@@ -1,0 +1,1815 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TemplateGuid>{9ef11e43-1701-4396-8835-8392d57abb70}</TemplateGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Survivalcraft</RootNamespace>
+    <AssemblyName>Survivalcraft</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>True</Deterministic>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml">
+      <HintPath>..\DllReference\System.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <HintPath>..\DllReference\System.Xml.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System_Net_Http">
+      <HintPath>..\dllReference\System_Net_Http.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Survivalcraft\Block\AdjustableDelayGateBlock.cs">
+      <Link>Block\AdjustableDelayGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\AirBlock.cs">
+      <Link>Block\AirBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\AlphaTestCubeBlock.cs">
+      <Link>Block\AlphaTestCubeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\AnalogToDigitalConverterBlock.cs">
+      <Link>Block\AnalogToDigitalConverterBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\AndGateBlock.cs">
+      <Link>Block\AndGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\ArrowBlock.cs">
+      <Link>Block\ArrowBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\AttachedSignBlock.cs">
+      <Link>Block\AttachedSignBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\AxeBlock.cs">
+      <Link>Block\AxeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BasaltBlock.cs">
+      <Link>Block\BasaltBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BasaltFenceBlock.cs">
+      <Link>Block\BasaltFenceBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BasaltSlabBlock.cs">
+      <Link>Block\BasaltSlabBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BasaltStairsBlock.cs">
+      <Link>Block\BasaltStairsBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BasePumpkinBlock.cs">
+      <Link>Block\BasePumpkinBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BatteryBlock.cs">
+      <Link>Block\BatteryBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BedrockBlock.cs">
+      <Link>Block\BedrockBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BirchLeavesBlock.cs">
+      <Link>Block\BirchLeavesBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BirchWoodBlock.cs">
+      <Link>Block\BirchWoodBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BoatBlock.cs">
+      <Link>Block\BoatBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BombBlock.cs">
+      <Link>Block\BombBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BottomSuckerBlock.cs">
+      <Link>Block\BottomSuckerBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BowBlock.cs">
+      <Link>Block\BowBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BreadBlock.cs">
+      <Link>Block\BreadBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BrickBlock.cs">
+      <Link>Block\BrickBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BrickFenceBlock.cs">
+      <Link>Block\BrickFenceBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BricksBlock.cs">
+      <Link>Block\BricksBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BrickSlabBlock.cs">
+      <Link>Block\BrickSlabBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BrickStairsBlock.cs">
+      <Link>Block\BrickStairsBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BucketBlock.cs">
+      <Link>Block\BucketBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\BulletBlock.cs">
+      <Link>Block\BulletBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\ButtonBlock.cs">
+      <Link>Block\ButtonBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CactusBlock.cs">
+      <Link>Block\CactusBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CampfireBlock.cs">
+      <Link>Block\CampfireBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CanvasBlock.cs">
+      <Link>Block\CanvasBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CarpetBlock.cs">
+      <Link>Block\CarpetBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CellDoorBlock.cs">
+      <Link>Block\CellDoorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CellTrapdoorBlock.cs">
+      <Link>Block\CellTrapdoorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\ChestBlock.cs">
+      <Link>Block\ChestBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\ChristmasTreeBlock.cs">
+      <Link>Block\ChristmasTreeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\ChunkBlock.cs">
+      <Link>Block\ChunkBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\ClayBlock.cs">
+      <Link>Block\ClayBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CoalBlock.cs">
+      <Link>Block\CoalBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CoalChunkBlock.cs">
+      <Link>Block\CoalChunkBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CoalOreBlock.cs">
+      <Link>Block\CoalOreBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CobblestoneBlock.cs">
+      <Link>Block\CobblestoneBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CobblestoneSlabBlock.cs">
+      <Link>Block\CobblestoneSlabBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CobblestoneStairsBlock.cs">
+      <Link>Block\CobblestoneStairsBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CompassBlock.cs">
+      <Link>Block\CompassBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CookedBirdBlock.cs">
+      <Link>Block\CookedBirdBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CookedFishBlock.cs">
+      <Link>Block\CookedFishBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CookedMeatBlock.cs">
+      <Link>Block\CookedMeatBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CopperAxeBlock.cs">
+      <Link>Block\CopperAxeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CopperBlock.cs">
+      <Link>Block\CopperBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CopperIngotBlock.cs">
+      <Link>Block\CopperIngotBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CopperMacheteBlock.cs">
+      <Link>Block\CopperMacheteBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CopperOreBlock.cs">
+      <Link>Block\CopperOreBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CopperPickaxeBlock.cs">
+      <Link>Block\CopperPickaxeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CopperRakeBlock.cs">
+      <Link>Block\CopperRakeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CopperShovelBlock.cs">
+      <Link>Block\CopperShovelBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CopperSpearBlock.cs">
+      <Link>Block\CopperSpearBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CottonBlock.cs">
+      <Link>Block\CottonBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CottonWadBlock.cs">
+      <Link>Block\CottonWadBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CounterBlock.cs">
+      <Link>Block\CounterBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CraftingTableBlock.cs">
+      <Link>Block\CraftingTableBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CrossBlock.cs">
+      <Link>Block\CrossBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CrossbowBlock.cs">
+      <Link>Block\CrossbowBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\CubeBlock.cs">
+      <Link>Block\CubeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DelayGateBlock.cs">
+      <Link>Block\DelayGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DetonatorBlock.cs">
+      <Link>Block\DetonatorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DiamondAxeBlock.cs">
+      <Link>Block\DiamondAxeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DiamondBlock.cs">
+      <Link>Block\DiamondBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DiamondChunkBlock.cs">
+      <Link>Block\DiamondChunkBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DiamondMacheteBlock.cs">
+      <Link>Block\DiamondMacheteBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DiamondOreBlock.cs">
+      <Link>Block\DiamondOreBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DiamondPickaxeBlock.cs">
+      <Link>Block\DiamondPickaxeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DiamondRakeBlock.cs">
+      <Link>Block\DiamondRakeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DiamondShovelBlock.cs">
+      <Link>Block\DiamondShovelBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DiamondSpearBlock.cs">
+      <Link>Block\DiamondSpearBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DigitalToAnalogConverterBlock.cs">
+      <Link>Block\DigitalToAnalogConverterBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DirtBlock.cs">
+      <Link>Block\DirtBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DispenserBlock.cs">
+      <Link>Block\DispenserBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DoorBlock.cs">
+      <Link>Block\DoorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DoughBlock.cs">
+      <Link>Block\DoughBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\DryBushBlock.cs">
+      <Link>Block\DryBushBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\EggBlock.cs">
+      <Link>Block\EggBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\EmptyBucketBlock.cs">
+      <Link>Block\EmptyBucketBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\ExperienceBlock.cs">
+      <Link>Block\ExperienceBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FeatherBlock.cs">
+      <Link>Block\FeatherBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FenceBlock.cs">
+      <Link>Block\FenceBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FenceGateBlock.cs">
+      <Link>Block\FenceGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FireBlock.cs">
+      <Link>Block\FireBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FireworksBlock.cs">
+      <Link>Block\FireworksBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FlatBlock.cs">
+      <Link>Block\FlatBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FlourBlock.cs">
+      <Link>Block\FlourBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FlowerBlock.cs">
+      <Link>Block\FlowerBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FluidBlock.cs">
+      <Link>Block\FluidBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FoodBlock.cs">
+      <Link>Block\FoodBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FourLedBlock.cs">
+      <Link>Block\FourLedBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FramedGlassBlock.cs">
+      <Link>Block\FramedGlassBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FurBlock.cs">
+      <Link>Block\FurBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FurnaceBlock.cs">
+      <Link>Block\FurnaceBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\FurnitureBlock.cs">
+      <Link>Block\FurnitureBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\GermaniumChunkBlock.cs">
+      <Link>Block\GermaniumChunkBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\GermaniumOreBlock.cs">
+      <Link>Block\GermaniumOreBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\GermaniumOreChunkBlock.cs">
+      <Link>Block\GermaniumOreChunkBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\GlassBlock.cs">
+      <Link>Block\GlassBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\GraniteBlock.cs">
+      <Link>Block\GraniteBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\GrassBlock.cs">
+      <Link>Block\GrassBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\GrassTrapBlock.cs">
+      <Link>Block\GrassTrapBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\GravelBlock.cs">
+      <Link>Block\GravelBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\GravestoneBlock.cs">
+      <Link>Block\GravestoneBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\GunpowderBlock.cs">
+      <Link>Block\GunpowderBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\GunpowderKegBlock.cs">
+      <Link>Block\GunpowderKegBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\HammerBlock.cs">
+      <Link>Block\HammerBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\HygrometerBlock.cs">
+      <Link>Block\HygrometerBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IceBlock.cs">
+      <Link>Block\IceBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IElectricElementBlock.cs">
+      <Link>Block\IElectricElementBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IElectricWireElementBlock.cs">
+      <Link>Block\IElectricWireElementBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IMovingBlockSet.cs">
+      <Link>Block\IMovingBlockSet.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IncendiaryBombBlock.cs">
+      <Link>Block\IncendiaryBombBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IngotBlock.cs">
+      <Link>Block\IngotBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IPaintableBlock.cs">
+      <Link>Block\IPaintableBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronAttachedSignBlock.cs">
+      <Link>Block\IronAttachedSignBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronAxeBlock.cs">
+      <Link>Block\IronAxeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronBlock.cs">
+      <Link>Block\IronBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronDoorBlock.cs">
+      <Link>Block\IronDoorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronFenceBlock.cs">
+      <Link>Block\IronFenceBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronFenceGateBlock.cs">
+      <Link>Block\IronFenceGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronHammerBlock.cs">
+      <Link>Block\IronHammerBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronIngotBlock.cs">
+      <Link>Block\IronIngotBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronLadderBlock.cs">
+      <Link>Block\IronLadderBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronMacheteBlock.cs">
+      <Link>Block\IronMacheteBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronOreBlock.cs">
+      <Link>Block\IronOreBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronOreChunkBlock.cs">
+      <Link>Block\IronOreChunkBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronPickaxeBlock.cs">
+      <Link>Block\IronPickaxeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronPostedSignBlock.cs">
+      <Link>Block\IronPostedSignBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronRakeBlock.cs">
+      <Link>Block\IronRakeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronShovelBlock.cs">
+      <Link>Block\IronShovelBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IronSpearBlock.cs">
+      <Link>Block\IronSpearBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\IvyBlock.cs">
+      <Link>Block\IvyBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\JackOLanternBlock.cs">
+      <Link>Block\JackOLanternBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\KelpBlock.cs">
+      <Link>Block\KelpBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\LadderBlock.cs">
+      <Link>Block\LadderBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\LargeDryBushBlock.cs">
+      <Link>Block\LargeDryBushBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\LargeGunpowderKegBlock.cs">
+      <Link>Block\LargeGunpowderKegBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\LargeIncendiaryKegBlock.cs">
+      <Link>Block\LargeIncendiaryKegBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\LeatherBlock.cs">
+      <Link>Block\LeatherBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\LeavesBlock.cs">
+      <Link>Block\LeavesBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\LedBlock.cs">
+      <Link>Block\LedBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\LightbulbBlock.cs">
+      <Link>Block\LightbulbBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\LimestoneBlock.cs">
+      <Link>Block\LimestoneBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\LitFurnaceBlock.cs">
+      <Link>Block\LitFurnaceBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MacheteBlock.cs">
+      <Link>Block\MacheteBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MagmaBlock.cs">
+      <Link>Block\MagmaBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MagmaBucketBlock.cs">
+      <Link>Block\MagmaBucketBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MagnetBlock.cs">
+      <Link>Block\MagnetBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MalachiteBlock.cs">
+      <Link>Block\MalachiteBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MalachiteChunkBlock.cs">
+      <Link>Block\MalachiteChunkBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MarbleBlock.cs">
+      <Link>Block\MarbleBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MarbleSlabBlock.cs">
+      <Link>Block\MarbleSlabBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MarbleStairsBlock.cs">
+      <Link>Block\MarbleStairsBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MatchBlock.cs">
+      <Link>Block\MatchBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MediumGunpowderKegBlock.cs">
+      <Link>Block\MediumGunpowderKegBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MediumIncendiaryKegBlock.cs">
+      <Link>Block\MediumIncendiaryKegBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MemoryBankBlock.cs">
+      <Link>Block\MemoryBankBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MilkBucketBlock.cs">
+      <Link>Block\MilkBucketBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MimosaLeavesBlock.cs">
+      <Link>Block\MimosaLeavesBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MimosaWoodBlock.cs">
+      <Link>Block\MimosaWoodBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MotionDetectorBlock.cs">
+      <Link>Block\MotionDetectorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MountedElectricElementBlock.cs">
+      <Link>Block\MountedElectricElementBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MovingBlock.cs">
+      <Link>Block\MovingBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MovingBlocksRaycastResult.cs">
+      <Link>Block\MovingBlocksRaycastResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MulticoloredLedBlock.cs">
+      <Link>Block\MulticoloredLedBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\MusketBlock.cs">
+      <Link>Block\MusketBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\NandGateBlock.cs">
+      <Link>Block\NandGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\NorGateBlock.cs">
+      <Link>Block\NorGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\NotGateBlock.cs">
+      <Link>Block\NotGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\OakLeavesBlock.cs">
+      <Link>Block\OakLeavesBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\OakWoodBlock.cs">
+      <Link>Block\OakWoodBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\OneLedBlock.cs">
+      <Link>Block\OneLedBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\OrGateBlock.cs">
+      <Link>Block\OrGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PaintBucketBlock.cs">
+      <Link>Block\PaintBucketBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PaintedCubeBlock.cs">
+      <Link>Block\PaintedCubeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PaintStripperBucketBlock.cs">
+      <Link>Block\PaintStripperBucketBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PhotodiodeBlock.cs">
+      <Link>Block\PhotodiodeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PickaxeBlock.cs">
+      <Link>Block\PickaxeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PigmentBlock.cs">
+      <Link>Block\PigmentBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PistonBlock.cs">
+      <Link>Block\PistonBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PistonHeadBlock.cs">
+      <Link>Block\PistonHeadBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PlanksBlock.cs">
+      <Link>Block\PlanksBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PostedSignBlock.cs">
+      <Link>Block\PostedSignBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PressurePlateBlock.cs">
+      <Link>Block\PressurePlateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PumpkinBlock.cs">
+      <Link>Block\PumpkinBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PumpkinSoupBucketBlock.cs">
+      <Link>Block\PumpkinSoupBucketBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\PurpleFlowerBlock.cs">
+      <Link>Block\PurpleFlowerBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RakeBlock.cs">
+      <Link>Block\RakeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RandomGeneratorBlock.cs">
+      <Link>Block\RandomGeneratorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RawBirdBlock.cs">
+      <Link>Block\RawBirdBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RawFishBlock.cs">
+      <Link>Block\RawFishBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RawMeatBlock.cs">
+      <Link>Block\RawMeatBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RealTimeClockBlock.cs">
+      <Link>Block\RealTimeClockBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RedFlowerBlock.cs">
+      <Link>Block\RedFlowerBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RodBlock.cs">
+      <Link>Block\RodBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RotateableMountedElectricElementBlock.cs">
+      <Link>Block\RotateableMountedElectricElementBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RottenBirdBlock.cs">
+      <Link>Block\RottenBirdBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RottenBreadBlock.cs">
+      <Link>Block\RottenBreadBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RottenDoughBlock.cs">
+      <Link>Block\RottenDoughBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RottenEggBlock.cs">
+      <Link>Block\RottenEggBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RottenFishBlock.cs">
+      <Link>Block\RottenFishBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RottenMeatBlock.cs">
+      <Link>Block\RottenMeatBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RottenMilkBucketBlock.cs">
+      <Link>Block\RottenMilkBucketBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RottenPumpkinBlock.cs">
+      <Link>Block\RottenPumpkinBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RottenPumpkinSoupBucketBlock.cs">
+      <Link>Block\RottenPumpkinSoupBucketBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\RyeBlock.cs">
+      <Link>Block\RyeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SaddleBlock.cs">
+      <Link>Block\SaddleBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SaltpeterChunkBlock.cs">
+      <Link>Block\SaltpeterChunkBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SaltpeterOreBlock.cs">
+      <Link>Block\SaltpeterOreBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SandBlock.cs">
+      <Link>Block\SandBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SandstoneBlock.cs">
+      <Link>Block\SandstoneBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SandstoneSlabBlock.cs">
+      <Link>Block\SandstoneSlabBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SandstoneStairsBlock.cs">
+      <Link>Block\SandstoneStairsBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SaplingBlock.cs">
+      <Link>Block\SaplingBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SeagrassBlock.cs">
+      <Link>Block\SeagrassBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SeaUrchinBlock.cs">
+      <Link>Block\SeaUrchinBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SeedsBlock.cs">
+      <Link>Block\SeedsBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SemiconductorBlock.cs">
+      <Link>Block\SemiconductorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SevenSegmentDisplayBlock.cs">
+      <Link>Block\SevenSegmentDisplayBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\ShovelBlock.cs">
+      <Link>Block\ShovelBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SignBlock.cs">
+      <Link>Block\SignBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SlabBlock.cs">
+      <Link>Block\SlabBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SmallGunpowderKegBlock.cs">
+      <Link>Block\SmallGunpowderKegBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SmallIncendiaryKegBlock.cs">
+      <Link>Block\SmallIncendiaryKegBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SnowballBlock.cs">
+      <Link>Block\SnowballBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SnowBlock.cs">
+      <Link>Block\SnowBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SoilBlock.cs">
+      <Link>Block\SoilBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SoundGeneratorBlock.cs">
+      <Link>Block\SoundGeneratorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SpearBlock.cs">
+      <Link>Block\SpearBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SpikedPlankBlock.cs">
+      <Link>Block\SpikedPlankBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SpruceLeavesBlock.cs">
+      <Link>Block\SpruceLeavesBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SpruceWoodBlock.cs">
+      <Link>Block\SpruceWoodBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SRLatchBlock.cs">
+      <Link>Block\SRLatchBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StairsBlock.cs">
+      <Link>Block\StairsBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StarfishBlock.cs">
+      <Link>Block\StarfishBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StickBlock.cs">
+      <Link>Block\StickBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StoneAxeBlock.cs">
+      <Link>Block\StoneAxeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StoneBrickBlock.cs">
+      <Link>Block\StoneBrickBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StoneBrickSlabBlock.cs">
+      <Link>Block\StoneBrickSlabBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StoneBrickStairsBlock.cs">
+      <Link>Block\StoneBrickStairsBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StoneChunkBlock.cs">
+      <Link>Block\StoneChunkBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StoneClubBlock.cs">
+      <Link>Block\StoneClubBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StoneFenceBlock.cs">
+      <Link>Block\StoneFenceBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StoneSlabBlock.cs">
+      <Link>Block\StoneSlabBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StoneSpearBlock.cs">
+      <Link>Block\StoneSpearBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StoneStairsBlock.cs">
+      <Link>Block\StoneStairsBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\StringBlock.cs">
+      <Link>Block\StringBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SulphurChunkBlock.cs">
+      <Link>Block\SulphurChunkBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SulphurOreBlock.cs">
+      <Link>Block\SulphurOreBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\SwitchBlock.cs">
+      <Link>Block\SwitchBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\TallGrassBlock.cs">
+      <Link>Block\TallGrassBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\TallSpruceLeavesBlock.cs">
+      <Link>Block\TallSpruceLeavesBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\TargetBlock.cs">
+      <Link>Block\TargetBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\ThermometerBlock.cs">
+      <Link>Block\ThermometerBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\TorchBlock.cs">
+      <Link>Block\TorchBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\TrapdoorBlock.cs">
+      <Link>Block\TrapdoorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\TreasureGeneratorBlock.cs">
+      <Link>Block\TreasureGeneratorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\TruthTableCircuitBlock.cs">
+      <Link>Block\TruthTableCircuitBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WaterBlock.cs">
+      <Link>Block\WaterBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WaterBucketBlock.cs">
+      <Link>Block\WaterBucketBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WaterPlantBlock.cs">
+      <Link>Block\WaterPlantBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WhistleBlock.cs">
+      <Link>Block\WhistleBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WhiteFlowerBlock.cs">
+      <Link>Block\WhiteFlowerBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WickerLampBlock.cs">
+      <Link>Block\WickerLampBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WindowBlock.cs">
+      <Link>Block\WindowBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WireBlock.cs">
+      <Link>Block\WireBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WireThroughBlock.cs">
+      <Link>Block\WireThroughBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WireThroughBricksBlock.cs">
+      <Link>Block\WireThroughBricksBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WireThroughCobblestoneBlock.cs">
+      <Link>Block\WireThroughCobblestoneBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WireThroughPlanksBlock.cs">
+      <Link>Block\WireThroughPlanksBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WireThroughSemiconductorBlock.cs">
+      <Link>Block\WireThroughSemiconductorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WireThroughStoneBlock.cs">
+      <Link>Block\WireThroughStoneBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodBlock.cs">
+      <Link>Block\WoodBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenAttachedSignBlock.cs">
+      <Link>Block\WoodenAttachedSignBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenClubBlock.cs">
+      <Link>Block\WoodenClubBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenDoorBlock.cs">
+      <Link>Block\WoodenDoorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenFenceBlock.cs">
+      <Link>Block\WoodenFenceBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenFenceGateBlock.cs">
+      <Link>Block\WoodenFenceGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenLadderBlock.cs">
+      <Link>Block\WoodenLadderBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenPostedSignBlock.cs">
+      <Link>Block\WoodenPostedSignBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenRakeBlock.cs">
+      <Link>Block\WoodenRakeBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenSlabBlock.cs">
+      <Link>Block\WoodenSlabBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenSpearBlock.cs">
+      <Link>Block\WoodenSpearBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenStairsBlock.cs">
+      <Link>Block\WoodenStairsBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\WoodenTrapdoorBlock.cs">
+      <Link>Block\WoodenTrapdoorBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Block\XorGateBlock.cs">
+      <Link>Block\XorGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentAimingSights.cs">
+      <Link>Component\ComponentAimingSights.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentAutoJump.cs">
+      <Link>Component\ComponentAutoJump.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentAvoidFireBehavior.cs">
+      <Link>Component\ComponentAvoidFireBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentAvoidPlayerBehavior.cs">
+      <Link>Component\ComponentAvoidPlayerBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentBehavior.cs">
+      <Link>Component\ComponentBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentBehaviorSelector.cs">
+      <Link>Component\ComponentBehaviorSelector.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentBirdModel.cs">
+      <Link>Component\ComponentBirdModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentBlockEntity.cs">
+      <Link>Component\ComponentBlockEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentBlockHighlight.cs">
+      <Link>Component\ComponentBlockHighlight.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentBoat.cs">
+      <Link>Component\ComponentBoat.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentBody.cs">
+      <Link>Component\ComponentBody.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentCattleDriveBehavior.cs">
+      <Link>Component\ComponentCattleDriveBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentCetaceanBreatheBehavior.cs">
+      <Link>Component\ComponentCetaceanBreatheBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentChaseBehavior.cs">
+      <Link>Component\ComponentChaseBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentChest.cs">
+      <Link>Component\ComponentChest.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentClothing.cs">
+      <Link>Component\ComponentClothing.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentCraftingTable.cs">
+      <Link>Component\ComponentCraftingTable.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentCreativeInventory.cs">
+      <Link>Component\ComponentCreativeInventory.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentCreature.cs">
+      <Link>Component\ComponentCreature.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentCreatureModel.cs">
+      <Link>Component\ComponentCreatureModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentCreatureSounds.cs">
+      <Link>Component\ComponentCreatureSounds.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentDamage.cs">
+      <Link>Component\ComponentDamage.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentDiggingCracks.cs">
+      <Link>Component\ComponentDiggingCracks.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentDigInMudBehavior.cs">
+      <Link>Component\ComponentDigInMudBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentDispenser.cs">
+      <Link>Component\ComponentDispenser.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentDumpRiderBehavior.cs">
+      <Link>Component\ComponentDumpRiderBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentEatPickableBehavior.cs">
+      <Link>Component\ComponentEatPickableBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFindPlayerBehavior.cs">
+      <Link>Component\ComponentFindPlayerBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFirstPersonModel.cs">
+      <Link>Component\ComponentFirstPersonModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFishModel.cs">
+      <Link>Component\ComponentFishModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFishOutOfWaterBehavior.cs">
+      <Link>Component\ComponentFishOutOfWaterBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFlightlessBirdModel.cs">
+      <Link>Component\ComponentFlightlessBirdModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFlu.cs">
+      <Link>Component\ComponentFlu.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFlyAroundBehavior.cs">
+      <Link>Component\ComponentFlyAroundBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFlyAwayBehavior.cs">
+      <Link>Component\ComponentFlyAwayBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFourLeggedModel.cs">
+      <Link>Component\ComponentFourLeggedModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFrame.cs">
+      <Link>Component\ComponentFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFurnace.cs">
+      <Link>Component\ComponentFurnace.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentFurnitureInventory.cs">
+      <Link>Component\ComponentFurnitureInventory.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentGlowingEyes.cs">
+      <Link>Component\ComponentGlowingEyes.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentGui.cs">
+      <Link>Component\ComponentGui.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentHealth.cs">
+      <Link>Component\ComponentHealth.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentHerdBehavior.cs">
+      <Link>Component\ComponentHerdBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentHowlBehavior.cs">
+      <Link>Component\ComponentHowlBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentHumanModel.cs">
+      <Link>Component\ComponentHumanModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentInput.cs">
+      <Link>Component\ComponentInput.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentIntro.cs">
+      <Link>Component\ComponentIntro.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentIntroShip.cs">
+      <Link>Component\ComponentIntroShip.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentInventory.cs">
+      <Link>Component\ComponentInventory.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentInventoryBase.cs">
+      <Link>Component\ComponentInventoryBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentLayEggBehavior.cs">
+      <Link>Component\ComponentLayEggBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentLevel.cs">
+      <Link>Component\ComponentLevel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentLocomotion.cs">
+      <Link>Component\ComponentLocomotion.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentLookAroundBehavior.cs">
+      <Link>Component\ComponentLookAroundBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentLoot.cs">
+      <Link>Component\ComponentLoot.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentMiner.cs">
+      <Link>Component\ComponentMiner.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentModel.cs">
+      <Link>Component\ComponentModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentMount.cs">
+      <Link>Component\ComponentMount.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentMoveAwayBehavior.cs">
+      <Link>Component\ComponentMoveAwayBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentName.cs">
+      <Link>Component\ComponentName.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentOnFire.cs">
+      <Link>Component\ComponentOnFire.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentOuterClothingModel.cs">
+      <Link>Component\ComponentOuterClothingModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentPathfinding.cs">
+      <Link>Component\ComponentPathfinding.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentPilot.cs">
+      <Link>Component\ComponentPilot.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentPlayer.cs">
+      <Link>Component\ComponentPlayer.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentRandomFeedBehavior.cs">
+      <Link>Component\ComponentRandomFeedBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentRandomPeckBehavior.cs">
+      <Link>Component\ComponentRandomPeckBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentRider.cs">
+      <Link>Component\ComponentRider.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentRunAwayBehavior.cs">
+      <Link>Component\ComponentRunAwayBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentScreenOverlays.cs">
+      <Link>Component\ComponentScreenOverlays.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentShapeshifter.cs">
+      <Link>Component\ComponentShapeshifter.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentSickness.cs">
+      <Link>Component\ComponentSickness.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentSimpleModel.cs">
+      <Link>Component\ComponentSimpleModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentSleep.cs">
+      <Link>Component\ComponentSleep.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentSpawn.cs">
+      <Link>Component\ComponentSpawn.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentStareBehavior.cs">
+      <Link>Component\ComponentStareBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentSteedBehavior.cs">
+      <Link>Component\ComponentSteedBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentStubbornSteedBehavior.cs">
+      <Link>Component\ComponentStubbornSteedBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentSummonBehavior.cs">
+      <Link>Component\ComponentSummonBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentSwimAroundBehavior.cs">
+      <Link>Component\ComponentSwimAroundBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentSwimAwayBehavior.cs">
+      <Link>Component\ComponentSwimAwayBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentUdder.cs">
+      <Link>Component\ComponentUdder.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentVitalStats.cs">
+      <Link>Component\ComponentVitalStats.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentVrHandsModel.cs">
+      <Link>Component\ComponentVrHandsModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentWalkAroundBehavior.cs">
+      <Link>Component\ComponentWalkAroundBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\Changes\BlocksManager.cs">
+      <Link>ModsManager\Changes\BlocksManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\Changes\ClothingBlock.cs">
+      <Link>ModsManager\Changes\ClothingBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\Changes\ContentManager.cs">
+      <Link>ModsManager\Changes\ContentManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\Changes\CraftingRecipesManager.cs">
+      <Link>ModsManager\Changes\CraftingRecipesManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\Changes\DatabaseManager.cs">
+      <Link>ModsManager\Changes\DatabaseManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\FileEntry.cs">
+      <Link>ModsManager\FileEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\LanguageControl.cs">
+      <Link>Language\LanguageControl.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\ModInfo.cs">
+      <Link>ModsManager\ModInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\MyTipDialog.cs">
+      <Link>ModsManager\MyTipDialog.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\PluginLoaderAttribute.cs">
+      <Link>ModsManager\PluginLoaderAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Screen\PlayScreen.cs">
+      <Link>Screen\PlayScreen.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Subsystem\SubsystemSignBlockBehavior.cs">
+      <Link>Subsystem\SubsystemSignBlockBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Subsystem\SubsystemSky.cs">
+      <Link>Subsystem\SubsystemSky.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Subsystem\SubsystemSnowBlockBehavior.cs">
+      <Link>Subsystem\SubsystemSnowBlockBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Subsystem\SubsystemSoilBlockBehavior.cs">
+      <Link>Subsystem\SubsystemSoilBlockBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Widget\EditMemeryDialogB.cs">
+      <Link>Dialog\EditMemeryDialogB.cs</Link>
+    </Compile>
+    <Compile Include="ContentProvider\LoginDialog.cs" />
+    <Compile Include="ContentProvider\SPMBoxExternalContentProvider.cs" />
+    <Compile Include="Game\ActiveExternalContentInfo.cs" />
+    <Compile Include="Game\AdjustableDelayGateElectricElement.cs" />
+    <Compile Include="Game\AimState.cs" />
+    <Compile Include="Game\AnalogToDigitalConverterElectricElement.cs" />
+    <Compile Include="Game\AnalyticsManager.cs" />
+    <Compile Include="Game\AnalyticsParameter.cs" />
+    <Compile Include="Game\AndGateElectricElement.cs" />
+    <Compile Include="ContentProvider\AndroidSdCardExternalContentProvider.cs" />
+    <Compile Include="Game\AStar.cs" />
+    <Compile Include="Game\AudioManager.cs" />
+    <Compile Include="Game\AverageCountDebugItemAttribute.cs" />
+    <Compile Include="Game\AverageTimeDebugItemAttribute.cs" />
+    <Compile Include="Game\BaseDelayGateElectricElement.cs" />
+    <Compile Include="Game\BasePerspectiveCamera.cs" />
+    <Compile Include="Game\BatteryElectricElement.cs" />
+    <Compile Include="Game\BestiaryCreatureInfo.cs" />
+    <Compile Include="Screen\BestiaryDescriptionScreen.cs" />
+    <Compile Include="Screen\BestiaryScreen.cs" />
+    <Compile Include="Game\Block.cs" />
+    <Compile Include="Game\BlockColorsMap.cs" />
+    <Compile Include="Game\BlockDebrisParticleSystem.cs" />
+    <Compile Include="Game\BlockDigMethod.cs" />
+    <Compile Include="Game\BlockDropValue.cs" />
+    <Compile Include="Game\BlockGeometryGenerator.cs" />
+    <Compile Include="Game\BlockMesh.cs" />
+    <Compile Include="Game\BlockMeshVertex.cs" />
+    <Compile Include="Game\BlockPlacementData.cs" />
+    <Compile Include="Game\BlocksTexturesCache.cs" />
+    <Compile Include="Game\BlocksTexturesManager.cs" />
+    <Compile Include="Game\BodyRaycastResult.cs" />
+    <Compile Include="Game\BreathingMode.cs" />
+    <Compile Include="Game\BuildConfiguration.cs" />
+    <Compile Include="Game\BuildFurnitureDialog.cs" />
+    <Compile Include="Game\BurntDebrisParticleSystem.cs" />
+    <Compile Include="Game\BusyDialog.cs" />
+    <Compile Include="Game\ButtonElectricElement.cs" />
+    <Compile Include="Game\ButtonFurnitureElectricElement.cs" />
+    <Compile Include="Game\Camera.cs" />
+    <Compile Include="Game\CancellableBusyDialog.cs" />
+    <Compile Include="Game\CancellableProgress.cs" />
+    <Compile Include="Game\CellFace.cs" />
+    <Compile Include="Game\CharacterSkinsCache.cs" />
+    <Compile Include="Game\CharacterSkinsManager.cs" />
+    <Compile Include="Game\ChristmasTreeElectricElement.cs" />
+    <Compile Include="Game\ClipboardManager.cs" />
+    <Compile Include="Game\ClothingData.cs" />
+    <Compile Include="Game\ClothingSlot.cs" />
+    <Compile Include="Game\CollectionUtils.cs" />
+    <Compile Include="Game\CommunityContentEntry.cs" />
+    <Compile Include="Game\CommunityContentManager.cs" />
+    <Compile Include="Game\CommunityContentMode.cs" />
+    <Compile Include="Screen\CommunityContentScreen.cs" />
+    <Compile Include="Game\CounterElectricElement.cs" />
+    <Compile Include="Game\CraftingRecipe.cs" />
+    <Compile Include="Game\CreativeInventoryPanel.cs" />
+    <Compile Include="Game\CreatureCategory.cs" />
+    <Compile Include="Game\DataSizeFormatter.cs" />
+    <Compile Include="Game\DeathCamera.cs" />
+    <Compile Include="Game\DebugCamera.cs" />
+    <Compile Include="Game\DebugItemAttribute.cs" />
+    <Compile Include="Game\DebugItemsContainerAttribute.cs" />
+    <Compile Include="Game\DebugMenuItemAttribute.cs" />
+    <Compile Include="Game\DelayGateElectricElement.cs" />
+    <Compile Include="Game\DetonatorElectricElement.cs" />
+    <Compile Include="Game\DeviceManager.cs" />
+    <Compile Include="Game\Dialog.cs" />
+    <Compile Include="Game\DialogsManager.cs" />
+    <Compile Include="Game\DigitalToAnalogConverterElectricElement.cs" />
+    <Compile Include="Game\DispenserElectricElement.cs" />
+    <Compile Include="Game\DoorElectricElement.cs" />
+    <Compile Include="Game\DownloadContentFromLinkDialog.cs" />
+    <Compile Include="Game\DragMode.cs" />
+    <Compile Include="Game\DrawBlockEnvironmentData.cs" />
+    <Compile Include="ContentProvider\DropboxExternalContentProvider.cs" />
+    <Compile Include="Game\EditAdjustableDelayGateDialog.cs" />
+    <Compile Include="Game\EditBatteryDialog.cs" />
+    <Compile Include="Game\EditColorDialog.cs" />
+    <Compile Include="Game\EditMemoryBankDialog.cs" />
+    <Compile Include="Game\EditPaletteDialog.cs" />
+    <Compile Include="Game\EditPistonDialog.cs" />
+    <Compile Include="Game\EditSignDialog.cs" />
+    <Compile Include="Game\EditTruthTableDialog.cs" />
+    <Compile Include="Game\ElectricConnection.cs" />
+    <Compile Include="Game\ElectricConnectionPath.cs" />
+    <Compile Include="Game\ElectricConnectorDirection.cs" />
+    <Compile Include="Game\ElectricConnectorType.cs" />
+    <Compile Include="Game\ElectricElement.cs" />
+    <Compile Include="Game\EntityReference.cs" />
+    <Compile Include="Game\EntityReferenceHumanReadableConverter.cs" />
+    <Compile Include="Game\EnumUtils.cs" />
+    <Compile Include="Game\EnvironmentBehaviorMode.cs" />
+    <Compile Include="Game\ExceptionManager.cs" />
+    <Compile Include="Game\ExplosionParticleSystem.cs" />
+    <Compile Include="Game\ExternalContentEntry.cs" />
+    <Compile Include="Game\ExternalContentLinkDialog.cs" />
+    <Compile Include="Game\ExternalContentManager.cs" />
+    <Compile Include="Screen\ExternalContentScreen.cs" />
+    <Compile Include="Game\ExternalContentType.cs" />
+    <Compile Include="Game\FenceGateElectricElement.cs" />
+    <Compile Include="Game\FireParticleSystem.cs" />
+    <Compile Include="Game\FireworksParticleSystem.cs" />
+    <Compile Include="Game\FireworksTrailParticleSystem.cs" />
+    <Compile Include="Game\FixedCamera.cs" />
+    <Compile Include="Game\FloatListDebugMenuItemAttribute.cs" />
+    <Compile Include="Game\FluidInfo.cs" />
+    <Compile Include="Game\FlyCamera.cs" />
+    <Compile Include="Game\FoodType.cs" />
+    <Compile Include="Game\FourLedElectricElement.cs" />
+    <Compile Include="Game\FppCamera.cs" />
+    <Compile Include="Game\FurnitureDesign.cs" />
+    <Compile Include="Game\FurnitureElectricElement.cs" />
+    <Compile Include="Game\FurnitureGeometry.cs" />
+    <Compile Include="Game\FurnitureInteractionMode.cs" />
+    <Compile Include="Game\FurnitureInventoryPanel.cs" />
+    <Compile Include="Game\FurniturePacksManager.cs" />
+    <Compile Include="Game\FurnitureSet.cs" />
+    <Compile Include="Game\FuseParticleSystem.cs" />
+    <Compile Include="Screen\GameLoadingScreen.cs" />
+    <Compile Include="Game\GameLogSink.cs" />
+    <Compile Include="Game\GameManager.cs" />
+    <Compile Include="Game\GameMenuDialog.cs" />
+    <Compile Include="Game\GameMode.cs" />
+    <Compile Include="Game\GamepadHelpDialog.cs" />
+    <Compile Include="Screen\GameScreen.cs" />
+    <Compile Include="Game\GlowPoint.cs" />
+    <Compile Include="Game\GlowPointType.cs" />
+    <Compile Include="Game\GuiSize.cs" />
+    <Compile Include="Game\GunpowderKegElectricElement.cs" />
+    <Compile Include="Game\GunSmokeParticleSystem.cs" />
+    <Compile Include="Screen\HelpScreen.cs" />
+    <Compile Include="Game\HelpTopic.cs" />
+    <Compile Include="Screen\HelpTopicScreen.cs" />
+    <Compile Include="Game\HitValueParticleSystem.cs" />
+    <Compile Include="Game\HygrometerElectricElement.cs" />
+    <Compile Include="Game\IAStarStorage.cs" />
+    <Compile Include="Game\IAStarWorld.cs" />
+    <Compile Include="Game\IDrawable.cs" />
+    <Compile Include="Game\IEditableItemData.cs" />
+    <Compile Include="ContentProvider\IExternalContentProvider.cs" />
+    <Compile Include="Game\IInventory.cs" />
+    <Compile Include="Game\INoiseListener.cs" />
+    <Compile Include="Game\InstancedModelData.cs" />
+    <Compile Include="Game\InstancedModelsManager.cs" />
+    <Compile Include="Game\IntroCamera.cs" />
+    <Compile Include="Game\InventoryDragData.cs" />
+    <Compile Include="Game\ITerrainContentsGenerator.cs" />
+    <Compile Include="Game\ITrailParticleSystem.cs" />
+    <Compile Include="Game\IUpdateable.cs" />
+    <Compile Include="Game\KeyboardHelpDialog.cs" />
+    <Compile Include="Game\KillParticleSystem.cs" />
+    <Compile Include="Game\LayoutDirection.cs" />
+    <Compile Include="Game\LedElectricElement.cs" />
+    <Compile Include="Game\LevelFactorDialog.cs" />
+    <Compile Include="Game\LightBulbElectricElement.cs" />
+    <Compile Include="Game\LightingManager.cs" />
+    <Compile Include="Game\ListSelectionDialog.cs" />
+    <Compile Include="Game\LoadingCamera.cs" />
+    <Compile Include="Screen\LoadingScreen.cs" />
+    <Compile Include="Game\LookControlMode.cs" />
+    <Compile Include="Game\MagmaSplashParticleSystem.cs" />
+    <Compile Include="Screen\MainMenuScreen.cs" />
+    <Compile Include="Game\MarketplaceManager.cs" />
+    <Compile Include="Game\MatrixUtils.cs" />
+    <Compile Include="Game\MemoryBankData.cs" />
+    <Compile Include="Game\MemoryBankElectricElement.cs" />
+    <Compile Include="Game\MessageDialog.cs" />
+    <Compile Include="Game\MessageDialogButton.cs" />
+    <Compile Include="Game\ModelRenderingMode.cs" />
+    <Compile Include="Game\ModelShader.cs" />
+    <Compile Include="Screen\ManageContentScreen.cs" />
+    <Compile Include="Screen\ModifyWorldScreen.cs" />
+    <Compile Include="Game\MoreCommunityLinkDialog.cs" />
+    <Compile Include="Game\MotdManager.cs" />
+    <Compile Include="Game\MotionDetectorElectricElement.cs" />
+    <Compile Include="Game\MountedElectricElement.cs" />
+    <Compile Include="Game\MoveControlMode.cs" />
+    <Compile Include="Game\MulticoloredLedElectricElement.cs" />
+    <Compile Include="Game\MultistateFurnitureElectricElement.cs" />
+    <Compile Include="Game\MusicManager.cs" />
+    <Compile Include="Screen\NagScreen.cs" />
+    <Compile Include="Game\NandGateElectricElement.cs" />
+    <Compile Include="Screen\NewWorldScreen.cs" />
+    <Compile Include="Game\NorGateElectricElement.cs" />
+    <Compile Include="Game\NotGateElectricElement.cs" />
+    <Compile Include="Game\OneLedElectricElement.cs" />
+    <Compile Include="Game\OnFireParticleSystem.cs" />
+    <Compile Include="Game\OrbitCamera.cs" />
+    <Compile Include="Game\OrGateElectricElement.cs" />
+    <Compile Include="Game\PaintParticleSystem.cs" />
+    <Compile Include="Game\Particle.cs" />
+    <Compile Include="Game\ParticleBillboardingMode.cs" />
+    <Compile Include="Game\ParticleSystem.cs" />
+    <Compile Include="Game\ParticleSystemBase.cs" />
+    <Compile Include="Game\PathfindingResult.cs" />
+    <Compile Include="Game\PerformanceManager.cs" />
+    <Compile Include="Game\PhotodiodeElectricElement.cs" />
+    <Compile Include="Game\Pickable.cs" />
+    <Compile Include="Game\PistonElectricElement.cs" />
+    <Compile Include="Game\PistonMode.cs" />
+    <Compile Include="Game\PlantsManager.cs" />
+    <Compile Include="Game\Platform.cs" />
+    <Compile Include="Game\PlayerClass.cs" />
+    <Compile Include="Game\PlayerData.cs" />
+    <Compile Include="Game\PlayerInfo.cs" />
+    <Compile Include="Game\PlayerInput.cs" />
+    <Compile Include="Screen\PlayerScreen.cs" />
+    <Compile Include="Screen\PlayersScreen.cs" />
+    <Compile Include="Game\PlayerStats.cs" />
+    <Compile Include="Game\PrecipitationShaftInfo.cs" />
+    <Compile Include="Game\PrecipitationShaftParticleSystem.cs" />
+    <Compile Include="Game\PrecipitationType.cs" />
+    <Compile Include="Game\PressurePlateElectricElement.cs" />
+    <Compile Include="Game\Profiler.cs" />
+    <Compile Include="Game\Program.cs" />
+    <Compile Include="Game\Progress.cs" />
+    <Compile Include="Game\ProgressManager.cs" />
+    <Compile Include="Game\Projectile.cs" />
+    <Compile Include="Game\ProjectileStoppedAction.cs" />
+    <Compile Include="Game\PublishCommunityLinkDialog.cs" />
+    <Compile Include="Game\PukeParticleSystem.cs" />
+    <Compile Include="Game\RainSplashParticleSystem.cs" />
+    <Compile Include="Game\Random.cs" />
+    <Compile Include="Game\RandomGeneratorElectricElement.cs" />
+    <Compile Include="Game\RandomJumpCamera.cs" />
+    <Compile Include="Game\RateCommunityContentDialog.cs" />
+    <Compile Include="Game\RaycastMode.cs" />
+    <Compile Include="Game\RealTimeClockElectricElement.cs" />
+    <Compile Include="Screen\RecipaediaDescriptionScreen.cs" />
+    <Compile Include="Screen\RecipaediaRecipesScreen.cs" />
+    <Compile Include="Screen\RecipaediaScreen.cs" />
+    <Compile Include="Game\ReportCommunityContentDialog.cs" />
+    <Compile Include="Game\ResolutionMode.cs" />
+    <Compile Include="Game\RotateableElectricElement.cs" />
+    <Compile Include="Game\RunningAverage.cs" />
+    <Compile Include="Game\ScannedItemData.cs" />
+    <Compile Include="Game\ScreenCaptureManager.cs" />
+    <Compile Include="Game\Segment2.cs" />
+    <Compile Include="Game\Segment3.cs" />
+    <Compile Include="ContentProvider\SelectExternalContentProviderDialog.cs" />
+    <Compile Include="Game\SelectExternalContentTypeDialog.cs" />
+    <Compile Include="Screen\Screen.cs" />
+    <Compile Include="Screen\ScreenLayout.cs" />
+    <Compile Include="Screen\ScreenResolutionManager.cs" />
+    <Compile Include="Screen\ScreenshotSize.cs" />
+    <Compile Include="Screen\ScreensManager.cs" />
+    <Compile Include="Screen\ScreenSpaceFireRenderer.cs" />
+    <Compile Include="Screen\SettingsAudioScreen.cs" />
+    <Compile Include="Screen\SettingsCompatibilityScreen.cs" />
+    <Compile Include="Screen\SettingsControlsScreen.cs" />
+    <Compile Include="Screen\SettingsGraphicsScreen.cs" />
+    <Compile Include="Game\SettingsManager.cs" />
+    <Compile Include="Screen\SettingsPerformanceScreen.cs" />
+    <Compile Include="Screen\SettingsScreen.cs" />
+    <Compile Include="Screen\SettingsUiScreen.cs" />
+    <Compile Include="Game\SevenSegmentDisplayElectricElement.cs" />
+    <Compile Include="Game\ShapeshiftParticleSystem.cs" />
+    <Compile Include="Game\SignData.cs" />
+    <Compile Include="Game\SignElectricElement.cs" />
+    <Compile Include="Game\SimplexNoise.cs" />
+    <Compile Include="Game\SkyRenderingMode.cs" />
+    <Compile Include="Game\SmokeTrailParticleSystem.cs" />
+    <Compile Include="Game\SnowSplashParticleSystem.cs" />
+    <Compile Include="Game\SortedMultiCollection.cs" />
+    <Compile Include="Game\SoundGeneratorElectricElement.cs" />
+    <Compile Include="Game\SoundParticleSystem.cs" />
+    <Compile Include="Game\SpawnChunk.cs" />
+    <Compile Include="Game\SpawnDialog.cs" />
+    <Compile Include="Game\SpawnEntityData.cs" />
+    <Compile Include="Game\SpawnLocationType.cs" />
+    <Compile Include="Game\SpikedPlankElectricElement.cs" />
+    <Compile Include="Game\SRLatchElectricElement.cs" />
+    <Compile Include="Game\StartingPositionMode.cs" />
+    <Compile Include="Game\StateMachine.cs" />
+    <Compile Include="Game\StraightFlightCamera.cs" />
+    <Compile Include="Game\StringsManager.cs" />
+    <Compile Include="Game\StringUtils.cs" />
+    <Compile Include="Subsystem\SubsystemAdjustableDelayGateBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemAmbientSounds.cs" />
+    <Compile Include="Subsystem\SubsystemAnimatedTextures.cs" />
+    <Compile Include="Subsystem\SubsystemArrowBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemAudio.cs" />
+    <Compile Include="Subsystem\SubsystemBatteryBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemBlockBehaviors.cs" />
+    <Compile Include="Subsystem\SubsystemBlockEntities.cs" />
+    <Compile Include="Subsystem\SubsystemBlocksScanner.cs" />
+    <Compile Include="Subsystem\SubsystemBlocksTexture.cs" />
+    <Compile Include="Subsystem\SubsystemBoatBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemBodies.cs" />
+    <Compile Include="Subsystem\SubsystemBombBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemBottomSuckerBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemBowBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemBucketBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemBulletBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemCactusBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemCampfireBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemCarpetBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemChestBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemCollapsingBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemCraftingTableBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemCreatureSpawn.cs" />
+    <Compile Include="Subsystem\SubsystemCrossbowBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemDispenserBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemDoorBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemDrawing.cs" />
+    <Compile Include="Subsystem\SubsystemEditableItemBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemEggBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemElectricBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemElectricity.cs" />
+    <Compile Include="Subsystem\SubsystemExplosions.cs" />
+    <Compile Include="Subsystem\SubsystemExplosivesBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemFenceBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemFenceGateBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemFertilizerBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemFireBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemFireworksBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemFluidBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemFurnaceBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemFurnitureBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemGameInfo.cs" />
+    <Compile Include="Subsystem\SubsystemGlow.cs" />
+    <Compile Include="Subsystem\SubsystemGrassBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemGrassTrapBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemGravestoneBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemHammerBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemImpactExplosivesBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemInWaterBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemItemsScanner.cs" />
+    <Compile Include="Subsystem\SubsystemIvyBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemLadderBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemMagmaBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemMagnetBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemMatchBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemMemoryBankBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemMetersBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemModelsRenderer.cs" />
+    <Compile Include="Subsystem\SubsystemMovingBlocks.cs" />
+    <Compile Include="Subsystem\SubsystemMusketBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemNames.cs" />
+    <Compile Include="Subsystem\SubsystemNoise.cs" />
+    <Compile Include="Subsystem\SubsystemPalette.cs" />
+    <Compile Include="Subsystem\SubsystemParticles.cs" />
+    <Compile Include="Subsystem\SubsystemPathfinding.cs" />
+    <Compile Include="Subsystem\SubsystemPickables.cs" />
+    <Compile Include="Subsystem\SubsystemPistonBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemPlantBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemPlayers.cs" />
+    <Compile Include="Subsystem\SubsystemPlayerStats.cs" />
+    <Compile Include="Subsystem\SubsystemPollableBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemPostprocessor.cs" />
+    <Compile Include="Subsystem\SubsystemProjectiles.cs" />
+    <Compile Include="Subsystem\SubsystemRakeBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemRotBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemSaddleBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemSaplingBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemShadows.cs" />
+    <Compile Include="Subsystem\SubsystemSoundMaterials.cs" />
+    <Compile Include="Subsystem\SubsystemSpawn.cs" />
+    <Compile Include="Subsystem\SubsystemSpikesBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemStairsBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemTerrain.cs" />
+    <Compile Include="Subsystem\SubsystemThrowableBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemTime.cs" />
+    <Compile Include="Subsystem\SubsystemTimeOfDay.cs" />
+    <Compile Include="Subsystem\SubsystemTorchBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemTrapdoorBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemTreasureGeneratorBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemTruthTableCircuitBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemUpdate.cs" />
+    <Compile Include="Subsystem\SubsystemWaterBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemWaterPlantBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemWeather.cs" />
+    <Compile Include="Subsystem\SubsystemWhistleBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemWoodBlockBehavior.cs" />
+    <Compile Include="Game\Subtexture.cs" />
+    <Compile Include="Game\SwitchElectricElement.cs" />
+    <Compile Include="Game\SwitchFurnitureElectricElement.cs" />
+    <Compile Include="Game\TargetElectricElement.cs" />
+    <Compile Include="Game\Terrain.cs" />
+    <Compile Include="Game\TerrainBrush.cs" />
+    <Compile Include="Game\TerrainChunk.cs" />
+    <Compile Include="Game\TerrainChunkGeometry.cs" />
+    <Compile Include="Game\TerrainChunkSliceGeometry.cs" />
+    <Compile Include="Game\TerrainChunkState.cs" />
+    <Compile Include="Game\TerrainContentsGenerator21.cs" />
+    <Compile Include="Game\TerrainContentsGenerator22.cs" />
+    <Compile Include="Game\TerrainContentsGeneratorFlat.cs" />
+    <Compile Include="Game\TerrainGenerationMode.cs" />
+    <Compile Include="Game\TerrainGeometry.cs" />
+    <Compile Include="Game\TerrainGeometrySubset.cs" />
+    <Compile Include="Game\TerrainRaycastResult.cs" />
+    <Compile Include="Game\TerrainRenderer.cs" />
+    <Compile Include="Game\TerrainSerializer129.cs" />
+    <Compile Include="Game\TerrainSerializer14.cs" />
+    <Compile Include="Game\TerrainSerializer22.cs" />
+    <Compile Include="Game\TerrainUpdater.cs" />
+    <Compile Include="Game\TerrainVertex.cs" />
+    <Compile Include="Game\TextBoxDialog.cs" />
+    <Compile Include="Game\TextOrientation.cs" />
+    <Compile Include="Game\TextureAtlas.cs" />
+    <Compile Include="Game\TextureAtlasManager.cs" />
+    <Compile Include="Game\ThermometerElectricElement.cs" />
+    <Compile Include="Game\TimeOfDayMode.cs" />
+    <Compile Include="Game\TouchInput.cs" />
+    <Compile Include="Game\TouchInputType.cs" />
+    <Compile Include="Game\TppCamera.cs" />
+    <Compile Include="ContentProvider\TransferShExternalContentProvider.cs" />
+    <Compile Include="Game\TrapDoorElectricElement.cs" />
+    <Compile Include="Game\TreeType.cs" />
+    <Compile Include="Screen\TrialEndedScreen.cs" />
+    <Compile Include="Game\TruthTableCircuitElectricElement.cs" />
+    <Compile Include="Game\TruthTableData.cs" />
+    <Compile Include="Game\UpdateOrder.cs" />
+    <Compile Include="Game\UserInfo.cs" />
+    <Compile Include="Game\UserManager.cs" />
+    <Compile Include="Game\VersionConverter.cs" />
+    <Compile Include="Game\VersionConverter10To14.cs" />
+    <Compile Include="Game\VersionConverter110To111.cs" />
+    <Compile Include="Game\VersionConverter111To112.cs" />
+    <Compile Include="Game\VersionConverter112To113.cs" />
+    <Compile Include="Game\VersionConverter113To114.cs" />
+    <Compile Include="Game\VersionConverter114To115.cs" />
+    <Compile Include="Game\VersionConverter115To116.cs" />
+    <Compile Include="Game\VersionConverter116To117.cs" />
+    <Compile Include="Game\VersionConverter117To118.cs" />
+    <Compile Include="Game\VersionConverter118To119.cs" />
+    <Compile Include="Game\VersionConverter119To120.cs" />
+    <Compile Include="Game\VersionConverter120To121.cs" />
+    <Compile Include="Game\VersionConverter121To122.cs" />
+    <Compile Include="Game\VersionConverter122To123.cs" />
+    <Compile Include="Game\VersionConverter123To124.cs" />
+    <Compile Include="Game\VersionConverter124To125.cs" />
+    <Compile Include="Game\VersionConverter125To126.cs" />
+    <Compile Include="Game\VersionConverter126To127.cs" />
+    <Compile Include="Game\VersionConverter127To128.cs" />
+    <Compile Include="Game\VersionConverter128To129.cs" />
+    <Compile Include="Game\VersionConverter129To130.cs" />
+    <Compile Include="Game\VersionConverter130To20.cs" />
+    <Compile Include="Game\VersionConverter14To15.cs" />
+    <Compile Include="Game\VersionConverter15To16.cs" />
+    <Compile Include="Game\VersionConverter16To17.cs" />
+    <Compile Include="Game\VersionConverter17To18.cs" />
+    <Compile Include="Game\VersionConverter18To19.cs" />
+    <Compile Include="Game\VersionConverter19To110.cs" />
+    <Compile Include="Game\VersionConverter20To21.cs" />
+    <Compile Include="Game\VersionConverter21To22.cs" />
+    <Compile Include="Game\VersionsManager.cs" />
+    <Compile Include="Game\ViewAngleMode.cs" />
+    <Compile Include="Game\ViewGameLogDialog.cs" />
+    <Compile Include="Game\VrController.cs" />
+    <Compile Include="Game\VrControllerButton.cs" />
+    <Compile Include="Game\VrEye.cs" />
+    <Compile Include="Game\VrManager.cs" />
+    <Compile Include="Game\WaterSplashParticleSystem.cs" />
+    <Compile Include="Game\WebBrowserManager.cs" />
+    <Compile Include="Game\WebManager.cs" />
+    <Compile Include="Game\WhalePlumeParticleSystem.cs" />
+    <Compile Include="Game\WireDomainElectricElement.cs" />
+    <Compile Include="Game\WorldInfo.cs" />
+    <Compile Include="Game\WorldItem.cs" />
+    <Compile Include="Screen\WorldOptionsScreen.cs" />
+    <Compile Include="Game\WorldPalette.cs" />
+    <Compile Include="Game\WorldSettings.cs" />
+    <Compile Include="Game\WorldsManager.cs" />
+    <Compile Include="Game\XorGateElectricElement.cs" />
+    <Compile Include="Game\ZipArchive.cs" />
+    <Compile Include="Game\ZipArchiveEntry.cs" />
+    <Compile Include="ModsManager\ModsManager.cs" />
+    <Compile Include="Resources\Resource.designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screen\ContentScreen.cs" />
+    <Compile Include="SimpleJson.Reflection\ReflectionUtils.cs" />
+    <Compile Include="SimpleJson\IJsonSerializerStrategy.cs" />
+    <Compile Include="SimpleJson\JsonArray.cs" />
+    <Compile Include="SimpleJson\JsonObject.cs" />
+    <Compile Include="SimpleJson\PocoJsonSerializerStrategy.cs" />
+    <Compile Include="SimpleJson\SimpleJson.cs" />
+    <Compile Include="Widget\ArrowLineWidget.cs" />
+    <Compile Include="Widget\BevelledButtonWidget.cs" />
+    <Compile Include="Widget\BevelledRectangleWidget.cs" />
+    <Compile Include="Widget\BitmapButtonWidget.cs" />
+    <Compile Include="Widget\BlockIconWidget.cs" />
+    <Compile Include="Widget\BowWidget.cs" />
+    <Compile Include="Widget\BusyBarWidget.cs" />
+    <Compile Include="Widget\ButtonWidget.cs" />
+    <Compile Include="Widget\CanvasWidget.cs" />
+    <Compile Include="Widget\CheckboxWidget.cs" />
+    <Compile Include="Widget\ChestWidget.cs" />
+    <Compile Include="Widget\ClearWidget.cs" />
+    <Compile Include="Widget\ClickableWidget.cs" />
+    <Compile Include="Widget\ClickTextWidget.cs" />
+    <Compile Include="Widget\ClothingWidget.cs" />
+    <Compile Include="Widget\ContainerWidget.cs" />
+    <Compile Include="Widget\CraftingRecipeSlotWidget.cs" />
+    <Compile Include="Widget\CraftingRecipeWidget.cs" />
+    <Compile Include="Widget\CraftingTableWidget.cs" />
+    <Compile Include="Widget\CreativeInventoryWidget.cs" />
+    <Compile Include="Widget\CrossbowWidget.cs" />
+    <Compile Include="Widget\DispenserWidget.cs" />
+    <Compile Include="Widget\DragHostWidget.cs" />
+    <Compile Include="Widget\FireWidget.cs" />
+    <Compile Include="Widget\FixedSizePanelWidget.cs" />
+    <Compile Include="Widget\FullInventoryWidget.cs" />
+    <Compile Include="Widget\FurnaceWidget.cs" />
+    <Compile Include="Widget\FurnitureDesignWidget.cs" />
+    <Compile Include="Widget\FurnitureSetItemWidget.cs" />
+    <Compile Include="Widget\GamesWidget.cs" />
+    <Compile Include="Widget\GameWidget.cs" />
+    <Compile Include="Widget\GridPanelWidget.cs" />
+    <Compile Include="Widget\IDragTargetWidget.cs" />
+    <Compile Include="Widget\InventorySlotWidget.cs" />
+    <Compile Include="Widget\LabelWidget.cs" />
+    <Compile Include="Widget\LinkWidget.cs" />
+    <Compile Include="Widget\ListPanelWidget.cs" />
+    <Compile Include="Widget\MessageWidget.cs" />
+    <Compile Include="Widget\ModelWidget.cs" />
+    <Compile Include="Widget\MotdWidget.cs" />
+    <Compile Include="Widget\MoveRoseWidget.cs" />
+    <Compile Include="Widget\MusketWidget.cs" />
+    <Compile Include="Widget\PanoramaWidget.cs" />
+    <Compile Include="Widget\PlayerModelWidget.cs" />
+    <Compile Include="Widget\PlayerWidget.cs" />
+    <Compile Include="Widget\RectangleWidget.cs" />
+    <Compile Include="Widget\ScrollPanelWidget.cs" />
+    <Compile Include="Widget\ShortInventoryWidget.cs" />
+    <Compile Include="Widget\SliderWidget.cs" />
+    <Compile Include="Widget\SmeltingRecipeWidget.cs" />
+    <Compile Include="Widget\StackPanelWidget.cs" />
+    <Compile Include="Widget\StarRatingWidget.cs" />
+    <Compile Include="Widget\SubsystemGameWidgets.cs" />
+    <Compile Include="Widget\TextBoxWidget.cs" />
+    <Compile Include="Widget\TouchInputWidget.cs" />
+    <Compile Include="Widget\UniformSpacingPanelWidget.cs" />
+    <Compile Include="Widget\ValueBarWidget.cs" />
+    <Compile Include="Widget\ViewWidget.cs" />
+    <Compile Include="Widget\VitalStatsWidget.cs" />
+    <Compile Include="Widget\Widget.cs" />
+    <Compile Include="Widget\WidgetAlignment.cs" />
+    <Compile Include="Widget\WidgetInput.cs" />
+    <Compile Include="Widget\WidgetInputDevice.cs" />
+    <Compile Include="Widget\WidgetsList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutResources.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\drawable\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine_android\Engine_android.csproj">
+      <Project>{2b5cfe67-d78b-4ccd-a6bb-616bf772c094}</Project>
+      <Name>Engine_android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EntitySystem\EntitySystem.csproj">
+      <Project>{4cc1004a-3b04-4129-8ffa-b2fefef6644c}</Project>
+      <Name>EntitySystem</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
