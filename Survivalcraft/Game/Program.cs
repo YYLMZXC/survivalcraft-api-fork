@@ -78,13 +78,20 @@ namespace Game
 		public static void Initialize()
 		{
 			Log.Information($"Survivalcraft starting up at {DateTime.Now}, Version={VersionsManager.Version}, BuildConfiguration={VersionsManager.BuildConfiguration}, Platform={VersionsManager.Platform}, Storage.AvailableFreeSpace={Storage.FreeSpace / 1024 / 1024}MB, ApproximateScreenDpi={ScreenResolutionManager.ApproximateScreenDpi:0.0}, ApproxScreenInches={ScreenResolutionManager.ApproximateScreenInches:0.0}, ScreenResolution={Window.Size}, ProcessorsCount={Environment.ProcessorCount}, RAM={Utilities.GetTotalAvailableMemory() / 1024 / 1024}MB, 64bit={Marshal.SizeOf<IntPtr>() == 8}");
-			MarketplaceManager.Initialize();
-			SettingsManager.Initialize();
-			AnalyticsManager.Initialize();
-			VersionsManager.Initialize();
-			ExternalContentManager.Initialize();
-			ContentManager.Initialize();
-			ScreensManager.Initialize();
+			try {
+				SettingsManager.Initialize();
+				AnalyticsManager.Initialize();
+				VersionsManager.Initialize();
+				ExternalContentManager.Initialize();
+				ContentManager.Initialize();
+				ScreensManager.Initialize();
+				Log.Information("Program Initialize Success");
+			}
+			catch (Exception e){
+				Log.Error(e.Message);
+			}
+			//MarketplaceManagerIOS会用到，这里注释掉了
+			//MarketplaceManager.Initialize();
 		}
 
 		public static void Run()
