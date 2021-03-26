@@ -12,10 +12,6 @@ namespace Game
 		{
 			get
 			{
-				if (!m_isInitialized)
-				{
-					throw new InvalidOperationException("MarketplaceManager not initialized.");
-				}
 				return m_isTrialMode;
 			}
 			set
