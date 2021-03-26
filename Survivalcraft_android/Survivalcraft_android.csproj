@@ -25,9 +25,9 @@
     <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>3</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -1707,7 +1707,6 @@
     <Compile Include="Game\ZipArchive.cs" />
     <Compile Include="Game\ZipArchiveEntry.cs" />
     <Compile Include="ModsManager\ModsManager.cs" />
-    <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen\ContentScreen.cs" />
     <Compile Include="SimpleJson.Reflection\ReflectionUtils.cs" />
@@ -1780,18 +1779,6 @@
     <Compile Include="Widget\WidgetInput.cs" />
     <Compile Include="Widget\WidgetInputDevice.cs" />
     <Compile Include="Widget\WidgetsList.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AboutResources.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values\strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine_android\Engine_android.csproj">

@@ -71,7 +71,7 @@ namespace Engine
 				for (int j = 0; j < types.Length; j++)
 				{
 					MethodInfo method = types[j].GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-					if (!(method != null))
+					if (method==null)
 					{
 						continue;
 					}
