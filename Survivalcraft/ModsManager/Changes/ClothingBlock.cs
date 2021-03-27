@@ -152,7 +152,7 @@ namespace Game
 			{
 				return base.GetCategory(value);
 			}
-			return LanguageControl.Get("BlocksManager", "Dyed");
+			return "Dyed";
 		}
 
 		public override int GetDamage(int value)

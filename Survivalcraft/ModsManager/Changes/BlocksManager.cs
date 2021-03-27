@@ -122,19 +122,19 @@ namespace Game
 			{
 				blocks[j].Initialize();
 			}
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Terrain"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Plants"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Construction"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Items"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Tools"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Weapons"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Clothes"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Electrics"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Food"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Spawner Eggs"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Painted"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Dyed"));
-			m_categories.Add(LanguageControl.Get("BlocksManager", "Fireworks"));
+			m_categories.Add("Terrain");
+			m_categories.Add("Plants");
+			m_categories.Add("Construction");
+			m_categories.Add("Items");
+			m_categories.Add("Tools");
+			m_categories.Add("Weapons");
+			m_categories.Add("Clothes");
+			m_categories.Add("Electrics");
+			m_categories.Add("Food");
+			m_categories.Add("Spawner Eggs");
+			m_categories.Add("Painted");
+			m_categories.Add("Dyed");
+			m_categories.Add("Fireworks");
 			blocks = Blocks;
 			Initialized?.Invoke();
 			foreach (Block block2 in blocks)
@@ -142,7 +142,7 @@ namespace Game
 				foreach (int creativeValue in block2.GetCreativeValues())
 				{
 					string category = block2.GetCategory(creativeValue);
-					string mp = LanguageControl.Get("BlocksManager", category);
+					string mp = category;
 					if (string.IsNullOrEmpty(mp))
 					{
 						if (!m_categories.Contains(category)) m_categories.Add(category);

@@ -32,14 +32,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>true</Prefer32Bit>
-    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -75,6 +75,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -632,13 +635,13 @@
     <Compile Include="Game\BodyRaycastResult.cs" />
     <Compile Include="Game\BreathingMode.cs" />
     <Compile Include="Game\BuildConfiguration.cs" />
-    <Compile Include="Game\BuildFurnitureDialog.cs" />
+    <Compile Include="Dialog\BuildFurnitureDialog.cs" />
     <Compile Include="Game\BurntDebrisParticleSystem.cs" />
-    <Compile Include="Game\BusyDialog.cs" />
+    <Compile Include="Dialog\BusyDialog.cs" />
     <Compile Include="Game\ButtonElectricElement.cs" />
     <Compile Include="Game\ButtonFurnitureElectricElement.cs" />
     <Compile Include="Game\Camera.cs" />
-    <Compile Include="Game\CancellableBusyDialog.cs" />
+    <Compile Include="Dialog\CancellableBusyDialog.cs" />
     <Compile Include="Game\CancellableProgress.cs" />
     <Compile Include="Game\CellFace.cs" />
     <Compile Include="Game\CharacterSkinsCache.cs" />
@@ -669,18 +672,18 @@
     <Compile Include="ContentProvider\DiskExternalContentProvider.cs" />
     <Compile Include="Game\DispenserElectricElement.cs" />
     <Compile Include="Game\DoorElectricElement.cs" />
-    <Compile Include="Game\DownloadContentFromLinkDialog.cs" />
+    <Compile Include="Dialog\DownloadContentFromLinkDialog.cs" />
     <Compile Include="Game\DragMode.cs" />
     <Compile Include="ContentProvider\DropboxExternalContentProvider.cs" />
     <Compile Include="Game\DrawBlockEnvironmentData.cs" />
-    <Compile Include="Game\EditAdjustableDelayGateDialog.cs" />
-    <Compile Include="Game\EditBatteryDialog.cs" />
-    <Compile Include="Game\EditColorDialog.cs" />
-    <Compile Include="Game\EditMemoryBankDialog.cs" />
-    <Compile Include="Game\EditPaletteDialog.cs" />
-    <Compile Include="Game\EditPistonDialog.cs" />
-    <Compile Include="Game\EditSignDialog.cs" />
-    <Compile Include="Game\EditTruthTableDialog.cs" />
+    <Compile Include="Dialog\EditAdjustableDelayGateDialog.cs" />
+    <Compile Include="Dialog\EditBatteryDialog.cs" />
+    <Compile Include="Dialog\EditColorDialog.cs" />
+    <Compile Include="Dialog\EditMemoryBankDialog.cs" />
+    <Compile Include="Dialog\EditPaletteDialog.cs" />
+    <Compile Include="Dialog\EditPistonDialog.cs" />
+    <Compile Include="Dialog\EditSignDialog.cs" />
+    <Compile Include="Dialog\EditTruthTableDialog.cs" />
     <Compile Include="Game\ElectricConnection.cs" />
     <Compile Include="Game\ElectricConnectionPath.cs" />
     <Compile Include="Game\ElectricConnectorDirection.cs" />
@@ -693,7 +696,7 @@
     <Compile Include="Game\ExceptionManager.cs" />
     <Compile Include="Game\ExplosionParticleSystem.cs" />
     <Compile Include="Game\ExternalContentEntry.cs" />
-    <Compile Include="Game\ExternalContentLinkDialog.cs" />
+    <Compile Include="Dialog\ExternalContentLinkDialog.cs" />
     <Compile Include="Game\ExternalContentManager.cs" />
     <Compile Include="Game\ExternalContentType.cs" />
     <Compile Include="Game\FenceGateElectricElement.cs" />
@@ -717,9 +720,9 @@
     <Compile Include="Game\FuseParticleSystem.cs" />
     <Compile Include="Game\GameLogSink.cs" />
     <Compile Include="Game\GameManager.cs" />
-    <Compile Include="Game\GameMenuDialog.cs" />
+    <Compile Include="Dialog\GameMenuDialog.cs" />
     <Compile Include="Game\GameMode.cs" />
-    <Compile Include="Game\GamepadHelpDialog.cs" />
+    <Compile Include="Dialog\GamepadHelpDialog.cs" />
     <Compile Include="Game\GlowPoint.cs" />
     <Compile Include="Game\GlowPointType.cs" />
     <Compile Include="Game\GuiSize.cs" />
@@ -742,14 +745,14 @@
     <Compile Include="Game\ITerrainContentsGenerator.cs" />
     <Compile Include="Game\ITrailParticleSystem.cs" />
     <Compile Include="Game\IUpdateable.cs" />
-    <Compile Include="Game\KeyboardHelpDialog.cs" />
+    <Compile Include="Dialog\KeyboardHelpDialog.cs" />
     <Compile Include="Game\KillParticleSystem.cs" />
     <Compile Include="Game\LayoutDirection.cs" />
     <Compile Include="Game\LedElectricElement.cs" />
-    <Compile Include="Game\LevelFactorDialog.cs" />
+    <Compile Include="Dialog\LevelFactorDialog.cs" />
     <Compile Include="Game\LightBulbElectricElement.cs" />
     <Compile Include="Game\LightingManager.cs" />
-    <Compile Include="Game\ListSelectionDialog.cs" />
+    <Compile Include="Dialog\ListSelectionDialog.cs" />
     <Compile Include="Game\LoadingCamera.cs" />
     <Compile Include="Game\LookControlMode.cs" />
     <Compile Include="Game\MagmaSplashParticleSystem.cs" />
@@ -757,11 +760,11 @@
     <Compile Include="Game\MatrixUtils.cs" />
     <Compile Include="Game\MemoryBankData.cs" />
     <Compile Include="Game\MemoryBankElectricElement.cs" />
-    <Compile Include="Game\MessageDialog.cs" />
-    <Compile Include="Game\MessageDialogButton.cs" />
+    <Compile Include="Dialog\MessageDialog.cs" />
+    <Compile Include="Dialog\MessageDialogButton.cs" />
     <Compile Include="Game\ModelRenderingMode.cs" />
     <Compile Include="Game\ModelShader.cs" />
-    <Compile Include="Game\MoreCommunityLinkDialog.cs" />
+    <Compile Include="Dialog\MoreCommunityLinkDialog.cs" />
     <Compile Include="Game\MotdManager.cs" />
     <Compile Include="Game\MotionDetectorElectricElement.cs" />
     <Compile Include="Game\MountedElectricElement.cs" />
@@ -804,24 +807,24 @@
     <Compile Include="Game\ProgressManager.cs" />
     <Compile Include="Game\Projectile.cs" />
     <Compile Include="Game\ProjectileStoppedAction.cs" />
-    <Compile Include="Game\PublishCommunityLinkDialog.cs" />
+    <Compile Include="Dialog\PublishCommunityLinkDialog.cs" />
     <Compile Include="Game\PukeParticleSystem.cs" />
     <Compile Include="Game\RainSplashParticleSystem.cs" />
     <Compile Include="Game\Random.cs" />
     <Compile Include="Game\RandomGeneratorElectricElement.cs" />
     <Compile Include="Game\RandomJumpCamera.cs" />
-    <Compile Include="Game\RateCommunityContentDialog.cs" />
+    <Compile Include="Dialog\RateCommunityContentDialog.cs" />
     <Compile Include="Game\RaycastMode.cs" />
     <Compile Include="Game\RealTimeClockElectricElement.cs" />
-    <Compile Include="Game\ReportCommunityContentDialog.cs" />
+    <Compile Include="Dialog\ReportCommunityContentDialog.cs" />
     <Compile Include="Game\ResolutionMode.cs" />
     <Compile Include="Game\RotateableElectricElement.cs" />
     <Compile Include="Game\RunningAverage.cs" />
     <Compile Include="Game\ScannedItemData.cs" />
     <Compile Include="Game\Segment2.cs" />
     <Compile Include="Game\Segment3.cs" />
-    <Compile Include="ContentProvider\SelectExternalContentProviderDialog.cs" />
-    <Compile Include="Game\SelectExternalContentTypeDialog.cs" />
+    <Compile Include="Dialog\SelectExternalContentProviderDialog.cs" />
+    <Compile Include="Dialog\SelectExternalContentTypeDialog.cs" />
     <Compile Include="Game\SettingsManager.cs" />
     <Compile Include="Game\SevenSegmentDisplayElectricElement.cs" />
     <Compile Include="Game\ShapeshiftParticleSystem.cs" />
@@ -835,7 +838,7 @@
     <Compile Include="Game\SoundGeneratorElectricElement.cs" />
     <Compile Include="Game\SoundParticleSystem.cs" />
     <Compile Include="Game\SpawnChunk.cs" />
-    <Compile Include="Game\SpawnDialog.cs" />
+    <Compile Include="Dialog\SpawnDialog.cs" />
     <Compile Include="Game\SpawnEntityData.cs" />
     <Compile Include="Game\SpawnLocationType.cs" />
     <Compile Include="Game\SpikedPlankElectricElement.cs" />
@@ -869,7 +872,7 @@
     <Compile Include="Game\TerrainSerializer22.cs" />
     <Compile Include="Game\TerrainUpdater.cs" />
     <Compile Include="Game\TerrainVertex.cs" />
-    <Compile Include="Game\TextBoxDialog.cs" />
+    <Compile Include="Dialog\TextBoxDialog.cs" />
     <Compile Include="Game\TextOrientation.cs" />
     <Compile Include="Game\TextureAtlas.cs" />
     <Compile Include="Game\TextureAtlasManager.cs" />
@@ -919,7 +922,7 @@
     <Compile Include="Game\VersionConverter21To22.cs" />
     <Compile Include="Game\VersionsManager.cs" />
     <Compile Include="Game\ViewAngleMode.cs" />
-    <Compile Include="Game\ViewGameLogDialog.cs" />
+    <Compile Include="Dialog\ViewGameLogDialog.cs" />
     <Compile Include="Game\VrController.cs" />
     <Compile Include="Game\VrControllerButton.cs" />
     <Compile Include="Game\VrEye.cs" />
@@ -945,7 +948,7 @@
     <Compile Include="ModsManager\FileEntry.cs" />
     <Compile Include="ModsManager\ModInfo.cs" />
     <Compile Include="ModsManager\ModsManager.cs" />
-    <Compile Include="ModsManager\MyTipDialog.cs" />
+    <Compile Include="Dialog\MyTipDialog.cs" />
     <Compile Include="ModsManager\PluginLoaderAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -982,7 +985,7 @@
     <Compile Include="Widget\CrossbowWidget.cs" />
     <Compile Include="Widget\DispenserWidget.cs" />
     <Compile Include="Widget\DragHostWidget.cs" />
-    <Compile Include="Widget\EditMemeryDialogB.cs" />
+    <Compile Include="Dialog\EditMemeryDialogB.cs" />
     <Compile Include="Widget\FireWidget.cs" />
     <Compile Include="Widget\FixedSizePanelWidget.cs" />
     <Compile Include="Widget\FullInventoryWidget.cs" />
@@ -997,7 +1000,7 @@
     <Compile Include="Widget\LabelWidget.cs" />
     <Compile Include="Widget\LinkWidget.cs" />
     <Compile Include="Widget\ListPanelWidget.cs" />
-    <Compile Include="Widget\LoginDialog.cs" />
+    <Compile Include="Dialog\LoginDialog.cs" />
     <Compile Include="Widget\MessageWidget.cs" />
     <Compile Include="Widget\ModelWidget.cs" />
     <Compile Include="Widget\MotdWidget.cs" />

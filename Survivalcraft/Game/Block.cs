@@ -198,7 +198,7 @@ namespace Game
 
 		public virtual string GetCategory(int value)
 		{
-			return LanguageControl.Get("BlocksManager", DefaultCategory);
+			return DefaultCategory;
 		}
 
 		public virtual IEnumerable<int> GetCreativeValues()

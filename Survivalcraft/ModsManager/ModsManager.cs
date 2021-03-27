@@ -217,6 +217,16 @@ public static class ModsManager
 		}
 		Log.Information("mods manager initialize success");
 		Log.Information($"loaded {cnt} dlls");
+
+
+		List<FileEntry> txts = GetEntries(".txt");
+		foreach (FileEntry fileEntry in txts) {
+			StreamReader streamReader = new StreamReader(fileEntry.Stream);
+			string yx = streamReader.ReadToEnd();
+			fileEntry.Stream.Position = 0L;
+			StreamReader streamReader1 = new StreamReader(fileEntry.Stream);
+			string yx1 = streamReader.ReadToEnd();
+		}
 	}
 	public static void GetAllFiles(string path) {//获取zip包列表，变成ZipArchive
 		foreach (string item in Storage.ListFileNames(path)) {

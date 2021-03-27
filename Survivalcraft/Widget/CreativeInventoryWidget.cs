@@ -88,15 +88,15 @@ namespace Game
 			});
 			for (int i = 0; i < m_categories.Count; i++)
 			{
-				if (m_categories[i].Name == LanguageControl.Get("BlocksManager", "Electrics"))
+				if (m_categories[i].Name == "Electrics")
 				{
 					m_categories[i].Color = new Color(128, 140, 255);
 				}
-				if (m_categories[i].Name == LanguageControl.Get("BlocksManager", "Plants"))
+				if (m_categories[i].Name == "Plants")
 				{
 					m_categories[i].Color = new Color(64, 160, 64);
 				}
-				if (m_categories[i].Name == LanguageControl.Get("BlocksManager", "Weapons"))
+				if (m_categories[i].Name == "Weapons")
 				{
 					m_categories[i].Color = new Color(255, 128, 112);
 				}
@@ -139,7 +139,7 @@ namespace Game
 				}
 			}
 			m_componentCreativeInventory.CategoryIndex = MathUtils.Clamp(m_componentCreativeInventory.CategoryIndex, 0, m_categories.Count - 1);
-			m_categoryButton.Text = m_categories[m_componentCreativeInventory.CategoryIndex].Name;
+			m_categoryButton.Text = LanguageControl.Get("BlocksManager",m_categories[m_componentCreativeInventory.CategoryIndex].Name);
 			m_categoryLeftButton.IsEnabled = (m_componentCreativeInventory.CategoryIndex > 0);
 			m_categoryRightButton.IsEnabled = (m_componentCreativeInventory.CategoryIndex < m_categories.Count - 1);
 			if (m_componentCreativeInventory.CategoryIndex != m_activeCategoryIndex)
