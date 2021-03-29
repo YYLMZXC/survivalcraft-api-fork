@@ -116,7 +116,7 @@ namespace Game
 		}
         public override string GetCategory(int value)
         {
-            return LanguageControl.Get("BlocksManager","Spawner Eggs");
+            return "Spawner Eggs";
         }
         public override string GetDescription(int value)
         {

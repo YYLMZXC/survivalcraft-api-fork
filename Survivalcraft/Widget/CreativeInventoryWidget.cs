@@ -125,7 +125,7 @@ namespace Game
 				{
 					DialogsManager.ShowDialog(componentPlayer.GuiWidget, new ListSelectionDialog(string.Empty, m_categories, 56f, (object c) => new LabelWidget
 					{
-						Text = ((Category)c).Name,
+						Text = LanguageControl.Get("BlocksManager",((Category)c).Name),
 						Color = ((Category)c).Color,
 						HorizontalAlignment = WidgetAlignment.Center,
 						VerticalAlignment = WidgetAlignment.Center

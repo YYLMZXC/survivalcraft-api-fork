@@ -46,7 +46,12 @@ namespace Game
 				ExceptionManager.ReportExceptionToUser("Unhandled exception.", e.Exception);
 				e.IsHandled = true;
 			};
-			Window.Run(1920, 1080, Engine.WindowMode.Resizable, "生存战争2.2插件版V1.32c正式版");
+#if DEBUG
+			Window.Run(480, 320, WindowMode.Fixed, "生存战争2.2插件版V1.34beta");
+#endif
+#if TRACE
+			Window.Run(1920, 1080, WindowMode.Fullscreen, "生存战争2.2插件版V1.34beta");
+#endif
 		}
 
 		public static void HandleUriHandler(Uri uri)

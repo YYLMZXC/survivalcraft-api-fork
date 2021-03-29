@@ -74,7 +74,7 @@ namespace Game
 			{
 				PopulateBlocksList();
 			}
-			string arg = m_categories[m_categoryIndex] ?? LanguageControl.Get("BlocksManager","All Blocks");
+			string arg = LanguageControl.Get("BlocksManager", m_categories[m_categoryIndex]) ?? LanguageControl.Get("BlocksManager","All Blocks");
 			m_categoryLabel.Text = $"{arg} ({m_blocksList.Items.Count})";
 			m_prevCategoryButton.IsEnabled = (m_categoryIndex > 0);
 			m_nextCategoryButton.IsEnabled = (m_categoryIndex < m_categories.Count - 1);

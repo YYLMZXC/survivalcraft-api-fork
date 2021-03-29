@@ -18,17 +18,7 @@ public static class ModsManager
 	public static List<Assembly> loadedAssemblies;
 
 	public static string Extension;
-
-	public static HashSet<string> DisabledMods;
-
-	public static HashSet<string> CachedMods;
-
-	public static bool ReadZip;
-
-	public static bool AutoCleanCache;
-
-	public static int SearchDepth;
-
+	
 	public static List<string> Files;
 
 	public static List<string> Directories;
@@ -193,13 +183,9 @@ public static class ModsManager
 	{
 		loadedAssemblies = new List<Assembly>();
 		LoadedMods = new List<ModInfo>();
-		CachedMods = new HashSet<string>();
-		DisabledMods = new HashSet<string>();
 		Files = new List<string>();
 		Directories = new List<string>();
 		customer_Strings = new Dictionary<string, string>();
-		ReadZip = true;
-		SearchDepth = 3;
 		ErrorHandler = LogException;
 		zip_filelist = new Dictionary<string, ZipArchive>();
 		if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
@@ -217,23 +203,15 @@ public static class ModsManager
 		}
 		Log.Information("mods manager initialize success");
 		Log.Information($"loaded {cnt} dlls");
-
-
-		List<FileEntry> txts = GetEntries(".txt");
-		foreach (FileEntry fileEntry in txts) {
-			StreamReader streamReader = new StreamReader(fileEntry.Stream);
-			string yx = streamReader.ReadToEnd();
-			fileEntry.Stream.Position = 0L;
-			StreamReader streamReader1 = new StreamReader(fileEntry.Stream);
-			string yx1 = streamReader.ReadToEnd();
-		}
 	}
 	public static void GetAllFiles(string path) {//获取zip包列表，变成ZipArchive
 		foreach (string item in Storage.ListFileNames(path)) {
 			string ms = Storage.GetExtension(item);
 			string ks = Storage.CombinePaths(path, item);
+			MemoryStream memoryStream = new MemoryStream();
 			Stream stream = Storage.OpenFile(ks,OpenFileMode.Read);
-			quickAddModsFileList.Add(new FileEntry() { Stream=stream , Filename=item });
+			stream.CopyTo(memoryStream);
+			quickAddModsFileList.Add(new FileEntry() { Stream= memoryStream, Filename=item });
 			try
 			{
 				if (ms == ".zip" || ms == ".scmod")

@@ -1270,6 +1270,21 @@
     <Compile Include="..\Survivalcraft\Dialog\ReportCommunityContentDialog.cs">
       <Link>Dialog\ReportCommunityContentDialog.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Dialog\SelectExternalContentProviderDialog.cs">
+      <Link>Dialog\SelectExternalContentProviderDialog.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Dialog\SelectExternalContentTypeDialog.cs">
+      <Link>Dialog\SelectExternalContentTypeDialog.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Dialog\SpawnDialog.cs">
+      <Link>Dialog\SpawnDialog.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Dialog\TextBoxDialog.cs">
+      <Link>Dialog\TextBoxDialog.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Dialog\ViewGameLogDialog.cs">
+      <Link>Dialog\ViewGameLogDialog.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\Dialog.cs">
       <Link>Game\Dialog.cs</Link>
     </Compile>
@@ -1317,6 +1332,24 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemSoilBlockBehavior.cs">
       <Link>Subsystem\SubsystemSoilBlockBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Widget\ClothingWidget.cs">
+      <Link>Widget\ClothingWidget.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Widget\ContainerWidget.cs">
+      <Link>Widget\ContainerWidget.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Widget\CraftingRecipeSlotWidget.cs">
+      <Link>Widget\CraftingRecipeSlotWidget.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Widget\CraftingRecipeWidget.cs">
+      <Link>Widget\CraftingRecipeWidget.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Widget\CraftingTableWidget.cs">
+      <Link>Widget\CraftingTableWidget.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Widget\CreativeInventoryWidget.cs">
+      <Link>Widget\CreativeInventoryWidget.cs</Link>
     </Compile>
     <Compile Include="ContentProvider\SPMBoxExternalContentProvider.cs" />
     <Compile Include="Game\ActiveExternalContentInfo.cs" />
@@ -1778,12 +1811,6 @@
     <Compile Include="Widget\ClearWidget.cs" />
     <Compile Include="Widget\ClickableWidget.cs" />
     <Compile Include="Widget\ClickTextWidget.cs" />
-    <Compile Include="Widget\ClothingWidget.cs" />
-    <Compile Include="Widget\ContainerWidget.cs" />
-    <Compile Include="Widget\CraftingRecipeSlotWidget.cs" />
-    <Compile Include="Widget\CraftingRecipeWidget.cs" />
-    <Compile Include="Widget\CraftingTableWidget.cs" />
-    <Compile Include="Widget\CreativeInventoryWidget.cs" />
     <Compile Include="Widget\CrossbowWidget.cs" />
     <Compile Include="Widget\DispenserWidget.cs" />
     <Compile Include="Widget\DragHostWidget.cs" />
