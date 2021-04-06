@@ -65,7 +65,7 @@ namespace Game
                 {
                     m_text = text;
                     CaretPosition = CaretPosition;
-                    this.TextChanged?.Invoke(this);
+                    TextChanged?.Invoke(this);
                 }
             }
         }
@@ -191,10 +191,19 @@ namespace Game
         {
             if (m_hasFocus)
             {
-                string inputString = KeyboardInput.GetInput();
-                if (!string.IsNullOrEmpty(inputString)) {
-                    //fixed me 读取了后怎么清空
-                    EnterText(inputString);
+                if (KeyboardInput.DeletePressed&&CaretPosition>0)
+                {
+                    CaretPosition--;
+                    Text=Text.Remove(CaretPosition, 1);
+                }
+                else {
+                    string inputString = KeyboardInput.GetInput();
+                    if (!string.IsNullOrEmpty(inputString))
+                    {
+                        //fixed me 读取了后怎么清空
+                        EnterText(inputString);
+                    }
+
                 }
             }
             if (Input.Click.HasValue)

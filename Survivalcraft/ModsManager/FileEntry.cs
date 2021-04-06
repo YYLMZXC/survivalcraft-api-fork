@@ -8,6 +8,6 @@ public class FileEntry
         InStorage
     }
     public string Filename;
-    public StorageType type;
+    public StorageType storageType;
     public Stream Stream;
 }

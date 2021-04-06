@@ -228,6 +228,7 @@ namespace Engine.Input
 
 		private static void KeyDownHandler(object sender, KeyboardKeyEventArgs e)
 		{
+			if (e.Key == OpenTK.Input.Key.Back || e.Key == OpenTK.Input.Key.Delete) KeyboardInput.DeletePressed = true;
 			Key key = TranslateKey(e.Key);
 			if (key != (Key)(-1))
 			{
@@ -246,6 +247,7 @@ namespace Engine.Input
 
 		private static void KeyPressHandler(object sender, KeyPressEventArgs e)
 		{
+			KeyboardInput.Chars.Add(e.KeyChar);
 			ProcessCharacterEntered(e.KeyChar);
 			LastString += e.KeyChar;
 		}

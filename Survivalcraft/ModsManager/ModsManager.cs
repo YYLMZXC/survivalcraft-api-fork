@@ -195,7 +195,7 @@ public static class ModsManager
             string ms = Storage.GetExtension(item);
             string ks = Storage.CombinePaths(path, item);
             Stream stream = Storage.OpenFile(ks, OpenFileMode.Read);
-            quickAddModsFileList.Add(new FileEntry() { Stream = stream, Filename = item });
+            quickAddModsFileList.Add(new FileEntry() { Stream = stream,storageType=FileEntry.StorageType.InStorage,Filename = item });
             try
             {
                 if (ms == ".zip" || ms == ".scmod")
@@ -219,7 +219,13 @@ public static class ModsManager
         List<FileEntry> fileEntries = new List<FileEntry>();
         foreach (FileEntry fileEntry1 in quickAddModsFileList)
         {
-            if (Storage.GetExtension(fileEntry1.Filename) == ext) fileEntries.Add(fileEntry1);
+            if (Storage.GetExtension(fileEntry1.Filename) == ext)
+            {
+                MemoryStream memoryStream = new MemoryStream();
+                fileEntry1.Stream.CopyTo(memoryStream);
+                FileEntry fileEntry = new FileEntry() { storageType=FileEntry.StorageType.InStorage,Stream=memoryStream,Filename=fileEntry1.Filename};
+                fileEntries.Add(fileEntry);
+            }
         }
         foreach (ZipArchive zipArchive in zip_filelist.Values)
         {
@@ -231,6 +237,7 @@ public static class ModsManager
                     MemoryStream stream = new MemoryStream();
                     zipArchive.ExtractFile(zipArchiveEntry, stream);
                     FileEntry fileEntry = new FileEntry();
+                    fileEntry.storageType = FileEntry.StorageType.InZip;
                     fileEntry.Filename = fn;
                     stream.Position = 0L;
                     fileEntry.Stream = stream;
