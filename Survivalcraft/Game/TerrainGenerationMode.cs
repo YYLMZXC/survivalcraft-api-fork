@@ -1,10 +1,10 @@
 namespace Game
 {
-	public enum TerrainGenerationMode
-	{
-		Continent,
-		Island,
-		FlatContinent,
-		FlatIsland
-	}
+    public enum TerrainGenerationMode
+    {
+        Continent,
+        Island,
+        FlatContinent,
+        FlatIsland
+    }
 }

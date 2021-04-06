@@ -9,11 +9,11 @@ namespace Engine.Graphics
 {
 	public class Texture2D : GraphicsResource
 	{
-		internal int m_texture;
+		public int m_texture;
 
-		private All m_pixelFormat;
+		public All m_pixelFormat;
 
-		private All m_pixelType;
+		public All m_pixelType;
 
 		public IntPtr NativeHandle => (IntPtr)m_texture;
 
@@ -31,25 +31,25 @@ namespace Engine.Graphics
 		public int Width
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public int Height
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public ColorFormat ColorFormat
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public int MipLevelsCount
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public object Tag
@@ -109,17 +109,17 @@ namespace Engine.Graphics
 			}
 		}
 
-		internal override void HandleDeviceLost()
+		public override void HandleDeviceLost()
 		{
 			DeleteTexture();
 		}
 
-		internal override void HandleDeviceReset()
+		public override void HandleDeviceReset()
 		{
 			AllocateTexture();
 		}
 
-		private void AllocateTexture()
+		public void AllocateTexture()
 		{
 			GL.GenTextures(1, out m_texture);
 			GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
@@ -131,7 +131,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		private void DeleteTexture()
+		public void DeleteTexture()
 		{
 			if (m_texture != 0)
 			{
@@ -188,7 +188,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		internal void InitializeTexture2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat)
+		public void InitializeTexture2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat)
 		{
 			if (width < 1)
 			{
@@ -220,7 +220,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		private void VerifyParametersSetData<T>(int mipLevel, T[] source, int sourceStartIndex = 0) where T : struct
+		public void VerifyParametersSetData<T>(int mipLevel, T[] source, int sourceStartIndex = 0) where T : struct
 		{
 			VerifyNotDisposed();
 			int num = Utilities.SizeOf<T>();

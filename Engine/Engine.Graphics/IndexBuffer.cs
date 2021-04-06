@@ -6,7 +6,7 @@ namespace Engine.Graphics
 {
 	public sealed class IndexBuffer : GraphicsResource
 	{
-		internal int m_buffer;
+		public int m_buffer;
 
 		public string DebugName
 		{
@@ -22,13 +22,13 @@ namespace Engine.Graphics
 		public IndexFormat IndexFormat
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public int IndicesCount
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public object Tag
@@ -66,24 +66,24 @@ namespace Engine.Graphics
 			}
 		}
 
-		internal override void HandleDeviceLost()
+		public override void HandleDeviceLost()
 		{
 			DeleteBuffer();
 		}
 
-		internal override void HandleDeviceReset()
+		public override void HandleDeviceReset()
 		{
 			AllocateBuffer();
 		}
 
-		private void AllocateBuffer()
+		public void AllocateBuffer()
 		{
 			GL.GenBuffers(1, out m_buffer);
 			GLWrapper.BindBuffer(All.ElementArrayBuffer, m_buffer);
 			GL.BufferData(All.ElementArrayBuffer, new IntPtr(IndexFormat.GetSize() * IndicesCount), IntPtr.Zero, All.StaticDraw);
 		}
 
-		private void DeleteBuffer()
+		public void DeleteBuffer()
 		{
 			if (m_buffer != 0)
 			{
@@ -97,7 +97,7 @@ namespace Engine.Graphics
 			return IndicesCount * IndexFormat.GetSize();
 		}
 
-		private void InitializeIndexBuffer(IndexFormat indexFormat, int indicesCount)
+		public void InitializeIndexBuffer(IndexFormat indexFormat, int indicesCount)
 		{
 			if (indicesCount <= 0)
 			{
@@ -107,7 +107,7 @@ namespace Engine.Graphics
 			IndicesCount = indicesCount;
 		}
 
-		private void VerifyParametersSetData<T>(T[] source, int sourceStartIndex, int sourceCount, int targetStartIndex = 0) where T : struct
+		public void VerifyParametersSetData<T>(T[] source, int sourceStartIndex, int sourceCount, int targetStartIndex = 0) where T : struct
 		{
 			VerifyNotDisposed();
 			int num = Utilities.SizeOf<T>();

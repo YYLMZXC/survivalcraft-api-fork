@@ -10,9 +10,9 @@ namespace Engine.Graphics
 {
     public sealed class RenderTarget2D : Texture2D
     {
-        internal int m_frameBuffer;
+        public int m_frameBuffer;
 
-        internal int m_depthBuffer;
+        public int m_depthBuffer;
 
         public DepthFormat DepthFormat
         {
@@ -114,12 +114,12 @@ namespace Engine.Graphics
             GL.GenerateMipmap(All.Texture2D);
         }
 
-        internal override void HandleDeviceLost()
+        public override void HandleDeviceLost()
         {
             DeleteRenderTarget();
         }
 
-        internal override void HandleDeviceReset()
+        public override void HandleDeviceReset()
         {
             AllocateRenderTarget();
         }

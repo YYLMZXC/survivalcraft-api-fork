@@ -1,19 +1,19 @@
 namespace Game
 {
-	public class CommunityContentEntry
-	{
-		public ExternalContentType Type;
+    public class CommunityContentEntry
+    {
+        public ExternalContentType Type;
 
-		public string Name;
+        public string Name;
 
-		public string Address;
+        public string Address;
 
-		public string UserId;
+        public string UserId;
 
-		public long Size;
+        public long Size;
 
-		public string ExtraText;
+        public string ExtraText;
 
-		public float RatingsAverage;
-	}
+        public float RatingsAverage;
+    }
 }

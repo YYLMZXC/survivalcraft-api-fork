@@ -1,12 +1,12 @@
 namespace Game
 {
-	public class SandstoneBlock : PaintedCubeBlock
-	{
-		public const int Index = 4;
+    public class SandstoneBlock : PaintedCubeBlock
+    {
+        public const int Index = 4;
 
-		public SandstoneBlock()
-			: base(64)
-		{
-		}
-	}
+        public SandstoneBlock()
+            : base(64)
+        {
+        }
+    }
 }

@@ -1,9 +1,9 @@
 namespace Game
 {
-	public struct BlockDropValue
-	{
-		public int Value;
+    public struct BlockDropValue
+    {
+        public int Value;
 
-		public int Count;
-	}
+        public int Count;
+    }
 }

@@ -8,14 +8,14 @@ namespace Engine.Graphics
 {
 	public sealed class RenderTarget2D : Texture2D
 	{
-		internal int m_frameBuffer;
+		public int m_frameBuffer;
 
-		internal int m_depthBuffer;
+		public int m_depthBuffer;
 
 		public DepthFormat DepthFormat
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public RenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
@@ -60,17 +60,17 @@ namespace Engine.Graphics
 			GL.GenerateMipmap(All.Texture2D);
 		}
 
-		internal override void HandleDeviceLost()
+		public override void HandleDeviceLost()
 		{
 			DeleteRenderTarget();
 		}
 
-		internal override void HandleDeviceReset()
+		public override void HandleDeviceReset()
 		{
 			AllocateRenderTarget();
 		}
 
-		private void AllocateRenderTarget()
+		public void AllocateRenderTarget()
 		{
 			GL.GenFramebuffers(1, out m_frameBuffer);
 			GLWrapper.BindFramebuffer(m_frameBuffer);
@@ -95,7 +95,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		private void DeleteRenderTarget()
+		public void DeleteRenderTarget()
 		{
 			if (m_depthBuffer != 0)
 			{
@@ -125,12 +125,12 @@ namespace Engine.Graphics
 			return base.GetGpuMemoryUsage() + DepthFormat.GetSize() * base.Width * base.Height;
 		}
 
-		private void InitializeRenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
+		public void InitializeRenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
 		{
 			DepthFormat = depthFormat;
 		}
 
-		private void VerifyParametersGetData<T>(T[] target, int targetStartIndex, Rectangle sourceRectangle) where T : struct
+		public void VerifyParametersGetData<T>(T[] target, int targetStartIndex, Rectangle sourceRectangle) where T : struct
 		{
 			VerifyNotDisposed();
 			int size = base.ColorFormat.GetSize();

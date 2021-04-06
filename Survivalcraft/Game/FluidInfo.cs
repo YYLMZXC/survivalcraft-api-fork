@@ -2,12 +2,12 @@ using Engine;
 
 namespace Game
 {
-	public struct FluidInfo
-	{
-		public FluidBlock Block;
+    public struct FluidInfo
+    {
+        public FluidBlock Block;
 
-		public float SurfaceHeight;
+        public float SurfaceHeight;
 
-		public Vector2 FlowSpeed;
-	}
+        public Vector2 FlowSpeed;
+    }
 }

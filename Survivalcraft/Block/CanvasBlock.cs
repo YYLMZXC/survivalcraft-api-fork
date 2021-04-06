@@ -1,7 +1,7 @@
 namespace Game
 {
-	public class CanvasBlock : FlatBlock
-	{
-		public const int Index = 206;
-	}
+    public class CanvasBlock : FlatBlock
+    {
+        public const int Index = 206;
+    }
 }

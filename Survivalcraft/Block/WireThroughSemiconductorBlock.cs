@@ -1,12 +1,12 @@
 namespace Game
 {
-	public class WireThroughSemiconductorBlock : WireThroughBlock
-	{
-		public const int Index = 155;
+    public class WireThroughSemiconductorBlock : WireThroughBlock
+    {
+        public const int Index = 155;
 
-		public WireThroughSemiconductorBlock()
-			: base(216, 78)
-		{
-		}
-	}
+        public WireThroughSemiconductorBlock()
+            : base(216, 78)
+        {
+        }
+    }
 }

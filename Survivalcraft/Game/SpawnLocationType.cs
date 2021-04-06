@@ -1,9 +1,9 @@
 namespace Game
 {
-	public enum SpawnLocationType
-	{
-		Surface,
-		Cave,
-		Water
-	}
+    public enum SpawnLocationType
+    {
+        Surface,
+        Cave,
+        Water
+    }
 }

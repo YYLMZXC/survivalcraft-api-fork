@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Engine;
+using SimpleJson;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Engine;
-using SimpleJson;
 
 namespace Game
 {
@@ -32,7 +30,7 @@ namespace Game
                 foreach (FileEntry entry in langs)
                 {
                     string filename = Storage.GetFileName(entry.Filename);
-                    if (filename.StartsWith(languageType.ToString())) 
+                    if (filename.StartsWith(languageType.ToString()))
                     { //加载该语言包
                         loadJson(entry.Stream); break;
                     }
@@ -148,12 +146,12 @@ namespace Game
                 }
                 else if (ma.TryGetValue(hn[0] + ":0", out Dictionary<string, string> mbc))
                 {
-                    if (hn[0] == "ClothingBlock") return "";
+                    if (hn[0] == "ClothingBlock") return string.Empty;
                     if (mbc.TryGetValue(prop, out string mc)) return mc;
                 }
 
             }
-            return "";
+            return string.Empty;
         }
         public static string GetContentWidgets(string name, string prop)
         {
@@ -162,7 +160,7 @@ namespace Game
                 if (ma.TryGetValue(name, out Dictionary<string, string> mb))
                     if (mb.TryGetValue(prop, out string mc)) return mc;
             }
-            return "";
+            return string.Empty;
         }
         public static string GetContentWidgets(string name, int pos)
         {
@@ -178,7 +176,7 @@ namespace Game
                     if (mb.TryGetValue(prop, out string mc)) return mc;
                 }
             }
-            return "";
+            return string.Empty;
         }
         public static string GetFireworks(string name, string prop)
         {
@@ -187,7 +185,7 @@ namespace Game
                 if (ma.TryGetValue(name, out Dictionary<string, string> mb))
                     if (mb.TryGetValue(prop, out string mc)) return mc;
             }
-            return "";
+            return string.Empty;
         }
 
     }

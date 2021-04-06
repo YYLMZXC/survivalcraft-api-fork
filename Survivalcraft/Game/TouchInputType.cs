@@ -1,9 +1,9 @@
 namespace Game
 {
-	public enum TouchInputType
-	{
-		Tap,
-		Hold,
-		Move
-	}
+    public enum TouchInputType
+    {
+        Tap,
+        Hold,
+        Move
+    }
 }

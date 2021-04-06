@@ -1,17 +1,17 @@
 namespace Game
 {
-	public class TerrainGeometry
-	{
-		public TerrainGeometrySubset SubsetOpaque;
+    public class TerrainGeometry
+    {
+        public TerrainGeometrySubset SubsetOpaque;
 
-		public TerrainGeometrySubset SubsetAlphaTest;
+        public TerrainGeometrySubset SubsetAlphaTest;
 
-		public TerrainGeometrySubset SubsetTransparent;
+        public TerrainGeometrySubset SubsetTransparent;
 
-		public TerrainGeometrySubset[] OpaqueSubsetsByFace;
+        public TerrainGeometrySubset[] OpaqueSubsetsByFace;
 
-		public TerrainGeometrySubset[] AlphaTestSubsetsByFace;
+        public TerrainGeometrySubset[] AlphaTestSubsetsByFace;
 
-		public TerrainGeometrySubset[] TransparentSubsetsByFace;
-	}
+        public TerrainGeometrySubset[] TransparentSubsetsByFace;
+    }
 }

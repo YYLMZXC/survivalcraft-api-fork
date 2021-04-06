@@ -1,4 +1,3 @@
-using System;
 using Android.Content;
 using Android.Media;
 using Android.OS;
@@ -8,6 +7,7 @@ using Engine.Input;
 using OpenTK.Graphics;
 using OpenTK.Graphics.ES20;
 using OpenTK.Platform.Android;
+using System;
 
 namespace Engine
 {

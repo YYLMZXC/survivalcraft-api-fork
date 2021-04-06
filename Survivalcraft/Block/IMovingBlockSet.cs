@@ -2,37 +2,37 @@ using Engine;
 
 namespace Game
 {
-	public interface IMovingBlockSet
-	{
-		Vector3 Position
-		{
-			get;
-		}
+    public interface IMovingBlockSet
+    {
+        Vector3 Position
+        {
+            get;
+        }
 
-		string Id
-		{
-			get;
-		}
+        string Id
+        {
+            get;
+        }
 
-		object Tag
-		{
-			get;
-		}
+        object Tag
+        {
+            get;
+        }
 
-		Vector3 CurrentVelocity
-		{
-			get;
-		}
+        Vector3 CurrentVelocity
+        {
+            get;
+        }
 
-		ReadOnlyList<MovingBlock> Blocks
-		{
-			get;
-		}
+        ReadOnlyList<MovingBlock> Blocks
+        {
+            get;
+        }
 
-		BoundingBox BoundingBox(bool extendToFillCells);
+        BoundingBox BoundingBox(bool extendToFillCells);
 
-		void SetBlock(Point3 offset, int value);
+        void SetBlock(Point3 offset, int value);
 
-		void Stop();
-	}
+        void Stop();
+    }
 }

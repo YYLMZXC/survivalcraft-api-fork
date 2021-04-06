@@ -1,9 +1,9 @@
 namespace Game
 {
-	public class Progress
-	{
-		public float Completed;
+    public class Progress
+    {
+        public float Completed;
 
-		public float Total;
-	}
+        public float Total;
+    }
 }

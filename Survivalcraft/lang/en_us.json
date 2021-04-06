@@ -2,6 +2,11 @@
 	"Language": {
 		"Name": "English"
 	},
+	"DiskExternalContentProvider": {
+		"DisplayName": "disk",
+		"Description": "No login required; Save to disk"
+
+	},
 	"ContentManager": {
 		"1": "Content \"{0}\" has type {1}, requested type was {2}"
 	},
@@ -20,11 +25,11 @@
 		"9": "Are you sure?",
 		"10": "Invalid item type."
 	},
-	"SubsystemFurnitureBlockBehavior":{
-		"0":"Unsuitable block found",
-		"1":"Unsuitable block found",
-		"2":"Furniture design is too large",
-		"3":"Too many different furniture designs"	
+	"SubsystemFurnitureBlockBehavior": {
+		"0": "Unsuitable block found",
+		"1": "Unsuitable block found",
+		"2": "Furniture design is too large",
+		"3": "Too many different furniture designs"
 	},
 	"ExternalContentManager": {
 		"1": "Name empty.",
@@ -61,39 +66,39 @@
 		"2": "In game for {0} days",
 		"3": "Never spawned yet"
 	},
-	"CrossbowWidget":{
-		"0":"Pull",
-		"1":"Load bolt",
-		"2":"Ready to fire"
+	"CrossbowWidget": {
+		"0": "Pull",
+		"1": "Load bolt",
+		"2": "Ready to fire"
 	},
-	"SubsystemMusketBlockBehavior":{
-		"0":"Load gunpowder first",
-		"1":"No bullet, blind shot fired"
+	"SubsystemMusketBlockBehavior": {
+		"0": "Load gunpowder first",
+		"1": "No bullet, blind shot fired"
 	},
-	"BowWidget":{
-		"0":"Load arrow",
-		"1":"Ready to fire"
+	"BowWidget": {
+		"0": "Load arrow",
+		"1": "Ready to fire"
 	},
 
-	"SubsystemBowBlockBehavior":{
-		"0":"Load an arrow first"
+	"SubsystemBowBlockBehavior": {
+		"0": "Load an arrow first"
 	},
-	"CraftingRecipesManager":{
-		"0":"Use a furnace to smelt this item",
-		"1":"Need more heat to smelt this item, use better fuel",
-		"2":"You must be level {0} to craft this item",
-		"3":"You must be level {0} to smelt this item"
-	
+	"CraftingRecipesManager": {
+		"0": "Use a furnace to smelt this item",
+		"1": "Need more heat to smelt this item, use better fuel",
+		"2": "You must be level {0} to craft this item",
+		"3": "You must be level {0} to smelt this item"
+
 	},
-	"SubsystemCrossbowBlockBehavior":{
-		"0":"Draw the crossbow first",
-		"1":"Load a bolt first"
+	"SubsystemCrossbowBlockBehavior": {
+		"0": "Draw the crossbow first",
+		"1": "Load a bolt first"
 	},
-	"MusketWidget":{
-		"0":"Load gunpowder",
-		"1":"Load cotton wad",
-		"2":"Load bullet",
-		"3":"Ready to fire"
+	"MusketWidget": {
+		"0": "Load gunpowder",
+		"1": "Load cotton wad",
+		"2": "Load bullet",
+		"3": "Ready to fire"
 	},
 	"PlayerData": {
 		"1": "Cannot change player class when player data already exists.",
@@ -419,16 +424,8 @@
 		"SplitTouch": "SplitTouch"
 	},
 	"SettingsUiScreen": {
-		"1": "Adjust User Interface Settings",
-		"2": "Language:",
-		"3": "Window Mode:",
-		"4": "UI Size:",
-		"5": "UI Vertical Flip:",
-		"6": "Hide Move/Look Pads:",
-		"7": "Show UI in screenshots:",
-		"8": "Show logo in screenshots:",
-		"9": "Screenshot resolution:",
-		"10": "Community Content:"
+		"1": "Message",
+		"2": "Do you want apply this setting?"
 	},
 	"EnvironmentBehaviorMode": {
 		"Living": "Living",
@@ -2803,24 +2800,24 @@
 			"12": "Speed",
 			"13": "Hunger",
 			"14": "Insulation",
-			"15":"",
-			"16":"Affects melee attack power, digging speed, throwing range, and bow range.",
-			"17":"Affects damage received from attacks, falls, fire, and asphyxiation.",
-			"18":"Affects movement speed on foot, swimming speed, jump height and stamina regeneration.",
-			"19":"Affects how quickly eaten food is depleted.",
+			"15": "",
+			"16": "Affects melee attack power, digging speed, throwing range, and bow range.",
+			"17": "Affects damage received from attacks, falls, fire, and asphyxiation.",
+			"18": "Affects movement speed on foot, swimming speed, jump height and stamina regeneration.",
+			"19": "Affects how quickly eaten food is depleted.",
 			"Strength": "Strength",
-			"Resilience":"Resilience",
-			"Speed":"Speed",
-			"Hunger":"Hunger",
-			"Choked":"Choked"
+			"Resilience": "Resilience",
+			"Speed": "Speed",
+			"Hunger": "Hunger",
+			"Choked": "Choked"
 		},
-		"EditMemeryDialogB":{
-		"0":"Edit MemoryBank",
-		"1":"Clear",
-		"2":"Transposition",
-		"3":"Input All:",
-		"4":"Save",
-		"5":"Cancel"
+		"EditMemeryDialogB": {
+			"0": "Edit MemoryBank",
+			"1": "Clear",
+			"2": "Transposition",
+			"3": "Input All:",
+			"4": "Save",
+			"5": "Cancel"
 		},
 
 

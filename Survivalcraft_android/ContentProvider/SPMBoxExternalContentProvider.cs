@@ -255,10 +255,11 @@ namespace Game
 						DialogsManager.HideAllDialogs();
 					}
 					else {
+						DialogsManager.HideDialog(login.busyDialog);
 						login.tip.Text=msg;
 					}
 				};
-				login.fail = delegate (Exception e) { login.tip.Text=e.ToString(); };
+				login.fail = delegate (Exception e) { DialogsManager.HideDialog(login.busyDialog); login.tip.Text=e.ToString(); };
 				DialogsManager.ShowDialog(null,login);
 			}
 			catch (Exception error)

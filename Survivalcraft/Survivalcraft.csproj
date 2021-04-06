@@ -42,7 +42,7 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -380,6 +380,34 @@
     <Compile Include="Block\WoodenStairsBlock.cs" />
     <Compile Include="Block\WoodenTrapdoorBlock.cs" />
     <Compile Include="Block\XorGateBlock.cs" />
+    <Compile Include="Managers\AnalyticsManager.cs" />
+    <Compile Include="Managers\AudioManager.cs" />
+    <Compile Include="Managers\BlocksTexturesManager.cs" />
+    <Compile Include="Managers\CharacterSkinsManager.cs" />
+    <Compile Include="Managers\ClipboardManager.cs" />
+    <Compile Include="Managers\CommunityContentManager.cs" />
+    <Compile Include="Managers\DialogsManager.cs" />
+    <Compile Include="Managers\ExceptionManager.cs" />
+    <Compile Include="Managers\ExternalContentManager.cs" />
+    <Compile Include="Managers\FurniturePacksManager.cs" />
+    <Compile Include="Managers\GameManager.cs" />
+    <Compile Include="Managers\InstancedModelsManager.cs" />
+    <Compile Include="Managers\LightingManager.cs" />
+    <Compile Include="Managers\MarketplaceManager.cs" />
+    <Compile Include="Managers\MotdManager.cs" />
+    <Compile Include="Managers\MusicManager.cs" />
+    <Compile Include="Managers\PerformanceManager.cs" />
+    <Compile Include="Managers\PlantsManager.cs" />
+    <Compile Include="Managers\ProgressManager.cs" />
+    <Compile Include="Managers\SettingsManager.cs" />
+    <Compile Include="Managers\StringsManager.cs" />
+    <Compile Include="Managers\TextureAtlasManager.cs" />
+    <Compile Include="Managers\UserManager.cs" />
+    <Compile Include="Managers\VersionsManager.cs" />
+    <Compile Include="Managers\VrManager.cs" />
+    <Compile Include="Managers\WebBrowserManager.cs" />
+    <Compile Include="Managers\WebManager.cs" />
+    <Compile Include="Managers\WorldsManager.cs" />
     <Compile Include="Screen\BestiaryDescriptionScreen.cs" />
     <Compile Include="Screen\BestiaryScreen.cs" />
     <Compile Include="Screen\CommunityContentScreen.cs" />
@@ -402,11 +430,11 @@
     <Compile Include="Screen\RecipaediaRecipesScreen.cs" />
     <Compile Include="Screen\RecipaediaScreen.cs" />
     <Compile Include="Screen\Screen.cs" />
-    <Compile Include="Screen\ScreenCaptureManager.cs" />
+    <Compile Include="Managers\ScreenCaptureManager.cs" />
     <Compile Include="Screen\ScreenLayout.cs" />
-    <Compile Include="Screen\ScreenResolutionManager.cs" />
+    <Compile Include="Managers\ScreenResolutionManager.cs" />
     <Compile Include="Screen\ScreenshotSize.cs" />
-    <Compile Include="Screen\ScreensManager.cs" />
+    <Compile Include="Managers\ScreensManager.cs" />
     <Compile Include="Screen\ScreenSpaceFireRenderer.cs" />
     <Compile Include="Screen\SettingsAudioScreen.cs" />
     <Compile Include="Screen\SettingsCompatibilityScreen.cs" />
@@ -609,12 +637,10 @@
     <Compile Include="Game\AdjustableDelayGateElectricElement.cs" />
     <Compile Include="Game\AimState.cs" />
     <Compile Include="Game\AnalogToDigitalConverterElectricElement.cs" />
-    <Compile Include="Game\AnalyticsManager.cs" />
     <Compile Include="Game\AnalyticsManagerUtils.cs" />
     <Compile Include="Game\AnalyticsParameter.cs" />
     <Compile Include="Game\AndGateElectricElement.cs" />
     <Compile Include="Game\AStar.cs" />
-    <Compile Include="Game\AudioManager.cs" />
     <Compile Include="Game\AverageCountDebugItemAttribute.cs" />
     <Compile Include="Game\AverageTimeDebugItemAttribute.cs" />
     <Compile Include="Game\BaseDelayGateElectricElement.cs" />
@@ -631,7 +657,6 @@
     <Compile Include="Game\BlockMeshVertex.cs" />
     <Compile Include="Game\BlockPlacementData.cs" />
     <Compile Include="Game\BlocksTexturesCache.cs" />
-    <Compile Include="Game\BlocksTexturesManager.cs" />
     <Compile Include="Game\BodyRaycastResult.cs" />
     <Compile Include="Game\BreathingMode.cs" />
     <Compile Include="Game\BuildConfiguration.cs" />
@@ -645,14 +670,11 @@
     <Compile Include="Game\CancellableProgress.cs" />
     <Compile Include="Game\CellFace.cs" />
     <Compile Include="Game\CharacterSkinsCache.cs" />
-    <Compile Include="Game\CharacterSkinsManager.cs" />
     <Compile Include="Game\ChristmasTreeElectricElement.cs" />
-    <Compile Include="Game\ClipboardManager.cs" />
     <Compile Include="Game\ClothingData.cs" />
     <Compile Include="Game\ClothingSlot.cs" />
     <Compile Include="Game\CollectionUtils.cs" />
     <Compile Include="Game\CommunityContentEntry.cs" />
-    <Compile Include="Game\CommunityContentManager.cs" />
     <Compile Include="Game\CommunityContentMode.cs" />
     <Compile Include="Game\CounterElectricElement.cs" />
     <Compile Include="Game\CraftingRecipe.cs" />
@@ -667,7 +689,6 @@
     <Compile Include="Game\DelayGateElectricElement.cs" />
     <Compile Include="Game\DetonatorElectricElement.cs" />
     <Compile Include="Game\Dialog.cs" />
-    <Compile Include="Game\DialogsManager.cs" />
     <Compile Include="Game\DigitalToAnalogConverterElectricElement.cs" />
     <Compile Include="ContentProvider\DiskExternalContentProvider.cs" />
     <Compile Include="Game\DispenserElectricElement.cs" />
@@ -693,11 +714,9 @@
     <Compile Include="Game\EntityReferenceHumanReadableConverter.cs" />
     <Compile Include="Game\EnumUtils.cs" />
     <Compile Include="Game\EnvironmentBehaviorMode.cs" />
-    <Compile Include="Game\ExceptionManager.cs" />
     <Compile Include="Game\ExplosionParticleSystem.cs" />
     <Compile Include="Game\ExternalContentEntry.cs" />
     <Compile Include="Dialog\ExternalContentLinkDialog.cs" />
-    <Compile Include="Game\ExternalContentManager.cs" />
     <Compile Include="Game\ExternalContentType.cs" />
     <Compile Include="Game\FenceGateElectricElement.cs" />
     <Compile Include="Game\FireParticleSystem.cs" />
@@ -715,11 +734,9 @@
     <Compile Include="Game\FurnitureGeometry.cs" />
     <Compile Include="Game\FurnitureInteractionMode.cs" />
     <Compile Include="Game\FurnitureInventoryPanel.cs" />
-    <Compile Include="Game\FurniturePacksManager.cs" />
     <Compile Include="Game\FurnitureSet.cs" />
     <Compile Include="Game\FuseParticleSystem.cs" />
     <Compile Include="Game\GameLogSink.cs" />
-    <Compile Include="Game\GameManager.cs" />
     <Compile Include="Dialog\GameMenuDialog.cs" />
     <Compile Include="Game\GameMode.cs" />
     <Compile Include="Dialog\GamepadHelpDialog.cs" />
@@ -739,7 +756,6 @@
     <Compile Include="Game\IInventory.cs" />
     <Compile Include="Game\INoiseListener.cs" />
     <Compile Include="Game\InstancedModelData.cs" />
-    <Compile Include="Game\InstancedModelsManager.cs" />
     <Compile Include="Game\IntroCamera.cs" />
     <Compile Include="Game\InventoryDragData.cs" />
     <Compile Include="Game\ITerrainContentsGenerator.cs" />
@@ -751,12 +767,10 @@
     <Compile Include="Game\LedElectricElement.cs" />
     <Compile Include="Dialog\LevelFactorDialog.cs" />
     <Compile Include="Game\LightBulbElectricElement.cs" />
-    <Compile Include="Game\LightingManager.cs" />
     <Compile Include="Dialog\ListSelectionDialog.cs" />
     <Compile Include="Game\LoadingCamera.cs" />
     <Compile Include="Game\LookControlMode.cs" />
     <Compile Include="Game\MagmaSplashParticleSystem.cs" />
-    <Compile Include="Game\MarketplaceManager.cs" />
     <Compile Include="Game\MatrixUtils.cs" />
     <Compile Include="Game\MemoryBankData.cs" />
     <Compile Include="Game\MemoryBankElectricElement.cs" />
@@ -765,13 +779,11 @@
     <Compile Include="Game\ModelRenderingMode.cs" />
     <Compile Include="Game\ModelShader.cs" />
     <Compile Include="Dialog\MoreCommunityLinkDialog.cs" />
-    <Compile Include="Game\MotdManager.cs" />
     <Compile Include="Game\MotionDetectorElectricElement.cs" />
     <Compile Include="Game\MountedElectricElement.cs" />
     <Compile Include="Game\MoveControlMode.cs" />
     <Compile Include="Game\MulticoloredLedElectricElement.cs" />
     <Compile Include="Game\MultistateFurnitureElectricElement.cs" />
-    <Compile Include="Game\MusicManager.cs" />
     <Compile Include="Game\NandGateElectricElement.cs" />
     <Compile Include="Game\NorGateElectricElement.cs" />
     <Compile Include="Game\NotGateElectricElement.cs" />
@@ -785,12 +797,10 @@
     <Compile Include="Game\ParticleSystem.cs" />
     <Compile Include="Game\ParticleSystemBase.cs" />
     <Compile Include="Game\PathfindingResult.cs" />
-    <Compile Include="Game\PerformanceManager.cs" />
     <Compile Include="Game\PhotodiodeElectricElement.cs" />
     <Compile Include="Game\Pickable.cs" />
     <Compile Include="Game\PistonElectricElement.cs" />
     <Compile Include="Game\PistonMode.cs" />
-    <Compile Include="Game\PlantsManager.cs" />
     <Compile Include="Game\Platform.cs" />
     <Compile Include="Game\PlayerClass.cs" />
     <Compile Include="Game\PlayerData.cs" />
@@ -804,7 +814,6 @@
     <Compile Include="Game\Profiler.cs" />
     <Compile Include="Game\Program.cs" />
     <Compile Include="Game\Progress.cs" />
-    <Compile Include="Game\ProgressManager.cs" />
     <Compile Include="Game\Projectile.cs" />
     <Compile Include="Game\ProjectileStoppedAction.cs" />
     <Compile Include="Dialog\PublishCommunityLinkDialog.cs" />
@@ -825,7 +834,6 @@
     <Compile Include="Game\Segment3.cs" />
     <Compile Include="Dialog\SelectExternalContentProviderDialog.cs" />
     <Compile Include="Dialog\SelectExternalContentTypeDialog.cs" />
-    <Compile Include="Game\SettingsManager.cs" />
     <Compile Include="Game\SevenSegmentDisplayElectricElement.cs" />
     <Compile Include="Game\ShapeshiftParticleSystem.cs" />
     <Compile Include="Game\SignData.cs" />
@@ -846,7 +854,6 @@
     <Compile Include="Game\StartingPositionMode.cs" />
     <Compile Include="Game\StateMachine.cs" />
     <Compile Include="Game\StraightFlightCamera.cs" />
-    <Compile Include="Game\StringsManager.cs" />
     <Compile Include="Game\StringUtils.cs" />
     <Compile Include="ModsManager\LanguageControl.cs" />
     <Compile Include="Game\Subtexture.cs" />
@@ -875,7 +882,6 @@
     <Compile Include="Dialog\TextBoxDialog.cs" />
     <Compile Include="Game\TextOrientation.cs" />
     <Compile Include="Game\TextureAtlas.cs" />
-    <Compile Include="Game\TextureAtlasManager.cs" />
     <Compile Include="Game\ThermometerElectricElement.cs" />
     <Compile Include="Game\TimeOfDayMode.cs" />
     <Compile Include="Game\TouchInput.cs" />
@@ -888,7 +894,6 @@
     <Compile Include="Game\TruthTableData.cs" />
     <Compile Include="Game\UpdateOrder.cs" />
     <Compile Include="Game\UserInfo.cs" />
-    <Compile Include="Game\UserManager.cs" />
     <Compile Include="Game\VersionConverter.cs" />
     <Compile Include="Game\VersionConverter10To14.cs" />
     <Compile Include="Game\VersionConverter110To111.cs" />
@@ -920,23 +925,18 @@
     <Compile Include="Game\VersionConverter19To110.cs" />
     <Compile Include="Game\VersionConverter20To21.cs" />
     <Compile Include="Game\VersionConverter21To22.cs" />
-    <Compile Include="Game\VersionsManager.cs" />
     <Compile Include="Game\ViewAngleMode.cs" />
     <Compile Include="Dialog\ViewGameLogDialog.cs" />
     <Compile Include="Game\VrController.cs" />
     <Compile Include="Game\VrControllerButton.cs" />
     <Compile Include="Game\VrEye.cs" />
-    <Compile Include="Game\VrManager.cs" />
     <Compile Include="Game\WaterSplashParticleSystem.cs" />
-    <Compile Include="Game\WebBrowserManager.cs" />
-    <Compile Include="Game\WebManager.cs" />
     <Compile Include="Game\WhalePlumeParticleSystem.cs" />
     <Compile Include="Game\WireDomainElectricElement.cs" />
     <Compile Include="Game\WorldInfo.cs" />
     <Compile Include="Game\WorldItem.cs" />
     <Compile Include="Game\WorldPalette.cs" />
     <Compile Include="Game\WorldSettings.cs" />
-    <Compile Include="Game\WorldsManager.cs" />
     <Compile Include="Game\XorGateElectricElement.cs" />
     <Compile Include="Game\ZipArchive.cs" />
     <Compile Include="Game\ZipArchiveEntry.cs" />
@@ -1086,4 +1086,9 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

@@ -4,26 +4,26 @@ namespace Game
 {
     public class DrawBlockEnvironmentData
     {
-		public SubsystemTerrain SubsystemTerrain;
+        public SubsystemTerrain SubsystemTerrain;
 
-		public Matrix InWorldMatrix;
+        public Matrix InWorldMatrix;
 
-		public Matrix? ViewProjectionMatrix;
+        public Matrix? ViewProjectionMatrix;
 
-		public Vector3? BillboardDirection;
+        public Vector3? BillboardDirection;
 
-		public int Humidity;
+        public int Humidity;
 
-		public int Temperature;
+        public int Temperature;
 
-		public int Light;
+        public int Light;
 
-		public DrawBlockEnvironmentData()
-		{
-			InWorldMatrix = Matrix.Identity;
-			Humidity = 15;
-			Temperature = 8;
-			Light = 15;
-		}
-	}
+        public DrawBlockEnvironmentData()
+        {
+            InWorldMatrix = Matrix.Identity;
+            Humidity = 15;
+            Temperature = 8;
+            Light = 15;
+        }
+    }
 }

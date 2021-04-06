@@ -1,9 +1,9 @@
 namespace Game
 {
-	public enum AimState
-	{
-		InProgress,
-		Cancelled,
-		Completed
-	}
+    public enum AimState
+    {
+        InProgress,
+        Cancelled,
+        Completed
+    }
 }

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Engine;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using Engine;
 
 namespace Game
 {
@@ -12,6 +12,7 @@ namespace Game
         public StackPanelWidget MainView;
         public BevelledButtonWidget btna, btnb, btnc;
         public TextBoxWidget txa, txb;
+        public BusyDialog busyDialog = new BusyDialog("提示", "登陆中");
         public LabelWidget tip = new LabelWidget() { HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Near, Margin = new Vector2(1f, 1f) };
         public LoginDialog()
         {
@@ -64,6 +65,7 @@ namespace Game
                 Dictionary<string, string> par = new Dictionary<string, string>();
                 par.Add("user", txa.Text);
                 par.Add("pass", txb.Text);
+                DialogsManager.ShowDialog(this,busyDialog);
                 WebManager.Post(SPMBoxExternalContentProvider.m_redirectUri + "/com/api/login", par, null, new MemoryStream(), new CancellableProgress(), succ, fail);
             }
             if (btnb.IsClicked)

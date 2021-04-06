@@ -6,15 +6,15 @@ namespace Engine.Graphics
 {
 	public class UnlitShader : Shader
 	{
-		private ShaderParameter m_worldViewProjectionMatrixParameter;
+		public ShaderParameter m_worldViewProjectionMatrixParameter;
 
-		private ShaderParameter m_textureParameter;
+		public ShaderParameter m_textureParameter;
 
-		private ShaderParameter m_samplerStateParameter;
+		public ShaderParameter m_samplerStateParameter;
 
-		private ShaderParameter m_colorParameter;
+		public ShaderParameter m_colorParameter;
 
-		private ShaderParameter m_alphaThresholdParameter;
+		public ShaderParameter m_alphaThresholdParameter;
 
 		public readonly ShaderTransforms Transforms;
 
@@ -62,13 +62,13 @@ namespace Engine.Graphics
 			Color = Vector4.One;
 		}
 
-		protected override void PrepareForDrawingOverride()
+		public override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(1, worldView: false, viewProjection: false, worldViewProjection: true);
 			m_worldViewProjectionMatrixParameter.SetValue(Transforms.WorldViewProjection, 1);
 		}
 
-		private static ShaderMacro[] PrepareShaderMacros(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
+		public static ShaderMacro[] PrepareShaderMacros(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
 		{
 			List<ShaderMacro> list = new List<ShaderMacro>();
 			if (useVertexColor)

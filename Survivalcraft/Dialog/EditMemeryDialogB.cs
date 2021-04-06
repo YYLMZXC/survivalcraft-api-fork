@@ -1,7 +1,6 @@
 ﻿using Engine;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Game
@@ -130,7 +129,8 @@ namespace Game
                     int addr = (i - 1) * 16 + (j - 1);
                     if (j > 0 && i > 0)
                     {
-                        ClickTextWidget clickTextWidget = new ClickTextWidget(new Vector2(22), string.Format("{0}", MemoryBankData.m_hexChars[Read(addr)]), delegate () {
+                        ClickTextWidget clickTextWidget = new ClickTextWidget(new Vector2(22), string.Format("{0}", MemoryBankData.m_hexChars[Read(addr)]), delegate ()
+                        {
                             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             clickpos = addr;
                             isclick = true;
@@ -149,7 +149,8 @@ namespace Game
                             line.Children.Add(click);
                             continue;
                         };
-                        ClickTextWidget clickTextWidget = new ClickTextWidget(new Vector2(22), MemoryBankData.m_hexChars[p].ToString(), delegate () {
+                        ClickTextWidget clickTextWidget = new ClickTextWidget(new Vector2(22), MemoryBankData.m_hexChars[p].ToString(), delegate ()
+                        {
 
                         });
                         clickTextWidget.labelWidget.Color = Color.DarkGray;
@@ -286,7 +287,8 @@ namespace Game
                 LoadString(textBoxWidget.Text);
                 isclick = true;
             }, memory.SaveString(false)));
-            stack.Children.Add(makeButton(LanguageControl.GetContentWidgets(fName, 4), delegate () {
+            stack.Children.Add(makeButton(LanguageControl.GetContentWidgets(fName, 4), delegate ()
+            {
                 for (int i = 0; i < Data.Count; i++)
                 {
                     memory.Write(i, Data[i]);
@@ -295,7 +297,8 @@ namespace Game
                 AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                 DialogsManager.HideDialog(this);
             }));
-            stack.Children.Add(makeButton(LanguageControl.GetContentWidgets(fName, 5), delegate () {
+            stack.Children.Add(makeButton(LanguageControl.GetContentWidgets(fName, 5), delegate ()
+            {
                 AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                 DialogsManager.HideDialog(this);
                 isclick = true;

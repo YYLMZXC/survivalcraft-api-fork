@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -192,7 +192,7 @@ namespace Game
 		{
 			if (string.IsNullOrEmpty(path))
 			{
-				path = Storage.GetSystemPath("android:SurvivalCraft2.2/files");
+				path = DiskExternalContentProvider.LocalPath;
 			}
 			path = path.Replace("\\", "/");
 			if (path != m_path)

@@ -1,8 +1,8 @@
 namespace Game
 {
-	public enum PrecipitationType
-	{
-		Rain,
-		Snow
-	}
+    public enum PrecipitationType
+    {
+        Rain,
+        Snow
+    }
 }

@@ -1,10 +1,10 @@
 namespace Game
 {
-	public enum GlowPointType
-	{
-		Round,
-		Square,
-		HorizontalRectangle,
-		VerticalRectangle
-	}
+    public enum GlowPointType
+    {
+        Round,
+        Square,
+        HorizontalRectangle,
+        VerticalRectangle
+    }
 }

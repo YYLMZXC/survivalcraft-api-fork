@@ -2,18 +2,18 @@ using Engine;
 
 namespace Game
 {
-	public class WorldItem
-	{
-		public int Value;
+    public class WorldItem
+    {
+        public int Value;
 
-		public Vector3 Position;
+        public Vector3 Position;
 
-		public Vector3 Velocity;
+        public Vector3 Velocity;
 
-		public double CreationTime;
+        public double CreationTime;
 
-		public int Light;
+        public int Light;
 
-		public bool ToRemove;
-	}
+        public bool ToRemove;
+    }
 }

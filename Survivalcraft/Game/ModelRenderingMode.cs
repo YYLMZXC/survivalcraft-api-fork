@@ -1,10 +1,10 @@
 namespace Game
 {
-	public enum ModelRenderingMode
-	{
-		Solid,
-		AlphaThreshold,
-		TransparentBeforeWater,
-		TransparentAfterWater
-	}
+    public enum ModelRenderingMode
+    {
+        Solid,
+        AlphaThreshold,
+        TransparentBeforeWater,
+        TransparentAfterWater
+    }
 }

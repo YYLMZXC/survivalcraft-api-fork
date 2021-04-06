@@ -59,6 +59,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Engine\Engine.Graphics\GraphicsResource.cs">
+      <Link>Engine.Graphics\GraphicsResource.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\IndexBuffer.cs">
+      <Link>Engine.Graphics\IndexBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Shader.cs">
+      <Link>Engine.Graphics\Shader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\UnlitShader.cs">
+      <Link>Engine.Graphics\UnlitShader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexBuffer.cs">
+      <Link>Engine.Graphics\VertexBuffer.cs</Link>
+    </Compile>
     <Compile Include="Engine.Audio\AudioTrackCache.cs" />
     <Compile Include="Engine.Audio\BaseSound.cs" />
     <Compile Include="Engine.Audio\Mixer.cs" />
@@ -117,8 +132,6 @@
     <Compile Include="Engine.Graphics\FontBatch2D.cs" />
     <Compile Include="Engine.Graphics\FontBatch3D.cs" />
     <Compile Include="Engine.Graphics\GLWrapper.cs" />
-    <Compile Include="Engine.Graphics\GraphicsResource.cs" />
-    <Compile Include="Engine.Graphics\IndexBuffer.cs" />
     <Compile Include="Engine.Graphics\IndexFormat.cs" />
     <Compile Include="Engine.Graphics\LitShader.cs" />
     <Compile Include="Engine.Graphics\LockOnFirstUse.cs" />
@@ -132,7 +145,6 @@
     <Compile Include="Engine.Graphics\RasterizerState.cs" />
     <Compile Include="Engine.Graphics\RenderTarget2D.cs" />
     <Compile Include="Engine.Graphics\SamplerState.cs" />
-    <Compile Include="Engine.Graphics\Shader.cs" />
     <Compile Include="Engine.Graphics\ShaderMacro.cs" />
     <Compile Include="Engine.Graphics\ShaderParameter.cs" />
     <Compile Include="Engine.Graphics\ShaderParameterType.cs" />
@@ -143,8 +155,6 @@
     <Compile Include="Engine.Graphics\TexturedBatch2D.cs" />
     <Compile Include="Engine.Graphics\TexturedBatch3D.cs" />
     <Compile Include="Engine.Graphics\TextureFilterMode.cs" />
-    <Compile Include="Engine.Graphics\UnlitShader.cs" />
-    <Compile Include="Engine.Graphics\VertexBuffer.cs" />
     <Compile Include="Engine.Graphics\VertexDeclaration.cs" />
     <Compile Include="Engine.Graphics\VertexElement.cs" />
     <Compile Include="Engine.Graphics\VertexElementFormat.cs" />

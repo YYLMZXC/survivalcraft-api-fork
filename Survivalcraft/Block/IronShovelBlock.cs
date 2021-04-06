@@ -1,12 +1,12 @@
 namespace Game
 {
-	public class IronShovelBlock : ShovelBlock
-	{
-		public const int Index = 36;
+    public class IronShovelBlock : ShovelBlock
+    {
+        public const int Index = 36;
 
-		public IronShovelBlock()
-			: base(47, 63)
-		{
-		}
-	}
+        public IronShovelBlock()
+            : base(47, 63)
+        {
+        }
+    }
 }

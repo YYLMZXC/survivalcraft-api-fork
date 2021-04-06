@@ -1,9 +1,9 @@
 namespace Game
 {
-	public enum StartingPositionMode
-	{
-		Easy,
-		Medium,
-		Hard
-	}
+    public enum StartingPositionMode
+    {
+        Easy,
+        Medium,
+        Hard
+    }
 }

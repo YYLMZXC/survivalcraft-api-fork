@@ -8,47 +8,47 @@ namespace Engine.Graphics
 {
 	public class LitShader : Shader
 	{
-		private ShaderParameter m_worldMatrixParameter;
+		public ShaderParameter m_worldMatrixParameter;
 
-		private ShaderParameter m_worldViewMatrixParameter;
+		public ShaderParameter m_worldViewMatrixParameter;
 
-		private ShaderParameter m_worldViewProjectionMatrixParameter;
+		public ShaderParameter m_worldViewProjectionMatrixParameter;
 
-		private ShaderParameter m_textureParameter;
+		public ShaderParameter m_textureParameter;
 
-		private ShaderParameter m_samplerStateParameter;
+		public ShaderParameter m_samplerStateParameter;
 
-		private ShaderParameter m_materialColorParameter;
+		public ShaderParameter m_materialColorParameter;
 
-		private ShaderParameter m_emissionColorParameter;
+		public ShaderParameter m_emissionColorParameter;
 
-		private ShaderParameter m_alphaThresholdParameter;
+		public ShaderParameter m_alphaThresholdParameter;
 
-		private ShaderParameter m_ambientLightColorParameter;
+		public ShaderParameter m_ambientLightColorParameter;
 
-		private ShaderParameter m_diffuseLightColor1Parameter;
+		public ShaderParameter m_diffuseLightColor1Parameter;
 
-		private ShaderParameter m_directionToLight1Parameter;
+		public ShaderParameter m_directionToLight1Parameter;
 
-		private ShaderParameter m_diffuseLightColor2Parameter;
+		public ShaderParameter m_diffuseLightColor2Parameter;
 
-		private ShaderParameter m_directionToLight2Parameter;
+		public ShaderParameter m_directionToLight2Parameter;
 
-		private ShaderParameter m_diffuseLightColor3Parameter;
+		public ShaderParameter m_diffuseLightColor3Parameter;
 
-		private ShaderParameter m_directionToLight3Parameter;
+		public ShaderParameter m_directionToLight3Parameter;
 
-		private ShaderParameter m_fogStartParameter;
+		public ShaderParameter m_fogStartParameter;
 
-		private ShaderParameter m_fogLengthParameter;
+		public ShaderParameter m_fogLengthParameter;
 
-		private ShaderParameter m_fogColorParameter;
+		public ShaderParameter m_fogColorParameter;
 
-		private int m_instancesCount;
+		public int m_instancesCount;
 
-		private int m_lightsCount;
+		public int m_lightsCount;
 
-		private bool m_useFog;
+		public bool m_useFog;
 
 		public readonly ShaderTransforms Transforms;
 
@@ -248,7 +248,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		protected override void PrepareForDrawingOverride()
+		public override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(m_instancesCount, m_useFog, viewProjection: false, worldViewProjection: true);
 			m_worldViewProjectionMatrixParameter.SetValue(Transforms.WorldViewProjection, InstancesCount);
@@ -262,7 +262,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		private static ShaderMacro[] PrepareShaderMacros(int lightsCount, bool useEmissionColor, bool useVertexColor, bool useTexture, bool useFog, bool useAlphaThreshold, int maxInstancesCount)
+		public static ShaderMacro[] PrepareShaderMacros(int lightsCount, bool useEmissionColor, bool useVertexColor, bool useTexture, bool useFog, bool useAlphaThreshold, int maxInstancesCount)
 		{
 			List<ShaderMacro> list = new List<ShaderMacro>();
 			if (lightsCount > 0)

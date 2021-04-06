@@ -1,15 +1,15 @@
 namespace Game
 {
-	public struct AnalyticsParameter
-	{
-		public string Name;
+    public struct AnalyticsParameter
+    {
+        public string Name;
 
-		public string Value;
+        public string Value;
 
-		public AnalyticsParameter(string name, string value)
-		{
-			Name = name;
-			Value = value;
-		}
-	}
+        public AnalyticsParameter(string name, string value)
+        {
+            Name = name;
+            Value = value;
+        }
+    }
 }

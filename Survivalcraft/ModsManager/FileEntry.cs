@@ -2,7 +2,12 @@
 
 public class FileEntry
 {
-	public string Filename;
-
-	public Stream Stream;
+    public enum StorageType
+    { 
+        InZip,
+        InStorage
+    }
+    public string Filename;
+    public StorageType type;
+    public Stream Stream;
 }

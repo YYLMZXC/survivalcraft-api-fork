@@ -1,7 +1,5 @@
-using Engine.Media;
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“OpenTK”(是否缺少 using 指令或程序集引用?)
+锘縰sing Engine.Media;
 using OpenTK.Graphics.ES20;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“OpenTK”(是否缺少 using 指令或程序集引用?)
 using System;
 using System.IO;
 using System.Linq;
@@ -11,15 +9,9 @@ namespace Engine.Graphics
 {
     public class Texture2D : GraphicsResource
     {
-        internal int m_texture;
-
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
+        public int m_texture;
         public All m_pixelFormat;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
-
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
         public All m_pixelType;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
         public int Width
         {
@@ -112,7 +104,7 @@ namespace Engine.Graphics
             }
         }
 
-        internal void InitializeTexture2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat)
+        public void InitializeTexture2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat)
         {
             if (width < 1)
             {
@@ -225,12 +217,12 @@ namespace Engine.Graphics
             }
         }
 
-        internal override void HandleDeviceLost()
+        public override void HandleDeviceLost()
         {
             DeleteTexture();
         }
 
-        internal override void HandleDeviceReset()
+        public override void HandleDeviceReset()
         {
             AllocateTexture();
         }

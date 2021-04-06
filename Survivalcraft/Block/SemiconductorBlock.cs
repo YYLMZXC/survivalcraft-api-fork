@@ -1,7 +1,7 @@
 namespace Game
 {
-	public class SemiconductorBlock : CubeBlock
-	{
-		public const int Index = 231;
-	}
+    public class SemiconductorBlock : CubeBlock
+    {
+        public const int Index = 231;
+    }
 }
