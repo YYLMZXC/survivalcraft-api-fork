@@ -19,9 +19,9 @@ namespace Game
                 {
                     throw new InvalidOperationException("GameLogSink already created.");
                 }
-                string text = "app:/Logs";
-                string path = Storage.CombinePaths(text, "Game.log");
-                Storage.CreateDirectory(text);
+
+                string path = Storage.CombinePaths(ModsManager.logPath, "Game.log");
+                Storage.CreateDirectory(ModsManager.logPath);
                 m_stream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen);
                 if (m_stream.Length > 10485760)
                 {

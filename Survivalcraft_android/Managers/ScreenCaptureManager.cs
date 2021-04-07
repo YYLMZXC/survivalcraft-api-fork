@@ -119,8 +119,8 @@ namespace Game
 						}
 						SettingsManager.ResolutionMode = resolutionMode;
 					}
-					if (!Storage.DirectoryExists(ModsManager.baseDir + "/ScreenCapture")) Storage.CreateDirectory(ModsManager.baseDir + "/ScreenCapture");
-					string path = Storage.CombinePaths(Storage.GetSystemPath(ModsManager.baseDir + "/ScreenCapture"), filename);
+					if (!Storage.DirectoryExists(ModsManager.screenCapturePath)) Storage.CreateDirectory(ModsManager.screenCapturePath);
+					string path = Storage.CombinePaths(Storage.GetSystemPath(ModsManager.screenCapturePath), filename);
 					using (FileStream stream = new FileStream(path, FileMode.Create))
 					{
 						byte[] array = new byte[4 * renderTarget2D.Width * renderTarget2D.Height];

@@ -17,7 +17,7 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
@@ -90,19 +90,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\DebugFont.dat" />
     <AndroidAsset Include="..\Survivalcraft\Content.pak">
       <Link>Assets\Content.pak</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\Survivalcraft\lang\en_us.json">
-      <Link>Assets\lang\en_us.json</Link>
+    <AndroidAsset Include="..\Survivalcraft\lang\en_US.json">
+      <Link>Assets\lang\en_US.json</Link>
     </AndroidAsset>
     <AndroidAsset Include="..\Survivalcraft\lang\ot_OT.json">
       <Link>Assets\lang\ot_OT.json</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\Survivalcraft\lang\zh_cn.json">
-      <Link>Assets\lang\zh_cn.json</Link>
+    <AndroidAsset Include="..\Survivalcraft\lang\zh_CN.json">
+      <Link>Assets\lang\zh_CN.json</Link>
     </AndroidAsset>
+    <AndroidAsset Include="Assets\DebugFont.dat" />
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -123,18 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Lit.psh" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Lit.vsh" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Unlit.psh" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Unlit.vsh" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\colors.xml" />
@@ -159,10 +147,22 @@
       <Name>Survivalcraft_android</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Lit.psh" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Lit.vsh" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Unlit.psh" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Unlit.vsh" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

@@ -22,7 +22,6 @@ namespace Game
             items2 = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
             string name = "app:lang/" + languageType.ToString() + ".json";
             List<FileEntry> langs = ModsManager.GetEntries(".json");
-
             try
             {//没有找到文件,加载默认
                 Stream ssa = Storage.OpenFile(name, OpenFileMode.Read);

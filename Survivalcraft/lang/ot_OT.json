@@ -7,6 +7,11 @@
 		"Description": "No login required; Save to disk"
 
 	},
+	"MemoryBankBlockBehavior": {
+		"1": "Select Editor Type",
+		"2": "original",
+		"3": "api version"
+	},
 	"ContentManager": {
 		"1": "Content \"{0}\" has type {1}, requested type was {2}"
 	},

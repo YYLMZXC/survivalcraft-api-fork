@@ -18,7 +18,7 @@ namespace Game
 
         public static ReadOnlyList<string> CharacterSkinsNames => new ReadOnlyList<string>(m_characterSkinNames);
 
-        public static string CharacterSkinsDirectoryName => "app:/CharacterSkins";
+        public static string CharacterSkinsDirectoryName =>ModsManager.CharacterSkinsDirectoryName;
 
         public static event Action<string> CharacterSkinDeleted;
 

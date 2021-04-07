@@ -189,6 +189,7 @@ namespace Game
 
         public override void Update()
         {
+#if desktop
             if (m_hasFocus)
             {
                 if (KeyboardInput.DeletePressed&&CaretPosition>0)
@@ -206,6 +207,76 @@ namespace Game
 
                 }
             }
+#endif
+#if android
+            if (m_hasFocus)
+            {
+                if (base.Input.LastChar.HasValue && !base.Input.IsKeyDown(Key.Control) && !char.IsControl(base.Input.LastChar.Value))
+                {
+                    EnterText(new string(base.Input.LastChar.Value, 1));
+                    base.Input.Clear();
+                }
+                if (base.Input.LastKey.HasValue)
+                {
+                    bool flag = false;
+                    Key value = base.Input.LastKey.Value;
+                    if (value == Key.V && base.Input.IsKeyDown(Key.Control))
+                    {
+                        EnterText(ClipboardManager.ClipboardString);
+                        flag = true;
+                    }
+                    else if (value == Key.BackSpace && CaretPosition > 0)
+                    {
+                        CaretPosition--;
+                        Text = Text.Remove(CaretPosition, 1);
+                        flag = true;
+                    }
+                    else
+                    {
+                        switch (value)
+                        {
+                            case Key.Delete:
+                                if (CaretPosition < m_text.Length)
+                                {
+                                    Text = Text.Remove(CaretPosition, 1);
+                                    flag = true;
+                                }
+                                break;
+                            case Key.LeftArrow:
+                                CaretPosition--;
+                                flag = true;
+                                break;
+                            case Key.RightArrow:
+                                CaretPosition++;
+                                flag = true;
+                                break;
+                            case Key.Home:
+                                CaretPosition = 0;
+                                flag = true;
+                                break;
+                            case Key.End:
+                                CaretPosition = m_text.Length;
+                                flag = true;
+                                break;
+                            case Key.Enter:
+                                flag = true;
+                                HasFocus = false;
+                                this.Enter?.Invoke(this);
+                                break;
+                            case Key.Escape:
+                                flag = true;
+                                HasFocus = false;
+                                this.Escape?.Invoke(this);
+                                break;
+                        }
+                    }
+                    if (flag)
+                    {
+                        base.Input.Clear();
+                    }
+                }
+            }
+#endif
             if (Input.Click.HasValue)
             {
                 HasFocus = (HitTestGlobal(Input.Click.Value.Start) == this && HitTestGlobal(Input.Click.Value.End) == this);

@@ -13,9 +13,7 @@ namespace Game
 {
     public static class CommunityContentManager
     {
-        public const string m_cacheFilename = "app:/CommunityContentCache.xml";
-
-        public const string m_scResDirAddress = "https://m.schub.top/resource";
+        public const string m_scResDirAddress = "https://m.schub.top/com/list";
 
         public static Dictionary<string, string> m_idToAddressMap = new Dictionary<string, string>();
 
@@ -356,9 +354,9 @@ namespace Game
         {
             try
             {
-                if (Storage.FileExists("app:CommunityContentCache.xml"))
+                if (Storage.FileExists(ModsManager.communityContentCachePath))
                 {
-                    using (Stream stream = Storage.OpenFile("app:CommunityContentCache.xml", OpenFileMode.Read))
+                    using (Stream stream = Storage.OpenFile(ModsManager.communityContentCachePath, OpenFileMode.Read))
                     {
                         XElement xElement = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
                         foreach (XElement item in xElement.Element("Feedback").Elements())
@@ -403,7 +401,7 @@ namespace Game
                     XmlUtils.SetAttributeValue(xElement5, "Address", item.Value);
                     xElement4.Add(xElement5);
                 }
-                using (Stream stream = Storage.OpenFile("app:CommunityContentCache.xml", OpenFileMode.Create))
+                using (Stream stream = Storage.OpenFile(ModsManager.communityContentCachePath, OpenFileMode.Create))
                 {
                     XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);
                 }

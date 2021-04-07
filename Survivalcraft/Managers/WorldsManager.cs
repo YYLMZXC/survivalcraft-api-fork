@@ -16,7 +16,7 @@ namespace Game
 
         public static ReadOnlyList<string> m_newWorldNames;
 
-        public static string WorldsDirectoryName = "app:/Worlds";
+        public static string WorldsDirectoryName = ModsManager.WorldsDirectoryName;
 
         public const int MaxAllowedWorlds = 30;
 

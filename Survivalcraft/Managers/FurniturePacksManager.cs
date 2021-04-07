@@ -13,7 +13,7 @@ namespace Game
 
         public static ReadOnlyList<string> FurniturePackNames => new ReadOnlyList<string>(m_furniturePackNames);
 
-        public static string FurniturePacksDirectoryName => "app:/FurniturePacks";
+        public static string FurniturePacksDirectoryName => ModsManager.FurniturePacksDirectoryName;
 
         public static event Action<string> FurniturePackDeleted;
 

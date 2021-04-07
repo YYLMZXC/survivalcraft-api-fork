@@ -62,9 +62,34 @@ namespace Game
                         ModsManager.modSettings.languageType = (LanguageControl.LanguageType)((int)(ModsManager.modSettings.languageType + 1) % EnumUtils.GetEnumValues(typeof(LanguageControl.LanguageType)).Count);
                         ModsManager.SaveSettings();
                         LanguageControl.init(ModsManager.modSettings.languageType);
-                        ScreensManager.m_screens.Clear();
-                        ScreensManager.InitScreens();
-                        ScreensManager.SwitchScreen("Loading");
+                        ScreensManager.m_screens["MainMenu"] = new MainMenuScreen();
+                        ScreensManager.m_screens["Recipaedia"] = new RecipaediaScreen();
+                        ScreensManager.m_screens["RecipaediaRecipes"] = new RecipaediaRecipesScreen();
+                        ScreensManager.m_screens["RecipaediaDescription"] = new RecipaediaDescriptionScreen();
+                        ScreensManager.m_screens["Bestiary"] = new BestiaryScreen();
+                        ScreensManager.m_screens["BestiaryDescription"] = new BestiaryDescriptionScreen();
+                        ScreensManager.m_screens["Help"] = new HelpScreen();
+                        ScreensManager.m_screens["HelpTopic"] = new HelpTopicScreen();
+                        ScreensManager.m_screens["Settings"] = new SettingsScreen();
+                        ScreensManager.m_screens["SettingsPerformance"] = new SettingsPerformanceScreen();
+                        ScreensManager.m_screens["SettingsGraphics"] = new SettingsGraphicsScreen();
+                        ScreensManager.m_screens["SettingsUi"] = new SettingsUiScreen();
+                        ScreensManager.m_screens["SettingsCompatibility"] = new SettingsCompatibilityScreen();
+                        ScreensManager.m_screens["SettingsAudio"] = new SettingsAudioScreen();
+                        ScreensManager.m_screens["SettingsControls"] = new SettingsControlsScreen();
+                        ScreensManager.m_screens["Play"] = new PlayScreen();
+                        ScreensManager.m_screens["NewWorld"] = new NewWorldScreen();
+                        ScreensManager.m_screens["ModifyWorld"] = new ModifyWorldScreen();
+                        ScreensManager.m_screens["WorldOptions"] = new WorldOptionsScreen();
+                        ScreensManager.m_screens["GameLoading"] = new GameLoadingScreen();
+                        ScreensManager.m_screens["Game"] = new GameScreen();
+                        ScreensManager.m_screens["ExternalContent"] = new ExternalContentScreen();
+                        ScreensManager.m_screens["CommunityContent"] = new CommunityContentScreen();
+                        ScreensManager.m_screens["Content"] = new ContentScreen();
+                        ScreensManager.m_screens["ManageContent"] = new ManageContentScreen();
+                        ScreensManager.m_screens["Players"] = new PlayersScreen();
+                        ScreensManager.m_screens["Player"] = new PlayerScreen();
+                        ScreensManager.SwitchScreen("MainMenu");
                     }
                 }));
             }

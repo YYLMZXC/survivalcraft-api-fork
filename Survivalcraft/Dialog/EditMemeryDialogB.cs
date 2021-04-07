@@ -18,12 +18,19 @@ namespace Game
         public bool isclick = true;
         public static string fName = "EditMemeryDialogB";
         public List<ClickTextWidget> list = new List<ClickTextWidget>();
+
+        public byte LastOutput
+        {
+            get;
+            set;
+        }
+
         public EditMemeryDialogB(MemoryBankData memoryBankData, Action onCancel)
         {
             memory = memoryBankData;
             Data.Clear();
             Data.AddRange(memory.Data);
-            CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(600f, float.PositiveInfinity), HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center };
+            CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(600f, 500f), HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center };
             RectangleWidget rectangleWidget = new RectangleWidget() { FillColor = new Color(0, 0, 0, 255), OutlineColor = new Color(128, 128, 128, 128), OutlineThickness = 2 };
             StackPanelWidget stackPanel = new StackPanelWidget() { Direction = LayoutDirection.Vertical };
             LabelWidget labelWidget = new LabelWidget() { Text = LanguageControl.GetContentWidgets(fName, 0), HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0, 10) };
@@ -97,11 +104,7 @@ namespace Game
         {
             return SaveString(saveLastOutput: true);
         }
-        public byte LastOutput
-        {
-            get;
-            set;
-        }
+
         public string SaveString(bool saveLastOutput)
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -118,6 +121,7 @@ namespace Game
             }
             return stringBuilder.ToString();
         }
+
         public Widget initData()
         {
             StackPanelWidget stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10, 0) };
@@ -164,15 +168,17 @@ namespace Game
 
         public Widget makeFuncButton(string txt, Action func)
         {
-            ClickTextWidget clickText = new ClickTextWidget(new Vector2(50, 40), txt, func, true);
-            clickText.Margin = new Vector2(5, 2);
-            clickText.labelWidget.FontScale = 1f;
-            clickText.labelWidget.Color = Color.Black;
+            ClickTextWidget clickText = new ClickTextWidget(new Vector2(40), txt, func, true);
+            clickText.BorderColor = Color.White;
+            clickText.Margin = new Vector2(2);
+            clickText.labelWidget.FontScale = txt.Length > 1 ? 0.7f : 1f;
+            clickText.labelWidget.Color = Color.White;
             return clickText;
         }
+
         public Widget initButton()
         {
-            StackPanelWidget stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical };
+            StackPanelWidget stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10, 10) };
             for (int i = 0; i < 6; i++)
             {
                 StackPanelWidget stackPanelWidget = new StackPanelWidget() { Direction = LayoutDirection.Horizontal };
@@ -305,6 +311,7 @@ namespace Game
             }));
             return stack;
         }
+
         public Widget makeTextBox(Action<TextBoxWidget> ac, string text = "")
         {
             CanvasWidget canvasWidget = new CanvasWidget() { HorizontalAlignment = WidgetAlignment.Center };
@@ -319,41 +326,39 @@ namespace Game
             canvasWidget.Children.Add(stack);
             return canvasWidget;
         }
+
         public Widget makeButton(string txt, Action tas)
         {
             ClickTextWidget clickTextWidget = new ClickTextWidget(new Vector2(120, 30), txt, tas);
-            clickTextWidget.rectangleWidget.OutlineColor = Color.White;
-            clickTextWidget.BackGround = Color.Gray;
-            clickTextWidget.rectangleWidget.OutlineThickness = 2;
+            clickTextWidget.BorderColor = Color.White;
             clickTextWidget.Margin = new Vector2(0, 3);
             clickTextWidget.labelWidget.FontScale = 0.7f;
             clickTextWidget.labelWidget.Color = Color.Green;
             return clickTextWidget;
         }
+
         public override void Update()
         {
-            int i = 0;
+            if (Input.Back || Input.Cancel) {
+                DialogsManager.HideDialog(this);            
+            }
             if (isSetPos)
             {
-                list[clickpos].rectangleWidget.OutlineColor = Color.Red;//设定选择颜色
-                list[clickpos].rectangleWidget.OutlineThickness = 1;
+                list[clickpos].BorderColor = Color.Red;//设定选择颜色
                 return;
             }
             if (!isclick) return;
-            foreach (ClickTextWidget clickText in list)
-            {
+            for (int i=0;i<list.Count;i++) {
                 if (i == clickpos)
                 {
-                    list[i].rectangleWidget.OutlineColor = Color.Yellow;//设定选择颜色
-                    list[i].rectangleWidget.OutlineThickness = 1;
+                    list[i].BorderColor = Color.Yellow;//设定选择颜色
                 }
                 else
                 {
-                    list[i].rectangleWidget.OutlineColor = Color.Transparent;//设定选择颜色
+                    list[i].BorderColor = Color.Transparent;//设定选择颜色
                 }
                 list[i].labelWidget.Text = string.Format("{0}", MemoryBankData.m_hexChars[Read(i)]);
-                list[i].IsDrawRequired = false;
-                ++i;
+
             }
             isclick = false;
         }

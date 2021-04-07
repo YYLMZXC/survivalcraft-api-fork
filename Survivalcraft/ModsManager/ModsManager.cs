@@ -20,9 +20,70 @@ public static class ModsManager
 
     public static Func<XElement, IEnumerable<FileEntry>, string, string, string, XElement> CombineXml1;
 
+#if desktop
     public static string ModsPath = "app:/Mods";
+#endif
+#if android
+    public static string baseDir = EngineActivity.basePath;
+    public static string screenCapturePath = Storage.CombinePaths(baseDir , "ScreenCapture");
+    public static string ModsPath = baseDir + "/Mods";
+#endif
+#if desktop
+    public static string userDataPath = "app:/UserId.dat";
+#endif
+#if android
+    public static string userDataPath => "config:/UserId.dat";
+#endif
 
+#if desktop
+    public static string FurniturePacksDirectoryName => "app:/FurniturePacks";
+#endif
+#if android
+    public static string FurniturePacksDirectoryName => "config:/FurniturePacks";
+#endif
+#if desktop
+    public static string CharacterSkinsDirectoryName => "app:/CharacterSkins";
+#endif
+#if android
+    public static string CharacterSkinsDirectoryName => "config:/CharacterSkins";
+#endif
+#if desktop
+    public static string BlockTexturesDirectoryName => "app:/TexturePacks";
+#endif
+#if android
+    public static string BlockTexturesDirectoryName => "config:/TexturePacks";
+#endif
+
+#if desktop
+    public static string WorldsDirectoryName = "app:/Worlds";
+#endif
+#if android
+    public static string WorldsDirectoryName = "config:/Worlds";
+#endif
+#if desktop
+    public static string communityContentCachePath = "app:CommunityContentCache.xml";
+#endif
+#if android
+    public static string communityContentCachePath = "config:/CommunityContentCache.xml";
+#endif
+#if desktop
     public static string ModsSetPath = "app:/ModSettings.xml";
+#endif
+#if android
+    public static string ModsSetPath = "config:/ModSettings.xml";
+#endif
+#if desktop
+    public static string settingPath = "app:/Settings.xml";
+#endif
+#if android
+    public static string settingPath = "config:/Settings.xml";
+#endif
+#if desktop
+    public static string logPath = "app:/Logs";
+#endif
+#if android
+    public static string logPath = "config:/Logs";
+#endif
 
     public static string path;//移动端mods数据文件夹
 
@@ -61,7 +122,7 @@ public static class ModsManager
         XElement la = XmlUtils.AddElement(xElement, "Set");
         la.SetAttributeValue("Name", "Language");
         la.SetAttributeValue("Value", (int)modSettings.languageType);
-        using (Stream stream = Storage.OpenFile("app:/ModSettings.xml", OpenFileMode.Create))
+        using (Stream stream = Storage.OpenFile(settingPath, OpenFileMode.Create))
         {
             XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);
         }

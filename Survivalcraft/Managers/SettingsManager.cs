@@ -344,13 +344,8 @@ namespace Game
 
         public static bool EnableAndroidAudioTrackCaching
         {
-            get
-            {
-                return true;
-            }
-            set
-            {
-            }
+            get;
+            set;
         }
 
         public static bool UseReducedZRange
@@ -452,6 +447,12 @@ namespace Game
             BlocksTextureFileName = string.Empty;
             LookControlMode = LookControlMode.EntireScreen;
             FlipVerticalAxis = false;
+#if android
+            EnableAndroidAudioTrackCaching = true;
+#endif
+#if desktop
+            EnableAndroidAudioTrackCaching = false;
+#endif
             MoveSensitivity = 0.5f;
             LookSensitivity = 0.5f;
             GamepadDeadZone = 0.16f;
@@ -509,9 +510,9 @@ namespace Game
         {
             try
             {
-                if (Storage.FileExists("app:/Settings.xml"))
+                if (Storage.FileExists(ModsManager.settingPath))
                 {
-                    using (Stream stream = Storage.OpenFile("app:/Settings.xml", OpenFileMode.Read))
+                    using (Stream stream = Storage.OpenFile(ModsManager.settingPath, OpenFileMode.Read))
                     {
                         foreach (XElement item in XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true).Elements())
                         {
@@ -573,7 +574,7 @@ namespace Game
                         }));
                     }
                 }
-                using (Stream stream = Storage.OpenFile("app:/Settings.xml", OpenFileMode.Create))
+                using (Stream stream = Storage.OpenFile(ModsManager.settingPath, OpenFileMode.Create))
                 {
                     XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);
                 }

@@ -563,7 +563,7 @@ namespace Game
 
         public void DisplayError()
         {
-            DialogsManager.ShowDialog(null, new MessageDialog("Error", "Too many different furniture designs", "确定", null, null));
+            DialogsManager.ShowDialog(null, new MessageDialog("Error", "Too many different furniture designs", LanguageControl.Get("Usual","ok"), null, null));
         }
 
         public static int GetRotation(int data)
@@ -578,14 +578,14 @@ namespace Game
 
         public static int GetDesignIndex(int data)
         {
-            return (data >> 2) & 0x3FF;
+            return (data >> 2) & -536866817;
         }
 
         public static int SetDesignIndex(int data, int designIndex, int shadowStrengthFactor, bool isLightEmitter)
         {
-            data = ((data & -4093) | ((designIndex & 0x3FF) << 2));
-            data = ((data & -12289) | ((shadowStrengthFactor & 3) << 12));
-            data = ((data & -16385) | ((isLightEmitter ? 1 : 0) << 14));
+            data = ((data & 3) | ((designIndex & 32764) << 2));//设置旋转，和方块索引
+            data = ((data & 163839) | ((shadowStrengthFactor & 3) << 14));//设置光强
+            data = ((data & 131071) | ((isLightEmitter ? 1 : 0) << 15));//设置是否发光
             return data;
         }
 
@@ -597,12 +597,12 @@ namespace Game
 
         public static int GetShadowStrengthFactor(int data)
         {
-            return (data >> 12) & 3;
+            return (data >> 29) & 3;
         }
 
         public static bool GetIsLightEmitter(int data)
         {
-            return ((data >> 14) & 1) != 0;
+            return ((data >> 31) & 1) != 0;
         }
     }
 }

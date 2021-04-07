@@ -36,6 +36,7 @@ namespace Game
 
         public static void MigrateDataFromIsolatedStorageWithDialog()
         {
+#if desktop
             try
             {
                 if (Storage.DirectoryExists("app:/.config/.isolated-storage"))
@@ -75,6 +76,7 @@ namespace Game
                 Log.Error("Failed to migrate data. Reason: {0}", ex.Message);
                 AnalyticsManager.LogError("Migration to 1.27 failed", ex);
             }
+#endif
         }
 
         public void ConvertTypesToEngine(XElement node)

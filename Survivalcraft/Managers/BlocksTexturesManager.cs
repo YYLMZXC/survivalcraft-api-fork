@@ -19,7 +19,7 @@ namespace Game
 
         public static ReadOnlyList<string> BlockTexturesNames => new ReadOnlyList<string>(m_blockTextureNames);
 
-        public static string BlockTexturesDirectoryName => "app:/TexturePacks";
+        public static string BlockTexturesDirectoryName => ModsManager.BlockTexturesDirectoryName;
 
         public static event Action<string> BlocksTextureDeleted;
 

@@ -1,4 +1,5 @@
 ﻿using Engine;
+using Engine.Graphics;
 using System;
 
 namespace Game
@@ -6,43 +7,51 @@ namespace Game
     public class ClickTextWidget : CanvasWidget
     {
         public LabelWidget labelWidget;
-        public ClickableWidget clickidget;
         public Action click;
         public RectangleWidget rectangleWidget;
-        public Color BackGround = Color.Transparent;
         public Color pressColor = Color.Red;
+        public Color BorderColor = Color.Transparent;
         public ClickTextWidget(Vector2 vector2, string text, Action click, bool box = false)
         {
             Size = vector2;
             HorizontalAlignment = WidgetAlignment.Center;
             VerticalAlignment = WidgetAlignment.Center;
             labelWidget = new LabelWidget() { Text = text, FontScale = 0.8f, HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center };
-            if (click == null)
+            Children.Add(labelWidget);
+            IsDrawEnabled = true;
+            IsDrawRequired = true;
+            IsUpdateEnabled = true;
+            this.click = click;
+        }
+        public override void Draw(DrawContext dc)
+        {
+            Matrix m = base.GlobalTransform;
+            Vector2 v = Vector2.Zero;
+            Vector2 v2 = new Vector2(base.ActualSize.X, 0f);
+            Vector2 v3 = base.ActualSize;
+            Vector2 v4 = new Vector2(0f, base.ActualSize.Y);
+            Vector2.Transform(ref v, ref m, out Vector2 result);
+            Vector2.Transform(ref v2, ref m, out Vector2 result2);
+            Vector2.Transform(ref v3, ref m, out Vector2 result3);
+            Vector2.Transform(ref v4, ref m, out Vector2 result4);
+            FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(1,DepthStencilState.DepthWrite);
+            Vector2 vector = Vector2.Normalize(base.GlobalTransform.Right.XY);
+            Vector2 v5 = -Vector2.Normalize(base.GlobalTransform.Up.XY);
+            for (int i = 0; i < 1; i++)
             {
-                Children.Add(labelWidget);
-            }
-            else
-            {
-                clickidget = new ClickableWidget();
-                rectangleWidget = new RectangleWidget() { OutlineThickness = 0 };
-                if (box)
-                {
-                    BackGround = Color.Gray;
-                    rectangleWidget.FillColor = BackGround;
-                    rectangleWidget.OutlineColor = Color.Transparent;
-                    rectangleWidget.OutlineThickness = 1;
-                }
-                Children.Add(rectangleWidget);
-                Children.Add(clickidget);
-                Children.Add(labelWidget);
-                this.click = click;
+                flatBatch2D.QueueLine(result, result2, 1f, BorderColor);
+                flatBatch2D.QueueLine(result2, result3, 1f, BorderColor);
+                flatBatch2D.QueueLine(result3, result4, 1f, BorderColor);
+                flatBatch2D.QueueLine(result4, result, 1f, BorderColor);
+                result += vector - v5;
+                result2 += -vector - v5;
+                result3 += -vector + v5;
+                result4 += vector + v5;
             }
         }
         public override void Update()
         {
-            if (clickidget == null) return;
-            if (clickidget.IsClicked)
-            {
+            if(Input.Click.HasValue && HitTest(Input.Click.Value.Start) && HitTest(Input.Click.Value.End)) {
                 click?.Invoke();
             }
         }
