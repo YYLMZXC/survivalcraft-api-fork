@@ -74,6 +74,9 @@
     <Compile Include="..\Engine\Engine.Graphics\VertexBuffer.cs">
       <Link>Engine.Graphics\VertexBuffer.cs</Link>
     </Compile>
+    <Compile Include="..\Engine\Engine.Input\KeyboardInput.cs">
+      <Link>Engine.Input\KeyboardInput.cs</Link>
+    </Compile>
     <Compile Include="Engine.Audio\AudioTrackCache.cs" />
     <Compile Include="Engine.Audio\BaseSound.cs" />
     <Compile Include="Engine.Audio\Mixer.cs" />

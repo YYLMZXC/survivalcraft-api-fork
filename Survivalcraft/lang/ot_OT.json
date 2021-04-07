@@ -1,6 +1,6 @@
 ﻿{
 	"Language": {
-		"Name": "English"
+		"Name": "Other"
 	},
 	"DiskExternalContentProvider": {
 		"DisplayName": "disk",
@@ -335,7 +335,7 @@
 		"length unit": "meters\n",
 		"speed unit": "km/h\n",
 		"weight unit": "kg\n",
-		"weight": "weight\n",
+		"weight": "weight:\n",
 		"range": "{0} to {1}"
 	},
 	"CommunityContentScreen": {
@@ -475,31 +475,31 @@
 		"11": "The game may crash randomly if your device does not have enough memory to handle the visibility range you selected."
 	},
 	"RecipaediaDescriptionScreen": {
-		"1": "Luminosity",
-		"2": "Fuel Value",
-		"3": "Is Stackable",
-		"4": "Yes (up to {0})",
-		"5": "Is Flammable",
-		"6": "Nutrition",
-		"7": "Max Storage Time",
-		"8": "Digging Method",
-		"9": "Digging Resilience",
-		"10": "Explosion Resilience",
-		"11": "Explosive Power",
-		"12": "Melee Power",
-		"13": "Melee Hit Ratio",
-		"14": "Projectile Power",
-		"15": "Shoveling",
-		"16": "Hacking",
-		"17": "Quarrying",
-		"18": "Durability",
-		"19": "Experience Orbs",
-		"20": "Can Be Dyed",
-		"21": "Armor Protection",
-		"22": "Armor Durability",
-		"23": "Insulation",
-		"24": "Movement Speed",
-		"25": "{0} days"
+		"Luminosity": "Luminosity",
+		"Fuel Value": "Fuel Value",
+		"Is Stackable": "Is Stackable",
+		"Is Flammable": "Is Flammable",
+		"Nutrition": "Nutrition",
+		"Max Storage Time": "Max Storage Time",
+		"Digging Method": "Digging Method",
+		"Digging Resilience": "Digging Resilience",
+		"Explosion Resilience": "Explosion Resilience",
+		"Explosive Power": "Explosive Power",
+		"Melee Power": "Melee Power",
+		"Melee Hit Ratio": "Melee Hit Ratio",
+		"Projectile Power": "Projectile Power",
+		"Shoveling": "Shoveling",
+		"Hacking": "Hacking",
+		"Quarrying": "Quarrying",
+		"Durability": "Durability",
+		"Experience Orbs": "Experience Orbs",
+		"Can Be Dyed": "Can Be Dyed",
+		"Armor Protection": "Armor Protection",
+		"Armor Durability": "Armor Durability",
+		"Insulation": "Insulation",
+		"Movement Speed": "Movement Speed",
+		"1": "Yes (up to {0})",
+		"2": "{0} days"
 	},
 	"ComponentVitalStats": {
 		"1": "You feel too sick to eat this",
@@ -689,6 +689,7 @@
 		"unknown": "Unknown",
 		"yes": "Yes",
 		"no": "No",
+		"exist": "exist",
 		"none": "None",
 		"nothing": "Nothing",
 		"ok": "Ok",

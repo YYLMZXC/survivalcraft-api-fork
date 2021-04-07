@@ -111,9 +111,9 @@ namespace Game
                 m_propertyNames2Widget.Text += LanguageControl.Get(fName, "weight");
                 LabelWidget propertyValues2Widget3 = m_propertyValues2Widget;
                 propertyValues2Widget3.Text = propertyValues2Widget3.Text + bestiaryCreatureInfo.Mass.ToString() + LanguageControl.Get(fName, "weight unit");
-                m_propertyNames2Widget.Text += LanguageControl.Get("BlocksManager", "Spawner Eggs");
+                m_propertyNames2Widget.Text += LanguageControl.Get("BlocksManager", "Spawner Eggs")+":";
                 LabelWidget propertyValues2Widget4 = m_propertyValues2Widget;
-                propertyValues2Widget4.Text = propertyValues2Widget4.Text + (bestiaryCreatureInfo.HasSpawnerEgg ? LanguageControl.Get("Usual", "yes") : LanguageControl.Get("Usual", "no")) + "\n";
+                propertyValues2Widget4.Text = propertyValues2Widget4.Text + (bestiaryCreatureInfo.HasSpawnerEgg ? LanguageControl.Get("Usual", "exist") : LanguageControl.Get("Usual", "none")) + "\n";
                 m_propertyNames2Widget.Text = m_propertyNames2Widget.Text.TrimEnd();
                 m_propertyValues2Widget.Text = m_propertyValues2Widget.Text.TrimEnd();
                 m_dropsPanel.Children.Clear();

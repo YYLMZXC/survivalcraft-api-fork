@@ -78,82 +78,82 @@ namespace Game
             Block block = BlocksManager.Blocks[num];
             if (block.DefaultEmittedLightAmount > 0)
             {
-                dictionary.Add(LanguageControl.Get(fName, 1), block.DefaultEmittedLightAmount.ToString());
+                dictionary.Add("Luminosity", block.DefaultEmittedLightAmount.ToString());
             }
             if (block.FuelFireDuration > 0f)
             {
-                dictionary.Add(LanguageControl.Get(fName, 2), block.FuelFireDuration.ToString());
+                dictionary.Add("Fuel Value", block.FuelFireDuration.ToString());
             }
-            dictionary.Add(LanguageControl.Get(fName, 3), (block.MaxStacking > 1) ? string.Format(LanguageControl.Get(fName, 4), block.MaxStacking.ToString()) : LanguageControl.Get("Usual", "no"));
-            dictionary.Add(LanguageControl.Get(fName, 5), (block.FireDuration > 0f) ? LanguageControl.Get("Usual", "yes") : LanguageControl.Get("Usual", "no"));
+            dictionary.Add("Is Stackable", (block.MaxStacking > 1) ? string.Format(LanguageControl.Get(fName, 1), block.MaxStacking.ToString()) : LanguageControl.Get("Usual", "no"));
+            dictionary.Add("Is Flammable", (block.FireDuration > 0f) ? LanguageControl.Get("Usual", "yes") : LanguageControl.Get("Usual", "no"));
             if (block.GetNutritionalValue(value) > 0f)
             {
-                dictionary.Add(LanguageControl.Get(fName, 6), block.GetNutritionalValue(value).ToString());
+                dictionary.Add("Nutrition", block.GetNutritionalValue(value).ToString());
             }
             if (block.GetRotPeriod(value) > 0)
             {
-                dictionary.Add(LanguageControl.Get(fName, 7), string.Format(LanguageControl.Get(fName, 25), $"{(2 * block.GetRotPeriod(value) * 60f / 1200f):0.0}"));
+                dictionary.Add("Max Storage Time", string.Format(LanguageControl.Get(fName, 2), $"{(2 * block.GetRotPeriod(value) * 60f / 1200f):0.0}"));
             }
             if (block.DigMethod != 0)
             {
-                dictionary.Add(LanguageControl.Get(fName, 8), LanguageControl.Get("DigMethod", block.DigMethod.ToString()));
-                dictionary.Add(LanguageControl.Get(fName, 9), block.DigResilience.ToString());
+                dictionary.Add("Digging Method", LanguageControl.Get("DigMethod", block.DigMethod.ToString()));
+                dictionary.Add("Digging Resilience", block.DigResilience.ToString());
             }
             if (block.ExplosionResilience > 0f)
             {
-                dictionary.Add(LanguageControl.Get(fName, 10), block.ExplosionResilience.ToString());
+                dictionary.Add("Explosion Resilience", block.ExplosionResilience.ToString());
             }
             if (block.GetExplosionPressure(value) > 0f)
             {
-                dictionary.Add(LanguageControl.Get(fName, 11), block.GetExplosionPressure(value).ToString());
+                dictionary.Add("Explosive Power", block.GetExplosionPressure(value).ToString());
             }
             bool flag = false;
             if (block.GetMeleePower(value) > 1f)
             {
-                dictionary.Add(LanguageControl.Get(fName, 12), block.GetMeleePower(value).ToString());
+                dictionary.Add("Melee Power", block.GetMeleePower(value).ToString());
                 flag = true;
             }
             if (block.GetMeleePower(value) > 1f)
             {
-                dictionary.Add(LanguageControl.Get(fName, 13), $"{100f * block.GetMeleeHitProbability(value):0}%");
+                dictionary.Add("Melee Hit Ratio", $"{100f * block.GetMeleeHitProbability(value):0}%");
                 flag = true;
             }
             if (block.GetProjectilePower(value) > 1f)
             {
-                dictionary.Add(LanguageControl.Get(fName, 14), block.GetProjectilePower(value).ToString());
+                dictionary.Add("Projectile Power", block.GetProjectilePower(value).ToString());
                 flag = true;
             }
             if (block.ShovelPower > 1f)
             {
-                dictionary.Add(LanguageControl.Get(fName, 15), block.ShovelPower.ToString());
+                dictionary.Add("Shoveling", block.ShovelPower.ToString());
                 flag = true;
             }
             if (block.HackPower > 1f)
             {
-                dictionary.Add(LanguageControl.Get(fName, 16), block.HackPower.ToString());
+                dictionary.Add("Hacking", block.HackPower.ToString());
                 flag = true;
             }
             if (block.QuarryPower > 1f)
             {
-                dictionary.Add(LanguageControl.Get(fName, 17), block.QuarryPower.ToString());
+                dictionary.Add("Quarrying", block.QuarryPower.ToString());
                 flag = true;
             }
             if (flag && block.Durability > 0)
             {
-                dictionary.Add(LanguageControl.Get(fName, 18), block.Durability.ToString());
+                dictionary.Add("Durability", block.Durability.ToString());
             }
             if (block.DefaultExperienceCount > 0f)
             {
-                dictionary.Add(LanguageControl.Get(fName, 19), block.DefaultExperienceCount.ToString());
+                dictionary.Add("Experience Orbs", block.DefaultExperienceCount.ToString());
             }
             if (block is ClothingBlock)
             {
                 ClothingData clothingData = ClothingBlock.GetClothingData(Terrain.ExtractData(value));
-                dictionary.Add(LanguageControl.Get(fName, 20), clothingData.CanBeDyed ? LanguageControl.Get("Usual", "yes") : LanguageControl.Get("Usual", "no"));
-                dictionary.Add(LanguageControl.Get(fName, 21), $"{(int)(clothingData.ArmorProtection * 100f)}%");
-                dictionary.Add(LanguageControl.Get(fName, 22), clothingData.Sturdiness.ToString());
-                dictionary.Add(LanguageControl.Get(fName, 23), $"{clothingData.Insulation:0.0} clo");
-                dictionary.Add(LanguageControl.Get(fName, 24), $"{clothingData.MovementSpeedFactor * 100f:0}%");
+                dictionary.Add("Can Be Dyed", clothingData.CanBeDyed ? LanguageControl.Get("Usual", "yes") : LanguageControl.Get("Usual", "no"));
+                dictionary.Add("Armor Protection", $"{(int)(clothingData.ArmorProtection * 100f)}%");
+                dictionary.Add("Armor Durability", clothingData.Sturdiness.ToString());
+                dictionary.Add("Insulation", $"{clothingData.Insulation:0.0} clo");
+                dictionary.Add("Movement Speed", $"{clothingData.MovementSpeedFactor * 100f:0}%");
             }
             return dictionary;
         }
@@ -179,14 +179,14 @@ namespace Game
                     if (num2 < blockProperties.Count - blockProperties.Count / 2)
                     {
                         LabelWidget propertyNames1Widget = m_propertyNames1Widget;
-                        propertyNames1Widget.Text = propertyNames1Widget.Text + item.Key + ":\n";
+                        propertyNames1Widget.Text = propertyNames1Widget.Text +LanguageControl.Get(fName, item.Key) + ":\n";
                         LabelWidget propertyValues1Widget = m_propertyValues1Widget;
                         propertyValues1Widget.Text = propertyValues1Widget.Text + item.Value + "\n";
                     }
                     else
                     {
                         LabelWidget propertyNames2Widget = m_propertyNames2Widget;
-                        propertyNames2Widget.Text = propertyNames2Widget.Text + item.Key + ":\n";
+                        propertyNames2Widget.Text = propertyNames2Widget.Text + LanguageControl.Get(fName, item.Key) + ":\n";
                         LabelWidget propertyValues2Widget = m_propertyValues2Widget;
                         propertyValues2Widget.Text = propertyValues2Widget.Text + item.Value + "\n";
                     }
