@@ -242,12 +242,6 @@ public static class ModsManager
                 cnt++;
             }
         }
-        foreach (FileEntry fileEntry in GetEntries(".txt")) {
-            StreamReader streamReader = new StreamReader(fileEntry.Stream);
-            streamReader.Dispose();
-        }
-        Log.Information("mods manager initialize success");
-        Log.Information($"loaded {cnt} dlls");
     }
     public static void GetAllFiles(string path)
     {//获取zip包列表，变成ZipArchive
@@ -282,9 +276,12 @@ public static class ModsManager
         {
             if (Storage.GetExtension(fileEntry1.Filename) == ext)
             {
-                MemoryStream memoryStream = new MemoryStream();
-                fileEntry1.Stream.CopyTo(memoryStream);
-                FileEntry fileEntry = new FileEntry() { storageType=FileEntry.StorageType.InStorage,Stream=memoryStream,Filename=fileEntry1.Filename};
+                FileEntry fileEntry = new FileEntry() { storageType=FileEntry.StorageType.InStorage, Filename=fileEntry1.Filename};
+                byte[] tmp = new byte[fileEntry1.Stream.Length];
+                fileEntry1.Stream.Position = 0L;
+                fileEntry1.Stream.Read(tmp, 0, (int)fileEntry1.Stream.Length);
+                MemoryStream memoryStream = new MemoryStream(tmp);
+                fileEntry.Stream = memoryStream;
                 fileEntries.Add(fileEntry);
             }
         }
