@@ -449,8 +449,10 @@ namespace Game
             FlipVerticalAxis = false;
 #if android
             EnableAndroidAudioTrackCaching = true;
+            GuiSize = GuiSize.Normal;
 #endif
 #if desktop
+            GuiSize = GuiSize.Smallest;
             EnableAndroidAudioTrackCaching = false;
 #endif
             MoveSensitivity = 0.5f;
@@ -479,7 +481,7 @@ namespace Game
             ScreenLayout2 = (((float)Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.DoubleVertical : ScreenLayout.DoubleHorizontal);
             ScreenLayout3 = (((float)Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.TripleVertical : ScreenLayout.TripleHorizontal);
             ScreenLayout4 = ScreenLayout.Quadruple;
-            GuiSize = GuiSize.Smallest;
+            
             HorizontalCreativeFlight = true;
             TerrainMipmapsEnabled = true;
             LoadSettings();
