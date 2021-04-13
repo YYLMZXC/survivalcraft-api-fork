@@ -74,14 +74,14 @@ namespace Game
             AddStat(stackPanelWidget, LanguageControl.Get(fName, 12), WorldOptionsScreen.FormatOffset(subsystemGameInfo.WorldSettings.HumidityOffset));
             AddStat(stackPanelWidget, LanguageControl.Get(fName, 13), subsystemGameInfo.WorldSettings.BiomeSize.ToString() + "x");
             int num = 0;
-            for (int i = 0; i < ComponentFurnitureInventory.maxDesign; i++)
+            for (int i = 0; i < FurnitureDesign.maxDesign; i++)
             {
                 if (subsystemFurnitureBlockBehavior.GetDesign(i) != null)
                 {
                     num++;
                 }
             }
-            AddStat(stackPanelWidget, LanguageControl.Get(fName, 14), $"{num}/{ComponentFurnitureInventory.maxDesign}");
+            AddStat(stackPanelWidget, LanguageControl.Get(fName, 14), $"{num}/{FurnitureDesign.maxDesign}");
             AddStat(stackPanelWidget, LanguageControl.Get(fName, 15), string.IsNullOrEmpty(subsystemGameInfo.WorldSettings.OriginalSerializationVersion) ? LanguageControl.Get(fName, 16) : subsystemGameInfo.WorldSettings.OriginalSerializationVersion);
             stackPanelWidget.Children.Add(new LabelWidget
             {

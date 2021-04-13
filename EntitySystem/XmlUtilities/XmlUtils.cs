@@ -31,7 +31,7 @@ namespace XmlUtilities
 				}
 				catch (Exception)
 				{
-					return defaultValue;
+					//return defaultValue;
 				}
 			}
 			return defaultValue;

@@ -27,7 +27,7 @@ namespace Game
 
         public List<FurnitureSet> m_furnitureSets = new List<FurnitureSet>();
 
-        public FurnitureDesign[] m_furnitureDesigns = new FurnitureDesign[ComponentFurnitureInventory.maxDesign];
+        public FurnitureDesign[] m_furnitureDesigns = new FurnitureDesign[FurnitureDesign.maxDesign];
 
         public Dictionary<Point3, List<FireParticleSystem>> m_particleSystemsByCell = new Dictionary<Point3, List<FireParticleSystem>>();
 
@@ -197,7 +197,7 @@ namespace Game
                         {
                             point2.Z = key.Z;
                         }
-                        if (MathUtils.Abs(point.X - point2.X) >= 16 || MathUtils.Abs(point.Y - point2.Y) >= 16 || MathUtils.Abs(point.Z - point2.Z) >= 16)
+                        if (MathUtils.Abs(point.X - point2.X) >= FurnitureDesign.MaxResolution || MathUtils.Abs(point.Y - point2.Y) >= FurnitureDesign.MaxResolution || MathUtils.Abs(point.Z - point2.Z) >= FurnitureDesign.MaxResolution)
                         {
                             componentMiner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 2), Color.White, blinking: true, playNotificationSound: false);
                             return;

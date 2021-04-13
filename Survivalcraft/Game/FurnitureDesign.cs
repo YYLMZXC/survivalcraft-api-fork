@@ -25,7 +25,9 @@ namespace Game
 
         public const int MinResolution = 2;
 
-        public const int MaxResolution = 16;
+        public const int maxDesign = 8192;//家具上限数量
+
+        public const int MaxResolution = 128;//家具大小128x128
 
         public const int MaxTriangles = 300;
 
@@ -300,7 +302,7 @@ namespace Game
 
         public void SetValues(int resolution, int[] values)
         {
-            if (resolution < 2 || resolution > 16)
+            if (resolution < 2 || resolution > MaxResolution)
             {
                 throw new ArgumentException(LanguageControl.Get(fName, 3));
             }
@@ -406,7 +408,7 @@ namespace Game
 
         public void Resize(int resolution)
         {
-            if (resolution < 2 || resolution > 16)
+            if (resolution < 2 || resolution > MaxResolution)
             {
                 throw new ArgumentException(LanguageControl.Get(fName, 3));
             }
@@ -889,15 +891,15 @@ namespace Game
                                 {
                                     blockMesh3 = blockMesh2;
                                 }
-                                int num15 = num14 % 16;
-                                int num16 = num14 / 16;
+                                int num15 = num14 % MaxResolution;
+                                int num16 = num14 / MaxResolution;
                                 int count = blockMesh3.Vertices.Count;
                                 blockMesh3.Vertices.Count += 4;
                                 BlockMeshVertex[] array2 = blockMesh3.Vertices.Array;
-                                float x5 = (((float)n + 0.01f) / (float)m_resolution + (float)num15) / 16f;
-                                float x6 = (((float)(n + point6.X) - 0.01f) / (float)m_resolution + (float)num15) / 16f;
+                                float x5 = (((float)n + 0.01f) / (float)m_resolution + (float)num15) / (float)MaxResolution;
+                                float x6 = (((float)(n + point6.X) - 0.01f) / (float)m_resolution + (float)num15) / (float)MaxResolution;
                                 float y5 = (((float)m + 0.01f) / (float)m_resolution + (float)num16) / 16f;
-                                float y6 = (((float)(m + point6.Y) - 0.01f) / (float)m_resolution + (float)num16) / 16f;
+                                float y6 = (((float)(m + point6.Y) - 0.01f) / (float)m_resolution + (float)num16) / (float)MaxResolution;
                                 BlockMeshVertex blockMeshVertex = array2[count] = new BlockMeshVertex
                                 {
                                     Position = new Vector3(x, y, z) / m_resolution,
