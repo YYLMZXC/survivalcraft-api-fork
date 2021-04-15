@@ -585,7 +585,7 @@ namespace Game
         {
             data = ((data & 3) | ((designIndex & 8191) << 2));//设置旋转，和方块索引
             data = ((data & 163839) | ((shadowStrengthFactor & 3) << 15));//设置光强
-            data = ((data & 131071) | ((isLightEmitter ? 1 : 0) << 16));//设置是否发光
+            data = ((data & 131071) | ((isLightEmitter ? 1 : 0) << 17));//设置是否发光
             return data;
         }
 
