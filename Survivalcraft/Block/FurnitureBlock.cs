@@ -221,7 +221,7 @@ namespace Game
                     return design.GetDefaultName();
                 }
             }
-            return "¼Ò¾ß";
+            return "Furniture";
         }
 
         public override bool IsInteractive(SubsystemTerrain subsystemTerrain, int value)

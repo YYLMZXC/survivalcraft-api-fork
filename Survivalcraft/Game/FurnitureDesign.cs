@@ -891,15 +891,15 @@ namespace Game
                                 {
                                     blockMesh3 = blockMesh2;
                                 }
-                                int num15 = num14 % MaxResolution;
-                                int num16 = num14 / MaxResolution;
+                                int num15 = num14 % 16;
+                                int num16 = num14 / 16;
                                 int count = blockMesh3.Vertices.Count;
                                 blockMesh3.Vertices.Count += 4;
                                 BlockMeshVertex[] array2 = blockMesh3.Vertices.Array;
-                                float x5 = (((float)n + 0.01f) / (float)m_resolution + (float)num15) / (float)MaxResolution;
-                                float x6 = (((float)(n + point6.X) - 0.01f) / (float)m_resolution + (float)num15) / (float)MaxResolution;
+                                float x5 = (((float)n + 0.01f) / (float)m_resolution + (float)num15) / 16f;
+                                float x6 = (((float)(n + point6.X) - 0.01f) / (float)m_resolution + (float)num15) / 16f;
                                 float y5 = (((float)m + 0.01f) / (float)m_resolution + (float)num16) / 16f;
-                                float y6 = (((float)(m + point6.Y) - 0.01f) / (float)m_resolution + (float)num16) / (float)MaxResolution;
+                                float y6 = (((float)(m + point6.Y) - 0.01f) / (float)m_resolution + (float)num16) / 16f;
                                 BlockMeshVertex blockMeshVertex = array2[count] = new BlockMeshVertex
                                 {
                                     Position = new Vector3(x, y, z) / m_resolution,
