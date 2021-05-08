@@ -53,7 +53,8 @@ namespace Game
                     if (value.StartsWith("[") && value.EndsWith("]"))
                     {
                         string[] xp = value.Substring(1, value.Length - 2).Split(new char[] { ':' });
-                        m_text = LanguageControl.GetContentWidgets(xp[0], xp[1]);
+                        if (xp.Length == 2) m_text = LanguageControl.GetContentWidgets(xp[0], xp[1]);
+                        else m_text = LanguageControl.Get("Usual", value);
                     }
                     else
                     {
