@@ -7,6 +7,7 @@ namespace Game
         World,
         BlocksTexture,
         CharacterSkin,
-        FurniturePack
+        FurniturePack,
+        Mod
     }
 }

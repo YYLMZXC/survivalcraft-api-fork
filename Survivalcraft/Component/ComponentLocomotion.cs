@@ -301,6 +301,8 @@ namespace Game
             set;
         }
 
+        public static bool IsCreativeFlyEnabledSet = false;
+
         public bool IsCreativeFlyEnabled
         {
             get;
@@ -483,7 +485,7 @@ namespace Game
             Vector3 vector = Vector3.Transform(m_componentCreature.ComponentBody.Matrix.Forward, Quaternion.CreateFromAxisAngle(right, LookAngles.Y));
             if (WalkSpeed > 0f && WalkOrder.HasValue)
             {
-                if (IsCreativeFlyEnabled)
+                if (IsCreativeFlyEnabled||IsCreativeFlyEnabledSet)
                 {
                     Vector3 v = new Vector3(WalkOrder.Value.X, 0f, WalkOrder.Value.Y);
                     if (FlyOrder.HasValue)

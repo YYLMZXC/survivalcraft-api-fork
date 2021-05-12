@@ -28,11 +28,13 @@ public struct ModInfo : IEquatable<ModInfo>
 
     public string Dependency;
 
+    public string FileName;
+
     public string Dependants;
 
     public bool UseDependencyInfo;
 
-    public ModInfo(string name, string description, uint version, string scversion, string url, string updateUrl, string authorList, string credits, string logo, string screenshots, string parent, string dependency, string dependants = null, bool usedependencyInfo = false)
+    public ModInfo(string name, string description, uint version, string scversion, string url, string updateUrl, string authorList, string credits, string logo, string screenshots, string parent, string dependency=null, string dependants = null, bool usedependencyInfo = false)
     {
         Name = name;
         Description = description;
@@ -48,6 +50,7 @@ public struct ModInfo : IEquatable<ModInfo>
         Dependency = dependency;
         Dependants = dependants;
         UseDependencyInfo = usedependencyInfo;
+        FileName = "";
     }
 
     public override bool Equals(object obj)

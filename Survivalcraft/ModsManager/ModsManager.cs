@@ -56,6 +56,9 @@ public static class ModsManager
         public LanguageControl.LanguageType languageType;
     }
     public static ModSettings modSettings;
+
+    public static List<Assembly> LoadQueque = new List<Assembly>();
+
     public static Dictionary<string, ZipArchive> zip_filelist;
     public static List<FileEntry> quickAddModsFileList = new List<FileEntry>();
     public static XElement CombineXml(XElement node, IEnumerable<FileEntry> files, string attr1 = null, string attr2 = null, string type = null)
@@ -185,7 +188,18 @@ public static class ModsManager
             enumerator4.Current.Remove();
         }
     }
+    public static string ImportMod(string name,Stream stream) {
+        string path = Storage.CombinePaths(ModsPath,name);
+        Stream fileStream = Storage.OpenFile(path,OpenFileMode.CreateOrOpen);
+        stream.CopyTo(fileStream);
+        fileStream.Close();
 
+        return "下载成功,重启游戏生效";
+
+    }
+    public static void DisableMod() {
+    
+    }
     public static void Initialize()
     {
         zip_filelist = new Dictionary<string, ZipArchive>();
@@ -198,7 +212,7 @@ public static class ModsManager
         {
             try
             {
-                LoadMod(Assembly.Load(StreamToBytes(item.Stream)));
+                LoadMod(item.SourceFile, Assembly.Load(StreamToBytes(item.Stream)));
             }
             catch
             {
@@ -214,7 +228,7 @@ public static class ModsManager
             string ms = Storage.GetExtension(item);
             string ks = Storage.CombinePaths(path, item);
             Stream stream = Storage.OpenFile(ks, OpenFileMode.Read);
-            quickAddModsFileList.Add(new FileEntry() { Stream = stream,storageType=FileEntry.StorageType.InStorage,Filename = item });
+            quickAddModsFileList.Add(new FileEntry() { Stream = stream,storageType=FileEntry.StorageType.InStorage,Filename = item,SourceFile=item });
             try
             {
                 if (ms == ".zip" || ms == ".scmod")
@@ -249,16 +263,17 @@ public static class ModsManager
                 fileEntries.Add(fileEntry);
             }
         }
-        foreach (ZipArchive zipArchive in zip_filelist.Values)
+        foreach (var zipArchive in zip_filelist)
         {
-            foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.ReadCentralDir())
+            foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.Value.ReadCentralDir())
             {
                 string fn = zipArchiveEntry.FilenameInZip;
                 if (Storage.GetExtension(fn) == ext)
                 {
                     MemoryStream stream = new MemoryStream();
-                    zipArchive.ExtractFile(zipArchiveEntry, stream);
+                    zipArchive.Value.ExtractFile(zipArchiveEntry, stream);
                     FileEntry fileEntry = new FileEntry();
+                    fileEntry.SourceFile = zipArchive.Key;
                     fileEntry.storageType = FileEntry.StorageType.InZip;
                     fileEntry.Filename = fn;
                     stream.Position = 0L;
@@ -331,7 +346,7 @@ public static class ModsManager
         return stream;
     }
 
-    public static void LoadMod(Assembly asm)
+    public static void LoadMod(string name,Assembly asm)
     {
         if (asm == null) return;
         Type typeFromHandle = typeof(PluginLoaderAttribute);
@@ -341,12 +356,15 @@ public static class ModsManager
             PluginLoaderAttribute pluginLoaderAttribute = (PluginLoaderAttribute)Attribute.GetCustomAttribute(types[i], typeFromHandle);
             if (pluginLoaderAttribute != null)
             {
+                ModInfo modInfo = pluginLoaderAttribute.ModInfo;
+                modInfo.FileName = name;
+
                 MethodInfo method;
                 if ((method = types[i].GetMethod("Initialize", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)) != null)
                 {
                     method.Invoke(Activator.CreateInstance(types[i]), null);
                 }
-                LoadedMods.Add(pluginLoaderAttribute.ModInfo);
+                LoadedMods.Add(modInfo);
                 Log.Information("loaded mod [" + pluginLoaderAttribute.ModInfo.Name + "]");
             }
         }

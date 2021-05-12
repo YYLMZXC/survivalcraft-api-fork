@@ -19,11 +19,8 @@ namespace Game
 
         public static Dictionary<string, bool> m_feedbackCache = new Dictionary<string, bool>();
 
-        public static bool Loaded = false;
-
         public static void Initialize()
         {
-            if (Loaded) return;
             Load();
             WorldsManager.WorldDeleted += delegate (string path)
             {
@@ -45,7 +42,6 @@ namespace Game
             {
                 Save();
             };
-            Loaded = true;
         }
 
         public static string GetDownloadedContentAddress(ExternalContentType type, string name)
@@ -69,6 +65,8 @@ namespace Game
                 return;
             }
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            Dictionary<string, string> Header = new Dictionary<string, string>();
+            Header.Add("Content-Type", "application/x-www-form-urlencoded");
             dictionary.Add("Action", "list");
             dictionary.Add("Cursor", cursor ?? string.Empty);
             dictionary.Add("UserId", userFilter ?? string.Empty);
@@ -77,7 +75,7 @@ namespace Game
             dictionary.Add("SortOrder", sortOrder ?? string.Empty);
             dictionary.Add("Platform", VersionsManager.Platform.ToString());
             dictionary.Add("Version", VersionsManager.Version);
-            WebManager.Post(m_scResDirAddress, null, null, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
+            WebManager.Post(m_scResDirAddress, null, Header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
             {
                 try
                 {

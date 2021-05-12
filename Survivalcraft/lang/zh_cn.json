@@ -58,7 +58,9 @@
 		"World": "世界",
 		"Blocks Texture": "方块材质",
 		"Character Skin": "人物皮肤",
-		"Furniture Pack": "家具包"
+		"Furniture Pack": "家具包",
+		"Mod": "模组"
+
 	},
 	"PlayerWidget": {
 		"1": "{0} 由{1}控制",

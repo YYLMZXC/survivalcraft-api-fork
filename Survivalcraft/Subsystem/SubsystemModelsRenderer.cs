@@ -37,9 +37,11 @@ namespace Game
 
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
 
-        public static ModelShader m_shaderOpaque = new ModelShader(useAlphaThreshold: false, 7);
+        public static int MaxInstancesCount = 7;
 
-        public static ModelShader m_shaderAlphaTested = new ModelShader(useAlphaThreshold: true, 7);
+        public static ModelShader m_shaderOpaque = new ModelShader(useAlphaThreshold: false, MaxInstancesCount);
+
+        public static ModelShader m_shaderAlphaTested = new ModelShader(useAlphaThreshold: true, MaxInstancesCount);
 
         public Dictionary<ComponentModel, ModelData> m_componentModels = new Dictionary<ComponentModel, ModelData>();
 

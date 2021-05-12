@@ -578,14 +578,19 @@ namespace Game
 
         public static int GetDesignIndex(int data)
         {
-            return (data >> 2) & 8191;
+            return ((data >> 15) << 10) | ((data >> 2) & 1023);
         }
 
         public static int SetDesignIndex(int data, int designIndex, int shadowStrengthFactor, bool isLightEmitter)
         {
-            data = ((data & 3) | ((designIndex & 8191) << 2));//设置旋转，和方块索引
-            data = ((data & 163839) | ((shadowStrengthFactor & 3) << 15));//设置光强
-            data = ((data & 131071) | ((isLightEmitter ? 1 : 0) << 17));//设置是否发光
+            int IndexI3 = designIndex >> 10;
+            int IndexI10 = designIndex & 1023;
+
+            data = ((data & 3) | ((IndexI10 & 1023) << 2));//设置旋转，和方块索引前10位
+            data = ((data & 4095) | ((shadowStrengthFactor & 3) << 12));//设置光强
+            data = ((data & 16383) | ((isLightEmitter ? 1 : 0) << 14));//设置是否发光
+            data = ((data & 32767) | IndexI3 << 15);//设置索引后3位
+
             return data;
         }
 
@@ -597,12 +602,12 @@ namespace Game
 
         public static int GetShadowStrengthFactor(int data)
         {
-            return (data >> 29) & 3;
+            return (data >> 12) & 3;
         }
 
         public static bool GetIsLightEmitter(int data)
         {
-            return ((data >> 31) & 1) != 0;
+            return ((data >> 14) & 1) != 0;
         }
     }
 }

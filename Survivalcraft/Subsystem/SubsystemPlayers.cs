@@ -17,7 +17,7 @@ namespace Game
 
         public int m_nextPlayerIndex;
 
-        public const int MaxPlayers = 4;
+        public static int MaxPlayers = 4;
 
         public ReadOnlyList<PlayerData> PlayersData => new ReadOnlyList<PlayerData>(m_playersData);
 
@@ -65,7 +65,7 @@ namespace Game
 
         public void AddPlayerData(PlayerData playerData)
         {
-            if (m_playersData.Count >= 4)
+            if (m_playersData.Count >= MaxPlayers)
             {
                 throw new InvalidOperationException("Too many players.");
             }
@@ -74,7 +74,8 @@ namespace Game
                 throw new InvalidOperationException("Player already added.");
             }
             m_playersData.Add(playerData);
-            playerData.PlayerIndex = m_nextPlayerIndex++;
+            playerData.PlayerIndex = m_nextPlayerIndex - 1 ;
+            m_nextPlayerIndex++;
             this.PlayerAdded?.Invoke(playerData);
         }
 

@@ -7,6 +7,7 @@ public class FileEntry
         InZip,
         InStorage
     }
+    public string SourceFile;
     public string Filename;
     public StorageType storageType;
     public Stream Stream;

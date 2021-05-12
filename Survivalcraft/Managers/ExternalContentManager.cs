@@ -99,6 +99,8 @@ namespace Game
                     return LanguageControl.Get(fName, "Character Skin");
                 case ExternalContentType.FurniturePack:
                     return LanguageControl.Get(fName, "Furniture Pack");
+                case ExternalContentType.Mod:
+                    return LanguageControl.Get(fName, "Mod");
                 default:
                     return string.Empty;
             }
@@ -115,6 +117,8 @@ namespace Game
                 case ExternalContentType.CharacterSkin:
                     return true;
                 case ExternalContentType.FurniturePack:
+                    return true;
+                case ExternalContentType.Mod:
                     return true;
                 default:
                     return false;
@@ -201,6 +205,8 @@ namespace Game
                     return CharacterSkinsManager.ImportCharacterSkin(name, stream);
                 case ExternalContentType.FurniturePack:
                     return FurniturePacksManager.ImportFurniturePack(name, stream);
+                case ExternalContentType.Mod:
+                    return ModsManager.ImportMod(name,stream);
                 default:
                     throw new InvalidOperationException(LanguageControl.Get(fName, 4));
             }

@@ -95,7 +95,7 @@ namespace Game
             int index = 0;
             while (index < 4 && m_gameWidgets.FirstOrDefault((GameWidget v) => v.GameWidgetIndex == index) != null)
             {
-                int num = ++index;
+                int num = index++;
             }
             if (index >= 4)
             {

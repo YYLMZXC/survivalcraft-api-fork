@@ -56,7 +56,8 @@
 		"World": "World",
 		"Blocks Texture": "Blocks Texture",
 		"Character Skin": "Character Skin",
-		"Furniture Pack": "Furniture Pack"
+		"Furniture Pack": "Furniture Pack",
+		"Mod": "Mod"
 	},
 	"ComponentHealth": {
 		"1": "Burned by magma",

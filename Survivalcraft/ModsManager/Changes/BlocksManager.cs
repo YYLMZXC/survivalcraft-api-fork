@@ -95,8 +95,8 @@ namespace Game
 
             foreach (KeyValuePair<int, Block> current2 in dictionary)
             {
-                m_blocks[current2.Key] = current2.Value;//添加普通方块
-                m_fluidBlocks[current2.Key] = (current2.Value as FluidBlock);//添加流体方块
+                m_blocks[current2.Key] = current2.Value;
+                m_fluidBlocks[current2.Key] = (current2.Value as FluidBlock);
             }
 
             for (num = 0; num < m_blocks.Length; num++)

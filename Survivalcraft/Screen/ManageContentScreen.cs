@@ -53,33 +53,31 @@ public class ManageContentScreen : Screen
         {
             ListItem listItem = (ListItem)obj;
             ContainerWidget containerWidget;
-            if (listItem.Type == ExternalContentType.BlocksTexture)
-            {
-                XElement node2 = ContentManager.Get<XElement>("Widgets/BlocksTextureItem");
-                containerWidget = (ContainerWidget)Widget.LoadWidget(this, node2, null);
-                RectangleWidget rectangleWidget = containerWidget.Children.Find<RectangleWidget>("BlocksTextureItem.Icon");
-                LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Text");
-                LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Details");
-                Texture2D texture = m_blocksTexturesCache.GetTexture(listItem.Name);
-                BlocksTexturesManager.GetCreationDate(listItem.Name);
-                rectangleWidget.Subtexture = new Subtexture(texture, Vector2.Zero, Vector2.One);
-                labelWidget.Text = listItem.DisplayName;
-                labelWidget2.Text = string.Format(LanguageControl.Get(fName, 1), texture.Width, texture.Height);
-                if (!listItem.IsBuiltIn)
-                {
-                    labelWidget2.Text += $" | {listItem.CreationTime.ToLocalTime():dd MMM yyyy HH:mm}";
-                    if (listItem.UseCount > 0)
-                    {
-                        labelWidget2.Text += string.Format(LanguageControl.Get(fName, 2), listItem.UseCount);
+
+            switch (listItem.Type) {
+                case ExternalContentType.BlocksTexture: {
+                        XElement node2 = ContentManager.Get<XElement>("Widgets/BlocksTextureItem");
+                        containerWidget = (ContainerWidget)Widget.LoadWidget(this, node2, null);
+                        RectangleWidget rectangleWidget = containerWidget.Children.Find<RectangleWidget>("BlocksTextureItem.Icon");
+                        LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Text");
+                        LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Details");
+                        Texture2D texture = m_blocksTexturesCache.GetTexture(listItem.Name);
+                        BlocksTexturesManager.GetCreationDate(listItem.Name);
+                        rectangleWidget.Subtexture = new Subtexture(texture, Vector2.Zero, Vector2.One);
+                        labelWidget.Text = listItem.DisplayName;
+                        labelWidget2.Text = string.Format(LanguageControl.Get(fName, 1), texture.Width, texture.Height);
+                        if (!listItem.IsBuiltIn)
+                        {
+                            labelWidget2.Text += $" | {listItem.CreationTime.ToLocalTime():dd MMM yyyy HH:mm}";
+                            if (listItem.UseCount > 0)
+                            {
+                                labelWidget2.Text += string.Format(LanguageControl.Get(fName, 2), listItem.UseCount);
+                            }
+                        }
+
+                        break;
                     }
-                }
-            }
-            else
-            {
-                if (listItem.Type != ExternalContentType.CharacterSkin)
-                {
-                    if (listItem.Type == ExternalContentType.FurniturePack)
-                    {
+                case ExternalContentType.FurniturePack: {
                         XElement node3 = ContentManager.Get<XElement>("Widgets/FurniturePackItem");
                         containerWidget = (ContainerWidget)Widget.LoadWidget(this, node3, null);
                         LabelWidget labelWidget3 = containerWidget.Children.Find<LabelWidget>("FurniturePackItem.Text");
@@ -101,27 +99,51 @@ public class ManageContentScreen : Screen
                             labelWidget4.Text = labelWidget4.Text + LanguageControl.Get("Usual", "error") + ex.Message;
                             return containerWidget;
                         }
+                        break;
                     }
-                    throw new InvalidOperationException(LanguageControl.Get(fName, 10));
-                }
-                XElement node4 = ContentManager.Get<XElement>("Widgets/CharacterSkinItem");
-                containerWidget = (ContainerWidget)Widget.LoadWidget(this, node4, null);
-                PlayerModelWidget playerModelWidget = containerWidget.Children.Find<PlayerModelWidget>("CharacterSkinItem.Model");
-                LabelWidget labelWidget5 = containerWidget.Children.Find<LabelWidget>("CharacterSkinItem.Text");
-                LabelWidget labelWidget6 = containerWidget.Children.Find<LabelWidget>("CharacterSkinItem.Details");
-                Texture2D texture2 = m_characterSkinsCache.GetTexture(listItem.Name);
-                playerModelWidget.PlayerClass = PlayerClass.Male;
-                playerModelWidget.CharacterSkinTexture = texture2;
-                labelWidget5.Text = listItem.DisplayName;
-                labelWidget6.Text = string.Format(LanguageControl.Get(fName, 4), texture2.Width, texture2.Height);
-                if (!listItem.IsBuiltIn)
-                {
-                    labelWidget6.Text += $" | {listItem.CreationTime.ToLocalTime():dd MMM yyyy HH:mm}";
-                    if (listItem.UseCount > 0)
-                    {
-                        labelWidget6.Text += string.Format(LanguageControl.Get(fName, 2), listItem.UseCount);
+                case ExternalContentType.CharacterSkin: {
+                        XElement node4 = ContentManager.Get<XElement>("Widgets/CharacterSkinItem");
+                        containerWidget = (ContainerWidget)Widget.LoadWidget(this, node4, null);
+                        PlayerModelWidget playerModelWidget = containerWidget.Children.Find<PlayerModelWidget>("CharacterSkinItem.Model");
+                        LabelWidget labelWidget5 = containerWidget.Children.Find<LabelWidget>("CharacterSkinItem.Text");
+                        LabelWidget labelWidget6 = containerWidget.Children.Find<LabelWidget>("CharacterSkinItem.Details");
+                        Texture2D texture2 = m_characterSkinsCache.GetTexture(listItem.Name);
+                        playerModelWidget.PlayerClass = PlayerClass.Male;
+                        playerModelWidget.CharacterSkinTexture = texture2;
+                        labelWidget5.Text = listItem.DisplayName;
+                        labelWidget6.Text = string.Format(LanguageControl.Get(fName, 4), texture2.Width, texture2.Height);
+                        if (!listItem.IsBuiltIn)
+                        {
+                            labelWidget6.Text += $" | {listItem.CreationTime.ToLocalTime():dd MMM yyyy HH:mm}";
+                            if (listItem.UseCount > 0)
+                            {
+                                labelWidget6.Text += string.Format(LanguageControl.Get(fName, 2), listItem.UseCount);
+                            }
+                        }
+
+                        break;
                     }
-                }
+                case ExternalContentType.Mod: {
+                        XElement node2 = ContentManager.Get<XElement>("Widgets/BlocksTextureItem");
+                        containerWidget = (ContainerWidget)Widget.LoadWidget(this, node2, null);
+                        RectangleWidget rectangleWidget = containerWidget.Children.Find<RectangleWidget>("BlocksTextureItem.Icon");
+                        LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Text");
+                        LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Details");
+                        rectangleWidget.Subtexture = TextureAtlasManager.GetSubtexture("Textures/Atlas/WorldIcon");
+                        labelWidget.Text = listItem.DisplayName;
+                        labelWidget2.Text = listItem.Name;
+                        if (!listItem.IsBuiltIn)
+                        {
+                            labelWidget2.Text += $" | {listItem.CreationTime.ToLocalTime():dd MMM yyyy HH:mm}";
+                            if (listItem.UseCount > 0)
+                            {
+                                labelWidget2.Text += string.Format(LanguageControl.Get(fName, 2), listItem.UseCount);
+                            }
+                        }
+                        break;
+                    }
+                default: throw new InvalidOperationException(LanguageControl.Get(fName, 10));
+
             }
             return containerWidget;
         };
@@ -231,6 +253,33 @@ public class ManageContentScreen : Screen
                     DisplayName = FurniturePacksManager.GetDisplayName(furniturePackName),
                     CreationTime = FurniturePacksManager.GetCreationDate(furniturePackName)
                 });
+            }
+        }
+        if (m_filter == ExternalContentType.Mod || m_filter == ExternalContentType.Unknown)
+        {
+            IEnumerable<string> modfiles=Storage.ListFileNames(ModsManager.ModsPath);
+            foreach (string mods in modfiles)
+            {
+                if (mods.EndsWith(".scmod")|| mods.EndsWith(".zip")) {
+                    string name = mods;
+                    string desc = mods;
+                    string P = Storage.CombinePaths(ModsManager.ModsPath, mods);
+                    ModInfo? modInfo = (ModInfo?)ModsManager.LoadedMods.Find(p=>p.FileName==mods);
+                    if (modInfo.HasValue)
+                    {
+                        name = $"{modInfo.Value.Name} 版本{modInfo.Value.Version}";
+                        desc = modInfo.Value.Description;
+                    }
+                    list.Add(new ListItem
+                    {
+                        Name = desc,
+                        IsBuiltIn = false,
+                        Type = ExternalContentType.Mod,
+                        DisplayName = name,
+                        CreationTime = Storage.GetFileLastWriteTime(P)
+                    });
+
+                }
             }
         }
         list.Sort(delegate (ListItem o1, ListItem o2)
