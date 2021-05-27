@@ -408,6 +408,8 @@
     <Compile Include="Managers\WebBrowserManager.cs" />
     <Compile Include="Managers\WebManager.cs" />
     <Compile Include="Managers\WorldsManager.cs" />
+    <Compile Include="ModsManager\LocalLoader.cs" />
+    <Compile Include="ModsManager\RemoteLoader.cs" />
     <Compile Include="Screen\BestiaryDescriptionScreen.cs" />
     <Compile Include="Screen\BestiaryScreen.cs" />
     <Compile Include="Screen\CommunityContentScreen.cs" />
@@ -1088,7 +1090,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

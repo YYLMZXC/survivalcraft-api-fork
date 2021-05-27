@@ -20,82 +20,104 @@ namespace Game
 
         public bool m_loadingErrorsSuppressed;
 
+        public StackPanelWidget panelWidget = new StackPanelWidget() { Direction=LayoutDirection.Vertical,HorizontalAlignment=WidgetAlignment.Center,VerticalAlignment=WidgetAlignment.Far};
+
+        public LabelWidget labelWidget = new LabelWidget() { Text="API v1.34",Color=Color.Red,VerticalAlignment=WidgetAlignment.Far, HorizontalAlignment=WidgetAlignment.Center};
+
+        public LabelWidget labelWidget2 = new LabelWidget() { Color=Color.Red, VerticalAlignment = WidgetAlignment.Far,HorizontalAlignment = WidgetAlignment.Near,Margin=new Vector2(300,0)};
+
         public LoadingScreen()
         {
             XElement node = ContentManager.Get<XElement>("Screens/LoadingScreen");
             LoadContents(this, node);
+            panelWidget.Children.Add(labelWidget);
+            panelWidget.Children.Add(labelWidget2);
+            Children.Add(panelWidget);
             AddLoadAction(delegate
             {
-                VrManager.Initialize();
+                SetMsg("初始化DatabaseManager");
+                DatabaseManager.Initialize();
             });
             AddLoadAction(delegate
             {
+                SetMsg("初始化CommunityContentManager");
                 CommunityContentManager.Initialize();
             });
             AddLoadAction(delegate
             {
+                SetMsg("初始化MotdManager");
                 MotdManager.Initialize();
             });
             AddLoadAction(delegate
             {
+                SetMsg("初始化LightingManager");
                 LightingManager.Initialize();
             });
             AddLoadAction(delegate
             {
+                SetMsg("初始化StringsManager");
                 StringsManager.LoadStrings();
             });
             AddLoadAction(delegate
             {
+                SetMsg("初始化TextureAtlasManager");
                 TextureAtlasManager.LoadAtlases();
             });
-            //检查所有文件
+
+            AddLoadAction(delegate
+            {
+                SetMsg("初始化WorldsManager");
+                WorldsManager.Initialize();
+            });
+            AddLoadAction(delegate
+            {
+                SetMsg("初始化BlocksTexturesManager");
+                BlocksTexturesManager.Initialize();
+            });
+            AddLoadAction(delegate
+            {
+                SetMsg("初始化CharacterSkinsManager");
+                CharacterSkinsManager.Initialize();
+            });
+            AddLoadAction(delegate
+            {
+                SetMsg("初始化FurniturePacksManager");
+                FurniturePacksManager.Initialize();
+            });
+            AddLoadAction(delegate
+            {
+                SetMsg("初始化BlocksManager");
+                BlocksManager.Initialize();
+            });
+            AddLoadAction(delegate
+            {
+                SetMsg("初始化CraftingRecipesManager");
+                CraftingRecipesManager.Initialize();
+            });
+            AddLoadAction(delegate
+            {
+                SetMsg("初始化MusicManager");
+                MusicManager.CurrentMix = MusicManager.Mix.Menu;
+            });
             foreach (ContentInfo item in ContentManager.List())
             {
                 ContentInfo localContentInfo = item;
                 AddLoadAction(delegate
                 {
+                    SetMsg("检查文件" + localContentInfo.Name);
                     ContentManager.Get(localContentInfo.Name);
                 });
             }
-            AddLoadAction(delegate
-            {
-                DatabaseManager.Initialize();
-            });
-            AddLoadAction(delegate
-            {
-                WorldsManager.Initialize();
-            });
-            AddLoadAction(delegate
-            {
-                BlocksTexturesManager.Initialize();
-            });
-            AddLoadAction(delegate
-            {
-                CharacterSkinsManager.Initialize();
-            });
-            AddLoadAction(delegate
-            {
-                FurniturePacksManager.Initialize();
-            });
-            AddLoadAction(delegate
-            {
-                BlocksManager.Initialize();
-            });
-            AddLoadAction(delegate
-            {
-                CraftingRecipesManager.Initialize();
-            });
-            AddLoadAction(delegate
-            {
-                MusicManager.CurrentMix = MusicManager.Mix.Menu;
-            });
+
         }
 
         public void AddLoadAction(Action action)
         {
             m_loadActions.Add(action);
         }
-
+        public void SetMsg(string text) {
+            labelWidget2.Text = text;
+        }
         public override void Leave()
         {
             ContentManager.Dispose("Textures/Gui/CandyRufusLogo");

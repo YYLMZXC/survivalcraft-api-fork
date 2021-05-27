@@ -32,15 +32,15 @@ namespace Game
             m_viewGameLogButton = Children.Find<ButtonWidget>("ViewGameLogButton");
             m_resetDefaultsButton = Children.Find<ButtonWidget>("ResetDefaultsButton");
             m_descriptionLabel = Children.Find<LabelWidget>("Description");
-
-            m_useAudioTrackCachingButton.IsVisible = false;
         }
 
         public override void Enter(object[] parameters)
         {
             m_descriptionLabel.Text = string.Empty;
-            m_disableAudioTrackCachingContainer.IsVisible = false;
+#if Desktop
+            m_useAudioTrackCachingButton.IsVisible = false;
             m_useReducedZRangeContainer.IsVisible = false;
+#endif
         }
 
         public override void Update()
@@ -55,6 +55,12 @@ namespace Game
                 SettingsManager.UseReducedZRange = !SettingsManager.UseReducedZRange;
                 m_descriptionLabel.Text = StringsManager.GetString("Settings.Compatibility.UseReducedZRange.Description");
             }
+            if (m_useAudioTrackCachingButton.IsClicked)
+            {
+                SettingsManager.EnableAndroidAudioTrackCaching = !SettingsManager.EnableAndroidAudioTrackCaching;
+                m_descriptionLabel.Text = StringsManager.GetString("Settings.Compatibility.UseAudioTrackCaching.Description");
+            }
+
             if (m_viewGameLogButton.IsClicked)
             {
                 DialogsManager.ShowDialog(null, new ViewGameLogDialog());
@@ -65,7 +71,9 @@ namespace Game
                 SettingsManager.UseReducedZRange = false;
             }
             m_singlethreadedTerrainUpdateButton.Text = (SettingsManager.MultithreadedTerrainUpdate ? LanguageControl.Get("Usual", "off") : LanguageControl.Get("Usual", "on"));
+            m_useAudioTrackCachingButton.Text = (SettingsManager.EnableAndroidAudioTrackCaching ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
             m_useReducedZRangeButton.Text = (SettingsManager.UseReducedZRange ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
+
             m_resetDefaultsButton.IsEnabled = (!SettingsManager.MultithreadedTerrainUpdate || SettingsManager.UseReducedZRange);
             if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {

@@ -40,7 +40,7 @@
     <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
     <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AndroidUseAapt2>false</AndroidUseAapt2>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidKeyStore>true</AndroidKeyStore>
     <AndroidSigningKeyStore>C:\Users\Administrator\AppData\Local\Xamarin\Mono for Android\debug.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>android</AndroidSigningStorePass>
@@ -163,7 +163,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

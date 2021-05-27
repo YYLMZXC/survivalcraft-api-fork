@@ -2,6 +2,7 @@ using Engine;
 using Engine.Graphics;
 using Engine.Serialization;
 using GameEntitySystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TemplatesDatabase;
@@ -57,6 +58,8 @@ namespace Game
         public static string fName = "ComponentClothing";
 
         public List<int> m_clothesList = new List<int>();
+
+        public static Func<float,float> ApplyArmorProtection_;
 
         public Dictionary<ClothingSlot, List<int>> m_clothes = new Dictionary<ClothingSlot, List<int>>();
 
@@ -130,12 +133,12 @@ namespace Game
             }
         }
 
-        public ReadOnlyList<int> GetClothes(ClothingSlot slot)
+        public virtual ReadOnlyList<int> GetClothes(ClothingSlot slot)
         {
             return new ReadOnlyList<int>(m_clothes[slot]);
         }
 
-        public void SetClothes(ClothingSlot slot, IEnumerable<int> clothes)
+        public virtual void SetClothes(ClothingSlot slot, IEnumerable<int> clothes)
         {
             if (!m_clothes[slot].SequenceEqual(clothes))
             {
@@ -204,8 +207,11 @@ namespace Game
             }
         }
 
-        public float ApplyArmorProtection(float attackPower)
+        public virtual float ApplyArmorProtection(float attackPower)
         {
+            if (ApplyArmorProtection_ != null) {
+                return ApplyArmorProtection_.Invoke(attackPower);
+            }
             float num = m_random.Float(0f, 1f);
             ClothingSlot slot = (num < 0.1f) ? ClothingSlot.Feet : ((num < 0.3f) ? ClothingSlot.Legs : ((num < 0.9f) ? ClothingSlot.Torso : ClothingSlot.Head));
             float num2 = ((ClothingBlock)BlocksManager.Blocks[203]).Durability + 1;
@@ -388,12 +394,12 @@ namespace Game
             UpdateRenderTargets();
         }
 
-        public int GetSlotValue(int slotIndex)
+        public virtual int GetSlotValue(int slotIndex)
         {
             return GetClothes((ClothingSlot)slotIndex).LastOrDefault();
         }
 
-        public int GetSlotCount(int slotIndex)
+        public virtual int GetSlotCount(int slotIndex)
         {
             if (((ICollection<int>)GetClothes((ClothingSlot)slotIndex)).Count <= 0)
             {
@@ -402,12 +408,12 @@ namespace Game
             return 1;
         }
 
-        public int GetSlotCapacity(int slotIndex, int value)
+        public virtual int GetSlotCapacity(int slotIndex, int value)
         {
             return 0;
         }
 
-        public int GetSlotProcessCapacity(int slotIndex, int value)
+        public virtual int GetSlotProcessCapacity(int slotIndex, int value)
         {
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
             if (block.GetNutritionalValue(value) > 0f)
@@ -421,11 +427,11 @@ namespace Game
             return 0;
         }
 
-        public void AddSlotItems(int slotIndex, int value, int count)
+        public virtual void AddSlotItems(int slotIndex, int value, int count)
         {
         }
 
-        public void ProcessSlotItems(int slotIndex, int value, int count, int processCount, out int processedValue, out int processedCount)
+        public virtual void ProcessSlotItems(int slotIndex, int value, int count, int processCount, out int processedValue, out int processedCount)
         {
             processedCount = 0;
             processedValue = 0;
@@ -461,7 +467,7 @@ namespace Game
             }
         }
 
-        public int RemoveSlotItems(int slotIndex, int count)
+        public virtual int RemoveSlotItems(int slotIndex, int count)
         {
             if (count == 1)
             {
@@ -476,7 +482,7 @@ namespace Game
             return 0;
         }
 
-        public void DropAllItems(Vector3 position)
+        public virtual void DropAllItems(Vector3 position)
         {
             Random random = new Random();
             SubsystemPickables subsystemPickables = base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
@@ -493,12 +499,12 @@ namespace Game
             }
         }
 
-        public void Display_DeviceReset()
+        public virtual void Display_DeviceReset()
         {
             m_clothedTexturesValid = false;
         }
 
-        public bool CanWearClothing(int value)
+        public virtual bool CanWearClothing(int value)
         {
             ClothingData clothingData = ClothingBlock.GetClothingData(Terrain.ExtractData(value));
             IList<int> list = GetClothes(clothingData.Slot);
@@ -510,7 +516,7 @@ namespace Game
             return clothingData.Layer > clothingData2.Layer;
         }
 
-        public void UpdateRenderTargets()
+        public virtual void UpdateRenderTargets()
         {
             if (m_skinTexture == null || m_componentPlayer.PlayerData.CharacterSkinName != m_skinTextureName)
             {

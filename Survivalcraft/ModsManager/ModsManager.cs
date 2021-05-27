@@ -19,6 +19,8 @@ public static class ModsManager
     public static List<ModInfo> LoadedMods=new List<ModInfo>();
 
     public static Func<XElement, IEnumerable<FileEntry>, string, string, string, XElement> CombineXml1;
+    public const string APIVersion = "1.34";
+    public const string SCVersion = "2.2.10.4";
 
 #if desktop
     public static string ModsPath = "app:/Mods";
@@ -31,8 +33,6 @@ public static class ModsManager
     public static string ModsSetPath = "app:/ModSettings.xml";
     public static string settingPath = "app:/Settings.xml";
     public static string logPath = "app:/Logs";
-    public const string APIVersion="1.34";
-    public const string SCVersion = "2.2.10.4";
 
 #endif
 #if android
@@ -59,9 +59,9 @@ public static class ModsManager
     }
     public static ModSettings modSettings=new ModSettings();
     public static Dictionary<string, Type> TypeCaches = new Dictionary<string, Type>();
-    public static List<Assembly> LoadQueque = new List<Assembly>();
     public static Dictionary<string, ZipArchive> zip_filelist;
     public static List<FileEntry> quickAddModsFileList = new List<FileEntry>();
+    public static List<LocalLoader> localLoaders = new List<LocalLoader>();
     public static XElement CombineXml(XElement node, IEnumerable<FileEntry> files, string attr1 = null, string attr2 = null, string type = null)
     {
         Func<XElement, IEnumerable<FileEntry>, string, string, string, XElement> combineXml = CombineXml1;
@@ -173,6 +173,7 @@ public static class ModsManager
             enumerator4.Current.Remove();
         }
     }
+
     public static string ImportMod(string name,Stream stream) {
         string path = Storage.CombinePaths(ModsPath,name);
         Stream fileStream = Storage.OpenFile(path,OpenFileMode.CreateOrOpen);
@@ -195,7 +196,9 @@ public static class ModsManager
         {
             try
             {
-                LoadMod(item.SourceFile, Assembly.Load(StreamToBytes(item.Stream)));
+                LocalLoader localLoader = new LocalLoader(item.Filename, StreamToBytes(item.Stream));
+                localLoaders.Add(localLoader);
+                LoadMod(item.SourceFile, localLoader.Assembly);
             }
             catch
             {

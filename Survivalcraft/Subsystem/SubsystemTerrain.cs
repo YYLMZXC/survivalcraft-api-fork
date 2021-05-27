@@ -25,6 +25,9 @@ namespace Game
             new Point3(0, 0, 1)
         };
 
+        public static Func<SubsystemTerrain, ITerrainContentsGenerator> TerrainContentsGenerator_;
+        public static Func<SubsystemTerrain, ITerrainContentsGenerator> TerrainContentsGeneratorFlat_;
+
         public SubsystemGameWidgets m_subsystemViews;
 
         public SubsystemParticles m_subsystemParticles;
@@ -402,11 +405,25 @@ namespace Game
                 TerrainGenerationMode terrainGenerationMode = SubsystemGameInfo.WorldSettings.TerrainGenerationMode;
                 if (terrainGenerationMode == TerrainGenerationMode.FlatContinent || terrainGenerationMode == TerrainGenerationMode.FlatIsland)
                 {
-                    TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
+                    if (TerrainContentsGeneratorFlat_ != null)
+                    {
+                        TerrainContentsGenerator = TerrainContentsGeneratorFlat_?.Invoke(this);
+                    }
+                    else {
+                        TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
+
+                    }
                 }
                 else
                 {
-                    TerrainContentsGenerator = new TerrainContentsGenerator21(this);
+                    if (TerrainContentsGenerator_ != null)
+                    {
+                        TerrainContentsGenerator = TerrainContentsGenerator_?.Invoke(this);
+                    }
+                    else {
+                        TerrainContentsGenerator = new TerrainContentsGenerator21(this);
+
+                    }
                 }
             }
             else
@@ -414,11 +431,27 @@ namespace Game
                 TerrainGenerationMode terrainGenerationMode2 = SubsystemGameInfo.WorldSettings.TerrainGenerationMode;
                 if (terrainGenerationMode2 == TerrainGenerationMode.FlatContinent || terrainGenerationMode2 == TerrainGenerationMode.FlatIsland)
                 {
-                    TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
+                    if (TerrainContentsGeneratorFlat_ != null)
+                    {
+                        TerrainContentsGenerator = TerrainContentsGeneratorFlat_?.Invoke(this);
+                    }
+                    else
+                    {
+                        TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
+
+                    }
                 }
                 else
                 {
-                    TerrainContentsGenerator = new TerrainContentsGenerator22(this);
+                    if (TerrainContentsGenerator_ != null)
+                    {
+                        TerrainContentsGenerator = TerrainContentsGenerator_?.Invoke(this);
+                    }
+                    else
+                    {
+                        TerrainContentsGenerator = new TerrainContentsGenerator22(this);
+
+                    }
                 }
             }
         }

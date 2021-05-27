@@ -11,8 +11,6 @@ namespace Game
 {
     public static class SettingsManager
     {
-        public const string m_settingsFileName = "app:/Settings.xml";
-
         public static float m_soundsVolume;
 
         public static float m_musicVolume;
@@ -74,10 +72,7 @@ namespace Game
                 if (value != m_resolutionMode)
                 {
                     m_resolutionMode = value;
-                    if (SettingsManager.SettingChanged != null)
-                    {
-                        SettingsManager.SettingChanged("ResolutionMode");
-                    }
+                    SettingChanged?.Invoke("ResolutionMode");
                 }
             }
         }
@@ -168,7 +163,7 @@ namespace Game
                         Window.Position = m_resizableWindowPosition;
                         Window.Size = m_resizableWindowSize;
                     }
-                    Engine.Window.WindowMode = value;
+                    Window.WindowMode = value;
                     m_windowMode = value;
                 }
             }
