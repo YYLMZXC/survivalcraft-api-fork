@@ -326,7 +326,7 @@ namespace Game
 
         public virtual bool OnFluidInteract(int interactValue, int x, int y, int z, int fluidValue)
         {
-            if (!BlocksManager.Blocks[Terrain.ExtractContents(interactValue)].IsFluidBlocker)
+            if (!BlocksManager.Blocks[Terrain.ExtractContents(interactValue)].IsFluidBlocker_(interactValue))
             {
                 base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                 Set(x, y, z, fluidValue);
