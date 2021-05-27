@@ -406,6 +406,8 @@ namespace Game
             get;
             set;
         }
+        public static Action<XElement> SaveSetings_;
+        public static Action<XElement> LoadSetings_;
 
         public static bool UpsideDownLayout
         {
@@ -516,7 +518,10 @@ namespace Game
                 {
                     using (Stream stream = Storage.OpenFile(ModsManager.settingPath, OpenFileMode.Read))
                     {
-                        foreach (XElement item in XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true).Elements())
+                        XElement xElement = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
+                        LoadSetings_?.Invoke(xElement);
+                        ModsManager.LoadSettings(xElement);
+                        foreach (XElement item in xElement.Elements())
                         {
                             string name = "<unknown>";
                             try
@@ -576,6 +581,8 @@ namespace Game
                         }));
                     }
                 }
+                SaveSetings_?.Invoke(xElement);
+                ModsManager.SaveSettings(xElement);
                 using (Stream stream = Storage.OpenFile(ModsManager.settingPath, OpenFileMode.Create))
                 {
                     XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);

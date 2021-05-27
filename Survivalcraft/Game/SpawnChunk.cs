@@ -12,5 +12,7 @@ namespace Game
         public double? LastVisitedTime;
 
         public List<SpawnEntityData> SpawnsData = new List<SpawnEntityData>();
+
+
     }
 }

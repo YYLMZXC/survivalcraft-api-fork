@@ -55,10 +55,11 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public event Action<Pickable> PickableAdded;
-        public event Action<Pickable> PickableRemoved;
+        public virtual Action<Pickable> PickableAdded { get; set; }
 
-        public Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
+        public virtual Action<Pickable> PickableRemoved { get; set; }
+
+        public virtual Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
         {
             Pickable pickable = new Pickable();
             pickable.Value = value;
@@ -80,10 +81,7 @@ namespace Game
                 pickable.Velocity = new Vector3(m_random.Float(-0.5f, 0.5f), m_random.Float(1f, 1.2f), m_random.Float(-0.5f, 0.5f));
             }
             m_pickables.Add(pickable);
-            if (this.PickableAdded != null)
-            {
-                this.PickableAdded(pickable);
-            }
+            PickableAdded?.Invoke(pickable);
             return pickable;
         }
 
@@ -253,7 +251,8 @@ namespace Game
                                                 {
                                                     for (int l = -3; l <= 3; l++)
                                                     {
-                                                        if (!BlocksManager.Blocks[m_subsystemTerrain.Terrain.GetCellContents(j + num8, k + num9, l + num10)].IsCollidable)
+                                                        int value = m_subsystemTerrain.Terrain.GetCellContents(j + num8, k + num9, l + num10);
+                                                        if (!BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value))
                                                         {
                                                             int num15 = j * j + k * k + l * l;
                                                             if (!num14.HasValue || num15 < num14.Value)
@@ -364,10 +363,7 @@ namespace Game
             foreach (Pickable item in m_pickablesToRemove)
             {
                 m_pickables.Remove(item);
-                if (this.PickableRemoved != null)
-                {
-                    this.PickableRemoved(item);
-                }
+                PickableRemoved?.Invoke(item);
             }
             m_pickablesToRemove.Clear();
         }

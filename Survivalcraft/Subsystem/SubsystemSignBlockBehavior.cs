@@ -144,16 +144,18 @@ namespace Game
                 int x2 = x - point.X;
                 int y2 = y - point.Y;
                 int z2 = z - point.Z;
-                int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x2, y2, z2);
-                if (!BlocksManager.Blocks[cellContents].IsCollidable)
+                int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x2, y2, z2);
+                int cellContents = Terrain.ExtractContents(cellValue);
+                if (!BlocksManager.Blocks[cellContents].IsCollidable_(cellValue))
                 {
                     base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                 }
             }
             else if (block is PostedSignBlock)
             {
-                int num2 = PostedSignBlock.GetHanging(data) ? base.SubsystemTerrain.Terrain.GetCellContents(x, y + 1, z) : base.SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
-                if (!BlocksManager.Blocks[num2].IsCollidable)
+                int num2 = PostedSignBlock.GetHanging(data) ? base.SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z) : base.SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+
+                if (!BlocksManager.Blocks[Terrain.ExtractContents(num2)].IsCollidable_(num2))
                 {
                     base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                 }

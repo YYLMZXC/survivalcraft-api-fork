@@ -573,11 +573,11 @@ namespace Game
                             isEnd = true;
                             return pistonFace == AttachedSignBlock.GetFace(data);
                         }
-                        if (block.IsNonDuplicable)
+                        if (block.IsNonDuplicable_(value))
                         {
                             return false;
                         }
-                        if (block.IsCollidable)
+                        if (block.IsCollidable_(value))
                         {
                             return true;
                         }

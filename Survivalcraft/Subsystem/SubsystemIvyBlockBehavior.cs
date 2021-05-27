@@ -44,7 +44,7 @@ namespace Game
             {
                 Point3 point = CellFace.FaceToPoint3(face);
                 int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(x + point.X, y + point.Y, z + point.Z);
-                if (!BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)].IsCollidable)
+                if (!BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)].IsCollidable_(cellValue2))
                 {
                     base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: true, noParticleSystem: false);
                 }

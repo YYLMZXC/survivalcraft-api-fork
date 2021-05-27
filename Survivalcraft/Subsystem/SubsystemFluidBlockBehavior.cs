@@ -449,13 +449,14 @@ namespace Game
                     return int.MaxValue;
                 }
             }
-            else if (BlocksManager.Blocks[num].IsFluidBlocker)
+            else if (BlocksManager.Blocks[num].IsFluidBlocker_(cellValue))
             {
                 return int.MaxValue;
             }
-            int num2 = Terrain.ExtractContents(base.SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z));
+            int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+            int num2 = Terrain.ExtractContents(cellValue2);
             Block block = BlocksManager.Blocks[num2];
-            if (m_fluidBlock.IsTheSameFluid(num2) || !block.IsFluidBlocker)
+            if (m_fluidBlock.IsTheSameFluid(num2) || !block.IsFluidBlocker_(cellValue2))
             {
                 return level;
             }

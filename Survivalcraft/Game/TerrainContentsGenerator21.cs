@@ -2131,11 +2131,12 @@ namespace Game
                             {
                                 for (int n = num12; n <= num13; n++)
                                 {
-                                    int num14 = Terrain.ExtractContents(chunk.GetCellValueFast(l, m, n));
+                                    int value = chunk.GetCellValueFast(l, m, n);
+                                    int num14 = Terrain.ExtractContents(value);
                                     Block block = BlocksManager.Blocks[num14];
                                     if (m > num7)
                                     {
-                                        if (!block.IsCollidable)
+                                        if (!block.IsCollidable_(value))
                                         {
                                             continue;
                                         }

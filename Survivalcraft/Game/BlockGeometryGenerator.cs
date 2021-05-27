@@ -72,8 +72,7 @@ namespace Game
         {
             m_cornerLightsPosition = new Point3(2147483647);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        
         public static void SetupCornerVertex(float x, float y, float z, Color color, int light, int face, int textureSlot, int corner, ref TerrainVertex vertex)
         {
             float num = LightingManager.LightIntensityByLightValueAndFace[light + 16 * face];
@@ -82,16 +81,14 @@ namespace Game
             float ty = (m_textureCoordinates[corner].Y + (float)(textureSlot / 16)) / 16f;
             SetupVertex(x, y, z, color2, tx, ty, ref vertex);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        
         public static void SetupLitCornerVertex(float x, float y, float z, Color color, int textureSlot, int corner, ref TerrainVertex vertex)
         {
             float tx = (m_textureCoordinates[corner].X + (float)(textureSlot % 16)) / 16f;
             float ty = (m_textureCoordinates[corner].Y + (float)(textureSlot / 16)) / 16f;
             SetupVertex(x, y, z, color, tx, ty, ref vertex);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        
         public static void SetupVertex(float x, float y, float z, Color color, float tx, float ty, ref TerrainVertex vertex)
         {
             vertex.X = x;
@@ -855,8 +852,7 @@ namespace Game
                 }
             }
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        
         public static void CalculateCubeVertexLight(int value, ref int light, ref int shadow)
         {
             int num = Terrain.ExtractContents(value);
@@ -868,8 +864,7 @@ namespace Game
             light = Math.Max(light, Terrain.ExtractLight(value));
             shadow += BlocksManager.Blocks[num].GetShadowStrength(value);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        
         public static int CombineLightAndShadow(int light, int shadow)
         {
             return MathUtils.Max(light - MathUtils.Max(shadow / 7, 0), 0);

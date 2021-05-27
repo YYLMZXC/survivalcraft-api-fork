@@ -38,6 +38,7 @@ namespace Game
         public int m_lastDigFrameIndex;
 
         public float m_lastPokingPhase;
+
         public ComponentCreature ComponentCreature
         {
             get;
@@ -109,6 +110,7 @@ namespace Game
                 return m_digProgress;
             }
         }
+        public static Action<ComponentBody, ComponentCreature, Vector3, Vector3, float, bool> AttackBody_; 
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
         public static Func<TerrainRaycastResult, bool> Dig1;
@@ -217,7 +219,7 @@ namespace Game
             if (Place2 != null) return Place2(raycastResult, value);
 
             int num = Terrain.ExtractContents(value);
-            if (BlocksManager.Blocks[num].IsPlaceable)
+            if (BlocksManager.Blocks[num].IsPlaceable_(value))
             {
                 Block block = BlocksManager.Blocks[num];
                 BlockPlacementData placementData = block.GetPlacementValue(m_subsystemTerrain, this, value, raycastResult);
@@ -376,7 +378,7 @@ namespace Game
         {
             int num = Terrain.ExtractContents(ActiveBlockValue);
             Block block = BlocksManager.Blocks[num];
-            if (block.IsAimable)
+            if (block.IsAimable_(ActiveBlockValue))
             {
                 if (!CanUseTool(ActiveBlockValue))
                 {
@@ -421,7 +423,7 @@ namespace Game
                     }
                     if (mode == RaycastMode.Interaction)
                     {
-                        if (block.IsPlacementTransparent)
+                        if (block.IsPlacementTransparent_(value))
                         {
                             return block.IsInteractive(m_subsystemTerrain, value);
                         }
@@ -429,7 +431,7 @@ namespace Game
                     }
                     if (mode == RaycastMode.Gathering)
                     {
-                        return block.IsGatherable;
+                        return block.IsGatherable_(value);
                     }
                 }
                 return false;
@@ -494,6 +496,10 @@ namespace Game
 
         public static void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack)
         {
+            if (AttackBody_ != null) {
+                AttackBody_(target,attacker,hitPoint,hitDirection,attackPower,isMeleeAttack);
+                return;
+            }
             if (attacker != null && attacker is ComponentPlayer && target.Entity.FindComponent<ComponentPlayer>() != null && !target.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true).WorldSettings.IsFriendlyFireEnabled)
             {
                 attacker.Entity.FindComponent<ComponentGui>(throwOnError: true).DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: true, playNotificationSound: true);

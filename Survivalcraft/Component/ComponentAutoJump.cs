@@ -72,19 +72,25 @@ namespace Game
                         }
                         if (flag)
                         {
-                            int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(v3.X), Terrain.ToCell(v3.Y), Terrain.ToCell(v3.Z));
-                            int cellContents2 = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(vector3.X), Terrain.ToCell(vector3.Y), Terrain.ToCell(vector3.Z));
-                            int cellContents3 = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(vector4.X), Terrain.ToCell(vector4.Y), Terrain.ToCell(vector4.Z));
-                            int cellContents4 = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(v3.X), Terrain.ToCell(v3.Y) + 1, Terrain.ToCell(v3.Z));
-                            int cellContents5 = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(vector3.X), Terrain.ToCell(vector3.Y) + 1, Terrain.ToCell(vector3.Z));
-                            int cellContents6 = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(vector4.X), Terrain.ToCell(vector4.Y) + 1, Terrain.ToCell(vector4.Z));
+                            int cellValue = m_subsystemTerrain.Terrain.GetCellValue(Terrain.ToCell(v3.X), Terrain.ToCell(v3.Y), Terrain.ToCell(v3.Z));
+                            int cellValue2 = m_subsystemTerrain.Terrain.GetCellValue(Terrain.ToCell(vector3.X), Terrain.ToCell(vector3.Y), Terrain.ToCell(vector3.Z));
+                            int cellValue3 = m_subsystemTerrain.Terrain.GetCellValue(Terrain.ToCell(vector4.X), Terrain.ToCell(vector4.Y), Terrain.ToCell(vector4.Z));
+                            int cellValue4 = m_subsystemTerrain.Terrain.GetCellValue(Terrain.ToCell(v3.X), Terrain.ToCell(v3.Y) + 1, Terrain.ToCell(v3.Z));
+                            int cellValue5 = m_subsystemTerrain.Terrain.GetCellValue(Terrain.ToCell(vector3.X), Terrain.ToCell(vector3.Y) + 1, Terrain.ToCell(vector3.Z));
+                            int cellValue6 = m_subsystemTerrain.Terrain.GetCellValue(Terrain.ToCell(vector4.X), Terrain.ToCell(vector4.Y) + 1, Terrain.ToCell(vector4.Z));
+                            int cellContents = Terrain.ExtractContents(cellValue);
+                            int cellContents2 = Terrain.ExtractContents(cellValue2);
+                            int cellContents3 = Terrain.ExtractContents(cellValue3);
+                            int cellContents4 = Terrain.ExtractContents(cellValue4);
+                            int cellContents5 = Terrain.ExtractContents(cellValue5);
+                            int cellContents6 = Terrain.ExtractContents(cellValue6);
                             Block block = BlocksManager.Blocks[cellContents];
                             Block block2 = BlocksManager.Blocks[cellContents2];
                             Block block3 = BlocksManager.Blocks[cellContents3];
                             Block block4 = BlocksManager.Blocks[cellContents4];
                             Block block5 = BlocksManager.Blocks[cellContents5];
                             Block block6 = BlocksManager.Blocks[cellContents6];
-                            if (!block.NoAutoJump && ((block.IsCollidable && !block4.IsCollidable) || (block2.IsCollidable && !block5.IsCollidable) || (block3.IsCollidable && !block6.IsCollidable)))
+                            if (!block.NoAutoJump && ((block.IsCollidable_(cellValue) && !block4.IsCollidable_(cellValue4)) || (block2.IsCollidable_(cellValue2) && !block5.IsCollidable_(cellValue5)) || (block3.IsCollidable_(cellValue3) && !block6.IsCollidable_(cellValue6))))
                             {
                                 m_componentCreature.ComponentLocomotion.JumpOrder = MathUtils.Max(m_jumpStrength, m_componentCreature.ComponentLocomotion.JumpOrder);
                                 m_lastAutoJumpTime = m_subsystemTime.GameTime;

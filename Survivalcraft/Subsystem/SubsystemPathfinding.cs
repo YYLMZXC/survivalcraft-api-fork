@@ -379,7 +379,7 @@ namespace Game
             {
                 return true;
             }
-            if (!block.IsCollidable)
+            if (!block.IsCollidable_(value))
             {
                 return true;
             }

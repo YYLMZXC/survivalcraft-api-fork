@@ -113,9 +113,9 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public event Action<ComponentCreature> Attacked;
+        public virtual Action<ComponentCreature> Attacked { get; set; }
 
-        public void Heal(float amount)
+        public virtual void Heal(float amount)
         {
             if (amount > 0f)
             {
@@ -123,7 +123,7 @@ namespace Game
             }
         }
 
-        public void Injure(float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause)
+        public virtual void Injure(float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause)
         {
             if (!(amount > 0f) || (!ignoreInvulnerability && IsInvulnerable))
             {
@@ -183,9 +183,9 @@ namespace Game
                     }
                 }
             }
-            if (attacker != null && this.Attacked != null)
+            if (attacker != null && Attacked != null)
             {
-                this.Attacked(attacker);
+                Attacked(attacker);
             }
         }
 

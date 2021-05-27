@@ -39,9 +39,9 @@ namespace Engine
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            while (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
-            {
+            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted) {
                 RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, 0);
+                while (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted);
             }
             RequestWindowFeature(WindowFeatures.NoTitle);
             Window.AddFlags(WindowManagerFlags.Fullscreen);

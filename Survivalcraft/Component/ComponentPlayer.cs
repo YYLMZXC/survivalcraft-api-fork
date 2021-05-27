@@ -241,7 +241,7 @@ namespace Game
                 }
             }
             float num2 = (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative) ? 0.1f : 1.4f;
-            if (playerInput.Aim.HasValue && block.IsAimable && m_subsystemTime.GameTime - m_lastActionTime > (double)num2)
+            if (playerInput.Aim.HasValue && block.IsAimable_(ComponentMiner.ActiveBlockValue) && m_subsystemTime.GameTime - m_lastActionTime > (double)num2)
             {
                 if (!m_isAimBlocked)
                 {
@@ -350,7 +350,7 @@ namespace Game
             {
                 num5 = value3;
             }
-            if (num5 == 0 && !block2.IsNonDuplicable)
+            if (num5 == 0 && !block2.IsNonDuplicable_(value3))
             {
                 List<BlockDropValue> list = new List<BlockDropValue>();
                 block2.GetDropValues(m_subsystemTerrain, value3, 0, int.MaxValue, list, out bool _);

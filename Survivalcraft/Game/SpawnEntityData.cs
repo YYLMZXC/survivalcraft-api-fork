@@ -9,5 +9,8 @@ namespace Game
         public Vector3 Position;
 
         public bool ConstantSpawn;
+
+        public string ExtraData;
+
     }
 }

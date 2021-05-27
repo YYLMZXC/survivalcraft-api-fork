@@ -15,6 +15,7 @@ namespace Game
 
         public LabelWidget m_instructionsLabel;
         public static string fName = "BowWidget";
+
         public BowWidget(IInventory inventory, int slotIndex)
         {
             m_inventory = inventory;

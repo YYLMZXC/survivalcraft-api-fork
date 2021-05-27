@@ -1,3 +1,4 @@
+using System;
 using Engine;
 using GameEntitySystem;
 using TemplatesDatabase;
@@ -109,6 +110,9 @@ namespace Game
         public bool m_keyboardHelpMessageShown;
 
         public bool m_gamepadHelpMessageShown;
+
+        public static Func<Widget> OpenClothingWidget;
+
 
         public ContainerWidget ControlsContainerWidget
         {
@@ -579,7 +583,13 @@ namespace Game
                 }
                 else
                 {
-                    ModalPanelWidget = new ClothingWidget(m_componentPlayer);
+                    if (OpenClothingWidget != null)
+                    {
+                        ModalPanelWidget = OpenClothingWidget();
+                    }
+                    else {
+                        ModalPanelWidget = new ClothingWidget(m_componentPlayer);
+                    }
                 }
             }
             if (m_sneakButtonWidget.IsClicked || playerInput.ToggleSneak)
@@ -641,8 +651,9 @@ namespace Game
                 if (inventory != null)
                 {
                     int activeSlotIndex = inventory.ActiveSlotIndex;
-                    int num = Terrain.ExtractContents(inventory.GetSlotValue(activeSlotIndex));
-                    if (BlocksManager.Blocks[num].IsEditable)
+                    int value = inventory.GetSlotValue(activeSlotIndex);
+                    int num = Terrain.ExtractContents(value);
+                    if (BlocksManager.Blocks[num].IsEditable_(value))
                     {
                         SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num);
                         for (int i = 0; i < blockBehaviors.Length && !blockBehaviors[i].OnEditInventoryItem(inventory, activeSlotIndex, m_componentPlayer); i++)
@@ -772,8 +783,9 @@ namespace Game
             if (inventory != null)
             {
                 int activeSlotIndex = inventory.ActiveSlotIndex;
-                int num = Terrain.ExtractContents(inventory.GetSlotValue(activeSlotIndex));
-                if (BlocksManager.Blocks[num].IsEditable)
+                int value = inventory.GetSlotValue(activeSlotIndex);
+                int num = Terrain.ExtractContents(value);
+                if (BlocksManager.Blocks[num].IsEditable_(value))
                 {
                     return true;
                 }

@@ -57,7 +57,7 @@ namespace Game
                         particle.BillboardingMode = ParticleBillboardingMode.Horizontal;
                         particle.FadeFactor = 1.6f;
                     }
-                    else if (block.IsCollidable)
+                    else if (block.IsCollidable_(value))
                     {
                         particle.BaseSize1 = 0.03f;
                         particle.BaseSize2 = 0.08f;

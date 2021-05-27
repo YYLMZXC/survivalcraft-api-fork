@@ -47,9 +47,11 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public event Action<SpawnChunk> SpawningChunk;
+        public virtual Action<SpawnChunk> SpawningChunk { get; set; }
 
-        public SpawnChunk GetSpawnChunk(Point2 point)
+        public virtual Func<SpawnEntityData,Entity> SpawnEntity_ { get; set; }
+
+        public virtual SpawnChunk GetSpawnChunk(Point2 point)
         {
             m_chunks.TryGetValue(point, out SpawnChunk value);
             return value;
@@ -139,7 +141,7 @@ namespace Game
             }
         }
 
-        public SpawnChunk GetOrCreateSpawnChunk(Point2 point)
+        public virtual SpawnChunk GetOrCreateSpawnChunk(Point2 point)
         {
             SpawnChunk spawnChunk = GetSpawnChunk(point);
             if (spawnChunk == null)
@@ -153,7 +155,7 @@ namespace Game
             return spawnChunk;
         }
 
-        public void DiscardOldChunks()
+        public virtual void DiscardOldChunks()
         {
             List<Point2> list = new List<Point2>();
             foreach (SpawnChunk value in m_chunks.Values)
@@ -169,7 +171,7 @@ namespace Game
             }
         }
 
-        public void UpdateLastVisitedTime()
+        public virtual void UpdateLastVisitedTime()
         {
             foreach (ComponentPlayer componentPlayer in m_subsystemPlayers.ComponentPlayers)
             {
@@ -192,7 +194,7 @@ namespace Game
             }
         }
 
-        public void SpawnChunks()
+        public virtual void SpawnChunks()
         {
             List<SpawnChunk> list = new List<SpawnChunk>();
             foreach (GameWidget gameWidget in m_subsystemViews.GameWidgets)
@@ -236,7 +238,7 @@ namespace Game
             }
         }
 
-        public void DespawnChunks()
+        public virtual void DespawnChunks()
         {
             List<ComponentSpawn> list = new List<ComponentSpawn>(0);
             foreach (ComponentSpawn key in m_spawns.Keys)
@@ -275,8 +277,11 @@ namespace Game
             }
         }
 
-        public Entity SpawnEntity(SpawnEntityData data)
+        public virtual Entity SpawnEntity(SpawnEntityData data)
         {
+            if (SpawnEntity_ != null) {
+                return SpawnEntity_(data);
+            }
             try
             {
                 Entity entity = DatabaseManager.CreateEntity(base.Project, data.TemplateName, throwIfNotFound: true);
@@ -297,13 +302,14 @@ namespace Game
             }
         }
 
-        public void LoadSpawnsData(string data, List<SpawnEntityData> creaturesData)
+        public virtual void LoadSpawnsData(string data, List<SpawnEntityData> creaturesData)
         {
             string[] array = data.Split(new char[1]
             {
                 ';'
             }, StringSplitOptions.RemoveEmptyEntries);
             int num = 0;
+
             while (true)
             {
                 if (num < array.Length)
@@ -326,9 +332,12 @@ namespace Game
                             Z = float.Parse(array2[3], CultureInfo.InvariantCulture)
                         }
                     };
-                    if (array2.Length >= 5)
+                    if (array2.Length == 5)
                     {
                         spawnEntityData.ConstantSpawn = bool.Parse(array2[4]);
+                    }
+                    if (array2.Length > 5) {
+                        spawnEntityData.ConstantSpawn = bool.Parse(array2[5]);
                     }
                     creaturesData.Add(spawnEntityData);
                     num++;
@@ -339,7 +348,7 @@ namespace Game
             throw new InvalidOperationException("Invalid spawn data string.");
         }
 
-        public string SaveSpawnsData(List<SpawnEntityData> spawnsData)
+        public virtual string SaveSpawnsData(List<SpawnEntityData> spawnsData)
         {
             StringBuilder stringBuilder = new StringBuilder();
             foreach (SpawnEntityData spawnsDatum in spawnsData)
@@ -353,6 +362,10 @@ namespace Game
                 stringBuilder.Append((MathUtils.Round(spawnsDatum.Position.Z * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
                 stringBuilder.Append(',');
                 stringBuilder.Append(spawnsDatum.ConstantSpawn.ToString());
+                if (!string.IsNullOrEmpty(spawnsDatum.ExtraData)) {
+                    stringBuilder.Append(',');
+                    stringBuilder.Append(spawnsDatum.ExtraData);
+                }
                 stringBuilder.Append(';');
             }
             return stringBuilder.ToString();

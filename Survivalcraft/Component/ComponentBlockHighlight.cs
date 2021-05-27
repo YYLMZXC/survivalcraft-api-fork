@@ -89,7 +89,7 @@ namespace Game
                         terrainRaycastResult.Distance = MathUtils.Max(terrainRaycastResult.Distance, 0.1f);
                         m_highlightRaycastResult = terrainRaycastResult;
                     }
-                    if (obj.IsEditable)
+                    if (obj.IsEditable_(cellValue))
                     {
                         NearbyEditableCell = terrainRaycastResult.CellFace.Point;
                     }

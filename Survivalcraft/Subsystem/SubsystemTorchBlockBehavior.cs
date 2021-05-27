@@ -29,7 +29,7 @@ namespace Game
                         int y2 = y - point.Y;
                         int z2 = z - point.Z;
                         int cellContents2 = base.SubsystemTerrain.Terrain.GetCellContents(x2, y2, z2);
-                        if (!BlocksManager.Blocks[cellContents2].IsCollidable)
+                        if (!BlocksManager.Blocks[cellContents2].IsCollidable_(cellValueFast))
                         {
                             base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                         }
@@ -38,7 +38,7 @@ namespace Game
                 case 132:
                     {
                         int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
-                        if (!BlocksManager.Blocks[cellContents].IsCollidable)
+                        if (!BlocksManager.Blocks[cellContents].IsCollidable_(cellValueFast))
                         {
                             base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                         }

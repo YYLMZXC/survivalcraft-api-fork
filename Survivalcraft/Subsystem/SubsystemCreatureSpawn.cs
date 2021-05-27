@@ -146,7 +146,7 @@ namespace Game
             }
         }
 
-        public void InitializeCreatureTypes()
+        public virtual void InitializeCreatureTypes()
         {
             m_creatureTypes.Add(new CreatureType("Duck", SpawnLocationType.Surface, randomSpawn: true, constantSpawn: false)
             {
@@ -934,7 +934,7 @@ namespace Game
             });
         }
 
-        public void SpawnRandomCreature()
+        public virtual void SpawnRandomCreature()
         {
             if (CountCreatures(constantSpawn: false) < 24)
             {
@@ -969,7 +969,7 @@ namespace Game
             }
         }
 
-        public void SpawnChunkCreatures(SpawnChunk chunk, int maxAttempts, bool constantSpawn)
+        public virtual void SpawnChunkCreatures(SpawnChunk chunk, int maxAttempts, bool constantSpawn)
         {
             int num = constantSpawn ? 18 : 24;
             int num2 = constantSpawn ? 4 : 3;
@@ -1006,7 +1006,7 @@ namespace Game
             }
         }
 
-        public List<Entity> SpawnCreatures(CreatureType creatureType, string templateName, Point3 point, int count)
+        public virtual List<Entity> SpawnCreatures(CreatureType creatureType, string templateName, Point3 point, int count)
         {
             List<Entity> list = new List<Entity>();
             int num = 0;
@@ -1035,7 +1035,7 @@ namespace Game
             return list;
         }
 
-        public Entity SpawnCreature(string templateName, Vector3 position, bool constantSpawn)
+        public virtual Entity SpawnCreature(string templateName, Vector3 position, bool constantSpawn)
         {
             try
             {
@@ -1053,7 +1053,7 @@ namespace Game
             }
         }
 
-        public Point3? GetRandomChunkSpawnPoint(SpawnChunk chunk, SpawnLocationType spawnLocationType)
+        public virtual Point3? GetRandomChunkSpawnPoint(SpawnChunk chunk, SpawnLocationType spawnLocationType)
         {
             for (int i = 0; i < 5; i++)
             {
@@ -1069,7 +1069,7 @@ namespace Game
             return null;
         }
 
-        public Point3? GetRandomSpawnPoint(Camera camera, SpawnLocationType spawnLocationType)
+        public virtual Point3? GetRandomSpawnPoint(Camera camera, SpawnLocationType spawnLocationType)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -1085,7 +1085,7 @@ namespace Game
             return null;
         }
 
-        public Point3? ProcessSpawnPoint(Point3 spawnPoint, SpawnLocationType spawnLocationType)
+        public virtual Point3? ProcessSpawnPoint(Point3 spawnPoint, SpawnLocationType spawnLocationType)
         {
             int x = spawnPoint.X;
             int num = MathUtils.Clamp(spawnPoint.Y, 1, 254);
@@ -1110,7 +1110,7 @@ namespace Game
             return null;
         }
 
-        public bool TestSpawnPoint(Point3 spawnPoint, SpawnLocationType spawnLocationType)
+        public virtual bool TestSpawnPoint(Point3 spawnPoint, SpawnLocationType spawnLocationType)
         {
             int x = spawnPoint.X;
             int y = spawnPoint.Y;
@@ -1178,7 +1178,7 @@ namespace Game
             }
         }
 
-        public int CountCreatures(bool constantSpawn)
+        public virtual int CountCreatures(bool constantSpawn)
         {
             int num = 0;
             foreach (ComponentBody body in m_subsystemBodies.Bodies)
@@ -1192,7 +1192,7 @@ namespace Game
             return num;
         }
 
-        public int CountCreaturesInArea(Vector2 c1, Vector2 c2, bool constantSpawn)
+        public virtual int CountCreaturesInArea(Vector2 c1, Vector2 c2, bool constantSpawn)
         {
             int num = 0;
             m_componentBodies.Clear();
@@ -1236,7 +1236,7 @@ namespace Game
             return num;
         }
 
-        public int GetRandomWeightedItem(IEnumerable<float> items)
+        public virtual int GetRandomWeightedItem(IEnumerable<float> items)
         {
             float max = MathUtils.Max(items.Sum(), 1f);
             float num = m_random.Float(0f, max);
@@ -1253,7 +1253,7 @@ namespace Game
             return -1;
         }
 
-        public SpawnLocationType GetRandomSpawnLocationType()
+        public virtual SpawnLocationType GetRandomSpawnLocationType()
         {
             return m_spawnLocations[m_random.Int(0, m_spawnLocations.Length - 1)];
         }

@@ -2,6 +2,7 @@ using Engine;
 using Engine.Graphics;
 using Engine.Media;
 using GameEntitySystem;
+using System;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -124,6 +125,7 @@ namespace Game
                 m_blockIconWidget.CustomViewMatrix = value;
             }
         }
+        public static Action<int, ValueBarWidget> HealthBarFunc;
 
         public GameWidget GameWidget
         {
@@ -424,19 +426,28 @@ namespace Game
                         m_lastCount = num;
                     }
                     m_countWidget.IsVisible = (num > 1 && !flag);
-                    m_editOverlayWidget.IsVisible = (!HideEditOverlay && block.IsEditable);
+                    m_editOverlayWidget.IsVisible = (!HideEditOverlay && block.IsEditable_(slotValue));
                     m_interactiveOverlayWidget.IsVisible = (!HideInteractiveOverlay && ((m_subsystemTerrain != null) ? block.IsInteractive(m_subsystemTerrain, slotValue) : block.DefaultIsInteractive));
                     m_foodOverlayWidget.IsVisible = (!HideFoodOverlay && block.GetRotPeriod(slotValue) > 0);
                     m_foodOverlayWidget.FillColor = (flag2 ? new Color(128, 64, 0) : new Color(160, 160, 160));
-                    if (!flag && !HideHealthBar && block.Durability >= 0)
-                    {
-                        int damage = block.GetDamage(slotValue);
-                        m_healthBarWidget.IsVisible = true;
-                        m_healthBarWidget.Value = (float)(block.Durability - damage) / (float)block.Durability;
-                    }
-                    else
-                    {
-                        m_healthBarWidget.IsVisible = false;
+                    if (!flag && !HideHealthBar) {
+                        if (HealthBarFunc != null)
+                        {
+                            HealthBarFunc(slotValue,m_healthBarWidget);
+                        }
+                        else
+                        {
+                            if (block.Durability >= 0)
+                            {
+                                int damage = block.GetDamage(slotValue);
+                                m_healthBarWidget.IsVisible = true;
+                                m_healthBarWidget.Value = (float)(block.Durability - damage) / (float)block.Durability;
+                            }
+                            else
+                            {
+                                m_healthBarWidget.IsVisible = false;
+                            }
+                        }
                     }
                 }
                 else

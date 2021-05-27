@@ -167,11 +167,14 @@ namespace Game
         {
             return Blocks.Where((Block b) => b.CraftingId == craftingId).ToArray();
         }
-
         public static void DrawCubeBlock(PrimitivesRenderer3D primitivesRenderer, int value, Vector3 size, ref Matrix matrix, Color color, Color topColor, DrawBlockEnvironmentData environmentData)
         {
+            DrawCubeBlock(primitivesRenderer,value,size,ref matrix,color,topColor,environmentData, (environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture);
+        
+        }
+        public static void DrawCubeBlock(PrimitivesRenderer3D primitivesRenderer, int value, Vector3 size, ref Matrix matrix, Color color, Color topColor, DrawBlockEnvironmentData environmentData,Texture2D texture)
+        {
             environmentData = (environmentData ?? m_defaultEnvironmentData);
-            Texture2D texture = (environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture;
             TexturedBatch3D texturedBatch3D = primitivesRenderer.TexturedBatch(texture, useAlphaTest: true, 0, null, RasterizerState.CullCounterClockwiseScissor, null, SamplerState.PointClamp);
             float s = LightingManager.LightIntensityByLightValue[environmentData.Light];
             color = Color.MultiplyColorOnly(color, s);

@@ -62,10 +62,11 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public event Action<Projectile> ProjectileAdded;
+        public virtual Action<Projectile> ProjectileAdded { get; set; }
 
-        public event Action<Projectile> ProjectileRemoved;
-        public Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
+        public virtual Action<Projectile> ProjectileRemoved { get;set; }
+
+        public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
         {
             Projectile projectile = new Projectile();
             projectile.Value = value;
@@ -89,7 +90,7 @@ namespace Game
             return projectile;
         }
 
-        public Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
+        public virtual Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
         {
             int num = Terrain.ExtractContents(value);
             Block block = BlocksManager.Blocks[num];
@@ -125,14 +126,14 @@ namespace Game
             return null;
         }
 
-        public void AddTrail(Projectile projectile, Vector3 offset, ITrailParticleSystem particleSystem)
+        public virtual void AddTrail(Projectile projectile, Vector3 offset, ITrailParticleSystem particleSystem)
         {
             RemoveTrail(projectile);
             projectile.TrailParticleSystem = particleSystem;
             projectile.TrailOffset = offset;
         }
 
-        public void RemoveTrail(Projectile projectile)
+        public virtual void RemoveTrail(Projectile projectile)
         {
             if (projectile.TrailParticleSystem != null)
             {
@@ -144,7 +145,7 @@ namespace Game
             }
         }
 
-        public void Draw(Camera camera, int drawOrder)
+        public  void Draw(Camera camera, int drawOrder)
         {
             m_drawBlockEnvironmentData.SubsystemTerrain = m_subsystemTerrain;
             m_drawBlockEnvironmentData.InWorldMatrix = Matrix.Identity;
@@ -289,7 +290,7 @@ namespace Game
                             {
                                 m_subsystemSoundMaterials.PlayImpactSound(cellValue, position, 1f);
                             }
-                            if (block.IsStickable && num2 > 10f && m_random.Bool(block2.ProjectileStickProbability))
+                            if (block.IsStickable_(projectile.Value) && num2 > 10f && m_random.Bool(block2.ProjectileStickProbability))
                             {
                                 Vector3 v3 = Vector3.Normalize(projectile.Velocity);
                                 float s = MathUtils.Lerp(0.1f, 0.2f, MathUtils.Saturate((num2 - 15f) / 20f));
@@ -468,19 +469,19 @@ namespace Game
             }
         }
 
-        public bool IsWater(Vector3 position)
+        public virtual bool IsWater(Vector3 position)
         {
             int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
             return BlocksManager.Blocks[cellContents] is WaterBlock;
         }
 
-        public bool IsMagma(Vector3 position)
+        public virtual bool IsMagma(Vector3 position)
         {
             int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
             return BlocksManager.Blocks[cellContents] is MagmaBlock;
         }
 
-        public void MakeProjectileNoise(Projectile projectile)
+        public virtual void MakeProjectileNoise(Projectile projectile)
         {
             if (m_subsystemTime.GameTime - projectile.LastNoiseTime > 0.5)
             {

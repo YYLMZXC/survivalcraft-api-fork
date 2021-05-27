@@ -9,13 +9,20 @@ public class PluginLoaderAttribute : Attribute
 
     public PluginLoaderAttribute(string name, string description, uint version, string scversion, string url, string updateUrl, string authorList, string credits, string logo, string screenshots, string parent, string dependency = null, string dependants = null, bool usedependencyInfo = false)
     {
-        info = new ModInfo(name, description, version, scversion, url, updateUrl, authorList, credits, logo, screenshots, parent, dependency, dependants, usedependencyInfo);
+        info = new ModInfo(name, description, version.ToString(), scversion, url, updateUrl, authorList, credits, logo, screenshots, parent, dependency, dependants, usedependencyInfo);
     }
 
     public PluginLoaderAttribute(string name, string description, uint version)
     {
         info.Name = name;
         info.Description = description;
-        info.Version = version;
+        info.ModVersion = version.ToString();
+    }
+    public PluginLoaderAttribute(string name, string description,string modversion, string apiversion)
+    {
+        info.Name = name;
+        info.Description = description;
+        info.ModVersion = modversion;
+        info.APIVersion = apiversion;
     }
 }

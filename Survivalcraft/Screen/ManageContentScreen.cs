@@ -267,7 +267,7 @@ public class ManageContentScreen : Screen
                     ModInfo? modInfo = (ModInfo?)ModsManager.LoadedMods.Find(p=>p.FileName==mods);
                     if (modInfo.HasValue)
                     {
-                        name = $"{modInfo.Value.Name} 版本{modInfo.Value.Version}";
+                        name = $"{modInfo.Value.Name} 版本{modInfo.Value.ModVersion}";
                         desc = modInfo.Value.Description;
                     }
                     list.Add(new ListItem

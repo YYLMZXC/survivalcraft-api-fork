@@ -1854,7 +1854,7 @@ namespace Game
                                     Block block = BlocksManager.Blocks[num14];
                                     if (m > num7)
                                     {
-                                        if (!block.IsCollidable)
+                                        if (!block.IsCollidable_(num14))
                                         {
                                             continue;
                                         }

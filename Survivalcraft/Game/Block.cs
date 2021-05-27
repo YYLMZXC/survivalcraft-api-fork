@@ -186,6 +186,42 @@ namespace Game
             if (string.IsNullOrEmpty(nm)) return DefaultDisplayName;
             else return nm;
         }
+        public virtual bool IsEditable_(int value) {
+            return IsEditable;
+        }
+        public virtual bool IsAimable_(int value)
+        {
+            return IsAimable;
+        }
+        public virtual bool IsCollidable_(int value)
+        {
+            return IsCollidable;
+        }
+        public virtual bool IsFluidBlocker_(int value)
+        {
+            return IsFluidBlocker;
+        }
+        public virtual bool IsGatherable_(int value)
+        {
+            return IsGatherable;
+        }
+        public virtual bool IsNonDuplicable_(int value)
+        {
+            return IsNonDuplicable;
+        }
+        public virtual bool IsPlaceable_(int value)
+        {
+            return IsPlaceable;
+        }
+        public virtual bool IsPlacementTransparent_(int value)
+        {
+            return IsPlacementTransparent;
+        }
+        public virtual bool IsStickable_(int value)
+        {
+            return IsStickable;
+        }
+
 
         public virtual string GetDescription(int value)
         {

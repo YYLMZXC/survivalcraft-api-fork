@@ -45,7 +45,7 @@ namespace Game
                         particle.TimeToLive = m_random.Float(0.2f, 0.3f);
                         particle.FadeFactor = 1f;
                     }
-                    else if (block.IsCollidable || block is SnowBlock)
+                    else if (block.IsCollidable_(value) || block is SnowBlock)
                     {
                         particle.TimeToLive = m_random.Float(0.8f, 1.2f);
                         particle.FadeFactor = 1f;

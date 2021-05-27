@@ -31,6 +31,8 @@ public static class ModsManager
     public static string ModsSetPath = "app:/ModSettings.xml";
     public static string settingPath = "app:/Settings.xml";
     public static string logPath = "app:/Logs";
+    public const string APIVersion="1.34";
+    public const string SCVersion = "2.2.10.4";
 
 #endif
 #if android
@@ -55,10 +57,9 @@ public static class ModsManager
     {
         public LanguageControl.LanguageType languageType;
     }
-    public static ModSettings modSettings;
-
+    public static ModSettings modSettings=new ModSettings();
+    public static Dictionary<string, Type> TypeCaches = new Dictionary<string, Type>();
     public static List<Assembly> LoadQueque = new List<Assembly>();
-
     public static Dictionary<string, ZipArchive> zip_filelist;
     public static List<FileEntry> quickAddModsFileList = new List<FileEntry>();
     public static XElement CombineXml(XElement node, IEnumerable<FileEntry> files, string attr1 = null, string attr2 = null, string type = null)
@@ -83,44 +84,28 @@ public static class ModsManager
         }
         return node;
     }
-    public static void SaveSettings()
+    public static void SaveSettings(XElement xElement)
     {
-        XElement xElement = new XElement("Settings");
         XElement la = XmlUtils.AddElement(xElement, "Set");
         la.SetAttributeValue("Name", "Language");
         la.SetAttributeValue("Value", (int)modSettings.languageType);
-        using (Stream stream = Storage.OpenFile(settingPath, OpenFileMode.Create))
-        {
-            XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);
-        }
     }
-    public static void GetSetting()
+    public static void LoadSettings(XElement xElement)
     {
-        ModSettings mmodSettings = new ModSettings();
-        if (Storage.FileExists(ModsSetPath))
+        try
         {
-            using (Stream stream = Storage.OpenFile(ModsSetPath, OpenFileMode.Read))
+            foreach (XElement item in xElement.Elements())
             {
-                try
+                if (item.Attribute("Name").Value == "Language")
                 {
-                    foreach (XElement item in XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true).Elements())
-                    {
-                        if (item.Attribute("Name").Value == "Language")
-                        {
-                            mmodSettings.languageType = (LanguageControl.LanguageType)int.Parse(item.Attribute("Value").Value);
-                        }
-                    }
-
+                    modSettings.languageType = (LanguageControl.LanguageType)int.Parse(item.Attribute("Value").Value);
                 }
-                catch { }
             }
-        }
-        else
-        {
-            mmodSettings.languageType = LanguageControl.LanguageType.zh_CN;
-        }
-        modSettings = mmodSettings;
 
+        }
+        catch { 
+        
+        }
     }
     public static void Modify(XElement dst, XElement src, string attr1 = null, string attr2 = null, XName type = null)
     {
@@ -204,8 +189,7 @@ public static class ModsManager
     {
         zip_filelist = new Dictionary<string, ZipArchive>();
         if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
-        GetAllFiles(ModsPath);//获取zip列表
-        GetSetting();//初始化设置
+        GetAllFiles(ModsPath);//获取zip列表        
         List<FileEntry> dlls = GetEntries(".dll");
         int cnt = 0;
         foreach (FileEntry item in dlls)
@@ -221,6 +205,8 @@ public static class ModsManager
             }
         }
     }
+    public static List<Exception> exceptions = new List<Exception>();
+
     public static void GetAllFiles(string path)
     {//获取zip包列表，变成ZipArchive
         foreach (string item in Storage.ListFileNames(path))
@@ -357,18 +343,33 @@ public static class ModsManager
             if (pluginLoaderAttribute != null)
             {
                 ModInfo modInfo = pluginLoaderAttribute.ModInfo;
-                modInfo.FileName = name;
-
-                MethodInfo method;
-                if ((method = types[i].GetMethod("Initialize", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)) != null)
+                if (modInfo.APIVersion == null)
                 {
-                    method.Invoke(Activator.CreateInstance(types[i]), null);
+                    exceptions.Add(new InvalidOperationException($"[{modInfo.Name}]加载失败\n缺少APIVersion声明"));
                 }
-                LoadedMods.Add(modInfo);
-                Log.Information("loaded mod [" + pluginLoaderAttribute.ModInfo.Name + "]");
+                else {
+                    Version modapiver = new Version(modInfo.APIVersion);
+                    Version apiver = new Version(APIVersion);
+                    if (modapiver < apiver)
+                    {
+                        exceptions.Add(new InvalidOperationException($"[{modInfo.Name}]加载失败\nMod要求API版本为:{modapiver}\n当前API版本:{apiver}"));
+                    }
+                    else
+                    {
+                        modInfo.FileName = name;
+                        MethodInfo method;
+                        if ((method = types[i].GetMethod("Initialize", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)) != null)
+                        {
+                            method.Invoke(Activator.CreateInstance(types[i]), null);
+                        }
+                        LoadedMods.Add(modInfo);
+                        Log.Information("loaded mod [" + pluginLoaderAttribute.ModInfo.Name + "]");
+                    }
+                }
             }
         }
     }
+
     public static string GetMd5(string input)
     {
         MD5 md5Hasher = MD5.Create();

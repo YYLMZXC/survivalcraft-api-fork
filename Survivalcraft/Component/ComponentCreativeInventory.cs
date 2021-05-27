@@ -162,7 +162,7 @@ namespace Game
                 return 99980001;
             }
             int num = Terrain.ExtractContents(value);
-            if (BlocksManager.Blocks[num].IsNonDuplicable)
+            if (BlocksManager.Blocks[num].IsNonDuplicable_(value))
             {
                 return 9999;
             }
@@ -234,7 +234,7 @@ namespace Game
             if (slotIndex >= 0 && slotIndex < OpenSlotsCount)
             {
                 int num = Terrain.ExtractContents(m_slots[slotIndex]);
-                if (BlocksManager.Blocks[num].IsNonDuplicable)
+                if (BlocksManager.Blocks[num].IsNonDuplicable_(m_slots[slotIndex]))
                 {
                     m_slots[slotIndex] = 0;
                     return 1;
