@@ -435,7 +435,7 @@ namespace Game
                         Pressure = num4,
                         IsIncendiary = isIncendiary
                     });
-                    if (block.IsCollidable)
+                    if (block.IsCollidable_(cellValue))
                     {
                         return;
                     }

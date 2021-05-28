@@ -88,12 +88,12 @@ namespace Game
             m_cameras.Add(new DeathCamera(this));
             m_cameras.Add(new IntroCamera(this));
             m_cameras.Add(new TppCamera(this));
+            m_cameras.Add(new DebugCamera(this));
             m_cameras.Add(new OrbitCamera(this));
             m_cameras.Add(new FixedCamera(this));
             m_cameras.Add(new LoadingCamera(this));
             m_activeCamera = FindCamera<LoadingCamera>();
         }
-
         public T FindCamera<T>(bool throwOnError = true) where T : Camera
         {
             T val = (T)m_cameras.FirstOrDefault((Camera c) => c is T);

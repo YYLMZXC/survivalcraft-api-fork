@@ -227,7 +227,7 @@ namespace Game
                                 Vector2? vector2 = m_subsystemFluidBlockBehavior.CalculateFlowSpeed(Terrain.ToCell(pickable.Position.X), Terrain.ToCell(pickable.Position.Y + 0.1f), Terrain.ToCell(pickable.Position.Z), out surfaceBlock, out surfaceHeight);
                                 if (!pickable.StuckMatrix.HasValue)
                                 {
-                                    TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(position, vector, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable);
+                                    TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(position, vector, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
                                     if (terrainRaycastResult.HasValue)
                                     {
                                         int contents = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(terrainRaycastResult.Value.CellFace.X, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z));
@@ -236,7 +236,7 @@ namespace Game
                                         {
                                             blockBehaviors[i].OnHitByProjectile(terrainRaycastResult.Value.CellFace, pickable);
                                         }
-                                        if (m_subsystemTerrain.Raycast(position, position, useInteractionBoxes: false, skipAirBlocks: true, (int value2, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value2)].IsCollidable).HasValue)
+                                        if (m_subsystemTerrain.Raycast(position, position, useInteractionBoxes: false, skipAirBlocks: true, (int value2, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value2)].IsCollidable_(value2)).HasValue)
                                         {
                                             int num8 = Terrain.ToCell(position.X);
                                             int num9 = Terrain.ToCell(position.Y);
@@ -305,7 +305,7 @@ namespace Game
                                 else
                                 {
                                     Vector3 vector3 = pickable.StuckMatrix.Value.Translation + pickable.StuckMatrix.Value.Up * block.ProjectileTipOffset;
-                                    if (!m_subsystemTerrain.Raycast(vector3, vector3, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable).HasValue)
+                                    if (!m_subsystemTerrain.Raycast(vector3, vector3, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value)).HasValue)
                                     {
                                         pickable.Position = pickable.StuckMatrix.Value.Translation;
                                         pickable.Velocity = Vector3.Zero;

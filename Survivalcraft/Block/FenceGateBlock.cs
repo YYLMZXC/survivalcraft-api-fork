@@ -181,7 +181,7 @@ namespace Game
             Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
             int data = Terrain.ExtractData(cellValue);
             int data2 = Terrain.ExtractData(cellValue2);
-            int data3 = SetRightHanded(rightHanded: (block is FenceGateBlock && GetRotation(data) == num5) || ((!(block2 is FenceGateBlock) || GetRotation(data2) != num5) && !block.IsCollidable), data: SetOpen(SetRotation(Terrain.ExtractData(value), num5), open: false));
+            int data3 = SetRightHanded(rightHanded: (block is FenceGateBlock && GetRotation(data) == num5) || ((!(block2 is FenceGateBlock) || GetRotation(data2) != num5) && !block.IsCollidable_(cellValue)), data: SetOpen(SetRotation(Terrain.ExtractData(value), num5), open: false));
             BlockPlacementData result = default(BlockPlacementData);
             result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, BlockIndex), data3);
             result.CellFace = raycastResult.CellFace;

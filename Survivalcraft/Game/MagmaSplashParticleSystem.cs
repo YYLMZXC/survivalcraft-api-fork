@@ -91,7 +91,7 @@ namespace Game
                     continue;
                 }
                 Block block = BlocksManager.Blocks[num2];
-                if (block.IsCollidable)
+                if (block.IsCollidable_(cellValue))
                 {
                     particle.IsActive = true;
                 }

@@ -679,28 +679,34 @@ namespace Game
                     }
                 }
             }
-            if (!m_componentPlayer.ComponentInput.IsControlledByVr && (m_cameraButtonWidget.IsClicked || playerInput.SwitchCameraMode))
+            if (m_cameraButtonWidget.IsClicked || playerInput.SwitchCameraMode || input.IsKeyDownOnce(Engine.Input.Key.V) || input.IsPadButtonDownOnce(Engine.Input.GamePadButton.RightThumb) || input.IsPadButtonDownOnce(Engine.Input.GamePadButton.DPadDown))
             {
                 GameWidget gameWidget = m_componentPlayer.GameWidget;
-                if (gameWidget.ActiveCamera.GetType() == typeof(FppCamera))
+                if (gameWidget.ActiveCamera is FppCamera)
                 {
                     gameWidget.ActiveCamera = gameWidget.FindCamera<TppCamera>();
                     DisplaySmallMessage(LanguageControl.Get(fName, 9), Color.White, blinking: false, playNotificationSound: false);
                 }
-                else if (gameWidget.ActiveCamera.GetType() == typeof(TppCamera))
+                else if (gameWidget.ActiveCamera is TppCamera)
                 {
                     gameWidget.ActiveCamera = gameWidget.FindCamera<OrbitCamera>();
                     DisplaySmallMessage(LanguageControl.Get(fName, 10), Color.White, blinking: false, playNotificationSound: false);
                 }
-                else if (gameWidget.ActiveCamera.GetType() == typeof(OrbitCamera))
+                else if (gameWidget.ActiveCamera is OrbitCamera)
                 {
                     gameWidget.ActiveCamera = gameWidget.FindCamera<FixedCamera>();
                     DisplaySmallMessage(LanguageControl.Get(fName, 11), Color.White, blinking: false, playNotificationSound: false);
                 }
                 else
                 {
-                    gameWidget.ActiveCamera = gameWidget.FindCamera<FppCamera>();
-                    DisplaySmallMessage(LanguageControl.Get(fName, 12), Color.White, blinking: false, playNotificationSound: false);
+                    if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && gameWidget.ActiveCamera is FixedCamera)
+                    {                        
+                        gameWidget.ActiveCamera = gameWidget.FindCamera<DebugCamera>();
+                        DisplaySmallMessage(LanguageControl.Get(fName, 19), Color.White, blinking: false, playNotificationSound: false);
+                    }else {
+                        gameWidget.ActiveCamera = gameWidget.FindCamera<FppCamera>();
+                        DisplaySmallMessage(LanguageControl.Get(fName, 12), Color.White, blinking: false, playNotificationSound: false);
+                    }
                 }
             }
             if (m_photoButtonWidget.IsClicked || playerInput.TakeScreenshot)

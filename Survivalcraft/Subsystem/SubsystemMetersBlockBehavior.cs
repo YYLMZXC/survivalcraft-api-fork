@@ -41,8 +41,8 @@ namespace Game
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
             Point3 point = CellFace.FaceToPoint3(Terrain.ExtractData(base.SubsystemTerrain.Terrain.GetCellValue(x, y, z)));
-            int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x - point.X, y - point.Y, z - point.Z);
-            if (BlocksManager.Blocks[cellContents].IsTransparent)
+            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
+            if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue))
             {
                 base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
             }
@@ -247,7 +247,7 @@ namespace Game
                             if (heat2 > 0f && !base.SubsystemTerrain.Raycast(new Vector3(x, y, z) + new Vector3(0.5f, 0.75f, 0.5f), new Vector3(x + k, y + m, z + l) + new Vector3(0.5f, 0.75f, 0.5f), useInteractionBoxes: false, skipAirBlocks: true, delegate (int raycastValue, float d)
                             {
                                 Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(raycastValue)];
-                                return block2.IsCollidable && !block2.IsTransparent;
+                                return block2.IsCollidable_(raycastValue) && !block2.IsTransparent_(raycastValue);
                             }).HasValue)
                             {
                                 num31 += heat2 * 3f / (float)(num32 + 2);

@@ -24,6 +24,9 @@ namespace Game
 
         public static WorldInfo WorldInfo => m_worldInfo;
 
+        public static Action<XElement> ProjectLoad;
+        public static Action<XElement> ProjectSave;
+
         public static void LoadProject(WorldInfo worldInfo, ContainerWidget gamesWidget)
         {
             DisposeProject();
@@ -39,6 +42,7 @@ namespace Game
                 valuesDictionary.SetValue("Views", valuesDictionary3);
                 valuesDictionary3.SetValue("GamesWidget", gamesWidget);
                 XElement projectNode = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
+                ProjectLoad?.Invoke(projectNode);
                 ProjectData projectData = new ProjectData(DatabaseManager.GameDatabase, projectNode, valuesDictionary, ignoreInvalidEntities: true);
                 m_project = new Project(DatabaseManager.GameDatabase, projectData);
                 m_subsystemUpdate = m_project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
@@ -66,6 +70,7 @@ namespace Game
                     {
                         WorldsManager.MakeQuickWorldBackup(subsystemGameInfo.DirectoryName);
                         XElement xElement = new XElement("Project");
+                        ProjectSave?.Invoke(xElement);
                         projectData.Save(xElement);
                         XmlUtils.SetAttributeValue(xElement, "Version", VersionsManager.SerializationVersion);
                         Storage.CreateDirectory(subsystemGameInfo.DirectoryName);

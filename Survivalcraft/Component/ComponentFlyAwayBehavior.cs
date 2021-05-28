@@ -148,8 +148,9 @@ namespace Game
                 int num3 = Terrain.ToCell(position.Z + m_random.Float(-20f, 20f));
                 for (int num4 = 255; num4 >= 0; num4--)
                 {
-                    int cellContents = m_subsystemTerrain.Terrain.GetCellContents(num2, num4, num3);
-                    if (BlocksManager.Blocks[cellContents].IsCollidable || cellContents == 18)
+
+                    int cellValue = m_subsystemTerrain.Terrain.GetCellValue(num2, num4, num3);
+                    if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsCollidable_(cellValue) || Terrain.ExtractContents(cellValue) == 18)
                     {
                         Vector3 vector = new Vector3((float)num2 + 0.5f, (float)num4 + 1.1f, (float)num3 + 0.5f);
                         float num5 = ScoreSafePlace(position, vector, null);

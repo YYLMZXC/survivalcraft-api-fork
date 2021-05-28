@@ -162,7 +162,9 @@ namespace Game
         public int DefaultRotPeriod;
 
         public float DefaultSicknessProbability;
+
         public static string fName = "Block";
+
         protected Random Random = new Random();
 
         private static BoundingBox[] m_defaultCollisionBoxes = new BoundingBox[1]
@@ -197,6 +199,9 @@ namespace Game
         {
             return IsCollidable;
         }
+        public virtual bool IsTransparent_(int value) {
+            return IsTransparent;
+        }
         public virtual bool IsFluidBlocker_(int value)
         {
             return IsFluidBlocker;
@@ -221,8 +226,12 @@ namespace Game
         {
             return IsStickable;
         }
-
-
+        public virtual float GetProjectileSpeed(int value) {
+            return ProjectileSpeed;
+        }
+        public virtual float GetProjectileDamping(int value) {
+            return ProjectileDamping;
+        }
         public virtual string GetDescription(int value)
         {
             int data = Terrain.ExtractData(value);
@@ -231,12 +240,29 @@ namespace Game
             if (string.IsNullOrEmpty(nm)) return DefaultDescription;
             else return nm;
         }
-
+        public virtual FoodType GetFoodType(int value) { return FoodType; }
         public virtual string GetCategory(int value)
         {
             return DefaultCategory;
         }
-
+        public virtual float GetDigResilience(int value) {
+            return DigResilience;
+        }
+        public virtual BlockDigMethod GetBlockDigMethod(int value)
+        {
+            return DigMethod;
+        }
+        public virtual float GetShovelPower(int value) {
+            return ShovelPower;
+        }
+        public virtual float GetQuarryPower(int value)
+        {
+            return QuarryPower;
+        }
+        public virtual float GetHackPower(int value)
+        {
+            return HackPower;
+        }
         public virtual IEnumerable<int> GetCreativeValues()
         {
             if (DefaultCreativeData >= 0)
@@ -457,7 +483,7 @@ namespace Game
 
         public virtual bool IsHeatBlocker(int value)
         {
-            return IsCollidable;
+            return IsCollidable_(value);
         }
 
         public float? Raycast(Ray3 ray, SubsystemTerrain subsystemTerrain, int value, bool useInteractionBoxes, out int nearestBoxIndex, out BoundingBox nearestBox)

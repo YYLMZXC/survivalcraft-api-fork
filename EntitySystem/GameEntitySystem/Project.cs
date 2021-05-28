@@ -10,13 +10,13 @@ namespace GameEntitySystem
 {
 	public class Project : IDisposable
 	{
-		private GameDatabase m_gameDatabase;
+		public GameDatabase m_gameDatabase;
 
-		private DatabaseObject m_projectTemplate;
+		public DatabaseObject m_projectTemplate;
 
-		private List<Subsystem> m_subsystems = new List<Subsystem>();
+		public List<Subsystem> m_subsystems = new List<Subsystem>();
 
-		private Dictionary<Entity, bool> m_entities = new Dictionary<Entity, bool>();
+		public Dictionary<Entity, bool> m_entities = new Dictionary<Entity, bool>();
 
 		public GameDatabase GameDatabase => m_gameDatabase;
 
@@ -30,12 +30,15 @@ namespace GameEntitySystem
 
 		public event EventHandler<EntityAddRemoveEventArgs> EntityRemoved;
 
+		public ProjectData m_projectData;
+
 		public Project(GameDatabase gameDatabase, ProjectData projectData)
 		{
 			try
 			{
 				m_gameDatabase = gameDatabase;
-				m_projectTemplate = projectData.ValuesDictionary.DatabaseObject;
+				m_projectData = projectData;
+				m_projectTemplate = m_projectData.ValuesDictionary.DatabaseObject;
 				Dictionary<string, Subsystem> dictionary = new Dictionary<string, Subsystem>();
 				foreach (ValuesDictionary item in from x in projectData.ValuesDictionary.Values
 					select x as ValuesDictionary into x
@@ -302,7 +305,7 @@ namespace GameEntitySystem
 			}
 		}
 
-		private void FireEntityAddedEvents(Entity entity)
+		public void FireEntityAddedEvents(Entity entity)
 		{
 			foreach (Component component in entity.Components)
 			{
@@ -319,7 +322,7 @@ namespace GameEntitySystem
 			entity.FireEntityAddedEvent();
 		}
 
-		private void FireEntityRemovedEvents(Entity entity)
+		public void FireEntityRemovedEvents(Entity entity)
 		{
 			foreach (Component component in entity.Components)
 			{
@@ -336,7 +339,7 @@ namespace GameEntitySystem
 			entity.FireEntityRemovedEvent();
 		}
 
-		private static Dictionary<Entity, bool> DetermineNotOwnedEntities(IEnumerable<Entity> entities)
+		public static Dictionary<Entity, bool> DetermineNotOwnedEntities(IEnumerable<Entity> entities)
 		{
 			Dictionary<Entity, bool> dictionary = new Dictionary<Entity, bool>();
 			List<Entity> list = new List<Entity>();
@@ -361,7 +364,7 @@ namespace GameEntitySystem
 			return dictionary;
 		}
 
-		private void LoadSubsystem(Subsystem subsystem, Dictionary<string, Subsystem> subsystemsByName, Dictionary<Subsystem, bool> loadedSubsystems, int depth)
+		public void LoadSubsystem(Subsystem subsystem, Dictionary<string, Subsystem> subsystemsByName, Dictionary<Subsystem, bool> loadedSubsystems, int depth)
 		{
 			if (depth > 100)
 			{

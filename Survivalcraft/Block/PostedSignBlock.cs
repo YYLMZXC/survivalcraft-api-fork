@@ -98,7 +98,7 @@ namespace Game
             {
                 return base.GetCategory(value);
             }
-            return LanguageControl.Get("BlocksManager", "Painted");
+            return "Painted";
         }
 
         public override IEnumerable<int> GetCreativeValues()

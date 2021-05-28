@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survivalcraft", "Survivalcr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survivalcraft_android", "Survivalcraft_android\Survivalcraft_android.csproj", "{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{6F48CB29-CB63-4BF6-9FC3-58A4A4B4DD2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,7 +36,6 @@ Global
 		{2B5CFE67-D78B-4CCD-A6BB-616BF772C094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B5CFE67-D78B-4CCD-A6BB-616BF772C094}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{4CC1004A-3B04-4129-8FFA-B2FEFEF6644C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

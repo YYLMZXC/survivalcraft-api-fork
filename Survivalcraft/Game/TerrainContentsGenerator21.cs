@@ -1037,8 +1037,9 @@ namespace Game
                     int num4 = 254;
                     while (num4 >= 0)
                     {
-                        int num5 = Terrain.ExtractContents(chunk.GetCellValueFast(num3));
-                        if (!BlocksManager.Blocks[num5].IsTransparent)
+                        int value5 = chunk.GetCellValueFast(num3);
+                        int num5 = Terrain.ExtractContents(value5);
+                        if (!BlocksManager.Blocks[num5].IsTransparent_(value5))
                         {
                             float num6 = CalculateMountainRangeFactor(num, num2);
                             int temperature = terrain.GetTemperature(num, num2);
@@ -1464,12 +1465,14 @@ namespace Game
                                 flag = false;
                                 break;
                             }
-                            if (BlocksManager.Blocks[terrain.GetCellContentsFast(num11, num9, num12)].IsCollidable)
+                            int cellValue1 = terrain.GetCellValueFast(num11, num9, num12);
+                            int cellValue2 = terrain.GetCellValueFast(num11, num9 - 1, num12);
+                            if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue1)].IsCollidable_(cellValue1))
                             {
                                 flag = false;
                                 break;
                             }
-                            if (BlocksManager.Blocks[terrain.GetCellContentsFast(num11, num9 - 1, num12)].IsCollidable)
+                            if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)].IsCollidable_(cellValue2))
                             {
                                 if (l <= MathUtils.Max(num10 / 2, 0))
                                 {
@@ -1499,23 +1502,28 @@ namespace Game
                                 terrain.SetCellValueFast(num13, num9, num14, treeTrunkValue);
                                 if (m > num10 / 2)
                                 {
-                                    if (random.Bool(0.3f) && !BlocksManager.Blocks[terrain.GetCellContentsFast(num13 + point2.X, num9, num14 + point2.Z)].IsCollidable)
+                                    int value3 = terrain.GetCellValueFast(num13 + point2.X, num9, num14 + point2.Z);
+                                    int value4 = terrain.GetCellValueFast(num13 + point2.X, num9, num14 + point2.Z);
+                                    int value5 = terrain.GetCellValueFast(num13 - point2.X, num9, num14 - point2.Z);
+                                    int value6 = terrain.GetCellValueFast(num13 - point2.X, num9, num14 - point2.Z);
+                                    int value7 = terrain.GetCellValueFast(num13, num9 + 1, num14);
+                                    if (random.Bool(0.3f) && !BlocksManager.Blocks[Terrain.ExtractContents(value3)].IsCollidable_(value3))
                                     {
                                         terrain.SetCellValueFast(num13 + point2.X, num9, num14 + point2.Z, treeLeavesValue);
                                     }
-                                    if (random.Bool(0.05f) && !BlocksManager.Blocks[terrain.GetCellContentsFast(num13 + point2.X, num9, num14 + point2.Z)].IsCollidable)
+                                    if (random.Bool(0.05f) && !BlocksManager.Blocks[Terrain.ExtractContents(value4)].IsCollidable_(value4))
                                     {
                                         terrain.SetCellValueFast(num13 + point2.X, num9, num14 + point2.Z, treeTrunkValue);
                                     }
-                                    if (random.Bool(0.3f) && !BlocksManager.Blocks[terrain.GetCellContentsFast(num13 - point2.X, num9, num14 - point2.Z)].IsCollidable)
+                                    if (random.Bool(0.3f) && !BlocksManager.Blocks[Terrain.ExtractContents(value5)].IsCollidable_(value5))
                                     {
                                         terrain.SetCellValueFast(num13 - point2.X, num9, num14 - point2.Z, treeLeavesValue);
                                     }
-                                    if (random.Bool(0.05f) && !BlocksManager.Blocks[terrain.GetCellContentsFast(num13 - point2.X, num9, num14 - point2.Z)].IsCollidable)
+                                    if (random.Bool(0.05f) && !BlocksManager.Blocks[Terrain.ExtractContents(value6)].IsCollidable_(value6))
                                     {
                                         terrain.SetCellValueFast(num13 - point2.X, num9, num14 - point2.Z, treeTrunkValue);
                                     }
-                                    if (random.Bool(0.1f) && !BlocksManager.Blocks[terrain.GetCellContentsFast(num13, num9 + 1, num14)].IsCollidable)
+                                    if (random.Bool(0.1f) && !BlocksManager.Blocks[Terrain.ExtractContents(value7)].IsCollidable_(value7))
                                     {
                                         terrain.SetCellValueFast(num13, num9 + 1, num14, treeLeavesValue);
                                     }
@@ -1545,7 +1553,12 @@ namespace Game
                             continue;
                         }
                         num19++;
-                        if (!BlocksManager.Blocks[terrain.GetCellContentsFast(num17 + 1, num19, num18)].IsCollidable && !BlocksManager.Blocks[terrain.GetCellContentsFast(num17 - 1, num19, num18)].IsCollidable && !BlocksManager.Blocks[terrain.GetCellContentsFast(num17, num19, num18 + 1)].IsCollidable && !BlocksManager.Blocks[terrain.GetCellContentsFast(num17, num19, num18 - 1)].IsCollidable)
+                        int value1 = terrain.GetCellValueFast(num17 + 1, num19, num18);
+                        int value2 = terrain.GetCellValueFast(num17 - 1, num19, num18);
+                        int value3 = terrain.GetCellValueFast(num17, num19, num18 + 1);
+                        int value4 = terrain.GetCellValueFast(num17, num19, num18 - 1);
+
+                        if (!BlocksManager.Blocks[Terrain.ExtractContents(value1)].IsCollidable_(value1) && !BlocksManager.Blocks[Terrain.ExtractContents(value2)].IsCollidable_(value2) && !BlocksManager.Blocks[Terrain.ExtractContents(value3)].IsCollidable_(value3) && !BlocksManager.Blocks[Terrain.ExtractContents(value4)].IsCollidable_(value4))
                         {
                             TreeType? treeType2 = PlantsManager.GenerateRandomTreeType(random, num3 + SubsystemWeather.GetTemperatureAdjustmentAtHeight(num19), humidity, num19);
                             if (treeType2.HasValue)

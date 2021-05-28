@@ -261,23 +261,7 @@ public class ManageContentScreen : Screen
             foreach (string mods in modfiles)
             {
                 if (mods.EndsWith(".scmod")|| mods.EndsWith(".zip")) {
-                    string name = mods;
-                    string desc = mods;
-                    string P = Storage.CombinePaths(ModsManager.ModsPath, mods);
-                    ModInfo? modInfo = (ModInfo?)ModsManager.LoadedMods.Find(p=>p.FileName==mods);
-                    if (modInfo.HasValue)
-                    {
-                        name = $"{modInfo.Value.Name} 版本{modInfo.Value.ModVersion}";
-                        desc = modInfo.Value.Description;
-                    }
-                    list.Add(new ListItem
-                    {
-                        Name = desc,
-                        IsBuiltIn = false,
-                        Type = ExternalContentType.Mod,
-                        DisplayName = name,
-                        CreationTime = Storage.GetFileLastWriteTime(P)
-                    });
+                    //读取mod信息转换为列表
 
                 }
             }

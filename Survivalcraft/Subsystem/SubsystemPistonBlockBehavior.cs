@@ -588,8 +588,7 @@ namespace Game
 
         public static bool IsBlockBlocking(int value)
         {
-            int num = Terrain.ExtractContents(value);
-            return BlocksManager.Blocks[num].IsCollidable;
+            return BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value);
         }
     }
 }

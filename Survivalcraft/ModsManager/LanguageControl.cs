@@ -2,7 +2,7 @@
 using SimpleJson;
 using System.Collections.Generic;
 using System.IO;
-
+using System;
 namespace Game
 {
     public static class LanguageControl
@@ -16,38 +16,26 @@ namespace Game
             en_US,
             ot_OT
         }
-        public static void init(LanguageType languageType)
+        public static void Initialize(LanguageType languageType)
         {
             items = new Dictionary<string, Dictionary<string, string>>();
             items2 = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
             string name = "app:lang/" + languageType.ToString() + ".json";
-            List<FileEntry> langs = ModsManager.GetEntries(".json");
-            try
-            {//没有找到文件,加载默认
-                Stream ssa = Storage.OpenFile(name, OpenFileMode.Read);
-                loadJson(ssa);
-                foreach (FileEntry entry in langs)
-                {
-                    string filename = Storage.GetFileName(entry.Filename);
-                    if (filename.StartsWith(languageType.ToString()))
-                    { //加载该语言包
-                        loadJson(entry.Stream); break;
-                    }
-                }
-            }
-            catch
+            for (int i = 0; i < ModsManager.WaitToLoadMods.Count; i++)
             {
-                loadJson(Storage.OpenFile("app:lang/" + LanguageType.zh_CN.ToString() + ".json", OpenFileMode.Read));
-                foreach (FileEntry entry in langs)
+                try
                 {
-                    string filename = Storage.GetFileName(entry.Filename);
-                    if (filename.StartsWith(LanguageType.zh_CN.ToString()))
-                    { //加载该语言包
-                        loadJson(entry.Stream); break;
-                    }
+                    ModEntity modEntity = ModsManager.WaitToLoadMods[i];
+                    LoadingScreen.SetMsg($"初始化语言包:[{modEntity.modInfo.Name}]");
+                    modEntity.InitLauguage();
+                    modEntity.InitPak();
                 }
-
+                catch (Exception e)
+                {
+                    ModsManager.exceptions.Add(e);
+                }
             }
+
         }
         public static void loadJson(Stream stream)
         {

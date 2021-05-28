@@ -113,7 +113,7 @@ namespace Game
                 }
             }
             Vector3 end = vector + v * block.ProjectileTipOffset;
-            if (!m_subsystemTerrain.Raycast(position, end, useInteractionBoxes: false, skipAirBlocks: true, (int testValue, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(testValue)].IsCollidable).HasValue)
+            if (!m_subsystemTerrain.Raycast(position, end, useInteractionBoxes: false, skipAirBlocks: true, (int testValue, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(testValue)].IsCollidable_(testValue)).HasValue)
             {
                 Projectile projectile = AddProjectile(value, vector, velocity, angularVelocity, owner);
                 SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num);
@@ -222,7 +222,7 @@ namespace Game
                         Vector3 vector = position + projectile.Velocity * dt;
                         Vector3 v = block.ProjectileTipOffset * Vector3.Normalize(projectile.Velocity);
                         BodyRaycastResult? bodyRaycastResult = m_subsystemBodies.Raycast(position + v, vector + v, 0.2f, (ComponentBody body, float distance) => true);
-                        TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(position + v, vector + v, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable);
+                        TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(position + v, vector + v, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
                         bool flag = block.DisintegratesOnHit;
                         if (terrainRaycastResult.HasValue || bodyRaycastResult.HasValue)
                         {
@@ -349,7 +349,7 @@ namespace Game
                                 }
                             }
                         }
-                        float num5 = projectile.IsInWater ? MathUtils.Pow(0.001f, dt) : MathUtils.Pow(block.ProjectileDamping, dt);
+                        float num5 = projectile.IsInWater ? MathUtils.Pow(0.001f, dt) : MathUtils.Pow(block.GetProjectileDamping(projectile.Value), dt);
                         projectile.Velocity.Y += -10f * dt;
                         projectile.Velocity *= num5;
                         projectile.AngularVelocity *= num5;

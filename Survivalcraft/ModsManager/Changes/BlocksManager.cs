@@ -109,14 +109,9 @@ namespace Game
             string data = ContentManager.Get<string>("BlocksData");
             ContentManager.Dispose("BlocksData");
             LoadBlocksData(data);
-            List<FileEntry> blocklist = ModsManager.GetEntries(".csv");
-            foreach (FileEntry file in blocklist)
-            {
-                file.Stream.Position = 0L;
-                StreamReader reader = new StreamReader(file.Stream);
-                string text = reader.ReadToEnd();
-                LoadBlocksData(text);
-            }
+
+
+
             Block[] blocks = Blocks;
             for (int j = 0; j < blocks.Length; j++)
             {

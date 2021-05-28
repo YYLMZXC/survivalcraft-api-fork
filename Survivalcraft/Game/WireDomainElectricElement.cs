@@ -47,7 +47,7 @@ namespace Game
                 Point3 point = CellFace.FaceToPoint3(cellFace.Face);
                 int cellValue2 = base.SubsystemElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X - point.X, cellFace.Y - point.Y, cellFace.Z - point.Z);
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
-                if (!block.IsCollidable_(cellValue) || block.IsTransparent)
+                if (!block.IsCollidable_(cellValue2) || block.IsTransparent_(cellValue2))
                 {
                     num2 &= ~(1 << cellFace.Face);
                 }

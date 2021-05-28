@@ -30,11 +30,13 @@ namespace Game
         public static ICollection<ValuesDictionary> EntitiesValuesDictionaries => m_valueDictionaries.Values;
 
         public static void Initialize()
-        {
-            if (m_gameDatabase != null) return;
+        {            
             XElement node = ContentManager.Get<XElement>("Database");
             ContentManager.Dispose("Database");
-            ModsManager.CombineXml(node, ModsManager.GetEntries(".xdb"), "Guid", "Name");
+            LoadDataBaseFromXml(node);
+        }
+        public static void LoadDataBaseFromXml(XElement node) {
+
             m_gameDatabase = new GameDatabase(XmlDatabaseSerializer.LoadDatabase(node));
             foreach (DatabaseObject explicitNestingChild in GameDatabase.Database.Root.GetExplicitNestingChildren(GameDatabase.EntityTemplateType, directChildrenOnly: false))
             {
@@ -42,6 +44,7 @@ namespace Game
                 valuesDictionary.PopulateFromDatabaseObject(explicitNestingChild);
                 m_valueDictionaries.Add(explicitNestingChild.Name, valuesDictionary);
             }
+
         }
 
         public static ValuesDictionary FindEntityValuesDictionary(string entityTemplateName, bool throwIfNotFound)

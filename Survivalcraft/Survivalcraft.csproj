@@ -408,8 +408,7 @@
     <Compile Include="Managers\WebBrowserManager.cs" />
     <Compile Include="Managers\WebManager.cs" />
     <Compile Include="Managers\WorldsManager.cs" />
-    <Compile Include="ModsManager\LocalLoader.cs" />
-    <Compile Include="ModsManager\RemoteLoader.cs" />
+    <Compile Include="ModsManager\ModLoader.cs" />
     <Compile Include="Screen\BestiaryDescriptionScreen.cs" />
     <Compile Include="Screen\BestiaryScreen.cs" />
     <Compile Include="Screen\CommunityContentScreen.cs" />
@@ -947,10 +946,9 @@
     <Compile Include="ModsManager\Changes\CraftingRecipesManager.cs" />
     <Compile Include="ModsManager\Changes\DatabaseManager.cs" />
     <Compile Include="ModsManager\Changes\ClothingBlock.cs" />
-    <Compile Include="ModsManager\FileEntry.cs" />
+    <Compile Include="ModsManager\ModEntity.cs" />
     <Compile Include="ModsManager\ModInfo.cs" />
     <Compile Include="ModsManager\ModsManager.cs" />
-    <Compile Include="ModsManager\PluginLoaderAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1090,7 +1088,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

@@ -60,7 +60,7 @@ namespace Game
                     if (button == MessageDialogButton.Button1)
                     {
                         ModsManager.modSettings.languageType = (LanguageControl.LanguageType)((int)(ModsManager.modSettings.languageType + 1) % EnumUtils.GetEnumValues(typeof(LanguageControl.LanguageType)).Count);
-                        LanguageControl.init(ModsManager.modSettings.languageType);
+                        LanguageControl.Initialize(ModsManager.modSettings.languageType);
                         ScreensManager.m_screens["MainMenu"] = new MainMenuScreen();
                         ScreensManager.m_screens["Recipaedia"] = new RecipaediaScreen();
                         ScreensManager.m_screens["RecipaediaRecipes"] = new RecipaediaRecipesScreen();

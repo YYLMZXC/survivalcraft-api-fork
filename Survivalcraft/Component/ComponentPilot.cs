@@ -229,7 +229,7 @@ namespace Game
                     {
                         if (RaycastDestination)
                         {
-                            if (!m_subsystemTerrain.Raycast(position + new Vector3(0f, 0.5f, 0f), v + new Vector3(0f, 0.5f, 0f), useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable).HasValue)
+                            if (!m_subsystemTerrain.Raycast(position + new Vector3(0f, 0.5f, 0f), v + new Vector3(0f, 0.5f, 0f), useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value)).HasValue)
                             {
                                 Destination = null;
                             }
@@ -283,7 +283,7 @@ namespace Game
                         {
                             return false;
                         }
-                        if (block.IsCollidable)
+                        if (block.IsCollidable_(cellValue))
                         {
                             break;
                         }
@@ -297,7 +297,7 @@ namespace Game
             {
                 int cellValue2 = m_subsystemTerrain.Terrain.GetCellValue(Terrain.ToCell(vector2.X), Terrain.ToCell(vector2.Y) + num3, Terrain.ToCell(vector2.Z));
                 Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
-                if ((block2.IsCollidable || block2.BlockIndex == 18) && !block2.ShouldAvoid(cellValue2))
+                if ((block2.IsCollidable_(cellValue2) || block2.BlockIndex == 18) && !block2.ShouldAvoid(cellValue2))
                 {
                     flag = false;
                     break;

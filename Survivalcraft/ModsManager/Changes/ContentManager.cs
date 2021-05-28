@@ -4,30 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-
+using System.IO;
 namespace Game
 {
     public static class ContentManager
     {
-        public static bool Loaded = false;
         public static void Initialize()
         {
-            if(Loaded)return;
             ContentCache.AddPackage("app:/Content.pak", Encoding.UTF8.GetBytes(Pad()), new byte[1]
             {
                 63
             });
-            ModsManager.Initialize();
-            LanguageControl.init(ModsManager.modSettings.languageType);
-            List<FileEntry> list = ModsManager.GetEntries(".pak");
-            foreach (FileEntry fileEntry in list)
-            {
-                ContentCache.AddPackage(() => fileEntry.Stream, Encoding.UTF8.GetBytes(Pad()), new byte[1]
-            {
-                63
-            });
-            }
-            Loaded = true;
         }
 
         public static object Get(string name)
@@ -56,6 +43,10 @@ namespace Game
         public static T Get<T>(string name)
         {
             return (T)Get(typeof(T), name);
+        }
+
+        public static void Add(Stream stream) {
+            ContentCache.AddPackage(()=> { return stream; }, Encoding.UTF8.GetBytes(Pad()), new byte[1] { 63 });
         }
 
         public static void Dispose(string name)

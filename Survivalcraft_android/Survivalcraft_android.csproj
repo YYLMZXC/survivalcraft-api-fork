@@ -2126,6 +2126,9 @@
     <Compile Include="..\Survivalcraft\Managers\ExceptionManager.cs">
       <Link>Managers\ExceptionManager.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Managers\ExternalContentManager.cs">
+      <Link>Managers\ExternalContentManager.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Managers\FurniturePacksManager.cs">
       <Link>Managers\FurniturePacksManager.cs</Link>
     </Compile>
@@ -2212,9 +2215,6 @@
     </Compile>
     <Compile Include="..\Survivalcraft\ModsManager\ModsManager.cs">
       <Link>ModsManager\ModsManager.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\ModsManager\PluginLoaderAttribute.cs">
-      <Link>ModsManager\PluginLoaderAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Screen\BestiaryDescriptionScreen.cs">
       <Link>Screen\BestiaryDescriptionScreen.cs</Link>
@@ -2837,7 +2837,6 @@
     <Compile Include="ContentProvider\IExternalContentProvider.cs" />
     <Compile Include="ContentProvider\TransferShExternalContentProvider.cs" />
     <Compile Include="Managers\ClipboardManager.cs" />
-    <Compile Include="Managers\ExternalContentManager.cs" />
     <Compile Include="Managers\ScreenCaptureManager.cs" />
     <Compile Include="Managers\WebManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

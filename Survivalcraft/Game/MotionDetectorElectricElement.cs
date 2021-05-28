@@ -70,7 +70,7 @@ namespace Game
                     if (num2 < 64f && Vector3.Dot(Vector3.Normalize(vector - (m_center - 0.75f * m_direction)), m_direction) > 0.5f && !base.SubsystemElectricity.SubsystemTerrain.Raycast(m_center, vector, useInteractionBoxes: false, skipAirBlocks: true, delegate (int value, float d)
                     {
                         Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-                        return block.IsCollidable && block.BlockIndex != 15 && block.BlockIndex != 60 && block.BlockIndex != 44 && block.BlockIndex != 18;
+                        return block.IsCollidable_(value) && block.BlockIndex != 15 && block.BlockIndex != 60 && block.BlockIndex != 44 && block.BlockIndex != 18;
                     }).HasValue)
                     {
                         num = MathUtils.Max(num, MathUtils.Saturate(1f - MathUtils.Sqrt(num2) / 8f));

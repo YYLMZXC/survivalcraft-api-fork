@@ -100,7 +100,7 @@ namespace Game
                 {
                     return;
                 }
-                if (block.IsCollidable)
+                if (block.IsCollidable_(cellValue))
                 {
                     float blockWalkingHeight = GetBlockWalkingHeight(block, cellValue);
                     if (blockWalkingHeight > 0.5f && (block.NoAutoJump || block.NoSmoothRise))
@@ -122,7 +122,7 @@ namespace Game
                         {
                             return;
                         }
-                        if (block2.IsCollidable)
+                        if (block2.IsCollidable_(cellValue2))
                         {
                             y = num3 + num6 + 1;
                             flag = true;
@@ -196,7 +196,7 @@ namespace Game
                                 {
                                     return true;
                                 }
-                                if (block.IsCollidable)
+                                if (block.IsCollidable_(cellValueFast))
                                 {
                                     Vector3 v = new Vector3(i, num8, j);
                                     BoundingBox[] customCollisionBoxes = block.GetCustomCollisionBoxes(SubsystemTerrain, cellValueFast);
@@ -364,7 +364,7 @@ namespace Game
             {
                 return true;
             }
-            if (block.IsCollidable)
+            if (block.IsCollidable_(value))
             {
                 return true;
             }

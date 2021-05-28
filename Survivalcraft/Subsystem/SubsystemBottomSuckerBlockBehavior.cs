@@ -29,7 +29,7 @@ namespace Game
         public bool IsSupport(int value, int face)
         {
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-            if (block.IsCollidable)
+            if (block.IsCollidable_(value))
             {
                 return !block.IsFaceTransparent(base.SubsystemTerrain, CellFace.OppositeFace(face), value);
             }

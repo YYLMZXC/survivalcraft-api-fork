@@ -73,21 +73,21 @@ namespace Game
                 bool upsideDown = TrapdoorBlock.GetUpsideDown(data);
                 bool flag = false;
                 Point3 point = CellFace.FaceToPoint3(rotation);
-                int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x - point.X, y - point.Y, z - point.Z);
-                flag |= !BlocksManager.Blocks[cellContents].IsTransparent;
+                int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
+                flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)].IsTransparent_(cellValue2);
                 if (upsideDown)
                 {
-                    int cellContents2 = base.SubsystemTerrain.Terrain.GetCellContents(x, y + 1, z);
-                    flag |= !BlocksManager.Blocks[cellContents2].IsTransparent;
-                    int cellContents3 = base.SubsystemTerrain.Terrain.GetCellContents(x - point.X, y - point.Y + 1, z - point.Z);
-                    flag |= !BlocksManager.Blocks[cellContents3].IsTransparent;
+                    int cellValue3 = base.SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
+                    flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue3)].IsTransparent_(cellValue3);
+                    int cellValue4 = base.SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y + 1, z - point.Z);
+                    flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue4)].IsTransparent_(cellValue4);
                 }
                 else
                 {
-                    int cellContents4 = base.SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
-                    flag |= !BlocksManager.Blocks[cellContents4].IsTransparent;
-                    int cellContents5 = base.SubsystemTerrain.Terrain.GetCellContents(x - point.X, y - point.Y - 1, z - point.Z);
-                    flag |= !BlocksManager.Blocks[cellContents5].IsTransparent;
+                    int cellValue5 = base.SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+                    flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue5)].IsTransparent_(cellValue5);
+                    int cellValue6 = base.SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y - 1, z - point.Z);
+                    flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue6)].IsTransparent_(cellValue6);
                 }
                 if (!flag)
                 {

@@ -265,7 +265,7 @@ namespace Game
             particle.YLimit = m_yLimit;
             particle.GenerateSplash = true;
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(m_topmostValue)];
-            if (!block.IsTransparent)
+            if (!block.IsTransparent_(m_topmostValue))
             {
                 return;
             }

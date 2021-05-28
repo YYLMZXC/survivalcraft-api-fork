@@ -76,7 +76,7 @@ namespace Game
             {
                 return base.GetCategory(value);
             }
-            return LanguageControl.Get("BlocksManager", "Painted");
+            return "Painted";
         }
 
         public override int GetFace(int value)

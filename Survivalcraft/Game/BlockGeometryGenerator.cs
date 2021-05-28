@@ -173,7 +173,7 @@ namespace Game
             TerrainChunk chunkAtCell4 = Terrain.GetChunkAtCell(x, z - 1);
             TerrainChunk chunkAtCell5 = Terrain.GetChunkAtCell(x - 1, z);
             int cellValueFast = chunkAtCell2.GetCellValueFast(x & 0xF, y, (z + 1) & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices = subsetsByFace[0].Vertices;
                 DynamicArray<ushort> indices = subsetsByFace[0].Indices;
@@ -194,7 +194,7 @@ namespace Game
                 indices.Array[count2 + 5] = (ushort)(count + 3);
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices2 = subsetsByFace[1].Vertices;
                 DynamicArray<ushort> indices2 = subsetsByFace[1].Indices;
@@ -215,7 +215,7 @@ namespace Game
                 indices2.Array[count4 + 5] = (ushort)(count3 + 3);
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices3 = subsetsByFace[2].Vertices;
                 DynamicArray<ushort> indices3 = subsetsByFace[2].Indices;
@@ -236,7 +236,7 @@ namespace Game
                 indices3.Array[count6 + 5] = (ushort)count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices4 = subsetsByFace[3].Vertices;
                 DynamicArray<ushort> indices4 = subsetsByFace[3].Indices;
@@ -257,7 +257,7 @@ namespace Game
                 indices4.Array[count8 + 5] = (ushort)count7;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices5 = subsetsByFace[4].Vertices;
                 DynamicArray<ushort> indices5 = subsetsByFace[4].Indices;
@@ -278,7 +278,7 @@ namespace Game
                 indices5.Array[count10 + 5] = (ushort)count9;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices6 = subsetsByFace[5].Vertices;
                 DynamicArray<ushort> indices6 = subsetsByFace[5].Indices;
@@ -309,7 +309,7 @@ namespace Game
             TerrainChunk chunkAtCell4 = Terrain.GetChunkAtCell(x, z - 1);
             TerrainChunk chunkAtCell5 = Terrain.GetChunkAtCell(x - 1, z);
             int cellValueFast = chunkAtCell2.GetCellValueFast(x & 0xF, y, (z + 1) & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices = subsetsByFace[0].Vertices;
                 DynamicArray<ushort> indices = subsetsByFace[0].Indices;
@@ -330,7 +330,7 @@ namespace Game
                 indices.Array[count2 + 5] = (ushort)(count + 3);
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices2 = subsetsByFace[1].Vertices;
                 DynamicArray<ushort> indices2 = subsetsByFace[1].Indices;
@@ -351,7 +351,7 @@ namespace Game
                 indices2.Array[count4 + 5] = (ushort)(count3 + 3);
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices3 = subsetsByFace[2].Vertices;
                 DynamicArray<ushort> indices3 = subsetsByFace[2].Indices;
@@ -372,7 +372,7 @@ namespace Game
                 indices3.Array[count6 + 5] = (ushort)count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices4 = subsetsByFace[3].Vertices;
                 DynamicArray<ushort> indices4 = subsetsByFace[3].Indices;
@@ -393,7 +393,7 @@ namespace Game
                 indices4.Array[count8 + 5] = (ushort)count7;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF);
-            if ((Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast)) || height11 < 1f || height12 < 1f || height21 < 1f || height22 < 1f)
+            if (( block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast)) || height11 < 1f || height12 < 1f || height21 < 1f || height22 < 1f)
             {
                 DynamicArray<TerrainVertex> vertices5 = subsetsByFace[4].Vertices;
                 DynamicArray<ushort> indices5 = subsetsByFace[4].Indices;
@@ -414,7 +414,7 @@ namespace Game
                 indices5.Array[count10 + 5] = (ushort)count9;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices6 = subsetsByFace[5].Vertices;
                 DynamicArray<ushort> indices6 = subsetsByFace[5].Indices;
@@ -445,7 +445,7 @@ namespace Game
             TerrainChunk chunkAtCell4 = Terrain.GetChunkAtCell(x, z - 1);
             TerrainChunk chunkAtCell5 = Terrain.GetChunkAtCell(x - 1, z);
             int cellValueFast = chunkAtCell2.GetCellValueFast(x & 0xF, y, (z + 1) & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices = subsetsByFace[0].Vertices;
                 DynamicArray<ushort> indices = subsetsByFace[0].Indices;
@@ -466,7 +466,7 @@ namespace Game
                 indices.Array[count2 + 5] = (ushort)(count + 3);
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices2 = subsetsByFace[1].Vertices;
                 DynamicArray<ushort> indices2 = subsetsByFace[1].Indices;
@@ -487,7 +487,7 @@ namespace Game
                 indices2.Array[count4 + 5] = (ushort)(count3 + 3);
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices3 = subsetsByFace[2].Vertices;
                 DynamicArray<ushort> indices3 = subsetsByFace[2].Indices;
@@ -508,7 +508,7 @@ namespace Game
                 indices3.Array[count6 + 5] = (ushort)count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices4 = subsetsByFace[3].Vertices;
                 DynamicArray<ushort> indices4 = subsetsByFace[3].Indices;
@@ -529,7 +529,7 @@ namespace Game
                 indices4.Array[count8 + 5] = (ushort)count7;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices5 = subsetsByFace[4].Vertices;
                 DynamicArray<ushort> indices5 = subsetsByFace[4].Indices;
@@ -550,7 +550,7 @@ namespace Game
                 indices5.Array[count10 + 5] = (ushort)count9;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF);
-            if (Terrain.ExtractContents(cellValueFast) != blockIndex && block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast))
+            if ( block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices6 = subsetsByFace[5].Vertices;
                 DynamicArray<ushort> indices6 = subsetsByFace[5].Indices;

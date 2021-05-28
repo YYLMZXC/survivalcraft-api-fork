@@ -24,7 +24,10 @@ namespace Game
 
         public LabelWidget labelWidget = new LabelWidget() { Text="API v1.34",Color=Color.Red,VerticalAlignment=WidgetAlignment.Far, HorizontalAlignment=WidgetAlignment.Center};
 
-        public LabelWidget labelWidget2 = new LabelWidget() { Color=Color.Red, VerticalAlignment = WidgetAlignment.Far,HorizontalAlignment = WidgetAlignment.Near,Margin=new Vector2(300,0)};
+        public static LabelWidget labelWidget2 = new LabelWidget() { Color=Color.Red, VerticalAlignment = WidgetAlignment.Far,HorizontalAlignment = WidgetAlignment.Near,Margin=new Vector2(300,0)};
+
+        public XElement DatabaseNode;
+
 
         public LoadingScreen()
         {
@@ -33,12 +36,67 @@ namespace Game
             panelWidget.Children.Add(labelWidget);
             panelWidget.Children.Add(labelWidget2);
             Children.Add(panelWidget);
+            InitActions();
+        }
+
+        public void InitActions() {
+            AddLoadAction(() => {
+                SetMsg("初始化ModsManager");
+                ModsManager.GetAllFiles(ModsManager.ModsPath);
+            });
+
+            foreach (ModEntity entity in ModsManager.WaitToLoadMods) {
+                AddLoadAction(() => {
+                    SetMsg($"检查Mod依赖项:{entity.modInfo.Name}");
+                    entity.CheckDependencies();
+                });
+            }
+            foreach (ModEntity entity in ModsManager.CacheToLoadMods)
+            {
+                AddLoadAction(() => {
+                    SetMsg($"加载Dll:{entity.modInfo.Name}");
+                    try {
+                        entity.LoadDll();
+                    }
+                    catch (Exception e) {
+                        ModsManager.exceptions.Add(e);
+                        ModsManager.CacheToLoadMods.Remove(entity);
+                    }
+                });
+            }
+            ModsManager.WaitToLoadMods.Clear();
+            AddLoadAction(()=> {
+                LoadingScreen.SetMsg("初始化语言包:[SurvivalCraft]");
+                LanguageControl.Initialize(ModsManager.modSettings.languageType);
+            });
+
+            foreach (ContentInfo item in ContentManager.List())
+            {
+                ContentInfo localContentInfo = item;
+                AddLoadAction(delegate
+                {
+                    SetMsg($"检查Pak:{localContentInfo.Name}");
+                    ContentManager.Get(localContentInfo.Name);
+                });
+            }
+            
             AddLoadAction(delegate
             {
-                SetMsg("初始化DatabaseManager");
-                DatabaseManager.Initialize();
+                DatabaseNode = ContentManager.Get<XElement>("Database");
+                SetMsg("初始化DatabaseManager:[SurvivalCraft]");
             });
-            AddLoadAction(delegate
+
+            foreach (ModEntity entity in ModsManager.CacheToLoadMods)
+            {
+                AddLoadAction(()=> { 
+                
+                });
+            
+            }
+
+
+
+                AddLoadAction(delegate
             {
                 SetMsg("初始化CommunityContentManager");
                 CommunityContentManager.Initialize();
@@ -63,7 +121,6 @@ namespace Game
                 SetMsg("初始化TextureAtlasManager");
                 TextureAtlasManager.LoadAtlases();
             });
-
             AddLoadAction(delegate
             {
                 SetMsg("初始化WorldsManager");
@@ -99,15 +156,6 @@ namespace Game
                 SetMsg("初始化MusicManager");
                 MusicManager.CurrentMix = MusicManager.Mix.Menu;
             });
-            foreach (ContentInfo item in ContentManager.List())
-            {
-                ContentInfo localContentInfo = item;
-                AddLoadAction(delegate
-                {
-                    SetMsg("检查文件" + localContentInfo.Name);
-                    ContentManager.Get(localContentInfo.Name);
-                });
-            }
 
         }
 
@@ -115,7 +163,7 @@ namespace Game
         {
             m_loadActions.Add(action);
         }
-        public void SetMsg(string text) {
+        public static void SetMsg(string text) {
             labelWidget2.Text = text;
         }
         public override void Leave()

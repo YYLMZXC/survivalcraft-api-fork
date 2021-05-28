@@ -9,16 +9,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
 using XmlUtilities;
+using SimpleJson;
+using SimpleJson.Reflection;
+
+
 
 public static class ModsManager
 {
     public static Dictionary<string, ZipArchive> Archives;
-
-    public static Action Initialized;
-
-    public static List<ModInfo> LoadedMods=new List<ModInfo>();
-
-    public static Func<XElement, IEnumerable<FileEntry>, string, string, string, XElement> CombineXml1;
     public const string APIVersion = "1.34";
     public const string SCVersion = "2.2.10.4";
 
@@ -58,31 +56,71 @@ public static class ModsManager
         public LanguageControl.LanguageType languageType;
     }
     public static ModSettings modSettings=new ModSettings();
-    public static Dictionary<string, Type> TypeCaches = new Dictionary<string, Type>();
-    public static Dictionary<string, ZipArchive> zip_filelist;
-    public static List<FileEntry> quickAddModsFileList = new List<FileEntry>();
-    public static List<LocalLoader> localLoaders = new List<LocalLoader>();
-    public static XElement CombineXml(XElement node, IEnumerable<FileEntry> files, string attr1 = null, string attr2 = null, string type = null)
+    public static List<Exception> exceptions = new List<Exception>();
+    public static List<ModEntity> LoadedMods = new List<ModEntity>();
+    public static List<ModEntity> CacheToLoadMods = new List<ModEntity>();
+    public static List<ModEntity> WaitToLoadMods = new List<ModEntity>();
+    public static T DeserializeJson<T>(string text) where T : class
     {
-        Func<XElement, IEnumerable<FileEntry>, string, string, string, XElement> combineXml = CombineXml1;
-        if (combineXml != null)
+        JsonObject obj = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(text, typeof(JsonObject));
+        T outobj = Activator.CreateInstance(typeof(T)) as T;
+        Type outtype = outobj.GetType();
+        foreach (var c in obj)
         {
-            return combineXml(node, files, attr1, attr2, type);
-        }
-        IEnumerator<FileEntry> enumerator = files.GetEnumerator();
-        while (enumerator.MoveNext())
-        {
-            try
+            FieldInfo[] fieldInfos = outtype.GetFields();
+            FieldInfo field = outtype.GetField(c.Key, BindingFlags.Public | BindingFlags.Instance);
+            if (field == null) continue;
+            if (c.Value is JsonArray)
             {
-                XElement src = XmlUtils.LoadXmlFromStream(enumerator.Current.Stream, null, throwOnError: true);
-                Modify(node, src, attr1, attr2, type);
+                JsonArray jsonArray = c.Value as JsonArray;
+                Type[] types = field.FieldType.GetGenericArguments();
+                var list1 = Activator.CreateInstance(typeof(List<>).MakeGenericType(types));
+                foreach (var item in jsonArray)
+                {
+                    Type type = list1.GetType();
+                    MethodInfo methodInfo = type.GetMethod("Add");
+                    if (types.Length == 1)
+                    {
+                        string tn = types[0].Name.ToLower();
+                        switch (tn)
+                        {
+                            case "int32":
+                                int.TryParse(item.ToString(), out int r);
+                                methodInfo.Invoke(list1, new object[] { r });
+                                break;
+                            case "int64":
+                                long.TryParse(item.ToString(), out long r1);
+                                methodInfo.Invoke(list1, new object[] { r1 });
+                                break;
+                            case "single":
+                                float.TryParse(item.ToString(), out float r2);
+                                methodInfo.Invoke(list1, new object[] { r2 });
+                                break;
+                            case "double":
+                                double.TryParse(item.ToString(), out double r3);
+                                methodInfo.Invoke(list1, new object[] { r3 });
+                                break;
+                            case "bool":
+                                bool.TryParse(item.ToString(), out bool r4);
+                                methodInfo.Invoke(list1, new object[] { r4 });
+                                break;
+                            default:
+                                methodInfo.Invoke(list1, new object[] { item });
+                                break;
+                        }
+                    }
+                }
+                if (list1 != null)
+                {
+                    field.SetValue(outobj, list1);
+                }
             }
-            catch (Exception arg)
+            else
             {
-                throw new InvalidDataException(arg.Message);
+                field.SetValue(outobj, c.Value);
             }
         }
-        return node;
+        return outobj;
     }
     public static void SaveSettings(XElement xElement)
     {
@@ -173,7 +211,6 @@ public static class ModsManager
             enumerator4.Current.Remove();
         }
     }
-
     public static string ImportMod(string name,Stream stream) {
         string path = Storage.CombinePaths(ModsPath,name);
         Stream fileStream = Storage.OpenFile(path,OpenFileMode.CreateOrOpen);
@@ -187,47 +224,30 @@ public static class ModsManager
     }
     public static void Initialize()
     {
-        zip_filelist = new Dictionary<string, ZipArchive>();
         if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
-        GetAllFiles(ModsPath);//获取zip列表        
-        List<FileEntry> dlls = GetEntries(".dll");
-        int cnt = 0;
-        foreach (FileEntry item in dlls)
-        {
-            try
-            {
-                LocalLoader localLoader = new LocalLoader(item.Filename, StreamToBytes(item.Stream));
-                localLoaders.Add(localLoader);
-                LoadMod(item.SourceFile, localLoader.Assembly);
-            }
-            catch
-            {
-                Log.Error("未能成功加载[" + item.Filename + "]");
-                cnt++;
-            }
-        }
     }
-    public static List<Exception> exceptions = new List<Exception>();
-
+    /// <summary>
+    /// 获取所有文件
+    /// </summary>
+    /// <param name="path"></param>
     public static void GetAllFiles(string path)
-    {//获取zip包列表，变成ZipArchive
+    {
         foreach (string item in Storage.ListFileNames(path))
         {
             string ms = Storage.GetExtension(item);
             string ks = Storage.CombinePaths(path, item);
             Stream stream = Storage.OpenFile(ks, OpenFileMode.Read);
-            quickAddModsFileList.Add(new FileEntry() { Stream = stream,storageType=FileEntry.StorageType.InStorage,Filename = item,SourceFile=item });
             try
             {
                 if (ms == ".zip" || ms == ".scmod")
                 {
-                    ZipArchive zipArchive = ZipArchive.Open(stream, true);
-                    zip_filelist.Add(item, zipArchive);
+                    ModEntity modEntity = new ModEntity(ZipArchive.Open(stream, true));
+                    WaitToLoadMods.Add(modEntity);
                 }
             }
             catch (Exception e)
             {
-                Log.Error("load file [" + ks + "] error." + e.ToString());
+                exceptions.Add(e);
             }
         }
         foreach (string dir in Storage.ListDirectoryNames(path))
@@ -235,47 +255,10 @@ public static class ModsManager
             GetAllFiles(Storage.CombinePaths(path, dir));
         }
     }
-    public static List<FileEntry> GetEntries(string ext)
-    {//获取制定后缀的文件集
-        List<FileEntry> fileEntries = new List<FileEntry>();
-        foreach (FileEntry fileEntry1 in quickAddModsFileList)
-        {
-            if (Storage.GetExtension(fileEntry1.Filename) == ext)
-            {
-                FileEntry fileEntry = new FileEntry() { storageType=FileEntry.StorageType.InStorage, Filename=fileEntry1.Filename};
-                byte[] tmp = new byte[fileEntry1.Stream.Length];
-                fileEntry1.Stream.Position = 0L;
-                fileEntry1.Stream.Read(tmp, 0, (int)fileEntry1.Stream.Length);
-                MemoryStream memoryStream = new MemoryStream(tmp);
-                fileEntry.Stream = memoryStream;
-                fileEntries.Add(fileEntry);
-            }
-        }
-        foreach (var zipArchive in zip_filelist)
-        {
-            foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.Value.ReadCentralDir())
-            {
-                string fn = zipArchiveEntry.FilenameInZip;
-                if (Storage.GetExtension(fn) == ext)
-                {
-                    MemoryStream stream = new MemoryStream();
-                    zipArchive.Value.ExtractFile(zipArchiveEntry, stream);
-                    FileEntry fileEntry = new FileEntry();
-                    fileEntry.SourceFile = zipArchive.Key;
-                    fileEntry.storageType = FileEntry.StorageType.InZip;
-                    fileEntry.Filename = fn;
-                    stream.Position = 0L;
-                    fileEntry.Stream = stream;
-                    fileEntries.Add(fileEntry);
-                }
-            }
-        }
-        return fileEntries;
-    }
-    public static void LogException(FileEntry file, Exception ex)
+    public static string StreamToString(Stream stream)
     {
-        Log.Warning("Loading \"" + file.Filename.Substring(path.Length + 1) + "\" failed: " + ex.ToString());
-        file.Stream.Close();
+        stream.Seek(0,SeekOrigin.Begin);
+        return new StreamReader(stream).ReadToEnd();
     }
     /// <summary> 
     /// 将 Stream 转成 byte[] 
@@ -284,12 +267,10 @@ public static class ModsManager
     {
         byte[] bytes = new byte[stream.Length];
         stream.Read(bytes, 0, bytes.Length);
-
         // 设置当前流的位置为流的开始 
         stream.Seek(0, SeekOrigin.Begin);
         return bytes;
     }
-
     /// <summary> 
     /// 将 byte[] 转成 Stream 
     /// </summary> 
@@ -298,7 +279,6 @@ public static class ModsManager
         Stream stream = new MemoryStream(bytes);
         return stream;
     }
-
     /// <summary> 
     /// 将 Stream 写入文件 
     /// </summary> 
@@ -317,7 +297,6 @@ public static class ModsManager
         bw.Close();
         fs.Close();
     }
-
     /// <summary> 
     /// 从文件读取 Stream 
     /// </summary> 
@@ -333,45 +312,19 @@ public static class ModsManager
         Stream stream = new MemoryStream(bytes);
         return stream;
     }
-
     public static void LoadMod(string name,Assembly asm)
     {
         if (asm == null) return;
-        Type typeFromHandle = typeof(PluginLoaderAttribute);
         Type[] types = asm.GetTypes();
         for (int i = 0; i < types.Length; i++)
         {
-            PluginLoaderAttribute pluginLoaderAttribute = (PluginLoaderAttribute)Attribute.GetCustomAttribute(types[i], typeFromHandle);
-            if (pluginLoaderAttribute != null)
+            MethodInfo method;
+            if ((method = types[i].GetMethod("Initialize", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)) != null)
             {
-                ModInfo modInfo = pluginLoaderAttribute.ModInfo;
-                if (modInfo.APIVersion == null)
-                {
-                    exceptions.Add(new InvalidOperationException($"[{modInfo.Name}]加载失败\n缺少APIVersion声明"));
-                }
-                else {
-                    Version modapiver = new Version(modInfo.APIVersion);
-                    Version apiver = new Version(APIVersion);
-                    if (modapiver < apiver)
-                    {
-                        exceptions.Add(new InvalidOperationException($"[{modInfo.Name}]加载失败\nMod要求API版本为:{modapiver}\n当前API版本:{apiver}"));
-                    }
-                    else
-                    {
-                        modInfo.FileName = name;
-                        MethodInfo method;
-                        if ((method = types[i].GetMethod("Initialize", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)) != null)
-                        {
-                            method.Invoke(Activator.CreateInstance(types[i]), null);
-                        }
-                        LoadedMods.Add(modInfo);
-                        Log.Information("loaded mod [" + pluginLoaderAttribute.ModInfo.Name + "]");
-                    }
-                }
+                method.Invoke(Activator.CreateInstance(types[i]), null);
             }
         }
     }
-
     public static string GetMd5(string input)
     {
         MD5 md5Hasher = MD5.Create();
@@ -383,4 +336,42 @@ public static class ModsManager
         }
         return sBuilder.ToString();
     }
+
+    public static XElement FindElementByGuid(XElement xElement,string guid) {
+        foreach (XElement element in xElement.Elements()) {
+            foreach (XAttribute xAttribute in element.Attributes()) {
+                if (xAttribute.Name.ToString() == "Guid"&&xAttribute.Value==guid) {
+                    return element;
+                }
+            }
+            XElement element1 = FindElementByGuid(element, guid);
+            if (element1 != null) return element1;
+        }
+        return null;
+    }
+    public static bool HasAttribute(XElement element,Func<string,bool> func,out XAttribute xAttributeout) {
+        foreach (XAttribute xAttribute in element.Attributes())
+        {
+            if (func(xAttribute.Name.ToString())) {
+                xAttributeout = xAttribute;
+                return true;
+            }
+        }
+        xAttributeout = null;
+        return false;
+    }
+
+    public static void CombineDataBase(XElement DataBaseXml,XElement MergeXml) {
+
+        foreach (XElement element in MergeXml) {
+            if (HasAttribute(element, (str) => { return str.Contains("new-"); }, out XAttribute attribute)) {
+                if (HasAttribute(element,(str)=> { str == "Guid"; },out XAttribute attribute1)) {
+                
+                
+                }
+            }
+        }
+    }
+
+
 }

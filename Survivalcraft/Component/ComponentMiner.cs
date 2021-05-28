@@ -39,6 +39,9 @@ namespace Game
 
         public float m_lastPokingPhase;
 
+        public static Action<ComponentMiner, TerrainRaycastResult, float> OnDig;
+
+
         public ComponentCreature ComponentCreature
         {
             get;
@@ -160,7 +163,7 @@ namespace Game
                 m_digStartTime = m_subsystemTime.GameTime;
                 DigCellFace = cellFace;
             }
-            float num3 = CalculateDigTime(cellValue, num2);
+            float num3 = CalculateDigTime(cellValue, activeBlockValue);
             m_digProgress = ((num3 > 0f) ? MathUtils.Saturate((float)(m_subsystemTime.GameTime - m_digStartTime) / num3) : 1f);
             if (!CanUseTool(activeBlockValue))
             {
@@ -173,6 +176,7 @@ namespace Game
             bool flag = ComponentPlayer != null && !ComponentPlayer.ComponentInput.IsControlledByTouch && m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative;
             if (flag || (m_lastPokingPhase <= 0.5f && PokingPhase > 0.5f))
             {
+                OnDig?.Invoke(this,raycastResult, m_digProgress);
                 if (m_digProgress >= 1f)
                 {
                     DigCellFace = null;
@@ -219,9 +223,10 @@ namespace Game
             if (Place2 != null) return Place2(raycastResult, value);
 
             int num = Terrain.ExtractContents(value);
-            if (BlocksManager.Blocks[num].IsPlaceable_(value))
+            Block block = BlocksManager.Blocks[num];
+            if (block.IsPlaceable_(value))
             {
-                Block block = BlocksManager.Blocks[num];
+                
                 BlockPlacementData placementData = block.GetPlacementValue(m_subsystemTerrain, this, value, raycastResult);
                 if (placementData.Value != 0)
                 {
@@ -232,7 +237,7 @@ namespace Game
                     if (num3 > 0 && num3 < 255 && (IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Harmless))
                     {
                         bool flag = false;
-                        if (block.IsCollidable)
+                        if (block.IsCollidable_(value))
                         {
                             BoundingBox boundingBox = ComponentCreature.ComponentBody.BoundingBox;
                             boundingBox.Min += new Vector3(0.2f);
@@ -673,11 +678,16 @@ namespace Game
             return false;
         }
 
-        public float CalculateDigTime(int digValue, int toolContents)
+        public float CalculateDigTime(int digValue, int toolValue)
         {
-            Block block = BlocksManager.Blocks[toolContents];
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(toolValue)];
             Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(digValue)];
-            float digResilience = block2.DigResilience;
+            float digResilience = block2.GetDigResilience(digValue);
+            BlockDigMethod digBlockMethod = block2.GetBlockDigMethod(digValue);
+            float ShovelPower = block.GetShovelPower(toolValue);
+            float QuarryPower = block.GetQuarryPower(toolValue);
+            float HackPower = block.GetHackPower(toolValue);
+
             if (ComponentPlayer != null && m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative)
             {
                 if (digResilience < float.PositiveInfinity)
@@ -689,17 +699,17 @@ namespace Game
             if (ComponentPlayer != null && m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Adventure)
             {
                 float num = 0f;
-                if (block2.DigMethod == BlockDigMethod.Shovel && block.ShovelPower >= 2f)
+                if (digBlockMethod == BlockDigMethod.Shovel && ShovelPower >= 2f)
                 {
-                    num = block.ShovelPower;
+                    num = ShovelPower;
                 }
-                else if (block2.DigMethod == BlockDigMethod.Quarry && block.QuarryPower >= 2f)
+                else if (digBlockMethod == BlockDigMethod.Quarry && QuarryPower >= 2f)
                 {
-                    num = block.QuarryPower;
+                    num = QuarryPower;
                 }
-                else if (block2.DigMethod == BlockDigMethod.Hack && block.HackPower >= 2f)
+                else if (digBlockMethod == BlockDigMethod.Hack && HackPower >= 2f)
                 {
-                    num = block.HackPower;
+                    num = HackPower;
                 }
                 num *= ComponentPlayer.ComponentLevel.StrengthFactor;
                 if (!(num > 0f))
@@ -709,17 +719,17 @@ namespace Game
                 return MathUtils.Max(digResilience / num, 0f);
             }
             float num2 = 0f;
-            if (block2.DigMethod == BlockDigMethod.Shovel)
+            if (digBlockMethod == BlockDigMethod.Shovel)
             {
-                num2 = block.ShovelPower;
+                num2 = ShovelPower;
             }
-            else if (block2.DigMethod == BlockDigMethod.Quarry)
+            else if (digBlockMethod == BlockDigMethod.Quarry)
             {
-                num2 = block.QuarryPower;
+                num2 = QuarryPower;
             }
-            else if (block2.DigMethod == BlockDigMethod.Hack)
+            else if (digBlockMethod == BlockDigMethod.Hack)
             {
-                num2 = block.HackPower;
+                num2 = HackPower;
             }
             if (ComponentPlayer != null)
             {

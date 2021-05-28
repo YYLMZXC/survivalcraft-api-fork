@@ -526,8 +526,8 @@ namespace Game
             {
                 num -= 5f;
             }
-            int cellContents = m_subsystemTerrain.Terrain.GetCellContents(x, num2, z);
-            if (BlocksManager.Blocks[cellContents].IsTransparent)
+            int cellValue = m_subsystemTerrain.Terrain.GetCellValue(x, num2, z);
+            if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue))
             {
                 num -= 5f;
             }
@@ -567,22 +567,25 @@ namespace Game
             {
                 num -= 100f;
             }
-            Block obj = BlocksManager.Blocks[m_subsystemTerrain.Terrain.GetCellContents(x, y - 1, z)];
-            Block block = BlocksManager.Blocks[m_subsystemTerrain.Terrain.GetCellContents(x, y, z)];
-            Block block2 = BlocksManager.Blocks[m_subsystemTerrain.Terrain.GetCellContents(x, y + 1, z)];
-            if (obj.IsTransparent)
+            int objvalue = m_subsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+            int blockvalue = m_subsystemTerrain.Terrain.GetCellValue(x, y, z);
+            int block2value = m_subsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
+            Block obj = BlocksManager.Blocks[Terrain.ExtractContents(objvalue)];
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(blockvalue)];
+            Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(block2value)];
+            if (obj.IsTransparent_(objvalue))
             {
                 num -= 10f;
             }
-            if (!obj.IsCollidable)
+            if (!obj.IsCollidable_(objvalue))
             {
                 num -= 10f;
             }
-            if (block.IsCollidable)
+            if (block.IsCollidable_(blockvalue))
             {
                 num -= 10f;
             }
-            if (block2.IsCollidable)
+            if (block2.IsCollidable_(block2value))
             {
                 num -= 10f;
             }
@@ -605,9 +608,9 @@ namespace Game
                 {
                     for (int num = p.Y; num > 0; num--)
                     {
-                        int cellContents = m_subsystemTerrain.Terrain.GetCellContents(p.X, num, p.Z);
-                        Block block = BlocksManager.Blocks[cellContents];
-                        if (block.IsCollidable)
+                        int cellValue = m_subsystemTerrain.Terrain.GetCellValue(p.X, num, p.Z);
+                        Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
+                        if (block.IsCollidable_(cellValue))
                         {
                             return false;
                         }

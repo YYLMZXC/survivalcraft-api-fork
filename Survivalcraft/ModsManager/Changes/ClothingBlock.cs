@@ -35,18 +35,19 @@ namespace Game
             }
             int num = 0;
             List<ClothingData> clothingDatas = new List<ClothingData>();
-            IEnumerator<XElement> enumerator = ModsManager.CombineXml(ContentManager.Get<XElement>("Clothes"), ModsManager.GetEntries(".clo"), "Index", "Clothes").Elements().GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                XElement item = enumerator.Current;
+
+            //ÒÂ·þÈ¥³ý
+            XElement xElement= ContentManager.Get<XElement>("Clothes");
+            foreach (XElement item in xElement.Elements()) {
+
                 int ClothIndex = XmlUtils.GetAttributeValue<int>(item, "Index");
                 string newDescription = LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "Description");
                 string newDisplayName = LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "DisplayName");
-                if (string.IsNullOrEmpty(newDescription))
+                if (string.IsNullOrEmpty(newDescription)&&item.Attribute("Description")!=null)
                 {
                     newDescription = XmlUtils.GetAttributeValue<string>(item, "Description");
                 }
-                if (string.IsNullOrEmpty(newDisplayName))
+                if (string.IsNullOrEmpty(newDisplayName) && item.Attribute("Description") != null)
                 {
                     newDisplayName = XmlUtils.GetAttributeValue<string>(item, "DisplayName");
 
@@ -73,8 +74,8 @@ namespace Game
                 };
                 num++;
                 clothingDatas.Add(clothingData);
-            }
 
+            }
             m_clothingData = new ClothingData[clothingDatas.Count];
             num = 0;
             foreach (ClothingData data in clothingDatas.OrderBy(p => p.Index))

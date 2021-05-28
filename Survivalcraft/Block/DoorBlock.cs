@@ -106,16 +106,20 @@ namespace Game
             switch (num5)
             {
                 case 0:
-                    rightHanded = BlocksManager.Blocks[subsystemTerrain.Terrain.GetCellContents(num6 - 1, y, num7)].IsTransparent;
+                    int cellValue = subsystemTerrain.Terrain.GetCellValue(num6 - 1, y, num7);
+                    rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue);
                     break;
                 case 1:
-                    rightHanded = BlocksManager.Blocks[subsystemTerrain.Terrain.GetCellContents(num6, y, num7 + 1)].IsTransparent;
+                    cellValue = subsystemTerrain.Terrain.GetCellValue(num6, y, num7 + 1);
+                    rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue);
                     break;
                 case 2:
-                    rightHanded = BlocksManager.Blocks[subsystemTerrain.Terrain.GetCellContents(num6 + 1, y, num7)].IsTransparent;
+                    cellValue = subsystemTerrain.Terrain.GetCellValue(num6 + 1, y, num7);
+                    rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue);
                     break;
                 case 3:
-                    rightHanded = BlocksManager.Blocks[subsystemTerrain.Terrain.GetCellContents(num6, y, num7 - 1)].IsTransparent;
+                    cellValue = subsystemTerrain.Terrain.GetCellValue(num6, y, num7 - 1);
+                    rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue);
                     break;
             }
             int data = SetRightHanded(SetOpen(SetRotation(0, num5), open: false), rightHanded);

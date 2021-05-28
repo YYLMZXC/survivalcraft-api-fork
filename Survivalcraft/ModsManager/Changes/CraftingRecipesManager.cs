@@ -28,9 +28,8 @@ namespace Game
             }
 
             XElement source1 = ContentManager.Get<XElement>("CraftingRecipes");
-            ModsManager.CombineXml(source1, ModsManager.GetEntries(".cr"), "Description", "Result", "Recipes");
-            IEnumerable<XElement> source2 = source1.Descendants("Recipe");
-            foreach (XElement item in source2)
+
+            foreach (XElement item in source1.Elements())
             {
                 CraftingRecipe craftingRecipe = new CraftingRecipe();
                 string attributeValue = XmlUtils.GetAttributeValue<string>(item, "Result");

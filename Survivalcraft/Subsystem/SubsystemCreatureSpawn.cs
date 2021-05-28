@@ -1128,13 +1128,13 @@ namespace Game
                         {
                             return false;
                         }
-                        int cellContentsFast7 = m_subsystemTerrain.Terrain.GetCellContentsFast(x, y - 1, z);
-                        int cellContentsFast8 = m_subsystemTerrain.Terrain.GetCellContentsFast(x, y, z);
-                        int cellContentsFast9 = m_subsystemTerrain.Terrain.GetCellContentsFast(x, y + 1, z);
-                        Block block6 = BlocksManager.Blocks[cellContentsFast7];
-                        Block block7 = BlocksManager.Blocks[cellContentsFast8];
-                        Block block8 = BlocksManager.Blocks[cellContentsFast9];
-                        if ((block6.IsCollidable || block6 is WaterBlock) && !block7.IsCollidable && !(block7 is WaterBlock) && !block8.IsCollidable)
+                        int cellValueFast7 = m_subsystemTerrain.Terrain.GetCellValueFast(x, y - 1, z);
+                        int cellValueFast8 = m_subsystemTerrain.Terrain.GetCellValueFast(x, y, z);
+                        int cellValueFast9 = m_subsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z);
+                        Block block6 = BlocksManager.Blocks[Terrain.ExtractContents(cellValueFast7)];
+                        Block block7 = BlocksManager.Blocks[Terrain.ExtractContents(cellValueFast8)];
+                        Block block8 = BlocksManager.Blocks[Terrain.ExtractContents(cellValueFast9)];
+                        if ((block6.IsCollidable_(cellValueFast7) || block6 is WaterBlock) && !block7.IsCollidable_(cellValueFast8) && !(block7 is WaterBlock) && !block8.IsCollidable_(cellValueFast9))
                         {
                             return !(block8 is WaterBlock);
                         }
@@ -1147,13 +1147,13 @@ namespace Game
                         {
                             return false;
                         }
-                        int cellContentsFast4 = m_subsystemTerrain.Terrain.GetCellContentsFast(x, y - 1, z);
-                        int cellContentsFast5 = m_subsystemTerrain.Terrain.GetCellContentsFast(x, y, z);
-                        int cellContentsFast6 = m_subsystemTerrain.Terrain.GetCellContentsFast(x, y + 1, z);
-                        Block block3 = BlocksManager.Blocks[cellContentsFast4];
-                        Block block4 = BlocksManager.Blocks[cellContentsFast5];
-                        Block block5 = BlocksManager.Blocks[cellContentsFast6];
-                        if ((block3.IsCollidable || block3 is WaterBlock) && !block4.IsCollidable && !(block4 is WaterBlock) && !block5.IsCollidable)
+                        int cellValueFast4 = m_subsystemTerrain.Terrain.GetCellValueFast(x, y - 1, z);
+                        int cellValueFast5 = m_subsystemTerrain.Terrain.GetCellValueFast(x, y, z);
+                        int cellValueFast6 = m_subsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z);
+                        Block block3 = BlocksManager.Blocks[Terrain.ExtractContents(cellValueFast4)];
+                        Block block4 = BlocksManager.Blocks[Terrain.ExtractContents(cellValueFast5)];
+                        Block block5 = BlocksManager.Blocks[Terrain.ExtractContents(cellValueFast6)];
+                        if ((block3.IsCollidable_(cellValueFast4) || block3 is WaterBlock) && !block4.IsCollidable_(cellValueFast5) && !(block4 is WaterBlock) && !block5.IsCollidable_(cellValueFast6))
                         {
                             return !(block5 is WaterBlock);
                         }
@@ -1162,14 +1162,14 @@ namespace Game
                 case SpawnLocationType.Water:
                     {
                         int cellContentsFast = m_subsystemTerrain.Terrain.GetCellContentsFast(x, y, z);
-                        int cellContentsFast2 = m_subsystemTerrain.Terrain.GetCellContentsFast(x, y + 1, z);
-                        int cellContentsFast3 = m_subsystemTerrain.Terrain.GetCellContentsFast(x, y + 2, z);
-                        Block obj = BlocksManager.Blocks[cellContentsFast];
-                        Block block = BlocksManager.Blocks[cellContentsFast2];
-                        Block block2 = BlocksManager.Blocks[cellContentsFast3];
-                        if (obj is WaterBlock && !block.IsCollidable)
+                        int cellValueFast2 = m_subsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z);
+                        int cellValueFast3 = m_subsystemTerrain.Terrain.GetCellValueFast(x, y + 2, z);
+                        Block obj = BlocksManager.Blocks[Terrain.ExtractContents(cellContentsFast)];
+                        Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValueFast2)];
+                        Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValueFast3)];
+                        if (obj is WaterBlock && !block.IsCollidable_(cellValueFast2))
                         {
-                            return !block2.IsCollidable;
+                            return !block2.IsCollidable_(cellValueFast3);
                         }
                         return false;
                     }

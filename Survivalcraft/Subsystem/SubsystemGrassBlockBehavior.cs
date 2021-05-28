@@ -140,7 +140,7 @@ namespace Game
             {
                 if (!block.IsFaceTransparent(base.SubsystemTerrain, 5, value))
                 {
-                    return block.IsCollidable;
+                    return block.IsCollidable_(value);
                 }
                 return false;
             }

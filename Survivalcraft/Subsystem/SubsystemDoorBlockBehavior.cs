@@ -68,9 +68,9 @@ namespace Game
 
         public override void OnBlockAdded(int value, int oldValue, int x, int y, int z)
         {
-            int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
-            int cellContents2 = base.SubsystemTerrain.Terrain.GetCellContents(x, y + 1, z);
-            if (!BlocksManager.Blocks[cellContents].IsTransparent && cellContents2 == 0)
+            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+            int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
+            if (!BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue) && Terrain.ExtractContents(cellValue2) == 0)
             {
                 base.SubsystemTerrain.ChangeCell(x, y + 1, z, value);
             }
@@ -113,8 +113,8 @@ namespace Game
             }
             if (DoorBlock.IsBottomPart(base.SubsystemTerrain.Terrain, x, y, z))
             {
-                int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
-                if (BlocksManager.Blocks[cellContents].IsTransparent)
+                int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+                if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)].IsTransparent_(cellValue2))
                 {
                     base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                 }

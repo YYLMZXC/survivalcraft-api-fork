@@ -53,7 +53,7 @@ namespace Game
                         Block block = BlocksManager.Blocks[num];
                         if (slotCount > 0)
                         {
-                            float num2 = block.ProjectileSpeed;
+                            float num2 = block.GetProjectileSpeed(slotValue);
                             if (componentMiner.ComponentPlayer != null)
                             {
                                 num2 *= 0.5f * (componentMiner.ComponentPlayer.ComponentLevel.StrengthFactor - 1f) + 1f;

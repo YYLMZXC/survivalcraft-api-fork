@@ -52,7 +52,7 @@ namespace Game
                     Vector3 v4 = 0.5f * (vector3 * i + v3 * j);
                     Vector3 vector4 = matrix.Translation + v4;
                     Vector3 end = vector4 + vector2 + Vector3.Normalize(vector2) * 0.5f;
-                    TerrainRaycastResult? terrainRaycastResult = base.GameWidget.SubsystemGameWidgets.SubsystemTerrain.Raycast(vector4, end, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => !BlocksManager.Blocks[Terrain.ExtractContents(value)].IsTransparent);
+                    TerrainRaycastResult? terrainRaycastResult = base.GameWidget.SubsystemGameWidgets.SubsystemTerrain.Raycast(vector4, end, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => !BlocksManager.Blocks[Terrain.ExtractContents(value)].IsTransparent_(value));
                     if (terrainRaycastResult.HasValue)
                     {
                         num = (num.HasValue ? MathUtils.Min(num.Value, terrainRaycastResult.Value.Distance) : terrainRaycastResult.Value.Distance);

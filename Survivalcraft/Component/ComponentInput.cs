@@ -27,6 +27,9 @@ namespace Game
 
         public PlayerInput PlayerInput => m_playerInput;
 
+
+
+
         public bool IsControlledByTouch
         {
             get;
@@ -45,6 +48,7 @@ namespace Game
                 return false;
             }
         }
+        public bool AllowHandleInput { get; set; } = true;
 
         public IInventory SplitSourceInventory
         {
@@ -197,7 +201,7 @@ namespace Game
                 m_playerInput.ToggleCreativeFly |= input.IsKeyDownOnce(Key.F);
                 m_playerInput.PickBlockType = (input.IsMouseButtonDownOnce(MouseButton.Middle) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.PickBlockType);
             }
-            if (!DialogsManager.HasDialogs(m_componentPlayer.GuiWidget))
+            if (!DialogsManager.HasDialogs(m_componentPlayer.GuiWidget) && AllowHandleInput)
             {
                 m_playerInput.ToggleInventory |= input.IsKeyDownOnce(Key.E);
                 m_playerInput.ToggleClothing |= input.IsKeyDownOnce(Key.C);
@@ -304,7 +308,7 @@ namespace Game
                 m_lastLeftTrigger = padTriggerPosition;
                 m_lastRightTrigger = padTriggerPosition2;
             }
-            if (!DialogsManager.HasDialogs(m_componentPlayer.GuiWidget))
+            if (!DialogsManager.HasDialogs(m_componentPlayer.GuiWidget) && AllowHandleInput)
             {
                 m_playerInput.ToggleInventory |= input.IsPadButtonDownOnce(GamePadButton.X);
                 m_playerInput.ToggleClothing |= input.IsPadButtonDownOnce(GamePadButton.Y);
@@ -407,7 +411,7 @@ namespace Game
                 }
                 m_playerInput.Drop |= input.IsVrButtonDownOnce(VrController.Right, VrControllerButton.Grip);
             }
-            if (!DialogsManager.HasDialogs(m_componentPlayer.GuiWidget))
+            if (!DialogsManager.HasDialogs(m_componentPlayer.GuiWidget) && AllowHandleInput)
             {
                 m_playerInput.ToggleInventory |= input.IsVrButtonDownOnce(VrController.Right, VrControllerButton.Menu);
             }

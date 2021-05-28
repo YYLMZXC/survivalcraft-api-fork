@@ -274,7 +274,7 @@ namespace Game
         public bool TryAddPickable(Pickable pickable)
         {
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(pickable.Value)];
-            if (m_foodFactors[(int)block.FoodType] > 0f && Vector3.DistanceSquared(pickable.Position, m_componentCreature.ComponentBody.Position) < 256f)
+            if (m_foodFactors[(int)block.GetFoodType(pickable.Value)] > 0f && Vector3.DistanceSquared(pickable.Position, m_componentCreature.ComponentBody.Position) < 256f)
             {
                 m_pickables.Add(pickable, value: true);
                 return true;
