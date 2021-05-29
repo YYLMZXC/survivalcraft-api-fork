@@ -29,11 +29,11 @@ namespace Game
 
         public static ICollection<ValuesDictionary> EntitiesValuesDictionaries => m_valueDictionaries.Values;
 
+        public static XElement xElement = null;
+
         public static void Initialize()
-        {            
-            XElement node = ContentManager.Get<XElement>("Database");
-            ContentManager.Dispose("Database");
-            LoadDataBaseFromXml(node);
+        {
+            xElement = null;
         }
         public static void LoadDataBaseFromXml(XElement node) {
 

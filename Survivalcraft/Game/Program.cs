@@ -45,7 +45,7 @@ namespace Game
                 e.IsHandled = true;
             };
 #if DEBUG
-            Window.Run(320, 240, WindowMode.Resizable, "生存战争2.2插件版V1.34beta");
+            Window.Run(1074, 720, WindowMode.Resizable, "生存战争2.2插件版V1.34beta");
 #endif
 #if TRACE
 			Window.Run(1024, 768, WindowMode.Fullscreen, "生存战争2.2插件版V1.34beta");

@@ -7,8 +7,8 @@ namespace Game
 {
     public static class LanguageControl
     {
-        public static Dictionary<string, Dictionary<string, string>> items;
-        public static Dictionary<string, Dictionary<string, Dictionary<string, string>>> items2;
+        public static Dictionary<string, Dictionary<string, string>> items=new Dictionary<string, Dictionary<string, string>>();
+        public static Dictionary<string, Dictionary<string, Dictionary<string, string>>> items2=new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
 
         public enum LanguageType
         {
@@ -18,24 +18,8 @@ namespace Game
         }
         public static void Initialize(LanguageType languageType)
         {
-            items = new Dictionary<string, Dictionary<string, string>>();
-            items2 = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
-            string name = "app:lang/" + languageType.ToString() + ".json";
-            for (int i = 0; i < ModsManager.WaitToLoadMods.Count; i++)
-            {
-                try
-                {
-                    ModEntity modEntity = ModsManager.WaitToLoadMods[i];
-                    LoadingScreen.SetMsg($"初始化语言包:[{modEntity.modInfo.Name}]");
-                    modEntity.InitLauguage();
-                    modEntity.InitPak();
-                }
-                catch (Exception e)
-                {
-                    ModsManager.exceptions.Add(e);
-                }
-            }
-
+            items.Clear();
+            items2.Clear();
         }
         public static void loadJson(Stream stream)
         {

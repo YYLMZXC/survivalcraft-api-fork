@@ -8,11 +8,14 @@ using SimpleJson;
 using System.Reflection;
 using System;
 using System.Xml.Linq;
+using System.Linq;
+using Game;
+using GameEntitySystem;
 public class ModEntity
 {
 
     public enum StorageType
-    { 
+    {
         InZip,
         InStorage
     }
@@ -23,10 +26,11 @@ public class ModEntity
     public StorageType storageType;
     public ZipArchive ModArchive;
     public Dictionary<string, Stream> ModFiles = new Dictionary<string, Stream>();
-    private bool IsLoaded = false;
+    public List<Block> Blocks = new List<Block>();
+    public bool HasException = false;
     public bool IsChecked;
     public Action ModInit;
-    public ModLoader ModLoader_;
+    public ModEntity() { }
     public ModEntity(ZipArchive zipArchive) {
         ModArchive = zipArchive;
         if (GetFile("modinfo.json", out Stream stream)) {
@@ -47,6 +51,7 @@ public class ModEntity
             if (Storage.GetExtension(zipArchiveEntry.FilenameInZip) == extension) {
                 MemoryStream stream = new MemoryStream();
                 ModArchive.ExtractFile(zipArchiveEntry, stream);
+                stream.Seek(0, SeekOrigin.Begin);
                 files.Add(stream);
             }
         }
@@ -57,10 +62,9 @@ public class ModEntity
     /// </summary>
     /// <param name="filename"></param>
     /// <returns></returns>
-    public bool GetFile(string filename,out Stream stream)
+    public virtual bool GetFile(string filename, out Stream stream)
     {
         filename = filename.ToLower();
-        List<Stream> files = new List<Stream>();
         //将每个zip里面的文件读进内存中
         foreach (ZipArchiveEntry zipArchiveEntry in ModArchive.ReadCentralDir())
         {
@@ -68,49 +72,81 @@ public class ModEntity
             {
                 stream = new MemoryStream();
                 ModArchive.ExtractFile(zipArchiveEntry, stream);
+                stream.Seek(0, SeekOrigin.Begin);
                 return true;
             }
         }
         stream = null;
         return false;
     }
-
-    public void InitLauguage() {
+    public virtual void LoadLauguage() {
         if (GetFile($"{ModsManager.modSettings.languageType}.json", out Stream stream)) {
             LanguageControl.loadJson(stream);
         }
     }
-    public void InitPak() {
+    public virtual void InitPak() {
         foreach (Stream stream in GetFiles(".pak")) {
             ContentManager.Add(stream);
+        }
+    }
+    public virtual void LoadBlocksData() {
+        foreach (Stream stream in GetFiles(".csv"))
+        {
+            BlocksManager.LoadBlocksData(ModsManager.StreamToString(stream));
             stream.Dispose();
         }
     }
-    public void LoadXdb(XElement xElement) {
+    public virtual void LoadXdb(ref XElement xElement) {
         foreach (Stream stream in GetFiles(".xdb"))
         {
-            string xml = ModsManager.StreamToString(stream);
-
+            ModsManager.CombineDataBase(xElement, stream);
             stream.Dispose();
         }
-
     }
-    public void LoadDll() {
+    public virtual void LoadClo(ClothingBlock block, ref XElement xElement) {
+        foreach (Stream stream in GetFiles(".clo"))
+        {
+            ModsManager.CombineClo(xElement, stream);
+            stream.Dispose();
+        }
+    }
+    public virtual void LoadCr(ref XElement xElement)
+    {
+        foreach (Stream stream in GetFiles(".cr"))
+        {
+            ModsManager.CombineCr(xElement, stream);
+            stream.Dispose();
+        }
+    }
+    public virtual void LoadDll() {
         foreach (Stream stream in GetFiles(".dll"))
         {
             Assembly assembly = Assembly.Load(ModsManager.StreamToBytes(stream));
             Type[] types = assembly.GetTypes();
-            for (int i=0;i<types.Length;i++) {
-                if (types[i].IsSubclassOf(typeof(ModLoader))) {
-                    ModLoader_ = Activator.CreateInstance(types[i]) as ModLoader;
-                    break;
+            for (int i = 0; i < types.Length; i++) {
+                Type type = types[i];
+                if (type.IsSubclassOf(typeof(ModLoader))) {
+                    ModLoader modLoader = Activator.CreateInstance(types[i]) as ModLoader;
+                    ModsManager.ModLoaders.Add(modLoader);
+                }
+                if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract) {
+                    FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
+                    if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
+                    {
+                        ModsManager.AddException(new InvalidOperationException($"Block type \"{type.FullName}\" does not have static field Index of type int."));
+                    }
+                    else {
+                        int staticIndex = (int)fieldInfo.GetValue(null);
+                        Block block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
+                        block.BlockIndex = staticIndex;
+                        Blocks.Add(block);
+                    }
                 }
             }
             stream.Dispose();
         }
     }
-
-    public void CheckDependencies() {
+    public virtual void CheckDependencies() {
         for (int j = 0; j < modInfo.Dependencies.Count; j++)
         {
             int k = j;
@@ -138,22 +174,25 @@ public class ModEntity
                 IsChecked = true;
             }
             else {
-                ModsManager.exceptions.Add(new System.Exception($"[{modInfo.Name}]缺少依赖项{name}"));
+                ModsManager.AddException(new System.Exception($"[{modInfo.Name}]缺少依赖项{name}"));
                 return;
             }
         }
         ModsManager.CacheToLoadMods.Add(this);
     }
-
-    public void InitDataBase() {
-        foreach (Stream stream in GetFiles(".xdb"))
-        {
-            ContentManager.Add(stream);
-            stream.Dispose();
-        }
+    public virtual void SaveSettings(XElement xElement)
+    {
     }
-    public void Unload() { 
-    
+    public virtual void LoadSettings(XElement xElement)
+    {
     }
+    public virtual void OnBlocksInitalized(List<string> categories)
+    {
 
+    }
+    public virtual void InitScreens(LoadingScreen loading)
+    {
+
+
+    }
 }

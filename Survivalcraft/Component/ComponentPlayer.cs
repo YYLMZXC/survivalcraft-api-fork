@@ -19,6 +19,7 @@ namespace Game
         public SubsystemTerrain m_subsystemTerrain;
 
         public bool m_aimHintIssued;
+
         public static string fName = "ComponentPlayer";
 
         public double m_lastActionTime;

@@ -49,8 +49,6 @@ namespace Game
 
         public virtual Action<SpawnChunk> SpawningChunk { get; set; }
 
-        public virtual Func<SpawnEntityData,Entity> SpawnEntity_ { get; set; }
-
         public virtual SpawnChunk GetSpawnChunk(Point2 point)
         {
             m_chunks.TryGetValue(point, out SpawnChunk value);
@@ -279,20 +277,13 @@ namespace Game
 
         public virtual Entity SpawnEntity(SpawnEntityData data)
         {
-            if (SpawnEntity_ != null) {
-                return SpawnEntity_(data);
-            }
             try
             {
                 Entity entity = DatabaseManager.CreateEntity(base.Project, data.TemplateName, throwIfNotFound: true);
-                entity.FindComponent<ComponentBody>(throwOnError: true).Position = data.Position;
-                entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
-                ComponentCreature componentCreature = entity.FindComponent<ComponentCreature>();
-                if (componentCreature != null)
-                {
-                    componentCreature.ConstantSpawn = data.ConstantSpawn;
+                foreach (ModLoader modEntity in ModsManager.ModLoaders) {
+                    modEntity.SpawnEntity(this,entity,data);
                 }
-                base.Project.AddEntity(entity);
+                Project.AddEntity(entity);
                 return entity;
             }
             catch (Exception ex)
@@ -309,7 +300,6 @@ namespace Game
                 ';'
             }, StringSplitOptions.RemoveEmptyEntries);
             int num = 0;
-
             while (true)
             {
                 if (num < array.Length)

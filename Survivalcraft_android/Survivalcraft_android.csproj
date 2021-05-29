@@ -2204,14 +2204,17 @@
     <Compile Include="..\Survivalcraft\ModsManager\Changes\DatabaseManager.cs">
       <Link>ModsManager\Changes\DatabaseManager.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\ModsManager\FileEntry.cs">
-      <Link>ModsManager\FileEntry.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\ModsManager\LanguageControl.cs">
       <Link>Language\LanguageControl.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\ModEntity.cs">
+      <Link>ModsManager\ModEntity.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\ModsManager\ModInfo.cs">
       <Link>ModsManager\ModInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\ModLoader.cs">
+      <Link>ModsManager\ModLoader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\ModsManager\ModsManager.cs">
       <Link>ModsManager\ModsManager.cs</Link>

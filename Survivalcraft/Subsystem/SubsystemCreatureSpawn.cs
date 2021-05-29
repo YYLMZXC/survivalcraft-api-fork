@@ -148,6 +148,7 @@ namespace Game
 
         public virtual void InitializeCreatureTypes()
         {
+
             m_creatureTypes.Add(new CreatureType("Duck", SpawnLocationType.Surface, randomSpawn: true, constantSpawn: false)
             {
                 SpawnSuitabilityFunction = delegate (CreatureType creatureType, Point3 point)
@@ -932,6 +933,10 @@ namespace Game
                 },
                 SpawnFunction = ((CreatureType creatureType, Point3 point) => SpawnCreatures(creatureType, "Hyena", point, m_random.Int(1, 2)).Count)
             });
+            foreach (ModLoader modEntity in ModsManager.ModLoaders) {
+                modEntity.InitializeCreatureTypes(this,m_creatureTypes);
+            }
+            
         }
 
         public virtual void SpawnRandomCreature()

@@ -11,10 +11,7 @@ namespace Game
     {
         public static void Initialize()
         {
-            ContentCache.AddPackage("app:/Content.pak", Encoding.UTF8.GetBytes(Pad()), new byte[1]
-            {
-                63
-            });
+            ContentManager.Add(Storage.OpenFile("app:/Content.pak", OpenFileMode.Read));
         }
 
         public static object Get(string name)

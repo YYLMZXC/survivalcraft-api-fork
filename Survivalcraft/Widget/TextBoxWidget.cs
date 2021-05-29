@@ -279,7 +279,14 @@ namespace Game
 #endif
             if (Input.Click.HasValue)
             {
+                //处理电脑键盘输入时会处理成游戏输入
                 HasFocus = (HitTestGlobal(Input.Click.Value.Start) == this && HitTestGlobal(Input.Click.Value.End) == this);
+                if (HasFocus) {
+                    foreach (ComponentPlayer componentPlayer in GameManager.Project.FindSubsystem<SubsystemPlayers>().ComponentPlayers) {
+                        componentPlayer.ComponentInput.AllowHandleInput = !HasFocus;
+                    }
+                
+                }
             }
         }
 

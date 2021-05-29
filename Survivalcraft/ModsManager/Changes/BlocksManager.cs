@@ -11,92 +11,40 @@ namespace Game
 {
     public static class BlocksManager
     {
-        public static Block[] m_blocks;
-
-        public static FluidBlock[] m_fluidBlocks;
-
+        public static Block[] m_blocks = new Block[1024];
+        public static FluidBlock[] m_fluidBlocks=new FluidBlock[1024];
         public static List<string> m_categories = new List<string>();
-
         public static DrawBlockEnvironmentData m_defaultEnvironmentData = new DrawBlockEnvironmentData();
-
         public static Vector4[] m_slotTexCoords = new Vector4[256];
-
         public static Block[] Blocks => m_blocks;
-
         public static FluidBlock[] FluidBlocks => m_fluidBlocks;
-        public static Action Initialized;
-        public static Action Initialize1;
         public static ReadOnlyList<string> Categories => new ReadOnlyList<string>(m_categories);
-        public static Func<IEnumerable<TypeInfo>> GetBlockTypes1;
-        public static IEnumerable<TypeInfo> GetBlockTypes()
-        {
-            Func<IEnumerable<TypeInfo>> getBlockTypes = GetBlockTypes1;
-            if (getBlockTypes != null)
-            {
-                return getBlockTypes();
-            }
-            List<TypeInfo> list = new List<TypeInfo>();
-            list.AddRange(typeof(BlocksManager).Assembly.DefinedTypes);
-            ReadOnlyList<Assembly>.Enumerator enumerator = TypeCache.LoadedAssemblies.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                list.AddRange(enumerator.Current.DefinedTypes);
-            }
-            return list;
-        }
-        public sealed class c
-        {
-            public static readonly c _ = new c();
-
-            public static Func<FieldInfo, bool> __11_0;
-
-            public bool Initialize_b__11_0(FieldInfo fi)
-            {
-                if (fi.Name == "Index" && fi.IsPublic)
-                {
-                    return fi.IsStatic;
-                }
-                return false;
-            }
-        }
 
 
         public static void Initialize()
         {
-            if (Initialize1 != null)
-            {
-                Initialize1();
-                return;
-            }
             CalculateSlotTexCoordTables();
             int num = 0;
-            Dictionary<int, Block> dictionary = new Dictionary<int, Block>();
-            IEnumerable<TypeInfo> jl = GetBlockTypes();
-            foreach (TypeInfo blockType in jl)
-            {
-                if (blockType.IsSubclassOf(typeof(Block)) && !blockType.IsAbstract)
-                {
-                    FieldInfo fieldInfo = blockType.AsType().GetRuntimeFields().FirstOrDefault(c._.Initialize_b__11_0);
-                    if (!(fieldInfo != null) || !(fieldInfo.FieldType == typeof(int)))
+            foreach (ModEntity entity in ModsManager.CacheToLoadMods) {
+                for (int i=0;i<entity.Blocks.Count;i++) {
+                    Block block = entity.Blocks[i];
+                    if (m_blocks[block.BlockIndex] == null)
                     {
-                        throw new InvalidOperationException($"Block type \"{blockType.FullName}\" does not have static field Index of type int.");
+                        m_blocks[block.BlockIndex] = block;
+                        if (m_fluidBlocks[block.BlockIndex] == null)
+                        {
+                            m_fluidBlocks[block.BlockIndex] = block as FluidBlock;
+                        }
+                        else
+                        {
+                            ModsManager.AddException(new InvalidOperationException($"The index is already exist where block type is \"{block.GetType().FullName}\" "));
+                        }
                     }
-                    int num2 = (int)fieldInfo.GetValue(null);
-                    Block block = (Block)Activator.CreateInstance(blockType.AsType());
-                    dictionary[block.BlockIndex = num2] = block;
-                    if (num2 > num)
+                    else
                     {
-                        num = num2;
+                        ModsManager.AddException(new InvalidOperationException($"The index is already exist where block type is \"{block.GetType().FullName}\" "));
                     }
-                }
-            }
-            m_blocks = new Block[num + 1];
-            m_fluidBlocks = new FluidBlock[num + 1];
-
-            foreach (KeyValuePair<int, Block> current2 in dictionary)
-            {
-                m_blocks[current2.Key] = current2.Value;
-                m_fluidBlocks[current2.Key] = (current2.Value as FluidBlock);
+                }            
             }
 
             for (num = 0; num < m_blocks.Length; num++)
@@ -106,48 +54,35 @@ namespace Game
                     m_blocks[num] = Blocks[0];
                 }
             }
-            string data = ContentManager.Get<string>("BlocksData");
-            ContentManager.Dispose("BlocksData");
-            LoadBlocksData(data);
 
-
-
-            Block[] blocks = Blocks;
-            for (int j = 0; j < blocks.Length; j++)
-            {
-                blocks[j].Initialize();
+            foreach (ModEntity modEntity in ModsManager.CacheToLoadMods) {
+                modEntity.LoadBlocksData();
             }
-            m_categories.Add("Terrain");
-            m_categories.Add("Plants");
-            m_categories.Add("Construction");
-            m_categories.Add("Items");
-            m_categories.Add("Tools");
-            m_categories.Add("Weapons");
-            m_categories.Add("Clothes");
-            m_categories.Add("Electrics");
-            m_categories.Add("Food");
-            m_categories.Add("Spawner Eggs");
-            m_categories.Add("Painted");
-            m_categories.Add("Dyed");
-            m_categories.Add("Fireworks");
-            blocks = Blocks;
-            Initialized?.Invoke();
-            foreach (Block block2 in blocks)
+
+
+            for (int j = 0; j < m_blocks.Length; j++)
             {
-                foreach (int creativeValue in block2.GetCreativeValues())
-                {
-                    string category = block2.GetCategory(creativeValue);
-                    if (!string.IsNullOrEmpty(category))
-                    {
-                        if (!m_categories.Contains(category)) m_categories.Add(category);
-                    }
-                    else {
-                        block2.DefaultCategory = m_categories[0];
-                    }
+                if (j > 1000) { 
+                
+                }
+                Block block = m_blocks[j];
+                block.Initialize();
+                foreach (int value in block.GetCreativeValues()) {
+                    string category = block.GetCategory(value);
+                    AddCategory(category);
                 }
             }
+            foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
+            {
+                modEntity.OnBlocksInitalized(m_categories);
+            }
         }
-
+        public static void AddCategory(string category) {
+            if (!m_categories.Contains(category))
+            {
+                m_categories.Add(category);
+            }
+        }
         public static Block FindBlockByTypeName(string typeName, bool throwIfNotFound)
         {
             Block block = Blocks.FirstOrDefault((Block b) => b.GetType().Name == typeName);

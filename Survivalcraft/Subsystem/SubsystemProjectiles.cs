@@ -79,9 +79,9 @@ namespace Game
             projectile.Owner = owner;
             projectile.ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable;
             m_projectiles.Add(projectile);
-            if (this.ProjectileAdded != null)
-            {
-                this.ProjectileAdded(projectile);
+            ProjectileAdded?.Invoke(projectile);
+            foreach (ModLoader modEntity in ModsManager.ModLoaders) {
+                modEntity.ProjectileAdded(this,projectile);
             }
             if (owner != null && owner.PlayerStats != null)
             {
@@ -417,9 +417,10 @@ namespace Game
                     item.TrailParticleSystem.IsStopped = true;
                 }
                 m_projectiles.Remove(item);
-                if (this.ProjectileRemoved != null)
+                ProjectileRemoved?.Invoke(item);
+                foreach (ModLoader modEntity in ModsManager.ModLoaders)
                 {
-                    this.ProjectileRemoved(item);
+                    modEntity.ProjectileAdded(this,item);
                 }
             }
             m_projectilesToRemove.Clear();

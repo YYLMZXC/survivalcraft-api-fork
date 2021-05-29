@@ -33,6 +33,7 @@ namespace Game
         public float m_digProgress;
 
         public double m_lastHitTime;
+
         public static string fName = "ComponentMiner";
 
         public int m_lastDigFrameIndex;
@@ -116,22 +117,9 @@ namespace Game
         public static Action<ComponentBody, ComponentCreature, Vector3, Vector3, float, bool> AttackBody_; 
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
-        public static Func<TerrainRaycastResult, bool> Dig1;
-        public static Action<bool> Poke1;
-        public static Func<TerrainRaycastResult, bool> Place1;
-        public static Func<TerrainRaycastResult, int, bool> Place2;
-        public static Func<Ray3, bool> Use1;
-        public static Func<TerrainRaycastResult, bool> Interact1;
-        public static Action<ComponentBody, Vector3, Vector3> Hit1;
-
 
         public void Poke(bool forceRestart)
         {
-            if (Poke1 != null)
-            {
-                Poke1.Invoke(forceRestart);
-                return;
-            }
             if (forceRestart)
             {
                 PokingPhase = 0.0001f;
@@ -144,69 +132,15 @@ namespace Game
 
         public bool Dig(TerrainRaycastResult raycastResult)
         {
-            if (Dig1 != null)
-            {
-                return Dig1(raycastResult);
+            bool flag=false;
+            foreach (ModLoader modEntity in ModsManager.ModLoaders) {
+                flag |= modEntity.ComponentMinerDig(this,raycastResult);
             }
-
-            bool result = false;
-            m_lastDigFrameIndex = Time.FrameIndex;
-            CellFace cellFace = raycastResult.CellFace;
-            int cellValue = m_subsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
-            int num = Terrain.ExtractContents(cellValue);
-            Block block = BlocksManager.Blocks[num];
-            int activeBlockValue = ActiveBlockValue;
-            int num2 = Terrain.ExtractContents(activeBlockValue);
-            Block block2 = BlocksManager.Blocks[num2];
-            if (!DigCellFace.HasValue || DigCellFace.Value.X != cellFace.X || DigCellFace.Value.Y != cellFace.Y || DigCellFace.Value.Z != cellFace.Z)
-            {
-                m_digStartTime = m_subsystemTime.GameTime;
-                DigCellFace = cellFace;
-            }
-            float num3 = CalculateDigTime(cellValue, activeBlockValue);
-            m_digProgress = ((num3 > 0f) ? MathUtils.Saturate((float)(m_subsystemTime.GameTime - m_digStartTime) / num3) : 1f);
-            if (!CanUseTool(activeBlockValue))
-            {
-                m_digProgress = 0f;
-                if (m_subsystemTime.PeriodicGameTimeEvent(5.0, m_digStartTime + 1.0))
-                {
-                    ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block2.PlayerLevelRequired, block2.GetDisplayName(m_subsystemTerrain, activeBlockValue)), Color.White, blinking: true, playNotificationSound: true);
-                }
-            }
-            bool flag = ComponentPlayer != null && !ComponentPlayer.ComponentInput.IsControlledByTouch && m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative;
-            if (flag || (m_lastPokingPhase <= 0.5f && PokingPhase > 0.5f))
-            {
-                OnDig?.Invoke(this,raycastResult, m_digProgress);
-                if (m_digProgress >= 1f)
-                {
-                    DigCellFace = null;
-                    if (flag)
-                    {
-                        Poke(forceRestart: true);
-                    }
-                    BlockPlacementData digValue = block.GetDigValue(m_subsystemTerrain, this, cellValue, activeBlockValue, raycastResult);
-                    m_subsystemTerrain.DestroyCell(block2.ToolLevel, digValue.CellFace.X, digValue.CellFace.Y, digValue.CellFace.Z, digValue.Value, noDrop: false, noParticleSystem: false);
-                    m_subsystemSoundMaterials.PlayImpactSound(cellValue, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f);
-                    DamageActiveTool(1);
-                    if (ComponentCreature.PlayerStats != null)
-                    {
-                        ComponentCreature.PlayerStats.BlocksDug++;
-                    }
-                    result = true;
-                }
-                else
-                {
-                    m_subsystemSoundMaterials.PlayImpactSound(cellValue, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 1f);
-                    BlockDebrisParticleSystem particleSystem = block.CreateDebrisParticleSystem(m_subsystemTerrain, raycastResult.HitPoint(0.1f), cellValue, 0.35f);
-                    base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
-                }
-            }
-            return result;
+            return flag;
         }
 
         public bool Place(TerrainRaycastResult raycastResult)
         {
-            if (Place1 != null) return Place1(raycastResult);
             if (Place(raycastResult, ActiveBlockValue))
             {
                 if (Inventory != null)
@@ -220,89 +154,26 @@ namespace Game
 
         public bool Place(TerrainRaycastResult raycastResult, int value)
         {
-            if (Place2 != null) return Place2(raycastResult, value);
-
-            int num = Terrain.ExtractContents(value);
-            Block block = BlocksManager.Blocks[num];
-            if (block.IsPlaceable_(value))
+            bool flag = false;
+            foreach (ModLoader modEntity in ModsManager.ModLoaders)
             {
-                
-                BlockPlacementData placementData = block.GetPlacementValue(m_subsystemTerrain, this, value, raycastResult);
-                if (placementData.Value != 0)
-                {
-                    Point3 point = CellFace.FaceToPoint3(placementData.CellFace.Face);
-                    int num2 = placementData.CellFace.X + point.X;
-                    int num3 = placementData.CellFace.Y + point.Y;
-                    int num4 = placementData.CellFace.Z + point.Z;
-                    if (num3 > 0 && num3 < 255 && (IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Harmless))
-                    {
-                        bool flag = false;
-                        if (block.IsCollidable_(value))
-                        {
-                            BoundingBox boundingBox = ComponentCreature.ComponentBody.BoundingBox;
-                            boundingBox.Min += new Vector3(0.2f);
-                            boundingBox.Max -= new Vector3(0.2f);
-                            BoundingBox[] customCollisionBoxes = block.GetCustomCollisionBoxes(m_subsystemTerrain, placementData.Value);
-                            for (int i = 0; i < customCollisionBoxes.Length; i++)
-                            {
-                                BoundingBox box = customCollisionBoxes[i];
-                                box.Min += new Vector3(num2, num3, num4);
-                                box.Max += new Vector3(num2, num3, num4);
-                                if (boundingBox.Intersection(box))
-                                {
-                                    flag = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!flag)
-                        {
-                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(placementData.Value));
-                            for (int i = 0; i < blockBehaviors.Length; i++)
-                            {
-                                blockBehaviors[i].OnItemPlaced(num2, num3, num4, ref placementData, value);
-                            }
-                            m_subsystemTerrain.DestroyCell(0, num2, num3, num4, placementData.Value, noDrop: false, noParticleSystem: false);
-                            m_subsystemAudio.PlaySound("Audio/BlockPlaced", 1f, 0f, new Vector3(placementData.CellFace.X, placementData.CellFace.Y, placementData.CellFace.Z), 5f, autoDelay: false);
-                            Poke(forceRestart: false);
-                            if (ComponentCreature.PlayerStats != null)
-                            {
-                                ComponentCreature.PlayerStats.BlocksPlaced++;
-                            }
-                            return true;
-                        }
-                    }
-                }
+                flag |= modEntity.ComponentMinerPlace(this, raycastResult,value);
             }
-            return false;
+            return flag;
         }
 
         public bool Use(Ray3 ray)
         {
-            if (Use1 != null) return Use1(ray);
-            int num = Terrain.ExtractContents(ActiveBlockValue);
-            Block block = BlocksManager.Blocks[num];
-            if (!CanUseTool(ActiveBlockValue))
+            bool flag = false;
+            foreach (ModLoader modEntity in ModsManager.ModLoaders)
             {
-                ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block.PlayerLevelRequired, block.GetDisplayName(m_subsystemTerrain, ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
-                Poke(forceRestart: false);
-                return false;
+                flag |= modEntity.ComponentMinerUse(this, ray);
             }
-            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num);
-            for (int i = 0; i < blockBehaviors.Length; i++)
-            {
-                if (blockBehaviors[i].OnUse(ray, this))
-                {
-                    Poke(forceRestart: false);
-                    return true;
-                }
-            }
-            return false;
+            return flag;
         }
 
         public bool Interact(TerrainRaycastResult raycastResult)
-        {
-            if (Interact1 != null) return Interact1(raycastResult);
+        {            
             int cellContents = m_subsystemTerrain.Terrain.GetCellContents(raycastResult.CellFace.X, raycastResult.CellFace.Y, raycastResult.CellFace.Z);
             SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(cellContents);
             for (int i = 0; i < blockBehaviors.Length; i++)
@@ -322,7 +193,6 @@ namespace Game
 
         public void Hit(ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection)
         {
-            if (Hit1 != null) { Hit1(componentBody, hitPoint, hitDirection); return; }
             if (!(m_subsystemTime.GameTime - m_lastHitTime > 0.6600000262260437))
             {
                 return;
@@ -501,110 +371,8 @@ namespace Game
 
         public static void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack)
         {
-            if (AttackBody_ != null) {
-                AttackBody_(target,attacker,hitPoint,hitDirection,attackPower,isMeleeAttack);
-                return;
-            }
-            if (attacker != null && attacker is ComponentPlayer && target.Entity.FindComponent<ComponentPlayer>() != null && !target.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true).WorldSettings.IsFriendlyFireEnabled)
-            {
-                attacker.Entity.FindComponent<ComponentGui>(throwOnError: true).DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: true, playNotificationSound: true);
-                return;
-            }
-            if (attackPower > 0f)
-            {
-                ComponentClothing componentClothing = target.Entity.FindComponent<ComponentClothing>();
-                if (componentClothing != null)
-                {
-                    attackPower = componentClothing.ApplyArmorProtection(attackPower);
-                }
-                ComponentLevel componentLevel = target.Entity.FindComponent<ComponentLevel>();
-                if (componentLevel != null)
-                {
-                    attackPower /= componentLevel.ResilienceFactor;
-                }
-                ComponentHealth componentHealth = target.Entity.FindComponent<ComponentHealth>();
-                if (componentHealth != null)
-                {
-                    float num = attackPower / componentHealth.AttackResilience;
-                    string cause;
-                    if (attacker != null)
-                    {
-                        string str = attacker.KillVerbs[s_random.Int(0, attacker.KillVerbs.Count - 1)];
-                        string attackerName = attacker.DisplayName;
-                        cause = string.Format(LanguageControl.Get(fName, 4), attackerName, LanguageControl.Get(fName, str));
-                    }
-                    else
-                    {
-                        switch (s_random.Int(0, 5))
-                        {
-                            case 0:
-                                cause = LanguageControl.Get(fName, 5);
-                                break;
-                            case 1:
-                                cause = LanguageControl.Get(fName, 6);
-                                break;
-                            case 2:
-                                cause = LanguageControl.Get(fName, 7);
-                                break;
-                            case 3:
-                                cause = LanguageControl.Get(fName, 8);
-                                break;
-                            case 4:
-                                cause = LanguageControl.Get(fName, 9);
-                                break;
-                            default:
-                                cause = LanguageControl.Get(fName, 10);
-                                break;
-                        }
-                    }
-                    float health = componentHealth.Health;
-                    componentHealth.Injure(num, attacker, ignoreInvulnerability: false, cause);
-                    if (num > 0f)
-                    {
-                        target.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).PlayRandomSound("Audio/Impacts/Body", 1f, s_random.Float(-0.3f, 0.3f), target.Position, 4f, autoDelay: false);
-                        float num2 = (health - componentHealth.Health) * componentHealth.AttackResilience;
-                        if (attacker is ComponentPlayer && num2 > 0f)
-                        {
-                            string text2 = (0f - num2).ToString("0", CultureInfo.InvariantCulture);
-                            HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + attacker.ComponentBody.Velocity, Color.White, text2);
-                            target.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
-                        }
-                    }
-                }
-                ComponentDamage componentDamage = target.Entity.FindComponent<ComponentDamage>();
-                if (componentDamage != null)
-                {
-                    float num3 = attackPower / componentDamage.AttackResilience;
-                    componentDamage.Damage(num3);
-                    if (num3 > 0f)
-                    {
-                        target.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).PlayRandomSound(componentDamage.DamageSoundName, 1f, s_random.Float(-0.3f, 0.3f), target.Position, 4f, autoDelay: false);
-                    }
-                }
-            }
-            float num4 = 0f;
-            float x = 0f;
-            if (isMeleeAttack && attacker != null)
-            {
-                float num5 = (attackPower >= 2f) ? 1.25f : 1f;
-                float num6 = MathUtils.Pow(attacker.ComponentBody.Mass / target.Mass, 0.5f);
-                float x2 = num5 * num6;
-                num4 = 5.5f * MathUtils.Saturate(x2);
-                x = 0.25f * MathUtils.Saturate(x2);
-            }
-            else if (attackPower > 0f)
-            {
-                num4 = 2f;
-                x = 0.2f;
-            }
-            if (num4 > 0f)
-            {
-                target.ApplyImpulse(num4 * Vector3.Normalize(hitDirection + s_random.Vector3(0.1f) + 0.2f * Vector3.UnitY));
-                ComponentLocomotion componentLocomotion = target.Entity.FindComponent<ComponentLocomotion>();
-                if (componentLocomotion != null)
-                {
-                    componentLocomotion.StunTime = MathUtils.Max(componentLocomotion.StunTime, x);
-                }
+            foreach (ModLoader modEntity in ModsManager.ModLoaders) {
+                modEntity.AttackBody(target,attacker,hitPoint,hitDirection,attackPower,isMeleeAttack);
             }
         }
 

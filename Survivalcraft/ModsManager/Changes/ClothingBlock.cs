@@ -17,7 +17,6 @@ namespace Game
         public BlockMesh m_innerMesh;
 
         public BlockMesh m_outerMesh;
-        public static Action Initialize1;
         public static Matrix[] m_slotTransforms = new Matrix[4]
         {
             Matrix.CreateTranslation(0f, -1.5f, 0f) * Matrix.CreateScale(2.7f),
@@ -28,22 +27,17 @@ namespace Game
 
         public override void Initialize()
         {
-            if (Initialize1 != null)
-            {
-                Initialize1();
-                return;
-            }
             int num = 0;
             List<ClothingData> clothingDatas = new List<ClothingData>();
-
-            //ÒÂ·þÈ¥³ý
-            XElement xElement= ContentManager.Get<XElement>("Clothes");
+            XElement xElement = null;
+            foreach (ModEntity modEntity in ModsManager.CacheToLoadMods) {
+                modEntity.LoadClo(this,ref xElement);
+            }
             foreach (XElement item in xElement.Elements()) {
-
                 int ClothIndex = XmlUtils.GetAttributeValue<int>(item, "Index");
                 string newDescription = LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "Description");
                 string newDisplayName = LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "DisplayName");
-                if (string.IsNullOrEmpty(newDescription)&&item.Attribute("Description")!=null)
+                if (string.IsNullOrEmpty(newDescription) && item.Attribute("Description") != null)
                 {
                     newDescription = XmlUtils.GetAttributeValue<string>(item, "Description");
                 }
@@ -84,7 +78,6 @@ namespace Game
                 m_clothingData[num] = data;
                 num++;
             }
-
             Model playerModel = CharacterSkinsManager.GetPlayerModel(PlayerClass.Male);
             Matrix[] array = new Matrix[playerModel.Bones.Count];
             playerModel.CopyAbsoluteBoneTransformsTo(array);

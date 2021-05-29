@@ -27,6 +27,7 @@ namespace Game
             public float Duration;
         }
         public static string fName = "ComponentGui";
+
         public SubsystemGameInfo m_subsystemGameInfo;
 
         public SubsystemAudio m_subsystemAudio;
@@ -583,13 +584,12 @@ namespace Game
                 }
                 else
                 {
-                    if (OpenClothingWidget != null)
-                    {
-                        ModalPanelWidget = OpenClothingWidget();
+                    ClothingWidget clothingWidget = new ClothingWidget(m_componentPlayer);
+                    foreach (ModLoader modLoader in ModsManager.ModLoaders) {
+                        modLoader.OnClothingWidgetOpen(this,clothingWidget);
                     }
-                    else {
-                        ModalPanelWidget = new ClothingWidget(m_componentPlayer);
-                    }
+                    ModalPanelWidget = clothingWidget;
+
                 }
             }
             if (m_sneakButtonWidget.IsClicked || playerInput.ToggleSneak)

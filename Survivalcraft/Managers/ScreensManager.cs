@@ -58,8 +58,6 @@ namespace Game
             get;
             set;
         }
-        public static Action Initialize1;
-        public static Action Initialized;
 
         public static T FindScreen<T>(string name) where T : Screen
         {
@@ -107,17 +105,16 @@ namespace Game
 
         public static void Initialize()
         {
-            if (Initialize1 != null) { Initialize1.Invoke();Initialize1 = null; return; }
             RootWidget = new CanvasWidget();
             RootWidget.WidgetsHierarchyInput = new WidgetInput();
             InitScreens();
             SwitchScreen("Loading");
-            Initialized?.Invoke();
         }
 
         public static void InitScreens() {
             LoadingScreen loadingScreen = new LoadingScreen();
             AddScreen("Loading", loadingScreen);
+
             loadingScreen.AddLoadAction(delegate
             {
                 AddScreen("Nag", new NagScreen());
@@ -234,6 +231,10 @@ namespace Game
             {
                 AddScreen("Player", new PlayerScreen());
             });
+            foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
+            {
+                modEntity.InitScreens(loadingScreen);
+            }
         }
 
 
