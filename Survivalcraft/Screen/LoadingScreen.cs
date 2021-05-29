@@ -81,8 +81,7 @@ namespace Game
                         try
                         {
                             LoadingScreen.SetMsg($"初始化语言包:[{modEntity.modInfo.Name}]");
-                            modEntity.LoadLauguage();
-                            modEntity.InitPak();
+                            modEntity.LoadLauguage();                            
                         }
                         catch (Exception e)
                         {
@@ -90,6 +89,16 @@ namespace Game
                             ModsManager.AddException(e);
                         }
 
+                    });
+                }
+            });
+            AddLoadAction(()=> {
+                
+                foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
+                {
+                    AddQuequeAction(()=> {
+                        LoadingScreen.SetMsg($"初始化Pak:[{modEntity.modInfo.Name}]");
+                        modEntity.InitPak();
                     });
                 }
             });
@@ -186,12 +195,14 @@ namespace Game
                 SetMsg("初始化MusicManager");
                 MusicManager.CurrentMix = MusicManager.Mix.Menu;
             });
-            AddLoadAction(()=> {
+            AddLoadAction(() => {
+                ModsManager.CacheToLoadMods.Clear();
                 ModsManager.LoadedMods.Clear();
-                foreach (ModEntity modEntity in ModsManager.CacheToLoadMods) {
-                    ModsManager.LoadedMods.Add(modEntity);
+                foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
+                {
+                    if(!modEntity.HasException)ModsManager.LoadedMods.Add(modEntity);
                 }
-            
+
             });
         }
 
@@ -228,12 +239,15 @@ namespace Game
 
                 while (!m_pauseLoading && m_index < m_loadActions.Count)
                 {
+                    bool flag2=false;
                     while (QuequeAction.Count > 0)
                     {
                         QuequeAction[0].Invoke();
                         QuequeAction.RemoveAt(0);
-                        continue;
+                        flag2 = true;
+                        break;
                     }
+                    if (flag2) break;
                     if (ModsManager.exceptions.Count > 0)
                     {
                         m_pauseLoading = true;

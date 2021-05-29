@@ -257,13 +257,16 @@ public class ManageContentScreen : Screen
         }
         if (m_filter == ExternalContentType.Mod || m_filter == ExternalContentType.Unknown)
         {
-            IEnumerable<string> modfiles=Storage.ListFileNames(ModsManager.ModsPath);
-            foreach (string mods in modfiles)
+            foreach (ModEntity modEntity in ModsManager.LoadedMods)
             {
-                if (mods.EndsWith(".scmod")|| mods.EndsWith(".zip")) {
-                    //读取mod信息转换为列表
-
-                }
+                list.Add(new ListItem
+                {
+                    Name = $"[模组]{modEntity.modInfo.Name}",
+                    IsBuiltIn = false,
+                    Type = ExternalContentType.Mod,
+                    DisplayName = $"{modEntity.modInfo.Name} 版本:{modEntity.modInfo.Version}",
+                    CreationTime = DateTime.Now
+                });
             }
         }
         list.Sort(delegate (ListItem o1, ListItem o2)
