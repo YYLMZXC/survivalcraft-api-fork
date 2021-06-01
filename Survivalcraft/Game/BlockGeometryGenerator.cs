@@ -85,8 +85,7 @@ namespace Game
                     terrainGeometry.Texture = texture;
                     item.Add(terrainGeometry);
                     return terrainGeometry;
-                }
-                else {
+                }else {
                     terrainGeometry.Texture = texture;
                     terrainGeometry.MeshID = meshID;
                     return terrainGeometry;

@@ -13,7 +13,6 @@ using Game;
 using GameEntitySystem;
 public class ModEntity
 {
-
     public enum StorageType
     {
         InZip,
@@ -80,16 +79,25 @@ public class ModEntity
         stream = null;
         return false;
     }
+    /// <summary>
+    /// 初始化语言包
+    /// </summary>
     public virtual void LoadLauguage() {
         if (GetFile($"{ModsManager.modSettings.languageType}.json", out Stream stream)) {
             LanguageControl.loadJson(stream);
         }
     }
+    /// <summary>
+    /// 初始化Pak资源
+    /// </summary>
     public virtual void InitPak() {
         foreach (Stream stream in GetFiles(".pak")) {
             ContentManager.Add(stream);
         }
     }
+    /// <summary>
+    /// 初始化BlocksData资源
+    /// </summary>
     public virtual void LoadBlocksData() {
         foreach (Stream stream in GetFiles(".csv"))
         {
@@ -97,6 +105,10 @@ public class ModEntity
             stream.Dispose();
         }
     }
+    /// <summary>
+    /// 初始化Database数据
+    /// </summary>
+    /// <param name="xElement"></param>
     public virtual void LoadXdb(ref XElement xElement) {
         foreach (Stream stream in GetFiles(".xdb"))
         {
@@ -107,6 +119,11 @@ public class ModEntity
             ModLoader_.OnXdbLoad(xElement);
         }
     }
+    /// <summary>
+    /// 初始化Clothing数据
+    /// </summary>
+    /// <param name="block"></param>
+    /// <param name="xElement"></param>
     public virtual void LoadClo(ClothingBlock block, ref XElement xElement) {
         foreach (Stream stream in GetFiles(".clo"))
         {
@@ -114,6 +131,10 @@ public class ModEntity
             stream.Dispose();
         }
     }
+    /// <summary>
+    /// 初始化CraftingRecipe
+    /// </summary>
+    /// <param name="xElement"></param>
     public virtual void LoadCr(ref XElement xElement)
     {
         foreach (Stream stream in GetFiles(".cr"))
@@ -122,6 +143,9 @@ public class ModEntity
             stream.Dispose();
         }
     }
+    /// <summary>
+    /// 加载mod程序集
+    /// </summary>
     public virtual void LoadDll() {
         foreach (Stream stream in GetFiles(".dll"))
         {
@@ -157,7 +181,9 @@ public class ModEntity
             }
         }
     }
-
+    /// <summary>
+    /// 检查依赖项
+    /// </summary>
     public virtual void CheckDependencies() {
         for (int j = 0; j < modInfo.Dependencies.Count; j++)
         {
@@ -186,25 +212,41 @@ public class ModEntity
                 IsChecked = true;
             }
             else {
-                ModsManager.AddException(new System.Exception($"[{modInfo.Name}]缺少依赖项{name}"));
+                ModsManager.AddException(new Exception($"[{modInfo.Name}]缺少依赖项{name}"));
                 return;
             }
         }
         ModsManager.CacheToLoadMods.Add(this);
     }
+    /// <summary>
+    /// 保存设置
+    /// </summary>
+    /// <param name="xElement"></param>
     public virtual void SaveSettings(XElement xElement)
     {
         if (ModLoader_ != null) ModLoader_.SaveSettings(xElement);
 
     }
+    /// <summary>
+    /// 加载设置
+    /// </summary>
+    /// <param name="xElement"></param>
     public virtual void LoadSettings(XElement xElement)
     {
         if (ModLoader_ != null) ModLoader_.LoadSettings(xElement);
     }
+    /// <summary>
+    /// BlocksManager初始化完毕
+    /// </summary>
+    /// <param name="categories"></param>
     public virtual void OnBlocksInitalized(List<string> categories)
     {
         if (ModLoader_ != null) ModLoader_.OnBlocksManagerInitalized();
     }
+    /// <summary>
+    /// ScreensManager初始化完毕
+    /// </summary>
+    /// <param name="loading"></param>
     public virtual void InitScreens(LoadingScreen loading)
     {
         if (ModLoader_ != null) ModLoader_.OnScreensManagerInitalized(loading);

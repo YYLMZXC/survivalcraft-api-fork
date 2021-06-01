@@ -147,8 +147,9 @@ public static class ModsManager
         if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
         WaitToLoadMods.Clear();
         WaitToLoadMods.Add(new SurvivalCrafModEntity());
+        WaitToLoadMods.Add(new FastDebugModEntity());
         ModLoaders.Clear();
-        GetAllFiles(ModsManager.ModsPath);
+        GetAllFiles(ModsPath);
     }
     public static void AddException(Exception e) {
         exceptions.Add(e);

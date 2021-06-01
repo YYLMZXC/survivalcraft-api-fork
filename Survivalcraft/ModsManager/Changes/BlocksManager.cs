@@ -62,9 +62,6 @@ namespace Game
 
             for (int j = 0; j < m_blocks.Length; j++)
             {
-                if (j > 1000) { 
-                
-                }
                 Block block = m_blocks[j];
                 block.Initialize();
                 foreach (int value in block.GetCreativeValues()) {

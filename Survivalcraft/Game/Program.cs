@@ -136,7 +136,7 @@ namespace Game
             }
             catch (Exception e)
             {
-                ExceptionManager.ReportExceptionToUser(null, e);
+                ModsManager.AddException(e);
                 ScreensManager.SwitchScreen("MainMenu");
             }
             try

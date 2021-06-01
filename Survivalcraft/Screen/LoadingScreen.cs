@@ -97,7 +97,7 @@ namespace Game
                 foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
                 {
                     AddQuequeAction(()=> {
-                        LoadingScreen.SetMsg($"初始化Pak:[{modEntity.modInfo.Name}]");
+                        SetMsg($"初始化Pak:[{modEntity.modInfo.Name}]");
                         modEntity.InitPak();
                     });
                 }
@@ -117,6 +117,16 @@ namespace Game
                         {
                             ModsManager.AddException(e);
                         }
+                    });
+                }
+            });
+            AddLoadAction(() => {
+
+                foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
+                {
+                    AddQuequeAction(() => {
+                        SetMsg($"初始化Mod:[{modEntity.modInfo.Name}]");
+                        if(modEntity.ModLoader_!=null)modEntity.ModLoader_.__ModInitialize();
                     });
                 }
             });
