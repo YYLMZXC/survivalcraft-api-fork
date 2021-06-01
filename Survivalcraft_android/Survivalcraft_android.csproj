@@ -1901,6 +1901,9 @@
     <Compile Include="..\Survivalcraft\Game\TerrainContentsGeneratorFlat.cs">
       <Link>Game\TerrainContentsGeneratorFlat.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\TerrainDraw.cs">
+      <Link>Game\TerrainDraw.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\TerrainGenerationMode.cs">
       <Link>Game\TerrainGenerationMode.cs</Link>
     </Compile>

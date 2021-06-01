@@ -30,6 +30,7 @@ public class ModEntity
     public bool HasException = false;
     public bool IsChecked;
     public Action ModInit;
+    public ModLoader ModLoader_;
     public ModEntity() { }
     public ModEntity(ZipArchive zipArchive) {
         ModArchive = zipArchive;
@@ -102,6 +103,9 @@ public class ModEntity
             ModsManager.CombineDataBase(xElement, stream);
             stream.Dispose();
         }
+        if (ModLoader_ != null) {
+            ModLoader_.OnXdbLoad(xElement);
+        }
     }
     public virtual void LoadClo(ClothingBlock block, ref XElement xElement) {
         foreach (Stream stream in GetFiles(".clo"))
@@ -121,31 +125,39 @@ public class ModEntity
     public virtual void LoadDll() {
         foreach (Stream stream in GetFiles(".dll"))
         {
-            Assembly assembly = Assembly.Load(ModsManager.StreamToBytes(stream));
-            Type[] types = assembly.GetTypes();
-            for (int i = 0; i < types.Length; i++) {
-                Type type = types[i];
-                if (type.IsSubclassOf(typeof(ModLoader))) {
-                    ModLoader modLoader = Activator.CreateInstance(types[i]) as ModLoader;
-                    ModsManager.ModLoaders.Add(modLoader);
-                }
-                if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract) {
-                    FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
-                    if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
-                    {
-                        ModsManager.AddException(new InvalidOperationException($"Block type \"{type.FullName}\" does not have static field Index of type int."));
-                    }
-                    else {
-                        int staticIndex = (int)fieldInfo.GetValue(null);
-                        Block block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
-                        block.BlockIndex = staticIndex;
-                        Blocks.Add(block);
-                    }
-                }
-            }
+            LoadDllLogic(stream);
             stream.Dispose();
         }
     }
+    public void LoadDllLogic(Stream stream) {
+        Assembly assembly = Assembly.Load(ModsManager.StreamToBytes(stream));
+        Type[] types = assembly.GetTypes();
+        for (int i = 0; i < types.Length; i++)
+        {
+            Type type = types[i];
+            if (type.IsSubclassOf(typeof(ModLoader)))
+            {
+                ModLoader_ = Activator.CreateInstance(types[i]) as ModLoader;
+                ModsManager.ModLoaders.Add(ModLoader_);
+            }
+            if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
+            {
+                FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
+                if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
+                {
+                    ModsManager.AddException(new InvalidOperationException($"Block type \"{type.FullName}\" does not have static field Index of type int."));
+                }
+                else
+                {
+                    int staticIndex = (int)fieldInfo.GetValue(null);
+                    Block block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
+                    block.BlockIndex = staticIndex;
+                    Blocks.Add(block);
+                }
+            }
+        }
+    }
+
     public virtual void CheckDependencies() {
         for (int j = 0; j < modInfo.Dependencies.Count; j++)
         {
@@ -182,17 +194,20 @@ public class ModEntity
     }
     public virtual void SaveSettings(XElement xElement)
     {
+        if (ModLoader_ != null) ModLoader_.SaveSettings(xElement);
+
     }
     public virtual void LoadSettings(XElement xElement)
     {
+        if (ModLoader_ != null) ModLoader_.LoadSettings(xElement);
     }
     public virtual void OnBlocksInitalized(List<string> categories)
     {
-
+        if (ModLoader_ != null) ModLoader_.OnBlocksManagerInitalized();
     }
     public virtual void InitScreens(LoadingScreen loading)
     {
-
+        if (ModLoader_ != null) ModLoader_.OnScreensManagerInitalized(loading);
 
     }
 }

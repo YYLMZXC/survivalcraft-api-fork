@@ -45,7 +45,7 @@ namespace Game
                 e.IsHandled = true;
             };
 #if DEBUG
-            Window.Run(1074, 720, WindowMode.Resizable, "生存战争2.2插件版V1.34beta");
+            Window.Run(320, 240, WindowMode.Resizable, "生存战争2.2插件版V1.34beta");
 #endif
 #if TRACE
 			Window.Run(1024, 768, WindowMode.Fullscreen, "生存战争2.2插件版V1.34beta");
@@ -95,17 +95,13 @@ namespace Game
             {
                 Log.Error(e.Message);
             }
-            //MarketplaceManagerIOS会用到，这里注释掉了
-            //MarketplaceManager.Initialize();
         }
 
         public static void Run()
         {
-            VrManager.WaitGetPoses();
-            double realTime = Time.RealTime;
-            LastFrameTime = (float)(realTime - m_frameBeginTime);
+            LastFrameTime = (float)(Time.RealTime - m_frameBeginTime);
             LastCpuFrameTime = (float)(m_cpuEndTime - m_frameBeginTime);
-            m_frameBeginTime = realTime;
+            m_frameBeginTime = Time.RealTime;
             if (Engine.Input.Keyboard.IsKeyDown(Engine.Input.Key.F11))
             {
                 if (SettingsManager.WindowMode == Engine.WindowMode.Fullscreen)
@@ -116,9 +112,7 @@ namespace Game
                 {
                     SettingsManager.WindowMode = Engine.WindowMode.Fullscreen;
                 }
-            }
-
-            Window.PresentationInterval = ((!VrManager.IsVrStarted) ? SettingsManager.PresentationInterval : 0);
+            }            
             try
             {
                 if (ExceptionManager.Error == null)

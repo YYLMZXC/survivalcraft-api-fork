@@ -322,29 +322,10 @@ namespace Game
             }, null);
             m_stateMachine.AddState("PlayerDead", delegate
             {
-                GameWidget.ActiveCamera = GameWidget.FindCamera<DeathCamera>();
-                if (ComponentPlayer != null)
+                foreach (ModLoader modLoader in ModsManager.ModLoaders)
                 {
-                    string text = ComponentPlayer.ComponentHealth.CauseOfDeath;
-                    if (string.IsNullOrEmpty(text))
-                    {
-                        text = LanguageControl.Get(fName, 12);
-                    }
-                    string arg = string.Format(LanguageControl.Get(fName, 13), text);
-                    if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Cruel)
-                    {
-                        ComponentPlayer.ComponentGui.DisplayLargeMessage(LanguageControl.Get(fName, 6), string.Format(LanguageControl.Get(fName, 7), arg, LanguageControl.Get("GameMode", m_subsystemGameInfo.WorldSettings.GameMode.ToString())), 30f, 1.5f);
-                    }
-                    else if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Adventure && !m_subsystemGameInfo.WorldSettings.IsAdventureRespawnAllowed)
-                    {
-                        ComponentPlayer.ComponentGui.DisplayLargeMessage(LanguageControl.Get(fName, 6), string.Format(LanguageControl.Get(fName, 8), arg), 30f, 1.5f);
-                    }
-                    else
-                    {
-                        ComponentPlayer.ComponentGui.DisplayLargeMessage(LanguageControl.Get(fName, 6), string.Format(LanguageControl.Get(fName, 9), arg), 30f, 1.5f);
-                    }
+                    modLoader.OnPlayerDead(this);
                 }
-                Level = MathUtils.Max(MathUtils.Floor(Level / 2f), 1f);
             }, delegate
             {
                 if (ComponentPlayer == null)

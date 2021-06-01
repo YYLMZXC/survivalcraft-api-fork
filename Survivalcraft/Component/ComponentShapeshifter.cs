@@ -114,6 +114,7 @@ namespace Game
 
         public void ComponentSpawn_Despawned(ComponentSpawn componentSpawn)
         {
+
             if (m_componentHealth.Health > 0f && !string.IsNullOrEmpty(m_spawnEntityTemplateName))
             {
                 Entity entity = DatabaseManager.CreateEntity(base.Project, m_spawnEntityTemplateName, throwIfNotFound: true);
@@ -122,6 +123,11 @@ namespace Game
                 componentBody.Rotation = m_componentBody.Rotation;
                 componentBody.Velocity = m_componentBody.Velocity;
                 entity.FindComponent<ComponentSpawn>(throwOnError: true).SpawnDuration = 0.5f;
+
+                foreach (ModLoader modLoader in ModsManager.ModLoaders) {
+                    modLoader.ComponentSpawn_Despawned(entity,componentSpawn);
+                }
+
                 base.Project.AddEntity(entity);
             }
             if (m_particleSystem != null)

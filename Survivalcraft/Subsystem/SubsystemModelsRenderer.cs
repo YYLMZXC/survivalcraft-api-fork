@@ -221,6 +221,12 @@ namespace Game
                 InstancedModelData instancedModelData = InstancedModelsManager.GetInstancedModelData(componentModel.Model, componentModel.MeshDrawOrders);
                 Display.DrawIndexed(PrimitiveType.TriangleList, modelShader, instancedModelData.VertexBuffer, instancedModelData.IndexBuffer, 0, instancedModelData.IndexBuffer.IndicesCount);
                 ModelsDrawn++;
+                //»­Ãû³Æ
+                foreach (ModLoader modLoader in ModsManager.ModLoaders)
+                {
+                    modLoader.OnModelRendererDrawExtra(this,componentModel,camera,alphaThreshold);
+
+                }
             }
         }
 

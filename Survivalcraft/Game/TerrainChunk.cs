@@ -1,6 +1,7 @@
 using Engine;
 using System;
-
+using System.Collections.Generic;
+using Engine.Graphics;
 namespace Game
 {
     public class TerrainChunk : IDisposable
@@ -60,6 +61,8 @@ namespace Game
         public volatile bool NewGeometryData;
 
         public TerrainChunkGeometry Geometry = new TerrainChunkGeometry();
+
+        public TerrainDraw terrainDraw = new TerrainDraw();
 
         public int[] Cells = new int[65536];
 

@@ -193,60 +193,10 @@ namespace Game
 
         public void Hit(ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection)
         {
-            if (!(m_subsystemTime.GameTime - m_lastHitTime > 0.6600000262260437))
-            {
-                return;
+            foreach (ModLoader modLoader in ModsManager.ModLoaders) {
+                modLoader.ComponentMinerHit(this, componentBody,hitPoint,hitDirection);
+            
             }
-            m_lastHitTime = m_subsystemTime.GameTime;
-            Block block = BlocksManager.Blocks[Terrain.ExtractContents(ActiveBlockValue)];
-            if (!CanUseTool(ActiveBlockValue))
-            {
-                ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block.PlayerLevelRequired, block.GetDisplayName(m_subsystemTerrain, ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
-                Poke(forceRestart: false);
-                return;
-            }
-            float num = 0f;
-            float num2 = 1f;
-            if (ActiveBlockValue != 0)
-            {
-                num = block.GetMeleePower(ActiveBlockValue) * AttackPower * m_random.Float(0.8f, 1.2f);
-                num2 = block.GetMeleeHitProbability(ActiveBlockValue);
-            }
-            else
-            {
-                num = AttackPower * m_random.Float(0.8f, 1.2f);
-                num2 = 0.66f;
-            }
-            bool flag;
-            if (ComponentPlayer != null)
-            {
-                m_subsystemAudio.PlaySound("Audio/Swoosh", 1f, m_random.Float(-0.2f, 0.2f), componentBody.Position, 3f, autoDelay: false);
-                flag = m_random.Bool(num2);
-                num *= ComponentPlayer.ComponentLevel.StrengthFactor;
-            }
-            else
-            {
-                flag = true;
-            }
-            if (flag)
-            {
-                AttackBody(componentBody, ComponentCreature, hitPoint, hitDirection, num, isMeleeAttack: true);
-                DamageActiveTool(1);
-            }
-            else if (ComponentCreature is ComponentPlayer)
-            {
-                HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
-                base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
-            }
-            if (ComponentCreature.PlayerStats != null)
-            {
-                ComponentCreature.PlayerStats.MeleeAttacks++;
-                if (flag)
-                {
-                    ComponentCreature.PlayerStats.MeleeHits++;
-                }
-            }
-            Poke(forceRestart: false);
         }
 
         public bool Aim(Ray3 aim, AimState state)

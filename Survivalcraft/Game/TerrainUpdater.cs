@@ -128,7 +128,7 @@ namespace Game
                 }
             }
         }
-        public static Action<TerrainChunk, bool> GenerateChunkVertices1;
+
         public struct UpdateLocation
         {
             public Vector2 Center;
@@ -686,159 +686,10 @@ namespace Game
 
         public void UpdateChunkSingleStep(TerrainChunk chunk, int skylightValue)
         {
-            switch (chunk.ThreadState)
-            {
-                case TerrainChunkState.NotLoaded:
-                    {
-                        double realTime19 = Time.RealTime;
-                        if (m_subsystemTerrain.TerrainSerializer.LoadChunk(chunk))
-                        {
-                            chunk.ThreadState = TerrainChunkState.InvalidLight;
-                            chunk.WasUpgraded = true;
-                            double realTime20 = Time.RealTime;
-                            chunk.IsLoaded = true;
-                            m_statistics.LoadingCount++;
-                            m_statistics.LoadingTime += realTime20 - realTime19;
-                        }
-                        else
-                        {
-                            chunk.ThreadState = TerrainChunkState.InvalidContents1;
-                            chunk.WasUpgraded = true;
-                        }
-                        break;
-                    }
-                case TerrainChunkState.InvalidContents1:
-                    {
-                        double realTime17 = Time.RealTime;
-                        m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass1(chunk);
-                        chunk.ThreadState = TerrainChunkState.InvalidContents2;
-                        chunk.WasUpgraded = true;
-                        double realTime18 = Time.RealTime;
-                        m_statistics.ContentsCount1++;
-                        m_statistics.ContentsTime1 += realTime18 - realTime17;
-                        break;
-                    }
-                case TerrainChunkState.InvalidContents2:
-                    {
-                        double realTime15 = Time.RealTime;
-                        m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass2(chunk);
-                        chunk.ThreadState = TerrainChunkState.InvalidContents3;
-                        chunk.WasUpgraded = true;
-                        double realTime16 = Time.RealTime;
-                        m_statistics.ContentsCount2++;
-                        m_statistics.ContentsTime2 += realTime16 - realTime15;
-                        break;
-                    }
-                case TerrainChunkState.InvalidContents3:
-                    {
-                        double realTime13 = Time.RealTime;
-                        m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass3(chunk);
-                        chunk.ThreadState = TerrainChunkState.InvalidContents4;
-                        chunk.WasUpgraded = true;
-                        double realTime14 = Time.RealTime;
-                        m_statistics.ContentsCount3++;
-                        m_statistics.ContentsTime3 += realTime14 - realTime13;
-                        break;
-                    }
-                case TerrainChunkState.InvalidContents4:
-                    {
-                        double realTime7 = Time.RealTime;
-                        m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass4(chunk);
-                        chunk.ThreadState = TerrainChunkState.InvalidLight;
-                        chunk.WasUpgraded = true;
-                        double realTime8 = Time.RealTime;
-                        m_statistics.ContentsCount4++;
-                        m_statistics.ContentsTime4 += realTime8 - realTime7;
-                        break;
-                    }
-                case TerrainChunkState.InvalidLight:
-                    {
-                        double realTime3 = Time.RealTime;
-                        GenerateChunkSunLightAndHeight(chunk, skylightValue);
-                        chunk.ThreadState = TerrainChunkState.InvalidPropagatedLight;
-                        chunk.WasUpgraded = true;
-                        chunk.LightPropagationMask = 0;
-                        double realTime4 = Time.RealTime;
-                        m_statistics.LightCount++;
-                        m_statistics.LightTime += realTime4 - realTime3;
-                        break;
-                    }
-                case TerrainChunkState.InvalidPropagatedLight:
-                    {
-                        for (int i = -2; i <= 2; i++)
-                        {
-                            for (int j = -2; j <= 2; j++)
-                            {
-                                TerrainChunk chunkAtCell = m_terrain.GetChunkAtCell(chunk.Origin.X + i * 16, chunk.Origin.Y + j * 16);
-                                if (chunkAtCell != null && chunkAtCell.ThreadState < TerrainChunkState.InvalidPropagatedLight)
-                                {
-                                    UpdateChunkSingleStep(chunkAtCell, skylightValue);
-                                    return;
-                                }
-                            }
-                        }
-                        double realTime9 = Time.RealTime;
-                        m_lightSources.Clear();
-                        for (int k = -1; k <= 1; k++)
-                        {
-                            for (int l = -1; l <= 1; l++)
-                            {
-                                int num = CalculateLightPropagationBitIndex(k, l);
-                                if (((chunk.LightPropagationMask >> num) & 1) == 0)
-                                {
-                                    TerrainChunk chunkAtCell2 = m_terrain.GetChunkAtCell(chunk.Origin.X + k * 16, chunk.Origin.Y + l * 16);
-                                    if (chunkAtCell2 != null)
-                                    {
-                                        GenerateChunkLightSources(chunkAtCell2);
-                                        UpdateNeighborsLightPropagationBitmasks(chunkAtCell2);
-                                    }
-                                }
-                            }
-                        }
-                        double realTime10 = Time.RealTime;
-                        m_statistics.LightSourcesCount++;
-                        m_statistics.LightSourcesTime += realTime10 - realTime9;
-                        double realTime11 = Time.RealTime;
-                        PropagateLight();
-                        chunk.ThreadState = TerrainChunkState.InvalidVertices1;
-                        chunk.WasUpgraded = true;
-                        double realTime12 = Time.RealTime;
-                        m_statistics.LightPropagateCount++;
-                        m_statistics.LightSourceInstancesCount += m_lightSources.Count;
-                        m_statistics.LightPropagateTime += realTime12 - realTime11;
-                        break;
-                    }
-                case TerrainChunkState.InvalidVertices1:
-                    {
-                        double realTime5 = Time.RealTime;
-                        lock (chunk.Geometry)
-                        {
-                            chunk.NewGeometryData = false;
-                            GenerateChunkVertices(chunk, even: true);
-                        }
-                        chunk.ThreadState = TerrainChunkState.InvalidVertices2;
-                        chunk.WasUpgraded = true;
-                        double realTime6 = Time.RealTime;
-                        m_statistics.VerticesCount1++;
-                        m_statistics.VerticesTime1 += realTime6 - realTime5;
-                        break;
-                    }
-                case TerrainChunkState.InvalidVertices2:
-                    {
-                        double realTime = Time.RealTime;
-                        lock (chunk.Geometry)
-                        {
-                            GenerateChunkVertices(chunk, even: false);
-                            chunk.NewGeometryData = true;
-                        }
-                        chunk.ThreadState = TerrainChunkState.Valid;
-                        chunk.WasUpgraded = true;
-                        double realTime2 = Time.RealTime;
-                        m_statistics.VerticesCount2++;
-                        m_statistics.VerticesTime2 += realTime2 - realTime;
-                        break;
-                    }
+            foreach (ModLoader modLoader in ModsManager.ModLoaders) {
+                modLoader.UpdateChunkSingleStep(this,chunk,skylightValue);
             }
+
         }
 
         public void GenerateChunkSunLightAndHeight(TerrainChunk chunk, int skylightValue)
@@ -1048,11 +899,6 @@ namespace Game
 
         public void GenerateChunkVertices(TerrainChunk chunk, bool even)
         {
-            if (GenerateChunkVertices1 != null)
-            {
-                GenerateChunkVertices1(chunk, even);
-                return;
-            }
             m_subsystemTerrain.BlockGeometryGenerator.ResetCache();
             TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y - 1);
             TerrainChunk chunkAtCoords2 = m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y - 1);
@@ -1145,6 +991,7 @@ namespace Game
                     }
                 }
             }
+            chunk.terrainDraw.Combile();
         }
 
         public static int CalculateLightPropagationBitIndex(int x, int z)

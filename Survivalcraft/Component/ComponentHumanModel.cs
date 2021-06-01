@@ -379,21 +379,7 @@ namespace Game
                 Matrix matrix2 = matrix * camera.ViewMatrix;
                 block.DrawBlock(m_subsystemModelsRenderer.PrimitivesRenderer, m_componentMiner.ActiveBlockValue, Color.White, block.InHandScale, ref matrix2, m_drawBlockEnvironmentData);
             }
-            if (m_componentPlayer != null && camera.GameWidget.PlayerData != m_componentPlayer.PlayerData)
-            {
-                Vector3 position = Vector3.Transform(m_componentCreature.ComponentBody.Position + 1.02f * Vector3.UnitY * m_componentCreature.ComponentBody.BoxSize.Y, camera.ViewMatrix);
-                if (position.Z < 0f)
-                {
-                    Color color = Color.Lerp(Color.White, Color.Transparent, MathUtils.Saturate((position.Length() - 4f) / 3f));
-                    if (color.A > 8)
-                    {
-                        Vector3 right = Vector3.TransformNormal(0.005f * Vector3.Normalize(Vector3.Cross(camera.ViewDirection, Vector3.UnitY)), camera.ViewMatrix);
-                        Vector3 down = Vector3.TransformNormal(-0.005f * Vector3.UnitY, camera.ViewMatrix);
-                        BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
-                        m_subsystemModelsRenderer.PrimitivesRenderer.FontBatch(font, 1, DepthStencilState.DepthRead, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.LinearClamp).QueueText(m_componentPlayer.PlayerData.Name, position, right, down, color, TextAnchor.HorizontalCenter | TextAnchor.Bottom);
-                    }
-                }
-            }
+
             base.DrawExtras(camera);
         }
 

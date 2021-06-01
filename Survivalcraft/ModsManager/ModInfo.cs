@@ -10,6 +10,7 @@ namespace Game{
         public string Description;
         public string ScVersion;
         public string Link;
+        public string Author;
         public List<string> Dependencies = new List<string>();
     }
 }

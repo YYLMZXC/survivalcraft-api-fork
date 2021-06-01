@@ -154,11 +154,11 @@ namespace Game
             Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
             m_opaqueShader.GetParameter("u_origin").SetValue(v.XZ);
             m_opaqueShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
-            m_opaqueShader.GetParameter("u_viewPosition").SetValue(viewPosition);
-            m_opaqueShader.GetParameter("u_texture").SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
+            m_opaqueShader.GetParameter("u_viewPosition").SetValue(viewPosition);            
             m_opaqueShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             m_opaqueShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
             m_opaqueShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+            ShaderParameter TextureParam = m_opaqueShader.GetParameter("u_texture");
             ShaderParameter parameter = m_opaqueShader.GetParameter("u_fogStartInvLength");
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
@@ -183,7 +183,9 @@ namespace Game
                 {
                     num3 |= 8;
                 }
+                TextureParam.SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
                 DrawTerrainChunkGeometrySubsets(m_opaqueShader, terrainChunk.Geometry, num3);
+
                 ChunksDrawn++;
             }
         }
@@ -200,10 +202,10 @@ namespace Game
             m_alphaTestedShader.GetParameter("u_origin").SetValue(v.XZ);
             m_alphaTestedShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
             m_alphaTestedShader.GetParameter("u_viewPosition").SetValue(viewPosition);
-            m_alphaTestedShader.GetParameter("u_texture").SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
             m_alphaTestedShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             m_alphaTestedShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
             m_alphaTestedShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+            ShaderParameter TextureParam = m_opaqueShader.GetParameter("u_texture");
             ShaderParameter parameter = m_alphaTestedShader.GetParameter("u_fogStartInvLength");
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
@@ -212,8 +214,15 @@ namespace Game
                 float num2 = MathUtils.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
                 parameter.SetValue(new Vector2(num2, 1f / (num - num2)));
                 int subsetsMask = 32;
+                TextureParam.SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
                 DrawTerrainChunkGeometrySubsets(m_alphaTestedShader, terrainChunk.Geometry, subsetsMask);
+                foreach (var item in terrainChunk.terrainDraw.Draws)
+                {
+                    TextureParam.SetValue(item.Key);
+                    Display.DrawUserIndexed(PrimitiveType.TriangleList,m_alphaTestedShader,TerrainVertex.VertexDeclaration, item.Value.SubsetOpaque.Vertices.Array, 0, item.Value.SubsetOpaque.Vertices.Count, item.Value.SubsetOpaque.Indices.Array,0, item.Value.SubsetOpaque.Indices.Count);
+                }
             }
+
         }
 
         public void DrawTransparent(Camera camera)

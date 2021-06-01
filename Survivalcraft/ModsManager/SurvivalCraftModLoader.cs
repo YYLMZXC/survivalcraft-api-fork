@@ -10,11 +10,11 @@ using System.Xml.Linq;
 using System.IO;
 using System.Reflection;
 using System.Globalization;
+using Engine.Media;
 namespace Game
 {
     public class SurvivalCraftModLoader:ModLoader
     {
-
         public override bool ComponentMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult)
         {
             bool result = false;
@@ -304,8 +304,298 @@ namespace Game
                 componentCreature.ConstantSpawn = data.ConstantSpawn;
             }
         }
-
-
-
+        public override void OnCameraChange(ComponentPlayer m_componentPlayer,ComponentGui componentGui)
+        {
+            GameWidget gameWidget = m_componentPlayer.GameWidget;
+            if (gameWidget.ActiveCamera is FppCamera)
+            {
+                gameWidget.ActiveCamera = gameWidget.FindCamera<TppCamera>();
+                componentGui.DisplaySmallMessage(LanguageControl.Get(ComponentGui.fName, 9), Color.White, blinking: false, playNotificationSound: false);
+            }
+            else if (gameWidget.ActiveCamera is TppCamera)
+            {
+                gameWidget.ActiveCamera = gameWidget.FindCamera<OrbitCamera>();
+                componentGui.DisplaySmallMessage(LanguageControl.Get(ComponentGui.fName, 10), Color.White, blinking: false, playNotificationSound: false);
+            }
+            else if (gameWidget.ActiveCamera is OrbitCamera)
+            {
+                gameWidget.ActiveCamera = gameWidget.FindCamera<FixedCamera>();
+                componentGui.DisplaySmallMessage(LanguageControl.Get(ComponentGui.fName, 11), Color.White, blinking: false, playNotificationSound: false);
+            }
+            else
+            {
+                if (componentGui.m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && gameWidget.ActiveCamera is FixedCamera)
+                {
+                    gameWidget.ActiveCamera = gameWidget.FindCamera<DebugCamera>();
+                    componentGui.DisplaySmallMessage(LanguageControl.Get(ComponentGui.fName, 19), Color.White, blinking: false, playNotificationSound: false);
+                }
+                else
+                {
+                    gameWidget.ActiveCamera = gameWidget.FindCamera<FppCamera>();
+                    componentGui.DisplaySmallMessage(LanguageControl.Get(ComponentGui.fName, 12), Color.White, blinking: false, playNotificationSound: false);
+                }
+            }
+        }
+        public override void OnPlayerDead(PlayerData playerData)
+        {
+            playerData.GameWidget.ActiveCamera = playerData.GameWidget.FindCamera<DeathCamera>();
+            if (playerData.ComponentPlayer != null)
+            {
+                string text = playerData.ComponentPlayer.ComponentHealth.CauseOfDeath;
+                if (string.IsNullOrEmpty(text))
+                {
+                    text = LanguageControl.Get(PlayerData.fName, 12);
+                }
+                string arg = string.Format(LanguageControl.Get(PlayerData.fName, 13), text);
+                if (playerData.m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Cruel)
+                {
+                    playerData.ComponentPlayer.ComponentGui.DisplayLargeMessage(LanguageControl.Get(PlayerData.fName, 6), string.Format(LanguageControl.Get(PlayerData.fName, 7), arg, LanguageControl.Get("GameMode", playerData.m_subsystemGameInfo.WorldSettings.GameMode.ToString())), 30f, 1.5f);
+                }
+                else if (playerData.m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Adventure && !playerData.m_subsystemGameInfo.WorldSettings.IsAdventureRespawnAllowed)
+                {
+                    playerData.ComponentPlayer.ComponentGui.DisplayLargeMessage(LanguageControl.Get(PlayerData.fName, 6), string.Format(LanguageControl.Get(PlayerData.fName, 8), arg), 30f, 1.5f);
+                }
+                else
+                {
+                    playerData.ComponentPlayer.ComponentGui.DisplayLargeMessage(LanguageControl.Get(PlayerData.fName, 6), string.Format(LanguageControl.Get(PlayerData.fName, 9), arg), 30f, 1.5f);
+                }
+            }
+            playerData.Level = MathUtils.Max(MathUtils.Floor(playerData.Level / 2f), 1f);
+        }
+        public override void UpdateChunkSingleStep(TerrainUpdater terrainUpdater, TerrainChunk chunk, int skylightValue)
+        {
+            switch (chunk.ThreadState)
+            {
+                case TerrainChunkState.NotLoaded:
+                    {
+                        double realTime19 = Time.RealTime;
+                        if (terrainUpdater.m_subsystemTerrain.TerrainSerializer.LoadChunk(chunk))
+                        {
+                            chunk.ThreadState = TerrainChunkState.InvalidLight;
+                            chunk.WasUpgraded = true;
+                            double realTime20 = Time.RealTime;
+                            chunk.IsLoaded = true;
+                            terrainUpdater.m_statistics.LoadingCount++;
+                            terrainUpdater.m_statistics.LoadingTime += realTime20 - realTime19;
+                        }
+                        else
+                        {
+                            chunk.ThreadState = TerrainChunkState.InvalidContents1;
+                            chunk.WasUpgraded = true;
+                        }
+                        break;
+                    }
+                case TerrainChunkState.InvalidContents1:
+                    {
+                        double realTime17 = Time.RealTime;
+                        terrainUpdater.m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass1(chunk);
+                        chunk.ThreadState = TerrainChunkState.InvalidContents2;
+                        chunk.WasUpgraded = true;
+                        double realTime18 = Time.RealTime;
+                        terrainUpdater.m_statistics.ContentsCount1++;
+                        terrainUpdater.m_statistics.ContentsTime1 += realTime18 - realTime17;
+                        break;
+                    }
+                case TerrainChunkState.InvalidContents2:
+                    {
+                        double realTime15 = Time.RealTime;
+                        terrainUpdater.m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass2(chunk);
+                        chunk.ThreadState = TerrainChunkState.InvalidContents3;
+                        chunk.WasUpgraded = true;
+                        double realTime16 = Time.RealTime;
+                        terrainUpdater.m_statistics.ContentsCount2++;
+                        terrainUpdater.m_statistics.ContentsTime2 += realTime16 - realTime15;
+                        break;
+                    }
+                case TerrainChunkState.InvalidContents3:
+                    {
+                        double realTime13 = Time.RealTime;
+                        terrainUpdater.m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass3(chunk);
+                        chunk.ThreadState = TerrainChunkState.InvalidContents4;
+                        chunk.WasUpgraded = true;
+                        double realTime14 = Time.RealTime;
+                        terrainUpdater.m_statistics.ContentsCount3++;
+                        terrainUpdater.m_statistics.ContentsTime3 += realTime14 - realTime13;
+                        break;
+                    }
+                case TerrainChunkState.InvalidContents4:
+                    {
+                        double realTime7 = Time.RealTime;
+                        terrainUpdater.m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass4(chunk);
+                        chunk.ThreadState = TerrainChunkState.InvalidLight;
+                        chunk.WasUpgraded = true;
+                        double realTime8 = Time.RealTime;
+                        terrainUpdater.m_statistics.ContentsCount4++;
+                        terrainUpdater.m_statistics.ContentsTime4 += realTime8 - realTime7;
+                        break;
+                    }
+                case TerrainChunkState.InvalidLight:
+                    {
+                        double realTime3 = Time.RealTime;
+                        terrainUpdater.GenerateChunkSunLightAndHeight(chunk, skylightValue);
+                        chunk.ThreadState = TerrainChunkState.InvalidPropagatedLight;
+                        chunk.WasUpgraded = true;
+                        chunk.LightPropagationMask = 0;
+                        double realTime4 = Time.RealTime;
+                        terrainUpdater.m_statistics.LightCount++;
+                        terrainUpdater.m_statistics.LightTime += realTime4 - realTime3;
+                        break;
+                    }
+                case TerrainChunkState.InvalidPropagatedLight:
+                    {
+                        for (int i = -2; i <= 2; i++)
+                        {
+                            for (int j = -2; j <= 2; j++)
+                            {
+                                TerrainChunk chunkAtCell = terrainUpdater.m_terrain.GetChunkAtCell(chunk.Origin.X + i * 16, chunk.Origin.Y + j * 16);
+                                if (chunkAtCell != null && chunkAtCell.ThreadState < TerrainChunkState.InvalidPropagatedLight)
+                                {
+                                    terrainUpdater.UpdateChunkSingleStep(chunkAtCell, skylightValue);
+                                    return;
+                                }
+                            }
+                        }
+                        double realTime9 = Time.RealTime;
+                        terrainUpdater.m_lightSources.Clear();
+                        for (int k = -1; k <= 1; k++)
+                        {
+                            for (int l = -1; l <= 1; l++)
+                            {
+                                int num = TerrainUpdater.CalculateLightPropagationBitIndex(k, l);
+                                if (((chunk.LightPropagationMask >> num) & 1) == 0)
+                                {
+                                    TerrainChunk chunkAtCell2 = terrainUpdater.m_terrain.GetChunkAtCell(chunk.Origin.X + k * 16, chunk.Origin.Y + l * 16);
+                                    if (chunkAtCell2 != null)
+                                    {
+                                        terrainUpdater.GenerateChunkLightSources(chunkAtCell2);
+                                        terrainUpdater.UpdateNeighborsLightPropagationBitmasks(chunkAtCell2);
+                                    }
+                                }
+                            }
+                        }
+                        double realTime10 = Time.RealTime;
+                        terrainUpdater.m_statistics.LightSourcesCount++;
+                        terrainUpdater.m_statistics.LightSourcesTime += realTime10 - realTime9;
+                        double realTime11 = Time.RealTime;
+                        terrainUpdater.PropagateLight();
+                        chunk.ThreadState = TerrainChunkState.InvalidVertices1;
+                        chunk.WasUpgraded = true;
+                        double realTime12 = Time.RealTime;
+                        terrainUpdater.m_statistics.LightPropagateCount++;
+                        terrainUpdater.m_statistics.LightSourceInstancesCount += terrainUpdater.m_lightSources.Count;
+                        terrainUpdater.m_statistics.LightPropagateTime += realTime12 - realTime11;
+                        break;
+                    }
+                case TerrainChunkState.InvalidVertices1:
+                    {
+                        double realTime5 = Time.RealTime;
+                        lock (chunk.Geometry)
+                        {
+                            chunk.NewGeometryData = false;
+                            terrainUpdater.GenerateChunkVertices(chunk, even: true);
+                        }
+                        chunk.ThreadState = TerrainChunkState.InvalidVertices2;
+                        chunk.WasUpgraded = true;
+                        double realTime6 = Time.RealTime;
+                        terrainUpdater.m_statistics.VerticesCount1++;
+                        terrainUpdater.m_statistics.VerticesTime1 += realTime6 - realTime5;
+                        break;
+                    }
+                case TerrainChunkState.InvalidVertices2:
+                    {
+                        double realTime = Time.RealTime;
+                        lock (chunk.Geometry)
+                        {
+                            terrainUpdater.GenerateChunkVertices(chunk, even: false);
+                            chunk.NewGeometryData = true;
+                        }
+                        chunk.ThreadState = TerrainChunkState.Valid;
+                        chunk.WasUpgraded = true;
+                        double realTime2 = Time.RealTime;
+                        terrainUpdater.m_statistics.VerticesCount2++;
+                        terrainUpdater.m_statistics.VerticesTime2 += realTime2 - realTime;
+                        break;
+                    }
+            }
+        }
+        public override void ComponentMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection)
+        {
+            if (!(miner.m_subsystemTime.GameTime - miner.m_lastHitTime > 0.6600000262260437))
+            {
+                return;
+            }
+            miner.m_lastHitTime = miner.m_subsystemTime.GameTime;
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(miner.ActiveBlockValue)];
+            if (!miner.CanUseTool(miner.ActiveBlockValue))
+            {
+                miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block.PlayerLevelRequired, block.GetDisplayName(miner.m_subsystemTerrain, miner.ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
+                miner.Poke(forceRestart: false);
+                return;
+            }
+            float num = 0f;
+            float num2 = 1f;
+            if (miner.ActiveBlockValue != 0)
+            {
+                num = block.GetMeleePower(miner.ActiveBlockValue) * miner.AttackPower * miner.m_random.Float(0.8f, 1.2f);
+                num2 = block.GetMeleeHitProbability(miner.ActiveBlockValue);
+            }
+            else
+            {
+                num = miner.AttackPower * miner.m_random.Float(0.8f, 1.2f);
+                num2 = 0.66f;
+            }
+            bool flag;
+            if (miner.ComponentPlayer != null)
+            {
+                miner.m_subsystemAudio.PlaySound("Audio/Swoosh", 1f, miner.m_random.Float(-0.2f, 0.2f), componentBody.Position, 3f, autoDelay: false);
+                flag = miner.m_random.Bool(num2);
+                num *= miner.ComponentPlayer.ComponentLevel.StrengthFactor;
+            }
+            else
+            {
+                flag = true;
+            }
+            if (flag)
+            {
+                ComponentMiner.AttackBody(componentBody, miner.ComponentCreature, hitPoint, hitDirection, num, isMeleeAttack: true);
+                miner.DamageActiveTool(1);
+            }
+            else if (miner.ComponentCreature is ComponentPlayer)
+            {
+                HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + miner.ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(ComponentMiner.fName, 2));
+                miner.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
+            }
+            if (miner.ComponentCreature.PlayerStats != null)
+            {
+                miner.ComponentCreature.PlayerStats.MeleeAttacks++;
+                if (flag)
+                {
+                    miner.ComponentCreature.PlayerStats.MeleeHits++;
+                }
+            }
+            miner.Poke(forceRestart: false);
+        }
+        public override void OnModelRendererDrawExtra(SubsystemModelsRenderer modelsRenderer, ComponentModel componentModel, Camera camera, float? alphaThreshold)
+        {
+            if (componentModel is ComponentHumanModel) {
+                ComponentPlayer m_componentPlayer = componentModel.Entity.FindComponent<ComponentPlayer>();
+                if (m_componentPlayer != null && camera.GameWidget.PlayerData != m_componentPlayer.PlayerData)
+                {
+                    ComponentCreature m_componentCreature = m_componentPlayer.ComponentMiner.ComponentCreature;
+                    Vector3 position = Vector3.Transform(m_componentCreature.ComponentBody.Position + 1.02f * Vector3.UnitY * m_componentCreature.ComponentBody.BoxSize.Y, camera.ViewMatrix);
+                    if (position.Z < 0f)
+                    {
+                        Color color = Color.Lerp(Color.White, Color.Transparent, MathUtils.Saturate((position.Length() - 4f) / 3f));
+                        if (color.A > 8)
+                        {
+                            Vector3 right = Vector3.TransformNormal(0.005f * Vector3.Normalize(Vector3.Cross(camera.ViewDirection, Vector3.UnitY)), camera.ViewMatrix);
+                            Vector3 down = Vector3.TransformNormal(-0.005f * Vector3.UnitY, camera.ViewMatrix);
+                            BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
+                            modelsRenderer.PrimitivesRenderer.FontBatch(font, 1, DepthStencilState.DepthRead, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.LinearClamp).QueueText(m_componentPlayer.PlayerData.Name, position, right, down, color, TextAnchor.HorizontalCenter | TextAnchor.Bottom);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

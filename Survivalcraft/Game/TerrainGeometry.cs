@@ -1,3 +1,4 @@
+using Engine.Graphics;
 namespace Game
 {
     public class TerrainGeometry
@@ -13,5 +14,9 @@ namespace Game
         public TerrainGeometrySubset[] AlphaTestSubsetsByFace;
 
         public TerrainGeometrySubset[] TransparentSubsetsByFace;
+
+        public Texture2D Texture;
+
+        public int MeshID;
     }
 }

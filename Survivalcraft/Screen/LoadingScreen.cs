@@ -38,7 +38,7 @@ namespace Game
             panelWidget.Children.Add(labelWidget);
             panelWidget.Children.Add(labelWidget2);
             Children.Add(panelWidget);
-            InitActions();
+            InitActions();            
         }
 
         public void InitActions() {
@@ -221,8 +221,13 @@ namespace Game
         {
             ContentManager.Dispose("Textures/Gui/CandyRufusLogo");
             ContentManager.Dispose("Textures/Gui/EngineLogo");
+            Window.PresentationInterval = SettingsManager.PresentationInterval;
         }
-
+        public override void Enter(object[] parameters)
+        {
+            Window.PresentationInterval = 0;
+            base.Enter(parameters);
+        }
         public override void Update()
         {
             if (!m_loadingStarted)

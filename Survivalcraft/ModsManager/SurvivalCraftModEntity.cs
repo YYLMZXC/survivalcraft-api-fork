@@ -123,5 +123,6 @@ namespace Game
             BlocksManager.AddCategory("Dyed");
             BlocksManager.AddCategory("Fireworks");
         }
+       
     }
 }

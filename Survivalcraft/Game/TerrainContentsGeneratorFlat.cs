@@ -104,19 +104,39 @@ namespace Game
                     }
                 }
             }
+            foreach (ModLoader modLoader in ModsManager.ModLoaders)
+            {
+                modLoader.GenerateChunkContentsPass1(this, chunk);
+            }
+
         }
 
         public void GenerateChunkContentsPass2(TerrainChunk chunk)
         {
             UpdateFluidIsTop(chunk);
+            foreach (ModLoader modLoader in ModsManager.ModLoaders)
+            {
+                modLoader.GenerateChunkContentsPass2(this, chunk);
+            }
+
         }
 
         public void GenerateChunkContentsPass3(TerrainChunk chunk)
         {
+            foreach (ModLoader modLoader in ModsManager.ModLoaders)
+            {
+                modLoader.GenerateChunkContentsPass3(this, chunk);
+            }
+
         }
 
         public void GenerateChunkContentsPass4(TerrainChunk chunk)
         {
+            foreach (ModLoader modLoader in ModsManager.ModLoaders)
+            {
+                modLoader.GenerateChunkContentsPass4(this, chunk);
+            }
+
         }
 
         public float CalculateOceanShoreDistance(float x, float z)
