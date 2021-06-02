@@ -26,15 +26,30 @@ namespace Game
         public float FirstPersonScale = 1f;
 
         public Vector3 FirstPersonOffset = Vector3.Zero;
+        public virtual Vector3 GetFirstPersonOffset(int value) {
+            return FirstPersonOffset;
+        }
 
         public Vector3 FirstPersonRotation = Vector3.Zero;
-
+        public virtual Vector3 GetFirstPersonRotation(int value)
+        {
+            return FirstPersonRotation;
+        }
         public float InHandScale = 1f;
-
+        public virtual float GetInHandScale(int value)
+        {
+            return InHandScale;
+        }
         public Vector3 InHandOffset = Vector3.Zero;
-
+        public virtual Vector3 GetInHandOffset(int value)
+        {
+            return InHandOffset;
+        }
         public Vector3 InHandRotation = Vector3.Zero;
-
+        public virtual Vector3 GetInHandRotation(int value)
+        {
+            return InHandRotation;
+        }
         public string Behaviors = string.Empty;
 
         public string CraftingId = string.Empty;
@@ -165,13 +180,16 @@ namespace Game
 
         public static string fName = "Block";
 
-        protected Random Random = new Random();
+        public Random Random = new Random();
 
-        private static BoundingBox[] m_defaultCollisionBoxes = new BoundingBox[1]
+        public static BoundingBox[] m_defaultCollisionBoxes = new BoundingBox[1]
         {
             new BoundingBox(Vector3.Zero, Vector3.One)
         };
 
+        public virtual float GetFirstPersonScale(int value) {
+            return FirstPersonScale;
+        }
         public virtual void Initialize()
         {
             if (Durability < -1 || Durability > 65535)
@@ -179,7 +197,12 @@ namespace Game
                 throw new InvalidOperationException(string.Format(LanguageControl.Get(fName, 1), DefaultDisplayName));
             }
         }
-
+        public virtual int PlayerLevelRequired_(int value) {
+            return PlayerLevelRequired;
+        }
+        public virtual bool HasCollisionBehavior_(int value) {
+            return false;
+        }
         public virtual string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
         {
             int data = Terrain.ExtractData(value);
@@ -194,6 +217,9 @@ namespace Game
         public virtual bool IsAimable_(int value)
         {
             return IsAimable;
+        }
+        public virtual int GetToolLevel(int value) {
+            return ToolLevel;
         }
         public virtual bool IsCollidable_(int value)
         {
@@ -420,7 +446,17 @@ namespace Game
         {
             return DefaultHeat;
         }
-
+        public virtual float GetBlockHealth(int value) {
+            int dur = GetDurability(value);
+            int dag = GetDamage(value);
+            if (Durability >= 0) {
+                return (float)(dur - dag) / (float)dur;
+            }
+            return -1f;
+        }
+        public virtual int GetDurability(int value) {
+            return Durability;
+        }
         public virtual float GetExplosionPressure(int value)
         {
             return DefaultExplosionPressure;

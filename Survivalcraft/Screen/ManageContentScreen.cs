@@ -21,6 +21,8 @@ public class ManageContentScreen : Screen
         public DateTime CreationTime;
 
         public int UseCount;
+
+        public Texture2D Texture;
     }
     public static string fName = "ManageContentScreen";
 
@@ -129,7 +131,7 @@ public class ManageContentScreen : Screen
                         RectangleWidget rectangleWidget = containerWidget.Children.Find<RectangleWidget>("BlocksTextureItem.Icon");
                         LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Text");
                         LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Details");
-                        rectangleWidget.Subtexture = TextureAtlasManager.GetSubtexture("Textures/Atlas/WorldIcon");
+                        rectangleWidget.Subtexture = listItem.Texture==null ? TextureAtlasManager.GetSubtexture("Textures/Atlas/WorldIcon"):new Subtexture(listItem.Texture,Vector2.Zero,Vector2.One);
                         labelWidget.Text = listItem.DisplayName;
                         labelWidget2.Text = listItem.Name;
                         if (!listItem.IsBuiltIn)
@@ -261,11 +263,12 @@ public class ManageContentScreen : Screen
             {
                 list.Add(new ListItem
                 {
-                    Name = $"[模组]{modEntity.modInfo.Name}",
+                    Name = $"[模组]{modEntity.modInfo.Description}",
                     IsBuiltIn = false,
                     Type = ExternalContentType.Mod,
                     DisplayName = $"{modEntity.modInfo.Name} 版本:{modEntity.modInfo.Version}",
-                    CreationTime = DateTime.Now
+                    CreationTime = DateTime.Now,
+                    Texture=modEntity.Icon
                 });
             }
         }

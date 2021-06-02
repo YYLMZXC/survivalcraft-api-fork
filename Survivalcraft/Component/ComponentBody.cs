@@ -721,7 +721,7 @@ namespace Game
                     return;
                 }
                 int num3 = Terrain.ExtractContents(pushingCollisionBox.BlockValue);
-                if (BlocksManager.Blocks[num3].HasCollisionBehavior)
+                if (BlocksManager.Blocks[num3].HasCollisionBehavior_(pushingCollisionBox.BlockValue))
                 {
                     SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num3);
                     for (int i = 0; i < blockBehaviors.Length; i++)

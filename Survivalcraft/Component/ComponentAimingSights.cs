@@ -55,7 +55,7 @@ namespace Game
                 if (IsSightsVisible)
                 {
                     Texture2D texture = ContentManager.Get<Texture2D>("Textures/Gui/Sights");
-                    float s = (!camera.Eye.HasValue) ? 8f : 2.5f;
+                    float s = 8f;
                     Vector3 v = m_sightsPosition + m_sightsDirection * 50f;
                     Vector3 vector = Vector3.Normalize(Vector3.Cross(m_sightsDirection, Vector3.UnitY));
                     Vector3 v2 = Vector3.Normalize(Vector3.Cross(m_sightsDirection, vector));
@@ -68,7 +68,7 @@ namespace Game
                     texturedBatch3D.QueueQuad(p, p2, p3, p4, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(0f, 1f), Color.White);
                     texturedBatch3D.TransformTriangles(camera.ViewMatrix, count);
                 }
-                if (!camera.Eye.HasValue && !camera.UsesMovementControls && !IsSightsVisible && (SettingsManager.LookControlMode == LookControlMode.SplitTouch || !m_componentPlayer.ComponentInput.IsControlledByTouch))
+                if (!camera.UsesMovementControls && !IsSightsVisible && (SettingsManager.LookControlMode == LookControlMode.SplitTouch || !m_componentPlayer.ComponentInput.IsControlledByTouch))
                 {
                     Subtexture subtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Crosshair");
                     float s2 = 1.25f;

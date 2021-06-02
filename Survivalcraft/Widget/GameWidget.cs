@@ -163,13 +163,9 @@ namespace Game
 
         public bool IsCameraAllowed(Camera camera)
         {
-            if (PlayerData.ComponentPlayer?.ComponentInput.IsControlledByVr ?? false)
+            if (!(camera is FppCamera) && !(camera is LoadingCamera))
             {
-                if (!(camera is FppCamera) && !(camera is LoadingCamera))
-                {
-                    return camera is DeathCamera;
-                }
-                return true;
+                return camera is DeathCamera;
             }
             return true;
         }

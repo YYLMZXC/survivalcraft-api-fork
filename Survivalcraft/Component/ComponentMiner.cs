@@ -40,9 +40,6 @@ namespace Game
 
         public float m_lastPokingPhase;
 
-        public static Action<ComponentMiner, TerrainRaycastResult, float> OnDig;
-
-
         public ComponentCreature ComponentCreature
         {
             get;
@@ -114,7 +111,6 @@ namespace Game
                 return m_digProgress;
             }
         }
-        public static Action<ComponentBody, ComponentCreature, Vector3, Vector3, float, bool> AttackBody_; 
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -207,7 +203,7 @@ namespace Game
             {
                 if (!CanUseTool(ActiveBlockValue))
                 {
-                    ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block.PlayerLevelRequired, block.GetDisplayName(m_subsystemTerrain, ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
+                    ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block.PlayerLevelRequired_(ActiveBlockValue), block.GetDisplayName(m_subsystemTerrain, ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
                     Poke(forceRestart: false);
                     return true;
                 }
@@ -465,7 +461,7 @@ namespace Game
             if (m_subsystemGameInfo.WorldSettings.GameMode != 0 && m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled)
             {
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(toolValue)];
-                if (ComponentPlayer != null && ComponentPlayer.PlayerData.Level < (float)block.PlayerLevelRequired)
+                if (ComponentPlayer != null && ComponentPlayer.PlayerData.Level < (float)block.PlayerLevelRequired_(toolValue))
                 {
                     return false;
                 }

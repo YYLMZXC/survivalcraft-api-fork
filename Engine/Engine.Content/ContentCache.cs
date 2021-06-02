@@ -115,7 +115,7 @@ namespace Engine.Content
 						{
 							TypeName = typeName,
 							Stream = contentStream,
-							Position = position,
+							Position = position,							
 							BytesCount = bytesCount
 						});
 					}

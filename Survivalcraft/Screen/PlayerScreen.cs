@@ -258,8 +258,6 @@ namespace Game
                     return LanguageControl.Get(fName, 7) + (GamePad.IsConnected(2) ? "" : LanguageControl.Get(fName, 9));
                 case WidgetInputDevice.GamePad4:
                     return LanguageControl.Get(fName, 8) + (GamePad.IsConnected(3) ? "" : LanguageControl.Get(fName, 9));
-                case WidgetInputDevice.VrControllers:
-                    return LanguageControl.Get(fName, 11) + (VrManager.IsVrAvailable ? "" : LanguageControl.Get(fName, 9));
                 default:
                     return LanguageControl.Get(fName, 10);
             }

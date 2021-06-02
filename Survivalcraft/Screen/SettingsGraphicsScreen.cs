@@ -23,24 +23,12 @@ namespace Game
 
         public override void Update()
         {
-            if (m_virtualRealityButton.IsClicked)
-            {
-                if (SettingsManager.UseVr)
-                {
-                    SettingsManager.UseVr = false;
-                    VrManager.StopVr();
-                }
-                else
-                {
-                    SettingsManager.UseVr = true;
-                    VrManager.StartVr();
-                }
-            }
+
             if (m_brightnessSlider.IsSliding)
             {
                 SettingsManager.Brightness = m_brightnessSlider.Value;
             }
-            m_virtualRealityButton.IsEnabled = VrManager.IsVrAvailable;
+            m_virtualRealityButton.IsEnabled = false;
             m_virtualRealityButton.Text = (SettingsManager.UseVr ? "Enabled" : "Disabled");
             m_brightnessSlider.Value = SettingsManager.Brightness;
             m_brightnessSlider.Text = MathUtils.Round(SettingsManager.Brightness * 10f).ToString();

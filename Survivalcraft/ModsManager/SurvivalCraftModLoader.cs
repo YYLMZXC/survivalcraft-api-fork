@@ -38,7 +38,7 @@ namespace Game
                 miner.m_digProgress = 0f;
                 if (miner.m_subsystemTime.PeriodicGameTimeEvent(5.0, miner.m_digStartTime + 1.0))
                 {
-                    miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block2.PlayerLevelRequired, block2.GetDisplayName(miner.m_subsystemTerrain, activeBlockValue)), Color.White, blinking: true, playNotificationSound: true);
+                    miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block2.PlayerLevelRequired_(miner.ActiveBlockValue), block2.GetDisplayName(miner.m_subsystemTerrain, activeBlockValue)), Color.White, blinking: true, playNotificationSound: true);
                 }
             }
             bool flag = miner.ComponentPlayer != null && !miner.ComponentPlayer.ComponentInput.IsControlledByTouch && miner.m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative;
@@ -52,7 +52,7 @@ namespace Game
                         miner.Poke(forceRestart: true);
                     }
                     BlockPlacementData digValue = block.GetDigValue(miner.m_subsystemTerrain, miner, cellValue, activeBlockValue, raycastResult);
-                    miner.m_subsystemTerrain.DestroyCell(block2.ToolLevel, digValue.CellFace.X, digValue.CellFace.Y, digValue.CellFace.Z, digValue.Value, noDrop: false, noParticleSystem: false);
+                    miner.m_subsystemTerrain.DestroyCell(block2.GetToolLevel(activeBlockValue), digValue.CellFace.X, digValue.CellFace.Y, digValue.CellFace.Z, digValue.Value, noDrop: false, noParticleSystem: false);
                     miner.m_subsystemSoundMaterials.PlayImpactSound(cellValue, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f);
                     miner.DamageActiveTool(1);
                     if (miner.ComponentCreature.PlayerStats != null)
@@ -132,7 +132,7 @@ namespace Game
             Block block = BlocksManager.Blocks[num];
             if (!miner.CanUseTool(miner.ActiveBlockValue))
             {
-                miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block.PlayerLevelRequired, block.GetDisplayName(miner.m_subsystemTerrain, miner.ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
+                miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block.PlayerLevelRequired_(miner.ActiveBlockValue), block.GetDisplayName(miner.m_subsystemTerrain, miner.ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
                 miner.Poke(forceRestart: false);
                 return false;
             }
@@ -528,7 +528,7 @@ namespace Game
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(miner.ActiveBlockValue)];
             if (!miner.CanUseTool(miner.ActiveBlockValue))
             {
-                miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block.PlayerLevelRequired, block.GetDisplayName(miner.m_subsystemTerrain, miner.ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
+                miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block.PlayerLevelRequired_(miner.ActiveBlockValue), block.GetDisplayName(miner.m_subsystemTerrain, miner.ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
                 miner.Poke(forceRestart: false);
                 return;
             }

@@ -249,7 +249,7 @@ namespace Game
                     Ray3 value = playerInput.Aim.Value;
                     Vector3 vector = GameWidget.ActiveCamera.WorldToScreen(value.Position + value.Direction, Matrix.Identity);
                     Point2 size = Window.Size;
-                    if (ComponentInput.IsControlledByVr || (vector.X >= (float)size.X * 0.02f && vector.X < (float)size.X * 0.98f && vector.Y >= (float)size.Y * 0.02f && vector.Y < (float)size.Y * 0.98f))
+                    if ((vector.X >= (float)size.X * 0.02f && vector.X < (float)size.X * 0.98f && vector.Y >= (float)size.Y * 0.02f && vector.Y < (float)size.Y * 0.98f))
                     {
                         m_aim = value;
                         if (ComponentMiner.Aim(value, AimState.InProgress))

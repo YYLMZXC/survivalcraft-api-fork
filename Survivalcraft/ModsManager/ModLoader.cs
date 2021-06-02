@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Game;
 using System.Collections.Generic;
 using Engine.Graphics;
 using Engine;
@@ -9,7 +8,6 @@ using System.Reflection;
 using System;
 using System.Xml.Linq;
 using System.Linq;
-using Game;
 using GameEntitySystem;
 namespace Game
 {
@@ -86,5 +84,7 @@ namespace Game
         {
 
         }
+        public virtual void ProjectLoad(XElement xElement) { }
+        public virtual void ProjectSave(XElement xElement) { }
     }
 }

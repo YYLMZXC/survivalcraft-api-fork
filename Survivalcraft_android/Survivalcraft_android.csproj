@@ -1184,9 +1184,6 @@
     <Compile Include="..\Survivalcraft\Component\ComponentVitalStats.cs">
       <Link>Component\ComponentVitalStats.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Component\ComponentVrHandsModel.cs">
-      <Link>Component\ComponentVrHandsModel.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Component\ComponentWalkAroundBehavior.cs">
       <Link>Component\ComponentWalkAroundBehavior.cs</Link>
     </Compile>
@@ -2069,15 +2066,6 @@
     <Compile Include="..\Survivalcraft\Game\ViewAngleMode.cs">
       <Link>Game\ViewAngleMode.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Game\VrController.cs">
-      <Link>Game\VrController.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Game\VrControllerButton.cs">
-      <Link>Game\VrControllerButton.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Game\VrEye.cs">
-      <Link>Game\VrEye.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Game\WaterSplashParticleSystem.cs">
       <Link>Game\WaterSplashParticleSystem.cs</Link>
     </Compile>
@@ -2182,9 +2170,6 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Managers\VersionsManager.cs">
       <Link>Managers\VersionsManager.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Managers\VrManager.cs">
-      <Link>Managers\VrManager.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Managers\WebBrowserManager.cs">
       <Link>Managers\WebBrowserManager.cs</Link>

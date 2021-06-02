@@ -48,7 +48,7 @@ namespace Game
 
         public override void Draw(DrawContext dc)
         {
-            if (GameWidget.PlayerData.ComponentPlayer != null && GameWidget.PlayerData.IsReadyForPlaying && !GameWidget.PlayerData.ComponentPlayer.ComponentInput.IsControlledByVr)
+            if (GameWidget.PlayerData.ComponentPlayer != null && GameWidget.PlayerData.IsReadyForPlaying )
             {
                 DrawToScreen(dc);
             }
@@ -124,7 +124,7 @@ namespace Game
 
         public void DrawToScreen(DrawContext dc)
         {
-            GameWidget.ActiveCamera.PrepareForDrawing(null);
+            GameWidget.ActiveCamera.PrepareForDrawing();
             RenderTarget2D renderTarget = Display.RenderTarget;
             SetupScalingRenderTarget();
             try

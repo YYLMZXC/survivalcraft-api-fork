@@ -69,7 +69,7 @@ namespace Game
         public void Update(float dt)
         {
             Camera activeCamera = m_componentPlayer.GameWidget.ActiveCamera;
-            Ray3? ray = m_componentPlayer.ComponentInput.IsControlledByVr ? m_componentPlayer.ComponentInput.CalculateVrHandRay() : new Ray3?(new Ray3(activeCamera.ViewPosition, activeCamera.ViewDirection));
+            Ray3? ray = new Ray3?(new Ray3(activeCamera.ViewPosition, activeCamera.ViewDirection));
             NearbyEditableCell = null;
             if (ray.HasValue)
             {
@@ -129,10 +129,6 @@ namespace Game
 
         public void DrawRayHighlight(Camera camera)
         {
-            if (!camera.Eye.HasValue)
-            {
-                return;
-            }
             Ray3 ray = default(Ray3);
             float num;
             if (m_highlightRaycastResult is TerrainRaycastResult)
@@ -171,66 +167,11 @@ namespace Game
 
         public void DrawReticleHighlight(Camera camera)
         {
-            if (camera.Eye.HasValue && m_highlightRaycastResult is TerrainRaycastResult)
-            {
-                TerrainRaycastResult terrainRaycastResult = (TerrainRaycastResult)m_highlightRaycastResult;
-                Vector3 vector = terrainRaycastResult.HitPoint();
-                Vector3 vector2 = (!(BlocksManager.Blocks[Terrain.ExtractContents(terrainRaycastResult.Value)] is CrossBlock)) ? CellFace.FaceToVector3(terrainRaycastResult.CellFace.Face) : (-terrainRaycastResult.Ray.Direction);
-                float num = Vector3.Distance(camera.ViewPosition, vector);
-                float s = 0.03f + MathUtils.Min(0.008f * num, 0.04f);
-                float s2 = 0.01f * num;
-                Vector3 v = (MathUtils.Abs(Vector3.Dot(vector2, Vector3.UnitY)) < 0.5f) ? Vector3.UnitY : Vector3.UnitX;
-                Vector3 vector3 = Vector3.Normalize(Vector3.Cross(vector2, v));
-                Vector3 v2 = Vector3.Normalize(Vector3.Cross(vector2, vector3));
-                Subtexture subtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Reticle");
-                TexturedBatch3D texturedBatch3D = m_primitivesRenderer3D.TexturedBatch(subtexture.Texture, useAlphaTest: false, 0, DepthStencilState.DepthRead, null, null, SamplerState.LinearClamp);
-                Vector3 p = vector + s * (-vector3 + v2) + s2 * vector2;
-                Vector3 p2 = vector + s * (vector3 + v2) + s2 * vector2;
-                Vector3 p3 = vector + s * (vector3 - v2) + s2 * vector2;
-                Vector3 p4 = vector + s * (-vector3 - v2) + s2 * vector2;
-                Vector2 texCoord = new Vector2(subtexture.TopLeft.X, subtexture.TopLeft.Y);
-                Vector2 texCoord2 = new Vector2(subtexture.BottomRight.X, subtexture.TopLeft.Y);
-                Vector2 texCoord3 = new Vector2(subtexture.BottomRight.X, subtexture.BottomRight.Y);
-                Vector2 texCoord4 = new Vector2(subtexture.TopLeft.X, subtexture.BottomRight.Y);
-                texturedBatch3D.QueueQuad(p, p2, p3, p4, texCoord, texCoord2, texCoord3, texCoord4, Color.White);
-                texturedBatch3D.Flush(camera.ViewProjectionMatrix);
-            }
+            
         }
 
         public void DrawFillHighlight(Camera camera)
         {
-            if (camera.Eye.HasValue && m_highlightRaycastResult is TerrainRaycastResult)
-            {
-                CellFace cellFace = ((TerrainRaycastResult)m_highlightRaycastResult).CellFace;
-                int cellValue = m_subsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
-                int num = Terrain.ExtractContents(cellValue);
-                Block block = BlocksManager.Blocks[num];
-                if (m_geometry == null || cellValue != m_value || cellFace != m_cellFace)
-                {
-                    m_geometry = new Geometry();
-                    block.GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, m_geometry, cellValue, cellFace.X, cellFace.Y, cellFace.Z);
-                    m_cellFace = cellFace;
-                    m_value = cellValue;
-                }
-                DynamicArray<TerrainVertex> vertices = m_geometry.SubsetOpaque.Vertices;
-                DynamicArray<ushort> indices = m_geometry.SubsetOpaque.Indices;
-                float x = m_subsystemSky.ViewFogRange.X;
-                float y = m_subsystemSky.ViewFogRange.Y;
-                Vector3 viewPosition = camera.ViewPosition;
-                Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
-                Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
-                Display.BlendState = BlendState.NonPremultiplied;
-                Display.DepthStencilState = DepthStencilState.Default;
-                Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-                m_shader.GetParameter("u_origin").SetValue(v.XZ);
-                m_shader.GetParameter("u_viewProjectionMatrix").SetValue(value);
-                m_shader.GetParameter("u_viewPosition").SetValue(viewPosition);
-                m_shader.GetParameter("u_texture").SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
-                m_shader.GetParameter("u_samplerState").SetValue(SamplerState.PointWrap);
-                m_shader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-                m_shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(x, 1f / (y - x)));
-                Display.DrawUserIndexed(PrimitiveType.TriangleList, m_shader, TerrainVertex.VertexDeclaration, vertices.Array, 0, vertices.Count, indices.Array, 0, indices.Count);
-            }
         }
 
         public void DrawOutlineHighlight(Camera camera)

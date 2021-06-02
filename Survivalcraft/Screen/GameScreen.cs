@@ -72,7 +72,6 @@ namespace Game
         {
             base.Input.IsMouseCursorVisible = show;
             base.Input.IsPadCursorVisible = show;
-            base.Input.IsVrCursorVisible = show;
         }
     }
 }

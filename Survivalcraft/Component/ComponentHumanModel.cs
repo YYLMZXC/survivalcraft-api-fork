@@ -366,7 +366,8 @@ namespace Game
                 m.Right = Vector3.Normalize(m.Right);
                 m.Up = Vector3.Normalize(m.Up);
                 m.Forward = Vector3.Normalize(m.Forward);
-                Matrix matrix = Matrix.CreateRotationY(MathUtils.DegToRad(block.InHandRotation.Y) + m_inHandItemRotation.Y) * Matrix.CreateRotationZ(MathUtils.DegToRad(block.InHandRotation.Z) + m_inHandItemRotation.Z) * Matrix.CreateRotationX(MathUtils.DegToRad(block.InHandRotation.X) + m_inHandItemRotation.X) * Matrix.CreateTranslation(block.InHandOffset + m_inHandItemOffset) * Matrix.CreateTranslation(new Vector3(0.05f, 0.05f, -0.56f) * (m_componentCreature.ComponentBody.BoxSize.Y / 1.77f)) * m;
+                Vector3 InhandRotation = block.GetInHandRotation(m_componentMiner.ActiveBlockValue);
+                Matrix matrix = Matrix.CreateRotationY(MathUtils.DegToRad(InhandRotation.Y) + m_inHandItemRotation.Y) * Matrix.CreateRotationZ(MathUtils.DegToRad(InhandRotation.Z) + m_inHandItemRotation.Z) * Matrix.CreateRotationX(MathUtils.DegToRad(InhandRotation.X) + m_inHandItemRotation.X) * Matrix.CreateTranslation(block.GetInHandOffset(m_componentMiner.ActiveBlockValue) + m_inHandItemOffset) * Matrix.CreateTranslation(new Vector3(0.05f, 0.05f, -0.56f) * (m_componentCreature.ComponentBody.BoxSize.Y / 1.77f)) * m;
                 int x = Terrain.ToCell(matrix.Translation.X);
                 int y = Terrain.ToCell(matrix.Translation.Y);
                 int z = Terrain.ToCell(matrix.Translation.Z);
@@ -377,7 +378,7 @@ namespace Game
                 m_drawBlockEnvironmentData.BillboardDirection = -Vector3.UnitZ;
                 m_drawBlockEnvironmentData.SubsystemTerrain = m_subsystemTerrain;
                 Matrix matrix2 = matrix * camera.ViewMatrix;
-                block.DrawBlock(m_subsystemModelsRenderer.PrimitivesRenderer, m_componentMiner.ActiveBlockValue, Color.White, block.InHandScale, ref matrix2, m_drawBlockEnvironmentData);
+                block.DrawBlock(m_subsystemModelsRenderer.PrimitivesRenderer, m_componentMiner.ActiveBlockValue, Color.White, block.GetInHandScale(m_componentMiner.ActiveBlockValue), ref matrix2, m_drawBlockEnvironmentData);
             }
 
             base.DrawExtras(camera);

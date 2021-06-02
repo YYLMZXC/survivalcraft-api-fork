@@ -405,7 +405,6 @@
     <Compile Include="Managers\TextureAtlasManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Managers\VersionsManager.cs" />
-    <Compile Include="Managers\VrManager.cs" />
     <Compile Include="Managers\WebBrowserManager.cs" />
     <Compile Include="Managers\WebManager.cs" />
     <Compile Include="Managers\WorldsManager.cs" />
@@ -635,7 +634,6 @@
     <Compile Include="Component\ComponentSwimAwayBehavior.cs" />
     <Compile Include="Component\ComponentUdder.cs" />
     <Compile Include="Component\ComponentVitalStats.cs" />
-    <Compile Include="Component\ComponentVrHandsModel.cs" />
     <Compile Include="Component\ComponentWalkAroundBehavior.cs" />
     <Compile Include="ContentProvider\SPMBoxExternalContentProvider.cs" />
     <Compile Include="Game\ActiveExternalContentInfo.cs" />
@@ -932,9 +930,6 @@
     <Compile Include="Game\VersionConverter21To22.cs" />
     <Compile Include="Game\ViewAngleMode.cs" />
     <Compile Include="Dialog\ViewGameLogDialog.cs" />
-    <Compile Include="Game\VrController.cs" />
-    <Compile Include="Game\VrControllerButton.cs" />
-    <Compile Include="Game\VrEye.cs" />
     <Compile Include="Game\WaterSplashParticleSystem.cs" />
     <Compile Include="Game\WhalePlumeParticleSystem.cs" />
     <Compile Include="Game\WireDomainElectricElement.cs" />
@@ -1064,7 +1059,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content.pak">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="lang\en_US.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1093,7 +1088,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

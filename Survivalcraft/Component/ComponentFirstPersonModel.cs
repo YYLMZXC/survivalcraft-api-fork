@@ -67,7 +67,7 @@ namespace Game
 
         public void Draw(Camera camera, int drawOrder)
         {
-            if (m_componentPlayer.ComponentHealth.Health > 0f && camera.GameWidget.IsEntityFirstPersonTarget(base.Entity) && !m_componentPlayer.ComponentInput.IsControlledByVr)
+            if (m_componentPlayer.ComponentHealth.Health > 0f && camera.GameWidget.IsEntityFirstPersonTarget(base.Entity))
             {
                 Viewport viewport = Display.Viewport;
                 Viewport viewport2 = viewport;
@@ -135,7 +135,7 @@ namespace Game
                         int num6 = Terrain.ExtractContents(m_value);
                         Block block = BlocksManager.Blocks[num6];
                         Vector3 vector = block.FirstPersonRotation * ((float)Math.PI / 180f) + m_itemRotation;
-                        Vector3 position3 = block.FirstPersonOffset + m_itemOffset;
+                        Vector3 position3 = block.GetFirstPersonOffset(m_value) + m_itemOffset;
                         position3 += m_itemOffset;
                         Matrix matrix = Matrix.CreateFromYawPitchRoll(vector.Y, vector.X, vector.Z) * identity * Matrix.CreateTranslation(position3) * Matrix.CreateFromYawPitchRoll(m_lagAngles.X, m_lagAngles.Y, 0f) * m;
                         m_drawBlockEnvironmentData.SubsystemTerrain = m_subsystemTerrain;
@@ -143,7 +143,7 @@ namespace Game
                         m_drawBlockEnvironmentData.Light = m_itemLight;
                         m_drawBlockEnvironmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
                         m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(num5);
-                        block.DrawBlock(m_primitivesRenderer, m_value, Color.White, block.FirstPersonScale, ref matrix, m_drawBlockEnvironmentData);
+                        block.DrawBlock(m_primitivesRenderer, m_value, Color.White, block.GetFirstPersonScale(m_value), ref matrix, m_drawBlockEnvironmentData);
                         m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
                     }
                     else

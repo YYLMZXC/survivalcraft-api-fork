@@ -8,6 +8,12 @@ namespace Game
     {
         public FastDebugModEntity() {
             modInfo = new ModInfo() { Name = "FastDebug", Version = "1.0.0", ApiVersion = "1.34", Author = "Mod", Description = "仅用于调试，不建议用于正式发布", ScVersion = "2.2.10.4" };
+            IEnumerable<string> dlls = Storage.ListFileNames(ModsManager.ModsPath);
+            foreach (string c in dlls)
+            {
+                if (c == "icon.png")
+                    LoadIcon(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
+            }
         }
         public override void LoadDll()
         {
@@ -72,7 +78,10 @@ namespace Game
             IEnumerable<string> dlls = Storage.ListFileNames(ModsManager.ModsPath);
             foreach (string c in dlls)
             {
-                if (c.EndsWith(".xdb")) ModsManager.CombineDataBase(xElement,Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
+                if (c.EndsWith(".xdb"))
+                {
+                    ModsManager.CombineDataBase(xElement, Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
+                }
 
             }
         }

@@ -177,10 +177,6 @@ namespace Game
 
         public static List<TerrainBrush> m_magmaPocketBrushes;
 
-        public static Action<TerrainChunk> GenerateMinerals1;
-
-        public static Action<TerrainChunk> GenerateMinerals2;
-
         public static List<List<TerrainBrush>> m_caveBrushesByType;
 
         public SubsystemTerrain m_subsystemTerrain;
@@ -392,7 +388,6 @@ namespace Game
             GenerateCaves(chunk);
             GeneratePockets(chunk);
             GenerateMinerals(chunk);
-            GenerateMinerals2?.Invoke(chunk);
             GenerateSurface(chunk);
             PropagateFluidsDownwards(chunk);
             foreach (ModLoader modLoader in ModsManager.ModLoaders)
@@ -812,11 +807,6 @@ namespace Game
             {
                 return;
             }
-            if (GenerateMinerals1 != null)
-            {
-                GenerateMinerals1(chunk); return;
-            }
-
             int x = chunk.Coords.X;
             int y = chunk.Coords.Y;
             for (int i = x - 1; i <= x + 1; i++)

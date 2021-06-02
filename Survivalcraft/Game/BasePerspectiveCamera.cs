@@ -47,15 +47,7 @@ namespace Game
             {
                 if (!m_viewMatrix.HasValue)
                 {
-                    if (!base.Eye.HasValue)
-                    {
-                        m_viewMatrix = Matrix.CreateLookAt(m_viewPosition, m_viewPosition + m_viewDirection, m_viewUp);
-                    }
-                    else
-                    {
-                        Matrix eyeToHeadTransform = VrManager.GetEyeToHeadTransform(base.Eye.Value);
-                        m_viewMatrix = Matrix.CreateLookAt(m_viewPosition, m_viewPosition + m_viewDirection, m_viewUp) * Matrix.Invert(eyeToHeadTransform);
-                    }
+                    m_viewMatrix = Matrix.CreateLookAt(m_viewPosition, m_viewPosition + m_viewDirection, m_viewUp);
                 }
                 return m_viewMatrix.Value;
             }
@@ -81,7 +73,7 @@ namespace Game
                 {
                     m_projectionMatrix = CalculateBaseProjectionMatrix();
                     ViewWidget viewWidget = base.GameWidget.ViewWidget;
-                    if (!viewWidget.ScalingRenderTargetSize.HasValue && !base.Eye.HasValue)
+                    if (!viewWidget.ScalingRenderTargetSize.HasValue)
                     {
                         m_projectionMatrix *= MatrixUtils.CreateScaleTranslation(0.5f * viewWidget.ActualSize.X, -0.5f * viewWidget.ActualSize.Y, viewWidget.ActualSize.X / 2f, viewWidget.ActualSize.Y / 2f) * viewWidget.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / (float)Display.Viewport.Width, -2f / (float)Display.Viewport.Height, -1f, 1f);
                     }
@@ -96,16 +88,9 @@ namespace Game
             {
                 if (!m_screenProjectionMatrix.HasValue)
                 {
-                    if (!base.Eye.HasValue)
-                    {
-                        Point2 size = Window.Size;
-                        ViewWidget viewWidget = base.GameWidget.ViewWidget;
-                        m_screenProjectionMatrix = CalculateBaseProjectionMatrix() * MatrixUtils.CreateScaleTranslation(0.5f * viewWidget.ActualSize.X, -0.5f * viewWidget.ActualSize.Y, viewWidget.ActualSize.X / 2f, viewWidget.ActualSize.Y / 2f) * viewWidget.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / (float)size.X, -2f / (float)size.Y, -1f, 1f);
-                    }
-                    else
-                    {
-                        m_screenProjectionMatrix = CalculateBaseProjectionMatrix();
-                    }
+                    Point2 size = Window.Size;
+                    ViewWidget viewWidget = base.GameWidget.ViewWidget;
+                    m_screenProjectionMatrix = CalculateBaseProjectionMatrix() * MatrixUtils.CreateScaleTranslation(0.5f * viewWidget.ActualSize.X, -0.5f * viewWidget.ActualSize.Y, viewWidget.ActualSize.X / 2f, viewWidget.ActualSize.Y / 2f) * viewWidget.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / (float)size.X, -2f / (float)size.Y, -1f, 1f);
                 }
                 return m_screenProjectionMatrix.Value;
             }
@@ -146,13 +131,10 @@ namespace Game
                     {
                         m_viewportSize = new Vector2(viewWidget.ScalingRenderTargetSize.Value);
                     }
-                    else if (!base.Eye.HasValue)
-                    {
-                        m_viewportSize = new Vector2(viewWidget.ActualSize.X * viewWidget.GlobalTransform.Right.Length(), viewWidget.ActualSize.Y * viewWidget.GlobalTransform.Up.Length());
-                    }
                     else
                     {
-                        m_viewportSize = new Vector2(VrManager.VrRenderTarget.Width, VrManager.VrRenderTarget.Height);
+                        m_viewportSize = new Vector2(viewWidget.ActualSize.X * viewWidget.GlobalTransform.Right.Length(), viewWidget.ActualSize.Y * viewWidget.GlobalTransform.Up.Length());
+
                     }
                 }
                 return m_viewportSize.Value;
@@ -165,26 +147,19 @@ namespace Game
             {
                 if (!m_viewportMatrix.HasValue)
                 {
-                    if (!base.Eye.HasValue)
+                    ViewWidget viewWidget = base.GameWidget.ViewWidget;
+                    if (viewWidget.ScalingRenderTargetSize.HasValue)
                     {
-                        ViewWidget viewWidget = base.GameWidget.ViewWidget;
-                        if (viewWidget.ScalingRenderTargetSize.HasValue)
-                        {
-                            m_viewportMatrix = Matrix.Identity;
-                        }
-                        else
-                        {
-                            Matrix identity = Matrix.Identity;
-                            identity.Right = Vector3.Normalize(viewWidget.GlobalTransform.Right);
-                            identity.Up = Vector3.Normalize(viewWidget.GlobalTransform.Up);
-                            identity.Forward = viewWidget.GlobalTransform.Forward;
-                            identity.Translation = viewWidget.GlobalTransform.Translation;
-                            m_viewportMatrix = identity;
-                        }
+                        m_viewportMatrix = Matrix.Identity;
                     }
                     else
                     {
-                        m_viewportMatrix = Matrix.Identity;
+                        Matrix identity = Matrix.Identity;
+                        identity.Right = Vector3.Normalize(viewWidget.GlobalTransform.Right);
+                        identity.Up = Vector3.Normalize(viewWidget.GlobalTransform.Up);
+                        identity.Forward = viewWidget.GlobalTransform.Forward;
+                        identity.Translation = viewWidget.GlobalTransform.Translation;
+                        m_viewportMatrix = identity;
                     }
                 }
                 return m_viewportMatrix.Value;
@@ -211,9 +186,8 @@ namespace Game
             }
         }
 
-        public override void PrepareForDrawing(VrEye? eye)
+        public override void PrepareForDrawing()
         {
-            base.PrepareForDrawing(eye);
             m_viewMatrix = null;
             m_invertedViewMatrix = null;
             m_projectionMatrix = null;
@@ -240,33 +214,29 @@ namespace Game
 
         public Matrix CalculateBaseProjectionMatrix()
         {
-            if (!base.Eye.HasValue)
+            float num = 90f;
+            float num2 = 1f;
+            if (SettingsManager.ViewAngleMode == ViewAngleMode.Narrow)
             {
-                float num = 90f;
-                float num2 = 1f;
-                if (SettingsManager.ViewAngleMode == ViewAngleMode.Narrow)
-                {
-                    num2 = 0.8f;
-                }
-                else if (SettingsManager.ViewAngleMode == ViewAngleMode.Normal)
-                {
-                    num2 = 0.9f;
-                }
-                ViewWidget viewWidget = base.GameWidget.ViewWidget;
-                float num3 = viewWidget.ActualSize.X / viewWidget.ActualSize.Y;
-                float num4 = MathUtils.Min(num * num3, num);
-                float num5 = num4 * num3;
-                if (num5 < 90f)
-                {
-                    num4 *= 90f / num5;
-                }
-                else if (num5 > 175f)
-                {
-                    num4 *= 175f / num5;
-                }
-                return Matrix.CreatePerspectiveFieldOfView(MathUtils.DegToRad(num4 * num2), num3, 0.1f, 2048f);
+                num2 = 0.8f;
             }
-            return VrManager.GetProjectionMatrix(base.Eye.Value, 0.1f, 2048f);
+            else if (SettingsManager.ViewAngleMode == ViewAngleMode.Normal)
+            {
+                num2 = 0.9f;
+            }
+            ViewWidget viewWidget = base.GameWidget.ViewWidget;
+            float num3 = viewWidget.ActualSize.X / viewWidget.ActualSize.Y;
+            float num4 = MathUtils.Min(num * num3, num);
+            float num5 = num4 * num3;
+            if (num5 < 90f)
+            {
+                num4 *= 90f / num5;
+            }
+            else if (num5 > 175f)
+            {
+                num4 *= 175f / num5;
+            }
+            return Matrix.CreatePerspectiveFieldOfView(MathUtils.DegToRad(num4 * num2), num3, 0.1f, 2048f);
         }
     }
 }

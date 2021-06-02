@@ -103,21 +103,24 @@ namespace Game
                 }
             });
             AddLoadAction(() => {
+                Random random = new Random();
                 foreach (ContentInfo item in ContentManager.List())
                 {
                     ContentInfo localContentInfo = item;
-                    AddQuequeAction(delegate
-                    {
-                        try
+                    if (random.Bool(0.5f)) {
+                        AddQuequeAction(delegate
                         {
-                            SetMsg($"¼ì²éPak:{localContentInfo.Name}");
-                            ContentManager.Get(localContentInfo.Name);
-                        }
-                        catch (Exception e)
-                        {
-                            ModsManager.AddException(e);
-                        }
-                    });
+                            try
+                            {
+                                SetMsg($"¼ì²éPak:{localContentInfo.Name}");
+                                ContentManager.Get(localContentInfo.Name);
+                            }
+                            catch (Exception e)
+                            {
+                                ModsManager.AddException(e);
+                            }
+                        });
+                    }
                 }
             });
             AddLoadAction(() => {
@@ -206,12 +209,12 @@ namespace Game
                 MusicManager.CurrentMix = MusicManager.Mix.Menu;
             });
             AddLoadAction(() => {
-                ModsManager.CacheToLoadMods.Clear();
                 ModsManager.LoadedMods.Clear();
                 foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
                 {
                     if(!modEntity.HasException)ModsManager.LoadedMods.Add(modEntity);
                 }
+                ModsManager.CacheToLoadMods.Clear();
 
             });
         }

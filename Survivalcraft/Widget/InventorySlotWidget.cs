@@ -125,7 +125,6 @@ namespace Game
                 m_blockIconWidget.CustomViewMatrix = value;
             }
         }
-        public static Action<int, ValueBarWidget> HealthBarFunc;
 
         public GameWidget GameWidget
         {
@@ -430,23 +429,16 @@ namespace Game
                     m_interactiveOverlayWidget.IsVisible = (!HideInteractiveOverlay && ((m_subsystemTerrain != null) ? block.IsInteractive(m_subsystemTerrain, slotValue) : block.DefaultIsInteractive));
                     m_foodOverlayWidget.IsVisible = (!HideFoodOverlay && block.GetRotPeriod(slotValue) > 0);
                     m_foodOverlayWidget.FillColor = (flag2 ? new Color(128, 64, 0) : new Color(160, 160, 160));
-                    if (!flag && !HideHealthBar) {
-                        if (HealthBarFunc != null)
+                    if (!flag) {
+                        float percent = block.GetBlockHealth(slotValue);
+                        if (percent >= 0)
                         {
-                            HealthBarFunc(slotValue,m_healthBarWidget);
+                            m_healthBarWidget.IsVisible = true;
+                            m_healthBarWidget.Value = percent;
                         }
                         else
                         {
-                            if (block.Durability >= 0)
-                            {
-                                int damage = block.GetDamage(slotValue);
-                                m_healthBarWidget.IsVisible = true;
-                                m_healthBarWidget.Value = (float)(block.Durability - damage) / (float)block.Durability;
-                            }
-                            else
-                            {
-                                m_healthBarWidget.IsVisible = false;
-                            }
+                            m_healthBarWidget.IsVisible = false;
                         }
                     }
                 }

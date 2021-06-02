@@ -36,18 +36,6 @@ namespace Game
             set;
         } = true;
 
-
-        public bool IsControlledByVr
-        {
-            get
-            {
-                if (VrManager.IsVrStarted)
-                {
-                    return (m_componentPlayer.GameWidget.Input.Devices & WidgetInputDevice.VrControllers) != 0;
-                }
-                return false;
-            }
-        }
         public bool AllowHandleInput { get; set; } = true;
 
         public IInventory SplitSourceInventory
@@ -72,13 +60,6 @@ namespace Game
 
         public Ray3? CalculateVrHandRay()
         {
-            if (VrManager.IsControllerPresent(VrController.Right))
-            {
-                Camera activeCamera = m_componentPlayer.GameWidget.ActiveCamera;
-                Matrix m = VrManager.HmdMatrixInverted * Matrix.CreateWorld(activeCamera.ViewPosition, activeCamera.ViewDirection, activeCamera.ViewUp);
-                Matrix matrix = VrManager.GetControllerMatrix(VrController.Right) * m;
-                return new Ray3(matrix.Translation + matrix.Forward * (5f / 64f), matrix.Forward);
-            }
             return null;
         }
 
@@ -87,7 +68,6 @@ namespace Game
             m_playerInput = default(PlayerInput);
             UpdateInputFromMouseAndKeyboard(m_componentPlayer.GameWidget.Input);
             UpdateInputFromGamepad(m_componentPlayer.GameWidget.Input);
-            UpdateInputFromVrControllers(m_componentPlayer.GameWidget.Input);
             UpdateInputFromWidgets(m_componentPlayer.GameWidget.Input);
             if (m_playerInput.Jump)
             {
@@ -313,107 +293,6 @@ namespace Game
                 m_playerInput.ToggleInventory |= input.IsPadButtonDownOnce(GamePadButton.X);
                 m_playerInput.ToggleClothing |= input.IsPadButtonDownOnce(GamePadButton.Y);
                 m_playerInput.GamepadHelp |= input.IsPadButtonDownOnce(GamePadButton.Start);
-            }
-        }
-
-        public void UpdateInputFromVrControllers(WidgetInput input)
-        {
-            if (!IsControlledByVr)
-            {
-                return;
-            }
-            IsControlledByTouch = false;
-            if (m_componentGui.ModalPanelWidget != null || DialogsManager.HasDialogs(m_componentPlayer.GuiWidget))
-            {
-                if (!input.IsVrCursorVisible)
-                {
-                    input.IsVrCursorVisible = true;
-                }
-            }
-            else
-            {
-                input.IsVrCursorVisible = false;
-                float num = MathUtils.Pow(1.25f, 10f * (SettingsManager.MoveSensitivity - 0.5f));
-                float num2 = MathUtils.Pow(1.25f, 10f * (SettingsManager.LookSensitivity - 0.5f));
-                float num3 = MathUtils.Clamp(m_subsystemTime.GameTimeDelta, 0f, 0.1f);
-                Vector2 v = Vector2.Normalize(m_componentPlayer.ComponentBody.Matrix.Right.XZ);
-                Vector2 v2 = Vector2.Normalize(m_componentPlayer.ComponentBody.Matrix.Forward.XZ);
-                Vector2 vrStickPosition = input.GetVrStickPosition(VrController.Left, 0.2f);
-                Vector2 vrStickPosition2 = input.GetVrStickPosition(VrController.Right, 0.2f);
-                Matrix m = VrManager.HmdMatrixInverted.OrientationMatrix * m_componentPlayer.ComponentCreatureModel.EyeRotation.ToMatrix();
-                Vector2 xZ = Vector3.TransformNormal(new Vector3(VrManager.WalkingVelocity.X, 0f, VrManager.WalkingVelocity.Y), m).XZ;
-                Vector3 value = Vector3.TransformNormal(new Vector3(VrManager.HeadMove.X, 0f, VrManager.HeadMove.Y), m);
-                Vector3 zero = Vector3.Zero;
-                zero += 0.5f * new Vector3(Vector2.Dot(xZ, v), 0f, Vector2.Dot(xZ, v2));
-                zero += new Vector3(2f * vrStickPosition.X, 2f * vrStickPosition2.Y, 2f * vrStickPosition.Y);
-                m_playerInput.Move += zero;
-                m_playerInput.SneakMove += zero;
-                m_playerInput.VrMove = value;
-                TouchInput? touchInput = VrManager.GetTouchInput(VrController.Left);
-                if (touchInput.HasValue && num3 > 0f)
-                {
-                    if (touchInput.Value.InputType == TouchInputType.Move)
-                    {
-                        Vector2 move = touchInput.Value.Move;
-                        Vector2 vector = 10f * num / num3 * new Vector2(0.5f) * move * MathUtils.Pow(move.LengthSquared(), 0.175f);
-                        m_playerInput.SneakMove.X += vector.X;
-                        m_playerInput.SneakMove.Z += vector.Y;
-                        m_playerInput.Move.X += ProcessInputValue(touchInput.Value.TotalMoveLimited.X, 0.1f, 1f);
-                        m_playerInput.Move.Z += ProcessInputValue(touchInput.Value.TotalMoveLimited.Y, 0.1f, 1f);
-                    }
-                    else if (touchInput.Value.InputType == TouchInputType.Tap)
-                    {
-                        m_playerInput.Jump = true;
-                    }
-                }
-                m_playerInput.Look += 0.5f * vrStickPosition2 * MathUtils.Pow(vrStickPosition2.LengthSquared(), 0.25f);
-                Vector3 hmdMatrixYpr = VrManager.HmdMatrixYpr;
-                Vector3 hmdLastMatrixYpr = VrManager.HmdLastMatrixYpr;
-                Vector3 vector2 = hmdMatrixYpr - hmdLastMatrixYpr;
-                m_playerInput.VrLook = new Vector2(vector2.X, hmdMatrixYpr.Y);
-                TouchInput? touchInput2 = VrManager.GetTouchInput(VrController.Right);
-                Vector2 zero2 = Vector2.Zero;
-                if (touchInput2.HasValue)
-                {
-                    if (touchInput2.Value.InputType == TouchInputType.Move)
-                    {
-                        zero2.X = touchInput2.Value.Move.X;
-                        m_playerInput.Move.Y += ProcessInputValue(touchInput2.Value.TotalMoveLimited.Y, 0.1f, 1f);
-                    }
-                    else if (touchInput2.Value.InputType == TouchInputType.Tap)
-                    {
-                        m_playerInput.Jump = true;
-                    }
-                }
-                if (num3 > 0f)
-                {
-                    m_vrSmoothLook = Vector2.Lerp(m_vrSmoothLook, zero2, 14f * num3);
-                    m_playerInput.Look += num2 / num3 * new Vector2(0.25f) * m_vrSmoothLook * MathUtils.Pow(m_vrSmoothLook.LengthSquared(), 0.3f);
-                }
-                if (VrManager.IsControllerPresent(VrController.Right))
-                {
-                    m_playerInput.Dig = (VrManager.IsButtonDown(VrController.Right, VrControllerButton.Trigger) ? CalculateVrHandRay() : m_playerInput.Dig);
-                    m_playerInput.Hit = (VrManager.IsButtonDownOnce(VrController.Right, VrControllerButton.Trigger) ? CalculateVrHandRay() : m_playerInput.Hit);
-                    m_playerInput.Aim = (VrManager.IsButtonDown(VrController.Left, VrControllerButton.Trigger) ? CalculateVrHandRay() : m_playerInput.Aim);
-                    m_playerInput.Interact = (VrManager.IsButtonDownOnce(VrController.Left, VrControllerButton.Trigger) ? CalculateVrHandRay() : m_playerInput.Interact);
-                }
-                m_playerInput.ToggleMount |= input.IsVrButtonDownOnce(VrController.Left, VrControllerButton.TouchpadUp);
-                m_playerInput.ToggleSneak |= input.IsVrButtonDownOnce(VrController.Left, VrControllerButton.TouchpadDown);
-                m_playerInput.EditItem |= input.IsVrButtonDownOnce(VrController.Left, VrControllerButton.Grip);
-                m_playerInput.ToggleCreativeFly |= input.IsVrButtonDownOnce(VrController.Right, VrControllerButton.TouchpadUp);
-                if (input.IsVrButtonDownOnce(VrController.Right, VrControllerButton.TouchpadLeft))
-                {
-                    m_playerInput.ScrollInventory--;
-                }
-                if (input.IsVrButtonDownOnce(VrController.Right, VrControllerButton.TouchpadRight))
-                {
-                    m_playerInput.ScrollInventory++;
-                }
-                m_playerInput.Drop |= input.IsVrButtonDownOnce(VrController.Right, VrControllerButton.Grip);
-            }
-            if (!DialogsManager.HasDialogs(m_componentPlayer.GuiWidget) && AllowHandleInput)
-            {
-                m_playerInput.ToggleInventory |= input.IsVrButtonDownOnce(VrController.Right, VrControllerButton.Menu);
             }
         }
 

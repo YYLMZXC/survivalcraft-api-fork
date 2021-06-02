@@ -244,62 +244,13 @@ namespace Game
             {
                 UpdateAnimation();
             }
-            if (VrManager.IsVrStarted)
-            {
-                AnimateVrQuad();
-            }
             Widget.UpdateWidgetsHierarchy(RootWidget);
         }
 
         public static void Draw()
         {
-            if (VrManager.IsVrStarted)
-            {
-                Point2 point = new Point2(Display.Viewport.Width, Display.Viewport.Height);
-                if (MathUtils.Max(point.X, point.Y) == 0)
-                {
-                    point = new Point2(1500, 1000);
-                }
-                while (MathUtils.Max(point.X, point.Y) < 1024)
-                {
-                    point *= 2;
-                }
-                if (m_uiRenderTarget == null || m_uiRenderTarget.Width != point.X || m_uiRenderTarget.Height != point.Y)
-                {
-                    Utilities.Dispose(ref m_uiRenderTarget);
-                    m_uiRenderTarget = new RenderTarget2D(point.X, point.Y, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
-                }
-                RenderTarget2D renderTarget = Display.RenderTarget;
-                try
-                {
-                    Display.RenderTarget = m_uiRenderTarget;
-                    LayoutAndDrawWidgets();
-                    Display.RenderTarget = VrManager.VrRenderTarget;
-                    for (VrEye vrEye = VrEye.Left; vrEye <= VrEye.Right; vrEye++)
-                    {
-                        Display.Clear(Color.Black, 1f, 0);
-                        DrawVrBackground();
-                        DrawVrQuad();
-                        Matrix hmdMatrix = VrManager.HmdMatrix;
-                        Matrix m = Matrix.Invert(VrManager.GetEyeToHeadTransform(vrEye));
-                        Matrix m2 = Matrix.Invert(hmdMatrix);
-                        Matrix projectionMatrix = VrManager.GetProjectionMatrix(vrEye, 0.1f, 1024f);
-                        m_pr3.Flush(m2 * m * projectionMatrix);
-                        VrManager.SubmitEyeTexture(vrEye, VrManager.VrRenderTarget);
-                    }
-                }
-                finally
-                {
-                    Display.RenderTarget = renderTarget;
-                }
-                m_pr2.TexturedBatch(m_uiRenderTarget, useAlphaTest: false, 0, DepthStencilState.None, RasterizerState.CullNoneScissor, BlendState.Opaque, SamplerState.PointClamp).QueueQuad(new Vector2(0f, 0f), new Vector2(m_uiRenderTarget.Width, m_uiRenderTarget.Height), 0f, new Vector2(0f, 0f), new Vector2(1f, 1f), Color.White);
-                m_pr2.Flush();
-            }
-            else
-            {
-                Utilities.Dispose(ref m_uiRenderTarget);
-                LayoutAndDrawWidgets();
-            }
+            Utilities.Dispose(ref m_uiRenderTarget);
+            LayoutAndDrawWidgets();
         }
 
         public static void UpdateAnimation()
@@ -370,7 +321,7 @@ namespace Game
             if (Time.FrameIndex >= 5)
             {
                 float num = 6f;
-                Matrix hmdMatrix = VrManager.HmdMatrix;
+                Matrix hmdMatrix =Matrix.Identity;
                 Vector3 vector = hmdMatrix.Translation + num * (Vector3.Normalize(hmdMatrix.Forward * new Vector3(1f, 0f, 1f)) + new Vector3(0f, 0.1f, 0f));
                 if (m_vrQuadPosition == Vector3.Zero)
                 {
@@ -403,7 +354,7 @@ namespace Game
 
         public static void DrawVrBackground()
         {
-            Matrix hmdMatrix = VrManager.HmdMatrix;
+            Matrix hmdMatrix = Matrix.Identity;
             TexturedBatch3D batch = m_pr3.TexturedBatch(ContentManager.Get<Texture2D>("Textures/Star"));
             Random.Seed(0);
             for (int i = 0; i < 1500; i++)

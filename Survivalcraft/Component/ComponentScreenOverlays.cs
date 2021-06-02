@@ -221,9 +221,9 @@ namespace Game
         public void DrawIceOverlay(Camera camera, float factor)
         {
             Vector2 viewportSize = camera.ViewportSize;
-            float s = camera.Eye.HasValue ? 1.3f : 1f;
-            float num = camera.Eye.HasValue ? MathUtils.Pow(factor, 0.4f) : factor;
-            Vector2 v = camera.Eye.HasValue ? viewportSize : new Vector2(1f);
+            float s = 1f;
+            float num = factor;
+            Vector2 v = Vector2.One;
             float num2 = v.Length();
             Point2 point = new Point2((int)MathUtils.Round(12f * viewportSize.X / viewportSize.Y), (int)MathUtils.Round(12f));
             if (m_iceVertices == null || m_cellsCount != point)
@@ -294,47 +294,25 @@ namespace Game
         public void DrawFloatingMessage(Camera camera, string message, float factor)
         {
             BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
-            if (!camera.Eye.HasValue)
-            {
-                Vector2 position = camera.ViewportSize / 2f;
-                position.X += 0.07f * camera.ViewportSize.X * (float)MathUtils.Sin(1.7300000190734863 * Time.FrameStartTime);
-                position.Y += 0.07f * camera.ViewportSize.Y * (float)MathUtils.Cos(1.1200000047683716 * Time.FrameStartTime);
-                FontBatch2D fontBatch2D = m_primitivesRenderer2D.FontBatch(font, 1, DepthStencilState.None, null, BlendState.AlphaBlend);
-                int count = fontBatch2D.TriangleVertices.Count;
-                fontBatch2D.QueueText(message, position, 0f, Color.White * factor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.One * camera.GameWidget.GlobalScale, Vector2.Zero);
-                fontBatch2D.TransformTriangles(camera.ViewportMatrix, count);
-                fontBatch2D.Flush();
-            }
-            else
-            {
-                Vector3 position2 = -4f * Vector3.UnitZ;
-                position2.X += 0.28f * (float)MathUtils.Sin(1.7300000190734863 * Time.FrameStartTime);
-                position2.Y += 0.28f * (float)MathUtils.Cos(1.1200000047683716 * Time.FrameStartTime);
-                FontBatch3D fontBatch3D = m_primitivesRenderer3D.FontBatch(font, 1, DepthStencilState.None, RasterizerState.CullNoneScissor, BlendState.AlphaBlend);
-                fontBatch3D.QueueText(message, position2, 0.008f * Vector3.UnitX, -0.008f * Vector3.UnitY, Color.White * factor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
-                fontBatch3D.Flush(camera.ProjectionMatrix);
-            }
+            Vector2 position = camera.ViewportSize / 2f;
+            position.X += 0.07f * camera.ViewportSize.X * (float)MathUtils.Sin(1.7300000190734863 * Time.FrameStartTime);
+            position.Y += 0.07f * camera.ViewportSize.Y * (float)MathUtils.Cos(1.1200000047683716 * Time.FrameStartTime);
+            FontBatch2D fontBatch2D = m_primitivesRenderer2D.FontBatch(font, 1, DepthStencilState.None, null, BlendState.AlphaBlend);
+            int count = fontBatch2D.TriangleVertices.Count;
+            fontBatch2D.QueueText(message, position, 0f, Color.White * factor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.One * camera.GameWidget.GlobalScale, Vector2.Zero);
+            fontBatch2D.TransformTriangles(camera.ViewportMatrix, count);
+            fontBatch2D.Flush();
         }
 
         public void DrawMessage(Camera camera, string message, float factor)
         {
             BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
-            if (!camera.Eye.HasValue)
-            {
-                Vector2 position = new Vector2(camera.ViewportSize.X / 2f, camera.ViewportSize.Y - 25f);
-                FontBatch2D fontBatch2D = m_primitivesRenderer2D.FontBatch(font, 0, DepthStencilState.None, null, BlendState.AlphaBlend);
-                int count = fontBatch2D.TriangleVertices.Count;
-                fontBatch2D.QueueText(message, position, 0f, Color.Gray * factor, TextAnchor.HorizontalCenter | TextAnchor.Bottom, Vector2.One * camera.GameWidget.GlobalScale, Vector2.Zero);
-                fontBatch2D.TransformTriangles(camera.ViewportMatrix, count);
-                fontBatch2D.Flush();
-            }
-            else
-            {
-                Vector3 position2 = -4f * Vector3.UnitZ + -0.24f / camera.ProjectionMatrix.M22 * 2f * Vector3.UnitY;
-                FontBatch3D fontBatch3D = m_primitivesRenderer3D.FontBatch(font, 0, DepthStencilState.None, RasterizerState.CullNoneScissor, BlendState.AlphaBlend);
-                fontBatch3D.QueueText(message, position2, 0.0104f * Vector3.UnitX, -0.0104f * Vector3.UnitY, Color.White * factor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
-                fontBatch3D.Flush(camera.ProjectionMatrix);
-            }
+            Vector2 position = new Vector2(camera.ViewportSize.X / 2f, camera.ViewportSize.Y - 25f);
+            FontBatch2D fontBatch2D = m_primitivesRenderer2D.FontBatch(font, 0, DepthStencilState.None, null, BlendState.AlphaBlend);
+            int count = fontBatch2D.TriangleVertices.Count;
+            fontBatch2D.QueueText(message, position, 0f, Color.Gray * factor, TextAnchor.HorizontalCenter | TextAnchor.Bottom, Vector2.One * camera.GameWidget.GlobalScale, Vector2.Zero);
+            fontBatch2D.TransformTriangles(camera.ViewportMatrix, count);
+            fontBatch2D.Flush();
         }
     }
 }
