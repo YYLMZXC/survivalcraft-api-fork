@@ -99,7 +99,6 @@ namespace Game
             }
         }
 
-
         public static void SetupCornerVertex(float x, float y, float z, Color color, int light, int face, int textureSlot, int corner, ref TerrainVertex vertex)
         {
             float num = LightingManager.LightIntensityByLightValueAndFace[light + 16 * face];

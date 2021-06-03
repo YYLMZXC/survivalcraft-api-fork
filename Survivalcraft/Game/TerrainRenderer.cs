@@ -207,6 +207,7 @@ namespace Game
             m_alphaTestedShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
             ShaderParameter TextureParam = m_opaqueShader.GetParameter("u_texture");
             ShaderParameter parameter = m_alphaTestedShader.GetParameter("u_fogStartInvLength");
+            TextureParam.SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
                 TerrainChunk terrainChunk = m_chunksToDraw[i];
@@ -214,7 +215,6 @@ namespace Game
                 float num2 = MathUtils.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
                 parameter.SetValue(new Vector2(num2, 1f / (num - num2)));
                 int subsetsMask = 32;
-                TextureParam.SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
                 DrawTerrainChunkGeometrySubsets(m_alphaTestedShader, terrainChunk.Geometry, subsetsMask);
                 foreach (var item in terrainChunk.terrainDraw.Draws)
                 {
