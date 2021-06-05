@@ -163,9 +163,9 @@ namespace Game
 
         public bool IsCameraAllowed(Camera camera)
         {
-            if (!(camera is FppCamera) && !(camera is LoadingCamera))
-            {
-                return camera is DeathCamera;
+            if ((camera is DeathCamera) || (camera is LoadingCamera))
+            {                
+                return false;
             }
             return true;
         }

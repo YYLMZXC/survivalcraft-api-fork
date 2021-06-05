@@ -41,7 +41,7 @@ namespace Game
 
 		public LoginProcessData m_loginProcessData;
 
-		public string DisplayName => "SPMBox中国社区";
+		public string DisplayName => "SC中文社区";
 
 		public string Description
 		{

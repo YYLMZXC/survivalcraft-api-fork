@@ -7,7 +7,7 @@ namespace Game
     public class FastDebugModEntity :ModEntity
     {
         public FastDebugModEntity() {
-            modInfo = new ModInfo() { Name = "FastDebug", Version = "1.0.0", ApiVersion = "1.34", Author = "Mod", Description = "仅用于调试，不建议用于正式发布", ScVersion = "2.2.10.4" };
+            modInfo = new ModInfo() { Name = "FastDebug", Version = "1.0.0", ApiVersion = "1.34", Author = "Mod", Description = "仅用于调试，不建议用于正式发布", ScVersion = "2.2.10.4", PackageName = "com.fastdebug" };
             IEnumerable<string> dlls = Storage.ListFileNames(ModsManager.ModsPath);
             foreach (string c in dlls)
             {
@@ -20,8 +20,10 @@ namespace Game
             IEnumerable<string> dlls = Storage.ListFileNames(ModsManager.ModsPath);
             foreach (string c in dlls)
             {
-                if (c.EndsWith(".dll"))
+                if (c.EndsWith(".dll")) {
                     LoadDllLogic(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
+                    break;
+                }
             }
         }
         public override void InitPak()

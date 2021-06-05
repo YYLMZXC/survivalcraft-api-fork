@@ -11,6 +11,7 @@ namespace Game{
         public string ScVersion;
         public string Link;
         public string Author;
+        public string PackageName;
         public List<string> Dependencies = new List<string>();
     }
 }

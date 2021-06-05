@@ -281,7 +281,7 @@ namespace Game
             {
                 //处理电脑键盘输入时会处理成游戏输入
                 HasFocus = (HitTestGlobal(Input.Click.Value.Start) == this && HitTestGlobal(Input.Click.Value.End) == this);
-                if (HasFocus) {
+                if (HasFocus && GameManager.Project!=null) {
                     foreach (ComponentPlayer componentPlayer in GameManager.Project.FindSubsystem<SubsystemPlayers>().ComponentPlayers) {
                         componentPlayer.ComponentInput.AllowHandleInput = !HasFocus;
                     }

@@ -161,7 +161,7 @@ namespace Game
                 if (Subtexture != null)
                 {
                     SamplerState samplerState = (!TextureWrap) ? (TextureLinearFilter ? SamplerState.LinearClamp : SamplerState.PointClamp) : (TextureLinearFilter ? SamplerState.LinearWrap : SamplerState.PointWrap);
-                    TexturedBatch2D texturedBatch2D = dc.PrimitivesRenderer2D.TexturedBatch(Subtexture.Texture, useAlphaTest: false, 0, depthStencilState, null, null, samplerState);
+                    TexturedBatch2D texturedBatch2D = dc.PrimitivesRenderer2D.TexturedBatch(Subtexture.Texture, useAlphaTest: true, 0, depthStencilState, null, null, samplerState);
                     Vector2 zero = default(Vector2);
                     Vector2 texCoord;
                     Vector2 texCoord2 = default(Vector2);

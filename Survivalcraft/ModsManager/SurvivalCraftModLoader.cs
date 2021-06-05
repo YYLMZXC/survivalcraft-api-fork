@@ -597,5 +597,19 @@ namespace Game
                 }
             }
         }
+        public override void GuiUpdate(ComponentGui componentGui)
+        {
+            componentGui.HandleInput();
+            componentGui.UpdateWidgets();
+        }
+        public override void OnGuiEntityAdd(ComponentGui componentGui, Entity entity)
+        {
+            componentGui.ShortInventoryWidget.AssignComponents(componentGui.m_componentPlayer.ComponentMiner.Inventory);
+        }
+        public override void OnGuiEntityRemove(ComponentGui componentGui, Entity entity)
+        {
+            componentGui.ShortInventoryWidget.AssignComponents(null);
+            componentGui.m_message = null;
+        }
     }
 }

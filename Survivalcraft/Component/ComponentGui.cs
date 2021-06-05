@@ -26,6 +26,7 @@ namespace Game
 
             public float Duration;
         }
+
         public static string fName = "ComponentGui";
 
         public SubsystemGameInfo m_subsystemGameInfo;
@@ -222,7 +223,6 @@ namespace Game
                 StartTime = Time.RealTime + (double)delay
             };
         }
-
         public void DisplaySmallMessage(string text, Color color, bool blinking, bool playNotificationSound)
         {
             m_messageWidget.DisplayMessage(text, color, blinking);
@@ -246,8 +246,10 @@ namespace Game
 
         public void Update(float dt)
         {
-            HandleInput();
-            UpdateWidgets();
+
+            foreach (ModLoader modLoader in ModsManager.ModLoaders) {
+                modLoader.GuiUpdate(this);
+            }
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
@@ -311,13 +313,18 @@ namespace Game
 
         public override void OnEntityAdded()
         {
-            ShortInventoryWidget.AssignComponents(m_componentPlayer.ComponentMiner.Inventory);
+
+            foreach (ModLoader modLoader in ModsManager.ModLoaders) {
+                modLoader.OnGuiEntityAdd(this,Entity);
+            }
         }
 
         public override void OnEntityRemoved()
         {
-            ShortInventoryWidget.AssignComponents(null);
-            m_message = null;
+            foreach (ModLoader modLoader in ModsManager.ModLoaders)
+            {
+                modLoader.OnGuiEntityRemove(this, Entity);
+            }
         }
 
         public override void Dispose()

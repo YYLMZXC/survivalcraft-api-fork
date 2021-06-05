@@ -29,7 +29,7 @@ namespace Game
 
         public XElement DatabaseNode;
 
-        public bool IsConfirm = false;
+        public bool IsShow = false;
 
         public LoadingScreen()
         {
@@ -92,8 +92,7 @@ namespace Game
                     });
                 }
             });
-            AddLoadAction(()=> {
-                
+            AddLoadAction(()=> {                
                 foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
                 {
                     AddQuequeAction(()=> {
@@ -299,15 +298,15 @@ namespace Game
                         break;
                     }
                 }
-                if (ModsManager.exceptions.Count > 0&&!IsConfirm) {
-
+                if (ModsManager.exceptions.Count > 0&&!IsShow) {
+                    IsShow = true; m_pauseLoading = true;
                     DialogsManager.ShowDialog(ScreensManager.RootWidget, new MessageDialog("Mod加载出错", ExceptionManager.MakeFullErrorMessage(ModsManager.exceptions[0]), "确定", "忽略", delegate (MessageDialogButton b)
                     {
-                        IsConfirm = true;
                         switch (b)
                         {
                             case MessageDialogButton.Button1:
                                 m_pauseLoading = false;
+                                IsShow = false;
                                 ModsManager.exceptions.RemoveAt(0);
                                 break;
                             case MessageDialogButton.Button2:

@@ -2192,6 +2192,9 @@
     <Compile Include="..\Survivalcraft\ModsManager\Changes\DatabaseManager.cs">
       <Link>ModsManager\Changes\DatabaseManager.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\FastDebugModEntity.cs">
+      <Link>ModsManager\FastDebugModEntity.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\ModsManager\LanguageControl.cs">
       <Link>Language\LanguageControl.cs</Link>
     </Compile>
@@ -2206,6 +2209,12 @@
     </Compile>
     <Compile Include="..\Survivalcraft\ModsManager\ModsManager.cs">
       <Link>ModsManager\ModsManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\SurvivalCraftModEntity.cs">
+      <Link>ModsManager\SurvivalCraftModEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\SurvivalCraftModLoader.cs">
+      <Link>ModsManager\SurvivalCraftModLoader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Screen\BestiaryDescriptionScreen.cs">
       <Link>Screen\BestiaryDescriptionScreen.cs</Link>
@@ -2704,6 +2713,9 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Widget\FixedSizePanelWidget.cs">
       <Link>Widget\FixedSizePanelWidget.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Widget\FontTextWidget.cs">
+      <Link>Widget\FontTextWidget.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Widget\FullInventoryWidget.cs">
       <Link>Widget\FullInventoryWidget.cs</Link>

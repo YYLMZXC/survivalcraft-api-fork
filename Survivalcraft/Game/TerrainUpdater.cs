@@ -991,7 +991,7 @@ namespace Game
                     }
                 }
             }
-            chunk.terrainDraw.Combile();
+            if(even)chunk.terrainDraw.Combile();
         }
 
         public static int CalculateLightPropagationBitIndex(int x, int z)

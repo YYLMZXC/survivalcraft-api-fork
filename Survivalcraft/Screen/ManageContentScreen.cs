@@ -132,6 +132,7 @@ public class ManageContentScreen : Screen
                         LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Text");
                         LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Details");
                         rectangleWidget.Subtexture = listItem.Texture==null ? TextureAtlasManager.GetSubtexture("Textures/Atlas/WorldIcon"):new Subtexture(listItem.Texture,Vector2.Zero,Vector2.One);
+                        rectangleWidget.TextureLinearFilter = true;
                         labelWidget.Text = listItem.DisplayName;
                         labelWidget2.Text = listItem.Name;
                         if (!listItem.IsBuiltIn)
@@ -261,9 +262,10 @@ public class ManageContentScreen : Screen
         {
             foreach (ModEntity modEntity in ModsManager.LoadedMods)
             {
+                string author = string.IsNullOrEmpty(modEntity.modInfo.Author) ? "无" : modEntity.modInfo.Author;
                 list.Add(new ListItem
                 {
-                    Name = $"[模组]{modEntity.modInfo.Description}",
+                    Name = $"[模组]{modEntity.modInfo.Description}<{author}>",
                     IsBuiltIn = false,
                     Type = ExternalContentType.Mod,
                     DisplayName = $"{modEntity.modInfo.Name} 版本:{modEntity.modInfo.Version}",

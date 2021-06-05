@@ -37,11 +37,9 @@ namespace Game
 
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
 
-        public static int MaxInstancesCount = 7;
+        public ModelShader m_shaderOpaque;
 
-        public static ModelShader m_shaderOpaque = new ModelShader(useAlphaThreshold: false, MaxInstancesCount);
-
-        public static ModelShader m_shaderAlphaTested = new ModelShader(useAlphaThreshold: true, MaxInstancesCount);
+        public ModelShader m_shaderAlphaTested;
 
         public Dictionary<ComponentModel, ModelData> m_componentModels = new Dictionary<ComponentModel, ModelData>();
 
@@ -140,9 +138,16 @@ namespace Game
             m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
             m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_subsystemShadows = base.Project.FindSubsystem<SubsystemShadows>(throwOnError: true);
-        }
+            int MaxInstancesCount = 0;
+            foreach (ModLoader modLoader in ModsManager.ModLoaders) {
+                MaxInstancesCount = Math.Max(modLoader.GetMaxInstancesCount(),MaxInstancesCount);
+            }
+            m_shaderOpaque = new ModelShader(useAlphaThreshold: false, MaxInstancesCount);
+            m_shaderAlphaTested = new ModelShader(useAlphaThreshold: true, MaxInstancesCount);
 
-        public override void OnEntityAdded(Entity entity)
+    }
+
+    public override void OnEntityAdded(Entity entity)
         {
             foreach (ComponentModel item in entity.FindComponents<ComponentModel>())
             {

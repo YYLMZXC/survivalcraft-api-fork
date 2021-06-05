@@ -86,5 +86,41 @@ namespace Game
         }
         public virtual void ProjectLoad(XElement xElement) { }
         public virtual void ProjectSave(XElement xElement) { }
+        public virtual void GuiUpdate(ComponentGui componentGui) { 
+        
+        }
+        public virtual void OnGuiEntityAdd(ComponentGui componentGui,Entity entity)
+        {
+
+        }
+        public virtual void OnGuiEntityRemove(ComponentGui componentGui, Entity entity)
+        {
+
+        }
+        /// <summary>
+        /// CornerVertex
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="color">点输出颜色</param>
+        /// <param name="light">传入的亮度</param>
+        /// <param name="face">哪个面</param>
+        /// <param name="corner"></param>
+        /// <param name="vertex"></param>
+        public virtual bool SetupCornerVertex(float x, float y, float z,ref Color color, int light, int face, int corner, ref TerrainVertex vertex) {
+            return false;
+        }
+        public virtual bool SetupLitCornerVertex(float x, float y, float z,ref Color color, int corner, ref TerrainVertex vertex) {
+            return false;
+
+        }
+        public virtual bool SetupVertex(float x, float y, float z,ref Color color, float tx, float ty, ref TerrainVertex vertex) {
+            return false;
+
+        }
+        public virtual int GetMaxInstancesCount() {
+            return 7;
+        }
     }
 }

@@ -48,6 +48,7 @@ public static class ModsManager
     public static string logPath = "config:/Logs";
 #endif
     public static string path;//移动端mods数据文件夹
+
     public class ModSettings
     {
         public LanguageControl.LanguageType languageType;
@@ -121,6 +122,7 @@ public static class ModsManager
         }
         return outobj;
     }
+
     public static void SaveSettings(XElement xElement)
     {
         foreach (ModEntity modEntity in CacheToLoadMods) {
@@ -149,7 +151,37 @@ public static class ModsManager
         WaitToLoadMods.Add(new SurvivalCrafModEntity());
         WaitToLoadMods.Add(new FastDebugModEntity());
         ModLoaders.Clear();
-        GetAllFiles(ModsPath);
+        GetScmods(ModsPath);
+        List<ModEntity> modToRemove = new List<ModEntity>();
+        foreach (ModEntity modEntity1 in WaitToLoadMods) {
+            ModInfo modInfo = modEntity1.modInfo;
+            if (modEntity1.IsChecked) continue;
+            List<ModEntity> modEntities = ModsManager.WaitToLoadMods.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
+            Version version = new Version();
+            foreach (ModEntity modEntity in modEntities)
+            {
+                if (version <= new Version(modEntity.modInfo.Version)) version = new Version(modEntity.modInfo.Version);
+            }
+            ModEntity entity1 = ModsManager.WaitToLoadMods.Find(px => px.modInfo.PackageName == modInfo.PackageName && new Version(px.modInfo.Version) != new Version(modInfo.Version) && new Version(px.modInfo.Version) == version);
+            if (entity1 != null)
+            {
+                ModsManager.AddException(new InvalidOperationException($"检测到已安装多个[{entity1.modInfo.Name}]，已加载版本:{version}"));
+                foreach (ModEntity modEntity in modEntities)
+                {
+                    if (version != new Version(modEntity.modInfo.Version))
+                    {
+                        modEntity1.IsChecked = true;
+                        modToRemove.Add(modEntity1);
+                    }
+                }
+            }
+        }
+
+        foreach (ModEntity modEntity2 in modToRemove) {
+            WaitToLoadMods.Remove(modEntity2);
+        }
+        foreach (ModEntity modEntity1 in WaitToLoadMods)
+        { modEntity1.IsChecked = false; }
     }
     public static void AddException(Exception e) {
         exceptions.Add(e);
@@ -158,7 +190,7 @@ public static class ModsManager
     /// 获取所有文件
     /// </summary>
     /// <param name="path"></param>
-    public static void GetAllFiles(string path)
+    public static void GetScmods(string path)
     {
         foreach (string item in Storage.ListFileNames(path))
         {
@@ -167,9 +199,11 @@ public static class ModsManager
             Stream stream = Storage.OpenFile(ks, OpenFileMode.Read);
             try
             {
-                if (ms == ".zip" || ms == ".scmod")
+                if (ms == ".scmod")
                 {
                     ModEntity modEntity = new ModEntity(ZipArchive.Open(stream, true));
+                    if (modEntity.modInfo == null) continue;
+                    if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
                     WaitToLoadMods.Add(modEntity);
                 }
             }
@@ -180,7 +214,7 @@ public static class ModsManager
         }
         foreach (string dir in Storage.ListDirectoryNames(path))
         {
-            GetAllFiles(Storage.CombinePaths(path, dir));
+            GetScmods(Storage.CombinePaths(path, dir));
         }
     }
     public static string StreamToString(Stream stream)
@@ -363,7 +397,17 @@ public static class ModsManager
             }
             CombineCrLogic(xElement, element);
         }
-
+    }
+    public static void Modify(XElement source,XElement change) {
+        if (FindElement(source, (item) => { if (item.Name.LocalName == change.Name.LocalName && item.Attribute("Guid").Value == change.Attribute("Guid").Value) return true;return false; }, out XElement xElement1)){
+            foreach (XElement xElement in change.Elements()) {
+                Modify(xElement1,xElement);
+            }
+        }
+        else
+        {
+            source.Add(change);
+        }
 
     }
     public static void CombineDataBase(XElement DataBaseXml,Stream Xdb) {
@@ -381,16 +425,7 @@ public static class ModsManager
                     }                
                 }
             }
-            if (element.Name.ToString() == "Folder") {
-                if (ModsManager.HasAttribute(element, (name) => { return name == "Guid"; }, out XAttribute xAttribute)) {
-                    if (FindElementByGuid(DataObjects, xAttribute.Value, out XElement xElement))
-                    {
-                        foreach (XElement element1 in element.Elements()) {
-                            xElement.Add(element1);
-                        }
-                    }
-                }            
-            }
+            Modify(DataObjects,element);
         }
     }
 

@@ -174,8 +174,13 @@ namespace Game {
                 Type type = types[i];
                 if (type.IsSubclassOf(typeof(ModLoader)))
                 {
-                    ModLoader_ = Activator.CreateInstance(types[i]) as ModLoader;
-                    ModsManager.ModLoaders.Add(ModLoader_);
+                    try {
+                        ModLoader_ = Activator.CreateInstance(types[i]) as ModLoader;
+                        ModsManager.ModLoaders.Add(ModLoader_);
+                    }
+                    catch (Exception e) {
+                        ModsManager.AddException(e);
+                    }
                 }
                 if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
                 {
@@ -218,7 +223,7 @@ namespace Game {
                 {
                     dn = name;
                 }
-                ModEntity entity = ModsManager.WaitToLoadMods.Find(px => px.modInfo.Name == dn && new Version(px.modInfo.Version) == dnversion);
+                ModEntity entity = ModsManager.WaitToLoadMods.Find(px => px.modInfo.PackageName == dn && new Version(px.modInfo.Version) == dnversion);
                 if (entity != null)
                 {
                     entity.CheckDependencies();//依赖项最先被加载
