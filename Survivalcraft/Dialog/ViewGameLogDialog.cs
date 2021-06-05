@@ -110,7 +110,8 @@ namespace Game
                         dialog.LargeMessage = "上传成功";
                         dialog.m_cancelButtonWidget.Text = "确定";
                         GameLogSink.m_writer.BaseStream.SetLength(0);
-                        GameLogSink.m_writer.Flush();                        
+                        GameLogSink.m_writer.Flush();
+                        PopulateList();
                     }, delegate (Exception error)
                     {
                         dialog.LargeMessage = "上传失败";
