@@ -56,6 +56,38 @@ namespace Game
                 }
             });
             AddLoadAction(() => {
+                foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
+                {
+                    AddQuequeAction(() => {
+                        SetMsg($"初始化Pak:[{modEntity.modInfo.Name}]");
+                        modEntity.InitPak();
+                    });
+                }
+            });
+            AddLoadAction(() => {
+                Random random = new Random();
+                foreach (ContentInfo item in ContentManager.List())
+                {
+                    ContentInfo localContentInfo = item;
+                    if (random.Bool(0.5f))
+                    {
+                        AddQuequeAction(delegate
+                        {
+                            try
+                            {
+                                SetMsg($"检查Pak:{localContentInfo.Name}");
+                                ContentManager.Get(localContentInfo.Name);
+                            }
+                            catch (Exception e)
+                            {
+                                ModsManager.AddException(e);
+                            }
+                        });
+                    }
+                }
+            });
+
+            AddLoadAction(() => {
                 foreach (ModEntity entity in ModsManager.CacheToLoadMods)
                 {
                     AddQuequeAction(() => {
@@ -90,36 +122,6 @@ namespace Game
                         }
 
                     });
-                }
-            });
-            AddLoadAction(()=> {                
-                foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
-                {
-                    AddQuequeAction(()=> {
-                        SetMsg($"初始化Pak:[{modEntity.modInfo.Name}]");
-                        modEntity.InitPak();
-                    });
-                }
-            });
-            AddLoadAction(() => {
-                Random random = new Random();
-                foreach (ContentInfo item in ContentManager.List())
-                {
-                    ContentInfo localContentInfo = item;
-                    if (random.Bool(0.5f)) {
-                        AddQuequeAction(delegate
-                        {
-                            try
-                            {
-                                SetMsg($"检查Pak:{localContentInfo.Name}");
-                                ContentManager.Get(localContentInfo.Name);
-                            }
-                            catch (Exception e)
-                            {
-                                ModsManager.AddException(e);
-                            }
-                        });
-                    }
                 }
             });
             AddLoadAction(() => {

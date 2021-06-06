@@ -80,9 +80,8 @@ namespace Game
             return m_faceToVector3[face];
         }
 
-        public static int Point3ToFace(Point3 p, int maxFace = 5)
+        public static int Point3ToFace(Point3 p, int maxFace = 6)
         {
-            maxFace = MathUtils.Clamp(maxFace, 0, 5);
             for (int i = 0; i < maxFace; i++)
             {
                 if (m_faceToPoint3[i] == p)
@@ -93,9 +92,8 @@ namespace Game
             throw new InvalidOperationException("Invalid Point3.");
         }
 
-        public static int Vector3ToFace(Vector3 v, int maxFace = 5)
+        public static int Vector3ToFace(Vector3 v, int maxFace = 6)
         {
-            maxFace = MathUtils.Clamp(maxFace, 0, 5);
             float num = -1f / 0f;
             int result = 0;
             for (int i = 0; i <= maxFace; i++)

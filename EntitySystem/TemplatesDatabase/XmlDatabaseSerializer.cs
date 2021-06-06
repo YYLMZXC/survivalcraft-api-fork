@@ -201,7 +201,7 @@ namespace TemplatesDatabase
 			InternalSaveDatabaseObject(node, databaseObject, saveNestingParent: false);
 		}
 
-		private static List<DatabaseObject> InternalLoadDatabaseObjectsList(XElement node, Database database, Dictionary<DatabaseObject, Guid> nestingParents, Dictionary<DatabaseObject, Guid> inheritanceParents, Dictionary<Guid, Guid> guidTranslation)
+		public static List<DatabaseObject> InternalLoadDatabaseObjectsList(XElement node, Database database, Dictionary<DatabaseObject, Guid> nestingParents, Dictionary<DatabaseObject, Guid> inheritanceParents, Dictionary<Guid, Guid> guidTranslation)
 		{
 			List<DatabaseObject> list = new List<DatabaseObject>();
 			foreach (XElement item2 in node.Elements())
@@ -212,7 +212,7 @@ namespace TemplatesDatabase
 			return list;
 		}
 
-		private static DatabaseObject InternalLoadDatabaseObject(XElement node, Database database, Dictionary<DatabaseObject, Guid> nestingParents, Dictionary<DatabaseObject, Guid> inheritanceParents, Dictionary<Guid, Guid> guidTranslation)
+		public static DatabaseObject InternalLoadDatabaseObject(XElement node, Database database, Dictionary<DatabaseObject, Guid> nestingParents, Dictionary<DatabaseObject, Guid> inheritanceParents, Dictionary<Guid, Guid> guidTranslation)
 		{
 			Guid guid = XmlUtils.GetAttributeValue(node, "Guid", Guid.Empty);
 			string attributeValue = XmlUtils.GetAttributeValue(node, "Name", string.Empty);
@@ -264,7 +264,7 @@ namespace TemplatesDatabase
 			}
 		}
 
-		private static void InternalSaveDatabaseObject(XElement node, DatabaseObject databaseObject, bool saveNestingParent)
+		public static void InternalSaveDatabaseObject(XElement node, DatabaseObject databaseObject, bool saveNestingParent)
 		{
 			XmlUtils.SetAttributeValue(node, "Name", databaseObject.Name);
 			if (!string.IsNullOrEmpty(databaseObject.Description))

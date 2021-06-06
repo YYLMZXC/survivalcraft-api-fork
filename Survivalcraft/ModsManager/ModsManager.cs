@@ -399,7 +399,7 @@ public static class ModsManager
         }
     }
     public static void Modify(XElement source,XElement change) {
-        if (FindElement(source, (item) => { if (item.Name.LocalName == change.Name.LocalName && item.Attribute("Guid").Value == change.Attribute("Guid").Value) return true;return false; }, out XElement xElement1)){
+        if (FindElement(source, (item) => { if (item.Name.LocalName == change.Name.LocalName && item.Attribute("Guid")!=null && change.Attribute("Guid") != null && item.Attribute("Guid").Value == change.Attribute("Guid").Value) return true;return false; }, out XElement xElement1)){
             foreach (XElement xElement in change.Elements()) {
                 Modify(xElement1,xElement);
             }
@@ -411,7 +411,7 @@ public static class ModsManager
 
     }
     public static void CombineDataBase(XElement DataBaseXml,Stream Xdb) {
-        XElement MergeXml=XmlUtilities.XmlUtils.LoadXmlFromStream(Xdb,Encoding.UTF8,true);
+        XElement MergeXml = XmlUtils.LoadXmlFromStream(Xdb, Encoding.UTF8, true);
         XElement DataObjects = DataBaseXml.Element("DatabaseObjects");
         foreach (XElement element in MergeXml.Elements()) {
             //处理修改
