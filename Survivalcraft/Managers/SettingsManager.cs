@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using XmlUtilities;
-
+using System.Collections.Generic;
 namespace Game
 {
     public static class SettingsManager
@@ -401,8 +401,6 @@ namespace Game
             get;
             set;
         }
-        public static Action<XElement> SaveSetings_;
-        public static Action<XElement> LoadSetings_;
 
         public static bool UpsideDownLayout
         {
@@ -513,23 +511,40 @@ namespace Game
                 {
                     using (Stream stream = Storage.OpenFile(ModsManager.settingPath, OpenFileMode.Read))
                     {
+                        ModsManager.DisabledMods.Clear();
                         XElement xElement = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
-                        LoadSetings_?.Invoke(xElement);
-                        ModsManager.LoadSettings(xElement);
                         foreach (XElement item in xElement.Elements())
                         {
                             string name = "<unknown>";
                             try
                             {
-                                name = XmlUtils.GetAttributeValue<string>(item, "Name");
-                                string attributeValue = XmlUtils.GetAttributeValue<string>(item, "Value");
-                                PropertyInfo propertyInfo = (from pi in typeof(SettingsManager).GetRuntimeProperties()
-                                                             where pi.Name == name && pi.GetMethod.IsStatic && pi.GetMethod.IsPublic && pi.SetMethod.IsPublic
-                                                             select pi).FirstOrDefault();
-                                if ((object)propertyInfo != null)
+                                if (item.Name.LocalName == "Setting")
                                 {
-                                    object value = HumanReadableConverter.ConvertFromString(propertyInfo.PropertyType, attributeValue);
-                                    propertyInfo.SetValue(null, value, null);
+                                    name = XmlUtils.GetAttributeValue<string>(item, "Name");
+                                    string attributeValue = XmlUtils.GetAttributeValue<string>(item, "Value");
+                                    PropertyInfo propertyInfo = (from pi in typeof(SettingsManager).GetRuntimeProperties()
+                                                                 where pi.Name == name && pi.GetMethod.IsStatic && pi.GetMethod.IsPublic && pi.SetMethod.IsPublic
+                                                                 select pi).FirstOrDefault();
+                                    if ((object)propertyInfo != null)
+                                    {
+                                        object value = HumanReadableConverter.ConvertFromString(propertyInfo.PropertyType, attributeValue);
+                                        propertyInfo.SetValue(null, value, null);
+                                    }
+
+                                }
+                                else if (item.Name.LocalName == "ModSet" && item.Attribute("Name").Value == "Language")
+                                {
+                                    ModsManager.modSettings.languageType = (LanguageControl.LanguageType)int.Parse(item.Attribute("Value").Value);
+                                }
+                                else if(item.Name.LocalName == "DisableMods")
+                                {
+                                    foreach (XElement xElement1 in item.Elements())
+                                    {
+                                        ModInfo modInfo = new ModInfo();
+                                        modInfo.PackageName = xElement1.Attribute("PackageName").Value;
+                                        modInfo.Version = xElement1.Attribute("Version").Value;
+                                        ModsManager.DisabledMods.Add(modInfo);
+                                    }
                                 }
                             }
                             catch (Exception ex)
@@ -541,6 +556,7 @@ namespace Game
                                 }));
                             }
                         }
+
                     }
                     Log.Information("Loaded settings.");
                 }
@@ -576,11 +592,34 @@ namespace Game
                         }));
                     }
                 }
-                SaveSetings_?.Invoke(xElement);
+
+
+                XElement la = new XElement("ModSet");
+                la.SetAttributeValue("Name", "Language");
+                la.SetAttributeValue("Value", (int)ModsManager.modSettings.languageType);
+                List<ModEntity> modEntities = ModsManager.ModList.FindAll(p => p.IsLoaded && !p.IsDisabled);
+                XElement xElement1 = new XElement("DisableMods");
+                foreach (ModEntity modEntity in modEntities)
+                {
+                    if (modEntity.IsDisabled) {
+                        XElement element = new XElement("Mod");
+                        element.SetAttributeValue("PackageName", modEntity.modInfo.PackageName);
+                        element.SetAttributeValue("Version", modEntity.modInfo.Version);
+                        xElement1.Add(element);
+
+                    }
+                }
+                xElement.Add(xElement1);
                 ModsManager.SaveSettings(xElement);
                 using (Stream stream = Storage.OpenFile(ModsManager.settingPath, OpenFileMode.Create))
                 {
                     XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);
+                }
+                using (Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Create))
+                {
+                    XElement xElement2 = new XElement("ModSettings");
+                    ModsManager.SaveSettings(xElement2);
+                    XmlUtils.SaveXmlToStream(xElement2, stream, null, throwOnError: true);
                 }
                 Log.Information("Saved settings");
             }

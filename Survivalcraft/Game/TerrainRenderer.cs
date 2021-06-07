@@ -162,7 +162,9 @@ namespace Game
             ShaderParameter parameter = m_opaqueShader.GetParameter("u_fogStartInvLength");
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
+                int c = 0;
                 TerrainChunk terrainChunk = m_chunksToDraw[i];
+
                 float num = MathUtils.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
                 float num2 = MathUtils.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
                 parameter.SetValue(new Vector2(num2, 1f / (num - num2)));

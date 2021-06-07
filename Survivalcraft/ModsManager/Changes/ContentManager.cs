@@ -11,7 +11,7 @@ namespace Game
     {
         public static void Initialize()
         {
-            ContentCache.AddPackage("app:/Content.pak", Encoding.UTF8.GetBytes(Pad()), new byte[1] { 63 });
+            Add("app:/Core.pak");
         }
 
         public static object Get(string name)
@@ -44,6 +44,10 @@ namespace Game
 
         public static void Add(Stream stream) {
             ContentCache.AddPackage(()=> stream, Encoding.UTF8.GetBytes(Pad()), new byte[1] { 63 });
+        }
+        public static void Add(string name)
+        {
+            ContentCache.AddPackage(name, Encoding.UTF8.GetBytes(Pad()), new byte[1] { 63 });
         }
 
         public static void Dispose(string name)

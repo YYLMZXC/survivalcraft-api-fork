@@ -14,7 +14,7 @@ namespace Game
 {
     public class SurvivalCrafModEntity : ModEntity
     {
-        
+
         public SurvivalCrafModEntity(){
             modInfo = new ModInfo();
             modInfo.ApiVersion = "1.34";
@@ -25,7 +25,6 @@ namespace Game
         }
         public override void CheckDependencies()
         {
-            ModsManager.CacheToLoadMods.Add(this);
         }
         public override bool GetFile(string filename, out Stream stream)
         {
@@ -34,7 +33,7 @@ namespace Game
         }
         public override void InitPak()
         {
-           
+            ContentManager.Add("app:/Content.pak");
         }
         public override void LoadBlocksData()
         {
@@ -94,19 +93,14 @@ namespace Game
         }
         public override void SaveSettings(XElement xElement)
         {
-            XElement la = new XElement("ModSet");
-            la.SetAttributeValue("Name", "Language");
-            la.SetAttributeValue("Value", (int)ModsManager.modSettings.languageType);
+
+
         }
         public override void LoadSettings(XElement xElement)
         {
-            foreach (XElement item in xElement.Elements())
-            {
-                if (item.Attribute("Name").Value == "Language")
-                {
-                    ModsManager.modSettings.languageType = (LanguageControl.LanguageType)int.Parse(item.Attribute("Value").Value);
-                }
-            }
+
+
+
         }
         public override void OnBlocksInitalized(List<string> categories)
         {

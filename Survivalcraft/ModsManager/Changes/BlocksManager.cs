@@ -25,28 +25,19 @@ namespace Game
         {
             CalculateSlotTexCoordTables();
             int num = 0;
-            foreach (ModEntity entity in ModsManager.CacheToLoadMods) {
-                for (int i=0;i<entity.Blocks.Count;i++) {
-                    Block block = entity.Blocks[i];
-                    if (m_blocks[block.BlockIndex] == null)
+            foreach (ModEntity entity in ModsManager.ModList) {
+                if (entity.IsLoaded && !entity.IsDisabled) {
+                    for (int i = 0; i < entity.Blocks.Count; i++)
                     {
+                        Block block = entity.Blocks[i];
                         m_blocks[block.BlockIndex] = block;
-                        if (m_fluidBlocks[block.BlockIndex] == null)
+                        if (block is FluidBlock)
                         {
                             m_fluidBlocks[block.BlockIndex] = block as FluidBlock;
                         }
-                        else
-                        {
-                            ModsManager.AddException(new InvalidOperationException($"The index is already exist where block type is \"{block.GetType().FullName}\" "));
-                        }
-                    }
-                    else
-                    {
-                        ModsManager.AddException(new InvalidOperationException($"The index is already exist where block type is \"{block.GetType().FullName}\" "));
                     }
                 }            
             }
-
             for (num = 0; num < m_blocks.Length; num++)
             {
                 if (m_blocks[num] == null)
@@ -55,8 +46,8 @@ namespace Game
                 }
             }
 
-            foreach (ModEntity modEntity in ModsManager.CacheToLoadMods) {
-                modEntity.LoadBlocksData();
+            foreach (ModEntity modEntity in ModsManager.ModList) {
+                if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.LoadBlocksData();
             }
 
 
@@ -69,9 +60,9 @@ namespace Game
                     AddCategory(category);
                 }
             }
-            foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
+            foreach (ModEntity modEntity in ModsManager.ModList)
             {
-                modEntity.OnBlocksInitalized(m_categories);
+                if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.OnBlocksInitalized(m_categories);
             }
         }
         public static void AddCategory(string category) {

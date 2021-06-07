@@ -23,6 +23,8 @@ public class ManageContentScreen : Screen
         public int UseCount;
 
         public Texture2D Texture;
+
+        public ModEntity ModEntity;
     }
     public static string fName = "ManageContentScreen";
 
@@ -55,7 +57,6 @@ public class ManageContentScreen : Screen
         {
             ListItem listItem = (ListItem)obj;
             ContainerWidget containerWidget;
-
             switch (listItem.Type) {
                 case ExternalContentType.BlocksTexture: {
                         XElement node2 = ContentManager.Get<XElement>("Widgets/BlocksTextureItem");
@@ -168,6 +169,14 @@ public class ManageContentScreen : Screen
         ListItem selectedItem = (ListItem)m_contentList.SelectedItem;
         m_deleteButton.IsEnabled = (selectedItem != null && !selectedItem.IsBuiltIn);
         m_uploadButton.IsEnabled = (selectedItem != null && !selectedItem.IsBuiltIn);
+        if (selectedItem.Type == ExternalContentType.Mod)
+        {
+            m_deleteButton.Text = selectedItem.ModEntity.IsDisabled ? "启用" : "禁用";
+        }
+        else
+        {
+            m_deleteButton.Text = "删除";
+        }
         m_filterLabel.Text = GetFilterDisplayName(m_filter);
         if (m_deleteButton.IsClicked)
         {
@@ -176,7 +185,21 @@ public class ManageContentScreen : Screen
             {
                 if (button == MessageDialogButton.Button1)
                 {
-                    ExternalContentManager.DeleteExternalContent(selectedItem.Type, selectedItem.Name);
+                    if (selectedItem.Type == ExternalContentType.Mod)
+                    {
+                        if (selectedItem.ModEntity.GetType() == typeof(SurvivalCrafModEntity).GetType())
+                        {
+                            DialogsManager.ShowDialog(this,new MessageDialog("提示","不可操作","确定","取消",(btn)=> { DialogsManager.HideAllDialogs(); }));
+                        }
+                        else {
+                            selectedItem.ModEntity.IsDisabled = !selectedItem.ModEntity.IsDisabled;
+                            selectedItem.ModEntity.IsLoaded = !selectedItem.ModEntity.IsDisabled;
+                        }
+                    }
+                    else {
+
+                        ExternalContentManager.DeleteExternalContent(selectedItem.Type, selectedItem.Name);
+                    }
                     UpdateList();
                 }
             }));
@@ -260,7 +283,7 @@ public class ManageContentScreen : Screen
         }
         if (m_filter == ExternalContentType.Mod || m_filter == ExternalContentType.Unknown)
         {
-            foreach (ModEntity modEntity in ModsManager.LoadedMods)
+            foreach (ModEntity modEntity in ModsManager.ModList)
             {
                 string author = string.IsNullOrEmpty(modEntity.modInfo.Author) ? "无" : modEntity.modInfo.Author;
                 list.Add(new ListItem
@@ -270,7 +293,8 @@ public class ManageContentScreen : Screen
                     Type = ExternalContentType.Mod,
                     DisplayName = $"{modEntity.modInfo.Name} 版本:{modEntity.modInfo.Version}",
                     CreationTime = DateTime.Now,
-                    Texture=modEntity.Icon
+                    Texture=modEntity.Icon,
+                    ModEntity=modEntity
                 });
             }
         }

@@ -43,7 +43,6 @@ namespace Game
                 valuesDictionary.PopulateFromDatabaseObject(explicitNestingChild);
                 m_valueDictionaries.Add(explicitNestingChild.Name, valuesDictionary);
             }
-
         }
 
         public static ValuesDictionary FindEntityValuesDictionary(string entityTemplateName, bool throwIfNotFound)

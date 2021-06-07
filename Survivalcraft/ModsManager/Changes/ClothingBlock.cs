@@ -13,9 +13,9 @@ namespace Game
         public const int Index = 203;
 
         public static ClothingData[] m_clothingData;
-
+        List<ClothingData> clothingDatas = new List<ClothingData>();
         public BlockMesh m_innerMesh;
-
+        int num = 0;
         public BlockMesh m_outerMesh;
         public static Matrix[] m_slotTransforms = new Matrix[4]
         {
@@ -24,16 +24,8 @@ namespace Game
             Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateScale(2.7f),
             Matrix.CreateTranslation(0f, -0.1f, 0f) * Matrix.CreateScale(2.7f)
         };
-
-        public override void Initialize()
-        {
-            int num = 0;
-            List<ClothingData> clothingDatas = new List<ClothingData>();
-            XElement xElement = null;
-            foreach (ModEntity modEntity in ModsManager.CacheToLoadMods) {
-                modEntity.LoadClo(this,ref xElement);
-            }
-            foreach (XElement item in xElement.Elements()) {
+        public void LoadClothingData(XElement item) {
+            if (item.Name.LocalName == "ClothingData") {
                 int ClothIndex = XmlUtils.GetAttributeValue<int>(item, "Index");
                 string newDescription = LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "Description");
                 string newDisplayName = LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "DisplayName");
@@ -68,8 +60,21 @@ namespace Game
                 };
                 num++;
                 clothingDatas.Add(clothingData);
-
             }
+            foreach (XElement xElement1 in item.Elements()) {
+                LoadClothingData(xElement1);
+            
+            }
+        }
+        public override void Initialize()
+        {
+            num = 0;
+            clothingDatas.Clear();
+            XElement xElement = null;
+            foreach (ModEntity modEntity in ModsManager.ModList) {
+                if(modEntity.IsLoaded&&!modEntity.IsDisabled)modEntity.LoadClo(this,ref xElement);
+            }
+            LoadClothingData(xElement);
             m_clothingData = new ClothingData[clothingDatas.Count];
             num = 0;
             foreach (ClothingData data in clothingDatas.OrderBy(p => p.Index))

@@ -992,6 +992,11 @@ namespace Game
                 }
             }
             if(even)chunk.terrainDraw.Combile();
+
+            if (true)
+            {
+                ModsManager.ExportDae(chunk.Geometry);
+            }
         }
 
         public static int CalculateLightPropagationBitIndex(int x, int z)

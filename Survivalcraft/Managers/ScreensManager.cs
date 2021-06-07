@@ -231,9 +231,9 @@ namespace Game
             {
                 AddScreen("Player", new PlayerScreen());
             });
-            foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
+            foreach (ModEntity modEntity in ModsManager.ModList)
             {
-                modEntity.InitScreens(loadingScreen);
+                if(modEntity.IsLoaded&&!modEntity.IsDisabled)modEntity.InitScreens(loadingScreen);
             }
         }
 

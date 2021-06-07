@@ -17,9 +17,9 @@ namespace Game
         public static void Initialize()
         {
             XElement source = null;
-            foreach (ModEntity modEntity in ModsManager.CacheToLoadMods)
+            foreach (ModEntity modEntity in ModsManager.ModList)
             {
-                modEntity.LoadCr(ref source);
+                if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.LoadCr(ref source);
             }
             LoadData(source);
             Block[] blocks = BlocksManager.Blocks;

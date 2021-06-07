@@ -21,6 +21,8 @@ namespace Game {
         public bool HasException = false;
         public bool IsChecked;
         public Action ModInit;
+        public bool IsLoaded = true;
+        public bool IsDisabled = false;
         public ModLoader ModLoader_;
         public ModEntity() { }
         public ModEntity(ZipArchive zipArchive)
@@ -179,6 +181,8 @@ namespace Game {
                         ModsManager.ModLoaders.Add(ModLoader_);
                     }
                     catch (Exception e) {
+                        IsLoaded = false;
+                        HasException = true;
                         ModsManager.AddException(e);
                     }
                 }
@@ -223,20 +227,20 @@ namespace Game {
                 {
                     dn = name;
                 }
-                ModEntity entity = ModsManager.WaitToLoadMods.Find(px => px.modInfo.PackageName == dn && new Version(px.modInfo.Version) == dnversion);
+                ModEntity entity = ModsManager.ModList.Find(px =>px.IsLoaded && !px.IsDisabled && px.modInfo.PackageName == dn && new Version(px.modInfo.Version) == dnversion);
                 if (entity != null)
                 {
                     entity.CheckDependencies();//依赖项最先被加载
-                    ModsManager.CacheToLoadMods.Add(entity);
                     IsChecked = true;
                 }
                 else
                 {
+                    HasException = true;
+                    IsLoaded = false;
                     ModsManager.AddException(new Exception($"[{modInfo.Name}]缺少依赖项{name}"));
                     return;
                 }
             }
-            ModsManager.CacheToLoadMods.Add(this);
         }
         /// <summary>
         /// 保存设置

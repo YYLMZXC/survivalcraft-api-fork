@@ -11,7 +11,7 @@ using System.Xml.Linq;
 using XmlUtilities;
 using SimpleJson;
 using SimpleJson.Reflection;
-
+using Engine.Graphics;
 
 
 public static class ModsManager
@@ -55,10 +55,9 @@ public static class ModsManager
     }
     public static ModSettings modSettings=new ModSettings();
     public static List<Exception> exceptions = new List<Exception>();
-    public static List<ModEntity> LoadedMods = new List<ModEntity>();
-    public static List<ModEntity> CacheToLoadMods = new List<ModEntity>();
-    public static List<ModEntity> WaitToLoadMods = new List<ModEntity>();
+    public static List<ModEntity> ModList = new List<ModEntity>();
     public static List<ModLoader> ModLoaders = new List<ModLoader>();
+    public static List<ModInfo> DisabledMods = new List<ModInfo>();
 
     public static T DeserializeJson<T>(string text) where T : class
     {
@@ -125,15 +124,15 @@ public static class ModsManager
 
     public static void SaveSettings(XElement xElement)
     {
-        foreach (ModEntity modEntity in CacheToLoadMods) {
-            modEntity.SaveSettings(xElement);
+        foreach (ModEntity modEntity in ModList) {
+           if(modEntity.IsLoaded&&!modEntity.IsDisabled) modEntity.SaveSettings(xElement);
         }
     }
     public static void LoadSettings(XElement xElement)
     {
-        foreach (ModEntity modEntity in CacheToLoadMods)
+        foreach (ModEntity modEntity in ModList)
         {
-            modEntity.SaveSettings(xElement);
+            if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.SaveSettings(xElement);
         }
     }
     public static string ImportMod(string name,Stream stream) {
@@ -147,41 +146,41 @@ public static class ModsManager
     public static void Initialize()
     {
         if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
-        WaitToLoadMods.Clear();
-        WaitToLoadMods.Add(new SurvivalCrafModEntity());
-        WaitToLoadMods.Add(new FastDebugModEntity());
+        ModList.Clear();
+        ModList.Add(new SurvivalCrafModEntity());
+        ModList.Add(new FastDebugModEntity());
         ModLoaders.Clear();
         GetScmods(ModsPath);
-        List<ModEntity> modToRemove = new List<ModEntity>();
-        foreach (ModEntity modEntity1 in WaitToLoadMods) {
+        foreach (ModEntity modEntity1 in ModList) {
             ModInfo modInfo = modEntity1.modInfo;
+            ModInfo disabledmod = DisabledMods.Find(l=>l.PackageName==modInfo.PackageName&&l.Version==modInfo.Version);
+            if (disabledmod != null) {
+                modEntity1.IsDisabled = true;
+                modEntity1.IsLoaded = false;
+                continue;
+            }
             if (modEntity1.IsChecked) continue;
-            List<ModEntity> modEntities = ModsManager.WaitToLoadMods.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
+            List<ModEntity> modEntities = ModsManager.ModList.FindAll(px => px.IsLoaded && !px.IsDisabled && px.modInfo.PackageName == modInfo.PackageName);
             Version version = new Version();
             foreach (ModEntity modEntity in modEntities)
             {
                 if (version <= new Version(modEntity.modInfo.Version)) version = new Version(modEntity.modInfo.Version);
             }
-            ModEntity entity1 = ModsManager.WaitToLoadMods.Find(px => px.modInfo.PackageName == modInfo.PackageName && new Version(px.modInfo.Version) != new Version(modInfo.Version) && new Version(px.modInfo.Version) == version);
-            if (entity1 != null)
+            List<ModEntity> entities = ModsManager.ModList.FindAll(px => px.modInfo.PackageName == modInfo.PackageName && new Version(px.modInfo.Version) != new Version(modInfo.Version) && new Version(px.modInfo.Version) == version);
+            if (entities.Count>1)
             {
-                ModsManager.AddException(new InvalidOperationException($"检测到已安装多个[{entity1.modInfo.Name}]，已加载版本:{version}"));
+                ModsManager.AddException(new InvalidOperationException($"检测到已安装多个[{modEntity1.modInfo.Name}]，已加载版本:{version}"));
                 foreach (ModEntity modEntity in modEntities)
                 {
                     if (version != new Version(modEntity.modInfo.Version))
                     {
-                        modEntity1.IsChecked = true;
-                        modToRemove.Add(modEntity1);
+                        modEntity1.IsLoaded = false;
+                        modEntity1.IsDisabled = true;
                     }
+                    modEntity1.IsChecked = true;
                 }
             }
         }
-
-        foreach (ModEntity modEntity2 in modToRemove) {
-            WaitToLoadMods.Remove(modEntity2);
-        }
-        foreach (ModEntity modEntity1 in WaitToLoadMods)
-        { modEntity1.IsChecked = false; }
     }
     public static void AddException(Exception e) {
         exceptions.Add(e);
@@ -204,7 +203,7 @@ public static class ModsManager
                     ModEntity modEntity = new ModEntity(ZipArchive.Open(stream, true));
                     if (modEntity.modInfo == null) continue;
                     if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
-                    WaitToLoadMods.Add(modEntity);
+                    ModList.Add(modEntity);
                 }
             }
             catch (Exception e)
@@ -426,6 +425,86 @@ public static class ModsManager
                 }
             }
             Modify(DataObjects,element);
+        }
+    }
+    public enum SourceType{
+        positions,
+        normals,
+        map,
+        vertices,
+        TEXCOORD,
+        VERTEX,
+        NORMAL
+    }
+    public static string ObjectsToStr<T>(T[] arr) {
+        if (arr == null) return string.Empty;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i=0;i<arr.Length;i++) {
+            stringBuilder.Append(arr[i]+" ");
+        }
+        string res = stringBuilder.ToString();
+        return res.Substring(0,res.Length-1);
+    }
+    public static XElement CreateSource<T>(string MeshName,SourceType sourceType,T[] arr,string[] param,int stride=3) {
+        XElement technique_common = new XElement("technique_common");
+        XElement source = new XElement("source");
+        XElement vertices = new XElement("vertices");
+        XElement triangles = new XElement("triangles");
+        XElement float_array = new XElement("float_array");
+        XElement accessor = new XElement("accessor");
+        string sourceID = MeshName + "-mesh-"+sourceType.ToString();
+        source.SetAttributeValue("id",sourceID);
+        string floatarray_id = sourceID + "-array";
+        float_array.SetAttributeValue("id", floatarray_id);
+        float_array.SetAttributeValue("count",arr.Length);
+        float_array.SetValue(ObjectsToStr(arr));
+        source.Add(float_array);
+        source.Add(technique_common);
+        technique_common.Add(accessor);
+        accessor.SetAttributeValue("source", "#" + floatarray_id);
+        accessor.SetAttributeValue("count", arr.Length / stride);
+        accessor.SetAttributeValue("stride", stride);
+        for (int i = 0; i < param.Length; i++)
+        {
+            XElement param2 = new XElement("param");
+            param2.SetAttributeValue("name", param[i]);
+            param2.SetAttributeValue("type", "float");
+            accessor.Add(param2);
+        }
+        return source;
+    }
+    public static XElement CreateInput(SourceType sourceType,string source,int offset=-1) {
+        XElement input = new XElement("input");
+        input.SetAttributeValue("semantic",sourceType.ToString().ToUpper());
+        input.SetAttributeValue("source", source);
+        if (offset >= 0) input.SetAttributeValue("offset",offset);
+        return input;
+    }
+
+    public static void ExportDae(TerrainChunkGeometry terrainChunkGeometry) {
+        List<string> vs = new List<string>();
+        List<string> vts = new List<string>();
+        List<string> vns = new List<string>();
+        foreach (TerrainChunkSliceGeometry buffer in terrainChunkGeometry.Slices)
+        {
+            TerrainVertex[] Vertices = buffer.SubsetOpaque.Vertices.Array;
+            ushort[] Indices = buffer.SubsetOpaque.Indices.Array;
+            if (Vertices.Length == 0 || Indices.Length == 0) continue;
+            for (int i = 0; i < Indices.Length; i++)
+            {
+                TerrainVertex vertex = Vertices[Indices[i]];
+                positions.Add(vertex.X);
+                positions.Add(vertex.Y);
+                positions.Add(vertex.Z);
+                txs.Add(vertex.Tx / 32767f);
+                txs.Add(vertex.Ty / 32767f);
+                ps.Add(i);
+                ps.Add(0);
+                ps.Add(i);
+            }
+        }
+        using (Stream stream = Storage.OpenFile(Storage.CombinePaths(ModsPath, "ex.obj"),OpenFileMode.CreateOrOpen)){
+            XmlUtilities.XmlUtils.SaveXmlToStream(COLLADA, stream, Encoding.UTF8,true);
         }
     }
 
