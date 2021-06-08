@@ -991,11 +991,15 @@ namespace Game
                     }
                 }
             }
-            if(even)chunk.terrainDraw.Combile();
+            if (even) chunk.terrainDraw.Combile();
+            if (even) {
+                string s = "";
+                int ac = 0;
+                foreach (TerrainChunkSliceGeometry geometry in chunk.Geometry.Slices) {
+                    s += ModsManager.ExportObjModel(geometry,chunk.Coords,ac);
+                    ac++;
+                }
 
-            if (true)
-            {
-                ModsManager.ExportDae(chunk.Geometry);
             }
         }
 

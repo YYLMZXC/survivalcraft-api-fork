@@ -140,7 +140,7 @@ public static class ModsManager
         Stream fileStream = Storage.OpenFile(path,OpenFileMode.CreateOrOpen);
         stream.CopyTo(fileStream);
         fileStream.Close();
-        return "下载成功,重启游戏生效";
+        return "下载成功";
 
     }
     public static void Initialize()
@@ -445,67 +445,105 @@ public static class ModsManager
         string res = stringBuilder.ToString();
         return res.Substring(0,res.Length-1);
     }
-    public static XElement CreateSource<T>(string MeshName,SourceType sourceType,T[] arr,string[] param,int stride=3) {
-        XElement technique_common = new XElement("technique_common");
-        XElement source = new XElement("source");
-        XElement vertices = new XElement("vertices");
-        XElement triangles = new XElement("triangles");
-        XElement float_array = new XElement("float_array");
-        XElement accessor = new XElement("accessor");
-        string sourceID = MeshName + "-mesh-"+sourceType.ToString();
-        source.SetAttributeValue("id",sourceID);
-        string floatarray_id = sourceID + "-array";
-        float_array.SetAttributeValue("id", floatarray_id);
-        float_array.SetAttributeValue("count",arr.Length);
-        float_array.SetValue(ObjectsToStr(arr));
-        source.Add(float_array);
-        source.Add(technique_common);
-        technique_common.Add(accessor);
-        accessor.SetAttributeValue("source", "#" + floatarray_id);
-        accessor.SetAttributeValue("count", arr.Length / stride);
-        accessor.SetAttributeValue("stride", stride);
-        for (int i = 0; i < param.Length; i++)
-        {
-            XElement param2 = new XElement("param");
-            param2.SetAttributeValue("name", param[i]);
-            param2.SetAttributeValue("type", "float");
-            accessor.Add(param2);
-        }
-        return source;
-    }
-    public static XElement CreateInput(SourceType sourceType,string source,int offset=-1) {
-        XElement input = new XElement("input");
-        input.SetAttributeValue("semantic",sourceType.ToString().ToUpper());
-        input.SetAttributeValue("source", source);
-        if (offset >= 0) input.SetAttributeValue("offset",offset);
-        return input;
+    /// <summary>
+    /// 计算三点成面的法向量
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <param name="v3"></param>
+    /// <returns></returns>
+    public static Vector3 Cal_Normal_3D(Vector3 v1, Vector3 v2, Vector3 v3)
+    {
+        float na = (v2.Y - v1.Y) * (v3.Z - v1.Z) - (v2.Z - v1.Z) * (v3.Y - v1.Y);
+        float nb = (v2.Z - v1.Z) * (v3.X - v1.X) - (v2.X - v1.Z) * (v3.Z - v1.Z);
+        float nc = (v2.X - v1.X) * (v3.Y - v1.Y) - (v2.Y - v1.Y) * (v3.X - v1.X);
+        return new Vector3(na, nb, nc);
     }
 
-    public static void ExportDae(TerrainChunkGeometry terrainChunkGeometry) {
-        List<string> vs = new List<string>();
-        List<string> vts = new List<string>();
-        List<string> vns = new List<string>();
-        foreach (TerrainChunkSliceGeometry buffer in terrainChunkGeometry.Slices)
+    public static string ExportObjModel(TerrainGeometry buffer,Point2 point,int ID=0) {
+
+        List<Vector3> vs = new List<Vector3>();//顶点
+        List<Vector2> vts = new List<Vector2>();//纹理
+        List<string> v_string = new List<string>();//顶点
+        List<string> vt_string = new List<string>();//纹理
+        List<string> vn_string = new List<string>();//法线
+        List<string> fs = new List<string>();//面
+        List<TerrainVertex> terrainVertices = new List<TerrainVertex>();
+        List<ushort> vs1 = new List<ushort>();
+        int yc = 0;
+        terrainVertices.AddRange(buffer.SubsetOpaque.Vertices);
+        for (int i = 0; i < buffer.SubsetOpaque.Indices.Count; i++)
         {
-            TerrainVertex[] Vertices = buffer.SubsetOpaque.Vertices.Array;
-            ushort[] Indices = buffer.SubsetOpaque.Indices.Array;
-            if (Vertices.Length == 0 || Indices.Length == 0) continue;
-            for (int i = 0; i < Indices.Length; i++)
+            vs1.Add((ushort)(yc + buffer.SubsetOpaque.Indices[i]));
+        }
+        yc = terrainVertices.Count;
+        terrainVertices.AddRange(buffer.SubsetAlphaTest.Vertices);
+        for (int i = 0; i < buffer.SubsetAlphaTest.Indices.Count; i++)
+        {
+            vs1.Add((ushort)(yc + buffer.SubsetAlphaTest.Indices[i]));
+        }
+        yc = terrainVertices.Count;
+        terrainVertices.AddRange(buffer.SubsetTransparent.Vertices);
+        for (int i = 0; i < buffer.SubsetTransparent.Indices.Count; i++)
+        {
+            vs1.Add((ushort)(yc + buffer.SubsetTransparent.Indices[i]));
+        }
+        for (int j = 0; j < 6; j++)
+        {
+            yc = terrainVertices.Count;
+            terrainVertices.AddRange(buffer.OpaqueSubsetsByFace[j].Vertices);
+            for (int i = 0; i < buffer.OpaqueSubsetsByFace[j].Indices.Count; i++)
             {
-                TerrainVertex vertex = Vertices[Indices[i]];
-                positions.Add(vertex.X);
-                positions.Add(vertex.Y);
-                positions.Add(vertex.Z);
-                txs.Add(vertex.Tx / 32767f);
-                txs.Add(vertex.Ty / 32767f);
-                ps.Add(i);
-                ps.Add(0);
-                ps.Add(i);
+                vs1.Add((ushort)(yc + buffer.OpaqueSubsetsByFace[j].Indices[i]));
             }
         }
-        using (Stream stream = Storage.OpenFile(Storage.CombinePaths(ModsPath, "ex.obj"),OpenFileMode.CreateOrOpen)){
-            XmlUtilities.XmlUtils.SaveXmlToStream(COLLADA, stream, Encoding.UTF8,true);
+        for (int j = 0; j < 6; j++)
+        {
+            yc = terrainVertices.Count;
+            terrainVertices.AddRange(buffer.AlphaTestSubsetsByFace[j].Vertices);
+            for (int i = 0; i < buffer.AlphaTestSubsetsByFace[j].Indices.Count; i++)
+            {
+                vs1.Add((ushort)(yc + buffer.AlphaTestSubsetsByFace[j].Indices[i]));
+            }
         }
+        for (int j = 0; j < 6; j++)
+        {
+            yc = terrainVertices.Count;
+            terrainVertices.AddRange(buffer.TransparentSubsetsByFace[j].Vertices);
+            for (int i = 0; i < buffer.TransparentSubsetsByFace[j].Indices.Count; i++)
+            {
+                vs1.Add((ushort)(yc + buffer.TransparentSubsetsByFace[j].Indices[i]));
+            }
+        }
+        TerrainVertex[] Vertices = terrainVertices.ToArray();
+        ushort[] Indices = vs1.ToArray();
+        if (Vertices.Length == 0 || Indices.Length == 0) return string.Empty;
+        for (int i = 0; i < Vertices.Length; i++)
+        {
+            TerrainVertex vertex = Vertices[i];
+            Vector3 vector3 = new Vector3(vertex.X, vertex.Y, vertex.Z);
+            Vector2 vector2 = new Vector2(vertex.Tx / 32767f, vertex.Ty / 32767f);
+            vs.Add(vector3);//添加坐标
+            vts.Add(vector2);//添加纹理坐标
+            v_string.Add($"v {vertex.X} {vertex.Y} {vertex.Z}\n");
+            vt_string.Add($"vt {vector2.X.ToString("F3")} {vector2.Y.ToString("F3")}\n");
+        }
+        vn_string.Add($"vn 0 0 -1\n");
+        for (int i = 0; i < Indices.Length; i += 3)
+        {
+            int index = Indices[i] + 1;
+            int index2 = Indices[i + 1] + 1;
+            int index3 = Indices[i + 2] + 1;
+            fs.Add($"f {index}/{index}/{vn_string.Count} {index2}/{index2}/{vn_string.Count} {index3}/{index3}/{vn_string.Count}\n");
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append($"o TerrainModelExport{point.X}{point.Y}{ID}\n");
+        foreach (string asas in v_string) { stringBuilder.Append(asas); }
+        foreach (string asas in vt_string) { stringBuilder.Append(asas); }
+        foreach (string asas in vn_string) { stringBuilder.Append(asas); }
+        stringBuilder.Append("usemtl None\ns off\n");
+        foreach (string asas in fs) { stringBuilder.Append(asas); }
+        return stringBuilder.ToString();
     }
 
 

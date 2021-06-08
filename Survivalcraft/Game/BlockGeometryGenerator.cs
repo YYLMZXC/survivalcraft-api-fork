@@ -169,7 +169,7 @@ namespace Game
                 vertex.Y = y;
                 vertex.Z = z;
                 vertex.Tx = (short)(tx * 32767f);
-                vertex.Ty = (short)(ty * 32767f);
+                vertex.Ty = (short)(ty * 32767f);                
                 vertex.Color = color;
             }
         }
