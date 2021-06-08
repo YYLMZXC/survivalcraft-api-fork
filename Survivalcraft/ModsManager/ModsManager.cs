@@ -360,7 +360,7 @@ public static class ModsManager
     }
     public static void CombineCr(XElement xElement, Stream cloorcr)
     {
-        XElement MergeXml = XmlUtilities.XmlUtils.LoadXmlFromStream(cloorcr, Encoding.UTF8, true);
+        XElement MergeXml = XmlUtils.LoadXmlFromStream(cloorcr, Encoding.UTF8, true);
         CombineCrLogic(xElement,MergeXml);
     }
     public static void CombineCrLogic(XElement xElement, XElement needCombine) {
@@ -459,7 +459,21 @@ public static class ModsManager
         float nc = (v2.X - v1.X) * (v3.Y - v1.Y) - (v2.Y - v1.Y) * (v3.X - v1.X);
         return new Vector3(na, nb, nc);
     }
-
+    public static void SaveModel(TerrainChunk chunk) {
+        string s = "";
+        int ac = 0;
+        string filename =$"chunk{chunk.Coords.X}-{chunk.Coords.Y}.obj";
+        foreach (TerrainChunkSliceGeometry geometry in chunk.Geometry.Slices)
+        {
+            s += ExportObjModel(geometry, chunk.Coords, ac);
+            ac++;
+        }
+        if (!Storage.FileExists("app:/Export/" + filename))
+        {
+            if (!Storage.DirectoryExists("app:/Export")) Storage.CreateDirectory("app:/Export");
+            File.WriteAllText(Storage.GetSystemPath("app:/Export/" + filename), s);
+        }
+    }
     public static string ExportObjModel(TerrainGeometry buffer,Point2 point,int ID=0) {
 
         List<Vector3> vs = new List<Vector3>();//顶点
@@ -526,9 +540,9 @@ public static class ModsManager
             vs.Add(vector3);//添加坐标
             vts.Add(vector2);//添加纹理坐标
             v_string.Add($"v {vertex.X} {vertex.Y} {vertex.Z}\n");
-            vt_string.Add($"vt {vector2.X.ToString("F3")} {vector2.Y.ToString("F3")}\n");
+            vt_string.Add($"vt {vector2.X.ToString("F6")} {vector2.Y.ToString("F6")}\n");
         }
-        vn_string.Add($"vn 0 0 -1\n");
+        vn_string.Add($"vn 0 -1 0\n");
         for (int i = 0; i < Indices.Length; i += 3)
         {
             int index = Indices[i] + 1;
