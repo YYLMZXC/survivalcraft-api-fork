@@ -84,6 +84,9 @@ namespace Game
             m_playerInput.CameraMove = m_playerInput.Move;
             m_playerInput.CameraSneakMove = m_playerInput.SneakMove;
             m_playerInput.CameraLook = m_playerInput.Look;
+            if (m_componentPlayer.GameWidget.Input.IsKeyDownOnce(Key.Delete)) {
+                ModelExport.Export();
+            }
             if (!Window.IsActive || !m_componentPlayer.PlayerData.IsReadyForPlaying)
             {
                 m_playerInput = default(PlayerInput);

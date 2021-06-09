@@ -409,6 +409,7 @@
     <Compile Include="Managers\WebManager.cs" />
     <Compile Include="Managers\WorldsManager.cs" />
     <Compile Include="ModsManager\FastDebugModEntity.cs" />
+    <Compile Include="ModsManager\ModelExport.cs" />
     <Compile Include="ModsManager\ModLoader.cs" />
     <Compile Include="ModsManager\SurvivalCraftModEntity.cs" />
     <Compile Include="ModsManager\SurvivalCraftModLoader.cs" />
@@ -1091,7 +1092,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

@@ -993,8 +993,7 @@ namespace Game
             }
             if (even) chunk.terrainDraw.Combile();
             if (even) {
-
-                ModsManager.SaveModel(chunk);
+                ModelExport.Add(chunk);
             }
         }
 
