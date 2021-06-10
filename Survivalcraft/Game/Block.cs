@@ -449,7 +449,7 @@ namespace Game
         public virtual float GetBlockHealth(int value) {
             int dur = GetDurability(value);
             int dag = GetDamage(value);
-            if (Durability >= 0) {
+            if (Durability > 0) {
                 return (float)(dur - dag) / (float)dur;
             }
             return -1f;

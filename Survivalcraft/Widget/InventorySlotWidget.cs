@@ -441,6 +441,11 @@ namespace Game
                             m_healthBarWidget.IsVisible = false;
                         }
                     }
+                    else
+                    {
+                        m_healthBarWidget.IsVisible = false;
+                    }
+
                 }
                 else
                 {

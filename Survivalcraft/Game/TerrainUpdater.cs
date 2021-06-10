@@ -992,9 +992,6 @@ namespace Game
                 }
             }
             if (even) chunk.terrainDraw.Combile();
-            if (even) {
-                ModelExport.Add(chunk);
-            }
         }
 
         public static int CalculateLightPropagationBitIndex(int x, int z)

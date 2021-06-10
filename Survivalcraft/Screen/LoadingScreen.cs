@@ -87,21 +87,18 @@ namespace Game
                 foreach (ContentInfo item in ContentManager.List())
                 {
                     ContentInfo localContentInfo = item;
-                    if (random.Bool(0.2f))
+                    AddQuequeAction(delegate
                     {
-                        AddQuequeAction(delegate
+                        try
                         {
-                            try
-                            {
-                                SetMsg($"¼ì²éPak:{localContentInfo.Name}");
-                                ContentManager.Get(localContentInfo.Name);
-                            }
-                            catch (Exception e)
-                            {
-                                ModsManager.AddException(e);
-                            }
-                        });
-                    }
+                            SetMsg($"¼ì²éPak:{localContentInfo.Name}");
+                            ContentManager.Get(localContentInfo.Name);
+                        }
+                        catch (Exception e)
+                        {
+                            ModsManager.AddException(e);
+                        }
+                    });
                 }
             });
             AddLoadAction(() => {
