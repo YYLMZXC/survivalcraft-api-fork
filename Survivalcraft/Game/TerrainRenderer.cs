@@ -314,6 +314,7 @@ namespace Game
                         }
                         if (terrainGeometrySubset2.Indices.Count > 0)
                         {
+                            buffer.IndexBuffer.Tag = m_tmpIndices.ToList().ToArray();
                             m_tmpIndices.Count = terrainGeometrySubset2.Indices.Count;
                             ShiftIndices(terrainGeometrySubset2.Indices.Array, m_tmpIndices.Array, num6, terrainGeometrySubset2.Indices.Count);
                             buffer.IndexBuffer.SetData(m_tmpIndices.Array, 0, m_tmpIndices.Count, num7);
@@ -321,6 +322,7 @@ namespace Game
                         }
                         if (terrainGeometrySubset2.Vertices.Count > 0)
                         {
+                            buffer.VertexBuffer.Tag = terrainGeometrySubset2.Vertices.ToList().ToArray();
                             buffer.VertexBuffer.SetData(terrainGeometrySubset2.Vertices.Array, 0, terrainGeometrySubset2.Vertices.Count, num6);
                             num6 += terrainGeometrySubset2.Vertices.Count;
                         }
