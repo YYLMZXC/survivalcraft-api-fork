@@ -22,7 +22,10 @@ namespace Game {
         public bool IsChecked;
         public Action ModInit;
         public bool IsLoaded = true;
-        public bool IsDisabled = false;
+        public bool IsDisabled { 
+            get;
+            set;
+        }
         public ModLoader ModLoader_;
         public ModEntity() { }
         public ModEntity(ZipArchive zipArchive)
@@ -275,6 +278,13 @@ namespace Game {
         {
             if (ModLoader_ != null) ModLoader_.OnScreensManagerInitalized(loading);
 
+        }
+        /// <summary>
+        /// 衣服初始化完毕时执行
+        /// </summary>
+        /// <param name="clothings"></param>
+        public virtual void OnClothingInitialize(ClothingData[] clothings) {
+            ModLoader_?.OnClothingInitialize(clothings);        
         }
     }
 

@@ -75,6 +75,7 @@ namespace Game
             dictionary.Add("SortOrder", sortOrder ?? string.Empty);
             dictionary.Add("Platform", VersionsManager.Platform.ToString());
             dictionary.Add("Version", VersionsManager.Version);
+            dictionary.Add("Apiv", ModsManager.Apiv.ToString());
             WebManager.Post(m_scResDirAddress, null, Header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
             {
                 try

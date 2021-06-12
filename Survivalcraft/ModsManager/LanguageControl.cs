@@ -7,9 +7,8 @@ namespace Game
 {
     public static class LanguageControl
     {
-        public static Dictionary<string, Dictionary<string, string>> items=new Dictionary<string, Dictionary<string, string>>();
-        public static Dictionary<string, Dictionary<string, Dictionary<string, string>>> items2=new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
-
+        public static Dictionary<string, Dictionary<string, string>> items = new Dictionary<string, Dictionary<string, string>>();
+        public static Dictionary<string, Dictionary<string, Dictionary<string, string>>> items2 = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
         public enum LanguageType
         {
             zh_CN,

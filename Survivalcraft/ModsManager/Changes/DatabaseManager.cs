@@ -34,6 +34,7 @@ namespace Game
         public static void Initialize()
         {
             xElement = null;
+            m_valueDictionaries.Clear();
         }
         public static void LoadDataBaseFromXml(XElement node) {
             m_gameDatabase = new GameDatabase(XmlDatabaseSerializer.LoadDatabase(node));

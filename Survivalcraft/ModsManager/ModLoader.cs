@@ -29,6 +29,11 @@ namespace Game
             return false;
         }
         /// <summary>
+        /// 衣服初始化完毕时执行
+        /// </summary>
+        /// <param name="clothings"></param>
+        public virtual void OnClothingInitialize(ClothingData[] clothings) { }
+        /// <summary>
         /// 当人物使用手持物品时执行
         /// </summary>
         /// <param name="miner"></param>

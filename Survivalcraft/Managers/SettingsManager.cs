@@ -345,13 +345,8 @@ namespace Game
 
         public static bool UseReducedZRange
         {
-            get
-            {
-                return false;
-            }
-            set
-            {
-            }
+            get;
+            set;
         }
 
         public static int IsolatedStorageMigrationCounter
@@ -592,14 +587,11 @@ namespace Game
                         }));
                     }
                 }
-
-
                 XElement la = new XElement("ModSet");
                 la.SetAttributeValue("Name", "Language");
                 la.SetAttributeValue("Value", (int)ModsManager.modSettings.languageType);
-                List<ModEntity> modEntities = ModsManager.ModList.FindAll(p => p.IsLoaded && !p.IsDisabled);
                 XElement xElement1 = new XElement("DisableMods");
-                foreach (ModEntity modEntity in modEntities)
+                foreach (ModEntity modEntity in ModsManager.ModList)
                 {
                     if (modEntity.IsDisabled) {
                         XElement element = new XElement("Mod");

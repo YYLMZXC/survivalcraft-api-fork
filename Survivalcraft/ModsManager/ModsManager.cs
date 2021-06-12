@@ -10,7 +10,6 @@ using System.Text;
 using System.Xml.Linq;
 using XmlUtilities;
 using SimpleJson;
-using SimpleJson.Reflection;
 using Engine.Graphics;
 using Engine.Media;
 
@@ -19,7 +18,8 @@ public static class ModsManager
     public static Dictionary<string, ZipArchive> Archives;
     public const string APIVersion = "1.34";
     public const string SCVersion = "2.2.10.4";
-
+    //1为api1.33 2为api1.34
+    public const int Apiv = 2;
 #if desktop
     public static string ModsPath = "app:/Mods";
     public static string userDataPath = "app:/UserId.dat";
@@ -66,7 +66,6 @@ public static class ModsManager
         Type outtype = outobj.GetType();
         foreach (var c in obj)
         {
-            FieldInfo[] fieldInfos = outtype.GetFields();
             FieldInfo field = outtype.GetField(c.Key, BindingFlags.Public | BindingFlags.Instance);
             if (field == null) continue;
             if (c.Value is JsonArray)
@@ -147,9 +146,9 @@ public static class ModsManager
     {
         if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
         ModList.Clear();
+        ModLoaders.Clear();
         ModList.Add(new SurvivalCrafModEntity());
         ModList.Add(new FastDebugModEntity());
-        ModLoaders.Clear();
         GetScmods(ModsPath);
         foreach (ModEntity modEntity1 in ModList) {
             ModInfo modInfo = modEntity1.modInfo;

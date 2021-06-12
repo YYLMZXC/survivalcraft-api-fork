@@ -21,7 +21,7 @@ public class ManageContentScreen : Screen
         public DateTime CreationTime;
 
         public int UseCount;
-
+        public bool IsClick;
         public Texture2D Texture;
 
         public ModEntity ModEntity;
@@ -41,6 +41,8 @@ public class ManageContentScreen : Screen
     public BlocksTexturesCache m_blocksTexturesCache = new BlocksTexturesCache();
 
     public CharacterSkinsCache m_characterSkinsCache = new CharacterSkinsCache();
+
+    public bool changeed = false;
 
     public ExternalContentType m_filter;
 
@@ -106,7 +108,7 @@ public class ManageContentScreen : Screen
                     }
                 case ExternalContentType.CharacterSkin: {
                         XElement node4 = ContentManager.Get<XElement>("Widgets/CharacterSkinItem");
-                        containerWidget = (ContainerWidget)Widget.LoadWidget(this, node4, null);
+                        containerWidget = (ContainerWidget)LoadWidget(this, node4, null);
                         PlayerModelWidget playerModelWidget = containerWidget.Children.Find<PlayerModelWidget>("CharacterSkinItem.Model");
                         LabelWidget labelWidget5 = containerWidget.Children.Find<LabelWidget>("CharacterSkinItem.Text");
                         LabelWidget labelWidget6 = containerWidget.Children.Find<LabelWidget>("CharacterSkinItem.Details");
@@ -151,6 +153,21 @@ public class ManageContentScreen : Screen
             }
             return containerWidget;
         };
+        m_contentList.ItemClicked += (obj) =>{
+            ListItem listItem = (ListItem)obj;
+            if (listItem.Type == ExternalContentType.Mod && listItem.IsClick)
+            {
+                MessageDialog messageDialog = new MessageDialog(listItem.ModEntity.modInfo.Name, listItem.ModEntity.modInfo.Description, "确定", "取消", (btn) =>{
+                    DialogsManager.HideAllDialogs();
+                    listItem.IsClick = false;
+
+                });
+                DialogsManager.ShowDialog(this,messageDialog);
+            }
+            else {
+                listItem.IsClick = true;
+            }
+        };
     }
 
     public override void Enter(object[] parameters)
@@ -167,37 +184,38 @@ public class ManageContentScreen : Screen
     public override void Update()
     {
         ListItem selectedItem = (ListItem)m_contentList.SelectedItem;
-        m_deleteButton.IsEnabled = (selectedItem != null && !selectedItem.IsBuiltIn);
-        m_uploadButton.IsEnabled = (selectedItem != null && !selectedItem.IsBuiltIn);
-        if (selectedItem.Type == ExternalContentType.Mod)
-        {
-            m_deleteButton.Text = selectedItem.ModEntity.IsDisabled ? "启用" : "禁用";
-        }
-        else
-        {
-            m_deleteButton.Text = "删除";
+        if (selectedItem != null) {
+            m_deleteButton.IsEnabled = !selectedItem.IsBuiltIn;
+            m_uploadButton.IsEnabled = !selectedItem.IsBuiltIn;
+            if (selectedItem.Type == ExternalContentType.Mod)
+            {
+                m_deleteButton.Text = selectedItem.ModEntity.IsDisabled ? "启用" : "禁用";
+                m_deleteButton.IsEnabled = !(selectedItem.ModEntity is SurvivalCrafModEntity || selectedItem.ModEntity is FastDebugModEntity);
+            }
+            else
+            {
+                m_deleteButton.Text = "删除";
+            }
+
         }
         m_filterLabel.Text = GetFilterDisplayName(m_filter);
         if (m_deleteButton.IsClicked)
         {
             string smallMessage = (selectedItem.UseCount <= 0) ? string.Format(LanguageControl.Get(fName, 5), selectedItem.DisplayName) : string.Format(LanguageControl.Get(fName, 6), selectedItem.DisplayName, selectedItem.UseCount);
+            if (selectedItem.Type == ExternalContentType.Mod) {
+                smallMessage = (selectedItem.ModEntity.IsDisabled ? "启用" : "禁用") + $"[{selectedItem.ModEntity.modInfo.Name}]?";
+            }
             DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 9), smallMessage, LanguageControl.Get("Usual", "yes"), LanguageControl.Get("Usual", "no"), delegate (MessageDialogButton button)
             {
                 if (button == MessageDialogButton.Button1)
                 {
                     if (selectedItem.Type == ExternalContentType.Mod)
                     {
-                        if (selectedItem.ModEntity.GetType() == typeof(SurvivalCrafModEntity).GetType())
-                        {
-                            DialogsManager.ShowDialog(this,new MessageDialog("提示","不可操作","确定","取消",(btn)=> { DialogsManager.HideAllDialogs(); }));
-                        }
-                        else {
-                            selectedItem.ModEntity.IsDisabled = !selectedItem.ModEntity.IsDisabled;
-                            selectedItem.ModEntity.IsLoaded = !selectedItem.ModEntity.IsDisabled;
-                        }
+                        changeed = true;
+                        selectedItem.ModEntity.IsDisabled = !selectedItem.ModEntity.IsDisabled;
+                        selectedItem.ModEntity.IsLoaded = !selectedItem.ModEntity.IsDisabled;
                     }
                     else {
-
                         ExternalContentManager.DeleteExternalContent(selectedItem.Type, selectedItem.Name);
                     }
                     UpdateList();
@@ -226,7 +244,20 @@ public class ManageContentScreen : Screen
         }
         if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
         {
-            ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
+            if (changeed) {
+                DialogsManager.ShowDialog(this,new MessageDialog("提示", "配置已更改，是否重新加载?", "是", "否", (btn)=>{
+                    DialogsManager.HideAllDialogs();
+                    if (btn == MessageDialogButton.Button1)
+                    {
+                        SettingsManager.SaveSettings();
+                        SettingsManager.LoadSettings();
+                        ScreensManager.SwitchScreen("Loading");
+                    }
+                    else {
+                        ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
+                    }
+                }));
+            }else ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
         }
     }
 
@@ -285,13 +316,15 @@ public class ManageContentScreen : Screen
         {
             foreach (ModEntity modEntity in ModsManager.ModList)
             {
+                string dis = string.Empty;
+                if (modEntity.IsDisabled) dis = "[已禁用]";
                 string author = string.IsNullOrEmpty(modEntity.modInfo.Author) ? "无" : modEntity.modInfo.Author;
                 list.Add(new ListItem
                 {
                     Name = $"[模组]{modEntity.modInfo.Description}<{author}>",
                     IsBuiltIn = false,
                     Type = ExternalContentType.Mod,
-                    DisplayName = $"{modEntity.modInfo.Name} 版本:{modEntity.modInfo.Version}",
+                    DisplayName = $"{dis}{modEntity.modInfo.Name} 版本:{modEntity.modInfo.Version}",
                     CreationTime = DateTime.Now,
                     Texture=modEntity.Icon,
                     ModEntity=modEntity

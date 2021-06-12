@@ -23,6 +23,10 @@ namespace Game
 
         public static void Initialize()
         {
+            for (int i=0;i<m_blocks.Length;i++) {
+                m_blocks[i] = null;
+            }
+            m_categories.Clear();
             CalculateSlotTexCoordTables();
             int num = 0;
             foreach (ModEntity entity in ModsManager.ModList) {

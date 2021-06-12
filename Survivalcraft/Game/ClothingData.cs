@@ -1,4 +1,5 @@
 using Engine.Graphics;
+using System;
 
 namespace Game
 {
@@ -37,5 +38,32 @@ namespace Game
         public int Layer;
 
         public int PlayerLevelRequired;
+
+        /// <summary>
+        /// 装备
+        /// </summary>
+        public event Action Mount;
+        /// <summary>
+        /// 卸载
+        /// </summary>
+        public event Action Dismount;
+        /// <summary>
+        /// 更新
+        /// </summary>
+        public event Action Update;
+
+        public void OnMount()
+        {
+            Mount?.Invoke();
+        }
+        public void OnDismount()
+        {
+            Dismount?.Invoke();
+        }
+
+        public void OnUpdate() {
+            Update?.Invoke();
+        }
+
     }
 }

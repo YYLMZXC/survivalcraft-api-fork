@@ -1289,6 +1289,9 @@
     <Compile Include="..\Survivalcraft\Game\AimState.cs">
       <Link>Game\AimState.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\AlphaTestedShader.cs">
+      <Link>Game\AlphaTestedShader.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\AnalogToDigitalConverterElectricElement.cs">
       <Link>Game\AnalogToDigitalConverterElectricElement.cs</Link>
     </Compile>
@@ -1571,6 +1574,9 @@
     <Compile Include="..\Survivalcraft\Game\HelpTopic.cs">
       <Link>Game\HelpTopic.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\HighlightShader.cs">
+      <Link>Game\HighlightShader.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\HitValueParticleSystem.cs">
       <Link>Game\HitValueParticleSystem.cs</Link>
     </Compile>
@@ -1678,6 +1684,9 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\OnFireParticleSystem.cs">
       <Link>Game\OnFireParticleSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Game\OpaqueShader.cs">
+      <Link>Game\OpaqueShader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\OrbitCamera.cs">
       <Link>Game\OrbitCamera.cs</Link>
@@ -1951,6 +1960,9 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\TppCamera.cs">
       <Link>Game\TppCamera.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Game\TransparentShader.cs">
+      <Link>Game\TransparentShader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\TrapDoorElectricElement.cs">
       <Link>Game\TrapDoorElectricElement.cs</Link>

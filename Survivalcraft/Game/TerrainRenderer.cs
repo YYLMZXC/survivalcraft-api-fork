@@ -72,9 +72,9 @@ namespace Game
             m_subsystemTerrain = subsystemTerrain;
             m_subsystemSky = subsystemTerrain.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_subsystemAnimatedTextures = subsystemTerrain.SubsystemAnimatedTextures;
-            m_opaqueShader = ContentManager.Get<Shader>("Shaders/Opaque");
-            m_alphaTestedShader = ContentManager.Get<Shader>("Shaders/AlphaTested");
-            m_transparentShader = ContentManager.Get<Shader>("Shaders/Transparent");
+            m_opaqueShader = new OpaqueShader();
+            m_alphaTestedShader = new AlphaTestedShader();
+            m_transparentShader = new TransparentShader();
             Display.DeviceReset += Display_DeviceReset;
         }
 

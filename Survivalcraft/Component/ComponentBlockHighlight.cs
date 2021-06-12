@@ -124,7 +124,7 @@ namespace Game
             m_subsystemAnimatedTextures = base.Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
             m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
-            m_shader = ContentManager.Get<Shader>("Shaders/Highlight");
+            m_shader = new HighlightShader();
         }
 
         public void DrawRayHighlight(Camera camera)

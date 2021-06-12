@@ -207,11 +207,11 @@ namespace Game
 
         public virtual float ApplyArmorProtection(float attackPower)
         {
-            float result = attackPower;
+            List<float> results = new List<float>();
             foreach (ModLoader modEntity in ModsManager.ModLoaders) {
-                result = Math.Min(result, modEntity.ApplyArmorProtection(this, attackPower));
+                results.Add(modEntity.ApplyArmorProtection(this, attackPower));
             }
-            return result;
+            return results.Min();
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
@@ -277,6 +277,25 @@ namespace Game
 
         public void Update(float dt)
         {
+            foreach (ClothingSlot slot in m_innerSlotsOrder)
+            {
+                foreach (int clothe in GetClothes(slot))
+                {
+                    int data = Terrain.ExtractData(clothe);
+                    ClothingData clothingData = ClothingBlock.GetClothingData(data);
+                    clothingData.OnUpdate();
+                }
+            }
+            foreach (ClothingSlot slot in m_outerSlotsOrder)
+            {
+                foreach (int clothe in GetClothes(slot))
+                {
+                    int data = Terrain.ExtractData(clothe);
+                    ClothingData clothingData = ClothingBlock.GetClothingData(data);
+                    clothingData.OnUpdate();
+                }
+            }
+
             if (m_subsystemGameInfo.WorldSettings.GameMode != 0 && m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled && m_subsystemTime.PeriodicGameTimeEvent(0.5, 0.0))
             {
                 foreach (int enumValue in EnumUtils.GetEnumValues(typeof(ClothingSlot)))
@@ -421,6 +440,7 @@ namespace Game
             if (block is ClothingBlock)
             {
                 ClothingData clothingData = ClothingBlock.GetClothingData(Terrain.ExtractData(value));
+                clothingData.OnMount();
                 List<int> list = new List<int>(GetClothes(clothingData.Slot));
                 list.Add(value);
                 SetClothes(clothingData.Slot, list);
@@ -434,6 +454,10 @@ namespace Game
                 List<int> list = new List<int>(GetClothes((ClothingSlot)slotIndex));
                 if (list.Count > 0)
                 {
+                    int value = list[list.Count - 1];
+                    int data = Terrain.ExtractData(value);
+                    ClothingData clothingData = ClothingBlock.GetClothingData(data);
+                    clothingData.OnDismount();
                     list.RemoveAt(list.Count - 1);
                     SetClothes((ClothingSlot)slotIndex, list);
                     return 1;

@@ -35,16 +35,12 @@ namespace Game
             public BlockMesh BlockMesh;
         }
         public new static string fName = "EggBlock";
-
         public const int Index = 118;
-
-        public List<EggType> m_eggTypes = new List<EggType>();
-
+        public DynamicArray<EggType> m_eggTypes = new DynamicArray<EggType>();
         public ReadOnlyList<EggType> EggTypes => new ReadOnlyList<EggType>(m_eggTypes);
-
         public override void Initialize()
         {
-            List<EggType> eggTypes = new List<EggType>();
+            m_eggTypes.Clear();
             DatabaseObjectType parameterSetType = DatabaseManager.GameDatabase.ParameterSetType;
             Guid eggParameterSetGuid = new Guid("300ff557-775f-4c7c-a88a-26655369f00b");
             foreach (DatabaseObject item in from o in DatabaseManager.GameDatabase.Database.Root.GetExplicitNestingChildren(parameterSetType, directChildrenOnly: false)
@@ -61,7 +57,9 @@ namespace Game
                         string[] lp = value.Substring(1, value.Length - 2).Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
                         value = LanguageControl.GetDatabase("DisplayName", lp[1]);
                     }
-                    eggTypes.Add(new EggType
+                    if (nestedValue >= m_eggTypes.Count) m_eggTypes.Count = nestedValue + 1;
+
+                    m_eggTypes[nestedValue]=new EggType()
                     {
                         EggTypeIndex = nestedValue,
                         ShowEgg = item.GetNestedValue<bool>("ShowEgg"),
@@ -73,10 +71,9 @@ namespace Game
                         SwapUV = item.GetNestedValue<bool>("SwapUV"),
                         Scale = item.GetNestedValue<float>("Scale"),
                         TextureSlot = item.GetNestedValue<int>("TextureSlot")
-                    });
+                    };
                 }
             }
-            m_eggTypes.AddRange(eggTypes.OrderBy(p => p.EggTypeIndex).ToArray());
             Model model = ContentManager.Get<Model>("Models/Egg");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Egg").ParentBone);
             foreach (EggType eggType in m_eggTypes)
@@ -97,7 +94,6 @@ namespace Game
             }
             base.Initialize();
         }
-
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
         {
             EggType eggType = GetEggType(Terrain.ExtractData(value));
@@ -171,6 +167,7 @@ namespace Game
         {
             foreach (EggType eggType in m_eggTypes)
             {
+                if (eggType == null) continue;
                 if (eggType.ShowEgg)
                 {
                     yield return Terrain.MakeBlockValue(118, 0, SetEggType(0, eggType.EggTypeIndex));

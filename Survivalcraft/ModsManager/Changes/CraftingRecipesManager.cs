@@ -13,9 +13,9 @@ namespace Game
         public static List<CraftingRecipe> m_recipes = new List<CraftingRecipe>();
         public static ReadOnlyList<CraftingRecipe> Recipes => new ReadOnlyList<CraftingRecipe>(m_recipes);
         public static string fName = "CraftingRecipesManager";
-        public static bool Loaded = false;
         public static void Initialize()
         {
+            m_recipes.Clear();
             XElement source = null;
             foreach (ModEntity modEntity in ModsManager.ModList)
             {

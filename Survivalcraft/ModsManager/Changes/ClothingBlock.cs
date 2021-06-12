@@ -12,11 +12,12 @@ namespace Game
     {
         public const int Index = 203;
 
-        public static ClothingData[] m_clothingData;
-        List<ClothingData> clothingDatas = new List<ClothingData>();
+        public static DynamicArray<ClothingData> m_clothingData = new DynamicArray<ClothingData>();
+
         public BlockMesh m_innerMesh;
-        int num = 0;
+
         public BlockMesh m_outerMesh;
+
         public static Matrix[] m_slotTransforms = new Matrix[4]
         {
             Matrix.CreateTranslation(0f, -1.5f, 0f) * Matrix.CreateScale(2.7f),
@@ -24,6 +25,7 @@ namespace Game
             Matrix.CreateTranslation(0f, -0.5f, 0f) * Matrix.CreateScale(2.7f),
             Matrix.CreateTranslation(0f, -0.1f, 0f) * Matrix.CreateScale(2.7f)
         };
+
         public void LoadClothingData(XElement item) {
             if (item.Name.LocalName == "ClothingData") {
                 int ClothIndex = XmlUtils.GetAttributeValue<int>(item, "Index");
@@ -41,7 +43,7 @@ namespace Game
                 ClothingData clothingData = new ClothingData
                 {
                     Index = ClothIndex,
-                    DisplayIndex = num,
+                    DisplayIndex = DisplayOrder,
                     DisplayName = newDisplayName,
                     Slot = XmlUtils.GetAttributeValue<ClothingSlot>(item, "Slot"),
                     ArmorProtection = XmlUtils.GetAttributeValue<float>(item, "ArmorProtection"),
@@ -58,31 +60,21 @@ namespace Game
                     ImpactSoundsFolder = XmlUtils.GetAttributeValue<string>(item, "ImpactSoundsFolder"),
                     Description = newDescription
                 };
-                num++;
-                clothingDatas.Add(clothingData);
+                if (ClothIndex >= m_clothingData.Count) m_clothingData.Count = ClothIndex + 1;
+                m_clothingData[ClothIndex]=clothingData;
             }
             foreach (XElement xElement1 in item.Elements()) {
-                LoadClothingData(xElement1);
-            
+                LoadClothingData(xElement1);            
             }
         }
+
         public override void Initialize()
         {
-            num = 0;
-            clothingDatas.Clear();
             XElement xElement = null;
             foreach (ModEntity modEntity in ModsManager.ModList) {
                 if(modEntity.IsLoaded&&!modEntity.IsDisabled)modEntity.LoadClo(this,ref xElement);
             }
             LoadClothingData(xElement);
-            m_clothingData = new ClothingData[clothingDatas.Count];
-            num = 0;
-            foreach (ClothingData data in clothingDatas.OrderBy(p => p.Index))
-            {
-                data.Index = num;
-                m_clothingData[num] = data;
-                num++;
-            }
             Model playerModel = CharacterSkinsManager.GetPlayerModel(PlayerClass.Male);
             Matrix[] array = new Matrix[playerModel.Bones.Count];
             playerModel.CopyAbsoluteBoneTransformsTo(array);
@@ -122,6 +114,10 @@ namespace Game
                 }
             }
             base.Initialize();
+
+            foreach (ModEntity modEntity in ModsManager.ModList) {
+                if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.OnClothingInitialize(m_clothingData.ToArray());
+            }
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
@@ -172,6 +168,7 @@ namespace Game
             IEnumerable<ClothingData> enumerable = m_clothingData.OrderBy((ClothingData cd) => cd.DisplayIndex);
             foreach (ClothingData clothingData in enumerable)
             {
+                if (clothingData == null) continue;
                 int colorsCount = (!clothingData.CanBeDyed) ? 1 : 16;
                 int color = 0;
                 while (color < colorsCount)
@@ -287,7 +284,6 @@ namespace Game
         public static ClothingData GetClothingData(int data)
         {
             int num = GetClothingIndex(data);
-            if (num >= m_clothingData.Length) num = 0;
             return m_clothingData[num];
         }
 
