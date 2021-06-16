@@ -16,6 +16,7 @@ namespace Game
         public ComponentPlayer m_componentPlayer;
 
         public bool m_playIntro;
+
         public static string fName = "ComponentIntro";
 
         public StateMachine m_stateMachine = new StateMachine();
@@ -56,7 +57,7 @@ namespace Game
             m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
             m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
             m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
-            m_playIntro = valuesDictionary.GetValue<bool>("PlayIntro");
+            m_playIntro = valuesDictionary.GetValue<bool>("PlayIntro") && SettingsManager.AllowInitialIntro;
             m_stateMachine.AddState("ShipView", ShipView_Enter, ShipView_Update, null);
         }
 

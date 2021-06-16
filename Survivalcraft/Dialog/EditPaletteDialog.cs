@@ -83,7 +83,7 @@ namespace Game
                 {
                     Size = new Vector2(160f, 60f),
                     VerticalAlignment = WidgetAlignment.Center,
-                    Text = "Reset"
+                    Text = LanguageControl.Get(GetType().Name,1)
                 });
                 obj.Children.Add(new CanvasWidget
                 {
@@ -110,7 +110,7 @@ namespace Game
                 int i = k;
                 if (m_labels[k].IsClicked)
                 {
-                    DialogsManager.ShowDialog(this, new TextBoxDialog("Edit Color Name", m_labels[k].Text, 16, delegate (string s)
+                    DialogsManager.ShowDialog(this, new TextBoxDialog(LanguageControl.Get(GetType().Name, 2), m_labels[k].Text, 16, delegate (string s)
                     {
                         if (s != null)
                         {
@@ -120,7 +120,7 @@ namespace Game
                             }
                             else
                             {
-                                DialogsManager.ShowDialog(this, new MessageDialog("Invalid name", null, "OK", null, null));
+                                DialogsManager.ShowDialog(this, new MessageDialog(LanguageControl.Get(GetType().Name, 3), null, LanguageControl.Get("Usual","ok"), null, null));
                             }
                         }
                     }));

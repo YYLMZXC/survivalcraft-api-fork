@@ -333,5 +333,10 @@ namespace Game
         public virtual int GetMaxInstancesCount() {
             return 7;
         }
+
+
+        public virtual void OnLevelUpdate(ComponentLevel level) { 
+        
+        }
     }
 }

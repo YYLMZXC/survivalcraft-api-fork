@@ -611,5 +611,12 @@ namespace Game
             componentGui.ShortInventoryWidget.AssignComponents(null);
             componentGui.m_message = null;
         }
+        public override void OnLevelUpdate(ComponentLevel level)
+        {
+            level.StrengthFactor = level.CalculateStrengthFactor(null);
+            level.SpeedFactor = level.CalculateSpeedFactor(null);
+            level.HungerFactor = level.CalculateHungerFactor(null);
+            level.ResilienceFactor = level.CalculateResilienceFactor(null);
+        }
     }
 }

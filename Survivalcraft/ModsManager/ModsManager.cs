@@ -332,7 +332,7 @@ public static class ModsManager
     public static bool HasAttribute(XElement element,Func<string,bool> func,out XAttribute xAttributeout) {
         foreach (XAttribute xAttribute in element.Attributes())
         {
-            if (func(xAttribute.Name.ToString())) {
+            if (func(xAttribute.Name.LocalName)) {
                 xAttributeout = xAttribute;
                 return true;
             }
@@ -376,7 +376,8 @@ public static class ModsManager
                     {
                         editName = px[0];
                     }
-                    if (FindElement(xElement, (ele) => {//原始标签
+                    if (FindElement(xElement, (ele) =>
+                    {//原始标签
                         foreach (XAttribute xAttribute in element.Attributes())//待修改的标签
                         {
                             if (xAttribute.Name == attribute.Name) continue;
@@ -391,6 +392,8 @@ public static class ModsManager
                             element1.SetValue(element.Value);
                         }
                     }
+                }else {
+                    xElement.Add(element);
                 }
             }
             CombineCrLogic(xElement, element);

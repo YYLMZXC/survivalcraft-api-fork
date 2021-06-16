@@ -16,7 +16,9 @@ namespace Game
         }
 
         public Random m_random = new Random();
+
         public static string fName = "ComponentLevel";
+
         public List<Factor> m_factors = new List<Factor>();
 
         public float? m_lastLevelTextValue;
@@ -431,13 +433,13 @@ namespace Game
             {
                 AddExperience(1, playSound: false);
             }
-            StrengthFactor = CalculateStrengthFactor(null);
-            SpeedFactor = CalculateSpeedFactor(null);
-            HungerFactor = CalculateHungerFactor(null);
-            ResilienceFactor = CalculateResilienceFactor(null);
+
+            foreach (ModLoader modLoader in ModsManager.ModLoaders) {
+                modLoader.OnLevelUpdate(this);
+            }
             if (!m_lastLevelTextValue.HasValue || m_lastLevelTextValue.Value != MathUtils.Floor(m_componentPlayer.PlayerData.Level))
             {
-                m_componentPlayer.ComponentGui.LevelLabelWidget.Text = "µÈ¼¶ " + MathUtils.Floor(m_componentPlayer.PlayerData.Level).ToString();
+                m_componentPlayer.ComponentGui.LevelLabelWidget.Text = LanguageControl.Get(fName,2) + MathUtils.Floor(m_componentPlayer.PlayerData.Level).ToString();
                 m_lastLevelTextValue = MathUtils.Floor(m_componentPlayer.PlayerData.Level);
             }
             m_componentPlayer.PlayerStats.HighestLevel = MathUtils.Max(m_componentPlayer.PlayerStats.HighestLevel, m_componentPlayer.PlayerData.Level);

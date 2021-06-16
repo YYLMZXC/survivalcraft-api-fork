@@ -201,7 +201,7 @@ namespace Game
             return PlayerLevelRequired;
         }
         public virtual bool HasCollisionBehavior_(int value) {
-            return false;
+            return IsCollidable;
         }
         public virtual string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
         {

@@ -706,8 +706,7 @@ namespace Game
                 BoundingBox smoothRiseBox = boundingBox;
                 smoothRiseBox.Min.Y += MaxSmoothRiseHeight;
                 num = CalculateSmoothRisePushBack(boundingBox, smoothRiseBox, axis, m_collisionBoxes, out pushingCollisionBox);
-            }
-            else
+            }else
             {
                 num = CalculatePushBack(boundingBox, axis, m_collisionBoxes, out pushingCollisionBox);
             }

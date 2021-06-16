@@ -67,7 +67,7 @@ namespace Game
             m_delaySlider.Value = m_delay;
             m_minusButton.IsEnabled = ((float)m_delay > m_delaySlider.MinValue);
             m_plusButton.IsEnabled = ((float)m_delay < m_delaySlider.MaxValue);
-            m_delayLabel.Text = $"{(float)(m_delay + 1) * 0.01f:0.00} seconds";
+            m_delayLabel.Text =string.Format(LanguageControl.Get(GetType().Name,1),Math.Round((float)(m_delay + 1) * 0.01f,2));
         }
 
         public void Dismiss(int? result)

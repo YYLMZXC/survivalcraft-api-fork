@@ -47,6 +47,7 @@ namespace Game
             AddLoadAction(() => {
                 SetMsg("初始化ModsManager");
                 ModsManager.Initialize();
+                ContentManager.Initialize();
             });
             AddLoadAction(() => {
                 LoadingScreen.SetMsg("初始化语言包:[SurvivalCraft]");

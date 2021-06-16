@@ -1,6 +1,6 @@
 ﻿{
 	"Language": {
-		"Name": "Other"
+		"Name": "Customer"
 	},
 	"DiskExternalContentProvider": {
 		"DisplayName": "disk",
@@ -65,7 +65,8 @@
 		"3": "Left the world",
 		"4": "Come back!",
 		"5": "Burned to death",
-		"6": "Stranded on land"
+		"6": "Stranded on land",
+		"7": "Suffocated"
 	},
 	"PlayerWidget": {
 		"1": "{0} Controlled by {1}",
@@ -148,8 +149,37 @@
 		"9": "Name Modified Furniture",
 		"10": "Rename Furniture",
 		"11": "Name Furniture"
-
 	},
+	"EditAdjustableDelayGateDialog": {
+		"1": "{0} seconds"
+	},
+	"EditBatteryDialog": {
+		"1": "Low",
+		"2": "High"
+	},
+	"EditColorDialog": {
+		"1": "Edit Color",
+		"2": "Red:",
+		"3": "Green:",
+		"4": "Blue:",
+		"5": "Enter Color",
+		"6": "Invalid Color",
+		"7": "Use R,G,B or #HEX notation, e.g. 255,92,13 or #FF5C0D"
+	},
+	"EditPaletteDialog": {
+		"1": "Reset",
+		"2": "Edit Color Name",
+		"3": "Invalid name"
+	},
+	"EditPistonDialog": {
+		"1": "{0} blocks"
+	},
+	"EditTruthTableDialog": {
+		"1": "Table",
+		"2": "Linear"
+	},
+
+
 	"FurnitureInventoryPanel": {
 		"1": "{0} design(s) added. ",
 		"2": "{0} design(s) were already present in the world and were skipped. ",
@@ -2593,7 +2623,8 @@
 			"12": "Creative Mode Dig Speed:",
 			"13": "Creative Mode Reach:",
 			"14": "Minimum Hold Duration:",
-			"15": "Minimum Drag Distance:"
+			"15": "Minimum Drag Distance:",
+			"16": "Introduction:"
 		},
 		"SettingsGraphicsScreen": {
 			"1": "Adjust Graphics Settings",

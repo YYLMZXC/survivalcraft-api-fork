@@ -99,9 +99,9 @@ namespace Game
         public void UpdateControls()
         {
             m_slider1.Value = m_maxExtension + 1;
-            m_slider1.Text = $"{m_maxExtension + 1} blocks";
+            m_slider1.Text = string.Format(LanguageControl.Get(GetType().Name,1), m_maxExtension + 1);
             m_slider2.Value = m_pullCount + 1;
-            m_slider2.Text = $"{m_pullCount + 1} blocks";
+            m_slider2.Text = string.Format(LanguageControl.Get(GetType().Name, 1), m_pullCount + 1);
             m_slider3.Value = m_speed;
             m_slider3.Text = m_speedNames[m_speed];
         }

@@ -76,7 +76,7 @@ namespace Game
             }
             if (m_linearPanel.IsVisible)
             {
-                m_switchViewButton.Text = "Table";
+                m_switchViewButton.Text = LanguageControl.Get(GetType().Name,1);
                 if (m_switchViewButton.IsClicked)
                 {
                     m_linearPanel.IsVisible = false;
@@ -85,7 +85,7 @@ namespace Game
             }
             else
             {
-                m_switchViewButton.Text = "Linear";
+                m_switchViewButton.Text = LanguageControl.Get(GetType().Name, 2);
                 if (m_switchViewButton.IsClicked)
                 {
                     m_linearPanel.IsVisible = true;

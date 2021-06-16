@@ -53,7 +53,7 @@ namespace Game
                 {
                     (Widget)new LabelWidget
                     {
-                        Text = "Edit Color",
+                        Text = LanguageControl.Get(GetType().Name,1),
                         HorizontalAlignment = WidgetAlignment.Center
                     },
                     (Widget)new CanvasWidget
@@ -83,7 +83,7 @@ namespace Game
                 {
                     (Widget)new LabelWidget
                     {
-                        Text = "Red:",
+                        Text = LanguageControl.Get(GetType().Name,2),
                         Color = Color.Gray,
                         VerticalAlignment = WidgetAlignment.Center,
                         Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
@@ -118,7 +118,7 @@ namespace Game
                 {
                     (Widget)new LabelWidget
                     {
-                        Text = "Green:",
+                        Text = LanguageControl.Get(GetType().Name,3),
                         Color = Color.Gray,
                         VerticalAlignment = WidgetAlignment.Center,
                         Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
@@ -153,7 +153,7 @@ namespace Game
                 {
                     (Widget)new LabelWidget
                     {
-                        Text = "Blue:",
+                        Text = LanguageControl.Get(GetType().Name,4),
                         Color = Color.Gray,
                         VerticalAlignment = WidgetAlignment.Center,
                         Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
@@ -222,7 +222,7 @@ namespace Game
             BevelledButtonWidget obj14 = new BevelledButtonWidget
             {
                 Size = new Vector2(160f, 60f),
-                Text = "OK"
+                Text = LanguageControl.Get("Usual","ok")
             };
             ButtonWidget widget4 = obj14;
             m_okButton = obj14;
@@ -235,7 +235,7 @@ namespace Game
             BevelledButtonWidget obj15 = new BevelledButtonWidget
             {
                 Size = new Vector2(160f, 60f),
-                Text = "Cancel"
+                Text = LanguageControl.Get("Usual","cancel")
             };
             widget4 = obj15;
             m_cancelButton = obj15;
@@ -252,7 +252,7 @@ namespace Game
         {
             if (m_rectangle.IsClicked)
             {
-                DialogsManager.ShowDialog(this, new TextBoxDialog("Enter Color", GetColorString(), 20, delegate (string s)
+                DialogsManager.ShowDialog(this, new TextBoxDialog(LanguageControl.Get(GetType().Name, 5), GetColorString(), 20, delegate (string s)
                 {
                     if (s != null)
                     {
@@ -262,7 +262,7 @@ namespace Game
                         }
                         catch
                         {
-                            DialogsManager.ShowDialog(this, new MessageDialog("Invalid Color", "Use R,G,B or #HEX notation, e.g. 255,92,13 or #FF5C0D", "OK", null, null));
+                            DialogsManager.ShowDialog(this, new MessageDialog(LanguageControl.Get(GetType().Name, 6), LanguageControl.Get(GetType().Name, 7), LanguageControl.Get("Usual","ok"), null, null));
                         }
                     }
                 }));

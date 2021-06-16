@@ -25,6 +25,8 @@ namespace Game
 
         public static Point2 m_resizableWindowSize;
 
+        public static bool AllowInitialIntro { get; set; }
+
         public static float SoundsVolume
         {
             get
@@ -434,6 +436,7 @@ namespace Game
             ScreenshotSize = ScreenshotSize.ScreenSize;
             MoveControlMode = MoveControlMode.Pad;
             HideMoveLookPads = false;
+            AllowInitialIntro = true;
             BlocksTextureFileName = string.Empty;
             LookControlMode = LookControlMode.EntireScreen;
             FlipVerticalAxis = false;

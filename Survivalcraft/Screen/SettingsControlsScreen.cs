@@ -15,6 +15,8 @@ namespace Game
 
         public ButtonWidget m_autoJumpButton;
 
+        public ButtonWidget m_AllowInitialIntro;
+
         public ButtonWidget m_horizontalCreativeFlightButton;
 
         public ContainerWidget m_horizontalCreativeFlightPanel;
@@ -44,6 +46,7 @@ namespace Game
             m_lookControlModeButton = Children.Find<ButtonWidget>("LookControlMode");
             m_leftHandedLayoutButton = Children.Find<ButtonWidget>("LeftHandedLayout");
             m_flipVerticalAxisButton = Children.Find<ButtonWidget>("FlipVerticalAxis");
+            m_AllowInitialIntro = Children.Find<ButtonWidget>("AllowInitialIntro");            
             m_autoJumpButton = Children.Find<ButtonWidget>("AutoJump");
             m_horizontalCreativeFlightButton = Children.Find<ButtonWidget>("HorizontalCreativeFlight");
             m_horizontalCreativeFlightPanel = Children.Find<ContainerWidget>("HorizontalCreativeFlightPanel");
@@ -55,6 +58,7 @@ namespace Game
             m_creativeReachSlider = Children.Find<SliderWidget>("CreativeReachSlider");
             m_holdDurationSlider = Children.Find<SliderWidget>("HoldDurationSlider");
             m_dragDistanceSlider = Children.Find<SliderWidget>("DragDistanceSlider");
+
             m_horizontalCreativeFlightPanel.IsVisible = false;
         }
 
@@ -116,10 +120,12 @@ namespace Game
             {
                 SettingsManager.MinimumDragDistance = m_dragDistanceSlider.Value;
             }
+            if (m_AllowInitialIntro.IsClicked) SettingsManager.AllowInitialIntro = !SettingsManager.AllowInitialIntro;
             m_moveControlModeButton.Text = LanguageControl.Get("MoveControlMode", SettingsManager.MoveControlMode.ToString());
             m_lookControlModeButton.Text = LanguageControl.Get("LookControlMode", SettingsManager.LookControlMode.ToString());
             m_leftHandedLayoutButton.Text = (SettingsManager.LeftHandedLayout ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
             m_flipVerticalAxisButton.Text = (SettingsManager.FlipVerticalAxis ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
+            m_AllowInitialIntro.Text = (SettingsManager.AllowInitialIntro ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
             m_autoJumpButton.Text = (SettingsManager.AutoJump ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
             m_horizontalCreativeFlightButton.Text = (SettingsManager.HorizontalCreativeFlight ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
             m_moveSensitivitySlider.Value = SettingsManager.MoveSensitivity;
