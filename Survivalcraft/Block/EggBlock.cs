@@ -78,6 +78,7 @@ namespace Game
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Egg").ParentBone);
             foreach (EggType eggType in m_eggTypes)
             {
+                if (eggType == null) continue;
                 eggType.BlockMesh = new BlockMesh();
                 eggType.BlockMesh.AppendModelMeshPart(model.FindMesh("Egg").MeshParts[0], boneAbsoluteTransform, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, eggType.Color);
                 Matrix identity = Matrix.Identity;
@@ -181,8 +182,9 @@ namespace Game
 
         public override IEnumerable<CraftingRecipe> GetProceduralCraftingRecipes()
         {
-            foreach (EggType eggType in ((EggBlock)BlocksManager.Blocks[118]).EggTypes)
+            foreach (EggType eggType in EggTypes)
             {
+                if (eggType == null) continue;
                 if (eggType.NutritionalValue > 0f)
                 {
                     int rot = 0;
