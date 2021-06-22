@@ -183,25 +183,7 @@ namespace Game
 
         public static bool ValidateWorldName(string name)
         {
-            if (name.Length == 0 || name.Length > 14)
-            {
-                return false;
-            }
-            if (!char.IsLetterOrDigit(name[0]) || !char.IsLetterOrDigit(name[name.Length - 1]))
-            {
-                return false;
-            }
-            foreach (char c in name)
-            {
-                if (c > '\u007f')
-                {
-                    return false;
-                }
-                if (!char.IsLetterOrDigit(c) && c != ' ')
-                {
-                    return false;
-                }
-            }
+            if (name.Contains("\\") || name.Length > 128) return false;
             return true;
         }
 
