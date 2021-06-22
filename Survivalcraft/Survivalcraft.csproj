@@ -384,7 +384,9 @@
     <Compile Include="Game\HighlightShader.cs" />
     <Compile Include="Game\OpaqueShader.cs" />
     <Compile Include="Game\TerrainDraw.cs" />
+    <Compile Include="Game\TerrainSerializer22.cs" />
     <Compile Include="Game\TransparentShader.cs" />
+    <Compile Include="Game\VersionConverter22To221.cs" />
     <Compile Include="Managers\AnalyticsManager.cs" />
     <Compile Include="Managers\AudioManager.cs" />
     <Compile Include="Managers\BlocksTexturesManager.cs" />
@@ -413,6 +415,7 @@
     <Compile Include="Managers\WebManager.cs" />
     <Compile Include="Managers\WorldsManager.cs" />
     <Compile Include="ModsManager\FastDebugModEntity.cs" />
+    <Compile Include="ModsManager\Locker.cs" />
     <Compile Include="ModsManager\ModLoader.cs" />
     <Compile Include="ModsManager\SurvivalCraftModEntity.cs" />
     <Compile Include="ModsManager\SurvivalCraftModLoader.cs" />
@@ -883,7 +886,7 @@
     <Compile Include="Game\TerrainRenderer.cs" />
     <Compile Include="Game\TerrainSerializer129.cs" />
     <Compile Include="Game\TerrainSerializer14.cs" />
-    <Compile Include="Game\TerrainSerializer22.cs" />
+    <Compile Include="Game\TerrainSerializer221.cs" />
     <Compile Include="Game\TerrainUpdater.cs" />
     <Compile Include="Game\TerrainVertex.cs" />
     <Compile Include="Dialog\TextBoxDialog.cs" />
@@ -1095,7 +1098,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

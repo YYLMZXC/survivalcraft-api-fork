@@ -1934,6 +1934,9 @@
     <Compile Include="..\Survivalcraft\Game\TerrainSerializer22.cs">
       <Link>Game\TerrainSerializer22.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\TerrainSerializer221.cs">
+      <Link>Game\TerrainSerializer221.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\TerrainUpdater.cs">
       <Link>Game\TerrainUpdater.cs</Link>
     </Compile>
@@ -2074,6 +2077,9 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\VersionConverter21To22.cs">
       <Link>Game\VersionConverter21To22.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Game\VersionConverter22To221.cs">
+      <Link>Game\VersionConverter22To221.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\ViewAngleMode.cs">
       <Link>Game\ViewAngleMode.cs</Link>

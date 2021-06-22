@@ -25,9 +25,6 @@ namespace Game
             new Point3(0, 0, 1)
         };
 
-        public static Func<SubsystemTerrain, ITerrainContentsGenerator> TerrainContentsGenerator_;
-        public static Func<SubsystemTerrain, ITerrainContentsGenerator> TerrainContentsGeneratorFlat_;
-
         public SubsystemGameWidgets m_subsystemViews;
 
         public SubsystemParticles m_subsystemParticles;
@@ -86,7 +83,7 @@ namespace Game
             set;
         }
 
-        public TerrainSerializer22 TerrainSerializer
+        public TerrainSerializer221 TerrainSerializer
         {
             get;
             set;
@@ -398,32 +395,18 @@ namespace Game
             Terrain = new Terrain();
             TerrainRenderer = new TerrainRenderer(this);
             TerrainUpdater = new TerrainUpdater(this);
-            TerrainSerializer = new TerrainSerializer22(Terrain, SubsystemGameInfo.DirectoryName);
+            TerrainSerializer = new TerrainSerializer221(Terrain, SubsystemGameInfo.DirectoryName);
             BlockGeometryGenerator = new BlockGeometryGenerator(Terrain, this, base.Project.FindSubsystem<SubsystemElectricity>(throwOnError: true), SubsystemFurnitureBlockBehavior, base.Project.FindSubsystem<SubsystemMetersBlockBehavior>(throwOnError: true), SubsystemPalette);
             if (string.CompareOrdinal(SubsystemGameInfo.WorldSettings.OriginalSerializationVersion, "2.1") <= 0)
             {
                 TerrainGenerationMode terrainGenerationMode = SubsystemGameInfo.WorldSettings.TerrainGenerationMode;
                 if (terrainGenerationMode == TerrainGenerationMode.FlatContinent || terrainGenerationMode == TerrainGenerationMode.FlatIsland)
                 {
-                    if (TerrainContentsGeneratorFlat_ != null)
-                    {
-                        TerrainContentsGenerator = TerrainContentsGeneratorFlat_?.Invoke(this);
-                    }
-                    else {
-                        TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
-
-                    }
+                    TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
                 }
                 else
                 {
-                    if (TerrainContentsGenerator_ != null)
-                    {
-                        TerrainContentsGenerator = TerrainContentsGenerator_?.Invoke(this);
-                    }
-                    else {
-                        TerrainContentsGenerator = new TerrainContentsGenerator21(this);
-
-                    }
+                    TerrainContentsGenerator = new TerrainContentsGenerator21(this);
                 }
             }
             else
@@ -431,27 +414,11 @@ namespace Game
                 TerrainGenerationMode terrainGenerationMode2 = SubsystemGameInfo.WorldSettings.TerrainGenerationMode;
                 if (terrainGenerationMode2 == TerrainGenerationMode.FlatContinent || terrainGenerationMode2 == TerrainGenerationMode.FlatIsland)
                 {
-                    if (TerrainContentsGeneratorFlat_ != null)
-                    {
-                        TerrainContentsGenerator = TerrainContentsGeneratorFlat_?.Invoke(this);
-                    }
-                    else
-                    {
-                        TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
-
-                    }
+                    TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
                 }
                 else
                 {
-                    if (TerrainContentsGenerator_ != null)
-                    {
-                        TerrainContentsGenerator = TerrainContentsGenerator_?.Invoke(this);
-                    }
-                    else
-                    {
-                        TerrainContentsGenerator = new TerrainContentsGenerator22(this);
-
-                    }
+                    TerrainContentsGenerator = new TerrainContentsGenerator22(this);
                 }
             }
         }
