@@ -145,7 +145,7 @@ namespace Game
                 {
                     m_statsString = $"CPUMEM {(float)TotalMemoryUsed / 1024f / 1024f:0}MB, GPUMEM {(float)TotalGpuMemoryUsed / 1024f / 1024f:0}MB, CPU {AverageCpuFrameTime / AverageFrameTime * 100f:0}%, FPS {1f / AverageFrameTime:0.0}";
                 }
-                m_primitivesRenderer.FontBatch(BitmapFont.DebugFont, 0, null, null, null, SamplerState.PointClamp).QueueText(m_statsString, new Vector2(viewport.Width, 0f), 0f, Color.White, TextAnchor.Right, scale, Vector2.Zero);
+                m_primitivesRenderer.FontBatch(BitmapFont.DebugFont, 0, null, null, null, SamplerState.PointClamp).QueueText(m_statsString, new Vector2(viewport.Width/2, 0f), 0f, Color.White, TextAnchor.Right, scale, Vector2.Zero);
             }
             if (SettingsManager.DisplayFpsRibbon)
             {

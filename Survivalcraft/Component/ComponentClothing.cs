@@ -209,7 +209,7 @@ namespace Game
         {
             List<float> results = new List<float>();
             foreach (ModLoader modEntity in ModsManager.ModLoaders) {
-                results.Add(modEntity.ApplyArmorProtection(this, attackPower));
+                results.Add(modEntity.ApplyArmorProtection(this,ref attackPower));
             }
             return results.Min();
         }

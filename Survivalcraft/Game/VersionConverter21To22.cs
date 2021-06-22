@@ -209,73 +209,7 @@ namespace Game
 
         public void ConvertChunks(string directoryName)
         {
-            string path = Storage.CombinePaths(directoryName, "Chunks32.dat");
-            string path2 = Storage.CombinePaths(directoryName, "Chunks32h.dat.new");
-            long num = 2 * Storage.GetFileSize(path) + 52428800;
-            if (Storage.FreeSpace < num)
-            {
-                throw new InvalidOperationException($"Not enough free space to convert world. {num / 1024 / 1024}MB required.");
-            }
-            using (Stream stream2 = Storage.OpenFile(path, OpenFileMode.Read))
-            {
-                using (Stream stream = Storage.OpenFile(path2, OpenFileMode.Create))
-                {
-                    byte[] array = new byte[131072];
-                    byte[] array2 = new byte[262144];
-                    for (int i = 0; i < 65537; i++)
-                    {
-                        TerrainSerializer22.WriteTOCEntry(stream, 0, 0, -1);
-                    }
-                    int num2 = 0;
-                    while (true)
-                    {
-                        stream2.Position = 12 * num2;
-                        TerrainSerializer129.ReadTOCEntry(stream2, out int cx, out int cz, out int index);
-                        if (index < 0)
-                        {
-                            break;
-                        }
-                        stream.Position = 12 * num2;
-                        TerrainSerializer22.WriteTOCEntry(stream, cx, cz, num2);
-                        stream2.Position = 786444 + 132112L * (long)index;
-                        stream.Position = stream.Length;
-                        TerrainSerializer129.ReadChunkHeader(stream2);
-                        TerrainSerializer22.WriteChunkHeader(stream, cx, cz);
-                        stream2.Read(array, 0, 131072);
-                        int num3 = 0;
-                        int num4 = 0;
-                        for (int j = 0; j < 16; j++)
-                        {
-                            for (int k = 0; k < 16; k++)
-                            {
-                                for (int l = 0; l < 256; l++)
-                                {
-                                    int num5;
-                                    if (l <= 127)
-                                    {
-                                        num5 = ConvertValue(array[4 * num3] | (array[4 * num3 + 1] << 8) | (array[4 * num3 + 2] << 16) | (array[4 * num3 + 3] << 24));
-                                        num3++;
-                                    }
-                                    else
-                                    {
-                                        num5 = 0;
-                                    }
-                                    array2[4 * num4] = (byte)num5;
-                                    array2[4 * num4 + 1] = (byte)(num5 >> 8);
-                                    array2[4 * num4 + 2] = (byte)(num5 >> 16);
-                                    array2[4 * num4 + 3] = (byte)(num5 >> 24);
-                                    num4++;
-                                }
-                            }
-                        }
-                        stream.Write(array2, 0, 262144);
-                        stream2.Read(array, 0, 1024);
-                        stream.Write(array, 0, 1024);
-                        num2++;
-                    }
-                }
-            }
-            Storage.MoveFile(Storage.CombinePaths(directoryName, "Chunks32.dat"), Storage.CombinePaths(directoryName, "Chunks32.dat.old"));
+            
         }
 
         public static int ConvertValue(int value)

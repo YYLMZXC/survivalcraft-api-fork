@@ -60,9 +60,8 @@ namespace Game
         {
             IEnumerable<string> dlls = Storage.ListFileNames(ModsManager.ModsPath);
             foreach (string c in dlls)
-            {
+            {                
                 if (c.EndsWith(".json")) LanguageControl.loadJson(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
-
             }
 
         }

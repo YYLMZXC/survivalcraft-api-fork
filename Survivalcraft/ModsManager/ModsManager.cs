@@ -12,7 +12,7 @@ using XmlUtilities;
 using SimpleJson;
 using Engine.Graphics;
 using Engine.Media;
-
+using System.IO.Compression;
 public static class ModsManager
 {
     public static Dictionary<string, ZipArchive> Archives;
@@ -58,6 +58,25 @@ public static class ModsManager
     public static List<ModEntity> ModList = new List<ModEntity>();
     public static List<ModLoader> ModLoaders = new List<ModLoader>();
     public static List<ModInfo> DisabledMods = new List<ModInfo>();
+
+    public static void StreamCompress(Stream input, MemoryStream data)
+    {
+        byte[] dat = data.ToArray();
+        using (GZipStream stream = new GZipStream(input, CompressionMode.Compress)) {
+            stream.Write(dat, 0, dat.Length);
+        }
+    }
+    public static Stream StreamDecompress(Stream input)
+    {
+        MemoryStream outStream = new MemoryStream();
+        using (GZipStream zipStream = new GZipStream(input, CompressionMode.Decompress))
+        {
+            zipStream.CopyTo(outStream);
+            zipStream.Close();
+            outStream.Seek(0,SeekOrigin.Begin);
+            return outStream;
+        }
+    }
 
     public static T DeserializeJson<T>(string text) where T : class
     {

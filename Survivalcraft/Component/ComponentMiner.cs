@@ -189,10 +189,13 @@ namespace Game
 
         public void Hit(ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection)
         {
+            float AttackPower = 0f;
+            //预先生成粒子特效
+            HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(ComponentMiner.fName, 2));
             foreach (ModLoader modLoader in ModsManager.ModLoaders) {
-                modLoader.ComponentMinerHit(this, componentBody,hitPoint,hitDirection);
-            
+                modLoader.ComponentMinerHit(this, componentBody,hitPoint,hitDirection, particleSystem, ref AttackPower);            
             }
+            Poke(forceRestart: false);
         }
 
         public bool Aim(Ray3 aim, AimState state)
@@ -308,8 +311,7 @@ namespace Game
                 {
                     Inventory.AddSlotItems(Inventory.ActiveSlotIndex, num, slotCount);
                 }
-            }
-            else
+            }else
             {
                 Inventory.RemoveSlotItems(Inventory.ActiveSlotIndex, 1);
             }
@@ -317,8 +319,12 @@ namespace Game
 
         public static void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack)
         {
+            HitValueParticleSystem hitValueParticleSystem = null;
+            if (attacker != null) {
+                hitValueParticleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + attacker.ComponentBody.Velocity, Color.White, string.Empty);
+            }
             foreach (ModLoader modEntity in ModsManager.ModLoaders) {
-                modEntity.AttackBody(target,attacker,hitPoint,hitDirection,attackPower,isMeleeAttack);
+                modEntity.AttackBody(target,attacker,hitPoint,hitDirection,attackPower,isMeleeAttack,hitValueParticleSystem);
             }
         }
 

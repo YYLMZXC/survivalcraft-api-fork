@@ -4,11 +4,6 @@ using Engine.Serialization;
 using GameEntitySystem;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using TemplatesDatabase;
-using System.Xml.Linq;
-using System.IO;
-using System.Reflection;
 using System.Globalization;
 using Engine.Media;
 namespace Game
@@ -147,7 +142,60 @@ namespace Game
             }
             return false;
         }
-        public override void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack)
+        public override void ComponentMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection,HitValueParticleSystem hitValueParticleSystem,ref float AttackPower)
+        {
+            if (!(miner.m_subsystemTime.GameTime - miner.m_lastHitTime > 0.6600000262260437))
+            {
+                return;
+            }
+            float num2 = 0f;
+            miner.m_lastHitTime = miner.m_subsystemTime.GameTime;
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(miner.ActiveBlockValue)];
+            if (!miner.CanUseTool(miner.ActiveBlockValue))
+            {
+                miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block.PlayerLevelRequired_(miner.ActiveBlockValue), block.GetDisplayName(miner.m_subsystemTerrain, miner.ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
+                miner.Poke(forceRestart: false);
+                return;
+            }
+            if (miner.ActiveBlockValue != 0)
+            {
+                AttackPower = block.GetMeleePower(miner.ActiveBlockValue) * miner.AttackPower * miner.m_random.Float(0.8f, 1.2f);
+                num2 = block.GetMeleeHitProbability(miner.ActiveBlockValue);
+            }else
+            {
+                AttackPower = miner.AttackPower * miner.m_random.Float(0.8f, 1.2f);
+                num2 = 0.66f;
+            }
+            bool flag;
+            if (miner.ComponentPlayer != null)
+            {
+                miner.m_subsystemAudio.PlaySound("Audio/Swoosh", 1f, miner.m_random.Float(-0.2f, 0.2f), componentBody.Position, 3f, autoDelay: false);
+                flag = miner.m_random.Bool(num2);
+                AttackPower *= miner.ComponentPlayer.ComponentLevel.StrengthFactor;
+            }
+            else
+            {
+                flag = true;
+            }
+            if (flag)
+            {
+                ComponentMiner.AttackBody(componentBody, miner.ComponentCreature, hitPoint, hitDirection, AttackPower, isMeleeAttack: true);
+                miner.DamageActiveTool(1);
+            }
+            else if (miner.ComponentCreature is ComponentPlayer)
+            {
+                miner.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(hitValueParticleSystem);
+            }
+            if (miner.ComponentCreature.PlayerStats != null)
+            {
+                miner.ComponentCreature.PlayerStats.MeleeAttacks++;
+                if (flag)
+                {
+                    miner.ComponentCreature.PlayerStats.MeleeHits++;
+                }
+            }
+        }
+        public override void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack,HitValueParticleSystem hitValueParticleSystem)
         {
             if (attacker != null && attacker is ComponentPlayer && target.Entity.FindComponent<ComponentPlayer>() != null && !target.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true).WorldSettings.IsFriendlyFireEnabled)
             {
@@ -210,8 +258,8 @@ namespace Game
                         if (attacker is ComponentPlayer && num2 > 0f)
                         {
                             string text2 = (0f - num2).ToString("0", CultureInfo.InvariantCulture);
-                            HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + attacker.ComponentBody.Velocity, Color.White, text2);
-                            target.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
+                            hitValueParticleSystem.Particles[0].Text = text2;
+                            target.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(hitValueParticleSystem);
                         }
                     }
                 }
@@ -251,7 +299,7 @@ namespace Game
                 }
             }
         }
-        public override float ApplyArmorProtection(ComponentClothing componentClothing, float attackPower)
+        public override float ApplyArmorProtection(ComponentClothing componentClothing,ref float attackPower)
         {
             float num = componentClothing.m_random.Float(0f, 1f);
             ClothingSlot slot = (num < 0.1f) ? ClothingSlot.Feet : ((num < 0.3f) ? ClothingSlot.Legs : ((num < 0.9f) ? ClothingSlot.Torso : ClothingSlot.Head));
@@ -517,63 +565,6 @@ namespace Game
                         break;
                     }
             }
-        }
-        public override void ComponentMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection)
-        {
-            if (!(miner.m_subsystemTime.GameTime - miner.m_lastHitTime > 0.6600000262260437))
-            {
-                return;
-            }
-            miner.m_lastHitTime = miner.m_subsystemTime.GameTime;
-            Block block = BlocksManager.Blocks[Terrain.ExtractContents(miner.ActiveBlockValue)];
-            if (!miner.CanUseTool(miner.ActiveBlockValue))
-            {
-                miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block.PlayerLevelRequired_(miner.ActiveBlockValue), block.GetDisplayName(miner.m_subsystemTerrain, miner.ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
-                miner.Poke(forceRestart: false);
-                return;
-            }
-            float num = 0f;
-            float num2 = 1f;
-            if (miner.ActiveBlockValue != 0)
-            {
-                num = block.GetMeleePower(miner.ActiveBlockValue) * miner.AttackPower * miner.m_random.Float(0.8f, 1.2f);
-                num2 = block.GetMeleeHitProbability(miner.ActiveBlockValue);
-            }
-            else
-            {
-                num = miner.AttackPower * miner.m_random.Float(0.8f, 1.2f);
-                num2 = 0.66f;
-            }
-            bool flag;
-            if (miner.ComponentPlayer != null)
-            {
-                miner.m_subsystemAudio.PlaySound("Audio/Swoosh", 1f, miner.m_random.Float(-0.2f, 0.2f), componentBody.Position, 3f, autoDelay: false);
-                flag = miner.m_random.Bool(num2);
-                num *= miner.ComponentPlayer.ComponentLevel.StrengthFactor;
-            }
-            else
-            {
-                flag = true;
-            }
-            if (flag)
-            {
-                ComponentMiner.AttackBody(componentBody, miner.ComponentCreature, hitPoint, hitDirection, num, isMeleeAttack: true);
-                miner.DamageActiveTool(1);
-            }
-            else if (miner.ComponentCreature is ComponentPlayer)
-            {
-                HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + miner.ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(ComponentMiner.fName, 2));
-                miner.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
-            }
-            if (miner.ComponentCreature.PlayerStats != null)
-            {
-                miner.ComponentCreature.PlayerStats.MeleeAttacks++;
-                if (flag)
-                {
-                    miner.ComponentCreature.PlayerStats.MeleeHits++;
-                }
-            }
-            miner.Poke(forceRestart: false);
         }
         public override void OnModelRendererDrawExtra(SubsystemModelsRenderer modelsRenderer, ComponentModel componentModel, Camera camera, float? alphaThreshold)
         {

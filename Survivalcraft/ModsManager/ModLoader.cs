@@ -64,14 +64,16 @@ namespace Game
         /// <param name="hitDirection"></param>
         /// <param name="attackPower"></param>
         /// <param name="isMeleeAttack"></param>
-        public virtual void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack) { }
+        public virtual void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack, HitValueParticleSystem hitValueParticleSystem) {
+
+        }
         /// <summary>
         /// 计算护甲免伤时执行
         /// </summary>
         /// <param name="componentClothing"></param>
         /// <param name="attackPower">未计算免伤前的伤害</param>
         /// <returns>免伤后的伤害，当多个mod都有免伤计算时，取最小值</returns>
-        public virtual float ApplyArmorProtection(ComponentClothing componentClothing, float attackPower)
+        public virtual float ApplyArmorProtection(ComponentClothing componentClothing,ref float attackPower)
         {
             return attackPower;
         }
@@ -201,7 +203,7 @@ namespace Game
         /// <param name="componentBody"></param>
         /// <param name="hitPoint"></param>
         /// <param name="hitDirection"></param>
-        public virtual void ComponentMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection) { }
+        public virtual void ComponentMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection,HitValueParticleSystem hitValueParticleSystem,ref float AttackPower) { }
         /// <summary>
         /// 生物变形重生为另一个生物时执行
         /// </summary>
