@@ -173,7 +173,15 @@ namespace Engine
 			Vector3 max = Vector3.Max(b.Max, p);
 			return new BoundingBox(min, max);
 		}
-
+#if android
+        public static float Distance(BoundingBox b, Vector3 p)
+        {
+            float num = MathUtils.Max(b.Min.X - p.X, 0f, p.X - b.Max.X);
+            float num2 = MathUtils.Max(b.Min.Y - p.Y, 0f, p.Y - b.Max.Y);
+            float num3 = MathUtils.Max(b.Min.Z - p.Z, 0f, p.Z - b.Max.Z);
+            return MathUtils.Sqrt(num * num + num2 * num2 + num3 * num3);
+        }
+#endif
 		public static BoundingBox Transform(BoundingBox b, Matrix m)
 		{
 			Transform(ref b, ref m, out BoundingBox result);

@@ -1,5 +1,7 @@
 using Engine.Media;
+#if desktop
 using OpenTK.Audio.OpenAL;
+#endif
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -8,7 +10,13 @@ namespace Engine.Audio
 {
 	public sealed class SoundBuffer : IDisposable
 	{
+#if desktop
 		internal int m_buffer;
+#else
+        internal byte[] m_data;
+
+        internal GCHandle m_gcHandle;
+#endif
 
 		public int ChannelsCount
 		{
@@ -33,7 +41,7 @@ namespace Engine.Audio
 			get;
 			internal set;
 		}
-
+#if desktop
 		public SoundBuffer(byte[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
 		{
 			Initialize(data, startIndex, itemsCount, channelsCount, samplingFrequency);
@@ -78,6 +86,43 @@ namespace Engine.Audio
 				gCHandle.Free();
 			}
 		}
+#else
+        public SoundBuffer(byte[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
+        {
+            Initialize(data, startIndex, itemsCount, channelsCount, samplingFrequency);
+            m_data = new byte[itemsCount];
+            Buffer.BlockCopy(data, startIndex, m_data, 0, itemsCount);
+        }
+
+        public SoundBuffer(short[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
+        {
+            Initialize(data, startIndex, itemsCount, channelsCount, samplingFrequency);
+            m_data = new byte[2 * itemsCount];
+            Buffer.BlockCopy(data, startIndex, m_data, 0, itemsCount * 2);
+        }
+
+        public SoundBuffer(Stream stream, int bytesCount, int channelsCount, int samplingFrequency)
+        {
+            m_data = Initialize(stream, bytesCount, channelsCount, samplingFrequency);
+        }
+
+        public void InternalDispose()
+        {
+            if (m_gcHandle.IsAllocated)
+            {
+                m_gcHandle.Free();
+            }
+        }
+
+        internal GCHandle GetPinnedHandle()
+        {
+            if (!m_gcHandle.IsAllocated)
+            {
+                m_gcHandle = GCHandle.Alloc(m_data, GCHandleType.Pinned);
+            }
+            return m_gcHandle;
+        }
+#endif
 
 		public void Dispose()
 		{

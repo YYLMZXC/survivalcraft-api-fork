@@ -89,7 +89,11 @@ namespace Engine.Media
 			{
 				if (m_debugFont == null)
 				{
+#if android
+                    m_debugFont = BitmapFontContentReader.ReadBitmapFont(Storage.OpenFile("app:DebugFont.dat", OpenFileMode.Read));
+#else
 					m_debugFont = BitmapFontContentReader.ReadBitmapFont(typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Embedded.DebugFont.dat"));
+#endif
 				}
 				return m_debugFont;
 			}

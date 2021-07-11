@@ -32,7 +32,7 @@ namespace NVorbis
 
 		private long _pageGranulePosition;
 
-		private int _length;
+		protected int _length;
 
 		private int _granuleCount;
 

@@ -32,7 +32,11 @@ namespace Engine.Content
 			ShaderMacro[] array2 = new ShaderMacro[array.Length];
 			for (int i = 0; i < array.Length; i++)
 			{
+#if android
+                string[] array3 = array[i].Split(new char[] { '=' }, StringSplitOptions.None);
+#else
 				string[] array3 = array[i].Split('=');
+#endif
 				if (array3.Length == 1)
 				{
 					array2[i] = new ShaderMacro(array3[0].Trim());

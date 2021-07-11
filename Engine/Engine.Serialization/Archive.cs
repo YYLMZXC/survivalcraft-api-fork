@@ -125,12 +125,21 @@ namespace Engine.Serialization
 									AddSerializeData(value);
 								}
 							}
+#if android
+							else if (type.GetTypeInfo().BaseType != null && IsTypeSerializable(type.GetTypeInfo().BaseType))
+                            {
+                                value = GetSerializeData(type.GetTypeInfo().BaseType, allowEmptySerializer: true).Clone();
+                                value.Type = type;
+                                value.AutoConstructObject = true;
+                            }
+#else
 							else if (type.BaseType != null && IsTypeSerializable(type.BaseType))
 							{
 								value = GetSerializeData(type.BaseType, allowEmptySerializer: true).Clone();
 								value.Type = type;
 								value.AutoConstructObject = true;
 							}
+#endif
 						}
 						if (value == null)
 						{
@@ -205,11 +214,11 @@ namespace Engine.Serialization
 			});
 			if (methodInfo != null && methodInfo2 != null)
 			{
-				object target = Activator.CreateInstance(serializerType.AsType());
-				Type delegateType = typeof(ReadDelegateGeneric<>).MakeGenericType(parameterType);
-				Type delegateType2 = typeof(WriteDelegateGeneric<>).MakeGenericType(parameterType);
-				Delegate @delegate = methodInfo.CreateDelegate(delegateType, target);
-				Delegate delegate2 = methodInfo2.CreateDelegate(delegateType2, target);
+                object obj = Activator.CreateInstance(serializerType.AsType());
+                Type type2 = typeof(ReadDelegateGeneric<>).MakeGenericType(parameterType);
+                Type type3 = typeof(WriteDelegateGeneric<>).MakeGenericType(parameterType);
+                Delegate @delegate = methodInfo.CreateDelegate(type2, obj);
+                Delegate delegate2 = methodInfo2.CreateDelegate(type3, obj);
 				return (SerializeData)typeof(Archive).GetTypeInfo().GetDeclaredMethod("CreateSerializeDataForSerializerHelper").MakeGenericMethod(type, parameterType)
 					.Invoke(null, new object[2]
 					{

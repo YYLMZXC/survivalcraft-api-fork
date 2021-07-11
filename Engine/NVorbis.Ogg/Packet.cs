@@ -6,7 +6,7 @@ namespace NVorbis.Ogg
 	{
 		private long _offset;
 
-		private int _length;
+		//private int _length;
 
 		private int _curOfs;
 
