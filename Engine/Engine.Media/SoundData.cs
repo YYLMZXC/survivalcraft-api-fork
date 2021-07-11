@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-	public class SoundData
+    public class SoundData
 	{
 		public int ChannelsCount
 		{
@@ -72,12 +72,12 @@ namespace Engine.Media
 		{
 			switch (format)
 			{
-			case SoundFileFormat.Wav:
-				return Wav.Stream(stream);
-			case SoundFileFormat.Ogg:
-				return Ogg.Stream(stream);
-			default:
-				throw new InvalidOperationException("Unsupported sound file format.");
+				case SoundFileFormat.Wav:
+					return Wav.Stream(stream);
+				case SoundFileFormat.Ogg:
+					return Ogg.Stream(stream);
+				default:
+					throw new InvalidOperationException("Unsupported sound file format.");
 			}
 		}
 
@@ -108,12 +108,12 @@ namespace Engine.Media
 		{
 			switch (format)
 			{
-			case SoundFileFormat.Wav:
-				return Wav.Load(stream);
-			case SoundFileFormat.Ogg:
-				return Ogg.Load(stream);
-			default:
-				throw new InvalidOperationException("Unsupported sound file format.");
+				case SoundFileFormat.Wav:
+					return Wav.Load(stream);
+				case SoundFileFormat.Ogg:
+					return Ogg.Load(stream);
+				default:
+					throw new InvalidOperationException("Unsupported sound file format.");
 			}
 		}
 

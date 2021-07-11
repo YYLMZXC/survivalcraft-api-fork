@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Hjg.Pngcs
 {
-	internal class PngIDatChunkOutputStream : ProgressiveOutputStream
+    internal class PngIDatChunkOutputStream : ProgressiveOutputStream
 	{
 		private const int SIZE_DEFAULT = 32768;
 

@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Media
 {
-	public static class Wav
+    public static class Wav
 	{
 		private class WavStreamingSource : StreamingSource
 		{

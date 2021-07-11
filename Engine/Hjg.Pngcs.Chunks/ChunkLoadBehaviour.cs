@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-	internal enum ChunkLoadBehaviour
+    internal enum ChunkLoadBehaviour
 	{
 		LOAD_CHUNK_NEVER,
 		LOAD_CHUNK_KNOWN,

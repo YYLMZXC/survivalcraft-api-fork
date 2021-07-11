@@ -1,6 +1,6 @@
 namespace NVorbis.Ogg
 {
-	internal class Crc
+    internal class Crc
 	{
 		private const uint CRC32_POLY = 79764919u;
 

@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace Engine.Serialization
 {
-	internal class XElementSerializer : ISerializer<XElement>
+    internal class XElementSerializer : ISerializer<XElement>
 	{
 		public void Serialize(InputArchive archive, ref XElement value)
 		{

@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Graphics
 {
-	public struct Viewport : IEquatable<Viewport>
+    public struct Viewport : IEquatable<Viewport>
 	{
 		public int X;
 

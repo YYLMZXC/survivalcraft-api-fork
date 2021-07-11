@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Engine.Serialization
 {
-	public class Archive
+    public class Archive
 	{
 		private delegate void ReadDelegateGeneric<T>(InputArchive archive, ref T value);
 
@@ -60,7 +60,6 @@ namespace Engine.Serialization
 			get;
 			set;
 		} = true;
-
 
 		protected Archive(int version)
 		{
@@ -127,11 +126,11 @@ namespace Engine.Serialization
 							}
 #if android
 							else if (type.GetTypeInfo().BaseType != null && IsTypeSerializable(type.GetTypeInfo().BaseType))
-                            {
-                                value = GetSerializeData(type.GetTypeInfo().BaseType, allowEmptySerializer: true).Clone();
-                                value.Type = type;
-                                value.AutoConstructObject = true;
-                            }
+							{
+								value = GetSerializeData(type.GetTypeInfo().BaseType, allowEmptySerializer: true).Clone();
+								value.Type = type;
+								value.AutoConstructObject = true;
+							}
 #else
 							else if (type.BaseType != null && IsTypeSerializable(type.BaseType))
 							{
@@ -202,23 +201,23 @@ namespace Engine.Serialization
 
 		private static SerializeData CreateSerializeDataForSerializer(TypeInfo serializerType, Type type, Type parameterType)
 		{
-			MethodInfo methodInfo = serializerType.GetDeclaredMethods("Serialize").FirstOrDefault(delegate(MethodInfo m)
+			MethodInfo methodInfo = serializerType.GetDeclaredMethods("Serialize").FirstOrDefault(delegate (MethodInfo m)
 			{
 				ParameterInfo[] parameters2 = m.GetParameters();
 				return parameters2.Length == 2 && parameters2[0].ParameterType == typeof(InputArchive) && parameters2[1].ParameterType == parameterType.MakeByRefType();
 			});
-			MethodInfo methodInfo2 = serializerType.GetDeclaredMethods("Serialize").FirstOrDefault(delegate(MethodInfo m)
+			MethodInfo methodInfo2 = serializerType.GetDeclaredMethods("Serialize").FirstOrDefault(delegate (MethodInfo m)
 			{
 				ParameterInfo[] parameters = m.GetParameters();
 				return parameters.Length == 2 && parameters[0].ParameterType == typeof(OutputArchive) && parameters[1].ParameterType == parameterType;
 			});
 			if (methodInfo != null && methodInfo2 != null)
 			{
-                object obj = Activator.CreateInstance(serializerType.AsType());
-                Type type2 = typeof(ReadDelegateGeneric<>).MakeGenericType(parameterType);
-                Type type3 = typeof(WriteDelegateGeneric<>).MakeGenericType(parameterType);
-                Delegate @delegate = methodInfo.CreateDelegate(type2, obj);
-                Delegate delegate2 = methodInfo2.CreateDelegate(type3, obj);
+				object obj = Activator.CreateInstance(serializerType.AsType());
+				Type type2 = typeof(ReadDelegateGeneric<>).MakeGenericType(parameterType);
+				Type type3 = typeof(WriteDelegateGeneric<>).MakeGenericType(parameterType);
+				Delegate @delegate = methodInfo.CreateDelegate(type2, obj);
+				Delegate delegate2 = methodInfo2.CreateDelegate(type3, obj);
 				return (SerializeData)typeof(Archive).GetTypeInfo().GetDeclaredMethod("CreateSerializeDataForSerializerHelper").MakeGenericMethod(type, parameterType)
 					.Invoke(null, new object[2]
 					{
@@ -234,7 +233,7 @@ namespace Engine.Serialization
 			SerializeData serializeData = CreateEmptySerializeData(typeof(T));
 			if (typeof(T).GetTypeInfo().IsValueType)
 			{
-				serializeData.Read = delegate(InputArchive archive, ref object value)
+				serializeData.Read = delegate (InputArchive archive, ref object value)
 				{
 					T val = (T)value;
 					val.Serialize(archive);
@@ -243,12 +242,12 @@ namespace Engine.Serialization
 			}
 			else
 			{
-				serializeData.Read = delegate(InputArchive archive, ref object value)
+				serializeData.Read = delegate (InputArchive archive, ref object value)
 				{
 					((T)value).Serialize(archive);
 				};
 			}
-			serializeData.Write = delegate(OutputArchive archive, object value)
+			serializeData.Write = delegate (OutputArchive archive, object value)
 			{
 				((T)value).Serialize(archive);
 			};
@@ -261,13 +260,13 @@ namespace Engine.Serialization
 			ReadDelegateGeneric<TParam> readDelegateGeneric = (ReadDelegateGeneric<TParam>)readDelegate;
 			WriteDelegateGeneric<TParam> writeDelegateGeneric = (WriteDelegateGeneric<TParam>)writeDelegate;
 			SerializeData serializeData = CreateEmptySerializeData(typeof(T));
-			serializeData.Read = delegate(InputArchive archive, ref object value)
+			serializeData.Read = delegate (InputArchive archive, ref object value)
 			{
 				TParam value2 = (value != null) ? ((TParam)value) : default(TParam);
 				readDelegateGeneric(archive, ref value2);
 				value = value2;
 			};
-			serializeData.Write = delegate(OutputArchive archive, object value)
+			serializeData.Write = delegate (OutputArchive archive, object value)
 			{
 				writeDelegateGeneric(archive, (TParam)value);
 			};

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	public class PadStream : Stream
+    public class PadStream : Stream
 	{
 		private Stream m_stream;
 

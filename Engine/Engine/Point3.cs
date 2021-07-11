@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-	public struct Point3 : IEquatable<Point3>
+    public struct Point3 : IEquatable<Point3>
 	{
 		public int X;
 

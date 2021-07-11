@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Engine.Serialization
 {
-	internal class ArraySerializer<T> : ISerializer<Array>
+    internal class ArraySerializer<T> : ISerializer<Array>
 	{
 		public void Serialize(InputArchive archive, ref Array value)
 		{

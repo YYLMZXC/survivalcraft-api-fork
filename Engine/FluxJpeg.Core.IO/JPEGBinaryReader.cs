@@ -2,7 +2,7 @@ using System.IO;
 
 namespace FluxJpeg.Core.IO
 {
-	internal class JPEGBinaryReader : BinaryReader
+    internal class JPEGBinaryReader : BinaryReader
 	{
 		public int eob_run;
 

@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Graphics
 {
-	public sealed class ShaderParameter
+    public sealed class ShaderParameter
 	{
 		internal int Location;
 
@@ -28,26 +28,26 @@ namespace Engine.Graphics
 			Count = count;
 			switch (type)
 			{
-			case ShaderParameterType.Texture2D:
-			case ShaderParameterType.Sampler2D:
-				break;
-			case ShaderParameterType.Float:
-				Value = new float[count];
-				break;
-			case ShaderParameterType.Vector2:
-				Value = new float[2 * count];
-				break;
-			case ShaderParameterType.Vector3:
-				Value = new float[3 * count];
-				break;
-			case ShaderParameterType.Vector4:
-				Value = new float[4 * count];
-				break;
-			case ShaderParameterType.Matrix:
-				Value = new float[16 * count];
-				break;
-			default:
-				throw new ArgumentException("type");
+				case ShaderParameterType.Texture2D:
+				case ShaderParameterType.Sampler2D:
+					break;
+				case ShaderParameterType.Float:
+					Value = new float[count];
+					break;
+				case ShaderParameterType.Vector2:
+					Value = new float[2 * count];
+					break;
+				case ShaderParameterType.Vector3:
+					Value = new float[3 * count];
+					break;
+				case ShaderParameterType.Vector4:
+					Value = new float[4 * count];
+					break;
+				case ShaderParameterType.Matrix:
+					Value = new float[16 * count];
+					break;
+				default:
+					throw new ArgumentException("type");
 			}
 		}
 

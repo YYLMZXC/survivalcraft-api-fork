@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Engine.Content
 {
-	public static class ContentCache
+    public static class ContentCache
 	{
 		private class ContentDescription
 		{
@@ -115,7 +115,7 @@ namespace Engine.Content
 						{
 							TypeName = typeName,
 							Stream = contentStream,
-							Position = position,							
+							Position = position,
 							BytesCount = bytesCount
 						});
 					}

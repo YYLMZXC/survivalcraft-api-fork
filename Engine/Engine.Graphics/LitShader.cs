@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Engine.Graphics
 {
-	public class LitShader : Shader
+    public class LitShader : Shader
 	{
 		public ShaderParameter m_worldMatrixParameter;
 

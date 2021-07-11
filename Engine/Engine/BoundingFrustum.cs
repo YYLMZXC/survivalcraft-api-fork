@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-	public class BoundingFrustum : IEquatable<BoundingFrustum>
+    public class BoundingFrustum : IEquatable<BoundingFrustum>
 	{
 		private Matrix m_viewProjection;
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace NVorbis
 {
-	internal abstract class VorbisFloor
+    internal abstract class VorbisFloor
 	{
 		internal abstract class PacketData
 		{
@@ -867,12 +867,12 @@ namespace NVorbis
 			VorbisFloor vorbisFloor = null;
 			switch (num)
 			{
-			case 0:
-				vorbisFloor = new Floor0(vorbis);
-				break;
-			case 1:
-				vorbisFloor = new Floor1(vorbis);
-				break;
+				case 0:
+					vorbisFloor = new Floor0(vorbis);
+					break;
+				case 1:
+					vorbisFloor = new Floor1(vorbis);
+					break;
 			}
 			if (vorbisFloor == null)
 			{

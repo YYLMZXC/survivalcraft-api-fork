@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentReader("Engine.Media.BitmapFont")]
+    [ContentReader("Engine.Media.BitmapFont")]
 	public class BitmapFontContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)

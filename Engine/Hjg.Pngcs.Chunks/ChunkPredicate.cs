@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-	internal interface ChunkPredicate
+    internal interface ChunkPredicate
 	{
 		bool Matches(PngChunk chunk);
 	}

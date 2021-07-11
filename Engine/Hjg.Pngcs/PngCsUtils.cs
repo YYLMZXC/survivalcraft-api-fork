@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs
 {
-	internal class PngCsUtils
+    internal class PngCsUtils
 	{
 		internal static bool arraysEqual4(byte[] ar1, byte[] ar2)
 		{

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace NVorbis
 {
-	internal class StreamReadBuffer : IDisposable
+    internal class StreamReadBuffer : IDisposable
 	{
 		private class StreamWrapper
 		{

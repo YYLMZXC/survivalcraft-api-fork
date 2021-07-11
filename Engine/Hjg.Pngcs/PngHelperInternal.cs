@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Hjg.Pngcs
 {
-	internal class PngHelperInternal
+    internal class PngHelperInternal
 	{
 		[ThreadStatic]
 		private static CRC32 crc32Engine = null;

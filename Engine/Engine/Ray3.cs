@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-	public struct Ray3 : IEquatable<Ray3>
+    public struct Ray3 : IEquatable<Ray3>
 	{
 		public Vector3 Position;
 

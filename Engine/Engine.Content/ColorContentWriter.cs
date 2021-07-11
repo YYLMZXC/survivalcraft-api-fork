@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentWriter("Engine.Color")]
+    [ContentWriter("Engine.Color")]
 	public class ColorContentWriter : IContentWriter
 	{
 		public Color Color;

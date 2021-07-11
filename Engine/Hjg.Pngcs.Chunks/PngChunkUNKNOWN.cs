@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs.Chunks
 {
-	internal class PngChunkUNKNOWN : PngChunkMultiple
+    internal class PngChunkUNKNOWN : PngChunkMultiple
 	{
 		private byte[] data;
 

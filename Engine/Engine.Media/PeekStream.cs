@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-	internal class PeekStream : Stream
+    internal class PeekStream : Stream
 	{
 		private Stream m_stream;
 
@@ -71,17 +71,17 @@ namespace Engine.Media
 		{
 			switch (origin)
 			{
-			case SeekOrigin.Begin:
-				Position = offset;
-				break;
-			case SeekOrigin.End:
-				Position = Length + offset;
-				break;
-			case SeekOrigin.Current:
-				Position += offset;
-				break;
-			default:
-				throw new ArgumentException("Invalid origin.", "origin");
+				case SeekOrigin.Begin:
+					Position = offset;
+					break;
+				case SeekOrigin.End:
+					Position = Length + offset;
+					break;
+				case SeekOrigin.Current:
+					Position += offset;
+					break;
+				default:
+					throw new ArgumentException("Invalid origin.", "origin");
 			}
 			return Position;
 		}

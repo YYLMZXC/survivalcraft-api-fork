@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Serialization
 {
-	[HumanReadableConverter(typeof(Guid))]
+    [HumanReadableConverter(typeof(Guid))]
 	internal class GuidHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)

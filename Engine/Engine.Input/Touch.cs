@@ -1,12 +1,15 @@
 #if android
+
 using Android.Views;
+
 #endif
+
 using System;
 using System.Collections.Generic;
 
 namespace Engine.Input
 {
-	public static class Touch
+    public static class Touch
 	{
 		private static List<TouchLocation> m_touchLocations = new List<TouchLocation>();
 
@@ -24,35 +27,38 @@ namespace Engine.Input
 
 		internal static void Dispose()
 		{
-        }
-#if android
-        internal static void HandleTouchEvent(MotionEvent e)
-        {
-            if (e.ActionMasked == MotionEventActions.Down || e.ActionMasked == MotionEventActions.Pointer1Down)
-            {
-                int pointerId = e.GetPointerId(e.ActionIndex);
-                float x = e.GetX(e.ActionIndex);
-                float y = e.GetY(e.ActionIndex);
-                ProcessTouchPressed(pointerId, new Vector2(x, y));
-            }
-            else if (e.ActionMasked == MotionEventActions.Move)
-            {
-                for (int i = 0; i < e.PointerCount; i++)
-                {
-                    int pointerId2 = e.GetPointerId(i);
-                    float x2 = e.GetX(i);
-                    float y2 = e.GetY(i);
-                    ProcessTouchMoved(pointerId2, new Vector2(x2, y2));
-                }
-            }
-            else if (e.ActionMasked == MotionEventActions.Up || e.ActionMasked == MotionEventActions.Pointer1Up || e.ActionMasked == MotionEventActions.Cancel || e.ActionMasked == MotionEventActions.Outside)
-            {
-                int pointerId3 = e.GetPointerId(e.ActionIndex);
-                float x3 = e.GetX(e.ActionIndex);
-                float y3 = e.GetY(e.ActionIndex);
-                ProcessTouchReleased(pointerId3, new Vector2(x3, y3));
-            }
 		}
+
+#if android
+
+		internal static void HandleTouchEvent(MotionEvent e)
+		{
+			if (e.ActionMasked == MotionEventActions.Down || e.ActionMasked == MotionEventActions.Pointer1Down)
+			{
+				int pointerId = e.GetPointerId(e.ActionIndex);
+				float x = e.GetX(e.ActionIndex);
+				float y = e.GetY(e.ActionIndex);
+				ProcessTouchPressed(pointerId, new Vector2(x, y));
+			}
+			else if (e.ActionMasked == MotionEventActions.Move)
+			{
+				for (int i = 0; i < e.PointerCount; i++)
+				{
+					int pointerId2 = e.GetPointerId(i);
+					float x2 = e.GetX(i);
+					float y2 = e.GetY(i);
+					ProcessTouchMoved(pointerId2, new Vector2(x2, y2));
+				}
+			}
+			else if (e.ActionMasked == MotionEventActions.Up || e.ActionMasked == MotionEventActions.Pointer1Up || e.ActionMasked == MotionEventActions.Cancel || e.ActionMasked == MotionEventActions.Outside)
+			{
+				int pointerId3 = e.GetPointerId(e.ActionIndex);
+				float x3 = e.GetX(e.ActionIndex);
+				float y3 = e.GetY(e.ActionIndex);
+				ProcessTouchReleased(pointerId3, new Vector2(x3, y3));
+			}
+		}
+
 #endif
 
 		public static void Clear()

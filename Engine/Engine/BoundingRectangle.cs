@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Engine
 {
-	public struct BoundingRectangle : IEquatable<BoundingRectangle>
+    public struct BoundingRectangle : IEquatable<BoundingRectangle>
 	{
 		public Vector2 Min;
 

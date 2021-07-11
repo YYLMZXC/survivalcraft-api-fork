@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NVorbis
 {
-	internal static class Huffman
+    internal static class Huffman
 	{
 		private const int MAX_TABLE_BITS = 10;
 

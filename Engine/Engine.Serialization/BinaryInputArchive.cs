@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Engine.Serialization
 {
-	public class BinaryInputArchive : InputArchive, IDisposable
+    public class BinaryInputArchive : InputArchive, IDisposable
 	{
 		private Dictionary<int, Type> m_typeIds = new Dictionary<int, Type>();
 

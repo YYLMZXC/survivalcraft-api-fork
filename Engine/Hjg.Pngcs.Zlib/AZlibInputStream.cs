@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Hjg.Pngcs.Zlib
 {
-	internal abstract class AZlibInputStream : Stream
+    internal abstract class AZlibInputStream : Stream
 	{
 		protected readonly Stream rawStream;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Engine.Graphics
 {
-	public class ModelMesh : IDisposable
+    public class ModelMesh : IDisposable
 	{
 		internal List<ModelMeshPart> m_meshParts = new List<ModelMeshPart>();
 

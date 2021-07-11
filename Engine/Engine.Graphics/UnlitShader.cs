@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Engine.Graphics
 {
-	public class UnlitShader : Shader
+    public class UnlitShader : Shader
 	{
 		public ShaderParameter m_worldViewProjectionMatrixParameter;
 
@@ -49,6 +49,7 @@ namespace Engine.Graphics
 				m_alphaThresholdParameter.SetValue(value);
 			}
 		}
+
 #if desktop
 		public UnlitShader(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
 			: base(new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Embedded.Unlit.vsh")).ReadToEnd(), new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Embedded.Unlit.psh")).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
@@ -63,8 +64,9 @@ namespace Engine.Graphics
 		}
 #endif
 #if android
+
 		public UnlitShader(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
-            : base(new StreamReader(Storage.OpenFile("app:Unlit.vsh", OpenFileMode.Read)).ReadToEnd(), new StreamReader(Storage.OpenFile("app:Unlit.psh", OpenFileMode.Read)).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
+			: base(new StreamReader(Storage.OpenFile("app:Unlit.vsh", OpenFileMode.Read)).ReadToEnd(), new StreamReader(Storage.OpenFile("app:Unlit.psh", OpenFileMode.Read)).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
 		{
 			m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix", allowNull: true);
 			m_textureParameter = GetParameter("u_texture", allowNull: true);
@@ -75,8 +77,8 @@ namespace Engine.Graphics
 			Color = Vector4.One;
 		}
 
-
 #endif
+
 		public override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(1, worldView: false, viewProjection: false, worldViewProjection: true);

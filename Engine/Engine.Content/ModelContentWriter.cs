@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentWriter("Engine.Graphics.Model")]
+    [ContentWriter("Engine.Graphics.Model")]
 	public class ModelContentWriter : IContentWriter
 	{
 		public string Model;

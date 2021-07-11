@@ -2,7 +2,7 @@ using System;
 
 namespace NVorbis
 {
-	internal interface IPacketProvider : IDisposable
+    internal interface IPacketProvider : IDisposable
 	{
 		int StreamSerial
 		{

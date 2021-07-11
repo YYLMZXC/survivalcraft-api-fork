@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Engine.Serialization
 {
-	internal class SystemDrawingTypesConverters
+    internal class SystemDrawingTypesConverters
 	{
 		[HumanReadableConverter(typeof(System.Drawing.Color))]
 		internal class ColorStringConverter : IHumanReadableConverter

@@ -1,6 +1,6 @@
 namespace Engine.Media
 {
-	public enum ImageFileFormat
+    public enum ImageFileFormat
 	{
 		Bmp,
 		Png,

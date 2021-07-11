@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-	public static class MathUtils
+    public static class MathUtils
 	{
 		public const float PI = (float)Math.PI;
 

@@ -1,6 +1,6 @@
 namespace Engine
 {
-	public enum LogType
+    public enum LogType
 	{
 		Debug,
 		Verbose,

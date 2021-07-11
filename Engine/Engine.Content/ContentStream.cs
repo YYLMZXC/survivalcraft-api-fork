@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	public class ContentStream : Stream
+    public class ContentStream : Stream
 	{
 		private Func<Stream> m_streamFactory;
 

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace FluxJpeg.Core
 {
-	internal class JpegHuffmanTable
+    internal class JpegHuffmanTable
 	{
 		private short[] lengths;
 

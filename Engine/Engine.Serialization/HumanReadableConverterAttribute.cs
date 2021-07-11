@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Serialization
 {
-	[AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class)]
 	public class HumanReadableConverterAttribute : Attribute
 	{
 		public Type Type;

@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentWriter("Engine.Graphics.Shader")]
+    [ContentWriter("Engine.Graphics.Shader")]
 	public class ShaderContentWriter : IContentWriter
 	{
 		public string VertexShader;
@@ -33,7 +33,7 @@ namespace Engine.Content
 			for (int i = 0; i < array.Length; i++)
 			{
 #if android
-                string[] array3 = array[i].Split(new char[] { '=' }, StringSplitOptions.None);
+				string[] array3 = array[i].Split(new char[] { '=' }, StringSplitOptions.None);
 #else
 				string[] array3 = array[i].Split('=');
 #endif

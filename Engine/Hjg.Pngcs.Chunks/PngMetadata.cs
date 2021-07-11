@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Hjg.Pngcs.Chunks
 {
-	internal class PngMetadata
+    internal class PngMetadata
 	{
 		private readonly ChunksList chunkList;
 

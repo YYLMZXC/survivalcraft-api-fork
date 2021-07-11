@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-	public class UnhandledExceptionInfo
+    public class UnhandledExceptionInfo
 	{
 		public readonly Exception Exception;
 

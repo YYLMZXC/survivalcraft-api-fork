@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-	public struct Vector2 : IEquatable<Vector2>
+    public struct Vector2 : IEquatable<Vector2>
 	{
 		public float X;
 
@@ -162,17 +162,21 @@ namespace Engine
 		{
 			return new Vector2(MathUtils.Max(v1.X, v2.X), MathUtils.Max(v1.Y, v2.Y));
 		}
-#if android
-        public static float MinElement(Vector2 v)
-        {
-            return MathUtils.Min(v.X, v.Y);
-        }
 
-        public static float MaxElement(Vector2 v)
-        {
-            return MathUtils.Max(v.X, v.Y);
-        }
+#if android
+
+		public static float MinElement(Vector2 v)
+		{
+			return MathUtils.Min(v.X, v.Y);
+		}
+
+		public static float MaxElement(Vector2 v)
+		{
+			return MathUtils.Max(v.X, v.Y);
+		}
+
 #endif
+
 		public static Vector2 Clamp(Vector2 v, float min, float max)
 		{
 			return new Vector2(MathUtils.Clamp(v.X, min, max), MathUtils.Clamp(v.Y, min, max));

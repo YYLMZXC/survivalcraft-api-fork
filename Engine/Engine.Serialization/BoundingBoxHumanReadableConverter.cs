@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Serialization
 {
-	[HumanReadableConverter(typeof(BoundingBox))]
+    [HumanReadableConverter(typeof(BoundingBox))]
 	internal class BoundingBoxHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace NVorbis.Ogg
 {
-	internal class ContainerReader : IContainerReader, IDisposable
+    internal class ContainerReader : IContainerReader, IDisposable
 	{
 		private class PageHeader
 		{
@@ -275,20 +275,20 @@ namespace NVorbis.Ogg
 				{
 					switch (_stream.ReadByte())
 					{
-					case 79:
-						if (_stream.ReadByte() == 103 && _stream.ReadByte() == 103 && _stream.ReadByte() == 83)
-						{
-							num += num3;
-							goto end_IL_0032;
-						}
-						_stream.Seek(-3L, SeekOrigin.Current);
-						break;
-					case -1:
-						return null;
+						case 79:
+							if (_stream.ReadByte() == 103 && _stream.ReadByte() == 103 && _stream.ReadByte() == 83)
+							{
+								num += num3;
+								goto end_IL_0032;
+							}
+							_stream.Seek(-3L, SeekOrigin.Current);
+							break;
+						case -1:
+							return null;
 					}
 					_wasteBits += 8L;
 					continue;
-					end_IL_0032:
+				end_IL_0032:
 					break;
 				}
 				while (++num3 < 65536);

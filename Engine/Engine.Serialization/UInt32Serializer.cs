@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	internal class UInt32Serializer : ISerializer<uint>
+    internal class UInt32Serializer : ISerializer<uint>
 	{
 		public void Serialize(InputArchive archive, ref uint value)
 		{

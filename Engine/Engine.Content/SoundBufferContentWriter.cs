@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentWriter("Engine.Audio.SoundBuffer")]
+    [ContentWriter("Engine.Audio.SoundBuffer")]
 	public class SoundBufferContentWriter : IContentWriter
 	{
 		public string Sound;

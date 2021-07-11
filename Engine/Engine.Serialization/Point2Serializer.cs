@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	internal class Point2Serializer : ISerializer<Point2>
+    internal class Point2Serializer : ISerializer<Point2>
 	{
 		public void Serialize(InputArchive archive, ref Point2 value)
 		{

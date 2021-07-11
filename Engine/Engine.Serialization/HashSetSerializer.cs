@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Engine.Serialization
 {
-	internal class HashSetSerializer<T> : ISerializer<HashSet<T>>
+    internal class HashSetSerializer<T> : ISerializer<HashSet<T>>
 	{
 		public void Serialize(InputArchive archive, ref HashSet<T> value)
 		{

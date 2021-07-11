@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Engine.Serialization
 {
-	public abstract class InputArchive : Archive
+    public abstract class InputArchive : Archive
 	{
 		private Dictionary<int, object> m_objectById = new Dictionary<int, object>();
 

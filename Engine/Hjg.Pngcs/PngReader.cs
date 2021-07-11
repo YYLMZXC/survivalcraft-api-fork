@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Hjg.Pngcs
 {
-	internal class PngReader
+    internal class PngReader
 	{
 		protected readonly string filename;
 
@@ -206,23 +206,23 @@ namespace Hjg.Pngcs
 			int num = rowbfilter[0];
 			switch (num)
 			{
-			case 0:
-				UnfilterRowNone(nbytes);
-				break;
-			case 1:
-				UnfilterRowSub(nbytes);
-				break;
-			case 2:
-				UnfilterRowUp(nbytes);
-				break;
-			case 3:
-				UnfilterRowAverage(nbytes);
-				break;
-			case 4:
-				UnfilterRowPaeth(nbytes);
-				break;
-			default:
-				throw new PngjInputException("Filter type " + num.ToString() + " not implemented");
+				case 0:
+					UnfilterRowNone(nbytes);
+					break;
+				case 1:
+					UnfilterRowSub(nbytes);
+					break;
+				case 2:
+					UnfilterRowUp(nbytes);
+					break;
+				case 3:
+					UnfilterRowAverage(nbytes);
+					break;
+				case 4:
+					UnfilterRowPaeth(nbytes);
+					break;
+				default:
+					throw new PngjInputException("Filter type " + num.ToString() + " not implemented");
 			}
 			if (crctest != null)
 			{

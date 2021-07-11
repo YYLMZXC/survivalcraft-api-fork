@@ -4,7 +4,7 @@ using System.IO.Compression;
 
 namespace Hjg.Pngcs.Zlib
 {
-	internal class ZlibInputStreamMs : AZlibInputStream
+    internal class ZlibInputStreamMs : AZlibInputStream
 	{
 		private DeflateStream deflateStream;
 

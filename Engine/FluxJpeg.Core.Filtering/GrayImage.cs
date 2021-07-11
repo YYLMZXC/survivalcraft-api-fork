@@ -1,6 +1,6 @@
 namespace FluxJpeg.Core.Filtering
 {
-	internal class GrayImage
+    internal class GrayImage
 	{
 		public float[] Scan0;
 

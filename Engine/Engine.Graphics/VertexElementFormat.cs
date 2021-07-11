@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-	public enum VertexElementFormat
+    public enum VertexElementFormat
 	{
 		Single,
 		Vector2,

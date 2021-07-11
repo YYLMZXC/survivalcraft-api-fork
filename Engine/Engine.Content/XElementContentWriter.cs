@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace Engine.Content
 {
-	[ContentWriter("System.Xml.Linq.XElement")]
+    [ContentWriter("System.Xml.Linq.XElement")]
 	public class XElementContentWriter : IContentWriter
 	{
 		public string Xml;

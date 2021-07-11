@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentReader("Engine.Media.ModelData")]
+    [ContentReader("Engine.Media.ModelData")]
 	public class ModelDataContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)

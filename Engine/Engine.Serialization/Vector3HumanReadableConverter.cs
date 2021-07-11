@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Serialization
 {
-	[HumanReadableConverter(typeof(Vector3))]
+    [HumanReadableConverter(typeof(Vector3))]
 	internal class Vector3HumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)

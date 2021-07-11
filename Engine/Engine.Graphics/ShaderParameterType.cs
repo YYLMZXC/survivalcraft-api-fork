@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-	public enum ShaderParameterType
+    public enum ShaderParameterType
 	{
 		Float,
 		Vector2,

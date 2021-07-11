@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-	internal class PngChunkBKGD : PngChunkSingle
+    internal class PngChunkBKGD : PngChunkSingle
 	{
 		public const string ID = "bKGD";
 

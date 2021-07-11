@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	internal class DoubleSerializer : ISerializer<double>
+    internal class DoubleSerializer : ISerializer<double>
 	{
 		public void Serialize(InputArchive archive, ref double value)
 		{

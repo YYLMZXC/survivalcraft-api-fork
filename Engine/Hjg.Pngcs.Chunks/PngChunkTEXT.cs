@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs.Chunks
 {
-	internal class PngChunkTEXT : PngChunkTextVar
+    internal class PngChunkTEXT : PngChunkTextVar
 	{
 		public const string ID = "tEXt";
 

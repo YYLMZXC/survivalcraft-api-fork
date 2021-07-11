@@ -2,7 +2,7 @@ using System.Text;
 
 namespace FluxJpeg.Core
 {
-	internal class JpegHeader
+    internal class JpegHeader
 	{
 		public byte Marker;
 
@@ -10,6 +10,6 @@ namespace FluxJpeg.Core
 
 		internal bool IsJFIF;
 
-		public new string ToString => Encoding.UTF8.GetString(Data, 0, Data.Length);
-	}
+        public new string ToString => Encoding.UTF8.GetString(Data, 0, Data.Length);
+    }
 }

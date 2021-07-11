@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Hjg.Pngcs.Chunks
 {
-	internal class PngChunkIHDR : PngChunkSingle
+    internal class PngChunkIHDR : PngChunkSingle
 	{
 		public const string ID = "IHDR";
 

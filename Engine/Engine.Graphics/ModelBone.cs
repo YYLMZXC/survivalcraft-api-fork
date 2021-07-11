@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Engine.Graphics
 {
-	public class ModelBone
+    public class ModelBone
 	{
 		internal List<ModelBone> m_childBones = new List<ModelBone>();
 

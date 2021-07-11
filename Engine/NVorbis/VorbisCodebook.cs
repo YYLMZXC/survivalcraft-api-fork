@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace NVorbis
 {
-	internal class VorbisCodebook
+    internal class VorbisCodebook
 	{
 		internal int BookNum;
 

@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Engine.Serialization
 {
-	public class XmlOutputArchive : OutputArchive
+    public class XmlOutputArchive : OutputArchive
 	{
 		public XElement Node
 		{

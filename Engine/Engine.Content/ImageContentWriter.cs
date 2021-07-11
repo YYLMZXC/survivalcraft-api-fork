@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentWriter("Engine.Media.Image")]
+    [ContentWriter("Engine.Media.Image")]
 	public class ImageContentWriter : IContentWriter
 	{
 		public string Image;

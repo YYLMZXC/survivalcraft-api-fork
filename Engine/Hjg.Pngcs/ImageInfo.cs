@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs
 {
-	internal class ImageInfo
+    internal class ImageInfo
 	{
 		private const int MAX_COLS_ROWS_VAL = 400000;
 
@@ -56,24 +56,24 @@ namespace Hjg.Pngcs
 			SamplesPerRowPacked = (Packed ? BytesPerRow : SamplesPerRow);
 			switch (BitDepth)
 			{
-			case 1:
-			case 2:
-			case 4:
-				if (!Indexed && !Greyscale)
-				{
-					throw new PngjException("only indexed or grayscale can have bitdepth=" + BitDepth.ToString());
-				}
-				break;
-			case 16:
-				if (Indexed)
-				{
-					throw new PngjException("indexed can't have bitdepth=" + BitDepth.ToString());
-				}
-				break;
-			default:
-				throw new PngjException("invalid bitdepth=" + BitDepth.ToString());
-			case 8:
-				break;
+				case 1:
+				case 2:
+				case 4:
+					if (!Indexed && !Greyscale)
+					{
+						throw new PngjException("only indexed or grayscale can have bitdepth=" + BitDepth.ToString());
+					}
+					break;
+				case 16:
+					if (Indexed)
+					{
+						throw new PngjException("indexed can't have bitdepth=" + BitDepth.ToString());
+					}
+					break;
+				default:
+					throw new PngjException("invalid bitdepth=" + BitDepth.ToString());
+				case 8:
+					break;
 			}
 			if (cols < 1 || cols > 400000)
 			{

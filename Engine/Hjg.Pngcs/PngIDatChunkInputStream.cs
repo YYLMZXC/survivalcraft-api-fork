@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Hjg.Pngcs
 {
-	internal class PngIDatChunkInputStream : Stream
+    internal class PngIDatChunkInputStream : Stream
 	{
 		public class IdatChunkInfo
 		{

@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-	public struct Matrix : IEquatable<Matrix>
+    public struct Matrix : IEquatable<Matrix>
 	{
 		public float M11;
 

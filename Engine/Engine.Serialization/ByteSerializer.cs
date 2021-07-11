@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	internal class ByteSerializer : ISerializer<byte>
+    internal class ByteSerializer : ISerializer<byte>
 	{
 		public void Serialize(InputArchive archive, ref byte value)
 		{

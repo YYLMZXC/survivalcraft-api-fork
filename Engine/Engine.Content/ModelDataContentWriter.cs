@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentWriter("Engine.Media.ModelData")]
+    [ContentWriter("Engine.Media.ModelData")]
 	public class ModelDataContentWriter : IContentWriter
 	{
 		public string ModelData;

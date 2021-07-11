@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Engine.Graphics
 {
-	public sealed class VertexDeclaration : IEquatable<VertexDeclaration>
+    public sealed class VertexDeclaration : IEquatable<VertexDeclaration>
 	{
 		internal VertexElement[] m_elements;
 

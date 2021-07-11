@@ -3,7 +3,7 @@ using System.IO.Compression;
 
 namespace Hjg.Pngcs.Zlib
 {
-	internal class ZlibOutputStreamMs : AZlibOutputStream
+    internal class ZlibOutputStreamMs : AZlibOutputStream
 	{
 		private DeflateStream deflateStream;
 

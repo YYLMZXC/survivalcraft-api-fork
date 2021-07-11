@@ -1,6 +1,6 @@
 namespace Engine.Input
 {
-	public struct MouseButtonEvent
+    public struct MouseButtonEvent
 	{
 		public Point2 Position;
 

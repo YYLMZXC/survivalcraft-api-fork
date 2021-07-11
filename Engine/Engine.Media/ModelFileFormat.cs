@@ -1,6 +1,6 @@
 namespace Engine.Media
 {
-	public enum ModelFileFormat
+    public enum ModelFileFormat
 	{
 		Collada
 	}

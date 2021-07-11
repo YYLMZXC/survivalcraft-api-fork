@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs.Chunks
 {
-	internal class PngChunkTIME : PngChunkSingle
+    internal class PngChunkTIME : PngChunkSingle
 	{
 		public const string ID = "tIME";
 

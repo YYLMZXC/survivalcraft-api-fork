@@ -3,7 +3,7 @@ using System.IO;
 
 namespace NVorbis
 {
-	internal class VorbisMode
+    internal class VorbisMode
 	{
 		private const float M_PI = (float)Math.PI;
 

@@ -104,11 +104,9 @@ namespace Game
 
         public static string UnpackMotd(byte[] data)
         {
-            string text = "motd.xml";
+            const string text = "motd.xml";
             using (MemoryStream stream = new MemoryStream(data))
-            {
                 return new StreamReader(stream).ReadToEnd();
-            }
             throw new InvalidOperationException($"\"{text}\" file not found in Motd zip archive.");
         }
 

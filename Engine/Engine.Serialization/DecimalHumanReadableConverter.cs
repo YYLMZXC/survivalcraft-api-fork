@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Engine.Serialization
 {
-	[HumanReadableConverter(typeof(decimal))]
+    [HumanReadableConverter(typeof(decimal))]
 	internal class DecimalHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)

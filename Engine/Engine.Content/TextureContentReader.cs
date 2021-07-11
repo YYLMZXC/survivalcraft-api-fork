@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentReader("Engine.Graphics.Texture2D")]
+    [ContentReader("Engine.Graphics.Texture2D")]
 	public class TextureContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)

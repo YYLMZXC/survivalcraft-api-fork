@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-	public enum ColorFormat
+    public enum ColorFormat
 	{
 		Rgba8888,
 		Rgba5551,

@@ -1,6 +1,6 @@
 namespace Engine
 {
-	public class DebugLogSink : ILogSink
+    public class DebugLogSink : ILogSink
 	{
 		public LogType MinimumLogType
 		{
@@ -14,12 +14,12 @@ namespace Engine
 			{
 				switch (logType)
 				{
-				case LogType.Debug:
-				case LogType.Verbose:
-				case LogType.Information:
-				case LogType.Warning:
-				case LogType.Error:
-					return;
+					case LogType.Debug:
+					case LogType.Verbose:
+					case LogType.Information:
+					case LogType.Warning:
+					case LogType.Error:
+						return;
 				}
 				_ = string.Empty;
 			}

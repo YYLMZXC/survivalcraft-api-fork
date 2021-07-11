@@ -2,7 +2,7 @@ using System;
 
 namespace NVorbis.Ogg
 {
-	internal class Packet : DataPacket
+    internal class Packet : DataPacket
 	{
 		private long _offset;
 

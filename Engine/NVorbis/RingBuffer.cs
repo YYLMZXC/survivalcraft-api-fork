@@ -2,7 +2,7 @@ using System;
 
 namespace NVorbis
 {
-	internal class RingBuffer
+    internal class RingBuffer
 	{
 		private float[] _buffer;
 

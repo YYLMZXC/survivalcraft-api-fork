@@ -2,7 +2,7 @@ using System;
 
 namespace FluxJpeg.Core.Filtering
 {
-	internal class Convolution
+    internal class Convolution
 	{
 		private struct FilterJob
 		{

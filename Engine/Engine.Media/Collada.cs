@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace Engine.Media
 {
-	public static class Collada
+    public static class Collada
 	{
 		private struct Vertex : IEquatable<Vertex>
 		{
@@ -200,25 +200,25 @@ namespace Engine.Media
 					if (item.Name == ColladaRoot.Namespace + "matrix")
 					{
 						float[] array = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+										 select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.Transpose(new Matrix(array[0], array[1], array[2], array[3], array[4], array[5], array[6], array[7], array[8], array[9], array[10], array[11], array[12], array[13], array[14], array[15])) * Transform;
 					}
 					else if (item.Name == ColladaRoot.Namespace + "translate")
 					{
 						float[] array2 = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+										  select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.CreateTranslation(array2[0], array2[1], array2[2]) * Transform;
 					}
 					else if (item.Name == ColladaRoot.Namespace + "rotate")
 					{
 						float[] array3 = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+										  select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.CreateFromAxisAngle(new Vector3(array3[0], array3[1], array3[2]), MathUtils.DegToRad(array3[3])) * Transform;
 					}
 					else if (item.Name == ColladaRoot.Namespace + "scale")
 					{
 						float[] array4 = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+										  select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.CreateScale(array4[0], array4[1], array4[2]) * Transform;
 					}
 				}
@@ -305,7 +305,7 @@ namespace Engine.Media
 				: base(collada, node)
 			{
 				Array = (from s in node.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-					select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+						 select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 			}
 		}
 
@@ -365,12 +365,12 @@ namespace Engine.Media
 				foreach (XElement item2 in node.Elements(ColladaRoot.Namespace + "vcount"))
 				{
 					VCount.AddRange(from s in item2.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-						select int.Parse(s, CultureInfo.InvariantCulture));
+									select int.Parse(s, CultureInfo.InvariantCulture));
 				}
 				foreach (XElement item3 in node.Elements(ColladaRoot.Namespace + "p"))
 				{
 					P.AddRange(from s in item3.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-						select int.Parse(s, CultureInfo.InvariantCulture));
+							   select int.Parse(s, CultureInfo.InvariantCulture));
 				}
 			}
 		}
@@ -567,23 +567,23 @@ namespace Engine.Media
 					{
 						switch (enumerator2.Current)
 						{
-						case 3:
-							list.Add(num4);
-							list.Add(num4 + 2);
-							list.Add(num4 + 1);
-							num4 += 3;
-							break;
-						case 4:
-							list.Add(num4);
-							list.Add(num4 + 2);
-							list.Add(num4 + 1);
-							list.Add(num4 + 2);
-							list.Add(num4);
-							list.Add(num4 + 3);
-							num4 += 4;
-							break;
-						default:
-							throw new NotSupportedException("Collada polygons with less than 3 or more than 4 vertices are not supported.");
+							case 3:
+								list.Add(num4);
+								list.Add(num4 + 2);
+								list.Add(num4 + 1);
+								num4 += 3;
+								break;
+							case 4:
+								list.Add(num4);
+								list.Add(num4 + 2);
+								list.Add(num4 + 1);
+								list.Add(num4 + 2);
+								list.Add(num4);
+								list.Add(num4 + 3);
+								num4 += 4;
+								break;
+							default:
+								throw new NotSupportedException("Collada polygons with less than 3 or more than 4 vertices are not supported.");
 						}
 					}
 				}

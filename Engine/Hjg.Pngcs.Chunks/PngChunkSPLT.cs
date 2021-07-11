@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Hjg.Pngcs.Chunks
 {
-	internal class PngChunkSPLT : PngChunkMultiple
+    internal class PngChunkSPLT : PngChunkMultiple
 	{
 		public const string ID = "sPLT";
 

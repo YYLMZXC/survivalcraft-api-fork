@@ -5,7 +5,7 @@ using System.IO;
 
 namespace NVorbis.Ogg
 {
-	[DebuggerTypeProxy(typeof(DebugView))]
+    [DebuggerTypeProxy(typeof(DebugView))]
 	internal class PacketReader : IPacketProvider, IDisposable
 	{
 		private class DebugView
@@ -218,7 +218,7 @@ namespace NVorbis.Ogg
 						}
 					}
 					break;
-					IL_004f:
+				IL_004f:
 					_container.GatherNextPage(_streamSerial);
 				}
 			}

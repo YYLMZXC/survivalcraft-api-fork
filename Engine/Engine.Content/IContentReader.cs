@@ -1,6 +1,6 @@
 namespace Engine.Content
 {
-	public interface IContentReader
+    public interface IContentReader
 	{
 		object Read(ContentStream stream, object existingObject);
 	}

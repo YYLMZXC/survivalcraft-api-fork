@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-	public class Image
+    public class Image
 	{
 		public readonly int Width;
 
@@ -228,14 +228,14 @@ namespace Engine.Media
 		{
 			switch (format)
 			{
-			case ImageFileFormat.Bmp:
-				return Bmp.Load(stream);
-			case ImageFileFormat.Png:
-				return Png.Load(stream);
-			case ImageFileFormat.Jpg:
-				return Jpg.Load(stream);
-			default:
-				throw new InvalidOperationException("Unsupported image file format.");
+				case ImageFileFormat.Bmp:
+					return Bmp.Load(stream);
+				case ImageFileFormat.Png:
+					return Png.Load(stream);
+				case ImageFileFormat.Jpg:
+					return Jpg.Load(stream);
+				default:
+					throw new InvalidOperationException("Unsupported image file format.");
 			}
 		}
 
@@ -266,17 +266,17 @@ namespace Engine.Media
 		{
 			switch (format)
 			{
-			case ImageFileFormat.Bmp:
-				Bmp.Save(image, stream, (!saveAlpha) ? Bmp.Format.RGB8 : Bmp.Format.RGBA8);
-				break;
-			case ImageFileFormat.Png:
-				Png.Save(image, stream, (!saveAlpha) ? Png.Format.RGB8 : Png.Format.RGBA8);
-				break;
-			case ImageFileFormat.Jpg:
-				Jpg.Save(image, stream, 95);
-				break;
-			default:
-				throw new InvalidOperationException("Unsupported image file format.");
+				case ImageFileFormat.Bmp:
+					Bmp.Save(image, stream, (!saveAlpha) ? Bmp.Format.RGB8 : Bmp.Format.RGBA8);
+					break;
+				case ImageFileFormat.Png:
+					Png.Save(image, stream, (!saveAlpha) ? Png.Format.RGB8 : Png.Format.RGBA8);
+					break;
+				case ImageFileFormat.Jpg:
+					Jpg.Save(image, stream, 95);
+					break;
+				default:
+					throw new InvalidOperationException("Unsupported image file format.");
 			}
 		}
 

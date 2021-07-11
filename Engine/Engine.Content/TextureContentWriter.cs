@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentWriter("Engine.Graphics.Texture2D")]
+    [ContentWriter("Engine.Graphics.Texture2D")]
 	public class TextureContentWriter : IContentWriter
 	{
 		public string Texture;

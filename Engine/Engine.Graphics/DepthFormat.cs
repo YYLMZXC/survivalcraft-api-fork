@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-	public enum DepthFormat
+    public enum DepthFormat
 	{
 		None,
 		Depth16,

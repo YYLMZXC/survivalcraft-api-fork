@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentReader("Engine.Media.Image")]
+    [ContentReader("Engine.Media.Image")]
 	public class ImageContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)

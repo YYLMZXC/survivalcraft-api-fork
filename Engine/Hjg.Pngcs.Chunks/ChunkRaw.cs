@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Hjg.Pngcs.Chunks
 {
-	internal class ChunkRaw
+    internal class ChunkRaw
 	{
 		public readonly int Length;
 

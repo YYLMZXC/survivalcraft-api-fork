@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Serialization
 {
-	[HumanReadableConverter(typeof(Color))]
+    [HumanReadableConverter(typeof(Color))]
 	internal class ColorHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)

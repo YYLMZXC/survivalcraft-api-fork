@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Zlib
 {
-	internal class DeflateCompressLevel
+    internal class DeflateCompressLevel
 	{
 		public const int NO_COMPRESSION = 0;
 

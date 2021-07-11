@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Zlib
 {
-	internal class Adler32
+    internal class Adler32
 	{
 		private uint a = 1u;
 

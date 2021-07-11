@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-	internal class ChunkPredicateEquiv : ChunkPredicate
+    internal class ChunkPredicateEquiv : ChunkPredicate
 	{
 		private readonly PngChunk chunk;
 

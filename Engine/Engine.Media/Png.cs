@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-	public static class Png
+    public static class Png
 	{
 		public enum Format
 		{
@@ -216,102 +216,102 @@ namespace Engine.Media
 			}
 			switch (format)
 			{
-			case Format.RGBA8:
-			{
-				ImageInfo imgInfo3 = new ImageInfo(image.Width, image.Height, 8, alpha: true, grayscale: false, palette: false);
-				PngWriter pngWriter3 = new PngWriter(stream, imgInfo3);
-				pngWriter3.ShouldCloseStream = false;
-				byte[] array3 = new byte[4 * image.Width];
-				int m = 0;
-				int num5 = 0;
-				for (; m < image.Height; m++)
+				case Format.RGBA8:
 				{
-					int n = 0;
-					int num6 = 0;
-					for (; n < image.Width; n++)
+					ImageInfo imgInfo3 = new ImageInfo(image.Width, image.Height, 8, alpha: true, grayscale: false, palette: false);
+					PngWriter pngWriter3 = new PngWriter(stream, imgInfo3);
+					pngWriter3.ShouldCloseStream = false;
+					byte[] array3 = new byte[4 * image.Width];
+					int m = 0;
+					int num5 = 0;
+					for (; m < image.Height; m++)
 					{
-						Color color3 = image.Pixels[num5++];
-						array3[num6++] = color3.R;
-						array3[num6++] = color3.G;
-						array3[num6++] = color3.B;
-						array3[num6++] = color3.A;
+						int n = 0;
+						int num6 = 0;
+						for (; n < image.Width; n++)
+						{
+							Color color3 = image.Pixels[num5++];
+							array3[num6++] = color3.R;
+							array3[num6++] = color3.G;
+							array3[num6++] = color3.B;
+							array3[num6++] = color3.A;
+						}
+						pngWriter3.WriteRowByte(array3, m);
 					}
-					pngWriter3.WriteRowByte(array3, m);
+					pngWriter3.End();
+					break;
 				}
-				pngWriter3.End();
-				break;
-			}
-			case Format.RGB8:
-			{
-				ImageInfo imgInfo2 = new ImageInfo(image.Width, image.Height, 8, alpha: false, grayscale: false, palette: false);
-				PngWriter pngWriter2 = new PngWriter(stream, imgInfo2);
-				pngWriter2.ShouldCloseStream = false;
-				byte[] array2 = new byte[3 * image.Width];
-				int k = 0;
-				int num3 = 0;
-				for (; k < image.Height; k++)
+				case Format.RGB8:
 				{
-					int l = 0;
-					int num4 = 0;
-					for (; l < image.Width; l++)
+					ImageInfo imgInfo2 = new ImageInfo(image.Width, image.Height, 8, alpha: false, grayscale: false, palette: false);
+					PngWriter pngWriter2 = new PngWriter(stream, imgInfo2);
+					pngWriter2.ShouldCloseStream = false;
+					byte[] array2 = new byte[3 * image.Width];
+					int k = 0;
+					int num3 = 0;
+					for (; k < image.Height; k++)
 					{
-						Color color2 = image.Pixels[num3++];
-						array2[num4++] = color2.R;
-						array2[num4++] = color2.G;
-						array2[num4++] = color2.B;
+						int l = 0;
+						int num4 = 0;
+						for (; l < image.Width; l++)
+						{
+							Color color2 = image.Pixels[num3++];
+							array2[num4++] = color2.R;
+							array2[num4++] = color2.G;
+							array2[num4++] = color2.B;
+						}
+						pngWriter2.WriteRowByte(array2, k);
 					}
-					pngWriter2.WriteRowByte(array2, k);
+					pngWriter2.End();
+					break;
 				}
-				pngWriter2.End();
-				break;
-			}
-			case Format.LA8:
-			{
-				ImageInfo imgInfo4 = new ImageInfo(image.Width, image.Height, 8, alpha: true, grayscale: true, palette: false);
-				PngWriter pngWriter4 = new PngWriter(stream, imgInfo4);
-				pngWriter4.ShouldCloseStream = false;
-				byte[] array4 = new byte[2 * image.Width];
-				int num7 = 0;
-				int num8 = 0;
-				for (; num7 < image.Height; num7++)
+				case Format.LA8:
 				{
-					int num9 = 0;
-					int num10 = 0;
-					for (; num9 < image.Width; num9++)
+					ImageInfo imgInfo4 = new ImageInfo(image.Width, image.Height, 8, alpha: true, grayscale: true, palette: false);
+					PngWriter pngWriter4 = new PngWriter(stream, imgInfo4);
+					pngWriter4.ShouldCloseStream = false;
+					byte[] array4 = new byte[2 * image.Width];
+					int num7 = 0;
+					int num8 = 0;
+					for (; num7 < image.Height; num7++)
 					{
-						Color color4 = image.Pixels[num8++];
-						array4[num10++] = (byte)((color4.R + color4.G + color4.B) / 3);
-						array4[num10++] = color4.A;
+						int num9 = 0;
+						int num10 = 0;
+						for (; num9 < image.Width; num9++)
+						{
+							Color color4 = image.Pixels[num8++];
+							array4[num10++] = (byte)((color4.R + color4.G + color4.B) / 3);
+							array4[num10++] = color4.A;
+						}
+						pngWriter4.WriteRowByte(array4, num7);
 					}
-					pngWriter4.WriteRowByte(array4, num7);
+					pngWriter4.End();
+					break;
 				}
-				pngWriter4.End();
-				break;
-			}
-			case Format.L8:
-			{
-				ImageInfo imgInfo = new ImageInfo(image.Width, image.Height, 8, alpha: false, grayscale: true, palette: false);
-				PngWriter pngWriter = new PngWriter(stream, imgInfo);
-				pngWriter.ShouldCloseStream = false;
-				byte[] array = new byte[image.Width];
-				int i = 0;
-				int num = 0;
-				for (; i < image.Height; i++)
+				case Format.L8:
 				{
-					int j = 0;
-					int num2 = 0;
-					for (; j < image.Width; j++)
+					ImageInfo imgInfo = new ImageInfo(image.Width, image.Height, 8, alpha: false, grayscale: true, palette: false);
+					PngWriter pngWriter = new PngWriter(stream, imgInfo);
+					pngWriter.ShouldCloseStream = false;
+					byte[] array = new byte[image.Width];
+					int i = 0;
+					int num = 0;
+					for (; i < image.Height; i++)
 					{
-						Color color = image.Pixels[num++];
-						array[num2++] = (byte)((color.R + color.G + color.B) / 3);
+						int j = 0;
+						int num2 = 0;
+						for (; j < image.Width; j++)
+						{
+							Color color = image.Pixels[num++];
+							array[num2++] = (byte)((color.R + color.G + color.B) / 3);
+						}
+						pngWriter.WriteRowByte(array, i);
 					}
-					pngWriter.WriteRowByte(array, i);
+					pngWriter.End();
+					break;
 				}
-				pngWriter.End();
-				break;
-			}
-			default:
-				throw new InvalidOperationException("Unsupported PNG pixel format.");
+				default:
+					throw new InvalidOperationException("Unsupported PNG pixel format.");
 			}
 		}
 	}

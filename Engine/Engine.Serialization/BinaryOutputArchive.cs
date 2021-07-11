@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Engine.Serialization
 {
-	public class BinaryOutputArchive : OutputArchive, IDisposable
+    public class BinaryOutputArchive : OutputArchive, IDisposable
 	{
 		private int m_nextTypeId;
 

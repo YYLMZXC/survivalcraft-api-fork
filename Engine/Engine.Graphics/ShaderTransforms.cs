@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Graphics
 {
-	public class ShaderTransforms
+    public class ShaderTransforms
 	{
 		private Matrix[] m_world;
 

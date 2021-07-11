@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentReader("Engine.Graphics.Model")]
+    [ContentReader("Engine.Graphics.Model")]
 	public class ModelContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)

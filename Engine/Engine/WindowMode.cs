@@ -1,6 +1,6 @@
 namespace Engine
 {
-	public enum WindowMode
+    public enum WindowMode
 	{
 		Resizable,
 		Fixed,

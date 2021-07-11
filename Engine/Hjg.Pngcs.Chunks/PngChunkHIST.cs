@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs.Chunks
 {
-	internal class PngChunkHIST : PngChunkSingle
+    internal class PngChunkHIST : PngChunkSingle
 	{
 		public static readonly string ID = "hIST";
 

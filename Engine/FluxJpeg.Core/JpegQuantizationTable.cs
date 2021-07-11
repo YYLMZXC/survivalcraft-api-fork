@@ -2,7 +2,7 @@ using System;
 
 namespace FluxJpeg.Core
 {
-	internal class JpegQuantizationTable
+    internal class JpegQuantizationTable
 	{
 		private int[] table;
 

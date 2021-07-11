@@ -2,7 +2,7 @@ using System.IO;
 
 namespace NVorbis
 {
-	internal abstract class VorbisTime
+    internal abstract class VorbisTime
 	{
 		private class Time0 : VorbisTime
 		{

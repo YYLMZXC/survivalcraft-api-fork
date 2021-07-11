@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace NVorbis
 {
-	internal class BufferedReadStream : Stream
+    internal class BufferedReadStream : Stream
 	{
 		private const int DEFAULT_INITIAL_SIZE = 32768;
 
@@ -205,12 +205,12 @@ namespace NVorbis
 			CheckLock();
 			switch (origin)
 			{
-			case SeekOrigin.Current:
-				offset += Position;
-				break;
-			case SeekOrigin.End:
-				offset += _baseStream.Length;
-				break;
+				case SeekOrigin.Current:
+					offset += Position;
+					break;
+				case SeekOrigin.End:
+					offset += _baseStream.Length;
+					break;
 			}
 			if (!_baseStream.CanSeek)
 			{

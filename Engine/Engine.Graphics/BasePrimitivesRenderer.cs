@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Engine.Graphics
 {
-	public class BasePrimitivesRenderer<T1, T2, T3> where T1 : BaseFlatBatch, new()where T2 : BaseTexturedBatch, new()where T3 : BaseFontBatch, new()
+    public class BasePrimitivesRenderer<T1, T2, T3> where T1 : BaseFlatBatch, new() where T2 : BaseTexturedBatch, new() where T3 : BaseFontBatch, new()
 	{
 		private bool m_sortNeeded;
 
@@ -116,7 +116,7 @@ namespace Engine.Graphics
 			if (m_sortNeeded)
 			{
 				m_sortNeeded = false;
-				m_allBatches.Sort(delegate(BaseBatch b1, BaseBatch b2)
+				m_allBatches.Sort(delegate (BaseBatch b1, BaseBatch b2)
 				{
 					if (b1.Layer < b2.Layer)
 					{

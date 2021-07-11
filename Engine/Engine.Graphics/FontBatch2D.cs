@@ -2,7 +2,7 @@ using Engine.Media;
 
 namespace Engine.Graphics
 {
-	public class FontBatch2D : BaseFontBatch
+    public class FontBatch2D : BaseFontBatch
 	{
 		public void QueueText(string text, Vector2 position, float depth, Color color, TextAnchor anchor = TextAnchor.Default)
 		{
@@ -43,12 +43,12 @@ namespace Engine.Graphics
 			{
 				switch (c)
 				{
-				case '\n':
-					num++;
-					v4 = vector3 + (float)num * (base.Font.GlyphHeight + spacing.Y) * v2;
-					continue;
-				case '\r':
-					continue;
+					case '\n':
+						num++;
+						v4 = vector3 + (float)num * (base.Font.GlyphHeight + spacing.Y) * v2;
+						continue;
+					case '\r':
+						continue;
 				}
 				BitmapFont.Glyph glyph = base.Font.GetGlyph(c);
 				if (!glyph.IsBlank)

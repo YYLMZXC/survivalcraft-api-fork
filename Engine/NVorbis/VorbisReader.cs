@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace NVorbis
 {
-	internal class VorbisReader : IDisposable
+    internal class VorbisReader : IDisposable
 	{
 		private int _streamIdx;
 

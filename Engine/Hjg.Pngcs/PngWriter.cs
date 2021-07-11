@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Hjg.Pngcs
 {
-	internal class PngWriter
+    internal class PngWriter
 	{
 		public readonly ImageInfo ImgInfo;
 
@@ -292,23 +292,23 @@ namespace Hjg.Pngcs
 			rowbfilter[0] = (byte)filterType;
 			switch (filterType)
 			{
-			case FilterType.FILTER_NONE:
-				FilterRowNone();
-				break;
-			case FilterType.FILTER_SUB:
-				FilterRowSub();
-				break;
-			case FilterType.FILTER_UP:
-				FilterRowUp();
-				break;
-			case FilterType.FILTER_AVERAGE:
-				FilterRowAverage();
-				break;
-			case FilterType.FILTER_PAETH:
-				FilterRowPaeth();
-				break;
-			default:
-				throw new PngjOutputException("Filter type " + filterType.ToString() + " not implemented");
+				case FilterType.FILTER_NONE:
+					FilterRowNone();
+					break;
+				case FilterType.FILTER_SUB:
+					FilterRowSub();
+					break;
+				case FilterType.FILTER_UP:
+					FilterRowUp();
+					break;
+				case FilterType.FILTER_AVERAGE:
+					FilterRowAverage();
+					break;
+				case FilterType.FILTER_PAETH:
+					FilterRowPaeth();
+					break;
+				default:
+					throw new PngjOutputException("Filter type " + filterType.ToString() + " not implemented");
 			}
 			reportResultsForFilter(rown, filterType, tentative: false);
 		}

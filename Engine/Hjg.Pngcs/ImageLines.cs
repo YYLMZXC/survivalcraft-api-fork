@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs
 {
-	internal class ImageLines
+    internal class ImageLines
 	{
 		internal readonly int channels;
 
@@ -69,28 +69,28 @@ namespace Hjg.Pngcs
 			elementsPerRow = (unpackedMode ? ImgInfo.SamplesPerRow : ImgInfo.SamplesPerRowPacked);
 			switch (sampleType)
 			{
-			case ImageLine.ESampleType.INT:
-			{
-				Scanlines = new int[nRows][];
-				for (int j = 0; j < nRows; j++)
+				case ImageLine.ESampleType.INT:
 				{
-					Scanlines[j] = new int[elementsPerRow];
+					Scanlines = new int[nRows][];
+					for (int j = 0; j < nRows; j++)
+					{
+						Scanlines[j] = new int[elementsPerRow];
+					}
+					ScanlinesB = null;
+					break;
 				}
-				ScanlinesB = null;
-				break;
-			}
-			case ImageLine.ESampleType.BYTE:
-			{
-				ScanlinesB = new byte[nRows][];
-				for (int i = 0; i < nRows; i++)
+				case ImageLine.ESampleType.BYTE:
 				{
-					ScanlinesB[i] = new byte[elementsPerRow];
+					ScanlinesB = new byte[nRows][];
+					for (int i = 0; i < nRows; i++)
+					{
+						ScanlinesB[i] = new byte[elementsPerRow];
+					}
+					Scanlines = null;
+					break;
 				}
-				Scanlines = null;
-				break;
-			}
-			default:
-				throw new PngjExceptionInternal("bad ImageLine initialization");
+				default:
+					throw new PngjExceptionInternal("bad ImageLine initialization");
 			}
 		}
 

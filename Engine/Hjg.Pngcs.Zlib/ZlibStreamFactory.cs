@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Hjg.Pngcs.Zlib
 {
-	internal class ZlibStreamFactory
+    internal class ZlibStreamFactory
 	{
 		public static AZlibInputStream createZlibInputStream(Stream st, bool leaveOpen)
 		{

@@ -3,7 +3,7 @@ using System;
 
 namespace Engine.Content
 {
-	[ContentReader("Engine.Media.StreamingSource")]
+    [ContentReader("Engine.Media.StreamingSource")]
 	public class StreamingSourceContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)

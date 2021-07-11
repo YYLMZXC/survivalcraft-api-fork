@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Engine.Content
 {
-	[ContentWriter("Engine.Media.BitmapFont")]
+    [ContentWriter("Engine.Media.BitmapFont")]
 	public class BitmapFontContentWriter : IContentWriter
 	{
 		private class BitmapFontData

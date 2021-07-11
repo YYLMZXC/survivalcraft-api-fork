@@ -1,6 +1,6 @@
 namespace NVorbis
 {
-	internal class HuffmanListNode
+    internal class HuffmanListNode
 	{
 		internal int Value;
 

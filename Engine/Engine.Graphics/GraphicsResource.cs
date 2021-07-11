@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Engine.Graphics
 {
-	public abstract class GraphicsResource : IDisposable
+    public abstract class GraphicsResource : IDisposable
 	{
 		public static HashSet<GraphicsResource> m_resources = new HashSet<GraphicsResource>();
 

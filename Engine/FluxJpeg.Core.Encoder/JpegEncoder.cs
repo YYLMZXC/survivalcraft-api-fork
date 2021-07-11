@@ -1,10 +1,9 @@
-using FluxJpeg.Core.IO;
 using System;
 using System.IO;
 
 namespace FluxJpeg.Core.Encoder
 {
-	internal class JpegEncoder
+    internal class JpegEncoder
 	{
 		private JpegEncodeProgressChangedArgs _progress;
 
@@ -228,18 +227,18 @@ namespace FluxJpeg.Core.Encoder
 				int num5;
 				switch (i)
 				{
-				default:
-					num5 = 17;
-					break;
-				case 2:
-					num5 = 1;
-					break;
-				case 1:
-					num5 = 16;
-					break;
-				case 0:
-					num5 = 0;
-					break;
+					default:
+						num5 = 17;
+						break;
+					case 2:
+						num5 = 1;
+						break;
+					case 1:
+						num5 = 16;
+						break;
+					case 0:
+						num5 = 0;
+						break;
 				}
 				byte b = (byte)num5;
 				array4[num2++ - num3] = b;

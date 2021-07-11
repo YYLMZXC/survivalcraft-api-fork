@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	internal class UInt16Serializer : ISerializer<ushort>
+    internal class UInt16Serializer : ISerializer<ushort>
 	{
 		public void Serialize(InputArchive archive, ref ushort value)
 		{

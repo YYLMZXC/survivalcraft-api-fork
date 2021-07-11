@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Hjg.Pngcs.Chunks
 {
-	internal class ChunksListForWrite : ChunksList
+    internal class ChunksListForWrite : ChunksList
 	{
 		private List<PngChunk> queuedChunks;
 

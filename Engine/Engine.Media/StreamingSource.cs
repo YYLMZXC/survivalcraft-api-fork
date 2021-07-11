@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-	public abstract class StreamingSource : IDisposable
+    public abstract class StreamingSource : IDisposable
 	{
 		public abstract int ChannelsCount
 		{

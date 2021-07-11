@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Engine.Input
 {
-	public static class Mouse
+    public static class Mouse
 	{
 #if desktop
 		private static Point2? m_lastMousePosition;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Engine.Serialization
 {
-	internal class SortedListSerializer<K, V> : ISerializer<SortedList<K, V>>
+    internal class SortedListSerializer<K, V> : ISerializer<SortedList<K, V>>
 	{
 		public void Serialize(InputArchive archive, ref SortedList<K, V> value)
 		{

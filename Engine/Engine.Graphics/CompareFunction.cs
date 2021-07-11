@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-	public enum CompareFunction
+    public enum CompareFunction
 	{
 		Always,
 		Never,

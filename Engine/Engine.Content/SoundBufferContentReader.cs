@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentReader("Engine.Audio.SoundBuffer")]
+    [ContentReader("Engine.Audio.SoundBuffer")]
 	public class SoundBufferContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)

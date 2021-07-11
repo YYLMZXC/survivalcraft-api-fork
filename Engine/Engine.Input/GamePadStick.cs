@@ -1,6 +1,6 @@
 namespace Engine.Input
 {
-	public enum GamePadStick
+    public enum GamePadStick
 	{
 		Left,
 		Right

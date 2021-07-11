@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-	internal abstract class PngChunkSingle : PngChunk
+    internal abstract class PngChunkSingle : PngChunk
 	{
 		public PngChunkSingle(string id, ImageInfo imgInfo)
 			: base(id, imgInfo)

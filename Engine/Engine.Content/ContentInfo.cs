@@ -1,6 +1,6 @@
 namespace Engine.Content
 {
-	public struct ContentInfo
+    public struct ContentInfo
 	{
 		public string Name;
 

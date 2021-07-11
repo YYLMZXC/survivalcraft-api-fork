@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace NVorbis
 {
-	internal static class Utils
+    internal static class Utils
 	{
 		[StructLayout(LayoutKind.Explicit)]
 		private struct FloatBits

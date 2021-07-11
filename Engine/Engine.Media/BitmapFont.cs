@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Engine.Media
 {
-	public class BitmapFont : IDisposable
+    public class BitmapFont : IDisposable
 	{
 		public class Glyph
 		{
@@ -90,7 +90,7 @@ namespace Engine.Media
 				if (m_debugFont == null)
 				{
 #if android
-                    m_debugFont = BitmapFontContentReader.ReadBitmapFont(Storage.OpenFile("app:DebugFont.dat", OpenFileMode.Read));
+					m_debugFont = BitmapFontContentReader.ReadBitmapFont(Storage.OpenFile("app:DebugFont.dat", OpenFileMode.Read));
 #else
 					m_debugFont = BitmapFontContentReader.ReadBitmapFont(typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Embedded.DebugFont.dat"));
 #endif
@@ -138,26 +138,26 @@ namespace Engine.Media
 				char c = text[i];
 				switch (c)
 				{
-				case '\n':
-					vector.X = 0f;
-					vector.Y += (GlyphHeight + spacing.Y) * scale.Y;
-					if (vector.Y > result.Y)
+					case '\n':
+						vector.X = 0f;
+						vector.Y += (GlyphHeight + spacing.Y) * scale.Y;
+						if (vector.Y > result.Y)
+						{
+							result.Y = vector.Y;
+						}
+						break;
+					default:
 					{
-						result.Y = vector.Y;
+						Glyph glyph = GetGlyph(c);
+						vector.X += (glyph.Width + spacing.X) * scale.X;
+						if (vector.X > result.X)
+						{
+							result.X = vector.X;
+						}
+						break;
 					}
-					break;
-				default:
-				{
-					Glyph glyph = GetGlyph(c);
-					vector.X += (glyph.Width + spacing.X) * scale.X;
-					if (vector.X > result.X)
-					{
-						result.X = vector.X;
-					}
-					break;
-				}
-				case '\r':
-					break;
+					case '\r':
+						break;
 				}
 			}
 			return result;
@@ -178,11 +178,11 @@ namespace Engine.Media
 				char c = text[i];
 				switch (c)
 				{
-				case '\n':
-					num = 0f;
-					continue;
-				case '\r':
-					continue;
+					case '\n':
+						num = 0f;
+						continue;
+					case '\r':
+						continue;
 				}
 				Glyph glyph = GetGlyph(c);
 				num += (glyph.Width + spacing) * scale;

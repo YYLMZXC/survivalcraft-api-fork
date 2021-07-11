@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Hjg.Pngcs.Chunks
 {
-	internal class ChunksList
+    internal class ChunksList
 	{
 		internal const int CHUNK_GROUP_0_IDHR = 0;
 

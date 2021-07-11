@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Serialization
 {
-	[HumanReadableConverter(typeof(Point2))]
+    [HumanReadableConverter(typeof(Point2))]
 	internal class Point2HumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)

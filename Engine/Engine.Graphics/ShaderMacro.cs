@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Graphics
 {
-	public class ShaderMacro
+    public class ShaderMacro
 	{
 		private static string m_nameChars1 = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

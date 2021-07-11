@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-	public static class Jpg
+    public static class Jpg
 	{
 		public static bool IsJpgStream(Stream stream)
 		{

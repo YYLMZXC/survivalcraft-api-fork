@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace FluxJpeg.Core.Decoder
 {
-	internal class JpegComponent
+    internal class JpegComponent
 	{
 		internal delegate void DecodeFunction(JPEGBinaryReader jpegReader, float[] zigzagMCU);
 
@@ -169,50 +169,50 @@ namespace FluxJpeg.Core.Decoder
 				byte[,] array2 = new byte[num, num2];
 				switch (mode)
 				{
-				case BlockUpsamplingMode.BoxFilter:
-				{
-					for (int n = 0; n < num2; n++)
+					case BlockUpsamplingMode.BoxFilter:
 					{
-						int num6 = n / factorUpH;
-						for (int num7 = 0; num7 < num; num7++)
+						for (int n = 0; n < num2; n++)
 						{
-							int num8 = num7 / factorUpV;
-							array2[num7, n] = array[num8, num6];
-						}
-					}
-					break;
-				}
-				case BlockUpsamplingMode.Interpolate:
-				{
-					for (int j = 0; j < num2; j++)
-					{
-						for (int k = 0; k < num; k++)
-						{
-							int num3 = 0;
-							for (int l = 0; l < factorUpH; l++)
+							int num6 = n / factorUpH;
+							for (int num7 = 0; num7 < num; num7++)
 							{
-								int num4 = (j + l) / factorUpH;
-								if (num4 >= length2)
-								{
-									num4 = length2 - 1;
-								}
-								for (int m = 0; m < factorUpV; m++)
-								{
-									int num5 = (k + m) / factorUpV;
-									if (num5 >= length)
-									{
-										num5 = length - 1;
-									}
-									num3 += array[num5, num4];
-								}
+								int num8 = num7 / factorUpV;
+								array2[num7, n] = array[num8, num6];
 							}
-							array2[k, j] = (byte)(num3 / (factorUpH * factorUpV));
 						}
+						break;
 					}
-					break;
-				}
-				default:
-					throw new ArgumentException("Upsampling mode not supported.");
+					case BlockUpsamplingMode.Interpolate:
+					{
+						for (int j = 0; j < num2; j++)
+						{
+							for (int k = 0; k < num; k++)
+							{
+								int num3 = 0;
+								for (int l = 0; l < factorUpH; l++)
+								{
+									int num4 = (j + l) / factorUpH;
+									if (num4 >= length2)
+									{
+										num4 = length2 - 1;
+									}
+									for (int m = 0; m < factorUpV; m++)
+									{
+										int num5 = (k + m) / factorUpV;
+										if (num5 >= length)
+										{
+											num5 = length - 1;
+										}
+										num3 += array[num5, num4];
+									}
+								}
+								array2[k, j] = (byte)(num3 / (factorUpH * factorUpV));
+							}
+						}
+						break;
+					}
+					default:
+						throw new ArgumentException("Upsampling mode not supported.");
 				}
 				scanDecoded[i] = array2;
 			}

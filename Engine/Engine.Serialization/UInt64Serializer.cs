@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	internal class UInt64Serializer : ISerializer<ulong>
+    internal class UInt64Serializer : ISerializer<ulong>
 	{
 		public void Serialize(InputArchive archive, ref ulong value)
 		{

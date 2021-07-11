@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-	public class ModelData
+    public class ModelData
 	{
 		public List<ModelBoneData> Bones = new List<ModelBoneData>();
 

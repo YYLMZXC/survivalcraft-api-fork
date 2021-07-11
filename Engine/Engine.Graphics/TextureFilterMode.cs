@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-	public enum TextureFilterMode
+    public enum TextureFilterMode
 	{
 		Point,
 		Linear,

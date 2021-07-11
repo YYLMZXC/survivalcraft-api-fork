@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs
 {
-	internal class PngjBadCrcException : PngjException
+    internal class PngjBadCrcException : PngjException
 	{
 		private const long serialVersionUID = 1L;
 

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
-	public sealed class VertexBuffer : GraphicsResource
+    public sealed class VertexBuffer : GraphicsResource
 	{
 		public int m_buffer;
 

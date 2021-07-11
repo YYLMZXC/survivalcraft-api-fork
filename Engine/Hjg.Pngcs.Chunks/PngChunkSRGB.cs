@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-	internal class PngChunkSRGB : PngChunkSingle
+    internal class PngChunkSRGB : PngChunkSingle
 	{
 		public const string ID = "sRGB";
 

@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs.Chunks
 {
-	internal class PngChunkPLTE : PngChunkSingle
+    internal class PngChunkPLTE : PngChunkSingle
 	{
 		public const string ID = "PLTE";
 

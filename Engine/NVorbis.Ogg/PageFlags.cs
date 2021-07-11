@@ -2,7 +2,7 @@ using System;
 
 namespace NVorbis.Ogg
 {
-	[Flags]
+    [Flags]
 	internal enum PageFlags
 	{
 		None = 0x0,

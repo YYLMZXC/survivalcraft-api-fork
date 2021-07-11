@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-	public static class Ogg
+    public static class Ogg
 	{
 		private class OggStreamingSource : StreamingSource
 		{

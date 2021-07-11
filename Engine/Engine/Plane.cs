@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-	public struct Plane : IEquatable<Plane>
+    public struct Plane : IEquatable<Plane>
 	{
 		public Vector3 Normal;
 

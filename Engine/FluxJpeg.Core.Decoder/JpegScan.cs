@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FluxJpeg.Core.Decoder
 {
-	internal class JpegScan
+    internal class JpegScan
 	{
 		private List<JpegComponent> components = new List<JpegComponent>();
 

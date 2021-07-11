@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-	internal class ChunkCopyBehaviour
+    internal class ChunkCopyBehaviour
 	{
 		public static readonly int COPY_NONE = 0;
 
