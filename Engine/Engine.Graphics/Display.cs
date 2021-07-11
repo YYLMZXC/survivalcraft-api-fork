@@ -133,7 +133,7 @@ namespace Engine.Graphics
 		public static void DrawUser<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount) where T : struct
 		{
 			VerifyParametersDrawUser(primitiveType, shader, vertexDeclaration, vertexData, startVertex, verticesCount);
-			GCHandle gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
+			var gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
 			try
 			{
 				GLWrapper.ApplyRenderTarget(RenderTarget);
@@ -153,8 +153,8 @@ namespace Engine.Graphics
 		public static void DrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, ushort[] indexData, int startIndex, int indicesCount) where T : struct
 		{
 			VerifyParametersDrawUserIndexed(primitiveType, shader, vertexDeclaration, vertexData, startVertex, verticesCount, indexData, startIndex, indicesCount);
-			GCHandle gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
-			GCHandle gCHandle2 = GCHandle.Alloc(indexData, GCHandleType.Pinned);
+			var gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
+			var gCHandle2 = GCHandle.Alloc(indexData, GCHandleType.Pinned);
 			try
 			{
 				GLWrapper.ApplyRenderTarget(RenderTarget);
@@ -253,15 +253,15 @@ namespace Engine.Graphics
 			int num = Utilities.SizeOf<T>();
 			if (shader == null)
 			{
-				throw new ArgumentNullException("shader");
+				throw new ArgumentNullException(nameof(shader));
 			}
 			if (vertexDeclaration == null)
 			{
-				throw new ArgumentNullException("vertexDeclaration");
+				throw new ArgumentNullException(nameof(vertexDeclaration));
 			}
 			if (vertexData == null)
 			{
-				throw new ArgumentNullException("vertexData");
+				throw new ArgumentNullException(nameof(vertexData));
 			}
 			if (vertexDeclaration.VertexStride / num * num != vertexDeclaration.VertexStride)
 			{
@@ -279,19 +279,19 @@ namespace Engine.Graphics
 			int num = Utilities.SizeOf<T>();
 			if (shader == null)
 			{
-				throw new ArgumentNullException("shader");
+				throw new ArgumentNullException(nameof(shader));
 			}
 			if (vertexDeclaration == null)
 			{
-				throw new ArgumentNullException("vertexDeclaration");
+				throw new ArgumentNullException(nameof(vertexDeclaration));
 			}
 			if (vertexData == null)
 			{
-				throw new ArgumentNullException("vertexData");
+				throw new ArgumentNullException(nameof(vertexData));
 			}
 			if (indexData == null)
 			{
-				throw new ArgumentNullException("indexData");
+				throw new ArgumentNullException(nameof(indexData));
 			}
 			if (vertexDeclaration.VertexStride / num * num != vertexDeclaration.VertexStride)
 			{
@@ -313,11 +313,11 @@ namespace Engine.Graphics
 			vertexBuffer.VerifyNotDisposed();
 			if (shader == null)
 			{
-				throw new ArgumentNullException("shader");
+				throw new ArgumentNullException(nameof(shader));
 			}
 			if (vertexBuffer == null)
 			{
-				throw new ArgumentNullException("vertexBuffer");
+				throw new ArgumentNullException(nameof(vertexBuffer));
 			}
 			if (startVertex < 0 || verticesCount < 0 || startVertex + verticesCount > vertexBuffer.VerticesCount)
 			{
@@ -332,15 +332,15 @@ namespace Engine.Graphics
 			indexBuffer.VerifyNotDisposed();
 			if (shader == null)
 			{
-				throw new ArgumentNullException("shader");
+				throw new ArgumentNullException(nameof(shader));
 			}
 			if (vertexBuffer == null)
 			{
-				throw new ArgumentNullException("vertexBuffer");
+				throw new ArgumentNullException(nameof(vertexBuffer));
 			}
 			if (indexBuffer == null)
 			{
-				throw new ArgumentNullException("indexBuffer");
+				throw new ArgumentNullException(nameof(indexBuffer));
 			}
 			if (startIndex < 0 || indicesCount < 0 || startIndex + indicesCount > indexBuffer.IndicesCount)
 			{

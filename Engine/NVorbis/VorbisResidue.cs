@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace NVorbis
 {
-    internal abstract class VorbisResidue
+	internal abstract class VorbisResidue
 	{
 		private class Residue0 : VorbisResidue
 		{
@@ -294,15 +294,15 @@ namespace NVorbis
 			VorbisResidue vorbisResidue = null;
 			switch (num)
 			{
-				case 0:
-					vorbisResidue = new Residue0(vorbis);
-					break;
-				case 1:
-					vorbisResidue = new Residue1(vorbis);
-					break;
-				case 2:
-					vorbisResidue = new Residue2(vorbis);
-					break;
+			case 0:
+				vorbisResidue = new Residue0(vorbis);
+				break;
+			case 1:
+				vorbisResidue = new Residue1(vorbis);
+				break;
+			case 2:
+				vorbisResidue = new Residue2(vorbis);
+				break;
 			}
 			if (vorbisResidue == null)
 			{

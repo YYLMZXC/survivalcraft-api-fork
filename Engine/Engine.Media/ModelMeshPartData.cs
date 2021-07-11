@@ -1,6 +1,6 @@
 namespace Engine.Media
 {
-    public class ModelMeshPartData
+	public class ModelMeshPartData
 	{
 		public int BuffersDataIndex;
 

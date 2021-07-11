@@ -1,6 +1,6 @@
 namespace FluxJpeg.Core.Decoder
 {
-    internal enum BlockUpsamplingMode
+	internal enum BlockUpsamplingMode
 	{
 		BoxFilter,
 		Interpolate

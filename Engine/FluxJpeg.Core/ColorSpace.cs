@@ -1,6 +1,6 @@
 namespace FluxJpeg.Core
 {
-    internal enum ColorSpace
+	internal enum ColorSpace
 	{
 		Gray,
 		YCbCr,

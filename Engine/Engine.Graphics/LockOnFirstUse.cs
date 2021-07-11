@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Graphics
 {
-    public class LockOnFirstUse
+	public class LockOnFirstUse
 	{
 		internal bool IsLocked;
 

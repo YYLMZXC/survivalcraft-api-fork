@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Engine.Serialization
 {
-    [HumanReadableConverter(typeof(uint))]
+	[HumanReadableConverter(typeof(uint))]
 	internal class UInt32HumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)

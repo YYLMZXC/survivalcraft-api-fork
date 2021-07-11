@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Serialization
 {
-    [HumanReadableConverter(typeof(Enum))]
+	[HumanReadableConverter(typeof(Enum))]
 	internal class EnumHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)

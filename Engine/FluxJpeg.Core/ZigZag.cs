@@ -1,6 +1,6 @@
 namespace FluxJpeg.Core
 {
-    internal class ZigZag
+	internal class ZigZag
 	{
 		internal static readonly int[] ZigZagMap = new int[64]
 		{

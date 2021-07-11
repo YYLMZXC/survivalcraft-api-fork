@@ -2,7 +2,7 @@ using System;
 
 namespace FluxJpeg.Core.IO
 {
-    internal class JPEGMarkerFoundException : Exception
+	internal class JPEGMarkerFoundException : Exception
 	{
 		public byte Marker;
 

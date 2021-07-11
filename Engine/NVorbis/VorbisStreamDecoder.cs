@@ -7,7 +7,7 @@ using System.Text;
 
 namespace NVorbis
 {
-    internal class VorbisStreamDecoder : IVorbisStreamStatus, IDisposable
+	internal class VorbisStreamDecoder : IVorbisStreamStatus, IDisposable
 	{
 		internal int _upperBitrate;
 
@@ -846,7 +846,7 @@ namespace NVorbis
 			}
 			if (granulePos < 0)
 			{
-				throw new ArgumentOutOfRangeException("granulePos");
+				throw new ArgumentOutOfRangeException(nameof(granulePos));
 			}
 			DataPacket dataPacket;
 			if (granulePos > 0)
@@ -854,7 +854,7 @@ namespace NVorbis
 				dataPacket = _packetProvider.FindPacket(granulePos, GetPacketLength);
 				if (dataPacket == null)
 				{
-					throw new ArgumentOutOfRangeException("granulePos");
+					throw new ArgumentOutOfRangeException(nameof(granulePos));
 				}
 			}
 			else

@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs.Chunks
 {
-    internal class PngChunkTEXT : PngChunkTextVar
+	internal class PngChunkTEXT : PngChunkTextVar
 	{
 		public const string ID = "tEXt";
 
@@ -39,7 +39,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkTEXT pngChunkTEXT = (PngChunkTEXT)other;
+			var pngChunkTEXT = (PngChunkTEXT)other;
 			key = pngChunkTEXT.key;
 			val = pngChunkTEXT.val;
 		}

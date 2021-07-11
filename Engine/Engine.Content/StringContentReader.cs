@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-    [ContentReader("System.String")]
+	[ContentReader("System.String")]
 	public class StringContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)

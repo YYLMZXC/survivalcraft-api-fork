@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace Engine.Media
 {
-    public static class Collada
+	public static class Collada
 	{
 		private struct Vertex : IEquatable<Vertex>
 		{
@@ -200,25 +200,25 @@ namespace Engine.Media
 					if (item.Name == ColladaRoot.Namespace + "matrix")
 					{
 						float[] array = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-										 select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.Transpose(new Matrix(array[0], array[1], array[2], array[3], array[4], array[5], array[6], array[7], array[8], array[9], array[10], array[11], array[12], array[13], array[14], array[15])) * Transform;
 					}
 					else if (item.Name == ColladaRoot.Namespace + "translate")
 					{
 						float[] array2 = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-										  select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.CreateTranslation(array2[0], array2[1], array2[2]) * Transform;
 					}
 					else if (item.Name == ColladaRoot.Namespace + "rotate")
 					{
 						float[] array3 = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-										  select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.CreateFromAxisAngle(new Vector3(array3[0], array3[1], array3[2]), MathUtils.DegToRad(array3[3])) * Transform;
 					}
 					else if (item.Name == ColladaRoot.Namespace + "scale")
 					{
 						float[] array4 = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-										  select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.CreateScale(array4[0], array4[1], array4[2]) * Transform;
 					}
 				}
@@ -305,7 +305,7 @@ namespace Engine.Media
 				: base(collada, node)
 			{
 				Array = (from s in node.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-						 select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+					select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 			}
 		}
 
@@ -365,12 +365,12 @@ namespace Engine.Media
 				foreach (XElement item2 in node.Elements(ColladaRoot.Namespace + "vcount"))
 				{
 					VCount.AddRange(from s in item2.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-									select int.Parse(s, CultureInfo.InvariantCulture));
+						select int.Parse(s, CultureInfo.InvariantCulture));
 				}
 				foreach (XElement item3 in node.Elements(ColladaRoot.Namespace + "p"))
 				{
 					P.AddRange(from s in item3.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-							   select int.Parse(s, CultureInfo.InvariantCulture));
+						select int.Parse(s, CultureInfo.InvariantCulture));
 				}
 			}
 		}
@@ -397,7 +397,7 @@ namespace Engine.Media
 				ColladaNameId colladaNameId = collada.ObjectsById[node.Attribute("source").Value.Substring(1)];
 				if (colladaNameId is ColladaVertices)
 				{
-					ColladaVertices colladaVertices = (ColladaVertices)colladaNameId;
+					var colladaVertices = (ColladaVertices)colladaNameId;
 					Source = colladaVertices.Source;
 					Semantic = colladaVertices.Semantic;
 				}
@@ -412,13 +412,13 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
 			bool result = false;
 			long position = stream.Position;
 			try
 			{
-				XmlReader xmlReader = XmlReader.Create(stream, new XmlReaderSettings
+				var xmlReader = XmlReader.Create(stream, new XmlReaderSettings
 				{
 					IgnoreComments = true,
 					IgnoreWhitespace = true
@@ -444,11 +444,11 @@ namespace Engine.Media
 
 		public static ModelData Load(Stream stream)
 		{
-			ModelData modelData = new ModelData();
-			ColladaRoot colladaRoot = new ColladaRoot(XElement.Load(stream));
+			var modelData = new ModelData();
+			var colladaRoot = new ColladaRoot(XElement.Load(stream));
 			if (colladaRoot.Scene.VisualScene.Nodes.Count > 1)
 			{
-				ModelBoneData modelBoneData = new ModelBoneData();
+				var modelBoneData = new ModelBoneData();
 				modelData.Bones.Add(modelBoneData);
 				modelBoneData.ParentBoneIndex = -1;
 				modelBoneData.Name = string.Empty;
@@ -474,7 +474,7 @@ namespace Engine.Media
 
 		private static ModelBoneData LoadNode(ModelData data, ModelBoneData parentBoneData, ColladaNode node, Matrix transform)
 		{
-			ModelBoneData modelBoneData = new ModelBoneData();
+			var modelBoneData = new ModelBoneData();
 			data.Bones.Add(modelBoneData);
 			modelBoneData.ParentBoneIndex = ((parentBoneData != null) ? data.Bones.IndexOf(parentBoneData) : (-1));
 			modelBoneData.Name = node.Name;
@@ -492,7 +492,7 @@ namespace Engine.Media
 
 		private static ModelMeshData LoadGeometry(ModelData data, ModelBoneData parentBoneData, ColladaGeometry geometry)
 		{
-			ModelMeshData modelMeshData = new ModelMeshData();
+			var modelMeshData = new ModelMeshData();
 			data.Meshes.Add(modelMeshData);
 			modelMeshData.Name = parentBoneData.Name;
 			modelMeshData.ParentBoneIndex = data.Bones.IndexOf(parentBoneData);
@@ -509,9 +509,9 @@ namespace Engine.Media
 
 		private static ModelMeshPartData LoadPolygons(ModelData data, ColladaPolygons polygons)
 		{
-			ModelMeshPartData modelMeshPartData = new ModelMeshPartData();
+			var modelMeshPartData = new ModelMeshPartData();
 			int num = 0;
-			Dictionary<VertexElement, ColladaInput> dictionary = new Dictionary<VertexElement, ColladaInput>();
+			var dictionary = new Dictionary<VertexElement, ColladaInput>();
 			foreach (ColladaInput input in polygons.Inputs)
 			{
 				string str = (input.Set == 0) ? string.Empty : input.Set.ToString(CultureInfo.InvariantCulture);
@@ -536,7 +536,7 @@ namespace Engine.Media
 					num += 4;
 				}
 			}
-			VertexDeclaration vertexDeclaration = new VertexDeclaration(dictionary.Keys.ToArray());
+			var vertexDeclaration = new VertexDeclaration(dictionary.Keys.ToArray());
 			ModelBuffersData modelBuffersData = data.Buffers.FirstOrDefault((ModelBuffersData vd) => vd.VertexDeclaration == vertexDeclaration);
 			if (modelBuffersData == null)
 			{
@@ -546,7 +546,7 @@ namespace Engine.Media
 			}
 			modelMeshPartData.BuffersDataIndex = data.Buffers.IndexOf(modelBuffersData);
 			int num2 = polygons.P.Count / polygons.Inputs.Count;
-			List<int> list = new List<int>();
+			var list = new List<int>();
 			if (polygons.VCount.Count == 0)
 			{
 				int num3 = 0;
@@ -567,23 +567,23 @@ namespace Engine.Media
 					{
 						switch (enumerator2.Current)
 						{
-							case 3:
-								list.Add(num4);
-								list.Add(num4 + 2);
-								list.Add(num4 + 1);
-								num4 += 3;
-								break;
-							case 4:
-								list.Add(num4);
-								list.Add(num4 + 2);
-								list.Add(num4 + 1);
-								list.Add(num4 + 2);
-								list.Add(num4);
-								list.Add(num4 + 3);
-								num4 += 4;
-								break;
-							default:
-								throw new NotSupportedException("Collada polygons with less than 3 or more than 4 vertices are not supported.");
+						case 3:
+							list.Add(num4);
+							list.Add(num4 + 2);
+							list.Add(num4 + 1);
+							num4 += 3;
+							break;
+						case 4:
+							list.Add(num4);
+							list.Add(num4 + 2);
+							list.Add(num4 + 1);
+							list.Add(num4 + 2);
+							list.Add(num4);
+							list.Add(num4 + 3);
+							num4 += 4;
+							break;
+						default:
+							throw new NotSupportedException("Collada polygons with less than 3 or more than 4 vertices are not supported.");
 						}
 					}
 				}
@@ -591,7 +591,7 @@ namespace Engine.Media
 			int vertexStride = modelBuffersData.VertexDeclaration.VertexStride;
 			int num5 = modelBuffersData.Vertices.Length;
 			modelBuffersData.Vertices = ExtendArray(modelBuffersData.Vertices, list.Count * vertexStride);
-			using (BinaryWriter binaryWriter = new BinaryWriter(new MemoryStream(modelBuffersData.Vertices, num5, list.Count * vertexStride)))
+			using (var binaryWriter = new BinaryWriter(new MemoryStream(modelBuffersData.Vertices, num5, list.Count * vertexStride)))
 			{
 				bool flag = false;
 				foreach (KeyValuePair<VertexElement, ColladaInput> item in dictionary)
@@ -661,7 +661,7 @@ namespace Engine.Media
 							int stride4 = value.Source.Accessor.Stride;
 							int num16 = polygons.P[list[m] * polygons.Inputs.Count + value.Offset];
 							binaryWriter.BaseStream.Position = m * vertexStride + key.Offset;
-							Color color = new Color(array4[offset4 + stride4 * num16], array4[offset4 + stride4 * num16 + 1], array4[offset4 + stride4 * num16 + 2], array4[offset4 + stride4 * num16 + 3]);
+							var color = new Color(array4[offset4 + stride4 * num16], array4[offset4 + stride4 * num16 + 1], array4[offset4 + stride4 * num16 + 2], array4[offset4 + stride4 * num16 + 3]);
 							binaryWriter.Write(color.PackedValue);
 						}
 					}
@@ -674,7 +674,7 @@ namespace Engine.Media
 
 		private static T[] ExtendArray<T>(T[] array, int extensionLength)
 		{
-			T[] array2 = new T[array.Length + extensionLength];
+			var array2 = new T[array.Length + extensionLength];
 			Array.Copy(array, array2, array.Length);
 			return array2;
 		}
@@ -682,11 +682,11 @@ namespace Engine.Media
 		private static void IndexVertices(int vertexStride, byte[] vertices, out byte[] resultVertices, out byte[] resultIndices)
 		{
 			int num = vertices.Length / vertexStride;
-			Dictionary<Vertex, ushort> dictionary = new Dictionary<Vertex, ushort>();
+			var dictionary = new Dictionary<Vertex, ushort>();
 			resultIndices = new byte[2 * num];
 			for (int i = 0; i < num; i++)
 			{
-				Vertex key = new Vertex(vertices, i * vertexStride, vertexStride);
+				var key = new Vertex(vertices, i * vertexStride, vertexStride);
 				if (!dictionary.TryGetValue(key, out ushort value))
 				{
 					value = (ushort)dictionary.Count;

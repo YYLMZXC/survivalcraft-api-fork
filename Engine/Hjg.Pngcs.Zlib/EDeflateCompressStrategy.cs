@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Zlib
 {
-    internal enum EDeflateCompressStrategy
+	internal enum EDeflateCompressStrategy
 	{
 		Filtered,
 		Huffman,

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace NVorbis
 {
-    internal class VorbisReader : IDisposable
+	internal class VorbisReader : IDisposable
 	{
 		private int _streamIdx;
 
@@ -118,11 +118,11 @@ namespace NVorbis
 		public VorbisReader(Stream stream, bool closeStreamOnDispose)
 			: this()
 		{
-			BufferedReadStream bufferedReadStream = new BufferedReadStream(stream)
+			var bufferedReadStream = new BufferedReadStream(stream)
 			{
 				CloseBaseStream = closeStreamOnDispose
 			};
-			ContainerReader containerReader = new ContainerReader(bufferedReadStream, closeStreamOnDispose);
+			var containerReader = new ContainerReader(bufferedReadStream, closeStreamOnDispose);
 			if (!LoadContainer(containerReader))
 			{
 				bufferedReadStream.Dispose();
@@ -152,7 +152,7 @@ namespace NVorbis
 		public VorbisReader(IPacketProvider packetProvider)
 			: this()
 		{
-			NewStreamEventArgs newStreamEventArgs = new NewStreamEventArgs(packetProvider);
+			var newStreamEventArgs = new NewStreamEventArgs(packetProvider);
 			NewStream(this, newStreamEventArgs);
 			if (newStreamEventArgs.IgnoreStream)
 			{
@@ -174,7 +174,7 @@ namespace NVorbis
 		private void NewStream(object sender, NewStreamEventArgs ea)
 		{
 			IPacketProvider packetProvider = ea.PacketProvider;
-			VorbisStreamDecoder vorbisStreamDecoder = new VorbisStreamDecoder(packetProvider);
+			var vorbisStreamDecoder = new VorbisStreamDecoder(packetProvider);
 			if (vorbisStreamDecoder.TryInit())
 			{
 				_decoders.Add(vorbisStreamDecoder);
@@ -209,11 +209,11 @@ namespace NVorbis
 		{
 			if (offset < 0)
 			{
-				throw new ArgumentOutOfRangeException("offset");
+				throw new ArgumentOutOfRangeException(nameof(offset));
 			}
 			if (count < 0 || offset + count > buffer.Length)
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			count = ActiveDecoder.ReadSamples(buffer, offset, count);
 			if (ClipSamples)
@@ -248,7 +248,7 @@ namespace NVorbis
 		{
 			if (index < 0 || index >= StreamCount)
 			{
-				throw new ArgumentOutOfRangeException("index");
+				throw new ArgumentOutOfRangeException(nameof(index));
 			}
 			if (_decoders == null)
 			{

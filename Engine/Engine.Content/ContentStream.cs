@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-    public class ContentStream : Stream
+	public class ContentStream : Stream
 	{
 		private Func<Stream> m_streamFactory;
 
@@ -59,7 +59,7 @@ namespace Engine.Content
 			m_stream = new PadStream(m_streamFactory());
 			if (!m_stream.CanSeek)
 			{
-				MemoryStream memoryStream = new MemoryStream();
+				var memoryStream = new MemoryStream();
 				m_stream.CopyTo(memoryStream);
 				m_stream.Dispose();
 				m_data = memoryStream.ToArray();
@@ -87,7 +87,7 @@ namespace Engine.Content
 					Position += offset;
 					break;
 				default:
-					throw new ArgumentException("Invalid origin.", "origin");
+					throw new ArgumentException("Invalid origin.", nameof(origin));
 			}
 			return Position;
 		}
@@ -124,7 +124,7 @@ namespace Engine.Content
 
 		public ContentStream Duplicate()
 		{
-			ContentStream contentStream = new ContentStream();
+			var contentStream = new ContentStream();
 			contentStream.m_streamFactory = m_streamFactory;
 			contentStream.m_data = m_data;
 			if (m_data != null)

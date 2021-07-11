@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-    public enum Blend
+	public enum Blend
 	{
 		Zero,
 		One,

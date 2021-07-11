@@ -2,7 +2,7 @@ using System;
 
 namespace NVorbis
 {
-    internal class NewStreamEventArgs : EventArgs
+	internal class NewStreamEventArgs : EventArgs
 	{
 		public IPacketProvider PacketProvider
 		{
@@ -20,7 +20,7 @@ namespace NVorbis
 		{
 			if (packetProvider == null)
 			{
-				throw new ArgumentNullException("packetProvider");
+				throw new ArgumentNullException(nameof(packetProvider));
 			}
 			PacketProvider = packetProvider;
 		}

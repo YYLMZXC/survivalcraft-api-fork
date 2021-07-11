@@ -5,36 +5,36 @@ namespace Engine.Audio
 {
 	public abstract class BaseSound : IDisposable
 	{
-		public float m_volume = 1f;
+		private float m_volume = 1f;
 
-		public float m_pitch = 1f;
+		private float m_pitch = 1f;
 
-		public float m_pan;
+		private float m_pan;
 
-		public object m_stateSync = new object();
+		internal object m_stateSync = new object();
 
-		public bool m_isLooped;
+		internal bool m_isLooped;
 
-		public bool m_disposeOnStop;
+		internal bool m_disposeOnStop;
 
-		public int m_source;
+		internal int m_source;
 
 		public SoundState State
 		{
 			get;
-			set;
+			internal set;
 		}
 
 		public int ChannelsCount
 		{
 			get;
-			set;
+			internal set;
 		}
 
 		public int SamplingFrequency
 		{
 			get;
-			set;
+			internal set;
 		}
 
 		public float Volume
@@ -48,7 +48,7 @@ namespace Engine.Audio
 				value = MathUtils.Saturate(value);
 				if (value != m_volume)
 				{
-					publicSetVolume(value);
+					InternalSetVolume(value);
 					m_volume = value;
 				}
 			}
@@ -65,7 +65,7 @@ namespace Engine.Audio
 				value = MathUtils.Clamp(value, 0.5f, 2f);
 				if (value != m_pitch)
 				{
-					publicSetPitch(value);
+					InternalSetPitch(value);
 					m_pitch = value;
 				}
 			}
@@ -84,7 +84,7 @@ namespace Engine.Audio
 					value = MathUtils.Clamp(value, -1f, 1f);
 					if (value != m_pan)
 					{
-						publicSetPan(value);
+						InternalSetPan(value);
 						m_pan = value;
 					}
 				}
@@ -134,7 +134,7 @@ namespace Engine.Audio
 				if (State == SoundState.Stopped || State == SoundState.Paused)
 				{
 					State = SoundState.Playing;
-					publicPlay();
+					InternalPlay();
 				}
 			}
 		}
@@ -146,7 +146,7 @@ namespace Engine.Audio
 				if (State == SoundState.Playing)
 				{
 					State = SoundState.Paused;
-					publicPause();
+					InternalPause();
 				}
 			}
 		}
@@ -162,7 +162,7 @@ namespace Engine.Audio
 				if (State == SoundState.Playing || State == SoundState.Paused)
 				{
 					State = SoundState.Stopped;
-					publicStop();
+					InternalStop();
 				}
 			}
 		}
@@ -172,11 +172,11 @@ namespace Engine.Audio
 			if (State != SoundState.Disposed)
 			{
 				State = SoundState.Disposed;
-				publicDispose();
+				InternalDispose();
 			}
 		}
 
-		public BaseSound()
+		internal BaseSound()
 		{
 			m_source = AL.GenSource();
 			Mixer.CheckALError();
@@ -184,7 +184,7 @@ namespace Engine.Audio
 			Mixer.CheckALError();
 		}
 
-		public void publicSetVolume(float volume)
+		private void InternalSetVolume(float volume)
 		{
 			if (m_source != 0)
 			{
@@ -193,7 +193,7 @@ namespace Engine.Audio
 			}
 		}
 
-		public void publicSetPitch(float pitch)
+		private void InternalSetPitch(float pitch)
 		{
 			if (m_source != 0)
 			{
@@ -202,7 +202,7 @@ namespace Engine.Audio
 			}
 		}
 
-		public void publicSetPan(float pan)
+		private void InternalSetPan(float pan)
 		{
 			if (m_source != 0)
 			{
@@ -213,13 +213,13 @@ namespace Engine.Audio
 			}
 		}
 
-		public abstract void publicPlay();
+		internal abstract void InternalPlay();
 
-		public abstract void publicPause();
+		internal abstract void InternalPause();
 
-		public abstract void publicStop();
+		internal abstract void InternalStop();
 
-		public virtual void publicDispose()
+		internal virtual void InternalDispose()
 		{
 			if (m_source != 0)
 			{

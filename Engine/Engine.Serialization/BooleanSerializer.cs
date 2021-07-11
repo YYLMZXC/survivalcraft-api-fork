@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-    internal class BooleanSerializer : ISerializer<bool>
+	internal class BooleanSerializer : ISerializer<bool>
 	{
 		public void Serialize(InputArchive archive, ref bool value)
 		{

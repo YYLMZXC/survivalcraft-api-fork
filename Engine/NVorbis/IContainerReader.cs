@@ -2,7 +2,7 @@ using System;
 
 namespace NVorbis
 {
-    internal interface IContainerReader : IDisposable
+	internal interface IContainerReader : IDisposable
 	{
 		int[] StreamSerials
 		{

@@ -1,6 +1,6 @@
 namespace FluxJpeg.Core
 {
-    internal struct ColorModel
+	internal struct ColorModel
 	{
 		public ColorSpace colorspace;
 

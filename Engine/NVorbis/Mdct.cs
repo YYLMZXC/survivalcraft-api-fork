@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NVorbis
 {
-    internal class Mdct
+	internal class Mdct
 	{
 		private const float M_PI = (float)Math.PI;
 

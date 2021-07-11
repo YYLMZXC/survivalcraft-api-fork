@@ -1,4 +1,4 @@
-﻿using OpenTK.Graphics.ES20;
+using OpenTK.Graphics.ES20;
 
 #pragma warning restore CS0246 // 未能找到类型或命名空间名“OpenTK”(是否缺少 using 指令或程序集引用?)
 
@@ -237,12 +237,12 @@ namespace Engine.Graphics
 			return str + shaderCode;
 		}
 
-		public override void HandleDeviceLost()
+		internal override void HandleDeviceLost()
 		{
 			DeleteShaders();
 		}
 
-		public override void HandleDeviceReset()
+        internal override void HandleDeviceReset()
 		{
 			CompileShaders();
 		}

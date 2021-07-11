@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-    [ContentReader("Engine.Graphics.Model")]
+	[ContentReader("Engine.Graphics.Model")]
 	public class ModelContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)
@@ -15,7 +15,7 @@ namespace Engine.Content
 			{
 				return Model.Load(modelData, keepSourceVertexDataInTags);
 			}
-			Model obj = (Model)existingObject;
+			var obj = (Model)existingObject;
 			obj.Initialize(modelData, keepSourceVertexDataInTags);
 			return obj;
 		}

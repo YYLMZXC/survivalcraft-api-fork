@@ -3,7 +3,7 @@ using System;
 
 namespace Engine.Content
 {
-    [ContentReader("Engine.Color")]
+	[ContentReader("Engine.Color")]
 	public class ColorContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)

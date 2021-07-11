@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Serialization
 {
-    public interface IHumanReadableConverter
+	public interface IHumanReadableConverter
 	{
 		string ConvertToString(object value);
 

@@ -1,6 +1,6 @@
 namespace Engine.Media
 {
-    public class ModelBoneData
+	public class ModelBoneData
 	{
 		public string Name;
 

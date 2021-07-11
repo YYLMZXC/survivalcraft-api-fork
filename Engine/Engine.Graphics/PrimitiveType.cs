@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-    public enum PrimitiveType
+	public enum PrimitiveType
 	{
 		LineList,
 		LineStrip,

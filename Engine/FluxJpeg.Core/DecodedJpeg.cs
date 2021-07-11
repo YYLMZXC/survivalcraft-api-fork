@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FluxJpeg.Core
 {
-    internal class DecodedJpeg
+	internal class DecodedJpeg
 	{
 		private Image _image;
 

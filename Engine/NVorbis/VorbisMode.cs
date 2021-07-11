@@ -3,7 +3,7 @@ using System.IO;
 
 namespace NVorbis
 {
-    internal class VorbisMode
+	internal class VorbisMode
 	{
 		private const float M_PI = (float)Math.PI;
 
@@ -25,7 +25,7 @@ namespace NVorbis
 
 		internal static VorbisMode Init(VorbisStreamDecoder vorbis, DataPacket packet)
 		{
-			VorbisMode vorbisMode = new VorbisMode(vorbis);
+			var vorbisMode = new VorbisMode(vorbis);
 			vorbisMode.BlockFlag = packet.ReadBit();
 			vorbisMode.WindowType = (int)packet.ReadBits(16);
 			vorbisMode.TransformType = (int)packet.ReadBits(16);

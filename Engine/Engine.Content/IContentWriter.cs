@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-    public interface IContentWriter
+	public interface IContentWriter
 	{
 		IEnumerable<string> GetDependencies();
 

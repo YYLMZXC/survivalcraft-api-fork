@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-    [ContentWriter("Engine.Media.StreamingSource")]
+	[ContentWriter("Engine.Media.StreamingSource")]
 	public class StreamingSourceContentWriter : IContentWriter
 	{
 		public string Sound;

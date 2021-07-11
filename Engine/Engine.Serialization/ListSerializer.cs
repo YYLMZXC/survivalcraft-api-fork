@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Engine.Serialization
 {
-    internal class ListSerializer<T> : ISerializer<List<T>>
+	internal class ListSerializer<T> : ISerializer<List<T>>
 	{
 		public void Serialize(InputArchive archive, ref List<T> value)
 		{

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-    public class SoundData
+	public class SoundData
 	{
 		public int ChannelsCount
 		{
@@ -27,15 +27,15 @@ namespace Engine.Media
 		{
 			if (channelsCount < 1 || channelsCount > 2)
 			{
-				throw new ArgumentOutOfRangeException("channelsCount");
+				throw new ArgumentOutOfRangeException(nameof(channelsCount));
 			}
 			if (samplingFrequency < 8000 || samplingFrequency > 48000)
 			{
-				throw new ArgumentOutOfRangeException("samplingFrequency");
+				throw new ArgumentOutOfRangeException(nameof(samplingFrequency));
 			}
 			if (bytesCount < 0 || bytesCount % (2 * channelsCount) != 0)
 			{
-				throw new ArgumentOutOfRangeException("bytesCount");
+				throw new ArgumentOutOfRangeException(nameof(bytesCount));
 			}
 			ChannelsCount = channelsCount;
 			SamplingFrequency = samplingFrequency;
@@ -72,12 +72,12 @@ namespace Engine.Media
 		{
 			switch (format)
 			{
-				case SoundFileFormat.Wav:
-					return Wav.Stream(stream);
-				case SoundFileFormat.Ogg:
-					return Ogg.Stream(stream);
-				default:
-					throw new InvalidOperationException("Unsupported sound file format.");
+			case SoundFileFormat.Wav:
+				return Wav.Stream(stream);
+			case SoundFileFormat.Ogg:
+				return Ogg.Stream(stream);
+			default:
+				throw new InvalidOperationException("Unsupported sound file format.");
 			}
 		}
 
@@ -91,7 +91,7 @@ namespace Engine.Media
 
 		public static StreamingSource Stream(Stream stream)
 		{
-			PeekStream peekStream = new PeekStream(stream, 64);
+			var peekStream = new PeekStream(stream, 64);
 			SoundFileFormat format = DetermineFileFormat(peekStream.GetInitialBytesStream());
 			return Stream(peekStream, format);
 		}
@@ -108,12 +108,12 @@ namespace Engine.Media
 		{
 			switch (format)
 			{
-				case SoundFileFormat.Wav:
-					return Wav.Load(stream);
-				case SoundFileFormat.Ogg:
-					return Ogg.Load(stream);
-				default:
-					throw new InvalidOperationException("Unsupported sound file format.");
+			case SoundFileFormat.Wav:
+				return Wav.Load(stream);
+			case SoundFileFormat.Ogg:
+				return Ogg.Load(stream);
+			default:
+				throw new InvalidOperationException("Unsupported sound file format.");
 			}
 		}
 
@@ -127,7 +127,7 @@ namespace Engine.Media
 
 		public static SoundData Load(Stream stream)
 		{
-			PeekStream peekStream = new PeekStream(stream, 64);
+			var peekStream = new PeekStream(stream, 64);
 			SoundFileFormat format = DetermineFileFormat(peekStream.GetInitialBytesStream());
 			return Load(peekStream, format);
 		}

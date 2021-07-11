@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Graphics
 {
-    public class VertexElement : IEquatable<VertexElement>
+	public class VertexElement : IEquatable<VertexElement>
 	{
 		private int m_hashCode;
 

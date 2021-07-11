@@ -2,7 +2,7 @@ using System;
 
 namespace FluxJpeg.Core.Filtering
 {
-    internal class Convolution
+	internal class Convolution
 	{
 		private struct FilterJob
 		{
@@ -55,7 +55,7 @@ namespace FluxJpeg.Core.Filtering
 		public GrayImage Filter1DSymmetric(GrayImage data, float[] filter, bool transpose)
 		{
 			GrayImage result = transpose ? new GrayImage(data.Height, data.Width) : new GrayImage(data.Width, data.Height);
-			FilterJob filterJob = default(FilterJob);
+			var filterJob = default(FilterJob);
 			filterJob.filter = filter;
 			filterJob.data = data;
 			filterJob.destPtr = 0;
@@ -76,7 +76,7 @@ namespace FluxJpeg.Core.Filtering
 
 		private void FilterPartSymmetricT(object filterJob)
 		{
-			FilterJob filterJob2 = (FilterJob)filterJob;
+			var filterJob2 = (FilterJob)filterJob;
 			GrayImage data = filterJob2.data;
 			float[] scan = data.Scan0;
 			float[] filter = filterJob2.filter;
@@ -128,7 +128,7 @@ namespace FluxJpeg.Core.Filtering
 
 		private void FilterPartSymmetric(object filterJob)
 		{
-			FilterJob filterJob2 = (FilterJob)filterJob;
+			var filterJob2 = (FilterJob)filterJob;
 			GrayImage data = filterJob2.data;
 			float[] scan = data.Scan0;
 			float[] filter = filterJob2.filter;
@@ -183,7 +183,7 @@ namespace FluxJpeg.Core.Filtering
 		{
 			int num = opLR.Width - 1;
 			int num2 = opLR.Height - 1;
-			GrayImage grayImage = new GrayImage(data.Width + 2 * num, data.Height + 2 * num2);
+			var grayImage = new GrayImage(data.Width + 2 * num, data.Height + 2 * num2);
 			int num3 = 0;
 			for (int i = 0; i < data.Height; i++)
 			{
@@ -205,7 +205,7 @@ namespace FluxJpeg.Core.Filtering
 			}
 			int num = opLR.Width - 1;
 			int num2 = opLR.Height - 1;
-			GrayImage grayImage = new GrayImage(data.Width - 2 * num, data.Height - 2 * num2);
+			var grayImage = new GrayImage(data.Width - 2 * num, data.Height - 2 * num2);
 			for (int i = num2; i < data.Height - num2; i++)
 			{
 				for (int j = num; j < data.Width - num; j++)
@@ -239,7 +239,7 @@ namespace FluxJpeg.Core.Filtering
 
 		public GrayImage Conv2D(GrayImage data, GrayImage op)
 		{
-			GrayImage grayImage = new GrayImage(data.Width, data.Height);
+			var grayImage = new GrayImage(data.Width, data.Height);
 			if (op.Width % 2 == 0 || op.Height % 2 == 0)
 			{
 				throw new ArgumentException("Operator must have an odd number of rows and columns.");

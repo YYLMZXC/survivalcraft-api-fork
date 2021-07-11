@@ -3,14 +3,14 @@ using System.Drawing;
 
 namespace Engine.Serialization
 {
-    internal class SystemDrawingTypesConverters
+	internal class SystemDrawingTypesConverters
 	{
 		[HumanReadableConverter(typeof(System.Drawing.Color))]
 		internal class ColorStringConverter : IHumanReadableConverter
 		{
 			public string ConvertToString(object value)
 			{
-				System.Drawing.Color color = (System.Drawing.Color)value;
+				var color = (System.Drawing.Color)value;
 				if (color.A != byte.MaxValue)
 				{
 					return HumanReadableConverter.ValuesListToString<byte>(',', color.A, color.R, color.G, color.B);
@@ -46,7 +46,7 @@ namespace Engine.Serialization
 		{
 			public string ConvertToString(object value)
 			{
-				Point point = (Point)value;
+				var point = (Point)value;
 				return HumanReadableConverter.ValuesListToString<int>(',', point.X, point.Y);
 			}
 
@@ -66,7 +66,7 @@ namespace Engine.Serialization
 		{
 			public string ConvertToString(object value)
 			{
-				PointF pointF = (PointF)value;
+				var pointF = (PointF)value;
 				return HumanReadableConverter.ValuesListToString<float>(',', pointF.X, pointF.Y);
 			}
 
@@ -86,7 +86,7 @@ namespace Engine.Serialization
 		{
 			public string ConvertToString(object value)
 			{
-				Size size = (Size)value;
+				var size = (Size)value;
 				return HumanReadableConverter.ValuesListToString<int>(',', size.Width, size.Height);
 			}
 
@@ -106,7 +106,7 @@ namespace Engine.Serialization
 		{
 			public string ConvertToString(object value)
 			{
-				SizeF sizeF = (SizeF)value;
+				var sizeF = (SizeF)value;
 				return HumanReadableConverter.ValuesListToString<float>(',', sizeF.Width, sizeF.Height);
 			}
 
@@ -126,7 +126,7 @@ namespace Engine.Serialization
 		{
 			public string ConvertToString(object value)
 			{
-				System.Drawing.Rectangle rectangle = (System.Drawing.Rectangle)value;
+				var rectangle = (System.Drawing.Rectangle)value;
 				return HumanReadableConverter.ValuesListToString<int>(',', rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
 			}
 
@@ -146,7 +146,7 @@ namespace Engine.Serialization
 		{
 			public string ConvertToString(object value)
 			{
-				RectangleF rectangleF = (RectangleF)value;
+				var rectangleF = (RectangleF)value;
 				return HumanReadableConverter.ValuesListToString<float>(',', rectangleF.X, rectangleF.Y, rectangleF.Width, rectangleF.Height);
 			}
 

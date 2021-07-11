@@ -1,4 +1,4 @@
-﻿using Engine.Media;
+using Engine.Media;
 using OpenTK.Graphics.ES20;
 using System;
 using System.IO;
@@ -217,12 +217,12 @@ namespace Engine.Graphics
 			}
 		}
 
-		public override void HandleDeviceLost()
+		internal override void HandleDeviceLost()
 		{
 			DeleteTexture();
 		}
 
-		public override void HandleDeviceReset()
+        internal override void HandleDeviceReset()
 		{
 			AllocateTexture();
 		}

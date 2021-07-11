@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs
 {
-    internal class ImageLine
+	internal class ImageLine
 	{
 		public enum ESampleType
 		{
@@ -94,18 +94,18 @@ namespace Hjg.Pngcs
 			ElementsPerRow = (SamplesUnpacked ? imgInfo.SamplesPerRow : imgInfo.SamplesPerRowPacked);
 			switch (stype)
 			{
-				case ESampleType.INT:
-					Scanline = ((sci != null) ? sci : new int[ElementsPerRow]);
-					ScanlineB = null;
-					maxSampleVal = ((bitDepth == 16) ? 65535 : GetMaskForPackedFormatsLs(bitDepth));
-					break;
-				case ESampleType.BYTE:
-					ScanlineB = ((scb != null) ? scb : new byte[ElementsPerRow]);
-					Scanline = null;
-					maxSampleVal = ((bitDepth == 16) ? 255 : GetMaskForPackedFormatsLs(bitDepth));
-					break;
-				default:
-					throw new PngjExceptionInternal("bad ImageLine initialization");
+			case ESampleType.INT:
+				Scanline = ((sci != null) ? sci : new int[ElementsPerRow]);
+				ScanlineB = null;
+				maxSampleVal = ((bitDepth == 16) ? 65535 : GetMaskForPackedFormatsLs(bitDepth));
+				break;
+			case ESampleType.BYTE:
+				ScanlineB = ((scb != null) ? scb : new byte[ElementsPerRow]);
+				Scanline = null;
+				maxSampleVal = ((bitDepth == 16) ? 255 : GetMaskForPackedFormatsLs(bitDepth));
+				break;
+			default:
+				throw new PngjExceptionInternal("bad ImageLine initialization");
 			}
 			Rown = -1;
 		}
@@ -291,7 +291,7 @@ namespace Hjg.Pngcs
 
 		public ImageLine unpackToNewImageLine()
 		{
-			ImageLine imageLine = new ImageLine(ImgInfo, SampleType, unpackedMode: true);
+			var imageLine = new ImageLine(ImgInfo, SampleType, unpackedMode: true);
 			if (SampleType == ESampleType.INT)
 			{
 				unpackInplaceInt(ImgInfo, Scanline, imageLine.Scanline, Scale: false);
@@ -305,7 +305,7 @@ namespace Hjg.Pngcs
 
 		public ImageLine packToNewImageLine()
 		{
-			ImageLine imageLine = new ImageLine(ImgInfo, SampleType, unpackedMode: false);
+			var imageLine = new ImageLine(ImgInfo, SampleType, unpackedMode: false);
 			if (SampleType == ESampleType.INT)
 			{
 				packInplaceInt(ImgInfo, Scanline, imageLine.Scanline, scaled: false);
@@ -346,14 +346,14 @@ namespace Hjg.Pngcs
 		{
 			switch (bitDepth)
 			{
-				case 4:
-					return 240;
-				case 2:
-					return 192;
-				case 1:
-					return 128;
-				default:
-					return 255;
+			case 4:
+				return 240;
+			case 2:
+				return 192;
+			case 1:
+				return 128;
+			default:
+				return 255;
 			}
 		}
 
@@ -361,14 +361,14 @@ namespace Hjg.Pngcs
 		{
 			switch (bitDepth)
 			{
-				case 4:
-					return 15;
-				case 2:
-					return 3;
-				case 1:
-					return 1;
-				default:
-					return 255;
+			case 4:
+				return 15;
+			case 2:
+				return 3;
+			case 1:
+				return 1;
+			default:
+				return 255;
 			}
 		}
 	}

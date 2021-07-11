@@ -1,6 +1,6 @@
 namespace FluxJpeg.Core.Filtering
 {
-    internal enum ResamplingFilters
+	internal enum ResamplingFilters
 	{
 		NearestNeighbor,
 		LowpassAntiAlias

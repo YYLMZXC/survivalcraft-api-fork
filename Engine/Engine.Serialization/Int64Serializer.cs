@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-    internal class Int64Serializer : ISerializer<long>
+	internal class Int64Serializer : ISerializer<long>
 	{
 		public void Serialize(InputArchive archive, ref long value)
 		{

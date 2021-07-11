@@ -5,21 +5,21 @@ using System.IO;
 
 namespace Engine.Content
 {
-    [ContentReader("Engine.Audio.SoundBuffer")]
+	[ContentReader("Engine.Audio.SoundBuffer")]
 	public class SoundBufferContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)
 		{
 			if (existingObject == null)
 			{
-				BinaryReader binaryReader = new BinaryReader(stream);
+				var binaryReader = new BinaryReader(stream);
 				bool flag = binaryReader.ReadBoolean();
 				int channelsCount = binaryReader.ReadInt32();
 				int samplingFrequency = binaryReader.ReadInt32();
 				int bytesCount = binaryReader.ReadInt32();
 				if (flag)
 				{
-					MemoryStream memoryStream = new MemoryStream();
+					var memoryStream = new MemoryStream();
 					using (StreamingSource streamingSource = Ogg.Stream(stream))
 					{
 						streamingSource.CopyTo(memoryStream);

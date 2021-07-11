@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-    [ContentReader("Engine.Graphics.Texture2D")]
+	[ContentReader("Engine.Graphics.Texture2D")]
 	public class TextureContentReader : IContentReader
 	{
 		public object Read(ContentStream stream, object existingObject)
@@ -14,7 +14,7 @@ namespace Engine.Content
 			{
 				return ReadTexture(stream);
 			}
-			Texture2D texture2D = (Texture2D)existingObject;
+			var texture2D = (Texture2D)existingObject;
 			stream.Position += 12L;
 			LoadTextureData(stream, texture2D, keepSourceImageInTag: false);
 			return texture2D;
@@ -22,19 +22,19 @@ namespace Engine.Content
 
 		public static Texture2D ReadTexture(Stream stream)
 		{
-			EngineBinaryReader engineBinaryReader = new EngineBinaryReader(stream);
+			var engineBinaryReader = new EngineBinaryReader(stream);
 			bool keepSourceImageInTag = engineBinaryReader.ReadBoolean();
 			int width = engineBinaryReader.ReadInt32();
 			int height = engineBinaryReader.ReadInt32();
 			int mipLevelsCount = engineBinaryReader.ReadInt32();
-			Texture2D texture2D = new Texture2D(width, height, mipLevelsCount, ColorFormat.Rgba8888);
+			var texture2D = new Texture2D(width, height, mipLevelsCount, ColorFormat.Rgba8888);
 			LoadTextureData(stream, texture2D, keepSourceImageInTag);
 			return texture2D;
 		}
 
 		private static void LoadTextureData(Stream stream, Texture2D texture, bool keepSourceImageInTag)
 		{
-			EngineBinaryReader engineBinaryReader = new EngineBinaryReader(stream);
+			var engineBinaryReader = new EngineBinaryReader(stream);
 			int num = texture.Width;
 			int num2 = texture.Height;
 			byte[] array = new byte[4 * num * num2];
@@ -43,7 +43,7 @@ namespace Engine.Content
 				engineBinaryReader.Read(array, 0, 4 * num * num2);
 				if (keepSourceImageInTag && i == 0)
 				{
-					Image image = new Image(num, num2);
+					var image = new Image(num, num2);
 					for (int j = 0; j < image.Pixels.Length; j++)
 					{
 						byte r = array[4 * j];

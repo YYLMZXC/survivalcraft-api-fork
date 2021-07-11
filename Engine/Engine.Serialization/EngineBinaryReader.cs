@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Engine.Serialization
 {
-    public class EngineBinaryReader : BinaryReader
+	public class EngineBinaryReader : BinaryReader
 	{
 		public EngineBinaryReader(Stream stream, bool leaveOpen = false)
 			: base(stream, Encoding.UTF8, leaveOpen)

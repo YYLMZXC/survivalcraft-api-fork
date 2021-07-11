@@ -9,21 +9,21 @@ namespace Engine.Audio
 {
 	public sealed class StreamingSound : BaseSound
 	{
-		public Task m_task;
+		private Task m_task;
 
-		public ManualResetEvent m_stopTaskEvent = new ManualResetEvent(initialState: false);
+		private ManualResetEvent m_stopTaskEvent = new ManualResetEvent(initialState: false);
 
-		public bool m_noMoreData;
+		private bool m_noMoreData;
 
-		public float m_bufferDuration;
+		private float m_bufferDuration;
 
 		public StreamingSource StreamingSource
 		{
 			get;
-			set;
+			private set;
 		}
 
-		public int ReadStreamingSource(byte[] buffer, int count)
+		private int ReadStreamingSource(byte[] buffer, int count)
 		{
 			int num = 0;
 			if (StreamingSource.BytesCount > 0)
@@ -47,11 +47,11 @@ namespace Engine.Audio
 			return num;
 		}
 
-		public void VerifyStreamingSource(StreamingSource streamingSource)
+		private void VerifyStreamingSource(StreamingSource streamingSource)
 		{
 			if (streamingSource == null)
 			{
-				throw new ArgumentNullException("streamingSource");
+				throw new ArgumentNullException(nameof(streamingSource));
 			}
 			if (streamingSource.ChannelsCount < 1 || streamingSource.ChannelsCount > 2)
 			{
@@ -88,19 +88,19 @@ namespace Engine.Audio
 			});
 		}
 
-		public override void publicPlay()
+		internal override void InternalPlay()
 		{
 			AL.SourcePlay(m_source);
 			Mixer.CheckALError();
 		}
 
-		public override void publicPause()
+		internal override void InternalPause()
 		{
 			AL.SourcePause(m_source);
 			Mixer.CheckALError();
 		}
 
-		public override void publicStop()
+		internal override void InternalStop()
 		{
 			AL.SourceStop(m_source);
 			Mixer.CheckALError();
@@ -108,7 +108,7 @@ namespace Engine.Audio
 			m_noMoreData = false;
 		}
 
-		public override void publicDispose()
+		internal override void InternalDispose()
 		{
 			if (m_stopTaskEvent != null && m_task != null)
 			{
@@ -123,13 +123,13 @@ namespace Engine.Audio
 				StreamingSource.Dispose();
 				StreamingSource = null;
 			}
-			base.publicDispose();
+			base.InternalDispose();
 		}
 
-		public void StreamingThreadFunction()
+		private void StreamingThreadFunction()
 		{
 			int[] array = new int[3];
-			List<int> list = new List<int>();
+			var list = new List<int>();
 			int millisecondsTimeout = MathUtils.Clamp((int)(0.5f * m_bufferDuration / (float)array.Length * 1000f), 1, 100);
 			byte[] array2 = new byte[2 * base.ChannelsCount * (int)((float)base.SamplingFrequency * m_bufferDuration / (float)array.Length)];
 			for (int i = 0; i < array.Length; i++)

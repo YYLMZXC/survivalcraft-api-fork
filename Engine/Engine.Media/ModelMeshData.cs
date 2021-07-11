@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Engine.Media
 {
-    public class ModelMeshData
+	public class ModelMeshData
 	{
 		public string Name;
 

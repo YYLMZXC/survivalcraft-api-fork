@@ -2,7 +2,7 @@ using System;
 
 namespace FluxJpeg.Core.Filtering
 {
-    internal abstract class Filter
+	internal abstract class Filter
 	{
 		protected int _newWidth;
 

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Hjg.Pngcs
 {
-    internal class PngIDatChunkOutputStream : ProgressiveOutputStream
+	internal class PngIDatChunkOutputStream : ProgressiveOutputStream
 	{
 		private const int SIZE_DEFAULT = 32768;
 
@@ -22,7 +22,7 @@ namespace Hjg.Pngcs
 
 		protected override void FlushBuffer(byte[] b, int len)
 		{
-			ChunkRaw chunkRaw = new ChunkRaw(len, ChunkHelper.b_IDAT, alloc: false);
+			var chunkRaw = new ChunkRaw(len, ChunkHelper.b_IDAT, alloc: false);
 			chunkRaw.Data = b;
 			chunkRaw.WriteChunk(outputStream);
 		}

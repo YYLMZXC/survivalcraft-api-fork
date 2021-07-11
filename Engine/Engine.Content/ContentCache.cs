@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Engine.Content
 {
-    public static class ContentCache
+	public static class ContentCache
 	{
 		private class ContentDescription
 		{
@@ -94,8 +94,8 @@ namespace Engine.Content
 					m_isInitialized = true;
 					Display.DeviceReset += Display_DeviceReset;
 				}
-				ContentStream contentStream = new ContentStream(streamFactory);
-				using (BinaryReader binaryReader = new BinaryReader(contentStream, Encoding.UTF8, leaveOpen: true))
+				var contentStream = new ContentStream(streamFactory);
+				using (var binaryReader = new BinaryReader(contentStream, Encoding.UTF8, leaveOpen: true))
 				{
 					byte[] array = new byte[4];
 					if (binaryReader.Read(array, 0, array.Length) != array.Length || array[0] != 80 || array[1] != 75 || array[2] != 50 || array[3] != 0)
@@ -178,7 +178,7 @@ namespace Engine.Content
 			{
 				if (value == null)
 				{
-					throw new ArgumentNullException("value");
+					throw new ArgumentNullException(nameof(value));
 				}
 				if (m_contentDescriptionsByName.ContainsKey(name))
 				{
@@ -196,7 +196,7 @@ namespace Engine.Content
 		{
 			if (folderName == null)
 			{
-				throw new ArgumentNullException("folderName");
+				throw new ArgumentNullException(nameof(folderName));
 			}
 			lock (m_lock)
 			{
@@ -312,7 +312,7 @@ namespace Engine.Content
 						ContentReaderAttribute customAttribute = definedType.GetCustomAttribute<ContentReaderAttribute>();
 						if (customAttribute != null && !m_contentReadersByTypeName.ContainsKey(customAttribute.ContentTypeName))
 						{
-							IContentReader value = (IContentReader)Activator.CreateInstance(definedType.AsType());
+							var value = (IContentReader)Activator.CreateInstance(definedType.AsType());
 							m_contentReadersByTypeName.Add(customAttribute.ContentTypeName, value);
 						}
 					}

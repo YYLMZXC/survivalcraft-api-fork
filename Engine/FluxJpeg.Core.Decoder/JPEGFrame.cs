@@ -3,7 +3,7 @@ using System;
 
 namespace FluxJpeg.Core.Decoder
 {
-    internal class JPEGFrame
+	internal class JPEGFrame
 	{
 		public static byte JPEG_COLOR_GRAY = 1;
 

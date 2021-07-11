@@ -1,10 +1,10 @@
 using Engine.Media;
 
-#pragma warning disable CS0246 // Î´ÄÜÕÒµ½ÀàĞÍ»òÃüÃû¿Õ¼äÃû¡°OpenTK¡±(ÊÇ·ñÈ±ÉÙ using Ö¸Áî»ò³ÌĞò¼¯ÒıÓÃ?)
+#pragma warning disable CS0246 // æœªèƒ½æ‰¾åˆ°ç±»å‹æˆ–å‘½åç©ºé—´åâ€œOpenTKâ€(æ˜¯å¦ç¼ºå°‘ using æŒ‡ä»¤æˆ–ç¨‹åºé›†å¼•ç”¨?)
 
 using OpenTK.Graphics.ES20;
 
-#pragma warning restore CS0246 // Î´ÄÜÕÒµ½ÀàĞÍ»òÃüÃû¿Õ¼äÃû¡°OpenTK¡±(ÊÇ·ñÈ±ÉÙ using Ö¸Áî»ò³ÌĞò¼¯ÒıÓÃ?)
+#pragma warning restore CS0246 // æœªèƒ½æ‰¾åˆ°ç±»å‹æˆ–å‘½åç©ºé—´åâ€œOpenTKâ€(æ˜¯å¦ç¼ºå°‘ using æŒ‡ä»¤æˆ–ç¨‹åºé›†å¼•ç”¨?)
 
 using System;
 using System.IO;
@@ -118,12 +118,12 @@ namespace Engine.Graphics
 			GL.GenerateMipmap(All.Texture2D);
 		}
 
-		public override void HandleDeviceLost()
+        internal override void HandleDeviceLost()
 		{
 			DeleteRenderTarget();
 		}
 
-		public override void HandleDeviceReset()
+        internal override void HandleDeviceReset()
 		{
 			AllocateRenderTarget();
 		}

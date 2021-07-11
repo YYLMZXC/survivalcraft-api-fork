@@ -2,7 +2,7 @@ using System;
 
 namespace NVorbis
 {
-    internal interface IVorbisStreamStatus
+	internal interface IVorbisStreamStatus
 	{
 		int EffectiveBitRate
 		{

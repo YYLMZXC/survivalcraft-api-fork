@@ -2,7 +2,7 @@ using System;
 
 namespace FluxJpeg.Core.Decoder
 {
-    internal class JpegDecodeProgressChangedArgs : EventArgs
+	internal class JpegDecodeProgressChangedArgs : EventArgs
 	{
 		public bool SizeReady;
 

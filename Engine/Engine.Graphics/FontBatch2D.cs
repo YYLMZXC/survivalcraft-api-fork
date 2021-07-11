@@ -2,7 +2,7 @@ using Engine.Media;
 
 namespace Engine.Graphics
 {
-    public class FontBatch2D : BaseFontBatch
+	public class FontBatch2D : BaseFontBatch
 	{
 		public void QueueText(string text, Vector2 position, float depth, Color color, TextAnchor anchor = TextAnchor.Default)
 		{
@@ -16,7 +16,7 @@ namespace Engine.Graphics
 			Vector2 vector3;
 			if (angle != 0f)
 			{
-				Vector2 vector = new Vector2(MathUtils.Cos(angle), MathUtils.Sin(angle));
+				var vector = new Vector2(MathUtils.Cos(angle), MathUtils.Sin(angle));
 				v = vector;
 				v2 = new Vector2(0f - vector.Y, vector.X);
 				Vector2 vector2 = CalculateTextOffset(text, anchor, scale, spacing);
@@ -43,12 +43,12 @@ namespace Engine.Graphics
 			{
 				switch (c)
 				{
-					case '\n':
-						num++;
-						v4 = vector3 + (float)num * (base.Font.GlyphHeight + spacing.Y) * v2;
-						continue;
-					case '\r':
-						continue;
+				case '\n':
+					num++;
+					v4 = vector3 + (float)num * (base.Font.GlyphHeight + spacing.Y) * v2;
+					continue;
+				case '\r':
+					continue;
 				}
 				BitmapFont.Glyph glyph = base.Font.GetGlyph(c);
 				if (!glyph.IsBlank)

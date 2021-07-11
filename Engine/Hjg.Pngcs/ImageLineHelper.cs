@@ -3,7 +3,7 @@ using System;
 
 namespace Hjg.Pngcs
 {
-    internal class ImageLineHelper
+	internal class ImageLineHelper
 	{
 		public static int[] Palette2rgb(ImageLine line, PngChunkPLTE pal, PngChunkTRNS trns, int[] buf)
 		{

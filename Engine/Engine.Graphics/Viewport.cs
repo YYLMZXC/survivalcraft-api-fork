@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Graphics
 {
-    public struct Viewport : IEquatable<Viewport>
+	public struct Viewport : IEquatable<Viewport>
 	{
 		public int X;
 
@@ -60,7 +60,7 @@ namespace Engine.Graphics
 
 		public Vector3 Project(Vector3 source, Matrix worldViewProjection)
 		{
-			Vector3 result = Vector3.Transform(source, worldViewProjection);
+			var result = Vector3.Transform(source, worldViewProjection);
 			result /= source.X * worldViewProjection.M14 + source.Y * worldViewProjection.M24 + source.Z * worldViewProjection.M34 + worldViewProjection.M44;
 			result.X = (result.X + 1f) * 0.5f * (float)Width + (float)X;
 			result.Y = (0f - result.Y + 1f) * 0.5f * (float)Height + (float)Y;
@@ -75,7 +75,7 @@ namespace Engine.Graphics
 
 		public Vector3 Unproject(Vector3 source, Matrix worldViewProjection)
 		{
-			Matrix m = Matrix.Invert(worldViewProjection);
+			var m = Matrix.Invert(worldViewProjection);
 			source.X = (source.X - (float)X) / (float)Width * 2f - 1f;
 			source.Y = 0f - ((source.Y - (float)Y) / (float)Height * 2f - 1f);
 			source.Z = (source.Z - MinDepth) / (MaxDepth - MinDepth);

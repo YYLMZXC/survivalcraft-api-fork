@@ -2,7 +2,7 @@ using System;
 
 namespace FluxJpeg.Core
 {
-    internal class Image
+	internal class Image
 	{
 		private delegate void ConvertColor(ref byte c1, ref byte c2, ref byte c3);
 

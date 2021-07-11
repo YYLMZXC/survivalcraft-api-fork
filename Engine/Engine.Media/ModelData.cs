@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-    public class ModelData
+	public class ModelData
 	{
 		public List<ModelBoneData> Bones = new List<ModelBoneData>();
 
@@ -49,7 +49,7 @@ namespace Engine.Media
 
 		public static ModelData Load(Stream stream)
 		{
-			PeekStream peekStream = new PeekStream(stream, 256);
+			var peekStream = new PeekStream(stream, 256);
 			ModelFileFormat format = DetermineFileFormat(peekStream.GetInitialBytesStream());
 			return Load(peekStream, format);
 		}

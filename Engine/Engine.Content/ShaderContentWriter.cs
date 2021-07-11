@@ -29,7 +29,7 @@ namespace Engine.Content
 			{
 				';'
 			}, StringSplitOptions.RemoveEmptyEntries);
-			ShaderMacro[] array2 = new ShaderMacro[array.Length];
+			var array2 = new ShaderMacro[array.Length];
 			for (int i = 0; i < array.Length; i++)
 			{
 #if android
@@ -49,7 +49,7 @@ namespace Engine.Content
 				}
 				throw new InvalidOperationException("Error parsing shader macros.");
 			}
-			BinaryWriter binaryWriter = new BinaryWriter(stream);
+			var binaryWriter = new BinaryWriter(stream);
 			binaryWriter.Write(value);
 			binaryWriter.Write(value2);
 			binaryWriter.Write(array2.Length);

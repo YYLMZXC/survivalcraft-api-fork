@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-    public interface ISerializable
+	public interface ISerializable
 	{
 		void Serialize(InputArchive archive);
 

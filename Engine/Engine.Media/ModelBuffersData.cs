@@ -2,7 +2,7 @@ using Engine.Graphics;
 
 namespace Engine.Media
 {
-    public class ModelBuffersData
+	public class ModelBuffersData
 	{
 		public VertexDeclaration VertexDeclaration;
 

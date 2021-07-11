@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Graphics
 {
-    public class ModelMeshPart : IDisposable
+	public class ModelMeshPart : IDisposable
 	{
 		internal BoundingBox m_boundingBox;
 

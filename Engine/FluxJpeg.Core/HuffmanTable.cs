@@ -4,7 +4,7 @@ using System.IO;
 
 namespace FluxJpeg.Core
 {
-    internal class HuffmanTable
+	internal class HuffmanTable
 	{
 		public static int HUFFMAN_MAX_TABLES = 4;
 

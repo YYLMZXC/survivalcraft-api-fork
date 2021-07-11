@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs
 {
-    internal class FilterWriteStrategy
+	internal class FilterWriteStrategy
 	{
 		private static readonly int COMPUTE_STATS_EVERY_N_LINES = 8;
 

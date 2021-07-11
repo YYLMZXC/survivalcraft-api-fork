@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs
 {
-    internal enum FilterType
+	internal enum FilterType
 	{
 		FILTER_NONE = 0,
 		FILTER_SUB = 1,

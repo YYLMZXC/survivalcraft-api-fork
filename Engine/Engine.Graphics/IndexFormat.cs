@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-    public enum IndexFormat
+	public enum IndexFormat
 	{
 		SixteenBits,
 		ThirtyTwoBits

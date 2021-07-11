@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Engine.Graphics
 {
-    public class ModelMesh : IDisposable
+	public class ModelMesh : IDisposable
 	{
 		internal List<ModelMeshPart> m_meshParts = new List<ModelMeshPart>();
 
@@ -48,17 +48,17 @@ namespace Engine.Graphics
 		{
 			if (vertexBuffer == null)
 			{
-				throw new ArgumentNullException("vertexBuffer");
+				throw new ArgumentNullException(nameof(vertexBuffer));
 			}
 			if (indexBuffer == null)
 			{
-				throw new ArgumentNullException("indexBuffer");
+				throw new ArgumentNullException(nameof(indexBuffer));
 			}
 			if (startIndex < 0 || indicesCount < 0 || startIndex + indicesCount > indexBuffer.IndicesCount)
 			{
 				throw new InvalidOperationException("Specified range is outside of index buffer.");
 			}
-			ModelMeshPart modelMeshPart = new ModelMeshPart();
+			var modelMeshPart = new ModelMeshPart();
 			m_meshParts.Add(modelMeshPart);
 			modelMeshPart.VertexBuffer = vertexBuffer;
 			modelMeshPart.IndexBuffer = indexBuffer;

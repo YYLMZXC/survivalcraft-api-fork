@@ -2,12 +2,12 @@ using System;
 
 namespace Engine.Serialization
 {
-    [HumanReadableConverter(typeof(Point2))]
+	[HumanReadableConverter(typeof(Point2))]
 	internal class Point2HumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{
-			Point2 point = (Point2)value;
+			var point = (Point2)value;
 			return HumanReadableConverter.ValuesListToString<int>(',', point.X, point.Y);
 		}
 

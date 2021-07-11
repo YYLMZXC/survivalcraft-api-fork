@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-    internal class PngChunkIDAT : PngChunkMultiple
+	internal class PngChunkIDAT : PngChunkMultiple
 	{
 		public const string ID = "IDAT";
 

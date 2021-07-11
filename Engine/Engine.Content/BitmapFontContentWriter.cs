@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Engine.Content
 {
-    [ContentWriter("Engine.Media.BitmapFont")]
+	[ContentWriter("Engine.Media.BitmapFont")]
 	public class BitmapFontContentWriter : IContentWriter
 	{
 		private class BitmapFontData
@@ -44,14 +44,14 @@ namespace Engine.Content
 
 		public void Write(string projectDirectory, Stream stream)
 		{
-			Image image = Image.Load(Storage.OpenFile(Storage.CombinePaths(projectDirectory, Font), OpenFileMode.Read), Image.DetermineFileFormat(Storage.GetExtension(Font)));
+			var image = Image.Load(Storage.OpenFile(Storage.CombinePaths(projectDirectory, Font), OpenFileMode.Read), Image.DetermineFileFormat(Storage.GetExtension(Font)));
 			WriteBitmapFont(stream, image, (char)FirstCode, (char)FallbackCode, Spacing, Scale, Offset, GenerateMipmaps, PremultiplyAlpha);
 		}
 
 		public static void WriteBitmapFont(Stream stream, Image image, char firstCode, char fallbackCode, Vector2 spacing, float scale, Vector2 offset, bool generateMipmaps, bool premultiplyAlpha)
 		{
-			EngineBinaryWriter engineBinaryWriter = new EngineBinaryWriter(stream);
-			BitmapFont bitmapFont = BitmapFont.InternalLoad(image, firstCode, fallbackCode, spacing, scale, offset, 1, premultiplyAlpha, createTexture: false);
+			var engineBinaryWriter = new EngineBinaryWriter(stream);
+			var bitmapFont = BitmapFont.InternalLoad(image, firstCode, fallbackCode, spacing, scale, offset, 1, premultiplyAlpha, createTexture: false);
 			engineBinaryWriter.Write(bitmapFont.m_glyphsByCode.Count((BitmapFont.Glyph g) => g != null));
 			for (int i = 0; i < bitmapFont.m_glyphsByCode.Length; i++)
 			{

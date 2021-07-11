@@ -2,12 +2,12 @@ using System;
 
 namespace Engine.Serialization
 {
-    [HumanReadableConverter(typeof(Color))]
+	[HumanReadableConverter(typeof(Color))]
 	internal class ColorHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{
-			Color color = (Color)value;
+			var color = (Color)value;
 			if (color.A != byte.MaxValue)
 			{
 				return HumanReadableConverter.ValuesListToString(',', new int[4]

@@ -2,12 +2,12 @@ using System;
 
 namespace Engine.Serialization
 {
-    [HumanReadableConverter(typeof(BoundingSphere))]
+	[HumanReadableConverter(typeof(BoundingSphere))]
 	internal class BoundingSphereHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{
-			BoundingSphere boundingSphere = (BoundingSphere)value;
+			var boundingSphere = (BoundingSphere)value;
 			return HumanReadableConverter.ValuesListToString<float>(',', boundingSphere.Center.X, boundingSphere.Center.Y, boundingSphere.Center.Z, boundingSphere.Radius);
 		}
 

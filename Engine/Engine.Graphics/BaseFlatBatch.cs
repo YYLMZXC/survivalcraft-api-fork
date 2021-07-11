@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-    public abstract class BaseFlatBatch : BaseBatch
+	public abstract class BaseFlatBatch : BaseBatch
 	{
 		internal static UnlitShader m_shader = new UnlitShader(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
 

@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Engine.Serialization
 {
-    public class XmlInputArchive : InputArchive
+	public class XmlInputArchive : InputArchive
 	{
 		public XElement Node
 		{
@@ -18,7 +18,7 @@ namespace Engine.Serialization
 		{
 			if (node == null)
 			{
-				throw new ArgumentNullException("node");
+				throw new ArgumentNullException(nameof(node));
 			}
 			Node = node;
 		}

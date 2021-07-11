@@ -1,6 +1,6 @@
 namespace Engine.Input
 {
-    public struct TouchLocation
+	public struct TouchLocation
 	{
 		public int Id;
 

@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-    internal class PngChunkBKGD : PngChunkSingle
+	internal class PngChunkBKGD : PngChunkSingle
 	{
 		public const string ID = "bKGD";
 
@@ -66,7 +66,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkBKGD pngChunkBKGD = (PngChunkBKGD)other;
+			var pngChunkBKGD = (PngChunkBKGD)other;
 			gray = pngChunkBKGD.gray;
 			red = pngChunkBKGD.red;
 			green = pngChunkBKGD.red;

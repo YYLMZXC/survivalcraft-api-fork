@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs
 {
-    internal abstract class ProgressiveOutputStream : CustomMemoryStream
+	internal abstract class ProgressiveOutputStream : CustomMemoryStream
 	{
 		private readonly int size;
 

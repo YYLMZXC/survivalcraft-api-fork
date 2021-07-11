@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-    internal abstract class PngChunkTextVar : PngChunkMultiple
+	internal abstract class PngChunkTextVar : PngChunkMultiple
 	{
 		public class PngTxtInfo
 		{

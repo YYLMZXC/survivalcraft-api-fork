@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-    internal class PlaneSerializer : ISerializer<Plane>
+	internal class PlaneSerializer : ISerializer<Plane>
 	{
 		public void Serialize(InputArchive archive, ref Plane value)
 		{

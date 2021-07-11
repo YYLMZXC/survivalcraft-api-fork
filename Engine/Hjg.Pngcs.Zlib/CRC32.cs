@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Zlib
 {
-    internal class CRC32
+	internal class CRC32
 	{
 		private const uint defaultPolynomial = 3988292384u;
 

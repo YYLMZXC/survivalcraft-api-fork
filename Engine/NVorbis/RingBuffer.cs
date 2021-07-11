@@ -2,7 +2,7 @@ using System;
 
 namespace NVorbis
 {
-    internal class RingBuffer
+	internal class RingBuffer
 	{
 		private float[] _buffer;
 
@@ -57,14 +57,14 @@ namespace NVorbis
 		{
 			if (index < 0 || index + count > buffer.Length)
 			{
-				throw new ArgumentOutOfRangeException("index");
+				throw new ArgumentOutOfRangeException(nameof(index));
 			}
 			int start = _start;
 			RemoveItems(count);
 			int num = (_end - start + _bufLen) % _bufLen;
 			if (count > num)
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			int num2 = Math.Min(count, _bufLen - start);
 			Array.Copy(_buffer, start, buffer, index, num2);

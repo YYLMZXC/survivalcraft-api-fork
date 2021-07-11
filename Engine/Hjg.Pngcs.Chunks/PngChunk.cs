@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Hjg.Pngcs.Chunks
 {
-    internal abstract class PngChunk
+	internal abstract class PngChunk
 	{
 		public enum ChunkOrderingConstraint
 		{

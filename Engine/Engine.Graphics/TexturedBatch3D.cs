@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-    public sealed class TexturedBatch3D : BaseTexturedBatch
+	public sealed class TexturedBatch3D : BaseTexturedBatch
 	{
 		public void QueueTriangle(Vector3 p1, Vector3 p2, Vector3 p3, Vector2 texCoord1, Vector2 texCoord2, Vector2 texCoord3, Color color)
 		{

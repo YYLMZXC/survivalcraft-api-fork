@@ -1,6 +1,6 @@
 namespace Engine.Input
 {
-    public enum Key
+	public enum Key
 	{
 		Back,
 		Shift,

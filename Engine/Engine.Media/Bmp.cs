@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Media
 {
-    public static class Bmp
+	public static class Bmp
 	{
 		public enum Format
 		{
@@ -63,7 +63,7 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
 			long position = stream.Position;
 			int num = stream.ReadByte();
@@ -79,7 +79,7 @@ namespace Engine.Media
 		public static BmpInfo GetInfo(Stream stream)
 		{
 			BitmapHeader bitmapHeader = ReadHeader(stream);
-			BmpInfo result = default(BmpInfo);
+			var result = default(BmpInfo);
 			result.Width = bitmapHeader.Width;
 			result.Height = bitmapHeader.Height;
 			if (bitmapHeader.BitCount == 32)
@@ -100,7 +100,7 @@ namespace Engine.Media
 		public static Image Load(Stream stream)
 		{
 			BitmapHeader bitmapHeader = ReadHeader(stream);
-			Image image = new Image(bitmapHeader.Width, MathUtils.Abs(bitmapHeader.Height));
+			var image = new Image(bitmapHeader.Width, MathUtils.Abs(bitmapHeader.Height));
 			if (bitmapHeader.BitCount == 32)
 			{
 				byte[] array = new byte[4 * image.Width];
@@ -153,7 +153,7 @@ namespace Engine.Media
 
 		public static void Save(Image image, Stream stream, Format format)
 		{
-			BitmapHeader structure = default(BitmapHeader);
+			var structure = default(BitmapHeader);
 			structure.Type1 = 66;
 			structure.Type2 = 77;
 			structure.Reserved1 = 0;
@@ -222,7 +222,7 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
 			if (!BitConverter.IsLittleEndian)
 			{

@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-    public abstract class BaseBatch
+	public abstract class BaseBatch
 	{
 		public int Layer
 		{

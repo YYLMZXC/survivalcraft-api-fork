@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-    internal class PngChunkSkipped : PngChunk
+	internal class PngChunkSkipped : PngChunk
 	{
 		internal PngChunkSkipped(string id, ImageInfo imgInfo, int clen)
 			: base(id, imgInfo)

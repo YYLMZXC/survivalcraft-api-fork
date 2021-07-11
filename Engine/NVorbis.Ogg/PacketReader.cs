@@ -5,7 +5,7 @@ using System.IO;
 
 namespace NVorbis.Ogg
 {
-    [DebuggerTypeProxy(typeof(DebugView))]
+	[DebuggerTypeProxy(typeof(DebugView))]
 	internal class PacketReader : IPacketProvider, IDisposable
 	{
 		private class DebugView
@@ -46,7 +46,7 @@ namespace NVorbis.Ogg
 					}
 					_last = _reader._last;
 					_first = _reader._first;
-					List<Packet> list = new List<Packet>();
+					var list = new List<Packet>();
 					for (Packet packet = _first; packet != null; packet = packet.Next)
 					{
 						list.Add(packet);
@@ -60,7 +60,7 @@ namespace NVorbis.Ogg
 			{
 				if (reader == null)
 				{
-					throw new ArgumentNullException("reader");
+					throw new ArgumentNullException(nameof(reader));
 				}
 				_reader = reader;
 			}
@@ -153,7 +153,7 @@ namespace NVorbis.Ogg
 					{
 						if (packet == null)
 						{
-							throw new ArgumentException("Wrong packet datatype", "packet");
+							throw new ArgumentException("Wrong packet datatype", nameof(packet));
 						}
 						if (_first == null)
 						{
@@ -218,7 +218,7 @@ namespace NVorbis.Ogg
 						}
 					}
 					break;
-				IL_004f:
+					IL_004f:
 					_container.GatherNextPage(_streamSerial);
 				}
 			}
@@ -377,7 +377,7 @@ namespace NVorbis.Ogg
 		{
 			if (granulePos < 0)
 			{
-				throw new ArgumentOutOfRangeException("granulePos");
+				throw new ArgumentOutOfRangeException(nameof(granulePos));
 			}
 			Packet packet = null;
 			Packet packet2 = _current ?? _first;
@@ -409,23 +409,23 @@ namespace NVorbis.Ogg
 		{
 			if (preRoll < 0)
 			{
-				throw new ArgumentOutOfRangeException("preRoll");
+				throw new ArgumentOutOfRangeException(nameof(preRoll));
 			}
 			if (packet == null)
 			{
 				throw new ArgumentNullException("granulePos");
 			}
-			Packet packet2 = packet as Packet;
+			var packet2 = packet as Packet;
 			if (packet2 == null)
 			{
-				throw new ArgumentException("Incorrect packet type!", "packet");
+				throw new ArgumentException("Incorrect packet type!", nameof(packet));
 			}
 			while (--preRoll >= 0)
 			{
 				packet2 = packet2.Prev;
 				if (packet2 == null)
 				{
-					throw new ArgumentOutOfRangeException("preRoll");
+					throw new ArgumentOutOfRangeException(nameof(preRoll));
 				}
 			}
 			_current = packet2.Prev;

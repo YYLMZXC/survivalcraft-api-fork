@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Engine.Serialization
 {
-    public static class TypeCache
+	public static class TypeCache
 	{
 		private static Dictionary<string, Type> m_typesByName;
 

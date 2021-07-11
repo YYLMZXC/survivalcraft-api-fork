@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-    [ContentWriter("System.String")]
+	[ContentWriter("System.String")]
 	public class StringContentWriter : IContentWriter
 	{
 		public string Text;

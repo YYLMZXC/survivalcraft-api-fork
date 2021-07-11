@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Graphics
 {
-    [Flags]
+	[Flags]
 	public enum TextAnchor
 	{
 		Default = 0x0,

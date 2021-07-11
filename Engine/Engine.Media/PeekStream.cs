@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-    internal class PeekStream : Stream
+	internal class PeekStream : Stream
 	{
 		private Stream m_stream;
 
@@ -47,7 +47,7 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
 			if (!stream.CanRead)
 			{
@@ -55,7 +55,7 @@ namespace Engine.Media
 			}
 			if (peekSize < 0)
 			{
-				throw new ArgumentOutOfRangeException("peekSize");
+				throw new ArgumentOutOfRangeException(nameof(peekSize));
 			}
 			m_stream = stream;
 			m_buffer = new byte[peekSize];
@@ -71,17 +71,17 @@ namespace Engine.Media
 		{
 			switch (origin)
 			{
-				case SeekOrigin.Begin:
-					Position = offset;
-					break;
-				case SeekOrigin.End:
-					Position = Length + offset;
-					break;
-				case SeekOrigin.Current:
-					Position += offset;
-					break;
-				default:
-					throw new ArgumentException("Invalid origin.", "origin");
+			case SeekOrigin.Begin:
+				Position = offset;
+				break;
+			case SeekOrigin.End:
+				Position = Length + offset;
+				break;
+			case SeekOrigin.Current:
+				Position += offset;
+				break;
+			default:
+				throw new ArgumentException("Invalid origin.", nameof(origin));
 			}
 			return Position;
 		}
@@ -95,15 +95,15 @@ namespace Engine.Media
 		{
 			if (buffer == null)
 			{
-				throw new ArgumentNullException("buffer");
+				throw new ArgumentNullException(nameof(buffer));
 			}
 			if (offset < 0)
 			{
-				throw new ArgumentOutOfRangeException("offset");
+				throw new ArgumentOutOfRangeException(nameof(offset));
 			}
 			if (offset + count > buffer.Length)
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			int num = 0;
 			if (m_position < m_end)

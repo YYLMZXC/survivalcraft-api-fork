@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Hjg.Pngcs.Chunks
 {
-    internal class PngMetadata
+	internal class PngMetadata
 	{
 		private readonly ChunksList chunkList;
 
@@ -61,7 +61,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public void SetDpi(double dpix, double dpiy)
 		{
-			PngChunkPHYS pngChunkPHYS = new PngChunkPHYS(chunkList.imageInfo);
+			var pngChunkPHYS = new PngChunkPHYS(chunkList.imageInfo);
 			pngChunkPHYS.SetAsDpi2(dpix, dpiy);
 			QueueChunk(pngChunkPHYS);
 		}
@@ -73,7 +73,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public PngChunkTIME SetTimeNow(int nsecs)
 		{
-			PngChunkTIME pngChunkTIME = new PngChunkTIME(chunkList.imageInfo);
+			var pngChunkTIME = new PngChunkTIME(chunkList.imageInfo);
 			pngChunkTIME.SetNow(nsecs);
 			QueueChunk(pngChunkTIME);
 			return pngChunkTIME;
@@ -86,7 +86,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public PngChunkTIME SetTimeYMDHMS(int year, int mon, int day, int hour, int min, int sec)
 		{
-			PngChunkTIME pngChunkTIME = new PngChunkTIME(chunkList.imageInfo);
+			var pngChunkTIME = new PngChunkTIME(chunkList.imageInfo);
 			pngChunkTIME.SetYMDHMS(year, mon, day, hour, min, sec);
 			QueueChunk(pngChunkTIME, lazyOverwrite: true);
 			return pngChunkTIME;
@@ -135,7 +135,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public List<PngChunkTextVar> GetTxtsForKey(string key)
 		{
-			List<PngChunkTextVar> list = new List<PngChunkTextVar>();
+			var list = new List<PngChunkTextVar>();
 			foreach (PngChunk item in chunkList.GetById("tEXt", key))
 			{
 				list.Add((PngChunkTextVar)item);
@@ -173,7 +173,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public PngChunkPLTE CreatePLTEChunk()
 		{
-			PngChunkPLTE pngChunkPLTE = new PngChunkPLTE(chunkList.imageInfo);
+			var pngChunkPLTE = new PngChunkPLTE(chunkList.imageInfo);
 			QueueChunk(pngChunkPLTE);
 			return pngChunkPLTE;
 		}
@@ -185,7 +185,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public PngChunkTRNS CreateTRNSChunk()
 		{
-			PngChunkTRNS pngChunkTRNS = new PngChunkTRNS(chunkList.imageInfo);
+			var pngChunkTRNS = new PngChunkTRNS(chunkList.imageInfo);
 			QueueChunk(pngChunkTRNS);
 			return pngChunkTRNS;
 		}

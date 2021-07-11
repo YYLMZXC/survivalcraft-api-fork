@@ -1,6 +1,6 @@
 namespace Hjg.Pngcs.Chunks
 {
-    internal class ChunkPredicateId : ChunkPredicate
+	internal class ChunkPredicateId : ChunkPredicate
 	{
 		private readonly string id;
 

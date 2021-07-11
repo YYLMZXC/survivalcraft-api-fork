@@ -3,7 +3,7 @@ using System;
 
 namespace FluxJpeg.Core
 {
-    internal class ImageResizer
+	internal class ImageResizer
 	{
 		private ResizeProgressChangedEventArgs progress = new ResizeProgressChangedEventArgs();
 
@@ -67,14 +67,14 @@ namespace FluxJpeg.Core
 			Filter filter;
 			switch (technique)
 			{
-				case ResamplingFilters.NearestNeighbor:
-					filter = new NNResize();
-					break;
-				case ResamplingFilters.LowpassAntiAlias:
-					filter = new LowpassResize();
-					break;
-				default:
-					throw new NotSupportedException();
+			case ResamplingFilters.NearestNeighbor:
+				filter = new NNResize();
+				break;
+			case ResamplingFilters.LowpassAntiAlias:
+				filter = new LowpassResize();
+				break;
+			default:
+				throw new NotSupportedException();
 			}
 			filter.ProgressChanged += ResizeProgressChanged;
 			return filter;

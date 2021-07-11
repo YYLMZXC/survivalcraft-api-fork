@@ -2,12 +2,12 @@ using System;
 
 namespace Engine.Serialization
 {
-    [HumanReadableConverter(typeof(Box))]
+	[HumanReadableConverter(typeof(Box))]
 	internal class BoxHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{
-			Box box = (Box)value;
+			var box = (Box)value;
 			return HumanReadableConverter.ValuesListToString<int>(',', box.Left, box.Top, box.Near, box.Width, box.Height, box.Depth);
 		}
 

@@ -2,7 +2,7 @@ using Engine.Media;
 
 namespace Engine.Graphics
 {
-    public abstract class BaseFontBatch : BaseBatch
+	public abstract class BaseFontBatch : BaseBatch
 	{
 		internal static UnlitShader m_shader = new UnlitShader(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
 

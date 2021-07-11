@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs.Chunks
 {
-    internal class PngChunkTIME : PngChunkSingle
+	internal class PngChunkTIME : PngChunkSingle
 	{
 		public const string ID = "tIME";
 
@@ -56,7 +56,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkTIME pngChunkTIME = (PngChunkTIME)other;
+			var pngChunkTIME = (PngChunkTIME)other;
 			year = pngChunkTIME.year;
 			mon = pngChunkTIME.mon;
 			day = pngChunkTIME.day;

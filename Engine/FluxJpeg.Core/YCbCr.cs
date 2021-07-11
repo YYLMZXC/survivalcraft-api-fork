@@ -1,6 +1,6 @@
 namespace FluxJpeg.Core
 {
-    internal class YCbCr
+	internal class YCbCr
 	{
 		public static void toRGB(ref byte c1, ref byte c2, ref byte c3)
 		{

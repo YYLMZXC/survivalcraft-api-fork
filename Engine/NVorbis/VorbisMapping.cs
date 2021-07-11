@@ -2,7 +2,7 @@ using System.IO;
 
 namespace NVorbis
 {
-    internal abstract class VorbisMapping
+	internal abstract class VorbisMapping
 	{
 		private class Mapping0 : VorbisMapping
 		{

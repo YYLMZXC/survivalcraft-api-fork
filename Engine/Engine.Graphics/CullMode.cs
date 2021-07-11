@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-    public enum CullMode
+	public enum CullMode
 	{
 		None,
 		CullClockwise,

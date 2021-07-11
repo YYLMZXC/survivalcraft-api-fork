@@ -2,12 +2,12 @@ using System;
 
 namespace Engine.Serialization
 {
-    [HumanReadableConverter(typeof(BoundingRectangle))]
+	[HumanReadableConverter(typeof(BoundingRectangle))]
 	internal class BoundingRectangleHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{
-			BoundingRectangle boundingRectangle = (BoundingRectangle)value;
+			var boundingRectangle = (BoundingRectangle)value;
 			return HumanReadableConverter.ValuesListToString<float>(',', boundingRectangle.Min.X, boundingRectangle.Min.Y, boundingRectangle.Max.X, boundingRectangle.Max.Y);
 		}
 

@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-    public enum TextureAddressMode
+	public enum TextureAddressMode
 	{
 		Clamp,
 		Wrap

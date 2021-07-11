@@ -2,12 +2,12 @@ using System;
 
 namespace Engine.Serialization
 {
-    [HumanReadableConverter(typeof(BoundingCircle))]
+	[HumanReadableConverter(typeof(BoundingCircle))]
 	internal class BoundingCircleHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{
-			BoundingCircle boundingCircle = (BoundingCircle)value;
+			var boundingCircle = (BoundingCircle)value;
 			return HumanReadableConverter.ValuesListToString<float>(',', boundingCircle.Center.X, boundingCircle.Center.Y, boundingCircle.Radius);
 		}
 

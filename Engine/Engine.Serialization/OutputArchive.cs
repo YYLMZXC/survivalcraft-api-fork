@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Engine.Serialization
 {
-    public abstract class OutputArchive : Archive
+	public abstract class OutputArchive : Archive
 	{
 		private int m_nextObjectId = 1;
 

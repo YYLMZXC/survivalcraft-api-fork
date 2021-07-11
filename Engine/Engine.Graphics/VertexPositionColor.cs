@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-    public struct VertexPositionColor
+	public struct VertexPositionColor
 	{
 		public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, "POSITION"), new VertexElement(12, VertexElementFormat.NormalizedByte4, "COLOR"));
 

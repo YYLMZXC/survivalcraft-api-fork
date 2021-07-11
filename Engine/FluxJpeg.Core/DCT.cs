@@ -2,7 +2,7 @@ using System;
 
 namespace FluxJpeg.Core
 {
-    internal class DCT
+	internal class DCT
 	{
 		private float[] _temp = new float[64];
 

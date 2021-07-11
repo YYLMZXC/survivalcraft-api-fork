@@ -1,6 +1,6 @@
 namespace FluxJpeg.Core.Filtering
 {
-    internal class NNResize : Filter
+	internal class NNResize : Filter
 	{
 		protected override void ApplyFilter()
 		{

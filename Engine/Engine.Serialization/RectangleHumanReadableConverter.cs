@@ -2,12 +2,12 @@ using System;
 
 namespace Engine.Serialization
 {
-    [HumanReadableConverter(typeof(Rectangle))]
+	[HumanReadableConverter(typeof(Rectangle))]
 	internal class RectangleHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{
-			Rectangle rectangle = (Rectangle)value;
+			var rectangle = (Rectangle)value;
 			return HumanReadableConverter.ValuesListToString<int>(',', rectangle.Left, rectangle.Top, rectangle.Width, rectangle.Height);
 		}
 

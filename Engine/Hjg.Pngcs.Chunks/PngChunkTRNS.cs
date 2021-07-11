@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs.Chunks
 {
-    internal class PngChunkTRNS : PngChunkSingle
+	internal class PngChunkTRNS : PngChunkSingle
 	{
 		public const string ID = "tRNS";
 
@@ -77,7 +77,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkTRNS pngChunkTRNS = (PngChunkTRNS)other;
+			var pngChunkTRNS = (PngChunkTRNS)other;
 			gray = pngChunkTRNS.gray;
 			red = pngChunkTRNS.red;
 			green = pngChunkTRNS.red;

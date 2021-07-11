@@ -1,6 +1,6 @@
 namespace Engine.Input
 {
-    public enum GamePadButton
+	public enum GamePadButton
 	{
 		A,
 		B,

@@ -2,12 +2,12 @@ using System;
 
 namespace Engine.Serialization
 {
-    [HumanReadableConverter(typeof(Plane))]
+	[HumanReadableConverter(typeof(Plane))]
 	internal class PlaneHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{
-			Plane plane = (Plane)value;
+			var plane = (Plane)value;
 			return HumanReadableConverter.ValuesListToString<float>(',', plane.Normal.X, plane.Normal.Y, plane.Normal.Z, plane.D);
 		}
 

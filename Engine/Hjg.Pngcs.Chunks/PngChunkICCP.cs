@@ -2,7 +2,7 @@ using System;
 
 namespace Hjg.Pngcs.Chunks
 {
-    internal class PngChunkICCP : PngChunkSingle
+	internal class PngChunkICCP : PngChunkSingle
 	{
 		public const string ID = "iCCP";
 
@@ -45,7 +45,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkICCP pngChunkICCP = (PngChunkICCP)other;
+			var pngChunkICCP = (PngChunkICCP)other;
 			profileName = pngChunkICCP.profileName;
 			compressedProfile = new byte[pngChunkICCP.compressedProfile.Length];
 			Array.Copy(pngChunkICCP.compressedProfile, compressedProfile, compressedProfile.Length);

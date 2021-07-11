@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-    public enum VertexElementSemantic
+	public enum VertexElementSemantic
 	{
 		Position,
 		Color,

@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Content
 {
-    [AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class)]
 	public class ContentWriterAttribute : Attribute
 	{
 		public string ContentTypeName;

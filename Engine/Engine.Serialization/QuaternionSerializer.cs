@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-    internal class QuaternionSerializer : ISerializer<Quaternion>
+	internal class QuaternionSerializer : ISerializer<Quaternion>
 	{
 		public void Serialize(InputArchive archive, ref Quaternion value)
 		{
