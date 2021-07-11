@@ -252,7 +252,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public override void PrepareForDrawingOverride()
+		protected override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(m_instancesCount, m_useFog, viewProjection: false, worldViewProjection: true);
 			m_worldViewProjectionMatrixParameter.SetValue(Transforms.WorldViewProjection, InstancesCount);

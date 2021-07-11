@@ -79,7 +79,7 @@ namespace Engine.Graphics
 
 #endif
 
-		public override void PrepareForDrawingOverride()
+        protected override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(1, worldView: false, viewProjection: false, worldViewProjection: true);
 			m_worldViewProjectionMatrixParameter.SetValue(Transforms.WorldViewProjection, 1);
