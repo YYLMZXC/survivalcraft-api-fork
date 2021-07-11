@@ -56,7 +56,7 @@ namespace Game
                 Matrix identity = Matrix.Identity;
                 identity *= Matrix.CreateScale(0f - num, 1f, 1f);
                 identity *= Matrix.CreateTranslation((0.5f - m_pivotDistance) * num, 0f, 0f) * Matrix.CreateRotationY(open ? (num * (float)Math.PI / 2f) : 0f) * Matrix.CreateTranslation((0f - (0.5f - m_pivotDistance)) * num, 0f, 0f);
-                identity *= Matrix.CreateTranslation(0f, 0f, 0f) * Matrix.CreateRotationY((float)rotation * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
+                identity *= Matrix.CreateTranslation(0f, 0f, 0f) * Matrix.CreateRotationY(rotation * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                 m_blockMeshes[i] = new BlockMesh();
                 m_blockMeshes[i].AppendModelMeshPart(model.FindMesh("Post").MeshParts[0], boneAbsoluteTransform * identity, makeEmissive: false, !rightHanded, doubleSided: false, flipNormals: false, m_postColor);
                 m_blockMeshes[i].AppendModelMeshPart(model.FindMesh("Planks").MeshParts[0], boneAbsoluteTransform2 * identity, makeEmissive: false, !rightHanded, doubleSided: false, flipNormals: false, Color.White);
@@ -66,8 +66,8 @@ namespace Game
                 }
                 m_coloredBlockMeshes[i] = new BlockMesh();
                 m_coloredBlockMeshes[i].AppendBlockMesh(m_blockMeshes[i]);
-                m_blockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
-                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+                m_blockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
+                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
                 BoundingBox boundingBox = m_blockMeshes[i].CalculateBoundingBox();
                 boundingBox.Min.X = MathUtils.Saturate(boundingBox.Min.X);
                 boundingBox.Min.Y = MathUtils.Saturate(boundingBox.Min.Y);
@@ -87,8 +87,8 @@ namespace Game
                 m_standaloneBlockMesh.AppendModelMeshPart(model.FindMesh("Planks").MeshParts[0], boneAbsoluteTransform2 * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: true, doubleSided: false, flipNormals: true, Color.White);
             }
             m_standaloneColoredBlockMesh.AppendBlockMesh(m_standaloneBlockMesh);
-            m_standaloneBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
-            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+            m_standaloneBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
+            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
             base.Initialize();
         }
 
@@ -182,7 +182,7 @@ namespace Game
             int data = Terrain.ExtractData(cellValue);
             int data2 = Terrain.ExtractData(cellValue2);
             int data3 = SetRightHanded(rightHanded: (block is FenceGateBlock && GetRotation(data) == num5) || ((!(block2 is FenceGateBlock) || GetRotation(data2) != num5) && !block.IsCollidable_(cellValue)), data: SetOpen(SetRotation(Terrain.ExtractData(value), num5), open: false));
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, BlockIndex), data3);
             result.CellFace = raycastResult.CellFace;
             return result;

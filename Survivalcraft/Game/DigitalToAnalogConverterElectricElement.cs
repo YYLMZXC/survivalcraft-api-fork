@@ -20,12 +20,12 @@ namespace Game
         {
             float voltage = m_voltage;
             m_voltage = 0f;
-            int rotation = base.Rotation;
-            foreach (ElectricConnection connection in base.Connections)
+            int rotation = Rotation;
+            foreach (ElectricConnection connection in Connections)
             {
-                if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0 && ElectricElement.IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
+                if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0 && IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
                 {
-                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(base.CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue)
                     {
                         if (connectorDirection.Value == ElectricConnectorDirection.Top)

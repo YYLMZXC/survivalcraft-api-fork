@@ -89,7 +89,7 @@ namespace Game
             {
                 WasOrderIssued = false;
             }
-            if (m_subsystemTime.PeriodicGameTimeEvent(1.0, (float)(GetHashCode() % 100) * 0.01f))
+            if (m_subsystemTime.PeriodicGameTimeEvent(1.0, GetHashCode() % 100 * 0.01f))
             {
                 m_importanceLevel = 0f;
                 if (m_isEnabled)
@@ -112,12 +112,12 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
-            m_componentMount = base.Entity.FindComponent<ComponentMount>(throwOnError: true);
-            m_isEnabled = base.Entity.ValuesDictionary.DatabaseObject.Name.EndsWith("_Saddled");
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_componentMount = Entity.FindComponent<ComponentMount>(throwOnError: true);
+            m_isEnabled = Entity.ValuesDictionary.DatabaseObject.Name.EndsWith("_Saddled");
             m_stateMachine.AddState("Inactive", null, delegate
             {
                 if (IsActive)

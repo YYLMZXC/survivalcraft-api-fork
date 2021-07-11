@@ -121,7 +121,7 @@ namespace Game
                 if (!string.IsNullOrEmpty(fileName))
                 {
                     Storage.DeleteFile(fileName);
-                    BlocksTexturesManager.BlocksTextureDeleted?.Invoke(name);
+                    BlocksTextureDeleted?.Invoke(name);
                 }
             }
             catch (Exception e)
@@ -142,7 +142,7 @@ namespace Game
 
         public static void ValidateBlocksTexture(Stream stream)
         {
-            Image image = Image.Load(stream);
+            var image = Image.Load(stream);
             if (image.Width > 65535 || image.Height > 65535)
             {
                 throw new InvalidOperationException($"Blocks texture is larger than 65535x65535 pixels (size={image.Width}x{image.Height})");

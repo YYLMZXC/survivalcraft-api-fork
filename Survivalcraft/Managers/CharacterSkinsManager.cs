@@ -167,7 +167,7 @@ namespace Game
                 if (!string.IsNullOrEmpty(fileName))
                 {
                     Storage.DeleteFile(fileName);
-                    CharacterSkinsManager.CharacterSkinDeleted?.Invoke(name);
+                    CharacterSkinDeleted?.Invoke(name);
                 }
             }
             catch (Exception e)
@@ -242,7 +242,7 @@ namespace Game
 
         public static void ValidateCharacterSkin(Stream stream)
         {
-            Image image = Image.Load(stream);
+            var image = Image.Load(stream);
             if (image.Width > 256 || image.Height > 256)
             {
                 throw new InvalidOperationException($"Character skin is larger than 256x256 pixels (size={image.Width}x{image.Height})");

@@ -33,7 +33,7 @@ namespace Game
                 MarketplaceManager.ShowMarketplace();
                 ScreensManager.SwitchScreen("MainMenu");
             }
-            if (Children.Find<ButtonWidget>("Quit").IsClicked || base.Input.Back)
+            if (Children.Find<ButtonWidget>("Quit").IsClicked || Input.Back)
             {
                 AnalyticsManager.LogEvent("[NagScreen] Clicked quit button");
                 Window.Close();

@@ -30,11 +30,11 @@ namespace Game
                     XmlUtils.SaveXmlToStream(xElement, stream2, null, throwOnError: true);
                 }
             }
-            Terrain terrain = new Terrain();
-            TerrainSerializer22 terrainSerializer22 = new TerrainSerializer22(terrain, directoryName);
-            TerrainSerializer221 terrainSerializer221 = new TerrainSerializer221(new Terrain(),directoryName);
+            var terrain = new Terrain();
+            var terrainSerializer22 = new TerrainSerializer22(terrain, directoryName);
+            var terrainSerializer221 = new TerrainSerializer221(new Terrain(),directoryName);
             foreach (var key in terrainSerializer22.m_chunkOffsets) {
-                TerrainChunk terrainChunk = new TerrainChunk(terrain,key.Key.X,key.Key.Y);
+                var terrainChunk = new TerrainChunk(terrain,key.Key.X,key.Key.Y);
                 if (terrainSerializer22.LoadChunk(terrainChunk)) {
                     terrainChunk.State = TerrainChunkState.Valid;
                     terrainChunk.ModificationCounter = 65535;

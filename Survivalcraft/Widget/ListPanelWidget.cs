@@ -94,10 +94,7 @@ namespace Game
                 if (value != m_selectedItemIndex)
                 {
                     m_selectedItemIndex = value;
-                    if (this.SelectionChanged != null)
-                    {
-                        this.SelectionChanged();
-                    }
+                    SelectionChanged?.Invoke();
                 }
             }
         }
@@ -180,7 +177,7 @@ namespace Game
 
         public override float CalculateScrollAreaLength()
         {
-            return (float)Items.Count * ItemSize;
+            return Items.Count * ItemSize;
         }
 
         public void ScrollToItem(object item)
@@ -188,8 +185,8 @@ namespace Game
             int num = m_items.IndexOf(item);
             if (num >= 0)
             {
-                float num2 = (float)num * ItemSize;
-                float num3 = (Direction == LayoutDirection.Horizontal) ? base.ActualSize.X : base.ActualSize.Y;
+                float num2 = num * ItemSize;
+                float num3 = (Direction == LayoutDirection.Horizontal) ? ActualSize.X : ActualSize.Y;
                 if (num2 < ScrollPosition)
                 {
                     ScrollPosition = num2;
@@ -203,7 +200,7 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = true;
+            IsDrawRequired = true;
             foreach (Widget child in Children)
             {
                 if (child.IsVisible)
@@ -221,29 +218,29 @@ namespace Game
             if (m_widgetsDirty)
             {
                 m_widgetsDirty = false;
-                CreateListWidgets((Direction == LayoutDirection.Horizontal) ? base.ActualSize.X : base.ActualSize.Y);
+                CreateListWidgets((Direction == LayoutDirection.Horizontal) ? ActualSize.X : ActualSize.Y);
             }
         }
 
         public override void ArrangeOverride()
         {
-            if (base.ActualSize != lastActualSize)
+            if (ActualSize != lastActualSize)
             {
                 m_widgetsDirty = true;
             }
-            lastActualSize = base.ActualSize;
+            lastActualSize = ActualSize;
             int num = m_firstVisibleIndex;
             foreach (Widget child in Children)
             {
                 if (Direction == LayoutDirection.Horizontal)
                 {
-                    Vector2 vector = new Vector2((float)num * ItemSize - ScrollPosition, 0f);
-                    ContainerWidget.ArrangeChildWidgetInCell(vector, vector + new Vector2(ItemSize, base.ActualSize.Y), child);
+                    var vector = new Vector2(num * ItemSize - ScrollPosition, 0f);
+                    ArrangeChildWidgetInCell(vector, vector + new Vector2(ItemSize, ActualSize.Y), child);
                 }
                 else
                 {
-                    Vector2 vector2 = new Vector2(0f, (float)num * ItemSize - ScrollPosition);
-                    ContainerWidget.ArrangeChildWidgetInCell(vector2, vector2 + new Vector2(base.ActualSize.X, ItemSize), child);
+                    var vector2 = new Vector2(0f, num * ItemSize - ScrollPosition);
+                    ArrangeChildWidgetInCell(vector2, vector2 + new Vector2(ActualSize.X, ItemSize), child);
                 }
                 num++;
             }
@@ -253,16 +250,16 @@ namespace Game
         {
             bool flag = ScrollSpeed != 0f;
             base.Update();
-            if (base.Input.Tap.HasValue && HitTestPanel(base.Input.Tap.Value))
+            if (Input.Tap.HasValue && HitTestPanel(Input.Tap.Value))
             {
                 m_clickAllowed = !flag;
             }
-            if (base.Input.Click.HasValue && m_clickAllowed && HitTestPanel(base.Input.Click.Value.Start) && HitTestPanel(base.Input.Click.Value.End))
+            if (Input.Click.HasValue && m_clickAllowed && HitTestPanel(Input.Click.Value.Start) && HitTestPanel(Input.Click.Value.End))
             {
-                int num = PositionToItemIndex(base.Input.Click.Value.End);
-                if (this.ItemClicked != null && num >= 0 && num < m_items.Count)
+                int num = PositionToItemIndex(Input.Click.Value.End);
+                if (ItemClicked != null && num >= 0 && num < m_items.Count)
                 {
-                    this.ItemClicked(Items[num]);
+                    ItemClicked(Items[num]);
                 }
                 SelectedIndex = num;
                 if (SelectedIndex.HasValue)
@@ -276,12 +273,12 @@ namespace Game
         {
             if (SelectedIndex.HasValue && SelectedIndex.Value >= m_firstVisibleIndex && SelectedIndex.Value <= m_lastVisibleIndex)
             {
-                Vector2 vector = (Direction == LayoutDirection.Horizontal) ? new Vector2((float)SelectedIndex.Value * ItemSize - ScrollPosition, 0f) : new Vector2(0f, (float)SelectedIndex.Value * ItemSize - ScrollPosition);
+                Vector2 vector = (Direction == LayoutDirection.Horizontal) ? new Vector2(SelectedIndex.Value * ItemSize - ScrollPosition, 0f) : new Vector2(0f, SelectedIndex.Value * ItemSize - ScrollPosition);
                 FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(0, DepthStencilState.None);
                 int count = flatBatch2D.TriangleVertices.Count;
-                Vector2 v = (Direction == LayoutDirection.Horizontal) ? new Vector2(ItemSize, base.ActualSize.Y) : new Vector2(base.ActualSize.X, ItemSize);
-                flatBatch2D.QueueQuad(vector, vector + v, 0f, SelectionColor * base.GlobalColorTransform);
-                flatBatch2D.TransformTriangles(base.GlobalTransform, count);
+                Vector2 v = (Direction == LayoutDirection.Horizontal) ? new Vector2(ItemSize, ActualSize.Y) : new Vector2(ActualSize.X, ItemSize);
+                flatBatch2D.QueueQuad(vector, vector + v, 0f, SelectionColor * GlobalColorTransform);
+                flatBatch2D.TransformTriangles(GlobalTransform, count);
             }
             base.Draw(dc);
         }

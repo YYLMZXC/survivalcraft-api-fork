@@ -16,7 +16,7 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemExplosions = base.Project.FindSubsystem<SubsystemExplosions>(throwOnError: true);
+            m_subsystemExplosions = Project.FindSubsystem<SubsystemExplosions>(throwOnError: true);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Game
                 bool flag;
                 if (i < 4)
                 {
-                    radians = (float)i * (float)Math.PI / 2f;
+                    radians = i * (float)Math.PI / 2f;
                     flag = false;
                 }
                 else if (i == 4)
@@ -50,7 +50,7 @@ namespace Game
                 }
                 for (int j = 0; j < 4; j++)
                 {
-                    float radians2 = (float)(-j) * (float)Math.PI / 2f;
+                    float radians2 = -j * (float)Math.PI / 2f;
                     int num = (i << 2) + j;
                     Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateRotationZ(radians2) * Matrix.CreateTranslation(0f, 0f, -0.5f) * (flag ? Matrix.CreateRotationX(radians) : Matrix.CreateRotationY(radians)) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
                     m_blockMeshes[num] = new BlockMesh();
@@ -112,7 +112,7 @@ namespace Game
             int num5 = Terrain.ExtractData(value);
             num5 &= -29;
             num5 |= raycastResult.CellFace.Face << 2;
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetRotation(num5, rotation));
             result.CellFace = raycastResult.CellFace;
             return result;

@@ -51,13 +51,13 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
-            m_componentMiner = base.Entity.FindComponent<ComponentMiner>(throwOnError: true);
-            m_componentFishModel = base.Entity.FindComponent<ComponentFishModel>(throwOnError: true);
-            m_componentSwimAwayBehavior = base.Entity.FindComponent<ComponentSwimAwayBehavior>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_componentMiner = Entity.FindComponent<ComponentMiner>(throwOnError: true);
+            m_componentFishModel = Entity.FindComponent<ComponentFishModel>(throwOnError: true);
+            m_componentSwimAwayBehavior = Entity.FindComponent<ComponentSwimAwayBehavior>(throwOnError: true);
             string digInBlockName = valuesDictionary.GetValue<string>("DigInBlockName");
             m_digInBlockIndex = ((!string.IsNullOrEmpty(digInBlockName)) ? BlocksManager.Blocks.First((Block b) => b.GetType().Name == digInBlockName).BlockIndex : 0);
             m_maxDigInDepth = valuesDictionary.GetValue<float>("MaxDigInDepth");
@@ -104,7 +104,7 @@ namespace Game
             m_stateMachine.AddState("DigIn", delegate
             {
                 m_digInTime = m_subsystemTime.GameTime;
-                m_digOutTime = m_digInTime + (double)m_random.Float(30f, 60f);
+                m_digOutTime = m_digInTime + m_random.Float(30f, 60f);
             }, delegate
             {
                 m_componentFishModel.DigInOrder = m_maxDigInDepth;
@@ -131,7 +131,7 @@ namespace Game
             {
                 Vector2 vector = m_random.Vector2(1f, 1f);
                 float y = 0.2f * m_random.Float(-0.8f, 1f);
-                Vector3 v = Vector3.Normalize(new Vector3(vector.X, y, vector.Y));
+                var v = Vector3.Normalize(new Vector3(vector.X, y, vector.Y));
                 Vector3 vector2 = m_componentCreature.ComponentBody.Position + m_random.Float(8f, 16f) * v;
                 TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(m_componentCreature.ComponentBody.Position, vector2, useInteractionBoxes: false, skipAirBlocks: false, delegate (int value, float d)
                 {

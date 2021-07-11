@@ -55,7 +55,7 @@ namespace Game
                             for (int k = 0; k < customCollisionBoxes.Length; k++)
                             {
                                 BoundingBox boundingBox = customCollisionBoxes[k];
-                                float num13 = boundingBox.Max.Y + (float)num11;
+                                float num13 = boundingBox.Max.Y + num11;
                                 if (shadowPosition.Y - num13 > -0.5f)
                                 {
                                     float num14 = camera.ViewPosition.Y - num13;
@@ -63,10 +63,10 @@ namespace Game
                                     {
                                         float num15 = MathUtils.Max(num14 * 0.01f, 0.005f);
                                         float num16 = MathUtils.Saturate(1f - (shadowPosition.Y - num13) / 2f);
-                                        Vector3 p = new Vector3(boundingBox.Min.X + (float)i, num13 + num15, boundingBox.Min.Z + (float)j);
-                                        Vector3 p2 = new Vector3(boundingBox.Max.X + (float)i, num13 + num15, boundingBox.Min.Z + (float)j);
-                                        Vector3 p3 = new Vector3(boundingBox.Max.X + (float)i, num13 + num15, boundingBox.Max.Z + (float)j);
-                                        Vector3 p4 = new Vector3(boundingBox.Min.X + (float)i, num13 + num15, boundingBox.Max.Z + (float)j);
+                                        var p = new Vector3(boundingBox.Min.X + i, num13 + num15, boundingBox.Min.Z + j);
+                                        var p2 = new Vector3(boundingBox.Max.X + i, num13 + num15, boundingBox.Min.Z + j);
+                                        var p3 = new Vector3(boundingBox.Max.X + i, num13 + num15, boundingBox.Max.Z + j);
+                                        var p4 = new Vector3(boundingBox.Min.X + i, num13 + num15, boundingBox.Max.Z + j);
                                         DrawShadowOverQuad(p, p2, p3, p4, shadowPosition, shadowDiameter, 0.45f * block.ObjectShadowStrength * alpha * num3 * num16);
                                     }
                                 }
@@ -89,7 +89,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
             m_batch = m_primitivesRenderer.TexturedBatch(ContentManager.Get<Texture2D>("Textures/Shadow"), useAlphaTest: false, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);
         }
 

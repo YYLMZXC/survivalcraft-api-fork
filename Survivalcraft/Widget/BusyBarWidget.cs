@@ -36,8 +36,8 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = true;
-            base.DesiredSize = new Vector2(120f, 12f);
+            IsDrawRequired = true;
+            DesiredSize = new Vector2(120f, 12f);
         }
 
         public override void Draw(DrawContext dc)
@@ -51,12 +51,12 @@ namespace Game
             int count = flatBatch2D.TriangleVertices.Count;
             for (int i = 0; i < 5; i++)
             {
-                Vector2 v = new Vector2(((float)i + 0.5f) * 24f, 6f);
+                var v = new Vector2((i + 0.5f) * 24f, 6f);
                 Color c = (i == m_boxIndex % 5) ? LitBarColor : UnlitBarColor;
                 float v2 = (i == m_boxIndex % 5) ? 12f : 8f;
-                flatBatch2D.QueueQuad(v - new Vector2(v2) / 2f, v + new Vector2(v2) / 2f, 0f, c * base.GlobalColorTransform);
+                flatBatch2D.QueueQuad(v - new Vector2(v2) / 2f, v + new Vector2(v2) / 2f, 0f, c * GlobalColorTransform);
             }
-            flatBatch2D.TransformTriangles(base.GlobalTransform, count);
+            flatBatch2D.TransformTriangles(GlobalTransform, count);
         }
     }
 }

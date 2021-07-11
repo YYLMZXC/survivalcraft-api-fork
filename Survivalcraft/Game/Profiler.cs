@@ -92,7 +92,7 @@ namespace Game
         {
             foreach (Metric metric in Metrics)
             {
-                float sample = (float)metric.TotalTicks / (float)Stopwatch.Frequency;
+                float sample = metric.TotalTicks / (float)Stopwatch.Frequency;
                 metric.AverageHitCount.AddSample(metric.HitCount);
                 metric.AverageTime.AddSample(sample);
                 metric.HitCount = 0;
@@ -119,7 +119,7 @@ namespace Game
             int length = text.Length;
             text.Append(metric.Name);
             text.Append('.', Math.Max(1, num - text.Length + length));
-            FormatTimeSimple(text, (float)metric.TotalTicks / (float)Stopwatch.Frequency);
+            FormatTimeSimple(text, metric.TotalTicks / (float)Stopwatch.Frequency);
         }
 
         public static void ReportAverage(StringBuilder text)

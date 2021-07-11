@@ -71,7 +71,7 @@ namespace Game
             {
                 return null;
             }
-            List<string> list = ingredients.Where((string i) => !string.IsNullOrEmpty(i)).ToList();
+            var list = ingredients.Where((string i) => !string.IsNullOrEmpty(i)).ToList();
             if (list.Count == 2)
             {
                 int num = 0;

@@ -63,7 +63,7 @@ namespace Game
             {
                 for (int j = 0; j < m_gridWidget.ColumnsCount; j++)
                 {
-                    CraftingRecipeSlotWidget widget = new CraftingRecipeSlotWidget();
+                    var widget = new CraftingRecipeSlotWidget();
                     m_gridWidget.Children.Add(widget);
                     m_gridWidget.SetWidgetCell(widget, new Point2(j, i));
                 }

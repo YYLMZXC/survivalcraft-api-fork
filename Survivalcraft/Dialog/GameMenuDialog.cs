@@ -33,13 +33,13 @@ namespace Game
             if (!m_increaseDetailDialogShown && PerformanceManager.LongTermAverageFrameTime.HasValue && PerformanceManager.LongTermAverageFrameTime.Value * 1000f < 25f && (SettingsManager.VisibilityRange <= 64 || SettingsManager.ResolutionMode == ResolutionMode.Low))
             {
                 m_increaseDetailDialogShown = true;
-                DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog(LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), LanguageControl.Get("Usual", "ok"), null, null));
+                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), LanguageControl.Get("Usual", "ok"), null, null));
                 AnalyticsManager.LogEvent("[GameMenuScreen] IncreaseDetailDialog Shown");
             }
             if (!m_decreaseDetailDialogShown && PerformanceManager.LongTermAverageFrameTime.HasValue && PerformanceManager.LongTermAverageFrameTime.Value * 1000f > 50f && (SettingsManager.VisibilityRange >= 64 || SettingsManager.ResolutionMode == ResolutionMode.High))
             {
                 m_decreaseDetailDialogShown = true;
-                DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog(LanguageControl.Get(fName, 3), LanguageControl.Get(fName, 4), LanguageControl.Get("Usual", "ok"), null, null));
+                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get(fName, 3), LanguageControl.Get(fName, 4), LanguageControl.Get("Usual", "ok"), null, null));
                 AnalyticsManager.LogEvent("[GameMenuScreen] DecreaseDetailDialog Shown");
             }
             m_statsPanel.Children.Clear();
@@ -51,7 +51,7 @@ namespace Game
             BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
             BitmapFont font2 = ContentManager.Get<BitmapFont>("Fonts/Pericles");
             Color white = Color.White;
-            StackPanelWidget stackPanelWidget = new StackPanelWidget
+            var stackPanelWidget = new StackPanelWidget
             {
                 Direction = LayoutDirection.Vertical,
                 HorizontalAlignment = WidgetAlignment.Center
@@ -126,9 +126,9 @@ namespace Game
                 AddStat(stackPanelWidget, LanguageControl.Get(fName, 36), playerStats.WaterCreatureKills.ToString("N0"));
                 AddStat(stackPanelWidget, LanguageControl.Get(fName, 37), playerStats.AirCreatureKills.ToString("N0"));
                 AddStat(stackPanelWidget, LanguageControl.Get(fName, 38), playerStats.MeleeAttacks.ToString("N0"));
-                AddStat(stackPanelWidget, LanguageControl.Get(fName, 39), playerStats.MeleeHits.ToString("N0"), $"({((playerStats.MeleeHits == 0L) ? 0.0 : ((double)playerStats.MeleeHits / (double)playerStats.MeleeAttacks * 100.0)):0}%)");
+                AddStat(stackPanelWidget, LanguageControl.Get(fName, 39), playerStats.MeleeHits.ToString("N0"), $"({((playerStats.MeleeHits == 0L) ? 0.0 : (playerStats.MeleeHits / (double)playerStats.MeleeAttacks * 100.0)):0}%)");
                 AddStat(stackPanelWidget, LanguageControl.Get(fName, 40), playerStats.RangedAttacks.ToString("N0"));
-                AddStat(stackPanelWidget, LanguageControl.Get(fName, 41), playerStats.RangedHits.ToString("N0"), $"({((playerStats.RangedHits == 0L) ? 0.0 : ((double)playerStats.RangedHits / (double)playerStats.RangedAttacks * 100.0)):0}%)");
+                AddStat(stackPanelWidget, LanguageControl.Get(fName, 41), playerStats.RangedHits.ToString("N0"), $"({((playerStats.RangedHits == 0L) ? 0.0 : (playerStats.RangedHits / (double)playerStats.RangedAttacks * 100.0)):0}%)");
                 AddStat(stackPanelWidget, LanguageControl.Get(fName, 42), playerStats.HitsReceived.ToString("N0"));
                 stackPanelWidget.Children.Add(new LabelWidget
                 {
@@ -225,12 +225,12 @@ namespace Game
         {
             if (Children.Find<ButtonWidget>("More").IsClicked)
             {
-                List<Tuple<string, Action>> list = new List<Tuple<string, Action>>();
+                var list = new List<Tuple<string, Action>>();
                 if (m_adventureRestartExists && GameManager.WorldInfo.WorldSettings.GameMode == GameMode.Adventure)
                 {
                     list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 82), delegate
                     {
-                        DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog(LanguageControl.Get(fName, 83), LanguageControl.Get(fName, 84), LanguageControl.Get("Usual", "yes"), LanguageControl.Get("Usual", "no"), delegate (MessageDialogButton result)
+                        DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get(fName, 83), LanguageControl.Get(fName, 84), LanguageControl.Get("Usual", "yes"), LanguageControl.Get("Usual", "no"), delegate (MessageDialogButton result)
                         {
                             if (result == MessageDialogButton.Button1)
                             {
@@ -243,10 +243,10 @@ namespace Game
                 {
                     list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 85), delegate
                     {
-                        DialogsManager.ShowDialog(base.ParentWidget, new ListSelectionDialog(LanguageControl.Get(fName, 86), GetRateableItems(), 60f, (object o) => ((ActiveExternalContentInfo)o).DisplayName, delegate (object o)
+                        DialogsManager.ShowDialog(ParentWidget, new ListSelectionDialog(LanguageControl.Get(fName, 86), GetRateableItems(), 60f, (object o) => ((ActiveExternalContentInfo)o).DisplayName, delegate (object o)
                         {
-                            ActiveExternalContentInfo activeExternalContentInfo = (ActiveExternalContentInfo)o;
-                            DialogsManager.ShowDialog(base.ParentWidget, new RateCommunityContentDialog(activeExternalContentInfo.Address, activeExternalContentInfo.DisplayName, UserManager.ActiveUser.UniqueId));
+                            var activeExternalContentInfo = (ActiveExternalContentInfo)o;
+                            DialogsManager.ShowDialog(ParentWidget, new RateCommunityContentDialog(activeExternalContentInfo.Address, activeExternalContentInfo.DisplayName, UserManager.ActiveUser.UniqueId));
                         }));
                     }));
                 }
@@ -262,27 +262,27 @@ namespace Game
                 {
                     ScreensManager.SwitchScreen("Help");
                 }));
-                if ((base.Input.Devices & (WidgetInputDevice.Keyboard | WidgetInputDevice.Mouse)) != 0)
+                if ((Input.Devices & (WidgetInputDevice.Keyboard | WidgetInputDevice.Mouse)) != 0)
                 {
                     list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 90), delegate
                     {
-                        DialogsManager.ShowDialog(base.ParentWidget, new KeyboardHelpDialog());
+                        DialogsManager.ShowDialog(ParentWidget, new KeyboardHelpDialog());
                     }));
                 }
-                if ((base.Input.Devices & WidgetInputDevice.Gamepads) != 0)
+                if ((Input.Devices & WidgetInputDevice.Gamepads) != 0)
                 {
                     list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 91), delegate
                     {
-                        DialogsManager.ShowDialog(base.ParentWidget, new GamepadHelpDialog());
+                        DialogsManager.ShowDialog(ParentWidget, new GamepadHelpDialog());
                     }));
                 }
-                ListSelectionDialog dialog = new ListSelectionDialog(LanguageControl.Get(fName, 92), list, 60f, (object t) => ((Tuple<string, Action>)t).Item1, delegate (object t)
+                var dialog = new ListSelectionDialog(LanguageControl.Get(fName, 92), list, 60f, (object t) => ((Tuple<string, Action>)t).Item1, delegate (object t)
                 {
                     ((Tuple<string, Action>)t).Item2();
                 });
-                DialogsManager.ShowDialog(base.ParentWidget, dialog);
+                DialogsManager.ShowDialog(ParentWidget, dialog);
             }
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("Resume").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("Resume").IsClicked)
             {
                 DialogsManager.HideDialog(this);
             }
@@ -330,7 +330,7 @@ namespace Game
                 HorizontalAlignment = WidgetAlignment.Center,
                 Children =
                 {
-                    (Widget)new LabelWidget
+                    new LabelWidget
                     {
                         Text = title + ":",
                         HorizontalAlignment = WidgetAlignment.Far,
@@ -338,20 +338,20 @@ namespace Game
                         Color = gray,
                         Margin = new Vector2(5f, 1f)
                     },
-                    (Widget)new StackPanelWidget
+                    new StackPanelWidget
                     {
                         Direction = LayoutDirection.Horizontal,
                         HorizontalAlignment = WidgetAlignment.Near,
                         Children =
                         {
-                            (Widget)new LabelWidget
+                            new LabelWidget
                             {
                                 Text = value1,
                                 Font = font,
                                 Color = white,
                                 Margin = new Vector2(5f, 1f)
                             },
-                            (Widget)new LabelWidget
+                            new LabelWidget
                             {
                                 Text = value2,
                                 Font = font,

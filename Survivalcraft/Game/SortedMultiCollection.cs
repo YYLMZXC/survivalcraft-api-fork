@@ -23,7 +23,7 @@ namespace Game
             internal Enumerator(SortedMultiCollection<TKey, TValue> collection)
             {
                 m_collection = collection;
-                m_current = default(KeyValuePair<TKey, TValue>);
+                m_current = default;
                 m_index = 0;
                 m_version = collection.m_version;
             }
@@ -44,7 +44,7 @@ namespace Game
                     m_index++;
                     return true;
                 }
-                m_current = default(KeyValuePair<TKey, TValue>);
+                m_current = default;
                 return false;
             }
 
@@ -55,7 +55,7 @@ namespace Game
                     throw new InvalidOperationException("SortedMultiCollection was modified, enumeration cannot continue.");
                 }
                 m_index = 0;
-                m_current = default(KeyValuePair<TKey, TValue>);
+                m_current = default;
             }
         }
 
@@ -82,7 +82,7 @@ namespace Game
                 value = Math.Max(Math.Max(4, m_count), value);
                 if (value != m_array.Length)
                 {
-                    KeyValuePair<TKey, TValue>[] array = new KeyValuePair<TKey, TValue>[value];
+                    var array = new KeyValuePair<TKey, TValue>[value];
                     Array.Copy(m_array, array, m_count);
                     m_array = array;
                 }
@@ -114,7 +114,7 @@ namespace Game
         }
 
         public SortedMultiCollection(int capacity)
-            : this(capacity, (IComparer<TKey>)null)
+            : this(capacity, null)
         {
             capacity = Math.Max(capacity, 4);
             m_array = new KeyValuePair<TKey, TValue>[capacity];
@@ -156,7 +156,7 @@ namespace Game
             if (num >= 0)
             {
                 Array.Copy(m_array, num + 1, m_array, num, m_count - num - 1);
-                m_array[m_count - 1] = default(KeyValuePair<TKey, TValue>);
+                m_array[m_count - 1] = default;
                 m_count--;
                 m_version++;
                 return true;
@@ -168,7 +168,7 @@ namespace Game
         {
             for (int i = 0; i < m_count; i++)
             {
-                m_array[i] = default(KeyValuePair<TKey, TValue>);
+                m_array[i] = default;
             }
             m_count = 0;
             m_version++;
@@ -182,7 +182,7 @@ namespace Game
                 value = m_array[num].Value;
                 return true;
             }
-            value = default(TValue);
+            value = default;
             return false;
         }
 

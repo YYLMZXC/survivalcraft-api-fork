@@ -243,7 +243,7 @@ namespace Game
                 DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(fName, 2), items, 72f, delegate (object index)
                 {
                     XElement node2 = ContentManager.Get<XElement>("Widgets/SelectBlockItem");
-                    ContainerWidget obj2 = (ContainerWidget)Widget.LoadWidget(null, node2, null);
+                    var obj2 = (ContainerWidget)LoadWidget(null, node2, null);
                     obj2.Children.Find<BlockIconWidget>("SelectBlockItem.Block").Contents = (int)index;
                     obj2.Children.Find<LabelWidget>("SelectBlockItem.Text").Text = BlocksManager.Blocks[(int)index].GetDisplayName(null, Terrain.MakeBlockValue((int)index));
                     return obj2;
@@ -280,10 +280,10 @@ namespace Game
             if (m_blocksTextureButton.IsClicked)
             {
                 BlocksTexturesManager.UpdateBlocksTexturesList();
-                ListSelectionDialog dialog = new ListSelectionDialog(LanguageControl.Get(fName, 3), BlocksTexturesManager.BlockTexturesNames, 64f, delegate (object item)
+                var dialog = new ListSelectionDialog(LanguageControl.Get(fName, 3), BlocksTexturesManager.BlockTexturesNames, 64f, delegate (object item)
                 {
                     XElement node = ContentManager.Get<XElement>("Widgets/BlocksTextureItem");
-                    ContainerWidget obj = (ContainerWidget)Widget.LoadWidget(this, node, null);
+                    var obj = (ContainerWidget)LoadWidget(this, node, null);
                     Texture2D texture2 = m_blockTexturesCache.GetTexture((string)item);
                     obj.Children.Find<LabelWidget>("BlocksTextureItem.Text").Text = BlocksTexturesManager.GetDisplayName((string)item);
                     obj.Children.Find<LabelWidget>("BlocksTextureItem.Details").Text = $"{texture2.Width}x{texture2.Height}";
@@ -374,7 +374,7 @@ namespace Game
             m_adventureSurvivalMechanicsButton.Text = (m_worldSettings.AreAdventureSurvivalMechanicsEnabled ? LanguageControl.Get("Usual", "enable") : LanguageControl.Get("Usual", "disable"));
             m_supernaturalCreaturesButton.Text = (m_worldSettings.AreSupernaturalCreaturesEnabled ? LanguageControl.Get("Usual", "enable") : LanguageControl.Get("Usual", "disable"));
             m_friendlyFireButton.Text = (m_worldSettings.IsFriendlyFireEnabled ? LanguageControl.Get("Usual", "allowed") : LanguageControl.Get("Usual", "not allowed"));
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
             }

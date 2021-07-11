@@ -17,7 +17,7 @@ namespace Game
         public KillParticleSystem(SubsystemTerrain terrain, Vector3 position, float size)
             : base(20)
         {
-            base.Texture = ContentManager.Get<Texture2D>("Textures/KillParticle");
+            Texture = ContentManager.Get<Texture2D>("Textures/KillParticle");
             int num = Terrain.ToCell(position.X);
             int num2 = Terrain.ToCell(position.Y);
             int num3 = Terrain.ToCell(position.Z);
@@ -28,14 +28,14 @@ namespace Game
             x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2 - 1, num3));
             x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 + 1));
             x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 - 1));
-            base.TextureSlotsCount = 2;
+            TextureSlotsCount = 2;
             Color white = Color.White;
             float num4 = LightingManager.LightIntensityByLightValue[x];
             white *= num4;
             white.A = 255;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle obj = base.Particles[i];
+                Particle obj = Particles[i];
                 obj.IsActive = true;
                 obj.Position = position + 0.4f * size * new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
                 obj.Color = white;
@@ -52,9 +52,9 @@ namespace Game
             dt = MathUtils.Clamp(dt, 0f, 0.1f);
             float num = MathUtils.Pow(0.1f, dt);
             bool flag = false;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (particle.IsActive)
                 {
                     flag = true;

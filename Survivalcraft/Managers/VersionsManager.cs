@@ -38,7 +38,7 @@ namespace Game
         static VersionsManager()
         {
             m_versionConverters = new List<VersionConverter>();
-            AssemblyName assemblyName = new AssemblyName(typeof(VersionsManager).GetTypeInfo().Assembly.FullName);
+            var assemblyName = new AssemblyName(typeof(VersionsManager).GetTypeInfo().Assembly.FullName);
             Version = $"{assemblyName.Version.Major}.{assemblyName.Version.Minor}.{assemblyName.Version.Build}.{assemblyName.Version.Revision}";
             SerializationVersion = $"{assemblyName.Version.Major}.{assemblyName.Version.Minor}";
             Assembly[] array = TypeCache.LoadedAssemblies.ToArray();
@@ -48,7 +48,7 @@ namespace Game
                 {
                     if (!definedType.IsAbstract && !definedType.IsInterface && typeof(VersionConverter).GetTypeInfo().IsAssignableFrom(definedType))
                     {
-                        VersionConverter item = (VersionConverter)Activator.CreateInstance(definedType.AsType());
+                        var item = (VersionConverter)Activator.CreateInstance(definedType.AsType());
                         m_versionConverters.Add(item);
                     }
                 }
@@ -113,9 +113,7 @@ namespace Game
             string[] array2 = v2.Split('.');
             for (int i = 0; i < MathUtils.Min(array.Length, array2.Length); i++)
             {
-                int result;
-                int result2;
-                int num = (!int.TryParse(array[i], out result) || !int.TryParse(array2[i], out result2)) ? string.CompareOrdinal(array[i], array2[i]) : (result - result2);
+                int num = (!int.TryParse(array[i], out int result) || !int.TryParse(array2[i], out int result2)) ? string.CompareOrdinal(array[i], array2[i]) : (result - result2);
                 if (num != 0)
                 {
                     return num;

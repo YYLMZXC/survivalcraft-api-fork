@@ -214,27 +214,27 @@ namespace Game
                 float num = 0f;
                 if ((TextAnchor & TextAnchor.VerticalCenter) != 0)
                 {
-                    float num2 = Font.GlyphHeight * FontScale * Font.Scale + (float)(m_lines.Count - 1) * ((Font.GlyphHeight + Font.Spacing.Y) * FontScale * Font.Scale + FontSpacing.Y);
-                    num = (base.ActualSize.Y - num2) / 2f;
+                    float num2 = Font.GlyphHeight * FontScale * Font.Scale + (m_lines.Count - 1) * ((Font.GlyphHeight + Font.Spacing.Y) * FontScale * Font.Scale + FontSpacing.Y);
+                    num = (ActualSize.Y - num2) / 2f;
                 }
                 else if ((TextAnchor & TextAnchor.Bottom) != 0)
                 {
-                    float num3 = Font.GlyphHeight * FontScale * Font.Scale + (float)(m_lines.Count - 1) * ((Font.GlyphHeight + Font.Spacing.Y) * FontScale * Font.Scale + FontSpacing.Y);
-                    num = base.ActualSize.Y - num3;
+                    float num3 = Font.GlyphHeight * FontScale * Font.Scale + (m_lines.Count - 1) * ((Font.GlyphHeight + Font.Spacing.Y) * FontScale * Font.Scale + FontSpacing.Y);
+                    num = ActualSize.Y - num3;
                 }
                 TextAnchor anchor = TextAnchor & ~(TextAnchor.VerticalCenter | TextAnchor.Bottom);
-                Color color = Color * base.GlobalColorTransform;
+                Color color = Color * GlobalColorTransform;
                 float num4 = CalculateLineHeight();
                 foreach (string line in m_lines)
                 {
                     float x = 0f;
                     if ((TextAnchor & TextAnchor.HorizontalCenter) != 0)
                     {
-                        x = base.ActualSize.X / 2f;
+                        x = ActualSize.X / 2f;
                     }
                     else if ((TextAnchor & TextAnchor.Right) != 0)
                     {
-                        x = base.ActualSize.X;
+                        x = ActualSize.X;
                     }
                     bool flag = true;
                     Vector2 vector = Vector2.Zero;
@@ -248,7 +248,7 @@ namespace Game
                     }
                     else if (TextOrientation == TextOrientation.VerticalLeft)
                     {
-                        vector = new Vector2(x, base.ActualSize.Y + num);
+                        vector = new Vector2(x, ActualSize.Y + num);
                         angle = MathUtils.DegToRad(-90f);
                         flag = true;
                     }
@@ -262,22 +262,22 @@ namespace Game
                     }
                     num += num4;
                 }
-                fontBatch2D.TransformTriangles(base.GlobalTransform, count);
+                fontBatch2D.TransformTriangles(GlobalTransform, count);
             }
         }
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = (!string.IsNullOrEmpty(Text) && Color.A != 0);
+            IsDrawRequired = (!string.IsNullOrEmpty(Text) && Color.A != 0);
             if (TextOrientation == TextOrientation.Horizontal)
             {
                 UpdateLines(parentAvailableSize.X, parentAvailableSize.Y);
-                base.DesiredSize = new Vector2((Size.X < 0f) ? m_linesSize.Value.X : Size.X, (Size.Y < 0f) ? m_linesSize.Value.Y : Size.Y);
+                DesiredSize = new Vector2((Size.X < 0f) ? m_linesSize.Value.X : Size.X, (Size.Y < 0f) ? m_linesSize.Value.Y : Size.Y);
             }
             else if (TextOrientation == TextOrientation.VerticalLeft)
             {
                 UpdateLines(parentAvailableSize.Y, parentAvailableSize.X);
-                base.DesiredSize = new Vector2((Size.X < 0f) ? m_linesSize.Value.Y : Size.X, (Size.Y < 0f) ? m_linesSize.Value.X : Size.Y);
+                DesiredSize = new Vector2((Size.X < 0f) ? m_linesSize.Value.Y : Size.X, (Size.Y < 0f) ? m_linesSize.Value.X : Size.Y);
             }
         }
 

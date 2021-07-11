@@ -68,7 +68,7 @@ namespace Game
                     Block block = BlocksManager.Blocks[num2];
                     if (explosiveData.FuseParticleSystem == null)
                     {
-                        GunpowderKegBlock gunpowderKegBlock = block as GunpowderKegBlock;
+                        var gunpowderKegBlock = block as GunpowderKegBlock;
                         if (gunpowderKegBlock != null)
                         {
                             explosiveData.FuseParticleSystem = new FuseParticleSystem(new Vector3(point.X, point.Y, point.Z) + gunpowderKegBlock.FuseOffset);
@@ -105,13 +105,13 @@ namespace Game
 
         public override void OnBlockRemoved(int value, int newValue, int x, int y, int z)
         {
-            Point3 point = new Point3(x, y, z);
+            var point = new Point3(x, y, z);
             RemoveExplosive(point);
         }
 
         public override void OnChunkDiscarding(TerrainChunk chunk)
         {
-            List<Point3> list = new List<Point3>();
+            var list = new List<Point3>();
             foreach (Point3 key in m_explosiveDataByPoint.Keys)
             {
                 if (key.X >= chunk.Origin.X && key.X < chunk.Origin.X + 16 && key.Z >= chunk.Origin.Y && key.Z < chunk.Origin.Y + 16)
@@ -138,11 +138,11 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemExplosions = base.Project.FindSubsystem<SubsystemExplosions>(throwOnError: true);
-            m_subsystemFireBlockBehavior = base.Project.FindSubsystem<SubsystemFireBlockBehavior>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemExplosions = Project.FindSubsystem<SubsystemExplosions>(throwOnError: true);
+            m_subsystemFireBlockBehavior = Project.FindSubsystem<SubsystemFireBlockBehavior>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
             m_fuseSound = m_subsystemAudio.CreateSound("Audio/Fuse");
             m_fuseSound.IsLooped = true;
             foreach (ValuesDictionary value3 in valuesDictionary.GetValue<ValuesDictionary>("Explosives").Values)
@@ -157,11 +157,11 @@ namespace Game
         {
             base.Save(valuesDictionary);
             int num = 0;
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Explosives", valuesDictionary2);
             foreach (ExplosiveData value in m_explosiveDataByPoint.Values)
             {
-                ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+                var valuesDictionary3 = new ValuesDictionary();
                 valuesDictionary2.SetValue(num++.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
                 valuesDictionary3.SetValue("Point", value.Point);
                 valuesDictionary3.SetValue("TimeToExplosion", value.TimeToExplosion);
@@ -177,7 +177,7 @@ namespace Game
         {
             if (!m_explosiveDataByPoint.ContainsKey(point))
             {
-                ExplosiveData explosiveData = new ExplosiveData();
+                var explosiveData = new ExplosiveData();
                 explosiveData.Point = point;
                 explosiveData.TimeToExplosion = timeToExplosion;
                 m_explosiveDataByPoint.Add(point, explosiveData);

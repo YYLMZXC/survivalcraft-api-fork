@@ -56,11 +56,11 @@ namespace Game
                 Matrix value2 = Matrix.Identity;
                 if (!num3)
                 {
-                    float radians = 0.2f * ((float)(num4 % 16) / 7.5f - 1f);
-                    float radians2 = 0.1f * ((float)((num4 >> 4) % 16) / 7.5f - 1f);
+                    float radians = 0.2f * (num4 % 16 / 7.5f - 1f);
+                    float radians2 = 0.1f * ((num4 >> 4) % 16 / 7.5f - 1f);
                     value2 = ((GetRotation(num) != 0) ? (Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationZ(radians) * Matrix.CreateRotationY(radians2) * Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationX(radians) * Matrix.CreateRotationY(radians2) * Matrix.CreateTranslation(0.5f, 0f, 0.5f)));
                 }
-                float f = num3 ? 0f : MathUtils.Sqr((float)((num4 >> 8) % 16) / 15f);
+                float f = num3 ? 0f : MathUtils.Sqr((num4 >> 8) % 16 / 15f);
                 generator.GenerateMeshVertices(color: (!flag) ? Color.Lerp(Color.White, new Color(255, 233, 199), f) : Color.Lerp(new Color(217, 206, 123), new Color(229, 206, 123), f), block: this, x: x, y: y, z: z, blockMesh: m_blockMeshes[num], matrix: value2, subset: geometry.SubsetOpaque);
             }
         }
@@ -92,12 +92,12 @@ namespace Game
             BlockPlacementData result;
             if (MathUtils.Abs(Vector3.Dot(forward, Vector3.UnitZ)) > num)
             {
-                result = default(BlockPlacementData);
+                result = default;
                 result.Value = Terrain.MakeBlockValue(189, 0, SetRotation(data, 0));
                 result.CellFace = raycastResult.CellFace;
                 return result;
             }
-            result = default(BlockPlacementData);
+            result = default;
             result.Value = Terrain.MakeBlockValue(189, 0, SetRotation(data, 1));
             result.CellFace = raycastResult.CellFace;
             return result;

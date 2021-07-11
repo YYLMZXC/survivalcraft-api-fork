@@ -28,12 +28,12 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(neighborX, neighborY, neighborZ);
+            int cellContents = SubsystemTerrain.Terrain.GetCellContents(neighborX, neighborY, neighborZ);
             if (cellContents != 0 && cellContents != 18)
             {
                 return;
             }
-            base.SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(0));
+            SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(0));
             if (!m_random.Bool(0.25f))
             {
                 return;
@@ -71,13 +71,13 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemPickables = base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
+            m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
         }
 
         static SubsystemTreasureGeneratorBlockBehavior()
         {
-            TreasureData[] array = new TreasureData[61];
-            TreasureData treasureData = new TreasureData
+            var array = new TreasureData[61];
+            var treasureData = new TreasureData
             {
                 Value = 79,
                 Probability = 4f,

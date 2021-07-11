@@ -41,7 +41,7 @@ namespace Game
             {
                 ScreensManager.SwitchScreen("ManageContent");
             }
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen("MainMenu");
             }

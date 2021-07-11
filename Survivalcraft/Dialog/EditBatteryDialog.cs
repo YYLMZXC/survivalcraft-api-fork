@@ -37,7 +37,7 @@ namespace Game
             {
                 Dismiss(m_voltageLevel);
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
+            if (Input.Cancel || m_cancelButton.IsClicked)
             {
                 Dismiss(null);
             }
@@ -46,7 +46,7 @@ namespace Game
 
         public void UpdateControls()
         {
-            m_voltageSlider.Text = string.Format("{0:0.0}V ({1})", 1.5f * (float)m_voltageLevel / 15f, (m_voltageLevel < 8) ?LanguageControl.Get(GetType().Name,1) : LanguageControl.Get(GetType().Name, 2));
+            m_voltageSlider.Text = string.Format("{0:0.0}V ({1})", 1.5f * m_voltageLevel / 15f, (m_voltageLevel < 8) ?LanguageControl.Get(GetType().Name,1) : LanguageControl.Get(GetType().Name, 2));
             m_voltageSlider.Value = m_voltageLevel;
         }
 

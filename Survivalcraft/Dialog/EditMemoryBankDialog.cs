@@ -116,7 +116,7 @@ namespace Game
                 m_memoryBankData.Data = m_tmpMemoryBankData.Data;
                 Dismiss(result: true);
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
+            if (Input.Cancel || m_cancelButton.IsClicked)
             {
                 Dismiss(result: false);
             }

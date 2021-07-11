@@ -47,7 +47,7 @@ namespace Game
         {
             try
             {
-                Dictionary<string, string> dictionary = new Dictionary<string, string>();
+                var dictionary = new Dictionary<string, string>();
                 dictionary.Add("Content-Type", "application/octet-stream");
                 WebManager.Put("https://transfer.sh/" + path, null, dictionary, stream, progress, delegate (byte[] result)
                 {

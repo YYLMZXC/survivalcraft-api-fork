@@ -139,7 +139,7 @@ namespace Game
             LitShader litShader = UseAlphaThreshold ? m_shaderAlpha : m_shader;
             litShader.Texture = TextureOverride;
             litShader.SamplerState = SamplerState.PointClamp;
-            litShader.MaterialColor = new Vector4(Color * base.GlobalColorTransform);
+            litShader.MaterialColor = new Vector4(Color * GlobalColorTransform);
             litShader.AmbientLightColor = new Vector3(0.66f, 0.66f, 0.66f);
             litShader.DiffuseLightColor1 = new Vector3(1f, 1f, 1f);
             litShader.LightDirection1 = Vector3.Normalize(new Vector3(1f, 1f, 1f));
@@ -149,10 +149,10 @@ namespace Game
             }
             litShader.Transforms.View = Matrix.CreateLookAt(ViewPosition, ViewTarget, Vector3.UnitY);
             Viewport viewport = Display.Viewport;
-            float num = base.ActualSize.X / base.ActualSize.Y;
+            float num = ActualSize.X / ActualSize.Y;
             if (IsPerspective)
             {
-                litShader.Transforms.Projection = Matrix.CreatePerspectiveFieldOfView(ViewFov, num, 0.1f, 100f) * MatrixUtils.CreateScaleTranslation(0.5f * base.ActualSize.X, -0.5f * base.ActualSize.Y, base.ActualSize.X / 2f, base.ActualSize.Y / 2f) * base.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / (float)viewport.Width, -2f / (float)viewport.Height, -1f, 1f);
+                litShader.Transforms.Projection = Matrix.CreatePerspectiveFieldOfView(ViewFov, num, 0.1f, 100f) * MatrixUtils.CreateScaleTranslation(0.5f * ActualSize.X, -0.5f * ActualSize.Y, ActualSize.X / 2f, ActualSize.Y / 2f) * GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / viewport.Width, -2f / viewport.Height, -1f, 1f);
             }
             else
             {
@@ -165,13 +165,13 @@ namespace Game
                 {
                     orthographicFrustumSize.Y = orthographicFrustumSize.X * num;
                 }
-                litShader.Transforms.Projection = Matrix.CreateOrthographic(orthographicFrustumSize.X, orthographicFrustumSize.Y, 0f, OrthographicFrustumSize.Z) * MatrixUtils.CreateScaleTranslation(0.5f * base.ActualSize.X, -0.5f * base.ActualSize.Y, base.ActualSize.X / 2f, base.ActualSize.Y / 2f) * base.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / (float)viewport.Width, -2f / (float)viewport.Height, -1f, 1f);
+                litShader.Transforms.Projection = Matrix.CreateOrthographic(orthographicFrustumSize.X, orthographicFrustumSize.Y, 0f, OrthographicFrustumSize.Z) * MatrixUtils.CreateScaleTranslation(0.5f * ActualSize.X, -0.5f * ActualSize.Y, ActualSize.X / 2f, ActualSize.Y / 2f) * GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / viewport.Width, -2f / viewport.Height, -1f, 1f);
             }
             Display.DepthStencilState = DepthStencilState.Default;
             Display.BlendState = BlendState.AlphaBlend;
             Display.RasterizerState = RasterizerState.CullNoneScissor;
             ProcessBoneHierarchy(Model.RootBone, Matrix.Identity, m_absoluteBoneTransforms);
-            float num2 = (float)Time.RealTime + (float)(GetHashCode() % 1000) / 100f;
+            float num2 = (float)Time.RealTime + GetHashCode() % 1000 / 100f;
             Matrix m = (AutoRotationVector.LengthSquared() > 0f) ? Matrix.CreateFromAxisAngle(Vector3.Normalize(AutoRotationVector), AutoRotationVector.Length() * num2) : Matrix.Identity;
             foreach (ModelMesh mesh in Model.Meshes)
             {
@@ -188,8 +188,8 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = (Model != null);
-            base.DesiredSize = Size;
+            IsDrawRequired = (Model != null);
+            DesiredSize = Size;
         }
 
         public void ProcessBoneHierarchy(ModelBone modelBone, Matrix currentTransform, Matrix[] transforms)

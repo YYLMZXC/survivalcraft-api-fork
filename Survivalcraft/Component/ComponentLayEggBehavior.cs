@@ -59,15 +59,15 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemPickables = base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
-            EggBlock eggBlock = (EggBlock)BlocksManager.Blocks[118];
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            var eggBlock = (EggBlock)BlocksManager.Blocks[118];
             m_layFrequency = valuesDictionary.GetValue<float>("LayFrequency");
-            m_eggType = eggBlock.GetEggTypeByCreatureTemplateName(base.Entity.ValuesDictionary.DatabaseObject.Name);
+            m_eggType = eggBlock.GetEggTypeByCreatureTemplateName(Entity.ValuesDictionary.DatabaseObject.Name);
             m_stateMachine.AddState("Inactive", null, delegate
             {
                 if (IsActive)

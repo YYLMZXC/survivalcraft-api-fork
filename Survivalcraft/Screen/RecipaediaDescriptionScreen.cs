@@ -55,17 +55,17 @@ namespace Game
         {
             m_leftButtonWidget.IsEnabled = (m_index > 0);
             m_rightButtonWidget.IsEnabled = (m_index < m_valuesList.Count - 1);
-            if (m_leftButtonWidget.IsClicked || base.Input.Left)
+            if (m_leftButtonWidget.IsClicked || Input.Left)
             {
                 m_index = MathUtils.Max(m_index - 1, 0);
                 UpdateBlockProperties();
             }
-            if (m_rightButtonWidget.IsClicked || base.Input.Right)
+            if (m_rightButtonWidget.IsClicked || Input.Right)
             {
                 m_index = MathUtils.Min(m_index + 1, m_valuesList.Count - 1);
                 UpdateBlockProperties();
             }
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
             }
@@ -73,7 +73,7 @@ namespace Game
 
         public Dictionary<string, string> GetBlockProperties(int value)
         {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            var dictionary = new Dictionary<string, string>();
             int num = Terrain.ExtractContents(value);
             Block block = BlocksManager.Blocks[num];
             if (block.DefaultEmittedLightAmount > 0)

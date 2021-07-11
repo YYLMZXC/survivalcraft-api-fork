@@ -69,7 +69,7 @@ namespace Game
             for (int i = 0; i < 4; i++)
             {
                 Point3 point = CellFace.FaceToPoint3(i);
-                int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x + point.X, y + point.Y, z + point.Z);
+                int cellValue = SubsystemTerrain.Terrain.GetCellValue(x + point.X, y + point.Y, z + point.Z);
                 if (Terrain.ExtractContents(cellValue) == 104)
                 {
                     int num = Terrain.ExtractData(cellValue);
@@ -80,7 +80,7 @@ namespace Game
                     }
                 }
             }
-            int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
+            int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
             if (Terrain.ExtractContents(cellValue2) == 104 && Terrain.ExtractData(cellValue2) == 0)
             {
                 return true;
@@ -90,7 +90,7 @@ namespace Game
 
         public bool SetCellOnFire(int x, int y, int z, float fireExpandability)
         {
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractContents(cellValue);
             if (BlocksManager.Blocks[num].FireDuration == 0f)
             {
@@ -100,7 +100,7 @@ namespace Game
             for (int i = 0; i < 5; i++)
             {
                 Point3 point = CellFace.FaceToPoint3(i);
-                int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(x + point.X, y + point.Y, z + point.Z);
+                int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x + point.X, y + point.Y, z + point.Z);
                 int num2 = Terrain.ExtractContents(cellValue2);
                 if (num2 == 0 || num2 == 104 || num2 == 61)
                 {
@@ -109,7 +109,7 @@ namespace Game
                     num3 |= ((1 << num4) & 0xF);
                     cellValue = Terrain.ReplaceData(Terrain.ReplaceContents(0, 104), num3);
                     AddFire(x + point.X, y + point.Y, z + point.Z, fireExpandability);
-                    base.SubsystemTerrain.ChangeCell(x + point.X, y + point.Y, z + point.Z, cellValue);
+                    SubsystemTerrain.ChangeCell(x + point.X, y + point.Y, z + point.Z, cellValue);
                     result = true;
                 }
             }
@@ -132,9 +132,9 @@ namespace Game
             }
             if (m_firePointsCopy.Count > 0)
             {
-                float num = MathUtils.Min(1f * dt * (float)m_firePointsCopy.Count + m_remainderToScan, 50f);
+                float num = MathUtils.Min(1f * dt * m_firePointsCopy.Count + m_remainderToScan, 50f);
                 int num2 = (int)num;
-                m_remainderToScan = num - (float)num2;
+                m_remainderToScan = num - num2;
                 int num3 = MathUtils.Min(m_copyIndex + num2, m_firePointsCopy.Count);
                 while (m_copyIndex < num3)
                 {
@@ -143,7 +143,7 @@ namespace Game
                         int x = value.Point.X;
                         int y = value.Point.Y;
                         int z = value.Point.Z;
-                        int num4 = Terrain.ExtractData(base.SubsystemTerrain.Terrain.GetCellValue(x, y, z));
+                        int num4 = Terrain.ExtractData(SubsystemTerrain.Terrain.GetCellValue(x, y, z));
                         m_fireSoundIntensity += 1f / (m_subsystemAudio.CalculateListenerDistanceSquared(new Vector3(x, y, z)) + 0.01f);
                         if ((num4 & 1) != 0)
                         {
@@ -231,7 +231,7 @@ namespace Game
                 {
                     Point3 key = item.Key;
                     float value2 = item.Value;
-                    base.SubsystemTerrain.ChangeCell(key.X, key.Y, key.Z, Terrain.ReplaceContents(0, 0));
+                    SubsystemTerrain.ChangeCell(key.X, key.Y, key.Z, Terrain.ReplaceContents(0, 0));
                     if (value2 > 0.25f)
                     {
                         for (int i = 0; i < 5; i++)
@@ -243,7 +243,7 @@ namespace Game
                     float num7 = m_subsystemViews.CalculateDistanceFromNearestView(new Vector3(key));
                     if (num5 < 15 && num7 < 24f)
                     {
-                        m_subsystemParticles.AddParticleSystem(new BurntDebrisParticleSystem(base.SubsystemTerrain, key.X, key.Y, key.Z));
+                        m_subsystemParticles.AddParticleSystem(new BurntDebrisParticleSystem(SubsystemTerrain, key.X, key.Y, key.Z));
                         num5++;
                     }
                     if (num6 < 4 && num7 < 16f)
@@ -264,20 +264,20 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int num = Terrain.ExtractData(base.SubsystemTerrain.Terrain.GetCellValue(x, y, z));
-            if ((num & 1) != 0 && BlocksManager.Blocks[base.SubsystemTerrain.Terrain.GetCellContents(x, y, z + 1)].FireDuration == 0f)
+            int num = Terrain.ExtractData(SubsystemTerrain.Terrain.GetCellValue(x, y, z));
+            if ((num & 1) != 0 && BlocksManager.Blocks[SubsystemTerrain.Terrain.GetCellContents(x, y, z + 1)].FireDuration == 0f)
             {
                 num &= -2;
             }
-            if ((num & 2) != 0 && BlocksManager.Blocks[base.SubsystemTerrain.Terrain.GetCellContents(x + 1, y, z)].FireDuration == 0f)
+            if ((num & 2) != 0 && BlocksManager.Blocks[SubsystemTerrain.Terrain.GetCellContents(x + 1, y, z)].FireDuration == 0f)
             {
                 num &= -3;
             }
-            if ((num & 4) != 0 && BlocksManager.Blocks[base.SubsystemTerrain.Terrain.GetCellContents(x, y, z - 1)].FireDuration == 0f)
+            if ((num & 4) != 0 && BlocksManager.Blocks[SubsystemTerrain.Terrain.GetCellContents(x, y, z - 1)].FireDuration == 0f)
             {
                 num &= -5;
             }
-            if ((num & 8) != 0 && BlocksManager.Blocks[base.SubsystemTerrain.Terrain.GetCellContents(x - 1, y, z)].FireDuration == 0f)
+            if ((num & 8) != 0 && BlocksManager.Blocks[SubsystemTerrain.Terrain.GetCellContents(x - 1, y, z)].FireDuration == 0f)
             {
                 num &= -9;
             }
@@ -305,12 +305,12 @@ namespace Game
                 }
             }
             int contents = 104;
-            if (num == 0 && BlocksManager.Blocks[base.SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z)].FireDuration == 0f)
+            if (num == 0 && BlocksManager.Blocks[SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z)].FireDuration == 0f)
             {
                 contents = 0;
             }
             int value2 = Terrain.ReplaceData(Terrain.ReplaceContents(0, contents), num);
-            base.SubsystemTerrain.ChangeCell(x, y, z, value2);
+            SubsystemTerrain.ChangeCell(x, y, z, value2);
         }
 
         public override void OnBlockAdded(int value, int oldValue, int x, int y, int z)
@@ -330,7 +330,7 @@ namespace Game
 
         public override void OnChunkDiscarding(TerrainChunk chunk)
         {
-            List<Point3> list = new List<Point3>();
+            var list = new List<Point3>();
             foreach (Point3 key in m_fireData.Keys)
             {
                 if (key.X >= chunk.Origin.X && key.X < chunk.Origin.X + 16 && key.Z >= chunk.Origin.Y && key.Z < chunk.Origin.Y + 16)
@@ -347,11 +347,11 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemViews = base.Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemAmbientSounds = base.Project.FindSubsystem<SubsystemAmbientSounds>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemViews = Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemAmbientSounds = Project.FindSubsystem<SubsystemAmbientSounds>(throwOnError: true);
             for (int i = -2; i <= 2; i++)
             {
                 for (int j = -1; j <= 2; j++)
@@ -364,7 +364,7 @@ namespace Game
                             if (MathUtils.Sqrt(i * i + j * j + k * k) <= num)
                             {
                                 float num2 = MathUtils.Sqrt(i * i + k * k);
-                                float num3 = (j > 0) ? (0.5f * (float)j) : ((float)(-j));
+                                float num3 = (j > 0) ? (0.5f * j) : -j;
                                 m_expansionProbabilities[new Point3(i, j, k)] = 0.02f / (num2 + num3);
                             }
                         }
@@ -375,10 +375,10 @@ namespace Game
 
         public void AddFire(int x, int y, int z, float expandability)
         {
-            Point3 point = new Point3(x, y, z);
+            var point = new Point3(x, y, z);
             if (!m_fireData.ContainsKey(point))
             {
-                FireData fireData = new FireData();
+                var fireData = new FireData();
                 fireData.Point = point;
                 fireData.FireExpandability = expandability;
                 InitializeFireDataTimes(fireData);
@@ -388,7 +388,7 @@ namespace Game
 
         public void RemoveFire(int x, int y, int z)
         {
-            Point3 key = new Point3(x, y, z);
+            var key = new Point3(x, y, z);
             m_fireData.Remove(key);
         }
 
@@ -407,7 +407,7 @@ namespace Game
             int x = fireData.Point.X + point.X;
             int y = fireData.Point.Y + point.Y;
             int z = fireData.Point.Z + point.Z;
-            int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x, y, z);
+            int cellContents = SubsystemTerrain.Terrain.GetCellContents(x, y, z);
             Block block = BlocksManager.Blocks[cellContents];
             switch (face)
             {
@@ -433,7 +433,7 @@ namespace Game
 
         public void QueueBurnAway(int x, int y, int z, float expandability)
         {
-            Point3 key = new Point3(x, y, z);
+            var key = new Point3(x, y, z);
             if (!m_toBurnAway.ContainsKey(key))
             {
                 m_toBurnAway.Add(key, expandability);

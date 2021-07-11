@@ -57,11 +57,11 @@ namespace Game
             m_moreOptionsButton = Children.Find<ButtonWidget>("MoreOptions");
             m_listPanel.ItemWidgetFactory = delegate (object item)
             {
-                CommunityContentEntry communityContentEntry = item as CommunityContentEntry;
+                var communityContentEntry = item as CommunityContentEntry;
                 if (communityContentEntry != null)
                 {
                     XElement node2 = ContentManager.Get<XElement>("Widgets/CommunityContentItem");
-                    ContainerWidget obj = (ContainerWidget)Widget.LoadWidget(this, node2, null);
+                    var obj = (ContainerWidget)LoadWidget(this, node2, null);
                     obj.Children.Find<RectangleWidget>("CommunityContentItem.Icon").Subtexture = ExternalContentManager.GetEntryTypeIcon(communityContentEntry.Type);
                     obj.Children.Find<LabelWidget>("CommunityContentItem.Text").Text = communityContentEntry.Name;
                     obj.Children.Find<LabelWidget>("CommunityContentItem.Details").Text = $"{ExternalContentManager.GetEntryTypeDescription(communityContentEntry.Type)} {DataSizeFormatter.Format(communityContentEntry.Size)}";
@@ -71,7 +71,7 @@ namespace Game
                     return obj;
                 }
                 XElement node3 = ContentManager.Get<XElement>("Widgets/CommunityContentItemMore");
-                ContainerWidget containerWidget = (ContainerWidget)Widget.LoadWidget(this, node3, null);
+                var containerWidget = (ContainerWidget)LoadWidget(this, node3, null);
                 m_moreLink = containerWidget.Children.Find<LinkWidget>("CommunityContentItemMore.Link");
                 m_moreLink.Tag = (item as string);
                 return containerWidget;
@@ -94,14 +94,14 @@ namespace Game
 
         public override void Update()
         {
-            CommunityContentEntry communityContentEntry = m_listPanel.SelectedItem as CommunityContentEntry;
+            var communityContentEntry = m_listPanel.SelectedItem as CommunityContentEntry;
             m_downloadButton.IsEnabled = (communityContentEntry != null);
             m_deleteButton.IsEnabled = (UserManager.ActiveUser != null && communityContentEntry != null && communityContentEntry.UserId == UserManager.ActiveUser.UniqueId);
             m_orderLabel.Text = GetOrderDisplayName(m_order);
             m_filterLabel.Text = GetFilterDisplayName(m_filter);
             if (m_changeOrderButton.IsClicked)
             {
-                List<Order> items = EnumUtils.GetEnumValues(typeof(Order)).Cast<Order>().ToList();
+                var items = EnumUtils.GetEnumValues(typeof(Order)).Cast<Order>().ToList();
                 DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(fName, "Order Type"), items, 60f, (object item) => GetOrderDisplayName((Order)item), delegate (object item)
                 {
                     m_order = (Order)item;
@@ -110,7 +110,7 @@ namespace Game
             }
             if (m_changeFilterButton.IsClicked)
             {
-                List<object> list = new List<object>();
+                var list = new List<object>();
                 list.Add(string.Empty);
                 foreach (ExternalContentType item in from ExternalContentType t in EnumUtils.GetEnumValues(typeof(ExternalContentType))
                                                      where ExternalContentManager.IsEntryTypeDownloadSupported(t)
@@ -144,11 +144,11 @@ namespace Game
             {
                 PopulateList((string)m_moreLink.Tag);
             }
-            if (base.Input.Back || Children.Find<BevelledButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Children.Find<BevelledButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen("Content");
             }
-            if (base.Input.Hold.HasValue && base.Input.HoldTime > 2f && base.Input.Hold.Value.Y < 20f)
+            if (Input.Hold.HasValue && Input.HoldTime > 2f && Input.Hold.Value.Y < 20f)
             {
                 m_contentExpiryTime = 0.0;
                 Task.Delay(250).Wait();
@@ -184,7 +184,7 @@ namespace Game
                     return;
                 }
             }
-            CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 2), autoHideOnCancel: false);
+            var busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 2), autoHideOnCancel: false);
             DialogsManager.ShowDialog(null, busyDialog);
             CommunityContentManager.List(cursor, text2, text3, text, text4, busyDialog.Progress, delegate (List<CommunityContentEntry> list, string nextCursor)
             {
@@ -213,7 +213,7 @@ namespace Game
         public void DownloadEntry(CommunityContentEntry entry)
         {
             string userId = (UserManager.ActiveUser != null) ? UserManager.ActiveUser.UniqueId : string.Empty;
-            CancellableBusyDialog busyDialog = new CancellableBusyDialog(string.Format(LanguageControl.Get(fName, 1), entry.Name), autoHideOnCancel: false);
+            var busyDialog = new CancellableBusyDialog(string.Format(LanguageControl.Get(fName, 1), entry.Name), autoHideOnCancel: false);
             DialogsManager.ShowDialog(null, busyDialog);
             CommunityContentManager.Download(entry.Address, entry.Name, entry.Type, userId, busyDialog.Progress, delegate
             {
@@ -233,7 +233,7 @@ namespace Game
                 {
                     if (button == MessageDialogButton.Button1)
                     {
-                        CancellableBusyDialog busyDialog = new CancellableBusyDialog(string.Format(LanguageControl.Get(fName, 3), entry.Name), autoHideOnCancel: false);
+                        var busyDialog = new CancellableBusyDialog(string.Format(LanguageControl.Get(fName, 3), entry.Name), autoHideOnCancel: false);
                         DialogsManager.ShowDialog(null, busyDialog);
                         CommunityContentManager.Delete(entry.Address, UserManager.ActiveUser.UniqueId, busyDialog.Progress, delegate
                         {

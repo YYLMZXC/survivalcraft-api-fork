@@ -30,7 +30,7 @@ namespace Game
             float voltage = m_voltage;
             int delaySteps = DelaySteps;
             float num = 0f;
-            foreach (ElectricConnection connection in base.Connections)
+            foreach (ElectricConnection connection in Connections)
             {
                 if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0)
                 {
@@ -40,18 +40,18 @@ namespace Game
             }
             if (delaySteps > 0)
             {
-                if (m_voltagesHistory.TryGetValue(base.SubsystemElectricity.CircuitStep, out float value))
+                if (m_voltagesHistory.TryGetValue(SubsystemElectricity.CircuitStep, out float value))
                 {
                     m_voltage = value;
-                    m_voltagesHistory.Remove(base.SubsystemElectricity.CircuitStep);
+                    m_voltagesHistory.Remove(SubsystemElectricity.CircuitStep);
                 }
                 if (num != m_lastStoredVoltage)
                 {
                     m_lastStoredVoltage = num;
                     if (m_voltagesHistory.Count < 300)
                     {
-                        m_voltagesHistory[base.SubsystemElectricity.CircuitStep + DelaySteps] = num;
-                        base.SubsystemElectricity.QueueElectricElementForSimulation(this, base.SubsystemElectricity.CircuitStep + DelaySteps);
+                        m_voltagesHistory[SubsystemElectricity.CircuitStep + DelaySteps] = num;
+                        SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + DelaySteps);
                     }
                 }
             }

@@ -19,7 +19,7 @@ namespace Game
             MaxLevel = maxLevel;
             for (int i = 0; i < 16; i++)
             {
-                float num = 0.875f * MathUtils.Saturate(1f - (float)i / (float)MaxLevel);
+                float num = 0.875f * MathUtils.Saturate(1f - i / (float)MaxLevel);
                 m_heightByLevel[i] = num;
                 m_boundingBoxesByLevel[i] = new BoundingBox[1]
                 {
@@ -132,7 +132,7 @@ namespace Game
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
         {
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, BlockIndex), 0);
             result.CellFace = raycastResult.CellFace;
             return result;

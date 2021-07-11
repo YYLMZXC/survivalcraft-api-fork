@@ -23,9 +23,9 @@ namespace Game
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner)
         {
-            CellFace cellFace = base.CellFaces[0];
-            base.SubsystemElectricity.SubsystemTerrain.SubsystemFurnitureBlockBehavior.SwitchToNextState(cellFace.X, cellFace.Y, cellFace.Z, playSound: false);
-            base.SubsystemElectricity.SubsystemAudio.PlaySound("Audio/Click", 1f, 0f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f, autoDelay: true);
+            CellFace cellFace = CellFaces[0];
+            SubsystemElectricity.SubsystemTerrain.SubsystemFurnitureBlockBehavior.SwitchToNextState(cellFace.X, cellFace.Y, cellFace.Z, playSound: false);
+            SubsystemElectricity.SubsystemAudio.PlaySound("Audio/Click", 1f, 0f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f, autoDelay: true);
             return true;
         }
     }

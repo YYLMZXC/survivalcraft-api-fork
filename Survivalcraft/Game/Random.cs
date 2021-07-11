@@ -58,7 +58,7 @@ namespace Game
 
         public bool Bool(float probability)
         {
-            return (float)Int() / 2.147484E+09f < probability;
+            return Int() / 2.147484E+09f < probability;
         }
 
         public uint UInt()
@@ -78,17 +78,17 @@ namespace Game
 
         public int Int(int bound)
         {
-            return (int)((long)Int() * (long)bound / 2147483648L);
+            return (int)(Int() * (long)bound / 2147483648L);
         }
 
         public int Int(int min, int max)
         {
-            return (int)(min + (long)Int() * (long)(max - min + 1) / 2147483648L);
+            return (int)(min + Int() * (long)(max - min + 1) / 2147483648L);
         }
 
         public float Float()
         {
-            return (float)Int() / 2.147484E+09f;
+            return Int() / 2.147484E+09f;
         }
 
         public float Float(float min, float max)
@@ -99,7 +99,7 @@ namespace Game
         public float NormalFloat(float mean, float stddev)
         {
             float num = Float();
-            if ((double)num < 0.5)
+            if (num < 0.5)
             {
                 float num2 = MathUtils.Sqrt(-2f * MathUtils.Log(num));
                 float num3 = 0.322232425f + num2 * (1f + num2 * (0.3422421f + num2 * (0.0204231218f + num2 * 4.536422E-05f)));

@@ -19,7 +19,7 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int cellValueFast = base.SubsystemTerrain.Terrain.GetCellValueFast(x, y, z);
+            int cellValueFast = SubsystemTerrain.Terrain.GetCellValueFast(x, y, z);
             switch (Terrain.ExtractContents(cellValueFast))
             {
                 case 31:
@@ -28,19 +28,19 @@ namespace Game
                         int x2 = x - point.X;
                         int y2 = y - point.Y;
                         int z2 = z - point.Z;
-                        int cellContents2 = base.SubsystemTerrain.Terrain.GetCellContents(x2, y2, z2);
+                        int cellContents2 = SubsystemTerrain.Terrain.GetCellContents(x2, y2, z2);
                         if (!BlocksManager.Blocks[cellContents2].IsCollidable_(cellValueFast))
                         {
-                            base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                        SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                         }
                         break;
                     }
                 case 132:
                     {
-                        int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
+                        int cellContents = SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
                         if (!BlocksManager.Blocks[cellContents].IsCollidable_(cellValueFast))
                         {
-                            base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                        SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                         }
                         break;
                     }
@@ -70,7 +70,7 @@ namespace Game
 
         public override void OnChunkDiscarding(TerrainChunk chunk)
         {
-            List<Point3> list = new List<Point3>();
+            var list = new List<Point3>();
             foreach (Point3 key in m_particleSystemsByCell.Keys)
             {
                 if (key.X >= chunk.Origin.X && key.X < chunk.Origin.X + 16 && key.Z >= chunk.Origin.Y && key.Z < chunk.Origin.Y + 16)
@@ -87,7 +87,7 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
         }
 
         public void AddTorch(int value, int x, int y, int z)
@@ -126,14 +126,14 @@ namespace Game
                     size = 0.2f;
                     break;
             }
-            FireParticleSystem fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + v, size, 24f);
+            var fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + v, size, 24f);
             m_subsystemParticles.AddParticleSystem(fireParticleSystem);
             m_particleSystemsByCell[new Point3(x, y, z)] = fireParticleSystem;
         }
 
         public void RemoveTorch(int x, int y, int z)
         {
-            Point3 key = new Point3(x, y, z);
+            var key = new Point3(x, y, z);
             FireParticleSystem particleSystem = m_particleSystemsByCell[key];
             m_subsystemParticles.RemoveParticleSystem(particleSystem);
             m_particleSystemsByCell.Remove(key);

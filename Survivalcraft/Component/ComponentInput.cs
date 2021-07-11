@@ -65,7 +65,7 @@ namespace Game
 
         public void Update(float dt)
         {
-            m_playerInput = default(PlayerInput);
+            m_playerInput = default;
             UpdateInputFromMouseAndKeyboard(m_componentPlayer.GameWidget.Input);
             UpdateInputFromGamepad(m_componentPlayer.GameWidget.Input);
             UpdateInputFromWidgets(m_componentPlayer.GameWidget.Input);
@@ -86,7 +86,7 @@ namespace Game
             m_playerInput.CameraLook = m_playerInput.Look;
             if (!Window.IsActive || !m_componentPlayer.PlayerData.IsReadyForPlaying)
             {
-                m_playerInput = default(PlayerInput);
+                m_playerInput = default;
             }
             else if (m_componentPlayer.ComponentHealth.Health <= 0f || m_componentPlayer.ComponentSleep.SleepFactor > 0f || !m_componentPlayer.GameWidget.ActiveCamera.IsEntityControlEnabled)
             {
@@ -125,9 +125,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_componentGui = base.Entity.FindComponent<ComponentGui>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_componentGui = Entity.FindComponent<ComponentGui>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
         }
 
         public void UpdateInputFromMouseAndKeyboard(WidgetInput input)
@@ -153,8 +153,8 @@ namespace Game
                 {
                     Point2 mouseMovement = input.MouseMovement;
                     int mouseWheelMovement = input.MouseWheelMovement;
-                    zero.X = 0.02f * (float)mouseMovement.X / Time.FrameDuration / 60f;
-                    zero.Y = -0.02f * (float)mouseMovement.Y / Time.FrameDuration / 60f;
+                    zero.X = 0.02f * mouseMovement.X / Time.FrameDuration / 60f;
+                    zero.Y = -0.02f * mouseMovement.Y / Time.FrameDuration / 60f;
                     num = mouseWheelMovement / 120;
                     if (mouseMovement != Point2.Zero)
                     {
@@ -307,7 +307,7 @@ namespace Game
             {
                 return;
             }
-            Vector2 v = new Vector2(SettingsManager.LeftHandedLayout ? 96 : (-96), -96f);
+            var v = new Vector2(SettingsManager.LeftHandedLayout ? 96 : (-96), -96f);
             v = Vector2.TransformNormal(v, input.Widget.GlobalTransform);
             if (m_componentGui.ViewWidget != null && m_componentGui.ViewWidget.TouchInput.HasValue)
             {
@@ -316,8 +316,8 @@ namespace Game
                 Camera activeCamera = m_componentPlayer.GameWidget.ActiveCamera;
                 Vector3 viewPosition = activeCamera.ViewPosition;
                 Vector3 viewDirection = activeCamera.ViewDirection;
-                Vector3 direction = Vector3.Normalize(activeCamera.ScreenToWorld(new Vector3(value.Position, 1f), Matrix.Identity) - viewPosition);
-                Vector3 direction2 = Vector3.Normalize(activeCamera.ScreenToWorld(new Vector3(value.Position + v, 1f), Matrix.Identity) - viewPosition);
+                var direction = Vector3.Normalize(activeCamera.ScreenToWorld(new Vector3(value.Position, 1f), Matrix.Identity) - viewPosition);
+                var direction2 = Vector3.Normalize(activeCamera.ScreenToWorld(new Vector3(value.Position + v, 1f), Matrix.Identity) - viewPosition);
                 if (value.InputType == TouchInputType.Tap)
                 {
                     if (SettingsManager.LookControlMode == LookControlMode.SplitTouch)
@@ -349,7 +349,7 @@ namespace Game
                 {
                     if (SettingsManager.LookControlMode == LookControlMode.EntireScreen || SettingsManager.LookControlMode == LookControlMode.SplitTouch)
                     {
-                        Vector2 v2 = Vector2.TransformNormal(value.Move, m_componentGui.ViewWidget.InvertedGlobalTransform);
+                        var v2 = Vector2.TransformNormal(value.Move, m_componentGui.ViewWidget.InvertedGlobalTransform);
                         Vector2 vector = num2 / num3 * new Vector2(0.0006f, -0.0006f) * v2 * MathUtils.Pow(v2.LengthSquared(), 0.125f);
                         m_playerInput.Look += vector;
                     }
@@ -383,11 +383,11 @@ namespace Game
                 }
                 else if (value2.InputType == TouchInputType.Move || value2.InputType == TouchInputType.Hold)
                 {
-                    Vector2 v3 = Vector2.TransformNormal(value2.Move, m_componentGui.ViewWidget.InvertedGlobalTransform);
+                    var v3 = Vector2.TransformNormal(value2.Move, m_componentGui.ViewWidget.InvertedGlobalTransform);
                     Vector2 vector2 = num / num3 * new Vector2(0.003f, -0.003f) * v3 * MathUtils.Pow(v3.LengthSquared(), 0.175f);
                     m_playerInput.SneakMove.X += vector2.X;
                     m_playerInput.SneakMove.Z += vector2.Y;
-                    Vector2 vector3 = Vector2.TransformNormal(value2.TotalMoveLimited, m_componentGui.ViewWidget.InvertedGlobalTransform);
+                    var vector3 = Vector2.TransformNormal(value2.TotalMoveLimited, m_componentGui.ViewWidget.InvertedGlobalTransform);
                     m_playerInput.Move.X += ProcessInputValue(vector3.X * viewWidget.GlobalScale, 0.2f * radius, radius);
                     m_playerInput.Move.Z += ProcessInputValue((0f - vector3.Y) * viewWidget.GlobalScale, 0.2f * radius, radius);
                 }
@@ -412,7 +412,7 @@ namespace Game
                 }
                 else if (value3.InputType == TouchInputType.Move)
                 {
-                    Vector2 v4 = Vector2.TransformNormal(value3.Move, m_componentGui.ViewWidget.InvertedGlobalTransform);
+                    var v4 = Vector2.TransformNormal(value3.Move, m_componentGui.ViewWidget.InvertedGlobalTransform);
                     Vector2 vector4 = num2 / num3 * new Vector2(0.0006f, -0.0006f) * v4 * MathUtils.Pow(v4.LengthSquared(), 0.125f);
                     m_playerInput.Look += vector4;
                 }

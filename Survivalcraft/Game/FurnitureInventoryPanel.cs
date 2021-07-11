@@ -63,7 +63,7 @@ namespace Game
             {
                 for (int j = 0; j < m_inventoryGrid.ColumnsCount; j++)
                 {
-                    InventorySlotWidget widget = new InventorySlotWidget();
+                    var widget = new InventorySlotWidget();
                     m_inventoryGrid.Children.Add(widget);
                     m_inventoryGrid.SetWidgetCell(widget, new Point2(j, i));
                 }
@@ -101,9 +101,9 @@ namespace Game
             m_creativeInventoryWidget.PageDownButton.IsEnabled = (ComponentFurnitureInventory.PageIndex < m_pagesCount - 1);
             m_creativeInventoryWidget.PageLabel.Text = ((m_pagesCount > 0) ? $"{ComponentFurnitureInventory.PageIndex + 1}/{m_pagesCount}" : string.Empty);
             m_moreButton.IsEnabled = (ComponentFurnitureInventory.FurnitureSet != null);
-            if (base.Input.Scroll.HasValue && HitTestGlobal(base.Input.Scroll.Value.XY).IsChildWidgetOf(m_inventoryGrid))
+            if (Input.Scroll.HasValue && HitTestGlobal(Input.Scroll.Value.XY).IsChildWidgetOf(m_inventoryGrid))
             {
-                ComponentFurnitureInventory.PageIndex -= (int)base.Input.Scroll.Value.Z;
+                ComponentFurnitureInventory.PageIndex -= (int)Input.Scroll.Value.Z;
             }
             if (m_creativeInventoryWidget.PageUpButton.IsClicked)
             {
@@ -116,7 +116,7 @@ namespace Game
             ComponentFurnitureInventory.PageIndex = ((m_pagesCount > 0) ? MathUtils.Clamp(ComponentFurnitureInventory.PageIndex, 0, m_pagesCount - 1) : 0);
             if (m_addButton.IsClicked)
             {
-                List<Tuple<string, Action>> list = new List<Tuple<string, Action>>();
+                var list = new List<Tuple<string, Action>>();
                 list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 6), delegate
                 {
                     if (SubsystemFurnitureBlockBehavior.FurnitureSets.Count < 32)
@@ -139,7 +139,7 @@ namespace Game
             }
             if (m_moreButton.IsClicked && ComponentFurnitureInventory.FurnitureSet != null)
             {
-                List<Tuple<string, Action>> list2 = new List<Tuple<string, Action>>();
+                var list2 = new List<Tuple<string, Action>>();
                 list2.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 9), delegate
                 {
                     RenameFurnitureSet();
@@ -215,7 +215,7 @@ namespace Game
 
         public void AssignInventorySlots()
         {
-            List<int> list = new List<int>();
+            var list = new List<int>();
             for (int i = 0; i < ComponentFurnitureInventory.SlotsCount; i++)
             {
                 int slotValue = ComponentFurnitureInventory.GetSlotValue(i);
@@ -230,7 +230,7 @@ namespace Game
                     }
                 }
             }
-            List<InventorySlotWidget> list2 = new List<InventorySlotWidget>((from w in m_inventoryGrid.Children
+            var list2 = new List<InventorySlotWidget>((from w in m_inventoryGrid.Children
                                                                              select w as InventorySlotWidget into w
                                                                              where w != null
                                                                              select w).Cast<InventorySlotWidget>());
@@ -254,7 +254,7 @@ namespace Game
         public void NewFurnitureSet()
         {
             ComponentPlayer componentPlayer = ComponentFurnitureInventory.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
-            base.Input.EnterText(componentPlayer.GuiWidget, LanguageControl.Get(fName, 15), LanguageControl.Get(fName, 16), 20, delegate (string s)
+            Input.EnterText(componentPlayer.GuiWidget, LanguageControl.Get(fName, 15), LanguageControl.Get(fName, 16), 20, delegate (string s)
             {
                 if (s != null)
                 {
@@ -268,7 +268,7 @@ namespace Game
 
         public void DeleteFurnitureSet()
         {
-            FurnitureSet furnitureSet = m_furnitureSetList.SelectedItem as FurnitureSet;
+            var furnitureSet = m_furnitureSetList.SelectedItem as FurnitureSet;
             if (furnitureSet != null)
             {
                 int num = SubsystemFurnitureBlockBehavior.FurnitureSets.IndexOf(furnitureSet);
@@ -281,11 +281,11 @@ namespace Game
 
         public void RenameFurnitureSet()
         {
-            FurnitureSet furnitureSet = m_furnitureSetList.SelectedItem as FurnitureSet;
+            var furnitureSet = m_furnitureSetList.SelectedItem as FurnitureSet;
             if (furnitureSet != null)
             {
                 ComponentPlayer componentPlayer = ComponentFurnitureInventory.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
-                base.Input.EnterText(componentPlayer.GuiWidget, LanguageControl.Get(fName, 17), furnitureSet.Name, 20, delegate (string s)
+                Input.EnterText(componentPlayer.GuiWidget, LanguageControl.Get(fName, 17), furnitureSet.Name, 20, delegate (string s)
                 {
                     if (s != null)
                     {
@@ -298,7 +298,7 @@ namespace Game
 
         public void MoveFurnitureSet(int move)
         {
-            FurnitureSet furnitureSet = m_furnitureSetList.SelectedItem as FurnitureSet;
+            var furnitureSet = m_furnitureSetList.SelectedItem as FurnitureSet;
             if (furnitureSet != null)
             {
                 SubsystemFurnitureBlockBehavior.MoveFurnitureSet(furnitureSet, move);
@@ -323,7 +323,7 @@ namespace Game
                         int num2 = 0;
                         string text = (string)s;
                         List<List<FurnitureDesign>> list = FurnitureDesign.ListChains(FurniturePacksManager.LoadFurniturePack(subsystemTerrain, text));
-                        List<FurnitureDesign> list2 = new List<FurnitureDesign>();
+                        var list2 = new List<FurnitureDesign>();
                         SubsystemFurnitureBlockBehavior.GarbageCollectDesigns();
                         foreach (List<FurnitureDesign> item in list)
                         {

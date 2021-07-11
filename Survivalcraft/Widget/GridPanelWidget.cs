@@ -117,7 +117,7 @@ namespace Game
                 row3.Position = zero.Y;
                 zero.Y += row3.ActualHeight;
             }
-            base.DesiredSize = zero;
+            DesiredSize = zero;
         }
 
         public override void ArrangeOverride()
@@ -129,11 +129,11 @@ namespace Game
                 {
                     Column column = m_columns[widgetCell.X];
                     Row row = m_rows[widgetCell.Y];
-                    ContainerWidget.ArrangeChildWidgetInCell(new Vector2(column.Position, row.Position), new Vector2(column.Position + column.ActualWidth, row.Position + row.ActualHeight), child);
+                    ArrangeChildWidgetInCell(new Vector2(column.Position, row.Position), new Vector2(column.Position + column.ActualWidth, row.Position + row.ActualHeight), child);
                 }
                 else
                 {
-                    ContainerWidget.ArrangeChildWidgetInCell(Vector2.Zero, base.ActualSize, child);
+                    ArrangeChildWidgetInCell(Vector2.Zero, ActualSize, child);
                 }
             }
         }

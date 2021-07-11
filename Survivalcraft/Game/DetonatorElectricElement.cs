@@ -9,9 +9,9 @@ namespace Game
 
         public void Detonate()
         {
-            CellFace cellFace = base.CellFaces[0];
+            CellFace cellFace = CellFaces[0];
             int value = Terrain.MakeBlockValue(147);
-            base.SubsystemElectricity.Project.FindSubsystem<SubsystemExplosions>(throwOnError: true).TryExplodeBlock(cellFace.X, cellFace.Y, cellFace.Z, value);
+            SubsystemElectricity.Project.FindSubsystem<SubsystemExplosions>(throwOnError: true).TryExplodeBlock(cellFace.X, cellFace.Y, cellFace.Z, value);
         }
 
         public override bool Simulate()

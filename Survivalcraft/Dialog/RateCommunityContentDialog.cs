@@ -42,8 +42,8 @@ namespace Game
             if (m_rateButton.IsClicked)
             {
                 DialogsManager.HideDialog(this);
-                CancellableBusyDialog busyDialog = new CancellableBusyDialog("Sending Rating", autoHideOnCancel: false);
-                DialogsManager.ShowDialog(base.ParentWidget, busyDialog);
+                var busyDialog = new CancellableBusyDialog("Sending Rating", autoHideOnCancel: false);
+                DialogsManager.ShowDialog(ParentWidget, busyDialog);
                 CommunityContentManager.Rate(m_address, m_userId, (int)m_starRating.Rating, busyDialog.Progress, delegate
                 {
                     DialogsManager.HideDialog(busyDialog);
@@ -55,9 +55,9 @@ namespace Game
             if (m_reportLink.IsClicked && UserManager.ActiveUser != null)
             {
                 DialogsManager.HideDialog(this);
-                DialogsManager.ShowDialog(base.ParentWidget, new ReportCommunityContentDialog(m_address, m_displayName, UserManager.ActiveUser.UniqueId));
+                DialogsManager.ShowDialog(ParentWidget, new ReportCommunityContentDialog(m_address, m_displayName, UserManager.ActiveUser.UniqueId));
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
+            if (Input.Cancel || m_cancelButton.IsClicked)
             {
                 DialogsManager.HideDialog(this);
             }

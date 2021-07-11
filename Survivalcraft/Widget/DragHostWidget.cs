@@ -52,8 +52,8 @@ namespace Game
             if (m_dragWidget != null)
             {
                 UpdateDragPosition();
-                IDragTargetWidget dragTargetWidget = HitTestGlobal(m_dragPosition, (Widget w) => w is IDragTargetWidget) as IDragTargetWidget;
-                if (base.Input.Drag.HasValue)
+                var dragTargetWidget = HitTestGlobal(m_dragPosition, (Widget w) => w is IDragTargetWidget) as IDragTargetWidget;
+                if (Input.Drag.HasValue)
                 {
                     dragTargetWidget?.DragOver(m_dragWidget, m_dragData);
                 }
@@ -76,19 +76,19 @@ namespace Game
             foreach (Widget child in Children)
             {
                 Vector2 parentDesiredSize = child.ParentDesiredSize;
-                parentDesiredSize.X = MathUtils.Min(parentDesiredSize.X, base.ActualSize.X);
-                parentDesiredSize.Y = MathUtils.Min(parentDesiredSize.Y, base.ActualSize.Y);
+                parentDesiredSize.X = MathUtils.Min(parentDesiredSize.X, ActualSize.X);
+                parentDesiredSize.Y = MathUtils.Min(parentDesiredSize.Y, ActualSize.Y);
                 child.Arrange(ScreenToWidget(m_dragPosition) - 0.5f * parentDesiredSize, parentDesiredSize);
             }
         }
 
         public void UpdateDragPosition()
         {
-            if (base.Input.Drag.HasValue)
+            if (Input.Drag.HasValue)
             {
-                m_dragPosition = base.Input.Drag.Value;
-                m_dragPosition.X = MathUtils.Clamp(m_dragPosition.X, base.GlobalBounds.Min.X, base.GlobalBounds.Max.X - 1f);
-                m_dragPosition.Y = MathUtils.Clamp(m_dragPosition.Y, base.GlobalBounds.Min.Y, base.GlobalBounds.Max.Y - 1f);
+                m_dragPosition = Input.Drag.Value;
+                m_dragPosition.X = MathUtils.Clamp(m_dragPosition.X, GlobalBounds.Min.X, GlobalBounds.Max.X - 1f);
+                m_dragPosition.Y = MathUtils.Clamp(m_dragPosition.Y, GlobalBounds.Min.Y, GlobalBounds.Max.Y - 1f);
             }
         }
     }

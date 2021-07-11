@@ -110,7 +110,7 @@ namespace Game
                             VerticalAlignment = WidgetAlignment.Center,
                             Children =
                             {
-                                (Widget)new RectangleWidget
+                                new RectangleWidget
                                 {
                                     Size = new Vector2(98f, 56f),
                                     Subtexture = ContentManager.Get<Subtexture>(name),
@@ -118,19 +118,19 @@ namespace Game
                                     OutlineColor = Color.Transparent,
                                     Margin = new Vector2(10f, 0f)
                                 },
-                                (Widget)new StackPanelWidget
+                                new StackPanelWidget
                                 {
                                     Direction = LayoutDirection.Vertical,
                                     VerticalAlignment = WidgetAlignment.Center,
                                     Margin = new Vector2(10f, 0f),
                                     Children =
                                     {
-                                        (Widget)new LabelWidget
+                                        new LabelWidget
                                         {
                                             Text = StringsManager.GetString("ScreenLayout." + str + ".Name"),
                                             Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
                                         },
-                                        (Widget)new LabelWidget
+                                        new LabelWidget
                                         {
                                             Text = StringsManager.GetString("ScreenLayout." + str + ".Description"),
                                             Font = ContentManager.Get<BitmapFont>("Fonts/Pericles"),
@@ -164,7 +164,7 @@ namespace Game
                     }));
                 }
             }
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen("Game");
             }

@@ -55,7 +55,7 @@ namespace Game
                     cutFace = i;
                 }
             }
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetCutFace(0, cutFace));
             result.CellFace = raycastResult.CellFace;
             return result;

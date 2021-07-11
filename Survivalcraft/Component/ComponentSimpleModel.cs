@@ -14,20 +14,20 @@ namespace Game
         {
             if (m_componentSpawn != null)
             {
-                base.Opacity = ((m_componentSpawn.SpawnDuration > 0f) ? ((float)MathUtils.Saturate((m_subsystemGameInfo.TotalElapsedGameTime - m_componentSpawn.SpawnTime) / (double)m_componentSpawn.SpawnDuration)) : 1f);
+                Opacity = ((m_componentSpawn.SpawnDuration > 0f) ? ((float)MathUtils.Saturate((m_subsystemGameInfo.TotalElapsedGameTime - m_componentSpawn.SpawnTime) / m_componentSpawn.SpawnDuration)) : 1f);
                 if (m_componentSpawn.DespawnTime.HasValue)
                 {
-                    base.Opacity = MathUtils.Min(base.Opacity.Value, (float)MathUtils.Saturate(1.0 - (m_subsystemGameInfo.TotalElapsedGameTime - m_componentSpawn.DespawnTime.Value) / (double)m_componentSpawn.DespawnDuration));
+                    Opacity = MathUtils.Min(Opacity.Value, (float)MathUtils.Saturate(1.0 - (m_subsystemGameInfo.TotalElapsedGameTime - m_componentSpawn.DespawnTime.Value) / m_componentSpawn.DespawnDuration));
                 }
             }
-            SetBoneTransform(base.Model.RootBone.Index, m_componentFrame.Matrix);
+            SetBoneTransform(Model.RootBone.Index, m_componentFrame.Matrix);
             base.Animate();
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_componentSpawn = base.Entity.FindComponent<ComponentSpawn>();
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_componentSpawn = Entity.FindComponent<ComponentSpawn>();
             base.Load(valuesDictionary, idToEntityMap);
         }
     }

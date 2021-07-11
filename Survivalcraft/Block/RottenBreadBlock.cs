@@ -7,7 +7,7 @@ namespace Game
         public const int Index = 242;
 
         public RottenBreadBlock()
-            : base("Models/Bread", Matrix.CreateTranslation(-0.375f, -0.25f, 0f), Color.White, FoodBlock.m_compostValue)
+            : base("Models/Bread", Matrix.CreateTranslation(-0.375f, -0.25f, 0f), Color.White, m_compostValue)
         {
         }
     }

@@ -164,14 +164,7 @@ namespace Game
                 m_visibilityRangeWarningLabel.Text = LanguageControl.Get(fName, 7);
             }
             m_viewAnglesButton.Text = LanguageControl.Get("ViewAngleMode", SettingsManager.ViewAngleMode.ToString());
-            if (SettingsManager.TerrainMipmapsEnabled)
-            {
-                m_terrainMipmapsButton.Text = LanguageControl.Get("Usual", "enable");
-            }
-            else
-            {
-                m_terrainMipmapsButton.Text = LanguageControl.Get("Usual", "disable");
-            }
+            m_terrainMipmapsButton.Text = SettingsManager.TerrainMipmapsEnabled ? LanguageControl.Get("Usual", "enable") : LanguageControl.Get("Usual", "disable");
 
             m_skyRenderingModeButton.Text = LanguageControl.Get("SkyRenderingMode", SettingsManager.SkyRenderingMode.ToString());
             m_objectShadowsButton.Text = SettingsManager.ObjectsShadowsEnabled ? LanguageControl.Get("Usual", "enable") : LanguageControl.Get("Usual", "disable");
@@ -179,7 +172,7 @@ namespace Game
             m_framerateLimitSlider.Text = (SettingsManager.PresentationInterval != 0) ? string.Format(LanguageControl.Get(fName, 8), SettingsManager.PresentationInterval) : LanguageControl.Get(fName, 9);
             m_displayFpsCounterButton.Text = (SettingsManager.DisplayFpsCounter ? LanguageControl.Get("Usual", "yes") : LanguageControl.Get("Usual", "no"));
             m_displayFpsRibbonButton.Text = (SettingsManager.DisplayFpsRibbon ? LanguageControl.Get("Usual", "yes") : LanguageControl.Get("Usual", "no"));
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 bool flag = SettingsManager.VisibilityRange > 128;
                 if (SettingsManager.VisibilityRange > m_enterVisibilityRange && flag)

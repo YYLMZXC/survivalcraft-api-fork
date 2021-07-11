@@ -69,7 +69,7 @@ namespace Game
             {
                 m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, position + m_componentBody.BoxSize.Y / 2f * Vector3.UnitY, m_debrisStrength, m_debrisScale, Color.White, m_debrisTextureSlot));
                 m_subsystemAudio.PlayRandomSound(DamageSoundName, 1f, 0f, m_componentBody.Position, 4f, autoDelay: true);
-                base.Project.RemoveEntity(base.Entity, disposeEntity: true);
+                Project.RemoveEntity(Entity, disposeEntity: true);
             }
             float num = MathUtils.Abs(m_componentBody.CollisionVelocityChange.Y);
             if (num > m_fallResilience)
@@ -91,11 +91,11 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_componentBody = base.Entity.FindComponent<ComponentBody>(throwOnError: true);
-            m_componentOnFire = base.Entity.FindComponent<ComponentOnFire>();
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_componentBody = Entity.FindComponent<ComponentBody>(throwOnError: true);
+            m_componentOnFire = Entity.FindComponent<ComponentOnFire>();
             Hitpoints = valuesDictionary.GetValue<float>("Hitpoints");
             AttackResilience = valuesDictionary.GetValue<float>("AttackResilience");
             m_fallResilience = valuesDictionary.GetValue<float>("FallResilience");

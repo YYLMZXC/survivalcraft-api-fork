@@ -49,7 +49,7 @@ namespace Game
 
         public override void Enter(object[] parameters)
         {
-            BestiaryCreatureInfo item = (BestiaryCreatureInfo)parameters[0];
+            var item = (BestiaryCreatureInfo)parameters[0];
             m_infoList = (IList<BestiaryCreatureInfo>)parameters[1];
             m_index = m_infoList.IndexOf(item);
             UpdateCreatureProperties();
@@ -59,17 +59,17 @@ namespace Game
         {
             m_leftButtonWidget.IsEnabled = (m_index > 0);
             m_rightButtonWidget.IsEnabled = (m_index < m_infoList.Count - 1);
-            if (m_leftButtonWidget.IsClicked || base.Input.Left)
+            if (m_leftButtonWidget.IsClicked || Input.Left)
             {
                 m_index = MathUtils.Max(m_index - 1, 0);
                 UpdateCreatureProperties();
             }
-            if (m_rightButtonWidget.IsClicked || base.Input.Right)
+            if (m_rightButtonWidget.IsClicked || Input.Right)
             {
                 m_index = MathUtils.Min(m_index + 1, m_infoList.Count - 1);
                 UpdateCreatureProperties();
             }
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
             }
@@ -104,7 +104,7 @@ namespace Game
                 m_propertyValues2Widget.Text = string.Empty;
                 m_propertyNames2Widget.Text += LanguageControl.Get(fName, "speed");
                 LabelWidget propertyValues2Widget = m_propertyValues2Widget;
-                propertyValues2Widget.Text = propertyValues2Widget.Text + ((double)bestiaryCreatureInfo.MovementSpeed * 3.6).ToString("0") + LanguageControl.Get(fName, "speed unit");
+                propertyValues2Widget.Text = propertyValues2Widget.Text + (bestiaryCreatureInfo.MovementSpeed * 3.6).ToString("0") + LanguageControl.Get(fName, "speed unit");
                 m_propertyNames2Widget.Text += LanguageControl.Get(fName, "jump height");
                 LabelWidget propertyValues2Widget2 = m_propertyValues2Widget;
                 propertyValues2Widget2.Text = propertyValues2Widget2.Text + bestiaryCreatureInfo.JumpHeight.ToString("0.0") + LanguageControl.Get(fName, "length unit");
@@ -131,18 +131,18 @@ namespace Game
                             Margin = new Vector2(20f, 0f),
                             Children =
                             {
-                                (Widget)new BlockIconWidget
+                                new BlockIconWidget
                                 {
                                     Size = new Vector2(32f),
                                     Scale = 1.2f,
                                     VerticalAlignment = WidgetAlignment.Center,
                                     Value = item.Value
                                 },
-                                (Widget)new CanvasWidget
+                                new CanvasWidget
                                 {
                                     Size = new Vector2(10f, 0f)
                                 },
-                                (Widget)new LabelWidget
+                                new LabelWidget
                                 {
                                     VerticalAlignment = WidgetAlignment.Center,
                                     Text = text

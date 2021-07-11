@@ -50,7 +50,7 @@ namespace Game
                 ContentManager.Initialize();
             });
             AddLoadAction(() => {
-                LoadingScreen.SetMsg("初始化语言包:[SurvivalCraft]");
+                SetMsg("初始化语言包:[SurvivalCraft]");
                 LanguageControl.Initialize(ModsManager.modSettings.languageType);
             });
             AddLoadAction(() => {
@@ -84,7 +84,7 @@ namespace Game
                 }
             });
             AddLoadAction(() => {
-                Random random = new Random();
+                var random = new Random();
                 foreach (ContentInfo item in ContentManager.List())
                 {
                     ContentInfo localContentInfo = item;
@@ -204,7 +204,7 @@ namespace Game
                         AddQuequeAction(() => {
                             try
                             {
-                                LoadingScreen.SetMsg($"初始化语言包:[{modEntity.modInfo.Name}]");
+                                SetMsg($"初始化语言包:[{modEntity.modInfo.Name}]");
                                 modEntity.LoadLauguage();
                             }
                             catch (Exception e)
@@ -422,7 +422,7 @@ namespace Game
         }
         public override void Enter(object[] parameters)
         {
-            List<string> remove = new List<string>();
+            var remove = new List<string>();
             foreach (var screen in ScreensManager.m_screens) {
                 if (screen.Value == this) continue;
                 else remove.Add(screen.Key);

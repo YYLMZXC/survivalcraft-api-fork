@@ -20,9 +20,9 @@ namespace Game
             ListPanelWidget worldsListWidget = m_worldsListWidget;
             worldsListWidget.ItemWidgetFactory = (Func<object, Widget>)Delegate.Combine(worldsListWidget.ItemWidgetFactory, (Func<object, Widget>)delegate (object item)
             {
-                WorldInfo worldInfo = (WorldInfo)item;
+                var worldInfo = (WorldInfo)item;
                 XElement node2 = ContentManager.Get<XElement>("Widgets/SavedWorldItem");
-                ContainerWidget containerWidget = (ContainerWidget)Widget.LoadWidget(this, node2, null);
+                var containerWidget = (ContainerWidget)LoadWidget(this, node2, null);
                 LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("WorldItem.Name");
                 LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("WorldItem.Details");
                 containerWidget.Tag = worldInfo;
@@ -51,13 +51,13 @@ namespace Game
 
         public override void Enter(object[] parameters)
         {
-            BusyDialog dialog = new BusyDialog(LanguageControl.GetContentWidgets(fName, 5), null);
+            var dialog = new BusyDialog(LanguageControl.GetContentWidgets(fName, 5), null);
             DialogsManager.ShowDialog(null, dialog);
             Task.Run(delegate
             {
-                WorldInfo selectedItem = (WorldInfo)m_worldsListWidget.SelectedItem;
+                var selectedItem = (WorldInfo)m_worldsListWidget.SelectedItem;
                 WorldsManager.UpdateWorldsList();
-                List<WorldInfo> worldInfos = new List<WorldInfo>(WorldsManager.WorldInfos);
+                var worldInfos = new List<WorldInfo>(WorldsManager.WorldInfos);
                 worldInfos.Sort((WorldInfo w1, WorldInfo w2) => DateTime.Compare(w2.LastSaveTime, w1.LastSaveTime));
                 Dispatcher.Dispatch(delegate
                 {
@@ -102,10 +102,10 @@ namespace Game
             }
             if (Children.Find<ButtonWidget>("Properties").IsClicked && m_worldsListWidget.SelectedItem != null)
             {
-                WorldInfo worldInfo = (WorldInfo)m_worldsListWidget.SelectedItem;
+                var worldInfo = (WorldInfo)m_worldsListWidget.SelectedItem;
                 ScreensManager.SwitchScreen("ModifyWorld", worldInfo.DirectoryName, worldInfo.WorldSettings);
             }
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen("MainMenu");
                 m_worldsListWidget.SelectedItem = null;

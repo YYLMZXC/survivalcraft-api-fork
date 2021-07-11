@@ -78,14 +78,9 @@ namespace Game
             }
             set
             {
-                if (m_granularity > 0f)
-                {
-                    m_value = MathUtils.Round(MathUtils.Clamp(value, MinValue, MaxValue) / m_granularity) * m_granularity;
-                }
-                else
-                {
-                    m_value = MathUtils.Clamp(value, MinValue, MaxValue);
-                }
+                m_value = m_granularity > 0f
+                    ? MathUtils.Round(MathUtils.Clamp(value, MinValue, MaxValue) / m_granularity) * m_granularity
+                    : MathUtils.Clamp(value, MinValue, MaxValue);
             }
         }
 
@@ -169,7 +164,7 @@ namespace Game
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
             base.MeasureOverride(parentAvailableSize);
-            base.IsDrawRequired = true;
+            IsDrawRequired = true;
         }
 
         public override void ArrangeOverride()
@@ -182,13 +177,13 @@ namespace Game
             {
                 Vector2 zero = Vector2.Zero;
                 zero.X = num3 * (num - num2);
-                zero.Y = MathUtils.Max((base.ActualSize.Y - m_tabWidget.ActualSize.Y) / 2f, 0f);
+                zero.Y = MathUtils.Max((ActualSize.Y - m_tabWidget.ActualSize.Y) / 2f, 0f);
                 m_canvasWidget.SetWidgetPosition(m_tabWidget, zero);
             }
             else
             {
                 Vector2 zero2 = Vector2.Zero;
-                zero2.X = MathUtils.Max(base.ActualSize.X - m_tabWidget.ActualSize.X, 0f) / 2f;
+                zero2.X = MathUtils.Max(ActualSize.X - m_tabWidget.ActualSize.X, 0f) / 2f;
                 zero2.Y = num3 * (num - num2);
                 m_canvasWidget.SetWidgetPosition(m_tabWidget, zero2);
             }
@@ -199,15 +194,15 @@ namespace Game
         {
             float num = (LayoutDirection == LayoutDirection.Horizontal) ? m_canvasWidget.ActualSize.X : m_canvasWidget.ActualSize.Y;
             float num2 = (LayoutDirection == LayoutDirection.Horizontal) ? m_tabWidget.ActualSize.X : m_tabWidget.ActualSize.Y;
-            if (base.Input.Tap.HasValue && HitTestGlobal(base.Input.Tap.Value) == m_tabWidget)
+            if (Input.Tap.HasValue && HitTestGlobal(Input.Tap.Value) == m_tabWidget)
             {
-                m_dragStartPoint = ScreenToWidget(base.Input.Press.Value);
+                m_dragStartPoint = ScreenToWidget(Input.Press.Value);
             }
-            if (base.Input.Press.HasValue)
+            if (Input.Press.HasValue)
             {
                 if (m_dragStartPoint.HasValue)
                 {
-                    Vector2 vector = ScreenToWidget(base.Input.Press.Value);
+                    Vector2 vector = ScreenToWidget(Input.Press.Value);
                     float value = Value;
                     if (LayoutDirection == LayoutDirection.Horizontal)
                     {
@@ -229,10 +224,10 @@ namespace Game
             {
                 m_dragStartPoint = null;
             }
-            IsSliding = (m_dragStartPoint.HasValue && base.IsEnabledGlobal && base.IsVisibleGlobal);
+            IsSliding = (m_dragStartPoint.HasValue && IsEnabledGlobal && IsVisibleGlobal);
             if (m_dragStartPoint.HasValue)
             {
-                base.Input.Clear();
+                Input.Clear();
             }
         }
     }

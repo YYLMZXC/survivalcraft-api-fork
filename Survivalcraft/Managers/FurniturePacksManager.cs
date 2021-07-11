@@ -88,15 +88,15 @@ namespace Game
 
         public static string CreateFurniturePack(string name, ICollection<FurnitureDesign> designs)
         {
-            MemoryStream memoryStream = new MemoryStream();
-            using (ZipArchive zipArchive = ZipArchive.Create(memoryStream, keepStreamOpen: true))
+            var memoryStream = new MemoryStream();
+            using (var zipArchive = ZipArchive.Create(memoryStream, keepStreamOpen: true))
             {
-                ValuesDictionary valuesDictionary = new ValuesDictionary();
+                var valuesDictionary = new ValuesDictionary();
                 SubsystemFurnitureBlockBehavior.SaveFurnitureDesigns(valuesDictionary, designs);
-                XElement xElement = new XElement("FurnitureDesigns");
+                var xElement = new XElement("FurnitureDesigns");
                 valuesDictionary.Save(xElement);
-                MemoryStream memoryStream2 = new MemoryStream();
-                xElement.Save((Stream)memoryStream2);
+                var memoryStream2 = new MemoryStream();
+                xElement.Save(memoryStream2);
                 memoryStream2.Position = 0L;
                 zipArchive.AddStream("FurnitureDesigns.xml", memoryStream2);
             }
@@ -109,7 +109,7 @@ namespace Game
             try
             {
                 Storage.DeleteFile(GetFileName(name));
-                FurniturePacksManager.FurniturePackDeleted?.Invoke(name);
+                FurniturePackDeleted?.Invoke(name);
             }
             catch (Exception e)
             {
@@ -144,18 +144,18 @@ namespace Game
 
         public static List<FurnitureDesign> LoadFurniturePack(SubsystemTerrain subsystemTerrain, Stream stream)
         {
-            using (ZipArchive zipArchive = ZipArchive.Open(stream, keepStreamOpen: true))
+            using (var zipArchive = ZipArchive.Open(stream, keepStreamOpen: true))
             {
                 List<ZipArchiveEntry> list = zipArchive.ReadCentralDir();
                 if (list.Count != 1 || list[0].FilenameInZip != "FurnitureDesigns.xml")
                 {
                     throw new InvalidOperationException("Invalid furniture pack.");
                 }
-                MemoryStream memoryStream = new MemoryStream();
+                var memoryStream = new MemoryStream();
                 zipArchive.ExtractFile(list[0], memoryStream);
                 memoryStream.Position = 0L;
-                XElement overridesNode = XElement.Load((Stream)memoryStream);
-                ValuesDictionary valuesDictionary = new ValuesDictionary();
+                var overridesNode = XElement.Load(memoryStream);
+                var valuesDictionary = new ValuesDictionary();
                 valuesDictionary.ApplyOverrides(overridesNode);
                 return SubsystemFurnitureBlockBehavior.LoadFurnitureDesigns(subsystemTerrain, valuesDictionary);
             }

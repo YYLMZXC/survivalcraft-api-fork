@@ -49,7 +49,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            foreach (IDrawable item in base.Project.FindSubsystems<IDrawable>())
+            foreach (IDrawable item in Project.FindSubsystems<IDrawable>())
             {
                 AddDrawable(item);
             }

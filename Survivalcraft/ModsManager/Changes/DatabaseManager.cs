@@ -40,7 +40,7 @@ namespace Game
             m_gameDatabase = new GameDatabase(XmlDatabaseSerializer.LoadDatabase(node));
             foreach (DatabaseObject explicitNestingChild in GameDatabase.Database.Root.GetExplicitNestingChildren(GameDatabase.EntityTemplateType, directChildrenOnly: false))
             {
-                ValuesDictionary valuesDictionary = new ValuesDictionary();
+                var valuesDictionary = new ValuesDictionary();
                 valuesDictionary.PopulateFromDatabaseObject(explicitNestingChild);
                 m_valueDictionaries.Add(explicitNestingChild.Name, valuesDictionary);
             }

@@ -39,7 +39,7 @@ namespace Game
         {
             get
             {
-                if (base.IsEnabledGlobal && base.IsVisibleGlobal)
+                if (IsEnabledGlobal && IsVisibleGlobal)
                 {
                     return m_touchInput;
                 }
@@ -52,7 +52,7 @@ namespace Game
             m_touchInput = null;
             double frameStartTime = Time.FrameStartTime;
             int frameIndex = Time.FrameIndex;
-            foreach (TouchLocation touchLocation in base.Input.TouchLocations)
+            foreach (TouchLocation touchLocation in Input.TouchLocations)
             {
                 if (touchLocation.State == TouchLocationState.Pressed)
                 {
@@ -71,8 +71,8 @@ namespace Game
                 {
                     if (m_touchId.HasValue && touchLocation.Id == m_touchId.Value)
                     {
-                        m_touchMoved |= (Vector2.Distance(touchLocation.Position, m_touchOrigin) > SettingsManager.MinimumDragDistance * base.GlobalScale);
-                        TouchInput value = default(TouchInput);
+                        m_touchMoved |= (Vector2.Distance(touchLocation.Position, m_touchOrigin) > SettingsManager.MinimumDragDistance * GlobalScale);
+                        TouchInput value = default;
                         value.InputType = ((!m_touchMoved) ? TouchInputType.Hold : TouchInputType.Move);
                         value.Duration = (float)(frameStartTime - m_touchTime);
                         value.DurationFrames = frameIndex - m_touchFrameIndex;
@@ -94,9 +94,9 @@ namespace Game
                 }
                 else if (touchLocation.State == TouchLocationState.Released && m_touchId.HasValue && touchLocation.Id == m_touchId.Value)
                 {
-                    if (frameStartTime - m_touchTime <= (double)SettingsManager.MinimumHoldDuration && Vector2.Distance(touchLocation.Position, m_touchOrigin) < SettingsManager.MinimumDragDistance * base.GlobalScale)
+                    if (frameStartTime - m_touchTime <= SettingsManager.MinimumHoldDuration && Vector2.Distance(touchLocation.Position, m_touchOrigin) < SettingsManager.MinimumDragDistance * GlobalScale)
                     {
-                        TouchInput value2 = default(TouchInput);
+                        TouchInput value2 = default;
                         value2.InputType = TouchInputType.Tap;
                         value2.Duration = (float)(frameStartTime - m_touchTime);
                         value2.DurationFrames = frameIndex - m_touchFrameIndex;

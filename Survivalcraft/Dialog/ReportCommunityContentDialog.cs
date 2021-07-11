@@ -70,7 +70,7 @@ namespace Game
                 Text = "Excessive Swearing",
                 Tag = "swearing"
             });
-            Random random = new Random();
+            var random = new Random();
             m_reasonWidgetsList.RandomShuffle((int max) => random.Int(0, max - 1));
             m_reasonWidgetsList.Add(new CheckboxWidget
             {
@@ -91,7 +91,7 @@ namespace Game
             if (m_reportButton.IsClicked)
             {
                 DialogsManager.HideDialog(this);
-                DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog("Are you sure?", "Reporting offensive content is a serious matter. Please make sure you checked the right box. Do not report content which is not offensive.", "Proceed", "Cancel", delegate (MessageDialogButton b)
+                DialogsManager.ShowDialog(ParentWidget, new MessageDialog("Are you sure?", "Reporting offensive content is a serious matter. Please make sure you checked the right box. Do not report content which is not offensive.", "Proceed", "Cancel", delegate (MessageDialogButton b)
                 {
                     if (b == MessageDialogButton.Button1)
                     {
@@ -104,8 +104,8 @@ namespace Game
                                 break;
                             }
                         }
-                        CancellableBusyDialog busyDialog = new CancellableBusyDialog("Sending Report", autoHideOnCancel: false);
-                        DialogsManager.ShowDialog(base.ParentWidget, busyDialog);
+                        var busyDialog = new CancellableBusyDialog("Sending Report", autoHideOnCancel: false);
+                        DialogsManager.ShowDialog(ParentWidget, busyDialog);
                         CommunityContentManager.Report(m_address, m_userId, report, busyDialog.Progress, delegate
                         {
                             DialogsManager.HideDialog(busyDialog);
@@ -116,7 +116,7 @@ namespace Game
                     }
                 }));
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
+            if (Input.Cancel || m_cancelButton.IsClicked)
             {
                 DialogsManager.HideDialog(this);
             }

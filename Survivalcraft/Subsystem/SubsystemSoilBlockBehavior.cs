@@ -51,18 +51,18 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
             if (DegradesSoilIfOnTopOfIt(cellValue))
             {
-                int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
-                base.SubsystemTerrain.ChangeCell(x, y, z, Terrain.ReplaceContents(cellValue2, 2));
+                int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+                SubsystemTerrain.ChangeCell(x, y, z, Terrain.ReplaceContents(cellValue2, 2));
             }
         }
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
         }
 
         public void Update(float dt)
@@ -71,10 +71,10 @@ namespace Game
             {
                 foreach (Point3 key2 in m_toDegrade.Keys)
                 {
-                    if (base.SubsystemTerrain.Terrain.GetCellContents(key2.X, key2.Y, key2.Z) == 168)
+                    if (SubsystemTerrain.Terrain.GetCellContents(key2.X, key2.Y, key2.Z) == 168)
                     {
-                        int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(key2.X, key2.Y, key2.Z);
-                        base.SubsystemTerrain.ChangeCell(key2.X, key2.Y, key2.Z, Terrain.ReplaceContents(cellValue, 2));
+                        int cellValue = SubsystemTerrain.Terrain.GetCellValue(key2.X, key2.Y, key2.Z);
+                        SubsystemTerrain.ChangeCell(key2.X, key2.Y, key2.Z, Terrain.ReplaceContents(cellValue, 2));
                     }
                 }
                 m_toDegrade.Clear();
@@ -85,12 +85,12 @@ namespace Game
                 {
                     Point3 key = item.Key;
                     bool value = item.Value;
-                    int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(key.X, key.Y, key.Z);
+                    int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(key.X, key.Y, key.Z);
                     if (Terrain.ExtractContents(cellValue2) == 168)
                     {
                         int data = SoilBlock.SetHydration(Terrain.ExtractData(cellValue2), value);
                         int value2 = Terrain.ReplaceData(cellValue2, data);
-                        base.SubsystemTerrain.ChangeCell(key.X, key.Y, key.Z, value2);
+                        SubsystemTerrain.ChangeCell(key.X, key.Y, key.Z, value2);
                     }
                 }
                 m_toHydrate.Clear();
@@ -101,7 +101,7 @@ namespace Game
         {
             int num = Terrain.ExtractContents(value);
             Block block = BlocksManager.Blocks[num];
-            if (!block.IsFaceTransparent(base.SubsystemTerrain, 5, value))
+            if (!block.IsFaceTransparent(SubsystemTerrain, 5, value))
             {
                 return block.IsCollidable_(value);
             }
@@ -145,7 +145,7 @@ namespace Game
 
         public bool DetermineHydrationHelper(int x, int y, int z, int steps)
         {
-            int cellValueFast = base.SubsystemTerrain.Terrain.GetCellValueFast(x, y, z);
+            int cellValueFast = SubsystemTerrain.Terrain.GetCellValueFast(x, y, z);
             int num = Terrain.ExtractContents(cellValueFast);
             int data = Terrain.ExtractData(cellValueFast);
             switch (num)

@@ -58,14 +58,9 @@ namespace Game
         public void NextFrame()
         {
             m_prevGameTimeDelta = m_gameTimeDelta;
-            if (!FixedTimeStep.HasValue)
-            {
-                m_gameTimeDelta = MathUtils.Min(Time.FrameDuration * m_gameTimeFactor, 0.1f);
-            }
-            else
-            {
-                m_gameTimeDelta = MathUtils.Min(FixedTimeStep.Value * m_gameTimeFactor, 0.1f);
-            }
+            m_gameTimeDelta = !FixedTimeStep.HasValue
+                ? MathUtils.Min(Time.FrameDuration * m_gameTimeFactor, 0.1f)
+                : MathUtils.Min(FixedTimeStep.Value * m_gameTimeFactor, 0.1f);
             m_gameTime += m_gameTimeDelta;
             int num = 0;
             while (num < m_delayedExecutionsRequests.Count)
@@ -138,15 +133,15 @@ namespace Game
             double num2 = MathUtils.Floor(num / period) * period;
             if (num >= num2)
             {
-                return num - (double)GameTimeDelta < num2;
+                return num - GameTimeDelta < num2;
             }
             return false;
         }
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemPlayers = base.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
-            m_subsystemUpdate = base.Project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
+            m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
+            m_subsystemUpdate = Project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
         }
     }
 }

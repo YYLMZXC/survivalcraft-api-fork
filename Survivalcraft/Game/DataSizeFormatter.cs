@@ -12,15 +12,15 @@ namespace Game
             }
             if (bytes < 1048576)
             {
-                float num = (float)bytes / 1024f;
+                float num = bytes / 1024f;
                 return string.Format(PrepareFormatString(num, "kB"), num);
             }
             if (bytes < 1073741824)
             {
-                float num2 = (float)bytes / 1024f / 1024f;
+                float num2 = bytes / 1024f / 1024f;
                 return string.Format(PrepareFormatString(num2, "MB"), num2);
             }
-            float num3 = (float)bytes / 1024f / 1024f / 1024f;
+            float num3 = bytes / 1024f / 1024f / 1024f;
             return string.Format(PrepareFormatString(num3, "GB"), num3);
         }
 

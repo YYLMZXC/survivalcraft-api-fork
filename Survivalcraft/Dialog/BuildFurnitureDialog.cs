@@ -114,13 +114,13 @@ namespace Game
             m_buildButton.IsEnabled = m_isValid;
             if (m_nameButton.IsClicked)
             {
-                List<Tuple<string, Action>> list = new List<Tuple<string, Action>>();
+                var list = new List<Tuple<string, Action>>();
                 if (m_sourceDesign != null)
                 {
                     list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 7), delegate
                     {
                         Dismiss(result: false);
-                        DialogsManager.ShowDialog(base.ParentWidget, new TextBoxDialog(LanguageControl.Get(fName, 10), m_sourceDesign.Name, 20, delegate (string s)
+                        DialogsManager.ShowDialog(ParentWidget, new TextBoxDialog(LanguageControl.Get(fName, 10), m_sourceDesign.Name, 20, delegate (string s)
                         {
                             try
                             {
@@ -131,13 +131,13 @@ namespace Game
                             }
                             catch (Exception ex3)
                             {
-                                DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog(LanguageControl.Get("Usual", "error"), ex3.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get("Usual", "error"), ex3.Message, LanguageControl.Get("Usual", "ok"), null, null));
                             }
                         }));
                     }));
                     list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 8), delegate
                     {
-                        DialogsManager.ShowDialog(base.ParentWidget, new TextBoxDialog(LanguageControl.Get(fName, 11), m_design.Name, 20, delegate (string s)
+                        DialogsManager.ShowDialog(ParentWidget, new TextBoxDialog(LanguageControl.Get(fName, 11), m_design.Name, 20, delegate (string s)
                         {
                             try
                             {
@@ -148,7 +148,7 @@ namespace Game
                             }
                             catch (Exception ex2)
                             {
-                                DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog(LanguageControl.Get("Usual", "error"), ex2.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get("Usual", "error"), ex2.Message, LanguageControl.Get("Usual", "ok"), null, null));
                             }
                         }));
                     }));
@@ -157,7 +157,7 @@ namespace Game
                 {
                     list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 9), delegate
                     {
-                        DialogsManager.ShowDialog(base.ParentWidget, new TextBoxDialog(LanguageControl.Get(fName, 11), m_design.Name, 20, delegate (string s)
+                        DialogsManager.ShowDialog(ParentWidget, new TextBoxDialog(LanguageControl.Get(fName, 11), m_design.Name, 20, delegate (string s)
                         {
                             try
                             {
@@ -168,7 +168,7 @@ namespace Game
                             }
                             catch (Exception ex)
                             {
-                                DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog(LanguageControl.Get("Usual", "error"), ex.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get("Usual", "error"), ex.Message, LanguageControl.Get("Usual", "ok"), null, null));
                             }
                         }));
                     }));
@@ -179,7 +179,7 @@ namespace Game
                 }
                 else
                 {
-                    DialogsManager.ShowDialog(base.ParentWidget, new ListSelectionDialog(LanguageControl.Get(fName, 11), list, 64f, (object t) => ((Tuple<string, Action>)t).Item1, delegate (object t)
+                    DialogsManager.ShowDialog(ParentWidget, new ListSelectionDialog(LanguageControl.Get(fName, 11), list, 64f, (object t) => ((Tuple<string, Action>)t).Item1, delegate (object t)
                     {
                         ((Tuple<string, Action>)t).Item2();
                     }));
@@ -225,7 +225,7 @@ namespace Game
             {
                 Dismiss(result: true);
             }
-            if (base.Input.Back || m_cancelButton.IsClicked)
+            if (Input.Back || m_cancelButton.IsClicked)
             {
                 Dismiss(result: false);
             }

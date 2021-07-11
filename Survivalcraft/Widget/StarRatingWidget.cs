@@ -49,10 +49,10 @@ namespace Game
 
         public override void Update()
         {
-            if (base.Input.Press.HasValue && HitTestGlobal(base.Input.Press.Value) == this)
+            if (Input.Press.HasValue && HitTestGlobal(Input.Press.Value) == this)
             {
-                Vector2 vector = ScreenToWidget(base.Input.Press.Value);
-                Rating = (int)MathUtils.Floor(5f * vector.X / base.ActualSize.X + 1f);
+                Vector2 vector = ScreenToWidget(Input.Press.Value);
+                Rating = (int)MathUtils.Floor(5f * vector.X / ActualSize.X + 1f);
             }
         }
 
@@ -60,20 +60,20 @@ namespace Game
         {
             TexturedBatch2D texturedBatch2D = dc.PrimitivesRenderer2D.TexturedBatch(m_texture, useAlphaTest: false, 0, DepthStencilState.None, null, null, SamplerState.LinearWrap);
             float x = 0f;
-            float x2 = base.ActualSize.X * Rating / 5f;
-            float x3 = base.ActualSize.X;
+            float x2 = ActualSize.X * Rating / 5f;
+            float x3 = ActualSize.X;
             float y = 0f;
-            float y2 = base.ActualSize.Y;
+            float y2 = ActualSize.Y;
             int count = texturedBatch2D.TriangleVertices.Count;
-            texturedBatch2D.QueueQuad(new Vector2(x, y), new Vector2(x2, y2), 0f, new Vector2(0f, 0f), new Vector2(Rating, 1f), ForeColor * base.GlobalColorTransform);
-            texturedBatch2D.QueueQuad(new Vector2(x2, y), new Vector2(x3, y2), 0f, new Vector2(Rating, 0f), new Vector2(5f, 1f), BackColor * base.GlobalColorTransform);
-            texturedBatch2D.TransformTriangles(base.GlobalTransform, count);
+            texturedBatch2D.QueueQuad(new Vector2(x, y), new Vector2(x2, y2), 0f, new Vector2(0f, 0f), new Vector2(Rating, 1f), ForeColor * GlobalColorTransform);
+            texturedBatch2D.QueueQuad(new Vector2(x2, y), new Vector2(x3, y2), 0f, new Vector2(Rating, 0f), new Vector2(5f, 1f), BackColor * GlobalColorTransform);
+            texturedBatch2D.TransformTriangles(GlobalTransform, count);
         }
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = true;
-            base.DesiredSize = new Vector2(5f * StarSize, StarSize);
+            IsDrawRequired = true;
+            DesiredSize = new Vector2(5f * StarSize, StarSize);
         }
     }
 }

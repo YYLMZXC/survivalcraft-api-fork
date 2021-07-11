@@ -112,28 +112,23 @@ namespace Game
         public override void Draw(DrawContext dc)
         {
             Block obj = BlocksManager.Blocks[Contents];
-            if (DrawBlockEnvironmentData.SubsystemTerrain != null)
-            {
-                _ = DrawBlockEnvironmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture;
-            }
-            else
-            {
-                _ = BlocksTexturesManager.DefaultBlocksTexture;
-            }
+            _ = DrawBlockEnvironmentData.SubsystemTerrain != null
+                ? DrawBlockEnvironmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture
+                : BlocksTexturesManager.DefaultBlocksTexture;
             Viewport viewport = Display.Viewport;
-            float num = MathUtils.Min(base.ActualSize.X, base.ActualSize.Y) * Scale;
-            Matrix m = Matrix.CreateOrthographic(3.6f, 3.6f, -10f - 1f * Depth, 10f - 1f * Depth);
-            Matrix m2 = MatrixUtils.CreateScaleTranslation(num, 0f - num, base.ActualSize.X / 2f, base.ActualSize.Y / 2f) * base.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / (float)viewport.Width, -2f / (float)viewport.Height, -1f, 1f);
+            float num = MathUtils.Min(ActualSize.X, ActualSize.Y) * Scale;
+            var m = Matrix.CreateOrthographic(3.6f, 3.6f, -10f - 1f * Depth, 10f - 1f * Depth);
+            Matrix m2 = MatrixUtils.CreateScaleTranslation(num, 0f - num, ActualSize.X / 2f, ActualSize.Y / 2f) * GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / viewport.Width, -2f / viewport.Height, -1f, 1f);
             DrawBlockEnvironmentData.ViewProjectionMatrix = (CustomViewMatrix.HasValue ? CustomViewMatrix.Value : m_viewMatrix) * m * m2;
             float iconViewScale = BlocksManager.Blocks[Contents].GetIconViewScale(Value, DrawBlockEnvironmentData);
             Matrix matrix = CustomViewMatrix.HasValue ? Matrix.Identity : Matrix.CreateTranslation(BlocksManager.Blocks[Contents].GetIconBlockOffset(Value, DrawBlockEnvironmentData));
-            obj.DrawBlock(dc.PrimitivesRenderer3D, Value, base.GlobalColorTransform, iconViewScale, ref matrix, DrawBlockEnvironmentData);
+            obj.DrawBlock(dc.PrimitivesRenderer3D, Value, GlobalColorTransform, iconViewScale, ref matrix, DrawBlockEnvironmentData);
         }
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = true;
-            base.DesiredSize = Size;
+            IsDrawRequired = true;
+            DesiredSize = Size;
         }
     }
 }

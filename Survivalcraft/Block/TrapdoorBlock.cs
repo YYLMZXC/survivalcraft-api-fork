@@ -32,7 +32,7 @@ namespace Game
                 Matrix identity = Matrix.Identity;
                 identity *= Matrix.CreateTranslation(0f, -0.0625f, 0.4375f) * Matrix.CreateRotationX(open ? (-(float)Math.PI / 2f) : 0f) * Matrix.CreateTranslation(0f, 0.0625f, -0.4375f);
                 identity *= Matrix.CreateRotationZ(upsideDown ? ((float)Math.PI) : 0f);
-                identity *= Matrix.CreateRotationY((float)rotation * (float)Math.PI / 2f);
+                identity *= Matrix.CreateRotationY(rotation * (float)Math.PI / 2f);
                 identity *= Matrix.CreateTranslation(new Vector3(0.5f, upsideDown ? 1 : 0, 0.5f));
                 m_blockMeshesByData[i].AppendModelMeshPart(model.FindMesh("Trapdoor").MeshParts[0], boneAbsoluteTransform * identity, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                 m_blockMeshesByData[i].GenerateSidesData();
@@ -66,7 +66,7 @@ namespace Game
             if (raycastResult.CellFace.Face < 4)
             {
                 rotation = raycastResult.CellFace.Face;
-                upsideDown = (raycastResult.HitPoint().Y - (float)raycastResult.CellFace.Y > 0.5f);
+                upsideDown = (raycastResult.HitPoint().Y - raycastResult.CellFace.Y > 0.5f);
             }
             else
             {
@@ -79,7 +79,7 @@ namespace Game
                 upsideDown = (raycastResult.CellFace.Face == 5);
             }
             int data = SetOpen(SetRotation(SetUpsideDown(0, upsideDown), rotation), open: false);
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, BlockIndex), data);
             result.CellFace = raycastResult.CellFace;
             return result;

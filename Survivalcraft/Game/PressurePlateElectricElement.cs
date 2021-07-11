@@ -21,9 +21,9 @@ namespace Game
             if (pressure > m_pressure)
             {
                 m_pressure = pressure;
-                CellFace cellFace = base.CellFaces[0];
-                base.SubsystemElectricity.SubsystemAudio.PlaySound("Audio/BlockPlaced", 1f, 0.3f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2.5f, autoDelay: true);
-                base.SubsystemElectricity.QueueElectricElementForSimulation(this, base.SubsystemElectricity.CircuitStep + 1);
+                CellFace cellFace = CellFaces[0];
+                SubsystemElectricity.SubsystemAudio.PlaySound("Audio/BlockPlaced", 1f, 0.3f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2.5f, autoDelay: true);
+                SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 1);
             }
         }
 
@@ -38,14 +38,14 @@ namespace Game
             if (m_pressure > 0f && Time.FrameIndex - m_lastPressFrameIndex < 2)
             {
                 m_voltage = PressureToVoltage(m_pressure);
-                base.SubsystemElectricity.QueueElectricElementForSimulation(this, base.SubsystemElectricity.CircuitStep + 10);
+                SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 10);
             }
             else
             {
-                if (ElectricElement.IsSignalHigh(m_voltage))
+                if (IsSignalHigh(m_voltage))
                 {
-                    CellFace cellFace = base.CellFaces[0];
-                    base.SubsystemElectricity.SubsystemAudio.PlaySound("Audio/BlockPlaced", 0.6f, -0.1f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2.5f, autoDelay: true);
+                    CellFace cellFace = CellFaces[0];
+                    SubsystemElectricity.SubsystemAudio.PlaySound("Audio/BlockPlaced", 0.6f, -0.1f, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2.5f, autoDelay: true);
                 }
                 m_voltage = 0f;
                 m_pressure = 0f;

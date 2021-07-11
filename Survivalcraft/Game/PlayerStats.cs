@@ -42,7 +42,7 @@ namespace Game
 
             public string Save()
             {
-                StringBuilder stringBuilder = new StringBuilder();
+                var stringBuilder = new StringBuilder();
                 stringBuilder.Append(Day.ToString("R", CultureInfo.InvariantCulture));
                 stringBuilder.Append(',');
                 stringBuilder.Append(Location.X.ToString("R", CultureInfo.InvariantCulture));
@@ -204,7 +204,7 @@ namespace Game
                 }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string s in array)
                 {
-                    DeathRecord item = default(DeathRecord);
+                    DeathRecord item = default;
                     item.Load(s);
                     m_deathRecords.Add(item);
                 }
@@ -213,7 +213,7 @@ namespace Game
 
         public void Save(ValuesDictionary valuesDictionary)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             foreach (DeathRecord deathRecord in m_deathRecords)
             {
                 stringBuilder.Append(deathRecord.Save());

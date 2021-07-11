@@ -43,11 +43,11 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
-            m_componentMount = base.Entity.FindComponent<ComponentMount>(throwOnError: true);
-            m_isEnabled = !base.Entity.ValuesDictionary.DatabaseObject.Name.EndsWith("_Saddled");
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_componentMount = Entity.FindComponent<ComponentMount>(throwOnError: true);
+            m_isEnabled = !Entity.ValuesDictionary.DatabaseObject.Name.EndsWith("_Saddled");
             m_stateMachine.AddState("Inactive", delegate
             {
                 m_importanceLevel = 0f;
@@ -188,7 +188,7 @@ namespace Game
         {
             if (m_rider != null)
             {
-                base.Entity.FindComponent<ComponentRunAwayBehavior>()?.RunAwayFrom(m_rider.ComponentCreature.ComponentBody);
+                Entity.FindComponent<ComponentRunAwayBehavior>()?.RunAwayFrom(m_rider.ComponentCreature.ComponentBody);
             }
         }
     }

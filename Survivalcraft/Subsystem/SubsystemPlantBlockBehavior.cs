@@ -40,8 +40,8 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int num = Terrain.ExtractContents(base.SubsystemTerrain.Terrain.GetCellValue(x, y, z));
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+            int num = Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(x, y, z));
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
             int num2 = Terrain.ExtractContents(cellValue);
             switch (num)
             {
@@ -49,22 +49,22 @@ namespace Game
                 case 244:
                     if (num2 != 8 && num2 != 2 && num2 != 168)
                     {
-                        base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                        SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                     }
                     break;
                 case 132:
                     {
                         Block block = BlocksManager.Blocks[num2];
-                        if (block.IsFaceTransparent(base.SubsystemTerrain, 4, cellValue) && !(block is FenceBlock))
+                        if (block.IsFaceTransparent(SubsystemTerrain, 4, cellValue) && !(block is FenceBlock))
                         {
-                            base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                        SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                         }
                         break;
                     }
                 default:
                     if (num2 != 8 && num2 != 2 && num2 != 7 && num2 != 168)
                     {
-                        base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                        SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                     }
                     break;
             }
@@ -105,8 +105,8 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
         }
 
         public void Update(float dt)
@@ -116,9 +116,9 @@ namespace Game
                 foreach (KeyValuePair<Point3, Replacement> item in m_toReplace)
                 {
                     Point3 key = item.Key;
-                    if (Terrain.ReplaceLight(base.SubsystemTerrain.Terrain.GetCellValue(key.X, key.Y, key.Z), 0) == Terrain.ReplaceLight(item.Value.RequiredValue, 0))
+                    if (Terrain.ReplaceLight(SubsystemTerrain.Terrain.GetCellValue(key.X, key.Y, key.Z), 0) == Terrain.ReplaceLight(item.Value.RequiredValue, 0))
                     {
-                        base.SubsystemTerrain.ChangeCell(key.X, key.Y, key.Z, item.Value.Value);
+                        SubsystemTerrain.ChangeCell(key.X, key.Y, key.Z, item.Value.Value);
                     }
                 }
                 m_toReplace.Clear();
@@ -128,7 +128,7 @@ namespace Game
         public void GrowTallGrass(int value, int x, int y, int z, int pollPass)
         {
             int data = Terrain.ExtractData(value);
-            if (TallGrassBlock.GetIsSmall(data) && Terrain.ExtractLight(base.SubsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z)) >= 9)
+            if (TallGrassBlock.GetIsSmall(data) && Terrain.ExtractLight(SubsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z)) >= 9)
             {
                 int data2 = TallGrassBlock.SetIsSmall(data, isSmall: false);
                 int value2 = Terrain.ReplaceData(value, data2);
@@ -143,7 +143,7 @@ namespace Game
         public void GrowFlower(int value, int x, int y, int z, int pollPass)
         {
             int data = Terrain.ExtractData(value);
-            if (FlowerBlock.GetIsSmall(data) && Terrain.ExtractLight(base.SubsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z)) >= 9)
+            if (FlowerBlock.GetIsSmall(data) && Terrain.ExtractLight(SubsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z)) >= 9)
             {
                 int data2 = FlowerBlock.SetIsSmall(data, isSmall: false);
                 int value2 = Terrain.ReplaceData(value, data2);
@@ -157,7 +157,7 @@ namespace Game
 
         public void GrowRye(int value, int x, int y, int z, int pollPass)
         {
-            if (Terrain.ExtractLight(base.SubsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z)) < 9)
+            if (Terrain.ExtractLight(SubsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z)) < 9)
             {
                 return;
             }
@@ -175,7 +175,7 @@ namespace Game
                     int data2 = RyeBlock.SetSize(RyeBlock.SetIsWild(data, isWild: true), size + 1);
                     int value2 = Terrain.ReplaceData(value, data2);
                     Dictionary<Point3, Replacement> toReplace = m_toReplace;
-                    Point3 key = new Point3(x, y, z);
+                    var key = new Point3(x, y, z);
                     value3 = new Replacement
                     {
                         Value = value2,
@@ -185,7 +185,7 @@ namespace Game
                 }
                 return;
             }
-            int cellValueFast = base.SubsystemTerrain.Terrain.GetCellValueFast(x, y - 1, z);
+            int cellValueFast = SubsystemTerrain.Terrain.GetCellValueFast(x, y - 1, z);
             if (Terrain.ExtractContents(cellValueFast) == 168)
             {
                 int data3 = Terrain.ExtractData(cellValueFast);
@@ -221,7 +221,7 @@ namespace Game
                         int data5 = SoilBlock.SetNitrogen(data3, MathUtils.Max(nitrogen - 1, 0));
                         int value5 = Terrain.ReplaceData(cellValueFast, data5);
                         Dictionary<Point3, Replacement> toReplace2 = m_toReplace;
-                        Point3 key2 = new Point3(x, y - 1, z);
+                        var key2 = new Point3(x, y - 1, z);
                         value3 = new Replacement
                         {
                             Value = value5,
@@ -235,7 +235,7 @@ namespace Game
             {
                 int value6 = Terrain.ReplaceData(value, RyeBlock.SetIsWild(data, isWild: true));
                 Dictionary<Point3, Replacement> toReplace3 = m_toReplace;
-                Point3 key3 = new Point3(x, y, z);
+                var key3 = new Point3(x, y, z);
                 value3 = new Replacement
                 {
                     Value = value6,
@@ -247,7 +247,7 @@ namespace Game
 
         public void GrowCotton(int value, int x, int y, int z, int pollPass)
         {
-            if (Terrain.ExtractLight(base.SubsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z)) < 9)
+            if (Terrain.ExtractLight(SubsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z)) < 9)
             {
                 return;
             }
@@ -265,7 +265,7 @@ namespace Game
                     int data2 = CottonBlock.SetSize(CottonBlock.SetIsWild(data, isWild: true), size + 1);
                     int value2 = Terrain.ReplaceData(value, data2);
                     Dictionary<Point3, Replacement> toReplace = m_toReplace;
-                    Point3 key = new Point3(x, y, z);
+                    var key = new Point3(x, y, z);
                     value3 = new Replacement
                     {
                         Value = value2,
@@ -275,7 +275,7 @@ namespace Game
                 }
                 return;
             }
-            int cellValueFast = base.SubsystemTerrain.Terrain.GetCellValueFast(x, y - 1, z);
+            int cellValueFast = SubsystemTerrain.Terrain.GetCellValueFast(x, y - 1, z);
             if (Terrain.ExtractContents(cellValueFast) == 168)
             {
                 int data3 = Terrain.ExtractData(cellValueFast);
@@ -311,7 +311,7 @@ namespace Game
                         int data5 = SoilBlock.SetNitrogen(data3, MathUtils.Max(nitrogen - 1, 0));
                         int value5 = Terrain.ReplaceData(cellValueFast, data5);
                         Dictionary<Point3, Replacement> toReplace2 = m_toReplace;
-                        Point3 key2 = new Point3(x, y - 1, z);
+                        var key2 = new Point3(x, y - 1, z);
                         value3 = new Replacement
                         {
                             Value = value5,
@@ -325,7 +325,7 @@ namespace Game
             {
                 int value6 = Terrain.ReplaceData(value, CottonBlock.SetIsWild(data, isWild: true));
                 Dictionary<Point3, Replacement> toReplace3 = m_toReplace;
-                Point3 key3 = new Point3(x, y, z);
+                var key3 = new Point3(x, y, z);
                 value3 = new Replacement
                 {
                     Value = value6,
@@ -337,7 +337,7 @@ namespace Game
 
         public void GrowPumpkin(int value, int x, int y, int z, int pollPass)
         {
-            if (Terrain.ExtractLight(base.SubsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z)) < 9)
+            if (Terrain.ExtractLight(SubsystemTerrain.Terrain.GetCellValueFast(x, y + 1, z)) < 9)
             {
                 return;
             }
@@ -347,7 +347,7 @@ namespace Game
             {
                 return;
             }
-            int cellValueFast = base.SubsystemTerrain.Terrain.GetCellValueFast(x, y - 1, z);
+            int cellValueFast = SubsystemTerrain.Terrain.GetCellValueFast(x, y - 1, z);
             int num = Terrain.ExtractContents(cellValueFast);
             int data2 = Terrain.ExtractData(cellValueFast);
             bool flag = num == 168 && SoilBlock.GetHydration(data2);
@@ -387,7 +387,7 @@ namespace Game
                     int data4 = SoilBlock.SetNitrogen(data2, MathUtils.Max(num2 - 3, 0));
                     int value4 = Terrain.ReplaceData(cellValueFast, data4);
                     Dictionary<Point3, Replacement> toReplace = m_toReplace;
-                    Point3 key = new Point3(x, y - 1, z);
+                    var key = new Point3(x, y - 1, z);
                     value3 = new Replacement
                     {
                         Value = value4,

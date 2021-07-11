@@ -48,8 +48,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            foreach (ComponentBehavior item in base.Entity.FindComponents<ComponentBehavior>())
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            foreach (ComponentBehavior item in Entity.FindComponents<ComponentBehavior>())
             {
                 m_behaviors.Add(item);
             }

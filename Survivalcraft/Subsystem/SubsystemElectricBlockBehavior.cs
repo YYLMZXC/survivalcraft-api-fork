@@ -171,7 +171,7 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemElectricity = base.Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
+            m_subsystemElectricity = Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Game
         public override void Update()
         {
             m_helpButton.IsVisible = !(ScreensManager.CurrentScreen is HelpScreen);
-            if (m_okButton.IsClicked || base.Input.Cancel || base.Input.IsPadButtonDownOnce(GamePadButton.Start))
+            if (m_okButton.IsClicked || Input.Cancel || Input.IsPadButtonDownOnce(GamePadButton.Start))
             {
                 DialogsManager.HideDialog(this);
             }

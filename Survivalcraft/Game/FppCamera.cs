@@ -20,10 +20,10 @@ namespace Game
 
         public override void Update(float dt)
         {
-            if (base.GameWidget.Target != null)
+            if (GameWidget.Target != null)
             {
-                Matrix matrix = Matrix.CreateFromQuaternion(base.GameWidget.Target.ComponentCreatureModel.EyeRotation);
-                matrix.Translation = base.GameWidget.Target.ComponentCreatureModel.EyePosition;
+                var matrix = Matrix.CreateFromQuaternion(GameWidget.Target.ComponentCreatureModel.EyeRotation);
+                matrix.Translation = GameWidget.Target.ComponentCreatureModel.EyePosition;
                 SetupPerspectiveCamera(matrix.Translation, matrix.Forward, matrix.Up);
             }
         }

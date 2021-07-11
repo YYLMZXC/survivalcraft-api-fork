@@ -219,25 +219,11 @@ namespace Game
             if (BreathingMode == BreathingMode.Air)
             {
                 int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(m_componentCreature.ComponentCreatureModel.EyePosition.Y), Terrain.ToCell(position.Z));
-                if (BlocksManager.Blocks[cellContents] is FluidBlock || position.Y > 259f)
-                {
-                    Air = MathUtils.Saturate(Air - dt / AirCapacity);
-                }
-                else
-                {
-                    Air = 1f;
-                }
+                Air = BlocksManager.Blocks[cellContents] is FluidBlock || position.Y > 259f ? MathUtils.Saturate(Air - dt / AirCapacity) : 1f;
             }
             else if (BreathingMode == BreathingMode.Water)
             {
-                if (m_componentCreature.ComponentBody.ImmersionFactor > 0.25f)
-                {
-                    Air = 1f;
-                }
-                else
-                {
-                    Air = MathUtils.Saturate(Air - dt / AirCapacity);
-                }
+                Air = m_componentCreature.ComponentBody.ImmersionFactor > 0.25f ? 1f : MathUtils.Saturate(Air - dt / AirCapacity);
             }
             if (m_componentCreature.ComponentBody.ImmersionFactor > 0f && m_componentCreature.ComponentBody.ImmersionFluidBlock is MagmaBlock)
             {
@@ -314,13 +300,13 @@ namespace Game
                 float x = m_componentCreature.ComponentBody.BoxSize.X;
                 m_subsystemParticles.AddParticleSystem(new KillParticleSystem(m_subsystemTerrain, position2, x));
                 Vector3 position3 = (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max) / 2f;
-                foreach (IInventory item in base.Entity.FindComponents<IInventory>())
+                foreach (IInventory item in Entity.FindComponents<IInventory>())
                 {
                     item.DropAllItems(position3);
                 }
                 DeathTime = m_subsystemGameInfo.TotalElapsedGameTime;
             }
-            if (Health <= 0f && CorpseDuration > 0f && m_subsystemGameInfo.TotalElapsedGameTime - DeathTime > (double)CorpseDuration)
+            if (Health <= 0f && CorpseDuration > 0f && m_subsystemGameInfo.TotalElapsedGameTime - DeathTime > CorpseDuration)
             {
                 m_componentCreature.ComponentSpawn.Despawn();
             }
@@ -328,15 +314,15 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemTimeOfDay = base.Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemPickables = base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>();
-            m_componentOnFire = base.Entity.FindComponent<ComponentOnFire>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTimeOfDay = Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>();
+            m_componentOnFire = Entity.FindComponent<ComponentOnFire>(throwOnError: true);
             AttackResilience = valuesDictionary.GetValue<float>("AttackResilience");
             FallResilience = valuesDictionary.GetValue<float>("FallResilience");
             FireResilience = valuesDictionary.GetValue<float>("FireResilience");
@@ -349,7 +335,7 @@ namespace Game
             double value = valuesDictionary.GetValue<double>("DeathTime");
             DeathTime = ((value >= 0.0) ? new double?(value) : null);
             CauseOfDeath = valuesDictionary.GetValue<string>("CauseOfDeath");
-            if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && base.Entity.FindComponent<ComponentPlayer>() != null)
+            if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && Entity.FindComponent<ComponentPlayer>() != null)
             {
                 IsInvulnerable = true;
             }

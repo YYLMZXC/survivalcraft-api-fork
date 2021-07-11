@@ -31,15 +31,15 @@ namespace Game
         public RainSplashParticleSystem()
             : base(150)
         {
-            base.Texture = ContentManager.Get<Texture2D>("Textures/RainSplashParticle");
-            base.TextureSlotsCount = 1;
+            Texture = ContentManager.Get<Texture2D>("Textures/RainSplashParticle");
+            TextureSlotsCount = 1;
         }
 
         public void AddSplash(int value, Vector3 position, Color color)
         {
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (!particle.IsActive)
                 {
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
@@ -90,9 +90,9 @@ namespace Game
                 dt = MathUtils.Clamp(dt, 0f, 0.1f);
                 float num = MathUtils.Pow(0.0005f, dt);
                 bool flag = false;
-                for (int i = 0; i < base.Particles.Length; i++)
+                for (int i = 0; i < Particles.Length; i++)
                 {
-                    Particle particle = base.Particles[i];
+                    Particle particle = Particles[i];
                     if (particle.IsActive)
                     {
                         particle.Position += particle.Velocity * dt;

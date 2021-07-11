@@ -25,7 +25,7 @@ namespace Game
                     NamesValues namesValues;
                     if (!m_namesValuesByType.TryGetValue(type, out NamesValues value))
                     {
-                        namesValues = default(NamesValues);
+                        namesValues = default;
                         namesValues.Names = new ReadOnlyList<string>(new List<string>(Enum.GetNames(type)));
                         namesValues.Values = new ReadOnlyList<int>(new List<int>(Enum.GetValues(type).Cast<int>()));
                         value = namesValues;

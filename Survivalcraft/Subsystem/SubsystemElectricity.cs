@@ -327,7 +327,7 @@ namespace Game
         public void GetAllConnectedNeighbors(int x, int y, int z, int mountingFace, DynamicArray<ElectricConnectionPath> list)
         {
             int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
-            IElectricElementBlock electricElementBlock = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] as IElectricElementBlock;
+            var electricElementBlock = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)] as IElectricElementBlock;
             if (electricElementBlock == null)
             {
                 return;
@@ -350,7 +350,7 @@ namespace Game
                     int y2 = y + electricConnectionPath.NeighborOffsetY;
                     int z2 = z + electricConnectionPath.NeighborOffsetZ;
                     int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x2, y2, z2);
-                    IElectricElementBlock electricElementBlock2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)] as IElectricElementBlock;
+                    var electricElementBlock2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)] as IElectricElementBlock;
                     if (electricElementBlock2 == null)
                     {
                         continue;
@@ -455,9 +455,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            SubsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            SubsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            SubsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            SubsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            SubsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
             string[] array = valuesDictionary.GetValue<string>("VoltagesByCell").Split(new char[1]
             {
                 ';'
@@ -488,7 +488,7 @@ namespace Game
         public override void Save(ValuesDictionary valuesDictionary)
         {
             int num = 0;
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             foreach (KeyValuePair<Point3, float> persistentElementsVoltage in m_persistentElementsVoltages)
             {
                 if (num > 500)
@@ -531,7 +531,7 @@ namespace Game
                 GetAllConnectedNeighbors(cellFace2.X, cellFace2.Y, cellFace2.Z, cellFace2.Face, m_tmpConnectionPaths);
                 foreach (ElectricConnectionPath tmpConnectionPath in m_tmpConnectionPaths)
                 {
-                    CellFace cellFace = new CellFace(cellFace2.X + tmpConnectionPath.NeighborOffsetX, cellFace2.Y + tmpConnectionPath.NeighborOffsetY, cellFace2.Z + tmpConnectionPath.NeighborOffsetZ, tmpConnectionPath.NeighborFace);
+                    var cellFace = new CellFace(cellFace2.X + tmpConnectionPath.NeighborOffsetX, cellFace2.Y + tmpConnectionPath.NeighborOffsetY, cellFace2.Z + tmpConnectionPath.NeighborOffsetZ, tmpConnectionPath.NeighborFace);
                     if (m_electricElementsByCellFace.TryGetValue(cellFace, out ElectricElement value) && value != electricElement)
                     {
                         int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace2.X, cellFace2.Y, cellFace2.Z);
@@ -619,7 +619,7 @@ namespace Game
                 }
                 else
                 {
-                    IElectricElementBlock electricElementBlock = BlocksManager.Blocks[num] as IElectricElementBlock;
+                    var electricElementBlock = BlocksManager.Blocks[num] as IElectricElementBlock;
                     if (electricElementBlock != null)
                     {
                         ElectricElement electricElement2 = electricElementBlock.CreateElectricElement(this, cellValue, key.X, key.Y, key.Z);
@@ -663,7 +663,7 @@ namespace Game
                                 ScanWireDomain(new CellFace(i, j, k, l), m_tmpVisited, m_tmpResult);
                                 if (m_tmpResult.Count > 0)
                                 {
-                                    WireDomainElectricElement electricElement = new WireDomainElectricElement(this, m_tmpResult.Keys);
+                                    var electricElement = new WireDomainElectricElement(this, m_tmpResult.Keys);
                                     AddElectricElement(electricElement);
                                 }
                             }
@@ -698,7 +698,7 @@ namespace Game
 
         public void ScanWireDomain(CellFace startCellFace, Dictionary<CellFace, bool> visited, Dictionary<CellFace, bool> result)
         {
-            DynamicArray<CellFace> dynamicArray = new DynamicArray<CellFace>();
+            var dynamicArray = new DynamicArray<CellFace>();
             dynamicArray.Add(startCellFace);
             while (dynamicArray.Count > 0)
             {
@@ -714,7 +714,7 @@ namespace Game
                 }
                 int cellValue = SubsystemTerrain.Terrain.GetCellValue(key.X, key.Y, key.Z);
                 int num = Terrain.ExtractContents(cellValue);
-                IElectricWireElementBlock electricWireElementBlock = BlocksManager.Blocks[num] as IElectricWireElementBlock;
+                var electricWireElementBlock = BlocksManager.Blocks[num] as IElectricWireElementBlock;
                 if (electricWireElementBlock == null)
                 {
                     continue;
@@ -728,7 +728,7 @@ namespace Game
                 {
                     if ((connectedWireFacesMask & (1 << i)) != 0)
                     {
-                        CellFace key2 = new CellFace(key.X, key.Y, key.Z, i);
+                        var key2 = new CellFace(key.X, key.Y, key.Z, i);
                         visited.Add(key2, value: true);
                         result.Add(key2, value: true);
                         m_tmpConnectionPaths.Clear();

@@ -124,7 +124,7 @@ namespace Game
             if (m_subsystemTime.GameTime >= m_nextUpdateTime)
             {
                 float num = m_random.Float(0.08f, 0.12f);
-                m_nextUpdateTime = m_subsystemTime.GameTime + (double)num;
+                m_nextUpdateTime = m_subsystemTime.GameTime + num;
                 m_pathfindingCongestion = MathUtils.Max(m_pathfindingCongestion - 20f * num, 0f);
                 m_stateMachine.Update();
             }
@@ -132,10 +132,10 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemPathfinding = base.Project.FindSubsystem<SubsystemPathfinding>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPilot = base.Entity.FindComponent<ComponentPilot>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemPathfinding = Project.FindSubsystem<SubsystemPathfinding>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPilot = Entity.FindComponent<ComponentPilot>(throwOnError: true);
             m_stateMachine.AddState("Stopped", delegate
             {
                 Stop();
@@ -204,7 +204,7 @@ namespace Game
                 }
                 if (m_pathfindingResult.IsCompleted)
                 {
-                    m_pathfindingCongestion = MathUtils.Min(m_pathfindingCongestion + (float)m_pathfindingResult.PositionsChecked, 1000f);
+                    m_pathfindingCongestion = MathUtils.Min(m_pathfindingCongestion + m_pathfindingResult.PositionsChecked, 1000f);
                     if (m_pathfindingResult.Path.Count > 0)
                     {
                         m_stateMachine.TransitionTo("MovingWithPath");

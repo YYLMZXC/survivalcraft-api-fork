@@ -120,21 +120,21 @@ namespace Game
             try
             {
                 VerifyLoggedIn();
-                Dictionary<string, string> dictionary = new Dictionary<string, string>();
+                var dictionary = new Dictionary<string, string>();
                 dictionary.Add("Authorization", "Bearer " + SettingsManager.ScpboxAccessToken);
                 dictionary.Add("Content-Type", "application/json");
-                JsonObject jsonObject = new JsonObject();
+                var jsonObject = new JsonObject();
                 jsonObject.Add("path", NormalizePath(path));
                 jsonObject.Add("recursive", false);
                 jsonObject.Add("include_media_info", false);
                 jsonObject.Add("include_deleted", false);
                 jsonObject.Add("include_has_explicit_shared_members", false);
-                MemoryStream data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
+                var data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
                 WebManager.Post(m_redirectUri + "/com/files/list_folder", null, dictionary, data, progress, delegate (byte[] result)
                 {
                     try
                     {
-                        JsonObject jsonObject2 = (JsonObject)WebManager.JsonFromBytes(result);
+                        var jsonObject2 = (JsonObject)WebManager.JsonFromBytes(result);
                         success(JsonObjectToEntry(jsonObject2));
                     }
                     catch (Exception obj2)
@@ -157,9 +157,9 @@ namespace Game
             try
             {
                 VerifyLoggedIn();
-                JsonObject jsonObject = new JsonObject();
+                var jsonObject = new JsonObject();
                 jsonObject.Add("path", NormalizePath(path));
-                Dictionary<string, string> dictionary = new Dictionary<string, string>();
+                var dictionary = new Dictionary<string, string>();
                 dictionary.Add("Authorization", "Bearer " + SettingsManager.ScpboxAccessToken);
                 dictionary.Add("Dropbox-API-Arg", jsonObject.ToString());
                 WebManager.Get(m_redirectUri + "/com/files/download", null, dictionary, progress, delegate (byte[] result)
@@ -181,12 +181,12 @@ namespace Game
             try
             {
                 VerifyLoggedIn();
-                JsonObject jsonObject = new JsonObject();
+                var jsonObject = new JsonObject();
                 jsonObject.Add("path", NormalizePath(path));
                 jsonObject.Add("mode", "add");
                 jsonObject.Add("autorename", true);
                 jsonObject.Add("mute", false);
-                Dictionary<string, string> dictionary = new Dictionary<string, string>();
+                var dictionary = new Dictionary<string, string>();
                 dictionary.Add("Authorization", "Bearer " + SettingsManager.ScpboxAccessToken);
                 dictionary.Add("Content-Type", "application/octet-stream");
                 dictionary.Add("Dropbox-API-Arg", jsonObject.ToString());
@@ -209,18 +209,18 @@ namespace Game
             try
             {
                 VerifyLoggedIn();
-                Dictionary<string, string> dictionary = new Dictionary<string, string>();
+                var dictionary = new Dictionary<string, string>();
                 dictionary.Add("Authorization", "Bearer " + SettingsManager.ScpboxAccessToken);
                 dictionary.Add("Content-Type", "application/json");
-                JsonObject jsonObject = new JsonObject();
+                var jsonObject = new JsonObject();
                 jsonObject.Add("path", NormalizePath(path));
                 jsonObject.Add("short_url", false);
-                MemoryStream data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
+                var data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
                 WebManager.Post(m_redirectUri + "/com/sharing/create_shared_link", null, dictionary, data, progress, delegate (byte[] result)
                 {
                     try
                     {
-                        JsonObject jsonObject2 = (JsonObject)WebManager.JsonFromBytes(result);
+                        var jsonObject2 = (JsonObject)WebManager.JsonFromBytes(result);
                         success(JsonObjectToLinkAddress(jsonObject2));
                     }
                     catch (Exception obj2)
@@ -242,16 +242,16 @@ namespace Game
         {
             try
             {
-                LoginDialog login = new LoginDialog();
+                var login = new LoginDialog();
                 login.succ = delegate (byte[] a)
                 {
-                    StreamReader streamReader = new StreamReader(new MemoryStream(a));
-                    JsonObject json = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(streamReader.ReadToEnd());
+                    var streamReader = new StreamReader(new MemoryStream(a));
+                    var json = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(streamReader.ReadToEnd());
                     int code = int.Parse(json["code"].ToString());
                     string msg = json["msg"].ToString();
                     if (code == 200)
                     {
-                        JsonObject token = (JsonObject)json["data"];
+                        var token = (JsonObject)json["data"];
                         SettingsManager.ScpboxAccessToken = token["accessToken"].ToString();
                         DialogsManager.HideAllDialogs();
                     }
@@ -275,7 +275,7 @@ namespace Game
             {
                 LoginProcessData loginProcessData = m_loginProcessData;
                 m_loginProcessData = null;
-                TextBoxDialog dialog = new TextBoxDialog("输入用户登录Token:", "", 256, delegate (string s)
+                var dialog = new TextBoxDialog("输入用户登录Token:", "", 256, delegate (string s)
                 {
                     if (s != null)
                     {
@@ -368,12 +368,12 @@ namespace Game
 
         internal static ExternalContentEntry JsonObjectToEntry(JsonObject jsonObject)
         {
-            ExternalContentEntry externalContentEntry = new ExternalContentEntry();
+            var externalContentEntry = new ExternalContentEntry();
             if (jsonObject.ContainsKey("entries"))
             {
                 foreach (JsonObject item in (JsonArray)jsonObject["entries"])
                 {
-                    ExternalContentEntry externalContentEntry2 = new ExternalContentEntry();
+                    var externalContentEntry2 = new ExternalContentEntry();
                     externalContentEntry2.Path = item["path_display"].ToString();
                     externalContentEntry2.Type = ((item[".tag"].ToString() == "folder") ? ExternalContentType.Directory : ExternalContentManager.ExtensionToType(Storage.GetExtension(externalContentEntry2.Path)));
                     if (externalContentEntry2.Type != ExternalContentType.Directory)

@@ -117,7 +117,7 @@ namespace Game
                     m_textBox3.Text,
                     m_textBox4.Text
                 };
-                Color[] colors = new Color[4]
+                var colors = new Color[4]
                 {
                     m_colorButton1.Color,
                     m_colorButton2.Color,
@@ -157,7 +157,7 @@ namespace Game
             {
                 m_colorButton4.Color = m_colors[(m_colors.FirstIndex(m_colorButton4.Color) + 1) % m_colors.Length];
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
+            if (Input.Cancel || m_cancelButton.IsClicked)
             {
                 Dismiss();
             }

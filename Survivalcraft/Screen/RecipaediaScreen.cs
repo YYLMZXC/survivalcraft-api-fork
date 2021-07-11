@@ -45,7 +45,7 @@ namespace Game
                 int num = Terrain.ExtractContents(value);
                 Block block = BlocksManager.Blocks[num];
                 XElement node2 = ContentManager.Get<XElement>("Widgets/RecipaediaItem");
-                ContainerWidget obj = (ContainerWidget)Widget.LoadWidget(this, node2, null);
+                var obj = (ContainerWidget)LoadWidget(this, node2, null);
                 obj.Children.Find<BlockIconWidget>("RecipaediaItem.Icon").Value = value;
                 obj.Children.Find<LabelWidget>("RecipaediaItem.Text").Text = block.GetDisplayName(null, value);
                 obj.Children.Find<LabelWidget>("RecipaediaItem.Details").Text = block.GetDescription(value);
@@ -96,11 +96,11 @@ namespace Game
                 m_recipesButton.IsEnabled = false;
             }
             m_detailsButton.IsEnabled = value.HasValue;
-            if (m_prevCategoryButton.IsClicked || base.Input.Left)
+            if (m_prevCategoryButton.IsClicked || Input.Left)
             {
                 m_categoryIndex = MathUtils.Max(m_categoryIndex - 1, 0);
             }
-            if (m_nextCategoryButton.IsClicked || base.Input.Right)
+            if (m_nextCategoryButton.IsClicked || Input.Right)
             {
                 m_categoryIndex = MathUtils.Min(m_categoryIndex + 1, m_categories.Count - 1);
             }
@@ -112,7 +112,7 @@ namespace Game
             {
                 ScreensManager.SwitchScreen("RecipaediaRecipes", value.Value);
             }
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(m_previousScreen);
             }

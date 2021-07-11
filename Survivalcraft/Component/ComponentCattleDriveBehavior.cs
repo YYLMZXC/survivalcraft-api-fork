@@ -49,11 +49,11 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemCreatureSpawn = base.Project.FindSubsystem<SubsystemCreatureSpawn>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
-            m_componentHerdBehavior = base.Entity.FindComponent<ComponentHerdBehavior>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemCreatureSpawn = Project.FindSubsystem<SubsystemCreatureSpawn>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_componentHerdBehavior = Entity.FindComponent<ComponentHerdBehavior>(throwOnError: true);
             m_stateMachine.AddState("Inactive", delegate
             {
                 m_importanceLevel = 0f;
@@ -129,8 +129,8 @@ namespace Game
                     }
                 }
             }
-            v /= (float)num;
-            driveVector /= (float)num;
+            v /= num;
+            driveVector /= num;
             Vector3 v2 = v - position;
             float s = MathUtils.Max(1.5f * v2.Length() - 3f, 0f);
             return 0.33f * m_driveVector + 0.66f * driveVector + s * Vector3.Normalize(v2);

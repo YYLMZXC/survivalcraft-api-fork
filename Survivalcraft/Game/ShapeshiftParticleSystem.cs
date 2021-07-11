@@ -41,8 +41,8 @@ namespace Game
         public ShapeshiftParticleSystem()
             : base(40)
         {
-            base.Texture = ContentManager.Get<Texture2D>("Textures/ShapeshiftParticle");
-            base.TextureSlotsCount = 3;
+            Texture = ContentManager.Get<Texture2D>("Textures/ShapeshiftParticle");
+            TextureSlotsCount = 3;
         }
 
         public override bool Simulate(float dt)
@@ -50,9 +50,9 @@ namespace Game
             bool flag = false;
             m_generationSpeed = MathUtils.Min(m_generationSpeed + 15f * dt, 35f);
             m_toGenerate += m_generationSpeed * dt;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (particle.IsActive)
                 {
                     flag = true;

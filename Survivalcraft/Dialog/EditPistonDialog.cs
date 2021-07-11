@@ -89,7 +89,7 @@ namespace Game
                 int value = PistonBlock.SetMaxExtension(PistonBlock.SetPullCount(PistonBlock.SetSpeed(m_data, m_speed), m_pullCount), m_maxExtension);
                 Dismiss(value);
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
+            if (Input.Cancel || m_cancelButton.IsClicked)
             {
                 Dismiss(null);
             }

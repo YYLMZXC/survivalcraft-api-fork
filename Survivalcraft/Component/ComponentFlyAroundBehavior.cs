@@ -47,9 +47,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_stateMachine.AddState("Inactive", null, delegate
             {
                 if (IsActive)
@@ -77,7 +77,7 @@ namespace Game
                 {
                     float num = (m_random.Float(0f, 1f) < 0.2f) ? m_random.Float(0.4f, 0.6f) : (0f - m_random.Float(0.4f, 0.6f));
                     m_angle = MathUtils.NormalizeAngle(m_angle + num);
-                    Vector2 vector = Vector2.CreateFromAngle(m_angle);
+                    var vector = Vector2.CreateFromAngle(m_angle);
                     Vector3 value = position + new Vector3(vector.X, 0f, vector.Y) * 10f;
                     value.Y = EstimateHeight(new Vector2(value.X, value.Z), 8) + m_random.Float(3f, 5f);
                     m_componentPathfinding.SetDestination(value, m_random.Float(0.6f, 1.05f), 6f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);

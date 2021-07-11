@@ -19,7 +19,7 @@ namespace Game
             {
                 if (!(m_lastMilkingTime < 0.0))
                 {
-                    return m_subsystemGameInfo.TotalElapsedGameTime - m_lastMilkingTime >= (double)m_milkRegenerationTime;
+                    return m_subsystemGameInfo.TotalElapsedGameTime - m_lastMilkingTime >= m_milkRegenerationTime;
                 }
                 return true;
             }
@@ -29,7 +29,7 @@ namespace Game
         {
             if (milker != null)
             {
-                base.Entity.FindComponent<ComponentHerdBehavior>()?.CallNearbyCreaturesHelp(milker.ComponentCreature, 20f, 20f, isPersistent: true);
+                Entity.FindComponent<ComponentHerdBehavior>()?.CallNearbyCreaturesHelp(milker.ComponentCreature, 20f, 20f, isPersistent: true);
             }
             if (HasMilk)
             {
@@ -43,8 +43,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
             m_milkRegenerationTime = valuesDictionary.GetValue<float>("MilkRegenerationTime");
             m_lastMilkingTime = valuesDictionary.GetValue<double>("LastMilkingTime");
         }

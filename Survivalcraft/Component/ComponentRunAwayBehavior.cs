@@ -59,12 +59,12 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemNoise = base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
-            m_componentHerdBehavior = base.Entity.FindComponent<ComponentHerdBehavior>();
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemNoise = Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_componentHerdBehavior = Entity.FindComponent<ComponentHerdBehavior>();
             m_componentCreature.ComponentHealth.Attacked += delegate (ComponentCreature attacker)
             {
                 RunAwayFrom(attacker.ComponentBody);
@@ -156,7 +156,7 @@ namespace Game
                     int cellValue = m_subsystemTerrain.Terrain.GetCellValue(num2, num4, num3);
                     if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsCollidable_(cellValue) || Terrain.ExtractContents(cellValue) == 18)
                     {
-                        Vector3 vector = new Vector3((float)num2 + 0.5f, (float)num4 + 1.1f, (float)num3 + 0.5f);
+                        var vector = new Vector3(num2 + 0.5f, num4 + 1.1f, num3 + 0.5f);
                         float num5 = ScoreSafePlace(position, vector, herdPosition, m_lastNoiseSourcePosition, Terrain.ExtractContents(cellValue));
                         if (num5 > num)
                         {
@@ -173,13 +173,13 @@ namespace Game
         public float ScoreSafePlace(Vector3 currentPosition, Vector3 safePosition, Vector3? herdPosition, Vector3? noiseSourcePosition, int contents)
         {
             float num = 0f;
-            Vector2 vector = new Vector2(currentPosition.X, currentPosition.Z);
-            Vector2 vector2 = new Vector2(safePosition.X, safePosition.Z);
-            Segment2 s = new Segment2(vector, vector2);
+            var vector = new Vector2(currentPosition.X, currentPosition.Z);
+            var vector2 = new Vector2(safePosition.X, safePosition.Z);
+            var s = new Segment2(vector, vector2);
             if (m_attacker != null)
             {
                 Vector3 position = m_attacker.Position;
-                Vector2 vector3 = new Vector2(position.X, position.Z);
+                var vector3 = new Vector2(position.X, position.Z);
                 float num2 = Vector2.Distance(vector3, vector2);
                 float num3 = Segment2.Distance(s, vector3);
                 num += num2 + 3f * num3;

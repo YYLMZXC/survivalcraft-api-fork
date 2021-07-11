@@ -27,8 +27,8 @@ namespace Game
         {
             m_subsystemTerrain = terrain;
             m_position = position;
-            base.Texture = ContentManager.Get<Texture2D>("Textures/MagmaSplashParticle");
-            base.TextureSlotsCount = 2;
+            Texture = ContentManager.Get<Texture2D>("Textures/MagmaSplashParticle");
+            TextureSlotsCount = 2;
             int num = Terrain.ToCell(position.X);
             int num2 = Terrain.ToCell(position.Y);
             int num3 = Terrain.ToCell(position.Z);
@@ -44,9 +44,9 @@ namespace Game
             white *= num4;
             white.A = 255;
             float num5 = large ? 1.5f : 1f;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle obj = base.Particles[i];
+                Particle obj = Particles[i];
                 obj.IsActive = true;
                 obj.Position = position;
                 obj.Color = white;
@@ -63,9 +63,9 @@ namespace Game
             float num = MathUtils.Pow(0.015f, dt);
             m_time += dt;
             bool flag = false;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (!particle.IsActive)
                 {
                     continue;

@@ -114,7 +114,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            SubsystemGameInfo subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            SubsystemGameInfo subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
             m_colors = subsystemGameInfo.WorldSettings.Palette.Colors.ToArray();
             m_names = subsystemGameInfo.WorldSettings.Palette.Names.ToArray();
             m_fabricColors = CreateFabricColors(m_colors);
@@ -122,10 +122,10 @@ namespace Game
 
         public static Color[] CreateFabricColors(Color[] colors)
         {
-            Color[] array = new Color[16];
+            var array = new Color[16];
             for (int i = 0; i < 16; i++)
             {
-                Vector3 rgb = new Vector3(colors[i]);
+                var rgb = new Vector3(colors[i]);
                 Vector3 hsv = Color.RgbToHsv(rgb);
                 hsv.Y *= 0.85f;
                 rgb = Color.HsvToRgb(hsv);

@@ -30,7 +30,7 @@ namespace Game
         {
             m_message = text;
             m_messageStartTime = Time.RealTime;
-            m_duration = (blinking ? 6f : (4f + MathUtils.Min(1f * (float)m_message.Count((char c) => c == '\n'), 4f)));
+            m_duration = (blinking ? 6f : (4f + MathUtils.Min(1f * m_message.Count((char c) => c == '\n'), 4f)));
             m_color = color;
             m_blinking = blinking;
         }
@@ -43,7 +43,7 @@ namespace Game
                 float num;
                 if (m_blinking)
                 {
-                    num = MathUtils.Saturate(1f * (float)(m_messageStartTime + (double)m_duration - realTime));
+                    num = MathUtils.Saturate(1f * (float)(m_messageStartTime + m_duration - realTime));
                     if (realTime - m_messageStartTime < 0.417)
                     {
                         num *= MathUtils.Lerp(0.25f, 1f, 0.5f * (1f - MathUtils.Cos((float)Math.PI * 12f * (float)(realTime - m_messageStartTime))));
@@ -51,12 +51,12 @@ namespace Game
                 }
                 else
                 {
-                    num = MathUtils.Saturate(MathUtils.Min(3f * (float)(realTime - m_messageStartTime), 1f * (float)(m_messageStartTime + (double)m_duration - realTime)));
+                    num = MathUtils.Saturate(MathUtils.Min(3f * (float)(realTime - m_messageStartTime), 1f * (float)(m_messageStartTime + m_duration - realTime)));
                 }
                 m_labelWidget.Color = m_color * num;
                 m_labelWidget.IsVisible = true;
                 m_labelWidget.Text = m_message;
-                if (realTime - m_messageStartTime > (double)m_duration)
+                if (realTime - m_messageStartTime > m_duration)
                 {
                     m_message = null;
                 }

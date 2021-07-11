@@ -25,18 +25,18 @@ namespace Game
             string txt = new StreamReader(stream).ReadToEnd();
             if (txt.Length > 0)
             {//加载原版语言包
-                JsonObject obj = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(txt);
+                var obj = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(txt);
                 foreach (KeyValuePair<string, object> lla in obj)
                 {
-                    JsonObject json = (JsonObject)lla.Value;
-                    Dictionary<string, string> values = new Dictionary<string, string>();
-                    Dictionary<string, Dictionary<string, string>> values2 = new Dictionary<string, Dictionary<string, string>>();
+                    var json = (JsonObject)lla.Value;
+                    var values = new Dictionary<string, string>();
+                    var values2 = new Dictionary<string, Dictionary<string, string>>();
                     foreach (KeyValuePair<string, object> llb in json)
                     {
-                        JsonObject json2 = llb.Value as JsonObject;
+                        var json2 = llb.Value as JsonObject;
                         if (json2 != null)
                         {
-                            Dictionary<string, string> values3 = new Dictionary<string, string>();
+                            var values3 = new Dictionary<string, string>();
                             foreach (KeyValuePair<string, object> llc in json2)
                             {
                                 if (values3.ContainsKey(llc.Key))

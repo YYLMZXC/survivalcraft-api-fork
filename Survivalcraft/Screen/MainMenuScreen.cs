@@ -76,7 +76,7 @@ namespace Game
                 AnalyticsManager.LogEvent("[MainMenuScreen] Clicked buy button");
                 MarketplaceManager.ShowMarketplace();
             }
-            if ((base.Input.Back && !Keyboard.BackButtonQuitsApp) || base.Input.IsKeyDownOnce(Key.Escape))
+            if ((Input.Back && !Keyboard.BackButtonQuitsApp) || Input.IsKeyDownOnce(Key.Escape))
             {
                 if (MarketplaceManager.IsTrialMode)
                 {

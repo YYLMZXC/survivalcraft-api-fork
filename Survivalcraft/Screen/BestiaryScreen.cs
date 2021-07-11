@@ -21,9 +21,9 @@ namespace Game
             m_creaturesList = Children.Find<ListPanelWidget>("CreaturesList");
             m_creaturesList.ItemWidgetFactory = delegate (object item)
             {
-                BestiaryCreatureInfo bestiaryCreatureInfo2 = (BestiaryCreatureInfo)item;
+                var bestiaryCreatureInfo2 = (BestiaryCreatureInfo)item;
                 XElement node2 = ContentManager.Get<XElement>("Widgets/BestiaryItem");
-                ContainerWidget obj = (ContainerWidget)Widget.LoadWidget(this, node2, null);
+                var obj = (ContainerWidget)LoadWidget(this, node2, null);
                 ModelWidget modelWidget = obj.Children.Find<ModelWidget>("BestiaryItem.Model");
                 SetupBestiaryModelWidget(bestiaryCreatureInfo2, modelWidget, (m_creaturesList.Items.IndexOf(item) % 2 == 0) ? new Vector3(-1f, 0f, -1f) : new Vector3(1f, 0f, -1f), autoRotate: false, autoAspect: false);
                 obj.Children.Find<LabelWidget>("BestiaryItem.Text").Text = bestiaryCreatureInfo2.DisplayName;
@@ -34,7 +34,7 @@ namespace Game
             {
                 ScreensManager.SwitchScreen("BestiaryDescription", item, m_creaturesList.Items.Cast<BestiaryCreatureInfo>().ToList());
             };
-            List<BestiaryCreatureInfo> list = new List<BestiaryCreatureInfo>();
+            var list = new List<BestiaryCreatureInfo>();
             foreach (ValuesDictionary entitiesValuesDictionary in DatabaseManager.EntitiesValuesDictionaries)
             {
                 ValuesDictionary valuesDictionary = DatabaseManager.FindValuesDictionaryForComponent(entitiesValuesDictionary, typeof(ComponentCreature));
@@ -76,7 +76,7 @@ namespace Game
                                 string[] lp = dy.Substring(1, dy.Length - 2).Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
                                 dy = LanguageControl.GetDatabase("Description", lp[1]);
                             }
-                            BestiaryCreatureInfo bestiaryCreatureInfo = new BestiaryCreatureInfo
+                            var bestiaryCreatureInfo = new BestiaryCreatureInfo
                             {
                                 Order = order,
                                 DisplayName = value,
@@ -122,7 +122,7 @@ namespace Game
 
         public override void Update()
         {
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(m_previousScreen);
             }
@@ -132,7 +132,7 @@ namespace Game
         {
             modelWidget.Model = ContentManager.Get<Model>(info.ModelName);
             modelWidget.TextureOverride = ContentManager.Get<Texture2D>(info.TextureOverride);
-            Matrix[] absoluteTransforms = new Matrix[modelWidget.Model.Bones.Count];
+            var absoluteTransforms = new Matrix[modelWidget.Model.Bones.Count];
             modelWidget.Model.CopyAbsoluteBoneTransformsTo(absoluteTransforms);
             BoundingBox boundingBox = modelWidget.Model.CalculateAbsoluteBoundingBox(absoluteTransforms);
             float x = MathUtils.Max(boundingBox.Size().X, 1.4f * boundingBox.Size().Y, boundingBox.Size().Z);

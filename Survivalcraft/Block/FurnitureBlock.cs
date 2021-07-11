@@ -96,7 +96,7 @@ namespace Game
         {
             for (int i = 0; i < 4; i++)
             {
-                m_matrices[i] = Matrix.CreateTranslation(new Vector3(-0.5f, 0f, -0.5f)) * Matrix.CreateRotationY((float)i * (float)Math.PI / 2f) * Matrix.CreateTranslation(new Vector3(0.5f, 0f, 0.5f));
+                m_matrices[i] = Matrix.CreateTranslation(new Vector3(-0.5f, 0f, -0.5f)) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(new Vector3(0.5f, 0f, 0.5f));
             }
             base.Initialize();
         }
@@ -121,7 +121,7 @@ namespace Game
             {
                 int num = CellFace.OppositeFace((i < 4) ? ((i + rotation) % 4) : i);
                 byte b = (byte)(LightingManager.LightIntensityByLightValueAndFace[15 + 16 * num] * 255f);
-                Color color = new Color(b, b, b);
+                var color = new Color(b, b, b);
                 if (geometry2.SubsetOpaqueByFace[i] != null)
                 {
                     generator.GenerateShadedMeshVertices(this, x, y, z, geometry2.SubsetOpaqueByFace[i], color, m_matrices[rotation], m_facesMaps[rotation], geometry.OpaqueSubsetsByFace[num]);
@@ -150,16 +150,16 @@ namespace Game
             {
                 return;
             }
-            Vector3 v = default(Vector3);
-            v.X = -0.5f * (float)(design.Box.Left + design.Box.Right) / (float)design.Resolution;
-            v.Y = -0.5f * (float)(design.Box.Top + design.Box.Bottom) / (float)design.Resolution;
-            v.Z = -0.5f * (float)(design.Box.Near + design.Box.Far) / (float)design.Resolution;
+            Vector3 v = default;
+            v.X = -0.5f * (design.Box.Left + design.Box.Right) / design.Resolution;
+            v.Y = -0.5f * (design.Box.Top + design.Box.Bottom) / design.Resolution;
+            v.Z = -0.5f * (design.Box.Near + design.Box.Far) / design.Resolution;
             Matrix matrix2 = Matrix.CreateTranslation(v * size) * matrix;
             FurnitureGeometry geometry = design.Geometry;
             for (int i = 0; i < 6; i++)
             {
                 float s = LightingManager.LightIntensityByLightValueAndFace[environmentData.Light + 16 * CellFace.OppositeFace(i)];
-                Color color2 = Color.MultiplyColorOnly(color, s);
+                var color2 = Color.MultiplyColorOnly(color, s);
                 if (geometry.SubsetOpaqueByFace[i] != null)
                 {
                     BlocksManager.DrawMeshBlock(primitivesRenderer, geometry.SubsetOpaqueByFace[i], color2, size, ref matrix2, environmentData);
@@ -336,7 +336,7 @@ namespace Game
                 }
             }
             int data = SetRotation(Terrain.ExtractData(value), rotation);
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.CellFace = raycastResult.CellFace;
             result.Value = Terrain.ReplaceData(value, data);
             return result;
@@ -362,7 +362,7 @@ namespace Game
                 FurnitureDesign design = environmentData.SubsystemTerrain.SubsystemFurnitureBlockBehavior.GetDesign(designIndex);
                 if (design != null)
                 {
-                    float num = (float)design.Resolution / (float)MathUtils.Max(design.Box.Width, design.Box.Height, design.Box.Depth);
+                    float num = design.Resolution / (float)MathUtils.Max(design.Box.Width, design.Box.Height, design.Box.Depth);
                     return DefaultIconViewScale * num;
                 }
             }
@@ -406,7 +406,7 @@ namespace Game
             int num = 0;
             int num2 = 0;
             int num3 = 0;
-            List<FurnitureDesign> list = new List<FurnitureDesign>();
+            var list = new List<FurnitureDesign>();
             for (int i = 0; i < ingredients.Length; i++)
             {
                 if (string.IsNullOrEmpty(ingredients[i]))
@@ -460,7 +460,7 @@ namespace Game
             }
             if (list.Count == 2 && num == 0 && num2 == 1 && num3 == 0)
             {
-                List<FurnitureDesign> list2 = list.Select((FurnitureDesign d) => d.Clone()).ToList();
+                var list2 = list.Select((FurnitureDesign d) => d.Clone()).ToList();
                 for (int j = 0; j < list2.Count; j++)
                 {
                     list2[j].InteractionMode = FurnitureInteractionMode.ElectricSwitch;
@@ -482,7 +482,7 @@ namespace Game
             }
             if (list.Count >= 2 && num == 0 && num2 == 0 && num3 <= 1)
             {
-                List<FurnitureDesign> list3 = list.Select((FurnitureDesign d) => d.Clone()).ToList();
+                var list3 = list.Select((FurnitureDesign d) => d.Clone()).ToList();
                 for (int k = 0; k < list3.Count; k++)
                 {
                     list3[k].InteractionMode = ((num3 == 0) ? FurnitureInteractionMode.Multistate : FurnitureInteractionMode.ConnectedMultistate);

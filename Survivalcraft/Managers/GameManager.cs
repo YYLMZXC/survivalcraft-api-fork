@@ -31,11 +31,11 @@ namespace Game
             VersionsManager.UpgradeWorld(worldInfo.DirectoryName);
             using (Stream stream = Storage.OpenFile(Storage.CombinePaths(worldInfo.DirectoryName, "Project.xml"), OpenFileMode.Read))
             {
-                ValuesDictionary valuesDictionary = new ValuesDictionary();
-                ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+                var valuesDictionary = new ValuesDictionary();
+                var valuesDictionary2 = new ValuesDictionary();
                 valuesDictionary.SetValue("GameInfo", valuesDictionary2);
                 valuesDictionary2.SetValue("WorldDirectoryName", worldInfo.DirectoryName);
-                ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+                var valuesDictionary3 = new ValuesDictionary();
                 valuesDictionary.SetValue("Views", valuesDictionary3);
                 valuesDictionary3.SetValue("GamesWidget", gamesWidget);
                 XElement projectNode = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
@@ -43,7 +43,7 @@ namespace Game
                 {
                     modLoader.ProjectSave(projectNode);
                 }
-                ProjectData projectData = new ProjectData(DatabaseManager.GameDatabase, projectNode, valuesDictionary, ignoreInvalidEntities: true);
+                var projectData = new ProjectData(DatabaseManager.GameDatabase, projectNode, valuesDictionary, ignoreInvalidEntities: true);
                 m_project = new Project(DatabaseManager.GameDatabase, projectData);
                 m_subsystemUpdate = m_project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
             }
@@ -63,13 +63,13 @@ namespace Game
                 m_saveCompleted.Reset();
                 SubsystemGameInfo subsystemGameInfo = m_project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
                 string projectFileName = Storage.CombinePaths(subsystemGameInfo.DirectoryName, "Project.xml");
-                Exception e = default(Exception);
+                Exception e = default;
                 Task.Run(delegate
                 {
                     try
                     {
                         WorldsManager.MakeQuickWorldBackup(subsystemGameInfo.DirectoryName);
-                        XElement xElement = new XElement("Project");
+                        var xElement = new XElement("Project");
                         foreach (ModLoader modLoader in ModsManager.ModLoaders) {
                             modLoader.ProjectSave(xElement);
                         }

@@ -62,7 +62,7 @@ namespace Game
         {
             m_sneezeDuration = 1f;
             m_componentPlayer.ComponentCreatureSounds.PlaySneezeSound();
-            base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true).MakeNoise(m_componentPlayer.ComponentBody.Position, 0.25f, 10f);
+            Project.FindSubsystem<SubsystemNoise>(throwOnError: true).MakeNoise(m_componentPlayer.ComponentBody.Position, 0.25f, 10f);
         }
 
         public void Cough()
@@ -70,7 +70,7 @@ namespace Game
             m_lastCoughTime = m_subsystemTime.GameTime;
             m_coughDuration = 4f;
             m_componentPlayer.ComponentCreatureSounds.PlayCoughSound();
-            base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true).MakeNoise(m_componentPlayer.ComponentBody.Position, 0.25f, 10f);
+            Project.FindSubsystem<SubsystemNoise>(throwOnError: true).MakeNoise(m_componentPlayer.ComponentBody.Position, 0.25f, 10f);
         }
 
         public void Update(float dt)
@@ -154,12 +154,12 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
             m_fluDuration = valuesDictionary.GetValue<float>("FluDuration");
             m_fluOnset = valuesDictionary.GetValue<float>("FluOnset");
         }

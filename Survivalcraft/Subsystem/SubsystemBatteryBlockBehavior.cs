@@ -36,8 +36,8 @@ namespace Game
                 if (num != data)
                 {
                     int value2 = Terrain.ReplaceData(value, num);
-                    base.SubsystemTerrain.ChangeCell(x, y, z, value2);
-                    SubsystemElectricity subsystemElectricity = base.Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
+                    SubsystemTerrain.ChangeCell(x, y, z, value2);
+                    SubsystemElectricity subsystemElectricity = Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
                     ElectricElement electricElement = subsystemElectricity.GetElectricElement(x, y, z, 4);
                     if (electricElement != null)
                     {

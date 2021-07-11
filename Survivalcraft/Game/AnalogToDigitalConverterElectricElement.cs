@@ -13,7 +13,7 @@ namespace Game
 
         public override float GetOutputVoltage(int face)
         {
-            ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(base.CellFaces[0].Face, base.Rotation, face);
+            ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);
             if (connectorDirection.HasValue)
             {
                 if (connectorDirection.Value == ElectricConnectorDirection.Top)
@@ -39,12 +39,12 @@ namespace Game
         public override bool Simulate()
         {
             int bits = m_bits;
-            int rotation = base.Rotation;
-            foreach (ElectricConnection connection in base.Connections)
+            int rotation = Rotation;
+            foreach (ElectricConnection connection in Connections)
             {
                 if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0)
                 {
-                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(base.CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue && connectorDirection.Value == ElectricConnectorDirection.In)
                     {
                         float outputVoltage = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);

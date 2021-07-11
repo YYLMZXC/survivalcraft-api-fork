@@ -46,9 +46,9 @@ namespace Game
 
         public override void Update()
         {
-            if (base.Input.Back)
+            if (Input.Back)
             {
-                base.Input.Clear();
+                Input.Clear();
             }
         }
     }

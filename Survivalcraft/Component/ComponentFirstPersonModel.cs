@@ -67,7 +67,7 @@ namespace Game
 
         public void Draw(Camera camera, int drawOrder)
         {
-            if (m_componentPlayer.ComponentHealth.Health > 0f && camera.GameWidget.IsEntityFirstPersonTarget(base.Entity))
+            if (m_componentPlayer.ComponentHealth.Health > 0f && camera.GameWidget.IsEntityFirstPersonTarget(Entity))
             {
                 Viewport viewport = Display.Viewport;
                 Viewport viewport2 = viewport;
@@ -101,7 +101,7 @@ namespace Game
                         if (componentCreatureModel != null)
                         {
                             float num3 = componentCreatureModel.MovementAnimationPhase * (float)Math.PI * 2f + 0.5f;
-                            Vector3 position = default(Vector3);
+                            Vector3 position = default;
                             position.Y = 0.02f * MathUtils.Sin(num3);
                             position.Z = 0.02f * MathUtils.Sin(num3);
                             identity *= Matrix.CreateRotationX(0.05f * MathUtils.Sin(num3 * 1f)) * Matrix.CreateTranslation(position);
@@ -110,7 +110,7 @@ namespace Game
                     else
                     {
                         float num4 = m_componentPlayer.ComponentCreatureModel.MovementAnimationPhase * (float)Math.PI * 2f;
-                        Vector3 position2 = default(Vector3);
+                        Vector3 position2 = default;
                         position2.X = 0.03f * MathUtils.Sin(num4 * 1f);
                         position2.Y = 0.02f * MathUtils.Sin(num4 * 2f);
                         position2.Z = 0.02f * MathUtils.Sin(num4 * 1f);
@@ -120,7 +120,7 @@ namespace Game
                     int x = Terrain.ToCell(eyePosition.X);
                     int num5 = Terrain.ToCell(eyePosition.Y);
                     int z = Terrain.ToCell(eyePosition.Z);
-                    Matrix m = Matrix.CreateFromQuaternion(m_componentPlayer.ComponentCreatureModel.EyeRotation);
+                    var m = Matrix.CreateFromQuaternion(m_componentPlayer.ComponentCreatureModel.EyeRotation);
                     m.Translation = m_componentPlayer.ComponentCreatureModel.EyePosition;
                     if (m_value != 0)
                     {
@@ -157,7 +157,7 @@ namespace Game
                                 m_handLight = num7.Value;
                             }
                         }
-                        Vector3 position4 = new Vector3(0.25f, -0.3f, -0.05f);
+                        var position4 = new Vector3(0.25f, -0.3f, -0.05f);
                         Matrix matrix2 = Matrix.CreateScale(0.01f) * Matrix.CreateRotationX(0.8f) * Matrix.CreateRotationY(0.4f) * identity * Matrix.CreateTranslation(position4) * Matrix.CreateFromYawPitchRoll(m_lagAngles.X, m_lagAngles.Y, 0f) * m * camera.ViewMatrix;
                         Display.DepthStencilState = DepthStencilState.Default;
                         Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
@@ -233,10 +233,10 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
-            m_componentRider = base.Entity.FindComponent<ComponentRider>(throwOnError: true);
-            m_componentMiner = base.Entity.FindComponent<ComponentMiner>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
+            m_componentRider = Entity.FindComponent<ComponentRider>(throwOnError: true);
+            m_componentMiner = Entity.FindComponent<ComponentMiner>(throwOnError: true);
             m_handModel = ContentManager.Get<Model>(valuesDictionary.GetValue<string>("HandModelName"));
         }
     }

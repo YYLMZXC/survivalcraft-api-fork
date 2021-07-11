@@ -105,7 +105,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        Project IInventory.Project => base.Project;
+        Project IInventory.Project => Project;
 
         public int SlotsCount => 4;
 
@@ -207,7 +207,7 @@ namespace Game
 
         public virtual float ApplyArmorProtection(float attackPower)
         {
-            List<float> results = new List<float>();
+            var results = new List<float>();
             foreach (ModLoader modEntity in ModsManager.ModLoaders) {
                 results.Add(modEntity.ApplyArmorProtection(this,ref attackPower));
             }
@@ -216,19 +216,19 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemPickables = base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
-            m_componentGui = base.Entity.FindComponent<ComponentGui>(throwOnError: true);
-            m_componentHumanModel = base.Entity.FindComponent<ComponentHumanModel>(throwOnError: true);
-            m_componentBody = base.Entity.FindComponent<ComponentBody>(throwOnError: true);
-            m_componentOuterClothingModel = base.Entity.FindComponent<ComponentOuterClothingModel>(throwOnError: true);
-            m_componentVitalStats = base.Entity.FindComponent<ComponentVitalStats>(throwOnError: true);
-            m_componentLocomotion = base.Entity.FindComponent<ComponentLocomotion>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
+            m_componentGui = Entity.FindComponent<ComponentGui>(throwOnError: true);
+            m_componentHumanModel = Entity.FindComponent<ComponentHumanModel>(throwOnError: true);
+            m_componentBody = Entity.FindComponent<ComponentBody>(throwOnError: true);
+            m_componentOuterClothingModel = Entity.FindComponent<ComponentOuterClothingModel>(throwOnError: true);
+            m_componentVitalStats = Entity.FindComponent<ComponentVitalStats>(throwOnError: true);
+            m_componentLocomotion = Entity.FindComponent<ComponentLocomotion>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
             SteedMovementSpeedFactor = 1f;
             Insulation = 0f;
             LeastInsulatedSlot = ClothingSlot.Feet;
@@ -246,7 +246,7 @@ namespace Game
 
         public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)
         {
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Clothes", valuesDictionary2);
             valuesDictionary2.SetValue("Head", HumanReadableConverter.ValuesListToString(';', m_clothes[ClothingSlot.Head].ToArray()));
             valuesDictionary2.SetValue("Torso", HumanReadableConverter.ValuesListToString(';', m_clothes[ClothingSlot.Torso].ToArray()));
@@ -308,7 +308,7 @@ namespace Game
                     {
                         int value = m_clothesList[num];
                         ClothingData clothingData = ClothingBlock.GetClothingData(Terrain.ExtractData(value));
-                        if ((float)clothingData.PlayerLevelRequired > m_componentPlayer.PlayerData.Level)
+                        if (clothingData.PlayerLevelRequired > m_componentPlayer.PlayerData.Level)
                         {
 
                             m_componentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), clothingData.PlayerLevelRequired, clothingData.DisplayName), Color.White, blinking: true, playNotificationSound: true);
@@ -341,8 +341,8 @@ namespace Game
                             int value2 = m_clothesList[i];
                             ClothingData clothingData2 = ClothingBlock.GetClothingData(Terrain.ExtractData(value2));
                             float num2 = (m_componentVitalStats.Wetness > 0f) ? (10f * clothingData2.Sturdiness) : (20f * clothingData2.Sturdiness);
-                            double num3 = MathUtils.Floor(m_lastTotalElapsedGameTime.Value / (double)num2);
-                            if (MathUtils.Floor(m_subsystemGameInfo.TotalElapsedGameTime / (double)num2) > num3 && m_random.Float(0f, 1f) < 0.75f)
+                            double num3 = MathUtils.Floor(m_lastTotalElapsedGameTime.Value / num2);
+                            if (MathUtils.Floor(m_subsystemGameInfo.TotalElapsedGameTime / num2) > num3 && m_random.Float(0f, 1f) < 0.75f)
                             {
                                 m_clothesList[i] = BlocksManager.DamageItem(value2, 1);
                                 flag2 = true;
@@ -380,7 +380,7 @@ namespace Game
 
         public virtual int GetSlotCount(int slotIndex)
         {
-            if (((ICollection<int>)GetClothes((ClothingSlot)slotIndex)).Count <= 0)
+            if (GetClothes((ClothingSlot)slotIndex).Count <= 0)
             {
                 return 0;
             }
@@ -441,7 +441,7 @@ namespace Game
             {
                 ClothingData clothingData = ClothingBlock.GetClothingData(Terrain.ExtractData(value));
                 clothingData.OnMount();
-                List<int> list = new List<int>(GetClothes(clothingData.Slot));
+                var list = new List<int>(GetClothes(clothingData.Slot));
                 list.Add(value);
                 SetClothes(clothingData.Slot, list);
             }
@@ -451,7 +451,7 @@ namespace Game
         {
             if (count == 1)
             {
-                List<int> list = new List<int>(GetClothes((ClothingSlot)slotIndex));
+                var list = new List<int>(GetClothes((ClothingSlot)slotIndex));
                 if (list.Count > 0)
                 {
                     int value = list[list.Count - 1];
@@ -468,8 +468,8 @@ namespace Game
 
         public virtual void DropAllItems(Vector3 position)
         {
-            Random random = new Random();
-            SubsystemPickables subsystemPickables = base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
+            var random = new Random();
+            SubsystemPickables subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
             for (int i = 0; i < SlotsCount; i++)
             {
                 int slotCount = GetSlotCount(i);

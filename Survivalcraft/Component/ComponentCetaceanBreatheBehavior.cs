@@ -39,11 +39,11 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_stateMachine.AddState("Inactive", null, delegate
             {
                 m_importanceLevel = MathUtils.Lerp(0f, 400f, MathUtils.Saturate((0.75f - m_componentCreature.ComponentHealth.Air) / 0.75f));
@@ -106,12 +106,12 @@ namespace Game
             for (int i = 0; i < 16; i++)
             {
                 Vector2 vector2 = (i < 4) ? (new Vector2(forward.X, forward.Z) + m_random.Vector2(0f, 0.25f)) : m_random.Vector2(0.5f, 1f);
-                Vector3 v = Vector3.Normalize(new Vector3(vector2.X, 1f, vector2.Y));
+                var v = Vector3.Normalize(new Vector3(vector2.X, 1f, vector2.Y));
                 Vector3 end = vector + s * v;
                 TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(vector, end, useInteractionBoxes: false, skipAirBlocks: false, (int value, float d) => Terrain.ExtractContents(value) != 18);
                 if (terrainRaycastResult.HasValue && Terrain.ExtractContents(terrainRaycastResult.Value.Value) == 0)
                 {
-                    return new Vector3((float)terrainRaycastResult.Value.CellFace.X + 0.5f, terrainRaycastResult.Value.CellFace.Y, (float)terrainRaycastResult.Value.CellFace.Z + 0.5f);
+                    return new Vector3(terrainRaycastResult.Value.CellFace.X + 0.5f, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z + 0.5f);
                 }
             }
             return null;

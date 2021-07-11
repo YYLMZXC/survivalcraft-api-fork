@@ -344,7 +344,7 @@ namespace Game
 
         public virtual BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
         {
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = value;
             result.CellFace = raycastResult.CellFace;
             return result;
@@ -352,7 +352,7 @@ namespace Game
 
         public virtual BlockPlacementData GetDigValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, int toolValue, TerrainRaycastResult raycastResult)
         {
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = 0;
             result.CellFace = raycastResult.CellFace;
             return result;
@@ -369,7 +369,7 @@ namespace Game
             if (DefaultDropContent != 0)
             {
                 int num = (int)DefaultDropCount;
-                if (Random.Bool(DefaultDropCount - (float)num))
+                if (Random.Bool(DefaultDropCount - num))
                 {
                     num++;
                 }
@@ -384,7 +384,7 @@ namespace Game
                 }
             }
             int num2 = (int)DefaultExperienceCount;
-            if (Random.Bool(DefaultExperienceCount - (float)num2))
+            if (Random.Bool(DefaultExperienceCount - num2))
             {
                 num2++;
             }
@@ -450,7 +450,7 @@ namespace Game
             int dur = GetDurability(value);
             int dag = GetDamage(value);
             if (Durability > 0) {
-                return (float)(dur - dag) / (float)dur;
+                return (dur - dag) / (float)dur;
             }
             return -1f;
         }
@@ -526,7 +526,7 @@ namespace Game
         {
             float? result = null;
             nearestBoxIndex = 0;
-            nearestBox = default(BoundingBox);
+            nearestBox = default;
             BoundingBox[] array = useInteractionBoxes ? GetCustomInteractionBoxes(subsystemTerrain, value) : GetCustomCollisionBoxes(subsystemTerrain, value);
             for (int i = 0; i < array.Length; i++)
             {

@@ -23,10 +23,10 @@ namespace Game
         {
             m_subsystemAudio.PlayRandomSound("Audio/Whistle", 1f, m_random.Float(-0.2f, 0f), ray.Position, 4f, autoDelay: true);
             m_subsystemNoise.MakeNoise(componentMiner.ComponentCreature.ComponentBody, 0.5f, 30f);
-            DynamicArray<ComponentBody> dynamicArray = new DynamicArray<ComponentBody>();
+            var dynamicArray = new DynamicArray<ComponentBody>();
             m_subsystemBodies.FindBodiesAroundPoint(new Vector2(componentMiner.ComponentCreature.ComponentBody.Position.X, componentMiner.ComponentCreature.ComponentBody.Position.Z), 64f, dynamicArray);
             float num = float.PositiveInfinity;
-            List<ComponentBody> list = new List<ComponentBody>();
+            var list = new List<ComponentBody>();
             foreach (ComponentBody item in dynamicArray)
             {
                 ComponentSummonBehavior componentSummonBehavior = item.Entity.FindComponent<ComponentSummonBehavior>();
@@ -59,9 +59,9 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemNoise = base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemNoise = Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
         }
     }
 }

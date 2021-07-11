@@ -304,12 +304,12 @@ namespace Game
             float num = componentClothing.m_random.Float(0f, 1f);
             ClothingSlot slot = (num < 0.1f) ? ClothingSlot.Feet : ((num < 0.3f) ? ClothingSlot.Legs : ((num < 0.9f) ? ClothingSlot.Torso : ClothingSlot.Head));
             float num2 = ((ClothingBlock)BlocksManager.Blocks[203]).Durability + 1;
-            List<int> list = new List<int>(componentClothing.GetClothes(slot));
+            var list = new List<int>(componentClothing.GetClothes(slot));
             for (int i = 0; i < list.Count; i++)
             {
                 int value = list[i];
                 ClothingData clothingData = ClothingBlock.GetClothingData(Terrain.ExtractData(value));
-                float x = (num2 - (float)BlocksManager.Blocks[203].GetDamage(value)) / num2 * clothingData.Sturdiness;
+                float x = (num2 - BlocksManager.Blocks[203].GetDamage(value)) / num2 * clothingData.Sturdiness;
                 float num3 = MathUtils.Min(attackPower * MathUtils.Saturate(clothingData.ArmorProtection), x);
                 if (num3 > 0f)
                 {
@@ -317,7 +317,7 @@ namespace Game
                     if (componentClothing.m_subsystemGameInfo.WorldSettings.GameMode != 0)
                     {
                         float x2 = num3 / clothingData.Sturdiness * num2 + 0.001f;
-                        int damageCount = (int)(MathUtils.Floor(x2) + (float)(componentClothing.m_random.Bool(MathUtils.Remainder(x2, 1f)) ? 1 : 0));
+                        int damageCount = (int)(MathUtils.Floor(x2) + (componentClothing.m_random.Bool(MathUtils.Remainder(x2, 1f)) ? 1 : 0));
                         list[i] = BlocksManager.DamageItem(value, damageCount);
                     }
                     if (!string.IsNullOrEmpty(clothingData.ImpactSoundsFolder))
@@ -573,14 +573,14 @@ namespace Game
                 if (m_componentPlayer != null && camera.GameWidget.PlayerData != m_componentPlayer.PlayerData)
                 {
                     ComponentCreature m_componentCreature = m_componentPlayer.ComponentMiner.ComponentCreature;
-                    Vector3 position = Vector3.Transform(m_componentCreature.ComponentBody.Position + 1.02f * Vector3.UnitY * m_componentCreature.ComponentBody.BoxSize.Y, camera.ViewMatrix);
+                    var position = Vector3.Transform(m_componentCreature.ComponentBody.Position + 1.02f * Vector3.UnitY * m_componentCreature.ComponentBody.BoxSize.Y, camera.ViewMatrix);
                     if (position.Z < 0f)
                     {
-                        Color color = Color.Lerp(Color.White, Color.Transparent, MathUtils.Saturate((position.Length() - 4f) / 3f));
+                        var color = Color.Lerp(Color.White, Color.Transparent, MathUtils.Saturate((position.Length() - 4f) / 3f));
                         if (color.A > 8)
                         {
-                            Vector3 right = Vector3.TransformNormal(0.005f * Vector3.Normalize(Vector3.Cross(camera.ViewDirection, Vector3.UnitY)), camera.ViewMatrix);
-                            Vector3 down = Vector3.TransformNormal(-0.005f * Vector3.UnitY, camera.ViewMatrix);
+                            var right = Vector3.TransformNormal(0.005f * Vector3.Normalize(Vector3.Cross(camera.ViewDirection, Vector3.UnitY)), camera.ViewMatrix);
+                            var down = Vector3.TransformNormal(-0.005f * Vector3.UnitY, camera.ViewMatrix);
                             BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
                             modelsRenderer.PrimitivesRenderer.FontBatch(font, 1, DepthStencilState.DepthRead, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.LinearClamp).QueueText(m_componentPlayer.PlayerData.Name, position, right, down, color, TextAnchor.HorizontalCenter | TextAnchor.Bottom);
                         }

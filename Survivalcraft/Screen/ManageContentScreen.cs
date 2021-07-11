@@ -57,12 +57,12 @@ public class ManageContentScreen : Screen
         m_filterLabel = Children.Find<LabelWidget>("Filter");
         m_contentList.ItemWidgetFactory = delegate (object obj)
         {
-            ListItem listItem = (ListItem)obj;
+            var listItem = (ListItem)obj;
             ContainerWidget containerWidget;
             switch (listItem.Type) {
                 case ExternalContentType.BlocksTexture: {
                         XElement node2 = ContentManager.Get<XElement>("Widgets/BlocksTextureItem");
-                        containerWidget = (ContainerWidget)Widget.LoadWidget(this, node2, null);
+                        containerWidget = (ContainerWidget)LoadWidget(this, node2, null);
                         RectangleWidget rectangleWidget = containerWidget.Children.Find<RectangleWidget>("BlocksTextureItem.Icon");
                         LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Text");
                         LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Details");
@@ -84,7 +84,7 @@ public class ManageContentScreen : Screen
                     }
                 case ExternalContentType.FurniturePack: {
                         XElement node3 = ContentManager.Get<XElement>("Widgets/FurniturePackItem");
-                        containerWidget = (ContainerWidget)Widget.LoadWidget(this, node3, null);
+                        containerWidget = (ContainerWidget)LoadWidget(this, node3, null);
                         LabelWidget labelWidget3 = containerWidget.Children.Find<LabelWidget>("FurniturePackItem.Text");
                         LabelWidget labelWidget4 = containerWidget.Children.Find<LabelWidget>("FurniturePackItem.Details");
                         labelWidget3.Text = listItem.DisplayName;
@@ -130,7 +130,7 @@ public class ManageContentScreen : Screen
                     }
                 case ExternalContentType.Mod: {
                         XElement node2 = ContentManager.Get<XElement>("Widgets/BlocksTextureItem");
-                        containerWidget = (ContainerWidget)Widget.LoadWidget(this, node2, null);
+                        containerWidget = (ContainerWidget)LoadWidget(this, node2, null);
                         RectangleWidget rectangleWidget = containerWidget.Children.Find<RectangleWidget>("BlocksTextureItem.Icon");
                         LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Text");
                         LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Details");
@@ -154,10 +154,10 @@ public class ManageContentScreen : Screen
             return containerWidget;
         };
         m_contentList.ItemClicked += (obj) =>{
-            ListItem listItem = (ListItem)obj;
+            var listItem = (ListItem)obj;
             if (listItem.Type == ExternalContentType.Mod && listItem.IsClick)
             {
-                MessageDialog messageDialog = new MessageDialog(listItem.ModEntity.modInfo.Name, listItem.ModEntity.modInfo.Description, "确定", "取消", (btn) =>{
+                var messageDialog = new MessageDialog(listItem.ModEntity.modInfo.Name, listItem.ModEntity.modInfo.Description, "确定", "取消", (btn) =>{
                     DialogsManager.HideAllDialogs();
                     listItem.IsClick = false;
 
@@ -183,7 +183,7 @@ public class ManageContentScreen : Screen
 
     public override void Update()
     {
-        ListItem selectedItem = (ListItem)m_contentList.SelectedItem;
+        var selectedItem = (ListItem)m_contentList.SelectedItem;
         if (selectedItem != null) {
             m_deleteButton.IsEnabled = !selectedItem.IsBuiltIn;
             m_uploadButton.IsEnabled = !selectedItem.IsBuiltIn;
@@ -228,7 +228,7 @@ public class ManageContentScreen : Screen
         }
         if (m_changeFilterButton.IsClicked)
         {
-            List<ExternalContentType> list = new List<ExternalContentType>();
+            var list = new List<ExternalContentType>();
             list.Add(ExternalContentType.Unknown);
             list.Add(ExternalContentType.BlocksTexture);
             list.Add(ExternalContentType.CharacterSkin);
@@ -242,7 +242,7 @@ public class ManageContentScreen : Screen
                 }
             }));
         }
-        if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+        if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
         {
             if (changeed) {
                 DialogsManager.ShowDialog(this,new MessageDialog("提示", "配置已更改，是否重新加载?", "是", "否", (btn)=>{
@@ -264,7 +264,7 @@ public class ManageContentScreen : Screen
     public void UpdateList()
     {
         WorldsManager.UpdateWorldsList();
-        List<ListItem> list = new List<ListItem>();
+        var list = new List<ListItem>();
         if (m_filter == ExternalContentType.BlocksTexture || m_filter == ExternalContentType.Unknown)
         {
             BlocksTexturesManager.UpdateBlocksTexturesList();

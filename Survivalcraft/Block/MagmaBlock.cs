@@ -15,7 +15,7 @@ namespace Game
 
         public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value)
         {
-            if (FluidBlock.GetIsTop(Terrain.ExtractData(value)))
+            if (GetIsTop(Terrain.ExtractData(value)))
             {
                 return face != 5;
             }

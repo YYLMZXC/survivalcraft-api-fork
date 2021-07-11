@@ -46,7 +46,7 @@ namespace Game
             m_copyUserIdButton.IsEnabled = (UserManager.ActiveUser != null);
             if (m_changeUserButton.IsClicked)
             {
-                DialogsManager.ShowDialog(base.ParentWidget, new ListSelectionDialog("Select Active User", UserManager.GetUsers(), 60f, (object item) => ((UserInfo)item).DisplayName, delegate (object item)
+                DialogsManager.ShowDialog(ParentWidget, new ListSelectionDialog("Select Active User", UserManager.GetUsers(), 60f, (object item) => ((UserInfo)item).DisplayName, delegate (object item)
                 {
                     UserManager.ActiveUser = (UserInfo)item;
                 }));
@@ -57,9 +57,9 @@ namespace Game
             }
             if (m_publishButton.IsClicked && UserManager.ActiveUser != null)
             {
-                DialogsManager.ShowDialog(base.ParentWidget, new PublishCommunityLinkDialog(UserManager.ActiveUser.UniqueId, null, null));
+                DialogsManager.ShowDialog(ParentWidget, new PublishCommunityLinkDialog(UserManager.ActiveUser.UniqueId, null, null));
             }
-            if (base.Input.Cancel || m_closeButton.IsClicked)
+            if (Input.Cancel || m_closeButton.IsClicked)
             {
                 DialogsManager.HideDialog(this);
             }

@@ -7,7 +7,7 @@ namespace Game
         public Dialog()
         {
             IsHitTestVisible = true;
-            base.Size = new Vector2(1f / 0f);
+            Size = new Vector2(1f / 0f);
         }
     }
 }

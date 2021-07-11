@@ -11,8 +11,8 @@ namespace Game
         {
             public Geometry()
             {
-                TerrainGeometrySubset terrainGeometrySubset = new TerrainGeometrySubset();
-                TerrainGeometrySubset[] array = new TerrainGeometrySubset[6]
+                var terrainGeometrySubset = new TerrainGeometrySubset();
+                var array = new TerrainGeometrySubset[6]
                 {
                     terrainGeometrySubset,
                     terrainGeometrySubset,
@@ -69,7 +69,7 @@ namespace Game
         public void Update(float dt)
         {
             Camera activeCamera = m_componentPlayer.GameWidget.ActiveCamera;
-            Ray3? ray = new Ray3?(new Ray3(activeCamera.ViewPosition, activeCamera.ViewDirection));
+            var ray = new Ray3?(new Ray3(activeCamera.ViewPosition, activeCamera.ViewDirection));
             NearbyEditableCell = null;
             if (ray.HasValue)
             {
@@ -78,7 +78,7 @@ namespace Game
                 {
                     return;
                 }
-                TerrainRaycastResult terrainRaycastResult = (TerrainRaycastResult)m_highlightRaycastResult;
+                var terrainRaycastResult = (TerrainRaycastResult)m_highlightRaycastResult;
                 if (terrainRaycastResult.Distance < 3f)
                 {
                     Point3 point = terrainRaycastResult.CellFace.Point;
@@ -120,32 +120,32 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemAnimatedTextures = base.Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemAnimatedTextures = Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
             m_shader = new HighlightShader();
         }
 
         public void DrawRayHighlight(Camera camera)
         {
-            Ray3 ray = default(Ray3);
+            Ray3 ray = default;
             float num;
             if (m_highlightRaycastResult is TerrainRaycastResult)
             {
-                TerrainRaycastResult obj = (TerrainRaycastResult)m_highlightRaycastResult;
+                var obj = (TerrainRaycastResult)m_highlightRaycastResult;
                 ray = obj.Ray;
                 num = MathUtils.Min(obj.Distance, 2f);
             }
             else if (m_highlightRaycastResult is BodyRaycastResult)
             {
-                BodyRaycastResult obj2 = (BodyRaycastResult)m_highlightRaycastResult;
+                var obj2 = (BodyRaycastResult)m_highlightRaycastResult;
                 ray = obj2.Ray;
                 num = MathUtils.Min(obj2.Distance, 2f);
             }
             else if (m_highlightRaycastResult is MovingBlocksRaycastResult)
             {
-                MovingBlocksRaycastResult obj3 = (MovingBlocksRaycastResult)m_highlightRaycastResult;
+                var obj3 = (MovingBlocksRaycastResult)m_highlightRaycastResult;
                 ray = obj3.Ray;
                 num = MathUtils.Min(obj3.Distance, 2f);
             }
@@ -159,7 +159,7 @@ namespace Game
                 num = 2f;
             }
             Color color = Color.White * 0.5f;
-            Color color2 = Color.Lerp(color, Color.Transparent, MathUtils.Saturate(num / 2f));
+            var color2 = Color.Lerp(color, Color.Transparent, MathUtils.Saturate(num / 2f));
             FlatBatch3D flatBatch3D = m_primitivesRenderer3D.FlatBatch();
             flatBatch3D.QueueLine(ray.Position, ray.Position + ray.Direction * num, color, color2);
             flatBatch3D.Flush(camera.ViewProjectionMatrix);
@@ -250,13 +250,13 @@ namespace Game
         {
             int cellValue = m_subsystemTerrain.Terrain.GetCellValue(point.X, point.Y, point.Z);
             BoundingBox[] customCollisionBoxes = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].GetCustomCollisionBoxes(m_subsystemTerrain, cellValue);
-            Vector3 vector = new Vector3(point.X, point.Y, point.Z);
+            var vector = new Vector3(point.X, point.Y, point.Z);
             if (customCollisionBoxes.Length != 0)
             {
                 BoundingBox? boundingBox = null;
                 for (int i = 0; i < customCollisionBoxes.Length; i++)
                 {
-                    if (customCollisionBoxes[i] != default(BoundingBox))
+                    if (customCollisionBoxes[i] != default)
                     {
                         boundingBox = (boundingBox.HasValue ? BoundingBox.Union(boundingBox.Value, customCollisionBoxes[i]) : customCollisionBoxes[i]);
                     }

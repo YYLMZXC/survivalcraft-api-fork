@@ -57,7 +57,7 @@ namespace Game
             {
                 direction = 5;
             }
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.MakeBlockValue(216, 0, SetDirection(0, direction));
             result.CellFace = raycastResult.CellFace;
             return result;

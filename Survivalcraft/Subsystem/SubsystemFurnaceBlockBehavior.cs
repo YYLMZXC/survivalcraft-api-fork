@@ -21,12 +21,12 @@ namespace Game
         {
             if (Terrain.ExtractContents(oldValue) != 64 && Terrain.ExtractContents(oldValue) != 65)
             {
-                DatabaseObject databaseObject = base.SubsystemTerrain.Project.GameDatabase.Database.FindDatabaseObject("Furnace", base.SubsystemTerrain.Project.GameDatabase.EntityTemplateType, throwIfNotFound: true);
-                ValuesDictionary valuesDictionary = new ValuesDictionary();
+                DatabaseObject databaseObject = SubsystemTerrain.Project.GameDatabase.Database.FindDatabaseObject("Furnace", SubsystemTerrain.Project.GameDatabase.EntityTemplateType, throwIfNotFound: true);
+                var valuesDictionary = new ValuesDictionary();
                 valuesDictionary.PopulateFromDatabaseObject(databaseObject);
                 valuesDictionary.GetValue<ValuesDictionary>("BlockEntity").SetValue("Coordinates", new Point3(x, y, z));
-                Entity entity = base.SubsystemTerrain.Project.CreateEntity(valuesDictionary);
-                base.SubsystemTerrain.Project.AddEntity(entity);
+                Entity entity = SubsystemTerrain.Project.CreateEntity(valuesDictionary);
+                SubsystemTerrain.Project.AddEntity(entity);
             }
             if (Terrain.ExtractContents(value) == 65)
             {
@@ -38,7 +38,7 @@ namespace Game
         {
             if (Terrain.ExtractContents(newValue) != 64 && Terrain.ExtractContents(newValue) != 65)
             {
-                ComponentBlockEntity blockEntity = base.SubsystemTerrain.Project.FindSubsystem<SubsystemBlockEntities>(throwOnError: true).GetBlockEntity(x, y, z);
+                ComponentBlockEntity blockEntity = SubsystemTerrain.Project.FindSubsystem<SubsystemBlockEntities>(throwOnError: true).GetBlockEntity(x, y, z);
                 if (blockEntity != null)
                 {
                     Vector3 position = new Vector3(x, y, z) + new Vector3(0.5f);
@@ -46,7 +46,7 @@ namespace Game
                     {
                         item.DropAllItems(position);
                     }
-                    base.SubsystemTerrain.Project.RemoveEntity(blockEntity.Entity, disposeEntity: true);
+                    SubsystemTerrain.Project.RemoveEntity(blockEntity.Entity, disposeEntity: true);
                 }
             }
             if (Terrain.ExtractContents(value) == 65)
@@ -65,7 +65,7 @@ namespace Game
 
         public override void OnChunkDiscarding(TerrainChunk chunk)
         {
-            List<Point3> list = new List<Point3>();
+            var list = new List<Point3>();
             foreach (Point3 key in m_particleSystemsByCell.Keys)
             {
                 if (key.X >= chunk.Origin.X && key.X < chunk.Origin.X + 16 && key.Z >= chunk.Origin.Y && key.Z < chunk.Origin.Y + 16)
@@ -81,7 +81,7 @@ namespace Game
 
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner)
         {
-            ComponentBlockEntity blockEntity = base.SubsystemTerrain.Project.FindSubsystem<SubsystemBlockEntities>(throwOnError: true).GetBlockEntity(raycastResult.CellFace.X, raycastResult.CellFace.Y, raycastResult.CellFace.Z);
+            ComponentBlockEntity blockEntity = SubsystemTerrain.Project.FindSubsystem<SubsystemBlockEntities>(throwOnError: true).GetBlockEntity(raycastResult.CellFace.X, raycastResult.CellFace.Y, raycastResult.CellFace.Z);
             if (blockEntity != null && componentMiner.ComponentPlayer != null)
             {
                 ComponentFurnace componentFurnace = blockEntity.Entity.FindComponent<ComponentFurnace>(throwOnError: true);
@@ -100,21 +100,21 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
         }
 
         public void AddFire(int value, int x, int y, int z)
         {
-            Vector3 v = new Vector3(0.5f, 0.2f, 0.5f);
+            var v = new Vector3(0.5f, 0.2f, 0.5f);
             float size = 0.15f;
-            FireParticleSystem fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + v, size, 16f);
+            var fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + v, size, 16f);
             m_subsystemParticles.AddParticleSystem(fireParticleSystem);
             m_particleSystemsByCell[new Point3(x, y, z)] = fireParticleSystem;
         }
 
         public void RemoveFire(int x, int y, int z)
         {
-            Point3 key = new Point3(x, y, z);
+            var key = new Point3(x, y, z);
             FireParticleSystem particleSystem = m_particleSystemsByCell[key];
             m_subsystemParticles.RemoveParticleSystem(particleSystem);
             m_particleSystemsByCell.Remove(key);

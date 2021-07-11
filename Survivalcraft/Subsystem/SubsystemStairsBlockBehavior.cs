@@ -12,7 +12,7 @@ namespace Game
 
         public SubsystemStairsBlockBehavior()
         {
-            List<int> list = new List<int>();
+            var list = new List<int>();
             list.AddRange(from b in BlocksManager.Blocks
                           where b is StairsBlock
                           select b.BlockIndex);
@@ -21,7 +21,7 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
             UpdateIsCorner(cellValue, x, y, z, updateModificationCounter: true);
         }
 
@@ -50,7 +50,7 @@ namespace Game
             int rotation = StairsBlock.GetRotation(data);
             bool isUpsideDown = StairsBlock.GetIsUpsideDown(data);
             Point3 point = StairsBlock.RotationToDirection(rotation);
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x + point.X, y + point.Y, z + point.Z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x + point.X, y + point.Y, z + point.Z);
             int num = Terrain.ExtractContents(cellValue);
             if (BlocksManager.Blocks[num] is StairsBlock)
             {
@@ -98,11 +98,11 @@ namespace Game
                 {
                     int data3 = StairsBlock.SetRotation(StairsBlock.SetCornerType(data, StairsBlock.CornerType.OneQuarter), num2);
                     int value3 = Terrain.ReplaceData(value, data3);
-                    base.SubsystemTerrain.ChangeCell(x, y, z, value3, updateModificationCounter);
+                    SubsystemTerrain.ChangeCell(x, y, z, value3, updateModificationCounter);
                 }
                 return;
             }
-            cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
+            cellValue = SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
             num = Terrain.ExtractContents(cellValue);
             if (!(BlocksManager.Blocks[num] is StairsBlock))
             {
@@ -184,7 +184,7 @@ namespace Game
             {
                 int data5 = StairsBlock.SetRotation(StairsBlock.SetCornerType(data, StairsBlock.CornerType.ThreeQuarters), num3);
                 int value4 = Terrain.ReplaceData(value, data5);
-                base.SubsystemTerrain.ChangeCell(x, y, z, value4, updateModificationCounter);
+                SubsystemTerrain.ChangeCell(x, y, z, value4, updateModificationCounter);
             }
         }
     }

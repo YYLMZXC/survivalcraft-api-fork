@@ -110,23 +110,23 @@ namespace Game
                 TexturedBatch2D texturedBatch2D = dc.PrimitivesRenderer2D.TexturedBatch(Texture, useAlphaTest: false, 0, DepthStencilState.None, null, null, samplerState);
                 int count = flatBatch2D.TriangleVertices.Count;
                 int count2 = texturedBatch2D.TriangleVertices.Count;
-                QueueBevelledRectangle(texturedBatch2D, flatBatch2D, Vector2.Zero, base.ActualSize, 0f, BevelSize, CenterColor * base.GlobalColorTransform, BevelColor * base.GlobalColorTransform, ShadowColor * base.GlobalColorTransform, AmbientLight, DirectionalLight, TextureScale);
-                flatBatch2D.TransformTriangles(base.GlobalTransform, count);
-                texturedBatch2D.TransformTriangles(base.GlobalTransform, count2);
+                QueueBevelledRectangle(texturedBatch2D, flatBatch2D, Vector2.Zero, ActualSize, 0f, BevelSize, CenterColor * GlobalColorTransform, BevelColor * GlobalColorTransform, ShadowColor * GlobalColorTransform, AmbientLight, DirectionalLight, TextureScale);
+                flatBatch2D.TransformTriangles(GlobalTransform, count);
+                texturedBatch2D.TransformTriangles(GlobalTransform, count2);
             }
             else
             {
                 FlatBatch2D flatBatch2D2 = dc.PrimitivesRenderer2D.FlatBatch(0, DepthStencilState.None);
                 int count3 = flatBatch2D2.TriangleVertices.Count;
-                QueueBevelledRectangle(null, flatBatch2D2, Vector2.Zero, base.ActualSize, 0f, BevelSize, CenterColor * base.GlobalColorTransform, BevelColor * base.GlobalColorTransform, ShadowColor * base.GlobalColorTransform, AmbientLight, DirectionalLight, 0f);
-                flatBatch2D2.TransformTriangles(base.GlobalTransform, count3);
+                QueueBevelledRectangle(null, flatBatch2D2, Vector2.Zero, ActualSize, 0f, BevelSize, CenterColor * GlobalColorTransform, BevelColor * GlobalColorTransform, ShadowColor * GlobalColorTransform, AmbientLight, DirectionalLight, 0f);
+                flatBatch2D2.TransformTriangles(GlobalTransform, count3);
             }
         }
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = (BevelColor.A != 0 || CenterColor.A != 0);
-            base.DesiredSize = Size;
+            IsDrawRequired = (BevelColor.A != 0 || CenterColor.A != 0);
+            DesiredSize = Size;
         }
 
         public static void QueueBevelledRectangle(TexturedBatch2D texturedBatch, FlatBatch2D flatBatch, Vector2 c1, Vector2 c2, float depth, float bevelSize, Color color, Color bevelColor, Color shadowColor, float ambientLight, float directionalLight, float textureScale)
@@ -152,15 +152,15 @@ namespace Game
             float num4 = MathUtils.Saturate(((bevelSize > 0f) ? (-0.375f) : 0.5f) * directionalLight + ambientLight);
             float num5 = MathUtils.Saturate(((bevelSize > 0f) ? 0.5f : (-0.375f)) * directionalLight + ambientLight);
             float num6 = MathUtils.Saturate(0f * directionalLight + ambientLight);
-            Color color2 = new Color((byte)(num4 * (float)(int)bevelColor.R), (byte)(num4 * (float)(int)bevelColor.G), (byte)(num4 * (float)(int)bevelColor.B), bevelColor.A);
-            Color color3 = new Color((byte)(num5 * (float)(int)bevelColor.R), (byte)(num5 * (float)(int)bevelColor.G), (byte)(num5 * (float)(int)bevelColor.B), bevelColor.A);
-            Color color4 = new Color((byte)(num2 * (float)(int)bevelColor.R), (byte)(num2 * (float)(int)bevelColor.G), (byte)(num2 * (float)(int)bevelColor.B), bevelColor.A);
-            Color color5 = new Color((byte)(num3 * (float)(int)bevelColor.R), (byte)(num3 * (float)(int)bevelColor.G), (byte)(num3 * (float)(int)bevelColor.B), bevelColor.A);
-            Color color6 = new Color((byte)(num6 * (float)(int)color.R), (byte)(num6 * (float)(int)color.G), (byte)(num6 * (float)(int)color.B), color.A);
+            var color2 = new Color((byte)(num4 * bevelColor.R), (byte)(num4 * bevelColor.G), (byte)(num4 * bevelColor.B), bevelColor.A);
+            var color3 = new Color((byte)(num5 * bevelColor.R), (byte)(num5 * bevelColor.G), (byte)(num5 * bevelColor.B), bevelColor.A);
+            var color4 = new Color((byte)(num2 * bevelColor.R), (byte)(num2 * bevelColor.G), (byte)(num2 * bevelColor.B), bevelColor.A);
+            var color5 = new Color((byte)(num3 * bevelColor.R), (byte)(num3 * bevelColor.G), (byte)(num3 * bevelColor.B), bevelColor.A);
+            var color6 = new Color((byte)(num6 * color.R), (byte)(num6 * color.G), (byte)(num6 * color.B), color.A);
             if (texturedBatch != null)
             {
-                float num7 = textureScale / (float)texturedBatch.Texture.Width;
-                float num8 = textureScale / (float)texturedBatch.Texture.Height;
+                float num7 = textureScale / texturedBatch.Texture.Width;
+                float num8 = textureScale / texturedBatch.Texture.Height;
                 float num9 = x * num7;
                 float num10 = y * num8;
                 float x6 = num9;
@@ -200,7 +200,7 @@ namespace Game
             if (bevelSize > 0f && flatBatch != null && shadowColor.A > 0)
             {
                 Color color7 = shadowColor;
-                Color color8 = new Color(0, 0, 0, 0);
+                var color8 = new Color(0, 0, 0, 0);
                 flatBatch.QueueTriangle(new Vector2(x, y4), new Vector2(x2, y5), new Vector2(x2, y4), depth, color8, color8, color7);
                 flatBatch.QueueTriangle(new Vector2(x4, y), new Vector2(x4, y2), new Vector2(x5, y2), depth, color8, color7, color8);
                 flatBatch.QueueTriangle(new Vector2(x4, y4), new Vector2(x4, y5), new Vector2(x5, y4), depth, color7, color8, color8);

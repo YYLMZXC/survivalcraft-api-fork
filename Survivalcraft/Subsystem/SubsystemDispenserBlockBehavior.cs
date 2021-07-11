@@ -22,20 +22,20 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemBlockEntities = base.Project.FindSubsystem<SubsystemBlockEntities>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemBlockEntities = Project.FindSubsystem<SubsystemBlockEntities>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
         }
 
         public override void OnBlockAdded(int value, int oldValue, int x, int y, int z)
         {
-            DatabaseObject databaseObject = base.Project.GameDatabase.Database.FindDatabaseObject("Dispenser", base.Project.GameDatabase.EntityTemplateType, throwIfNotFound: true);
-            ValuesDictionary valuesDictionary = new ValuesDictionary();
+            DatabaseObject databaseObject = Project.GameDatabase.Database.FindDatabaseObject("Dispenser", Project.GameDatabase.EntityTemplateType, throwIfNotFound: true);
+            var valuesDictionary = new ValuesDictionary();
             valuesDictionary.PopulateFromDatabaseObject(databaseObject);
             valuesDictionary.GetValue<ValuesDictionary>("BlockEntity").SetValue("Coordinates", new Point3(x, y, z));
-            Entity entity = base.Project.CreateEntity(valuesDictionary);
-            base.Project.AddEntity(entity);
+            Entity entity = Project.CreateEntity(valuesDictionary);
+            Project.AddEntity(entity);
         }
 
         public override void OnBlockRemoved(int value, int newValue, int x, int y, int z)
@@ -48,7 +48,7 @@ namespace Game
                 {
                     item.DropAllItems(position);
                 }
-                base.Project.RemoveEntity(blockEntity.Entity, disposeEntity: true);
+                Project.RemoveEntity(blockEntity.Entity, disposeEntity: true);
             }
         }
 
@@ -78,7 +78,7 @@ namespace Game
             if (blockEntity != null && DispenserBlock.GetAcceptsDrops(Terrain.ExtractData(m_subsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z))))
             {
                 ComponentDispenser inventory = blockEntity.Entity.FindComponent<ComponentDispenser>(throwOnError: true);
-                Pickable pickable = worldItem as Pickable;
+                var pickable = worldItem as Pickable;
                 int num = pickable?.Count ?? 1;
                 int num2 = ComponentInventoryBase.AcquireItems(inventory, worldItem.Value, num);
                 if (num2 < num)

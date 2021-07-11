@@ -32,7 +32,7 @@ namespace Game
             {
                 for (int j = 0; j < m_inventoryGrid.ColumnsCount; j++)
                 {
-                    InventorySlotWidget widget = new InventorySlotWidget
+                    var widget = new InventorySlotWidget
                     {
                         HideEditOverlay = true,
                         HideInteractiveOverlay = true,
@@ -48,12 +48,12 @@ namespace Game
         {
             if (m_assignedCategoryIndex >= 0)
             {
-                if (base.Input.Scroll.HasValue)
+                if (Input.Scroll.HasValue)
                 {
-                    Widget widget = HitTestGlobal(base.Input.Scroll.Value.XY);
+                    Widget widget = HitTestGlobal(Input.Scroll.Value.XY);
                     if (widget != null && widget.IsChildWidgetOf(m_inventoryGrid))
                     {
-                        m_componentCreativeInventory.PageIndex -= (int)base.Input.Scroll.Value.Z;
+                        m_componentCreativeInventory.PageIndex -= (int)Input.Scroll.Value.Z;
                     }
                 }
                 if (m_creativeInventoryWidget.PageDownButton.IsClicked)
@@ -97,7 +97,7 @@ namespace Game
                 int num5 = m_componentCreativeInventory.PageIndex * num4;
                 foreach (Widget child in m_inventoryGrid.Children)
                 {
-                    InventorySlotWidget inventorySlotWidget = child as InventorySlotWidget;
+                    var inventorySlotWidget = child as InventorySlotWidget;
                     if (inventorySlotWidget != null)
                     {
                         if (num5 < m_slotIndices.Count)

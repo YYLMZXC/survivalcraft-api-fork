@@ -67,7 +67,7 @@ namespace Game
 
         public void Update(float dt)
         {
-            if (!base.IsAddedToProject)
+            if (!IsAddedToProject)
             {
                 return;
             }
@@ -107,7 +107,7 @@ namespace Game
             {
                 return;
             }
-            m_nextCheckTime = m_subsystemTime.GameTime + (double)m_random.Float(0.9f, 1.1f);
+            m_nextCheckTime = m_subsystemTime.GameTime + m_random.Float(0.9f, 1.1f);
             TouchesFire = CheckIfBodyTouchesFire();
             if (TouchesFire)
             {
@@ -129,12 +129,12 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemAmbientSounds = base.Project.FindSubsystem<SubsystemAmbientSounds>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            ComponentBody = base.Entity.FindComponent<ComponentBody>();
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemAmbientSounds = Project.FindSubsystem<SubsystemAmbientSounds>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            ComponentBody = Entity.FindComponent<ComponentBody>();
             float value = valuesDictionary.GetValue<float>("FireDuration");
             if (value > 0f)
             {
@@ -180,7 +180,7 @@ namespace Game
                             case 104:
                                 if (num8 == 0)
                                 {
-                                    BoundingBox box2 = new BoundingBox(new Vector3(i, j, k), new Vector3(i + 1, j + 1, k + 1));
+                                    var box2 = new BoundingBox(new Vector3(i, j, k), new Vector3(i + 1, j + 1, k + 1));
                                     if (boundingBox.Intersection(box2))
                                     {
                                         return true;
@@ -189,7 +189,7 @@ namespace Game
                                 }
                                 if ((num8 & 1) != 0)
                                 {
-                                    BoundingBox box3 = new BoundingBox(new Vector3(i, j, (float)k + 0.5f), new Vector3(i + 1, j + 1, k + 1));
+                                    var box3 = new BoundingBox(new Vector3(i, j, k + 0.5f), new Vector3(i + 1, j + 1, k + 1));
                                     if (boundingBox.Intersection(box3))
                                     {
                                         return true;
@@ -197,7 +197,7 @@ namespace Game
                                 }
                                 if ((num8 & 2) != 0)
                                 {
-                                    BoundingBox box4 = new BoundingBox(new Vector3((float)i + 0.5f, j, k), new Vector3(i + 1, j + 1, k + 1));
+                                    var box4 = new BoundingBox(new Vector3(i + 0.5f, j, k), new Vector3(i + 1, j + 1, k + 1));
                                     if (boundingBox.Intersection(box4))
                                     {
                                         return true;
@@ -205,7 +205,7 @@ namespace Game
                                 }
                                 if ((num8 & 4) != 0)
                                 {
-                                    BoundingBox box5 = new BoundingBox(new Vector3(i, j, k), new Vector3(i + 1, j + 1, (float)k + 0.5f));
+                                    var box5 = new BoundingBox(new Vector3(i, j, k), new Vector3(i + 1, j + 1, k + 0.5f));
                                     if (boundingBox.Intersection(box5))
                                     {
                                         return true;
@@ -213,7 +213,7 @@ namespace Game
                                 }
                                 if ((num8 & 8) != 0)
                                 {
-                                    BoundingBox box6 = new BoundingBox(new Vector3(i, j, k), new Vector3((float)i + 0.5f, j + 1, k + 1));
+                                    var box6 = new BoundingBox(new Vector3(i, j, k), new Vector3(i + 0.5f, j + 1, k + 1));
                                     if (boundingBox.Intersection(box6))
                                     {
                                         return true;
@@ -223,7 +223,7 @@ namespace Game
                             case 209:
                                 if (num8 > 0)
                                 {
-                                    BoundingBox box = new BoundingBox(new Vector3(i, j, k) + new Vector3(0.2f), new Vector3(i + 1, j + 1, k + 1) - new Vector3(0.2f));
+                                    var box = new BoundingBox(new Vector3(i, j, k) + new Vector3(0.2f), new Vector3(i + 1, j + 1, k + 1) - new Vector3(0.2f));
                                     if (boundingBox.Intersection(box))
                                     {
                                         return true;

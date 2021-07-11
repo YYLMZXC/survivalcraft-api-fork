@@ -63,7 +63,7 @@ namespace Game
                 m_pukeParticleSystem = new PukeParticleSystem(m_subsystemTerrain);
                 m_subsystemParticles.AddParticleSystem(m_pukeParticleSystem);
                 m_componentPlayer.ComponentCreatureSounds.PlayPukeSound();
-                base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true).MakeNoise(m_componentPlayer.ComponentBody.Position, 0.25f, 10f);
+                Project.FindSubsystem<SubsystemNoise>(throwOnError: true).MakeNoise(m_componentPlayer.ComponentBody.Position, 0.25f, 10f);
                 m_greenoutDuration = 0.8f;
                 m_componentPlayer.PlayerStats.TimesPuked++;
             }
@@ -123,11 +123,11 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
             m_sicknessDuration = valuesDictionary.GetValue<float>("SicknessDuration");
         }
 

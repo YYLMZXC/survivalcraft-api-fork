@@ -471,8 +471,8 @@ namespace Game
             MultithreadedTerrainUpdate = true;
             NewYearCelebrationLastYear = 2015;
             ScreenLayout1 = ScreenLayout.Single;
-            ScreenLayout2 = (((float)Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.DoubleVertical : ScreenLayout.DoubleHorizontal);
-            ScreenLayout3 = (((float)Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.TripleVertical : ScreenLayout.TripleHorizontal);
+            ScreenLayout2 = ((Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.DoubleVertical : ScreenLayout.DoubleHorizontal);
+            ScreenLayout3 = ((Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.TripleVertical : ScreenLayout.TripleHorizontal);
             ScreenLayout4 = ScreenLayout.Quadruple;
             
             HorizontalCreativeFlight = true;
@@ -538,7 +538,7 @@ namespace Game
                                 {
                                     foreach (XElement xElement1 in item.Elements())
                                     {
-                                        ModInfo modInfo = new ModInfo();
+                                        var modInfo = new ModInfo();
                                         modInfo.PackageName = xElement1.Attribute("PackageName").Value;
                                         modInfo.Version = xElement1.Attribute("Version").Value;
                                         ModsManager.DisabledMods.Add(modInfo);
@@ -569,7 +569,7 @@ namespace Game
         {
             try
             {
-                XElement xElement = new XElement("Settings");
+                var xElement = new XElement("Settings");
                 foreach (PropertyInfo item in from pi in typeof(SettingsManager).GetRuntimeProperties()
                                               where pi.GetMethod.IsStatic && pi.GetMethod.IsPublic && pi.SetMethod.IsPublic
                                               select pi)
@@ -590,14 +590,14 @@ namespace Game
                         }));
                     }
                 }
-                XElement la = new XElement("ModSet");
+                var la = new XElement("ModSet");
                 la.SetAttributeValue("Name", "Language");
                 la.SetAttributeValue("Value", (int)ModsManager.modSettings.languageType);
-                XElement xElement1 = new XElement("DisableMods");
+                var xElement1 = new XElement("DisableMods");
                 foreach (ModEntity modEntity in ModsManager.ModList)
                 {
                     if (modEntity.IsDisabled) {
-                        XElement element = new XElement("Mod");
+                        var element = new XElement("Mod");
                         element.SetAttributeValue("PackageName", modEntity.modInfo.PackageName);
                         element.SetAttributeValue("Version", modEntity.modInfo.Version);
                         xElement1.Add(element);
@@ -612,7 +612,7 @@ namespace Game
                 }
                 using (Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Create))
                 {
-                    XElement xElement2 = new XElement("ModSettings");
+                    var xElement2 = new XElement("ModSettings");
                     ModsManager.SaveSettings(xElement2);
                     XmlUtils.SaveXmlToStream(xElement2, stream, null, throwOnError: true);
                 }

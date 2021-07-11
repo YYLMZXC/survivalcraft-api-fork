@@ -112,7 +112,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            SubsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
         }
     }
 }

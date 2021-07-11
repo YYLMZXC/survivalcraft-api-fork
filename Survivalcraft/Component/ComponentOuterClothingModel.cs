@@ -14,31 +14,24 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
             base.Load(valuesDictionary, idToEntityMap);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_componentHumanModel = base.Entity.FindComponent<ComponentHumanModel>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_componentHumanModel = Entity.FindComponent<ComponentHumanModel>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
         }
 
         public override void Animate()
         {
-            base.Opacity = m_componentHumanModel.Opacity;
-            foreach (ModelBone bone in base.Model.Bones)
+            Opacity = m_componentHumanModel.Opacity;
+            foreach (ModelBone bone in Model.Bones)
             {
                 ModelBone modelBone = m_componentHumanModel.Model.FindBone(bone.Name);
                 SetBoneTransform(bone.Index, m_componentHumanModel.GetBoneTransform(modelBone.Index));
             }
-            if (base.Opacity.HasValue && base.Opacity.Value < 1f)
+            if (Opacity.HasValue && Opacity.Value < 1f)
             {
                 bool num = m_componentCreature.ComponentBody.ImmersionFactor >= 1f;
                 bool flag = m_subsystemSky.ViewUnderWaterDepth > 0f;
-                if (num == flag)
-                {
-                    RenderingMode = ModelRenderingMode.TransparentAfterWater;
-                }
-                else
-                {
-                    RenderingMode = ModelRenderingMode.TransparentBeforeWater;
-                }
+                RenderingMode = num == flag ? ModelRenderingMode.TransparentAfterWater : ModelRenderingMode.TransparentBeforeWater;
             }
             else
             {
@@ -50,14 +43,14 @@ namespace Game
         public override void SetModel(Model model)
         {
             base.SetModel(model);
-            if (base.MeshDrawOrders.Length != 4)
+            if (MeshDrawOrders.Length != 4)
             {
                 throw new InvalidOperationException("Invalid number of meshes in OuterClothing model.");
             }
-            base.MeshDrawOrders[0] = model.Meshes.IndexOf(model.FindMesh("Leg1"));
-            base.MeshDrawOrders[1] = model.Meshes.IndexOf(model.FindMesh("Leg2"));
-            base.MeshDrawOrders[2] = model.Meshes.IndexOf(model.FindMesh("Body"));
-            base.MeshDrawOrders[3] = model.Meshes.IndexOf(model.FindMesh("Head"));
+            MeshDrawOrders[0] = model.Meshes.IndexOf(model.FindMesh("Leg1"));
+            MeshDrawOrders[1] = model.Meshes.IndexOf(model.FindMesh("Leg2"));
+            MeshDrawOrders[2] = model.Meshes.IndexOf(model.FindMesh("Body"));
+            MeshDrawOrders[3] = model.Meshes.IndexOf(model.FindMesh("Head"));
         }
     }
 }

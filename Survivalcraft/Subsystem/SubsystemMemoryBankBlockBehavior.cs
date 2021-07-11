@@ -21,15 +21,8 @@ namespace Game
             int count = inventory.GetSlotCount(slotIndex);
             int id = Terrain.ExtractData(value);
             MemoryBankData memoryBankData = GetItemData(id);
-            if (memoryBankData != null)
-            {
-                memoryBankData = (MemoryBankData)memoryBankData.Copy();
-            }
-            else
-            {
-                memoryBankData = new MemoryBankData();
-            }
-            ListSelectionDialog listSelectionDialog = new ListSelectionDialog(LanguageControl.Get(fName,1), new int[] { 0, 1 }, 60f, (a) => {
+            memoryBankData = memoryBankData != null ? (MemoryBankData)memoryBankData.Copy() : new MemoryBankData();
+            var listSelectionDialog = new ListSelectionDialog(LanguageControl.Get(fName,1), new int[] { 0, 1 }, 60f, (a) => {
                 string[] l = new string[] { LanguageControl.Get(fName, 2), LanguageControl.Get(fName, 3) };
                 return l[(int)a];
             }, (obj) => {
@@ -60,7 +53,7 @@ namespace Game
         public override bool OnEditBlock(int x, int y, int z, int value, ComponentPlayer componentPlayer)
         {
             MemoryBankData memoryBankData = GetBlockData(new Point3(x, y, z)) ?? new MemoryBankData();
-            ListSelectionDialog listSelectionDialog = new ListSelectionDialog(LanguageControl.Get(fName, 1), new int[] {0,1 }, 60f, (a)=> {
+            var listSelectionDialog = new ListSelectionDialog(LanguageControl.Get(fName, 1), new int[] {0,1 }, 60f, (a)=> {
                 string[] l = new string[] { LanguageControl.Get(fName, 2), LanguageControl.Get(fName, 3) };
                 return l[(int)a]; 
             },(obj)=> {
@@ -70,7 +63,7 @@ namespace Game
                     {
                         SetBlockData(new Point3(x, y, z), memoryBankData);
                         int face = ((MemoryBankBlock)BlocksManager.Blocks[186]).GetFace(value);
-                        SubsystemElectricity subsystemElectricity = base.SubsystemTerrain.Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
+                        SubsystemElectricity subsystemElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
                         ElectricElement electricElement = subsystemElectricity.GetElectricElement(x, y, z, face);
                         if (electricElement != null)
                         {
@@ -81,7 +74,7 @@ namespace Game
                     DialogsManager.ShowDialog(componentPlayer.GuiWidget,new EditMemoryBankDialog(memoryBankData,()=> {
                         SetBlockData(new Point3(x, y, z), memoryBankData);
                         int face = ((MemoryBankBlock)BlocksManager.Blocks[186]).GetFace(value);
-                        SubsystemElectricity subsystemElectricity = base.SubsystemTerrain.Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
+                        SubsystemElectricity subsystemElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
                         ElectricElement electricElement = subsystemElectricity.GetElectricElement(x, y, z, face);
                         if (electricElement != null)
                         {

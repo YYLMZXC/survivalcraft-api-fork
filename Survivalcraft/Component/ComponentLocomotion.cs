@@ -437,16 +437,16 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemNoise = base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>();
-            m_componentLevel = base.Entity.FindComponent<ComponentLevel>();
-            m_componentClothing = base.Entity.FindComponent<ComponentClothing>();
-            m_componentMount = base.Entity.FindComponent<ComponentMount>();
-            m_componentRider = base.Entity.FindComponent<ComponentRider>();
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemNoise = Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>();
+            m_componentLevel = Entity.FindComponent<ComponentLevel>();
+            m_componentClothing = Entity.FindComponent<ComponentClothing>();
+            m_componentMount = Entity.FindComponent<ComponentMount>();
+            m_componentRider = Entity.FindComponent<ComponentRider>();
             IsCreativeFlyEnabled = valuesDictionary.GetValue<bool>("IsCreativeFlyEnabled");
             AccelerationFactor = valuesDictionary.GetValue<float>("AccelerationFactor");
             WalkSpeed = valuesDictionary.GetValue<float>("WalkSpeed");
@@ -462,7 +462,7 @@ namespace Game
             m_minFrictionFactor = valuesDictionary.GetValue<float>("MinFrictionFactor");
             m_lookAutoLevelX = valuesDictionary.GetValue<bool>("LookAutoLevelX");
             m_lookAutoLevelY = valuesDictionary.GetValue<bool>("LookAutoLevelY");
-            if (base.Entity.FindComponent<ComponentPlayer>() == null)
+            if (Entity.FindComponent<ComponentPlayer>() == null)
             {
                 WalkSpeed *= m_random.Float(0.85f, 1f);
                 FlySpeed *= m_random.Float(0.85f, 1f);
@@ -482,12 +482,12 @@ namespace Game
             m_componentCreature.ComponentBody.IsWaterDragEnabled = true;
             Vector3 velocity = m_componentCreature.ComponentBody.Velocity;
             Vector3 right = m_componentCreature.ComponentBody.Matrix.Right;
-            Vector3 vector = Vector3.Transform(m_componentCreature.ComponentBody.Matrix.Forward, Quaternion.CreateFromAxisAngle(right, LookAngles.Y));
+            var vector = Vector3.Transform(m_componentCreature.ComponentBody.Matrix.Forward, Quaternion.CreateFromAxisAngle(right, LookAngles.Y));
             if (WalkSpeed > 0f && WalkOrder.HasValue)
             {
                 if (IsCreativeFlyEnabled||IsCreativeFlyEnabledSet)
                 {
-                    Vector3 v = new Vector3(WalkOrder.Value.X, 0f, WalkOrder.Value.Y);
+                    var v = new Vector3(WalkOrder.Value.X, 0f, WalkOrder.Value.Y);
                     if (FlyOrder.HasValue)
                     {
                         v += FlyOrder.Value;

@@ -91,8 +91,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemBlocksTexture = base.Project.FindSubsystem<SubsystemBlocksTexture>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemBlocksTexture = Project.FindSubsystem<SubsystemBlocksTexture>(throwOnError: true);
             Display.DeviceReset += Display_DeviceReset;
         }
 
@@ -113,7 +113,7 @@ namespace Game
             int num = BlocksManager.Blocks[18].DefaultTextureSlot % 16;
             int num2 = BlocksManager.Blocks[18].DefaultTextureSlot / 16;
             double num3 = 1.0 * m_subsystemTime.GameTime;
-            double num4 = 1.0 * (m_subsystemTime.GameTime - (double)m_subsystemTime.GameTimeDelta);
+            double num4 = 1.0 * (m_subsystemTime.GameTime - m_subsystemTime.GameTimeDelta);
             float num5 = MathUtils.Min((float)MathUtils.Remainder(num3, 2.0), 1f);
             float num6 = MathUtils.Min((float)MathUtils.Remainder(num3 + 1.0, 2.0), 1f);
             byte b = (byte)(255f * num5);
@@ -134,10 +134,10 @@ namespace Game
             Color color2 = m_waterOrder ? new Color(b2, b2, b2, b2) : new Color(b, b, b, b);
             float num7 = MathUtils.Floor((float)MathUtils.Remainder(1.75 * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
             float num8 = 0f - num7 + 1f;
-            float num9 = MathUtils.Floor((float)MathUtils.Remainder((double)(1.75f / MathUtils.Sqrt(2f)) * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
+            float num9 = MathUtils.Floor((float)MathUtils.Remainder(1.75f / MathUtils.Sqrt(2f) * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
             float num10 = 0f - num9 + 1f;
-            Vector2 tc = new Vector2(0f, 0f);
-            Vector2 tc2 = new Vector2(1f, 1f);
+            var tc = new Vector2(0f, 0f);
+            var tc2 = new Vector2(1f, 1f);
             DrawBlocksTextureSlot(batch, num, num2, tc, tc2, tcOffset, color);
             DrawBlocksTextureSlot(batch, num, num2, tc, tc2, tcOffset2, color2);
             tc = new Vector2(num7, 0f);
@@ -180,7 +180,7 @@ namespace Game
             int num = BlocksManager.Blocks[92].DefaultTextureSlot % 16;
             int num2 = BlocksManager.Blocks[92].DefaultTextureSlot / 16;
             double num3 = 0.5 * m_subsystemTime.GameTime;
-            double num4 = 0.5 * (m_subsystemTime.GameTime - (double)m_subsystemTime.GameTimeDelta);
+            double num4 = 0.5 * (m_subsystemTime.GameTime - m_subsystemTime.GameTimeDelta);
             float num5 = MathUtils.Min((float)MathUtils.Remainder(num3, 2.0), 1f);
             float num6 = MathUtils.Min((float)MathUtils.Remainder(num3 + 1.0, 2.0), 1f);
             byte b = (byte)(255f * num5);
@@ -201,10 +201,10 @@ namespace Game
             Color color2 = m_magmaOrder ? new Color(b2, b2, b2, b2) : new Color(b, b, b, b);
             float num7 = MathUtils.Floor((float)MathUtils.Remainder(0.40000000596046448 * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
             float num8 = 0f - num7 + 1f;
-            float num9 = MathUtils.Floor((float)MathUtils.Remainder((double)(0.4f / MathUtils.Sqrt(2f)) * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
+            float num9 = MathUtils.Floor((float)MathUtils.Remainder(0.4f / MathUtils.Sqrt(2f) * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
             float num10 = 0f - num9 + 1f;
-            Vector2 tc = new Vector2(0f, 0f);
-            Vector2 tc2 = new Vector2(1f, 1f);
+            var tc = new Vector2(0f, 0f);
+            var tc2 = new Vector2(1f, 1f);
             DrawBlocksTextureSlot(batch, num, num2, tc, tc2, tcOffset, color);
             DrawBlocksTextureSlot(batch, num, num2, tc, tc2, tcOffset2, color2);
             tc = new Vector2(num7, 0f);
@@ -256,15 +256,15 @@ namespace Game
             m_screenSpaceFireRenderer.ParticleAnimationPeriod = 3f;
             m_screenSpaceFireRenderer.Origin = new Vector2(num2, num3 + 3) * num + new Vector2(0f, 0.5f * m_screenSpaceFireRenderer.ParticleSize);
             m_screenSpaceFireRenderer.Width = num;
-            m_screenSpaceFireRenderer.CutoffPosition = (float)num3 * num;
+            m_screenSpaceFireRenderer.CutoffPosition = num3 * num;
             m_screenSpaceFireRenderer.Update(dt);
             m_screenSpaceFireRenderer.Draw(m_primitivesRenderer, 0f, Matrix.Identity, Color.White);
-            return new Rectangle((int)((float)num2 * num), (int)((float)num3 * num), (int)num, (int)(num * 3f));
+            return new Rectangle((int)(num2 * num), (int)(num3 * num), (int)num, (int)(num * 3f));
         }
 
         public void DrawBlocksTextureSlot(TexturedBatch2D batch, int slotX, int slotY, Vector2 tc1, Vector2 tc2, Vector2 tcOffset, Color color)
         {
-            float s = (float)m_animatedBlocksTexture.Width / 16f;
+            float s = m_animatedBlocksTexture.Width / 16f;
             batch.QueueQuad(new Vector2(slotX, slotY) * s, new Vector2(slotX + 1, slotY + 1) * s, 0f, (tc1 + tcOffset) / 16f, (tc2 + tcOffset) / 16f, color);
         }
     }

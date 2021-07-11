@@ -32,7 +32,7 @@ namespace Game
             {
                 for (int j = 0; j < m_inventoryGrid.ColumnsCount; j++)
                 {
-                    InventorySlotWidget widget = new InventorySlotWidget();
+                    var widget = new InventorySlotWidget();
                     m_inventoryGrid.Children.Add(widget);
                     m_inventoryGrid.SetWidgetCell(widget, new Point2(j, i));
                 }
@@ -60,17 +60,13 @@ namespace Game
                 {
                     m_instructionsLabel.Text = LanguageControl.Get(fName, 0);
                 }
-                else if (!arrowType.HasValue)
-                {
-                    m_instructionsLabel.Text = LanguageControl.Get(fName, 1);
-                }
                 else
                 {
-                    m_instructionsLabel.Text = LanguageControl.Get(fName, 2);
+                    m_instructionsLabel.Text = !arrowType.HasValue ? LanguageControl.Get(fName, 1) : LanguageControl.Get(fName, 2);
                 }
-                if ((draw < 15 || !arrowType.HasValue) && base.Input.Tap.HasValue && HitTestGlobal(base.Input.Tap.Value) == m_inventorySlotWidget)
+                if ((draw < 15 || !arrowType.HasValue) && Input.Tap.HasValue && HitTestGlobal(Input.Tap.Value) == m_inventorySlotWidget)
                 {
-                    Vector2 vector = m_inventorySlotWidget.ScreenToWidget(base.Input.Press.Value);
+                    Vector2 vector = m_inventorySlotWidget.ScreenToWidget(Input.Press.Value);
                     float num2 = vector.Y - DrawToPosition(draw);
                     if (MathUtils.Abs(vector.X - m_inventorySlotWidget.ActualSize.X / 2f) < 25f && MathUtils.Abs(num2) < 25f)
                     {
@@ -81,9 +77,9 @@ namespace Game
                 {
                     return;
                 }
-                if (base.Input.Press.HasValue)
+                if (Input.Press.HasValue)
                 {
-                    int num3 = PositionToDraw(m_inventorySlotWidget.ScreenToWidget(base.Input.Press.Value).Y - m_dragStartOffset.Value);
+                    int num3 = PositionToDraw(m_inventorySlotWidget.ScreenToWidget(Input.Press.Value).Y - m_dragStartOffset.Value);
                     SetDraw(num3);
                     if (draw <= 9 && num3 > 9)
                     {
@@ -99,12 +95,12 @@ namespace Game
                         return;
                     }
                     SetDraw(0);
-                    AudioManager.PlaySound("Audio/CrossbowBoing", MathUtils.Saturate((float)(draw - 3) / 10f), m_random.Float(-0.1f, 0.1f), 0f);
+                    AudioManager.PlaySound("Audio/CrossbowBoing", MathUtils.Saturate((draw - 3) / 10f), m_random.Float(-0.1f, 0.1f), 0f);
                 }
             }
             else
             {
-                base.ParentWidget.Children.Remove(this);
+                ParentWidget.Children.Remove(this);
             }
         }
 
@@ -118,7 +114,7 @@ namespace Game
 
         public static float DrawToPosition(int draw)
         {
-            return (float)draw * 5.4f + 85f;
+            return draw * 5.4f + 85f;
         }
 
         public static int PositionToDraw(float position)

@@ -57,7 +57,7 @@ namespace Game
             bool flag = Keyboard.IsKeyDown(Key.Control);
             Vector3 direction = m_direction;
             Vector3 unitY = Vector3.UnitY;
-            Vector3 vector2 = Vector3.Normalize(Vector3.Cross(direction, unitY));
+            var vector2 = Vector3.Normalize(Vector3.Cross(direction, unitY));
             float num2 = 8f;
             if (num)
             {

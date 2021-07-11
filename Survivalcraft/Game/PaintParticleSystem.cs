@@ -27,7 +27,7 @@ namespace Game
             : base(20)
         {
             m_subsystemTerrain = terrain;
-            base.Texture = terrain.Project.FindSubsystem<SubsystemBlocksTexture>(throwOnError: true).BlocksTexture;
+            Texture = terrain.Project.FindSubsystem<SubsystemBlocksTexture>(throwOnError: true).BlocksTexture;
             int num = Terrain.ToCell(position.X);
             int num2 = Terrain.ToCell(position.Y);
             int num3 = Terrain.ToCell(position.Z);
@@ -38,17 +38,17 @@ namespace Game
             x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2 - 1, num3));
             x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 + 1));
             x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 - 1));
-            base.TextureSlotsCount = 16;
+            TextureSlotsCount = 16;
             float s = LightingManager.LightIntensityByLightValue[x];
             m_color = color * s;
             m_color.A = color.A;
-            Vector3 vector = Vector3.Normalize(Vector3.Cross(normal, new Vector3(0.37f, 0.15f, 0.17f)));
-            Vector3 v = Vector3.Normalize(Vector3.Cross(normal, vector));
-            for (int i = 0; i < base.Particles.Length; i++)
+            var vector = Vector3.Normalize(Vector3.Cross(normal, new Vector3(0.37f, 0.15f, 0.17f)));
+            var v = Vector3.Normalize(Vector3.Cross(normal, vector));
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle obj = base.Particles[i];
+                Particle obj = Particles[i];
                 obj.IsActive = true;
-                Vector2 vector2 = new Vector2(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
+                var vector2 = new Vector2(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
                 obj.Position = position + 0.4f * (vector2.X * vector + vector2.Y * v) + 0.03f * normal;
                 obj.Color = m_color;
                 obj.Size = new Vector2(m_random.Float(0.025f, 0.035f));
@@ -65,9 +65,9 @@ namespace Game
             float num = MathUtils.Pow(0.2f, dt);
             float num2 = MathUtils.Pow(1E-07f, dt);
             bool flag = false;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (!particle.IsActive)
                 {
                     continue;

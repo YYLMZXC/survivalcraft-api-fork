@@ -27,7 +27,7 @@ namespace Game
             m_handler = handler;
             XElement node = ContentManager.Get<XElement>("Dialogs/MessageDialog");
             LoadContents(this, node);
-            base.Size = new Vector2((size.X >= 0f) ? size.X : base.Size.X, (size.Y >= 0f) ? size.Y : base.Size.Y);
+            Size = new Vector2((size.X >= 0f) ? size.X : Size.X, (size.Y >= 0f) ? size.Y : Size.Y);
             m_largeLabelWidget = Children.Find<LabelWidget>("MessageDialog.LargeLabel");
             m_smallLabelWidget = Children.Find<LabelWidget>("MessageDialog.SmallLabel");
             m_button1Widget = Children.Find<ButtonWidget>("MessageDialog.Button1");
@@ -54,7 +54,7 @@ namespace Game
 
         public override void Update()
         {
-            if (base.Input.Cancel)
+            if (Input.Cancel)
             {
                 if (m_button2Widget.IsVisible)
                 {
@@ -65,7 +65,7 @@ namespace Game
                     Dismiss(MessageDialogButton.Button1);
                 }
             }
-            else if (base.Input.Ok || m_button1Widget.IsClicked)
+            else if (Input.Ok || m_button1Widget.IsClicked)
             {
                 Dismiss(MessageDialogButton.Button1);
             }
@@ -81,10 +81,7 @@ namespace Game
             {
                 DialogsManager.HideDialog(this);
             }
-            if (m_handler != null)
-            {
-                m_handler(button);
-            }
+            m_handler?.Invoke(button);
         }
     }
 }

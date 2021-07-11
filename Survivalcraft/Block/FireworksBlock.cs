@@ -69,8 +69,8 @@ namespace Game
             }
             for (int j = 0; j < 2; j++)
             {
-                float num3 = 0.5f + (float)j * 0.5f;
-                Matrix m = Matrix.CreateScale(new Vector3(num3, 1f, num3));
+                float num3 = 0.5f + j * 0.5f;
+                var m = Matrix.CreateScale(new Vector3(num3, 1f, num3));
                 m_bodyBlockMeshes[j] = new BlockMesh();
                 m_bodyBlockMeshes[j].AppendModelMeshPart(model.FindMesh("Body").MeshParts[0], boneAbsoluteTransform * m * Matrix.CreateTranslation(0f, -0.25f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             }
@@ -144,7 +144,7 @@ namespace Game
                     {
                         for (int color = 0; color < 8; color = num)
                         {
-                            CraftingRecipe craftingRecipe = new CraftingRecipe
+                            var craftingRecipe = new CraftingRecipe
                             {
                                 ResultCount = 20,
                                 ResultValue = Terrain.MakeBlockValue(215, 0, SetColor(SetAltitude(SetShape(SetFlickering(0, flickering != 0), (Shape)shape), altitude), color)),

@@ -35,14 +35,14 @@ namespace Game
 
         public bool RetractExtendSpikes(int x, int y, int z, bool extend)
         {
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractContents(cellValue);
             if (BlocksManager.Blocks[num] is SpikedPlankBlock)
             {
                 int data = SpikedPlankBlock.SetSpikesState(Terrain.ExtractData(cellValue), extend);
                 int value = Terrain.ReplaceData(cellValue, data);
-                base.SubsystemTerrain.ChangeCell(x, y, z, value);
-                Vector3 vector = new Vector3(x, y, z);
+                SubsystemTerrain.ChangeCell(x, y, z, value);
+                var vector = new Vector3(x, y, z);
                 float num2 = m_subsystemAudio.CalculateListenerDistance(vector);
                 if (!m_closestSoundToPlay.HasValue || num2 < m_subsystemAudio.CalculateListenerDistance(m_closestSoundToPlay.Value))
                 {
@@ -55,7 +55,7 @@ namespace Game
 
         public override void OnCollide(CellFace cellFace, float velocity, ComponentBody componentBody)
         {
-            int data = Terrain.ExtractData(base.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
+            int data = Terrain.ExtractData(SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
             if (!SpikedPlankBlock.GetSpikesState(data))
             {
                 return;
@@ -80,8 +80,8 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
         }
 
         public override void OnEntityRemoved(Entity entity)

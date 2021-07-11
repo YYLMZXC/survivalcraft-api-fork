@@ -46,9 +46,9 @@ namespace Game
                                        select e)
             {
                 XmlUtils.SetAttributeValue(item3, "Name", "Players");
-                XElement xElement2 = new XElement("Values");
+                var xElement2 = new XElement("Values");
                 xElement2.SetAttributeValue("Name", "Players");
-                XElement xElement3 = new XElement("Values");
+                var xElement3 = new XElement("Values");
                 xElement3.SetAttributeValue("Name", "1");
                 xElement2.Add(xElement3);
                 XElement[] array = item3.Elements().ToArray();
@@ -70,7 +70,7 @@ namespace Game
                                       select e).FirstOrDefault();
                 if (xElement5 != null)
                 {
-                    XElement xElement6 = new XElement("Values");
+                    var xElement6 = new XElement("Values");
                     XmlUtils.SetAttributeValue(xElement6, "Name", "Stats");
                     item4.Add(xElement6);
                     XmlUtils.SetAttributeValue(xElement5, "Name", "1");

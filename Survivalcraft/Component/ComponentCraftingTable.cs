@@ -118,7 +118,7 @@ namespace Game
             }
             ComponentPlayer componentPlayer = FindInteractingPlayer();
             float playerLevel = componentPlayer?.PlayerData.Level ?? 1f;
-            CraftingRecipe craftingRecipe = CraftingRecipesManager.FindMatchingRecipe(base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true), m_matchedIngredients, 0f, playerLevel);
+            CraftingRecipe craftingRecipe = CraftingRecipesManager.FindMatchingRecipe(Project.FindSubsystem<SubsystemTerrain>(throwOnError: true), m_matchedIngredients, 0f, playerLevel);
             if (craftingRecipe != null && craftingRecipe.ResultValue != 0)
             {
                 m_matchedRecipe = craftingRecipe;

@@ -141,25 +141,25 @@ namespace Game
             }
             if (m_strengthLink.IsClicked)
             {
-                List<ComponentLevel.Factor> factors = new List<ComponentLevel.Factor>();
+                var factors = new List<ComponentLevel.Factor>();
                 float total = m_componentPlayer.ComponentLevel.CalculateStrengthFactor(factors);
                 DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(fName, "Strength"), LanguageControl.GetContentWidgets(fName, 16), factors, total));
             }
             if (m_resilienceLink.IsClicked)
             {
-                List<ComponentLevel.Factor> factors2 = new List<ComponentLevel.Factor>();
+                var factors2 = new List<ComponentLevel.Factor>();
                 float total2 = m_componentPlayer.ComponentLevel.CalculateResilienceFactor(factors2);
                 DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(fName, "Resilience"), LanguageControl.GetContentWidgets(fName, 17), factors2, total2));
             }
             if (m_speedLink.IsClicked)
             {
-                List<ComponentLevel.Factor> factors3 = new List<ComponentLevel.Factor>();
+                var factors3 = new List<ComponentLevel.Factor>();
                 float total3 = m_componentPlayer.ComponentLevel.CalculateSpeedFactor(factors3);
                 DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(fName, "Speed"), LanguageControl.GetContentWidgets(fName, 18), factors3, total3));
             }
             if (m_hungerLink.IsClicked)
             {
-                List<ComponentLevel.Factor> factors4 = new List<ComponentLevel.Factor>();
+                var factors4 = new List<ComponentLevel.Factor>();
                 float total4 = m_componentPlayer.ComponentLevel.CalculateHungerFactor(factors4);
                 DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(fName, "Hunger"), LanguageControl.GetContentWidgets(fName, 19), factors4, total4));
             }

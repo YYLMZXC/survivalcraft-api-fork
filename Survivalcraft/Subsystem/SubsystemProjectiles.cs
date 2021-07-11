@@ -68,7 +68,7 @@ namespace Game
 
         public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
         {
-            Projectile projectile = new Projectile();
+            var projectile = new Projectile();
             projectile.Value = value;
             projectile.Position = position;
             projectile.Velocity = velocity;
@@ -94,11 +94,11 @@ namespace Game
         {
             int num = Terrain.ExtractContents(value);
             Block block = BlocksManager.Blocks[num];
-            Vector3 v = Vector3.Normalize(velocity);
+            var v = Vector3.Normalize(velocity);
             Vector3 vector = position;
             if (owner != null)
             {
-                Ray3 ray = new Ray3(position + v * 5f, -v);
+                var ray = new Ray3(position + v * 5f, -v);
                 BoundingBox boundingBox = owner.ComponentBody.BoundingBox;
                 boundingBox.Min -= new Vector3(0.4f);
                 boundingBox.Max += new Vector3(0.4f);
@@ -292,7 +292,7 @@ namespace Game
                             }
                             if (block.IsStickable_(projectile.Value) && num2 > 10f && m_random.Bool(block2.ProjectileStickProbability))
                             {
-                                Vector3 v3 = Vector3.Normalize(projectile.Velocity);
+                                var v3 = Vector3.Normalize(projectile.Velocity);
                                 float s = MathUtils.Lerp(0.1f, 0.2f, MathUtils.Saturate((num2 - 15f) / 20f));
                                 vector2 = position + terrainRaycastResult.Value.Distance * Vector3.Normalize(projectile.Velocity) + v3 * s;
                             }
@@ -401,7 +401,7 @@ namespace Game
                             projectile.ToRemove = true;
                             m_subsystemExplosions.TryExplodeBlock(Terrain.ToCell(projectile.Position.X), Terrain.ToCell(projectile.Position.Y), Terrain.ToCell(projectile.Position.Z), projectile.Value);
                         }
-                        if (m_subsystemTime.PeriodicGameTimeEvent(1.0, (double)(projectile.GetHashCode() % 100) / 100.0) && (m_subsystemFireBlockBehavior.IsCellOnFire(Terrain.ToCell(projectile.Position.X), Terrain.ToCell(projectile.Position.Y + 0.1f), Terrain.ToCell(projectile.Position.Z)) || m_subsystemFireBlockBehavior.IsCellOnFire(Terrain.ToCell(projectile.Position.X), Terrain.ToCell(projectile.Position.Y + 0.1f) - 1, Terrain.ToCell(projectile.Position.Z))))
+                        if (m_subsystemTime.PeriodicGameTimeEvent(1.0, projectile.GetHashCode() % 100 / 100.0) && (m_subsystemFireBlockBehavior.IsCellOnFire(Terrain.ToCell(projectile.Position.X), Terrain.ToCell(projectile.Position.Y + 0.1f), Terrain.ToCell(projectile.Position.Z)) || m_subsystemFireBlockBehavior.IsCellOnFire(Terrain.ToCell(projectile.Position.X), Terrain.ToCell(projectile.Position.Y + 0.1f) - 1, Terrain.ToCell(projectile.Position.Z))))
                         {
                             m_subsystemAudio.PlayRandomSound("Audio/Sizzles", 1f, m_random.Float(-0.2f, 0.2f), projectile.Position, 3f, autoDelay: true);
                             projectile.ToRemove = true;
@@ -428,23 +428,23 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemSoundMaterials = base.Project.FindSubsystem<SubsystemSoundMaterials>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemPickables = base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemNoise = base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
-            m_subsystemExplosions = base.Project.FindSubsystem<SubsystemExplosions>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
-            m_subsystemFluidBlockBehavior = base.Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
-            m_subsystemFireBlockBehavior = base.Project.FindSubsystem<SubsystemFireBlockBehavior>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemSoundMaterials = Project.FindSubsystem<SubsystemSoundMaterials>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemNoise = Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
+            m_subsystemExplosions = Project.FindSubsystem<SubsystemExplosions>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
+            m_subsystemFluidBlockBehavior = Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
+            m_subsystemFireBlockBehavior = Project.FindSubsystem<SubsystemFireBlockBehavior>(throwOnError: true);
             foreach (ValuesDictionary item in valuesDictionary.GetValue<ValuesDictionary>("Projectiles").Values.Where((object v) => v is ValuesDictionary))
             {
-                Projectile projectile = new Projectile();
+                var projectile = new Projectile();
                 projectile.Value = item.GetValue<int>("Value");
                 projectile.Position = item.GetValue<Vector3>("Position");
                 projectile.Velocity = item.GetValue<Vector3>("Velocity");
@@ -455,12 +455,12 @@ namespace Game
 
         public override void Save(ValuesDictionary valuesDictionary)
         {
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Projectiles", valuesDictionary2);
             int num = 0;
             foreach (Projectile projectile in m_projectiles)
             {
-                ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+                var valuesDictionary3 = new ValuesDictionary();
                 valuesDictionary2.SetValue(num.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
                 valuesDictionary3.SetValue("Value", projectile.Value);
                 valuesDictionary3.SetValue("Position", projectile.Position);

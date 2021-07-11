@@ -599,25 +599,25 @@ namespace Game
 
         public static float Dot(int[] g, float x, float y)
         {
-            return (float)g[0] * x + (float)g[1] * y;
+            return g[0] * x + g[1] * y;
         }
 
         public static float Dot(int[] g, float x, float y, float z)
         {
-            return (float)g[0] * x + (float)g[1] * y + (float)g[2] * z;
+            return g[0] * x + g[1] * y + g[2] * z;
         }
 
         public static float Hash(int x)
         {
             x = ((x << 13) ^ x);
-            return (float)((x * (x * x * 15731 + 789221) + 1376312589) & 0x7FFFFFFF) / 2.14748365E+09f;
+            return ((x * (x * x * 15731 + 789221) + 1376312589) & 0x7FFFFFFF) / 2.14748365E+09f;
         }
 
         public static float Noise(float x)
         {
             int num = (int)MathUtils.Floor(x);
             int x2 = (int)MathUtils.Ceiling(x);
-            float num2 = x - (float)num;
+            float num2 = x - num;
             float num3 = Hash(num);
             float num4 = Hash(x2);
             return num3 + num2 * num2 * (3f - 2f * num2) * (num4 - num3);
@@ -628,9 +628,9 @@ namespace Game
             float num = (x + y) * 0.366025418f;
             int num2 = (int)MathUtils.Floor(x + num);
             int num3 = (int)MathUtils.Floor(y + num);
-            float num4 = (float)(num2 + num3) * 0.211324871f;
-            float num5 = (float)num2 - num4;
-            float num6 = (float)num3 - num4;
+            float num4 = (num2 + num3) * 0.211324871f;
+            float num5 = num2 - num4;
+            float num6 = num3 - num4;
             float num7 = x - num5;
             float num8 = y - num6;
             int num9;
@@ -645,8 +645,8 @@ namespace Game
                 num9 = 0;
                 num10 = 1;
             }
-            float num11 = num7 - (float)num9 + 0.211324871f;
-            float num12 = num8 - (float)num10 + 0.211324871f;
+            float num11 = num7 - num9 + 0.211324871f;
+            float num12 = num8 - num10 + 0.211324871f;
             float num13 = num7 - 1f + 0.422649741f;
             float num14 = num8 - 1f + 0.422649741f;
             int num15 = num2 & 0xFF;
@@ -696,10 +696,10 @@ namespace Game
             int num2 = (int)MathUtils.Floor(x + num);
             int num3 = (int)MathUtils.Floor(y + num);
             int num4 = (int)MathUtils.Floor(z + num);
-            float num5 = (float)(num2 + num3 + num4) * (355f / (678f * (float)Math.PI));
-            float num6 = (float)num2 - num5;
-            float num7 = (float)num3 - num5;
-            float num8 = (float)num4 - num5;
+            float num5 = (num2 + num3 + num4) * (355f / (678f * (float)Math.PI));
+            float num6 = num2 - num5;
+            float num7 = num3 - num5;
+            float num8 = num4 - num5;
             float num9 = x - num6;
             float num10 = y - num7;
             float num11 = z - num8;
@@ -766,12 +766,12 @@ namespace Game
                 num16 = 1;
                 num17 = 0;
             }
-            float num18 = num9 - (float)num12 + 355f / (678f * (float)Math.PI);
-            float num19 = num10 - (float)num13 + 355f / (678f * (float)Math.PI);
-            float num20 = num11 - (float)num14 + 355f / (678f * (float)Math.PI);
-            float num21 = num9 - (float)num15 + 0.333333343f;
-            float num22 = num10 - (float)num16 + 0.333333343f;
-            float num23 = num11 - (float)num17 + 0.333333343f;
+            float num18 = num9 - num12 + 355f / (678f * (float)Math.PI);
+            float num19 = num10 - num13 + 355f / (678f * (float)Math.PI);
+            float num20 = num11 - num14 + 355f / (678f * (float)Math.PI);
+            float num21 = num9 - num15 + 0.333333343f;
+            float num22 = num10 - num16 + 0.333333343f;
+            float num23 = num11 - num17 + 0.333333343f;
             float num24 = num9 - 1f + 0.5f;
             float num25 = num10 - 1f + 0.5f;
             float num26 = num11 - 1f + 0.5f;

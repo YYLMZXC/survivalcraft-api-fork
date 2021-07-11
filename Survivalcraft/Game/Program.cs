@@ -104,14 +104,7 @@ namespace Game
             m_frameBeginTime = Time.RealTime;
             if (Engine.Input.Keyboard.IsKeyDown(Engine.Input.Key.F11))
             {
-                if (SettingsManager.WindowMode == Engine.WindowMode.Fullscreen)
-                {
-                    SettingsManager.WindowMode = Engine.WindowMode.Resizable;
-                }
-                else
-                {
-                    SettingsManager.WindowMode = Engine.WindowMode.Fullscreen;
-                }
+                SettingsManager.WindowMode = SettingsManager.WindowMode == WindowMode.Fullscreen ? WindowMode.Resizable : WindowMode.Fullscreen;
             }            
             try
             {
@@ -121,7 +114,7 @@ namespace Game
                     {
                         Uri obj = m_urisToHandle[0];
                         m_urisToHandle.RemoveAt(0);
-                        Program.HandleUri?.Invoke(obj);
+                        HandleUri?.Invoke(obj);
                     }
                     PerformanceManager.Update();
                     MotdManager.Update();

@@ -41,7 +41,7 @@ namespace Game
                 case AimState.Completed:
                     {
                         Vector3 vector = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.4f;
-                        Vector3 v = Vector3.Normalize(vector + aim.Direction * 10f - vector);
+                        var v = Vector3.Normalize(vector + aim.Direction * 10f - vector);
                         if (componentMiner.Inventory == null)
                         {
                             break;
@@ -73,8 +73,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemProjectiles = base.Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
             base.Load(valuesDictionary);
         }
     }

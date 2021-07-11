@@ -43,18 +43,18 @@ namespace Game
             if (m_subsystemTime.GameTime >= m_nextUpdateTime)
             {
                 m_dt = m_random.Float(0.4f, 0.6f) + MathUtils.Min((float)(m_subsystemTime.GameTime - m_nextUpdateTime), 0.1f);
-                m_nextUpdateTime = m_subsystemTime.GameTime + (double)m_dt;
+                m_nextUpdateTime = m_subsystemTime.GameTime + m_dt;
                 m_stateMachine.Update();
             }
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_dayRange = valuesDictionary.GetValue<float>("DayRange");
             m_nightRange = valuesDictionary.GetValue<float>("NightRange");
             m_stateMachine.AddState("Inactive", delegate
@@ -92,7 +92,7 @@ namespace Game
                 {
                     float num = ScoreTarget(m_target);
                     SetImportanceLevel(num);
-                    Vector3 vector = Vector3.Normalize(m_componentCreature.ComponentBody.Position - m_target.ComponentBody.Position);
+                    var vector = Vector3.Normalize(m_componentCreature.ComponentBody.Position - m_target.ComponentBody.Position);
                     Vector3 value = m_componentCreature.ComponentBody.Position + 10f * Vector3.Normalize(new Vector3(vector.X, 0f, vector.Z));
                     m_componentPathfinding.SetDestination(value, MathUtils.Lerp(0.6f, 1f, num), 1f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
                     m_componentCreature.ComponentCreatureModel.LookRandomOrder = true;

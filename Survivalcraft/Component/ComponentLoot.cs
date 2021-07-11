@@ -38,7 +38,7 @@ namespace Game
 
         public static List<Loot> ParseLootList(ValuesDictionary lootVd)
         {
-            List<Loot> list = new List<Loot>();
+            var list = new List<Loot>();
             foreach (string value in lootVd.Values)
             {
                 list.Add(ParseLoot(value));
@@ -49,7 +49,7 @@ namespace Game
 
         public void Update(float dt)
         {
-            if (!m_lootDropped && m_componentCreature.ComponentHealth.DeathTime.HasValue && m_subsystemGameInfo.TotalElapsedGameTime >= m_componentCreature.ComponentHealth.DeathTime.Value + (double)m_componentCreature.ComponentHealth.CorpseDuration)
+            if (!m_lootDropped && m_componentCreature.ComponentHealth.DeathTime.HasValue && m_subsystemGameInfo.TotalElapsedGameTime >= m_componentCreature.ComponentHealth.DeathTime.Value + m_componentCreature.ComponentHealth.CorpseDuration)
             {
                 bool num = m_componentCreature.Entity.FindComponent<ComponentOnFire>()?.IsOnFire ?? false;
                 m_lootDropped = true;
@@ -70,9 +70,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemPickables = base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
             m_lootDropped = valuesDictionary.GetValue<bool>("LootDropped");
             m_lootList = ParseLootList(valuesDictionary.GetValue<ValuesDictionary>("Loot"));
             m_lootOnFireList = ParseLootList(valuesDictionary.GetValue<ValuesDictionary>("LootOnFire"));
@@ -89,7 +89,7 @@ namespace Game
             if (array.Length >= 3)
             {
                 int v = CraftingRecipesManager.DecodeResult(array[0]);
-                Loot result = default(Loot);
+                Loot result = default;
                 result.Value = v;
                 result.MinCount = int.Parse(array[1], CultureInfo.InvariantCulture);
                 result.MaxCount = int.Parse(array[2], CultureInfo.InvariantCulture);

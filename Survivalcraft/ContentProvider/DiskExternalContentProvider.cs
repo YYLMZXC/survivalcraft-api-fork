@@ -40,7 +40,7 @@ namespace Game
                 return;
             }
             else fileStream = File.OpenRead(path);
-            Exception e = default(Exception);
+            Exception e = default;
             ThreadPool.QueueUserWorkItem(delegate
             {
                 try
@@ -61,8 +61,8 @@ namespace Game
 
         public void List(string path, CancellableProgress progress, Action<ExternalContentEntry> success, Action<Exception> failure)
         {
-            ExternalContentEntry entry = default(ExternalContentEntry);
-            Exception e = default(Exception);
+            ExternalContentEntry entry = default;
+            Exception e = default;
             ThreadPool.QueueUserWorkItem(delegate
             {
                 try
@@ -90,13 +90,12 @@ namespace Game
 
         public void Upload(string path, Stream stream, CancellableProgress progress, Action<string> success, Action<Exception> failure)
         {
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            var saveFileDialog1 = new SaveFileDialog();
             try
             {
                 FileStream fileStream = null;
                 string nPath = Path.Combine(LocalPath,path);
-                if (!File.Exists(nPath))fileStream = File.Create(nPath);
-                else fileStream = File.OpenWrite(nPath);
+                fileStream = !File.Exists(nPath) ? File.Create(nPath) : File.OpenWrite(nPath);
                 stream.CopyTo(fileStream);
                 fileStream.Close();
                 success(null);
@@ -108,7 +107,7 @@ namespace Game
         }
         private ExternalContentEntry GetDirectoryEntry(string internalPath, bool scanContents)
         {
-            ExternalContentEntry externalContentEntry = new ExternalContentEntry();
+            var externalContentEntry = new ExternalContentEntry();
             externalContentEntry.Type = ExternalContentType.Directory;
             externalContentEntry.Path = internalPath;
             externalContentEntry.Time = new DateTime(1970, 1, 1);
@@ -122,8 +121,8 @@ namespace Game
                 directories = Directory.GetFiles(internalPath);
                 foreach (string text in directories)
                 {
-                    FileInfo fileInfo = new FileInfo(text);
-                    ExternalContentEntry externalContentEntry2 = new ExternalContentEntry();
+                    var fileInfo = new FileInfo(text);
+                    var externalContentEntry2 = new ExternalContentEntry();
                     externalContentEntry2.Type = ExternalContentManager.ExtensionToType(Path.GetExtension(text));
                     externalContentEntry2.Path = text;
                     externalContentEntry2.Size = fileInfo.Length;

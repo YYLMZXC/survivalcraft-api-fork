@@ -54,7 +54,7 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = true;
+            IsDrawRequired = true;
         }
 
         public override void Draw(DrawContext dc)

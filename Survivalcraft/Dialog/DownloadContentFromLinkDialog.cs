@@ -74,20 +74,20 @@ namespace Game
             }
             if (m_changeTypeButtonWidget.IsClicked)
             {
-                DialogsManager.ShowDialog(base.ParentWidget, new SelectExternalContentTypeDialog("Select Content Type", delegate (ExternalContentType item)
+                DialogsManager.ShowDialog(ParentWidget, new SelectExternalContentTypeDialog("Select Content Type", delegate (ExternalContentType item)
                 {
                     m_type = item;
                     m_updateContentName = true;
                 }));
             }
-            else if (base.Input.Cancel || m_cancelButtonWidget.IsClicked)
+            else if (Input.Cancel || m_cancelButtonWidget.IsClicked)
             {
                 DialogsManager.HideDialog(this);
             }
             else if (m_downloadButtonWidget.IsClicked)
             {
-                CancellableBusyDialog busyDialog = new CancellableBusyDialog("Downloading", autoHideOnCancel: false);
-                DialogsManager.ShowDialog(base.ParentWidget, busyDialog);
+                var busyDialog = new CancellableBusyDialog("Downloading", autoHideOnCancel: false);
+                DialogsManager.ShowDialog(ParentWidget, busyDialog);
                 WebManager.Get(text, null, null, busyDialog.Progress, delegate (byte[] data)
                 {
                     ExternalContentManager.ImportExternalContent(new MemoryStream(data), m_type, name, delegate
@@ -97,12 +97,12 @@ namespace Game
                     }, delegate (Exception error)
                     {
                         DialogsManager.HideDialog(busyDialog);
-                        DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog("Error", error.Message, "OK", null, null));
+                        DialogsManager.ShowDialog(ParentWidget, new MessageDialog("Error", error.Message, "OK", null, null));
                     });
                 }, delegate (Exception error)
                 {
                     DialogsManager.HideDialog(busyDialog);
-                    DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog("Error", error.Message, "OK", null, null));
+                    DialogsManager.ShowDialog(ParentWidget, new MessageDialog("Error", error.Message, "OK", null, null));
                 });
             }
         }

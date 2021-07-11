@@ -38,7 +38,7 @@ namespace Game
             {
                 for (int j = num3; j <= num6; j++)
                 {
-                    TerrainChunk chunkAtCell = base.SubsystemTerrain.Terrain.GetChunkAtCell(i, j);
+                    TerrainChunk chunkAtCell = SubsystemTerrain.Terrain.GetChunkAtCell(i, j);
                     if (chunkAtCell == null)
                     {
                         continue;
@@ -62,7 +62,7 @@ namespace Game
             int num2 = chunk.Origin.Y - 16;
             int num3 = chunk.Origin.X + 32;
             int num4 = chunk.Origin.Y + 32;
-            List<Point3> list = new List<Point3>();
+            var list = new List<Point3>();
             foreach (Point3 item in m_leavesToCheck)
             {
                 if (item.X >= num && item.X < num3 && item.Z >= num2 && item.Z < num4)
@@ -82,7 +82,7 @@ namespace Game
             {
                 return;
             }
-            int num = MathUtils.Min(MathUtils.Max((int)((float)m_leavesToCheck.Count * 0.1f), 10), 200);
+            int num = MathUtils.Min(MathUtils.Max((int)(m_leavesToCheck.Count * 0.1f), 10), 200);
             for (int i = 0; i < num; i++)
             {
                 if (m_leavesToCheck.Count <= 0)
@@ -96,8 +96,8 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
             string value = valuesDictionary.GetValue<string>("LeavesToCheck");
             Point3[] array = HumanReadableConverter.ValuesListFromString<Point3>(';', value);
             foreach (Point3 item in array)
@@ -116,7 +116,7 @@ namespace Game
         public void DecayLeavesIfNeeded(Point3 p)
         {
             m_leavesToCheck.Remove(p);
-            if (!(BlocksManager.Blocks[base.SubsystemTerrain.Terrain.GetCellContents(p.X, p.Y, p.Z)] is LeavesBlock))
+            if (!(BlocksManager.Blocks[SubsystemTerrain.Terrain.GetCellContents(p.X, p.Y, p.Z)] is LeavesBlock))
             {
                 return;
             }
@@ -131,7 +131,7 @@ namespace Game
             {
                 for (int j = num3; j <= num6; j++)
                 {
-                    TerrainChunk chunkAtCell = base.SubsystemTerrain.Terrain.GetChunkAtCell(i, j);
+                    TerrainChunk chunkAtCell = SubsystemTerrain.Terrain.GetChunkAtCell(i, j);
                     if (chunkAtCell == null)
                     {
                         continue;
@@ -156,7 +156,7 @@ namespace Game
             }
             if (!flag)
             {
-                base.SubsystemTerrain.ChangeCell(p.X, p.Y, p.Z, 0);
+                SubsystemTerrain.ChangeCell(p.X, p.Y, p.Z, 0);
             }
         }
     }

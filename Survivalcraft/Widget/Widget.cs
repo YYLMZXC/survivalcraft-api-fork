@@ -61,7 +61,7 @@ namespace Game
                 }
                 if (flag || !widget.ClampToBounds)
                 {
-                    ContainerWidget containerWidget = widget as ContainerWidget;
+                    var containerWidget = widget as ContainerWidget;
                     if (containerWidget != null)
                     {
                         foreach (Widget child in containerWidget.Children)
@@ -532,7 +532,7 @@ namespace Game
             {
                 throw new NotImplementedException("Node property specification not implemented.");
             }
-            Widget widget = Activator.CreateInstance(FindTypeFromXmlName(node.Name.LocalName, node.Name.NamespaceName)) as Widget;
+            var widget = Activator.CreateInstance(FindTypeFromXmlName(node.Name.LocalName, node.Name.NamespaceName)) as Widget;
             if (widget == null)
             {
                 throw new Exception($"Type \"{node.Name.LocalName}\" is not a Widget.");
@@ -612,7 +612,7 @@ namespace Game
         {
             if (node.HasElements)
             {
-                ContainerWidget containerWidget = this as ContainerWidget;
+                var containerWidget = this as ContainerWidget;
                 if (containerWidget == null)
                 {
                     throw new Exception($"Type \"{node.Name.LocalName}\" is not a ContainerWidget, but it contains child widgets.");
@@ -694,25 +694,14 @@ namespace Game
             m_actualSize.X = (num * parentActualSize.X + num3 * parentActualSize.Y) / (num + num3);
             m_actualSize.Y = (num2 * parentActualSize.X + num4 * parentActualSize.Y) / (num2 + num4);
             m_parentOffset = -TransformBoundsToParent(m_actualSize).Min;
-            if (ParentWidget != null)
-            {
-                m_globalColorTransform = ParentWidget.m_globalColorTransform * m_colorTransform;
-            }
-            else
-            {
-                m_globalColorTransform = m_colorTransform;
-            }
+            m_globalColorTransform = ParentWidget != null ? ParentWidget.m_globalColorTransform * m_colorTransform : m_colorTransform;
             if (m_isRenderTransformIdentity)
             {
                 m_globalTransform = m_layoutTransform;
             }
-            else if (m_isLayoutTransformIdentity)
-            {
-                m_globalTransform = m_renderTransform;
-            }
             else
             {
-                m_globalTransform = m_renderTransform * m_layoutTransform;
+                m_globalTransform = m_isLayoutTransformIdentity ? m_renderTransform : m_renderTransform * m_layoutTransform;
             }
             m_globalTransform.M41 += position.X + m_parentOffset.X;
             m_globalTransform.M42 += position.Y + m_parentOffset.Y;
@@ -883,7 +872,7 @@ namespace Game
         {
             if (!string.IsNullOrEmpty(namespaceName))
             {
-                Uri uri = new Uri(namespaceName);
+                var uri = new Uri(namespaceName);
                 if (uri.Scheme == "runtime-namespace")
                 {
                     return TypeCache.FindType(uri.AbsolutePath + "." + name, skipSystemAssemblies: false, throwIfNotFound: true);
@@ -897,7 +886,7 @@ namespace Game
         {
             if (widget != null && widget.IsVisible && (!widget.ClampToBounds || widget.HitTest(point)))
             {
-                ContainerWidget containerWidget = widget as ContainerWidget;
+                var containerWidget = widget as ContainerWidget;
                 if (containerWidget != null)
                 {
                     WidgetsList children = containerWidget.Children;
@@ -929,7 +918,7 @@ namespace Game
                 widget.WidgetsHierarchyInput.Update();
                 isMouseCursorVisible |= widget.WidgetsHierarchyInput.IsMouseCursorVisible;
             }
-            ContainerWidget containerWidget = widget as ContainerWidget;
+            var containerWidget = widget as ContainerWidget;
             if (containerWidget != null)
             {
                 WidgetsList children = containerWidget.Children;

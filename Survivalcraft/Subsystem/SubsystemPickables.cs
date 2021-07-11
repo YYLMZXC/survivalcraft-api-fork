@@ -61,7 +61,7 @@ namespace Game
 
         public virtual Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
         {
-            Pickable pickable = new Pickable();
+            var pickable = new Pickable();
             pickable.Value = value;
             pickable.Count = count;
             pickable.Position = position;
@@ -92,7 +92,7 @@ namespace Game
         {
             double totalElapsedGameTime = m_subsystemGameInfo.TotalElapsedGameTime;
             m_drawBlockEnvironmentData.SubsystemTerrain = m_subsystemTerrain;
-            Matrix matrix = Matrix.CreateRotationY((float)MathUtils.Remainder(totalElapsedGameTime, 6.2831854820251465));
+            var matrix = Matrix.CreateRotationY((float)MathUtils.Remainder(totalElapsedGameTime, 6.2831854820251465));
             float num = MathUtils.Min(m_subsystemSky.VisibilityRange, 30f);
             foreach (Pickable pickable in m_pickables)
             {
@@ -115,7 +115,7 @@ namespace Game
                     {
                         m_drawBlockEnvironmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
                         m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(num5);
-                        float f = MathUtils.Max(position.Y - (float)num5 - 0.75f, 0f) / 0.25f;
+                        float f = MathUtils.Max(position.Y - num5 - 0.75f, 0f) / 0.25f;
                         int num6 = pickable.Light = (int)MathUtils.Lerp(m_subsystemTerrain.Terrain.GetCellLightFast(x, num5, z), m_subsystemTerrain.Terrain.GetCellLightFast(x, num5 + 1, z), f);
                     }
                     m_drawBlockEnvironmentData.Light = pickable.Light;
@@ -159,9 +159,9 @@ namespace Game
                 {
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(pickable.Value)];
                     int num3 = m_pickables.Count - m_pickablesToRemove.Count;
-                    float num4 = MathUtils.Lerp(300f, 90f, MathUtils.Saturate((float)num3 / 60f));
+                    float num4 = MathUtils.Lerp(300f, 90f, MathUtils.Saturate(num3 / 60f));
                     double num5 = totalElapsedGameTime - pickable.CreationTime;
-                    if (num5 > (double)num4)
+                    if (num5 > num4)
                     {
                         pickable.ToRemove = true;
                     }
@@ -225,9 +225,7 @@ namespace Game
                             }
                             else
                             {
-                                FluidBlock surfaceBlock;
-                                float? surfaceHeight;
-                                Vector2? vector2 = m_subsystemFluidBlockBehavior.CalculateFlowSpeed(Terrain.ToCell(pickable.Position.X), Terrain.ToCell(pickable.Position.Y + 0.1f), Terrain.ToCell(pickable.Position.Z), out surfaceBlock, out surfaceHeight);
+                                Vector2? vector2 = m_subsystemFluidBlockBehavior.CalculateFlowSpeed(Terrain.ToCell(pickable.Position.X), Terrain.ToCell(pickable.Position.Y + 0.1f), Terrain.ToCell(pickable.Position.Z), out FluidBlock surfaceBlock, out float? surfaceHeight);
                                 if (!pickable.StuckMatrix.HasValue)
                                 {
                                     TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(position, vector, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
@@ -333,7 +331,7 @@ namespace Game
                                 {
                                     pickable.SplashGenerated = false;
                                 }
-                                if (m_subsystemTime.PeriodicGameTimeEvent(1.0, (double)(pickable.GetHashCode() % 100) / 100.0) && (m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(pickable.Position.X), Terrain.ToCell(pickable.Position.Y + 0.1f), Terrain.ToCell(pickable.Position.Z)) == 104 || m_subsystemFireBlockBehavior.IsCellOnFire(Terrain.ToCell(pickable.Position.X), Terrain.ToCell(pickable.Position.Y + 0.1f), Terrain.ToCell(pickable.Position.Z))))
+                                if (m_subsystemTime.PeriodicGameTimeEvent(1.0, pickable.GetHashCode() % 100 / 100.0) && (m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(pickable.Position.X), Terrain.ToCell(pickable.Position.Y + 0.1f), Terrain.ToCell(pickable.Position.Z)) == 104 || m_subsystemFireBlockBehavior.IsCellOnFire(Terrain.ToCell(pickable.Position.X), Terrain.ToCell(pickable.Position.Y + 0.1f), Terrain.ToCell(pickable.Position.Z))))
                                 {
                                     m_subsystemAudio.PlayRandomSound("Audio/Sizzles", 1f, m_random.Float(-0.2f, 0.2f), pickable.Position, 3f, autoDelay: true);
                                     pickable.ToRemove = true;
@@ -377,20 +375,20 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemPlayers = base.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemExplosions = base.Project.FindSubsystem<SubsystemExplosions>(throwOnError: true);
-            m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
-            m_subsystemFireBlockBehavior = base.Project.FindSubsystem<SubsystemFireBlockBehavior>(throwOnError: true);
-            m_subsystemFluidBlockBehavior = base.Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemExplosions = Project.FindSubsystem<SubsystemExplosions>(throwOnError: true);
+            m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
+            m_subsystemFireBlockBehavior = Project.FindSubsystem<SubsystemFireBlockBehavior>(throwOnError: true);
+            m_subsystemFluidBlockBehavior = Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
             foreach (ValuesDictionary item in valuesDictionary.GetValue<ValuesDictionary>("Pickables").Values.Where((object v) => v is ValuesDictionary))
             {
-                Pickable pickable = new Pickable();
+                var pickable = new Pickable();
                 pickable.Value = item.GetValue<int>("Value");
                 pickable.Count = item.GetValue<int>("Count");
                 pickable.Position = item.GetValue<Vector3>("Position");
@@ -406,12 +404,12 @@ namespace Game
 
         public override void Save(ValuesDictionary valuesDictionary)
         {
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Pickables", valuesDictionary2);
             int num = 0;
             foreach (Pickable pickable in m_pickables)
             {
-                ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+                var valuesDictionary3 = new ValuesDictionary();
                 valuesDictionary2.SetValue(num.ToString(), valuesDictionary3);
                 valuesDictionary3.SetValue("Value", pickable.Value);
                 valuesDictionary3.SetValue("Count", pickable.Count);

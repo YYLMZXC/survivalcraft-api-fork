@@ -33,8 +33,8 @@ namespace Game
         public FireworksTrailParticleSystem()
             : base(60)
         {
-            base.Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
-            base.TextureSlotsCount = 3;
+            Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
+            TextureSlotsCount = 3;
         }
 
         public override bool Simulate(float dt)
@@ -46,9 +46,9 @@ namespace Game
                 m_lastPosition = Position;
             }
             bool flag = false;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (particle.IsActive)
                 {
                     flag = true;

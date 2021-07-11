@@ -40,7 +40,7 @@ namespace Game
                 int num;
                 for (int rot = 0; rot <= 1; rot = num)
                 {
-                    CraftingRecipe craftingRecipe = new CraftingRecipe
+                    var craftingRecipe = new CraftingRecipe
                     {
                         ResultCount = 1,
                         ResultValue = 251,

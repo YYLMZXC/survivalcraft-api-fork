@@ -68,7 +68,7 @@ namespace Game
                     wiredFace = i;
                 }
             }
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetWiredFace(0, wiredFace));
             result.CellFace = raycastResult.CellFace;
             return result;

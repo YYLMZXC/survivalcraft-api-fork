@@ -22,19 +22,19 @@ namespace Game
         public ReadOnlyList<ScannedItemData> ScanItems()
         {
             m_items.Clear();
-            foreach (Subsystem subsystem in base.Project.Subsystems)
+            foreach (Subsystem subsystem in Project.Subsystems)
             {
-                IInventory inventory = subsystem as IInventory;
+                var inventory = subsystem as IInventory;
                 if (inventory != null)
                 {
                     ScanInventory(inventory, m_items);
                 }
             }
-            foreach (Entity entity in base.Project.Entities)
+            foreach (Entity entity in Project.Entities)
             {
                 foreach (Component component in entity.Components)
                 {
-                    IInventory inventory2 = component as IInventory;
+                    var inventory2 = component as IInventory;
                     if (inventory2 != null)
                     {
                         ScanInventory(inventory2, m_items);
@@ -42,7 +42,7 @@ namespace Game
                 }
             }
             ScannedItemData item;
-            foreach (Pickable pickable in base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true).Pickables)
+            foreach (Pickable pickable in Project.FindSubsystem<SubsystemPickables>(throwOnError: true).Pickables)
             {
                 if (pickable.Count > 0 && pickable.Value != 0)
                 {
@@ -56,7 +56,7 @@ namespace Game
                     items.Add(item);
                 }
             }
-            foreach (Projectile projectile in base.Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true).Projectiles)
+            foreach (Projectile projectile in Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true).Projectiles)
             {
                 if (projectile.Value != 0)
                 {
@@ -70,7 +70,7 @@ namespace Game
                     items2.Add(item);
                 }
             }
-            foreach (IMovingBlockSet movingBlockSet in base.Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true).MovingBlockSets)
+            foreach (IMovingBlockSet movingBlockSet in Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true).MovingBlockSets)
             {
                 for (int i = 0; i < movingBlockSet.Blocks.Count; i++)
                 {
@@ -92,7 +92,7 @@ namespace Game
         {
             if (itemData.Container is IInventory)
             {
-                IInventory obj = (IInventory)itemData.Container;
+                var obj = (IInventory)itemData.Container;
                 obj.RemoveSlotItems(itemData.IndexInContainer, itemData.Count);
                 int slotCapacity = obj.GetSlotCapacity(itemData.IndexInContainer, newValue);
                 obj.AddSlotItems(itemData.IndexInContainer, newValue, MathUtils.Min(itemData.Count, slotCapacity));
@@ -105,7 +105,7 @@ namespace Game
             }
             if (itemData.Container is IMovingBlockSet)
             {
-                IMovingBlockSet obj2 = (IMovingBlockSet)itemData.Container;
+                var obj2 = (IMovingBlockSet)itemData.Container;
                 MovingBlock movingBlock = obj2.Blocks.ElementAt(itemData.IndexInContainer);
                 obj2.SetBlock(movingBlock.Offset, newValue);
                 return true;
@@ -118,7 +118,7 @@ namespace Game
             if (Time.FrameStartTime >= m_nextAutomaticScanTime)
             {
                 m_nextAutomaticScanTime = Time.FrameStartTime + 60.0;
-                this.ItemsScanned?.Invoke(ScanItems());
+                ItemsScanned?.Invoke(ScanItems());
             }
         }
 

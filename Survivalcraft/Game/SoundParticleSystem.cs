@@ -25,8 +25,8 @@ namespace Game
         {
             m_position = position;
             m_direction = direction;
-            base.Texture = ContentManager.Get<Texture2D>("Textures/SoundParticle");
-            base.TextureSlotsCount = 2;
+            Texture = ContentManager.Get<Texture2D>("Textures/SoundParticle");
+            TextureSlotsCount = 2;
         }
 
         public void AddNote(Color color)
@@ -35,10 +35,10 @@ namespace Game
             Particle particle;
             while (true)
             {
-                if (num < base.Particles.Length)
+                if (num < Particles.Length)
                 {
-                    particle = base.Particles[num];
-                    if (!base.Particles[num].IsActive)
+                    particle = Particles[num];
+                    if (!Particles[num].IsActive)
                     {
                         break;
                     }
@@ -54,7 +54,7 @@ namespace Game
             particle.TimeToLive = m_random.Float(1f, 1.5f);
             particle.Velocity = 3f * (m_direction + m_random.Vector3(0.5f));
             particle.BaseColor = color;
-            particle.TextureSlot = m_random.Int(0, base.TextureSlotsCount * base.TextureSlotsCount - 1);
+            particle.TextureSlot = m_random.Int(0, TextureSlotsCount * TextureSlotsCount - 1);
             particle.BillboardingMode = ParticleBillboardingMode.Vertical;
         }
 
@@ -63,9 +63,9 @@ namespace Game
             dt = MathUtils.Clamp(dt, 0f, 0.1f);
             float num = MathUtils.Pow(0.02f, dt);
             bool flag = false;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (particle.IsActive)
                 {
                     flag = true;

@@ -49,7 +49,7 @@ namespace Game
                 Type type = types[i];
                 if (type.IsSubclassOf(typeof(ModLoader)) && !type.IsAbstract)
                 {
-                    ModLoader modLoader = Activator.CreateInstance(types[i]) as ModLoader;
+                    var modLoader = Activator.CreateInstance(types[i]) as ModLoader;
                     modLoader.__ModInitialize();
                     ModsManager.ModLoaders.Add(modLoader);
                 }
@@ -63,7 +63,7 @@ namespace Game
                     else
                     {
                         int staticIndex = (int)fieldInfo.GetValue(null);
-                        Block block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
+                        var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
                         block.BlockIndex = staticIndex;
                         Blocks.Add(block);
                     }

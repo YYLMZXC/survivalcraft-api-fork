@@ -20,8 +20,8 @@ namespace Game
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("JackOLantern").ParentBone);
             for (int i = 0; i < 4; i++)
             {
-                float radians = (float)i * (float)Math.PI / 2f;
-                BlockMesh blockMesh = new BlockMesh();
+                float radians = i * (float)Math.PI / 2f;
+                var blockMesh = new BlockMesh();
                 blockMesh.AppendModelMeshPart(model.FindMesh("JackOLantern").MeshParts[0], boneAbsoluteTransform * Matrix.CreateRotationY(radians) * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, new Color(232, 232, 232));
                 blockMesh.AppendModelMeshPart(model.FindMesh("JackOLantern").MeshParts[0], boneAbsoluteTransform * Matrix.CreateRotationY(radians) * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: true, flipWindingOrder: true, doubleSided: false, flipNormals: false, Color.White);
                 m_blockMeshesByData[i] = blockMesh;
@@ -56,7 +56,7 @@ namespace Game
             {
                 data = 3;
             }
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, 132), data);
             result.CellFace = raycastResult.CellFace;
             return result;

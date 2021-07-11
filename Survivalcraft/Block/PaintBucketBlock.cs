@@ -60,7 +60,7 @@ namespace Game
                     int num = CombineColors(color, 1 << additive);
                     if (num != color)
                     {
-                        CraftingRecipe craftingRecipe = new CraftingRecipe
+                        var craftingRecipe = new CraftingRecipe
                         {
                             Description = $"ÖÆ×÷ {SubsystemPalette.GetName(null, num, null)} ÑÕÁÏ",
                             ResultValue = Terrain.MakeBlockValue(129, 0, num),

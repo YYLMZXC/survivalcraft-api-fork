@@ -36,7 +36,7 @@ namespace Game
                         break;
                     }
                     string key = prefix + array2[0];
-                    Rectangle value = new Rectangle
+                    var value = new Rectangle
                     {
                         Left = int.Parse(array2[1], CultureInfo.InvariantCulture),
                         Top = int.Parse(array2[2], CultureInfo.InvariantCulture),
@@ -61,11 +61,11 @@ namespace Game
         {
             if (m_rectangles.TryGetValue(textureName, out Rectangle value))
             {
-                Vector4 value2 = default(Vector4);
-                value2.X = (float)value.Left / (float)m_texture.Width;
-                value2.Y = (float)value.Top / (float)m_texture.Height;
-                value2.Z = (float)value.Right / (float)m_texture.Width;
-                value2.W = (float)value.Bottom / (float)m_texture.Height;
+                Vector4 value2 = default;
+                value2.X = value.Left / (float)m_texture.Width;
+                value2.Y = value.Top / (float)m_texture.Height;
+                value2.Z = value.Right / (float)m_texture.Width;
+                value2.W = value.Bottom / (float)m_texture.Height;
                 return value2;
             }
             return null;

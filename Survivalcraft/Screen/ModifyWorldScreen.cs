@@ -124,7 +124,7 @@ namespace Game
                 WorldsManager.ChangeWorld(m_directoryName, m_worldSettings);
                 ScreensManager.SwitchScreen("Play");
             }
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 if (flag)
                 {
@@ -152,16 +152,16 @@ namespace Game
             foreach (KeyValuePair<string, object> item in d1)
             {
                 object value = d2.GetValue<object>(item.Key, null);
-                ValuesDictionary valuesDictionary = value as ValuesDictionary;
+                var valuesDictionary = value as ValuesDictionary;
                 if (valuesDictionary != null)
                 {
-                    ValuesDictionary valuesDictionary2 = item.Value as ValuesDictionary;
+                    var valuesDictionary2 = item.Value as ValuesDictionary;
                     if (valuesDictionary2 == null || !CompareValueDictionaries(valuesDictionary, valuesDictionary2))
                     {
                         return false;
                     }
                 }
-                else if (!object.Equals(value, item.Value))
+                else if (!Equals(value, item.Value))
                 {
                     return false;
                 }

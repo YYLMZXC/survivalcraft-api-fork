@@ -237,7 +237,7 @@ namespace Game
                         }
                         stream.Position = 12 * num2;
                         TerrainSerializer22.WriteTOCEntry(stream, cx, cz, num2);
-                        stream2.Position = 786444 + 132112L * (long)index;
+                        stream2.Position = 786444 + 132112L * index;
                         stream.Position = stream.Length;
                         TerrainSerializer129.ReadChunkHeader(stream2);
                         TerrainSerializer22.WriteChunkHeader(stream, cx, cz);

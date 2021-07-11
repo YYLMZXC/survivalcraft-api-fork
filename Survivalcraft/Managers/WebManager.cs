@@ -63,8 +63,7 @@ namespace Game
         {
             try
             {
-                int Desc;
-                return InternetGetConnectedState(out Desc, 0);
+                return InternetGetConnectedState(out int Desc, 0);
             }
             catch (Exception e)
             {
@@ -75,8 +74,8 @@ namespace Game
 
         public static void Get(string address, Dictionary<string, string> parameters, Dictionary<string, string> headers, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
         {
-            MemoryStream targetStream = default(MemoryStream);
-            Exception e = default(Exception);
+            MemoryStream targetStream = default;
+            Exception e = default;
             Task.Run(async delegate
             {
                 try
@@ -86,7 +85,7 @@ namespace Game
                     {
                         throw new InvalidOperationException("Internet connection is unavailable.");
                     }
-                    using (HttpClient client = new HttpClient())
+                    using (var client = new HttpClient())
                     {
                         Uri requestUri = (parameters != null && parameters.Count > 0) ? new Uri(string.Format("{0}?{1}", new object[2]
                         {
@@ -163,7 +162,7 @@ namespace Game
 
         public static string UrlParametersToString(Dictionary<string, string> values)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             string value = string.Empty;
             foreach (KeyValuePair<string, string> value2 in values)
             {
@@ -191,7 +190,7 @@ namespace Game
 
         public static Dictionary<string, string> UrlParametersFromString(string s)
         {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            var dictionary = new Dictionary<string, string>();
             string[] array = s.Split(new char[1]
             {
                 '&'
@@ -224,8 +223,8 @@ namespace Game
 
         public static void PutOrPost(bool isPost, string address, Dictionary<string, string> parameters, Dictionary<string, string> headers, Stream data, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
         {
-            byte[] responseData = default(byte[]);
-            Exception e = default(Exception);
+            byte[] responseData = default;
+            Exception e = default;
             Task.Run(async delegate
             {
                 try
@@ -234,9 +233,9 @@ namespace Game
                     {
                         throw new InvalidOperationException("Internet connection is unavailable.");
                     }
-                    using (HttpClient client = new HttpClient())
+                    using (var client = new HttpClient())
                     {
-                        Dictionary<string, string> dictionary = new Dictionary<string, string>();
+                        var dictionary = new Dictionary<string, string>();
                         if (headers != null)
                         {
                             foreach (KeyValuePair<string, string> header in headers)
@@ -252,7 +251,7 @@ namespace Game
                             address,
                             UrlParametersToString(parameters)
                         })) : new Uri(address);
-                        ProgressHttpContent content = new ProgressHttpContent(data, progress);
+                        var content = new ProgressHttpContent(data, progress);
                         foreach (KeyValuePair<string, string> item in dictionary)
                         {
                             content.Headers.Add(item.Key, item.Value);

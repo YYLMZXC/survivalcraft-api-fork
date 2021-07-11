@@ -23,9 +23,9 @@ namespace Game
             float voltage = m_voltage;
             if (m_score > 0)
             {
-                m_voltage = (float)(m_score + 7) / 15f;
+                m_voltage = (m_score + 7) / 15f;
                 m_score = 0;
-                base.SubsystemElectricity.QueueElectricElementForSimulation(this, base.SubsystemElectricity.CircuitStep + 50);
+                SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 50);
             }
             else
             {
@@ -36,23 +36,23 @@ namespace Game
 
         public override void OnHitByProjectile(CellFace cellFace, WorldItem worldItem)
         {
-            if (m_score == 0 && !ElectricElement.IsSignalHigh(m_voltage))
+            if (m_score == 0 && !IsSignalHigh(m_voltage))
             {
                 if (cellFace.Face == 0 || cellFace.Face == 2)
                 {
-                    float num = worldItem.Position.X - (float)cellFace.X - 0.5f;
-                    float num2 = worldItem.Position.Y - (float)cellFace.Y - 0.5f;
+                    float num = worldItem.Position.X - cellFace.X - 0.5f;
+                    float num2 = worldItem.Position.Y - cellFace.Y - 0.5f;
                     float num3 = MathUtils.Sqrt(num * num + num2 * num2);
                     m_score = MathUtils.Clamp((int)MathUtils.Round(8f * (1f - num3 / 0.707f)), 1, 8);
                 }
                 else
                 {
-                    float num4 = worldItem.Position.Z - (float)cellFace.Z - 0.5f;
-                    float num5 = worldItem.Position.Y - (float)cellFace.Y - 0.5f;
+                    float num4 = worldItem.Position.Z - cellFace.Z - 0.5f;
+                    float num5 = worldItem.Position.Y - cellFace.Y - 0.5f;
                     float num6 = MathUtils.Sqrt(num4 * num4 + num5 * num5);
                     m_score = MathUtils.Clamp((int)MathUtils.Round(8f * (1f - num6 / 0.5f)), 1, 8);
                 }
-                base.SubsystemElectricity.QueueElectricElementForSimulation(this, base.SubsystemElectricity.CircuitStep + 1);
+                SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 1);
             }
         }
     }

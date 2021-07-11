@@ -13,15 +13,8 @@ namespace Game
         public RandomGeneratorElectricElement(SubsystemElectricity subsystemElectricity, CellFace cellFace)
             : base(subsystemElectricity, cellFace)
         {
-            float? num = base.SubsystemElectricity.ReadPersistentVoltage(base.CellFaces[0].Point);
-            if (num.HasValue)
-            {
-                m_voltage = num.Value;
-            }
-            else
-            {
-                m_voltage = GetRandomVoltage();
-            }
+            float? num = SubsystemElectricity.ReadPersistentVoltage(CellFaces[0].Point);
+            m_voltage = num.HasValue ? num.Value : GetRandomVoltage();
         }
 
         public override float GetOutputVoltage(int face)
@@ -34,12 +27,12 @@ namespace Game
             float voltage = m_voltage;
             bool flag = false;
             bool flag2 = false;
-            _ = base.Rotation;
-            foreach (ElectricConnection connection in base.Connections)
+            _ = Rotation;
+            foreach (ElectricConnection connection in Connections)
             {
                 if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0)
                 {
-                    if (ElectricElement.IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
+                    if (IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
                     {
                         if (m_clockAllowed)
                         {
@@ -64,11 +57,11 @@ namespace Game
             else
             {
                 m_voltage = GetRandomVoltage();
-                base.SubsystemElectricity.QueueElectricElementForSimulation(this, base.SubsystemElectricity.CircuitStep + MathUtils.Max((int)(s_random.Float(0.25f, 0.75f) / 0.01f), 1));
+                SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + MathUtils.Max((int)(s_random.Float(0.25f, 0.75f) / 0.01f), 1));
             }
             if (m_voltage != voltage)
             {
-                base.SubsystemElectricity.WritePersistentVoltage(base.CellFaces[0].Point, m_voltage);
+                SubsystemElectricity.WritePersistentVoltage(CellFaces[0].Point, m_voltage);
                 return true;
             }
             return false;
@@ -76,7 +69,7 @@ namespace Game
 
         public static float GetRandomVoltage()
         {
-            return (float)s_random.Int(0, 15) / 15f;
+            return s_random.Int(0, 15) / 15f;
         }
     }
 }

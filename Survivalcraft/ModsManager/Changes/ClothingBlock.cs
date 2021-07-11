@@ -40,7 +40,7 @@ namespace Game
                     newDisplayName = XmlUtils.GetAttributeValue<string>(item, "DisplayName");
 
                 }
-                ClothingData clothingData = new ClothingData
+                var clothingData = new ClothingData
                 {
                     Index = ClothIndex,
                     DisplayIndex = DisplayOrder,
@@ -76,7 +76,7 @@ namespace Game
             }
             LoadClothingData(xElement);
             Model playerModel = CharacterSkinsManager.GetPlayerModel(PlayerClass.Male);
-            Matrix[] array = new Matrix[playerModel.Bones.Count];
+            var array = new Matrix[playerModel.Bones.Count];
             playerModel.CopyAbsoluteBoneTransformsTo(array);
             int index = playerModel.FindBone("Hand1").Index;
             int index2 = playerModel.FindBone("Hand2").Index;
@@ -95,7 +95,7 @@ namespace Game
                 }
             }
             Model outerClothingModel = CharacterSkinsManager.GetOuterClothingModel(PlayerClass.Male);
-            Matrix[] array2 = new Matrix[outerClothingModel.Bones.Count];
+            var array2 = new Matrix[outerClothingModel.Bones.Count];
             outerClothingModel.CopyAbsoluteBoneTransformsTo(array2);
             int index3 = outerClothingModel.FindBone("Leg1").Index;
             int index4 = outerClothingModel.FindBone("Leg2").Index;
@@ -187,7 +187,7 @@ namespace Game
             {
                 return null;
             }
-            List<string> list = ingredients.Where((string i) => !string.IsNullOrEmpty(i)).ToList();
+            var list = ingredients.Where((string i) => !string.IsNullOrEmpty(i)).ToList();
             if (list.Count == 2)
             {
                 int num = 0;

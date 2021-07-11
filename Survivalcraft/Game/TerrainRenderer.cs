@@ -147,7 +147,7 @@ namespace Game
         {
             int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
             Vector3 viewPosition = camera.ViewPosition;
-            Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+            var v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
             Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
             Display.BlendState = BlendState.Opaque;
             Display.DepthStencilState = DepthStencilState.Default;
@@ -195,7 +195,7 @@ namespace Game
         {
             int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
             Vector3 viewPosition = camera.ViewPosition;
-            Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+            var v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
             Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
             Display.BlendState = BlendState.Opaque;
             Display.DepthStencilState = DepthStencilState.Default;
@@ -230,7 +230,7 @@ namespace Game
         {
             int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
             Vector3 viewPosition = camera.ViewPosition;
-            Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+            var v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
             Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
             Display.BlendState = BlendState.AlphaBlend;
             Display.DepthStencilState = DepthStencilState.Default;
@@ -297,7 +297,7 @@ namespace Game
                 }
                 if (num2 > 0 && num3 > 0)
                 {
-                    TerrainChunkGeometry.Buffer buffer = new TerrainChunkGeometry.Buffer();
+                    var buffer = new TerrainChunkGeometry.Buffer();
                     geometry.Buffers.Add(buffer);
                     buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, num2);
                     buffer.IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits, num3);
@@ -373,10 +373,10 @@ namespace Game
         public void StartChunkFadeIn(Camera camera, TerrainChunk chunk)
         {
             Vector3 viewPosition = camera.ViewPosition;
-            Vector2 v = new Vector2(chunk.Origin.X, chunk.Origin.Y);
-            Vector2 v2 = new Vector2(chunk.Origin.X + 16, chunk.Origin.Y);
-            Vector2 v3 = new Vector2(chunk.Origin.X, chunk.Origin.Y + 16);
-            Vector2 v4 = new Vector2(chunk.Origin.X + 16, chunk.Origin.Y + 16);
+            var v = new Vector2(chunk.Origin.X, chunk.Origin.Y);
+            var v2 = new Vector2(chunk.Origin.X + 16, chunk.Origin.Y);
+            var v3 = new Vector2(chunk.Origin.X, chunk.Origin.Y + 16);
+            var v4 = new Vector2(chunk.Origin.X + 16, chunk.Origin.Y + 16);
             float x = Vector2.Distance(viewPosition.XZ, v);
             float x2 = Vector2.Distance(viewPosition.XZ, v2);
             float x3 = Vector2.Distance(viewPosition.XZ, v3);

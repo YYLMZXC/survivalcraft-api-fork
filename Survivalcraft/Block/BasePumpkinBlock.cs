@@ -25,7 +25,7 @@ namespace Game
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Pumpkin").ParentBone);
             for (int i = 0; i < 8; i++)
             {
-                float num = MathUtils.Lerp(0.2f, 1f, (float)i / 7f);
+                float num = MathUtils.Lerp(0.2f, 1f, i / 7f);
                 float num2 = MathUtils.Min(0.3f * num, 0.7f * (1f - num));
                 Color color;
                 if (m_isRotten)
@@ -34,7 +34,7 @@ namespace Game
                 }
                 else
                 {
-                    color = Color.Lerp(new Color(0, 128, 128), new Color(80, 255, 255), (float)i / 7f);
+                    color = Color.Lerp(new Color(0, 128, 128), new Color(80, 255, 255), i / 7f);
                     if (i == 7)
                     {
                         color.R = byte.MaxValue;
@@ -140,7 +140,7 @@ namespace Game
         public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength)
         {
             int size = GetSize(Terrain.ExtractData(value));
-            float num = MathUtils.Lerp(0.2f, 1f, (float)size / 7f);
+            float num = MathUtils.Lerp(0.2f, 1f, size / 7f);
             Color color = (size == 7) ? Color.White : new Color(0, 128, 128);
             return new BlockDebrisParticleSystem(subsystemTerrain, position, 1.5f * strength, DestructionDebrisScale * num, color, DefaultTextureSlot);
         }

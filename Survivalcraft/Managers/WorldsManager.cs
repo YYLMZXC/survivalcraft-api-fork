@@ -79,7 +79,7 @@ namespace Game
                 DeleteWorldContents(directoryName, null);
                 Storage.DeleteDirectory(directoryName);
             }
-            WorldsManager.WorldDeleted?.Invoke(directoryName);
+            WorldDeleted?.Invoke(directoryName);
         }
 
         public static void RepairWorldIfNeeded(string directoryName)
@@ -106,7 +106,7 @@ namespace Game
                         using (Stream stream = Storage.OpenFile(path, OpenFileMode.Read))
                         {
                             TerrainSerializer14.ReadTOCEntry(stream, out int cx, out int cz, out int _);
-                            Vector3 vector = new Vector3(16 * cx, 255f, 16 * cz);
+                            var vector = new Vector3(16 * cx, 255f, 16 * cz);
                             xElement.Element("Subsystems").Element("Values").Element("Value")
                                 .Attribute("Value")
                                 .SetValue(HumanReadableConverter.ConvertToString(vector));
@@ -189,10 +189,10 @@ namespace Game
 
         public static WorldInfo GetWorldInfo(string directoryName)
         {
-            WorldInfo worldInfo = new WorldInfo();
+            var worldInfo = new WorldInfo();
             worldInfo.DirectoryName = directoryName;
             worldInfo.LastSaveTime = DateTime.MinValue;
-            List<string> list = new List<string>();
+            var list = new List<string>();
             RecursiveEnumerateDirectory(directoryName, list, null, null);
             if (list.Count > 0)
             {
@@ -223,14 +223,14 @@ namespace Game
                             worldInfo.SerializationVersion = XmlUtils.GetAttributeValue(xElement, "Version", "1.0");
                             VersionsManager.UpgradeProjectXml(xElement);
                             XElement gameInfoNode = GetGameInfoNode(xElement);
-                            ValuesDictionary valuesDictionary = new ValuesDictionary();
+                            var valuesDictionary = new ValuesDictionary();
                             valuesDictionary.ApplyOverrides(gameInfoNode);
                             worldInfo.WorldSettings.Load(valuesDictionary);
                             foreach (XElement item2 in (from e in GetPlayersNode(xElement).Elements()
                                                         where XmlUtils.GetAttributeValue<string>(e, "Name") == "Players"
                                                         select e).First().Elements())
                             {
-                                PlayerInfo playerInfo = new PlayerInfo();
+                                var playerInfo = new PlayerInfo();
                                 worldInfo.PlayerInfos.Add(playerInfo);
                                 XElement xElement2 = (from e in item2.Elements()
                                                       where XmlUtils.GetAttributeValue(e, "Name", string.Empty) == "CharacterSkinName"
@@ -282,24 +282,24 @@ namespace Game
                     num2 += 29;
                 }
             }
-            ValuesDictionary valuesDictionary = new ValuesDictionary();
+            var valuesDictionary = new ValuesDictionary();
             worldSettings.Save(valuesDictionary, liveModifiableParametersOnly: false);
             valuesDictionary.SetValue("WorldDirectoryName", unusedWorldDirectoryName);
             valuesDictionary.SetValue("WorldSeed", num);
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary2.SetValue("Players", new ValuesDictionary());
             DatabaseObject databaseObject = DatabaseManager.GameDatabase.Database.FindDatabaseObject("GameProject", DatabaseManager.GameDatabase.ProjectTemplateType, throwIfNotFound: true);
-            XElement xElement = new XElement("Project");
+            var xElement = new XElement("Project");
             XmlUtils.SetAttributeValue(xElement, "Guid", databaseObject.Guid);
             XmlUtils.SetAttributeValue(xElement, "Name", "GameProject");
             XmlUtils.SetAttributeValue(xElement, "Version", VersionsManager.SerializationVersion);
-            XElement xElement2 = new XElement("Subsystems");
+            var xElement2 = new XElement("Subsystems");
             xElement.Add(xElement2);
-            XElement xElement3 = new XElement("Values");
+            var xElement3 = new XElement("Values");
             XmlUtils.SetAttributeValue(xElement3, "Name", "GameInfo");
             valuesDictionary.Save(xElement3);
             xElement2.Add(xElement3);
-            XElement xElement4 = new XElement("Values");
+            var xElement4 = new XElement("Values");
             XmlUtils.SetAttributeValue(xElement4, "Name", "Players");
             valuesDictionary2.Save(xElement4);
             xElement2.Add(xElement4);
@@ -323,7 +323,7 @@ namespace Game
                 xElement = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
             }
             XElement gameInfoNode = GetGameInfoNode(xElement);
-            ValuesDictionary valuesDictionary = new ValuesDictionary();
+            var valuesDictionary = new ValuesDictionary();
             valuesDictionary.ApplyOverrides(gameInfoNode);
             GameMode value = valuesDictionary.GetValue<GameMode>("GameMode");
             worldSettings.Save(valuesDictionary, liveModifiableParametersOnly: true);
@@ -421,9 +421,9 @@ namespace Game
             {
                 throw new InvalidOperationException("Directory does not contain a world.");
             }
-            List<string> list = new List<string>();
+            var list = new List<string>();
             RecursiveEnumerateDirectory(directoryName, list, null, filter);
-            using (ZipArchive zipArchive = ZipArchive.Create(targetStream, keepStreamOpen: true))
+            using (var zipArchive = ZipArchive.Create(targetStream, keepStreamOpen: true))
             {
                 foreach (string item in list)
                 {
@@ -478,7 +478,7 @@ namespace Game
             {
                 throw new InvalidOperationException($"Cannot import world into \"{directoryName}\" because this directory does not exist.");
             }
-            using (ZipArchive zipArchive = ZipArchive.Open(sourceStream, keepStreamOpen: true))
+            using (var zipArchive = ZipArchive.Open(sourceStream, keepStreamOpen: true))
             {
                 foreach (ZipArchiveEntry item in zipArchive.ReadCentralDir())
                 {
@@ -490,7 +490,7 @@ namespace Game
                         {
                             if (importEmbeddedExternalContent)
                             {
-                                MemoryStream memoryStream = new MemoryStream();
+                                var memoryStream = new MemoryStream();
                                 zipArchive.ExtractFile(item, memoryStream);
                                 memoryStream.Position = 0L;
                                 ExternalContentType type = ExternalContentManager.ExtensionToType(extension);
@@ -515,8 +515,8 @@ namespace Game
 
         public static void DeleteWorldContents(string directoryName, Func<string, bool> filter)
         {
-            List<string> list = new List<string>();
-            List<string> list2 = new List<string>();
+            var list = new List<string>();
+            var list2 = new List<string>();
             RecursiveEnumerateDirectory(directoryName, list, list2, filter);
             foreach (string item in list)
             {

@@ -56,7 +56,7 @@ namespace Game
             {
                 if (num >= 0)
                 {
-                    num2 = MathUtils.Min((float)num + 0.5f, m_listWidget.Items.Count);
+                    num2 = MathUtils.Min(num + 0.5f, m_listWidget.Items.Count);
                     if (num2 * itemSize <= m_contentWidget.Size.Y)
                     {
                         break;
@@ -81,11 +81,11 @@ namespace Game
 
         public override void Update()
         {
-            if (base.Input.Back || base.Input.Cancel)
+            if (Input.Back || Input.Cancel)
             {
                 m_dismissTime = 0.0;
             }
-            else if (base.Input.Tap.HasValue && !m_listWidget.HitTest(base.Input.Tap.Value))
+            else if (Input.Tap.HasValue && !m_listWidget.HitTest(Input.Tap.Value))
             {
                 m_dismissTime = 0.0;
             }

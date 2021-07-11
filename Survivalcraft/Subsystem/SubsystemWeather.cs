@@ -103,7 +103,7 @@ namespace Game
             PrecipitationShaftInfo result;
             if (IsPlaceFrozen(seasonalTemperature, num))
             {
-                result = default(PrecipitationShaftInfo);
+                result = default;
                 result.Intensity = GlobalPrecipitationIntensity;
                 result.Type = PrecipitationType.Snow;
                 result.YLimit = num + 1;
@@ -112,13 +112,13 @@ namespace Game
             int seasonalHumidity = SubsystemTerrain.Terrain.GetSeasonalHumidity(shaftValue);
             if (seasonalTemperature <= 8 || seasonalHumidity >= 8)
             {
-                result = default(PrecipitationShaftInfo);
+                result = default;
                 result.Intensity = GlobalPrecipitationIntensity;
                 result.Type = PrecipitationType.Rain;
                 result.YLimit = num + 1;
                 return result;
             }
-            result = default(PrecipitationShaftInfo);
+            result = default;
             result.Intensity = 0f;
             result.Type = PrecipitationType.Rain;
             result.YLimit = num + 1;
@@ -137,7 +137,7 @@ namespace Game
                 int num5 = num + num3;
                 int num6 = num2 + num4;
                 int num7 = SubsystemTerrain.Terrain.CalculateTopmostCellHeight(num5, num6);
-                if (!vector.HasValue || (float)num7 > vector.Value.Y)
+                if (!vector.HasValue || num7 > vector.Value.Y)
                 {
                     vector = new Vector3(num5, num7, num6);
                 }
@@ -150,7 +150,7 @@ namespace Game
 
         public static int GetTemperatureAdjustmentAtHeight(int y)
         {
-            return (int)MathUtils.Round((y > 64) ? (-0.0008f * (float)MathUtils.Sqr(y - 64)) : (0.1f * (float)(64 - y)));
+            return (int)MathUtils.Round((y > 64) ? (-0.0008f * MathUtils.Sqr(y - 64)) : (0.1f * (64 - y)));
         }
 
         public static bool IsPlaceFrozen(int temperature, int y)
@@ -172,10 +172,9 @@ namespace Game
             RainColor = new Color(b, b, b);
             byte b2 = (byte)(255f * MathUtils.Lerp(0.15f, 1f, SubsystemSky.SkyLightIntensity));
             SnowColor = new Color(b2, b2, b2);
-            Vector2 vector = new Vector2(camera.ViewPosition.X, camera.ViewPosition.Z);
+            var vector = new Vector2(camera.ViewPosition.X, camera.ViewPosition.Z);
             Point2 point = Terrain.ToCell(vector);
-            Vector2? value = null;
-            m_lastShaftsUpdatePositions.TryGetValue(camera.GameWidget, out value);
+            m_lastShaftsUpdatePositions.TryGetValue(camera.GameWidget, out Vector2? value);
             if (value.HasValue && !(Vector2.DistanceSquared(value.Value, vector) > 1f))
             {
                 return;
@@ -184,7 +183,7 @@ namespace Game
             m_toRemove.Clear();
             foreach (PrecipitationShaftParticleSystem value2 in activeShafts.Values)
             {
-                if (MathUtils.Sqr((float)value2.Point.X + 0.5f - vector.X) + MathUtils.Sqr((float)value2.Point.Y + 0.5f - vector.Y) > (float)num2 + 1f)
+                if (MathUtils.Sqr(value2.Point.X + 0.5f - vector.X) + MathUtils.Sqr(value2.Point.Y + 0.5f - vector.Y) > num2 + 1f)
                 {
                     m_toRemove.Add(value2);
                 }
@@ -201,12 +200,12 @@ namespace Game
             {
                 for (int j = point.Y - num; j <= point.Y + num; j++)
                 {
-                    if (MathUtils.Sqr((float)i + 0.5f - vector.X) + MathUtils.Sqr((float)j + 0.5f - vector.Y) <= (float)num2)
+                    if (MathUtils.Sqr(i + 0.5f - vector.X) + MathUtils.Sqr(j + 0.5f - vector.Y) <= num2)
                     {
-                        Point2 point2 = new Point2(i, j);
+                        var point2 = new Point2(i, j);
                         if (!activeShafts.ContainsKey(point2))
                         {
-                            PrecipitationShaftParticleSystem precipitationShaftParticleSystem = new PrecipitationShaftParticleSystem(camera.GameWidget, this, m_random, point2, GetPrecipitationShaftInfo(point2.X, point2.Y).Type);
+                            var precipitationShaftParticleSystem = new PrecipitationShaftParticleSystem(camera.GameWidget, this, m_random, point2, GetPrecipitationShaftInfo(point2.X, point2.Y).Type);
                             m_subsystemParticles.AddParticleSystem(precipitationShaftParticleSystem);
                             activeShafts.Add(point2, precipitationShaftParticleSystem);
                         }
@@ -223,21 +222,21 @@ namespace Game
                 {
                     if (m_subsystemGameInfo.WorldSettings.StartingPositionMode == StartingPositionMode.Hard)
                     {
-                        m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + (double)(60f * m_random.Float(2f, 3f));
+                        m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + 60f * m_random.Float(2f, 3f);
                         m_lightningIntensity = m_random.Float(0.5f, 1f);
                     }
                     else
                     {
-                        m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + (double)(60f * m_random.Float(3f, 6f));
+                        m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + 60f * m_random.Float(3f, 6f);
                         m_lightningIntensity = m_random.Float(0.33f, 0.66f);
                     }
                 }
                 else
                 {
-                    m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + (double)(60f * m_random.Float(5f, 45f));
+                    m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + 60f * m_random.Float(5f, 45f);
                     m_lightningIntensity = ((m_random.Float(0f, 1f) < 0.5f) ? m_random.Float(0.33f, 1f) : 0f);
                 }
-                m_precipitationEndTime = m_precipitationStartTime + (double)(60f * m_random.Float(3f, 6f));
+                m_precipitationEndTime = m_precipitationStartTime + 60f * m_random.Float(3f, 6f);
             }
             float num = (float)MathUtils.Max(0.0, MathUtils.Min(m_subsystemGameInfo.TotalElapsedGameTime - m_precipitationStartTime, m_precipitationEndTime - m_subsystemGameInfo.TotalElapsedGameTime));
             GlobalPrecipitationIntensity = (m_subsystemGameInfo.WorldSettings.AreWeatherEffectsEnabled ? MathUtils.Saturate(num * 0.04f) : 0f);
@@ -259,7 +258,7 @@ namespace Game
                         for (int k = num3 - 8; k < num3 + 8; k++)
                         {
                             int topHeight = SubsystemTerrain.Terrain.GetTopHeight(j, k);
-                            if (!vector.HasValue || (float)topHeight > vector.Value.Y)
+                            if (!vector.HasValue || topHeight > vector.Value.Y)
                             {
                                 vector = new Vector3(j, topHeight, k);
                             }
@@ -284,7 +283,7 @@ namespace Game
                         int num7 = Terrain.ToCell(listenerPosition.Z) - 5;
                         int num8 = Terrain.ToCell(listenerPosition.X) + 5;
                         int num9 = Terrain.ToCell(listenerPosition.Z) + 5;
-                        Vector3 vector2 = default(Vector3);
+                        Vector3 vector2 = default;
                         for (int l = num6; l <= num8; l++)
                         {
                             for (int m = num7; m <= num9; m++)
@@ -292,9 +291,9 @@ namespace Game
                                 PrecipitationShaftInfo precipitationShaftInfo = GetPrecipitationShaftInfo(l, m);
                                 if (precipitationShaftInfo.Type == PrecipitationType.Rain && precipitationShaftInfo.Intensity > 0f)
                                 {
-                                    vector2.X = (float)l + 0.5f;
+                                    vector2.X = l + 0.5f;
                                     vector2.Y = MathUtils.Max(precipitationShaftInfo.YLimit, listenerPosition.Y);
-                                    vector2.Z = (float)m + 0.5f;
+                                    vector2.Z = m + 0.5f;
                                     float num10 = vector2.X - listenerPosition.X;
                                     float num11 = 8f * (vector2.Y - listenerPosition.Y);
                                     float num12 = vector2.Z - listenerPosition.Z;
@@ -321,13 +320,13 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            SubsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemBlocksScanner = base.Project.FindSubsystem<SubsystemBlocksScanner>(throwOnError: true);
-            SubsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            SubsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemBlocksScanner = Project.FindSubsystem<SubsystemBlocksScanner>(throwOnError: true);
+            SubsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            SubsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
             m_precipitationStartTime = valuesDictionary.GetValue<double>("WeatherStartTime");
             m_precipitationEndTime = valuesDictionary.GetValue<double>("WeatherEndTime");
             m_lightningIntensity = valuesDictionary.GetValue<float>("LightningIntensity");

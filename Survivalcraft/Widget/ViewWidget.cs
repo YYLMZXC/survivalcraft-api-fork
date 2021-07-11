@@ -42,7 +42,7 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = true;
+            IsDrawRequired = true;
             base.MeasureOverride(parentAvailableSize);
         }
 
@@ -66,7 +66,7 @@ namespace Game
 
         public void DragDrop(Widget dragWidget, object data)
         {
-            InventoryDragData inventoryDragData = data as InventoryDragData;
+            var inventoryDragData = data as InventoryDragData;
             if (inventoryDragData != null && GameManager.Project != null)
             {
                 SubsystemPickables subsystemPickables = GameManager.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
@@ -86,14 +86,14 @@ namespace Game
         public void SetupScalingRenderTarget()
         {
             float num = (SettingsManager.ResolutionMode == ResolutionMode.Low) ? 0.5f : ((SettingsManager.ResolutionMode != ResolutionMode.Medium) ? 1f : 0.75f);
-            float num2 = base.GlobalTransform.Right.Length();
-            float num3 = base.GlobalTransform.Up.Length();
-            Vector2 vector = new Vector2(base.ActualSize.X * num2, base.ActualSize.Y * num3);
-            Point2 point = default(Point2);
+            float num2 = GlobalTransform.Right.Length();
+            float num3 = GlobalTransform.Up.Length();
+            var vector = new Vector2(ActualSize.X * num2, ActualSize.Y * num3);
+            Point2 point = default;
             point.X = (int)MathUtils.Round(vector.X * num);
             point.Y = (int)MathUtils.Round(vector.Y * num);
             Point2 point2 = point;
-            if ((num < 1f || base.GlobalColorTransform != Color.White) && point2.X > 0 && point2.Y > 0)
+            if ((num < 1f || GlobalColorTransform != Color.White) && point2.X > 0 && point2.Y > 0)
             {
                 if (m_scalingRenderTarget == null || m_scalingRenderTarget.Width != point2.X || m_scalingRenderTarget.Height != point2.Y)
                 {
@@ -113,11 +113,11 @@ namespace Game
         {
             if (m_scalingRenderTarget != null)
             {
-                BlendState blendState = (base.GlobalColorTransform.A < byte.MaxValue) ? BlendState.AlphaBlend : BlendState.Opaque;
+                BlendState blendState = (GlobalColorTransform.A < byte.MaxValue) ? BlendState.AlphaBlend : BlendState.Opaque;
                 TexturedBatch2D texturedBatch2D = dc.PrimitivesRenderer2D.TexturedBatch(m_scalingRenderTarget, useAlphaTest: false, 0, DepthStencilState.None, RasterizerState.CullNoneScissor, blendState, SamplerState.PointClamp);
                 int count = texturedBatch2D.TriangleVertices.Count;
-                texturedBatch2D.QueueQuad(Vector2.Zero, base.ActualSize, 0f, Vector2.Zero, Vector2.One, base.GlobalColorTransform);
-                texturedBatch2D.TransformTriangles(base.GlobalTransform, count);
+                texturedBatch2D.QueueQuad(Vector2.Zero, ActualSize, 0f, Vector2.Zero, Vector2.One, GlobalColorTransform);
+                texturedBatch2D.TransformTriangles(GlobalTransform, count);
                 dc.PrimitivesRenderer2D.Flush();
             }
         }

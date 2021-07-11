@@ -21,44 +21,44 @@ namespace Game
         {
             float voltage = m_voltage;
             int num = 0;
-            int rotation = base.Rotation;
-            foreach (ElectricConnection connection in base.Connections)
+            int rotation = Rotation;
+            foreach (ElectricConnection connection in Connections)
             {
                 if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0)
                 {
-                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(base.CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue)
                     {
                         if (connectorDirection == ElectricConnectorDirection.Top)
                         {
-                            if (ElectricElement.IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
+                            if (IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
                             {
                                 num |= 1;
                             }
                         }
                         else if (connectorDirection == ElectricConnectorDirection.Right)
                         {
-                            if (ElectricElement.IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
+                            if (IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
                             {
                                 num |= 2;
                             }
                         }
                         else if (connectorDirection == ElectricConnectorDirection.Bottom)
                         {
-                            if (ElectricElement.IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
+                            if (IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
                             {
                                 num |= 4;
                             }
                         }
-                        else if (connectorDirection == ElectricConnectorDirection.Left && ElectricElement.IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
+                        else if (connectorDirection == ElectricConnectorDirection.Left && IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace)))
                         {
                             num |= 8;
                         }
                     }
                 }
             }
-            TruthTableData blockData = m_subsystemTruthTableCircuitBlockBehavior.GetBlockData(base.CellFaces[0].Point);
-            m_voltage = ((blockData != null) ? ((float)(int)blockData.Data[num] / 15f) : 0f);
+            TruthTableData blockData = m_subsystemTruthTableCircuitBlockBehavior.GetBlockData(CellFaces[0].Point);
+            m_voltage = ((blockData != null) ? (blockData.Data[num] / 15f) : 0f);
             return m_voltage != voltage;
         }
     }

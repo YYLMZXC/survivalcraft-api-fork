@@ -137,7 +137,7 @@ namespace Game
                 Log.Warning("Terrain raycast too long, trimming.");
                 end = start + 1000f * Vector3.Normalize(end - start);
             }
-            Ray3 ray = new Ray3(start, Vector3.Normalize(end - start));
+            var ray = new Ray3(start, Vector3.Normalize(end - start));
             float x = start.X;
             float y = start.Y;
             float z = start.Z;
@@ -167,17 +167,15 @@ namespace Game
             float num22 = 1f / Math.Abs(z2 - z);
             while (true)
             {
-                BoundingBox boundingBox = default(BoundingBox);
+                BoundingBox boundingBox = default;
                 int collisionBoxIndex = 0;
                 float? num23 = null;
                 int cellValue = Terrain.GetCellValue(num2, num3, num4);
                 int num24 = Terrain.ExtractContents(cellValue);
                 if (num24 != 0 || !skipAirBlocks)
                 {
-                    Ray3 ray2 = new Ray3(ray.Position - new Vector3(num2, num3, num4), ray.Direction);
-                    int nearestBoxIndex;
-                    BoundingBox nearestBox;
-                    float? num25 = BlocksManager.Blocks[num24].Raycast(ray2, this, cellValue, useInteractionBoxes, out nearestBoxIndex, out nearestBox);
+                    var ray2 = new Ray3(ray.Position - new Vector3(num2, num3, num4), ray.Direction);
+                    float? num25 = BlocksManager.Blocks[num24].Raycast(ray2, this, cellValue, useInteractionBoxes, out int nearestBoxIndex, out BoundingBox nearestBox);
                     if (num25.HasValue && (!num23.HasValue || num25.Value < num23.Value))
                     {
                         num23 = num25;
@@ -226,7 +224,7 @@ namespace Game
                         num26 = num27;
                         face = 0;
                     }
-                    TerrainRaycastResult value = default(TerrainRaycastResult);
+                    TerrainRaycastResult value = default;
                     value.Ray = ray;
                     value.Value = cellValue;
                     value.CellFace = new CellFace
@@ -352,7 +350,7 @@ namespace Game
                 }
                 if (showDebris && !noParticleSystem && m_subsystemViews.CalculateDistanceFromNearestView(new Vector3(x, y, z)) < 16f)
                 {
-                    m_subsystemParticles.AddParticleSystem(block.CreateDebrisParticleSystem(this, new Vector3((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f), cellValue, 1f));
+                    m_subsystemParticles.AddParticleSystem(block.CreateDebrisParticleSystem(this, new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), cellValue, 1f));
                 }
             }
             ChangeCell(x, y, z, newValue);
@@ -384,42 +382,32 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemViews = base.Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
-            SubsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemPickables = base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
-            m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
-            SubsystemAnimatedTextures = base.Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
-            SubsystemFurnitureBlockBehavior = base.Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true);
-            SubsystemPalette = base.Project.FindSubsystem<SubsystemPalette>(throwOnError: true);
+            m_subsystemViews = Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
+            SubsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
+            m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
+            SubsystemAnimatedTextures = Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
+            SubsystemFurnitureBlockBehavior = Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true);
+            SubsystemPalette = Project.FindSubsystem<SubsystemPalette>(throwOnError: true);
             Terrain = new Terrain();
             TerrainRenderer = new TerrainRenderer(this);
             TerrainUpdater = new TerrainUpdater(this);
             TerrainSerializer = new TerrainSerializer221(Terrain, SubsystemGameInfo.DirectoryName);
-            BlockGeometryGenerator = new BlockGeometryGenerator(Terrain, this, base.Project.FindSubsystem<SubsystemElectricity>(throwOnError: true), SubsystemFurnitureBlockBehavior, base.Project.FindSubsystem<SubsystemMetersBlockBehavior>(throwOnError: true), SubsystemPalette);
+            BlockGeometryGenerator = new BlockGeometryGenerator(Terrain, this, Project.FindSubsystem<SubsystemElectricity>(throwOnError: true), SubsystemFurnitureBlockBehavior, Project.FindSubsystem<SubsystemMetersBlockBehavior>(throwOnError: true), SubsystemPalette);
             if (string.CompareOrdinal(SubsystemGameInfo.WorldSettings.OriginalSerializationVersion, "2.1") <= 0)
             {
                 TerrainGenerationMode terrainGenerationMode = SubsystemGameInfo.WorldSettings.TerrainGenerationMode;
-                if (terrainGenerationMode == TerrainGenerationMode.FlatContinent || terrainGenerationMode == TerrainGenerationMode.FlatIsland)
-                {
-                    TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
-                }
-                else
-                {
-                    TerrainContentsGenerator = new TerrainContentsGenerator21(this);
-                }
+                TerrainContentsGenerator = terrainGenerationMode == TerrainGenerationMode.FlatContinent || terrainGenerationMode == TerrainGenerationMode.FlatIsland
+                    ? new TerrainContentsGeneratorFlat(this)
+                    : (ITerrainContentsGenerator)new TerrainContentsGenerator21(this);
             }
             else
             {
                 TerrainGenerationMode terrainGenerationMode2 = SubsystemGameInfo.WorldSettings.TerrainGenerationMode;
-                if (terrainGenerationMode2 == TerrainGenerationMode.FlatContinent || terrainGenerationMode2 == TerrainGenerationMode.FlatIsland)
-                {
-                    TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
-                }
-                else
-                {
-                    TerrainContentsGenerator = new TerrainContentsGenerator22(this);
-                }
+                TerrainContentsGenerator = terrainGenerationMode2 == TerrainGenerationMode.FlatContinent || terrainGenerationMode2 == TerrainGenerationMode.FlatIsland
+                    ? new TerrainContentsGeneratorFlat(this)
+                    : (ITerrainContentsGenerator)new TerrainContentsGenerator22(this);
             }
         }
 

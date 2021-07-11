@@ -26,7 +26,7 @@ namespace Game
             set;
         }
 
-        Project IInventory.Project => base.Project;
+        Project IInventory.Project => Project;
 
         public int ActiveSlotIndex
         {
@@ -80,7 +80,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemFurnitureBlockBehavior = base.Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true);
+            m_subsystemFurnitureBlockBehavior = Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true);
             string furnitureSetName = valuesDictionary.GetValue<string>("FurnitureSet");
             FurnitureSet = m_subsystemFurnitureBlockBehavior.FurnitureSets.FirstOrDefault((FurnitureSet f) => f.Name == furnitureSetName);
         }
@@ -123,7 +123,7 @@ namespace Game
             int slotValue = GetSlotValue(slotIndex);
             if (slotCount > 0 && slotValue != 0)
             {
-                SubsystemBlockBehavior[] blockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
+                SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
                 for (int i = 0; i < blockBehaviors.Length; i++)
                 {
                     int processInventoryItemCapacity = blockBehaviors[i].GetProcessInventoryItemCapacity(this, slotIndex, value);
@@ -146,7 +146,7 @@ namespace Game
             int slotValue = GetSlotValue(slotIndex);
             if (slotCount > 0 && slotValue != 0)
             {
-                SubsystemBlockBehavior[] blockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
+                SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
                 foreach (SubsystemBlockBehavior subsystemBlockBehavior in blockBehaviors)
                 {
                     int processInventoryItemCapacity = subsystemBlockBehavior.GetProcessInventoryItemCapacity(this, slotIndex, value);

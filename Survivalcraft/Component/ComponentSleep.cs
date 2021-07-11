@@ -64,7 +64,7 @@ namespace Game
                 for (int j = -1; j <= 1; j++)
                 {
                     Vector3 start = m_componentPlayer.ComponentBody.Position + new Vector3(i, 1f, j);
-                    Vector3 end = new Vector3(start.X, 255f, start.Z);
+                    var end = new Vector3(start.X, 255f, start.Z);
                     if (!m_subsystemTerrain.Raycast(start, end, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => Terrain.ExtractContents(value) != 0).HasValue)
                     {
                         reason = LanguageControl.Get(fName, 5);
@@ -163,13 +163,13 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemPlayers = base.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemUpdate = base.Project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemTimeOfDay = base.Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
+            m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemUpdate = Project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemTimeOfDay = Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
             m_sleepStartTime = valuesDictionary.GetValue<double>("SleepStartTime");
             m_allowManualWakeUp = valuesDictionary.GetValue<bool>("AllowManualWakeUp");
             if (m_sleepStartTime == 0.0)

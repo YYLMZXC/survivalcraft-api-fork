@@ -42,7 +42,7 @@ namespace Game
                 if (Storage.DirectoryExists("app:/.config/.isolated-storage"))
                 {
                     Log.Information("1.26 data found, starting migration to 1.27.");
-                    BusyDialog dialog = new BusyDialog("Please wait", "Migrating 1.26 data to 1.27 format...");
+                    var dialog = new BusyDialog("Please wait", "Migrating 1.26 data to 1.27 format...");
                     DialogsManager.ShowDialog(null, dialog);
                     Task.Run(delegate
                     {

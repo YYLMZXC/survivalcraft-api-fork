@@ -69,14 +69,7 @@ namespace Game
 
         public override void Update()
         {
-            if (Progress.Completed > 0f && Progress.Total > 0f)
-            {
-                SmallMessage = $"{Progress.Completed / Progress.Total * 100f:0}%";
-            }
-            else
-            {
-                SmallMessage = string.Empty;
-            }
+            SmallMessage = Progress.Completed > 0f && Progress.Total > 0f ? $"{Progress.Completed / Progress.Total * 100f:0}%" : string.Empty;
             if (m_cancelButtonWidget.IsClicked)
             {
                 Progress.Cancel();
@@ -85,9 +78,9 @@ namespace Game
                     DialogsManager.HideDialog(this);
                 }
             }
-            if (base.Input.Cancel)
+            if (Input.Cancel)
             {
-                base.Input.Clear();
+                Input.Clear();
             }
         }
     }

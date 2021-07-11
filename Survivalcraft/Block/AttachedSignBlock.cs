@@ -41,16 +41,16 @@ namespace Game
             Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Surface").ParentBone);
             for (int i = 0; i < 4; i++)
             {
-                float radians = (float)Math.PI / 2f * (float)i;
+                float radians = (float)Math.PI / 2f * i;
                 Matrix m = Matrix.CreateTranslation(0f, 0f, -15f / 32f) * Matrix.CreateRotationY(radians) * Matrix.CreateTranslation(0.5f, -0.3125f, 0.5f);
-                BlockMesh blockMesh = new BlockMesh();
+                var blockMesh = new BlockMesh();
                 blockMesh.AppendModelMeshPart(model.FindMesh("Sign").MeshParts[0], boneAbsoluteTransform * m, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                 m_blockMeshes[i] = new BlockMesh();
                 m_blockMeshes[i].AppendBlockMesh(blockMesh);
                 m_coloredBlockMeshes[i] = new BlockMesh();
                 m_coloredBlockMeshes[i].AppendBlockMesh(m_blockMeshes[i]);
-                m_blockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
-                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+                m_blockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
+                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
                 m_collisionBoxes[i] = new BoundingBox[1];
                 m_collisionBoxes[i][0] = blockMesh.CalculateBoundingBox();
                 m_surfaceMeshes[i] = new BlockMesh();
@@ -59,8 +59,8 @@ namespace Game
             }
             m_standaloneBlockMesh.AppendModelMeshPart(model.FindMesh("Sign").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0f, -0.6f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             m_standaloneColoredBlockMesh.AppendBlockMesh(m_standaloneBlockMesh);
-            m_standaloneBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
-            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+            m_standaloneBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
+            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
             base.Initialize();
         }
 
@@ -134,7 +134,7 @@ namespace Game
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
         {
-            return default(BlockPlacementData);
+            return default;
         }
 
         public override BlockMesh GetSignSurfaceBlockMesh(int data)

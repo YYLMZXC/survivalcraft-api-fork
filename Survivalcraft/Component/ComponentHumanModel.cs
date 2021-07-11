@@ -83,14 +83,9 @@ namespace Game
 
         public override void Update(float dt)
         {
-            if (m_componentCreature.ComponentBody.IsSneaking)
-            {
-                m_sneakFactor = MathUtils.Min(m_sneakFactor + 2f * dt, 1f);
-            }
-            else
-            {
-                m_sneakFactor = MathUtils.Max(m_sneakFactor - 2f * dt, 0f);
-            }
+            m_sneakFactor = m_componentCreature.ComponentBody.IsSneaking
+                ? MathUtils.Min(m_sneakFactor + 2f * dt, 1f)
+                : MathUtils.Max(m_sneakFactor - 2f * dt, 0f);
             if ((m_componentSleep != null && m_componentSleep.IsSleeping) || m_componentCreature.ComponentHealth.Health <= 0f)
             {
                 m_lieDownFactorEye = MathUtils.Min(m_lieDownFactorEye + 1f * dt, 1f);
@@ -114,7 +109,7 @@ namespace Game
                 float num = m_componentCreature.ComponentLocomotion.SlipSpeed ?? (m_componentCreature.ComponentBody.Velocity.XZ - m_componentCreature.ComponentBody.StandingOnVelocity.XZ).Length();
                 if (num > 0.5f)
                 {
-                    base.MovementAnimationPhase += num * dt * m_walkAnimationSpeed;
+                    MovementAnimationPhase += num * dt * m_walkAnimationSpeed;
                     m_footstepsPhase += 1f * m_walkAnimationSpeed * num * dt;
                     flag = false;
                     flag2 = false;
@@ -122,17 +117,12 @@ namespace Game
             }
             if (flag)
             {
-                float num2 = 0.5f * MathUtils.Floor(2f * base.MovementAnimationPhase);
-                if (base.MovementAnimationPhase != num2)
+                float num2 = 0.5f * MathUtils.Floor(2f * MovementAnimationPhase);
+                if (MovementAnimationPhase != num2)
                 {
-                    if (base.MovementAnimationPhase - num2 > 0.25f)
-                    {
-                        base.MovementAnimationPhase = MathUtils.Min(base.MovementAnimationPhase + 2f * dt, num2 + 0.5f);
-                    }
-                    else
-                    {
-                        base.MovementAnimationPhase = MathUtils.Max(base.MovementAnimationPhase - 2f * dt, num2);
-                    }
+                    MovementAnimationPhase = MovementAnimationPhase - num2 > 0.25f
+                        ? MathUtils.Min(MovementAnimationPhase + 2f * dt, num2 + 0.5f)
+                        : MathUtils.Max(MovementAnimationPhase - 2f * dt, num2);
                 }
             }
             if (flag2)
@@ -146,14 +136,14 @@ namespace Game
                 ComponentCreatureModel componentCreatureModel = componentMount.Entity.FindComponent<ComponentCreatureModel>();
                 if (componentCreatureModel != null)
                 {
-                    base.Bob = componentCreatureModel.Bob;
-                    num3 = base.Bob;
+                    Bob = componentCreatureModel.Bob;
+                    num3 = Bob;
                 }
                 m_headingOffset = 0f;
             }
             else
             {
-                float x = MathUtils.Sin((float)Math.PI * 2f * base.MovementAnimationPhase);
+                float x = MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase);
                 num3 = m_walkBobHeight * MathUtils.Sqr(x);
                 float num4 = 0f;
                 if (m_componentCreature.ComponentLocomotion.LastWalkOrder.HasValue && m_componentCreature.ComponentLocomotion.LastWalkOrder != Vector2.Zero)
@@ -164,16 +154,16 @@ namespace Game
                 m_headingOffset = MathUtils.NormalizeAngle(m_headingOffset);
             }
             float num5 = MathUtils.Min(12f * m_subsystemTime.GameTimeDelta, 1f);
-            base.Bob += num5 * (num3 - base.Bob);
-            base.IsAttackHitMoment = false;
-            if (base.AttackOrder)
+            Bob += num5 * (num3 - Bob);
+            IsAttackHitMoment = false;
+            if (AttackOrder)
             {
                 m_punchFactor = MathUtils.Min(m_punchFactor + 4f * dt, 1f);
                 float punchPhase = m_punchPhase;
                 m_punchPhase = MathUtils.Remainder(m_punchPhase + dt * 2f, 1f);
                 if (punchPhase < 0.5f && m_punchPhase >= 0.5f)
                 {
-                    base.IsAttackHitMoment = true;
+                    IsAttackHitMoment = true;
                     m_punchCounter++;
                 }
             }
@@ -192,9 +182,9 @@ namespace Game
                     }
                 }
             }
-            m_rowLeft = base.RowLeftOrder;
-            m_rowRight = base.RowRightOrder;
-            if ((m_rowLeft || m_rowRight) && componentMount != null && componentMount.ComponentBody.ImmersionFactor > 0f && MathUtils.Floor(1.1000000238418579 * m_subsystemTime.GameTime) != MathUtils.Floor(1.1000000238418579 * (m_subsystemTime.GameTime - (double)m_subsystemTime.GameTimeDelta)))
+            m_rowLeft = RowLeftOrder;
+            m_rowRight = RowRightOrder;
+            if ((m_rowLeft || m_rowRight) && componentMount != null && componentMount.ComponentBody.ImmersionFactor > 0f && MathUtils.Floor(1.1000000238418579 * m_subsystemTime.GameTime) != MathUtils.Floor(1.1000000238418579 * (m_subsystemTime.GameTime - m_subsystemTime.GameTimeDelta)))
             {
                 m_subsystemAudio.PlayRandomSound("Audio/Rowing", m_random.Float(0.4f, 0.6f), m_random.Float(-0.3f, 0.2f), m_componentCreature.ComponentBody.Position, 3f, autoDelay: true);
             }
@@ -210,15 +200,15 @@ namespace Game
                     m_footstepsPhase = 0f;
                 }
             }
-            m_aimHandAngle = base.AimHandAngleOrder;
-            m_inHandItemOffset = Vector3.Lerp(m_inHandItemOffset, base.InHandItemOffsetOrder, 10f * dt);
-            m_inHandItemRotation = Vector3.Lerp(m_inHandItemRotation, base.InHandItemRotationOrder, 10f * dt);
-            base.AttackOrder = false;
-            base.RowLeftOrder = false;
-            base.RowRightOrder = false;
-            base.AimHandAngleOrder = 0f;
-            base.InHandItemOffsetOrder = Vector3.Zero;
-            base.InHandItemRotationOrder = Vector3.Zero;
+            m_aimHandAngle = AimHandAngleOrder;
+            m_inHandItemOffset = Vector3.Lerp(m_inHandItemOffset, InHandItemOffsetOrder, 10f * dt);
+            m_inHandItemRotation = Vector3.Lerp(m_inHandItemRotation, InHandItemRotationOrder, 10f * dt);
+            AttackOrder = false;
+            RowLeftOrder = false;
+            RowRightOrder = false;
+            AimHandAngleOrder = 0f;
+            InHandItemOffsetOrder = Vector3.Zero;
+            InHandItemRotationOrder = Vector3.Zero;
             base.Update(dt);
         }
 
@@ -229,10 +219,10 @@ namespace Game
             if (m_lieDownFactorModel == 0f)
             {
                 ComponentMount componentMount = (m_componentRider != null) ? m_componentRider.Mount : null;
-                float num = MathUtils.Sin((float)Math.PI * 2f * base.MovementAnimationPhase);
-                position.Y += base.Bob;
+                float num = MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase);
+                position.Y += Bob;
                 vector.X += m_headingOffset;
-                float num2 = (float)MathUtils.Remainder(0.75 * m_subsystemGameInfo.TotalElapsedGameTime + (double)(GetHashCode() & 0xFFFF), 10000.0);
+                float num2 = (float)MathUtils.Remainder(0.75 * m_subsystemGameInfo.TotalElapsedGameTime + (GetHashCode() & 0xFFFF), 10000.0);
                 float x = MathUtils.Clamp(MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.Noise(1.02f * num2 - 100f)) + m_componentCreature.ComponentLocomotion.LookAngles.X + 1f * m_componentCreature.ComponentLocomotion.LastTurnOrder.X + m_headingOffset, 0f - MathUtils.DegToRad(80f), MathUtils.DegToRad(80f));
                 float y = MathUtils.Clamp(MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.Noise(0.96f * num2 - 200f)) + m_componentCreature.ComponentLocomotion.LookAngles.Y, 0f - MathUtils.DegToRad(45f), MathUtils.DegToRad(45f));
                 float num3 = 0f;
@@ -276,7 +266,7 @@ namespace Game
                     y2 = MathUtils.Lerp(0f, 0.25f, SimplexNoise.Noise(1.07f * num2 + 400f));
                     y3 = 0f - MathUtils.Lerp(0f, 0.25f, SimplexNoise.Noise(0.93f * num2 + 500f));
                 }
-                else if (base.MovementAnimationPhase != 0f)
+                else if (MovementAnimationPhase != 0f)
                 {
                     num4 = -0.5f * num;
                     num6 = 0.5f * num;
@@ -342,7 +332,7 @@ namespace Game
             }
             else
             {
-                float num25 = MathUtils.Max(base.DeathPhase, m_lieDownFactorModel);
+                float num25 = MathUtils.Max(DeathPhase, m_lieDownFactorModel);
                 float num26 = 1f - num25;
                 Vector3 position2 = position + num25 * 0.5f * m_componentCreature.ComponentBody.BoxSize.Y * Vector3.Normalize(m_componentCreature.ComponentBody.Matrix.Forward * new Vector3(1f, 0f, 1f)) + num25 * Vector3.UnitY * m_componentCreature.ComponentBody.BoxSize.Z * 0.1f;
                 SetBoneTransform(m_bodyBone.Index, Matrix.CreateFromYawPitchRoll(vector.X, (float)Math.PI / 2f * num25, 0f) * Matrix.CreateTranslation(position2));
@@ -361,7 +351,7 @@ namespace Game
             {
                 int num = Terrain.ExtractContents(m_componentMiner.ActiveBlockValue);
                 Block block = BlocksManager.Blocks[num];
-                Matrix m = base.AbsoluteBoneTransformsForCamera[m_hand2Bone.Index];
+                Matrix m = AbsoluteBoneTransformsForCamera[m_hand2Bone.Index];
                 m *= camera.InvertedViewMatrix;
                 m.Right = Vector3.Normalize(m.Right);
                 m.Up = Vector3.Normalize(m.Up);
@@ -387,14 +377,14 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
             base.Load(valuesDictionary, idToEntityMap);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemModelsRenderer = base.Project.FindSubsystem<SubsystemModelsRenderer>(throwOnError: true);
-            m_subsystemNoise = base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_componentMiner = base.Entity.FindComponent<ComponentMiner>();
-            m_componentRider = base.Entity.FindComponent<ComponentRider>();
-            m_componentSleep = base.Entity.FindComponent<ComponentSleep>();
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>();
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemModelsRenderer = Project.FindSubsystem<SubsystemModelsRenderer>(throwOnError: true);
+            m_subsystemNoise = Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_componentMiner = Entity.FindComponent<ComponentMiner>();
+            m_componentRider = Entity.FindComponent<ComponentRider>();
+            m_componentSleep = Entity.FindComponent<ComponentSleep>();
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>();
             m_walkAnimationSpeed = valuesDictionary.GetValue<float>("WalkAnimationSpeed");
             m_walkBobHeight = valuesDictionary.GetValue<float>("WalkBobHeight");
             m_walkLegsAngle = valuesDictionary.GetValue<float>("WalkLegsAngle");
@@ -403,14 +393,14 @@ namespace Game
         public override void SetModel(Model model)
         {
             base.SetModel(model);
-            if (base.Model != null)
+            if (Model != null)
             {
-                m_bodyBone = base.Model.FindBone("Body");
-                m_headBone = base.Model.FindBone("Head");
-                m_leg1Bone = base.Model.FindBone("Leg1");
-                m_leg2Bone = base.Model.FindBone("Leg2");
-                m_hand1Bone = base.Model.FindBone("Hand1");
-                m_hand2Bone = base.Model.FindBone("Hand2");
+                m_bodyBone = Model.FindBone("Body");
+                m_headBone = Model.FindBone("Head");
+                m_leg1Bone = Model.FindBone("Leg1");
+                m_leg2Bone = Model.FindBone("Leg2");
+                m_hand1Bone = Model.FindBone("Hand1");
+                m_hand2Bone = Model.FindBone("Hand2");
             }
             else
             {
@@ -430,7 +420,7 @@ namespace Game
             float num2 = 0.875f * m_componentCreature.ComponentBody.BoxSize.Y;
             float num3 = MathUtils.Lerp(MathUtils.Lerp(num2, 0.45f * num2, num), 0.2f * num2, f);
             Matrix matrix = m_componentCreature.ComponentBody.Matrix;
-            return m_componentCreature.ComponentBody.Position + matrix.Up * (num3 + 2f * base.Bob) + matrix.Forward * -0.2f * num;
+            return m_componentCreature.ComponentBody.Position + matrix.Up * (num3 + 2f * Bob) + matrix.Forward * -0.2f * num;
         }
 
         public override Quaternion CalculateEyeRotation()

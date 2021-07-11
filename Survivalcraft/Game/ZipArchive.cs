@@ -63,7 +63,7 @@ namespace Game
 
         public static ZipArchive Open(Stream stream, bool keepStreamOpen = false)
         {
-            ZipArchive zipArchive = new ZipArchive();
+            var zipArchive = new ZipArchive();
             zipArchive.ZipFileStream = stream;
             zipArchive.ReadOnly = true;
             zipArchive.KeepStreamOpen = keepStreamOpen;
@@ -80,7 +80,7 @@ namespace Game
             {
                 throw new InvalidOperationException("Writing is not allowed");
             }
-            ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry();
+            var zipArchiveEntry = new ZipArchiveEntry();
             zipArchiveEntry.Method = Compression.Deflate;
             zipArchiveEntry.FilenameInZip = NormalizedFilename(filenameInZip);
             zipArchiveEntry.Comment = string.Empty;
@@ -133,7 +133,7 @@ namespace Game
             {
                 throw new InvalidOperationException("Central directory currently does not exist");
             }
-            List<ZipArchiveEntry> list = new List<ZipArchiveEntry>();
+            var list = new List<ZipArchiveEntry>();
             ushort num;
             ushort num2;
             ushort num3;
@@ -150,7 +150,7 @@ namespace Game
                 uint headerOffset = BitConverter.ToUInt32(CentralDirImage, i + 42);
                 uint headerSize = (uint)(46 + num + num2 + num3);
                 Encoding uTF = Encoding.UTF8;
-                ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry();
+                var zipArchiveEntry = new ZipArchiveEntry();
                 zipArchiveEntry.Method = (Compression)method;
                 zipArchiveEntry.FilenameInZip = NormalizedFilename(uTF.GetString(CentralDirImage, i + 46, num));
                 zipArchiveEntry.FileOffset = GetFileOffset(headerOffset);
@@ -384,7 +384,7 @@ namespace Game
             try
             {
                 ZipFileStream.Seek(-17L, SeekOrigin.End);
-                BinaryReader binaryReader = new BinaryReader(ZipFileStream);
+                var binaryReader = new BinaryReader(ZipFileStream);
                 do
                 {
                     ZipFileStream.Seek(-5L, SeekOrigin.Current);

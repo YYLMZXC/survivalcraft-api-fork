@@ -41,8 +41,8 @@ namespace Game
         public OnFireParticleSystem()
             : base(25)
         {
-            base.Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
-            base.TextureSlotsCount = 3;
+            Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
+            TextureSlotsCount = 3;
         }
 
         public override bool Simulate(float dt)
@@ -52,9 +52,9 @@ namespace Game
             {
                 m_toGenerate += 20f * dt;
                 float num = MathUtils.Pow(0.02f, dt);
-                for (int i = 0; i < base.Particles.Length; i++)
+                for (int i = 0; i < Particles.Length; i++)
                 {
-                    Particle particle = base.Particles[i];
+                    Particle particle = Particles[i];
                     if (particle.IsActive)
                     {
                         flag = true;
@@ -76,7 +76,7 @@ namespace Game
                         if (m_toGenerate >= 1f)
                         {
                             particle.IsActive = true;
-                            Vector3 v = new Vector3(m_random.Float(-1f, 1f), m_random.Float(0f, 1f), m_random.Float(-1f, 1f));
+                            var v = new Vector3(m_random.Float(-1f, 1f), m_random.Float(0f, 1f), m_random.Float(-1f, 1f));
                             particle.Position = Position + 0.75f * Radius * v;
                             particle.Color = Color.White;
                             particle.Velocity = 1.5f * v;

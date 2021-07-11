@@ -43,18 +43,18 @@ namespace Game
             m_componentModel.SetBoneTransform(m_componentModel.Model.RootBone.Index, matrix);
             if (m_subsystemTime.GameTime - m_creationTime > 10.0 && m_subsystemViews.CalculateDistanceFromNearestView(matrix.Translation) > m_subsystemSky.VisibilityRange + 30f)
             {
-                base.Project.RemoveEntity(base.Entity, disposeEntity: true);
+                Project.RemoveEntity(Entity, disposeEntity: true);
             }
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemViews = base.Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_componentFrame = base.Entity.FindComponent<ComponentFrame>(throwOnError: true);
-            m_componentModel = base.Entity.FindComponent<ComponentModel>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemViews = Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_componentFrame = Entity.FindComponent<ComponentFrame>(throwOnError: true);
+            m_componentModel = Entity.FindComponent<ComponentModel>(throwOnError: true);
             m_creationTime = m_subsystemTime.GameTime;
             Heading = valuesDictionary.GetValue<float>("Heading");
         }

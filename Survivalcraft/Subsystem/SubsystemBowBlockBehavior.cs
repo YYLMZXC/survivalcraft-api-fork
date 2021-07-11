@@ -102,8 +102,8 @@ namespace Game
                                     if (arrowType.HasValue)
                                     {
                                         Vector3 vector = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.3f - componentMiner.ComponentCreature.ComponentBody.Matrix.Up * 0.2f;
-                                        Vector3 vector2 = Vector3.Normalize(vector + aim.Direction * 10f - vector);
-                                        float num4 = MathUtils.Lerp(0f, 28f, MathUtils.Pow((float)draw / 15f, 0.75f));
+                                        var vector2 = Vector3.Normalize(vector + aim.Direction * 10f - vector);
+                                        float num4 = MathUtils.Lerp(0f, 28f, MathUtils.Pow(draw / 15f, 0.75f));
                                         if (componentMiner.ComponentPlayer != null)
                                         {
                                             num4 *= 0.5f * (componentMiner.ComponentPlayer.ComponentLevel.StrengthFactor - 1f) + 1f;
@@ -118,8 +118,8 @@ namespace Game
                                             vector3 = new Vector3(0.01f, 0.01f, 0.01f);
                                         }
                                         int value2 = Terrain.MakeBlockValue(192, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
-                                        Vector3 vector4 = Vector3.Normalize(Vector3.Cross(vector2, Vector3.UnitY));
-                                        Vector3 v2 = Vector3.Normalize(Vector3.Cross(vector2, vector4));
+                                        var vector4 = Vector3.Normalize(Vector3.Cross(vector2, Vector3.UnitY));
+                                        var v2 = Vector3.Normalize(Vector3.Cross(vector2, vector4));
                                         Vector3 v3 = m_random.Float(0f - vector3.X, vector3.X) * vector4 + m_random.Float(0f - vector3.Y, vector3.Y) * v2 + m_random.Float(0f - vector3.Z, vector3.Z) * vector2;
                                         if (m_subsystemProjectiles.FireProjectile(value2, vector, (vector2 + v3) * num4, Vector3.Zero, componentMiner.ComponentCreature) != null)
                                         {
@@ -189,9 +189,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemProjectiles = base.Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
             base.Load(valuesDictionary);
         }
     }

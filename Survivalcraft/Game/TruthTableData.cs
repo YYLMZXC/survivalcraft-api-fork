@@ -59,7 +59,7 @@ namespace Game
 
         public string SaveString()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             for (int i = 0; i < Data.Length; i++)
             {
                 int index = MathUtils.Clamp(Data[i], 0, 15);
@@ -70,7 +70,7 @@ namespace Game
 
         public string SaveBinaryString()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             for (int i = 0; i < Data.Length; i++)
             {
                 stringBuilder.Append((Data[i] != 0) ? '1' : '0');

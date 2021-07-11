@@ -106,10 +106,10 @@ namespace Game
                 m_topmostBelowValue = m_subsystemWeather.SubsystemTerrain.Terrain.GetCellValue(Point.X, precipitationShaftInfo.YLimit - 2, Point.Y);
             }
             Camera activeCamera = m_gameWidget.ActiveCamera;
-            if (!m_isEmpty || (m_intensity > 0f && (float)m_yLimit < activeCamera.ViewPosition.Y + 5f))
+            if (!m_isEmpty || (m_intensity > 0f && m_yLimit < activeCamera.ViewPosition.Y + 5f))
             {
-                Vector2 v = Vector2.Normalize(new Vector2(activeCamera.ViewDirection.X, activeCamera.ViewDirection.Z));
-                Vector2 v2 = Vector2.Normalize(new Vector2((float)Point.X + 0.5f - activeCamera.ViewPosition.X + 0.7f * v.X, (float)Point.Y + 0.5f - activeCamera.ViewPosition.Z + 0.7f * v.Y));
+                var v = Vector2.Normalize(new Vector2(activeCamera.ViewDirection.X, activeCamera.ViewDirection.Z));
+                var v2 = Vector2.Normalize(new Vector2(Point.X + 0.5f - activeCamera.ViewPosition.X + 0.7f * v.X, Point.Y + 0.5f - activeCamera.ViewPosition.Z + 0.7f * v.Y));
                 float num = Vector2.Dot(v, v2);
                 m_isVisible = (num > 0.5f);
                 if (m_isVisible)
@@ -142,10 +142,10 @@ namespace Game
                         num4 = num2;
                         num5 = num3;
                     }
-                    float num6 = (num5 - num4) / 10f * (float)m_particles.Length * m_intensity;
-                    int num7 = (int)num6 + ((m_random.Float(0f, 1f) < num6 - (float)(int)num6) ? 1 : 0);
+                    float num6 = (num5 - num4) / 10f * m_particles.Length * m_intensity;
+                    int num7 = (int)num6 + ((m_random.Float(0f, 1f) < num6 - (int)num6) ? 1 : 0);
                     m_lastViewY = y;
-                    m_toCreate += (float)m_particles.Length * m_intensity / 10f * m_averageSpeed * dt;
+                    m_toCreate += m_particles.Length * m_intensity / 10f * m_averageSpeed * dt;
                     m_isEmpty = true;
                     float num8 = (m_precipitationType == PrecipitationType.Rain) ? 0f : 0.03f;
                     for (int i = 0; i < m_particles.Length; i++)
@@ -153,7 +153,7 @@ namespace Game
                         Particle particle = m_particles[i];
                         if (particle.IsActive)
                         {
-                            if (particle.YLimit == 0f && particle.Position.Y <= (float)m_yLimit + num8)
+                            if (particle.YLimit == 0f && particle.Position.Y <= m_yLimit + num8)
                             {
                                 RaycastParticle(particle);
                             }
@@ -179,19 +179,19 @@ namespace Game
                         }
                         else if (num7 > 0)
                         {
-                            particle.Position.X = (float)Point.X + m_random.Float(0f, 1f);
+                            particle.Position.X = Point.X + m_random.Float(0f, 1f);
                             particle.Position.Y = m_random.Float(num4, num5);
-                            particle.Position.Z = (float)Point.Y + m_random.Float(0f, 1f);
-                            particle.IsActive = (particle.Position.Y >= (float)m_yLimit);
+                            particle.Position.Z = Point.Y + m_random.Float(0f, 1f);
+                            particle.IsActive = (particle.Position.Y >= m_yLimit);
                             particle.YLimit = 0f;
                             num7--;
                         }
                         else if (m_toCreate >= 1f)
                         {
-                            particle.Position.X = (float)Point.X + m_random.Float(0f, 1f);
+                            particle.Position.X = Point.X + m_random.Float(0f, 1f);
                             particle.Position.Y = m_random.Float(num3 - m_averageSpeed * dt, num3);
-                            particle.Position.Z = (float)Point.Y + m_random.Float(0f, 1f);
-                            particle.IsActive = (particle.Position.Y >= (float)m_yLimit);
+                            particle.Position.Z = Point.Y + m_random.Float(0f, 1f);
+                            particle.IsActive = (particle.Position.Y >= m_yLimit);
                             particle.YLimit = 0f;
                             m_toCreate -= 1f;
                         }
@@ -218,7 +218,7 @@ namespace Game
             }
             float num = camera.ViewPosition.Y + 5f;
             Vector3 viewDirection = camera.ViewDirection;
-            Vector3 vector = Vector3.Normalize(Vector3.Cross(viewDirection, Vector3.UnitY));
+            var vector = Vector3.Normalize(Vector3.Cross(viewDirection, Vector3.UnitY));
             Vector3 v = (m_precipitationType == PrecipitationType.Rain) ? Vector3.UnitY : Vector3.Normalize(Vector3.Cross(viewDirection, vector));
             Vector3 vector2 = vector * m_size.X;
             Vector3 vector3 = v * m_size.Y;
@@ -269,10 +269,8 @@ namespace Game
             {
                 return;
             }
-            Ray3 ray = new Ray3(new Vector3(particle.Position.X - (float)Point.X, 1f, particle.Position.Z - (float)Point.Y), -Vector3.UnitY);
-            int nearestBoxIndex;
-            BoundingBox nearestBox;
-            float? num = block.Raycast(ray, m_subsystemWeather.SubsystemTerrain, m_topmostValue, useInteractionBoxes: false, out nearestBoxIndex, out nearestBox);
+            var ray = new Ray3(new Vector3(particle.Position.X - Point.X, 1f, particle.Position.Z - Point.Y), -Vector3.UnitY);
+            float? num = block.Raycast(ray, m_subsystemWeather.SubsystemTerrain, m_topmostValue, useInteractionBoxes: false, out int nearestBoxIndex, out BoundingBox nearestBox);
             if (num.HasValue)
             {
                 particle.YLimit -= num.Value;
@@ -324,7 +322,7 @@ namespace Game
                             Particle particle = m_particles[i];
                             particle.IsActive = false;
                             particle.TextureSlot = (byte)m_random.Int(0, 15);
-                            Vector2 v = new Vector2((int)particle.TextureSlot % 4, (int)particle.TextureSlot / 4) * num;
+                            Vector2 v = new Vector2(particle.TextureSlot % 4, particle.TextureSlot / 4) * num;
                             particle.TexCoord1 = v + new Vector2(0f, 0f);
                             particle.TexCoord2 = v + new Vector2(num, 0f);
                             particle.TexCoord3 = v + new Vector2(num, num);

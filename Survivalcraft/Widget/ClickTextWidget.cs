@@ -25,18 +25,18 @@ namespace Game
         }
         public override void Draw(DrawContext dc)
         {
-            Matrix m = base.GlobalTransform;
+            Matrix m = GlobalTransform;
             Vector2 v = Vector2.Zero;
-            Vector2 v2 = new Vector2(base.ActualSize.X, 0f);
-            Vector2 v3 = base.ActualSize;
-            Vector2 v4 = new Vector2(0f, base.ActualSize.Y);
+            var v2 = new Vector2(ActualSize.X, 0f);
+            Vector2 v3 = ActualSize;
+            var v4 = new Vector2(0f, ActualSize.Y);
             Vector2.Transform(ref v, ref m, out Vector2 result);
             Vector2.Transform(ref v2, ref m, out Vector2 result2);
             Vector2.Transform(ref v3, ref m, out Vector2 result3);
             Vector2.Transform(ref v4, ref m, out Vector2 result4);
             FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(1,DepthStencilState.DepthWrite);
-            Vector2 vector = Vector2.Normalize(base.GlobalTransform.Right.XY);
-            Vector2 v5 = -Vector2.Normalize(base.GlobalTransform.Up.XY);
+            var vector = Vector2.Normalize(GlobalTransform.Right.XY);
+            Vector2 v5 = -Vector2.Normalize(GlobalTransform.Up.XY);
             for (int i = 0; i < 1; i++)
             {
                 flatBatch2D.QueueLine(result, result2, 1f, BorderColor);

@@ -17,7 +17,7 @@ namespace Game
             if (!Storage.DirectoryExists(directoryName)) {
                 Storage.CreateDirectory(directoryName);
             }
-            this.DirectoryName = directoryName;
+            DirectoryName = directoryName;
 
         }
         public bool LoadChunk(TerrainChunk chunk)
@@ -52,7 +52,7 @@ namespace Game
                     {
                         using (Stream memory = ModsManager.StreamDecompress(stream))
                         {
-                            BinaryReader binaryReader = new BinaryReader(memory);
+                            var binaryReader = new BinaryReader(memory);
                             int CellsCount = binaryReader.ReadInt32();
                             for (int i = 0; i < CellsCount; i++)
                             {
@@ -99,9 +99,9 @@ namespace Game
                 }
                 using (Stream stream = Storage.OpenFile(saveFile, OpenFileMode.ReadWrite))
                 {
-                    using (MemoryStream streamSave = new MemoryStream())
+                    using (var streamSave = new MemoryStream())
                     {
-                        BinaryWriter binaryWriter = new BinaryWriter(streamSave);
+                        var binaryWriter = new BinaryWriter(streamSave);
                         binaryWriter.Write(chunk.Cells.Length);
                         for (int i = 0; i < chunk.Cells.Length; i++)
                         {

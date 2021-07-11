@@ -39,14 +39,14 @@ namespace Game
                 }
                 m_visibleSlotsCount = value;
                 ActiveSlotIndex = ActiveSlotIndex;
-                ComponentFrame componentFrame = base.Entity.FindComponent<ComponentFrame>();
+                ComponentFrame componentFrame = Entity.FindComponent<ComponentFrame>();
                 if (componentFrame != null)
                 {
                     Vector3 position = componentFrame.Position + new Vector3(0f, 0.5f, 0f);
                     Vector3 velocity = 1f * componentFrame.Rotation.GetForwardVector();
                     for (int i = m_visibleSlotsCount; i < 10; i++)
                     {
-                        ComponentInventoryBase.DropSlotItems(this, i, position, velocity);
+                        DropSlotItems(this, i, position, velocity);
                     }
                 }
             }

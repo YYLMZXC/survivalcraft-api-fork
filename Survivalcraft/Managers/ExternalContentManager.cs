@@ -224,7 +224,7 @@ namespace Game
             {
                 Action loginAction = delegate
                 {
-                    CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 5), autoHideOnCancel: true);
+                    var busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 5), autoHideOnCancel: true);
                     DialogsManager.ShowDialog(null, busyDialog);
                     provider.Login(busyDialog.Progress, delegate
                     {
@@ -270,7 +270,7 @@ namespace Game
                     {
                         ShowLoginUiIfNeeded(provider, showWarningDialog: true, delegate
                         {
-                            CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 10), autoHideOnCancel: false);
+                            var busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 10), autoHideOnCancel: false);
                             DialogsManager.ShowDialog(null, busyDialog);
                             Task.Run(delegate
                             {

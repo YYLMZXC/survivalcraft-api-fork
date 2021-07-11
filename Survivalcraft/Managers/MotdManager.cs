@@ -35,10 +35,7 @@ namespace Game
             set
             {
                 m_message = value;
-                if (MotdManager.MessageOfTheDayUpdated != null)
-                {
-                    MotdManager.MessageOfTheDayUpdated();
-                }
+                MessageOfTheDayUpdated?.Invoke();
             }
         }
 
@@ -61,7 +58,7 @@ namespace Game
         {
             if (Time.PeriodicEvent(1.0, 0.0))
             {
-                TimeSpan t = TimeSpan.FromHours(SettingsManager.MotdUpdatePeriodHours);
+                var t = TimeSpan.FromHours(SettingsManager.MotdUpdatePeriodHours);
                 DateTime now = DateTime.Now;
                 if (now >= SettingsManager.MotdLastUpdateTime + t)
                 {
@@ -105,7 +102,7 @@ namespace Game
         public static string UnpackMotd(byte[] data)
         {
             const string text = "motd.xml";
-            using (MemoryStream stream = new MemoryStream(data))
+            using (var stream = new MemoryStream(data))
                 return new StreamReader(stream).ReadToEnd();
             throw new InvalidOperationException($"\"{text}\" file not found in Motd zip archive.");
         }
@@ -128,12 +125,12 @@ namespace Game
                 SettingsManager.MotdUpdatePeriodHours = XmlUtils.GetAttributeValue(xElement, "UpdatePeriodHours", 24);
                 SettingsManager.MotdUpdateUrl = XmlUtils.GetAttributeValue(xElement, "UpdateUrl", SettingsManager.MotdUpdateUrl);
                 SettingsManager.MotdBackupUpdateUrl = XmlUtils.GetAttributeValue(xElement, "BackupUpdateUrl", SettingsManager.MotdBackupUpdateUrl);
-                Message message = new Message();
+                var message = new Message();
                 foreach (XElement item2 in xElement.Elements())
                 {
                     if (Widget.IsNodeIncludedOnCurrentPlatform(item2))
                     {
-                        Line item = new Line
+                        var item = new Line
                         {
                             Time = XmlUtils.GetAttributeValue<float>(item2, "Time"),
                             Node = item2.Elements().FirstOrDefault(),

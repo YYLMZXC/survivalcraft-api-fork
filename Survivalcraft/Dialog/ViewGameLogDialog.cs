@@ -25,7 +25,7 @@ namespace Game
         public ViewGameLogDialog()
         {
             m_uploadButton = new BevelledButtonWidget() { Style = ContentManager.Get<XElement>("Styles/ButtonStyle_160x60") ,VerticalAlignment=WidgetAlignment.Center,Text="上传"};
-            CanvasWidget canvasWidget = new CanvasWidget() { Size=new Vector2(40,0)};
+            var canvasWidget = new CanvasWidget() { Size=new Vector2(40,0)};
             XElement node = ContentManager.Get<XElement>("Dialogs/ViewGameLogDialog");
             LoadContents(this, node);
             m_listPanel = Children.Find<ListPanelWidget>("ViewGameLogDialog.ListPanel");
@@ -39,7 +39,7 @@ namespace Game
             {
                 if (m_listPanel.SelectedItem == item)
                 {
-                    DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog("Log Item", item.ToString(), "OK", null, null));
+                    DialogsManager.ShowDialog(ParentWidget, new MessageDialog("Log Item", item.ToString(), "OK", null, null));
                 }
             };
             PopulateList();
@@ -57,17 +57,13 @@ namespace Game
                 {
                     m_filter = LogType.Warning;
                 }
-                else if (m_filter < LogType.Error)
-                {
-                    m_filter = LogType.Error;
-                }
                 else
                 {
-                    m_filter = LogType.Debug;
+                    m_filter = m_filter < LogType.Error ? LogType.Error : LogType.Debug;
                 }
                 PopulateList();
             }
-            if (base.Input.Cancel || m_closeButton.IsClicked)
+            if (Input.Cancel || m_closeButton.IsClicked)
             {
                 DialogsManager.HideDialog(this);
             }
@@ -86,22 +82,22 @@ namespace Game
             if (m_uploadButton.IsClicked) {
                 if (string.IsNullOrEmpty(SettingsManager.ScpboxAccessToken))
                 {
-                    MessageDialog messageDialog = new MessageDialog("错误", "请登陆后进行日志提交操作","确定","取消",(btn)=> {
+                    var messageDialog = new MessageDialog("错误", "请登陆后进行日志提交操作","确定","取消",(btn)=> {
                         DialogsManager.HideAllDialogs();
                     });
                     DialogsManager.ShowDialog(this, messageDialog);
                 }
                 else {
-                    CancellableProgress cancellableProgress = new CancellableProgress();
-                    CancellableBusyDialog dialog = new CancellableBusyDialog("上传日志中...", true);
+                    var cancellableProgress = new CancellableProgress();
+                    var dialog = new CancellableBusyDialog("上传日志中...", true);
                     DialogsManager.ShowDialog(this, dialog);
-                    JsonObject jsonObject = new JsonObject();
+                    var jsonObject = new JsonObject();
                     jsonObject.Add("path", "/GameLog/" + DateTime.Now.Ticks + ".log");
-                    Dictionary<string, string> dictionary = new Dictionary<string, string>();
+                    var dictionary = new Dictionary<string, string>();
                     dictionary.Add("Authorization", "Bearer " + SettingsManager.ScpboxAccessToken);
                     dictionary.Add("Content-Type", "application/octet-stream");
                     dictionary.Add("Dropbox-API-Arg", jsonObject.ToString());
-                    MemoryStream memoryStream = new MemoryStream();
+                    var memoryStream = new MemoryStream();
                     GameLogSink.m_stream.Seek(0,SeekOrigin.Begin);
                     GameLogSink.m_stream.CopyTo(memoryStream);
                     memoryStream.Seek(0,SeekOrigin.Begin);
@@ -169,7 +165,7 @@ namespace Game
                 }
                 m_listPanel.AddItem(item);
             }
-            m_listPanel.ScrollPosition = (float)m_listPanel.Items.Count * m_listPanel.ItemSize;
+            m_listPanel.ScrollPosition = m_listPanel.Items.Count * m_listPanel.ItemSize;
         }
     }
 }

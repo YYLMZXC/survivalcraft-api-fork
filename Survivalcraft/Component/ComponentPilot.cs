@@ -97,7 +97,7 @@ namespace Game
             bool flag = true;
             if (Destination.HasValue && destination.HasValue)
             {
-                Vector3 v = Vector3.Normalize(Destination.Value - m_componentCreature.ComponentBody.Position);
+                var v = Vector3.Normalize(Destination.Value - m_componentCreature.ComponentBody.Position);
                 if (Vector3.Dot(Vector3.Normalize(destination.Value - m_componentCreature.ComponentBody.Position), v) > 0.5f)
                 {
                     flag = false;
@@ -127,7 +127,7 @@ namespace Game
         {
             if (m_subsystemTime.GameTime >= m_nextUpdateTime)
             {
-                m_nextUpdateTime = m_subsystemTime.GameTime + (double)m_random.Float(0.09f, 0.11f);
+                m_nextUpdateTime = m_subsystemTime.GameTime + m_random.Float(0.09f, 0.11f);
                 m_walkOrder = null;
                 m_flyOrder = null;
                 m_swimOrder = null;
@@ -144,7 +144,7 @@ namespace Game
                     float num2 = vector2.LengthSquared();
                     float x = Vector2.Angle(forward.XZ, vector.XZ);
                     float num3 = ((m_componentCreature.ComponentBody.CollisionVelocityChange * new Vector3(1f, 0f, 1f)).LengthSquared() > 0f && m_componentCreature.ComponentBody.StandingOnValue.HasValue) ? 0.15f : 0.4f;
-                    if (m_subsystemTime.GameTime >= m_lastStuckCheckTime + (double)num3 || !m_lastStuckCheckPosition.HasValue)
+                    if (m_subsystemTime.GameTime >= m_lastStuckCheckTime + num3 || !m_lastStuckCheckPosition.HasValue)
                     {
                         m_lastStuckCheckTime = m_subsystemTime.GameTime;
                         if (MathUtils.Abs(x) > MathUtils.DegToRad(20f) || !m_lastStuckCheckPosition.HasValue || Vector3.Dot(position - m_lastStuckCheckPosition.Value, Vector3.Normalize(vector)) > 0.2f)
@@ -197,14 +197,7 @@ namespace Game
                         {
                             IsStuck = true;
                         }
-                        if (num2 < 1f && vector.Y < -0.1f)
-                        {
-                            m_componentCreature.ComponentBody.IsSmoothRiseEnabled = false;
-                        }
-                        else
-                        {
-                            m_componentCreature.ComponentBody.IsSmoothRiseEnabled = true;
-                        }
+                        m_componentCreature.ComponentBody.IsSmoothRiseEnabled = num2 >= 1f || vector.Y >= -0.1f;
                         if (num2 < 1f && (vector.Y < -0.5f || vector.Y > 1f))
                         {
                             if (vector.Y > 0f && m_random.Float(0f, 1f) < 0.05f)
@@ -258,10 +251,10 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
         }
 
         public bool IsTerrainSafeToGo(Vector3 position, Vector3 direction)
@@ -347,7 +340,7 @@ namespace Game
                 if (v2.LengthSquared() < num * num)
                 {
                     float num2 = v.Length();
-                    Vector2 v3 = Vector2.Normalize(xZ + Vector2.Normalize(v2) * num - position.XZ);
+                    var v3 = Vector2.Normalize(xZ + Vector2.Normalize(v2) * num - position.XZ);
                     if (Vector2.Dot(v / num2, v3) > 0.5f)
                     {
                         return new Vector3(position.X + v3.X * num2, destination.Y, position.Z + v3.Y * num2);

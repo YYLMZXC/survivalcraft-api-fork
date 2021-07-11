@@ -36,17 +36,17 @@ namespace Game
                 Matrix matrix = boneAbsoluteTransform * Matrix.CreateTranslation(0.5f, (i == 0) ? 0f : 0.5f, 0.5f);
                 m_uncoloredBlockMeshes[i] = new BlockMesh();
                 m_uncoloredBlockMeshes[i].AppendModelMeshPart(meshPart, matrix, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-                m_uncoloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
+                m_uncoloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
                 m_uncoloredBlockMeshes[i].GenerateSidesData();
                 m_coloredBlockMeshes[i] = new BlockMesh();
                 m_coloredBlockMeshes[i].AppendModelMeshPart(meshPart, matrix, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
                 m_coloredBlockMeshes[i].GenerateSidesData();
             }
             m_standaloneUncoloredBlockMesh.AppendModelMeshPart(meshPart, boneAbsoluteTransform * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-            m_standaloneUncoloredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
+            m_standaloneUncoloredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
             m_standaloneColoredBlockMesh.AppendModelMeshPart(meshPart, boneAbsoluteTransform * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
             m_collisionBoxes[0] = new BoundingBox[1]
             {
                 new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f))
@@ -92,7 +92,7 @@ namespace Game
             if (num2 == num && ((GetIsTop(data2) && raycastResult.CellFace.Face == 5) || (!GetIsTop(data2) && raycastResult.CellFace.Face == 4)))
             {
                 int value2 = Terrain.MakeBlockValue(m_fullBlockIndex, 0, 0);
-                IPaintableBlock paintableBlock = BlocksManager.Blocks[m_fullBlockIndex] as IPaintableBlock;
+                var paintableBlock = BlocksManager.Blocks[m_fullBlockIndex] as IPaintableBlock;
                 if (paintableBlock != null)
                 {
                     int? color = GetColor(data);
@@ -100,13 +100,13 @@ namespace Game
                 }
                 CellFace cellFace = raycastResult.CellFace;
                 cellFace.Point -= CellFace.FaceToPoint3(cellFace.Face);
-                result = default(BlockPlacementData);
+                result = default;
                 result.Value = value2;
                 result.CellFace = cellFace;
                 return result;
             }
-            bool isTop = (raycastResult.CellFace.Face >= 4) ? (raycastResult.CellFace.Face == 5) : (raycastResult.HitPoint().Y - (float)raycastResult.CellFace.Y > 0.5f);
-            result = default(BlockPlacementData);
+            bool isTop = (raycastResult.CellFace.Face >= 4) ? (raycastResult.CellFace.Face == 5) : (raycastResult.HitPoint().Y - raycastResult.CellFace.Y > 0.5f);
+            result = default;
             result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetIsTop(data, isTop));
             result.CellFace = raycastResult.CellFace;
             return result;
