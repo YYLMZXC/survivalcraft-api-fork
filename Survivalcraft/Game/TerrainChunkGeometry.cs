@@ -12,6 +12,8 @@ namespace Game
 
             public IndexBuffer IndexBuffer;
 
+            public Texture2D Texture;
+
             public int[] SubsetIndexBufferStarts = new int[7];
 
             public int[] SubsetIndexBufferEnds = new int[7];

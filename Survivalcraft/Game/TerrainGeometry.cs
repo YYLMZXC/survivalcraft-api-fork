@@ -1,6 +1,13 @@
+using Engine;
+using System.Collections.Generic;
 using Engine.Graphics;
 namespace Game
 {
+    public enum GeometryType
+    {
+        Opaque, Alphatest, Transparent
+    }
+
     public class TerrainGeometry
     {
         public TerrainGeometrySubset SubsetOpaque;
@@ -15,6 +22,20 @@ namespace Game
 
         public TerrainGeometrySubset[] TransparentSubsetsByFace;
 
-        public Texture2D Texture;
+        public Dictionary<Texture2D, TerrainChunkSliceGeometry> GeometrySubsets = new Dictionary<Texture2D, TerrainChunkSliceGeometry>();
+
+        public TerrainGeometry() { 
+        
+        }
+
+        public TerrainChunkSliceGeometry GetGeometry(Texture2D texture,GeometryType geometryType=GeometryType.Opaque)
+        {
+            if (GeometrySubsets.TryGetValue(texture, out TerrainChunkSliceGeometry subset)==false)
+            {
+                subset = new TerrainChunkSliceGeometry();
+                GeometrySubsets.Add(texture, subset);
+            }
+            return subset;
+        }
     }
 }

@@ -128,7 +128,7 @@ namespace Game
                 }
             }
         }
-        public static Action<TerrainChunk, bool> GenerateChunkVertices1;
+
         public struct UpdateLocation
         {
             public Vector2 Center;
@@ -1048,12 +1048,7 @@ namespace Game
 
         public void GenerateChunkVertices(TerrainChunk chunk, bool even)
         {
-            if (GenerateChunkVertices1 != null)
-            {
-                GenerateChunkVertices1(chunk, even);
-                return;
-            }
-            m_subsystemTerrain.BlockGeometryGenerator.ResetCache();
+            m_subsystemTerrain.BlockGeometryGenerator.ResetCache();            
             TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y - 1);
             TerrainChunk chunkAtCoords2 = m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y - 1);
             TerrainChunk chunkAtCoords3 = m_terrain.GetChunkAtCoords(chunk.Coords.X + 1, chunk.Coords.Y - 1);
@@ -1089,6 +1084,7 @@ namespace Game
                     continue;
                 }
                 TerrainChunkSliceGeometry terrainChunkSliceGeometry = chunk.Geometry.Slices[i];
+                terrainChunkSliceGeometry.GeometrySubsets.Clear();
                 chunk.SliceContentsHashes[i] = CalculateChunkSliceContentsHash(chunk, i);
                 if (terrainChunkSliceGeometry.ContentsHash != 0 && terrainChunkSliceGeometry.ContentsHash == chunk.SliceContentsHashes[i])
                 {
@@ -1139,7 +1135,7 @@ namespace Game
                             int num10 = Terrain.ExtractContents(cellValueFast);
                             if (num10 != 0)
                             {
-                                BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, chunk.Geometry.Slices[i], cellValueFast, num5, m, num6);
+                                BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, terrainChunkSliceGeometry, cellValueFast, num5, m, num6);
                             }
                         }
                     }

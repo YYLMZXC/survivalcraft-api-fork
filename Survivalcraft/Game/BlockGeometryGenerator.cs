@@ -74,19 +74,6 @@ namespace Game
             m_cornerLightsPosition = new Point3(2147483647);
         }
 
-        public static TerrainGeometry CreateGeometry()
-        {
-            var Geometry = new TerrainGeometry();
-            var terrainGeometrySubset = new TerrainGeometrySubset(new DynamicArray<TerrainVertex>(), new DynamicArray<ushort>());
-            Geometry.AlphaTestSubsetsByFace = new TerrainGeometrySubset[6] { terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset };
-            Geometry.OpaqueSubsetsByFace = new TerrainGeometrySubset[6] { terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset };
-            Geometry.TransparentSubsetsByFace = new TerrainGeometrySubset[6] { terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset };
-            Geometry.SubsetAlphaTest = terrainGeometrySubset;
-            Geometry.SubsetOpaque = terrainGeometrySubset;
-            Geometry.SubsetTransparent = terrainGeometrySubset;
-            return Geometry;
-        }
-
         public static void SetupCornerVertex(float x, float y, float z, Color color, int light, int face, int textureSlot, int corner, ref TerrainVertex vertex)
         {
             float num = LightingManager.LightIntensityByLightValueAndFace[light + 16 * face];
