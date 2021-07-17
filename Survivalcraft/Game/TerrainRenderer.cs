@@ -158,6 +158,10 @@ namespace Game
             m_opaqueShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             m_opaqueShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
             m_opaqueShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+            try{ // 更好的着色器的新论据
+              m_opaqueShader.GetParameter("u_time").SetValue(m_subsystemSky.m_subsystemTimeOfDay.TimeOfDay);
+            }
+            catch {}
             ShaderParameter parameter = m_opaqueShader.GetParameter("u_fogStartInvLength");
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
@@ -202,6 +206,10 @@ namespace Game
             m_alphaTestedShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             m_alphaTestedShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
             m_alphaTestedShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+            try{ // 更好的着色器的新论据
+              m_alphaTestedShader.GetParameter("u_time").SetValue(m_subsystemSky.m_subsystemTimeOfDay.TimeOfDay);
+            }
+            catch {}
             ShaderParameter parameter = m_alphaTestedShader.GetParameter("u_fogStartInvLength");
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
@@ -229,6 +237,10 @@ namespace Game
             m_transparentShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             m_transparentShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
             m_transparentShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+            try{ // 更好的着色器的新论据
+              m_transparentShader.GetParameter("u_time").SetValue(m_subsystemSky.m_subsystemTimeOfDay.TimeOfDay);
+            }
+            catch {}
             ShaderParameter parameter = m_transparentShader.GetParameter("u_fogStartInvLength");
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
@@ -272,7 +284,7 @@ namespace Game
 
 
         public void SetupChunkGeometryVertexIndexBuffers(TerrainChunk chunk,Texture2D texture, TerrainChunkSliceGeometry item) {
-            //����ԭ���Geometry
+            //����ԭ���Geometry
             for (int x = 0; x < item.Subsets.Length; x++)
             {
                 if (CombileVertexAndIndex(item.Subsets[x], texture, out TerrainChunkGeometry.Buffer buffer))
@@ -363,3 +375,4 @@ namespace Game
         }
     }
 }
+
