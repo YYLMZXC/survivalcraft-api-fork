@@ -79,7 +79,7 @@ namespace FluxJpeg.Core.Decoder
 
 		private bool TryParseJFIF(byte[] data)
 		{
-			FluxJpeg.Core.IO.BinaryReader binaryReader = new FluxJpeg.Core.IO.BinaryReader(new MemoryStream(data));
+			var binaryReader = new FluxJpeg.Core.IO.BinaryReader(new MemoryStream(data));
 			int num = data.Length + 2;
 			if (num < JFIF_FIXED_LENGTH)
 			{
@@ -128,7 +128,7 @@ namespace FluxJpeg.Core.Decoder
 			int resetInterval = 0;
 			bool flag = false;
 			bool flag2 = false;
-			List<JpegHeader> list = new List<JpegHeader>();
+			var list = new List<JpegHeader>();
 			while (true)
 			{
 				if (DecodeProgress.Abort)

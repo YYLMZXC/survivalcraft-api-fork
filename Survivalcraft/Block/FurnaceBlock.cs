@@ -20,7 +20,7 @@ namespace Game
             {
                 m_blockMeshesByData[i] = new BlockMesh();
                 Matrix identity = Matrix.Identity;
-                identity *= Matrix.CreateRotationY((float)i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
+                identity *= Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                 m_blockMeshesByData[i].AppendModelMeshPart(model.FindMesh("Furnace").MeshParts[0], boneAbsoluteTransform * identity, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             }
             m_standaloneBlockMesh.AppendModelMeshPart(model.FindMesh("Furnace").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
@@ -70,7 +70,7 @@ namespace Game
             {
                 data = 1;
             }
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, 64), data);
             result.CellFace = raycastResult.CellFace;
             return result;

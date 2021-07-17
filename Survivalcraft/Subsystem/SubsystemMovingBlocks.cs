@@ -65,7 +65,7 @@ namespace Game
 
             public MovingBlockSet()
             {
-                TerrainGeometrySubset terrainGeometrySubset = new TerrainGeometrySubset(Vertices, Indices);
+                var terrainGeometrySubset = new TerrainGeometrySubset(Vertices, Indices);
                 Geometry = new TerrainGeometry();
                 Geometry.SubsetOpaque = terrainGeometrySubset;
                 Geometry.SubsetAlphaTest = terrainGeometrySubset;
@@ -108,20 +108,15 @@ namespace Game
                     point = (point.HasValue ? Point3.Min(point.Value, block.Offset) : block.Offset);
                     point2 = (point2.HasValue ? Point3.Max(point2.Value, block.Offset) : block.Offset);
                 }
-                if (point.HasValue)
-                {
-                    Box = new Box(point.Value.X, point.Value.Y, point.Value.Z, point2.Value.X - point.Value.X + 1, point2.Value.Y - point.Value.Y + 1, point2.Value.Z - point.Value.Z + 1);
-                }
-                else
-                {
-                    Box = default(Box);
-                }
+                Box = point.HasValue
+                    ? new Box(point.Value.X, point.Value.Y, point.Value.Z, point2.Value.X - point.Value.X + 1, point2.Value.Y - point.Value.Y + 1, point2.Value.Z - point.Value.Z + 1)
+                    : default;
             }
 
             public BoundingBox BoundingBox(bool extendToFillCells)
             {
-                Vector3 min = new Vector3(Position.X + (float)Box.Left, Position.Y + (float)Box.Top, Position.Z + (float)Box.Near);
-                Vector3 max = new Vector3(Position.X + (float)Box.Right, Position.Y + (float)Box.Bottom, Position.Z + (float)Box.Far);
+                var min = new Vector3(Position.X + Box.Left, Position.Y + Box.Top, Position.Z + Box.Near);
+                var max = new Vector3(Position.X + Box.Right, Position.Y + Box.Bottom, Position.Z + Box.Far);
                 if (extendToFillCells)
                 {
                     min.X = MathUtils.Floor(min.X);
@@ -200,7 +195,7 @@ namespace Game
 
         public IMovingBlockSet AddMovingBlockSet(Vector3 position, Vector3 targetPosition, float speed, float acceleration, float drag, Vector2 smoothness, IEnumerable<MovingBlock> blocks, string id, object tag, bool testCollision)
         {
-            MovingBlockSet movingBlockSet = new MovingBlockSet
+            var movingBlockSet = new MovingBlockSet
             {
                 Position = position,
                 StartPosition = position,
@@ -232,7 +227,7 @@ namespace Game
 
         public void RemoveMovingBlockSet(IMovingBlockSet movingBlockSet)
         {
-            MovingBlockSet movingBlockSet2 = (MovingBlockSet)movingBlockSet;
+            var movingBlockSet2 = (MovingBlockSet)movingBlockSet;
             if (m_movingBlockSets.Remove(movingBlockSet2))
             {
                 m_removing.Add(movingBlockSet2);
@@ -255,7 +250,7 @@ namespace Game
         {
             foreach (MovingBlockSet movingBlockSet in m_movingBlockSets)
             {
-                if (movingBlockSet.Id == id && object.Equals(movingBlockSet.Tag, tag))
+                if (movingBlockSet.Id == id && Equals(movingBlockSet.Tag, tag))
                 {
                     return movingBlockSet;
                 }
@@ -265,8 +260,8 @@ namespace Game
 
         public MovingBlocksRaycastResult? Raycast(Vector3 start, Vector3 end, bool extendToFillCells)
         {
-            Ray3 ray = new Ray3(start, Vector3.Normalize(end - start));
-            BoundingBox boundingBox = new BoundingBox(Vector3.Min(start, end), Vector3.Max(start, end));
+            var ray = new Ray3(start, Vector3.Normalize(end - start));
+            var boundingBox = new BoundingBox(Vector3.Min(start, end), Vector3.Max(start, end));
             m_result.Clear();
             FindMovingBlocks(boundingBox, extendToFillCells, m_result);
             float num = float.MaxValue;
@@ -283,7 +278,7 @@ namespace Game
             }
             if (movingBlockSet != null)
             {
-                MovingBlocksRaycastResult value = default(MovingBlocksRaycastResult);
+                MovingBlocksRaycastResult value = default;
                 value.Ray = ray;
                 value.Distance = num;
                 value.MovingBlockSet = movingBlockSet;
@@ -363,7 +358,7 @@ namespace Game
             }
             foreach (MovingBlockSet item in m_stopped)
             {
-                this.Stopped?.Invoke(item);
+                Stopped?.Invoke(item);
             }
             m_stopped.Clear();
         }
@@ -393,7 +388,7 @@ namespace Game
             if (m_vertices.Count > 0)
             {
                 Vector3 viewPosition = camera.ViewPosition;
-                Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+                var v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
                 Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
                 Display.BlendState = BlendState.Opaque;
                 Display.DepthStencilState = DepthStencilState.Default;
@@ -415,10 +410,10 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_subsystemAnimatedTextures = base.Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemAnimatedTextures = Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
             m_shader = new AlphaTestedShader();
             foreach (ValuesDictionary value9 in valuesDictionary.GetValue<ValuesDictionary>("MovingBlockSets").Values)
             {
@@ -430,14 +425,14 @@ namespace Game
                 Vector2 value6 = value9.GetValue("Smoothness", Vector2.Zero);
                 string value7 = value9.GetValue<string>("Id", null);
                 object value8 = value9.GetValue<object>("Tag", null);
-                List<MovingBlock> list = new List<MovingBlock>();
+                var list = new List<MovingBlock>();
                 string[] array = value9.GetValue<string>("Blocks").Split(new char[1]
                 {
                     ';'
                 }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string obj2 in array)
                 {
-                    MovingBlock item = default(MovingBlock);
+                    MovingBlock item = default;
                     string[] array2 = obj2.Split(new char[1]
                     {
                         ','
@@ -454,12 +449,12 @@ namespace Game
 
         public override void Save(ValuesDictionary valuesDictionary)
         {
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("MovingBlockSets", valuesDictionary2);
             int num = 0;
             foreach (MovingBlockSet movingBlockSet in m_movingBlockSets)
             {
-                ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+                var valuesDictionary3 = new ValuesDictionary();
                 valuesDictionary2.SetValue(num.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
                 valuesDictionary3.SetValue("Position", movingBlockSet.Position);
                 valuesDictionary3.SetValue("TargetPosition", movingBlockSet.TargetPosition);
@@ -478,7 +473,7 @@ namespace Game
                 {
                     valuesDictionary3.SetValue("Tag", movingBlockSet.Tag);
                 }
-                StringBuilder stringBuilder = new StringBuilder();
+                var stringBuilder = new StringBuilder();
                 foreach (MovingBlock block in movingBlockSet.Blocks)
                 {
                     stringBuilder.Append(HumanReadableConverter.ConvertToString(block.Value));
@@ -531,14 +526,14 @@ namespace Game
 
         public void TerrainCollision(MovingBlockSet movingBlockSet)
         {
-            Point3 point = default(Point3);
-            point.X = (int)MathUtils.Floor((float)movingBlockSet.Box.Left + movingBlockSet.Position.X);
-            point.Y = (int)MathUtils.Floor((float)movingBlockSet.Box.Top + movingBlockSet.Position.Y);
-            point.Z = (int)MathUtils.Floor((float)movingBlockSet.Box.Near + movingBlockSet.Position.Z);
-            Point3 point2 = default(Point3);
-            point2.X = (int)MathUtils.Ceiling((float)movingBlockSet.Box.Right + movingBlockSet.Position.X);
-            point2.Y = (int)MathUtils.Ceiling((float)movingBlockSet.Box.Bottom + movingBlockSet.Position.Y);
-            point2.Z = (int)MathUtils.Ceiling((float)movingBlockSet.Box.Far + movingBlockSet.Position.Z);
+            Point3 point = default;
+            point.X = (int)MathUtils.Floor(movingBlockSet.Box.Left + movingBlockSet.Position.X);
+            point.Y = (int)MathUtils.Floor(movingBlockSet.Box.Top + movingBlockSet.Position.Y);
+            point.Z = (int)MathUtils.Floor(movingBlockSet.Box.Near + movingBlockSet.Position.Z);
+            Point3 point2 = default;
+            point2.X = (int)MathUtils.Ceiling(movingBlockSet.Box.Right + movingBlockSet.Position.X);
+            point2.Y = (int)MathUtils.Ceiling(movingBlockSet.Box.Bottom + movingBlockSet.Position.Y);
+            point2.Z = (int)MathUtils.Ceiling(movingBlockSet.Box.Far + movingBlockSet.Position.Z);
             for (int i = point.X; i < point2.X; i++)
             {
                 for (int j = point.Z; j < point2.Z; j++)
@@ -547,7 +542,7 @@ namespace Game
                     {
                         if (Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(i, k, j)) != 0)
                         {
-                            this.CollidedWithTerrain?.Invoke(movingBlockSet, new Point3(i, k, j));
+                            CollidedWithTerrain?.Invoke(movingBlockSet, new Point3(i, k, j));
                         }
                     }
                 }
@@ -556,7 +551,7 @@ namespace Game
 
         public void GenerateGeometry(MovingBlockSet movingBlockSet)
         {
-            Point3 point = default(Point3);
+            Point3 point = default;
             point.X = ((movingBlockSet.CurrentVelocity.X > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.X)) : (point.X = (int)MathUtils.Ceiling(movingBlockSet.Position.X)));
             point.Y = ((movingBlockSet.CurrentVelocity.Y > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.Y)) : (point.Y = (int)MathUtils.Ceiling(movingBlockSet.Position.Y)));
             point.Z = ((movingBlockSet.CurrentVelocity.Z > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.Z)) : (point.Z = (int)MathUtils.Ceiling(movingBlockSet.Position.Z)));
@@ -564,14 +559,14 @@ namespace Game
             {
                 return;
             }
-            Point3 p = new Point3(movingBlockSet.Box.Left, movingBlockSet.Box.Top, movingBlockSet.Box.Near);
-            Point3 point2 = new Point3(movingBlockSet.Box.Width, movingBlockSet.Box.Height, movingBlockSet.Box.Depth);
+            var p = new Point3(movingBlockSet.Box.Left, movingBlockSet.Box.Top, movingBlockSet.Box.Near);
+            var point2 = new Point3(movingBlockSet.Box.Width, movingBlockSet.Box.Height, movingBlockSet.Box.Depth);
             point2.Y = MathUtils.Min(point2.Y, 254);
             if (m_blockGeometryGenerator == null)
             {
                 int x = 2;
                 x = (int)MathUtils.NextPowerOf2((uint)x);
-                m_blockGeometryGenerator = new BlockGeometryGenerator(new Terrain(), m_subsystemTerrain, null, base.Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true), null, base.Project.FindSubsystem<SubsystemPalette>(throwOnError: true));
+                m_blockGeometryGenerator = new BlockGeometryGenerator(new Terrain(), m_subsystemTerrain, null, Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true), null, Project.FindSubsystem<SubsystemPalette>(throwOnError: true));
                 for (int i = 0; i < x; i++)
                 {
                     for (int j = 0; j < x; j++)

@@ -23,7 +23,7 @@ namespace Engine.Content
 		public void Write(string projectDirectory, Stream stream)
 		{
 			new BinaryWriter(stream).Write(KeepSourceVertexDataInTags);
-			ModelData modelData = ModelData.Load(Storage.CombinePaths(projectDirectory, Model));
+			var modelData = ModelData.Load(Storage.CombinePaths(projectDirectory, Model));
 			ModelDataContentWriter.WriteModelData(stream, modelData, Transform);
 		}
 	}

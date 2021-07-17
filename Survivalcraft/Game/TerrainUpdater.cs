@@ -277,7 +277,7 @@ namespace Game
                     for (int j = point.Y; j <= point2.Y; j++)
                     {
                         TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(i, j);
-                        float num5 = Vector2.DistanceSquared(v2: new Vector2(((float)i + 0.5f) * 16f, ((float)j + 0.5f) * 16f), v1: value.Center);
+                        float num5 = Vector2.DistanceSquared(v2: new Vector2((i + 0.5f) * 16f, (j + 0.5f) * 16f), v1: value.Center);
                         if (num5 <= num3)
                         {
                             if (chunkAtCoords == null || chunkAtCoords.State < TerrainChunkState.Valid)
@@ -306,7 +306,7 @@ namespace Game
                 {
                     return 1f;
                 }
-                return (float)num / (float)(num2 + num);
+                return num / (float)(num2 + num);
             }
             return 0f;
         }
@@ -336,7 +336,7 @@ namespace Game
             else if (m_task == null)
             {
                 m_quitUpdateThread = false;
-                m_task = Task.Run((Action)ThreadUpdateFunction);
+                m_task = Task.Run(ThreadUpdateFunction);
                 UnpauseUpdateThread();
                 m_updateEvent.Set();
             }
@@ -499,7 +499,7 @@ namespace Game
                 {
                     for (int l = point.Y; l <= point2.Y; l++)
                     {
-                        Vector2 chunkCenter = new Vector2(((float)k + 0.5f) * 16f, ((float)l + 0.5f) * 16f);
+                        var chunkCenter = new Vector2((k + 0.5f) * 16f, (l + 0.5f) * 16f);
                         TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(k, l);
                         if (chunkAtCoords == null)
                         {
@@ -597,8 +597,7 @@ namespace Game
                 m_threadUpdateParameters = m_updateParameters;
                 SendReceiveChunkStatesThread();
             }
-            TerrainChunkState desiredState;
-            TerrainChunk terrainChunk = FindBestChunkToUpdate(out desiredState);
+            TerrainChunk terrainChunk = FindBestChunkToUpdate(out TerrainChunkState desiredState);
             if (terrainChunk != null)
             {
                 double realTime = Time.RealTime;
@@ -659,9 +658,9 @@ namespace Game
 
         public List<TerrainChunk> DetermineSynchronousUpdateChunks(Vector3 viewPosition, Vector3 viewDirection)
         {
-            Vector3 vector = Vector3.Normalize(Vector3.Cross(viewDirection, Vector3.UnitY));
-            Vector3 v = Vector3.Normalize(Vector3.Cross(viewDirection, vector));
-            Vector3[] obj = new Vector3[6]
+            var vector = Vector3.Normalize(Vector3.Cross(viewDirection, Vector3.UnitY));
+            var v = Vector3.Normalize(Vector3.Cross(viewDirection, vector));
+            var obj = new Vector3[6]
             {
                 viewPosition,
                 viewPosition + 6f * viewDirection,
@@ -670,7 +669,7 @@ namespace Game
                 viewPosition + 6f * viewDirection - 2f * v,
                 viewPosition + 6f * viewDirection + 2f * v
             };
-            List<TerrainChunk> list = new List<TerrainChunk>();
+            var list = new List<TerrainChunk>();
             Vector3[] array = obj;
             for (int i = 0; i < array.Length; i++)
             {

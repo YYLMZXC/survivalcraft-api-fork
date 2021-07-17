@@ -80,18 +80,18 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemItemsScanner = base.Project.FindSubsystem<SubsystemItemsScanner>(throwOnError: true);
+            m_subsystemItemsScanner = Project.FindSubsystem<SubsystemItemsScanner>(throwOnError: true);
             foreach (KeyValuePair<string, object> item in valuesDictionary.GetValue<ValuesDictionary>("Blocks"))
             {
                 Point3 key = HumanReadableConverter.ConvertFromString<Point3>(item.Key);
-                T value = new T();
+                var value = new T();
                 value.LoadString((string)item.Value);
                 m_blocksData[key] = value;
             }
             foreach (KeyValuePair<string, object> item2 in valuesDictionary.GetValue<ValuesDictionary>("Items"))
             {
                 int key2 = HumanReadableConverter.ConvertFromString<int>(item2.Key);
-                T value2 = new T();
+                var value2 = new T();
                 value2.LoadString((string)item2.Value);
                 m_itemsData[key2] = value2;
             }
@@ -101,13 +101,13 @@ namespace Game
         public override void Save(ValuesDictionary valuesDictionary)
         {
             base.Save(valuesDictionary);
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Blocks", valuesDictionary2);
             foreach (KeyValuePair<Point3, T> blocksDatum in m_blocksData)
             {
                 valuesDictionary2.SetValue(HumanReadableConverter.ConvertToString(blocksDatum.Key), blocksDatum.Value.SaveString());
             }
-            ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+            var valuesDictionary3 = new ValuesDictionary();
             valuesDictionary.SetValue("Items", valuesDictionary3);
             foreach (KeyValuePair<int, T> itemsDatum in m_itemsData)
             {
@@ -129,7 +129,7 @@ namespace Game
 
         public void GarbageCollectItems(ReadOnlyList<ScannedItemData> allExistingItems)
         {
-            HashSet<int> hashSet = new HashSet<int>();
+            var hashSet = new HashSet<int>();
             foreach (ScannedItemData item in allExistingItems)
             {
                 if (Terrain.ExtractContents(item.Value) == m_contents)
@@ -137,7 +137,7 @@ namespace Game
                     hashSet.Add(Terrain.ExtractData(item.Value));
                 }
             }
-            List<int> list = new List<int>();
+            var list = new List<int>();
             foreach (KeyValuePair<int, T> itemsDatum in m_itemsData)
             {
                 if (!hashSet.Contains(itemsDatum.Key))

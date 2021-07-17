@@ -93,14 +93,7 @@ namespace Game
         public override void Enter(object[] parameters)
         {
             m_mode = (Mode)parameters[0];
-            if (m_mode == Mode.Edit)
-            {
-                m_playerData = (PlayerData)parameters[1];
-            }
-            else
-            {
-                m_playerData = new PlayerData((Project)parameters[1]);
-            }
+            m_playerData = m_mode == Mode.Edit ? (PlayerData)parameters[1] : new PlayerData((Project)parameters[1]);
             if (m_mode == Mode.Initial)
             {
                 m_playerClassButton.IsEnabled = true;
@@ -166,10 +159,10 @@ namespace Game
             {
                 CharacterSkinsManager.UpdateCharacterSkinsList();
                 IEnumerable<string> items = CharacterSkinsManager.CharacterSkinsNames.Where((string n) => CharacterSkinsManager.GetPlayerClass(n) == m_playerData.PlayerClass || !CharacterSkinsManager.GetPlayerClass(n).HasValue);
-                ListSelectionDialog dialog = new ListSelectionDialog(LanguageControl.Get(fName, 1), items, 64f, delegate (object item)
+                var dialog = new ListSelectionDialog(LanguageControl.Get(fName, 1), items, 64f, delegate (object item)
                  {
                      XElement node = ContentManager.Get<XElement>("Widgets/CharacterSkinItem");
-                     ContainerWidget obj = (ContainerWidget)Widget.LoadWidget(this, node, null);
+                     var obj = (ContainerWidget)LoadWidget(this, node, null);
                      Texture2D texture = m_characterSkinsCache.GetTexture((string)item);
                      obj.Children.Find<LabelWidget>("CharacterSkinItem.Text").Text = CharacterSkinsManager.GetDisplayName((string)item);
                      obj.Children.Find<LabelWidget>("CharacterSkinItem.Details").Text = $"{texture.Width}x{texture.Height}";
@@ -191,7 +184,7 @@ namespace Game
             {
                 DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(fName, 2), m_inputDevices, 56f, (object d) => GetDeviceDisplayName((WidgetInputDevice)d), delegate (object d)
                  {
-                     WidgetInputDevice widgetInputDevice = (WidgetInputDevice)d;
+                     var widgetInputDevice = (WidgetInputDevice)d;
                      m_playerData.InputDevice = widgetInputDevice;
                      foreach (PlayerData playersDatum in m_playerData.SubsystemPlayers.PlayersData)
                      {
@@ -228,7 +221,7 @@ namespace Game
                 m_playerData.SubsystemPlayers.AddPlayerData(m_playerData);
                 ScreensManager.SwitchScreen("Player", Mode.Initial, m_playerData.SubsystemPlayers.Project);
             }
-            if ((base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked) && VerifyName())
+            if ((Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked) && VerifyName())
             {
                 if (m_mode == Mode.Initial)
                 {

@@ -24,9 +24,9 @@ namespace Game
         public ExplosionParticleSystem()
             : base(1000)
         {
-            base.Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
-            base.TextureSlotsCount = 3;
-            m_inactiveParticles.AddRange(base.Particles);
+            Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
+            TextureSlotsCount = 3;
+            m_inactiveParticles.AddRange(Particles);
         }
 
         public void SetExplosionCell(Point3 point, float strength)
@@ -42,10 +42,10 @@ namespace Game
                 {
                     for (int i = 0; i < 5; i++)
                     {
-                        int num = m_random.Int(0, base.Particles.Length - 1);
-                        if (strength > base.Particles[num].Strength)
+                        int num = m_random.Int(0, Particles.Length - 1);
+                        if (strength > Particles[num].Strength)
                         {
-                            value = base.Particles[num];
+                            value = Particles[num];
                         }
                     }
                 }
@@ -70,9 +70,9 @@ namespace Game
             if (!m_isEmpty)
             {
                 m_isEmpty = true;
-                for (int i = 0; i < base.Particles.Length; i++)
+                for (int i = 0; i < Particles.Length; i++)
                 {
-                    Particle particle = base.Particles[i];
+                    Particle particle = Particles[i];
                     if (particle.IsActive)
                     {
                         m_isEmpty = false;

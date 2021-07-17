@@ -102,7 +102,7 @@ namespace Game
                 WorldInfo worldInfo = WorldsManager.CreateWorld(m_worldSettings);
                 ScreensManager.SwitchScreen("GameLoading", worldInfo, null);
             }
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen("Play");
             }

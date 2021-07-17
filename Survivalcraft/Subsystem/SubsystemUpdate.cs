@@ -111,8 +111,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            foreach (IUpdateable item in base.Project.FindSubsystems<IUpdateable>())
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            foreach (IUpdateable item in Project.FindSubsystems<IUpdateable>())
             {
                 AddUpdateable(item);
             }

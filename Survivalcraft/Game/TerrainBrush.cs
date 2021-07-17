@@ -172,7 +172,7 @@ namespace Game
 
         public void Replace(int oldValue, int newValue)
         {
-            Dictionary<int, Cell> dictionary = new Dictionary<int, Cell>();
+            var dictionary = new Dictionary<int, Cell>();
             foreach (KeyValuePair<int, Cell> item in m_cellsDictionary)
             {
                 Cell value = item.Value;

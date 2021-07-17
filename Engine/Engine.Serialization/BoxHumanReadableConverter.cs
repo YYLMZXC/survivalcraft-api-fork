@@ -7,7 +7,7 @@ namespace Engine.Serialization
 	{
 		public string ConvertToString(object value)
 		{
-			Box box = (Box)value;
+			var box = (Box)value;
 			return HumanReadableConverter.ValuesListToString<int>(',', box.Left, box.Top, box.Near, box.Width, box.Height, box.Depth);
 		}
 

@@ -9,11 +9,11 @@ namespace Engine.Graphics
 {
 	public class Texture2D : GraphicsResource
 	{
-		public int m_texture;
+		internal int m_texture;
 
-		public All m_pixelFormat;
+		private All m_pixelFormat;
 
-		public All m_pixelType;
+		private All m_pixelType;
 
 		public IntPtr NativeHandle => (IntPtr)m_texture;
 
@@ -31,25 +31,25 @@ namespace Engine.Graphics
 		public int Width
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public int Height
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public ColorFormat ColorFormat
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public int MipLevelsCount
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public object Tag
@@ -94,7 +94,7 @@ namespace Engine.Graphics
 		public void SetData<T>(int mipLevel, T[] source, int sourceStartIndex = 0) where T : struct
 		{
 			VerifyParametersSetData(mipLevel, source, sourceStartIndex);
-			GCHandle gCHandle = GCHandle.Alloc(source, GCHandleType.Pinned);
+			var gCHandle = GCHandle.Alloc(source, GCHandleType.Pinned);
 			try
 			{
 				int width = MathUtils.Max(Width >> mipLevel, 1);
@@ -109,17 +109,17 @@ namespace Engine.Graphics
 			}
 		}
 
-		public override void HandleDeviceLost()
+		internal override void HandleDeviceLost()
 		{
 			DeleteTexture();
 		}
 
-		public override void HandleDeviceReset()
+		internal override void HandleDeviceReset()
 		{
 			AllocateTexture();
 		}
 
-		public void AllocateTexture()
+		private void AllocateTexture()
 		{
 			GL.GenTextures(1, out m_texture);
 			GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
@@ -131,7 +131,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public void DeleteTexture()
+		private void DeleteTexture()
 		{
 			if (m_texture != 0)
 			{
@@ -154,7 +154,7 @@ namespace Engine.Graphics
 
 		public static Texture2D Load(Image image, int mipLevelsCount = 1)
 		{
-			Texture2D texture2D = new Texture2D(image.Width, image.Height, mipLevelsCount, ColorFormat.Rgba8888);
+			var texture2D = new Texture2D(image.Width, image.Height, mipLevelsCount, ColorFormat.Rgba8888);
 			if (mipLevelsCount > 1)
 			{
 				Image[] array = Image.GenerateMipmaps(image, mipLevelsCount).ToArray();
@@ -172,7 +172,7 @@ namespace Engine.Graphics
 
 		public static Texture2D Load(Stream stream, bool premultiplyAlpha = false, int mipLevelsCount = 1)
 		{
-			Image image = Image.Load(stream);
+			var image = Image.Load(stream);
 			if (premultiplyAlpha)
 			{
 				Image.PremultiplyAlpha(image);
@@ -188,19 +188,19 @@ namespace Engine.Graphics
 			}
 		}
 
-		public void InitializeTexture2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat)
+		internal void InitializeTexture2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat)
 		{
 			if (width < 1)
 			{
-				throw new ArgumentOutOfRangeException("width");
+				throw new ArgumentOutOfRangeException(nameof(width));
 			}
 			if (height < 1)
 			{
-				throw new ArgumentOutOfRangeException("height");
+				throw new ArgumentOutOfRangeException(nameof(height));
 			}
 			if (mipLevelsCount < 1)
 			{
-				throw new ArgumentOutOfRangeException("mipLevelsCount");
+				throw new ArgumentOutOfRangeException(nameof(mipLevelsCount));
 			}
 			Width = width;
 			Height = height;
@@ -220,7 +220,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public void VerifyParametersSetData<T>(int mipLevel, T[] source, int sourceStartIndex = 0) where T : struct
+		private void VerifyParametersSetData<T>(int mipLevel, T[] source, int sourceStartIndex = 0) where T : struct
 		{
 			VerifyNotDisposed();
 			int num = Utilities.SizeOf<T>();
@@ -230,11 +230,11 @@ namespace Engine.Graphics
 			int num4 = size * num2 * num3;
 			if (source == null)
 			{
-				throw new ArgumentNullException("source");
+				throw new ArgumentNullException(nameof(source));
 			}
 			if (mipLevel < 0 || mipLevel >= MipLevelsCount)
 			{
-				throw new ArgumentOutOfRangeException("mipLevel");
+				throw new ArgumentOutOfRangeException(nameof(mipLevel));
 			}
 			if (num > size)
 			{

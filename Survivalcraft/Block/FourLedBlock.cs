@@ -22,7 +22,7 @@ namespace Game
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(modelMesh.ParentBone);
             for (int i = 0; i < 6; i++)
             {
-                Matrix m = (i >= 4) ? ((i != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY((float)i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f));
+                Matrix m = (i >= 4) ? ((i != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f));
                 m_blockMeshesByFace[i] = new BlockMesh();
                 m_blockMeshesByFace[i].AppendModelMeshPart(modelMesh.MeshParts[0], boneAbsoluteTransform * m, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                 m_collisionBoxesByFace[i] = new BoundingBox[1]
@@ -40,7 +40,7 @@ namespace Game
             int color = 0;
             while (color < 8)
             {
-                CraftingRecipe craftingRecipe = new CraftingRecipe
+                var craftingRecipe = new CraftingRecipe
                 {
                     ResultCount = 4,
                     ResultValue = Terrain.MakeBlockValue(182, 0, SetColor(0, color)),
@@ -95,7 +95,7 @@ namespace Game
         {
             int data = SetMountingFace(Terrain.ExtractData(value), raycastResult.CellFace.Face);
             int value2 = Terrain.ReplaceData(value, data);
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = value2;
             result.CellFace = raycastResult.CellFace;
             return result;

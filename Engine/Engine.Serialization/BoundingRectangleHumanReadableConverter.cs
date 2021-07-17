@@ -7,7 +7,7 @@ namespace Engine.Serialization
 	{
 		public string ConvertToString(object value)
 		{
-			BoundingRectangle boundingRectangle = (BoundingRectangle)value;
+			var boundingRectangle = (BoundingRectangle)value;
 			return HumanReadableConverter.ValuesListToString<float>(',', boundingRectangle.Min.X, boundingRectangle.Min.Y, boundingRectangle.Max.X, boundingRectangle.Max.Y);
 		}
 

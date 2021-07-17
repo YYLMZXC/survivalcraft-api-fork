@@ -12,7 +12,7 @@ namespace Game
         {
             XElement node = ContentManager.Get<XElement>("Screens/GameScreen");
             LoadContents(this, node);
-            base.IsDrawRequired = true;
+            IsDrawRequired = true;
             Window.Deactivated += delegate
             {
                 GameManager.SaveProject(waitForCompletion: true, showErrorDialog: false);
@@ -57,7 +57,7 @@ namespace Game
                 }
                 GameManager.UpdateProject();
             }
-            ShowHideCursors(GameManager.Project == null || DialogsManager.HasDialogs(this) || DialogsManager.HasDialogs(base.RootWidget) || ScreensManager.CurrentScreen != this);
+            ShowHideCursors(GameManager.Project == null || DialogsManager.HasDialogs(this) || DialogsManager.HasDialogs(RootWidget) || ScreensManager.CurrentScreen != this);
         }
 
         public override void Draw(DrawContext dc)
@@ -70,8 +70,8 @@ namespace Game
 
         public void ShowHideCursors(bool show)
         {
-            base.Input.IsMouseCursorVisible = show;
-            base.Input.IsPadCursorVisible = show;
+            Input.IsMouseCursorVisible = show;
+            Input.IsPadCursorVisible = show;
         }
     }
 }

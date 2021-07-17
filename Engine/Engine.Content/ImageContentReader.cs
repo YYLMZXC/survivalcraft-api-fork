@@ -19,10 +19,10 @@ namespace Engine.Content
 
 		public static Image ReadImage(Stream stream)
 		{
-			EngineBinaryReader engineBinaryReader = new EngineBinaryReader(stream);
+			var engineBinaryReader = new EngineBinaryReader(stream);
 			int width = engineBinaryReader.ReadInt32();
 			int height = engineBinaryReader.ReadInt32();
-			Image image = new Image(width, height);
+			var image = new Image(width, height);
 			for (int i = 0; i < image.Pixels.Length; i++)
 			{
 				image.Pixels[i] = engineBinaryReader.ReadColor();

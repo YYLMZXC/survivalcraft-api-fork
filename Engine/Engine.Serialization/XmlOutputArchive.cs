@@ -23,7 +23,7 @@ namespace Engine.Serialization
 		{
 			if (node == null)
 			{
-				throw new ArgumentNullException("node");
+				throw new ArgumentNullException(nameof(node));
 			}
 			Node = node;
 		}
@@ -191,7 +191,7 @@ namespace Engine.Serialization
 		{
 			if (name != null)
 			{
-				XElement xElement = new XElement(name);
+				var xElement = new XElement(name);
 				Node.Add(xElement);
 				Node = xElement;
 			}

@@ -42,7 +42,7 @@ namespace Game
         {
             m_eggTypes.Clear();
             DatabaseObjectType parameterSetType = DatabaseManager.GameDatabase.ParameterSetType;
-            Guid eggParameterSetGuid = new Guid("300ff557-775f-4c7c-a88a-26655369f00b");
+            var eggParameterSetGuid = new Guid("300ff557-775f-4c7c-a88a-26655369f00b");
             foreach (DatabaseObject item in from o in DatabaseManager.GameDatabase.Database.Root.GetExplicitNestingChildren(parameterSetType, directChildrenOnly: false)
                                             where o.EffectiveInheritanceRoot.Guid == eggParameterSetGuid
                                             select o)
@@ -90,7 +90,7 @@ namespace Game
                     identity.M22 = 0f;
                 }
                 identity *= Matrix.CreateScale(0.0625f * eggType.ScaleUV.X, 0.0625f * eggType.ScaleUV.Y, 1f);
-                identity *= Matrix.CreateTranslation((float)(eggType.TextureSlot % 16) / 16f, (float)(eggType.TextureSlot / 16) / 16f, 0f);
+                identity *= Matrix.CreateTranslation(eggType.TextureSlot % 16 / 16f, eggType.TextureSlot / 16 / 16f, 0f);
                 eggType.BlockMesh.TransformTextureCoordinates(identity);
             }
             base.Initialize();
@@ -190,7 +190,7 @@ namespace Game
                     int rot = 0;
                     while (rot <= 1)
                     {
-                        CraftingRecipe craftingRecipe = new CraftingRecipe
+                        var craftingRecipe = new CraftingRecipe
                         {
                             ResultCount = 1,
                             ResultValue = Terrain.MakeBlockValue(118, 0, SetEggType(SetIsCooked(0, isCooked: true), eggType.EggTypeIndex)),

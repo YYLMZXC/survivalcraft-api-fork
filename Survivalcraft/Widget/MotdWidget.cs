@@ -35,9 +35,9 @@ namespace Game
 
         public override void Update()
         {
-            if (base.Input.Tap.HasValue)
+            if (Input.Tap.HasValue)
             {
-                Widget widget = HitTestGlobal(base.Input.Tap.Value);
+                Widget widget = HitTestGlobal(Input.Tap.Value);
                 if (widget != null && (widget == this || widget.IsChildWidgetOf(this)))
                 {
                     m_tapsCount++;
@@ -49,11 +49,11 @@ namespace Game
                 MotdManager.ForceRedownload();
                 AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
             }
-            if (base.Input.IsKeyDownOnce(Key.PageUp))
+            if (Input.IsKeyDownOnce(Key.PageUp))
             {
                 GotoLine(m_currentLineIndex - 1);
             }
-            if (base.Input.IsKeyDownOnce(Key.PageDown))
+            if (Input.IsKeyDownOnce(Key.PageDown))
             {
                 GotoLine(m_currentLineIndex + 1);
             }
@@ -61,14 +61,14 @@ namespace Game
             {
                 m_currentLineIndex %= m_lines.Count;
                 double realTime = Time.RealTime;
-                if (m_lastLineChangeTime == 0.0 || realTime - m_lastLineChangeTime >= (double)m_lines[m_currentLineIndex].Time)
+                if (m_lastLineChangeTime == 0.0 || realTime - m_lastLineChangeTime >= m_lines[m_currentLineIndex].Time)
                 {
                     GotoLine((m_lastLineChangeTime != 0.0) ? (m_currentLineIndex + 1) : 0);
                 }
                 float num2 = (float)(realTime - m_lastLineChangeTime);
-                float num3 = (float)(m_lastLineChangeTime + (double)m_lines[m_currentLineIndex].Time - 0.33000001311302185 - realTime);
-                SetWidgetPosition(position: new Vector2((!(num2 < num3)) ? (base.ActualSize.X * (1f - MathUtils.PowSign(MathUtils.Sin(MathUtils.Saturate(1.5f * num3) * (float)Math.PI / 2f), 0.33f))) : (base.ActualSize.X * (MathUtils.PowSign(MathUtils.Sin(MathUtils.Saturate(1.5f * num2) * (float)Math.PI / 2f), 0.33f) - 1f)), 0f), widget: m_containerWidget);
-                m_containerWidget.Size = base.ActualSize;
+                float num3 = (float)(m_lastLineChangeTime + m_lines[m_currentLineIndex].Time - 0.33000001311302185 - realTime);
+                SetWidgetPosition(position: new Vector2((!(num2 < num3)) ? (ActualSize.X * (1f - MathUtils.PowSign(MathUtils.Sin(MathUtils.Saturate(1.5f * num3) * (float)Math.PI / 2f), 0.33f))) : (ActualSize.X * (MathUtils.PowSign(MathUtils.Sin(MathUtils.Saturate(1.5f * num2) * (float)Math.PI / 2f), 0.33f) - 1f)), 0f), widget: m_containerWidget);
+                m_containerWidget.Size = ActualSize;
             }
             else
             {
@@ -117,11 +117,11 @@ namespace Game
 
         public LineData ParseLine(MotdManager.Line line)
         {
-            LineData lineData = new LineData();
+            var lineData = new LineData();
             lineData.Time = line.Time;
             if (line.Node != null)
             {
-                lineData.Widget = Widget.LoadWidget(null, line.Node, null);
+                lineData.Widget = LoadWidget(null, line.Node, null);
             }
             else
             {
@@ -129,7 +129,7 @@ namespace Game
                 {
                     throw new InvalidOperationException("Invalid MOTD line.");
                 }
-                StackPanelWidget stackPanelWidget = new StackPanelWidget
+                var stackPanelWidget = new StackPanelWidget
                 {
                     Direction = LayoutDirection.Vertical,
                     HorizontalAlignment = WidgetAlignment.Center,
@@ -141,7 +141,7 @@ namespace Game
                     string text = array[i].Trim();
                     if (!string.IsNullOrEmpty(text))
                     {
-                        LabelWidget widget = new LabelWidget
+                        var widget = new LabelWidget
                         {
                             Text = text,
                             Font = ContentManager.Get<BitmapFont>("Fonts/Pericles"),

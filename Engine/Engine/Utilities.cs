@@ -1,11 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+
+#if android
+
+using Android.App;
+using static Android.App.ActivityManager;
+
+#else
 using Microsoft.VisualBasic.Devices;
+#endif
 
 namespace Engine
 {
-	public static class Utilities
+    public static class Utilities
 	{
 		public static void Swap<T>(ref T a, ref T b)
 		{
@@ -76,9 +84,24 @@ namespace Engine
 			}
 		}
 
+#if android
+
+		public static long GetTotalAvailableMemory()
+		{
+			//IL_000f: Unknown result type (might be due to invalid IL or missing references)
+			//IL_0014: Unknown result type (might be due to invalid IL or missing references)
+			//IL_001a: Expected O, but got Unknown
+			ActivityManager val = (ActivityManager)Window.Activity.GetSystemService("activity");
+			MemoryInfo val2 = (MemoryInfo)(object)new MemoryInfo();
+			val.GetMemoryInfo(val2);
+			return val2.TotalMem;
+		}
+
+#else
 		public static int GetTotalAvailableMemory()
 		{
 			return (int)new ComputerInfo().AvailablePhysicalMemory;
 		}
+#endif
 	}
 }

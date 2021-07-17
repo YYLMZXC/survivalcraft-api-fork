@@ -47,8 +47,8 @@ namespace Game
         {
             m_size = size;
             m_maxDuration = maxDuration;
-            base.Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
-            base.TextureSlotsCount = 3;
+            Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
+            TextureSlotsCount = 3;
             m_textureSlotMultiplier = m_random.Float(1.1f, 1.9f);
             m_textureSlotOffset = ((m_random.Float(0f, 1f) < 0.33f) ? 3 : 0);
             m_color = color;
@@ -65,9 +65,9 @@ namespace Game
             m_toGenerate += num * dt;
             float num2 = MathUtils.Pow(0.1f, dt);
             bool flag = false;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (particle.IsActive)
                 {
                     flag = true;
@@ -88,13 +88,13 @@ namespace Game
                 else if (!IsStopped && m_toGenerate >= 1f)
                 {
                     particle.IsActive = true;
-                    Vector3 v = new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
+                    var v = new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
                     particle.Position = Position + 0.025f * v;
                     particle.Color = m_color;
                     particle.Velocity = 0.2f * v;
                     particle.Time = 0f;
                     particle.Size = new Vector2(0.15f * m_size);
-                    particle.Duration = (float)base.Particles.Length / num * m_random.Float(0.8f, 1.05f);
+                    particle.Duration = Particles.Length / num * m_random.Float(0.8f, 1.05f);
                     particle.FlipX = m_random.Bool();
                     particle.FlipY = m_random.Bool();
                     m_toGenerate -= 1f;

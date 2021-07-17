@@ -31,17 +31,17 @@ namespace Game
             m_cancelButton = Children.Find<ButtonWidget>("EditPaletteDialog.Cancel");
             for (int i = 0; i < 16; i++)
             {
-                StackPanelWidget obj = new StackPanelWidget
+                var obj = new StackPanelWidget
                 {
                     Direction = LayoutDirection.Horizontal,
                     Children =
                     {
-                        (Widget)new CanvasWidget
+                        new CanvasWidget
                         {
                             Size = new Vector2(32f, 60f),
                             Children =
                             {
-                                (Widget)new LabelWidget
+                                new LabelWidget
                                 {
                                     Text = (i + 1).ToString() + ".",
                                     Color = Color.Gray,
@@ -51,7 +51,7 @@ namespace Game
                                 }
                             }
                         },
-                        (Widget)new CanvasWidget
+                        new CanvasWidget
                         {
                             Size = new Vector2(10f, 0f)
                         }
@@ -146,7 +146,7 @@ namespace Game
                 m_tmpPalette.CopyTo(m_palette);
                 Dismiss();
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
+            if (Input.Cancel || m_cancelButton.IsClicked)
             {
                 Dismiss();
             }

@@ -50,9 +50,9 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemExplosions = base.Project.FindSubsystem<SubsystemExplosions>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemExplosions = Project.FindSubsystem<SubsystemExplosions>(throwOnError: true);
         }
     }
 }

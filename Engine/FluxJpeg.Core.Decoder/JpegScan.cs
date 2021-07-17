@@ -20,7 +20,7 @@ namespace FluxJpeg.Core.Decoder
 
 		public void AddComponent(byte id, byte factorHorizontal, byte factorVertical, byte quantizationID, byte colorMode)
 		{
-			JpegComponent item = new JpegComponent(this, id, factorHorizontal, factorVertical, quantizationID, colorMode);
+			var item = new JpegComponent(this, id, factorHorizontal, factorVertical, quantizationID, colorMode);
 			components.Add(item);
 			maxH = components.Max((JpegComponent x) => x.factorH);
 			maxV = components.Max((JpegComponent x) => x.factorV);

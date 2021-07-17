@@ -32,7 +32,7 @@ namespace Game
             m_virtualRealityButton.Text = (SettingsManager.UseVr ? "Enabled" : "Disabled");
             m_brightnessSlider.Value = SettingsManager.Brightness;
             m_brightnessSlider.Text = MathUtils.Round(SettingsManager.Brightness * 10f).ToString();
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
             }

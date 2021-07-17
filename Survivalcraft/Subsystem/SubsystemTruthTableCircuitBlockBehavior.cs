@@ -20,14 +20,7 @@ namespace Game
             int count = inventory.GetSlotCount(slotIndex);
             int id = Terrain.ExtractData(value);
             TruthTableData truthTableData = GetItemData(id);
-            if (truthTableData != null)
-            {
-                truthTableData = (TruthTableData)truthTableData.Copy();
-            }
-            else
-            {
-                truthTableData = new TruthTableData();
-            }
+            truthTableData = truthTableData != null ? (TruthTableData)truthTableData.Copy() : new TruthTableData();
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditTruthTableDialog(truthTableData, delegate
             {
                 int data = StoreItemDataAtUniqueId(truthTableData);
@@ -45,7 +38,7 @@ namespace Game
             {
                 SetBlockData(new Point3(x, y, z), truthTableData);
                 int face = ((TruthTableCircuitBlock)BlocksManager.Blocks[188]).GetFace(value);
-                SubsystemElectricity subsystemElectricity = base.SubsystemTerrain.Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
+                SubsystemElectricity subsystemElectricity = SubsystemTerrain.Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
                 ElectricElement electricElement = subsystemElectricity.GetElectricElement(x, y, z, face);
                 if (electricElement != null)
                 {

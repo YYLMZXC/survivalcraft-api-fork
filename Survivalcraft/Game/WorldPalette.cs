@@ -40,7 +40,7 @@ namespace Game
         public WorldPalette()
         {
             Colors = DefaultColors.ToArray();
-            List<string> tmp = new List<string>();
+            var tmp = new List<string>();
             foreach (KeyValuePair<string, string> iyt in LanguageControl.items[GetType().Name].ToArray())
             {
                 tmp.Add(iyt.Value);
@@ -82,7 +82,7 @@ namespace Game
 
         public ValuesDictionary Save()
         {
-            ValuesDictionary valuesDictionary = new ValuesDictionary();
+            var valuesDictionary = new ValuesDictionary();
             string value = string.Join(";", Colors.Select((Color c, int i) => (!(c == DefaultColors[i])) ? HumanReadableConverter.ConvertToString(c) : string.Empty));
             string value2 = string.Join(";", Names.Select((string n, int i) => (!(n == LanguageControl.Get(GetType().Name, i))) ? n : string.Empty));
             valuesDictionary.SetValue("Colors", value);

@@ -85,7 +85,7 @@ namespace Engine.Media
 
 			public override StreamingSource Duplicate()
 			{
-				ContentStream contentStream = m_stream as ContentStream;
+				var contentStream = m_stream as ContentStream;
 				if (contentStream != null)
 				{
 					return new WavStreamingSource(contentStream.Duplicate());
@@ -143,7 +143,7 @@ namespace Engine.Media
 
 		public static bool IsWavStream(Stream stream)
 		{
-			BinaryReader binaryReader = new BinaryReader(stream);
+			var binaryReader = new BinaryReader(stream);
 			if (stream.Length - stream.Position >= Utilities.SizeOf<WavHeader>())
 			{
 				int num = binaryReader.ReadInt32();
@@ -161,7 +161,7 @@ namespace Engine.Media
 		public static WavInfo GetInfo(Stream stream)
 		{
 			ReadHeaders(stream, out FmtHeader fmtHeader, out DataHeader dataHeader, out long _);
-			WavInfo result = default(WavInfo);
+			var result = default(WavInfo);
 			result.ChannelsCount = fmtHeader.ChannelsCount;
 			result.SamplingFrequency = fmtHeader.SamplingFrequency;
 			result.BytesCount = dataHeader.DataSize;
@@ -177,7 +177,7 @@ namespace Engine.Media
 		{
 			ReadHeaders(stream, out FmtHeader fmtHeader, out DataHeader dataHeader, out long dataStart);
 			stream.Position = dataStart;
-			SoundData soundData = new SoundData(fmtHeader.ChannelsCount, fmtHeader.SamplingFrequency, dataHeader.DataSize);
+			var soundData = new SoundData(fmtHeader.ChannelsCount, fmtHeader.SamplingFrequency, dataHeader.DataSize);
 			byte[] array = new byte[dataHeader.DataSize];
 			if (stream.Read(array, 0, array.Length) != array.Length)
 			{
@@ -191,19 +191,19 @@ namespace Engine.Media
 		{
 			if (soundData == null)
 			{
-				throw new ArgumentNullException("soundData");
+				throw new ArgumentNullException(nameof(soundData));
 			}
 			if (stream == null)
 			{
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
-			EngineBinaryWriter engineBinaryWriter = new EngineBinaryWriter(stream);
-			WavHeader structure = default(WavHeader);
+			var engineBinaryWriter = new EngineBinaryWriter(stream);
+			var structure = default(WavHeader);
 			structure.Riff = MakeFourCC("RIFF");
 			structure.FileSize = Utilities.SizeOf<WavHeader>() + Utilities.SizeOf<FmtHeader>() + Utilities.SizeOf<DataHeader>() + soundData.Data.Length;
 			structure.Wave = MakeFourCC("WAVE");
 			engineBinaryWriter.WriteStruct(structure);
-			FmtHeader structure2 = default(FmtHeader);
+			var structure2 = default(FmtHeader);
 			structure2.Fmt = MakeFourCC("fmt ");
 			structure2.FormatSize = 16;
 			structure2.Type = 1;
@@ -213,7 +213,7 @@ namespace Engine.Media
 			structure2.BytesPerSample = (short)(soundData.ChannelsCount * 2);
 			structure2.BitsPerChannel = 16;
 			engineBinaryWriter.WriteStruct(structure2);
-			DataHeader structure3 = default(DataHeader);
+			var structure3 = default(DataHeader);
 			structure3.Data = MakeFourCC("data");
 			structure3.DataSize = soundData.Data.Length * 2;
 			engineBinaryWriter.WriteStruct(structure3);
@@ -226,7 +226,7 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
 			if (!BitConverter.IsLittleEndian)
 			{
@@ -236,7 +236,7 @@ namespace Engine.Media
 			{
 				throw new InvalidOperationException("Invalid WAV header.");
 			}
-			EngineBinaryReader engineBinaryReader = new EngineBinaryReader(stream);
+			var engineBinaryReader = new EngineBinaryReader(stream);
 			fmtHeader = default(FmtHeader);
 			dataHeader = default(DataHeader);
 			dataStart = 0L;

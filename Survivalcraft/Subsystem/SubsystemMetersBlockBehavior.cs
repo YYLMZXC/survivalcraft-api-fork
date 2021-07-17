@@ -40,11 +40,11 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            Point3 point = CellFace.FaceToPoint3(Terrain.ExtractData(base.SubsystemTerrain.Terrain.GetCellValue(x, y, z)));
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
+            Point3 point = CellFace.FaceToPoint3(Terrain.ExtractData(SubsystemTerrain.Terrain.GetCellValue(x, y, z)));
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
             if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue))
             {
-                base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
             }
         }
 
@@ -71,7 +71,7 @@ namespace Game
 
         public override void OnChunkDiscarding(TerrainChunk chunk)
         {
-            List<Point3> list = new List<Point3>();
+            var list = new List<Point3>();
             foreach (Point3 key in m_thermometersByPoint.Keys)
             {
                 if (key.X >= chunk.Origin.X && key.X < chunk.Origin.X + 16 && key.Z >= chunk.Origin.Y && key.Z < chunk.Origin.Y + 16)
@@ -88,16 +88,16 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemWeather = base.Project.FindSubsystem<SubsystemWeather>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemWeather = Project.FindSubsystem<SubsystemWeather>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
         }
 
         public void Update(float dt)
         {
             if (m_thermometersToSimulateIndex < m_thermometersToSimulate.Count)
             {
-                double period = MathUtils.Max(5.0 / (double)m_thermometersToSimulate.Count, 1.0);
+                double period = MathUtils.Max(5.0 / m_thermometersToSimulate.Count, 1.0);
                 if (m_subsystemTime.PeriodicGameTimeEvent(period, 0.0))
                 {
                     Point3 point = m_thermometersToSimulate.Array[m_thermometersToSimulateIndex];
@@ -115,8 +115,7 @@ namespace Game
 
         public int GetThermometerReading(int x, int y, int z)
         {
-            int value = 0;
-            m_thermometersByPoint.TryGetValue(new Point3(x, y, z), out value);
+            m_thermometersByPoint.TryGetValue(new Point3(x, y, z), out int value);
             return value;
         }
 
@@ -148,7 +147,7 @@ namespace Game
                 int num11 = num8 + x;
                 int num12 = num9 + y;
                 int num13 = num10 + z;
-                Terrain terrain = base.SubsystemTerrain.Terrain;
+                Terrain terrain = SubsystemTerrain.Terrain;
                 TerrainChunk chunkAtCell = terrain.GetChunkAtCell(num11, num13);
                 if (chunkAtCell == null || num12 < 0 || num12 >= 256)
                 {
@@ -165,7 +164,7 @@ namespace Game
                 {
                     int num15 = MathUtils.Abs(num8) + MathUtils.Abs(num9) + MathUtils.Abs(num10);
                     int num16 = (num15 <= 0) ? 1 : (4 * num15 * num15 + 2);
-                    float num17 = 1f / (float)num16;
+                    float num17 = 1f / num16;
                     num5 += num17 * 36f * heat;
                     num6 += num17;
                 }
@@ -173,10 +172,10 @@ namespace Game
                 {
                     int num18 = MathUtils.Abs(num8) + MathUtils.Abs(num9) + MathUtils.Abs(num10);
                     int num19 = (num18 <= 0) ? 1 : (4 * num18 * num18 + 2);
-                    float num20 = 1f / (float)num19;
+                    float num20 = 1f / num19;
                     float num21 = terrain.SeasonTemperature;
                     float num22 = SubsystemWeather.GetTemperatureAdjustmentAtHeight(y2);
-                    float num23 = (block is WaterBlock) ? (MathUtils.Max((float)chunkAtCell.GetTemperatureFast(x2, z2) + num21 - 6f, 0f) + num22) : ((!(block is IceBlock)) ? ((float)chunkAtCell.GetTemperatureFast(x2, z2) + num21 + num22) : (0f + num21 + num22));
+                    float num23 = (block is WaterBlock) ? (MathUtils.Max(chunkAtCell.GetTemperatureFast(x2, z2) + num21 - 6f, 0f) + num22) : ((!(block is IceBlock)) ? (chunkAtCell.GetTemperatureFast(x2, z2) + num21 + num22) : (0f + num21 + num22));
                     num += num20 * num23;
                     num2 += num20;
                 }
@@ -184,13 +183,13 @@ namespace Game
                 {
                     int num24 = MathUtils.Abs(num8) + MathUtils.Abs(num9) + MathUtils.Abs(num10);
                     int num25 = (num24 <= 0) ? 1 : (4 * num24 * num24 + 2);
-                    float num26 = 1f / (float)num25;
+                    float num26 = 1f / num25;
                     PrecipitationShaftInfo precipitationShaftInfo = m_subsystemWeather.GetPrecipitationShaftInfo(x, z);
                     float num27 = terrain.SeasonTemperature;
                     float num28 = (y >= precipitationShaftInfo.YLimit) ? MathUtils.Lerp(0f, -2f, precipitationShaftInfo.Intensity) : 0f;
                     float num29 = MathUtils.Lerp(-6f, 0f, m_subsystemSky.SkyLightIntensity);
                     float num30 = SubsystemWeather.GetTemperatureAdjustmentAtHeight(y2);
-                    num3 += num26 * ((float)chunkAtCell.GetTemperatureFast(x2, z2) + num27 + num28 + num29 + num30);
+                    num3 += num26 * (chunkAtCell.GetTemperatureFast(x2, z2) + num27 + num28 + num29 + num30);
                     num4 += num26;
                 }
                 else if (m_toVisit.Count < 4090)
@@ -226,7 +225,7 @@ namespace Game
             {
                 for (int l = -7; l <= 7; l++)
                 {
-                    TerrainChunk chunkAtCell2 = base.SubsystemTerrain.Terrain.GetChunkAtCell(x + k, z + l);
+                    TerrainChunk chunkAtCell2 = SubsystemTerrain.Terrain.GetChunkAtCell(x + k, z + l);
                     if (chunkAtCell2 == null || chunkAtCell2.State < TerrainChunkState.InvalidVertices1)
                     {
                         continue;
@@ -244,13 +243,13 @@ namespace Game
                         if (num33 >= 0 && num33 < 256)
                         {
                             float heat2 = GetHeat(chunkAtCell2.GetCellValueFast(x3, num33, z3));
-                            if (heat2 > 0f && !base.SubsystemTerrain.Raycast(new Vector3(x, y, z) + new Vector3(0.5f, 0.75f, 0.5f), new Vector3(x + k, y + m, z + l) + new Vector3(0.5f, 0.75f, 0.5f), useInteractionBoxes: false, skipAirBlocks: true, delegate (int raycastValue, float d)
+                            if (heat2 > 0f && !SubsystemTerrain.Raycast(new Vector3(x, y, z) + new Vector3(0.5f, 0.75f, 0.5f), new Vector3(x + k, y + m, z + l) + new Vector3(0.5f, 0.75f, 0.5f), useInteractionBoxes: false, skipAirBlocks: true, delegate (int raycastValue, float d)
                             {
                                 Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(raycastValue)];
                                 return block2.IsCollidable_(raycastValue) && !block2.IsTransparent_(raycastValue);
                             }).HasValue)
                             {
-                                num31 += heat2 * 3f / (float)(num32 + 2);
+                                num31 += heat2 * 3f / (num32 + 2);
                             }
                         }
                     }
@@ -299,7 +298,7 @@ namespace Game
 
         public void SimulateThermometer(int x, int y, int z, bool invalidateTerrainOnChange)
         {
-            Point3 key = new Point3(x, y, z);
+            var key = new Point3(x, y, z);
             if (!m_thermometersByPoint.ContainsKey(key))
             {
                 return;
@@ -314,10 +313,10 @@ namespace Game
             m_thermometersByPoint[new Point3(x, y, z)] = num2;
             if (invalidateTerrainOnChange)
             {
-                TerrainChunk chunkAtCell = base.SubsystemTerrain.Terrain.GetChunkAtCell(x, z);
+                TerrainChunk chunkAtCell = SubsystemTerrain.Terrain.GetChunkAtCell(x, z);
                 if (chunkAtCell != null)
                 {
-                    base.SubsystemTerrain.TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords, 0, TerrainChunkState.InvalidVertices1, forceGeometryRegeneration: true);
+                    SubsystemTerrain.TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords, 0, TerrainChunkState.InvalidVertices1, forceGeometryRegeneration: true);
                 }
             }
         }

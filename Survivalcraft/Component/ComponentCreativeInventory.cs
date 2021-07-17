@@ -35,7 +35,7 @@ namespace Game
             set;
         }
 
-        Project IInventory.Project => base.Project;
+        Project IInventory.Project => Project;
 
         public int ActiveSlotIndex
         {
@@ -66,7 +66,7 @@ namespace Game
                 }
                 m_visibleSlotsCount = value;
                 ActiveSlotIndex = ActiveSlotIndex;
-                ComponentFrame componentFrame = base.Entity.FindComponent<ComponentFrame>();
+                ComponentFrame componentFrame = Entity.FindComponent<ComponentFrame>();
                 if (componentFrame != null)
                 {
                     Vector3 position = componentFrame.Position + new Vector3(0f, 0.5f, 0f);
@@ -116,13 +116,13 @@ namespace Game
             valuesDictionary.SetValue("ActiveSlotIndex", m_activeSlotIndex);
             valuesDictionary.SetValue("CategoryIndex", CategoryIndex);
             valuesDictionary.SetValue("PageIndex", PageIndex);
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Slots", valuesDictionary2);
             for (int i = 0; i < OpenSlotsCount; i++)
             {
                 if (m_slots[i] != 0)
                 {
-                    ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+                    var valuesDictionary3 = new ValuesDictionary();
                     valuesDictionary2.SetValue("Slot" + i.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
                     valuesDictionary3.SetValue("Contents", m_slots[i]);
                 }
@@ -175,7 +175,7 @@ namespace Game
             int slotValue = GetSlotValue(slotIndex);
             if (slotCount > 0 && slotValue != 0)
             {
-                SubsystemBlockBehavior[] blockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
+                SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
                 for (int i = 0; i < blockBehaviors.Length; i++)
                 {
                     int processInventoryItemCapacity = blockBehaviors[i].GetProcessInventoryItemCapacity(this, slotIndex, value);
@@ -206,7 +206,7 @@ namespace Game
             int slotValue = GetSlotValue(slotIndex);
             if (slotCount > 0 && slotValue != 0)
             {
-                SubsystemBlockBehavior[] blockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
+                SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
                 foreach (SubsystemBlockBehavior subsystemBlockBehavior in blockBehaviors)
                 {
                     int processInventoryItemCapacity = subsystemBlockBehavior.GetProcessInventoryItemCapacity(this, slotIndex, value);

@@ -72,14 +72,14 @@ namespace Engine.Serialization
 
 		public void Serialize<T>(string name, Action<T> setter)
 		{
-			T value = default(T);
+			var value = default(T);
 			Serialize(name, ref value);
 			setter(value);
 		}
 
 		public T Serialize<T>(string name)
 		{
-			T value = default(T);
+			var value = default(T);
 			Serialize(name, ref value);
 			return value;
 		}
@@ -100,14 +100,14 @@ namespace Engine.Serialization
 
 		public List<T> SerializeCollection<T>(string name)
 		{
-			List<T> list = new List<T>();
+			var list = new List<T>();
 			SerializeCollection(name, list);
 			return list;
 		}
 
 		public Dictionary<K, V> SerializeDictionary<K, V>(string name)
 		{
-			Dictionary<K, V> dictionary = new Dictionary<K, V>();
+			var dictionary = new Dictionary<K, V>();
 			SerializeDictionary(name, dictionary);
 			return dictionary;
 		}

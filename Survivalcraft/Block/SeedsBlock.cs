@@ -22,7 +22,7 @@ namespace Game
 
         public override IEnumerable<int> GetCreativeValues()
         {
-            List<int> list = new List<int>();
+            var list = new List<int>();
             foreach (int enumValue in EnumUtils.GetEnumValues(typeof(SeedType)))
             {
                 list.Add(Terrain.MakeBlockValue(173, 0, enumValue));
@@ -67,7 +67,7 @@ namespace Game
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
         {
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.CellFace = raycastResult.CellFace;
             if (raycastResult.CellFace.Face == 4)
             {

@@ -25,7 +25,7 @@ namespace Game
         {
             if (cellFace.Face == 4 && componentBody.Mass > 20f)
             {
-                Point3 key = new Point3(cellFace.X, cellFace.Y, cellFace.Z);
+                var key = new Point3(cellFace.X, cellFace.Y, cellFace.Z);
                 if (!m_trapValues.TryGetValue(key, out TrapValue value))
                 {
                     value = new TrapValue();
@@ -45,9 +45,9 @@ namespace Game
                     {
                         for (int j = -1; j <= 1; j++)
                         {
-                            if (MathUtils.Abs(i) + MathUtils.Abs(j) <= 1 && base.SubsystemTerrain.Terrain.GetCellContents(trapValue.Key.X + i, trapValue.Key.Y, trapValue.Key.Z + j) == 87)
+                            if (MathUtils.Abs(i) + MathUtils.Abs(j) <= 1 && SubsystemTerrain.Terrain.GetCellContents(trapValue.Key.X + i, trapValue.Key.Y, trapValue.Key.Z + j) == 87)
                             {
-                                base.SubsystemTerrain.DestroyCell(0, trapValue.Key.X + i, trapValue.Key.Y, trapValue.Key.Z + j, 0, noDrop: false, noParticleSystem: false);
+                                SubsystemTerrain.DestroyCell(0, trapValue.Key.X + i, trapValue.Key.Y, trapValue.Key.Z + j, 0, noDrop: false, noParticleSystem: false);
                             }
                         }
                     }

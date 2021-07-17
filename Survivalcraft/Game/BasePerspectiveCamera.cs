@@ -72,10 +72,10 @@ namespace Game
                 if (!m_projectionMatrix.HasValue)
                 {
                     m_projectionMatrix = CalculateBaseProjectionMatrix();
-                    ViewWidget viewWidget = base.GameWidget.ViewWidget;
+                    ViewWidget viewWidget = GameWidget.ViewWidget;
                     if (!viewWidget.ScalingRenderTargetSize.HasValue)
                     {
-                        m_projectionMatrix *= MatrixUtils.CreateScaleTranslation(0.5f * viewWidget.ActualSize.X, -0.5f * viewWidget.ActualSize.Y, viewWidget.ActualSize.X / 2f, viewWidget.ActualSize.Y / 2f) * viewWidget.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / (float)Display.Viewport.Width, -2f / (float)Display.Viewport.Height, -1f, 1f);
+                        m_projectionMatrix *= MatrixUtils.CreateScaleTranslation(0.5f * viewWidget.ActualSize.X, -0.5f * viewWidget.ActualSize.Y, viewWidget.ActualSize.X / 2f, viewWidget.ActualSize.Y / 2f) * viewWidget.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / Display.Viewport.Width, -2f / Display.Viewport.Height, -1f, 1f);
                     }
                 }
                 return m_projectionMatrix.Value;
@@ -89,8 +89,8 @@ namespace Game
                 if (!m_screenProjectionMatrix.HasValue)
                 {
                     Point2 size = Window.Size;
-                    ViewWidget viewWidget = base.GameWidget.ViewWidget;
-                    m_screenProjectionMatrix = CalculateBaseProjectionMatrix() * MatrixUtils.CreateScaleTranslation(0.5f * viewWidget.ActualSize.X, -0.5f * viewWidget.ActualSize.Y, viewWidget.ActualSize.X / 2f, viewWidget.ActualSize.Y / 2f) * viewWidget.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / (float)size.X, -2f / (float)size.Y, -1f, 1f);
+                    ViewWidget viewWidget = GameWidget.ViewWidget;
+                    m_screenProjectionMatrix = CalculateBaseProjectionMatrix() * MatrixUtils.CreateScaleTranslation(0.5f * viewWidget.ActualSize.X, -0.5f * viewWidget.ActualSize.Y, viewWidget.ActualSize.X / 2f, viewWidget.ActualSize.Y / 2f) * viewWidget.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / size.X, -2f / size.Y, -1f, 1f);
                 }
                 return m_screenProjectionMatrix.Value;
             }
@@ -126,16 +126,10 @@ namespace Game
             {
                 if (!m_viewportSize.HasValue)
                 {
-                    ViewWidget viewWidget = base.GameWidget.ViewWidget;
-                    if (viewWidget.ScalingRenderTargetSize.HasValue)
-                    {
-                        m_viewportSize = new Vector2(viewWidget.ScalingRenderTargetSize.Value);
-                    }
-                    else
-                    {
-                        m_viewportSize = new Vector2(viewWidget.ActualSize.X * viewWidget.GlobalTransform.Right.Length(), viewWidget.ActualSize.Y * viewWidget.GlobalTransform.Up.Length());
-
-                    }
+                    ViewWidget viewWidget = GameWidget.ViewWidget;
+                    m_viewportSize = viewWidget.ScalingRenderTargetSize.HasValue
+                        ? new Vector2(viewWidget.ScalingRenderTargetSize.Value)
+                        : new Vector2(viewWidget.ActualSize.X * viewWidget.GlobalTransform.Right.Length(), viewWidget.ActualSize.Y * viewWidget.GlobalTransform.Up.Length());
                 }
                 return m_viewportSize.Value;
             }
@@ -147,7 +141,7 @@ namespace Game
             {
                 if (!m_viewportMatrix.HasValue)
                 {
-                    ViewWidget viewWidget = base.GameWidget.ViewWidget;
+                    ViewWidget viewWidget = GameWidget.ViewWidget;
                     if (viewWidget.ScalingRenderTargetSize.HasValue)
                     {
                         m_viewportMatrix = Matrix.Identity;
@@ -224,7 +218,7 @@ namespace Game
             {
                 num2 = 0.9f;
             }
-            ViewWidget viewWidget = base.GameWidget.ViewWidget;
+            ViewWidget viewWidget = GameWidget.ViewWidget;
             float num3 = viewWidget.ActualSize.X / viewWidget.ActualSize.Y;
             float num4 = MathUtils.Min(num * num3, num);
             float num5 = num4 * num3;

@@ -55,7 +55,7 @@ namespace Game
                 ReadTOCEntry(m_stream, out int cx, out int cz, out int index);
                 if (index >= 0)
                 {
-                    m_chunkOffsets[new Point2(cx, cz)] = 786444 + 132112L * (long)index;
+                    m_chunkOffsets[new Point2(cx, cz)] = 786444 + 132112L * index;
                     continue;
                 }
                 break;

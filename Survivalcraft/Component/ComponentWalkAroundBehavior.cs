@@ -31,10 +31,10 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_stateMachine.AddState("Inactive", delegate
             {
                 m_importanceLevel = m_random.Float(0f, 1f);
@@ -88,7 +88,7 @@ namespace Game
             for (int i = 0; i < 16; i++)
             {
                 Vector2 vector = Vector2.Normalize(m_random.Vector2(1f)) * m_random.Float(6f, 12f);
-                Vector3 vector2 = new Vector3(position.X + vector.X, 0f, position.Z + vector.Y);
+                var vector2 = new Vector3(position.X + vector.X, 0f, position.Z + vector.Y);
                 vector2.Y = m_subsystemTerrain.Terrain.GetTopHeight(Terrain.ToCell(vector2.X), Terrain.ToCell(vector2.Z)) + 1;
                 float num2 = ScoreDestination(vector2);
                 if (num2 > num)

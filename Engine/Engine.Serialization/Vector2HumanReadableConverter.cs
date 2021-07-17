@@ -7,7 +7,7 @@ namespace Engine.Serialization
 	{
 		public string ConvertToString(object value)
 		{
-			Vector2 vector = (Vector2)value;
+			var vector = (Vector2)value;
 			return HumanReadableConverter.ValuesListToString<float>(',', vector.X, vector.Y);
 		}
 

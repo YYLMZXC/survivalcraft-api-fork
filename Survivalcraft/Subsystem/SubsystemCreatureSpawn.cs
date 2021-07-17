@@ -112,13 +112,13 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemSpawn = base.Project.FindSubsystem<SubsystemSpawn>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_subsystemViews = base.Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemSpawn = Project.FindSubsystem<SubsystemSpawn>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemViews = Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
             InitializeCreatureTypes();
             m_subsystemSpawn.SpawningChunk += delegate (SpawnChunk chunk)
             {
@@ -946,7 +946,7 @@ namespace Game
                 foreach (GameWidget gameWidget in m_subsystemViews.GameWidgets)
                 {
                     int num = 48;
-                    Vector2 v = new Vector2(gameWidget.ActiveCamera.ViewPosition.X, gameWidget.ActiveCamera.ViewPosition.Z);
+                    var v = new Vector2(gameWidget.ActiveCamera.ViewPosition.X, gameWidget.ActiveCamera.ViewPosition.Z);
                     if (CountCreaturesInArea(v - new Vector2(60f), v + new Vector2(60f), constantSpawn: false) >= num)
                     {
                         break;
@@ -1013,7 +1013,7 @@ namespace Game
 
         public virtual List<Entity> SpawnCreatures(CreatureType creatureType, string templateName, Point3 point, int count)
         {
-            List<Entity> list = new List<Entity>();
+            var list = new List<Entity>();
             int num = 0;
             while (count > 0 && num < 50)
             {
@@ -1027,7 +1027,7 @@ namespace Game
                 Point3? point2 = ProcessSpawnPoint(spawnPoint, creatureType.SpawnLocationType);
                 if (point2.HasValue && creatureType.SpawnSuitabilityFunction(creatureType, point2.Value) > 0f)
                 {
-                    Vector3 position = new Vector3((float)point2.Value.X + m_random.Float(0.4f, 0.6f), (float)point2.Value.Y + 1.1f, (float)point2.Value.Z + m_random.Float(0.4f, 0.6f));
+                    var position = new Vector3(point2.Value.X + m_random.Float(0.4f, 0.6f), point2.Value.Y + 1.1f, point2.Value.Z + m_random.Float(0.4f, 0.6f));
                     Entity entity = SpawnCreature(templateName, position, creatureType.ConstantSpawn);
                     if (entity != null)
                     {
@@ -1044,11 +1044,11 @@ namespace Game
         {
             try
             {
-                Entity entity = DatabaseManager.CreateEntity(base.Project, templateName, throwIfNotFound: true);
+                Entity entity = DatabaseManager.CreateEntity(Project, templateName, throwIfNotFound: true);
                 entity.FindComponent<ComponentBody>(throwOnError: true).Position = position;
                 entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
                 entity.FindComponent<ComponentCreature>(throwOnError: true).ConstantSpawn = constantSpawn;
-                base.Project.AddEntity(entity);
+                Project.AddEntity(entity);
                 return entity;
             }
             catch (Exception ex)
@@ -1100,12 +1100,12 @@ namespace Game
             {
                 for (int i = 0; i < 30; i++)
                 {
-                    Point3 point = new Point3(x, num + i, z);
+                    var point = new Point3(x, num + i, z);
                     if (TestSpawnPoint(point, spawnLocationType))
                     {
                         return point;
                     }
-                    Point3 point2 = new Point3(x, num - i, z);
+                    var point2 = new Point3(x, num - i, z);
                     if (TestSpawnPoint(point2, spawnLocationType))
                     {
                         return point2;

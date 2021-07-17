@@ -126,7 +126,7 @@ namespace NVorbis.Ogg
 		{
 			if (!_packetReaders.TryGetValue(streamSerial, out PacketReader value))
 			{
-				throw new ArgumentOutOfRangeException("streamSerial");
+				throw new ArgumentOutOfRangeException(nameof(streamSerial));
 			}
 			return value;
 		}
@@ -195,7 +195,7 @@ namespace NVorbis.Ogg
 			{
 				return null;
 			}
-			PageHeader pageHeader = new PageHeader();
+			var pageHeader = new PageHeader();
 			pageHeader.Flags = (PageFlags)_readBuffer[5];
 			long num = BitConverter.ToInt32(_readBuffer, 6);
 			long num2 = BitConverter.ToInt32(_readBuffer, 10);
@@ -218,7 +218,7 @@ namespace NVorbis.Ogg
 			{
 				return null;
 			}
-			List<int> list = new List<int>(num3);
+			var list = new List<int>(num3);
 			int num4 = 0;
 			int num5 = 0;
 			for (int j = 0; j < num3; j++)
@@ -323,7 +323,7 @@ namespace NVorbis.Ogg
 			int[] packetSizes = hdr.PacketSizes;
 			foreach (int num3 in packetSizes)
 			{
-				Packet packet = new Packet(this, num, num3)
+				var packet = new Packet(this, num, num3)
 				{
 					PageGranulePosition = hdr.GranulePosition,
 					IsEndOfStream = isEndOfStream,
@@ -371,7 +371,7 @@ namespace NVorbis.Ogg
 					{
 						break;
 					}
-					NewStreamEventArgs newStreamEventArgs = new NewStreamEventArgs(_packetReaders[pageHeader.StreamSerial]);
+					var newStreamEventArgs = new NewStreamEventArgs(_packetReaders[pageHeader.StreamSerial]);
 					newStream(this, newStreamEventArgs);
 					if (!newStreamEventArgs.IgnoreStream)
 					{
@@ -420,7 +420,7 @@ namespace NVorbis.Ogg
 		{
 			if (!_packetReaders.ContainsKey(streamSerial))
 			{
-				throw new ArgumentOutOfRangeException("streamSerial");
+				throw new ArgumentOutOfRangeException(nameof(streamSerial));
 			}
 			int num;
 			do

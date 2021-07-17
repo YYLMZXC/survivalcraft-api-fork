@@ -15,7 +15,7 @@ namespace Engine.Content
 			{
 				return Model.Load(modelData, keepSourceVertexDataInTags);
 			}
-			Model obj = (Model)existingObject;
+			var obj = (Model)existingObject;
 			obj.Initialize(modelData, keepSourceVertexDataInTags);
 			return obj;
 		}

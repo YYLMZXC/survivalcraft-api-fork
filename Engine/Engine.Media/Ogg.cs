@@ -38,7 +38,7 @@ namespace Engine.Media
 				m_stream = stream;
 				if (!stream.CanSeek)
 				{
-					MemoryStream memoryStream = new MemoryStream();
+					var memoryStream = new MemoryStream();
 					stream.CopyTo(memoryStream);
 					if (!leaveOpen)
 					{
@@ -62,7 +62,7 @@ namespace Engine.Media
 			{
 				if (buffer == null)
 				{
-					throw new ArgumentNullException("buffer");
+					throw new ArgumentNullException(nameof(buffer));
 				}
 				if (offset < 0 || count < 0 || offset + count > buffer.Length)
 				{
@@ -103,7 +103,7 @@ namespace Engine.Media
 
 			public override StreamingSource Duplicate()
 			{
-				ContentStream contentStream = m_stream as ContentStream;
+				var contentStream = m_stream as ContentStream;
 				if (contentStream != null)
 				{
 					return new OggStreamingSource(contentStream.Duplicate());
@@ -131,7 +131,7 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
 			return new OggStreamingSource(stream, leaveOpen);
 		}
@@ -146,7 +146,7 @@ namespace Engine.Media
 				}
 				byte[] array = new byte[(int)streamingSource.BytesCount];
 				streamingSource.Read(array, 0, array.Length);
-				SoundData soundData = new SoundData(streamingSource.ChannelsCount, streamingSource.SamplingFrequency, array.Length);
+				var soundData = new SoundData(streamingSource.ChannelsCount, streamingSource.SamplingFrequency, array.Length);
 				Buffer.BlockCopy(array, 0, soundData.Data, 0, array.Length);
 				return soundData;
 			}

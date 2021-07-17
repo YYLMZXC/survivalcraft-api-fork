@@ -18,7 +18,7 @@ namespace Game
 
         public RunningAverage(float period)
         {
-            m_period = (long)(period * (float)Stopwatch.Frequency);
+            m_period = (long)(period * Stopwatch.Frequency);
         }
 
         public void AddSample(float sample)
@@ -28,7 +28,7 @@ namespace Game
             long timestamp = Stopwatch.GetTimestamp();
             if (timestamp >= m_startTicks + m_period)
             {
-                m_value = m_sumValues / (float)m_countValues;
+                m_value = m_sumValues / m_countValues;
                 m_sumValues = 0f;
                 m_countValues = 0;
                 m_startTicks = timestamp;

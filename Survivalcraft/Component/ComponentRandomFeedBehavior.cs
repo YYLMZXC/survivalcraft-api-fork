@@ -45,10 +45,10 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_autoFeed = valuesDictionary.GetValue<bool>("AutoFeed");
             m_stateMachine.AddState("Inactive", delegate
             {

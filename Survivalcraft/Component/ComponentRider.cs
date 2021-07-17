@@ -49,14 +49,14 @@ namespace Game
 
         public ComponentMount FindNearestMount()
         {
-            Vector2 point = new Vector2(ComponentCreature.ComponentBody.Position.X, ComponentCreature.ComponentBody.Position.Z);
+            var point = new Vector2(ComponentCreature.ComponentBody.Position.X, ComponentCreature.ComponentBody.Position.Z);
             m_componentBodies.Clear();
             m_subsystemBodies.FindBodiesAroundPoint(point, 2.5f, m_componentBodies);
             float num = 0f;
             ComponentMount result = null;
             foreach (ComponentMount item in from b in m_componentBodies
                                             select b.Entity.FindComponent<ComponentMount>() into m
-                                            where m != null && m.Entity != base.Entity
+                                            where m != null && m.Entity != Entity
                                             select m)
             {
                 float num2 = ScoreMount(item, 2.5f);
@@ -159,9 +159,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            ComponentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            ComponentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
             m_riderOffset = valuesDictionary.GetValue<Vector3>("RiderOffset");
         }
 

@@ -43,13 +43,13 @@ namespace Game
                 for (int j = 0; j < 6; j++)
                 {
                     int num2 = SetMountingFace(SetMaterial(0, i), j);
-                    Matrix matrix = (j >= 4) ? ((j != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY((float)j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f));
+                    Matrix matrix = (j >= 4) ? ((j != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f));
                     m_blockMeshesByData[num2] = new BlockMesh();
                     m_blockMeshesByData[num2].AppendModelMeshPart(model.FindMesh("PressurePlate").MeshParts[0], boneAbsoluteTransform * matrix, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-                    m_blockMeshesByData[num2].TransformTextureCoordinates(Matrix.CreateTranslation((float)(num % 16) / 16f, (float)(num / 16) / 16f, 0f));
+                    m_blockMeshesByData[num2].TransformTextureCoordinates(Matrix.CreateTranslation(num % 16 / 16f, num / 16 / 16f, 0f));
                     m_blockMeshesByData[num2].GenerateSidesData();
-                    Vector3 vector = Vector3.Transform(new Vector3(-0.5f, 0f, -0.5f), matrix);
-                    Vector3 vector2 = Vector3.Transform(new Vector3(0.5f, 0.0625f, 0.5f), matrix);
+                    var vector = Vector3.Transform(new Vector3(-0.5f, 0f, -0.5f), matrix);
+                    var vector2 = Vector3.Transform(new Vector3(0.5f, 0.0625f, 0.5f), matrix);
                     vector.X = MathUtils.Round(vector.X * 100f) / 100f;
                     vector.Y = MathUtils.Round(vector.Y * 100f) / 100f;
                     vector.Z = MathUtils.Round(vector.Z * 100f) / 100f;
@@ -64,7 +64,7 @@ namespace Game
                 Matrix identity = Matrix.Identity;
                 m_standaloneBlockMeshesByMaterial[i] = new BlockMesh();
                 m_standaloneBlockMeshesByMaterial[i].AppendModelMeshPart(model.FindMesh("PressurePlate").MeshParts[0], boneAbsoluteTransform * identity, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-                m_standaloneBlockMeshesByMaterial[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(num % 16) / 16f, (float)(num / 16) / 16f, 0f));
+                m_standaloneBlockMeshesByMaterial[i].TransformTextureCoordinates(Matrix.CreateTranslation(num % 16 / 16f, num / 16 / 16f, 0f));
             }
         }
 
@@ -89,7 +89,7 @@ namespace Game
         {
             int data = SetMountingFace(Terrain.ExtractData(value), raycastResult.CellFace.Face);
             int value2 = Terrain.ReplaceData(value, data);
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = value2;
             result.CellFace = raycastResult.CellFace;
             return result;

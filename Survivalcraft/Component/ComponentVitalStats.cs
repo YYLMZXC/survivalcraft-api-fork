@@ -226,12 +226,12 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemMetersBlockBehavior = base.Project.FindSubsystem<SubsystemMetersBlockBehavior>(throwOnError: true);
-            m_subsystemWeather = base.Project.FindSubsystem<SubsystemWeather>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemMetersBlockBehavior = Project.FindSubsystem<SubsystemMetersBlockBehavior>(throwOnError: true);
+            m_subsystemWeather = Project.FindSubsystem<SubsystemWeather>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
             m_pantingSound = m_subsystemAudio.CreateSound("Audio/HumanPanting");
             m_pantingSound.IsLooped = true;
             Food = valuesDictionary.GetValue<float>("Food");
@@ -262,7 +262,7 @@ namespace Game
             valuesDictionary.SetValue("Sleep", Sleep);
             valuesDictionary.SetValue("Temperature", Temperature);
             valuesDictionary.SetValue("Wetness", Wetness);
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Satiation", valuesDictionary2);
             foreach (KeyValuePair<int, float> item in m_satiation)
             {
@@ -495,7 +495,7 @@ namespace Game
             if (!m_componentPlayer.ComponentSleep.IsSleeping)
             {
                 m_componentPlayer.ComponentScreenOverlays.BlackoutFactor = MathUtils.Max(m_sleepBlackoutFactor, m_componentPlayer.ComponentScreenOverlays.BlackoutFactor);
-                if ((double)m_sleepBlackoutFactor > 0.01)
+                if (m_sleepBlackoutFactor > 0.01)
                 {
                     m_componentPlayer.ComponentScreenOverlays.FloatingMessage = LanguageControl.Get(fName, 24);
                     m_componentPlayer.ComponentScreenOverlays.FloatingMessageFactor = MathUtils.Saturate(10f * (m_sleepBlackoutFactor - 0.9f));
@@ -524,7 +524,7 @@ namespace Game
                     arg = LanguageControl.Get(fName, 43);
                     break;
             }
-            if (m_subsystemTime.PeriodicGameTimeEvent(2.0, 2.0 * (double)GetHashCode() % 1000.0 / 1000.0))
+            if (m_subsystemTime.PeriodicGameTimeEvent(2.0, 2.0 * GetHashCode() % 1000.0 / 1000.0))
             {
                 int x = Terrain.ToCell(m_componentPlayer.ComponentBody.Position.X);
                 int y = Terrain.ToCell(m_componentPlayer.ComponentBody.Position.Y + 0.1f);
@@ -593,7 +593,7 @@ namespace Game
             float num4 = MathUtils.Saturate(0.5f * m_temperatureBlackoutDuration);
             m_temperatureBlackoutFactor = MathUtils.Saturate(m_temperatureBlackoutFactor + 2f * gameTimeDelta * (num4 - m_temperatureBlackoutFactor));
             m_componentPlayer.ComponentScreenOverlays.BlackoutFactor = MathUtils.Max(m_temperatureBlackoutFactor, m_componentPlayer.ComponentScreenOverlays.BlackoutFactor);
-            if ((double)m_temperatureBlackoutFactor > 0.01)
+            if (m_temperatureBlackoutFactor > 0.01)
             {
                 m_componentPlayer.ComponentScreenOverlays.FloatingMessage = LanguageControl.Get(fName, 37);
                 m_componentPlayer.ComponentScreenOverlays.FloatingMessageFactor = MathUtils.Saturate(10f * (m_temperatureBlackoutFactor - 0.9f));
@@ -618,13 +618,11 @@ namespace Game
             {
                 m_componentPlayer.ComponentGui.TemperatureBarWidget.BarSubtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Temperature2");
             }
-            else if (m_environmentTemperature > 2f)
-            {
-                m_componentPlayer.ComponentGui.TemperatureBarWidget.BarSubtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Temperature1");
-            }
             else
             {
-                m_componentPlayer.ComponentGui.TemperatureBarWidget.BarSubtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Temperature0");
+                m_componentPlayer.ComponentGui.TemperatureBarWidget.BarSubtexture = m_environmentTemperature > 2f
+                    ? ContentManager.Get<Subtexture>("Textures/Atlas/Temperature1")
+                    : ContentManager.Get<Subtexture>("Textures/Atlas/Temperature0");
             }
         }
 

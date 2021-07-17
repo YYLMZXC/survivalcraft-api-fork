@@ -27,7 +27,7 @@ namespace Game
             {
                 return;
             }
-            int num = Terrain.ExtractLight(base.SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z));
+            int num = Terrain.ExtractLight(SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z));
             if (num == 0)
             {
                 m_toUpdate[new Point3(x, y, z)] = Terrain.ReplaceContents(value, 8);
@@ -42,12 +42,12 @@ namespace Game
                 {
                     for (int k = y - 2; k <= y + 1; k++)
                     {
-                        int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(i, k, j);
+                        int cellValue = SubsystemTerrain.Terrain.GetCellValue(i, k, j);
                         if (Terrain.ExtractContents(cellValue) != 2)
                         {
                             continue;
                         }
-                        int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(i, k + 1, j);
+                        int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(i, k + 1, j);
                         if (KillsGrassIfOnTopOfIt(cellValue2) || Terrain.ExtractLight(cellValue2) < 13 || !(m_random.Float(0f, 1f) < 0.1f))
                         {
                             continue;
@@ -56,8 +56,8 @@ namespace Game
                         m_toUpdate[new Point3(i, k, j)] = num2;
                         if (Terrain.ExtractContents(cellValue2) == 0)
                         {
-                            int temperature = base.SubsystemTerrain.Terrain.GetTemperature(i, j);
-                            int humidity = base.SubsystemTerrain.Terrain.GetHumidity(i, j);
+                            int temperature = SubsystemTerrain.Terrain.GetTemperature(i, j);
+                            int humidity = SubsystemTerrain.Terrain.GetHumidity(i, j);
                             int num3 = PlantsManager.GenerateRandomPlantValue(m_random, num2, temperature, humidity, k + 1);
                             if (num3 != 0)
                             {
@@ -71,22 +71,22 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
             if (Terrain.ExtractContents(cellValue) == 61)
             {
-                int cellValueFast = base.SubsystemTerrain.Terrain.GetCellValueFast(x, y, z);
+                int cellValueFast = SubsystemTerrain.Terrain.GetCellValueFast(x, y, z);
                 cellValueFast = Terrain.ReplaceData(cellValueFast, 1);
-                base.SubsystemTerrain.ChangeCell(x, y, z, cellValueFast);
+                SubsystemTerrain.ChangeCell(x, y, z, cellValueFast);
             }
             else
             {
-                int cellValueFast2 = base.SubsystemTerrain.Terrain.GetCellValueFast(x, y, z);
+                int cellValueFast2 = SubsystemTerrain.Terrain.GetCellValueFast(x, y, z);
                 cellValueFast2 = Terrain.ReplaceData(cellValueFast2, 0);
-                base.SubsystemTerrain.ChangeCell(x, y, z, cellValueFast2);
+                SubsystemTerrain.ChangeCell(x, y, z, cellValueFast2);
             }
             if (KillsGrassIfOnTopOfIt(cellValue))
             {
-                base.SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(2, 0, 0));
+                SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(2, 0, 0));
             }
         }
 
@@ -94,14 +94,14 @@ namespace Game
         {
             if (damage > BlocksManager.Blocks[8].ExplosionResilience * m_random.Float(0f, 1f))
             {
-                base.SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(2, 0, 0));
+                SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(2, 0, 0));
             }
         }
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
             base.Load(valuesDictionary);
         }
 
@@ -113,20 +113,20 @@ namespace Game
                 {
                     if (Terrain.ExtractContents(item.Value) == 8)
                     {
-                        if (base.SubsystemTerrain.Terrain.GetCellContents(item.Key.X, item.Key.Y, item.Key.Z) != 2)
+                        if (SubsystemTerrain.Terrain.GetCellContents(item.Key.X, item.Key.Y, item.Key.Z) != 2)
                         {
                             continue;
                         }
                     }
                     else
                     {
-                        int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(item.Key.X, item.Key.Y - 1, item.Key.Z);
-                        if ((cellContents != 8 && cellContents != 2) || base.SubsystemTerrain.Terrain.GetCellContents(item.Key.X, item.Key.Y, item.Key.Z) != 0)
+                        int cellContents = SubsystemTerrain.Terrain.GetCellContents(item.Key.X, item.Key.Y - 1, item.Key.Z);
+                        if ((cellContents != 8 && cellContents != 2) || SubsystemTerrain.Terrain.GetCellContents(item.Key.X, item.Key.Y, item.Key.Z) != 0)
                         {
                             continue;
                         }
                     }
-                    base.SubsystemTerrain.ChangeCell(item.Key.X, item.Key.Y, item.Key.Z, item.Value);
+                    SubsystemTerrain.ChangeCell(item.Key.X, item.Key.Y, item.Key.Z, item.Value);
                 }
                 m_toUpdate.Clear();
             }
@@ -138,7 +138,7 @@ namespace Game
             Block block = BlocksManager.Blocks[num];
             if (!(block is FluidBlock))
             {
-                if (!block.IsFaceTransparent(base.SubsystemTerrain, 5, value))
+                if (!block.IsFaceTransparent(SubsystemTerrain, 5, value))
                 {
                     return block.IsCollidable_(value);
                 }

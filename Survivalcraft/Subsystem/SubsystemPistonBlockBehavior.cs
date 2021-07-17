@@ -85,11 +85,11 @@ namespace Game
             int data = Terrain.ExtractData(value);
             DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditPistonDialog(data, delegate (int newData)
             {
-                if (newData != data && base.SubsystemTerrain.Terrain.GetCellContents(x, y, z) == contents)
+                if (newData != data && SubsystemTerrain.Terrain.GetCellContents(x, y, z) == contents)
                 {
                     int value2 = Terrain.ReplaceData(value, newData);
-                    base.SubsystemTerrain.ChangeCell(x, y, z, value2);
-                    SubsystemElectricity subsystemElectricity = base.Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
+                    SubsystemTerrain.ChangeCell(x, y, z, value2);
+                    SubsystemElectricity subsystemElectricity = Project.FindSubsystem<SubsystemElectricity>(throwOnError: true);
                     ElectricElement electricElement = subsystemElectricity.GetElectricElement(x, y, z, 0);
                     if (electricElement != null)
                     {
@@ -150,8 +150,8 @@ namespace Game
 
         public override void OnChunkDiscarding(TerrainChunk chunk)
         {
-            BoundingBox boundingBox = new BoundingBox(chunk.BoundingBox.Min - new Vector3(16f), chunk.BoundingBox.Max + new Vector3(16f));
-            DynamicArray<IMovingBlockSet> dynamicArray = new DynamicArray<IMovingBlockSet>();
+            var boundingBox = new BoundingBox(chunk.BoundingBox.Min - new Vector3(16f), chunk.BoundingBox.Max + new Vector3(16f));
+            var dynamicArray = new DynamicArray<IMovingBlockSet>();
             m_subsystemMovingBlocks.FindMovingBlocks(boundingBox, extendToFillCells: false, dynamicArray);
             foreach (IMovingBlockSet item in dynamicArray)
             {
@@ -165,10 +165,10 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemMovingBlocks = base.Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemMovingBlocks = Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true);
             m_subsystemMovingBlocks.Stopped += MovingBlocksStopped;
             m_subsystemMovingBlocks.CollidedWithTerrain += MovingBlocksCollidedWithTerrain;
         }
@@ -235,7 +235,7 @@ namespace Game
             {
                 if (movingBlockSet.Id == "Piston")
                 {
-                    Point3 point = (Point3)movingBlockSet.Tag;
+                    var point = (Point3)movingBlockSet.Tag;
                     int cellValue = m_subsystemTerrain.Terrain.GetCellValue(point.X, point.Y, point.Z);
                     if (Terrain.ExtractContents(cellValue) == 237)
                     {
@@ -248,16 +248,16 @@ namespace Game
                         {
                             num = MathUtils.Min(num, block.Offset.X * p.X + block.Offset.Y * p.Y + block.Offset.Z * p.Z);
                         }
-                        float num2 = movingBlockSet.Position.X * (float)p.X + movingBlockSet.Position.Y * (float)p.Y + movingBlockSet.Position.Z * (float)p.Z;
+                        float num2 = movingBlockSet.Position.X * p.X + movingBlockSet.Position.Y * p.Y + movingBlockSet.Position.Z * p.Z;
                         float num3 = point.X * p.X + point.Y * p.Y + point.Z * p.Z;
                         if (num2 > num3)
                         {
-                            if ((float)num + num2 - num3 > 1f)
+                            if (num + num2 - num3 > 1f)
                             {
                                 movingBlockSet.SetBlock(p * (num - 1), Terrain.MakeBlockValue(238, 0, PistonHeadBlock.SetFace(PistonHeadBlock.SetIsShaft(PistonHeadBlock.SetMode(0, mode), isShaft: true), face)));
                             }
                         }
-                        else if (num2 < num3 && (float)num + num2 - num3 <= 0f)
+                        else if (num2 < num3 && num + num2 - num3 <= 0f)
                         {
                             movingBlockSet.SetBlock(p * num, 0);
                         }
@@ -478,7 +478,7 @@ namespace Game
             {
                 return;
             }
-            Point3 point = (Point3)movingBlockSet.Tag;
+            var point = (Point3)movingBlockSet.Tag;
             int cellValue = m_subsystemTerrain.Terrain.GetCellValue(point.X, point.Y, point.Z);
             if (Terrain.ExtractContents(cellValue) != 237)
             {
@@ -489,13 +489,13 @@ namespace Game
             int num2 = point.X * point2.X + point.Y * point2.Y + point.Z * point2.Z;
             if (num > num2)
             {
-                if (IsBlockBlocking(base.SubsystemTerrain.Terrain.GetCellValue(p.X, p.Y, p.Z)))
+                if (IsBlockBlocking(SubsystemTerrain.Terrain.GetCellValue(p.X, p.Y, p.Z)))
                 {
                     movingBlockSet.Stop();
                 }
                 else
                 {
-                    base.SubsystemTerrain.DestroyCell(0, p.X, p.Y, p.Z, 0, noDrop: false, noParticleSystem: false);
+                    SubsystemTerrain.DestroyCell(0, p.X, p.Y, p.Z, 0, noDrop: false, noParticleSystem: false);
                 }
             }
         }
@@ -506,7 +506,7 @@ namespace Game
             {
                 return;
             }
-            Point3 key = (Point3)movingBlockSet.Tag;
+            var key = (Point3)movingBlockSet.Tag;
             if (Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValue(key.X, key.Y, key.Z)) == 237)
             {
                 if (!m_actions.TryGetValue(key, out QueuedAction value))

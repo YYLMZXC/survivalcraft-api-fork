@@ -19,7 +19,7 @@ namespace Game
         public void Cancel()
         {
             CancellationTokenSource.Cancel();
-            this.Cancelled?.Invoke();
+            Cancelled?.Invoke();
         }
     }
 }

@@ -57,11 +57,11 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
-            m_subsystemCampfireBlockBehavior = base.Project.FindSubsystem<SubsystemCampfireBlockBehavior>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemCampfireBlockBehavior = Project.FindSubsystem<SubsystemCampfireBlockBehavior>(throwOnError: true);
             m_dayRange = valuesDictionary.GetValue<float>("DayRange");
             m_nightRange = valuesDictionary.GetValue<float>("NightRange");
             m_periodicEventOffset = m_random.Float(0f, 10f);
@@ -85,14 +85,7 @@ namespace Game
                             m_ignoreFireUntil = m_subsystemTime.GameTime + 20.0;
                         }
                         Vector3.Distance(m_target.Value, m_componentCreature.ComponentBody.Position);
-                        if (m_subsystemTime.GameTime < m_ignoreFireUntil)
-                        {
-                            m_importanceLevel = 0f;
-                        }
-                        else
-                        {
-                            m_importanceLevel = ((targetScore > 0.5f) ? 250f : m_random.Float(1f, 5f));
-                        }
+                        m_importanceLevel = m_subsystemTime.GameTime < m_ignoreFireUntil ? 0f : (targetScore > 0.5f) ? 250f : m_random.Float(1f, 5f);
                     }
                     else
                     {
@@ -104,7 +97,7 @@ namespace Game
             {
                 if (m_target.HasValue)
                 {
-                    Vector3 vector2 = Vector3.Normalize(Vector3.Normalize(m_componentCreature.ComponentBody.Position - m_target.Value) + m_random.Vector3(0.5f));
+                    var vector2 = Vector3.Normalize(Vector3.Normalize(m_componentCreature.ComponentBody.Position - m_target.Value) + m_random.Vector3(0.5f));
                     Vector3 value2 = m_componentCreature.ComponentBody.Position + m_random.Float(6f, 8f) * Vector3.Normalize(new Vector3(vector2.X, 0f, vector2.Z));
                     m_componentPathfinding.SetDestination(value2, m_random.Float(0.6f, 0.8f), 1f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
                 }
@@ -163,7 +156,7 @@ namespace Game
             float num = 0f;
             foreach (Point3 campfire in m_subsystemCampfireBlockBehavior.Campfires)
             {
-                Vector3 vector = new Vector3(campfire.X, campfire.Y, campfire.Z);
+                var vector = new Vector3(campfire.X, campfire.Y, campfire.Z);
                 float num2 = ScoreTarget(vector);
                 if (num2 > num)
                 {

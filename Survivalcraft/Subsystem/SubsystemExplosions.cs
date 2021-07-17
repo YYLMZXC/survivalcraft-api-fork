@@ -58,7 +58,7 @@ namespace Game
                         int num8 = num5 + (num6 << 4) + (num7 << 4 << 4);
                         return array[num8];
                     }
-                    return default(T);
+                    return default;
                 }
                 return m_outside;
             }
@@ -98,7 +98,7 @@ namespace Game
 
             public Dictionary<Point3, T> ToDictionary()
             {
-                Dictionary<Point3, T> dictionary = new Dictionary<Point3, T>();
+                var dictionary = new Dictionary<Point3, T>();
                 for (int i = 0; i < m_data.Length; i++)
                 {
                     T[] array = m_data[i];
@@ -111,7 +111,7 @@ namespace Game
                     int num3 = m_originZ + (((i >> 8) & 0xF) << 4);
                     for (int j = 0; j < array.Length; j++)
                     {
-                        if (!object.Equals(array[j], default(T)))
+                        if (!Equals(array[j], default(T)))
                         {
                             int num4 = j & 0xF;
                             int num5 = (j >> 4) & 0xF;
@@ -266,15 +266,15 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemNoise = base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_subsystemPickables = base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
-            m_subsystemProjectiles = base.Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
-            m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
-            m_subsystemFireBlockBehavior = base.Project.FindSubsystem<SubsystemFireBlockBehavior>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemNoise = Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
+            m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
+            m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
+            m_subsystemFireBlockBehavior = Project.FindSubsystem<SubsystemFireBlockBehavior>(throwOnError: true);
             m_explosionParticleSystem = new ExplosionParticleSystem();
             m_subsystemParticles.AddParticleSystem(m_explosionParticleSystem);
         }
@@ -283,10 +283,10 @@ namespace Game
         {
             float num = MathUtils.Max(0.13f * MathUtils.Pow(pressure, 0.5f), 1f);
             m_subsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(0));
-            SparseSpatialArray<bool> processed = new SparseSpatialArray<bool>(x, y, z, outside: true);
-            List<ProcessPoint> list = new List<ProcessPoint>();
-            List<ProcessPoint> list2 = new List<ProcessPoint>();
-            List<ProcessPoint> list3 = new List<ProcessPoint>();
+            var processed = new SparseSpatialArray<bool>(x, y, z, outside: true);
+            var list = new List<ProcessPoint>();
+            var list2 = new List<ProcessPoint>();
+            var list3 = new List<ProcessPoint>();
             TryAddPoint(x, y, z, -1, pressure, isIncendiary, list, processed);
             int num2 = 0;
             int num3 = 0;
@@ -294,7 +294,7 @@ namespace Game
             {
                 num2 += list.Count;
                 num3++;
-                float num4 = 5f * (float)MathUtils.Max(num3 - 7, 0);
+                float num4 = 5f * MathUtils.Max(num3 - 7, 0);
                 float num5 = pressure / (MathUtils.Pow(num2, 0.66f) + num4);
                 if (num5 >= num)
                 {
@@ -360,7 +360,7 @@ namespace Game
             if (num != 0)
             {
                 int num2 = (int)(MathUtils.Hash((uint)(x + 913 * y + 217546 * z)) % 100u);
-                float num3 = MathUtils.Lerp(1f, 2f, (float)num2 / 100f);
+                float num3 = MathUtils.Lerp(1f, 2f, num2 / 100f);
                 if (num2 % 8 == 0)
                 {
                     num3 *= 3f;
@@ -381,9 +381,9 @@ namespace Game
                     }
                     if (!flag)
                     {
-                        CalculateImpulseAndDamage(new Vector3((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f), 60f, 2f * num4, out Vector3 impulse, out float _);
+                        CalculateImpulseAndDamage(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), 60f, 2f * num4, out Vector3 impulse, out float _);
                         bool flag2 = false;
-                        List<BlockDropValue> list = new List<BlockDropValue>();
+                        var list = new List<BlockDropValue>();
                         block.GetDropValues(m_subsystemTerrain, cellValue, newValue, 0, list, out bool _);
                         if (list.Count == 0)
                         {
@@ -408,8 +408,8 @@ namespace Game
                                         velocity *= m_random.Float(0.5f, 1f);
                                         velocity += m_random.Vector3(0.2f * velocity.Length());
                                     }
-                                    float num9 = flag2 ? 0f : MathUtils.Lerp(1f, 0f, (float)m_projectilesCount / 20f);
-                                    Projectile projectile = m_subsystemProjectiles.AddProjectile(item.Value, new Vector3((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f), velocity, m_random.Vector3(0f, 20f), null);
+                                    float num9 = flag2 ? 0f : MathUtils.Lerp(1f, 0f, m_projectilesCount / 20f);
+                                    Projectile projectile = m_subsystemProjectiles.AddProjectile(item.Value, new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), velocity, m_random.Vector3(0f, 20f), null);
                                     projectile.ProjectileStoppedAction = ((!(m_random.Float(0f, 1f) < num9)) ? ProjectileStoppedAction.Disappear : ProjectileStoppedAction.TurnIntoPickable);
                                     if (m_random.Float(0f, 1f) < 0.5f && m_projectilesCount < 35)
                                     {
@@ -540,7 +540,7 @@ namespace Game
                     projectile2.Velocity += (impulse3 + new Vector3(0f, 0.1f * impulse3.Length(), 0f)) * m_random.Float(0.75f, 1f);
                 }
             }
-            Vector3 position = new Vector3(point.X, point.Y, point.Z);
+            var position = new Vector3(point.X, point.Y, point.Z);
             float delay = m_subsystemAudio.CalculateDelay(num);
             if (num2 > 1000000f)
             {

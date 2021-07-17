@@ -13,7 +13,7 @@ namespace Game
         public ThermometerElectricElement(SubsystemElectricity subsystemElectricity, CellFace cellFace)
             : base(subsystemElectricity, cellFace)
         {
-            m_subsystemMetersBlockBehavior = base.SubsystemElectricity.Project.FindSubsystem<SubsystemMetersBlockBehavior>(throwOnError: true);
+            m_subsystemMetersBlockBehavior = SubsystemElectricity.Project.FindSubsystem<SubsystemMetersBlockBehavior>(throwOnError: true);
         }
 
         public override float GetOutputVoltage(int face)
@@ -24,10 +24,10 @@ namespace Game
         public override bool Simulate()
         {
             float voltage = m_voltage;
-            CellFace cellFace = base.CellFaces[0];
-            m_voltage = MathUtils.Saturate((float)m_subsystemMetersBlockBehavior.GetThermometerReading(cellFace.X, cellFace.Y, cellFace.Z) / 15f);
-            float num = 0.5f * (0.9f + 0.000200000009f * (float)(GetHashCode() % 1000));
-            base.SubsystemElectricity.QueueElectricElementForSimulation(this, base.SubsystemElectricity.CircuitStep + MathUtils.Max((int)(num / 0.01f), 1));
+            CellFace cellFace = CellFaces[0];
+            m_voltage = MathUtils.Saturate(m_subsystemMetersBlockBehavior.GetThermometerReading(cellFace.X, cellFace.Y, cellFace.Z) / 15f);
+            float num = 0.5f * (0.9f + 0.000200000009f * (GetHashCode() % 1000));
+            SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + MathUtils.Max((int)(num / 0.01f), 1));
             return m_voltage != voltage;
         }
     }

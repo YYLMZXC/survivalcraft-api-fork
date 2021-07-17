@@ -7,7 +7,7 @@ namespace Engine.Serialization
 	{
 		public string ConvertToString(object value)
 		{
-			Color color = (Color)value;
+			var color = (Color)value;
 			if (color.A != byte.MaxValue)
 			{
 				return HumanReadableConverter.ValuesListToString(',', new int[4]

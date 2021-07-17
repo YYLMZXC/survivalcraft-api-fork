@@ -48,7 +48,7 @@ namespace Game
 
         public override void Update()
         {
-            if (base.Input.Cancel || m_okWidget.IsClicked)
+            if (Input.Cancel || m_okWidget.IsClicked)
             {
                 DialogsManager.HideDialog(this);
             }

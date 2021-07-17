@@ -84,7 +84,7 @@ namespace Engine.Graphics
 			for (int i = 0; i <= sides; i++)
 			{
 				float x = MathUtils.Lerp(startAngle, endAngle, (float)i / (float)sides);
-				Vector2 v = new Vector2(MathUtils.Sin(x), 0f - MathUtils.Cos(x));
+				var v = new Vector2(MathUtils.Sin(x), 0f - MathUtils.Cos(x));
 				Vector2 vector = center + outerRadius * v;
 				Vector2 vector2 = center + innerRadius * v;
 				if (i > 0)

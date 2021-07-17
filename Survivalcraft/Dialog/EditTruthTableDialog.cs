@@ -97,7 +97,7 @@ namespace Game
                 m_truthTableData.Data = m_tmpTruthTableData.Data;
                 Dismiss(result: true);
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
+            if (Input.Cancel || m_cancelButton.IsClicked)
             {
                 Dismiss(result: false);
             }
@@ -106,10 +106,7 @@ namespace Game
         public void Dismiss(bool result)
         {
             DialogsManager.HideDialog(this);
-            if (m_handler != null)
-            {
-                m_handler(result);
-            }
+            m_handler?.Invoke(result);
         }
     }
 }

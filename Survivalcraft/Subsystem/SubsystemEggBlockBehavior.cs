@@ -27,11 +27,11 @@ namespace Game
                 if (m_subsystemCreatureSpawn.Creatures.Count < 35)
                 {
                     EggBlock.EggType eggType = m_eggBlock.GetEggType(data);
-                    Entity entity = DatabaseManager.CreateEntity(base.Project, eggType.TemplateName, throwIfNotFound: true);
+                    Entity entity = DatabaseManager.CreateEntity(Project, eggType.TemplateName, throwIfNotFound: true);
                     entity.FindComponent<ComponentBody>(throwOnError: true).Position = worldItem.Position;
                     entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
                     entity.FindComponent<ComponentSpawn>(throwOnError: true).SpawnDuration = 0.25f;
-                    base.Project.AddEntity(entity);
+                    Project.AddEntity(entity);
                 }
                 else
                 {
@@ -44,8 +44,8 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemCreatureSpawn = base.Project.FindSubsystem<SubsystemCreatureSpawn>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemCreatureSpawn = Project.FindSubsystem<SubsystemCreatureSpawn>(throwOnError: true);
         }
     }
 }

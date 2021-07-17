@@ -17,11 +17,11 @@ namespace Game
         {
             if (CalculateHighInputsCount() > 0)
             {
-                if (m_isActionAllowed && (!m_lastActionTime.HasValue || base.SubsystemElectricity.SubsystemTime.GameTime - m_lastActionTime > 0.1))
+                if (m_isActionAllowed && (!m_lastActionTime.HasValue || SubsystemElectricity.SubsystemTime.GameTime - m_lastActionTime > 0.1))
                 {
                     m_isActionAllowed = false;
-                    m_lastActionTime = base.SubsystemElectricity.SubsystemTime.GameTime;
-                    base.SubsystemElectricity.Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true).SwitchToNextState(base.CellFaces[0].X, base.CellFaces[0].Y, base.CellFaces[0].Z, playSound: false);
+                    m_lastActionTime = SubsystemElectricity.SubsystemTime.GameTime;
+                    SubsystemElectricity.Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true).SwitchToNextState(CellFaces[0].X, CellFaces[0].Y, CellFaces[0].Z, playSound: false);
                 }
             }
             else

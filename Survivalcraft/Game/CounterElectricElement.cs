@@ -27,12 +27,12 @@ namespace Game
 
         public override float GetOutputVoltage(int face)
         {
-            ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(base.CellFaces[0].Face, base.Rotation, face);
+            ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(CellFaces[0].Face, Rotation, face);
             if (connectorDirection.HasValue)
             {
                 if (connectorDirection.Value == ElectricConnectorDirection.Top)
                 {
-                    return (float)m_counter / 15f;
+                    return m_counter / 15f;
                 }
                 if (connectorDirection.Value == ElectricConnectorDirection.Bottom)
                 {
@@ -49,25 +49,25 @@ namespace Game
             bool flag = false;
             bool flag2 = false;
             bool flag3 = false;
-            int rotation = base.Rotation;
-            foreach (ElectricConnection connection in base.Connections)
+            int rotation = Rotation;
+            foreach (ElectricConnection connection in Connections)
             {
                 if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0)
                 {
-                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(base.CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue)
                     {
                         if (connectorDirection == ElectricConnectorDirection.Right)
                         {
-                            flag = ElectricElement.IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
+                            flag = IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
                         }
                         else if (connectorDirection == ElectricConnectorDirection.Left)
                         {
-                            flag2 = ElectricElement.IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
+                            flag2 = IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
                         }
                         else if (connectorDirection == ElectricConnectorDirection.In)
                         {
-                            flag3 = ElectricElement.IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
+                            flag3 = IsSignalHigh(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
                         }
                     }
                 }
@@ -119,7 +119,7 @@ namespace Game
             }
             if (m_counter != counter || m_overflow != overflow)
             {
-                base.SubsystemElectricity.WritePersistentVoltage(base.CellFaces[0].Point, (float)m_counter / 15f * (float)((!m_overflow) ? 1 : (-1)));
+                SubsystemElectricity.WritePersistentVoltage(CellFaces[0].Point, m_counter / 15f * ((!m_overflow) ? 1 : (-1)));
                 return true;
             }
             return false;

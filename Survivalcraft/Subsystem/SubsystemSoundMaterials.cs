@@ -45,7 +45,7 @@ namespace Game
                 {
                     float pitch = m_random.Float(-0.2f, 0.2f);
                     m_subsystemAudio.PlayRandomSound(value, 0.75f * loudnessMultiplier, pitch, componentCreature.ComponentBody.Position, 2f * loudnessMultiplier, autoDelay: true);
-                    ComponentPlayer componentPlayer = componentCreature as ComponentPlayer;
+                    var componentPlayer = componentCreature as ComponentPlayer;
                     if (componentPlayer != null && componentPlayer.ComponentVitalStats.Wetness > 0f)
                     {
                         string value2 = m_footstepSoundsValuesDictionary.GetValue<string>("Squishy", null);
@@ -92,8 +92,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
             m_impactsSoundsValuesDictionary = valuesDictionary.GetValue<ValuesDictionary>("ImpactSounds");
             m_footstepSoundsValuesDictionary = valuesDictionary.GetValue<ValuesDictionary>("FootstepSounds");
         }

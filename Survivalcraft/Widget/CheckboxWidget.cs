@@ -110,7 +110,7 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            bool isEnabledGlobal = base.IsEnabledGlobal;
+            bool isEnabledGlobal = IsEnabledGlobal;
             m_labelWidget.Color = (isEnabledGlobal ? Color : new Color(112, 112, 112));
             m_rectangleWidget.FillColor = new Color(0, 0, 0, 128);
             m_rectangleWidget.OutlineColor = (isEnabledGlobal ? new Color(128, 128, 128) : new Color(112, 112, 112));

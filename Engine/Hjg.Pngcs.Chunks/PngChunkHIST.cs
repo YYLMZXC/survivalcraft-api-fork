@@ -49,7 +49,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkHIST pngChunkHIST = (PngChunkHIST)other;
+			var pngChunkHIST = (PngChunkHIST)other;
 			hist = new int[pngChunkHIST.hist.Length];
 			Array.Copy(pngChunkHIST.hist, 0, hist, 0, pngChunkHIST.hist.Length);
 		}

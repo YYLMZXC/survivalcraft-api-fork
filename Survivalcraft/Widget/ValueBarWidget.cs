@@ -171,7 +171,7 @@ namespace Game
 
         public override void Draw(DrawContext dc)
         {
-            BaseBatch baseBatch = (BarSubtexture == null) ? ((BaseBatch)dc.PrimitivesRenderer2D.FlatBatch(0, DepthStencilState.None)) : ((BaseBatch)dc.PrimitivesRenderer2D.TexturedBatch(BarSubtexture.Texture, useAlphaTest: false, 0, DepthStencilState.None, null, null, TextureLinearFilter ? SamplerState.LinearClamp : SamplerState.PointClamp));
+            BaseBatch baseBatch = (BarSubtexture == null) ? dc.PrimitivesRenderer2D.FlatBatch(0, DepthStencilState.None) : ((BaseBatch)dc.PrimitivesRenderer2D.TexturedBatch(BarSubtexture.Texture, useAlphaTest: false, 0, DepthStencilState.None, null, null, TextureLinearFilter ? SamplerState.LinearClamp : SamplerState.PointClamp));
             int num = 0;
             int start = 0;
             if (baseBatch is TexturedBatch2D)
@@ -196,9 +196,9 @@ namespace Game
             for (int i = 0; i < 2 * BarsCount; i += num2)
             {
                 bool flag = i % 2 == 0;
-                float num3 = 0.5f * (float)i;
+                float num3 = 0.5f * i;
                 float num4 = 0f;
-                num4 = ((!FlipDirection) ? MathUtils.Clamp((Value - num3 / (float)BarsCount) * (float)BarsCount, 0f, 1f) : MathUtils.Clamp((Value - ((float)BarsCount - num3 - 1f) / (float)BarsCount) * (float)BarsCount, 0f, 1f));
+                num4 = ((!FlipDirection) ? MathUtils.Clamp((Value - num3 / BarsCount) * BarsCount, 0f, 1f) : MathUtils.Clamp((Value - (BarsCount - num3 - 1f) / BarsCount) * BarsCount, 0f, 1f));
                 if (!BarBlending)
                 {
                     num4 = MathUtils.Ceiling(num4);
@@ -207,9 +207,9 @@ namespace Game
                 Color c = LitBarColor;
                 if (LitBarColor2 != Color.Transparent && BarsCount > 1)
                 {
-                    c = Color.Lerp(LitBarColor, LitBarColor2, num3 / (float)(BarsCount - 1));
+                    c = Color.Lerp(LitBarColor, LitBarColor2, num3 / (BarsCount - 1));
                 }
-                Color color = Color.Lerp(UnlitBarColor, c, num4) * s * base.GlobalColorTransform;
+                Color color = Color.Lerp(UnlitBarColor, c, num4) * s * GlobalColorTransform;
                 if (HalfBars)
                 {
                     if (flag)
@@ -219,7 +219,7 @@ namespace Game
                         if (baseBatch is TexturedBatch2D)
                         {
                             Vector2 topLeft = BarSubtexture.TopLeft;
-                            Vector2 texCoord = new Vector2(MathUtils.Lerp(BarSubtexture.TopLeft.X, BarSubtexture.BottomRight.X, v.X), MathUtils.Lerp(BarSubtexture.TopLeft.Y, BarSubtexture.BottomRight.Y, v.Y));
+                            var texCoord = new Vector2(MathUtils.Lerp(BarSubtexture.TopLeft.X, BarSubtexture.BottomRight.X, v.X), MathUtils.Lerp(BarSubtexture.TopLeft.Y, BarSubtexture.BottomRight.Y, v.Y));
                             ((TexturedBatch2D)baseBatch).QueueQuad(zero + zero2 * BarSize, zero + v * BarSize, 0f, topLeft, texCoord, color);
                         }
                         else
@@ -233,7 +233,7 @@ namespace Game
                         Vector2 one = Vector2.One;
                         if (baseBatch is TexturedBatch2D)
                         {
-                            Vector2 texCoord2 = new Vector2(MathUtils.Lerp(BarSubtexture.TopLeft.X, BarSubtexture.BottomRight.X, v2.X), MathUtils.Lerp(BarSubtexture.TopLeft.Y, BarSubtexture.BottomRight.Y, v2.Y));
+                            var texCoord2 = new Vector2(MathUtils.Lerp(BarSubtexture.TopLeft.X, BarSubtexture.BottomRight.X, v2.X), MathUtils.Lerp(BarSubtexture.TopLeft.Y, BarSubtexture.BottomRight.Y, v2.Y));
                             Vector2 bottomRight = BarSubtexture.BottomRight;
                             ((TexturedBatch2D)baseBatch).QueueQuad(zero + v2 * BarSize, zero + one * BarSize, 0f, texCoord2, bottomRight, color);
                         }
@@ -273,27 +273,22 @@ namespace Game
             }
             if (baseBatch is TexturedBatch2D)
             {
-                ((TexturedBatch2D)baseBatch).TransformTriangles(base.GlobalTransform, num);
+                ((TexturedBatch2D)baseBatch).TransformTriangles(GlobalTransform, num);
             }
             else
             {
-                ((FlatBatch2D)baseBatch).TransformLines(base.GlobalTransform, start);
-                ((FlatBatch2D)baseBatch).TransformTriangles(base.GlobalTransform, num);
+                ((FlatBatch2D)baseBatch).TransformLines(GlobalTransform, start);
+                ((FlatBatch2D)baseBatch).TransformTriangles(GlobalTransform, num);
             }
             m_flashCount = MathUtils.Max(m_flashCount - 4f * Time.FrameDuration, 0f);
         }
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = true;
-            if (m_layoutDirection == LayoutDirection.Horizontal)
-            {
-                base.DesiredSize = new Vector2((BarSize.X + Spacing) * (float)BarsCount, BarSize.Y);
-            }
-            else
-            {
-                base.DesiredSize = new Vector2(BarSize.X, (BarSize.Y + Spacing) * (float)BarsCount);
-            }
+            IsDrawRequired = true;
+            DesiredSize = m_layoutDirection == LayoutDirection.Horizontal
+                ? new Vector2((BarSize.X + Spacing) * BarsCount, BarSize.Y)
+                : new Vector2(BarSize.X, (BarSize.Y + Spacing) * BarsCount);
         }
     }
 }

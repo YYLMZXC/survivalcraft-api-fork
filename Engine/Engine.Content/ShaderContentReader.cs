@@ -11,11 +11,11 @@ namespace Engine.Content
 		{
 			if (existingObject == null)
 			{
-				BinaryReader binaryReader = new BinaryReader(stream);
+				var binaryReader = new BinaryReader(stream);
 				string vertexShaderCode = binaryReader.ReadString();
 				string pixelShaderCode = binaryReader.ReadString();
 				int num = binaryReader.ReadInt32();
-				ShaderMacro[] array = new ShaderMacro[num];
+				var array = new ShaderMacro[num];
 				for (int i = 0; i < num; i++)
 				{
 					string name = binaryReader.ReadString();

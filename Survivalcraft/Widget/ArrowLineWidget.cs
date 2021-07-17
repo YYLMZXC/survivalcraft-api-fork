@@ -95,7 +95,7 @@ namespace Game
             {
                 ParsePoints();
             }
-            Color color = Color * base.GlobalColorTransform;
+            Color color = Color * GlobalColorTransform;
             FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(1, DepthStencilState.None);
             int count = flatBatch2D.TriangleVertices.Count;
             for (int i = 0; i < m_vertices.Count; i += 3)
@@ -105,7 +105,7 @@ namespace Game
                 Vector2 p3 = m_startOffset + m_vertices[i + 2];
                 flatBatch2D.QueueTriangle(p, p2, p3, 0f, color);
             }
-            flatBatch2D.TransformTriangles(base.GlobalTransform, count);
+            flatBatch2D.TransformTriangles(GlobalTransform, count);
         }
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
@@ -114,13 +114,13 @@ namespace Game
             {
                 ParsePoints();
             }
-            base.IsDrawRequired = (Color.A > 0 && Width > 0f);
+            IsDrawRequired = (Color.A > 0 && Width > 0f);
         }
 
         public void ParsePoints()
         {
             m_parsingPending = false;
-            List<Vector2> list = new List<Vector2>();
+            var list = new List<Vector2>();
             string[] array = m_pointsString.Split(new string[] { ";" }, StringSplitOptions.None);
             foreach (string data in array)
             {
@@ -133,7 +133,7 @@ namespace Game
                 {
                     Vector2 vector = list[j - 1];
                     Vector2 vector2 = list[j];
-                    Vector2 vector3 = Vector2.Normalize(vector2 - vector);
+                    var vector3 = Vector2.Normalize(vector2 - vector);
                     Vector2 vector4 = vector3;
                     Vector2 v = vector3;
                     if (j >= 2)
@@ -144,8 +144,8 @@ namespace Game
                     {
                         v = Vector2.Normalize(list[j + 1] - vector2);
                     }
-                    Vector2 v2 = Vector2.Perpendicular(vector4);
-                    Vector2 v3 = Vector2.Perpendicular(vector3);
+                    var v2 = Vector2.Perpendicular(vector4);
+                    var v3 = Vector2.Perpendicular(vector3);
                     float num = (float)Math.PI - Vector2.Angle(vector4, vector3);
                     float s = 0.5f * Width / MathUtils.Tan(num / 2f);
                     Vector2 v4 = 0.5f * v2 * Width - vector4 * s;
@@ -193,18 +193,18 @@ namespace Game
                 }
                 if (AbsoluteCoordinates)
                 {
-                    base.DesiredSize = new Vector2(num5.Value, num6.Value);
+                    DesiredSize = new Vector2(num5.Value, num6.Value);
                     m_startOffset = Vector2.Zero;
                 }
                 else
                 {
-                    base.DesiredSize = new Vector2(num5.Value - num3.Value, num6.Value - num4.Value);
+                    DesiredSize = new Vector2(num5.Value - num3.Value, num6.Value - num4.Value);
                     m_startOffset = -new Vector2(num3.Value, num4.Value);
                 }
             }
             else
             {
-                base.DesiredSize = Vector2.Zero;
+                DesiredSize = Vector2.Zero;
                 m_startOffset = Vector2.Zero;
             }
         }

@@ -156,17 +156,10 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            bool isEnabledGlobal = base.IsEnabledGlobal;
+            bool isEnabledGlobal = IsEnabledGlobal;
             m_labelWidget.Color = (isEnabledGlobal ? Color : new Color(112, 112, 112));
             m_imageWidget.FillColor = (isEnabledGlobal ? Color : new Color(112, 112, 112));
-            if (m_clickableWidget.IsPressed || IsChecked)
-            {
-                m_rectangleWidget.BevelSize = -0.5f * BevelSize;
-            }
-            else
-            {
-                m_rectangleWidget.BevelSize = BevelSize;
-            }
+            m_rectangleWidget.BevelSize = m_clickableWidget.IsPressed || IsChecked ? -0.5f * BevelSize : BevelSize;
             base.MeasureOverride(parentAvailableSize);
         }
     }

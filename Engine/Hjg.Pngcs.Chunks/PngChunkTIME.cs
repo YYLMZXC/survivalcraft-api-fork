@@ -56,7 +56,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkTIME pngChunkTIME = (PngChunkTIME)other;
+			var pngChunkTIME = (PngChunkTIME)other;
 			year = pngChunkTIME.year;
 			mon = pngChunkTIME.mon;
 			day = pngChunkTIME.day;

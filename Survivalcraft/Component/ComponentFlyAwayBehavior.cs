@@ -54,7 +54,7 @@ namespace Game
             }
             if (m_subsystemTime.GameTime >= m_nextUpdateTime)
             {
-                m_nextUpdateTime = m_subsystemTime.GameTime + (double)m_random.Float(0.5f, 1f);
+                m_nextUpdateTime = m_subsystemTime.GameTime + m_random.Float(0.5f, 1f);
                 m_stateMachine.Update();
             }
         }
@@ -69,13 +69,13 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemNoise = base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemNoise = Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_componentCreature.ComponentBody.CollidedWithBody += delegate
             {
                 if (m_stateMachine.CurrentState != "RunningAway")
@@ -152,7 +152,7 @@ namespace Game
                     int cellValue = m_subsystemTerrain.Terrain.GetCellValue(num2, num4, num3);
                     if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsCollidable_(cellValue) || Terrain.ExtractContents(cellValue) == 18)
                     {
-                        Vector3 vector = new Vector3((float)num2 + 0.5f, (float)num4 + 1.1f, (float)num3 + 0.5f);
+                        var vector = new Vector3(num2 + 0.5f, num4 + 1.1f, num3 + 0.5f);
                         float num5 = ScoreSafePlace(position, vector, null);
                         if (num5 > num)
                         {
@@ -200,7 +200,7 @@ namespace Game
 
         public bool IsPredator(Entity entity)
         {
-            if (entity != base.Entity)
+            if (entity != Entity)
             {
                 ComponentCreature componentCreature = entity.FindComponent<ComponentCreature>();
                 if (componentCreature != null && (componentCreature.Category == CreatureCategory.LandPredator || componentCreature.Category == CreatureCategory.WaterPredator || componentCreature.Category == CreatureCategory.LandOther))

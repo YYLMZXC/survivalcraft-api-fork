@@ -9,11 +9,11 @@ namespace FluxJpeg.Core.Filtering
 			double std = (double)(length / _newWidth) * 0.5;
 			for (int i = 0; i < num; i++)
 			{
-				GrayImage data = new GrayImage(_sourceData[i]);
+				var data = new GrayImage(_sourceData[i]);
 				data = Convolution.Instance.GaussianConv(data, std);
 				_sourceData[i] = data.ToByteArray2D();
 			}
-			NNResize nNResize = new NNResize();
+			var nNResize = new NNResize();
 			_destinationData = nNResize.Apply(_sourceData, _newWidth, _newHeight);
 		}
 	}

@@ -65,7 +65,7 @@ namespace Game
             {
                 ScreensManager.SwitchScreen("SettingsControls");
             }
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(m_previousScreen);
                 m_previousScreen = null;

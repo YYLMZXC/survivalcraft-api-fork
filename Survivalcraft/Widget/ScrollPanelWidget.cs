@@ -33,7 +33,7 @@ namespace Game
 
         public ScrollPanelWidget()
         {
-            base.ClampToBounds = true;
+            ClampToBounds = true;
             StartInitialScroll();
         }
 
@@ -58,7 +58,7 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = true;
+            IsDrawRequired = true;
             foreach (Widget child in Children)
             {
                 if (child.IsVisible)
@@ -80,7 +80,7 @@ namespace Game
             foreach (Widget child in Children)
             {
                 Vector2 zero = Vector2.Zero;
-                Vector2 actualSize = base.ActualSize;
+                Vector2 actualSize = ActualSize;
                 if (Direction == LayoutDirection.Horizontal)
                 {
                     zero.X -= ScrollPosition;
@@ -91,7 +91,7 @@ namespace Game
                     zero.Y -= ScrollPosition;
                     actualSize.Y = zero.Y + child.ParentDesiredSize.Y;
                 }
-                ContainerWidget.ArrangeChildWidgetInCell(zero, actualSize, child);
+                ArrangeChildWidgetInCell(zero, actualSize, child);
             }
         }
 
@@ -100,16 +100,16 @@ namespace Game
             float num = 50f;
             m_scrollAreaLength = CalculateScrollAreaLength();
             m_scrollBarAlpha = MathUtils.Max(m_scrollBarAlpha - 2f * Time.FrameDuration, 0f);
-            if (base.Input.Tap.HasValue && HitTestPanel(base.Input.Tap.Value))
+            if (Input.Tap.HasValue && HitTestPanel(Input.Tap.Value))
             {
-                m_lastDragPosition = ScreenToWidget(base.Input.Tap.Value);
+                m_lastDragPosition = ScreenToWidget(Input.Tap.Value);
             }
             if (m_lastDragPosition.HasValue)
             {
-                if (base.Input.Press.HasValue)
+                if (Input.Press.HasValue)
                 {
                     float num2 = 0f;
-                    Vector2 vector = ScreenToWidget(base.Input.Press.Value);
+                    Vector2 vector = ScreenToWidget(Input.Press.Value);
                     Vector2 vector2 = vector - m_lastDragPosition.Value;
                     if (Direction == LayoutDirection.Horizontal)
                     {
@@ -144,14 +144,14 @@ namespace Game
                 ScrollPosition += ScrollSpeed * Time.FrameDuration;
                 m_scrollBarAlpha = 3f;
             }
-            if (base.Input.Scroll.HasValue && HitTestPanel(base.Input.Scroll.Value.XY))
+            if (Input.Scroll.HasValue && HitTestPanel(Input.Scroll.Value.XY))
             {
-                ScrollPosition -= 40f * base.Input.Scroll.Value.Z;
+                ScrollPosition -= 40f * Input.Scroll.Value.Z;
                 ScrollSpeed = 0f;
                 num = 0f;
                 m_scrollBarAlpha = 3f;
             }
-            float num4 = MathUtils.Max(m_scrollAreaLength - base.ActualSize.Y, 0f);
+            float num4 = MathUtils.Max(m_scrollAreaLength - ActualSize.Y, 0f);
             if (ScrollPosition < 0f)
             {
                 if (!m_lastDragPosition.HasValue)
@@ -170,15 +170,15 @@ namespace Game
                 ScrollPosition = MathUtils.Min(ScrollPosition, num4 + num);
                 ScrollSpeed = 0f;
             }
-            if (m_lastDragPosition.HasValue && (base.Input.Drag.HasValue || base.Input.Hold.HasValue))
+            if (m_lastDragPosition.HasValue && (Input.Drag.HasValue || Input.Hold.HasValue))
             {
-                base.Input.Clear();
+                Input.Clear();
             }
         }
 
         public override void Draw(DrawContext dc)
         {
-            Color color = new Color((byte)128, (byte)128, (byte)128) * base.GlobalColorTransform * MathUtils.Saturate(m_scrollBarAlpha);
+            Color color = new Color((byte)128, (byte)128, (byte)128) * GlobalColorTransform * MathUtils.Saturate(m_scrollBarAlpha);
             if (color.A > 0 && m_scrollAreaLength > 0f)
             {
                 FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(0, DepthStencilState.None);
@@ -186,20 +186,20 @@ namespace Game
                 if (Direction == LayoutDirection.Horizontal)
                 {
                     float scrollPosition = ScrollPosition;
-                    float x = base.ActualSize.X;
-                    Vector2 corner = new Vector2(scrollPosition / m_scrollAreaLength * x, base.ActualSize.Y - 5f);
-                    Vector2 corner2 = new Vector2((scrollPosition + x) / m_scrollAreaLength * x, base.ActualSize.Y - 1f);
+                    float x = ActualSize.X;
+                    var corner = new Vector2(scrollPosition / m_scrollAreaLength * x, ActualSize.Y - 5f);
+                    var corner2 = new Vector2((scrollPosition + x) / m_scrollAreaLength * x, ActualSize.Y - 1f);
                     flatBatch2D.QueueQuad(corner, corner2, 0f, color);
                 }
                 else
                 {
                     float scrollPosition2 = ScrollPosition;
-                    float y = base.ActualSize.Y;
-                    Vector2 corner3 = new Vector2(base.ActualSize.X - 5f, scrollPosition2 / m_scrollAreaLength * y);
-                    Vector2 corner4 = new Vector2(base.ActualSize.X - 1f, (scrollPosition2 + y) / m_scrollAreaLength * y);
+                    float y = ActualSize.Y;
+                    var corner3 = new Vector2(ActualSize.X - 5f, scrollPosition2 / m_scrollAreaLength * y);
+                    var corner4 = new Vector2(ActualSize.X - 1f, (scrollPosition2 + y) / m_scrollAreaLength * y);
                     flatBatch2D.QueueQuad(corner3, corner4, 0f, color);
                 }
-                flatBatch2D.TransformTriangles(base.GlobalTransform, count);
+                flatBatch2D.TransformTriangles(GlobalTransform, count);
             }
         }
 

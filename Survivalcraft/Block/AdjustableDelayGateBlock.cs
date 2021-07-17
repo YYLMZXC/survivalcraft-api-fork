@@ -36,7 +36,7 @@ namespace Game
             int data = Terrain.ExtractData(value);
             if (GetFace(value) == face)
             {
-                ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(GetFace(value), RotateableMountedElectricElementBlock.GetRotation(data), connectorFace);
+                ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
                 if (connectorDirection == ElectricConnectorDirection.Bottom)
                 {
                     return ElectricConnectorType.Input;

@@ -23,7 +23,7 @@ namespace Hjg.Pngcs.Chunks
 			{
 				throw new PngjException("Text chunk key must be non empty");
 			}
-			MemoryStream memoryStream = new MemoryStream();
+			var memoryStream = new MemoryStream();
 			ChunkHelper.WriteBytesToStream(memoryStream, ChunkHelper.ToBytes(key));
 			memoryStream.WriteByte(0);
 			memoryStream.WriteByte((byte)(compressed ? 1 : 0));
@@ -92,7 +92,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkITXT pngChunkITXT = (PngChunkITXT)other;
+			var pngChunkITXT = (PngChunkITXT)other;
 			key = pngChunkITXT.key;
 			val = pngChunkITXT.val;
 			compressed = pngChunkITXT.compressed;

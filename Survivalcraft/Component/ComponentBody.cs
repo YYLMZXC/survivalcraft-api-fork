@@ -158,14 +158,7 @@ namespace Game
             }
             set
             {
-                if (value.LengthSquared() > 625f)
-                {
-                    m_velocity = 25f * Vector3.Normalize(value);
-                }
-                else
-                {
-                    m_velocity = value;
-                }
+                m_velocity = value.LengthSquared() > 625f ? 25f * Vector3.Normalize(value) : value;
             }
         }
 
@@ -226,7 +219,7 @@ namespace Game
             get
             {
                 Vector3 boxSize = BoxSize;
-                Vector3 position = base.Position;
+                Vector3 position = Position;
                 return new BoundingBox(position - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f), position + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f));
             }
         }
@@ -284,14 +277,14 @@ namespace Game
 
         static ComponentBody()
         {
-            List<Vector3> list = new List<Vector3>();
+            var list = new List<Vector3>();
             for (int i = -2; i <= 2; i++)
             {
                 for (int j = -2; j <= 2; j++)
                 {
                     for (int k = -2; k <= 2; k++)
                     {
-                        Vector3 item = new Vector3(0.25f * (float)i, 0.25f * (float)j, 0.25f * (float)k);
+                        var item = new Vector3(0.25f * i, 0.25f * j, 0.25f * k);
                         list.Add(item);
                     }
                 }
@@ -326,14 +319,14 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
             base.Load(valuesDictionary, idToEntityMap);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_subsystemMovingBlocks = base.Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
-            m_subsystemFluidBlockBehavior = base.Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemMovingBlocks = Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
+            m_subsystemFluidBlockBehavior = Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
             BoxSize = valuesDictionary.GetValue<Vector3>("BoxSize");
             Mass = valuesDictionary.GetValue<float>("Mass");
             Density = valuesDictionary.GetValue<float>("Density");
@@ -343,7 +336,7 @@ namespace Game
             WaterTurnSpeed = valuesDictionary.GetValue<float>("WaterTurnSpeed");
             Velocity = valuesDictionary.GetValue<Vector3>("Velocity");
             MaxSmoothRiseHeight = valuesDictionary.GetValue<float>("MaxSmoothRiseHeight");
-            ParentBody = valuesDictionary.GetValue<EntityReference>("ParentBody").GetComponent<ComponentBody>(base.Entity, idToEntityMap, throwIfNotFound: false);
+            ParentBody = valuesDictionary.GetValue<EntityReference>("ParentBody").GetComponent<ComponentBody>(Entity, idToEntityMap, throwIfNotFound: false);
             ParentBodyPositionOffset = valuesDictionary.GetValue<Vector3>("ParentBodyPositionOffset");
             ParentBodyRotationOffset = valuesDictionary.GetValue<Quaternion>("ParentBodyRotationOffset");
             IsSmoothRiseEnabled = true;
@@ -359,7 +352,7 @@ namespace Game
             {
                 valuesDictionary.SetValue("Velocity", Velocity);
             }
-            EntityReference value = EntityReference.FromId(ParentBody, entityToIdMap);
+            var value = EntityReference.FromId(ParentBody, entityToIdMap);
             if (!value.IsNullOrEmpty())
             {
                 valuesDictionary.SetValue("ParentBody", value);
@@ -395,7 +388,7 @@ namespace Game
                     return;
                 }
             }
-            Vector3 position = base.Position;
+            Vector3 position = Position;
             TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(Terrain.ToCell(position.X), Terrain.ToCell(position.Z));
             if (chunkAtCell == null || chunkAtCell.State <= TerrainChunkState.InvalidContents4)
             {
@@ -408,14 +401,14 @@ namespace Game
             FindMovingBlocksCollisionBoxes(position, m_movingBlocksCollisionBoxes);
             if (!MoveToFreeSpace())
             {
-                ComponentHealth componentHealth = base.Entity.FindComponent<ComponentHealth>();
+                ComponentHealth componentHealth = Entity.FindComponent<ComponentHealth>();
                 if (componentHealth != null)
                 {
                     componentHealth.Injure(1f, null, ignoreInvulnerability: true, "Crushed");
                 }
                 else
                 {
-                    base.Project.RemoveEntity(base.Entity, disposeEntity: true);
+                    Project.RemoveEntity(Entity, disposeEntity: true);
                 }
                 return;
             }
@@ -440,7 +433,7 @@ namespace Game
                 float num4 = 1f;
                 if (ImmersionFluidBlock.FrictionFactor != 1f)
                 {
-                    num4 = ((SimplexNoise.Noise((float)MathUtils.Remainder(6.0 * Time.FrameStartTime + (double)(GetHashCode() % 1000), 1000.0)) > 0.5f) ? ImmersionFluidBlock.FrictionFactor : 1f);
+                    num4 = ((SimplexNoise.Noise((float)MathUtils.Remainder(6.0 * Time.FrameStartTime + GetHashCode() % 1000, 1000.0)) > 0.5f) ? ImmersionFluidBlock.FrictionFactor : 1f);
                 }
                 float f = MathUtils.Saturate(WaterDrag.X * num4 * ImmersionFactor * dt);
                 float f2 = MathUtils.Saturate(WaterDrag.Y * num4 * dt);
@@ -453,11 +446,11 @@ namespace Game
                     {
                         float s = MathUtils.Saturate(MathUtils.Lerp(1f, 0f, m_velocity.Length()));
                         Vector2 vector3 = Vector2.Normalize(vector.Value) * s;
-                        base.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitY, WaterTurnSpeed * (-1f * vector3.X + 0.71f * vector3.Y) * dt);
+                        Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitY, WaterTurnSpeed * (-1f * vector3.X + 0.71f * vector3.Y) * dt);
                     }
                     if (WaterSwayAngle > 0f)
                     {
-                        base.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitX, WaterSwayAngle * (float)MathUtils.Sin((double)(200f / Mass) * m_subsystemTime.GameTime));
+                        Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitX, WaterSwayAngle * (float)MathUtils.Sin(200f / Mass * m_subsystemTime.GameTime));
                     }
                 }
             }
@@ -465,7 +458,7 @@ namespace Game
             {
                 Vector3 v = Vector3.Transform(ParentBodyPositionOffset, m_parentBody.Rotation) + m_parentBody.Position - position;
                 m_velocity = ((dt > 0f) ? (v / dt) : Vector3.Zero);
-                base.Rotation = ParentBodyRotationOffset * m_parentBody.Rotation;
+                Rotation = ParentBodyRotationOffset * m_parentBody.Rotation;
             }
             StandingOnValue = null;
             StandingOnBody = null;
@@ -514,12 +507,11 @@ namespace Game
 
         public void UpdateImmersionData()
         {
-            Vector3 position = base.Position;
+            Vector3 position = Position;
             int x = Terrain.ToCell(position.X);
             int y = Terrain.ToCell(position.Y + 0.01f);
             int z = Terrain.ToCell(position.Z);
-            FluidBlock surfaceFluidBlock;
-            float? surfaceHeight = m_subsystemFluidBlockBehavior.GetSurfaceHeight(x, y, z, out surfaceFluidBlock);
+            float? surfaceHeight = m_subsystemFluidBlockBehavior.GetSurfaceHeight(x, y, z, out FluidBlock surfaceFluidBlock);
             if (surfaceHeight.HasValue)
             {
                 int cellValue = m_subsystemTerrain.Terrain.GetCellValue(x, y, z);
@@ -538,7 +530,7 @@ namespace Game
         public bool MoveToFreeSpace()
         {
             Vector3 boxSize = BoxSize;
-            Vector3 position = base.Position;
+            Vector3 position = Position;
             for (int i = 0; i < m_freeSpaceOffsets.Length; i++)
             {
                 Vector3? vector = null;
@@ -547,7 +539,7 @@ namespace Game
                 {
                     continue;
                 }
-                BoundingBox box = new BoundingBox(vector2 - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f), vector2 + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f));
+                var box = new BoundingBox(vector2 - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f), vector2 + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f));
                 box.Min += new Vector3(0.01f, MaxSmoothRiseHeight + 0.01f, 0.01f);
                 box.Max -= new Vector3(0.01f);
                 m_collisionBoxes.Clear();
@@ -561,16 +553,13 @@ namespace Game
                 else
                 {
                     m_stoppedTime = 0f;
-                    CollisionBox pushingCollisionBox;
-                    float num = CalculatePushBack(box, 0, m_collisionBoxes, out pushingCollisionBox);
-                    CollisionBox pushingCollisionBox2;
-                    float num2 = CalculatePushBack(box, 1, m_collisionBoxes, out pushingCollisionBox2);
-                    CollisionBox pushingCollisionBox3;
-                    float num3 = CalculatePushBack(box, 2, m_collisionBoxes, out pushingCollisionBox3);
+                    float num = CalculatePushBack(box, 0, m_collisionBoxes, out CollisionBox pushingCollisionBox);
+                    float num2 = CalculatePushBack(box, 1, m_collisionBoxes, out CollisionBox pushingCollisionBox2);
+                    float num3 = CalculatePushBack(box, 2, m_collisionBoxes, out CollisionBox pushingCollisionBox3);
                     float num4 = num * num;
                     float num5 = num2 * num2;
                     float num6 = num3 * num3;
-                    List<Vector3> list = new List<Vector3>();
+                    var list = new List<Vector3>();
                     if (num4 <= num5 && num4 <= num6)
                     {
                         list.Add(vector2 + new Vector3(num, 0f, 0f));
@@ -631,7 +620,7 @@ namespace Game
                 }
                 if (vector.HasValue)
                 {
-                    base.Position = vector.Value;
+                    Position = vector.Value;
                     return true;
                 }
             }
@@ -640,25 +629,24 @@ namespace Game
 
         public void MoveWithCollision(float dt, Vector3 move)
         {
-            Vector3 position = base.Position;
+            Vector3 position = Position;
             bool isSmoothRising = IsSmoothRiseEnabled && MaxSmoothRiseHeight > 0f && HandleSmoothRise(ref move, position, dt);
             HandleAxisCollision(1, move.Y, ref position, isSmoothRising);
             HandleAxisCollision(0, move.X, ref position, isSmoothRising);
             HandleAxisCollision(2, move.Z, ref position, isSmoothRising);
-            base.Position = position;
+            Position = position;
         }
 
         public bool HandleSmoothRise(ref Vector3 move, Vector3 position, float dt)
         {
             Vector3 boxSize = BoxSize;
-            BoundingBox box = new BoundingBox(position - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f), position + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f));
+            var box = new BoundingBox(position - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f), position + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f));
             box.Min += new Vector3(0.04f, 0f, 0.04f);
             box.Max -= new Vector3(0.04f, 0f, 0.04f);
             m_collisionBoxes.Clear();
             FindTerrainCollisionBoxes(box, m_collisionBoxes);
             m_collisionBoxes.AddRange(m_movingBlocksCollisionBoxes);
-            CollisionBox pushingCollisionBox;
-            float num = MathUtils.Max(CalculatePushBack(box, 1, m_collisionBoxes, out pushingCollisionBox), 0f);
+            float num = MathUtils.Max(CalculatePushBack(box, 1, m_collisionBoxes, out CollisionBox pushingCollisionBox), 0f);
             if (!BlocksManager.Blocks[Terrain.ExtractContents(pushingCollisionBox.BlockValue)].NoSmoothRise && num > 0.04f)
             {
                 float x = MathUtils.Min(4.5f * dt, num);
@@ -696,7 +684,7 @@ namespace Game
                     v = new Vector3(0.04f, 0.04f, 0f);
                     break;
             }
-            BoundingBox boundingBox = new BoundingBox(position - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f) + v, position + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f) - v);
+            var boundingBox = new BoundingBox(position - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f) + v, position + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f) - v);
             FindTerrainCollisionBoxes(boundingBox, m_collisionBoxes);
             m_collisionBoxes.AddRange(m_movingBlocksCollisionBoxes);
             float num;
@@ -710,9 +698,8 @@ namespace Game
             {
                 num = CalculatePushBack(boundingBox, axis, m_collisionBoxes, out pushingCollisionBox);
             }
-            BoundingBox box = new BoundingBox(position - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f) + v, position + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f) - v);
-            CollisionBox pushingCollisionBox2;
-            float num2 = CalculatePushBack(box, axis, m_bodiesCollisionBoxes, out pushingCollisionBox2);
+            var box = new BoundingBox(position - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f) + v, position + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f) - v);
+            float num2 = CalculatePushBack(box, axis, m_bodiesCollisionBoxes, out CollisionBox pushingCollisionBox2);
             if (MathUtils.Abs(num) > MathUtils.Abs(num2))
             {
                 if (num == 0f)
@@ -726,7 +713,7 @@ namespace Game
                     for (int i = 0; i < blockBehaviors.Length; i++)
                     {
                         Vector3 vector = (pushingCollisionBox.Box.Min + pushingCollisionBox.Box.Max) / 2f;
-                        CellFace cellFace = CellFace.FromAxisAndDirection(Terrain.ToCell(vector.X), Terrain.ToCell(vector.Y), Terrain.ToCell(vector.Z), axis, 0f - GetVectorComponent(m_velocity, axis));
+                        var cellFace = CellFace.FromAxisAndDirection(Terrain.ToCell(vector.X), Terrain.ToCell(vector.Y), Terrain.ToCell(vector.Z), axis, 0f - GetVectorComponent(m_velocity, axis));
                         blockBehaviors[i].OnCollide(cellFace, GetVectorComponent(m_velocity, axis), this);
                     }
                 }
@@ -780,14 +767,8 @@ namespace Game
                         position.Z += num2;
                         break;
                 }
-                if (this.CollidedWithBody != null)
-                {
-                    this.CollidedWithBody(componentBody);
-                }
-                if (componentBody.CollidedWithBody != null)
-                {
-                    componentBody.CollidedWithBody(this);
-                }
+                CollidedWithBody?.Invoke(componentBody);
+                componentBody.CollidedWithBody?.Invoke(this);
             }
         }
 
@@ -812,7 +793,7 @@ namespace Game
         public void FindMovingBlocksCollisionBoxes(Vector3 position, DynamicArray<CollisionBox> result)
         {
             Vector3 boxSize = BoxSize;
-            BoundingBox boundingBox = new BoundingBox(position - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f), position + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f));
+            var boundingBox = new BoundingBox(position - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f), position + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f));
             boundingBox.Min -= new Vector3(1f);
             boundingBox.Max += new Vector3(1f);
             m_movingBlockSets.Clear();
@@ -874,7 +855,7 @@ namespace Game
                             if (block.IsCollidable_(cellValueFast))
                             {
                                 BoundingBox[] customCollisionBoxes = block.GetCustomCollisionBoxes(m_subsystemTerrain, cellValueFast);
-                                Vector3 v = new Vector3(i, num2, j);
+                                var v = new Vector3(i, num2, j);
                                 for (int k = 0; k < customCollisionBoxes.Length; k++)
                                 {
                                     result.Add(new CollisionBox
@@ -902,8 +883,8 @@ namespace Game
             {
                 return;
             }
-            bool num4 = position.X < (float)num + 0.5f;
-            bool flag = position.Z < (float)num3 + 0.5f;
+            bool num4 = position.X < num + 0.5f;
+            bool flag = position.Z < num3 + 0.5f;
             CollisionBox item;
             if (num4)
             {
@@ -919,7 +900,7 @@ namespace Game
                     {
                         item = new CollisionBox
                         {
-                            Box = new BoundingBox(new Vector3(num, num2, (float)num3 + overhang.Y), new Vector3(num + 1, num2 + 1, num3 + 1)),
+                            Box = new BoundingBox(new Vector3(num, num2, num3 + overhang.Y), new Vector3(num + 1, num2 + 1, num3 + 1)),
                             BlockValue = 0
                         };
                         result.Add(item);
@@ -928,7 +909,7 @@ namespace Game
                     {
                         item = new CollisionBox
                         {
-                            Box = new BoundingBox(new Vector3((float)num + overhang.X, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1)),
+                            Box = new BoundingBox(new Vector3(num + overhang.X, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1)),
                             BlockValue = 0
                         };
                         result.Add(item);
@@ -937,7 +918,7 @@ namespace Game
                     {
                         item = new CollisionBox
                         {
-                            Box = new BoundingBox(new Vector3((float)num + overhang.X, num2, (float)num3 + overhang.Y), new Vector3(num + 1, num2 + 1, num3 + 1)),
+                            Box = new BoundingBox(new Vector3(num + overhang.X, num2, num3 + overhang.Y), new Vector3(num + 1, num2 + 1, num3 + 1)),
                             BlockValue = 0
                         };
                         result.Add(item);
@@ -955,7 +936,7 @@ namespace Game
                     {
                         item = new CollisionBox
                         {
-                            Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1, num2 + 1, (float)(num3 + 1) - overhang.Y)),
+                            Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1 - overhang.Y)),
                             BlockValue = 0
                         };
                         result.Add(item);
@@ -964,7 +945,7 @@ namespace Game
                     {
                         item = new CollisionBox
                         {
-                            Box = new BoundingBox(new Vector3((float)num + overhang.X, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1)),
+                            Box = new BoundingBox(new Vector3(num + overhang.X, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1)),
                             BlockValue = 0
                         };
                         result.Add(item);
@@ -973,7 +954,7 @@ namespace Game
                     {
                         item = new CollisionBox
                         {
-                            Box = new BoundingBox(new Vector3((float)num + overhang.X, num2, num3), new Vector3(num + 1, num2 + 1, (float)(num3 + 1) - overhang.Y)),
+                            Box = new BoundingBox(new Vector3(num + overhang.X, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1 - overhang.Y)),
                             BlockValue = 0
                         };
                         result.Add(item);
@@ -993,7 +974,7 @@ namespace Game
                 {
                     item = new CollisionBox
                     {
-                        Box = new BoundingBox(new Vector3(num, num2, (float)num3 + overhang.Y), new Vector3(num + 1, num2 + 1, num3 + 1)),
+                        Box = new BoundingBox(new Vector3(num, num2, num3 + overhang.Y), new Vector3(num + 1, num2 + 1, num3 + 1)),
                         BlockValue = 0
                     };
                     result.Add(item);
@@ -1002,7 +983,7 @@ namespace Game
                 {
                     item = new CollisionBox
                     {
-                        Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3((float)(num + 1) - overhang.X, num2 + 1, num3 + 1)),
+                        Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1 - overhang.X, num2 + 1, num3 + 1)),
                         BlockValue = 0
                     };
                     result.Add(item);
@@ -1011,7 +992,7 @@ namespace Game
                 {
                     item = new CollisionBox
                     {
-                        Box = new BoundingBox(new Vector3(num, num2, (float)num3 + overhang.Y), new Vector3((float)(num + 1) - overhang.X, num2 + 1, num3 + 1)),
+                        Box = new BoundingBox(new Vector3(num, num2, num3 + overhang.Y), new Vector3(num + 1 - overhang.X, num2 + 1, num3 + 1)),
                         BlockValue = 0
                     };
                     result.Add(item);
@@ -1029,7 +1010,7 @@ namespace Game
                 {
                     item = new CollisionBox
                     {
-                        Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1, num2 + 1, (float)(num3 + 1) - overhang.Y)),
+                        Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1 - overhang.Y)),
                         BlockValue = 0
                     };
                     result.Add(item);
@@ -1038,7 +1019,7 @@ namespace Game
                 {
                     item = new CollisionBox
                     {
-                        Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3((float)(num + 1) - overhang.X, num2 + 1, num3 + 1)),
+                        Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1 - overhang.X, num2 + 1, num3 + 1)),
                         BlockValue = 0
                     };
                     result.Add(item);
@@ -1047,7 +1028,7 @@ namespace Game
                 {
                     item = new CollisionBox
                     {
-                        Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3((float)(num + 1) - overhang.X, num2 + 1, (float)(num3 + 1) - overhang.Y)),
+                        Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1 - overhang.X, num2 + 1, num3 + 1 - overhang.Y)),
                         BlockValue = 0
                     };
                     result.Add(item);
@@ -1069,7 +1050,7 @@ namespace Game
 
         public float CalculatePushBack(BoundingBox box, int axis, DynamicArray<CollisionBox> collisionBoxes, out CollisionBox pushingCollisionBox)
         {
-            pushingCollisionBox = default(CollisionBox);
+            pushingCollisionBox = default;
             float num = 0f;
             for (int i = 0; i < collisionBoxes.Count; i++)
             {
@@ -1085,7 +1066,7 @@ namespace Game
 
         public float CalculateSmoothRisePushBack(BoundingBox normalBox, BoundingBox smoothRiseBox, int axis, DynamicArray<CollisionBox> collisionBoxes, out CollisionBox pushingCollisionBox)
         {
-            pushingCollisionBox = default(CollisionBox);
+            pushingCollisionBox = default;
             float num = 0f;
             for (int i = 0; i < collisionBoxes.Count; i++)
             {

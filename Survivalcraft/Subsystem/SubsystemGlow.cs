@@ -25,7 +25,7 @@ namespace Game
 
         public GlowPoint AddGlowPoint()
         {
-            GlowPoint glowPoint = new GlowPoint();
+            var glowPoint = new GlowPoint();
             m_glowPoints.Add(glowPoint, value: true);
             return glowPoint;
         }
@@ -68,7 +68,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_batchesByType[0] = m_primitivesRenderer.TexturedBatch(ContentManager.Get<Texture2D>("Textures/RoundGlow"), useAlphaTest: false, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);
             m_batchesByType[1] = m_primitivesRenderer.TexturedBatch(ContentManager.Get<Texture2D>("Textures/SquareGlow"), useAlphaTest: false, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);
             m_batchesByType[2] = m_primitivesRenderer.TexturedBatch(ContentManager.Get<Texture2D>("Textures/HorizontalRectGlow"), useAlphaTest: false, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);

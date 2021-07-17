@@ -23,12 +23,12 @@ namespace Game
 
         public override void Update(float dt)
         {
-            if (base.GameWidget.Target == null)
+            if (GameWidget.Target == null)
             {
                 return;
             }
-            Matrix matrix = Matrix.CreateFromQuaternion(base.GameWidget.Target.ComponentCreatureModel.EyeRotation);
-            matrix.Translation = base.GameWidget.Target.ComponentBody.Position + 0.5f * base.GameWidget.Target.ComponentBody.BoxSize.Y * Vector3.UnitY;
+            var matrix = Matrix.CreateFromQuaternion(GameWidget.Target.ComponentCreatureModel.EyeRotation);
+            matrix.Translation = GameWidget.Target.ComponentBody.Position + 0.5f * GameWidget.Target.ComponentBody.BoxSize.Y * Vector3.UnitY;
             Vector3 v = -2.25f * matrix.Forward + 1.75f * matrix.Up;
             Vector3 vector = matrix.Translation + v;
             if (Vector3.Distance(vector, m_position) < 10f)
@@ -43,8 +43,8 @@ namespace Game
             }
             Vector3 vector2 = m_position - matrix.Translation;
             float? num = null;
-            Vector3 vector3 = Vector3.Normalize(Vector3.Cross(vector2, Vector3.UnitY));
-            Vector3 v3 = Vector3.Normalize(Vector3.Cross(vector2, vector3));
+            var vector3 = Vector3.Normalize(Vector3.Cross(vector2, Vector3.UnitY));
+            var v3 = Vector3.Normalize(Vector3.Cross(vector2, vector3));
             for (int i = 0; i <= 0; i++)
             {
                 for (int j = 0; j <= 0; j++)
@@ -52,7 +52,7 @@ namespace Game
                     Vector3 v4 = 0.5f * (vector3 * i + v3 * j);
                     Vector3 vector4 = matrix.Translation + v4;
                     Vector3 end = vector4 + vector2 + Vector3.Normalize(vector2) * 0.5f;
-                    TerrainRaycastResult? terrainRaycastResult = base.GameWidget.SubsystemGameWidgets.SubsystemTerrain.Raycast(vector4, end, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => !BlocksManager.Blocks[Terrain.ExtractContents(value)].IsTransparent_(value));
+                    TerrainRaycastResult? terrainRaycastResult = GameWidget.SubsystemGameWidgets.SubsystemTerrain.Raycast(vector4, end, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => !BlocksManager.Blocks[Terrain.ExtractContents(value)].IsTransparent_(value));
                     if (terrainRaycastResult.HasValue)
                     {
                         num = (num.HasValue ? MathUtils.Min(num.Value, terrainRaycastResult.Value.Distance) : terrainRaycastResult.Value.Distance);

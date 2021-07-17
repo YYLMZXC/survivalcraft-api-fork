@@ -29,8 +29,8 @@ namespace Game
         public GunSmokeParticleSystem(SubsystemTerrain terrain, Vector3 position, Vector3 direction)
             : base(50)
         {
-            base.Texture = ContentManager.Get<Texture2D>("Textures/GunSmokeParticle");
-            base.TextureSlotsCount = 3;
+            Texture = ContentManager.Get<Texture2D>("Textures/GunSmokeParticle");
+            TextureSlotsCount = 3;
             m_position = position;
             m_direction = Vector3.Normalize(direction);
             int num = Terrain.ToCell(position.X);
@@ -53,7 +53,7 @@ namespace Game
             float num = MathUtils.Lerp(150f, 20f, MathUtils.Saturate(2f * m_time / 0.5f));
             float num2 = MathUtils.Pow(0.01f, dt);
             float s = MathUtils.Lerp(20f, 0f, MathUtils.Saturate(2f * m_time / 0.5f));
-            Vector3 v = new Vector3(2f, 2f, 1f);
+            var v = new Vector3(2f, 2f, 1f);
             if (m_time < 0.5f)
             {
                 m_toGenerate += num * dt;
@@ -63,9 +63,9 @@ namespace Game
                 m_toGenerate = 0f;
             }
             bool flag = false;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (particle.IsActive)
                 {
                     flag = true;

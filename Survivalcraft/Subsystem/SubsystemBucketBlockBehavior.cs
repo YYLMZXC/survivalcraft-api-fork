@@ -35,7 +35,7 @@ namespace Game
                 if (obj is TerrainRaycastResult)
                 {
                     CellFace cellFace = ((TerrainRaycastResult)obj).CellFace;
-                    int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
+                    int cellValue = SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
                     int num2 = Terrain.ExtractContents(cellValue);
                     int data = Terrain.ExtractData(cellValue);
                     Block block = BlocksManager.Blocks[num2];
@@ -47,7 +47,7 @@ namespace Game
                         {
                             inventory.AddSlotItems(inventory.ActiveSlotIndex, value, 1);
                         }
-                        base.SubsystemTerrain.DestroyCell(0, cellFace.X, cellFace.Y, cellFace.Z, 0, noDrop: false, noParticleSystem: false);
+                        SubsystemTerrain.DestroyCell(0, cellFace.X, cellFace.Y, cellFace.Z, 0, noDrop: false, noParticleSystem: false);
                         return true;
                     }
                     if (block is MagmaBlock && FluidBlock.GetLevel(data) == 0)
@@ -58,7 +58,7 @@ namespace Game
                         {
                             inventory.AddSlotItems(inventory.ActiveSlotIndex, value2, 1);
                         }
-                        base.SubsystemTerrain.DestroyCell(0, cellFace.X, cellFace.Y, cellFace.Z, 0, noDrop: false, noParticleSystem: false);
+                        SubsystemTerrain.DestroyCell(0, cellFace.X, cellFace.Y, cellFace.Z, 0, noDrop: false, noParticleSystem: false);
                         return true;
                     }
                 }
@@ -124,7 +124,7 @@ namespace Game
                         if (terrainRaycastResult3.HasValue)
                         {
                             CellFace cellFace2 = terrainRaycastResult3.Value.CellFace;
-                            int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(cellFace2.X, cellFace2.Y, cellFace2.Z);
+                            int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(cellFace2.X, cellFace2.Y, cellFace2.Z);
                             int num3 = Terrain.ExtractContents(cellValue2);
                             Block block2 = BlocksManager.Blocks[num3];
                             if (block2 is IPaintableBlock)
@@ -132,12 +132,12 @@ namespace Game
                                 Vector3 normal = CellFace.FaceToVector3(terrainRaycastResult3.Value.CellFace.Face);
                                 Vector3 position = terrainRaycastResult3.Value.HitPoint();
                                 int? num4 = (num == 128) ? null : new int?(PaintBucketBlock.GetColor(Terrain.ExtractData(activeBlockValue)));
-                                Color color = num4.HasValue ? SubsystemPalette.GetColor(base.SubsystemTerrain, num4) : new Color(128, 128, 128, 128);
-                                int value6 = ((IPaintableBlock)block2).Paint(base.SubsystemTerrain, cellValue2, num4);
-                                base.SubsystemTerrain.ChangeCell(cellFace2.X, cellFace2.Y, cellFace2.Z, value6);
+                                Color color = num4.HasValue ? SubsystemPalette.GetColor(SubsystemTerrain, num4) : new Color(128, 128, 128, 128);
+                                int value6 = ((IPaintableBlock)block2).Paint(SubsystemTerrain, cellValue2, num4);
+                            SubsystemTerrain.ChangeCell(cellFace2.X, cellFace2.Y, cellFace2.Z, value6);
                                 componentMiner.DamageActiveTool(1);
                                 m_subsystemAudio.PlayRandomSound("Audio/Paint", 0.4f, m_random.Float(-0.1f, 0.1f), componentMiner.ComponentCreature.ComponentBody.Position, 2f, autoDelay: true);
-                                m_subsystemParticles.AddParticleSystem(new PaintParticleSystem(base.SubsystemTerrain, position, normal, color));
+                                m_subsystemParticles.AddParticleSystem(new PaintParticleSystem(SubsystemTerrain, position, normal, color));
                             }
                             return true;
                         }
@@ -150,8 +150,8 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Game
                 {
                     m_cachedMatrixValid = false;
                     m_position = value;
-                    this.PositionChanged?.Invoke(this);
+                    PositionChanged?.Invoke(this);
                 }
             }
         }
@@ -45,7 +45,7 @@ namespace Game
                 {
                     m_cachedMatrixValid = false;
                     m_rotation = value;
-                    this.RotationChanged?.Invoke(this);
+                    RotationChanged?.Invoke(this);
                 }
             }
         }

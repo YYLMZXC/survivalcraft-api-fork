@@ -113,7 +113,7 @@ namespace Game
                     }
                     else
                     {
-                        this.FocusLost?.Invoke(this);
+                        FocusLost?.Invoke(this);
                     }
                 }
             }
@@ -178,7 +178,7 @@ namespace Game
 
         public TextBoxWidget()
         {
-            base.ClampToBounds = true;
+            ClampToBounds = true;
             Color = Color.White;
             TextureLinearFilter = true;
             Font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
@@ -292,56 +292,51 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = true;
+            IsDrawRequired = true;
             if (m_size.HasValue)
             {
-                base.DesiredSize = m_size.Value;
+                DesiredSize = m_size.Value;
                 return;
             }
-            if (Text.Length == 0)
-            {
-                base.DesiredSize = Font.MeasureText(" ", new Vector2(FontScale), FontSpacing);
-            }
-            else
-            {
-                base.DesiredSize = Font.MeasureText(Text, new Vector2(FontScale), FontSpacing);
-            }
-            base.DesiredSize += new Vector2(1f * FontScale * Font.Scale, 0f);
+            DesiredSize = Text.Length == 0
+                ? Font.MeasureText(" ", new Vector2(FontScale), FontSpacing)
+                : Font.MeasureText(Text, new Vector2(FontScale), FontSpacing);
+            DesiredSize += new Vector2(1f * FontScale * Font.Scale, 0f);
         }
 
         public override void Draw(DrawContext dc)
         {
-            Color color = Color * base.GlobalColorTransform;
+            Color color = Color * GlobalColorTransform;
             if (!string.IsNullOrEmpty(m_text))
             {
-                Vector2 position = new Vector2(0f - m_scroll, base.ActualSize.Y / 2f);
+                var position = new Vector2(0f - m_scroll, ActualSize.Y / 2f);
                 SamplerState samplerState = TextureLinearFilter ? SamplerState.LinearClamp : SamplerState.PointClamp;
                 FontBatch2D fontBatch2D = dc.PrimitivesRenderer2D.FontBatch(Font, 1, DepthStencilState.None, null, null, samplerState);
                 int count = fontBatch2D.TriangleVertices.Count;
                 fontBatch2D.QueueText(Text, position, 0f, color, TextAnchor.VerticalCenter, new Vector2(FontScale), FontSpacing);
-                fontBatch2D.TransformTriangles(base.GlobalTransform, count);
+                fontBatch2D.TransformTriangles(GlobalTransform, count);
             }
             if (!m_hasFocus || !(MathUtils.Remainder(Time.RealTime - m_focusStartTime, 0.5) < 0.25))
             {
                 return;
             }
             float num = Font.CalculateCharacterPosition(Text, CaretPosition, new Vector2(FontScale), FontSpacing);
-            Vector2 v = new Vector2(0f, base.ActualSize.Y / 2f) + new Vector2(num - m_scroll, 0f);
+            Vector2 v = new Vector2(0f, ActualSize.Y / 2f) + new Vector2(num - m_scroll, 0f);
             if (m_hasFocus)
             {
                 if (v.X < 0f)
                 {
                     m_scroll = MathUtils.Max(m_scroll + v.X, 0f);
                 }
-                if (v.X > base.ActualSize.X)
+                if (v.X > ActualSize.X)
                 {
-                    m_scroll += v.X - base.ActualSize.X + 1f;
+                    m_scroll += v.X - ActualSize.X + 1f;
                 }
             }
             FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(1, DepthStencilState.None);
             int count2 = flatBatch2D.TriangleVertices.Count;
             flatBatch2D.QueueQuad(v - new Vector2(0f, Font.GlyphHeight / 2f * FontScale * Font.Scale), v + new Vector2(1f, Font.GlyphHeight / 2f * FontScale * Font.Scale), 0f, color);
-            flatBatch2D.TransformTriangles(base.GlobalTransform, count2);
+            flatBatch2D.TransformTriangles(GlobalTransform, count2);
         }
 
         public void EnterText(string s)
@@ -365,14 +360,7 @@ namespace Game
             }
             else if (m_text.Length + s.Length <= MaximumLength)
             {
-                if (CaretPosition < m_text.Length)
-                {
-                    Text = Text.Insert(CaretPosition, s);
-                }
-                else
-                {
-                    Text = m_text + s;
-                }
+                Text = CaretPosition < m_text.Length ? Text.Insert(CaretPosition, s) : m_text + s;
                 CaretPosition += s.Length;
             }
         }

@@ -110,7 +110,7 @@ namespace Game
 
         public static CellFace FromAxisAndDirection(int x, int y, int z, int axis, float direction)
         {
-            CellFace result = default(CellFace);
+            CellFace result = default;
             result.X = x;
             result.Y = y;
             result.Z = z;

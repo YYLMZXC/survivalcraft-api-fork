@@ -26,15 +26,15 @@ namespace Game
             m_bestiaryButton = Children.Find<ButtonWidget>("BestiaryButton");
             m_topicsList.ItemWidgetFactory = delegate (object item)
             {
-                HelpTopic helpTopic3 = (HelpTopic)item;
+                var helpTopic3 = (HelpTopic)item;
                 XElement node2 = ContentManager.Get<XElement>("Widgets/HelpTopicItem");
-                ContainerWidget obj = (ContainerWidget)Widget.LoadWidget(this, node2, null);
+                var obj = (ContainerWidget)LoadWidget(this, node2, null);
                 obj.Children.Find<LabelWidget>("HelpTopicItem.Title").Text = helpTopic3.Title;
                 return obj;
             };
             m_topicsList.ItemClicked += delegate (object item)
             {
-                HelpTopic helpTopic2 = item as HelpTopic;
+                var helpTopic2 = item as HelpTopic;
                 if (helpTopic2 != null)
                 {
                     ShowTopic(helpTopic2);
@@ -65,7 +65,7 @@ namespace Game
                 text = text.Replace("\r", "");
                 text = text.Replace("’", "'");
                 text = text.Replace("\\n", "\n");
-                HelpTopic helpTopic = new HelpTopic
+                var helpTopic = new HelpTopic
                 {
                     Name = attributeValue,
                     Title = attributeValue2,
@@ -102,7 +102,7 @@ namespace Game
             {
                 ScreensManager.SwitchScreen("Bestiary");
             }
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(m_previousScreen);
             }

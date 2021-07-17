@@ -88,7 +88,7 @@ namespace Game
             m_openHeap.Clear();
             OpenStorage.Clear();
             ClosedStorage.Clear();
-            Node node = NewNode(start, default(T), 0f, 0f);
+            Node node = NewNode(start, default, 0f, 0f);
             OpenStorage.Set(start, node);
             HeapEnqueue(node);
             Node node2 = null;
@@ -135,7 +135,7 @@ namespace Game
                     {
                         node2 = node3;
                     }
-                    Node node4 = (Node)OpenStorage.Get(val);
+                    var node4 = (Node)OpenStorage.Get(val);
                     if (node4 != null)
                     {
                         if (num3 < node4.G)

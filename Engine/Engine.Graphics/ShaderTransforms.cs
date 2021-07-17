@@ -67,7 +67,7 @@ namespace Engine.Graphics
 		{
 			if (count < 1 || count > MaxWorldMatrices)
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			if (worldView)
 			{

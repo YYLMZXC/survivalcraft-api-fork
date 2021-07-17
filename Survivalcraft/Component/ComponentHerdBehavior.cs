@@ -102,10 +102,10 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemCreatureSpawn = base.Project.FindSubsystem<SubsystemCreatureSpawn>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemCreatureSpawn = Project.FindSubsystem<SubsystemCreatureSpawn>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             HerdName = valuesDictionary.GetValue<string>("HerdName");
             m_herdingRange = valuesDictionary.GetValue<float>("HerdingRange");
             m_autoNearbyCreaturesHelp = valuesDictionary.GetValue<bool>("AutoNearbyCreaturesHelp");
@@ -115,7 +115,7 @@ namespace Game
             };
             m_stateMachine.AddState("Inactive", null, delegate
             {
-                if (m_subsystemTime.PeriodicGameTimeEvent(1.0, 1f * ((float)(GetHashCode() % 256) / 256f)))
+                if (m_subsystemTime.PeriodicGameTimeEvent(1.0, 1f * (GetHashCode() % 256 / 256f)))
                 {
                     Vector3? vector2 = FindHerdCenter();
                     if (vector2.HasValue)

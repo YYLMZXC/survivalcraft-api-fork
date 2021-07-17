@@ -220,7 +220,7 @@ namespace Game
                 LargeText = largeText,
                 SmallText = smallText,
                 Duration = duration,
-                StartTime = Time.RealTime + (double)delay
+                StartTime = Time.RealTime + delay
             };
         }
         public void DisplaySmallMessage(string text, Color color, bool blinking, bool playNotificationSound)
@@ -254,12 +254,12 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemTimeOfDay = base.Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemTimeOfDay = Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
             ContainerWidget guiWidget = m_componentPlayer.GuiWidget;
             m_backButtonWidget = guiWidget.Children.Find<ButtonWidget>("BackButton");
             m_inventoryButtonWidget = guiWidget.Children.Find<ButtonWidget>("InventoryButton");
@@ -420,10 +420,10 @@ namespace Game
                 labelWidget2.Text = m_message.SmallText;
                 labelWidget.IsVisible = !string.IsNullOrEmpty(m_message.LargeText);
                 labelWidget2.IsVisible = !string.IsNullOrEmpty(m_message.SmallText);
-                float num = (float)MathUtils.Min(MathUtils.Saturate(2.0 * (realTime - m_message.StartTime)), MathUtils.Saturate(2.0 * (m_message.StartTime + (double)m_message.Duration - realTime)));
+                float num = (float)MathUtils.Min(MathUtils.Saturate(2.0 * (realTime - m_message.StartTime)), MathUtils.Saturate(2.0 * (m_message.StartTime + m_message.Duration - realTime)));
                 labelWidget.Color = new Color(num, num, num, num);
                 labelWidget2.Color = new Color(num, num, num, num);
-                if (Time.RealTime > m_message.StartTime + (double)m_message.Duration)
+                if (Time.RealTime > m_message.StartTime + m_message.Duration)
                 {
                     m_message = null;
                 }
@@ -506,13 +506,9 @@ namespace Game
             {
                 m_componentPlayer.ComponentGui.HealthBarWidget.LitBarColor = new Color(166, 175, 103);
             }
-            else if (m_componentPlayer.ComponentFlu.HasFlu)
-            {
-                m_componentPlayer.ComponentGui.HealthBarWidget.LitBarColor = new Color(0, 48, 255);
-            }
             else
             {
-                m_componentPlayer.ComponentGui.HealthBarWidget.LitBarColor = new Color(224, 24, 0);
+                m_componentPlayer.ComponentGui.HealthBarWidget.LitBarColor = m_componentPlayer.ComponentFlu.HasFlu ? new Color(0, 48, 255) : new Color(224, 24, 0);
             }
         }
 
@@ -574,13 +570,11 @@ namespace Game
                 {
                     ModalPanelWidget = null;
                 }
-                else if (m_componentPlayer.ComponentMiner.Inventory is ComponentCreativeInventory)
-                {
-                    ModalPanelWidget = new CreativeInventoryWidget(m_componentPlayer.Entity);
-                }
                 else
                 {
-                    ModalPanelWidget = new FullInventoryWidget(m_componentPlayer.ComponentMiner.Inventory, m_componentPlayer.Entity.FindComponent<ComponentCraftingTable>(throwOnError: true));
+                    ModalPanelWidget = m_componentPlayer.ComponentMiner.Inventory is ComponentCreativeInventory
+                        ? new CreativeInventoryWidget(m_componentPlayer.Entity)
+                        : (Widget)new FullInventoryWidget(m_componentPlayer.ComponentMiner.Inventory, m_componentPlayer.Entity.FindComponent<ComponentCraftingTable>(throwOnError: true));
                 }
             }
             if (playerInput.ToggleClothing || m_clothingButtonWidget.IsClicked)
@@ -591,7 +585,7 @@ namespace Game
                 }
                 else
                 {
-                    ClothingWidget clothingWidget = new ClothingWidget(m_componentPlayer);
+                    var clothingWidget = new ClothingWidget(m_componentPlayer);
                     foreach (ModLoader modLoader in ModsManager.ModLoaders) {
                         modLoader.OnClothingWidgetOpen(this,clothingWidget);
                     }
@@ -704,8 +698,8 @@ namespace Game
             }
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && (m_lightningButtonWidget.IsClicked || playerInput.Lighting))
             {
-                Matrix matrix = Matrix.CreateFromQuaternion(m_componentPlayer.ComponentCreatureModel.EyeRotation);
-                base.Project.FindSubsystem<SubsystemWeather>(throwOnError: true).ManualLightingStrike(m_componentPlayer.ComponentCreatureModel.EyePosition, matrix.Forward);
+                var matrix = Matrix.CreateFromQuaternion(m_componentPlayer.ComponentCreatureModel.EyeRotation);
+                Project.FindSubsystem<SubsystemWeather>(throwOnError: true).ManualLightingStrike(m_componentPlayer.ComponentCreatureModel.EyePosition, matrix.Forward);
             }
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && (m_timeOfDayButtonWidget.IsClicked || playerInput.TimeOfDay))
             {

@@ -55,7 +55,7 @@ namespace Engine.Graphics
 		{
 			if (name == null)
 			{
-				throw new ArgumentNullException("name");
+				throw new ArgumentNullException(nameof(name));
 			}
 			if (parentBone == null && m_bones.Count > 0)
 			{
@@ -65,7 +65,7 @@ namespace Engine.Graphics
 			{
 				throw new InvalidOperationException("Parent bone must belong to the same model.");
 			}
-			ModelBone modelBone = new ModelBone();
+			var modelBone = new ModelBone();
 			modelBone.Model = this;
 			modelBone.Index = m_bones.Count;
 			m_bones.Add(modelBone);
@@ -87,11 +87,11 @@ namespace Engine.Graphics
 		{
 			if (name == null)
 			{
-				throw new ArgumentNullException("name");
+				throw new ArgumentNullException(nameof(name));
 			}
 			if (parentBone == null)
 			{
-				throw new ArgumentNullException("parentBone");
+				throw new ArgumentNullException(nameof(parentBone));
 			}
 			if (parentBone.Model != this)
 			{
@@ -139,7 +139,7 @@ namespace Engine.Graphics
 			{
 				throw new ArgumentOutOfRangeException("transforms");
 			}
-			BoundingBox result = default(BoundingBox);
+			var result = default(BoundingBox);
 			bool flag = false;
 			foreach (ModelMesh mesh in Meshes)
 			{
@@ -164,7 +164,7 @@ namespace Engine.Graphics
 
 		public static Model Load(ModelData modelData, bool keepSourceVertexDataInTags = false)
 		{
-			Model model = new Model();
+			var model = new Model();
 			model.Initialize(modelData, keepSourceVertexDataInTags);
 			return model;
 		}
@@ -183,11 +183,11 @@ namespace Engine.Graphics
 		{
 			if (modelData == null)
 			{
-				throw new ArgumentNullException("modelData");
+				throw new ArgumentNullException(nameof(modelData));
 			}
 			InternalDispose();
-			VertexBuffer[] array = new VertexBuffer[modelData.Buffers.Count];
-			IndexBuffer[] array2 = new IndexBuffer[modelData.Buffers.Count];
+			var array = new VertexBuffer[modelData.Buffers.Count];
+			var array2 = new IndexBuffer[modelData.Buffers.Count];
 			for (int i = 0; i < modelData.Buffers.Count; i++)
 			{
 				ModelBuffersData modelBuffersData = modelData.Buffers[i];

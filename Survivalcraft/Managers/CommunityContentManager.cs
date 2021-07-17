@@ -64,8 +64,8 @@ namespace Game
                 failure(new InvalidOperationException("Internet connection is unavailable."));
                 return;
             }
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
-            Dictionary<string, string> Header = new Dictionary<string, string>();
+            var dictionary = new Dictionary<string, string>();
+            var Header = new Dictionary<string, string>();
             Header.Add("Content-Type", "application/x-www-form-urlencoded");
             dictionary.Add("Action", "list");
             dictionary.Add("Cursor", cursor ?? string.Empty);
@@ -82,7 +82,7 @@ namespace Game
                 {
                     XElement xElement = XmlUtils.LoadXmlFromString(Encoding.UTF8.GetString(result, 0, result.Length), throwOnError: true);
                     string attributeValue = XmlUtils.GetAttributeValue<string>(xElement, "NextCursor");
-                    List<CommunityContentEntry> list = new List<CommunityContentEntry>();
+                    var list = new List<CommunityContentEntry>();
                     foreach (XElement item in xElement.Elements())
                     {
                         try
@@ -234,7 +234,7 @@ namespace Game
                 failure(new InvalidOperationException("Internet connection is unavailable."));
                 return;
             }
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            var dictionary = new Dictionary<string, string>();
             dictionary.Add("Action", "delete");
             dictionary.Add("UserId", userId);
             dictionary.Add("Url", address);
@@ -289,7 +289,7 @@ namespace Game
                 return;
             }
 
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            var dictionary = new Dictionary<string, string>();
             dictionary.Add("Action", "feedback");
             dictionary.Add("Feedback", feedback);
             if (feedbackParameter != null)
@@ -333,7 +333,7 @@ namespace Game
 
         public static string CalculateContentHashString(byte[] data)
         {
-            using (SHA1Managed sHA1Managed = new SHA1Managed())
+            using (var sHA1Managed = new SHA1Managed())
             {
                 return Convert.ToBase64String(sHA1Managed.ComputeHash(data));
             }
@@ -382,20 +382,20 @@ namespace Game
         {
             try
             {
-                XElement xElement = new XElement("Cache");
-                XElement xElement2 = new XElement("Feedback");
+                var xElement = new XElement("Cache");
+                var xElement2 = new XElement("Feedback");
                 xElement.Add(xElement2);
                 foreach (string key in m_feedbackCache.Keys)
                 {
-                    XElement xElement3 = new XElement("Item");
+                    var xElement3 = new XElement("Item");
                     XmlUtils.SetAttributeValue(xElement3, "Key", key);
                     xElement2.Add(xElement3);
                 }
-                XElement xElement4 = new XElement("Content");
+                var xElement4 = new XElement("Content");
                 xElement.Add(xElement4);
                 foreach (KeyValuePair<string, string> item in m_idToAddressMap)
                 {
-                    XElement xElement5 = new XElement("Item");
+                    var xElement5 = new XElement("Item");
                     XmlUtils.SetAttributeValue(xElement5, "Path", item.Key);
                     XmlUtils.SetAttributeValue(xElement5, "Address", item.Value);
                     xElement4.Add(xElement5);

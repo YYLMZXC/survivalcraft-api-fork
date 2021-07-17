@@ -66,9 +66,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            ComponentFrame = base.Entity.FindComponent<ComponentFrame>(throwOnError: true);
-            ComponentCreature = base.Entity.FindComponent<ComponentCreature>();
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            ComponentFrame = Entity.FindComponent<ComponentFrame>(throwOnError: true);
+            ComponentCreature = Entity.FindComponent<ComponentCreature>();
             AutoDespawn = valuesDictionary.GetValue<bool>("AutoDespawn");
             double value = valuesDictionary.GetValue<double>("SpawnTime");
             double value2 = valuesDictionary.GetValue<double>("DespawnTime");
@@ -89,13 +89,10 @@ namespace Game
 
         public void Update(float dt)
         {
-            if (DespawnTime.HasValue && m_subsystemGameInfo.TotalElapsedGameTime >= DespawnTime.Value + (double)DespawnDuration)
+            if (DespawnTime.HasValue && m_subsystemGameInfo.TotalElapsedGameTime >= DespawnTime.Value + DespawnDuration)
             {
-                base.Project.RemoveEntity(base.Entity, disposeEntity: true);
-                if (this.Despawned != null)
-                {
-                    this.Despawned(this);
-                }
+                Project.RemoveEntity(Entity, disposeEntity: true);
+                Despawned?.Invoke(this);
             }
         }
     }

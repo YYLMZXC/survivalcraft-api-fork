@@ -39,10 +39,10 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_stareRange = valuesDictionary.GetValue<float>("StareRange");
             m_stateMachine.AddState("Inactive", delegate
             {
@@ -68,11 +68,11 @@ namespace Game
             }, null);
             m_stateMachine.AddState("Stare", delegate
             {
-                m_stareEndTime = m_subsystemTime.GameTime + (double)m_random.Float(6f, 12f);
+                m_stareEndTime = m_subsystemTime.GameTime + m_random.Float(6f, 12f);
                 if (m_target != null)
                 {
                     Vector3 position = m_componentCreature.ComponentBody.Position;
-                    Vector3 v = Vector3.Normalize(m_target.ComponentBody.Position - position);
+                    var v = Vector3.Normalize(m_target.ComponentBody.Position - position);
                     m_componentPathfinding.SetDestination(position + 1.1f * v, m_random.Float(0.3f, 0.4f), 1f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
                     if (m_random.Float(0f, 1f) < 0.5f)
                     {

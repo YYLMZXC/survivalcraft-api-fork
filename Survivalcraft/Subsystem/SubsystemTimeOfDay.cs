@@ -64,7 +64,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
             TimeOfDayOffset = valuesDictionary.GetValue<double>("TimeOfDayOffset");
         }
 

@@ -11,16 +11,16 @@ namespace Game
         public LightBulbElectricElement(SubsystemElectricity subsystemElectricity, CellFace cellFace, int value)
             : base(subsystemElectricity, cellFace)
         {
-            m_lastChangeCircuitStep = base.SubsystemElectricity.CircuitStep;
+            m_lastChangeCircuitStep = SubsystemElectricity.CircuitStep;
             int data = Terrain.ExtractData(value);
             m_intensity = LightbulbBlock.GetLightIntensity(data);
         }
 
         public override bool Simulate()
         {
-            int num = base.SubsystemElectricity.CircuitStep - m_lastChangeCircuitStep;
+            int num = SubsystemElectricity.CircuitStep - m_lastChangeCircuitStep;
             float num2 = 0f;
-            foreach (ElectricConnection connection in base.Connections)
+            foreach (ElectricConnection connection in Connections)
             {
                 if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0)
                 {
@@ -31,19 +31,19 @@ namespace Game
             m_intensity = MathUtils.Clamp((int)MathUtils.Round((num2 - 0.5f) * 30f), 0, 15);
             if (m_intensity != intensity)
             {
-                m_lastChangeCircuitStep = base.SubsystemElectricity.CircuitStep;
+                m_lastChangeCircuitStep = SubsystemElectricity.CircuitStep;
             }
             if (num >= 10)
             {
-                CellFace cellFace = base.CellFaces[0];
-                int cellValue = base.SubsystemElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
+                CellFace cellFace = CellFaces[0];
+                int cellValue = SubsystemElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
                 int data = LightbulbBlock.SetLightIntensity(Terrain.ExtractData(cellValue), m_intensity);
                 int value = Terrain.ReplaceData(cellValue, data);
-                base.SubsystemElectricity.SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, value);
+                SubsystemElectricity.SubsystemTerrain.ChangeCell(cellFace.X, cellFace.Y, cellFace.Z, value);
             }
             else
             {
-                base.SubsystemElectricity.QueueElectricElementForSimulation(this, base.SubsystemElectricity.CircuitStep + 10 - num);
+                SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + 10 - num);
             }
             return false;
         }

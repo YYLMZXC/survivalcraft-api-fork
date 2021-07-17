@@ -31,6 +31,48 @@ namespace Engine.Input
 			new State(),
 			new State()
 		};
+        internal static void Initialize()
+        {
+        }
+        internal static void Dispose()
+        {
+        }
+		internal static void BeforeFrame()
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				GamePadState state = OpenTK.Input.GamePad.GetState(i);
+				if (state.IsConnected)
+				{
+					m_states[i].IsConnected = true;
+					if (Window.IsActive)
+					{
+						m_states[i].Sticks[0] = new Vector2(state.ThumbSticks.Left.X, state.ThumbSticks.Left.Y);
+						m_states[i].Sticks[1] = new Vector2(state.ThumbSticks.Right.X, state.ThumbSticks.Right.Y);
+						m_states[i].Triggers[0] = state.Triggers.Left;
+						m_states[i].Triggers[1] = state.Triggers.Right;
+						m_states[i].Buttons[0] = (state.Buttons.A == ButtonState.Pressed);
+						m_states[i].Buttons[1] = (state.Buttons.B == ButtonState.Pressed);
+						m_states[i].Buttons[2] = (state.Buttons.X == ButtonState.Pressed);
+						m_states[i].Buttons[3] = (state.Buttons.Y == ButtonState.Pressed);
+						m_states[i].Buttons[4] = (state.Buttons.Back == ButtonState.Pressed);
+						m_states[i].Buttons[5] = (state.Buttons.Start == ButtonState.Pressed);
+						m_states[i].Buttons[6] = (state.Buttons.LeftStick == ButtonState.Pressed);
+						m_states[i].Buttons[7] = (state.Buttons.RightStick == ButtonState.Pressed);
+						m_states[i].Buttons[8] = (state.Buttons.LeftShoulder == ButtonState.Pressed);
+						m_states[i].Buttons[9] = (state.Buttons.RightShoulder == ButtonState.Pressed);
+						m_states[i].Buttons[10] = (state.DPad.Left == ButtonState.Pressed);
+						m_states[i].Buttons[12] = (state.DPad.Right == ButtonState.Pressed);
+						m_states[i].Buttons[11] = (state.DPad.Up == ButtonState.Pressed);
+						m_states[i].Buttons[13] = (state.DPad.Down == ButtonState.Pressed);
+					}
+				}
+				else
+				{
+					m_states[i].IsConnected = false;
+				}
+			}
+		}
 
 		public static bool IsConnected(int gamePadIndex)
 		{
@@ -171,51 +213,6 @@ namespace Engine.Input
 		private static float ApplyDeadZone(float value, float deadZone)
 		{
 			return MathUtils.Sign(value) * MathUtils.Max(MathUtils.Abs(value) - deadZone, 0f) / (1f - deadZone);
-		}
-
-		internal static void Initialize()
-		{
-		}
-
-		internal static void Dispose()
-		{
-		}
-
-		internal static void BeforeFrame()
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				GamePadState state = OpenTK.Input.GamePad.GetState(i);
-				if (state.IsConnected)
-				{
-					m_states[i].IsConnected = true;
-					if (Window.IsActive)
-					{
-						m_states[i].Sticks[0] = new Vector2(state.ThumbSticks.Left.X, state.ThumbSticks.Left.Y);
-						m_states[i].Sticks[1] = new Vector2(state.ThumbSticks.Right.X, state.ThumbSticks.Right.Y);
-						m_states[i].Triggers[0] = state.Triggers.Left;
-						m_states[i].Triggers[1] = state.Triggers.Right;
-						m_states[i].Buttons[0] = (state.Buttons.A == ButtonState.Pressed);
-						m_states[i].Buttons[1] = (state.Buttons.B == ButtonState.Pressed);
-						m_states[i].Buttons[2] = (state.Buttons.X == ButtonState.Pressed);
-						m_states[i].Buttons[3] = (state.Buttons.Y == ButtonState.Pressed);
-						m_states[i].Buttons[4] = (state.Buttons.Back == ButtonState.Pressed);
-						m_states[i].Buttons[5] = (state.Buttons.Start == ButtonState.Pressed);
-						m_states[i].Buttons[6] = (state.Buttons.LeftStick == ButtonState.Pressed);
-						m_states[i].Buttons[7] = (state.Buttons.RightStick == ButtonState.Pressed);
-						m_states[i].Buttons[8] = (state.Buttons.LeftShoulder == ButtonState.Pressed);
-						m_states[i].Buttons[9] = (state.Buttons.RightShoulder == ButtonState.Pressed);
-						m_states[i].Buttons[10] = (state.DPad.Left == ButtonState.Pressed);
-						m_states[i].Buttons[12] = (state.DPad.Right == ButtonState.Pressed);
-						m_states[i].Buttons[11] = (state.DPad.Up == ButtonState.Pressed);
-						m_states[i].Buttons[13] = (state.DPad.Down == ButtonState.Pressed);
-					}
-				}
-				else
-				{
-					m_states[i].IsConnected = false;
-				}
-			}
 		}
 	}
 }

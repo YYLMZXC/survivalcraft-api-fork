@@ -45,23 +45,23 @@ namespace Game
             for (int i = 0; i < 16; i++)
             {
                 bool hanging = GetHanging(i);
-                Matrix m = Matrix.CreateRotationY((float)GetDirection(i) * (float)Math.PI / 4f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
+                Matrix m = Matrix.CreateRotationY(GetDirection(i) * (float)Math.PI / 4f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                 if (hanging)
                 {
                     m *= Matrix.CreateScale(1f, -1f, 1f) * Matrix.CreateTranslation(0f, 1f, 0f);
                 }
                 m_directions[i] = m.Forward;
-                BlockMesh blockMesh = new BlockMesh();
+                var blockMesh = new BlockMesh();
                 blockMesh.AppendModelMeshPart(model.FindMesh("Sign").MeshParts[0], boneAbsoluteTransform * m, makeEmissive: false, hanging, doubleSided: false, flipNormals: false, Color.White);
-                BlockMesh blockMesh2 = new BlockMesh();
+                var blockMesh2 = new BlockMesh();
                 blockMesh2.AppendModelMeshPart(model.FindMesh("Post").MeshParts[0], boneAbsoluteTransform2 * m, makeEmissive: false, hanging, doubleSided: false, flipNormals: false, Color.White);
                 m_blockMeshes[i] = new BlockMesh();
                 m_blockMeshes[i].AppendBlockMesh(blockMesh);
                 m_blockMeshes[i].AppendBlockMesh(blockMesh2);
                 m_coloredBlockMeshes[i] = new BlockMesh();
                 m_coloredBlockMeshes[i].AppendBlockMesh(m_blockMeshes[i]);
-                m_blockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
-                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+                m_blockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
+                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
                 m_collisionBoxes[i] = new BoundingBox[2];
                 m_collisionBoxes[i][0] = blockMesh.CalculateBoundingBox();
                 m_collisionBoxes[i][1] = blockMesh2.CalculateBoundingBox();
@@ -81,8 +81,8 @@ namespace Game
             m_standaloneBlockMesh.AppendModelMeshPart(model.FindMesh("Sign").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0f, -0.6f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             m_standaloneBlockMesh.AppendModelMeshPart(model.FindMesh("Post").MeshParts[0], boneAbsoluteTransform2 * Matrix.CreateTranslation(0f, -0.6f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             m_standaloneColoredBlockMesh.AppendBlockMesh(m_standaloneBlockMesh);
-            m_standaloneBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
-            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+            m_standaloneBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
+            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
             base.Initialize();
         }
 
@@ -188,7 +188,7 @@ namespace Game
             if (raycastResult.CellFace.Face < 4)
             {
                 int data = AttachedSignBlock.SetFace(AttachedSignBlock.SetColor(0, color), raycastResult.CellFace.Face);
-                result = default(BlockPlacementData);
+                result = default;
                 result.Value = Terrain.MakeBlockValue(m_attachedSignBlockIndex, 0, data);
                 result.CellFace = raycastResult.CellFace;
                 return result;
@@ -206,7 +206,7 @@ namespace Game
                 }
             }
             int data2 = SetHanging(SetDirection(SetColor(0, color), direction), raycastResult.CellFace.Face == 5);
-            result = default(BlockPlacementData);
+            result = default;
             result.Value = Terrain.MakeBlockValue(BlockIndex, 0, data2);
             result.CellFace = raycastResult.CellFace;
             return result;

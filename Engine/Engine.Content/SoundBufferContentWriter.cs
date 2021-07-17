@@ -31,7 +31,7 @@ namespace Engine.Content
 						{
 							throw new InvalidOperationException("Audio data too long.");
 						}
-						BinaryWriter binaryWriter = new BinaryWriter(stream);
+						var binaryWriter = new BinaryWriter(stream);
 						binaryWriter.Write(OggCompressed);
 						binaryWriter.Write(streamingSource.ChannelsCount);
 						binaryWriter.Write(streamingSource.SamplingFrequency);
@@ -61,7 +61,7 @@ namespace Engine.Content
 
 		private static void WritePcm(Stream stream, StreamingSource streamingSource)
 		{
-			BinaryWriter binaryWriter = new BinaryWriter(stream);
+			var binaryWriter = new BinaryWriter(stream);
 			binaryWriter.Write(value: false);
 			binaryWriter.Write(streamingSource.ChannelsCount);
 			binaryWriter.Write(streamingSource.SamplingFrequency);

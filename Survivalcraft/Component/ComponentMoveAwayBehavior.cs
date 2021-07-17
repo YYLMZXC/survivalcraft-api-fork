@@ -32,8 +32,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_componentCreature.ComponentBody.CollidedWithBody += delegate (ComponentBody body)
             {
                 m_target = body;
@@ -63,12 +63,12 @@ namespace Game
                 if (m_target != null)
                 {
                     Vector3 vector = m_target.Position + 0.5f * m_target.Velocity;
-                    Vector2 v = Vector2.Normalize(m_componentCreature.ComponentBody.Position.XZ - vector.XZ);
+                    var v = Vector2.Normalize(m_componentCreature.ComponentBody.Position.XZ - vector.XZ);
                     Vector2 vector2 = Vector2.Zero;
                     float num = float.MinValue;
                     for (float num2 = 0f; num2 < (float)Math.PI * 2f; num2 += 0.1f)
                     {
-                        Vector2 vector3 = Vector2.CreateFromAngle(num2);
+                        var vector3 = Vector2.CreateFromAngle(num2);
                         if (Vector2.Dot(vector3, v) > 0.2f)
                         {
                             float num3 = Vector2.Dot(m_componentCreature.ComponentBody.Matrix.Forward.XZ, vector3);

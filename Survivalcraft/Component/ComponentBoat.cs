@@ -92,11 +92,11 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_componentMount = base.Entity.FindComponent<ComponentMount>(throwOnError: true);
-            m_componentBody = base.Entity.FindComponent<ComponentBody>(throwOnError: true);
-            m_componentDamage = base.Entity.FindComponent<ComponentDamage>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_componentMount = Entity.FindComponent<ComponentMount>(throwOnError: true);
+            m_componentBody = Entity.FindComponent<ComponentBody>(throwOnError: true);
+            m_componentDamage = Entity.FindComponent<ComponentDamage>(throwOnError: true);
         }
     }
 }

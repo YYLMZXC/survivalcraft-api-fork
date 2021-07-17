@@ -75,8 +75,8 @@ namespace Game
 
         public static InstancedModelData CreateInstancedModelData(Model model, int[] meshDrawOrders)
         {
-            DynamicArray<InstancedVertex> dynamicArray = new DynamicArray<InstancedVertex>();
-            DynamicArray<ushort> dynamicArray2 = new DynamicArray<ushort>();
+            var dynamicArray = new DynamicArray<InstancedVertex>();
+            var dynamicArray2 = new DynamicArray<ushort>();
             for (int i = 0; i < meshDrawOrders.Length; i++)
             {
                 ModelMesh modelMesh = model.Meshes[meshDrawOrders[i]];
@@ -87,7 +87,7 @@ namespace Game
                     IndexBuffer indexBuffer = meshPart.IndexBuffer;
                     ReadOnlyList<VertexElement> vertexElements = vertexBuffer.VertexDeclaration.VertexElements;
                     ushort[] indexData = BlockMesh.GetIndexData<ushort>(indexBuffer);
-                    Dictionary<ushort, ushort> dictionary = new Dictionary<ushort, ushort>();
+                    var dictionary = new Dictionary<ushort, ushort>();
                     if (vertexElements.Count != 3 || vertexElements[0].Offset != 0 || !(vertexElements[0].Semantic == VertexElementSemantic.Position.GetSemanticString()) || vertexElements[1].Offset != 12 || !(vertexElements[1].Semantic == VertexElementSemantic.Normal.GetSemanticString()) || vertexElements[2].Offset != 24 || !(vertexElements[2].Semantic == VertexElementSemantic.TextureCoordinate.GetSemanticString()))
                     {
                         throw new InvalidOperationException("Unsupported vertex format.");
@@ -99,7 +99,7 @@ namespace Game
                         if (!dictionary.ContainsKey(num))
                         {
                             dictionary.Add(num, (ushort)dynamicArray.Count);
-                            InstancedVertex item = default(InstancedVertex);
+                            InstancedVertex item = default;
                             SourceModelVertex sourceModelVertex = vertexData[num];
                             item.X = sourceModelVertex.X;
                             item.Y = sourceModelVertex.Y;
@@ -121,7 +121,7 @@ namespace Game
                     }
                 }
             }
-            InstancedModelData instancedModelData = new InstancedModelData();
+            var instancedModelData = new InstancedModelData();
             instancedModelData.VertexBuffer = new VertexBuffer(InstancedModelData.VertexDeclaration, dynamicArray.Count);
             instancedModelData.IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits, dynamicArray2.Count);
             instancedModelData.VertexBuffer.SetData(dynamicArray.Array, 0, dynamicArray.Count);

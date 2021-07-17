@@ -32,7 +32,7 @@ namespace Game
 
         public static string[] SplitStackTrace(string stackTrace)
         {
-            List<string> list = new List<string>();
+            var list = new List<string>();
             do
             {
                 string text = stackTrace.Substring(0, MathUtils.Min(stackTrace.Length, 254));

@@ -69,7 +69,7 @@ namespace Game
             m_front[2] = Vector3.UnitY;
             m_right[2] = Vector3.UnitX;
             m_up[2] = Vector3.UnitZ;
-            float s = 1f / (float)TextureSlotsCount;
+            float s = 1f / TextureSlotsCount;
             for (int i = 0; i < m_particles.Length; i++)
             {
                 Particle particle = m_particles[i];
@@ -87,7 +87,7 @@ namespace Game
                     if (rotation != 0f)
                     {
                         Vector3 v = (m_front[billboardingMode].X * m_front[billboardingMode].X > m_front[billboardingMode].Z * m_front[billboardingMode].Z) ? new Vector3(0f, MathUtils.Cos(rotation), MathUtils.Sin(rotation)) : new Vector3(MathUtils.Sin(rotation), MathUtils.Cos(rotation), 0f);
-                        Vector3 vector = Vector3.Normalize(Vector3.Cross(m_front[(uint)particle.BillboardingMode], v));
+                        var vector = Vector3.Normalize(Vector3.Cross(m_front[(uint)particle.BillboardingMode], v));
                         v = Vector3.Normalize(Vector3.Cross(m_front[(uint)particle.BillboardingMode], vector));
                         vector *= size.Y;
                         v *= size.X;
@@ -106,7 +106,7 @@ namespace Game
                         p4 = position + (-vector2 + v2);
                     }
                     TexturedBatch3D obj = particle.UseAdditiveBlending ? AdditiveBatch : AlphaBlendedBatch;
-                    Vector2 v3 = new Vector2(textureSlot % TextureSlotsCount, textureSlot / TextureSlotsCount);
+                    var v3 = new Vector2(textureSlot % TextureSlotsCount, textureSlot / TextureSlotsCount);
                     float num = 0f;
                     float num2 = 1f;
                     float num3 = 1f;

@@ -132,9 +132,9 @@ namespace Game
             {
                 if (m_gameWidget == null)
                 {
-                    for (ContainerWidget parentWidget = base.ParentWidget; parentWidget != null; parentWidget = parentWidget.ParentWidget)
+                    for (ContainerWidget parentWidget = ParentWidget; parentWidget != null; parentWidget = parentWidget.ParentWidget)
                     {
-                        GameWidget gameWidget = parentWidget as GameWidget;
+                        var gameWidget = parentWidget as GameWidget;
                         if (gameWidget != null)
                         {
                             m_gameWidget = gameWidget;
@@ -160,10 +160,10 @@ namespace Game
 
         public InventorySlotWidget()
         {
-            base.Size = new Vector2(72f, 72f);
+            Size = new Vector2(72f, 72f);
             WidgetsList children = Children;
-            Widget[] array = new Widget[7];
-            BevelledRectangleWidget obj = new BevelledRectangleWidget
+            var array = new Widget[7];
+            var obj = new BevelledRectangleWidget
             {
                 BevelSize = -2f,
                 DirectionalLight = 0.15f,
@@ -172,7 +172,7 @@ namespace Game
             BevelledRectangleWidget bevelledRectangleWidget = obj;
             m_rectangleWidget = obj;
             array[0] = bevelledRectangleWidget;
-            RectangleWidget obj2 = new RectangleWidget
+            var obj2 = new RectangleWidget
             {
                 FillColor = Color.Transparent,
                 OutlineColor = Color.Transparent
@@ -180,7 +180,7 @@ namespace Game
             RectangleWidget rectangleWidget = obj2;
             m_highlightWidget = obj2;
             array[1] = rectangleWidget;
-            BlockIconWidget obj3 = new BlockIconWidget
+            var obj3 = new BlockIconWidget
             {
                 HorizontalAlignment = WidgetAlignment.Center,
                 VerticalAlignment = WidgetAlignment.Center,
@@ -189,7 +189,7 @@ namespace Game
             BlockIconWidget blockIconWidget = obj3;
             m_blockIconWidget = obj3;
             array[2] = blockIconWidget;
-            LabelWidget obj4 = new LabelWidget
+            var obj4 = new LabelWidget
             {
                 Font = ContentManager.Get<BitmapFont>("Fonts/Pericles"),
                 FontScale = 1f,
@@ -200,7 +200,7 @@ namespace Game
             LabelWidget labelWidget = obj4;
             m_countWidget = obj4;
             array[3] = labelWidget;
-            ValueBarWidget obj5 = new ValueBarWidget
+            var obj5 = new ValueBarWidget
             {
                 LayoutDirection = LayoutDirection.Vertical,
                 HorizontalAlignment = WidgetAlignment.Near,
@@ -216,14 +216,14 @@ namespace Game
             ValueBarWidget valueBarWidget = obj5;
             m_healthBarWidget = obj5;
             array[4] = valueBarWidget;
-            StackPanelWidget obj6 = new StackPanelWidget
+            var obj6 = new StackPanelWidget
             {
                 Direction = LayoutDirection.Horizontal,
                 HorizontalAlignment = WidgetAlignment.Far,
                 Margin = new Vector2(3f, 3f)
             };
             WidgetsList children2 = obj6.Children;
-            RectangleWidget obj7 = new RectangleWidget
+            var obj7 = new RectangleWidget
             {
                 Subtexture = ContentManager.Get<Subtexture>("Textures/Atlas/InteractiveItemOverlay"),
                 Size = new Vector2(13f, 14f),
@@ -234,7 +234,7 @@ namespace Game
             m_interactiveOverlayWidget = obj7;
             children2.Add(rectangleWidget);
             WidgetsList children3 = obj6.Children;
-            RectangleWidget obj8 = new RectangleWidget
+            var obj8 = new RectangleWidget
             {
                 Subtexture = ContentManager.Get<Subtexture>("Textures/Atlas/EditItemOverlay"),
                 Size = new Vector2(12f, 14f),
@@ -245,7 +245,7 @@ namespace Game
             m_editOverlayWidget = obj8;
             children3.Add(rectangleWidget);
             WidgetsList children4 = obj6.Children;
-            RectangleWidget obj9 = new RectangleWidget
+            var obj9 = new RectangleWidget
             {
                 Subtexture = ContentManager.Get<Subtexture>("Textures/Atlas/FoodItemOverlay"),
                 Size = new Vector2(11f, 14f),
@@ -256,7 +256,7 @@ namespace Game
             m_foodOverlayWidget = obj9;
             children4.Add(rectangleWidget);
             array[5] = obj6;
-            LabelWidget obj10 = new LabelWidget
+            var obj10 = new LabelWidget
             {
                 Text = "Split",
                 Font = ContentManager.Get<BitmapFont>("Fonts/Pericles"),
@@ -276,14 +276,7 @@ namespace Game
             m_inventory = inventory;
             m_slotIndex = slotIndex;
             m_subsystemTerrain = inventory?.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            if (inventory is Component)
-            {
-                m_componentPlayer = ((Component)inventory).Entity.FindComponent<ComponentPlayer>();
-            }
-            else
-            {
-                m_componentPlayer = null;
-            }
+            m_componentPlayer = inventory is Component ? ((Component)inventory).Entity.FindComponent<ComponentPlayer>() : null;
             m_blockIconWidget.DrawBlockEnvironmentData.SubsystemTerrain = m_subsystemTerrain;
         }
 
@@ -293,7 +286,7 @@ namespace Game
             {
                 return;
             }
-            WidgetInput input = base.Input;
+            WidgetInput input = Input;
             ComponentPlayer viewPlayer = GetViewPlayer();
             int slotValue = m_inventory.GetSlotValue(m_slotIndex);
             int num = Terrain.ExtractContents(slotValue);
@@ -313,9 +306,9 @@ namespace Game
             if (input.SpecialClick.HasValue && HitTestGlobal(input.SpecialClick.Value.Start) == this && HitTestGlobal(input.SpecialClick.Value.End) == this)
             {
                 IInventory inventory = null;
-                foreach (InventorySlotWidget item in ((ContainerWidget)base.RootWidget).AllChildren.OfType<InventorySlotWidget>())
+                foreach (InventorySlotWidget item in ((ContainerWidget)RootWidget).AllChildren.OfType<InventorySlotWidget>())
                 {
-                    if (item.m_inventory != null && item.m_inventory != m_inventory && item.Input == base.Input && item.IsEnabledGlobal && item.IsVisibleGlobal)
+                    if (item.m_inventory != null && item.m_inventory != m_inventory && item.Input == Input && item.IsEnabledGlobal && item.IsVisibleGlobal)
                     {
                         inventory = item.m_inventory;
                         break;
@@ -381,7 +374,7 @@ namespace Game
                 }
                 int num3 = (dragMode != 0) ? 1 : slotCount;
                 SubsystemTerrain subsystemTerrain = m_inventory.Project.FindSubsystem<SubsystemTerrain>();
-                ContainerWidget containerWidget = (ContainerWidget)Widget.LoadWidget(null, ContentManager.Get<XElement>("Widgets/InventoryDragWidget"), null);
+                var containerWidget = (ContainerWidget)LoadWidget(null, ContentManager.Get<XElement>("Widgets/InventoryDragWidget"), null);
                 containerWidget.Children.Find<BlockIconWidget>("InventoryDragWidget.Icon").Value = Terrain.ReplaceLight(slotValue, 15);
                 containerWidget.Children.Find<BlockIconWidget>("InventoryDragWidget.Icon").DrawBlockEnvironmentData.SubsystemTerrain = subsystemTerrain;
                 containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Name").Text = block.GetDisplayName(subsystemTerrain, slotValue);
@@ -483,7 +476,7 @@ namespace Game
                 m_foodOverlayWidget.IsVisible = false;
                 m_splitLabelWidget.IsVisible = false;
             }
-            base.IsDrawRequired = (m_inventoryDragData != null);
+            IsDrawRequired = (m_inventoryDragData != null);
             base.MeasureOverride(parentAvailableSize);
         }
 
@@ -494,13 +487,13 @@ namespace Game
                 int slotValue = m_inventoryDragData.Inventory.GetSlotValue(m_inventoryDragData.SlotIndex);
                 if (m_inventory.GetSlotProcessCapacity(m_slotIndex, slotValue) >= 0 || m_inventory.GetSlotCapacity(m_slotIndex, slotValue) > 0)
                 {
-                    float num = 80f * base.GlobalTransform.Right.Length();
-                    Vector2 center = Vector2.Transform(base.ActualSize / 2f, base.GlobalTransform);
+                    float num = 80f * GlobalTransform.Right.Length();
+                    var center = Vector2.Transform(ActualSize / 2f, GlobalTransform);
                     FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(100);
-                    flatBatch2D.QueueEllipse(center, new Vector2(num), 0f, new Color(0, 0, 0, 96) * base.GlobalColorTransform, 64);
-                    flatBatch2D.QueueEllipse(center, new Vector2(num - 0.5f), 0f, new Color(0, 0, 0, 64) * base.GlobalColorTransform, 64);
-                    flatBatch2D.QueueEllipse(center, new Vector2(num + 0.5f), 0f, new Color(0, 0, 0, 48) * base.GlobalColorTransform, 64);
-                    flatBatch2D.QueueDisc(center, new Vector2(num), 0f, new Color(0, 0, 0, 48) * base.GlobalColorTransform, 64);
+                    flatBatch2D.QueueEllipse(center, new Vector2(num), 0f, new Color(0, 0, 0, 96) * GlobalColorTransform, 64);
+                    flatBatch2D.QueueEllipse(center, new Vector2(num - 0.5f), 0f, new Color(0, 0, 0, 64) * GlobalColorTransform, 64);
+                    flatBatch2D.QueueEllipse(center, new Vector2(num + 0.5f), 0f, new Color(0, 0, 0, 48) * GlobalColorTransform, 64);
+                    flatBatch2D.QueueDisc(center, new Vector2(num), 0f, new Color(0, 0, 0, 48) * GlobalColorTransform, 64);
                 }
             }
             m_inventoryDragData = null;
@@ -513,7 +506,7 @@ namespace Game
 
         public void DragDrop(Widget dragWidget, object data)
         {
-            InventoryDragData inventoryDragData = data as InventoryDragData;
+            var inventoryDragData = data as InventoryDragData;
             if (m_inventory != null && inventoryDragData != null)
             {
                 HandleDragDrop(inventoryDragData.Inventory, inventoryDragData.SlotIndex, inventoryDragData.DragMode, m_inventory, m_slotIndex);

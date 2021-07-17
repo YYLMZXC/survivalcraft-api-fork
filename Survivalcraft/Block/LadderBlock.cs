@@ -29,7 +29,7 @@ namespace Game
             for (int i = 0; i < 4; i++)
             {
                 m_blockMeshesByData[i] = new BlockMesh();
-                Matrix m = Matrix.CreateTranslation(0f, 0f, 0f - (0.5f - m_offset)) * Matrix.CreateRotationY((float)i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
+                Matrix m = Matrix.CreateTranslation(0f, 0f, 0f - (0.5f - m_offset)) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                 m_blockMeshesByData[i].AppendModelMeshPart(model.FindMesh("Ladder").MeshParts[0], boneAbsoluteTransform * m, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                 m_blockMeshesByData[i].GenerateSidesData();
                 m_collisionBoxesByData[i] = new BoundingBox[1]
@@ -57,7 +57,7 @@ namespace Game
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
         {
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = ((raycastResult.CellFace.Face < 4) ? Terrain.MakeBlockValue(BlockIndex, 0, SetFace(0, raycastResult.CellFace.Face)) : 0);
             result.CellFace = raycastResult.CellFace;
             return result;

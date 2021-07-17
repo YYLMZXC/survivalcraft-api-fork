@@ -100,17 +100,10 @@ namespace Game
 
         public override BoundingBox[] GetCustomCollisionBoxes(SubsystemTerrain terrain, int value)
         {
-            BoundingBox[] array = new BoundingBox[6];
+            var array = new BoundingBox[6];
             for (int i = 0; i < 6; i++)
             {
-                if (WireExistsOnFace(value, i))
-                {
-                    array[i] = m_collisionBoxesByFace[i];
-                }
-                else
-                {
-                    array[i] = default(BoundingBox);
-                }
+                array[i] = WireExistsOnFace(value, i) ? m_collisionBoxesByFace[i] : default;
             }
             return array;
         }
@@ -144,12 +137,12 @@ namespace Game
             BlockPlacementData result;
             if (num2 != wireFacesBitmask || !(block is WireBlock))
             {
-                result = default(BlockPlacementData);
+                result = default;
                 result.Value = SetWireFacesBitmask(value, num2);
                 result.CellFace = raycastResult.CellFace;
                 return result;
             }
-            result = default(BlockPlacementData);
+            result = default;
             return result;
         }
 
@@ -157,7 +150,7 @@ namespace Game
         {
             int wireFacesBitmask = GetWireFacesBitmask(value);
             wireFacesBitmask &= ~(1 << raycastResult.CollisionBoxIndex);
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = SetWireFacesBitmask(value, wireFacesBitmask);
             result.CellFace = raycastResult.CellFace;
             return result;

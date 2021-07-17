@@ -34,7 +34,7 @@ namespace Game
         {
             for (int i = 0; i < 3; i++)
             {
-                Vector3 v = new Vector3(m_random.Float(-3f, 3f), -15f, m_random.Float(-3f, 3f));
+                var v = new Vector3(m_random.Float(-3f, 3f), -15f, m_random.Float(-3f, 3f));
                 if (m_subsystemTerrain.Raycast(position, position + v, useInteractionBoxes: false, skipAirBlocks: true, null).HasValue)
                 {
                     return;
@@ -56,7 +56,7 @@ namespace Game
             m_subsystemProjectiles.AddTrail(projectile, Vector3.Zero, new FireworksTrailParticleSystem());
             m_subsystemAudio.PlayRandomSound("Audio/FireworksWhoosh", 1f, m_random.Float(-0.2f, 0.2f), projectile.Position, 8f, autoDelay: true);
             m_subsystemNoise.MakeNoise(projectile.Position, 1f, 10f);
-            m_subsystemTime.QueueGameTimeDelayedExecution(m_subsystemTime.GameTime + (double)num, delegate
+            m_subsystemTime.QueueGameTimeDelayedExecution(m_subsystemTime.GameTime + num, delegate
             {
                 if (!projectile.ToRemove)
                 {
@@ -74,14 +74,14 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemProjectiles = base.Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemNoise = base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_subsystemPlayers = base.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemNoise = Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
         }
 
         public void Update(float dt)
@@ -120,7 +120,7 @@ namespace Game
                     data = FireworksBlock.SetAltitude(data, m_random.Int(0, 1));
                     data = FireworksBlock.SetFlickering(data, m_random.Float(0f, 1f) < 0.25f);
                     int value = Terrain.MakeBlockValue(215, 0, data);
-                    Vector3 position = new Vector3(terrainRaycastResult.Value.CellFace.Point.X, terrainRaycastResult.Value.CellFace.Point.Y + 1, terrainRaycastResult.Value.CellFace.Point.Z);
+                    var position = new Vector3(terrainRaycastResult.Value.CellFace.Point.X, terrainRaycastResult.Value.CellFace.Point.Y + 1, terrainRaycastResult.Value.CellFace.Point.Z);
                     m_subsystemProjectiles.FireProjectile(value, position, new Vector3(m_random.Float(-3f, 3f), 45f, m_random.Float(-3f, 3f)), Vector3.Zero, null);
                 }
             }

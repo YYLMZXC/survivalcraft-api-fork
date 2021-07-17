@@ -22,7 +22,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
         }
 
         public void MakeNoisepublic(ComponentBody sourceBody, Vector3 position, float loudness, float range)

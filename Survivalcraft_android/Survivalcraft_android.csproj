@@ -2213,6 +2213,9 @@
     <Compile Include="..\Survivalcraft\ModsManager\LanguageControl.cs">
       <Link>Language\LanguageControl.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\Locker.cs">
+      <Link>ModsManager\Locker.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\ModsManager\ModEntity.cs">
       <Link>ModsManager\ModEntity.cs</Link>
     </Compile>

@@ -52,7 +52,7 @@ namespace Game
         {
             get
             {
-                ComponentPlayer componentPlayer = this as ComponentPlayer;
+                var componentPlayer = this as ComponentPlayer;
                 if (componentPlayer != null)
                 {
                     return m_subsystemPlayerStats.GetPlayerStats(componentPlayer.PlayerData.PlayerIndex);
@@ -83,13 +83,13 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            ComponentBody = base.Entity.FindComponent<ComponentBody>(throwOnError: true);
-            ComponentHealth = base.Entity.FindComponent<ComponentHealth>(throwOnError: true);
-            ComponentSpawn = base.Entity.FindComponent<ComponentSpawn>(throwOnError: true);
-            ComponentCreatureSounds = base.Entity.FindComponent<ComponentCreatureSounds>(throwOnError: true);
-            ComponentCreatureModel = base.Entity.FindComponent<ComponentCreatureModel>(throwOnError: true);
-            ComponentLocomotion = base.Entity.FindComponent<ComponentLocomotion>(throwOnError: true);
-            m_subsystemPlayerStats = base.Project.FindSubsystem<SubsystemPlayerStats>(throwOnError: true);
+            ComponentBody = Entity.FindComponent<ComponentBody>(throwOnError: true);
+            ComponentHealth = Entity.FindComponent<ComponentHealth>(throwOnError: true);
+            ComponentSpawn = Entity.FindComponent<ComponentSpawn>(throwOnError: true);
+            ComponentCreatureSounds = Entity.FindComponent<ComponentCreatureSounds>(throwOnError: true);
+            ComponentCreatureModel = Entity.FindComponent<ComponentCreatureModel>(throwOnError: true);
+            ComponentLocomotion = Entity.FindComponent<ComponentLocomotion>(throwOnError: true);
+            m_subsystemPlayerStats = Project.FindSubsystem<SubsystemPlayerStats>(throwOnError: true);
             ConstantSpawn = valuesDictionary.GetValue<bool>("ConstantSpawn");
             Category = valuesDictionary.GetValue<CreatureCategory>("Category");
             DisplayName = valuesDictionary.GetValue<string>("DisplayName");

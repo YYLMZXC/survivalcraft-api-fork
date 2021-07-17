@@ -32,7 +32,7 @@ namespace Game
         public void Update(float dt)
         {
             Terrain terrain = m_subsystemTerrain.Terrain;
-            m_pollCount += (float)(terrain.AllocatedChunks.Length * 16 * 16) * dt / 60f;
+            m_pollCount += terrain.AllocatedChunks.Length * 16 * 16 * dt / 60f;
             m_pollCount = MathUtils.Clamp(m_pollCount, 0f, 200f);
             TerrainChunk nextChunk = terrain.GetNextChunk(m_pollChunkCoordinates.X, m_pollChunkCoordinates.Y);
             if (nextChunk == null)
@@ -81,7 +81,7 @@ namespace Game
                     }
                     m_pollX = 0;
                 }
-                this.ScanningChunkCompleted?.Invoke(nextChunk);
+                ScanningChunkCompleted?.Invoke(nextChunk);
                 nextChunk = terrain.GetNextChunk(nextChunk.Coords.X + 1, nextChunk.Coords.Y);
                 if (nextChunk == null)
                 {
@@ -97,8 +97,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
             m_pollChunkCoordinates = valuesDictionary.GetValue<Point2>("PollChunkCoordinates");
             Point2 value = valuesDictionary.GetValue<Point2>("PollPoint");
             m_pollX = value.X;

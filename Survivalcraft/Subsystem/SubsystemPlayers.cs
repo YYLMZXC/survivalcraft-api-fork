@@ -76,7 +76,7 @@ namespace Game
             m_playersData.Add(playerData);
             playerData.PlayerIndex = m_nextPlayerIndex - 1 ;
             m_nextPlayerIndex++;
-            this.PlayerAdded?.Invoke(playerData);
+            PlayerAdded?.Invoke(playerData);
         }
 
         public void RemovePlayerData(PlayerData playerData)
@@ -88,9 +88,9 @@ namespace Game
             m_playersData.Remove(playerData);
             if (playerData.ComponentPlayer != null)
             {
-                base.Project.RemoveEntity(playerData.ComponentPlayer.Entity, disposeEntity: true);
+                Project.RemoveEntity(playerData.ComponentPlayer.Entity, disposeEntity: true);
             }
-            this.PlayerRemoved?.Invoke(playerData);
+            PlayerRemoved?.Invoke(playerData);
             playerData.Dispose();
         }
 
@@ -98,7 +98,7 @@ namespace Game
         {
             if (m_playersData.Count == 0)
             {
-                ScreensManager.SwitchScreen("Player", PlayerScreen.Mode.Initial, base.Project);
+                ScreensManager.SwitchScreen("Player", PlayerScreen.Mode.Initial, Project);
             }
             foreach (PlayerData playersDatum in m_playersData)
             {
@@ -116,12 +116,12 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
             m_nextPlayerIndex = valuesDictionary.GetValue<int>("NextPlayerIndex");
             GlobalSpawnPosition = valuesDictionary.GetValue<Vector3>("GlobalSpawnPosition");
             foreach (KeyValuePair<string, object> item in valuesDictionary.GetValue<ValuesDictionary>("Players"))
             {
-                PlayerData playerData = new PlayerData(base.Project);
+                var playerData = new PlayerData(Project);
                 playerData.Load((ValuesDictionary)item.Value);
                 playerData.PlayerIndex = int.Parse(item.Key, CultureInfo.InvariantCulture);
                 m_playersData.Add(playerData);
@@ -132,11 +132,11 @@ namespace Game
         {
             valuesDictionary.SetValue("NextPlayerIndex", m_nextPlayerIndex);
             valuesDictionary.SetValue("GlobalSpawnPosition", GlobalSpawnPosition);
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Players", valuesDictionary2);
             foreach (PlayerData playersDatum in m_playersData)
             {
-                ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+                var valuesDictionary3 = new ValuesDictionary();
                 valuesDictionary2.SetValue(playersDatum.PlayerIndex.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
                 playersDatum.Save(valuesDictionary3);
             }

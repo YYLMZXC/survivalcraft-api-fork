@@ -8,14 +8,14 @@ namespace Engine.Graphics
 {
 	public sealed class RenderTarget2D : Texture2D
 	{
-		public int m_frameBuffer;
+		internal int m_frameBuffer;
 
-		public int m_depthBuffer;
+		internal int m_depthBuffer;
 
 		public DepthFormat DepthFormat
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public RenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
@@ -42,7 +42,7 @@ namespace Engine.Graphics
 		public void GetData<T>(T[] target, int targetStartIndex, Rectangle sourceRectangle) where T : struct
 		{
 			VerifyParametersGetData(target, targetStartIndex, sourceRectangle);
-			GCHandle gCHandle = GCHandle.Alloc(target, GCHandleType.Pinned);
+			var gCHandle = GCHandle.Alloc(target, GCHandleType.Pinned);
 			try
 			{
 				GLWrapper.BindFramebuffer(m_frameBuffer);
@@ -60,17 +60,17 @@ namespace Engine.Graphics
 			GL.GenerateMipmap(All.Texture2D);
 		}
 
-		public override void HandleDeviceLost()
+		internal override void HandleDeviceLost()
 		{
 			DeleteRenderTarget();
 		}
 
-		public override void HandleDeviceReset()
+		internal override void HandleDeviceReset()
 		{
 			AllocateRenderTarget();
 		}
 
-		public void AllocateRenderTarget()
+		private void AllocateRenderTarget()
 		{
 			GL.GenFramebuffers(1, out m_frameBuffer);
 			GLWrapper.BindFramebuffer(m_frameBuffer);
@@ -95,7 +95,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public void DeleteRenderTarget()
+		private void DeleteRenderTarget()
 		{
 			if (m_depthBuffer != 0)
 			{
@@ -115,7 +115,7 @@ namespace Engine.Graphics
 			{
 				throw new InvalidOperationException("Unsupported color format.");
 			}
-			Image image = new Image(renderTarget.Width, renderTarget.Height);
+			var image = new Image(renderTarget.Width, renderTarget.Height);
 			renderTarget.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget.Width, renderTarget.Height));
 			Image.Save(image, stream, format, saveAlpha);
 		}
@@ -125,19 +125,19 @@ namespace Engine.Graphics
 			return base.GetGpuMemoryUsage() + DepthFormat.GetSize() * base.Width * base.Height;
 		}
 
-		public void InitializeRenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
+		private void InitializeRenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
 		{
 			DepthFormat = depthFormat;
 		}
 
-		public void VerifyParametersGetData<T>(T[] target, int targetStartIndex, Rectangle sourceRectangle) where T : struct
+		private void VerifyParametersGetData<T>(T[] target, int targetStartIndex, Rectangle sourceRectangle) where T : struct
 		{
 			VerifyNotDisposed();
 			int size = base.ColorFormat.GetSize();
 			int num = Utilities.SizeOf<T>();
 			if (target == null)
 			{
-				throw new ArgumentNullException("target");
+				throw new ArgumentNullException(nameof(target));
 			}
 			if (num > size)
 			{
@@ -149,11 +149,11 @@ namespace Engine.Graphics
 			}
 			if (sourceRectangle.Left < 0 || sourceRectangle.Width <= 0 || sourceRectangle.Top < 0 || sourceRectangle.Height <= 0 || sourceRectangle.Left + sourceRectangle.Width > base.Width || sourceRectangle.Top + sourceRectangle.Height > base.Height)
 			{
-				throw new ArgumentOutOfRangeException("sourceRectangle");
+				throw new ArgumentOutOfRangeException(nameof(sourceRectangle));
 			}
 			if (targetStartIndex < 0 || targetStartIndex >= target.Length)
 			{
-				throw new ArgumentOutOfRangeException("targetStartIndex");
+				throw new ArgumentOutOfRangeException(nameof(targetStartIndex));
 			}
 			if ((target.Length - targetStartIndex) * num < sourceRectangle.Width * sourceRectangle.Height * size)
 			{

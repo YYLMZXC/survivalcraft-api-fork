@@ -155,7 +155,7 @@ namespace Game
             Vector2 corner = particle.Position - particle.Size / 2f;
             Vector2 corner2 = particle.Position + particle.Size / 2f;
             int textureSlot = particle.TextureSlot;
-            Vector2 v = new Vector2(textureSlot % 3, textureSlot / 3);
+            var v = new Vector2(textureSlot % 3, textureSlot / 3);
             float num = 0f;
             float num2 = 1f;
             float num3 = 0f;

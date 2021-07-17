@@ -31,7 +31,7 @@ namespace NVorbis
 
 		internal static VorbisCodebook Init(VorbisStreamDecoder vorbis, DataPacket packet, int number)
 		{
-			VorbisCodebook vorbisCodebook = new VorbisCodebook();
+			var vorbisCodebook = new VorbisCodebook();
 			vorbisCodebook.BookNum = number;
 			vorbisCodebook.Init(packet);
 			return vorbisCodebook;

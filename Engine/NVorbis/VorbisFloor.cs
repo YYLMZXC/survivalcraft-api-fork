@@ -198,7 +198,7 @@ namespace NVorbis
 
 			internal override void Apply(PacketData packetData, float[] residue)
 			{
-				PacketData0 packetData2 = packetData as PacketData0;
+				var packetData2 = packetData as PacketData0;
 				if (packetData2 == null)
 				{
 					throw new ArgumentException("Incorrect packet data!");
@@ -619,7 +619,7 @@ namespace NVorbis
 				_yBits = _yBitsLookup[_multiplier];
 				_multiplier++;
 				int num3 = (int)packet.ReadBits(4);
-				List<int> list = new List<int>();
+				var list = new List<int>();
 				list.Add(0);
 				list.Add(1 << num3);
 				for (int l = 0; l < _partitionClass.Length; l++)
@@ -725,10 +725,10 @@ namespace NVorbis
 
 			internal override void Apply(PacketData packetData, float[] residue)
 			{
-				PacketData1 packetData2 = packetData as PacketData1;
+				var packetData2 = packetData as PacketData1;
 				if (packetData2 == null)
 				{
-					throw new ArgumentException("Incorrect packet data!", "packetData");
+					throw new ArgumentException("Incorrect packet data!", nameof(packetData));
 				}
 				int num = packetData2.BlockSize / 2;
 				if (packetData2.PostCount > 0)

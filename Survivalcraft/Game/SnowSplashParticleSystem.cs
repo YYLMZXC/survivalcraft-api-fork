@@ -21,15 +21,15 @@ namespace Game
         public SnowSplashParticleSystem()
             : base(100)
         {
-            base.Texture = ContentManager.Get<Texture2D>("Textures/SnowParticle");
-            base.TextureSlotsCount = 4;
+            Texture = ContentManager.Get<Texture2D>("Textures/SnowParticle");
+            TextureSlotsCount = 4;
         }
 
         public void AddSplash(int value, Vector3 position, Vector2 size, Color color, int textureSlot)
         {
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (!particle.IsActive)
                 {
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
@@ -62,9 +62,9 @@ namespace Game
             {
                 dt = MathUtils.Clamp(dt, 0f, 0.1f);
                 bool flag = false;
-                for (int i = 0; i < base.Particles.Length; i++)
+                for (int i = 0; i < Particles.Length; i++)
                 {
-                    Particle particle = base.Particles[i];
+                    Particle particle = Particles[i];
                     if (particle.IsActive)
                     {
                         particle.Color = particle.BaseColor * MathUtils.Saturate(particle.FadeFactor * particle.TimeToLive);

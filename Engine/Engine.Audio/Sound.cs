@@ -5,7 +5,7 @@ namespace Engine.Audio
 {
 	public sealed class Sound : BaseSound
 	{
-		public SoundBuffer m_soundBuffer;
+		private SoundBuffer m_soundBuffer;
 
 		public SoundBuffer SoundBuffer => m_soundBuffer;
 
@@ -19,11 +19,11 @@ namespace Engine.Audio
 			}
 		}
 
-		public void Initialize(SoundBuffer soundBuffer)
+		internal void Initialize(SoundBuffer soundBuffer)
 		{
 			if (soundBuffer == null)
 			{
-				throw new ArgumentNullException("soundBuffer");
+				throw new ArgumentNullException(nameof(soundBuffer));
 			}
 			m_soundBuffer = soundBuffer;
 			int num = ++m_soundBuffer.UseCount;
@@ -33,7 +33,7 @@ namespace Engine.Audio
 		{
 			if (soundBuffer == null)
 			{
-				throw new ArgumentNullException("soundBuffer");
+				throw new ArgumentNullException(nameof(soundBuffer));
 			}
 			AL.Source(m_source, ALSourcei.Buffer, soundBuffer.m_buffer);
 			Mixer.CheckALError();
@@ -48,28 +48,28 @@ namespace Engine.Audio
 			Mixer.m_soundsToStopPoll.Add(this);
 		}
 
-		public override void publicPlay()
+		internal override void InternalPlay()
 		{
 			AL.Source(m_source, ALSourceb.Looping, m_isLooped);
 			AL.SourcePlay(m_source);
 			Mixer.CheckALError();
 		}
 
-		public override void publicPause()
+		internal override void InternalPause()
 		{
 			AL.SourcePause(m_source);
 			Mixer.CheckALError();
 		}
 
-		public override void publicStop()
+		internal override void InternalStop()
 		{
 			AL.SourceRewind(m_source);
 			Mixer.CheckALError();
 		}
 
-		public override void publicDispose()
+		internal override void InternalDispose()
 		{
-			base.publicDispose();
+			base.InternalDispose();
 			Mixer.m_soundsToStopPoll.Remove(this);
 		}
 	}

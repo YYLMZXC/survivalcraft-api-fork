@@ -48,7 +48,7 @@ namespace Game
 
         public override void Update()
         {
-            WidgetInput input = base.Input;
+            WidgetInput input = Input;
             IsPressed = false;
             IsTapped = false;
             IsClicked = false;

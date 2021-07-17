@@ -149,9 +149,9 @@ namespace Game
                                         else
                                         {
                                             Vector3 vector2 = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.3f - componentMiner.ComponentCreature.ComponentBody.Matrix.Up * 0.2f;
-                                            Vector3 vector3 = Vector3.Normalize(vector2 + aim.Direction * 10f - vector2);
-                                            Vector3 vector4 = Vector3.Normalize(Vector3.Cross(vector3, Vector3.UnitY));
-                                            Vector3 v2 = Vector3.Normalize(Vector3.Cross(vector3, vector4));
+                                            var vector3 = Vector3.Normalize(vector2 + aim.Direction * 10f - vector2);
+                                            var vector4 = Vector3.Normalize(Vector3.Cross(vector3, Vector3.UnitY));
+                                            var v2 = Vector3.Normalize(Vector3.Cross(vector3, vector4));
                                             for (int i = 0; i < num6; i++)
                                             {
                                                 Vector3 v3 = m_random.Float(0f - vector.X, vector.X) * vector4 + m_random.Float(0f - vector.Y, vector.Y) * v2 + m_random.Float(0f - vector.Z, vector.Z) * vector3;
@@ -248,12 +248,12 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemProjectiles = base.Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemNoise = base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemNoise = Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
             base.Load(valuesDictionary);
         }
     }

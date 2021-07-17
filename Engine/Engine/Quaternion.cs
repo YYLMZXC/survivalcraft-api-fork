@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-	public struct Quaternion : IEquatable<Quaternion>
+    public struct Quaternion : IEquatable<Quaternion>
 	{
 		public float X;
 

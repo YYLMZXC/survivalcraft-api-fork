@@ -7,7 +7,7 @@ namespace Engine.Serialization
 	{
 		public string ConvertToString(object value)
 		{
-			Quaternion quaternion = (Quaternion)value;
+			var quaternion = (Quaternion)value;
 			return HumanReadableConverter.ValuesListToString<float>(',', quaternion.X, quaternion.Y, quaternion.Z, quaternion.W);
 		}
 

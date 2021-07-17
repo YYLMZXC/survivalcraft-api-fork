@@ -26,8 +26,8 @@ namespace Game
 
         public override void Update(float dt)
         {
-            ComponentPlayer componentPlayer = base.GameWidget.PlayerData.ComponentPlayer;
-            if (componentPlayer == null || base.GameWidget.Target == null)
+            ComponentPlayer componentPlayer = GameWidget.PlayerData.ComponentPlayer;
+            if (componentPlayer == null || GameWidget.Target == null)
             {
                 return;
             }
@@ -37,8 +37,8 @@ namespace Game
             m_angles.X = MathUtils.NormalizeAngle(m_angles.X + 4f * cameraLook.X * dt + 0.5f * cameraSneakMove.X * dt);
             m_angles.Y = MathUtils.Clamp(MathUtils.NormalizeAngle(m_angles.Y + 4f * cameraLook.Y * dt), MathUtils.DegToRad(-20f), MathUtils.DegToRad(70f));
             m_distance = MathUtils.Clamp(m_distance - 10f * cameraSneakMove.Z * dt, 2f, 16f);
-            Vector3 v = Vector3.Transform(new Vector3(m_distance, 0f, 0f), Matrix.CreateFromYawPitchRoll(m_angles.X, 0f, m_angles.Y));
-            Vector3 vector = base.GameWidget.Target.ComponentBody.BoundingBox.Center();
+            var v = Vector3.Transform(new Vector3(m_distance, 0f, 0f), Matrix.CreateFromYawPitchRoll(m_angles.X, 0f, m_angles.Y));
+            Vector3 vector = GameWidget.Target.ComponentBody.BoundingBox.Center();
             Vector3 vector2 = vector + v;
             if (Vector3.Distance(vector2, m_position) < 10f)
             {
@@ -52,8 +52,8 @@ namespace Game
             }
             Vector3 vector3 = m_position - vector;
             float? num = null;
-            Vector3 vector4 = Vector3.Normalize(Vector3.Cross(vector3, Vector3.UnitY));
-            Vector3 v3 = Vector3.Normalize(Vector3.Cross(vector3, vector4));
+            var vector4 = Vector3.Normalize(Vector3.Cross(vector3, Vector3.UnitY));
+            var v3 = Vector3.Normalize(Vector3.Cross(vector3, vector4));
             for (int i = 0; i <= 0; i++)
             {
                 for (int j = 0; j <= 0; j++)
@@ -61,7 +61,7 @@ namespace Game
                     Vector3 v4 = 0.5f * (vector4 * i + v3 * j);
                     Vector3 vector5 = vector + v4;
                     Vector3 end = vector5 + vector3 + Vector3.Normalize(vector3) * 0.5f;
-                    TerrainRaycastResult? terrainRaycastResult = base.GameWidget.SubsystemGameWidgets.SubsystemTerrain.Raycast(vector5, end, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => !BlocksManager.Blocks[Terrain.ExtractContents(value)].IsTransparent_(value));
+                    TerrainRaycastResult? terrainRaycastResult = GameWidget.SubsystemGameWidgets.SubsystemTerrain.Raycast(vector5, end, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => !BlocksManager.Blocks[Terrain.ExtractContents(value)].IsTransparent_(value));
                     if (terrainRaycastResult.HasValue)
                     {
                         num = (num.HasValue ? MathUtils.Min(num.Value, terrainRaycastResult.Value.Distance) : terrainRaycastResult.Value.Distance);

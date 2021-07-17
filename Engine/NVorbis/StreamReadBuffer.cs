@@ -147,19 +147,19 @@ namespace NVorbis
 		{
 			if (offset < 0)
 			{
-				throw new ArgumentOutOfRangeException("offset");
+				throw new ArgumentOutOfRangeException(nameof(offset));
 			}
 			if (buffer == null)
 			{
-				throw new ArgumentNullException("buffer");
+				throw new ArgumentNullException(nameof(buffer));
 			}
 			if (index < 0 || index + count > buffer.Length)
 			{
-				throw new ArgumentOutOfRangeException("index");
+				throw new ArgumentOutOfRangeException(nameof(index));
 			}
 			if (count < 0)
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			if (offset >= _wrapper.EofOffset)
 			{
@@ -174,7 +174,7 @@ namespace NVorbis
 		{
 			if (offset < 0)
 			{
-				throw new ArgumentOutOfRangeException("offset");
+				throw new ArgumentOutOfRangeException(nameof(offset));
 			}
 			if (offset >= _wrapper.EofOffset)
 			{

@@ -29,7 +29,7 @@ namespace Game
             {
                 for (int j = 0; j < m_inventoryGrid.ColumnsCount; j++)
                 {
-                    InventorySlotWidget widget = new InventorySlotWidget();
+                    var widget = new InventorySlotWidget();
                     m_inventoryGrid.Children.Add(widget);
                     m_inventoryGrid.SetWidgetCell(widget, new Point2(j, i));
                 }
@@ -70,7 +70,7 @@ namespace Game
             }
             else
             {
-                base.ParentWidget.Children.Remove(this);
+                ParentWidget.Children.Remove(this);
             }
         }
     }

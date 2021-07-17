@@ -72,7 +72,7 @@ namespace Engine.Graphics
 			}
 			if (count < 0 || count > value.Length || count > Count)
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			if (!IsChanged)
 			{
@@ -117,7 +117,7 @@ namespace Engine.Graphics
 			}
 			if (count < 0 || count > value.Length || count > Count)
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			if (!IsChanged)
 			{
@@ -167,7 +167,7 @@ namespace Engine.Graphics
 			}
 			if (count < 0 || count > value.Length || count > Count)
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			if (!IsChanged)
 			{
@@ -219,7 +219,7 @@ namespace Engine.Graphics
 			}
 			if (count < 0 || count > value.Length || count > Count)
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			if (!IsChanged)
 			{
@@ -284,7 +284,7 @@ namespace Engine.Graphics
 			}
 			if (count < 0 || count > value.Length || count > Count)
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			if (!IsChanged)
 			{

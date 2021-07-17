@@ -17,15 +17,15 @@ namespace Game
             Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("StringRelaxed").ParentBone);
             Matrix boneAbsoluteTransform3 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("BowTensed").ParentBone);
             Matrix boneAbsoluteTransform4 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("StringTensed").ParentBone);
-            BlockMesh blockMesh = new BlockMesh();
+            var blockMesh = new BlockMesh();
             blockMesh.AppendModelMeshPart(model.FindMesh("BowRelaxed").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             blockMesh.AppendModelMeshPart(model.FindMesh("StringRelaxed").MeshParts[0], boneAbsoluteTransform2 * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-            BlockMesh blockMesh2 = new BlockMesh();
+            var blockMesh2 = new BlockMesh();
             blockMesh2.AppendModelMeshPart(model.FindMesh("BowTensed").MeshParts[0], boneAbsoluteTransform3 * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             blockMesh2.AppendModelMeshPart(model.FindMesh("StringTensed").MeshParts[0], boneAbsoluteTransform4 * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             for (int i = 0; i < 16; i++)
             {
-                float factor = (float)i / 15f;
+                float factor = i / 15f;
                 m_standaloneBlockMeshes[i] = new BlockMesh();
                 m_standaloneBlockMeshes[i].AppendBlockMesh(blockMesh);
                 m_standaloneBlockMeshes[i].BlendBlockMesh(blockMesh2, factor);
@@ -45,7 +45,7 @@ namespace Game
             BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMeshes[draw], color, 2f * size, ref matrix, environmentData);
             if (arrowType.HasValue)
             {
-                float num = MathUtils.Lerp(0.14f, 0.68f, (float)draw / 15f);
+                float num = MathUtils.Lerp(0.14f, 0.68f, draw / 15f);
                 Matrix matrix2 = Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0.4f * size, (-1f + 2f * num) * size) * matrix;
                 int value2 = Terrain.MakeBlockValue(192, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
                 BlocksManager.Blocks[192].DrawBlock(primitivesRenderer, value2, color, size, ref matrix2, environmentData);

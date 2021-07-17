@@ -20,16 +20,16 @@ namespace Engine.Content
 
 		public static BitmapFont ReadBitmapFont(Stream stream)
 		{
-			BitmapFont bitmapFont = new BitmapFont();
+			var bitmapFont = new BitmapFont();
 			InitializeBitmapFont(stream, bitmapFont);
 			return bitmapFont;
 		}
 
 		internal static void InitializeBitmapFont(Stream stream, BitmapFont bitmapFont)
 		{
-			EngineBinaryReader engineBinaryReader = new EngineBinaryReader(stream);
+			var engineBinaryReader = new EngineBinaryReader(stream);
 			int num = engineBinaryReader.ReadInt32();
-			BitmapFont.Glyph[] array = new BitmapFont.Glyph[num];
+			var array = new BitmapFont.Glyph[num];
 			for (int i = 0; i < num; i++)
 			{
 				char code = engineBinaryReader.ReadChar();

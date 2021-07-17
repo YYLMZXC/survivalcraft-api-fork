@@ -32,11 +32,11 @@ namespace Game
             {
                 for (int j = 0; j < 16; j++)
                 {
-                    float f = MathUtils.Saturate((float)i / 8f);
-                    float f2 = MathUtils.Saturate((float)(j - 4) / 10f);
-                    Color c = Color.Lerp(th11, th21, f);
-                    Color c2 = Color.Lerp(th12, th22, f);
-                    Color color = Color.Lerp(c, c2, f2);
+                    float f = MathUtils.Saturate(i / 8f);
+                    float f2 = MathUtils.Saturate((j - 4) / 10f);
+                    var c = Color.Lerp(th11, th21, f);
+                    var c2 = Color.Lerp(th12, th22, f);
+                    var color = Color.Lerp(c, c2, f2);
                     int num = i + j * 16;
                     m_map[num] = color;
                 }

@@ -120,7 +120,7 @@ namespace Game
 
         public void SetSignData(Point3 point, string[] lines, Color[] colors, string url)
         {
-            TextData textData = new TextData();
+            var textData = new TextData();
             textData.Point = point;
             for (int i = 0; i < 4; i++)
             {
@@ -134,7 +134,7 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int cellValueFast = base.SubsystemTerrain.Terrain.GetCellValueFast(x, y, z);
+            int cellValueFast = SubsystemTerrain.Terrain.GetCellValueFast(x, y, z);
             int num = Terrain.ExtractContents(cellValueFast);
             int data = Terrain.ExtractData(cellValueFast);
             Block block = BlocksManager.Blocks[num];
@@ -144,20 +144,20 @@ namespace Game
                 int x2 = x - point.X;
                 int y2 = y - point.Y;
                 int z2 = z - point.Z;
-                int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x2, y2, z2);
+                int cellValue = SubsystemTerrain.Terrain.GetCellValue(x2, y2, z2);
                 int cellContents = Terrain.ExtractContents(cellValue);
                 if (!BlocksManager.Blocks[cellContents].IsCollidable_(cellValue))
                 {
-                    base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                    SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                 }
             }
             else if (block is PostedSignBlock)
             {
-                int num2 = PostedSignBlock.GetHanging(data) ? base.SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z) : base.SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+                int num2 = PostedSignBlock.GetHanging(data) ? SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z) : SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
 
                 if (!BlocksManager.Blocks[Terrain.ExtractContents(num2)].IsCollidable_(num2))
                 {
-                    base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                    SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                 }
             }
         }
@@ -165,7 +165,7 @@ namespace Game
         public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner)
         {
             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
-            Point3 point = new Point3(raycastResult.CellFace.X, raycastResult.CellFace.Y, raycastResult.CellFace.Z);
+            var point = new Point3(raycastResult.CellFace.X, raycastResult.CellFace.Y, raycastResult.CellFace.Z);
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Adventure)
             {
                 SignData signData = GetSignData(point);
@@ -183,7 +183,7 @@ namespace Game
 
         public override void OnBlockRemoved(int value, int newValue, int x, int y, int z)
         {
-            Point3 key = new Point3(x, y, z);
+            var key = new Point3(x, y, z);
             m_textsByPoint.Remove(key);
             m_lastUpdatePositions.Clear();
         }
@@ -201,9 +201,9 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemViews = base.Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemViews = Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
             foreach (ValuesDictionary value11 in valuesDictionary.GetValue<ValuesDictionary>("Texts").Values)
             {
                 Point3 value = value11.GetValue<Point3>("Point");
@@ -237,11 +237,11 @@ namespace Game
         {
             base.Save(valuesDictionary);
             int num = 0;
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Texts", valuesDictionary2);
             foreach (TextData value in m_textsByPoint.Values)
             {
-                ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+                var valuesDictionary3 = new ValuesDictionary();
                 valuesDictionary3.SetValue("Point", value.Point);
                 if (!string.IsNullOrEmpty(value.Lines[0]))
                 {
@@ -319,8 +319,8 @@ namespace Game
             {
                 return;
             }
-            List<string> list = new List<string>();
-            List<Color> list2 = new List<Color>();
+            var list = new List<string>();
+            var list2 = new List<Color>();
             for (int i = 0; i < textData.Lines.Length; i++)
             {
                 if (!string.IsNullOrEmpty(textData.Lines[i]))
@@ -451,7 +451,7 @@ namespace Game
                     {
                         int cellValue = m_subsystemTerrain.Terrain.GetCellValue(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
                         int num = Terrain.ExtractContents(cellValue);
-                        SignBlock signBlock = BlocksManager.Blocks[num] as SignBlock;
+                        var signBlock = BlocksManager.Blocks[num] as SignBlock;
                         if (signBlock != null)
                         {
                             int data = Terrain.ExtractData(cellValue);
@@ -464,9 +464,9 @@ namespace Game
                                     nearText.Light = Terrain.ExtractLight(cellValue);
                                 }
                                 float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
-                                Color color = new Color(num2, num2, num2);
+                                var color = new Color(num2, num2, num2);
                                 Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
-                                Vector3 vector = new Vector3(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
+                                var vector = new Vector3(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
                                 float num3 = Vector3.Dot(camera.ViewPosition - (vector + new Vector3(0.5f)), signSurfaceNormal);
                                 Vector3 v = MathUtils.Max(0.01f * num3, 0.005f) * signSurfaceNormal;
                                 for (int i = 0; i < signSurfaceBlockMesh.Indices.Count / 3; i++)

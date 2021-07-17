@@ -29,7 +29,7 @@ namespace Game
             for (int i = 0; i < 6; i++)
             {
                 int num = SetMountingFace(0, i);
-                Matrix m2 = (i >= 4) ? ((i != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY((float)i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f));
+                Matrix m2 = (i >= 4) ? ((i != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f));
                 m_blockMeshesByData[num] = new BlockMesh();
                 m_blockMeshesByData[num].AppendModelMeshPart(modelMesh.MeshParts[0], boneAbsoluteTransform * m2, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                 m_blockMeshesByData[num].AppendModelMeshPart(modelMesh2.MeshParts[0], boneAbsoluteTransform2 * m2, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, new Color(48, 48, 48));
@@ -42,7 +42,7 @@ namespace Game
 
         public override IEnumerable<CraftingRecipe> GetProceduralCraftingRecipes()
         {
-            CraftingRecipe craftingRecipe = new CraftingRecipe
+            var craftingRecipe = new CraftingRecipe
             {
                 ResultCount = 4,
                 ResultValue = Terrain.MakeBlockValue(254, 0, 0),
@@ -71,7 +71,7 @@ namespace Game
         {
             int data = SetMountingFace(Terrain.ExtractData(value), raycastResult.CellFace.Face);
             int value2 = Terrain.ReplaceData(value, data);
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = value2;
             result.CellFace = raycastResult.CellFace;
             return result;

@@ -13,12 +13,12 @@ namespace Game
             BlockPlacementData result;
             if (BlocksManager.Blocks[num] is WaterBlock)
             {
-                result = default(BlockPlacementData);
+                result = default;
                 result.CellFace = raycastResult.CellFace;
                 result.Value = Terrain.MakeBlockValue(BlockIndex, 0, data);
                 return result;
             }
-            result = default(BlockPlacementData);
+            result = default;
             return result;
         }
     }

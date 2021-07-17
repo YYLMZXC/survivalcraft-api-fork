@@ -36,7 +36,7 @@ namespace Game
             int num = 0;
             foreach (T item in collection)
             {
-                if (object.Equals(item, value))
+                if (Equals(item, value))
                 {
                     return num;
                 }

@@ -28,8 +28,8 @@ namespace Game
                 }
                 else
                 {
-                    float scale = MathUtils.Lerp(1.5f, 4f, (float)i / 15f);
-                    float radians = (float)i * (float)Math.PI / 2f;
+                    float scale = MathUtils.Lerp(1.5f, 4f, i / 15f);
+                    float radians = i * (float)Math.PI / 2f;
                     m_meshesByData[i].AppendModelMeshPart(model.FindMesh("Wood").MeshParts[0], boneAbsoluteTransform * Matrix.CreateScale(scale) * Matrix.CreateRotationY(radians) * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                     m_meshesByData[i].AppendModelMeshPart(model.FindMesh("Ashes").MeshParts[0], boneAbsoluteTransform2 * Matrix.CreateScale(scale) * Matrix.CreateRotationY(radians) * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                 }
@@ -74,7 +74,7 @@ namespace Game
 
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
         {
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.CellFace = raycastResult.CellFace;
             result.Value = Terrain.MakeBlockValue(209, 0, 3);
             return result;

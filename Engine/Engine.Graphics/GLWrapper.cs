@@ -700,8 +700,8 @@ namespace Engine.Graphics
 						GL.Uniform1(shaderParameter.Location, num);
 					}
 					ShaderParameter obj = shader.m_parameters[num2 + 1];
-					Texture2D texture2D = (Texture2D)shaderParameter.Resource;
-					SamplerState samplerState = (SamplerState)obj.Resource;
+					var texture2D = (Texture2D)shaderParameter.Resource;
+					var samplerState = (SamplerState)obj.Resource;
 					if (texture2D != null)
 					{
 						if (samplerState == null)

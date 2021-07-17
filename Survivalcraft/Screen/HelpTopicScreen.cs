@@ -21,7 +21,7 @@ namespace Game
 
         public override void Enter(object[] parameters)
         {
-            HelpTopic helpTopic = (HelpTopic)parameters[0];
+            var helpTopic = (HelpTopic)parameters[0];
             m_titleLabel.Text = helpTopic.Title;
             m_textLabel.Text = helpTopic.Text;
             m_scrollPanel.ScrollPosition = 0f;
@@ -29,7 +29,7 @@ namespace Game
 
         public override void Update()
         {
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
             }

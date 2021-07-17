@@ -47,7 +47,7 @@ namespace Game
 
         public FurnitureDesignWidget()
         {
-            base.ClampToBounds = true;
+            ClampToBounds = true;
             Size = new Vector2(float.PositiveInfinity);
             Mode = ViewMode.Perspective;
             m_direction = Vector3.Normalize(new Vector3(1f, -0.5f, -1f));
@@ -64,17 +64,17 @@ namespace Game
             if (Mode == ViewMode.Perspective)
             {
                 Viewport viewport = Display.Viewport;
-                Vector3 vector = new Vector3(0.5f, 0.5f, 0.5f);
-                Matrix m = Matrix.CreateLookAt(2.65f * m_direction + vector, vector, Vector3.UnitY);
-                Matrix m2 = Matrix.CreatePerspectiveFieldOfView(1.2f, base.ActualSize.X / base.ActualSize.Y, 0.4f, 4f);
-                Matrix m3 = MatrixUtils.CreateScaleTranslation(base.ActualSize.X, 0f - base.ActualSize.Y, base.ActualSize.X / 2f, base.ActualSize.Y / 2f) * base.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / (float)viewport.Width, -2f / (float)viewport.Height, -1f, 1f);
+                var vector = new Vector3(0.5f, 0.5f, 0.5f);
+                var m = Matrix.CreateLookAt(2.65f * m_direction + vector, vector, Vector3.UnitY);
+                var m2 = Matrix.CreatePerspectiveFieldOfView(1.2f, ActualSize.X / ActualSize.Y, 0.4f, 4f);
+                Matrix m3 = MatrixUtils.CreateScaleTranslation(ActualSize.X, 0f - ActualSize.Y, ActualSize.X / 2f, ActualSize.Y / 2f) * GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / viewport.Width, -2f / viewport.Height, -1f, 1f);
                 matrix = m * m2 * m3;
                 FlatBatch3D flatBatch3D = m_primitivesRenderer3d.FlatBatch(1, DepthStencilState.DepthRead);
                 for (int i = 0; i <= Design.Resolution; i++)
                 {
-                    float num = (float)i / (float)Design.Resolution;
+                    float num = i / (float)Design.Resolution;
                     Color color = (i % 2 == 0) ? new Color(56, 56, 56, 56) : new Color(28, 28, 28, 28);
-                    color *= base.GlobalColorTransform;
+                    color *= GlobalColorTransform;
                     flatBatch3D.QueueLine(new Vector3(num, 0f, 0f), new Vector3(num, 0f, 1f), color);
                     flatBatch3D.QueueLine(new Vector3(0f, 0f, num), new Vector3(1f, 0f, num), color);
                     flatBatch3D.QueueLine(new Vector3(0f, num, 0f), new Vector3(0f, num, 1f), color);
@@ -82,7 +82,7 @@ namespace Game
                     flatBatch3D.QueueLine(new Vector3(0f, num, 1f), new Vector3(1f, num, 1f), color);
                     flatBatch3D.QueueLine(new Vector3(num, 0f, 1f), new Vector3(num, 1f, 1f), color);
                 }
-                Color color2 = new Color(64, 64, 64, 255) * base.GlobalColorTransform;
+                Color color2 = new Color(64, 64, 64, 255) * GlobalColorTransform;
                 FontBatch3D fontBatch3D = m_primitivesRenderer3d.FontBatch(ContentManager.Get<BitmapFont>("Fonts/Pericles"), 1);
                 fontBatch3D.QueueText("Front", new Vector3(0.5f, 0f, 0f), 0.004f * new Vector3(-1f, 0f, 0f), 0.004f * new Vector3(0f, 0f, -1f), color2, TextAnchor.HorizontalCenter);
                 fontBatch3D.QueueText("Side", new Vector3(1f, 0f, 0.5f), 0.004f * new Vector3(0f, 0f, -1f), 0.004f * new Vector3(1f, 0f, 0f), color2, TextAnchor.HorizontalCenter);
@@ -111,28 +111,28 @@ namespace Game
                     up = new Vector3(0f, 0f, 1f);
                 }
                 Viewport viewport2 = Display.Viewport;
-                float num2 = MathUtils.Min(base.ActualSize.X, base.ActualSize.Y);
-                Matrix m4 = Matrix.CreateLookAt(position, new Vector3(0f, 0f, 0f), up);
-                Matrix m5 = Matrix.CreateOrthographic(2f, 2f, -10f, 10f);
-                Matrix m6 = MatrixUtils.CreateScaleTranslation(num2, 0f - num2, base.ActualSize.X / 2f, base.ActualSize.Y / 2f) * base.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / (float)viewport2.Width, -2f / (float)viewport2.Height, -1f, 1f);
+                float num2 = MathUtils.Min(ActualSize.X, ActualSize.Y);
+                var m4 = Matrix.CreateLookAt(position, new Vector3(0f, 0f, 0f), up);
+                var m5 = Matrix.CreateOrthographic(2f, 2f, -10f, 10f);
+                Matrix m6 = MatrixUtils.CreateScaleTranslation(num2, 0f - num2, ActualSize.X / 2f, ActualSize.Y / 2f) * GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / viewport2.Width, -2f / viewport2.Height, -1f, 1f);
                 matrix = Matrix.CreateTranslation(-0.5f, -0.5f, -0.5f) * m4 * m5 * m6;
                 FlatBatch2D flatBatch2D = m_primitivesRenderer2d.FlatBatch();
-                Matrix m7 = base.GlobalTransform;
+                Matrix m7 = GlobalTransform;
                 for (int j = 1; j < Design.Resolution; j++)
                 {
-                    float num3 = (float)j / (float)Design.Resolution;
-                    Vector2 v = new Vector2(base.ActualSize.X * num3, 0f);
-                    Vector2 v2 = new Vector2(base.ActualSize.X * num3, base.ActualSize.Y);
-                    Vector2 v3 = new Vector2(0f, base.ActualSize.Y * num3);
-                    Vector2 v4 = new Vector2(base.ActualSize.X, base.ActualSize.Y * num3);
+                    float num3 = j / (float)Design.Resolution;
+                    var v = new Vector2(ActualSize.X * num3, 0f);
+                    var v2 = new Vector2(ActualSize.X * num3, ActualSize.Y);
+                    var v3 = new Vector2(0f, ActualSize.Y * num3);
+                    var v4 = new Vector2(ActualSize.X, ActualSize.Y * num3);
                     Vector2.Transform(ref v, ref m7, out v);
                     Vector2.Transform(ref v2, ref m7, out v2);
                     Vector2.Transform(ref v3, ref m7, out v3);
                     Vector2.Transform(ref v4, ref m7, out v4);
                     Color color3 = (j % 2 == 0) ? new Color(0, 0, 0, 56) : new Color(0, 0, 0, 28);
                     Color color4 = (j % 2 == 0) ? new Color(56, 56, 56, 56) : new Color(28, 28, 28, 28);
-                    color3 *= base.GlobalColorTransform;
-                    color4 *= base.GlobalColorTransform;
+                    color3 *= GlobalColorTransform;
+                    color4 *= GlobalColorTransform;
                     flatBatch2D.QueueLine(v, v2, 0f, (j % 2 == 0) ? color3 : (color3 * 0.75f));
                     flatBatch2D.QueueLine(v + new Vector2(1f, 0f), v2 + new Vector2(1f, 0f), 0f, color4);
                     flatBatch2D.QueueLine(v3, v4, 0f, color3);
@@ -143,7 +143,7 @@ namespace Game
             FurnitureGeometry geometry = Design.Geometry;
             for (int k = 0; k < 6; k++)
             {
-                Color globalColorTransform = base.GlobalColorTransform;
+                Color globalColorTransform = GlobalColorTransform;
                 if (Mode == ViewMode.Perspective)
                 {
                     float num4 = LightingManager.LightIntensityByLightValueAndFace[15 + 16 * CellFace.OppositeFace(k)];
@@ -168,16 +168,16 @@ namespace Game
             {
                 return;
             }
-            if (base.Input.Tap.HasValue && HitTestGlobal(base.Input.Tap.Value) == this)
+            if (Input.Tap.HasValue && HitTestGlobal(Input.Tap.Value) == this)
             {
-                m_dragStartPoint = base.Input.Tap;
+                m_dragStartPoint = Input.Tap;
             }
-            if (base.Input.Press.HasValue)
+            if (Input.Press.HasValue)
             {
                 if (m_dragStartPoint.HasValue)
                 {
-                    Vector2 vector = ScreenToWidget(base.Input.Press.Value) - ScreenToWidget(m_dragStartPoint.Value);
-                    Vector2 vector2 = default(Vector2);
+                    Vector2 vector = ScreenToWidget(Input.Press.Value) - ScreenToWidget(m_dragStartPoint.Value);
+                    Vector2 vector2 = default;
                     vector2.Y = -0.01f * vector.X;
                     vector2.X = 0.01f * vector.Y;
                     if (Time.FrameDuration > 0f)
@@ -185,7 +185,7 @@ namespace Game
                         m_rotationSpeed = vector2 / Time.FrameDuration;
                     }
                     Rotate(vector2);
-                    m_dragStartPoint = base.Input.Press;
+                    m_dragStartPoint = Input.Press;
                 }
             }
             else
@@ -198,14 +198,14 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = (Design != null);
-            base.DesiredSize = Size;
+            IsDrawRequired = (Design != null);
+            DesiredSize = Size;
         }
 
         public void Rotate(Vector2 angles)
         {
             float num = MathUtils.DegToRad(1f);
-            Vector3 axis = Vector3.Normalize(Vector3.Cross(m_direction, Vector3.UnitY));
+            var axis = Vector3.Normalize(Vector3.Cross(m_direction, Vector3.UnitY));
             m_direction = Vector3.TransformNormal(m_direction, Matrix.CreateRotationY(angles.Y));
             float num2 = MathUtils.Acos(Vector3.Dot(m_direction, Vector3.UnitY));
             float num3 = MathUtils.Acos(Vector3.Dot(m_direction, -Vector3.UnitY));

@@ -60,14 +60,14 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemPickables = base.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_foodFactors = new float[EnumUtils.GetEnumValues(typeof(FoodType)).Max() + 1];
             foreach (KeyValuePair<string, object> item in valuesDictionary.GetValue<ValuesDictionary>("FoodFactors"))
             {
-                FoodType foodType = (FoodType)Enum.Parse(typeof(FoodType), item.Key, ignoreCase: false);
+                var foodType = (FoodType)Enum.Parse(typeof(FoodType), item.Key, ignoreCase: false);
                 m_foodFactors[(int)foodType] = (float)item.Value;
             }
             m_subsystemPickables.PickableAdded += delegate (Pickable pickable)
@@ -97,7 +97,7 @@ namespace Game
                     {
                         if (m_subsystemTime.GameTime > m_nextFindPickableTime)
                         {
-                            m_nextFindPickableTime = m_subsystemTime.GameTime + (double)m_random.Float(2f, 4f);
+                            m_nextFindPickableTime = m_subsystemTime.GameTime + m_random.Float(2f, 4f);
                             m_pickable = FindPickable(m_componentCreature.ComponentBody.Position);
                         }
                     }
@@ -167,7 +167,7 @@ namespace Game
                 {
                     m_componentCreature.ComponentCreatureModel.LookAtOrder = m_pickable.Position;
                 }
-                if (m_subsystemTime.PeriodicGameTimeEvent(0.25, (double)(GetHashCode() % 100) * 0.01))
+                if (m_subsystemTime.PeriodicGameTimeEvent(0.25, GetHashCode() % 100 * 0.01))
                 {
                     m_stateMachine.TransitionTo("Move");
                 }
@@ -249,7 +249,7 @@ namespace Game
         {
             if (m_subsystemTime.GameTime > m_nextPickablesUpdateTime)
             {
-                m_nextPickablesUpdateTime = m_subsystemTime.GameTime + (double)m_random.Float(2f, 4f);
+                m_nextPickablesUpdateTime = m_subsystemTime.GameTime + m_random.Float(2f, 4f);
                 m_pickables.Clear();
                 foreach (Pickable pickable in m_subsystemPickables.Pickables)
                 {

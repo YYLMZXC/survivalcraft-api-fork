@@ -6,7 +6,7 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
             UpdateVariant(cellValue, x, y, z);
         }
 
@@ -18,13 +18,13 @@ namespace Game
         public void UpdateVariant(int value, int x, int y, int z)
         {
             int num = Terrain.ExtractContents(value);
-            FenceBlock fenceBlock = BlocksManager.Blocks[num] as FenceBlock;
+            var fenceBlock = BlocksManager.Blocks[num] as FenceBlock;
             if (fenceBlock != null)
             {
-                int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x + 1, y, z);
-                int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(x - 1, y, z);
-                int cellValue3 = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z + 1);
-                int cellValue4 = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z - 1);
+                int cellValue = SubsystemTerrain.Terrain.GetCellValue(x + 1, y, z);
+                int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x - 1, y, z);
+                int cellValue3 = SubsystemTerrain.Terrain.GetCellValue(x, y, z + 1);
+                int cellValue4 = SubsystemTerrain.Terrain.GetCellValue(x, y, z - 1);
                 int num2 = 0;
                 if (fenceBlock.ShouldConnectTo(cellValue))
                 {
@@ -44,7 +44,7 @@ namespace Game
                 }
                 int data = Terrain.ExtractData(value);
                 int value2 = Terrain.ReplaceData(value, FenceBlock.SetVariant(data, num2));
-                base.SubsystemTerrain.ChangeCell(x, y, z, value2);
+                SubsystemTerrain.ChangeCell(x, y, z, value2);
             }
         }
     }

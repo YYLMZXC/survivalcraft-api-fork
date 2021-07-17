@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-	public struct Color : IEquatable<Color>
+    public struct Color : IEquatable<Color>
 	{
 		public uint PackedValue;
 
@@ -309,36 +309,36 @@ namespace Engine
 			float z;
 			switch (num)
 			{
-			case 0:
-				x = hsv.Z;
-				y = num5;
-				z = num3;
-				break;
-			case 1:
-				x = num4;
-				y = hsv.Z;
-				z = num3;
-				break;
-			case 2:
-				x = num3;
-				y = hsv.Z;
-				z = num5;
-				break;
-			case 3:
-				x = num3;
-				y = num4;
-				z = hsv.Z;
-				break;
-			case 4:
-				x = num5;
-				y = num3;
-				z = hsv.Z;
-				break;
-			default:
-				x = hsv.Z;
-				y = num3;
-				z = num4;
-				break;
+				case 0:
+					x = hsv.Z;
+					y = num5;
+					z = num3;
+					break;
+				case 1:
+					x = num4;
+					y = hsv.Z;
+					z = num3;
+					break;
+				case 2:
+					x = num3;
+					y = hsv.Z;
+					z = num5;
+					break;
+				case 3:
+					x = num3;
+					y = num4;
+					z = hsv.Z;
+					break;
+				case 4:
+					x = num5;
+					y = num3;
+					z = hsv.Z;
+					break;
+				default:
+					x = hsv.Z;
+					y = num3;
+					z = num4;
+					break;
 			}
 			return new Vector3(x, y, z);
 		}

@@ -63,7 +63,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkCHRM pngChunkCHRM = (PngChunkCHRM)other;
+			var pngChunkCHRM = (PngChunkCHRM)other;
 			whitex = pngChunkCHRM.whitex;
 			whitey = pngChunkCHRM.whitex;
 			redx = pngChunkCHRM.redx;

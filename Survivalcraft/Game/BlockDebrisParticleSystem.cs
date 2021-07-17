@@ -19,7 +19,7 @@ namespace Game
             : base((int)(50f * strength))
         {
             m_subsystemTerrain = terrain;
-            base.Texture = terrain.Project.FindSubsystem<SubsystemBlocksTexture>(throwOnError: true).BlocksTexture;
+            Texture = terrain.Project.FindSubsystem<SubsystemBlocksTexture>(throwOnError: true).BlocksTexture;
             int num = Terrain.ToCell(position.X);
             int num2 = Terrain.ToCell(position.Y);
             int num3 = Terrain.ToCell(position.Z);
@@ -30,16 +30,16 @@ namespace Game
             x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2 - 1, num3));
             x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 + 1));
             x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 - 1));
-            base.TextureSlotsCount = 32;
+            TextureSlotsCount = 32;
             float num4 = LightingManager.LightIntensityByLightValue[x];
             color *= num4;
             color.A = 255;
             float num5 = MathUtils.Sqrt(strength);
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle obj = base.Particles[i];
+                Particle obj = Particles[i];
                 obj.IsActive = true;
-                Vector3 vector = new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
+                var vector = new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
                 obj.Position = position + strength * 0.45f * vector;
                 obj.Color = Color.MultiplyColorOnly(color, m_random.Float(0.7f, 1f));
                 obj.Size = num5 * scale * new Vector2(m_random.Float(0.05f, 0.06f));
@@ -54,9 +54,9 @@ namespace Game
             dt = MathUtils.Clamp(dt, 0f, 0.1f);
             float num = MathUtils.Pow(0.1f, dt);
             bool flag = false;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (!particle.IsActive)
                 {
                     continue;

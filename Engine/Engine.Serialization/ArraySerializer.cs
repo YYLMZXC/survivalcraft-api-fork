@@ -7,7 +7,7 @@ namespace Engine.Serialization
 	{
 		public void Serialize(InputArchive archive, ref Array value)
 		{
-			List<T> list = new List<T>();
+			var list = new List<T>();
 			archive.SerializeCollection(null, list);
 			value = list.ToArray();
 		}

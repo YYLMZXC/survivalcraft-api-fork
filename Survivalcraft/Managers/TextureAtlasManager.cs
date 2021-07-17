@@ -59,9 +59,9 @@ namespace Game
                     int num3 = int.Parse(array2[2], CultureInfo.InvariantCulture);
                     int num4 = int.Parse(array2[3], CultureInfo.InvariantCulture);
                     int num5 = int.Parse(array2[4], CultureInfo.InvariantCulture);
-                    Vector2 topLeft = new Vector2((float)num2 / (float)texture.Width, (float)num3 / (float)texture.Height);
-                    Vector2 bottomRight = new Vector2((float)(num2 + num4) / (float)texture.Width, (float)(num3 + num5) / (float)texture.Height);
-                    Subtexture value = new Subtexture(texture, topLeft, bottomRight);
+                    var topLeft = new Vector2(num2 / (float)texture.Width, num3 / (float)texture.Height);
+                    var bottomRight = new Vector2((num2 + num4) / (float)texture.Width, (num3 + num5) / (float)texture.Height);
+                    var value = new Subtexture(texture, topLeft, bottomRight);
                     m_subtextures.Add(key, value);
                     num++;
                     continue;

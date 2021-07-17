@@ -42,7 +42,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            ComponentBody = base.Entity.FindComponent<ComponentBody>(throwOnError: true);
+            ComponentBody = Entity.FindComponent<ComponentBody>(throwOnError: true);
             MountOffset = valuesDictionary.GetValue<Vector3>("MountOffset");
             DismountOffset = valuesDictionary.GetValue<Vector3>("DismountOffset");
         }

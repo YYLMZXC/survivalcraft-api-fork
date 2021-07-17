@@ -60,8 +60,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemPlayers = base.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
-            SubsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
+            SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
             m_subsystemPlayers.PlayerAdded += delegate (PlayerData playerData)
             {
                 AddGameWidgetForPlayer(playerData);
@@ -101,7 +101,7 @@ namespace Game
             {
                 throw new InvalidOperationException("Too many GameWidgets.");
             }
-            GameWidget gameWidget = new GameWidget(playerData, playerData.PlayerIndex);
+            var gameWidget = new GameWidget(playerData, playerData.PlayerIndex);
             m_gameWidgets.Add(gameWidget);
             GamesWidget.Children.Add(gameWidget);
 

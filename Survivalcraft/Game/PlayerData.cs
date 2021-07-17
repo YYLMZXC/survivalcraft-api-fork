@@ -358,19 +358,12 @@ namespace Game
 
         public void RandomizeCharacterSkin()
         {
-            Random random = new Random();
+            var random = new Random();
             CharacterSkinsManager.UpdateCharacterSkinsList();
             string[] array = CharacterSkinsManager.CharacterSkinsNames.Where((string n) => CharacterSkinsManager.IsBuiltIn(n) && CharacterSkinsManager.GetPlayerClass(n) == m_playerClass).ToArray();
             string[] second = SubsystemPlayers.PlayersData.Select((PlayerData pd) => pd.CharacterSkinName).ToArray();
             string[] array2 = array.Except(second).ToArray();
-            if (array2.Length != 0)
-            {
-                CharacterSkinName = array2[random.Int(0, array2.Length - 1)];
-            }
-            else
-            {
-                CharacterSkinName = array[random.Int(0, array.Length - 1)];
-            }
+            CharacterSkinName = array2.Length != 0 ? array2[random.Int(0, array2.Length - 1)] : array[random.Int(0, array.Length - 1)];
         }
 
         public void ResetName()
@@ -523,10 +516,10 @@ namespace Game
                 }
             }
             Vector2 vector = ComponentIntro.FindOceanDirection(m_subsystemTerrain.TerrainContentsGenerator, new Vector2(x, z));
-            Vector3 vector2 = new Vector3(x, (float)num2 + 1.5f, z);
+            var vector2 = new Vector3(x, num2 + 1.5f, z);
             for (int k = -1; k <= 1; k++)
             {
-                Vector3 end = vector2 + new Vector3(30f * vector.X, 5f * (float)k, 30f * vector.Y);
+                Vector3 end = vector2 + new Vector3(30f * vector.X, 5f * k, 30f * vector.Y);
                 TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(vector2, end, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => Terrain.ExtractContents(value) != 0);
                 if (terrainRaycastResult.HasValue)
                 {
@@ -572,7 +565,7 @@ namespace Game
             }
             foreach (PlayerData playersDatum in SubsystemPlayers.PlayersData)
             {
-                if (playersDatum != this && Vector3.DistanceSquared(playersDatum.SpawnPosition, new Vector3(x, y, z)) < (float)MathUtils.Sqr(2))
+                if (playersDatum != this && Vector3.DistanceSquared(playersDatum.SpawnPosition, new Vector3(x, y, z)) < MathUtils.Sqr(2))
                 {
                     num -= 1f;
                 }
@@ -683,7 +676,7 @@ namespace Game
                     value4 = MakeClothingValue(26, 6) + ";" + MakeClothingValue(29, 0);
                 }
             }
-            ValuesDictionary overrides = new ValuesDictionary
+            var overrides = new ValuesDictionary
             {
                 {
                     "Player",

@@ -96,7 +96,7 @@ namespace NVorbis
 		{
 			if (baseStream == null)
 			{
-				throw new ArgumentNullException("baseStream");
+				throw new ArgumentNullException(nameof(baseStream));
 			}
 			if (!baseStream.CanRead)
 			{

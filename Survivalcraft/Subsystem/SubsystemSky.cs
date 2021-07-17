@@ -245,7 +245,7 @@ namespace Game
             {
                 return;
             }
-            DynamicArray<ComponentBody> dynamicArray = new DynamicArray<ComponentBody>();
+            var dynamicArray = new DynamicArray<ComponentBody>();
             m_subsystemBodies.FindBodiesAroundPoint(new Vector2(targetPosition.X, targetPosition.Z), 4f, dynamicArray);
             for (int i = 0; i < dynamicArray.Count; i++)
             {
@@ -264,7 +264,7 @@ namespace Game
             int num3 = Terrain.ToCell(targetPosition.Y);
             int z = Terrain.ToCell(targetPosition.Z);
             float pressure = (m_random.Float(0f, 1f) < 0.2f) ? 39 : 19;
-            base.Project.FindSubsystem<SubsystemExplosions>(throwOnError: true).AddExplosion(x, num3 + 1, z, pressure, isIncendiary: false, noExplosionSound: true);
+            Project.FindSubsystem<SubsystemExplosions>(throwOnError: true).AddExplosion(x, num3 + 1, z, pressure, isIncendiary: false, noExplosionSound: true);
         }
 
         public void Update(float dt)
@@ -283,8 +283,7 @@ namespace Game
                 int x = Terrain.ToCell(viewPosition.X);
                 int y = Terrain.ToCell(viewPosition.Y);
                 int z = Terrain.ToCell(viewPosition.Z);
-                FluidBlock surfaceFluidBlock;
-                float? surfaceHeight = m_subsystemFluidBlockBehavior.GetSurfaceHeight(x, y, z, out surfaceFluidBlock);
+                float? surfaceHeight = m_subsystemFluidBlockBehavior.GetSurfaceHeight(x, y, z, out FluidBlock surfaceFluidBlock);
                 if (surfaceHeight.HasValue)
                 {
                     if (surfaceFluidBlock is WaterBlock)
@@ -301,7 +300,7 @@ namespace Game
                     int seasonalHumidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
                     int temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
                     Color c = BlockColorsMap.WaterColorsMap.Lookup(temperature, seasonalHumidity);
-                    float num = MathUtils.Lerp(1f, 0.5f, (float)seasonalHumidity / 15f);
+                    float num = MathUtils.Lerp(1f, 0.5f, seasonalHumidity / 15f);
                     float num2 = MathUtils.Lerp(1f, 0.2f, MathUtils.Saturate(0.075f * (ViewUnderWaterDepth - 2f)));
                     float num3 = MathUtils.Lerp(0.33f, 1f, SkyLightIntensity);
                     m_viewFogRange.X = 0f;
@@ -364,14 +363,14 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTimeOfDay = base.Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemWeather = base.Project.FindSubsystem<SubsystemWeather>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_subsystemFluidBlockBehavior = base.Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
+            m_subsystemTimeOfDay = Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemWeather = Project.FindSubsystem<SubsystemWeather>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemFluidBlockBehavior = Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
             m_sunTexture = ContentManager.Get<Texture2D>("Textures/Sun");
             m_glowTexture = ContentManager.Get<Texture2D>("Textures/SkyGlow");
             m_cloudsTexture = ContentManager.Get<Texture2D>("Textures/Clouds");
@@ -478,7 +477,7 @@ namespace Game
             float angle = num + (float)Math.PI;
             float num2 = MathUtils.Lerp(90f, 160f, f);
             float num3 = MathUtils.Lerp(60f, 80f, f);
-            Color color = Color.Lerp(new Color(255, 255, 255), new Color(255, 255, 160), f);
+            var color = Color.Lerp(new Color(255, 255, 255), new Color(255, 255, 160), f);
             Color white = Color.White;
             white *= 1f - SkyLightIntensity;
             color *= MathUtils.Lerp(1f, 0f, globalPrecipitationIntensity);
@@ -503,9 +502,9 @@ namespace Game
             FlatBatch3D flatBatch3D = m_primitivesRenderer3d.FlatBatch(0, DepthStencilState.DepthRead, null, BlendState.Additive);
             Vector3 value = m_lightningStrikePosition.Value;
             Vector3 unitY = Vector3.UnitY;
-            Vector3 v = Vector3.Normalize(Vector3.Cross(camera.ViewDirection, unitY));
+            var v = Vector3.Normalize(Vector3.Cross(camera.ViewDirection, unitY));
             Viewport viewport = Display.Viewport;
-            float num = Vector4.Transform(new Vector4(value, 1f), camera.ViewProjectionMatrix).W * 2f / ((float)viewport.Width * camera.ProjectionMatrix.M11);
+            float num = Vector4.Transform(new Vector4(value, 1f), camera.ViewProjectionMatrix).W * 2f / (viewport.Width * camera.ProjectionMatrix.M11);
             for (int i = 0; i < (int)(m_lightningStrikeBrightness * 30f); i++)
             {
                 float s = m_random.NormalFloat(0f, 1f * num);
@@ -559,7 +558,7 @@ namespace Game
             m_cloudsLayerColors[3] = Color.Transparent;
             double gameTime = m_subsystemTime.GameTime;
             Vector3 viewPosition = camera.ViewPosition;
-            Vector2 v = new Vector2((float)MathUtils.Remainder(0.0020000000949949026 * gameTime - (double)(viewPosition.X / 1900f * 1.75f), 1.0) + viewPosition.X / 1900f * 1.75f, (float)MathUtils.Remainder(0.0020000000949949026 * gameTime - (double)(viewPosition.Z / 1900f * 1.75f), 1.0) + viewPosition.Z / 1900f * 1.75f);
+            var v = new Vector2((float)MathUtils.Remainder(0.0020000000949949026 * gameTime - viewPosition.X / 1900f * 1.75f, 1.0) + viewPosition.X / 1900f * 1.75f, (float)MathUtils.Remainder(0.0020000000949949026 * gameTime - viewPosition.Z / 1900f * 1.75f, 1.0) + viewPosition.Z / 1900f * 1.75f);
             TexturedBatch3D texturedBatch3D = m_primitivesRenderer3d.TexturedBatch(m_cloudsTexture, useAlphaTest: false, 2, DepthStencilState.DepthRead, null, BlendState.AlphaBlend, SamplerState.LinearWrap);
             DynamicArray<VertexPositionColorTexture> triangleVertices = texturedBatch3D.TriangleVertices;
             DynamicArray<ushort> triangleIndices = texturedBatch3D.TriangleIndices;
@@ -577,10 +576,10 @@ namespace Game
                     int num4 = MathUtils.Max(MathUtils.Abs(num2), MathUtils.Abs(num3));
                     float num5 = m_cloudsLayerRadii[num4];
                     float num6 = (num4 > 0) ? (num5 / MathUtils.Sqrt(num2 * num2 + num3 * num3)) : 0f;
-                    float num7 = (float)num2 * num6;
-                    float num8 = (float)num3 * num6;
+                    float num7 = num2 * num6;
+                    float num8 = num3 * num6;
                     float y = MathUtils.Lerp(600f, 60f, num5 * num5);
-                    Vector3 position = new Vector3(viewPosition.X + num7 * 1900f, y, viewPosition.Z + num8 * 1900f);
+                    var position = new Vector3(viewPosition.X + num7 * 1900f, y, viewPosition.Z + num8 * 1900f);
                     Vector2 texCoord = new Vector2(position.X, position.Z) / 1900f * 1.75f - v;
                     Color color = m_cloudsLayerColors[num4];
                     texturedBatch3D.TriangleVertices.Array[count2++] = new VertexPositionColorTexture(position, color, texCoord);
@@ -618,13 +617,13 @@ namespace Game
         {
             if (color.A > 0)
             {
-                Vector3 vector = default(Vector3);
+                Vector3 vector = default;
                 vector.X = 0f - MathUtils.Sin(angle);
                 vector.Y = 0f - MathUtils.Cos(angle);
                 vector.Z = 0f;
                 Vector3 vector2 = vector;
                 Vector3 unitZ = Vector3.UnitZ;
-                Vector3 v = Vector3.Cross(unitZ, vector2);
+                var v = Vector3.Cross(unitZ, vector2);
                 Vector3 p = viewPosition + vector2 * distance - radius * unitZ - radius * v;
                 Vector3 p2 = viewPosition + vector2 * distance + radius * unitZ - radius * v;
                 Vector3 p3 = viewPosition + vector2 * distance + radius * unitZ + radius * v;
@@ -637,14 +636,9 @@ namespace Game
         {
             VisibilityRange = SettingsManager.VisibilityRange;
             SkyLightIntensity = CalculateLightIntensity(m_subsystemTimeOfDay.TimeOfDay);
-            if (MoonPhase == 4)
-            {
-                SkyLightValue = m_lightValuesMoonless[(int)MathUtils.Round(MathUtils.Lerp(0f, 5f, SkyLightIntensity))];
-            }
-            else
-            {
-                SkyLightValue = m_lightValuesNormal[(int)MathUtils.Round(MathUtils.Lerp(0f, 5f, SkyLightIntensity))];
-            }
+            SkyLightValue = MoonPhase == 4
+                ? m_lightValuesMoonless[(int)MathUtils.Round(MathUtils.Lerp(0f, 5f, SkyLightIntensity))]
+                : m_lightValuesNormal[(int)MathUtils.Round(MathUtils.Lerp(0f, 5f, SkyLightIntensity))];
         }
 
         public float CalculateLightIntensity(float timeOfDay)
@@ -667,16 +661,16 @@ namespace Game
         public Color CalculateSkyColor(Vector3 direction, float timeOfDay, float precipitationIntensity, int temperature)
         {
             direction = Vector3.Normalize(direction);
-            Vector2 vector = Vector2.Normalize(new Vector2(direction.X, direction.Z));
+            var vector = Vector2.Normalize(new Vector2(direction.X, direction.Z));
             float s = CalculateLightIntensity(timeOfDay);
-            float f = (float)temperature / 15f;
+            float f = temperature / 15f;
             Vector3 v = new Vector3(0.65f, 0.68f, 0.7f) * s;
-            Vector3 v2 = Vector3.Lerp(new Vector3(0.28f, 0.38f, 0.52f), new Vector3(0.15f, 0.3f, 0.56f), f);
-            Vector3 v3 = Vector3.Lerp(new Vector3(0.7f, 0.79f, 0.88f), new Vector3(0.64f, 0.77f, 0.91f), f);
+            var v2 = Vector3.Lerp(new Vector3(0.28f, 0.38f, 0.52f), new Vector3(0.15f, 0.3f, 0.56f), f);
+            var v3 = Vector3.Lerp(new Vector3(0.7f, 0.79f, 0.88f), new Vector3(0.64f, 0.77f, 0.91f), f);
             Vector3 v4 = Vector3.Lerp(v2, v, precipitationIntensity) * s;
             Vector3 v5 = Vector3.Lerp(v3, v, precipitationIntensity) * s;
-            Vector3 v6 = new Vector3(1f, 0.3f, -0.2f);
-            Vector3 v7 = new Vector3(1f, 0.3f, -0.2f);
+            var v6 = new Vector3(1f, 0.3f, -0.2f);
+            var v7 = new Vector3(1f, 0.3f, -0.2f);
             if (m_lightningStrikePosition.HasValue)
             {
                 v4 = Vector3.Max(new Vector3(m_lightningStrikeBrightness), v4);
@@ -693,11 +687,11 @@ namespace Game
         {
             for (int i = 0; i < 8; i++)
             {
-                float x = (float)Math.PI / 2f * MathUtils.Sqr((float)i / 7f);
+                float x = (float)Math.PI / 2f * MathUtils.Sqr(i / 7f);
                 for (int j = 0; j < 10; j++)
                 {
                     int num = j + i * 10;
-                    float x2 = (float)Math.PI * 2f * (float)j / 10f;
+                    float x2 = (float)Math.PI * 2f * j / 10f;
                     float num2 = 1800f * MathUtils.Cos(x);
                     skyDome.Vertices[num].Position.X = num2 * MathUtils.Sin(x2);
                     skyDome.Vertices[num].Position.Z = num2 * MathUtils.Cos(x2);
@@ -738,8 +732,8 @@ namespace Game
 
         public void FillStarsBuffers()
         {
-            Random random = new Random(7);
-            StarVertex[] array = new StarVertex[600];
+            var random = new Random(7);
+            var array = new StarVertex[600];
             for (int i = 0; i < 150; i++)
             {
                 Vector3 v;
@@ -751,10 +745,10 @@ namespace Game
                 v = Vector3.Normalize(v);
                 float s = 9f * random.NormalFloat(1f, 0.1f);
                 float w = MathUtils.Saturate(random.NormalFloat(0.6f, 0.4f));
-                Color color = new Color(new Vector4(random.Float(0.6f, 1f), 0.7f, random.Float(0.8f, 1f), w));
+                var color = new Color(new Vector4(random.Float(0.6f, 1f), 0.7f, random.Float(0.8f, 1f), w));
                 Vector3 v2 = 900f * v;
-                Vector3 vector = Vector3.Normalize(Vector3.Cross((v.X > v.Y) ? Vector3.UnitY : Vector3.UnitX, v));
-                Vector3 v3 = Vector3.Normalize(Vector3.Cross(vector, v));
+                var vector = Vector3.Normalize(Vector3.Cross((v.X > v.Y) ? Vector3.UnitY : Vector3.UnitX, v));
+                var v3 = Vector3.Normalize(Vector3.Cross(vector, v));
                 Vector3 position = v2 + s * (-vector - v3);
                 Vector3 position2 = v2 + s * (vector - v3);
                 Vector3 position3 = v2 + s * (vector + v3);

@@ -44,11 +44,11 @@ namespace Game
 
         public override void Update()
         {
-            if (base.Input.Cancel)
+            if (Input.Cancel)
             {
                 Dismiss(null);
             }
-            else if (base.Input.Ok)
+            else if (Input.Ok)
             {
                 Dismiss(m_textBoxWidget.Text);
             }

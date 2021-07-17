@@ -36,7 +36,7 @@ namespace Game
                 m_inventoryGrid.ColumnsCount = m_inventory.VisibleSlotsCount;
                 for (int i = 0; i < m_inventoryGrid.ColumnsCount; i++)
                 {
-                    InventorySlotWidget inventorySlotWidget = new InventorySlotWidget();
+                    var inventorySlotWidget = new InventorySlotWidget();
                     inventorySlotWidget.AssignInventorySlot(m_inventory, i);
                     inventorySlotWidget.BevelColor = new Color(181, 172, 154) * 0.6f;
                     inventorySlotWidget.CenterColor = new Color(181, 172, 154) * 0.33f;

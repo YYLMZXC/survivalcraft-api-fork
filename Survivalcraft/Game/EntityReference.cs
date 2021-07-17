@@ -44,7 +44,7 @@ namespace Game
             }
         }
 
-        public static EntityReference Null => default(EntityReference);
+        public static EntityReference Null => default;
 
         public Entity GetEntity(Entity localEntity, IdToEntityMap idToEntityMap, bool throwIfNotFound)
         {
@@ -106,7 +106,7 @@ namespace Game
 
         public static EntityReference Local(Component component)
         {
-            EntityReference result = default(EntityReference);
+            EntityReference result = default;
             result.m_referenceType = ReferenceType.Local;
             result.m_componentReference = ((component != null) ? component.ValuesDictionary.DatabaseObject.Name : string.Empty);
             return result;
@@ -115,7 +115,7 @@ namespace Game
         public static EntityReference FromId(Component component, EntityToIdMap entityToIdMap)
         {
             int num = entityToIdMap.FindId(component?.Entity);
-            EntityReference result = default(EntityReference);
+            EntityReference result = default;
             result.m_referenceType = ReferenceType.ByEntityId;
             result.m_entityReference = num.ToString(CultureInfo.InvariantCulture);
             result.m_componentReference = ((component != null) ? component.ValuesDictionary.DatabaseObject.Name : string.Empty);
@@ -125,7 +125,7 @@ namespace Game
         public static EntityReference FromId(Entity entity, EntityToIdMap entityToIdMap)
         {
             int num = entityToIdMap.FindId(entity);
-            EntityReference result = default(EntityReference);
+            EntityReference result = default;
             result.m_referenceType = ReferenceType.ByEntityId;
             result.m_entityReference = num.ToString(CultureInfo.InvariantCulture);
             result.m_componentReference = string.Empty;
@@ -135,7 +135,7 @@ namespace Game
         public static EntityReference FromName(Component component)
         {
             string entityReference = (component != null) ? component.Entity.FindComponent<ComponentName>(null, throwOnError: true).Name : string.Empty;
-            EntityReference result = default(EntityReference);
+            EntityReference result = default;
             result.m_referenceType = ReferenceType.ByEntityName;
             result.m_entityReference = entityReference;
             result.m_componentReference = ((component != null) ? component.ValuesDictionary.DatabaseObject.Name : string.Empty);
@@ -145,7 +145,7 @@ namespace Game
         public static EntityReference FromName(Entity entity)
         {
             string entityReference = (entity != null) ? entity.FindComponent<ComponentName>(null, throwOnError: true).Name : string.Empty;
-            EntityReference result = default(EntityReference);
+            EntityReference result = default;
             result.m_referenceType = ReferenceType.ByEntityName;
             result.m_entityReference = entityReference;
             result.m_componentReference = string.Empty;
@@ -154,7 +154,7 @@ namespace Game
 
         public static EntityReference FromReferenceString(string referenceString)
         {
-            EntityReference result = default(EntityReference);
+            EntityReference result = default;
             if (string.IsNullOrEmpty(referenceString))
             {
                 result.m_referenceType = ReferenceType.Null;

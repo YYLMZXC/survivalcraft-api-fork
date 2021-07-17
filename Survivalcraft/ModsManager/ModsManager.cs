@@ -62,14 +62,14 @@ public static class ModsManager
     public static void StreamCompress(Stream input, MemoryStream data)
     {
         byte[] dat = data.ToArray();
-        using (GZipStream stream = new GZipStream(input, CompressionMode.Compress)) {
+        using (var stream = new GZipStream(input, CompressionMode.Compress)) {
             stream.Write(dat, 0, dat.Length);
         }
     }
     public static Stream StreamDecompress(Stream input)
     {
-        MemoryStream outStream = new MemoryStream();
-        using (GZipStream zipStream = new GZipStream(input, CompressionMode.Decompress))
+        var outStream = new MemoryStream();
+        using (var zipStream = new GZipStream(input, CompressionMode.Decompress))
         {
             zipStream.CopyTo(outStream);
             zipStream.Close();
@@ -80,8 +80,8 @@ public static class ModsManager
 
     public static T DeserializeJson<T>(string text) where T : class
     {
-        JsonObject obj = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(text, typeof(JsonObject));
-        T outobj = Activator.CreateInstance(typeof(T)) as T;
+        var obj = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(text, typeof(JsonObject));
+        var outobj = Activator.CreateInstance(typeof(T)) as T;
         Type outtype = outobj.GetType();
         foreach (var c in obj)
         {
@@ -89,7 +89,7 @@ public static class ModsManager
             if (field == null) continue;
             if (c.Value is JsonArray)
             {
-                JsonArray jsonArray = c.Value as JsonArray;
+                var jsonArray = c.Value as JsonArray;
                 Type[] types = field.FieldType.GetGenericArguments();
                 var list1 = Activator.CreateInstance(typeof(List<>).MakeGenericType(types));
                 foreach (var item in jsonArray)
@@ -178,16 +178,16 @@ public static class ModsManager
                 continue;
             }
             if (modEntity1.IsChecked) continue;
-            List<ModEntity> modEntities = ModsManager.ModList.FindAll(px => px.IsLoaded && !px.IsDisabled && px.modInfo.PackageName == modInfo.PackageName);
-            Version version = new Version();
+            List<ModEntity> modEntities = ModList.FindAll(px => px.IsLoaded && !px.IsDisabled && px.modInfo.PackageName == modInfo.PackageName);
+            var version = new Version();
             foreach (ModEntity modEntity in modEntities)
             {
                 if (version <= new Version(modEntity.modInfo.Version)) version = new Version(modEntity.modInfo.Version);
             }
-            List<ModEntity> entities = ModsManager.ModList.FindAll(px => px.modInfo.PackageName == modInfo.PackageName && new Version(px.modInfo.Version) != new Version(modInfo.Version) && new Version(px.modInfo.Version) == version);
+            List<ModEntity> entities = ModList.FindAll(px => px.modInfo.PackageName == modInfo.PackageName && new Version(px.modInfo.Version) != new Version(modInfo.Version) && new Version(px.modInfo.Version) == version);
             if (entities.Count>1)
             {
-                ModsManager.AddException(new InvalidOperationException($"检测到已安装多个[{modEntity1.modInfo.Name}]，已加载版本:{version}"));
+                AddException(new InvalidOperationException($"检测到已安装多个[{modEntity1.modInfo.Name}]，已加载版本:{version}"));
                 foreach (ModEntity modEntity in modEntities)
                 {
                     if (version != new Version(modEntity.modInfo.Version))
@@ -218,7 +218,7 @@ public static class ModsManager
             {
                 if (ms == ".scmod")
                 {
-                    ModEntity modEntity = new ModEntity(ZipArchive.Open(stream, true));
+                    var modEntity = new ModEntity(ZipArchive.Open(stream, true));
                     if (modEntity.modInfo == null) continue;
                     if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
                     ModList.Add(modEntity);
@@ -270,8 +270,8 @@ public static class ModsManager
         stream.Seek(0, SeekOrigin.Begin);
 
         // 把 byte[] 写入文件 
-        FileStream fs = new FileStream(fileName, FileMode.Create);
-        BinaryWriter bw = new BinaryWriter(fs);
+        var fs = new FileStream(fileName, FileMode.Create);
+        var bw = new BinaryWriter(fs);
         bw.Write(bytes);
         bw.Close();
         fs.Close();
@@ -282,7 +282,7 @@ public static class ModsManager
     public static Stream FileToStream(string fileName)
     {
         // 打开文件 
-        FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+        var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
         // 读取文件的 byte[] 
         byte[] bytes = new byte[fileStream.Length];
         fileStream.Read(bytes, 0, bytes.Length);
@@ -306,9 +306,9 @@ public static class ModsManager
     }
     public static string GetMd5(string input)
     {
-        MD5 md5Hasher = MD5.Create();
+        var md5Hasher = MD5.Create();
         byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
-        StringBuilder sBuilder = new StringBuilder();
+        var sBuilder = new StringBuilder();
         for (int i = 0; i < data.Length; i++)
         {
             sBuilder.Append(data[i].ToString("x2"));
@@ -360,7 +360,7 @@ public static class ModsManager
         return false;
     }
     public static void CombineClo(XElement xElement,Stream cloorcr) {
-        XElement MergeXml = XmlUtilities.XmlUtils.LoadXmlFromStream(cloorcr, Encoding.UTF8,true);
+        XElement MergeXml = XmlUtils.LoadXmlFromStream(cloorcr, Encoding.UTF8,true);
         foreach (XElement element in MergeXml.Elements()) {
             if (HasAttribute(element, (name) => { return name.StartsWith("new-"); }, out XAttribute attribute)) {
                 if (HasAttribute(element, (name) => { return name == "Index"; }, out XAttribute xAttribute)) {
@@ -459,7 +459,7 @@ public static class ModsManager
     }
     public static string ObjectsToStr<T>(T[] arr) {
         if (arr == null) return string.Empty;
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
         for (int i=0;i<arr.Length;i++) {
             stringBuilder.Append(arr[i]+" ");
         }
@@ -482,7 +482,7 @@ public static class ModsManager
     }
     public static void SaveToImage(string name,RenderTarget2D renderTarget2D)
     {
-        Image image = new Image(renderTarget2D.Width, renderTarget2D.Height);
+        var image = new Image(renderTarget2D.Width, renderTarget2D.Height);
         renderTarget2D.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));
         try
         {

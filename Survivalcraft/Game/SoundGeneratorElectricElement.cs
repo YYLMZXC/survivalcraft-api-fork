@@ -86,12 +86,12 @@ namespace Game
             int num2 = 15;
             int num3 = 2;
             int num4 = 0;
-            int rotation = base.Rotation;
-            foreach (ElectricConnection connection in base.Connections)
+            int rotation = Rotation;
+            foreach (ElectricConnection connection in Connections)
             {
                 if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0)
                 {
-                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(base.CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue)
                     {
                         if (connectorDirection.Value == ElectricConnectorDirection.In || connectorDirection.Value == ElectricConnectorDirection.Bottom)
@@ -113,9 +113,9 @@ namespace Game
                     }
                 }
             }
-            if (m_lastToneInput == 0 && num4 != 0 && num != 15 && base.SubsystemElectricity.SubsystemTime.GameTime >= m_playAllowedTime)
+            if (m_lastToneInput == 0 && num4 != 0 && num != 15 && SubsystemElectricity.SubsystemTime.GameTime >= m_playAllowedTime)
             {
-                m_playAllowedTime = base.SubsystemElectricity.SubsystemTime.GameTime + 0.079999998211860657;
+                m_playAllowedTime = SubsystemElectricity.SubsystemTime.GameTime + 0.079999998211860657;
                 string text = m_tones[num4];
                 float num5 = 0f;
                 string text2 = null;
@@ -144,20 +144,20 @@ namespace Game
                 }
                 if (num5 != 0f && !string.IsNullOrEmpty(text2))
                 {
-                    CellFace cellFace = base.CellFaces[0];
-                    Vector3 position = new Vector3(cellFace.X, cellFace.Y, cellFace.Z);
-                    float volume = (float)num2 / 15f;
+                    CellFace cellFace = CellFaces[0];
+                    var position = new Vector3(cellFace.X, cellFace.Y, cellFace.Z);
+                    float volume = num2 / 15f;
                     float pitch = MathUtils.Clamp(MathUtils.Log(num5) / MathUtils.Log(2f), -1f, 1f);
-                    float minDistance = 0.5f + 5f * (float)num2 / 15f;
-                    base.SubsystemElectricity.SubsystemAudio.PlaySound(text2, volume, pitch, position, minDistance, autoDelay: true);
+                    float minDistance = 0.5f + 5f * num2 / 15f;
+                    SubsystemElectricity.SubsystemAudio.PlaySound(text2, volume, pitch, position, minDistance, autoDelay: true);
                     float loudness = (num2 < 8) ? 0.25f : 0.5f;
-                    float range = MathUtils.Lerp(2f, 20f, (float)num2 / 15f);
+                    float range = MathUtils.Lerp(2f, 20f, num2 / 15f);
                     m_subsystemNoise.MakeNoise(position, loudness, range);
                     if (m_particleSystem.SubsystemParticles == null)
                     {
                         m_subsystemParticles.AddParticleSystem(m_particleSystem);
                     }
-                    Vector3 hsv = new Vector3(22.5f * (float)num + m_random.Float(0f, 22f), 0.5f + (float)num2 / 30f, 1f);
+                    var hsv = new Vector3(22.5f * num + m_random.Float(0f, 22f), 0.5f + num2 / 30f, 1f);
                     m_particleSystem.AddNote(new Color(Color.HsvToRgb(hsv)));
                 }
             }

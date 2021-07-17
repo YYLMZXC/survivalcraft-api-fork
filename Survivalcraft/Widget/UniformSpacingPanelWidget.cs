@@ -29,14 +29,14 @@ namespace Game
                 {
                     if (m_direction == LayoutDirection.Horizontal)
                     {
-                        float num = (m_count > 0) ? (base.ActualSize.X / (float)m_count) : 0f;
-                        ContainerWidget.ArrangeChildWidgetInCell(zero, new Vector2(zero.X + num, zero.Y + base.ActualSize.Y), child);
+                        float num = (m_count > 0) ? (ActualSize.X / m_count) : 0f;
+                        ArrangeChildWidgetInCell(zero, new Vector2(zero.X + num, zero.Y + ActualSize.Y), child);
                         zero.X += num;
                     }
                     else
                     {
-                        float num2 = (m_count > 0) ? (base.ActualSize.Y / (float)m_count) : 0f;
-                        ContainerWidget.ArrangeChildWidgetInCell(zero, new Vector2(zero.X + base.ActualSize.X, zero.Y + num2), child);
+                        float num2 = (m_count > 0) ? (ActualSize.Y / m_count) : 0f;
+                        ArrangeChildWidgetInCell(zero, new Vector2(zero.X + ActualSize.X, zero.Y + num2), child);
                         zero.Y += num2;
                     }
                 }
@@ -53,7 +53,7 @@ namespace Game
                     m_count++;
                 }
             }
-            parentAvailableSize = ((m_direction != 0) ? Vector2.Min(parentAvailableSize, new Vector2(parentAvailableSize.X, parentAvailableSize.Y / (float)m_count)) : Vector2.Min(parentAvailableSize, new Vector2(parentAvailableSize.X / (float)m_count, parentAvailableSize.Y)));
+            parentAvailableSize = ((m_direction != 0) ? Vector2.Min(parentAvailableSize, new Vector2(parentAvailableSize.X, parentAvailableSize.Y / m_count)) : Vector2.Min(parentAvailableSize, new Vector2(parentAvailableSize.X / m_count, parentAvailableSize.Y)));
             float num = 0f;
             foreach (Widget child2 in Children)
             {
@@ -63,14 +63,9 @@ namespace Game
                     num = ((m_direction != 0) ? MathUtils.Max(num, child2.ParentDesiredSize.X + 2f * child2.Margin.X) : MathUtils.Max(num, child2.ParentDesiredSize.Y + 2f * child2.Margin.Y));
                 }
             }
-            if (m_direction == LayoutDirection.Horizontal)
-            {
-                base.DesiredSize = new Vector2(float.PositiveInfinity, num);
-            }
-            else
-            {
-                base.DesiredSize = new Vector2(num, float.PositiveInfinity);
-            }
+            DesiredSize = m_direction == LayoutDirection.Horizontal
+                ? new Vector2(float.PositiveInfinity, num)
+                : new Vector2(num, float.PositiveInfinity);
         }
     }
 }

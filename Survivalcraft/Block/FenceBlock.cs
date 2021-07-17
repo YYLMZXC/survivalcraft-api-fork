@@ -50,9 +50,9 @@ namespace Game
                 bool flag = (i & 2) != 0;
                 bool flag2 = (i & 4) != 0;
                 bool flag3 = (i & 8) != 0;
-                List<BoundingBox> list = new List<BoundingBox>();
-                Matrix m = Matrix.CreateTranslation(0.5f, 0f, 0.5f);
-                BlockMesh blockMesh = new BlockMesh();
+                var list = new List<BoundingBox>();
+                var m = Matrix.CreateTranslation(0.5f, 0f, 0.5f);
+                var blockMesh = new BlockMesh();
                 blockMesh.AppendModelMeshPart(model.FindMesh("Post").MeshParts[0], boneAbsoluteTransform * m, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                 BoundingBox item = blockMesh.CalculateBoundingBox();
                 item.Min.X -= 0.1f;
@@ -60,10 +60,10 @@ namespace Game
                 item.Max.X += 0.1f;
                 item.Max.Z += 0.1f;
                 list.Add(item);
-                BlockMesh blockMesh2 = new BlockMesh();
+                var blockMesh2 = new BlockMesh();
                 if (num)
                 {
-                    BlockMesh blockMesh3 = new BlockMesh();
+                    var blockMesh3 = new BlockMesh();
                     Matrix m2 = Matrix.CreateRotationY(0f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                     blockMesh3.AppendModelMeshPart(model.FindMesh("Planks").MeshParts[0], boneAbsoluteTransform2 * m2, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                     if (m_doubleSidedPlanks)
@@ -76,7 +76,7 @@ namespace Game
                 }
                 if (flag)
                 {
-                    BlockMesh blockMesh4 = new BlockMesh();
+                    var blockMesh4 = new BlockMesh();
                     Matrix m3 = Matrix.CreateRotationY((float)Math.PI) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                     blockMesh4.AppendModelMeshPart(model.FindMesh("Planks").MeshParts[0], boneAbsoluteTransform2 * m3, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                     if (m_doubleSidedPlanks)
@@ -89,7 +89,7 @@ namespace Game
                 }
                 if (flag2)
                 {
-                    BlockMesh blockMesh5 = new BlockMesh();
+                    var blockMesh5 = new BlockMesh();
                     Matrix m4 = Matrix.CreateRotationY(4.712389f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                     blockMesh5.AppendModelMeshPart(model.FindMesh("Planks").MeshParts[0], boneAbsoluteTransform2 * m4, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                     if (m_doubleSidedPlanks)
@@ -102,7 +102,7 @@ namespace Game
                 }
                 if (flag3)
                 {
-                    BlockMesh blockMesh6 = new BlockMesh();
+                    var blockMesh6 = new BlockMesh();
                     Matrix m5 = Matrix.CreateRotationY((float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                     blockMesh6.AppendModelMeshPart(model.FindMesh("Planks").MeshParts[0], boneAbsoluteTransform2 * m5, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                     if (m_doubleSidedPlanks)
@@ -117,12 +117,12 @@ namespace Game
                 m_blockMeshes[i] = new BlockMesh();
                 m_blockMeshes[i].AppendBlockMesh(blockMesh);
                 m_blockMeshes[i].AppendBlockMesh(blockMesh2);
-                m_blockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
+                m_blockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
                 m_blockMeshes[i].GenerateSidesData();
                 m_coloredBlockMeshes[i] = new BlockMesh();
                 m_coloredBlockMeshes[i].AppendBlockMesh(blockMesh);
                 m_coloredBlockMeshes[i].AppendBlockMesh(blockMesh2);
-                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
                 m_coloredBlockMeshes[i].GenerateSidesData();
                 m_collisionBoxes[i] = list.ToArray();
             }
@@ -139,8 +139,8 @@ namespace Game
                 m_standaloneBlockMesh.AppendModelMeshPart(model.FindMesh("Planks").MeshParts[0], boneAbsoluteTransform2 * Matrix.CreateRotationY((float)Math.PI) * Matrix.CreateTranslation(0.5f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: true, doubleSided: false, flipNormals: true, Color.White);
             }
             m_standaloneColoredBlockMesh.AppendBlockMesh(m_standaloneBlockMesh);
-            m_standaloneBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
-            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+            m_standaloneBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
+            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
             base.Initialize();
         }
 

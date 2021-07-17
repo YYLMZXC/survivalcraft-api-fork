@@ -16,7 +16,7 @@ namespace Engine.Media
 		{
 			if (image == null)
 			{
-				throw new ArgumentNullException("image");
+				throw new ArgumentNullException(nameof(image));
 			}
 			Width = image.Width;
 			Height = image.Height;
@@ -27,11 +27,11 @@ namespace Engine.Media
 		{
 			if (width < 0)
 			{
-				throw new ArgumentOutOfRangeException("width");
+				throw new ArgumentOutOfRangeException(nameof(width));
 			}
 			if (height < 0)
 			{
-				throw new ArgumentOutOfRangeException("height");
+				throw new ArgumentOutOfRangeException(nameof(height));
 			}
 			Width = width;
 			Height = height;
@@ -42,11 +42,11 @@ namespace Engine.Media
 		{
 			if (x < 0 || x >= Width)
 			{
-				throw new ArgumentOutOfRangeException("x");
+				throw new ArgumentOutOfRangeException(nameof(x));
 			}
 			if (y < 0 || y >= Height)
 			{
-				throw new ArgumentOutOfRangeException("y");
+				throw new ArgumentOutOfRangeException(nameof(y));
 			}
 			return Pixels[x + y * Width];
 		}
@@ -55,11 +55,11 @@ namespace Engine.Media
 		{
 			if (x < 0 || x >= Width)
 			{
-				throw new ArgumentOutOfRangeException("x");
+				throw new ArgumentOutOfRangeException(nameof(x));
 			}
 			if (y < 0 || y >= Height)
 			{
-				throw new ArgumentOutOfRangeException("y");
+				throw new ArgumentOutOfRangeException(nameof(y));
 			}
 			Pixels[x + y * Width] = color;
 		}
@@ -76,11 +76,11 @@ namespace Engine.Media
 		{
 			if (image == null)
 			{
-				throw new ArgumentNullException("image");
+				throw new ArgumentNullException(nameof(image));
 			}
 			if (maxLevelsCount < 0)
 			{
-				throw new ArgumentOutOfRangeException("maxLevelsCount");
+				throw new ArgumentOutOfRangeException(nameof(maxLevelsCount));
 			}
 			if (maxLevelsCount == 0)
 			{
@@ -104,7 +104,7 @@ namespace Engine.Media
 				int num2 = mipHeight;
 				mipWidth = MathUtils.Max(num / 2, 1);
 				mipHeight = MathUtils.Max(num2 / 2, 1);
-				Image mipImage = new Image(mipWidth, mipHeight);
+				var mipImage = new Image(mipWidth, mipHeight);
 				int num3 = num / mipWidth;
 				int num4 = num2 / mipHeight;
 				if (num3 == 2 && num4 == 2)
@@ -249,7 +249,7 @@ namespace Engine.Media
 
 		public static Image Load(Stream stream)
 		{
-			PeekStream peekStream = new PeekStream(stream, 64);
+			var peekStream = new PeekStream(stream, 64);
 			ImageFileFormat format = DetermineFileFormat(peekStream.GetInitialBytesStream());
 			return Load(peekStream, format);
 		}

@@ -39,8 +39,8 @@ namespace Game
         public WhalePlumeParticleSystem(SubsystemTerrain terrain, float size, float duration)
             : base(100)
         {
-            base.Texture = ContentManager.Get<Texture2D>("Textures/WaterSplashParticle");
-            base.TextureSlotsCount = 2;
+            Texture = ContentManager.Get<Texture2D>("Textures/WaterSplashParticle");
+            TextureSlotsCount = 2;
             m_size = size;
             m_duration = duration;
         }
@@ -58,11 +58,11 @@ namespace Game
             }
             float num = MathUtils.Pow(0.001f, dt);
             float num2 = MathUtils.Lerp(4f, 10f, MathUtils.Saturate(2f * m_time / m_duration));
-            Vector3 v = new Vector3(0f, 1f, 2f);
+            var v = new Vector3(0f, 1f, 2f);
             bool flag = false;
-            for (int i = 0; i < base.Particles.Length; i++)
+            for (int i = 0; i < Particles.Length; i++)
             {
-                Particle particle = base.Particles[i];
+                Particle particle = Particles[i];
                 if (particle.IsActive)
                 {
                     flag = true;

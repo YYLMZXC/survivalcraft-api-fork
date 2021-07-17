@@ -44,9 +44,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_stateMachine.AddState("Inactive", null, delegate
             {
                 if (IsActive)
@@ -97,7 +97,7 @@ namespace Game
             {
                 Vector2 vector2 = m_random.Vector2(1f, 1f);
                 float y = 0.3f * m_random.Float(-0.9f, 1f);
-                Vector3 v = Vector3.Normalize(new Vector3(vector2.X, y, vector2.Y));
+                var v = Vector3.Normalize(new Vector3(vector2.X, y, vector2.Y));
                 Vector3 vector3 = vector + num2 * v;
                 TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(vector, vector3, useInteractionBoxes: false, skipAirBlocks: false, delegate (int value, float d)
                 {

@@ -23,10 +23,10 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
+            int cellContents = SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
             if (cellContents != 7 && cellContents != 127)
             {
-                base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
             }
         }
 
@@ -36,11 +36,11 @@ namespace Game
             {
                 return;
             }
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
             if (Terrain.ExtractContents(cellValue) == 0 && Terrain.ExtractLight(cellValue) >= 12)
             {
-                int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
-                int cellContents2 = base.SubsystemTerrain.Terrain.GetCellContents(x, y - 2, z);
+                int cellContents = SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
+                int cellContents2 = SubsystemTerrain.Terrain.GetCellContents(x, y - 2, z);
                 if ((cellContents != 127 || cellContents2 != 127) && m_random.Float(0f, 1f) < 0.25f)
                 {
                     m_toUpdate[new Point3(x, y + 1, z)] = Terrain.MakeBlockValue(127, 0, 0);
@@ -55,8 +55,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
             base.Load(valuesDictionary);
         }
 
@@ -66,9 +66,9 @@ namespace Game
             {
                 foreach (KeyValuePair<Point3, int> item in m_toUpdate)
                 {
-                    if (base.SubsystemTerrain.Terrain.GetCellContents(item.Key.X, item.Key.Y, item.Key.Z) == 0)
+                    if (SubsystemTerrain.Terrain.GetCellContents(item.Key.X, item.Key.Y, item.Key.Z) == 0)
                     {
-                        base.SubsystemTerrain.ChangeCell(item.Key.X, item.Key.Y, item.Key.Z, item.Value);
+                        SubsystemTerrain.ChangeCell(item.Key.X, item.Key.Y, item.Key.Z, item.Value);
                     }
                 }
                 m_toUpdate.Clear();

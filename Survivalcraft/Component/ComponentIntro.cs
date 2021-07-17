@@ -29,7 +29,7 @@ namespace Game
             Vector2 result = Vector2.Zero;
             for (int i = 0; i < 36; i++)
             {
-                Vector2 vector = Vector2.CreateFromAngle((float)i / 36f * 2f * (float)Math.PI);
+                var vector = Vector2.CreateFromAngle(i / 36f * 2f * (float)Math.PI);
                 Vector2 vector2 = position + 50f * vector;
                 float num2 = generator.CalculateOceanShoreDistance(vector2.X, vector2.Y);
                 if (num2 < num)
@@ -53,10 +53,10 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
             m_playIntro = valuesDictionary.GetValue<bool>("PlayIntro") && SettingsManager.AllowInitialIntro;
             m_stateMachine.AddState("ShipView", ShipView_Enter, ShipView_Update, null);
         }
@@ -86,14 +86,14 @@ namespace Game
                     }
                 }
             }
-            DatabaseObject databaseObject = base.Project.GameDatabase.Database.FindDatabaseObject("IntroShip", base.Project.GameDatabase.EntityTemplateType, throwIfNotFound: true);
-            ValuesDictionary valuesDictionary = new ValuesDictionary();
+            DatabaseObject databaseObject = Project.GameDatabase.Database.FindDatabaseObject("IntroShip", Project.GameDatabase.EntityTemplateType, throwIfNotFound: true);
+            var valuesDictionary = new ValuesDictionary();
             valuesDictionary.PopulateFromDatabaseObject(databaseObject);
-            Entity entity = base.Project.CreateEntity(valuesDictionary);
-            Vector3 vector4 = new Vector3(vector3.X, (float)m_subsystemTerrain.TerrainContentsGenerator.OceanLevel + 0.5f, vector3.Y);
+            Entity entity = Project.CreateEntity(valuesDictionary);
+            var vector4 = new Vector3(vector3.X, m_subsystemTerrain.TerrainContentsGenerator.OceanLevel + 0.5f, vector3.Y);
             entity.FindComponent<ComponentFrame>(throwOnError: true).Position = vector4;
             entity.FindComponent<ComponentIntroShip>(throwOnError: true).Heading = Vector2.Angle(vector, -Vector2.UnitY);
-            base.Project.AddEntity(entity);
+            Project.AddEntity(entity);
             m_subsystemTime.QueueGameTimeDelayedExecution(2.0, delegate
             {
                 m_componentPlayer.ComponentGui.DisplayLargeMessage(null, LanguageControl.Get(fName, 1), 5f, 0f);
@@ -168,7 +168,7 @@ namespace Game
             {
                 num -= 100f;
             }
-            return num + 2f * (float)num4;
+            return num + 2f * num4;
         }
     }
 }

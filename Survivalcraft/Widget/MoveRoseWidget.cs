@@ -17,7 +17,7 @@ namespace Game
         {
             get
             {
-                if (base.IsEnabledGlobal && base.IsVisibleGlobal)
+                if (IsEnabledGlobal && IsVisibleGlobal)
                 {
                     return m_direction;
                 }
@@ -29,7 +29,7 @@ namespace Game
         {
             get
             {
-                if (base.IsEnabledGlobal && base.IsVisibleGlobal)
+                if (IsEnabledGlobal && IsVisibleGlobal)
                 {
                     return m_jump;
                 }
@@ -41,11 +41,11 @@ namespace Game
         {
             m_direction = Vector3.Zero;
             m_jump = false;
-            Vector2 v = base.ActualSize / 2f;
-            float num = base.ActualSize.X / 2f;
+            Vector2 v = ActualSize / 2f;
+            float num = ActualSize.X / 2f;
             float num2 = num / 3.5f;
             float num3 = MathUtils.DegToRad(35f);
-            foreach (TouchLocation touchLocation in base.Input.TouchLocations)
+            foreach (TouchLocation touchLocation in Input.TouchLocations)
             {
                 if (HitTestGlobal(touchLocation.Position) == this)
                 {
@@ -89,7 +89,7 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = true;
+            IsDrawRequired = true;
         }
 
         public override void Draw(DrawContext dc)
@@ -100,74 +100,74 @@ namespace Game
             TexturedBatch2D texturedBatch2D2 = dc.PrimitivesRenderer2D.TexturedBatch(subtexture2.Texture);
             int count = texturedBatch2D.TriangleVertices.Count;
             int count2 = texturedBatch2D2.TriangleVertices.Count;
-            Vector2 p = base.ActualSize / 2f;
-            Vector2 vector = new Vector2(0f, 0f);
-            Vector2 vector2 = new Vector2(base.ActualSize.X, 0f);
-            Vector2 vector3 = new Vector2(base.ActualSize.X, base.ActualSize.Y);
-            Vector2 vector4 = new Vector2(0f, base.ActualSize.Y);
+            Vector2 p = ActualSize / 2f;
+            var vector = new Vector2(0f, 0f);
+            var vector2 = new Vector2(ActualSize.X, 0f);
+            var vector3 = new Vector2(ActualSize.X, ActualSize.Y);
+            var vector4 = new Vector2(0f, ActualSize.Y);
             if (m_direction.Z > 0f)
             {
                 Vector2 subtextureCoords = GetSubtextureCoords(subtexture2, new Vector2(0f, 0f));
                 Vector2 subtextureCoords2 = GetSubtextureCoords(subtexture2, new Vector2(1f, 0f));
                 Vector2 subtextureCoords3 = GetSubtextureCoords(subtexture2, new Vector2(0.5f, 0.5f));
-                texturedBatch2D2.QueueTriangle(vector, vector2, p, 0f, subtextureCoords, subtextureCoords2, subtextureCoords3, base.GlobalColorTransform);
+                texturedBatch2D2.QueueTriangle(vector, vector2, p, 0f, subtextureCoords, subtextureCoords2, subtextureCoords3, GlobalColorTransform);
             }
             else
             {
                 Vector2 subtextureCoords4 = GetSubtextureCoords(subtexture, new Vector2(0f, 0f));
                 Vector2 subtextureCoords5 = GetSubtextureCoords(subtexture, new Vector2(1f, 0f));
                 Vector2 subtextureCoords6 = GetSubtextureCoords(subtexture, new Vector2(0.5f, 0.5f));
-                texturedBatch2D.QueueTriangle(vector, vector2, p, 0f, subtextureCoords4, subtextureCoords5, subtextureCoords6, base.GlobalColorTransform);
+                texturedBatch2D.QueueTriangle(vector, vector2, p, 0f, subtextureCoords4, subtextureCoords5, subtextureCoords6, GlobalColorTransform);
             }
             if (m_direction.X > 0f)
             {
                 Vector2 subtextureCoords7 = GetSubtextureCoords(subtexture2, new Vector2(1f, 0f));
                 Vector2 subtextureCoords8 = GetSubtextureCoords(subtexture2, new Vector2(1f, 1f));
                 Vector2 subtextureCoords9 = GetSubtextureCoords(subtexture2, new Vector2(0.5f, 0.5f));
-                texturedBatch2D2.QueueTriangle(vector2, vector3, p, 0f, subtextureCoords7, subtextureCoords8, subtextureCoords9, base.GlobalColorTransform);
+                texturedBatch2D2.QueueTriangle(vector2, vector3, p, 0f, subtextureCoords7, subtextureCoords8, subtextureCoords9, GlobalColorTransform);
             }
             else
             {
                 Vector2 subtextureCoords10 = GetSubtextureCoords(subtexture, new Vector2(1f, 0f));
                 Vector2 subtextureCoords11 = GetSubtextureCoords(subtexture, new Vector2(1f, 1f));
                 Vector2 subtextureCoords12 = GetSubtextureCoords(subtexture, new Vector2(0.5f, 0.5f));
-                texturedBatch2D.QueueTriangle(vector2, vector3, p, 0f, subtextureCoords10, subtextureCoords11, subtextureCoords12, base.GlobalColorTransform);
+                texturedBatch2D.QueueTriangle(vector2, vector3, p, 0f, subtextureCoords10, subtextureCoords11, subtextureCoords12, GlobalColorTransform);
             }
             if (m_direction.Z < 0f)
             {
                 Vector2 subtextureCoords13 = GetSubtextureCoords(subtexture2, new Vector2(1f, 1f));
                 Vector2 subtextureCoords14 = GetSubtextureCoords(subtexture2, new Vector2(0f, 1f));
                 Vector2 subtextureCoords15 = GetSubtextureCoords(subtexture2, new Vector2(0.5f, 0.5f));
-                texturedBatch2D2.QueueTriangle(vector3, vector4, p, 0f, subtextureCoords13, subtextureCoords14, subtextureCoords15, base.GlobalColorTransform);
+                texturedBatch2D2.QueueTriangle(vector3, vector4, p, 0f, subtextureCoords13, subtextureCoords14, subtextureCoords15, GlobalColorTransform);
             }
             else
             {
                 Vector2 subtextureCoords16 = GetSubtextureCoords(subtexture, new Vector2(1f, 1f));
                 Vector2 subtextureCoords17 = GetSubtextureCoords(subtexture, new Vector2(0f, 1f));
                 Vector2 subtextureCoords18 = GetSubtextureCoords(subtexture, new Vector2(0.5f, 0.5f));
-                texturedBatch2D.QueueTriangle(vector3, vector4, p, 0f, subtextureCoords16, subtextureCoords17, subtextureCoords18, base.GlobalColorTransform);
+                texturedBatch2D.QueueTriangle(vector3, vector4, p, 0f, subtextureCoords16, subtextureCoords17, subtextureCoords18, GlobalColorTransform);
             }
             if (m_direction.X < 0f)
             {
                 Vector2 subtextureCoords19 = GetSubtextureCoords(subtexture2, new Vector2(0f, 1f));
                 Vector2 subtextureCoords20 = GetSubtextureCoords(subtexture2, new Vector2(0f, 0f));
                 Vector2 subtextureCoords21 = GetSubtextureCoords(subtexture2, new Vector2(0.5f, 0.5f));
-                texturedBatch2D2.QueueTriangle(vector4, vector, p, 0f, subtextureCoords19, subtextureCoords20, subtextureCoords21, base.GlobalColorTransform);
+                texturedBatch2D2.QueueTriangle(vector4, vector, p, 0f, subtextureCoords19, subtextureCoords20, subtextureCoords21, GlobalColorTransform);
             }
             else
             {
                 Vector2 subtextureCoords22 = GetSubtextureCoords(subtexture, new Vector2(0f, 1f));
                 Vector2 subtextureCoords23 = GetSubtextureCoords(subtexture, new Vector2(0f, 0f));
                 Vector2 subtextureCoords24 = GetSubtextureCoords(subtexture, new Vector2(0.5f, 0.5f));
-                texturedBatch2D.QueueTriangle(vector4, vector, p, 0f, subtextureCoords22, subtextureCoords23, subtextureCoords24, base.GlobalColorTransform);
+                texturedBatch2D.QueueTriangle(vector4, vector, p, 0f, subtextureCoords22, subtextureCoords23, subtextureCoords24, GlobalColorTransform);
             }
             if (texturedBatch2D == texturedBatch2D2)
             {
-                texturedBatch2D.TransformTriangles(base.GlobalTransform, count);
+                texturedBatch2D.TransformTriangles(GlobalTransform, count);
                 return;
             }
-            texturedBatch2D.TransformTriangles(base.GlobalTransform, count);
-            texturedBatch2D2.TransformTriangles(base.GlobalTransform, count2);
+            texturedBatch2D.TransformTriangles(GlobalTransform, count);
+            texturedBatch2D2.TransformTriangles(GlobalTransform, count2);
         }
 
         public static Vector2 GetSubtextureCoords(Subtexture subtexture, Vector2 texCoords)

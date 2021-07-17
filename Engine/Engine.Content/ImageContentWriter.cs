@@ -17,13 +17,13 @@ namespace Engine.Content
 
 		public void Write(string projectDirectory, Stream stream)
 		{
-			Image image = Engine.Media.Image.Load(Storage.OpenFile(Storage.CombinePaths(projectDirectory, Image), OpenFileMode.Read), Engine.Media.Image.DetermineFileFormat(Storage.GetExtension(Image)));
+			var image = Engine.Media.Image.Load(Storage.OpenFile(Storage.CombinePaths(projectDirectory, Image), OpenFileMode.Read), Engine.Media.Image.DetermineFileFormat(Storage.GetExtension(Image)));
 			WriteImage(stream, image);
 		}
 
 		public static void WriteImage(Stream stream, Image image)
 		{
-			EngineBinaryWriter engineBinaryWriter = new EngineBinaryWriter(stream);
+			var engineBinaryWriter = new EngineBinaryWriter(stream);
 			engineBinaryWriter.Write(image.Width);
 			engineBinaryWriter.Write(image.Height);
 			for (int i = 0; i < image.Pixels.Length; i++)

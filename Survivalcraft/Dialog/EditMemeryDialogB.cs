@@ -30,11 +30,11 @@ namespace Game
             memory = memoryBankData;
             Data.Clear();
             Data.AddRange(memory.Data);
-            CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(600f, 500f), HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center };
-            RectangleWidget rectangleWidget = new RectangleWidget() { FillColor = new Color(0, 0, 0, 255), OutlineColor = new Color(128, 128, 128, 128), OutlineThickness = 2 };
-            StackPanelWidget stackPanel = new StackPanelWidget() { Direction = LayoutDirection.Vertical };
-            LabelWidget labelWidget = new LabelWidget() { Text = LanguageControl.GetContentWidgets(fName, 0), HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0, 10) };
-            StackPanelWidget stackPanelWidget = new StackPanelWidget() { Direction = LayoutDirection.Horizontal, HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Near, Margin = new Vector2(10f, 10f) };
+            var canvasWidget = new CanvasWidget() { Size = new Vector2(600f, 500f), HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center };
+            var rectangleWidget = new RectangleWidget() { FillColor = new Color(0, 0, 0, 255), OutlineColor = new Color(128, 128, 128, 128), OutlineThickness = 2 };
+            var stackPanel = new StackPanelWidget() { Direction = LayoutDirection.Vertical };
+            var labelWidget = new LabelWidget() { Text = LanguageControl.GetContentWidgets(fName, 0), HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0, 10) };
+            var stackPanelWidget = new StackPanelWidget() { Direction = LayoutDirection.Horizontal, HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Near, Margin = new Vector2(10f, 10f) };
             Children.Add(canvasWidget);
             canvasWidget.Children.Add(rectangleWidget);
             canvasWidget.Children.Add(stackPanel);
@@ -107,7 +107,7 @@ namespace Game
 
         public string SaveString(bool saveLastOutput)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             int num = Data.Count;
             for (int j = 0; j < num; j++)
             {
@@ -124,16 +124,16 @@ namespace Game
 
         public Widget initData()
         {
-            StackPanelWidget stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10, 0) };
+            var stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10, 0) };
             for (int i = 0; i < 17; i++)
             {
-                StackPanelWidget line = new StackPanelWidget() { Direction = LayoutDirection.Horizontal };
+                var line = new StackPanelWidget() { Direction = LayoutDirection.Horizontal };
                 for (int j = 0; j < 17; j++)
                 {
                     int addr = (i - 1) * 16 + (j - 1);
                     if (j > 0 && i > 0)
                     {
-                        ClickTextWidget clickTextWidget = new ClickTextWidget(new Vector2(22), string.Format("{0}", MemoryBankData.m_hexChars[Read(addr)]), delegate ()
+                        var clickTextWidget = new ClickTextWidget(new Vector2(22), string.Format("{0}", MemoryBankData.m_hexChars[Read(addr)]), delegate ()
                         {
                             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             clickpos = addr;
@@ -149,11 +149,11 @@ namespace Game
                         else if (j == 0 && i > 0) p = i - 1;
                         else
                         {
-                            ClickTextWidget click = new ClickTextWidget(new Vector2(22), "", null);
+                            var click = new ClickTextWidget(new Vector2(22), "", null);
                             line.Children.Add(click);
                             continue;
                         };
-                        ClickTextWidget clickTextWidget = new ClickTextWidget(new Vector2(22), MemoryBankData.m_hexChars[p].ToString(), delegate ()
+                        var clickTextWidget = new ClickTextWidget(new Vector2(22), MemoryBankData.m_hexChars[p].ToString(), delegate ()
                         {
 
                         });
@@ -168,7 +168,7 @@ namespace Game
 
         public Widget makeFuncButton(string txt, Action func)
         {
-            ClickTextWidget clickText = new ClickTextWidget(new Vector2(40), txt, func, true);
+            var clickText = new ClickTextWidget(new Vector2(40), txt, func, true);
             clickText.BorderColor = Color.White;
             clickText.Margin = new Vector2(2);
             clickText.labelWidget.FontScale = txt.Length > 1 ? 0.7f : 1f;
@@ -178,10 +178,10 @@ namespace Game
 
         public Widget initButton()
         {
-            StackPanelWidget stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10, 10) };
+            var stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10, 10) };
             for (int i = 0; i < 6; i++)
             {
-                StackPanelWidget stackPanelWidget = new StackPanelWidget() { Direction = LayoutDirection.Horizontal };
+                var stackPanelWidget = new StackPanelWidget() { Direction = LayoutDirection.Horizontal };
                 for (int j = 0; j < 3; j++)
                 {
                     int cc = i * 3 + j;
@@ -224,7 +224,7 @@ namespace Game
                             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             if (!isSetPos)
                             {
-                                Write(clickpos, (byte)0);//写入数据
+                                Write(clickpos, 0);//写入数据
                                 lastvalue = 0;
                                 clickpos += 1;//自动加1
                                 if (clickpos >= 255)
@@ -268,7 +268,7 @@ namespace Game
                         stackPanelWidget.Children.Add(makeFuncButton(LanguageControl.GetContentWidgets(fName, 2), delegate ()
                         {
                             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
-                            DynamicArray<byte> tmp = new DynamicArray<byte>();
+                            var tmp = new DynamicArray<byte>();
                             tmp.AddRange(Data);
                             tmp.Count = 256;
                             for (int c = 0; c < 16; c++)
@@ -286,7 +286,7 @@ namespace Game
                 }
                 stack.Children.Add(stackPanelWidget);
             }
-            LabelWidget labelWidget = new LabelWidget() { FontScale = 0.8f, Text = LanguageControl.GetContentWidgets(fName, 3), HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0f, 10f), Color = Color.DarkGray };
+            var labelWidget = new LabelWidget() { FontScale = 0.8f, Text = LanguageControl.GetContentWidgets(fName, 3), HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0f, 10f), Color = Color.DarkGray };
             stack.Children.Add(labelWidget);
             stack.Children.Add(makeTextBox(delegate (TextBoxWidget textBoxWidget)
             {
@@ -314,10 +314,10 @@ namespace Game
 
         public Widget makeTextBox(Action<TextBoxWidget> ac, string text = "")
         {
-            CanvasWidget canvasWidget = new CanvasWidget() { HorizontalAlignment = WidgetAlignment.Center };
-            RectangleWidget rectangleWidget = new RectangleWidget() { FillColor = Color.Black, OutlineColor = Color.White, Size = new Vector2(120, 30) };
-            StackPanelWidget stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical };
-            TextBoxWidget textBox = new TextBoxWidget() { VerticalAlignment = WidgetAlignment.Center, Color = new Color(255, 255, 255), Margin = new Vector2(4f, 0f), Size = new Vector2(120, 30), MaximumLength = 256 };
+            var canvasWidget = new CanvasWidget() { HorizontalAlignment = WidgetAlignment.Center };
+            var rectangleWidget = new RectangleWidget() { FillColor = Color.Black, OutlineColor = Color.White, Size = new Vector2(120, 30) };
+            var stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical };
+            var textBox = new TextBoxWidget() { VerticalAlignment = WidgetAlignment.Center, Color = new Color(255, 255, 255), Margin = new Vector2(4f, 0f), Size = new Vector2(120, 30), MaximumLength = 256 };
             textBox.FontScale = 0.7f;
             textBox.Text = text;
             textBox.TextChanged += ac;
@@ -329,7 +329,7 @@ namespace Game
 
         public Widget makeButton(string txt, Action tas)
         {
-            ClickTextWidget clickTextWidget = new ClickTextWidget(new Vector2(120, 30), txt, tas);
+            var clickTextWidget = new ClickTextWidget(new Vector2(120, 30), txt, tas);
             clickTextWidget.BorderColor = Color.White;
             clickTextWidget.Margin = new Vector2(0, 3);
             clickTextWidget.labelWidget.FontScale = 0.7f;

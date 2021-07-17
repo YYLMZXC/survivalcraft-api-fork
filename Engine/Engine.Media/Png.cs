@@ -29,7 +29,7 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
 			long position = stream.Position;
 			int num = stream.ReadByte();
@@ -52,12 +52,12 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
-			PngReader pngReader = new PngReader(stream);
+			var pngReader = new PngReader(stream);
 			pngReader.ShouldCloseStream = false;
 			pngReader.End();
-			PngInfo result = default(PngInfo);
+			var result = default(PngInfo);
 			result.Width = pngReader.ImgInfo.Cols;
 			result.Height = pngReader.ImgInfo.Rows;
 			if (pngReader.ImgInfo.BitDepth == 8 && pngReader.ImgInfo.Channels == 4)
@@ -91,9 +91,9 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
-			PngReader pngReader = new PngReader(stream);
+			var pngReader = new PngReader(stream);
 			pngReader.ShouldCloseStream = false;
 			pngReader.ChunkLoadBehaviour = ChunkLoadBehaviour.LOAD_CHUNK_NEVER;
 			pngReader.MaxTotalBytesRead = long.MaxValue;
@@ -101,7 +101,7 @@ namespace Engine.Media
 			pngReader.End();
 			if (imageLines.ImgInfo.BitDepth == 8 && imageLines.ImgInfo.Channels == 4)
 			{
-				Image image = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
+				var image = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
 				int i = 0;
 				int num = 0;
 				for (; i < image.Height; i++)
@@ -122,7 +122,7 @@ namespace Engine.Media
 			}
 			if (imageLines.ImgInfo.BitDepth == 8 && imageLines.ImgInfo.Channels == 3)
 			{
-				Image image2 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
+				var image2 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
 				int k = 0;
 				int num3 = 0;
 				for (; k < image2.Height; k++)
@@ -142,7 +142,7 @@ namespace Engine.Media
 			}
 			if (imageLines.ImgInfo.BitDepth == 8 && imageLines.ImgInfo.Channels == 2 && imageLines.ImgInfo.Greyscale)
 			{
-				Image image3 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
+				var image3 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
 				int m = 0;
 				int num5 = 0;
 				for (; m < image3.Height; m++)
@@ -161,7 +161,7 @@ namespace Engine.Media
 			}
 			if (imageLines.ImgInfo.BitDepth == 8 && imageLines.ImgInfo.Channels == 1 && imageLines.ImgInfo.Greyscale)
 			{
-				Image image4 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
+				var image4 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
 				int num7 = 0;
 				int num8 = 0;
 				for (; num7 < image4.Height; num7++)
@@ -179,12 +179,12 @@ namespace Engine.Media
 			}
 			if (imageLines.ImgInfo.BitDepth == 8 && imageLines.ImgInfo.Channels == 1 && imageLines.ImgInfo.Indexed)
 			{
-				PngChunkPLTE pngChunkPLTE = (PngChunkPLTE)pngReader.GetChunksList().GetById1("PLTE");
+				var pngChunkPLTE = (PngChunkPLTE)pngReader.GetChunksList().GetById1("PLTE");
 				if (pngChunkPLTE == null)
 				{
 					throw new InvalidOperationException("PLTE chunk not found in indexed PNG.");
 				}
-				Image image5 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
+				var image5 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
 				int num11 = 0;
 				int num12 = 0;
 				for (; num11 < image5.Height; num11++)
@@ -208,18 +208,18 @@ namespace Engine.Media
 		{
 			if (image == null)
 			{
-				throw new ArgumentNullException("image");
+				throw new ArgumentNullException(nameof(image));
 			}
 			if (stream == null)
 			{
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
 			switch (format)
 			{
 			case Format.RGBA8:
 			{
-				ImageInfo imgInfo3 = new ImageInfo(image.Width, image.Height, 8, alpha: true, grayscale: false, palette: false);
-				PngWriter pngWriter3 = new PngWriter(stream, imgInfo3);
+				var imgInfo3 = new ImageInfo(image.Width, image.Height, 8, alpha: true, grayscale: false, palette: false);
+				var pngWriter3 = new PngWriter(stream, imgInfo3);
 				pngWriter3.ShouldCloseStream = false;
 				byte[] array3 = new byte[4 * image.Width];
 				int m = 0;
@@ -243,8 +243,8 @@ namespace Engine.Media
 			}
 			case Format.RGB8:
 			{
-				ImageInfo imgInfo2 = new ImageInfo(image.Width, image.Height, 8, alpha: false, grayscale: false, palette: false);
-				PngWriter pngWriter2 = new PngWriter(stream, imgInfo2);
+				var imgInfo2 = new ImageInfo(image.Width, image.Height, 8, alpha: false, grayscale: false, palette: false);
+				var pngWriter2 = new PngWriter(stream, imgInfo2);
 				pngWriter2.ShouldCloseStream = false;
 				byte[] array2 = new byte[3 * image.Width];
 				int k = 0;
@@ -267,8 +267,8 @@ namespace Engine.Media
 			}
 			case Format.LA8:
 			{
-				ImageInfo imgInfo4 = new ImageInfo(image.Width, image.Height, 8, alpha: true, grayscale: true, palette: false);
-				PngWriter pngWriter4 = new PngWriter(stream, imgInfo4);
+				var imgInfo4 = new ImageInfo(image.Width, image.Height, 8, alpha: true, grayscale: true, palette: false);
+				var pngWriter4 = new PngWriter(stream, imgInfo4);
 				pngWriter4.ShouldCloseStream = false;
 				byte[] array4 = new byte[2 * image.Width];
 				int num7 = 0;
@@ -290,8 +290,8 @@ namespace Engine.Media
 			}
 			case Format.L8:
 			{
-				ImageInfo imgInfo = new ImageInfo(image.Width, image.Height, 8, alpha: false, grayscale: true, palette: false);
-				PngWriter pngWriter = new PngWriter(stream, imgInfo);
+				var imgInfo = new ImageInfo(image.Width, image.Height, 8, alpha: false, grayscale: true, palette: false);
+				var pngWriter = new PngWriter(stream, imgInfo);
 				pngWriter.ShouldCloseStream = false;
 				byte[] array = new byte[image.Width];
 				int i = 0;

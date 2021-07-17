@@ -107,9 +107,9 @@ namespace Game
             {
                 if (m_frameCount > 0)
                 {
-                    m_longTermAverageFrameTime = (float)(m_totalFrameTime / (double)m_frameCount);
-                    float num = (int)MathUtils.Round(MathUtils.Round(m_totalFrameTime / (double)m_frameCount / 0.004999999888241291) * 0.004999999888241291 * 1000.0);
-                    float num2 = (int)MathUtils.Round(MathUtils.Round(m_totalCpuFrameTime / (double)m_frameCount / 0.004999999888241291) * 0.004999999888241291 * 1000.0);
+                    m_longTermAverageFrameTime = (float)(m_totalFrameTime / m_frameCount);
+                    float num = (int)MathUtils.Round(MathUtils.Round(m_totalFrameTime / m_frameCount / 0.004999999888241291) * 0.004999999888241291 * 1000.0);
+                    float num2 = (int)MathUtils.Round(MathUtils.Round(m_totalCpuFrameTime / m_frameCount / 0.004999999888241291) * 0.004999999888241291 * 1000.0);
                     AnalyticsManager.LogEvent("[PerformanceManager] Measurement", new AnalyticsParameter("FrameCount", m_frameCount.ToString()), new AnalyticsParameter("AverageFrameTime", num.ToString() + "ms"), new AnalyticsParameter("AverageFrameCpuTime", num2.ToString() + "ms"));
                     Log.Information($"PerformanceManager Measurement: frames={m_frameCount.ToString()}, avgFrameTime={num.ToString()}ms, avgFrameCpuTime={num2.ToString()}ms");
                 }
@@ -137,23 +137,23 @@ namespace Game
 
         public static void Draw()
         {
-            Vector2 scale = new Vector2(MathUtils.Round(MathUtils.Clamp(ScreensManager.RootWidget.GlobalScale, 1f, 4f)));
+            var scale = new Vector2(MathUtils.Round(MathUtils.Clamp(ScreensManager.RootWidget.GlobalScale, 1f, 4f)));
             Viewport viewport = Display.Viewport;
             if (SettingsManager.DisplayFpsCounter)
             {
                 if (Time.PeriodicEvent(1.0, 0.0))
                 {
-                    m_statsString = $"CPUMEM {(float)TotalMemoryUsed / 1024f / 1024f:0}MB, GPUMEM {(float)TotalGpuMemoryUsed / 1024f / 1024f:0}MB, CPU {AverageCpuFrameTime / AverageFrameTime * 100f:0}%, FPS {1f / AverageFrameTime:0.0}";
+                    m_statsString = $"CPUMEM {TotalMemoryUsed / 1024f / 1024f:0}MB, GPUMEM {TotalGpuMemoryUsed / 1024f / 1024f:0}MB, CPU {AverageCpuFrameTime / AverageFrameTime * 100f:0}%, FPS {1f / AverageFrameTime:0.0}";
                 }
                 m_primitivesRenderer.FontBatch(BitmapFont.DebugFont, 0, null, null, null, SamplerState.PointClamp).QueueText(m_statsString, new Vector2(viewport.Width/2, 0f), 0f, Color.White, TextAnchor.Right, scale, Vector2.Zero);
             }
             if (SettingsManager.DisplayFpsRibbon)
             {
-                float num = ((float)viewport.Width / scale.X > 480f) ? (scale.X * 2f) : scale.X;
-                float num2 = (float)viewport.Height / -0.1f;
+                float num = (viewport.Width / scale.X > 480f) ? (scale.X * 2f) : scale.X;
+                float num2 = viewport.Height / -0.1f;
                 float num3 = viewport.Height - 1;
                 float s = 0.5f;
-                int num4 = MathUtils.Max((int)((float)viewport.Width / num), 1);
+                int num4 = MathUtils.Max((int)(viewport.Width / num), 1);
                 if (m_frameData == null || m_frameData.Length != num4)
                 {
                     m_frameData = new FrameData[num4];
@@ -172,8 +172,8 @@ namespace Game
                 {
                     int num6 = (num5 - m_frameData.Length + 1 + m_frameDataIndex + m_frameData.Length) % m_frameData.Length;
                     FrameData frameData = m_frameData[num6];
-                    float x = (float)num5 * num;
-                    float x2 = (float)(num5 + 1) * num;
+                    float x = num5 * num;
+                    float x2 = (num5 + 1) * num;
                     flatBatch2D.QueueQuad(new Vector2(x, num3), new Vector2(x2, num3 + frameData.CpuTime * num2), 0f, color);
                     flatBatch2D.QueueQuad(new Vector2(x, num3 + frameData.CpuTime * num2), new Vector2(x2, num3 + frameData.TotalTime * num2), 0f, color2);
                 }

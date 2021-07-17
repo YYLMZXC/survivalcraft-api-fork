@@ -137,7 +137,7 @@ namespace Hjg.Pngcs
 				throw new PngjInputException("IHDR not found as first chunk??? [" + ChunkHelper.ToString(array2) + "]");
 			}
 			offset += 4L;
-			PngChunkIHDR pngChunkIHDR = (PngChunkIHDR)ReadChunk(array2, num, skipforced: false);
+			var pngChunkIHDR = (PngChunkIHDR)ReadChunk(array2, num, skipforced: false);
 			bool alpha = (pngChunkIHDR.Colormodel & 4) != 0;
 			bool palette = (pngChunkIHDR.Colormodel & 1) != 0;
 			bool grayscale = pngChunkIHDR.Colormodel == 0 || pngChunkIHDR.Colormodel == 4;
@@ -427,7 +427,7 @@ namespace Hjg.Pngcs
 			}
 			else
 			{
-				ChunkRaw chunkRaw = new ChunkRaw(clen, chunkid, alloc: true);
+				var chunkRaw = new ChunkRaw(clen, chunkid, alloc: true);
 				chunkRaw.ReadChunkData(inputStream, crcEnabled | flag);
 				pngChunk = PngChunk.Factory(chunkRaw, ImgInfo);
 				if (!pngChunk.Crit)
@@ -633,7 +633,7 @@ namespace Hjg.Pngcs
 			{
 				throw new PngjInputException("bad args");
 			}
-			ImageLines imageLines = new ImageLines(ImgInfo, ImageLine.ESampleType.INT, unpackedMode, rowOffset, nRows, rowStep);
+			var imageLines = new ImageLines(ImgInfo, ImageLine.ESampleType.INT, unpackedMode, rowOffset, nRows, rowStep);
 			if (!interlaced)
 			{
 				for (int i = 0; i < ImgInfo.Rows; i++)
@@ -684,7 +684,7 @@ namespace Hjg.Pngcs
 			{
 				throw new PngjInputException("bad args");
 			}
-			ImageLines imageLines = new ImageLines(ImgInfo, ImageLine.ESampleType.BYTE, unpackedMode, rowOffset, nRows, rowStep);
+			var imageLines = new ImageLines(ImgInfo, ImageLine.ESampleType.BYTE, unpackedMode, rowOffset, nRows, rowStep);
 			if (!interlaced)
 			{
 				for (int i = 0; i < ImgInfo.Rows; i++)

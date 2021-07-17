@@ -22,12 +22,12 @@ namespace Game
             Model model = ContentManager.Get<Model>("Models/Hammer");
             Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Handle").ParentBone);
             Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Head").ParentBone);
-            BlockMesh blockMesh = new BlockMesh();
+            var blockMesh = new BlockMesh();
             blockMesh.AppendModelMeshPart(model.FindMesh("Handle").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-            blockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_handleTextureSlot % 16) / 16f, (float)(m_handleTextureSlot / 16) / 16f, 0f));
-            BlockMesh blockMesh2 = new BlockMesh();
+            blockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(m_handleTextureSlot % 16 / 16f, m_handleTextureSlot / 16 / 16f, 0f));
+            var blockMesh2 = new BlockMesh();
             blockMesh2.AppendModelMeshPart(model.FindMesh("Head").MeshParts[0], boneAbsoluteTransform2 * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-            blockMesh2.TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_headTextureSlot % 16) / 16f, (float)(m_headTextureSlot / 16) / 16f, 0f));
+            blockMesh2.TransformTextureCoordinates(Matrix.CreateTranslation(m_headTextureSlot % 16 / 16f, m_headTextureSlot / 16 / 16f, 0f));
             m_standaloneBlockMesh.AppendBlockMesh(blockMesh);
             m_standaloneBlockMesh.AppendBlockMesh(blockMesh2);
             base.Initialize();

@@ -107,7 +107,7 @@ namespace Game
 
         public virtual void CalculateIsVisible(Camera camera)
         {
-            if (camera.GameWidget.IsEntityFirstPersonTarget(base.Entity))
+            if (camera.GameWidget.IsEntityFirstPersonTarget(Entity))
             {
                 IsVisibleForCamera = false;
                 return;
@@ -117,7 +117,7 @@ namespace Game
             vector.Y *= m_subsystemSky.VisibilityRangeYMultiplier;
             if (vector.LengthSquared() < num)
             {
-                BoundingSphere sphere = new BoundingSphere(m_componentFrame.Position, m_boundingSphereRadius);
+                var sphere = new BoundingSphere(m_componentFrame.Position, m_boundingSphereRadius);
                 IsVisibleForCamera = camera.ViewFrustum.Intersection(sphere);
             }
             else
@@ -136,8 +136,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_componentFrame = base.Entity.FindComponent<ComponentFrame>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_componentFrame = Entity.FindComponent<ComponentFrame>(throwOnError: true);
             string value = valuesDictionary.GetValue<string>("ModelName");
             Model = ContentManager.Get<Model>(value);
             CastsShadow = valuesDictionary.GetValue<bool>("CastsShadow");

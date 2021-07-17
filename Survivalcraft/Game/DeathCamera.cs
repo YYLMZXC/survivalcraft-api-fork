@@ -23,10 +23,10 @@ namespace Game
         public override void Activate(Camera previousCamera)
         {
             m_position = previousCamera.ViewPosition;
-            Vector3 vector = base.GameWidget.Target?.ComponentBody.BoundingBox.Center() ?? m_position;
+            Vector3 vector = GameWidget.Target?.ComponentBody.BoundingBox.Center() ?? m_position;
             m_bestPosition = FindBestCameraPosition(vector, 6f);
             SetupPerspectiveCamera(m_position, vector - m_position, Vector3.UnitY);
-            ComponentPlayer componentPlayer = base.GameWidget.Target as ComponentPlayer;
+            var componentPlayer = GameWidget.Target as ComponentPlayer;
             if (componentPlayer != null &&  m_bestPosition.HasValue)
             {
                 Vector3 vector2 = Matrix.CreateWorld(Vector3.Zero, vector - m_bestPosition.Value, Vector3.UnitY).ToYawPitchRoll();
@@ -36,7 +36,7 @@ namespace Game
 
         public override void Update(float dt)
         {
-            Vector3 v = base.GameWidget.Target?.ComponentBody.BoundingBox.Center() ?? m_position;
+            Vector3 v = GameWidget.Target?.ComponentBody.BoundingBox.Center() ?? m_position;
             if (m_bestPosition.HasValue)
             {
                 if (Vector3.Distance(m_bestPosition.Value, m_position) > 20f)
@@ -53,15 +53,15 @@ namespace Game
             Vector3? vector = null;
             for (int i = 0; i < 36; i++)
             {
-                float x = 1f + (float)Math.PI * 2f * (float)i / 36f;
-                Vector3 v2 = Vector3.Normalize(new Vector3(MathUtils.Sin(x), 0.5f, MathUtils.Cos(x)));
+                float x = 1f + (float)Math.PI * 2f * i / 36f;
+                var v2 = Vector3.Normalize(new Vector3(MathUtils.Sin(x), 0.5f, MathUtils.Cos(x)));
                 Vector3 vector2 = targetPosition + v2 * distance;
-                TerrainRaycastResult? terrainRaycastResult = base.GameWidget.SubsystemGameWidgets.SubsystemTerrain.Raycast(targetPosition, vector2, useInteractionBoxes: false, skipAirBlocks: true, (int v, float d) => !BlocksManager.Blocks[Terrain.ExtractContents(v)].IsTransparent_(v));
+                TerrainRaycastResult? terrainRaycastResult = GameWidget.SubsystemGameWidgets.SubsystemTerrain.Raycast(targetPosition, vector2, useInteractionBoxes: false, skipAirBlocks: true, (int v, float d) => !BlocksManager.Blocks[Terrain.ExtractContents(v)].IsTransparent_(v));
                 Vector3 zero = Vector3.Zero;
                 if (terrainRaycastResult.HasValue)
                 {
                     CellFace cellFace = terrainRaycastResult.Value.CellFace;
-                    zero = new Vector3((float)cellFace.X + 0.5f, (float)cellFace.Y + 0.5f, (float)cellFace.Z + 0.5f) - 1f * v2;
+                    zero = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f) - 1f * v2;
                 }
                 else
                 {

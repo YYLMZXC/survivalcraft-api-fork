@@ -21,13 +21,13 @@ namespace Engine.Content
 
 		public void Write(string projectDirectory, Stream stream)
 		{
-			ModelData modelData = Engine.Media.ModelData.Load(Storage.CombinePaths(projectDirectory, ModelData));
+			var modelData = Engine.Media.ModelData.Load(Storage.CombinePaths(projectDirectory, ModelData));
 			WriteModelData(stream, modelData, Transform);
 		}
 
 		public static void WriteModelData(Stream stream, ModelData modelData, Matrix transform)
 		{
-			EngineBinaryWriter engineBinaryWriter = new EngineBinaryWriter(stream);
+			var engineBinaryWriter = new EngineBinaryWriter(stream);
 			engineBinaryWriter.Write(modelData.Bones.Count);
 			foreach (ModelBoneData bone in modelData.Bones)
 			{

@@ -7,7 +7,7 @@ namespace Engine.Serialization
 	{
 		public string ConvertToString(object value)
 		{
-			Rectangle rectangle = (Rectangle)value;
+			var rectangle = (Rectangle)value;
 			return HumanReadableConverter.ValuesListToString<int>(',', rectangle.Left, rectangle.Top, rectangle.Width, rectangle.Height);
 		}
 

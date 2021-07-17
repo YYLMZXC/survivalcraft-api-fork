@@ -14,7 +14,7 @@ namespace Game
                 foreach (Widget childWidget in Children)
                 {
                     yield return childWidget;
-                    ContainerWidget containerWidget = childWidget as ContainerWidget;
+                    var containerWidget = childWidget as ContainerWidget;
                     if (containerWidget != null)
                     {
                         foreach (Widget allChild in containerWidget.AllChildren)
@@ -59,7 +59,7 @@ namespace Game
         {
             foreach (Widget child in Children)
             {
-                ArrangeChildWidgetInCell(Vector2.Zero, base.ActualSize, child);
+                ArrangeChildWidgetInCell(Vector2.Zero, ActualSize, child);
             }
         }
 

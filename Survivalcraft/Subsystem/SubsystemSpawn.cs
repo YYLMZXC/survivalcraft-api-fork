@@ -81,15 +81,15 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemPlayers = base.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
-            m_subsystemViews = base.Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
+            m_subsystemViews = Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
             foreach (KeyValuePair<string, object> item in valuesDictionary.GetValue<ValuesDictionary>("Chunks"))
             {
-                ValuesDictionary valuesDictionary2 = (ValuesDictionary)item.Value;
-                SpawnChunk spawnChunk = new SpawnChunk();
+                var valuesDictionary2 = (ValuesDictionary)item.Value;
+                var spawnChunk = new SpawnChunk();
                 spawnChunk.Point = HumanReadableConverter.ConvertFromString<Point2>(item.Key);
                 spawnChunk.IsSpawned = valuesDictionary2.GetValue<bool>("IsSpawned");
                 spawnChunk.LastVisitedTime = valuesDictionary2.GetValue<double>("LastVisitedTime");
@@ -104,13 +104,13 @@ namespace Game
 
         public override void Save(ValuesDictionary valuesDictionary)
         {
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Chunks", valuesDictionary2);
             foreach (SpawnChunk value2 in m_chunks.Values)
             {
                 if (value2.LastVisitedTime.HasValue)
                 {
-                    ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+                    var valuesDictionary3 = new ValuesDictionary();
                     valuesDictionary2.SetValue(HumanReadableConverter.ConvertToString(value2.Point), valuesDictionary3);
                     valuesDictionary3.SetValue("IsSpawned", value2.IsSpawned);
                     valuesDictionary3.SetValue("LastVisitedTime", value2.LastVisitedTime.Value);
@@ -155,7 +155,7 @@ namespace Game
 
         public virtual void DiscardOldChunks()
         {
-            List<Point2> list = new List<Point2>();
+            var list = new List<Point2>();
             foreach (SpawnChunk value in m_chunks.Values)
             {
                 if (!value.LastVisitedTime.HasValue || m_subsystemGameInfo.TotalElapsedGameTime - value.LastVisitedTime.Value > 76800.0)
@@ -173,7 +173,7 @@ namespace Game
         {
             foreach (ComponentPlayer componentPlayer in m_subsystemPlayers.ComponentPlayers)
             {
-                Vector2 v = new Vector2(componentPlayer.ComponentBody.Position.X, componentPlayer.ComponentBody.Position.Z);
+                var v = new Vector2(componentPlayer.ComponentBody.Position.X, componentPlayer.ComponentBody.Position.Z);
                 Vector2 p = v - new Vector2(8f);
                 Vector2 p2 = v + new Vector2(8f);
                 Point2 point = Terrain.ToChunk(p);
@@ -194,10 +194,10 @@ namespace Game
 
         public virtual void SpawnChunks()
         {
-            List<SpawnChunk> list = new List<SpawnChunk>();
+            var list = new List<SpawnChunk>();
             foreach (GameWidget gameWidget in m_subsystemViews.GameWidgets)
             {
-                Vector2 v = new Vector2(gameWidget.ActiveCamera.ViewPosition.X, gameWidget.ActiveCamera.ViewPosition.Z);
+                var v = new Vector2(gameWidget.ActiveCamera.ViewPosition.X, gameWidget.ActiveCamera.ViewPosition.Z);
                 Vector2 p = v - new Vector2(40f);
                 Vector2 p2 = v + new Vector2(40f);
                 Point2 point = Terrain.ToChunk(p);
@@ -206,20 +206,20 @@ namespace Game
                 {
                     for (int j = point.Y; j <= point2.Y; j++)
                     {
-                        Vector2 v2 = new Vector2(((float)i + 0.5f) * 16f, ((float)j + 0.5f) * 16f);
+                        var v2 = new Vector2((i + 0.5f) * 16f, (j + 0.5f) * 16f);
                         if (Vector2.DistanceSquared(v, v2) < 1600f)
                         {
                             TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(Terrain.ToCell(v2.X), Terrain.ToCell(v2.Y));
                             if (chunkAtCell != null && chunkAtCell.State > TerrainChunkState.InvalidPropagatedLight)
                             {
-                                Point2 point3 = new Point2(i, j);
+                                var point3 = new Point2(i, j);
                                 SpawnChunk orCreateSpawnChunk = GetOrCreateSpawnChunk(point3);
                                 foreach (SpawnEntityData spawnsDatum in orCreateSpawnChunk.SpawnsData)
                                 {
                                     SpawnEntity(spawnsDatum);
                                 }
                                 orCreateSpawnChunk.SpawnsData.Clear();
-                                this.SpawningChunk?.Invoke(orCreateSpawnChunk);
+                                SpawningChunk?.Invoke(orCreateSpawnChunk);
                                 orCreateSpawnChunk.IsSpawned = true;
                             }
                         }
@@ -238,18 +238,18 @@ namespace Game
 
         public virtual void DespawnChunks()
         {
-            List<ComponentSpawn> list = new List<ComponentSpawn>(0);
+            var list = new List<ComponentSpawn>(0);
             foreach (ComponentSpawn key in m_spawns.Keys)
             {
                 if (key.AutoDespawn && !key.IsDespawning)
                 {
                     bool flag = true;
                     Vector3 position = key.ComponentFrame.Position;
-                    Vector2 v = new Vector2(position.X, position.Z);
+                    var v = new Vector2(position.X, position.Z);
                     foreach (GameWidget gameWidget in m_subsystemViews.GameWidgets)
                     {
                         Vector3 viewPosition = gameWidget.ActiveCamera.ViewPosition;
-                        Vector2 v2 = new Vector2(viewPosition.X, viewPosition.Z);
+                        var v2 = new Vector2(viewPosition.X, viewPosition.Z);
                         if (Vector2.DistanceSquared(v, v2) <= 2704f)
                         {
                             flag = false;
@@ -279,7 +279,7 @@ namespace Game
         {
             try
             {
-                Entity entity = DatabaseManager.CreateEntity(base.Project, data.TemplateName, throwIfNotFound: true);
+                Entity entity = DatabaseManager.CreateEntity(Project, data.TemplateName, throwIfNotFound: true);
                 foreach (ModLoader modEntity in ModsManager.ModLoaders) {
                     modEntity.SpawnEntity(this,entity,data);
                 }
@@ -312,7 +312,7 @@ namespace Game
                     {
                         break;
                     }
-                    SpawnEntityData spawnEntityData = new SpawnEntityData
+                    var spawnEntityData = new SpawnEntityData
                     {
                         TemplateName = array2[0],
                         Position = new Vector3
@@ -340,7 +340,7 @@ namespace Game
 
         public virtual string SaveSpawnsData(List<SpawnEntityData> spawnsData)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             foreach (SpawnEntityData spawnsDatum in spawnsData)
             {
                 stringBuilder.Append(spawnsDatum.TemplateName);

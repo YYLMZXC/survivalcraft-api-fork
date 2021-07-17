@@ -153,13 +153,13 @@ namespace Hjg.Pngcs.Chunks
 		{
 			try
 			{
-				MemoryStream memoryStream = new MemoryStream(ori, offset, len);
+				var memoryStream = new MemoryStream(ori, offset, len);
 				Stream stream = memoryStream;
 				if (!compress)
 				{
 					stream = ZlibStreamFactory.createZlibInputStream(memoryStream);
 				}
-				MemoryStream memoryStream2 = new MemoryStream();
+				var memoryStream2 = new MemoryStream();
 				Stream stream2 = memoryStream2;
 				if (compress)
 				{
@@ -193,7 +193,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public static List<PngChunk> FilterList(List<PngChunk> list, ChunkPredicate predicateKeep)
 		{
-			List<PngChunk> list2 = new List<PngChunk>();
+			var list2 = new List<PngChunk>();
 			foreach (PngChunk item in list)
 			{
 				if (predicateKeep.Matches(item))

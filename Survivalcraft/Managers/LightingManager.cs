@@ -52,9 +52,9 @@ namespace Game
                 TerrainChunk chunkAtCell4 = terrain.GetChunkAtCell(x, z);
                 if (chunkAtCell != null && chunkAtCell.State >= TerrainChunkState.InvalidVertices1 && chunkAtCell2 != null && chunkAtCell2.State >= TerrainChunkState.InvalidVertices1 && chunkAtCell3 != null && chunkAtCell3.State >= TerrainChunkState.InvalidVertices1 && chunkAtCell4 != null && chunkAtCell4.State >= TerrainChunkState.InvalidVertices1)
                 {
-                    float f = p.X - (float)num;
-                    float f2 = p.Y - (float)num2;
-                    float f3 = p.Z - (float)num3;
+                    float f = p.X - num;
+                    float f2 = p.Y - num2;
+                    float f3 = p.Z - num3;
                     float x2 = terrain.GetCellLightFast(num, num2, num3);
                     float x3 = terrain.GetCellLightFast(num, num2, z);
                     float x4 = terrain.GetCellLightFast(num, num4, num3);
@@ -72,7 +72,7 @@ namespace Game
                     float num5 = MathUtils.Lerp(x14, x15, f3);
                     int num6 = (int)MathUtils.Floor(num5);
                     int num7 = (int)MathUtils.Ceiling(num5);
-                    float f4 = num5 - (float)num6;
+                    float f4 = num5 - num6;
                     return MathUtils.Lerp(LightIntensityByLightValue[num6], LightIntensityByLightValue[num7], f4);
                 }
             }
@@ -84,7 +84,7 @@ namespace Game
             float x = MathUtils.Lerp(0f, 0.1f, SettingsManager.Brightness);
             for (int i = 0; i < 16; i++)
             {
-                LightIntensityByLightValue[i] = MathUtils.Saturate(MathUtils.Lerp(x, 1f, MathUtils.Pow((float)i / 15f, 1.25f)));
+                LightIntensityByLightValue[i] = MathUtils.Saturate(MathUtils.Lerp(x, 1f, MathUtils.Pow(i / 15f, 1.25f)));
             }
             for (int j = 0; j < 6; j++)
             {

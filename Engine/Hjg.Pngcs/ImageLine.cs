@@ -291,7 +291,7 @@ namespace Hjg.Pngcs
 
 		public ImageLine unpackToNewImageLine()
 		{
-			ImageLine imageLine = new ImageLine(ImgInfo, SampleType, unpackedMode: true);
+			var imageLine = new ImageLine(ImgInfo, SampleType, unpackedMode: true);
 			if (SampleType == ESampleType.INT)
 			{
 				unpackInplaceInt(ImgInfo, Scanline, imageLine.Scanline, Scale: false);
@@ -305,7 +305,7 @@ namespace Hjg.Pngcs
 
 		public ImageLine packToNewImageLine()
 		{
-			ImageLine imageLine = new ImageLine(ImgInfo, SampleType, unpackedMode: false);
+			var imageLine = new ImageLine(ImgInfo, SampleType, unpackedMode: false);
 			if (SampleType == ESampleType.INT)
 			{
 				packInplaceInt(ImgInfo, Scanline, imageLine.Scanline, scaled: false);

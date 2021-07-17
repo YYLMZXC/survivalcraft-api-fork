@@ -48,10 +48,10 @@ namespace Game
             m_voltage = CalculateMotionVoltage();
             if (m_voltage > 0f && voltage == 0f)
             {
-                base.SubsystemElectricity.SubsystemAudio.PlaySound("Audio/MotionDetectorClick", 1f, 0f, m_center, 1f, autoDelay: true);
+                SubsystemElectricity.SubsystemAudio.PlaySound("Audio/MotionDetectorClick", 1f, 0f, m_center, 1f, autoDelay: true);
             }
-            float num = 0.5f * (0.9f + 0.000200000009f * (float)(GetHashCode() % 1000));
-            base.SubsystemElectricity.QueueElectricElementForSimulation(this, base.SubsystemElectricity.CircuitStep + MathUtils.Max((int)(num / 0.01f), 1));
+            float num = 0.5f * (0.9f + 0.000200000009f * (GetHashCode() % 1000));
+            SubsystemElectricity.QueueElectricElementForSimulation(this, SubsystemElectricity.CircuitStep + MathUtils.Max((int)(num / 0.01f), 1));
             return m_voltage != voltage;
         }
 
@@ -67,7 +67,7 @@ namespace Game
                 {
                     Vector3 vector = componentBody.Position + new Vector3(0f, 0.5f * componentBody.BoxSize.Y, 0f);
                     float num2 = Vector3.DistanceSquared(vector, m_center);
-                    if (num2 < 64f && Vector3.Dot(Vector3.Normalize(vector - (m_center - 0.75f * m_direction)), m_direction) > 0.5f && !base.SubsystemElectricity.SubsystemTerrain.Raycast(m_center, vector, useInteractionBoxes: false, skipAirBlocks: true, delegate (int value, float d)
+                    if (num2 < 64f && Vector3.Dot(Vector3.Normalize(vector - (m_center - 0.75f * m_direction)), m_direction) > 0.5f && !SubsystemElectricity.SubsystemTerrain.Raycast(m_center, vector, useInteractionBoxes: false, skipAirBlocks: true, delegate (int value, float d)
                     {
                         Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
                         return block.IsCollidable_(value) && block.BlockIndex != 15 && block.BlockIndex != 60 && block.BlockIndex != 44 && block.BlockIndex != 18;

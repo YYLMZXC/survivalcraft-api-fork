@@ -34,7 +34,7 @@ namespace Game
             m_shoreRoughnessFrequency = MathUtils.Lerp(0.5f, 1f, m_worldSettings.ShoreRoughness) * new Vector2(1f) / m_shoreRoughnessAmplitude;
             m_shoreRoughnessOctaves.X = (int)MathUtils.Clamp(MathUtils.Log(1f / m_shoreRoughnessFrequency.X) / MathUtils.Log(2f) - 1f, 1f, 7f);
             m_shoreRoughnessOctaves.Y = (int)MathUtils.Clamp(MathUtils.Log(1f / m_shoreRoughnessFrequency.Y) / MathUtils.Log(2f) - 1f, 1f, 7f);
-            Random random = new Random(subsystemGameInfo.WorldSeed);
+            var random = new Random(subsystemGameInfo.WorldSeed);
             m_shoreRoughnessOffset[0] = random.Float(-2000f, 2000f);
             m_shoreRoughnessOffset[1] = random.Float(-2000f, 2000f);
             m_shoreRoughnessOffset[2] = random.Float(-2000f, 2000f);

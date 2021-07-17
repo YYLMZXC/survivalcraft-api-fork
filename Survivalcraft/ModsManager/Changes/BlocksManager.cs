@@ -212,7 +212,7 @@ namespace Game
         {
             environmentData = (environmentData ?? m_defaultEnvironmentData);
             float num = LightingManager.LightIntensityByLightValue[environmentData.Light];
-            Vector4 v = new Vector4(color);
+            var v = new Vector4(color);
             v.X *= num;
             v.Y *= num;
             v.Z *= num;
@@ -241,7 +241,7 @@ namespace Game
                 BlockMeshVertex blockMeshVertex = array[i];
                 if (flag2)
                 {
-                    Vector4 v2 = new Vector4(blockMeshVertex.Position, 1f);
+                    var v2 = new Vector4(blockMeshVertex.Position, 1f);
                     Vector4.Transform(ref v2, ref m, out v2);
                     float num2 = 1f / v2.W;
                     blockMeshVertex.Position = new Vector3(v2.X * num2, v2.Y * num2, v2.Z * num2);
@@ -255,7 +255,7 @@ namespace Game
                     triangleVertices.Array[count4++] = new VertexPositionColorTexture(blockMeshVertex.Position, blockMeshVertex.Color, blockMeshVertex.TextureCoordinates);
                     continue;
                 }
-                Color color2 = new Color((byte)((float)(int)blockMeshVertex.Color.R * v.X), (byte)((float)(int)blockMeshVertex.Color.G * v.Y), (byte)((float)(int)blockMeshVertex.Color.B * v.Z), (byte)((float)(int)blockMeshVertex.Color.A * v.W));
+                var color2 = new Color((byte)(blockMeshVertex.Color.R * v.X), (byte)(blockMeshVertex.Color.G * v.Y), (byte)(blockMeshVertex.Color.B * v.Z), (byte)(blockMeshVertex.Color.A * v.W));
                 triangleVertices.Array[count4++] = new VertexPositionColorTexture(blockMeshVertex.Position, color2, blockMeshVertex.TextureCoordinates);
             }
             DynamicArray<ushort> triangleIndices = texturedBatch3D.TriangleIndices;
@@ -285,7 +285,7 @@ namespace Game
 
         public static void LoadBlocksData(string data)
         {
-            Dictionary<Block, bool> dictionary = new Dictionary<Block, bool>();
+            var dictionary = new Dictionary<Block, bool>();
             data = data.Replace("\r", string.Empty);
             string[] array = data.Split(new char[1]
             {
@@ -316,7 +316,7 @@ namespace Game
                     throw new InvalidOperationException(string.Format(LanguageControl.Get("BlocksManager", 3), typeName));
                 }
                 dictionary.Add(block, value: true);
-                Dictionary<string, FieldInfo> dictionary2 = new Dictionary<string, FieldInfo>();
+                var dictionary2 = new Dictionary<string, FieldInfo>();
                 foreach (FieldInfo runtimeField in block.GetType().GetRuntimeFields())
                 {
                     if (runtimeField.IsPublic && !runtimeField.IsStatic)
@@ -338,7 +338,7 @@ namespace Game
                         if (text2.StartsWith("#"))
                         {
                             string refTypeName = text2.Substring(1);
-                            obj = ((!string.IsNullOrEmpty(refTypeName)) ? ((object)(m_blocks.FirstOrDefault((Block v) => v.GetType().Name == refTypeName) ?? throw new InvalidOperationException(string.Format(LanguageControl.Get("BlocksManager", 6), refTypeName))).BlockIndex) : ((object)block.BlockIndex));
+                            obj = ((!string.IsNullOrEmpty(refTypeName)) ? (m_blocks.FirstOrDefault((Block v) => v.GetType().Name == refTypeName) ?? throw new InvalidOperationException(string.Format(LanguageControl.Get("BlocksManager", 6), refTypeName))).BlockIndex : ((object)block.BlockIndex));
                         }
                         else
                         {
@@ -362,10 +362,10 @@ namespace Game
         {
             int num = slot % 16;
             int num2 = slot / 16;
-            float x = ((float)num + 0.001f) / 16f;
-            float y = ((float)num2 + 0.001f) / 16f;
-            float z = ((float)(num + 1) - 0.001f) / 16f;
-            float w = ((float)(num2 + 1) - 0.001f) / 16f;
+            float x = (num + 0.001f) / 16f;
+            float y = (num2 + 0.001f) / 16f;
+            float z = (num + 1 - 0.001f) / 16f;
+            float w = (num2 + 1 - 0.001f) / 16f;
             return new Vector4(x, y, z, w);
         }
     }

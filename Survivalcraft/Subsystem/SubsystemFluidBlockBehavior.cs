@@ -52,7 +52,7 @@ namespace Game
 
         public void UpdateIsTop(int value, int x, int y, int z)
         {
-            Terrain terrain = base.SubsystemTerrain.Terrain;
+            Terrain terrain = SubsystemTerrain.Terrain;
             if (y < 255)
             {
                 TerrainChunk chunkAtCell = terrain.GetChunkAtCell(x, z);
@@ -87,7 +87,7 @@ namespace Game
             }] = true;
             if (neighborY == y + 1)
             {
-                UpdateIsTop(base.SubsystemTerrain.Terrain.GetCellValueFast(x, y, z), x, y, z);
+                UpdateIsTop(SubsystemTerrain.Terrain.GetCellValueFast(x, y, z), x, y, z);
             }
         }
 
@@ -102,7 +102,7 @@ namespace Game
         {
             if (y >= 0 && y < 255)
             {
-                TerrainChunk chunkAtCell = base.SubsystemTerrain.Terrain.GetChunkAtCell(x, z);
+                TerrainChunk chunkAtCell = SubsystemTerrain.Terrain.GetChunkAtCell(x, z);
                 if (chunkAtCell != null)
                 {
                     int num = TerrainChunk.CalculateCellIndex(x & 0xF, 0, z & 0xF);
@@ -118,7 +118,7 @@ namespace Game
                             {
                                 surfaceFluidBlock = fluidBlock;
                                 int level = FluidBlock.GetLevel(Terrain.ExtractData(cellValueFast));
-                                return (float)y + surfaceFluidBlock.GetLevelHeight(level);
+                                return y + surfaceFluidBlock.GetLevelHeight(level);
                             }
                             surfaceFluidBlock = null;
                             return null;
@@ -133,8 +133,7 @@ namespace Game
 
         public float? GetSurfaceHeight(int x, int y, int z)
         {
-            FluidBlock surfaceFluidBlock;
-            return GetSurfaceHeight(x, y, z, out surfaceFluidBlock);
+            return GetSurfaceHeight(x, y, z, out FluidBlock surfaceFluidBlock);
         }
 
         public Vector2? CalculateFlowSpeed(int x, int y, int z, out FluidBlock surfaceBlock, out float? surfaceHeight)
@@ -143,14 +142,14 @@ namespace Game
             if (surfaceHeight.HasValue)
             {
                 y = (int)surfaceHeight.Value;
-                int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+                int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
                 int num = Terrain.ExtractContents(cellValue);
                 if (BlocksManager.Blocks[num] is FluidBlock)
                 {
-                    int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(x - 1, y, z);
-                    int cellValue3 = base.SubsystemTerrain.Terrain.GetCellValue(x + 1, y, z);
-                    int cellValue4 = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z - 1);
-                    int cellValue5 = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z + 1);
+                    int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x - 1, y, z);
+                    int cellValue3 = SubsystemTerrain.Terrain.GetCellValue(x + 1, y, z);
+                    int cellValue4 = SubsystemTerrain.Terrain.GetCellValue(x, y, z - 1);
+                    int cellValue5 = SubsystemTerrain.Terrain.GetCellValue(x, y, z + 1);
                     int num2 = Terrain.ExtractContents(cellValue2);
                     int num3 = Terrain.ExtractContents(cellValue3);
                     int num4 = Terrain.ExtractContents(cellValue4);
@@ -160,7 +159,7 @@ namespace Game
                     int num7 = (num3 == num) ? FluidBlock.GetLevel(Terrain.ExtractData(cellValue3)) : level;
                     int num8 = (num4 == num) ? FluidBlock.GetLevel(Terrain.ExtractData(cellValue4)) : level;
                     int num9 = (num5 == num) ? FluidBlock.GetLevel(Terrain.ExtractData(cellValue5)) : level;
-                    Vector2 vector = default(Vector2);
+                    Vector2 vector = default;
                     vector.X = MathUtils.Sign(level - num6) - MathUtils.Sign(level - num7);
                     vector.Y = MathUtils.Sign(level - num8) - MathUtils.Sign(level - num9);
                     Vector2 v = vector;
@@ -170,8 +169,8 @@ namespace Game
                     }
                     if (!m_fluidRandomFlowDirections.TryGetValue(new Point3(x, y, z), out Vector2 value))
                     {
-                        value.X = 0.05f * (2f * SimplexNoise.OctavedNoise((float)x + 0.2f * (float)SubsystemTime.GameTime, z, 0.1f, 1, 1f, 1f) - 1f);
-                        value.Y = 0.05f * (2f * SimplexNoise.OctavedNoise((float)x + 0.2f * (float)SubsystemTime.GameTime + 100f, z, 0.1f, 1, 1f, 1f) - 1f);
+                        value.X = 0.05f * (2f * SimplexNoise.OctavedNoise(x + 0.2f * (float)SubsystemTime.GameTime, z, 0.1f, 1, 1f, 1f) - 1f);
+                        value.Y = 0.05f * (2f * SimplexNoise.OctavedNoise(x + 0.2f * (float)SubsystemTime.GameTime + 100f, z, 0.1f, 1, 1f, 1f) - 1f);
                         if (m_fluidRandomFlowDirections.Count < 1000)
                         {
                             m_fluidRandomFlowDirections[new Point3(x, y, z)] = value;
@@ -190,17 +189,15 @@ namespace Game
 
         public Vector2? CalculateFlowSpeed(int x, int y, int z)
         {
-            FluidBlock surfaceBlock;
-            float? surfaceHeight;
-            return CalculateFlowSpeed(x, y, z, out surfaceBlock, out surfaceHeight);
+            return CalculateFlowSpeed(x, y, z, out FluidBlock surfaceBlock, out float? surfaceHeight);
         }
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            SubsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            SubsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            SubsystemAmbientSounds = base.Project.FindSubsystem<SubsystemAmbientSounds>(throwOnError: true);
+            SubsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            SubsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            SubsystemAmbientSounds = Project.FindSubsystem<SubsystemAmbientSounds>(throwOnError: true);
         }
 
         public void SpreadFluid()
@@ -212,13 +209,13 @@ namespace Game
                     int x = key.X;
                     int y = key.Y;
                     int z = key.Z;
-                    int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+                    int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
                     int contents = Terrain.ExtractContents(cellValue);
                     int data = Terrain.ExtractData(cellValue);
                     int level = FluidBlock.GetLevel(data);
                     if (m_fluidBlock.IsTheSameFluid(contents))
                     {
-                        int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+                        int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
                         int contents2 = Terrain.ExtractContents(cellValue2);
                         int data2 = Terrain.ExtractData(cellValue2);
                         int level2 = FluidBlock.GetLevel(data2);
@@ -226,7 +223,7 @@ namespace Game
                         int num2 = 0;
                         for (int j = 0; j < 4; j++)
                         {
-                            int cellValue3 = base.SubsystemTerrain.Terrain.GetCellValue(x + m_sideNeighbors[j].X, y, z + m_sideNeighbors[j].Y);
+                            int cellValue3 = SubsystemTerrain.Terrain.GetCellValue(x + m_sideNeighbors[j].X, y, z + m_sideNeighbors[j].Y);
                             int contents3 = Terrain.ExtractContents(cellValue3);
                             if (m_fluidBlock.IsTheSameFluid(contents3))
                             {
@@ -240,7 +237,7 @@ namespace Game
                         }
                         if (level != 0 && level <= num)
                         {
-                            int contents4 = Terrain.ExtractContents(base.SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z));
+                            int contents4 = Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z));
                             if (!m_fluidBlock.IsTheSameFluid(contents4))
                             {
                                 if (num + 1 > m_fluidBlock.MaxLevel)
@@ -308,19 +305,19 @@ namespace Game
                     int z2 = item.Key.Z;
                     int value = item.Value;
                     int contents5 = Terrain.ExtractContents(item.Value);
-                    int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x2, y2, z2);
+                    int cellContents = SubsystemTerrain.Terrain.GetCellContents(x2, y2, z2);
                     FluidBlock fluidBlock = BlocksManager.FluidBlocks[cellContents];
                     if (fluidBlock != null && !fluidBlock.IsTheSameFluid(contents5))
                     {
-                        base.SubsystemTerrain.DestroyCell(0, x2, y2, z2, value, noDrop: false, noParticleSystem: false);
+                        SubsystemTerrain.DestroyCell(0, x2, y2, z2, value, noDrop: false, noParticleSystem: false);
                     }
                     else
                     {
-                        base.SubsystemTerrain.ChangeCell(x2, y2, z2, value);
+                        SubsystemTerrain.ChangeCell(x2, y2, z2, value);
                     }
                 }
                 m_toSet.Clear();
-                base.SubsystemTerrain.ProcessModifiedCells();
+                SubsystemTerrain.ProcessModifiedCells();
             }
         }
 
@@ -328,7 +325,7 @@ namespace Game
         {
             if (!BlocksManager.Blocks[Terrain.ExtractContents(interactValue)].IsFluidBlocker_(interactValue))
             {
-                base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                 Set(x, y, z, fluidValue);
                 return true;
             }
@@ -338,7 +335,7 @@ namespace Game
         public float? CalculateDistanceToFluid(Vector3 p, int radius, bool flowingFluidOnly)
         {
             float num = float.MaxValue;
-            Terrain terrain = base.SubsystemTerrain.Terrain;
+            Terrain terrain = SubsystemTerrain.Terrain;
             int num2 = Terrain.ToCell(p.X) - radius;
             int num3 = Terrain.ToCell(p.X) + radius;
             int num4 = MathUtils.Clamp(Terrain.ToCell(p.Y) - radius, 0, 254);
@@ -375,9 +372,9 @@ namespace Game
                                 continue;
                             }
                         }
-                        float num8 = p.X - ((float)j + 0.5f);
-                        float num9 = p.Y - ((float)l + 1f);
-                        float num10 = p.Z - ((float)i + 0.5f);
+                        float num8 = p.X - (j + 0.5f);
+                        float num9 = p.Y - (l + 1f);
+                        float num10 = p.Z - (i + 0.5f);
                         float num11 = num8 * num8 + num9 * num9 + num10 * num10;
                         if (num11 < num)
                         {
@@ -395,7 +392,7 @@ namespace Game
 
         public void Set(int x, int y, int z, int value)
         {
-            Point3 key = new Point3(x, y, z);
+            var key = new Point3(x, y, z);
             if (!m_toSet.ContainsKey(key))
             {
                 m_toSet[key] = value;
@@ -408,7 +405,7 @@ namespace Game
             {
                 return;
             }
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
             int contents = Terrain.ExtractContents(cellValue);
             int data = Terrain.ExtractData(cellValue);
             if (m_fluidBlock.IsTheSameFluid(contents))
@@ -440,7 +437,7 @@ namespace Game
                 return int.MaxValue;
             }
             levels[new Point3(x, y, z)] = level;
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractContents(cellValue);
             if (m_fluidBlock.IsTheSameFluid(num))
             {

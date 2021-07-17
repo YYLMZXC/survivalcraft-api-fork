@@ -50,7 +50,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkOFFS pngChunkOFFS = (PngChunkOFFS)other;
+			var pngChunkOFFS = (PngChunkOFFS)other;
 			posX = pngChunkOFFS.posX;
 			posY = pngChunkOFFS.posY;
 			units = pngChunkOFFS.units;

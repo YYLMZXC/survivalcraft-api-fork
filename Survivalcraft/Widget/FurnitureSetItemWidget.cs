@@ -41,7 +41,7 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = m_highlighted;
+            IsDrawRequired = m_highlighted;
             base.MeasureOverride(parentAvailableSize);
         }
 
@@ -51,15 +51,15 @@ namespace Game
             {
                 FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(100, DepthStencilState.None);
                 int count = flatBatch2D.TriangleVertices.Count;
-                flatBatch2D.QueueQuad(Vector2.Zero, base.ActualSize, 0f, new Color(128, 128, 128, 128));
-                flatBatch2D.TransformTriangles(base.GlobalTransform, count);
+                flatBatch2D.QueueQuad(Vector2.Zero, ActualSize, 0f, new Color(128, 128, 128, 128));
+                flatBatch2D.TransformTriangles(GlobalTransform, count);
                 m_highlighted = false;
             }
         }
 
         public FurnitureDesign GetFurnitureDesign(object dragData)
         {
-            InventoryDragData inventoryDragData = dragData as InventoryDragData;
+            var inventoryDragData = dragData as InventoryDragData;
             if (inventoryDragData != null)
             {
                 int slotValue = inventoryDragData.Inventory.GetSlotValue(inventoryDragData.SlotIndex);

@@ -670,7 +670,7 @@ namespace Game
                 }
                 if (MouseWheelMovement != 0)
                 {
-                    Scroll = new Vector3(value, (float)MouseWheelMovement / 120f);
+                    Scroll = new Vector3(value, MouseWheelMovement / 120f);
                 }
                 if (m_mouseHoldInProgress && m_mouseDownPoint.HasValue)
                 {
@@ -689,7 +689,7 @@ namespace Game
                         DragMode = ((!IsMouseButtonDown(MouseButton.Left)) ? DragMode.SingleItem : DragMode.AllItems);
                         Drag = m_mouseDownPoint.Value;
                     }
-                    else if (Time.FrameStartTime - m_mouseDragTime > (double)SettingsManager.MinimumHoldDuration)
+                    else if (Time.FrameStartTime - m_mouseDragTime > SettingsManager.MinimumHoldDuration)
                     {
                         m_mouseHoldInProgress = true;
                     }
@@ -787,7 +787,7 @@ namespace Game
                     Drag = m_padDownPoint.Value;
                     DragMode = DragMode.AllItems;
                 }
-                else if (Time.FrameStartTime - m_padDragTime > (double)SettingsManager.MinimumHoldDuration)
+                else if (Time.FrameStartTime - m_padDragTime > SettingsManager.MinimumHoldDuration)
                 {
                     Hold = m_padDownPoint.Value;
                     HoldTime = (float)(Time.FrameStartTime - m_padDragTime);
@@ -795,9 +795,9 @@ namespace Game
             }
             if (IsPadCursorVisible)
             {
-                Vector2 v = Vector2.Transform(PadCursorPosition, Widget.InvertedGlobalTransform);
+                var v = Vector2.Transform(PadCursorPosition, Widget.InvertedGlobalTransform);
                 Vector2 padStickPosition = GetPadStickPosition(GamePadStick.Left, SettingsManager.GamepadDeadZone);
-                Vector2 v2 = new Vector2(padStickPosition.X, 0f - padStickPosition.Y);
+                var v2 = new Vector2(padStickPosition.X, 0f - padStickPosition.Y);
                 v2 = 1200f * SettingsManager.GamepadCursorSpeed * v2.LengthSquared() * Vector2.Normalize(v2) * Time.FrameDuration;
                 v += v2;
                 PadCursorPosition = Vector2.Transform(v, Widget.GlobalTransform);
@@ -846,7 +846,7 @@ namespace Game
                                     Hold = m_touchStartPoint;
                                     HoldTime = (float)(Time.FrameStartTime - m_touchStartTime);
                                 }
-                                else if (Time.FrameStartTime - m_touchStartTime > (double)SettingsManager.MinimumHoldDuration)
+                                else if (Time.FrameStartTime - m_touchStartTime > SettingsManager.MinimumHoldDuration)
                                 {
                                     m_touchHoldInProgress = true;
                                 }

@@ -5,11 +5,11 @@ namespace Engine.Graphics
 {
 	public abstract class GraphicsResource : IDisposable
 	{
-		public static HashSet<GraphicsResource> m_resources = new HashSet<GraphicsResource>();
+		internal static HashSet<GraphicsResource> m_resources = new HashSet<GraphicsResource>();
 
-		public bool m_isDisposed;
+		internal bool m_isDisposed;
 
-		public GraphicsResource()
+		internal GraphicsResource()
 		{
 			m_resources.Add(this);
 		}
@@ -30,11 +30,11 @@ namespace Engine.Graphics
 
 		public abstract int GetGpuMemoryUsage();
 
-		public abstract void HandleDeviceLost();
+		internal abstract void HandleDeviceLost();
 
-		public abstract void HandleDeviceReset();
+		internal abstract void HandleDeviceReset();
 
-		public void VerifyNotDisposed()
+		internal void VerifyNotDisposed()
 		{
 			if (m_isDisposed)
 			{

@@ -30,7 +30,7 @@ namespace Game
             m_pointerMesh.AppendModelMeshPart(model.FindMesh("Pointer").MeshParts[0], matrix, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             for (int i = 0; i < 4; i++)
             {
-                m_matricesByData[i] = Matrix.CreateScale(5f) * Matrix.CreateTranslation(0.95f, 0.15f, 0.5f) * Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationY((float)(i + 1) * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
+                m_matricesByData[i] = Matrix.CreateScale(5f) * Matrix.CreateTranslation(0.95f, 0.15f, 0.5f) * Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationY((i + 1) * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                 m_collisionBoxesByData[i] = new BoundingBox[1]
                 {
                     m_caseMesh.CalculateBoundingBox(m_matricesByData[i])
@@ -88,7 +88,7 @@ namespace Game
             {
                 value2 = Terrain.ReplaceData(Terrain.ReplaceContents(0, 121), 3);
             }
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = value2;
             result.CellFace = raycastResult.CellFace;
             return result;
@@ -100,7 +100,7 @@ namespace Game
             if (num < m_matricesByData.Length)
             {
                 int humidity = generator.Terrain.GetHumidity(x, z);
-                float radians = MathUtils.Lerp(1.5f, -1.5f, (float)humidity / 15f);
+                float radians = MathUtils.Lerp(1.5f, -1.5f, humidity / 15f);
                 Matrix matrix = m_matricesByData[num];
                 Matrix value2 = m_invPointerMatrix * Matrix.CreateRotationX(radians) * m_pointerMatrix * matrix;
                 generator.GenerateMeshVertices(this, x, y, z, m_caseMesh, Color.White, matrix, geometry.SubsetOpaque);
@@ -117,8 +117,8 @@ namespace Game
                 Vector3 translation = environmentData.InWorldMatrix.Translation;
                 int num2 = Terrain.ToCell(translation.X);
                 int num3 = Terrain.ToCell(translation.Z);
-                float f = translation.X - (float)num2;
-                float f2 = translation.Z - (float)num3;
+                float f = translation.X - num2;
+                float f2 = translation.Z - num3;
                 float x = environmentData.SubsystemTerrain.Terrain.GetSeasonalHumidity(num2, num3);
                 float x2 = environmentData.SubsystemTerrain.Terrain.GetSeasonalHumidity(num2, num3 + 1);
                 float x3 = environmentData.SubsystemTerrain.Terrain.GetSeasonalHumidity(num2 + 1, num3);

@@ -112,7 +112,7 @@ namespace Game
         }
 
         public static void InitScreens() {
-            LoadingScreen loadingScreen = new LoadingScreen();
+            var loadingScreen = new LoadingScreen();
             AddScreen("Loading", loadingScreen);
 
             foreach (ModEntity modEntity in ModsManager.ModList)
@@ -220,7 +220,7 @@ namespace Game
                     m_vrQuadPosition += v * MathUtils.Min(0.75f * MathUtils.Pow(MathUtils.Max(num2 - 0.15f * num, 0f), 0.33f) * Time.FrameDuration, 1f);
                     m_vrQuadPosition += v2 * MathUtils.Min(1.5f * MathUtils.Pow(MathUtils.Max(num3 - 0.05f * num, 0f), 0.33f) * Time.FrameDuration, 1f);
                 }
-                Vector2 vector2 = new Vector2((float)m_uiRenderTarget.Width / (float)m_uiRenderTarget.Height, 1f);
+                var vector2 = new Vector2(m_uiRenderTarget.Width / (float)m_uiRenderTarget.Height, 1f);
                 vector2 /= MathUtils.Max(vector2.X, vector2.Y);
                 vector2 *= 7.5f;
                 m_vrQuadMatrix.Forward = Vector3.Normalize(hmdMatrix.Translation - m_vrQuadPosition);
@@ -258,7 +258,7 @@ namespace Game
                 {
                     float num2 = 1f;
                     float num3 = 1f;
-                    Vector3 vector3 = new Vector3(((float)j - 0.5f) * num2, 0f, ((float)k - 0.5f) * num2) + new Vector3(MathUtils.Round(hmdMatrix.Translation.X), 0f, MathUtils.Round(hmdMatrix.Translation.Z));
+                    Vector3 vector3 = new Vector3((j - 0.5f) * num2, 0f, (k - 0.5f) * num2) + new Vector3(MathUtils.Round(hmdMatrix.Translation.X), 0f, MathUtils.Round(hmdMatrix.Translation.Z));
                     float num4 = Vector3.Distance(vector3, hmdMatrix.Translation);
                     float num5 = MathUtils.Lerp(1f, 0f, MathUtils.Saturate(num4 / 7f));
                     if (num5 > 0f)
@@ -292,9 +292,9 @@ namespace Game
                     break;
             }
             num *= DebugUiScale;
-            Vector2 vector = new Vector2(Display.Viewport.Width, Display.Viewport.Height);
+            var vector = new Vector2(Display.Viewport.Width, Display.Viewport.Height);
             float num2 = vector.X / num;
-            Vector2 availableSize = new Vector2(num, num / vector.X * vector.Y);
+            var availableSize = new Vector2(num, num / vector.X * vector.Y);
             float num3 = num * 9f / 16f;
             if (vector.Y / num2 < num3)
             {

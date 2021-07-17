@@ -43,9 +43,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_isEnabled = valuesDictionary.GetValue<bool>("IsEnabled");
             m_stateMachine.AddState("Inactive", delegate
             {
@@ -105,8 +105,8 @@ namespace Game
                 float num = Vector3.Distance(m_componentCreature.ComponentBody.Position, SummonTarget.Position);
                 if (num > 4f)
                 {
-                    Vector3 v = Vector3.Normalize(Vector3.Cross(Vector3.UnitY, SummonTarget.Position - m_componentCreature.ComponentBody.Position));
-                    v *= 0.75f * (float)((GetHashCode() % 2 != 0) ? 1 : (-1)) * (float)(1 + GetHashCode() % 3);
+                    var v = Vector3.Normalize(Vector3.Cross(Vector3.UnitY, SummonTarget.Position - m_componentCreature.ComponentBody.Position));
+                    v *= 0.75f * ((GetHashCode() % 2 != 0) ? 1 : (-1)) * (1 + GetHashCode() % 3);
                     float speed = MathUtils.Lerp(0.4f, 1f, MathUtils.Saturate(0.25f * (num - 5f)));
                     m_componentPathfinding.SetDestination(SummonTarget.Position + v, speed, 3.75f, 2000, useRandomMovements: true, ignoreHeightDifference: false, raycastDestination: true, null);
                     m_stoppedTime = -1.0;

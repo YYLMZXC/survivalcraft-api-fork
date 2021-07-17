@@ -29,7 +29,7 @@ namespace Game
             {
                 for (int j = 0; j < m_inventoryGrid.ColumnsCount; j++)
                 {
-                    InventorySlotWidget widget = new InventorySlotWidget();
+                    var widget = new InventorySlotWidget();
                     m_inventoryGrid.Children.Add(widget);
                     m_inventoryGrid.SetWidgetCell(widget, new Point2(j, i));
                 }
@@ -48,17 +48,12 @@ namespace Game
             int slotValue = m_inventory.GetSlotValue(m_slotIndex);
             int slotCount = m_inventory.GetSlotCount(m_slotIndex);
             int num = Terrain.ExtractContents(slotValue);
-            if (!BowBlock.GetArrowType(Terrain.ExtractData(slotValue)).HasValue)
-            {
-                m_instructionsLabel.Text = LanguageControl.Get(fName, 0);
-            }
-            else
-            {
-                m_instructionsLabel.Text = LanguageControl.Get(fName, 1);
-            }
+            m_instructionsLabel.Text = !BowBlock.GetArrowType(Terrain.ExtractData(slotValue)).HasValue
+                ? LanguageControl.Get(fName, 0)
+                : LanguageControl.Get(fName, 1);
             if (num != 191 || slotCount == 0)
             {
-                base.ParentWidget.Children.Remove(this);
+                ParentWidget.Children.Remove(this);
             }
         }
     }

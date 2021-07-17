@@ -20,12 +20,12 @@ namespace Engine.Content
 
 		public static ModelData ReadModelData(Stream stream)
 		{
-			EngineBinaryReader engineBinaryReader = new EngineBinaryReader(stream);
-			ModelData modelData = new ModelData();
+			var engineBinaryReader = new EngineBinaryReader(stream);
+			var modelData = new ModelData();
 			modelData.Bones.Capacity = engineBinaryReader.ReadInt32();
 			for (int i = 0; i < modelData.Bones.Capacity; i++)
 			{
-				ModelBoneData modelBoneData = new ModelBoneData();
+				var modelBoneData = new ModelBoneData();
 				modelData.Bones.Add(modelBoneData);
 				modelBoneData.ParentBoneIndex = engineBinaryReader.ReadInt32();
 				modelBoneData.Name = engineBinaryReader.ReadString();
@@ -34,7 +34,7 @@ namespace Engine.Content
 			modelData.Meshes.Capacity = engineBinaryReader.ReadInt32();
 			for (int j = 0; j < modelData.Meshes.Capacity; j++)
 			{
-				ModelMeshData modelMeshData = new ModelMeshData();
+				var modelMeshData = new ModelMeshData();
 				modelData.Meshes.Add(modelMeshData);
 				modelMeshData.ParentBoneIndex = engineBinaryReader.ReadInt32();
 				modelMeshData.Name = engineBinaryReader.ReadString();
@@ -42,7 +42,7 @@ namespace Engine.Content
 				modelMeshData.BoundingBox = engineBinaryReader.ReadBoundingBox();
 				for (int k = 0; k < modelMeshData.MeshParts.Capacity; k++)
 				{
-					ModelMeshPartData modelMeshPartData = new ModelMeshPartData();
+					var modelMeshPartData = new ModelMeshPartData();
 					modelMeshData.MeshParts.Add(modelMeshPartData);
 					modelMeshPartData.BuffersDataIndex = engineBinaryReader.ReadInt32();
 					modelMeshPartData.StartIndex = engineBinaryReader.ReadInt32();
@@ -53,9 +53,9 @@ namespace Engine.Content
 			modelData.Buffers.Capacity = engineBinaryReader.ReadInt32();
 			for (int l = 0; l < modelData.Buffers.Capacity; l++)
 			{
-				ModelBuffersData modelBuffersData = new ModelBuffersData();
+				var modelBuffersData = new ModelBuffersData();
 				modelData.Buffers.Add(modelBuffersData);
-				VertexElement[] array = new VertexElement[engineBinaryReader.ReadInt32()];
+				var array = new VertexElement[engineBinaryReader.ReadInt32()];
 				for (int m = 0; m < array.Length; m++)
 				{
 					array[m] = new VertexElement(engineBinaryReader.ReadInt32(), (VertexElementFormat)engineBinaryReader.ReadInt32(), engineBinaryReader.ReadString());

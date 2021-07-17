@@ -24,7 +24,7 @@ namespace Game
                 if (componentHealth == null || componentHealth.Health > 0f)
                 {
                     string entityTemplateName = bodyRaycastResult.Value.ComponentBody.Entity.ValuesDictionary.DatabaseObject.Name + "_Saddled";
-                    Entity entity = DatabaseManager.CreateEntity(base.Project, entityTemplateName, throwIfNotFound: false);
+                    Entity entity = DatabaseManager.CreateEntity(Project, entityTemplateName, throwIfNotFound: false);
                     if (entity != null)
                     {
                         ComponentBody componentBody = entity.FindComponent<ComponentBody>(throwOnError: true);
@@ -32,8 +32,8 @@ namespace Game
                         componentBody.Rotation = bodyRaycastResult.Value.ComponentBody.Rotation;
                         componentBody.Velocity = bodyRaycastResult.Value.ComponentBody.Velocity;
                         entity.FindComponent<ComponentSpawn>(throwOnError: true).SpawnDuration = 0f;
-                        base.Project.RemoveEntity(bodyRaycastResult.Value.ComponentBody.Entity, disposeEntity: true);
-                        base.Project.AddEntity(entity);
+                        Project.RemoveEntity(bodyRaycastResult.Value.ComponentBody.Entity, disposeEntity: true);
+                        Project.AddEntity(entity);
                         m_subsystemAudio.PlaySound("Audio/BlockPlaced", 1f, m_random.Float(-0.1f, 0.1f), ray.Position, 1f, autoDelay: true);
                         componentMiner.RemoveActiveTool(1);
                     }
@@ -46,7 +46,7 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
         }
     }
 }

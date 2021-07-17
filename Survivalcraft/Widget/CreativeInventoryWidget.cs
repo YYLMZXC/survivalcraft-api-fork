@@ -57,12 +57,12 @@ namespace Game
             m_pageDownButton = Children.Find<ButtonWidget>("PageDownButton");
             m_pageLabel = Children.Find<LabelWidget>("PageLabel");
             m_panelContainer = Children.Find<ContainerWidget>("PanelContainer");
-            CreativeInventoryPanel creativeInventoryPanel = new CreativeInventoryPanel(this)
+            var creativeInventoryPanel = new CreativeInventoryPanel(this)
             {
                 IsVisible = false
             };
             m_panelContainer.Children.Add(creativeInventoryPanel);
-            FurnitureInventoryPanel furnitureInventoryPanel = new FurnitureInventoryPanel(this)
+            var furnitureInventoryPanel = new FurnitureInventoryPanel(this)
             {
                 IsVisible = false
             };
@@ -109,11 +109,11 @@ namespace Game
 
         public override void Update()
         {
-            if (m_categoryLeftButton.IsClicked || base.Input.Left)
+            if (m_categoryLeftButton.IsClicked || Input.Left)
             {
                 int num = --m_componentCreativeInventory.CategoryIndex;
             }
-            if (m_categoryRightButton.IsClicked || base.Input.Right)
+            if (m_categoryRightButton.IsClicked || Input.Right)
             {
                 int num = ++m_componentCreativeInventory.CategoryIndex;
             }

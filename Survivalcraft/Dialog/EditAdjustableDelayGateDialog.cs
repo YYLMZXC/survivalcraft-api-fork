@@ -55,7 +55,7 @@ namespace Game
             {
                 Dismiss(m_delay);
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
+            if (Input.Cancel || m_cancelButton.IsClicked)
             {
                 Dismiss(null);
             }
@@ -65,9 +65,9 @@ namespace Game
         public void UpdateControls()
         {
             m_delaySlider.Value = m_delay;
-            m_minusButton.IsEnabled = ((float)m_delay > m_delaySlider.MinValue);
-            m_plusButton.IsEnabled = ((float)m_delay < m_delaySlider.MaxValue);
-            m_delayLabel.Text =string.Format(LanguageControl.Get(GetType().Name,1),Math.Round((float)(m_delay + 1) * 0.01f,2));
+            m_minusButton.IsEnabled = (m_delay > m_delaySlider.MinValue);
+            m_plusButton.IsEnabled = (m_delay < m_delaySlider.MaxValue);
+            m_delayLabel.Text =string.Format(LanguageControl.Get(GetType().Name,1),Math.Round((m_delay + 1) * 0.01f,2));
         }
 
         public void Dismiss(int? result)

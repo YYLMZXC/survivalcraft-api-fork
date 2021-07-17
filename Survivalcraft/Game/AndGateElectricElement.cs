@@ -21,7 +21,7 @@ namespace Game
             float voltage = m_voltage;
             int num = 0;
             int num2 = 15;
-            foreach (ElectricConnection connection in base.Connections)
+            foreach (ElectricConnection connection in Connections)
             {
                 if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0)
                 {
@@ -29,7 +29,7 @@ namespace Game
                     num++;
                 }
             }
-            m_voltage = ((num == 2) ? ((float)num2 / 15f) : 0f);
+            m_voltage = ((num == 2) ? (num2 / 15f) : 0f);
             return m_voltage != voltage;
         }
     }

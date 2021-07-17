@@ -42,8 +42,8 @@ namespace Game
                 int rotation = GetRotation(i);
                 bool isUpsideDown = GetIsUpsideDown(i);
                 CornerType cornerType = GetCornerType(i);
-                Matrix m = (!isUpsideDown) ? (Matrix.CreateRotationY((float)rotation * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationY((float)rotation * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, -0.5f, 0.5f) * Matrix.CreateScale(1f, -1f, 1f) * Matrix.CreateTranslation(0f, 0.5f, 0f));
-                BlockMesh blockMesh = new BlockMesh();
+                Matrix m = (!isUpsideDown) ? (Matrix.CreateRotationY(rotation * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationY(rotation * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, -0.5f, 0.5f) * Matrix.CreateScale(1f, -1f, 1f) * Matrix.CreateTranslation(0f, 0.5f, 0f));
+                var blockMesh = new BlockMesh();
                 switch (cornerType)
                 {
                     case CornerType.None:
@@ -65,17 +65,17 @@ namespace Game
                 }
                 m_coloredBlockMeshes[i] = new BlockMesh();
                 m_coloredBlockMeshes[i].AppendBlockMesh(blockMesh);
-                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+                m_coloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
                 m_coloredBlockMeshes[i].GenerateSidesData();
                 m_uncoloredBlockMeshes[i] = new BlockMesh();
                 m_uncoloredBlockMeshes[i].AppendBlockMesh(blockMesh);
-                m_uncoloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
+                m_uncoloredBlockMeshes[i].TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
                 m_uncoloredBlockMeshes[i].GenerateSidesData();
             }
             m_standaloneUncoloredBlockMesh.AppendModelMeshPart(model.FindMesh("Stairs").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-            m_standaloneUncoloredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(DefaultTextureSlot % 16) / 16f, (float)(DefaultTextureSlot / 16) / 16f, 0f));
+            m_standaloneUncoloredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(DefaultTextureSlot % 16 / 16f, DefaultTextureSlot / 16 / 16f, 0f));
             m_standaloneColoredBlockMesh.AppendModelMeshPart(model.FindMesh("Stairs").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0f, -0.5f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation((float)(m_coloredTextureSlot % 16) / 16f, (float)(m_coloredTextureSlot / 16) / 16f, 0f));
+            m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
             m_collisionBoxes[0] = new BoundingBox[2]
             {
                 new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 1f, 0.5f)),
@@ -292,7 +292,7 @@ namespace Game
             }
             bool isUpsideDown = raycastResult.CellFace.Face == 5;
             int data = Terrain.ExtractData(value);
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetIsUpsideDown(SetRotation(data, rotation), isUpsideDown));
             result.CellFace = raycastResult.CellFace;
             return result;

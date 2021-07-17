@@ -47,11 +47,11 @@ namespace Game
             if (m_componentCreature.ComponentLocomotion.LastSwimOrder.HasValue && m_componentCreature.ComponentLocomotion.LastSwimOrder.Value != Vector3.Zero)
             {
                 float num = (m_componentCreature.ComponentLocomotion.LastSwimOrder.Value.LengthSquared() > 0.99f) ? 1.75f : 1f;
-                base.MovementAnimationPhase = MathUtils.Remainder(base.MovementAnimationPhase + m_swimAnimationSpeed * num * dt, 1000f);
+                MovementAnimationPhase = MathUtils.Remainder(MovementAnimationPhase + m_swimAnimationSpeed * num * dt, 1000f);
             }
             else
             {
-                base.MovementAnimationPhase = MathUtils.Remainder(base.MovementAnimationPhase + 0.15f * m_swimAnimationSpeed * dt, 1000f);
+                MovementAnimationPhase = MathUtils.Remainder(MovementAnimationPhase + 0.15f * m_swimAnimationSpeed * dt, 1000f);
             }
             if (BendOrder.HasValue)
             {
@@ -82,18 +82,18 @@ namespace Game
             }
             float num3 = 0.33f * m_componentCreature.ComponentLocomotion.TurnSpeed;
             float num4 = 1f * m_componentCreature.ComponentLocomotion.TurnSpeed;
-            base.IsAttackHitMoment = false;
-            if (base.AttackOrder || base.FeedOrder)
+            IsAttackHitMoment = false;
+            if (AttackOrder || FeedOrder)
             {
-                if (base.AttackOrder)
+                if (AttackOrder)
                 {
                     m_tailWagPhase = MathUtils.Remainder(m_tailWagPhase + num3 * dt, 1f);
                 }
                 float bitingPhase = m_bitingPhase;
                 m_bitingPhase = MathUtils.Remainder(m_bitingPhase + num4 * dt, 1f);
-                if (base.AttackOrder && bitingPhase < 0.5f && m_bitingPhase >= 0.5f)
+                if (AttackOrder && bitingPhase < 0.5f && m_bitingPhase >= 0.5f)
                 {
-                    base.IsAttackHitMoment = true;
+                    IsAttackHitMoment = true;
                 }
             }
             else
@@ -107,8 +107,8 @@ namespace Game
                     m_bitingPhase = MathUtils.Remainder(MathUtils.Min(m_bitingPhase + num4 * dt, 1f), 1f);
                 }
             }
-            base.AttackOrder = false;
-            base.FeedOrder = false;
+            AttackOrder = false;
+            FeedOrder = false;
             BendOrder = null;
             DigInOrder = 0f;
             base.Update(dt);
@@ -128,13 +128,13 @@ namespace Game
                 {
                     num2 = MathUtils.DegToRad(25f) * MathUtils.Clamp(0.5f * MathUtils.Sin((float)Math.PI * 2f * num) - m_tailTurn.X, -1f, 1f);
                     num3 = MathUtils.DegToRad(30f) * MathUtils.Clamp(0.5f * MathUtils.Sin(2f * ((float)Math.PI * MathUtils.Max(num - 0.25f, 0f))) - m_tailTurn.X, -1f, 1f);
-                    num4 = MathUtils.DegToRad(25f) * MathUtils.Clamp(0.5f * MathUtils.Sin((float)Math.PI * 2f * base.MovementAnimationPhase) - m_tailTurn.Y, -1f, 1f);
-                    num5 = MathUtils.DegToRad(30f) * MathUtils.Clamp(0.5f * MathUtils.Sin((float)Math.PI * 2f * MathUtils.Max(base.MovementAnimationPhase - 0.25f, 0f)) - m_tailTurn.Y, -1f, 1f);
+                    num4 = MathUtils.DegToRad(25f) * MathUtils.Clamp(0.5f * MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase) - m_tailTurn.Y, -1f, 1f);
+                    num5 = MathUtils.DegToRad(30f) * MathUtils.Clamp(0.5f * MathUtils.Sin((float)Math.PI * 2f * MathUtils.Max(MovementAnimationPhase - 0.25f, 0f)) - m_tailTurn.Y, -1f, 1f);
                 }
                 else
                 {
-                    num2 = MathUtils.DegToRad(25f) * MathUtils.Clamp(0.5f * MathUtils.Sin((float)Math.PI * 2f * (base.MovementAnimationPhase + num)) - m_tailTurn.X, -1f, 1f);
-                    num3 = MathUtils.DegToRad(30f) * MathUtils.Clamp(0.5f * MathUtils.Sin(2f * ((float)Math.PI * MathUtils.Max(base.MovementAnimationPhase + num - 0.25f, 0f))) - m_tailTurn.X, -1f, 1f);
+                    num2 = MathUtils.DegToRad(25f) * MathUtils.Clamp(0.5f * MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + num)) - m_tailTurn.X, -1f, 1f);
+                    num3 = MathUtils.DegToRad(30f) * MathUtils.Clamp(0.5f * MathUtils.Sin(2f * ((float)Math.PI * MathUtils.Max(MovementAnimationPhase + num - 0.25f, 0f))) - m_tailTurn.X, -1f, 1f);
                     num4 = MathUtils.DegToRad(25f) * MathUtils.Clamp(0f - m_tailTurn.Y, -1f, 1f);
                     num5 = MathUtils.DegToRad(30f) * MathUtils.Clamp(0f - m_tailTurn.Y, -1f, 1f);
                 }
@@ -173,8 +173,8 @@ namespace Game
             else
             {
                 float num6 = m_componentCreature.ComponentBody.BoundingBox.Max.Y - m_componentCreature.ComponentBody.BoundingBox.Min.Y;
-                Vector3 position = m_componentCreature.ComponentBody.Position + 1f * num6 * base.DeathPhase * Vector3.UnitY;
-                SetBoneTransform(m_bodyBone.Index, Matrix.CreateFromYawPitchRoll(vector.X, 0f, (float)Math.PI * base.DeathPhase) * Matrix.CreateTranslation(position));
+                Vector3 position = m_componentCreature.ComponentBody.Position + 1f * num6 * DeathPhase * Vector3.UnitY;
+                SetBoneTransform(m_bodyBone.Index, Matrix.CreateFromYawPitchRoll(vector.X, 0f, (float)Math.PI * DeathPhase) * Matrix.CreateTranslation(position));
                 SetBoneTransform(m_tail1Bone.Index, Matrix.Identity);
                 SetBoneTransform(m_tail2Bone.Index, Matrix.Identity);
                 if (m_jawBone != null)
@@ -195,12 +195,12 @@ namespace Game
         public override void SetModel(Model model)
         {
             base.SetModel(model);
-            if (base.Model != null)
+            if (Model != null)
             {
-                m_bodyBone = base.Model.FindBone("Body");
-                m_tail1Bone = base.Model.FindBone("Tail1");
-                m_tail2Bone = base.Model.FindBone("Tail2");
-                m_jawBone = base.Model.FindBone("Jaw", throwIfNotFound: false);
+                m_bodyBone = Model.FindBone("Body");
+                m_tail1Bone = Model.FindBone("Tail1");
+                m_tail2Bone = Model.FindBone("Tail2");
+                m_jawBone = Model.FindBone("Jaw", throwIfNotFound: false);
             }
             else
             {

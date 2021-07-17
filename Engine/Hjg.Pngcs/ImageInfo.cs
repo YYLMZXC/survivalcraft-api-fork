@@ -116,7 +116,7 @@ namespace Hjg.Pngcs
 			{
 				return false;
 			}
-			ImageInfo imageInfo = (ImageInfo)obj;
+			var imageInfo = (ImageInfo)obj;
 			if (Alpha != imageInfo.Alpha)
 			{
 				return false;

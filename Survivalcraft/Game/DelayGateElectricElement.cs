@@ -17,7 +17,7 @@ namespace Game
         {
             get
             {
-                if (base.SubsystemElectricity.CircuitStep - m_lastDelayCalculationStep > 50)
+                if (SubsystemElectricity.CircuitStep - m_lastDelayCalculationStep > 50)
                 {
                     m_delaySteps = null;
                 }
@@ -26,7 +26,7 @@ namespace Game
                     int count = 0;
                     CountDelayPredecessors(this, ref count);
                     m_delaySteps = m_delaysByPredecessorsCount[count];
-                    m_lastDelayCalculationStep = base.SubsystemElectricity.CircuitStep;
+                    m_lastDelayCalculationStep = SubsystemElectricity.CircuitStep;
                 }
                 return m_delaySteps.Value;
             }
@@ -45,7 +45,7 @@ namespace Game
                 {
                     if (connection.ConnectorType == ElectricConnectorType.Input)
                     {
-                        DelayGateElectricElement delayGateElectricElement = connection.NeighborElectricElement as DelayGateElectricElement;
+                        var delayGateElectricElement = connection.NeighborElectricElement as DelayGateElectricElement;
                         if (delayGateElectricElement != null)
                         {
                             count++;

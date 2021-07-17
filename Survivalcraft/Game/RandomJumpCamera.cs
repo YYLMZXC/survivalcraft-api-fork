@@ -32,7 +32,7 @@ namespace Game
             }
             if (m_random.Float(0f, 1f) < m_frequency * dt)
             {
-                SubsystemPlayers subsystemPlayers = base.GameWidget.SubsystemGameWidgets.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
+                SubsystemPlayers subsystemPlayers = GameWidget.SubsystemGameWidgets.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
                 if (subsystemPlayers.PlayersData.Count > 0)
                 {
                     Vector3 spawnPosition = subsystemPlayers.PlayersData[0].SpawnPosition;
@@ -45,7 +45,7 @@ namespace Game
             }
             if (m_random.Float(0f, 1f) < 0.5f * m_frequency * dt)
             {
-                base.GameWidget.SubsystemGameWidgets.Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true).TimeOfDayOffset = m_random.Float(0f, 1f);
+                GameWidget.SubsystemGameWidgets.Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true).TimeOfDayOffset = m_random.Float(0f, 1f);
             }
             if (m_random.Float(0f, 1f) < 1f * dt * 0.5f)
             {

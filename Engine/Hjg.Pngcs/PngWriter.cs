@@ -155,7 +155,7 @@ namespace Hjg.Pngcs
 		{
 			CurrentChunkGroup = 0;
 			PngHelperInternal.WriteBytes(outputStream, PngHelperInternal.PNG_ID_SIGNATURE);
-			PngChunkIHDR obj = new PngChunkIHDR(ImgInfo)
+			var obj = new PngChunkIHDR(ImgInfo)
 			{
 				Cols = ImgInfo.Cols,
 				Rows = ImgInfo.Rows,

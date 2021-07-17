@@ -46,10 +46,10 @@ namespace Game
 
         public void AppendImageExtrusion(Image image, Rectangle bounds, Vector3 size, Color color)
         {
-            BlockMesh blockMesh = new BlockMesh();
+            var blockMesh = new BlockMesh();
             DynamicArray<BlockMeshVertex> vertices = blockMesh.Vertices;
             DynamicArray<ushort> indices = blockMesh.Indices;
-            BlockMeshVertex item = new BlockMeshVertex
+            var item = new BlockMeshVertex
             {
                 Position = new Vector3(bounds.Left, bounds.Top, -1f),
                 TextureCoordinates = new Vector2(bounds.Left, bounds.Top)
@@ -127,26 +127,26 @@ namespace Game
                     {
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)i - 0.01f, (float)num - 0.01f, -1.01f),
-                            TextureCoordinates = new Vector2((float)(i - 1) + 0.01f, (float)num + 0.01f)
+                            Position = new Vector3(i - 0.01f, num - 0.01f, -1.01f),
+                            TextureCoordinates = new Vector2(i - 1 + 0.01f, num + 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)i - 0.01f, (float)num - 0.01f, 1.01f),
-                            TextureCoordinates = new Vector2((float)i - 0.01f, (float)num + 0.01f)
+                            Position = new Vector3(i - 0.01f, num - 0.01f, 1.01f),
+                            TextureCoordinates = new Vector2(i - 0.01f, num + 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)i - 0.01f, (float)j + 0.01f, -1.01f),
-                            TextureCoordinates = new Vector2((float)(i - 1) + 0.01f, (float)j - 0.01f)
+                            Position = new Vector3(i - 0.01f, j + 0.01f, -1.01f),
+                            TextureCoordinates = new Vector2(i - 1 + 0.01f, j - 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)i - 0.01f, (float)j + 0.01f, 1.01f),
-                            TextureCoordinates = new Vector2((float)i - 0.01f, (float)j - 0.01f)
+                            Position = new Vector3(i - 0.01f, j + 0.01f, 1.01f),
+                            TextureCoordinates = new Vector2(i - 0.01f, j - 0.01f)
                         };
                         vertices.Add(item);
                         indices.Add((ushort)(vertices.Count - 4));
@@ -177,26 +177,26 @@ namespace Game
                     {
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)(k + 1) + 0.01f, (float)num3 - 0.01f, -1.01f),
-                            TextureCoordinates = new Vector2((float)(k + 1) + 0.01f, (float)num3 + 0.01f)
+                            Position = new Vector3(k + 1 + 0.01f, num3 - 0.01f, -1.01f),
+                            TextureCoordinates = new Vector2(k + 1 + 0.01f, num3 + 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)(k + 1) + 0.01f, (float)num3 - 0.01f, 1.01f),
-                            TextureCoordinates = new Vector2((float)(k + 2) - 0.01f, (float)num3 + 0.01f)
+                            Position = new Vector3(k + 1 + 0.01f, num3 - 0.01f, 1.01f),
+                            TextureCoordinates = new Vector2(k + 2 - 0.01f, num3 + 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)(k + 1) + 0.01f, (float)l + 0.01f, -1.01f),
-                            TextureCoordinates = new Vector2((float)(k + 1) + 0.01f, (float)l - 0.01f)
+                            Position = new Vector3(k + 1 + 0.01f, l + 0.01f, -1.01f),
+                            TextureCoordinates = new Vector2(k + 1 + 0.01f, l - 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)(k + 1) + 0.01f, (float)l + 0.01f, 1.01f),
-                            TextureCoordinates = new Vector2((float)(k + 2) - 0.01f, (float)l - 0.01f)
+                            Position = new Vector3(k + 1 + 0.01f, l + 0.01f, 1.01f),
+                            TextureCoordinates = new Vector2(k + 2 - 0.01f, l - 0.01f)
                         };
                         vertices.Add(item);
                         indices.Add((ushort)(vertices.Count - 4));
@@ -227,26 +227,26 @@ namespace Game
                     {
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)num5 - 0.01f, (float)m - 0.01f, -1.01f),
-                            TextureCoordinates = new Vector2((float)num5 + 0.01f, (float)(m - 1) + 0.01f)
+                            Position = new Vector3(num5 - 0.01f, m - 0.01f, -1.01f),
+                            TextureCoordinates = new Vector2(num5 + 0.01f, m - 1 + 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)num5 - 0.01f, (float)m - 0.01f, 1.01f),
-                            TextureCoordinates = new Vector2((float)num5 + 0.01f, (float)m - 0.01f)
+                            Position = new Vector3(num5 - 0.01f, m - 0.01f, 1.01f),
+                            TextureCoordinates = new Vector2(num5 + 0.01f, m - 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)n + 0.01f, (float)m - 0.01f, -1.01f),
-                            TextureCoordinates = new Vector2((float)n - 0.01f, (float)(m - 1) + 0.01f)
+                            Position = new Vector3(n + 0.01f, m - 0.01f, -1.01f),
+                            TextureCoordinates = new Vector2(n - 0.01f, m - 1 + 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)n + 0.01f, (float)m - 0.01f, 1.01f),
-                            TextureCoordinates = new Vector2((float)n - 0.01f, (float)m - 0.01f)
+                            Position = new Vector3(n + 0.01f, m - 0.01f, 1.01f),
+                            TextureCoordinates = new Vector2(n - 0.01f, m - 0.01f)
                         };
                         vertices.Add(item);
                         indices.Add((ushort)(vertices.Count - 4));
@@ -277,26 +277,26 @@ namespace Game
                     {
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)num8 - 0.01f, (float)(num7 + 1) + 0.01f, -1.01f),
-                            TextureCoordinates = new Vector2((float)num8 + 0.01f, (float)(num7 + 1) + 0.01f)
+                            Position = new Vector3(num8 - 0.01f, num7 + 1 + 0.01f, -1.01f),
+                            TextureCoordinates = new Vector2(num8 + 0.01f, num7 + 1 + 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)num8 - 0.01f, (float)(num7 + 1) + 0.01f, 1.01f),
-                            TextureCoordinates = new Vector2((float)num8 + 0.01f, (float)(num7 + 2) - 0.01f)
+                            Position = new Vector3(num8 - 0.01f, num7 + 1 + 0.01f, 1.01f),
+                            TextureCoordinates = new Vector2(num8 + 0.01f, num7 + 2 - 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)num9 + 0.01f, (float)(num7 + 1) + 0.01f, -1.01f),
-                            TextureCoordinates = new Vector2((float)num9 - 0.01f, (float)(num7 + 1) + 0.01f)
+                            Position = new Vector3(num9 + 0.01f, num7 + 1 + 0.01f, -1.01f),
+                            TextureCoordinates = new Vector2(num9 - 0.01f, num7 + 1 + 0.01f)
                         };
                         vertices.Add(item);
                         item = new BlockMeshVertex
                         {
-                            Position = new Vector3((float)num9 + 0.01f, (float)(num7 + 1) + 0.01f, 1.01f),
-                            TextureCoordinates = new Vector2((float)num9 - 0.01f, (float)(num7 + 2) - 0.01f)
+                            Position = new Vector3(num9 + 0.01f, num7 + 1 + 0.01f, 1.01f),
+                            TextureCoordinates = new Vector2(num9 - 0.01f, num7 + 2 - 0.01f)
                         };
                         vertices.Add(item);
                         indices.Add((ushort)(vertices.Count - 4));
@@ -311,10 +311,10 @@ namespace Game
             }
             for (int num11 = 0; num11 < vertices.Count; num11++)
             {
-                vertices.Array[num11].Position.X -= (float)bounds.Left + (float)bounds.Width / 2f;
-                vertices.Array[num11].Position.Y = (float)bounds.Bottom - vertices.Array[num11].Position.Y - (float)bounds.Height / 2f;
-                vertices.Array[num11].Position.X *= size.X / (float)bounds.Width;
-                vertices.Array[num11].Position.Y *= size.Y / (float)bounds.Height;
+                vertices.Array[num11].Position.X -= bounds.Left + bounds.Width / 2f;
+                vertices.Array[num11].Position.Y = bounds.Bottom - vertices.Array[num11].Position.Y - bounds.Height / 2f;
+                vertices.Array[num11].Position.X *= size.X / bounds.Width;
+                vertices.Array[num11].Position.Y *= size.Y / bounds.Height;
                 vertices.Array[num11].Position.Z *= size.Z / 2f;
                 vertices.Array[num11].TextureCoordinates.X /= image.Width;
                 vertices.Array[num11].TextureCoordinates.Y /= image.Height;
@@ -334,17 +334,17 @@ namespace Game
             }
             InternalVertex[] vertexData = GetVertexData<InternalVertex>(vertexBuffer);
             ushort[] indexData = GetIndexData<ushort>(indexBuffer);
-            Dictionary<ushort, ushort> dictionary = new Dictionary<ushort, ushort>();
+            var dictionary = new Dictionary<ushort, ushort>();
             for (int i = meshPart.StartIndex; i < meshPart.StartIndex + meshPart.IndicesCount; i++)
             {
                 ushort num = indexData[i];
                 if (!dictionary.ContainsKey(num))
                 {
                     dictionary.Add(num, (ushort)Vertices.Count);
-                    BlockMeshVertex item = default(BlockMeshVertex);
+                    BlockMeshVertex item = default;
                     item.Position = Vector3.Transform(vertexData[num].Position, matrix);
                     item.TextureCoordinates = vertexData[num].TextureCoordinate;
-                    Vector3 vector = Vector3.Normalize(Vector3.TransformNormal(flipNormals ? (-vertexData[num].Normal) : vertexData[num].Normal, matrix));
+                    var vector = Vector3.Normalize(Vector3.TransformNormal(flipNormals ? (-vertexData[num].Normal) : vertexData[num].Normal, matrix));
                     if (makeEmissive)
                     {
                         item.IsEmissive = true;
@@ -418,7 +418,7 @@ namespace Game
         {
             for (int i = 0; i < Vertices.Count; i++)
             {
-                if (((1 << (int)Vertices.Array[i].Face) & facesMask) != 0)
+                if (((1 << Vertices.Array[i].Face) & facesMask) != 0)
                 {
                     Vertices.Array[i].Position = Vector3.Transform(Vertices.Array[i].Position, matrix);
                 }
@@ -429,7 +429,7 @@ namespace Game
         {
             for (int i = 0; i < Vertices.Count; i++)
             {
-                if (((1 << (int)Vertices.Array[i].Face) & facesMask) != 0)
+                if (((1 << Vertices.Array[i].Face) & facesMask) != 0)
                 {
                     Vertices.Array[i].TextureCoordinates = Vector2.Transform(Vertices.Array[i].TextureCoordinates, matrix);
                 }
@@ -440,7 +440,7 @@ namespace Game
         {
             for (int i = 0; i < Vertices.Count; i++)
             {
-                if (((1 << (int)Vertices.Array[i].Face) & facesMask) != 0)
+                if (((1 << Vertices.Array[i].Face) & facesMask) != 0)
                 {
                     Vertices.Array[i].Color = color;
                 }
@@ -451,7 +451,7 @@ namespace Game
         {
             for (int i = 0; i < Vertices.Count; i++)
             {
-                if (((1 << (int)Vertices.Array[i].Face) & facesMask) != 0)
+                if (((1 << Vertices.Array[i].Face) & facesMask) != 0)
                 {
                     Vertices.Array[i].Color *= color;
                 }
@@ -490,13 +490,9 @@ namespace Game
                 {
                     Sides.Array[i] = 4;
                 }
-                else if (IsNear(position.Y, position2.Y, position3.Y, 0f))
-                {
-                    Sides.Array[i] = 5;
-                }
                 else
                 {
-                    Sides.Array[i] = -1;
+                    Sides.Array[i] = IsNear(position.Y, position2.Y, position3.Y, 0f) ? (sbyte)5 : (sbyte)-1;
                 }
             }
         }
@@ -522,8 +518,8 @@ namespace Game
             {
                 throw new InvalidOperationException("VertexBuffer data size is not a whole multiply of target type size.");
             }
-            T[] array2 = new T[array.Length / Utilities.SizeOf<T>()];
-            GCHandle gCHandle = GCHandle.Alloc(array2, GCHandleType.Pinned);
+            var array2 = new T[array.Length / Utilities.SizeOf<T>()];
+            var gCHandle = GCHandle.Alloc(array2, GCHandleType.Pinned);
             try
             {
                 Marshal.Copy(array, 0, gCHandle.AddrOfPinnedObject(), Utilities.SizeOf<T>() * array2.Length);
@@ -546,8 +542,8 @@ namespace Game
             {
                 throw new InvalidOperationException("IndexBuffer data size is not a whole multiply of target type size.");
             }
-            T[] array2 = new T[array.Length / Utilities.SizeOf<T>()];
-            GCHandle gCHandle = GCHandle.Alloc(array2, GCHandleType.Pinned);
+            var array2 = new T[array.Length / Utilities.SizeOf<T>()];
+            var gCHandle = GCHandle.Alloc(array2, GCHandleType.Pinned);
             try
             {
                 Marshal.Copy(array, 0, gCHandle.AddrOfPinnedObject(), Utilities.SizeOf<T>() * array2.Length);

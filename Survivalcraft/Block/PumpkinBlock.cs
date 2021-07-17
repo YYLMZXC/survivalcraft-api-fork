@@ -15,7 +15,7 @@ namespace Game
         {
             base.GetDropValues(subsystemTerrain, oldValue, newValue, toolLevel, dropValues, out showDebris);
             int data = Terrain.ExtractData(oldValue);
-            if (BasePumpkinBlock.GetSize(data) == 7 && !BasePumpkinBlock.GetIsDead(data) && Random.Bool(0.5f))
+            if (GetSize(data) == 7 && !GetIsDead(data) && Random.Bool(0.5f))
             {
                 dropValues.Add(new BlockDropValue
                 {

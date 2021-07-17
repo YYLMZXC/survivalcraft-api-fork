@@ -21,7 +21,7 @@ namespace Game
             for (int i = 0; i < 2; i++)
             {
                 m_meshesByData[i] = new BlockMesh();
-                m_meshesByData[i].AppendModelMeshPart(model.FindMesh("Magnet").MeshParts[0], boneAbsoluteTransform * Matrix.CreateRotationY((float)Math.PI / 2f * (float)i) * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: false, flipWindingOrder: false, doubleSided: true, flipNormals: false, Color.White);
+                m_meshesByData[i].AppendModelMeshPart(model.FindMesh("Magnet").MeshParts[0], boneAbsoluteTransform * Matrix.CreateRotationY((float)Math.PI / 2f * i) * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: false, flipWindingOrder: false, doubleSided: true, flipNormals: false, Color.White);
                 m_collisionBoxesByData[i] = new BoundingBox[1]
                 {
                     m_meshesByData[i].CalculateBoundingBox()
@@ -62,13 +62,13 @@ namespace Game
             {
                 Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
                 int data = (!(MathUtils.Abs(forward.X) > MathUtils.Abs(forward.Z))) ? 1 : 0;
-                result = default(BlockPlacementData);
+                result = default;
                 result.CellFace = raycastResult.CellFace;
                 result.Value = Terrain.ReplaceData(value, data);
                 return result;
             }
             componentMiner.ComponentPlayer?.ComponentGui.DisplaySmallMessage("Too many magnets", Color.White, blinking: true, playNotificationSound: false);
-            result = default(BlockPlacementData);
+            result = default;
             return result;
         }
     }

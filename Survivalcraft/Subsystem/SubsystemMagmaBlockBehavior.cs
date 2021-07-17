@@ -27,14 +27,14 @@ namespace Game
 
         public void Update(float dt)
         {
-            if (base.SubsystemTime.PeriodicGameTimeEvent(2.0, 0.0))
+            if (SubsystemTime.PeriodicGameTimeEvent(2.0, 0.0))
             {
                 SpreadFluid();
             }
-            if (base.SubsystemTime.PeriodicGameTimeEvent(1.0, 0.75))
+            if (SubsystemTime.PeriodicGameTimeEvent(1.0, 0.75))
             {
                 float num = float.MaxValue;
-                foreach (Vector3 listenerPosition in base.SubsystemAudio.ListenerPositions)
+                foreach (Vector3 listenerPosition in SubsystemAudio.ListenerPositions)
                 {
                     float? num2 = CalculateDistanceToFluid(listenerPosition, 8, flowingFluidOnly: false);
                     if (num2.HasValue && num2.Value < num)
@@ -42,9 +42,9 @@ namespace Game
                         num = num2.Value;
                     }
                 }
-                m_soundVolume = base.SubsystemAudio.CalculateVolume(num, 2f, 3.5f);
+                m_soundVolume = SubsystemAudio.CalculateVolume(num, 2f, 3.5f);
             }
-            base.SubsystemAmbientSounds.MagmaSoundVolume = MathUtils.Max(base.SubsystemAmbientSounds.MagmaSoundVolume, m_soundVolume);
+            SubsystemAmbientSounds.MagmaSoundVolume = MathUtils.Max(SubsystemAmbientSounds.MagmaSoundVolume, m_soundVolume);
         }
 
         public override void OnBlockAdded(int value, int oldValue, int x, int y, int z)
@@ -72,8 +72,8 @@ namespace Game
         {
             if (BlocksManager.Blocks[Terrain.ExtractContents(interactValue)] is WaterBlock)
             {
-                base.SubsystemAudio.PlayRandomSound("Audio/Sizzles", 1f, m_random.Float(-0.1f, 0.1f), new Vector3(x, y, z), 5f, autoDelay: true);
-                base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                SubsystemAudio.PlayRandomSound("Audio/Sizzles", 1f, m_random.Float(-0.1f, 0.1f), new Vector3(x, y, z), 5f, autoDelay: true);
+                SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
                 Set(x, y, z, 67);
                 return true;
             }
@@ -83,23 +83,23 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemFireBlockBehavior = base.Project.FindSubsystem<SubsystemFireBlockBehavior>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemFireBlockBehavior = Project.FindSubsystem<SubsystemFireBlockBehavior>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
         }
 
         public void ApplyMagmaNeighborhoodEffect(int x, int y, int z)
         {
             m_subsystemFireBlockBehavior.SetCellOnFire(x, y, z, 1f);
-            switch (base.SubsystemTerrain.Terrain.GetCellContents(x, y, z))
+            switch (SubsystemTerrain.Terrain.GetCellContents(x, y, z))
             {
                 case 61:
                 case 62:
-                    base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
-                    m_subsystemParticles.AddParticleSystem(new BurntDebrisParticleSystem(base.SubsystemTerrain, new Vector3((float)x + 0.5f, y + 1, (float)z + 0.5f)));
+                    SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                    m_subsystemParticles.AddParticleSystem(new BurntDebrisParticleSystem(SubsystemTerrain, new Vector3(x + 0.5f, y + 1, z + 0.5f)));
                     break;
                 case 8:
-                    base.SubsystemTerrain.ChangeCell(x, y, z, 2);
-                    m_subsystemParticles.AddParticleSystem(new BurntDebrisParticleSystem(base.SubsystemTerrain, new Vector3((float)x + 0.5f, y + 1, (float)z + 0.5f)));
+                    SubsystemTerrain.ChangeCell(x, y, z, 2);
+                    m_subsystemParticles.AddParticleSystem(new BurntDebrisParticleSystem(SubsystemTerrain, new Vector3(x + 0.5f, y + 1, z + 0.5f)));
                     break;
             }
         }

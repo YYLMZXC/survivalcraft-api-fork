@@ -26,7 +26,7 @@ namespace Engine.Content
 
 		public void Write(string projectDirectory, Stream stream)
 		{
-			Image image = Image.Load(Storage.OpenFile(Storage.CombinePaths(projectDirectory, Texture), OpenFileMode.Read), Image.DetermineFileFormat(Storage.GetExtension(Texture)));
+			var image = Image.Load(Storage.OpenFile(Storage.CombinePaths(projectDirectory, Texture), OpenFileMode.Read), Image.DetermineFileFormat(Storage.GetExtension(Texture)));
 			WriteTexture(stream, image, GenerateMipmaps, PremultiplyAlpha, KeepSourceImageDataInTag);
 		}
 
@@ -37,7 +37,7 @@ namespace Engine.Content
 				image = new Image(image);
 				Image.PremultiplyAlpha(image);
 			}
-			List<Image> list = new List<Image>();
+			var list = new List<Image>();
 			if (generateMipmaps)
 			{
 				list.AddRange(Image.GenerateMipmaps(image));
@@ -46,7 +46,7 @@ namespace Engine.Content
 			{
 				list.Add(image);
 			}
-			EngineBinaryWriter engineBinaryWriter = new EngineBinaryWriter(stream);
+			var engineBinaryWriter = new EngineBinaryWriter(stream);
 			engineBinaryWriter.Write(keepSourceImageInTag);
 			engineBinaryWriter.Write(list[0].Width);
 			engineBinaryWriter.Write(list[0].Height);

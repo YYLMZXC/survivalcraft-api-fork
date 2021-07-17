@@ -74,7 +74,7 @@ namespace Game
         {
             string text = string.Empty;
             string text2 = "0123456789abdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            Random random = new Random(171);
+            var random = new Random(171);
             for (int i = 0; i < 229; i++)
             {
                 text += text2[random.Int(text2.Length)].ToString();

@@ -4,12 +4,13 @@ using System.Drawing;
 
 namespace Engine.Input
 {
-	public static class Mouse
+    public static class Mouse
 	{
+#if desktop
 		private static Point2? m_lastMousePosition;
 
 		private static int? m_lastMouseWheelValue;
-
+#endif
 		private static bool[] m_mouseButtonsDownArray;
 
 		private static bool[] m_mouseButtonsDownOnceArray;
@@ -46,15 +47,19 @@ namespace Engine.Input
 
 		public static void SetMousePosition(int x, int y)
 		{
+#if desktop
 			Point point = Window.m_gameWindow.PointToScreen(new Point(x, y));
 			OpenTK.Input.Mouse.SetPosition(point.X, point.Y);
+#endif
 		}
 
 		internal static void Initialize()
 		{
+#if desktop
 			Window.m_gameWindow.MouseDown += MouseDownHandler;
 			Window.m_gameWindow.MouseUp += MouseUpHandler;
 			Window.m_gameWindow.MouseMove += MouseMoveHandler;
+#endif
 		}
 
 		internal static void Dispose()
@@ -63,6 +68,7 @@ namespace Engine.Input
 
 		internal static void BeforeFrame()
 		{
+#if desktop
 			if (Window.IsActive)
 			{
 				Window.m_gameWindow.CursorVisible = IsMouseVisible;
@@ -83,8 +89,10 @@ namespace Engine.Input
 				m_lastMousePosition = null;
 				m_lastMouseWheelValue = null;
 			}
+#endif
 		}
 
+#if desktop
 		private static void MouseDownHandler(object sender, MouseButtonEventArgs e)
 		{
 			MouseButton mouseButton = TranslateMouseButton(e.Button);
@@ -122,6 +130,7 @@ namespace Engine.Input
 				return (MouseButton)(-1);
 			}
 		}
+#endif
 
 		static Mouse()
 		{

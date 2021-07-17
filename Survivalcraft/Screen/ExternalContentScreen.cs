@@ -47,9 +47,9 @@ namespace Game
 			m_copyLinkButton = Children.Find<ButtonWidget>("CopyLink");
 			m_directoryList.ItemWidgetFactory = delegate (object item)
 			{
-				ExternalContentEntry externalContentEntry2 = (ExternalContentEntry)item;
+				var externalContentEntry2 = (ExternalContentEntry)item;
 				XElement node2 = ContentManager.Get<XElement>("Widgets/ExternalContentItem");
-				ContainerWidget containerWidget = (ContainerWidget)Widget.LoadWidget(this, node2, null);
+				var containerWidget = (ContainerWidget)LoadWidget(this, node2, null);
 				string fileName = Storage.GetFileName(externalContentEntry2.Path);
 				string text = m_downloadedFiles.ContainsKey(externalContentEntry2.Path) ? LanguageControl.Get(fName, 11) : string.Empty;
 				string text2 = (externalContentEntry2.Type != ExternalContentType.Directory) ? $"{ExternalContentManager.GetEntryTypeDescription(externalContentEntry2.Type)} | {DataSizeFormatter.Format(externalContentEntry2.Size)} | {externalContentEntry2.Time:dd-MMM-yyyy HH:mm}{text}" : ExternalContentManager.GetEntryTypeDescription(externalContentEntry2.Type);
@@ -62,7 +62,7 @@ namespace Game
 			{
 				if (m_directoryList.SelectedItem == item)
 				{
-					ExternalContentEntry externalContentEntry = item as ExternalContentEntry;
+					var externalContentEntry = item as ExternalContentEntry;
 					if (externalContentEntry != null && externalContentEntry.Type == ExternalContentType.Directory)
 					{
 						SetPath(externalContentEntry.Path);
@@ -153,7 +153,7 @@ namespace Game
 			}
 			if (m_copyLinkButton.IsClicked && externalContentEntry != null && ExternalContentManager.IsEntryTypeDownloadSupported(externalContentEntry.Type))
 			{
-				CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 8), autoHideOnCancel: false);
+				var busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 8), autoHideOnCancel: false);
 				DialogsManager.ShowDialog(null, busyDialog);
 				m_externalContentProvider.Link(externalContentEntry.Path, busyDialog.Progress, delegate (string link)
 				{
@@ -182,7 +182,7 @@ namespace Game
 					});
 				}
 			}
-			if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
 			{
 				ScreensManager.SwitchScreen("Content");
 			}
@@ -207,12 +207,12 @@ namespace Game
 			m_directoryList.ClearItems();
 			if (m_externalContentProvider != null && m_externalContentProvider.IsLoggedIn)
 			{
-				CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 9), autoHideOnCancel: false);
+				var busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 9), autoHideOnCancel: false);
 				DialogsManager.ShowDialog(null, busyDialog);
 				m_externalContentProvider.List(m_path, busyDialog.Progress, delegate (ExternalContentEntry entry)
 				{
 					DialogsManager.HideDialog(busyDialog);
-					List<ExternalContentEntry> list = new List<ExternalContentEntry>(entry.ChildEntries.Where((ExternalContentEntry e) => EntryFilter(e)).Take(1000));
+					var list = new List<ExternalContentEntry>(entry.ChildEntries.Where((ExternalContentEntry e) => EntryFilter(e)).Take(1000));
 					m_directoryList.ClearItems();
 					list.Sort(delegate (ExternalContentEntry e1, ExternalContentEntry e2)
 					{
@@ -236,7 +236,7 @@ namespace Game
 
 		public void DownloadEntry(ExternalContentEntry entry)
 		{
-			CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 10), autoHideOnCancel: false);
+			var busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 10), autoHideOnCancel: false);
 			DialogsManager.ShowDialog(null, busyDialog);
 			m_externalContentProvider.Download(entry.Path, busyDialog.Progress, delegate (Stream stream)
 			{

@@ -41,7 +41,7 @@ namespace Game
                 }
                 return;
             }
-            CraftingRecipe craftingRecipe = new CraftingRecipe();
+            var craftingRecipe = new CraftingRecipe();
             string attributeValue = XmlUtils.GetAttributeValue<string>(item, "Result");
             string desc = XmlUtils.GetAttributeValue<string>(item, "Description");
             if (desc.StartsWith("[") && desc.EndsWith("]"))
@@ -68,7 +68,7 @@ namespace Game
             {
                 throw new InvalidOperationException($"In Recipe for \"{attributeValue2}\" RemainsCount is larger than max stacking of remains block.");
             }
-            Dictionary<char, string> dictionary = new Dictionary<char, string>();
+            var dictionary = new Dictionary<char, string>();
             foreach (XAttribute item2 in from a in item.Attributes()
                                          where a.Name.LocalName.Length == 1 && char.IsLower(a.Name.LocalName[0])
                                          select a)

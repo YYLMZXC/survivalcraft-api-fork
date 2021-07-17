@@ -34,9 +34,9 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemSoundMaterials = base.Project.FindSubsystem<SubsystemSoundMaterials>(throwOnError: true);
-            m_subsystemMovingBlocks = base.Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemSoundMaterials = Project.FindSubsystem<SubsystemSoundMaterials>(throwOnError: true);
+            m_subsystemMovingBlocks = Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true);
             m_subsystemMovingBlocks.Stopped += MovingBlocksStopped;
             m_subsystemMovingBlocks.CollidedWithTerrain += MovingBlocksCollidedWithTerrain;
         }
@@ -45,14 +45,14 @@ namespace Game
         {
             if (movingBlockSet.Id == "CollapsingBlock")
             {
-                int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(p.X, p.Y, p.Z);
+                int cellValue = SubsystemTerrain.Terrain.GetCellValue(p.X, p.Y, p.Z);
                 if (IsCollapseSupportBlock(cellValue))
                 {
                     movingBlockSet.Stop();
                 }
                 else if (IsCollapseDestructibleBlock(cellValue))
                 {
-                    base.SubsystemTerrain.DestroyCell(0, p.X, p.Y, p.Z, 0, noDrop: false, noParticleSystem: false);
+                    SubsystemTerrain.DestroyCell(0, p.X, p.Y, p.Z, 0, noDrop: false, noParticleSystem: false);
                 }
             }
         }
@@ -65,7 +65,7 @@ namespace Game
                 foreach (MovingBlock block in movingBlockSet.Blocks)
                 {
                     Point3 point = p + block.Offset;
-                    base.SubsystemTerrain.DestroyCell(0, point.X, point.Y, point.Z, block.Value, noDrop: false, noParticleSystem: false);
+                    SubsystemTerrain.DestroyCell(0, point.X, point.Y, point.Z, block.Value, noDrop: false, noParticleSystem: false);
                 }
                 m_subsystemMovingBlocks.RemoveMovingBlockSet(movingBlockSet);
                 if (movingBlockSet.Blocks.Count > 0)
@@ -81,15 +81,15 @@ namespace Game
             {
                 return;
             }
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(p.X, p.Y - 1, p.Z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(p.X, p.Y - 1, p.Z);
             if (IsCollapseSupportBlock(cellValue))
             {
                 return;
             }
-            List<MovingBlock> list = new List<MovingBlock>();
+            var list = new List<MovingBlock>();
             for (int i = p.Y; i < 256; i++)
             {
-                int cellValue2 = base.SubsystemTerrain.Terrain.GetCellValue(p.X, i, p.Z);
+                int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(p.X, i, p.Z);
                 if (!IsCollapsibleBlock(cellValue2))
                 {
                     break;
@@ -105,7 +105,7 @@ namespace Game
                 foreach (MovingBlock item in list)
                 {
                     Point3 point = p + item.Offset;
-                    base.SubsystemTerrain.ChangeCell(point.X, point.Y, point.Z, 0);
+                    SubsystemTerrain.ChangeCell(point.X, point.Y, point.Z, 0);
                 }
             }
         }
@@ -134,7 +134,7 @@ namespace Game
                 {
                     return true;
                 }
-                if (block.IsFaceTransparent(base.SubsystemTerrain, 4, value))
+                if (block.IsFaceTransparent(SubsystemTerrain, 4, value))
                 {
                     return block is SoilBlock;
                 }

@@ -31,7 +31,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public Dictionary<string, int> GetChunksKeys()
 		{
-			Dictionary<string, int> dictionary = new Dictionary<string, int>();
+			var dictionary = new Dictionary<string, int>();
 			foreach (PngChunk chunk in chunks)
 			{
 				dictionary[chunk.Id] = ((!dictionary.ContainsKey(chunk.Id)) ? 1 : (dictionary[chunk.Id] + 1));
@@ -105,7 +105,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public string ToStringFull()
 		{
-			StringBuilder stringBuilder = new StringBuilder(ToString());
+			var stringBuilder = new StringBuilder(ToString());
 			stringBuilder.Append("\n Read:\n");
 			foreach (PngChunk chunk in chunks)
 			{

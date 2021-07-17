@@ -38,10 +38,10 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
             if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue))
             {
-                base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
             }
         }
 
@@ -52,7 +52,7 @@ namespace Game
             {
                 Point = new Point3(x, y, z),
                 Type = (TreeType)Terrain.ExtractData(value),
-                MatureTime = m_subsystemGameInfo.TotalElapsedGameTime + (double)num
+                MatureTime = m_subsystemGameInfo.TotalElapsedGameTime + num
             });
         }
 
@@ -64,7 +64,7 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
             m_enumerator = m_saplings.Values.GetEnumerator();
             foreach (string value in valuesDictionary.GetValue<ValuesDictionary>("Saplings").Values)
             {
@@ -74,7 +74,7 @@ namespace Game
 
         public override void Save(ValuesDictionary valuesDictionary)
         {
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Saplings", valuesDictionary2);
             int num = 0;
             foreach (SaplingData value in m_saplings.Values)
@@ -138,23 +138,23 @@ namespace Game
             int x = saplingData.Point.X;
             int y = saplingData.Point.Y;
             int z = saplingData.Point.Z;
-            TerrainChunk chunkAtCell = base.SubsystemTerrain.Terrain.GetChunkAtCell(x - 6, z - 6);
-            TerrainChunk chunkAtCell2 = base.SubsystemTerrain.Terrain.GetChunkAtCell(x - 6, z + 6);
-            TerrainChunk chunkAtCell3 = base.SubsystemTerrain.Terrain.GetChunkAtCell(x + 6, z - 6);
-            TerrainChunk chunkAtCell4 = base.SubsystemTerrain.Terrain.GetChunkAtCell(x + 6, z + 6);
+            TerrainChunk chunkAtCell = SubsystemTerrain.Terrain.GetChunkAtCell(x - 6, z - 6);
+            TerrainChunk chunkAtCell2 = SubsystemTerrain.Terrain.GetChunkAtCell(x - 6, z + 6);
+            TerrainChunk chunkAtCell3 = SubsystemTerrain.Terrain.GetChunkAtCell(x + 6, z - 6);
+            TerrainChunk chunkAtCell4 = SubsystemTerrain.Terrain.GetChunkAtCell(x + 6, z + 6);
             if (chunkAtCell != null && chunkAtCell.State == TerrainChunkState.Valid && chunkAtCell2 != null && chunkAtCell2.State == TerrainChunkState.Valid && chunkAtCell3 != null && chunkAtCell3.State == TerrainChunkState.Valid && chunkAtCell4 != null && chunkAtCell4.State == TerrainChunkState.Valid)
             {
-                int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
+                int cellContents = SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
                 if (cellContents == 2 || cellContents == 8)
                 {
-                    if (base.SubsystemTerrain.Terrain.GetCellLight(x, y + 1, z) >= 9)
+                    if (SubsystemTerrain.Terrain.GetCellLight(x, y + 1, z) >= 9)
                     {
                         bool flag = false;
                         for (int i = x - 1; i <= x + 1; i++)
                         {
                             for (int j = z - 1; j <= z + 1; j++)
                             {
-                                int cellContents2 = base.SubsystemTerrain.Terrain.GetCellContents(i, y - 1, j);
+                                int cellContents2 = SubsystemTerrain.Terrain.GetCellContents(i, y - 1, j);
                                 if (BlocksManager.Blocks[cellContents2] is WaterBlock)
                                 {
                                     flag = true;
@@ -169,8 +169,8 @@ namespace Game
                         }
                         else
                         {
-                            int num2 = base.SubsystemTerrain.Terrain.GetTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
-                            int num3 = base.SubsystemTerrain.Terrain.GetHumidity(x, z);
+                            int num2 = SubsystemTerrain.Terrain.GetTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
+                            int num3 = SubsystemTerrain.Terrain.GetHumidity(x, z);
                             if (flag)
                             {
                                 num2 = (num2 + 10) / 2;
@@ -180,25 +180,25 @@ namespace Game
                         }
                         if (m_random.Bool(num))
                         {
-                            base.SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(0, 0, 0));
+                            SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(0, 0, 0));
                             if (!GrowTree(x, y, z, saplingData.Type))
                             {
-                                base.SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(28, 0, 0));
+                                SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(28, 0, 0));
                             }
                         }
                         else
                         {
-                            base.SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(28, 0, 0));
+                            SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(28, 0, 0));
                         }
                     }
                     else if (m_subsystemGameInfo.TotalElapsedGameTime > saplingData.MatureTime + 1200.0)
                     {
-                        base.SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(28, 0, 0));
+                        SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(28, 0, 0));
                     }
                 }
                 else
                 {
-                    base.SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(28, 0, 0));
+                    SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(28, 0, 0));
                 }
             }
             else
@@ -220,7 +220,7 @@ namespace Game
                     TerrainBrush.Cell cell = cells[j];
                     if (cell.Y >= 0 && (cell.X != 0 || cell.Y != 0 || cell.Z != 0))
                     {
-                        int cellContents = base.SubsystemTerrain.Terrain.GetCellContents(cell.X + x, cell.Y + y, cell.Z + z);
+                        int cellContents = SubsystemTerrain.Terrain.GetCellContents(cell.X + x, cell.Y + y, cell.Z + z);
                         if (cellContents != 0 && !(BlocksManager.Blocks[cellContents] is LeavesBlock))
                         {
                             flag = false;
@@ -230,7 +230,7 @@ namespace Game
                 }
                 if (flag)
                 {
-                    terrainBrush.Paint(base.SubsystemTerrain, x, y, z);
+                    terrainBrush.Paint(SubsystemTerrain, x, y, z);
                     return true;
                 }
             }

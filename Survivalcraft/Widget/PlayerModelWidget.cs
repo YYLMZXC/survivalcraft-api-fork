@@ -105,17 +105,17 @@ namespace Game
 
         public override void Update()
         {
-            if (base.Input.Press.HasValue)
+            if (Input.Press.HasValue)
             {
                 if (m_lastDrag.HasValue)
                 {
-                    m_rotation += 0.01f * (base.Input.Press.Value.X - m_lastDrag.Value.X);
-                    m_lastDrag = base.Input.Press.Value;
-                    base.Input.Clear();
+                    m_rotation += 0.01f * (Input.Press.Value.X - m_lastDrag.Value.X);
+                    m_lastDrag = Input.Press.Value;
+                    Input.Clear();
                 }
-                else if (HitTestGlobal(base.Input.Press.Value) == this)
+                else if (HitTestGlobal(Input.Press.Value) == this)
                 {
-                    m_lastDrag = base.Input.Press.Value;
+                    m_lastDrag = Input.Press.Value;
                 }
             }
             else
@@ -136,14 +136,7 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            if (OuterClothing)
-            {
-                m_modelWidget.Model = CharacterSkinsManager.GetOuterClothingModel(PlayerClass);
-            }
-            else
-            {
-                m_modelWidget.Model = CharacterSkinsManager.GetPlayerModel(PlayerClass);
-            }
+            m_modelWidget.Model = OuterClothing ? CharacterSkinsManager.GetOuterClothingModel(PlayerClass) : CharacterSkinsManager.GetPlayerModel(PlayerClass);
             if (CameraShot == Shot.Body)
             {
                 m_modelWidget.ViewPosition = ((PlayerClass == PlayerClass.Male) ? new Vector3(0f, 1.46f, -3.2f) : new Vector3(0f, 1.39f, -3.04f));
@@ -160,19 +153,14 @@ namespace Game
                 m_modelWidget.ViewTarget = ((PlayerClass == PlayerClass.Male) ? new Vector3(0f, 1.5f, 0f) : new Vector3(0f, 1.43f, 0f));
                 m_modelWidget.ViewFov = 0.57f;
             }
-            if (OuterClothing)
-            {
-                m_modelWidget.TextureOverride = OuterClothingTexture;
-            }
-            else
-            {
-                m_modelWidget.TextureOverride = ((CharacterSkinName != null) ? CharacterSkinsCache.GetTexture(CharacterSkinName) : CharacterSkinTexture);
-            }
+            m_modelWidget.TextureOverride = OuterClothing
+                ? OuterClothingTexture
+                : (CharacterSkinName != null) ? CharacterSkinsCache.GetTexture(CharacterSkinName) : CharacterSkinTexture;
             if (AnimateHeadSeed != 0)
             {
                 int num = (AnimateHeadSeed < 0) ? GetHashCode() : AnimateHeadSeed;
-                float num2 = (float)MathUtils.Remainder(Time.FrameStartTime + 1000.0 * (double)num, 10000.0);
-                Vector2 vector = default(Vector2);
+                float num2 = (float)MathUtils.Remainder(Time.FrameStartTime + 1000.0 * num, 10000.0);
+                Vector2 vector = default;
                 vector.X = MathUtils.Lerp(-0.75f, 0.75f, SimplexNoise.OctavedNoise(num2 + 100f, 0.2f, 1, 2f, 0.5f));
                 vector.Y = MathUtils.Lerp(-0.5f, 0.5f, SimplexNoise.OctavedNoise(num2 + 200f, 0.17f, 1, 2f, 0.5f));
                 Matrix value = Matrix.CreateRotationX(vector.Y) * Matrix.CreateRotationZ(vector.X);
@@ -181,11 +169,11 @@ namespace Game
             if (!OuterClothing && AnimateHandsSeed != 0)
             {
                 int num3 = (AnimateHandsSeed < 0) ? GetHashCode() : AnimateHandsSeed;
-                float num4 = (float)MathUtils.Remainder(Time.FrameStartTime + 1000.0 * (double)num3, 10000.0);
-                Vector2 vector2 = default(Vector2);
+                float num4 = (float)MathUtils.Remainder(Time.FrameStartTime + 1000.0 * num3, 10000.0);
+                Vector2 vector2 = default;
                 vector2.X = MathUtils.Lerp(0.2f, 0f, SimplexNoise.OctavedNoise(num4 + 100f, 0.7f, 1, 2f, 0.5f));
                 vector2.Y = MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.OctavedNoise(num4 + 200f, 0.7f, 1, 2f, 0.5f));
-                Vector2 vector3 = default(Vector2);
+                Vector2 vector3 = default;
                 vector3.X = MathUtils.Lerp(-0.2f, 0f, SimplexNoise.OctavedNoise(num4 + 300f, 0.7f, 1, 2f, 0.5f));
                 vector3.Y = MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.OctavedNoise(num4 + 400f, 0.7f, 1, 2f, 0.5f));
                 Matrix value2 = Matrix.CreateRotationX(vector2.Y) * Matrix.CreateRotationY(vector2.X);
@@ -198,7 +186,7 @@ namespace Game
 
         public override void UpdateCeases()
         {
-            if (base.RootWidget == null)
+            if (RootWidget == null)
             {
                 if (m_publicCharacterSkinsCache.ContainsTexture(m_modelWidget.TextureOverride))
                 {

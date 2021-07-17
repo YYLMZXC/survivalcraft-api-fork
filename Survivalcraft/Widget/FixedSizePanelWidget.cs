@@ -22,14 +22,14 @@ namespace Game
                     }
                 }
             }
-            base.DesiredSize = zero;
+            DesiredSize = zero;
         }
 
         public override void ArrangeOverride()
         {
             foreach (Widget child in Children)
             {
-                ContainerWidget.ArrangeChildWidgetInCell(Vector2.Zero, base.ActualSize, child);
+                ArrangeChildWidgetInCell(Vector2.Zero, ActualSize, child);
             }
         }
     }

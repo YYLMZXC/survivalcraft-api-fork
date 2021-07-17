@@ -36,7 +36,7 @@ namespace Game
                 Matrix identity = Matrix.Identity;
                 identity *= Matrix.CreateScale(0f - num, 1f, 1f);
                 identity *= Matrix.CreateTranslation((0.5f - m_pivotDistance) * num, 0f, 0f) * Matrix.CreateRotationY(open ? (num * (float)Math.PI / 2f) : 0f) * Matrix.CreateTranslation((0f - (0.5f - m_pivotDistance)) * num, 0f, 0f);
-                identity *= Matrix.CreateTranslation(0f, 0f, 0.5f - m_pivotDistance) * Matrix.CreateRotationY((float)rotation * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
+                identity *= Matrix.CreateTranslation(0f, 0f, 0.5f - m_pivotDistance) * Matrix.CreateRotationY(rotation * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                 m_blockMeshesByData[i].AppendModelMeshPart(model.FindMesh("Door").MeshParts[0], boneAbsoluteTransform * identity, makeEmissive: false, !rightHanded, doubleSided: false, flipNormals: false, Color.White);
                 BoundingBox boundingBox = m_blockMeshesByData[i].CalculateBoundingBox();
                 boundingBox.Max.Y = 1f;
@@ -123,7 +123,7 @@ namespace Game
                     break;
             }
             int data = SetRightHanded(SetOpen(SetRotation(0, num5), open: false), rightHanded);
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, BlockIndex), data);
             result.CellFace = raycastResult.CellFace;
             return result;

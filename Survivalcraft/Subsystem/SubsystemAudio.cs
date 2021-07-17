@@ -97,7 +97,7 @@ namespace Game
 
         public void PlaySound(string name, float volume, float pitch, float pan, float delay)
         {
-            double num = m_subsystemTime.GameTime + (double)delay;
+            double num = m_subsystemTime.GameTime + delay;
             m_nextSoundTime = MathUtils.Min(m_nextSoundTime, num);
             m_queuedSounds.Add(new SoundInfo
             {
@@ -149,7 +149,7 @@ namespace Game
 
         public Sound CreateSound(string name)
         {
-            Sound sound = new Sound(ContentManager.Get<SoundBuffer>(name));
+            var sound = new Sound(ContentManager.Get<SoundBuffer>(name));
             m_sounds.Add(sound);
             return sound;
         }
@@ -207,8 +207,8 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemViews = base.Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemViews = Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
         }
 
         public override void Dispose()

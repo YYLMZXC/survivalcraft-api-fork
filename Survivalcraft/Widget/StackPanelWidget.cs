@@ -60,22 +60,11 @@ namespace Game
             }
             if (Direction == LayoutDirection.Horizontal)
             {
-                if (m_fillCount == 0)
-                {
-                    base.DesiredSize = new Vector2(m_fixedSize, num);
-                }
-                else
-                {
-                    base.DesiredSize = new Vector2(float.PositiveInfinity, num);
-                }
-            }
-            else if (m_fillCount == 0)
-            {
-                base.DesiredSize = new Vector2(num, m_fixedSize);
+                DesiredSize = m_fillCount == 0 ? new Vector2(m_fixedSize, num) : new Vector2(float.PositiveInfinity, num);
             }
             else
             {
-                base.DesiredSize = new Vector2(num, float.PositiveInfinity);
+                DesiredSize = m_fillCount == 0 ? new Vector2(num, m_fixedSize) : new Vector2(num, float.PositiveInfinity);
             }
         }
 
@@ -88,38 +77,38 @@ namespace Game
                 {
                     if (Direction == LayoutDirection.Horizontal)
                     {
-                        float num2 = (child.ParentDesiredSize.X == float.PositiveInfinity) ? ((m_fillCount > 0) ? (MathUtils.Max(base.ActualSize.X - m_fixedSize, 0f) / (float)m_fillCount) : 0f) : (child.ParentDesiredSize.X + 2f * child.Margin.X);
+                        float num2 = (child.ParentDesiredSize.X == float.PositiveInfinity) ? ((m_fillCount > 0) ? (MathUtils.Max(ActualSize.X - m_fixedSize, 0f) / m_fillCount) : 0f) : (child.ParentDesiredSize.X + 2f * child.Margin.X);
                         Vector2 c;
                         Vector2 c2;
                         if (!IsInverted)
                         {
                             c = new Vector2(num, 0f);
-                            c2 = new Vector2(num + num2, base.ActualSize.Y);
+                            c2 = new Vector2(num + num2, ActualSize.Y);
                         }
                         else
                         {
-                            c = new Vector2(base.ActualSize.X - (num + num2), 0f);
-                            c2 = new Vector2(base.ActualSize.X - num, base.ActualSize.Y);
+                            c = new Vector2(ActualSize.X - (num + num2), 0f);
+                            c2 = new Vector2(ActualSize.X - num, ActualSize.Y);
                         }
-                        ContainerWidget.ArrangeChildWidgetInCell(c, c2, child);
+                        ArrangeChildWidgetInCell(c, c2, child);
                         num += num2;
                     }
                     else
                     {
-                        float num3 = (child.ParentDesiredSize.Y == float.PositiveInfinity) ? ((m_fillCount > 0) ? (MathUtils.Max(base.ActualSize.Y - m_fixedSize, 0f) / (float)m_fillCount) : 0f) : (child.ParentDesiredSize.Y + 2f * child.Margin.Y);
+                        float num3 = (child.ParentDesiredSize.Y == float.PositiveInfinity) ? ((m_fillCount > 0) ? (MathUtils.Max(ActualSize.Y - m_fixedSize, 0f) / m_fillCount) : 0f) : (child.ParentDesiredSize.Y + 2f * child.Margin.Y);
                         Vector2 c3;
                         Vector2 c4;
                         if (!IsInverted)
                         {
                             c3 = new Vector2(0f, num);
-                            c4 = new Vector2(base.ActualSize.X, num + num3);
+                            c4 = new Vector2(ActualSize.X, num + num3);
                         }
                         else
                         {
-                            c3 = new Vector2(0f, base.ActualSize.Y - (num + num3));
-                            c4 = new Vector2(base.ActualSize.X, base.ActualSize.Y - num);
+                            c3 = new Vector2(0f, ActualSize.Y - (num + num3));
+                            c4 = new Vector2(ActualSize.X, ActualSize.Y - num);
                         }
-                        ContainerWidget.ArrangeChildWidgetInCell(c3, c4, child);
+                        ArrangeChildWidgetInCell(c3, c4, child);
                         num += num3;
                     }
                 }

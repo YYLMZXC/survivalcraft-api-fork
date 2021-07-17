@@ -18,17 +18,17 @@ namespace Game
             Matrix boneAbsoluteTransform3 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("StringRelaxed").ParentBone);
             Matrix boneAbsoluteTransform4 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("BowTensed").ParentBone);
             Matrix boneAbsoluteTransform5 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("StringTensed").ParentBone);
-            BlockMesh blockMesh = new BlockMesh();
+            var blockMesh = new BlockMesh();
             blockMesh.AppendModelMeshPart(model.FindMesh("Body").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0f, 0f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             blockMesh.AppendModelMeshPart(model.FindMesh("BowRelaxed").MeshParts[0], boneAbsoluteTransform2 * Matrix.CreateTranslation(0f, 0f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             blockMesh.AppendModelMeshPart(model.FindMesh("StringRelaxed").MeshParts[0], boneAbsoluteTransform3 * Matrix.CreateTranslation(0f, 0f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
-            BlockMesh blockMesh2 = new BlockMesh();
+            var blockMesh2 = new BlockMesh();
             blockMesh2.AppendModelMeshPart(model.FindMesh("Body").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0f, 0f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             blockMesh2.AppendModelMeshPart(model.FindMesh("BowTensed").MeshParts[0], boneAbsoluteTransform4 * Matrix.CreateTranslation(0f, 0f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             blockMesh2.AppendModelMeshPart(model.FindMesh("StringTensed").MeshParts[0], boneAbsoluteTransform5 * Matrix.CreateTranslation(0f, 0f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
             for (int i = 0; i < 16; i++)
             {
-                float factor = (float)i / 15f;
+                float factor = i / 15f;
                 m_standaloneBlockMeshes[i] = new BlockMesh();
                 m_standaloneBlockMeshes[i].AppendBlockMesh(blockMesh);
                 m_standaloneBlockMeshes[i].BlendBlockMesh(blockMesh2, factor);

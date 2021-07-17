@@ -42,8 +42,8 @@ namespace Game
 
         public void FindBodiesInArea(Vector2 corner1, Vector2 corner2, DynamicArray<ComponentBody> result)
         {
-            Point2 point = new Point2((int)MathUtils.Floor(corner1.X / 8f), (int)MathUtils.Floor(corner1.Y / 8f));
-            Point2 point2 = new Point2((int)MathUtils.Floor(corner2.X / 8f), (int)MathUtils.Floor(corner2.Y / 8f));
+            var point = new Point2((int)MathUtils.Floor(corner1.X / 8f), (int)MathUtils.Floor(corner1.Y / 8f));
+            var point2 = new Point2((int)MathUtils.Floor(corner2.X / 8f), (int)MathUtils.Floor(corner2.Y / 8f));
             int num = MathUtils.Min(point.X, point2.X) - 1;
             int num2 = MathUtils.Min(point.Y, point2.Y) - 1;
             int num3 = MathUtils.Max(point.X, point2.X) + 1;
@@ -66,10 +66,10 @@ namespace Game
         public BodyRaycastResult? Raycast(Vector3 start, Vector3 end, float inflateAmount, Func<ComponentBody, float, bool> action)
         {
             float num = Vector3.Distance(start, end);
-            Ray3 ray = new Ray3(start, (num > 0f) ? ((end - start) / num) : Vector3.UnitX);
-            Vector2 corner = new Vector2(start.X, start.Z);
-            Vector2 corner2 = new Vector2(end.X, end.Z);
-            BodyRaycastResult bodyRaycastResult = default(BodyRaycastResult);
+            var ray = new Ray3(start, (num > 0f) ? ((end - start) / num) : Vector3.UnitX);
+            var corner = new Vector2(start.X, start.Z);
+            var corner2 = new Vector2(end.X, end.Z);
+            BodyRaycastResult bodyRaycastResult = default;
             bodyRaycastResult.Ray = ray;
             bodyRaycastResult.Distance = float.MaxValue;
             BodyRaycastResult value = bodyRaycastResult;
@@ -130,7 +130,7 @@ namespace Game
         public void AddBody(ComponentBody componentBody)
         {
             Vector3 position = componentBody.Position;
-            Point2 point = new Point2((int)MathUtils.Floor(position.X / 8f), (int)MathUtils.Floor(position.Z / 8f));
+            var point = new Point2((int)MathUtils.Floor(position.X / 8f), (int)MathUtils.Floor(position.Z / 8f));
             m_areaByComponentBody.Add(componentBody, point);
             if (!m_componentBodiesByArea.TryGetValue(point, out DynamicArray<ComponentBody> value))
             {
@@ -152,7 +152,7 @@ namespace Game
         public void UpdateBody(ComponentBody componentBody)
         {
             Vector3 position = componentBody.Position;
-            Point2 point = new Point2((int)MathUtils.Floor(position.X / 8f), (int)MathUtils.Floor(position.Z / 8f));
+            var point = new Point2((int)MathUtils.Floor(position.X / 8f), (int)MathUtils.Floor(position.Z / 8f));
             Point2 point2 = m_areaByComponentBody[componentBody];
             if (point != point2)
             {

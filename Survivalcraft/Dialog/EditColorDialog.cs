@@ -28,14 +28,14 @@ namespace Game
         public EditColorDialog(Color color, Action<Color?> handler)
         {
             WidgetsList children = Children;
-            CanvasWidget obj = new CanvasWidget
+            var obj = new CanvasWidget
             {
                 Size = new Vector2(660f, 420f),
                 HorizontalAlignment = WidgetAlignment.Center,
                 VerticalAlignment = WidgetAlignment.Center,
                 Children =
                 {
-                    (Widget)new RectangleWidget
+                    new RectangleWidget
                     {
                         FillColor = new Color(0, 0, 0, 255),
                         OutlineColor = new Color(128, 128, 128, 128),
@@ -44,58 +44,58 @@ namespace Game
                 }
             };
             WidgetsList children2 = obj.Children;
-            StackPanelWidget obj2 = new StackPanelWidget
+            var obj2 = new StackPanelWidget
             {
                 Direction = LayoutDirection.Vertical,
                 Margin = new Vector2(15f),
                 HorizontalAlignment = WidgetAlignment.Center,
                 Children =
                 {
-                    (Widget)new LabelWidget
+                    new LabelWidget
                     {
                         Text = LanguageControl.Get(GetType().Name,1),
                         HorizontalAlignment = WidgetAlignment.Center
                     },
-                    (Widget)new CanvasWidget
+                    new CanvasWidget
                     {
                         Size = new Vector2(0f, 1f / 0f)
                     }
                 }
             };
             WidgetsList children3 = obj2.Children;
-            StackPanelWidget obj3 = new StackPanelWidget
+            var obj3 = new StackPanelWidget
             {
                 Direction = LayoutDirection.Horizontal
             };
             WidgetsList children4 = obj3.Children;
-            StackPanelWidget obj4 = new StackPanelWidget
+            var obj4 = new StackPanelWidget
             {
                 Direction = LayoutDirection.Vertical,
                 VerticalAlignment = WidgetAlignment.Center
             };
             WidgetsList children5 = obj4.Children;
-            StackPanelWidget obj5 = new StackPanelWidget
+            var obj5 = new StackPanelWidget
             {
                 Direction = LayoutDirection.Horizontal,
                 HorizontalAlignment = WidgetAlignment.Far,
                 Margin = new Vector2(0f, 10f),
                 Children =
                 {
-                    (Widget)new LabelWidget
+                    new LabelWidget
                     {
                         Text = LanguageControl.Get(GetType().Name,2),
                         Color = Color.Gray,
                         VerticalAlignment = WidgetAlignment.Center,
                         Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
                     },
-                    (Widget)new CanvasWidget
+                    new CanvasWidget
                     {
                         Size = new Vector2(10f, 0f)
                     }
                 }
             };
             WidgetsList children6 = obj5.Children;
-            SliderWidget obj6 = new SliderWidget
+            var obj6 = new SliderWidget
             {
                 Size = new Vector2(300f, 50f),
                 IsLabelVisible = false,
@@ -109,28 +109,28 @@ namespace Game
             children6.Add(widget);
             children5.Add(obj5);
             WidgetsList children7 = obj4.Children;
-            StackPanelWidget obj7 = new StackPanelWidget
+            var obj7 = new StackPanelWidget
             {
                 Direction = LayoutDirection.Horizontal,
                 HorizontalAlignment = WidgetAlignment.Far,
                 Margin = new Vector2(0f, 10f),
                 Children =
                 {
-                    (Widget)new LabelWidget
+                    new LabelWidget
                     {
                         Text = LanguageControl.Get(GetType().Name,3),
                         Color = Color.Gray,
                         VerticalAlignment = WidgetAlignment.Center,
                         Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
                     },
-                    (Widget)new CanvasWidget
+                    new CanvasWidget
                     {
                         Size = new Vector2(10f, 0f)
                     }
                 }
             };
             WidgetsList children8 = obj7.Children;
-            SliderWidget obj8 = new SliderWidget
+            var obj8 = new SliderWidget
             {
                 Size = new Vector2(300f, 50f),
                 IsLabelVisible = false,
@@ -144,28 +144,28 @@ namespace Game
             children8.Add(widget);
             children7.Add(obj7);
             WidgetsList children9 = obj4.Children;
-            StackPanelWidget obj9 = new StackPanelWidget
+            var obj9 = new StackPanelWidget
             {
                 Direction = LayoutDirection.Horizontal,
                 HorizontalAlignment = WidgetAlignment.Far,
                 Margin = new Vector2(0f, 10f),
                 Children =
                 {
-                    (Widget)new LabelWidget
+                    new LabelWidget
                     {
                         Text = LanguageControl.Get(GetType().Name,4),
                         Color = Color.Gray,
                         VerticalAlignment = WidgetAlignment.Center,
                         Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
                     },
-                    (Widget)new CanvasWidget
+                    new CanvasWidget
                     {
                         Size = new Vector2(10f, 0f)
                     }
                 }
             };
             WidgetsList children10 = obj9.Children;
-            SliderWidget obj10 = new SliderWidget
+            var obj10 = new SliderWidget
             {
                 Size = new Vector2(300f, 50f),
                 IsLabelVisible = false,
@@ -184,9 +184,9 @@ namespace Game
                 Size = new Vector2(20f, 0f)
             });
             WidgetsList children11 = obj3.Children;
-            CanvasWidget canvasWidget = new CanvasWidget();
+            var canvasWidget = new CanvasWidget();
             WidgetsList children12 = canvasWidget.Children;
-            BevelledButtonWidget obj11 = new BevelledButtonWidget
+            var obj11 = new BevelledButtonWidget
             {
                 Size = new Vector2(200f, 240f),
                 AmbientLight = 1f,
@@ -197,7 +197,7 @@ namespace Game
             m_rectangle = obj11;
             children12.Add(widget2);
             WidgetsList children13 = canvasWidget.Children;
-            LabelWidget obj12 = new LabelWidget
+            var obj12 = new LabelWidget
             {
                 HorizontalAlignment = WidgetAlignment.Center,
                 VerticalAlignment = WidgetAlignment.Center,
@@ -213,13 +213,13 @@ namespace Game
                 Size = new Vector2(0f, 1f / 0f)
             });
             WidgetsList children14 = obj2.Children;
-            StackPanelWidget obj13 = new StackPanelWidget
+            var obj13 = new StackPanelWidget
             {
                 Direction = LayoutDirection.Horizontal,
                 HorizontalAlignment = WidgetAlignment.Center
             };
             WidgetsList children15 = obj13.Children;
-            BevelledButtonWidget obj14 = new BevelledButtonWidget
+            var obj14 = new BevelledButtonWidget
             {
                 Size = new Vector2(160f, 60f),
                 Text = LanguageControl.Get("Usual","ok")
@@ -232,7 +232,7 @@ namespace Game
                 Size = new Vector2(50f, 0f)
             });
             WidgetsList children16 = obj13.Children;
-            BevelledButtonWidget obj15 = new BevelledButtonWidget
+            var obj15 = new BevelledButtonWidget
             {
                 Size = new Vector2(160f, 60f),
                 Text = LanguageControl.Get("Usual","cancel")
@@ -283,7 +283,7 @@ namespace Game
             {
                 Dismiss(m_color);
             }
-            if (base.Input.Cancel || m_cancelButton.IsClicked)
+            if (Input.Cancel || m_cancelButton.IsClicked)
             {
                 Dismiss(null);
             }
@@ -293,9 +293,9 @@ namespace Game
         public void UpdateControls()
         {
             m_rectangle.CenterColor = m_color;
-            m_sliderR.Value = (int)m_color.R;
-            m_sliderG.Value = (int)m_color.G;
-            m_sliderB.Value = (int)m_color.B;
+            m_sliderR.Value = m_color.R;
+            m_sliderG.Value = m_color.G;
+            m_sliderB.Value = m_color.B;
             m_label.Text = GetColorString();
         }
 

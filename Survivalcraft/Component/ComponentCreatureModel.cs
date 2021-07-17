@@ -155,24 +155,17 @@ namespace Game
 
         public override void Animate()
         {
-            base.Opacity = ((m_componentCreature.ComponentSpawn.SpawnDuration > 0f) ? ((float)MathUtils.Saturate((m_subsystemGameInfo.TotalElapsedGameTime - m_componentCreature.ComponentSpawn.SpawnTime) / (double)m_componentCreature.ComponentSpawn.SpawnDuration)) : 1f);
+            Opacity = ((m_componentCreature.ComponentSpawn.SpawnDuration > 0f) ? ((float)MathUtils.Saturate((m_subsystemGameInfo.TotalElapsedGameTime - m_componentCreature.ComponentSpawn.SpawnTime) / m_componentCreature.ComponentSpawn.SpawnDuration)) : 1f);
             if (m_componentCreature.ComponentSpawn.DespawnTime.HasValue)
             {
-                base.Opacity = MathUtils.Min(base.Opacity.Value, (float)MathUtils.Saturate(1.0 - (m_subsystemGameInfo.TotalElapsedGameTime - m_componentCreature.ComponentSpawn.DespawnTime.Value) / (double)m_componentCreature.ComponentSpawn.DespawnDuration));
+                Opacity = MathUtils.Min(Opacity.Value, (float)MathUtils.Saturate(1.0 - (m_subsystemGameInfo.TotalElapsedGameTime - m_componentCreature.ComponentSpawn.DespawnTime.Value) / m_componentCreature.ComponentSpawn.DespawnDuration));
             }
-            base.DiffuseColor = Vector3.Lerp(Vector3.One, new Vector3(1f, 0f, 0f), m_injuryColorFactor);
-            if (base.Opacity.HasValue && base.Opacity.Value < 1f)
+            DiffuseColor = Vector3.Lerp(Vector3.One, new Vector3(1f, 0f, 0f), m_injuryColorFactor);
+            if (Opacity.HasValue && Opacity.Value < 1f)
             {
                 bool num = m_componentCreature.ComponentBody.ImmersionFactor >= 1f;
                 bool flag = m_subsystemSky.ViewUnderWaterDepth > 0f;
-                if (num == flag)
-                {
-                    RenderingMode = ModelRenderingMode.TransparentAfterWater;
-                }
-                else
-                {
-                    RenderingMode = ModelRenderingMode.TransparentBeforeWater;
-                }
+                RenderingMode = num == flag ? ModelRenderingMode.TransparentAfterWater : ModelRenderingMode.TransparentBeforeWater;
             }
             else
             {
@@ -183,10 +176,10 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
             base.Load(valuesDictionary, idToEntityMap);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
             m_componentCreature.ComponentHealth.Attacked += delegate (ComponentCreature attacker)
             {
                 if (DeathPhase == 0f && m_componentCreature.ComponentHealth.Health == 0f)
@@ -213,7 +206,7 @@ namespace Game
             if (LookRandomOrder)
             {
                 Matrix matrix = m_componentCreature.ComponentBody.Matrix;
-                Vector3 v = Vector3.Normalize(m_randomLookPoint - m_componentCreature.ComponentCreatureModel.EyePosition);
+                var v = Vector3.Normalize(m_randomLookPoint - m_componentCreature.ComponentCreatureModel.EyePosition);
                 if (m_random.Float(0f, 1f) < 0.25f * dt || Vector3.Dot(matrix.Forward, v) < 0.2f)
                 {
                     float s = m_random.Float(-5f, 5f);
@@ -235,7 +228,7 @@ namespace Game
             {
                 HeadShakeOrder = MathUtils.Max(HeadShakeOrder - dt, 0f);
                 float num = 1f * MathUtils.Saturate(4f * HeadShakeOrder);
-                m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(num * (float)MathUtils.Sin(16.0 * m_subsystemTime.GameTime + (double)(0.01f * (float)GetHashCode())), 0f) - m_componentCreature.ComponentLocomotion.LookAngles;
+                m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(num * (float)MathUtils.Sin(16.0 * m_subsystemTime.GameTime + 0.01f * GetHashCode()), 0f) - m_componentCreature.ComponentLocomotion.LookAngles;
             }
             if (m_componentCreature.ComponentHealth.Health == 0f)
             {

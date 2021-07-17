@@ -75,7 +75,7 @@ namespace Game
             m_useReducedZRangeButton.Text = (SettingsManager.UseReducedZRange ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
 
             m_resetDefaultsButton.IsEnabled = (!SettingsManager.MultithreadedTerrainUpdate || SettingsManager.UseReducedZRange);
-            if (base.Input.Back || base.Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
             }

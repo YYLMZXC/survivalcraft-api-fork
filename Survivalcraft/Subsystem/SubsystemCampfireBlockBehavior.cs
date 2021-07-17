@@ -64,10 +64,10 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
             if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue))
             {
-                base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
             }
         }
 
@@ -94,7 +94,7 @@ namespace Game
 
         public override void OnChunkDiscarding(TerrainChunk chunk)
         {
-            List<Point3> list = new List<Point3>();
+            var list = new List<Point3>();
             foreach (Point3 key in m_particleSystemsByCell.Keys)
             {
                 if (key.X >= chunk.Origin.X && key.X < chunk.Origin.X + 16 && key.Z >= chunk.Origin.Y && key.Z < chunk.Origin.Y + 16)
@@ -129,10 +129,10 @@ namespace Game
         public override void Load(ValuesDictionary valuesDictionary)
         {
             base.Load(valuesDictionary);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemWeather = base.Project.FindSubsystem<SubsystemWeather>(throwOnError: true);
-            m_subsystemAmbientSounds = base.Project.FindSubsystem<SubsystemAmbientSounds>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemWeather = Project.FindSubsystem<SubsystemWeather>(throwOnError: true);
+            m_subsystemAmbientSounds = Project.FindSubsystem<SubsystemAmbientSounds>(throwOnError: true);
         }
 
         public void AddCampfireParticleSystem(int value, int x, int y, int z)
@@ -140,9 +140,9 @@ namespace Game
             int num = Terrain.ExtractData(value);
             if (num > 0)
             {
-                Vector3 v = new Vector3(0.5f, 0.15f, 0.5f);
-                float size = MathUtils.Lerp(0.2f, 0.5f, (float)num / 15f);
-                FireParticleSystem fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + v, size, 256f);
+                var v = new Vector3(0.5f, 0.15f, 0.5f);
+                float size = MathUtils.Lerp(0.2f, 0.5f, num / 15f);
+                var fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + v, size, 256f);
                 m_subsystemParticles.AddParticleSystem(fireParticleSystem);
                 m_particleSystemsByCell[new Point3(x, y, z)] = fireParticleSystem;
             }
@@ -150,7 +150,7 @@ namespace Game
 
         public void RemoveCampfireParticleSystem(int x, int y, int z)
         {
-            Point3 key = new Point3(x, y, z);
+            var key = new Point3(x, y, z);
             if (m_particleSystemsByCell.TryGetValue(key, out FireParticleSystem value))
             {
                 value.IsStopped = true;
@@ -160,11 +160,11 @@ namespace Game
 
         public bool AddFuel(int x, int y, int z, int value, int count)
         {
-            if (Terrain.ExtractData(base.SubsystemTerrain.Terrain.GetCellValue(x, y, z)) > 0)
+            if (Terrain.ExtractData(SubsystemTerrain.Terrain.GetCellValue(x, y, z)) > 0)
             {
                 int num = Terrain.ExtractContents(value);
                 Block block = BlocksManager.Blocks[num];
-                if (base.Project.FindSubsystem<SubsystemExplosions>(throwOnError: true).TryExplodeBlock(x, y, z, value))
+                if (Project.FindSubsystem<SubsystemExplosions>(throwOnError: true).TryExplodeBlock(x, y, z, value))
                 {
                     return true;
                 }
@@ -174,9 +174,9 @@ namespace Game
                 }
                 if (block.FuelHeatLevel > 0f)
                 {
-                    float num2 = (float)count * MathUtils.Min(block.FuelFireDuration, 20f) / 5f;
+                    float num2 = count * MathUtils.Min(block.FuelFireDuration, 20f) / 5f;
                     int num3 = (int)num2;
-                    float num4 = num2 - (float)num3;
+                    float num4 = num2 - num3;
                     if (m_random.Float(0f, 1f) < num4)
                     {
                         num3++;
@@ -193,7 +193,7 @@ namespace Game
 
         public bool ResizeCampfire(int x, int y, int z, int steps, bool playSound)
         {
-            int cellValue = base.SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
             int num = Terrain.ExtractData(cellValue);
             if (num > 0)
             {
@@ -201,7 +201,7 @@ namespace Game
                 if (num2 != num)
                 {
                     int value = Terrain.ReplaceData(cellValue, num2);
-                    base.SubsystemTerrain.ChangeCell(x, y, z, value);
+                    SubsystemTerrain.ChangeCell(x, y, z, value);
                     if (playSound)
                     {
                         if (steps >= 0)

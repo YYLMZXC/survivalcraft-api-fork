@@ -1,14 +1,17 @@
 namespace Engine.Graphics
 {
-	public sealed class SamplerState : LockOnFirstUse
+    public sealed class SamplerState : LockOnFirstUse
 	{
 		private TextureFilterMode m_filterMode;
 
 		private TextureAddressMode m_addressModeU;
 
 		private TextureAddressMode m_addressModeV;
-
+#if android
+		public int m_maxAnisotropy = 1;
+#else
 		private int m_maxAnisotropy;
+#endif
 
 		private float m_minLod = -1000f;
 

@@ -95,7 +95,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkSBIT pngChunkSBIT = (PngChunkSBIT)other;
+			var pngChunkSBIT = (PngChunkSBIT)other;
 			Graysb = pngChunkSBIT.Graysb;
 			Redsb = pngChunkSBIT.Redsb;
 			Greensb = pngChunkSBIT.Greensb;

@@ -62,16 +62,16 @@ namespace Game
 
         public override void OnAdded()
         {
-            CellFace cellFace = base.CellFaces[0];
-            int data = Terrain.ExtractData(base.SubsystemElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
+            CellFace cellFace = CellFaces[0];
+            int data = Terrain.ExtractData(SubsystemElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z));
             int mountingFace = SevenSegmentDisplayBlock.GetMountingFace(data);
             m_color = LedBlock.LedColors[SevenSegmentDisplayBlock.GetColor(data)];
             for (int i = 0; i < 7; i++)
             {
-                Vector3 v = new Vector3((float)cellFace.X + 0.5f, (float)cellFace.Y + 0.5f, (float)cellFace.Z + 0.5f);
+                var v = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
                 Vector3 vector = CellFace.FaceToVector3(mountingFace);
                 Vector3 vector2 = (mountingFace < 4) ? Vector3.UnitY : Vector3.UnitX;
-                Vector3 v2 = Vector3.Cross(vector, vector2);
+                var v2 = Vector3.Cross(vector, vector2);
                 m_glowPoints[i] = m_subsystemGlow.AddGlowPoint();
                 m_glowPoints[i].Position = v - 0.4375f * CellFace.FaceToVector3(mountingFace) + m_centers[i].X * 0.0625f * v2 + m_centers[i].Y * 0.0625f * vector2;
                 m_glowPoints[i].Forward = vector;
@@ -97,7 +97,7 @@ namespace Game
         {
             float voltage = m_voltage;
             m_voltage = 0f;
-            foreach (ElectricConnection connection in base.Connections)
+            foreach (ElectricConnection connection in Connections)
             {
                 if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0)
                 {
@@ -109,14 +109,7 @@ namespace Game
                 int num = (int)MathUtils.Round(m_voltage * 15f);
                 for (int i = 0; i < 7; i++)
                 {
-                    if ((m_patterns[num] & (1 << i)) != 0)
-                    {
-                        m_glowPoints[i].Color = m_color;
-                    }
-                    else
-                    {
-                        m_glowPoints[i].Color = Color.Transparent;
-                    }
+                    m_glowPoints[i].Color = (m_patterns[num] & (1 << i)) != 0 ? m_color : Color.Transparent;
                 }
             }
             return false;

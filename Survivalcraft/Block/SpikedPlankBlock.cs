@@ -29,7 +29,7 @@ namespace Game
                 for (int j = 0; j < 6; j++)
                 {
                     int num = SetMountingFace(SetSpikesState(0, i != 0), j);
-                    Matrix m = (j >= 4) ? ((j != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY((float)j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f));
+                    Matrix m = (j >= 4) ? ((j != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY(j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f));
                     m_blockMeshesByData[num] = new BlockMesh();
                     m_blockMeshesByData[num].AppendModelMeshPart(model.FindMesh(name).MeshParts[0], boneAbsoluteTransform * m, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
                     m_collisionBoxesByData[num] = new BoundingBox[1]
@@ -87,7 +87,7 @@ namespace Game
         public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
         {
             int data = SetMountingFace(SetSpikesState(Terrain.ExtractData(value), spikesState: true), raycastResult.CellFace.Face);
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.ReplaceData(value, data);
             result.CellFace = raycastResult.CellFace;
             return result;

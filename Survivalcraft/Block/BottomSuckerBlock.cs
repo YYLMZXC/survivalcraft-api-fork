@@ -15,12 +15,12 @@ namespace Game
             BlockPlacementData result;
             if (obj is WaterBlock)
             {
-                result = default(BlockPlacementData);
+                result = default;
                 result.CellFace = raycastResult.CellFace;
                 result.Value = Terrain.MakeBlockValue(BlockIndex, 0, SetSubvariant(SetFace(data, raycastResult.CellFace.Face), face));
                 return result;
             }
-            result = default(BlockPlacementData);
+            result = default;
             return result;
         }
 

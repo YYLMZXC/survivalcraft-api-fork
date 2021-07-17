@@ -96,7 +96,7 @@ namespace Game
         }
         public T FindCamera<T>(bool throwOnError = true) where T : Camera
         {
-            T val = (T)m_cameras.FirstOrDefault((Camera c) => c is T);
+            var val = (T)m_cameras.FirstOrDefault((Camera c) => c is T);
             if (val != null || !throwOnError)
             {
                 return val;
@@ -125,13 +125,13 @@ namespace Game
         public override void Update()
         {
             WidgetInputDevice widgetInputDevice = DetermineInputDevices();
-            if (base.WidgetsHierarchyInput == null || base.WidgetsHierarchyInput.Devices != widgetInputDevice)
+            if (WidgetsHierarchyInput == null || WidgetsHierarchyInput.Devices != widgetInputDevice)
             {
-                base.WidgetsHierarchyInput = new WidgetInput(widgetInputDevice);
+                WidgetsHierarchyInput = new WidgetInput(widgetInputDevice);
             }
             if (GuiWidget.ParentWidget == null)
             {
-                Widget.UpdateWidgetsHierarchy(GuiWidget);
+                UpdateWidgetsHierarchy(GuiWidget);
             }
         }
 

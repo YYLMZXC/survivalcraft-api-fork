@@ -193,7 +193,7 @@ namespace Game
             m_worldUpParameter = GetParameter("u_worldUp");
             Transforms = new ShaderTransforms(maxInstancesCount);
         }
-        public override void PrepareForDrawingOverride()
+        protected override void PrepareForDrawingOverride()
         {
             Transforms.UpdateMatrices(m_instancesCount, worldView: false, viewProjection: false, worldViewProjection: true);
             m_worldViewProjectionMatrixParameter.SetValue(Transforms.WorldViewProjection, InstancesCount);
@@ -202,7 +202,7 @@ namespace Game
 
         public static ShaderMacro[] PrepareShaderMacros(bool useAlphaThreshold, int maxInstancesCount)
         {
-            List<ShaderMacro> list = new List<ShaderMacro>();
+            var list = new List<ShaderMacro>();
             if (useAlphaThreshold)
             {
                 list.Add(new ShaderMacro("ALPHATESTED"));

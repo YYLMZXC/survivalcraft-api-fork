@@ -23,7 +23,7 @@ namespace Game
         public override bool Simulate()
         {
             float num = 0f;
-            foreach (ElectricConnection connection in base.Connections)
+            foreach (ElectricConnection connection in Connections)
             {
                 if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0)
                 {
@@ -34,7 +34,7 @@ namespace Game
             if (num2 != m_lastLength)
             {
                 m_lastLength = num2;
-                base.SubsystemElectricity.Project.FindSubsystem<SubsystemPistonBlockBehavior>(throwOnError: true).AdjustPiston(base.CellFaces[0].Point, num2);
+                SubsystemElectricity.Project.FindSubsystem<SubsystemPistonBlockBehavior>(throwOnError: true).AdjustPiston(CellFaces[0].Point, num2);
             }
             return false;
         }

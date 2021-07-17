@@ -27,7 +27,7 @@ namespace Game
                 MarketplaceManager.ShowMarketplace();
                 ScreensManager.SwitchScreen("MainMenu");
             }
-            if ((m_quitButton != null && m_quitButton.IsClicked) || base.Input.Back)
+            if ((m_quitButton != null && m_quitButton.IsClicked) || Input.Back)
             {
                 AnalyticsManager.LogEvent("[TrialEndedScreen] Clicked quit button");
                 ScreensManager.SwitchScreen("MainMenu");

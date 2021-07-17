@@ -38,7 +38,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override ChunkRaw CreateRawChunk()
 		{
-			MemoryStream memoryStream = new MemoryStream();
+			var memoryStream = new MemoryStream();
 			ChunkHelper.WriteBytesToStream(memoryStream, ChunkHelper.ToBytes(PalName));
 			memoryStream.WriteByte(0);
 			memoryStream.WriteByte((byte)SampleDepth);
@@ -121,7 +121,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkSPLT pngChunkSPLT = (PngChunkSPLT)other;
+			var pngChunkSPLT = (PngChunkSPLT)other;
 			PalName = pngChunkSPLT.PalName;
 			SampleDepth = pngChunkSPLT.SampleDepth;
 			Palette = new int[pngChunkSPLT.Palette.Length];

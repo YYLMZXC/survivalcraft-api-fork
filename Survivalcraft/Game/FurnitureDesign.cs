@@ -393,15 +393,8 @@ namespace Game
             {
                 int num = m_values[i];
                 int num2 = Terrain.ExtractContents(num);
-                IPaintableBlock paintableBlock = BlocksManager.Blocks[num2] as IPaintableBlock;
-                if (paintableBlock != null)
-                {
-                    array[i] = paintableBlock.Paint(null, num, color);
-                }
-                else
-                {
-                    array[i] = num;
-                }
+                var paintableBlock = BlocksManager.Blocks[num2] as IPaintableBlock;
+                array[i] = paintableBlock != null ? paintableBlock.Paint(null, num, color) : num;
             }
             SetValues(Resolution, array);
         }
@@ -477,8 +470,8 @@ namespace Game
                 {
                     for (int k = 0; k < m_resolution; k++)
                     {
-                        Vector3 vector = RotatePoint(new Vector3(k, j, i) - new Vector3((float)m_resolution / 2f - 0.5f), axis, steps) + new Vector3((float)m_resolution / 2f - 0.5f);
-                        Point3 point = new Point3((int)MathUtils.Round(vector.X), (int)MathUtils.Round(vector.Y), (int)MathUtils.Round(vector.Z));
+                        Vector3 vector = RotatePoint(new Vector3(k, j, i) - new Vector3(m_resolution / 2f - 0.5f), axis, steps) + new Vector3(m_resolution / 2f - 0.5f);
+                        var point = new Point3((int)MathUtils.Round(vector.X), (int)MathUtils.Round(vector.Y), (int)MathUtils.Round(vector.Z));
                         if (point.X >= 0 && point.X < m_resolution && point.Y >= 0 && point.Y < m_resolution && point.Z >= 0 && point.Z < m_resolution)
                         {
                             array[point.X + point.Y * m_resolution + point.Z * m_resolution * m_resolution] = m_values[k + j * m_resolution + i * m_resolution * m_resolution];
@@ -498,8 +491,8 @@ namespace Game
                 {
                     for (int k = 0; k < m_resolution; k++)
                     {
-                        Vector3 vector = MirrorPoint(new Vector3(k, j, i) - new Vector3((float)m_resolution / 2f - 0.5f), axis) + new Vector3((float)m_resolution / 2f - 0.5f);
-                        Point3 point = new Point3((int)MathUtils.Round(vector.X), (int)MathUtils.Round(vector.Y), (int)MathUtils.Round(vector.Z));
+                        Vector3 vector = MirrorPoint(new Vector3(k, j, i) - new Vector3(m_resolution / 2f - 0.5f), axis) + new Vector3(m_resolution / 2f - 0.5f);
+                        var point = new Point3((int)MathUtils.Round(vector.X), (int)MathUtils.Round(vector.Y), (int)MathUtils.Round(vector.Z));
                         if (point.X >= 0 && point.X < m_resolution && point.Y >= 0 && point.Y < m_resolution && point.Z >= 0 && point.Z < m_resolution)
                         {
                             array[point.X + point.Y * m_resolution + point.Z * m_resolution * m_resolution] = m_values[k + j * m_resolution + i * m_resolution * m_resolution];
@@ -512,7 +505,7 @@ namespace Game
 
         public ValuesDictionary Save()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             int num = m_values[0];
             int num2 = 1;
             for (int i = 1; i < m_values.Length; i++)
@@ -535,7 +528,7 @@ namespace Game
             stringBuilder.Append('*');
             stringBuilder.Append(num.ToString(CultureInfo.InvariantCulture));
             stringBuilder.Append(',');
-            ValuesDictionary valuesDictionary = new ValuesDictionary();
+            var valuesDictionary = new ValuesDictionary();
             if (!string.IsNullOrEmpty(Name))
             {
                 valuesDictionary.SetValue("Name", Name);
@@ -595,7 +588,7 @@ namespace Game
 
         public FurnitureDesign Clone()
         {
-            FurnitureDesign furnitureDesign = new FurnitureDesign(m_subsystemTerrain);
+            var furnitureDesign = new FurnitureDesign(m_subsystemTerrain);
             furnitureDesign.SetValues(Resolution, m_values);
             furnitureDesign.Name = Name;
             furnitureDesign.LinkedDesign = LinkedDesign;
@@ -606,7 +599,7 @@ namespace Game
         public List<FurnitureDesign> CloneChain()
         {
             List<FurnitureDesign> list = ListChain();
-            List<FurnitureDesign> list2 = new List<FurnitureDesign>(list.Count);
+            var list2 = new List<FurnitureDesign>(list.Count);
             for (int i = 0; i < list.Count; i++)
             {
                 list2.Add(list[i].Clone());
@@ -626,8 +619,8 @@ namespace Game
         public List<FurnitureDesign> ListChain()
         {
             FurnitureDesign furnitureDesign = this;
-            HashSet<FurnitureDesign> hashSet = new HashSet<FurnitureDesign>();
-            List<FurnitureDesign> list = new List<FurnitureDesign>();
+            var hashSet = new HashSet<FurnitureDesign>();
+            var list = new List<FurnitureDesign>();
             do
             {
                 hashSet.Add(furnitureDesign);
@@ -640,8 +633,8 @@ namespace Game
 
         public static List<List<FurnitureDesign>> ListChains(IEnumerable<FurnitureDesign> designs)
         {
-            List<List<FurnitureDesign>> list = new List<List<FurnitureDesign>>();
-            List<FurnitureDesign> list2 = new List<FurnitureDesign>(designs);
+            var list = new List<List<FurnitureDesign>>();
+            var list2 = new List<FurnitureDesign>(designs);
             while (list2.Count > 0)
             {
                 List<FurnitureDesign> list3 = list2[0].ListChain();
@@ -725,7 +718,7 @@ namespace Game
             {
                 for (int j = 0; j < Resolution; j++)
                 {
-                    float x = (float)(j + 1) / (float)Resolution;
+                    float x = (j + 1) / (float)Resolution;
                     for (int k = 0; k < Resolution; k++)
                     {
                         if (!IsValueTransparent(m_values[num++]))
@@ -740,7 +733,7 @@ namespace Game
             {
                 num2 += array[l];
             }
-            num2 /= (float)(Resolution * Resolution);
+            num2 /= Resolution * Resolution;
             float num3 = 1.5f;
             m_shadowStrengthFactor = (int)MathUtils.Clamp(MathUtils.Round(num2 * 3f * num3), 0f, 3f);
         }
@@ -801,11 +794,11 @@ namespace Game
                         point5 = new Point3(m_resolution - 1, m_resolution - 1, m_resolution - 1);
                         break;
                 }
-                BlockMesh blockMesh = new BlockMesh();
-                BlockMesh blockMesh2 = new BlockMesh();
+                var blockMesh = new BlockMesh();
+                var blockMesh2 = new BlockMesh();
                 for (int j = 0; j < m_resolution; j++)
                 {
-                    Cell[] array = new Cell[m_resolution * m_resolution];
+                    var array = new Cell[m_resolution * m_resolution];
                     for (int k = 0; k < m_resolution; k++)
                     {
                         for (int l = 0; l < m_resolution; l++)
@@ -815,7 +808,7 @@ namespace Game
                             int num4 = j * point.Z + k * point3.Z + l * point2.Z + point5.Z;
                             int num5 = num2 + num3 * m_resolution + num4 * m_resolution * m_resolution;
                             int num6 = m_values[num5];
-                            Cell cell = default(Cell);
+                            Cell cell = default;
                             cell.Value = num6;
                             Cell cell2 = cell;
                             if (j > 0 && num6 != 0)
@@ -843,30 +836,30 @@ namespace Game
                             if (!(point6 == Point2.Zero))
                             {
                                 MarkUsed(array, new Point2(n, m), point6);
-                                float num8 = 0.0005f * (float)m_resolution;
-                                float num9 = (float)n - num8;
-                                float num10 = (float)(n + point6.X) + num8;
-                                float num11 = (float)m - num8;
-                                float num12 = (float)(m + point6.Y) + num8;
-                                float x = (float)(j * point.X) + num11 * (float)point3.X + num9 * (float)point2.X + (float)point4.X;
-                                float y = (float)(j * point.Y) + num11 * (float)point3.Y + num9 * (float)point2.Y + (float)point4.Y;
-                                float z = (float)(j * point.Z) + num11 * (float)point3.Z + num9 * (float)point2.Z + (float)point4.Z;
-                                float x2 = (float)(j * point.X) + num11 * (float)point3.X + num10 * (float)point2.X + (float)point4.X;
-                                float y2 = (float)(j * point.Y) + num11 * (float)point3.Y + num10 * (float)point2.Y + (float)point4.Y;
-                                float z2 = (float)(j * point.Z) + num11 * (float)point3.Z + num10 * (float)point2.Z + (float)point4.Z;
-                                float x3 = (float)(j * point.X) + num12 * (float)point3.X + num10 * (float)point2.X + (float)point4.X;
-                                float y3 = (float)(j * point.Y) + num12 * (float)point3.Y + num10 * (float)point2.Y + (float)point4.Y;
-                                float z3 = (float)(j * point.Z) + num12 * (float)point3.Z + num10 * (float)point2.Z + (float)point4.Z;
-                                float x4 = (float)(j * point.X) + num12 * (float)point3.X + num9 * (float)point2.X + (float)point4.X;
-                                float y4 = (float)(j * point.Y) + num12 * (float)point3.Y + num9 * (float)point2.Y + (float)point4.Y;
-                                float z4 = (float)(j * point.Z) + num12 * (float)point3.Z + num9 * (float)point2.Z + (float)point4.Z;
+                                float num8 = 0.0005f * m_resolution;
+                                float num9 = n - num8;
+                                float num10 = n + point6.X + num8;
+                                float num11 = m - num8;
+                                float num12 = m + point6.Y + num8;
+                                float x = j * point.X + num11 * point3.X + num9 * point2.X + point4.X;
+                                float y = j * point.Y + num11 * point3.Y + num9 * point2.Y + point4.Y;
+                                float z = j * point.Z + num11 * point3.Z + num9 * point2.Z + point4.Z;
+                                float x2 = j * point.X + num11 * point3.X + num10 * point2.X + point4.X;
+                                float y2 = j * point.Y + num11 * point3.Y + num10 * point2.Y + point4.Y;
+                                float z2 = j * point.Z + num11 * point3.Z + num10 * point2.Z + point4.Z;
+                                float x3 = j * point.X + num12 * point3.X + num10 * point2.X + point4.X;
+                                float y3 = j * point.Y + num12 * point3.Y + num10 * point2.Y + point4.Y;
+                                float z3 = j * point.Z + num12 * point3.Z + num10 * point2.Z + point4.Z;
+                                float x4 = j * point.X + num12 * point3.X + num9 * point2.X + point4.X;
+                                float y4 = j * point.Y + num12 * point3.Y + num9 * point2.Y + point4.Y;
+                                float z4 = j * point.Z + num12 * point3.Z + num9 * point2.Z + point4.Z;
                                 BlockMesh blockMesh3 = blockMesh;
                                 int num13 = Terrain.ExtractContents(value2);
                                 Block block = BlocksManager.Blocks[num13];
                                 int num14 = block.GetFaceTextureSlot(i, value2);
                                 bool isEmissive = false;
                                 Color color = Color.White;
-                                IPaintableBlock paintableBlock = block as IPaintableBlock;
+                                var paintableBlock = block as IPaintableBlock;
                                 if (paintableBlock != null)
                                 {
                                     int? paintColor = paintableBlock.GetPaintColor(value2);
@@ -896,10 +889,10 @@ namespace Game
                                 int count = blockMesh3.Vertices.Count;
                                 blockMesh3.Vertices.Count += 4;
                                 BlockMeshVertex[] array2 = blockMesh3.Vertices.Array;
-                                float x5 = (((float)n + 0.01f) / (float)m_resolution + (float)num15) / 16f;
-                                float x6 = (((float)(n + point6.X) - 0.01f) / (float)m_resolution + (float)num15) / 16f;
-                                float y5 = (((float)m + 0.01f) / (float)m_resolution + (float)num16) / 16f;
-                                float y6 = (((float)(m + point6.Y) - 0.01f) / (float)m_resolution + (float)num16) / 16f;
+                                float x5 = ((n + 0.01f) / m_resolution + num15) / 16f;
+                                float x6 = ((n + point6.X - 0.01f) / m_resolution + num15) / 16f;
+                                float y5 = ((m + 0.01f) / m_resolution + num16) / 16f;
+                                float y6 = ((m + point6.Y - 0.01f) / m_resolution + num16) / 16f;
                                 BlockMeshVertex blockMeshVertex = array2[count] = new BlockMeshVertex
                                 {
                                     Position = new Vector3(x, y, z) / m_resolution,
@@ -963,7 +956,7 @@ namespace Game
         public void CreateCollisionAndInteractionBoxes()
         {
             Subdivision subdivision = CreateBoundingBoxesHelper(Box, 0, CreatePrecedingEmptySpacesArray());
-            List<BoundingBox> list = new List<BoundingBox>(subdivision.Boxes.Count);
+            var list = new List<BoundingBox>(subdivision.Boxes.Count);
             for (int i = 0; i < subdivision.Boxes.Count; i++)
             {
                 Box box = subdivision.Boxes[i];
@@ -974,17 +967,17 @@ namespace Game
             m_collisionBoxesByRotation = new BoundingBox[4][];
             for (int j = 0; j < 4; j++)
             {
-                Matrix m = Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationY((float)j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
+                Matrix m = Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationY(j * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                 m_collisionBoxesByRotation[j] = new BoundingBox[list.Count];
                 for (int k = 0; k < list.Count; k++)
                 {
-                    Vector3 v = Vector3.Transform(list[k].Min, m);
-                    Vector3 v2 = Vector3.Transform(list[k].Max, m);
-                    BoundingBox boundingBox = new BoundingBox(Vector3.Min(v, v2), Vector3.Max(v, v2));
+                    var v = Vector3.Transform(list[k].Min, m);
+                    var v2 = Vector3.Transform(list[k].Max, m);
+                    var boundingBox = new BoundingBox(Vector3.Min(v, v2), Vector3.Max(v, v2));
                     m_collisionBoxesByRotation[j][k] = boundingBox;
                 }
             }
-            List<BoundingBox> list2 = new List<BoundingBox>(list);
+            var list2 = new List<BoundingBox>(list);
             while (true)
             {
                 int num = 0;
@@ -1031,13 +1024,13 @@ namespace Game
                     m_interactionBoxesByRotation = new BoundingBox[4][];
                     for (int num3 = 0; num3 < 4; num3++)
                     {
-                        Matrix m2 = Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationY((float)num3 * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
+                        Matrix m2 = Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationY(num3 * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                         m_interactionBoxesByRotation[num3] = new BoundingBox[list2.Count];
                         for (int num4 = 0; num4 < list2.Count; num4++)
                         {
-                            Vector3 v3 = Vector3.Transform(list2[num4].Min, m2);
-                            Vector3 v4 = Vector3.Transform(list2[num4].Max, m2);
-                            BoundingBox boundingBox2 = new BoundingBox(Vector3.Min(v3, v4), Vector3.Max(v3, v4));
+                            var v3 = Vector3.Transform(list2[num4].Min, m2);
+                            var v4 = Vector3.Transform(list2[num4].Max, m2);
+                            var boundingBox2 = new BoundingBox(Vector3.Min(v3, v4), Vector3.Max(v3, v4));
                             m_interactionBoxesByRotation[num3][num4] = boundingBox2;
                         }
                     }
@@ -1054,7 +1047,7 @@ namespace Game
 
         public void CreateTorchPoints()
         {
-            List<BoundingBox> list = new List<BoundingBox>();
+            var list = new List<BoundingBox>();
             for (int i = 0; i < Resolution; i++)
             {
                 for (int j = 0; j < Resolution; j++)
@@ -1066,7 +1059,7 @@ namespace Game
                         {
                             continue;
                         }
-                        BoundingBox boundingBox = new BoundingBox(new Vector3(k, j, i) / Resolution, new Vector3(k + 1, j + 1, i + 1) / Resolution);
+                        var boundingBox = new BoundingBox(new Vector3(k, j, i) / Resolution, new Vector3(k + 1, j + 1, i + 1) / Resolution);
                         int num2 = -1;
                         for (int l = 0; l < list.Count; l++)
                         {
@@ -1096,12 +1089,12 @@ namespace Game
             m_torchPointsByRotation = new BoundingBox[4][];
             for (int m = 0; m < 4; m++)
             {
-                Matrix m2 = Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationY((float)m * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
+                Matrix m2 = Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationY(m * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f);
                 m_torchPointsByRotation[m] = new BoundingBox[list.Count];
                 for (int n = 0; n < list.Count; n++)
                 {
-                    Vector3 v = Vector3.Transform(list[n].Min, m2);
-                    Vector3 v2 = Vector3.Transform(list[n].Max, m2);
+                    var v = Vector3.Transform(list[n].Min, m2);
+                    var v2 = Vector3.Transform(list[n].Max, m2);
                     m_torchPointsByRotation[m][n] = new BoundingBox(Vector3.Min(v, v2), Vector3.Max(v, v2));
                 }
             }
@@ -1109,7 +1102,7 @@ namespace Game
 
         public void CalculateMainValue()
         {
-            Dictionary<int, int> dictionary = new Dictionary<int, int>();
+            var dictionary = new Dictionary<int, int>();
             for (int i = 0; i < Resolution; i++)
             {
                 for (int j = 0; j < Resolution; j++)
@@ -1224,7 +1217,7 @@ namespace Game
         public Subdivision CreateBoundingBoxesHelper(Box box, int depth, byte[] precedingEmptySpaces)
         {
             int num = 0;
-            Subdivision result = default(Subdivision);
+            Subdivision result = default;
             result.TotalVolume = box.Width * box.Height * box.Depth;
             result.MinVolume = result.TotalVolume;
             result.Boxes = new List<Box>
@@ -1302,7 +1295,7 @@ namespace Game
                     if (j == num || surface[j + i * m_resolution].Value != value)
                     {
                         num = j;
-                        Point2 point = new Point2(num - start.X, i - start.Y + 1);
+                        var point = new Point2(num - start.X, i - start.Y + 1);
                         if (point.X * point.Y > result.X * result.Y)
                         {
                             result = point;

@@ -101,7 +101,7 @@ namespace Game
                 m_point = point;
                 m_value = cellValue;
                 m_vertices.Clear();
-                CracksVertex item = default(CracksVertex);
+                CracksVertex item = default;
                 for (int i = 0; i < m_geometry.SubsetOpaque.Vertices.Count; i++)
                 {
                     TerrainVertex terrainVertex = m_geometry.SubsetOpaque.Vertices.Array[i];
@@ -109,14 +109,14 @@ namespace Game
                     item.X = terrainVertex.X;
                     item.Y = terrainVertex.Y;
                     item.Z = terrainVertex.Z;
-                    item.Tx = (float)terrainVertex.Tx / 32767f * 16f;
-                    item.Ty = (float)terrainVertex.Ty / 32767f * 16f;
+                    item.Tx = terrainVertex.Tx / 32767f * 16f;
+                    item.Ty = terrainVertex.Ty / 32767f * 16f;
                     item.Color = new Color(b, b, b, (byte)128);
                     m_vertices.Add(item);
                 }
             }
             Vector3 viewPosition = camera.ViewPosition;
-            Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+            var v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
             Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
             DynamicArray<ushort> indices = m_geometry.SubsetOpaque.Indices;
             float x = m_subsystemSky.ViewFogRange.X;
@@ -137,9 +137,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_componentMiner = base.Entity.FindComponent<ComponentMiner>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_componentMiner = Entity.FindComponent<ComponentMiner>(throwOnError: true);
             m_shader = new AlphaTestedShader();
             m_textures = new Texture2D[8];
             for (int i = 0; i < 8; i++)

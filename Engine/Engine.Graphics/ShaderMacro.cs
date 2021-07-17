@@ -21,11 +21,11 @@ namespace Engine.Graphics
 		{
 			if (string.IsNullOrEmpty(name))
 			{
-				throw new ArgumentNullException("name");
+				throw new ArgumentNullException(nameof(name));
 			}
 			if (value == null)
 			{
-				throw new ArgumentNullException("value");
+				throw new ArgumentNullException(nameof(value));
 			}
 			for (int i = 0; i < name.Length; i++)
 			{

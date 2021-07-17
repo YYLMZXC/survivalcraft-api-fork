@@ -46,7 +46,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkUNKNOWN pngChunkUNKNOWN = (PngChunkUNKNOWN)other;
+			var pngChunkUNKNOWN = (PngChunkUNKNOWN)other;
 			data = pngChunkUNKNOWN.data;
 		}
 	}

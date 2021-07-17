@@ -122,7 +122,7 @@ namespace Game
                 float num2 = 0.66f * MathUtils.Sqr(MathUtils.Saturate(1f - 0.75f * num));
                 if (num2 > 0.01f)
                 {
-                    Matrix matrix = default(Matrix);
+                    Matrix matrix = default;
                     matrix.Translation = Vector3.Zero;
                     matrix.Forward = camera.ViewDirection;
                     matrix.Right = Vector3.Normalize(Vector3.Cross(camera.ViewUp, matrix.Forward));
@@ -163,21 +163,21 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_componentGui = base.Entity.FindComponent<ComponentGui>(throwOnError: true);
-            m_componentPlayer = base.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_componentGui = Entity.FindComponent<ComponentGui>(throwOnError: true);
+            m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
         }
 
         public void DrawOverlay(Camera camera, Color color, float innerFactor, float outerFactor)
         {
             Vector2 viewportSize = camera.ViewportSize;
-            Vector2 vector = new Vector2(0f, 0f);
-            Vector2 vector2 = new Vector2(viewportSize.X, 0f);
-            Vector2 vector3 = new Vector2(viewportSize.X, viewportSize.Y);
-            Vector2 vector4 = new Vector2(0f, viewportSize.Y);
-            Vector2 p = new Vector2(viewportSize.X / 2f, viewportSize.Y / 2f);
+            var vector = new Vector2(0f, 0f);
+            var vector2 = new Vector2(viewportSize.X, 0f);
+            var vector3 = new Vector2(viewportSize.X, viewportSize.Y);
+            var vector4 = new Vector2(0f, viewportSize.Y);
+            var p = new Vector2(viewportSize.X / 2f, viewportSize.Y / 2f);
             Color color2 = color * outerFactor;
             Color color3 = color * innerFactor;
             FlatBatch2D flatBatch2D = m_primitivesRenderer2D.FlatBatch(0, DepthStencilState.None, null, BlendState.AlphaBlend);
@@ -194,11 +194,11 @@ namespace Game
         {
             Vector2 viewportSize = camera.ViewportSize;
             float num = viewportSize.X / viewportSize.Y;
-            Vector2 vector = new Vector2(0f, 0f);
-            Vector2 vector2 = new Vector2(viewportSize.X, 0f);
-            Vector2 vector3 = new Vector2(viewportSize.X, viewportSize.Y);
-            Vector2 vector4 = new Vector2(0f, viewportSize.Y);
-            Vector2 p = new Vector2(viewportSize.X / 2f, viewportSize.Y / 2f);
+            var vector = new Vector2(0f, 0f);
+            var vector2 = new Vector2(viewportSize.X, 0f);
+            var vector3 = new Vector2(viewportSize.X, viewportSize.Y);
+            var vector4 = new Vector2(0f, viewportSize.Y);
+            var p = new Vector2(viewportSize.X / 2f, viewportSize.Y / 2f);
             offset.X = MathUtils.Remainder(offset.X, 1f);
             offset.Y = MathUtils.Remainder(offset.Y, 1f);
             Vector2 vector5 = new Vector2(0f, 0f) + offset;
@@ -225,7 +225,7 @@ namespace Game
             float num = factor;
             Vector2 v = Vector2.One;
             float num2 = v.Length();
-            Point2 point = new Point2((int)MathUtils.Round(12f * viewportSize.X / viewportSize.Y), (int)MathUtils.Round(12f));
+            var point = new Point2((int)MathUtils.Round(12f * viewportSize.X / viewportSize.Y), (int)MathUtils.Round(12f));
             if (m_iceVertices == null || m_cellsCount != point)
             {
                 m_cellsCount = point;
@@ -245,8 +245,8 @@ namespace Game
                         {
                             num4 += m_random.Float(-0.4f, 0.4f);
                         }
-                        float x = num3 / (float)point.X;
-                        float y = num4 / (float)point.Y;
+                        float x = num3 / point.X;
+                        float y = num4 / point.Y;
                         m_iceVertices[i + j * (point.X + 1)] = new Vector2(x, y);
                     }
                 }
@@ -258,17 +258,17 @@ namespace Game
             {
                 m_light = (LightingManager.CalculateSmoothLight(m_subsystemTerrain, camera.ViewPosition) ?? m_light ?? 1f);
             }
-            Color color = Color.MultiplyColorOnly(Color.White, m_light.Value);
+            var color = Color.MultiplyColorOnly(Color.White, m_light.Value);
             m_random.Seed(0);
             Texture2D texture = ContentManager.Get<Texture2D>("Textures/IceOverlay");
             TexturedBatch3D texturedBatch3D = m_primitivesRenderer3D.TexturedBatch(texture, useAlphaTest: false, 0, DepthStencilState.None, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.PointWrap);
-            Vector2 v3 = new Vector2(viewportSize.X / viewportSize.Y, 1f);
-            Vector2 vector3 = new Vector2(point.X - 1, point.Y - 1);
+            var v3 = new Vector2(viewportSize.X / viewportSize.Y, 1f);
+            var vector3 = new Vector2(point.X - 1, point.Y - 1);
             for (int k = 0; k < point.X; k++)
             {
                 for (int l = 0; l < point.Y; l++)
                 {
-                    float num5 = (new Vector2((float)(2 * k) / vector3.X - 1f, (float)(2 * l) / vector3.Y - 1f) * v).Length() / num2;
+                    float num5 = (new Vector2(2 * k / vector3.X - 1f, 2 * l / vector3.Y - 1f) * v).Length() / num2;
                     if (1f - num5 + m_random.Float(0f, 0.05f) < num)
                     {
                         Vector2 v4 = m_iceVertices[k + l * (point.X + 1)];
@@ -307,7 +307,7 @@ namespace Game
         public void DrawMessage(Camera camera, string message, float factor)
         {
             BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
-            Vector2 position = new Vector2(camera.ViewportSize.X / 2f, camera.ViewportSize.Y - 25f);
+            var position = new Vector2(camera.ViewportSize.X / 2f, camera.ViewportSize.Y - 25f);
             FontBatch2D fontBatch2D = m_primitivesRenderer2D.FontBatch(font, 0, DepthStencilState.None, null, BlendState.AlphaBlend);
             int count = fontBatch2D.TriangleVertices.Count;
             fontBatch2D.QueueText(message, position, 0f, Color.Gray * factor, TextAnchor.HorizontalCenter | TextAnchor.Bottom, Vector2.One * camera.GameWidget.GlobalScale, Vector2.Zero);

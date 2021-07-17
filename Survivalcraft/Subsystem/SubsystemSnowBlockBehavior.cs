@@ -9,9 +9,9 @@ namespace Game
 
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
-            if (!CanSupportSnow(base.SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z)))
+            if (!CanSupportSnow(SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z)))
             {
-                base.SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+                SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
             }
         }
 

@@ -11,9 +11,9 @@ namespace Game
         public static string Words="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         public static string Encrypt(string str) {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             int Len = Words.Length;
-            byte[] data = System.Text.Encoding.UTF8.GetBytes(str);
+            byte[] data = Encoding.UTF8.GetBytes(str);
             for (int i=0;i< data.Length;i++) {
                 int q = data[i] / Len;
                 int r = data[i] % Len;

@@ -31,9 +31,9 @@ namespace Game
                             {
                                 num = MathUtils.Max(Window.ScreenSize.X, Window.ScreenSize.Y);
                                 height = MathUtils.Min(Window.ScreenSize.X, Window.ScreenSize.Y);
-                                float num2 = (float)num / (float)height;
+                                float num2 = num / (float)height;
                                 num = MathUtils.Min(num, 2048);
-                                height = (int)MathUtils.Round((float)num / num2);
+                                height = (int)MathUtils.Round(num / num2);
                                 break;
                             }
                         case ScreenshotSize.FullHD:
@@ -78,10 +78,10 @@ namespace Game
         {
             if (GameManager.Project != null)
             {
-                using (RenderTarget2D renderTarget2D = new RenderTarget2D(width, height, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8))
+                using (var renderTarget2D = new RenderTarget2D(width, height, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8))
                 {
                     RenderTarget2D renderTarget = Display.RenderTarget;
-                    Dictionary<ComponentGui, bool> dictionary = new Dictionary<ComponentGui, bool>();
+                    var dictionary = new Dictionary<ComponentGui, bool>();
                     ResolutionMode resolutionMode = ResolutionMode.High;
                     try
                     {
@@ -99,9 +99,9 @@ namespace Game
                         ScreensManager.Draw();
                         if (SettingsManager.ShowLogoInScreenshots)
                         {
-                            PrimitivesRenderer2D primitivesRenderer2D = new PrimitivesRenderer2D();
+                            var primitivesRenderer2D = new PrimitivesRenderer2D();
                             Texture2D texture2D = ContentManager.Get<Texture2D>("Textures/Gui/ScreenCaptureOverlay");
-                            Vector2 vector = new Vector2((width - texture2D.Width) / 2, 0f);
+                            var vector = new Vector2((width - texture2D.Width) / 2, 0f);
                             Vector2 corner = vector + new Vector2(texture2D.Width, texture2D.Height);
                             primitivesRenderer2D.TexturedBatch(texture2D, useAlphaTest: false, 0, DepthStencilState.None).QueueQuad(vector, corner, 0f, new Vector2(0f, 0f), new Vector2(1f, 1f), Color.White);
                             primitivesRenderer2D.Flush();
@@ -116,7 +116,7 @@ namespace Game
                         }
                         SettingsManager.ResolutionMode = resolutionMode;
                     }
-                    Image image = new Image(renderTarget2D.Width, renderTarget2D.Height);
+                    var image = new Image(renderTarget2D.Width, renderTarget2D.Height);
                     renderTarget2D.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));
                     if (!Storage.DirectoryExists(ScreenshotDir))
                         Storage.CreateDirectory(ScreenshotDir);

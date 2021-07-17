@@ -78,13 +78,13 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_componentSpawn = base.Entity.FindComponent<ComponentSpawn>(throwOnError: true);
-            m_componentBody = base.Entity.FindComponent<ComponentBody>(throwOnError: true);
-            m_componentHealth = base.Entity.FindComponent<ComponentHealth>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_componentSpawn = Entity.FindComponent<ComponentSpawn>(throwOnError: true);
+            m_componentBody = Entity.FindComponent<ComponentBody>(throwOnError: true);
+            m_componentHealth = Entity.FindComponent<ComponentHealth>(throwOnError: true);
             m_dayEntityTemplateName = valuesDictionary.GetValue<string>("DayEntityTemplateName");
             m_nightEntityTemplateName = valuesDictionary.GetValue<string>("NightEntityTemplateName");
             float value = valuesDictionary.GetValue<float>("Probability");
@@ -117,7 +117,7 @@ namespace Game
 
             if (m_componentHealth.Health > 0f && !string.IsNullOrEmpty(m_spawnEntityTemplateName))
             {
-                Entity entity = DatabaseManager.CreateEntity(base.Project, m_spawnEntityTemplateName, throwIfNotFound: true);
+                Entity entity = DatabaseManager.CreateEntity(Project, m_spawnEntityTemplateName, throwIfNotFound: true);
                 ComponentBody componentBody = entity.FindComponent<ComponentBody>(throwOnError: true);
                 componentBody.Position = m_componentBody.Position;
                 componentBody.Rotation = m_componentBody.Rotation;
@@ -128,7 +128,7 @@ namespace Game
                     modLoader.ComponentSpawn_Despawned(entity,componentSpawn);
                 }
 
-                base.Project.AddEntity(entity);
+                Project.AddEntity(entity);
             }
             if (m_particleSystem != null)
             {

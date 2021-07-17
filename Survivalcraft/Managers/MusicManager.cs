@@ -101,7 +101,7 @@ namespace Game
                         PlayMusic("Music/NativeIndianChant", startPercentage);
                         break;
                 }
-                m_nextSongTime = Time.FrameStartTime + (double)m_random.Float(40f, 60f);
+                m_nextSongTime = Time.FrameStartTime + m_random.Float(40f, 60f);
             }
         }
 
@@ -119,7 +119,7 @@ namespace Game
                     m_fadeStartTime = Time.FrameStartTime + 2.0;
                     float volume = (m_fadeSound != null) ? 0f : Volume;
                     StreamingSource streamingSource = ContentManager.Get<StreamingSource>(name).Duplicate();
-                    streamingSource.Position = (long)(MathUtils.Saturate(startPercentage) * (float)(streamingSource.BytesCount / streamingSource.ChannelsCount / 2)) / 16 * 16;
+                    streamingSource.Position = (long)(MathUtils.Saturate(startPercentage) * (streamingSource.BytesCount / streamingSource.ChannelsCount / 2)) / 16 * 16;
                     m_sound = new StreamingSound(streamingSource, volume, 1f, 0f, isLooped: false, disposeOnStop: false, 1f);
                     m_sound.Play();
                 }

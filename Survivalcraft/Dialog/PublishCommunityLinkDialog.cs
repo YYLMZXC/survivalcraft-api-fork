@@ -59,30 +59,30 @@ namespace Game
             m_publishButtonWidget.IsEnabled = (text.Length > 0 && text2.Length > 0);
             if (m_changeTypeButtonWidget.IsClicked)
             {
-                DialogsManager.ShowDialog(base.ParentWidget, new SelectExternalContentTypeDialog("Select Content Type", delegate (ExternalContentType item)
+                DialogsManager.ShowDialog(ParentWidget, new SelectExternalContentTypeDialog("Select Content Type", delegate (ExternalContentType item)
                 {
                     m_type = item;
                 }));
             }
-            else if (base.Input.Cancel || m_cancelButtonWidget.IsClicked)
+            else if (Input.Cancel || m_cancelButtonWidget.IsClicked)
             {
                 DialogsManager.HideDialog(this);
             }
             else if (m_publishButtonWidget.IsClicked)
             {
-                CancellableBusyDialog busyDialog = new CancellableBusyDialog("Publishing", autoHideOnCancel: false);
-                DialogsManager.ShowDialog(base.ParentWidget, busyDialog);
+                var busyDialog = new CancellableBusyDialog("Publishing", autoHideOnCancel: false);
+                DialogsManager.ShowDialog(ParentWidget, busyDialog);
                 CommunityContentManager.Publish(text, text2, m_type, m_user, busyDialog.Progress, delegate
                 {
                     DialogsManager.HideDialog(busyDialog);
-                    DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog("Link Published Successfully", "It should start appearing in the listings after it is moderated. Please keep the file accessible through this link, so that other community members can download it.", "OK", null, delegate
+                    DialogsManager.ShowDialog(ParentWidget, new MessageDialog("Link Published Successfully", "It should start appearing in the listings after it is moderated. Please keep the file accessible through this link, so that other community members can download it.", "OK", null, delegate
                     {
                         DialogsManager.HideDialog(this);
                     }));
                 }, delegate (Exception error)
                 {
                     DialogsManager.HideDialog(busyDialog);
-                    DialogsManager.ShowDialog(base.ParentWidget, new MessageDialog("Error", error.Message, "OK", null, null));
+                    DialogsManager.ShowDialog(ParentWidget, new MessageDialog("Error", error.Message, "OK", null, null));
                 });
             }
         }

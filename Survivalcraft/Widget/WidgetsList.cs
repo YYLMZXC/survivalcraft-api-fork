@@ -179,7 +179,7 @@ namespace Game
                 {
                     return widget2;
                 }
-                ContainerWidget containerWidget = widget2 as ContainerWidget;
+                var containerWidget = widget2 as ContainerWidget;
                 if (containerWidget != null)
                 {
                     Widget widget = containerWidget.Children.Find(name, type, throwIfNotFound: false);

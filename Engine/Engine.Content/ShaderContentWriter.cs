@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Engine.Content
 {
-	[ContentWriter("Engine.Graphics.Shader")]
+    [ContentWriter("Engine.Graphics.Shader")]
 	public class ShaderContentWriter : IContentWriter
 	{
 		public string VertexShader;
@@ -29,10 +29,14 @@ namespace Engine.Content
 			{
 				';'
 			}, StringSplitOptions.RemoveEmptyEntries);
-			ShaderMacro[] array2 = new ShaderMacro[array.Length];
+			var array2 = new ShaderMacro[array.Length];
 			for (int i = 0; i < array.Length; i++)
 			{
+#if android
+				string[] array3 = array[i].Split(new char[] { '=' }, StringSplitOptions.None);
+#else
 				string[] array3 = array[i].Split('=');
+#endif
 				if (array3.Length == 1)
 				{
 					array2[i] = new ShaderMacro(array3[0].Trim());
@@ -45,7 +49,7 @@ namespace Engine.Content
 				}
 				throw new InvalidOperationException("Error parsing shader macros.");
 			}
-			BinaryWriter binaryWriter = new BinaryWriter(stream);
+			var binaryWriter = new BinaryWriter(stream);
 			binaryWriter.Write(value);
 			binaryWriter.Write(value2);
 			binaryWriter.Write(array2.Length);

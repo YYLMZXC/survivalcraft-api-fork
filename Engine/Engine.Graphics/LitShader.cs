@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Engine.Graphics
 {
-	public class LitShader : Shader
+    public class LitShader : Shader
 	{
 		public ShaderParameter m_worldMatrixParameter;
 
@@ -189,7 +189,11 @@ namespace Engine.Graphics
 		}
 
 		public LitShader(int lightsCount, bool useEmissionColor, bool useVertexColor, bool useTexture, bool useFog, bool useAlphaThreshold, int maxInstancesCount = 1)
+#if android
+			: base(new StreamReader(Storage.OpenFile("app:Lit.vsh", OpenFileMode.Read)).ReadToEnd(), new StreamReader(Storage.OpenFile("app:Lit.psh", OpenFileMode.Read)).ReadToEnd(), PrepareShaderMacros(lightsCount, useEmissionColor, useVertexColor, useTexture, useFog, useAlphaThreshold, maxInstancesCount))
+#else
 			: base(new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Embedded.Lit.vsh")).ReadToEnd(), new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Embedded.Lit.psh")).ReadToEnd(), PrepareShaderMacros(lightsCount, useEmissionColor, useVertexColor, useTexture, useFog, useAlphaThreshold, maxInstancesCount))
+#endif
 		{
 			if (lightsCount < 0 || lightsCount > 3)
 			{
@@ -248,7 +252,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public override void PrepareForDrawingOverride()
+		protected override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(m_instancesCount, m_useFog, viewProjection: false, worldViewProjection: true);
 			m_worldViewProjectionMatrixParameter.SetValue(Transforms.WorldViewProjection, InstancesCount);

@@ -67,7 +67,7 @@ namespace Game
                     };
                 }
             }
-            SubsystemPlayers subsystemPlayers = base.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
+            SubsystemPlayers subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
             foreach (PlayerData playersDatum in subsystemPlayers.PlayersData)
             {
                 if (!CharacterSkinsManager.IsBuiltIn(playersDatum.CharacterSkinName))
@@ -81,7 +81,7 @@ namespace Game
                     };
                 }
             }
-            SubsystemFurnitureBlockBehavior subsystemFurnitureBlockBehavior = base.Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true);
+            SubsystemFurnitureBlockBehavior subsystemFurnitureBlockBehavior = Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true);
             foreach (FurnitureSet furnitureSet in subsystemFurnitureBlockBehavior.FurnitureSets)
             {
                 if (furnitureSet.ImportedFrom != null)
@@ -99,7 +99,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
             WorldSettings = new WorldSettings();
             WorldSettings.Load(valuesDictionary);
             DirectoryName = valuesDictionary.GetValue<string>("WorldDirectoryName");
@@ -119,7 +119,7 @@ namespace Game
             TotalElapsedGameTime += dt;
             TotalElapsedGameTimeDelta = (m_lastTotalElapsedGameTime.HasValue ? ((float)(TotalElapsedGameTime - m_lastTotalElapsedGameTime.Value)) : 0f);
             m_lastTotalElapsedGameTime = TotalElapsedGameTime;
-            if (m_subsystemTime.GameTime >= 600.0 && m_subsystemTime.GameTime - (double)m_subsystemTime.GameTimeDelta < 600.0 && UserManager.ActiveUser != null)
+            if (m_subsystemTime.GameTime >= 600.0 && m_subsystemTime.GameTime - m_subsystemTime.GameTimeDelta < 600.0 && UserManager.ActiveUser != null)
             {
                 foreach (ActiveExternalContentInfo item in GetActiveExternalContent())
                 {

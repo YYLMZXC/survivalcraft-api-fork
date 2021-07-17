@@ -29,12 +29,12 @@ namespace Game
                 Vector2? lastWalkOrder = m_componentCreature.ComponentLocomotion.LastWalkOrder;
                 if (lastWalkOrder.HasValue)
                 {
-                    Vector2 vector = new Vector2(m_componentCreature.ComponentBody.CollisionVelocityChange.X, m_componentCreature.ComponentBody.CollisionVelocityChange.Z);
+                    var vector = new Vector2(m_componentCreature.ComponentBody.CollisionVelocityChange.X, m_componentCreature.ComponentBody.CollisionVelocityChange.Z);
                     if (vector != Vector2.Zero && !m_collidedWithBody)
                     {
-                        Vector2 v = Vector2.Normalize(vector);
+                        var v = Vector2.Normalize(vector);
                         Vector3 vector2 = m_componentCreature.ComponentBody.Matrix.Right * lastWalkOrder.Value.X + m_componentCreature.ComponentBody.Matrix.Forward * lastWalkOrder.Value.Y;
-                        Vector2 v2 = Vector2.Normalize(new Vector2(vector2.X, vector2.Z));
+                        var v2 = Vector2.Normalize(new Vector2(vector2.X, vector2.Z));
                         bool flag = false;
                         Vector3 v3 = Vector3.Zero;
                         Vector3 vector3 = Vector3.Zero;
@@ -104,9 +104,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
             m_alwaysEnabled = valuesDictionary.GetValue<bool>("AlwaysEnabled");
             m_jumpStrength = valuesDictionary.GetValue<float>("JumpStrength");
             m_componentCreature.ComponentBody.CollidedWithBody += delegate

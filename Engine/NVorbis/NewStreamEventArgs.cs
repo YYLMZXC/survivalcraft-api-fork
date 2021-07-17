@@ -20,7 +20,7 @@ namespace NVorbis
 		{
 			if (packetProvider == null)
 			{
-				throw new ArgumentNullException("packetProvider");
+				throw new ArgumentNullException(nameof(packetProvider));
 			}
 			PacketProvider = packetProvider;
 		}

@@ -85,7 +85,7 @@ namespace Game
             {
                 data = 1;
             }
-            BlockPlacementData result = default(BlockPlacementData);
+            BlockPlacementData result = default;
             result.Value = Terrain.ReplaceData(Terrain.ReplaceContents(0, 45), data);
             result.CellFace = raycastResult.CellFace;
             return result;

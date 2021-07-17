@@ -36,7 +36,7 @@ namespace Engine.Graphics
 				}
 			}
 			m_sortNeeded |= (m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer);
-			T1 val = new T1();
+			var val = new T1();
 			val.Layer = layer;
 			val.DepthStencilState = depthStencilState;
 			val.RasterizerState = rasterizerState;
@@ -50,7 +50,7 @@ namespace Engine.Graphics
 		{
 			if (texture == null)
 			{
-				throw new ArgumentNullException("texture");
+				throw new ArgumentNullException(nameof(texture));
 			}
 			for (LinkedListNode<T2> linkedListNode = m_texturedBatches.First; linkedListNode != null; linkedListNode = linkedListNode.Next)
 			{
@@ -66,7 +66,7 @@ namespace Engine.Graphics
 				}
 			}
 			m_sortNeeded |= (m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer);
-			T2 val = new T2();
+			var val = new T2();
 			val.Layer = layer;
 			val.UseAlphaTest = useAlphaTest;
 			val.Texture = texture;
@@ -83,7 +83,7 @@ namespace Engine.Graphics
 		{
 			if (font == null)
 			{
-				throw new ArgumentNullException("font");
+				throw new ArgumentNullException(nameof(font));
 			}
 			for (LinkedListNode<T3> linkedListNode = m_fontBatches.First; linkedListNode != null; linkedListNode = linkedListNode.Next)
 			{
@@ -99,7 +99,7 @@ namespace Engine.Graphics
 				}
 			}
 			m_sortNeeded |= (m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer);
-			T3 val = new T3();
+			var val = new T3();
 			val.Layer = layer;
 			val.Font = font;
 			val.SamplerState = samplerState;

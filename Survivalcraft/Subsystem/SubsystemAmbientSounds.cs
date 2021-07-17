@@ -81,7 +81,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            SubsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            SubsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
             m_fireSound = SubsystemAudio.CreateSound("Audio/Fire");
             m_fireSound.IsLooped = true;
             m_fireSound.Volume = 0f;

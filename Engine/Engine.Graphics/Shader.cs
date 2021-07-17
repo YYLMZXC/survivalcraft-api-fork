@@ -8,14 +8,14 @@ namespace Engine.Graphics
 {
 	public class Shader : GraphicsResource
 	{
-		public struct ShaderAttributeData
+		internal struct ShaderAttributeData
 		{
 			public string Semantic;
 
 			public int Location;
 		}
 
-		public struct VertexAttributeData
+		internal struct VertexAttributeData
 		{
 			public int Size;
 
@@ -26,27 +26,27 @@ namespace Engine.Graphics
 			public int Offset;
 		}
 
-		public int m_program;
+		internal int m_program;
 
-		public int m_vertexShader;
+		internal int m_vertexShader;
 
-		public int m_pixelShader;
+		internal int m_pixelShader;
 
-		public Dictionary<VertexDeclaration, VertexAttributeData[]> m_vertexAttributeDataByDeclaration = new Dictionary<VertexDeclaration, VertexAttributeData[]>();
+		internal Dictionary<VertexDeclaration, VertexAttributeData[]> m_vertexAttributeDataByDeclaration = new Dictionary<VertexDeclaration, VertexAttributeData[]>();
 
-		public List<ShaderAttributeData> m_shaderAttributeData = new List<ShaderAttributeData>();
+		internal List<ShaderAttributeData> m_shaderAttributeData = new List<ShaderAttributeData>();
 
-		public ShaderParameter m_glymulParameter;
+		private ShaderParameter m_glymulParameter;
 
-		public Dictionary<string, ShaderParameter> m_parametersByName;
+		private Dictionary<string, ShaderParameter> m_parametersByName;
 
-		public ShaderParameter[] m_parameters;
+		internal ShaderParameter[] m_parameters;
 
-		public string m_vertexShaderCode;
+		private string m_vertexShaderCode;
 
-		public string m_pixelShaderCode;
+		private string m_pixelShaderCode;
 
-		public ShaderMacro[] m_shaderMacros;
+		private ShaderMacro[] m_shaderMacros;
 
 		public string DebugName
 		{
@@ -87,13 +87,13 @@ namespace Engine.Graphics
 			DeleteShaders();
 		}
 
-		public void PrepareForDrawing()
+		internal void PrepareForDrawing()
 		{
 			m_glymulParameter.SetValue((Display.RenderTarget != null) ? (-1f) : 1f);
 			PrepareForDrawingOverride();
 		}
 
-		public VertexAttributeData[] GetVertexAttribData(VertexDeclaration vertexDeclaration)
+		internal VertexAttributeData[] GetVertexAttribData(VertexDeclaration vertexDeclaration)
 		{
 			if (!m_vertexAttributeDataByDeclaration.TryGetValue(vertexDeclaration, out VertexAttributeData[] value))
 			{
@@ -125,7 +125,7 @@ namespace Engine.Graphics
 			return value;
 		}
 
-		public static void ParseShaderMetadata(string shaderCode, Dictionary<string, string> semanticsByAttribute, Dictionary<string, string> samplersByTexture)
+		private static void ParseShaderMetadata(string shaderCode, Dictionary<string, string> semanticsByAttribute, Dictionary<string, string> samplersByTexture)
 		{
 			string[] array = shaderCode.Split('\n');
 			for (int i = 0; i < array.Length; i++)
@@ -139,7 +139,7 @@ namespace Engine.Graphics
 						text = text.Substring(2).TrimStart();
 						if (text.StartsWith("<") && text.EndsWith("/>"))
 						{
-							XElement xElement = XElement.Parse(text);
+							var xElement = XElement.Parse(text);
 							if (xElement.Name == "Semantic")
 							{
 								if (xElement.Attribute("Attribute") == null)
@@ -178,7 +178,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public string PrependShaderMacros(string shaderCode, ShaderMacro[] shaderMacros, bool isVertexShader)
+		private string PrependShaderMacros(string shaderCode, ShaderMacro[] shaderMacros, bool isVertexShader)
 		{
 			string str = "#version 110" + Environment.NewLine;
 			str = str + "#define GLSL" + Environment.NewLine;
@@ -195,21 +195,21 @@ namespace Engine.Graphics
 			return str + shaderCode;
 		}
 
-		public override void HandleDeviceLost()
+		internal override void HandleDeviceLost()
 		{
 			DeleteShaders();
 		}
 
-		public override void HandleDeviceReset()
+		internal override void HandleDeviceReset()
 		{
 			CompileShaders();
 		}
 
-		public void CompileShaders()
+		internal void CompileShaders()
 		{
 			DeleteShaders();
-			Dictionary<string, string> dictionary = new Dictionary<string, string>();
-			Dictionary<string, string> dictionary2 = new Dictionary<string, string>();
+			var dictionary = new Dictionary<string, string>();
+			var dictionary2 = new Dictionary<string, string>();
 			ParseShaderMetadata(m_vertexShaderCode, dictionary, dictionary2);
 			ParseShaderMetadata(m_pixelShaderCode, dictionary, dictionary2);
 			string @string = PrependShaderMacros(m_vertexShaderCode, m_shaderMacros, isVertexShader: true);
@@ -245,7 +245,7 @@ namespace Engine.Graphics
 			GL.GetProgram(m_program, ProgramParameter.ActiveAttributes, out int params4);
 			for (int i = 0; i < params4; i++)
 			{
-				StringBuilder stringBuilder = new StringBuilder(256);
+				var stringBuilder = new StringBuilder(256);
 				GL.GetActiveAttrib(m_program, i, stringBuilder.Capacity, out int _, out int _, out ActiveAttribType _, stringBuilder);
 				int attribLocation = GL.GetAttribLocation(m_program, stringBuilder.ToString());
 				if (!dictionary.TryGetValue(stringBuilder.ToString(), out string value))
@@ -259,11 +259,11 @@ namespace Engine.Graphics
 				});
 			}
 			GL.GetProgram(m_program, ProgramParameter.ActiveUniforms, out int params5);
-			List<ShaderParameter> list = new List<ShaderParameter>();
-			Dictionary<string, ShaderParameter> dictionary3 = new Dictionary<string, ShaderParameter>();
+			var list = new List<ShaderParameter>();
+			var dictionary3 = new Dictionary<string, ShaderParameter>();
 			for (int j = 0; j < params5; j++)
 			{
-				StringBuilder stringBuilder2 = new StringBuilder(256);
+				var stringBuilder2 = new StringBuilder(256);
 				GL.GetActiveUniform(m_program, j, stringBuilder2.Capacity, out int _, out int size2, out ActiveUniformType type2, stringBuilder2);
 				int uniformLocation = GL.GetUniformLocation(m_program, stringBuilder2.ToString());
 				ShaderParameterType shaderParameterType = GLWrapper.TranslateActiveUniformType(type2);
@@ -272,7 +272,7 @@ namespace Engine.Graphics
 				{
 					stringBuilder2.Remove(num, stringBuilder2.Length - num);
 				}
-				ShaderParameter shaderParameter = new ShaderParameter(this, stringBuilder2.ToString(), shaderParameterType, size2);
+				var shaderParameter = new ShaderParameter(this, stringBuilder2.ToString(), shaderParameterType, size2);
 				shaderParameter.Location = uniformLocation;
 				dictionary3.Add(shaderParameter.Name, shaderParameter);
 				list.Add(shaderParameter);
@@ -282,7 +282,7 @@ namespace Engine.Graphics
 					{
 						throw new InvalidOperationException($"Texture \"{shaderParameter.Name}\" has no sampler defined in shader metadata.");
 					}
-					ShaderParameter shaderParameter2 = new ShaderParameter(this, value2, ShaderParameterType.Sampler2D, 1);
+					var shaderParameter2 = new ShaderParameter(this, value2, ShaderParameterType.Sampler2D, 1);
 					shaderParameter2.Location = int.MaxValue;
 					dictionary3.Add(value2, shaderParameter2);
 					list.Add(shaderParameter2);
@@ -315,7 +315,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public void DeleteShaders()
+		internal void DeleteShaders()
 		{
 			if (m_program != 0)
 			{
@@ -356,23 +356,23 @@ namespace Engine.Graphics
 			return 16384;
 		}
 
-		public virtual void PrepareForDrawingOverride()
+		protected virtual void PrepareForDrawingOverride()
 		{
 		}
 
-		public void InitializeShader(string vertexShaderCode, string pixelShaderCode, ShaderMacro[] shaderMacros)
+		private void InitializeShader(string vertexShaderCode, string pixelShaderCode, ShaderMacro[] shaderMacros)
 		{
 			if (vertexShaderCode == null)
 			{
-				throw new ArgumentNullException("vertexShaderCode");
+				throw new ArgumentNullException(nameof(vertexShaderCode));
 			}
 			if (pixelShaderCode == null)
 			{
-				throw new ArgumentNullException("pixelShaderCode");
+				throw new ArgumentNullException(nameof(pixelShaderCode));
 			}
 			if (shaderMacros == null)
 			{
-				throw new ArgumentNullException("shaderMacros");
+				throw new ArgumentNullException(nameof(shaderMacros));
 			}
 			m_vertexShaderCode = vertexShaderCode;
 			m_pixelShaderCode = pixelShaderCode;

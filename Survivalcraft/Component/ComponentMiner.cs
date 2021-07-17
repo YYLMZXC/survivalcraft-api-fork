@@ -116,14 +116,7 @@ namespace Game
 
         public void Poke(bool forceRestart)
         {
-            if (forceRestart)
-            {
-                PokingPhase = 0.0001f;
-            }
-            else
-            {
-                PokingPhase = MathUtils.Max(0.0001f, PokingPhase);
-            }
+            PokingPhase = forceRestart ? 0.0001f : MathUtils.Max(0.0001f, PokingPhase);
         }
 
         public bool Dig(TerrainRaycastResult raycastResult)
@@ -191,7 +184,7 @@ namespace Game
         {
             float AttackPower = 0f;
             //预先生成粒子特效
-            HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(ComponentMiner.fName, 2));
+            var particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
             foreach (ModLoader modLoader in ModsManager.ModLoaders) {
                 modLoader.ComponentMinerHit(this, componentBody,hitPoint,hitDirection, particleSystem, ref AttackPower);            
             }
@@ -227,10 +220,10 @@ namespace Game
             float reach = (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative) ? SettingsManager.CreativeReach : 5f;
             Vector3 creaturePosition = ComponentCreature.ComponentCreatureModel.EyePosition;
             Vector3 start = ray.Position;
-            Vector3 direction = Vector3.Normalize(ray.Direction);
+            var direction = Vector3.Normalize(ray.Direction);
             Vector3 end = ray.Position + direction * 15f;
             Point3 startCell = Terrain.ToCell(start);
-            BodyRaycastResult? bodyRaycastResult = m_subsystemBodies.Raycast(start, end, 0.35f, (ComponentBody body, float distance) => (Vector3.DistanceSquared(start + distance * direction, creaturePosition) <= reach * reach && body.Entity != base.Entity && !body.IsChildOfBody(ComponentCreature.ComponentBody) && !ComponentCreature.ComponentBody.IsChildOfBody(body) && Vector3.Dot(Vector3.Normalize(body.BoundingBox.Center() - start), direction) > 0.7f) ? true : false);
+            BodyRaycastResult? bodyRaycastResult = m_subsystemBodies.Raycast(start, end, 0.35f, (ComponentBody body, float distance) => (Vector3.DistanceSquared(start + distance * direction, creaturePosition) <= reach * reach && body.Entity != Entity && !body.IsChildOfBody(ComponentCreature.ComponentBody) && !ComponentCreature.ComponentBody.IsChildOfBody(body) && Vector3.Dot(Vector3.Normalize(body.BoundingBox.Center() - start), direction) > 0.7f) ? true : false);
             MovingBlocksRaycastResult? movingBlocksRaycastResult = m_subsystemMovingBlocks.Raycast(start, end, extendToFillCells: true);
             TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(start, end, useInteractionBoxes: true, skipAirBlocks: true, delegate (int value, float distance)
             {
@@ -337,14 +330,7 @@ namespace Game
                 PokingPhase += num * m_subsystemTime.GameTimeDelta;
                 if (PokingPhase > 1f)
                 {
-                    if (DigCellFace.HasValue)
-                    {
-                        PokingPhase = MathUtils.Remainder(PokingPhase, 1f);
-                    }
-                    else
-                    {
-                        PokingPhase = 0f;
-                    }
+                    PokingPhase = DigCellFace.HasValue ? MathUtils.Remainder(PokingPhase, 1f) : 0f;
                 }
             }
             if (DigCellFace.HasValue && Time.FrameIndex - m_lastDigFrameIndex > 1)
@@ -355,24 +341,19 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_subsystemMovingBlocks = base.Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
-            m_subsystemSoundMaterials = base.Project.FindSubsystem<SubsystemSoundMaterials>(throwOnError: true);
-            m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
-            ComponentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            ComponentPlayer = base.Entity.FindComponent<ComponentPlayer>();
-            if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && ComponentPlayer != null)
-            {
-                Inventory = base.Entity.FindComponent<ComponentCreativeInventory>();
-            }
-            else
-            {
-                Inventory = base.Entity.FindComponent<ComponentInventory>();
-            }
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemMovingBlocks = Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemSoundMaterials = Project.FindSubsystem<SubsystemSoundMaterials>(throwOnError: true);
+            m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
+            ComponentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            ComponentPlayer = Entity.FindComponent<ComponentPlayer>();
+            Inventory = m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && ComponentPlayer != null
+                ? Entity.FindComponent<ComponentCreativeInventory>()
+                : (IInventory)Entity.FindComponent<ComponentInventory>();
             AttackPower = valuesDictionary.GetValue<float>("AttackPower");
         }
 
@@ -467,7 +448,7 @@ namespace Game
             if (m_subsystemGameInfo.WorldSettings.GameMode != 0 && m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled)
             {
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(toolValue)];
-                if (ComponentPlayer != null && ComponentPlayer.PlayerData.Level < (float)block.PlayerLevelRequired_(toolValue))
+                if (ComponentPlayer != null && ComponentPlayer.PlayerData.Level < block.PlayerLevelRequired_(toolValue))
                 {
                     return false;
                 }

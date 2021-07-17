@@ -19,7 +19,7 @@ namespace Game
             MemoryBankData blockData = m_subsystemMemoryBankBlockBehavior.GetBlockData(cellFace.Point);
             if (blockData != null)
             {
-                m_voltage = (float)(int)blockData.LastOutput / 15f;
+                m_voltage = blockData.LastOutput / 15f;
             }
         }
 
@@ -37,12 +37,12 @@ namespace Game
             float num = 0f;
             int num2 = 0;
             int num3 = 0;
-            int rotation = base.Rotation;
-            foreach (ElectricConnection connection in base.Connections)
+            int rotation = Rotation;
+            foreach (ElectricConnection connection in Connections)
             {
                 if (connection.ConnectorType != ElectricConnectorType.Output && connection.NeighborConnectorType != 0)
                 {
-                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(base.CellFaces[0].Face, rotation, connection.ConnectorFace);
+                    ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(CellFaces[0].Face, rotation, connection.ConnectorFace);
                     if (connectorDirection.HasValue)
                     {
                         if (connectorDirection == ElectricConnectorDirection.Right)
@@ -67,14 +67,14 @@ namespace Game
                     }
                 }
             }
-            MemoryBankData memoryBankData = m_subsystemMemoryBankBlockBehavior.GetBlockData(base.CellFaces[0].Point);
+            MemoryBankData memoryBankData = m_subsystemMemoryBankBlockBehavior.GetBlockData(CellFaces[0].Point);
             int address = num2 + (num3 << 4);
             if (flag2)
             {
                 if (flag && m_clockAllowed)
                 {
                     m_clockAllowed = false;
-                    m_voltage = ((memoryBankData != null) ? ((float)(int)memoryBankData.Read(address) / 15f) : 0f);
+                    m_voltage = ((memoryBankData != null) ? (memoryBankData.Read(address) / 15f) : 0f);
                 }
                 else if (flag3 && m_writeAllowed)
                 {
@@ -82,14 +82,14 @@ namespace Game
                     if (memoryBankData == null)
                     {
                         memoryBankData = new MemoryBankData();
-                        m_subsystemMemoryBankBlockBehavior.SetBlockData(base.CellFaces[0].Point, memoryBankData);
+                        m_subsystemMemoryBankBlockBehavior.SetBlockData(CellFaces[0].Point, memoryBankData);
                     }
                     memoryBankData.Write(address, (byte)MathUtils.Round(num * 15f));
                 }
             }
             else
             {
-                m_voltage = ((memoryBankData != null) ? ((float)(int)memoryBankData.Read(address) / 15f) : 0f);
+                m_voltage = ((memoryBankData != null) ? (memoryBankData.Read(address) / 15f) : 0f);
             }
             if (!flag)
             {

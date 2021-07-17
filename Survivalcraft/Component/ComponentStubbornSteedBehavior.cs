@@ -44,34 +44,29 @@ namespace Game
             }
             if (m_subsystemTime.PeriodicGameTimeEvent(1.0, m_periodicEventOffset))
             {
-                if (m_subsystemGameInfo.TotalElapsedGameTime < m_stubbornEndTime && m_componentEatPickableBehavior.Satiation <= 0f && m_componentMount.Rider != null)
-                {
-                    m_importanceLevel = 210f;
-                }
-                else
-                {
-                    m_importanceLevel = 0f;
-                }
+                m_importanceLevel = m_subsystemGameInfo.TotalElapsedGameTime < m_stubbornEndTime && m_componentEatPickableBehavior.Satiation <= 0f && m_componentMount.Rider != null
+                    ? 210f
+                    : 0f;
             }
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentMount = base.Entity.FindComponent<ComponentMount>(throwOnError: true);
-            m_componentSteedBehavior = base.Entity.FindComponent<ComponentSteedBehavior>(throwOnError: true);
-            m_componentEatPickableBehavior = base.Entity.FindComponent<ComponentEatPickableBehavior>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentMount = Entity.FindComponent<ComponentMount>(throwOnError: true);
+            m_componentSteedBehavior = Entity.FindComponent<ComponentSteedBehavior>(throwOnError: true);
+            m_componentEatPickableBehavior = Entity.FindComponent<ComponentEatPickableBehavior>(throwOnError: true);
             m_stubbornProbability = valuesDictionary.GetValue<float>("StubbornProbability");
             m_stubbornEndTime = valuesDictionary.GetValue<double>("StubbornEndTime");
             m_periodicEventOffset = m_random.Float(0f, 100f);
-            m_isSaddled = base.Entity.ValuesDictionary.DatabaseObject.Name.EndsWith("_Saddled");
+            m_isSaddled = Entity.ValuesDictionary.DatabaseObject.Name.EndsWith("_Saddled");
             m_stateMachine.AddState("Inactive", null, delegate
             {
                 if (m_subsystemTime.PeriodicGameTimeEvent(1.0, m_periodicEventOffset) && m_componentMount.Rider != null && m_random.Float(0f, 1f) < m_stubbornProbability && (!m_isSaddled || m_componentEatPickableBehavior.Satiation <= 0f))
                 {
-                    m_stubbornEndTime = m_subsystemGameInfo.TotalElapsedGameTime + (double)m_random.Float(60f, 120f);
+                    m_stubbornEndTime = m_subsystemGameInfo.TotalElapsedGameTime + m_random.Float(60f, 120f);
                 }
                 if (IsActive)
                 {

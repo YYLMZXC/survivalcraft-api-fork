@@ -20,7 +20,7 @@ namespace Game
 
         public Random m_random = new Random();
 
-        Project IInventory.Project => base.Project;
+        Project IInventory.Project => Project;
 
         public virtual int SlotsCount => m_slots.Count;
 
@@ -82,14 +82,14 @@ namespace Game
 
         public ComponentPlayer FindInteractingPlayer()
         {
-            ComponentPlayer componentPlayer = base.Entity.FindComponent<ComponentPlayer>();
+            ComponentPlayer componentPlayer = Entity.FindComponent<ComponentPlayer>();
             if (componentPlayer == null)
             {
-                ComponentBlockEntity componentBlockEntity = base.Entity.FindComponent<ComponentBlockEntity>();
+                ComponentBlockEntity componentBlockEntity = Entity.FindComponent<ComponentBlockEntity>();
                 if (componentBlockEntity != null)
                 {
-                    Vector3 position = new Vector3(componentBlockEntity.Coordinates);
-                    componentPlayer = base.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true).FindNearestPlayer(position);
+                    var position = new Vector3(componentBlockEntity.Coordinates);
+                    componentPlayer = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true).FindNearestPlayer(position);
                 }
             }
             return componentPlayer;
@@ -131,14 +131,14 @@ namespace Game
 
         public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)
         {
-            ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+            var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Slots", valuesDictionary2);
             for (int i = 0; i < m_slots.Count; i++)
             {
                 Slot slot = m_slots[i];
                 if (slot.Count > 0)
                 {
-                    ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+                    var valuesDictionary3 = new ValuesDictionary();
                     valuesDictionary2.SetValue("Slot" + i.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
                     valuesDictionary3.SetValue("Contents", slot.Value);
                     valuesDictionary3.SetValue("Count", slot.Count);
@@ -183,7 +183,7 @@ namespace Game
             int slotValue = GetSlotValue(slotIndex);
             if (slotCount > 0 && slotValue != 0)
             {
-                SubsystemBlockBehavior[] blockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
+                SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
                 for (int i = 0; i < blockBehaviors.Length; i++)
                 {
                     int processInventoryItemCapacity = blockBehaviors[i].GetProcessInventoryItemCapacity(this, slotIndex, value);
@@ -216,7 +216,7 @@ namespace Game
             int slotValue = GetSlotValue(slotIndex);
             if (slotCount > 0 && slotValue != 0)
             {
-                SubsystemBlockBehavior[] blockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
+                SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
                 foreach (SubsystemBlockBehavior subsystemBlockBehavior in blockBehaviors)
                 {
                     int processInventoryItemCapacity = subsystemBlockBehavior.GetProcessInventoryItemCapacity(this, slotIndex, value);

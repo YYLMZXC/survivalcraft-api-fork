@@ -11,7 +11,7 @@ namespace Engine.Graphics
 
 		public void QueueText(string text, Vector3 position, Vector3 right, Vector3 down, Color color, TextAnchor anchor, Vector2 spacing)
 		{
-			Vector2 scale = new Vector2(right.Length(), down.Length());
+			var scale = new Vector2(right.Length(), down.Length());
 			Vector2 vector = CalculateTextOffset(text, anchor, scale, spacing);
 			Vector3 vector2 = position + vector.X * Vector3.Normalize(right) + vector.Y * Vector3.Normalize(down);
 			Vector3 v = vector2;

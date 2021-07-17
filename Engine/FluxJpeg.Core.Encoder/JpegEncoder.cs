@@ -128,7 +128,7 @@ namespace FluxJpeg.Core.Encoder
 				};
 				WriteArray(data2);
 			}
-			FluxJpeg.Core.IO.BinaryWriter binaryWriter = new FluxJpeg.Core.IO.BinaryWriter(_outStream);
+			var binaryWriter = new FluxJpeg.Core.IO.BinaryWriter(_outStream);
 			bool flag = false;
 			foreach (JpegHeader metaHeader in _input.MetaHeaders)
 			{

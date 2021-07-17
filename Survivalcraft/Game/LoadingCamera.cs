@@ -20,7 +20,7 @@ namespace Game
 
         public override void Update(float dt)
         {
-            SetupPerspectiveCamera(base.GameWidget.PlayerData.SpawnPosition, Vector3.UnitX, Vector3.UnitY);
+            SetupPerspectiveCamera(GameWidget.PlayerData.SpawnPosition, Vector3.UnitX, Vector3.UnitY);
         }
     }
 }

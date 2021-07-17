@@ -28,8 +28,8 @@ namespace Game
             : base(15)
         {
             m_position = position;
-            base.Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
-            base.TextureSlotsCount = 3;
+            Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
+            TextureSlotsCount = 3;
         }
 
         public override bool Simulate(float dt)
@@ -37,9 +37,9 @@ namespace Game
             if (m_visible)
             {
                 m_toGenerate += 15f * dt;
-                for (int i = 0; i < base.Particles.Length; i++)
+                for (int i = 0; i < Particles.Length; i++)
                 {
-                    Particle particle = base.Particles[i];
+                    Particle particle = Particles[i];
                     if (particle.IsActive)
                     {
                         particle.Time += dt;

@@ -68,8 +68,8 @@ namespace Game
                 try
                 {
                     m_stream.Position = MathUtils.Max(m_stream.Position - bytesCount, 0L);
-                    StreamReader streamReader = new StreamReader(m_stream);
-                    List<string> list = new List<string>();
+                    var streamReader = new StreamReader(m_stream);
+                    var list = new List<string>();
                     while (true)
                     {
                         string text = streamReader.ReadLine();

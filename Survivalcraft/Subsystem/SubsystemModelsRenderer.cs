@@ -135,9 +135,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_subsystemShadows = base.Project.FindSubsystem<SubsystemShadows>(throwOnError: true);
+            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemShadows = Project.FindSubsystem<SubsystemShadows>(throwOnError: true);
             int MaxInstancesCount = 0;
             foreach (ModLoader modLoader in ModsManager.ModLoaders) {
                 MaxInstancesCount = Math.Max(modLoader.GetMaxInstancesCount(),MaxInstancesCount);
@@ -151,7 +151,7 @@ namespace Game
         {
             foreach (ComponentModel item in entity.FindComponents<ComponentModel>())
             {
-                ModelData value = new ModelData
+                var value = new ModelData
                 {
                     ComponentModel = item,
                     ComponentBody = item.Entity.FindComponent<ComponentBody>(),

@@ -60,7 +60,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override ChunkRaw CreateRawChunk()
 		{
-			ChunkRaw chunkRaw = new ChunkRaw(13, ChunkHelper.b_IHDR, alloc: true);
+			var chunkRaw = new ChunkRaw(13, ChunkHelper.b_IHDR, alloc: true);
 			int num = 0;
 			PngHelperInternal.WriteInt4tobytes(Cols, chunkRaw.Data, num);
 			num += 4;
@@ -92,7 +92,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkIHDR pngChunkIHDR = (PngChunkIHDR)other;
+			var pngChunkIHDR = (PngChunkIHDR)other;
 			Cols = pngChunkIHDR.Cols;
 			Rows = pngChunkIHDR.Rows;
 			Bitspc = pngChunkIHDR.Bitspc;

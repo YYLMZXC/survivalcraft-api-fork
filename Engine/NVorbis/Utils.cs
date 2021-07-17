@@ -43,7 +43,7 @@ namespace NVorbis
 
 		internal static float ClipValue(float value, ref bool clipped)
 		{
-			FloatBits floatBits = default(FloatBits);
+			var floatBits = default(FloatBits);
 			floatBits.Bits = 0u;
 			floatBits.Float = value;
 			if ((floatBits.Bits & int.MaxValue) > 1065353215)

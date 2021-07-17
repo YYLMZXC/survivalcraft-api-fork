@@ -100,7 +100,7 @@ namespace Game
                                     else
                                     {
                                         Vector3 vector = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.3f - componentMiner.ComponentCreature.ComponentBody.Matrix.Up * 0.2f;
-                                        Vector3 v2 = Vector3.Normalize(vector + aim.Direction * 10f - vector);
+                                        var v2 = Vector3.Normalize(vector + aim.Direction * 10f - vector);
                                         int value2 = Terrain.MakeBlockValue(192, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
                                         float s = 38f;
                                         if (m_subsystemProjectiles.FireProjectile(value2, vector, s * v2, Vector3.Zero, componentMiner.ComponentCreature) != null)
@@ -165,9 +165,9 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemProjectiles = base.Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
-            m_subsystemAudio = base.Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
+            m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
             base.Load(valuesDictionary);
         }
     }

@@ -51,13 +51,13 @@ namespace Game {
         /// <returns></returns>
         public List<Stream> GetFiles(string extension)
         {
-            List<Stream> files = new List<Stream>();
+            var files = new List<Stream>();
             //将每个zip里面的文件读进内存中
             foreach (ZipArchiveEntry zipArchiveEntry in ModArchive.ReadCentralDir())
             {
                 if (Storage.GetExtension(zipArchiveEntry.FilenameInZip) == extension)
                 {
-                    MemoryStream stream = new MemoryStream();
+                    var stream = new MemoryStream();
                     ModArchive.ExtractFile(zipArchiveEntry, stream);
                     stream.Seek(0, SeekOrigin.Begin);
                     files.Add(stream);
@@ -172,7 +172,7 @@ namespace Game {
         }
         public void LoadDllLogic(Stream stream)
         {
-            Assembly assembly = Assembly.Load(ModsManager.StreamToBytes(stream));
+            var assembly = Assembly.Load(ModsManager.StreamToBytes(stream));
             Type[] types = assembly.GetTypes();
             for (int i = 0; i < types.Length; i++)
             {
@@ -199,7 +199,7 @@ namespace Game {
                     else
                     {
                         int staticIndex = (int)fieldInfo.GetValue(null);
-                        Block block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
+                        var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
                         block.BlockIndex = staticIndex;
                         Blocks.Add(block);
                     }
@@ -216,7 +216,7 @@ namespace Game {
                 int k = j;
                 string name = modInfo.Dependencies[k];
                 string dn = "";
-                Version dnversion = new Version();
+                var dnversion = new Version();
                 if (name.Contains(":"))
                 {
                     string[] tmpa = name.Split(new char[] { ':' });

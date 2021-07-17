@@ -99,8 +99,7 @@ namespace Game
                 }
                 if (m_componentCreatureModel.IsAttackHitMoment)
                 {
-                    Vector3 hitPoint;
-                    ComponentBody hitBody = GetHitBody(m_target.ComponentBody, out hitPoint);
+                    ComponentBody hitBody = GetHitBody(m_target.ComponentBody, out Vector3 hitPoint);
                     if (hitBody != null)
                     {
                         float x = m_isPersistent ? m_random.Float(8f, 10f) : 2f;
@@ -113,24 +112,24 @@ namespace Game
             if (m_subsystemTime.GameTime >= m_nextUpdateTime)
             {
                 m_dt = m_random.Float(0.25f, 0.35f) + MathUtils.Min((float)(m_subsystemTime.GameTime - m_nextUpdateTime), 0.1f);
-                m_nextUpdateTime = m_subsystemTime.GameTime + (double)m_dt;
+                m_nextUpdateTime = m_subsystemTime.GameTime + m_dt;
                 m_stateMachine.Update();
             }
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
-            m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-            m_subsystemPlayers = base.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
-            m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_subsystemBodies = base.Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
-            m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-            m_subsystemNoise = base.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
-            m_componentCreature = base.Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentPathfinding = base.Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
-            m_componentMiner = base.Entity.FindComponent<ComponentMiner>(throwOnError: true);
-            m_componentFeedBehavior = base.Entity.FindComponent<ComponentRandomFeedBehavior>();
-            m_componentCreatureModel = base.Entity.FindComponent<ComponentCreatureModel>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
+            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+            m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+            m_subsystemNoise = Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
+            m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
+            m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
+            m_componentMiner = Entity.FindComponent<ComponentMiner>(throwOnError: true);
+            m_componentFeedBehavior = Entity.FindComponent<ComponentRandomFeedBehavior>();
+            m_componentCreatureModel = Entity.FindComponent<ComponentCreatureModel>(throwOnError: true);
             m_dayChaseRange = valuesDictionary.GetValue<float>("DayChaseRange");
             m_nightChaseRange = valuesDictionary.GetValue<float>("NightChaseRange");
             m_dayChaseTime = valuesDictionary.GetValue<float>("DayChaseTime");
@@ -245,7 +244,7 @@ namespace Game
                 {
                     if (m_componentFeedBehavior != null)
                     {
-                        m_subsystemTime.QueueGameTimeDelayedExecution(m_subsystemTime.GameTime + (double)m_random.Float(1f, 3f), delegate
+                        m_subsystemTime.QueueGameTimeDelayedExecution(m_subsystemTime.GameTime + m_random.Float(1f, 3f), delegate
                         {
                             if (m_target != null)
                             {
@@ -330,7 +329,7 @@ namespace Game
             bool flag2 = m_componentCreature.Category != CreatureCategory.WaterPredator && m_componentCreature.Category != CreatureCategory.WaterOther;
             bool flag3 = componentCreature == Target || m_subsystemGameInfo.WorldSettings.GameMode > GameMode.Harmless;
             bool flag4 = (componentCreature.Category & m_autoChaseMask) != 0;
-            bool flag5 = componentCreature == Target || (flag4 && MathUtils.Remainder(0.004999999888241291 * m_subsystemTime.GameTime + (double)((float)(GetHashCode() % 1000) / 1000f) + (double)((float)(componentCreature.GetHashCode() % 1000) / 1000f), 1.0) < (double)m_chaseNonPlayerProbability);
+            bool flag5 = componentCreature == Target || (flag4 && MathUtils.Remainder(0.004999999888241291 * m_subsystemTime.GameTime + GetHashCode() % 1000 / 1000f + componentCreature.GetHashCode() % 1000 / 1000f, 1.0) < m_chaseNonPlayerProbability);
             if (componentCreature != m_componentCreature && ((!flag && flag5) || (flag && flag3)) && componentCreature.Entity.IsAddedToProject && componentCreature.ComponentHealth.Health > 0f && (flag2 || IsTargetInWater(componentCreature.ComponentBody)))
             {
                 float num = Vector3.Distance(m_componentCreature.ComponentBody.Position, componentCreature.ComponentBody.Position);
@@ -423,14 +422,14 @@ namespace Game
         {
             Vector3 vector = m_componentCreature.ComponentBody.BoundingBox.Center();
             Vector3 v = target.BoundingBox.Center();
-            Ray3 ray = new Ray3(vector, Vector3.Normalize(v - vector));
+            var ray = new Ray3(vector, Vector3.Normalize(v - vector));
             BodyRaycastResult? bodyRaycastResult = m_componentMiner.Raycast<BodyRaycastResult>(ray, RaycastMode.Interaction);
             if (bodyRaycastResult.HasValue && bodyRaycastResult.Value.Distance < 1.75f && (bodyRaycastResult.Value.ComponentBody == target || bodyRaycastResult.Value.ComponentBody.IsChildOfBody(target) || target.IsChildOfBody(bodyRaycastResult.Value.ComponentBody) || target.StandingOnBody == bodyRaycastResult.Value.ComponentBody))
             {
                 hitPoint = bodyRaycastResult.Value.HitPoint();
                 return bodyRaycastResult.Value.ComponentBody;
             }
-            hitPoint = default(Vector3);
+            hitPoint = default;
             return null;
         }
     }

@@ -6,7 +6,7 @@ namespace Engine.Graphics
 {
 	public sealed class VertexBuffer : GraphicsResource
 	{
-		public int m_buffer;
+		internal int m_buffer;
 
 		public string DebugName
 		{
@@ -22,13 +22,13 @@ namespace Engine.Graphics
 		public VertexDeclaration VertexDeclaration
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public int VerticesCount
 		{
 			get;
-			set;
+			private set;
 		}
 
 		public object Tag
@@ -52,7 +52,7 @@ namespace Engine.Graphics
 		public void SetData<T>(T[] source, int sourceStartIndex, int sourceCount, int targetStartIndex = 0) where T : struct
 		{
 			VerifyParametersSetData(source, sourceStartIndex, sourceCount, targetStartIndex);
-			GCHandle gCHandle = GCHandle.Alloc(source, GCHandleType.Pinned);
+			var gCHandle = GCHandle.Alloc(source, GCHandleType.Pinned);
 			try
 			{
 				int num = Utilities.SizeOf<T>();
@@ -66,24 +66,24 @@ namespace Engine.Graphics
 			}
 		}
 
-		public override void HandleDeviceLost()
+		internal override void HandleDeviceLost()
 		{
 			DeleteBuffer();
 		}
 
-		public override void HandleDeviceReset()
+		internal override void HandleDeviceReset()
 		{
 			AllocateBuffer();
 		}
 
-		public void AllocateBuffer()
+		private void AllocateBuffer()
 		{
 			GL.GenBuffers(1, out m_buffer);
 			GLWrapper.BindBuffer(All.ArrayBuffer, m_buffer);
 			GL.BufferData(All.ArrayBuffer, new IntPtr(VertexDeclaration.VertexStride * VerticesCount), IntPtr.Zero, All.StaticDraw);
 		}
 
-		public void DeleteBuffer()
+		private void DeleteBuffer()
 		{
 			if (m_buffer != 0)
 			{
@@ -97,11 +97,11 @@ namespace Engine.Graphics
 			return VertexDeclaration.VertexStride * VerticesCount;
 		}
 
-		public void InitializeVertexBuffer(VertexDeclaration vertexDeclaration, int verticesCount)
+		private void InitializeVertexBuffer(VertexDeclaration vertexDeclaration, int verticesCount)
 		{
 			if (vertexDeclaration == null)
 			{
-				throw new ArgumentNullException("vertexDeclaration");
+				throw new ArgumentNullException(nameof(vertexDeclaration));
 			}
 			if (verticesCount <= 0)
 			{
@@ -111,14 +111,14 @@ namespace Engine.Graphics
 			VerticesCount = verticesCount;
 		}
 
-		public void VerifyParametersSetData<T>(T[] source, int sourceStartIndex, int sourceCount, int targetStartIndex = 0) where T : struct
+		private void VerifyParametersSetData<T>(T[] source, int sourceStartIndex, int sourceCount, int targetStartIndex = 0) where T : struct
 		{
 			VerifyNotDisposed();
 			int num = Utilities.SizeOf<T>();
 			int vertexStride = VertexDeclaration.VertexStride;
 			if (source == null)
 			{
-				throw new ArgumentNullException("source");
+				throw new ArgumentNullException(nameof(source));
 			}
 			if (sourceStartIndex < 0 || sourceCount < 0 || sourceStartIndex + sourceCount > source.Length)
 			{

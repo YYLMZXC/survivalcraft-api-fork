@@ -46,7 +46,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public override void CloneDataFromRead(PngChunk other)
 		{
-			PngChunkSRGB pngChunkSRGB = (PngChunkSRGB)other;
+			var pngChunkSRGB = (PngChunkSRGB)other;
 			Intent = pngChunkSRGB.Intent;
 		}
 	}

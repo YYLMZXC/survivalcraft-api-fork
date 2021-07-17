@@ -40,8 +40,8 @@ namespace Game
             m_position = position;
             m_size = size;
             m_maxVisibilityDistance = maxVisibilityDistance;
-            base.Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
-            base.TextureSlotsCount = 3;
+            Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
+            TextureSlotsCount = 3;
         }
 
         public override bool Simulate(float dt)
@@ -51,9 +51,9 @@ namespace Game
             if (m_visible || m_age < 2f)
             {
                 m_toGenerate += (IsStopped ? 0f : (5f * dt));
-                for (int i = 0; i < base.Particles.Length; i++)
+                for (int i = 0; i < Particles.Length; i++)
                 {
-                    Particle particle = base.Particles[i];
+                    Particle particle = Particles[i];
                     if (particle.IsActive)
                     {
                         flag = true;

@@ -146,32 +146,32 @@ namespace Game
                 return;
             }
             DepthStencilState depthStencilState = DepthWriteEnabled ? DepthStencilState.DepthWrite : DepthStencilState.None;
-            Matrix m = base.GlobalTransform;
+            Matrix m = GlobalTransform;
             Vector2 v = Vector2.Zero;
-            Vector2 v2 = new Vector2(base.ActualSize.X, 0f);
-            Vector2 v3 = base.ActualSize;
-            Vector2 v4 = new Vector2(0f, base.ActualSize.Y);
+            var v2 = new Vector2(ActualSize.X, 0f);
+            Vector2 v3 = ActualSize;
+            var v4 = new Vector2(0f, ActualSize.Y);
             Vector2.Transform(ref v, ref m, out Vector2 result);
             Vector2.Transform(ref v2, ref m, out Vector2 result2);
             Vector2.Transform(ref v3, ref m, out Vector2 result3);
             Vector2.Transform(ref v4, ref m, out Vector2 result4);
-            Color color = FillColor * base.GlobalColorTransform;
+            Color color = FillColor * GlobalColorTransform;
             if (color.A != 0)
             {
                 if (Subtexture != null)
                 {
                     SamplerState samplerState = (!TextureWrap) ? (TextureLinearFilter ? SamplerState.LinearClamp : SamplerState.PointClamp) : (TextureLinearFilter ? SamplerState.LinearWrap : SamplerState.PointWrap);
                     TexturedBatch2D texturedBatch2D = dc.PrimitivesRenderer2D.TexturedBatch(Subtexture.Texture, useAlphaTest: true, 0, depthStencilState, null, null, samplerState);
-                    Vector2 zero = default(Vector2);
+                    Vector2 zero = default;
                     Vector2 texCoord;
-                    Vector2 texCoord2 = default(Vector2);
+                    Vector2 texCoord2 = default;
                     Vector2 texCoord3;
                     if (TextureWrap)
                     {
                         zero = Vector2.Zero;
-                        texCoord = new Vector2(base.ActualSize.X / (float)Subtexture.Texture.Width, 0f);
-                        texCoord2 = new Vector2(base.ActualSize.X / (float)Subtexture.Texture.Width, base.ActualSize.Y / (float)Subtexture.Texture.Height);
-                        texCoord3 = new Vector2(0f, base.ActualSize.Y / (float)Subtexture.Texture.Height);
+                        texCoord = new Vector2(ActualSize.X / Subtexture.Texture.Width, 0f);
+                        texCoord2 = new Vector2(ActualSize.X / Subtexture.Texture.Width, ActualSize.Y / Subtexture.Texture.Height);
+                        texCoord3 = new Vector2(0f, ActualSize.Y / Subtexture.Texture.Height);
                     }
                     else
                     {
@@ -199,13 +199,13 @@ namespace Game
                     dc.PrimitivesRenderer2D.FlatBatch(1, depthStencilState).QueueQuad(result, result2, result3, result4, Depth, color);
                 }
             }
-            Color color2 = OutlineColor * base.GlobalColorTransform;
+            Color color2 = OutlineColor * GlobalColorTransform;
             if (color2.A != 0 && OutlineThickness > 0f)
             {
                 FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(1, depthStencilState);
-                Vector2 vector = Vector2.Normalize(base.GlobalTransform.Right.XY);
-                Vector2 v5 = -Vector2.Normalize(base.GlobalTransform.Up.XY);
-                int num = (int)MathUtils.Max(MathUtils.Round(OutlineThickness * base.GlobalTransform.Right.Length()), 1f);
+                var vector = Vector2.Normalize(GlobalTransform.Right.XY);
+                Vector2 v5 = -Vector2.Normalize(GlobalTransform.Up.XY);
+                int num = (int)MathUtils.Max(MathUtils.Round(OutlineThickness * GlobalTransform.Right.Length()), 1f);
                 for (int i = 0; i < num; i++)
                 {
                     flatBatch2D.QueueLine(result, result2, Depth, color2);
@@ -222,8 +222,8 @@ namespace Game
 
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
-            base.IsDrawRequired = (FillColor.A != 0 || (OutlineColor.A != 0 && OutlineThickness > 0f));
-            base.DesiredSize = Size;
+            IsDrawRequired = (FillColor.A != 0 || (OutlineColor.A != 0 && OutlineThickness > 0f));
+            DesiredSize = Size;
         }
     }
 }
