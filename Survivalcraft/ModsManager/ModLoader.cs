@@ -286,49 +286,6 @@ namespace Game
         }
 
         /// <summary>
-        /// 渲染CubeBlock图形数据的方法
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="z"></param>
-        /// <param name="color">点输出颜色</param>
-        /// <param name="light">传入的亮度</param>
-        /// <param name="face">哪个面</param>
-        /// <param name="corner"></param>
-        /// <param name="vertex"></param>
-        public virtual bool SetupCornerVertex(float x, float y, float z,ref Color color, int light, int face, int corner, ref TerrainVertex vertex) {
-            return false;
-        }
-        /// <summary>
-        /// 渲染CrossBlock图形数据的方法
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="z"></param>
-        /// <param name="color"></param>
-        /// <param name="corner"></param>
-        /// <param name="vertex"></param>
-        /// <returns></returns>
-        public virtual bool SetupLitCornerVertex(float x, float y, float z,ref Color color, int corner, ref TerrainVertex vertex) {
-            return false;
-
-        }
-        /// <summary>
-        /// 渲染MeshBlock图形数据的方法
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="z"></param>
-        /// <param name="color"></param>
-        /// <param name="tx"></param>
-        /// <param name="ty"></param>
-        /// <param name="vertex"></param>
-        /// <returns></returns>
-        public virtual bool SetupVertex(float x, float y, float z,ref Color color, float tx, float ty, ref TerrainVertex vertex) {
-            return false;
-
-        }
-        /// <summary>
         /// 生物最大组件数，多个Mod时取最大
         /// </summary>
         /// <returns></returns>

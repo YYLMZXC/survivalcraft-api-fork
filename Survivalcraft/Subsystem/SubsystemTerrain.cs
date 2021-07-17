@@ -83,7 +83,7 @@ namespace Game
             set;
         }
 
-        public TerrainSerializer221 TerrainSerializer
+        public TerrainSerializer22 TerrainSerializer
         {
             get;
             set;
@@ -393,7 +393,7 @@ namespace Game
             Terrain = new Terrain();
             TerrainRenderer = new TerrainRenderer(this);
             TerrainUpdater = new TerrainUpdater(this);
-            TerrainSerializer = new TerrainSerializer221(Terrain, SubsystemGameInfo.DirectoryName);
+            TerrainSerializer = new TerrainSerializer22(Terrain, SubsystemGameInfo.DirectoryName);
             BlockGeometryGenerator = new BlockGeometryGenerator(Terrain, this, Project.FindSubsystem<SubsystemElectricity>(throwOnError: true), SubsystemFurnitureBlockBehavior, Project.FindSubsystem<SubsystemMetersBlockBehavior>(throwOnError: true), SubsystemPalette);
             if (string.CompareOrdinal(SubsystemGameInfo.WorldSettings.OriginalSerializationVersion, "2.1") <= 0)
             {
