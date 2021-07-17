@@ -1,7 +1,6 @@
 using Engine;
 using System;
-using System.Collections.Generic;
-using Engine.Graphics;
+
 namespace Game
 {
     public class TerrainChunk : IDisposable
@@ -50,7 +49,7 @@ namespace Game
 
         public int ModificationCounter;
 
-        public float[] FogEnds = new float[SubsystemPlayers.MaxPlayers];
+        public float[] FogEnds = new float[4];
 
         public int[] SliceContentsHashes = new int[16];
 
@@ -60,7 +59,7 @@ namespace Game
 
         public volatile bool NewGeometryData;
 
-        public Dictionary<Texture2D, TerrainChunkSliceGeometry> Draws = new Dictionary<Texture2D, TerrainChunkSliceGeometry>();
+        public TerrainChunkGeometry Geometry = new TerrainChunkGeometry();
 
         public int[] Cells = new int[65536];
 
@@ -72,11 +71,12 @@ namespace Game
             Coords = new Point2(x, z);
             Origin = new Point2(x * 16, z * 16);
             BoundingBox = new BoundingBox(new Vector3(Origin.X, 0f, Origin.Y), new Vector3(Origin.X + 16, 256f, Origin.Y + 16));
-            Center = new Vector2(Origin.X + 8f, Origin.Y + 8f);
+            Center = new Vector2((float)Origin.X + 8f, (float)Origin.Y + 8f);
         }
 
         public void Dispose()
         {
+            Geometry.Dispose();
         }
 
         public static bool IsCellValid(int x, int y, int z)

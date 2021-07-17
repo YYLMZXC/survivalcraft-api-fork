@@ -151,51 +151,7 @@ namespace Game
 
 
         }
-        /// <summary>
-        /// 地形生成步骤1时执行
-        /// </summary>
-        /// <param name="generator"></param>
-        /// <param name="chunk"></param>
-        public virtual void GenerateChunkContentsPass1(ITerrainContentsGenerator generator, TerrainChunk chunk)
-        {
 
-        }
-        /// <summary>
-        /// 地形生成步骤2时执行
-        /// </summary>
-        /// <param name="generator"></param>
-        /// <param name="chunk"></param>
-        public virtual void GenerateChunkContentsPass2(ITerrainContentsGenerator generator, TerrainChunk chunk)
-        {
-
-        }
-        /// <summary>
-        /// 地形生成步骤3时执行
-        /// </summary>
-        /// <param name="generator"></param>
-        /// <param name="chunk"></param>
-        public virtual void GenerateChunkContentsPass3(ITerrainContentsGenerator generator, TerrainChunk chunk)
-        {
-
-        }
-        /// <summary>
-        /// 地形生成步骤4时执行
-        /// </summary>
-        /// <param name="generator"></param>
-        /// <param name="chunk"></param>
-        public virtual void GenerateChunkContentsPass4(ITerrainContentsGenerator generator, TerrainChunk chunk)
-        {
-
-        }
-        /// <summary>
-        /// 更新TerrainChunk状态时执行
-        /// </summary>
-        /// <param name="terrainUpdater"></param>
-        /// <param name="chunk"></param>
-        /// <param name="skylightValue"></param>
-        public virtual void UpdateChunkSingleStep(TerrainUpdater terrainUpdater, TerrainChunk chunk, int skylightValue) {
-
-        }
         /// <summary>
         /// 人物攻击生物时执行
         /// </summary>

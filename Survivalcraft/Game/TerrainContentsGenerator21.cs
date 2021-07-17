@@ -746,21 +746,12 @@ namespace Game
         {
             GenerateSurfaceParameters(chunk, 0, 0, 16, 8);
             GenerateTerrain(chunk, 0, 0, 16, 8);
-            foreach (ModLoader modLoader in ModsManager.ModLoaders)
-            {
-                modLoader.GenerateChunkContentsPass1(this, chunk);
-            }
-
         }
 
         public void GenerateChunkContentsPass2(TerrainChunk chunk)
         {
             GenerateSurfaceParameters(chunk, 0, 8, 16, 16);
             GenerateTerrain(chunk, 0, 8, 16, 16);
-            foreach (ModLoader modLoader in ModsManager.ModLoaders)
-            {
-                modLoader.GenerateChunkContentsPass2(this, chunk);
-            }
         }
 
         public void GenerateChunkContentsPass3(TerrainChunk chunk)
@@ -770,10 +761,6 @@ namespace Game
             GenerateMinerals(chunk);
             GenerateSurface(chunk);
             PropagateFluidsDownwards(chunk);
-            foreach (ModLoader modLoader in ModsManager.ModLoaders)
-            {
-                modLoader.GenerateChunkContentsPass3(this, chunk);
-            }
         }
 
         public void GenerateChunkContentsPass4(TerrainChunk chunk)
@@ -791,10 +778,6 @@ namespace Game
             GenerateSnowAndIce(chunk);
             GenerateBedrockAndAir(chunk);
             UpdateFluidIsTop(chunk);
-            foreach (ModLoader modLoader in ModsManager.ModLoaders)
-            {
-                modLoader.GenerateChunkContentsPass4(this, chunk);
-            }
         }
 
         public float CalculateOceanShoreDistance(float x, float z)
