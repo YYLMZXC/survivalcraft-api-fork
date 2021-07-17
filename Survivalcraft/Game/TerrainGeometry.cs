@@ -16,7 +16,5 @@ namespace Game
         public TerrainGeometrySubset[] TransparentSubsetsByFace;
 
         public Texture2D Texture;
-
-        public int MeshID;
     }
 }

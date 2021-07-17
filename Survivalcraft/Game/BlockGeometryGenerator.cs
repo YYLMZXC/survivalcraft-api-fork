@@ -86,30 +86,6 @@ namespace Game
             return Geometry;
         }
 
-        public static TerrainGeometry GetTerrainDraw(BlockGeometryGenerator geometryGenerator, int x,int y,int z,Texture2D texture,int meshID=0) {
-            TerrainChunk chunk = geometryGenerator.SubsystemTerrain.Terrain.GetChunkAtCell(x, z);
-            if (chunk.terrainDraw.Caches.TryGetValue(new Point3(x, y, z), out List<TerrainGeometry> item)) {
-                TerrainGeometry terrainGeometry = item.Find(p=>p.MeshID==meshID);
-                if (terrainGeometry == null)
-                {
-                    terrainGeometry = CreateGeometry();
-                    terrainGeometry.MeshID = meshID;
-                    terrainGeometry.Texture = texture;
-                    item.Add(terrainGeometry);
-                    return terrainGeometry;
-                }else {
-                    terrainGeometry.Texture = texture;
-                    terrainGeometry.MeshID = meshID;
-                    return terrainGeometry;
-                }
-            }else {
-                TerrainGeometry terrainGeometry = CreateGeometry();
-                terrainGeometry.MeshID = meshID;
-                terrainGeometry.Texture = texture;
-                chunk.terrainDraw.Caches.Add(new Point3(x,y,z),new List<TerrainGeometry>() { terrainGeometry });
-                return terrainGeometry;
-            }
-        }
 
         public static void SetupCornerVertex(float x, float y, float z, Color color, int light, int face, int textureSlot, int corner, ref TerrainVertex vertex,bool useTextureSlot)
         {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Engine.Graphics;
 namespace Game
 {
     public class TerrainUpdater
@@ -176,6 +176,8 @@ namespace Game
 
         public Task m_task;
 
+        public SubsystemAnimatedTextures AnimatedTextures;
+
         public AutoResetEvent m_updateEvent = new AutoResetEvent(initialState: true);
 
         public ManualResetEvent m_pauseEvent = new ManualResetEvent(initialState: true);
@@ -215,6 +217,7 @@ namespace Game
             m_threadUpdateParameters.Chunks = new TerrainChunk[0];
             m_threadUpdateParameters.Locations = new Dictionary<int, UpdateLocation>();
             SettingsManager.SettingChanged += SettingsManager_SettingChanged;
+            AnimatedTextures = subsystemTerrain.Project.FindSubsystem<SubsystemAnimatedTextures>();
         }
 
         public void Dispose()
@@ -436,7 +439,6 @@ namespace Game
                         chunkAtCoords.State = state;
                         if (forceGeometryRegeneration)
                         {
-                            chunkAtCoords.Geometry.InvalidateSliceContentsHashes();
                         }
                     }
                     chunkAtCoords.WasDowngraded = true;
@@ -454,7 +456,6 @@ namespace Game
                     terrainChunk.State = state;
                     if (forceGeometryRegeneration)
                     {
-                        terrainChunk.Geometry.InvalidateSliceContentsHashes();
                     }
                 }
                 terrainChunk.WasDowngraded = true;
@@ -488,7 +489,6 @@ namespace Game
                     }
                     m_subsystemTerrain.TerrainSerializer.SaveChunk(terrainChunk);
                     m_terrain.FreeChunk(terrainChunk);
-                    m_subsystemTerrain.TerrainRenderer.DisposeTerrainChunkGeometryVertexIndexBuffers(terrainChunk.Geometry);
                 }
             }
             for (int j = 0; j < locations.Length; j++)
@@ -934,20 +934,7 @@ namespace Game
                 {
                     continue;
                 }
-                TerrainChunkSliceGeometry terrainChunkSliceGeometry = chunk.Geometry.Slices[i];
-                chunk.SliceContentsHashes[i] = CalculateChunkSliceContentsHash(chunk, i);
-                if (terrainChunkSliceGeometry.ContentsHash != 0 && terrainChunkSliceGeometry.ContentsHash == chunk.SliceContentsHashes[i])
-                {
-                    m_statistics.SkippedSlices++;
-                    continue;
-                }
                 m_statistics.GeneratedSlices++;
-                TerrainGeometrySubset[] subsets = terrainChunkSliceGeometry.Subsets;
-                foreach (TerrainGeometrySubset obj in subsets)
-                {
-                    obj.Vertices.Clear();
-                    obj.Indices.Clear();
-                }
                 for (int k = num; k < num3; k++)
                 {
                     for (int l = num2; l < num4; l++)
@@ -985,13 +972,33 @@ namespace Game
                             int num10 = Terrain.ExtractContents(cellValueFast);
                             if (num10 != 0)
                             {
-                                BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, chunk.Geometry.Slices[i], cellValueFast, num5, m, num6);
+                                TerrainChunkSliceGeometry geometry = new TerrainChunkSliceGeometry();
+                                BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, geometry, cellValueFast, num5, m, num6);
+                                if (geometry.Texture == null) geometry.Texture = AnimatedTextures.AnimatedBlocksTexture;
+                                if (chunk.Draws.TryGetValue(geometry.Texture, out TerrainChunkSliceGeometry chunkGeometry))
+                                {
+                                    for (int ii=0;ii<chunkGeometry.Subsets.Length;ii++) {
+                                        TerrainGeometrySubset subsetTo = chunkGeometry.Subsets[ii];
+                                        TerrainGeometrySubset subsetFrom = geometry.Subsets[ii];
+                                        int count = subsetTo.Vertices.Count;
+                                        for (int ix = 0; ix < subsetFrom.Vertices.Count; ix++)
+                                        {
+                                            subsetTo.Vertices.Add(subsetFrom.Vertices.Array[ix]);
+                                        }
+                                        for (int jx = 0; jx < subsetFrom.Indices.Count; jx++)
+                                        {
+                                            subsetTo.Indices.Add((ushort)(subsetFrom.Indices.Array[jx] + count));
+                                        }
+                                    }
+                                }
+                                else {
+                                    chunk.Draws.Add(geometry.Texture,geometry);
+                                }
                             }
                         }
                     }
                 }
             }
-            if (even) chunk.terrainDraw.Combile();
         }
 
         public static int CalculateLightPropagationBitIndex(int x, int z)

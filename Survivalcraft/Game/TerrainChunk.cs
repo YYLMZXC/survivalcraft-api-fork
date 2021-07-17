@@ -60,9 +60,7 @@ namespace Game
 
         public volatile bool NewGeometryData;
 
-        public TerrainChunkGeometry Geometry = new TerrainChunkGeometry();
-
-        public TerrainDraw terrainDraw = new TerrainDraw();
+        public Dictionary<Texture2D, TerrainChunkSliceGeometry> Draws = new Dictionary<Texture2D, TerrainChunkSliceGeometry>();
 
         public int[] Cells = new int[65536];
 
@@ -79,7 +77,6 @@ namespace Game
 
         public void Dispose()
         {
-            Geometry.Dispose();
         }
 
         public static bool IsCellValid(int x, int y, int z)
