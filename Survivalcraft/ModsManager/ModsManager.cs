@@ -21,22 +21,23 @@ public static class ModsManager
     //1为api1.33 2为api1.34
     public const int Apiv = 2;
 #if desktop
-    public static string ModsPath = "app:/Mods";
-    public static string userDataPath = "app:/UserId.dat";
-    public static string CharacterSkinsDirectoryName = "app:/CharacterSkins";
-    public static string FurniturePacksDirectoryName = "app:/FurniturePacks";
-    public static string BlockTexturesDirectoryName = "app:/TexturePacks";
-    public static string WorldsDirectoryName = "app:/Worlds";
-    public static string communityContentCachePath = "app:CommunityContentCache.xml";
-    public static string ModsSetPath = "app:/ModSettings.xml";
-    public static string settingPath = "app:/Settings.xml";
-    public static string logPath = "app:/Logs";
+    public static string ExternelPath = "app:";
+    public static string ModsPath = ExternelPath + "/Mods";
+    public static string userDataPath = ExternelPath + "/UserId.dat";
+    public static string CharacterSkinsDirectoryName = ExternelPath + "/CharacterSkins";
+    public static string FurniturePacksDirectoryName = ExternelPath + "/FurniturePacks";
+    public static string BlockTexturesDirectoryName = ExternelPath + "/TexturePacks";
+    public static string WorldsDirectoryName = ExternelPath + "/Worlds";
+    public static string communityContentCachePath = ExternelPath + "CommunityContentCache.xml";
+    public static string ModsSetPath = ExternelPath + "/ModSettings.xml";
+    public static string settingPath = ExternelPath + "/Settings.xml";
+    public static string logPath = ExternelPath + "/Logs";
 
 #endif
 #if android
-    public static string baseDir = EngineActivity.basePath;
-    public static string screenCapturePath = Storage.CombinePaths(baseDir , "ScreenCapture");
-    public static string ModsPath = baseDir + "/Mods";
+    public static string ExternelPath = "android:";
+    public static string screenCapturePath =ExternelPath + "ScreenCapture";
+    public static string ModsPath = ExternelPath + "/Mods";
     public static string userDataPath = "config:/UserId.dat";
     public static string FurniturePacksDirectoryName => "config:/FurniturePacks";
     public static string CharacterSkinsDirectoryName => "config:/CharacterSkins";
@@ -77,7 +78,20 @@ public static class ModsManager
             return outStream;
         }
     }
+    public static string GetInPakOrStorageFile(string filepath,string prefix=".txt") {
+        string storagePath = Storage.CombinePaths(ExternelPath, filepath + prefix);
+        if (Storage.FileExists(storagePath))
+        {
+            string txt = null;
+            using (Stream stream = Storage.OpenFile(storagePath, OpenFileMode.Read))
+            {
+                txt = new StreamReader(stream).ReadToEnd();
+            }
+            return txt;
+        }
+        else return ContentManager.Get<string>(filepath);
 
+    }
     public static T DeserializeJson<T>(string text) where T : class
     {
         var obj = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(text, typeof(JsonObject));

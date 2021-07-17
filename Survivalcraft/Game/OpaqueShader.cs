@@ -1,9 +1,10 @@
 ﻿using Engine.Graphics;
+using Engine;
 namespace Game
 {
    public class OpaqueShader:Shader
     {
-        public OpaqueShader() : base(ContentManager.Get<string>("Shaders/OpaqueVsh"), ContentManager.Get<string>("Shaders/OpaquePsh"), new ShaderMacro[] { new ShaderMacro("OpaqueShader") }) { }
+        public OpaqueShader() : base(ModsManager.GetInPakOrStorageFile("Shaders/OpaqueVsh"), ModsManager.GetInPakOrStorageFile("Shaders/OpaquePsh"), new ShaderMacro[] { new ShaderMacro("OpaqueShader") }) { }
 
     }
 }
