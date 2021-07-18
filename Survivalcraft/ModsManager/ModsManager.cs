@@ -35,7 +35,7 @@ public static class ModsManager
 
 #endif
 #if android
-    public static string ExternelPath = "android:";
+    public static string ExternelPath = EngineActivity.BasePath;
     public static string screenCapturePath =ExternelPath + "ScreenCapture";
     public static string ModsPath = ExternelPath + "/Mods";
     public static string userDataPath = "config:/UserId.dat";

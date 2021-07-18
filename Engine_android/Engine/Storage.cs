@@ -275,7 +275,7 @@ namespace Engine
 			else if (path.StartsWith("config:"))
 			{
 				isApp = false;
-				return Path.Combine(EngineActivity.configPath, path.Substring(8).TrimStart(Path.DirectorySeparatorChar));
+				return Path.Combine(EngineActivity.ConfigPath, path.Substring(8).TrimStart(Path.DirectorySeparatorChar));
 			}
 			throw new InvalidOperationException($"Invalid path \"{path}\".");
 		}

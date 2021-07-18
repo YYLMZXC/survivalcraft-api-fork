@@ -28,8 +28,8 @@ namespace Engine
 
 		public event Action<Intent> NewIntent;
 
-		public static string basePath = "";
-		public static string configPath = "";
+		public static string BasePath = "";
+		public static string ConfigPath = "";
 
 		public EngineActivity()
 		{
@@ -50,8 +50,8 @@ namespace Engine
 			RequestedOrientation = ScreenOrientation.UserLandscape;
 			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 			string[] flist = Assets.List("");
-			basePath = new StreamReader(Assets.Open("apppath.txt")).ReadToEnd();
-			configPath = this.GetExternalFilesDir("").AbsolutePath;
+			BasePath = new StreamReader(Assets.Open("apppath.txt")).ReadToEnd();
+			ConfigPath = this.GetExternalFilesDir("").AbsolutePath;
 			foreach (string dll in flist)
 			{
 				if (dll.EndsWith(".dll"))
