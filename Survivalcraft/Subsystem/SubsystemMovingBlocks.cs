@@ -63,10 +63,10 @@ namespace Game
 
             ReadOnlyList<MovingBlock> IMovingBlockSet.Blocks => new ReadOnlyList<MovingBlock>(Blocks);
 
-            public MovingBlockSet()
+            public MovingBlockSet(Project project)
             {
                 Geometry = new TerrainGeometry(true);
-                Geometry.CreateDefalutGeometry(GameManager.Project.FindSubsystem<SubsystemAnimatedTextures>(true).AnimatedBlocksTexture);
+                Geometry.CreateDefalutGeometry(project.FindSubsystem<SubsystemAnimatedTextures>(true).AnimatedBlocksTexture);
             }
 
             public void SetTexture(Texture2D texture) {
@@ -171,7 +171,7 @@ namespace Game
 
         public IMovingBlockSet AddMovingBlockSet(Vector3 position, Vector3 targetPosition, float speed, float acceleration, float drag, Vector2 smoothness, IEnumerable<MovingBlock> blocks, string id, object tag, bool testCollision)
         {
-            var movingBlockSet = new MovingBlockSet
+            var movingBlockSet = new MovingBlockSet(Project)
             {
                 Position = position,
                 StartPosition = position,
