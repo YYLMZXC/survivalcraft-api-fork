@@ -8,8 +8,6 @@ namespace Game
 
         public DynamicArray<ushort> Indices = new DynamicArray<ushort>();
 
-        public GeometryType GeometryType = default;
-
         public TerrainGeometrySubset()
         {
         }

@@ -1,6 +1,6 @@
 namespace Game
 {
-	public class TerrainChunkSliceGeometry : TerrainGeometry
+	public class TerrainChunkSliceGeometry
 	{
 		public const int OpaqueFace0Index = 0;
 
@@ -16,16 +16,41 @@ namespace Game
 
 		public const int TransparentIndex = 6;
 
+		public TerrainGeometrySubset SubsetOpaque;
+
+		public TerrainGeometrySubset SubsetAlphaTest;
+
+		public TerrainGeometrySubset SubsetTransparent;
+
+		public TerrainGeometrySubset[] OpaqueSubsetsByFace;
+
+		public TerrainGeometrySubset[] AlphaTestSubsetsByFace;
+
+		public TerrainGeometrySubset[] TransparentSubsetsByFace;
+
 		public TerrainGeometrySubset[] Subsets = new TerrainGeometrySubset[7];
 
 		public int ContentsHash;
 
-		public TerrainChunkSliceGeometry()
+		public TerrainChunkSliceGeometry(bool AllSame=false)
 		{
 			Subsets = new TerrainGeometrySubset[7];
-			for (int i = 0; i < Subsets.Length; i++)
+			if (AllSame)
 			{
-				Subsets[i] = new TerrainGeometrySubset();
+				TerrainGeometrySubset subset = new TerrainGeometrySubset();
+				for (int i = 0; i < Subsets.Length; i++)
+				{
+					Subsets[i] = subset;
+				}
+			}
+			else
+			{
+
+				for (int i = 0; i < Subsets.Length; i++)
+				{
+					Subsets[i] = new TerrainGeometrySubset();
+				}
+
 			}
 			SubsetOpaque = Subsets[4];
 			SubsetAlphaTest = Subsets[5];

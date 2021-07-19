@@ -7,40 +7,17 @@ namespace Game
 {
     public class ComponentDiggingCracks : Component, IDrawable
     {
-        public class Geometry : TerrainGeometry
-        {
-            public Geometry()
-            {
-                TerrainGeometrySubset terrainGeometrySubset = SubsetTransparent = (SubsetAlphaTest = (SubsetOpaque = new TerrainGeometrySubset()));
-                OpaqueSubsetsByFace = new TerrainGeometrySubset[6]
-                {
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset
-                };
-                AlphaTestSubsetsByFace = new TerrainGeometrySubset[6]
-                {
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset
-                };
-                TransparentSubsetsByFace = new TerrainGeometrySubset[6]
-                {
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset
-                };
-            }
-        }
+        public SubsystemTerrain m_subsystemTerrain;
+
+        public SubsystemSky m_subsystemSky;
+
+        public ComponentMiner m_componentMiner;
+
+        public Texture2D[] m_textures;
+
+        public Shader m_shader;
+
+        public TerrainGeometry m_geometry = new TerrainGeometry(true);
 
         public struct CracksVertex
         {
@@ -59,19 +36,9 @@ namespace Game
             public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.Vector2, VertexElementSemantic.TextureCoordinate), new VertexElement(20, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color));
         }
 
-        public SubsystemTerrain m_subsystemTerrain;
-
-        public SubsystemSky m_subsystemSky;
-
-        public ComponentMiner m_componentMiner;
-
-        public Texture2D[] m_textures;
-
-        public Shader m_shader;
-
-        public Geometry m_geometry;
-
         public DynamicArray<CracksVertex> m_vertices = new DynamicArray<CracksVertex>();
+
+        public TerrainChunk terrainChunk;
 
         public Point3 m_point;
 
@@ -94,12 +61,11 @@ namespace Game
             int cellValue = m_subsystemTerrain.Terrain.GetCellValue(point.X, point.Y, point.Z);
             int num = Terrain.ExtractContents(cellValue);
             Block block = BlocksManager.Blocks[num];
-            if (m_geometry == null || cellValue != m_value || point != m_point)
+            if (m_geometry.GeometrySubsets.Count == 0 || cellValue != m_value || point != m_point)
             {
-                m_geometry = new Geometry();
+                m_geometry.ClearGeometry();
+                terrainChunk = m_subsystemTerrain.Terrain.GetChunkAtCell(point.X,point.Z);
                 block.GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, m_geometry, cellValue, point.X, point.Y, point.Z);
-                m_point = point;
-                m_value = cellValue;
                 m_vertices.Clear();
                 CracksVertex item = default;
                 for (int i = 0; i < m_geometry.SubsetOpaque.Vertices.Count; i++)
@@ -114,6 +80,10 @@ namespace Game
                     item.Color = new Color(b, b, b, (byte)128);
                     m_vertices.Add(item);
                 }
+
+
+                m_point = point;
+                m_value = cellValue;
             }
             Vector3 viewPosition = camera.ViewPosition;
             var v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
@@ -146,6 +116,7 @@ namespace Game
             {
                 m_textures[i] = ContentManager.Get<Texture2D>($"Textures/Cracks{i + 1}");
             }
+            m_geometry.CreateDefalutGeometry(m_textures[0]);//´´½¨8¸öSlices
         }
     }
 }

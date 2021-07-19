@@ -280,10 +280,6 @@ namespace Game
                     }
                 }
             });
-            AddLoadAction(()=> {
-                Shader shader = ContentManager.Get<Shader>("Shaders/AlphaTested");
-
-            });
 
             AddLoadAction(delegate
             {

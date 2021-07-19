@@ -1,10 +1,11 @@
 using Engine;
 using System;
-
+using Engine.Graphics;
 namespace Game
 {
     public class TerrainChunk : IDisposable
     {
+
         public const int SizeBits = 4;
 
         public const int Size = 16;
@@ -59,11 +60,12 @@ namespace Game
 
         public volatile bool NewGeometryData;
 
-        public TerrainChunkGeometry Geometry = new TerrainChunkGeometry();
-
         public int[] Cells = new int[65536];
 
         public int[] Shafts = new int[256];
+
+
+        public TerrainGeometry Geometry = new TerrainGeometry();
 
         public TerrainChunk(Terrain terrain, int x, int z)
         {

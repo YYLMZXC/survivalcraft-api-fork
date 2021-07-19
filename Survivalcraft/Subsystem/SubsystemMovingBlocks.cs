@@ -45,9 +45,9 @@ namespace Game
 
             public TerrainGeometry Geometry;
 
-            public DynamicArray<TerrainVertex> Vertices = new DynamicArray<TerrainVertex>();
+            public DynamicArray<TerrainVertex> Vertices =>Geometry.SubsetOpaque.Vertices;
 
-            public DynamicArray<ushort> Indices = new DynamicArray<ushort>();
+            public DynamicArray<ushort> Indices => Geometry.SubsetOpaque.Indices;
 
             public Vector3 GeometryOffset;
 
@@ -65,39 +65,15 @@ namespace Game
 
             public MovingBlockSet()
             {
-                var terrainGeometrySubset = new TerrainGeometrySubset(Vertices, Indices);
-                Geometry = new TerrainGeometry();
-                Geometry.SubsetOpaque = terrainGeometrySubset;
-                Geometry.SubsetAlphaTest = terrainGeometrySubset;
-                Geometry.SubsetTransparent = terrainGeometrySubset;
-                Geometry.OpaqueSubsetsByFace = new TerrainGeometrySubset[6]
-                {
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset
-                };
-                Geometry.AlphaTestSubsetsByFace = new TerrainGeometrySubset[6]
-                {
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset
-                };
-                Geometry.TransparentSubsetsByFace = new TerrainGeometrySubset[6]
-                {
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset
-                };
+                Geometry = new TerrainGeometry(true);
+                Geometry.CreateDefalutGeometry(GameManager.Project.FindSubsystem<SubsystemAnimatedTextures>(true).AnimatedBlocksTexture);
             }
+
+            public void SetTexture(Texture2D texture) {
+                Geometry.GeometrySubsets.Clear();
+                Geometry.CreateDefalutGeometry(texture);
+            }
+
 
             public void UpdateBox()
             {
@@ -382,6 +358,7 @@ namespace Game
                 }
                 else
                 {
+                    m_removing[num].Geometry.ClearGeometry();
                     m_removing.RemoveAt(num);
                 }
             }
@@ -402,10 +379,7 @@ namespace Game
                 m_shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(m_subsystemSky.ViewFogRange.X, 1f / (m_subsystemSky.ViewFogRange.Y - m_subsystemSky.ViewFogRange.X)));
                 Display.DrawUserIndexed(PrimitiveType.TriangleList, m_shader, TerrainVertex.VertexDeclaration, m_vertices.Array, 0, m_vertices.Count, m_indices.Array, 0, m_indices.Count);
             }
-            if (DebugDrawMovingBlocks)
-            {
-                DebugDraw();
-            }
+
         }
 
         public override void Load(ValuesDictionary valuesDictionary)
@@ -496,10 +470,6 @@ namespace Game
             {
                 m_blockGeometryGenerator.Terrain.Dispose();
             }
-        }
-
-        public void DebugDraw()
-        {
         }
 
         public void MovingBlocksCollision(MovingBlockSet movingBlockSet)
