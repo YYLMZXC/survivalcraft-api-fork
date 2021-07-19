@@ -145,6 +145,7 @@ namespace Game
                 IndicesPosition += geometry[i].Indices.Count;
                 if (AllInOne) break;
             }
+            buffer.Texture = texture;
             return true;
         }
 

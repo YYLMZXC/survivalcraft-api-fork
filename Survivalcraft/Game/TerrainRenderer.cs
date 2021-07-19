@@ -78,7 +78,6 @@ namespace Game
             Display.DeviceReset += Display_DeviceReset;
         }
 
-
         public void PrepareForDrawing(Camera camera)
         {
             Vector2 xZ = camera.ViewPosition.XZ;
@@ -195,7 +194,6 @@ namespace Game
             m_alphaTestedShader.GetParameter("u_origin").SetValue(v.XZ);
             m_alphaTestedShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
             m_alphaTestedShader.GetParameter("u_viewPosition").SetValue(viewPosition);
-            m_alphaTestedShader.GetParameter("u_texture").SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
             m_alphaTestedShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             m_alphaTestedShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
             m_alphaTestedShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
@@ -277,6 +275,7 @@ namespace Game
         }
 
         public static void DrawTerrainChunkGeometrySubset(Shader shader, TerrainGeometry.DrawBuffer buffer, int subsetsMask) {
+            shader.GetParameter("u_texture").SetValue(buffer.Texture);
             int num = 2147483647;
             int num2 = 0;
             for (int i = 0; i < 8; i++)
