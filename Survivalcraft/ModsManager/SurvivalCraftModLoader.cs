@@ -12,7 +12,19 @@ namespace Game
     {
         public override void __ModInitialize()
         {
-
+            ModsManager.RegisterHook("ComponentMinerDig",this);
+            ModsManager.RegisterHook("ComponentMinerHit", this);
+            ModsManager.RegisterHook("AttackBody", this);
+            ModsManager.RegisterHook("ApplyArmorProtection", this);
+            ModsManager.RegisterHook("SpawnEntity", this);
+            ModsManager.RegisterHook("OnCameraChange", this);
+            ModsManager.RegisterHook("OnPlayerDead", this);
+            ModsManager.RegisterHook("OnModelRendererDrawExtra", this);
+            ModsManager.RegisterHook("GuiUpdate", this);
+            ModsManager.RegisterHook("OnGuiEntityAdd", this);
+            ModsManager.RegisterHook("OnGuiEntityRemove", this);
+            ModsManager.RegisterHook("OnLevelUpdate", this);
+            ModsManager.RegisterHook("GetMaxInstancesCount", this);
         }
         public override bool ComponentMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult)
         {
@@ -379,6 +391,10 @@ namespace Game
             level.SpeedFactor = level.CalculateSpeedFactor(null);
             level.HungerFactor = level.CalculateHungerFactor(null);
             level.ResilienceFactor = level.CalculateResilienceFactor(null);
+        }
+        public override int GetMaxInstancesCount()
+        {
+            return 7;
         }
     }
 }

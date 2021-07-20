@@ -205,6 +205,7 @@ public static class ModsManager
     public static void Initialize()
     {
         if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
+        ModHooks.Clear();
         ModList.Clear();
         ModLoaders.Clear();
         ModList.Add(new SurvivalCrafModEntity());

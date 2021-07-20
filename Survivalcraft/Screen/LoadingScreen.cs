@@ -27,7 +27,7 @@ namespace Game
 
         public LabelWidget labelWidget = new LabelWidget() { Text = "API v1.34", Color = Color.Green, VerticalAlignment = WidgetAlignment.Far, HorizontalAlignment = WidgetAlignment.Center };
 
-        public static LabelWidget labelWidget2 = new LabelWidget() { Color=Color.Green, VerticalAlignment = WidgetAlignment.Far,HorizontalAlignment = WidgetAlignment.Near,Margin=new Vector2(300,0)};
+        public static LabelWidget labelWidget2 = new LabelWidget() { Color = Color.Green, VerticalAlignment = WidgetAlignment.Far, HorizontalAlignment = WidgetAlignment.Near,Margin=new Vector2(50) };
 
         public XElement DatabaseNode;
 
@@ -38,7 +38,7 @@ namespace Game
             XElement node = ContentManager.Get<XElement>("Screens/LoadingScreen");
             LoadContents(this, node);
             panelWidget.Children.Add(labelWidget);
-            panelWidget.Children.Add(labelWidget2);
+            Children.Add(labelWidget2);
             Children.Add(panelWidget);
         }
 
@@ -84,7 +84,6 @@ namespace Game
                 }
             });
             AddLoadAction(() => {
-                var random = new Random();
                 foreach (ContentInfo item in ContentManager.List())
                 {
                     ContentInfo localContentInfo = item;
@@ -123,6 +122,7 @@ namespace Game
                     }
                 }
             });
+
             AddLoadAction(() => {
                 foreach (ModEntity modEntity in ModsManager.ModList)
                 {
@@ -134,6 +134,7 @@ namespace Game
                     }
                 }
             });
+
             AddLoadAction(() => {
 
                 foreach (ModEntity modEntity in ModsManager.ModList)
