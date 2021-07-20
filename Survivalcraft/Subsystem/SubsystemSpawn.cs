@@ -280,9 +280,12 @@ namespace Game
             try
             {
                 Entity entity = DatabaseManager.CreateEntity(Project, data.TemplateName, throwIfNotFound: true);
-                foreach (ModLoader modEntity in ModsManager.ModLoaders) {
-                    modEntity.SpawnEntity(this,entity,data);
-                }
+                ModsManager.HookAction("SpawnEntity", list=> {
+                    foreach (ModLoader modEntity in list)
+                    {
+                        modEntity.SpawnEntity(this, entity, data);
+                    }
+                });
                 Project.AddEntity(entity);
                 return entity;
             }
@@ -295,70 +298,87 @@ namespace Game
 
         public virtual void LoadSpawnsData(string data, List<SpawnEntityData> creaturesData)
         {
-            string[] array = data.Split(new char[1]
-            {
-                ';'
-            }, StringSplitOptions.RemoveEmptyEntries);
-            int num = 0;
-            while (true)
-            {
-                if (num < array.Length)
-                {
-                    string[] array2 = array[num].Split(new char[1]
-                    {
-                        ','
-                    }, StringSplitOptions.RemoveEmptyEntries);
-                    if (array2.Length < 4)
-                    {
-                        break;
-                    }
-                    var spawnEntityData = new SpawnEntityData
-                    {
-                        TemplateName = array2[0],
-                        Position = new Vector3
-                        {
-                            X = float.Parse(array2[1], CultureInfo.InvariantCulture),
-                            Y = float.Parse(array2[2], CultureInfo.InvariantCulture),
-                            Z = float.Parse(array2[3], CultureInfo.InvariantCulture)
-                        }
-                    };
-                    if (array2.Length == 5)
-                    {
-                        spawnEntityData.ConstantSpawn = bool.Parse(array2[4]);
-                    }
-                    if (array2.Length > 5) {
-                        spawnEntityData.ConstantSpawn = bool.Parse(array2[5]);
-                    }
-                    creaturesData.Add(spawnEntityData);
-                    num++;
-                    continue;
+            bool flag = false;
+            ModsManager.HookAction("",list=> {
+
+                foreach (ModLoader modLoader in list) {
+                    modLoader.LoadSpawnsData(this,data,creaturesData,out flag);
+                    if (flag) break;
                 }
-                return;
-            }
-            throw new InvalidOperationException("Invalid spawn data string.");
+                if (flag) return;
+                string[] array = data.Split(new char[1]
+                {
+                ';'
+                }, StringSplitOptions.RemoveEmptyEntries);
+                int num = 0;
+                while (true)
+                {
+                    if (num < array.Length)
+                    {
+                        string[] array2 = array[num].Split(new char[1]
+                        {
+                        ','
+                        }, StringSplitOptions.RemoveEmptyEntries);
+                        if (array2.Length < 4)
+                        {
+                            break;
+                        }
+                        var spawnEntityData = new SpawnEntityData
+                        {
+                            TemplateName = array2[0],
+                            Position = new Vector3
+                            {
+                                X = float.Parse(array2[1], CultureInfo.InvariantCulture),
+                                Y = float.Parse(array2[2], CultureInfo.InvariantCulture),
+                                Z = float.Parse(array2[3], CultureInfo.InvariantCulture)
+                            }
+                        };
+                        if (array2.Length == 5)
+                        {
+                            spawnEntityData.ConstantSpawn = bool.Parse(array2[4]);
+                        }
+                        creaturesData.Add(spawnEntityData);
+                        num++;
+                        continue;
+                    }
+                    return;
+                }
+                throw new InvalidOperationException("Invalid spawn data string.");
+            });
         }
 
         public virtual string SaveSpawnsData(List<SpawnEntityData> spawnsData)
         {
-            var stringBuilder = new StringBuilder();
-            foreach (SpawnEntityData spawnsDatum in spawnsData)
-            {
-                stringBuilder.Append(spawnsDatum.TemplateName);
-                stringBuilder.Append(',');
-                stringBuilder.Append((MathUtils.Round(spawnsDatum.Position.X * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
-                stringBuilder.Append(',');
-                stringBuilder.Append((MathUtils.Round(spawnsDatum.Position.Y * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
-                stringBuilder.Append(',');
-                stringBuilder.Append((MathUtils.Round(spawnsDatum.Position.Z * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
-                stringBuilder.Append(',');
-                stringBuilder.Append(spawnsDatum.ConstantSpawn.ToString());
-                if (!string.IsNullOrEmpty(spawnsDatum.ExtraData)) {
-                    stringBuilder.Append(',');
-                    stringBuilder.Append(spawnsDatum.ExtraData);
+            bool flag = false;
+            string data=string.Empty;
+            ModsManager.HookAction("SaveSpawnsData", list=> {
+                foreach (ModLoader modLoader in list) {
+                    data = modLoader.SaveSpawnsData(this,spawnsData,out flag);
+                    if (flag) break;
                 }
-                stringBuilder.Append(';');
-            }
-            return stringBuilder.ToString();
+                if (flag) return;
+                var stringBuilder = new StringBuilder();
+                foreach (SpawnEntityData spawnsDatum in spawnsData)
+                {
+                    stringBuilder.Append(spawnsDatum.TemplateName);
+                    stringBuilder.Append(',');
+                    stringBuilder.Append((MathUtils.Round(spawnsDatum.Position.X * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
+                    stringBuilder.Append(',');
+                    stringBuilder.Append((MathUtils.Round(spawnsDatum.Position.Y * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
+                    stringBuilder.Append(',');
+                    stringBuilder.Append((MathUtils.Round(spawnsDatum.Position.Z * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
+                    stringBuilder.Append(',');
+                    stringBuilder.Append(spawnsDatum.ConstantSpawn.ToString());
+                    if (!string.IsNullOrEmpty(spawnsDatum.ExtraData))
+                    {
+                        stringBuilder.Append(',');
+                        stringBuilder.Append(spawnsDatum.ExtraData);
+                    }
+                    stringBuilder.Append(';');
+                }
+                data= stringBuilder.ToString();
+            });
+            return data;
         }
     }
 }

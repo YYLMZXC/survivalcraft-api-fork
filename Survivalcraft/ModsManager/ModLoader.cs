@@ -16,7 +16,9 @@ namespace Game
         /// <summary>
         /// 当ModLoader类被实例化时执行
         /// </summary>
-        public virtual void __ModInitialize() { }
+        public virtual void __ModInitialize() { 
+        
+        }
         /// <summary>
         /// 当人物进行挖掘时执行
         /// </summary>
@@ -28,35 +30,9 @@ namespace Game
 
             return false;
         }
-        /// <summary>
-        /// 衣服初始化完毕时执行
-        /// </summary>
-        /// <param name="clothings"></param>
-        public virtual void OnClothingInitialize(ClothingData[] clothings) { }
-        /// <summary>
-        /// 当人物使用手持物品时执行
-        /// </summary>
-        /// <param name="miner"></param>
-        /// <param name="ray"></param>
-        /// <returns></returns>
-        public virtual bool ComponentMinerUse(ComponentMiner miner, Ray3 ray)
-        {
 
-            return false;
-        }
         /// <summary>
-        /// 当人物放置方块时执行
-        /// </summary>
-        /// <param name="miner"></param>
-        /// <param name="raycastResult"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public virtual bool ComponentMinerPlace(ComponentMiner miner, TerrainRaycastResult raycastResult, int value)
-        {
-            return false;
-        }
-        /// <summary>
-        /// 当生物收到攻击时执行
+        /// 当生物受到攻击时执行
         /// </summary>
         /// <param name="target"></param>
         /// <param name="attacker"></param>
@@ -78,7 +54,7 @@ namespace Game
             return attackPower;
         }
         /// <summary>
-        /// 生物生成的初始化方法
+        /// 初始化自然生成生物列表
         /// </summary>
         /// <param name="spawn"></param>
         /// <param name="creatureTypes"></param>
@@ -96,14 +72,14 @@ namespace Game
         /// <param name="spawn"></param>
         /// <param name="data"></param>
         /// <param name="creaturesData"></param>
-        public virtual void LoadSpawnsData(SubsystemSpawn spawn, string data, List<SpawnEntityData> creaturesData) { }
+        public virtual void LoadSpawnsData(SubsystemSpawn spawn, string data, List<SpawnEntityData> creaturesData,out bool Decoded) { Decoded = false; }
         /// <summary>
         /// 当区块卸载时，区块的生物数据被保存时执行
         /// </summary>
         /// <param name="spawn"></param>
         /// <param name="spawnsData"></param>
         /// <returns></returns>
-        public virtual string SaveSpawnsData(SubsystemSpawn spawn, List<SpawnEntityData> spawnsData) { return ""; }
+        public virtual string SaveSpawnsData(SubsystemSpawn spawn, List<SpawnEntityData> spawnsData, out bool Encoded) { Encoded = false; return ""; }
         /// <summary>
         /// 掉落物被添加时执行
         /// </summary>
@@ -249,9 +225,21 @@ namespace Game
             return 7;
         }
 
-
+        /// <summary>
+        /// 等级更新事件
+        /// </summary>
+        /// <param name="level"></param>
         public virtual void OnLevelUpdate(ComponentLevel level) { 
         
+        }
+        /// <summary>
+        /// 解码配方
+        /// </summary>
+        /// <param name="element">配方的Xelement</param>
+        /// <param name="Decoded">是否解码成功，为true时不进行后续解码</param>
+        public virtual void OnCraftingRecipeDecode(XElement element,out bool Decoded)
+        {
+            Decoded = false;
         }
     }
 }

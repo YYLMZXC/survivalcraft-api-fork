@@ -59,7 +59,35 @@ public static class ModsManager
     public static List<ModEntity> ModList = new List<ModEntity>();
     public static List<ModLoader> ModLoaders = new List<ModLoader>();
     public static List<ModInfo> DisabledMods = new List<ModInfo>();
+    public static Dictionary<string, List<ModLoader>> ModHooks = new Dictionary<string, List<ModLoader>>();
+    /// <summary>
+    /// 执行Hook
+    /// </summary>
+    /// <param name="HookName"></param>
+    /// <param name="action"></param>
+    public static void HookAction(string HookName,Action<List<ModLoader>> action) {
+        if (ModHooks.TryGetValue(HookName, out List<ModLoader> loaders)) {
+            action?.Invoke(loaders);
+        }    
+    }
+    /// <summary>
+    /// 注册Hook
+    /// </summary>
+    /// <param name="HookName"></param>
+    /// <param name="modLoader"></param>
+    public static void RegisterHook(string HookName, ModLoader modLoader)
+    {
 
+        if (ModHooks.TryGetValue(HookName, out List<ModLoader> loaders))
+        {
+            loaders.Add(modLoader);
+        }
+        else
+        {
+            ModHooks.Add(HookName, new List<ModLoader>() { modLoader });
+        }
+
+    }
     public static void StreamCompress(Stream input, MemoryStream data)
     {
         byte[] dat = data.ToArray();
@@ -153,7 +181,6 @@ public static class ModsManager
         }
         return outobj;
     }
-
     public static void SaveSettings(XElement xElement)
     {
         foreach (ModEntity modEntity in ModList) {

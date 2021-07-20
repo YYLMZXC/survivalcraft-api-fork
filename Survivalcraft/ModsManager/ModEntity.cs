@@ -279,13 +279,6 @@ namespace Game {
             if (ModLoader_ != null) ModLoader_.OnScreensManagerInitalized(loading);
 
         }
-        /// <summary>
-        /// 衣服初始化完毕时执行
-        /// </summary>
-        /// <param name="clothings"></param>
-        public virtual void OnClothingInitialize(ClothingData[] clothings) {
-            ModLoader_?.OnClothingInitialize(clothings);        
-        }
     }
 
 }

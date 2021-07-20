@@ -1052,12 +1052,9 @@ namespace Game
         {
             m_subsystemTerrain.BlockGeometryGenerator.ResetCache();
             if (even) {
-                if (chunk.Geometry.DefaultGeometry == null)
-                {
-                    chunk.Geometry.CreateDefalutGeometry(SubsystemAnimatedTextures.AnimatedBlocksTexture);
-                }
-                chunk.Geometry.ClearGeometry();
-
+                //Çå³ýTextures»º´æ
+                chunk.Geometry.GeometrySubsets.Clear();
+                chunk.Geometry.CreateDefalutGeometry(SubsystemAnimatedTextures.AnimatedBlocksTexture);
             }
             TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y - 1);
             TerrainChunk chunkAtCoords2 = m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y - 1);

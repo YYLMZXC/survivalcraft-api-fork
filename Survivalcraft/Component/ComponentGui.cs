@@ -246,10 +246,13 @@ namespace Game
 
         public void Update(float dt)
         {
+            ModsManager.HookAction("GuiUpdate", list => {
 
-            foreach (ModLoader modLoader in ModsManager.ModLoaders) {
-                modLoader.GuiUpdate(this);
-            }
+                foreach (ModLoader modLoader in list)
+                {
+                    modLoader.GuiUpdate(this);
+                }
+            });
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
@@ -313,18 +316,22 @@ namespace Game
 
         public override void OnEntityAdded()
         {
-
-            foreach (ModLoader modLoader in ModsManager.ModLoaders) {
-                modLoader.OnGuiEntityAdd(this,Entity);
-            }
+            ModsManager.HookAction("OnGuiEntityAdd", list=> {
+                foreach (ModLoader modLoader in list)
+                {
+                    modLoader.OnGuiEntityAdd(this, Entity);
+                }
+            });
         }
 
         public override void OnEntityRemoved()
         {
-            foreach (ModLoader modLoader in ModsManager.ModLoaders)
-            {
-                modLoader.OnGuiEntityRemove(this, Entity);
-            }
+            ModsManager.HookAction("OnGuiEntityRemove", list => {
+                foreach (ModLoader modLoader in list)
+                {
+                    modLoader.OnGuiEntityRemove(this, Entity);
+                }
+            });
         }
 
         public override void Dispose()
@@ -586,9 +593,12 @@ namespace Game
                 else
                 {
                     var clothingWidget = new ClothingWidget(m_componentPlayer);
-                    foreach (ModLoader modLoader in ModsManager.ModLoaders) {
-                        modLoader.OnClothingWidgetOpen(this,clothingWidget);
-                    }
+                    ModsManager.HookAction("OnClothingWidgetOpen", list=> {
+                        foreach (ModLoader modLoader in list)
+                        {
+                            modLoader.OnClothingWidgetOpen(this, clothingWidget);
+                        }
+                    });
                     ModalPanelWidget = clothingWidget;
 
                 }
@@ -682,9 +692,13 @@ namespace Game
             }
             if (m_cameraButtonWidget.IsClicked || playerInput.SwitchCameraMode || input.IsKeyDownOnce(Engine.Input.Key.V) || input.IsPadButtonDownOnce(Engine.Input.GamePadButton.RightThumb) || input.IsPadButtonDownOnce(Engine.Input.GamePadButton.DPadDown))
             {
-                foreach (ModLoader modLoader in ModsManager.ModLoaders) {
-                    modLoader.OnCameraChange(m_componentPlayer,this);
-                }
+                ModsManager.HookAction("OnCameraChange", list=> {
+                    foreach (ModLoader modLoader in list)
+                    {
+                        modLoader.OnCameraChange(m_componentPlayer, this);
+                    }
+
+                });
             }
             if (m_photoButtonWidget.IsClicked || playerInput.TakeScreenshot)
             {

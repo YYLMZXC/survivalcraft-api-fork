@@ -10,6 +10,10 @@ namespace Game
 {
     public class SurvivalCraftModLoader:ModLoader
     {
+        public override void __ModInitialize()
+        {
+
+        }
         public override bool ComponentMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult)
         {
             bool result = false;
@@ -64,83 +68,6 @@ namespace Game
                 }
             }
             return result;
-        }
-        public override bool ComponentMinerPlace(ComponentMiner miner, TerrainRaycastResult raycastResult, int value)
-        {
-            int num = Terrain.ExtractContents(value);
-            Block block = BlocksManager.Blocks[num];
-            if (block.IsPlaceable_(value))
-            {
-
-                BlockPlacementData placementData = block.GetPlacementValue(miner.m_subsystemTerrain, miner, value, raycastResult);
-                if (placementData.Value != 0)
-                {
-                    Point3 point = CellFace.FaceToPoint3(placementData.CellFace.Face);
-                    int num2 = placementData.CellFace.X + point.X;
-                    int num3 = placementData.CellFace.Y + point.Y;
-                    int num4 = placementData.CellFace.Z + point.Z;
-                    if (num3 > 0 && num3 < 255 && (ComponentMiner.IsBlockPlacingAllowed(miner.ComponentCreature.ComponentBody) || miner.m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Harmless))
-                    {
-                        bool flag = false;
-                        if (block.IsCollidable_(value))
-                        {
-                            BoundingBox boundingBox = miner.ComponentCreature.ComponentBody.BoundingBox;
-                            boundingBox.Min += new Vector3(0.2f);
-                            boundingBox.Max -= new Vector3(0.2f);
-                            BoundingBox[] customCollisionBoxes = block.GetCustomCollisionBoxes(miner.m_subsystemTerrain, placementData.Value);
-                            for (int i = 0; i < customCollisionBoxes.Length; i++)
-                            {
-                                BoundingBox box = customCollisionBoxes[i];
-                                box.Min += new Vector3(num2, num3, num4);
-                                box.Max += new Vector3(num2, num3, num4);
-                                if (boundingBox.Intersection(box))
-                                {
-                                    flag = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!flag)
-                        {
-                            SubsystemBlockBehavior[] blockBehaviors = miner.m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(placementData.Value));
-                            for (int i = 0; i < blockBehaviors.Length; i++)
-                            {
-                                blockBehaviors[i].OnItemPlaced(num2, num3, num4, ref placementData, value);
-                            }
-                            miner.m_subsystemTerrain.DestroyCell(0, num2, num3, num4, placementData.Value, noDrop: false, noParticleSystem: false);
-                            miner.m_subsystemAudio.PlaySound("Audio/BlockPlaced", 1f, 0f, new Vector3(placementData.CellFace.X, placementData.CellFace.Y, placementData.CellFace.Z), 5f, autoDelay: false);
-                            miner.Poke(forceRestart: false);
-                            if (miner.ComponentCreature.PlayerStats != null)
-                            {
-                                miner.ComponentCreature.PlayerStats.BlocksPlaced++;
-                            }
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-        public override bool ComponentMinerUse(ComponentMiner miner, Ray3 ray)
-        {
-            int num = Terrain.ExtractContents(miner.ActiveBlockValue);
-            Block block = BlocksManager.Blocks[num];
-            if (!miner.CanUseTool(miner.ActiveBlockValue))
-            {
-                miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block.PlayerLevelRequired_(miner.ActiveBlockValue), block.GetDisplayName(miner.m_subsystemTerrain, miner.ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
-                miner.Poke(forceRestart: false);
-                return false;
-            }
-            SubsystemBlockBehavior[] blockBehaviors = miner.m_subsystemBlockBehaviors.GetBlockBehaviors(num);
-            for (int i = 0; i < blockBehaviors.Length; i++)
-            {
-                if (blockBehaviors[i].OnUse(ray, miner))
-                {
-                    miner.Poke(forceRestart: false);
-                    return true;
-                }
-            }
-            return false;
         }
         public override void ComponentMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection,HitValueParticleSystem hitValueParticleSystem,ref float AttackPower)
         {

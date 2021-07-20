@@ -114,10 +114,6 @@ namespace Game
                 }
             }
             base.Initialize();
-
-            foreach (ModEntity modEntity in ModsManager.ModList) {
-                if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.OnClothingInitialize(m_clothingData.ToArray());
-            }
         }
 
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)

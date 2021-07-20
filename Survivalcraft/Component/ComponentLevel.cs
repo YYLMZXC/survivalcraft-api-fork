@@ -433,10 +433,12 @@ namespace Game
             {
                 AddExperience(1, playSound: false);
             }
-
-            foreach (ModLoader modLoader in ModsManager.ModLoaders) {
-                modLoader.OnLevelUpdate(this);
-            }
+            ModsManager.HookAction("OnLevelUpdate", list=> {
+                foreach (ModLoader modLoader in list)
+                {
+                    modLoader.OnLevelUpdate(this);
+                }
+            });
             if (!m_lastLevelTextValue.HasValue || m_lastLevelTextValue.Value != MathUtils.Floor(m_componentPlayer.PlayerData.Level))
             {
                 m_componentPlayer.ComponentGui.LevelLabelWidget.Text = LanguageControl.Get(fName,2) + MathUtils.Floor(m_componentPlayer.PlayerData.Level).ToString();

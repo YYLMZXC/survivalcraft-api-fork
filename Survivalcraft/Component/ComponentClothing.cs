@@ -208,9 +208,12 @@ namespace Game
         public virtual float ApplyArmorProtection(float attackPower)
         {
             var results = new List<float>();
-            foreach (ModLoader modEntity in ModsManager.ModLoaders) {
-                results.Add(modEntity.ApplyArmorProtection(this,ref attackPower));
-            }
+            ModsManager.HookAction("ApplyArmorProtection", list=> {
+                foreach (ModLoader modEntity in list)
+                {
+                    results.Add(modEntity.ApplyArmorProtection(this, ref attackPower));
+                }
+            });
             return results.Min();
         }
 

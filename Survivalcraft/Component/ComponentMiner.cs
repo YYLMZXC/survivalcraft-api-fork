@@ -122,9 +122,12 @@ namespace Game
         public bool Dig(TerrainRaycastResult raycastResult)
         {
             bool flag=false;
-            foreach (ModLoader modEntity in ModsManager.ModLoaders) {
-                flag |= modEntity.ComponentMinerDig(this,raycastResult);
-            }
+            ModsManager.HookAction("ComponentMinerDig",list=> {
+                foreach (ModLoader modEntity in list)
+                {
+                    flag |= modEntity.ComponentMinerDig(this, raycastResult);
+                }
+            });
             return flag;
         }
 
@@ -143,22 +146,80 @@ namespace Game
 
         public bool Place(TerrainRaycastResult raycastResult, int value)
         {
-            bool flag = false;
-            foreach (ModLoader modEntity in ModsManager.ModLoaders)
+            int num = Terrain.ExtractContents(value);
+            if (BlocksManager.Blocks[num].IsPlaceable)
             {
-                flag |= modEntity.ComponentMinerPlace(this, raycastResult,value);
+                Block block = BlocksManager.Blocks[num];
+                BlockPlacementData placementData = block.GetPlacementValue(m_subsystemTerrain, this, value, raycastResult);
+                if (placementData.Value != 0)
+                {
+                    Point3 point = CellFace.FaceToPoint3(placementData.CellFace.Face);
+                    int num2 = placementData.CellFace.X + point.X;
+                    int num3 = placementData.CellFace.Y + point.Y;
+                    int num4 = placementData.CellFace.Z + point.Z;
+                    if (num3 > 0 && num3 < 255 && (IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Harmless))
+                    {
+                        bool flag = false;
+                        if (block.IsCollidable)
+                        {
+                            BoundingBox boundingBox = ComponentCreature.ComponentBody.BoundingBox;
+                            boundingBox.Min += new Vector3(0.2f);
+                            boundingBox.Max -= new Vector3(0.2f);
+                            BoundingBox[] customCollisionBoxes = block.GetCustomCollisionBoxes(m_subsystemTerrain, placementData.Value);
+                            for (int i = 0; i < customCollisionBoxes.Length; i++)
+                            {
+                                BoundingBox box = customCollisionBoxes[i];
+                                box.Min += new Vector3(num2, num3, num4);
+                                box.Max += new Vector3(num2, num3, num4);
+                                if (boundingBox.Intersection(box))
+                                {
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!flag)
+                        {
+                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(placementData.Value));
+                            for (int i = 0; i < blockBehaviors.Length; i++)
+                            {
+                                blockBehaviors[i].OnItemPlaced(num2, num3, num4, ref placementData, value);
+                            }
+                            m_subsystemTerrain.DestroyCell(0, num2, num3, num4, placementData.Value, noDrop: false, noParticleSystem: false);
+                            m_subsystemAudio.PlaySound("Audio/BlockPlaced", 1f, 0f, new Vector3(placementData.CellFace.X, placementData.CellFace.Y, placementData.CellFace.Z), 5f, autoDelay: false);
+                            Poke(forceRestart: false);
+                            if (ComponentCreature.PlayerStats != null)
+                            {
+                                ComponentCreature.PlayerStats.BlocksPlaced++;
+                            }
+                            return true;
+                        }
+                    }
+                }
             }
-            return flag;
+            return false;
         }
 
         public bool Use(Ray3 ray)
         {
-            bool flag = false;
-            foreach (ModLoader modEntity in ModsManager.ModLoaders)
+            int num = Terrain.ExtractContents(ActiveBlockValue);
+            Block block = BlocksManager.Blocks[num];
+            if (!CanUseTool(ActiveBlockValue))
             {
-                flag |= modEntity.ComponentMinerUse(this, ray);
+                ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block.PlayerLevelRequired, block.GetDisplayName(m_subsystemTerrain, ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
+                Poke(forceRestart: false);
+                return false;
             }
-            return flag;
+            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num);
+            for (int i = 0; i < blockBehaviors.Length; i++)
+            {
+                if (blockBehaviors[i].OnUse(ray, this))
+                {
+                    Poke(forceRestart: false);
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool Interact(TerrainRaycastResult raycastResult)
@@ -185,9 +246,12 @@ namespace Game
             float AttackPower = 0f;
             //预先生成粒子特效
             var particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
-            foreach (ModLoader modLoader in ModsManager.ModLoaders) {
-                modLoader.ComponentMinerHit(this, componentBody,hitPoint,hitDirection, particleSystem, ref AttackPower);            
-            }
+            ModsManager.HookAction("ComponentMinerHit", list=> {
+                foreach (ModLoader modLoader in list)
+                {
+                    modLoader.ComponentMinerHit(this, componentBody, hitPoint, hitDirection, particleSystem, ref AttackPower);
+                }
+            });
             Poke(forceRestart: false);
         }
 
@@ -316,9 +380,12 @@ namespace Game
             if (attacker != null) {
                 hitValueParticleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + attacker.ComponentBody.Velocity, Color.White, string.Empty);
             }
-            foreach (ModLoader modEntity in ModsManager.ModLoaders) {
-                modEntity.AttackBody(target,attacker,hitPoint,hitDirection,attackPower,isMeleeAttack,hitValueParticleSystem);
-            }
+            ModsManager.HookAction("AttackBody", list=> {
+                foreach (ModLoader modEntity in list)
+                {
+                    modEntity.AttackBody(target, attacker, hitPoint, hitDirection, attackPower, isMeleeAttack, hitValueParticleSystem);
+                }
+            });
         }
 
         public void Update(float dt)
