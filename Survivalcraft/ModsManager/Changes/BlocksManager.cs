@@ -19,8 +19,6 @@ namespace Game
         public static Block[] Blocks => m_blocks;
         public static FluidBlock[] FluidBlocks => m_fluidBlocks;
         public static ReadOnlyList<string> Categories => new ReadOnlyList<string>(m_categories);
-
-
         public static void Initialize()
         {
             for (int i=0;i<m_blocks.Length;i++) {
@@ -94,7 +92,6 @@ namespace Game
             }
             return block;
         }
-
         public static Block[] FindBlocksByCraftingId(string craftingId)
         {
             return Blocks.Where((Block b) => b.CraftingId == craftingId).ToArray();
@@ -150,7 +147,6 @@ namespace Game
             vector2 = m_slotTexCoords[block.GetFaceTextureSlot(3, value)];
             texturedBatch3D.QueueQuad(color: Color.MultiplyColorOnly(color, LightingManager.CalculateLighting(matrix.Right)), p1: v4, p2: v6, p3: v10, p4: v8, texCoord1: new Vector2(vector2.X, vector2.W), texCoord2: new Vector2(vector2.X, vector2.Y), texCoord3: new Vector2(vector2.Z, vector2.Y), texCoord4: new Vector2(vector2.Z, vector2.W));
         }
-
         public static void DrawFlatBlock(PrimitivesRenderer3D primitivesRenderer, int value, float size, ref Matrix matrix, Texture2D texture, Color color, bool isEmissive, DrawBlockEnvironmentData environmentData)
         {
             environmentData = (environmentData ?? m_defaultEnvironmentData);
@@ -203,21 +199,18 @@ namespace Game
                 texturedBatch3D.QueueQuad(v2, v3, v5, v4, new Vector2(vector2.X, vector2.W), new Vector2(vector2.Z, vector2.W), new Vector2(vector2.Z, vector2.Y), new Vector2(vector2.X, vector2.Y), color);
             }
         }
-
         public static void DrawMeshBlock(PrimitivesRenderer3D primitivesRenderer, BlockMesh blockMesh, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
         {
             environmentData = (environmentData ?? m_defaultEnvironmentData);
             Texture2D texture = (environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture;
             DrawMeshBlock(primitivesRenderer, blockMesh, texture, Color.White, size, ref matrix, environmentData);
         }
-
         public static void DrawMeshBlock(PrimitivesRenderer3D primitivesRenderer, BlockMesh blockMesh, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
         {
             environmentData = (environmentData ?? m_defaultEnvironmentData);
             Texture2D texture = (environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture;
             DrawMeshBlock(primitivesRenderer, blockMesh, texture, color, size, ref matrix, environmentData);
         }
-
         public static void DrawMeshBlock(PrimitivesRenderer3D primitivesRenderer, BlockMesh blockMesh, Texture2D texture, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
         {
             environmentData = (environmentData ?? m_defaultEnvironmentData);
@@ -276,7 +269,6 @@ namespace Game
                 triangleIndices.Array[count5++] = (ushort)(count3 + array2[j]);
             }
         }
-
         public static int DamageItem(int value, int damageCount)
         {
             int num = Terrain.ExtractContents(value);
@@ -292,7 +284,6 @@ namespace Game
             }
             return value;
         }
-
         public static void LoadBlocksData(string data)
         {
             var dictionary = new Dictionary<Block, bool>();
@@ -359,7 +350,6 @@ namespace Game
                 }
             }
         }
-
         public static void CalculateSlotTexCoordTables()
         {
             for (int i = 0; i < 256; i++)
@@ -367,7 +357,6 @@ namespace Game
                 m_slotTexCoords[i] = TextureSlotToTextureCoords(i);
             }
         }
-
         public static Vector4 TextureSlotToTextureCoords(int slot)
         {
             int num = slot % 16;
