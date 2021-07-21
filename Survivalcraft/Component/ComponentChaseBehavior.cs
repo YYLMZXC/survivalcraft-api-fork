@@ -138,20 +138,6 @@ namespace Game
             m_chaseNonPlayerProbability = valuesDictionary.GetValue<float>("ChaseNonPlayerProbability");
             m_chaseWhenAttackedProbability = valuesDictionary.GetValue<float>("ChaseWhenAttackedProbability");
             m_chaseOnTouchProbability = valuesDictionary.GetValue<float>("ChaseOnTouchProbability");
-            m_componentCreature.ComponentHealth.Attacked += delegate (ComponentCreature attacker)
-            {
-                if (m_random.Float(0f, 1f) < m_chaseWhenAttackedProbability)
-                {
-                    if (m_chaseWhenAttackedProbability >= 1f)
-                    {
-                        Attack(attacker, 30f, 60f, isPersistent: true);
-                    }
-                    else
-                    {
-                        Attack(attacker, 7f, 7f, isPersistent: false);
-                    }
-                }
-            };
             m_componentCreature.ComponentBody.CollidedWithBody += delegate (ComponentBody body)
             {
                 if (m_target == null && m_autoChaseSuppressionTime <= 0f && m_random.Float(0f, 1f) < m_chaseOnTouchProbability)

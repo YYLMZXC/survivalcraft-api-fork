@@ -2,19 +2,28 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.IO;
+using System;
 namespace Game
 {
     public class FastDebugModEntity :ModEntity
     {
         public FastDebugModEntity() {
-            modInfo = new ModInfo() { Name = "FastDebug", Version = "1.0.0", ApiVersion = "1.34", Author = "Mod", Description = "调试Mod插件", ScVersion = "2.2.10.4", PackageName = "com.fastdebug" };
-            IEnumerable<string> dlls = Storage.ListFileNames(ModsManager.ModsPath);
-            foreach (string c in dlls)
+            if (GetFile("modinfo.json", out Stream stream))
             {
-                if (c == "icon.png")
-                    LoadIcon(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
+                modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
+                modInfo.Name = $"[Debug]{modInfo.Name}";
+                stream.Close();
+            }
+            else {
+                modInfo = new ModInfo() { Name = "FastDebug", Version = "1.0.0", ApiVersion = "1.34", Author = "Mod", Description = "调试Mod插件", ScVersion = "2.2.10.4", PackageName = "com.fastdebug" };
+            }
+            if (GetFile("icon.png", out Stream stream2)) {
+                LoadIcon(stream2);
+                stream.Close();
             }
         }
+
+
         public override void LoadDll()
         {
             IEnumerable<string> dlls = Storage.ListFileNames(ModsManager.ModsPath);

@@ -35,14 +35,7 @@ namespace Game
             {
                 ScanProjectile(projectile);
             }
-            m_subsystemProjectiles.ProjectileAdded += delegate (Projectile projectile)
-            {
-                ScanProjectile(projectile);
-            };
-            m_subsystemProjectiles.ProjectileRemoved += delegate (Projectile projectile)
-            {
-                m_projectiles.Remove(projectile);
-            };
+
         }
 
         public void ScanProjectile(Projectile projectile)

@@ -433,18 +433,20 @@ namespace Game
             {
                 AddExperience(1, playSound: false);
             }
-            ModsManager.HookAction("OnLevelUpdate", list=> {
-                foreach (ModLoader modLoader in list)
-                {
-                    modLoader.OnLevelUpdate(this);
-                }
-            });
             if (!m_lastLevelTextValue.HasValue || m_lastLevelTextValue.Value != MathUtils.Floor(m_componentPlayer.PlayerData.Level))
             {
                 m_componentPlayer.ComponentGui.LevelLabelWidget.Text = LanguageControl.Get(fName,2) + MathUtils.Floor(m_componentPlayer.PlayerData.Level).ToString();
                 m_lastLevelTextValue = MathUtils.Floor(m_componentPlayer.PlayerData.Level);
             }
             m_componentPlayer.PlayerStats.HighestLevel = MathUtils.Max(m_componentPlayer.PlayerStats.HighestLevel, m_componentPlayer.PlayerData.Level);
+            StrengthFactor = CalculateStrengthFactor(null);
+            SpeedFactor = CalculateSpeedFactor(null);
+            HungerFactor = CalculateHungerFactor(null);
+            ResilienceFactor = CalculateResilienceFactor(null);
+            ModsManager.HookAction("OnLevelUpdate", modLoader => {
+                modLoader.OnLevelUpdate(this);
+                return false;
+            });
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)

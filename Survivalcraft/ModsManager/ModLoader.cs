@@ -20,15 +20,19 @@ namespace Game
         public virtual void __ModInitialize() { 
         
         }
+
+        public virtual void ComponentMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection, ref float AttackPower, ref float Probability,out bool Hitted) {
+            Hitted = false;
+        }
         /// <summary>
         /// 当人物进行挖掘时执行
         /// </summary>
         /// <param name="miner"></param>
         /// <param name="raycastResult"></param>
         /// <returns></returns>
-        public virtual bool ComponentMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult)
+        public virtual bool ComponentMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult,ref float DigProgress,out bool Digged)
         {
-
+            Digged = false;
             return false;
         }
 
@@ -50,8 +54,9 @@ namespace Game
         /// <param name="componentClothing"></param>
         /// <param name="attackPower">未计算免伤前的伤害</param>
         /// <returns>免伤后的伤害，当多个mod都有免伤计算时，取最小值</returns>
-        public virtual float ApplyArmorProtection(ComponentClothing componentClothing,ref float attackPower)
+        public virtual float ApplyArmorProtection(ComponentClothing componentClothing,float attackPower,out bool Applied)
         {
+            Applied = false;
             return attackPower;
         }
         /// <summary>
@@ -66,7 +71,9 @@ namespace Game
         /// <param name="spawn"></param>
         /// <param name="entity"></param>
         /// <param name="spawnEntityData"></param>
-        public virtual void SpawnEntity(SubsystemSpawn spawn, Entity entity, SpawnEntityData spawnEntityData) { }
+        public virtual void SpawnEntity(SubsystemSpawn spawn, Entity entity, SpawnEntityData spawnEntityData,out bool Spawned) {
+            Spawned = false;
+        }
         /// <summary>
         /// 当区块加载时，区块的生物数据被读取时执行
         /// </summary>
@@ -129,16 +136,9 @@ namespace Game
 
         }
 
+
         /// <summary>
-        /// 人物攻击生物时执行
-        /// </summary>
-        /// <param name="miner"></param>
-        /// <param name="componentBody"></param>
-        /// <param name="hitPoint"></param>
-        /// <param name="hitDirection"></param>
-        public virtual void ComponentMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection,HitValueParticleSystem hitValueParticleSystem,ref float AttackPower) { }
-        /// <summary>
-        /// 生物变形重生为另一个生物时执行
+        /// 生物消失时执行
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="componentSpawn"></param>
@@ -199,21 +199,11 @@ namespace Game
         public virtual void GuiUpdate(ComponentGui componentGui) { 
         
         }
-        /// <summary>
-        /// ComponentGui被添加时的方法
-        /// </summary>
-        /// <param name="componentGui"></param>
-        /// <param name="entity"></param>
-        public virtual void OnGuiEntityAdd(ComponentGui componentGui,Entity entity)
+        public virtual void OnEntityAdd(Entity entity)
         {
 
         }
-        /// <summary>
-        /// ComponentGui被删除时的方法
-        /// </summary>
-        /// <param name="componentGui"></param>
-        /// <param name="entity"></param>
-        public virtual void OnGuiEntityRemove(ComponentGui componentGui, Entity entity)
+        public virtual void OnEntityRemove(Entity entity)
         {
 
         }
@@ -237,7 +227,7 @@ namespace Game
         /// 解码配方
         /// </summary>
         /// <param name="element">配方的Xelement</param>
-        /// <param name="Decoded">是否解码成功，为true时不进行后续解码</param>
+        /// <param name="Decoded">是否解码成功，不成功交由下一个Mod处理</param>
         public virtual void OnCraftingRecipeDecode(List<CraftingRecipe> m_recipes,XElement element,out bool Decoded)
         {
             Decoded = false;
@@ -247,22 +237,42 @@ namespace Game
         /// </summary>
         /// <param name="requiredIngredients"></param>
         /// <param name="actualIngredient"></param>
-        /// <param name="Matched">是否匹配成功</param>
+        /// <param name="Matched">是否匹配成功，不成功交由下一个Mod处理</param>
         public virtual bool MatchRecipe(string[] requiredIngredients, string[] actualIngredient,out bool Matched) {
             Matched = false;
             return false;
         }
-
+        /// <summary>
+        /// 解码结果
+        /// </summary>
+        /// <param name="result">结果字符串</param>
+        /// <param name="Decoded">是否解码成功，不成功交由下一个Mod处理</param>
+        /// <returns></returns>
         public virtual int DecodeResult(string result,out bool Decoded) {
             Decoded = false;
             return 0;
         }
-
+        /// <summary>
+        /// 解码配方
+        /// </summary>
+        /// <param name="ingredient"></param>
+        /// <param name="craftingId"></param>
+        /// <param name="data"></param>
+        /// <param name="Decoded">是否解码成功，不成功交由下一个Mod处理</param>
         public virtual void DecodeIngredient(string ingredient, out string craftingId, out int? data,out bool Decoded) {
             Decoded = false;
             craftingId = string.Empty;
             data = null;
         }
+        /// <summary>
+        /// 设定伤害粒子参数
+        /// </summary>
+        /// <param name="hitValueParticleSystem"></param>
+        public virtual void SetHitValueParticleSystem(HitValueParticleSystem hitValueParticleSystem) { }
 
+        public virtual void OnBodyAttacked(ComponentCreature attacker,ComponentHealth ToCreatureHealth) { 
+        
+        
+        }
     }
 }

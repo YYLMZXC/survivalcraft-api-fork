@@ -65,9 +65,11 @@ public static class ModsManager
     /// </summary>
     /// <param name="HookName"></param>
     /// <param name="action"></param>
-    public static void HookAction(string HookName,Action<List<ModLoader>> action) {
+    public static void HookAction(string HookName,Func<ModLoader,bool> action) {
         if (ModHooks.TryGetValue(HookName, out List<ModLoader> loaders)) {
-            action?.Invoke(loaders);
+            foreach (ModLoader modLoader in loaders) {
+                if (action.Invoke(modLoader)) break;
+            }
         }    
     }
     /// <summary>
@@ -201,6 +203,11 @@ public static class ModsManager
         fileStream.Close();
         return "下载成功";
 
+    }
+    public static void ModListAllDo(Action<ModEntity> entity) {
+        for (int i=0;i<ModList.Count;i++) {
+            entity?.Invoke(ModList[i]);
+        }
     }
     public static void Initialize()
     {

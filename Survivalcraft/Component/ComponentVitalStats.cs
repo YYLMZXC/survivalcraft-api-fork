@@ -249,10 +249,6 @@ namespace Game
             {
                 m_satiation[int.Parse(item.Key, CultureInfo.InvariantCulture)] = (float)item.Value;
             }
-            m_componentPlayer.ComponentHealth.Attacked += delegate
-            {
-                m_lastAttackedTime = m_subsystemTime.GameTime;
-            };
         }
 
         public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)

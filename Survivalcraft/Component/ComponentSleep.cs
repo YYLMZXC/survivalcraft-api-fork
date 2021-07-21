@@ -181,13 +181,6 @@ namespace Game
                 m_sleepFactor = 1f;
                 m_minWetness = float.MaxValue;
             }
-            m_componentPlayer.ComponentHealth.Attacked += delegate
-            {
-                if (IsSleeping && m_componentPlayer.ComponentVitalStats.Sleep > 0.25f)
-                {
-                    WakeUp();
-                }
-            };
         }
 
         public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)

@@ -7,6 +7,7 @@ using System.Text;
 using System.IO;
 namespace Game
 {
+
     public static class ContentManager
     {
         public static void Initialize()

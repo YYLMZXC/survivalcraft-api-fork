@@ -280,12 +280,21 @@ namespace Game
             try
             {
                 Entity entity = DatabaseManager.CreateEntity(Project, data.TemplateName, throwIfNotFound: true);
-                ModsManager.HookAction("SpawnEntity", list=> {
-                    foreach (ModLoader modEntity in list)
-                    {
-                        modEntity.SpawnEntity(this, entity, data);
-                    }
+                bool flag = false;
+                ModsManager.HookAction("SpawnEntity", modLoader => {
+                    modLoader.SpawnEntity(this, entity, data,out bool flag2);
+                    return flag2;
                 });
+                if (flag == false)
+                {
+                    entity.FindComponent<ComponentBody>(throwOnError: true).Position = data.Position;
+                    entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
+                    ComponentCreature componentCreature = entity.FindComponent<ComponentCreature>();
+                    if (componentCreature != null)
+                    {
+                        componentCreature.ConstantSpawn = data.ConstantSpawn;
+                    }
+                }
                 Project.AddEntity(entity);
                 return entity;
             }
@@ -299,13 +308,11 @@ namespace Game
         public virtual void LoadSpawnsData(string data, List<SpawnEntityData> creaturesData)
         {
             bool flag = false;
-            ModsManager.HookAction("",list=> {
-
-                foreach (ModLoader modLoader in list) {
-                    modLoader.LoadSpawnsData(this,data,creaturesData,out flag);
-                    if (flag) break;
-                }
-                if (flag) return;
+            ModsManager.HookAction("LoadSpawnsData", modLoader => {
+                modLoader.LoadSpawnsData(this, data, creaturesData, out flag);
+                return flag;
+            });
+            if (flag == false) {
                 string[] array = data.Split(new char[1]
                 {
                 ';'
@@ -344,19 +351,19 @@ namespace Game
                     return;
                 }
                 throw new InvalidOperationException("Invalid spawn data string.");
-            });
+
+            }
         }
 
         public virtual string SaveSpawnsData(List<SpawnEntityData> spawnsData)
         {
             bool flag = false;
             string data=string.Empty;
-            ModsManager.HookAction("SaveSpawnsData", list=> {
-                foreach (ModLoader modLoader in list) {
-                    data = modLoader.SaveSpawnsData(this,spawnsData,out flag);
-                    if (flag) break;
-                }
-                if (flag) return;
+            ModsManager.HookAction("SaveSpawnsData", modLoader => {
+                data = modLoader.SaveSpawnsData(this, spawnsData, out flag);
+                return flag;
+            });
+            if (flag == false) {
                 var stringBuilder = new StringBuilder();
                 foreach (SpawnEntityData spawnsDatum in spawnsData)
                 {
@@ -376,8 +383,8 @@ namespace Game
                     }
                     stringBuilder.Append(';');
                 }
-                data= stringBuilder.ToString();
-            });
+                data = stringBuilder.ToString();
+            }
             return data;
         }
     }

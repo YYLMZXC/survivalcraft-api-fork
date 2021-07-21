@@ -45,6 +45,18 @@ namespace Game
                 }
                 var projectData = new ProjectData(DatabaseManager.GameDatabase, projectNode, valuesDictionary, ignoreInvalidEntities: true);
                 m_project = new Project(DatabaseManager.GameDatabase, projectData);
+                m_project.EntityAdded += new EventHandler<EntityAddRemoveEventArgs>((s, arg) => {
+                    ModsManager.HookAction("OnEntityAdd", loader => {
+                        loader.OnEntityAdd(arg.Entity);
+                        return false;
+                    });
+                });
+                m_project.EntityRemoved += new EventHandler<EntityAddRemoveEventArgs>((s, arg) => {
+                    ModsManager.HookAction("OnEntityRemove", loader => {
+                        loader.OnEntityRemove(arg.Entity);
+                        return false;
+                    });
+                });
                 m_subsystemUpdate = m_project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
             }
             m_worldInfo = worldInfo;

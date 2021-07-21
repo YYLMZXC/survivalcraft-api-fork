@@ -44,21 +44,15 @@ namespace Game
                 }
                 return;
             }
-            ModsManager.HookAction("OnCraftingRecipeDecode", list => {
-                bool flag = false;
-                foreach (ModLoader modLoader in list)
-                {
-                    modLoader.OnCraftingRecipeDecode(m_recipes, item, out bool Decoded);
-                    if (Decoded) { flag = true; break; }
-                }
-                if (flag) return;
-                else
-                {
-                    CraftingRecipe craftingRecipe = DecodeElementToCraftingRecipe(item);
-                    m_recipes.Add(craftingRecipe);
-                }
-
+            bool flag = false;
+            ModsManager.HookAction("OnCraftingRecipeDecode", modLoader => {
+                modLoader.OnCraftingRecipeDecode(m_recipes, item, out flag);
+                return flag;
             });
+            if (flag == false) {
+                CraftingRecipe craftingRecipe = DecodeElementToCraftingRecipe(item);
+                m_recipes.Add(craftingRecipe);
+            }
         }
 
         public static CraftingRecipe DecodeElementToCraftingRecipe(XElement item, int HorizontalLen=3)
@@ -184,11 +178,9 @@ namespace Game
         {
             bool flag2 = false;
             int result2 = 0;
-            ModsManager.HookAction("DecodeResult", list=> {
-                foreach (ModLoader modLoader in list) {
-                    result2 = modLoader.DecodeResult(result,out flag2);
-                    if (flag2) break;
-                }
+            ModsManager.HookAction("DecodeResult", modLoader => {
+                result2 = modLoader.DecodeResult(result, out flag2);
+                return flag2;
             });
             if (flag2) return result2;
             if (!string.IsNullOrEmpty(result))
@@ -205,11 +197,9 @@ namespace Game
             bool flag2 = false;
             string craftingId_R=string.Empty;
             int? data_R = null;
-            ModsManager.HookAction("DecodeIngredient",list=> {
-                foreach (ModLoader modLoader in list) {
-                    modLoader.DecodeIngredient(ingredient,out craftingId_R, out data_R, out flag2);
-                    if (flag2) break;
-                }            
+            ModsManager.HookAction("DecodeIngredient", modLoader => {
+                modLoader.DecodeIngredient(ingredient, out craftingId_R, out data_R, out flag2);
+                return flag2;
             });
             if (flag2) { craftingId = craftingId_R; data = data_R; return; } 
             string[] array = ingredient.Split(new char[] { ':' }, StringSplitOptions.None);
@@ -221,11 +211,9 @@ namespace Game
         {
             bool flag2 = false;
             bool result = false;
-            ModsManager.HookAction("MatchRecipe",list=> {
-                foreach (ModLoader modLoader in list) {
-                    result=modLoader.MatchRecipe(requiredIngredients,actualIngredients,out flag2);
-                    if (flag2) break;
-                }            
+            ModsManager.HookAction("MatchRecipe", modLoader => {
+                result = modLoader.MatchRecipe(requiredIngredients, actualIngredients, out flag2);
+                return flag2;
             });
             if (flag2) return result;
             string[] array = new string[9];

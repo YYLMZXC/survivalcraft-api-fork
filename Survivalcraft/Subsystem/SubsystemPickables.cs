@@ -55,11 +55,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public virtual Action<Pickable> PickableAdded { get; set; }
-
-        public virtual Action<Pickable> PickableRemoved { get; set; }
-
-        public virtual Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
+        public Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
         {
             var pickable = new Pickable();
             pickable.Value = value;
@@ -81,10 +77,10 @@ namespace Game
                 pickable.Velocity = new Vector3(m_random.Float(-0.5f, 0.5f), m_random.Float(1f, 1.2f), m_random.Float(-0.5f, 0.5f));
             }
             m_pickables.Add(pickable);
-            foreach (ModLoader modEntity in ModsManager.ModLoaders) {
-                modEntity.PickableAdded(this,pickable);
-            }
-            PickableAdded?.Invoke(pickable);
+            ModsManager.HookAction("AddPickable", modLoader => {
+                modLoader.PickableAdded(this, pickable);
+                return false;
+            });
             return pickable;
         }
 
@@ -364,11 +360,10 @@ namespace Game
             foreach (Pickable item in m_pickablesToRemove)
             {
                 m_pickables.Remove(item);
-                PickableRemoved?.Invoke(item);
-                foreach (ModLoader modEntity in ModsManager.ModLoaders)
-                {
-                    modEntity.PickableAdded(this, item);
-                }
+                ModsManager.HookAction("PickableRemoved", modLoader => {
+                    modLoader.PickableRemoved(this, item);
+                    return false;
+                });
             }
             m_pickablesToRemove.Clear();
         }

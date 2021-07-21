@@ -207,14 +207,56 @@ namespace Game
 
         public virtual float ApplyArmorProtection(float attackPower)
         {
-            var results = new List<float>();
-            ModsManager.HookAction("ApplyArmorProtection", list=> {
-                foreach (ModLoader modEntity in list)
-                {
-                    results.Add(modEntity.ApplyArmorProtection(this, ref attackPower));
-                }
+            bool Applied = false;
+            ModsManager.HookAction("ApplyArmorProtection", modLoader => {
+                attackPower = modLoader.ApplyArmorProtection(this, attackPower, out bool flag2);
+                Applied |= flag2;
+                return false;
             });
-            return results.Min();
+            if (Applied == false)
+            {
+                float num = m_random.Float(0f, 1f);
+                ClothingSlot slot = (num < 0.1f) ? ClothingSlot.Feet : ((num < 0.3f) ? ClothingSlot.Legs : ((num < 0.9f) ? ClothingSlot.Torso : ClothingSlot.Head));
+                float num2 = ((ClothingBlock)BlocksManager.Blocks[203]).Durability + 1;
+                List<int> list = new List<int>(GetClothes(slot));
+                for (int i = 0; i < list.Count; i++)
+                {
+                    int value = list[i];
+                    ClothingData clothingData = ClothingBlock.GetClothingData(Terrain.ExtractData(value));
+                    float x = (num2 - (float)BlocksManager.Blocks[203].GetDamage(value)) / num2 * clothingData.Sturdiness;
+                    float num3 = MathUtils.Min(attackPower * MathUtils.Saturate(clothingData.ArmorProtection), x);
+                    if (num3 > 0f)
+                    {
+                        attackPower -= num3;
+                        if (m_subsystemGameInfo.WorldSettings.GameMode != 0)
+                        {
+                            float x2 = num3 / clothingData.Sturdiness * num2 + 0.001f;
+                            int damageCount = (int)(MathUtils.Floor(x2) + (float)(m_random.Bool(MathUtils.Remainder(x2, 1f)) ? 1 : 0));
+                            list[i] = BlocksManager.DamageItem(value, damageCount);
+                        }
+                        if (!string.IsNullOrEmpty(clothingData.ImpactSoundsFolder))
+                        {
+                            m_subsystemAudio.PlayRandomSound(clothingData.ImpactSoundsFolder, 1f, m_random.Float(-0.3f, 0.3f), m_componentBody.Position, 4f, 0.15f);
+                        }
+                    }
+                }
+                int num4 = 0;
+                while (num4 < list.Count)
+                {
+                    if (Terrain.ExtractContents(list[num4]) != 203)
+                    {
+                        list.RemoveAt(num4);
+                        m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + m_componentBody.BoxSize / 2f, 1f, 1f, Color.White, 0));
+                    }
+                    else
+                    {
+                        num4++;
+                    }
+                }
+                SetClothes(slot, list);
+
+            }
+            return MathUtils.Max(attackPower, 0f);
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)

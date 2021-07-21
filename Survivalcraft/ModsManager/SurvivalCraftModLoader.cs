@@ -10,286 +10,27 @@ namespace Game
 {
     public class SurvivalCraftModLoader:ModLoader
     {
+        public List<ComponentEatPickableBehavior> EatPickableBehaviors = new List<ComponentEatPickableBehavior>();
+        public List<ComponentChaseBehavior> ChaseBehaviors = new List<ComponentChaseBehavior>();
+        public List<ComponentCreatureModel> CreatureModels = new List<ComponentCreatureModel>();
+        public List<ComponentHerdBehavior> HerdBehaviors = new List<ComponentHerdBehavior>();
+        public List<ComponentRunAwayBehavior> RunAwayBehaviors = new List<ComponentRunAwayBehavior>();
+        public List<ComponentSwimAwayBehavior> SwimAwayBehaviors = new List<ComponentSwimAwayBehavior>();
+        public List<ComponentSleep> Sleeps = new List<ComponentSleep>();
+        public List<ComponentVitalStats> VitalStats = new List<ComponentVitalStats>();
         public override void __ModInitialize()
         {
-            ModsManager.RegisterHook("ComponentMinerDig",this);
-            ModsManager.RegisterHook("ComponentMinerHit", this);
-            ModsManager.RegisterHook("AttackBody", this);
-            ModsManager.RegisterHook("ApplyArmorProtection", this);
-            ModsManager.RegisterHook("SpawnEntity", this);
             ModsManager.RegisterHook("OnCameraChange", this);
             ModsManager.RegisterHook("OnPlayerDead", this);
             ModsManager.RegisterHook("OnModelRendererDrawExtra", this);
-            ModsManager.RegisterHook("GuiUpdate", this);
-            ModsManager.RegisterHook("OnGuiEntityAdd", this);
-            ModsManager.RegisterHook("OnGuiEntityRemove", this);
-            ModsManager.RegisterHook("OnLevelUpdate", this);
             ModsManager.RegisterHook("GetMaxInstancesCount", this);
-        }
-        public override bool ComponentMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult)
-        {
-            bool result = false;
-            miner.m_lastDigFrameIndex = Time.FrameIndex;
-            CellFace cellFace = raycastResult.CellFace;
-            int cellValue = miner.m_subsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
-            int num = Terrain.ExtractContents(cellValue);
-            Block block = BlocksManager.Blocks[num];
-            int activeBlockValue = miner.ActiveBlockValue;
-            int num2 = Terrain.ExtractContents(activeBlockValue);
-            Block block2 = BlocksManager.Blocks[num2];
-            if (!miner.DigCellFace.HasValue || miner.DigCellFace.Value.X != cellFace.X || miner.DigCellFace.Value.Y != cellFace.Y || miner.DigCellFace.Value.Z != cellFace.Z)
-            {
-                miner.m_digStartTime = miner.m_subsystemTime.GameTime;
-                miner.DigCellFace = cellFace;
-            }
-            float num3 = miner.CalculateDigTime(cellValue, activeBlockValue);
-            miner.m_digProgress = ((num3 > 0f) ? MathUtils.Saturate((float)(miner.m_subsystemTime.GameTime - miner.m_digStartTime) / num3) : 1f);
-            if (!miner.CanUseTool(activeBlockValue))
-            {
-                miner.m_digProgress = 0f;
-                if (miner.m_subsystemTime.PeriodicGameTimeEvent(5.0, miner.m_digStartTime + 1.0))
-                {
-                    miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block2.PlayerLevelRequired_(miner.ActiveBlockValue), block2.GetDisplayName(miner.m_subsystemTerrain, activeBlockValue)), Color.White, blinking: true, playNotificationSound: true);
-                }
-            }
-            bool flag = miner.ComponentPlayer != null && !miner.ComponentPlayer.ComponentInput.IsControlledByTouch && miner.m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative;
-            if (flag || (miner.m_lastPokingPhase <= 0.5f && miner.PokingPhase > 0.5f))
-            {
-                if (miner.m_digProgress >= 1f)
-                {
-                    miner.DigCellFace = null;
-                    if (flag)
-                    {
-                        miner.Poke(forceRestart: true);
-                    }
-                    BlockPlacementData digValue = block.GetDigValue(miner.m_subsystemTerrain, miner, cellValue, activeBlockValue, raycastResult);
-                    miner.m_subsystemTerrain.DestroyCell(block2.GetToolLevel(activeBlockValue), digValue.CellFace.X, digValue.CellFace.Y, digValue.CellFace.Z, digValue.Value, noDrop: false, noParticleSystem: false);
-                    miner.m_subsystemSoundMaterials.PlayImpactSound(cellValue, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f);
-                    miner.DamageActiveTool(1);
-                    if (miner.ComponentCreature.PlayerStats != null)
-                    {
-                        miner.ComponentCreature.PlayerStats.BlocksDug++;
-                    }
-                    result = true;
-                }
-                else
-                {
-                    miner.m_subsystemSoundMaterials.PlayImpactSound(cellValue, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 1f);
-                    BlockDebrisParticleSystem particleSystem = block.CreateDebrisParticleSystem(miner.m_subsystemTerrain, raycastResult.HitPoint(0.1f), cellValue, 0.35f);
-                    miner.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
-                }
-            }
-            return result;
-        }
-        public override void ComponentMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection,HitValueParticleSystem hitValueParticleSystem,ref float AttackPower)
-        {
-            if (!(miner.m_subsystemTime.GameTime - miner.m_lastHitTime > 0.6600000262260437))
-            {
-                return;
-            }
-            float num2 = 0f;
-            miner.m_lastHitTime = miner.m_subsystemTime.GameTime;
-            Block block = BlocksManager.Blocks[Terrain.ExtractContents(miner.ActiveBlockValue)];
-            if (!miner.CanUseTool(miner.ActiveBlockValue))
-            {
-                miner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(ComponentMiner.fName, 1), block.PlayerLevelRequired_(miner.ActiveBlockValue), block.GetDisplayName(miner.m_subsystemTerrain, miner.ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
-                miner.Poke(forceRestart: false);
-                return;
-            }
-            if (miner.ActiveBlockValue != 0)
-            {
-                AttackPower = block.GetMeleePower(miner.ActiveBlockValue) * miner.AttackPower * miner.m_random.Float(0.8f, 1.2f);
-                num2 = block.GetMeleeHitProbability(miner.ActiveBlockValue);
-            }else
-            {
-                AttackPower = miner.AttackPower * miner.m_random.Float(0.8f, 1.2f);
-                num2 = 0.66f;
-            }
-            bool flag;
-            if (miner.ComponentPlayer != null)
-            {
-                miner.m_subsystemAudio.PlaySound("Audio/Swoosh", 1f, miner.m_random.Float(-0.2f, 0.2f), componentBody.Position, 3f, autoDelay: false);
-                flag = miner.m_random.Bool(num2);
-                AttackPower *= miner.ComponentPlayer.ComponentLevel.StrengthFactor;
-            }
-            else
-            {
-                flag = true;
-            }
-            if (flag)
-            {
-                ComponentMiner.AttackBody(componentBody, miner.ComponentCreature, hitPoint, hitDirection, AttackPower, isMeleeAttack: true);
-                miner.DamageActiveTool(1);
-            }
-            else if (miner.ComponentCreature is ComponentPlayer)
-            {
-                miner.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(hitValueParticleSystem);
-            }
-            if (miner.ComponentCreature.PlayerStats != null)
-            {
-                miner.ComponentCreature.PlayerStats.MeleeAttacks++;
-                if (flag)
-                {
-                    miner.ComponentCreature.PlayerStats.MeleeHits++;
-                }
-            }
-        }
-        public override void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack,HitValueParticleSystem hitValueParticleSystem)
-        {
-            if (attacker != null && attacker is ComponentPlayer && target.Entity.FindComponent<ComponentPlayer>() != null && !target.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true).WorldSettings.IsFriendlyFireEnabled)
-            {
-                attacker.Entity.FindComponent<ComponentGui>(throwOnError: true).DisplaySmallMessage(LanguageControl.Get(ComponentClothing.fName, 3), Color.White, blinking: true, playNotificationSound: true);
-                return;
-            }
-            if (attackPower > 0f)
-            {
-                ComponentClothing componentClothing = target.Entity.FindComponent<ComponentClothing>();
-                if (componentClothing != null)
-                {
-                    attackPower = componentClothing.ApplyArmorProtection(attackPower);
-                }
-                ComponentLevel componentLevel = target.Entity.FindComponent<ComponentLevel>();
-                if (componentLevel != null)
-                {
-                    attackPower /= componentLevel.ResilienceFactor;
-                }
-                ComponentHealth componentHealth = target.Entity.FindComponent<ComponentHealth>();
-                if (componentHealth != null)
-                {
-                    float num = attackPower / componentHealth.AttackResilience;
-                    string cause;
-                    if (attacker != null)
-                    {
-                        string str = attacker.KillVerbs[ComponentMiner.s_random.Int(0, attacker.KillVerbs.Count - 1)];
-                        string attackerName = attacker.DisplayName;
-                        cause = string.Format(LanguageControl.Get(ComponentClothing.fName, 4), attackerName, LanguageControl.Get(ComponentClothing.fName, str));
-                    }
-                    else
-                    {
-                        switch (ComponentMiner.s_random.Int(0, 5))
-                        {
-                            case 0:
-                                cause = LanguageControl.Get(ComponentClothing.fName, 5);
-                                break;
-                            case 1:
-                                cause = LanguageControl.Get(ComponentClothing.fName, 6);
-                                break;
-                            case 2:
-                                cause = LanguageControl.Get(ComponentClothing.fName, 7);
-                                break;
-                            case 3:
-                                cause = LanguageControl.Get(ComponentClothing.fName, 8);
-                                break;
-                            case 4:
-                                cause = LanguageControl.Get(ComponentClothing.fName, 9);
-                                break;
-                            default:
-                                cause = LanguageControl.Get(ComponentClothing.fName, 10);
-                                break;
-                        }
-                    }
-                    float health = componentHealth.Health;
-                    componentHealth.Injure(num, attacker, ignoreInvulnerability: false, cause);
-                    if (num > 0f)
-                    {
-                        target.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).PlayRandomSound("Audio/Impacts/Body", 1f, ComponentMiner.s_random.Float(-0.3f, 0.3f), target.Position, 4f, autoDelay: false);
-                        float num2 = (health - componentHealth.Health) * componentHealth.AttackResilience;
-                        if (attacker is ComponentPlayer && num2 > 0f)
-                        {
-                            string text2 = (0f - num2).ToString("0", CultureInfo.InvariantCulture);
-                            hitValueParticleSystem.Particles[0].Text = text2;
-                            target.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(hitValueParticleSystem);
-                        }
-                    }
-                }
-                ComponentDamage componentDamage = target.Entity.FindComponent<ComponentDamage>();
-                if (componentDamage != null)
-                {
-                    float num3 = attackPower / componentDamage.AttackResilience;
-                    componentDamage.Damage(num3);
-                    if (num3 > 0f)
-                    {
-                        target.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).PlayRandomSound(componentDamage.DamageSoundName, 1f, ComponentMiner.s_random.Float(-0.3f, 0.3f), target.Position, 4f, autoDelay: false);
-                    }
-                }
-            }
-            float num4 = 0f;
-            float x = 0f;
-            if (isMeleeAttack && attacker != null)
-            {
-                float num5 = (attackPower >= 2f) ? 1.25f : 1f;
-                float num6 = MathUtils.Pow(attacker.ComponentBody.Mass / target.Mass, 0.5f);
-                float x2 = num5 * num6;
-                num4 = 5.5f * MathUtils.Saturate(x2);
-                x = 0.25f * MathUtils.Saturate(x2);
-            }
-            else if (attackPower > 0f)
-            {
-                num4 = 2f;
-                x = 0.2f;
-            }
-            if (num4 > 0f)
-            {
-                target.ApplyImpulse(num4 * Vector3.Normalize(hitDirection + ComponentMiner.s_random.Vector3(0.1f) + 0.2f * Vector3.UnitY));
-                ComponentLocomotion componentLocomotion = target.Entity.FindComponent<ComponentLocomotion>();
-                if (componentLocomotion != null)
-                {
-                    componentLocomotion.StunTime = MathUtils.Max(componentLocomotion.StunTime, x);
-                }
-            }
-        }
-        public override float ApplyArmorProtection(ComponentClothing componentClothing,ref float attackPower)
-        {
-            float num = componentClothing.m_random.Float(0f, 1f);
-            ClothingSlot slot = (num < 0.1f) ? ClothingSlot.Feet : ((num < 0.3f) ? ClothingSlot.Legs : ((num < 0.9f) ? ClothingSlot.Torso : ClothingSlot.Head));
-            float num2 = ((ClothingBlock)BlocksManager.Blocks[203]).Durability + 1;
-            var list = new List<int>(componentClothing.GetClothes(slot));
-            for (int i = 0; i < list.Count; i++)
-            {
-                int value = list[i];
-                ClothingData clothingData = ClothingBlock.GetClothingData(Terrain.ExtractData(value));
-                float x = (num2 - BlocksManager.Blocks[203].GetDamage(value)) / num2 * clothingData.Sturdiness;
-                float num3 = MathUtils.Min(attackPower * MathUtils.Saturate(clothingData.ArmorProtection), x);
-                if (num3 > 0f)
-                {
-                    attackPower -= num3;
-                    if (componentClothing.m_subsystemGameInfo.WorldSettings.GameMode != 0)
-                    {
-                        float x2 = num3 / clothingData.Sturdiness * num2 + 0.001f;
-                        int damageCount = (int)(MathUtils.Floor(x2) + (componentClothing.m_random.Bool(MathUtils.Remainder(x2, 1f)) ? 1 : 0));
-                        list[i] = BlocksManager.DamageItem(value, damageCount);
-                    }
-                    if (!string.IsNullOrEmpty(clothingData.ImpactSoundsFolder))
-                    {
-                        componentClothing.m_subsystemAudio.PlayRandomSound(clothingData.ImpactSoundsFolder, 1f, componentClothing.m_random.Float(-0.3f, 0.3f), componentClothing.m_componentBody.Position, 4f, 0.15f);
-                    }
-                }
-            }
-            int num4 = 0;
-            while (num4 < list.Count)
-            {
-                if (Terrain.ExtractContents(list[num4]) != 203)
-                {
-                    list.RemoveAt(num4);
-                    componentClothing.m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(componentClothing.m_subsystemTerrain, componentClothing.m_componentBody.Position + componentClothing.m_componentBody.BoxSize / 2f, 1f, 1f, Color.White, 0));
-                }
-                else
-                {
-                    num4++;
-                }
-            }
-            componentClothing.SetClothes(slot, list);
-            return MathUtils.Max(attackPower, 0f);
-        }
-        public override void SpawnEntity(SubsystemSpawn spawn, Entity entity, SpawnEntityData data)
-        {
-            entity.FindComponent<ComponentBody>(throwOnError: true).Position = data.Position;
-            entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, spawn.m_random.Float(0f, (float)Math.PI * 2f));
-            ComponentCreature componentCreature = entity.FindComponent<ComponentCreature>();
-            if (componentCreature != null)
-            {
-                componentCreature.ConstantSpawn = data.ConstantSpawn;
-            }
+            ModsManager.RegisterHook("PickableAdded", this);
+            ModsManager.RegisterHook("PickableRemoved", this);
+            ModsManager.RegisterHook("ProjectileAdded", this);
+            ModsManager.RegisterHook("ProjectileRemoved", this);
+            ModsManager.RegisterHook("OnEntityAdd", this);
+            ModsManager.RegisterHook("OnEntityRemove", this);
+            ModsManager.RegisterHook("OnBodyAttacked", this);
         }
         public override void OnCameraChange(ComponentPlayer m_componentPlayer,ComponentGui componentGui)
         {
@@ -371,30 +112,134 @@ namespace Game
                 }
             }
         }
-        public override void GuiUpdate(ComponentGui componentGui)
-        {
-            componentGui.HandleInput();
-            componentGui.UpdateWidgets();
-        }
-        public override void OnGuiEntityAdd(ComponentGui componentGui, Entity entity)
-        {
-            componentGui.ShortInventoryWidget.AssignComponents(componentGui.m_componentPlayer.ComponentMiner.Inventory);
-        }
-        public override void OnGuiEntityRemove(ComponentGui componentGui, Entity entity)
-        {
-            componentGui.ShortInventoryWidget.AssignComponents(null);
-            componentGui.m_message = null;
-        }
-        public override void OnLevelUpdate(ComponentLevel level)
-        {
-            level.StrengthFactor = level.CalculateStrengthFactor(null);
-            level.SpeedFactor = level.CalculateSpeedFactor(null);
-            level.HungerFactor = level.CalculateHungerFactor(null);
-            level.ResilienceFactor = level.CalculateResilienceFactor(null);
-        }
         public override int GetMaxInstancesCount()
         {
             return 7;
+        }
+        public override void PickableAdded(SubsystemPickables subsystemPickables, Pickable pickable)
+        {
+            foreach (ComponentEatPickableBehavior behavior in EatPickableBehaviors)
+            {
+                if (behavior.TryAddPickable(pickable) && behavior.m_pickable == null)
+                {
+                    behavior.m_pickable = pickable;
+                }
+            }
+        }
+        public override void PickableRemoved(SubsystemPickables subsystemPickables, Pickable pickable)
+        {
+            foreach (ComponentEatPickableBehavior behavior in EatPickableBehaviors)
+            {
+                behavior.m_pickables.Remove(pickable);
+                if (behavior.m_pickable == pickable)
+                {
+                    behavior.m_pickable = null;
+                }
+            }
+        }
+        public override void ProjectileAdded(SubsystemProjectiles subsystemProjectiles, Projectile projectile)
+        {
+            SubsystemBombBlockBehavior subsystemBombBlockBehavior = subsystemProjectiles.Project.FindSubsystem<SubsystemBombBlockBehavior>();
+            subsystemBombBlockBehavior.ScanProjectile(projectile);
+        }
+        public override void ProjectileRemoved(SubsystemProjectiles subsystemProjectiles, Projectile projectile)
+        {
+            SubsystemBombBlockBehavior subsystemBombBlockBehavior = subsystemProjectiles.Project.FindSubsystem<SubsystemBombBlockBehavior>();
+            subsystemBombBlockBehavior.m_projectiles.Remove(projectile);
+        }
+        public override void OnEntityAdd(Entity entity)
+        {
+            ComponentEatPickableBehavior behavior = entity.FindComponent<ComponentEatPickableBehavior>();
+            if (behavior != null) EatPickableBehaviors.Add(behavior);
+            ComponentChaseBehavior behavior1 = entity.FindComponent<ComponentChaseBehavior>();
+            if (behavior1 != null) ChaseBehaviors.Add(behavior1);
+            ComponentCreatureModel behavior2 = entity.FindComponent<ComponentCreatureModel>();
+            if (behavior2 != null) CreatureModels.Add(behavior2);
+            ComponentHerdBehavior behavior3 = entity.FindComponent<ComponentHerdBehavior>();
+            if (behavior3 != null) HerdBehaviors.Add(behavior3);
+            ComponentRunAwayBehavior behavior4 = entity.FindComponent<ComponentRunAwayBehavior>();
+            if (behavior4 != null) RunAwayBehaviors.Add(behavior4);
+            ComponentSwimAwayBehavior behavior5 = entity.FindComponent<ComponentSwimAwayBehavior>();
+            if (behavior5 != null) SwimAwayBehaviors.Add(behavior5);
+            ComponentSleep behavior6 = entity.FindComponent<ComponentSleep>();
+            if (behavior6 != null) Sleeps.Add(behavior6);
+            ComponentVitalStats behavior7 = entity.FindComponent<ComponentVitalStats>();
+            if (behavior7 != null) VitalStats.Add(behavior7);
+        }
+        public override void OnEntityRemove(Entity entity)
+        {
+            ComponentEatPickableBehavior behavior = entity.FindComponent<ComponentEatPickableBehavior>();
+            if (behavior != null) EatPickableBehaviors.Remove(behavior);
+            ComponentChaseBehavior behavior1 = entity.FindComponent<ComponentChaseBehavior>();
+            if (behavior1 != null) ChaseBehaviors.Remove(behavior1);
+            ComponentCreatureModel behavior2 = entity.FindComponent<ComponentCreatureModel>();
+            if (behavior2 != null) CreatureModels.Remove(behavior2);
+            ComponentHerdBehavior behavior3 = entity.FindComponent<ComponentHerdBehavior>();
+            if (behavior3 != null) HerdBehaviors.Remove(behavior3);
+            ComponentRunAwayBehavior behavior4 = entity.FindComponent<ComponentRunAwayBehavior>();
+            if (behavior4 != null) RunAwayBehaviors.Remove(behavior4);
+            ComponentSwimAwayBehavior behavior5 = entity.FindComponent<ComponentSwimAwayBehavior>();
+            if (behavior5 != null) SwimAwayBehaviors.Remove(behavior5);
+            ComponentSleep behavior6 = entity.FindComponent<ComponentSleep>();
+            if (behavior6 != null) Sleeps.Remove(behavior6);
+            ComponentVitalStats behavior7 = entity.FindComponent<ComponentVitalStats>();
+            if (behavior7 != null) VitalStats.Remove(behavior7);
+        }
+        public override void OnBodyAttacked(ComponentCreature attacker, ComponentHealth ToCreatureHealth)
+        {
+            if (attacker == null) return;
+            for (int i = 0; i < ChaseBehaviors.Count; i++)
+            {
+                ComponentChaseBehavior behavior = ChaseBehaviors[i];
+                if (behavior.m_random.Float(0f, 1f) < behavior.m_chaseWhenAttackedProbability)
+                {
+                    if (behavior.m_chaseWhenAttackedProbability >= 1f)
+                    {
+                        behavior.Attack(attacker, 30f, 60f, isPersistent: true);
+                    }
+                    else
+                    {
+                        behavior.Attack(attacker, 7f, 7f, isPersistent: false);
+                    }
+                }
+            }
+            for (int i = 0; i < CreatureModels.Count; i++)
+            {
+                ComponentCreatureModel behavior = CreatureModels[i];
+                if (behavior.DeathPhase == 0f && behavior.m_componentCreature.ComponentHealth.Health == 0f)
+                {
+                    behavior.DeathCauseOffset = attacker.ComponentBody.BoundingBox.Center() - behavior.m_componentCreature.ComponentBody.BoundingBox.Center();
+                }
+            }
+            for (int i = 0; i < HerdBehaviors.Count; i++)
+            {
+                ComponentHerdBehavior behavior = HerdBehaviors[i];
+                behavior.CallNearbyCreaturesHelp(attacker, 20f, 30f, isPersistent: false);
+            }
+            for (int i = 0; i < RunAwayBehaviors.Count; i++)
+            {
+                ComponentRunAwayBehavior behavior = RunAwayBehaviors[i];
+                behavior.RunAwayFrom(attacker.ComponentBody);
+            }
+            for (int i = 0; i < SwimAwayBehaviors.Count; i++)
+            {
+                ComponentSwimAwayBehavior behavior = SwimAwayBehaviors[i];
+                behavior.SwimAwayFrom(attacker.ComponentBody);
+            }
+            for (int i = 0; i < Sleeps.Count; i++)
+            {
+                ComponentSleep behavior = Sleeps[i];
+                if (behavior.IsSleeping && behavior.m_componentPlayer.ComponentVitalStats.Sleep > 0.25f)
+                {
+                    behavior.WakeUp();
+                }
+            }
+            for (int i = 0; i < VitalStats.Count; i++)
+            {
+                ComponentVitalStats behavior = VitalStats[i];
+                behavior.m_lastAttackedTime = behavior.m_subsystemTime.GameTime;
+            }
+
         }
     }
 }

@@ -34,15 +34,16 @@ namespace Game {
             if (GetFile("modinfo.json", out Stream stream))
             {
                 modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
-                stream.Dispose();
+                stream.Close();
             }
             if (GetFile("icon.png", out Stream stream2)) {
                 LoadIcon(stream2);
+                stream2.Close();
             }
         }
-        public void LoadIcon(Stream stream) {
+        public virtual void LoadIcon(Stream stream) {
             Icon = Texture2D.Load(stream);
-
+            stream.Close();
         }
         /// <summary>
         /// 获取指定后缀文件列表，带.

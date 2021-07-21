@@ -11,6 +11,7 @@ namespace Game
     public class LoadingScreen : Screen
     {
         public List<Action> m_loadActions = new List<Action>();
+
         public List<Action> QuequeAction = new List<Action>();
 
         public int m_index;
@@ -27,7 +28,7 @@ namespace Game
 
         public LabelWidget labelWidget = new LabelWidget() { Text = "API v1.34", Color = Color.Green, VerticalAlignment = WidgetAlignment.Far, HorizontalAlignment = WidgetAlignment.Center };
 
-        public static LabelWidget labelWidget2 = new LabelWidget() { Color = Color.Green, VerticalAlignment = WidgetAlignment.Far, HorizontalAlignment = WidgetAlignment.Near,Margin=new Vector2(50) };
+        public static LabelWidget labelWidget2 = new LabelWidget() { Color = Color.Green, VerticalAlignment = WidgetAlignment.Near, HorizontalAlignment = WidgetAlignment.Near, Margin = new Vector2(50) };
 
         public XElement DatabaseNode;
 
@@ -42,7 +43,8 @@ namespace Game
             Children.Add(panelWidget);
         }
 
-        public void InitActions() {
+        public void InitActions()
+        {
 
             AddLoadAction(() => {
                 SetMsg("初始化ModsManager");
@@ -54,34 +56,37 @@ namespace Game
                 LanguageControl.Initialize(ModsManager.modSettings.languageType);
             });
             AddLoadAction(() => {
-                foreach (ModEntity entity in ModsManager.ModList)
-                {
-                    if (entity.IsLoaded && entity.IsDisabled == false) {
+                ModsManager.ModListAllDo(entity => {
+                    if (entity.IsLoaded && entity.IsDisabled == false)
+                    {
                         AddQuequeAction(() => {
                             SetMsg($"检查Mod依赖项:{entity.modInfo.Name}");
                             entity.CheckDependencies();
                         });
                     }
-                }
+                });
             });
             AddLoadAction(() => {
-                foreach (ModEntity modEntity in ModsManager.ModList)
-                {
-                    if (modEntity.IsLoaded && modEntity.IsDisabled == false) {
+                ModsManager.ModListAllDo(modEntity => {
+                    if (modEntity.IsLoaded && modEntity.IsDisabled == false)
+                    {
                         AddQuequeAction(() => {
                             SetMsg($"初始化Pak:[{modEntity.modInfo.Name}]");
-                            try {
+                            try
+                            {
                                 modEntity.InitPak();
 
                             }
-                            catch (Exception e) {
+                            catch (Exception e)
+                            {
                                 ModsManager.AddException(e);
                                 modEntity.HasException = true;
                                 modEntity.IsLoaded = false;
                             }
                         });
                     }
-                }
+
+                });
             });
             AddLoadAction(() => {
                 foreach (ContentInfo item in ContentManager.List())
@@ -102,8 +107,7 @@ namespace Game
                 }
             });
             AddLoadAction(() => {
-                foreach (ModEntity entity in ModsManager.ModList)
-                {
+                ModsManager.ModListAllDo(entity => {
                     if (entity.IsLoaded && entity.IsDisabled == false)
                     {
                         AddQuequeAction(() => {
@@ -120,47 +124,48 @@ namespace Game
                             }
                         });
                     }
-                }
-            });
 
+                });
+            });
             AddLoadAction(() => {
-                foreach (ModEntity modEntity in ModsManager.ModList)
-                {
-                    if (modEntity.IsLoaded && modEntity.IsDisabled == false) {
+                ModsManager.ModListAllDo(modEntity => {
+                    if (modEntity.IsLoaded && modEntity.IsDisabled == false)
+                    {
                         AddQuequeAction(() => {
                             SetMsg($"回滚Pak:[{modEntity.modInfo.Name}]");
                             modEntity.InitPak();
                         });
                     }
-                }
+
+                });
             });
 
             AddLoadAction(() => {
-
-                foreach (ModEntity modEntity in ModsManager.ModList)
-                {
-                    if (modEntity.IsLoaded && modEntity.IsDisabled == false) {
+                ModsManager.ModListAllDo(modEntity => {
+                    if (modEntity.IsLoaded && modEntity.IsDisabled == false)
+                    {
                         AddQuequeAction(() => {
                             try
                             {
                                 SetMsg($"初始化Mod:[{modEntity.modInfo.Name}]");
                                 if (modEntity.ModLoader_ != null) modEntity.ModLoader_.__ModInitialize();
                             }
-                            catch (Exception e) {
+                            catch (Exception e)
+                            {
                                 ModsManager.AddException(e);
                                 modEntity.IsLoaded = false;
                                 modEntity.HasException = true;
                             }
                         });
                     }
-                }
+
+                });
             });
             AddLoadAction(() => {
                 SetMsg("初始化DatabaseManager:[SurvivalCraft]");
-                DatabaseManager.Initialize();
-                foreach (ModEntity entity in ModsManager.ModList)
-                {
-                    if (entity.IsLoaded && entity.IsDisabled == false) {
+                ModsManager.ModListAllDo(entity => {
+                    if (entity.IsLoaded && entity.IsDisabled == false)
+                    {
                         AddQuequeAction(() => {
                             try
                             {
@@ -176,7 +181,8 @@ namespace Game
 
                         });
                     }
-                }
+
+                });
             });
             AddLoadAction(() => {
                 SetMsg("加载Database:[SurvivalCraft]");
@@ -184,7 +190,8 @@ namespace Game
                 {
                     ModsManager.AddException(new InvalidOperationException("Database.xml初始化失败"));
                 }
-                else {
+                else
+                {
                     DatabaseManager.LoadDataBaseFromXml(DatabaseManager.xElement);
                 }
             });
@@ -198,10 +205,10 @@ namespace Game
                 SetMsg("初始化MotdManager");
                 MotdManager.Initialize();
             });
-            AddLoadAction(()=> {
-                foreach (ModEntity modEntity in ModsManager.ModList)
-                {
-                    if (modEntity.IsLoaded && modEntity.IsDisabled == false) {
+            AddLoadAction(() => {
+                ModsManager.ModListAllDo(modEntity => {
+                    if (modEntity.IsLoaded && modEntity.IsDisabled == false)
+                    {
                         AddQuequeAction(() => {
                             try
                             {
@@ -218,7 +225,8 @@ namespace Game
                         });
 
                     }
-                }
+
+                });
 
             });
             AddLoadAction(() =>
@@ -271,8 +279,9 @@ namespace Game
                 SetMsg("初始化MusicManager");
                 MusicManager.CurrentMix = MusicManager.Mix.Menu;
             });
-            AddLoadAction(()=> {
-                if (Storage.FileExists(ModsManager.ModsSetPath)) {
+            AddLoadAction(() => {
+                if (Storage.FileExists(ModsManager.ModsSetPath))
+                {
                     using (Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Read))
                     {
                         SetMsg("初始化Mods设置");
@@ -399,8 +408,9 @@ namespace Game
                 AddScreen("Player", new PlayerScreen());
             });
         }
-        public void AddScreen(string name,Screen screen) {
-            ScreensManager.AddScreen(name,screen);
+        public void AddScreen(string name, Screen screen)
+        {
+            ScreensManager.AddScreen(name, screen);
         }
         public void AddLoadAction(Action action)
         {
@@ -410,7 +420,8 @@ namespace Game
         {
             QuequeAction.Add(action);
         }
-        public static void SetMsg(string text) {
+        public static void SetMsg(string text)
+        {
             labelWidget2.Text = text;
         }
         public override void Leave()
@@ -420,7 +431,8 @@ namespace Game
         public override void Enter(object[] parameters)
         {
             var remove = new List<string>();
-            foreach (var screen in ScreensManager.m_screens) {
+            foreach (var screen in ScreensManager.m_screens)
+            {
                 if (screen.Value == this) continue;
                 else remove.Add(screen.Key);
             }

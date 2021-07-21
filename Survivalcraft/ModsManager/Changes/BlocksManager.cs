@@ -27,6 +27,19 @@ namespace Game
                 m_blocks[i] = null;
             }
             m_categories.Clear();
+            m_categories.Add("Terrain");
+            m_categories.Add("Plants");
+            m_categories.Add("Construction");
+            m_categories.Add("Items");
+            m_categories.Add("Tools");
+            m_categories.Add("Weapons");
+            m_categories.Add("Clothes");
+            m_categories.Add("Electrics");
+            m_categories.Add("Food");
+            m_categories.Add("Spawner Eggs");
+            m_categories.Add("Painted");
+            m_categories.Add("Dyed");
+            m_categories.Add("Fireworks");
             CalculateSlotTexCoordTables();
             int num = 0;
             foreach (ModEntity entity in ModsManager.ModList) {
@@ -49,12 +62,9 @@ namespace Game
                     m_blocks[num] = Blocks[0];
                 }
             }
-
             foreach (ModEntity modEntity in ModsManager.ModList) {
                 if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.LoadBlocksData();
             }
-
-
             for (int j = 0; j < m_blocks.Length; j++)
             {
                 Block block = m_blocks[j];

@@ -62,11 +62,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public virtual Action<Projectile> ProjectileAdded { get; set; }
-
-        public virtual Action<Projectile> ProjectileRemoved { get;set; }
-
-        public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
+        public Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
         {
             var projectile = new Projectile();
             projectile.Value = value;
@@ -79,7 +75,6 @@ namespace Game
             projectile.Owner = owner;
             projectile.ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable;
             m_projectiles.Add(projectile);
-            ProjectileAdded?.Invoke(projectile);
             foreach (ModLoader modEntity in ModsManager.ModLoaders) {
                 modEntity.ProjectileAdded(this,projectile);
             }
@@ -90,7 +85,7 @@ namespace Game
             return projectile;
         }
 
-        public virtual Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
+        public Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
         {
             int num = Terrain.ExtractContents(value);
             Block block = BlocksManager.Blocks[num];
@@ -126,14 +121,14 @@ namespace Game
             return null;
         }
 
-        public virtual void AddTrail(Projectile projectile, Vector3 offset, ITrailParticleSystem particleSystem)
+        public void AddTrail(Projectile projectile, Vector3 offset, ITrailParticleSystem particleSystem)
         {
             RemoveTrail(projectile);
             projectile.TrailParticleSystem = particleSystem;
             projectile.TrailOffset = offset;
         }
 
-        public virtual void RemoveTrail(Projectile projectile)
+        public void RemoveTrail(Projectile projectile)
         {
             if (projectile.TrailParticleSystem != null)
             {
@@ -417,7 +412,6 @@ namespace Game
                     item.TrailParticleSystem.IsStopped = true;
                 }
                 m_projectiles.Remove(item);
-                ProjectileRemoved?.Invoke(item);
                 foreach (ModLoader modEntity in ModsManager.ModLoaders)
                 {
                     modEntity.ProjectileAdded(this,item);
@@ -470,19 +464,19 @@ namespace Game
             }
         }
 
-        public virtual bool IsWater(Vector3 position)
+        public bool IsWater(Vector3 position)
         {
             int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
             return BlocksManager.Blocks[cellContents] is WaterBlock;
         }
 
-        public virtual bool IsMagma(Vector3 position)
+        public bool IsMagma(Vector3 position)
         {
             int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
             return BlocksManager.Blocks[cellContents] is MagmaBlock;
         }
 
-        public virtual void MakeProjectileNoise(Projectile projectile)
+        public void MakeProjectileNoise(Projectile projectile)
         {
             if (m_subsystemTime.GameTime - projectile.LastNoiseTime > 0.5)
             {

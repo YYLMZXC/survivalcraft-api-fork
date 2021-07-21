@@ -322,12 +322,9 @@ namespace Game
             }, null);
             m_stateMachine.AddState("PlayerDead", delegate
             {
-                ModsManager.HookAction("OnPlayerDead", list=> {
-                    foreach (ModLoader modLoader in list)
-                    {
-                        modLoader.OnPlayerDead(this);
-                    }
-
+                ModsManager.HookAction("OnPlayerDead", modLoader => {
+                    modLoader.OnPlayerDead(this);
+                    return false;
                 });
             }, delegate
             {

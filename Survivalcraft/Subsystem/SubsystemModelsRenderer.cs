@@ -139,11 +139,9 @@ namespace Game
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_subsystemShadows = Project.FindSubsystem<SubsystemShadows>(throwOnError: true);
             int MaxInstancesCount = 0;
-            ModsManager.HookAction("GetMaxInstancesCount", list=> {
-                foreach (ModLoader modLoader in list)
-                {
-                    MaxInstancesCount = Math.Max(modLoader.GetMaxInstancesCount(), MaxInstancesCount);
-                }
+            ModsManager.HookAction("GetMaxInstancesCount", modLoader => {
+                MaxInstancesCount = Math.Max(modLoader.GetMaxInstancesCount(), MaxInstancesCount);
+                return false;
             });
             m_shaderOpaque = new ModelShader(useAlphaThreshold: false, MaxInstancesCount);
             m_shaderAlphaTested = new ModelShader(useAlphaThreshold: true, MaxInstancesCount);
@@ -230,12 +228,9 @@ namespace Game
                 Display.DrawIndexed(PrimitiveType.TriangleList, modelShader, instancedModelData.VertexBuffer, instancedModelData.IndexBuffer, 0, instancedModelData.IndexBuffer.IndicesCount);
                 ModelsDrawn++;
                 //»­Ãû³Æ
-                ModsManager.HookAction("OnModelRendererDrawExtra", list=> {
-                    foreach (ModLoader modLoader in list)
-                    {
-                        modLoader.OnModelRendererDrawExtra(this, componentModel, camera, alphaThreshold);
-
-                    }
+                ModsManager.HookAction("OnModelRendererDrawExtra", modLoader => {
+                    modLoader.OnModelRendererDrawExtra(this, componentModel, camera, alphaThreshold);
+                    return false;
                 });
             }
         }

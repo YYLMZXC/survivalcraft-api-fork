@@ -121,14 +121,64 @@ namespace Game
 
         public bool Dig(TerrainRaycastResult raycastResult)
         {
-            bool flag=false;
-            ModsManager.HookAction("ComponentMinerDig",list=> {
-                foreach (ModLoader modEntity in list)
+
+            bool result = false;
+            m_lastDigFrameIndex = Time.FrameIndex;
+            CellFace cellFace = raycastResult.CellFace;
+            int cellValue = m_subsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z);
+            int num = Terrain.ExtractContents(cellValue);
+            Block block = BlocksManager.Blocks[num];
+            int activeBlockValue = ActiveBlockValue;
+            int num2 = Terrain.ExtractContents(activeBlockValue);
+            Block block2 = BlocksManager.Blocks[num2];
+            if (!DigCellFace.HasValue || DigCellFace.Value.X != cellFace.X || DigCellFace.Value.Y != cellFace.Y || DigCellFace.Value.Z != cellFace.Z)
+            {
+                m_digStartTime = m_subsystemTime.GameTime;
+                DigCellFace = cellFace;
+            }
+            float num3 = CalculateDigTime(cellValue, num2);
+            m_digProgress = ((num3 > 0f) ? MathUtils.Saturate((float)(m_subsystemTime.GameTime - m_digStartTime) / num3) : 1f);
+            if (!CanUseTool(activeBlockValue))
+            {
+                m_digProgress = 0f;
+                if (m_subsystemTime.PeriodicGameTimeEvent(5.0, m_digStartTime + 1.0))
                 {
-                    flag |= modEntity.ComponentMinerDig(this, raycastResult);
+                    ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block2.PlayerLevelRequired, block2.GetDisplayName(m_subsystemTerrain, activeBlockValue)), Color.White, blinking: true, playNotificationSound: true);
                 }
+            }
+            bool flag = ComponentPlayer != null && !ComponentPlayer.ComponentInput.IsControlledByTouch && m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative;
+            ModsManager.HookAction("ComponentMinerDig", modLoader => {
+                modLoader.ComponentMinerDig(this, raycastResult, ref m_digProgress, out bool flag2);
+                flag |= flag2;
+                return false;
             });
-            return flag;
+            if (flag || (m_lastPokingPhase <= 0.5f && PokingPhase > 0.5f))
+            {
+                if (m_digProgress >= 1f)
+                {
+                    DigCellFace = null;
+                    if (flag)
+                    {
+                        Poke(forceRestart: true);
+                    }
+                    BlockPlacementData digValue = block.GetDigValue(m_subsystemTerrain, this, cellValue, activeBlockValue, raycastResult);
+                    m_subsystemTerrain.DestroyCell(block2.ToolLevel, digValue.CellFace.X, digValue.CellFace.Y, digValue.CellFace.Z, digValue.Value, noDrop: false, noParticleSystem: false);
+                    m_subsystemSoundMaterials.PlayImpactSound(cellValue, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f);
+                    DamageActiveTool(1);
+                    if (ComponentCreature.PlayerStats != null)
+                    {
+                        ComponentCreature.PlayerStats.BlocksDug++;
+                    }
+                    result = true;
+                }
+                else
+                {
+                    m_subsystemSoundMaterials.PlayImpactSound(cellValue, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 1f);
+                    BlockDebrisParticleSystem particleSystem = block.CreateDebrisParticleSystem(m_subsystemTerrain, raycastResult.HitPoint(0.1f), cellValue, 0.35f);
+                    base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
+                }
+            }
+            return result;
         }
 
         public bool Place(TerrainRaycastResult raycastResult)
@@ -243,15 +293,70 @@ namespace Game
 
         public void Hit(ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection)
         {
-            float AttackPower = 0f;
-            //预先生成粒子特效
-            var particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
-            ModsManager.HookAction("ComponentMinerHit", list=> {
-                foreach (ModLoader modLoader in list)
-                {
-                    modLoader.ComponentMinerHit(this, componentBody, hitPoint, hitDirection, particleSystem, ref AttackPower);
-                }
+            if (!(m_subsystemTime.GameTime - m_lastHitTime > 0.6600000262260437))
+            {
+                return;
+            }
+            m_lastHitTime = m_subsystemTime.GameTime;
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(ActiveBlockValue)];
+            if (!CanUseTool(ActiveBlockValue))
+            {
+                ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block.PlayerLevelRequired, block.GetDisplayName(m_subsystemTerrain, ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
+                Poke(forceRestart: false);
+                return;
+            }
+            float num = 0f;//伤害
+            float num2 = 1f;//命中率
+            if (ActiveBlockValue != 0)
+            {
+                num = block.GetMeleePower(ActiveBlockValue) * AttackPower * m_random.Float(0.8f, 1.2f);
+                num2 = block.GetMeleeHitProbability(ActiveBlockValue);
+            }
+            else
+            {
+                num = AttackPower * m_random.Float(0.8f, 1.2f);
+                num2 = 0.66f;
+            }
+            bool flag;
+
+            ModsManager.HookAction("ComponentMinerHit",modLoader=> {
+                modLoader.ComponentMinerHit(this,componentBody,hitPoint,hitDirection,ref num,ref num2,out bool Hitted);
+                return Hitted;
             });
+
+            if (ComponentPlayer != null)
+            {
+                m_subsystemAudio.PlaySound("Audio/Swoosh", 1f, m_random.Float(-0.2f, 0.2f), componentBody.Position, 3f, autoDelay: false);
+                flag = m_random.Bool(num2);
+                num *= ComponentPlayer.ComponentLevel.StrengthFactor;
+            }
+            else
+            {
+                flag = true;
+            }
+            if (flag)
+            {
+                AttackBody(componentBody, ComponentCreature, hitPoint, hitDirection, num, isMeleeAttack: true);
+                DamageActiveTool(1);
+            }
+            else if (ComponentCreature is ComponentPlayer)
+            {
+                HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
+                ModsManager.HookAction("SetHitValueParticleSystem", modLoader => {
+                    modLoader.SetHitValueParticleSystem(particleSystem);
+                    return false;
+                });
+                base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
+            }
+            if (ComponentCreature.PlayerStats != null)
+            {
+                ComponentCreature.PlayerStats.MeleeAttacks++;
+                if (flag)
+                {
+                    ComponentCreature.PlayerStats.MeleeHits++;
+                }
+            }
+
             Poke(forceRestart: false);
         }
 
@@ -376,16 +481,112 @@ namespace Game
 
         public static void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack)
         {
-            HitValueParticleSystem hitValueParticleSystem = null;
-            if (attacker != null) {
-                hitValueParticleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + attacker.ComponentBody.Velocity, Color.White, string.Empty);
+            if (attacker != null && attacker is ComponentPlayer && target.Entity.FindComponent<ComponentPlayer>() != null && !target.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true).WorldSettings.IsFriendlyFireEnabled)
+            {
+                attacker.Entity.FindComponent<ComponentGui>(throwOnError: true).DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: true, playNotificationSound: true);
+                return;
             }
-            ModsManager.HookAction("AttackBody", list=> {
-                foreach (ModLoader modEntity in list)
+            if (attackPower > 0f)
+            {
+                ComponentClothing componentClothing = target.Entity.FindComponent<ComponentClothing>();
+                if (componentClothing != null)
                 {
-                    modEntity.AttackBody(target, attacker, hitPoint, hitDirection, attackPower, isMeleeAttack, hitValueParticleSystem);
+                    attackPower = componentClothing.ApplyArmorProtection(attackPower);
                 }
-            });
+                ComponentLevel componentLevel = target.Entity.FindComponent<ComponentLevel>();
+                if (componentLevel != null)
+                {
+                    attackPower /= componentLevel.ResilienceFactor;
+                }
+                ComponentHealth componentHealth = target.Entity.FindComponent<ComponentHealth>();
+                if (componentHealth != null)
+                {
+                    float num = attackPower / componentHealth.AttackResilience;
+                    string cause;
+                    if (attacker != null)
+                    {
+                        string str = attacker.KillVerbs[s_random.Int(0, attacker.KillVerbs.Count - 1)];
+                        string attackerName = attacker.DisplayName;
+                        cause = string.Format(LanguageControl.Get(fName, 4), attackerName, LanguageControl.Get(fName, str));
+                    }
+                    else
+                    {
+                        switch (s_random.Int(0, 5))
+                        {
+                            case 0:
+                                cause = LanguageControl.Get(fName, 5);
+                                break;
+                            case 1:
+                                cause = LanguageControl.Get(fName, 6);
+                                break;
+                            case 2:
+                                cause = LanguageControl.Get(fName, 7);
+                                break;
+                            case 3:
+                                cause = LanguageControl.Get(fName, 8);
+                                break;
+                            case 4:
+                                cause = LanguageControl.Get(fName, 9);
+                                break;
+                            default:
+                                cause = LanguageControl.Get(fName, 10);
+                                break;
+                        }
+                    }
+                    float health = componentHealth.Health;
+                    componentHealth.Injure(num, attacker, ignoreInvulnerability: false, cause);
+                    if (num > 0f)
+                    {
+                        target.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).PlayRandomSound("Audio/Impacts/Body", 1f, s_random.Float(-0.3f, 0.3f), target.Position, 4f, autoDelay: false);
+                        float num2 = (health - componentHealth.Health) * componentHealth.AttackResilience;
+                        if (attacker is ComponentPlayer && num2 > 0f)
+                        {
+                            string text2 = (0f - num2).ToString("0", CultureInfo.InvariantCulture);
+                            HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + attacker.ComponentBody.Velocity, Color.White, text2);
+                            ModsManager.HookAction("SetHitValueParticleSystem", modLoader => {
+                                modLoader.SetHitValueParticleSystem(particleSystem);
+                                return false;
+                            });
+                            target.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
+                        }
+                    }
+                }
+                ComponentDamage componentDamage = target.Entity.FindComponent<ComponentDamage>();
+                if (componentDamage != null)
+                {
+                    float num3 = attackPower / componentDamage.AttackResilience;
+                    componentDamage.Damage(num3);
+                    if (num3 > 0f)
+                    {
+                        target.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).PlayRandomSound(componentDamage.DamageSoundName, 1f, s_random.Float(-0.3f, 0.3f), target.Position, 4f, autoDelay: false);
+                    }
+                }
+            }
+            float num4 = 0f;
+            float x = 0f;
+            if (isMeleeAttack && attacker != null)
+            {
+                float num5 = (attackPower >= 2f) ? 1.25f : 1f;
+                float num6 = MathUtils.Pow(attacker.ComponentBody.Mass / target.Mass, 0.5f);
+                float x2 = num5 * num6;
+                num4 = 5.5f * MathUtils.Saturate(x2);
+                x = 0.25f * MathUtils.Saturate(x2);
+            }
+            else if (attackPower > 0f)
+            {
+                num4 = 2f;
+                x = 0.2f;
+            }
+            if (num4 > 0f)
+            {
+                target.ApplyImpulse(num4 * Vector3.Normalize(hitDirection + s_random.Vector3(0.1f) + 0.2f * Vector3.UnitY));
+                ComponentLocomotion componentLocomotion = target.Entity.FindComponent<ComponentLocomotion>();
+                if (componentLocomotion != null)
+                {
+                    componentLocomotion.StunTime = MathUtils.Max(componentLocomotion.StunTime, x);
+                }
+            }
+
         }
 
         public void Update(float dt)
