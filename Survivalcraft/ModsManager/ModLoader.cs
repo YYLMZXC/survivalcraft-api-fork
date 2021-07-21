@@ -13,6 +13,7 @@ namespace Game
 {
     public abstract class ModLoader
     {
+        public ModEntity Entity;
         /// <summary>
         /// 当ModLoader类被实例化时执行
         /// </summary>
@@ -237,9 +238,31 @@ namespace Game
         /// </summary>
         /// <param name="element">配方的Xelement</param>
         /// <param name="Decoded">是否解码成功，为true时不进行后续解码</param>
-        public virtual void OnCraftingRecipeDecode(XElement element,out bool Decoded)
+        public virtual void OnCraftingRecipeDecode(List<CraftingRecipe> m_recipes,XElement element,out bool Decoded)
         {
             Decoded = false;
         }
+        /// <summary>
+        /// 配方匹配
+        /// </summary>
+        /// <param name="requiredIngredients"></param>
+        /// <param name="actualIngredient"></param>
+        /// <param name="Matched">是否匹配成功</param>
+        public virtual bool MatchRecipe(string[] requiredIngredients, string[] actualIngredient,out bool Matched) {
+            Matched = false;
+            return false;
+        }
+
+        public virtual int DecodeResult(string result,out bool Decoded) {
+            Decoded = false;
+            return 0;
+        }
+
+        public virtual void DecodeIngredient(string ingredient, out string craftingId, out int? data,out bool Decoded) {
+            Decoded = false;
+            craftingId = string.Empty;
+            data = null;
+        }
+
     }
 }

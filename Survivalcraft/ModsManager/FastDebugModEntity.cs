@@ -1,7 +1,7 @@
 ﻿using Engine;
 using System.Collections.Generic;
 using System.Xml.Linq;
-
+using System.IO;
 namespace Game
 {
     public class FastDebugModEntity :ModEntity
@@ -90,6 +90,35 @@ namespace Game
         public override void OnBlocksInitalized(List<string> categories)
         {
         }
-
+        /// <summary>
+        /// 获取指定后缀文件列表，带.
+        /// </summary>
+        /// <param name="extension"></param>
+        /// <returns></returns>
+        public override List<Stream> GetFiles(string extension)
+        {
+            var files = new List<Stream>();
+            foreach (string name in Storage.ListFileNames(ModsManager.ModsPath)) {
+                if(name.EndsWith(extension))files.Add(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath,name),OpenFileMode.Read));            
+            }
+            return files;
+        }
+        /// <summary>
+        /// 获取指定文件
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public override bool GetFile(string filename, out Stream stream)
+        {
+            foreach (string name in Storage.ListFileNames(ModsManager.ModsPath))
+            {
+                if (name == filename) {
+                    stream = Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, name), OpenFileMode.Read);
+                    return true;
+                }
+            }
+            stream=null;
+            return false;
+        }
     }
 }

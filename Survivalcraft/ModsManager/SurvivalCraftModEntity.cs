@@ -1,15 +1,10 @@
 ﻿using Engine;
-using Engine.Graphics;
-using Engine.Serialization;
-using GameEntitySystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TemplatesDatabase;
 using System.Xml.Linq;
 using System.IO;
 using System.Reflection;
-using System.Globalization;
 namespace Game
 {
     public class SurvivalCrafModEntity : ModEntity
@@ -43,6 +38,7 @@ namespace Game
         }
         public override void LoadDll()
         {
+            List<Type> BlockTypes = new List<Type>();
             Type[] types = typeof(BlocksManager).Assembly.GetTypes();
             for (int i = 0; i < types.Length; i++)
             {
@@ -50,24 +46,30 @@ namespace Game
                 if (type.IsSubclassOf(typeof(ModLoader)) && !type.IsAbstract)
                 {
                     var modLoader = Activator.CreateInstance(types[i]) as ModLoader;
+                    modLoader.Entity = this;
                     modLoader.__ModInitialize();
                     ModsManager.ModLoaders.Add(modLoader);
                 }
                 if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
                 {
-                    FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
-                    if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
-                    {
-                        ModsManager.AddException(new InvalidOperationException($"Block type \"{type.FullName}\" does not have static field Index of type int."));
-                    }
-                    else
-                    {
-                        int staticIndex = (int)fieldInfo.GetValue(null);
-                        var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
-                        block.BlockIndex = staticIndex;
-                        Blocks.Add(block);
-                    }
+                    BlockTypes.Add(type);
                 }
+            }
+            for (int i=0;i<BlockTypes.Count;i++) {
+                Type type = BlockTypes[i];
+                FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
+                if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
+                {
+                    ModsManager.AddException(new InvalidOperationException($"Block type \"{type.FullName}\" does not have static field Index of type int."));
+                }
+                else
+                {
+                    int staticIndex = (int)fieldInfo.GetValue(null);
+                    var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
+                    block.BlockIndex = staticIndex;
+                    Blocks.Add(block);
+                }
+
             }
         }
         public override void LoadXdb(ref XElement xElement)

@@ -49,7 +49,7 @@ namespace Game {
         /// </summary>
         /// <param name="extension"></param>
         /// <returns></returns>
-        public List<Stream> GetFiles(string extension)
+        public virtual List<Stream> GetFiles(string extension)
         {
             var files = new List<Stream>();
             //将每个zip里面的文件读进内存中
@@ -173,37 +173,39 @@ namespace Game {
         public void LoadDllLogic(Stream stream)
         {
             var assembly = Assembly.Load(ModsManager.StreamToBytes(stream));
+            List<Type> BlockTypes = new List<Type>();
             Type[] types = assembly.GetTypes();
             for (int i = 0; i < types.Length; i++)
             {
                 Type type = types[i];
-                if (type.IsSubclassOf(typeof(ModLoader)))
+                if (type.IsSubclassOf(typeof(ModLoader)) && !type.IsAbstract)
                 {
-                    try {
-                        ModLoader_ = Activator.CreateInstance(types[i]) as ModLoader;
-                        ModsManager.ModLoaders.Add(ModLoader_);
-                    }
-                    catch (Exception e) {
-                        IsLoaded = false;
-                        HasException = true;
-                        ModsManager.AddException(e);
-                    }
+                    var modLoader = Activator.CreateInstance(types[i]) as ModLoader;
+                    modLoader.Entity = this;
+                    modLoader.__ModInitialize();
+                    ModsManager.ModLoaders.Add(modLoader);
                 }
                 if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
                 {
-                    FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
-                    if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
-                    {
-                        ModsManager.AddException(new InvalidOperationException($"Block type \"{type.FullName}\" does not have static field Index of type int."));
-                    }
-                    else
-                    {
-                        int staticIndex = (int)fieldInfo.GetValue(null);
-                        var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
-                        block.BlockIndex = staticIndex;
-                        Blocks.Add(block);
-                    }
+                    BlockTypes.Add(type);
                 }
+            }
+            for (int i = 0; i < BlockTypes.Count; i++)
+            {
+                Type type = BlockTypes[i];
+                FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
+                if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
+                {
+                    ModsManager.AddException(new InvalidOperationException($"Block type \"{type.FullName}\" does not have static field Index of type int."));
+                }
+                else
+                {
+                    int staticIndex = (int)fieldInfo.GetValue(null);
+                    var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
+                    block.BlockIndex = staticIndex;
+                    Blocks.Add(block);
+                }
+
             }
         }
         /// <summary>
