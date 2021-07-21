@@ -75,15 +75,8 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.6.0.1141" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -110,8 +103,6 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\Tabbar.xml" />
-    <AndroidResource Include="Resources\layout\Toolbar.xml" />
     <AndroidResource Include="Resources\mipmap-anydpi-v26\icon.xml" />
     <AndroidResource Include="Resources\mipmap-anydpi-v26\icon_round.xml" />
     <AndroidResource Include="Resources\mipmap-hdpi\icon.png" />
@@ -127,12 +118,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
+    <Folder Include="Resources\layout\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\colors.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\apppath.txt" />
@@ -163,10 +152,13 @@
   <ItemGroup>
     <AndroidAsset Include="Assets\Unlit.vsh" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\styles.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

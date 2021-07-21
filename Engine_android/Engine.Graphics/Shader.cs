@@ -1,7 +1,4 @@
 using OpenTK.Graphics.ES20;
-
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“OpenTK”(是否缺少 using 指令或程序集引用?)
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,9 +19,7 @@ namespace Engine.Graphics
 		{
 			public int Size;
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 			public All Type;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 			public bool Normalize;
 
