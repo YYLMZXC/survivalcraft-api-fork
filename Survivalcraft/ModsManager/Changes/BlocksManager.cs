@@ -72,10 +72,11 @@ namespace Game
                     AddCategory(category);
                 }
             }
-            foreach (ModEntity modEntity in ModsManager.ModList)
-            {
-                if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.OnBlocksInitalized(m_categories);
-            }
+
+            ModsManager.HookAction("OnBlocksManagerInitalized", modLoader=> {
+                modLoader.OnBlocksManagerInitalized();
+                return false;
+            });
         }
         public static void AddCategory(string category) {
             if (!m_categories.Contains(category))

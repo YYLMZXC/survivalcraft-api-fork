@@ -19,7 +19,7 @@ namespace Game
             }
             if (GetFile("icon.png", out Stream stream2)) {
                 LoadIcon(stream2);
-                stream.Close();
+                stream2.Close();
             }
         }
 
@@ -96,7 +96,7 @@ namespace Game
             }
         }
 
-        public override void OnBlocksInitalized(List<string> categories)
+        public override void OnBlocksInitalized()
         {
         }
         /// <summary>

@@ -104,7 +104,7 @@ namespace Game
 
 
         }
-        public override void OnBlocksInitalized(List<string> categories)
+        public override void OnBlocksInitalized()
         {
             BlocksManager.AddCategory("Terrain");
             BlocksManager.AddCategory("Plants");

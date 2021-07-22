@@ -272,6 +272,10 @@ namespace Game
 
         public virtual void OnBodyAttacked(ComponentCreature attacker,ComponentHealth ToCreatureHealth) { 
         
+        }
+
+        public virtual void SetShaderParameter(Shader shader) { 
+        
         
         }
     }

@@ -269,7 +269,7 @@ namespace Game {
         /// BlocksManager初始化完毕
         /// </summary>
         /// <param name="categories"></param>
-        public virtual void OnBlocksInitalized(List<string> categories)
+        public virtual void OnBlocksInitalized()
         {
             if (ModLoader_ != null) ModLoader_.OnBlocksManagerInitalized();
         }
