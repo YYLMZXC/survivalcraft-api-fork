@@ -435,7 +435,7 @@ namespace Game
             }
             if (!m_lastLevelTextValue.HasValue || m_lastLevelTextValue.Value != MathUtils.Floor(m_componentPlayer.PlayerData.Level))
             {
-                m_componentPlayer.ComponentGui.LevelLabelWidget.Text = LanguageControl.Get(fName,2) + MathUtils.Floor(m_componentPlayer.PlayerData.Level).ToString();
+                m_componentPlayer.ComponentGui.LevelLabelWidget.Text = string.Format(LanguageControl.Get(fName, 2), MathUtils.Floor(m_componentPlayer.PlayerData.Level).ToString());
                 m_lastLevelTextValue = MathUtils.Floor(m_componentPlayer.PlayerData.Level);
             }
             m_componentPlayer.PlayerStats.HighestLevel = MathUtils.Max(m_componentPlayer.PlayerStats.HighestLevel, m_componentPlayer.PlayerData.Level);

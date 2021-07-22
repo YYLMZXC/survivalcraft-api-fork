@@ -72,7 +72,7 @@ namespace Game
             m_subsystemTerrain = subsystemTerrain;
             m_subsystemSky = subsystemTerrain.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_subsystemAnimatedTextures = subsystemTerrain.SubsystemAnimatedTextures;
-            ;
+            OpaqueShader=new OpaqueShader();
             AlphatestedShader = new AlphaTestedShader();
             TransparentShader = new TransparentShader();
             Display.DeviceReset += Display_DeviceReset;
