@@ -747,7 +747,8 @@ namespace Game
                         double realTime7 = Time.RealTime;
                         m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass4(chunk);
                         ModsManager.HookAction("OnTerrainContentsGenerated", modLoader=> {
-                            modLoader.OnTerrainContentsGenerated(chunk);                        
+                            modLoader.OnTerrainContentsGenerated(chunk);
+                            return false;
                         });
                         chunk.ThreadState = TerrainChunkState.InvalidLight;
                         chunk.WasUpgraded = true;

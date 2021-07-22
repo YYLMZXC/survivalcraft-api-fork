@@ -267,8 +267,9 @@ namespace Game
         /// <summary>
         /// 设定伤害粒子参数
         /// </summary>
-        /// <param name="hitValueParticleSystem"></param>
-        public virtual void SetHitValueParticleSystem(HitValueParticleSystem hitValueParticleSystem) { }
+        /// <param name="hitValueParticleSystem">粒子</param>
+        /// <param name="Hit">true 命中 false 未命中</param>
+        public virtual void SetHitValueParticleSystem(HitValueParticleSystem hitValueParticleSystem,bool Hit) { }
         /// <summary>
         /// 当生物被攻击受到伤害时
         /// </summary>

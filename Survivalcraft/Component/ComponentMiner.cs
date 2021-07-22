@@ -343,7 +343,7 @@ namespace Game
             {
                 HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
                 ModsManager.HookAction("SetHitValueParticleSystem", modLoader => {
-                    modLoader.SetHitValueParticleSystem(particleSystem);
+                    modLoader.SetHitValueParticleSystem(particleSystem, false);
                     return false;
                 });
                 base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
@@ -544,7 +544,7 @@ namespace Game
                             string text2 = (0f - num2).ToString("0", CultureInfo.InvariantCulture);
                             HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + attacker.ComponentBody.Velocity, Color.White, text2);
                             ModsManager.HookAction("SetHitValueParticleSystem", modLoader => {
-                                modLoader.SetHitValueParticleSystem(particleSystem);
+                                modLoader.SetHitValueParticleSystem(particleSystem, true);
                                 return false;
                             });
                             target.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
