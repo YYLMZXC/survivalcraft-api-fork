@@ -150,7 +150,7 @@ namespace Game
         }
 
         public void Combile() {
-
+            Dispose();
             foreach (var item in GeometrySubsets)
             {
                 if (CombileVertexAndIndex(item.Value.Subsets, item.Key, out DrawBuffer buffer))
@@ -158,7 +158,6 @@ namespace Game
                     DrawBuffers.Add(buffer);
                 }
             }
-
         }
 
         public void ClearGeometry() {
@@ -169,11 +168,11 @@ namespace Game
                 }
             }
         }
+
         public void CreateDefalutGeometry(Texture2D texture)
         {
             DefaultGeometry = GetGeometry(texture);
         }
-
 
         public TerrainChunkSliceGeometry GetGeometry(Texture2D texture=null)
         {
