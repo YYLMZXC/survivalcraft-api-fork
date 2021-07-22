@@ -26,9 +26,9 @@ namespace GameEntitySystem
 
 		public Dictionary<Entity, bool>.KeyCollection Entities => m_entities.Keys;
 
-		public event EventHandler<EntityAddRemoveEventArgs> EntityAdded;
+		public static event EventHandler<EntityAddRemoveEventArgs> EntityAdded;
 
-		public event EventHandler<EntityAddRemoveEventArgs> EntityRemoved;
+		public static event EventHandler<EntityAddRemoveEventArgs> EntityRemoved;
 
 		public ProjectData m_projectData;
 
@@ -91,6 +91,7 @@ namespace GameEntitySystem
 				}
 				throw;
 			}
+
 		}
 
 		public Subsystem FindSubsystem(Type type, string name, bool throwOnError)
@@ -303,6 +304,8 @@ namespace GameEntitySystem
 					subsystem.Dispose();
 				}
 			}
+			EntityRemoved = null;
+			EntityAdded = null;
 		}
 
 		public void FireEntityAddedEvents(Entity entity)
@@ -315,9 +318,9 @@ namespace GameEntitySystem
 			{
 				subsystem.OnEntityAdded(entity);
 			}
-			if (this.EntityAdded != null)
+			if (EntityAdded != null)
 			{
-				this.EntityAdded(this, new EntityAddRemoveEventArgs(entity));
+				EntityAdded(this, new EntityAddRemoveEventArgs(entity));
 			}
 			entity.FireEntityAddedEvent();
 		}
@@ -332,9 +335,9 @@ namespace GameEntitySystem
 			{
 				subsystem.OnEntityRemoved(entity);
 			}
-			if (this.EntityRemoved != null)
+			if (EntityRemoved != null)
 			{
-				this.EntityRemoved(this, new EntityAddRemoveEventArgs(entity));
+				EntityRemoved(this, new EntityAddRemoveEventArgs(entity));
 			}
 			entity.FireEntityRemovedEvent();
 		}
