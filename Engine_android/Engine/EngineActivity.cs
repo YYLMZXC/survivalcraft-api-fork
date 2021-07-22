@@ -3,7 +3,6 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Support.V4.Content;
 using Android.Views;
 using System;
 using System.Collections.Generic;
@@ -39,10 +38,8 @@ namespace Engine
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-			if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
-			{
+			if (CheckSelfPermission(Manifest.Permission.WriteExternalStorage)!=Permission.Granted) {
 				RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, 0);
-				while (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted) ;
 			}
 			RequestWindowFeature(WindowFeatures.NoTitle);
 			Window.AddFlags(WindowManagerFlags.Fullscreen);

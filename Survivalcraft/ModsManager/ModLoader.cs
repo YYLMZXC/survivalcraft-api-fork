@@ -285,5 +285,10 @@ namespace Game
         
         
         }
+        /// <summary>
+        /// 区块地形生成时
+        /// </summary>
+        /// <param name="chunk"></param>
+        public virtual void OnTerrainContentsGenerated(TerrainChunk chunk) { }
     }
 }
