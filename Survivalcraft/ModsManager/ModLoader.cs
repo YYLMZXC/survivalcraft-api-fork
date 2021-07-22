@@ -269,11 +269,18 @@ namespace Game
         /// </summary>
         /// <param name="hitValueParticleSystem"></param>
         public virtual void SetHitValueParticleSystem(HitValueParticleSystem hitValueParticleSystem) { }
-
+        /// <summary>
+        /// 当生物被攻击受到伤害时
+        /// </summary>
+        /// <param name="attacker"></param>
+        /// <param name="ToCreatureHealth"></param>
         public virtual void OnBodyAttacked(ComponentCreature attacker,ComponentHealth ToCreatureHealth) { 
         
         }
-
+        /// <summary>
+        /// 设定Shader参数
+        /// </summary>
+        /// <param name="shader"></param>
         public virtual void SetShaderParameter(Shader shader) { 
         
         
