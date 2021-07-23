@@ -490,7 +490,7 @@ namespace Game
                     }
                     m_subsystemTerrain.TerrainSerializer.SaveChunk(terrainChunk);
                     m_terrain.FreeChunk(terrainChunk);
-                    m_subsystemTerrain.TerrainRenderer.DisposeTerrainChunkGeometryVertexIndexBuffers(terrainChunk);
+                    terrainChunk.Geometry.Dispose();
                 }
             }
             for (int j = 0; j < locations.Length; j++)

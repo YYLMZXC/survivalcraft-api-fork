@@ -112,7 +112,7 @@ namespace Game
 
         public DynamicArray<DrawBuffer> DrawBuffers = new DynamicArray<DrawBuffer>();
 
-        public bool CombileVertexAndIndex(TerrainGeometrySubset[] geometry, Texture2D texture, out DrawBuffer buffer)
+        public bool CompileVertexAndIndex(TerrainGeometrySubset[] geometry, Texture2D texture, out DrawBuffer buffer)
         {
             int IndicesPosition = 0;
             int VerticesPosition = 0;
@@ -149,11 +149,11 @@ namespace Game
             return true;
         }
 
-        public void Combile() {
+        public void Compile() {
             Dispose();
             foreach (var item in GeometrySubsets)
             {
-                if (CombileVertexAndIndex(item.Value.Subsets, item.Key, out DrawBuffer buffer))
+                if (CompileVertexAndIndex(item.Value.Subsets, item.Key, out DrawBuffer buffer))
                 {
                     DrawBuffers.Add(buffer);
                 }

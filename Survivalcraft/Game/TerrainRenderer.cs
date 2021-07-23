@@ -250,10 +250,6 @@ namespace Game
         {
             Display.DeviceReset -= Display_DeviceReset;
         }
-        public void DisposeTerrainChunkGeometryVertexIndexBuffers(TerrainChunk chunk)
-        {
-            chunk.Dispose();
-        }
 
         public void Display_DeviceReset()
         {
@@ -261,15 +257,14 @@ namespace Game
             TerrainChunk[] allocatedChunks = m_subsystemTerrain.Terrain.AllocatedChunks;
             foreach (TerrainChunk terrainChunk in allocatedChunks)
             {
-                DisposeTerrainChunkGeometryVertexIndexBuffers(terrainChunk);
+                terrainChunk.Geometry.Dispose();
             }
         }
 
 
         public void SetupTerrainChunkGeometryVertexIndexBuffers(TerrainChunk chunk)
         {
-            DisposeTerrainChunkGeometryVertexIndexBuffers(chunk);
-            chunk.Geometry.Combile();
+            chunk.Geometry.Compile();
 
         }
 
