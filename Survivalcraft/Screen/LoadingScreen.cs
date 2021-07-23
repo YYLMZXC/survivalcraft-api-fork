@@ -411,10 +411,18 @@ namespace Game
                 SetMsg("ºÏ≤ÈModHooks");
                 foreach (ModEntity modEntity in ModsManager.ModList)
                 {
+                    if (modEntity.IsLoaded == false) {
+                        modEntity.Dispose();
+                    }
                     if (modEntity.IsLoaded == false || modEntity.IsDisabled) {
-                        if (modEntity.ModLoader_ != null) {
-                            foreach (var items in ModsManager.ModHooks.Values) {
-                                if (items.Contains(modEntity.ModLoader_)) items.Remove(modEntity.ModLoader_);
+                        if (modEntity.ModLoader_ != null)
+                        {
+                            foreach (var items in ModsManager.ModHooks.Values)
+                            {
+                                if (items.Contains(modEntity.ModLoader_))
+                                {
+                                    items.Remove(modEntity.ModLoader_);
+                                }
                             }
                         }
                     }

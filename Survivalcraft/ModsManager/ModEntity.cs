@@ -282,6 +282,9 @@ namespace Game {
             if (ModLoader_ != null) ModLoader_.OnScreensManagerInitalized(loading);
 
         }
+        public virtual void Dispose() {
+            if (ModLoader_ != null) ModLoader_.Dispose();
+        }
     }
 
 }

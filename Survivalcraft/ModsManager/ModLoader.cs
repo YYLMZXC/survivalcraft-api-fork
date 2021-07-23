@@ -291,5 +291,12 @@ namespace Game
         /// </summary>
         /// <param name="chunk"></param>
         public virtual void OnTerrainContentsGenerated(TerrainChunk chunk) { }
+
+        /// <summary>
+        /// Mod被卸载时执行
+        /// </summary>
+        public virtual void Dispose() { 
+        
+        }
     }
 }
