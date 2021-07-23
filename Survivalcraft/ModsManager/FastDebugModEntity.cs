@@ -72,7 +72,6 @@ namespace Game
             {
                 if (c == ModsManager.modSettings.languageType + ".json") LanguageControl.loadJson(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
             }
-
         }
         public override void LoadBlocksData()
         {
@@ -94,10 +93,21 @@ namespace Game
                 }
 
             }
+            ModLoader_?.OnXdbLoad(xElement);
         }
 
         public override void OnBlocksInitalized()
         {
+            ModLoader_?.OnBlocksManagerInitalized();
+
+        }
+        public override void SaveSettings(XElement xElement)
+        {
+            ModLoader_?.SaveSettings(xElement);
+        }
+        public override void LoadSettings(XElement xElement)
+        {
+            ModLoader_?.LoadSettings(xElement);
         }
         /// <summary>
         /// 获取指定后缀文件列表，带.

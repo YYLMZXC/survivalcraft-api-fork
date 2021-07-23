@@ -37,18 +37,6 @@ namespace Game
         }
 
         /// <summary>
-        /// 当生物受到攻击时执行
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="attacker"></param>
-        /// <param name="hitPoint"></param>
-        /// <param name="hitDirection"></param>
-        /// <param name="attackPower"></param>
-        /// <param name="isMeleeAttack"></param>
-        public virtual void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack, HitValueParticleSystem hitValueParticleSystem) {
-
-        }
-        /// <summary>
         /// 计算护甲免伤时执行
         /// </summary>
         /// <param name="componentClothing"></param>
