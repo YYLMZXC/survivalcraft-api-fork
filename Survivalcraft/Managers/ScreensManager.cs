@@ -115,10 +115,6 @@ namespace Game
             var loadingScreen = new LoadingScreen();
             AddScreen("Loading", loadingScreen);
 
-            foreach (ModEntity modEntity in ModsManager.ModList)
-            {
-                if(modEntity.IsLoaded&&!modEntity.IsDisabled)modEntity.InitScreens(loadingScreen);
-            }
         }
 
 

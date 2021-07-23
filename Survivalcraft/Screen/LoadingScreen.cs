@@ -420,6 +420,15 @@ namespace Game
                     }
                 }
             });
+            AddLoadAction(delegate
+            {
+                SetMsg("Init Screens");
+                foreach (ModEntity modEntity in ModsManager.ModList)
+                {
+                    if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.InitScreens(this);
+                }
+            });
+
         }
         public void AddScreen(string name, Screen screen)
         {
