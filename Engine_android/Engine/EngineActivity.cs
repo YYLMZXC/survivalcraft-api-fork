@@ -12,8 +12,6 @@ using System.Threading;
 
 namespace Engine
 {
-    [Activity(Label = "生存战争2.2插件版", LaunchMode = LaunchMode.SingleTask, Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
-	[IntentFilter(new string[] { "android.intent.action.VIEW" }, DataScheme = "com.candy.survivalcraft", Categories = new string[] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
 
 	public class EngineActivity : Activity
 	{
@@ -28,6 +26,7 @@ namespace Engine
 		public event Action<Intent> NewIntent;
 
 		public static string BasePath = "";
+
 		public static string ConfigPath = "";
 
 		public EngineActivity()
@@ -58,39 +57,6 @@ namespace Engine
 					AppDomain.CurrentDomain.Load(memoryStream.ToArray());
 				}
 			}
-			foreach (Assembly assembly in assemblies)
-			{
-				if (assembly.GetName().Name == "mscorlib" || assembly.GetName().Name == "Mono.Android")
-				{
-					continue;
-				}
-				Type[] types = assembly.GetTypes();
-				for (int j = 0; j < types.Length; j++)
-				{
-					MethodInfo method = types[j].GetMethod("Main", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-					if (method == null)
-					{
-						continue;
-					}
-					List<object> list = new List<object>();
-					ParameterInfo[] parameters = method.GetParameters();
-					if (parameters.Length == 1)
-					{
-						if (parameters[0].ParameterType != typeof(string[]))
-						{
-							continue;
-						}
-						list.Add(new string[0]);
-					}
-					else if (parameters.Length > 1)
-					{
-						continue;
-					}
-					method.Invoke(null, list.ToArray());
-					return;
-				}
-			}
-			throw new Exception("Cannot find static Main method.");
 		}
 
 		protected override void OnPause()
