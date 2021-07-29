@@ -15,7 +15,6 @@ using Engine.Media;
 using System.IO.Compression;
 public static class ModsManager
 {
-    public static Dictionary<string, ZipArchive> Archives;
     public const string APIVersion = "1.34";
     public const string SCVersion = "2.2.10.4";
     //1为api1.33 2为api1.34
@@ -32,7 +31,6 @@ public static class ModsManager
     public static string ModsSetPath = ExternelPath + "/ModSettings.xml";
     public static string settingPath = ExternelPath + "/Settings.xml";
     public static string logPath = ExternelPath + "/Logs";
-
 #endif
 #if android
     public static string ExternelPath = EngineActivity.BasePath;
@@ -54,20 +52,59 @@ public static class ModsManager
     {
         public LanguageControl.LanguageType languageType;
     }
+    public class ModHook {
+        public string HookName;
+        public Dictionary<ModLoader,bool> Loaders = new Dictionary<ModLoader, bool>();
+        public Dictionary<ModLoader, string> DisableReason = new Dictionary<ModLoader, string>();
+        public ModHook(string name)
+        {
+            HookName = name;
+        }
+        public void Add(ModLoader modLoader)
+        {
+            if (Loaders.TryGetValue(modLoader, out bool k) == false)
+            {
+                Loaders.Add(modLoader, true);
+            }
+        }
+        public void Remove(ModLoader modLoader)
+        {
+            if (Loaders.TryGetValue(modLoader, out bool k))
+            {
+                Loaders.Remove(modLoader);
+            }
+        }
+        public void Disable(ModLoader from,ModLoader toDisable ,string reason)
+        {
+            if (Loaders.TryGetValue(toDisable, out bool k))
+            {
+                k = false;
+                if (DisableReason.TryGetValue(from, out string res))
+                {
+                    res = reason;
+                }
+                else
+                {
+                    DisableReason.Add(from, reason);
+                }
+            }
+        }
+    }
+
     public static ModSettings modSettings=new ModSettings();
-    public static List<Exception> exceptions = new List<Exception>();
+    public static List<Exception> Exceptions = new List<Exception>();
     public static List<ModEntity> ModList = new List<ModEntity>();
     public static List<ModLoader> ModLoaders = new List<ModLoader>();
     public static List<ModInfo> DisabledMods = new List<ModInfo>();
-    public static Dictionary<string, List<ModLoader>> ModHooks = new Dictionary<string, List<ModLoader>>();
+    public static Dictionary<string, ModHook> ModHooks = new Dictionary<string, ModHook>();
     /// <summary>
     /// 执行Hook
     /// </summary>
     /// <param name="HookName"></param>
     /// <param name="action"></param>
     public static void HookAction(string HookName,Func<ModLoader,bool> action) {
-        if (ModHooks.TryGetValue(HookName, out List<ModLoader> loaders)) {
-            foreach (ModLoader modLoader in loaders) {
+        if (ModHooks.TryGetValue(HookName, out ModHook modHook)) {
+            foreach (ModLoader modLoader in modHook.Loaders.Keys) {
                 if (action.Invoke(modLoader)) break;
             }
         }    
@@ -80,15 +117,19 @@ public static class ModsManager
     public static void RegisterHook(string HookName, ModLoader modLoader)
     {
 
-        if (ModHooks.TryGetValue(HookName, out List<ModLoader> loaders))
+        if (ModHooks.TryGetValue(HookName, out ModHook modHook)==false)
         {
-            loaders.Add(modLoader);
+            modHook = new ModHook(HookName);
+            ModHooks.Add(HookName, modHook);
         }
-        else
+        modHook.Add(modLoader);
+    }
+    public static void DisableHook(ModLoader from, string HookName,string packageName,string reason) {
+        ModEntity modEntity = ModList.Find(p=>p.modInfo.PackageName==packageName);
+        if (ModHooks.TryGetValue(HookName, out ModHook modHook))
         {
-            ModHooks.Add(HookName, new List<ModLoader>() { modLoader });
+            modHook.Disable(from, modEntity.ModLoader_, reason);
         }
-
     }
     public static void StreamCompress(Stream input, MemoryStream data)
     {
@@ -198,9 +239,10 @@ public static class ModsManager
     }
     public static string ImportMod(string name,Stream stream) {
         string path = Storage.CombinePaths(ModsPath,name);
-        Stream fileStream = Storage.OpenFile(path,OpenFileMode.CreateOrOpen);
-        stream.CopyTo(fileStream);
-        fileStream.Close();
+        using (Stream fileStream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen)) {
+            stream.CopyTo(fileStream);
+            stream.Close();
+        }
         return "下载成功";
 
     }
@@ -250,7 +292,7 @@ public static class ModsManager
         }
     }
     public static void AddException(Exception e) {
-        exceptions.Add(e);
+        Exceptions.Add(e);
     }
     /// <summary>
     /// 获取所有文件
@@ -314,10 +356,9 @@ public static class ModsManager
     {
         // 把 Stream 转换成 byte[] 
         byte[] bytes = new byte[stream.Length];
+        stream.Seek(0, SeekOrigin.Begin);
         stream.Read(bytes, 0, bytes.Length);
         // 设置当前流的位置为流的开始 
-        stream.Seek(0, SeekOrigin.Begin);
-
         // 把 byte[] 写入文件 
         var fs = new FileStream(fileName, FileMode.Create);
         var bw = new BinaryWriter(fs);
@@ -339,19 +380,6 @@ public static class ModsManager
         // 把 byte[] 转换成 Stream 
         Stream stream = new MemoryStream(bytes);
         return stream;
-    }
-    public static void LoadMod(string name,Assembly asm)
-    {
-        if (asm == null) return;
-        Type[] types = asm.GetTypes();
-        for (int i = 0; i < types.Length; i++)
-        {
-            MethodInfo method;
-            if ((method = types[i].GetMethod("Initialize", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)) != null)
-            {
-                method.Invoke(Activator.CreateInstance(types[i]), null);
-            }
-        }
     }
     public static string GetMd5(string input)
     {
@@ -460,7 +488,9 @@ public static class ModsManager
                             element1.SetValue(element.Value);
                         }
                     }
-                }else {
+                }
+                else
+                {
                     xElement.Add(element);
                 }
             }

@@ -117,7 +117,7 @@ namespace Game
         }
         public override string GetDescription(int value)
         {
-            return LanguageControl.Get(fName, 3) + GetEggType(Terrain.ExtractData(value)).TemplateName;
+            return LanguageControl.Get(fName, 3) + LanguageControl.GetDatabase("DisplayName", GetEggType(Terrain.ExtractData(value)).EggTypeIndex.ToString());
         }
         public override float GetNutritionalValue(int value)
         {
@@ -197,7 +197,7 @@ namespace Game
                             RemainsCount = 1,
                             RemainsValue = Terrain.MakeBlockValue(91),
                             RequiredHeatLevel = 1f,
-                            Description = "Cook an egg to increase its nutritional value"
+                            Description = LanguageControl.Get(fName, 4)
                         };
                         int data = SetEggType(SetIsLaid(0, isLaid: true), eggType.EggTypeIndex);
                         int value = SetDamage(Terrain.MakeBlockValue(118, 0, data), rot);

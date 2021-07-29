@@ -487,7 +487,8 @@
 	"EggBlock": {
 		"1": "Cooked",
 		"2": "Laid",
-		"3": "spawn "
+		"3": "spawn ",
+		"4": "Cook an egg to increase its nutritional value"
 	},
 	"CreativeInventoryWidget": {
 		"1": "Furniture",

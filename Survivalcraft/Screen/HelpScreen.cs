@@ -40,24 +40,22 @@ namespace Game
                     ShowTopic(helpTopic2);
                 }
             };
-            foreach (KeyValuePair<string, Dictionary<string, string>> item in LanguageControl.items2["Help"])
+            var kvs = LanguageControl.Get("Help");
+            foreach (var item in kvs)
             {
-                if (item.Value.ContainsKey("DisabledPlatforms"))
+                SimpleJson.JsonObject item3 = item.Value as SimpleJson.JsonObject;
+                if (item3.ContainsKey("DisabledPlatforms"))
                 {
-                    item.Value.TryGetValue("DisabledPlatforms", out string displa);
-                    if (displa.Split(new string[] { "," }, StringSplitOptions.None).FirstOrDefault((string s) => s.Trim().ToLower() == VersionsManager.Platform.ToString().ToLower()) == null) continue;
+                    item3.TryGetValue("DisabledPlatforms", out object displa);
+                    if (((string)displa).Split(new string[] { "," }, StringSplitOptions.None).FirstOrDefault((string s) => s.Trim().ToLower() == VersionsManager.Platform.ToString().ToLower()) == null) continue;
                 }
-                item.Value.TryGetValue("Title", out string Title);
-                item.Value.TryGetValue("Name", out string Name);
-                item.Value.TryGetValue("value", out string value);
-                if (string.IsNullOrEmpty(Title)) Title = string.Empty;
-                if (string.IsNullOrEmpty(Name)) Name = string.Empty;
-                if (string.IsNullOrEmpty(value)) value = string.Empty;
-
-                string attributeValue = Name;
-                string attributeValue2 = Title;
+                item3.TryGetValue("Title", out object Title);
+                item3.TryGetValue("Name", out object Name);
+                item3.TryGetValue("value", out object value);
+                string attributeValue = Name as string;
+                string attributeValue2 = Title as string;
                 string text = string.Empty;
-                string[] array = value.Split(new string[] { "\n" }, StringSplitOptions.None);
+                string[] array = ((string)value).Split(new string[] { "\n" }, StringSplitOptions.None);
                 foreach (string text2 in array)
                 {
                     text = text + text2.Trim() + " ";

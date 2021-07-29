@@ -279,6 +279,15 @@ namespace Game
         /// </summary>
         /// <param name="chunk"></param>
         public virtual void OnTerrainContentsGenerated(TerrainChunk chunk) { }
+        /// <summary>
+        /// 摇人行为
+        /// </summary>
+        /// <param name="herdBehavior"></param>
+        /// <param name="target"></param>
+        /// <param name="maxRange"></param>
+        /// <param name="maxChaseTime"></param>
+        /// <param name="isPersistent"></param>
+        public void CallNearbyCreaturesHelp(ComponentHerdBehavior herdBehavior, ComponentCreature target, float maxRange, float maxChaseTime, bool isPersistent) { }
 
         /// <summary>
         /// Mod被卸载时执行

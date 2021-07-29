@@ -419,10 +419,7 @@ namespace Game
                         {
                             foreach (var items in ModsManager.ModHooks.Values)
                             {
-                                if (items.Contains(modEntity.ModLoader_))
-                                {
-                                    items.Remove(modEntity.ModLoader_);
-                                }
+                                items.Remove(modEntity.ModLoader_);
                             }
                         }
                     }
@@ -526,7 +523,7 @@ namespace Game
                         QuequeAction[0].Invoke();
                         QuequeAction.RemoveAt(0);
                     }
-                    if (ModsManager.exceptions.Count > 0)
+                    if (ModsManager.Exceptions.Count > 0)
                     {
                         m_pauseLoading = true;
                     }
@@ -535,17 +532,17 @@ namespace Game
                         break;
                     }
                 }
-                if (ModsManager.exceptions.Count > 0 && !IsShow)
+                if (ModsManager.Exceptions.Count > 0 && !IsShow)
                 {
                     IsShow = true; m_pauseLoading = true;
-                    DialogsManager.ShowDialog(ScreensManager.RootWidget, new MessageDialog("Mod加载出错", ExceptionManager.MakeFullErrorMessage(ModsManager.exceptions[0]), "确定", "忽略", delegate (MessageDialogButton b)
+                    DialogsManager.ShowDialog(ScreensManager.RootWidget, new MessageDialog("Mod加载出错", ExceptionManager.MakeFullErrorMessage(ModsManager.Exceptions[0]), "确定", "忽略", delegate (MessageDialogButton b)
                     {
                         switch (b)
                         {
                             case MessageDialogButton.Button1:
                                 m_pauseLoading = false;
                                 IsShow = false;
-                                ModsManager.exceptions.RemoveAt(0);
+                                ModsManager.Exceptions.RemoveAt(0);
                                 break;
                             case MessageDialogButton.Button2:
                                 m_loadingErrorsSuppressed = true;
