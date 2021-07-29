@@ -101,7 +101,7 @@ public class ManageContentScreen : Screen
                         }
                         catch (Exception ex)
                         {
-                            labelWidget4.Text = labelWidget4.Text + LanguageControl.Get("Usual", "error") + ex.Message;
+                            labelWidget4.Text = labelWidget4.Text + LanguageControl.Error + ex.Message;
                             return containerWidget;
                         }
                         break;
@@ -157,7 +157,7 @@ public class ManageContentScreen : Screen
             var listItem = (ListItem)obj;
             if (listItem.Type == ExternalContentType.Mod && listItem.IsClick)
             {
-                var messageDialog = new MessageDialog(listItem.ModEntity.modInfo.Name, listItem.ModEntity.modInfo.Description, "确定", "取消", (btn) =>{
+                var messageDialog = new MessageDialog(listItem.ModEntity.modInfo.Name, listItem.ModEntity.modInfo.Description, LanguageControl.Ok, LanguageControl.Cancel, (btn) =>{
                     DialogsManager.HideAllDialogs();
                     listItem.IsClick = false;
 
@@ -189,12 +189,12 @@ public class ManageContentScreen : Screen
             m_uploadButton.IsEnabled = !selectedItem.IsBuiltIn;
             if (selectedItem.Type == ExternalContentType.Mod)
             {
-                m_deleteButton.Text = selectedItem.ModEntity.IsDisabled ? "启用" : "禁用";
+                m_deleteButton.Text = selectedItem.ModEntity.IsDisabled ? LanguageControl.Enable : LanguageControl.Disable;
                 m_deleteButton.IsEnabled = !(selectedItem.ModEntity is SurvivalCrafModEntity || selectedItem.ModEntity is FastDebugModEntity);
             }
             else
             {
-                m_deleteButton.Text = "删除";
+                m_deleteButton.Text = LanguageControl.Delete;
             }
 
         }
@@ -203,9 +203,9 @@ public class ManageContentScreen : Screen
         {
             string smallMessage = (selectedItem.UseCount <= 0) ? string.Format(LanguageControl.Get(fName, 5), selectedItem.DisplayName) : string.Format(LanguageControl.Get(fName, 6), selectedItem.DisplayName, selectedItem.UseCount);
             if (selectedItem.Type == ExternalContentType.Mod) {
-                smallMessage = (selectedItem.ModEntity.IsDisabled ? "启用" : "禁用") + $"[{selectedItem.ModEntity.modInfo.Name}]?";
+                smallMessage = (selectedItem.ModEntity.IsDisabled ? LanguageControl.Enable : LanguageControl.Disable) + $"[{selectedItem.ModEntity.modInfo.Name}]?";
             }
-            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 9), smallMessage, LanguageControl.Get("Usual", "yes"), LanguageControl.Get("Usual", "no"), delegate (MessageDialogButton button)
+            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 9), smallMessage, LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
             {
                 if (button == MessageDialogButton.Button1)
                 {
@@ -245,7 +245,7 @@ public class ManageContentScreen : Screen
         if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
         {
             if (changeed) {
-                DialogsManager.ShowDialog(this,new MessageDialog("提示", "配置已更改，是否重新加载?", "是", "否", (btn)=>{
+                DialogsManager.ShowDialog(this,new MessageDialog(LanguageControl.Warning, LanguageControl.Get(GetType().Name,11), LanguageControl.Yes, LanguageControl.No, (btn)=>{
                     DialogsManager.HideAllDialogs();
                     if (btn == MessageDialogButton.Button1)
                     {

@@ -189,7 +189,7 @@ namespace Game
                 {
                     if (m_worldSettings.GameMode != 0 && ((TerrainGenerationMode)e == TerrainGenerationMode.FlatContinent || (TerrainGenerationMode)e == TerrainGenerationMode.FlatIsland))
                     {
-                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 5), LanguageControl.Get("Usual", "ok"), null, null));
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 5), LanguageControl.Ok, null, null));
                     }
                     else
                     {
@@ -369,11 +369,11 @@ namespace Game
             m_biomeSizeSlider.Text = m_worldSettings.BiomeSize.ToString() + "x";
             m_environmentBehaviorButton.Text = LanguageControl.Get("EnvironmentBehaviorMode", m_worldSettings.EnvironmentBehaviorMode.ToString());
             m_timeOfDayButton.Text = LanguageControl.Get("TimeOfDayMode", m_worldSettings.TimeOfDayMode.ToString());
-            m_weatherEffectsButton.Text = (m_worldSettings.AreWeatherEffectsEnabled ? LanguageControl.Get("Usual", "enable") : LanguageControl.Get("Usual", "disable"));
-            m_adventureRespawnButton.Text = (m_worldSettings.IsAdventureRespawnAllowed ? LanguageControl.Get("Usual", "allowed") : LanguageControl.Get("Usual", "not allowed"));
-            m_adventureSurvivalMechanicsButton.Text = (m_worldSettings.AreAdventureSurvivalMechanicsEnabled ? LanguageControl.Get("Usual", "enable") : LanguageControl.Get("Usual", "disable"));
-            m_supernaturalCreaturesButton.Text = (m_worldSettings.AreSupernaturalCreaturesEnabled ? LanguageControl.Get("Usual", "enable") : LanguageControl.Get("Usual", "disable"));
-            m_friendlyFireButton.Text = (m_worldSettings.IsFriendlyFireEnabled ? LanguageControl.Get("Usual", "allowed") : LanguageControl.Get("Usual", "not allowed"));
+            m_weatherEffectsButton.Text = (m_worldSettings.AreWeatherEffectsEnabled ? LanguageControl.Enable : LanguageControl.Disable);
+            m_adventureRespawnButton.Text = (m_worldSettings.IsAdventureRespawnAllowed ? LanguageControl.Allowed : LanguageControl.NAllowed);
+            m_adventureSurvivalMechanicsButton.Text = (m_worldSettings.AreAdventureSurvivalMechanicsEnabled ? LanguageControl.Enable : LanguageControl.Disable);
+            m_supernaturalCreaturesButton.Text = (m_worldSettings.AreSupernaturalCreaturesEnabled ? LanguageControl.Enable : LanguageControl.Disable);
+            m_friendlyFireButton.Text = (m_worldSettings.IsFriendlyFireEnabled ? LanguageControl.Allowed : LanguageControl.NAllowed);
             if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);

@@ -305,7 +305,7 @@ namespace Game
                 }
                 if (array3.Length != array2.Length + 1)
                 {
-                    throw new InvalidOperationException(string.Format(LanguageControl.Get("BlocksManager", 2), (array3.Length != 0) ? array3[0] : LanguageControl.Get("Usual", "unknown")));
+                    throw new InvalidOperationException(string.Format(LanguageControl.Get("BlocksManager", 2), (array3.Length != 0) ? array3[0] : LanguageControl.Unknown));
                 }
                 string typeName = array3[0];
                 if (string.IsNullOrEmpty(typeName))

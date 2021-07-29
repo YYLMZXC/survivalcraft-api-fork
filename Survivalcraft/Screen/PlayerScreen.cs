@@ -49,7 +49,7 @@ namespace Game
         public ButtonWidget m_deleteButton;
 
         public ButtonWidget m_playButton;
-        public static string fName = "PlayerScreen";
+
         public WidgetInputDevice[] m_inputDevices = new WidgetInputDevice[5]
         {
             WidgetInputDevice.None,
@@ -159,7 +159,7 @@ namespace Game
             {
                 CharacterSkinsManager.UpdateCharacterSkinsList();
                 IEnumerable<string> items = CharacterSkinsManager.CharacterSkinsNames.Where((string n) => CharacterSkinsManager.GetPlayerClass(n) == m_playerData.PlayerClass || !CharacterSkinsManager.GetPlayerClass(n).HasValue);
-                var dialog = new ListSelectionDialog(LanguageControl.Get(fName, 1), items, 64f, delegate (object item)
+                var dialog = new ListSelectionDialog(LanguageControl.Get(GetType().Name, 1), items, 64f, delegate (object item)
                  {
                      XElement node = ContentManager.Get<XElement>("Widgets/CharacterSkinItem");
                      var obj = (ContainerWidget)LoadWidget(this, node, null);
@@ -182,7 +182,7 @@ namespace Game
             }
             if (m_controlsButton.IsClicked)
             {
-                DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(fName, 2), m_inputDevices, 56f, (object d) => GetDeviceDisplayName((WidgetInputDevice)d), delegate (object d)
+                DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(GetType().Name, 2), m_inputDevices, 56f, (object d) => GetDeviceDisplayName((WidgetInputDevice)d), delegate (object d)
                  {
                      var widgetInputDevice = (WidgetInputDevice)d;
                      m_playerData.InputDevice = widgetInputDevice;
@@ -202,7 +202,7 @@ namespace Game
             }
             if (m_deleteButton.IsClicked)
             {
-                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get("Usual", "warning"), LanguageControl.Get(fName, 3), LanguageControl.Get("Usual", "ok"), LanguageControl.Get("Usual", "cancel"), delegate (MessageDialogButton b)
+                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, LanguageControl.Get(GetType().Name, 3), LanguageControl.Ok, LanguageControl.Cancel, delegate (MessageDialogButton b)
                    {
                        if (b == MessageDialogButton.Button1)
                        {
@@ -242,17 +242,17 @@ namespace Game
             switch (device)
             {
                 case WidgetInputDevice.Keyboard | WidgetInputDevice.Mouse:
-                    return LanguageControl.Get(fName, 4);
+                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 4);
                 case WidgetInputDevice.GamePad1:
-                    return LanguageControl.Get(fName, 5) + (GamePad.IsConnected(0) ? "" : LanguageControl.Get(fName, 9));
+                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 5) + (GamePad.IsConnected(0) ? "" : LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 9));
                 case WidgetInputDevice.GamePad2:
-                    return LanguageControl.Get(fName, 6) + (GamePad.IsConnected(1) ? "" : LanguageControl.Get(fName, 9));
+                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 6) + (GamePad.IsConnected(1) ? "" : LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 9));
                 case WidgetInputDevice.GamePad3:
-                    return LanguageControl.Get(fName, 7) + (GamePad.IsConnected(2) ? "" : LanguageControl.Get(fName, 9));
+                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 7) + (GamePad.IsConnected(2) ? "" : LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 9));
                 case WidgetInputDevice.GamePad4:
-                    return LanguageControl.Get(fName, 8) + (GamePad.IsConnected(3) ? "" : LanguageControl.Get(fName, 9));
+                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 8) + (GamePad.IsConnected(3) ? "" : LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 9));
                 default:
-                    return LanguageControl.Get(fName, 10);
+                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 10);
             }
         }
 
@@ -266,7 +266,7 @@ namespace Game
             {
                 return true;
             }
-            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get("Usual", "error"), LanguageControl.Get(fName, 12), LanguageControl.Get("Usual", "ok"), null, null));
+            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, LanguageControl.Get(GetType().Name, 12), LanguageControl.Ok, null, null));
             return false;
         }
     }

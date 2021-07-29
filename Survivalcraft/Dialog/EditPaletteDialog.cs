@@ -120,7 +120,7 @@ namespace Game
                             }
                             else
                             {
-                                DialogsManager.ShowDialog(this, new MessageDialog(LanguageControl.Get(GetType().Name, 3), null, LanguageControl.Get("Usual","ok"), null, null));
+                                DialogsManager.ShowDialog(this, new MessageDialog(LanguageControl.Get(GetType().Name, 3), null, LanguageControl.Ok, null, null));
                             }
                         }
                     }));

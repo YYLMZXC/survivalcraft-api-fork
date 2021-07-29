@@ -9,6 +9,28 @@ namespace Game
     {
         public static JsonObject KeyWords = new JsonObject();
 
+        public static string Ok = string.Empty;
+        public static string Cancel = string.Empty;
+        public static string None = string.Empty;
+        public static string Nothing = string.Empty;
+        public static string Error = string.Empty;
+        public static string On = string.Empty;
+        public static string Off = string.Empty;
+        public static string Disable = string.Empty;
+        public static string Enable = string.Empty;
+        public static string Warning = string.Empty;
+        public static string Back = string.Empty;
+        public static string Allowed = string.Empty;
+        public static string NAllowed = string.Empty;
+        public static string Unknown = string.Empty;
+        public static string Yes = string.Empty;
+        public static string No = string.Empty;
+        public static string Unavailable = string.Empty;
+        public static string Exists = string.Empty;
+        public static string Success = string.Empty;
+        public static string Delete = string.Empty;
+
+
         public enum LanguageType
         {
             zh_CN,
@@ -25,8 +47,28 @@ namespace Game
             if (txt.Length > 0)
             {//加载原版语言包
                 var obj = SimpleJson.SimpleJson.DeserializeObject(txt);
-                loadJsonLogic(KeyWords,obj);
+                loadJsonLogic(KeyWords, obj);
             }
+            if (Ok == string.Empty) Ok = Get("Usual", "ok");
+            if (Cancel == string.Empty) Cancel = Get("Usual", "cancel");
+            if (None == string.Empty) None = Get("Usual", "none");
+            if (Nothing == string.Empty) Nothing = Get("Usual", "nothing");
+            if (Error == string.Empty) Error = Get("Usual", "error");
+            if (On == string.Empty) On = Get("Usual", "on");
+            if (Off == string.Empty) Off = Get("Usual", "off");
+            if (Disable == string.Empty) Disable = Get("Usual", "disable");
+            if (Enable == string.Empty) Enable = Get("Usual", "enable");
+            if (Warning == string.Empty) Warning = Get("Usual", "warning");
+            if (Back == string.Empty) Back = Get("Usual", "back");
+            if (Allowed == string.Empty) Allowed = Get("Usual", "allowed");
+            if (NAllowed == string.Empty) NAllowed = Get("Usual", "not allowed");
+            if (Unknown == string.Empty) Unknown = Get("Usual", "unknown");
+            if (Yes == string.Empty) Yes = Get("Usual", "yes");
+            if (No == string.Empty) No = Get("Usual", "no");
+            if (Unavailable == string.Empty) Unavailable = Get("Usual", "Unavailable");
+            if (Exists == string.Empty) Exists = Get("Usual", "exist");
+            if (Success == string.Empty) Success = Get("Usual", "success");
+            if (Delete == string.Empty) Success = Get("Usual", "delete");
         }
 
         public static void loadJsonLogic(JsonObject node, object obj) {
@@ -66,7 +108,7 @@ namespace Game
                         {
                             node[i.ToString()] = jsonArray[i];
                         }
-                        else KeyWords.Add(i.ToString(), jsonArray[i]);
+                        else node.Add(i.ToString(), jsonArray[i]);
                     }
                     else {
                         JsonObject keys = new JsonObject();
@@ -121,9 +163,6 @@ namespace Game
             }
             return new JsonObject();
         }
-
-
-
         public static string LName()
         {
             return ModsManager.modSettings.languageType.ToString();
@@ -170,7 +209,6 @@ namespace Game
             }
             return string.Empty;
         }
-
         public static string GetDatabase(string name, string prop)
         {
             if (Get(out string res, "Database", name, prop))

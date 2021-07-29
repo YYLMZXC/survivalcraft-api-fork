@@ -131,7 +131,7 @@ namespace Game
                             }
                             catch (Exception ex3)
                             {
-                                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get("Usual", "error"), ex3.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Error, ex3.Message, LanguageControl.Ok, null, null));
                             }
                         }));
                     }));
@@ -148,7 +148,7 @@ namespace Game
                             }
                             catch (Exception ex2)
                             {
-                                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get("Usual", "error"), ex2.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Error, ex2.Message, LanguageControl.Ok, null, null));
                             }
                         }));
                     }));
@@ -168,7 +168,7 @@ namespace Game
                             }
                             catch (Exception ex)
                             {
-                                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get("Usual", "error"), ex.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Error, ex.Message, LanguageControl.Ok, null, null));
                             }
                         }));
                     }));

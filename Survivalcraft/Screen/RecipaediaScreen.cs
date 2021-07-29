@@ -24,7 +24,7 @@ namespace Game
         public List<string> m_categories = new List<string>();
 
         public int m_categoryIndex;
-        public static string fName = "RecipaediaScreen";
+
         public int m_listCategoryIndex = -1;
 
         public RecipaediaScreen()
@@ -87,12 +87,12 @@ namespace Game
             }
             if (num > 0)
             {
-                m_recipesButton.Text = string.Format("{0} {1}", num, (num == 1) ? LanguageControl.Get(fName, 1) : LanguageControl.Get(fName, 2));
+                m_recipesButton.Text = string.Format("{0} {1}", num, (num == 1) ? LanguageControl.Get(GetType().Name, 0) : LanguageControl.Get(GetType().Name, 1));
                 m_recipesButton.IsEnabled = true;
             }
             else
             {
-                m_recipesButton.Text = LanguageControl.Get(fName, 3);
+                m_recipesButton.Text = LanguageControl.Get(GetType().Name, 2);
                 m_recipesButton.IsEnabled = false;
             }
             m_detailsButton.IsEnabled = value.HasValue;

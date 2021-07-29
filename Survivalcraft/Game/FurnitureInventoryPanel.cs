@@ -125,7 +125,7 @@ namespace Game
                     }
                     else
                     {
-                        DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 24), LanguageControl.Get(fName, 25), LanguageControl.Get("Usual", "ok"), null, null));
+                        DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 24), LanguageControl.Get(fName, 25), LanguageControl.Ok, null, null));
                     }
                 }));
                 list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 7), delegate
@@ -148,7 +148,7 @@ namespace Game
                 {
                     if (SubsystemFurnitureBlockBehavior.GetFurnitureSetDesigns(ComponentFurnitureInventory.FurnitureSet).Count() > 0)
                     {
-                        DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get("Usual", "warning"), LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 27), LanguageControl.Get(fName, 28), delegate (MessageDialogButton b)
+                        DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Warning, LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 27), LanguageControl.Get(fName, 28), delegate (MessageDialogButton b)
                         {
                             if (b == MessageDialogButton.Button1)
                             {
@@ -311,7 +311,7 @@ namespace Game
             FurniturePacksManager.UpdateFurniturePacksList();
             if (FurniturePacksManager.FurniturePackNames.Count() == 0)
             {
-                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 18), LanguageControl.Get(fName, 19), LanguageControl.Get("Usual", "ok"), null, null));
+                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 18), LanguageControl.Get(fName, 19), LanguageControl.Ok, null, null));
             }
             else
             {
@@ -360,11 +360,11 @@ namespace Game
                         {
                             text2 += string.Format(LanguageControl.Get(fName, 3), num2, 65535);
                         }
-                        DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 4), text2.Trim(), LanguageControl.Get("Usual", "ok"), null, null));
+                        DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 4), text2.Trim(), LanguageControl.Ok, null, null));
                     }
                     catch (Exception ex)
                     {
-                        DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 5), ex.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                        DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 5), ex.Message, LanguageControl.Ok, null, null));
                     }
                 }));
             }
@@ -376,11 +376,11 @@ namespace Game
             {
                 FurnitureDesign[] designs = SubsystemFurnitureBlockBehavior.GetFurnitureSetDesigns(ComponentFurnitureInventory.FurnitureSet).ToArray();
                 string displayName = FurniturePacksManager.GetDisplayName(FurniturePacksManager.CreateFurniturePack(ComponentFurnitureInventory.FurnitureSet.Name, designs));
-                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 21), string.Format(LanguageControl.Get(fName, 22), displayName), LanguageControl.Get("Usual", "ok"), null, null));
+                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 21), string.Format(LanguageControl.Get(fName, 22), displayName), LanguageControl.Ok, null, null));
             }
             catch (Exception ex)
             {
-                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 23), ex.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 23), ex.Message, LanguageControl.Ok, null, null));
             }
         }
     }

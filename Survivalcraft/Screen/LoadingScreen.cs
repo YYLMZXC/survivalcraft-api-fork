@@ -139,7 +139,6 @@ namespace Game
 
                 });
             });
-
             AddLoadAction(() => {
                 ModsManager.ModListAllDo(modEntity => {
                     if (modEntity.IsLoaded && modEntity.IsDisabled == false)

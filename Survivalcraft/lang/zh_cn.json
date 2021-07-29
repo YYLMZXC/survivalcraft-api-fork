@@ -7,6 +7,7 @@
 		"Description": "不需要登陆，直接储存"
 
 	},
+	"FurnitureBlock": [ "将家具设计融合为家具", "太多不同的家具设计了" ],
 	"MemoryBankBlockBehavior": {
 		"1": "选择编辑器",
 		"2": "原版编辑器",
@@ -29,7 +30,8 @@
 		"7": "筛选",
 		"8": "全部",
 		"9": "你确定吗?",
-		"10": "无效的类型"
+		"10": "无效的类型",
+		"11": "配置已更改，是否重新加载?"
 	},
 	"SubsystemFurnitureBlockBehavior": {
 		"0": "没有找到合适的方块",
@@ -62,11 +64,7 @@
 		"Mod": "模组"
 
 	},
-	"PlayerWidget": {
-		"1": "{0} 由{1}控制",
-		"2": "已在游戏生存{0}天",
-		"3": "从未玩过"
-	},
+	"PlayerWidget": [ "{0} 由{1}控制", "已在游戏生存{0}天", "从未玩过" ],
 	"ComponentHealth": {
 		"1": "被岩浆烧毁死",
 		"2": "从高处掉落摔死",
@@ -183,6 +181,8 @@
 		"1": "表格",
 		"2": "线性"
 	},
+	"FurnitureDesignWidget": [ "前面", "侧面" ],
+
 	"FurnitureInventoryPanel": {
 		"1": "{0}个家具被添加. ",
 		"2": "{0}个家具已存在在这个世界中，并被忽略",
@@ -745,7 +745,9 @@
 		"cancel": "取消",
 		"allowed": "允许",
 		"not allowed": "不允许",
-		"success": "成功"
+		"success": "成功",
+		"Unavailable": "不可用的",
+		"delete": "删除"
 	},
 	"Blocks": {
 		"AirBlock:0": {
@@ -3056,24 +3058,16 @@
 			"10": "开始游戏",
 			"11": "加入新玩家"
 		},
-		"PlayersScreen": {
-			"1": "编辑玩家",
-			"2": "屏幕布局",
-			"3": "添加新玩家"
-		},
+		"PlayersScreen": [ "编辑玩家", "屏幕布局", "添加新玩家", "不可在残酷模式添加新玩家", "不可在冒险模式添加新玩家", "已达到最大玩家上限数:{0}", "选择屏幕布局" ],
 		"RecipaediaDescriptionScreen": {
 			"1": "方块描述"
 		},
 		"RecipaediaRecipesScreen": {
 			"1": "方块合成"
 		},
-		"RecipaediaScreen": {
-			"1": "合成表",
-			"2": "方块描述",
-			"3": "合成方式"
-		},
+		"RecipaediaScreen": [ "合成表", "描述", "配方" ],
 		"RespawningScreen": {
-			"1": "重生...",
+			"1": "重生中...",
 			"2": "您的物品仅会在死亡地点保留短暂时间！"
 		},
 		"SettingsAudioScreen": {

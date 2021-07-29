@@ -21,8 +21,6 @@ namespace Game
 
         public LabelWidget m_errorLabel;
 
-        public static string fName = "NewWorldScreen";
-
         public ButtonWidget m_playButton;
 
         public Random m_random = new Random();

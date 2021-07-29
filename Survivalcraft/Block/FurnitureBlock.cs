@@ -454,7 +454,7 @@ namespace Game
                 {
                     ResultValue = Terrain.MakeBlockValue(227, 0, SetDesignIndex(0, furnitureDesign2.Index, furnitureDesign2.ShadowStrengthFactor, furnitureDesign2.IsLightEmitter)),
                     ResultCount = 1,
-                    Description = "Combine furniture into interactive design",
+                    Description = LanguageControl.Get(GetType().Name,0),
                     Ingredients = (string[])ingredients.Clone()
                 };
             }
@@ -476,7 +476,7 @@ namespace Game
                 {
                     ResultValue = Terrain.MakeBlockValue(227, 0, SetDesignIndex(0, furnitureDesign3.Index, furnitureDesign3.ShadowStrengthFactor, furnitureDesign3.IsLightEmitter)),
                     ResultCount = 1,
-                    Description = "Combine furniture into interactive design",
+                    Description = LanguageControl.Get(GetType().Name, 0),
                     Ingredients = (string[])ingredients.Clone()
                 };
             }
@@ -498,7 +498,7 @@ namespace Game
                 {
                     ResultValue = Terrain.MakeBlockValue(227, 0, SetDesignIndex(0, furnitureDesign4.Index, furnitureDesign4.ShadowStrengthFactor, furnitureDesign4.IsLightEmitter)),
                     ResultCount = 1,
-                    Description = "Combine furniture into interactive design",
+                    Description = LanguageControl.Get(GetType().Name, 0),
                     Ingredients = (string[])ingredients.Clone()
                 };
             }
@@ -563,7 +563,7 @@ namespace Game
 
         public void DisplayError()
         {
-            DialogsManager.ShowDialog(null, new MessageDialog("Error", "Too many different furniture designs", LanguageControl.Get("Usual","ok"), null, null));
+            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, LanguageControl.Get(GetType().Name,1), LanguageControl.Ok, null, null));
         }
 
         public static int GetRotation(int data)
