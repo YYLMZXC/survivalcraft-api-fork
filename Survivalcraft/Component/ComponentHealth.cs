@@ -113,8 +113,6 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public event Action<ComponentCreature> Attacked;
-
         public void Heal(float amount)
         {
             if (amount > 0f)

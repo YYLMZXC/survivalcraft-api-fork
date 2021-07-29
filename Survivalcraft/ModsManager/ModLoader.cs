@@ -276,6 +276,7 @@ namespace Game
         }
         /// <summary>
         /// 区块地形生成时
+        /// 注意此方法运行在子线程中
         /// </summary>
         /// <param name="chunk"></param>
         public virtual void OnTerrainContentsGenerated(TerrainChunk chunk) { }

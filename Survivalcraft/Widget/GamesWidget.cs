@@ -208,7 +208,7 @@ namespace Game
                     Children[3].LayoutTransform = new Matrix(num9, 0f, 0f, 0f, 0f, num9, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
                 }
             }
-            else if (Children.Count > 4)
+            else if (Children.Count > SubsystemPlayers.MaxPlayers)
             {
                 throw new InvalidOperationException("Too many GameWidgets.");
             }
