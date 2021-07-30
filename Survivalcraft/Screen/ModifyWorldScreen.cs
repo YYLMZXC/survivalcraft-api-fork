@@ -32,7 +32,6 @@ namespace Game
 
         public ValuesDictionary m_originalWorldSettingsData = new ValuesDictionary();
 
-        public static string fName = "ModifyWorldScreen";
         public ModifyWorldScreen()
         {
             XElement node = ContentManager.Get<XElement>("Screens/ModifyWorldScreen");
@@ -95,7 +94,7 @@ namespace Game
             if (m_deleteButton.IsClicked)
             {
                 MessageDialog dialog = null;
-                dialog = new MessageDialog(LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), LanguageControl.Get("Usual", "yes"), LanguageControl.Get("Usual", "no"), delegate (MessageDialogButton button)
+                dialog = new MessageDialog(LanguageControl.Get(GetType().Name, 1), LanguageControl.Get(GetType().Name, 2), LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
                  {
                      if (button == MessageDialogButton.Button1)
                      {
@@ -128,7 +127,7 @@ namespace Game
             {
                 if (flag)
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 3), LanguageControl.Get(fName, 4), LanguageControl.Get("Usual", "yes"), LanguageControl.Get("Usual", "no"), delegate (MessageDialogButton button)
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 3), LanguageControl.Get(GetType().Name, 4), LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
                       {
                           if (button == MessageDialogButton.Button1)
                           {

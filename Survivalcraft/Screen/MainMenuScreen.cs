@@ -25,14 +25,14 @@ namespace Game
                 SettingsManager.IsolatedStorageMigrationCounter++;
                 VersionConverter126To127.MigrateDataFromIsolatedStorageWithDialog();
             }
-            if (ModsManager.exceptions.Count > 0)
+            if (ModsManager.Exceptions.Count > 0)
             {
                 string msg = "";
-                for (int i=0;i<ModsManager.exceptions.Count;i++) {
-                    msg += ModsManager.exceptions[i].Message+"\n";
+                for (int i=0;i<ModsManager.Exceptions.Count;i++) {
+                    msg += ModsManager.Exceptions[i].Message+"\n";
                 }
                 DialogsManager.ShowDialog(null, new MessageDialog("Mod加载出错", msg, "确定", "取消", (btn) => {
-                    ModsManager.exceptions.Clear();
+                    ModsManager.Exceptions.Clear();
                 }));
             }
         }

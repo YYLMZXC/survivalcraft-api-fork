@@ -13,6 +13,7 @@ namespace Game
 
         public const int MaxNameLength = 16;
 
+        public static string fName = "WorldPalette";
         public static readonly Color[] DefaultColors = new Color[16]
         {
             new Color(255, 255, 255),
@@ -40,12 +41,13 @@ namespace Game
         public WorldPalette()
         {
             Colors = DefaultColors.ToArray();
-            var tmp = new List<string>();
-            foreach (KeyValuePair<string, string> iyt in LanguageControl.items[GetType().Name].ToArray())
+            SimpleJson.JsonObject jsonobj = LanguageControl.Get(fName);
+            Names = new string[jsonobj.Count];
+            int i = 0;
+            foreach (var iyt in jsonobj)
             {
-                tmp.Add(iyt.Value);
+                Names[i++] = iyt.Value as string;
             }
-            Names = tmp.ToArray();
         }
 
         public WorldPalette(ValuesDictionary valuesDictionary)

@@ -52,7 +52,7 @@ namespace Game
             catch (Exception e)
             {
                 ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
-                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 1), ExceptionManager.MakeFullErrorMessage(e), LanguageControl.Get("Usual", "ok"), null, null));
+                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 1), ExceptionManager.MakeFullErrorMessage(e), LanguageControl.Ok, null, null));
             }
         }
 

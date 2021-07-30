@@ -222,7 +222,7 @@ namespace Game
             var obj14 = new BevelledButtonWidget
             {
                 Size = new Vector2(160f, 60f),
-                Text = LanguageControl.Get("Usual","ok")
+                Text = LanguageControl.Ok
             };
             ButtonWidget widget4 = obj14;
             m_okButton = obj14;
@@ -235,7 +235,7 @@ namespace Game
             var obj15 = new BevelledButtonWidget
             {
                 Size = new Vector2(160f, 60f),
-                Text = LanguageControl.Get("Usual","cancel")
+                Text = LanguageControl.Cancel
             };
             widget4 = obj15;
             m_cancelButton = obj15;
@@ -262,7 +262,7 @@ namespace Game
                         }
                         catch
                         {
-                            DialogsManager.ShowDialog(this, new MessageDialog(LanguageControl.Get(GetType().Name, 6), LanguageControl.Get(GetType().Name, 7), LanguageControl.Get("Usual","ok"), null, null));
+                            DialogsManager.ShowDialog(this, new MessageDialog(LanguageControl.Get(GetType().Name, 6), LanguageControl.Get(GetType().Name, 7), LanguageControl.Ok, null, null));
                         }
                     }
                 }));

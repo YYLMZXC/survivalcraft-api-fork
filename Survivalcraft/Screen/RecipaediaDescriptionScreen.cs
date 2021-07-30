@@ -84,8 +84,8 @@ namespace Game
             {
                 dictionary.Add("Fuel Value", block.FuelFireDuration.ToString());
             }
-            dictionary.Add("Is Stackable", (block.MaxStacking > 1) ? string.Format(LanguageControl.Get(fName, 1), block.MaxStacking.ToString()) : LanguageControl.Get("Usual", "no"));
-            dictionary.Add("Is Flammable", (block.FireDuration > 0f) ? LanguageControl.Get("Usual", "yes") : LanguageControl.Get("Usual", "no"));
+            dictionary.Add("Is Stackable", (block.MaxStacking > 1) ? string.Format(LanguageControl.Get(fName, 1), block.MaxStacking.ToString()) : LanguageControl.No);
+            dictionary.Add("Is Flammable", (block.FireDuration > 0f) ? LanguageControl.Yes : LanguageControl.No);
             if (block.GetNutritionalValue(value) > 0f)
             {
                 dictionary.Add("Nutrition", block.GetNutritionalValue(value).ToString());
@@ -149,7 +149,7 @@ namespace Game
             if (block is ClothingBlock)
             {
                 ClothingData clothingData = ClothingBlock.GetClothingData(Terrain.ExtractData(value));
-                dictionary.Add("Can Be Dyed", clothingData.CanBeDyed ? LanguageControl.Get("Usual", "yes") : LanguageControl.Get("Usual", "no"));
+                dictionary.Add("Can Be Dyed", clothingData.CanBeDyed ? LanguageControl.Yes : LanguageControl.No);
                 dictionary.Add("Armor Protection", $"{(int)(clothingData.ArmorProtection * 100f)}%");
                 dictionary.Add("Armor Durability", clothingData.Sturdiness.ToString());
                 dictionary.Add("Insulation", $"{clothingData.Insulation:0.0} clo");

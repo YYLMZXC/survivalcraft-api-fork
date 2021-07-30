@@ -123,11 +123,11 @@ namespace Game
             if (m_AllowInitialIntro.IsClicked) SettingsManager.AllowInitialIntro = !SettingsManager.AllowInitialIntro;
             m_moveControlModeButton.Text = LanguageControl.Get("MoveControlMode", SettingsManager.MoveControlMode.ToString());
             m_lookControlModeButton.Text = LanguageControl.Get("LookControlMode", SettingsManager.LookControlMode.ToString());
-            m_leftHandedLayoutButton.Text = (SettingsManager.LeftHandedLayout ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
-            m_flipVerticalAxisButton.Text = (SettingsManager.FlipVerticalAxis ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
-            m_AllowInitialIntro.Text = (SettingsManager.AllowInitialIntro ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
-            m_autoJumpButton.Text = (SettingsManager.AutoJump ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
-            m_horizontalCreativeFlightButton.Text = (SettingsManager.HorizontalCreativeFlight ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
+            m_leftHandedLayoutButton.Text = (SettingsManager.LeftHandedLayout ? LanguageControl.On : LanguageControl.Off);
+            m_flipVerticalAxisButton.Text = (SettingsManager.FlipVerticalAxis ? LanguageControl.On : LanguageControl.Off);
+            m_AllowInitialIntro.Text = (SettingsManager.AllowInitialIntro ? LanguageControl.On : LanguageControl.Off);
+            m_autoJumpButton.Text = (SettingsManager.AutoJump ? LanguageControl.On : LanguageControl.Off);
+            m_horizontalCreativeFlightButton.Text = (SettingsManager.HorizontalCreativeFlight ? LanguageControl.On : LanguageControl.Off);
             m_moveSensitivitySlider.Value = SettingsManager.MoveSensitivity;
             m_moveSensitivitySlider.Text = MathUtils.Round(SettingsManager.MoveSensitivity * 10f).ToString();
             m_lookSensitivitySlider.Value = SettingsManager.LookSensitivity;

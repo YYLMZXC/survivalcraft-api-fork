@@ -33,13 +33,13 @@ namespace Game
             if (!m_increaseDetailDialogShown && PerformanceManager.LongTermAverageFrameTime.HasValue && PerformanceManager.LongTermAverageFrameTime.Value * 1000f < 25f && (SettingsManager.VisibilityRange <= 64 || SettingsManager.ResolutionMode == ResolutionMode.Low))
             {
                 m_increaseDetailDialogShown = true;
-                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), LanguageControl.Get("Usual", "ok"), null, null));
+                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), LanguageControl.Ok, null, null));
                 AnalyticsManager.LogEvent("[GameMenuScreen] IncreaseDetailDialog Shown");
             }
             if (!m_decreaseDetailDialogShown && PerformanceManager.LongTermAverageFrameTime.HasValue && PerformanceManager.LongTermAverageFrameTime.Value * 1000f > 50f && (SettingsManager.VisibilityRange >= 64 || SettingsManager.ResolutionMode == ResolutionMode.High))
             {
                 m_decreaseDetailDialogShown = true;
-                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get(fName, 3), LanguageControl.Get(fName, 4), LanguageControl.Get("Usual", "ok"), null, null));
+                DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get(fName, 3), LanguageControl.Get(fName, 4), LanguageControl.Ok, null, null));
                 AnalyticsManager.LogEvent("[GameMenuScreen] DecreaseDetailDialog Shown");
             }
             m_statsPanel.Children.Clear();
@@ -230,7 +230,7 @@ namespace Game
                 {
                     list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 82), delegate
                     {
-                        DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get(fName, 83), LanguageControl.Get(fName, 84), LanguageControl.Get("Usual", "yes"), LanguageControl.Get("Usual", "no"), delegate (MessageDialogButton result)
+                        DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get(fName, 83), LanguageControl.Get(fName, 84), LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton result)
                         {
                             if (result == MessageDialogButton.Button1)
                             {

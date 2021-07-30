@@ -7,6 +7,7 @@
 		"Description": "No login required; Save to disk"
 
 	},
+	"FurnitureBlock": [ "Combine furniture into interactive design", "Too many different furniture designs" ],
 	"MemoryBankBlockBehavior": {
 		"1": "Select Editor Type",
 		"2": "original",
@@ -28,7 +29,8 @@
 		"7": "Select Items Filter",
 		"8": "All Items",
 		"9": "Are you sure?",
-		"10": "Invalid item type."
+		"10": "Invalid item type.",
+		"11": "The configuration has been changed. Do you want to reload it?"
 	},
 	"SubsystemFurnitureBlockBehavior": {
 		"0": "Unsuitable block found",
@@ -68,11 +70,7 @@
 		"6": "Stranded on land",
 		"7": "Suffocated"
 	},
-	"PlayerWidget": {
-		"1": "{0} Controlled by {1}",
-		"2": "In game for {0} days",
-		"3": "Never spawned yet"
-	},
+	"PlayerWidget": [ "{0} Controlled by {1}", "In game for {0} days", "Never spawned yet" ],
 	"CrossbowWidget": {
 		"0": "Pull",
 		"1": "Load bolt",
@@ -178,8 +176,8 @@
 		"1": "Table",
 		"2": "Linear"
 	},
-
-
+	"FurnitureDesignWidget": [ "Front", "Side" ],
+	"FurnitureSetItemWidget": [ "Uncategorized", "{0} design(s)" ],
 	"FurnitureInventoryPanel": {
 		"1": "{0} design(s) added. ",
 		"2": "{0} design(s) were already present in the world and were skipped. ",
@@ -487,7 +485,8 @@
 	"EggBlock": {
 		"1": "Cooked",
 		"2": "Laid",
-		"3": "spawn "
+		"3": "spawn ",
+		"4": "Cook an egg to increase its nutritional value"
 	},
 	"CreativeInventoryWidget": {
 		"1": "Furniture",
@@ -727,7 +726,7 @@
 		"unknown": "Unknown",
 		"yes": "Yes",
 		"no": "No",
-		"exist": "exist",
+		"exist": "Exist",
 		"none": "None",
 		"nothing": "Nothing",
 		"ok": "Ok",
@@ -741,7 +740,9 @@
 		"cancel": "Cancel",
 		"allowed": "Allowed",
 		"not allowed": "Not Allowed",
-		"success": "Success"
+		"success": "Success",
+		"Unavailable": "Unavailable",
+		"delete": "Delete"
 	},
 	"Blocks": {
 		"AirBlock:0": {
@@ -2572,22 +2573,12 @@
 			"10": "Play!",
 			"11": "Add Another"
 		},
-		"PlayersScreen": {
-			"1": "Edit Players",
-			"2": "Screen Layout",
-			"3": "New Player"
-		},
+		"PlayersScreen": [ "Edit Players", "Screen Layout", "New Player", "Cannot add players in cruel mode.", "Cannot add players in adventure mode.", "A maximum of {0} players are allowed.", "Select Screen Layout" ],
 		"RecipaediaDescriptionScreen": {
 			"1": "Block Description"
 		},
-		"RecipaediaRecipesScreen": {
-			"1": "Block Recipes"
-		},
-		"RecipaediaScreen": {
-			"1": "Recipaedia",
-			"2": "Description",
-			"3": "Recipes"
-		},
+		"RecipaediaRecipesScreen": [ "Block Recipes", "(recipe #{0})" ],
+		"RecipaediaScreen": [ "Recipaedia", "Description", "Recipes" ],
 		"RespawningScreen": {
 			"1": "Respawning...",
 			"2": "Your items will stay for a short time at the place of death."

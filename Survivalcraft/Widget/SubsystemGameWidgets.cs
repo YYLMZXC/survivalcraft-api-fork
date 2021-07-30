@@ -9,7 +9,7 @@ namespace Game
 {
     public class SubsystemGameWidgets : Subsystem, IUpdateable
     {
-        public const int MaxGameWidgets = 4;
+        public int MaxGameWidgets => SubsystemPlayers.MaxPlayers;
 
         public SubsystemPlayers m_subsystemPlayers;
 
@@ -93,11 +93,11 @@ namespace Game
         public void AddGameWidgetForPlayer(PlayerData playerData)
         {
             int index = 0;
-            while (index < 4 && m_gameWidgets.FirstOrDefault((GameWidget v) => v.GameWidgetIndex == index) != null)
+            while (index < MaxGameWidgets && m_gameWidgets.FirstOrDefault((GameWidget v) => v.GameWidgetIndex == index) != null)
             {
                 int num = index++;
             }
-            if (index >= 4)
+            if (index >= MaxGameWidgets)
             {
                 throw new InvalidOperationException("Too many GameWidgets.");
             }

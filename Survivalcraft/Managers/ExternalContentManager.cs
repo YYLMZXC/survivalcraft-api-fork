@@ -235,13 +235,13 @@ namespace Game
                         DialogsManager.HideDialog(busyDialog);
                         if (error != null)
                         {
-                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get("Usual", "error"), error.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, error.Message, LanguageControl.Ok, null, null));
                         }
                     });
                 };
                 if (showWarningDialog)
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 6), string.Format(LanguageControl.Get(fName, 7), provider.DisplayName), LanguageControl.Get(fName, 8), LanguageControl.Get("Usual", "cancel"), delegate (MessageDialogButton b)
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 6), string.Format(LanguageControl.Get(fName, 7), provider.DisplayName), LanguageControl.Get(fName, 8), LanguageControl.Cancel, delegate (MessageDialogButton b)
                     {
                         if (b == MessageDialogButton.Button1)
                         {
@@ -346,7 +346,7 @@ namespace Game
                                         DialogsManager.HideDialog(busyDialog);
                                         if (string.IsNullOrEmpty(link))
                                         {
-                                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get("Usual", "success"), string.Format(LanguageControl.Get(fName, 15), DataSizeFormatter.Format(length)), LanguageControl.Get("Usual", "ok"), null, null));
+                                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Success, string.Format(LanguageControl.Get(fName, 15), DataSizeFormatter.Format(length)), LanguageControl.Ok, null, null));
                                         }
                                         else
                                         {
@@ -356,14 +356,14 @@ namespace Game
                                     {
                                         cleanup();
                                         DialogsManager.HideDialog(busyDialog);
-                                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get("Usual", "error"), error.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, error.Message, LanguageControl.Ok, null, null));
                                     });
                                 }
                                 catch (Exception ex2)
                                 {
                                     cleanup();
                                     DialogsManager.HideDialog(busyDialog);
-                                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get("Usual", "error"), ex2.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, ex2.Message, LanguageControl.Ok, null, null));
                                 }
                             });
                         });
@@ -371,7 +371,7 @@ namespace Game
                 }
                 catch (Exception ex)
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get("Usual", "error"), ex.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, ex.Message, LanguageControl.Ok, null, null));
                 }
             }));
         }

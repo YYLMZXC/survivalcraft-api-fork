@@ -164,20 +164,20 @@ namespace Game
                 m_visibilityRangeWarningLabel.Text = LanguageControl.Get(fName, 7);
             }
             m_viewAnglesButton.Text = LanguageControl.Get("ViewAngleMode", SettingsManager.ViewAngleMode.ToString());
-            m_terrainMipmapsButton.Text = SettingsManager.TerrainMipmapsEnabled ? LanguageControl.Get("Usual", "enable") : LanguageControl.Get("Usual", "disable");
+            m_terrainMipmapsButton.Text = SettingsManager.TerrainMipmapsEnabled ? LanguageControl.Enable : LanguageControl.Disable;
 
             m_skyRenderingModeButton.Text = LanguageControl.Get("SkyRenderingMode", SettingsManager.SkyRenderingMode.ToString());
-            m_objectShadowsButton.Text = SettingsManager.ObjectsShadowsEnabled ? LanguageControl.Get("Usual", "enable") : LanguageControl.Get("Usual", "disable");
+            m_objectShadowsButton.Text = SettingsManager.ObjectsShadowsEnabled ? LanguageControl.Enable : LanguageControl.Disable;
             m_framerateLimitSlider.Value = (m_presentationIntervals.IndexOf(SettingsManager.PresentationInterval) >= 0) ? m_presentationIntervals.IndexOf(SettingsManager.PresentationInterval) : (m_presentationIntervals.Count - 1);
             m_framerateLimitSlider.Text = (SettingsManager.PresentationInterval != 0) ? string.Format(LanguageControl.Get(fName, 8), SettingsManager.PresentationInterval) : LanguageControl.Get(fName, 9);
-            m_displayFpsCounterButton.Text = (SettingsManager.DisplayFpsCounter ? LanguageControl.Get("Usual", "yes") : LanguageControl.Get("Usual", "no"));
-            m_displayFpsRibbonButton.Text = (SettingsManager.DisplayFpsRibbon ? LanguageControl.Get("Usual", "yes") : LanguageControl.Get("Usual", "no"));
+            m_displayFpsCounterButton.Text = (SettingsManager.DisplayFpsCounter ? LanguageControl.Yes : LanguageControl.No);
+            m_displayFpsRibbonButton.Text = (SettingsManager.DisplayFpsRibbon ? LanguageControl.Yes : LanguageControl.No);
             if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 bool flag = SettingsManager.VisibilityRange > 128;
                 if (SettingsManager.VisibilityRange > m_enterVisibilityRange && flag)
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 10), LanguageControl.Get(fName, 11), LanguageControl.Get("Usual", "ok"), LanguageControl.Get("Usual", "back"), delegate (MessageDialogButton button)
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 10), LanguageControl.Get(fName, 11), LanguageControl.Ok, LanguageControl.Back, delegate (MessageDialogButton button)
                       {
                           if (button == MessageDialogButton.Button1)
                           {

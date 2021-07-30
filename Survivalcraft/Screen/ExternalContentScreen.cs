@@ -26,7 +26,7 @@ namespace Game
 		public ButtonWidget m_copyLinkButton;
 
 		public string m_path;
-		public static string fName = "ExternalContentScreen";
+
 		public bool m_listDirty;
 
 		public Dictionary<string, bool> m_downloadedFiles = new Dictionary<string, bool>();
@@ -51,7 +51,7 @@ namespace Game
 				XElement node2 = ContentManager.Get<XElement>("Widgets/ExternalContentItem");
 				var containerWidget = (ContainerWidget)LoadWidget(this, node2, null);
 				string fileName = Storage.GetFileName(externalContentEntry2.Path);
-				string text = m_downloadedFiles.ContainsKey(externalContentEntry2.Path) ? LanguageControl.Get(fName, 11) : string.Empty;
+				string text = m_downloadedFiles.ContainsKey(externalContentEntry2.Path) ? LanguageControl.Get(GetType().Name, 11) : string.Empty;
 				string text2 = (externalContentEntry2.Type != ExternalContentType.Directory) ? $"{ExternalContentManager.GetEntryTypeDescription(externalContentEntry2.Type)} | {DataSizeFormatter.Format(externalContentEntry2.Size)} | {externalContentEntry2.Time:dd-MMM-yyyy HH:mm}{text}" : ExternalContentManager.GetEntryTypeDescription(externalContentEntry2.Type);
 				containerWidget.Children.Find<RectangleWidget>("ExternalContentItem.Icon").Subtexture = ExternalContentManager.GetEntryTypeIcon(externalContentEntry2.Type);
 				containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Text").Text = fileName;
@@ -95,13 +95,13 @@ namespace Game
 				m_actionButton.IsVisible = true;
 				if (externalContentEntry.Type == ExternalContentType.Directory)
 				{
-					m_actionButton.Text = LanguageControl.Get(fName, 1);
+					m_actionButton.Text = LanguageControl.Get(GetType().Name, 1);
 					m_actionButton.IsEnabled = true;
 					m_copyLinkButton.IsEnabled = false;
 				}
 				else
 				{
-					m_actionButton.Text = LanguageControl.Get(fName, 2);
+					m_actionButton.Text = LanguageControl.Get(GetType().Name, 2);
 					if (ExternalContentManager.IsEntryTypeDownloadSupported(ExternalContentManager.ExtensionToType(Storage.GetExtension(externalContentEntry.Path).ToLower())))
 					{
 						m_actionButton.IsEnabled = true;
@@ -119,16 +119,16 @@ namespace Game
 				m_actionButton.IsVisible = false;
 				m_copyLinkButton.IsVisible = false;
 			}
-			m_directoryLabel.Text = m_externalContentProvider.IsLoggedIn ? string.Format(LanguageControl.Get(fName, 3), m_path) : LanguageControl.Get(fName, 4);
+			m_directoryLabel.Text = m_externalContentProvider.IsLoggedIn ? string.Format(LanguageControl.Get(GetType().Name, 3), m_path) : LanguageControl.Get(GetType().Name, 4);
 			m_providerNameLabel.Text = m_externalContentProvider.DisplayName;
 			m_upDirectoryButton.IsEnabled = (m_externalContentProvider.IsLoggedIn && m_path != "/");
-			m_loginLogoutButton.Text = (m_externalContentProvider.IsLoggedIn ? LanguageControl.Get(fName, 5) : LanguageControl.Get(fName, 6));
+			m_loginLogoutButton.Text = (m_externalContentProvider.IsLoggedIn ? LanguageControl.Get(GetType().Name, 5) : LanguageControl.Get(GetType().Name, 6));
 			m_loginLogoutButton.IsVisible = m_externalContentProvider.RequiresLogin;
 			m_copyLinkButton.IsVisible = m_externalContentProvider.SupportsLinks;
 			m_copyLinkButton.IsEnabled = (externalContentEntry != null && ExternalContentManager.IsEntryTypeDownloadSupported(externalContentEntry.Type));
 			if (m_changeProviderButton.IsClicked)
 			{
-				DialogsManager.ShowDialog(null, new SelectExternalContentProviderDialog(LanguageControl.Get(fName, 7), listingSupportRequired: true, delegate (IExternalContentProvider provider)
+				DialogsManager.ShowDialog(null, new SelectExternalContentProviderDialog(LanguageControl.Get(GetType().Name, 7), listingSupportRequired: true, delegate (IExternalContentProvider provider)
 				{
 					m_externalContentProvider = provider;
 					m_listDirty = true;
@@ -153,7 +153,7 @@ namespace Game
 			}
 			if (m_copyLinkButton.IsClicked && externalContentEntry != null && ExternalContentManager.IsEntryTypeDownloadSupported(externalContentEntry.Type))
 			{
-				var busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 8), autoHideOnCancel: false);
+				var busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 8), autoHideOnCancel: false);
 				DialogsManager.ShowDialog(null, busyDialog);
 				m_externalContentProvider.Link(externalContentEntry.Path, busyDialog.Progress, delegate (string link)
 				{
@@ -162,7 +162,7 @@ namespace Game
 				}, delegate (Exception error)
 				{
 					DialogsManager.HideDialog(busyDialog);
-					DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get("Usual", "error"), error.Message, LanguageControl.Get("Usual", "ok"), null, null));
+					DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, error.Message, LanguageControl.Ok, null, null));
 				});
 			}
 			if (m_loginLogoutButton.IsClicked)
@@ -207,7 +207,7 @@ namespace Game
 			m_directoryList.ClearItems();
 			if (m_externalContentProvider != null && m_externalContentProvider.IsLoggedIn)
 			{
-				var busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 9), autoHideOnCancel: false);
+				var busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 9), autoHideOnCancel: false);
 				DialogsManager.ShowDialog(null, busyDialog);
 				m_externalContentProvider.List(m_path, busyDialog.Progress, delegate (ExternalContentEntry entry)
 				{
@@ -229,18 +229,18 @@ namespace Game
 				}, delegate (Exception error)
 				{
 					DialogsManager.HideDialog(busyDialog);
-					DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get("Usual", "error"), error.Message, LanguageControl.Get("Usual", "ok"), null, null));
+					DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, error.Message, LanguageControl.Ok, null, null));
 				});
 			}
 		}
 
 		public void DownloadEntry(ExternalContentEntry entry)
 		{
-			var busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 10), autoHideOnCancel: false);
+			var busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 10), autoHideOnCancel: false);
 			DialogsManager.ShowDialog(null, busyDialog);
 			m_externalContentProvider.Download(entry.Path, busyDialog.Progress, delegate (Stream stream)
 			{
-				busyDialog.LargeMessage = LanguageControl.Get(fName, 12);
+				busyDialog.LargeMessage = LanguageControl.Get(GetType().Name, 12);
 				ExternalContentManager.ImportExternalContent(stream, entry.Type, Storage.GetFileName(entry.Path), delegate
 				{
 					stream.Dispose();
@@ -249,12 +249,12 @@ namespace Game
 				{
 					stream.Dispose();
 					DialogsManager.HideDialog(busyDialog);
-					DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get("Usual", "error"), error.Message, LanguageControl.Get("Usual", "ok"), null, null));
+					DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, error.Message, LanguageControl.Ok, null, null));
 				});
 			}, delegate (Exception error)
 			{
 				DialogsManager.HideDialog(busyDialog);
-				DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get("Usual", "error"), error.Message, LanguageControl.Get("Usual", "ok"), null, null));
+				DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, error.Message, LanguageControl.Ok, null, null));
 			});
 		}
 

@@ -143,9 +143,15 @@ namespace Game
             {
                 if (Time.PeriodicEvent(1.0, 0.0))
                 {
+#if DEBUG
+                    m_statsString = $"FPS {1f / AverageFrameTime:0.0} Screen:[" + ScreensManager.CurrentScreen.GetType().Name + "]";
+#else
                     m_statsString = $"CPUMEM {TotalMemoryUsed / 1024f / 1024f:0}MB, GPUMEM {TotalGpuMemoryUsed / 1024f / 1024f:0}MB, CPU {AverageCpuFrameTime / AverageFrameTime * 100f:0}%, FPS {1f / AverageFrameTime:0.0}";
+#endif
+
                 }
-                m_primitivesRenderer.FontBatch(BitmapFont.DebugFont, 0, null, null, null, SamplerState.PointClamp).QueueText(m_statsString, new Vector2(viewport.Width/2, 0f), 0f, Color.White, TextAnchor.Right, scale, Vector2.Zero);
+                FontBatch2D fontBatch2D = m_primitivesRenderer.FontBatch(BitmapFont.DebugFont, 0, null, null, null, SamplerState.PointClamp);
+                fontBatch2D.QueueText(m_statsString, Vector2.Transform(Vector2.Zero,ScreensManager.RootWidget.GlobalTransform), 0f, Color.White, TextAnchor.Default, scale, Vector2.Zero);
             }
             if (SettingsManager.DisplayFpsRibbon)
             {

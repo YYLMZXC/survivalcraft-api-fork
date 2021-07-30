@@ -70,9 +70,9 @@ namespace Game
                 SettingsManager.MultithreadedTerrainUpdate = true;
                 SettingsManager.UseReducedZRange = false;
             }
-            m_singlethreadedTerrainUpdateButton.Text = (SettingsManager.MultithreadedTerrainUpdate ? LanguageControl.Get("Usual", "off") : LanguageControl.Get("Usual", "on"));
-            m_useAudioTrackCachingButton.Text = (SettingsManager.EnableAndroidAudioTrackCaching ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
-            m_useReducedZRangeButton.Text = (SettingsManager.UseReducedZRange ? LanguageControl.Get("Usual", "on") : LanguageControl.Get("Usual", "off"));
+            m_singlethreadedTerrainUpdateButton.Text = (SettingsManager.MultithreadedTerrainUpdate ? LanguageControl.Off : LanguageControl.On);
+            m_useAudioTrackCachingButton.Text = (SettingsManager.EnableAndroidAudioTrackCaching ? LanguageControl.On : LanguageControl.Off);
+            m_useReducedZRangeButton.Text = (SettingsManager.UseReducedZRange ? LanguageControl.On : LanguageControl.Off);
 
             m_resetDefaultsButton.IsEnabled = (!SettingsManager.MultithreadedTerrainUpdate || SettingsManager.UseReducedZRange);
             if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)

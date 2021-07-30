@@ -50,7 +50,7 @@ namespace Game
 
         public int ModificationCounter;
 
-        public float[] FogEnds = new float[4];
+        public float[] FogEnds = new float[SubsystemPlayers.MaxPlayers];
 
         public int[] SliceContentsHashes = new int[16];
 

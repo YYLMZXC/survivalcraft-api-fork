@@ -8,9 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("Survivalcraft.Resource", IsApplication=false)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("Game.Resource", IsApplication=false)]
 
-namespace Survivalcraft
+namespace Game
 {
 	
 	
