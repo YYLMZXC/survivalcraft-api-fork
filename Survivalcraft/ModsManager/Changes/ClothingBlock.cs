@@ -72,7 +72,7 @@ namespace Game
         {
             XElement xElement = null;
             foreach (ModEntity modEntity in ModsManager.ModList) {
-                if(modEntity.IsLoaded&&!modEntity.IsDisabled)modEntity.LoadClo(this,ref xElement);
+                modEntity.LoadClo(this,ref xElement);
             }
             LoadClothingData(xElement);
             Model playerModel = CharacterSkinsManager.GetPlayerModel(PlayerClass.Male);

@@ -35,18 +35,6 @@ namespace Game
                 }
             }
         }
-        public override void InitPak()
-        {
-            IEnumerable<string> dlls = Storage.ListFileNames(ModsManager.ModsPath);
-            foreach (string c in dlls)
-            {
-                if (c.EndsWith(".pak"))
-                {
-                   // ContentManager.Add(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
-                }
-
-            }
-        }
         public override void LoadClo(ClothingBlock block, ref XElement xElement)
         {
             IEnumerable<string> dlls = Storage.ListFileNames(ModsManager.ModsPath);

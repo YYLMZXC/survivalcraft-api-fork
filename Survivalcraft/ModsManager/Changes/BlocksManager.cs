@@ -41,17 +41,15 @@ namespace Game
             CalculateSlotTexCoordTables();
             int num = 0;
             foreach (ModEntity entity in ModsManager.ModList) {
-                if (entity.IsLoaded && !entity.IsDisabled) {
-                    for (int i = 0; i < entity.Blocks.Count; i++)
+                for (int i = 0; i < entity.Blocks.Count; i++)
+                {
+                    Block block = entity.Blocks[i];
+                    m_blocks[block.BlockIndex] = block;
+                    if (block is FluidBlock)
                     {
-                        Block block = entity.Blocks[i];
-                        m_blocks[block.BlockIndex] = block;
-                        if (block is FluidBlock)
-                        {
-                            m_fluidBlocks[block.BlockIndex] = block as FluidBlock;
-                        }
+                        m_fluidBlocks[block.BlockIndex] = block as FluidBlock;
                     }
-                }            
+                }
             }
             for (num = 0; num < m_blocks.Length; num++)
             {
@@ -61,7 +59,7 @@ namespace Game
                 }
             }
             foreach (ModEntity modEntity in ModsManager.ModList) {
-                if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.LoadBlocksData();
+                modEntity.LoadBlocksData();
             }
             for (int j = 0; j < m_blocks.Length; j++)
             {

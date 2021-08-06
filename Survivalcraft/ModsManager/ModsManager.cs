@@ -90,13 +90,13 @@ public static class ModsManager
             }
         }
     }
-
+    private static bool AllowContinue = true;
     public static ModSettings modSettings=new ModSettings();
-    public static List<Exception> Exceptions = new List<Exception>();
     public static List<ModEntity> ModList = new List<ModEntity>();
     public static List<ModLoader> ModLoaders = new List<ModLoader>();
     public static List<ModInfo> DisabledMods = new List<ModInfo>();
     public static Dictionary<string, ModHook> ModHooks = new Dictionary<string, ModHook>();
+    public static bool GetAllowContinue() { return AllowContinue; }
     /// <summary>
     /// 执行Hook
     /// </summary>
@@ -125,7 +125,7 @@ public static class ModsManager
         modHook.Add(modLoader);
     }
     public static void DisableHook(ModLoader from, string HookName,string packageName,string reason) {
-        ModEntity modEntity = ModList.Find(p=>p.modInfo.PackageName==packageName);
+        ModEntity modEntity = ModList.Find(p => p.modInfo.PackageName == packageName);
         if (ModHooks.TryGetValue(HookName, out ModHook modHook))
         {
             modHook.Disable(from, modEntity.ModLoader_, reason);
@@ -227,14 +227,14 @@ public static class ModsManager
     public static void SaveSettings(XElement xElement)
     {
         foreach (ModEntity modEntity in ModList) {
-           if(modEntity.IsLoaded&&!modEntity.IsDisabled) modEntity.SaveSettings(xElement);
+           modEntity.SaveSettings(xElement);
         }
     }
     public static void LoadSettings(XElement xElement)
     {
         foreach (ModEntity modEntity in ModList)
         {
-            if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.SaveSettings(xElement);
+            modEntity.SaveSettings(xElement);
         }
     }
     public static string ImportMod(string name,Stream stream) {
@@ -260,16 +260,19 @@ public static class ModsManager
         ModList.Add(new SurvivalCrafModEntity());
         ModList.Add(new FastDebugModEntity());
         GetScmods(ModsPath);
+        List<ModInfo> ToDisable = new List<ModInfo>();
+        ToDisable.AddRange(DisabledMods);
         foreach (ModEntity modEntity1 in ModList) {
             ModInfo modInfo = modEntity1.modInfo;
-            ModInfo disabledmod = DisabledMods.Find(l=>l.PackageName==modInfo.PackageName&&l.Version==modInfo.Version);
-            if (disabledmod != null) {
-                modEntity1.IsDisabled = true;
-                modEntity1.IsLoaded = false;
+            ModInfo disabledmod = ToDisable.Find(l=>l.PackageName==modInfo.PackageName&&l.Version==modInfo.Version);
+            if (disabledmod != null)
+            {
+                ToDisable.Add(modEntity1.modInfo);
+                ModList.Remove(modEntity1);
                 continue;
             }
             if (modEntity1.IsChecked) continue;
-            List<ModEntity> modEntities = ModList.FindAll(px => px.IsLoaded && !px.IsDisabled && px.modInfo.PackageName == modInfo.PackageName);
+            List<ModEntity> modEntities = ModList.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
             var version = new Version();
             foreach (ModEntity modEntity in modEntities)
             {
@@ -283,16 +286,17 @@ public static class ModsManager
                 {
                     if (version != new Version(modEntity.modInfo.Version))
                     {
-                        modEntity1.IsLoaded = false;
-                        modEntity1.IsDisabled = true;
+                        ToDisable.Add(modEntity1.modInfo);
+                        ModList.Remove(modEntity1);
                     }
                     modEntity1.IsChecked = true;
                 }
             }
         }
     }
-    public static void AddException(Exception e) {
-        Exceptions.Add(e);
+    public static void AddException(Exception e,bool AllowContinue_=false) {
+        LoadingScreen.Error(e.Message);
+        AllowContinue = AllowContinue_;
     }
     /// <summary>
     /// 获取所有文件

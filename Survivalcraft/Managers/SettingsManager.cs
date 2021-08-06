@@ -596,13 +596,10 @@ namespace Game
                 var xElement1 = new XElement("DisableMods");
                 foreach (ModEntity modEntity in ModsManager.ModList)
                 {
-                    if (modEntity.IsDisabled) {
-                        var element = new XElement("Mod");
-                        element.SetAttributeValue("PackageName", modEntity.modInfo.PackageName);
-                        element.SetAttributeValue("Version", modEntity.modInfo.Version);
-                        xElement1.Add(element);
-
-                    }
+                    var element = new XElement("Mod");
+                    element.SetAttributeValue("PackageName", modEntity.modInfo.PackageName);
+                    element.SetAttributeValue("Version", modEntity.modInfo.Version);
+                    xElement1.Add(element);
                 }
                 xElement.Add(xElement1);
                 ModsManager.SaveSettings(xElement);

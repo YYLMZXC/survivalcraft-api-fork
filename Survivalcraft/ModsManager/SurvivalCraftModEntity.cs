@@ -30,10 +30,7 @@ namespace Game
             stream = null;
             return false;
         }
-        public override void InitPak()
-        {
-            //ContentManager.Add("app:/Content.pak");
-        }
+
         public override void LoadBlocksData()
         {
             BlocksManager.LoadBlocksData(ContentManager.Get<string>("BlocksData"));

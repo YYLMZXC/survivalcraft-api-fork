@@ -203,7 +203,7 @@ public class ManageContentScreen : Screen
         {
             string smallMessage = (selectedItem.UseCount <= 0) ? string.Format(LanguageControl.Get(fName, 5), selectedItem.DisplayName) : string.Format(LanguageControl.Get(fName, 6), selectedItem.DisplayName, selectedItem.UseCount);
             if (selectedItem.Type == ExternalContentType.Mod) {
-                smallMessage = (selectedItem.ModEntity.IsDisabled ? LanguageControl.Enable : LanguageControl.Disable) + $"[{selectedItem.ModEntity.modInfo.Name}]?";
+                smallMessage = (ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo) ? LanguageControl.Enable : LanguageControl.Disable) + $"[{selectedItem.ModEntity.modInfo.Name}]?";
             }
             DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 9), smallMessage, LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
             {
@@ -212,8 +212,16 @@ public class ManageContentScreen : Screen
                     if (selectedItem.Type == ExternalContentType.Mod)
                     {
                         changeed = true;
-                        selectedItem.ModEntity.IsDisabled = !selectedItem.ModEntity.IsDisabled;
-                        selectedItem.ModEntity.IsLoaded = !selectedItem.ModEntity.IsDisabled;
+                        if (ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo))
+                        {
+                            selectedItem.ModEntity.Dispose();
+                            ModsManager.DisabledMods.Remove(selectedItem.ModEntity.modInfo);
+                            ModsManager.ModList.Add(selectedItem.ModEntity);
+                        }
+                        else {
+                            ModsManager.DisabledMods.Add(selectedItem.ModEntity.modInfo);
+                            ModsManager.ModList.Remove(selectedItem.ModEntity);
+                        }
                     }
                     else {
                         ExternalContentManager.DeleteExternalContent(selectedItem.Type, selectedItem.Name);

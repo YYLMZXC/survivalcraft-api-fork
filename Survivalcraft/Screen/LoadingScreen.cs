@@ -19,14 +19,20 @@ namespace Game
             public LogItem(LogType type, string log) { LogType = type; Message = log; }
         }
         public List<Action> m_loadActions = new List<Action>();
-
         public CanvasWidget Canvas = new CanvasWidget();
-
-        public ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
-
+        public static ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
+        static LoadingScreen() {
+            LogList.ItemWidgetFactory += (obj) => {
+                LogItem logItem = obj as LogItem;
+                CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(float.PositiveInfinity, 20), Margin = new Vector2(Display.Viewport.Width, 2) };
+                FontTextWidget fontTextWidget = new FontTextWidget() { Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
+                canvasWidget.Children.Add(fontTextWidget);
+                return canvasWidget;
+            };
+            LogList.ItemSize = 20;
+        }
         public XElement DatabaseNode;
-
-        public Color GetColor(LogType type) {
+        public static Color GetColor(LogType type) {
             switch (type) {
                 case LogType.Advice:return Color.Cyan;
                 case LogType.Error:return Color.Red;
@@ -39,36 +45,28 @@ namespace Game
         {
             Canvas.Size = new Vector2(float.PositiveInfinity);
             Canvas.Children.Add(LogList);
-            LogList.ItemWidgetFactory += (obj) => {
-                LogItem logItem = obj as LogItem;
-                CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(float.PositiveInfinity, 20), Margin = new Vector2(Display.Viewport.Width, 2) };
-                FontTextWidget fontTextWidget = new FontTextWidget() { Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
-                canvasWidget.Children.Add(fontTextWidget);
-                return canvasWidget;
-            };
-            LogList.ItemSize = 20;
             Children.Add(Canvas);
             Info("Initilizing Mods Manager. Api Version: 1.34");
         }
 
-        public void Error(string mesg)
+        public static void Error(string mesg)
         {
             Add(LogType.Error,mesg);
         }
-        public void Info(string mesg)
+        public static void Info(string mesg)
         {
             Add(LogType.Info, mesg);
         }
-        public void Warning(string mesg)
+        public static void Warning(string mesg)
         {
             Add(LogType.Warning, mesg);
         }
-        public void Advice(string mesg)
+        public static void Advice(string mesg)
         {
             Add(LogType.Advice, mesg);
         }
 
-        public void Add(LogType type,string mesg) {
+        public static void Add(LogType type,string mesg) {
             LogItem item = new LogItem(type, mesg);
             LogList.AddItem(item);
             LogList.ScrollToItem(item);
@@ -76,6 +74,17 @@ namespace Game
 
         public void InitActions()
         {
+            AddLoadAction(delegate {//将所有的有效的scmod读取为ModEntity，并自动添加SurvivalCraftModEntity
+                ModsManager.Initialize();            
+            });
+            AddLoadAction(delegate { //初始化所有ModEntity的资源包
+                foreach (ModEntity modEntity in ModsManager.ModList) {
+                    modEntity.InitResources();                
+                }            
+            });
+        }
+        public void InitScreen() {
+
             AddLoadAction(delegate
             {
                 AddScreen("Nag", new NagScreen());
@@ -192,10 +201,8 @@ namespace Game
             {
                 AddScreen("Player", new PlayerScreen());
             });
-
-
-
         }
+
         public void AddScreen(string name, Screen screen)
         {
             ScreensManager.AddScreen(name, screen);
@@ -210,6 +217,7 @@ namespace Game
         }
         public override void Leave()
         {
+            LogList.ClearItems();
             Window.PresentationInterval = SettingsManager.PresentationInterval;
         }
         public override void Enter(object[] parameters)
@@ -229,8 +237,11 @@ namespace Game
         }
         public override void Update()
         {
-
-
+            if (ModsManager.GetAllowContinue() == false) return;
+            if (m_loadActions.Count > 0) {
+                m_loadActions[0].Invoke();
+                m_loadActions.RemoveAt(0);
+            }
         }
     }
 }

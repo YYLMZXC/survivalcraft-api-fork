@@ -18,14 +18,9 @@ namespace Game {
         public ZipArchive ModArchive;
         public Dictionary<string, Stream> ModFiles = new Dictionary<string, Stream>();
         public List<Block> Blocks = new List<Block>();
-        public bool HasException = false;
         public bool IsChecked;
+        private bool ResourcesInited = false;
         public Action ModInit;
-        public bool IsLoaded = true;
-        public bool IsDisabled { 
-            get;
-            set;
-        }
         public ModLoader ModLoader_;
         public ModEntity() { }
         public ModEntity(ZipArchive zipArchive)
@@ -101,11 +96,12 @@ namespace Game {
         /// <summary>
         /// 初始化Pak资源
         /// </summary>
-        public virtual void InitPak()
+        public virtual void InitResources()
         {
-            foreach (Stream stream in GetFiles(".pak"))
-            {
-                //ContentManager.Add(stream);
+            foreach (ZipArchiveEntry zipArchiveEntry in ModArchive.ReadCentralDir()) {
+                if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/")) {
+                    ContentManager.Add(this,zipArchiveEntry.FilenameInZip.Substring(7));                
+                }            
             }
         }
         /// <summary>
@@ -234,7 +230,7 @@ namespace Game {
                 {
                     dn = name;
                 }
-                ModEntity entity = ModsManager.ModList.Find(px =>px.IsLoaded && !px.IsDisabled && px.modInfo.PackageName == dn && new Version(px.modInfo.Version) == dnversion);
+                ModEntity entity = ModsManager.ModList.Find(px => px.modInfo.PackageName == dn && new Version(px.modInfo.Version) == dnversion);
                 if (entity != null)
                 {
                     entity.CheckDependencies();//依赖项最先被加载
@@ -242,9 +238,7 @@ namespace Game {
                 }
                 else
                 {
-                    HasException = true;
-                    IsLoaded = false;
-                    ModsManager.AddException(new Exception($"[{modInfo.Name}]缺少依赖项{name}"));
+                    ModsManager.AddException(new Exception($"[{modInfo.Name}]缺少依赖项{name}"), false);
                     return;
                 }
             }
