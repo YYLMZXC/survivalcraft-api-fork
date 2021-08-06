@@ -1,4 +1,3 @@
-using Engine.Content;
 using Engine.Graphics;
 using System;
 using System.Collections.Generic;
@@ -90,12 +89,76 @@ namespace Engine.Media
 				if (m_debugFont == null)
 				{
 #if android
-					m_debugFont = BitmapFontContentReader.ReadBitmapFont(Storage.OpenFile("app:DebugFont.dat", OpenFileMode.Read));
+					using (Stream stream = Storage.OpenFile("app:DebugFont.dat", OpenFileMode.Read)) {
+						m_debugFont = (BitmapFont)Serialization.ContentSerializer.StreamConvertType(typeof(BitmapFont), string.Empty, stream);
+					}
 #else
-					m_debugFont = BitmapFontContentReader.ReadBitmapFont(typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Embedded.DebugFont.dat"));
+					/*
+					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.dat")) {
+						Engine.Content.BitmapFontContentReader.ReadBitmapFont(stream);
+					
+					}
+					*/
+					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png"))
+					{
+						using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst"))
+						{
+							m_debugFont = Initialize(stream, stream2);
+						}
+
+					}
 #endif
 				}
 				return m_debugFont;
+			}
+		}
+		/// <summary>
+		/// 纹理图
+		/// </summary>
+		/// <param name="texture">图片文件的输入流</param>
+		/// <param name="glyphs">位图数据的输入流</param>
+		public static BitmapFont Initialize(Stream TextureStream,Stream GlyphsStream) {
+			try
+			{
+				Texture2D texture = Texture2D.Load(TextureStream);
+				BitmapFont bitmapFont = new BitmapFont();
+				StreamReader streamReader = new StreamReader(GlyphsStream);
+				int num = int.Parse(streamReader.ReadLine());
+				var array = new Glyph[num];
+				for (int i = 0; i < num; i++)
+				{
+					string line = streamReader.ReadLine();
+					string[] arr = line.Split(new char[] { ' ' }, StringSplitOptions.None);
+					if (arr.Length == 9)
+					{
+						string[] tmp = new string[8];
+						tmp[0] = " ";
+						for (int j = 2; j < arr.Length; j++)
+						{
+							tmp[j - 1] = arr[j];
+						}
+						arr = tmp;
+					}
+					char code = char.Parse(arr[0]);
+					Vector2 texCoord = new Vector2(float.Parse(arr[1]), float.Parse(arr[2]));
+					Vector2 texCoord2 = new Vector2(float.Parse(arr[3]), float.Parse(arr[4]));
+					Vector2 offset = new Vector2(float.Parse(arr[5]), float.Parse(arr[6]));
+					float width = float.Parse(arr[7]);
+					array[i] = new Glyph(code, texCoord, texCoord2, offset, width);
+				}
+				float glyphHeight = float.Parse(streamReader.ReadLine());
+				string line2 = streamReader.ReadLine();
+				string[] arr2 = line2.Split(new char[] { ' ' }, StringSplitOptions.None);
+				Vector2 spacing = new Vector2(float.Parse(arr2[0]), float.Parse(arr2[1]));
+				float scale = float.Parse(streamReader.ReadLine());
+				char fallbackCode = char.Parse(streamReader.ReadLine());
+				bitmapFont.Initialize(texture, null, array, fallbackCode, glyphHeight, spacing, scale);
+				return bitmapFont;
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.Message);
+				return null;
 			}
 		}
 
@@ -224,7 +287,10 @@ namespace Engine.Media
 			{
 				if (m_debugFont != null)
 				{
-					BitmapFontContentReader.InitializeBitmapFont(typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Embedded.DebugFont.dat"), m_debugFont);
+					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Embedded.DebugFont.dat"))
+					{
+						m_debugFont = (BitmapFont)Serialization.ContentSerializer.StreamConvertType(typeof(BitmapFont), string.Empty, stream);
+					}
 				}
 			};
 		}

@@ -42,7 +42,7 @@ namespace Game
             {
                 if (c.EndsWith(".pak"))
                 {
-                    ContentManager.Add(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
+                   // ContentManager.Add(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
                 }
 
             }

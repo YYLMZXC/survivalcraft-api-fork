@@ -189,6 +189,7 @@
     <Compile Include="Engine.Serialization\CharSerializer.cs" />
     <Compile Include="Engine.Serialization\ColorHumanReadableConverter.cs" />
     <Compile Include="Engine.Serialization\ColorSerializer.cs" />
+    <Compile Include="Engine.Serialization\ContentSerializer.cs" />
     <Compile Include="Engine.Serialization\DateTimeHumanReadableConverter.cs" />
     <Compile Include="Engine.Serialization\DecimalHumanReadableConverter.cs" />
     <Compile Include="Engine.Serialization\DictionarySerializer.cs" />
@@ -426,19 +427,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Engine\Resources.Embedded.DebugFont.dat" />
-    <EmbeddedResource Include="Resources\Embedded\DebugFont.dat" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Engine\Resources.Embedded.Lit.psh" />
-    <Content Include="Engine\Resources.Embedded.Lit.vsh" />
-    <Content Include="Engine\Resources.Embedded.Unlit.psh" />
-    <Content Include="Engine\Resources.Embedded.Unlit.vsh" />
+    <EmbeddedResource Include="Resources\Lit.psh" />
+    <EmbeddedResource Include="Resources\Lit.vsh" />
+    <EmbeddedResource Include="Resources\Unlit.psh" />
+    <EmbeddedResource Include="Resources\Unlit.vsh" />
+    <EmbeddedResource Include="Resources\Debugfont.lst" />
+    <EmbeddedResource Include="Resources\Debugfont.png" />
     <EmbeddedResource Include="Resources\icon.ico" />
-    <EmbeddedResource Include="Resources\Embedded\Unlit.vsh" />
-    <EmbeddedResource Include="Resources\Embedded\Unlit.psh" />
-    <EmbeddedResource Include="Resources\Embedded\Lit.vsh" />
-    <EmbeddedResource Include="Resources\Embedded\Lit.psh" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -1,86 +1,94 @@
 using Engine;
-using Engine.Content;
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 using System.IO;
+using System.Collections.Generic;
+using Engine.Serialization;
+using Engine.Media;
+
 namespace Game
 {
-
+    public class ContentInfo { 
+        public ModEntity Entity;
+        public string Filename;
+        public string AbsolutePath;
+        public ContentInfo(ModEntity entity, string filename)
+        {
+            Entity = entity;
+            Filename = filename;
+        }
+        public object Get(Type type, string name)
+        {
+            object obj = null;
+            if (Entity.GetFile(name, out Stream stream))
+            {
+                obj = ContentSerializer.StreamConvertType(type, name, stream);
+            }
+            return obj;
+        }
+    }
     public static class ContentManager
     {
+        internal static Dictionary<string, ContentInfo> Resources = new Dictionary<string, ContentInfo>();
+
         public static void Initialize()
         {
-            Add("app:/Core.pak");
+
+
+
         }
 
-        public static object Get(string name)
+        public static T Get<T>(string name) where T : class
         {
-            return ContentCache.Get(name);
+            return Get(typeof(T),name) as T;
         }
 
         public static object Get(Type type, string name)
         {
-            if (type == typeof(Subtexture))
-            {
-                return TextureAtlasManager.GetSubtexture(name);
-            }
-            if (type == typeof(string) && name.StartsWith("Strings/"))
-            {
-                return StringsManager.GetString(name.Substring(8));
-            }
-            object obj = Get(name);
-            if (!type.GetTypeInfo().IsAssignableFrom(obj.GetType().GetTypeInfo()))
-            {
-                throw new InvalidOperationException(string.Format(LanguageControl.Get("ContentManager", "1"), name, obj.GetType().FullName, type.FullName));
+            object obj = null;
+            if (Resources.TryGetValue(name, out ContentInfo contentInfo)) {
+                if (contentInfo.Entity.GetFile(name,out Stream stream)) {
+                    using (stream) {
+                        obj = ContentSerializer.StreamConvertType(type,name,stream);
+                    }
+                }            
             }
             return obj;
         }
 
-        public static T Get<T>(string name)
-        {
-            return (T)Get(typeof(T), name);
-        }
+        
 
-        public static void Add(Stream stream) {
-            ContentCache.AddPackage(()=> stream, Encoding.UTF8.GetBytes(Pad()), new byte[1] { 63 });
-        }
-        public static void Add(string name)
+        public static void Add(ModEntity entity,string name)
         {
-            ContentCache.AddPackage(name, Encoding.UTF8.GetBytes(Pad()), new byte[1] { 63 });
+            if (Resources.TryGetValue(name, out ContentInfo contentInfo))
+            {
+                Resources[name] = new ContentInfo(entity, name);
+            }
+            else
+                Resources.Add(name, new ContentInfo(entity, name));
         }
 
         public static void Dispose(string name)
         {
-            ContentCache.Dispose(name);
+
         }
 
         public static bool IsContent(object content)
         {
-            return ContentCache.IsContent(content);
+            return false;
         }
 
         public static ReadOnlyList<ContentInfo> List()
         {
-            return ContentCache.List();
+            return new ReadOnlyList<ContentInfo>(Resources.Values.ToDynamicArray());
         }
 
         public static ReadOnlyList<ContentInfo> List(string directory)
         {
-            return ContentCache.List(directory);
-        }
-
-        public static string Pad()
-        {
-            string text = string.Empty;
-            string text2 = "0123456789abdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            var random = new Random(171);
-            for (int i = 0; i < 229; i++)
-            {
-                text += text2[random.Int(text2.Length)].ToString();
+            List<ContentInfo> contents = new List<ContentInfo>();
+            foreach (var content in Resources.Values) {
+                if(content.AbsolutePath.StartsWith(directory))contents.Add(content);            
             }
-            return text;
+            return new ReadOnlyList<ContentInfo>(contents);
         }
     }
 }

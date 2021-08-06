@@ -1,4 +1,3 @@
-using Engine.Content;
 using Engine.Serialization;
 using System;
 using System.IO;
@@ -85,11 +84,10 @@ namespace Engine.Media
 
 			public override StreamingSource Duplicate()
 			{
-				var contentStream = m_stream as ContentStream;
-				if (contentStream != null)
-				{
-					return new WavStreamingSource(contentStream.Duplicate());
-				}
+				MemoryStream memoryStream = new MemoryStream();
+				m_stream.Position = 0L;
+				m_stream.CopyTo(memoryStream);
+				return new WavStreamingSource(memoryStream);
 				throw new InvalidOperationException("Underlying stream does not support duplication.");
 			}
 		}

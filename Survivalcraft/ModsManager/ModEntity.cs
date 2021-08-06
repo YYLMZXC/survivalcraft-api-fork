@@ -105,7 +105,7 @@ namespace Game {
         {
             foreach (Stream stream in GetFiles(".pak"))
             {
-                ContentManager.Add(stream);
+                //ContentManager.Add(stream);
             }
         }
         /// <summary>

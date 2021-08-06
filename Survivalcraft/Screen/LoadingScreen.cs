@@ -1,295 +1,81 @@
 using Engine;
-using Engine.Content;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using System.IO;
-using XmlUtilities;
 using Engine.Graphics;
 namespace Game
 {
     public class LoadingScreen : Screen
     {
+        public enum LogType { 
+            Info,
+            Warning,
+            Error,
+            Advice
+        }
+        private class LogItem {
+            public LogType LogType;
+            public string Message;
+            public LogItem(LogType type, string log) { LogType = type; Message = log; }
+        }
         public List<Action> m_loadActions = new List<Action>();
 
-        public List<Action> QuequeAction = new List<Action>();
+        public CanvasWidget Canvas = new CanvasWidget();
 
-        public int m_index;
-
-        public bool m_loadingStarted;
-
-        public bool m_loadingFinished;
-
-        public bool m_pauseLoading;
-
-        public bool m_loadingErrorsSuppressed;
-
-        public StackPanelWidget panelWidget = new StackPanelWidget() { Direction = LayoutDirection.Vertical, HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Far, Margin = new Vector2(0, 80) };
-
-        public LabelWidget labelWidget = new LabelWidget() { Text = "API v1.34", Color = Color.Green, VerticalAlignment = WidgetAlignment.Far, HorizontalAlignment = WidgetAlignment.Center };
-
-        public static LabelWidget labelWidget2 = new LabelWidget() { Color = Color.Green, VerticalAlignment = WidgetAlignment.Near, HorizontalAlignment = WidgetAlignment.Near, Margin = new Vector2(50) };
+        public ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical };
 
         public XElement DatabaseNode;
 
-        public bool IsShow = false;
-
+        public Color GetColor(LogType type) {
+            switch (type) {
+                case LogType.Advice:return Color.Cyan;
+                case LogType.Error:return Color.Red;
+                case LogType.Warning:return Color.Yellow;
+                case LogType.Info:return Color.White;
+                default:return Color.White;
+            }
+        }
         public LoadingScreen()
         {
-            XElement node = ContentManager.Get<XElement>("Screens/LoadingScreen");
-            LoadContents(this, node);
-            panelWidget.Children.Add(labelWidget);
-            Children.Add(labelWidget2);
-            Children.Add(panelWidget);
+            Canvas.Size = new Vector2(float.PositiveInfinity);
+            Canvas.Children.Add(LogList);
+            LogList.ItemWidgetFactory += (obj) => {
+                LogItem logItem = obj as LogItem;
+                CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(float.PositiveInfinity, 20), Margin = new Vector2(Display.Viewport.Width, 2) };
+                FontTextWidget fontTextWidget = new FontTextWidget() { Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
+                canvasWidget.Children.Add(fontTextWidget);
+                return canvasWidget;
+            };
+            LogList.ItemSize = 20;
+            Children.Add(Canvas);
+            Info("Initilizing Mods Manager. Api Version: 1.34");
+        }
+
+        public void Error(string mesg)
+        {
+            Add(LogType.Error,mesg);
+        }
+        public void Info(string mesg)
+        {
+            Add(LogType.Info, mesg);
+        }
+        public void Warning(string mesg)
+        {
+            Add(LogType.Warning, mesg);
+        }
+        public void Advice(string mesg)
+        {
+            Add(LogType.Advice, mesg);
+        }
+
+        public void Add(LogType type,string mesg) {
+            LogItem item = new LogItem(type, mesg);
+            LogList.AddItem(item);
+            LogList.ScrollToItem(item);
         }
 
         public void InitActions()
         {
-
-            AddLoadAction(() => {
-                SetMsg("初始化ModsManager");
-                ModsManager.Initialize();
-                ContentManager.Initialize();
-            });
-            AddLoadAction(() => {
-                SetMsg("初始化语言包:[SurvivalCraft]");
-                LanguageControl.Initialize(ModsManager.modSettings.languageType);
-            });
-            AddLoadAction(() => {
-                ModsManager.ModListAllDo(entity => {
-                    if (entity.IsLoaded && entity.IsDisabled == false)
-                    {
-                        AddQuequeAction(() => {
-                            SetMsg($"检查Mod依赖项:{entity.modInfo.Name}");
-                            entity.CheckDependencies();
-                        });
-                    }
-                });
-            });
-            AddLoadAction(() => {
-                ModsManager.ModListAllDo(modEntity => {
-                    if (modEntity.IsLoaded && modEntity.IsDisabled == false)
-                    {
-                        AddQuequeAction(() => {
-                            SetMsg($"初始化Pak:[{modEntity.modInfo.Name}]");
-                            try
-                            {
-                                modEntity.InitPak();
-
-                            }
-                            catch (Exception e)
-                            {
-                                ModsManager.AddException(e);
-                                modEntity.HasException = true;
-                                modEntity.IsLoaded = false;
-                            }
-                        });
-                    }
-
-                });
-            });
-            AddLoadAction(() => {
-                foreach (ContentInfo item in ContentManager.List())
-                {
-                    ContentInfo localContentInfo = item;
-                    AddQuequeAction(delegate
-                    {
-                        try
-                        {
-                            SetMsg($"检查Pak:{localContentInfo.Name}");
-                            ContentManager.Get(localContentInfo.Name);
-                        }
-                        catch (Exception e)
-                        {
-                            ModsManager.AddException(e);
-                        }
-                    });
-                }
-            });
-            AddLoadAction(() => {
-                ModsManager.ModListAllDo(entity => {
-                    if (entity.IsLoaded && entity.IsDisabled == false)
-                    {
-                        AddQuequeAction(() => {
-                            SetMsg($"加载Dll:{entity.modInfo.Name}");
-                            try
-                            {
-                                entity.LoadDll();
-                            }
-                            catch (Exception e)
-                            {
-                                entity.HasException = true;
-                                entity.IsLoaded = false;
-                                ModsManager.AddException(e);
-                            }
-                        });
-                    }
-
-                });
-            });
-            AddLoadAction(() => {
-                ModsManager.ModListAllDo(modEntity => {
-                    if (modEntity.IsLoaded && modEntity.IsDisabled == false)
-                    {
-                        AddQuequeAction(() => {
-                            SetMsg($"回滚Pak:[{modEntity.modInfo.Name}]");
-                            modEntity.InitPak();
-                        });
-                    }
-
-                });
-            });
-            AddLoadAction(() => {
-                ModsManager.ModListAllDo(modEntity => {
-                    if (modEntity.IsLoaded && modEntity.IsDisabled == false)
-                    {
-                        AddQuequeAction(() => {
-                            try
-                            {
-                                SetMsg($"初始化Mod:[{modEntity.modInfo.Name}]");
-                                if (modEntity.ModLoader_ != null) modEntity.ModLoader_.__ModInitialize();
-                            }
-                            catch (Exception e)
-                            {
-                                ModsManager.AddException(e);
-                                modEntity.IsLoaded = false;
-                                modEntity.HasException = true;
-                            }
-                        });
-                    }
-
-                });
-            });
-            AddLoadAction(() => {
-                SetMsg("初始化DatabaseManager:[SurvivalCraft]");
-                ModsManager.ModListAllDo(entity => {
-                    if (entity.IsLoaded && entity.IsDisabled == false)
-                    {
-                        AddQuequeAction(() => {
-                            try
-                            {
-                                SetMsg($"初始化DatabaseManager:[{entity.modInfo.Name}]");
-                                entity.LoadXdb(ref DatabaseManager.xElement);
-                            }
-                            catch (Exception e)
-                            {
-                                ModsManager.AddException(e);
-                                entity.IsLoaded = false;
-                                entity.HasException = true;
-                            }
-
-                        });
-                    }
-
-                });
-            });
-            AddLoadAction(() => {
-                SetMsg("加载Database:[SurvivalCraft]");
-                if (DatabaseManager.xElement == null)
-                {
-                    ModsManager.AddException(new InvalidOperationException("Database.xml初始化失败"));
-                }
-                else
-                {
-                    DatabaseManager.LoadDataBaseFromXml(DatabaseManager.xElement);
-                }
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化CommunityContentManager");
-                CommunityContentManager.Initialize();
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化MotdManager");
-                MotdManager.Initialize();
-            });
-            AddLoadAction(() => {
-                ModsManager.ModListAllDo(modEntity => {
-                    if (modEntity.IsLoaded && modEntity.IsDisabled == false)
-                    {
-                        AddQuequeAction(() => {
-                            try
-                            {
-                                SetMsg($"初始化语言包:[{modEntity.modInfo.Name}]");
-                                modEntity.LoadLauguage();
-                            }
-                            catch (Exception e)
-                            {
-                                modEntity.IsLoaded = false;
-                                modEntity.HasException = true;
-                                ModsManager.AddException(e);
-                            }
-
-                        });
-
-                    }
-
-                });
-
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化LightingManager");
-                LightingManager.Initialize();
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化StringsManager");
-                StringsManager.LoadStrings();
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化TextureAtlasManager");
-                TextureAtlasManager.LoadAtlases();
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化WorldsManager");
-                WorldsManager.Initialize();
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化BlocksTexturesManager");
-                BlocksTexturesManager.Initialize();
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化CharacterSkinsManager");
-                CharacterSkinsManager.Initialize();
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化FurniturePacksManager");
-                FurniturePacksManager.Initialize();
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化BlocksManager");
-                BlocksManager.Initialize();
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化CraftingRecipesManager");
-                CraftingRecipesManager.Initialize();
-            });
-            AddLoadAction(() =>
-            {
-                SetMsg("初始化MusicManager");
-                MusicManager.CurrentMix = MusicManager.Mix.Menu;
-            });
-            AddLoadAction(() => {
-                if (Storage.FileExists(ModsManager.ModsSetPath))
-                {
-                    using (Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Read))
-                    {
-                        SetMsg("初始化Mods设置");
-                        XElement xElement = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
-                        ModsManager.LoadSettings(xElement);
-                    }
-                }
-            });
-
             AddLoadAction(delegate
             {
                 AddScreen("Nag", new NagScreen());
@@ -406,32 +192,8 @@ namespace Game
             {
                 AddScreen("Player", new PlayerScreen());
             });
-            AddLoadAction(()=> {
-                SetMsg("检查ModHooks");
-                foreach (ModEntity modEntity in ModsManager.ModList)
-                {
-                    if (modEntity.IsLoaded == false) {
-                        modEntity.Dispose();
-                    }
-                    if (modEntity.IsLoaded == false || modEntity.IsDisabled) {
-                        if (modEntity.ModLoader_ != null)
-                        {
-                            foreach (var items in ModsManager.ModHooks.Values)
-                            {
-                                items.Remove(modEntity.ModLoader_);
-                            }
-                        }
-                    }
-                }
-            });
-            AddLoadAction(delegate
-            {
-                SetMsg("Init Screens");
-                foreach (ModEntity modEntity in ModsManager.ModList)
-                {
-                    if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.InitScreens(this);
-                }
-            });
+
+
 
         }
         public void AddScreen(string name, Screen screen)
@@ -444,11 +206,7 @@ namespace Game
         }
         public void AddQuequeAction(Action action)
         {
-            QuequeAction.Add(action);
-        }
-        public static void SetMsg(string text)
-        {
-            labelWidget2.Text = text;
+            //QuequeAction.Add(action);
         }
         public override void Leave()
         {
@@ -466,96 +224,13 @@ namespace Game
             {
                 ScreensManager.m_screens.Remove(screen);
             }
-
-            Window.PresentationInterval = 0;
-            m_loadingStarted = false;
-            m_loadingFinished = false;
             InitActions();
             base.Enter(parameters);
         }
         public override void Update()
         {
-            if (!m_loadingStarted)
-            {
-                m_loadingStarted = true;
-            }
-            else
-            {
-                if (m_loadingFinished)
-                {
-                    return;
-                }
-                double realTime = Time.RealTime;
 
-                while (!m_pauseLoading && m_index < m_loadActions.Count)
-                {
-                    if (QuequeAction.Count == 0)
-                    {
-                        try
-                        {
-                            m_loadActions[m_index++]();
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Error("Loading error. Reason: " + ex.Message);
-                            if (!m_loadingErrorsSuppressed)
-                            {
-                                m_pauseLoading = true;
-                                DialogsManager.ShowDialog(ScreensManager.RootWidget, new MessageDialog("Loading Error", ExceptionManager.MakeFullErrorMessage(ex), "确定", "Suppress", delegate (MessageDialogButton b)
-                                {
-                                    switch (b)
-                                    {
-                                        case MessageDialogButton.Button1:
-                                            m_pauseLoading = false;
-                                            break;
-                                        case MessageDialogButton.Button2:
-                                            m_loadingErrorsSuppressed = true;
-                                            break;
-                                    }
-                                }));
-                            }
-                        }
-                    }
 
-                    if (QuequeAction.Count > 0)
-                    {
-                        QuequeAction[0].Invoke();
-                        QuequeAction.RemoveAt(0);
-                    }
-                    if (ModsManager.Exceptions.Count > 0)
-                    {
-                        m_pauseLoading = true;
-                    }
-                    if (Time.RealTime - realTime > 0.1)
-                    {
-                        break;
-                    }
-                }
-                if (ModsManager.Exceptions.Count > 0 && !IsShow)
-                {
-                    IsShow = true; m_pauseLoading = true;
-                    DialogsManager.ShowDialog(ScreensManager.RootWidget, new MessageDialog("Mod加载出错", ExceptionManager.MakeFullErrorMessage(ModsManager.Exceptions[0]), "确定", "忽略", delegate (MessageDialogButton b)
-                    {
-                        switch (b)
-                        {
-                            case MessageDialogButton.Button1:
-                                m_pauseLoading = false;
-                                IsShow = false;
-                                ModsManager.Exceptions.RemoveAt(0);
-                                break;
-                            case MessageDialogButton.Button2:
-                                m_loadingErrorsSuppressed = true;
-                                break;
-                        }
-                    }));
-                }
-                if (m_index >= m_loadActions.Count)
-                {
-                    m_loadingFinished = true;
-                    AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
-                    ScreensManager.SwitchScreen("MainMenu");
-                }
-            }
         }
     }
 }

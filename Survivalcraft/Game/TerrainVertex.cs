@@ -17,6 +17,8 @@ namespace Game
 
         public Color Color;
 
-        public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.NormalizedShort2, VertexElementSemantic.TextureCoordinate), new VertexElement(16, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color));
+        public Vector3 Normal;
+
+        public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.NormalizedShort2, VertexElementSemantic.TextureCoordinate), new VertexElement(16, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color), new VertexElement(20, VertexElementFormat.Vector3, VertexElementSemantic.Normal));
     }
 }

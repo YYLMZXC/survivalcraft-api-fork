@@ -383,6 +383,7 @@
     <Compile Include="Game\AlphaTestedShader.cs" />
     <Compile Include="Game\HighlightShader.cs" />
     <Compile Include="Game\OpaqueShader.cs" />
+    <Compile Include="Game\Subtexture.cs" />
     <Compile Include="Game\TerrainSerializer22.cs" />
     <Compile Include="Game\TransparentShader.cs" />
     <Compile Include="Managers\AnalyticsManager.cs" />
@@ -406,7 +407,6 @@
     <Compile Include="Managers\ProgressManager.cs" />
     <Compile Include="Managers\SettingsManager.cs" />
     <Compile Include="Managers\StringsManager.cs" />
-    <Compile Include="Managers\TextureAtlasManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Managers\VersionsManager.cs" />
     <Compile Include="Managers\WebBrowserManager.cs" />
@@ -863,7 +863,6 @@
     <Compile Include="Game\StraightFlightCamera.cs" />
     <Compile Include="Game\StringUtils.cs" />
     <Compile Include="ModsManager\LanguageControl.cs" />
-    <Compile Include="Game\Subtexture.cs" />
     <Compile Include="Game\SwitchElectricElement.cs" />
     <Compile Include="Game\SwitchFurnitureElectricElement.cs" />
     <Compile Include="Game\TargetElectricElement.cs" />
@@ -887,7 +886,6 @@
     <Compile Include="Game\TerrainVertex.cs" />
     <Compile Include="Dialog\TextBoxDialog.cs" />
     <Compile Include="Game\TextOrientation.cs" />
-    <Compile Include="Game\TextureAtlas.cs" />
     <Compile Include="Game\ThermometerElectricElement.cs" />
     <Compile Include="Game\TimeOfDayMode.cs" />
     <Compile Include="Game\TouchInput.cs" />
@@ -1061,12 +1059,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content.pak">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Core.pak">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Content.zip" />
     <None Include="lang\en_US.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -1094,7 +1087,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

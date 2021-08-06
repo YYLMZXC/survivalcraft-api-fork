@@ -134,7 +134,7 @@ public class ManageContentScreen : Screen
                         RectangleWidget rectangleWidget = containerWidget.Children.Find<RectangleWidget>("BlocksTextureItem.Icon");
                         LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Text");
                         LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Details");
-                        rectangleWidget.Subtexture = listItem.Texture==null ? TextureAtlasManager.GetSubtexture("Textures/Atlas/WorldIcon"):new Subtexture(listItem.Texture,Vector2.Zero,Vector2.One);
+                        rectangleWidget.Subtexture = listItem.Texture==null ? ContentManager.Get<Subtexture>("Textures/Atlas/WorldIcon"):new Subtexture(listItem.Texture,Vector2.Zero,Vector2.One);
                         rectangleWidget.TextureLinearFilter = true;
                         labelWidget.Text = listItem.DisplayName;
                         labelWidget2.Text = listItem.Name;

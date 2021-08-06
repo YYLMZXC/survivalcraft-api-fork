@@ -1,21 +1,12 @@
-using Engine;
+﻿using Engine.Serialization;
 using Engine.Graphics;
-
+using Engine;
 namespace Game
 {
-    public class Subtexture
+    public class Subtexture : Engine.Serialization.Subtexture
     {
-        public readonly Texture2D Texture;
-
-        public readonly Vector2 TopLeft;
-
-        public readonly Vector2 BottomRight;
-
-        public Subtexture(Texture2D texture, Vector2 topLeft, Vector2 bottomRight)
+        public Subtexture(Texture2D texture, Vector2 topLeft, Vector2 bottomRight) : base(texture, topLeft, bottomRight)
         {
-            Texture = texture;
-            TopLeft = topLeft;
-            BottomRight = bottomRight;
         }
     }
 }

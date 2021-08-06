@@ -8,7 +8,7 @@ namespace Game
     {
         public SubsystemTerrain m_subsystemTerrain;
 
-        public SubsystemSky m_subsystemSky;
+        public static SubsystemSky m_subsystemSky;
 
         public SubsystemAnimatedTextures m_subsystemAnimatedTextures;
 
@@ -17,6 +17,8 @@ namespace Game
         public static Shader AlphatestedShader;
 
         public static Shader TransparentShader;
+
+        public static LitShader LightShader = new LitShader(1, true, true, true, false, false) { SamplerState=SamplerState.PointWrap};
 
         public SamplerState m_samplerState = new SamplerState
         {
@@ -135,18 +137,26 @@ namespace Game
 
         public void DrawOpaque(Camera camera)
         {
+            /*
             Vector3 viewPosition = camera.ViewPosition;
             Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
             Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
+            */
             Display.BlendState = BlendState.Opaque;
             Display.DepthStencilState = DepthStencilState.Default;
             Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-            OpaqueShader.GetParameter("u_origin").SetValue(v.XZ);
-            OpaqueShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
-            OpaqueShader.GetParameter("u_viewPosition").SetValue(viewPosition);
-            OpaqueShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
-            OpaqueShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
-            OpaqueShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+            LightShader.Transforms.View = camera.ViewMatrix;
+            LightShader.Transforms.Projection = camera.ProjectionMatrix;
+            LightShader.Transforms.World[0]=Matrix.Identity;
+            LightShader.EmissionColor =new Vector4(new Vector3(Color.White),1f);
+            /*
+            LightShader.GetParameter("u_origin").SetValue(v.XZ);
+            LightShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
+            LightShader.GetParameter("u_viewPosition").SetValue(viewPosition);
+            LightShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+            LightShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
+            LightShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+            */
             ModsManager.HookAction("SetShaderParameter", modLoader => {
                 modLoader.SetShaderParameter(OpaqueShader);
                 return false;
@@ -154,7 +164,7 @@ namespace Game
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
                 TerrainChunk terrainChunk = m_chunksToDraw[i];
-                DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk.Geometry.DrawBuffers, CalculateSubsetsMask(terrainChunk, m_subsystemSky, camera, OpaqueShader));
+                DrawTerrainChunkGeometrySubsets(LightShader, terrainChunk.Geometry.DrawBuffers, CalculateSubsetsMask(terrainChunk, m_subsystemSky, camera, OpaqueShader));
                 ChunksDrawn++;
             }
         }
@@ -277,7 +287,14 @@ namespace Game
         }
 
         public static void DrawTerrainChunkGeometrySubset(Shader shader, TerrainGeometry.DrawBuffer buffer, int subsetsMask) {
-            shader.GetParameter("u_texture").SetValue(buffer.Texture);
+            if (shader == LightShader)
+            {
+                LightShader.Texture = buffer.Texture;
+                LightShader.LightDirection1 = m_subsystemSky.MoonPoint;
+            }
+            else {
+                shader.GetParameter("u_texture").SetValue(buffer.Texture);
+            }
             int num = 2147483647;
             int num2 = 0;
             for (int i = 0; i < 8; i++)

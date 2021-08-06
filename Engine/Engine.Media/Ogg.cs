@@ -1,4 +1,3 @@
-using Engine.Content;
 using NVorbis;
 using System;
 using System.IO;
@@ -100,14 +99,16 @@ namespace Engine.Media
 				}
 				return num * 2;
 			}
-
+			/// <summary>
+			/// 复制出一个新的流
+			/// </summary>
+			/// <returns></returns>
 			public override StreamingSource Duplicate()
 			{
-				var contentStream = m_stream as ContentStream;
-				if (contentStream != null)
-				{
-					return new OggStreamingSource(contentStream.Duplicate());
-				}
+				MemoryStream memoryStream = new MemoryStream();
+				m_stream.Position = 0L;
+				m_stream.CopyTo(memoryStream);
+				return new OggStreamingSource(memoryStream);
 				throw new InvalidOperationException("Underlying stream does not support duplication.");
 			}
 		}
