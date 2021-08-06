@@ -260,6 +260,8 @@ public static class ModsManager
         ModList.Add(new SurvivalCrafModEntity());
         ModList.Add(new FastDebugModEntity());
         GetScmods(ModsPath);
+        DisabledMods.Clear();
+        List<ModEntity> ToRemove = new List<ModEntity>();
         List<ModInfo> ToDisable = new List<ModInfo>();
         ToDisable.AddRange(DisabledMods);
         foreach (ModEntity modEntity1 in ModList) {
@@ -268,7 +270,7 @@ public static class ModsManager
             if (disabledmod != null)
             {
                 ToDisable.Add(modEntity1.modInfo);
-                ModList.Remove(modEntity1);
+                ToRemove.Add(modEntity1);
                 continue;
             }
             if (modEntity1.IsChecked) continue;
@@ -287,11 +289,14 @@ public static class ModsManager
                     if (version != new Version(modEntity.modInfo.Version))
                     {
                         ToDisable.Add(modEntity1.modInfo);
-                        ModList.Remove(modEntity1);
+                        ToRemove.Add(modEntity1);
                     }
                     modEntity1.IsChecked = true;
                 }
             }
+        }
+        foreach (var item in ToRemove) {
+            ModsManager.ModList.Remove(item);
         }
     }
     public static void AddException(Exception e,bool AllowContinue_=false) {
@@ -321,6 +326,7 @@ public static class ModsManager
             }
             catch (Exception e)
             {
+                stream.Close();
                 AddException(e);
             }
         }

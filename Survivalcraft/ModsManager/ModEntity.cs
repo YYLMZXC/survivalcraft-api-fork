@@ -94,14 +94,27 @@ namespace Game {
             }
         }
         /// <summary>
+        /// Mod初始化
+        /// </summary>
+        public virtual void ModInitialize() {
+            LoadingScreen.Info("Invoke ModInitialize:"+modInfo?.PackageName);
+            ModLoader_?.__ModInitialize();
+        }
+        /// <summary>
         /// 初始化Pak资源
         /// </summary>
         public virtual void InitResources()
         {
-            foreach (ZipArchiveEntry zipArchiveEntry in ModArchive.ReadCentralDir()) {
-                if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/")) {
-                    ContentManager.Add(this,zipArchiveEntry.FilenameInZip.Substring(7));                
-                }            
+            if (ModArchive == null) return;
+            List<ZipArchiveEntry> entries = ModArchive.ReadCentralDir();
+            LoadingScreen.Info("Loading Resources:" + modInfo?.PackageName);
+            foreach (ZipArchiveEntry zipArchiveEntry in entries) {
+                Dispatcher.Dispatch(delegate {
+                    if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
+                    {
+                        ContentManager.Add(this, zipArchiveEntry.FilenameInZip.Substring(7));
+                    }
+                });
             }
         }
         /// <summary>
@@ -109,6 +122,7 @@ namespace Game {
         /// </summary>
         public virtual void LoadBlocksData()
         {
+            LoadingScreen.Info("Loading Resources:" + modInfo?.PackageName);
             foreach (Stream stream in GetFiles(".csv"))
             {
                 BlocksManager.LoadBlocksData(ModsManager.StreamToString(stream));
@@ -161,6 +175,7 @@ namespace Game {
         /// </summary>
         public virtual void LoadDll()
         {
+            LoadingScreen.Info("Loading Assembly:" + modInfo?.Name);
             foreach (Stream stream in GetFiles(".dll"))
             {
                 LoadDllLogic(stream);
@@ -211,6 +226,7 @@ namespace Game {
         /// </summary>
         public virtual void CheckDependencies()
         {
+            LoadingScreen.Info("CheckDependencies:"+modInfo?.PackageName);
             for (int j = 0; j < modInfo.Dependencies.Count; j++)
             {
                 int k = j;

@@ -21,8 +21,9 @@ namespace Game
         public List<Action> m_loadActions = new List<Action>();
         public CanvasWidget Canvas = new CanvasWidget();
         public static ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
+
         static LoadingScreen() {
-            LogList.ItemWidgetFactory += (obj) => {
+            LogList.ItemWidgetFactory = (obj) => {
                 LogItem logItem = obj as LogItem;
                 CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(float.PositiveInfinity, 20), Margin = new Vector2(Display.Viewport.Width, 2) };
                 FontTextWidget fontTextWidget = new FontTextWidget() { Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
@@ -43,7 +44,9 @@ namespace Game
         }
         public LoadingScreen()
         {
+            RectangleWidget rectangle = new RectangleWidget() { FillColor = Color.Black, OutlineThickness = 0f };
             Canvas.Size = new Vector2(float.PositiveInfinity);
+            Canvas.Children.Add(rectangle);
             Canvas.Children.Add(LogList);
             Children.Add(Canvas);
             Info("Initilizing Mods Manager. Api Version: 1.34");
@@ -77,11 +80,21 @@ namespace Game
             AddLoadAction(delegate {//将所有的有效的scmod读取为ModEntity，并自动添加SurvivalCraftModEntity
                 ModsManager.Initialize();            
             });
-            AddLoadAction(delegate { //初始化所有ModEntity的资源包
-                foreach (ModEntity modEntity in ModsManager.ModList) {
-                    modEntity.InitResources();                
-                }            
+            AddLoadAction(delegate {//检查所有Mod依赖项 
+                ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });
+            
             });
+            AddLoadAction(delegate { //初始化所有ModEntity的资源包
+                ModsManager.ModListAllDo((modEntity) => { modEntity.InitResources(); });
+            });
+
+            AddLoadAction(delegate { //读取所有的ModEntity的dll，并分离出ModLoader
+                ModsManager.ModListAllDo((modEntity) => { modEntity.LoadDll(); });
+            });
+            AddLoadAction(delegate { //执行所有ModEntity的ModInitialize方法
+                ModsManager.ModListAllDo((modEntity) => { modEntity.ModInitialize(); });
+            });
+
         }
         public void InitScreen() {
 
@@ -239,8 +252,15 @@ namespace Game
         {
             if (ModsManager.GetAllowContinue() == false) return;
             if (m_loadActions.Count > 0) {
-                m_loadActions[0].Invoke();
-                m_loadActions.RemoveAt(0);
+                try
+                {
+                    m_loadActions[0].Invoke();
+                    m_loadActions.RemoveAt(0);
+                }
+                catch (Exception e)
+                {
+                    ModsManager.AddException(e, true);
+                }
             }
         }
     }

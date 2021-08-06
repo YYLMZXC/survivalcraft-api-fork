@@ -189,7 +189,7 @@ public class ManageContentScreen : Screen
             m_uploadButton.IsEnabled = !selectedItem.IsBuiltIn;
             if (selectedItem.Type == ExternalContentType.Mod)
             {
-                m_deleteButton.Text = selectedItem.ModEntity.IsDisabled ? LanguageControl.Enable : LanguageControl.Disable;
+                m_deleteButton.Text = ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo) ? LanguageControl.Enable : LanguageControl.Disable;
                 m_deleteButton.IsEnabled = !(selectedItem.ModEntity is SurvivalCrafModEntity || selectedItem.ModEntity is FastDebugModEntity);
             }
             else
@@ -325,7 +325,7 @@ public class ManageContentScreen : Screen
             foreach (ModEntity modEntity in ModsManager.ModList)
             {
                 string dis = string.Empty;
-                if (modEntity.IsDisabled) dis = "[已禁用]";
+                if (ModsManager.DisabledMods.Contains(modEntity.modInfo)) dis = "[已禁用]";
                 string author = string.IsNullOrEmpty(modEntity.modInfo.Author) ? "无" : modEntity.modInfo.Author;
                 list.Add(new ListItem
                 {

@@ -16,11 +16,8 @@ namespace Game
             modInfo.ScVersion = "2.2.10.4";
             modInfo.Name = "SurvivalCraft";
             modInfo.Version = "2.2.10.4";
-            modInfo.PackageName = "com.survivalcraf";
-            using (Stream stream = Storage.OpenFile("app:Content.zip", OpenFileMode.Read))
-            {
-                ModArchive = ZipArchive.Open(stream, true);
-            }
+            modInfo.PackageName = "com.survivalcraft";
+            ModArchive = ZipArchive.Open(Storage.OpenFile("app:Content.zip", OpenFileMode.Read), true);
         }
         public override void CheckDependencies()
         {
