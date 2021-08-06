@@ -22,7 +22,7 @@ namespace Game
 
         public CanvasWidget Canvas = new CanvasWidget();
 
-        public ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical };
+        public ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
 
         public XElement DatabaseNode;
 
