@@ -64,7 +64,7 @@ namespace Game
         {
             if (m_batch == null)
             {
-                m_batch = SubsystemParticles.PrimitivesRenderer.FontBatch(ContentManager.Get<BitmapFont>("Fonts/Pericles"), 0, DepthStencilState.None);
+                m_batch = SubsystemParticles.PrimitivesRenderer.FontBatch(LabelWidget.BitmapFont, 0, DepthStencilState.None);
             }
             Vector3 viewDirection = camera.ViewDirection;
             var vector = Vector3.Normalize(Vector3.Cross(viewDirection, Vector3.UnitY));

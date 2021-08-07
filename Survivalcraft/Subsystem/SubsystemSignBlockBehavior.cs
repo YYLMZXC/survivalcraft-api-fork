@@ -71,7 +71,7 @@ namespace Game
 
         public List<TextData> m_nearTexts = new List<TextData>();
 
-        public BitmapFont m_font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
+        public BitmapFont m_font = LabelWidget.BitmapFont;
 
         public RenderTarget2D m_renderTarget;
 

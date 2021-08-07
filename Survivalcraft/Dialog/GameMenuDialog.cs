@@ -48,8 +48,8 @@ namespace Game
             PlayerStats playerStats = componentPlayer.PlayerStats;
             SubsystemGameInfo subsystemGameInfo = project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
             SubsystemFurnitureBlockBehavior subsystemFurnitureBlockBehavior = project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true);
-            BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
-            BitmapFont font2 = ContentManager.Get<BitmapFont>("Fonts/Pericles");
+            BitmapFont font = LabelWidget.BitmapFont;
+            BitmapFont font2 = LabelWidget.BitmapFont;
             Color white = Color.White;
             var stackPanelWidget = new StackPanelWidget
             {
@@ -321,7 +321,7 @@ namespace Game
 
         public void AddStat(ContainerWidget containerWidget, string title, string value1, string value2 = "")
         {
-            BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
+            BitmapFont font = LabelWidget.BitmapFont;
             Color white = Color.White;
             Color gray = Color.Gray;
             containerWidget.Children.Add(new UniformSpacingPanelWidget

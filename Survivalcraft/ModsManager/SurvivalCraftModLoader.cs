@@ -105,7 +105,7 @@ namespace Game
                         {
                             var right = Vector3.TransformNormal(0.005f * Vector3.Normalize(Vector3.Cross(camera.ViewDirection, Vector3.UnitY)), camera.ViewMatrix);
                             var down = Vector3.TransformNormal(-0.005f * Vector3.UnitY, camera.ViewMatrix);
-                            BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
+                            BitmapFont font = LabelWidget.BitmapFont;
                             modelsRenderer.PrimitivesRenderer.FontBatch(font, 1, DepthStencilState.DepthRead, RasterizerState.CullNoneScissor, BlendState.AlphaBlend, SamplerState.LinearClamp).QueueText(m_componentPlayer.PlayerData.Name, position, right, down, color, TextAnchor.HorizontalCenter | TextAnchor.Bottom);
                         }
                     }

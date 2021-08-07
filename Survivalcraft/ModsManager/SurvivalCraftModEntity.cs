@@ -19,15 +19,6 @@ namespace Game
             modInfo.PackageName = "com.survivalcraft";
             ModArchive = ZipArchive.Open(Storage.OpenFile("app:Content.zip", OpenFileMode.Read), true);
         }
-        public override void CheckDependencies()
-        {
-        }
-        public override bool GetFile(string filename, out Stream stream)
-        {
-            stream = null;
-            return false;
-        }
-
         public override void LoadBlocksData()
         {
             BlocksManager.LoadBlocksData(ContentManager.Get<string>("BlocksData"));

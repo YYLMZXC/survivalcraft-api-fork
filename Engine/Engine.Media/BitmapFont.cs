@@ -128,7 +128,7 @@ namespace Engine.Media
 				for (int i = 0; i < num; i++)
 				{
 					string line = streamReader.ReadLine();
-					string[] arr = line.Split(new char[] { ' ' }, StringSplitOptions.None);
+					string[] arr = line.Split(new char[] { (char)0x20, (char)0x09 }, StringSplitOptions.None);
 					if (arr.Length == 9)
 					{
 						string[] tmp = new string[8];
@@ -148,7 +148,7 @@ namespace Engine.Media
 				}
 				float glyphHeight = float.Parse(streamReader.ReadLine());
 				string line2 = streamReader.ReadLine();
-				string[] arr2 = line2.Split(new char[] { ' ' }, StringSplitOptions.None);
+				string[] arr2 = line2.Split(new char[] { (char)0x20, (char)0x09 }, StringSplitOptions.None);
 				Vector2 spacing = new Vector2(float.Parse(arr2[0]), float.Parse(arr2[1]));
 				float scale = float.Parse(streamReader.ReadLine());
 				char fallbackCode = char.Parse(streamReader.ReadLine());
@@ -287,9 +287,13 @@ namespace Engine.Media
 			{
 				if (m_debugFont != null)
 				{
-					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Embedded.DebugFont.dat"))
+					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png"))
 					{
-						m_debugFont = (BitmapFont)Serialization.ContentSerializer.StreamConvertType(typeof(BitmapFont), string.Empty, stream);
+						using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst"))
+						{
+							m_debugFont = Initialize(stream, stream2);
+						}
+
 					}
 				}
 			};

@@ -16,11 +16,9 @@ namespace Game {
         public ModInfo modInfo;
         public Texture2D Icon;
         public ZipArchive ModArchive;
-        public Dictionary<string, Stream> ModFiles = new Dictionary<string, Stream>();
+        public Dictionary<string, ZipArchiveEntry> ModFiles = new Dictionary<string, ZipArchiveEntry>();
         public List<Block> Blocks = new List<Block>();
         public bool IsChecked;
-        private bool ResourcesInited = false;
-        public Action ModInit;
         public ModLoader ModLoader_;
         public ModEntity() { }
         public ModEntity(ZipArchive zipArchive)
@@ -62,23 +60,19 @@ namespace Game {
             return files;
         }
         /// <summary>
-        /// 获取指定文件
+        /// 获取指定文件，将ZipArchive解压到内存中
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
         public virtual bool GetFile(string filename, out Stream stream)
-        {
-            filename = filename.ToLower();
-            //将每个zip里面的文件读进内存中
-            foreach (ZipArchiveEntry zipArchiveEntry in ModArchive.ReadCentralDir())
+        {            
+            if (ModFiles.TryGetValue(filename, out ZipArchiveEntry entry))
             {
-                if (zipArchiveEntry.FilenameInZip.ToLower() == filename)
-                {
-                    stream = new MemoryStream();
-                    ModArchive.ExtractFile(zipArchiveEntry, stream);
-                    stream.Seek(0, SeekOrigin.Begin);
-                    return true;
-                }
+                stream = new MemoryStream();
+                ModArchive.ExtractFile(entry, stream);
+                stream.Seek(0, SeekOrigin.Begin);
+                return true;
+
             }
             stream = null;
             return false;
@@ -105,6 +99,7 @@ namespace Game {
         /// </summary>
         public virtual void InitResources()
         {
+            ModFiles.Clear();
             if (ModArchive == null) return;
             List<ZipArchiveEntry> entries = ModArchive.ReadCentralDir();
             LoadingScreen.Info("Loading Resources:" + modInfo?.PackageName);
@@ -112,6 +107,7 @@ namespace Game {
                 Dispatcher.Dispatch(delegate {
                     if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
                     {
+                        ModFiles.Add(zipArchiveEntry.FilenameInZip.Substring(7), zipArchiveEntry);
                         ContentManager.Add(this, zipArchiveEntry.FilenameInZip.Substring(7));
                     }
                 });

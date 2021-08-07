@@ -181,7 +181,6 @@ namespace Game
             ClampToBounds = true;
             Color = Color.White;
             TextureLinearFilter = true;
-            Font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
             FontScale = 1f;
             Title = string.Empty;
             Description = string.Empty;

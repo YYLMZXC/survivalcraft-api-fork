@@ -25,14 +25,13 @@ namespace Game
         static LoadingScreen() {
             LogList.ItemWidgetFactory = (obj) => {
                 LogItem logItem = obj as LogItem;
-                CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(float.PositiveInfinity, 20), Margin = new Vector2(Display.Viewport.Width, 2) };
-                FontTextWidget fontTextWidget = new FontTextWidget() { Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
+                CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(float.PositiveInfinity, 20), Margin = new Vector2(Display.Viewport.Width, 2),HorizontalAlignment=WidgetAlignment.Near };
+                FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 2f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
                 canvasWidget.Children.Add(fontTextWidget);
                 return canvasWidget;
             };
             LogList.ItemSize = 20;
         }
-        public XElement DatabaseNode;
         public static Color GetColor(LogType type) {
             switch (type) {
                 case LogType.Advice:return Color.Cyan;
@@ -81,20 +80,33 @@ namespace Game
                 ModsManager.Initialize();            
             });
             AddLoadAction(delegate {//检查所有Mod依赖项 
-                ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });
-            
+                ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });            
             });
             AddLoadAction(delegate { //初始化所有ModEntity的资源包
                 ModsManager.ModListAllDo((modEntity) => { modEntity.InitResources(); });
             });
-
-            AddLoadAction(delegate { //读取所有的ModEntity的dll，并分离出ModLoader
+            AddLoadAction(delegate { //读取所有的ModEntity的dll，并分离出ModLoader，保存Blocks
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadDll(); });
+            });
+            AddLoadAction(delegate {//初始化TextureAtlas
+                Info("TextureAtlas Initialize");
+                TextureAtlasManager.Initialize();
             });
             AddLoadAction(delegate { //执行所有ModEntity的ModInitialize方法
                 ModsManager.ModListAllDo((modEntity) => { modEntity.ModInitialize(); });
             });
 
+            AddLoadAction(delegate { //初始化Database
+                DatabaseManager.Initialize();
+                ModsManager.ModListAllDo((modEntity) => { modEntity.LoadXdb(ref DatabaseManager.DatabaseNode); });
+                DatabaseManager.LoadDataBaseFromXml(DatabaseManager.DatabaseNode);
+            });
+
+            AddLoadAction(delegate { //初始化方块管理器
+                BlocksManager.Initialize();
+            });
+
+            InitScreen();
         }
         public void InitScreen() {
 
