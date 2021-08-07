@@ -111,10 +111,6 @@ namespace Game {
                         ModFiles.Add(zipArchiveEntry.FilenameInZip.Substring(7), zipArchiveEntry);
                         ContentManager.Add(this, zipArchiveEntry.FilenameInZip.Substring(7));
                     }
-                    else {
-                        LoadingScreen.Info("Check dir:"+zipArchiveEntry.FilenameInZip);
-                    
-                    }
                 });
             }
         }

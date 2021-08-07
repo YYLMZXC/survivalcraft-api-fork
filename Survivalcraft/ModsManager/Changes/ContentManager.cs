@@ -157,7 +157,7 @@ namespace Game
             switch (type.FullName)
             {
                 case "Engine.Audio.SoundBuffer":return Engine.Audio.SoundBuffer.Load(stream);
-                case "Engine.Graphics.Texture2D": return Texture2D.Load(stream);
+                case "Engine.Graphics.Texture2D": return Texture2D.Load(stream,true);
                 case "System.String":return new StreamReader(stream).ReadToEnd();
                 case "Engine.Media.Image": return Image.Load(stream);
                 case "System.Xml.Linq.XElement": return XElement.Load(stream);

@@ -118,6 +118,15 @@ namespace Game
 
             AddLoadAction(delegate {
                 BlocksTexturesManager.Initialize();
+                AnalyticsManager.Initialize();
+                CharacterSkinsManager.Initialize();
+                CommunityContentManager.Initialize();
+                ExternalContentManager.Initialize();
+                FurniturePacksManager.Initialize();
+                LightingManager.Initialize();
+                MotdManager.Initialize();
+                VersionsManager.Initialize();
+                WorldsManager.Initialize();
             });
             AddLoadAction(()=> {
                 ScreensManager.SwitchScreen("MainMenu");

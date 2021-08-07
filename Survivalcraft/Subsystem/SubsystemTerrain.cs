@@ -365,12 +365,12 @@ namespace Game
                     TerrainUpdater.PrepareForDrawing(camera);
                     TerrainRenderer.PrepareForDrawing(camera);
                     TerrainRenderer.DrawOpaque(camera);
-                    TerrainRenderer.DrawAlphaTested(camera);
+                    //TerrainRenderer.DrawAlphaTested(camera);
                 }
-                else if (drawOrder == m_drawOrders[1])
-                {
-                    TerrainRenderer.DrawTransparent(camera);
-                }
+//                else if (drawOrder == m_drawOrders[1])
+ //               {
+ //                   TerrainRenderer.DrawTransparent(camera);
+ //               }
             }
         }
 

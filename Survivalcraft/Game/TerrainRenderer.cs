@@ -18,7 +18,7 @@ namespace Game
 
         public static Shader TransparentShader;
 
-        public static LitShader LightShader = new LitShader(1, true, true, true, false, false) { SamplerState=SamplerState.PointWrap};
+        public static LitShader LightShader = new LitShader(1, false, false, true, false, false) { SamplerState=SamplerState.PointWrap};
 
         public SamplerState m_samplerState = new SamplerState
         {
@@ -142,13 +142,12 @@ namespace Game
             Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
             Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
             */
-            Display.BlendState = BlendState.Opaque;
+            Display.BlendState = BlendState.AlphaBlend;
             Display.DepthStencilState = DepthStencilState.Default;
-            Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
+            Display.RasterizerState = RasterizerState.CullNoneScissor;
             LightShader.Transforms.View = camera.ViewMatrix;
             LightShader.Transforms.Projection = camera.ProjectionMatrix;
             LightShader.Transforms.World[0]=Matrix.Identity;
-            LightShader.EmissionColor =new Vector4(new Vector3(Color.White),1f);
             /*
             LightShader.GetParameter("u_origin").SetValue(v.XZ);
             LightShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
@@ -159,12 +158,14 @@ namespace Game
             */
             ModsManager.HookAction("SetShaderParameter", modLoader => {
                 modLoader.SetShaderParameter(OpaqueShader);
-                return false;
+                return false; 
             });
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
                 TerrainChunk terrainChunk = m_chunksToDraw[i];
                 DrawTerrainChunkGeometrySubsets(LightShader, terrainChunk.Geometry.DrawBuffers, CalculateSubsetsMask(terrainChunk, m_subsystemSky, camera, OpaqueShader));
+                DrawTerrainChunkGeometrySubsets(LightShader, terrainChunk.Geometry.DrawBuffers, 32);//»æÖÆAlphatest
+                DrawTerrainChunkGeometrySubsets(LightShader, terrainChunk.Geometry.DrawBuffers, 64);//»æÖÆTransparent
                 ChunksDrawn++;
             }
         }
