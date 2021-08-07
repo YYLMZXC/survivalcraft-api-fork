@@ -82,8 +82,9 @@ namespace Game {
         /// </summary>
         public virtual void LoadLauguage()
         {
+            LoadingScreen.Info("Load Language:"+modInfo?.PackageName);
             if (GetFile($"{ModsManager.modSettings.languageType}.json", out Stream stream))
-            {
+            {                
                 LanguageControl.loadJson(stream);
             }
         }
@@ -105,10 +106,14 @@ namespace Game {
             LoadingScreen.Info("Loading Resources:" + modInfo?.PackageName);
             foreach (ZipArchiveEntry zipArchiveEntry in entries) {
                 Dispatcher.Dispatch(delegate {
-                    if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
+                    if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/") && zipArchiveEntry.FileSize > 0)
                     {
                         ModFiles.Add(zipArchiveEntry.FilenameInZip.Substring(7), zipArchiveEntry);
                         ContentManager.Add(this, zipArchiveEntry.FilenameInZip.Substring(7));
+                    }
+                    else {
+                        LoadingScreen.Info("Check dir:"+zipArchiveEntry.FilenameInZip);
+                    
                     }
                 });
             }
@@ -222,7 +227,7 @@ namespace Game {
         /// </summary>
         public virtual void CheckDependencies()
         {
-            LoadingScreen.Info("CheckDependencies:"+modInfo?.PackageName);
+            LoadingScreen.Info("CheckDependencies:" + modInfo?.PackageName);
             for (int j = 0; j < modInfo.Dependencies.Count; j++)
             {
                 int k = j;

@@ -71,9 +71,7 @@ namespace Game
         public override void Initialize()
         {
             XElement xElement = null;
-            foreach (ModEntity modEntity in ModsManager.ModList) {
-                modEntity.LoadClo(this,ref xElement);
-            }
+            ModsManager.ModListAllDo((modEntity) => { modEntity.LoadClo(this, ref xElement); });
             LoadClothingData(xElement);
             Model playerModel = CharacterSkinsManager.GetPlayerModel(PlayerClass.Male);
             var array = new Matrix[playerModel.Bones.Count];

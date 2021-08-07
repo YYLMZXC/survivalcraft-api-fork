@@ -21,7 +21,6 @@ namespace Game
         public List<Action> m_loadActions = new List<Action>();
         public CanvasWidget Canvas = new CanvasWidget();
         public static ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
-
         static LoadingScreen() {
             LogList.ItemWidgetFactory = (obj) => {
                 LogItem logItem = obj as LogItem;
@@ -85,6 +84,9 @@ namespace Game
             AddLoadAction(delegate { //初始化所有ModEntity的资源包
                 ModsManager.ModListAllDo((modEntity) => { modEntity.InitResources(); });
             });
+            AddLoadAction(delegate { //初始化所有ModEntity的语言包
+                ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLauguage(); });
+            });
             AddLoadAction(delegate { //读取所有的ModEntity的dll，并分离出ModLoader，保存Blocks
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadDll(); });
             });
@@ -97,18 +99,31 @@ namespace Game
             });
 
             AddLoadAction(delegate { //初始化Database
+                Info("DatabaseManager Initialize");
                 DatabaseManager.Initialize();
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadXdb(ref DatabaseManager.DatabaseNode); });
                 DatabaseManager.LoadDataBaseFromXml(DatabaseManager.DatabaseNode);
             });
 
             AddLoadAction(delegate { //初始化方块管理器
+                Info("BlocksManager Initialize");
                 BlocksManager.Initialize();
             });
 
-            InitScreen();
+            AddLoadAction(delegate { //初始化合成谱
+                Info("CraftingRecipesManager Initialize");
+                CraftingRecipesManager.Initialize();
+            });
+            InitScreens();
+
+            AddLoadAction(delegate {
+                BlocksTexturesManager.Initialize();
+            });
+            AddLoadAction(()=> {
+                ScreensManager.SwitchScreen("MainMenu");
+            });
         }
-        public void InitScreen() {
+        public void InitScreens() {
 
             AddLoadAction(delegate
             {

@@ -2,6 +2,7 @@ using Engine;
 using Engine.Audio;
 using GameEntitySystem;
 using System.Collections.Generic;
+using System.IO;
 using TemplatesDatabase;
 
 namespace Game
@@ -126,7 +127,7 @@ namespace Game
             if (readOnlyList.Count > 0)
             {
                 int index = m_random.Int(0, readOnlyList.Count - 1);
-                PlaySound(readOnlyList[index].Filename, volume, pitch, pan, delay);
+                PlaySound(readOnlyList[index].ContentPath, volume, pitch, pan, delay);
             }
             else
             {

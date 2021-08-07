@@ -12,11 +12,14 @@ namespace Game
     public class ContentInfo { 
         public ModEntity Entity;
         public string Filename;
-        public string AbsolutePath;
-        public ContentInfo(ModEntity entity, string filename)
+        public string ContentPath;
+        public object obj;
+        public ContentInfo(ModEntity entity, string AbsolutePath_)
         {
             Entity = entity;
-            Filename = filename;
+            Filename = Path.GetFileName(AbsolutePath_);
+            int pos = AbsolutePath_.LastIndexOf('.');
+            ContentPath = AbsolutePath_.Substring(0, pos);
         }
         public bool Get(Type type, string name,out object obj)
         {
@@ -44,17 +47,21 @@ namespace Game
 
         public static void Initialize()
         {
-
-
-
+            Resources.Clear();
         }
-
-        public static T Get<T>(string name) where T : class
+        /// <summary>
+        /// 获取资源
+        /// </summary>
+        /// <typeparam name="T">要转换的类型</typeparam>
+        /// <param name="name">资源名称</param>
+        /// <param name="useCache">是否使用缓存</param>
+        /// <returns></returns>
+        public static T Get<T>(string name, bool useCache = false) where T : class
         {
-            return Get(typeof(T),name) as T;
+            return Get(typeof(T), name,useCache) as T;
         }
 
-        public static object Get(Type type, string name)
+        public static object Get(Type type, string name,bool useCache=false)
         {
             object obj = null;
             string fixname = string.Empty;
@@ -66,38 +73,61 @@ namespace Game
                         {
                             if (contentInfo1.Get(name + ".png", out Stream stream))
                             {
+                                if (contentInfo1.obj != null && useCache) return contentInfo1.obj;
                                 using (stream)
                                 {
                                     if (contentInfo1.Get(name + ".lst", out Stream stream2))
                                     {
                                         using (stream)
                                         {
-                                            return BitmapFont.Initialize(stream, stream2);
+                                            return contentInfo1.obj = BitmapFont.Initialize(stream, stream2);
                                         }
                                     }
                                 }
                             }
                         }
-                        throw new Exception("Not found Resources:" + name + " for " + type.Name);
+                        throw new Exception("Not found Resources:" + name + " for " + type.FullName);
                     }
-                case "Engine.Graphics.Shader": {
+                case "Engine.Graphics.Shader": 
+                    {
                         if (Resources.TryGetValue(name + ".psh", out ContentInfo contentInfo1))
                         {
                             if (contentInfo1.Get(name + ".psh", out Stream stream))
                             {
+                                if (contentInfo1.obj != null && useCache) return contentInfo1.obj;
                                 using (stream)
                                 {
                                     if (contentInfo1.Get(name + ".vsh", out Stream stream2))
                                     {
                                         using (stream)
                                         {
-                                            return new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), null);
+                                            return contentInfo1.obj = new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), null);
                                         }
                                     }
                                 }
                             }
                         }
-                        throw new Exception("Not found Resources:" + name + " for " + type.Name);
+                        throw new Exception("Not found Resources:" + name + " for " + type.FullName);
+                    }
+                case "Engine.Audio.SoundBuffer":
+                    {
+                        if (Resources.TryGetValue(name + ".ogg", out ContentInfo contentInfo1))
+                        {
+                            if (contentInfo1.obj != null && useCache) return contentInfo1.obj;
+                            if (contentInfo1.Get(name + ".ogg", out Stream stream))
+                            {
+                                return contentInfo1.obj = Engine.Audio.SoundBuffer.Load(stream, SoundFileFormat.Ogg);
+                            }
+                        }
+                        if (Resources.TryGetValue(name + ".wav", out ContentInfo contentInfo2))
+                        {
+                            if (contentInfo2.obj != null && useCache) return contentInfo2.obj;
+                            if (contentInfo2.Get(name + ".wav", out Stream stream))
+                            {
+                                return contentInfo2.obj = Engine.Audio.SoundBuffer.Load(stream, SoundFileFormat.Wav);
+                            }
+                        }
+                        throw new Exception("Not found Resources:" + name + " for " + type.FullName);
                     }
                 case "Engine.Graphics.Texture2D": fixname=name+".png";break;
                 case "System.String": fixname = name + ".txt"; break;
@@ -107,9 +137,10 @@ namespace Game
                 case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) return TextureAtlasManager.GetSubtexture(name); else return new Subtexture(Get<Texture2D>(name),Vector2.Zero,Vector2.One);
                 default: { break; }
             }
-            if (Resources.TryGetValue(fixname, out ContentInfo contentInfo2))
+            if (Resources.TryGetValue(fixname, out ContentInfo contentInfo3))
             {
-                if (contentInfo2.Get(fixname, out Stream stream))
+                if(contentInfo3.obj != null && useCache) return contentInfo3.obj;
+                if (contentInfo3.Get(fixname, out Stream stream))
                 {
                     using (stream)
                     {//单文件转换
@@ -117,13 +148,15 @@ namespace Game
                     }
                 }
             }
-            if (obj == null) throw new Exception("Not found Resources:" + name + " for " + type.Name);
+            if (obj == null) throw new Exception("Not found Resources:" + name + " for " + type.FullName);
+            contentInfo3.obj = obj;
             return obj;
         }
         public static object StreamConvertType(Type type,Stream stream)
         {
             switch (type.FullName)
             {
+                case "Engine.Audio.SoundBuffer":return Engine.Audio.SoundBuffer.Load(stream);
                 case "Engine.Graphics.Texture2D": return Texture2D.Load(stream);
                 case "System.String":return new StreamReader(stream).ReadToEnd();
                 case "Engine.Media.Image": return Image.Load(stream);
@@ -138,7 +171,7 @@ namespace Game
         {
             if (Resources.TryGetValue(name, out ContentInfo contentInfo))
             {
-                Resources[name] = new ContentInfo(entity, name);
+                contentInfo = new ContentInfo(entity, name);
             }
             else
                 Resources.Add(name, new ContentInfo(entity, name));
@@ -163,7 +196,7 @@ namespace Game
         {
             List<ContentInfo> contents = new List<ContentInfo>();
             foreach (var content in Resources.Values) {
-                if(content.AbsolutePath.StartsWith(directory))contents.Add(content);            
+                if(content.ContentPath.StartsWith(directory))contents.Add(content);            
             }
             return new ReadOnlyList<ContentInfo>(contents);
         }
