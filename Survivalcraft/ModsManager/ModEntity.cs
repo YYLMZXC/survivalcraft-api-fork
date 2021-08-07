@@ -82,9 +82,9 @@ namespace Game {
         /// </summary>
         public virtual void LoadLauguage()
         {
-            LoadingScreen.Info("Load Language:"+modInfo?.PackageName);
-            if (GetFile($"{ModsManager.modSettings.languageType}.json", out Stream stream))
-            {                
+            LoadingScreen.Info("Load Language:" + modInfo?.PackageName);
+            if (GetFile($"Lang/{ModsManager.modSettings.languageType}.json", out Stream stream))
+            {
                 LanguageControl.loadJson(stream);
             }
         }

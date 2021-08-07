@@ -85,6 +85,7 @@ namespace Game
                 ModsManager.ModListAllDo((modEntity) => { modEntity.InitResources(); });
             });
             AddLoadAction(delegate { //初始化所有ModEntity的语言包
+                LanguageControl.Initialize(ModsManager.modSettings.languageType);
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLauguage(); });
             });
             AddLoadAction(delegate { //读取所有的ModEntity的dll，并分离出ModLoader，保存Blocks
