@@ -52,19 +52,19 @@ namespace Game
 
         public static void Error(string mesg)
         {
-            Add(LogType.Error,mesg);
+            Add(LogType.Error, "[Error]" + mesg);
         }
         public static void Info(string mesg)
         {
-            Add(LogType.Info, mesg);
+            Add(LogType.Info, "[Info]" + mesg);
         }
         public static void Warning(string mesg)
         {
-            Add(LogType.Warning, mesg);
+            Add(LogType.Warning, "[Warning]" + mesg);
         }
         public static void Advice(string mesg)
         {
-            Add(LogType.Advice, mesg);
+            Add(LogType.Advice, "[Advice]" + mesg);
         }
 
         public static void Add(LogType type,string mesg) {
@@ -129,6 +129,24 @@ namespace Game
                 VersionsManager.Initialize();
                 WorldsManager.Initialize();
             });
+            AddLoadAction(delegate { //初始化合成谱
+                Info("Loading ModSettings");
+                using (System.IO.Stream stream = Storage.OpenFile("app:Settings.xml",OpenFileMode.Read))
+                {
+                    try
+                    {
+                        XElement element = XElement.Load(stream);
+                        ModsManager.ModListAllDo((modEntity) => {
+                            modEntity.LoadSettings(element);
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        Warning(e.Message);
+                    }
+                }
+            });
+
             AddLoadAction(()=> {
                 ScreensManager.SwitchScreen("MainMenu");
             });

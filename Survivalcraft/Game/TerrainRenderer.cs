@@ -18,8 +18,6 @@ namespace Game
 
         public static Shader TransparentShader;
 
-        public static LitShader LightShader = new LitShader(1, false, false, true, false, false) { SamplerState=SamplerState.PointWrap};
-
         public SamplerState m_samplerState = new SamplerState
         {
             AddressModeU = TextureAddressMode.Clamp,
@@ -144,10 +142,9 @@ namespace Game
             */
             Display.BlendState = BlendState.AlphaBlend;
             Display.DepthStencilState = DepthStencilState.Default;
-            Display.RasterizerState = RasterizerState.CullNoneScissor;
-            LightShader.Transforms.View = camera.ViewMatrix;
-            LightShader.Transforms.Projection = camera.ProjectionMatrix;
-            LightShader.Transforms.World[0]=Matrix.Identity;
+            Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
+            //LightShader.EmissionColor = new Vector4(new Vector3(Color.White), 1f);
+
             /*
             LightShader.GetParameter("u_origin").SetValue(v.XZ);
             LightShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
@@ -156,6 +153,17 @@ namespace Game
             LightShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
             LightShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
             */
+            //测试 将世界中的0,0转换到屏幕，在视野内说明能看见
+            //计算出太阳视角下的投影矩阵
+
+            Matrix LightViewMatrix = Matrix.CreateLookAt(m_subsystemSky.LightPosition, m_subsystemSky.LightPosition + m_subsystemSky.LightDirection, Vector3.UnitY);
+            Matrix LightMatrix = LightViewMatrix * FppCamera.CalculateBaseProjectionMatrix(camera.GameWidget.ViewWidget);
+            OpaqueShader.GetParameter("ViewProjectionMatrix").SetValue(camera.ViewProjectionMatrix);
+            //传入太阳视角下的投射矩阵
+            OpaqueShader.GetParameter("LightMatrix").SetValue(LightMatrix);
+            //传入视图大小
+            OpaqueShader.GetParameter("ViewPort").SetValue(new Vector2(Display.Viewport.Width,Display.Viewport.Height));
+            OpaqueShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             ModsManager.HookAction("SetShaderParameter", modLoader => {
                 modLoader.SetShaderParameter(OpaqueShader);
                 return false; 
@@ -163,9 +171,9 @@ namespace Game
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
                 TerrainChunk terrainChunk = m_chunksToDraw[i];
-                DrawTerrainChunkGeometrySubsets(LightShader, terrainChunk.Geometry.DrawBuffers, CalculateSubsetsMask(terrainChunk, m_subsystemSky, camera, OpaqueShader));
-                DrawTerrainChunkGeometrySubsets(LightShader, terrainChunk.Geometry.DrawBuffers, 32);//绘制Alphatest
-                DrawTerrainChunkGeometrySubsets(LightShader, terrainChunk.Geometry.DrawBuffers, 64);//绘制Transparent
+                DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk.Geometry.DrawBuffers, CalculateSubsetsMask(terrainChunk, m_subsystemSky, camera, OpaqueShader));
+                DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk.Geometry.DrawBuffers, 32);//绘制Alphatest
+                DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk.Geometry.DrawBuffers, 64);//绘制Transparent
                 ChunksDrawn++;
             }
         }
@@ -174,7 +182,7 @@ namespace Game
             int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
             float num = MathUtils.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
             float num2 = MathUtils.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
-            shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(num2, 1f / (num - num2)));
+            //shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(num2, 1f / (num - num2)));
             int num3 = 16;
             if (camera.ViewPosition.Z > terrainChunk.BoundingBox.Min.Z)
             {
@@ -288,14 +296,7 @@ namespace Game
         }
 
         public static void DrawTerrainChunkGeometrySubset(Shader shader, TerrainGeometry.DrawBuffer buffer, int subsetsMask) {
-            if (shader == LightShader)
-            {
-                LightShader.Texture = buffer.Texture;
-                LightShader.LightDirection1 = m_subsystemSky.MoonPoint;
-            }
-            else {
-                shader.GetParameter("u_texture").SetValue(buffer.Texture);
-            }
+            shader.GetParameter("u_texture").SetValue(buffer.Texture);
             int num = 2147483647;
             int num2 = 0;
             for (int i = 0; i < 8; i++)

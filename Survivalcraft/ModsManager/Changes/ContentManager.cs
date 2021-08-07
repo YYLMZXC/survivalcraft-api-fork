@@ -134,6 +134,7 @@ namespace Game
                 case "Engine.Media.Image": fixname = name + ".png"; break;
                 case "System.Xml.Linq.XElement": fixname = name + ".xml"; break;
                 case "Engine.Graphics.Model": fixname = name + ".dae"; break;
+                case "Engine.Media.StreamingSource":fixname = name + ".ogg";break;
                 case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) return TextureAtlasManager.GetSubtexture(name); else return new Subtexture(Get<Texture2D>(name),Vector2.Zero,Vector2.One);
                 default: { break; }
             }
@@ -156,7 +157,8 @@ namespace Game
         {
             switch (type.FullName)
             {
-                case "Engine.Audio.SoundBuffer":return Engine.Audio.SoundBuffer.Load(stream);
+                case "Engine.Media.StreamingSource":return Ogg.Stream(stream);
+                case "Engine.Audio.SoundBuffer":return SoundData.Load(stream);
                 case "Engine.Graphics.Texture2D": return Texture2D.Load(stream,true);
                 case "System.String":return new StreamReader(stream).ReadToEnd();
                 case "Engine.Media.Image": return Image.Load(stream);
