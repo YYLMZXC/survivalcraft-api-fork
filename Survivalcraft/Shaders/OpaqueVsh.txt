@@ -42,11 +42,13 @@ void main(
 
 uniform mat4 ViewProjectionMatrix;
 uniform mat4 LightMatrix;
+uniform vec3 LightPosition;
 
 attribute vec3 a_position;
 attribute vec2 a_texcoord;
 attribute vec4 a_color;
 
+varying vec3 distance;
 varying vec2 v_texcoord;
 varying vec4 v_color;
 varying vec2 s_texcoord;
@@ -55,8 +57,9 @@ void main()
 {
 	v_color = a_color;
 	v_texcoord = a_texcoord;
-	vec4 wspos = vec4(a_position.xyz, 1.0) * LightMatrix;
-	s_texcoord = vec2(wspos.x,wspos.y);
+	distance = LightPosition - a_position;
+	vec4 tmp = vec4(a_position.xyz, 1.0) * LightMatrix;
+	s_texcoord = tmp.xy;
 	gl_Position = ViewProjectionMatrix * vec4(a_position.xyz, 1.0);
 	OPENGL_POSITION_FIX;
 }

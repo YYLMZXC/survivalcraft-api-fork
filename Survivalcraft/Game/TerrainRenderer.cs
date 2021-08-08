@@ -150,7 +150,7 @@ namespace Game
             ShadowShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             RenderTarget2D target2D = Display.RenderTarget;
             Display.RenderTarget = RenderTarget;
-            Display.Clear(Color.White,1f);
+            Display.Clear(Color.Transparent,1f);
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
                 TerrainChunk terrainChunk = m_chunksToDraw[i];
@@ -159,12 +159,12 @@ namespace Game
                 DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry.DrawBuffers, 64);//绘制Transparent
             }
             Display.RenderTarget = target2D;
-            if (Time.PeriodicEvent(5.0, 4.0)) ModsManager.SaveToImage("txt.png", RenderTarget);
-            
+            if (Time.PeriodicEvent(5.0, 4.0)) ModsManager.SaveToImage("shadow", RenderTarget);
             #endregion
             #region 开始正常绘制
+            ShadowShader.GetParameter("LightPosition").SetValue(m_subsystemSky.LightPosition);
             OpaqueShader.GetParameter("LightMatrix").SetValue(LightMatrix);
-            OpaqueShader.GetParameter("ViewProjectionMatrix").SetValue(LightMatrix);
+            OpaqueShader.GetParameter("ViewProjectionMatrix").SetValue(camera.ViewProjectionMatrix);
             OpaqueShader.GetParameter("s_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             OpaqueShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             OpaqueShader.GetParameter("ShadowTexture").SetValue(RenderTarget);

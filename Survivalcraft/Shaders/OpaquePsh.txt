@@ -52,16 +52,15 @@ uniform sampler2D ShadowTexture;
 varying vec2 v_texcoord;
 varying vec4 v_color;
 varying vec2 s_texcoord;
+varying vec3 distance;
 
 void main()
 {
 	vec4 result = v_color;
-	result*=texture2D(u_texture, v_texcoord);
+	result *=texture2D(u_texture, v_texcoord);
 	vec4 resultsha = texture2D(ShadowTexture, s_texcoord);
-	if(resultsha.x<result.x){
-		result*= 0.5;
-	}else{
-		result*= 1.0;
+	if(length(distance)<length(resultsha.xyz)){
+		result.rgb*= 0.5;
 	}
 	gl_FragColor = result;
 }
