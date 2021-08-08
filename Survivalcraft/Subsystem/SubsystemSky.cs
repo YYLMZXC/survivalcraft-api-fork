@@ -493,7 +493,7 @@ namespace Game
             QueueCelestialBody(batch, camera.ViewPosition, color3, 900f, 3.5f * num3, angle);
             QueueCelestialBody(batch2, camera.ViewPosition, color, 900f, num2, num);
             QueueCelestialBody(batch3, camera.ViewPosition, white, 900f, num3, angle);
-            LightPosition = GetPos(camera.ViewPosition, color, 900f, num2, num);
+            LightPosition = GetPos(camera.ViewPosition, color, 257f, num2, num);
             
         }
 

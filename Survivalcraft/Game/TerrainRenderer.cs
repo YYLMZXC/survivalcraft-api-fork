@@ -6,13 +6,17 @@ namespace Game
 {
     public class TerrainRenderer : IDisposable
     {
+        public PrimitivesRenderer3D PrimitivesRenderer = new PrimitivesRenderer3D();
         public SubsystemTerrain m_subsystemTerrain;
+        public RenderTarget2D RenderTarget;
 
         public static SubsystemSky m_subsystemSky;
 
         public SubsystemAnimatedTextures m_subsystemAnimatedTextures;
 
         public static Shader OpaqueShader;
+
+        public static Shader ShadowShader;
 
         public static Shader AlphatestedShader;
 
@@ -73,9 +77,11 @@ namespace Game
             m_subsystemSky = subsystemTerrain.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_subsystemAnimatedTextures = subsystemTerrain.SubsystemAnimatedTextures;
             OpaqueShader=new OpaqueShader();
+            ShadowShader = new Shader(ModsManager.GetInPakOrStorageFile("Shaders/shadow",".vsh"), ModsManager.GetInPakOrStorageFile("Shaders/shadow",".psh"), new ShaderMacro[] { new ShaderMacro("ShadowShader") });
             AlphatestedShader = new AlphaTestedShader();
             TransparentShader = new TransparentShader();
             Display.DeviceReset += Display_DeviceReset;
+            RenderTarget = new RenderTarget2D(Display.Viewport.Width,Display.Viewport.Height,1,ColorFormat.Rgba8888,DepthFormat.Depth16);
         }
 
         public void PrepareForDrawing(Camera camera)
@@ -135,39 +141,38 @@ namespace Game
 
         public void DrawOpaque(Camera camera)
         {
-            /*
-            Vector3 viewPosition = camera.ViewPosition;
-            Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
-            Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
-            */
-            Display.BlendState = BlendState.AlphaBlend;
+            Display.BlendState = BlendState.Opaque;
             Display.DepthStencilState = DepthStencilState.Default;
-            Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-            //LightShader.EmissionColor = new Vector4(new Vector3(Color.White), 1f);
-
-            /*
-            LightShader.GetParameter("u_origin").SetValue(v.XZ);
-            LightShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
-            LightShader.GetParameter("u_viewPosition").SetValue(viewPosition);
-            LightShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
-            LightShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
-            LightShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-            */
-            //测试 将世界中的0,0转换到屏幕，在视野内说明能看见
-            //计算出太阳视角下的投影矩阵
-
-            Matrix LightViewMatrix = Matrix.CreateLookAt(m_subsystemSky.LightPosition, m_subsystemSky.LightPosition + m_subsystemSky.LightDirection, Vector3.UnitY);
+            float time=m_subsystemSky.m_subsystemTimeOfDay.TimeOfDay;//0.25-0.75f为白天
+            time = MathUtils.Clamp(time - 0.25f, 0f, 0.5f);
+            time *= 2;//得到180对应的份数
+            float angle = time * 180;//得到角度
+            float radius = MathUtils.DegToRad(angle);//得到弧度
+            Vector3 direction = new Vector3(0, -(float)Math.Sin(radius), -(float)Math.Cos(radius));
+            Matrix LightViewMatrix = Matrix.CreateLookAt(m_subsystemSky.LightPosition, m_subsystemSky.LightPosition + direction, Vector3.UnitY);
             Matrix LightMatrix = LightViewMatrix * FppCamera.CalculateBaseProjectionMatrix(camera.GameWidget.ViewWidget);
-            OpaqueShader.GetParameter("ViewProjectionMatrix").SetValue(camera.ViewProjectionMatrix);
-            //传入太阳视角下的投射矩阵
+            #region 开始绘制参照纹理
+            ShadowShader.GetParameter("ViewProjectionMatrix").SetValue(LightMatrix);
+            ShadowShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+            RenderTarget2D target2D = Display.RenderTarget;
+            Display.RenderTarget = RenderTarget;
+            Display.Clear(Color.Black,1f);
+            for (int i = 0; i < m_chunksToDraw.Count; i++)
+            {
+                TerrainChunk terrainChunk = m_chunksToDraw[i];
+                DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry.DrawBuffers, CalculateSubsetsMask(terrainChunk, m_subsystemSky, camera, OpaqueShader));
+                DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry.DrawBuffers, 32);//绘制Alphatest
+                DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry.DrawBuffers, 64);//绘制Transparent
+            }
+            Display.RenderTarget = target2D;
+            if (Time.PeriodicEvent(5.0, 4.0)) ModsManager.SaveToImage("txt.png", RenderTarget);
+            #endregion
+            #region 开始正常绘制
             OpaqueShader.GetParameter("LightMatrix").SetValue(LightMatrix);
-            //传入视图大小
-            OpaqueShader.GetParameter("ViewPort").SetValue(new Vector2(Display.Viewport.Width,Display.Viewport.Height));
+            OpaqueShader.GetParameter("ViewProjectionMatrix").SetValue(camera.ViewProjectionMatrix);
+            OpaqueShader.GetParameter("s_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             OpaqueShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
-            ModsManager.HookAction("SetShaderParameter", modLoader => {
-                modLoader.SetShaderParameter(OpaqueShader);
-                return false; 
-            });
+            OpaqueShader.GetParameter("ShadowTexture").SetValue(RenderTarget);
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
                 TerrainChunk terrainChunk = m_chunksToDraw[i];
@@ -176,6 +181,11 @@ namespace Game
                 DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk.Geometry.DrawBuffers, 64);//绘制Transparent
                 ChunksDrawn++;
             }
+            #endregion
+            ModsManager.HookAction("SetShaderParameter", modLoader => {
+                modLoader.SetShaderParameter(OpaqueShader);
+                return false; 
+            });
         }
 
         public static int CalculateSubsetsMask(TerrainChunk terrainChunk,SubsystemSky m_subsystemSky,Camera camera,Shader shader) {
