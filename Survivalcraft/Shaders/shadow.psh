@@ -1,0 +1,29 @@
+#ifdef GLSL
+
+// <Sampler Name='u_samplerState' Texture='u_texture' />
+
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform sampler2D u_texture;
+
+varying vec2 v_texcoord;
+varying float distance;
+varying vec2 viewsize2;
+
+
+void main()
+{	
+	vec4 prevcolor = texture2D(u_texture, v_texcoord);//获取之前的颜色
+	//计算之前的深度
+	vec4 result = prevcolor;
+	float prevlen =(prevcolor.x*prevcolor.y*prevcolor.z*prevcolor.w);
+	float resultlen = distance;
+	if(distance < result){
+		result = vec4(resultlen/255/255/255,(resultlen/255/255)%255,(resultlen/255)%255,resultlen%255);
+	}
+	gl_FragColor = result;
+}
+
+#endif

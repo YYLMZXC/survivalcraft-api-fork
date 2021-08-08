@@ -493,7 +493,7 @@ namespace Game
             QueueCelestialBody(batch, camera.ViewPosition, color3, 900f, 3.5f * num3, angle);
             QueueCelestialBody(batch2, camera.ViewPosition, color, 900f, num2, num);
             QueueCelestialBody(batch3, camera.ViewPosition, white, 900f, num3, angle);
-            LightPosition = GetPos(camera.ViewPosition, color, 257f, num2, num);
+            LightPosition = GetPos(camera.ViewPosition, color, 200f, num2, num);
             
         }
 
@@ -625,9 +625,8 @@ namespace Game
             Vector3 vector2 = vector;
             Vector3 unitZ = Vector3.UnitZ;
             var v = Vector3.Cross(unitZ, vector2);
-
             Vector3 p = viewPosition + vector2 * distance - radius * unitZ - radius * v;
-            LightDirection =Vector3.Normalize(viewPosition-p);
+            LightDirection = Vector3.Normalize(new Vector3(viewPosition.X, 0, viewPosition.Z) - p);
             return p;
         }
         public void QueueCelestialBody(TexturedBatch3D batch, Vector3 viewPosition, Color color, float distance, float radius, float angle)
