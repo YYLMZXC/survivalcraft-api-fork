@@ -298,7 +298,7 @@ public static class ModsManager
             }
         }
         foreach (var item in ToRemove) {
-            ModsManager.ModList.Remove(item);
+            ModList.Remove(item);
         }
     }
     public static void AddException(Exception e,bool AllowContinue_=false) {

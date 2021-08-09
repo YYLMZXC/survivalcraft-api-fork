@@ -8,7 +8,7 @@ namespace Game
 {
     public class TextBoxWidget : Widget
     {
-        public BitmapFont m_font;
+        public BitmapFont m_font = LabelWidget.BitmapFont;
 
         public string m_text = string.Empty;
 

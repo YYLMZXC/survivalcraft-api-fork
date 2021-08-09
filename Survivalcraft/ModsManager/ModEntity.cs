@@ -24,15 +24,7 @@ namespace Game {
         public ModEntity(ZipArchive zipArchive)
         {
             ModArchive = zipArchive;
-            if (GetFile("modinfo.json", out Stream stream))
-            {
-                modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
-                stream.Close();
-            }
-            if (GetFile("icon.png", out Stream stream2)) {
-                LoadIcon(stream2);
-                stream2.Close();
-            }
+            InitResources();
         }
         public virtual void LoadIcon(Stream stream) {
             Icon = Texture2D.Load(stream);
@@ -72,10 +64,14 @@ namespace Game {
                 ModArchive.ExtractFile(entry, stream);
                 stream.Seek(0, SeekOrigin.Begin);
                 return true;
-
             }
             stream = null;
             return false;
+        }
+        public virtual bool GetAssetsFile(string filename, out Stream stream)
+        {
+            filename = "Assets/" + filename;
+            return GetFile(filename,out stream);
         }
         /// <summary>
         /// 初始化语言包
@@ -83,7 +79,7 @@ namespace Game {
         public virtual void LoadLauguage()
         {
             LoadingScreen.Info("Load Language:" + modInfo?.PackageName);
-            if (GetFile($"Lang/{ModsManager.modSettings.languageType}.json", out Stream stream))
+            if (GetAssetsFile($"Lang/{ModsManager.modSettings.languageType}.json", out Stream stream))
             {
                 LanguageControl.loadJson(stream);
             }
@@ -105,14 +101,25 @@ namespace Game {
             List<ZipArchiveEntry> entries = ModArchive.ReadCentralDir();
             LoadingScreen.Info("Loading Resources:" + modInfo?.PackageName);
             foreach (ZipArchiveEntry zipArchiveEntry in entries) {
-                Dispatcher.Dispatch(delegate {
-                    if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/") && zipArchiveEntry.FileSize > 0)
+                if (zipArchiveEntry.FileSize > 0) {
+                    ModFiles.Add(zipArchiveEntry.FilenameInZip, zipArchiveEntry);
+                    if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
                     {
-                        ModFiles.Add(zipArchiveEntry.FilenameInZip.Substring(7), zipArchiveEntry);
                         ContentManager.Add(this, zipArchiveEntry.FilenameInZip.Substring(7));
                     }
-                });
+                }
             }
+            if (GetFile("modinfo.json", out Stream stream))
+            {
+                modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
+                stream.Close();
+            }
+            if (GetFile("icon.png", out Stream stream2))
+            {
+                LoadIcon(stream2);
+                stream2.Close();
+            }
+
         }
         /// <summary>
         /// 初始化BlocksData资源

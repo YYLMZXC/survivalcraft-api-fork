@@ -7,6 +7,7 @@ namespace Game
 {
     public class FastDebugModEntity :ModEntity
     {
+        public Dictionary<string, FileInfo> FModFiles = new Dictionary<string, FileInfo>();
         public FastDebugModEntity() {
             if (GetFile("modinfo.json", out Stream stream))
             {
@@ -22,8 +23,29 @@ namespace Game
                 stream2.Close();
             }
         }
+        public override void InitResources()
+        {
+            ReadDirResouces(ModsManager.ModsPath,"");
+        }
 
-
+        public void ReadDirResouces(string basepath,string path) {
+            if (string.IsNullOrEmpty(path)) path = basepath;
+            DynamicArray<string> dirs = Storage.ListDirectoryNames(path).ToDynamicArray();
+            foreach (string d in dirs)
+            {
+                ReadDirResouces(basepath, path + "/" + d);
+            }
+            DynamicArray<string> files = Storage.ListFileNames(path).ToDynamicArray();
+            foreach (string f in files)
+            {
+                string abpath = (path + "/" + f);
+                string FilenameInZip = abpath.Substring(basepath.Length + 1);
+                ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry();
+                zipArchiveEntry.FilenameInZip = FilenameInZip;
+                FModFiles.Add(FilenameInZip.Substring(7), new FileInfo(Storage.GetSystemPath(abpath)));
+                ContentManager.Add(this, FilenameInZip.Substring(7));
+            }
+        }
         public override void LoadDll()
         {
             IEnumerable<string> dlls = Storage.ListFileNames(ModsManager.ModsPath);
@@ -103,14 +125,14 @@ namespace Game
         /// <returns></returns>
         public override bool GetFile(string filename, out Stream stream)
         {
-            foreach (string name in Storage.ListFileNames(ModsManager.ModsPath))
-            {
-                if (name == filename) {
-                    stream = Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, name), OpenFileMode.Read);
-                    return true;
+            stream=null;
+            if (FModFiles.TryGetValue(filename, out FileInfo fileInfo)) {
+                using (Stream stream2 = fileInfo.OpenRead()) {
+                    stream = new MemoryStream();
+                    stream2.CopyTo(stream2);
+                    stream.Position = 0L;
                 }
             }
-            stream=null;
             return false;
         }
     }

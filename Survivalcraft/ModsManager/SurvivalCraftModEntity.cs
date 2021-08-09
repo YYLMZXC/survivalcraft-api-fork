@@ -10,14 +10,9 @@ namespace Game
     public class SurvivalCrafModEntity : ModEntity
     {
 
-        public SurvivalCrafModEntity(){
-            modInfo = new ModInfo();
-            modInfo.ApiVersion = "1.34";
-            modInfo.ScVersion = "2.2.10.4";
-            modInfo.Name = "SurvivalCraft";
-            modInfo.Version = "2.2.10.4";
-            modInfo.PackageName = "com.survivalcraft";
-            ModArchive = ZipArchive.Open(Storage.OpenFile("app:Content.zip", OpenFileMode.Read), true);
+        public SurvivalCrafModEntity():base(ZipArchive.Open(Storage.OpenFile("app:Content.zip", OpenFileMode.Read), true))
+        {
+
         }
         public override void LoadBlocksData()
         {
@@ -75,12 +70,6 @@ namespace Game
         {
             xElement = ContentManager.Get<XElement>("Clothes");
             ContentManager.Dispose("Clothes");
-        }
-        public override void LoadLauguage()
-        {
-            string name = "app:lang/" + ModsManager.modSettings.languageType.ToString() + ".json";
-            LanguageControl.loadJson(Storage.OpenFile(name, OpenFileMode.Read));
-
         }
         public override void SaveSettings(XElement xElement)
         {

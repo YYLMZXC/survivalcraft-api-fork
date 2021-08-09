@@ -24,7 +24,7 @@ namespace Game
         public bool Get(Type type, string name,out object obj)
         {
             obj = null;
-            if (Entity.GetFile(name, out Stream stream))
+            if (Entity.GetAssetsFile(name, out Stream stream))
             {
                 obj = ContentManager.StreamConvertType(type, stream);
                 return true;
@@ -34,7 +34,7 @@ namespace Game
         public bool Get(string name, out Stream stream)
         {
             stream = null;
-            if (Entity.GetFile(name, out stream))
+            if (Entity.GetAssetsFile(name, out stream))
             {
                 return true;
             }
@@ -137,6 +137,7 @@ namespace Game
                 case "Engine.Media.StreamingSource":fixname = name + ".ogg";break;
                 case "Engine.Graphics.VertexShaderCode": fixname = name + ".vsh"; break;
                 case "Engine.Graphics.PixelShaderCode": fixname = name + ".psh"; break;
+                case "SimpleJson.JsonObject": fixname = name + ".json"; break;
                 case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) return TextureAtlasManager.GetSubtexture(name); else return new Subtexture(Get<Texture2D>(name),Vector2.Zero,Vector2.One);
                 default: { break; }
             }
@@ -159,11 +160,12 @@ namespace Game
         {
             switch (type.FullName)
             {
+                case "SimpleJson.JsonObject": return SimpleJson.SimpleJson.DeserializeObject(new StreamReader(stream).ReadToEnd());
                 case "Engine.Graphics.VertexShaderCode": return new VertexShaderCode() { Code=new StreamReader(stream).ReadToEnd()};
                 case "Engine.Graphics.PixelShaderCode": return new PixelShaderCode() { Code = new StreamReader(stream).ReadToEnd() };
                 case "Engine.Media.StreamingSource":return Ogg.Stream(stream);
                 case "Engine.Audio.SoundBuffer":return SoundData.Load(stream);
-                case "Engine.Graphics.Texture2D": return Texture2D.Load(stream,true);
+                case "Engine.Graphics.Texture2D": return Texture2D.Load(stream);
                 case "System.String":return new StreamReader(stream).ReadToEnd();
                 case "Engine.Media.Image": return Image.Load(stream);
                 case "System.Xml.Linq.XElement": return XElement.Load(stream);
@@ -185,11 +187,22 @@ namespace Game
 
         public static void Dispose(string name)
         {
-
+            foreach (ContentInfo contentInfo in Resources.Values)
+            {
+                if (contentInfo.ContentPath == name) {
+                    IDisposable disposable = contentInfo.obj as IDisposable;
+                    if (disposable != null) disposable.Dispose();
+                    break;
+                }
+            }
         }
 
         public static bool IsContent(object content)
         {
+            foreach (ContentInfo contentInfo in Resources.Values)
+            {
+                if (contentInfo.obj == content) return true;
+            }
             return false;
         }
 
