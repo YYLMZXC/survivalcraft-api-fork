@@ -1,11 +1,14 @@
 using Engine;
 using GameEntitySystem;
 using TemplatesDatabase;
-
+using System.Collections.Generic;
+using System;
 namespace Game
 {
     public class ComponentChaseBehavior : ComponentBehavior, IUpdateable
     {
+        private Dictionary<ModLoader, Action> Hooks = new Dictionary<ModLoader, Action>();
+
         public SubsystemGameInfo m_subsystemGameInfo;
 
         public SubsystemPlayers m_subsystemPlayers;
@@ -116,7 +119,6 @@ namespace Game
                 m_stateMachine.Update();
             }
         }
-
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
             m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
@@ -158,6 +160,19 @@ namespace Game
                     m_componentCreature.ComponentLocomotion.JumpOrder = 1f;
                 }
             };
+            m_componentCreature.ComponentHealth.Hook(ModsManager.ModList[0].ModLoader_,"Attacked",delegate {
+                if (m_random.Float(0f, 1f) < m_chaseWhenAttackedProbability)
+                {
+                    if (m_chaseWhenAttackedProbability >= 1f)
+                    {
+                        Attack(attacker, 30f, 60f, isPersistent: true);
+                    }
+                    else
+                    {
+                        Attack(attacker, 7f, 7f, isPersistent: false);
+                    }
+                }
+            });
             m_stateMachine.AddState("LookingForTarget", delegate
             {
                 m_importanceLevel = 0f;

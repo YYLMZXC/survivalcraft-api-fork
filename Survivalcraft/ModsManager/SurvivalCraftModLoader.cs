@@ -1,23 +1,11 @@
 ﻿using Engine;
 using Engine.Graphics;
-using Engine.Serialization;
-using GameEntitySystem;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using Engine.Media;
 namespace Game
 {
     public class SurvivalCraftModLoader:ModLoader
     {
-        public List<ComponentEatPickableBehavior> EatPickableBehaviors = new List<ComponentEatPickableBehavior>();
-        public List<ComponentChaseBehavior> ChaseBehaviors = new List<ComponentChaseBehavior>();
-        public List<ComponentCreatureModel> CreatureModels = new List<ComponentCreatureModel>();
-        public List<ComponentHerdBehavior> HerdBehaviors = new List<ComponentHerdBehavior>();
-        public List<ComponentRunAwayBehavior> RunAwayBehaviors = new List<ComponentRunAwayBehavior>();
-        public List<ComponentSwimAwayBehavior> SwimAwayBehaviors = new List<ComponentSwimAwayBehavior>();
-        public List<ComponentSleep> Sleeps = new List<ComponentSleep>();
-        public List<ComponentVitalStats> VitalStats = new List<ComponentVitalStats>();
+
         public override void __ModInitialize()
         {
             ModsManager.RegisterHook("OnCameraChange", this);
@@ -30,7 +18,6 @@ namespace Game
             ModsManager.RegisterHook("ProjectileRemoved", this);
             ModsManager.RegisterHook("OnEntityAdd", this);
             ModsManager.RegisterHook("OnEntityRemove", this);
-            ModsManager.RegisterHook("OnBodyAttacked", this);
         }
         public override void OnCameraChange(ComponentPlayer m_componentPlayer,ComponentGui componentGui)
         {
@@ -147,99 +134,8 @@ namespace Game
             SubsystemBombBlockBehavior subsystemBombBlockBehavior = subsystemProjectiles.Project.FindSubsystem<SubsystemBombBlockBehavior>();
             subsystemBombBlockBehavior.m_projectiles.Remove(projectile);
         }
-        public override void OnEntityAdd(Entity entity)
-        {
-            ComponentEatPickableBehavior behavior = entity.FindComponent<ComponentEatPickableBehavior>();
-            if (behavior != null) EatPickableBehaviors.Add(behavior);
-            ComponentChaseBehavior behavior1 = entity.FindComponent<ComponentChaseBehavior>();
-            if (behavior1 != null) ChaseBehaviors.Add(behavior1);
-            ComponentCreatureModel behavior2 = entity.FindComponent<ComponentCreatureModel>();
-            if (behavior2 != null) CreatureModels.Add(behavior2);
-            ComponentHerdBehavior behavior3 = entity.FindComponent<ComponentHerdBehavior>();
-            if (behavior3 != null) HerdBehaviors.Add(behavior3);
-            ComponentRunAwayBehavior behavior4 = entity.FindComponent<ComponentRunAwayBehavior>();
-            if (behavior4 != null) RunAwayBehaviors.Add(behavior4);
-            ComponentSwimAwayBehavior behavior5 = entity.FindComponent<ComponentSwimAwayBehavior>();
-            if (behavior5 != null) SwimAwayBehaviors.Add(behavior5);
-            ComponentSleep behavior6 = entity.FindComponent<ComponentSleep>();
-            if (behavior6 != null) Sleeps.Add(behavior6);
-            ComponentVitalStats behavior7 = entity.FindComponent<ComponentVitalStats>();
-            if (behavior7 != null) VitalStats.Add(behavior7);
-        }
-        public override void OnEntityRemove(Entity entity)
-        {
-            ComponentEatPickableBehavior behavior = entity.FindComponent<ComponentEatPickableBehavior>();
-            if (behavior != null) EatPickableBehaviors.Remove(behavior);
-            ComponentChaseBehavior behavior1 = entity.FindComponent<ComponentChaseBehavior>();
-            if (behavior1 != null) ChaseBehaviors.Remove(behavior1);
-            ComponentCreatureModel behavior2 = entity.FindComponent<ComponentCreatureModel>();
-            if (behavior2 != null) CreatureModels.Remove(behavior2);
-            ComponentHerdBehavior behavior3 = entity.FindComponent<ComponentHerdBehavior>();
-            if (behavior3 != null) HerdBehaviors.Remove(behavior3);
-            ComponentRunAwayBehavior behavior4 = entity.FindComponent<ComponentRunAwayBehavior>();
-            if (behavior4 != null) RunAwayBehaviors.Remove(behavior4);
-            ComponentSwimAwayBehavior behavior5 = entity.FindComponent<ComponentSwimAwayBehavior>();
-            if (behavior5 != null) SwimAwayBehaviors.Remove(behavior5);
-            ComponentSleep behavior6 = entity.FindComponent<ComponentSleep>();
-            if (behavior6 != null) Sleeps.Remove(behavior6);
-            ComponentVitalStats behavior7 = entity.FindComponent<ComponentVitalStats>();
-            if (behavior7 != null) VitalStats.Remove(behavior7);
-        }
-        public override void OnBodyAttacked(ComponentCreature attacker, ComponentHealth ToCreatureHealth)
-        {
-            if (attacker == null) return;
-            for (int i = 0; i < ChaseBehaviors.Count; i++)
-            {
-                ComponentChaseBehavior behavior = ChaseBehaviors[i];
-                if (behavior.m_random.Float(0f, 1f) < behavior.m_chaseWhenAttackedProbability)
-                {
-                    if (behavior.m_chaseWhenAttackedProbability >= 1f)
-                    {
-                        behavior.Attack(attacker, 30f, 60f, isPersistent: true);
-                    }
-                    else
-                    {
-                        behavior.Attack(attacker, 7f, 7f, isPersistent: false);
-                    }
-                }
-            }
-            for (int i = 0; i < CreatureModels.Count; i++)
-            {
-                ComponentCreatureModel behavior = CreatureModels[i];
-                if (behavior.DeathPhase == 0f && behavior.m_componentCreature.ComponentHealth.Health == 0f)
-                {
-                    behavior.DeathCauseOffset = attacker.ComponentBody.BoundingBox.Center() - behavior.m_componentCreature.ComponentBody.BoundingBox.Center();
-                }
-            }
-            for (int i = 0; i < HerdBehaviors.Count; i++)
-            {
-                ComponentHerdBehavior behavior = HerdBehaviors[i];
-                behavior.CallNearbyCreaturesHelp(attacker, 20f, 30f, isPersistent: false);
-            }
-            for (int i = 0; i < RunAwayBehaviors.Count; i++)
-            {
-                ComponentRunAwayBehavior behavior = RunAwayBehaviors[i];
-                behavior.RunAwayFrom(attacker.ComponentBody);
-            }
-            for (int i = 0; i < SwimAwayBehaviors.Count; i++)
-            {
-                ComponentSwimAwayBehavior behavior = SwimAwayBehaviors[i];
-                behavior.SwimAwayFrom(attacker.ComponentBody);
-            }
-            for (int i = 0; i < Sleeps.Count; i++)
-            {
-                ComponentSleep behavior = Sleeps[i];
-                if (behavior.IsSleeping && behavior.m_componentPlayer.ComponentVitalStats.Sleep > 0.25f)
-                {
-                    behavior.WakeUp();
-                }
-            }
-            for (int i = 0; i < VitalStats.Count; i++)
-            {
-                ComponentVitalStats behavior = VitalStats[i];
-                behavior.m_lastAttackedTime = behavior.m_subsystemTime.GameTime;
-            }
 
-        }
+
+
     }
 }

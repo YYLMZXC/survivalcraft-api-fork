@@ -258,14 +258,7 @@ namespace Game
         /// <param name="hitValueParticleSystem">粒子</param>
         /// <param name="Hit">true 命中 false 未命中</param>
         public virtual void SetHitValueParticleSystem(HitValueParticleSystem hitValueParticleSystem,bool Hit) { }
-        /// <summary>
-        /// 当生物被攻击受到伤害时
-        /// </summary>
-        /// <param name="attacker"></param>
-        /// <param name="ToCreatureHealth"></param>
-        public virtual void OnBodyAttacked(ComponentCreature attacker,ComponentHealth ToCreatureHealth) { 
-        
-        }
+
         /// <summary>
         /// 设定Shader参数
         /// </summary>

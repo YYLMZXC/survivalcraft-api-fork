@@ -5,8 +5,9 @@ using TemplatesDatabase;
 
 namespace Game
 {
-    public class ComponentHealth : Component, IUpdateable
+    public class ComponentHealth : HookableComponent, IUpdateable
     {
+
         public SubsystemTime m_subsystemTime;
 
         public SubsystemTimeOfDay m_subsystemTimeOfDay;
@@ -181,11 +182,7 @@ namespace Game
                     }
                 }
             }
-
-            ModsManager.HookAction("OnBodyAttacked", modLoader=> {
-                modLoader.OnBodyAttacked(attacker,this);
-                return false;
-            });
+            HookActions();
         }
 
         public void Update(float dt)
@@ -353,5 +350,7 @@ namespace Game
                 valuesDictionary.SetValue("CauseOfDeath", CauseOfDeath);
             }
         }
+
+
     }
 }

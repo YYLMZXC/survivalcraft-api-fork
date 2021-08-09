@@ -380,6 +380,7 @@
     <Compile Include="Block\WoodenStairsBlock.cs" />
     <Compile Include="Block\WoodenTrapdoorBlock.cs" />
     <Compile Include="Block\XorGateBlock.cs" />
+    <Compile Include="Component\HookableComponent.cs" />
     <Compile Include="Game\Subtexture.cs" />
     <Compile Include="Game\TerrainSerializer22.cs" />
     <Compile Include="Game\TextureAtlas.cs" />

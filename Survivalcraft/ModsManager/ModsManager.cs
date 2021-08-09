@@ -56,7 +56,8 @@ public static class ModsManager
     }
     public class ModHook {
         public string HookName;
-        public Dictionary<ModLoader,bool> Loaders = new Dictionary<ModLoader, bool>();
+        public Dictionary<ModLoader, bool> Loaders = new Dictionary<ModLoader, bool>();
+        public Dictionary<ModLoader, Action> Hooks = new Dictionary<ModLoader, Action>();
         public Dictionary<ModLoader, string> DisableReason = new Dictionary<ModLoader, string>();
         public ModHook(string name)
         {
@@ -69,6 +70,33 @@ public static class ModsManager
                 Loaders.Add(modLoader, true);
             }
         }
+        public void AddHook(ModLoader modLoader, Action action)
+        {
+            if (action != null)
+            {
+
+                if (Hooks.TryGetValue(modLoader, out Action action1) == false)
+                {
+                    Hooks.Add(modLoader, action1);
+                }
+                else
+                {
+                    action1 += action;
+                }
+            }
+        }
+
+        public void HookAction()
+        {
+            foreach (var item in Hooks)
+            {
+                if (Loaders.TryGetValue(item.Key, out bool k) && k)
+                {
+                    item.Value?.Invoke();
+                }
+            }
+        }
+
         public void Remove(ModLoader modLoader)
         {
             if (Loaders.TryGetValue(modLoader, out bool k))
@@ -118,7 +146,6 @@ public static class ModsManager
     /// <param name="modLoader"></param>
     public static void RegisterHook(string HookName, ModLoader modLoader)
     {
-
         if (ModHooks.TryGetValue(HookName, out ModHook modHook)==false)
         {
             modHook = new ModHook(HookName);
