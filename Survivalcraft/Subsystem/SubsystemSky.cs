@@ -493,7 +493,7 @@ namespace Game
             QueueCelestialBody(batch, camera.ViewPosition, color3, 900f, 3.5f * num3, angle);
             QueueCelestialBody(batch2, camera.ViewPosition, color, 900f, num2, num);
             QueueCelestialBody(batch3, camera.ViewPosition, white, 900f, num3, angle);
-            LightPosition = GetPos(new Vector3(camera.ViewPosition.X,0, camera.ViewPosition.Z), color, 200f, num2, num);
+            LightPosition = GetPos(new Vector3(camera.ViewPosition.X,64, camera.ViewPosition.Z) ,300f, num2, num);
             
         }
 
@@ -617,7 +617,7 @@ namespace Game
             _ = DrawCloudsWireframe;
         }
 
-        public Vector3 GetPos(Vector3 viewPosition, Color color, float distance, float radius, float angle)
+        public Vector3 GetPos(Vector3 viewPosition, float distance, float radius, float angle)
         {
             Vector3 vector = default;
             vector.X = -MathUtils.Sin(angle);

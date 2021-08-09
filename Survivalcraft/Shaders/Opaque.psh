@@ -52,16 +52,14 @@ uniform sampler2D ShadowTexture;
 varying vec2 v_texcoord;
 varying vec4 v_color;
 varying vec2 s_texcoord;
-varying float distance;
-varying vec2 viewsize2;
+varying float pmx;
+
 void main()
 {
 	vec4 result = v_color;
 	result *= texture2D(u_texture, v_texcoord);
-	vec4 resultsha = texture2D(ShadowTexture, s_texcoord);
-	if(distance > resultsha.x){
-		result.rgb *= 0.5;
-	}
+	vec4 closest  = texture2D(ShadowTexture, s_texcoord);
+	if(pmx <= closest.x)result.rgb*=0.5;
 	gl_FragColor = result;
 }
 

@@ -230,7 +230,7 @@ namespace Engine.Graphics
 			if (params2 != 1)
 			{
 				string shaderInfoLog2 = GL.GetShaderInfoLog(m_pixelShader);
-				throw new InvalidOperationException($"Error compiling pixel shader.\n{shaderInfoLog2}");
+				 throw new InvalidOperationException($"Error compiling pixel shader.\n{shaderInfoLog2}");
 			}
 			m_program = GL.CreateProgram();
 			GL.AttachShader(m_program, m_vertexShader);
