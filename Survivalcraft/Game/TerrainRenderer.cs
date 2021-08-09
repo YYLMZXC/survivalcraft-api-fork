@@ -138,52 +138,26 @@ namespace Game
 
         public void DrawOpaque(Camera camera)
         {
+            Vector3 viewPosition = camera.ViewPosition;
+            Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+            Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
             Display.BlendState = BlendState.Opaque;
             Display.DepthStencilState = DepthStencilState.Default;
-            Vector3 pos = new Vector3(camera.ViewPosition.X, 200, camera.ViewPosition.Z);
-            Matrix LightViewMatrix = Matrix.CreateLookAt(pos, pos - Vector3.UnitY, Vector3.UnitY);
-            Matrix LightMatrix =LightViewMatrix * BasePerspectiveCamera.CalculateBaseProjectionMatrix(new Vector2(1024,1024));
-            SamplerState samplerState = SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState;
-            #region 开始绘制参照纹理
-            ShadowShader.GetParameter("u_texture").SetValue(RenderTarget);
-            ShadowShader.GetParameter("viewsize").SetValue(new Vector2(1024, 1024));
-            ShadowShader.GetParameter("LightPosition").SetValue(pos);
-            ShadowShader.GetParameter("ViewProjectionMatrix").SetValue(LightMatrix);
-            ShadowShader.GetParameter("u_samplerState").SetValue(samplerState);
-            RenderTarget2D target2D = Display.RenderTarget;
-            Display.RenderTarget = RenderTarget;
-            Display.Clear(Color.White,1f);
-            for (int i = 0; i < m_chunksToDraw.Count; i++)
-            {
-                TerrainChunk terrainChunk = m_chunksToDraw[i];
-                DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry.DrawBuffers, CalculateSubsetsMask(terrainChunk, m_subsystemSky, camera, OpaqueShader));
-                DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry.DrawBuffers, 32);//绘制Alphatest
-                DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry.DrawBuffers, 64);//绘制Transparent
-            }
-            Display.RenderTarget = target2D;
-            if (Time.PeriodicEvent(5.0, 4.0)) ModsManager.SaveToImage("shadow", RenderTarget);
-            
-            #endregion
-            
-            
-            #region 开始正常绘制
-            OpaqueShader.GetParameter("viewsize").SetValue(new Vector2(1024, 1024));
-            OpaqueShader.GetParameter("LightPosition").SetValue(pos);
-            OpaqueShader.GetParameter("LightMatrix").SetValue(LightMatrix);
-            OpaqueShader.GetParameter("ViewProjectionMatrix").SetValue(camera.ViewProjectionMatrix);
-            OpaqueShader.GetParameter("s_samplerState").SetValue(samplerState);
-            OpaqueShader.GetParameter("u_samplerState").SetValue(samplerState);
-            Texture2D texture = RenderTarget;
-            OpaqueShader.GetParameter("ShadowTexture").SetValue(texture);
+            Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
+            OpaqueShader.GetParameter("u_origin").SetValue(v.XZ);
+            OpaqueShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
+            OpaqueShader.GetParameter("u_viewPosition").SetValue(viewPosition);
+            OpaqueShader.GetParameter("u_texture").SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
+            OpaqueShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+            OpaqueShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
+            OpaqueShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+            OpaqueShader.GetParameter("u_time").SetValue(m_subsystemSky.m_subsystemTimeOfDay.TimeOfDay);//时间参数
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
                 TerrainChunk terrainChunk = m_chunksToDraw[i];
                 DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk.Geometry.DrawBuffers, CalculateSubsetsMask(terrainChunk, m_subsystemSky, camera, OpaqueShader));
-                DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk.Geometry.DrawBuffers, 32);//绘制Alphatest
-                DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk.Geometry.DrawBuffers, 64);//绘制Transparent
                 ChunksDrawn++;
             }
-            #endregion
             ModsManager.HookAction("SetShaderParameter", modLoader => {
                 modLoader.SetShaderParameter(OpaqueShader);
                 return false; 
@@ -194,7 +168,7 @@ namespace Game
             int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
             float num = MathUtils.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
             float num2 = MathUtils.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
-            //shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(num2, 1f / (num - num2)));
+            shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(num2, 1f / (num - num2)));
             int num3 = 16;
             if (camera.ViewPosition.Z > terrainChunk.BoundingBox.Min.Z)
             {

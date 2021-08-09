@@ -1083,18 +1083,10 @@
     <Content Include="OpenAL\x86\openal32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Shaders\Opaque.psh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Shaders\Opaque.vsh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Shaders\shadow.psh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Shaders\shadow.vsh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Shaders\Opaque.psh" />
+    <None Include="Shaders\Opaque.vsh" />
+    <None Include="Shaders\shadow.psh" />
+    <None Include="Shaders\shadow.vsh" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
