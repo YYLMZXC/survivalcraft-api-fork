@@ -138,7 +138,7 @@ namespace Game
 
         public void DrawOpaque(Camera camera)
         {
-            Display.BlendState = BlendState.AlphaBlend;
+            Display.BlendState = BlendState.Opaque;
             Display.DepthStencilState = DepthStencilState.Default;
             Matrix LightViewMatrix = Matrix.CreateLookAt(m_subsystemSky.LightPosition, m_subsystemSky.LightPosition + m_subsystemSky.LightDirection, Vector3.UnitY);
             Matrix LightMatrix = LightViewMatrix * FppCamera.CalculateBaseProjectionMatrix(camera.GameWidget.ViewWidget);
@@ -150,7 +150,7 @@ namespace Game
             ShadowShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             RenderTarget2D target2D = Display.RenderTarget;
             Display.RenderTarget = RenderTarget;
-            Display.Clear(Color.Transparent,1f);
+            Display.Clear(Color.White,1f);
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
                 TerrainChunk terrainChunk = m_chunksToDraw[i];
@@ -162,7 +162,8 @@ namespace Game
             if (Time.PeriodicEvent(5.0, 4.0)) ModsManager.SaveToImage("shadow", RenderTarget);
             #endregion
             #region 开始正常绘制
-            ShadowShader.GetParameter("LightPosition").SetValue(m_subsystemSky.LightPosition);
+            //OpaqueShader.GetParameter("viewsize").SetValue(new Vector2(Display.Viewport.Width,Display.Viewport.Height));
+            OpaqueShader.GetParameter("LightPosition").SetValue(m_subsystemSky.LightPosition);
             OpaqueShader.GetParameter("LightMatrix").SetValue(LightMatrix);
             OpaqueShader.GetParameter("ViewProjectionMatrix").SetValue(camera.ViewProjectionMatrix);
             OpaqueShader.GetParameter("s_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);

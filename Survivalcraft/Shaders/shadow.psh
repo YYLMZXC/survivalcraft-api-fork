@@ -9,7 +9,7 @@ precision mediump float;
 uniform sampler2D u_texture;
 
 varying vec2 v_texcoord;
-varying vec3 distance;
+varying float distance;
 varying vec2 viewsize2;
 
 float fmod(float _X, float _Y)
@@ -20,14 +20,8 @@ float fmod(float _X, float _Y)
 void main()
 {	
 	vec4 prevcolor = texture2D(u_texture, v_texcoord);//获取之前的颜色
-	float flen=length(prevcolor.xyz);
-	if(flen==0.0){
-		prevcolor = vec4(distance,1.0);
-	}else{
-		//计算之前的深度
-		if(length(distance) <= flen){
-			prevcolor = vec4(distance,1.0);
-		}
+	if(distance < prevcolor.x){
+		prevcolor = vec4(distance,distance,distance,1.0);
 	}
 	gl_FragColor = prevcolor;
 }
