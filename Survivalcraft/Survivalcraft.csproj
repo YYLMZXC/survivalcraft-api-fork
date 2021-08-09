@@ -380,14 +380,10 @@
     <Compile Include="Block\WoodenStairsBlock.cs" />
     <Compile Include="Block\WoodenTrapdoorBlock.cs" />
     <Compile Include="Block\XorGateBlock.cs" />
-    <Compile Include="Game\AlphaTestedShader.cs" />
-    <Compile Include="Game\HighlightShader.cs" />
-    <Compile Include="Game\OpaqueShader.cs" />
     <Compile Include="Game\Subtexture.cs" />
     <Compile Include="Game\TerrainSerializer22.cs" />
     <Compile Include="Game\TextureAtlas.cs" />
     <Compile Include="Game\TextureAtlasManager.cs" />
-    <Compile Include="Game\TransparentShader.cs" />
     <Compile Include="Managers\AnalyticsManager.cs" />
     <Compile Include="Managers\AudioManager.cs" />
     <Compile Include="Managers\BlocksTexturesManager.cs" />

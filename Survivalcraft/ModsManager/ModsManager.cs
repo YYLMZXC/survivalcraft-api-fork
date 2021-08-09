@@ -13,6 +13,8 @@ using SimpleJson;
 using Engine.Graphics;
 using Engine.Media;
 using System.IO.Compression;
+
+
 public static class ModsManager
 {
     public const string APIVersion = "1.34";
@@ -149,18 +151,18 @@ public static class ModsManager
             return outStream;
         }
     }
-    public static string GetInPakOrStorageFile(string filepath,string prefix=".txt") {
+    public static T GetInPakOrStorageFile<T>(string filepath,string prefix=".txt") where T :class {
         string storagePath = Storage.CombinePaths(ExternelPath, filepath + prefix);
         if (Storage.FileExists(storagePath))
         {
-            string txt = null;
+            object obj = null;
             using (Stream stream = Storage.OpenFile(storagePath, OpenFileMode.Read))
             {
-                txt = new StreamReader(stream).ReadToEnd();
+                obj = ContentManager.StreamConvertType(typeof(T).GetType(), stream);
             }
-            return txt;
+            return obj as T;
         }
-        else return ContentManager.Get<string>(filepath);
+        else return ContentManager.Get<T>(filepath);
 
     }
     public static T DeserializeJson<T>(string text) where T : class

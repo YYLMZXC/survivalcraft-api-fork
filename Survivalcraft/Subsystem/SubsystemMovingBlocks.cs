@@ -388,7 +388,7 @@ namespace Game
             m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_subsystemAnimatedTextures = Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
-            m_shader = new AlphaTestedShader();
+            m_shader = TerrainRenderer.AlphatestedShader;
             foreach (ValuesDictionary value9 in valuesDictionary.GetValue<ValuesDictionary>("MovingBlockSets").Values)
             {
                 Vector3 value = value9.GetValue<Vector3>("Position");

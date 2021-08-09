@@ -17,8 +17,6 @@ namespace Game
             public Color Color;
         }
 
-        public Vector3 LightPosition;
-        public Vector3 LightDirection;
         public class SkyDome : IDisposable
         {
             public const int VerticesCountX = 10;
@@ -492,9 +490,7 @@ namespace Game
             QueueCelestialBody(batch, camera.ViewPosition, color2, 900f, 3.5f * num2, num);
             QueueCelestialBody(batch, camera.ViewPosition, color3, 900f, 3.5f * num3, angle);
             QueueCelestialBody(batch2, camera.ViewPosition, color, 900f, num2, num);
-            QueueCelestialBody(batch3, camera.ViewPosition, white, 900f, num3, angle);
-            LightPosition = GetPos(new Vector3(camera.ViewPosition.X,64, camera.ViewPosition.Z) ,300f, num2, num);
-            
+            QueueCelestialBody(batch3, camera.ViewPosition, white, 900f, num3, angle);            
         }
 
         public void DrawLightning(Camera camera)
@@ -617,18 +613,6 @@ namespace Game
             _ = DrawCloudsWireframe;
         }
 
-        public Vector3 GetPos(Vector3 viewPosition, float distance, float radius, float angle)
-        {
-            Vector3 vector = default;
-            vector.X = -MathUtils.Sin(angle);
-            vector.Y = -MathUtils.Cos(angle);
-            Vector3 vector2 = vector;
-            Vector3 unitZ = Vector3.UnitZ;
-            var v = Vector3.Cross(unitZ, vector2);
-            Vector3 p = viewPosition + vector2 * distance - radius * unitZ - radius * v;
-            LightDirection = Vector3.Normalize(viewPosition - p);
-            return p;
-        }
         public void QueueCelestialBody(TexturedBatch3D batch, Vector3 viewPosition, Color color, float distance, float radius, float angle)
         {
             if (color.A > 0)

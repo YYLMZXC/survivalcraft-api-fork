@@ -101,7 +101,7 @@ namespace Game
                                     {
                                         using (stream)
                                         {
-                                            return contentInfo1.obj = new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), null);
+                                            return contentInfo1.obj = new Shader(new VertexShaderCode() { Code = new StreamReader(stream).ReadToEnd() }, new PixelShaderCode() { Code = new StreamReader(stream2).ReadToEnd() }, new ShaderMacro[] { new ShaderMacro(name) });
                                         }
                                     }
                                 }
@@ -135,6 +135,8 @@ namespace Game
                 case "System.Xml.Linq.XElement": fixname = name + ".xml"; break;
                 case "Engine.Graphics.Model": fixname = name + ".dae"; break;
                 case "Engine.Media.StreamingSource":fixname = name + ".ogg";break;
+                case "Engine.Graphics.VertexShaderCode": fixname = name + ".vsh"; break;
+                case "Engine.Graphics.PixelShaderCode": fixname = name + ".psh"; break;
                 case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) return TextureAtlasManager.GetSubtexture(name); else return new Subtexture(Get<Texture2D>(name),Vector2.Zero,Vector2.One);
                 default: { break; }
             }
@@ -157,6 +159,8 @@ namespace Game
         {
             switch (type.FullName)
             {
+                case "Engine.Graphics.VertexShaderCode": return new VertexShaderCode() { Code=new StreamReader(stream).ReadToEnd()};
+                case "Engine.Graphics.PixelShaderCode": return new PixelShaderCode() { Code = new StreamReader(stream).ReadToEnd() };
                 case "Engine.Media.StreamingSource":return Ogg.Stream(stream);
                 case "Engine.Audio.SoundBuffer":return SoundData.Load(stream);
                 case "Engine.Graphics.Texture2D": return Texture2D.Load(stream,true);

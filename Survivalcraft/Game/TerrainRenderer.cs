@@ -8,15 +8,11 @@ namespace Game
     {
         public PrimitivesRenderer3D PrimitivesRenderer = new PrimitivesRenderer3D();
         public SubsystemTerrain m_subsystemTerrain;
-        public RenderTarget2D RenderTarget;
-
         public static SubsystemSky m_subsystemSky;
 
         public SubsystemAnimatedTextures m_subsystemAnimatedTextures;
 
         public static Shader OpaqueShader;
-
-        public static Shader ShadowShader;
 
         public static Shader AlphatestedShader;
 
@@ -76,12 +72,10 @@ namespace Game
             m_subsystemTerrain = subsystemTerrain;
             m_subsystemSky = subsystemTerrain.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_subsystemAnimatedTextures = subsystemTerrain.SubsystemAnimatedTextures;
-            OpaqueShader=new OpaqueShader();
-            ShadowShader = new Shader(ModsManager.GetInPakOrStorageFile("Shaders/shadow",".vsh"), ModsManager.GetInPakOrStorageFile("Shaders/shadow",".psh"), new ShaderMacro[] { new ShaderMacro("ShadowShader") });
-            AlphatestedShader = new AlphaTestedShader();
-            TransparentShader = new TransparentShader();
+            OpaqueShader = new Shader(ModsManager.GetInPakOrStorageFile<VertexShaderCode>("Shaders/Opaque", ".vsh"), ModsManager.GetInPakOrStorageFile<PixelShaderCode>("Shaders/Opaque", ".psh"), new ShaderMacro[] { new ShaderMacro("Opaque") });
+            AlphatestedShader = new Shader(ModsManager.GetInPakOrStorageFile<VertexShaderCode>("Shaders/AlphaTested", ".vsh"), ModsManager.GetInPakOrStorageFile<PixelShaderCode>("Shaders/AlphaTested", ".psh"), new ShaderMacro[] { new ShaderMacro("ALPHATESTED") });
+            TransparentShader = new Shader(ModsManager.GetInPakOrStorageFile<VertexShaderCode>("Shaders/Transparent", ".vsh"), ModsManager.GetInPakOrStorageFile<PixelShaderCode>("Shaders/Transparent", ".psh"), new ShaderMacro[] { new ShaderMacro("Transparent") });
             Display.DeviceReset += Display_DeviceReset;
-            RenderTarget = new RenderTarget2D(1024, 1024,1,ColorFormat.Rgba8888,DepthFormat.Depth16);
         }
 
         public void PrepareForDrawing(Camera camera)
@@ -151,7 +145,6 @@ namespace Game
             OpaqueShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
             OpaqueShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
             OpaqueShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-            OpaqueShader.GetParameter("u_time").SetValue(m_subsystemSky.m_subsystemTimeOfDay.TimeOfDay);//时间参数
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
                 TerrainChunk terrainChunk = m_chunksToDraw[i];
@@ -282,7 +275,7 @@ namespace Game
         }
 
         public static void DrawTerrainChunkGeometrySubset(Shader shader, TerrainGeometry.DrawBuffer buffer, int subsetsMask) {
-            if (shader != ShadowShader) shader.GetParameter("u_texture").SetValue(buffer.Texture);
+            shader.GetParameter("u_texture").SetValue(buffer.Texture);
             int num = 2147483647;
             int num2 = 0;
             for (int i = 0; i < 8; i++)

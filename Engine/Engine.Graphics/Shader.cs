@@ -6,6 +6,16 @@ using System.Xml.Linq;
 
 namespace Engine.Graphics
 {
+	public class VertexShaderCode
+	{
+		public string Code;
+	}
+
+	public class PixelShaderCode
+	{
+		public string Code;
+	}
+
 	public class Shader : GraphicsResource
 	{
 		internal struct ShaderAttributeData
@@ -66,9 +76,7 @@ namespace Engine.Graphics
 		}
 
 		public ReadOnlyList<ShaderParameter> Parameters => new ReadOnlyList<ShaderParameter>(m_parameters);
-
-		public Shader(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros)
-		{
+		public void Construct(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros) {
 			try
 			{
 				InitializeShader(vertexShaderCode, pixelShaderCode, shaderMacros);
@@ -79,6 +87,14 @@ namespace Engine.Graphics
 				Dispose();
 				throw;
 			}
+		}
+		public Shader(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros)  {
+
+			Construct(vertexShaderCode, pixelShaderCode, shaderMacros);
+		}
+		public Shader(VertexShaderCode vertexShaderCode, PixelShaderCode pixelShaderCode, params ShaderMacro[] shaderMacros)
+		{
+			Construct(vertexShaderCode.Code,pixelShaderCode.Code,shaderMacros);
 		}
 
 		public override void Dispose()
