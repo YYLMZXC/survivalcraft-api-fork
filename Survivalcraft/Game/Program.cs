@@ -72,11 +72,6 @@ namespace Game
             }
             else if (Time.FrameIndex == 0)
             {
-                using (System.IO.Stream stream = Storage.OpenFile("app:demo.obj", OpenFileMode.Read))
-                {
-                    Model model = ObjModelReader.Load(stream);
-                    System.Diagnostics.Debug.WriteLine("Mesh Count is:" + model.Meshes.Count);
-                }
                 Initialize();
             }
             else

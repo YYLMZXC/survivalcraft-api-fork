@@ -20,6 +20,7 @@ namespace Game
         }
         public struct ObjVertex {
             public ObjPosition position;
+            public ObjNormal objNormal;
             public ObjTexCood texCood;
         }
         public struct ObjNormal
@@ -31,7 +32,6 @@ namespace Game
                 z = float.Parse(z_);
             }
         }
-
         public struct ObjTexCood {
             public float tx, ty;
             public ObjTexCood(string tx_, string ty_) {
@@ -51,7 +51,6 @@ namespace Game
                 return new BoundingBox(vectors);
             }
         }
-
         public static Model Load(Stream stream)
         {
             Dictionary<string, ObjMesh> Meshes = new Dictionary<string, ObjMesh>();
@@ -115,8 +114,9 @@ namespace Game
                                             int pc = int.Parse(param[2]);//法线索引
                                             ObjPosition objPosition = objPositions[pa - 1];
                                             ObjTexCood texCood = objTexCoods[pb - 1];
+                                            ObjNormal objNormal = objNormals[pc - 1];
                                             objMesh.Indices.Add((ushort)objMesh.Vertices.Count);
-                                            objMesh.Vertices.Add(new ObjVertex() { position = objPosition, texCood = texCood });
+                                            objMesh.Vertices.Add(new ObjVertex() { position = objPosition,objNormal= objNormal, texCood = texCood });
                                         }
                                     }
                                 }
@@ -132,18 +132,42 @@ namespace Game
             {
                 ModelBone modelBone = Model.NewBone(c.Key, Matrix.Identity, rootBone);
                 ModelMesh mesh = Model.NewMesh(c.Key, modelBone, c.Value.CalculateBoundingBox());
-                VertexBuffer vertexBuffer = new VertexBuffer(new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.Vector2, VertexElementSemantic.TextureCoordinate)),c.Value.Vertices.Count);
+                VertexBuffer vertexBuffer = new VertexBuffer(new VertexDeclaration(
+                    new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), 
+                    new VertexElement(12, VertexElementFormat.Vector3, VertexElementSemantic.Normal),
+                   new VertexElement(24, VertexElementFormat.Vector2, VertexElementSemantic.TextureCoordinate)),c.Value.Vertices.Count);
+                MemoryStream stream1 = new MemoryStream();
+                MemoryStream stream2 = new MemoryStream();
+                BinaryWriter binaryWriter1 = new BinaryWriter(stream1);
+                BinaryWriter binaryWriter2 = new BinaryWriter(stream2);
+                for (int i = 0; i < c.Value.Vertices.Count; i++)
+                {
+                    ObjVertex objVertex = c.Value.Vertices[i];
+                    binaryWriter1.Write(objVertex.position.x);
+                    binaryWriter1.Write(objVertex.position.y);
+                    binaryWriter1.Write(objVertex.position.z);
+                    binaryWriter1.Write(objVertex.objNormal.x);
+                    binaryWriter1.Write(objVertex.objNormal.y);
+                    binaryWriter1.Write(objVertex.objNormal.z);
+                    binaryWriter1.Write(objVertex.texCood.tx);
+                    binaryWriter1.Write(objVertex.texCood.ty);
+                }
+                for (int i=0;i<c.Value.Indices.Count;i++) {
+                    binaryWriter2.Write(c.Value.Indices[i]);
+                }
+                byte[] vs = stream1.ToArray();
+                byte[] ins = stream2.ToArray();
+                stream1.Close();
+                stream2.Close();
                 vertexBuffer.SetData(c.Value.Vertices.Array, 0, c.Value.Vertices.Count);
+                vertexBuffer.Tag = vs;
                 IndexBuffer indexBuffer = new IndexBuffer(IndexFormat.SixteenBits, c.Value.Indices.Count);
                 indexBuffer.SetData(c.Value.Indices.Array, 0, c.Value.Indices.Count);
+                indexBuffer.Tag = ins;
                 mesh.NewMeshPart(vertexBuffer, indexBuffer, 0, c.Value.Indices.Count, c.Value.CalculateBoundingBox());
                 Model.AddMesh(mesh);
             }
             return Model;
         }
-
-
-
-
     }
 }
