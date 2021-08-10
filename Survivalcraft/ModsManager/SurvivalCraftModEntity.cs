@@ -12,7 +12,6 @@ namespace Game
 
         public SurvivalCrafModEntity():base(ZipArchive.Open(Storage.OpenFile("app:Content.zip", OpenFileMode.Read), true))
         {
-
         }
         public override void LoadBlocksData()
         {
@@ -32,6 +31,7 @@ namespace Game
                     var modLoader = Activator.CreateInstance(types[i]) as ModLoader;
                     modLoader.Entity = this;
                     modLoader.__ModInitialize();
+                    ModLoader_ = modLoader;
                     ModsManager.ModLoaders.Add(modLoader);
                 }
                 if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)

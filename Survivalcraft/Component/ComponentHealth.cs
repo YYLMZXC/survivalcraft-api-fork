@@ -182,7 +182,7 @@ namespace Game
                     }
                 }
             }
-            HookActions(m_componentCreature, "Attacked");
+            if (attacker != null) HookActions(attacker, "Attacked");
         }
 
         public void Update(float dt)

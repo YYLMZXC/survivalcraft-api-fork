@@ -159,7 +159,7 @@ namespace Game
                 {
                     m_componentCreature.ComponentLocomotion.JumpOrder = 1f;
                 }
-            };
+            };            
             m_componentCreature.ComponentHealth.Hook("Attacked", ModsManager.SurvivalCrafModEntity.ModLoader_, delegate(ComponentCreature attacker) {
                 if (m_random.Float(0f, 1f) < m_chaseWhenAttackedProbability)
                 {

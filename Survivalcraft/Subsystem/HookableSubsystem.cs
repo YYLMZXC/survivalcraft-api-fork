@@ -11,7 +11,7 @@ namespace Game
         private class SubsystemHook
         {
             public Dictionary<ModLoader, bool> Loaders = new Dictionary<ModLoader, bool>();//是否被禁用
-            public Dictionary<ModLoader, Action<T>> Hooks = new Dictionary<ModLoader, Action<T>>();
+            public Dictionary<ModLoader, List<Action<T>>> Hooks = new Dictionary<ModLoader, List<Action<T>>>();
             public Dictionary<ModLoader, string> DisableReason = new Dictionary<ModLoader, string>();
             public string HookName;
             public SubsystemHook(string name)
@@ -22,14 +22,17 @@ namespace Game
             {
                 if (action != null)
                 {
-
-                    if (Hooks.TryGetValue(modLoader, out Action<T> action1) == false)
+                    if (Loaders.TryGetValue(modLoader, out bool k) == false)
                     {
-                        Hooks.Add(modLoader, action1);
+                        Loaders.Add(modLoader, true);
+                    }
+                    if (Hooks.TryGetValue(modLoader, out List<Action<T>> actions) == false)
+                    {
+                        Hooks.Add(modLoader, new List<Action<T>>() { action });
                     }
                     else
                     {
-                        action1 += action;
+                        actions.Add(action);
                     }
                 }
             }
@@ -54,7 +57,7 @@ namespace Game
                 {
                     if (Loaders.TryGetValue(item.Key, out bool k) && k)
                     {
-                        item.Value?.Invoke(obj);
+                        foreach (var ix in item.Value) ix?.Invoke(obj);
                     }
                 }
             }
@@ -80,6 +83,10 @@ namespace Game
                 component.AddHook(modLoader, action);
                 Hooks.Add(HookName, component);
             }
+        }
+        public override void Dispose()
+        {
+            Hooks.Clear();
         }
         public void Disable(string HookName, ModLoader from, ModLoader toDisable, string reason)
         {
