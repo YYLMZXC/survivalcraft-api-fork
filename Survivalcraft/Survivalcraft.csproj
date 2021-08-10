@@ -413,6 +413,7 @@
     <Compile Include="Managers\WorldsManager.cs" />
     <Compile Include="ModsManager\FastDebugModEntity.cs" />
     <Compile Include="ModsManager\ModLoader.cs" />
+    <Compile Include="ModsManager\ObjModelReader.cs" />
     <Compile Include="ModsManager\SurvivalCraftModEntity.cs" />
     <Compile Include="ModsManager\SurvivalCraftModLoader.cs" />
     <Compile Include="Screen\BestiaryDescriptionScreen.cs" />

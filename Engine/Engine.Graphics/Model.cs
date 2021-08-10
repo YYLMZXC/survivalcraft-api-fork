@@ -82,6 +82,9 @@ namespace Engine.Graphics
 			}
 			return modelBone;
 		}
+		public void AddMesh(ModelMesh mesh) {
+			m_meshes.Add(mesh);
+		}
 
 		public ModelMesh NewMesh(string name, ModelBone parentBone, BoundingBox boundingBox)
 		{
