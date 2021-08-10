@@ -97,7 +97,6 @@ namespace Game
             BlocksManager.AddCategory("Painted");
             BlocksManager.AddCategory("Dyed");
             BlocksManager.AddCategory("Fireworks");
-        }
-       
+        }      
     }
 }

@@ -77,30 +77,6 @@ namespace Game
         /// <returns></returns>
         public virtual string SaveSpawnsData(SubsystemSpawn spawn, List<SpawnEntityData> spawnsData, out bool Encoded) { Encoded = false; return ""; }
         /// <summary>
-        /// 掉落物被添加时执行
-        /// </summary>
-        /// <param name="subsystemPickables"></param>
-        /// <param name="pickable"></param>
-        public virtual void PickableAdded(SubsystemPickables subsystemPickables, Pickable pickable) { }
-        /// <summary>
-        /// 掉落物被删除时执行
-        /// </summary>
-        /// <param name="subsystemPickables"></param>
-        /// <param name="pickable"></param>
-        public virtual void PickableRemoved(SubsystemPickables subsystemPickables, Pickable pickable) { }
-        /// <summary>
-        /// 投掷物被添加时执行
-        /// </summary>
-        /// <param name="subsystemProjectiles"></param>
-        /// <param name="projectile"></param>
-        public virtual void ProjectileAdded(SubsystemProjectiles subsystemProjectiles, Projectile projectile) { }
-        /// <summary>
-        /// 投掷物被删除时执行
-        /// </summary>
-        /// <param name="subsystemProjectiles"></param>
-        /// <param name="projectile"></param>
-        public virtual void ProjectileRemoved(SubsystemProjectiles subsystemProjectiles, Projectile projectile) { }
-        /// <summary>
         /// 背包界面被打开时执行
         /// </summary>
         /// <param name="componentGui"></param>
@@ -123,8 +99,6 @@ namespace Game
 
 
         }
-
-
         /// <summary>
         /// 生物消失时执行
         /// </summary>

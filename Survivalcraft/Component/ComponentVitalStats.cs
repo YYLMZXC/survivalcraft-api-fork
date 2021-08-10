@@ -245,7 +245,7 @@ namespace Game
             m_lastTemperature = Temperature;
             m_lastWetness = Wetness;
             m_environmentTemperature = Temperature;
-            m_componentPlayer.ComponentHealth.HookAttacked(ModsManager.ModList[0].ModLoader_, delegate { m_lastAttackedTime = m_subsystemTime.GameTime; });
+            m_componentPlayer.ComponentHealth.Hook("Attacked", ModsManager.SurvivalCrafModEntity.ModLoader_, delegate(ComponentCreature componentCreature) { m_lastAttackedTime = m_subsystemTime.GameTime; });
             foreach (KeyValuePair<string, object> item in valuesDictionary.GetValue<ValuesDictionary>("Satiation"))
             {
                 m_satiation[int.Parse(item.Key, CultureInfo.InvariantCulture)] = (float)item.Value;

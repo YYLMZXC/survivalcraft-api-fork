@@ -6,15 +6,16 @@ using System.Collections.Generic;
 
 namespace Game
 {
-    public class HookableComponent<T> : Component where T:class
+    public class HookableSubsystem<T> : Subsystem where T : class
     {
-        private class ComponentHook
+        private class SubsystemHook
         {
             public Dictionary<ModLoader, bool> Loaders = new Dictionary<ModLoader, bool>();//是否被禁用
             public Dictionary<ModLoader, Action<T>> Hooks = new Dictionary<ModLoader, Action<T>>();
             public Dictionary<ModLoader, string> DisableReason = new Dictionary<ModLoader, string>();
             public string HookName;
-            public ComponentHook(string name) {
+            public SubsystemHook(string name)
+            {
                 HookName = name;
             }
             public void AddHook(ModLoader modLoader, Action<T> action)
@@ -58,30 +59,31 @@ namespace Game
                 }
             }
         }
-        private Dictionary<string, ComponentHook> Hooks = new Dictionary<string, ComponentHook>();
+        private Dictionary<string, SubsystemHook> Hooks = new Dictionary<string, SubsystemHook>();
         public void HookActions(T obj, string name)
         {
-            if (Hooks.TryGetValue(name, out ComponentHook component)) {
-                component.HookAction(obj);
+            if (Hooks.TryGetValue(name, out SubsystemHook subsystem)) {
+                subsystem.HookAction(obj);
             }
         }
+
         public void Hook(string HookName, ModLoader modLoader, Action<T> action)
         {
             if (modLoader == null) return;
-            if (Hooks.TryGetValue(HookName, out ComponentHook component))
+            if (Hooks.TryGetValue(HookName, out SubsystemHook component))
             {
                 component.AddHook(modLoader, action);
             }
             else
             {
-                component = new ComponentHook(HookName);
+                component = new SubsystemHook(HookName);
                 component.AddHook(modLoader, action);
                 Hooks.Add(HookName, component);
             }
         }
         public void Disable(string HookName, ModLoader from, ModLoader toDisable, string reason)
         {
-            if (Hooks.TryGetValue(HookName, out ComponentHook component))
+            if (Hooks.TryGetValue(HookName, out SubsystemHook component))
             {
                 component.Disable(from, toDisable, reason);
             }

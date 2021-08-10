@@ -9,14 +9,14 @@ namespace Game
     {
         public Dictionary<string, FileInfo> FModFiles = new Dictionary<string, FileInfo>();
         public FastDebugModEntity() {
+            InitResources();
             if (GetFile("modinfo.json", out Stream stream))
             {
                 modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
                 modInfo.Name = $"[Debug]{modInfo.Name}";
                 stream.Close();
-            }
-            else {
-                modInfo = new ModInfo() { Name = "FastDebug", Version = "1.0.0", ApiVersion = "1.34", Author = "Mod", Description = "调试Mod插件", ScVersion = "2.2.10.4", PackageName = "com.fastdebug" };
+            }else {
+                modInfo = new ModInfo() { Name = "FastDebug", Version = "1.0.0", ApiVersion = ModsManager.APIVersion, Author = "Mod", Description = "调试Mod插件", ScVersion = "2.2.10.4", PackageName = "com.fastdebug" };
             }
             if (GetFile("icon.png", out Stream stream2)) {
                 LoadIcon(stream2);
@@ -42,8 +42,11 @@ namespace Game
                 string FilenameInZip = abpath.Substring(basepath.Length + 1);
                 ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry();
                 zipArchiveEntry.FilenameInZip = FilenameInZip;
-                FModFiles.Add(FilenameInZip.Substring(7), new FileInfo(Storage.GetSystemPath(abpath)));
-                ContentManager.Add(this, FilenameInZip.Substring(7));
+                FModFiles.Add(FilenameInZip, new FileInfo(Storage.GetSystemPath(abpath)));
+                if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
+                {
+                    ContentManager.Add(this, zipArchiveEntry.FilenameInZip.Substring(7));
+                }
             }
         }
         public override void LoadDll()
@@ -119,7 +122,7 @@ namespace Game
             return files;
         }
         /// <summary>
-        /// 获取指定文件
+        /// 获取指定文件，这里申请的流需要Mod自行释放
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
@@ -127,13 +130,14 @@ namespace Game
         {
             stream=null;
             if (FModFiles.TryGetValue(filename, out FileInfo fileInfo)) {
-                using (Stream stream2 = fileInfo.OpenRead()) {
-                    stream = new MemoryStream();
-                    stream2.CopyTo(stream2);
-                    stream.Position = 0L;
-                }
+                stream = fileInfo.OpenRead();
+                return true;
             }
             return false;
+        }
+        public override bool GetAssetsFile(string filename, out Stream stream)
+        {
+            return GetFile("Assets/" + filename, out stream);
         }
     }
 }

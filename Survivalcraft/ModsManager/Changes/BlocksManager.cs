@@ -64,7 +64,14 @@ namespace Game
             for (int j = 0; j < m_blocks.Length; j++)
             {
                 Block block = m_blocks[j];
-                block.Initialize();
+                try
+                {
+                    block.Initialize();
+                }
+                catch (Exception e)
+                {
+                    LoadingScreen.Warning(e.Message);
+                }
                 foreach (int value in block.GetCreativeValues()) {
                     string category = block.GetCategory(value);
                     AddCategory(category);
@@ -294,6 +301,7 @@ namespace Game
             string[] array2 = null;
             for (int i = 0; i < array.Length; i++)
             {
+                if (string.IsNullOrEmpty(array[i])) continue;
                 string[] array3 = array[i].Split(';');
                 if (i == 0)
                 {

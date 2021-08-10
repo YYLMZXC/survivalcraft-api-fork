@@ -5,7 +5,7 @@ using TemplatesDatabase;
 
 namespace Game
 {
-    public class ComponentHealth : HookableComponent, IUpdateable
+    public class ComponentHealth : HookableComponent<ComponentCreature>, IUpdateable
     {
 
         public SubsystemTime m_subsystemTime;
@@ -182,7 +182,7 @@ namespace Game
                     }
                 }
             }
-            HookActions();
+            HookActions(m_componentCreature, "Attacked");
         }
 
         public void Update(float dt)

@@ -172,6 +172,12 @@ namespace Game
             m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
             m_sleepStartTime = valuesDictionary.GetValue<double>("SleepStartTime");
             m_allowManualWakeUp = valuesDictionary.GetValue<bool>("AllowManualWakeUp");
+            m_componentPlayer.ComponentHealth.Hook("Attacked", ModsManager.SurvivalCrafModEntity.ModLoader_, delegate (ComponentCreature attacker) {
+                if (IsSleeping && m_componentPlayer.ComponentVitalStats.Sleep > 0.25f)
+                {
+                    WakeUp();
+                }
+            });
             if (m_sleepStartTime == 0.0)
             {
                 m_sleepStartTime = null;

@@ -82,7 +82,7 @@ namespace Game
                 ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });            
             });
             AddLoadAction(delegate { //初始化所有ModEntity的资源包
-                ModsManager.ModListAllDo((modEntity) => { modEntity.InitResources(); });
+                //ModsManager.ModListAllDo((modEntity) => { modEntity.InitResources(); });
             });
             AddLoadAction(delegate { //初始化所有ModEntity的语言包
                 LanguageControl.Initialize(ModsManager.modSettings.languageType);

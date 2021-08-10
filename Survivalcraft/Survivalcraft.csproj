@@ -452,6 +452,7 @@
     <Compile Include="Screen\SettingsUiScreen.cs" />
     <Compile Include="Screen\TrialEndedScreen.cs" />
     <Compile Include="Screen\WorldOptionsScreen.cs" />
+    <Compile Include="Subsystem\HookableSubsystem.cs" />
     <Compile Include="Subsystem\SubsystemAdjustableDelayGateBlockBehavior.cs" />
     <Compile Include="Subsystem\SubsystemAmbientSounds.cs" />
     <Compile Include="Subsystem\SubsystemAnimatedTextures.cs" />
@@ -1083,7 +1084,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

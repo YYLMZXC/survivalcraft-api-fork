@@ -103,39 +103,5 @@ namespace Game
         {
             return 7;
         }
-        public override void PickableAdded(SubsystemPickables subsystemPickables, Pickable pickable)
-        {
-            foreach (ComponentEatPickableBehavior behavior in EatPickableBehaviors)
-            {
-                if (behavior.TryAddPickable(pickable) && behavior.m_pickable == null)
-                {
-                    behavior.m_pickable = pickable;
-                }
-            }
-        }
-        public override void PickableRemoved(SubsystemPickables subsystemPickables, Pickable pickable)
-        {
-            foreach (ComponentEatPickableBehavior behavior in EatPickableBehaviors)
-            {
-                behavior.m_pickables.Remove(pickable);
-                if (behavior.m_pickable == pickable)
-                {
-                    behavior.m_pickable = null;
-                }
-            }
-        }
-        public override void ProjectileAdded(SubsystemProjectiles subsystemProjectiles, Projectile projectile)
-        {
-            SubsystemBombBlockBehavior subsystemBombBlockBehavior = subsystemProjectiles.Project.FindSubsystem<SubsystemBombBlockBehavior>();
-            subsystemBombBlockBehavior.ScanProjectile(projectile);
-        }
-        public override void ProjectileRemoved(SubsystemProjectiles subsystemProjectiles, Projectile projectile)
-        {
-            SubsystemBombBlockBehavior subsystemBombBlockBehavior = subsystemProjectiles.Project.FindSubsystem<SubsystemBombBlockBehavior>();
-            subsystemBombBlockBehavior.m_projectiles.Remove(projectile);
-        }
-
-
-
     }
 }

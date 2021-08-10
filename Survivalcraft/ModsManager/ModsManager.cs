@@ -17,10 +17,10 @@ using System.IO.Compression;
 
 public static class ModsManager
 {
-    public const string APIVersion = "1.34";
+    public const string APIVersion = "1.4";
     public const string SCVersion = "2.2.10.4";
     //1为api1.33 2为api1.34
-    public const int Apiv = 2;
+    public const int Apiv = 3;
 #if desktop
     public static string ExternelPath = "app:";
     public static string ModsPath = ExternelPath + "/Mods";
@@ -49,6 +49,7 @@ public static class ModsManager
     public static string logPath = "config:/Logs";
 #endif
     public static string path;//移动端mods数据文件夹
+    internal static ModEntity SurvivalCrafModEntity;
 
     public class ModSettings
     {
@@ -57,7 +58,6 @@ public static class ModsManager
     public class ModHook {
         public string HookName;
         public Dictionary<ModLoader, bool> Loaders = new Dictionary<ModLoader, bool>();
-        public Dictionary<ModLoader, Action> Hooks = new Dictionary<ModLoader, Action>();
         public Dictionary<ModLoader, string> DisableReason = new Dictionary<ModLoader, string>();
         public ModHook(string name)
         {
@@ -70,33 +70,6 @@ public static class ModsManager
                 Loaders.Add(modLoader, true);
             }
         }
-        public void AddHook(ModLoader modLoader, Action action)
-        {
-            if (action != null)
-            {
-
-                if (Hooks.TryGetValue(modLoader, out Action action1) == false)
-                {
-                    Hooks.Add(modLoader, action1);
-                }
-                else
-                {
-                    action1 += action;
-                }
-            }
-        }
-
-        public void HookAction()
-        {
-            foreach (var item in Hooks)
-            {
-                if (Loaders.TryGetValue(item.Key, out bool k) && k)
-                {
-                    item.Value?.Invoke();
-                }
-            }
-        }
-
         public void Remove(ModLoader modLoader)
         {
             if (Loaders.TryGetValue(modLoader, out bool k))
@@ -286,7 +259,8 @@ public static class ModsManager
         ModHooks.Clear();
         ModList.Clear();
         ModLoaders.Clear();
-        ModList.Add(new SurvivalCrafModEntity());
+        SurvivalCrafModEntity = new SurvivalCrafModEntity();
+        ModList.Add(SurvivalCrafModEntity);
         ModList.Add(new FastDebugModEntity());
         GetScmods(ModsPath);
         DisabledMods.Clear();
