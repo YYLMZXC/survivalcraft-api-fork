@@ -63,6 +63,9 @@ namespace Game
             public DynamicArray<ushort> Indices = new DynamicArray<ushort>();
             public string TexturePath = "Textures/ModelNone";//默认位置
             public string MeshName;
+            public ObjMesh(string meshname) {
+                MeshName = meshname;
+            }
             public BoundingBox CalculateBoundingBox()
             {
                 List<Vector3> vectors = new List<Vector3>();
@@ -97,7 +100,7 @@ namespace Game
                                 }
                                 else
                                 {
-                                    objMesh = new ObjMesh();
+                                    objMesh = new ObjMesh(spl[1]);
                                     Meshes.Add(spl[1], objMesh);
                                 }
                                 break;

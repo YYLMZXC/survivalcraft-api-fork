@@ -33,8 +33,8 @@ namespace Game
                         Meshes.Add(texture, blockMesh);
                     }
                 }
+                
             }
-
             /*
             using (Stream stream = Storage.OpenFile("app:chemical_oxidizer.obj", OpenFileMode.Read))
             {

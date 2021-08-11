@@ -76,8 +76,7 @@ namespace Game
                             }
                             if (Meshes.TryGetValue(name, out ObjModelReader.ObjMesh objMesh) == false)
                             {
-                                objMesh = new ObjModelReader.ObjMesh();
-                                objMesh.MeshName = name;
+                                objMesh = new ObjModelReader.ObjMesh(name);
                                 Meshes.Add(name, objMesh);
                             }
                             Vector3 start = new Vector3(ObjConvertFloat(from[0]), ObjConvertFloat(from[1]), ObjConvertFloat(from[2]));
@@ -88,7 +87,7 @@ namespace Game
                                 JsonObject jsonobj2 = obj3 as JsonObject;
                                 foreach (var jobj2 in jsonobj2)
                                 {
-                                    ObjModelReader.ObjMesh childMesh = new ObjModelReader.ObjMesh();
+                                    ObjModelReader.ObjMesh childMesh = new ObjModelReader.ObjMesh(jobj2.Key);
                                     List<Vector3> vectors = FacesDic[jobj2.Key];//预取出四个面的点
                                     JsonObject jobj3 = jobj2.Value as JsonObject;
                                     float rotate = 0f;
@@ -112,7 +111,6 @@ namespace Game
                                             childMesh.TexturePath = path;
                                         }
                                     }
-                                    childMesh.MeshName = jobj2.Key;
                                     ObjModelReader.ObjPosition[] ops = new ObjModelReader.ObjPosition[3];
                                     ObjModelReader.ObjTexCood[] ots = new ObjModelReader.ObjTexCood[3];
                                     ObjModelReader.ObjNormal[] ons = new ObjModelReader.ObjNormal[3];
