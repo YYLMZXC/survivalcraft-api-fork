@@ -64,6 +64,12 @@ namespace Game
         public static object Get(Type type, string name,bool useCache=false)
         {
             object obj = null;
+            if (name.Contains(":"))
+            { //带命名空间的解析
+                string[] spl = name.Split(new char[] { ':' }, StringSplitOptions.None);
+                string ModSpace = spl[0];
+                name = spl[1];
+            }
             string fixname = string.Empty;
             switch (type.FullName)
             {
@@ -137,6 +143,8 @@ namespace Game
                 case "Engine.Media.StreamingSource":fixname = name + ".ogg";break;
                 case "Engine.Graphics.VertexShaderCode": fixname = name + ".vsh"; break;
                 case "Engine.Graphics.PixelShaderCode": fixname = name + ".psh"; break;
+                case "Game.ObjModel": fixname = name + ".obj"; break;
+                case "Game.JsonModel": fixname = name + ".json"; break;
                 case "SimpleJson.JsonObject": fixname = name + ".json"; break;
                 case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) return TextureAtlasManager.GetSubtexture(name); else return new Subtexture(Get<Texture2D>(name),Vector2.Zero,Vector2.One);
                 default: { break; }
@@ -168,6 +176,8 @@ namespace Game
                 case "Engine.Graphics.Texture2D": return Texture2D.Load(stream);
                 case "System.String":return new StreamReader(stream).ReadToEnd();
                 case "Engine.Media.Image": return Image.Load(stream);
+                case "Game.ObjModel": return ObjModelReader.Load(stream);
+                case "Game.JsonModel": return JsonModelReader.Load(stream);
                 case "System.Xml.Linq.XElement": return XElement.Load(stream);
                 case "Engine.Graphics.Model": return Model.Load(stream,true);
             }
