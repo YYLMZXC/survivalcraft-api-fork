@@ -181,18 +181,18 @@ namespace Game
                 int faceTextureSlot = block.GetFaceTextureSlot(0, value);
                 int count = vertices.Count;
                 vertices.Count += 4;
-                SetupCubeVertexFace0(x, y, z + 1, 1f, 0, faceTextureSlot, color, ref vertices.Array[count]);
-                SetupCubeVertexFace0(x + 1, y, z + 1, 1f, 1, faceTextureSlot, color, ref vertices.Array[count + 1]);
-                SetupCubeVertexFace0(x + 1, y + 1, z + 1, 1f, 2, faceTextureSlot, color, ref vertices.Array[count + 2]);
-                SetupCubeVertexFace0(x, y + 1, z + 1, 1f, 3, faceTextureSlot, color, ref vertices.Array[count + 3]);
+                SetupCubeVertexFace0(x, y, z + 1, 1f, 0, faceTextureSlot, color, ref vertices.Array[count]);//A
+                SetupCubeVertexFace0(x + 1, y, z + 1, 1f, 1, faceTextureSlot, color, ref vertices.Array[count + 1]);//B
+                SetupCubeVertexFace0(x + 1, y + 1, z + 1, 1f, 2, faceTextureSlot, color, ref vertices.Array[count + 2]);//C
+                SetupCubeVertexFace0(x, y + 1, z + 1, 1f, 3, faceTextureSlot, color, ref vertices.Array[count + 3]);//D
                 int count2 = indices.Count;
                 indices.Count += 6;
-                indices.Array[count2] = (ushort)count;
-                indices.Array[count2 + 1] = (ushort)(count + 2);
-                indices.Array[count2 + 2] = (ushort)(count + 1);
-                indices.Array[count2 + 3] = (ushort)(count + 2);
-                indices.Array[count2 + 4] = (ushort)count;
-                indices.Array[count2 + 5] = (ushort)(count + 3);
+                indices.Array[count2] = (ushort)count;//A
+                indices.Array[count2 + 1] = (ushort)(count + 2);//C
+                indices.Array[count2 + 2] = (ushort)(count + 1);//B
+                indices.Array[count2 + 3] = (ushort)(count + 2);//C
+                indices.Array[count2 + 4] = (ushort)count;//A
+                indices.Array[count2 + 5] = (ushort)(count + 3);//D
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))

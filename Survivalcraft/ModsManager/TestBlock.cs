@@ -6,11 +6,13 @@ namespace Game
 {
     public class TestBlock:Block
     {
-        public const int Index = 999;
+        public const int Index = 300;
         public Dictionary<Texture2D, BlockMesh> Meshes = new Dictionary<Texture2D, BlockMesh>();
         public Dictionary<string, Texture2D> TextureMaps = new Dictionary<string, Texture2D>();
         public override void Initialize()
         {
+            DefaultShadowStrength = -1;
+            IsTransparent = false;
             using (Stream stream = Storage.OpenFile("app:12.json", OpenFileMode.Read))
             {
                 JsonModel jsonModel = JsonModelReader.Load(stream);
@@ -64,7 +66,7 @@ namespace Game
         }
         public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value)
         {
-            return true;
+            return false;
         }
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
