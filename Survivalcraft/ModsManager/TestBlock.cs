@@ -11,8 +11,7 @@ namespace Game
         public Dictionary<string, Texture2D> TextureMaps = new Dictionary<string, Texture2D>();
         public override void Initialize()
         {
-            /*
-            using (Stream stream = Storage.OpenFile("app:chemical_oxidizer.json", OpenFileMode.Read))
+            using (Stream stream = Storage.OpenFile("app:12.json", OpenFileMode.Read))
             {
                 JsonModel jsonModel = JsonModelReader.Load(stream);
                 foreach (ModelMesh mesh in jsonModel.Meshes)
@@ -35,7 +34,8 @@ namespace Game
                     }
                 }
             }
-            */
+
+            /*
             using (Stream stream = Storage.OpenFile("app:chemical_oxidizer.obj", OpenFileMode.Read))
             {
                 ObjModel jsonModel = ObjModelReader.Load(stream);
@@ -59,13 +59,19 @@ namespace Game
                     }
                 }
             }
+            */
 
         }
+        public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value)
+        {
+            return true;
+        }
+
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
         {
             foreach (var c in Meshes)
             {
-                generator.GenerateMeshVertices(this, x, y, z, c.Value, Color.White, null, geometry.GetGeometry(c.Key).SubsetOpaque);
+                generator.GenerateMeshVertices(this, x, y, z, c.Value, Color.White, null, geometry.GetGeometry(c.Key).SubsetAlphaTest);
             }
         }
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)

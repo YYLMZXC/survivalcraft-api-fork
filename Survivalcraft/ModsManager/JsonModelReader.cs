@@ -13,6 +13,7 @@ namespace Game
     public class JsonModelReader
     {
         public static Dictionary<string, List<Vector3>> FacesDic = new Dictionary<string, List<Vector3>>();
+        public static Dictionary<string,Vector3> NormalDic = new Dictionary<string,Vector3>();
         static JsonModelReader()
         {
             FacesDic.Add("north", new List<Vector3>() { Vector3.UnitX, Vector3.Zero, Vector3.UnitY, new Vector3(1, 1, 0) });
@@ -23,6 +24,13 @@ namespace Game
 
             FacesDic.Add("up", new List<Vector3>() { Vector3.UnitY, new Vector3(0, 1, 1), Vector3.One, new Vector3(1, 1, 0) });
             FacesDic.Add("down", new List<Vector3>() { Vector3.Zero, Vector3.UnitZ, new Vector3(1, 0, 1), new Vector3(1, 0, 0) });
+
+            NormalDic.Add("north", new Vector3(0, 0, -1));
+            NormalDic.Add("south", new Vector3(0, 0, 1));
+            NormalDic.Add("east", new Vector3(1, 0, 0));
+            NormalDic.Add("west", new Vector3(-1, 0, 0));
+            NormalDic.Add("up", new Vector3(0, 1, 0));
+            NormalDic.Add("down", new Vector3(0, -1, 0));
         }
         public static float ObjConvertFloat(object obj)
         {
@@ -62,22 +70,25 @@ namespace Game
                         {
                             JsonArray from = jobj["from"] as JsonArray;
                             JsonArray to = jobj["to"] as JsonArray;
-                            string name = jobj["name"] as string;
-                            ObjModelReader.ObjMesh objMesh = new ObjModelReader.ObjMesh();
-                            if (Meshes.TryGetValue(name, out ObjModelReader.ObjMesh mesh) == false)
+                            string name = "undefined";
+                            if (jobj.TryGetValue("name", out object obj8)) {
+                                name = obj8 as string;
+                            }
+                            if (Meshes.TryGetValue(name, out ObjModelReader.ObjMesh objMesh) == false)
                             {
+                                objMesh = new ObjModelReader.ObjMesh();
+                                objMesh.MeshName = name;
                                 Meshes.Add(name, objMesh);
                             }
                             Vector3 start = new Vector3(ObjConvertFloat(from[0]), ObjConvertFloat(from[1]), ObjConvertFloat(from[2]));
                             Vector3 end = new Vector3(ObjConvertFloat(to[0]), ObjConvertFloat(to[1]), ObjConvertFloat(to[2]));
                             Matrix transform = Matrix.CreateScale(end.X - start.X, end.Y - start.Y, end.Z - start.Z) * Matrix.CreateTranslation(start.X, start.Y, start.Z) * Matrix.CreateScale(0.0625f);//基础缩放变换
-
-
                             if (jobj.TryGetValue("faces", out object obj3))
                             {//每个面，开始生成六个面的顶点数据
                                 JsonObject jsonobj2 = obj3 as JsonObject;
                                 foreach (var jobj2 in jsonobj2)
                                 {
+                                    ObjModelReader.ObjMesh childMesh = new ObjModelReader.ObjMesh();
                                     List<Vector3> vectors = FacesDic[jobj2.Key];//预取出四个面的点
                                     JsonObject jobj3 = jobj2.Value as JsonObject;
                                     float rotate = 0f;
@@ -98,13 +109,13 @@ namespace Game
                                     {//处理贴图数据
                                         string tkey = obj5 as string;
                                         if (texturemap.TryGetValue(tkey.Substring(1),out string path)) {
-                                            objMesh.TexturePath = path;
+                                            childMesh.TexturePath = path;
                                         }
                                     }
+                                    childMesh.MeshName = jobj2.Key;
                                     ObjModelReader.ObjPosition[] ops = new ObjModelReader.ObjPosition[3];
                                     ObjModelReader.ObjTexCood[] ots = new ObjModelReader.ObjTexCood[3];
                                     ObjModelReader.ObjNormal[] ons = new ObjModelReader.ObjNormal[3];
-
                                     //生成第一个三角面顶点
                                     Vector3 p1 = Vector3.Transform(vectors[0], transform);
                                     Vector3 p2 = Vector3.Transform(vectors[1], transform);
@@ -123,17 +134,17 @@ namespace Game
                                     ots[1] = new ObjModelReader.ObjTexCood(t2.X, t2.Y);
                                     ots[2] = new ObjModelReader.ObjTexCood(t3.X, t3.Y);
                                     //生成第一个三角面的顶点法线
-                                    Vector3 normal = ModsManager.Cal_Normal_3D(p1, p2, p3);
+                                    Vector3 normal = NormalDic[jobj2.Key];
                                     ons[0] = new ObjModelReader.ObjNormal(normal.X, normal.Y, normal.Z);
                                     ons[1] = new ObjModelReader.ObjNormal(normal.X, normal.Y, normal.Z);
                                     ons[2] = new ObjModelReader.ObjNormal(normal.X, normal.Y, normal.Z);
-                                    int startcount = objMesh.Vertices.Count;
-                                    objMesh.Indices.Add((ushort)(startcount++));
-                                    objMesh.Indices.Add((ushort)(startcount++));
-                                    objMesh.Indices.Add((ushort)(startcount++));
-                                    objMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[0], objNormal = ons[0], texCood = ots[0] });
-                                    objMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[1], objNormal = ons[1], texCood = ots[1] });
-                                    objMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[2], objNormal = ons[2], texCood = ots[2] });
+                                    int startcount = childMesh.Vertices.Count;
+                                    childMesh.Indices.Add((ushort)(startcount++));
+                                    childMesh.Indices.Add((ushort)(startcount++));
+                                    childMesh.Indices.Add((ushort)(startcount++));
+                                    childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[0], objNormal = ons[0], texCood = ots[0] });
+                                    childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[1], objNormal = ons[1], texCood = ots[1] });
+                                    childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[2], objNormal = ons[2], texCood = ots[2] });
                                     //生成第二个三角面
                                     p1 = Vector3.Transform(vectors[0], transform);
                                     p2 = Vector3.Transform(vectors[2], transform);
@@ -152,16 +163,16 @@ namespace Game
                                     ots[1] = new ObjModelReader.ObjTexCood(t2.X, t2.Y);
                                     ots[2] = new ObjModelReader.ObjTexCood(t3.X, t3.Y);
                                     //生成第二个三角面的顶点法线
-                                    normal = ModsManager.Cal_Normal_3D(p1, p2, p3);
                                     ons[0] = new ObjModelReader.ObjNormal(normal.X, normal.Y, normal.Z);
                                     ons[1] = new ObjModelReader.ObjNormal(normal.X, normal.Y, normal.Z);
                                     ons[2] = new ObjModelReader.ObjNormal(normal.X, normal.Y, normal.Z);
-                                    objMesh.Indices.Add((ushort)(startcount++));
-                                    objMesh.Indices.Add((ushort)(startcount++));
-                                    objMesh.Indices.Add((ushort)(startcount++));
-                                    objMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[0], objNormal = ons[0], texCood = ots[0] });
-                                    objMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[1], objNormal = ons[1], texCood = ots[1] });
-                                    objMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[2], objNormal = ons[2], texCood = ots[2] });
+                                    childMesh.Indices.Add((ushort)(startcount++));
+                                    childMesh.Indices.Add((ushort)(startcount++));
+                                    childMesh.Indices.Add((ushort)(startcount++));
+                                    childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[0], objNormal = ons[0], texCood = ots[0] });
+                                    childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[1], objNormal = ons[1], texCood = ots[1] });
+                                    childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[2], objNormal = ons[2], texCood = ots[2] });
+                                    objMesh.ChildMeshes.Add(childMesh);
                                 }
                             }
                         }

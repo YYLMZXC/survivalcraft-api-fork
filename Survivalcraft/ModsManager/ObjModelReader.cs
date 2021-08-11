@@ -62,6 +62,7 @@ namespace Game
             public DynamicArray<ObjVertex> Vertices = new DynamicArray<ObjVertex>();
             public DynamicArray<ushort> Indices = new DynamicArray<ushort>();
             public string TexturePath = "Textures/ModelNone";//默认位置
+            public string MeshName;
             public BoundingBox CalculateBoundingBox()
             {
                 List<Vector3> vectors = new List<Vector3>();
@@ -70,6 +71,7 @@ namespace Game
                 }
                 return new BoundingBox(vectors);
             }
+            public List<ObjMesh> ChildMeshes = new List<ObjMesh>();
         }
         public static ObjModel Load(Stream stream)
         {
@@ -149,27 +151,23 @@ namespace Game
             return ObjMeshesToModel<ObjModel>(Meshes);
         }
 
-        public static T ObjMeshesToModel<T>(Dictionary<string,ObjMesh> Meshes) where T:class {
-            Type ctype = typeof(T);
-            if (!ctype.IsSubclassOf(typeof(Model))) throw new Exception("不能将" + ctype.Name + "转换为Model类型");
-            object iobj = Activator.CreateInstance(ctype);
-            Model Model = iobj as Model;
-            ModelBone rootBone = Model.NewBone("Object", Matrix.Identity, null);
-            foreach (var c in Meshes)
+        public static void AppendMesh(Model model,ModelBone rootBone, string texturepath, ObjMesh objMesh)
+        {
+            ModelBone modelBone = model.NewBone(objMesh.MeshName, Matrix.Identity, rootBone);
+            if (objMesh.Vertices.Count > 0)
             {
-                ModelBone modelBone = Model.NewBone(c.Key, Matrix.Identity, rootBone);
-                ModelMesh mesh = Model.NewMesh(c.Key, modelBone, c.Value.CalculateBoundingBox());
+                ModelMesh mesh = model.NewMesh(objMesh.MeshName, modelBone, objMesh.CalculateBoundingBox());
                 VertexBuffer vertexBuffer = new VertexBuffer(new VertexDeclaration(
                     new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position),
                     new VertexElement(12, VertexElementFormat.Vector3, VertexElementSemantic.Normal),
-                   new VertexElement(24, VertexElementFormat.Vector2, VertexElementSemantic.TextureCoordinate)), c.Value.Vertices.Count);
+                   new VertexElement(24, VertexElementFormat.Vector2, VertexElementSemantic.TextureCoordinate)), objMesh.Vertices.Count);
                 MemoryStream stream1 = new MemoryStream();
                 MemoryStream stream2 = new MemoryStream();
                 BinaryWriter binaryWriter1 = new BinaryWriter(stream1);
                 BinaryWriter binaryWriter2 = new BinaryWriter(stream2);
-                for (int i = 0; i < c.Value.Vertices.Count; i++)
+                for (int i = 0; i < objMesh.Vertices.Count; i++)
                 {
-                    ObjVertex objVertex = c.Value.Vertices[i];
+                    ObjVertex objVertex = objMesh.Vertices[i];
                     binaryWriter1.Write(objVertex.position.x);
                     binaryWriter1.Write(objVertex.position.y);
                     binaryWriter1.Write(objVertex.position.z);
@@ -179,22 +177,38 @@ namespace Game
                     binaryWriter1.Write(objVertex.texCood.tx);
                     binaryWriter1.Write(objVertex.texCood.ty);
                 }
-                for (int i = 0; i < c.Value.Indices.Count; i++)
+                for (int i = 0; i < objMesh.Indices.Count; i++)
                 {
-                    binaryWriter2.Write(c.Value.Indices[i]);
+                    binaryWriter2.Write(objMesh.Indices[i]);
                 }
                 byte[] vs = stream1.ToArray();
                 byte[] ins = stream2.ToArray();
                 stream1.Close();
                 stream2.Close();
-                vertexBuffer.SetData(c.Value.Vertices.Array, 0, c.Value.Vertices.Count);
+                vertexBuffer.SetData(objMesh.Vertices.Array, 0, objMesh.Vertices.Count);
                 vertexBuffer.Tag = vs;
-                IndexBuffer indexBuffer = new IndexBuffer(IndexFormat.SixteenBits, c.Value.Indices.Count);
-                indexBuffer.SetData(c.Value.Indices.Array, 0, c.Value.Indices.Count);
+                IndexBuffer indexBuffer = new IndexBuffer(IndexFormat.SixteenBits, objMesh.Indices.Count);
+                indexBuffer.SetData(objMesh.Indices.Array, 0, objMesh.Indices.Count);
                 indexBuffer.Tag = ins;
-                ModelMeshPart modelMeshPart = mesh.NewMeshPart(vertexBuffer, indexBuffer, 0, c.Value.Indices.Count, c.Value.CalculateBoundingBox());
-                modelMeshPart.TexturePath = c.Value.TexturePath;
-                Model.AddMesh(mesh);
+                ModelMeshPart modelMeshPart = mesh.NewMeshPart(vertexBuffer, indexBuffer, 0, objMesh.Indices.Count, objMesh.CalculateBoundingBox());
+                modelMeshPart.TexturePath = objMesh.TexturePath;
+                model.AddMesh(mesh);
+            }
+            foreach (ObjMesh objMesh1 in objMesh.ChildMeshes)
+            {
+                AppendMesh(model, modelBone, objMesh1.TexturePath, objMesh1);
+            }
+        }
+
+        public static T ObjMeshesToModel<T>(Dictionary<string,ObjMesh> Meshes) where T:class {
+            Type ctype = typeof(T);
+            if (!ctype.IsSubclassOf(typeof(Model))) throw new Exception("不能将" + ctype.Name + "转换为Model类型");
+            object iobj = Activator.CreateInstance(ctype);
+            Model Model = iobj as Model;
+            ModelBone rootBone = Model.NewBone("Object", Matrix.Identity, null);
+            foreach (var c in Meshes)
+            {
+                AppendMesh(Model, rootBone, c.Key, c.Value);
             }
             return iobj as T;
         }
