@@ -270,9 +270,10 @@ public static class ModsManager
         List<ModEntity> ToRemove = new List<ModEntity>();
         List<ModInfo> ToDisable = new List<ModInfo>();
         ToDisable.AddRange(DisabledMods);
-        foreach (ModEntity modEntity1 in ModList) {
+        foreach (ModEntity modEntity1 in ModList)
+        {
             ModInfo modInfo = modEntity1.modInfo;
-            ModInfo disabledmod = ToDisable.Find(l=>l.PackageName==modInfo.PackageName&&l.Version==modInfo.Version);
+            ModInfo disabledmod = ToDisable.Find(l => l == modInfo);
             if (disabledmod != null)
             {
                 ToDisable.Add(modEntity1.modInfo);
@@ -280,28 +281,23 @@ public static class ModsManager
                 continue;
             }
             if (modEntity1.IsChecked) continue;
+            if (new Version(modEntity1.modInfo.ApiVersion) < new Version(APIVersion))
+            {//api版本检测
+                ToDisable.Add(modEntity1);
+                ToRemove.Add(modEntity1);
+                AddException(new Exception($"[{modEntity1.modInfo.Name}]Target version {version} is less than api version {APIVersion}."), true);
+            }
             List<ModEntity> modEntities = ModList.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
-            var version = new Version();
-            foreach (ModEntity modEntity in modEntities)
-            {
-                if (version <= new Version(modEntity.modInfo.Version)) version = new Version(modEntity.modInfo.Version);
-            }
-            List<ModEntity> entities = ModList.FindAll(px => px.modInfo.PackageName == modInfo.PackageName && new Version(px.modInfo.Version) != new Version(modInfo.Version) && new Version(px.modInfo.Version) == version);
-            if (entities.Count>1)
-            {
-                AddException(new InvalidOperationException($"检测到已安装多个[{modEntity1.modInfo.Name}]，已加载版本:{version}"));
-                foreach (ModEntity modEntity in modEntities)
-                {
-                    if (version != new Version(modEntity.modInfo.Version))
-                    {
-                        ToDisable.Add(modEntity1.modInfo);
-                        ToRemove.Add(modEntity1);
-                    }
-                    modEntity1.IsChecked = true;
-                }
-            }
+            if (modEntities.Count > 1) AddException(new Exception($"Multiple installed [{px.modInfo.PackageName}]"));
+            modEntity1.IsChecked = true;
         }
-        foreach (var item in ToRemove) {
+        DisabledMods.Clear();
+        foreach (var item in ToDisable)
+        {
+            DisabledMods.Add(item);
+        }
+        foreach (var item in ToRemove)
+        {
             ModList.Remove(item);
         }
     }

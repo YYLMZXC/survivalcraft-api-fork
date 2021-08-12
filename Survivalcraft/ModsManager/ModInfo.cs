@@ -13,5 +13,17 @@ namespace Game{
         public string Author;
         public string PackageName;
         public List<string> Dependencies = new List<string>();
+        public override int GetHashCode()
+        {
+            return (PackageName + ApiVersion + Version).GetHashCode();
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is ModInfo)
+            {
+                if (obj.GetHashCode() == GetHashCode()) return true;
+            }
+            else return false;
+        }
     }
 }
