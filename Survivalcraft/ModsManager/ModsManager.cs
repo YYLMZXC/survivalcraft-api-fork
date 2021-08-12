@@ -99,6 +99,10 @@ public static class ModsManager
     public static List<ModLoader> ModLoaders = new List<ModLoader>();
     public static List<ModInfo> DisabledMods = new List<ModInfo>();
     public static Dictionary<string, ModHook> ModHooks = new Dictionary<string, ModHook>();
+    public static bool GetModEntity(string packagename,out ModEntity modEntity) {
+        modEntity = ModList.Find(px=>px.modInfo.PackageName==packagename);
+        return modEntity != null;
+    }
     public static bool GetAllowContinue() { return AllowContinue; }
     /// <summary>
     /// 执行Hook
@@ -539,15 +543,6 @@ public static class ModsManager
             }
             Modify(DataObjects,element);
         }
-    }
-    public enum SourceType{
-        positions,
-        normals,
-        map,
-        vertices,
-        TEXCOORD,
-        VERTEX,
-        NORMAL
     }
     public static string ObjectsToStr<T>(T[] arr) {
         if (arr == null) return string.Empty;

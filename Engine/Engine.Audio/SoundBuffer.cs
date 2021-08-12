@@ -10,7 +10,14 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Audio
 {
-    public sealed class SoundBuffer : IDisposable
+	public class OggSoundBuffer : SoundBuffer {
+
+	}
+	public class WavSoundBuffer : SoundBuffer
+	{
+
+	}
+	public class SoundBuffer : IDisposable
 	{
 #if desktop
 		internal int m_buffer;
@@ -62,7 +69,7 @@ namespace Engine.Audio
 			byte[] array = Initialize(stream, bytesCount, channelsCount, samplingFrequency);
 			CreateBuffer(array, 0, array.Length, channelsCount, samplingFrequency);
 		}
-
+		public SoundBuffer() { }
 		private void InternalDispose()
 		{
 			if (m_buffer != 0)

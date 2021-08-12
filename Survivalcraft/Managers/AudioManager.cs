@@ -17,7 +17,7 @@ namespace Game
                 {
                     try
                     {
-                        new Sound(ContentManager.Get<SoundBuffer>(name), num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true).Play();
+                        new Sound(ContentManager.Get<WavSoundBuffer>(name), num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true).Play();
                     }
                     catch (Exception)
                     {

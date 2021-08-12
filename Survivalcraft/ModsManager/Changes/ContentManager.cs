@@ -77,6 +77,57 @@ namespace Game
                 string[] spl = name.Split(new char[] { ':' }, StringSplitOptions.None);
                 string ModSpace = spl[0];
                 name = spl[1];
+                if (ModsManager.GetModEntity(ModSpace, out ModEntity modEntity))
+                {
+                    switch (type.FullName)
+                    {
+                        case "Engine.Media.BitmapFont":
+                            {
+                                if (modEntity.GetAssetsFile(name + ".png", out Stream stream))
+                                {
+                                    using (stream)
+                                    {
+                                        if (modEntity.GetAssetsFile(name + ".lst", out Stream stream2))
+                                        {
+                                            BitmapFont bitmapFont = BitmapFont.Initialize(stream, stream2);
+                                            stream2.Close();
+                                            return bitmapFont;
+                                        }
+                                    }
+                                }
+                                throw new Exception("Not found Resources:" + name + " for " + type.FullName);
+                            }
+                        case "Engine.Graphics.Shader":
+                            {
+                                if (modEntity.GetAssetsFile(name + ".psh", out Stream stream))
+                                {
+                                    using (stream)
+                                    {
+                                        if (modEntity.GetAssetsFile(name + ".vsh", out Stream stream2))
+                                        {
+                                            Shader shader = new Shader(new VertexShaderCode() { Code = new StreamReader(stream).ReadToEnd() }, new PixelShaderCode() { Code = new StreamReader(stream2).ReadToEnd() }, new ShaderMacro[] { new ShaderMacro(name) });
+                                            stream2.Close();
+                                            return shader;
+                                        }
+                                    }
+                                }
+                                throw new Exception("Not found Resources:" + name + " for " + type.FullName);
+                            }
+                        default:
+                            {
+                                if (modEntity.GetAssetsFile(name, out Stream stream))
+                                {
+                                    return StreamConvertType(type, stream);
+                                }
+                                else throw new Exception("Not found Resources:" + ModSpace + ":" + name + " for " + type.FullName);
+
+                                break;
+                            }
+                    }
+                }
+                else {
+                    throw new Exception("not found modspace:"+ModSpace);
+                }
             }
             string fixname = string.Empty;
             switch (type.FullName)
@@ -92,10 +143,9 @@ namespace Game
                                 {
                                     if (contentInfo1.Get(name + ".lst", out Stream stream2))
                                     {
-                                        using (stream)
-                                        {
-                                            return contentInfo1.obj = BitmapFont.Initialize(stream, stream2);
-                                        }
+                                        BitmapFont bitmapFont = BitmapFont.Initialize(stream, stream2);
+                                        stream2.Close();
+                                        return bitmapFont;
                                     }
                                 }
                             }
@@ -113,36 +163,17 @@ namespace Game
                                 {
                                     if (contentInfo1.Get(name + ".vsh", out Stream stream2))
                                     {
-                                        using (stream)
-                                        {
-                                            return contentInfo1.obj = new Shader(new VertexShaderCode() { Code = new StreamReader(stream).ReadToEnd() }, new PixelShaderCode() { Code = new StreamReader(stream2).ReadToEnd() }, new ShaderMacro[] { new ShaderMacro(name) });
-                                        }
+                                        Shader shader = new Shader(new VertexShaderCode() { Code = new StreamReader(stream).ReadToEnd() }, new PixelShaderCode() { Code = new StreamReader(stream2).ReadToEnd() }, new ShaderMacro[] { new ShaderMacro(name) });
+                                        stream2.Close();
+                                        return shader;
                                     }
                                 }
                             }
                         }
                         throw new Exception("Not found Resources:" + name + " for " + type.FullName);
                     }
-                case "Engine.Audio.SoundBuffer":
-                    {
-                        if (Resources.TryGetValue(name + ".ogg", out ContentInfo contentInfo1))
-                        {
-                            if (contentInfo1.obj != null && useCache) return contentInfo1.obj;
-                            if (contentInfo1.Get(name + ".ogg", out Stream stream))
-                            {
-                                return contentInfo1.obj = Engine.Audio.SoundBuffer.Load(stream, SoundFileFormat.Ogg);
-                            }
-                        }
-                        if (Resources.TryGetValue(name + ".wav", out ContentInfo contentInfo2))
-                        {
-                            if (contentInfo2.obj != null && useCache) return contentInfo2.obj;
-                            if (contentInfo2.Get(name + ".wav", out Stream stream))
-                            {
-                                return contentInfo2.obj = Engine.Audio.SoundBuffer.Load(stream, SoundFileFormat.Wav);
-                            }
-                        }
-                        throw new Exception("Not found Resources:" + name + " for " + type.FullName);
-                    }
+                case "Engine.Audio.OggSoundBuffer": fixname = name + ".ogg"; break;
+                case "Engine.Audio.WavSoundBuffer": fixname = name + ".wav"; break;
                 case "Game.MtllibStruct": fixname = name + ".mtl"; break;
                 case "Engine.Graphics.Texture2D": fixname=name+".png";break;
                 case "System.String": fixname = name + ".txt"; break;
@@ -179,6 +210,8 @@ namespace Game
             switch (type.FullName)
             {
                 case "SimpleJson.JsonObject": return SimpleJson.SimpleJson.DeserializeObject(new StreamReader(stream).ReadToEnd());
+                case "Engine.Audio.OggSoundBuffer": return Engine.Audio.OggSoundBuffer.Load(stream,SoundFileFormat.Ogg);
+                case "Engine.Audio.WavSoundBuffer": return Engine.Audio.OggSoundBuffer.Load(stream, SoundFileFormat.Wav);
                 case "Engine.Graphics.VertexShaderCode": return new VertexShaderCode() { Code=new StreamReader(stream).ReadToEnd()};
                 case "Engine.Graphics.PixelShaderCode": return new PixelShaderCode() { Code = new StreamReader(stream).ReadToEnd() };
                 case "Engine.Media.OggStreamingSource": return Ogg.Stream(stream);
