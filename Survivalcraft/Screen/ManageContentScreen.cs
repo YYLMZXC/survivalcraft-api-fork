@@ -1,4 +1,4 @@
-﻿using Engine;
+using Engine;
 using Engine.Graphics;
 using Game;
 using System;
@@ -104,7 +104,6 @@ public class ManageContentScreen : Screen
                             labelWidget4.Text = labelWidget4.Text + LanguageControl.Error + ex.Message;
                             return containerWidget;
                         }
-                        break;
                     }
                 case ExternalContentType.CharacterSkin: {
                         XElement node4 = ContentManager.Get<XElement>("Widgets/CharacterSkinItem");
@@ -125,7 +124,6 @@ public class ManageContentScreen : Screen
                                 labelWidget6.Text += string.Format(LanguageControl.Get(fName, 2), listItem.UseCount);
                             }
                         }
-
                         break;
                     }
                 case ExternalContentType.Mod: {
@@ -153,7 +151,8 @@ public class ManageContentScreen : Screen
             }
             return containerWidget;
         };
-        m_contentList.ItemClicked += (obj) =>{
+        m_contentList.ItemClicked += (obj) =>
+        {
             var listItem = (ListItem)obj;
             if (listItem.Type == ExternalContentType.Mod && listItem.IsClick)
             {
@@ -164,9 +163,8 @@ public class ManageContentScreen : Screen
                 });
                 DialogsManager.ShowDialog(this,messageDialog);
             }
-            else {
+            else
                 listItem.IsClick = true;
-            }
         };
     }
 
@@ -334,8 +332,8 @@ public class ManageContentScreen : Screen
                     Type = ExternalContentType.Mod,
                     DisplayName = $"{dis}{modEntity.modInfo.Name} 版本:{modEntity.modInfo.Version}",
                     CreationTime = DateTime.Now,
-                    Texture=modEntity.Icon,
-                    ModEntity=modEntity
+                    Texture = modEntity.Icon,
+                    ModEntity = modEntity
                 });
             }
         }
@@ -364,10 +362,6 @@ public class ManageContentScreen : Screen
 
     public static string GetFilterDisplayName(ExternalContentType filter)
     {
-        if (filter == ExternalContentType.Unknown)
-        {
-            return LanguageControl.Get(fName, 8);
-        }
-        return ExternalContentManager.GetEntryTypeDescription(filter);
+        return filter == ExternalContentType.Unknown ? LanguageControl.Get(fName, 8) : ExternalContentManager.GetEntryTypeDescription(filter);
     }
 }
