@@ -149,7 +149,7 @@ namespace Game
 
         public Sound CreateSound(string name)
         {
-            var sound = new Sound(ContentManager.Get<SoundBuffer>(name));
+            var sound = new Sound(ContentManager.Get<SoundBuffer>(name,".wav"));
             m_sounds.Add(sound);
             return sound;
         }

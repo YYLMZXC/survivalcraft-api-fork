@@ -10,13 +10,6 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Audio
 {
-	public class OggSoundBuffer : SoundBuffer {
-
-	}
-	public class WavSoundBuffer : SoundBuffer
-	{
-
-	}
 	public class SoundBuffer : IDisposable
 	{
 #if desktop

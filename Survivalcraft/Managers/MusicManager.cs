@@ -105,7 +105,7 @@ namespace Game
             }
         }
 
-        public static void PlayMusic(string name, float startPercentage ,SoundFileFormat soundFileFormat=SoundFileFormat.Ogg)
+        public static void PlayMusic(string name, float startPercentage)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -118,16 +118,7 @@ namespace Game
                     StopMusic();
                     m_fadeStartTime = Time.FrameStartTime + 2.0;
                     float volume = (m_fadeSound != null) ? 0f : Volume;
-                    StreamingSource streamingSource = null;
-                    switch (soundFileFormat) {
-                        case SoundFileFormat.Ogg:
-                            streamingSource = ContentManager.Get<OggStreamingSource>(name);break;
-                        case SoundFileFormat.Wav:
-                            streamingSource = ContentManager.Get<WavStreamingSource>(name); break;
-                        default:
-                            throw new System.Exception("unsupport music type");
-                            break;
-                    }
+                    StreamingSource streamingSource = ContentManager.Get<OggStreamingSource>(name);
                     streamingSource.Duplicate();
                     streamingSource.Position = (long)(MathUtils.Saturate(startPercentage) * (streamingSource.BytesCount / streamingSource.ChannelsCount / 2)) / 16 * 16;
                     m_sound = new StreamingSound(streamingSource, volume, 1f, 0f, isLooped: false, disposeOnStop: false, 1f);

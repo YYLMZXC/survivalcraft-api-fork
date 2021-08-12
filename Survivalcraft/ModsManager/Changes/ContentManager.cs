@@ -56,11 +56,11 @@ namespace Game
         /// <param name="name">资源名称</param>
         /// <param name="useCache">是否使用缓存</param>
         /// <returns></returns>
-        public static T Get<T>(string name, bool useCache = false) where T : class
+        public static T Get<T>(string name,string prefix=null, bool useCache = false) where T : class
         {
             try
             {
-                return Get(typeof(T), name, useCache) as T;
+                return Get(typeof(T), name, prefix, useCache) as T;
             }
             catch (Exception e)
             {
@@ -69,7 +69,7 @@ namespace Game
             }
         }
 
-        public static object Get(Type type, string name,bool useCache=false)
+        public static object Get(Type type, string name, string prefix = null, bool useCache = false)
         {
             object obj = null;
             if (name.Contains(":"))
@@ -172,21 +172,20 @@ namespace Game
                         }
                         throw new Exception("Not found Resources:" + name + " for " + type.FullName);
                     }
-                case "Engine.Audio.OggSoundBuffer": fixname = name + ".ogg"; break;
-                case "Engine.Audio.WavSoundBuffer": fixname = name + ".wav"; break;
-                case "Game.MtllibStruct": fixname = name + ".mtl"; break;
-                case "Engine.Graphics.Texture2D": fixname=name+".png";break;
-                case "System.String": fixname = name + ".txt"; break;
-                case "Engine.Media.Image": fixname = name + ".png"; break;
-                case "System.Xml.Linq.XElement": fixname = name + ".xml"; break;
-                case "Engine.Graphics.Model": fixname = name + ".dae"; break;
-                case "Engine.Media.OggStreamingSource":fixname = name + ".ogg";break;
-                case "Engine.Media.WavStreamingSource": fixname = name + ".wav"; break;
-                case "Engine.Graphics.VertexShaderCode": fixname = name + ".vsh"; break;
-                case "Engine.Graphics.PixelShaderCode": fixname = name + ".psh"; break;
-                case "Game.ObjModel": fixname = name + ".obj"; break;
-                case "Game.JsonModel": fixname = name + ".json"; break;
-                case "SimpleJson.JsonObject": fixname = name + ".json"; break;
+                case "Engine.Audio.SoundBuffer": if (string.IsNullOrEmpty(prefix)) throw new Exception("You must specify a file type."); else fixname = name + prefix; break;
+                case "Game.MtllibStruct": if (string.IsNullOrEmpty(prefix)) fixname = name + ".mtl"; else fixname = name + prefix; break;
+                case "Engine.Graphics.Texture2D": if (string.IsNullOrEmpty(prefix)) fixname = name + ".png"; else fixname = name + prefix; break;
+                case "System.String": if (string.IsNullOrEmpty(prefix)) fixname = name + ".txt"; else fixname = name + prefix; break;
+                case "Engine.Media.Image": if (string.IsNullOrEmpty(prefix)) fixname = name + ".png"; else fixname = name + prefix; break;
+                case "System.Xml.Linq.XElement": if (string.IsNullOrEmpty(prefix)) fixname = name + ".xml"; else fixname = name + prefix; break;
+                case "Engine.Graphics.Model": if (string.IsNullOrEmpty(prefix)) fixname = name + ".dae"; else fixname = name + prefix; break;
+                case "Engine.Media.OggStreamingSource": if (string.IsNullOrEmpty(prefix)) fixname = name + ".ogg"; else fixname = name + prefix; break;
+                case "Engine.Media.WavStreamingSource": if (string.IsNullOrEmpty(prefix)) fixname = name + ".wav"; else fixname = name + prefix; break;
+                case "Engine.Graphics.VertexShaderCode": if (string.IsNullOrEmpty(prefix)) fixname = name + ".vsh"; else fixname = name + prefix; break;
+                case "Engine.Graphics.PixelShaderCode": if (string.IsNullOrEmpty(prefix)) fixname = name + ".psh"; else fixname = name + prefix; break;
+                case "Game.ObjModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".obj"; else fixname = name + prefix; break;
+                case "Game.JsonModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".json"; else fixname = name + prefix; break;
+                case "SimpleJson.JsonObject": if (string.IsNullOrEmpty(prefix)) fixname = name + ".json"; else fixname = name + prefix; break;
                 case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) return TextureAtlasManager.GetSubtexture(name); else return new Subtexture(Get<Texture2D>(name),Vector2.Zero,Vector2.One);
                 default: { break; }
             }
@@ -210,13 +209,11 @@ namespace Game
             switch (type.FullName)
             {
                 case "SimpleJson.JsonObject": return SimpleJson.SimpleJson.DeserializeObject(new StreamReader(stream).ReadToEnd());
-                case "Engine.Audio.OggSoundBuffer": return Engine.Audio.OggSoundBuffer.Load(stream,SoundFileFormat.Ogg);
-                case "Engine.Audio.WavSoundBuffer": return Engine.Audio.OggSoundBuffer.Load(stream, SoundFileFormat.Wav);
                 case "Engine.Graphics.VertexShaderCode": return new VertexShaderCode() { Code=new StreamReader(stream).ReadToEnd()};
                 case "Engine.Graphics.PixelShaderCode": return new PixelShaderCode() { Code = new StreamReader(stream).ReadToEnd() };
                 case "Engine.Media.OggStreamingSource": return Ogg.Stream(stream);
                 case "Engine.Media.WavStreamingSource": return Wav.Stream(stream);
-                case "Engine.Audio.SoundBuffer":return SoundData.Load(stream);
+                case "Engine.Audio.SoundBuffer":return Engine.Audio.SoundBuffer.Load(stream);
                 case "Engine.Graphics.Texture2D": return Texture2D.Load(stream);
                 case "System.String":return new StreamReader(stream).ReadToEnd();
                 case "Engine.Media.Image": return Image.Load(stream);
