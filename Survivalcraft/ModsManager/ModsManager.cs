@@ -161,7 +161,7 @@ public static class ModsManager
             object obj = null;
             using (Stream stream = Storage.OpenFile(storagePath, OpenFileMode.Read))
             {
-                obj = ContentManager.StreamConvertType(typeof(T).GetType(), stream);
+                obj = ContentManager.StreamConvertType(typeof(T), stream);
             }
             return obj as T;
         }
