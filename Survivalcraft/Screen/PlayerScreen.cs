@@ -131,7 +131,7 @@ namespace Game
             m_characterSkinsCache.GetTexture(m_playerData.CharacterSkinName);
             m_playerModel.PlayerClass = m_playerData.PlayerClass;
             m_playerModel.CharacterSkinName = m_playerData.CharacterSkinName;
-            m_playerClassButton.Text = m_playerData.PlayerClass.ToString();
+            m_playerClassButton.Text = LanguageControl(GetType().Name, m_playerData.PlayerClass.ToString());
             if (!m_nameTextBox.HasFocus)
             {
                 m_nameTextBox.Text = m_playerData.Name;
@@ -242,17 +242,17 @@ namespace Game
             switch (device)
             {
                 case WidgetInputDevice.Keyboard | WidgetInputDevice.Mouse:
-                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 4);
+                    return LanguageControl.Get("PlayerScreen", 4);
                 case WidgetInputDevice.GamePad1:
-                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 5) + (GamePad.IsConnected(0) ? "" : LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 9));
+                    return LanguageControl.Get("PlayerScreen", 5) + (GamePad.IsConnected(0) ? "" : LanguageControl.Get("PlayerScreen", 9));
                 case WidgetInputDevice.GamePad2:
-                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 6) + (GamePad.IsConnected(1) ? "" : LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 9));
+                    return LanguageControl.Get("PlayerScreen", 6) + (GamePad.IsConnected(1) ? "" : LanguageControl.Get("PlayerScreen", 9));
                 case WidgetInputDevice.GamePad3:
-                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 7) + (GamePad.IsConnected(2) ? "" : LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 9));
+                    return LanguageControl.Get("PlayerScreen", 7) + (GamePad.IsConnected(2) ? "" : LanguageControl.Get("PlayerScreen", 9));
                 case WidgetInputDevice.GamePad4:
-                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 8) + (GamePad.IsConnected(3) ? "" : LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 9));
+                    return LanguageControl.Get("PlayerScreen", 8) + (GamePad.IsConnected(3) ? "" : LanguageControl.Get("PlayerScreen", 9));
                 default:
-                    return LanguageControl.Get(typeof(PlayerScreen).GetType().Name, 10);
+                    return LanguageControl.Get("PlayerScreen", 10);
             }
         }
 
