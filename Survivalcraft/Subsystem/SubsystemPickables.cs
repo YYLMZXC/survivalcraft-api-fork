@@ -1,7 +1,6 @@
 using Engine;
 using Engine.Graphics;
 using GameEntitySystem;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TemplatesDatabase;
@@ -44,7 +43,7 @@ namespace Game
 
         public DrawBlockEnvironmentData m_drawBlockEnvironmentData = new DrawBlockEnvironmentData();
 
-        public static int[] m_drawOrders = new int[1]
+        public static int[] m_drawOrders = new int[]
         {
             10
         };
