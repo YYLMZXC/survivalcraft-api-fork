@@ -47,7 +47,7 @@ namespace Game
             Canvas.Children.Add(rectangle);
             Canvas.Children.Add(LogList);
             Children.Add(Canvas);
-            Info("Initilizing Mods Manager. Api Version: 1.34");
+            Info("Initilizing Mods Manager. Api Version: " + ModsManager.APIVersion);
         }
 
         public static void Error(string mesg)
