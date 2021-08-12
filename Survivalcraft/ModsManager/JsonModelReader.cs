@@ -13,8 +13,9 @@ namespace Game
     public class JsonModelReader
     {
         public static Dictionary<string, List<Vector3>> FacesDic = new Dictionary<string, List<Vector3>>();
-        public static Dictionary<string,Vector3> NormalDic = new Dictionary<string,Vector3>();
+        public static Dictionary<string, Vector3> NormalDic = new Dictionary<string, Vector3>();
         public static Dictionary<string, List<int>> FacedirecDic = new Dictionary<string, List<int>>();
+        public static Dictionary<float, List<int>> TextureRotate = new Dictionary<float, List<int>>();
         static JsonModelReader()
         {
             FacesDic.Add("north", new List<Vector3>() { Vector3.UnitX, Vector3.Zero, Vector3.UnitY, new Vector3(1, 1, 0) });
@@ -33,12 +34,18 @@ namespace Game
             NormalDic.Add("up", new Vector3(0, 1, 0));
             NormalDic.Add("down", new Vector3(0, -1, 0));
 
-            FacedirecDic.Add("north", new List<int>() { 0, 2, 1, 0, 3, 2 });//逆时针
-            FacedirecDic.Add("south", new List<int>() { 0, 1, 2, 0, 2, 3 });//顺时针
-            FacedirecDic.Add("east", new List<int>() { 0, 1, 2, 0, 2, 3 });//顺时针
-            FacedirecDic.Add("west", new List<int>() { 0, 2, 1, 0, 3, 2 });//逆时针
-            FacedirecDic.Add("up", new List<int>() { 0, 2, 1, 0, 3, 2 });//顺时针
-            FacedirecDic.Add("down", new List<int>() { 0, 1, 2, 0, 2, 3 });//逆时针
+            FacedirecDic.Add("north", new List<int>() { 0, 2, 1, 0, 3, 2 });//逆
+            FacedirecDic.Add("west", new List<int>() { 0, 2, 1, 0, 3, 2 });//逆
+            FacedirecDic.Add("up", new List<int>() { 0, 2, 1, 0, 3, 2 });//逆
+
+            FacedirecDic.Add("south", new List<int>() { 0, 1, 2, 0, 2, 3 });//顺
+            FacedirecDic.Add("east", new List<int>() { 0, 1, 2, 0, 2, 3 });//顺
+            FacedirecDic.Add("down", new List<int>() { 0, 1, 2, 0, 2, 3 });//顺
+
+            TextureRotate.Add(0f, new List<int>() { 0, 3, 2, 3, 2, 1, 0, 1 });
+            TextureRotate.Add(90f, new List<int>() { 0, 1, 0, 3, 2, 3, 2, 1 });
+            TextureRotate.Add(180f, new List<int>() { 2, 1, 0, 1, 0, 3, 2, 3 });
+            TextureRotate.Add(270f, new List<int>() { 2, 3, 2, 1, 0, 1, 0, 3 });
         }
         public static float ObjConvertFloat(object obj)
         {
@@ -79,13 +86,21 @@ namespace Game
                             JsonArray from = jobj["from"] as JsonArray;
                             JsonArray to = jobj["to"] as JsonArray;
                             string name = "undefined";
-                            if (jobj.TryGetValue("name", out object obj8)) {
+                            if (jobj.TryGetValue("name", out object obj8))
+                            {
                                 name = obj8 as string;
                             }
                             if (Meshes.TryGetValue(name, out ObjModelReader.ObjMesh objMesh) == false)
                             {
                                 objMesh = new ObjModelReader.ObjMesh(name);
                                 Meshes.Add(name, objMesh);
+                            }
+                            if (jobj.TryGetValue("rotation", out object jobj7))
+                            { //处理模型旋转
+                                JsonObject jobj8 = jobj7 as JsonObject;
+                                JsonArray ori = jobj8["origin"] as JsonArray;
+                                float ang = ObjConvertFloat(jobj8["angle"]);
+                                //objMesh.MeshMatrix = Matrix.CreateFromAxisAngle(new Vector3(ObjConvertFloat(ori[0]) / 16f, ObjConvertFloat(ori[1]) / 16f, ObjConvertFloat(ori[2]) / 16f), ang);
                             }
                             Vector3 start = new Vector3(ObjConvertFloat(from[0]), ObjConvertFloat(from[1]), ObjConvertFloat(from[2]));
                             Vector3 end = new Vector3(ObjConvertFloat(to[0]), ObjConvertFloat(to[1]), ObjConvertFloat(to[2]));
@@ -102,26 +117,28 @@ namespace Game
                                     string facename = jobj2.Key;
                                     float[] uvs = new float[4];
                                     List<Vector2> TexCoords = new List<Vector2>();
+                                    if (jobj3.TryGetValue("rotation", out object obj6))
+                                    {//处理uv旋转数据
+                                        rotate = ObjConvertFloat(obj6);
+                                    }
                                     if (jobj3.TryGetValue("uv", out object obj4))
                                     {//处理uv坐标数据
                                         JsonArray uvarr = obj4 as JsonArray;
                                         for (int k = 0; k < uvarr.Count; k++)
                                         {
-                                            uvs[k] = ObjConvertFloat(uvarr[k]);
+                                            uvs[k] = ObjConvertFloat(uvarr[k]) / 16f;
                                         }
-                                        TexCoords.Add(new Vector2(uvs[0], uvs[3]));//x1,y2
-                                        TexCoords.Add(new Vector2(uvs[2], uvs[3]));//x2,y2
-                                        TexCoords.Add(new Vector2(uvs[2], uvs[1]));//x2,y1
-                                        TexCoords.Add(new Vector2(uvs[0], uvs[1]));//x1,y1
-                                    }
-                                    if (jobj3.TryGetValue("rotation", out object obj6))
-                                    {//处理uv旋转数据
-                                        //rotate = MathUtils.DegToRad(ObjConvertFloat(obj6));
+                                        Vector2 center = new Vector2(uvs[2] - uvs[0], uvs[3] - uvs[1]) / 2f + new Vector2(uvs[0], uvs[1]);//中心点
+                                        TexCoords.Add(new Vector2(uvs[TextureRotate[rotate][0]], uvs[TextureRotate[rotate][1]]));//x1,y2
+                                        TexCoords.Add(new Vector2(uvs[TextureRotate[rotate][2]], uvs[TextureRotate[rotate][3]]));//x1,y2
+                                        TexCoords.Add(new Vector2(uvs[TextureRotate[rotate][4]], uvs[TextureRotate[rotate][5]]));//x1,y2
+                                        TexCoords.Add(new Vector2(uvs[TextureRotate[rotate][6]], uvs[TextureRotate[rotate][7]]));//x1,y2
                                     }
                                     if (jobj3.TryGetValue("texture", out object obj5))
                                     {//处理贴图数据
                                         string tkey = obj5 as string;//面名字
-                                        if (texturemap.TryGetValue(tkey.Substring(1),out string path)) {
+                                        if (texturemap.TryGetValue(tkey.Substring(1), out string path))
+                                        {
                                             childMesh.TexturePath = path;
                                         }
                                     }
@@ -139,12 +156,9 @@ namespace Game
                                     ops[1] = new ObjModelReader.ObjPosition(p2.X, p2.Y, p2.Z);
                                     ops[2] = new ObjModelReader.ObjPosition(p3.X, p3.Y, p3.Z);
                                     //生成第一个三角面的纹理坐标
-                                    Vector2 t1 = TexCoords[c1] / 16f;
-                                    Vector2 t2 = TexCoords[c2] / 16f;
-                                    Vector2 t3 = TexCoords[c3] / 16f;
-                                    //t1 = Vector2.Transform(t1, Matrix.CreateRotationX(rotate));
-                                    //t2 = Vector2.Transform(t2, Matrix.CreateRotationX(rotate));
-                                    //t3 = Vector2.Transform(t3, Matrix.CreateRotationX(rotate));
+                                    Vector2 t1 = TexCoords[c1];
+                                    Vector2 t2 = TexCoords[c2];
+                                    Vector2 t3 = TexCoords[c3];
                                     ots[0] = new ObjModelReader.ObjTexCood(t1.X, t1.Y);
                                     ots[1] = new ObjModelReader.ObjTexCood(t2.X, t2.Y);
                                     ots[2] = new ObjModelReader.ObjTexCood(t3.X, t3.Y);
@@ -154,7 +168,7 @@ namespace Game
                                     childMesh.Indices.Add((ushort)(startcount++));
                                     childMesh.Indices.Add((ushort)(startcount++));
                                     childMesh.Indices.Add((ushort)(startcount++));
-                                    childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[0], objNormal = new ObjModelReader.ObjNormal(0,0,0), texCood = ots[0] });
+                                    childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[0], objNormal = new ObjModelReader.ObjNormal(0, 0, 0), texCood = ots[0] });
                                     childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[1], objNormal = new ObjModelReader.ObjNormal(0, 0, 0), texCood = ots[1] });
                                     childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[2], objNormal = new ObjModelReader.ObjNormal(0, 0, 0), texCood = ots[2] });
                                     //生成第二个三角面
@@ -168,9 +182,9 @@ namespace Game
                                     ops[1] = new ObjModelReader.ObjPosition(p2.X, p2.Y, p2.Z);
                                     ops[2] = new ObjModelReader.ObjPosition(p3.X, p3.Y, p3.Z);
                                     //生成第二个三角面的纹理坐标
-                                    t1 = TexCoords[c1] / 16f;
-                                    t2 = TexCoords[c2] / 16f;
-                                    t3 = TexCoords[c3] / 16f;
+                                    t1 = TexCoords[c1];
+                                    t2 = TexCoords[c2];
+                                    t3 = TexCoords[c3];
                                     ots[0] = new ObjModelReader.ObjTexCood(t1.X, t1.Y);
                                     ots[1] = new ObjModelReader.ObjTexCood(t2.X, t2.Y);
                                     ots[2] = new ObjModelReader.ObjTexCood(t3.X, t3.Y);

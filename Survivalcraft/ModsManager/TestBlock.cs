@@ -11,9 +11,9 @@ namespace Game
         public Dictionary<string, Texture2D> TextureMaps = new Dictionary<string, Texture2D>();
         public override void Initialize()
         {
-            using (Stream stream = Storage.OpenFile("app:chemical_oxidizer.json", OpenFileMode.Read))
+            using (Stream stream = Storage.OpenFile("app:chemical_oxidizer.obj", OpenFileMode.Read))
             {
-                JsonModel jsonModel = JsonModelReader.Load(stream);
+                ObjModel jsonModel = ObjModelReader.Load(stream);
                 foreach (ModelMesh mesh in jsonModel.Meshes)
                 {
                     ModelMeshPart modelMeshPart = mesh.MeshParts[0];
@@ -24,12 +24,12 @@ namespace Game
                     }
                     if (Meshes.TryGetValue(texture, out BlockMesh blockMesh))
                     {
-                        blockMesh.AppendModelMeshPart(modelMeshPart, Matrix.Identity, false, false, false, false, Color.White);
+                        blockMesh.AppendModelMeshPart(modelMeshPart, mesh.ParentBone.Transform, false, false, false, false, Color.White);
                     }
                     else
                     {
                         blockMesh = new BlockMesh();
-                        blockMesh.AppendModelMeshPart(modelMeshPart, Matrix.Identity, false, false, false, false, Color.White);
+                        blockMesh.AppendModelMeshPart(modelMeshPart, mesh.ParentBone.Transform, false, false, false, false, Color.White);
                         Meshes.Add(texture, blockMesh);
                     }
                 }                

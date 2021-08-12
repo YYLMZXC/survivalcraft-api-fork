@@ -58,7 +58,15 @@ namespace Game
         /// <returns></returns>
         public static T Get<T>(string name, bool useCache = false) where T : class
         {
-            return Get(typeof(T), name,useCache) as T;
+            try
+            {
+                return Get(typeof(T), name, useCache) as T;
+            }
+            catch (Exception e)
+            {
+                LoadingScreen.Warning("Loading Resouce " + name + " error." + e.Message);
+                return null;
+            }
         }
 
         public static object Get(Type type, string name,bool useCache=false)
@@ -135,6 +143,7 @@ namespace Game
                         }
                         throw new Exception("Not found Resources:" + name + " for " + type.FullName);
                     }
+                case "Game.MtllibStruct": fixname = name + ".mtl"; break;
                 case "Engine.Graphics.Texture2D": fixname=name+".png";break;
                 case "System.String": fixname = name + ".txt"; break;
                 case "Engine.Media.Image": fixname = name + ".png"; break;
@@ -180,6 +189,7 @@ namespace Game
                 case "Game.JsonModel": return JsonModelReader.Load(stream);
                 case "System.Xml.Linq.XElement": return XElement.Load(stream);
                 case "Engine.Graphics.Model": return Model.Load(stream,true);
+                case "Game.MtllibStruct": return MtllibStruct.Load(stream);
             }
             return null;
         }

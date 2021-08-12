@@ -9,6 +9,18 @@ namespace Game
 {
     public class ObjModelReader
     {
+        public static Dictionary<int, List<int>> FaceMap = new Dictionary<int, List<int>>();
+        static ObjModelReader()
+        {
+            FaceMap.Add(4, new List<int>() { 0, 2, 1 });//顶面
+            FaceMap.Add(5, new List<int>() { 0, 2, 1 });//底面
+
+            FaceMap.Add(2, new List<int>() { 0, 2, 1 });//逆
+            FaceMap.Add(3, new List<int>() { 0, 2, 1 });//逆
+
+            FaceMap.Add(0, new List<int>() { 0, 2, 1 });//顺
+            FaceMap.Add(1, new List<int>() { 0, 2, 1 });//顺
+        }
         public struct ObjPosition
         {
             public float x, y, z;
@@ -61,8 +73,9 @@ namespace Game
         public class ObjMesh {
             public DynamicArray<ObjVertex> Vertices = new DynamicArray<ObjVertex>();
             public DynamicArray<ushort> Indices = new DynamicArray<ushort>();
-            public string TexturePath = "Textures/ModelNone";//默认位置
+            public string TexturePath = "Textures/NoneTexture";//默认位置
             public string MeshName;
+            public Matrix? MeshMatrix;
             public ObjMesh(string meshname) {
                 MeshName = meshname;
             }
@@ -79,6 +92,7 @@ namespace Game
         public static ObjModel Load(Stream stream)
         {
             Dictionary<string, ObjMesh> Meshes = new Dictionary<string, ObjMesh>();
+            Dictionary<string, string> TexturePaths = new Dictionary<string, string>();
             List<ObjPosition> objPositions = new List<ObjPosition>();
             List<ObjTexCood> objTexCoods = new List<ObjTexCood>();
             List<ObjNormal> objNormals = new List<ObjNormal>();
@@ -86,12 +100,20 @@ namespace Game
             {
                 StreamReader streamReader = new StreamReader(stream);
                 ObjMesh objMesh = null;
+                string Tkey = null;
+                string CurrentTkey = null;
                 while (streamReader.EndOfStream == false)
                 {
                     string line = streamReader.ReadLine();
                     string[] spl = line.Split(new char[] { (char)0x09, (char)0x20 }, System.StringSplitOptions.None);
                     switch (spl[0])
                     {
+                        case "mtllib":
+                            {
+                                MtllibStruct mtllibStruct = ContentManager.Get<MtllibStruct>(spl[1]);
+                                TexturePaths = mtllibStruct.TexturePaths;
+                                break;
+                            }
                         case "o":
                             {
                                 if (Meshes.TryGetValue(spl[1], out ObjMesh mesh))
@@ -121,13 +143,27 @@ namespace Game
                                 objNormals.Add(new ObjNormal(spl[1], spl[2], spl[3]));
                                 break;
                             }
+                        case "usemtl":
+                            {
+                                if (TexturePaths.TryGetValue(spl[1], out CurrentTkey))
+                                {
+                                    //LoadingScreen.Info("Parse Obj mtl:" + CurrentTkey);
+                                }
+                                break;
+                            }
                         case "f":
                             {
+                                if (string.IsNullOrEmpty(CurrentTkey))
+                                {
+                                    CurrentTkey = "Textures/NoneTexture";
+                                }
+                                objMesh.TexturePath = CurrentTkey;
                                 int SideCount = spl.Length - 1;
                                 if (SideCount != 3) { throw new System.Exception("模型必须为三角面"); }
                                 else
                                 {
                                     int i = 0;
+                                    int startCount = objMesh.Vertices.Count;
                                     while (++i < spl.Length)
                                     {
                                         string[] param = spl[i].Split(new char[] { '/' }, System.StringSplitOptions.None);
@@ -140,7 +176,8 @@ namespace Game
                                             ObjPosition objPosition = objPositions[pa - 1];
                                             ObjTexCood texCood = objTexCoods[pb - 1];
                                             ObjNormal objNormal = objNormals[pc - 1];
-                                            objMesh.Indices.Add((ushort)objMesh.Vertices.Count);
+                                            int face = CellFace.Vector3ToFace(new Vector3(objNormal.x, objNormal.y, objNormal.z));
+                                            objMesh.Indices.Add((ushort)(startCount + FaceMap[face][i - 1]));
                                             objMesh.Vertices.Add(new ObjVertex() { position = objPosition,objNormal= objNormal, texCood = texCood });
                                         }
                                     }
@@ -156,7 +193,7 @@ namespace Game
 
         public static void AppendMesh(Model model,ModelBone rootBone, string texturepath, ObjMesh objMesh)
         {
-            ModelBone modelBone = model.NewBone(objMesh.MeshName, Matrix.Identity, rootBone);
+            ModelBone modelBone = model.NewBone(objMesh.MeshName, objMesh.MeshMatrix.HasValue ? objMesh.MeshMatrix.Value : Matrix.Identity, rootBone);
             if (objMesh.Vertices.Count > 0)
             {
                 ModelMesh mesh = model.NewMesh(objMesh.MeshName, modelBone, objMesh.CalculateBoundingBox());
