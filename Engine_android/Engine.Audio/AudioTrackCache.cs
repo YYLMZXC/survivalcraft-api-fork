@@ -106,8 +106,8 @@ namespace Engine.Audio
 					return null;
 				}
 			}
-			AudioTrack audioTrack = new AudioTrack(Stream.Music, soundBuffer.SamplingFrequency, (soundBuffer.ChannelsCount == 1) ? ChannelOut.FrontLeft : ChannelOut.Stereo, Encoding.Pcm16bit, soundBuffer.m_data.Length, AudioTrackMode.Static);
-			//			AudioTrack audioTrack = new AudioTrack(new AudioAttributes.Builder().SetUsage(AudioUsageKind.Media).SetContentType(AudioContentType.Music).Build(),new AudioFormat(), soundBuffer.m_data.Length, AudioTrackMode.Static,0);
+			AudioTrack audioTrack = new AudioTrack(Stream.Music, soundBuffer.SamplingFrequency, (soundBuffer.ChannelsCount == 1) ? ChannelOut.FrontLeft : ChannelOut.Stereo, Encoding.Pcm16bit, soundBuffer.m_data.Length, AudioTrackMode.Stream);
+			//AudioTrack audioTrack = new AudioTrack(new AudioAttributes.Builder().SetUsage(AudioUsageKind.Media).SetContentType(AudioContentType.Music).Build(),new AudioFormat(), soundBuffer.m_data.Length, AudioTrackMode.Static,0);
 
 			if (audioTrack.State != 0)
 			{

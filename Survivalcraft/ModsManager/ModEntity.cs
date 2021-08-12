@@ -16,30 +16,15 @@ namespace Game {
         public ModInfo modInfo;
         public Texture2D Icon;
         public ZipArchive ModArchive;
-        public Dictionary<string, Stream> ModFiles = new Dictionary<string, Stream>();
+        public Dictionary<string, ZipArchiveEntry> ModFiles = new Dictionary<string, ZipArchiveEntry>();
         public List<Block> Blocks = new List<Block>();
-        public bool HasException = false;
         public bool IsChecked;
-        public Action ModInit;
-        public bool IsLoaded = true;
-        public bool IsDisabled { 
-            get;
-            set;
-        }
         public ModLoader ModLoader_;
         public ModEntity() { }
         public ModEntity(ZipArchive zipArchive)
         {
             ModArchive = zipArchive;
-            if (GetFile("modinfo.json", out Stream stream))
-            {
-                modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
-                stream.Close();
-            }
-            if (GetFile("icon.png", out Stream stream2)) {
-                LoadIcon(stream2);
-                stream2.Close();
-            }
+            InitResources();
         }
         public virtual void LoadIcon(Stream stream) {
             Icon = Texture2D.Load(stream);
@@ -67,52 +52,81 @@ namespace Game {
             return files;
         }
         /// <summary>
-        /// 获取指定文件
+        /// 获取指定文件，将ZipArchive解压到内存中
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
         public virtual bool GetFile(string filename, out Stream stream)
-        {
-            filename = filename.ToLower();
-            //将每个zip里面的文件读进内存中
-            foreach (ZipArchiveEntry zipArchiveEntry in ModArchive.ReadCentralDir())
+        {            
+            if (ModFiles.TryGetValue(filename, out ZipArchiveEntry entry))
             {
-                if (zipArchiveEntry.FilenameInZip.ToLower() == filename)
-                {
-                    stream = new MemoryStream();
-                    ModArchive.ExtractFile(zipArchiveEntry, stream);
-                    stream.Seek(0, SeekOrigin.Begin);
-                    return true;
-                }
+                stream = new MemoryStream();
+                ModArchive.ExtractFile(entry, stream);
+                stream.Seek(0, SeekOrigin.Begin);
+                return true;
             }
             stream = null;
             return false;
+        }
+        public virtual bool GetAssetsFile(string filename, out Stream stream)
+        {
+            filename = "Assets/" + filename;
+            return GetFile(filename,out stream);
         }
         /// <summary>
         /// 初始化语言包
         /// </summary>
         public virtual void LoadLauguage()
         {
-            if (GetFile($"{ModsManager.modSettings.languageType}.json", out Stream stream))
+            LoadingScreen.Info("Load Language:" + modInfo?.PackageName);
+            if (GetAssetsFile($"Lang/{ModsManager.modSettings.languageType}.json", out Stream stream))
             {
                 LanguageControl.loadJson(stream);
             }
         }
         /// <summary>
+        /// Mod初始化
+        /// </summary>
+        public virtual void ModInitialize() {
+            LoadingScreen.Info("Invoke ModInitialize:"+modInfo?.PackageName);
+            ModLoader_?.__ModInitialize();
+        }
+        /// <summary>
         /// 初始化Pak资源
         /// </summary>
-        public virtual void InitPak()
+        public virtual void InitResources()
         {
-            foreach (Stream stream in GetFiles(".pak"))
-            {
-                ContentManager.Add(stream);
+            ModFiles.Clear();
+            if (ModArchive == null) return;
+            List<ZipArchiveEntry> entries = ModArchive.ReadCentralDir();
+            LoadingScreen.Info("Loading Resources:" + modInfo?.PackageName);
+            foreach (ZipArchiveEntry zipArchiveEntry in entries) {
+                if (zipArchiveEntry.FileSize > 0) {
+                    ModFiles.Add(zipArchiveEntry.FilenameInZip, zipArchiveEntry);
+                    if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
+                    {
+                        ContentManager.Add(this, zipArchiveEntry.FilenameInZip.Substring(7));
+                    }
+                }
             }
+            if (GetFile("modinfo.json", out Stream stream))
+            {
+                modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
+                stream.Close();
+            }
+            if (GetFile("icon.png", out Stream stream2))
+            {
+                LoadIcon(stream2);
+                stream2.Close();
+            }
+
         }
         /// <summary>
         /// 初始化BlocksData资源
         /// </summary>
         public virtual void LoadBlocksData()
         {
+            LoadingScreen.Info("Loading Resources:" + modInfo?.PackageName);
             foreach (Stream stream in GetFiles(".csv"))
             {
                 BlocksManager.LoadBlocksData(ModsManager.StreamToString(stream));
@@ -165,6 +179,7 @@ namespace Game {
         /// </summary>
         public virtual void LoadDll()
         {
+            LoadingScreen.Info("Loading Assembly:" + modInfo?.Name);
             foreach (Stream stream in GetFiles(".dll"))
             {
                 LoadDllLogic(stream);
@@ -215,6 +230,7 @@ namespace Game {
         /// </summary>
         public virtual void CheckDependencies()
         {
+            LoadingScreen.Info("CheckDependencies:" + modInfo?.PackageName);
             for (int j = 0; j < modInfo.Dependencies.Count; j++)
             {
                 int k = j;
@@ -234,7 +250,7 @@ namespace Game {
                 {
                     dn = name;
                 }
-                ModEntity entity = ModsManager.ModList.Find(px =>px.IsLoaded && !px.IsDisabled && px.modInfo.PackageName == dn && new Version(px.modInfo.Version) == dnversion);
+                ModEntity entity = ModsManager.ModList.Find(px => px.modInfo.PackageName == dn && new Version(px.modInfo.Version) == dnversion);
                 if (entity != null)
                 {
                     entity.CheckDependencies();//依赖项最先被加载
@@ -242,9 +258,7 @@ namespace Game {
                 }
                 else
                 {
-                    HasException = true;
-                    IsLoaded = false;
-                    ModsManager.AddException(new Exception($"[{modInfo.Name}]缺少依赖项{name}"));
+                    ModsManager.AddException(new Exception($"[{modInfo.Name}]缺少依赖项{name}"), false);
                     return;
                 }
             }

@@ -10,25 +10,8 @@ namespace Game
     public class SurvivalCrafModEntity : ModEntity
     {
 
-        public SurvivalCrafModEntity(){
-            modInfo = new ModInfo();
-            modInfo.ApiVersion = "1.34";
-            modInfo.ScVersion = "2.2.10.4";
-            modInfo.Name = "SurvivalCraft";
-            modInfo.Version = "2.2.10.4";
-            modInfo.PackageName = "com.survivalcraf";
-        }
-        public override void CheckDependencies()
+        public SurvivalCrafModEntity():base(ZipArchive.Open(Storage.OpenFile("app:Content.zip", OpenFileMode.Read), true))
         {
-        }
-        public override bool GetFile(string filename, out Stream stream)
-        {
-            stream = null;
-            return false;
-        }
-        public override void InitPak()
-        {
-            ContentManager.Add("app:/Content.pak");
         }
         public override void LoadBlocksData()
         {
@@ -48,6 +31,7 @@ namespace Game
                     var modLoader = Activator.CreateInstance(types[i]) as ModLoader;
                     modLoader.Entity = this;
                     modLoader.__ModInitialize();
+                    ModLoader_ = modLoader;
                     ModsManager.ModLoaders.Add(modLoader);
                 }
                 if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
@@ -87,12 +71,6 @@ namespace Game
             xElement = ContentManager.Get<XElement>("Clothes");
             ContentManager.Dispose("Clothes");
         }
-        public override void LoadLauguage()
-        {
-            string name = "app:lang/" + ModsManager.modSettings.languageType.ToString() + ".json";
-            LanguageControl.loadJson(Storage.OpenFile(name, OpenFileMode.Read));
-
-        }
         public override void SaveSettings(XElement xElement)
         {
 
@@ -119,7 +97,6 @@ namespace Game
             BlocksManager.AddCategory("Painted");
             BlocksManager.AddCategory("Dyed");
             BlocksManager.AddCategory("Fireworks");
-        }
-       
+        }      
     }
 }

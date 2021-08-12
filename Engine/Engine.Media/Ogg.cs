@@ -1,4 +1,3 @@
-using Engine.Content;
 using NVorbis;
 using System;
 using System.IO;
@@ -7,7 +6,7 @@ namespace Engine.Media
 {
 	public static class Ogg
 	{
-		private class OggStreamingSource : StreamingSource
+		public class OggStreamingSource : StreamingSource
 		{
 			private VorbisReader m_reader;
 
@@ -30,26 +29,27 @@ namespace Engine.Media
 					m_reader.DecodedPosition = value;
 				}
 			}
+			public MemoryStream BaseStream = new MemoryStream();
 
 			public override long BytesCount => m_reader.TotalSamples * 2;
-
 			public OggStreamingSource(Stream stream, bool leaveOpen = false)
 			{
 				m_stream = stream;
 				if (!stream.CanSeek)
 				{
-					var memoryStream = new MemoryStream();
-					stream.CopyTo(memoryStream);
+					stream.CopyTo(BaseStream);
 					if (!leaveOpen)
 					{
 						stream.Dispose();
 					}
-					memoryStream.Seek(0L, SeekOrigin.Begin);
-					m_reader = new VorbisReader(memoryStream, closeStreamOnDispose: false);
+					BaseStream.Position = 0L;
+					m_reader = new VorbisReader(BaseStream,  false);
 				}
 				else
 				{
-					m_reader = new VorbisReader(stream, !leaveOpen);
+					stream.CopyTo(BaseStream);
+					BaseStream.Position = 0L;
+					m_reader = new VorbisReader(BaseStream, false);
 				}
 			}
 
@@ -100,14 +100,14 @@ namespace Engine.Media
 				}
 				return num * 2;
 			}
-
+			/// <summary>
+			/// 复制出一个新的流
+			/// </summary>
+			/// <returns></returns>
 			public override StreamingSource Duplicate()
 			{
-				var contentStream = m_stream as ContentStream;
-				if (contentStream != null)
-				{
-					return new OggStreamingSource(contentStream.Duplicate());
-				}
+				BaseStream.Position = 0L;
+				return new OggStreamingSource(BaseStream);
 				throw new InvalidOperationException("Underlying stream does not support duplication.");
 			}
 		}

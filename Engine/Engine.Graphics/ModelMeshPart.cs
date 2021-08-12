@@ -6,6 +6,8 @@ namespace Engine.Graphics
 	{
 		internal BoundingBox m_boundingBox;
 
+		public string TexturePath;
+
 		public VertexBuffer VertexBuffer
 		{
 			get;

@@ -141,7 +141,7 @@ namespace Game
             Viewport viewport = Display.Viewport;
             if (SettingsManager.DisplayFpsCounter)
             {
-                if (Time.PeriodicEvent(1.0, 0.0))
+                if (Time.PeriodicEvent(1.0, 0.0) && ScreensManager.CurrentScreen != null)
                 {
 #if DEBUG
                     m_statsString = $"FPS {1f / AverageFrameTime:0.0} Screen:[" + ScreensManager.CurrentScreen.GetType().Name + "]";

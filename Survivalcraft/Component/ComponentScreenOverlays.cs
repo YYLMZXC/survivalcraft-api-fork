@@ -293,7 +293,7 @@ namespace Game
 
         public void DrawFloatingMessage(Camera camera, string message, float factor)
         {
-            BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
+            BitmapFont font = LabelWidget.BitmapFont;
             Vector2 position = camera.ViewportSize / 2f;
             position.X += 0.07f * camera.ViewportSize.X * (float)MathUtils.Sin(1.7300000190734863 * Time.FrameStartTime);
             position.Y += 0.07f * camera.ViewportSize.Y * (float)MathUtils.Cos(1.1200000047683716 * Time.FrameStartTime);
@@ -306,7 +306,7 @@ namespace Game
 
         public void DrawMessage(Camera camera, string message, float factor)
         {
-            BitmapFont font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
+            BitmapFont font = LabelWidget.BitmapFont;
             var position = new Vector2(camera.ViewportSize.X / 2f, camera.ViewportSize.Y - 25f);
             FontBatch2D fontBatch2D = m_primitivesRenderer2D.FontBatch(font, 0, DepthStencilState.None, null, BlendState.AlphaBlend);
             int count = fontBatch2D.TriangleVertices.Count;

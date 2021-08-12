@@ -155,7 +155,6 @@ namespace Game
                     m_dropsPanel.Children.Add(new LabelWidget
                     {
                         Margin = new Vector2(20f, 0f),
-                        Font = ContentManager.Get<BitmapFont>("Fonts/Pericles"),
                         Text = LanguageControl.Nothing
                     });
                 }

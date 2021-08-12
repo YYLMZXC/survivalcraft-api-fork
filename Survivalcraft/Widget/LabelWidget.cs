@@ -1,14 +1,12 @@
-using Engine;
-using Engine.Graphics;
 using Engine.Media;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Game
 {
     public class LabelWidget : FontTextWidget
     {
+        public static BitmapFont BitmapFont;
+        static LabelWidget(){
+            BitmapFont = ContentManager.Get<BitmapFont>("Fonts/Pericles");
+        }
         public override string Text
         {
             get => base.Text; set
@@ -31,7 +29,7 @@ namespace Game
         }
         public LabelWidget() : base()
         {
-            Font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
+            Font = BitmapFont;
         }
     }
 }

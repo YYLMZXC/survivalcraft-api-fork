@@ -86,7 +86,6 @@ namespace Game
                         Text = LanguageControl.Get(GetType().Name,2),
                         Color = Color.Gray,
                         VerticalAlignment = WidgetAlignment.Center,
-                        Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
                     },
                     new CanvasWidget
                     {
@@ -121,7 +120,6 @@ namespace Game
                         Text = LanguageControl.Get(GetType().Name,3),
                         Color = Color.Gray,
                         VerticalAlignment = WidgetAlignment.Center,
-                        Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
                     },
                     new CanvasWidget
                     {
@@ -156,7 +154,6 @@ namespace Game
                         Text = LanguageControl.Get(GetType().Name,4),
                         Color = Color.Gray,
                         VerticalAlignment = WidgetAlignment.Center,
-                        Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
                     },
                     new CanvasWidget
                     {
@@ -201,7 +198,6 @@ namespace Game
             {
                 HorizontalAlignment = WidgetAlignment.Center,
                 VerticalAlignment = WidgetAlignment.Center,
-                Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
             };
             LabelWidget widget3 = obj12;
             m_label = obj12;

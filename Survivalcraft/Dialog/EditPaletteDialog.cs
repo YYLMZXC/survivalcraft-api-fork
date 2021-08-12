@@ -47,7 +47,6 @@ namespace Game
                                     Color = Color.Gray,
                                     HorizontalAlignment = WidgetAlignment.Far,
                                     VerticalAlignment = WidgetAlignment.Center,
-                                    Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
                                 }
                             }
                         },
@@ -61,7 +60,6 @@ namespace Game
                 {
                     Size = new Vector2(300f, -1f),
                     VerticalAlignment = WidgetAlignment.Center,
-                    Font = ContentManager.Get<BitmapFont>("Fonts/Pericles")
                 });
                 obj.Children.Add(new CanvasWidget
                 {

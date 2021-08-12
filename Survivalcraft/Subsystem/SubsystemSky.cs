@@ -490,7 +490,7 @@ namespace Game
             QueueCelestialBody(batch, camera.ViewPosition, color2, 900f, 3.5f * num2, num);
             QueueCelestialBody(batch, camera.ViewPosition, color3, 900f, 3.5f * num3, angle);
             QueueCelestialBody(batch2, camera.ViewPosition, color, 900f, num2, num);
-            QueueCelestialBody(batch3, camera.ViewPosition, white, 900f, num3, angle);
+            QueueCelestialBody(batch3, camera.ViewPosition, white, 900f, num3, angle);            
         }
 
         public void DrawLightning(Camera camera)
@@ -618,9 +618,8 @@ namespace Game
             if (color.A > 0)
             {
                 Vector3 vector = default;
-                vector.X = 0f - MathUtils.Sin(angle);
-                vector.Y = 0f - MathUtils.Cos(angle);
-                vector.Z = 0f;
+                vector.X = - MathUtils.Sin(angle);
+                vector.Y = - MathUtils.Cos(angle);
                 Vector3 vector2 = vector;
                 Vector3 unitZ = Vector3.UnitZ;
                 var v = Vector3.Cross(unitZ, vector2);

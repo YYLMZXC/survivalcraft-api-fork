@@ -8,7 +8,7 @@ using TemplatesDatabase;
 
 namespace Game
 {
-    public class SubsystemPickables : Subsystem, IDrawable, IUpdateable
+    public class SubsystemPickables : HookableSubsystem<Pickable>, IDrawable, IUpdateable
     {
         public SubsystemAudio m_subsystemAudio;
 
@@ -77,10 +77,7 @@ namespace Game
                 pickable.Velocity = new Vector3(m_random.Float(-0.5f, 0.5f), m_random.Float(1f, 1.2f), m_random.Float(-0.5f, 0.5f));
             }
             m_pickables.Add(pickable);
-            ModsManager.HookAction("AddPickable", modLoader => {
-                modLoader.PickableAdded(this, pickable);
-                return false;
-            });
+            HookActions(pickable, "PickableAdded");
             return pickable;
         }
 
@@ -360,10 +357,7 @@ namespace Game
             foreach (Pickable item in m_pickablesToRemove)
             {
                 m_pickables.Remove(item);
-                ModsManager.HookAction("PickableRemoved", modLoader => {
-                    modLoader.PickableRemoved(this, item);
-                    return false;
-                });
+                HookActions(item, "PickableRemoved");
             }
             m_pickablesToRemove.Clear();
         }

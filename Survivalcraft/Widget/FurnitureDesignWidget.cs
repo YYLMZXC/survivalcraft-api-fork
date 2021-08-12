@@ -83,7 +83,7 @@ namespace Game
                     flatBatch3D.QueueLine(new Vector3(num, 0f, 1f), new Vector3(num, 1f, 1f), color);
                 }
                 Color color2 = new Color(64, 64, 64, 255) * GlobalColorTransform;
-                FontBatch3D fontBatch3D = m_primitivesRenderer3d.FontBatch(ContentManager.Get<BitmapFont>("Fonts/Pericles"), 1);
+                FontBatch3D fontBatch3D = m_primitivesRenderer3d.FontBatch(LabelWidget.BitmapFont, 1);
                 fontBatch3D.QueueText(LanguageControl.Get(GetType().Name,0), new Vector3(0.5f, 0f, 0f), 0.004f * new Vector3(-1f, 0f, 0f), 0.004f * new Vector3(0f, 0f, -1f), color2, TextAnchor.HorizontalCenter);
                 fontBatch3D.QueueText(LanguageControl.Get(GetType().Name, 1), new Vector3(1f, 0f, 0.5f), 0.004f * new Vector3(0f, 0f, -1f), 0.004f * new Vector3(1f, 0f, 0f), color2, TextAnchor.HorizontalCenter);
                 if (DrawDebugFurniture)

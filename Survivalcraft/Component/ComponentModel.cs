@@ -3,7 +3,7 @@ using Engine.Graphics;
 using GameEntitySystem;
 using System.Linq;
 using TemplatesDatabase;
-
+using System;
 namespace Game
 {
     public class ComponentModel : Component
@@ -139,7 +139,9 @@ namespace Game
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_componentFrame = Entity.FindComponent<ComponentFrame>(throwOnError: true);
             string value = valuesDictionary.GetValue<string>("ModelName");
-            Model = ContentManager.Get<Model>(value);
+            string modeltype = valuesDictionary.GetValue<string>("ModelType", "Engine.Graphics.Model");
+            Type type = Engine.Serialization.TypeCache.FindType(modeltype, true, true);
+            Model = (Model)ContentManager.Get(type, value);
             CastsShadow = valuesDictionary.GetValue<bool>("CastsShadow");
             string value2 = valuesDictionary.GetValue<string>("TextureOverride");
             TextureOverride = (string.IsNullOrEmpty(value2) ? null : ContentManager.Get<Texture2D>(value2));

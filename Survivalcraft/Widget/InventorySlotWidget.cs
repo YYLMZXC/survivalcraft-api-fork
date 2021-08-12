@@ -191,7 +191,6 @@ namespace Game
             array[2] = blockIconWidget;
             var obj4 = new LabelWidget
             {
-                Font = ContentManager.Get<BitmapFont>("Fonts/Pericles"),
                 FontScale = 1f,
                 HorizontalAlignment = WidgetAlignment.Far,
                 VerticalAlignment = WidgetAlignment.Far,
@@ -259,7 +258,6 @@ namespace Game
             var obj10 = new LabelWidget
             {
                 Text = "Split",
-                Font = ContentManager.Get<BitmapFont>("Fonts/Pericles"),
                 Color = new Color(255, 64, 0),
                 HorizontalAlignment = WidgetAlignment.Near,
                 VerticalAlignment = WidgetAlignment.Near,

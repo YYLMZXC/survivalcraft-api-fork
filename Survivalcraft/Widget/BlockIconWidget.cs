@@ -100,12 +100,12 @@ namespace Game
 
         public BlockIconWidget()
         {
+            DrawBlockEnvironmentData = new DrawBlockEnvironmentData();
             Size = new Vector2(float.PositiveInfinity);
             IsHitTestVisible = false;
             Light = 15;
             Depth = 1f;
             Color = Color.White;
-            DrawBlockEnvironmentData = new DrawBlockEnvironmentData();
             Scale = 1f;
         }
 

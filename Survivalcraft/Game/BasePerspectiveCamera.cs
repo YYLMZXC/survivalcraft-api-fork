@@ -41,7 +41,7 @@ namespace Game
 
         public override Vector3 ViewRight => m_viewRight;
 
-        public override Matrix ViewMatrix
+        public override Matrix ViewMatrix//视图矩阵，包含观测的位置，方向，垂直Y方向
         {
             get
             {
@@ -53,7 +53,7 @@ namespace Game
             }
         }
 
-        public override Matrix InvertedViewMatrix
+        public override Matrix InvertedViewMatrix//转置视图矩阵
         {
             get
             {
@@ -71,11 +71,18 @@ namespace Game
             {
                 if (!m_projectionMatrix.HasValue)
                 {
-                    m_projectionMatrix = CalculateBaseProjectionMatrix();
+                    m_projectionMatrix = CalculateBaseProjectionMatrix(GameWidget.ViewWidget.ActualSize);
                     ViewWidget viewWidget = GameWidget.ViewWidget;
                     if (!viewWidget.ScalingRenderTargetSize.HasValue)
                     {
-                        m_projectionMatrix *= MatrixUtils.CreateScaleTranslation(0.5f * viewWidget.ActualSize.X, -0.5f * viewWidget.ActualSize.Y, viewWidget.ActualSize.X / 2f, viewWidget.ActualSize.Y / 2f) * viewWidget.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / Display.Viewport.Width, -2f / Display.Viewport.Height, -1f, 1f);
+                        m_projectionMatrix *= 
+                            MatrixUtils.CreateScaleTranslation(
+                                0.5f * viewWidget.ActualSize.X,
+                                -0.5f * viewWidget.ActualSize.Y, 
+                                viewWidget.ActualSize.X / 2f, 
+                                viewWidget.ActualSize.Y / 2f) 
+                            * viewWidget.GlobalTransform 
+                            * MatrixUtils.CreateScaleTranslation(2f / Display.Viewport.Width, -2f / Display.Viewport.Height, -1f, 1f);
                     }
                 }
                 return m_projectionMatrix.Value;
@@ -90,7 +97,10 @@ namespace Game
                 {
                     Point2 size = Window.Size;
                     ViewWidget viewWidget = GameWidget.ViewWidget;
-                    m_screenProjectionMatrix = CalculateBaseProjectionMatrix() * MatrixUtils.CreateScaleTranslation(0.5f * viewWidget.ActualSize.X, -0.5f * viewWidget.ActualSize.Y, viewWidget.ActualSize.X / 2f, viewWidget.ActualSize.Y / 2f) * viewWidget.GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / size.X, -2f / size.Y, -1f, 1f);
+                    m_screenProjectionMatrix = CalculateBaseProjectionMatrix(GameWidget.ViewWidget.ActualSize)
+                        * MatrixUtils.CreateScaleTranslation(0.5f * viewWidget.ActualSize.X, -0.5f * viewWidget.ActualSize.Y, viewWidget.ActualSize.X / 2f, viewWidget.ActualSize.Y / 2f) 
+                        * viewWidget.GlobalTransform 
+                        * MatrixUtils.CreateScaleTranslation(2f / size.X, -2f / size.Y, -1f, 1f) ;
                 }
                 return m_screenProjectionMatrix.Value;
             }
@@ -114,7 +124,14 @@ namespace Game
             {
                 if (!m_viewProjectionMatrix.HasValue)
                 {
-                    m_viewProjectionMatrix = ViewMatrix * ProjectionMatrix;
+                    //世界坐标矩阵 * 投影矩阵得到屏幕矩阵，即将世界的坐标转换到屏幕的坐标
+                    m_viewProjectionMatrix = ViewMatrix  * ProjectionMatrix;
+                    /*
+                    //测试，将屏幕坐标转回到世界坐标
+                    //将屏幕坐标的0,0转换到世界的坐标中
+                    Vector3 vector = Vector3.Transform(Vector3.Zero, InvertedProjectionMatrix);
+                    vector = Vector3.Transform(vector,InvertedViewMatrix);
+                    */
                 }
                 return m_viewProjectionMatrix.Value;
             }
@@ -205,8 +222,11 @@ namespace Game
             m_viewUp = Vector3.Normalize(up);
             m_viewRight = Vector3.Normalize(Vector3.Cross(m_viewDirection, m_viewUp));
         }
-
-        public Matrix CalculateBaseProjectionMatrix()
+        /// <summary>
+        /// 计算基础投影矩阵，创建透视视野
+        /// </summary>
+        /// <returns></returns>
+        public static Matrix CalculateBaseProjectionMatrix(Vector2 wh)
         {
             float num = 90f;
             float num2 = 1f;
@@ -218,9 +238,8 @@ namespace Game
             {
                 num2 = 0.9f;
             }
-            ViewWidget viewWidget = GameWidget.ViewWidget;
-            float num3 = viewWidget.ActualSize.X / viewWidget.ActualSize.Y;
-            float num4 = MathUtils.Min(num * num3, num);
+            float num3 = wh.X / wh.Y;//视野长宽比
+            float num4 = MathUtils.Min(num * num3, num);//根据长宽比获取值，最大90f
             float num5 = num4 * num3;
             if (num5 < 90f)
             {
@@ -230,7 +249,8 @@ namespace Game
             {
                 num4 *= 175f / num5;
             }
-            return Matrix.CreatePerspectiveFieldOfView(MathUtils.DegToRad(num4 * num2), num3, 0.1f, 2048f);
+            //猜测，将世界坐标转换为屏幕坐标的矩阵
+            return Matrix.CreatePerspectiveFieldOfView(MathUtils.DegToRad(num4 * num2), num3, 0.1f, 2048f);//参数1视野Y宽度，参数2纵横比，参数3近平面，参数4远平面
         }
     }
 }
