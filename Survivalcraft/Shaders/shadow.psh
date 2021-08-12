@@ -1,0 +1,28 @@
+#ifdef GLSL
+
+// <Sampler Name='u_samplerState' Texture='u_texture' />
+
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform sampler2D u_texture;
+
+varying vec2 s_texcoord;
+varying float pmx;
+
+float fmod(float _X, float _Y)
+{
+    return _X - float(int(_X / _Y)) * _Y;
+}
+
+void main()
+{	
+	vec4 prevcolor = texture2D(u_texture, s_texcoord);//获取之前的颜色
+	if(pmx < prevcolor.x){
+		prevcolor = vec4(pmx,pmx,pmx,1.0);
+	}
+	gl_FragColor = prevcolor;
+}
+
+#endif

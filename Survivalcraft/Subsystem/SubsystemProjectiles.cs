@@ -9,7 +9,7 @@ using TemplatesDatabase;
 
 namespace Game
 {
-    public class SubsystemProjectiles : Subsystem, IUpdateable, IDrawable
+    public class SubsystemProjectiles : HookableSubsystem<Projectile>, IUpdateable, IDrawable
     {
         public SubsystemAudio m_subsystemAudio;
 
@@ -75,9 +75,7 @@ namespace Game
             projectile.Owner = owner;
             projectile.ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable;
             m_projectiles.Add(projectile);
-            foreach (ModLoader modEntity in ModsManager.ModLoaders) {
-                modEntity.ProjectileAdded(this,projectile);
-            }
+            HookActions(projectile, "ProjectileAdded");
             if (owner != null && owner.PlayerStats != null)
             {
                 owner.PlayerStats.RangedAttacks++;
@@ -412,10 +410,7 @@ namespace Game
                     item.TrailParticleSystem.IsStopped = true;
                 }
                 m_projectiles.Remove(item);
-                foreach (ModLoader modEntity in ModsManager.ModLoaders)
-                {
-                    modEntity.ProjectileAdded(this,item);
-                }
+                HookActions(item, "ProjectileRemoveed");
             }
             m_projectilesToRemove.Clear();
         }

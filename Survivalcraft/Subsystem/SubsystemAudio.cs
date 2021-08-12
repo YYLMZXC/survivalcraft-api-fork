@@ -1,8 +1,8 @@
 using Engine;
 using Engine.Audio;
-using Engine.Content;
 using GameEntitySystem;
 using System.Collections.Generic;
+using System.IO;
 using TemplatesDatabase;
 
 namespace Game
@@ -127,7 +127,7 @@ namespace Game
             if (readOnlyList.Count > 0)
             {
                 int index = m_random.Int(0, readOnlyList.Count - 1);
-                PlaySound(readOnlyList[index].Name, volume, pitch, pan, delay);
+                PlaySound(readOnlyList[index].ContentPath, volume, pitch, pan, delay);
             }
             else
             {
@@ -149,7 +149,7 @@ namespace Game
 
         public Sound CreateSound(string name)
         {
-            var sound = new Sound(ContentManager.Get<SoundBuffer>(name));
+            var sound = new Sound(ContentManager.Get<SoundBuffer>(name,".wav"));
             m_sounds.Add(sound);
             return sound;
         }

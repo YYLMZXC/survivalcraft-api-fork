@@ -70,6 +70,19 @@ namespace Game
                 var foodType = (FoodType)Enum.Parse(typeof(FoodType), item.Key, ignoreCase: false);
                 m_foodFactors[(int)foodType] = (float)item.Value;
             }
+            m_subsystemPickables.Hook("PickableAdded", ModsManager.SurvivalCrafModEntity.ModLoader_, delegate (Pickable pickable) {
+                if (TryAddPickable(pickable) && m_pickable == null)
+                {
+                    m_pickable = pickable;
+                }
+            });
+            m_subsystemPickables.Hook("PickableRemoved", ModsManager.SurvivalCrafModEntity.ModLoader_, delegate (Pickable pickable) {
+                m_pickables.Remove(pickable);
+                if (m_pickable == pickable)
+                {
+                    m_pickable = null;
+                }
+            });
 
             m_stateMachine.AddState("Inactive", delegate
             {

@@ -144,7 +144,6 @@ namespace Game
                         var widget = new LabelWidget
                         {
                             Text = text,
-                            Font = ContentManager.Get<BitmapFont>("Fonts/Pericles"),
                             HorizontalAlignment = WidgetAlignment.Center,
                             VerticalAlignment = WidgetAlignment.Center,
                             DropShadow = true

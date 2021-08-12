@@ -17,6 +17,8 @@ namespace Game
 
         public int m_lastVisibleIndex;
 
+        public bool PlayClickSound = true;
+
         public float m_itemSize;
 
         public bool m_widgetsDirty;
@@ -262,7 +264,7 @@ namespace Game
                     ItemClicked(Items[num]);
                 }
                 SelectedIndex = num;
-                if (SelectedIndex.HasValue)
+                if (SelectedIndex.HasValue && PlayClickSound)
                 {
                     AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                 }

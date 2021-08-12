@@ -82,6 +82,9 @@ namespace Engine.Graphics
 			}
 			return modelBone;
 		}
+		public void AddMesh(ModelMesh mesh) {
+			m_meshes.Add(mesh);
+		}
 
 		public ModelMesh NewMesh(string name, ModelBone parentBone, BoundingBox boundingBox)
 		{
@@ -171,12 +174,12 @@ namespace Engine.Graphics
 
 		public static Model Load(Stream stream, bool keepSourceVertexDataInTags = false)
 		{
-			return Load(ModelData.Load(stream));
+			return Load(ModelData.Load(stream), keepSourceVertexDataInTags);
 		}
 
 		public static Model Load(string fileName, bool keepSourceVertexDataInTags = false)
 		{
-			return Load(ModelData.Load(fileName));
+			return Load(ModelData.Load(fileName), keepSourceVertexDataInTags);
 		}
 
 		internal void Initialize(ModelData modelData, bool keepSourceVertexDataInTags)

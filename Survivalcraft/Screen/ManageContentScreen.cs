@@ -134,7 +134,7 @@ public class ManageContentScreen : Screen
                         RectangleWidget rectangleWidget = containerWidget.Children.Find<RectangleWidget>("BlocksTextureItem.Icon");
                         LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Text");
                         LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("BlocksTextureItem.Details");
-                        rectangleWidget.Subtexture = listItem.Texture==null ? TextureAtlasManager.GetSubtexture("Textures/Atlas/WorldIcon"):new Subtexture(listItem.Texture,Vector2.Zero,Vector2.One);
+                        rectangleWidget.Subtexture = listItem.Texture==null ? ContentManager.Get<Subtexture>("Textures/Atlas/WorldIcon"):new Subtexture(listItem.Texture,Vector2.Zero,Vector2.One);
                         rectangleWidget.TextureLinearFilter = true;
                         labelWidget.Text = listItem.DisplayName;
                         labelWidget2.Text = listItem.Name;
@@ -189,7 +189,7 @@ public class ManageContentScreen : Screen
             m_uploadButton.IsEnabled = !selectedItem.IsBuiltIn;
             if (selectedItem.Type == ExternalContentType.Mod)
             {
-                m_deleteButton.Text = selectedItem.ModEntity.IsDisabled ? LanguageControl.Enable : LanguageControl.Disable;
+                m_deleteButton.Text = ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo) ? LanguageControl.Enable : LanguageControl.Disable;
                 m_deleteButton.IsEnabled = !(selectedItem.ModEntity is SurvivalCrafModEntity || selectedItem.ModEntity is FastDebugModEntity);
             }
             else
@@ -203,7 +203,7 @@ public class ManageContentScreen : Screen
         {
             string smallMessage = (selectedItem.UseCount <= 0) ? string.Format(LanguageControl.Get(fName, 5), selectedItem.DisplayName) : string.Format(LanguageControl.Get(fName, 6), selectedItem.DisplayName, selectedItem.UseCount);
             if (selectedItem.Type == ExternalContentType.Mod) {
-                smallMessage = (selectedItem.ModEntity.IsDisabled ? LanguageControl.Enable : LanguageControl.Disable) + $"[{selectedItem.ModEntity.modInfo.Name}]?";
+                smallMessage = (ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo) ? LanguageControl.Enable : LanguageControl.Disable) + $"[{selectedItem.ModEntity.modInfo.Name}]?";
             }
             DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 9), smallMessage, LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
             {
@@ -212,8 +212,16 @@ public class ManageContentScreen : Screen
                     if (selectedItem.Type == ExternalContentType.Mod)
                     {
                         changeed = true;
-                        selectedItem.ModEntity.IsDisabled = !selectedItem.ModEntity.IsDisabled;
-                        selectedItem.ModEntity.IsLoaded = !selectedItem.ModEntity.IsDisabled;
+                        if (ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo))
+                        {
+                            selectedItem.ModEntity.Dispose();
+                            ModsManager.DisabledMods.Remove(selectedItem.ModEntity.modInfo);
+                            ModsManager.ModList.Add(selectedItem.ModEntity);
+                        }
+                        else {
+                            ModsManager.DisabledMods.Add(selectedItem.ModEntity.modInfo);
+                            ModsManager.ModList.Remove(selectedItem.ModEntity);
+                        }
                     }
                     else {
                         ExternalContentManager.DeleteExternalContent(selectedItem.Type, selectedItem.Name);
@@ -317,7 +325,7 @@ public class ManageContentScreen : Screen
             foreach (ModEntity modEntity in ModsManager.ModList)
             {
                 string dis = string.Empty;
-                if (modEntity.IsDisabled) dis = "[已禁用]";
+                if (ModsManager.DisabledMods.Contains(modEntity.modInfo)) dis = "[已禁用]";
                 string author = string.IsNullOrEmpty(modEntity.modInfo.Author) ? "无" : modEntity.modInfo.Author;
                 list.Add(new ListItem
                 {

@@ -19,7 +19,7 @@ namespace Game
             XElement source = null;
             foreach (ModEntity modEntity in ModsManager.ModList)
             {
-                if (modEntity.IsLoaded && !modEntity.IsDisabled) modEntity.LoadCr(ref source);
+                modEntity.LoadCr(ref source);
             }
             LoadData(source);
             Block[] blocks = BlocksManager.Blocks;

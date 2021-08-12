@@ -1,0 +1,66 @@
+#ifdef HLSL
+
+#ifdef USE_TEXTURE
+Texture2D u_texture;
+SamplerState u_samplerState;
+Texture2D ShadowTexture;
+SamplerState s_samplerState;
+#endif
+#ifdef USE_ALPHATHRESHOLD
+float u_alphaThreshold;
+#endif
+
+void main(
+#ifdef USE_TEXTURE
+	in float2 v_texcoord: TEXCOORD,
+#endif
+	in float4 v_color : COLOR,
+	out float4 svTarget: SV_TARGET
+)
+{
+	// Color
+	float4 result = v_color;
+
+	// Texture
+#ifdef USE_TEXTURE
+	result *= u_texture.Sample(u_samplerState, v_texcoord);
+#endif
+
+	// Alpha threshold
+#ifdef USE_ALPHATHRESHOLD
+	if (result.a <= u_alphaThreshold)
+		discard;
+#endif
+
+	// Return
+	svTarget = result;
+}
+
+#endif
+#ifdef GLSL
+
+// <Sampler Name='u_samplerState' Texture='u_texture' />
+// <Sampler Name='s_samplerState' Texture='ShadowTexture' />
+
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform sampler2D u_texture;
+uniform sampler2D ShadowTexture;
+
+varying vec2 v_texcoord;
+varying vec4 v_color;
+varying vec2 s_texcoord;
+varying float pmx;
+
+void main()
+{
+	vec4 result = v_color;
+	result *= texture2D(u_texture, v_texcoord);
+	vec4 closest  = texture2D(ShadowTexture, s_texcoord);
+	if(pmx <= closest.x)result.rgb*=0.5;
+	gl_FragColor = result;
+}
+
+#endif

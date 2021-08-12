@@ -380,11 +380,11 @@
     <Compile Include="Block\WoodenStairsBlock.cs" />
     <Compile Include="Block\WoodenTrapdoorBlock.cs" />
     <Compile Include="Block\XorGateBlock.cs" />
-    <Compile Include="Game\AlphaTestedShader.cs" />
-    <Compile Include="Game\HighlightShader.cs" />
-    <Compile Include="Game\OpaqueShader.cs" />
+    <Compile Include="Component\HookableComponent.cs" />
+    <Compile Include="Game\Subtexture.cs" />
     <Compile Include="Game\TerrainSerializer22.cs" />
-    <Compile Include="Game\TransparentShader.cs" />
+    <Compile Include="Game\TextureAtlas.cs" />
+    <Compile Include="Game\TextureAtlasManager.cs" />
     <Compile Include="Managers\AnalyticsManager.cs" />
     <Compile Include="Managers\AudioManager.cs" />
     <Compile Include="Managers\BlocksTexturesManager.cs" />
@@ -406,14 +406,16 @@
     <Compile Include="Managers\ProgressManager.cs" />
     <Compile Include="Managers\SettingsManager.cs" />
     <Compile Include="Managers\StringsManager.cs" />
-    <Compile Include="Managers\TextureAtlasManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Managers\VersionsManager.cs" />
     <Compile Include="Managers\WebBrowserManager.cs" />
     <Compile Include="Managers\WebManager.cs" />
     <Compile Include="Managers\WorldsManager.cs" />
     <Compile Include="ModsManager\FastDebugModEntity.cs" />
+    <Compile Include="ModsManager\JsonModelReader.cs" />
     <Compile Include="ModsManager\ModLoader.cs" />
+    <Compile Include="ModsManager\MtllibStruct.cs" />
+    <Compile Include="ModsManager\ObjModelReader.cs" />
     <Compile Include="ModsManager\SurvivalCraftModEntity.cs" />
     <Compile Include="ModsManager\SurvivalCraftModLoader.cs" />
     <Compile Include="Screen\BestiaryDescriptionScreen.cs" />
@@ -453,6 +455,7 @@
     <Compile Include="Screen\SettingsUiScreen.cs" />
     <Compile Include="Screen\TrialEndedScreen.cs" />
     <Compile Include="Screen\WorldOptionsScreen.cs" />
+    <Compile Include="Subsystem\HookableSubsystem.cs" />
     <Compile Include="Subsystem\SubsystemAdjustableDelayGateBlockBehavior.cs" />
     <Compile Include="Subsystem\SubsystemAmbientSounds.cs" />
     <Compile Include="Subsystem\SubsystemAnimatedTextures.cs" />
@@ -863,7 +866,6 @@
     <Compile Include="Game\StraightFlightCamera.cs" />
     <Compile Include="Game\StringUtils.cs" />
     <Compile Include="ModsManager\LanguageControl.cs" />
-    <Compile Include="Game\Subtexture.cs" />
     <Compile Include="Game\SwitchElectricElement.cs" />
     <Compile Include="Game\SwitchFurnitureElectricElement.cs" />
     <Compile Include="Game\TargetElectricElement.cs" />
@@ -887,7 +889,6 @@
     <Compile Include="Game\TerrainVertex.cs" />
     <Compile Include="Dialog\TextBoxDialog.cs" />
     <Compile Include="Game\TextOrientation.cs" />
-    <Compile Include="Game\TextureAtlas.cs" />
     <Compile Include="Game\ThermometerElectricElement.cs" />
     <Compile Include="Game\TimeOfDayMode.cs" />
     <Compile Include="Game\TouchInput.cs" />
@@ -1061,19 +1062,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content.pak">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Core.pak">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\en_US.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\ot_OT.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="lang\zh_CN.json">
+    <None Include="Content.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\app.manifest" />
@@ -1086,6 +1075,10 @@
     <Content Include="OpenAL\x86\openal32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Shaders\Opaque.psh" />
+    <None Include="Shaders\Opaque.vsh" />
+    <None Include="Shaders\shadow.psh" />
+    <None Include="Shaders\shadow.vsh" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

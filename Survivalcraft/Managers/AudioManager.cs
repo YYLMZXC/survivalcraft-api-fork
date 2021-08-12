@@ -1,7 +1,7 @@
 using Engine;
 using Engine.Audio;
 using System;
-
+using Engine.Media;
 namespace Game
 {
     public static class AudioManager
@@ -17,7 +17,7 @@ namespace Game
                 {
                     try
                     {
-                        new Sound(ContentManager.Get<SoundBuffer>(name), num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true).Play();
+                        new Sound(ContentManager.Get<SoundBuffer>(name, ".wav"), num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true).Play();
                     }
                     catch (Exception)
                     {

@@ -87,12 +87,12 @@ namespace Game
             }
             if (num > 0)
             {
-                m_recipesButton.Text = string.Format("{0} {1}", num, (num == 1) ? LanguageControl.Get(GetType().Name, 0) : LanguageControl.Get(GetType().Name, 1));
+                m_recipesButton.Text = string.Format("{0} {1}", num, (num == 1) ? LanguageControl.Get(GetType().Name, 1) : LanguageControl.Get(GetType().Name, 2));
                 m_recipesButton.IsEnabled = true;
             }
             else
             {
-                m_recipesButton.Text = LanguageControl.Get(GetType().Name, 2);
+                m_recipesButton.Text = LanguageControl.Get(GetType().Name, 3);
                 m_recipesButton.IsEnabled = false;
             }
             m_detailsButton.IsEnabled = value.HasValue;

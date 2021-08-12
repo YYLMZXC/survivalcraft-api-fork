@@ -20,7 +20,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;desktop</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>2</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -52,37 +52,6 @@
     <Compile Include="Engine.Audio\SoundBuffer.cs" />
     <Compile Include="Engine.Audio\SoundState.cs" />
     <Compile Include="Engine.Audio\StreamingSound.cs" />
-    <Compile Include="Engine.Content\BitmapFontContentReader.cs" />
-    <Compile Include="Engine.Content\BitmapFontContentWriter.cs" />
-    <Compile Include="Engine.Content\ColorContentReader.cs" />
-    <Compile Include="Engine.Content\ColorContentWriter.cs" />
-    <Compile Include="Engine.Content\ContentCache.cs" />
-    <Compile Include="Engine.Content\ContentInfo.cs" />
-    <Compile Include="Engine.Content\ContentReaderAttribute.cs" />
-    <Compile Include="Engine.Content\ContentStream.cs" />
-    <Compile Include="Engine.Content\ContentWriterAttribute.cs" />
-    <Compile Include="Engine.Content\IContentReader.cs" />
-    <Compile Include="Engine.Content\IContentWriter.cs" />
-    <Compile Include="Engine.Content\ImageContentReader.cs" />
-    <Compile Include="Engine.Content\ImageContentWriter.cs" />
-    <Compile Include="Engine.Content\ModelContentReader.cs" />
-    <Compile Include="Engine.Content\ModelContentWriter.cs" />
-    <Compile Include="Engine.Content\ModelDataContentReader.cs" />
-    <Compile Include="Engine.Content\ModelDataContentWriter.cs" />
-    <Compile Include="Engine.Content\OptionalAttribute.cs" />
-    <Compile Include="Engine.Content\PadStream.cs" />
-    <Compile Include="Engine.Content\ShaderContentReader.cs" />
-    <Compile Include="Engine.Content\ShaderContentWriter.cs" />
-    <Compile Include="Engine.Content\SoundBufferContentReader.cs" />
-    <Compile Include="Engine.Content\SoundBufferContentWriter.cs" />
-    <Compile Include="Engine.Content\StreamingSourceContentReader.cs" />
-    <Compile Include="Engine.Content\StreamingSourceContentWriter.cs" />
-    <Compile Include="Engine.Content\StringContentReader.cs" />
-    <Compile Include="Engine.Content\StringContentWriter.cs" />
-    <Compile Include="Engine.Content\TextureContentReader.cs" />
-    <Compile Include="Engine.Content\TextureContentWriter.cs" />
-    <Compile Include="Engine.Content\XElementContentReader.cs" />
-    <Compile Include="Engine.Content\XElementContentWriter.cs" />
     <Compile Include="Engine.Graphics\BaseBatch.cs" />
     <Compile Include="Engine.Graphics\BaseFlatBatch.cs" />
     <Compile Include="Engine.Graphics\BaseFontBatch.cs" />
@@ -165,12 +134,14 @@
     <Compile Include="Engine.Media\ModelMeshData.cs" />
     <Compile Include="Engine.Media\ModelMeshPartData.cs" />
     <Compile Include="Engine.Media\Ogg.cs" />
+    <Compile Include="Engine.Media\OggStreamingSource.cs" />
     <Compile Include="Engine.Media\PeekStream.cs" />
     <Compile Include="Engine.Media\Png.cs" />
     <Compile Include="Engine.Media\SoundData.cs" />
     <Compile Include="Engine.Media\SoundFileFormat.cs" />
     <Compile Include="Engine.Media\StreamingSource.cs" />
     <Compile Include="Engine.Media\Wav.cs" />
+    <Compile Include="Engine.Media\WavStreamSource.cs" />
     <Compile Include="Engine.Serialization\Archive.cs" />
     <Compile Include="Engine.Serialization\ArraySerializer.cs" />
     <Compile Include="Engine.Serialization\BinaryInputArchive.cs" />
@@ -189,6 +160,7 @@
     <Compile Include="Engine.Serialization\CharSerializer.cs" />
     <Compile Include="Engine.Serialization\ColorHumanReadableConverter.cs" />
     <Compile Include="Engine.Serialization\ColorSerializer.cs" />
+    <Compile Include="Engine.Serialization\ContentSerializer.cs" />
     <Compile Include="Engine.Serialization\DateTimeHumanReadableConverter.cs" />
     <Compile Include="Engine.Serialization\DecimalHumanReadableConverter.cs" />
     <Compile Include="Engine.Serialization\DictionarySerializer.cs" />
@@ -426,19 +398,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Engine\Resources.Embedded.DebugFont.dat" />
-    <EmbeddedResource Include="Resources\Embedded\DebugFont.dat" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Engine\Resources.Embedded.Lit.psh" />
-    <Content Include="Engine\Resources.Embedded.Lit.vsh" />
-    <Content Include="Engine\Resources.Embedded.Unlit.psh" />
-    <Content Include="Engine\Resources.Embedded.Unlit.vsh" />
+    <EmbeddedResource Include="Resources\Lit.psh" />
+    <EmbeddedResource Include="Resources\Lit.vsh" />
+    <EmbeddedResource Include="Resources\Unlit.psh" />
+    <EmbeddedResource Include="Resources\Unlit.vsh" />
+    <EmbeddedResource Include="Resources\Debugfont.lst" />
+    <EmbeddedResource Include="Resources\Debugfont.png" />
     <EmbeddedResource Include="Resources\icon.ico" />
-    <EmbeddedResource Include="Resources\Embedded\Unlit.vsh" />
-    <EmbeddedResource Include="Resources\Embedded\Unlit.psh" />
-    <EmbeddedResource Include="Resources\Embedded\Lit.vsh" />
-    <EmbeddedResource Include="Resources\Embedded\Lit.psh" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

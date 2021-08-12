@@ -110,7 +110,7 @@ namespace Game
             m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_componentMiner = Entity.FindComponent<ComponentMiner>(throwOnError: true);
-            m_shader = new AlphaTestedShader();
+            m_shader = TerrainRenderer.AlphatestedShader;
             m_textures = new Texture2D[8];
             for (int i = 0; i < 8; i++)
             {

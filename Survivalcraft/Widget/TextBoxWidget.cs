@@ -8,7 +8,7 @@ namespace Game
 {
     public class TextBoxWidget : Widget
     {
-        public BitmapFont m_font;
+        public BitmapFont m_font = LabelWidget.BitmapFont;
 
         public string m_text = string.Empty;
 
@@ -181,7 +181,6 @@ namespace Game
             ClampToBounds = true;
             Color = Color.White;
             TextureLinearFilter = true;
-            Font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
             FontScale = 1f;
             Title = string.Empty;
             Description = string.Empty;

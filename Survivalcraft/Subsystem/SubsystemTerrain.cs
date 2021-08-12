@@ -368,9 +368,9 @@ namespace Game
                     TerrainRenderer.DrawAlphaTested(camera);
                 }
                 else if (drawOrder == m_drawOrders[1])
-                {
-                    TerrainRenderer.DrawTransparent(camera);
-                }
+               {
+                   TerrainRenderer.DrawTransparent(camera);
+               }
             }
         }
 
