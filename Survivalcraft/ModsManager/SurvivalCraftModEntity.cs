@@ -10,8 +10,14 @@ namespace Game
     public class SurvivalCrafModEntity : ModEntity
     {
 
-        public SurvivalCrafModEntity():base(ZipArchive.Open(Storage.OpenFile("app:Content.zip", OpenFileMode.Read), true))
+        public SurvivalCrafModEntity()
         {
+            Stream stream = Storage.OpenFile("app:Content.zip",OpenFileMode.Read);
+            MemoryStream memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+            memoryStream.Position = 0L;
+            ModArchive = ZipArchive.Open(memoryStream, true);
+            InitResources();
         }
         public override void LoadBlocksData()
         {

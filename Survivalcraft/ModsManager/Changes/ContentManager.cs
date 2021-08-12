@@ -172,6 +172,7 @@ namespace Game
                         }
                         throw new Exception("Not found Resources:" + name + " for " + type.FullName);
                     }
+                case "Engine.Media.StreamingSource":
                 case "Engine.Audio.SoundBuffer": if (string.IsNullOrEmpty(prefix)) throw new Exception("You must specify a file type."); else fixname = name + prefix; break;
                 case "Game.MtllibStruct": if (string.IsNullOrEmpty(prefix)) fixname = name + ".mtl"; else fixname = name + prefix; break;
                 case "Engine.Graphics.Texture2D": if (string.IsNullOrEmpty(prefix)) fixname = name + ".png"; else fixname = name + prefix; break;
@@ -179,11 +180,9 @@ namespace Game
                 case "Engine.Media.Image": if (string.IsNullOrEmpty(prefix)) fixname = name + ".png"; else fixname = name + prefix; break;
                 case "System.Xml.Linq.XElement": if (string.IsNullOrEmpty(prefix)) fixname = name + ".xml"; else fixname = name + prefix; break;
                 case "Engine.Graphics.Model": if (string.IsNullOrEmpty(prefix)) fixname = name + ".dae"; else fixname = name + prefix; break;
-                case "Engine.Media.OggStreamingSource": if (string.IsNullOrEmpty(prefix)) fixname = name + ".ogg"; else fixname = name + prefix; break;
-                case "Engine.Media.WavStreamingSource": if (string.IsNullOrEmpty(prefix)) fixname = name + ".wav"; else fixname = name + prefix; break;
                 case "Game.ObjModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".obj"; else fixname = name + prefix; break;
+                case "SimpleJson.JsonObject":
                 case "Game.JsonModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".json"; else fixname = name + prefix; break;
-                case "SimpleJson.JsonObject": if (string.IsNullOrEmpty(prefix)) fixname = name + ".json"; else fixname = name + prefix; break;
                 case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) return TextureAtlasManager.GetSubtexture(name); else return new Subtexture(Get<Texture2D>(name),Vector2.Zero,Vector2.One);
                 default: { break; }
             }
@@ -207,8 +206,7 @@ namespace Game
             switch (type.FullName)
             {
                 case "SimpleJson.JsonObject": return SimpleJson.SimpleJson.DeserializeObject(new StreamReader(stream).ReadToEnd());
-                case "Engine.Media.OggStreamingSource": return Ogg.Stream(stream);
-                case "Engine.Media.WavStreamingSource": return Wav.Stream(stream);
+                case "Engine.Media.StreamingSource": return SoundData.Stream(stream);
                 case "Engine.Audio.SoundBuffer":return Engine.Audio.SoundBuffer.Load(stream);
                 case "Engine.Graphics.Texture2D": return Texture2D.Load(stream);
                 case "System.String":return new StreamReader(stream).ReadToEnd();

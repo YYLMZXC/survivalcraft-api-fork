@@ -129,20 +129,22 @@ namespace Game
                 VersionsManager.Initialize();
                 WorldsManager.Initialize();
             });
-            AddLoadAction(delegate { //初始化合成谱
+            AddLoadAction(delegate {
                 Info("Loading ModSettings");
-                using (System.IO.Stream stream = Storage.OpenFile("app:Settings.xml",OpenFileMode.Read))
-                {
-                    try
+                if (Storage.FileExists(ModsManager.SettingPath)) {
+                    using (System.IO.Stream stream = Storage.OpenFile(ModsManager.SettingPath, OpenFileMode.Read))
                     {
-                        XElement element = XElement.Load(stream);
-                        ModsManager.ModListAllDo((modEntity) => {
-                            modEntity.LoadSettings(element);
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        Warning(e.Message);
+                        try
+                        {
+                            XElement element = XElement.Load(stream);
+                            ModsManager.ModListAllDo((modEntity) => {
+                                modEntity.LoadSettings(element);
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Warning(e.Message);
+                        }
                     }
                 }
             });
@@ -314,7 +316,7 @@ namespace Game
                 }
                 catch (Exception e)
                 {
-                    ModsManager.AddException(e, true);
+                    ModsManager.AddException(e, false);
                 }
             }
         }
