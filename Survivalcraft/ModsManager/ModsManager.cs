@@ -1,4 +1,4 @@
-﻿// Game.ModsManager
+// Game.ModsManager
 using Engine;
 using Game;
 using System;
@@ -23,7 +23,6 @@ public static class ModsManager
     public const int Apiv = 3;
 #if desktop
     public static string ExternelPath = "app:";
-    public static string ModsPath = ExternelPath + "/Mods";
     public static string userDataPath = ExternelPath + "/UserId.dat";
     public static string CharacterSkinsDirectoryName = ExternelPath + "/CharacterSkins";
     public static string FurniturePacksDirectoryName = ExternelPath + "/FurniturePacks";
@@ -37,7 +36,6 @@ public static class ModsManager
 #if android
     public static string ExternelPath = EngineActivity.BasePath;
     public static string screenCapturePath =ExternelPath + "ScreenCapture";
-    public static string ModsPath = ExternelPath + "/Mods";
     public static string userDataPath = "config:/UserId.dat";
     public static string FurniturePacksDirectoryName => "config:/FurniturePacks";
     public static string CharacterSkinsDirectoryName => "config:/CharacterSkins";
@@ -48,6 +46,7 @@ public static class ModsManager
     public static string settingPath = "config:/Settings.xml";
     public static string logPath = "config:/Logs";
 #endif
+    public static string ModsPath = ExternelPath + "/Mods";
     public static string path;//移动端mods数据文件夹
     internal static ModEntity SurvivalCrafModEntity;
 
@@ -358,6 +357,7 @@ public static class ModsManager
         // 设置当前流的位置为流的开始 
         return bytes;
     }
+#if DEBUG
     /// <summary> 
     /// 将 byte[] 转成 Stream 
     /// </summary> 
@@ -398,6 +398,7 @@ public static class ModsManager
         Stream stream = new MemoryStream(bytes);
         return stream;
     }
+#endif
     public static string GetMd5(string input)
     {
         var md5Hasher = MD5.Create();
@@ -409,7 +410,7 @@ public static class ModsManager
         }
         return sBuilder.ToString();
     }
-    public static bool FindElement(XElement xElement,Func<XElement,bool> func, out XElement elementout)
+    public static bool FindElement(XElement xElement, Func<XElement,bool> func, out XElement elementout)
     {
         foreach (XElement element in xElement.Elements())
         {
@@ -544,6 +545,16 @@ public static class ModsManager
             Modify(DataObjects,element);
         }
     }
+#if DEBUG
+    public enum SourceType{
+        positions,
+        normals,
+        map,
+        vertices,
+        TEXCOORD,
+        VERTEX,
+        NORMAL
+    }
     public static string ObjectsToStr<T>(T[] arr) {
         if (arr == null) return string.Empty;
         var stringBuilder = new StringBuilder();
@@ -580,4 +591,5 @@ public static class ModsManager
             Console.WriteLine(e.Message);
         }
     }
+#endif
 }
