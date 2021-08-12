@@ -1187,6 +1187,9 @@
     <Compile Include="..\Survivalcraft\Component\ComponentWalkAroundBehavior.cs">
       <Link>Component\ComponentWalkAroundBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Component\HookableComponent.cs">
+      <Link>Component\HookableComponent.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Dialog\BuildFurnitureDialog.cs">
       <Link>Dialog\BuildFurnitureDialog.cs</Link>
     </Compile>
@@ -1288,9 +1291,6 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\AimState.cs">
       <Link>Game\AimState.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Game\AlphaTestedShader.cs">
-      <Link>Game\AlphaTestedShader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\AnalogToDigitalConverterElectricElement.cs">
       <Link>Game\AnalogToDigitalConverterElectricElement.cs</Link>
@@ -1574,9 +1574,6 @@
     <Compile Include="..\Survivalcraft\Game\HelpTopic.cs">
       <Link>Game\HelpTopic.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Game\HighlightShader.cs">
-      <Link>Game\HighlightShader.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Game\HitValueParticleSystem.cs">
       <Link>Game\HitValueParticleSystem.cs</Link>
     </Compile>
@@ -1684,9 +1681,6 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\OnFireParticleSystem.cs">
       <Link>Game\OnFireParticleSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Game\OpaqueShader.cs">
-      <Link>Game\OpaqueShader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\OrbitCamera.cs">
       <Link>Game\OrbitCamera.cs</Link>
@@ -1943,6 +1937,9 @@
     <Compile Include="..\Survivalcraft\Game\TextureAtlas.cs">
       <Link>Game\TextureAtlas.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\TextureAtlasManager.cs">
+      <Link>Managers\TextureAtlasManager.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\ThermometerElectricElement.cs">
       <Link>Game\ThermometerElectricElement.cs</Link>
     </Compile>
@@ -1957,9 +1954,6 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\TppCamera.cs">
       <Link>Game\TppCamera.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Game\TransparentShader.cs">
-      <Link>Game\TransparentShader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\TrapDoorElectricElement.cs">
       <Link>Game\TrapDoorElectricElement.cs</Link>
@@ -2171,9 +2165,6 @@
     <Compile Include="..\Survivalcraft\Managers\StringsManager.cs">
       <Link>Managers\StringsManager.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Managers\TextureAtlasManager.cs">
-      <Link>Managers\TextureAtlasManager.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Managers\UserManager.cs">
       <Link>Managers\UserManager.cs</Link>
     </Compile>
@@ -2204,6 +2195,9 @@
     <Compile Include="..\Survivalcraft\ModsManager\FastDebugModEntity.cs">
       <Link>ModsManager\FastDebugModEntity.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\JsonModelReader.cs">
+      <Link>ModsManager\JsonModelReader.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\ModsManager\LanguageControl.cs">
       <Link>Language\LanguageControl.cs</Link>
     </Compile>
@@ -2218,6 +2212,12 @@
     </Compile>
     <Compile Include="..\Survivalcraft\ModsManager\ModsManager.cs">
       <Link>ModsManager\ModsManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\MtllibStruct.cs">
+      <Link>ModsManager\MtllibStruct.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\ModsManager\ObjModelReader.cs">
+      <Link>ModsManager\ObjModelReader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\ModsManager\SurvivalCraftModEntity.cs">
       <Link>ModsManager\SurvivalCraftModEntity.cs</Link>
@@ -2341,6 +2341,9 @@
     </Compile>
     <Compile Include="..\Survivalcraft\SimpleJson\SimpleJson.cs">
       <Link>SimpleJson\SimpleJson.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Subsystem\HookableSubsystem.cs">
+      <Link>Subsystem\HookableSubsystem.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemAdjustableDelayGateBlockBehavior.cs">
       <Link>Subsystem\SubsystemAdjustableDelayGateBlockBehavior.cs</Link>

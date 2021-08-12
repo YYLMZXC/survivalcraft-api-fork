@@ -124,7 +124,7 @@ namespace Game
             m_subsystemAnimatedTextures = Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
-            m_shader = new Shader(ModsManager.GetInPakOrStorageFile<VertexShaderCode>("Shaders/Highlight", ".vsh"), ModsManager.GetInPakOrStorageFile<PixelShaderCode>("Shaders/Highlight", ".psh"), new ShaderMacro[] { new ShaderMacro("ShadowShader") });
+            m_shader = new Shader(ModsManager.GetInPakOrStorageFile<string>("Shaders/Highlight", ".vsh"), ModsManager.GetInPakOrStorageFile<string>("Shaders/Highlight", ".psh"), new ShaderMacro[] { new ShaderMacro("ShadowShader") });
 
         }
 

@@ -61,99 +61,6 @@
     <Compile Include="..\Engine\Engine.Audio\SoundState.cs">
       <Link>Engine.Audio\SoundState.cs</Link>
     </Compile>
-    <Compile Include="..\Engine\Engine.Content\BitmapFontContentReader.cs">
-      <Link>Engine.Content\BitmapFontContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\BitmapFontContentWriter.cs">
-      <Link>Engine.Content\BitmapFontContentWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ColorContentReader.cs">
-      <Link>Engine.Content\ColorContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ColorContentWriter.cs">
-      <Link>Engine.Content\ColorContentWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ContentCache.cs">
-      <Link>Engine.Content\ContentCache.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ContentInfo.cs">
-      <Link>Engine.Content\ContentInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ContentReaderAttribute.cs">
-      <Link>Engine.Content\ContentReaderAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ContentStream.cs">
-      <Link>Engine.Content\ContentStream.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ContentWriterAttribute.cs">
-      <Link>Engine.Content\ContentWriterAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\IContentReader.cs">
-      <Link>Engine.Content\IContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\IContentWriter.cs">
-      <Link>Engine.Content\IContentWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ImageContentReader.cs">
-      <Link>Engine.Content\ImageContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ImageContentWriter.cs">
-      <Link>Engine.Content\ImageContentWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ModelContentReader.cs">
-      <Link>Engine.Content\ModelContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ModelContentWriter.cs">
-      <Link>Engine.Content\ModelContentWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ModelDataContentReader.cs">
-      <Link>Engine.Content\ModelDataContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ModelDataContentWriter.cs">
-      <Link>Engine.Content\ModelDataContentWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\OptionalAttribute.cs">
-      <Link>Engine.Content\OptionalAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\PadStream.cs">
-      <Link>Engine.Content\PadStream.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ShaderContentReader.cs">
-      <Link>Engine.Content\ShaderContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\ShaderContentWriter.cs">
-      <Link>Engine.Content\ShaderContentWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\SoundBufferContentReader.cs">
-      <Link>Engine.Content\SoundBufferContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\SoundBufferContentWriter.cs">
-      <Link>Engine.Content\SoundBufferContentWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\StreamingSourceContentReader.cs">
-      <Link>Engine.Content\StreamingSourceContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\StreamingSourceContentWriter.cs">
-      <Link>Engine.Content\StreamingSourceContentWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\StringContentReader.cs">
-      <Link>Engine.Content\StringContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\StringContentWriter.cs">
-      <Link>Engine.Content\StringContentWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\TextureContentReader.cs">
-      <Link>Engine.Content\TextureContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\TextureContentWriter.cs">
-      <Link>Engine.Content\TextureContentWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\XElementContentReader.cs">
-      <Link>Engine.Content\XElementContentReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Engine\Engine.Content\XElementContentWriter.cs">
-      <Link>Engine.Content\XElementContentWriter.cs</Link>
-    </Compile>
     <Compile Include="..\Engine\Engine.Graphics\BaseBatch.cs">
       <Link>Engine.Graphics\BaseBatch.cs</Link>
     </Compile>
@@ -193,6 +100,9 @@
     <Compile Include="..\Engine\Engine.Graphics\DepthStencilState.cs">
       <Link>Engine.Graphics\DepthStencilState.cs</Link>
     </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ExtensionMethods.cs">
+      <Link>Engine.Graphics\ExtensionMethods.cs</Link>
+    </Compile>
     <Compile Include="..\Engine\Engine.Graphics\FlatBatch2D.cs">
       <Link>Engine.Graphics\FlatBatch2D.cs</Link>
     </Compile>
@@ -219,6 +129,9 @@
     </Compile>
     <Compile Include="..\Engine\Engine.Graphics\LockOnFirstUse.cs">
       <Link>Engine.Graphics\LockOnFirstUse.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Model.cs">
+      <Link>Engine.Graphics\Model.cs</Link>
     </Compile>
     <Compile Include="..\Engine\Engine.Graphics\ModelBone.cs">
       <Link>Engine.Graphics\ModelBone.cs</Link>
@@ -444,6 +357,9 @@
     </Compile>
     <Compile Include="..\Engine\Engine.Serialization\ColorSerializer.cs">
       <Link>Engine.Serialization\ColorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\ContentSerializer.cs">
+      <Link>Engine.Serialization\ContentSerializer.cs</Link>
     </Compile>
     <Compile Include="..\Engine\Engine.Serialization\DateTimeHumanReadableConverter.cs">
       <Link>Engine.Serialization\DateTimeHumanReadableConverter.cs</Link>
@@ -1129,9 +1045,7 @@
     <Compile Include="Engine.Audio\Sound.cs" />
     <Compile Include="Engine.Audio\StreamingSound.cs" />
     <Compile Include="Engine.Graphics\Display.cs" />
-    <Compile Include="Engine.Graphics\ExtensionMethods.cs" />
     <Compile Include="Engine.Graphics\GLWrapper.cs" />
-    <Compile Include="Engine.Graphics\Model.cs" />
     <Compile Include="Engine.Graphics\RenderTarget2D.cs" />
     <Compile Include="Engine.Graphics\Shader.cs" />
     <Compile Include="Engine.Graphics\Texture2D.cs" />

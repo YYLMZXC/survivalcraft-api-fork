@@ -105,7 +105,7 @@ namespace Game
                                     {
                                         if (modEntity.GetAssetsFile(name + ".vsh", out Stream stream2))
                                         {
-                                            Shader shader = new Shader(new VertexShaderCode() { Code = new StreamReader(stream).ReadToEnd() }, new PixelShaderCode() { Code = new StreamReader(stream2).ReadToEnd() }, new ShaderMacro[] { new ShaderMacro(name) });
+                                            Shader shader = new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), new ShaderMacro[] { new ShaderMacro(name) });
                                             stream2.Close();
                                             return shader;
                                         }
@@ -163,7 +163,7 @@ namespace Game
                                 {
                                     if (contentInfo1.Get(name + ".vsh", out Stream stream2))
                                     {
-                                        Shader shader = new Shader(new VertexShaderCode() { Code = new StreamReader(stream).ReadToEnd() }, new PixelShaderCode() { Code = new StreamReader(stream2).ReadToEnd() }, new ShaderMacro[] { new ShaderMacro(name) });
+                                        Shader shader = new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), new ShaderMacro[] { new ShaderMacro(name) });
                                         stream2.Close();
                                         return shader;
                                     }
@@ -181,8 +181,6 @@ namespace Game
                 case "Engine.Graphics.Model": if (string.IsNullOrEmpty(prefix)) fixname = name + ".dae"; else fixname = name + prefix; break;
                 case "Engine.Media.OggStreamingSource": if (string.IsNullOrEmpty(prefix)) fixname = name + ".ogg"; else fixname = name + prefix; break;
                 case "Engine.Media.WavStreamingSource": if (string.IsNullOrEmpty(prefix)) fixname = name + ".wav"; else fixname = name + prefix; break;
-                case "Engine.Graphics.VertexShaderCode": if (string.IsNullOrEmpty(prefix)) fixname = name + ".vsh"; else fixname = name + prefix; break;
-                case "Engine.Graphics.PixelShaderCode": if (string.IsNullOrEmpty(prefix)) fixname = name + ".psh"; else fixname = name + prefix; break;
                 case "Game.ObjModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".obj"; else fixname = name + prefix; break;
                 case "Game.JsonModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".json"; else fixname = name + prefix; break;
                 case "SimpleJson.JsonObject": if (string.IsNullOrEmpty(prefix)) fixname = name + ".json"; else fixname = name + prefix; break;
@@ -209,8 +207,6 @@ namespace Game
             switch (type.FullName)
             {
                 case "SimpleJson.JsonObject": return SimpleJson.SimpleJson.DeserializeObject(new StreamReader(stream).ReadToEnd());
-                case "Engine.Graphics.VertexShaderCode": return new VertexShaderCode() { Code=new StreamReader(stream).ReadToEnd()};
-                case "Engine.Graphics.PixelShaderCode": return new PixelShaderCode() { Code = new StreamReader(stream).ReadToEnd() };
                 case "Engine.Media.OggStreamingSource": return Ogg.Stream(stream);
                 case "Engine.Media.WavStreamingSource": return Wav.Stream(stream);
                 case "Engine.Audio.SoundBuffer":return Engine.Audio.SoundBuffer.Load(stream);

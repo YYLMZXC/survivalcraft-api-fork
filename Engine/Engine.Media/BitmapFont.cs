@@ -89,16 +89,15 @@ namespace Engine.Media
 				if (m_debugFont == null)
 				{
 #if android
-					using (Stream stream = Storage.OpenFile("app:DebugFont.dat", OpenFileMode.Read)) {
-						m_debugFont = (BitmapFont)Serialization.ContentSerializer.StreamConvertType(typeof(BitmapFont), string.Empty, stream);
+					using (Stream stream =EngineActivity.m_activity.Assets.Open("Debugfont.png"))
+					{
+						using (Stream stream2 = EngineActivity.m_activity.Assets.Open("Debugfont.lst"))
+						{
+							m_debugFont = Initialize(stream, stream2);
+						}
+
 					}
 #else
-					/*
-					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.dat")) {
-						Engine.Content.BitmapFontContentReader.ReadBitmapFont(stream);
-					
-					}
-					*/
 					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png"))
 					{
 						using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst"))

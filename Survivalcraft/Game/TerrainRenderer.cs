@@ -72,9 +72,9 @@ namespace Game
             m_subsystemTerrain = subsystemTerrain;
             m_subsystemSky = subsystemTerrain.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_subsystemAnimatedTextures = subsystemTerrain.SubsystemAnimatedTextures;
-            OpaqueShader = new Shader(ModsManager.GetInPakOrStorageFile<VertexShaderCode>("Shaders/Opaque", ".vsh"), ModsManager.GetInPakOrStorageFile<PixelShaderCode>("Shaders/Opaque", ".psh"), new ShaderMacro[] { new ShaderMacro("Opaque") });
-            AlphatestedShader = new Shader(ModsManager.GetInPakOrStorageFile<VertexShaderCode>("Shaders/AlphaTested", ".vsh"), ModsManager.GetInPakOrStorageFile<PixelShaderCode>("Shaders/AlphaTested", ".psh"), new ShaderMacro[] { new ShaderMacro("ALPHATESTED") });
-            TransparentShader = new Shader(ModsManager.GetInPakOrStorageFile<VertexShaderCode>("Shaders/Transparent", ".vsh"), ModsManager.GetInPakOrStorageFile<PixelShaderCode>("Shaders/Transparent", ".psh"), new ShaderMacro[] { new ShaderMacro("Transparent") });
+            OpaqueShader = new Shader(ModsManager.GetInPakOrStorageFile<string>("Shaders/Opaque", ".vsh"), ModsManager.GetInPakOrStorageFile<string>("Shaders/Opaque", ".psh"), new ShaderMacro[] { new ShaderMacro("Opaque") });
+            AlphatestedShader = new Shader(ModsManager.GetInPakOrStorageFile<string>("Shaders/AlphaTested", ".vsh"), ModsManager.GetInPakOrStorageFile<string>("Shaders/AlphaTested", ".psh"), new ShaderMacro[] { new ShaderMacro("ALPHATESTED") });
+            TransparentShader = new Shader(ModsManager.GetInPakOrStorageFile<string>("Shaders/Transparent", ".vsh"), ModsManager.GetInPakOrStorageFile<string>("Shaders/Transparent", ".psh"), new ShaderMacro[] { new ShaderMacro("Transparent") });
             Display.DeviceReset += Display_DeviceReset;
         }
 

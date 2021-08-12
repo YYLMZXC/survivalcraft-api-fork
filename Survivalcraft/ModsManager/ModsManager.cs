@@ -165,7 +165,7 @@ public static class ModsManager
             }
             return obj as T;
         }
-        else return ContentManager.Get<T>(filepath);
+        else return ContentManager.Get<T>(filepath, prefix);
 
     }
     public static T DeserializeJson<T>(string text) where T : class

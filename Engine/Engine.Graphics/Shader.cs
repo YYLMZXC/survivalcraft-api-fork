@@ -6,16 +6,6 @@ using System.Xml.Linq;
 
 namespace Engine.Graphics
 {
-	public class VertexShaderCode
-	{
-		public string Code;
-	}
-
-	public class PixelShaderCode
-	{
-		public string Code;
-	}
-
 	public class Shader : GraphicsResource
 	{
 		internal struct ShaderAttributeData
@@ -92,11 +82,6 @@ namespace Engine.Graphics
 
 			Construct(vertexShaderCode, pixelShaderCode, shaderMacros);
 		}
-		public Shader(VertexShaderCode vertexShaderCode, PixelShaderCode pixelShaderCode, params ShaderMacro[] shaderMacros)
-		{
-			Construct(vertexShaderCode.Code,pixelShaderCode.Code,shaderMacros);
-		}
-
 		public override void Dispose()
 		{
 			base.Dispose();

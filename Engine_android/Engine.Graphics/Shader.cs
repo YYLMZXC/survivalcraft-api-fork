@@ -6,8 +6,9 @@ using System.Xml.Linq;
 
 namespace Engine.Graphics
 {
-    public class Shader : GraphicsResource
+	public class Shader : GraphicsResource
 	{
+		
 		public struct ShaderAttributeData
 		{
 			public string Semantic;

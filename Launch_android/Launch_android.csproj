@@ -84,21 +84,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="..\Survivalcraft\Content.pak">
-      <Link>Assets\Content.pak</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Survivalcraft\lang\en_US.json">
-      <Link>Assets\lang\en_US.json</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Survivalcraft\lang\ot_OT.json">
-      <Link>Assets\lang\ot_OT.json</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Survivalcraft\lang\zh_CN.json">
-      <Link>Assets\lang\zh_CN.json</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="Assets\DebugFont.dat" />
-    <AndroidAsset Include="..\Survivalcraft\Core.pak">
-      <Link>Assets\Core.pak</Link>
+    <AndroidAsset Include="..\Survivalcraft\Content.zip">
+      <Link>Assets\Content.zip</Link>
     </AndroidAsset>
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
@@ -155,10 +142,20 @@
   <ItemGroup>
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Engine\Resources\Debugfont.lst">
+      <Link>Assets\Debugfont.lst</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Engine\Resources\Debugfont.png">
+      <Link>Assets\Debugfont.png</Link>
+    </AndroidAsset>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

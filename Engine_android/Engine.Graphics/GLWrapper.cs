@@ -1,9 +1,4 @@
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“OpenTK”(是否缺少 using 指令或程序集引用?)
-
 using OpenTK.Graphics.ES20;
-
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“OpenTK”(是否缺少 using 指令或程序集引用?)
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -56,37 +51,21 @@ namespace Engine.Graphics
 
 		public static All m_blendEquationColor;
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		public static All m_blendEquationAlpha;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		public static All m_blendFuncSource;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		public static All m_blendFuncSourceColor;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		public static All m_blendFuncSourceAlpha;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		public static All m_blendFuncDestination;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		public static All m_blendFuncDestinationColor;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		public static All m_blendFuncDestinationAlpha;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		public static Dictionary<All, bool> m_enableDisableStates;
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static bool?[] m_vertexAttribArray;
 
@@ -177,10 +156,8 @@ namespace Engine.Graphics
 			m_scissorRectangle = null;
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static bool Enable(All state)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (!m_enableDisableStates.TryGetValue(state, out bool value) || !value)
 			{
@@ -191,10 +168,8 @@ namespace Engine.Graphics
 			return false;
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static bool Disable(All state)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (!m_enableDisableStates.TryGetValue(state, out bool value) | value)
 			{
@@ -205,10 +180,8 @@ namespace Engine.Graphics
 			return false;
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static bool IsEnabled(All state)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (!m_enableDisableStates.TryGetValue(state, out bool value))
 			{
@@ -247,10 +220,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void CullFace(All cullFace)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (cullFace != m_cullFace)
 			{
@@ -259,10 +230,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void FrontFace(All frontFace)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (frontFace != m_frontFace)
 			{
@@ -271,10 +240,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void DepthFunc(All depthFunction)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (depthFunction != m_depthFunction)
 			{
@@ -323,10 +290,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void BlendEquation(All blendEquation)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (blendEquation != m_blendEquation)
 			{
@@ -337,12 +302,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void BlendEquationSeparate(All blendEquationColor, All blendEquationAlpha)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (blendEquationColor != m_blendEquationColor || blendEquationAlpha != m_blendEquationAlpha)
 			{
@@ -353,12 +314,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void BlendFunc(All blendFuncSource, All blendFuncDestination)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (blendFuncSource != m_blendFuncSource || blendFuncDestination != m_blendFuncDestination)
 			{
@@ -372,16 +329,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void BlendFuncSeparate(All blendFuncSourceColor, All blendFuncDestinationColor, All blendFuncSourceAlpha, All blendFuncDestinationAlpha)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (blendFuncSourceColor != m_blendFuncSourceColor || blendFuncDestinationColor != m_blendFuncDestinationColor || blendFuncSourceAlpha != m_blendFuncSourceAlpha || blendFuncDestinationAlpha != m_blendFuncDestinationAlpha)
 			{
@@ -409,10 +358,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void BindTexture(All target, int texture, bool forceBind)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (target == All.Texture2D)
 			{
@@ -432,10 +379,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void ActiveTexture(All textureUnit)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (textureUnit != m_activeTextureUnit)
 			{
@@ -444,10 +389,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void BindBuffer(All target, int buffer)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			switch (target)
 			{
@@ -524,10 +467,8 @@ namespace Engine.Graphics
 			GL.DeleteFramebuffers(1, ref framebuffer);
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void DeleteBuffer(All target, int buffer)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (target == All.ArrayBuffer)
 			{
@@ -863,10 +804,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static void TranslateVertexElementFormat(VertexElementFormat vertexElementFormat, out All type, out bool normalize)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			switch (vertexElementFormat)
 			{
@@ -915,10 +854,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static All TranslateIndexFormat(IndexFormat indexFormat)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			if (indexFormat == IndexFormat.SixteenBits)
 			{
@@ -927,10 +864,8 @@ namespace Engine.Graphics
 			throw new InvalidOperationException("Unsupported index format.");
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“ActiveUniformType”(是否缺少 using 指令或程序集引用?)
 
 		public static ShaderParameterType TranslateActiveUniformType(ActiveUniformType type)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“ActiveUniformType”(是否缺少 using 指令或程序集引用?)
 		{
 			switch (type)
 			{
@@ -951,10 +886,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static All TranslatePrimitiveType(PrimitiveType primitiveType)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			switch (primitiveType)
 			{
@@ -971,10 +904,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static All TranslateTextureFilterModeMin(TextureFilterMode filterMode, bool isMipmapped)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			switch (filterMode)
 			{
@@ -1037,10 +968,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static All TranslateTextureFilterModeMag(TextureFilterMode filterMode)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			switch (filterMode)
 			{
@@ -1067,10 +996,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static All TranslateTextureAddressMode(TextureAddressMode addressMode)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			switch (addressMode)
 			{
@@ -1083,10 +1010,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static All TranslateCompareFunction(CompareFunction compareFunction)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			switch (compareFunction)
 			{
@@ -1111,10 +1036,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static All TranslateBlendFunction(BlendFunction blendFunction)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			switch (blendFunction)
 			{
@@ -1129,10 +1052,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static All TranslateBlend(Blend blend)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			switch (blend)
 			{
@@ -1167,10 +1088,8 @@ namespace Engine.Graphics
 			}
 		}
 
-#pragma warning disable CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 
 		public static All TranslateDepthFormat(DepthFormat depthFormat)
-#pragma warning restore CS0246 // 未能找到类型或命名空间名“All”(是否缺少 using 指令或程序集引用?)
 		{
 			switch (depthFormat)
 			{
