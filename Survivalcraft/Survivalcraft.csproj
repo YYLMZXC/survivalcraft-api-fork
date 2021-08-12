@@ -418,7 +418,6 @@
     <Compile Include="ModsManager\ObjModelReader.cs" />
     <Compile Include="ModsManager\SurvivalCraftModEntity.cs" />
     <Compile Include="ModsManager\SurvivalCraftModLoader.cs" />
-    <Compile Include="ModsManager\TestBlock.cs" />
     <Compile Include="Screen\BestiaryDescriptionScreen.cs" />
     <Compile Include="Screen\BestiaryScreen.cs" />
     <Compile Include="Screen\CommunityContentScreen.cs" />
