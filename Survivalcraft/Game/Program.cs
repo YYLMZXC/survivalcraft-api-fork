@@ -46,10 +46,10 @@ namespace Game
             };
 
 #if DEBUG
-            Window.Run(240, 120, WindowMode.Resizable, "生存战争2.2插件版V1.34beta");
+            Window.Run(240, 120, WindowMode.Resizable, "生存战争2.2插件版V" + ModsManager.APIVersion + "beta");
 #endif
 #if TRACE
-			Window.Run(1024, 768, WindowMode.Fullscreen, "生存战争2.2插件版V1.34beta");
+			Window.Run(1024, 768, WindowMode.Fullscreen,  "生存战争2.2插件版V" + ModsManager.APIVersion);
 #endif
         }
 
