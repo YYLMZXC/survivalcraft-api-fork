@@ -131,7 +131,7 @@ namespace Game
             m_characterSkinsCache.GetTexture(m_playerData.CharacterSkinName);
             m_playerModel.PlayerClass = m_playerData.PlayerClass;
             m_playerModel.CharacterSkinName = m_playerData.CharacterSkinName;
-            m_playerClassButton.Text = LanguageControl(GetType().Name, m_playerData.PlayerClass.ToString());
+            m_playerClassButton.Text = LanguageControl.Get(GetType().Name, m_playerData.PlayerClass.ToString());
             if (!m_nameTextBox.HasFocus)
             {
                 m_nameTextBox.Text = m_playerData.Name;

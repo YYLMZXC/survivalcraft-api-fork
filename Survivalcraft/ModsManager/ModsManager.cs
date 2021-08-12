@@ -17,7 +17,7 @@ using System.IO.Compression;
 
 public static class ModsManager
 {
-    public const string APIVersion = "1.4";
+    public const string APIVersion = "1.40";
     public const string SCVersion = "2.2.10.4";
     //1为api1.33 2为api1.4
     public const int Apiv = 3;
@@ -267,6 +267,7 @@ public static class ModsManager
         ModList.Add(new FastDebugModEntity());
         GetScmods(ModsPath);
         DisabledMods.Clear();
+        float api = float.Parse(APIVersion);
         List<ModEntity> ToRemove = new List<ModEntity>();
         List<ModInfo> ToDisable = new List<ModInfo>();
         ToDisable.AddRange(DisabledMods);
@@ -281,11 +282,12 @@ public static class ModsManager
                 continue;
             }
             if (modEntity1.IsChecked) continue;
-            if (new Version(modEntity1.modInfo.ApiVersion) < new Version(APIVersion))
+            float.TryParse(modInfo.ApiVersion,out float curr);
+            if (curr < api)
             {//api版本检测
                 ToDisable.Add(modInfo);
                 ToRemove.Add(modEntity1);
-                AddException(new Exception($"[{modEntity1.modInfo.Name}]Target version {modInfo.Version} is less than api version {APIVersion}."), true);
+                AddException(new Exception($"[{modEntity1.modInfo.PackageName}]Target version {modInfo.Version} is less than api version {APIVersion}."), true);
             }
             List<ModEntity> modEntities = ModList.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
             if (modEntities.Count > 1) AddException(new Exception($"Multiple installed [{modInfo.PackageName}]"));
@@ -329,8 +331,8 @@ public static class ModsManager
             catch (Exception e)
             {
                 AddException(e);
+                stream.Close();
             }
-            stream.Close();
         }
         foreach (string dir in Storage.ListDirectoryNames(path))
         {

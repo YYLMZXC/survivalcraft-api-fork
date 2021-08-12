@@ -24,8 +24,8 @@ namespace Game
         static LoadingScreen() {
             LogList.ItemWidgetFactory = (obj) => {
                 LogItem logItem = obj as LogItem;
-                CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(Display.Viewport.Width, 20), Margin = new Vector2(0, 2),HorizontalAlignment=WidgetAlignment.Near };
-                FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 2f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
+                CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(Display.Viewport.Width, 40), Margin = new Vector2(0, 2),HorizontalAlignment=WidgetAlignment.Near };
+                FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 1.2f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
                 canvasWidget.Children.Add(fontTextWidget);
                 return canvasWidget;
             };
@@ -307,6 +307,10 @@ namespace Game
         }
         public override void Update()
         {
+            if (Input.Back || Input.Cancel) DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, "Quit?", "Ok", "No", (vt) => {
+                if (vt == MessageDialogButton.Button1) System.Environment.Exit(0);
+                else DialogsManager.HideAllDialogs();
+            }));
             if (ModsManager.GetAllowContinue() == false) return;
             if (m_loadActions.Count > 0) {
                 try
