@@ -19,9 +19,9 @@ namespace Game{
         }
         public override bool Equals(object obj)
         {
-            if (obj is ModInfo)
+            if (obj is ModInfo && obj.GetHashCode() == GetHashCode())
             {
-                if (obj.GetHashCode() == GetHashCode()) return true;
+                return true;
             }
             else return false;
         }

@@ -276,19 +276,19 @@ public static class ModsManager
             ModInfo disabledmod = ToDisable.Find(l => l == modInfo);
             if (disabledmod != null)
             {
-                ToDisable.Add(modEntity1.modInfo);
+                ToDisable.Add(modInfo);
                 ToRemove.Add(modEntity1);
                 continue;
             }
             if (modEntity1.IsChecked) continue;
             if (new Version(modEntity1.modInfo.ApiVersion) < new Version(APIVersion))
             {//api版本检测
-                ToDisable.Add(modEntity1);
+                ToDisable.Add(modInfo);
                 ToRemove.Add(modEntity1);
-                AddException(new Exception($"[{modEntity1.modInfo.Name}]Target version {version} is less than api version {APIVersion}."), true);
+                AddException(new Exception($"[{modEntity1.modInfo.Name}]Target version {modInfo.Version} is less than api version {APIVersion}."), true);
             }
             List<ModEntity> modEntities = ModList.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
-            if (modEntities.Count > 1) AddException(new Exception($"Multiple installed [{px.modInfo.PackageName}]"));
+            if (modEntities.Count > 1) AddException(new Exception($"Multiple installed [{modInfo.PackageName}]"));
             modEntity1.IsChecked = true;
         }
         DisabledMods.Clear();
@@ -328,9 +328,9 @@ public static class ModsManager
             }
             catch (Exception e)
             {
-                stream.Close();
                 AddException(e);
             }
+            stream.Close();
         }
         foreach (string dir in Storage.ListDirectoryNames(path))
         {
