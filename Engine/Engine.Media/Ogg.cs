@@ -6,7 +6,7 @@ namespace Engine.Media
 {
 	public static class Ogg
 	{
-		private class OggStreamingSource : StreamingSource
+		public class OggStreamingSource : StreamingSource
 		{
 			private VorbisReader m_reader;
 

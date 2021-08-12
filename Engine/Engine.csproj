@@ -134,12 +134,14 @@
     <Compile Include="Engine.Media\ModelMeshData.cs" />
     <Compile Include="Engine.Media\ModelMeshPartData.cs" />
     <Compile Include="Engine.Media\Ogg.cs" />
+    <Compile Include="Engine.Media\OggStreamingSource.cs" />
     <Compile Include="Engine.Media\PeekStream.cs" />
     <Compile Include="Engine.Media\Png.cs" />
     <Compile Include="Engine.Media\SoundData.cs" />
     <Compile Include="Engine.Media\SoundFileFormat.cs" />
     <Compile Include="Engine.Media\StreamingSource.cs" />
     <Compile Include="Engine.Media\Wav.cs" />
+    <Compile Include="Engine.Media\WavStreamSource.cs" />
     <Compile Include="Engine.Serialization\Archive.cs" />
     <Compile Include="Engine.Serialization\ArraySerializer.cs" />
     <Compile Include="Engine.Serialization\BinaryInputArchive.cs" />

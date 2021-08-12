@@ -149,7 +149,8 @@ namespace Game
                 case "Engine.Media.Image": fixname = name + ".png"; break;
                 case "System.Xml.Linq.XElement": fixname = name + ".xml"; break;
                 case "Engine.Graphics.Model": fixname = name + ".dae"; break;
-                case "Engine.Media.StreamingSource":fixname = name + ".ogg";break;
+                case "Engine.Media.OggStreamingSource":fixname = name + ".ogg";break;
+                case "Engine.Media.WavStreamingSource": fixname = name + ".wav"; break;
                 case "Engine.Graphics.VertexShaderCode": fixname = name + ".vsh"; break;
                 case "Engine.Graphics.PixelShaderCode": fixname = name + ".psh"; break;
                 case "Game.ObjModel": fixname = name + ".obj"; break;
@@ -180,7 +181,8 @@ namespace Game
                 case "SimpleJson.JsonObject": return SimpleJson.SimpleJson.DeserializeObject(new StreamReader(stream).ReadToEnd());
                 case "Engine.Graphics.VertexShaderCode": return new VertexShaderCode() { Code=new StreamReader(stream).ReadToEnd()};
                 case "Engine.Graphics.PixelShaderCode": return new PixelShaderCode() { Code = new StreamReader(stream).ReadToEnd() };
-                case "Engine.Media.StreamingSource":return Ogg.Stream(stream);
+                case "Engine.Media.OggStreamingSource": return Ogg.Stream(stream);
+                case "Engine.Media.WavStreamingSource": return Wav.Stream(stream);
                 case "Engine.Audio.SoundBuffer":return SoundData.Load(stream);
                 case "Engine.Graphics.Texture2D": return Texture2D.Load(stream);
                 case "System.String":return new StreamReader(stream).ReadToEnd();

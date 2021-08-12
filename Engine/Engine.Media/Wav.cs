@@ -7,7 +7,7 @@ namespace Engine.Media
 {
 	public static class Wav
 	{
-		private class WavStreamingSource : StreamingSource
+		public class WavStreamingSource : StreamingSource
 		{
 			private Stream m_stream;
 
