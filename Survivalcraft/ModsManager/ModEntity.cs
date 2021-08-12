@@ -179,7 +179,7 @@ namespace Game {
         /// </summary>
         public virtual void LoadDll()
         {
-            LoadingScreen.Info("Loading Assembly:" + modInfo?.Name);
+            LoadingScreen.Info("Loading Assembly:" + modInfo?.PackageName);
             foreach (Stream stream in GetFiles(".dll"))
             {
                 LoadDllLogic(stream);
