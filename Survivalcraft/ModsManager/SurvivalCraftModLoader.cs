@@ -39,16 +39,8 @@ namespace Game
             }
             else
             {
-                if (componentGui.m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && gameWidget.ActiveCamera is FixedCamera)
-                {
-                    gameWidget.ActiveCamera = gameWidget.FindCamera<DebugCamera>();
-                    componentGui.DisplaySmallMessage(LanguageControl.Get(ComponentGui.fName, 19), Color.White, blinking: false, playNotificationSound: false);
-                }
-                else
-                {
-                    gameWidget.ActiveCamera = gameWidget.FindCamera<FppCamera>();
-                    componentGui.DisplaySmallMessage(LanguageControl.Get(ComponentGui.fName, 12), Color.White, blinking: false, playNotificationSound: false);
-                }
+                gameWidget.ActiveCamera = gameWidget.FindCamera<FppCamera>();
+                componentGui.DisplaySmallMessage(LanguageControl.Get(ComponentGui.fName, 12), Color.White, blinking: false, playNotificationSound: false);
             }
         }
         public override void OnPlayerDead(PlayerData playerData)

@@ -19,32 +19,32 @@ public static class ModsManager
 {
     public const string APIVersion = "1.4";
     public const string SCVersion = "2.2.10.4";
-    //1为api1.33 2为api1.34
+    //1为api1.33 2为api1.4
     public const int Apiv = 3;
 #if desktop
     public static string ExternelPath = "app:";
-    public static string userDataPath = ExternelPath + "/UserId.dat";
+    public static string UserDataPath = ExternelPath + "/UserId.dat";
     public static string CharacterSkinsDirectoryName = ExternelPath + "/CharacterSkins";
     public static string FurniturePacksDirectoryName = ExternelPath + "/FurniturePacks";
     public static string BlockTexturesDirectoryName = ExternelPath + "/TexturePacks";
     public static string WorldsDirectoryName = ExternelPath + "/Worlds";
-    public static string communityContentCachePath = ExternelPath + "CommunityContentCache.xml";
+    public static string CommunityContentCachePath = ExternelPath + "CommunityContentCache.xml";
     public static string ModsSetPath = ExternelPath + "/ModSettings.xml";
-    public static string settingPath = ExternelPath + "/Settings.xml";
-    public static string logPath = ExternelPath + "/Logs";
+    public static string SettingPath = ExternelPath + "/Settings.xml";
+    public static string LogPath = ExternelPath + "/Logs";
 #endif
 #if android
     public static string ExternelPath = EngineActivity.BasePath;
-    public static string screenCapturePath =ExternelPath + "ScreenCapture";
-    public static string userDataPath = "config:/UserId.dat";
+    public static string ScreenCapturePath =ExternelPath + "ScreenCapture";
+    public static string UserDataPath = "config:/UserId.dat";
     public static string FurniturePacksDirectoryName => "config:/FurniturePacks";
     public static string CharacterSkinsDirectoryName => "config:/CharacterSkins";
     public static string BlockTexturesDirectoryName => "config:/TexturePacks";
     public static string WorldsDirectoryName = "config:/Worlds";
-    public static string communityContentCachePath = "config:/CommunityContentCache.xml";
+    public static string CommunityContentCachePath = "config:/CommunityContentCache.xml";
     public static string ModsSetPath = "config:/ModSettings.xml";
-    public static string settingPath = "config:/Settings.xml";
-    public static string logPath = "config:/Logs";
+    public static string SettingPath = "config:/Settings.xml";
+    public static string LogPath = "config:/Logs";
 #endif
     public static string ModsPath = ExternelPath + "/Mods";
     public static string path;//移动端mods数据文件夹

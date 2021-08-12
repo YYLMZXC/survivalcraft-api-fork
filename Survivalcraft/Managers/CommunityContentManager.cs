@@ -353,9 +353,9 @@ namespace Game
         {
             try
             {
-                if (Storage.FileExists(ModsManager.communityContentCachePath))
+                if (Storage.FileExists(ModsManager.CommunityContentCachePath))
                 {
-                    using (Stream stream = Storage.OpenFile(ModsManager.communityContentCachePath, OpenFileMode.Read))
+                    using (Stream stream = Storage.OpenFile(ModsManager.CommunityContentCachePath, OpenFileMode.Read))
                     {
                         XElement xElement = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
                         foreach (XElement item in xElement.Element("Feedback").Elements())
@@ -400,7 +400,7 @@ namespace Game
                     XmlUtils.SetAttributeValue(xElement5, "Address", item.Value);
                     xElement4.Add(xElement5);
                 }
-                using (Stream stream = Storage.OpenFile(ModsManager.communityContentCachePath, OpenFileMode.Create))
+                using (Stream stream = Storage.OpenFile(ModsManager.CommunityContentCachePath, OpenFileMode.Create))
                 {
                     XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);
                 }

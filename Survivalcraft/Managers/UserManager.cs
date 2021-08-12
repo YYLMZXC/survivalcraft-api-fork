@@ -27,7 +27,7 @@ namespace Game
             string text;
             try
             {
-                string path = ModsManager.userDataPath;
+                string path = ModsManager.UserDataPath;
                 if (!Storage.FileExists(path))
                 {
                     text = Guid.NewGuid().ToString();

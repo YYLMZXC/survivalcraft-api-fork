@@ -505,9 +505,9 @@ namespace Game
         {
             try
             {
-                if (Storage.FileExists(ModsManager.settingPath))
+                if (Storage.FileExists(ModsManager.SettingPath))
                 {
-                    using (Stream stream = Storage.OpenFile(ModsManager.settingPath, OpenFileMode.Read))
+                    using (Stream stream = Storage.OpenFile(ModsManager.SettingPath, OpenFileMode.Read))
                     {
                         ModsManager.DisabledMods.Clear();
                         XElement xElement = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
@@ -603,7 +603,7 @@ namespace Game
                 }
                 xElement.Add(xElement1);
                 ModsManager.SaveSettings(xElement);
-                using (Stream stream = Storage.OpenFile(ModsManager.settingPath, OpenFileMode.Create))
+                using (Stream stream = Storage.OpenFile(ModsManager.SettingPath, OpenFileMode.Create))
                 {
                     XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);
                 }
