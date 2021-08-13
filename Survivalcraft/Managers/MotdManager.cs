@@ -148,13 +148,7 @@ namespace Game
             return null;
         }
 
-        public static string GetMotdUrl()
-        {
-            if (SettingsManager.MotdUseBackupUrl)
-            {
-                return string.Format(SettingsManager.MotdBackupUpdateUrl, VersionsManager.SerializationVersion, ModsManager.modSettings.languageType);
-            }
-            return string.Format(SettingsManager.MotdUpdateUrl, VersionsManager.SerializationVersion, ModsManager.modSettings.languageType);
-        }
+        public static string GetMotdUrl() => string.Format(SettingsManager.MotdUseBackupUrl ? SettingsManager.MotdBackupUpdateUrl :
+            SettingsManager.MotdUpdateUrl, VersionsManager.SerializationVersion, ModsManager.modSettings.languageType);
     }
 }

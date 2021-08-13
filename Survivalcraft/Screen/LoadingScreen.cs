@@ -24,8 +24,8 @@ namespace Game
         static LoadingScreen() {
             LogList.ItemWidgetFactory = (obj) => {
                 LogItem logItem = obj as LogItem;
-                CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(Display.Viewport.Width, 20), Margin = new Vector2(0, 2),HorizontalAlignment=WidgetAlignment.Near };
-                FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 2f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
+                CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(Display.Viewport.Width, 40), Margin = new Vector2(0, 2),HorizontalAlignment=WidgetAlignment.Near };
+                FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 1.2f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
                 canvasWidget.Children.Add(fontTextWidget);
                 return canvasWidget;
             };
@@ -75,43 +75,43 @@ namespace Game
 
         public void InitActions()
         {
-            AddLoadAction(delegate {//½«ËùÓÐµÄÓÐÐ§µÄscmod¶ÁÈ¡ÎªModEntity£¬²¢×Ô¶¯Ìí¼ÓSurvivalCraftModEntity
+            AddLoadAction(delegate {//å°†æ‰€æœ‰çš„æœ‰æ•ˆçš„scmodè¯»å–ä¸ºModEntityï¼Œå¹¶è‡ªåŠ¨æ·»åŠ SurvivalCraftModEntity
                 ModsManager.Initialize();            
             });
-            AddLoadAction(delegate {//¼ì²éËùÓÐModÒÀÀµÏî 
+            AddLoadAction(delegate {//æ£€æŸ¥æ‰€æœ‰Modä¾èµ–é¡¹ 
                 ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });            
             });
-            AddLoadAction(delegate { //³õÊ¼»¯ËùÓÐModEntityµÄ×ÊÔ´°ü
+            AddLoadAction(delegate { //åˆå§‹åŒ–æ‰€æœ‰ModEntityçš„èµ„æºåŒ…
                 //ModsManager.ModListAllDo((modEntity) => { modEntity.InitResources(); });
             });
-            AddLoadAction(delegate { //³õÊ¼»¯ËùÓÐModEntityµÄÓïÑÔ°ü
+            AddLoadAction(delegate { //åˆå§‹åŒ–æ‰€æœ‰ModEntityçš„è¯­è¨€åŒ…
                 LanguageControl.Initialize(ModsManager.modSettings.languageType);
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLauguage(); });
             });
-            AddLoadAction(delegate { //¶ÁÈ¡ËùÓÐµÄModEntityµÄdll£¬²¢·ÖÀë³öModLoader£¬±£´æBlocks
+            AddLoadAction(delegate { //è¯»å–æ‰€æœ‰çš„ModEntityçš„dllï¼Œå¹¶åˆ†ç¦»å‡ºModLoaderï¼Œä¿å­˜Blocks
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadDll(); });
             });
-            AddLoadAction(delegate {//³õÊ¼»¯TextureAtlas
+            AddLoadAction(delegate {//åˆå§‹åŒ–TextureAtlas
                 Info("TextureAtlas Initialize");
                 TextureAtlasManager.Initialize();
             });
-            AddLoadAction(delegate { //Ö´ÐÐËùÓÐModEntityµÄModInitialize·½·¨
+            AddLoadAction(delegate { //æ‰§è¡Œæ‰€æœ‰ModEntityçš„ModInitializeæ–¹æ³•
                 ModsManager.ModListAllDo((modEntity) => { modEntity.ModInitialize(); });
             });
 
-            AddLoadAction(delegate { //³õÊ¼»¯Database
+            AddLoadAction(delegate { //åˆå§‹åŒ–Database
                 Info("DatabaseManager Initialize");
                 DatabaseManager.Initialize();
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadXdb(ref DatabaseManager.DatabaseNode); });
                 DatabaseManager.LoadDataBaseFromXml(DatabaseManager.DatabaseNode);
             });
 
-            AddLoadAction(delegate { //³õÊ¼»¯·½¿é¹ÜÀíÆ÷
+            AddLoadAction(delegate { //åˆå§‹åŒ–æ–¹å—ç®¡ç†å™¨
                 Info("BlocksManager Initialize");
                 BlocksManager.Initialize();
             });
 
-            AddLoadAction(delegate { //³õÊ¼»¯ºÏ³ÉÆ×
+            AddLoadAction(delegate { //åˆå§‹åŒ–åˆæˆè°±
                 Info("CraftingRecipesManager Initialize");
                 CraftingRecipesManager.Initialize();
             });
@@ -281,10 +281,10 @@ namespace Game
         {
             m_loadActions.Add(action);
         }
-        public void AddQuequeAction(Action action)
+        /*public void AddQuequeAction(Action action)
         {
-            //QuequeAction.Add(action);
-        }
+            QuequeAction.Add(action);
+        }*/
         public override void Leave()
         {
             LogList.ClearItems();
@@ -307,6 +307,10 @@ namespace Game
         }
         public override void Update()
         {
+            if (Input.Back || Input.Cancel) DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, "Quit?", "Ok", "No", (vt) => {
+                if (vt == MessageDialogButton.Button1) System.Environment.Exit(0);
+                else DialogsManager.HideAllDialogs();
+            }));
             if (ModsManager.GetAllowContinue() == false) return;
             if (m_loadActions.Count > 0) {
                 try

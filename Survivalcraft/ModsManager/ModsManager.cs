@@ -1,89 +1,95 @@
 // Game.ModsManager
 using Engine;
+using Engine.Graphics;
+using Engine.Media;
 using Game;
+using SimpleJson;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
 using XmlUtilities;
-using SimpleJson;
-using Engine.Graphics;
-using Engine.Media;
-using System.IO.Compression;
 
 
 public static class ModsManager
 {
-    public const string APIVersion = "1.4";
+    public const string APIVersion = "1.40";
     public const string SCVersion = "2.2.10.4";
+
     //1为api1.33 2为api1.4
     public const int Apiv = 3;
+
 #if desktop
-    public static string ExternelPath = "app:";
-    public static string UserDataPath = ExternelPath + "/UserId.dat";
-    public static string CharacterSkinsDirectoryName = ExternelPath + "/CharacterSkins";
-    public static string FurniturePacksDirectoryName = ExternelPath + "/FurniturePacks";
-    public static string BlockTexturesDirectoryName = ExternelPath + "/TexturePacks";
-    public static string WorldsDirectoryName = ExternelPath + "/Worlds";
-    public static string CommunityContentCachePath = ExternelPath + "CommunityContentCache.xml";
-    public static string ModsSetPath = ExternelPath + "/ModSettings.xml";
-    public static string SettingPath = ExternelPath + "/Settings.xml";
-    public static string LogPath = ExternelPath + "/Logs";
+    public static string ExternelPath = "app:",
+                         UserDataPath = ExternelPath + "/UserId.dat",
+                         CharacterSkinsDirectoryName = ExternelPath + "/CharacterSkins",
+                         FurniturePacksDirectoryName = ExternelPath + "/FurniturePacks",
+                         BlockTexturesDirectoryName = ExternelPath + "/TexturePacks",
+                         WorldsDirectoryName = ExternelPath + "/Worlds",
+                         CommunityContentCachePath = ExternelPath + "CommunityContentCache.xml",
+                         ModsSetPath = ExternelPath + "/ModSettings.xml",
+                         SettingPath = ExternelPath + "/Settings.xml",
+                         LogPath = ExternelPath + "/Logs";
 #endif
 #if android
-    public static string ExternelPath = EngineActivity.BasePath;
-    public static string ScreenCapturePath =ExternelPath + "ScreenCapture";
-    public static string UserDataPath = "config:/UserId.dat";
-    public static string FurniturePacksDirectoryName => "config:/FurniturePacks";
-    public static string CharacterSkinsDirectoryName => "config:/CharacterSkins";
-    public static string BlockTexturesDirectoryName => "config:/TexturePacks";
-    public static string WorldsDirectoryName = "config:/Worlds";
-    public static string CommunityContentCachePath = "config:/CommunityContentCache.xml";
-    public static string ModsSetPath = "config:/ModSettings.xml";
-    public static string SettingPath = "config:/Settings.xml";
-    public static string LogPath = "config:/Logs";
+    public static string ExternelPath = EngineActivity.BasePath,
+                         ScreenCapturePath =ExternelPath + "ScreenCapture",
+                         UserDataPath = "config:/UserId.dat",
+                         FurniturePacksDirectoryName = "config:/FurniturePacks",
+                         CharacterSkinsDirectoryName = "config:/CharacterSkins",
+                         BlockTexturesDirectoryName = "config:/TexturePacks",
+                         WorldsDirectoryName = "config:/Worlds",
+                         CommunityContentCachePath = "config:/CommunityContentCache.xml",
+                         ModsSetPath = "config:/ModSettings.xml",
+                         SettingPath = "config:/Settings.xml",
+                         LogPath = "config:/Logs";
 #endif
-    public static string ModsPath = ExternelPath + "/Mods";
-    public static string path;//移动端mods数据文件夹
+    public static string ModsPath = ExternelPath + "/Mods",
+                         path;//移动端mods数据文件夹
     internal static ModEntity SurvivalCrafModEntity;
 
     public class ModSettings
     {
         public LanguageControl.LanguageType languageType;
     }
-    public class ModHook {
+
+    public class ModHook
+    {
         public string HookName;
         public Dictionary<ModLoader, bool> Loaders = new Dictionary<ModLoader, bool>();
         public Dictionary<ModLoader, string> DisableReason = new Dictionary<ModLoader, string>();
+
         public ModHook(string name)
         {
             HookName = name;
         }
+
         public void Add(ModLoader modLoader)
         {
-            if (Loaders.TryGetValue(modLoader, out bool k) == false)
+            if (Loaders.TryGetValue(modLoader, out _) == false)
             {
                 Loaders.Add(modLoader, true);
             }
         }
+
         public void Remove(ModLoader modLoader)
         {
-            if (Loaders.TryGetValue(modLoader, out bool k))
+            if (Loaders.TryGetValue(modLoader, out _))
             {
                 Loaders.Remove(modLoader);
             }
         }
-        public void Disable(ModLoader from,ModLoader toDisable ,string reason)
+
+        public void Disable(ModLoader from, ModLoader toDisable, string reason)
         {
-            if (Loaders.TryGetValue(toDisable, out bool k))
+            if (Loaders.TryGetValue(toDisable, out _))
             {
-                k = false;
-                if (DisableReason.TryGetValue(from, out string res))
+                if (DisableReason.TryGetValue(from, out _))
                 {
-                    res = reason;
                 }
                 else
                 {
@@ -92,29 +98,41 @@ public static class ModsManager
             }
         }
     }
+
     private static bool AllowContinue = true;
-    public static ModSettings modSettings=new ModSettings();
+    public static ModSettings modSettings = new ModSettings();
     public static List<ModEntity> ModList = new List<ModEntity>();
     public static List<ModLoader> ModLoaders = new List<ModLoader>();
     public static List<ModInfo> DisabledMods = new List<ModInfo>();
     public static Dictionary<string, ModHook> ModHooks = new Dictionary<string, ModHook>();
-    public static bool GetModEntity(string packagename,out ModEntity modEntity) {
-        modEntity = ModList.Find(px=>px.modInfo.PackageName==packagename);
+
+    public static bool GetModEntity(string packagename, out ModEntity modEntity)
+    {
+        modEntity = ModList.Find(px => px.modInfo.PackageName == packagename);
         return modEntity != null;
     }
-    public static bool GetAllowContinue() { return AllowContinue; }
+
+    public static bool GetAllowContinue()
+    {
+        return AllowContinue;
+    }
+
     /// <summary>
     /// 执行Hook
     /// </summary>
     /// <param name="HookName"></param>
     /// <param name="action"></param>
-    public static void HookAction(string HookName,Func<ModLoader,bool> action) {
-        if (ModHooks.TryGetValue(HookName, out ModHook modHook)) {
-            foreach (ModLoader modLoader in modHook.Loaders.Keys) {
+    public static void HookAction(string HookName, Func<ModLoader, bool> action)
+    {
+        if (ModHooks.TryGetValue(HookName, out ModHook modHook))
+        {
+            foreach (ModLoader modLoader in modHook.Loaders.Keys)
+            {
                 if (action.Invoke(modLoader)) break;
             }
-        }    
+        }
     }
+
     /// <summary>
     /// 注册Hook
     /// </summary>
@@ -122,27 +140,33 @@ public static class ModsManager
     /// <param name="modLoader"></param>
     public static void RegisterHook(string HookName, ModLoader modLoader)
     {
-        if (ModHooks.TryGetValue(HookName, out ModHook modHook)==false)
+        if (ModHooks.TryGetValue(HookName, out ModHook modHook) == false)
         {
             modHook = new ModHook(HookName);
             ModHooks.Add(HookName, modHook);
         }
         modHook.Add(modLoader);
     }
-    public static void DisableHook(ModLoader from, string HookName,string packageName,string reason) {
+
+    public static void DisableHook(ModLoader from, string HookName, string packageName, string reason)
+    {
         ModEntity modEntity = ModList.Find(p => p.modInfo.PackageName == packageName);
         if (ModHooks.TryGetValue(HookName, out ModHook modHook))
         {
             modHook.Disable(from, modEntity.ModLoader_, reason);
         }
     }
+
+#if DEBUG
     public static void StreamCompress(Stream input, MemoryStream data)
     {
         byte[] dat = data.ToArray();
-        using (var stream = new GZipStream(input, CompressionMode.Compress)) {
+        using (var stream = new GZipStream(input, CompressionMode.Compress))
+        {
             stream.Write(dat, 0, dat.Length);
         }
     }
+
     public static Stream StreamDecompress(Stream input)
     {
         var outStream = new MemoryStream();
@@ -150,24 +174,26 @@ public static class ModsManager
         {
             zipStream.CopyTo(outStream);
             zipStream.Close();
-            outStream.Seek(0,SeekOrigin.Begin);
+            outStream.Seek(0, SeekOrigin.Begin);
             return outStream;
         }
     }
-    public static T GetInPakOrStorageFile<T>(string filepath,string prefix=".txt") where T :class {
+#endif
+    public static T GetInPakOrStorageFile<T>(string filepath, string prefix = ".txt") where T : class
+    {
         string storagePath = Storage.CombinePaths(ExternelPath, filepath + prefix);
         if (Storage.FileExists(storagePath))
         {
             object obj = null;
             using (Stream stream = Storage.OpenFile(storagePath, OpenFileMode.Read))
             {
-                obj = ContentManager.StreamConvertType(typeof(T).GetType(), stream);
+                obj = ContentManager.StreamConvertType(typeof(T), stream);
             }
             return obj as T;
         }
         else return ContentManager.Get<T>(filepath, prefix);
-
     }
+
     public static T DeserializeJson<T>(string text) where T : class
     {
         var obj = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(text, typeof(JsonObject));
@@ -229,12 +255,15 @@ public static class ModsManager
         }
         return outobj;
     }
+
     public static void SaveSettings(XElement xElement)
     {
-        foreach (ModEntity modEntity in ModList) {
-           modEntity.SaveSettings(xElement);
+        foreach (ModEntity modEntity in ModList)
+        {
+            modEntity.SaveSettings(xElement);
         }
     }
+
     public static void LoadSettings(XElement xElement)
     {
         foreach (ModEntity modEntity in ModList)
@@ -242,20 +271,24 @@ public static class ModsManager
             modEntity.SaveSettings(xElement);
         }
     }
-    public static string ImportMod(string name,Stream stream) {
-        string path = Storage.CombinePaths(ModsPath,name);
-        using (Stream fileStream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen)) {
+
+    public static string ImportMod(string name, Stream stream)
+    {
+        string path = Storage.CombinePaths(ModsPath, name);
+        using (Stream fileStream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
+        {
             stream.CopyTo(fileStream);
             stream.Close();
         }
         return "下载成功";
+    }
 
-    }
-    public static void ModListAllDo(Action<ModEntity> entity) {
-        for (int i=0;i<ModList.Count;i++) {
+    public static void ModListAllDo(Action<ModEntity> entity)
+    {
+        for (int i = 0; i < ModList.Count; i++)
             entity?.Invoke(ModList[i]);
-        }
     }
+
     public static void Initialize()
     {
         if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
@@ -267,6 +300,7 @@ public static class ModsManager
         ModList.Add(new FastDebugModEntity());
         GetScmods(ModsPath);
         DisabledMods.Clear();
+        float api = float.Parse(APIVersion);
         List<ModEntity> ToRemove = new List<ModEntity>();
         List<ModInfo> ToDisable = new List<ModInfo>();
         ToDisable.AddRange(DisabledMods);
@@ -281,11 +315,12 @@ public static class ModsManager
                 continue;
             }
             if (modEntity1.IsChecked) continue;
-            if (new Version(modEntity1.modInfo.ApiVersion) < new Version(APIVersion))
+            float.TryParse(modInfo.ApiVersion, out float curr);
+            if (curr < api)
             {//api版本检测
                 ToDisable.Add(modInfo);
                 ToRemove.Add(modEntity1);
-                AddException(new Exception($"[{modEntity1.modInfo.Name}]Target version {modInfo.Version} is less than api version {APIVersion}."), true);
+                AddException(new Exception($"[{modEntity1.modInfo.PackageName}]Target version {modInfo.Version} is less than api version {APIVersion}."), true);
             }
             List<ModEntity> modEntities = ModList.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
             if (modEntities.Count > 1) AddException(new Exception($"Multiple installed [{modInfo.PackageName}]"));
@@ -301,10 +336,13 @@ public static class ModsManager
             ModList.Remove(item);
         }
     }
-    public static void AddException(Exception e,bool AllowContinue_=false) {
+
+    public static void AddException(Exception e, bool AllowContinue_ = false)
+    {
         LoadingScreen.Error(e.Message);
         AllowContinue = AllowContinue_;
     }
+
     /// <summary>
     /// 获取所有文件
     /// </summary>
@@ -329,72 +367,76 @@ public static class ModsManager
             catch (Exception e)
             {
                 AddException(e);
+                stream.Close();
             }
-            stream.Close();
         }
         foreach (string dir in Storage.ListDirectoryNames(path))
         {
             GetScmods(Storage.CombinePaths(path, dir));
         }
     }
+
     public static string StreamToString(Stream stream)
     {
-        stream.Seek(0,SeekOrigin.Begin);
+        stream.Seek(0, SeekOrigin.Begin);
         return new StreamReader(stream).ReadToEnd();
     }
-    /// <summary> 
-    /// 将 Stream 转成 byte[] 
-    /// </summary> 
+
+    /// <summary>
+    /// 将 Stream 转成 byte[]
+    /// </summary>
     public static byte[] StreamToBytes(Stream stream)
     {
         byte[] bytes = new byte[stream.Length];
         stream.Seek(0, SeekOrigin.Begin);
         stream.Read(bytes, 0, bytes.Length);
-        // 设置当前流的位置为流的开始 
+        // 设置当前流的位置为流的开始
         return bytes;
     }
+
 #if DEBUG
-    /// <summary> 
-    /// 将 byte[] 转成 Stream 
-    /// </summary> 
+    /// <summary>
+    /// 将 byte[] 转成 Stream
+    /// </summary>
     public static Stream BytesToStream(byte[] bytes)
     {
         Stream stream = new MemoryStream(bytes);
         return stream;
     }
-    /// <summary> 
-    /// 将 Stream 写入文件 
-    /// </summary> 
+    /// <summary>
+    /// 将 Stream 写入文件
+    /// </summary>
     public static void StreamToFile(Stream stream, string fileName)
     {
-        // 把 Stream 转换成 byte[] 
+        // 把 Stream 转换成 byte[]
         byte[] bytes = new byte[stream.Length];
         stream.Seek(0, SeekOrigin.Begin);
         stream.Read(bytes, 0, bytes.Length);
-        // 设置当前流的位置为流的开始 
-        // 把 byte[] 写入文件 
+        // 设置当前流的位置为流的开始
+        // 把 byte[] 写入文件
         var fs = new FileStream(fileName, FileMode.Create);
         var bw = new BinaryWriter(fs);
         bw.Write(bytes);
         bw.Close();
         fs.Close();
     }
-    /// <summary> 
-    /// 从文件读取 Stream 
-    /// </summary> 
+    /// <summary>
+    /// 从文件读取 Stream
+    /// </summary>
     public static Stream FileToStream(string fileName)
     {
-        // 打开文件 
+        // 打开文件
         var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-        // 读取文件的 byte[] 
+        // 读取文件的 byte[]
         byte[] bytes = new byte[fileStream.Length];
         fileStream.Read(bytes, 0, bytes.Length);
         fileStream.Close();
-        // 把 byte[] 转换成 Stream 
+        // 把 byte[] 转换成 Stream
         Stream stream = new MemoryStream(bytes);
         return stream;
     }
 #endif
+
     public static string GetMd5(string input)
     {
         var md5Hasher = MD5.Create();
@@ -406,11 +448,13 @@ public static class ModsManager
         }
         return sBuilder.ToString();
     }
-    public static bool FindElement(XElement xElement, Func<XElement,bool> func, out XElement elementout)
+
+    public static bool FindElement(XElement xElement, Func<XElement, bool> func, out XElement elementout)
     {
         foreach (XElement element in xElement.Elements())
         {
-            if (func(element)) {
+            if (func(element))
+            {
                 elementout = element;
                 return true;
             }
@@ -423,15 +467,21 @@ public static class ModsManager
         elementout = null;
         return false;
     }
-    public static bool FindElementByGuid(XElement xElement,string guid,out XElement elementout) {
-        foreach (XElement element in xElement.Elements()) {
-            foreach (XAttribute xAttribute in element.Attributes()) {
-                if (xAttribute.Name.ToString() == "Guid" && xAttribute.Value == guid) {
+
+    public static bool FindElementByGuid(XElement xElement, string guid, out XElement elementout)
+    {
+        foreach (XElement element in xElement.Elements())
+        {
+            foreach (XAttribute xAttribute in element.Attributes())
+            {
+                if (xAttribute.Name.ToString() == "Guid" && xAttribute.Value == guid)
+                {
                     elementout = element;
                     return true;
                 }
             }
-            if (FindElementByGuid(element, guid, out XElement element1)){
+            if (FindElementByGuid(element, guid, out XElement element1))
+            {
                 elementout = element1;
                 return true;
             }
@@ -439,10 +489,13 @@ public static class ModsManager
         elementout = null;
         return false;
     }
-    public static bool HasAttribute(XElement element,Func<string,bool> func,out XAttribute xAttributeout) {
+
+    public static bool HasAttribute(XElement element, Func<string, bool> func, out XAttribute xAttributeout)
+    {
         foreach (XAttribute xAttribute in element.Attributes())
         {
-            if (func(xAttribute.Name.LocalName)) {
+            if (func(xAttribute.Name.LocalName))
+            {
                 xAttributeout = xAttribute;
                 return true;
             }
@@ -450,12 +503,18 @@ public static class ModsManager
         xAttributeout = null;
         return false;
     }
-    public static void CombineClo(XElement xElement,Stream cloorcr) {
-        XElement MergeXml = XmlUtils.LoadXmlFromStream(cloorcr, Encoding.UTF8,true);
-        foreach (XElement element in MergeXml.Elements()) {
-            if (HasAttribute(element, (name) => { return name.StartsWith("new-"); }, out XAttribute attribute)) {
-                if (HasAttribute(element, (name) => { return name == "Index"; }, out XAttribute xAttribute)) {
-                    if (FindElement(xElement, (ele) => { return element.Attribute("Index").Value == xAttribute.Value; }, out XElement element1)) {
+
+    public static void CombineClo(XElement xElement, Stream cloorcr)
+    {
+        XElement MergeXml = XmlUtils.LoadXmlFromStream(cloorcr, Encoding.UTF8, true);
+        foreach (XElement element in MergeXml.Elements())
+        {
+            if (HasAttribute(element, (name) => { return name.StartsWith("new-"); }, out XAttribute attribute))
+            {
+                if (HasAttribute(element, (name) => { return name == "Index"; }, out XAttribute xAttribute))
+                {
+                    if (FindElement(xElement, (ele) => { return element.Attribute("Index").Value == xAttribute.Value; }, out XElement element1))
+                    {
                         string[] px = attribute.Name.ToString().Split(new string[] { "new-" }, StringSplitOptions.RemoveEmptyEntries);
                         if (px.Length == 1)
                         {
@@ -467,13 +526,15 @@ public static class ModsManager
             xElement.Add(MergeXml);
         }
     }
+
     public static void CombineCr(XElement xElement, Stream cloorcr)
     {
         XElement MergeXml = XmlUtils.LoadXmlFromStream(cloorcr, Encoding.UTF8, true);
-        CombineCrLogic(xElement,MergeXml);
+        CombineCrLogic(xElement, MergeXml);
     }
-    public static void CombineCrLogic(XElement xElement, XElement needCombine) {
 
+    public static void CombineCrLogic(XElement xElement, XElement needCombine)
+    {
         foreach (XElement element in needCombine.Elements())
         {
             if (HasAttribute(element, (name) => { return name == "Result"; }, out XAttribute xAttribute1))
@@ -511,36 +572,47 @@ public static class ModsManager
             CombineCrLogic(xElement, element);
         }
     }
-    public static void Modify(XElement source,XElement change) {
-        if (FindElement(source, (item) => { if (item.Name.LocalName == change.Name.LocalName && item.Attribute("Guid")!=null && change.Attribute("Guid") != null && item.Attribute("Guid").Value == change.Attribute("Guid").Value) return true;return false; }, out XElement xElement1)){
-            foreach (XElement xElement in change.Elements()) {
-                Modify(xElement1,xElement);
+
+    public static void Modify(XElement source, XElement change)
+    {
+        if (FindElement(source, (item) => { if (item.Name.LocalName == change.Name.LocalName && item.Attribute("Guid") != null && change.Attribute("Guid") != null && item.Attribute("Guid").Value == change.Attribute("Guid").Value) return true; return false; }, out XElement xElement1))
+        {
+            foreach (XElement xElement in change.Elements())
+            {
+                Modify(xElement1, xElement);
             }
         }
         else
         {
             source.Add(change);
         }
-
     }
-    public static void CombineDataBase(XElement DataBaseXml,Stream Xdb) {
+
+    public static void CombineDataBase(XElement DataBaseXml, Stream Xdb)
+    {
         XElement MergeXml = XmlUtils.LoadXmlFromStream(Xdb, Encoding.UTF8, true);
         XElement DataObjects = DataBaseXml.Element("DatabaseObjects");
-        foreach (XElement element in MergeXml.Elements()) {
+        foreach (XElement element in MergeXml.Elements())
+        {
             //处理修改
-            if (HasAttribute(element, (str) => { return str.Contains("new-"); }, out XAttribute attribute)) {
-                if (HasAttribute(element,(str)=> {return str == "Guid"; },out XAttribute attribute1)) {
-                    if (FindElementByGuid(DataObjects, attribute1.Value, out XElement xElement)) {
-                        string[] px = attribute.Name.ToString().Split(new string[] { "new-"},StringSplitOptions.RemoveEmptyEntries);
-                        if (px.Length == 1) {
+            if (HasAttribute(element, (str) => { return str.Contains("new-"); }, out XAttribute attribute))
+            {
+                if (HasAttribute(element, (str) => { return str == "Guid"; }, out XAttribute attribute1))
+                {
+                    if (FindElementByGuid(DataObjects, attribute1.Value, out XElement xElement))
+                    {
+                        string[] px = attribute.Name.ToString().Split(new string[] { "new-" }, StringSplitOptions.RemoveEmptyEntries);
+                        if (px.Length == 1)
+                        {
                             xElement.SetAttributeValue(px[0], attribute.Value);
                         }
-                    }                
+                    }
                 }
             }
-            Modify(DataObjects,element);
+            Modify(DataObjects, element);
         }
     }
+
 #if DEBUG
     public enum SourceType{
         positions,
@@ -554,9 +626,8 @@ public static class ModsManager
     public static string ObjectsToStr<T>(T[] arr) {
         if (arr == null) return string.Empty;
         var stringBuilder = new StringBuilder();
-        for (int i=0;i<arr.Length;i++) {
+        for (int i=0;i<arr.Length;i++) 
             stringBuilder.Append(arr[i]+" ");
-        }
         string res = stringBuilder.ToString();
         return res.Substring(0,res.Length-1);
     }
@@ -574,7 +645,7 @@ public static class ModsManager
         float nc = (v2.X - v1.X) * (v3.Y - v1.Y) - (v2.Y - v1.Y) * (v3.X - v1.X);
         return new Vector3(na, nb, nc);
     }
-    public static void SaveToImage(string name,RenderTarget2D renderTarget2D)
+    public static void SaveToImage(string name, RenderTarget2D renderTarget2D)
     {
         var image = new Image(renderTarget2D.Width, renderTarget2D.Height);
         renderTarget2D.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));

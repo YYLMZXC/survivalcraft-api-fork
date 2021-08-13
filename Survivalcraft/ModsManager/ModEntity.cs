@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Collections.Generic;
 using Engine.Graphics;
 using Engine;
@@ -70,8 +70,7 @@ namespace Game {
         }
         public virtual bool GetAssetsFile(string filename, out Stream stream)
         {
-            filename = "Assets/" + filename;
-            return GetFile(filename,out stream);
+            return GetFile("Assets/" + filename, out stream);
         }
         /// <summary>
         /// 初始化语言包
@@ -179,7 +178,7 @@ namespace Game {
         /// </summary>
         public virtual void LoadDll()
         {
-            LoadingScreen.Info("Loading Assembly:" + modInfo?.Name);
+            LoadingScreen.Info("Loading Assembly:" + modInfo?.PackageName);
             foreach (Stream stream in GetFiles(".dll"))
             {
                 LoadDllLogic(stream);
@@ -189,7 +188,7 @@ namespace Game {
         public void LoadDllLogic(Stream stream)
         {
             var assembly = Assembly.Load(ModsManager.StreamToBytes(stream));
-            List<Type> BlockTypes = new List<Type>();
+            var BlockTypes = new List<Type>();
             Type[] types = assembly.GetTypes();
             for (int i = 0; i < types.Length; i++)
             {
