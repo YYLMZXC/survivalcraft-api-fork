@@ -1,14 +1,14 @@
+using System;
 using Engine;
 using Engine.Graphics;
 using Engine.Input;
 using Engine.Media;
-using System;
 
 namespace Game
 {
     public class TextBoxWidget : Widget
     {
-        public BitmapFont m_font = LabelWidget.BitmapFont;
+        public BitmapFont m_font;
 
         public string m_text = string.Empty;
 
@@ -105,6 +105,13 @@ namespace Game
                     m_hasFocus = value;
                     if (value)
                     {
+#if DESKTOP
+                        if (Text == string.Empty)
+                        {
+                            //清空之前的输入
+                            KeyboardInput.GetInput();
+                        }
+#endif
                         CaretPosition = m_text.Length;
                         Keyboard.ShowKeyboard(Title, Description, Text, passwordMode: false, delegate (string text)
                         {
@@ -113,7 +120,7 @@ namespace Game
                     }
                     else
                     {
-                        FocusLost?.Invoke(this);
+                        this.FocusLost?.Invoke(this);
                     }
                 }
             }
@@ -176,40 +183,23 @@ namespace Game
 
         public event Action<TextBoxWidget> FocusLost;
 
+        public bool MoveNextFlag;
+
         public TextBoxWidget()
         {
-            ClampToBounds = true;
+            base.ClampToBounds = true;
             Color = Color.White;
             TextureLinearFilter = true;
+            Font = ContentManager.Get<BitmapFont>("Fonts/Pericles");
             FontScale = 1f;
             Title = string.Empty;
             Description = string.Empty;
         }
-
         public override void Update()
         {
-#if desktop
-            if (m_hasFocus)
+            if (HasFocus)
             {
-                if (KeyboardInput.DeletePressed&&CaretPosition>0)
-                {
-                    CaretPosition--;
-                    Text=Text.Remove(CaretPosition, 1);
-                }
-                else {
-                    string inputString = KeyboardInput.GetInput();
-                    if (!string.IsNullOrEmpty(inputString))
-                    {
-                        //fixed me 读取了后怎么清空
-                        EnterText(inputString);
-                    }
-
-                }
-            }
-#endif
 #if android
-            if (m_hasFocus)
-            {
                 if (base.Input.LastChar.HasValue && !base.Input.IsKeyDown(Key.Control) && !char.IsControl(base.Input.LastChar.Value))
                 {
                     EnterText(new string(base.Input.LastChar.Value, 1));
@@ -274,68 +264,153 @@ namespace Game
                         base.Input.Clear();
                     }
                 }
-            }
+#else
+                //处理文字删除
+                if (KeyboardInput.DeletePressed)
+                {
+                    CaretPosition--;
+                    CaretPosition = Math.Max(0, CaretPosition);
+                    if (Text.Length > 0)
+                    {
+                        Text = Text.Remove(CaretPosition, 1);
+                    }
+                    float num = Font.CalculateCharacterPosition(Text, 0, new Vector2(FontScale), FontSpacing);
+                    m_scroll = num - base.ActualSize.X;
+                    m_scroll = MathUtils.Max(0, m_scroll);
+                }
+                //处理文字输入
+                string inputString = KeyboardInput.GetInput();
+                if (!string.IsNullOrEmpty(inputString))
+                {
+                    EnterText(inputString);
+                }
 #endif
+
+            }
+
             if (Input.Click.HasValue)
             {
                 //处理电脑键盘输入时会处理成游戏输入
-                HasFocus = (HitTestGlobal(Input.Click.Value.Start) == this && HitTestGlobal(Input.Click.Value.End) == this);
-                if (HasFocus && GameManager.Project!=null) {
-                    foreach (ComponentPlayer componentPlayer in GameManager.Project.FindSubsystem<SubsystemPlayers>().ComponentPlayers) {
+                HasFocus = HitTestGlobal(Input.Click.Value.Start) == this && HitTestGlobal(Input.Click.Value.End) == this;
+                if (GameManager.Project != null)
+                {
+                    foreach (ComponentPlayer componentPlayer in GameManager.Project.FindSubsystem<SubsystemPlayers>().ComponentPlayers)
+                    {
                         componentPlayer.ComponentInput.AllowHandleInput = !HasFocus;
                     }
-                
+                }
+            }
+            if (HasFocus)
+            { //处理复制粘贴事件
+                if (Input.IsKeyDown(Key.Control))
+                {
+                    if (Input.IsKeyDownOnce(Key.V))
+                    {
+                        Text += ClipboardManager.ClipboardString;
+                    }
+                    else if (Input.IsKeyDownOnce(Key.C))
+                    {
+                        ClipboardManager.ClipboardString = Text;
+                    }
+                    else if (Input.IsKeyDownOnce(Key.X)) { ClipboardManager.ClipboardString = Text; Text = string.Empty; }
+                }
+                if (Input.IsKeyDownOnce(Key.Tab))
+                {
+                    MoveNext(ScreensManager.CurrentScreen.Children);
+                }
+
+                if (Input.IsKeyDownRepeat(Key.LeftArrow))
+                {
+                    CaretPosition = MathUtils.Max(0, --CaretPosition);
+                }
+                if (Input.IsKeyDownRepeat(Key.RightArrow))
+                {
+                    CaretPosition = MathUtils.Max(Text.Length, ++CaretPosition);
+                }
+                if (Input.IsKeyDownRepeat(Key.UpArrow))
+                {
+                    CaretPosition = 0;
+                }
+                if (Input.IsKeyDownRepeat(Key.DownArrow))
+                {
+                    CaretPosition = Text.Length;
                 }
             }
         }
-
+        public void MoveNext(WidgetsList widgets)
+        {
+            foreach (Widget widget in widgets)
+            {
+                if (widget is TextBoxWidget)
+                {
+                    if (MoveNextFlag == false && widget == this) MoveNextFlag = true;
+                    else if (MoveNextFlag)
+                    {
+                        TextBoxWidget textBox = widget as TextBoxWidget;
+                        textBox.HasFocus = true;
+                        HasFocus = false;
+                        MoveNextFlag = false;
+                    }
+                }
+                if (widget is ContainerWidget)
+                {
+                    ContainerWidget container = widget as ContainerWidget;
+                    MoveNext(container.Children);
+                }
+            }
+        }
         public override void MeasureOverride(Vector2 parentAvailableSize)
         {
             IsDrawRequired = true;
             if (m_size.HasValue)
             {
-                DesiredSize = m_size.Value;
+                base.DesiredSize = m_size.Value;
                 return;
             }
-            DesiredSize = Text.Length == 0
-                ? Font.MeasureText(" ", new Vector2(FontScale), FontSpacing)
-                : Font.MeasureText(Text, new Vector2(FontScale), FontSpacing);
-            DesiredSize += new Vector2(1f * FontScale * Font.Scale, 0f);
+            if (Text.Length == 0)
+            {
+                base.DesiredSize = Font.MeasureText(" ", new Vector2(FontScale), FontSpacing);
+            }
+            else
+            {
+                base.DesiredSize = Font.MeasureText(Text, new Vector2(FontScale), FontSpacing);
+            }
+            base.DesiredSize += new Vector2(1f * FontScale * Font.Scale, 0f);
         }
 
         public override void Draw(DrawContext dc)
         {
-            Color color = Color * GlobalColorTransform;
+            Color color = Color * base.GlobalColorTransform;
             if (!string.IsNullOrEmpty(m_text))
             {
-                var position = new Vector2(0f - m_scroll, ActualSize.Y / 2f);
+                var position = new Vector2(0f - m_scroll, base.ActualSize.Y / 2f);
                 SamplerState samplerState = TextureLinearFilter ? SamplerState.LinearClamp : SamplerState.PointClamp;
                 FontBatch2D fontBatch2D = dc.PrimitivesRenderer2D.FontBatch(Font, 1, DepthStencilState.None, null, null, samplerState);
                 int count = fontBatch2D.TriangleVertices.Count;
                 fontBatch2D.QueueText(Text, position, 0f, color, TextAnchor.VerticalCenter, new Vector2(FontScale), FontSpacing);
-                fontBatch2D.TransformTriangles(GlobalTransform, count);
+                fontBatch2D.TransformTriangles(base.GlobalTransform, count);
             }
             if (!m_hasFocus || !(MathUtils.Remainder(Time.RealTime - m_focusStartTime, 0.5) < 0.25))
             {
                 return;
             }
             float num = Font.CalculateCharacterPosition(Text, CaretPosition, new Vector2(FontScale), FontSpacing);
-            Vector2 v = new Vector2(0f, ActualSize.Y / 2f) + new Vector2(num - m_scroll, 0f);
+            Vector2 v = new Vector2(0f, base.ActualSize.Y / 2f) + new Vector2(num - m_scroll, 0f);
             if (m_hasFocus)
             {
                 if (v.X < 0f)
                 {
                     m_scroll = MathUtils.Max(m_scroll + v.X, 0f);
                 }
-                if (v.X > ActualSize.X)
+                if (v.X > base.ActualSize.X)
                 {
-                    m_scroll += v.X - ActualSize.X + 1f;
+                    m_scroll += v.X - base.ActualSize.X + 1f;
                 }
             }
             FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(1, DepthStencilState.None);
             int count2 = flatBatch2D.TriangleVertices.Count;
             flatBatch2D.QueueQuad(v - new Vector2(0f, Font.GlyphHeight / 2f * FontScale * Font.Scale), v + new Vector2(1f, Font.GlyphHeight / 2f * FontScale * Font.Scale), 0f, color);
-            flatBatch2D.TransformTriangles(GlobalTransform, count2);
+            flatBatch2D.TransformTriangles(base.GlobalTransform, count2);
         }
 
         public void EnterText(string s)
@@ -348,7 +423,7 @@ namespace Game
                     {
                         string text = Text;
                         text = text.Remove(CaretPosition, s.Length);
-                        text = (Text = text.Insert(CaretPosition, s));
+                        text = Text = text.Insert(CaretPosition, s);
                     }
                     else
                     {
@@ -359,7 +434,14 @@ namespace Game
             }
             else if (m_text.Length + s.Length <= MaximumLength)
             {
-                Text = CaretPosition < m_text.Length ? Text.Insert(CaretPosition, s) : m_text + s;
+                if (CaretPosition < m_text.Length)
+                {
+                    Text = Text.Insert(CaretPosition, s);
+                }
+                else
+                {
+                    Text = m_text + s;
+                }
                 CaretPosition += s.Length;
             }
         }
