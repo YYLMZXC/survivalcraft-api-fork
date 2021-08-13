@@ -20,8 +20,8 @@ namespace Game
             LoadContents(this, node);
             LabelWidget labelWidget = Children.Find<LabelWidget>("FurnitureSetItem.Name");
             LabelWidget labelWidget2 = Children.Find<LabelWidget>("FurnitureSetItem.DesignsCount");
-            labelWidget.Text = ((furnitureSet == null) ? LanguageControl.Get(GetType().Name,0): furnitureSet.Name);
-            labelWidget2.Text = string.Format(LanguageControl.Get(GetType().Name,1), CountFurnitureDesigns());
+            labelWidget.Text = (furnitureSet == null) ? LanguageControl.Get(GetType().Name, 0) : furnitureSet.Name;
+            labelWidget2.Text = string.Format(LanguageControl.Get(GetType().Name, 1), CountFurnitureDesigns());
         }
 
         public void DragDrop(Widget dragWidget, object data)

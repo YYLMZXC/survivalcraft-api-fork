@@ -6,7 +6,7 @@ namespace SimpleJson
 {
     [GeneratedCode("simple-json", "1.0.0")]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal class JsonArray : List<object>
+    public class JsonArray : List<object>
     {
         public JsonArray()
         {

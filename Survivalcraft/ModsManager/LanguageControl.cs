@@ -119,6 +119,15 @@ namespace Game
                 }
             }
         }
+        public static JsonObject JsonArraytoObj(JsonArray jsonArray)
+        {
+            JsonObject obj = new JsonObject();
+            for (int i = 0; i < jsonArray.Count; i++)
+            {
+                obj.Add(i.ToString(), jsonArray[i]);
+            }
+            return obj;
+        }
         public static bool Get(out string result,params string[] keys) {
             int i = 0;
             JsonObject jsonobj = KeyWords;
@@ -129,7 +138,8 @@ namespace Game
                 if (jsonobj != null && jsonobj.ContainsKey(keys[i]))
                 {
                     obj = jsonobj[keys[i]];
-                    jsonobj = obj as JsonObject;
+                    if (obj is JsonArray) jsonobj = JsonArraytoObj(obj as JsonArray);
+                    else jsonobj = obj as JsonObject;
                 }
                 i++;
             }
@@ -151,7 +161,8 @@ namespace Game
                 if (jsonobj != null && jsonobj.ContainsKey(keys[i]))
                 {
                     obj = jsonobj[keys[i]];
-                    jsonobj = obj as JsonObject;
+                    if (obj is JsonArray) jsonobj = JsonArraytoObj(obj as JsonArray);
+                    else jsonobj = obj as JsonObject;
                 }
                 i++;
             }
