@@ -4,6 +4,7 @@ using Engine.Graphics;
 using System.IO;
 using Engine;
 using SimpleJson;
+using System.Xml.Linq;
 namespace Game
 {
     /** 
@@ -57,6 +58,13 @@ namespace Game
         public static JsonModel Load(Stream stream)
         {
             Dictionary<string, ObjModelReader.ObjMesh> Meshes = new Dictionary<string, ObjModelReader.ObjMesh>();
+            Vector3 FirstPersonOffset = Vector3.One;
+            Vector3 FirstPersonRotation = Vector3.Zero;
+            Vector3 FirstPersonScale = Vector3.One;
+            Vector3 InHandOffset = Vector3.One;
+            Vector3 InHandRotation = Vector3.Zero;
+            Vector3 InHandScale = Vector3.One;
+            string parent = string.Empty;
             using (stream)
             {
                 object obj = SimpleJson.SimpleJson.DeserializeObject(new StreamReader(stream).ReadToEnd());
@@ -65,6 +73,48 @@ namespace Game
                     JsonObject jsonObj = obj as JsonObject;
                     Vector2 textureSize = Vector2.Zero;
                     Dictionary<string, string> texturemap = new Dictionary<string, string>();
+                    if (jsonObj.TryGetValue("display", out object obj13)) {
+                        if ((obj13 as JsonObject).TryGetValue("thirdperson_righthand", out object obj1)) {
+                            JsonObject jobj1 = obj1 as JsonObject;
+                            if (jobj1.TryGetValue("rotation", out object obj4)) {
+                                JsonArray jsonArray = obj4 as JsonArray;
+                                InHandRotation = new Vector3(ObjConvertFloat(jsonArray[0]), ObjConvertFloat(jsonArray[1]), ObjConvertFloat(jsonArray[2]));
+                            }
+                            if (jobj1.TryGetValue("translation", out object obj5))
+                            {
+                                JsonArray jsonArray = obj5 as JsonArray;
+                                InHandOffset = new Vector3(ObjConvertFloat(jsonArray[0]), ObjConvertFloat(jsonArray[1]), ObjConvertFloat(jsonArray[2]));
+                            }
+                            if (jobj1.TryGetValue("scale", out object obj6))
+                            {
+                                JsonArray jsonArray = obj6 as JsonArray;
+                                InHandScale = new Vector3(ObjConvertFloat(jsonArray[0]), ObjConvertFloat(jsonArray[1]), ObjConvertFloat(jsonArray[2]));
+                            }
+                        }
+                        if ((obj13 as JsonObject).TryGetValue("firstperson_righthand", out object obj3))
+                        {
+                            JsonObject jobj1 = obj3 as JsonObject;
+                            if (jobj1.TryGetValue("rotation", out object obj4))
+                            {
+                                JsonArray jsonArray = obj4 as JsonArray;
+                                FirstPersonRotation = new Vector3(ObjConvertFloat(jsonArray[0]), ObjConvertFloat(jsonArray[1]), ObjConvertFloat(jsonArray[2]));
+                            }
+                            if (jobj1.TryGetValue("translation", out object obj5))
+                            {
+                                JsonArray jsonArray = obj5 as JsonArray;
+                                FirstPersonOffset = new Vector3(ObjConvertFloat(jsonArray[0]), ObjConvertFloat(jsonArray[1]), ObjConvertFloat(jsonArray[2]));
+                            }
+                            if (jobj1.TryGetValue("scale", out object obj6))
+                            {
+                                JsonArray jsonArray = obj6 as JsonArray;
+                                FirstPersonScale = new Vector3(ObjConvertFloat(jsonArray[0]), ObjConvertFloat(jsonArray[1]), ObjConvertFloat(jsonArray[2]));
+                            }
+                        }
+                    }
+                    if (jsonObj.TryGetValue("parent", out object obj12))
+                    {
+                        parent = obj12 as string;
+                    }
                     if (jsonObj.TryGetValue("textures", out object obj7))
                     {
                         JsonObject jobj5 = obj7 as JsonObject;
@@ -81,8 +131,9 @@ namespace Game
                     if (jsonObj.TryGetValue("elements", out object jarr))
                     {
                         JsonArray array = jarr as JsonArray;
-                        foreach (JsonObject jobj in array)
+                        for (int l=0;l<array.Count;l++)
                         {
+                            JsonObject jobj = array[l] as JsonObject;
                             JsonArray from = jobj["from"] as JsonArray;
                             JsonArray to = jobj["to"] as JsonArray;
                             string name = "undefined";
@@ -93,6 +144,7 @@ namespace Game
                             if (Meshes.TryGetValue(name, out ObjModelReader.ObjMesh objMesh) == false)
                             {
                                 objMesh = new ObjModelReader.ObjMesh(name);
+                                objMesh.ElementIndex = l;
                                 Meshes.Add(name, objMesh);
                             }
                             if (jobj.TryGetValue("rotation", out object jobj7))
@@ -200,11 +252,72 @@ namespace Game
                             }
                         }
                     }
+                    List<ObjModelReader.ObjMesh> objMeshes = new List<ObjModelReader.ObjMesh>();
+                    foreach (var c in Meshes)
+                    {
+                        objMeshes.Add(c.Value);
+                    }
+                    if (jsonObj.TryGetValue("groups", out object jobj9))
+                    {//解析groups
+                        Dictionary<string, ObjModelReader.ObjMesh> Meshes2 = new Dictionary<string, ObjModelReader.ObjMesh>();
+                        JsonArray jsonArray = jobj9 as JsonArray;
+                        for (int m = 0; m < jsonArray.Count; m++)
+                        {
+                            JsonObject jobj10 = jsonArray[m] as JsonObject;
+                            string jobj10name = m.ToString();
+                            if (jobj10.TryGetValue("name", out object jobj10name_)) jobj10name = (string)jobj10name_;
+                            ObjModelReader.ObjMesh mesh = new ObjModelReader.ObjMesh(jobj10name);
+                            if (jobj10.TryGetValue("oringin", out object jobj11))
+                            {
+                                JsonArray jarr2 = jobj11 as JsonArray;
+                                Vector3 start = new Vector3(ObjConvertFloat(jarr2[0]), ObjConvertFloat(jarr2[1]), ObjConvertFloat(jarr2[2])) / 16f;
+                                mesh.MeshMatrix = Matrix.CreateTranslation(start.X, start.Y, start.Z);
+                            }
+                            if (jobj10.TryGetValue("children", out object jobj12))
+                            {
+                                JsonArray jarr2 = jobj12 as JsonArray;
+                                for (int i = 0; i < jarr2.Count; i++)
+                                {
+                                    int eleindex = (int)ObjConvertFloat(jarr2[i]);
+                                    mesh.ChildMeshes.Add(objMeshes.Find(xp => xp.ElementIndex == eleindex));
+                                }
+                            }
+                            Meshes2.Add(jobj10name, mesh);
+                        }
+                        JsonModel jsonModel = ObjModelReader.ObjMeshesToModel<JsonModel>(Meshes2);
+                        if (string.IsNullOrEmpty(parent) == false) try { jsonModel.ParentModel = ContentManager.Get<JsonModel>(parent); } catch { }
+                        jsonModel.InHandScale = InHandScale;
+                        jsonModel.InHandOffset = InHandOffset;
+                        jsonModel.InHandRotation = InHandRotation;
+                        jsonModel.FirstPersonOffset = FirstPersonOffset;
+                        jsonModel.FirstPersonScale = FirstPersonScale;
+                        jsonModel.FirstPersonRotation = FirstPersonRotation;
+                        return jsonModel;
+                    }
                 }
             }
-            return ObjModelReader.ObjMeshesToModel<JsonModel>(Meshes);
+
+            JsonModel jsonModel2 = ObjModelReader.ObjMeshesToModel<JsonModel>(Meshes);
+            if (string.IsNullOrEmpty(parent) == false) try { jsonModel2.ParentModel = ContentManager.Get<JsonModel>(parent); } catch { }
+            jsonModel2.InHandScale = InHandScale;
+            jsonModel2.InHandOffset = InHandOffset;
+            jsonModel2.InHandRotation = InHandRotation;
+            jsonModel2.FirstPersonOffset = FirstPersonOffset;
+            jsonModel2.FirstPersonScale = FirstPersonScale;
+            jsonModel2.FirstPersonRotation = FirstPersonRotation;
+            return jsonModel2;
         }
     }
 
-    public class JsonModel : Model { }
+    public class JsonModel : Model
+    {
+        public Model ParentModel;
+        public string ParticleTexture;
+        public Vector3 FirstPersonOffset;
+        public Vector3 FirstPersonRotation;
+        public Vector3 FirstPersonScale;
+        public Vector3 InHandOffset;
+        public Vector3 InHandRotation;
+        public Vector3 InHandScale;
+    }
 }

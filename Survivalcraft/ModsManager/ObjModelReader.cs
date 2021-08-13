@@ -71,6 +71,7 @@ namespace Game
             }
         }
         public class ObjMesh {
+            public int ElementIndex;
             public DynamicArray<ObjVertex> Vertices = new DynamicArray<ObjVertex>();
             public DynamicArray<ushort> Indices = new DynamicArray<ushort>();
             public string TexturePath = "Textures/NoneTexture";//默认位置
