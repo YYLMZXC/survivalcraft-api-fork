@@ -70,7 +70,7 @@ namespace Game
                 }
                 catch (Exception e)
                 {
-                    LoadingScreen.Warning(e.Message);
+                    LoadingScreen.Warning("Loading Block " + block.GetType().FullName + " errro." + e.Message);
                 }
                 foreach (int value in block.GetCreativeValues()) {
                     string category = block.GetCategory(value);
