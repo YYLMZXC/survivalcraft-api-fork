@@ -253,15 +253,15 @@ namespace Game
             {
                 if (!string.IsNullOrEmpty((string)filter))
                 {
-                    return LanguageControl.Get(typeof(CommunityContentScreen).GetType().Name, 8);
+                    return LanguageControl.Get(typeof(CommunityContentScreen).Name, 8);
                 }
-                return LanguageControl.Get(typeof(CommunityContentScreen).GetType().Name, 9);
+                return LanguageControl.Get(typeof(CommunityContentScreen).Name, 9);
             }
             if (filter is ExternalContentType)
             {
                 return ExternalContentManager.GetEntryTypeDescription((ExternalContentType)filter);
             }
-            throw new InvalidOperationException(LanguageControl.Get(typeof(CommunityContentScreen).GetType().Name, 10));
+            throw new InvalidOperationException(LanguageControl.Get(typeof(CommunityContentScreen).Name, 10));
         }
 
         public static string GetOrderDisplayName(Order order)
@@ -269,11 +269,11 @@ namespace Game
             switch (order)
             {
                 case Order.ByRank:
-                    return LanguageControl.Get(typeof(CommunityContentScreen).GetType().Name, 11);
+                    return LanguageControl.Get(typeof(CommunityContentScreen).Name, 11);
                 case Order.ByTime:
-                    return LanguageControl.Get(typeof(CommunityContentScreen).GetType().Name, 12);
+                    return LanguageControl.Get(typeof(CommunityContentScreen).Name, 12);
                 default:
-                    throw new InvalidOperationException(LanguageControl.Get(typeof(CommunityContentScreen).GetType().Name, 13));
+                    throw new InvalidOperationException(LanguageControl.Get(typeof(CommunityContentScreen).Name, 13));
             }
         }
     }
