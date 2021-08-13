@@ -58,7 +58,7 @@ namespace Game
                 var projectData = new ProjectData(DatabaseManager.GameDatabase, projectNode, valuesDictionary, ignoreInvalidEntities: true);
                 m_project = new Project(DatabaseManager.GameDatabase, projectData);
                 m_subsystemUpdate = m_project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
-                ModsManager.HookAction("OnProjectLoaded", loader => loader.OnProjectLoaded(m_project));
+                ModsManager.HookAction("OnProjectLoaded", loader => { loader.OnProjectLoaded(m_project);return false; });
             }
             m_worldInfo = worldInfo;
             Log.Information("Loaded world, GameMode={0}, StartingPosition={1}, WorldName={2}, VisibilityRange={3}, Resolution={4}", worldInfo.WorldSettings.GameMode, worldInfo.WorldSettings.StartingPositionMode, worldInfo.WorldSettings.Name, SettingsManager.VisibilityRange.ToString(), SettingsManager.ResolutionMode.ToString());
@@ -135,7 +135,7 @@ namespace Game
                 m_project = null;
                 m_subsystemUpdate = null;
                 m_worldInfo = null;
-                ModsManager.HookAction("OnProjectDisposed", loader => loader.OnProjectDisposed());
+                ModsManager.HookAction("OnProjectDisposed", loader => { loader.OnProjectDisposed(); return false; });
                 GC.Collect();
             }
         }
