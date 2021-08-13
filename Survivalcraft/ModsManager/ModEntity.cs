@@ -296,8 +296,10 @@ namespace Game {
             if (ModLoader_ != null) ModLoader_.OnScreensManagerInitalized(loading);
 
         }
+        //释放资源
         public virtual void Dispose() {
-            if (ModLoader_ != null) ModLoader_.Dispose();
+            try { if (ModLoader_ != null) ModLoader_.Dispose(); } catch { }
+            ModArchive?.ZipFileStream.Close();
         }
     }
 
