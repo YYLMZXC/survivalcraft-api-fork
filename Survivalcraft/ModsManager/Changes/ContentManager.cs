@@ -71,6 +71,7 @@ namespace Game
 
         public static object Get(Type type, string name, string prefix = null, bool useCache = false)
         {
+            string fixname = string.Empty;
             object obj = null;
             if (name.Contains(":"))
             { //带命名空间的解析
@@ -115,21 +116,33 @@ namespace Game
                             }
                         default:
                             {
-                                if (modEntity.GetAssetsFile(name, out Stream stream))
+                                switch (type.FullName)
+                                {
+                                    case "Engine.Media.StreamingSource":
+                                    case "Engine.Audio.SoundBuffer": if (string.IsNullOrEmpty(prefix)) throw new Exception("You must specify a file type."); else fixname = name + prefix; break;
+                                    case "Game.MtllibStruct": if (string.IsNullOrEmpty(prefix)) fixname = name + ".mtl"; else fixname = name + prefix; break;
+                                    case "Engine.Graphics.Texture2D": if (string.IsNullOrEmpty(prefix)) fixname = name + ".png"; else fixname = name + prefix; break;
+                                    case "System.String": if (string.IsNullOrEmpty(prefix)) fixname = name + ".txt"; else fixname = name + prefix; break;
+                                    case "Engine.Media.Image": if (string.IsNullOrEmpty(prefix)) fixname = name + ".png"; else fixname = name + prefix; break;
+                                    case "System.Xml.Linq.XElement": if (string.IsNullOrEmpty(prefix)) fixname = name + ".xml"; else fixname = name + prefix; break;
+                                    case "Engine.Graphics.Model": if (string.IsNullOrEmpty(prefix)) fixname = name + ".dae"; else fixname = name + prefix; break;
+                                    case "Game.ObjModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".obj"; else fixname = name + prefix; break;
+                                    case "SimpleJson.JsonObject":
+                                    case "Game.JsonModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".json"; else fixname = name + prefix; break;
+                                    case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) return TextureAtlasManager.GetSubtexture(name); else return new Subtexture(Get<Texture2D>(name), Vector2.Zero, Vector2.One);
+                                }
+                                if (modEntity.GetAssetsFile(fixname, out Stream stream))
                                 {
                                     return StreamConvertType(type, stream);
                                 }
                                 else throw new Exception("Not found Resources:" + ModSpace + ":" + name + " for " + type.FullName);
-
-                                break;
                             }
                     }
                 }
                 else {
-                    throw new Exception("not found modspace:"+ModSpace);
+                    throw new Exception("not found modspace:" + ModSpace);
                 }
             }
-            string fixname = string.Empty;
             switch (type.FullName)
             {
                 case "Engine.Media.BitmapFont":
@@ -225,7 +238,7 @@ namespace Game
         {
             if (Resources.TryGetValue(name, out ContentInfo contentInfo))
             {
-                contentInfo = new ContentInfo(entity, name);
+                Resources[name] = new ContentInfo(entity, name);
             }
             else
                 Resources.Add(name, new ContentInfo(entity, name));
