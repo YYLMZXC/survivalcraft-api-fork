@@ -81,6 +81,7 @@ namespace Game
         {
             get
             {
+                if (LabelWidget.BitmapFont != null) return LabelWidget.BitmapFont;
                 return m_font;
             }
             set
