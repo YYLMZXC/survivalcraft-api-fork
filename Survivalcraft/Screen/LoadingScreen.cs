@@ -76,6 +76,7 @@ namespace Game
         public void InitActions()
         {
             AddLoadAction(delegate {//将所有的有效的scmod读取为ModEntity，并自动添加SurvivalCraftModEntity
+                MusicManager.CurrentMix = MusicManager.Mix.Menu;
                 ModsManager.Initialize();            
             });
             AddLoadAction(delegate {//检查所有Mod依赖项 
