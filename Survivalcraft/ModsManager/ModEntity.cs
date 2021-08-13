@@ -128,7 +128,14 @@ namespace Game {
             LoadingScreen.Info("Loading Resources:" + modInfo?.PackageName);
             foreach (Stream stream in GetFiles(".csv"))
             {
-                BlocksManager.LoadBlocksData(ModsManager.StreamToString(stream));
+                try
+                {
+                    BlocksManager.LoadBlocksData(ModsManager.StreamToString(stream));
+                }
+                catch (Exception e)
+                {
+                    LoadingScreen.Warning("<" + modInfo?.PackageName + ">" + e.Message);
+                }
                 stream.Dispose();
             }
         }
@@ -212,7 +219,7 @@ namespace Game {
                 FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
                 if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
                 {
-                    ModsManager.AddException(new InvalidOperationException($"Block type \"{type.FullName}\" does not have static field Index of type int."));
+                    LoadingScreen.Warning($"Block type \"{type.FullName}\" does not have static field Index of type int.");
                 }
                 else
                 {

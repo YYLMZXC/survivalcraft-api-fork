@@ -104,7 +104,14 @@ namespace Game
                 Info("DatabaseManager Initialize");
                 DatabaseManager.Initialize();
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadXdb(ref DatabaseManager.DatabaseNode); });
-                DatabaseManager.LoadDataBaseFromXml(DatabaseManager.DatabaseNode);
+                try
+                {
+                    DatabaseManager.LoadDataBaseFromXml(DatabaseManager.DatabaseNode);
+                }
+                catch (Exception e)
+                {
+                    Warning(e.Message);
+                }
             });
 
             AddLoadAction(delegate { //初始化方块管理器
