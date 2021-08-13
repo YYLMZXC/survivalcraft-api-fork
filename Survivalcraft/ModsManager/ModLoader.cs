@@ -278,8 +278,20 @@ namespace Game
         /// <param name="maxRange"></param>
         /// <param name="maxChaseTime"></param>
         /// <param name="isPersistent"></param>
-        public void CallNearbyCreaturesHelp(ComponentHerdBehavior herdBehavior, ComponentCreature target, float maxRange, float maxChaseTime, bool isPersistent) { }
+        public virtual void CallNearbyCreaturesHelp(ComponentHerdBehavior herdBehavior, ComponentCreature target, float maxRange, float maxChaseTime, bool isPersistent) { }
+        /// <summary>
+        /// 当Project被加载时
+        /// </summary>
+        /// <param name="project"></param>
+        public virtual void OnProjectLoaded(Project project) { 
+        
+        
+        }
+        public virtual void OnProjectDisposed()
+        {
 
+
+        }
         /// <summary>
         /// Mod被卸载时执行
         /// </summary>
