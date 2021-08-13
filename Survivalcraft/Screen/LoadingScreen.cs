@@ -25,7 +25,7 @@ namespace Game
             LogList.ItemWidgetFactory = (obj) => {
                 LogItem logItem = obj as LogItem;
                 CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(Display.Viewport.Width, 40), Margin = new Vector2(0, 2),HorizontalAlignment=WidgetAlignment.Near };
-                FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 1.2f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
+                FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 1f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
                 canvasWidget.Children.Add(fontTextWidget);
                 return canvasWidget;
             };
