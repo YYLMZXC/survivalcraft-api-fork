@@ -410,7 +410,7 @@ namespace Game
                     item.TrailParticleSystem.IsStopped = true;
                 }
                 m_projectiles.Remove(item);
-                HookActions(item, "ProjectileRemoveed");
+                HookActions(item, "ProjectileRemoved");
             }
             m_projectilesToRemove.Clear();
         }
