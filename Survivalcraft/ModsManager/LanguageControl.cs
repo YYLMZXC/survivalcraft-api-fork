@@ -87,13 +87,11 @@ namespace Game
                     }
                     else
                     {
-                        JsonObject keys = new JsonObject();
                         if (node.ContainsKey(item.Key))
                         {
-                            node[item.Key] = keys;
+                            loadJsonLogic(node[item.Key] as JsonObject,item.Value);
                         }
-                        else node.Add(item.Key, keys);
-                        loadJsonLogic(keys, item.Value);
+                        else node.Add(item.Key, item.Value);
                     }
                 }
             }
