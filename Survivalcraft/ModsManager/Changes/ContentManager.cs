@@ -157,6 +157,7 @@ namespace Game
                                     if (contentInfo1.Get(name + ".lst", out Stream stream2))
                                     {
                                         BitmapFont bitmapFont = BitmapFont.Initialize(stream, stream2);
+                                        contentInfo1.obj = bitmapFont;
                                         stream2.Close();
                                         return bitmapFont;
                                     }
@@ -177,6 +178,7 @@ namespace Game
                                     if (contentInfo1.Get(name + ".vsh", out Stream stream2))
                                     {
                                         Shader shader = new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), new ShaderMacro[] { new ShaderMacro(name) });
+                                        contentInfo1.obj = shader;
                                         stream2.Close();
                                         return shader;
                                     }

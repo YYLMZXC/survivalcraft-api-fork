@@ -18,9 +18,9 @@ namespace Game
             public string Message;
             public LogItem(LogType type, string log) { LogType = type; Message = log; }
         }
-        public List<Action> m_loadActions = new List<Action>();
-        public CanvasWidget Canvas = new CanvasWidget();
-        public static ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
+        private List<Action> LoadingActoins = new List<Action>();
+        private CanvasWidget Canvas = new CanvasWidget();
+        private static ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
         static LoadingScreen() {
             LogList.ItemWidgetFactory = (obj) => {
                 LogItem logItem = obj as LogItem;
@@ -73,7 +73,7 @@ namespace Game
             LogList.ScrollToItem(item);
         }
 
-        public void InitActions()
+        private void InitActions()
         {
             AddLoadAction(delegate {//将所有的有效的scmod读取为ModEntity，并自动添加SurvivalCraftModEntity
                 MusicManager.CurrentMix = MusicManager.Mix.Menu;
@@ -156,12 +156,14 @@ namespace Game
                     }
                 }
             });
-
+            AddLoadAction(()=> {
+                ModsManager.ModListAllDo((modEntity) => { Info("Invoke OnScreensManagerInitalized:" + modEntity.modInfo?.PackageName); modEntity.OnLoadingFinished(LoadingActoins); });
+            });
             AddLoadAction(()=> {
                 ScreensManager.SwitchScreen("MainMenu");
             });
         }
-        public void InitScreens() {
+        private void InitScreens() {
 
             AddLoadAction(delegate
             {
@@ -285,14 +287,11 @@ namespace Game
         {
             ScreensManager.AddScreen(name, screen);
         }
-        public void AddLoadAction(Action action)
+        private void AddLoadAction(Action action)
         {
-            m_loadActions.Add(action);
+            LoadingActoins.Add(action);
         }
-        /*public void AddQuequeAction(Action action)
-        {
-            QuequeAction.Add(action);
-        }*/
+
         public override void Leave()
         {
             LogList.ClearItems();
@@ -315,16 +314,16 @@ namespace Game
         }
         public override void Update()
         {
-            if (Input.Back || Input.Cancel) DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, "Quit?", "Ok", "No", (vt) => {
+            if (Input.Back || Input.Cancel) DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, "Quit?", LanguageControl.Ok, LanguageControl.No, (vt) => {
                 if (vt == MessageDialogButton.Button1) System.Environment.Exit(0);
                 else DialogsManager.HideAllDialogs();
             }));
             if (ModsManager.GetAllowContinue() == false) return;
-            if (m_loadActions.Count > 0) {
+            if (LoadingActoins.Count > 0) {
                 try
                 {
-                    m_loadActions[0].Invoke();
-                    m_loadActions.RemoveAt(0);
+                    LoadingActoins[0].Invoke();
+                    LoadingActoins.RemoveAt(0);
                 }
                 catch (Exception e)
                 {

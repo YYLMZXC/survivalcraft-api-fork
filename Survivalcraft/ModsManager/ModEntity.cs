@@ -204,7 +204,6 @@ namespace Game {
                 {
                     var modLoader = Activator.CreateInstance(types[i]) as ModLoader;
                     modLoader.Entity = this;
-                    modLoader.__ModInitialize();
                     ModLoader_ = modLoader;
                     ModsManager.ModLoaders.Add(modLoader);
                 }
@@ -295,12 +294,12 @@ namespace Game {
             if (ModLoader_ != null) ModLoader_.OnBlocksManagerInitalized();
         }
         /// <summary>
-        /// ScreensManager初始化完毕
+        /// LoadingScreen任务执行完毕
         /// </summary>
         /// <param name="loading"></param>
-        public virtual void InitScreens(LoadingScreen loading)
+        public virtual void OnLoadingFinished(List<Action> LoadingActions)
         {
-            if (ModLoader_ != null) ModLoader_.OnScreensManagerInitalized(loading);
+            if (ModLoader_ != null) ModLoader_.OnLoadingFinished(LoadingActions);
 
         }
         //释放资源

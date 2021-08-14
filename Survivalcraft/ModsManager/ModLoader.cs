@@ -132,12 +132,11 @@ namespace Game
         /// </summary>
         /// <param name="xElement"></param>
         public virtual void OnXdbLoad(XElement xElement) { }
-
         /// <summary>
-        /// ScreensManager初始化完成的方法
+        /// LoadingScreen任务结束时
         /// </summary>
-        /// <param name="loadingScreen"></param>
-        public virtual void OnScreensManagerInitalized(LoadingScreen loadingScreen) { }
+        /// <param name="loadingActions"></param>
+        public virtual void OnLoadingFinished(List<System.Action> loadingActions) { }
 
         /// <summary>
         /// 游戏设置数据保存的方法
