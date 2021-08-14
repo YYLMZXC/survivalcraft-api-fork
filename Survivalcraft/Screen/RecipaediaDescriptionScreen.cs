@@ -146,9 +146,9 @@ namespace Game
             {
                 dictionary.Add("Experience Orbs", block.DefaultExperienceCount.ToString());
             }
-            if (block is ClothingBlock)
+            if (block.CanWear(value))
             {
-                ClothingData clothingData = ClothingBlock.GetClothingData(Terrain.ExtractData(value));
+                ClothingData clothingData = block.GetClothingData(value);
                 dictionary.Add("Can Be Dyed", clothingData.CanBeDyed ? LanguageControl.Yes : LanguageControl.No);
                 dictionary.Add("Armor Protection", $"{(int)(clothingData.ArmorProtection * 100f)}%");
                 dictionary.Add("Armor Durability", clothingData.Sturdiness.ToString());

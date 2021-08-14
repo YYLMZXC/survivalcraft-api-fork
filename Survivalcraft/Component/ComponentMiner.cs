@@ -197,7 +197,7 @@ namespace Game
         public bool Place(TerrainRaycastResult raycastResult, int value)
         {
             int num = Terrain.ExtractContents(value);
-            if (BlocksManager.Blocks[num].IsPlaceable)
+            if (BlocksManager.Blocks[num].IsPlaceable_(value))
             {
                 Block block = BlocksManager.Blocks[num];
                 BlockPlacementData placementData = block.GetPlacementValue(m_subsystemTerrain, this, value, raycastResult);

@@ -463,7 +463,8 @@ namespace Game
 
         public static void AddClothingFactor(int clothingValue, ref float clothingFactor, ICollection<Factor> factors)
         {
-            ClothingData clothingData = ClothingBlock.GetClothingData(Terrain.ExtractData(clothingValue));
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(clothingValue)];
+            ClothingData clothingData = block.GetClothingData(clothingValue);
             if (clothingData.MovementSpeedFactor != 1f)
             {
                 clothingFactor *= clothingData.MovementSpeedFactor;

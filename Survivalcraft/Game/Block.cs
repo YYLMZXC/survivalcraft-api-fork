@@ -218,6 +218,16 @@ namespace Game
         {
             return IsAimable;
         }
+        public virtual void Eat(int value,ComponentVitalStats componentVitalStats) { 
+        
+        }
+        public virtual bool CanWear(int value) {
+            return false;
+        }
+        public virtual ClothingData GetClothingData(int value)
+        {
+            return null;
+        }
         public virtual int GetToolLevel(int value) {
             return ToolLevel;
         }

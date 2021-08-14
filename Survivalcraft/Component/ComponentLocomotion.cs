@@ -572,7 +572,8 @@ namespace Game
                         int value2 = m_componentPlayer.ComponentClothing.GetClothes(ClothingSlot.Feet).LastOrDefault();
                         if (Terrain.ExtractContents(value2) == 203)
                         {
-                            flag = (ClothingBlock.GetClothingData(Terrain.ExtractData(value2)).MovementSpeedFactor > 1f);
+                            Block block = BlocksManager.Blocks[Terrain.ExtractContents(value2)];
+                            flag = (block.GetClothingData(value2).MovementSpeedFactor > 1f);
                         }
                         if (!flag && vector2.LengthSquared() / velocity.LengthSquared() > 0.99f && WalkOrder.Value.LengthSquared() > 0.99f)
                         {

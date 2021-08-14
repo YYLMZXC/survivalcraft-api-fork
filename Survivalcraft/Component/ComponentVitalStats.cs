@@ -31,8 +31,6 @@ namespace Game
         public float m_stamina;
 
         public float m_sleep;
-        public static Func<int, bool> Eat1;
-        public static Func<int, bool> Eat2;
 
         public float m_temperature;
 
@@ -132,12 +130,9 @@ namespace Game
 
         public bool Eat(int value)
         {
-            if (Eat1 != null)
-            {
-                return Eat1(value);
-            }
             int num = Terrain.ExtractContents(value);
             Block obj = BlocksManager.Blocks[num];
+            obj.Eat(value, this);
             float num2 = obj.GetNutritionalValue(value);
             float sicknessProbability = obj.GetSicknessProbability(value);
             if (num2 > 0f)
@@ -195,10 +190,6 @@ namespace Game
                 }
                 m_componentPlayer.PlayerStats.FoodItemsEaten++;
                 return true;
-            }
-            if (Eat2 != null)
-            {
-                return Eat2(value);
             }
             return false;
         }

@@ -12,7 +12,7 @@ namespace Game
     {
         public const int Index = 203;
 
-        public static DynamicArray<ClothingData> m_clothingData = new DynamicArray<ClothingData>();
+        public DynamicArray<ClothingData> m_clothingData = new DynamicArray<ClothingData>();
 
         public BlockMesh m_innerMesh;
 
@@ -156,7 +156,16 @@ namespace Game
             num = ((num & -3841) | ((damage & 0xF) << 8));
             return Terrain.ReplaceData(value, num);
         }
-
+        public override bool CanWear(int value)
+        {
+            return true;
+        }
+        public override ClothingData GetClothingData(int value)
+        {
+            int data = Terrain.ExtractData(value);
+            int num = GetClothingIndex(data);
+            return m_clothingData[num];
+        }
         public override IEnumerable<int> GetCreativeValues()
         {
             IEnumerable<ClothingData> enumerable = m_clothingData.OrderBy((ClothingData cd) => cd.DisplayIndex);
@@ -275,12 +284,6 @@ namespace Game
             return (data & -256) | (clothingIndex & 0xFF);
         }
 
-        public static ClothingData GetClothingData(int data)
-        {
-            int num = GetClothingIndex(data);
-            return m_clothingData[num];
-        }
-
         public static int GetClothingColor(int data)
         {
             return (data >> 12) & 0xF;
@@ -299,7 +302,7 @@ namespace Game
         {
             int data = Terrain.ExtractData(value);
             int clothingColor = GetClothingColor(data);
-            ClothingData clothingData = GetClothingData(data);
+            ClothingData clothingData = GetClothingData(value);
             Matrix matrix2 = m_slotTransforms[(int)clothingData.Slot] * Matrix.CreateScale(size) * matrix;
             if (clothingData.IsOuter)
             {
