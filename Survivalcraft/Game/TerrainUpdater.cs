@@ -1094,23 +1094,6 @@ namespace Game
                 {
                     continue;
                 }
-                #region ºöÂÔChunkµÄGeometryÉú³É
-                /*
-                chunk.SliceContentsHashes[i] = CalculateChunkSliceContentsHash(chunk, i);
-                if (terrainChunkSliceGeometry.ContentsHash != 0 && terrainChunkSliceGeometry.ContentsHash == chunk.SliceContentsHashes[i])
-                {
-                    m_statistics.SkippedSlices++;
-                    continue;
-                }
-                m_statistics.GeneratedSlices++;
-                TerrainGeometrySubset[] subsets = terrainChunkSliceGeometry.Subsets;
-                foreach (TerrainGeometrySubset obj in subsets)
-                {
-                    obj.Vertices.Clear();
-                    obj.Indices.Clear();
-                }
-                */
-                #endregion
                 for (int k = num; k < num3; k++)
                 {
                     for (int l = num2; l < num4; l++)
@@ -1146,7 +1129,7 @@ namespace Game
                         {
                             int cellValueFast = chunk.GetCellValueFast(num9 + m);
                             int num10 = Terrain.ExtractContents(cellValueFast);
-                            if (num10 != 0)
+                            if (num10 > 0)
                             {
                                 BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, chunk.Geometry, cellValueFast, num5, m, num6);
                             }

@@ -77,14 +77,12 @@ namespace Game
         private void InitActions()
         {
             AddLoadAction(delegate {//将所有的有效的scmod读取为ModEntity，并自动添加SurvivalCraftModEntity
+                ContentManager.Initialize();
                 MusicManager.CurrentMix = MusicManager.Mix.Menu;
                 ModsManager.Initialize();            
             });
             AddLoadAction(delegate {//检查所有Mod依赖项 
                 ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });            
-            });
-            AddLoadAction(delegate { //初始化所有ModEntity的资源包
-                //ModsManager.ModListAllDo((modEntity) => { modEntity.InitResources(); });
             });
             AddLoadAction(delegate { //初始化所有ModEntity的语言包
                 LanguageControl.Initialize(ModsManager.modSettings.languageType);

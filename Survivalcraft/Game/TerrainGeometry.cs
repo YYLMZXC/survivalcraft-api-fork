@@ -105,6 +105,8 @@ namespace Game
 
         public bool AllInOne = false;
 
+        public bool Changed = false;
+
         public TerrainGeometry(bool AllInOne=false)
         {
             this.AllInOne = AllInOne;
@@ -133,32 +135,10 @@ namespace Game
             {
                 if (IndicesPosition > 0)
                 {
-                    for (int j = 0; j < geometry[i].Indices.Count; j+=3)
+                    for (int j = 0; j < geometry[i].Indices.Count; j++)
                     {
-                        TerrainGeometrySubset subset = geometry[i];
-                        /*
-                        Vector3 v1 = new Vector3(subset.Vertices[subset.Indices[j]].X, subset.Vertices[subset.Indices[j]].Y, subset.Vertices[subset.Indices[j]].Z);
-                        Vector3 v2 = new Vector3(subset.Vertices[subset.Indices[j+1]].X, subset.Vertices[subset.Indices[j+1]].Y, subset.Vertices[subset.Indices[j+1]].Z);
-                        Vector3 v3 = new Vector3(subset.Vertices[subset.Indices[j+2]].X, subset.Vertices[subset.Indices[j+2]].Y, subset.Vertices[subset.Indices[j+2]].Z);
-                        //计算面的法线
-                        Vector3 normal = ModsManager.Cal_Normal_3D(v1, v2, v3);
-                        TerrainVertex vertex1 = subset.Vertices[subset.Indices[j]];
-                        TerrainVertex vertex2 = subset.Vertices[subset.Indices[j+1]];
-                        TerrainVertex vertex3 = subset.Vertices[subset.Indices[j+2]];
-                        vertex1.Normal = normal;
-                        vertex2.Normal = normal;
-                        vertex3.Normal = normal;
-                        subset.Vertices[subset.Indices[j]] = vertex1;
-                        subset.Vertices[subset.Indices[j + 1]] = vertex2;
-                        subset.Vertices[subset.Indices[j + 2]] = vertex3;
-                        */
-                        //批量修改Indices
-                        subset.Indices[j] += (ushort)(VerticesPosition);
-                        subset.Indices[j + 1] += (ushort)(VerticesPosition);
-                        subset.Indices[j + 2] += (ushort)(VerticesPosition);
-
+                        geometry[i].Indices[j] += (ushort)(VerticesPosition);
                     }
-
                 }
                 buffer.VertexBuffer.SetData(geometry[i].Vertices.Array, 0, geometry[i].Vertices.Count, VerticesPosition);
                 buffer.IndexBuffer.SetData(geometry[i].Indices.Array, 0, geometry[i].Indices.Count, IndicesPosition);
@@ -173,13 +153,17 @@ namespace Game
         }
 
         public void Compile() {
-            Dispose();
-            foreach (var item in GeometrySubsets)
-            {
-                if (CompileVertexAndIndex(item.Value.Subsets, item.Key, out DrawBuffer buffer))
+            if (Changed) {
+                Dispose();
+                foreach (var item in GeometrySubsets)
                 {
-                    DrawBuffers.Add(buffer);
+                    if (CompileVertexAndIndex(item.Value.Subsets, item.Key, out DrawBuffer buffer))
+                    {
+                        DrawBuffers.Add(buffer);
+                    }
                 }
+                GeometrySubsets.Clear();
+                Changed = false;
             }
         }
 
@@ -199,6 +183,7 @@ namespace Game
 
         public TerrainChunkSliceGeometry GetGeometry(Texture2D texture=null)
         {
+            Changed = true;
             if (GeometrySubsets.TryGetValue(texture, out TerrainChunkSliceGeometry subset) == false)
             {
                 subset = new TerrainChunkSliceGeometry(AllInOne);

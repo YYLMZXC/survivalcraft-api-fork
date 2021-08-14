@@ -87,8 +87,7 @@ namespace Game
                 SettingsManager.Initialize();
                 AnalyticsManager.Initialize();
                 VersionsManager.Initialize();
-                ExternalContentManager.Initialize();
-                ContentManager.Initialize();
+                ExternalContentManager.Initialize();                
                 ScreensManager.Initialize();
                 Log.Information("Program Initialize Success");
             }

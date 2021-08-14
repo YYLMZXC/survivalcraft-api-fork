@@ -15,6 +15,7 @@ namespace Game
             Stream stream = Storage.OpenFile("app:Content.zip",OpenFileMode.Read);
             MemoryStream memoryStream = new MemoryStream();
             stream.CopyTo(memoryStream);
+            stream.Close();
             memoryStream.Position = 0L;
             ModArchive = ZipArchive.Open(memoryStream, true);
             InitResources();
