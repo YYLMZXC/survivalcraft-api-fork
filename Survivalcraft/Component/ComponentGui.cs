@@ -5,7 +5,7 @@ using TemplatesDatabase;
 
 namespace Game
 {
-    public class ComponentGui : Component, IUpdateable
+    public class ComponentGui : Component, IUpdateable,IDrawable
     {
         public class ModalPanelAnimationData
         {
@@ -212,6 +212,8 @@ namespace Game
         }
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
+
+        public int[] DrawOrders => new int[] { 9 };
 
         public void DisplayLargeMessage(string largeText, string smallText, float duration, float delay)
         {
@@ -773,6 +775,11 @@ namespace Game
                 }
             }
             return false;
+        }
+
+        public void Draw(Camera camera, int drawOrder)
+        {
+            ModsManager.HookAction("GuiDraw",(modloader)=> { modloader.GuiDraw(this,camera,drawOrder); return false; });
         }
     }
 }

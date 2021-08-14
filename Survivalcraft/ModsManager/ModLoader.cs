@@ -292,6 +292,16 @@ namespace Game
 
         }
         /// <summary>
+        /// GuiDraw
+        /// </summary>
+        /// <param name="componentGui"></param>
+        /// <param name="camera"></param>
+        /// <param name="drawOrder"></param>
+        public virtual void GuiDraw(ComponentGui componentGui, Camera camera, int drawOrder)
+        {
+
+        }
+        /// <summary>
         /// Mod被卸载时执行
         /// </summary>
         public virtual void Dispose()
