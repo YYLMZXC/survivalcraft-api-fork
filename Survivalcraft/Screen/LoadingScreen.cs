@@ -19,6 +19,7 @@ namespace Game
             public LogItem(LogType type, string log) { LogType = type; Message = log; }
         }
         private List<Action> LoadingActoins = new List<Action>();
+        private List<Action> ModLoadingActoins = new List<Action>();
         private CanvasWidget Canvas = new CanvasWidget();
         private static ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
         static LoadingScreen() {
@@ -157,7 +158,7 @@ namespace Game
                 }
             });
             AddLoadAction(()=> {
-                ModsManager.ModListAllDo((modEntity) => { Info("Invoke OnScreensManagerInitalized:" + modEntity.modInfo?.PackageName); modEntity.OnLoadingFinished(LoadingActoins); });
+                ModsManager.ModListAllDo((modEntity) => { Info("Invoke OnLoadingFinished:" + modEntity.modInfo?.PackageName); modEntity.OnLoadingFinished(ModLoadingActoins); });
             });
             AddLoadAction(()=> {
                 ScreensManager.SwitchScreen("MainMenu");
@@ -315,19 +316,35 @@ namespace Game
         public override void Update()
         {
             if (Input.Back || Input.Cancel) DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, "Quit?", LanguageControl.Ok, LanguageControl.No, (vt) => {
-                if (vt == MessageDialogButton.Button1) System.Environment.Exit(0);
+                if (vt == MessageDialogButton.Button1) Environment.Exit(0);
                 else DialogsManager.HideAllDialogs();
             }));
             if (ModsManager.GetAllowContinue() == false) return;
-            if (LoadingActoins.Count > 0) {
+            if (ModLoadingActoins.Count > 0)
+            {
                 try
                 {
-                    LoadingActoins[0].Invoke();
-                    LoadingActoins.RemoveAt(0);
+                    ModLoadingActoins[0].Invoke();
+                    ModLoadingActoins.RemoveAt(0);
                 }
                 catch (Exception e)
                 {
                     ModsManager.AddException(e, false);
+                }
+
+            }
+            else {
+                if (LoadingActoins.Count > 0)
+                {
+                    try
+                    {
+                        LoadingActoins[0].Invoke();
+                        LoadingActoins.RemoveAt(0);
+                    }
+                    catch (Exception e)
+                    {
+                        ModsManager.AddException(e, false);
+                    }
                 }
             }
         }
