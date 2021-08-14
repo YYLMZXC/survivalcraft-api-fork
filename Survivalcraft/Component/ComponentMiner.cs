@@ -136,7 +136,7 @@ namespace Game
                 m_digStartTime = m_subsystemTime.GameTime;
                 DigCellFace = cellFace;
             }
-            float num3 = CalculateDigTime(cellValue, num2);
+            float num3 = CalculateDigTime(cellValue, activeBlockValue);
             m_digProgress = ((num3 > 0f) ? MathUtils.Saturate((float)(m_subsystemTime.GameTime - m_digStartTime) / num3) : 1f);
             if (!CanUseTool(activeBlockValue))
             {
