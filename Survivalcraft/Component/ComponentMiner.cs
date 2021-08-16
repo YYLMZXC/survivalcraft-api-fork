@@ -230,7 +230,7 @@ namespace Game
                         }
                         if (!flag)
                         {
-                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(placementData.Value));
+                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(placementData.Value);
                             for (int i = 0; i < blockBehaviors.Length; i++)
                             {
                                 blockBehaviors[i].OnItemPlaced(num2, num3, num4, ref placementData, value);
@@ -260,7 +260,7 @@ namespace Game
                 Poke(forceRestart: false);
                 return false;
             }
-            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num);
+            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(ActiveBlockValue);
             for (int i = 0; i < blockBehaviors.Length; i++)
             {
                 if (blockBehaviors[i].OnUse(ray, this))
@@ -274,8 +274,7 @@ namespace Game
 
         public bool Interact(TerrainRaycastResult raycastResult)
         {            
-            int cellContents = m_subsystemTerrain.Terrain.GetCellContents(raycastResult.CellFace.X, raycastResult.CellFace.Y, raycastResult.CellFace.Z);
-            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(cellContents);
+            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(raycastResult.Value);
             for (int i = 0; i < blockBehaviors.Length; i++)
             {
                 if (blockBehaviors[i].OnInteract(raycastResult, this))
@@ -372,7 +371,7 @@ namespace Game
                     Poke(forceRestart: false);
                     return true;
                 }
-                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num);
+                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(ActiveBlockValue);
                 for (int i = 0; i < blockBehaviors.Length; i++)
                 {
                     if (blockBehaviors[i].OnAim(aim, this, state))

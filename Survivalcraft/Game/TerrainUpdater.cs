@@ -1231,7 +1231,7 @@ namespace Game
                         int num3 = Terrain.ExtractContents(cellValueFast);
                         if (num3 != 0)
                         {
-                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num3);
+                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(cellValueFast);
                             for (int k = 0; k < blockBehaviors.Length; k++)
                             {
                                 blockBehaviors[k].OnBlockGenerated(cellValueFast, x, num2, z, isLoaded);

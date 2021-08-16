@@ -41,7 +41,7 @@ namespace Game
             if (!m_projectiles.ContainsKey(projectile))
             {
                 int num = Terrain.ExtractContents(projectile.Value);
-                if (m_subsystemBlockBehaviors.GetBlockBehaviors(num).Contains(this))
+                if (m_subsystemBlockBehaviors.GetBlockBehaviors(projectile.Value).Contains(this))
                 {
                     m_projectiles.Add(projectile, value: true);
                     projectile.ProjectileStoppedAction = ProjectileStoppedAction.DoNothing;

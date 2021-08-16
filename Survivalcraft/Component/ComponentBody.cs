@@ -709,7 +709,7 @@ namespace Game
                 int num3 = Terrain.ExtractContents(pushingCollisionBox.BlockValue);
                 if (BlocksManager.Blocks[num3].HasCollisionBehavior_(pushingCollisionBox.BlockValue))
                 {
-                    SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num3);
+                    SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(pushingCollisionBox.BlockValue);
                     for (int i = 0; i < blockBehaviors.Length; i++)
                     {
                         Vector3 vector = (pushingCollisionBox.Box.Min + pushingCollisionBox.Box.Max) / 2f;

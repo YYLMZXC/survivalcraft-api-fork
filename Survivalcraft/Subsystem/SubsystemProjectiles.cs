@@ -109,7 +109,7 @@ namespace Game
             if (!m_subsystemTerrain.Raycast(position, end, useInteractionBoxes: false, skipAirBlocks: true, (int testValue, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(testValue)].IsCollidable_(testValue)).HasValue)
             {
                 Projectile projectile = AddProjectile(value, vector, velocity, angularVelocity, owner);
-                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num);
+                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(value);
                 for (int i = 0; i < blockBehaviors.Length; i++)
                 {
                     blockBehaviors[i].OnFiredAsProjectile(projectile);
@@ -221,7 +221,7 @@ namespace Game
                         {
                             CellFace? cellFace = terrainRaycastResult.HasValue ? new CellFace?(terrainRaycastResult.Value.CellFace) : null;
                             ComponentBody componentBody = bodyRaycastResult.HasValue ? bodyRaycastResult.Value.ComponentBody : null;
-                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(projectile.Value));
+                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(projectile.Value);
                             for (int i = 0; i < blockBehaviors.Length; i++)
                             {
                                 flag |= blockBehaviors[i].OnHitAsProjectile(cellFace, componentBody, projectile);
@@ -255,7 +255,7 @@ namespace Game
                             int num = Terrain.ExtractContents(cellValue);
                             Block block2 = BlocksManager.Blocks[num];
                             float num2 = projectile.Velocity.Length();
-                            SubsystemBlockBehavior[] blockBehaviors2 = m_subsystemBlockBehaviors.GetBlockBehaviors(num);
+                            SubsystemBlockBehavior[] blockBehaviors2 = m_subsystemBlockBehaviors.GetBlockBehaviors(cellValue);
                             for (int j = 0; j < blockBehaviors2.Length; j++)
                             {
                                 blockBehaviors2[j].OnHitByProjectile(cellFace2, projectile);

@@ -640,8 +640,7 @@ namespace Game
             {
                 Point3 value = m_componentPlayer.ComponentBlockHighlight.NearbyEditableCell.Value;
                 int cellValue = m_subsystemTerrain.Terrain.GetCellValue(value.X, value.Y, value.Z);
-                int contents = Terrain.ExtractContents(cellValue);
-                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(contents);
+                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(cellValue);
                 for (int i = 0; i < blockBehaviors.Length && !blockBehaviors[i].OnEditBlock(value.X, value.Y, value.Z, cellValue, m_componentPlayer); i++)
                 {
                 }
@@ -656,7 +655,7 @@ namespace Game
                     int num = Terrain.ExtractContents(value);
                     if (BlocksManager.Blocks[num].IsEditable_(value))
                     {
-                        SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num);
+                        SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(value);
                         for (int i = 0; i < blockBehaviors.Length && !blockBehaviors[i].OnEditInventoryItem(inventory, activeSlotIndex, m_componentPlayer); i++)
                         {
                         }

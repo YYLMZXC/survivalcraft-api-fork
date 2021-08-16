@@ -476,7 +476,7 @@ namespace Game
             {
                 int cellValue = m_subsystemTerrain.Terrain.GetCellValue(item2.Key.X, item2.Key.Y, item2.Key.Z);
                 int num6 = Terrain.ExtractContents(cellValue);
-                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num6);
+                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(cellValue);
                 if (blockBehaviors.Length != 0)
                 {
                     for (int i = 0; i < blockBehaviors.Length; i++)

@@ -175,7 +175,7 @@ namespace Game
             int slotValue = GetSlotValue(slotIndex);
             if (slotCount > 0 && slotValue != 0)
             {
-                SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
+                SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(slotValue);
                 for (int i = 0; i < blockBehaviors.Length; i++)
                 {
                     int processInventoryItemCapacity = blockBehaviors[i].GetProcessInventoryItemCapacity(this, slotIndex, value);
@@ -206,7 +206,7 @@ namespace Game
             int slotValue = GetSlotValue(slotIndex);
             if (slotCount > 0 && slotValue != 0)
             {
-                SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(Terrain.ExtractContents(slotValue));
+                SubsystemBlockBehavior[] blockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true).GetBlockBehaviors(slotValue);
                 foreach (SubsystemBlockBehavior subsystemBlockBehavior in blockBehaviors)
                 {
                     int processInventoryItemCapacity = subsystemBlockBehavior.GetProcessInventoryItemCapacity(this, slotIndex, value);
