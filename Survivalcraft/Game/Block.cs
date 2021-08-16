@@ -197,6 +197,19 @@ namespace Game
                 throw new InvalidOperationException(string.Format(LanguageControl.Get(fName, 1), DefaultDisplayName));
             }
         }
+        public List<SubsystemBlockBehavior> GetBehaviors(GameEntitySystem.Project project, int value) {
+            List<SubsystemBlockBehavior> behaviors = new List<SubsystemBlockBehavior>();
+            string[] array = Behaviors.Split(new char[1]
+                {
+                    ','
+                }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string text in array)
+            {
+                SubsystemBlockBehavior item = project.FindSubsystem<SubsystemBlockBehavior>(text.Trim(), throwOnError: true);
+                behaviors.Add(item);
+            }
+            return behaviors;
+        }
         public virtual int PlayerLevelRequired_(int value) {
             return PlayerLevelRequired;
         }

@@ -80,13 +80,13 @@ namespace GameEntitySystem
 					AddEntities(entities);
 				}
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 				try
 				{
 					Dispose();
 				}
-				catch (Exception)
+				catch (Exception e2)
 				{
 				}
 				throw;

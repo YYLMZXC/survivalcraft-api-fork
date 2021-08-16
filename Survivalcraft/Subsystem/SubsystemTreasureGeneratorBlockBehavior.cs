@@ -25,7 +25,6 @@ namespace Game
         {
             190
         };
-
         public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
         {
             int cellContents = SubsystemTerrain.Terrain.GetCellContents(neighborX, neighborY, neighborZ);
@@ -54,6 +53,10 @@ namespace Game
                     break;
                 }
             }
+            ModsManager.HookAction("OnTreasureGenerate", (modLoader) => {
+                modLoader.OnTreasureGenerate(SubsystemTerrain,x, y, z, neighborX, neighborY, neighborZ, ref num, ref num2, out bool IsGenerate);
+                return IsGenerate;
+            });
             if (num != 0 && num2 > 0)
             {
                 for (int j = 0; j < num2; j++)

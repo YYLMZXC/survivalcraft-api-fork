@@ -43,6 +43,7 @@ namespace Game
         public override void SetModel(Model model)
         {
             base.SetModel(model);
+            if (IsSet) return;
             if (MeshDrawOrders.Length != 4)
             {
                 throw new InvalidOperationException("Invalid number of meshes in OuterClothing model.");

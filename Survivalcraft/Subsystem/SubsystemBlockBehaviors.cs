@@ -14,40 +14,14 @@ namespace Game
 
         public ReadOnlyList<SubsystemBlockBehavior> BlockBehaviors => new ReadOnlyList<SubsystemBlockBehavior>(m_blockBehaviors);
 
-        public SubsystemBlockBehavior[] GetBlockBehaviors(int contents)
+        public SubsystemBlockBehavior[] GetBlockBehaviors(int value)
         {
-            return m_blockBehaviorsByContents[contents];
+            return BlocksManager.Blocks[Terrain.ExtractContents(value)].GetBehaviors(Project,value).ToArray();
         }
-
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            m_blockBehaviorsByContents = new SubsystemBlockBehavior[BlocksManager.Blocks.Length][];
-            var dictionary = new Dictionary<int, List<SubsystemBlockBehavior>>();
-            for (int i = 0; i < m_blockBehaviorsByContents.Length; i++)
-            {
-                dictionary[i] = new List<SubsystemBlockBehavior>();
-                string[] array = BlocksManager.Blocks[i].Behaviors.Split(new char[1]
-                {
-                    ','
-                }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string text in array)
-                {
-                    SubsystemBlockBehavior item = Project.FindSubsystem<SubsystemBlockBehavior>(text.Trim(), throwOnError: true);
-                    dictionary[i].Add(item);
-                }
-            }
-            foreach (SubsystemBlockBehavior item2 in Project.FindSubsystems<SubsystemBlockBehavior>())
-            {
-                m_blockBehaviors.Add(item2);
-                int[] handledBlocks = item2.HandledBlocks;
-                foreach (int key in handledBlocks)
-                {
-                    dictionary[key].Add(item2);
-                }
-            }
-            for (int k = 0; k < m_blockBehaviorsByContents.Length; k++)
-            {
-                m_blockBehaviorsByContents[k] = dictionary[k].ToArray();
+            foreach (var subsystem in Project.Subsystems) {
+                if (subsystem is SubsystemBlockBehavior) m_blockBehaviors.Add(subsystem as SubsystemBlockBehavior);
             }
         }
     }

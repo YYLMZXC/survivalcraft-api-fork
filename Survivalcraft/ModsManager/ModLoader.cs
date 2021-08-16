@@ -45,7 +45,9 @@ namespace Game
             Applied = false;
             return attackPower;
         }
-
+        public virtual void OnComponentModelSetModel(ComponentModel componentModel, Model model,out bool IsSet) {
+            IsSet = false;
+        }
         /// <summary>
         /// 初始化自然生成生物列表
         /// </summary>
@@ -299,6 +301,17 @@ namespace Game
         /// <param name="drawOrder"></param>
         public virtual void GuiDraw(ComponentGui componentGui, Camera camera, int drawOrder)
         {
+
+        }
+        /// <summary>
+        /// 挖掘触发宝物生成时，注意这里能获取到上个Mod生成宝物的情况
+        /// </summary>
+        /// <param name="BlockValue">宝物的方块值</param>
+        /// <param name="Count">宝物数量</param>
+        /// <param name="IsGenerate">是否继续让其它Mod处理</param>
+        public virtual void OnTreasureGenerate(SubsystemTerrain subsystemTerrain, int x, int y, int z, int neighborX, int neighborY, int neighborZ, ref int BlockValue, ref int Count, out bool IsGenerate)
+        {
+            IsGenerate = false;
 
         }
         /// <summary>

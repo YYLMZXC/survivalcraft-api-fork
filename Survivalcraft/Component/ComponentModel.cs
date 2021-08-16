@@ -10,6 +10,8 @@ namespace Game
     {
         public SubsystemSky m_subsystemSky;
 
+        public bool IsSet;
+
         public ComponentFrame m_componentFrame;
 
         public Model m_model;
@@ -151,6 +153,11 @@ namespace Game
 
         public virtual void SetModel(Model model)
         {
+            ModsManager.HookAction("OnComponentModelSetModel", (modLoader) => {
+                modLoader.OnComponentModelSetModel(this, model, out IsSet);
+                return IsSet;
+            });
+            if (IsSet) return;
             m_model = model;
             if (m_model != null)
             {
