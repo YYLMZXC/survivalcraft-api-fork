@@ -239,10 +239,10 @@ namespace Game
         {
             return ProjectileStickProbability;
         }
-        public bool MatchCrafingId(string CraftId) {
+        public virtual bool MatchCrafingId(string CraftId) {
             return CraftId == CraftingId;
         }
-        public List<SubsystemBlockBehavior> GetBehaviors(GameEntitySystem.Project project, int value) {
+        public virtual List<SubsystemBlockBehavior> GetBehaviors(GameEntitySystem.Project project, int value) {
             List<SubsystemBlockBehavior> behaviors = new List<SubsystemBlockBehavior>();
             string[] array = Behaviors.Split(new char[1]
                 {
