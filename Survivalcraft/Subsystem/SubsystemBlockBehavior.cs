@@ -20,6 +20,7 @@ namespace Game
 
         public virtual void OnChunkInitialized(TerrainChunk chunk)
         {
+
         }
 
         public virtual void OnChunkDiscarding(TerrainChunk chunk)

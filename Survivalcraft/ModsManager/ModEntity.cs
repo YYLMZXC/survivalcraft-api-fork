@@ -19,7 +19,8 @@ namespace Game {
         public Dictionary<string, ZipArchiveEntry> ModFiles = new Dictionary<string, ZipArchiveEntry>();
         public List<Block> Blocks = new List<Block>();
         public bool IsChecked;
-        public ModLoader ModLoader_;
+        public ModLoader Loader { get { return ModLoader_; } set { ModLoader_ = value; } }
+        private ModLoader ModLoader_;
         public ModEntity() { }
         public ModEntity(ZipArchive zipArchive)
         {
@@ -150,9 +151,9 @@ namespace Game {
                 ModsManager.CombineDataBase(xElement, stream);
                 stream.Dispose();
             }
-            if (ModLoader_ != null)
+            if (Loader != null)
             {
-                ModLoader_.OnXdbLoad(xElement);
+                Loader.OnXdbLoad(xElement);
             }
         }
         /// <summary>
@@ -204,7 +205,8 @@ namespace Game {
                 {
                     var modLoader = Activator.CreateInstance(types[i]) as ModLoader;
                     modLoader.Entity = this;
-                    ModLoader_ = modLoader;
+                    Loader = modLoader;
+                    modLoader.__ModInitialize();
                     ModsManager.ModLoaders.Add(modLoader);
                 }
                 if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
@@ -274,7 +276,7 @@ namespace Game {
         /// <param name="xElement"></param>
         public virtual void SaveSettings(XElement xElement)
         {
-            if (ModLoader_ != null) ModLoader_.SaveSettings(xElement);
+            if (Loader != null) Loader.SaveSettings(xElement);
 
         }
         /// <summary>
@@ -283,7 +285,7 @@ namespace Game {
         /// <param name="xElement"></param>
         public virtual void LoadSettings(XElement xElement)
         {
-            if (ModLoader_ != null) ModLoader_.LoadSettings(xElement);
+            if (Loader != null) Loader.LoadSettings(xElement);
         }
         /// <summary>
         /// BlocksManager初始化完毕
@@ -291,7 +293,7 @@ namespace Game {
         /// <param name="categories"></param>
         public virtual void OnBlocksInitalized()
         {
-            if (ModLoader_ != null) ModLoader_.OnBlocksManagerInitalized();
+            if (Loader != null) Loader.OnBlocksManagerInitalized();
         }
         /// <summary>
         /// LoadingScreen任务执行完毕
@@ -299,12 +301,12 @@ namespace Game {
         /// <param name="loading"></param>
         public virtual void OnLoadingFinished(List<Action> LoadingActions)
         {
-            if (ModLoader_ != null) ModLoader_.OnLoadingFinished(LoadingActions);
+            if (Loader != null) Loader.OnLoadingFinished(LoadingActions);
 
         }
         //释放资源
         public virtual void Dispose() {
-            try { if (ModLoader_ != null) ModLoader_.Dispose(); } catch { }
+            try { if (Loader != null) Loader.Dispose(); } catch { }
             ModArchive?.ZipFileStream.Close();
         }
     }

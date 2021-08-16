@@ -180,7 +180,7 @@ namespace Game
             m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
             m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
             m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
-            m_componentCreature.ComponentHealth.Hook("Attacked", ModsManager.SurvivalCrafModEntity.ModLoader_, delegate (ComponentCreature attacker) {
+            m_componentCreature.ComponentHealth.Hook("Attacked", ModsManager.SurvivalCrafModEntity.Loader, delegate (ComponentCreature attacker) {
                 if (DeathPhase == 0f && m_componentCreature.ComponentHealth.Health == 0f)
                 {
                     DeathCauseOffset = attacker.ComponentBody.BoundingBox.Center() - m_componentCreature.ComponentBody.BoundingBox.Center();

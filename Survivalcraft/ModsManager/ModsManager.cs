@@ -153,7 +153,7 @@ public static class ModsManager
         ModEntity modEntity = ModList.Find(p => p.modInfo.PackageName == packageName);
         if (ModHooks.TryGetValue(HookName, out ModHook modHook))
         {
-            modHook.Disable(from, modEntity.ModLoader_, reason);
+            modHook.Disable(from, modEntity.Loader, reason);
         }
     }
 

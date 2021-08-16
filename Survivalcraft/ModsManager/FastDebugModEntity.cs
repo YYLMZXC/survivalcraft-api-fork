@@ -108,7 +108,7 @@ namespace Game
                     ModsManager.CombineDataBase(xElement, Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
                 }
             }
-            ModLoader_?.OnXdbLoad(xElement);
+            Loader?.OnXdbLoad(xElement);
         }
 
         /// <summary>

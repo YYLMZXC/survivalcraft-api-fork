@@ -95,10 +95,6 @@ namespace Game
                 Info("TextureAtlas Initialize");
                 TextureAtlasManager.Initialize();
             });
-            AddLoadAction(delegate { //执行所有ModEntity的ModInitialize方法
-                ModsManager.ModListAllDo((modEntity) => { modEntity.ModInitialize(); });
-            });
-
             AddLoadAction(delegate { //初始化Database
                 Info("DatabaseManager Initialize");
                 DatabaseManager.Initialize();

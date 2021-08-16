@@ -115,7 +115,7 @@ namespace Game
             HerdName = valuesDictionary.GetValue<string>("HerdName");
             m_herdingRange = valuesDictionary.GetValue<float>("HerdingRange");
             m_autoNearbyCreaturesHelp = valuesDictionary.GetValue<bool>("AutoNearbyCreaturesHelp");
-            m_componentCreature.ComponentHealth.Hook("Attacked",ModsManager.SurvivalCrafModEntity.ModLoader_,delegate(ComponentCreature attacker) {
+            m_componentCreature.ComponentHealth.Hook("Attacked",ModsManager.SurvivalCrafModEntity.Loader, delegate(ComponentCreature attacker) {
                 CallNearbyCreaturesHelp(attacker, 20f, 30f, isPersistent: false);
             });
             m_stateMachine.AddState("Inactive", null, delegate
