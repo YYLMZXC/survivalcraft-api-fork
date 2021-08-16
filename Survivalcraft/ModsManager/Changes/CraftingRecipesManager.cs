@@ -216,6 +216,7 @@ namespace Game
                 return flag2;
             });
             if (flag2) return result;
+            if (actualIngredients.Length > 9) return false;
             string[] array = new string[9];
             for (int i = 0; i < 2; i++)
             {
