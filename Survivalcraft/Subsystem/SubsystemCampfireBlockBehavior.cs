@@ -172,9 +172,9 @@ namespace Game
                 {
                     return ResizeCampfire(x, y, z, -1, playSound: true);
                 }
-                if (block.FuelHeatLevel > 0f)
+                if (block.GetFuelHeatLevel(value) > 0f)
                 {
-                    float num2 = count * MathUtils.Min(block.FuelFireDuration, 20f) / 5f;
+                    float num2 = count * MathUtils.Min(block.GetFuelFireDuration(value), 20f) / 5f;
                     int num3 = (int)num2;
                     float num4 = num2 - num3;
                     if (m_random.Float(0f, 1f) < num4)

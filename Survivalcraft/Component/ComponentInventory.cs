@@ -70,7 +70,7 @@ namespace Game
             {
                 return 0;
             }
-            return BlocksManager.Blocks[Terrain.ExtractContents(value)].MaxStacking;
+            return BlocksManager.Blocks[Terrain.ExtractContents(value)].GetMaxStacking(value);
         }
     }
 }

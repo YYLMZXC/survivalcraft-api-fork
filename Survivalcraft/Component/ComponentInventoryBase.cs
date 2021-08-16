@@ -172,7 +172,7 @@ namespace Game
         {
             if (slotIndex >= 0 && slotIndex < m_slots.Count)
             {
-                return BlocksManager.Blocks[Terrain.ExtractContents(value)].MaxStacking;
+                return BlocksManager.Blocks[Terrain.ExtractContents(value)].GetMaxStacking(value);
             }
             return 0;
         }

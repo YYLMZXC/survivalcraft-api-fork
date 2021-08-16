@@ -76,16 +76,16 @@ namespace Game
             var dictionary = new Dictionary<string, string>();
             int num = Terrain.ExtractContents(value);
             Block block = BlocksManager.Blocks[num];
-            if (block.DefaultEmittedLightAmount > 0)
+            if (block.GetEmittedLightAmount(value) > 0)
             {
-                dictionary.Add("Luminosity", block.DefaultEmittedLightAmount.ToString());
+                dictionary.Add("Luminosity", block.GetEmittedLightAmount(value).ToString());
             }
-            if (block.FuelFireDuration > 0f)
+            if (block.GetFuelFireDuration(value) > 0f)
             {
-                dictionary.Add("Fuel Value", block.FuelFireDuration.ToString());
+                dictionary.Add("Fuel Value", block.GetFuelFireDuration(value).ToString());
             }
-            dictionary.Add("Is Stackable", (block.MaxStacking > 1) ? string.Format(LanguageControl.Get(fName, 1), block.MaxStacking.ToString()) : LanguageControl.No);
-            dictionary.Add("Is Flammable", (block.FireDuration > 0f) ? LanguageControl.Yes : LanguageControl.No);
+            dictionary.Add("Is Stackable", (block.GetMaxStacking(value) > 1) ? string.Format(LanguageControl.Get(fName, 1), block.GetMaxStacking(value).ToString()) : LanguageControl.No);
+            dictionary.Add("Is Flammable", (block.GetFireDuration(value) > 0f) ? LanguageControl.Yes : LanguageControl.No);
             if (block.GetNutritionalValue(value) > 0f)
             {
                 dictionary.Add("Nutrition", block.GetNutritionalValue(value).ToString());

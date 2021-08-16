@@ -63,7 +63,7 @@ namespace Game
         {
             int num = Terrain.ExtractContents(worldItem.Value);
             Block block = BlocksManager.Blocks[num];
-            Press(1f * block.Density);
+            Press(1f * block.GetDensity(worldItem.Value));
         }
 
         public static float PressureToVoltage(float pressure)

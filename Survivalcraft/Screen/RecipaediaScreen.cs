@@ -124,9 +124,9 @@ namespace Game
             string text = m_categories[m_categoryIndex];
             m_blocksList.ScrollPosition = 0f;
             m_blocksList.ClearItems();
-            foreach (Block item in BlocksManager.Blocks.OrderBy((Block b) => b.DisplayOrder))
+            foreach (Block item in BlocksManager.Blocks)
             {
-                foreach (int creativeValue in item.GetCreativeValues())
+                foreach (int creativeValue in item.GetCreativeValues().OrderBy((int v) => item.GetDisplayOrder(v)))
                 {
                     if (text == null || item.GetCategory(creativeValue) == text)
                     {

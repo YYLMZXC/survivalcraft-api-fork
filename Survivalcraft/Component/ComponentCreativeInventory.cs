@@ -89,9 +89,9 @@ namespace Game
             {
                 m_slots.Add(0);
             }
-            foreach (Block item in BlocksManager.Blocks.OrderBy((Block b) => b.DisplayOrder))
+            foreach (Block item in BlocksManager.Blocks)
             {
-                foreach (int creativeValue in item.GetCreativeValues())
+                foreach (int creativeValue in item.GetCreativeValues().OrderBy((int v) => item.GetDisplayOrder(v)))
                 {
                     m_slots.Add(creativeValue);
                 }

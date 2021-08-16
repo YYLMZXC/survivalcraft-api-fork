@@ -186,7 +186,10 @@ namespace Game
         {
             new BoundingBox(Vector3.Zero, Vector3.One)
         };
-
+        public virtual float GetDensity(int value)
+        {
+            return Density;
+        }
         public virtual float GetFirstPersonScale(int value) {
             return FirstPersonScale;
         }
@@ -196,6 +199,45 @@ namespace Game
             {
                 throw new InvalidOperationException(string.Format(LanguageControl.Get(fName, 1), DefaultDisplayName));
             }
+        }
+        public virtual bool GetIsDiggingTransparent(int value)
+        {
+            return IsDiggingTransparent;
+        }
+
+        public virtual float GetObjectShadowStrength(int value)
+        {
+            return ObjectShadowStrength;
+        }
+
+        public virtual float GetFuelHeatLevel(int value)
+        {
+            return FuelHeatLevel;
+        }
+
+        public virtual float GetExplosionResilience(int value)
+        {
+            return ExplosionResilience;
+        }
+        public virtual float GetExplosionPressure(int value)
+        {
+            return DefaultExplosionPressure;
+        }
+        public virtual int GetMaxStacking(int value) {
+            return MaxStacking;
+        }
+        public virtual float GetFuelFireDuration(int value)
+        {
+            return FuelFireDuration;
+        }
+        public virtual float GetProjectileResilience(int value)
+        {
+            return ProjectileResilience;
+        }
+        public virtual float GetFireDuration(int value) { return FireDuration; }
+        public virtual float GetProjectileStickProbability(int value)
+        {
+            return ProjectileStickProbability;
         }
         public bool MatchCrafingId(string CraftId) {
             return CraftId == CraftingId;
@@ -322,6 +364,10 @@ namespace Game
                 yield return Terrain.ReplaceContents(Terrain.ReplaceData(0, DefaultCreativeData), BlockIndex);
             }
         }
+        public virtual bool GetAlignToVelocity(int value)
+        {
+            return AlignToVelocity;
+        }
 
         public virtual bool IsInteractive(SubsystemTerrain subsystemTerrain, int value)
         {
@@ -378,6 +424,9 @@ namespace Game
         public virtual string GetCraftingId(int value) {
 
             return CraftingId;
+        }
+        public virtual int GetDisplayOrder(int value) {
+            return DisplayOrder;
         }
         public virtual BlockPlacementData GetDigValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, int toolValue, TerrainRaycastResult raycastResult)
         {
@@ -486,10 +535,7 @@ namespace Game
         public virtual int GetDurability(int value) {
             return Durability;
         }
-        public virtual float GetExplosionPressure(int value)
-        {
-            return DefaultExplosionPressure;
-        }
+
 
         public virtual bool GetExplosionIncendiary(int value)
         {

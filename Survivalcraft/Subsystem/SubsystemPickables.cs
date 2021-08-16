@@ -337,7 +337,7 @@ namespace Game
                                         float num20 = MathUtils.Saturate(3f * num19);
                                         pickable.Velocity.X += 4f * dt * (vector2.Value.X - pickable.Velocity.X);
                                         pickable.Velocity.Y -= 10f * dt;
-                                        pickable.Velocity.Y += 10f * (1f / block.Density * num20) * dt;
+                                        pickable.Velocity.Y += 10f * (1f / block.GetDensity(pickable.Value) * num20) * dt;
                                         pickable.Velocity.Z += 4f * dt * (vector2.Value.Y - pickable.Velocity.Z);
                                         pickable.Velocity.Y *= num2;
                                     }

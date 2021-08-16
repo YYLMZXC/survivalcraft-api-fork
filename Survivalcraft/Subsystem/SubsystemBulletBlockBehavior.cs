@@ -28,7 +28,7 @@ namespace Game
                 {
                     m_subsystemExplosions.TryExplodeBlock(cellFace.Value.X, cellFace.Value.Y, cellFace.Value.Z, cellValue);
                 }
-                if (obj.Density >= 1.5f && worldItem.Velocity.Length() > 30f)
+                if (obj.GetDensity(cellValue) >= 1.5f && worldItem.Velocity.Length() > 30f)
                 {
                     float num2 = 1f;
                     float minDistance = 8f;

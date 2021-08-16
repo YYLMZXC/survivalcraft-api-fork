@@ -49,7 +49,7 @@ namespace Game
                         int cellValueFast = m_subsystemTerrain.Terrain.GetCellValueFast(i, num11, j);
                         int num12 = Terrain.ExtractContents(cellValueFast);
                         Block block = BlocksManager.Blocks[num12];
-                        if (block.ObjectShadowStrength > 0f)
+                        if (block.GetObjectShadowStrength(cellValueFast) > 0f)
                         {
                             BoundingBox[] customCollisionBoxes = block.GetCustomCollisionBoxes(m_subsystemTerrain, cellValueFast);
                             for (int k = 0; k < customCollisionBoxes.Length; k++)
@@ -67,7 +67,7 @@ namespace Game
                                         var p2 = new Vector3(boundingBox.Max.X + i, num13 + num15, boundingBox.Min.Z + j);
                                         var p3 = new Vector3(boundingBox.Max.X + i, num13 + num15, boundingBox.Max.Z + j);
                                         var p4 = new Vector3(boundingBox.Min.X + i, num13 + num15, boundingBox.Max.Z + j);
-                                        DrawShadowOverQuad(p, p2, p3, p4, shadowPosition, shadowDiameter, 0.45f * block.ObjectShadowStrength * alpha * num3 * num16);
+                                        DrawShadowOverQuad(p, p2, p3, p4, shadowPosition, shadowDiameter, 0.45f * block.GetObjectShadowStrength(cellValueFast) * alpha * num3 * num16);
                                     }
                                 }
                             }

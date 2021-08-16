@@ -161,10 +161,10 @@ namespace Game
                         projectile.Light = m_subsystemTerrain.Terrain.GetCellLightFast(x, num2, z);
                     }
                     m_drawBlockEnvironmentData.Light = projectile.Light;
-                    m_drawBlockEnvironmentData.BillboardDirection = (block.AlignToVelocity ? null : new Vector3?(camera.ViewDirection));
+                    m_drawBlockEnvironmentData.BillboardDirection = (block.GetAlignToVelocity(projectile.Value) ? null : new Vector3?(camera.ViewDirection));
                     m_drawBlockEnvironmentData.InWorldMatrix.Translation = position;
                     Matrix matrix;
-                    if (block.AlignToVelocity)
+                    if (block.GetAlignToVelocity(projectile.Value))
                     {
                         CalculateVelocityAlignMatrix(block, position, projectile.Velocity, out matrix);
                     }
@@ -260,7 +260,7 @@ namespace Game
                             {
                                 blockBehaviors2[j].OnHitByProjectile(cellFace2, projectile);
                             }
-                            if (num2 > 10f && m_random.Float(0f, 1f) > block2.ProjectileResilience)
+                            if (num2 > 10f && m_random.Float(0f, 1f) > block2.GetProjectileResilience(cellValue))
                             {
                                 m_subsystemTerrain.DestroyCell(0, cellFace2.X, cellFace2.Y, cellFace2.Z, 0, noDrop: true, noParticleSystem: false);
                                 m_subsystemSoundMaterials.PlayImpactSound(cellValue, position, 1f);
@@ -283,7 +283,7 @@ namespace Game
                             {
                                 m_subsystemSoundMaterials.PlayImpactSound(cellValue, position, 1f);
                             }
-                            if (block.IsStickable_(projectile.Value) && num2 > 10f && m_random.Bool(block2.ProjectileStickProbability))
+                            if (block.IsStickable_(projectile.Value) && num2 > 10f && m_random.Bool(block2.GetProjectileStickProbability(projectile.Value)))
                             {
                                 var v3 = Vector3.Normalize(projectile.Velocity);
                                 float s = MathUtils.Lerp(0.1f, 0.2f, MathUtils.Saturate((num2 - 15f) / 20f));

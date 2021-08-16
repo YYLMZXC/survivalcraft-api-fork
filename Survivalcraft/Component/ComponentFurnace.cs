@@ -44,7 +44,7 @@ namespace Game
         {
             if (slotIndex == FuelSlotIndex)
             {
-                if (BlocksManager.Blocks[Terrain.ExtractContents(value)].FuelHeatLevel > 0f)
+                if (BlocksManager.Blocks[Terrain.ExtractContents(value)].GetFuelHeatLevel(value) > 0f)
                 {
                     return base.GetSlotCapacity(slotIndex, value);
                 }
@@ -90,7 +90,7 @@ namespace Game
                     if (slot.Count > 0)
                     {
                         int num = Terrain.ExtractContents(slot.Value);
-                        heatLevel = BlocksManager.Blocks[num].FuelHeatLevel;
+                        heatLevel = BlocksManager.Blocks[num].GetFuelHeatLevel(slot.Value);
                     }
                 }
                 CraftingRecipe craftingRecipe = FindSmeltingRecipe(heatLevel);
@@ -117,11 +117,11 @@ namespace Game
                         slot2.Count = 0;
                         m_subsystemExplosions.TryExplodeBlock(coordinates.X, coordinates.Y, coordinates.Z, slot2.Value);
                     }
-                    else if (block.FuelHeatLevel > 0f)
+                    else if (block.GetFuelHeatLevel(slot2.Value) > 0f)
                     {
                         slot2.Count--;
-                        m_fireTimeRemaining = block.FuelFireDuration;
-                        m_heatLevel = block.FuelHeatLevel;
+                        m_fireTimeRemaining = block.GetFuelFireDuration(slot2.Value);
+                        m_heatLevel = block.GetFuelHeatLevel(slot2.Value);
                     }
                 }
             }
@@ -218,7 +218,7 @@ namespace Game
                     {
                         Slot slot = m_slots[ResultSlotIndex];
                         int num3 = Terrain.ExtractContents(craftingRecipe.ResultValue);
-                        if (slot.Count != 0 && (craftingRecipe.ResultValue != slot.Value || craftingRecipe.ResultCount + slot.Count > BlocksManager.Blocks[num3].MaxStacking))
+                        if (slot.Count != 0 && (craftingRecipe.ResultValue != slot.Value || craftingRecipe.ResultCount + slot.Count > BlocksManager.Blocks[num3].GetMaxStacking(craftingRecipe.ResultValue)))
                         {
                             craftingRecipe = null;
                         }
@@ -227,7 +227,7 @@ namespace Game
                     {
                         if (m_slots[RemainsSlotIndex].Count == 0 || m_slots[RemainsSlotIndex].Value == craftingRecipe.RemainsValue)
                         {
-                            if (BlocksManager.Blocks[Terrain.ExtractContents(craftingRecipe.RemainsValue)].MaxStacking - m_slots[RemainsSlotIndex].Count < craftingRecipe.RemainsCount)
+                            if (BlocksManager.Blocks[Terrain.ExtractContents(craftingRecipe.RemainsValue)].GetMaxStacking(craftingRecipe.RemainsValue) - m_slots[RemainsSlotIndex].Count < craftingRecipe.RemainsCount)
                             {
                                 craftingRecipe = null;
                             }
