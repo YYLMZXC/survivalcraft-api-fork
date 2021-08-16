@@ -197,7 +197,7 @@ namespace Game
                     if (GetSlotCount(i) > 0)
                     {
                         Block block = BlocksManager.Blocks[num];
-                        m_matchedIngredients[i] = block.CraftingId + ":" + num2.ToString(CultureInfo.InvariantCulture);
+                        m_matchedIngredients[i] = block.GetCraftingId(slotValue) + ":" + num2.ToString(CultureInfo.InvariantCulture);
                     }
                     else
                     {

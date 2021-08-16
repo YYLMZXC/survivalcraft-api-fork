@@ -99,8 +99,12 @@ namespace Game
             return block;
         }
         public static Block[] FindBlocksByCraftingId(string craftingId)
-        {
-            return Blocks.Where((Block b) => b.CraftingId == craftingId).ToArray();
+        { 
+            List<Block> blocks = new List<Block>();
+            foreach (var c in BlocksManager.Blocks) {
+                if (c.MatchCrafingId(craftingId)) blocks.Add(c);
+            }
+            return blocks.ToArray();
         }
         public static void DrawCubeBlock(PrimitivesRenderer3D primitivesRenderer, int value, Vector3 size, ref Matrix matrix, Color color, Color topColor, DrawBlockEnvironmentData environmentData)
         {

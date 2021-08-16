@@ -197,6 +197,9 @@ namespace Game
                 throw new InvalidOperationException(string.Format(LanguageControl.Get(fName, 1), DefaultDisplayName));
             }
         }
+        public bool MatchCrafingId(string CraftId) {
+            return CraftId == CraftingId;
+        }
         public List<SubsystemBlockBehavior> GetBehaviors(GameEntitySystem.Project project, int value) {
             List<SubsystemBlockBehavior> behaviors = new List<SubsystemBlockBehavior>();
             string[] array = Behaviors.Split(new char[1]
@@ -372,7 +375,10 @@ namespace Game
             result.CellFace = raycastResult.CellFace;
             return result;
         }
+        public virtual string GetCraftingId(int value) {
 
+            return CraftingId;
+        }
         public virtual BlockPlacementData GetDigValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, int toolValue, TerrainRaycastResult raycastResult)
         {
             BlockPlacementData result = default;
