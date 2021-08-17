@@ -283,6 +283,7 @@ namespace Game
             }, null);
             m_stateMachine.AddState("WaitForTerrain", delegate
             {
+
                 m_terrainWaitStartTime = Time.FrameStartTime;
                 Vector2 center = (ComponentPlayer != null) ? ComponentPlayer.ComponentBody.Position.XZ : SpawnPosition.XZ;
                 m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(PlayerIndex, center, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
@@ -739,6 +740,9 @@ namespace Game
             }
             LastSpawnTime = m_subsystemGameInfo.TotalElapsedGameTime;
             int num = ++SpawnsCount;
+            ModsManager.HookAction("OnPlayerSpawned", modLoader => {
+                return modLoader.OnPlayerSpawned(spawnMode, entity2.FindComponent<ComponentPlayer>(), position);
+            });
         }
 
         public string GetEntityTemplateName()

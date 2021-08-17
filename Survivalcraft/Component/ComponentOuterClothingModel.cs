@@ -21,6 +21,8 @@ namespace Game
 
         public override void Animate()
         {
+            base.Animate();
+            if (Animated) return;
             Opacity = m_componentHumanModel.Opacity;
             foreach (ModelBone bone in Model.Bones)
             {
@@ -37,7 +39,6 @@ namespace Game
             {
                 RenderingMode = ModelRenderingMode.AlphaThreshold;
             }
-            base.Animate();
         }
 
         public override void SetModel(Model model)

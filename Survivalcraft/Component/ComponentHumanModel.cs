@@ -214,6 +214,8 @@ namespace Game
 
         public override void Animate()
         {
+            base.Animate();
+            if (Animated) return;
             Vector3 position = m_componentCreature.ComponentBody.Position;
             Vector3 vector = m_componentCreature.ComponentBody.Rotation.ToYawPitchRoll();
             if (m_lieDownFactorModel == 0f)
@@ -342,7 +344,6 @@ namespace Game
                 SetBoneTransform(m_leg1Bone.Index, Matrix.CreateRotationY(m_legAngles1.Y * num26) * Matrix.CreateRotationX(m_legAngles1.X * num26));
                 SetBoneTransform(m_leg2Bone.Index, Matrix.CreateRotationY(m_legAngles2.Y * num26) * Matrix.CreateRotationX(m_legAngles2.X * num26));
             }
-            base.Animate();
         }
 
         public override void DrawExtras(Camera camera)
@@ -393,6 +394,7 @@ namespace Game
         public override void SetModel(Model model)
         {
             base.SetModel(model);
+            if (IsSet) return;
             if (Model != null)
             {
                 m_bodyBone = Model.FindBone("Body");

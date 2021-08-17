@@ -155,6 +155,8 @@ namespace Game
 
         public override void Animate()
         {
+            base.Animate();
+            if (Animated) return;
             Opacity = ((m_componentCreature.ComponentSpawn.SpawnDuration > 0f) ? ((float)MathUtils.Saturate((m_subsystemGameInfo.TotalElapsedGameTime - m_componentCreature.ComponentSpawn.SpawnTime) / m_componentCreature.ComponentSpawn.SpawnDuration)) : 1f);
             if (m_componentCreature.ComponentSpawn.DespawnTime.HasValue)
             {

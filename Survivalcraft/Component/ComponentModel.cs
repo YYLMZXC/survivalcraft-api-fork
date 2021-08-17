@@ -12,6 +12,8 @@ namespace Game
 
         public bool IsSet;
 
+        public bool Animated = false;
+
         public ComponentFrame m_componentFrame;
 
         public Model m_model;
@@ -130,6 +132,8 @@ namespace Game
 
         public virtual void Animate()
         {
+            Animated = false;
+            ModsManager.HookAction("OnComponentModelAnimate", (modLoader)=> { modLoader.OnComponentModelAnimate(this,out Animated); return false; });
         }
 
         public virtual void DrawExtras(Camera camera)
@@ -153,6 +157,7 @@ namespace Game
 
         public virtual void SetModel(Model model)
         {
+            IsSet = false;
             ModsManager.HookAction("OnComponentModelSetModel", (modLoader) => {
                 modLoader.OnComponentModelSetModel(this, model, out IsSet);
                 return IsSet;

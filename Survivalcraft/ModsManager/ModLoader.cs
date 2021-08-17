@@ -314,6 +314,14 @@ namespace Game
             IsGenerate = false;
 
         }
+
+        public virtual void OnComponentModelAnimate(ComponentModel model,out bool Animated) {
+            Animated = false;
+        }
+        public virtual bool OnPlayerSpawned(PlayerData.SpawnMode spawnMode,ComponentPlayer componentPlayer, Vector3 position) {
+            return false;
+        
+        }
         /// <summary>
         /// Mod被卸载时执行
         /// </summary>
