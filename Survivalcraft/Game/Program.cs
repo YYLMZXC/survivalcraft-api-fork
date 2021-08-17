@@ -149,6 +149,7 @@ namespace Game
             }
             catch (Exception e2)
             {
+                if (GameManager.Project != null) GameManager.DisposeProject();
                 ExceptionManager.ReportExceptionToUser(null, e2);
                 ScreensManager.SwitchScreen("MainMenu");
             }
