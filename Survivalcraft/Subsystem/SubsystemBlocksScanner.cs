@@ -28,7 +28,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.BlocksScanner;
 
-        public event Action<TerrainChunk> ScanningChunkCompleted;
+        public virtual Action<TerrainChunk> ScanningChunkCompleted { get; set; }
         public void Update(float dt)
         {
             Terrain terrain = m_subsystemTerrain.Terrain;

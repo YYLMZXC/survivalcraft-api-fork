@@ -63,8 +63,8 @@ namespace Game
             }
         }
 
-        public event Action<ComponentFrame> PositionChanged;
-        public event Action<ComponentFrame> RotationChanged;
+        public virtual Action<ComponentFrame> PositionChanged { get; set; }
+        public virtual Action<ComponentFrame> RotationChanged { get;set; }
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
         {
             Position = valuesDictionary.GetValue<Vector3>("Position");

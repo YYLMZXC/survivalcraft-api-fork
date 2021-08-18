@@ -54,7 +54,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public event Action<ComponentSpawn> Despawned;
+        public virtual Action<ComponentSpawn> Despawned { get; set; }
 
         public void Despawn()
         {

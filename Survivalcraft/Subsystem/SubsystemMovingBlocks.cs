@@ -165,9 +165,9 @@ namespace Game
 
         public int[] DrawOrders => m_drawOrders;
 
-        public event Action<IMovingBlockSet, Point3> CollidedWithTerrain;
+        public virtual Action<IMovingBlockSet, Point3> CollidedWithTerrain { get; set; }
 
-        public event Action<IMovingBlockSet> Stopped;
+        public virtual Action<IMovingBlockSet> Stopped { get; set; }
 
         public IMovingBlockSet AddMovingBlockSet(Vector3 position, Vector3 targetPosition, float speed, float acceleration, float drag, Vector2 smoothness, IEnumerable<MovingBlock> blocks, string id, object tag, bool testCollision)
         {

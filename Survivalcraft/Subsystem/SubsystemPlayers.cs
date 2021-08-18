@@ -31,9 +31,9 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.SubsystemPlayers;
 
-        public event Action<PlayerData> PlayerAdded;
+        public virtual Action<PlayerData> PlayerAdded { get; set; }
 
-        public event Action<PlayerData> PlayerRemoved;
+        public virtual Action<PlayerData> PlayerRemoved { get; set; }
 
         public bool IsPlayer(Entity entity)
         {

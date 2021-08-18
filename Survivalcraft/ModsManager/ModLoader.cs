@@ -322,6 +322,10 @@ namespace Game
             return false;
         
         }
+        public virtual void OnComponentEatPickableEat(ComponentEatPickableBehavior eatPickableBehavior,Pickable EatPickable,out bool Dealed) {
+            Dealed = false;
+        }
+
         /// <summary>
         /// Mod被卸载时执行
         /// </summary>

@@ -17,7 +17,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public event Action<ReadOnlyList<ScannedItemData>> ItemsScanned;
+        public virtual Action<ReadOnlyList<ScannedItemData>> ItemsScanned { get; set; }
 
         public ReadOnlyList<ScannedItemData> ScanItems()
         {

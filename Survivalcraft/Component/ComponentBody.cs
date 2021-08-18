@@ -273,7 +273,7 @@ namespace Game
             }
         }
 
-        public event Action<ComponentBody> CollidedWithBody;
+        public virtual Action<ComponentBody> CollidedWithBody { get; set; }
 
         static ComponentBody()
         {

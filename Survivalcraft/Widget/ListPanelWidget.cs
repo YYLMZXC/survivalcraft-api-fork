@@ -126,9 +126,9 @@ namespace Game
             set;
         }
 
-        public event Action<object> ItemClicked;
+        public virtual Action<object> ItemClicked { get; set; }
 
-        public event Action SelectionChanged;
+        public virtual Action SelectionChanged { get; set; }
 
         public ListPanelWidget()
         {
