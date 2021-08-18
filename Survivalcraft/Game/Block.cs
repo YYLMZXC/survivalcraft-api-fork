@@ -255,7 +255,7 @@ namespace Game
             }
             return behaviors;
         }
-        public virtual int PlayerLevelRequired_(int value) {
+        public virtual int GetPlayerLevelRequired(int value) {
             return PlayerLevelRequired;
         }
         public virtual bool HasCollisionBehavior_(int value) {
@@ -435,7 +435,10 @@ namespace Game
             result.CellFace = raycastResult.CellFace;
             return result;
         }
+        public virtual float GetRequiredToolLevel(int value) {
 
+            return RequiredToolLevel;
+        }
         public virtual void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)
         {
             showDebris = (DestructionDebrisScale > 0f);

@@ -88,13 +88,20 @@ namespace Game
             string[] array = lootString.Split(new string[] { ";" }, StringSplitOptions.None);
             if (array.Length >= 3)
             {
-                int v = CraftingRecipesManager.DecodeResult(array[0]);
-                Loot result = default;
-                result.Value = v;
-                result.MinCount = int.Parse(array[1], CultureInfo.InvariantCulture);
-                result.MaxCount = int.Parse(array[2], CultureInfo.InvariantCulture);
-                result.Probability = ((array.Length >= 4) ? float.Parse(array[3], CultureInfo.InvariantCulture) : 1f);
-                return result;
+                try {
+
+                    int v = CraftingRecipesManager.DecodeResult(array[0]);
+                    Loot result = default;
+                    result.Value = v;
+                    result.MinCount = int.Parse(array[1]);
+                    result.MaxCount = int.Parse(array[2]);
+                    result.Probability = ((array.Length >= 4) ? float.Parse(array[3]) : 1f);
+                    return result;
+                }
+                catch {
+
+                    return default;
+                }
             }
             throw new InvalidOperationException("Invalid loot string.");
         }

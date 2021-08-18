@@ -79,7 +79,7 @@ namespace Game
 
         public override float ImportanceLevel => m_importanceLevel;
 
-        public void Attack(ComponentCreature componentCreature, float maxRange, float maxChaseTime, bool isPersistent)
+        public virtual void Attack(ComponentCreature componentCreature, float maxRange, float maxChaseTime, bool isPersistent)
         {
             m_target = componentCreature;
             m_nextUpdateTime = 0.0;
@@ -301,7 +301,7 @@ namespace Game
             m_stateMachine.TransitionTo("LookingForTarget");
         }
 
-        public ComponentCreature FindTarget()
+        public virtual ComponentCreature FindTarget()
         {
             Vector3 position = m_componentCreature.ComponentBody.Position;
             ComponentCreature result = null;
@@ -324,7 +324,7 @@ namespace Game
             return result;
         }
 
-        public float ScoreTarget(ComponentCreature componentCreature)
+        public virtual float ScoreTarget(ComponentCreature componentCreature)
         {
             bool flag = componentCreature.Entity.FindComponent<ComponentPlayer>() != null;
             bool flag2 = m_componentCreature.Category != CreatureCategory.WaterPredator && m_componentCreature.Category != CreatureCategory.WaterOther;
@@ -342,7 +342,7 @@ namespace Game
             return 0f;
         }
 
-        public bool IsTargetInWater(ComponentBody target)
+        public virtual bool IsTargetInWater(ComponentBody target)
         {
             if (target.ImmersionDepth > 0f)
             {
@@ -359,7 +359,7 @@ namespace Game
             return false;
         }
 
-        public bool IsTargetInAttackRange(ComponentBody target)
+        public virtual bool IsTargetInAttackRange(ComponentBody target)
         {
             if (IsBodyInAttackRange(target))
             {
@@ -395,7 +395,7 @@ namespace Game
             return false;
         }
 
-        public bool IsBodyInAttackRange(ComponentBody target)
+        public virtual bool IsBodyInAttackRange(ComponentBody target)
         {
             BoundingBox boundingBox = m_componentCreature.ComponentBody.BoundingBox;
             BoundingBox boundingBox2 = target.BoundingBox;
@@ -419,7 +419,7 @@ namespace Game
             return false;
         }
 
-        public ComponentBody GetHitBody(ComponentBody target, out Vector3 hitPoint)
+        public virtual ComponentBody GetHitBody(ComponentBody target, out Vector3 hitPoint)
         {
             Vector3 vector = m_componentCreature.ComponentBody.BoundingBox.Center();
             Vector3 v = target.BoundingBox.Center();

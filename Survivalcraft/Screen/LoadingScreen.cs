@@ -18,6 +18,8 @@ namespace Game
             public string Message;
             public LogItem(LogType type, string log) { LogType = type; Message = log; }
         }
+        private bool ActionFinished = true;
+        private object ActionLock = new object();
         private List<Action> LoadingActoins = new List<Action>();
         private List<Action> ModLoadingActoins = new List<Action>();
         private CanvasWidget Canvas = new CanvasWidget();
@@ -69,9 +71,11 @@ namespace Game
         }
 
         public static void Add(LogType type,string mesg) {
-            LogItem item = new LogItem(type, mesg);
-            LogList.AddItem(item);
-            LogList.ScrollToItem(item);
+            Dispatcher.Dispatch(delegate {
+                LogItem item = new LogItem(type, mesg);
+                LogList.AddItem(item);
+                LogList.ScrollToItem(item);
+            });
         }
 
         private void InitActions()
@@ -86,10 +90,20 @@ namespace Game
             });
             AddLoadAction(delegate { //初始化所有ModEntity的语言包
                 LanguageControl.Initialize(ModsManager.modSettings.languageType);
-                ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLauguage(); });
+                System.Threading.Tasks.Task.Run(delegate {
+                    lock (ActionLock)
+                    {
+                        ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLauguage(); });
+                    }
+                });
             });
             AddLoadAction(delegate { //读取所有的ModEntity的dll，并分离出ModLoader，保存Blocks
-                ModsManager.ModListAllDo((modEntity) => { modEntity.LoadDll(); });
+                ActionFinished = false;
+                lock (ActionLock)
+                {
+                    ModsManager.ModListAllDo((modEntity) => { modEntity.LoadDll(); });
+                    ActionFinished = true;
+                }
             });
             AddLoadAction(delegate {//初始化TextureAtlas
                 Info("TextureAtlas Initialize");
@@ -97,21 +111,29 @@ namespace Game
             });
             AddLoadAction(delegate { //初始化Database
                 Info("DatabaseManager Initialize");
-                DatabaseManager.Initialize();
-                ModsManager.ModListAllDo((modEntity) => { modEntity.LoadXdb(ref DatabaseManager.DatabaseNode); });
-                try
-                {
-                    DatabaseManager.LoadDataBaseFromXml(DatabaseManager.DatabaseNode);
-                }
-                catch (Exception e)
-                {
-                    Warning(e.Message);
-                }
+                System.Threading.Tasks.Task.Run(delegate {
+                    lock (ActionLock)
+                    {
+                        try
+                        {
+                            DatabaseManager.Initialize();
+                            ModsManager.ModListAllDo((modEntity) => { modEntity.LoadXdb(ref DatabaseManager.DatabaseNode); });
+                            DatabaseManager.LoadDataBaseFromXml(DatabaseManager.DatabaseNode);
+                        }
+                        catch (Exception e)
+                        {
+                            Warning(e.Message);
+                        }
+                    }
+                });
             });
-
             AddLoadAction(delegate { //初始化方块管理器
-                Info("BlocksManager Initialize");
-                BlocksManager.Initialize();
+                ActionFinished = false;
+                lock (ActionLock) {
+                    Info("BlocksManager Initialize");
+                    BlocksManager.Initialize();
+                    ActionFinished = true;
+                }
             });
 
             AddLoadAction(delegate { //初始化合成谱
@@ -318,7 +340,7 @@ namespace Game
             {
                 try
                 {
-                    ModLoadingActoins[0].Invoke();
+                    if (ActionFinished) ModLoadingActoins[0].Invoke();
                     ModLoadingActoins.RemoveAt(0);
                 }
                 catch (Exception e)
@@ -333,7 +355,7 @@ namespace Game
                     try
                     {
                         LoadingActoins[0].Invoke();
-                        LoadingActoins.RemoveAt(0);
+                        if(ActionFinished)LoadingActoins.RemoveAt(0);
                     }
                     catch (Exception e)
                     {

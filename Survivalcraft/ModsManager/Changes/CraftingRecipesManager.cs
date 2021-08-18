@@ -187,7 +187,7 @@ namespace Game
             {
                 string[] array = result.Split(new char[] { ':' }, StringSplitOptions.None);
                 Block block = BlocksManager.FindBlockByTypeName(array[0], throwIfNotFound: true);
-                return Terrain.MakeBlockValue(data: (array.Length >= 2) ? int.Parse(array[1], CultureInfo.InvariantCulture) : 0, contents: block.BlockIndex, light: 0);
+                return Terrain.MakeBlockValue( block.BlockIndex,  0 ,data: (array.Length == 2) ? int.Parse(array[1], CultureInfo.InvariantCulture) : 0);
             }
             return 0;
         }
