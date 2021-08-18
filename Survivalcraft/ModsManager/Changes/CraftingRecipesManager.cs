@@ -232,7 +232,7 @@ namespace Game
                         bool flag = true;
                         for (int l = 0; l < 9; l++)
                         {
-                            if (!CompareIngredients(array[l], actualIngredients[l]))
+                            if ( l==actualIngredients.Length || !CompareIngredients(array[l], actualIngredients[l]))
                             {
                                 flag = false;
                                 break;
