@@ -4,9 +4,6 @@ namespace Game
     public class LabelWidget : FontTextWidget
     {
         public static BitmapFont BitmapFont;
-        static LabelWidget(){
-            BitmapFont = ContentManager.Get<BitmapFont>("Fonts/Pericles");
-        }
         public override string Text
         {
             get => base.Text; set

@@ -19,6 +19,7 @@ namespace Game
             memoryStream.Position = 0L;
             ModArchive = ZipArchive.Open(memoryStream, true);
             InitResources();
+            LabelWidget.BitmapFont = ContentManager.Get<Engine.Media.BitmapFont>("Fonts/Pericles");
         }
         public override void LoadBlocksData()
         {

@@ -119,7 +119,6 @@ namespace Game {
                 LoadIcon(stream2);
                 stream2.Close();
             }
-
         }
         /// <summary>
         /// 初始化BlocksData资源
