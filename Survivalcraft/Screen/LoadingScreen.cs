@@ -297,6 +297,7 @@ namespace Game
         }
         public override void Enter(object[] parameters)
         {
+            Window.PresentationInterval = 0;
             var remove = new List<string>();
             foreach (var screen in ScreensManager.m_screens)
             {

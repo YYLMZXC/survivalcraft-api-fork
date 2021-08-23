@@ -117,6 +117,7 @@ namespace Game
             if (m_framerateLimitSlider.IsSliding)
             {
                 SettingsManager.PresentationInterval = m_presentationIntervals[MathUtils.Clamp((int)m_framerateLimitSlider.Value, 0, m_presentationIntervals.Count - 1)];
+                Window.PresentationInterval = SettingsManager.PresentationInterval;
             }
             if (m_displayFpsCounterButton.IsClicked)
             {
