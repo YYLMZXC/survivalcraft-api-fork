@@ -32,7 +32,7 @@ namespace Game
             m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
             m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
             m_subsystemProjectiles.Hook("ProjectileAdded", ModsManager.SurvivalCrafModEntity.Loader, delegate(Projectile projectile) { ScanProjectile(projectile); });
-            m_subsystemProjectiles.Hook("ProjectileRemoveed", ModsManager.SurvivalCrafModEntity.Loader, delegate (Projectile projectile) { m_projectiles.Remove(projectile); });
+            m_subsystemProjectiles.Hook("ProjectileRemoved", ModsManager.SurvivalCrafModEntity.Loader, delegate (Projectile projectile) { m_projectiles.Remove(projectile); });
 
         }
 

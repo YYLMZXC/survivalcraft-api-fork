@@ -9,7 +9,8 @@ using System.Xml.Linq;
 
 namespace Game
 {
-    public class ContentInfo { 
+    public class ContentInfo
+    {
         public ModEntity Entity;
         public string Filename;
         public string ContentPath;
@@ -20,7 +21,7 @@ namespace Game
             int pos = AbsolutePath_.LastIndexOf('.');
             ContentPath = AbsolutePath_.Substring(0, pos);
         }
-        public bool Get(Type type, string name,out object obj)
+        public bool Get(Type type, string name, out object obj)
         {
             obj = null;
             if (Entity.GetAssetsFile(name, out Stream stream))
@@ -73,7 +74,9 @@ namespace Game
             string fixname = string.Empty;
             object obj = null;
             object obj1 = null;
-            if (useCache && ResourcesCaches.TryGetValue(name,out obj1)) {
+            string cacheName = name + prefix;
+            if (useCache && ResourcesCaches.TryGetValue(cacheName, out obj1))
+            {
                 return obj1;
             }
             if (name.Contains(":"))
@@ -95,8 +98,11 @@ namespace Game
                                         {
                                             BitmapFont bitmapFont = BitmapFont.Initialize(stream, stream2);
                                             stream2.Close();
-                                            if (obj1 == null)ResourcesCaches.Add(name, bitmapFont);                                            
-                                            else ResourcesCaches[name] = bitmapFont;
+                                            if (useCache)
+                                            {
+                                                if (obj1 == null) ResourcesCaches.Add(cacheName, bitmapFont);
+                                                else ResourcesCaches[cacheName] = bitmapFont;
+                                            }
                                             return bitmapFont;
                                         }
                                     }
@@ -113,8 +119,12 @@ namespace Game
                                         {
                                             Shader shader = new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), new ShaderMacro[] { new ShaderMacro(name) });
                                             stream2.Close();
-                                            if (obj1 == null) ResourcesCaches.Add(name, shader);
-                                            else ResourcesCaches[name] = shader;
+                                            if (useCache)
+                                            {
+                                                if (obj1 == null) ResourcesCaches.Add(cacheName, shader);
+                                                else ResourcesCaches[cacheName] = shader;
+
+                                            }
                                             return shader;
                                         }
                                     }
@@ -136,20 +146,25 @@ namespace Game
                                     case "Game.ObjModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".obj"; else fixname = name + prefix; break;
                                     case "SimpleJson.JsonObject":
                                     case "Game.JsonModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".json"; else fixname = name + prefix; break;
-                                    case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) return TextureAtlasManager.GetSubtexture(name); else return new Subtexture(Get<Texture2D>(name), Vector2.Zero, Vector2.One);
+                                    case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) obj = TextureAtlasManager.GetSubtexture(name); else obj = new Subtexture(Get<Texture2D>(name, null, useCache), Vector2.Zero, Vector2.One); break;
                                 }
                                 if (modEntity.GetAssetsFile(fixname, out Stream stream))
                                 {
                                     obj = StreamConvertType(type, stream);
-                                    if (obj1 == null) ResourcesCaches.Add(name, obj);
-                                    else ResourcesCaches[name] = obj;
-                                    return obj;
                                 }
                                 else throw new Exception("Not found Resources:" + ModSpace + ":" + name + " for " + type.FullName);
+                                if (useCache)
+                                {
+
+                                    if (obj1 == null) ResourcesCaches.Add(cacheName, obj);
+                                    else ResourcesCaches[cacheName] = obj;
+                                }
+                                return obj;
                             }
                     }
                 }
-                else {
+                else
+                {
                     throw new Exception("not found modspace:" + ModSpace);
                 }
             }
@@ -167,8 +182,11 @@ namespace Game
                                     {
                                         BitmapFont bitmapFont = BitmapFont.Initialize(stream, stream2);
                                         stream2.Close();
-                                        if (obj1 == null) ResourcesCaches.Add(name, bitmapFont);
-                                        else ResourcesCaches[name] = bitmapFont;
+                                        if (useCache)
+                                        {
+                                            if (obj1 == null) ResourcesCaches.Add(cacheName, bitmapFont);
+                                            else ResourcesCaches[cacheName] = bitmapFont;
+                                        }
                                         return bitmapFont;
                                     }
                                 }
@@ -176,7 +194,7 @@ namespace Game
                         }
                         throw new Exception("Not found Resources:" + name + " for " + type.FullName);
                     }
-                case "Engine.Graphics.Shader": 
+                case "Engine.Graphics.Shader":
                     {
                         if (Resources.TryGetValue(name + ".psh", out ContentInfo contentInfo1))
                         {
@@ -188,8 +206,12 @@ namespace Game
                                     {
                                         Shader shader = new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), new ShaderMacro[] { new ShaderMacro(name) });
                                         stream2.Close();
-                                        if (obj1 == null) ResourcesCaches.Add(name, shader);
-                                        else ResourcesCaches[name] = shader;
+                                        if (useCache)
+                                        {
+
+                                            if (obj1 == null) ResourcesCaches.Add(cacheName, shader);
+                                            else ResourcesCaches[cacheName] = shader;
+                                        }
                                         return shader;
                                     }
                                 }
@@ -208,7 +230,7 @@ namespace Game
                 case "Game.ObjModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".obj"; else fixname = name + prefix; break;
                 case "SimpleJson.JsonObject":
                 case "Game.JsonModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".json"; else fixname = name + prefix; break;
-                case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) return TextureAtlasManager.GetSubtexture(name); else return new Subtexture(Get<Texture2D>(name),Vector2.Zero,Vector2.One);
+                case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) obj = TextureAtlasManager.GetSubtexture(name); else obj = new Subtexture(Get<Texture2D>(name, null, useCache), Vector2.Zero, Vector2.One); break;
                 default: { break; }
             }
             if (Resources.TryGetValue(fixname, out ContentInfo contentInfo3))
@@ -218,35 +240,39 @@ namespace Game
                     using (stream)
                     {//单文件转换
                         obj = StreamConvertType(type, stream);
-                        if (obj1 == null) ResourcesCaches.Add(name, obj1);
-                        else ResourcesCaches[name] = obj1;
                     }
                 }
+            }
+            if (useCache)
+            {
+                if (obj1 == null) ResourcesCaches.Add(cacheName, obj);
+                else ResourcesCaches[cacheName] = obj;
+
             }
             if (obj == null) throw new Exception("Not found Resources:" + name + " for " + type.FullName);
             return obj;
         }
-        public static object StreamConvertType(Type type,Stream stream)
+        public static object StreamConvertType(Type type, Stream stream)
         {
             switch (type.FullName)
             {
                 case "SimpleJson.JsonObject": return SimpleJson.SimpleJson.DeserializeObject(new StreamReader(stream).ReadToEnd());
                 case "Engine.Media.StreamingSource": return SoundData.Stream(stream);
-                case "Engine.Audio.SoundBuffer":return Engine.Audio.SoundBuffer.Load(stream);
+                case "Engine.Audio.SoundBuffer": return Engine.Audio.SoundBuffer.Load(stream);
                 case "Engine.Graphics.Texture2D": return Texture2D.Load(stream);
-                case "System.String":return new StreamReader(stream).ReadToEnd();
+                case "System.String": return new StreamReader(stream).ReadToEnd();
                 case "Engine.Media.Image": return Image.Load(stream);
                 case "Game.ObjModel": return ObjModelReader.Load(stream);
                 case "Game.JsonModel": return JsonModelReader.Load(stream);
                 case "System.Xml.Linq.XElement": return XElement.Load(stream);
-                case "Engine.Graphics.Model": return Model.Load(stream,true);
+                case "Engine.Graphics.Model": return Model.Load(stream, true);
                 case "Game.MtllibStruct": return MtllibStruct.Load(stream);
             }
             return null;
         }
 
 
-        public static void Add(ModEntity entity,string name)
+        public static void Add(ModEntity entity, string name)
         {
             if (Resources.TryGetValue(name, out ContentInfo contentInfo))
             {
@@ -258,10 +284,14 @@ namespace Game
 
         public static void Dispose(string name)
         {
-            foreach (var obj in ResourcesCaches.Values)
+            foreach (var obj in ResourcesCaches)
             {
-                IDisposable disposable = obj as IDisposable;
-                if (disposable != null) disposable.Dispose();
+                if (name == obj.Key)
+                {
+                    IDisposable disposable = obj.Value as IDisposable;
+                    if (disposable != null) disposable.Dispose();
+                    break;
+                }
             }
         }
 
@@ -282,8 +312,9 @@ namespace Game
         public static ReadOnlyList<ContentInfo> List(string directory)
         {
             List<ContentInfo> contents = new List<ContentInfo>();
-            foreach (var content in Resources.Values) {
-                if(content.ContentPath.StartsWith(directory))contents.Add(content);            
+            foreach (var content in Resources.Values)
+            {
+                if (content.ContentPath.StartsWith(directory)) contents.Add(content);
             }
             return new ReadOnlyList<ContentInfo>(contents);
         }
