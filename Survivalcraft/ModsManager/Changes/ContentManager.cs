@@ -270,8 +270,6 @@ namespace Game
             }
             return null;
         }
-
-
         public static void Add(ModEntity entity, string name)
         {
             if (Resources.TryGetValue(name, out ContentInfo contentInfo))
@@ -281,7 +279,10 @@ namespace Game
             else
                 Resources.Add(name, new ContentInfo(entity, name));
         }
-
+        /// <summary>
+        /// 可能需要带上文件后缀，即获取名字+获取的后缀
+        /// </summary>
+        /// <param name="name"></param>
         public static void Dispose(string name)
         {
             foreach (var obj in ResourcesCaches)
