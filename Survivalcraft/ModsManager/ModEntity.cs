@@ -46,7 +46,7 @@ namespace Game {
                 {
                     var stream = new MemoryStream();
                     ModArchive.ExtractFile(zipArchiveEntry, stream);
-                    stream.Seek(0, SeekOrigin.Begin);
+                    stream.Position = 0L;
                     files.Add(stream);
                 }
             }
@@ -63,7 +63,7 @@ namespace Game {
             {
                 stream = new MemoryStream();
                 ModArchive.ExtractFile(entry, stream);
-                stream.Seek(0, SeekOrigin.Begin);
+                stream.Position = 0L;
                 return true;
             }
             stream = null;

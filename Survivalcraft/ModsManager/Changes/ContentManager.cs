@@ -13,7 +13,6 @@ namespace Game
         public ModEntity Entity;
         public string Filename;
         public string ContentPath;
-        public object obj;
         public ContentInfo(ModEntity entity, string AbsolutePath_)
         {
             Entity = entity;
@@ -44,7 +43,7 @@ namespace Game
     public static class ContentManager
     {
         internal static Dictionary<string, ContentInfo> Resources = new Dictionary<string, ContentInfo>();
-
+        internal static Dictionary<string, object> ResourcesCaches = new Dictionary<string, object>();
         public static void Initialize()
         {
             Resources.Clear();
@@ -56,7 +55,7 @@ namespace Game
         /// <param name="name">资源名称</param>
         /// <param name="useCache">是否使用缓存</param>
         /// <returns></returns>
-        public static T Get<T>(string name,string prefix=null, bool useCache = false) where T : class
+        public static T Get<T>(string name, string prefix = null, bool useCache = true) where T : class
         {
             try
             {
@@ -73,6 +72,10 @@ namespace Game
         {
             string fixname = string.Empty;
             object obj = null;
+            object obj1 = null;
+            if (useCache && ResourcesCaches.TryGetValue(name,out obj1)) {
+                return obj1;
+            }
             if (name.Contains(":"))
             { //带命名空间的解析
                 string[] spl = name.Split(new char[] { ':' }, StringSplitOptions.None);
@@ -92,6 +95,8 @@ namespace Game
                                         {
                                             BitmapFont bitmapFont = BitmapFont.Initialize(stream, stream2);
                                             stream2.Close();
+                                            if (obj1 == null)ResourcesCaches.Add(name, bitmapFont);                                            
+                                            else ResourcesCaches[name] = bitmapFont;
                                             return bitmapFont;
                                         }
                                     }
@@ -108,6 +113,8 @@ namespace Game
                                         {
                                             Shader shader = new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), new ShaderMacro[] { new ShaderMacro(name) });
                                             stream2.Close();
+                                            if (obj1 == null) ResourcesCaches.Add(name, shader);
+                                            else ResourcesCaches[name] = shader;
                                             return shader;
                                         }
                                     }
@@ -133,7 +140,10 @@ namespace Game
                                 }
                                 if (modEntity.GetAssetsFile(fixname, out Stream stream))
                                 {
-                                    return StreamConvertType(type, stream);
+                                    obj = StreamConvertType(type, stream);
+                                    if (obj1 == null) ResourcesCaches.Add(name, obj);
+                                    else ResourcesCaches[name] = obj;
+                                    return obj;
                                 }
                                 else throw new Exception("Not found Resources:" + ModSpace + ":" + name + " for " + type.FullName);
                             }
@@ -151,14 +161,14 @@ namespace Game
                         {
                             if (contentInfo1.Get(name + ".png", out Stream stream))
                             {
-                                if (contentInfo1.obj != null && useCache) return contentInfo1.obj;
                                 using (stream)
                                 {
                                     if (contentInfo1.Get(name + ".lst", out Stream stream2))
                                     {
                                         BitmapFont bitmapFont = BitmapFont.Initialize(stream, stream2);
-                                        contentInfo1.obj = bitmapFont;
                                         stream2.Close();
+                                        if (obj1 == null) ResourcesCaches.Add(name, bitmapFont);
+                                        else ResourcesCaches[name] = bitmapFont;
                                         return bitmapFont;
                                     }
                                 }
@@ -172,14 +182,14 @@ namespace Game
                         {
                             if (contentInfo1.Get(name + ".psh", out Stream stream))
                             {
-                                if (contentInfo1.obj != null && useCache) return contentInfo1.obj;
                                 using (stream)
                                 {
                                     if (contentInfo1.Get(name + ".vsh", out Stream stream2))
                                     {
                                         Shader shader = new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), new ShaderMacro[] { new ShaderMacro(name) });
-                                        contentInfo1.obj = shader;
                                         stream2.Close();
+                                        if (obj1 == null) ResourcesCaches.Add(name, shader);
+                                        else ResourcesCaches[name] = shader;
                                         return shader;
                                     }
                                 }
@@ -203,17 +213,17 @@ namespace Game
             }
             if (Resources.TryGetValue(fixname, out ContentInfo contentInfo3))
             {
-                if(contentInfo3.obj != null && useCache) return contentInfo3.obj;
                 if (contentInfo3.Get(fixname, out Stream stream))
                 {
                     using (stream)
                     {//单文件转换
                         obj = StreamConvertType(type, stream);
+                        if (obj1 == null) ResourcesCaches.Add(name, obj1);
+                        else ResourcesCaches[name] = obj1;
                     }
                 }
             }
             if (obj == null) throw new Exception("Not found Resources:" + name + " for " + type.FullName);
-            contentInfo3.obj = obj;
             return obj;
         }
         public static object StreamConvertType(Type type,Stream stream)
@@ -248,21 +258,18 @@ namespace Game
 
         public static void Dispose(string name)
         {
-            foreach (ContentInfo contentInfo in Resources.Values)
+            foreach (var obj in ResourcesCaches.Values)
             {
-                if (contentInfo.ContentPath == name) {
-                    IDisposable disposable = contentInfo.obj as IDisposable;
-                    if (disposable != null) disposable.Dispose();
-                    break;
-                }
+                IDisposable disposable = obj as IDisposable;
+                if (disposable != null) disposable.Dispose();
             }
         }
 
         public static bool IsContent(object content)
         {
-            foreach (ContentInfo contentInfo in Resources.Values)
+            foreach (var obj in ResourcesCaches.Values)
             {
-                if (contentInfo.obj == content) return true;
+                if (obj == content) return true;
             }
             return false;
         }
