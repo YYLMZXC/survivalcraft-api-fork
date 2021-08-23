@@ -9,26 +9,26 @@ namespace Game
     {
         public static JsonObject KeyWords = new JsonObject();
 
-        public static string Ok = string.Empty;
-        public static string Cancel = string.Empty;
-        public static string None = string.Empty;
-        public static string Nothing = string.Empty;
-        public static string Error = string.Empty;
-        public static string On = string.Empty;
-        public static string Off = string.Empty;
-        public static string Disable = string.Empty;
-        public static string Enable = string.Empty;
-        public static string Warning = string.Empty;
-        public static string Back = string.Empty;
-        public static string Allowed = string.Empty;
-        public static string NAllowed = string.Empty;
-        public static string Unknown = string.Empty;
-        public static string Yes = string.Empty;
-        public static string No = string.Empty;
-        public static string Unavailable = string.Empty;
-        public static string Exists = string.Empty;
-        public static string Success = string.Empty;
-        public static string Delete = string.Empty;
+        public static string Ok = default;
+        public static string Cancel = default;
+        public static string None = default;
+        public static string Nothing = default;
+        public static string Error = default;
+        public static string On = default;
+        public static string Off = default;
+        public static string Disable = default;
+        public static string Enable = default;
+        public static string Warning = default;
+        public static string Back = default;
+        public static string Allowed = default;
+        public static string NAllowed = default;
+        public static string Unknown = default;
+        public static string Yes = default;
+        public static string No = default;
+        public static string Unavailable = default;
+        public static string Exists = default;
+        public static string Success = default;
+        public static string Delete = default;
 
 
         public enum LanguageType
@@ -39,6 +39,27 @@ namespace Game
         }
         public static void Initialize(LanguageType languageType)
         {
+            Ok = default;
+            Cancel = default;
+            None = default;
+            Nothing = default;
+            Error = default;
+            On = default;
+            Off = default;
+            Disable = default;
+            Enable = default;
+            Warning = default;
+            Back = default;
+            Allowed = default;
+            NAllowed = default;
+            Unknown = default;
+            Yes = default;
+            No = default;
+            Unavailable = default;
+            Exists = default;
+            Success = default;
+            Delete = default;
+            ModsManager.modSettings.languageType = languageType;
             KeyWords.Clear();
         }
         public static void loadJson(Stream stream)
@@ -49,26 +70,26 @@ namespace Game
                 var obj = SimpleJson.SimpleJson.DeserializeObject(txt);
                 loadJsonLogic(KeyWords, obj);
             }
-            if (Ok == string.Empty) Ok = Get("Usual", "ok");
-            if (Cancel == string.Empty) Cancel = Get("Usual", "cancel");
-            if (None == string.Empty) None = Get("Usual", "none");
-            if (Nothing == string.Empty) Nothing = Get("Usual", "nothing");
-            if (Error == string.Empty) Error = Get("Usual", "error");
-            if (On == string.Empty) On = Get("Usual", "on");
-            if (Off == string.Empty) Off = Get("Usual", "off");
-            if (Disable == string.Empty) Disable = Get("Usual", "disable");
-            if (Enable == string.Empty) Enable = Get("Usual", "enable");
-            if (Warning == string.Empty) Warning = Get("Usual", "warning");
-            if (Back == string.Empty) Back = Get("Usual", "back");
-            if (Allowed == string.Empty) Allowed = Get("Usual", "allowed");
-            if (NAllowed == string.Empty) NAllowed = Get("Usual", "not allowed");
-            if (Unknown == string.Empty) Unknown = Get("Usual", "unknown");
-            if (Yes == string.Empty) Yes = Get("Usual", "yes");
-            if (No == string.Empty) No = Get("Usual", "no");
-            if (Unavailable == string.Empty) Unavailable = Get("Usual", "Unavailable");
-            if (Exists == string.Empty) Exists = Get("Usual", "exist");
-            if (Success == string.Empty) Success = Get("Usual", "success");
-            if (Delete == string.Empty) Success = Get("Usual", "delete");
+            if (Ok == default) Ok = Get("Usual", "ok");
+            if (Cancel == default) Cancel = Get("Usual", "cancel");
+            if (None == default) None = Get("Usual", "none");
+            if (Nothing == default) Nothing = Get("Usual", "nothing");
+            if (Error == default) Error = Get("Usual", "error");
+            if (On == default) On = Get("Usual", "on");
+            if (Off == default) Off = Get("Usual", "off");
+            if (Disable == default) Disable = Get("Usual", "disable");
+            if (Enable == default) Enable = Get("Usual", "enable");
+            if (Warning == default) Warning = Get("Usual", "warning");
+            if (Back == default) Back = Get("Usual", "back");
+            if (Allowed == default) Allowed = Get("Usual", "allowed");
+            if (NAllowed == default) NAllowed = Get("Usual", "not allowed");
+            if (Unknown == default) Unknown = Get("Usual", "unknown");
+            if (Yes == default) Yes = Get("Usual", "yes");
+            if (No == default) No = Get("Usual", "no");
+            if (Unavailable == default) Unavailable = Get("Usual", "Unavailable");
+            if (Exists == default) Exists = Get("Usual", "exist");
+            if (Success == default) Success = Get("Usual", "success");
+            if (Delete == default) Success = Get("Usual", "delete");
         }
 
         public static void loadJsonLogic(JsonObject node, object obj) {

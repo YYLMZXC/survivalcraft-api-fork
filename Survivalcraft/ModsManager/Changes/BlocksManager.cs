@@ -3,7 +3,6 @@ using Engine.Graphics;
 using Engine.Serialization;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -378,5 +377,17 @@ namespace Game
             float w = (num2 + 1 - 0.001f) / 16f;
             return new Vector4(x, y, z, w);
         }
+        public static Block GetBlock(string ModSpace,string TypeFullName) {
+            if (ModsManager.GetModEntity(ModSpace, out ModEntity modEntity))
+            {
+                Block block = modEntity.Blocks.Find(p => p.GetType().Name == TypeFullName);
+                if (block != null)
+                {
+                    return block;
+                }
+            }
+            return null;
+        }
+
     }
 }

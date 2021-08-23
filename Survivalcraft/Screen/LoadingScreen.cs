@@ -26,11 +26,11 @@ namespace Game
             LogList.ItemWidgetFactory = (obj) => {
                 LogItem logItem = obj as LogItem;
                 CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(Display.Viewport.Width, 40), Margin = new Vector2(0, 2),HorizontalAlignment=WidgetAlignment.Near };
-                FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 1f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
+                FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 0.7f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
                 canvasWidget.Children.Add(fontTextWidget);
                 return canvasWidget;
             };
-            LogList.ItemSize = 20;
+            LogList.ItemSize = 30;
         }
         public static Color GetColor(LogType type) {
             switch (type) {
@@ -50,7 +50,6 @@ namespace Game
             Children.Add(Canvas);
             Info("Initilizing Mods Manager. Api Version: " + ModsManager.APIVersion);
         }
-
         public static void Error(string mesg)
         {
             Add(LogType.Error, "[Error]" + mesg);
@@ -67,7 +66,6 @@ namespace Game
         {
             Add(LogType.Advice, "[Advice]" + mesg);
         }
-
         public static void Add(LogType type,string mesg) {
             Dispatcher.Dispatch(delegate {
                 LogItem item = new LogItem(type, mesg);
@@ -75,7 +73,6 @@ namespace Game
                 LogList.ScrollToItem(item);
             });
         }
-
         private void InitActions()
         {
             AddLoadAction(delegate {//将所有的有效的scmod读取为ModEntity，并自动添加SurvivalCraftModEntity
@@ -285,7 +282,6 @@ namespace Game
                 AddScreen("Player", new PlayerScreen());
             });
         }
-
         public void AddScreen(string name, Screen screen)
         {
             ScreensManager.AddScreen(name, screen);
@@ -294,7 +290,6 @@ namespace Game
         {
             LoadingActoins.Add(action);
         }
-
         public override void Leave()
         {
             LogList.ClearItems();
