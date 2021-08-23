@@ -78,7 +78,7 @@ namespace Game {
         /// </summary>
         public virtual void LoadLauguage()
         {
-            LoadingScreen.Info("Load Language:" + modInfo?.PackageName);
+            LoadingScreen.Info("加载语言:" + modInfo?.Name);
             if (GetAssetsFile($"Lang/{ModsManager.modSettings.languageType}.json", out Stream stream))
             {
                 LanguageControl.loadJson(stream);
@@ -88,7 +88,7 @@ namespace Game {
         /// Mod初始化
         /// </summary>
         public virtual void ModInitialize() {
-            LoadingScreen.Info("Invoke ModInitialize:"+modInfo?.PackageName);
+            LoadingScreen.Info("初始化Mod方法:"+modInfo?.Name);
             ModLoader_?.__ModInitialize();
         }
         /// <summary>
@@ -99,7 +99,6 @@ namespace Game {
             ModFiles.Clear();
             if (ModArchive == null) return;
             List<ZipArchiveEntry> entries = ModArchive.ReadCentralDir();
-            LoadingScreen.Info("Loading Resources:" + modInfo?.PackageName);
             foreach (ZipArchiveEntry zipArchiveEntry in entries) {
                 if (zipArchiveEntry.FileSize > 0) {
                     ModFiles.Add(zipArchiveEntry.FilenameInZip, zipArchiveEntry);
@@ -119,13 +118,14 @@ namespace Game {
                 LoadIcon(stream2);
                 stream2.Close();
             }
+            LoadingScreen.Info("加载资源:" + modInfo?.Name+" 共"+ModFiles.Count+"文件");
         }
         /// <summary>
         /// 初始化BlocksData资源
         /// </summary>
         public virtual void LoadBlocksData()
         {
-            LoadingScreen.Info("Loading Resources:" + modInfo?.PackageName);
+            LoadingScreen.Info("加载方块数据:" + modInfo?.Name);
             foreach (Stream stream in GetFiles(".csv"))
             {
                 try
@@ -145,6 +145,7 @@ namespace Game {
         /// <param name="xElement"></param>
         public virtual void LoadXdb(ref XElement xElement)
         {
+            LoadingScreen.Info("加载数据库:" + modInfo?.Name);
             foreach (Stream stream in GetFiles(".xdb"))
             {
                 ModsManager.CombineDataBase(xElement, stream);
@@ -162,6 +163,7 @@ namespace Game {
         /// <param name="xElement"></param>
         public virtual void LoadClo(ClothingBlock block, ref XElement xElement)
         {
+            LoadingScreen.Info("加载衣物数据:" + modInfo?.Name);
             foreach (Stream stream in GetFiles(".clo"))
             {
                 ModsManager.CombineClo(xElement, stream);
@@ -174,6 +176,7 @@ namespace Game {
         /// <param name="xElement"></param>
         public virtual void LoadCr(ref XElement xElement)
         {
+            LoadingScreen.Info("加载合成谱:" + modInfo?.Name);
             foreach (Stream stream in GetFiles(".cr"))
             {
                 ModsManager.CombineCr(xElement, stream);
@@ -185,7 +188,7 @@ namespace Game {
         /// </summary>
         public virtual void LoadDll()
         {
-            LoadingScreen.Info("Loading Assembly:" + modInfo?.PackageName);
+            LoadingScreen.Info("加载程序集:" + modInfo?.PackageName);
             foreach (Stream stream in GetFiles(".dll"))
             {
                 LoadDllLogic(stream);
@@ -236,7 +239,7 @@ namespace Game {
         /// </summary>
         public virtual void CheckDependencies()
         {
-            LoadingScreen.Info("CheckDependencies:" + modInfo?.PackageName);
+            LoadingScreen.Info("检查依赖项:" + modInfo?.PackageName);
             for (int j = 0; j < modInfo.Dependencies.Count; j++)
             {
                 int k = j;

@@ -20,12 +20,13 @@ namespace Game
             ModArchive = ZipArchive.Open(memoryStream, true);
             InitResources();
             LabelWidget.BitmapFont = ContentManager.Get<Engine.Media.BitmapFont>("Fonts/Pericles");
+            LoadingScreen.Info("加载资源:" + modInfo?.Name);
         }
         public override void LoadBlocksData()
         {
+            LoadingScreen.Info("加载方块数据:" + modInfo?.Name);
             BlocksManager.LoadBlocksData(ContentManager.Get<string>("BlocksData"));
             ContentManager.Dispose("BlocksData");
-
         }
         public override void LoadDll()
         {
@@ -66,16 +67,19 @@ namespace Game
         }
         public override void LoadXdb(ref XElement xElement)
         {
+            LoadingScreen.Info("加载数据库:" + modInfo?.Name);
             xElement = ContentManager.Get<XElement>("Database");
             ContentManager.Dispose("Database");
         }
         public override void LoadCr(ref XElement xElement)
         {
+            LoadingScreen.Info("加载合成谱:" + modInfo?.Name);            
             xElement = ContentManager.Get<XElement>("CraftingRecipes");
             ContentManager.Dispose("CraftingRecipes");
         }
         public override void LoadClo(ClothingBlock block, ref XElement xElement)
         {
+            LoadingScreen.Info("加载衣物数据:" + modInfo?.Name);
             xElement = ContentManager.Get<XElement>("Clothes");
             ContentManager.Dispose("Clothes");
         }

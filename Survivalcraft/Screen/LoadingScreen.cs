@@ -94,11 +94,10 @@ namespace Game
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadDll(); });
             });
             AddLoadAction(delegate {//初始化TextureAtlas
-                Info("TextureAtlas Initialize");
+                Info("初始化纹理地图");
                 TextureAtlasManager.Initialize();
             });
             AddLoadAction(delegate { //初始化Database
-                Info("DatabaseManager Initialize");
                 try
                 {
                     DatabaseManager.Initialize();
@@ -110,7 +109,7 @@ namespace Game
                 }
             });
             AddLoadAction(delegate {
-                Info("Loading Database");
+                Info("读取数据库");
                 try
                 {
                     DatabaseManager.LoadDataBaseFromXml(DatabaseManager.DatabaseNode);
@@ -122,16 +121,13 @@ namespace Game
                 }
             });
             AddLoadAction(delegate { //初始化方块管理器
-                Info("BlocksManager Initialize");
+                Info("初始化方块管理器");
                 BlocksManager.Initialize();
             });
-
             AddLoadAction(delegate { //初始化合成谱
-                Info("CraftingRecipesManager Initialize");
                 CraftingRecipesManager.Initialize();
             });
             InitScreens();
-
             AddLoadAction(delegate {
                 BlocksTexturesManager.Initialize();
                 AnalyticsManager.Initialize();
@@ -145,7 +141,7 @@ namespace Game
                 WorldsManager.Initialize();
             });
             AddLoadAction(delegate {
-                Info("Loading ModSettings");
+                Info("初始化Mod设置参数");
                 if (Storage.FileExists(ModsManager.SettingPath)) {
                     using (System.IO.Stream stream = Storage.OpenFile(ModsManager.SettingPath, OpenFileMode.Read))
                     {
@@ -164,7 +160,7 @@ namespace Game
                 }
             });
             AddLoadAction(()=> {
-                ModsManager.ModListAllDo((modEntity) => { Info("Invoke OnLoadingFinished:" + modEntity.modInfo?.PackageName); modEntity.OnLoadingFinished(ModLoadingActoins); });
+                ModsManager.ModListAllDo((modEntity) => { Info("等待剩下的任务完成:" + modEntity.modInfo?.PackageName); modEntity.OnLoadingFinished(ModLoadingActoins); });
             });
             AddLoadAction(()=> {
                 ScreensManager.SwitchScreen("MainMenu");
