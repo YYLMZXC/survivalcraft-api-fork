@@ -7,8 +7,6 @@ namespace Game
 {
     public class SurvivalCraftModLoader:ModLoader
     {
-        private Project Project;
-        private SubsystemBombBlockBehavior BombBlockBehavior;
         public override void __ModInitialize()
         {
             ModsManager.RegisterHook("OnCameraChange", this);
