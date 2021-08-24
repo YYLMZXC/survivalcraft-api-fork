@@ -33,11 +33,11 @@ public static class ModsManager
                          CommunityContentCachePath = ExternelPath + "CommunityContentCache.xml",
                          ModsSetPath = ExternelPath + "/ModSettings.xml",
                          SettingPath = ExternelPath + "/Settings.xml",
-                         LogPath = ExternelPath + "/Logs";
+                         LogPath = ExternelPath + "/Bugs";
 #endif
 #if android
     public static string ExternelPath = EngineActivity.BasePath,
-                         ScreenCapturePath =ExternelPath + "ScreenCapture",
+                         ScreenCapturePath = ExternelPath + "ScreenCapture",
                          UserDataPath = "config:/UserId.dat",
                          FurniturePacksDirectoryName = "config:/FurniturePacks",
                          CharacterSkinsDirectoryName = "config:/CharacterSkins",
@@ -46,7 +46,7 @@ public static class ModsManager
                          CommunityContentCachePath = "config:/CommunityContentCache.xml",
                          ModsSetPath = "config:/ModSettings.xml",
                          SettingPath = "config:/Settings.xml",
-                         LogPath = "config:/Logs";
+                         LogPath = ExternelPath + "Bugs";
 #endif
     public static string ModsPath = ExternelPath + "/Mods",
                          path;//移动端mods数据文件夹
