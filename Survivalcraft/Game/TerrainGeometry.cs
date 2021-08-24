@@ -157,13 +157,17 @@ namespace Game
                 Dispose();
                 foreach (var item in GeometrySubsets)
                 {
-                    if (CompileVertexAndIndex(item.Value.Subsets, item.Key, out DrawBuffer buffer))
-                    {
-                        DrawBuffers.Add(buffer);
-                    }
+                    Dispatcher.Dispatch(delegate {
+                        if (CompileVertexAndIndex(item.Value.Subsets, item.Key, out DrawBuffer buffer))
+                        {
+                            DrawBuffers.Add(buffer);
+                        }
+                    });
                 }
-                GeometrySubsets.Clear();
-                Changed = false;
+                Dispatcher.Dispatch(delegate {
+                    GeometrySubsets.Clear();
+                    Changed = false;
+                });
             }
         }
 

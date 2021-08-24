@@ -315,9 +315,6 @@ namespace Game
 
         }
 
-        public virtual void OnComponentModelAnimate(ComponentModel model,out bool Animated) {
-            Animated = false;
-        }
         public virtual bool OnPlayerSpawned(PlayerData.SpawnMode spawnMode,ComponentPlayer componentPlayer, Vector3 position) {
             return false;
         
