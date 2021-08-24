@@ -58,6 +58,8 @@ namespace Game
             set;
         }
 
+        public virtual Func<bool> OnAnimate { get; set; }
+
         public bool CastsShadow
         {
             get;
@@ -132,8 +134,6 @@ namespace Game
 
         public virtual void Animate()
         {
-            Animated = false;
-            ModsManager.HookAction("OnComponentModelAnimate", (modLoader)=> { modLoader.OnComponentModelAnimate(this,out Animated); return false; });
         }
 
         public virtual void DrawExtras(Camera camera)

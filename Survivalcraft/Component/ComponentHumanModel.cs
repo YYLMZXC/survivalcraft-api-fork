@@ -215,9 +215,9 @@ namespace Game
         public override void Animate()
         {
             base.Animate();
-            if (Animated) return;
             Vector3 position = m_componentCreature.ComponentBody.Position;
             Vector3 vector = m_componentCreature.ComponentBody.Rotation.ToYawPitchRoll();
+            if (OnAnimate != null && OnAnimate()) return;
             if (m_lieDownFactorModel == 0f)
             {
                 ComponentMount componentMount = (m_componentRider != null) ? m_componentRider.Mount : null;
