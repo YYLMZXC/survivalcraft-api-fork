@@ -1187,9 +1187,6 @@
     <Compile Include="..\Survivalcraft\Component\ComponentWalkAroundBehavior.cs">
       <Link>Component\ComponentWalkAroundBehavior.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Component\HookableComponent.cs">
-      <Link>Component\HookableComponent.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Dialog\BuildFurnitureDialog.cs">
       <Link>Dialog\BuildFurnitureDialog.cs</Link>
     </Compile>
@@ -2341,9 +2338,6 @@
     </Compile>
     <Compile Include="..\Survivalcraft\SimpleJson\SimpleJson.cs">
       <Link>SimpleJson\SimpleJson.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Subsystem\HookableSubsystem.cs">
-      <Link>Subsystem\HookableSubsystem.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemAdjustableDelayGateBlockBehavior.cs">
       <Link>Subsystem\SubsystemAdjustableDelayGateBlockBehavior.cs</Link>
