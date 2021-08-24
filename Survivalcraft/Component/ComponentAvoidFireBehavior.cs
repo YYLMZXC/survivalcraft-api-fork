@@ -149,7 +149,7 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public Vector3? FindTarget(out float targetScore)
+        public virtual Vector3? FindTarget(out float targetScore)
         {
             _ = m_componentCreature.ComponentBody.Position;
             Vector3? result = null;
@@ -168,7 +168,7 @@ namespace Game
             return result;
         }
 
-        public float ScoreTarget(Vector3 target)
+        public virtual float ScoreTarget(Vector3 target)
         {
             float num = (m_subsystemSky.SkyLightIntensity > 0.2f) ? m_dayRange : m_nightRange;
             if (num > 0f)

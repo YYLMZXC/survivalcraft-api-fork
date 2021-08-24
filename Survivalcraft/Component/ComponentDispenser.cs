@@ -16,7 +16,7 @@ namespace Game
 
         public ComponentBlockEntity m_componentBlockEntity;
 
-        public void Dispense()
+        public virtual void Dispense()
         {
             Point3 coordinates = m_componentBlockEntity.Coordinates;
             int data = Terrain.ExtractData(m_subsystemTerrain.Terrain.GetCellValue(coordinates.X, coordinates.Y, coordinates.Z));
@@ -56,7 +56,7 @@ namespace Game
             m_componentBlockEntity = Entity.FindComponent<ComponentBlockEntity>(throwOnError: true);
         }
 
-        public void DispenseItem(Point3 point, int face, int value, DispenserBlock.Mode mode)
+        public virtual void DispenseItem(Point3 point, int face, int value, DispenserBlock.Mode mode)
         {
             Vector3 vector = CellFace.FaceToVector3(face);
             Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + 0.6f * vector;

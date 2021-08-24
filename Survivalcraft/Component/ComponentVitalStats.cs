@@ -66,6 +66,7 @@ namespace Game
 
         public float m_temperatureBlackoutDuration;
         public static string fName = "ComponentVitalStats";
+
         public float Food
         {
             get
@@ -128,7 +129,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public bool Eat(int value)
+        public virtual bool Eat(int value)
         {
             int num = Terrain.ExtractContents(value);
             Block obj = BlocksManager.Blocks[num];
@@ -194,7 +195,7 @@ namespace Game
             return false;
         }
 
-        public void MakeSleepy(float sleepValue)
+        public virtual void MakeSleepy(float sleepValue)
         {
             Sleep = MathUtils.Min(Sleep, sleepValue);
         }
@@ -236,7 +237,7 @@ namespace Game
             m_lastTemperature = Temperature;
             m_lastWetness = Wetness;
             m_environmentTemperature = Temperature;
-            m_componentPlayer.ComponentHealth.Hook("Attacked", ModsManager.SurvivalCrafModEntity.Loader, delegate(ComponentCreature componentCreature) { m_lastAttackedTime = m_subsystemTime.GameTime; });
+            m_componentPlayer.ComponentHealth.Attacked += delegate(ComponentCreature componentCreature) { m_lastAttackedTime = m_subsystemTime.GameTime; };
             foreach (KeyValuePair<string, object> item in valuesDictionary.GetValue<ValuesDictionary>("Satiation"))
             {
                 m_satiation[int.Parse(item.Key, CultureInfo.InvariantCulture)] = (float)item.Value;
@@ -266,7 +267,7 @@ namespace Game
             m_pantingSound.Stop();
         }
 
-        public void UpdateFood()
+        public virtual void UpdateFood()
         {
             float gameTimeDelta = m_subsystemTime.GameTimeDelta;
             float num = m_componentPlayer.ComponentLocomotion.LastWalkOrder.HasValue ? m_componentPlayer.ComponentLocomotion.LastWalkOrder.Value.Length() : 0f;
@@ -339,7 +340,7 @@ namespace Game
             m_componentPlayer.ComponentGui.FoodBarWidget.Value = Food;
         }
 
-        public void UpdateStamina()
+        public virtual void UpdateStamina()
         {
             float gameTimeDelta = m_subsystemTime.GameTimeDelta;
             float num = m_componentPlayer.ComponentLocomotion.LastWalkOrder.HasValue ? m_componentPlayer.ComponentLocomotion.LastWalkOrder.Value.Length() : 0f;
@@ -422,7 +423,7 @@ namespace Game
             }
         }
 
-        public void UpdateSleep()
+        public virtual void UpdateSleep()
         {
             float gameTimeDelta = m_subsystemTime.GameTimeDelta;
             bool flag = m_componentPlayer.ComponentBody.ImmersionFactor > 0.05f;
@@ -491,7 +492,7 @@ namespace Game
             }
         }
 
-        public void UpdateTemperature()
+        public virtual void UpdateTemperature()
         {
             float gameTimeDelta = m_subsystemTime.GameTimeDelta;
             bool flag = m_subsystemTime.PeriodicGameTimeEvent(300.0, 17.0);
@@ -614,7 +615,7 @@ namespace Game
             }
         }
 
-        public void UpdateWetness()
+        public virtual void UpdateWetness()
         {
             float gameTimeDelta = m_subsystemTime.GameTimeDelta;
             if (m_componentPlayer.ComponentBody.ImmersionFactor > 0.2f && m_componentPlayer.ComponentBody.ImmersionFluidBlock is WaterBlock)
@@ -677,7 +678,7 @@ namespace Game
             m_lastWetness = Wetness;
         }
 
-        public void ApplyDensityModifier(float modifier)
+        public virtual void ApplyDensityModifier(float modifier)
         {
             float num = modifier - m_densityModifierApplied;
             if (num != 0f)

@@ -54,7 +54,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public void Damage(float amount)
+        public virtual void Damage(float amount)
         {
             if (amount > 0f && Hitpoints > 0f)
             {
@@ -62,7 +62,7 @@ namespace Game
             }
         }
 
-        public void Update(float dt)
+        public virtual void Update(float dt)
         {
             Vector3 position = m_componentBody.Position;
             if (Hitpoints <= 0f)

@@ -32,7 +32,7 @@ namespace Game
 
         public int[] DrawOrders => m_drawOrders;
 
-        public void ShowAimingSights(Vector3 position, Vector3 direction)
+        public virtual void ShowAimingSights(Vector3 position, Vector3 direction)
         {
             IsSightsVisible = true;
             m_sightsPosition = position;

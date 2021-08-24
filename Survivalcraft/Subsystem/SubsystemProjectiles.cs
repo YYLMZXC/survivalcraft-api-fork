@@ -9,7 +9,7 @@ using TemplatesDatabase;
 
 namespace Game
 {
-    public class SubsystemProjectiles : HookableSubsystem<Projectile>, IUpdateable, IDrawable
+    public class SubsystemProjectiles : Subsystem, IUpdateable, IDrawable
     {
         public SubsystemAudio m_subsystemAudio;
 
@@ -60,9 +60,13 @@ namespace Game
 
         public int[] DrawOrders => m_drawOrders;
 
+        public virtual Action<Projectile> ProjectileAdded { get; set; }
+
+        public virtual Action<Projectile> ProjectileRemoved { get; set; }
+
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
+        public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
         {
             var projectile = new Projectile();
             projectile.Value = value;
@@ -75,7 +79,7 @@ namespace Game
             projectile.Owner = owner;
             projectile.ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable;
             m_projectiles.Add(projectile);
-            HookActions(projectile, "ProjectileAdded");
+            ProjectileAdded?.Invoke(projectile);
             if (owner != null && owner.PlayerStats != null)
             {
                 owner.PlayerStats.RangedAttacks++;
@@ -83,7 +87,7 @@ namespace Game
             return projectile;
         }
 
-        public Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
+        public virtual Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
         {
             int num = Terrain.ExtractContents(value);
             Block block = BlocksManager.Blocks[num];
@@ -119,14 +123,14 @@ namespace Game
             return null;
         }
 
-        public void AddTrail(Projectile projectile, Vector3 offset, ITrailParticleSystem particleSystem)
+        public virtual void AddTrail(Projectile projectile, Vector3 offset, ITrailParticleSystem particleSystem)
         {
             RemoveTrail(projectile);
             projectile.TrailParticleSystem = particleSystem;
             projectile.TrailOffset = offset;
         }
 
-        public void RemoveTrail(Projectile projectile)
+        public virtual void RemoveTrail(Projectile projectile)
         {
             if (projectile.TrailParticleSystem != null)
             {
@@ -410,7 +414,7 @@ namespace Game
                     item.TrailParticleSystem.IsStopped = true;
                 }
                 m_projectiles.Remove(item);
-                HookActions(item, "ProjectileRemoved");
+                ProjectileRemoved?.Invoke(item);
             }
             m_projectilesToRemove.Clear();
         }
@@ -459,19 +463,19 @@ namespace Game
             }
         }
 
-        public bool IsWater(Vector3 position)
+        public virtual bool IsWater(Vector3 position)
         {
             int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
             return BlocksManager.Blocks[cellContents] is WaterBlock;
         }
 
-        public bool IsMagma(Vector3 position)
+        public virtual bool IsMagma(Vector3 position)
         {
             int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
             return BlocksManager.Blocks[cellContents] is MagmaBlock;
         }
 
-        public void MakeProjectileNoise(Projectile projectile)
+        public virtual void MakeProjectileNoise(Projectile projectile)
         {
             if (m_subsystemTime.GameTime - projectile.LastNoiseTime > 0.5)
             {

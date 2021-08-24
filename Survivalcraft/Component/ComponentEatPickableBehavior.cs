@@ -70,20 +70,19 @@ namespace Game
                 var foodType = (FoodType)Enum.Parse(typeof(FoodType), item.Key, ignoreCase: false);
                 m_foodFactors[(int)foodType] = (float)item.Value;
             }
-            m_subsystemPickables.Hook("PickableAdded", ModsManager.SurvivalCrafModEntity.Loader, delegate (Pickable pickable) {
+            m_subsystemPickables.PickableAdded += (pickable) => {
                 if (TryAddPickable(pickable) && m_pickable == null)
                 {
                     m_pickable = pickable;
                 }
-            });
-            m_subsystemPickables.Hook("PickableRemoved", ModsManager.SurvivalCrafModEntity.Loader, delegate (Pickable pickable) {
+            };
+            m_subsystemPickables.PickableRemoved += (pickable) => {
                 m_pickables.Remove(pickable);
                 if (m_pickable == pickable)
                 {
                     m_pickable = null;
                 }
-            });
-
+            };
             m_stateMachine.AddState("Inactive", delegate
             {
                 m_importanceLevel = 0f;
@@ -243,12 +242,12 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public float GetFoodFactor(FoodType foodType)
+        public virtual float GetFoodFactor(FoodType foodType)
         {
             return m_foodFactors[(int)foodType];
         }
 
-        public Pickable FindPickable(Vector3 position)
+        public virtual Pickable FindPickable(Vector3 position)
         {
             if (m_subsystemTime.GameTime > m_nextPickablesUpdateTime)
             {
@@ -274,7 +273,7 @@ namespace Game
             return null;
         }
 
-        public bool TryAddPickable(Pickable pickable)
+        public virtual bool TryAddPickable(Pickable pickable)
         {
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(pickable.Value)];
             if (m_foodFactors[(int)block.GetFoodType(pickable.Value)] > 0f && Vector3.DistanceSquared(pickable.Position, m_componentCreature.ComponentBody.Position) < 256f)

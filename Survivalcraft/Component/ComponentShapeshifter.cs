@@ -101,7 +101,7 @@ namespace Game
             m_componentSpawn.Despawned += ComponentSpawn_Despawned;
         }
 
-        public void ShapeshiftTo(string entityTemplateName)
+        public virtual void ShapeshiftTo(string entityTemplateName)
         {
             if (string.IsNullOrEmpty(m_spawnEntityTemplateName))
             {
@@ -112,7 +112,7 @@ namespace Game
             }
         }
 
-        public void ComponentSpawn_Despawned(ComponentSpawn componentSpawn)
+        public virtual void ComponentSpawn_Despawned(ComponentSpawn componentSpawn)
         {
 
             if (m_componentHealth.Health > 0f && !string.IsNullOrEmpty(m_spawnEntityTemplateName))

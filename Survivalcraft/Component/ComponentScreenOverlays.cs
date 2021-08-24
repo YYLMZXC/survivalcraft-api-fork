@@ -170,7 +170,7 @@ namespace Game
             m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
         }
 
-        public void DrawOverlay(Camera camera, Color color, float innerFactor, float outerFactor)
+        public virtual void DrawOverlay(Camera camera, Color color, float innerFactor, float outerFactor)
         {
             Vector2 viewportSize = camera.ViewportSize;
             var vector = new Vector2(0f, 0f);
@@ -190,7 +190,7 @@ namespace Game
             flatBatch2D.Flush();
         }
 
-        public void DrawTexturedOverlay(Camera camera, Texture2D texture, Color color, float innerFactor, float outerFactor, Vector2 offset)
+        public virtual void DrawTexturedOverlay(Camera camera, Texture2D texture, Color color, float innerFactor, float outerFactor, Vector2 offset)
         {
             Vector2 viewportSize = camera.ViewportSize;
             float num = viewportSize.X / viewportSize.Y;
@@ -218,7 +218,7 @@ namespace Game
             texturedBatch2D.Flush();
         }
 
-        public void DrawIceOverlay(Camera camera, float factor)
+        public virtual void DrawIceOverlay(Camera camera, float factor)
         {
             Vector2 viewportSize = camera.ViewportSize;
             float s = 1f;
@@ -291,7 +291,7 @@ namespace Game
             texturedBatch3D.Flush(camera.ProjectionMatrix);
         }
 
-        public void DrawFloatingMessage(Camera camera, string message, float factor)
+        public virtual void DrawFloatingMessage(Camera camera, string message, float factor)
         {
             BitmapFont font = LabelWidget.BitmapFont;
             Vector2 position = camera.ViewportSize / 2f;
@@ -304,7 +304,7 @@ namespace Game
             fontBatch2D.Flush();
         }
 
-        public void DrawMessage(Camera camera, string message, float factor)
+        public virtual void DrawMessage(Camera camera, string message, float factor)
         {
             BitmapFont font = LabelWidget.BitmapFont;
             var position = new Vector2(camera.ViewportSize.X / 2f, camera.ViewportSize.Y - 25f);

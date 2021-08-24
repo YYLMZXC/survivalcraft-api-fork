@@ -49,7 +49,7 @@ namespace Game
 
         public double m_lastPukeSoundTime = -1000.0;
 
-        public void PlayIdleSound(bool skipIfRecentlyPlayed)
+        public virtual void PlayIdleSound(bool skipIfRecentlyPlayed)
         {
             if (!string.IsNullOrEmpty(m_idleSound) && m_subsystemTime.GameTime > m_lastSoundTime + (skipIfRecentlyPlayed ? 12f : 1f))
             {
@@ -58,7 +58,7 @@ namespace Game
             }
         }
 
-        public void PlayPainSound()
+        public virtual void PlayPainSound()
         {
             if (!string.IsNullOrEmpty(m_painSound) && m_subsystemTime.GameTime > m_lastSoundTime + 1.0)
             {
@@ -67,7 +67,7 @@ namespace Game
             }
         }
 
-        public void PlayMoanSound()
+        public virtual void PlayMoanSound()
         {
             if (!string.IsNullOrEmpty(m_moanSound) && m_subsystemTime.GameTime > m_lastSoundTime + 1.0)
             {
@@ -76,7 +76,7 @@ namespace Game
             }
         }
 
-        public void PlaySneezeSound()
+        public virtual void PlaySneezeSound()
         {
             if (!string.IsNullOrEmpty(m_sneezeSound) && m_subsystemTime.GameTime > m_lastSoundTime + 1.0)
             {
@@ -94,7 +94,7 @@ namespace Game
             }
         }
 
-        public void PlayPukeSound()
+        public virtual void PlayPukeSound()
         {
             if (!string.IsNullOrEmpty(m_pukeSound) && m_subsystemTime.GameTime > m_lastPukeSoundTime + 1.0)
             {
@@ -103,7 +103,7 @@ namespace Game
             }
         }
 
-        public void PlayAttackSound()
+        public virtual void PlayAttackSound()
         {
             if (!string.IsNullOrEmpty(m_attackSound) && m_subsystemTime.GameTime > m_lastSoundTime + 1.0)
             {
@@ -112,7 +112,7 @@ namespace Game
             }
         }
 
-        public bool PlayFootstepSound(float loudnessMultiplier)
+        public virtual bool PlayFootstepSound(float loudnessMultiplier)
         {
             return m_subsystemSoundMaterials.PlayFootstepSound(m_componentCreature, loudnessMultiplier);
         }

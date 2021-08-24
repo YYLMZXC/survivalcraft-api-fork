@@ -43,7 +43,7 @@ namespace Game
 
         public override float ImportanceLevel => m_importanceLevel;
 
-        public void Update(float dt)
+        public virtual void Update(float dt)
         {
             m_stateMachine.Update();
             m_collidedWithBody = null;
@@ -125,7 +125,7 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public Vector3? FindDestination()
+        public virtual Vector3? FindDestination()
         {
             for (int i = 0; i < 8; i++)
             {

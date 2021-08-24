@@ -98,7 +98,7 @@ namespace Game
             });
         }
 
-        public Vector3? FindSurfaceDestination()
+        public virtual Vector3? FindSurfaceDestination()
         {
             Vector3 vector = 0.5f * (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max);
             Vector3 forward = m_componentCreature.ComponentBody.Matrix.Forward;

@@ -4,10 +4,10 @@ using GameEntitySystem;
 using System.Collections.Generic;
 using System.Linq;
 using TemplatesDatabase;
-
+using System;
 namespace Game
 {
-    public class SubsystemPickables : HookableSubsystem<Pickable>, IDrawable, IUpdateable
+    public class SubsystemPickables : Subsystem, IDrawable, IUpdateable
     {
         public SubsystemAudio m_subsystemAudio;
 
@@ -52,6 +52,8 @@ namespace Game
 
         public int[] DrawOrders => m_drawOrders;
 
+        public virtual Action<Pickable> PickableAdded { get; set; }
+        public virtual Action<Pickable> PickableRemoved { get; set; }
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
         public Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
@@ -76,7 +78,7 @@ namespace Game
                 pickable.Velocity = new Vector3(m_random.Float(-0.5f, 0.5f), m_random.Float(1f, 1.2f), m_random.Float(-0.5f, 0.5f));
             }
             m_pickables.Add(pickable);
-            HookActions(pickable, "PickableAdded");
+            PickableAdded?.Invoke(pickable);
             return pickable;
         }
 
@@ -356,8 +358,8 @@ namespace Game
             foreach (Pickable item in m_pickablesToRemove)
             {
                 m_pickables.Remove(item);
-                HookActions(item, "PickableRemoved");
-            }
+                PickableRemoved?.Invoke(item);
+           }
             m_pickablesToRemove.Clear();
         }
 

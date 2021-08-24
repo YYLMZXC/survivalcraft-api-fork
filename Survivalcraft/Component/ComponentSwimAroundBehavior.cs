@@ -87,7 +87,7 @@ namespace Game
             }, null);
         }
 
-        public Vector3? FindDestination()
+        public virtual Vector3? FindDestination()
         {
             Vector3 vector = 0.5f * (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max);
             float num = 2f;

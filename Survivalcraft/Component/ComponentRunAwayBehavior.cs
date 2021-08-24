@@ -36,7 +36,7 @@ namespace Game
 
         public override float ImportanceLevel => m_importanceLevel;
 
-        public void RunAwayFrom(ComponentBody componentBody)
+        public virtual void RunAwayFrom(ComponentBody componentBody)
         {
             m_attacker = componentBody;
             m_timeToForgetAttacker = m_random.Float(10f, 20f);
@@ -48,7 +48,7 @@ namespace Game
             m_heardNoise = false;
         }
 
-        public void HearNoise(ComponentBody sourceBody, Vector3 sourcePosition, float loudness)
+        public virtual void HearNoise(ComponentBody sourceBody, Vector3 sourcePosition, float loudness)
         {
             if (loudness >= 1f)
             {
@@ -65,9 +65,9 @@ namespace Game
             m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
             m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_componentHerdBehavior = Entity.FindComponent<ComponentHerdBehavior>();
-            m_componentCreature.ComponentHealth.Hook("Attacked", ModsManager.SurvivalCrafModEntity.Loader, delegate (ComponentCreature attacker) {
+            m_componentCreature.ComponentHealth.Attacked += delegate (ComponentCreature attacker) {
                 RunAwayFrom(attacker.ComponentBody);
-            });
+            };
             m_stateMachine.AddState("Inactive", delegate
             {
                 m_importanceLevel = 0f;
@@ -136,7 +136,7 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public Vector3 FindSafePlace()
+        public virtual Vector3 FindSafePlace()
         {
             Vector3 position = m_componentCreature.ComponentBody.Position;
             Vector3? herdPosition = (m_componentHerdBehavior != null) ? m_componentHerdBehavior.FindHerdCenter() : null;
@@ -169,7 +169,7 @@ namespace Game
             return result;
         }
 
-        public float ScoreSafePlace(Vector3 currentPosition, Vector3 safePosition, Vector3? herdPosition, Vector3? noiseSourcePosition, int contents)
+        public virtual float ScoreSafePlace(Vector3 currentPosition, Vector3 safePosition, Vector3? herdPosition, Vector3? noiseSourcePosition, int contents)
         {
             float num = 0f;
             var vector = new Vector2(currentPosition.X, currentPosition.Z);

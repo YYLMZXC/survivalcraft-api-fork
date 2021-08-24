@@ -215,7 +215,7 @@ namespace Game
 
         public int[] DrawOrders => new int[] { 9 };
 
-        public void DisplayLargeMessage(string largeText, string smallText, float duration, float delay)
+        public virtual void DisplayLargeMessage(string largeText, string smallText, float duration, float delay)
         {
             m_message = new Message
             {
@@ -225,7 +225,7 @@ namespace Game
                 StartTime = Time.RealTime + delay
             };
         }
-        public void DisplaySmallMessage(string text, Color color, bool blinking, bool playNotificationSound)
+        public virtual void DisplaySmallMessage(string text, Color color, bool blinking, bool playNotificationSound)
         {
             m_messageWidget.DisplayMessage(text, color, blinking);
             if (playNotificationSound)
@@ -234,7 +234,7 @@ namespace Game
             }
         }
 
-        public bool IsGameMenuDialogVisible()
+        public virtual bool IsGameMenuDialogVisible()
         {
             foreach (Dialog dialog in DialogsManager.Dialogs)
             {
@@ -336,7 +336,7 @@ namespace Game
             }
         }
 
-        public void UpdateSidePanelsAnimation()
+        public virtual void UpdateSidePanelsAnimation()
         {
             float num = MathUtils.Min(Time.FrameDuration, 0.1f);
             bool flag = ModalPanelWidget != null && (m_modalPanelAnimationData == null || m_modalPanelAnimationData.NewWidget != null);
@@ -354,7 +354,7 @@ namespace Game
             m_rightControlsContainerWidget.RenderTransform = Matrix.CreateTranslation(m_rightControlsContainerWidget.ActualSize.X * m_sidePanelsFactor, 0f, 0f);
         }
 
-        public void UpdateModalPanelAnimation()
+        public virtual void UpdateModalPanelAnimation()
         {
             m_modalPanelAnimationData.Factor += 6f * MathUtils.Min(Time.FrameDuration, 0.1f);
             if (m_modalPanelAnimationData.Factor < 1f)
@@ -383,7 +383,7 @@ namespace Game
             }
         }
 
-        public void EndModalPanelAnimation()
+        public virtual void EndModalPanelAnimation()
         {
             if (m_modalPanelAnimationData.OldWidget != null)
             {
@@ -397,7 +397,7 @@ namespace Game
             m_modalPanelAnimationData = null;
         }
 
-        public void UpdateWidgets()
+        public virtual void UpdateWidgets()
         {
             ComponentRider componentRider = m_componentPlayer.ComponentRider;
             ComponentSleep componentSleep = m_componentPlayer.ComponentSleep;
@@ -511,7 +511,7 @@ namespace Game
             }
         }
 
-        public void HandleInput()
+        public virtual void HandleInput()
         {
             WidgetInput input = m_componentPlayer.GameWidget.Input;
             PlayerInput playerInput = m_componentPlayer.ComponentInput.PlayerInput;
@@ -746,12 +746,12 @@ namespace Game
             }
         }
 
-        public bool IsClothingVisible()
+        public virtual bool IsClothingVisible()
         {
             return ModalPanelWidget is ClothingWidget;
         }
 
-        public bool IsInventoryVisible()
+        public virtual bool IsInventoryVisible()
         {
             if (ModalPanelWidget != null)
             {
@@ -760,7 +760,7 @@ namespace Game
             return false;
         }
 
-        public bool IsActiveSlotEditable()
+        public virtual bool IsActiveSlotEditable()
         {
             IInventory inventory = m_componentPlayer.ComponentMiner.Inventory;
             if (inventory != null)

@@ -185,7 +185,7 @@ namespace Game
             valuesDictionary.SetValue("HeatLevel", m_heatLevel);
         }
 
-        public CraftingRecipe FindSmeltingRecipe(float heatLevel)
+        public virtual CraftingRecipe FindSmeltingRecipe(float heatLevel)
         {
             if (heatLevel > 0f)
             {

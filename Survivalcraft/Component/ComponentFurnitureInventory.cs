@@ -52,7 +52,7 @@ namespace Game
             }
         }
 
-        public void FillSlots()
+        public virtual void FillSlots()
         {
             m_subsystemFurnitureBlockBehavior.GarbageCollectDesigns();
             m_slots.Clear();
@@ -73,7 +73,7 @@ namespace Game
             }
         }
 
-        public void ClearSlots()
+        public virtual void ClearSlots()
         {
             m_slots.Clear();
         }
@@ -90,7 +90,7 @@ namespace Game
             valuesDictionary.SetValue("FurnitureSet", (FurnitureSet != null) ? FurnitureSet.Name : string.Empty);
         }
 
-        public int GetSlotValue(int slotIndex)
+        public virtual int GetSlotValue(int slotIndex)
         {
             if (slotIndex >= 0 && slotIndex < m_slots.Count)
             {
@@ -99,7 +99,7 @@ namespace Game
             return 0;
         }
 
-        public int GetSlotCount(int slotIndex)
+        public virtual int GetSlotCount(int slotIndex)
         {
             if (slotIndex >= 0 && slotIndex < m_slots.Count)
             {
@@ -112,12 +112,12 @@ namespace Game
             return 0;
         }
 
-        public int GetSlotCapacity(int slotIndex, int value)
+        public virtual int GetSlotCapacity(int slotIndex, int value)
         {
             return 99980001;
         }
 
-        public int GetSlotProcessCapacity(int slotIndex, int value)
+        public virtual int GetSlotProcessCapacity(int slotIndex, int value)
         {
             int slotCount = GetSlotCount(slotIndex);
             int slotValue = GetSlotValue(slotIndex);
@@ -136,7 +136,7 @@ namespace Game
             return 9999;
         }
 
-        public void AddSlotItems(int slotIndex, int value, int count)
+        public virtual void AddSlotItems(int slotIndex, int value, int count)
         {
         }
 
@@ -161,12 +161,12 @@ namespace Game
             processedCount = 0;
         }
 
-        public int RemoveSlotItems(int slotIndex, int count)
+        public virtual int RemoveSlotItems(int slotIndex, int count)
         {
             return 1;
         }
 
-        public void DropAllItems(Vector3 position)
+        public virtual void DropAllItems(Vector3 position)
         {
         }
     }

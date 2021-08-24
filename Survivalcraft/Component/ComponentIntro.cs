@@ -66,7 +66,7 @@ namespace Game
             valuesDictionary.SetValue("PlayIntro", m_playIntro);
         }
 
-        public void ShipView_Enter()
+        public virtual void ShipView_Enter()
         {
             ComponentBody componentBody = m_componentPlayer.Entity.FindComponent<ComponentBody>(throwOnError: true);
             Vector2 vector = FindOceanDirection(m_subsystemTerrain.TerrainContentsGenerator, componentBody.Position.XZ);
@@ -121,7 +121,7 @@ namespace Game
             introCamera.TargetCameraPosition = m_componentPlayer.ComponentCreatureModel.EyePosition;
         }
 
-        public void ShipView_Update()
+        public virtual void ShipView_Update()
         {
             IntroCamera introCamera = m_componentPlayer.GameWidget.FindCamera<IntroCamera>();
             introCamera.Speed = MathUtils.Lerp(0f, 8f, MathUtils.Saturate(((float)m_subsystemGameInfo.TotalElapsedGameTime - 6f) / 3f));
@@ -132,7 +132,7 @@ namespace Game
             }
         }
 
-        public float ScoreShipPosition(Vector2 playerPosition, int x, int z)
+        public virtual float ScoreShipPosition(Vector2 playerPosition, int x, int z)
         {
             float num = 0f;
             float num2 = m_subsystemTerrain.TerrainContentsGenerator.CalculateOceanShoreDistance(x, z);

@@ -94,17 +94,17 @@ namespace Game
             set;
         }
 
-        public Matrix? GetBoneTransform(int boneIndex)
+        public virtual Matrix? GetBoneTransform(int boneIndex)
         {
             return m_boneTransforms[boneIndex];
         }
 
-        public void SetBoneTransform(int boneIndex, Matrix? transformation)
+        public virtual void SetBoneTransform(int boneIndex, Matrix? transformation)
         {
             m_boneTransforms[boneIndex] = transformation;
         }
 
-        public void CalculateAbsoluteBonesTransforms(Camera camera)
+        public virtual void CalculateAbsoluteBonesTransforms(Camera camera)
         {
             ProcessBoneHierarchy(Model.RootBone, camera.ViewMatrix, AbsoluteBoneTransformsForCamera);
         }
@@ -178,7 +178,7 @@ namespace Game
             }
         }
 
-        public void ProcessBoneHierarchy(ModelBone modelBone, Matrix currentTransform, Matrix[] transforms)
+        public virtual void ProcessBoneHierarchy(ModelBone modelBone, Matrix currentTransform, Matrix[] transforms)
         {
             Matrix m = modelBone.Transform;
             if (m_boneTransforms[modelBone.Index].HasValue)

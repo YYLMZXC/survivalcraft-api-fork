@@ -156,7 +156,7 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public ComponentRider FindNearbyRider(float range)
+        public virtual ComponentRider FindNearbyRider(float range)
         {
             m_bodies.Clear();
             m_subsystemBodies.FindBodiesAroundPoint(new Vector2(m_componentCreature.ComponentBody.Position.X, m_componentCreature.ComponentBody.Position.Z), range, m_bodies);
@@ -174,7 +174,7 @@ namespace Game
             return null;
         }
 
-        public void ProcessRidingOrders()
+        public virtual void ProcessRidingOrders()
         {
             m_speedLevel = MathUtils.Clamp(m_speedLevel + SpeedOrder, 0, m_speedLevels.Length - 1);
             if (m_speedLevel == m_speedLevels.Length - 1 && SpeedOrder > 0)

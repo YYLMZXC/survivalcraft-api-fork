@@ -28,7 +28,7 @@ namespace Game
 
         public override float ImportanceLevel => m_importanceLevel;
 
-        public void HearNoise(ComponentBody sourceBody, Vector3 sourcePosition, float loudness)
+        public virtual void HearNoise(ComponentBody sourceBody, Vector3 sourcePosition, float loudness)
         {
             if (loudness >= 0.5f)
             {
@@ -97,7 +97,7 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public void FadeDriveVector()
+        public virtual void FadeDriveVector()
         {
             float num = m_driveVector.Length();
             if (num > 0.1f)
@@ -106,7 +106,7 @@ namespace Game
             }
         }
 
-        public Vector3 CalculateDriveDirectionAndSpeed()
+        public virtual Vector3 CalculateDriveDirectionAndSpeed()
         {
             int num = 1;
             Vector3 position = m_componentCreature.ComponentBody.Position;

@@ -93,7 +93,7 @@ namespace Game
             }, null);
         }
 
-        public float EstimateHeight(Vector2 position, int radius)
+        public virtual float EstimateHeight(Vector2 position, int radius)
         {
             int num = 0;
             for (int i = 0; i < 15; i++)

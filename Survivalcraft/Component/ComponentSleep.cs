@@ -36,7 +36,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public bool CanSleep(out string reason)
+        public virtual bool CanSleep(out string reason)
         {
             Block block = m_componentPlayer.ComponentBody.StandingOnValue.HasValue ? BlocksManager.Blocks[Terrain.ExtractContents(m_componentPlayer.ComponentBody.StandingOnValue.Value)] : null;
             if (block == null || m_componentPlayer.ComponentBody.ImmersionDepth > 0f)
@@ -76,7 +76,7 @@ namespace Game
             return true;
         }
 
-        public void Sleep(bool allowManualWakeup)
+        public virtual void Sleep(bool allowManualWakeup)
         {
             if (!IsSleeping)
             {
@@ -91,7 +91,7 @@ namespace Game
             }
         }
 
-        public void WakeUp()
+        public virtual void WakeUp()
         {
             if (m_sleepStartTime.HasValue)
             {
@@ -172,12 +172,12 @@ namespace Game
             m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
             m_sleepStartTime = valuesDictionary.GetValue<double>("SleepStartTime");
             m_allowManualWakeUp = valuesDictionary.GetValue<bool>("AllowManualWakeUp");
-            m_componentPlayer.ComponentHealth.Hook("Attacked", ModsManager.SurvivalCrafModEntity.Loader, delegate (ComponentCreature attacker) {
+            m_componentPlayer.ComponentHealth.Attacked += delegate (ComponentCreature attacker) {
                 if (IsSleeping && m_componentPlayer.ComponentVitalStats.Sleep > 0.25f)
                 {
                     WakeUp();
                 }
-            });
+            };
             if (m_sleepStartTime == 0.0)
             {
                 m_sleepStartTime = null;

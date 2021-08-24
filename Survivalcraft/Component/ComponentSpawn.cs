@@ -56,7 +56,7 @@ namespace Game
 
         public virtual Action<ComponentSpawn> Despawned { get; set; }
 
-        public void Despawn()
+        public virtual void Despawn()
         {
             if (!DespawnTime.HasValue)
             {

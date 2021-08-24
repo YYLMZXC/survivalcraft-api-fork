@@ -119,7 +119,7 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public ComponentCreature FindTarget()
+        public virtual ComponentCreature FindTarget()
         {
             Vector3 position = m_componentCreature.ComponentBody.Position;
             ComponentCreature result = null;
@@ -142,7 +142,7 @@ namespace Game
             return result;
         }
 
-        public float ScoreTarget(ComponentCreature target)
+        public virtual float ScoreTarget(ComponentCreature target)
         {
             float num = (m_subsystemSky.SkyLightIntensity > 0.2f) ? m_dayRange : m_nightRange;
             if (!target.IsAddedToProject || target.ComponentHealth.Health <= 0f || target.Entity.FindComponent<ComponentPlayer>() == null)

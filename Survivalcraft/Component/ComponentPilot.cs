@@ -92,7 +92,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public void SetDestination(Vector3? destination, float speed, float range, bool ignoreHeightDifference, bool raycastDestination, bool takeRisks, ComponentBody doNotAvoidBody)
+        public virtual void SetDestination(Vector3? destination, float speed, float range, bool ignoreHeightDifference, bool raycastDestination, bool takeRisks, ComponentBody doNotAvoidBody)
         {
             bool flag = true;
             if (Destination.HasValue && destination.HasValue)
@@ -118,7 +118,7 @@ namespace Game
             DoNotAvoidBody = doNotAvoidBody;
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
             SetDestination(null, 0f, 0f, ignoreHeightDifference: false, raycastDestination: false, takeRisks: false, null);
         }
@@ -257,7 +257,7 @@ namespace Game
             m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
         }
 
-        public bool IsTerrainSafeToGo(Vector3 position, Vector3 direction)
+        public virtual bool IsTerrainSafeToGo(Vector3 position, Vector3 direction)
         {
             Vector3 vector = position + new Vector3(0f, 0.1f, 0f) + ((direction.LengthSquared() < 1.2f) ? new Vector3(direction.X, 0f, direction.Z) : (1.2f * Vector3.Normalize(new Vector3(direction.X, 0f, direction.Z))));
             for (int i = -1; i <= 1; i++)
@@ -303,7 +303,7 @@ namespace Game
             return true;
         }
 
-        public ComponentBody FindNearestBodyInFront(Vector3 position, Vector2 direction)
+        public virtual ComponentBody FindNearestBodyInFront(Vector3 position, Vector2 direction)
         {
             if (m_subsystemTime.GameTime >= m_nextBodiesUpdateTime)
             {
@@ -328,7 +328,7 @@ namespace Game
             return result;
         }
 
-        public Vector3 AvoidNearestBody(Vector3 position, Vector3 destination)
+        public virtual Vector3 AvoidNearestBody(Vector3 position, Vector3 destination)
         {
             Vector2 v = destination.XZ - position.XZ;
             ComponentBody componentBody = FindNearestBodyInFront(position, Vector2.Normalize(v));

@@ -46,6 +46,8 @@ namespace Game
             }
         }
 
+        public event Action<string> OnTransitionTo;
+
         public void AddState(string name, Action enter, Action update, Action leave)
         {
             if (string.IsNullOrEmpty(name))
@@ -76,6 +78,7 @@ namespace Game
                 {
                     m_currentState.Enter();
                 }
+                OnTransitionTo?.Invoke(stateName);
             }
         }
 

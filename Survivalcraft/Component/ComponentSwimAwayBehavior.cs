@@ -30,7 +30,7 @@ namespace Game
 
         public override float ImportanceLevel => m_importanceLevel;
 
-        public void SwimAwayFrom(ComponentBody attacker)
+        public virtual void SwimAwayFrom(ComponentBody attacker)
         {
             m_attacker = attacker;
             m_timeToForgetAttacker = m_random.Float(10f, 20f);
@@ -48,9 +48,9 @@ namespace Game
             m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
             m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
             m_componentHerdBehavior = Entity.FindComponent<ComponentHerdBehavior>();
-            m_componentCreature.ComponentHealth.Hook("Attacked", ModsManager.SurvivalCrafModEntity.Loader, delegate (ComponentCreature attacker) {
+            m_componentCreature.ComponentHealth.Attacked += delegate (ComponentCreature attacker) {
                 SwimAwayFrom(attacker.ComponentBody);
-            });
+            };
             m_stateMachine.AddState("Inactive", delegate
             {
                 m_importanceLevel = 0f;
@@ -91,7 +91,7 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public Vector3 FindSafePlace()
+        public virtual Vector3 FindSafePlace()
         {
             Vector3 vector = 0.5f * (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max);
             Vector3? herdPosition = (m_componentHerdBehavior != null) ? m_componentHerdBehavior.FindHerdCenter() : null;
@@ -119,7 +119,7 @@ namespace Game
             return result;
         }
 
-        public float ScoreSafePlace(Vector3 currentPosition, Vector3 safePosition, Vector3? herdPosition)
+        public virtual float ScoreSafePlace(Vector3 currentPosition, Vector3 safePosition, Vector3? herdPosition)
         {
             var vector = new Vector2(currentPosition.X, currentPosition.Z);
             var vector2 = new Vector2(safePosition.X, safePosition.Z);

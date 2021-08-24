@@ -311,7 +311,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Locomotion;
 
-        public virtual void Update(float dt)
+        public void Update(float dt)
         {
             SlipSpeed = null;
             if (m_subsystemGameInfo.WorldSettings.GameMode != 0)
@@ -475,7 +475,7 @@ namespace Game
             valuesDictionary.SetValue("IsCreativeFlyEnabled", IsCreativeFlyEnabled);
         }
 
-        public void NormalMovement(float dt)
+        public virtual void NormalMovement(float dt)
         {
             m_componentCreature.ComponentBody.IsGravityEnabled = true;
             m_componentCreature.ComponentBody.IsGroundDragEnabled = true;
@@ -628,7 +628,7 @@ namespace Game
             m_componentCreature.ComponentBody.Velocity = velocity;
         }
 
-        public void LadderMovement(float dt, int value)
+        public virtual void LadderMovement(float dt, int value)
         {
             m_componentCreature.ComponentBody.IsGravityEnabled = false;
             Vector3 position = m_componentCreature.ComponentBody.Position;

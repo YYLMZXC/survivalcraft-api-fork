@@ -25,7 +25,7 @@ namespace Game
             }
         }
 
-        public bool Milk(ComponentMiner milker)
+        public virtual bool Milk(ComponentMiner milker)
         {
             if (milker != null)
             {

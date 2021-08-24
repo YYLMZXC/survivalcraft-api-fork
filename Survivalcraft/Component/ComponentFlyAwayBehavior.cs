@@ -59,7 +59,7 @@ namespace Game
             }
         }
 
-        public void HearNoise(ComponentBody sourceBody, Vector3 sourcePosition, float loudness)
+        public virtual void HearNoise(ComponentBody sourceBody, Vector3 sourcePosition, float loudness)
         {
             if (loudness >= 0.25f && m_stateMachine.CurrentState != "RunningAway")
             {
@@ -125,7 +125,7 @@ namespace Game
             m_stateMachine.TransitionTo("LookingForDanger");
         }
 
-        public bool ScanForDanger()
+        public virtual bool ScanForDanger()
         {
             Matrix matrix = m_componentCreature.ComponentBody.Matrix;
             Vector3 translation = matrix.Translation;
@@ -137,7 +137,7 @@ namespace Game
             return false;
         }
 
-        public Vector3 FindSafePlace()
+        public virtual Vector3 FindSafePlace()
         {
             Vector3 position = m_componentCreature.ComponentBody.Position;
             float num = float.NegativeInfinity;
@@ -166,7 +166,7 @@ namespace Game
             return result;
         }
 
-        public float ScoreSafePlace(Vector3 currentPosition, Vector3 safePosition, Vector3? lookDirection)
+        public virtual float ScoreSafePlace(Vector3 currentPosition, Vector3 safePosition, Vector3? lookDirection)
         {
             float num = 16f;
             Vector3 position = m_componentCreature.ComponentBody.Position;
@@ -198,7 +198,7 @@ namespace Game
             return num * MathUtils.Lerp(1f, 0.75f, MathUtils.Saturate(num2 / 20f));
         }
 
-        public bool IsPredator(Entity entity)
+        public virtual bool IsPredator(Entity entity)
         {
             if (entity != Entity)
             {

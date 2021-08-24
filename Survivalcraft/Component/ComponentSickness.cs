@@ -36,7 +36,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public void StartSickness()
+        public virtual void StartSickness()
         {
             if (m_sicknessDuration == 0f)
             {
@@ -45,7 +45,7 @@ namespace Game
             m_sicknessDuration = 900f;
         }
 
-        public void NauseaEffect()
+        public virtual void NauseaEffect()
         {
             m_lastNauseaTime = m_subsystemTime.GameTime;
             m_componentPlayer.ComponentCreatureSounds.PlayMoanSound();

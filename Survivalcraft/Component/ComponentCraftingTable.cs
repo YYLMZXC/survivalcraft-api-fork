@@ -91,7 +91,7 @@ namespace Game
             UpdateCraftingResult();
         }
 
-        public void UpdateCraftingResult()
+        public virtual void UpdateCraftingResult()
         {
             int num = int.MaxValue;
             m_matchedIngredients = new string[m_craftingGridSize * m_craftingGridSize];

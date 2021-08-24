@@ -159,8 +159,9 @@ namespace Game
                 {
                     m_componentCreature.ComponentLocomotion.JumpOrder = 1f;
                 }
-            };            
-            m_componentCreature.ComponentHealth.Hook("Attacked", ModsManager.SurvivalCrafModEntity.Loader, delegate(ComponentCreature attacker) {
+            };
+
+            m_componentCreature.ComponentHealth.Attacked += delegate (ComponentCreature attacker) {
                 if (m_random.Float(0f, 1f) < m_chaseWhenAttackedProbability)
                 {
                     if (m_chaseWhenAttackedProbability >= 1f)
@@ -172,7 +173,7 @@ namespace Game
                         Attack(attacker, 7f, 7f, isPersistent: false);
                     }
                 }
-            });
+            };
             m_stateMachine.AddState("LookingForTarget", delegate
             {
                 m_importanceLevel = 0f;

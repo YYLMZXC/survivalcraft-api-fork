@@ -83,12 +83,12 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public bool IsOutOfWater()
+        public virtual bool IsOutOfWater()
         {
             return m_componentCreature.ComponentBody.ImmersionFactor < 0.33f;
         }
 
-        public Vector3? FindDestination()
+        public virtual Vector3? FindDestination()
         {
             for (int i = 0; i < 8; i++)
             {

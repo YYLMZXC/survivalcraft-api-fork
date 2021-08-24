@@ -332,5 +332,9 @@ namespace Game
         public virtual void Dispose()
         {
         }
+        public virtual void ProjectileAdded(SubsystemProjectiles subsystemProjectiles, Projectile projectile) { }
+        public virtual void ProjectileRemoved(SubsystemProjectiles subsystemProjectiles, Projectile projectile) { }
+        public virtual void PickableAdded(SubsystemPickables subsystemPickables, Pickable pickable) { }
+        public virtual void PickableRemoved(SubsystemPickables subsystemPickables, Pickable pickable) { }
     }
 }

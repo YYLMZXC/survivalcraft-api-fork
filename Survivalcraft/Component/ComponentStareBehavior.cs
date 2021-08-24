@@ -97,7 +97,7 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public ComponentCreature FindTarget()
+        public virtual ComponentCreature FindTarget()
         {
             Vector3 position = m_componentCreature.ComponentBody.Position;
             m_componentBodies.Clear();
@@ -120,7 +120,7 @@ namespace Game
             return result;
         }
 
-        public float ScoreTarget(ComponentCreature componentCreature)
+        public virtual float ScoreTarget(ComponentCreature componentCreature)
         {
             if (componentCreature != m_componentCreature && componentCreature.Entity.IsAddedToProject)
             {

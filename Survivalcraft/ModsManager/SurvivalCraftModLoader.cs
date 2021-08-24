@@ -1,23 +1,20 @@
 ﻿using Engine;
 using Engine.Graphics;
 using Engine.Media;
+using GameEntitySystem;
+
 namespace Game
 {
     public class SurvivalCraftModLoader:ModLoader
     {
-
+        private Project Project;
+        private SubsystemBombBlockBehavior BombBlockBehavior;
         public override void __ModInitialize()
         {
             ModsManager.RegisterHook("OnCameraChange", this);
             ModsManager.RegisterHook("OnPlayerDead", this);
             ModsManager.RegisterHook("OnModelRendererDrawExtra", this);
             ModsManager.RegisterHook("GetMaxInstancesCount", this);
-            ModsManager.RegisterHook("PickableAdded", this);
-            ModsManager.RegisterHook("PickableRemoved", this);
-            ModsManager.RegisterHook("ProjectileAdded", this);
-            ModsManager.RegisterHook("ProjectileRemoved", this);
-            ModsManager.RegisterHook("OnEntityAdd", this);
-            ModsManager.RegisterHook("OnEntityRemove", this);
         }
         public override void OnCameraChange(ComponentPlayer m_componentPlayer,ComponentGui componentGui)
         {
@@ -108,5 +105,6 @@ namespace Game
         {
             return 7;
         }
+
     }
 }

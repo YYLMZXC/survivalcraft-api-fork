@@ -210,7 +210,7 @@ namespace Game
             }
         }
 
-        public virtual float ApplyArmorProtection(float attackPower)
+        public float ApplyArmorProtection(float attackPower)
         {
             bool Applied = false;
             ModsManager.HookAction("ApplyArmorProtection", modLoader => {

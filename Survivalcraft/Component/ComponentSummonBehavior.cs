@@ -98,7 +98,7 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public void FollowTarget(bool noDelay)
+        public virtual void FollowTarget(bool noDelay)
         {
             if (SummonTarget != null && (noDelay || m_random.Float(0f, 1f) < 5f * m_subsystemTime.GameTimeDelta))
             {

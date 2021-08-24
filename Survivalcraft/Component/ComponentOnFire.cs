@@ -50,7 +50,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public void SetOnFire(ComponentCreature attacker, float duration)
+        public virtual void SetOnFire(ComponentCreature attacker, float duration)
         {
             if (!IsOnFire)
             {
@@ -59,7 +59,7 @@ namespace Game
             m_fireDuration = MathUtils.Max(m_fireDuration, duration);
         }
 
-        public void Extinguish()
+        public virtual void Extinguish()
         {
             Attacker = null;
             m_fireDuration = 0f;
@@ -155,7 +155,7 @@ namespace Game
             }
         }
 
-        public bool CheckIfBodyTouchesFire()
+        public virtual bool CheckIfBodyTouchesFire()
         {
             BoundingBox boundingBox = ComponentBody.BoundingBox;
             boundingBox.Min -= new Vector3(0.25f);

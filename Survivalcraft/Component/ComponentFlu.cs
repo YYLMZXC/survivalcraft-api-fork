@@ -45,7 +45,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public void StartFlu()
+        public virtual void StartFlu()
         {
             if (m_fluDuration == 0f)
             {
@@ -58,14 +58,14 @@ namespace Game
             });
         }
 
-        public void Sneeze()
+        public virtual void Sneeze()
         {
             m_sneezeDuration = 1f;
             m_componentPlayer.ComponentCreatureSounds.PlaySneezeSound();
             Project.FindSubsystem<SubsystemNoise>(throwOnError: true).MakeNoise(m_componentPlayer.ComponentBody.Position, 0.25f, 10f);
         }
 
-        public void Cough()
+        public virtual void Cough()
         {
             m_lastCoughTime = m_subsystemTime.GameTime;
             m_coughDuration = 4f;
@@ -73,7 +73,7 @@ namespace Game
             Project.FindSubsystem<SubsystemNoise>(throwOnError: true).MakeNoise(m_componentPlayer.ComponentBody.Position, 0.25f, 10f);
         }
 
-        public void Update(float dt)
+        public virtual void Update(float dt)
         {
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative || !m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled)
             {
@@ -170,7 +170,7 @@ namespace Game
             valuesDictionary.SetValue("FluOnset", m_fluOnset);
         }
 
-        public void FluEffect()
+        public virtual void FluEffect()
         {
             m_lastEffectTime = m_subsystemTime.GameTime;
             m_blackoutDuration = MathUtils.Lerp(4f, 2f, m_componentPlayer.ComponentHealth.Health);

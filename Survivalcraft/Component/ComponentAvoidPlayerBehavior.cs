@@ -105,12 +105,12 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public void SetImportanceLevel(float score)
+        public virtual void SetImportanceLevel(float score)
         {
             m_importanceLevel = MathUtils.Lerp(4f, 8f, MathUtils.Sqrt(score));
         }
 
-        public ComponentCreature FindTarget(out float targetScore)
+        public virtual ComponentCreature FindTarget(out float targetScore)
         {
             Vector3 position = m_componentCreature.ComponentBody.Position;
             ComponentCreature result = null;
@@ -134,7 +134,7 @@ namespace Game
             return result;
         }
 
-        public float ScoreTarget(ComponentCreature target)
+        public virtual float ScoreTarget(ComponentCreature target)
         {
             float num = (m_subsystemSky.SkyLightIntensity > 0.2f) ? m_dayRange : m_nightRange;
             if (num > 0f)

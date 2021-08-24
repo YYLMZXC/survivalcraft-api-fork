@@ -36,7 +36,7 @@ namespace Game
 
         public override float ImportanceLevel => m_importanceLevel;
 
-        public void Update(float dt)
+        public virtual void Update(float dt)
         {
             m_stateMachine.Update();
         }
@@ -167,7 +167,7 @@ namespace Game
             m_stateMachine.TransitionTo("Inactive");
         }
 
-        public void TransitionToRandomDumpingBehavior()
+        public virtual void TransitionToRandomDumpingBehavior()
         {
             float num = m_random.Float(0f, 1f);
             if (num < 0.5f)
@@ -184,7 +184,7 @@ namespace Game
             }
         }
 
-        public void RunAway()
+        public virtual void RunAway()
         {
             if (m_rider != null)
             {

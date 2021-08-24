@@ -52,13 +52,13 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Input;
 
-        public void SetSplitSourceInventoryAndSlot(IInventory inventory, int slotIndex)
+        public virtual void SetSplitSourceInventoryAndSlot(IInventory inventory, int slotIndex)
         {
             SplitSourceInventory = inventory;
             SplitSourceSlotIndex = slotIndex;
         }
 
-        public Ray3? CalculateVrHandRay()
+        public virtual Ray3? CalculateVrHandRay()
         {
             return null;
         }
@@ -130,7 +130,7 @@ namespace Game
             m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
         }
 
-        public void UpdateInputFromMouseAndKeyboard(WidgetInput input)
+        public virtual void UpdateInputFromMouseAndKeyboard(WidgetInput input)
         {
             Vector3 viewPosition = m_componentPlayer.GameWidget.ActiveCamera.ViewPosition;
             Vector3 viewDirection = m_componentPlayer.GameWidget.ActiveCamera.ViewDirection;
@@ -235,7 +235,7 @@ namespace Game
             }
         }
 
-        public void UpdateInputFromGamepad(WidgetInput input)
+        public virtual void UpdateInputFromGamepad(WidgetInput input)
         {
             Vector3 viewPosition = m_componentPlayer.GameWidget.ActiveCamera.ViewPosition;
             Vector3 viewDirection = m_componentPlayer.GameWidget.ActiveCamera.ViewDirection;
@@ -296,7 +296,7 @@ namespace Game
             }
         }
 
-        public void UpdateInputFromWidgets(WidgetInput input)
+        public virtual void UpdateInputFromWidgets(WidgetInput input)
         {
             float num = MathUtils.Pow(1.25f, 10f * (SettingsManager.MoveSensitivity - 0.5f));
             float num2 = MathUtils.Pow(1.25f, 10f * (SettingsManager.LookSensitivity - 0.5f));

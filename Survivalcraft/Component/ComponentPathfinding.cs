@@ -98,7 +98,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public void SetDestination(Vector3? destination, float speed, float range, int maxPathfindingPositions, bool useRandomMovements, bool ignoreHeightDifference, bool raycastDestination, ComponentBody doNotAvoidBody)
+        public virtual void SetDestination(Vector3? destination, float speed, float range, int maxPathfindingPositions, bool useRandomMovements, bool ignoreHeightDifference, bool raycastDestination, ComponentBody doNotAvoidBody)
         {
             Destination = destination;
             Speed = speed;
@@ -112,7 +112,7 @@ namespace Game
             m_nextUpdateTime = 0.0;
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
             SetDestination(null, 0f, 0f, 0, useRandomMovements: false, ignoreHeightDifference: false, raycastDestination: false, null);
             m_componentPilot.Stop();

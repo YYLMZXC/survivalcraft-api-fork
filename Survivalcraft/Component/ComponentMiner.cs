@@ -114,7 +114,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public void Poke(bool forceRestart)
+        public virtual void Poke(bool forceRestart)
         {
             PokingPhase = forceRestart ? 0.0001f : MathUtils.Max(0.0001f, PokingPhase);
         }
@@ -449,7 +449,7 @@ namespace Game
             return (T)obj;
         }
 
-        public void RemoveActiveTool(int removeCount)
+        public virtual void RemoveActiveTool(int removeCount)
         {
             if (Inventory != null)
             {
@@ -457,7 +457,7 @@ namespace Game
             }
         }
 
-        public void DamageActiveTool(int damageCount)
+        public virtual void DamageActiveTool(int damageCount)
         {
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative || Inventory == null)
             {
@@ -646,7 +646,7 @@ namespace Game
             return false;
         }
 
-        public float CalculateDigTime(int digValue, int toolValue)
+        public virtual float CalculateDigTime(int digValue, int toolValue)
         {
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(toolValue)];
             Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(digValue)];
@@ -710,7 +710,7 @@ namespace Game
             return MathUtils.Max(digResilience / num2, 0f);
         }
 
-        public bool CanUseTool(int toolValue)
+        public virtual bool CanUseTool(int toolValue)
         {
             if (m_subsystemGameInfo.WorldSettings.GameMode != 0 && m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled)
             {

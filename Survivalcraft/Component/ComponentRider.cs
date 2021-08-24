@@ -47,7 +47,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public ComponentMount FindNearestMount()
+        public virtual ComponentMount FindNearestMount()
         {
             var point = new Vector2(ComponentCreature.ComponentBody.Position.X, ComponentCreature.ComponentBody.Position.Z);
             m_componentBodies.Clear();
@@ -69,7 +69,7 @@ namespace Game
             return result;
         }
 
-        public void StartMounting(ComponentMount componentMount)
+        public virtual void StartMounting(ComponentMount componentMount)
         {
             if (!m_isAnimating && Mount == null)
             {
@@ -85,7 +85,7 @@ namespace Game
             }
         }
 
-        public void StartDismounting()
+        public virtual void StartDismounting()
         {
             if (!m_isAnimating && Mount != null)
             {
@@ -165,7 +165,7 @@ namespace Game
             m_riderOffset = valuesDictionary.GetValue<Vector3>("RiderOffset");
         }
 
-        public float ScoreMount(ComponentMount componentMount, float maxDistance)
+        public virtual float ScoreMount(ComponentMount componentMount, float maxDistance)
         {
             if (componentMount.ComponentBody.Velocity.LengthSquared() < 1f)
             {

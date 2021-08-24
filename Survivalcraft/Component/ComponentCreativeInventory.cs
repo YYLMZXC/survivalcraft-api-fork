@@ -129,7 +129,7 @@ namespace Game
             }
         }
 
-        public int GetSlotValue(int slotIndex)
+        public virtual int GetSlotValue(int slotIndex)
         {
             if (slotIndex >= 0 && slotIndex < m_slots.Count)
             {
@@ -138,7 +138,7 @@ namespace Game
             return 0;
         }
 
-        public int GetSlotCount(int slotIndex)
+        public virtual int GetSlotCount(int slotIndex)
         {
             if (slotIndex >= 0 && slotIndex < m_slots.Count)
             {
@@ -151,7 +151,7 @@ namespace Game
             return 0;
         }
 
-        public int GetSlotCapacity(int slotIndex, int value)
+        public virtual int GetSlotCapacity(int slotIndex, int value)
         {
             if (slotIndex >= VisibleSlotsCount && slotIndex < 10)
             {
@@ -169,7 +169,7 @@ namespace Game
             return 99980001;
         }
 
-        public int GetSlotProcessCapacity(int slotIndex, int value)
+        public virtual int GetSlotProcessCapacity(int slotIndex, int value)
         {
             int slotCount = GetSlotCount(slotIndex);
             int slotValue = GetSlotValue(slotIndex);
@@ -192,7 +192,7 @@ namespace Game
             return 9999;
         }
 
-        public void AddSlotItems(int slotIndex, int value, int count)
+        public virtual void AddSlotItems(int slotIndex, int value, int count)
         {
             if (slotIndex >= 0 && slotIndex < OpenSlotsCount)
             {
@@ -229,7 +229,7 @@ namespace Game
             }
         }
 
-        public int RemoveSlotItems(int slotIndex, int count)
+        public virtual int RemoveSlotItems(int slotIndex, int count)
         {
             if (slotIndex >= 0 && slotIndex < OpenSlotsCount)
             {
@@ -248,7 +248,7 @@ namespace Game
             return 1;
         }
 
-        public void DropAllItems(Vector3 position)
+        public virtual void DropAllItems(Vector3 position)
         {
         }
     }

@@ -65,7 +65,7 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public void AddExperience(int count, bool playSound)
+        public virtual void AddExperience(int count, bool playSound)
         {
             if (playSound)
             {
@@ -109,7 +109,7 @@ namespace Game
             }
         }
 
-        public float CalculateStrengthFactor(ICollection<Factor> factors)
+        public virtual float CalculateStrengthFactor(ICollection<Factor> factors)
         {
             float num = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.8f : 1f;
             float num2 = 1f * num;
@@ -205,7 +205,7 @@ namespace Game
             return result;
         }
 
-        public float CalculateResilienceFactor(ICollection<Factor> factors)
+        public virtual float CalculateResilienceFactor(ICollection<Factor> factors)
         {
             float num = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.8f : 1f;
             float num2 = 1f * num;
@@ -275,7 +275,7 @@ namespace Game
             return result;
         }
 
-        public float CalculateSpeedFactor(ICollection<Factor> factors)
+        public virtual float CalculateSpeedFactor(ICollection<Factor> factors)
         {
             float num = 1f;
             float num2 = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 1.03f : 1f;
@@ -379,7 +379,7 @@ namespace Game
             return num;
         }
 
-        public float CalculateHungerFactor(ICollection<Factor> factors)
+        public virtual float CalculateHungerFactor(ICollection<Factor> factors)
         {
             float num = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.7f : 1f;
             float num2 = 1f * num;
@@ -427,7 +427,7 @@ namespace Game
             return result;
         }
 
-        public void Update(float dt)
+        public virtual void Update(float dt)
         {
             if (m_subsystemTime.PeriodicGameTimeEvent(180.0, 179.0))
             {
