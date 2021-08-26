@@ -35,9 +35,12 @@ namespace Engine.Audio
 			ChannelOut channelConfig = (streamingSource.ChannelsCount == 1) ? ChannelOut.FrontLeft : ChannelOut.Stereo;
 			int minBufferSize = AudioTrack.GetMinBufferSize(streamingSource.SamplingFrequency, channelConfig, Encoding.Pcm16bit);
 			int bufferSizeInBytes = MathUtils.Max(CalculateBufferSize(m_bufferDuration), minBufferSize);
-			m_audioTrack = new AudioTrack(Stream.Music, streamingSource.SamplingFrequency, channelConfig, Encoding.Pcm16bit, bufferSizeInBytes, AudioTrackMode.Stream);
-			//m_audioTrack = new AudioTrack(new AudioAttributes.Builder().SetUsage(AudioUsageKind.Media).SetContentType(AudioContentType.Music).Build(), new AudioFormat(), bufferSizeInBytes, AudioTrackMode.Static, 0);
-
+			//m_audioTrack = new AudioTrack(Stream.Music, streamingSource.SamplingFrequency, channelConfig, Encoding.Pcm16bit, bufferSizeInBytes, AudioTrackMode.Stream);			
+			AudioManager audioManager =(AudioManager) EngineActivity.m_activity.GetSystemService(Android.Content.Context.AudioService);
+			m_audioTrack = new AudioTrack(
+				new AudioAttributes.Builder().SetUsage(AudioUsageKind.Game).SetContentType(AudioContentType.Music).Build(),
+				new AudioFormat.Builder().SetEncoding(Encoding.Pcm16bit).SetSampleRate(streamingSource.SamplingFrequency).SetChannelMask(channelConfig).Build(),
+				bufferSizeInBytes, AudioTrackMode.Stream, audioManager.GenerateAudioSessionId());
 			Mixer.m_audioTracksCreated++;
 			if (m_audioTrack.State == AudioTrackState.Uninitialized)
 			{
@@ -47,13 +50,13 @@ namespace Engine.Audio
 				Log.Warning("Failed to create StreamingSound AudioTrack. Created={0}, Destroyed={1}", Mixer.m_audioTracksCreated, Mixer.m_audioTracksDestroyed);
 			}
 			StreamingSource = streamingSource;
-			base.ChannelsCount = streamingSource.ChannelsCount;
-			base.SamplingFrequency = streamingSource.SamplingFrequency;
-			base.Volume = volume;
-			base.Pitch = pitch;
-			base.Pan = pan;
-			base.IsLooped = isLooped;
-			base.DisposeOnStop = disposeOnStop;
+			ChannelsCount = streamingSource.ChannelsCount;
+			SamplingFrequency = streamingSource.SamplingFrequency;
+			Volume = volume;
+			Pitch = pitch;
+			Pan = pan;
+			IsLooped = isLooped;
+			DisposeOnStop = disposeOnStop;
 			if (m_audioTrack != null)
 			{
 				m_task = Task.Run(delegate
@@ -153,7 +156,7 @@ namespace Engine.Audio
 						if (num2 == 0 && m_audioTrack.PlaybackHeadPosition >= num / 2 / base.ChannelsCount - 1)
 						{
 							flag = false;
-							Dispatcher.Dispatch(base.Stop);
+							Dispatcher.Dispatch(Stop);
 						}
 					}
 					if (num2 > 0)
@@ -171,7 +174,7 @@ namespace Engine.Audio
 
 		public int CalculateBufferSize(float duration)
 		{
-			return 2 * base.ChannelsCount * (int)((float)base.SamplingFrequency * duration);
+			return 2 * ChannelsCount * (int)(SamplingFrequency * duration);
 		}
 
 		public int ReadStreamingSource(byte[] buffer, int count)

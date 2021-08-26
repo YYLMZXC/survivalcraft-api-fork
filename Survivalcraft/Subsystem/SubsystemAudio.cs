@@ -149,7 +149,11 @@ namespace Game
 
         public Sound CreateSound(string name)
         {
+#if android
+            var sound = new Sound(ContentManager.Get<Engine.Media.StreamingSource>(name,".wav"));
+#else
             var sound = new Sound(ContentManager.Get<SoundBuffer>(name,".wav"));
+#endif
             m_sounds.Add(sound);
             return sound;
         }

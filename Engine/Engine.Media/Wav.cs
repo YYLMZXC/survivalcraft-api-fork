@@ -21,6 +21,8 @@ namespace Engine.Media
 
 			private long m_position;
 
+			public MemoryStream BaseStream = new MemoryStream();
+
 			public override int ChannelsCount => m_channelsCount;
 
 			public override int SamplingFrequency => m_samplingFrequency;
@@ -52,13 +54,15 @@ namespace Engine.Media
 
 			public WavStreamingSource(Stream stream, bool leaveOpen = false)
 			{
-				m_stream = stream;
+				stream.CopyTo(BaseStream);
+				m_stream = BaseStream;
+				BaseStream.Position = 0L;
 				m_leaveOpen = leaveOpen;
-				ReadHeaders(stream, out FmtHeader fmtHeader, out DataHeader dataHeader, out long dataStart);
+				ReadHeaders(BaseStream, out FmtHeader fmtHeader, out DataHeader dataHeader, out long dataStart);
 				m_channelsCount = fmtHeader.ChannelsCount;
 				m_samplingFrequency = fmtHeader.SamplingFrequency;
 				m_bytesCount = dataHeader.DataSize;
-				stream.Position = dataStart;
+				BaseStream.Position = dataStart;
 			}
 
 			public override void Dispose()
@@ -87,6 +91,7 @@ namespace Engine.Media
 				MemoryStream memoryStream = new MemoryStream();
 				m_stream.Position = 0L;
 				m_stream.CopyTo(memoryStream);
+				memoryStream.Position = 0L;
 				return new WavStreamingSource(memoryStream);
 				throw new InvalidOperationException("Underlying stream does not support duplication.");
 			}

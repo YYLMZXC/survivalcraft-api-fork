@@ -335,7 +335,7 @@ namespace Game
             else if (m_task == null)
             {
                 m_quitUpdateThread = false;
-                m_task = Task.Run((Action)ThreadUpdateFunction);
+                m_task = Task.Run(ThreadUpdateFunction);
                 UnpauseUpdateThread();
                 m_updateEvent.Set();
             }
@@ -404,6 +404,7 @@ namespace Game
                     {
                         SendReceiveChunkStates();
                         SendReceiveChunkStatesThread();
+                        /*
                         foreach (TerrainChunk item in list)
                         {
                             while (item.ThreadState < TerrainChunkState.Valid)
@@ -411,6 +412,7 @@ namespace Game
                                 UpdateChunkSingleStep(item, m_subsystemSky.SkyLightValue);
                             }
                         }
+                        */
                         SendReceiveChunkStatesThread();
                         SendReceiveChunkStates();
                     }
@@ -817,7 +819,7 @@ namespace Game
                 case TerrainChunkState.InvalidVertices1:
                     {
                         double realTime5 = Time.RealTime;
-                        lock (chunk.Geometry)
+                        lock (chunk.SyncObj)
                         {
                             chunk.NewGeometryData = false;
                             GenerateChunkVertices(chunk, even: true);
@@ -832,7 +834,7 @@ namespace Game
                 case TerrainChunkState.InvalidVertices2:
                     {
                         double realTime = Time.RealTime;
-                        lock (chunk.Geometry)
+                        lock (chunk.SyncObj)
                         {
                             GenerateChunkVertices(chunk, even: false);
                             chunk.NewGeometryData = true;

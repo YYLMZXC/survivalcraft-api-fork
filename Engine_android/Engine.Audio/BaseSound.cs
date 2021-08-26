@@ -153,7 +153,7 @@ namespace Engine.Audio
 			}
 		}
 
-		internal void InternalSetVolume(float volume)
+		internal virtual void InternalSetVolume(float volume)
 		{
 			if (m_audioTrack != null)
 			{
@@ -162,7 +162,7 @@ namespace Engine.Audio
 			}
 		}
 
-		internal void InternalSetPitch(float pitch)
+		internal virtual void InternalSetPitch(float pitch)
 		{
 			if (m_audioTrack != null)
 			{
@@ -172,7 +172,7 @@ namespace Engine.Audio
 			}
 		}
 
-		internal void InternalSetPan(float pan)
+		internal virtual void InternalSetPan(float pan)
 		{
 			if (m_audioTrack != null)
 			{

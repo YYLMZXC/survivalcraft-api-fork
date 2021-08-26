@@ -64,6 +64,7 @@ namespace Game
 
         public int[] Shafts = new int[256];
 
+        public object SyncObj = new object();
 
         public TerrainGeometry Geometry = new TerrainGeometry();
 

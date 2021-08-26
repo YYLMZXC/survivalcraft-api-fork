@@ -89,7 +89,7 @@ namespace Game
             {
                 if (terrainChunk.NewGeometryData)
                 {
-                    lock (terrainChunk.Geometry.DrawBuffers)
+                    lock (terrainChunk.SyncObj)
                     {
                         if (terrainChunk.NewGeometryData)
                         {

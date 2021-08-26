@@ -117,7 +117,7 @@ namespace Game
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
         {
             int data = Terrain.ExtractData(value);
-            ClothingData clothingData = GetClothingData(data);
+            ClothingData clothingData = GetClothingData(value);
             int clothingColor = GetClothingColor(data);
             string displayName = clothingData.DisplayName;
             if (clothingColor != 0)
@@ -130,7 +130,7 @@ namespace Game
         public override string GetDescription(int value)
         {
             int data = Terrain.ExtractData(value);
-            ClothingData clothingData = GetClothingData(data);
+            ClothingData clothingData = GetClothingData(value);
             string desc = LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, clothingData.Index), "Description");
             if (string.IsNullOrEmpty(desc)) desc = clothingData.Description;
             return desc;
