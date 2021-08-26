@@ -403,8 +403,7 @@ namespace Game
                     try
                     {
                         SendReceiveChunkStates();
-                        SendReceiveChunkStatesThread();
-                        /*
+                        SendReceiveChunkStatesThread();                        
                         foreach (TerrainChunk item in list)
                         {
                             while (item.ThreadState < TerrainChunkState.Valid)
@@ -412,7 +411,6 @@ namespace Game
                                 UpdateChunkSingleStep(item, m_subsystemSky.SkyLightValue);
                             }
                         }
-                        */
                         SendReceiveChunkStatesThread();
                         SendReceiveChunkStates();
                     }
@@ -440,7 +438,7 @@ namespace Game
                         chunkAtCoords.State = state;
                         if (forceGeometryRegeneration)
                         {
-                            //chunkAtCoords.Geometry.InvalidateSliceContentsHashes();
+                            chunkAtCoords.Geometry.ChunkInvalid = true;
                         }
                     }
                     chunkAtCoords.WasDowngraded = true;
@@ -458,7 +456,7 @@ namespace Game
                     terrainChunk.State = state;
                     if (forceGeometryRegeneration)
                     {
-                        //terrainChunk.Geometry.InvalidateSliceContentsHashes();
+                        terrainChunk.Geometry.ChunkInvalid = true;
                     }
                 }
                 terrainChunk.WasDowngraded = true;
@@ -492,7 +490,7 @@ namespace Game
                     }
                     m_subsystemTerrain.TerrainSerializer.SaveChunk(terrainChunk);
                     m_terrain.FreeChunk(terrainChunk);
-                    terrainChunk.Geometry.Dispose();
+                    terrainChunk.Geometry.DisposeDrawBuffer();
                 }
             }
             for (int j = 0; j < locations.Length; j++)
@@ -819,9 +817,8 @@ namespace Game
                 case TerrainChunkState.InvalidVertices1:
                     {
                         double realTime5 = Time.RealTime;
-                        lock (chunk.SyncObj)
+                        lock (chunk.Geometry)
                         {
-                            chunk.NewGeometryData = false;
                             GenerateChunkVertices(chunk, even: true);
                         }
                         chunk.ThreadState = TerrainChunkState.InvalidVertices2;
@@ -834,7 +831,7 @@ namespace Game
                 case TerrainChunkState.InvalidVertices2:
                     {
                         double realTime = Time.RealTime;
-                        lock (chunk.SyncObj)
+                        lock (chunk.Geometry)
                         {
                             GenerateChunkVertices(chunk, even: false);
                             chunk.NewGeometryData = true;

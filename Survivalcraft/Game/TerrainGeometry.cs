@@ -105,7 +105,7 @@ namespace Game
 
         public bool AllInOne = false;
 
-        public bool Changed = false;
+        public bool ChunkInvalid = true;
 
         public TerrainGeometry(bool AllInOne=false)
         {
@@ -133,17 +133,18 @@ namespace Game
             buffer.IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits, IndicesCount);
             for (int i = 0; i < geometry.Length; i++)
             {
+                TerrainGeometrySubset subset = geometry[i];
                 if (IndicesPosition > 0)
                 {
-                    for (int j = 0; j < geometry[i].Indices.Count; j++)
+                    for (int j = 0; j < subset.Indices.Count; j++)
                     {
-                        geometry[i].Indices[j] += (ushort)(VerticesPosition);
+                        subset.Indices[j] += (ushort)(VerticesPosition);
                     }
                 }
-                buffer.VertexBuffer.SetData(geometry[i].Vertices.Array, 0, geometry[i].Vertices.Count, VerticesPosition);
-                buffer.IndexBuffer.SetData(geometry[i].Indices.Array, 0, geometry[i].Indices.Count, IndicesPosition);
+                buffer.VertexBuffer.SetData(subset.Vertices.Array, 0, subset.Vertices.Count, VerticesPosition);
+                buffer.IndexBuffer.SetData(subset.Indices.Array, 0, subset.Indices.Count, IndicesPosition);
                 buffer.SubsetIndexBufferStarts[i] = IndicesPosition;
-                buffer.SubsetIndexBufferEnds[i] = IndicesPosition + geometry[i].Indices.Count;
+                buffer.SubsetIndexBufferEnds[i] = IndicesPosition + subset.Indices.Count;
                 VerticesPosition += geometry[i].Vertices.Count;
                 IndicesPosition += geometry[i].Indices.Count;
                 if (AllInOne) break;
@@ -153,23 +154,22 @@ namespace Game
         }
 
         public void Compile() {
-            if (Changed) {
-                Dispose();
-                foreach (var item in GeometrySubsets)
+            DisposeDrawBuffer();
+            foreach (var item in GeometrySubsets)
+            {
+                if (CompileVertexAndIndex(item.Value.Subsets, item.Key, out DrawBuffer buffer))
                 {
-                    if (CompileVertexAndIndex(item.Value.Subsets, item.Key, out DrawBuffer buffer))
-                    {
-                        DrawBuffers.Add(buffer);
-                    }
+                    DrawBuffers.Add(buffer);
                 }
-                GeometrySubsets.Clear();
-                Changed = false;
             }
+            GeometrySubsets.Clear();
         }
 
         public void ClearGeometry() {
-            foreach (var item in GeometrySubsets) {
-                for (int i=0;i<item.Value.Subsets.Length;i++) {
+            foreach (var item in GeometrySubsets)
+            {
+                for (int i = 0; i < item.Value.Subsets.Length; i++)
+                {
                     item.Value.Subsets[i].Vertices.Clear();
                     item.Value.Subsets[i].Indices.Clear();
                 }
@@ -183,7 +183,6 @@ namespace Game
 
         public TerrainChunkSliceGeometry GetGeometry(Texture2D texture=null)
         {
-            Changed = true;
             if (GeometrySubsets.TryGetValue(texture, out TerrainChunkSliceGeometry subset) == false)
             {
                 subset = new TerrainChunkSliceGeometry(AllInOne);
@@ -192,7 +191,7 @@ namespace Game
             return subset;
         }
 
-        public void Dispose()
+        public void DisposeDrawBuffer()
         {
             for (int i = 0; i < DrawBuffers.Count; i++)
             {

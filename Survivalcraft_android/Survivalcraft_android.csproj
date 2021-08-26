@@ -1880,9 +1880,6 @@
     <Compile Include="..\Survivalcraft\Game\TerrainChunk.cs">
       <Link>Game\TerrainChunk.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Game\TerrainChunkGeometry.cs">
-      <Link>Game\TerrainChunkGeometry.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Game\TerrainChunkSliceGeometry.cs">
       <Link>Game\TerrainChunkSliceGeometry.cs</Link>
     </Compile>

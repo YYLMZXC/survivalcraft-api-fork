@@ -64,8 +64,6 @@ namespace Game
 
         public int[] Shafts = new int[256];
 
-        public object SyncObj = new object();
-
         public TerrainGeometry Geometry = new TerrainGeometry();
 
         public TerrainChunk(Terrain terrain, int x, int z)
@@ -79,7 +77,7 @@ namespace Game
 
         public void Dispose()
         {
-            Geometry.Dispose();
+            Geometry.DisposeDrawBuffer();
         }
 
         public static bool IsCellValid(int x, int y, int z)

@@ -87,20 +87,19 @@ namespace Game
             TerrainChunk[] allocatedChunks = m_subsystemTerrain.Terrain.AllocatedChunks;
             foreach (TerrainChunk terrainChunk in allocatedChunks)
             {
-                if (terrainChunk.NewGeometryData)
-                {
-                    lock (terrainChunk.SyncObj)
-                    {
-                        if (terrainChunk.NewGeometryData)
-                        {
-                            terrainChunk.NewGeometryData = false;
-                            SetupTerrainChunkGeometryVertexIndexBuffers(terrainChunk);
-                        }
-                    }
-                }
                 terrainChunk.DrawDistanceSquared = Vector2.DistanceSquared(xZ, terrainChunk.Center);
                 if (viewFrustum.Intersection(terrainChunk.BoundingBox) && terrainChunk.DrawDistanceSquared <= num)
                 {
+                    if (terrainChunk.NewGeometryData)
+                    {
+                        GameManager.SyncDispatcher.Add(delegate {
+                            lock (terrainChunk.Geometry)
+                            {
+                                SetupTerrainChunkGeometryVertexIndexBuffers(terrainChunk);
+                            }
+                        });
+                        terrainChunk.NewGeometryData = false;
+                    }
                     m_chunksToDraw.Add(terrainChunk);
                     if (terrainChunk.State != TerrainChunkState.Valid)
                     {
@@ -252,7 +251,7 @@ namespace Game
             TerrainChunk[] allocatedChunks = m_subsystemTerrain.Terrain.AllocatedChunks;
             foreach (TerrainChunk terrainChunk in allocatedChunks)
             {
-                terrainChunk.Geometry.Dispose();
+                terrainChunk.Geometry.DisposeDrawBuffer();
             }
         }
 
