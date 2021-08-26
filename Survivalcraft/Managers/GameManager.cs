@@ -25,7 +25,7 @@ namespace Game
 
         public static WorldInfo WorldInfo => m_worldInfo;
 
-        public static List<Action> SyncDispatcher = new List<Action>();
+        public static List<Func<bool>> SyncDispatcher = new List<Func<bool>>();
 
         public static void LoadProject(WorldInfo worldInfo, ContainerWidget gamesWidget)
         {
@@ -124,7 +124,7 @@ namespace Game
 
         public static void UpdateProject()
         {
-            if (SyncDispatcher.Count > 0) { SyncDispatcher[0].Invoke(); SyncDispatcher.RemoveAt(0); }
+            if (SyncDispatcher.Count > 0 && SyncDispatcher[0].Invoke()) { SyncDispatcher.RemoveAt(0); }
             if (m_project != null)
             {
                 m_subsystemUpdate.Update();

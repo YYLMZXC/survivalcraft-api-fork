@@ -93,10 +93,13 @@ namespace Game
                     if (terrainChunk.NewGeometryData)
                     {
                         GameManager.SyncDispatcher.Add(delegate {
+                            bool succ = false;
                             lock (terrainChunk.Geometry)
                             {
+                                succ = true;
                                 SetupTerrainChunkGeometryVertexIndexBuffers(terrainChunk);
                             }
+                            return succ;
                         });
                         terrainChunk.NewGeometryData = false;
                     }
