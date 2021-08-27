@@ -65,7 +65,7 @@ namespace Game
             }
             m_worldInfo = worldInfo;
             Log.Information("Loaded world, GameMode={0}, StartingPosition={1}, WorldName={2}, VisibilityRange={3}, Resolution={4}", worldInfo.WorldSettings.GameMode, worldInfo.WorldSettings.StartingPositionMode, worldInfo.WorldSettings.Name, SettingsManager.VisibilityRange.ToString(), SettingsManager.ResolutionMode.ToString());
-            AnalyticsManager.LogEvent("[GameManager] Loaded world", new AnalyticsParameter("GameMode", worldInfo.WorldSettings.GameMode.ToString()), new AnalyticsParameter("EnvironmentBehaviorMode", worldInfo.WorldSettings.EnvironmentBehaviorMode.ToString()), new AnalyticsParameter("TerrainGenerationMode", worldInfo.WorldSettings.TerrainGenerationMode.ToString()), new AnalyticsParameter("WorldDirectory", worldInfo.DirectoryName), new AnalyticsParameter("WorldName", worldInfo.WorldSettings.Name), new AnalyticsParameter("WorldSeedString", worldInfo.WorldSettings.Seed), new AnalyticsParameter("VisibilityRange", SettingsManager.VisibilityRange.ToString()), new AnalyticsParameter("Resolution", SettingsManager.ResolutionMode.ToString()));
+            
             GC.Collect();
         }
 

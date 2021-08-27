@@ -34,13 +34,13 @@ namespace Game
             {
                 m_increaseDetailDialogShown = true;
                 DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), LanguageControl.Ok, null, null));
-                AnalyticsManager.LogEvent("[GameMenuScreen] IncreaseDetailDialog Shown");
+                
             }
             if (!m_decreaseDetailDialogShown && PerformanceManager.LongTermAverageFrameTime.HasValue && PerformanceManager.LongTermAverageFrameTime.Value * 1000f > 50f && (SettingsManager.VisibilityRange >= 64 || SettingsManager.ResolutionMode == ResolutionMode.High))
             {
                 m_decreaseDetailDialogShown = true;
                 DialogsManager.ShowDialog(ParentWidget, new MessageDialog(LanguageControl.Get(fName, 3), LanguageControl.Get(fName, 4), LanguageControl.Ok, null, null));
-                AnalyticsManager.LogEvent("[GameMenuScreen] DecreaseDetailDialog Shown");
+                
             }
             m_statsPanel.Children.Clear();
             Project project = componentPlayer.Project;

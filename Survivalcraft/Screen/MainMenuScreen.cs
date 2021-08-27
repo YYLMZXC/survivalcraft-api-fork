@@ -63,7 +63,7 @@ namespace Game
             }
             if (Children.Find<ButtonWidget>("Buy").IsClicked)
             {
-                AnalyticsManager.LogEvent("[MainMenuScreen] Clicked buy button");
+                
                 MarketplaceManager.ShowMarketplace();
             }
             if ((Input.Back && !Keyboard.BackButtonQuitsApp) || Input.IsKeyDownOnce(Key.Escape))

@@ -110,7 +110,7 @@ namespace Game
                     m_longTermAverageFrameTime = (float)(m_totalFrameTime / m_frameCount);
                     float num = (int)MathUtils.Round(MathUtils.Round(m_totalFrameTime / m_frameCount / 0.004999999888241291) * 0.004999999888241291 * 1000.0);
                     float num2 = (int)MathUtils.Round(MathUtils.Round(m_totalCpuFrameTime / m_frameCount / 0.004999999888241291) * 0.004999999888241291 * 1000.0);
-                    AnalyticsManager.LogEvent("[PerformanceManager] Measurement", new AnalyticsParameter("FrameCount", m_frameCount.ToString()), new AnalyticsParameter("AverageFrameTime", num.ToString() + "ms"), new AnalyticsParameter("AverageFrameCpuTime", num2.ToString() + "ms"));
+                    
                     Log.Information($"PerformanceManager Measurement: frames={m_frameCount.ToString()}, avgFrameTime={num.ToString()}ms, avgFrameCpuTime={num2.ToString()}ms");
                 }
             }, delegate

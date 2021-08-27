@@ -127,7 +127,6 @@ namespace Game
             InitScreens();
             AddLoadAction(delegate {
                 BlocksTexturesManager.Initialize();
-                AnalyticsManager.Initialize();
                 CharacterSkinsManager.Initialize();
                 CommunityContentManager.Initialize();
                 ExternalContentManager.Initialize();

@@ -64,7 +64,7 @@ namespace Game
                 {
                     SettingsManager.MotdLastUpdateTime = now;
                     Log.Information("Downloading MOTD");
-                    AnalyticsManager.LogEvent("[MotdManager] Downloading MOTD", new AnalyticsParameter("Time", DateTime.Now.ToString("HH:mm:ss.fff")));
+                    
                     string url = GetMotdUrl();
                     WebManager.Get(url, null, null, null, delegate (byte[] result)
                     {
@@ -74,7 +74,7 @@ namespace Game
                             MessageOfTheDay = null;
                             SettingsManager.MotdLastDownloadedData = motdLastDownloadedData;
                             Log.Information("Downloaded MOTD");
-                            AnalyticsManager.LogEvent("[MotdManager] Downloaded MOTD", new AnalyticsParameter("Time", DateTime.Now.ToString("HH:mm:ss.fff")), new AnalyticsParameter("Url", url));
+                            
                             SettingsManager.MotdUseBackupUrl = false;
                         }
                         catch (Exception ex)

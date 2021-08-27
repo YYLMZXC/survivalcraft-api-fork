@@ -85,7 +85,6 @@ namespace Game
             try
             {
                 SettingsManager.Initialize();
-                AnalyticsManager.Initialize();
                 VersionsManager.Initialize();
                 ExternalContentManager.Initialize();                
                 ScreensManager.Initialize();

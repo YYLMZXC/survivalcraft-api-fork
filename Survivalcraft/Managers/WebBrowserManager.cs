@@ -7,7 +7,7 @@ namespace Game
     {
         public static void LaunchBrowser(string url)
         {
-            AnalyticsManager.LogEvent("[WebBrowserManager] Launching browser", new AnalyticsParameter("Url", url));
+            
             if (!url.Contains("://"))
             {
                 url = "http://" + url;

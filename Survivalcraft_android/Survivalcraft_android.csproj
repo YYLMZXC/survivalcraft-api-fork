@@ -1292,23 +1292,11 @@
     <Compile Include="..\Survivalcraft\Game\AnalogToDigitalConverterElectricElement.cs">
       <Link>Game\AnalogToDigitalConverterElectricElement.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Game\AnalyticsManagerUtils.cs">
-      <Link>Game\AnalyticsManagerUtils.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Game\AnalyticsParameter.cs">
-      <Link>Game\AnalyticsParameter.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Game\AndGateElectricElement.cs">
       <Link>Game\AndGateElectricElement.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\AStar.cs">
       <Link>Game\AStar.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Game\AverageCountDebugItemAttribute.cs">
-      <Link>Game\AverageCountDebugItemAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Game\AverageTimeDebugItemAttribute.cs">
-      <Link>Game\AverageTimeDebugItemAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\BaseDelayGateElectricElement.cs">
       <Link>Game\BaseDelayGateElectricElement.cs</Link>
@@ -2092,9 +2080,6 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\ZipArchiveEntry.cs">
       <Link>Game\ZipArchiveEntry.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Managers\AnalyticsManager.cs">
-      <Link>Managers\AnalyticsManager.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Managers\AudioManager.cs">
       <Link>Managers\AudioManager.cs</Link>

@@ -99,7 +99,7 @@ namespace Game
             if (CurrentScreen != null)
             {
                 Log.Verbose($"Entered screen \"{GetScreenName(CurrentScreen)}\"");
-                AnalyticsManager.LogEvent($"[{GetScreenName(CurrentScreen)}] Entered screen", new AnalyticsParameter("Time", DateTime.Now.ToString("HH:mm:ss.fff")));
+                
             }
         }
 

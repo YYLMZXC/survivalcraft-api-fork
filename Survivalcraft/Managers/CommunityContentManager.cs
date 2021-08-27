@@ -134,7 +134,6 @@ namespace Game
                         }, delegate
                         {
                         });
-                        AnalyticsManager.LogEvent("[CommunityContentManager] Download Success", new AnalyticsParameter("Name", name));
                         success();
                     }, delegate (Exception error)
                     {
@@ -143,7 +142,6 @@ namespace Game
                         }, delegate
                         {
                         });
-                        AnalyticsManager.LogEvent("[CommunityContentManager] Import Failure", new AnalyticsParameter("Name", name), new AnalyticsParameter("Error", error.Message.ToString()));
                         failure(error);
                     });
                 }, delegate (Exception error)
@@ -153,7 +151,6 @@ namespace Game
                     }, delegate
                     {
                     });
-                    AnalyticsManager.LogEvent("[CommunityContentManager] Download Failure", new AnalyticsParameter("Name", name), new AnalyticsParameter("Error", error.Message.ToString()));
                     failure(error);
                 });
             }
@@ -216,11 +213,9 @@ namespace Game
                     }), progress, delegate
                     {
                         success();
-                        AnalyticsManager.LogEvent("[CommunityContentManager] Publish Success", new AnalyticsParameter("Name", name), new AnalyticsParameter("Type", type.ToString()), new AnalyticsParameter("Size", data.Length.ToString()), new AnalyticsParameter("User", userId));
                     }, delegate (Exception error)
                     {
                         failure(error);
-                        AnalyticsManager.LogEvent("[CommunityContentManager] Publish Failure", new AnalyticsParameter("Name", name), new AnalyticsParameter("Type", type.ToString()), new AnalyticsParameter("Size", data.Length.ToString()), new AnalyticsParameter("User", userId), new AnalyticsParameter("Error", error.Message.ToString()));
                     });
                 }, failure);
             }
@@ -243,11 +238,11 @@ namespace Game
             WebManager.Post(m_scResDirAddress, null, null, WebManager.UrlParametersToStream(dictionary), progress, delegate
             {
                 success();
-                AnalyticsManager.LogEvent("[CommunityContentManager] Delete Success", new AnalyticsParameter("Name", address), new AnalyticsParameter("User", userId));
+                
             }, delegate (Exception error)
             {
                 failure(error);
-                AnalyticsManager.LogEvent("[CommunityContentManager] Delete Failure", new AnalyticsParameter("Name", address), new AnalyticsParameter("User", userId), new AnalyticsParameter("Error", error.Message.ToString()));
+                
             });
         }
 

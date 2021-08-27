@@ -61,7 +61,7 @@ namespace Game
             SettingsManager.LastLaunchedVersion = Version;
             if (Version != LastLaunchedVersion)
             {
-                AnalyticsManager.LogEvent("[VersionsManager] Upgrade game", new AnalyticsParameter("LastVersion", LastLaunchedVersion), new AnalyticsParameter("CurrentVersion", Version));
+                
             }
         }
 
@@ -103,7 +103,7 @@ namespace Game
                 {
                     throw new InvalidOperationException($"Upgrade produced invalid project version. Expected \"{SerializationVersion}\", found \"{worldInfo2.SerializationVersion}\".");
                 }
-                AnalyticsManager.LogEvent("[VersionConverter] Upgrade world", new AnalyticsParameter("SourceVersion", worldInfo.SerializationVersion), new AnalyticsParameter("TargetVersion", SerializationVersion));
+                
             }
         }
 
