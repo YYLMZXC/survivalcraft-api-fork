@@ -438,7 +438,10 @@ namespace Game
                         chunkAtCoords.State = state;
                         if (forceGeometryRegeneration)
                         {
-                            chunkAtCoords.Geometry.ChunkInvalid = true;
+                            for (int d = 0; d < 16; d++)
+                            {
+                                chunkAtCoords.SliceContentsHashes[i] = 0;
+                            }
                         }
                     }
                     chunkAtCoords.WasDowngraded = true;
@@ -456,7 +459,10 @@ namespace Game
                     terrainChunk.State = state;
                     if (forceGeometryRegeneration)
                     {
-                        terrainChunk.Geometry.ChunkInvalid = true;
+                        for (int i = 0; i < 16; i++)
+                        {
+                            terrainChunk.SliceContentsHashes[i] = new Random().Int();
+                        }
                     }
                 }
                 terrainChunk.WasDowngraded = true;
@@ -1094,6 +1100,9 @@ namespace Game
                 {
                     continue;
                 }
+                int hash = CalculateChunkSliceContentsHash(chunk.Terrain, chunk, i);
+                if (hash == chunk.SliceContentsHashes[i]) { System.Diagnostics.Debug.WriteLine("Skip chunk " + chunk.Coords + " at " + i); continue; }
+                
                 for (int k = num; k < num3; k++)
                 {
                     for (int l = num2; l < num4; l++)
@@ -1160,7 +1169,7 @@ namespace Game
             }
         }
 
-        public int CalculateChunkSliceContentsHash(TerrainChunk chunk, int sliceIndex)
+        public static int CalculateChunkSliceContentsHash(Terrain m_terrain, TerrainChunk chunk, int sliceIndex)
         {
             double realTime = Time.RealTime;
             int num = 1;
@@ -1205,8 +1214,6 @@ namespace Game
             num += m_terrain.SeasonHumidity;
             num *= 31;
             double realTime2 = Time.RealTime;
-            m_statistics.HashCount++;
-            m_statistics.HashTime += realTime2 - realTime;
             return num;
         }
 

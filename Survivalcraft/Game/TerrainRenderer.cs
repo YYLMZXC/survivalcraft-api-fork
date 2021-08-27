@@ -255,7 +255,15 @@ namespace Game
 
         public void SetupTerrainChunkGeometryVertexIndexBuffers(TerrainChunk chunk)
         {
+            for (int i = 0; i < 16; i++)
+            {
+                chunk.SliceContentsHashes[i] = 0;
+            }
             chunk.Geometry.Compile();
+            for (int i = 0; i < 16; i++)
+            {
+                chunk.SliceContentsHashes[i] = TerrainUpdater.CalculateChunkSliceContentsHash(chunk.Terrain, chunk, i);
+            }
 
         }
 
