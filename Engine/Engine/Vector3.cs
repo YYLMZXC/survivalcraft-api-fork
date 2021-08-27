@@ -231,8 +231,6 @@ namespace Engine
 			return new Vector3(MathUtils.Max(v1.X, v2.X), MathUtils.Max(v1.Y, v2.Y), MathUtils.Max(v1.Z, v2.Z));
 		}
 
-#if android
-
 		public static float MinElement(Vector3 v)
 		{
 			return MathUtils.Min(v.X, v.Y, v.Z);
@@ -242,8 +240,6 @@ namespace Engine
 		{
 			return MathUtils.Max(v.X, v.Y, v.Z);
 		}
-
-#endif
 
 		public static Vector3 Clamp(Vector3 v, float min, float max)
 		{

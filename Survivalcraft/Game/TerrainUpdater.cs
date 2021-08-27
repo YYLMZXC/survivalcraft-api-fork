@@ -817,9 +817,10 @@ namespace Game
                 case TerrainChunkState.InvalidVertices1:
                     {
                         double realTime5 = Time.RealTime;
-                        lock (chunk.Geometry)
+                        lock (chunk.Geometry.DrawBuffers)
                         {
                             GenerateChunkVertices(chunk, even: true);
+                            chunk.NewGeometryData = false;
                         }
                         chunk.ThreadState = TerrainChunkState.InvalidVertices2;
                         chunk.WasUpgraded = true;
@@ -831,7 +832,7 @@ namespace Game
                 case TerrainChunkState.InvalidVertices2:
                     {
                         double realTime = Time.RealTime;
-                        lock (chunk.Geometry)
+                        lock (chunk.Geometry.DrawBuffers)
                         {
                             GenerateChunkVertices(chunk, even: false);
                             chunk.NewGeometryData = true;

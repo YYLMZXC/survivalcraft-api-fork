@@ -18,7 +18,7 @@ namespace Game
                     try
                     {
 #if android
-                        Sound sound = new Sound(ContentManager.Get<StreamingSource>(name, ".wav"), num, ToEnginePitch(pitch), pan, false, true);
+                        Sound sound = new Sound(ContentManager.Get<StreamingSource>(name, ".wav").Duplicate(), num, ToEnginePitch(pitch), pan, false, true);
                         sound.Play();
 #else
                         new Sound(ContentManager.Get<SoundBuffer>(name, ".wav"), num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true).Play();

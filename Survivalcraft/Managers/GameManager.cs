@@ -124,7 +124,9 @@ namespace Game
 
         public static void UpdateProject()
         {
-            if (SyncDispatcher.Count > 0 && SyncDispatcher[0].Invoke()) { SyncDispatcher.RemoveAt(0); }
+            if (SyncDispatcher.Count > 0 && SyncDispatcher[0].Invoke()) { 
+                SyncDispatcher.RemoveAt(0); 
+            }
             if (m_project != null)
             {
                 m_subsystemUpdate.Update();

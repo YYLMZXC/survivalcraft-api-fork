@@ -88,14 +88,21 @@ namespace Engine.Media
 				return Stream(stream, format);
 			}
 		}
-
+#if android
+		public static StreamingSource Stream(Stream stream)
+		{
+			SoundFileFormat format = DetermineFileFormat(stream);
+			stream.Position = 0L;
+			return Stream(stream, format);
+		}
+#else
 		public static StreamingSource Stream(Stream stream)
 		{
 			var peekStream = new PeekStream(stream, 64);
 			SoundFileFormat format = DetermineFileFormat(peekStream.GetInitialBytesStream());
 			return Stream(peekStream, format);
 		}
-
+#endif
 		public static StreamingSource Stream(string fileName)
 		{
 			using (Stream stream = Storage.OpenFile(fileName, OpenFileMode.Read))

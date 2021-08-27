@@ -29,30 +29,39 @@ namespace Engine.Media
 					m_reader.DecodedPosition = value;
 				}
 			}
-			public MemoryStream BaseStream = new MemoryStream();
-
 			public override long BytesCount => m_reader.TotalSamples * 2;
+#if android
+			public OggStreamingSource(Stream stream, bool leaveOpen = false)
+			{
+				MemoryStream memoryStream = new MemoryStream();
+				stream.Position = 0L;
+				stream.CopyTo(memoryStream);
+				memoryStream.Position = 0L;
+				m_stream = memoryStream;
+				m_reader = new VorbisReader(m_stream, leaveOpen);
+			}
+#else
 			public OggStreamingSource(Stream stream, bool leaveOpen = false)
 			{
 				m_stream = stream;
 				if (!stream.CanSeek)
 				{
-					stream.CopyTo(BaseStream);
+					MemoryStream memoryStream = new MemoryStream();
+					stream.CopyTo(memoryStream);
 					if (!leaveOpen)
 					{
 						stream.Dispose();
 					}
-					BaseStream.Position = 0L;
-					m_reader = new VorbisReader(BaseStream,  false);
+					memoryStream.Seek(0L, SeekOrigin.Begin);
+					m_reader = new VorbisReader(memoryStream, closeStreamOnDispose: false);
 				}
 				else
 				{
-					stream.CopyTo(BaseStream);
-					BaseStream.Position = 0L;
-					m_reader = new VorbisReader(BaseStream, false);
+					m_reader = new VorbisReader(stream, !leaveOpen);
 				}
 			}
 
+#endif
 			public override void Dispose()
 			{
 				m_reader.Dispose();
@@ -104,12 +113,24 @@ namespace Engine.Media
 			/// 复制出一个新的流
 			/// </summary>
 			/// <returns></returns>
+#if android
 			public override StreamingSource Duplicate()
 			{
-				BaseStream.Position = 0L;
-				return new OggStreamingSource(BaseStream);
-				throw new InvalidOperationException("Underlying stream does not support duplication.");
+				MemoryStream memoryStream = new MemoryStream();
+				m_stream.Position = 0L;
+				m_stream.CopyTo(memoryStream);
+				memoryStream.Position = 0L;
+				return new OggStreamingSource(memoryStream);
 			}
+#else
+			public override StreamingSource Duplicate()
+			{
+				MemoryStream memoryStream = new MemoryStream();
+				m_stream.Position = 0L;
+				m_stream.CopyTo(memoryStream);
+				return new OggStreamingSource(memoryStream);
+			}
+#endif
 		}
 
 		public static bool IsOggStream(Stream stream)

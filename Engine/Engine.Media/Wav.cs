@@ -21,8 +21,6 @@ namespace Engine.Media
 
 			private long m_position;
 
-			public MemoryStream BaseStream = new MemoryStream();
-
 			public override int ChannelsCount => m_channelsCount;
 
 			public override int SamplingFrequency => m_samplingFrequency;
@@ -51,20 +49,33 @@ namespace Engine.Media
 					throw new NotSupportedException("Underlying stream cannot be seeked.");
 				}
 			}
-
+#if android
 			public WavStreamingSource(Stream stream, bool leaveOpen = false)
 			{
-				stream.CopyTo(BaseStream);
-				m_stream = BaseStream;
-				BaseStream.Position = 0L;
+				MemoryStream memoryStream = new MemoryStream();
+				stream.Position = 0L;
+				stream.CopyTo(memoryStream);
+				memoryStream.Position = 0L;
+				m_stream = memoryStream; 
 				m_leaveOpen = leaveOpen;
-				ReadHeaders(BaseStream, out FmtHeader fmtHeader, out DataHeader dataHeader, out long dataStart);
+				ReadHeaders(m_stream, out FmtHeader fmtHeader, out DataHeader dataHeader, out long dataStart);
 				m_channelsCount = fmtHeader.ChannelsCount;
 				m_samplingFrequency = fmtHeader.SamplingFrequency;
 				m_bytesCount = dataHeader.DataSize;
-				BaseStream.Position = dataStart;
+				m_stream.Position = dataStart;
 			}
-
+#else
+			public WavStreamingSource(Stream stream, bool leaveOpen = false)
+			{
+				m_stream = stream;
+				m_leaveOpen = leaveOpen;
+				ReadHeaders(stream, out FmtHeader fmtHeader, out DataHeader dataHeader, out long dataStart);
+				m_channelsCount = fmtHeader.ChannelsCount;
+				m_samplingFrequency = fmtHeader.SamplingFrequency;
+				m_bytesCount = dataHeader.DataSize;
+				stream.Position = dataStart;
+			}
+#endif
 			public override void Dispose()
 			{
 				if (!m_leaveOpen)
@@ -85,7 +96,7 @@ namespace Engine.Media
 				m_position += num / 2 / ChannelsCount;
 				return num;
 			}
-
+#if android
 			public override StreamingSource Duplicate()
 			{
 				MemoryStream memoryStream = new MemoryStream();
@@ -93,10 +104,18 @@ namespace Engine.Media
 				m_stream.CopyTo(memoryStream);
 				memoryStream.Position = 0L;
 				return new WavStreamingSource(memoryStream);
-				throw new InvalidOperationException("Underlying stream does not support duplication.");
 			}
-		}
+#else
+			public override StreamingSource Duplicate()
+			{
+				MemoryStream memoryStream = new MemoryStream();
+				m_stream.Position = 0L;
+				m_stream.CopyTo(memoryStream);
+				return new WavStreamingSource(memoryStream);
+			}
 
+#endif
+		}
 		public struct WavInfo
 		{
 			public int ChannelsCount;
