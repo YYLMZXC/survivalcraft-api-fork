@@ -26,6 +26,7 @@ namespace Game
         public float FirstPersonScale = 1f;
 
         public Vector3 FirstPersonOffset = Vector3.Zero;
+
         public virtual Vector3 GetFirstPersonOffset(int value) {
             return FirstPersonOffset;
         }

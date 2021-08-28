@@ -826,28 +826,10 @@ namespace Game
                         lock (chunk.Geometry.DrawBuffers)
                         {
                             GenerateChunkVertices(chunk, even: true);
-                            chunk.NewGeometryData = false;
-                        }
-                        chunk.ThreadState = TerrainChunkState.InvalidVertices2;
-                        chunk.WasUpgraded = true;
-                        double realTime6 = Time.RealTime;
-                        m_statistics.VerticesCount1++;
-                        m_statistics.VerticesTime1 += realTime6 - realTime5;
-                        break;
-                    }
-                case TerrainChunkState.InvalidVertices2:
-                    {
-                        double realTime = Time.RealTime;
-                        lock (chunk.Geometry.DrawBuffers)
-                        {
-                            GenerateChunkVertices(chunk, even: false);
                             chunk.NewGeometryData = true;
                         }
                         chunk.ThreadState = TerrainChunkState.Valid;
                         chunk.WasUpgraded = true;
-                        double realTime2 = Time.RealTime;
-                        m_statistics.VerticesCount2++;
-                        m_statistics.VerticesTime2 += realTime2 - realTime;
                         break;
                     }
             }
@@ -1057,91 +1039,38 @@ namespace Game
                 }
             }
         }
+        public static bool CalculateIsVisible(Vector3 position, Camera camera, float VisibilityRangeSqr, float VisibilityRangeYMultiplier)
+        {
+            Vector3 vector = position - camera.ViewPosition;
+            vector.Y *= VisibilityRangeYMultiplier;
+            if (vector.LengthSquared() < VisibilityRangeSqr)
+            {
+                var sphere = new BoundingSphere(position, 1);
+                return camera.ViewFrustum.Intersection(sphere);
+            }
+            return false;
+        }
 
         public void GenerateChunkVertices(TerrainChunk chunk, bool even)
         {
-            m_subsystemTerrain.BlockGeometryGenerator.ResetCache();
-            if (even) {
-                //清除Textures缓存
-                chunk.Geometry.GeometrySubsets.Clear();
-                chunk.Geometry.CreateDefalutGeometry(SubsystemAnimatedTextures.AnimatedBlocksTexture);
-            }
-            TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y - 1);
-            TerrainChunk chunkAtCoords2 = m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y - 1);
-            TerrainChunk chunkAtCoords3 = m_terrain.GetChunkAtCoords(chunk.Coords.X + 1, chunk.Coords.Y - 1);
-            TerrainChunk chunkAtCoords4 = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y);
-            TerrainChunk chunkAtCoords5 = m_terrain.GetChunkAtCoords(chunk.Coords.X + 1, chunk.Coords.Y);
-            TerrainChunk chunkAtCoords6 = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y + 1);
-            TerrainChunk chunkAtCoords7 = m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y + 1);
-            TerrainChunk chunkAtCoords8 = m_terrain.GetChunkAtCoords(chunk.Coords.X + 1, chunk.Coords.Y + 1);
-            int num = 0;
-            int num2 = 0;
-            int num3 = 16;
-            int num4 = 16;
-            if (chunkAtCoords4 == null)
+            chunk.Geometry.CreateDefalutGeometry(BlocksTexturesManager.DefaultBlocksTexture);
+            int X = chunk.Origin.X;
+            int Z = chunk.Origin.Y;
+            int XE = X + 16;
+            int ZE = Z + 16;
+            for (int i = X; i < XE; i++)
             {
-                num++;
-            }
-            if (chunkAtCoords2 == null)
-            {
-                num2++;
-            }
-            if (chunkAtCoords5 == null)
-            {
-                num3--;
-            }
-            if (chunkAtCoords7 == null)
-            {
-                num4--;
-            }
-            for (int i = 0; i < 16; i++)
-            {
-                if (i % 2 == 0 != even)
+                for (int j = Z; j < ZE; j++)
                 {
-                    continue;
-                }
-                int hash = CalculateChunkSliceContentsHash(chunk.Terrain, chunk, i);
-                if (hash == chunk.SliceContentsHashes[i]) { System.Diagnostics.Debug.WriteLine("Skip chunk " + chunk.Coords + " at " + i); continue; }
-                
-                for (int k = num; k < num3; k++)
-                {
-                    for (int l = num2; l < num4; l++)
+
+                    for (int k = 1; k < 255; k++)
                     {
-                        switch (k)
+                        int v = chunk.Terrain.GetCellValueFast(i, k, j);
+                        int id = Terrain.ExtractContents(v);
+                        if (id > 0)
                         {
-                            case 0:
-                                if ((l == 0 && chunkAtCoords == null) || (l == 15 && chunkAtCoords6 == null))
-                                {
-                                    continue;
-                                }
-                                break;
-                            case 15:
-                                if ((l == 0 && chunkAtCoords3 == null) || (l == 15 && chunkAtCoords8 == null))
-                                {
-                                    continue;
-                                }
-                                break;
-                        }
-                        int num5 = k + chunk.Origin.X;
-                        int num6 = l + chunk.Origin.Y;
-                        int bottomHeightFast = chunk.GetBottomHeightFast(k, l);
-                        int bottomHeight = m_terrain.GetBottomHeight(num5 - 1, num6);
-                        int bottomHeight2 = m_terrain.GetBottomHeight(num5 + 1, num6);
-                        int bottomHeight3 = m_terrain.GetBottomHeight(num5, num6 - 1);
-                        int bottomHeight4 = m_terrain.GetBottomHeight(num5, num6 + 1);
-                        int x = MathUtils.Min(bottomHeightFast - 1, MathUtils.Min(bottomHeight, bottomHeight2, bottomHeight3, bottomHeight4));
-                        int x2 = chunk.GetTopHeightFast(k, l) + 1;
-                        int num7 = MathUtils.Max(16 * i, x, 1);
-                        int num8 = MathUtils.Min(16 * (i + 1), x2, 255);
-                        int num9 = TerrainChunk.CalculateCellIndex(k, 0, l);
-                        for (int m = num7; m < num8; m++)
-                        {
-                            int cellValueFast = chunk.GetCellValueFast(num9 + m);
-                            int num10 = Terrain.ExtractContents(cellValueFast);
-                            if (num10 > 0)
-                            {
-                                BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, chunk.Geometry, cellValueFast, num5, m, num6);
-                            }
+                            //生成顶点数据
+                            BlocksManager.Blocks[id].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, chunk.Geometry, v, i, k, j);
                         }
                     }
                 }

@@ -181,12 +181,18 @@ namespace Game
             get;
             set;
         }
+        public float m_visibilityRange;
 
         public float VisibilityRange
         {
-            get;
-            set;
+            get { return m_visibilityRange; }
+            set {
+                m_visibilityRange = value;
+                VisibilityRangeSqr = MathUtils.Sqr(value);
+            }
         }
+
+        public float VisibilityRangeSqr { get; set; }
 
         public float VisibilityRangeYMultiplier
         {
