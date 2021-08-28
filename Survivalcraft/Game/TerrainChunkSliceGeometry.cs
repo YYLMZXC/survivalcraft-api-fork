@@ -35,6 +35,7 @@ namespace Game
 		public TerrainChunkSliceGeometry(bool AllSame=false)
 		{
 			Subsets = new TerrainGeometrySubset[7];
+
 			if (AllSame)
 			{
 				TerrainGeometrySubset subset = new TerrainGeometrySubset();

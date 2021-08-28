@@ -1,203 +1,93 @@
 using Engine;
 using System.Collections.Generic;
 using Engine.Graphics;
-using System;
 
 namespace Game
 {
     public class TerrainGeometry
     {
-        public class DrawBuffer : IDisposable
-        {
-            public VertexBuffer VertexBuffer;
 
-            public IndexBuffer IndexBuffer;
+		public const int OpaqueFace0Index = 0;
 
-            public Texture2D Texture;
+		public const int OpaqueFace1Index = 1;
 
-            public int[] SubsetIndexBufferStarts = new int[7];
+		public const int OpaqueFace2Index = 2;
 
-            public int[] SubsetIndexBufferEnds = new int[7];
+		public const int OpaqueFace3Index = 3;
 
-            public void Dispose()
-            {
-                Utilities.Dispose(ref VertexBuffer);
-                Utilities.Dispose(ref IndexBuffer);
-            }
-        }
+		public const int OpaqueIndex = 4;
 
-        public TerrainGeometrySubset SubsetOpaque
-        {
-            get
-            {
-                return DefaultGeometry.SubsetOpaque;
-            }
-            set
-            {
-                DefaultGeometry.SubsetOpaque = value;
-            }
-        }
+		public const int AlphaTestIndex = 5;
 
-        public TerrainGeometrySubset SubsetAlphaTest
-        {
-            get
-            {
-                return DefaultGeometry.SubsetAlphaTest;
-            }
-            set
-            {
-                DefaultGeometry.SubsetAlphaTest = value;
-            }
-        }
+		public const int TransparentIndex = 6;
 
-        public TerrainGeometrySubset SubsetTransparent
-        {
-            get
-            {
-                return DefaultGeometry.SubsetTransparent;
-            }
+		public TerrainGeometrySubset SubsetOpaque;
 
-            set
-            {
-                DefaultGeometry.SubsetTransparent = value;
-            }
-        }
+		public TerrainGeometrySubset SubsetAlphaTest;
 
-        public TerrainGeometrySubset[] OpaqueSubsetsByFace
-        {
-            get
-            {
-                return DefaultGeometry.OpaqueSubsetsByFace;
-            }
-            set
-            {
-                DefaultGeometry.OpaqueSubsetsByFace = value;
-            }
-        }
+		public TerrainGeometrySubset SubsetTransparent;
 
-        public TerrainGeometrySubset[] AlphaTestSubsetsByFace
-        {
-            get
-            {
-                return DefaultGeometry.AlphaTestSubsetsByFace;
-            }
-            set
-            {
-                DefaultGeometry.AlphaTestSubsetsByFace = value;
-            }
-        }
+		public TerrainGeometrySubset[] OpaqueSubsetsByFace;
 
-        public TerrainGeometrySubset[] TransparentSubsetsByFace
-        {
-            get
-            {
-                return DefaultGeometry.TransparentSubsetsByFace;
-            }
-            set
-            {
-                DefaultGeometry.TransparentSubsetsByFace = value;
-            }
-        }
+		public TerrainGeometrySubset[] AlphaTestSubsetsByFace;
 
-        public Dictionary<Texture2D, TerrainChunkSliceGeometry> GeometrySubsets = new Dictionary<Texture2D, TerrainChunkSliceGeometry>();
+		public TerrainGeometrySubset[] TransparentSubsetsByFace;
 
-        public TerrainChunkSliceGeometry DefaultGeometry;
+		public TerrainGeometrySubset[] Subsets = new TerrainGeometrySubset[7];
 
-        public bool AllInOne = false;
+		public int ContentsHash;
 
-        public bool ChunkInvalid = true;
+		public TerrainGeometry(bool AllSame = false)
+		{
+			Subsets = new TerrainGeometrySubset[7];
 
-        public TerrainGeometry(bool AllInOne=false)
-        {
-            this.AllInOne = AllInOne;
-        }
+			if (AllSame)
+			{
+				TerrainGeometrySubset subset = new TerrainGeometrySubset();
+				for (int i = 0; i < Subsets.Length; i++)
+				{
+					Subsets[i] = subset;
+				}
+			}
+			else
+			{
 
-        public DynamicArray<DrawBuffer> DrawBuffers = new DynamicArray<DrawBuffer>();
+				for (int i = 0; i < Subsets.Length; i++)
+				{
+					Subsets[i] = new TerrainGeometrySubset();
+				}
 
-        public bool CompileVertexAndIndex(TerrainGeometrySubset[] geometry, Texture2D texture, out DrawBuffer buffer)
-        {
-            int IndicesPosition = 0;
-            int VerticesPosition = 0;
-            int IndicesCount = 0;
-            int VerticesCount = 0;
-            buffer = new DrawBuffer();
-            buffer.Texture = texture;
-            for (int i = 0; i < geometry.Length; i++)
-            {
-                VerticesCount += geometry[i].Vertices.Count;
-                IndicesCount += geometry[i].Indices.Count;
-                if (AllInOne) break;
-            }
-            if (IndicesCount == 0) return false;
-            buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, VerticesCount);
-            buffer.IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits, IndicesCount);
-            for (int i = 0; i < geometry.Length; i++)
-            {
-                TerrainGeometrySubset subset = geometry[i];
-                if (IndicesPosition > 0)
-                {
-                    for (int j = 0; j < subset.Indices.Count; j++)
-                    {
-                        subset.Indices[j] += (ushort)(VerticesPosition);
-                    }
-                }
-                buffer.VertexBuffer.SetData(subset.Vertices.Array, 0, subset.Vertices.Count, VerticesPosition);
-                buffer.IndexBuffer.SetData(subset.Indices.Array, 0, subset.Indices.Count, IndicesPosition);
-                buffer.SubsetIndexBufferStarts[i] = IndicesPosition;
-                buffer.SubsetIndexBufferEnds[i] = IndicesPosition + subset.Indices.Count;
-                VerticesPosition += geometry[i].Vertices.Count;
-                IndicesPosition += geometry[i].Indices.Count;
-                if (AllInOne) break;
-            }
-            buffer.Texture = texture;
-            return true;
-        }
-
-        public void Compile() {
-            DisposeDrawBuffer();
-            foreach (var item in GeometrySubsets)
-            {
-                if (CompileVertexAndIndex(item.Value.Subsets, item.Key, out DrawBuffer buffer))
-                {
-                    DrawBuffers.Add(buffer);
-                }
-            }
-            GeometrySubsets.Clear();
-        }
-
-        public void ClearGeometry() {
-            foreach (var item in GeometrySubsets)
-            {
-                for (int i = 0; i < item.Value.Subsets.Length; i++)
-                {
-                    item.Value.Subsets[i].Vertices.Clear();
-                    item.Value.Subsets[i].Indices.Clear();
-                }
-            }
-        }
-
-        public void CreateDefalutGeometry(Texture2D texture)
-        {
-            DefaultGeometry = GetGeometry(texture);
-        }
-
-        public TerrainChunkSliceGeometry GetGeometry(Texture2D texture=null)
-        {
-            if (GeometrySubsets.TryGetValue(texture, out TerrainChunkSliceGeometry subset) == false)
-            {
-                subset = new TerrainChunkSliceGeometry(AllInOne);
-                GeometrySubsets.Add(texture, subset);
-            }
-            return subset;
-        }
-
-        public void DisposeDrawBuffer()
-        {
-            for (int i = 0; i < DrawBuffers.Count; i++)
-            {
-                DrawBuffers[i].Dispose();
-            }
-            DrawBuffers.Clear();
-        }
-    }
+			}
+			SubsetOpaque = Subsets[4];
+			SubsetAlphaTest = Subsets[5];
+			SubsetTransparent = Subsets[6];
+			OpaqueSubsetsByFace = new TerrainGeometrySubset[6]
+			{
+				Subsets[0],
+				Subsets[1],
+				Subsets[2],
+				Subsets[3],
+				Subsets[4],
+				Subsets[4]
+			};
+			AlphaTestSubsetsByFace = new TerrainGeometrySubset[6]
+			{
+				Subsets[5],
+				Subsets[5],
+				Subsets[5],
+				Subsets[5],
+				Subsets[5],
+				Subsets[5]
+			};
+			TransparentSubsetsByFace = new TerrainGeometrySubset[6]
+			{
+				Subsets[6],
+				Subsets[6],
+				Subsets[6],
+				Subsets[6],
+				Subsets[6],
+				Subsets[6]
+			};
+		}
+	}
 }

@@ -64,6 +64,12 @@ namespace Game
 
         public int[] Shafts = new int[256];
 
+        public bool[] Change = new bool[65536];
+
+        public DrawBuffer[] DrawBuffers = new DrawBuffer[65536];
+
+        public TerrainGeometrySubset[] Slices = new TerrainGeometrySubset[65536];
+
         public TerrainGeometry Geometry = new TerrainGeometry();
 
         public TerrainChunk(Terrain terrain, int x, int z)
@@ -207,6 +213,15 @@ namespace Game
         public void SetSunlightHeightFast(int x, int z, int sunlightHeight)
         {
             SetShaftValueFast(x, z, Terrain.ReplaceSunlightHeight(GetShaftValueFast(x, z), sunlightHeight));
+        }
+
+        public void DisposeDrawBuffers()
+        {
+
+            for (int i = 0; i < DrawBuffers.Length; i++)
+            {
+                DrawBuffers[i]?.Dispose();
+            }
         }
     }
 }

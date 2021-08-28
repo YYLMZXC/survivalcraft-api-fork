@@ -9,5 +9,10 @@ namespace Game
         {
             generator.GenerateCubeVertices(this, value, x, y, z, Color.White, geometry.OpaqueSubsetsByFace);
         }
+
+        public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometrySubset geometry, int value, int x, int y, int z)
+        {
+            generator.GenerateCubeVertices(this, value, x, y, z, Color.White, geometry);
+        }
     }
 }

@@ -380,6 +380,7 @@
     <Compile Include="Block\WoodenStairsBlock.cs" />
     <Compile Include="Block\WoodenTrapdoorBlock.cs" />
     <Compile Include="Block\XorGateBlock.cs" />
+    <Compile Include="Game\DrawBuffer.cs" />
     <Compile Include="Game\Subtexture.cs" />
     <Compile Include="Game\TerrainSerializer22.cs" />
     <Compile Include="Game\TextureAtlas.cs" />
@@ -1074,7 +1075,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

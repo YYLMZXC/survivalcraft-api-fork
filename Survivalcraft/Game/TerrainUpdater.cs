@@ -1050,31 +1050,153 @@ namespace Game
             }
             return false;
         }
+        public static int CalculateIndex(int x,int y,int z) {
+            return y + x * 256 + z * 256 * 16;
+        }
 
         public void GenerateChunkVertices(TerrainChunk chunk, bool even)
         {
-            chunk.Geometry.CreateDefalutGeometry(BlocksTexturesManager.DefaultBlocksTexture);
-            int X = chunk.Origin.X;
-            int Z = chunk.Origin.Y;
-            int XE = X + 16;
-            int ZE = Z + 16;
-            for (int i = X; i < XE; i++)
+            m_subsystemTerrain.BlockGeometryGenerator.ResetCache();
+            TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y - 1);
+            TerrainChunk chunkAtCoords2 = m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y - 1);
+            TerrainChunk chunkAtCoords3 = m_terrain.GetChunkAtCoords(chunk.Coords.X + 1, chunk.Coords.Y - 1);
+            TerrainChunk chunkAtCoords4 = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y);
+            TerrainChunk chunkAtCoords5 = m_terrain.GetChunkAtCoords(chunk.Coords.X + 1, chunk.Coords.Y);
+            TerrainChunk chunkAtCoords6 = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y + 1);
+            TerrainChunk chunkAtCoords7 = m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y + 1);
+            TerrainChunk chunkAtCoords8 = m_terrain.GetChunkAtCoords(chunk.Coords.X + 1, chunk.Coords.Y + 1);
+            int num = 0;
+            int num2 = 0;
+            int num3 = 16;
+            int num4 = 16;
+            if (chunkAtCoords4 == null)
             {
-                for (int j = Z; j < ZE; j++)
+                num++;
+            }
+            if (chunkAtCoords2 == null)
+            {
+                num2++;
+            }
+            if (chunkAtCoords5 == null)
+            {
+                num3--;
+            }
+            if (chunkAtCoords7 == null)
+            {
+                num4--;
+            }
+            for (int i = 0; i < 16; i++)
+            {
+                if (i % 2 == 0 != even)
                 {
-
-                    for (int k = 1; k < 255; k++)
+                    continue;
+                }
+                TerrainChunkSliceGeometry terrainChunkSliceGeometry = chunk.Geometry.Slices[i];
+                chunk.SliceContentsHashes[i] = CalculateChunkSliceContentsHash(chunk, i);
+                if (terrainChunkSliceGeometry.ContentsHash != 0 && terrainChunkSliceGeometry.ContentsHash == chunk.SliceContentsHashes[i])
+                {
+                    m_statistics.SkippedSlices++;
+                    continue;
+                }
+                m_statistics.GeneratedSlices++;
+                TerrainGeometrySubset[] subsets = terrainChunkSliceGeometry.Subsets;
+                foreach (TerrainGeometrySubset obj in subsets)
+                {
+                    obj.Vertices.Clear();
+                    obj.Indices.Clear();
+                }
+                for (int k = num; k < num3; k++)
+                {
+                    for (int l = num2; l < num4; l++)
                     {
-                        int v = chunk.Terrain.GetCellValueFast(i, k, j);
-                        int id = Terrain.ExtractContents(v);
-                        if (id > 0)
+                        switch (k)
                         {
-                            //生成顶点数据
-                            BlocksManager.Blocks[id].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, chunk.Geometry, v, i, k, j);
+                            case 0:
+                                if ((l == 0 && chunkAtCoords == null) || (l == 15 && chunkAtCoords6 == null))
+                                {
+                                    continue;
+                                }
+                                break;
+                            case 15:
+                                if ((l == 0 && chunkAtCoords3 == null) || (l == 15 && chunkAtCoords8 == null))
+                                {
+                                    continue;
+                                }
+                                break;
+                        }
+                        int num5 = k + chunk.Origin.X;
+                        int num6 = l + chunk.Origin.Y;
+                        int bottomHeightFast = chunk.GetBottomHeightFast(k, l);
+                        int bottomHeight = m_terrain.GetBottomHeight(num5 - 1, num6);
+                        int bottomHeight2 = m_terrain.GetBottomHeight(num5 + 1, num6);
+                        int bottomHeight3 = m_terrain.GetBottomHeight(num5, num6 - 1);
+                        int bottomHeight4 = m_terrain.GetBottomHeight(num5, num6 + 1);
+                        int x = MathUtils.Min(bottomHeightFast - 1, MathUtils.Min(bottomHeight, bottomHeight2, bottomHeight3, bottomHeight4));
+                        int x2 = chunk.GetTopHeightFast(k, l) + 1;
+                        int num7 = MathUtils.Max(16 * i, x, 1);
+                        int num8 = MathUtils.Min(16 * (i + 1), x2, 255);
+                        int num9 = TerrainChunk.CalculateCellIndex(k, 0, l);
+                        for (int m = num7; m < num8; m++)
+                        {
+                            int cellValueFast = chunk.GetCellValueFast(num9 + m);
+                            int num10 = Terrain.ExtractContents(cellValueFast);
+                            if (num10 != 0)
+                            {
+                                BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, chunk.Geometry.Slices[i], cellValueFast, num5, m, num6);
+                            }
                         }
                     }
                 }
             }
+        }
+        public int CalculateChunkSliceContentsHash(TerrainChunk chunk, int sliceIndex)
+        {
+            double realTime = Time.RealTime;
+            int num = 1;
+            int num2 = chunk.Origin.X - 1;
+            int num3 = chunk.Origin.X + 16 + 1;
+            int num4 = chunk.Origin.Y - 1;
+            int num5 = chunk.Origin.Y + 16 + 1;
+            int x = MathUtils.Max(16 * sliceIndex - 1, 0);
+            int x2 = MathUtils.Min(16 * (sliceIndex + 1) + 1, 256);
+            for (int i = num2; i < num3; i++)
+            {
+                for (int j = num4; j < num5; j++)
+                {
+                    TerrainChunk chunkAtCell = m_terrain.GetChunkAtCell(i, j);
+                    if (chunkAtCell != null)
+                    {
+                        int x3 = i & 0xF;
+                        int z = j & 0xF;
+                        int shaftValueFast = chunkAtCell.GetShaftValueFast(x3, z);
+                        int num6 = Terrain.ExtractBottomHeight(shaftValueFast);
+                        int num7 = Terrain.ExtractTopHeight(shaftValueFast);
+                        int num8 = MathUtils.Max(x, num6 - 1);
+                        int num9 = MathUtils.Min(x2, num7 + 2);
+                        int num10 = TerrainChunk.CalculateCellIndex(x3, num8, z);
+                        int num11 = num10 + num9 - num8;
+                        while (num10 < num11)
+                        {
+                            num += chunkAtCell.GetCellValueFast(num10++);
+                            num *= 31;
+                        }
+                        num += Terrain.ExtractTemperature(shaftValueFast);
+                        num *= 31;
+                        num += Terrain.ExtractHumidity(shaftValueFast);
+                        num *= 31;
+                        num += num8;
+                        num *= 31;
+                    }
+                }
+            }
+            num += m_terrain.SeasonTemperature;
+            num *= 31;
+            num += m_terrain.SeasonHumidity;
+            num *= 31;
+            double realTime2 = Time.RealTime;
+            m_statistics.HashCount++;
+            m_statistics.HashTime += realTime2 - realTime;
+            return num;
         }
 
         public static int CalculateLightPropagationBitIndex(int x, int z)
