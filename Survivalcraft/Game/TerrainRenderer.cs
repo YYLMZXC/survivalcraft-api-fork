@@ -46,6 +46,7 @@ namespace Game
 
         public static int ChunkTrianglesDrawn;
 
+
         public string ChunksGpuMemoryUsage
         {
             get
@@ -54,20 +55,15 @@ namespace Game
                 TerrainChunk[] allocatedChunks = m_subsystemTerrain.Terrain.AllocatedChunks;
                 foreach (TerrainChunk terrainChunk in allocatedChunks)
                 {
-                    if (terrainChunk.Geometry.DrawBuffers.Count > 0)
+                    foreach (DrawBuffer buffer in terrainChunk.DrawBuffers)
                     {
-                        foreach (DrawBuffer buffer in terrainChunk.DrawBuffers)
-                        {
-                            if (buffer == null) continue;
-                            num += (buffer.VertexBuffer?.GetGpuMemoryUsage() ?? 0);
-                            num += (buffer.IndexBuffer?.GetGpuMemoryUsage() ?? 0);
-                        }
+                        num += (buffer.VertexBuffer?.GetGpuMemoryUsage() ?? 0);
+                        num += (buffer.IndexBuffer?.GetGpuMemoryUsage() ?? 0);
                     }
                 }
                 return $"{num / 1024 / 1024:0.0}MB";
             }
         }
-
         public TerrainRenderer(SubsystemTerrain subsystemTerrain)
         {
             m_subsystemTerrain = subsystemTerrain;
@@ -78,6 +74,7 @@ namespace Game
             TransparentShader = new Shader(ModsManager.GetInPakOrStorageFile<string>("Shaders/Transparent", ".vsh"), ModsManager.GetInPakOrStorageFile<string>("Shaders/Transparent", ".psh"), new ShaderMacro[] { new ShaderMacro("Transparent") });
             Display.DeviceReset += Display_DeviceReset;
         }
+
         public void PrepareForDrawing(Camera camera)
         {
             Vector2 xZ = camera.ViewPosition.XZ;
@@ -90,15 +87,22 @@ namespace Game
             {
                 if (terrainChunk.NewGeometryData)
                 {
-                    lock (terrainChunk.Geometry.DrawBuffers) {
-                        SetupTerrainChunkGeometryVertexIndexBuffers(terrainChunk);
-                        terrainChunk.NewGeometryData = false;
+                    lock (terrainChunk.Geometry)
+                    {
+                        if (terrainChunk.NewGeometryData)
+                        {
+                            terrainChunk.NewGeometryData = false;
+                            SetupTerrainChunkGeometryVertexIndexBuffers(terrainChunk);
+                        }
                     }
                 }
                 terrainChunk.DrawDistanceSquared = Vector2.DistanceSquared(xZ, terrainChunk.Center);
-                if (viewFrustum.Intersection(terrainChunk.BoundingBox) && terrainChunk.DrawDistanceSquared <= num)
+                if (terrainChunk.DrawDistanceSquared <= num)
                 {
-                    m_chunksToDraw.Add(terrainChunk);
+                    if (viewFrustum.Intersection(terrainChunk.BoundingBox))
+                    {
+                        m_chunksToDraw.Add(terrainChunk);
+                    }
                     if (terrainChunk.State != TerrainChunkState.Valid)
                     {
                         continue;
@@ -256,44 +260,19 @@ namespace Game
 
         public void SetupTerrainChunkGeometryVertexIndexBuffers(TerrainChunk chunk)
         {
-            /*
+            //清除所有DrawBuffer，并将顶点数据转为DrawBuffer，并复制Slice的ContentHash
+            chunk.DrawBuffers.Clear();
+            chunk.InvalidateSliceContentsHashes();
             for (int i = 0; i < chunk.Slices.Length; i++)
             {
-                if (chunk.Change[i])
-                {
-                    //重新创建DrawBuffer
-                    TerrainChunkSliceGeometry sliceGeometry = chunk.Slices[i];
-                    int VerticesCount = 0;
-                    int IndicesCount = 0;
-                    int Count = 0;
-                    for (int j = 0; j < sliceGeometry.Subsets.Length; j++)
-                    {
-                        Count += sliceGeometry.Subsets[j].Indices.Count;
-                    }
-                    if (Count == 0) continue;
-                    DrawBuffer buffer = new DrawBuffer(VerticesCount, IndicesCount);
-                    for (int j = 0; j < sliceGeometry.Subsets.Length; j++)
-                    {
-                        buffer.VertexBuffer.SetData(sliceGeometry.Subsets[j].Vertices.Array, 0, sliceGeometry.Subsets[j].Vertices.Count, VerticesCount);
-                        buffer.IndexBuffer.SetData(sliceGeometry.Subsets[j].Indices.Array, 0, sliceGeometry.Subsets[j].Indices.Count, IndicesCount);
-                        buffer.SubsetIndexBufferStarts[j] = IndicesCount;
-                        VerticesCount += sliceGeometry.Subsets[j].Vertices.Count;
-                        IndicesCount += sliceGeometry.Subsets[j].Indices.Count;
-                        buffer.SubsetIndexBufferEnds[j] = IndicesCount;
-                    }
-                }
-                else if (chunk.DrawBuffers[i] != null)
-                {
-                    chunk.DrawBuffers[i].Dispose();
-                    chunk.DrawBuffers[i] = null;
-                }
+                chunk.Slices[i].GetDrawBuffers(chunk.DrawBuffers);
             }
-            */
+            chunk.CopySliceContentsHashes(chunk);
         }
 
         public static void DrawTerrainChunkGeometrySubsets(Shader shader,TerrainChunk chunk, int subsetsMask)
         {
-            for (int i = 0; i < chunk.DrawBuffers.Length; i++)
+            for (int i = 0; i < chunk.DrawBuffers.Count; i++)
             {
                 if (chunk.DrawBuffers[i] != null) DrawTerrainChunkGeometrySubset(shader, chunk.DrawBuffers[i], subsetsMask);
             }

@@ -86,7 +86,7 @@ namespace Game
         {
             foreach (string c in Storage.ListFileNames(ModsManager.ModsPath))
             {
-                if (c == ModsManager.modSettings.languageType + ".json") LanguageControl.loadJson(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
+                if (c == ModsManager.Configs["Language"] + ".json") LanguageControl.loadJson(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
             }
         }
 

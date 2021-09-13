@@ -149,6 +149,6 @@ namespace Game
         }
 
         public static string GetMotdUrl() => string.Format(SettingsManager.MotdUseBackupUrl ? SettingsManager.MotdBackupUpdateUrl :
-            SettingsManager.MotdUpdateUrl, VersionsManager.SerializationVersion, ModsManager.modSettings.languageType);
+            SettingsManager.MotdUpdateUrl, VersionsManager.SerializationVersion, ModsManager.Configs["Language"]);
     }
 }

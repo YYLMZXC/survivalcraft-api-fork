@@ -79,7 +79,7 @@ namespace Game {
         public virtual void LoadLauguage()
         {
             LoadingScreen.Info("加载语言:" + modInfo?.Name);
-            if (GetAssetsFile($"Lang/{ModsManager.modSettings.languageType}.json", out Stream stream))
+            if (GetAssetsFile($"Lang/{ModsManager.Configs["Language"]}.json", out Stream stream))
             {
                 LanguageControl.loadJson(stream);
             }

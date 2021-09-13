@@ -6,42 +6,27 @@ namespace Game
 {
     public class TerrainGeometry
     {
+		public virtual TerrainGeometrySubset SubsetOpaque { get; set; }
 
-		public const int OpaqueFace0Index = 0;
+		public virtual TerrainGeometrySubset SubsetAlphaTest { get; set; }
 
-		public const int OpaqueFace1Index = 1;
+		public virtual TerrainGeometrySubset SubsetTransparent { get; set; }
 
-		public const int OpaqueFace2Index = 2;
+		public virtual TerrainGeometrySubset[] OpaqueSubsetsByFace { get; set; }
 
-		public const int OpaqueFace3Index = 3;
+		public virtual TerrainGeometrySubset[] AlphaTestSubsetsByFace { get; set; }
 
-		public const int OpaqueIndex = 4;
-
-		public const int AlphaTestIndex = 5;
-
-		public const int TransparentIndex = 6;
-
-		public TerrainGeometrySubset SubsetOpaque;
-
-		public TerrainGeometrySubset SubsetAlphaTest;
-
-		public TerrainGeometrySubset SubsetTransparent;
-
-		public TerrainGeometrySubset[] OpaqueSubsetsByFace;
-
-		public TerrainGeometrySubset[] AlphaTestSubsetsByFace;
-
-		public TerrainGeometrySubset[] TransparentSubsetsByFace;
+		public virtual TerrainGeometrySubset[] TransparentSubsetsByFace { get; set; }
 
 		public TerrainGeometrySubset[] Subsets = new TerrainGeometrySubset[7];
 
-		public int ContentsHash;
-
-		public TerrainGeometry(bool AllSame = false)
+		public TerrainGeometry(bool SubsetsIsSame = false)
 		{
+			InitSubsets(SubsetsIsSame);
+		}
+		public virtual void InitSubsets(bool SubsetsIsSame) {
 			Subsets = new TerrainGeometrySubset[7];
-
-			if (AllSame)
+			if (SubsetsIsSame)
 			{
 				TerrainGeometrySubset subset = new TerrainGeometrySubset();
 				for (int i = 0; i < Subsets.Length; i++)
@@ -88,6 +73,19 @@ namespace Game
 				Subsets[6],
 				Subsets[6]
 			};
+		}
+		public virtual TerrainGeometry GetGeomtry(Texture2D texture)
+		{
+			return this;
+		}
+		public virtual void ClearSubsets()
+		{
+			for (int i = 0; i < Subsets.Length; i++)
+			{
+				Subsets[i].Indices.Clear();
+				Subsets[i].Vertices.Clear();
+			}
+
 		}
 	}
 }

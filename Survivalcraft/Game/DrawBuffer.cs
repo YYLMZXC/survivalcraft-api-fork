@@ -18,8 +18,13 @@ namespace Game
 
         public DrawBuffer(int VertexCount,int IndicesCount) {
             VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration,VertexCount);
-            IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits,IndicesCount);
-        
+            IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits,IndicesCount);        
+        }
+        public DrawBuffer(int VertexCount, int IndicesCount,Texture2D texture2D)
+        {
+            VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, VertexCount);
+            IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits, IndicesCount);
+            Texture = texture2D;
         }
 
         public void Dispose()

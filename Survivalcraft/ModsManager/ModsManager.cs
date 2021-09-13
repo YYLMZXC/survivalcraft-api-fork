@@ -54,7 +54,7 @@ public static class ModsManager
 
     public class ModSettings
     {
-        public LanguageControl.LanguageType languageType;
+        public string languageType;
     }
 
     public class ModHook
@@ -100,7 +100,7 @@ public static class ModsManager
     }
 
     private static bool AllowContinue = true;
-    public static ModSettings modSettings = new ModSettings();
+    public static Dictionary<string, string> Configs = new Dictionary<string, string>();
     public static List<ModEntity> ModList = new List<ModEntity>();
     public static List<ModLoader> ModLoaders = new List<ModLoader>();
     public static List<ModInfo> DisabledMods = new List<ModInfo>();
@@ -258,6 +258,11 @@ public static class ModsManager
 
     public static void SaveSettings(XElement xElement)
     {
+        XElement element = new XElement("Configs");
+        foreach (var c in Configs) {
+            element.SetAttributeValue(c.Key,c.Value);
+        }
+        xElement.Add(element);
         foreach (ModEntity modEntity in ModList)
         {
             modEntity.SaveSettings(xElement);
@@ -266,10 +271,22 @@ public static class ModsManager
 
     public static void LoadSettings(XElement xElement)
     {
+        foreach (var c in xElement.Element("Configs").Attributes()) {
+            Configs.Add(c.Name.LocalName, c.Value);
+        }
         foreach (ModEntity modEntity in ModList)
         {
             modEntity.SaveSettings(xElement);
         }
+    }
+    public static void SetConfig(string key,string value) {
+        if (!Configs.TryGetValue(key, out string mm))
+        {
+            Configs.Add(key, value);
+        }
+        Configs[key] = value;
+
+
     }
 
     public static string ImportMod(string name, Stream stream)

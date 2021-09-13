@@ -530,10 +530,6 @@ namespace Game
                                     }
 
                                 }
-                                else if (item.Name.LocalName == "ModSet" && item.Attribute("Name").Value == "Language")
-                                {
-                                    ModsManager.modSettings.languageType = (LanguageControl.LanguageType)int.Parse(item.Attribute("Value").Value);
-                                }
                                 else if(item.Name.LocalName == "DisableMods")
                                 {
                                     foreach (XElement xElement1 in item.Elements())
@@ -590,9 +586,6 @@ namespace Game
                         }));
                     }
                 }
-                var la = new XElement("ModSet");
-                la.SetAttributeValue("Name", "Language");
-                la.SetAttributeValue("Value", (int)ModsManager.modSettings.languageType);
                 var xElement1 = new XElement("DisableMods");
                 foreach (ModEntity modEntity in ModsManager.ModList)
                 {

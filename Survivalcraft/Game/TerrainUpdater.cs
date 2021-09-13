@@ -172,8 +172,6 @@ namespace Game
 
         public DynamicArray<LightSource> m_lightSources = new DynamicArray<LightSource>();
 
-        public UpdateStatistics m_statistics = new UpdateStatistics();
-
         public Task m_task;
 
         public AutoResetEvent m_updateEvent = new AutoResetEvent(initialState: true);
@@ -496,7 +494,6 @@ namespace Game
                     }
                     m_subsystemTerrain.TerrainSerializer.SaveChunk(terrainChunk);
                     m_terrain.FreeChunk(terrainChunk);
-                    terrainChunk.Geometry.DisposeDrawBuffer();
                 }
             }
             for (int j = 0; j < locations.Length; j++)
@@ -617,11 +614,6 @@ namespace Game
                 while (terrainChunk.ThreadState < desiredState && Time.RealTime - realTime < 0.0099999997764825821);
                 return false;
             }
-            if (LogTerrainUpdateStats)
-            {
-                m_statistics.Log();
-                m_statistics = new UpdateStatistics();
-            }
             return true;
         }
 
@@ -659,9 +651,6 @@ namespace Game
                     }
                 }
             }
-            double realTime2 = Time.RealTime;
-            m_statistics.FindBestChunkTime += realTime2 - realTime;
-            m_statistics.FindBestChunkCount++;
             return result;
         }
 
@@ -698,15 +687,11 @@ namespace Game
             {
                 case TerrainChunkState.NotLoaded:
                     {
-                        double realTime19 = Time.RealTime;
                         if (m_subsystemTerrain.TerrainSerializer.LoadChunk(chunk))
                         {
                             chunk.ThreadState = TerrainChunkState.InvalidLight;
                             chunk.WasUpgraded = true;
-                            double realTime20 = Time.RealTime;
                             chunk.IsLoaded = true;
-                            m_statistics.LoadingCount++;
-                            m_statistics.LoadingTime += realTime20 - realTime19;
                         }
                         else
                         {
@@ -717,40 +702,27 @@ namespace Game
                     }
                 case TerrainChunkState.InvalidContents1:
                     {
-                        double realTime17 = Time.RealTime;
                         m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass1(chunk);
                         chunk.ThreadState = TerrainChunkState.InvalidContents2;
                         chunk.WasUpgraded = true;
-                        double realTime18 = Time.RealTime;
-                        m_statistics.ContentsCount1++;
-                        m_statistics.ContentsTime1 += realTime18 - realTime17;
                         break;
                     }
                 case TerrainChunkState.InvalidContents2:
                     {
-                        double realTime15 = Time.RealTime;
                         m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass2(chunk);
                         chunk.ThreadState = TerrainChunkState.InvalidContents3;
                         chunk.WasUpgraded = true;
-                        double realTime16 = Time.RealTime;
-                        m_statistics.ContentsCount2++;
-                        m_statistics.ContentsTime2 += realTime16 - realTime15;
                         break;
                     }
                 case TerrainChunkState.InvalidContents3:
                     {
-                        double realTime13 = Time.RealTime;
                         m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass3(chunk);
                         chunk.ThreadState = TerrainChunkState.InvalidContents4;
                         chunk.WasUpgraded = true;
-                        double realTime14 = Time.RealTime;
-                        m_statistics.ContentsCount3++;
-                        m_statistics.ContentsTime3 += realTime14 - realTime13;
                         break;
                     }
                 case TerrainChunkState.InvalidContents4:
                     {
-                        double realTime7 = Time.RealTime;
                         m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass4(chunk);
                         ModsManager.HookAction("OnTerrainContentsGenerated", modLoader=> {
                             modLoader.OnTerrainContentsGenerated(chunk);
@@ -758,21 +730,14 @@ namespace Game
                         });
                         chunk.ThreadState = TerrainChunkState.InvalidLight;
                         chunk.WasUpgraded = true;
-                        double realTime8 = Time.RealTime;
-                        m_statistics.ContentsCount4++;
-                        m_statistics.ContentsTime4 += realTime8 - realTime7;
                         break;
                     }
                 case TerrainChunkState.InvalidLight:
                     {
-                        double realTime3 = Time.RealTime;
                         GenerateChunkSunLightAndHeight(chunk, skylightValue);
                         chunk.ThreadState = TerrainChunkState.InvalidPropagatedLight;
                         chunk.WasUpgraded = true;
                         chunk.LightPropagationMask = 0;
-                        double realTime4 = Time.RealTime;
-                        m_statistics.LightCount++;
-                        m_statistics.LightTime += realTime4 - realTime3;
                         break;
                     }
                 case TerrainChunkState.InvalidPropagatedLight:
@@ -807,25 +772,29 @@ namespace Game
                                 }
                             }
                         }
-                        double realTime10 = Time.RealTime;
-                        m_statistics.LightSourcesCount++;
-                        m_statistics.LightSourcesTime += realTime10 - realTime9;
-                        double realTime11 = Time.RealTime;
                         PropagateLight();
                         chunk.ThreadState = TerrainChunkState.InvalidVertices1;
                         chunk.WasUpgraded = true;
-                        double realTime12 = Time.RealTime;
-                        m_statistics.LightPropagateCount++;
-                        m_statistics.LightSourceInstancesCount += m_lightSources.Count;
-                        m_statistics.LightPropagateTime += realTime12 - realTime11;
                         break;
                     }
                 case TerrainChunkState.InvalidVertices1:
                     {
                         double realTime5 = Time.RealTime;
-                        lock (chunk.Geometry.DrawBuffers)
+                        lock (chunk.Geometry)
                         {
+                            chunk.NewGeometryData = false;
                             GenerateChunkVertices(chunk, even: true);
+                        }
+                        chunk.ThreadState = TerrainChunkState.InvalidVertices2;
+                        chunk.WasUpgraded = true;
+                        break;
+                    }
+                case TerrainChunkState.InvalidVertices2:
+                    {
+                        double realTime = Time.RealTime;
+                        lock (chunk.Geometry)
+                        {
+                            GenerateChunkVertices(chunk, even: false);
                             chunk.NewGeometryData = true;
                         }
                         chunk.ThreadState = TerrainChunkState.Valid;
@@ -1039,6 +1008,7 @@ namespace Game
                 }
             }
         }
+        
         public static bool CalculateIsVisible(Vector3 position, Camera camera, float VisibilityRangeSqr, float VisibilityRangeYMultiplier)
         {
             Vector3 vector = position - camera.ViewPosition;
@@ -1050,6 +1020,7 @@ namespace Game
             }
             return false;
         }
+        
         public static int CalculateIndex(int x,int y,int z) {
             return y + x * 256 + z * 256 * 16;
         }
@@ -1091,20 +1062,17 @@ namespace Game
                 {
                     continue;
                 }
-                TerrainChunkSliceGeometry terrainChunkSliceGeometry = chunk.Geometry.Slices[i];
+                TerrainChunkSliceGeometry terrainChunkSliceGeometry = chunk.Slices[i];
                 chunk.SliceContentsHashes[i] = CalculateChunkSliceContentsHash(chunk, i);
                 if (terrainChunkSliceGeometry.ContentsHash != 0 && terrainChunkSliceGeometry.ContentsHash == chunk.SliceContentsHashes[i])
                 {
-                    m_statistics.SkippedSlices++;
+#if DEBUG
+                    //System.Diagnostics.Debug.WriteLine("ºöÂÔÇø¿é" + chunk.Coords + "Æ¬¶Î" + i);
+#endif
                     continue;
                 }
-                m_statistics.GeneratedSlices++;
-                TerrainGeometrySubset[] subsets = terrainChunkSliceGeometry.Subsets;
-                foreach (TerrainGeometrySubset obj in subsets)
-                {
-                    obj.Vertices.Clear();
-                    obj.Indices.Clear();
-                }
+                terrainChunkSliceGeometry.ClearSubsets();
+
                 for (int k = num; k < num3; k++)
                 {
                     for (int l = num2; l < num4; l++)
@@ -1142,16 +1110,16 @@ namespace Game
                             int num10 = Terrain.ExtractContents(cellValueFast);
                             if (num10 != 0)
                             {
-                                BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, chunk.Geometry.Slices[i], cellValueFast, num5, m, num6);
+                                BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, terrainChunkSliceGeometry, cellValueFast, num5, m, num6);
                             }
                         }
                     }
                 }
             }
         }
-        public int CalculateChunkSliceContentsHash(TerrainChunk chunk, int sliceIndex)
+
+        public static int CalculateChunkSliceContentsHash(TerrainChunk chunk, int sliceIndex)
         {
-            double realTime = Time.RealTime;
             int num = 1;
             int num2 = chunk.Origin.X - 1;
             int num3 = chunk.Origin.X + 16 + 1;
@@ -1163,7 +1131,7 @@ namespace Game
             {
                 for (int j = num4; j < num5; j++)
                 {
-                    TerrainChunk chunkAtCell = m_terrain.GetChunkAtCell(i, j);
+                    TerrainChunk chunkAtCell = chunk.Terrain.GetChunkAtCell(i, j);
                     if (chunkAtCell != null)
                     {
                         int x3 = i & 0xF;
@@ -1189,13 +1157,10 @@ namespace Game
                     }
                 }
             }
-            num += m_terrain.SeasonTemperature;
+            num += chunk.Terrain.SeasonTemperature;
             num *= 31;
-            num += m_terrain.SeasonHumidity;
+            num += chunk.Terrain.SeasonHumidity;
             num *= 31;
-            double realTime2 = Time.RealTime;
-            m_statistics.HashCount++;
-            m_statistics.HashTime += realTime2 - realTime;
             return num;
         }
 

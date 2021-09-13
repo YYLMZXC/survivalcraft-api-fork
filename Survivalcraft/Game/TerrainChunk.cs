@@ -64,11 +64,9 @@ namespace Game
 
         public int[] Shafts = new int[256];
 
-        public bool[] Change = new bool[65536];
+        public TerrainChunkSliceGeometry[] Slices = new TerrainChunkSliceGeometry[16];
 
-        public DrawBuffer[] DrawBuffers = new DrawBuffer[65536];
-
-        public TerrainGeometrySubset[] Slices = new TerrainGeometrySubset[65536];
+        public DynamicArray<DrawBuffer> DrawBuffers = new DynamicArray<DrawBuffer>();
 
         public TerrainGeometry Geometry = new TerrainGeometry();
 
@@ -79,13 +77,40 @@ namespace Game
             Origin = new Point2(x * 16, z * 16);
             BoundingBox = new BoundingBox(new Vector3(Origin.X, 0f, Origin.Y), new Vector3(Origin.X + 16, 256f, Origin.Y + 16));
             Center = new Vector2((float)Origin.X + 8f, (float)Origin.Y + 8f);
+            for (int i = 0; i < Slices.Length; i++)
+            {
+                Slices[i] = new TerrainChunkSliceGeometry();
+            }
+        }
+        public void InvalidateSliceContentsHashes()
+        {
+            for (int i = 0; i < Slices.Length; i++)
+            {
+                Slices[i].ContentsHash = 0;
+            }
+        }
+        public void CopySliceContentsHashes(TerrainChunk chunk)
+        {
+            for (int i = 0; i < Slices.Length; i++)
+            {
+                Slices[i].ContentsHash = TerrainUpdater.CalculateChunkSliceContentsHash(chunk, i);
+                SliceContentsHashes[i] = Slices[i].ContentsHash;
+            }
+        }
+
+        public virtual void ClearSlicesSubsets()
+        {
+            for (int i = 0; i < Slices.Length; i++)
+            {
+                Slices[i].ClearSubsets();
+            }
+
         }
 
         public void Dispose()
         {
-            Geometry.DisposeDrawBuffer();
+            DisposeDrawBuffers();
         }
-
         public static bool IsCellValid(int x, int y, int z)
         {
             if (x >= 0 && x < 16 && y >= 0 && y < 256 && z >= 0)
@@ -217,11 +242,11 @@ namespace Game
 
         public void DisposeDrawBuffers()
         {
-
-            for (int i = 0; i < DrawBuffers.Length; i++)
+            for (int i = 0; i < DrawBuffers.Count; i++)
             {
-                DrawBuffers[i]?.Dispose();
+                DrawBuffers[i].Dispose();
             }
+            DrawBuffers.Clear();
         }
     }
 }

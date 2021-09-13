@@ -65,15 +65,9 @@ namespace Game
 
             public MovingBlockSet(Project project)
             {
-                Geometry = new TerrainGeometry(true);
-                Geometry.CreateDefalutGeometry(project.FindSubsystem<SubsystemAnimatedTextures>(true).AnimatedBlocksTexture);
+                Geometry = new TerrainGeometry();
+                Geometry.InitSubsets(true);
             }
-
-            public void SetTexture(Texture2D texture) {
-                Geometry.GeometrySubsets.Clear();
-                Geometry.CreateDefalutGeometry(texture);
-            }
-
 
             public void UpdateBox()
             {
@@ -358,7 +352,7 @@ namespace Game
                 }
                 else
                 {
-                    m_removing[num].Geometry.ClearGeometry();
+                    //m_removing[num].Geometry.ClearGeometry();
                     m_removing.RemoveAt(num);
                 }
             }

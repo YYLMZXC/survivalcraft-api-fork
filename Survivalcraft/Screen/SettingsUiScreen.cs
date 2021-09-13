@@ -60,8 +60,9 @@ namespace Game
                 {
                     if (button == MessageDialogButton.Button1)
                     {
-                        ModsManager.modSettings.languageType = (LanguageControl.LanguageType)((int)(ModsManager.modSettings.languageType + 1) % EnumUtils.GetEnumValues(typeof(LanguageControl.LanguageType)).Count);
-                        LanguageControl.Initialize(ModsManager.modSettings.languageType);
+                        int next = LanguageControl.LanguageTypes.IndexOf(ModsManager.Configs["Language"]) + 1;
+                        if (next == LanguageControl.LanguageTypes.Count) next = 0;
+                        LanguageControl.Initialize(LanguageControl.LanguageTypes[next]);
                         foreach (var c in ModsManager.ModList)
                         {
                             c.LoadLauguage();

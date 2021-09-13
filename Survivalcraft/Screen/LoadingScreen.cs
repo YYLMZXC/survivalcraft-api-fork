@@ -84,7 +84,16 @@ namespace Game
                 ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });            
             });
             AddLoadAction(delegate { //初始化所有ModEntity的语言包
-                LanguageControl.Initialize(ModsManager.modSettings.languageType);
+                //>>>初始化语言列表
+                ReadOnlyList<ContentInfo> axa = ContentManager.List("Lang");
+                LanguageControl.LanguageTypes.Clear();
+                foreach (ContentInfo contentInfo in axa) {
+                    string px = System.IO.Path.GetFileNameWithoutExtension(contentInfo.Filename);
+                    if(!LanguageControl.LanguageTypes.Contains(px))LanguageControl.LanguageTypes.Add(px);
+                }
+                //<<<结束
+                if (ModsManager.Configs.ContainsKey("Language")) LanguageControl.Initialize(ModsManager.Configs["Language"]);
+                else LanguageControl.Initialize("zh-CN");
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLauguage(); });
             });
             AddLoadAction(delegate { //读取所有的ModEntity的dll，并分离出ModLoader，保存Blocks

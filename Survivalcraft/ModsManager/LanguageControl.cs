@@ -8,7 +8,6 @@ namespace Game
     public static class LanguageControl
     {
         public static JsonObject KeyWords = new JsonObject();
-
         public static string Ok = default;
         public static string Cancel = default;
         public static string None = default;
@@ -30,14 +29,9 @@ namespace Game
         public static string Success = default;
         public static string Delete = default;
 
+        public static List<string> LanguageTypes = new List<string>();
 
-        public enum LanguageType
-        {
-            zh_CN,
-            en_US,
-            ot_OT
-        }
-        public static void Initialize(LanguageType languageType)
+        public static void Initialize(string languageType)
         {
             Ok = default;
             Cancel = default;
@@ -59,8 +53,8 @@ namespace Game
             Exists = default;
             Success = default;
             Delete = default;
-            ModsManager.modSettings.languageType = languageType;
             KeyWords.Clear();
+            ModsManager.SetConfig("Language", languageType);
         }
         public static void loadJson(Stream stream)
         {
@@ -195,7 +189,7 @@ namespace Game
         }
         public static string LName()
         {
-            return ModsManager.modSettings.languageType.ToString();
+            return ModsManager.Configs["Language"];
         }
         public static string Get(string className, int key)
         {//获得键值
