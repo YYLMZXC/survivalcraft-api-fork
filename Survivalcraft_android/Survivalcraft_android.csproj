@@ -1445,6 +1445,9 @@
     <Compile Include="..\Survivalcraft\Game\DrawBlockEnvironmentData.cs">
       <Link>Game\DrawBlockEnvironmentData.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\DrawBuffer.cs">
+      <Link>Game\DrawBuffer.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\ElectricConnection.cs">
       <Link>Game\ElectricConnection.cs</Link>
     </Compile>
