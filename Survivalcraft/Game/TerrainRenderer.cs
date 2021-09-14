@@ -231,6 +231,7 @@ namespace Game
                 modLoader.SetShaderParameter(TransparentShader);
                 return false;
             });
+            int count = 0;
             ShaderParameter parameter = TransparentShader.GetParameter("u_fogStartInvLength");
             for (int i = 0; i < m_chunksToDraw.Count; i++)
             {
@@ -239,7 +240,9 @@ namespace Game
                 float num2 = MathUtils.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
                 parameter.SetValue(new Vector2(num2, 1f / (num - num2)));
                 DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk, 64);
+                count += terrainChunk.DrawBuffers.Count;
             }
+            if(Time.PeriodicEvent(1.0,0.0))System.Diagnostics.Debug.WriteLine($"count:{count}");
         }
 
         public void Dispose()
@@ -253,7 +256,7 @@ namespace Game
             TerrainChunk[] allocatedChunks = m_subsystemTerrain.Terrain.AllocatedChunks;
             foreach (TerrainChunk terrainChunk in allocatedChunks)
             {
-                terrainChunk.DisposeDrawBuffers();
+                terrainChunk.Dispose();
             }
         }
 
@@ -261,20 +264,19 @@ namespace Game
         public void SetupTerrainChunkGeometryVertexIndexBuffers(TerrainChunk chunk)
         {
             //清除所有DrawBuffer，并将顶点数据转为DrawBuffer，并复制Slice的ContentHash
-            chunk.DrawBuffers.Clear();
             chunk.InvalidateSliceContentsHashes();
             for (int i = 0; i < chunk.Slices.Length; i++)
             {
                 chunk.Slices[i].GetDrawBuffers(chunk.DrawBuffers);
             }
-            chunk.CopySliceContentsHashes(chunk);
+            chunk.CopySliceContentsHashes();
         }
 
         public static void DrawTerrainChunkGeometrySubsets(Shader shader,TerrainChunk chunk, int subsetsMask)
         {
             for (int i = 0; i < chunk.DrawBuffers.Count; i++)
             {
-                if (chunk.DrawBuffers[i] != null) DrawTerrainChunkGeometrySubset(shader, chunk.DrawBuffers[i], subsetsMask);
+                DrawTerrainChunkGeometrySubset(shader, chunk.DrawBuffers[i], subsetsMask);
             }
         }
 

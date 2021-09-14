@@ -19,7 +19,7 @@ public static class ModsManager
 {
     public const string APIVersion = "1.40";
     public const string SCVersion = "2.2.10.4";
-
+    public static bool ConfigLoaded = false;
     //1为api1.33 2为api1.4
     public const int Apiv = 3;
 
@@ -278,6 +278,7 @@ public static class ModsManager
         {
             modEntity.SaveSettings(xElement);
         }
+        ConfigLoaded = true;
     }
     public static void SetConfig(string key,string value) {
         if (!Configs.TryGetValue(key, out string mm))

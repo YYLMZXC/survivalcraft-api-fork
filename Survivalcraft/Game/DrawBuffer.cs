@@ -10,6 +10,8 @@ namespace Game
 
         public IndexBuffer IndexBuffer;
 
+        public TerrainChunk Chunk;
+
         public Texture2D Texture;
 
         public int[] SubsetIndexBufferStarts = new int[7];

@@ -28,7 +28,6 @@ namespace Game
         public static string Exists = default;
         public static string Success = default;
         public static string Delete = default;
-
         public static List<string> LanguageTypes = new List<string>();
 
         public static void Initialize(string languageType)

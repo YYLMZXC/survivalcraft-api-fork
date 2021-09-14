@@ -19,7 +19,7 @@ namespace Game
             }
             for (int i = 0; i < subset.Indices.Count; i++)
             {
-                ushort index = (ushort)(subset.Indices[i] + subset.Vertices.Count);
+                ushort index = (ushort)(subset.Indices[i] + Vertices.Count);
                 Indices.Add(index);
             }
 

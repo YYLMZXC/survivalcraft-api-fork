@@ -89,12 +89,11 @@ namespace Game
                 Slices[i].ContentsHash = 0;
             }
         }
-        public void CopySliceContentsHashes(TerrainChunk chunk)
+        public void CopySliceContentsHashes()
         {
             for (int i = 0; i < Slices.Length; i++)
             {
-                Slices[i].ContentsHash = TerrainUpdater.CalculateChunkSliceContentsHash(chunk, i);
-                SliceContentsHashes[i] = Slices[i].ContentsHash;
+                Slices[i].ContentsHash = SliceContentsHashes[i];
             }
         }
 

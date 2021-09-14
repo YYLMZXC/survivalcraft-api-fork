@@ -56,7 +56,7 @@ namespace Game
 
         public static void Update()
         {
-            if (Time.PeriodicEvent(1.0, 0.0))
+            if (Time.PeriodicEvent(1.0, 0.0) && ModsManager.ConfigLoaded)
             {
                 var t = TimeSpan.FromHours(SettingsManager.MotdUpdatePeriodHours);
                 DateTime now = DateTime.Now;

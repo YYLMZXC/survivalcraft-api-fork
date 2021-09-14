@@ -82,15 +82,10 @@ namespace Game
 				{
 					if (CompileVertexAndIndex(c.Value.Subsets, c.Key, out DrawBuffer drawBuffer2))
 					{
-						DrawBuffers.Add(drawBuffer2);
 						drawBuffers.Add(drawBuffer2);
 					}
 				}
 				ShouldDisposeDrawBuffer = false;
-			}
-			else
-			{
-				drawBuffers.AddRange(DrawBuffers);
 			}
 		}
 
