@@ -54,18 +54,29 @@ namespace Game
             ResourcesAll.Clear();
             Caches.Clear();
         }
-        public static T Get<T>(string name, string suffix = null, bool useCache = true) where T : class
+        public static T Get<T>(string name, string suffix = null) where T : class
         {
-            return Get(typeof(T),name,suffix,useCache) as T;
+            string p = suffix == null ? name : name + suffix;
+            if (!Caches.TryGetValue(p, out object o))
+            {
+                object obj = Get(typeof(T), name, suffix);
+                Caches.Add(p, obj);
+                return obj as T;
+            }
+            else return o as T;
         }
-        public static object Get(Type type, string name, string suffix = null, bool useCache = false)
+        public static object Get(Type type, string name, string suffix = null)
         {
             object obj = null;
-            string packagename = string.Empty;
+            if (type == typeof(Subtexture))
+            {
+                Subtexture subtexture = TextureAtlasManager.GetSubtexture(name);
+                if (subtexture == null) return new Subtexture(Get<Texture2D>(name, suffix), Vector2.Zero, Vector2.One);
+                return subtexture;
+            }
             bool flag = name.Contains(":");
             if (ReaderList.TryGetValue(type.FullName, out IContentReader.IContentReader reader))
             {
-                reader.UseCache = useCache;
                 List<ContentInfo> contents = new List<ContentInfo>();
                 if (suffix == null)
                 {
@@ -111,11 +122,6 @@ namespace Game
                     contents.Add(new ContentInfo("survivalcraft", name));
                 }
                 obj = reader.Get(contents.ToArray());
-                if (Caches.TryGetValue(name, out object o))
-                {
-                    Caches[name] = obj;
-                }
-                else Caches.Add(name, obj);
             }
             if (obj == null) throw new Exception("not found any res:" + name);
             return obj;
@@ -162,6 +168,7 @@ namespace Game
                 if (obj is IDisposable dis) {
                     dis.Dispose();
                 }
+                Caches.Remove(name);
             }
         }
         public static bool IsContent(object content)

@@ -179,19 +179,10 @@ public static class ModsManager
         }
     }
 #endif
-    public static T GetInPakOrStorageFile<T>(string filepath, string prefix = ".txt") where T : class
+    public static T GetInPakOrStorageFile<T>(string filepath, string suffix = ".txt") where T : class
     {
-        string storagePath = Storage.CombinePaths(ExternelPath, filepath + prefix);
-        if (Storage.FileExists(storagePath))
-        {
-            object obj = null;
-            using (Stream stream = Storage.OpenFile(storagePath, OpenFileMode.Read))
-            {
-                obj = ContentManager.StreamConvertType(typeof(T), stream);
-            }
-            return obj as T;
-        }
-        else return ContentManager.Get<T>(filepath, prefix);
+        //string storagePath = Storage.CombinePaths(ExternelPath, filepath + prefix);
+        return ContentManager.Get<T>(filepath, suffix);
     }
 
     public static T DeserializeJson<T>(string text) where T : class

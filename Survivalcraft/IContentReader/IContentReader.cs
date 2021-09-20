@@ -7,7 +7,6 @@ namespace Game.IContentReader
     {
         public abstract string Type { get;}
         public abstract string[] DefaultSuffix { get; }
-        public bool UseCache;
         /// <summary>
         /// 
         /// </summary>
