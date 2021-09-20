@@ -738,6 +738,8 @@ namespace Game
 						double realTime14 = Time.RealTime;
 						m_statistics.ContentsCount3++;
 						m_statistics.ContentsTime3 += realTime14 - realTime13;
+						ModsManager.HookAction("OnTerrainContentsGenerated", (modLoader) => { modLoader.OnTerrainContentsGenerated(chunk); return true; });
+
 						break;
 					}
 				case TerrainChunkState.InvalidContents4:
