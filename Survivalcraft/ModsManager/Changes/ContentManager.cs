@@ -70,9 +70,7 @@ namespace Game
             object obj = null;
             if (type == typeof(Subtexture))
             {
-                Subtexture subtexture = TextureAtlasManager.GetSubtexture(name);
-                if (subtexture == null) return new Subtexture(Get<Texture2D>(name, suffix), Vector2.Zero, Vector2.One);
-                return subtexture;
+                return TextureAtlasManager.GetSubtexture(name);
             }
             bool flag = name.Contains(":");
             if (ReaderList.TryGetValue(type.FullName, out IContentReader.IContentReader reader))
@@ -179,6 +177,17 @@ namespace Game
             }
             return false;
         }
+        private static void Display_DeviceReset()
+        {
+            foreach (var item in Caches)
+            {
+                if (item.Value is Texture2D || item.Value is Model || item.Value is BitmapFont)
+                {
+                    Caches[item.Key] = Get(item.Value.GetType(),item.Key);
+                }
+            }
+        }
+
         public static ReadOnlyList<ContentInfo> List()
         {
             return new ReadOnlyList<ContentInfo>(Resources.Values.ToDynamicArray());

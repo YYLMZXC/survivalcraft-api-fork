@@ -33,7 +33,7 @@ namespace Game
             {
                 try
                 {
-                    value = new Subtexture(AtlasTexture, Vector2.Zero, Vector2.One);
+                    value = new Subtexture(ContentManager.Get<Texture2D>(name), Vector2.Zero, Vector2.One);
                     m_subtextures.Add(name, value);
                     return value;
                 }
