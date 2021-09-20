@@ -1445,9 +1445,6 @@
     <Compile Include="..\Survivalcraft\Game\DrawBlockEnvironmentData.cs">
       <Link>Game\DrawBlockEnvironmentData.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Game\DrawBuffer.cs">
-      <Link>Game\DrawBuffer.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Game\ElectricConnection.cs">
       <Link>Game\ElectricConnection.cs</Link>
     </Compile>
@@ -1871,6 +1868,9 @@
     <Compile Include="..\Survivalcraft\Game\TerrainChunk.cs">
       <Link>Game\TerrainChunk.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\TerrainChunkGeometry.cs">
+      <Link>Game\TerrainChunkGeometry.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\TerrainChunkSliceGeometry.cs">
       <Link>Game\TerrainChunkSliceGeometry.cs</Link>
     </Compile>
@@ -2083,6 +2083,54 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\ZipArchiveEntry.cs">
       <Link>Game\ZipArchiveEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\BitmapFontReader.cs">
+      <Link>IContentReader\BitmapFontReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\DaeModelReader.cs">
+      <Link>IContentReader\DaeModelReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\IContentReader.cs">
+      <Link>IContentReader\IContentReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\ImageReader.cs">
+      <Link>IContentReader\ImageReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\JsonArrayReader.cs">
+      <Link>IContentReader\JsonArrayReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\JsonModelReader.cs">
+      <Link>IContentReader\JsonModelReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\JsonObjectReader.cs">
+      <Link>IContentReader\JsonObjectReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\MtllibStructReader.cs">
+      <Link>IContentReader\MtllibStructReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\ObjModelReader.cs">
+      <Link>IContentReader\ObjModelReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\ShaderReader.cs">
+      <Link>IContentReader\ShaderReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\SoundBufferReader.cs">
+      <Link>IContentReader\SoundBufferReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\StreamingSourceReader.cs">
+      <Link>IContentReader\StreamingSourceReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\StringReader.cs">
+      <Link>IContentReader\StringReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\SubtextureReader.cs">
+      <Link>IContentReader\SubtextureReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\Texture2DReader.cs">
+      <Link>IContentReader\Texture2DReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\IContentReader\XmlReader.cs">
+      <Link>IContentReader\XmlReader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Managers\AudioManager.cs">
       <Link>Managers\AudioManager.cs</Link>

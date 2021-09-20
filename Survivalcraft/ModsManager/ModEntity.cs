@@ -102,10 +102,6 @@ namespace Game {
             foreach (ZipArchiveEntry zipArchiveEntry in entries) {
                 if (zipArchiveEntry.FileSize > 0) {
                     ModFiles.Add(zipArchiveEntry.FilenameInZip, zipArchiveEntry);
-                    if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
-                    {
-                        ContentManager.Add(this, zipArchiveEntry.FilenameInZip.Substring(7));
-                    }
                 }
             }
             if (GetFile("modinfo.json", out Stream stream))
@@ -117,6 +113,17 @@ namespace Game {
             {
                 LoadIcon(stream2);
                 stream2.Close();
+            }
+            foreach (var c in ModFiles) {
+                ZipArchiveEntry zipArchiveEntry = c.Value;
+                if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
+                {
+                    MemoryStream memoryStream = new MemoryStream();
+                    ContentInfo contentInfo = new ContentInfo(modInfo.PackageName, zipArchiveEntry.FilenameInZip.Substring(7));
+                    ModArchive.ExtractFile(zipArchiveEntry, memoryStream);
+                    contentInfo.SetContentStream(memoryStream);
+                    ContentManager.Add(contentInfo);
+                }
             }
             LoadingScreen.Info("加载资源:" + modInfo?.Name+" 共"+ModFiles.Count+"文件");
         }
@@ -210,6 +217,11 @@ namespace Game {
                     Loader = modLoader;
                     modLoader.__ModInitialize();
                     ModsManager.ModLoaders.Add(modLoader);
+                }
+                if (type.IsSubclassOf(typeof(IContentReader.IContentReader)) && !type.IsAbstract)
+                {
+                    IContentReader.IContentReader reader = Activator.CreateInstance(type) as IContentReader.IContentReader;
+                    if(!ContentManager.ReaderList.ContainsKey(reader.Type))ContentManager.ReaderList.Add(reader.Type, reader);
                 }
                 if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
                 {

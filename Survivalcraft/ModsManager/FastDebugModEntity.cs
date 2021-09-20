@@ -12,6 +12,11 @@ namespace Game
         public FastDebugModEntity()
         {
             InitResources();
+        }
+
+        public override void InitResources()
+        {
+            ReadDirResouces(ModsManager.ModsPath, "");
             if (GetFile("modinfo.json", out Stream stream))
             {
                 modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
@@ -27,29 +32,28 @@ namespace Game
                 LoadIcon(stream2);
                 stream2.Close();
             }
-        }
-
-        public override void InitResources()
-        {
-            ReadDirResouces(ModsManager.ModsPath, "");
+            foreach (var c in ModFiles)
+            {
+                ZipArchiveEntry zipArchiveEntry = c.Value;
+                if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
+                {
+                    MemoryStream memoryStream = new MemoryStream();
+                    ContentInfo contentInfo = new ContentInfo(modInfo.PackageName, zipArchiveEntry.FilenameInZip.Substring(7));
+                    ModArchive.ExtractFile(zipArchiveEntry, memoryStream);
+                    contentInfo.SetContentStream(memoryStream);
+                    ContentManager.Add(contentInfo);
+                }
+            }
         }
 
         public void ReadDirResouces(string basepath, string path)
         {
             if (string.IsNullOrEmpty(path)) path = basepath;
-            foreach (string d in Storage.ListDirectoryNames(path))
-                ReadDirResouces(basepath, path + "/" + d);
+            foreach (string d in Storage.ListDirectoryNames(path)) ReadDirResouces(basepath, path + "/" + d);
             foreach (string f in Storage.ListFileNames(path))
             {
                 string abpath = path + "/" + f;
                 string FilenameInZip = abpath.Substring(basepath.Length + 1);
-                var zipArchiveEntry = new ZipArchiveEntry();
-                zipArchiveEntry.FilenameInZip = FilenameInZip;
-                FModFiles.Add(FilenameInZip, new FileInfo(Storage.GetSystemPath(abpath)));
-                if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
-                {
-                    ContentManager.Add(this, zipArchiveEntry.FilenameInZip.Substring(7));
-                }
             }
         }
 

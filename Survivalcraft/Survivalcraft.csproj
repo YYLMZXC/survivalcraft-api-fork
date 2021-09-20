@@ -380,11 +380,26 @@
     <Compile Include="Block\WoodenStairsBlock.cs" />
     <Compile Include="Block\WoodenTrapdoorBlock.cs" />
     <Compile Include="Block\XorGateBlock.cs" />
-    <Compile Include="Game\DrawBuffer.cs" />
     <Compile Include="Game\Subtexture.cs" />
+    <Compile Include="Game\TerrainChunkGeometry.cs" />
     <Compile Include="Game\TerrainSerializer22.cs" />
     <Compile Include="Game\TextureAtlas.cs" />
     <Compile Include="Game\TextureAtlasManager.cs" />
+    <Compile Include="IContentReader\BitmapFontReader.cs" />
+    <Compile Include="IContentReader\DaeModelReader.cs" />
+    <Compile Include="IContentReader\ImageReader.cs" />
+    <Compile Include="IContentReader\JsonArrayReader.cs" />
+    <Compile Include="IContentReader\JsonModelReader.cs" />
+    <Compile Include="IContentReader\JsonObjectReader.cs" />
+    <Compile Include="IContentReader\MtllibStructReader.cs" />
+    <Compile Include="IContentReader\ObjModelReader.cs" />
+    <Compile Include="IContentReader\ShaderReader.cs" />
+    <Compile Include="IContentReader\SoundBufferReader.cs" />
+    <Compile Include="IContentReader\StreamingSourceReader.cs" />
+    <Compile Include="IContentReader\StringReader.cs" />
+    <Compile Include="IContentReader\SubtextureReader.cs" />
+    <Compile Include="IContentReader\Texture2DReader.cs" />
+    <Compile Include="IContentReader\XmlReader.cs" />
     <Compile Include="Managers\AudioManager.cs" />
     <Compile Include="Managers\BlocksTexturesManager.cs" />
     <Compile Include="Managers\CharacterSkinsManager.cs" />
@@ -411,6 +426,7 @@
     <Compile Include="Managers\WebManager.cs" />
     <Compile Include="Managers\WorldsManager.cs" />
     <Compile Include="ModsManager\FastDebugModEntity.cs" />
+    <Compile Include="IContentReader\IContentReader.cs" />
     <Compile Include="ModsManager\JsonModelReader.cs" />
     <Compile Include="ModsManager\ModLoader.cs" />
     <Compile Include="ModsManager\MtllibStruct.cs" />
@@ -1068,6 +1084,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

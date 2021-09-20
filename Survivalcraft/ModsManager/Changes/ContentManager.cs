@@ -11,245 +11,113 @@ namespace Game
 {
     public class ContentInfo
     {
-        public ModEntity Entity;
-        public string Filename;
+        public MemoryStream ContentStream;
+        public string AbsolutePath;
         public string ContentPath;
-        public ContentInfo(ModEntity entity, string AbsolutePath_)
+        public string Filename;
+        public object Instance;
+        public ContentInfo(string PackageName, string AbsolutePath_)
         {
-            Entity = entity;
-            Filename = Path.GetFileName(AbsolutePath_);
+            AbsolutePath = PackageName + ":"+ AbsolutePath_;
+            Filename = Path.GetFileName(AbsolutePath);
             int pos = AbsolutePath_.LastIndexOf('.');
-            ContentPath = AbsolutePath_.Substring(0, pos);
+            ContentPath = pos > -1 ? AbsolutePath_.Substring(0, pos) : AbsolutePath_;
         }
-        public bool Get(Type type, string name, out object obj)
-        {
-            obj = null;
-            if (Entity.GetAssetsFile(name, out Stream stream))
-            {
-                obj = ContentManager.StreamConvertType(type, stream);
-                return true;
+        public void SetContentStream(Stream stream) {
+            if (stream is MemoryStream) {
+                ContentStream = stream as MemoryStream;
+                ContentStream.Position = 0L;
             }
-            return false;
         }
-        public bool Get(string name, out Stream stream)
-        {
-            stream = null;
-            if (Entity.GetAssetsFile(name, out stream))
-            {
-                return true;
-            }
-            return false;
+        public Stream Duplicate() {
+            if (ContentStream == null || !ContentStream.CanRead || !ContentStream.CanWrite) throw new Exception("ContentStream has been disposed");
+            MemoryStream memoryStream = new MemoryStream();
+            ContentStream.CopyTo(memoryStream);
+            ContentStream.Position = 0L;
+            memoryStream.Position = 0L;
+            return memoryStream;
+        }
+        public void Dispose() {
+            ContentStream?.Dispose();
         }
     }
     public static class ContentManager
     {
+        internal static Dictionary<string, ContentInfo> ResourcesAll = new Dictionary<string, ContentInfo>();
         internal static Dictionary<string, ContentInfo> Resources = new Dictionary<string, ContentInfo>();
-        internal static Dictionary<string, object> ResourcesCaches = new Dictionary<string, object>();
+        internal static Dictionary<string, IContentReader.IContentReader> ReaderList = new Dictionary<string, IContentReader.IContentReader>();
+        internal static Dictionary<string, object> Caches = new Dictionary<string, object>();
         public static void Initialize()
         {
+            ReaderList.Clear();
             Resources.Clear();
+            ResourcesAll.Clear();
+            Caches.Clear();
         }
-        /// <summary>
-        /// 获取资源
-        /// </summary>
-        /// <typeparam name="T">要转换的类型</typeparam>
-        /// <param name="name">资源名称</param>
-        /// <param name="useCache">是否使用缓存</param>
-        /// <returns></returns>
-        public static T Get<T>(string name, string prefix = null, bool useCache = true) where T : class
+        public static T Get<T>(string name, string suffix = null, bool useCache = true) where T : class
         {
-            try
-            {
-                return Get(typeof(T), name, prefix, useCache) as T;
-            }
-            catch (Exception e)
-            {
-                LoadingScreen.Warning("Loading Resouce " + name + " error." + e.Message);
-                return null;
-            }
+            return Get(typeof(T),name,suffix,useCache) as T;
         }
-
-        public static object Get(Type type, string name, string prefix = null, bool useCache = false)
+        public static object Get(Type type, string name, string suffix = null, bool useCache = false)
         {
-            string fixname = string.Empty;
             object obj = null;
-            object obj1 = null;
-            string cacheName = name + prefix;
-            if (useCache && ResourcesCaches.TryGetValue(cacheName, out obj1))
+            string packagename = string.Empty;
+            bool flag = name.Contains(":");
+            if (ReaderList.TryGetValue(type.FullName, out IContentReader.IContentReader reader))
             {
-                return obj1;
-            }
-            if (name.Contains(":"))
-            { //带命名空间的解析
-                string[] spl = name.Split(new char[] { ':' }, StringSplitOptions.None);
-                string ModSpace = spl[0];
-                name = spl[1];
-                if (ModsManager.GetModEntity(ModSpace, out ModEntity modEntity))
+                reader.UseCache = useCache;
+                List<ContentInfo> contents = new List<ContentInfo>();
+                if (suffix == null)
                 {
-                    switch (type.FullName)
+                    for (int i = 0; i < reader.DefaultSuffix.Length; i++)
                     {
-                        case "Engine.Media.BitmapFont":
-                            {
-                                if (modEntity.GetAssetsFile(name + ".png", out Stream stream))
-                                {
-                                    using (stream)
-                                    {
-                                        if (modEntity.GetAssetsFile(name + ".lst", out Stream stream2))
-                                        {
-                                            BitmapFont bitmapFont = BitmapFont.Initialize(stream, stream2);
-                                            stream2.Close();
-                                            if (useCache)
-                                            {
-                                                if (obj1 == null) ResourcesCaches.Add(cacheName, bitmapFont);
-                                                else ResourcesCaches[cacheName] = bitmapFont;
-                                            }
-                                            return bitmapFont;
-                                        }
-                                    }
-                                }
-                                throw new Exception("Not found Resources:" + name + " for " + type.FullName);
-                            }
-                        case "Engine.Graphics.Shader":
-                            {
-                                if (modEntity.GetAssetsFile(name + ".psh", out Stream stream))
-                                {
-                                    using (stream)
-                                    {
-                                        if (modEntity.GetAssetsFile(name + ".vsh", out Stream stream2))
-                                        {
-                                            Shader shader = new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), new ShaderMacro[] { new ShaderMacro(name) });
-                                            stream2.Close();
-                                            if (useCache)
-                                            {
-                                                if (obj1 == null) ResourcesCaches.Add(cacheName, shader);
-                                                else ResourcesCaches[cacheName] = shader;
-
-                                            }
-                                            return shader;
-                                        }
-                                    }
-                                }
-                                throw new Exception("Not found Resources:" + name + " for " + type.FullName);
-                            }
-                        default:
-                            {
-                                switch (type.FullName)
-                                {
-                                    case "Engine.Media.StreamingSource":
-                                    case "Engine.Audio.SoundBuffer": if (string.IsNullOrEmpty(prefix)) throw new Exception("You must specify a file type."); else fixname = name + prefix; break;
-                                    case "Game.MtllibStruct": if (string.IsNullOrEmpty(prefix)) fixname = name + ".mtl"; else fixname = name + prefix; break;
-                                    case "Engine.Graphics.Texture2D": if (string.IsNullOrEmpty(prefix)) fixname = name + ".png"; else fixname = name + prefix; break;
-                                    case "System.String": if (string.IsNullOrEmpty(prefix)) fixname = name + ".txt"; else fixname = name + prefix; break;
-                                    case "Engine.Media.Image": if (string.IsNullOrEmpty(prefix)) fixname = name + ".png"; else fixname = name + prefix; break;
-                                    case "System.Xml.Linq.XElement": if (string.IsNullOrEmpty(prefix)) fixname = name + ".xml"; else fixname = name + prefix; break;
-                                    case "Engine.Graphics.Model": if (string.IsNullOrEmpty(prefix)) fixname = name + ".dae"; else fixname = name + prefix; break;
-                                    case "Game.ObjModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".obj"; else fixname = name + prefix; break;
-                                    case "SimpleJson.JsonObject":
-                                    case "Game.JsonModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".json"; else fixname = name + prefix; break;
-                                    case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) obj = TextureAtlasManager.GetSubtexture(name); else obj = new Subtexture(Get<Texture2D>(name, null, useCache), Vector2.Zero, Vector2.One); break;
-                                }
-                                if (modEntity.GetAssetsFile(fixname, out Stream stream))
-                                {
-                                    obj = StreamConvertType(type, stream);
-                                }
-                                else throw new Exception("Not found Resources:" + ModSpace + ":" + name + " for " + type.FullName);
-                                if (useCache)
-                                {
-
-                                    if (obj1 == null) ResourcesCaches.Add(cacheName, obj);
-                                    else ResourcesCaches[cacheName] = obj;
-                                }
-                                return obj;
-                            }
-                    }
-                }
-                else
-                {
-                    throw new Exception("not found modspace:" + ModSpace);
-                }
-            }
-            switch (type.FullName)
-            {
-                case "Engine.Media.BitmapFont":
-                    {
-                        if (Resources.TryGetValue(name + ".png", out ContentInfo contentInfo1))
+                        string p = name + "." + reader.DefaultSuffix[i];
+                        if (flag)
                         {
-                            if (contentInfo1.Get(name + ".png", out Stream stream))
+                            if (ResourcesAll.TryGetValue(p, out ContentInfo contentInfo))
                             {
-                                using (stream)
-                                {
-                                    if (contentInfo1.Get(name + ".lst", out Stream stream2))
-                                    {
-                                        BitmapFont bitmapFont = BitmapFont.Initialize(stream, stream2);
-                                        stream2.Close();
-                                        if (useCache)
-                                        {
-                                            if (obj1 == null) ResourcesCaches.Add(cacheName, bitmapFont);
-                                            else ResourcesCaches[cacheName] = bitmapFont;
-                                        }
-                                        return bitmapFont;
-                                    }
-                                }
+                                contents.Add(contentInfo);
+                            }
+
+                        }
+                        else
+                        {
+                            if (Resources.TryGetValue(p, out ContentInfo contentInfo))
+                            {
+                                contents.Add(contentInfo);
                             }
                         }
-                        throw new Exception("Not found Resources:" + name + " for " + type.FullName);
-                    }
-                case "Engine.Graphics.Shader":
-                    {
-                        if (Resources.TryGetValue(name + ".psh", out ContentInfo contentInfo1))
-                        {
-                            if (contentInfo1.Get(name + ".psh", out Stream stream))
-                            {
-                                using (stream)
-                                {
-                                    if (contentInfo1.Get(name + ".vsh", out Stream stream2))
-                                    {
-                                        Shader shader = new Shader(new StreamReader(stream).ReadToEnd(), new StreamReader(stream2).ReadToEnd(), new ShaderMacro[] { new ShaderMacro(name) });
-                                        stream2.Close();
-                                        if (useCache)
-                                        {
-
-                                            if (obj1 == null) ResourcesCaches.Add(cacheName, shader);
-                                            else ResourcesCaches[cacheName] = shader;
-                                        }
-                                        return shader;
-                                    }
-                                }
-                            }
-                        }
-                        throw new Exception("Not found Resources:" + name + " for " + type.FullName);
-                    }
-                case "Engine.Media.StreamingSource":
-                case "Engine.Audio.SoundBuffer": if (string.IsNullOrEmpty(prefix)) throw new Exception("You must specify a file type."); else fixname = name + prefix; break;
-                case "Game.MtllibStruct": if (string.IsNullOrEmpty(prefix)) fixname = name + ".mtl"; else fixname = name + prefix; break;
-                case "Engine.Graphics.Texture2D": if (string.IsNullOrEmpty(prefix)) fixname = name + ".png"; else fixname = name + prefix; break;
-                case "System.String": if (string.IsNullOrEmpty(prefix)) fixname = name + ".txt"; else fixname = name + prefix; break;
-                case "Engine.Media.Image": if (string.IsNullOrEmpty(prefix)) fixname = name + ".png"; else fixname = name + prefix; break;
-                case "System.Xml.Linq.XElement": if (string.IsNullOrEmpty(prefix)) fixname = name + ".xml"; else fixname = name + prefix; break;
-                case "Engine.Graphics.Model": if (string.IsNullOrEmpty(prefix)) fixname = name + ".dae"; else fixname = name + prefix; break;
-                case "Game.ObjModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".obj"; else fixname = name + prefix; break;
-                case "SimpleJson.JsonObject":
-                case "Game.JsonModel": if (string.IsNullOrEmpty(prefix)) fixname = name + ".json"; else fixname = name + prefix; break;
-                case "Game.Subtexture": if (name.StartsWith("Textures/Atlas/")) obj = TextureAtlasManager.GetSubtexture(name); else obj = new Subtexture(Get<Texture2D>(name, null, useCache), Vector2.Zero, Vector2.One); break;
-                default: { break; }
-            }
-            if (Resources.TryGetValue(fixname, out ContentInfo contentInfo3))
-            {
-                if (contentInfo3.Get(fixname, out Stream stream))
-                {
-                    using (stream)
-                    {//单文件转换
-                        obj = StreamConvertType(type, stream);
                     }
                 }
-            }
-            if (useCache)
-            {
-                if (obj1 == null) ResourcesCaches.Add(cacheName, obj);
-                else ResourcesCaches[cacheName] = obj;
+                else {
+                    string p = name + suffix;
+                    if (flag)
+                    {
+                        if (ResourcesAll.TryGetValue(p, out ContentInfo contentInfo))
+                        {
+                            contents.Add(contentInfo);
+                        }
 
+                    }
+                    else
+                    {
+                        if (Resources.TryGetValue(p, out ContentInfo contentInfo))
+                        {
+                            contents.Add(contentInfo);
+                        }
+                    }
+                }
+                if (contents.Count == 0) {//修正subtexture
+                    contents.Add(new ContentInfo("survivalcraft", name));
+                }
+                obj = reader.Get(contents.ToArray());
+                if (Caches.TryGetValue(name, out object o))
+                {
+                    Caches[name] = obj;
+                }
+                else Caches.Add(name, obj);
             }
-            if (obj == null) throw new Exception("Not found Resources:" + name + " for " + type.FullName);
+            if (obj == null) throw new Exception("not found any res:" + name);
             return obj;
         }
         public static object StreamConvertType(Type type, Stream stream)
@@ -270,14 +138,19 @@ namespace Game
             }
             return null;
         }
-        public static void Add(ModEntity entity, string name)
+        public static void Add(ContentInfo contentInfo)
         {
-            if (Resources.TryGetValue(name, out ContentInfo contentInfo))
-            {
-                Resources[name] = new ContentInfo(entity, name);
+            if (!ResourcesAll.TryGetValue(contentInfo.AbsolutePath, out ContentInfo info)) {
+                ResourcesAll.Add(contentInfo.AbsolutePath,contentInfo);
             }
-            else
-                Resources.Add(name, new ContentInfo(entity, name));
+            string[] tmp = contentInfo.AbsolutePath.Split(new char[] { ':'});
+            if (tmp.Length == 2) {
+                if (!Resources.TryGetValue(tmp[1], out ContentInfo info2))
+                {
+                    Resources[tmp[1]] = contentInfo;
+                }
+                else Resources.Add(tmp[1], contentInfo);
+            }
         }
         /// <summary>
         /// 可能需要带上文件后缀，即获取名字+获取的后缀
@@ -285,31 +158,24 @@ namespace Game
         /// <param name="name"></param>
         public static void Dispose(string name)
         {
-            foreach (var obj in ResourcesCaches)
-            {
-                if (name == obj.Key)
-                {
-                    IDisposable disposable = obj.Value as IDisposable;
-                    if (disposable != null) disposable.Dispose();
-                    break;
+            if (Caches.TryGetValue(name,out object obj)) {
+                if (obj is IDisposable dis) {
+                    dis.Dispose();
                 }
             }
         }
-
         public static bool IsContent(object content)
         {
-            foreach (var obj in ResourcesCaches.Values)
+            foreach (var obj in Caches.Values)
             {
                 if (obj == content) return true;
             }
             return false;
         }
-
         public static ReadOnlyList<ContentInfo> List()
         {
             return new ReadOnlyList<ContentInfo>(Resources.Values.ToDynamicArray());
         }
-
         public static ReadOnlyList<ContentInfo> List(string directory)
         {
             List<ContentInfo> contents = new List<ContentInfo>();

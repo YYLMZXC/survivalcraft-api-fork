@@ -5,54 +5,87 @@ using TemplatesDatabase;
 
 namespace Game
 {
-    public class ComponentDiggingCracks : Component, IDrawable
-    {
-        public SubsystemTerrain m_subsystemTerrain;
+	public class ComponentDiggingCracks : Component, IDrawable
+	{
+		public class Geometry : TerrainGeometry
+		{
+			public Geometry()
+			{
+				TerrainGeometrySubset terrainGeometrySubset = SubsetTransparent = (SubsetAlphaTest = (SubsetOpaque = new TerrainGeometrySubset()));
+				OpaqueSubsetsByFace = new TerrainGeometrySubset[6]
+				{
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset
+				};
+				AlphaTestSubsetsByFace = new TerrainGeometrySubset[6]
+				{
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset
+				};
+				TransparentSubsetsByFace = new TerrainGeometrySubset[6]
+				{
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset,
+					terrainGeometrySubset
+				};
+			}
+		}
 
-        public SubsystemSky m_subsystemSky;
+		public struct CracksVertex
+		{
+			public float X;
 
-        public ComponentMiner m_componentMiner;
+			public float Y;
 
-        public Texture2D[] m_textures;
+			public float Z;
 
-        public Shader m_shader;
+			public float Tx;
 
-        public TerrainGeometry m_geometry = new TerrainGeometry();
+			public float Ty;
 
-        public struct CracksVertex
-        {
-            public float X;
+			public Color Color;
 
-            public float Y;
+			public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.Vector2, VertexElementSemantic.TextureCoordinate), new VertexElement(20, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color));
+		}
 
-            public float Z;
+		public SubsystemTerrain m_subsystemTerrain;
 
-            public float Tx;
+		public SubsystemSky m_subsystemSky;
 
-            public float Ty;
+		public ComponentMiner m_componentMiner;
 
-            public Color Color;
+		public Texture2D[] m_textures;
 
-            public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.Vector2, VertexElementSemantic.TextureCoordinate), new VertexElement(20, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color));
-        }
+		public Shader m_shader;
 
-        public DynamicArray<CracksVertex> m_vertices = new DynamicArray<CracksVertex>();
+		public Geometry m_geometry;
 
-        public TerrainChunk terrainChunk;
+		public DynamicArray<CracksVertex> m_vertices = new DynamicArray<CracksVertex>();
 
-        public Point3 m_point;
+		public Point3 m_point;
 
-        public int m_value;
+		public int m_value;
 
-        public static int[] m_drawOrders = new int[1]
-        {
-            1
-        };
+		public static int[] m_drawOrders = new int[1]
+		{
+			1
+		};
 
-        public int[] DrawOrders => m_drawOrders;
+		public int[] DrawOrders => m_drawOrders;
 
-        public void Draw(Camera camera, int drawOrder)
-        {
+		public void Draw(Camera camera, int drawOrder)
+		{
 			if (!m_componentMiner.DigCellFace.HasValue || !(m_componentMiner.DigProgress > 0f) || !(m_componentMiner.DigTime > 0.2f))
 			{
 				return;
@@ -63,7 +96,7 @@ namespace Game
 			Block block = BlocksManager.Blocks[num];
 			if (m_geometry == null || cellValue != m_value || point != m_point)
 			{
-				m_geometry = new TerrainGeometry(true);
+				m_geometry = new Geometry();
 				block.GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, m_geometry, cellValue, point.X, point.Y, point.Z);
 				m_point = point;
 				m_value = cellValue;
@@ -82,13 +115,13 @@ namespace Game
 					m_vertices.Add(item);
 				}
 			}
-			int num2 = MathUtils.Clamp((int)(m_componentMiner.DigProgress * 8f), 0, 7);
 			Vector3 viewPosition = camera.ViewPosition;
 			Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			DynamicArray<ushort> indices = m_geometry.SubsetOpaque.Indices;
 			float x = m_subsystemSky.ViewFogRange.X;
 			float y = m_subsystemSky.ViewFogRange.Y;
+			int num2 = MathUtils.Clamp((int)(m_componentMiner.DigProgress * 8f), 0, 7);
 			Display.BlendState = BlendState.NonPremultiplied;
 			Display.DepthStencilState = DepthStencilState.Default;
 			Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
@@ -103,16 +136,16 @@ namespace Game
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
-        {
-            m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-            m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-            m_componentMiner = Entity.FindComponent<ComponentMiner>(throwOnError: true);
-            m_shader = TerrainRenderer.AlphatestedShader;
-            m_textures = new Texture2D[8];
-            for (int i = 0; i < 8; i++)
-            {
-                m_textures[i] = ContentManager.Get<Texture2D>($"Textures/Cracks{i + 1}");
-            }
-        }
-    }
+		{
+			m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+			m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+			m_componentMiner = base.Entity.FindComponent<ComponentMiner>(throwOnError: true);
+			m_shader = ContentManager.Get<Shader>("Shaders/AlphaTested");
+			m_textures = new Texture2D[8];
+			for (int i = 0; i < 8; i++)
+			{
+				m_textures[i] = ContentManager.Get<Texture2D>($"Textures/Cracks{i + 1}");
+			}
+		}
+	}
 }
