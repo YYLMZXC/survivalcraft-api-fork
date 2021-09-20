@@ -18,18 +18,21 @@ namespace Game
         public object Instance;
         public ContentInfo(string PackageName, string AbsolutePath_)
         {
-            AbsolutePath = PackageName + ":"+ AbsolutePath_;
+            AbsolutePath = PackageName + ":" + AbsolutePath_;
             Filename = Path.GetFileName(AbsolutePath);
             int pos = AbsolutePath_.LastIndexOf('.');
             ContentPath = pos > -1 ? AbsolutePath_.Substring(0, pos) : AbsolutePath_;
         }
-        public void SetContentStream(Stream stream) {
-            if (stream is MemoryStream) {
+        public void SetContentStream(Stream stream)
+        {
+            if (stream is MemoryStream)
+            {
                 ContentStream = stream as MemoryStream;
                 ContentStream.Position = 0L;
             }
         }
-        public Stream Duplicate() {
+        public Stream Duplicate()
+        {
             if (ContentStream == null || !ContentStream.CanRead || !ContentStream.CanWrite) throw new Exception("ContentStream has been disposed");
             MemoryStream memoryStream = new MemoryStream();
             ContentStream.CopyTo(memoryStream);
@@ -37,7 +40,8 @@ namespace Game
             memoryStream.Position = 0L;
             return memoryStream;
         }
-        public void Dispose() {
+        public void Dispose()
+        {
             ContentStream?.Dispose();
         }
     }
@@ -47,12 +51,13 @@ namespace Game
         internal static Dictionary<string, ContentInfo> Resources = new Dictionary<string, ContentInfo>();
         internal static Dictionary<string, IContentReader.IContentReader> ReaderList = new Dictionary<string, IContentReader.IContentReader>();
         internal static Dictionary<string, object> Caches = new Dictionary<string, object>();
+        internal static object syncobj = new object();
         public static void Initialize()
         {
             ReaderList.Clear();
             Resources.Clear();
             ResourcesAll.Clear();
-            Caches.Clear();
+            Caches.Clear();            
         }
         public static T Get<T>(string name, string suffix = null) where T : class
         {
@@ -67,20 +72,43 @@ namespace Game
         }
         public static object Get(Type type, string name, string suffix = null)
         {
-            object obj = null;
-            if (type == typeof(Subtexture))
+            lock (syncobj)
             {
-                return TextureAtlasManager.GetSubtexture(name);
-            }
-            bool flag = name.Contains(":");
-            if (ReaderList.TryGetValue(type.FullName, out IContentReader.IContentReader reader))
-            {
-                List<ContentInfo> contents = new List<ContentInfo>();
-                if (suffix == null)
+
+                object obj = null;
+                if (type == typeof(Subtexture))
                 {
-                    for (int i = 0; i < reader.DefaultSuffix.Length; i++)
+                    return TextureAtlasManager.GetSubtexture(name);
+                }
+                bool flag = name.Contains(":");
+                if (ReaderList.TryGetValue(type.FullName, out IContentReader.IContentReader reader))
+                {
+                    List<ContentInfo> contents = new List<ContentInfo>();
+                    if (suffix == null)
                     {
-                        string p = name + "." + reader.DefaultSuffix[i];
+                        for (int i = 0; i < reader.DefaultSuffix.Length; i++)
+                        {
+                            string p = name + "." + reader.DefaultSuffix[i];
+                            if (flag)
+                            {
+                                if (ResourcesAll.TryGetValue(p, out ContentInfo contentInfo))
+                                {
+                                    contents.Add(contentInfo);
+                                }
+
+                            }
+                            else
+                            {
+                                if (Resources.TryGetValue(p, out ContentInfo contentInfo))
+                                {
+                                    contents.Add(contentInfo);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        string p = name + suffix;
                         if (flag)
                         {
                             if (ResourcesAll.TryGetValue(p, out ContentInfo contentInfo))
@@ -97,32 +125,15 @@ namespace Game
                             }
                         }
                     }
-                }
-                else {
-                    string p = name + suffix;
-                    if (flag)
-                    {
-                        if (ResourcesAll.TryGetValue(p, out ContentInfo contentInfo))
-                        {
-                            contents.Add(contentInfo);
-                        }
-
+                    if (contents.Count == 0)
+                    {//ÐÞÕýsubtexture
+                        contents.Add(new ContentInfo("survivalcraft", name));
                     }
-                    else
-                    {
-                        if (Resources.TryGetValue(p, out ContentInfo contentInfo))
-                        {
-                            contents.Add(contentInfo);
-                        }
-                    }
+                    obj = reader.Get(contents.ToArray());
                 }
-                if (contents.Count == 0) {//ÐÞÕýsubtexture
-                    contents.Add(new ContentInfo("survivalcraft", name));
-                }
-                obj = reader.Get(contents.ToArray());
+                if (obj == null) throw new Exception("not found any res:" + name);
+                return obj;
             }
-            if (obj == null) throw new Exception("not found any res:" + name);
-            return obj;
         }
         public static object StreamConvertType(Type type, Stream stream)
         {
@@ -144,16 +155,21 @@ namespace Game
         }
         public static void Add(ContentInfo contentInfo)
         {
-            if (!ResourcesAll.TryGetValue(contentInfo.AbsolutePath, out ContentInfo info)) {
-                ResourcesAll.Add(contentInfo.AbsolutePath,contentInfo);
-            }
-            string[] tmp = contentInfo.AbsolutePath.Split(new char[] { ':'});
-            if (tmp.Length == 2) {
-                if (!Resources.TryGetValue(tmp[1], out ContentInfo info2))
+            lock (syncobj)
+            {
+                if (!ResourcesAll.TryGetValue(contentInfo.AbsolutePath, out ContentInfo info))
                 {
-                    Resources[tmp[1]] = contentInfo;
+                    ResourcesAll.Add(contentInfo.AbsolutePath, contentInfo);
                 }
-                else Resources.Add(tmp[1], contentInfo);
+                string[] tmp = contentInfo.AbsolutePath.Split(new char[] { ':' });
+                if (tmp.Length == 2)
+                {
+                    if (!Resources.TryGetValue(tmp[1], out ContentInfo info2))
+                    {
+                        Resources[tmp[1]] = contentInfo;
+                    }
+                    else Resources.Add(tmp[1], contentInfo);
+                }
             }
         }
         /// <summary>
@@ -162,11 +178,17 @@ namespace Game
         /// <param name="name"></param>
         public static void Dispose(string name)
         {
-            if (Caches.TryGetValue(name,out object obj)) {
-                if (obj is IDisposable dis) {
-                    dis.Dispose();
+            lock (syncobj)
+            {
+                if (Caches.TryGetValue(name, out object obj))
+                {
+                    if (obj is IDisposable dis)
+                    {
+                        dis.Dispose();
+                    }
+                    Caches.Remove(name);
                 }
-                Caches.Remove(name);
+
             }
         }
         public static bool IsContent(object content)
@@ -177,13 +199,13 @@ namespace Game
             }
             return false;
         }
-        private static void Display_DeviceReset()
+        public static void Display_DeviceReset()
         {
             foreach (var item in Caches)
             {
                 if (item.Value is Texture2D || item.Value is Model || item.Value is BitmapFont)
                 {
-                    Caches[item.Key] = Get(item.Value.GetType(),item.Key);
+                    Caches[item.Key] = Get(item.Value.GetType(), item.Key);
                 }
             }
         }

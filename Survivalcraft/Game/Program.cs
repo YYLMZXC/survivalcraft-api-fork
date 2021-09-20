@@ -38,7 +38,7 @@ namespace Game
             Window.HandleUri += HandleUriHandler;
             Window.Deactivated += DeactivatedHandler;
             Window.Frame += FrameHandler;
-
+            Display.DeviceReset += ContentManager.Display_DeviceReset;
             Window.UnhandledException += delegate (UnhandledExceptionInfo e)
             {
                 ExceptionManager.ReportExceptionToUser("Unhandled exception.", e.Exception);
