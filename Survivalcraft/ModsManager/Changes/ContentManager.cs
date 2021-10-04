@@ -30,6 +30,10 @@ namespace Game
                 ContentStream = stream as MemoryStream;
                 ContentStream.Position = 0L;
             }
+            else
+            {
+                throw new Exception("Can't set ContentStream width type " + stream.GetType().Name);
+            }
         }
         public Stream Duplicate()
         {
@@ -61,7 +65,7 @@ namespace Game
         }
         public static T Get<T>(string name, string suffix = null) where T : class
         {
-            string p = suffix == null ? name : name + suffix;
+            string p = suffix == null ? name : name + suffix;            
             if (!Caches.TryGetValue(p, out object o))
             {
                 object obj = Get(typeof(T), name, suffix);
@@ -164,7 +168,7 @@ namespace Game
                 string[] tmp = contentInfo.AbsolutePath.Split(new char[] { ':' });
                 if (tmp.Length == 2)
                 {
-                    if (!Resources.TryGetValue(tmp[1], out ContentInfo info2))
+                    if (Resources.TryGetValue(tmp[1], out ContentInfo info2))
                     {
                         Resources[tmp[1]] = contentInfo;
                     }

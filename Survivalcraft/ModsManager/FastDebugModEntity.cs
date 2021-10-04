@@ -11,6 +11,7 @@ namespace Game
 
         public FastDebugModEntity()
         {
+            modInfo = new ModInfo() { Name="[Debug]",PackageName="debug"};
             InitResources();
         }
 
@@ -32,18 +33,6 @@ namespace Game
                 LoadIcon(stream2);
                 stream2.Close();
             }
-            foreach (var c in ModFiles)
-            {
-                ZipArchiveEntry zipArchiveEntry = c.Value;
-                if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
-                {
-                    MemoryStream memoryStream = new MemoryStream();
-                    ContentInfo contentInfo = new ContentInfo(modInfo.PackageName, zipArchiveEntry.FilenameInZip.Substring(7));
-                    ModArchive.ExtractFile(zipArchiveEntry, memoryStream);
-                    contentInfo.SetContentStream(memoryStream);
-                    ContentManager.Add(contentInfo);
-                }
-            }
         }
 
         public void ReadDirResouces(string basepath, string path)
@@ -54,6 +43,20 @@ namespace Game
             {
                 string abpath = path + "/" + f;
                 string FilenameInZip = abpath.Substring(basepath.Length + 1);
+                if (FilenameInZip.StartsWith("Assets/"))
+                {
+                    string name = FilenameInZip.Substring(7);
+                    FModFiles.Add(name,new FileInfo(Storage.GetSystemPath(abpath)));
+                    ContentInfo contentInfo = new ContentInfo(modInfo.PackageName, name);
+                    MemoryStream memoryStream = new MemoryStream();
+                    using (Stream stream = Storage.OpenFile(abpath, OpenFileMode.Read))
+                    {
+                        stream.CopyTo(memoryStream);
+                        contentInfo.SetContentStream(memoryStream);
+                        ContentManager.Add(contentInfo);
+                    }
+                }
+
             }
         }
 
