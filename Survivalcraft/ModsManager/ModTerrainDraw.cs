@@ -12,6 +12,7 @@ namespace Game
 
         public static TerrainGeometry GetGeometry(int x, int z, Texture2D texture, TerrainGeometry geometry)
         {
+            return new TerrainGeometry();
         }
     }
 }
