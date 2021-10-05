@@ -4,7 +4,7 @@ using System.Linq;
 using Engine;
 using Engine.Graphics;
 
-namespace Game.ModsManager
+namespace Game
 {
     public class ModTerrainDraw
     {
