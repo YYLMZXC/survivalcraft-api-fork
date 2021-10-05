@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Game
@@ -39,7 +40,18 @@ namespace Game
             }
             if (m_manageButton.IsClicked)
             {
-                ScreensManager.SwitchScreen("ManageContent");
+                DialogsManager.ShowDialog(null, new ListSelectionDialog(null, new List<string> { "Mod管理", "资源管理" }, 80f, (object item) => (string)item, delegate (object item)
+                {
+                    string selectionResult = (string)item;
+                    if (selectionResult == "Mod")
+                    {
+                        ScreensManager.SwitchScreen("ModsManageContent");
+                    }
+                    else
+                    {
+                        ScreensManager.SwitchScreen("ManageContent");
+                    }
+                }));
             }
             if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {

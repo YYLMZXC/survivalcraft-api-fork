@@ -283,6 +283,10 @@ namespace Game
             });
             AddLoadAction(delegate
             {
+                AddScreen("ModsManageContent", new ModsManageContentScreen());
+            });
+            AddLoadAction(delegate
+            {
                 AddScreen("Players", new PlayersScreen());
             });
             AddLoadAction(delegate

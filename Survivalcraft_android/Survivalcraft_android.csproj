@@ -2291,6 +2291,9 @@
     <Compile Include="..\Survivalcraft\Screen\ModifyWorldScreen.cs">
       <Link>Screen\ModifyWorldScreen.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Screen\ModsManageContentScreen.cs">
+      <Link>Screen\ModsManageContentScreen.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Screen\NagScreen.cs">
       <Link>Screen\NagScreen.cs</Link>
     </Compile>
