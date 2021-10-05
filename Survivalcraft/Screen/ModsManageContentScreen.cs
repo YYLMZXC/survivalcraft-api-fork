@@ -79,18 +79,18 @@ public class ModsManageContentScreen : Screen
         m_actionButton2 = Children.Find<ButtonWidget>("ActionButton2");
         m_changeFilterButton = Children.Find<ButtonWidget>("ChangeFilter");
         m_upDirectoryButton = Children.Find<ButtonWidget>("UpDirectory");
-        m_topBarLabel.Text = "管理Mod内容";
+        m_topBarLabel.Text = LanguageControl.Get(fName, 1);
         m_modsContentList.ItemWidgetFactory = delegate (object item)
         {
             ModItem modItem = (ModItem)item;
             XElement node2 = ContentManager.Get<XElement>("Widgets/ExternalContentItem");
             ContainerWidget containerWidget = (ContainerWidget)Widget.LoadWidget(this, node2, null);
             string title = Storage.GetFileName(modItem.ExternalContentEntry.Path);
-            string details = "文件夹";
+            string details = LanguageControl.Get(fName, 2);
             if (modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
             {
                 title = modItem.ModInfo.Name;
-                details = "版本:" + modItem.ModInfo.Version + "   作者:" + modItem.ModInfo.Author + "   文件大小:" + MathUtils.Round(modItem.ExternalContentEntry.Size / 1000) + "KB";
+                details = string.Format(LanguageControl.Get(fName, 3), modItem.ModInfo.Version, modItem.ModInfo.Author, MathUtils.Round(modItem.ExternalContentEntry.Size / 1000));
             }
             containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Text").Text = title;
             containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Details").Text = details;
@@ -114,14 +114,14 @@ public class ModsManageContentScreen : Screen
                     }
                     catch
                     {
-                        DialogsManager.ShowDialog(null, new MessageDialog("提示", "无法进入目录:\n" + modItem.ExternalContentEntry.Path, LanguageControl.Get("Usual", "ok"), null, null));
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 5) + "\n" + modItem.ExternalContentEntry.Path, LanguageControl.Get("Usual", "ok"), null, null));
                     }
                 }
                 else if (modItem.ExternalContentEntry.Type == ExternalContentType.Mod && m_filter == StateFilter.UninstallState)
                 {
                     string modName = Storage.GetFileName(modItem.ExternalContentEntry.Path);
-                    string modDescription = "介绍:" + modItem.ModInfo.Description + "\n包名:" + modItem.ModInfo.PackageName + "，是否删除该mod";
-                    DialogsManager.ShowDialog(null, new MessageDialog(modName, modDescription, "删除", "返回", delegate (MessageDialogButton result)
+                    string modDescription = LanguageControl.Get(fName, 6) + modItem.ModInfo.Description + "\n" + LanguageControl.Get(fName, 7) + modItem.ModInfo.PackageName + "，" + LanguageControl.Get(fName, 8);
+                    DialogsManager.ShowDialog(null, new MessageDialog(modName, modDescription, LanguageControl.Get(fName, 9), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
                     {
                         if (result == MessageDialogButton.Button1)
                         {
@@ -157,17 +157,17 @@ public class ModsManageContentScreen : Screen
                     commonPathList.Add(commonPath);
                 }
             }
-            string explanation = "双击Mod文件可以查看Mod说明以及删除Mod.\n\n快速扫描的目录如下：";
+            string explanation = LanguageControl.Get(fName, 11);
             for (int i = 0; i < commonPathList.Count; i++)
             {
                 explanation += "\n" + (i + 1) + ". " + commonPathList[i];
             }
-            explanation += "\n\n" + "如果你下载的Mod不在以上目录，可以手动选择文件夹扫描.";
+            explanation += "\n\n" + LanguageControl.Get(fName, 12);
             if (commonPathList.Count == 0)
             {
-                explanation = "当前无可用的快速扫描路径";
+                explanation = LanguageControl.Get(fName, 13);
             }
-            DialogsManager.ShowDialog(null, new MessageDialog("说明", explanation, "确定", null, null));
+            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 14), explanation, LanguageControl.Get(fName, 15), null, null));
         }
     }
 
@@ -190,7 +190,7 @@ public class ModsManageContentScreen : Screen
             m_upDirectoryButton.IsEnabled = true;
             m_actionButton2.IsVisible = true;
             m_actionButton2.IsEnabled = true;
-            m_actionButton2.Text = (m_path == m_uninstallPath) ? "快速扫描" : "默认目录";
+            m_actionButton2.Text = (m_path == m_uninstallPath) ? LanguageControl.Get(fName, 16) : LanguageControl.Get(fName, 17);
         }
         ModItem modItem = null;
         if (m_modsContentList.SelectedIndex.HasValue)
@@ -199,17 +199,17 @@ public class ModsManageContentScreen : Screen
         }
         if (modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
         {
-            m_actionButton.Text = (m_filter == StateFilter.InstallState) ? "卸载" : "安装";
+            m_actionButton.Text = (m_filter == StateFilter.InstallState) ? LanguageControl.Get(fName, 18) : LanguageControl.Get(fName, 19);
             m_actionButton.IsEnabled = true;
         }
         else if (modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Directory)
         {
-            m_actionButton.Text = "扫描";
+            m_actionButton.Text = LanguageControl.Get(fName, 20);
             m_actionButton.IsEnabled = (modItem.ExternalContentEntry.Path != "android:/Android");
         }
         else
         {
-            m_actionButton.Text = "操作";
+            m_actionButton.Text = LanguageControl.Get(fName, 21);
             m_actionButton.IsEnabled = false;
         }
 
@@ -226,7 +226,7 @@ public class ModsManageContentScreen : Screen
                     {
                         Storage.DeleteFile(installPathName);
                         UpdateList();
-                        DialogsManager.ShowDialog(null, new MessageDialog("已卸载", fileName, LanguageControl.Get("Usual", "ok"), null, null));
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 22), fileName, LanguageControl.Get("Usual", "ok"), null, null));
                     }
                     catch (Exception)
                     {
@@ -247,22 +247,22 @@ public class ModsManageContentScreen : Screen
                     {
                         Storage.CopyFile(uninstallPathName, installPathName);
                         m_installModInfo.Add(modItem.ModInfo);
-                        DialogsManager.ShowDialog(null, new MessageDialog("已安装", fileName, LanguageControl.Get("Usual", "ok"), null, null));
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 23), fileName, LanguageControl.Get("Usual", "ok"), null, null));
                     }
                     else
                     {
-                        DialogsManager.ShowDialog(null, new MessageDialog("安装失败", fileName + "已安装或存在相同包名的mod文件", LanguageControl.Get("Usual", "ok"), null, null));
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 24), fileName + LanguageControl.Get(fName, 25), LanguageControl.Get("Usual", "ok"), null, null));
                     }
                 }
             }
             else if (modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Directory)
             {
-                BusyDialog busyDialog = new BusyDialog("扫描中", "正在扫描当前文件夹下的所有mod");
+                BusyDialog busyDialog = new BusyDialog(LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 27));
                 DialogsManager.ShowDialog(null, busyDialog);
                 count = 0;
                 int successCount = ScanModFile(modItem.ExternalContentEntry.Path);
                 DialogsManager.HideDialog(busyDialog);
-                DialogsManager.ShowDialog(null, new MessageDialog("扫描成功", "查找到" + successCount + "个新的有效Mod文件，是否查看结果", "查看", "稍后", delegate (MessageDialogButton result)
+                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 28), string.Format(LanguageControl.Get(fName, 29), successCount), LanguageControl.Get(fName, 30), LanguageControl.Get(fName, 31), delegate (MessageDialogButton result)
                 {
                     if (result == MessageDialogButton.Button1)
                     {
@@ -276,14 +276,14 @@ public class ModsManageContentScreen : Screen
         {
             if (m_path == m_uninstallPath)
             {
-                BusyDialog busyDialog = new BusyDialog("扫描中", "正在快速扫描常用文件夹下的所有mod");
+                BusyDialog busyDialog = new BusyDialog(LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 32));
                 DialogsManager.ShowDialog(null, busyDialog);
                 count = 0;
                 int allCount = FastScanModFile();
                 DialogsManager.HideDialog(busyDialog);
                 if (allCount == 0)
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog("提示", "没有查找到新的Mod文件，是否前往中文社区下载", "前往", "返回", delegate (MessageDialogButton result)
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 33), LanguageControl.Get(fName, 34), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
                     {
                         if (result == MessageDialogButton.Button1)
                         {
@@ -294,7 +294,7 @@ public class ModsManageContentScreen : Screen
                 }
                 else
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog("扫描成功", "查找到" + allCount + "个新的有效Mod文件", "查看", null, delegate (MessageDialogButton result)
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 28), string.Format(LanguageControl.Get(fName, 35), allCount), LanguageControl.Get(fName, 30), null, delegate (MessageDialogButton result)
                     {
                         SetPath(m_uninstallPath);
                         UpdateList();
@@ -309,10 +309,10 @@ public class ModsManageContentScreen : Screen
         }
         if (m_changeFilterButton.IsClicked)
         {
-            DialogsManager.ShowDialog(null, new ListSelectionDialog(null, new List<string> { "待安装Mod", "已安装Mod" }, 60f, (object item) => (string)item, delegate (object item)
+            DialogsManager.ShowDialog(null, new ListSelectionDialog(null, new List<string> { LanguageControl.Get(fName, 36), LanguageControl.Get(fName, 37) }, 60f, (object item) => (string)item, delegate (object item)
             {
                 string selectionResult = (string)item;
-                if (selectionResult == "已安装Mod")
+                if (selectionResult == LanguageControl.Get(fName, 37))
                 {
                     SetPath(m_installPath);
                     m_filter = StateFilter.InstallState;
@@ -351,7 +351,7 @@ public class ModsManageContentScreen : Screen
         {
             if (InstallModChange())
             {
-                DialogsManager.ShowDialog(null, new MessageDialog("提示", "重启游戏mod修改才会生效，是否重启", "重启", "稍后", delegate (MessageDialogButton result)
+                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 38), LanguageControl.Get(fName, 39), LanguageControl.Get(fName, 31), delegate (MessageDialogButton result)
                 {
                     if (result == MessageDialogButton.Button1)
                     {
@@ -373,7 +373,7 @@ public class ModsManageContentScreen : Screen
     public void UpdateList()
     {
         m_modsContentList.ClearItems();
-        m_modsContentLabel.Text = "当前目录:" + SetPathText(m_path);
+        m_modsContentLabel.Text = LanguageControl.Get(fName, 40) + SetPathText(m_path);
         if (m_filter == StateFilter.InstallState) m_installModInfo.Clear();
         IEnumerable<string> fileNameList = Storage.ListFileNames(m_path);
         foreach (string fileName in fileNameList)
@@ -386,7 +386,7 @@ public class ModsManageContentScreen : Screen
                 try
                 {
                     ModEntity modEntity = new ModEntity(ZipArchive.Open(stream, true));
-                    if (modEntity.modInfo == null || string.IsNullOrEmpty(modEntity.modInfo.PackageName) || modEntity.modInfo.ApiVersion != "1.4") continue;
+                    if (modEntity.modInfo == null || string.IsNullOrEmpty(modEntity.modInfo.PackageName) || !modEntity.modInfo.ApiVersion.Contains("1.4")) continue;
                     ExternalContentEntry externalContentEntry = new ExternalContentEntry
                     {
                         Type = ExternalContentType.Mod,
@@ -445,7 +445,7 @@ public class ModsManageContentScreen : Screen
                 try
                 {
                     ModEntity modEntity = new ModEntity(ZipArchive.Open(stream, true));
-                    if (modEntity.modInfo == null || string.IsNullOrEmpty(modEntity.modInfo.PackageName) || modEntity.modInfo.ApiVersion != "1.4") continue;
+                    if (modEntity.modInfo == null || string.IsNullOrEmpty(modEntity.modInfo.PackageName) || !modEntity.modInfo.ApiVersion.Contains("1.4")) continue;
                     string uninstallPathName = Storage.CombinePaths(m_uninstallPath, fileName);
                     if (!Storage.FileExists(uninstallPathName))
                     {
@@ -489,7 +489,7 @@ public class ModsManageContentScreen : Screen
                 }
                 catch
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog("提示", "目录:" + commonPath + "\n无法扫描.", "确定", null, null));
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), string.Format(LanguageControl.Get(fName, 41), commonPath), LanguageControl.Get(fName, 15), null, null));
                 }
             }
         }

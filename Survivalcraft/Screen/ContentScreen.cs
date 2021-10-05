@@ -5,6 +5,8 @@ namespace Game
 {
     public class ContentScreen : Screen
     {
+        public static string fName = "ContentScreen";
+
         public ButtonWidget m_externalContentButton;
 
         public ButtonWidget m_communityContentButton;
@@ -40,10 +42,10 @@ namespace Game
             }
             if (m_manageButton.IsClicked)
             {
-                DialogsManager.ShowDialog(null, new ListSelectionDialog(null, new List<string> { "Mod管理", "资源管理" }, 80f, (object item) => (string)item, delegate (object item)
+                DialogsManager.ShowDialog(null, new ListSelectionDialog(null, new List<string> { LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2) }, 70f, (object item) => (string)item, delegate (object item)
                 {
                     string selectionResult = (string)item;
-                    if (selectionResult == "Mod")
+                    if (selectionResult == LanguageControl.Get(fName, 1))
                     {
                         ScreensManager.SwitchScreen("ModsManageContent");
                     }
