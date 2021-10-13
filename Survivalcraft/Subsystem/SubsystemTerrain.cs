@@ -3,12 +3,14 @@ using GameEntitySystem;
 using System;
 using System.Collections.Generic;
 using TemplatesDatabase;
-
+using System.Diagnostics;
 namespace Game
 {
     public class SubsystemTerrain : Subsystem, IDrawable, IUpdateable
     {
         public static bool TerrainRenderingEnabled = true;
+        public Stopwatch stopwatch = new Stopwatch();
+
 
         public Dictionary<Point3, bool> m_modifiedCells = new Dictionary<Point3, bool>();
 
@@ -358,6 +360,7 @@ namespace Game
 
         public void Draw(Camera camera, int drawOrder)
         {
+            stopwatch.Restart();
             if (TerrainRenderingEnabled)
             {
                 if (drawOrder == m_drawOrders[0])
@@ -372,6 +375,8 @@ namespace Game
                    TerrainRenderer.DrawTransparent(camera);
                }
             }
+            stopwatch.Stop();
+            Console.WriteLine(stopwatch.Elapsed.TotalMilliseconds);
         }
 
         public void Update(float dt)
