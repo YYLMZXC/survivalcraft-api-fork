@@ -42,6 +42,8 @@ namespace Game
 
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
 
+        public PrimitiveRender PrimitiveRender = new PrimitiveRender();
+
         public static LitShader m_shader = new LitShader(2, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: false);
 
         public static int[] m_drawOrders = new int[1]
@@ -144,7 +146,8 @@ namespace Game
                         m_drawBlockEnvironmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
                         m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(num5);
                         block.DrawBlock(m_primitivesRenderer, m_value, Color.White, block.GetFirstPersonScale(m_value), ref matrix, m_drawBlockEnvironmentData);
-                        m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
+                        //m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
+                        PrimitiveRender.Flush(m_primitivesRenderer, camera.ViewProjectionMatrix);
                     }
                     else
                     {

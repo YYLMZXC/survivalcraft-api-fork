@@ -1733,6 +1733,9 @@
     <Compile Include="..\Survivalcraft\Game\PressurePlateElectricElement.cs">
       <Link>Game\PressurePlateElectricElement.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\PrimitiveRender.cs">
+      <Link>Game\PrimitiveRender.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\Profiler.cs">
       <Link>Game\Profiler.cs</Link>
     </Compile>
@@ -1790,6 +1793,9 @@
     <Compile Include="..\Survivalcraft\Game\SevenSegmentDisplayElectricElement.cs">
       <Link>Game\SevenSegmentDisplayElectricElement.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\ShaderCode.cs">
+      <Link>Game\ShaderCode.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\ShapeshiftParticleSystem.cs">
       <Link>Game\ShapeshiftParticleSystem.cs</Link>
     </Compile>
@@ -1802,8 +1808,14 @@
     <Compile Include="..\Survivalcraft\Game\SimplexNoise.cs">
       <Link>Game\SimplexNoise.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\SkyPrimitiveRender.cs">
+      <Link>Game\SkyPrimitiveRender.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\SkyRenderingMode.cs">
       <Link>Game\SkyRenderingMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Game\SkyShader.cs">
+      <Link>Game\SkyShader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\SmokeTrailParticleSystem.cs">
       <Link>Game\SmokeTrailParticleSystem.cs</Link>

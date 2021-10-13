@@ -160,7 +160,10 @@ namespace Game
 			OpaqueShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			OpaqueShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 			ShaderParameter parameter = OpaqueShader.GetParameter("u_fogStartInvLength");
-			ModsManager.HookAction("SetShaderParameter", (modLoader)=> { modLoader.SetShaderParameter(OpaqueShader);return true; });
+			ModsManager.HookAction("SetShaderParameter", (modLoader)=> { 
+				modLoader.SetShaderParameter(OpaqueShader);
+				return true; 
+			});
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];

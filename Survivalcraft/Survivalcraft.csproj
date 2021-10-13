@@ -380,6 +380,10 @@
     <Compile Include="Block\WoodenStairsBlock.cs" />
     <Compile Include="Block\WoodenTrapdoorBlock.cs" />
     <Compile Include="Block\XorGateBlock.cs" />
+    <Compile Include="Game\PrimitiveRender.cs" />
+    <Compile Include="Game\ShaderCode.cs" />
+    <Compile Include="Game\SkyPrimitiveRender.cs" />
+    <Compile Include="Game\SkyShader.cs" />
     <Compile Include="Game\Subtexture.cs" />
     <Compile Include="Game\TerrainChunkGeometry.cs" />
     <Compile Include="Game\TerrainSerializer22.cs" />

@@ -172,8 +172,8 @@ namespace Game
             }
         }
 
-        public ModelShader(bool useAlphaThreshold, int maxInstancesCount = 1)
-            : base(ModsManager.GetInPakOrStorageFile<string>("Shaders/Model",".vsh"), ModsManager.GetInPakOrStorageFile<string>("Shaders/Model",".psh"), PrepareShaderMacros(useAlphaThreshold, maxInstancesCount))
+        public ModelShader(string vsc, string psc, bool useAlphaThreshold, int maxInstancesCount = 1)
+            : base(vsc, psc, PrepareShaderMacros(useAlphaThreshold, maxInstancesCount))
         {
             m_worldMatrixParameter = GetParameter("u_worldMatrix");
             m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix");

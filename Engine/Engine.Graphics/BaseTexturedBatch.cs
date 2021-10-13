@@ -2,9 +2,9 @@ namespace Engine.Graphics
 {
 	public abstract class BaseTexturedBatch : BaseBatch
 	{
-		internal static UnlitShader m_shader = new UnlitShader(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+		internal static UnlitShader Shader = new UnlitShader(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
 
-		internal static UnlitShader m_shaderAlphaTest = new UnlitShader(useVertexColor: true, useTexture: true, useAlphaThreshold: true);
+		internal static UnlitShader ShaderAlphaTest = new UnlitShader(useVertexColor: true, useTexture: true, useAlphaThreshold: true);
 
 		public readonly DynamicArray<VertexPositionColorTexture> TriangleVertices = new DynamicArray<VertexPositionColorTexture>();
 
@@ -55,18 +55,18 @@ namespace Engine.Graphics
 		{
 			if (useAlphaTest)
 			{
-				m_shaderAlphaTest.Texture = texture;
-				m_shaderAlphaTest.SamplerState = samplerState;
-				m_shaderAlphaTest.Transforms.World[0] = matrix;
-				m_shaderAlphaTest.AlphaThreshold = 0f;
-				FlushWithCurrentStateAndShader(m_shaderAlphaTest, clearAfterFlush);
+				ShaderAlphaTest.Texture = texture;
+				ShaderAlphaTest.SamplerState = samplerState;
+				ShaderAlphaTest.Transforms.World[0] = matrix;
+				ShaderAlphaTest.AlphaThreshold = 0f;
+				FlushWithCurrentStateAndShader(ShaderAlphaTest, clearAfterFlush);
 			}
 			else
 			{
-				m_shader.Texture = texture;
-				m_shader.SamplerState = samplerState;
-				m_shader.Transforms.World[0] = matrix;
-				FlushWithCurrentStateAndShader(m_shader, clearAfterFlush);
+				Shader.Texture = texture;
+				Shader.SamplerState = samplerState;
+				Shader.Transforms.World[0] = matrix;
+				FlushWithCurrentStateAndShader(Shader, clearAfterFlush);
 			}
 		}
 
