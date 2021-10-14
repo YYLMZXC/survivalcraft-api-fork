@@ -44,7 +44,11 @@ namespace Game
 
         public PrimitiveRender PrimitiveRender = new PrimitiveRender();
 
-        public static LitShader m_shader = new LitShader(2, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: false);
+        public static UnlitShader UnlitShader = new UnlitShader(ShaderCode.Get("Shaders/Unlit.vsh"), ShaderCode.Get("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+       
+        public static UnlitShader UnlitShaderAlphaTest = new UnlitShader(ShaderCode.Get("Shaders/Unlit.vsh"), ShaderCode.Get("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: true);
+
+        public static LitShader LitShader = new LitShader(ShaderCode.Get("Shaders/Lit.vsh"), ShaderCode.Get("Shaders/Lit.psh"), 2, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: false);
 
         public static int[] m_drawOrders = new int[1]
         {
@@ -164,22 +168,22 @@ namespace Game
                         Matrix matrix2 = Matrix.CreateScale(0.01f) * Matrix.CreateRotationX(0.8f) * Matrix.CreateRotationY(0.4f) * identity * Matrix.CreateTranslation(position4) * Matrix.CreateFromYawPitchRoll(m_lagAngles.X, m_lagAngles.Y, 0f) * m * camera.ViewMatrix;
                         Display.DepthStencilState = DepthStencilState.Default;
                         Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-                        m_shader.Texture = m_componentPlayer.ComponentCreatureModel.TextureOverride;
-                        m_shader.SamplerState = SamplerState.PointClamp;
-                        m_shader.MaterialColor = Vector4.One;
-                        m_shader.AmbientLightColor = new Vector3(m_handLight * LightingManager.LightAmbient);
-                        m_shader.DiffuseLightColor1 = new Vector3(m_handLight);
-                        m_shader.DiffuseLightColor2 = new Vector3(m_handLight);
-                        m_shader.LightDirection1 = Vector3.TransformNormal(LightingManager.DirectionToLight1, camera.ViewMatrix);
-                        m_shader.LightDirection2 = Vector3.TransformNormal(LightingManager.DirectionToLight2, camera.ViewMatrix);
-                        m_shader.Transforms.World[0] = matrix2;
-                        m_shader.Transforms.View = Matrix.Identity;
-                        m_shader.Transforms.Projection = camera.ProjectionMatrix;
+                        LitShader.Texture = m_componentPlayer.ComponentCreatureModel.TextureOverride;
+                        LitShader.SamplerState = SamplerState.PointClamp;
+                        LitShader.MaterialColor = Vector4.One;
+                        LitShader.AmbientLightColor = new Vector3(m_handLight * LightingManager.LightAmbient);
+                        LitShader.DiffuseLightColor1 = new Vector3(m_handLight);
+                        LitShader.DiffuseLightColor2 = new Vector3(m_handLight);
+                        LitShader.LightDirection1 = Vector3.TransformNormal(LightingManager.DirectionToLight1, camera.ViewMatrix);
+                        LitShader.LightDirection2 = Vector3.TransformNormal(LightingManager.DirectionToLight2, camera.ViewMatrix);
+                        LitShader.Transforms.World[0] = matrix2;
+                        LitShader.Transforms.View = Matrix.Identity;
+                        LitShader.Transforms.Projection = camera.ProjectionMatrix;
                         foreach (ModelMesh mesh in m_handModel.Meshes)
                         {
                             foreach (ModelMeshPart meshPart in mesh.MeshParts)
                             {
-                                Display.DrawIndexed(PrimitiveType.TriangleList, m_shader, meshPart.VertexBuffer, meshPart.IndexBuffer, meshPart.StartIndex, meshPart.IndicesCount);
+                                Display.DrawIndexed(PrimitiveType.TriangleList, LitShader, meshPart.VertexBuffer, meshPart.IndexBuffer, meshPart.StartIndex, meshPart.IndicesCount);
                             }
                         }
                     }
@@ -241,6 +245,8 @@ namespace Game
             m_componentRider = Entity.FindComponent<ComponentRider>(throwOnError: true);
             m_componentMiner = Entity.FindComponent<ComponentMiner>(throwOnError: true);
             m_handModel = ContentManager.Get<Model>(valuesDictionary.GetValue<string>("HandModelName"));
+            PrimitiveRender.Shader = UnlitShader;
+            PrimitiveRender.ShaderAlphaTest = UnlitShaderAlphaTest;
         }
     }
 }

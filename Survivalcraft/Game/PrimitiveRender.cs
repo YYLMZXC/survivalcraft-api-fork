@@ -5,9 +5,9 @@ namespace Game
 {
 	public class PrimitiveRender
 	{
-		public UnlitShader m_shader = new UnlitShader(ShaderCode.Get("Shaders/Unlit.vsh"), ShaderCode.Get("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+		public UnlitShader Shader;
 
-		public UnlitShader m_shaderAlphaTest = new UnlitShader(ShaderCode.Get("Shaders/Unlit.vsh"), ShaderCode.Get("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: true);
+		public UnlitShader ShaderAlphaTest;
 
 		public void Textured_FlushWithCurrentStateAndShader(BaseTexturedBatch baseTexturedBatch, Shader shader, bool clearAfterFlush = true)
 		{
@@ -60,18 +60,18 @@ namespace Game
 
 					if (baseTexturedBatch.UseAlphaTest)
 					{
-						m_shaderAlphaTest.Texture = baseTexturedBatch.Texture;
-						m_shaderAlphaTest.SamplerState = baseTexturedBatch.SamplerState;
-						m_shaderAlphaTest.Transforms.World[0] = matrix;
-						m_shaderAlphaTest.AlphaThreshold = 0f;
-						baseTexturedBatch.FlushWithCurrentStateAndShader(m_shaderAlphaTest, clearAfterFlush);
+						ShaderAlphaTest.Texture = baseTexturedBatch.Texture;
+						ShaderAlphaTest.SamplerState = baseTexturedBatch.SamplerState;
+						ShaderAlphaTest.Transforms.World[0] = matrix;
+						ShaderAlphaTest.AlphaThreshold = 0f;
+						baseTexturedBatch.FlushWithCurrentStateAndShader(ShaderAlphaTest, clearAfterFlush);
 					}
 					else
 					{
-						m_shader.Texture = baseTexturedBatch.Texture;
-						m_shader.SamplerState = baseTexturedBatch.SamplerState;
-						m_shader.Transforms.World[0] = matrix;
-						baseTexturedBatch.FlushWithCurrentStateAndShader(m_shader, clearAfterFlush);
+						Shader.Texture = baseTexturedBatch.Texture;
+						Shader.SamplerState = baseTexturedBatch.SamplerState;
+					    Shader.Transforms.World[0] = matrix;
+						baseTexturedBatch.FlushWithCurrentStateAndShader(Shader, clearAfterFlush);
 					}
 				}
 				else

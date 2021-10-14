@@ -44,7 +44,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\</OutputPath>
     <DefineConstants>TRACE;desktop</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -1097,7 +1097,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

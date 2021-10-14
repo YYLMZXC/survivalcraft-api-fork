@@ -75,7 +75,7 @@ namespace Game
 
         public PrimitivesRenderer3D PrimitivesRenderer => m_primitivesRenderer;
 
-        public bool CanRender = false;
+        public static bool CanRender = false;
 
         public int[] DrawOrders => m_drawOrders;
 

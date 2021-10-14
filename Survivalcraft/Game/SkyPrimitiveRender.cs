@@ -5,9 +5,9 @@ namespace Game
 {
 	public class SkyPrimitiveRender
 	{
-		public SkyShader Shader = new SkyShader(ShaderCode.Get("Shaders/Sky.vsh"), ShaderCode.Get("Shaders/Sky.psh"), true, true, false);
+		public SkyShader Shader;
 
-		public SkyShader ShaderAlphaTest = new SkyShader(ShaderCode.Get("Shaders/Sky.vsh"), ShaderCode.Get("Shaders/Sky.psh"), true, true, true);
+		public SkyShader ShaderAlphaTest;
 
 		public void Textured_FlushWithCurrentStateAndShader(BaseTexturedBatch baseTexturedBatch, Shader shader, bool clearAfterFlush = true)
 		{

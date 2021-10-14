@@ -77,6 +77,14 @@ namespace Game
 
         public SkyPrimitiveRender m_primitiveRender;
 
+        public static SkyShader Shader = new SkyShader(ShaderCode.Get("Shaders/Sky.vsh"), ShaderCode.Get("Shaders/Sky.psh"), true, true, false);
+
+        public static SkyShader ShaderAlphaTest = new SkyShader(ShaderCode.Get("Shaders/Sky.vsh"), ShaderCode.Get("Shaders/Sky.psh"), true, true, true);
+
+        public static UnlitShader ShaderFlat = new UnlitShader(ShaderCode.Get("Shaders/Unlit.vsh"), ShaderCode.Get("Shaders/Unlit.psh"), useVertexColor: true, useTexture: false, useAlphaThreshold: false);
+
+        public static UnlitShader ShaderTextured = new UnlitShader(ShaderCode.Get("Shaders/Unlit.vsh"), ShaderCode.Get("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+
         public Random m_random = new Random();
 
         public Color m_viewFogColor;
@@ -92,10 +100,6 @@ namespace Game
         public Texture2D m_cloudsTexture;
 
         public Texture2D[] m_moonTextures = new Texture2D[8];
-
-        public static UnlitShader m_shaderFlat = new UnlitShader(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
-
-        public static UnlitShader m_shaderTextured = new UnlitShader(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
 
         public VertexDeclaration m_skyVertexDeclaration = new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color));
 
@@ -403,6 +407,8 @@ namespace Game
             m_glowTexture = ContentManager.Get<Texture2D>("Textures/SkyGlow");
             m_cloudsTexture = ContentManager.Get<Texture2D>("Textures/Clouds");
             m_primitiveRender = new SkyPrimitiveRender();
+            m_primitiveRender.Shader = Shader;
+            m_primitiveRender.ShaderAlphaTest = ShaderAlphaTest;
             for (int i = 0; i < 8; i++)
             {
                 m_moonTextures[i] = ContentManager.Get<Texture2D>("Textures/Moon" + (i + 1).ToString(CultureInfo.InvariantCulture));
@@ -467,9 +473,9 @@ namespace Game
             Display.DepthStencilState = DepthStencilState.DepthRead;
             Display.RasterizerState = RasterizerState.CullNoneScissor;
             Display.BlendState = BlendState.Opaque;
-            m_shaderFlat.Transforms.World[0] = Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
-            m_shaderFlat.Color = Vector4.One;
-            Display.DrawIndexed(PrimitiveType.TriangleList, m_shaderFlat, value.VertexBuffer, value.IndexBuffer, 0, value.IndexBuffer.IndicesCount);
+            ShaderFlat.Transforms.World[0] = Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
+            ShaderFlat.Color = Vector4.One;
+            Display.DrawIndexed(PrimitiveType.TriangleList, ShaderFlat, value.VertexBuffer, value.IndexBuffer, 0, value.IndexBuffer.IndicesCount);
         }
 
         //ÐÇÐÇ»æÖÆ
@@ -491,11 +497,11 @@ namespace Game
             if (num > 0.01f)
             {
                 Display.BlendState = BlendState.Additive;
-                m_shaderTextured.Transforms.World[0] = Matrix.CreateRotationZ(-2f * timeOfDay * (float)Math.PI) * Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
-                m_shaderTextured.Color = new Vector4(1f, 1.5f, 4f, num);
-                m_shaderTextured.Texture = ContentManager.Get<Texture2D>("Textures/Star");
-                m_shaderTextured.SamplerState = SamplerState.LinearClamp;
-                Display.DrawIndexed(PrimitiveType.TriangleList, m_shaderTextured, m_starsVertexBuffer, m_starsIndexBuffer, 0, m_starsIndexBuffer.IndicesCount);
+                ShaderTextured.Transforms.World[0] = Matrix.CreateRotationZ(-2f * timeOfDay * (float)Math.PI) * Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
+                ShaderTextured.Color = new Vector4(1f, 1.5f, 4f, num);
+                ShaderTextured.Texture = ContentManager.Get<Texture2D>("Textures/Star");
+                ShaderTextured.SamplerState = SamplerState.LinearClamp;
+                Display.DrawIndexed(PrimitiveType.TriangleList, ShaderTextured, m_starsVertexBuffer, m_starsIndexBuffer, 0, m_starsIndexBuffer.IndicesCount);
             }
         }
 

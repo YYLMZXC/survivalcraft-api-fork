@@ -260,7 +260,8 @@ namespace Game
         /// 设定Shader参数
         /// </summary>
         /// <param name="shader"></param>
-        public virtual void SetShaderParameter(Shader shader)
+        /// <param name="name">shader的标识名</param>
+        public virtual void SetShaderParameter(Shader shader, string name)
         {
         }
 
