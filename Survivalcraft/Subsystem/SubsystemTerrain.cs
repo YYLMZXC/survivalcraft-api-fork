@@ -3,6 +3,7 @@ using GameEntitySystem;
 using System;
 using System.Collections.Generic;
 using TemplatesDatabase;
+using Engine.Graphics;
 
 namespace Game
 {
@@ -25,6 +26,12 @@ namespace Game
             new Point3(0, 0, 1)
         };
 
+        public SubsystemSky m_subsystemsky;
+
+        public SubsystemTime m_subsystemTime;
+
+        public SubsystemTimeOfDay m_subsystemTimeOfDay;
+
         public SubsystemGameWidgets m_subsystemViews;
 
         public SubsystemParticles m_subsystemParticles;
@@ -40,6 +47,10 @@ namespace Game
             0,
             100
         };
+
+        public static Point2 ShadowMapSize = new Point2(2048, 1536);
+
+        public static Vector2 ShadowMapSizeV = new Vector2(ShadowMapSize);
 
         public SubsystemGameInfo SubsystemGameInfo
         {
@@ -104,6 +115,8 @@ namespace Game
         public int[] DrawOrders => m_drawOrders;
 
         public UpdateOrder UpdateOrder => UpdateOrder.Terrain;
+
+        public static RenderTarget2D ShadowTexture;
 
         public void ProcessModifiedCells()
         {
@@ -360,17 +373,46 @@ namespace Game
         {
             if (TerrainRenderingEnabled)
             {
-                if (drawOrder == m_drawOrders[0])
+                if (TerrainRenderer.CanShadowRender)
                 {
-                    TerrainUpdater.PrepareForDrawing(camera);
-                    TerrainRenderer.PrepareForDrawing(camera);
-                    TerrainRenderer.DrawOpaque(camera);
-                    TerrainRenderer.DrawAlphaTested(camera);
+                    double sita = Math.PI * m_subsystemTimeOfDay.TimeOfDay;
+                    Vector3 p = new Vector3(camera.ViewPosition.X + (float)(256.0 * Math.Cos(sita)), (float)(256.0 * Math.Sin(sita)), camera.ViewPosition.Z);
+                    Matrix viewMatrix = Matrix.CreateLookAt(p, p - Vector3.UnitY, Vector3.UnitY);
+                    Matrix projectionMatrix = BasePerspectiveCamera.CalculateBaseProjectionMatrix(ShadowMapSizeV);
+                    Matrix ScreenVP = viewMatrix * projectionMatrix;
+                    if (drawOrder == DrawOrders[0])
+                    {
+                        TerrainUpdater.PrepareForDrawing(camera);
+                        RenderTarget2D renderTarget = Display.RenderTarget;
+                        Display.RenderTarget = ShadowTexture;
+                        Display.Clear(Color.White, 1f);
+                        TerrainRenderer.PrepareForDrawingShadow(camera);
+                        TerrainRenderer.DrawShadow(camera, ScreenVP, p);
+                        Display.RenderTarget = renderTarget;
+                        TerrainRenderer.PrepareForDrawing(camera);
+                        TerrainRenderer.DrawOpaque(camera, ScreenVP, p);
+                        TerrainRenderer.DrawAlphaTested(camera, ScreenVP, p);
+
+                    }
+                    else if (drawOrder == m_drawOrders[1])
+                    {
+                        TerrainRenderer.DrawTransparent(camera, ScreenVP, p);
+                    }
                 }
-                else if (drawOrder == m_drawOrders[1])
-               {
-                   TerrainRenderer.DrawTransparent(camera);
-               }
+                else
+                {
+                    if (drawOrder == m_drawOrders[0])
+                    {
+                        TerrainUpdater.PrepareForDrawing(camera);
+                        TerrainRenderer.PrepareForDrawing(camera);
+                        TerrainRenderer.DrawOpaque(camera, Matrix.Zero, Vector3.Zero);
+                        TerrainRenderer.DrawAlphaTested(camera, Matrix.Zero, Vector3.Zero);
+                    }
+                    else if (drawOrder == m_drawOrders[1])
+                    {
+                        TerrainRenderer.DrawTransparent(camera, Matrix.Zero, Vector3.Zero);
+                    }
+                }
             }
         }
 
@@ -389,7 +431,11 @@ namespace Game
             m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
             SubsystemAnimatedTextures = Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
             SubsystemFurnitureBlockBehavior = Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true);
+            m_subsystemsky = Project.FindSubsystem<SubsystemSky>();
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>();
+            m_subsystemTimeOfDay = Project.FindSubsystem<SubsystemTimeOfDay>();
             SubsystemPalette = Project.FindSubsystem<SubsystemPalette>(throwOnError: true);
+            ShadowTexture = new RenderTarget2D(ShadowMapSize.X, ShadowMapSize.Y, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
             Terrain = new Terrain();
             TerrainRenderer = new TerrainRenderer(this);
             TerrainUpdater = new TerrainUpdater(this);
@@ -430,6 +476,7 @@ namespace Game
 
         public override void Dispose()
         {
+            ShadowTexture.Dispose();
             TerrainRenderer.Dispose();
             TerrainUpdater.Dispose();
             TerrainSerializer.Dispose();

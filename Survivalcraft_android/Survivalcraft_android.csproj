@@ -1793,8 +1793,8 @@
     <Compile Include="..\Survivalcraft\Game\SevenSegmentDisplayElectricElement.cs">
       <Link>Game\SevenSegmentDisplayElectricElement.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Game\ShaderCode.cs">
-      <Link>Game\ShaderCode.cs</Link>
+    <Compile Include="..\Survivalcraft\Game\ShaderCodeManager.cs">
+      <Link>Game\ShaderCodeManager.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\ShapeshiftParticleSystem.cs">
       <Link>Game\ShapeshiftParticleSystem.cs</Link>
