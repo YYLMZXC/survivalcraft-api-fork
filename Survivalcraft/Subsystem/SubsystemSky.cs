@@ -475,6 +475,7 @@ namespace Game
             Display.BlendState = BlendState.Opaque;
             ShaderFlat.Transforms.World[0] = Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
             ShaderFlat.Color = Vector4.One;
+            ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderFlat); return true; });
             Display.DrawIndexed(PrimitiveType.TriangleList, ShaderFlat, value.VertexBuffer, value.IndexBuffer, 0, value.IndexBuffer.IndicesCount);
         }
 
@@ -501,6 +502,7 @@ namespace Game
                 ShaderTextured.Color = new Vector4(1f, 1.5f, 4f, num);
                 ShaderTextured.Texture = ContentManager.Get<Texture2D>("Textures/Star");
                 ShaderTextured.SamplerState = SamplerState.LinearClamp;
+                ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderTextured); return true; });
                 Display.DrawIndexed(PrimitiveType.TriangleList, ShaderTextured, m_starsVertexBuffer, m_starsIndexBuffer, 0, m_starsIndexBuffer.IndicesCount);
             }
         }

@@ -250,6 +250,7 @@ namespace Game
             {
                 modelShader.AlphaThreshold = alphaThreshold.Value;
             }
+            ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(modelShader); return true; });
             foreach (ModelData modelsDatum in modelsData)
             {
                 ComponentModel componentModel = modelsDatum.ComponentModel;
