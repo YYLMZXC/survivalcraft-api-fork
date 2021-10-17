@@ -44,11 +44,11 @@ namespace Game
 
         public PrimitiveRender PrimitiveRender = new PrimitiveRender();
 
-        public static UnlitShader UnlitShader = new UnlitShader(ShaderCode.Get("Shaders/Unlit.vsh"), ShaderCode.Get("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+        public static UnlitShader UnlitShader = new UnlitShader(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
        
-        public static UnlitShader UnlitShaderAlphaTest = new UnlitShader(ShaderCode.Get("Shaders/Unlit.vsh"), ShaderCode.Get("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: true);
+        public static UnlitShader UnlitShaderAlphaTest = new UnlitShader(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: true);
 
-        public static LitShader LitShader = new LitShader(ShaderCode.Get("Shaders/Lit.vsh"), ShaderCode.Get("Shaders/Lit.psh"), 2, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: false);
+        public static LitShader LitShader = new LitShader(ShaderCodeManager.GetFast("Shaders/Lit.vsh"), ShaderCodeManager.GetFast("Shaders/Lit.psh"), 2, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: false);
 
         public static int[] m_drawOrders = new int[1]
         {

@@ -77,13 +77,13 @@ namespace Game
 
         public SkyPrimitiveRender m_primitiveRender;
 
-        public static SkyShader Shader = new SkyShader(ShaderCode.Get("Shaders/Sky.vsh"), ShaderCode.Get("Shaders/Sky.psh"), true, true, false);
+        public static SkyShader Shader = new SkyShader(ShaderCodeManager.GetFast("Shaders/Sky.vsh"), ShaderCodeManager.GetFast("Shaders/Sky.psh"), true, true, false);
 
-        public static SkyShader ShaderAlphaTest = new SkyShader(ShaderCode.Get("Shaders/Sky.vsh"), ShaderCode.Get("Shaders/Sky.psh"), true, true, true);
+        public static SkyShader ShaderAlphaTest = new SkyShader(ShaderCodeManager.GetFast("Shaders/Sky.vsh"), ShaderCodeManager.GetFast("Shaders/Sky.psh"), true, true, true);
 
-        public static UnlitShader ShaderFlat = new UnlitShader(ShaderCode.Get("Shaders/Unlit.vsh"), ShaderCode.Get("Shaders/Unlit.psh"), useVertexColor: true, useTexture: false, useAlphaThreshold: false);
+        public static UnlitShader ShaderFlat = new UnlitShader(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: false, useAlphaThreshold: false);
 
-        public static UnlitShader ShaderTextured = new UnlitShader(ShaderCode.Get("Shaders/Unlit.vsh"), ShaderCode.Get("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+        public static UnlitShader ShaderTextured = new UnlitShader(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
 
         public Random m_random = new Random();
 

@@ -176,8 +176,8 @@ namespace Game
                 MaxInstancesCount = Math.Max(modLoader.GetMaxInstancesCount(), MaxInstancesCount);
                 return false;
             });
-            ShaderOpaque = new ModelShader(ShaderCode.Get("Shaders/Model.vsh"), ShaderCode.Get("Shaders/Model.psh"), useAlphaThreshold: false, 7);
-            ShaderAlphaTested = new ModelShader(ShaderCode.Get("Shaders/Model.vsh"), ShaderCode.Get("Shaders/Model.psh"), useAlphaThreshold: true, 7);
+            ShaderOpaque = new ModelShader(ShaderCodeManager.GetFast("Shaders/Model.vsh"), ShaderCodeManager.GetFast("Shaders/Model.psh"), useAlphaThreshold: false, 7);
+            ShaderAlphaTested = new ModelShader(ShaderCodeManager.GetFast("Shaders/Model.vsh"), ShaderCodeManager.GetFast("Shaders/Model.psh"), useAlphaThreshold: true, 7);
         }
 
         public override void OnEntityAdded(Entity entity)
