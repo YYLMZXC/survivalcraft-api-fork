@@ -64,7 +64,7 @@ namespace Game
         {
             foreach (string c in Storage.ListFileNames(ModsManager.ModsPath))
             {
-                if (c.EndsWith(".dll"))
+                if (c.EndsWith(".dll") && !(c.StartsWith("EntitySystem") || c.StartsWith("Engine") || c.StartsWith("Survivalcraft") || c.StartsWith("OpenTK")))
                 {
                     LoadDllLogic(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
                     break;

@@ -47,11 +47,19 @@ namespace Game
                 }
                 else
                 {
-                    if (includefname.Contains(".")) includefname = includefname.Split('.')[0];
-                    shaderTextTemp = ContentManager.Get<string>(includefname);
+                    if (includefname.Contains(".txt"))
+                    {
+                        includefname = includefname.Split('.')[0];
+                        shaderTextTemp = ContentManager.Get<string>(includefname);
+                    }
+                    else
+                    {
+                        shaderTextTemp = GetFast(includefname);
+                    }
                 }
                 if (shaderTextTemp == string.Empty) return string.Empty;
-                string[] lines = shaderTextTemp.Split(new char[1] { '\n' });
+                shaderTextTemp = shaderTextTemp.Replace("\n", "$");
+                string[] lines = shaderTextTemp.Split(new char[1] { '$' });
                 for (int l = 0; l < lines.Length; l++)
                 {
                     if (lines[l].Contains("#include"))
@@ -62,7 +70,14 @@ namespace Game
                     }
                     else
                     {
-                        if (!IsAndroid) includeText += lines[l].Replace("highp", "") + "\n";
+                        if (!IsAndroid)
+                        {
+                            includeText += lines[l].Replace("highp", "") + "\n";
+                        }
+                        else
+                        {
+                            includeText += lines[l] + "\n";
+                        }
                     }
                 }
                 shaderText += includeText;
