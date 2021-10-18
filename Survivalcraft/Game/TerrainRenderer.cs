@@ -80,7 +80,7 @@ namespace Game
 			OpaqueShader = new Shader(ShaderCodeManager.GetFast("Shaders/Opaque.vsh"), ShaderCodeManager.GetFast("Shaders/Opaque.psh"), new ShaderMacro[] { new ShaderMacro("Opaque") });
 			AlphatestedShader = new Shader(ShaderCodeManager.GetFast("Shaders/AlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/AlphaTested.psh"), new ShaderMacro[] { new ShaderMacro("ALPHATESTED") });
 			TransparentShader = new Shader(ShaderCodeManager.GetFast("Shaders/Transparent.vsh"), ShaderCodeManager.GetFast("Shaders/Transparent.psh"), new ShaderMacro[] { new ShaderMacro("Transparent") });
-			ShadowShader = new Shader(ShaderCodeManager.GetFast("Shaders/Shadow.vsh"), ShaderCodeManager.GetFast("Shaders/Shadow.psh"), new ShaderMacro[] { new ShaderMacro("Shadow") });
+			//ShadowShader = new Shader(ShaderCodeManager.GetFast("Shaders/Shadow.vsh"), ShaderCodeManager.GetFast("Shaders/Shadow.psh"), new ShaderMacro[] { new ShaderMacro("Shadow") });
 			Display.DeviceReset += Display_DeviceReset;
 		}
 
@@ -161,6 +161,7 @@ namespace Game
 			ShadowShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
 			ShadowShader.GetParameter("u_viewPosition").SetValue(viewPosition);
 			ShadowShader.GetParameter("ScreenSize").SetValue(SubsystemTerrain.ShadowMapSizeV);
+			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShadowShader); return true; });
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
