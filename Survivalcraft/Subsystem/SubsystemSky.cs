@@ -77,9 +77,9 @@ namespace Game
 
         public SkyPrimitiveRender m_primitiveRender;
 
-        public static SkyShader Shader = new SkyShader(ShaderCodeManager.GetFast("Shaders/Sky.vsh"), ShaderCodeManager.GetFast("Shaders/Sky.psh"), true, true, false);
+        public static SkyShader Shader;
 
-        public static SkyShader ShaderAlphaTest = new SkyShader(ShaderCodeManager.GetFast("Shaders/Sky.vsh"), ShaderCodeManager.GetFast("Shaders/Sky.psh"), true, true, true);
+        public static SkyShader ShaderAlphaTest;
 
         public static UnlitShader ShaderFlat = new UnlitShader(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: false, useAlphaThreshold: false);
 
@@ -132,8 +132,6 @@ namespace Game
         public bool DrawCloudsWireframe;
 
         public bool FogEnabled = true;
-
-        public static bool CanRender = false;
 
         public int[] m_drawOrders = new int[3]
         {
@@ -356,8 +354,13 @@ namespace Game
                     int count = flatBatch2D.TriangleVertices.Count;
                     flatBatch2D.QueueQuad(Vector2.Zero, camera.ViewportSize, 0f, m_viewFogColor);
                     flatBatch2D.TransformTriangles(camera.ViewportMatrix, count);
-                    if (CanRender)
+                    if (Shader != null && ShaderAlphaTest != null)
                     {
+                        if (m_primitiveRender.Shader == null && m_primitiveRender.ShaderAlphaTest == null)
+                        {
+                            m_primitiveRender.Shader = Shader;
+                            m_primitiveRender.ShaderAlphaTest = ShaderAlphaTest;
+                        }
                         m_primitivesRenderer2d.Flush(true, int.MaxValue);
                     }
                     else
@@ -375,8 +378,13 @@ namespace Game
                     DrawStars(camera);
                     DrawSunAndMoon(camera);
                     DrawClouds(camera);
-                    if (CanRender)
+                    if (Shader != null && ShaderAlphaTest != null)
                     {
+                        if(m_primitiveRender.Shader == null && m_primitiveRender.ShaderAlphaTest == null)
+                        {
+                            m_primitiveRender.Shader = Shader;
+                            m_primitiveRender.ShaderAlphaTest = ShaderAlphaTest;
+                        }
                         m_primitiveRender.Flush(m_primitivesRenderer3d, camera.ViewProjectionMatrix, true, int.MaxValue);
                     }
                     else
@@ -407,8 +415,6 @@ namespace Game
             m_glowTexture = ContentManager.Get<Texture2D>("Textures/SkyGlow");
             m_cloudsTexture = ContentManager.Get<Texture2D>("Textures/Clouds");
             m_primitiveRender = new SkyPrimitiveRender();
-            m_primitiveRender.Shader = Shader;
-            m_primitiveRender.ShaderAlphaTest = ShaderAlphaTest;
             for (int i = 0; i < 8; i++)
             {
                 m_moonTextures[i] = ContentManager.Get<Texture2D>("Textures/Moon" + (i + 1).ToString(CultureInfo.InvariantCulture));
@@ -475,7 +481,7 @@ namespace Game
             Display.BlendState = BlendState.Opaque;
             ShaderFlat.Transforms.World[0] = Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
             ShaderFlat.Color = Vector4.One;
-            ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderFlat); return true; });
+            ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderFlat, camera); return true; });
             Display.DrawIndexed(PrimitiveType.TriangleList, ShaderFlat, value.VertexBuffer, value.IndexBuffer, 0, value.IndexBuffer.IndicesCount);
         }
 
@@ -502,7 +508,7 @@ namespace Game
                 ShaderTextured.Color = new Vector4(1f, 1.5f, 4f, num);
                 ShaderTextured.Texture = ContentManager.Get<Texture2D>("Textures/Star");
                 ShaderTextured.SamplerState = SamplerState.LinearClamp;
-                ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderTextured); return true; });
+                ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderTextured, camera); return true; });
                 Display.DrawIndexed(PrimitiveType.TriangleList, ShaderTextured, m_starsVertexBuffer, m_starsIndexBuffer, 0, m_starsIndexBuffer.IndicesCount);
             }
         }

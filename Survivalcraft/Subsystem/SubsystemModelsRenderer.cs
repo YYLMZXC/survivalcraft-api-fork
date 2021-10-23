@@ -43,6 +43,10 @@ namespace Game
 
         public static ModelShader ShaderAlphaTested;
 
+        private ModelShader m_shaderOpaque;
+
+        private ModelShader m_shaderAlphaTested;
+
         public int m_size; //´óÐ¡
 
         private Vector3 m_sunLightDirection;
@@ -74,8 +78,6 @@ namespace Game
         };
 
         public PrimitivesRenderer3D PrimitivesRenderer => m_primitivesRenderer;
-
-        public static bool CanRender = false;
 
         public int[] DrawOrders => m_drawOrders;
 
@@ -113,7 +115,7 @@ namespace Game
                 m_sunLightDirection = 1.25f * Vector3.TransformNormal(SunVector(m_subsystemSky), camera.ViewMatrix);
                 if (drawOrder == m_drawOrders[1])
                 {
-                    if (CanRender)
+                    if (ShaderOpaque != null && ShaderAlphaTested != null)
                     {
                         Display.DepthStencilState = DepthStencilState.Default;
                         Display.RasterizerState = RasterizerState.CullNoneScissor;
@@ -150,7 +152,7 @@ namespace Game
                     Display.RasterizerState = RasterizerState.CullNoneScissor;
                     Display.BlendState = BlendState.AlphaBlend;
                     DrawModels(camera, m_modelsToDraw[3], null);
-                    if (CanRender)
+                    if (ShaderOpaque != null && ShaderAlphaTested != null)
                     {
                         m_primitivesRenderer.Flush(camera.ProjectionMatrix, true, int.MaxValue);
                     }
@@ -176,8 +178,8 @@ namespace Game
                 MaxInstancesCount = Math.Max(modLoader.GetMaxInstancesCount(), MaxInstancesCount);
                 return false;
             });
-            ShaderOpaque = new ModelShader(ShaderCodeManager.GetFast("Shaders/Model.vsh"), ShaderCodeManager.GetFast("Shaders/Model.psh"), useAlphaThreshold: false, 7);
-            ShaderAlphaTested = new ModelShader(ShaderCodeManager.GetFast("Shaders/Model.vsh"), ShaderCodeManager.GetFast("Shaders/Model.psh"), useAlphaThreshold: true, 7);
+            m_shaderOpaque = new ModelShader(ShaderCodeManager.GetFast("Shaders/Model.vsh"), ShaderCodeManager.GetFast("Shaders/Model.psh"), useAlphaThreshold: false, 7);
+            m_shaderAlphaTested = new ModelShader(ShaderCodeManager.GetFast("Shaders/Model.vsh"), ShaderCodeManager.GetFast("Shaders/Model.psh"), useAlphaThreshold: true, 7);
         }
 
         public override void OnEntityAdded(Entity entity)
@@ -229,13 +231,15 @@ namespace Game
 
         public void DrawInstancedModels(Camera camera, List<ModelData> modelsData, float? alphaThreshold)
         {
-            ModelShader modelShader = alphaThreshold.HasValue ? ShaderAlphaTested : ShaderOpaque;
-            if (CanRender)
+            ModelShader modelShader = null;
+            if (ShaderOpaque != null && ShaderAlphaTested != null)
             {
+                modelShader = alphaThreshold.HasValue ? ShaderAlphaTested : ShaderOpaque;
                 modelShader.LightDirection1 = m_sunLightDirection;
             }
             else
             {
+                modelShader = alphaThreshold.HasValue ? m_shaderAlphaTested : m_shaderOpaque;
                 modelShader.LightDirection1 = -Vector3.TransformNormal(LightingManager.DirectionToLight1, camera.ViewMatrix);//
             }
             modelShader.LightDirection2 = -Vector3.TransformNormal(LightingManager.DirectionToLight2, camera.ViewMatrix);
@@ -281,7 +285,7 @@ namespace Game
             {
                 if (modelData.ComponentBody != null && modelData.ComponentModel.CastsShadow)
                 {
-                    if (CanRender)
+                    if (ShaderOpaque != null && ShaderAlphaTested != null)
                     {
                         float angle = 2f * m_subsystemTimeOfDay.TimeOfDay * (float)Math.PI; //½Ç¶È
                         if (((angle * 57.29578) - 90) >= 0 && ((angle * 57.29578) - 90) <= 20) { m_size = 5; }

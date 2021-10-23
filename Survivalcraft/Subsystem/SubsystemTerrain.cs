@@ -453,7 +453,6 @@ namespace Game
 
         public override void Dispose()
         {
-            ShadowTexture.Dispose();
             TerrainRenderer.Dispose();
             TerrainUpdater.Dispose();
             TerrainSerializer.Dispose();
