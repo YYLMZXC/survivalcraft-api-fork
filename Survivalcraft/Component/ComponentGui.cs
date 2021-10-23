@@ -778,25 +778,6 @@ namespace Game
 
         public void Draw(Camera camera, int drawOrder)
         {
-            if (TerrainRenderer.CanShadowRender)
-            {
-                TerrainRaycastResult? raycastResult = m_componentPlayer.ComponentMiner.Raycast<TerrainRaycastResult>(new Ray3(camera.ViewPosition, camera.ViewDirection), RaycastMode.Interaction);
-                if (raycastResult.HasValue)
-                {
-                    Engine.Graphics.PrimitivesRenderer2D primitives = new Engine.Graphics.PrimitivesRenderer2D();
-                    Engine.Graphics.FlatBatch2D flatBatch2D = primitives.FlatBatch();
-                    Point3 point = raycastResult.Value.CellFace.Point;
-                    Vector3 vector = new Vector3(point) + Vector3.UnitY;
-                    Vector3 vector2 = new Vector3(point);
-                    vector = camera.WorldToScreen(vector, Matrix.Identity);
-                    vector2 = camera.WorldToScreen(vector2, Matrix.Identity);
-                    flatBatch2D.QueueQuad(vector.XY, vector.XY + new Vector2(10, 10), 1f, Color.Red);
-                    flatBatch2D.QueueQuad(vector2.XY, vector2.XY + new Vector2(10, 10), 1f, Color.Yellow);
-                    primitives.Flush();
-                    //Engine.Window.PresentationInterval = 10;
-                    //if (Time.PeriodicEvent(1.0, 0.5)) System.Diagnostics.Debug.WriteLine(Engine.Graphics.Display.Viewport.ToString());
-                }
-            }
             ModsManager.HookAction("GuiDraw", (modloader) => { modloader.GuiDraw(this, camera, drawOrder); return false; });
         }
     }

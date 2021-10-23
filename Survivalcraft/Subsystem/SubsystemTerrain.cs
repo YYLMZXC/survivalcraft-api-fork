@@ -42,15 +42,15 @@ namespace Game
 
         public List<BlockDropValue> m_dropValues = new List<BlockDropValue>();
 
+        public static Point2 ShadowMapSize = Window.Size;
+
+        public static RenderTarget2D ShadowTexture = new RenderTarget2D(ShadowMapSize.X, ShadowMapSize.Y, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
+
         public static int[] m_drawOrders = new int[2]
         {
             0,
             100
         };
-
-        public static Point2 ShadowMapSize = new Point2(2048, 1536);
-
-        public static Vector2 ShadowMapSizeV = new Vector2(ShadowMapSize);
 
         public SubsystemGameInfo SubsystemGameInfo
         {
@@ -115,8 +115,6 @@ namespace Game
         public int[] DrawOrders => m_drawOrders;
 
         public UpdateOrder UpdateOrder => UpdateOrder.Terrain;
-
-        public static RenderTarget2D ShadowTexture;
 
         public void ProcessModifiedCells()
         {
@@ -373,35 +371,25 @@ namespace Game
         {
             if (TerrainRenderingEnabled)
             {
-                Vector3 p = Vector3.Zero;
-                Matrix ScreenVP = Matrix.Zero;
-                if (TerrainRenderer.CanShadowRender)
-                {
-                    double sita = Math.PI * m_subsystemTimeOfDay.TimeOfDay;
-                    p = new Vector3(camera.ViewPosition.X + (float)(256.0 * Math.Cos(sita)), (float)(256.0 * Math.Sin(sita)), camera.ViewPosition.Z);
-                    Matrix viewMatrix = Matrix.CreateLookAt(p, p - Vector3.UnitY, Vector3.UnitY);
-                    Matrix projectionMatrix = BasePerspectiveCamera.CalculateBaseProjectionMatrix(ShadowMapSizeV);
-                    ScreenVP = viewMatrix * projectionMatrix;
-                }
                 if (drawOrder == DrawOrders[0])
                 {
                     TerrainUpdater.PrepareForDrawing(camera);
-                    if (TerrainRenderer.CanShadowRender)
+                    if(TerrainRenderer.ShadowShader != null)
                     {
                         RenderTarget2D renderTarget = Display.RenderTarget;
                         Display.RenderTarget = ShadowTexture;
                         Display.Clear(Color.White, 1f);
-                        TerrainRenderer.PrepareForDrawingShadow(camera);
-                        TerrainRenderer.DrawShadow(camera, ScreenVP, p);
+                        TerrainRenderer.DrawShadow(camera);
                         Display.RenderTarget = renderTarget;
+                        Display.Clear(Color.White, 1f);
                     }
                     TerrainRenderer.PrepareForDrawing(camera);
-                    TerrainRenderer.DrawOpaque(camera, ScreenVP, p);
-                    TerrainRenderer.DrawAlphaTested(camera, ScreenVP, p);
+                    TerrainRenderer.DrawOpaque(camera);
+                    TerrainRenderer.DrawAlphaTested(camera);
                 }
                 else if (drawOrder == m_drawOrders[1])
                 {
-                    TerrainRenderer.DrawTransparent(camera, ScreenVP, p);
+                    TerrainRenderer.DrawTransparent(camera);
                 }
             }
         }
@@ -425,7 +413,6 @@ namespace Game
             m_subsystemTime = Project.FindSubsystem<SubsystemTime>();
             m_subsystemTimeOfDay = Project.FindSubsystem<SubsystemTimeOfDay>();
             SubsystemPalette = Project.FindSubsystem<SubsystemPalette>(throwOnError: true);
-            ShadowTexture = new RenderTarget2D(ShadowMapSize.X, ShadowMapSize.Y, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
             Terrain = new Terrain();
             TerrainRenderer = new TerrainRenderer(this);
             TerrainUpdater = new TerrainUpdater(this);

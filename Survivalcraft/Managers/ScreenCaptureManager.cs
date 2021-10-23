@@ -124,6 +124,11 @@ namespace Game
                     {
                         Image.Save(image, stream, ImageFileFormat.Jpg, saveAlpha: false);
                     }
+                    //输出阴影深度图
+                    using (Stream stream = Storage.OpenFile(Storage.CombinePaths(ScreenshotDir, "shadow.png"), OpenFileMode.CreateOrOpen))
+                    {
+                        RenderTarget2D.Save(SubsystemTerrain.ShadowTexture, stream, ImageFileFormat.Png, saveAlpha: true);
+                    }
                 }
             }
         }
