@@ -451,7 +451,7 @@ namespace Game
             processed.Set(x, y, z, value: true);
         }
 
-        public void PostprocessExplosions(bool playExplosionSound)
+        public virtual void PostprocessExplosions(bool playExplosionSound)
         {
             Point3 point = Point3.Zero;
             float num = float.MaxValue;
@@ -592,12 +592,12 @@ namespace Game
             }
         }
 
-        public void CalculateImpulseAndDamage(ComponentBody componentBody, float? obstaclePressure, out Vector3 impulse, out float damage)
+        public virtual void CalculateImpulseAndDamage(ComponentBody componentBody, float? obstaclePressure, out Vector3 impulse, out float damage)
         {
             CalculateImpulseAndDamage(0.5f * (componentBody.BoundingBox.Min + componentBody.BoundingBox.Max), componentBody.Mass, obstaclePressure, out impulse, out damage);
         }
 
-        public void CalculateImpulseAndDamage(Vector3 position, float mass, float? obstaclePressure, out Vector3 impulse, out float damage)
+        public virtual void CalculateImpulseAndDamage(Vector3 position, float mass, float? obstaclePressure, out Vector3 impulse, out float damage)
         {
             Point3 point = Terrain.ToCell(position);
             if (!obstaclePressure.HasValue)
