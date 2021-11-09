@@ -1,8 +1,8 @@
 namespace Engine.Graphics
 {
-	public abstract class BaseFlatBatch : BaseBatch
+    public abstract class BaseFlatBatch : BaseBatch
 	{
-		internal static UnlitShader m_shader = new UnlitShader(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
+		internal static UnlitShader Shader = new UnlitShader(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
 
 		public readonly DynamicArray<VertexPositionColor> LineVertices = new DynamicArray<VertexPositionColor>();
 
@@ -45,8 +45,8 @@ namespace Engine.Graphics
 		{
 			if (!IsEmpty())
 			{
-				m_shader.Transforms.World[0] = matrix;
-				FlushWithCurrentStateAndShader(m_shader, clearAfterFlush);
+				Shader.Transforms.World[0] = matrix;
+				FlushWithCurrentStateAndShader(Shader, clearAfterFlush);
 			}
 		}
 

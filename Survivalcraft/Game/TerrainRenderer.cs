@@ -4,6 +4,7 @@ using System;
 
 namespace Game
 {
+
 	public class TerrainRenderer : IDisposable
 	{
 		public SubsystemTerrain m_subsystemTerrain;
@@ -17,6 +18,8 @@ namespace Game
 		public static Shader AlphatestedShader;
 
 		public static Shader TransparentShader;
+
+		public static Shader ShadowShader;
 
 		public SamplerState m_samplerState = new SamplerState
 		{
@@ -72,20 +75,11 @@ namespace Game
 			m_subsystemTerrain = subsystemTerrain;
 			m_subsystemSky = subsystemTerrain.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
 			m_subsystemAnimatedTextures = subsystemTerrain.SubsystemAnimatedTextures;
-			OpaqueShader = new Shader(ModsManager.GetInPakOrStorageFile<string>("Shaders/Opaque", ".vsh"), ModsManager.GetInPakOrStorageFile<string>("Shaders/Opaque", ".psh"), new ShaderMacro[] { new ShaderMacro("Opaque") });
-			AlphatestedShader = new Shader(ModsManager.GetInPakOrStorageFile<string>("Shaders/AlphaTested", ".vsh"), ModsManager.GetInPakOrStorageFile<string>("Shaders/AlphaTested", ".psh"), new ShaderMacro[] { new ShaderMacro("ALPHATESTED") });
-			TransparentShader = new Shader(ModsManager.GetInPakOrStorageFile<string>("Shaders/Transparent", ".vsh"), ModsManager.GetInPakOrStorageFile<string>("Shaders/Transparent", ".psh"), new ShaderMacro[] { new ShaderMacro("Transparent") });
+			OpaqueShader = new Shader(ShaderCodeManager.GetFast("Shaders/Opaque.vsh"), ShaderCodeManager.GetFast("Shaders/Opaque.psh"), new ShaderMacro[] { new ShaderMacro("Opaque") });
+			AlphatestedShader = new Shader(ShaderCodeManager.GetFast("Shaders/AlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/AlphaTested.psh"), new ShaderMacro[] { new ShaderMacro("ALPHATESTED") });
+			TransparentShader = new Shader(ShaderCodeManager.GetFast("Shaders/Transparent.vsh"), ShaderCodeManager.GetFast("Shaders/Transparent.psh"), new ShaderMacro[] { new ShaderMacro("Transparent") });
+			//ShadowShader = new Shader(ShaderCodeManager.GetExternal("Shaders/Shadow.vsh"), ShaderCodeManager.GetExternal("Shaders/Shadow.psh"), new ShaderMacro[] { new ShaderMacro("Shadow") });
 			Display.DeviceReset += Display_DeviceReset;
-		}
-
-		public void DisposeTerrainChunkGeometryVertexIndexBuffers(TerrainChunkGeometry geometry)
-		{
-			foreach (TerrainChunkGeometry.Buffer buffer in geometry.Buffers)
-			{
-				buffer.Dispose();
-			}
-			geometry.Buffers.Clear();
-			geometry.InvalidateSliceContentsHashes();
 		}
 
 		public void PrepareForDrawing(Camera camera)
@@ -143,6 +137,40 @@ namespace Game
 			ChunkTrianglesDrawn = 0;
 		}
 
+		public void DrawShadow(Camera camera)
+		{
+			Vector3 viewPosition = camera.ViewPosition;
+			Display.BlendState = BlendState.Opaque;
+			Display.DepthStencilState = DepthStencilState.Default;
+			Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
+			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShadowShader, camera); return true; });
+			for (int i = 0; i < m_chunksToDraw.Count; i++)
+			{
+				TerrainChunk terrainChunk = m_chunksToDraw[i];
+				int num3 = 16;
+				if (viewPosition.Z > terrainChunk.BoundingBox.Min.Z)
+				{
+					num3 |= 1;
+				}
+				if (viewPosition.X > terrainChunk.BoundingBox.Min.X)
+				{
+					num3 |= 2;
+				}
+				if (viewPosition.Z < terrainChunk.BoundingBox.Max.Z)
+				{
+					num3 |= 4;
+				}
+				if (viewPosition.X < terrainChunk.BoundingBox.Max.X)
+				{
+					num3 |= 8;
+				}
+				DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry, num3);
+				DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry, 32);
+				//DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk.Geometry, 64);
+				ChunksDrawn++;
+			}
+		}
+
 		public void DrawOpaque(Camera camera)
 		{
 			int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
@@ -160,7 +188,7 @@ namespace Game
 			OpaqueShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			OpaqueShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 			ShaderParameter parameter = OpaqueShader.GetParameter("u_fogStartInvLength");
-			ModsManager.HookAction("SetShaderParameter", (modLoader)=> { modLoader.SetShaderParameter(OpaqueShader);return true; });
+			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(OpaqueShader, camera); return true; });
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
@@ -206,8 +234,7 @@ namespace Game
 			AlphatestedShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			AlphatestedShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 			ShaderParameter parameter = AlphatestedShader.GetParameter("u_fogStartInvLength");
-			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(AlphatestedShader); return true; });
-
+			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(AlphatestedShader, camera); return true; });
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
@@ -236,8 +263,7 @@ namespace Game
 			TransparentShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			TransparentShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 			ShaderParameter parameter = TransparentShader.GetParameter("u_fogStartInvLength");
-			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(TransparentShader); return true; });
-
+			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(TransparentShader, camera); return true; });
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
@@ -262,6 +288,16 @@ namespace Game
 			{
 				DisposeTerrainChunkGeometryVertexIndexBuffers(terrainChunk.Geometry);
 			}
+		}
+
+		public void DisposeTerrainChunkGeometryVertexIndexBuffers(TerrainChunkGeometry geometry)
+		{
+			foreach (TerrainChunkGeometry.Buffer buffer in geometry.Buffers)
+			{
+				buffer.Dispose();
+			}
+			geometry.Buffers.Clear();
+			geometry.InvalidateSliceContentsHashes();
 		}
 
 		public void SetupTerrainChunkGeometryVertexIndexBuffers(TerrainChunk chunk)
@@ -394,4 +430,5 @@ namespace Game
 			}
 		}
 	}
+
 }

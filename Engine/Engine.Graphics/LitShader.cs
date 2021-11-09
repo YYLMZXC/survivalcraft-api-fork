@@ -44,6 +44,8 @@ namespace Engine.Graphics
 
 		public ShaderParameter m_fogColorParameter;
 
+		public ShaderParameter m_time;
+
 		public int m_instancesCount;
 
 		public int m_lightsCount;
@@ -172,6 +174,14 @@ namespace Engine.Graphics
 			}
 		}
 
+		public float Time
+		{
+			set
+			{
+				m_time.SetValue(value);
+			}
+		}
+
 		public int InstancesCount
 		{
 			get
@@ -185,6 +195,67 @@ namespace Engine.Graphics
 					throw new InvalidOperationException("Invalid instances count.");
 				}
 				m_instancesCount = value;
+			}
+		}
+
+		public LitShader(string vsc, string psc, int lightsCount, bool useEmissionColor, bool useVertexColor, bool useTexture, bool useFog, bool useAlphaThreshold, int maxInstancesCount = 1)
+			: base(vsc, psc, PrepareShaderMacros(lightsCount, useEmissionColor, useVertexColor, useTexture, useFog, useAlphaThreshold, maxInstancesCount))
+		{
+			if (lightsCount < 0 || lightsCount > 3)
+			{
+				throw new ArgumentException("lightsCount");
+			}
+			if (maxInstancesCount < 0 || maxInstancesCount > 32)
+			{
+				throw new ArgumentException("maxInstancesCount");
+			}
+			m_worldMatrixParameter = GetParameter("u_worldMatrix", allowNull: true);
+			m_worldViewMatrixParameter = GetParameter("u_worldViewMatrix", allowNull: true);
+			m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix", allowNull: true);
+			m_textureParameter = GetParameter("u_texture", allowNull: true);
+			m_samplerStateParameter = GetParameter("u_samplerState", allowNull: true);
+			m_materialColorParameter = GetParameter("u_materialColor", allowNull: true);
+			m_emissionColorParameter = GetParameter("u_emissionColor", allowNull: true);
+			m_alphaThresholdParameter = GetParameter("u_alphaThreshold", allowNull: true);
+			m_ambientLightColorParameter = GetParameter("u_ambientLightColor", allowNull: true);
+			m_diffuseLightColor1Parameter = GetParameter("u_diffuseLightColor1", allowNull: true);
+			m_directionToLight1Parameter = GetParameter("u_directionToLight1", allowNull: true);
+			m_diffuseLightColor2Parameter = GetParameter("u_diffuseLightColor2", allowNull: true);
+			m_directionToLight2Parameter = GetParameter("u_directionToLight2", allowNull: true);
+			m_diffuseLightColor3Parameter = GetParameter("u_diffuseLightColor3", allowNull: true);
+			m_directionToLight3Parameter = GetParameter("u_directionToLight3", allowNull: true);
+			m_fogStartParameter = GetParameter("u_fogStart", allowNull: true);
+			m_fogLengthParameter = GetParameter("u_fogLength", allowNull: true);
+			m_fogColorParameter = GetParameter("u_fogColor", allowNull: true);
+			m_time = GetParameter("u_time", allowNull: true);
+			Transforms = new ShaderTransforms(maxInstancesCount);
+			m_lightsCount = lightsCount;
+			m_instancesCount = 1;
+			m_useFog = useFog;
+			MaterialColor = Vector4.One;
+			if (useEmissionColor)
+			{
+				EmissionColor = Vector4.Zero;
+			}
+			if (lightsCount >= 1)
+			{
+				AmbientLightColor = new Vector3(0.2f);
+				DiffuseLightColor1 = new Vector3(0.8f);
+				LightDirection1 = Vector3.Normalize(new Vector3(1f, -1f, 1f));
+			}
+			if (lightsCount >= 2)
+			{
+				DiffuseLightColor2 = new Vector3(0.4f);
+				LightDirection2 = Vector3.Normalize(new Vector3(-1f, -0.5f, -0.25f));
+			}
+			if (lightsCount >= 3)
+			{
+				DiffuseLightColor3 = new Vector3(0.2f);
+				LightDirection3 = Vector3.Normalize(new Vector3(0f, 1f, 0f));
+			}
+			if (useFog)
+			{
+				FogLength = 100f;
 			}
 		}
 

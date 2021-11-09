@@ -6,15 +6,15 @@ namespace Engine.Graphics
 {
 	public class BasePrimitivesRenderer<T1, T2, T3> where T1 : BaseFlatBatch, new()where T2 : BaseTexturedBatch, new()where T3 : BaseFontBatch, new()
 	{
-		private bool m_sortNeeded;
+		public bool m_sortNeeded;
 
-		private List<BaseBatch> m_allBatches = new List<BaseBatch>();
+		public List<BaseBatch> m_allBatches = new List<BaseBatch>();
 
-		private LinkedList<T1> m_flatBatches = new LinkedList<T1>();
+		public LinkedList<T1> m_flatBatches = new LinkedList<T1>();
 
-		private LinkedList<T2> m_texturedBatches = new LinkedList<T2>();
+		public LinkedList<T2> m_texturedBatches = new LinkedList<T2>();
 
-		private LinkedList<T3> m_fontBatches = new LinkedList<T3>();
+		public LinkedList<T3> m_fontBatches = new LinkedList<T3>();
 
 		internal BasePrimitivesRenderer()
 		{

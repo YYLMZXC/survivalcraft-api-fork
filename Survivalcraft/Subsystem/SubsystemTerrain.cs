@@ -3,6 +3,7 @@ using GameEntitySystem;
 using System;
 using System.Collections.Generic;
 using TemplatesDatabase;
+using Engine.Graphics;
 
 namespace Game
 {
@@ -25,6 +26,12 @@ namespace Game
             new Point3(0, 0, 1)
         };
 
+        public SubsystemSky m_subsystemsky;
+
+        public SubsystemTime m_subsystemTime;
+
+        public SubsystemTimeOfDay m_subsystemTimeOfDay;
+
         public SubsystemGameWidgets m_subsystemViews;
 
         public SubsystemParticles m_subsystemParticles;
@@ -34,6 +41,8 @@ namespace Game
         public SubsystemBlockBehaviors m_subsystemBlockBehaviors;
 
         public List<BlockDropValue> m_dropValues = new List<BlockDropValue>();
+
+        public static RenderTarget2D ShadowTexture = new RenderTarget2D(Window.Size.X, Window.Size.Y, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
 
         public static int[] m_drawOrders = new int[2]
         {
@@ -360,17 +369,26 @@ namespace Game
         {
             if (TerrainRenderingEnabled)
             {
-                if (drawOrder == m_drawOrders[0])
+                if (drawOrder == DrawOrders[0])
                 {
                     TerrainUpdater.PrepareForDrawing(camera);
+                    if(TerrainRenderer.ShadowShader != null)
+                    {
+                        RenderTarget2D renderTarget = Display.RenderTarget;
+                        Display.RenderTarget = ShadowTexture;
+                        Display.Clear(Color.White, 1f);
+                        TerrainRenderer.DrawShadow(camera);
+                        Display.RenderTarget = renderTarget;
+                        Display.Clear(Color.White, 1f);
+                    }
                     TerrainRenderer.PrepareForDrawing(camera);
                     TerrainRenderer.DrawOpaque(camera);
                     TerrainRenderer.DrawAlphaTested(camera);
                 }
                 else if (drawOrder == m_drawOrders[1])
-               {
-                   TerrainRenderer.DrawTransparent(camera);
-               }
+                {
+                    TerrainRenderer.DrawTransparent(camera);
+                }
             }
         }
 
@@ -389,6 +407,9 @@ namespace Game
             m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
             SubsystemAnimatedTextures = Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
             SubsystemFurnitureBlockBehavior = Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true);
+            m_subsystemsky = Project.FindSubsystem<SubsystemSky>();
+            m_subsystemTime = Project.FindSubsystem<SubsystemTime>();
+            m_subsystemTimeOfDay = Project.FindSubsystem<SubsystemTimeOfDay>();
             SubsystemPalette = Project.FindSubsystem<SubsystemPalette>(throwOnError: true);
             Terrain = new Terrain();
             TerrainRenderer = new TerrainRenderer(this);
