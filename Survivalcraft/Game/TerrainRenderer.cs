@@ -166,7 +166,7 @@ namespace Game
 				}
 				DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry, num3);
 				DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry, 32);
-				DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk.Geometry, 64);
+				//DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk.Geometry, 64);
 				ChunksDrawn++;
 			}
 		}

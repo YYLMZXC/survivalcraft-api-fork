@@ -42,9 +42,7 @@ namespace Game
 
         public List<BlockDropValue> m_dropValues = new List<BlockDropValue>();
 
-        public static Point2 ShadowMapSize = Window.Size;
-
-        public static RenderTarget2D ShadowTexture = new RenderTarget2D(ShadowMapSize.X, ShadowMapSize.Y, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
+        public static RenderTarget2D ShadowTexture = new RenderTarget2D(Window.Size.X, Window.Size.Y, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
 
         public static int[] m_drawOrders = new int[2]
         {
