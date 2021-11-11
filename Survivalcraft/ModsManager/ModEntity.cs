@@ -91,6 +91,16 @@ namespace Game {
             LoadingScreen.Info("初始化Mod方法:"+modInfo?.Name);
             ModLoader_?.__ModInitialize();
         }
+        public string toHex(string input) {
+            char[] values = input.ToCharArray();
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (char letter in values)
+            {
+                int value = Convert.ToInt32(letter);
+                stringBuilder.Append(String.Format("{0:X} ", value));
+            }
+            return stringBuilder.ToString();
+        }
         /// <summary>
         /// 初始化Pak资源
         /// </summary>

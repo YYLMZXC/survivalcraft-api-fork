@@ -360,7 +360,6 @@ namespace Game
 
         public void Draw(Camera camera, int drawOrder)
         {
-            stopwatch.Restart();
             if (TerrainRenderingEnabled)
             {
                 if (drawOrder == m_drawOrders[0])
@@ -375,8 +374,6 @@ namespace Game
                    TerrainRenderer.DrawTransparent(camera);
                }
             }
-            stopwatch.Stop();
-            Console.WriteLine(stopwatch.Elapsed.TotalMilliseconds);
         }
 
         public void Update(float dt)

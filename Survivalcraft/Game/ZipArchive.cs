@@ -149,7 +149,7 @@ namespace Game
                 num3 = BitConverter.ToUInt16(CentralDirImage, i + 32);
                 uint headerOffset = BitConverter.ToUInt32(CentralDirImage, i + 42);
                 uint headerSize = (uint)(46 + num + num2 + num3);
-                Encoding uTF = Encoding.UTF8;
+                Encoding uTF = Encoding.Default;
                 var zipArchiveEntry = new ZipArchiveEntry();
                 zipArchiveEntry.Method = (Compression)method;
                 zipArchiveEntry.FilenameInZip = NormalizedFilename(uTF.GetString(CentralDirImage, i + 46, num));

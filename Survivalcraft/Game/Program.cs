@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.InteropServices;
-
+using System.Net;
 namespace Game
 {
     public static class Program
@@ -31,6 +31,7 @@ namespace Game
         [STAThread]
         public static void Main()
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
             Log.RemoveAllLogSinks();
