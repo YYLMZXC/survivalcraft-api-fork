@@ -16,6 +16,8 @@ namespace Engine.Graphics
 
 		public ShaderParameter m_alphaThresholdParameter;
 
+		public ShaderParameter m_time;
+
 		public readonly ShaderTransforms Transforms;
 
 		public Texture2D Texture
@@ -50,23 +52,33 @@ namespace Engine.Graphics
 			}
 		}
 
-#if desktop
-		public UnlitShader(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
-			: base(new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.vsh")).ReadToEnd(), new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.psh")).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
+		public float Time
+		{
+			set
+			{
+				m_time.SetValue(value);
+			}
+		}
+
+		public UnlitShader(string vsc, string psc, bool useVertexColor, bool useTexture, bool useAlphaThreshold)
+			: base(vsc, psc, PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
 		{
 			m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix", allowNull: true);
 			m_textureParameter = GetParameter("u_texture", allowNull: true);
 			m_samplerStateParameter = GetParameter("u_samplerState", allowNull: true);
 			m_colorParameter = GetParameter("u_color", allowNull: true);
 			m_alphaThresholdParameter = GetParameter("u_alphaThreshold", allowNull: true);
+			m_time = GetParameter("u_time", allowNull: true);
 			Transforms = new ShaderTransforms(1);
 			Color = Vector4.One;
 		}
-#endif
+
+		public UnlitShader(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
 #if android
-
-		public UnlitShader(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
 			: base(new StreamReader(Storage.OpenFile("app:Unlit.vsh", OpenFileMode.Read)).ReadToEnd(), new StreamReader(Storage.OpenFile("app:Unlit.psh", OpenFileMode.Read)).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
+#else
+			: base(new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.vsh")).ReadToEnd(), new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.psh")).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
+#endif
 		{
 			m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix", allowNull: true);
 			m_textureParameter = GetParameter("u_texture", allowNull: true);
@@ -77,9 +89,7 @@ namespace Engine.Graphics
 			Color = Vector4.One;
 		}
 
-#endif
-
-        protected override void PrepareForDrawingOverride()
+		protected override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(1, worldView: false, viewProjection: false, worldViewProjection: true);
 			m_worldViewProjectionMatrixParameter.SetValue(Transforms.WorldViewProjection, 1);

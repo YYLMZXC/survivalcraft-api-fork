@@ -75,6 +75,16 @@ namespace Game
 
         public PrimitivesRenderer3D m_primitivesRenderer3d = new PrimitivesRenderer3D();
 
+        public SkyPrimitiveRender m_primitiveRender;
+
+        public static SkyShader Shader;
+
+        public static SkyShader ShaderAlphaTest;
+
+        public static UnlitShader ShaderFlat = new UnlitShader(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: false, useAlphaThreshold: false);
+
+        public static UnlitShader ShaderTextured = new UnlitShader(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+
         public Random m_random = new Random();
 
         public Color m_viewFogColor;
@@ -90,10 +100,6 @@ namespace Game
         public Texture2D m_cloudsTexture;
 
         public Texture2D[] m_moonTextures = new Texture2D[8];
-
-        public static UnlitShader m_shaderFlat = new UnlitShader(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
-
-        public static UnlitShader m_shaderTextured = new UnlitShader(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
 
         public VertexDeclaration m_skyVertexDeclaration = new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color));
 
@@ -186,7 +192,8 @@ namespace Game
         public float VisibilityRange
         {
             get { return m_visibilityRange; }
-            set {
+            set
+            {
                 m_visibilityRange = value;
                 VisibilityRangeSqr = MathUtils.Sqr(value);
             }
@@ -289,7 +296,8 @@ namespace Game
                 int x = Terrain.ToCell(viewPosition.X);
                 int y = Terrain.ToCell(viewPosition.Y);
                 int z = Terrain.ToCell(viewPosition.Z);
-                float? surfaceHeight = m_subsystemFluidBlockBehavior.GetSurfaceHeight(x, y, z, out FluidBlock surfaceFluidBlock);
+                FluidBlock surfaceFluidBlock;
+                float? surfaceHeight = m_subsystemFluidBlockBehavior.GetSurfaceHeight(x, y, z, out surfaceFluidBlock);
                 if (surfaceHeight.HasValue)
                 {
                     if (surfaceFluidBlock is WaterBlock)
@@ -306,14 +314,14 @@ namespace Game
                     int seasonalHumidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
                     int temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
                     Color c = BlockColorsMap.WaterColorsMap.Lookup(temperature, seasonalHumidity);
-                    float num = MathUtils.Lerp(1f, 0.5f, seasonalHumidity / 15f);
+                    float num = MathUtils.Lerp(1f, 0.5f, (float)seasonalHumidity / 15f);
                     float num2 = MathUtils.Lerp(1f, 0.2f, MathUtils.Saturate(0.075f * (ViewUnderWaterDepth - 2f)));
-                    float num3 = MathUtils.Lerp(0.33f, 1f, SkyLightIntensity);
+                    float num3 = MathUtils.Lerp(20f, 1f, SkyLightIntensity);
                     m_viewFogRange.X = 0f;
-                    m_viewFogRange.Y = MathUtils.Lerp(4f, 10f, num * num2 * num3);
-                    m_viewFogColor = Color.MultiplyColorOnly(c, 0.66f * num2 * num3);
+                    m_viewFogRange.Y = MathUtils.Lerp(40f, 50f, num * num2 * num3);
+                    m_viewFogColor = new Color(0, 145, 255, 100);//Color.MultiplyColorOnly(c, 0.66f * num2 * num3);
                     VisibilityRangeYMultiplier = 1f;
-                    m_viewIsSkyVisible = false;
+                    m_viewIsSkyVisible = true;
                 }
                 else if (ViewUnderMagmaDepth > 0f)
                 {
@@ -346,7 +354,20 @@ namespace Game
                     int count = flatBatch2D.TriangleVertices.Count;
                     flatBatch2D.QueueQuad(Vector2.Zero, camera.ViewportSize, 0f, m_viewFogColor);
                     flatBatch2D.TransformTriangles(camera.ViewportMatrix, count);
-                    m_primitivesRenderer2d.Flush();
+                    if (Shader != null && ShaderAlphaTest != null)
+                    {
+                        if (m_primitiveRender.Shader == null && m_primitiveRender.ShaderAlphaTest == null)
+                        {
+                            m_primitiveRender.Shader = Shader;
+                            m_primitiveRender.ShaderAlphaTest = ShaderAlphaTest;
+                        }
+                        m_primitivesRenderer2d.Flush(true, int.MaxValue);
+                    }
+                    else
+                    {
+                        m_primitivesRenderer2d.Flush();
+                    }
+                    return;
                 }
             }
             else if (drawOrder == m_drawOrders[1])
@@ -357,7 +378,20 @@ namespace Game
                     DrawStars(camera);
                     DrawSunAndMoon(camera);
                     DrawClouds(camera);
-                    m_primitivesRenderer3d.Flush(camera.ViewProjectionMatrix);
+                    if (Shader != null && ShaderAlphaTest != null)
+                    {
+                        if(m_primitiveRender.Shader == null && m_primitiveRender.ShaderAlphaTest == null)
+                        {
+                            m_primitiveRender.Shader = Shader;
+                            m_primitiveRender.ShaderAlphaTest = ShaderAlphaTest;
+                        }
+                        m_primitiveRender.Flush(m_primitivesRenderer3d, camera.ViewProjectionMatrix, true, int.MaxValue);
+                    }
+                    else
+                    {
+                        m_primitivesRenderer3d.Flush(camera.ViewProjectionMatrix);
+                    }
+                    return;
                 }
             }
             else
@@ -380,6 +414,7 @@ namespace Game
             m_sunTexture = ContentManager.Get<Texture2D>("Textures/Sun");
             m_glowTexture = ContentManager.Get<Texture2D>("Textures/SkyGlow");
             m_cloudsTexture = ContentManager.Get<Texture2D>("Textures/Clouds");
+            m_primitiveRender = new SkyPrimitiveRender();
             for (int i = 0; i < 8; i++)
             {
                 m_moonTextures[i] = ContentManager.Get<Texture2D>("Textures/Moon" + (i + 1).ToString(CultureInfo.InvariantCulture));
@@ -411,6 +446,7 @@ namespace Game
             m_skyDomes.Clear();
         }
 
+        //天空穹顶绘制
         public void DrawSkydome(Camera camera)
         {
             if (!m_skyDomes.TryGetValue(camera.GameWidget, out SkyDome value))
@@ -443,11 +479,13 @@ namespace Game
             Display.DepthStencilState = DepthStencilState.DepthRead;
             Display.RasterizerState = RasterizerState.CullNoneScissor;
             Display.BlendState = BlendState.Opaque;
-            m_shaderFlat.Transforms.World[0] = Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
-            m_shaderFlat.Color = Vector4.One;
-            Display.DrawIndexed(PrimitiveType.TriangleList, m_shaderFlat, value.VertexBuffer, value.IndexBuffer, 0, value.IndexBuffer.IndicesCount);
+            ShaderFlat.Transforms.World[0] = Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
+            ShaderFlat.Color = Vector4.One;
+            ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderFlat, camera); return true; });
+            Display.DrawIndexed(PrimitiveType.TriangleList, ShaderFlat, value.VertexBuffer, value.IndexBuffer, 0, value.IndexBuffer.IndicesCount);
         }
 
+        //星星绘制
         public void DrawStars(Camera camera)
         {
             float globalPrecipitationIntensity = m_subsystemWeather.GlobalPrecipitationIntensity;
@@ -466,14 +504,16 @@ namespace Game
             if (num > 0.01f)
             {
                 Display.BlendState = BlendState.Additive;
-                m_shaderTextured.Transforms.World[0] = Matrix.CreateRotationZ(-2f * timeOfDay * (float)Math.PI) * Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
-                m_shaderTextured.Color = new Vector4(1f, 1f, 1f, num);
-                m_shaderTextured.Texture = ContentManager.Get<Texture2D>("Textures/Star");
-                m_shaderTextured.SamplerState = SamplerState.LinearClamp;
-                Display.DrawIndexed(PrimitiveType.TriangleList, m_shaderTextured, m_starsVertexBuffer, m_starsIndexBuffer, 0, m_starsIndexBuffer.IndicesCount);
+                ShaderTextured.Transforms.World[0] = Matrix.CreateRotationZ(-2f * timeOfDay * (float)Math.PI) * Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
+                ShaderTextured.Color = new Vector4(1f, 1.5f, 4f, num);
+                ShaderTextured.Texture = ContentManager.Get<Texture2D>("Textures/Star");
+                ShaderTextured.SamplerState = SamplerState.LinearClamp;
+                ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderTextured, camera); return true; });
+                Display.DrawIndexed(PrimitiveType.TriangleList, ShaderTextured, m_starsVertexBuffer, m_starsIndexBuffer, 0, m_starsIndexBuffer.IndicesCount);
             }
         }
 
+        //太阳与月亮绘制
         public void DrawSunAndMoon(Camera camera)
         {
             float globalPrecipitationIntensity = m_subsystemWeather.GlobalPrecipitationIntensity;
@@ -483,7 +523,7 @@ namespace Game
             float angle = num + (float)Math.PI;
             float num2 = MathUtils.Lerp(90f, 160f, f);
             float num3 = MathUtils.Lerp(60f, 80f, f);
-            var color = Color.Lerp(new Color(255, 255, 255), new Color(255, 255, 160), f);
+            Color color = Color.Lerp(new Color(255, 255, 255), new Color(255, 255, 160), f);
             Color white = Color.White;
             white *= 1f - SkyLightIntensity;
             color *= MathUtils.Lerp(1f, 0f, globalPrecipitationIntensity);
@@ -496,9 +536,10 @@ namespace Game
             QueueCelestialBody(batch, camera.ViewPosition, color2, 900f, 3.5f * num2, num);
             QueueCelestialBody(batch, camera.ViewPosition, color3, 900f, 3.5f * num3, angle);
             QueueCelestialBody(batch2, camera.ViewPosition, color, 900f, num2, num);
-            QueueCelestialBody(batch3, camera.ViewPosition, white, 900f, num3, angle);            
+            QueueCelestialBody(batch3, camera.ViewPosition, white, 900f, num3, angle);
         }
 
+        //闪电绘制
         public void DrawLightning(Camera camera)
         {
             if (!m_lightningStrikePosition.HasValue)
@@ -508,9 +549,9 @@ namespace Game
             FlatBatch3D flatBatch3D = m_primitivesRenderer3d.FlatBatch(0, DepthStencilState.DepthRead, null, BlendState.Additive);
             Vector3 value = m_lightningStrikePosition.Value;
             Vector3 unitY = Vector3.UnitY;
-            var v = Vector3.Normalize(Vector3.Cross(camera.ViewDirection, unitY));
+            Vector3 v = Vector3.Normalize(Vector3.Cross(camera.ViewDirection, unitY));
             Viewport viewport = Display.Viewport;
-            float num = Vector4.Transform(new Vector4(value, 1f), camera.ViewProjectionMatrix).W * 2f / (viewport.Width * camera.ProjectionMatrix.M11);
+            float num = Vector4.Transform(new Vector4(value, 1f), camera.ViewProjectionMatrix).W * 2f / ((float)viewport.Width * camera.ProjectionMatrix.M11);
             for (int i = 0; i < (int)(m_lightningStrikeBrightness * 30f); i++)
             {
                 float s = m_random.NormalFloat(0f, 1f * num);
@@ -550,6 +591,7 @@ namespace Game
             }
         }
 
+        //云绘制
         public void DrawClouds(Camera camera)
         {
             if (SettingsManager.SkyRenderingMode == SkyRenderingMode.NoClouds)
@@ -558,13 +600,13 @@ namespace Game
             }
             float globalPrecipitationIntensity = m_subsystemWeather.GlobalPrecipitationIntensity;
             float num = MathUtils.Lerp(0.03f, 1f, MathUtils.Sqr(SkyLightIntensity)) * MathUtils.Lerp(1f, 0.2f, globalPrecipitationIntensity);
-            m_cloudsLayerColors[0] = Color.White * (num * 0.75f);
-            m_cloudsLayerColors[1] = Color.White * (num * 0.66f);
+            m_cloudsLayerColors[0] = Color.White * (num * 0.7f);
+            m_cloudsLayerColors[1] = Color.White * (num * 0.6f);
             m_cloudsLayerColors[2] = ViewFogColor;
             m_cloudsLayerColors[3] = Color.Transparent;
             double gameTime = m_subsystemTime.GameTime;
             Vector3 viewPosition = camera.ViewPosition;
-            var v = new Vector2((float)MathUtils.Remainder(0.0020000000949949026 * gameTime - viewPosition.X / 1900f * 1.75f, 1.0) + viewPosition.X / 1900f * 1.75f, (float)MathUtils.Remainder(0.0020000000949949026 * gameTime - viewPosition.Z / 1900f * 1.75f, 1.0) + viewPosition.Z / 1900f * 1.75f);
+            Vector2 v = new Vector2((float)MathUtils.Remainder(0.0070000000949949026 * gameTime - (double)(viewPosition.X / 1900f * 1.75f), 1.0) + viewPosition.X / 1900f * 1.75f, (float)MathUtils.Remainder(0.0020000000949949026 * gameTime - (double)(viewPosition.Z / 1900f * 1.75f), 1.0) + viewPosition.Z / 1900f * 1.75f);
             TexturedBatch3D texturedBatch3D = m_primitivesRenderer3d.TexturedBatch(m_cloudsTexture, useAlphaTest: false, 2, DepthStencilState.DepthRead, null, BlendState.AlphaBlend, SamplerState.LinearWrap);
             DynamicArray<VertexPositionColorTexture> triangleVertices = texturedBatch3D.TriangleVertices;
             DynamicArray<ushort> triangleIndices = texturedBatch3D.TriangleIndices;
@@ -582,10 +624,10 @@ namespace Game
                     int num4 = MathUtils.Max(MathUtils.Abs(num2), MathUtils.Abs(num3));
                     float num5 = m_cloudsLayerRadii[num4];
                     float num6 = (num4 > 0) ? (num5 / MathUtils.Sqrt(num2 * num2 + num3 * num3)) : 0f;
-                    float num7 = num2 * num6;
-                    float num8 = num3 * num6;
-                    float y = MathUtils.Lerp(600f, 60f, num5 * num5);
-                    var position = new Vector3(viewPosition.X + num7 * 1900f, y, viewPosition.Z + num8 * 1900f);
+                    float num7 = (float)num2 * num6;
+                    float num8 = (float)num3 * num6;
+                    float y = MathUtils.Lerp(800f, 60f, num5 * num5);//云的高度
+                    Vector3 position = new Vector3(viewPosition.X + num7 * 1900f, y, viewPosition.Z + num8 * 1900f);
                     Vector2 texCoord = new Vector2(position.X, position.Z) / 1900f * 1.75f - v;
                     Color color = m_cloudsLayerColors[num4];
                     texturedBatch3D.TriangleVertices.Array[count2++] = new VertexPositionColorTexture(position, color, texCoord);
@@ -624,8 +666,8 @@ namespace Game
             if (color.A > 0)
             {
                 Vector3 vector = default;
-                vector.X = - MathUtils.Sin(angle);
-                vector.Y = - MathUtils.Cos(angle);
+                vector.X = -MathUtils.Sin(angle);
+                vector.Y = -MathUtils.Cos(angle);
                 Vector3 vector2 = vector;
                 Vector3 unitZ = Vector3.UnitZ;
                 var v = Vector3.Cross(unitZ, vector2);
@@ -663,19 +705,20 @@ namespace Game
             return 1f - (timeOfDay - 0.7f) / 0.100000024f;
         }
 
+        //天空色调
         public Color CalculateSkyColor(Vector3 direction, float timeOfDay, float precipitationIntensity, int temperature)
         {
             direction = Vector3.Normalize(direction);
-            var vector = Vector2.Normalize(new Vector2(direction.X, direction.Z));
+            Vector2 vector = Vector2.Normalize(new Vector2(direction.X, direction.Z));
             float s = CalculateLightIntensity(timeOfDay);
-            float f = temperature / 15f;
+            float f = (float)temperature / 15f;
             Vector3 v = new Vector3(0.65f, 0.68f, 0.7f) * s;
-            var v2 = Vector3.Lerp(new Vector3(0.28f, 0.38f, 0.52f), new Vector3(0.15f, 0.3f, 0.56f), f);
-            var v3 = Vector3.Lerp(new Vector3(0.7f, 0.79f, 0.88f), new Vector3(0.64f, 0.77f, 0.91f), f);
+            Vector3 v2 = Vector3.Lerp(new Vector3(0.28f, 0.38f, 0.52f), new Vector3(0.15f, 0.3f, 0.56f), f);
+            Vector3 v3 = Vector3.Lerp(new Vector3(0.7f, 0.79f, 0.88f), new Vector3(0.64f, 0.77f, 0.91f), f);
             Vector3 v4 = Vector3.Lerp(v2, v, precipitationIntensity) * s;
             Vector3 v5 = Vector3.Lerp(v3, v, precipitationIntensity) * s;
-            var v6 = new Vector3(1f, 0.3f, -0.2f);
-            var v7 = new Vector3(1f, 0.3f, -0.2f);
+            Vector3 v6 = new Vector3(1f, 0.3f, -0.2f);
+            Vector3 v7 = new Vector3(1f, 0.3f, -0.2f);
             if (m_lightningStrikePosition.HasValue)
             {
                 v4 = Vector3.Max(new Vector3(m_lightningStrikeBrightness), v4);
@@ -685,7 +728,7 @@ namespace Game
             float f2 = MathUtils.Saturate((direction.Y - 0.1f) / 0.4f);
             float s2 = num * MathUtils.Sqr(MathUtils.Saturate(0f - vector.X));
             float s3 = num2 * MathUtils.Sqr(MathUtils.Saturate(vector.X));
-            return new Color(Vector3.Lerp(v5 + v6 * s2 + v7 * s3, v4, f2));
+            return new Color(Vector3.Lerp(v5 + v6 * s2 + v7 * s3, v4, f2));//远处雾颜色
         }
 
         public void FillSkyVertexBuffer(SkyDome skyDome, float timeOfDay, float precipitationIntensity, int temperature)
@@ -735,25 +778,26 @@ namespace Game
             skyDome.IndexBuffer.SetData(skyDome.Indices, 0, skyDome.Indices.Length);
         }
 
+        //填充星星缓冲
         public void FillStarsBuffers()
         {
-            var random = new Random(7);
-            var array = new StarVertex[600];
+            Random random = new Random(7);
+            StarVertex[] array = new StarVertex[600];
             for (int i = 0; i < 150; i++)
             {
                 Vector3 v;
                 do
                 {
-                    v = new Vector3(random.Float(-1f, 1f), random.Float(-1f, 1f), random.Float(-1f, 1f));
+                    v = new Vector3(random.Float(-1f, 2f), random.Float(-1f, 2f), random.Float(-1f, 2f));
                 }
                 while (v.LengthSquared() > 1f);
                 v = Vector3.Normalize(v);
-                float s = 9f * random.NormalFloat(1f, 0.1f);
+                float s = 10f * random.NormalFloat(1f, 0.1f);
                 float w = MathUtils.Saturate(random.NormalFloat(0.6f, 0.4f));
-                var color = new Color(new Vector4(random.Float(0.6f, 1f), 0.7f, random.Float(0.8f, 1f), w));
-                Vector3 v2 = 900f * v;
-                var vector = Vector3.Normalize(Vector3.Cross((v.X > v.Y) ? Vector3.UnitY : Vector3.UnitX, v));
-                var v3 = Vector3.Normalize(Vector3.Cross(vector, v));
+                Color color = new Color(new Vector4(random.Float(0.6f, 1f), 0.7f, random.Float(0.8f, 1f), w));
+                Vector3 v2 = 1000f * v;
+                Vector3 vector = Vector3.Normalize(Vector3.Cross((v.X > v.Y) ? Vector3.UnitY : Vector3.UnitX, v));
+                Vector3 v3 = Vector3.Normalize(Vector3.Cross(vector, v));
                 Vector3 position = v2 + s * (-vector - v3);
                 Vector3 position2 = v2 + s * (vector - v3);
                 Vector3 position3 = v2 + s * (vector + v3);
