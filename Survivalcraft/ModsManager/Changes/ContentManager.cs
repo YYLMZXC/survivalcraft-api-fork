@@ -16,12 +16,12 @@ namespace Game
         public string ContentPath;
         public string Filename;
         public object Instance;
-        public ContentInfo(string PackageName, string AbsolutePath_)
+        public ContentInfo(string AbsolutePath_)
         {
-            AbsolutePath = PackageName + ":" + AbsolutePath_;
-            Filename = Path.GetFileName(AbsolutePath);
+            AbsolutePath = AbsolutePath_;
             int pos = AbsolutePath_.LastIndexOf('.');
             ContentPath = pos > -1 ? AbsolutePath_.Substring(0, pos) : AbsolutePath_;
+            Filename = Path.GetFileName(AbsolutePath);
         }
         public void SetContentStream(Stream stream)
         {
@@ -51,7 +51,6 @@ namespace Game
     }
     public static class ContentManager
     {
-        internal static Dictionary<string, ContentInfo> ResourcesAll = new Dictionary<string, ContentInfo>();
         internal static Dictionary<string, ContentInfo> Resources = new Dictionary<string, ContentInfo>();
         internal static Dictionary<string, IContentReader.IContentReader> ReaderList = new Dictionary<string, IContentReader.IContentReader>();
         internal static Dictionary<string, object> Caches = new Dictionary<string, object>();
@@ -60,31 +59,22 @@ namespace Game
         {
             ReaderList.Clear();
             Resources.Clear();
-            ResourcesAll.Clear();
-            Caches.Clear();            
+            Caches.Clear();
         }
         public static T Get<T>(string name, string suffix = null) where T : class
         {
-            string p = suffix == null ? name : name + suffix;            
-            if (!Caches.TryGetValue(p, out object o))
-            {
-                object obj = Get(typeof(T), name, suffix);
-                Caches.Add(p, obj);
-                return obj as T;
-            }
-            else return o as T;
+            return Get(typeof(T), name, suffix) as T;
         }
         public static object Get(Type type, string name, string suffix = null)
         {
             lock (syncobj)
             {
-
+                if (Caches.TryGetValue(name, out var o)) return o;
                 object obj = null;
                 if (type == typeof(Subtexture))
                 {
                     return TextureAtlasManager.GetSubtexture(name);
                 }
-                bool flag = name.Contains(":");
                 if (ReaderList.TryGetValue(type.FullName, out IContentReader.IContentReader reader))
                 {
                     List<ContentInfo> contents = new List<ContentInfo>();
@@ -93,49 +83,28 @@ namespace Game
                         for (int i = 0; i < reader.DefaultSuffix.Length; i++)
                         {
                             string p = name + "." + reader.DefaultSuffix[i];
-                            if (flag)
-                            {
-                                if (ResourcesAll.TryGetValue(p, out ContentInfo contentInfo))
-                                {
-                                    contents.Add(contentInfo);
-                                }
-
-                            }
-                            else
-                            {
-                                if (Resources.TryGetValue(p, out ContentInfo contentInfo))
-                                {
-                                    contents.Add(contentInfo);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string p = name + suffix;
-                        if (flag)
-                        {
-                            if (ResourcesAll.TryGetValue(p, out ContentInfo contentInfo))
-                            {
-                                contents.Add(contentInfo);
-                            }
-
-                        }
-                        else
-                        {
                             if (Resources.TryGetValue(p, out ContentInfo contentInfo))
                             {
                                 contents.Add(contentInfo);
                             }
                         }
                     }
+                    else
+                    {
+                        string p = name + suffix;
+                        if (Resources.TryGetValue(p, out ContentInfo contentInfo))
+                        {
+                            contents.Add(contentInfo);
+                        }
+                    }
                     if (contents.Count == 0)
-                    {//修正subtexture
-                        contents.Add(new ContentInfo("survivalcraft", name));
+                    {//没有找到对应资源?
+                        contents.Add(new ContentInfo(name));
                     }
                     obj = reader.Get(contents.ToArray());
                 }
                 if (obj == null) throw new Exception("not found any res:" + name);
+                Caches.Add(name, obj);
                 return obj;
             }
         }
@@ -161,18 +130,9 @@ namespace Game
         {
             lock (syncobj)
             {
-                if (!ResourcesAll.TryGetValue(contentInfo.AbsolutePath, out ContentInfo info))
+                if (!Resources.TryGetValue(contentInfo.AbsolutePath, out ContentInfo info))
                 {
-                    ResourcesAll.Add(contentInfo.AbsolutePath, contentInfo);
-                }
-                string[] tmp = contentInfo.AbsolutePath.Split(new char[] { ':' });
-                if (tmp.Length == 2)
-                {
-                    if (Resources.TryGetValue(tmp[1], out ContentInfo info2))
-                    {
-                        Resources[tmp[1]] = contentInfo;
-                    }
-                    else Resources.Add(tmp[1], contentInfo);
+                    Resources.Add(contentInfo.AbsolutePath, contentInfo);
                 }
             }
         }
@@ -192,7 +152,6 @@ namespace Game
                     }
                     Caches.Remove(name);
                 }
-
             }
         }
         public static bool IsContent(object content)

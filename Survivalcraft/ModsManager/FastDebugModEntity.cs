@@ -47,7 +47,7 @@ namespace Game
                 {
                     string name = FilenameInZip.Substring(7);
                     FModFiles.Add(name,new FileInfo(Storage.GetSystemPath(abpath)));
-                    ContentInfo contentInfo = new ContentInfo(modInfo.PackageName, name);
+                    ContentInfo contentInfo = new ContentInfo(name);
                     MemoryStream memoryStream = new MemoryStream();
                     using (Stream stream = Storage.OpenFile(abpath, OpenFileMode.Read))
                     {
