@@ -51,7 +51,6 @@ namespace Game
     }
     public static class ContentManager
     {
-        internal static string splitString = "\x04\xa4\xe9\x09";
         internal static Dictionary<string, ContentInfo> Resources = new Dictionary<string, ContentInfo>();
         internal static Dictionary<string, IContentReader.IContentReader> ReaderList = new Dictionary<string, IContentReader.IContentReader>();
         internal static Dictionary<string, List<object>> Caches = new Dictionary<string, List<object>>();
@@ -61,6 +60,7 @@ namespace Game
             ReaderList.Clear();
             Resources.Clear();
             Caches.Clear();
+            Display.DeviceReset += Display_DeviceReset;
         }
         public static T Get<T>(string name, string suffix = null) where T : class
         {
@@ -163,9 +163,9 @@ namespace Game
         }
         public static bool IsContent(object content)
         {
-            foreach (var obj in Caches.Values)
+            foreach (var l in Caches.Values)
             {
-                if (obj == content) return true;
+                foreach (var d in l) if (d == content) return true;
             }
             return false;
         }

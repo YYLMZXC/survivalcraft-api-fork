@@ -75,10 +75,9 @@ namespace Game
 			m_subsystemTerrain = subsystemTerrain;
 			m_subsystemSky = subsystemTerrain.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
 			m_subsystemAnimatedTextures = subsystemTerrain.SubsystemAnimatedTextures;
-			OpaqueShader = new Shader(ShaderCodeManager.GetFast("Shaders/Opaque.vsh"), ShaderCodeManager.GetFast("Shaders/Opaque.psh"), new ShaderMacro[] { new ShaderMacro("Opaque") });
-			AlphatestedShader = new Shader(ShaderCodeManager.GetFast("Shaders/AlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/AlphaTested.psh"), new ShaderMacro[] { new ShaderMacro("ALPHATESTED") });
-			TransparentShader = new Shader(ShaderCodeManager.GetFast("Shaders/Transparent.vsh"), ShaderCodeManager.GetFast("Shaders/Transparent.psh"), new ShaderMacro[] { new ShaderMacro("Transparent") });
-			//ShadowShader = new Shader(ShaderCodeManager.GetExternal("Shaders/Shadow.vsh"), ShaderCodeManager.GetExternal("Shaders/Shadow.psh"), new ShaderMacro[] { new ShaderMacro("Shadow") });
+			if (OpaqueShader == null) OpaqueShader = new Shader(ShaderCodeManager.GetFast("Shaders/Opaque.vsh"), ShaderCodeManager.GetFast("Shaders/Opaque.psh"), new ShaderMacro[] { new ShaderMacro("Opaque") });
+			if (AlphatestedShader == null) AlphatestedShader = new Shader(ShaderCodeManager.GetFast("Shaders/AlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/AlphaTested.psh"), new ShaderMacro[] { new ShaderMacro("ALPHATESTED") });
+			if (TransparentShader == null) TransparentShader = new Shader(ShaderCodeManager.GetFast("Shaders/Transparent.vsh"), ShaderCodeManager.GetFast("Shaders/Transparent.psh"), new ShaderMacro[] { new ShaderMacro("Transparent") });
 			Display.DeviceReset += Display_DeviceReset;
 		}
 
@@ -166,7 +165,7 @@ namespace Game
 				}
 				DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry, num3);
 				DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry, 32);
-				//DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk.Geometry, 64);
+				DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk.Geometry, 64);
 				ChunksDrawn++;
 			}
 		}
