@@ -51,9 +51,10 @@ namespace Game
     }
     public static class ContentManager
     {
+        internal static string splitString = "\x04\xa4\xe9\x09";
         internal static Dictionary<string, ContentInfo> Resources = new Dictionary<string, ContentInfo>();
         internal static Dictionary<string, IContentReader.IContentReader> ReaderList = new Dictionary<string, IContentReader.IContentReader>();
-        internal static Dictionary<string, object> Caches = new Dictionary<string, object>();
+        internal static Dictionary<string, List<object>> Caches = new Dictionary<string, List<object>>();
         internal static object syncobj = new object();
         public static void Initialize()
         {
@@ -69,13 +70,14 @@ namespace Game
         {
             lock (syncobj)
             {
-                string fullname = suffix == null ? name : name + "." + suffix;
-                if (Caches.TryGetValue(fullname, out var o)) return o;
                 object obj = null;
+                string key = name == null ? name : name + "." + suffix;
                 if (type == typeof(Subtexture))
                 {
                     return TextureAtlasManager.GetSubtexture(name);
                 }
+                if (Caches.TryGetValue(key, out var cacheList)) obj = cacheList.Find(f => f.GetType() == type);
+                if (obj != null) return obj;
                 if (ReaderList.TryGetValue(type.FullName, out IContentReader.IContentReader reader))
                 {
                     List<ContentInfo> contents = new List<ContentInfo>();
@@ -105,7 +107,8 @@ namespace Game
                     obj = reader.Get(contents.ToArray());
                 }
                 if (obj == null) throw new Exception("not found any res:" + name);
-                Caches.Add(fullname, obj);
+                if (cacheList == null) { cacheList = new List<object>(); Caches.Add(key, cacheList); }
+                cacheList.Add(obj);
                 return obj;
             }
         }
@@ -145,13 +148,16 @@ namespace Game
         {
             lock (syncobj)
             {
-                if (Caches.TryGetValue(name, out object obj))
+                if (Caches.TryGetValue(name, out var list))
                 {
-                    if (obj is IDisposable dis)
+                    foreach (var t in list)
                     {
-                        dis.Dispose();
+                        if (t is IDisposable d)
+                        {
+                            d.Dispose();
+                        }
                     }
-                    Caches.Remove(name);
+                    list.Remove(name);
                 }
             }
         }
@@ -165,15 +171,19 @@ namespace Game
         }
         public static void Display_DeviceReset()
         {
-            foreach (var item in Caches)
+            foreach (var i in Caches)
             {
-                if (item.Value is Texture2D || item.Value is Model || item.Value is BitmapFont)
+                var k = i.Key;
+                for (var j = 0; j < i.Value.Count; j++)
                 {
-                    Caches[item.Key] = Get(item.Value.GetType(), item.Key);
+                    var t = i.Value[j];
+                    if (t is Texture2D || t is Model || t is BitmapFont)
+                    {
+                        i.Value[j] = Get(t.GetType(), k);
+                    }
                 }
             }
         }
-
         public static ReadOnlyList<ContentInfo> List()
         {
             return new ReadOnlyList<ContentInfo>(Resources.Values.ToDynamicArray());
