@@ -19,7 +19,6 @@ public static class ModsManager
 {
     public const string APIVersion = "1.40";
     public const string SCVersion = "2.2.10.4";
-    public static bool ConfigLoaded = false;
     //1为api1.33 2为api1.4
     public const int Apiv = 3;
 
@@ -34,6 +33,8 @@ public static class ModsManager
                          ModsSetPath = ExternelPath + "/ModSettings.xml",
                          SettingPath = ExternelPath + "/Settings.xml",
                          LogPath = ExternelPath + "/Bugs";
+    public static bool IsAndroid = false;
+
 #endif
 #if android
     public static string ExternelPath = EngineActivity.BasePath,
@@ -47,10 +48,13 @@ public static class ModsManager
                          ModsSetPath = "config:/ModSettings.xml",
                          SettingPath = "config:/Settings.xml",
                          LogPath = ExternelPath + "Bugs";
+    public static bool IsAndroid = true;
+
 #endif
     public static string ModsPath = ExternelPath + "/Mods",
                          path;//移动端mods数据文件夹
     internal static ModEntity SurvivalCrafModEntity;
+    internal static bool ConfigLoaded = false;
 
     public class ModSettings
     {

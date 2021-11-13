@@ -277,8 +277,9 @@ namespace Game
         {
             return IsAimable;
         }
-        public virtual void Eat(int value,ComponentVitalStats componentVitalStats) { 
-        
+        public virtual bool Eat(int value)
+        {
+            return false;
         }
         public virtual bool CanWear(int value) {
             return false;

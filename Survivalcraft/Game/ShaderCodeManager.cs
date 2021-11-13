@@ -7,8 +7,6 @@ namespace Game
 {
     public class ShaderCodeManager
     {
-        public static bool IsAndroid = (Environment.CurrentDirectory == "/");
-
         public static string GetFast(string fname)
         {
             string shaderText = string.Empty;
@@ -40,7 +38,7 @@ namespace Game
             {
                 if (external)
                 {
-                    string path = IsAndroid ? "android:/SurvivalCraft2.2/" : "app:/";
+                    string path =ModsManager.IsAndroid ? "android:/SurvivalCraft2.2/" : "app:/";
                     Stream stream = Storage.OpenFile(Storage.CombinePaths(path, includefname), OpenFileMode.Read);
                     StreamReader streamReader = new StreamReader(stream);
                     shaderTextTemp = streamReader.ReadToEnd();
@@ -70,7 +68,7 @@ namespace Game
                     }
                     else
                     {
-                        if (!IsAndroid)
+                        if (!ModsManager.IsAndroid)
                         {
                             includeText += lines[l].Replace("highp", "") + "\n";
                         }

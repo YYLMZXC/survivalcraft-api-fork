@@ -69,7 +69,8 @@ namespace Game
         {
             lock (syncobj)
             {
-                if (Caches.TryGetValue(name, out var o)) return o;
+                string fullname = suffix == null ? name : name + "." + suffix;
+                if (Caches.TryGetValue(fullname, out var o)) return o;
                 object obj = null;
                 if (type == typeof(Subtexture))
                 {
@@ -104,7 +105,7 @@ namespace Game
                     obj = reader.Get(contents.ToArray());
                 }
                 if (obj == null) throw new Exception("not found any res:" + name);
-                Caches.Add(name, obj);
+                Caches.Add(fullname, obj);
                 return obj;
             }
         }

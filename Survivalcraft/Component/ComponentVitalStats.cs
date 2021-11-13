@@ -126,15 +126,12 @@ namespace Game
                 m_wetness = MathUtils.Saturate(value);
             }
         }
-        public virtual Action<int> OnEat { get; set; }
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
         public virtual bool Eat(int value)
         {
             int num = Terrain.ExtractContents(value);
-            Block obj = BlocksManager.Blocks[num];
-            obj.Eat(value, this);
-            OnEat?.Invoke(value);
+            Block obj = BlocksManager.Blocks[num];            
             float num2 = obj.GetNutritionalValue(value);
             float sicknessProbability = obj.GetSicknessProbability(value);
             if (num2 > 0f)
