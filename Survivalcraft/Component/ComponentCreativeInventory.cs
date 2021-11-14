@@ -9,6 +9,12 @@ namespace Game
 {
     public class ComponentCreativeInventory : Component, IInventory
     {
+        internal class Order {
+            public Block block;
+            public int order;
+            public int value;
+            public Order(Block b,int o,int v) { block = b;order = o;value = v; }
+        }
         public List<int> m_slots = new List<int>();
 
         public int m_activeSlotIndex;
@@ -89,12 +95,18 @@ namespace Game
             {
                 m_slots.Add(0);
             }
+            List<Order> orders = new List<Order>();
             foreach (Block item in BlocksManager.Blocks)
             {
-                foreach (int creativeValue in item.GetCreativeValues().OrderByDescending((int v) => item.GetDisplayOrder(v)))
+                foreach (int creativeValue in item.GetCreativeValues())
                 {
-                    m_slots.Add(creativeValue);
+                    orders.Add(new Order(item, item.GetDisplayOrder(creativeValue), creativeValue));
                 }
+            }
+            var orderList = orders.OrderBy(o => o.order);
+            foreach (var c in orderList)
+            {
+                m_slots.Add(c.value);
             }
             ValuesDictionary value = valuesDictionary.GetValue<ValuesDictionary>("Slots", null);
             if (value == null)

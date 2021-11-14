@@ -7,6 +7,13 @@ namespace Game
 {
     public class RecipaediaScreen : Screen
     {
+        internal class Order
+        {
+            public Block block;
+            public int order;
+            public int value;
+            public Order(Block b, int o, int v) { block = b; order = o; value = v; }
+        }
         public ListPanelWidget m_blocksList;
 
         public LabelWidget m_categoryLabel;
@@ -124,15 +131,19 @@ namespace Game
             string text = m_categories[m_categoryIndex];
             m_blocksList.ScrollPosition = 0f;
             m_blocksList.ClearItems();
+
+            List<Order> orders = new List<Order>();
             foreach (Block item in BlocksManager.Blocks)
             {
-                foreach (int creativeValue in item.GetCreativeValues().OrderBy((int v) => item.GetDisplayOrder(v)))
+                foreach (int creativeValue in item.GetCreativeValues())
                 {
-                    if (text == null || item.GetCategory(creativeValue) == text)
-                    {
-                        m_blocksList.AddItem(creativeValue);
-                    }
+                    orders.Add(new Order(item, item.GetDisplayOrder(creativeValue), creativeValue));
                 }
+            }
+            var orderList = orders.OrderBy(o => o.order);
+            foreach (var c in orderList)
+            {
+                m_blocksList.AddItem(c.value);
             }
         }
     }
