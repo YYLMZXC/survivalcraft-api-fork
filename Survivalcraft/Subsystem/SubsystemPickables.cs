@@ -226,7 +226,7 @@ namespace Game
                                     if (terrainRaycastResult.HasValue)
                                     {
                                         int cellValue = m_subsystemTerrain.Terrain.GetCellValue(terrainRaycastResult.Value.CellFace.X, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z);
-                                        SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(cellValue);
+                                        SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
                                         for (int i = 0; i < blockBehaviors.Length; i++)
                                         {
                                             blockBehaviors[i].OnHitByProjectile(terrainRaycastResult.Value.CellFace, pickable);

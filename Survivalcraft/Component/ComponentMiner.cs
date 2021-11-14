@@ -230,7 +230,7 @@ namespace Game
                         }
                         if (!flag)
                         {
-                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(placementData.Value);
+                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(placementData.Value));
                             for (int i = 0; i < blockBehaviors.Length; i++)
                             {
                                 blockBehaviors[i].OnItemPlaced(num2, num3, num4, ref placementData, value);
@@ -260,7 +260,7 @@ namespace Game
                 Poke(forceRestart: false);
                 return false;
             }
-            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(ActiveBlockValue);
+            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(ActiveBlockValue));
             for (int i = 0; i < blockBehaviors.Length; i++)
             {
                 if (blockBehaviors[i].OnUse(ray, this))
@@ -274,7 +274,7 @@ namespace Game
 
         public bool Interact(TerrainRaycastResult raycastResult)
         {            
-            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(raycastResult.Value);
+            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(raycastResult.Value));
             for (int i = 0; i < blockBehaviors.Length; i++)
             {
                 if (blockBehaviors[i].OnInteract(raycastResult, this))
@@ -371,7 +371,7 @@ namespace Game
                     Poke(forceRestart: false);
                     return true;
                 }
-                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(ActiveBlockValue);
+                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(ActiveBlockValue));
                 for (int i = 0; i < blockBehaviors.Length; i++)
                 {
                     if (blockBehaviors[i].OnAim(aim, this, state))

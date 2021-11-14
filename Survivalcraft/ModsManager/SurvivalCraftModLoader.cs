@@ -14,6 +14,7 @@ namespace Game
             ModsManager.RegisterHook("OnModelRendererDrawExtra", this);
             ModsManager.RegisterHook("GetMaxInstancesCount", this);
         }
+        
         public override void OnCameraChange(ComponentPlayer m_componentPlayer,ComponentGui componentGui)
         {
             GameWidget gameWidget = m_componentPlayer.GameWidget;

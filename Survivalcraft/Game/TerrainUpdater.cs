@@ -333,7 +333,7 @@ namespace Game
 			else if (m_task == null)
 			{
 				m_quitUpdateThread = false;
-				m_task = Task.Run((Action)ThreadUpdateFunction);
+				m_task = Task.Run(ThreadUpdateFunction);
 				UnpauseUpdateThread();
 				m_updateEvent.Set();
 			}
@@ -1238,10 +1238,10 @@ namespace Game
 					while (num2 < 255)
 					{
 						int cellValueFast = chunk.GetCellValueFast(num);
-						int num3 = Terrain.ExtractContents(cellValueFast);
-						if (num3 != 0)
+						int contents = Terrain.ExtractContents(cellValueFast);
+						if (contents != 0)
 						{
-							SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(num3);
+							SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(contents);
 							for (int k = 0; k < blockBehaviors.Length; k++)
 							{
 								blockBehaviors[k].OnBlockGenerated(cellValueFast, x, num2, z, isLoaded);

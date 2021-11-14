@@ -47,6 +47,7 @@ namespace Game
             return InHandOffset;
         }
         public Vector3 InHandRotation = Vector3.Zero;
+
         public virtual Vector3 GetInHandRotation(int value)
         {
             return InHandRotation;
@@ -243,19 +244,7 @@ namespace Game
         public virtual bool MatchCrafingId(string CraftId) {
             return CraftId == CraftingId;
         }
-        public virtual List<SubsystemBlockBehavior> GetBehaviors(GameEntitySystem.Project project, int value) {
-            List<SubsystemBlockBehavior> behaviors = new List<SubsystemBlockBehavior>();
-            string[] array = Behaviors.Split(new char[1]
-                {
-                    ','
-                }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string text in array)
-            {
-                SubsystemBlockBehavior item = project.FindSubsystem<SubsystemBlockBehavior>(text.Trim(), throwOnError: true);
-                behaviors.Add(item);
-            }
-            return behaviors;
-        }
+
         public virtual int GetPlayerLevelRequired(int value) {
             return PlayerLevelRequired;
         }

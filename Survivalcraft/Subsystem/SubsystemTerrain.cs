@@ -129,7 +129,7 @@ namespace Game
                 {
                     Point3 point2 = m_neighborOffsets[j];
                     int cellValue = Terrain.GetCellValue(point.X + point2.X, point.Y + point2.Y, point.Z + point2.Z);
-                    SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(cellValue);
+                    SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
                     for (int k = 0; k < blockBehaviors.Length; k++)
                     {
                         blockBehaviors[k].OnNeighborBlockChanged(point.X + point2.X, point.Y + point2.Y, point.Z + point2.Z, point.X, point.Y, point.Z);
@@ -306,12 +306,12 @@ namespace Game
             int num2 = Terrain.ExtractContents(value);
             if (num2 != num)
             {
-                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(cellValueFast);
+                SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValueFast));
                 for (int i = 0; i < blockBehaviors.Length; i++)
                 {
                     blockBehaviors[i].OnBlockRemoved(cellValueFast, value, x, y, z);
                 }
-                SubsystemBlockBehavior[] blockBehaviors2 = m_subsystemBlockBehaviors.GetBlockBehaviors(value);
+                SubsystemBlockBehavior[] blockBehaviors2 = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(value));
                 for (int j = 0; j < blockBehaviors2.Length; j++)
                 {
                     blockBehaviors2[j].OnBlockAdded(value, cellValueFast, x, y, z);
@@ -319,7 +319,7 @@ namespace Game
             }
             else
             {
-                SubsystemBlockBehavior[] blockBehaviors3 = m_subsystemBlockBehaviors.GetBlockBehaviors(value);
+                SubsystemBlockBehavior[] blockBehaviors3 = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(value));
                 for (int k = 0; k < blockBehaviors3.Length; k++)
                 {
                     blockBehaviors3[k].OnBlockModified(value, cellValueFast, x, y, z);
@@ -344,7 +344,7 @@ namespace Game
                         BlockDropValue dropValue = m_dropValues[i];
                         if (dropValue.Count > 0)
                         {
-                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(dropValue.Value);
+                            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(dropValue.Value));
                             for (int j = 0; j < blockBehaviors.Length; j++)
                             {
                                 blockBehaviors[j].OnItemHarvested(x, y, z, cellValue, ref dropValue, ref newValue);

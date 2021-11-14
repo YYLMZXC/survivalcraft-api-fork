@@ -66,7 +66,6 @@ public static class ModsManager
         public string HookName;
         public Dictionary<ModLoader, bool> Loaders = new Dictionary<ModLoader, bool>();
         public Dictionary<ModLoader, string> DisableReason = new Dictionary<ModLoader, string>();
-
         public ModHook(string name)
         {
             HookName = name;

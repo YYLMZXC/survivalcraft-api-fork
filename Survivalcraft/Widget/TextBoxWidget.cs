@@ -105,8 +105,8 @@ namespace Game
                     m_hasFocus = value;
                     if (value)
                     {
-#if DESKTOP
-                        if (Text == string.Empty)
+#if desktop
+                        if (m_hasFocus && Text == string.Empty)
                         {
                             //清空之前的输入
                             KeyboardInput.GetInput();

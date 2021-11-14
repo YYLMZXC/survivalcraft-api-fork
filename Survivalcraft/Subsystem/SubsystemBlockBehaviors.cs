@@ -6,50 +6,49 @@ using TemplatesDatabase;
 
 namespace Game
 {
-    public class SubsystemBlockBehaviors : Subsystem
-    {
-        public List<SubsystemBlockBehavior> m_blockBehaviors = new List<SubsystemBlockBehavior>();
+	public class SubsystemBlockBehaviors : Subsystem
+	{
+		public SubsystemBlockBehavior[][] m_blockBehaviorsByContents;
 
-        public Dictionary<int, List<SubsystemBlockBehavior>> m_blockBehaviorsbyid = new Dictionary<int, List<SubsystemBlockBehavior>>();
+		public List<SubsystemBlockBehavior> m_blockBehaviors = new List<SubsystemBlockBehavior>();
 
-        public ReadOnlyList<SubsystemBlockBehavior> BlockBehaviors => new ReadOnlyList<SubsystemBlockBehavior>(m_blockBehaviors);
+		public ReadOnlyList<SubsystemBlockBehavior> BlockBehaviors => new ReadOnlyList<SubsystemBlockBehavior>(m_blockBehaviors);
 
-        public SubsystemBlockBehavior[] GetBlockBehaviors(int value)
-        {
-            int id = Terrain.ExtractContents(value);
-            List<SubsystemBlockBehavior> behaviors = BlocksManager.Blocks[id].GetBehaviors(Project, value);
-            if (m_blockBehaviorsbyid.TryGetValue(id, out List<SubsystemBlockBehavior> bs))
-            {
-                foreach (var c in bs)
-                {
-                    if (!behaviors.Contains(c)) behaviors.Add(c);
-                }
+		public SubsystemBlockBehavior[] GetBlockBehaviors(int contents)
+		{
+			return m_blockBehaviorsByContents[contents];
+		}
 
-            }
-            return behaviors.ToArray();
-        }
-        public override void Load(ValuesDictionary valuesDictionary)
-        {
-            foreach (var subsystem in Project.Subsystems) {
-                if (subsystem is SubsystemBlockBehavior)
-                {
-                    SubsystemBlockBehavior behavior = subsystem as SubsystemBlockBehavior;
-                    foreach (int id in behavior.HandledBlocks)
-                    {
-                        if (m_blockBehaviorsbyid.TryGetValue(id, out List<SubsystemBlockBehavior> bs))
-                        {
-                            if (!bs.Contains(behavior)) bs.Add(behavior);
-                        }
-                        else
-                        {
-                            bs = new List<SubsystemBlockBehavior>();
-                            bs.Add(behavior);
-                            m_blockBehaviorsbyid.Add(id, bs);
-                        }
-                    }
-                    m_blockBehaviors.Add(behavior);
-                }
-            }
-        }
-    }
+		public override void Load(ValuesDictionary valuesDictionary)
+		{
+			m_blockBehaviorsByContents = new SubsystemBlockBehavior[BlocksManager.Blocks.Length][];
+			Dictionary<int, List<SubsystemBlockBehavior>> dictionary = new Dictionary<int, List<SubsystemBlockBehavior>>();
+			for (int i = 0; i < m_blockBehaviorsByContents.Length; i++)
+			{
+				dictionary[i] = new List<SubsystemBlockBehavior>();
+				string[] array = BlocksManager.Blocks[i].Behaviors.Split(new char[1]
+				{
+					','
+				}, StringSplitOptions.RemoveEmptyEntries);
+				foreach (string text in array)
+				{
+					SubsystemBlockBehavior item = base.Project.FindSubsystem<SubsystemBlockBehavior>(text.Trim(), throwOnError: true);
+					dictionary[i].Add(item);
+				}
+			}
+			foreach (SubsystemBlockBehavior item2 in base.Project.FindSubsystems<SubsystemBlockBehavior>())
+			{
+				m_blockBehaviors.Add(item2);
+				int[] handledBlocks = item2.HandledBlocks;
+				foreach (int key in handledBlocks)
+				{
+					dictionary[key].Add(item2);
+				}
+			}
+			for (int k = 0; k < m_blockBehaviorsByContents.Length; k++)
+			{
+				m_blockBehaviorsByContents[k] = dictionary[k].ToArray();
+			}
+		}
+	}
 }
