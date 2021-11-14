@@ -476,7 +476,6 @@ namespace Game
             ScreenLayout4 = ScreenLayout.Quadruple;
             
             HorizontalCreativeFlight = true;
-            TerrainMipmapsEnabled = true;
             LoadSettings();
             VersionsManager.CompareVersions(LastLaunchedVersion, "1.29");
             _ = 0;
