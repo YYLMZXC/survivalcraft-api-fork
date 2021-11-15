@@ -110,6 +110,7 @@ namespace Game {
                 modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
                 stream.Close();
             }
+            if (modInfo == null) return;
             if (GetFile("icon.png", out Stream stream2))
             {
                 LoadIcon(stream2);
