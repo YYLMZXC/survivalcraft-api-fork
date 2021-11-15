@@ -47,7 +47,7 @@ namespace Game
                 {
                     if (includefname.Contains(".txt"))
                     {
-                        includefname = includefname.Split('.')[0];
+                        includefname = includefname.Split(new char[1] { '.' })[0];
                         shaderTextTemp = ContentManager.Get<string>(includefname);
                     }
                     else
