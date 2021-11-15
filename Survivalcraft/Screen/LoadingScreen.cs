@@ -78,7 +78,7 @@ namespace Game
             AddLoadAction(delegate {//将所有的有效的scmod读取为ModEntity，并自动添加SurvivalCraftModEntity
                 ContentManager.Initialize();
                 MusicManager.CurrentMix = MusicManager.Mix.Menu;
-                ModsManager.Initialize();            
+                ModsManager.Initialize();
             });
             AddLoadAction(delegate {//检查所有Mod依赖项 
                 ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });            
@@ -153,9 +153,7 @@ namespace Game
                         try
                         {
                             XElement element = XElement.Load(stream);
-                            ModsManager.ModListAllDo((modEntity) => {
-                                modEntity.LoadSettings(element);
-                            });
+                            ModsManager.LoadSettings(element);
                         }
                         catch (Exception e)
                         {

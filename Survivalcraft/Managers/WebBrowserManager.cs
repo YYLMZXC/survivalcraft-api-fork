@@ -14,7 +14,12 @@ namespace Game
             }
             try
             {
+#if desktop
                 System.Diagnostics.Process.Start(url);
+#endif
+#if android
+                Engine.Window.Activity.OpenLink(url);
+#endif
             }
             catch (Exception ex)
             {

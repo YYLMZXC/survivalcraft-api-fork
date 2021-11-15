@@ -602,7 +602,6 @@ namespace Game
                 using (Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Create))
                 {
                     var xElement2 = new XElement("ModSettings");
-                    ModsManager.SaveSettings(xElement2);
                     XmlUtils.SaveXmlToStream(xElement2, stream, null, throwOnError: true);
                 }
                 Log.Information("Saved settings");

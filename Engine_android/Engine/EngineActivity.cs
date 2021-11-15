@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Net;
 using Android.Views;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,21 @@ namespace Engine
 		{
 			m_activity = this;
 		}
+		public void OpenLink(string link)
+		{
 
+			Intent intent = new Intent();
+
+			intent.SetAction("android.intent.action.VIEW");
+
+			Android.Net.Uri content_url = Android.Net.Uri.Parse(link);
+
+			intent.SetData(content_url);
+
+			intent.SetClassName("com.android.browser", "com.android.browser.BrowserActivity");
+
+			StartActivity(intent);
+		}
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);

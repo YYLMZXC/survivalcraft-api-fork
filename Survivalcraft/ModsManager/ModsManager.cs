@@ -265,8 +265,9 @@ public static class ModsManager
 
     public static void LoadSettings(XElement xElement)
     {
-        foreach (var c in xElement.Element("Configs").Attributes()) {
-            Configs.Add(c.Name.LocalName, c.Value);
+        foreach (var c in xElement.Element("Configs").Attributes())
+        {
+            if(!Configs.ContainsKey(c.Name.LocalName))Configs.Add(c.Name.LocalName, c.Value);
         }
         foreach (ModEntity modEntity in ModList)
         {
@@ -280,8 +281,6 @@ public static class ModsManager
             Configs.Add(key, value);
         }
         Configs[key] = value;
-
-
     }
 
     public static string ImportMod(string name, Stream stream)

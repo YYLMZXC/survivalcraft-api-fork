@@ -16,6 +16,5 @@ namespace SC.Android
             base.OnCreate(savedInstanceState);
             Program.Main();  
         }
-
     }
 }
