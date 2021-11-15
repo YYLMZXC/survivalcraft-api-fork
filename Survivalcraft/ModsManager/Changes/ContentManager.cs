@@ -71,7 +71,7 @@ namespace Game
             lock (syncobj)
             {
                 object obj = null;
-                string key = name == null ? name : name + "." + suffix;
+                string key = suffix == null ? name : name + "." + suffix;
                 if (type == typeof(Subtexture))
                 {
                     return TextureAtlasManager.GetSubtexture(name);
@@ -81,11 +81,12 @@ namespace Game
                 if (ReaderList.TryGetValue(type.FullName, out IContentReader.IContentReader reader))
                 {
                     List<ContentInfo> contents = new List<ContentInfo>();
+                    string p = string.Empty;
                     if (suffix == null)
                     {
                         for (int i = 0; i < reader.DefaultSuffix.Length; i++)
                         {
-                            string p = name + "." + reader.DefaultSuffix[i];
+                            p = name + "." + reader.DefaultSuffix[i];
                             if (Resources.TryGetValue(p, out ContentInfo contentInfo))
                             {
                                 contents.Add(contentInfo);
@@ -94,7 +95,7 @@ namespace Game
                     }
                     else
                     {
-                        string p = name + suffix;
+                        p = name + suffix;
                         if (Resources.TryGetValue(p, out ContentInfo contentInfo))
                         {
                             contents.Add(contentInfo);
@@ -102,11 +103,10 @@ namespace Game
                     }
                     if (contents.Count == 0)
                     {//没有找到对应资源?
-                        contents.Add(new ContentInfo(name));
+                        throw new Exception("Not Found Res [" + name + "][" + type.FullName + "]");
                     }
                     obj = reader.Get(contents.ToArray());
                 }
-                if (obj == null) throw new Exception("not found any res:" + name);
                 if (cacheList == null) { cacheList = new List<object>(); Caches.Add(key, cacheList); }
                 cacheList.Add(obj);
                 return obj;

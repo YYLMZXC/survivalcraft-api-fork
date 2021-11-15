@@ -20,6 +20,8 @@ namespace Game
 
         public uint Crc32;
 
+        public bool IsFilenameUtf8;
+
         public DateTime ModifyTime;
 
         public string Comment;

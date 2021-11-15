@@ -91,16 +91,6 @@ namespace Game {
             LoadingScreen.Info("初始化Mod方法:"+modInfo?.Name);
             ModLoader_?.__ModInitialize();
         }
-        public string toHex(string input) {
-            char[] values = input.ToCharArray();
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (char letter in values)
-            {
-                int value = Convert.ToInt32(letter);
-                stringBuilder.Append(String.Format("{0:X} ", value));
-            }
-            return stringBuilder.ToString();
-        }
         /// <summary>
         /// 初始化Pak资源
         /// </summary>
@@ -110,7 +100,8 @@ namespace Game {
             if (ModArchive == null) return;
             List<ZipArchiveEntry> entries = ModArchive.ReadCentralDir();
             foreach (ZipArchiveEntry zipArchiveEntry in entries) {
-                if (zipArchiveEntry.FileSize > 0) {
+                if (zipArchiveEntry.FileSize > 0)
+                {
                     ModFiles.Add(zipArchiveEntry.FilenameInZip, zipArchiveEntry);
                 }
             }
@@ -126,10 +117,15 @@ namespace Game {
             }
             foreach (var c in ModFiles) {
                 ZipArchiveEntry zipArchiveEntry = c.Value;
-                if (zipArchiveEntry.FilenameInZip.StartsWith("Assets/"))
+                string filename = zipArchiveEntry.FilenameInZip;
+                if (!zipArchiveEntry.IsFilenameUtf8)
+                {
+                    ModsManager.AddException(new Exception("文件名["+zipArchiveEntry.FilenameInZip+"]编码不是Utf8，请进行修正，相关Mod[" + modInfo.Name + "]"));
+                }
+                if (filename.StartsWith("Assets/"))
                 {
                     MemoryStream memoryStream = new MemoryStream();
-                    ContentInfo contentInfo = new ContentInfo(zipArchiveEntry.FilenameInZip.Substring(7));
+                    ContentInfo contentInfo = new ContentInfo(filename.Substring(7));
                     ModArchive.ExtractFile(zipArchiveEntry, memoryStream);
                     contentInfo.SetContentStream(memoryStream);
                     ContentManager.Add(contentInfo);

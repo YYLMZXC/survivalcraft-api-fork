@@ -119,9 +119,9 @@ namespace Game
 						}
 						SettingsManager.ResolutionMode = resolutionMode;
 					}
+					string path = Storage.CombinePaths(ModsManager.ScreenCapturePath, filename);
 					if (!Storage.DirectoryExists(ModsManager.ScreenCapturePath)) Storage.CreateDirectory(ModsManager.ScreenCapturePath);
-					string path = Storage.CombinePaths(Storage.GetSystemPath(ModsManager.ScreenCapturePath), filename);
-					using (FileStream stream = new FileStream(path, FileMode.Create))
+					using (Stream stream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
 					{
 						byte[] array = new byte[4 * renderTarget2D.Width * renderTarget2D.Height];
 						renderTarget2D.GetData(array, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));
@@ -131,7 +131,7 @@ namespace Game
 						bitmap.Compress(Bitmap.CompressFormat.Png, 100, stream);
 					}
 					Intent intent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
-					intent.SetData(Android.Net.Uri.FromFile(new Java.IO.File(path)));
+					intent.SetData(Android.Net.Uri.FromFile(new Java.IO.File(Storage.GetSystemPath(path))));
 					Window.Activity.SendBroadcast(intent);
 				}
 			}

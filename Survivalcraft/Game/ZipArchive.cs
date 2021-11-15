@@ -126,6 +126,43 @@ namespace Game
             }
             ZipFileStream = null;
         }
+        private static bool IsUTF8Bytes(byte[] data,int start,int count)
+        {
+            int charByteCounter = 1; //计算当前正分析的字符应还有的字节数 
+            byte curByte; //当前分析的字节. 
+            int end = start + count;
+            for (int i = start; i < end; i++)
+            {
+                curByte = data[i];
+                if (charByteCounter == 1)
+                {
+                    if (curByte >= 0x80)
+                    {
+                        while (((curByte <<= 1) & 0x80) != 0)
+                        {
+                            charByteCounter++;
+                        }
+                        if (charByteCounter == 1 || charByteCounter > 6)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    if ((curByte & 0xC0) != 0x80)
+                    {
+                        return false;
+                    }
+                    charByteCounter--;
+                }
+            }
+            if (charByteCounter > 1)
+            {
+                throw new Exception("非预期的byte格式");
+            }
+            return true;
+        }
 
         public List<ZipArchiveEntry> ReadCentralDir()
         {
@@ -149,10 +186,11 @@ namespace Game
                 num3 = BitConverter.ToUInt16(CentralDirImage, i + 32);
                 uint headerOffset = BitConverter.ToUInt32(CentralDirImage, i + 42);
                 uint headerSize = (uint)(46 + num + num2 + num3);
-                Encoding uTF = Encoding.Default;
+                Encoding uTF = Encoding.UTF8;
                 var zipArchiveEntry = new ZipArchiveEntry();
                 zipArchiveEntry.Method = (Compression)method;
                 zipArchiveEntry.FilenameInZip = NormalizedFilename(uTF.GetString(CentralDirImage, i + 46, num));
+                zipArchiveEntry.IsFilenameUtf8 = IsUTF8Bytes(CentralDirImage, i + 46, num);
                 zipArchiveEntry.FileOffset = GetFileOffset(headerOffset);
                 zipArchiveEntry.FileSize = fileSize;
                 zipArchiveEntry.CompressedSize = compressedSize;

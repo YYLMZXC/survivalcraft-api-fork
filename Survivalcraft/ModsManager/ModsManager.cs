@@ -38,7 +38,7 @@ public static class ModsManager
 #endif
 #if android
     public static string ExternelPath = EngineActivity.BasePath,
-                         ScreenCapturePath = ExternelPath + "ScreenCapture",
+                         ScreenCapturePath = ExternelPath + "/ScreenCapture",
                          UserDataPath = "config:/UserId.dat",
                          FurniturePacksDirectoryName = "config:/FurniturePacks",
                          CharacterSkinsDirectoryName = "config:/CharacterSkins",
@@ -47,7 +47,7 @@ public static class ModsManager
                          CommunityContentCachePath = "config:/CommunityContentCache.xml",
                          ModsSetPath = "config:/ModSettings.xml",
                          SettingPath = "config:/Settings.xml",
-                         LogPath = ExternelPath + "Bugs";
+                         LogPath = ExternelPath + "/Bugs";
     public static bool IsAndroid = true;
 
 #endif
@@ -538,7 +538,6 @@ public static class ModsManager
             xElement.Add(MergeXml);
         }
     }
-
     public static void CombineCr(XElement xElement, Stream cloorcr)
     {
         XElement MergeXml = XmlUtils.LoadXmlFromStream(cloorcr, Encoding.UTF8, true);
