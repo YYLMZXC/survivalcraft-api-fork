@@ -52,13 +52,14 @@ namespace Engine
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-			if (CheckSelfPermission(Manifest.Permission.WriteExternalStorage)!=Permission.Granted) {
+			if (CheckSelfPermission(Manifest.Permission.WriteExternalStorage) != Permission.Granted)
+			{
 				RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, 0);
 			}
 			RequestWindowFeature(WindowFeatures.NoTitle);
 			Window.AddFlags(WindowManagerFlags.Fullscreen);
 			VolumeControlStream = Android.Media.Stream.Music;
-			RequestedOrientation = ScreenOrientation.UserLandscape;
+			RequestedOrientation = ScreenOrientation.SensorLandscape;
 			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 			string[] flist = Assets.List("");
 			BasePath = new StreamReader(Assets.Open("apppath.txt")).ReadToEnd();
