@@ -55,6 +55,8 @@ namespace Game
 
 		public bool AreBehaviorsNotified;
 
+		public object lockobj = new object();
+
 		public bool IsLoaded;
 
 		public volatile bool NewGeometryData;
