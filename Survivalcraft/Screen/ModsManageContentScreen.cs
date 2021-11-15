@@ -30,6 +30,8 @@ public class ModsManageContentScreen : Screen
 
     public LabelWidget m_modsContentLabel;
 
+    public LabelWidget m_filterLabel;
+
     public ButtonWidget m_actionButton;
 
     public ButtonWidget m_actionButton2;
@@ -56,10 +58,17 @@ public class ModsManageContentScreen : Screen
 
     public string m_installPath = "app:/Mods";
 
-    public string[] m_commonPaths = new string[2]
+    public string[] m_commonPaths = new string[9]
     {
         "android:/Download",
-        "android:/Android/data/com.tencent.mobileqq/Tencent/QQfile_recv"
+        "android:/Android/data/com.tencent.mobileqq/Tencent/QQfile_recv",
+        "android:/Android/data/com.tencent.tim/Tencent/TIMfile_recv",
+        "android:tencent/TIMfile_recv",
+        "android:tencent/QQfile_recv",
+        "android:/Quark/Download",
+        "android:/BaiduNetdisk",
+        "android:/UCDownloads",
+        "android:/baidu/searchbox/downloads"
     };
 
     public ModsManageContentScreen()
@@ -75,11 +84,13 @@ public class ModsManageContentScreen : Screen
         m_modsContentList = Children.Find<ListPanelWidget>("ModsContentList");
         m_topBarLabel = Children.Find<LabelWidget>("TopBar.Label");
         m_modsContentLabel = Children.Find<LabelWidget>("ModsContentLabel");
+        m_filterLabel = Children.Find<LabelWidget>("Filter");
         m_actionButton = Children.Find<ButtonWidget>("ActionButton");
         m_actionButton2 = Children.Find<ButtonWidget>("ActionButton2");
         m_changeFilterButton = Children.Find<ButtonWidget>("ChangeFilter");
         m_upDirectoryButton = Children.Find<ButtonWidget>("UpDirectory");
         m_topBarLabel.Text = LanguageControl.Get(fName, 1);
+        m_filterLabel.Text = LanguageControl.Get(fName, 36);
         m_modsContentList.ItemWidgetFactory = delegate (object item)
         {
             ModItem modItem = (ModItem)item;
@@ -309,24 +320,17 @@ public class ModsManageContentScreen : Screen
         }
         if (m_changeFilterButton.IsClicked)
         {
-            DialogsManager.ShowDialog(null, new ListSelectionDialog(null, new List<string> { LanguageControl.Get(fName, 36), LanguageControl.Get(fName, 37) }, 60f, (object item) => (string)item, delegate (object item)
+            if(m_filter == StateFilter.UninstallState)
             {
-                string selectionResult = (string)item;
-                if (selectionResult == LanguageControl.Get(fName, 37))
-                {
-                    SetPath(m_installPath);
-                    m_filter = StateFilter.InstallState;
-                }
-                else
-                {
-                    if (m_filter == StateFilter.InstallState)
-                    {
-                        SetPath(m_lastPath);
-                        m_filter = StateFilter.UninstallState;
-                    }
-                }
-                UpdateList();
-            }));
+                m_filter = StateFilter.InstallState;
+                SetPath(m_installPath);
+            }
+            else
+            {
+                m_filter = StateFilter.UninstallState;
+                SetPath(m_uninstallPath);
+            }
+            UpdateList();
         }
         if (m_upDirectoryButton.IsClicked)
         {
@@ -374,6 +378,7 @@ public class ModsManageContentScreen : Screen
     {
         m_modsContentList.ClearItems();
         m_modsContentLabel.Text = LanguageControl.Get(fName, 40) + SetPathText(m_path);
+        m_filterLabel.Text = (m_filter == StateFilter.UninstallState) ? LanguageControl.Get(fName, 36) : LanguageControl.Get(fName, 37);
         if (m_filter == StateFilter.InstallState) m_installModInfo.Clear();
         IEnumerable<string> fileNameList = Storage.ListFileNames(m_path);
         foreach (string fileName in fileNameList)
@@ -441,10 +446,19 @@ public class ModsManageContentScreen : Screen
             if (!string.IsNullOrEmpty(extension) && extension.ToLower() == ".scmod")
             {
                 string pathName = Storage.CombinePaths(path, fileName);
-                Stream stream = Storage.OpenFile(pathName, OpenFileMode.Read);
+                Stream stream = null;
                 try
                 {
-                    ModEntity modEntity = new ModEntity(ZipArchive.Open(stream, true));
+                    ModEntity modEntity = null;
+                    try
+                    {
+                        stream = Storage.OpenFile(pathName, OpenFileMode.Read);
+                        modEntity = new ModEntity(ZipArchive.Open(stream, true));
+                    }
+                    catch
+                    {
+                    }
+                    if (stream == null || modEntity == null) continue;
                     if (modEntity.modInfo == null || string.IsNullOrEmpty(modEntity.modInfo.PackageName) || !modEntity.modInfo.ApiVersion.Contains("1.4")) continue;
                     string uninstallPathName = Storage.CombinePaths(m_uninstallPath, fileName);
                     if (!Storage.FileExists(uninstallPathName))
