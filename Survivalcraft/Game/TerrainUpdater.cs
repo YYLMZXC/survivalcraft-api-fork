@@ -1226,32 +1226,39 @@ namespace Game
 			{
 				blockBehavior.OnChunkInitialized(chunk);
 			}
-			bool isLoaded = chunk.IsLoaded;
-			for (int i = 0; i < 16; i++)
-			{
-				for (int j = 0; j < 16; j++)
+			Task.Run(delegate {
+				lock (chunk.lockobj)
 				{
-					int x = i + chunk.Origin.X;
-					int z = j + chunk.Origin.Y;
-					int num = TerrainChunk.CalculateCellIndex(i, 0, j);
-					int num2 = 0;
-					while (num2 < 255)
+					bool isLoaded = chunk.IsLoaded;
+					for (int i = 0; i < 16; i++)
 					{
-						int cellValueFast = chunk.GetCellValueFast(num);
-						int contents = Terrain.ExtractContents(cellValueFast);
-						if (contents != 0)
+						for (int j = 0; j < 16; j++)
 						{
-							SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(contents);
-							for (int k = 0; k < blockBehaviors.Length; k++)
+							int x = i + chunk.Origin.X;
+							int z = j + chunk.Origin.Y;
+							int num = TerrainChunk.CalculateCellIndex(i, 0, j);
+							int num2 = 0;
+							while (num2 < 255)
 							{
-								blockBehaviors[k].OnBlockGenerated(cellValueFast, x, num2, z, isLoaded);
+								int cellValueFast = chunk.GetCellValueFast(num);
+								int contents = Terrain.ExtractContents(cellValueFast);
+								if (contents != 0)
+								{
+									SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(contents);
+									for (int k = 0; k < blockBehaviors.Length; k++)
+									{
+										blockBehaviors[k].OnBlockGenerated(cellValueFast, x, num2, z, isLoaded);
+									}
+								}
+								num2++;
+								num++;
 							}
 						}
-						num2++;
-						num++;
 					}
+
 				}
-			}
+
+			});
 		}
 
 		public void UnpauseUpdateThread()

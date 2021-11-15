@@ -9,7 +9,7 @@ namespace Game
     {
         public int m_craftingGridSize;
 
-        public string[] m_matchedIngredients = null;
+        public string[] m_matchedIngredients = new string[9];
 
         public CraftingRecipe m_matchedRecipe;
 
@@ -94,7 +94,6 @@ namespace Game
         public virtual void UpdateCraftingResult()
         {
             int num = int.MaxValue;
-            m_matchedIngredients = new string[m_craftingGridSize * m_craftingGridSize];
             for (int i = 0; i < m_craftingGridSize; i++)
             {
                 for (int j = 0; j < m_craftingGridSize; j++)
