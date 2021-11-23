@@ -146,7 +146,12 @@ namespace Game
             return Get("WorldPalette", "Colors", index.ToString());
         }
         public static string Get(params string[] key)
+        {
+            return Get(out bool r, key);
+        }
+        public static string Get(out bool r, params string[] key)
         {//获得键值
+            r = false;
             JsonObject obj = KeyWords;
             JsonArray arr = null;
             for (int i = 0; i < key.Length; i++)
@@ -168,8 +173,11 @@ namespace Game
                         arr = ja;
                         flag = true;
                     }
-                    else return obj2.ToString();
-
+                    else
+                    {
+                        r = true;
+                        return obj2.ToString();
+                    }
                 }
                 else
                 {
@@ -187,7 +195,11 @@ namespace Game
                             arr = ja;
                             flag = true;
                         }
-                        else return obj2.ToString();
+                        else
+                        {
+                            r = true;
+                            return obj2.ToString();
+                        }
                     }
                 }
                 if (!flag)
@@ -195,15 +207,19 @@ namespace Game
                     return key[i];
                 }
             }
-            string r = "";
-            foreach (string s in key) r += ":" + s;
-            return r;
+            string str = "";
+            foreach (string s in key) str += s + ":";
+            return str;
         }
         public static string GetBlock(string name, string prop)
         {
             string[] nm = name.Split(new char[] { ':' }, StringSplitOptions.None);
-            if (nm.Length < 2) name = name + ":0";
-            return Get("Blocks", name, prop);
+            string result = Get(out bool r, "Blocks", name, prop);
+            if (!r)
+            {
+                result = Get(out r, "Blocks", nm.Length < 2 ? (name + ":0") : (nm[0] + ":0"), prop);
+            }
+            return result;
         }
         public static string GetContentWidgets(string name, string prop)
         {

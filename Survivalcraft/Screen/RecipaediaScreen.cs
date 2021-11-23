@@ -137,7 +137,7 @@ namespace Game
             {
                 foreach (int creativeValue in item.GetCreativeValues())
                 {
-                    orders.Add(new Order(item, item.GetDisplayOrder(creativeValue), creativeValue));
+                    if (string.IsNullOrEmpty(text) || item.GetCategory(creativeValue) == text) orders.Add(new Order(item, item.GetDisplayOrder(creativeValue), creativeValue));
                 }
             }
             var orderList = orders.OrderBy(o => o.order);
