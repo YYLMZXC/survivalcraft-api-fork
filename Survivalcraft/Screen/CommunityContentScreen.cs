@@ -33,6 +33,12 @@ namespace Game
 
         public ButtonWidget m_moreOptionsButton;
 
+        public ButtonWidget m_searchKey;
+
+        public TextBoxWidget m_inputKey;
+
+        public LabelWidget m_placeHolder;
+
         public object m_filter;
 
         public Order m_order;
@@ -53,6 +59,9 @@ namespace Game
             m_downloadButton = Children.Find<ButtonWidget>("Download");
             m_deleteButton = Children.Find<ButtonWidget>("Delete");
             m_moreOptionsButton = Children.Find<ButtonWidget>("MoreOptions");
+            m_inputKey = Children.Find<TextBoxWidget>("key");
+            m_placeHolder = Children.Find<LabelWidget>("placeholder");
+            m_searchKey = Children.Find<ButtonWidget>("Search");
             m_listPanel.ItemWidgetFactory = delegate (object item)
             {
                 var communityContentEntry = item as CommunityContentEntry;
@@ -92,6 +101,7 @@ namespace Game
 
         public override void Update()
         {
+            m_placeHolder.IsVisible = string.IsNullOrEmpty(m_inputKey.Text);
             var communityContentEntry = m_listPanel.SelectedItem as CommunityContentEntry;
             m_downloadButton.IsEnabled = (communityContentEntry != null);
             m_deleteButton.IsEnabled = (UserManager.ActiveUser != null && communityContentEntry != null && communityContentEntry.UserId == UserManager.ActiveUser.UniqueId);
@@ -105,6 +115,10 @@ namespace Game
                     m_order = (Order)item;
                     PopulateList(null);
                 }));
+            }
+            if (m_searchKey.IsClicked)
+            {
+                PopulateList(null);
             }
             if (m_changeFilterButton.IsClicked)
             {
@@ -167,7 +181,7 @@ namespace Game
             string text2 = (m_filter is string) ? ((string)m_filter) : string.Empty;
             string text3 = (m_filter is ExternalContentType) ? LanguageControl.Get(GetType().Name, m_filter.ToString()) : string.Empty;
             string text4 = LanguageControl.Get(GetType().Name, m_order.ToString());
-            string cacheKey = text2 + "\n" + text3 + "\n" + text4 + "\n" + text;
+            string cacheKey = text2 + "\n" + text3 + "\n" + text4 + "\n" + text + "\n" + m_inputKey.Text;
             m_moreLink = null;
             if (string.IsNullOrEmpty(cursor))
             {
@@ -184,7 +198,7 @@ namespace Game
             }
             var busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 2), autoHideOnCancel: false);
             DialogsManager.ShowDialog(null, busyDialog);
-            CommunityContentManager.List(cursor, text2, text3, text, text4, busyDialog.Progress, delegate (List<CommunityContentEntry> list, string nextCursor)
+            CommunityContentManager.List(cursor, text2, text3, text, text4,m_inputKey.Text, busyDialog.Progress, delegate (List<CommunityContentEntry> list, string nextCursor)
             {
                 DialogsManager.HideDialog(busyDialog);
                 m_contentExpiryTime = Time.RealTime + 300.0;

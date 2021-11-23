@@ -40,7 +40,7 @@ namespace Game
                     ShowTopic(helpTopic2);
                 }
             };
-            var kvs = LanguageControl.Get("Help");
+            var kvs = LanguageControl.KeyWords["Help"] as SimpleJson.JsonObject;
             foreach (var item in kvs)
             {
                 SimpleJson.JsonObject item3 = item.Value as SimpleJson.JsonObject;

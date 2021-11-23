@@ -17,6 +17,8 @@ namespace Game
 
         public ButtonWidget m_AllowInitialIntro;
 
+        public ButtonWidget m_MemoryBankStyle;
+
         public ButtonWidget m_horizontalCreativeFlightButton;
 
         public ContainerWidget m_horizontalCreativeFlightPanel;
@@ -36,7 +38,6 @@ namespace Game
         public SliderWidget m_holdDurationSlider;
 
         public SliderWidget m_dragDistanceSlider;
-        public static string fName = "SettingsControlsScreen";
 
         public SettingsControlsScreen()
         {
@@ -58,7 +59,7 @@ namespace Game
             m_creativeReachSlider = Children.Find<SliderWidget>("CreativeReachSlider");
             m_holdDurationSlider = Children.Find<SliderWidget>("HoldDurationSlider");
             m_dragDistanceSlider = Children.Find<SliderWidget>("DragDistanceSlider");
-
+            m_MemoryBankStyle = Children.Find<ButtonWidget>("MemoryBankStyle");
             m_horizontalCreativeFlightPanel.IsVisible = false;
         }
 
@@ -120,11 +121,15 @@ namespace Game
             {
                 SettingsManager.MinimumDragDistance = m_dragDistanceSlider.Value;
             }
+            if (m_MemoryBankStyle.IsClicked) {
+                SettingsManager.UsePrimaryMemoryBank = !SettingsManager.UsePrimaryMemoryBank;
+            }
             if (m_AllowInitialIntro.IsClicked) SettingsManager.AllowInitialIntro = !SettingsManager.AllowInitialIntro;
             m_moveControlModeButton.Text = LanguageControl.Get("MoveControlMode", SettingsManager.MoveControlMode.ToString());
             m_lookControlModeButton.Text = LanguageControl.Get("LookControlMode", SettingsManager.LookControlMode.ToString());
             m_leftHandedLayoutButton.Text = (SettingsManager.LeftHandedLayout ? LanguageControl.On : LanguageControl.Off);
             m_flipVerticalAxisButton.Text = (SettingsManager.FlipVerticalAxis ? LanguageControl.On : LanguageControl.Off);
+            m_MemoryBankStyle.Text = SettingsManager.UsePrimaryMemoryBank ? LanguageControl.Get(GetType().Name, 2) : LanguageControl.Get(GetType().Name, 3);
             m_AllowInitialIntro.Text = (SettingsManager.AllowInitialIntro ? LanguageControl.On : LanguageControl.Off);
             m_autoJumpButton.Text = (SettingsManager.AutoJump ? LanguageControl.On : LanguageControl.Off);
             m_horizontalCreativeFlightButton.Text = (SettingsManager.HorizontalCreativeFlight ? LanguageControl.On : LanguageControl.Off);
@@ -139,11 +144,11 @@ namespace Game
             m_creativeDigTimeSlider.Value = SettingsManager.CreativeDigTime;
             m_creativeDigTimeSlider.Text = $"{MathUtils.Round(1000f * SettingsManager.CreativeDigTime)}ms";
             m_creativeReachSlider.Value = SettingsManager.CreativeReach;
-            m_creativeReachSlider.Text = string.Format(LanguageControl.Get(fName, 1), $"{SettingsManager.CreativeReach:0.0} ");
+            m_creativeReachSlider.Text = string.Format(LanguageControl.Get(GetType().Name, 0), $"{SettingsManager.CreativeReach:0.0} ");
             m_holdDurationSlider.Value = SettingsManager.MinimumHoldDuration;
             m_holdDurationSlider.Text = $"{MathUtils.Round(1000f * SettingsManager.MinimumHoldDuration)}ms";
             m_dragDistanceSlider.Value = SettingsManager.MinimumDragDistance;
-            m_dragDistanceSlider.Text = $"{MathUtils.Round(SettingsManager.MinimumDragDistance)} " + LanguageControl.Get(fName, 2);
+            m_dragDistanceSlider.Text = $"{MathUtils.Round(SettingsManager.MinimumDragDistance)} " + LanguageControl.Get(GetType().Name, 1);
             if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
             {
                 ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);

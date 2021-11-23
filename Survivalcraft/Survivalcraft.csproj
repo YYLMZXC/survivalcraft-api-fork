@@ -33,7 +33,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;desktop</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -1001,7 +1001,7 @@
     <Compile Include="Widget\CrossbowWidget.cs" />
     <Compile Include="Widget\DispenserWidget.cs" />
     <Compile Include="Widget\DragHostWidget.cs" />
-    <Compile Include="Dialog\EditMemeryDialogB.cs" />
+    <Compile Include="Dialog\EditMemeryBankDialogAPI.cs" />
     <Compile Include="Widget\FireWidget.cs" />
     <Compile Include="Widget\FixedSizePanelWidget.cs" />
     <Compile Include="Widget\FontTextWidget.cs" />
@@ -1097,7 +1097,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

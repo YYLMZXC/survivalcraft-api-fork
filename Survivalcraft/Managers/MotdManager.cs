@@ -26,6 +26,8 @@ namespace Game
 
         public static Message m_message;
 
+        public static SimpleJson.JsonObject UpdateResult = null;
+
         public static Message MessageOfTheDay
         {
             get
@@ -53,7 +55,36 @@ namespace Game
                 ForceRedownload();
             }
         }
-
+        public static void UpdateVersion() {
+            string url = string.Format(SettingsManager.MotdUpdateCheckUrl, VersionsManager.SerializationVersion, VersionsManager.Platform, ModsManager.APIVersion, LanguageControl.LName());
+            WebManager.Get(url, null, null, new CancellableProgress(), data => {
+                UpdateResult = SimpleJson.SimpleJson.DeserializeObject<SimpleJson.JsonObject>(System.Text.Encoding.UTF8.GetString(data));
+            }, ex => {
+                Log.Error("Failed processing Update check. Reason: " + ex.Message);
+            });
+        }
+        public static void DownloadMotd()
+        {
+            Log.Information("Downloading MOTD");
+            string url = GetMotdUrl();
+            WebManager.Get(url, null, null, null, delegate (byte[] result)
+            {
+                try
+                {
+                    string motdLastDownloadedData = UnpackMotd(result);
+                    MessageOfTheDay = null;
+                    SettingsManager.MotdLastDownloadedData = motdLastDownloadedData;
+                    Log.Information("Downloaded MOTD");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Failed processing MOTD string. Reason: " + ex.Message);
+                }
+            }, delegate (Exception error)
+            {
+                Log.Error("Failed downloading MOTD. Reason: {0}", error.Message);
+            });
+        }
         public static void Update()
         {
             if (Time.PeriodicEvent(1.0, 0.0) && ModsManager.ConfigLoaded)
@@ -63,30 +94,8 @@ namespace Game
                 if (now >= SettingsManager.MotdLastUpdateTime + t)
                 {
                     SettingsManager.MotdLastUpdateTime = now;
-                    Log.Information("Downloading MOTD");
-                    
-                    string url = GetMotdUrl();
-                    WebManager.Get(url, null, null, null, delegate (byte[] result)
-                    {
-                        try
-                        {
-                            string motdLastDownloadedData = UnpackMotd(result);
-                            MessageOfTheDay = null;
-                            SettingsManager.MotdLastDownloadedData = motdLastDownloadedData;
-                            Log.Information("Downloaded MOTD");
-                            
-                            SettingsManager.MotdUseBackupUrl = false;
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Error("Failed processing MOTD string. Reason: " + ex.Message);
-                            SettingsManager.MotdUseBackupUrl = !SettingsManager.MotdUseBackupUrl;
-                        }
-                    }, delegate (Exception error)
-                    {
-                        Log.Error("Failed downloading MOTD. Reason: {0}", error.Message);
-                        SettingsManager.MotdUseBackupUrl = !SettingsManager.MotdUseBackupUrl;
-                    });
+                    DownloadMotd();
+                    UpdateVersion();
                 }
             }
             if (MessageOfTheDay == null && !string.IsNullOrEmpty(SettingsManager.MotdLastDownloadedData))
@@ -101,10 +110,9 @@ namespace Game
 
         public static string UnpackMotd(byte[] data)
         {
-            const string text = "motd.xml";
             using (var stream = new MemoryStream(data))
                 return new StreamReader(stream).ReadToEnd();
-            throw new InvalidOperationException($"\"{text}\" file not found in Motd zip archive.");
+            throw new InvalidOperationException($"\"motd.xml\" file not found in Motd zip archive.");
         }
 
         public static Message ParseMotd(string dataString)
@@ -124,7 +132,6 @@ namespace Game
                 XElement xElement = XmlUtils.LoadXmlFromString(dataString.Substring(num, num2 - num), throwOnError: true);
                 SettingsManager.MotdUpdatePeriodHours = XmlUtils.GetAttributeValue(xElement, "UpdatePeriodHours", 24);
                 SettingsManager.MotdUpdateUrl = XmlUtils.GetAttributeValue(xElement, "UpdateUrl", SettingsManager.MotdUpdateUrl);
-                SettingsManager.MotdBackupUpdateUrl = XmlUtils.GetAttributeValue(xElement, "BackupUpdateUrl", SettingsManager.MotdBackupUpdateUrl);
                 var message = new Message();
                 foreach (XElement item2 in xElement.Elements())
                 {
@@ -147,8 +154,6 @@ namespace Game
             }
             return null;
         }
-
-        public static string GetMotdUrl() => string.Format(SettingsManager.MotdUseBackupUrl ? SettingsManager.MotdBackupUpdateUrl :
-            SettingsManager.MotdUpdateUrl, VersionsManager.SerializationVersion, ModsManager.Configs["Language"]);
+        public static string GetMotdUrl() => string.Format(SettingsManager.MotdUpdateUrl, VersionsManager.SerializationVersion, ModsManager.Configs["Language"]);
     }
 }

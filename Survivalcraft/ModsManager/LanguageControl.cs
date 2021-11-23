@@ -133,59 +133,6 @@ namespace Game
                 }
             }
         }
-        public static JsonObject JsonArraytoObj(JsonArray jsonArray)
-        {
-            JsonObject obj = new JsonObject();
-            for (int i = 0; i < jsonArray.Count; i++)
-            {
-                obj.Add(i.ToString(), jsonArray[i]);
-            }
-            return obj;
-        }
-        public static bool Get(out string result,params string[] keys) {
-            int i = 0;
-            JsonObject jsonobj = KeyWords;
-            object obj = null;
-            result = string.Empty;
-            while (i < keys.Length)
-            {
-                if (jsonobj != null && jsonobj.ContainsKey(keys[i]))
-                {
-                    obj = jsonobj[keys[i]];
-                    if (obj is JsonArray) jsonobj = JsonArraytoObj(obj as JsonArray);
-                    else jsonobj = obj as JsonObject;
-                }
-                i++;
-            }
-            if (obj is string)
-            {
-                result = obj as string;
-                return true;
-            }
-            result = keys[--i];
-            return false;
-        }
-        public static JsonObject Get(params string[] keys)
-        {
-            int i = 0;
-            object obj = null;
-            JsonObject jsonobj = KeyWords;
-            while (i < keys.Length)
-            {
-                if (jsonobj != null && jsonobj.ContainsKey(keys[i]))
-                {
-                    obj = jsonobj[keys[i]];
-                    if (obj is JsonArray) jsonobj = JsonArraytoObj(obj as JsonArray);
-                    else jsonobj = obj as JsonObject;
-                }
-                i++;
-            }
-            if (obj is JsonObject)
-            {
-                return obj as JsonObject;
-            }
-            return new JsonObject();
-        }
         public static string LName()
         {
             return ModsManager.Configs["Language"];
@@ -194,60 +141,85 @@ namespace Game
         {//获得键值
             return Get(className, key.ToString());
         }
-        public static string Get(string className, string key)
+        public static string GetWorldPalette(int index)
+        {
+            return Get("WorldPalette", "Colors", index.ToString());
+        }
+        public static string Get(params string[] key)
         {//获得键值
-            if (Get(out string res, className, key.ToString()))
+            JsonObject obj = KeyWords;
+            JsonArray arr = null;
+            for (int i = 0; i < key.Length; i++)
             {
-                return res;
+                bool flag = false;
+                if (arr != null)
+                {
+                    int.TryParse(key[i], out int p);
+                    object obj2 = arr[p];
+                    if (obj2 is JsonObject jo)
+                    {
+                        obj = jo;
+                        arr = null;
+                        flag = true;
+                    }
+                    else if (obj2 is JsonArray ja)
+                    {
+                        obj = null;
+                        arr = ja;
+                        flag = true;
+                    }
+                    else return obj2.ToString();
+
+                }
+                else
+                {
+                    if (obj.TryGetValue(key[i], out object obj2))
+                    {
+                        if (obj2 is JsonObject jo)
+                        {
+                            obj = jo;
+                            arr = null;
+                            flag = true;
+                        }
+                        else if (obj2 is JsonArray ja)
+                        {
+                            obj = null;
+                            arr = ja;
+                            flag = true;
+                        }
+                        else return obj2.ToString();
+                    }
+                }
+                if (!flag)
+                {
+                    return key[i];
+                }
             }
-            return key;
+            string r = "";
+            foreach (string s in key) r += ":" + s;
+            return r;
         }
         public static string GetBlock(string name, string prop)
         {
             string[] nm = name.Split(new char[] { ':' }, StringSplitOptions.None);
-
-            if (Get(out string res, "Blocks", name, prop))
-            {
-                return res;
-            }
-            else if (nm.Length == 2 && Get(out string res2, "Blocks", string.Format("{0}:0", nm[0]), prop))
-            {
-                return res2;
-            }
-            return string.Empty;
+            if (nm.Length < 2) name = name + ":0";
+            return Get("Blocks", name, prop);
         }
         public static string GetContentWidgets(string name, string prop)
         {
-            if (Get(out string res, "ContentWidgets", name, prop))
-            {
-                return res;
-            }
-            return string.Empty;
+            return Get("ContentWidgets", name, prop);
         }
         public static string GetContentWidgets(string name, int pos)
         {
-            if (Get(out string res, "ContentWidgets", pos.ToString()))
-            {
-                return res;
-            }
-            return string.Empty;
+            return Get("ContentWidgets", name, pos.ToString());
         }
         public static string GetDatabase(string name, string prop)
         {
-            if (Get(out string res, "Database", name, prop))
-            {
-                return res;
-            }
-            return prop;
+            return Get("Database", name, prop);
         }
         public static string GetFireworks(string name, string prop)
         {
-            if (Get(out string res, "FireworksBlock", name, prop))
-            {
-                return res;
-            }
-            return string.Empty;
+            return Get("FireworksBlock", name, prop);
         }
-
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Game
 {
-    public class EditMemeryDialogB : Dialog
+    public class EditMemoryBankDialogAPI : Dialog
     {
         public MemoryBankData memory;
         public DynamicArray<byte> Data = new DynamicArray<byte>();
@@ -16,7 +16,6 @@ namespace Game
         public int setPosN = 0;//第几位数
         public int lastvalue = 0;
         public bool isclick = true;
-        public static string fName = "EditMemeryDialogB";
         public List<ClickTextWidget> list = new List<ClickTextWidget>();
 
         public byte LastOutput
@@ -25,7 +24,7 @@ namespace Game
             set;
         }
 
-        public EditMemeryDialogB(MemoryBankData memoryBankData, Action onCancel)
+        public EditMemoryBankDialogAPI(MemoryBankData memoryBankData, Action onCancel)
         {
             memory = memoryBankData;
             Data.Clear();
@@ -33,7 +32,7 @@ namespace Game
             var canvasWidget = new CanvasWidget() { Size = new Vector2(600f, 500f), HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center };
             var rectangleWidget = new RectangleWidget() { FillColor = new Color(0, 0, 0, 255), OutlineColor = new Color(128, 128, 128, 128), OutlineThickness = 2 };
             var stackPanel = new StackPanelWidget() { Direction = LayoutDirection.Vertical };
-            var labelWidget = new LabelWidget() { Text = LanguageControl.GetContentWidgets(fName, 0), HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0, 10) };
+            var labelWidget = new LabelWidget() { Text = LanguageControl.GetContentWidgets(GetType().Name, 0), HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0, 10) };
             var stackPanelWidget = new StackPanelWidget() { Direction = LayoutDirection.Horizontal, HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Near, Margin = new Vector2(10f, 10f) };
             Children.Add(canvasWidget);
             canvasWidget.Children.Add(rectangleWidget);
@@ -251,7 +250,7 @@ namespace Game
                     }
                     else if (cc == 16)
                     {
-                        stackPanelWidget.Children.Add(makeFuncButton(LanguageControl.GetContentWidgets(fName, 1), delegate ()
+                        stackPanelWidget.Children.Add(makeFuncButton(LanguageControl.GetContentWidgets(GetType().Name, 1), delegate ()
                         {
                             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             for (int ai = 0; ai < Data.Count; ai++)
@@ -265,7 +264,7 @@ namespace Game
                     }
                     else if (cc == 17)
                     {
-                        stackPanelWidget.Children.Add(makeFuncButton(LanguageControl.GetContentWidgets(fName, 2), delegate ()
+                        stackPanelWidget.Children.Add(makeFuncButton(LanguageControl.GetContentWidgets(GetType().Name, 2), delegate ()
                         {
                             AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                             var tmp = new DynamicArray<byte>();
@@ -286,14 +285,14 @@ namespace Game
                 }
                 stack.Children.Add(stackPanelWidget);
             }
-            var labelWidget = new LabelWidget() { FontScale = 0.8f, Text = LanguageControl.GetContentWidgets(fName, 3), HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0f, 10f), Color = Color.DarkGray };
+            var labelWidget = new LabelWidget() { FontScale = 0.8f, Text = LanguageControl.GetContentWidgets(GetType().Name, 3), HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0f, 10f), Color = Color.DarkGray };
             stack.Children.Add(labelWidget);
             stack.Children.Add(makeTextBox(delegate (TextBoxWidget textBoxWidget)
             {
                 LoadString(textBoxWidget.Text);
                 isclick = true;
             }, memory.SaveString(false)));
-            stack.Children.Add(makeButton(LanguageControl.GetContentWidgets(fName, 4), delegate ()
+            stack.Children.Add(makeButton(LanguageControl.GetContentWidgets(GetType().Name, 4), delegate ()
             {
                 for (int i = 0; i < Data.Count; i++)
                 {
@@ -303,7 +302,7 @@ namespace Game
                 AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                 DialogsManager.HideDialog(this);
             }));
-            stack.Children.Add(makeButton(LanguageControl.GetContentWidgets(fName, 5), delegate ()
+            stack.Children.Add(makeButton(LanguageControl.GetContentWidgets(GetType().Name, 5), delegate ()
             {
                 AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
                 DialogsManager.HideDialog(this);

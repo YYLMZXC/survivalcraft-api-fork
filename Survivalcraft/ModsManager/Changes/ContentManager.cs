@@ -138,6 +138,9 @@ namespace Game
                 {
                     Resources.Add(contentInfo.AbsolutePath, contentInfo);
                 }
+                else {
+                    Resources[contentInfo.AbsolutePath] = contentInfo;
+                }
             }
         }
         /// <summary>

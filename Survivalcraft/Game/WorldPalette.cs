@@ -1,10 +1,9 @@
 using Engine;
 using Engine.Serialization;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using TemplatesDatabase;
-
+using SimpleJson;
 namespace Game
 {
     public class WorldPalette
@@ -13,7 +12,6 @@ namespace Game
 
         public const int MaxNameLength = 16;
 
-        public static string fName = "WorldPalette";
         public static readonly Color[] DefaultColors = new Color[16]
         {
             new Color(255, 255, 255),
@@ -41,12 +39,13 @@ namespace Game
         public WorldPalette()
         {
             Colors = DefaultColors.ToArray();
-            SimpleJson.JsonObject jsonobj = LanguageControl.Get(fName);
-            Names = new string[jsonobj.Count];
+            JsonObject obj = LanguageControl.KeyWords[GetType().Name] as JsonObject;
+            JsonArray jsonArray = obj["Colors"] as JsonArray;
+            Names = new string[jsonArray.Count];
             int i = 0;
-            foreach (var iyt in jsonobj)
+            foreach (var iyt in jsonArray)
             {
-                Names[i++] = iyt.Value as string;
+                Names[i++] = iyt.ToString();
             }
         }
 
@@ -55,15 +54,15 @@ namespace Game
             string[] array = valuesDictionary.GetValue("Colors", new string(';', 15)).Split(';');
             if (array.Length != 16)
             {
-                throw new InvalidOperationException("Invalid colors.");
+                throw new InvalidOperationException(LanguageControl.Get(GetType().Name,0));
             }
             Colors = array.Select((string s, int i) => (!string.IsNullOrEmpty(s)) ? HumanReadableConverter.ConvertFromString<Color>(s) : DefaultColors[i]).ToArray();
             string[] array2 = valuesDictionary.GetValue("Names", new string(';', 15)).Split(';');
             if (array2.Length != 16)
             {
-                throw new InvalidOperationException("Invalid color names.");
+                throw new InvalidOperationException(LanguageControl.Get(GetType().Name,1));
             }
-            Names = array2.Select((string s, int i) => (!string.IsNullOrEmpty(s)) ? s : LanguageControl.Get(GetType().Name, i)).ToArray();
+            Names = array2.Select((string s, int i) => (!string.IsNullOrEmpty(s)) ? s : LanguageControl.GetWorldPalette(i)).ToArray();
             string[] names = Names;
             int num = 0;
             while (true)
@@ -79,7 +78,7 @@ namespace Game
                 }
                 return;
             }
-            throw new InvalidOperationException("Invalid color name.");
+            throw new InvalidOperationException(LanguageControl.Get(GetType().Name,2));
         }
 
         public ValuesDictionary Save()
@@ -111,6 +110,7 @@ namespace Game
                     return false;
                 }
             }
+
             return true;
         }
     }

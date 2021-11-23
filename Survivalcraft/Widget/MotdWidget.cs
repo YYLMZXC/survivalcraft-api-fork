@@ -25,6 +25,8 @@ namespace Game
 
         public int m_tapsCount;
 
+        public bool Noticed = false;
+
         public MotdWidget()
         {
             m_containerWidget = new CanvasWidget();
@@ -35,6 +37,30 @@ namespace Game
 
         public override void Update()
         {
+            if (!Noticed && MotdManager.UpdateResult != null) {
+                SimpleJson.JsonObject jsonObj = MotdManager.UpdateResult;
+                string update = jsonObj["update"].ToString();
+                if (update == "1")
+                {
+                    try
+                    {
+                        DialogsManager.ShowDialog(ScreensManager.m_screens["MainMenu"], new MessageDialog(jsonObj["title"].ToString(), jsonObj["content"].ToString(), jsonObj["btn"].ToString(), LanguageControl.Cancel, btn =>
+                        {
+                            if (btn == MessageDialogButton.Button1)
+                            {
+                                WebBrowserManager.LaunchBrowser(jsonObj["url"].ToString());
+                            }
+                        }));
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error("Failed processing Update check. Reason: " + e.Message);
+                    }
+                    finally {
+                        Noticed = true;
+                    }
+                }
+            }
             if (Input.Tap.HasValue)
             {
                 Widget widget = HitTestGlobal(Input.Tap.Value);

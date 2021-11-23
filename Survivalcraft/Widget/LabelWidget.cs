@@ -6,7 +6,7 @@ namespace Game
         public static BitmapFont BitmapFont;
         public override string Text
         {
-            get => base.Text; set
+            get => m_text; set
             {
                 if (m_text != value && value != null)
                 {

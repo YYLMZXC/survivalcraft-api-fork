@@ -12,9 +12,12 @@ namespace Game
     public static class VersionsManager
     {
         public static List<VersionConverter> m_versionConverters;
-
+#if android
         public static Platform Platform => Platform.Android;
-
+#endif
+#if desktop
+        public static Platform Platform => Platform.Desktop;
+#endif
         public static BuildConfiguration BuildConfiguration => BuildConfiguration.Release;
 
         public static string Version

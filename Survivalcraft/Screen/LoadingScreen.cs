@@ -147,13 +147,13 @@ namespace Game
             });
             AddLoadAction(delegate {
                 Info("初始化Mod设置参数");
-                if (Storage.FileExists(ModsManager.SettingPath)) {
-                    using (System.IO.Stream stream = Storage.OpenFile(ModsManager.SettingPath, OpenFileMode.Read))
+                if (Storage.FileExists(ModsManager.ModsSetPath)) {
+                    using (System.IO.Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Read))
                     {
                         try
                         {
                             XElement element = XElement.Load(stream);
-                            ModsManager.LoadSettings(element);
+                            ModsManager.LoadModSettings(element);
                         }
                         catch (Exception e)
                         {

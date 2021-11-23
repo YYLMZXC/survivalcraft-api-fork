@@ -25,6 +25,8 @@ namespace Game
 
         public static Point2 m_resizableWindowSize;
 
+        public static bool UsePrimaryMemoryBank { get; set; }
+
         public static bool AllowInitialIntro { get; set; }
 
         public static float SoundsVolume
@@ -285,7 +287,7 @@ namespace Game
             set;
         }
 
-        public static string MotdBackupUpdateUrl
+        public static string MotdUpdateCheckUrl
         {
             get;
             set;
@@ -461,7 +463,7 @@ namespace Game
             DropboxAccessToken = string.Empty;
             ScpboxAccessToken = string.Empty;
             MotdUpdateUrl = "https://m.schub.top/com/motd?v={0}&l={1}";
-            MotdBackupUpdateUrl = "https://m.schub.top/com/motd?v={0}&l={1}";
+            MotdUpdateCheckUrl = "https://m.schub.top/com/motd?v={0}&cmd=version_check&platform={1}&apiv={2}&l={3}";
             MotdUpdatePeriodHours = 12.0;
             MotdLastUpdateTime = DateTime.MinValue;
             MotdLastDownloadedData = string.Empty;
@@ -510,6 +512,7 @@ namespace Game
                     {
                         ModsManager.DisabledMods.Clear();
                         XElement xElement = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
+                        ModsManager.LoadSettings(xElement);
                         foreach (XElement item in xElement.Elements())
                         {
                             string name = "<unknown>";
@@ -586,6 +589,7 @@ namespace Game
                     }
                 }
                 var xElement1 = new XElement("DisableMods");
+                var xElement2 = new XElement("ModSettings");
                 foreach (ModEntity modEntity in ModsManager.ModList)
                 {
                     var element = new XElement("Mod");
@@ -595,13 +599,13 @@ namespace Game
                 }
                 xElement.Add(xElement1);
                 ModsManager.SaveSettings(xElement);
+                ModsManager.SaveModSettings(xElement2);
                 using (Stream stream = Storage.OpenFile(ModsManager.SettingPath, OpenFileMode.Create))
                 {
                     XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);
                 }
                 using (Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Create))
                 {
-                    var xElement2 = new XElement("ModSettings");
                     XmlUtils.SaveXmlToStream(xElement2, stream, null, throwOnError: true);
                 }
                 Log.Information("Saved settings");

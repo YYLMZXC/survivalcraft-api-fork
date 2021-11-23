@@ -76,7 +76,7 @@ namespace Game
         {
             int data = Terrain.ExtractData(value);
             int color = GetColor(data);
-            return LanguageControl.Get("WorldPalette", color) + LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName");
+            return LanguageControl.GetWorldPalette(color) + LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName");
         }
 
         public override IEnumerable<int> GetCreativeValues()

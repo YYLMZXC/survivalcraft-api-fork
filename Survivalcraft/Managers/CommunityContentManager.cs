@@ -56,7 +56,7 @@ namespace Game
             return m_feedbackCache.ContainsKey(key);
         }
 
-        public static void List(string cursor, string userFilter, string typeFilter, string moderationFilter, string sortOrder, CancellableProgress progress, Action<List<CommunityContentEntry>, string> success, Action<Exception> failure)
+        public static void List(string cursor, string userFilter, string typeFilter, string moderationFilter, string sortOrder,string keySearch, CancellableProgress progress, Action<List<CommunityContentEntry>, string> success, Action<Exception> failure)
         {
             progress = (progress ?? new CancellableProgress());
             if (!WebManager.IsInternetConnectionAvailable())
@@ -76,6 +76,7 @@ namespace Game
             dictionary.Add("Platform", VersionsManager.Platform.ToString());
             dictionary.Add("Version", VersionsManager.Version);
             dictionary.Add("Apiv", ModsManager.Apiv.ToString());
+            dictionary.Add("key", keySearch);
             WebManager.Post(m_scResDirAddress, null, Header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
             {
                 try

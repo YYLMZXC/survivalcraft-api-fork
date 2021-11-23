@@ -249,31 +249,37 @@ public static class ModsManager
         }
         return outobj;
     }
-
-    public static void SaveSettings(XElement xElement)
+    public static void SaveModSettings(XElement xElement)
     {
-        XElement element = new XElement("Configs");
-        foreach (var c in Configs) {
-            element.SetAttributeValue(c.Key,c.Value);
-        }
-        xElement.Add(element);
         foreach (ModEntity modEntity in ModList)
         {
             modEntity.SaveSettings(xElement);
         }
     }
-
+    public static void SaveSettings(XElement xElement)
+    {
+        XElement element = new XElement("Configs");
+        foreach (var c in Configs)
+        {
+            element.SetAttributeValue(c.Key, c.Value);
+        }
+        xElement.Add(element);
+    }
     public static void LoadSettings(XElement xElement)
     {
         foreach (var c in xElement.Element("Configs").Attributes())
         {
-            if(!Configs.ContainsKey(c.Name.LocalName))Configs.Add(c.Name.LocalName, c.Value);
-        }
-        foreach (ModEntity modEntity in ModList)
-        {
-            modEntity.SaveSettings(xElement);
+            if (!Configs.ContainsKey(c.Name.LocalName)) SetConfig(c.Name.LocalName, c.Value);
         }
         ConfigLoaded = true;
+    }
+
+    public static void LoadModSettings(XElement xElement)
+    {
+        foreach (ModEntity modEntity in ModList)
+        {
+            modEntity.LoadSettings(xElement);
+        }
     }
     public static void SetConfig(string key,string value) {
         if (!Configs.TryGetValue(key, out string mm))
