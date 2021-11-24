@@ -128,7 +128,6 @@ namespace Game
 				}
 			}
 		}
-		public static Action<TerrainChunk, bool> GenerateChunkVertices1;
 		public struct UpdateLocation
 		{
 			public Vector2 Center;
@@ -165,6 +164,8 @@ namespace Game
 		public SubsystemTerrain m_subsystemTerrain;
 
 		public SubsystemSky m_subsystemSky;
+
+		public SubsystemAnimatedTextures m_subsystemAnimatedTextures;
 
 		public SubsystemBlockBehaviors m_subsystemBlockBehaviors;
 
@@ -207,8 +208,9 @@ namespace Game
 		public TerrainUpdater(SubsystemTerrain subsystemTerrain)
 		{
 			m_subsystemTerrain = subsystemTerrain;
-			m_subsystemSky = m_subsystemTerrain.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
-			m_subsystemBlockBehaviors = m_subsystemTerrain.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
+			m_subsystemSky = m_subsystemTerrain.Project.FindSubsystem<SubsystemSky>(true);
+			m_subsystemBlockBehaviors = m_subsystemTerrain.Project.FindSubsystem<SubsystemBlockBehaviors>(true);
+			m_subsystemAnimatedTextures = m_subsystemTerrain.Project.FindSubsystem<SubsystemAnimatedTextures>(true);
 			m_terrain = subsystemTerrain.Terrain;
 			m_updateParameters.Chunks = new TerrainChunk[0];
 			m_updateParameters.Locations = new Dictionary<int, UpdateLocation>();
@@ -1050,11 +1052,6 @@ namespace Game
 
 		public void GenerateChunkVertices(TerrainChunk chunk, bool even)
 		{
-			if (GenerateChunkVertices1 != null)
-			{
-				GenerateChunkVertices1(chunk, even);
-				return;
-			}
 			m_subsystemTerrain.BlockGeometryGenerator.ResetCache();
 			TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y - 1);
 			TerrainChunk chunkAtCoords2 = m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y - 1);
@@ -1098,12 +1095,7 @@ namespace Game
 					continue;
 				}
 				m_statistics.GeneratedSlices++;
-				TerrainGeometrySubset[] subsets = terrainChunkSliceGeometry.Subsets;
-				foreach (TerrainGeometrySubset obj in subsets)
-				{
-					obj.Vertices.Clear();
-					obj.Indices.Clear();
-				}
+				terrainChunkSliceGeometry.ClearSubsets(m_subsystemAnimatedTextures);
 				for (int k = num; k < num3; k++)
 				{
 					for (int l = num2; l < num4; l++)
@@ -1141,7 +1133,7 @@ namespace Game
 							int num10 = Terrain.ExtractContents(cellValueFast);
 							if (num10 != 0)
 							{
-								BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, chunk.Geometry.Slices[i], cellValueFast, num5, m, num6);
+								BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, terrainChunkSliceGeometry, cellValueFast, num5, m, num6);
 							}
 						}
 					}
@@ -1226,39 +1218,33 @@ namespace Game
 			{
 				blockBehavior.OnChunkInitialized(chunk);
 			}
-			Task.Run(delegate {
-				lock (chunk.lockobj)
+			bool isLoaded = chunk.IsLoaded;
+			for (int i = 0; i < 16; i++)
+			{
+				for (int j = 0; j < 16; j++)
 				{
-					bool isLoaded = chunk.IsLoaded;
-					for (int i = 0; i < 16; i++)
+					int x = i + chunk.Origin.X;
+					int z = j + chunk.Origin.Y;
+					int num = TerrainChunk.CalculateCellIndex(i, 0, j);
+					int num2 = 0;
+					while (num2 < 255)
 					{
-						for (int j = 0; j < 16; j++)
+						int cellValueFast = chunk.GetCellValueFast(num);
+						int contents = Terrain.ExtractContents(cellValueFast);
+						if (contents != 0)
 						{
-							int x = i + chunk.Origin.X;
-							int z = j + chunk.Origin.Y;
-							int num = TerrainChunk.CalculateCellIndex(i, 0, j);
-							int num2 = 0;
-							while (num2 < 255)
+							SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(contents);
+							for (int k = 0; k < blockBehaviors.Length; k++)
 							{
-								int cellValueFast = chunk.GetCellValueFast(num);
-								int contents = Terrain.ExtractContents(cellValueFast);
-								if (contents != 0)
-								{
-									SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(contents);
-									for (int k = 0; k < blockBehaviors.Length; k++)
-									{
-										blockBehaviors[k].OnBlockGenerated(cellValueFast, x, num2, z, isLoaded);
-									}
-								}
-								num2++;
-								num++;
+								blockBehaviors[k].OnBlockGenerated(cellValueFast, x, num2, z, isLoaded);
 							}
 						}
+						num2++;
+						num++;
 					}
-
 				}
+			}
 
-			});
 		}
 
 		public void UnpauseUpdateThread()

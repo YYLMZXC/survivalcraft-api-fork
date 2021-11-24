@@ -1,7 +1,7 @@
 using Engine;
 using Engine.Graphics;
 using System;
-
+using System.Collections.Generic;
 namespace Game
 {
 
@@ -303,64 +303,71 @@ namespace Game
 		{
 			TerrainChunkGeometry geometry = chunk.Geometry;
 			DisposeTerrainChunkGeometryVertexIndexBuffers(geometry);
-			int num = 0;
-			while (num < 112)
+			var Draws = chunk.Draws;
+			Draws.Clear();
+			int i, j, k;
+			for (i = 0; i < geometry.Slices.Length; i++)
 			{
-				int num2 = 0;
-				int num3 = 0;
-				int i;
-				for (i = num; i < 112; i++)
+				var slice = geometry.Slices[i];
+				foreach (var c in slice.Draws)
 				{
-					int num4 = i / 16;
-					int num5 = i % 16;
-					TerrainGeometrySubset terrainGeometrySubset = geometry.Slices[num5].Subsets[num4];
-					if (num2 + terrainGeometrySubset.Vertices.Count > 65535 && i > num)
+					if (!Draws.TryGetValue(c.Key, out var v))
 					{
-						break;
+						v = new TerrainGeometrySubset[7];
+						for (j = 0; j < 7; j++) v[j] = new TerrainGeometrySubset();
+						Draws.Add(c.Key, v);
 					}
-					num2 += terrainGeometrySubset.Vertices.Count;
-					num3 += terrainGeometrySubset.Indices.Count;
-				}
-				if (num2 > 65535)
-				{
-					Log.Warning("Max vertices count exceeded around ({0},{1},{2}), geometry will be corrupted ({3}/{4} vertices).", chunk.Origin.X, i % 16 * 16, chunk.Origin.Y, num2, 65535);
-				}
-				if (num2 > 0 && num3 > 0)
-				{
-					TerrainChunkGeometry.Buffer buffer = new TerrainChunkGeometry.Buffer();
-					geometry.Buffers.Add(buffer);
-					buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, num2);
-					buffer.IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits, num3);
-					int num6 = 0;
-					int num7 = 0;
-					for (int j = num; j < i; j++)
+					for (j = 0; j < 7; j++)
 					{
-						int num8 = j / 16;
-						int num9 = j % 16;
-						TerrainGeometrySubset terrainGeometrySubset2 = geometry.Slices[num9].Subsets[num8];
-						if (num9 == 0 || j == num)
+						var source = c.Value.Subsets[j];
+						var target = v[j];
+						if (source.Indices.Count > 0)
 						{
-							buffer.SubsetIndexBufferStarts[num8] = num7;
-						}
-						if (terrainGeometrySubset2.Indices.Count > 0)
-						{
-							m_tmpIndices.Count = terrainGeometrySubset2.Indices.Count;
-							ShiftIndices(terrainGeometrySubset2.Indices.Array, m_tmpIndices.Array, num6, terrainGeometrySubset2.Indices.Count);
-							buffer.IndexBuffer.SetData(m_tmpIndices.Array, 0, m_tmpIndices.Count, num7);
-							num7 += m_tmpIndices.Count;
-						}
-						if (terrainGeometrySubset2.Vertices.Count > 0)
-						{
-							buffer.VertexBuffer.SetData(terrainGeometrySubset2.Vertices.Array, 0, terrainGeometrySubset2.Vertices.Count, num6);
-							num6 += terrainGeometrySubset2.Vertices.Count;
-						}
-						if (num9 == 15 || j == i - 1)
-						{
-							buffer.SubsetIndexBufferEnds[num8] = num7;
+							if (target.Vertices.Count > 0)
+							{
+								for (k = 0; k < source.Indices.Count; k++)
+								{
+									target.Indices.Add((ushort)(source.Indices[k] + target.Vertices.Count));//shift indices
+								}
+							}
+							else target.Indices.AddRange(source.Indices);
+							target.Vertices.AddRange(source.Vertices);
 						}
 					}
 				}
-				num = i;
+			}
+			int IndicesCount; int VerticesCount;
+			foreach (var row in Draws)
+			{
+				TerrainChunkGeometry.Buffer buffer = new TerrainChunkGeometry.Buffer();
+				TerrainGeometrySubset[] subsets = row.Value;
+				IndicesCount = 0;VerticesCount = 0;
+				for (j = 0; j < 7; j++)
+				{
+					var subset = subsets[j];
+					if (subset.Indices.Count > 0)
+					{
+						buffer.SubsetIndexBufferStarts[j] = IndicesCount;
+						buffer.SubsetVertexBufferStarts[j] = VerticesCount;
+						IndicesCount += subset.Indices.Count;
+						VerticesCount += subset.Vertices.Count;
+						buffer.SubsetIndexBufferEnds[j] = IndicesCount;
+					}
+				}
+				if (IndicesCount == 0) continue;
+				buffer.Texture = row.Key;
+				geometry.Buffers.Add(buffer);
+				buffer.IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits, IndicesCount);
+				buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, VerticesCount);
+				for (j = 0; j < 7; j++)
+				{
+					var subset = subsets[j];
+					if (subset.Indices.Count > 0)
+					{
+						buffer.VertexBuffer.SetData(subset.Vertices.Array, 0, subset.Vertices.Count, buffer.SubsetVertexBufferStarts[j]);
+						buffer.IndexBuffer.SetData(subset.Indices.Array, 0, subset.Indices.Count, buffer.SubsetIndexBufferStarts[j]);
+					}
+				}
 			}
 			geometry.CopySliceContentsHashes(chunk);
 		}

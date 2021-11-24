@@ -1,6 +1,7 @@
 using Engine;
 using System;
-
+using System.Collections.Generic;
+using Engine.Graphics;
 namespace Game
 {
 	public class TerrainChunk : IDisposable
@@ -66,6 +67,8 @@ namespace Game
 		public int[] Cells = new int[65536];
 
 		public int[] Shafts = new int[256];
+
+		public Dictionary<Texture2D, TerrainGeometrySubset[]> Draws = new Dictionary<Texture2D, TerrainGeometrySubset[]>();
 
 		public TerrainChunk(Terrain terrain, int x, int z)
 		{
