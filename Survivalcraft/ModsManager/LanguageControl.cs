@@ -221,6 +221,11 @@ namespace Game
             }
             return result;
         }
+        public static bool TryGetBlock(string name, string prop, out string result)
+        {
+            result = Get(out bool r, "Blocks", name, prop);
+            return r;
+        }
         public static string GetContentWidgets(string name, string prop)
         {
             return Get("ContentWidgets", name, prop);

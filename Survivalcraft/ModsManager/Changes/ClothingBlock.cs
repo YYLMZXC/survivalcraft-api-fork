@@ -29,16 +29,13 @@ namespace Game
         public void LoadClothingData(XElement item) {
             if (item.Name.LocalName == "ClothingData") {
                 int ClothIndex = XmlUtils.GetAttributeValue<int>(item, "Index");
-                string newDescription = LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "Description");
-                string newDisplayName = LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "DisplayName");
-                if (string.IsNullOrEmpty(newDescription) && item.Attribute("Description") != null)
+                if (!LanguageControl.TryGetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "Description", out string newDescription) && item.Attribute("Description") != null)
                 {
                     newDescription = XmlUtils.GetAttributeValue<string>(item, "Description");
                 }
-                if (string.IsNullOrEmpty(newDisplayName) && item.Attribute("Description") != null)
+                if (!LanguageControl.TryGetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "DisplayName", out string newDisplayName) && item.Attribute("Description") != null)
                 {
                     newDisplayName = XmlUtils.GetAttributeValue<string>(item, "DisplayName");
-
                 }
                 var clothingData = new ClothingData
                 {
