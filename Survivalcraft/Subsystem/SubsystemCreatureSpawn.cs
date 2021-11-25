@@ -933,10 +933,10 @@ namespace Game
                 },
                 SpawnFunction = ((CreatureType creatureType, Point3 point) => SpawnCreatures(creatureType, "Hyena", point, m_random.Int(1, 2)).Count)
             });
-            foreach (ModLoader modEntity in ModsManager.ModLoaders) {
-                modEntity.InitializeCreatureTypes(this,m_creatureTypes);
-            }
-            
+            ModsManager.HookAction("InitializeCreatureTypes", (modLoader) => {
+                modLoader.InitializeCreatureTypes(this, m_creatureTypes);
+                return false;
+            });
         }
 
         public virtual void SpawnRandomCreature()

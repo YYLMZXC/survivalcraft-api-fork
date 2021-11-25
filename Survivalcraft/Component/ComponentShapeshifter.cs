@@ -124,9 +124,10 @@ namespace Game
                 componentBody.Velocity = m_componentBody.Velocity;
                 entity.FindComponent<ComponentSpawn>(throwOnError: true).SpawnDuration = 0.5f;
 
-                foreach (ModLoader modLoader in ModsManager.ModLoaders) {
-                    modLoader.ComponentSpawn_Despawned(entity,componentSpawn);
-                }
+                ModsManager.HookAction("OnDespawned", modLoader => {
+                    modLoader.OnDespawned(entity, componentSpawn);
+                    return false;
+                });
 
                 Project.AddEntity(entity);
             }

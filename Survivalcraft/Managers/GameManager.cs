@@ -42,10 +42,10 @@ namespace Game
                 valuesDictionary.SetValue("Views", valuesDictionary3);
                 valuesDictionary3.SetValue("GamesWidget", gamesWidget);
                 XElement projectNode = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
-                foreach (ModLoader modLoader in ModsManager.ModLoaders)
-                {
-                    modLoader.ProjectSave(projectNode);
-                }
+                ModsManager.HookAction("ProjectXmlLoad", loader => {
+                    loader.ProjectXmlLoad(projectNode);
+                    return false;
+                });
                 Project.EntityAdded += new EventHandler<EntityAddRemoveEventArgs>((s, arg) => {
                     ModsManager.HookAction("OnEntityAdd", loader => {
                         loader.OnEntityAdd(arg.Entity);
@@ -86,9 +86,10 @@ namespace Game
                     {
                         WorldsManager.MakeQuickWorldBackup(subsystemGameInfo.DirectoryName);
                         var xElement = new XElement("Project");
-                        foreach (ModLoader modLoader in ModsManager.ModLoaders) {
-                            modLoader.ProjectSave(xElement);
-                        }
+                        ModsManager.HookAction("ProjectXmlSave", loader => {
+                            loader.ProjectXmlSave(xElement);
+                            return false;
+                        });
                         projectData.Save(xElement);
                         XmlUtils.SetAttributeValue(xElement, "Version", VersionsManager.SerializationVersion);
                         Storage.CreateDirectory(subsystemGameInfo.DirectoryName);

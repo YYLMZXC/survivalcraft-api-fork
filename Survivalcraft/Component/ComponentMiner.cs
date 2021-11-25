@@ -121,7 +121,6 @@ namespace Game
 
         public bool Dig(TerrainRaycastResult raycastResult)
         {
-
             bool result = false;
             m_lastDigFrameIndex = Time.FrameIndex;
             CellFace cellFace = raycastResult.CellFace;
@@ -147,8 +146,8 @@ namespace Game
                 }
             }
             bool flag = ComponentPlayer != null && !ComponentPlayer.ComponentInput.IsControlledByTouch && m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative;
-            ModsManager.HookAction("ComponentMinerDig", modLoader => {
-                modLoader.ComponentMinerDig(this, raycastResult, ref m_digProgress, out bool flag2);
+            ModsManager.HookAction("OnMinerDig", modLoader => {
+                modLoader.OnMinerDig(this, raycastResult, ref m_digProgress, out bool flag2);
                 flag |= flag2;
                 return false;
             });
@@ -318,8 +317,8 @@ namespace Game
             }
             bool flag;
 
-            ModsManager.HookAction("ComponentMinerHit", modLoader => {
-                modLoader.ComponentMinerHit(this, componentBody, hitPoint, hitDirection, ref num, ref num2, out bool Hitted);
+            ModsManager.HookAction("OnMinerHit", modLoader => {
+                modLoader.OnMinerHit(this, componentBody, hitPoint, hitDirection, ref num, ref num2, out bool Hitted);
                 return Hitted;
             });
 

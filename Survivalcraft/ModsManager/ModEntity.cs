@@ -314,7 +314,7 @@ namespace Game {
         /// <param name="categories"></param>
         public virtual void OnBlocksInitalized()
         {
-            if (Loader != null) Loader.OnBlocksManagerInitalized();
+            if (Loader != null) Loader.BlocksInitalized();
         }
         /// <summary>
         /// LoadingScreen任务执行完毕
@@ -327,7 +327,7 @@ namespace Game {
         }
         //释放资源
         public virtual void Dispose() {
-            try { if (Loader != null) Loader.Dispose(); } catch { }
+            try { if (Loader != null) Loader.ModDispose(); } catch { }
             ModArchive?.ZipFileStream.Close();
         }
     }

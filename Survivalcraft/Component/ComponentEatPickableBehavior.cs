@@ -203,8 +203,8 @@ namespace Game
                             {
                                 m_importanceLevel = 0f;
                             }
-                            ModsManager.HookAction("OnComponentEatPickableEat", (modLoader) => {
-                                modLoader.OnComponentEatPickableEat(this, m_pickable,out bool Dealed);
+                            ModsManager.HookAction("OnEatPickable", (modLoader) => {
+                                modLoader.OnEatPickable(this, m_pickable,out bool Dealed);
                                 return Dealed;
                             });
                         }

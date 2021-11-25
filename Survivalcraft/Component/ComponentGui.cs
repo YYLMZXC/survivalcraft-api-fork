@@ -591,8 +591,8 @@ namespace Game
                 else
                 {
                     var clothingWidget = new ClothingWidget(m_componentPlayer);
-                    ModsManager.HookAction("OnClothingWidgetOpen", modLoader => {
-                        modLoader.OnClothingWidgetOpen(this, clothingWidget);
+                    ModsManager.HookAction("ClothingWidgetOpen", modLoader => {
+                        modLoader.ClothingWidgetOpen(this, clothingWidget);
                         return false;
                     });
                     ModalPanelWidget = clothingWidget;

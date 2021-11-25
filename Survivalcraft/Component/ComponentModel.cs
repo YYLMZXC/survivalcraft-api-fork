@@ -158,8 +158,8 @@ namespace Game
         public virtual void SetModel(Model model)
         {
             IsSet = false;
-            ModsManager.HookAction("OnComponentModelSetModel", (modLoader) => {
-                modLoader.OnComponentModelSetModel(this, model, out IsSet);
+            ModsManager.HookAction("OnSetModel", (modLoader) => {
+                modLoader.OnSetModel(this, model, out IsSet);
                 return IsSet;
             });
             if (IsSet) return;

@@ -17,21 +17,94 @@ namespace Game
         {
         }
 
-        public virtual void ComponentMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection, ref float AttackPower, ref float Probability, out bool Hitted)
+        /// <summary>
+        /// Mod被卸载时执行
+        /// </summary>
+        public virtual void ModDispose()
+        {
+        }
+
+        /// <summary>
+        /// 当人物击打时执行
+        /// </summary>
+        public virtual void OnMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection, ref float AttackPower, ref float Probability, out bool Hitted)
         {
             Hitted = false;
         }
 
         /// <summary>
-        /// 当人物进行挖掘时执行
+        /// 当人物挖掘时执行
         /// </summary>
         /// <param name="miner"></param>
         /// <param name="raycastResult"></param>
         /// <returns></returns>
-        public virtual bool ComponentMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult, ref float DigProgress, out bool Digged)
+        public virtual bool OnMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult, ref float DigProgress, out bool Digged)
         {
             Digged = false;
             return false;
+        }
+
+        /// <summary>
+        /// 当人物吃东西时执行
+        /// </summary>
+        /// <param name="componentPlayer"></param>
+        /// <param name="block"></param>
+        /// <param name="value"></param>
+        /// <param name="count"></param>
+        /// <param name="processCount"></param>
+        /// <param name="processedValue"></param>
+        /// <param name="processedCount"></param>
+        /// <returns>true 不移交 false 移交到下一个mod处理</returns>
+        public virtual bool OnPlayerEat(ComponentPlayer componentPlayer, Block block, int value)
+        {
+            return false;
+        }
+       
+        /// <summary>
+        /// 动物吃掉落物时执行
+        /// </summary>
+        public virtual void OnEatPickable(ComponentEatPickableBehavior eatPickableBehavior, Pickable EatPickable, out bool Dealed)
+        {
+            Dealed = false;
+        }
+
+        /// <summary>
+        /// 人物出生时执行
+        /// </summary>
+        public virtual bool OnPlayerSpawned(PlayerData.SpawnMode spawnMode, ComponentPlayer componentPlayer, Vector3 position)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 当人物死亡时执行
+        /// </summary>
+        /// <param name="playerData"></param>
+        public virtual void OnPlayerDead(PlayerData playerData)
+        {
+        }
+
+        /// <summary>
+        /// 当Miner执行AttackBody方法时执行
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="attacker"></param>
+        /// <param name="hitPoint"></param>
+        /// <param name="hitDirection"></param>
+        /// <param name="attackPower"></param>
+        /// <param name="isMeleeAttack"></param>
+        /// <returns>false移交到下一个Mod处理,true不移交</returns>
+        public virtual bool AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, bool isMeleeAttack)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 当模型对象进行模型设值时执行
+        /// </summary>
+        public virtual void OnSetModel(ComponentModel componentModel, Model model, out bool IsSet)
+        {
+            IsSet = false;
         }
 
         /// <summary>
@@ -45,18 +118,67 @@ namespace Game
             Applied = false;
             return attackPower;
         }
-        public virtual void OnComponentModelSetModel(ComponentModel componentModel, Model model,out bool IsSet) {
-            IsSet = false;
-        }
+
         /// <summary>
-        /// 初始化自然生成生物列表
+        /// 等级更新时执行
+        /// </summary>
+        /// <param name="level"></param>
+        public virtual void OnLevelUpdate(ComponentLevel level)
+        {
+        }
+
+        /// <summary>
+        /// Gui组件帧更新时执行
+        /// </summary>
+        /// <param name="componentGui"></param>
+        public virtual void GuiUpdate(ComponentGui componentGui)
+        {
+        }
+
+        /// <summary>
+        /// Gui组件绘制时执行
+        /// </summary>
+        /// <param name="componentGui"></param>
+        /// <param name="camera"></param>
+        /// <param name="drawOrder"></param>
+        public virtual void GuiDraw(ComponentGui componentGui, Camera camera, int drawOrder)
+        {
+        }
+
+        /// <summary>
+        /// 衣物背包界面被打开时执行
+        /// </summary>
+        /// <param name="componentGui"></param>
+        /// <param name="clothingWidget"></param>
+        public virtual void ClothingWidgetOpen(ComponentGui componentGui, ClothingWidget clothingWidget)
+        {
+        }
+
+        /// <summary>
+        /// 当实体被添加时执行
+        /// </summary>
+        public virtual void OnEntityAdd(Entity entity)
+        {
+        }
+
+        /// <summary>
+        /// 当实体被移除时执行
+        /// </summary>
+        public virtual void OnEntityRemove(Entity entity)
+        {
+        }
+
+        /// <summary>
+        /// 自然生成生物列表初始化时执行
         /// </summary>
         /// <param name="spawn"></param>
         /// <param name="creatureTypes"></param>
-        public virtual void InitializeCreatureTypes(SubsystemCreatureSpawn spawn, List<SubsystemCreatureSpawn.CreatureType> creatureTypes) { }
+        public virtual void InitializeCreatureTypes(SubsystemCreatureSpawn spawn, List<SubsystemCreatureSpawn.CreatureType> creatureTypes) 
+        {
+        }
 
         /// <summary>
-        /// 生物被生成时执行
+        /// 生物出生时执行
         /// </summary>
         /// <param name="spawn"></param>
         /// <param name="entity"></param>
@@ -67,125 +189,25 @@ namespace Game
         }
 
         /// <summary>
-        /// 当区块加载时，区块的生物数据被读取时执行
-        /// </summary>
-        /// <param name="spawn"></param>
-        /// <param name="data"></param>
-        /// <param name="creaturesData"></param>
-        public virtual void LoadSpawnsData(SubsystemSpawn spawn, string data, List<SpawnEntityData> creaturesData, out bool Decoded) { Decoded = false; }
-
-        /// <summary>
-        /// 当区块卸载时，区块的生物数据被保存时执行
-        /// </summary>
-        /// <param name="spawn"></param>
-        /// <param name="spawnsData"></param>
-        /// <returns></returns>
-        public virtual string SaveSpawnsData(SubsystemSpawn spawn, List<SpawnEntityData> spawnsData, out bool Encoded) { Encoded = false; return ""; }
-
-        /// <summary>
-        /// 背包界面被打开时执行
-        /// </summary>
-        /// <param name="componentGui"></param>
-        /// <param name="clothingWidget"></param>
-        public virtual void OnClothingWidgetOpen(ComponentGui componentGui, ClothingWidget clothingWidget) { }
-
-        /// <summary>
-        /// 人物死亡时执行
-        /// </summary>
-        /// <param name="playerData"></param>
-        public virtual void OnPlayerDead(PlayerData playerData)
-        {
-        }
-
-        /// <summary>
-        /// 改变相机模式时执行
-        /// </summary>
-        /// <param name="m_componentPlayer"></param>
-        /// <param name="componentGui"></param>
-        public virtual void OnCameraChange(ComponentPlayer m_componentPlayer, ComponentGui componentGui)
-        {
-        }
-
-        /// <summary>
-        /// 生物消失时执行
+        /// 当生物消失时执行
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="componentSpawn"></param>
-        public virtual void ComponentSpawn_Despawned(Entity entity, ComponentSpawn componentSpawn) { }
+        public virtual void OnDespawned(Entity entity, ComponentSpawn componentSpawn)
+        {
+        }
 
         /// <summary>
-        /// 绘制额外模型数据的方法，如人物头顶的名字
+        /// 设置着色器参数
         /// </summary>
-        /// <param name="modelsRenderer"></param>
-        /// <param name="componentModel"></param>
+        /// <param name="shader"></param>
         /// <param name="camera"></param>
-        /// <param name="alphaThreshold"></param>
-        public virtual void OnModelRendererDrawExtra(SubsystemModelsRenderer modelsRenderer, ComponentModel componentModel, Camera camera, float? alphaThreshold) { }
-
-        /// <summary>
-        /// BlocksManager初始化完成执行的方法
-        /// </summary>
-        public virtual void OnBlocksManagerInitalized()
+        public virtual void SetShaderParameter(Shader shader, Camera camera)
         {
         }
 
         /// <summary>
-        /// Xdb被加载时执行的方法
-        /// </summary>
-        /// <param name="xElement"></param>
-        public virtual void OnXdbLoad(XElement xElement) { }
-        /// <summary>
-        /// LoadingScreen任务结束时
-        /// </summary>
-        /// <param name="loadingActions"></param>
-        public virtual void OnLoadingFinished(List<System.Action> loadingActions) { }
-
-        /// <summary>
-        /// 游戏设置数据保存的方法
-        /// </summary>
-        /// <param name="xElement"></param>
-        public virtual void SaveSettings(XElement xElement)
-        {
-        }
-
-        /// <summary>
-        /// 游戏设置数据加载的方法
-        /// </summary>
-        /// <param name="xElement"></param>
-        public virtual void LoadSettings(XElement xElement)
-        {
-        }
-
-        /// <summary>
-        /// Project.xml加载时执行的方法
-        /// </summary>
-        /// <param name="xElement"></param>
-        public virtual void ProjectLoad(XElement xElement) { }
-
-        /// <summary>
-        /// Project.xml保存时执行的方法
-        /// </summary>
-        /// <param name="xElement"></param>
-        public virtual void ProjectSave(XElement xElement) { }
-
-        /// <summary>
-        /// ComponentGui帧更新方法
-        /// </summary>
-        /// <param name="componentGui"></param>
-        public virtual void GuiUpdate(ComponentGui componentGui)
-        {
-        }
-
-        public virtual void OnEntityAdd(Entity entity)
-        {
-        }
-
-        public virtual void OnEntityRemove(Entity entity)
-        {
-        }
-
-        /// <summary>
-        /// 生物最大组件数，多个Mod时取最大
+        /// 设置生物最大组件数，多个Mod时取最大
         /// </summary>
         /// <returns></returns>
         public virtual int GetMaxInstancesCount()
@@ -194,15 +216,129 @@ namespace Game
         }
 
         /// <summary>
-        /// 等级更新事件
+        /// 绘制额外模型数据的方法，如人物头顶的名字
         /// </summary>
-        /// <param name="level"></param>
-        public virtual void OnLevelUpdate(ComponentLevel level)
+        /// <param name="modelsRenderer"></param>
+        /// <param name="componentModel"></param>
+        /// <param name="camera"></param>
+        /// <param name="alphaThreshold"></param>
+        public virtual void OnModelRendererDrawExtra(SubsystemModelsRenderer modelsRenderer, ComponentModel componentModel, Camera camera, float? alphaThreshold)
         {
         }
 
         /// <summary>
-        /// 解码配方
+        /// 设定伤害粒子参数
+        /// </summary>
+        /// <param name="hitValueParticleSystem">粒子</param>
+        /// <param name="Hit">true 命中 false 未命中</param>
+        public virtual void SetHitValueParticleSystem(HitValueParticleSystem hitValueParticleSystem, bool Hit)
+        {
+        }
+
+        /// <summary>
+        /// 当区块加载时，区块的生物数据被读取时执行
+        /// </summary>
+        /// <param name="spawn"></param>
+        /// <param name="data"></param>
+        /// <param name="creaturesData"></param>
+        public virtual void LoadSpawnsData(SubsystemSpawn spawn, string data, List<SpawnEntityData> creaturesData, out bool Decoded) 
+        { 
+            Decoded = false; 
+        }
+
+        /// <summary>
+        /// 当区块卸载时，区块的生物数据被保存时执行
+        /// </summary>
+        /// <param name="spawn"></param>
+        /// <param name="spawnsData"></param>
+        /// <returns></returns>
+        public virtual string SaveSpawnsData(SubsystemSpawn spawn, List<SpawnEntityData> spawnsData, out bool Encoded) 
+        { 
+            Encoded = false; 
+            return ""; 
+        }
+
+        /// <summary>
+        /// 区块地形生成时
+        /// 注意此方法运行在子线程中
+        /// </summary>
+        /// <param name="chunk"></param>
+        public virtual void OnTerrainContentsGenerated(TerrainChunk chunk)
+        {
+        }
+
+        /// <summary>
+        /// 当Project被加载时执行
+        /// </summary>
+        /// <param name="project"></param>
+        public virtual void OnProjectLoaded(Project project)
+        {
+        }
+
+        /// <summary>
+        /// 当Project被释放时执行
+        /// </summary>
+        public virtual void OnProjectDisposed()
+        {
+        }
+
+        /// <summary>
+        /// 方块初始化完成时执行
+        /// </summary>
+        public virtual void BlocksInitalized()
+        {
+        }
+
+        /// <summary>
+        /// 加载任务结束时执行
+        /// </summary>
+        /// <param name="loadingActions"></param>
+        public virtual void OnLoadingFinished(List<System.Action> loadingActions) 
+        { 
+        }
+
+        /// <summary>
+        /// 游戏设置数据保存时执行
+        /// </summary>
+        /// <param name="xElement"></param>
+        public virtual void SaveSettings(XElement xElement)
+        {
+        }
+
+        /// <summary>
+        /// 游戏设置数据加载时执行
+        /// </summary>
+        /// <param name="xElement"></param>
+        public virtual void LoadSettings(XElement xElement)
+        {
+        }
+
+        /// <summary>
+        /// Xdb文件加载时执行
+        /// </summary>
+        /// <param name="xElement"></param>
+        public virtual void OnXdbLoad(XElement xElement)
+        {
+        }
+
+        /// <summary>
+        /// Project.xml加载时执行
+        /// </summary>
+        /// <param name="xElement"></param>
+        public virtual void ProjectXmlLoad(XElement xElement) 
+        { 
+        }
+
+        /// <summary>
+        /// Project.xml保存时执行
+        /// </summary>
+        /// <param name="xElement"></param>
+        public virtual void ProjectXmlSave(XElement xElement) 
+        { 
+        }
+
+        /// <summary>
+        /// 配方解码时执行
         /// </summary>
         /// <param name="element">配方的Xelement</param>
         /// <param name="Decoded">是否解码成功，不成功交由下一个Mod处理</param>
@@ -212,7 +348,7 @@ namespace Game
         }
 
         /// <summary>
-        /// 配方匹配
+        /// 配方匹配时执行
         /// </summary>
         /// <param name="requiredIngredients"></param>
         /// <param name="actualIngredient"></param>
@@ -224,7 +360,7 @@ namespace Game
         }
 
         /// <summary>
-        /// 解码结果
+        /// 获得解码结果时执行
         /// </summary>
         /// <param name="result">结果字符串</param>
         /// <param name="Decoded">是否解码成功，不成功交由下一个Mod处理</param>
@@ -250,55 +386,13 @@ namespace Game
         }
 
         /// <summary>
-        /// 设定伤害粒子参数
+        /// 改变相机模式时执行
         /// </summary>
-        /// <param name="hitValueParticleSystem">粒子</param>
-        /// <param name="Hit">true 命中 false 未命中</param>
-        public virtual void SetHitValueParticleSystem(HitValueParticleSystem hitValueParticleSystem, bool Hit) { }
-
-        /// <summary>
-        /// 当吃被触发时
-        /// </summary>
-        /// <param name="componentPlayer"></param>
-        /// <param name="block"></param>
-        /// <param name="value"></param>
-        /// <param name="count"></param>
-        /// <param name="processCount"></param>
-        /// <param name="processedValue"></param>
-        /// <param name="processedCount"></param>
-        /// <returns>true 不移交 false 移交到下一个mod处理</returns>
-        public virtual bool OnEat(ComponentPlayer componentPlayer, Block block, int value)
-        {
-            return false;
-        }
-        /// <summary>
-        /// 设定Shader参数
-        /// </summary>
-        /// <param name="shader"></param>
-        /// <param name="camera"></param>
-        public virtual void SetShaderParameter(Shader shader, Camera camera)
+        /// <param name="m_componentPlayer"></param>
+        /// <param name="componentGui"></param>
+        public virtual void OnCameraChange(ComponentPlayer m_componentPlayer, ComponentGui componentGui)
         {
         }
-        /// <summary>
-        /// AttackBody代理
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="attacker"></param>
-        /// <param name="hitPoint"></param>
-        /// <param name="hitDirection"></param>
-        /// <param name="attackPower"></param>
-        /// <param name="isMeleeAttack"></param>
-        /// <returns>false移交到下一个Mod处理,true不移交</returns>
-        public virtual bool AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection,ref float attackPower, bool isMeleeAttack)
-        {
-            return false;
-        }
-        /// <summary>
-        /// 区块地形生成时
-        /// 注意此方法运行在子线程中
-        /// </summary>
-        /// <param name="chunk"></param>
-        public virtual void OnTerrainContentsGenerated(TerrainChunk chunk) { }
 
         /// <summary>
         /// 摇人行为
@@ -308,30 +402,10 @@ namespace Game
         /// <param name="maxRange"></param>
         /// <param name="maxChaseTime"></param>
         /// <param name="isPersistent"></param>
-        public virtual void CallNearbyCreaturesHelp(ComponentHerdBehavior herdBehavior, ComponentCreature target, float maxRange, float maxChaseTime, bool isPersistent) { }
-        /// <summary>
-        /// 当Project被加载时
-        /// </summary>
-        /// <param name="project"></param>
-        public virtual void OnProjectLoaded(Project project) { 
-        
-        
+        public virtual void CallNearbyCreaturesHelp(ComponentHerdBehavior herdBehavior, ComponentCreature target, float maxRange, float maxChaseTime, bool isPersistent) 
+        { 
         }
-        public virtual void OnProjectDisposed()
-        {
-
-
-        }
-        /// <summary>
-        /// GuiDraw
-        /// </summary>
-        /// <param name="componentGui"></param>
-        /// <param name="camera"></param>
-        /// <param name="drawOrder"></param>
-        public virtual void GuiDraw(ComponentGui componentGui, Camera camera, int drawOrder)
-        {
-
-        }
+       
         /// <summary>
         /// 挖掘触发宝物生成时，注意这里能获取到上个Mod生成宝物的情况
         /// </summary>
@@ -341,26 +415,6 @@ namespace Game
         public virtual void OnTreasureGenerate(SubsystemTerrain subsystemTerrain, int x, int y, int z, int neighborX, int neighborY, int neighborZ, ref int BlockValue, ref int Count, out bool IsGenerate)
         {
             IsGenerate = false;
-
         }
-
-        public virtual bool OnPlayerSpawned(PlayerData.SpawnMode spawnMode,ComponentPlayer componentPlayer, Vector3 position) {
-            return false;
-        
-        }
-        public virtual void OnComponentEatPickableEat(ComponentEatPickableBehavior eatPickableBehavior,Pickable EatPickable,out bool Dealed) {
-            Dealed = false;
-        }
-
-        /// <summary>
-        /// Mod被卸载时执行
-        /// </summary>
-        public virtual void Dispose()
-        {
-        }
-        public virtual void ProjectileAdded(SubsystemProjectiles subsystemProjectiles, Projectile projectile) { }
-        public virtual void ProjectileRemoved(SubsystemProjectiles subsystemProjectiles, Projectile projectile) { }
-        public virtual void PickableAdded(SubsystemPickables subsystemPickables, Pickable pickable) { }
-        public virtual void PickableRemoved(SubsystemPickables subsystemPickables, Pickable pickable) { }
     }
 }

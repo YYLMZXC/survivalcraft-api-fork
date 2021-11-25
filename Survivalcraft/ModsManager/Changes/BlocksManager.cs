@@ -77,8 +77,8 @@ namespace Game
                 }
             }
 
-            ModsManager.HookAction("OnBlocksManagerInitalized", modLoader=> {
-                modLoader.OnBlocksManagerInitalized();
+            ModsManager.HookAction("BlocksInitalized", modLoader=> {
+                modLoader.BlocksInitalized();
                 return false;
             });
         }
