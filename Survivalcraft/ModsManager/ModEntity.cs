@@ -298,7 +298,6 @@ namespace Game {
         public virtual void SaveSettings(XElement xElement)
         {
             if (Loader != null) Loader.SaveSettings(xElement);
-
         }
         /// <summary>
         /// 加载设置
@@ -323,7 +322,6 @@ namespace Game {
         public virtual void OnLoadingFinished(List<Action> LoadingActions)
         {
             if (Loader != null) Loader.OnLoadingFinished(LoadingActions);
-
         }
         //释放资源
         public virtual void Dispose() {
@@ -331,6 +329,5 @@ namespace Game {
             ModArchive?.ZipFileStream.Close();
         }
     }
-
 }
 
