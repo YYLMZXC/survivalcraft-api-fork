@@ -188,6 +188,8 @@ namespace Game
 			OpaqueShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 			ShaderParameter parameter = OpaqueShader.GetParameter("u_fogStartInvLength");
 			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(OpaqueShader, camera); return true; });
+			Point2 point = Terrain.ToChunk(camera.ViewPosition.XZ);
+			var chunk = m_subsystemTerrain.Terrain.GetChunkAtCoords(point.X, point.Y);
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
@@ -305,7 +307,7 @@ namespace Game
 			DisposeTerrainChunkGeometryVertexIndexBuffers(geometry);
 			var Draws = chunk.Draws;
 			Draws.Clear();
-			int i, j, k;
+			int i, j, k; int IndicesCount; int VerticesCount;
 			for (i = 0; i < geometry.Slices.Length; i++)
 			{
 				var slice = geometry.Slices[i];
@@ -317,6 +319,7 @@ namespace Game
 						for (j = 0; j < 7; j++) v[j] = new TerrainGeometrySubset();
 						Draws.Add(c.Key, v);
 					}
+					VerticesCount = 0;
 					for (j = 0; j < 7; j++)
 					{
 						var source = c.Value.Subsets[j];
@@ -336,7 +339,6 @@ namespace Game
 					}
 				}
 			}
-			int IndicesCount; int VerticesCount;
 			foreach (var row in Draws)
 			{
 				TerrainChunkGeometry.Buffer buffer = new TerrainChunkGeometry.Buffer();
@@ -359,13 +361,22 @@ namespace Game
 				geometry.Buffers.Add(buffer);
 				buffer.IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits, IndicesCount);
 				buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, VerticesCount);
+				VerticesCount = 0;
 				for (j = 0; j < 7; j++)
 				{
 					var subset = subsets[j];
 					if (subset.Indices.Count > 0)
 					{
+						if (VerticesCount > 0)
+						{
+							for (k = 0; k < subset.Indices.Count; k++)
+							{
+								subset.Indices[k] = ((ushort)(subset.Indices[k] + VerticesCount));//shift indices
+							}
+						}
 						buffer.VertexBuffer.SetData(subset.Vertices.Array, 0, subset.Vertices.Count, buffer.SubsetVertexBufferStarts[j]);
 						buffer.IndexBuffer.SetData(subset.Indices.Array, 0, subset.Indices.Count, buffer.SubsetIndexBufferStarts[j]);
+						VerticesCount += subset.Vertices.Count;
 					}
 				}
 			}
