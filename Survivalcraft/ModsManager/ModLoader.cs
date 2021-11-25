@@ -264,7 +264,20 @@ namespace Game
         public virtual void SetShaderParameter(Shader shader, Camera camera)
         {
         }
-
+        /// <summary>
+        /// AttackBody代理
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="attacker"></param>
+        /// <param name="hitPoint"></param>
+        /// <param name="hitDirection"></param>
+        /// <param name="attackPower"></param>
+        /// <param name="isMeleeAttack"></param>
+        /// <returns>false移交到下一个Mod处理,true不移交</returns>
+        public virtual bool AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection,ref float attackPower, bool isMeleeAttack)
+        {
+            return false;
+        }
         /// <summary>
         /// 区块地形生成时
         /// 注意此方法运行在子线程中

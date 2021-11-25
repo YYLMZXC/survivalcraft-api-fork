@@ -318,8 +318,8 @@ namespace Game
             }
             bool flag;
 
-            ModsManager.HookAction("ComponentMinerHit",modLoader=> {
-                modLoader.ComponentMinerHit(this,componentBody,hitPoint,hitDirection,ref num,ref num2,out bool Hitted);
+            ModsManager.HookAction("ComponentMinerHit", modLoader => {
+                modLoader.ComponentMinerHit(this, componentBody, hitPoint, hitDirection, ref num, ref num2, out bool Hitted);
                 return Hitted;
             });
 
@@ -345,7 +345,7 @@ namespace Game
                     modLoader.SetHitValueParticleSystem(particleSystem, false);
                     return false;
                 });
-                base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
+                Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
             }
             if (ComponentCreature.PlayerStats != null)
             {
@@ -485,6 +485,7 @@ namespace Game
                 attacker.Entity.FindComponent<ComponentGui>(throwOnError: true).DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: true, playNotificationSound: true);
                 return;
             }
+            ModsManager.HookAction("AttackBody", modloader => { modloader.AttackBody(target, attacker, hitPoint, hitDirection, ref attackPower, isMeleeAttack); return false; });
             if (attackPower > 0f)
             {
                 ComponentClothing componentClothing = target.Entity.FindComponent<ComponentClothing>();
