@@ -29,12 +29,12 @@ namespace Game
 
 
 
-
-        public bool IsControlledByTouch
-        {
-            get;
-            set;
-        } = true;
+#if android
+        public bool IsControlledByTouch { get; set; } = true;
+#endif
+#if desktop
+        public bool IsControlledByTouch { get; set; }
+#endif
 
         public bool AllowHandleInput { get; set; } = true;
 
