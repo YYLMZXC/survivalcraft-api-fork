@@ -485,7 +485,7 @@ namespace Game
                 attacker.Entity.FindComponent<ComponentGui>(throwOnError: true).DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: true, playNotificationSound: true);
                 return;
             }
-            ModsManager.HookAction("AttackBody", modloader => { modloader.AttackBody(target, attacker, hitPoint, hitDirection, ref attackPower, isMeleeAttack); return false; });
+            ModsManager.HookAction("AttackBody", modloader => { return modloader.AttackBody(target, attacker, hitPoint, hitDirection, ref attackPower, isMeleeAttack); });
             if (attackPower > 0f)
             {
                 ComponentClothing componentClothing = target.Entity.FindComponent<ComponentClothing>();

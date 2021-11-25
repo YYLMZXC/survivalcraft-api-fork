@@ -257,6 +257,21 @@ namespace Game
         public virtual void SetHitValueParticleSystem(HitValueParticleSystem hitValueParticleSystem, bool Hit) { }
 
         /// <summary>
+        /// 当吃被触发时
+        /// </summary>
+        /// <param name="componentPlayer"></param>
+        /// <param name="block"></param>
+        /// <param name="value"></param>
+        /// <param name="count"></param>
+        /// <param name="processCount"></param>
+        /// <param name="processedValue"></param>
+        /// <param name="processedCount"></param>
+        /// <returns>true 不移交 false 移交到下一个mod处理</returns>
+        public virtual bool OnEat(ComponentPlayer componentPlayer, Block block, int value)
+        {
+            return false;
+        }
+        /// <summary>
         /// 设定Shader参数
         /// </summary>
         /// <param name="shader"></param>

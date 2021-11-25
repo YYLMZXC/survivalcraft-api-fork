@@ -473,6 +473,8 @@ namespace Game
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
             if (block.GetNutritionalValue(value) > 0f)
             {
+                ModsManager.HookAction("OnEat", modLoader => { return modLoader.OnEat(m_componentPlayer, block, value); });
+
                 if (block is BucketBlock)
                 {
                     processedValue = Terrain.MakeBlockValue(90, 0, Terrain.ExtractData(value));
@@ -493,6 +495,7 @@ namespace Game
                     processedValue = value;
                     processedCount = processCount;
                 }
+
             }
             if (block.CanWear(value))
             {
