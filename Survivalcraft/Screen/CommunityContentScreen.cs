@@ -96,6 +96,7 @@ namespace Game
         {
             m_filter = string.Empty;
             m_order = Order.ByRank;
+            m_inputKey.Text = string.Empty;
             PopulateList(null);
         }
 
