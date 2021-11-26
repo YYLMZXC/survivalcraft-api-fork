@@ -318,8 +318,8 @@ namespace Game
                     float num2 = MathUtils.Lerp(1f, 0.2f, MathUtils.Saturate(0.075f * (ViewUnderWaterDepth - 2f)));
                     float num3 = MathUtils.Lerp(20f, 1f, SkyLightIntensity);
                     m_viewFogRange.X = 0f;
-                    m_viewFogRange.Y = MathUtils.Lerp(40f, 50f, num * num2 * num3);
-                    m_viewFogColor = new Color(0, 145, 255, 100);//Color.MultiplyColorOnly(c, 0.66f * num2 * num3);
+                    m_viewFogRange.Y = MathUtils.Lerp(4f, 10f, num * num2 * num3);
+                    m_viewFogColor = Color.MultiplyColorOnly(c, 0.66f * num2 * num3);
                     VisibilityRangeYMultiplier = 1f;
                     m_viewIsSkyVisible = true;
                 }
@@ -505,7 +505,7 @@ namespace Game
             {
                 Display.BlendState = BlendState.Additive;
                 ShaderTextured.Transforms.World[0] = Matrix.CreateRotationZ(-2f * timeOfDay * (float)Math.PI) * Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
-                ShaderTextured.Color = new Vector4(1f, 1.5f, 4f, num);
+                ShaderTextured.Color = new Vector4(1f, 1f, 1f, num);
                 ShaderTextured.Texture = ContentManager.Get<Texture2D>("Textures/Star");
                 ShaderTextured.SamplerState = SamplerState.LinearClamp;
                 ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderTextured, camera); return true; });
