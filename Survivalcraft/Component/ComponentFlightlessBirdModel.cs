@@ -95,6 +95,13 @@ namespace Game
 
         public override void Animate()
         {
+            bool Skip = false;
+            ModsManager.HookAction("OnModelAnimate", loader => { loader.OnModelAnimate(this, out Skip); return true; });
+            if (Skip)
+            {
+                base.Animate();
+                return;
+            }
             Vector3 position = m_componentCreature.ComponentBody.Position;
             Vector3 vector = m_componentCreature.ComponentBody.Rotation.ToYawPitchRoll();
             if (m_componentCreature.ComponentHealth.Health > 0f)

@@ -96,6 +96,7 @@ namespace Game
                     {
                     }
                 }
+                ModsManager.HookAction("SubsystemUpdate", loader => { loader.SubsystemUpdate(dt); return false; });
             }
         }
 

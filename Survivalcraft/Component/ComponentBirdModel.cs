@@ -95,6 +95,13 @@ namespace Game
 
         public override void Animate()
         {
+            bool Skip = false;
+            ModsManager.HookAction("OnModelAnimate", loader => {loader.OnModelAnimate(this, out Skip);return true;});
+            if (Skip)
+            {
+                base.Animate();
+                return;
+            }
             float num = 0f;
             if (m_hasWings)
             {

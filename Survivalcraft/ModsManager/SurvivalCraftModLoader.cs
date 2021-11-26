@@ -5,7 +5,7 @@ using GameEntitySystem;
 
 namespace Game
 {
-    public class SurvivalCraftModLoader:ModLoader
+    public class SurvivalCraftModLoader : ModLoader
     {
         public override void __ModInitialize()
         {
@@ -14,7 +14,7 @@ namespace Game
             ModsManager.RegisterHook("OnModelRendererDrawExtra", this);
             ModsManager.RegisterHook("GetMaxInstancesCount", this);
         }
-        
+
         public override void OnCameraChange(ComponentPlayer m_componentPlayer,ComponentGui componentGui)
         {
             GameWidget gameWidget = m_componentPlayer.GameWidget;
@@ -100,6 +100,7 @@ namespace Game
                 }
             }
         }
+
         public override int GetMaxInstancesCount()
         {
             return 7;

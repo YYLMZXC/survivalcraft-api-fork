@@ -135,6 +135,7 @@ namespace Game
 					Window.Activity.SendBroadcast(intent);
 				}
 			}
+			ModsManager.HookAction("OnCapture", loader => { loader.OnCapture(); return false; });
 		}
 	}
 }

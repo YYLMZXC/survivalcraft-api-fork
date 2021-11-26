@@ -108,6 +108,15 @@ namespace Game
         }
 
         /// <summary>
+        /// 当动物模型对象作出动画时执行
+        /// Skip为是否跳过原动画代码
+        /// </summary>
+        public virtual void OnModelAnimate(ComponentCreatureModel componentCreatureModel, out bool Skip)
+        {
+            Skip = false;
+        }
+
+        /// <summary>
         /// 计算护甲免伤时执行
         /// </summary>
         /// <param name="componentClothing"></param>
@@ -198,6 +207,14 @@ namespace Game
         }
 
         /// <summary>
+        /// 设置跳跃是否可放置方块
+        /// </summary>
+        public virtual void JumpToPlace(out bool Pass)
+        {
+            Pass = false;
+        }
+
+        /// <summary>
         /// 设置着色器参数
         /// </summary>
         /// <param name="shader"></param>
@@ -264,6 +281,13 @@ namespace Game
         /// </summary>
         /// <param name="chunk"></param>
         public virtual void OnTerrainContentsGenerated(TerrainChunk chunk)
+        {
+        }
+
+        /// <summary>
+        /// 子系统帧更新时执行
+        /// </summary>
+        public virtual void SubsystemUpdate(float dt)
         {
         }
 
@@ -391,6 +415,13 @@ namespace Game
         /// <param name="m_componentPlayer"></param>
         /// <param name="componentGui"></param>
         public virtual void OnCameraChange(ComponentPlayer m_componentPlayer, ComponentGui componentGui)
+        {
+        }
+
+        /// <summary>
+        /// 屏幕截图时执行
+        /// </summary>
+        public virtual void OnCapture()
         {
         }
 

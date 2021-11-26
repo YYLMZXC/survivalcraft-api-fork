@@ -206,7 +206,9 @@ namespace Game
                     int num2 = placementData.CellFace.X + point.X;
                     int num3 = placementData.CellFace.Y + point.Y;
                     int num4 = placementData.CellFace.Z + point.Z;
-                    if (num3 > 0 && num3 < 255 && (IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Harmless))
+                    bool pass = false;
+                    ModsManager.HookAction("JumpToPlace", loader => { loader.JumpToPlace(out pass); return true; });
+                    if (num3 > 0 && num3 < 255 && (pass || (IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Harmless)))
                     {
                         bool flag = false;
                         if (block.IsCollidable)
