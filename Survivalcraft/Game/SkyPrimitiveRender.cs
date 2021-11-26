@@ -9,6 +9,8 @@ namespace Game
 
 		public SkyShader ShaderAlphaTest;
 
+		public Camera Camera;
+
 		public void Textured_FlushWithCurrentStateAndShader(BaseTexturedBatch baseTexturedBatch, Shader shader, bool clearAfterFlush = true)
 		{
 			int num = 0;
@@ -61,7 +63,7 @@ namespace Game
 						ShaderAlphaTest.SamplerState = baseTexturedBatch.SamplerState;
 						ShaderAlphaTest.Transforms.World[0] = matrix;
 						ShaderAlphaTest.AlphaThreshold = 0f;
-						ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderAlphaTest, null); return true; });
+						ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderAlphaTest, Camera); return true; });
 						baseTexturedBatch.FlushWithCurrentStateAndShader(ShaderAlphaTest, clearAfterFlush);
 					}
 					else
@@ -69,7 +71,7 @@ namespace Game
 						Shader.Texture = baseTexturedBatch.Texture;
 						Shader.SamplerState = baseTexturedBatch.SamplerState;
 						Shader.Transforms.World[0] = matrix;
-						ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(Shader, null); return true; });
+						ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(Shader, Camera); return true; });
 						baseTexturedBatch.FlushWithCurrentStateAndShader(Shader, clearAfterFlush);
 					}
 				}
