@@ -129,6 +129,8 @@ namespace Game
 
         public bool DrawSkyEnabled = true;
 
+        public static bool DrawGalaxyEnabled = true;
+
         public bool DrawCloudsWireframe;
 
         public bool FogEnabled = true;
@@ -318,8 +320,8 @@ namespace Game
                     float num2 = MathUtils.Lerp(1f, 0.2f, MathUtils.Saturate(0.075f * (ViewUnderWaterDepth - 2f)));
                     float num3 = MathUtils.Lerp(20f, 1f, SkyLightIntensity);
                     m_viewFogRange.X = 0f;
-                    m_viewFogRange.Y = MathUtils.Lerp(40f, 50f, num * num2 * num3);
-                    m_viewFogColor = new Color(0, 145, 255, 100);//Color.MultiplyColorOnly(c, 0.66f * num2 * num3);
+                    m_viewFogRange.Y = MathUtils.Lerp(4f, 10f, num * num2 * num3);
+                    m_viewFogColor = Color.MultiplyColorOnly(c, 0.66f * num2 * num3);
                     VisibilityRangeYMultiplier = 1f;
                     m_viewIsSkyVisible = true;
                 }
@@ -360,6 +362,7 @@ namespace Game
                         {
                             m_primitiveRender.Shader = Shader;
                             m_primitiveRender.ShaderAlphaTest = ShaderAlphaTest;
+                            m_primitiveRender.Camera = camera;
                         }
                         m_primitivesRenderer2d.Flush(true, int.MaxValue);
                     }
@@ -375,15 +378,24 @@ namespace Game
                 if (DrawSkyEnabled && m_viewIsSkyVisible && SettingsManager.SkyRenderingMode != SkyRenderingMode.Disabled)
                 {
                     DrawSkydome(camera);
-                    DrawStars(camera);
-                    DrawSunAndMoon(camera);
-                    DrawClouds(camera);
+                    if (DrawGalaxyEnabled)
+                    {
+                        DrawStars(camera);
+                        DrawSunAndMoon(camera);
+                        DrawClouds(camera);
+                    }
+                    else
+                    {
+                        DrawClouds(camera);
+                        DrawClouds2(camera);
+                    }
                     if (Shader != null && ShaderAlphaTest != null)
                     {
                         if(m_primitiveRender.Shader == null && m_primitiveRender.ShaderAlphaTest == null)
                         {
                             m_primitiveRender.Shader = Shader;
                             m_primitiveRender.ShaderAlphaTest = ShaderAlphaTest;
+                            m_primitiveRender.Camera = camera;
                         }
                         m_primitiveRender.Flush(m_primitivesRenderer3d, camera.ViewProjectionMatrix, true, int.MaxValue);
                     }
@@ -505,7 +517,7 @@ namespace Game
             {
                 Display.BlendState = BlendState.Additive;
                 ShaderTextured.Transforms.World[0] = Matrix.CreateRotationZ(-2f * timeOfDay * (float)Math.PI) * Matrix.CreateTranslation(camera.ViewPosition) * camera.ViewProjectionMatrix;
-                ShaderTextured.Color = new Vector4(1f, 1.5f, 4f, num);
+                ShaderTextured.Color = new Vector4(1f, 1f, 1f, num);
                 ShaderTextured.Texture = ContentManager.Get<Texture2D>("Textures/Star");
                 ShaderTextured.SamplerState = SamplerState.LinearClamp;
                 ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderTextured, camera); return true; });
@@ -627,6 +639,75 @@ namespace Game
                     float num7 = (float)num2 * num6;
                     float num8 = (float)num3 * num6;
                     float y = MathUtils.Lerp(800f, 60f, num5 * num5);//云的高度
+                    Vector3 position = new Vector3(viewPosition.X + num7 * 1900f, y, viewPosition.Z + num8 * 1900f);
+                    Vector2 texCoord = new Vector2(position.X, position.Z) / 1900f * 1.75f - v;
+                    Color color = m_cloudsLayerColors[num4];
+                    texturedBatch3D.TriangleVertices.Array[count2++] = new VertexPositionColorTexture(position, color, texCoord);
+                    if (j > 0 && i > 0)
+                    {
+                        ushort num9 = (ushort)(count + j + i * 7);
+                        ushort num10 = (ushort)(count + (j - 1) + i * 7);
+                        ushort num11 = (ushort)(count + (j - 1) + (i - 1) * 7);
+                        ushort num12 = (ushort)(count + j + (i - 1) * 7);
+                        if ((num2 <= 0 && num3 <= 0) || (num2 > 0 && num3 > 0))
+                        {
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num9;
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num10;
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num11;
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num11;
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num12;
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num9;
+                        }
+                        else
+                        {
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num9;
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num10;
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num12;
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num10;
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num11;
+                            texturedBatch3D.TriangleIndices.Array[count3++] = num12;
+                        }
+                    }
+                }
+            }
+            _ = DrawCloudsWireframe;
+        }
+
+        public void DrawClouds2(Camera camera)
+        {
+            if (SettingsManager.SkyRenderingMode == SkyRenderingMode.NoClouds)
+            {
+                return;
+            }
+            float globalPrecipitationIntensity = m_subsystemWeather.GlobalPrecipitationIntensity;
+            float num = MathUtils.Lerp(0.03f, 1f, MathUtils.Sqr(SkyLightIntensity)) * MathUtils.Lerp(1f, 0.2f, globalPrecipitationIntensity);
+            m_cloudsLayerColors[0] = new Color(255, 255, 255, 10);
+            m_cloudsLayerColors[1] = new Color(255, 255, 255, 10);
+            m_cloudsLayerColors[2] = new Color(255, 255, 255, 10);
+            m_cloudsLayerColors[3] = new Color(255, 255, 255, 10);
+            double gameTime = m_subsystemTime.GameTime;
+            Vector3 viewPosition = camera.ViewPosition;
+            Vector2 v = new Vector2((float)MathUtils.Remainder(0.0020000000949949026 * gameTime - (double)(viewPosition.X / 1900f * 1.75f), 1.0) + viewPosition.X / 1900f * 2.75f, (float)MathUtils.Remainder(0.0020000000949949026 * gameTime - (double)(viewPosition.Z / 1900f * 1.75f), 1.0) + viewPosition.Z / 1900f * 1.75f);
+            TexturedBatch3D texturedBatch3D = m_primitivesRenderer3d.TexturedBatch(m_cloudsTexture, useAlphaTest: false, 2, DepthStencilState.DepthRead, null, BlendState.AlphaBlend, SamplerState.LinearWrap);
+            DynamicArray<VertexPositionColorTexture> triangleVertices = texturedBatch3D.TriangleVertices;
+            DynamicArray<ushort> triangleIndices = texturedBatch3D.TriangleIndices;
+            int count = triangleVertices.Count;
+            int count2 = triangleVertices.Count;
+            int count3 = triangleIndices.Count;
+            triangleVertices.Count += 49;
+            triangleIndices.Count += 216;
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    int num2 = j - 3;
+                    int num3 = i - 3;
+                    int num4 = MathUtils.Max(MathUtils.Abs(num2), MathUtils.Abs(num3));
+                    float num5 = m_cloudsLayerRadii[num4];
+                    float num6 = (num4 > 0) ? (num5 / MathUtils.Sqrt(num2 * num2 + num3 * num3)) : 0f;
+                    float num7 = (float)num2 * num6;
+                    float num8 = (float)num3 * num6;
+                    float y = MathUtils.Lerp(-700f, 60f, num5 * num5);//云的高度
                     Vector3 position = new Vector3(viewPosition.X + num7 * 1900f, y, viewPosition.Z + num8 * 1900f);
                     Vector2 texCoord = new Vector2(position.X, position.Z) / 1900f * 1.75f - v;
                     Color color = m_cloudsLayerColors[num4];
