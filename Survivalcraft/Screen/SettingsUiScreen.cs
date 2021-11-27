@@ -77,7 +77,7 @@ namespace Game
                         {
                             ScreensManager.m_screens[c.Key] = c.Value as Screen;
                         }
-
+                        CraftingRecipesManager.Initialize();
                         ScreensManager.SwitchScreen("MainMenu");
                     }
                 }));

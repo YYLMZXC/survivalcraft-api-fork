@@ -255,9 +255,11 @@ namespace Game
         {
             int data = Terrain.ExtractData(value);
             string bn = string.Format("{0}:{1}", GetType().Name, data);
-            string nm = LanguageControl.GetBlock(bn, "DisplayName");
-            if (string.IsNullOrEmpty(nm)) return DefaultDisplayName;
-            else return nm;
+            if (LanguageControl.TryGetBlock(bn, "DisplayName", out var result))
+            {
+                return result;
+            }
+            return DefaultDisplayName;
         }
         public virtual bool IsEditable_(int value) {
             return IsEditable;
@@ -321,9 +323,8 @@ namespace Game
         {
             int data = Terrain.ExtractData(value);
             string bn = string.Format("{0}:{1}", GetType().Name, data);
-            string nm = LanguageControl.GetBlock(bn, "Description");
-            if (string.IsNullOrEmpty(nm)) return DefaultDescription;
-            else return nm;
+            if (LanguageControl.TryGetBlock(bn, "Description", out var r)) return r;
+            return DefaultDescription;
         }
         public virtual FoodType GetFoodType(int value) { return FoodType; }
         public virtual string GetCategory(int value)

@@ -211,19 +211,18 @@ namespace Game
             foreach (string s in key) str += s + ":";
             return str;
         }
-        public static string GetBlock(string name, string prop)
+        public static string GetBlock(string blockName, string prop)
         {
-            string[] nm = name.Split(new char[] { ':' }, StringSplitOptions.None);
-            string result = Get(out bool r, "Blocks", name, prop);
-            if (!r)
+            if (TryGetBlock(blockName, prop, out var result))
             {
-                result = Get(out r, "Blocks", nm.Length < 2 ? (name + ":0") : (nm[0] + ":0"), prop);
+                return result;
             }
             return result;
         }
-        public static bool TryGetBlock(string name, string prop, out string result)
+        public static bool TryGetBlock(string blockName, string prop, out string result)
         {
-            result = Get(out bool r, "Blocks", name, prop);
+            string[] nm = blockName.Split(new char[] { ':' }, StringSplitOptions.None);
+            result = Get(out bool r, "Blocks", nm.Length < 2 ? (blockName + ":0") : (nm[0] + ":0"), prop);
             return r;
         }
         public static string GetContentWidgets(string name, string prop)
