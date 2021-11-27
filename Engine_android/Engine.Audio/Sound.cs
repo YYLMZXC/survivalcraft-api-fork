@@ -21,12 +21,38 @@ namespace Engine.Audio
 			IsLooped = isLooped;
 			DisposeOnStop = disposeOnStop;
 		}
+
+		public Sound(StreamingSource streamingSource, SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
+		{
+			m_streamingSound = new StreamingSound(streamingSource, volume, pitch, pan, isLooped, disposeOnStop);
+			Volume = volume;
+			Pitch = pitch;
+			Pan = pan;
+			IsLooped = isLooped;
+			DisposeOnStop = disposeOnStop;
+		}
 #else
 		public SoundBuffer m_soundBuffer;
 
 		public SoundBuffer SoundBuffer => m_soundBuffer;
 
 		public Sound(SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
+		{
+			if (soundBuffer == null)
+			{
+				throw new ArgumentNullException("soundBuffer");
+			}
+			Initialize(soundBuffer);
+			ChannelsCount = soundBuffer.ChannelsCount;
+			SamplingFrequency = soundBuffer.SamplingFrequency;
+			Volume = volume;
+			Pitch = pitch;
+			Pan = pan;
+			IsLooped = isLooped;
+			DisposeOnStop = disposeOnStop;
+		}
+
+		public Sound(StreamingSource streamingSource, SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
 		{
 			if (soundBuffer == null)
 			{
