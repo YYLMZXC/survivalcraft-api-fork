@@ -104,6 +104,7 @@ public static class ModsManager
 
     private static bool AllowContinue = true;
     public static Dictionary<string, string> Configs = new Dictionary<string, string>();
+    public static List<ModEntity> ModListAll = new List<ModEntity>();
     public static List<ModEntity> ModList = new List<ModEntity>();
     public static List<ModLoader> ModLoaders = new List<ModLoader>();
     public static List<ModInfo> DisabledMods = new List<ModInfo>();
@@ -310,22 +311,25 @@ public static class ModsManager
     {
         if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
         ModHooks.Clear();
+        ModListAll.Clear();
         ModList.Clear();
         ModLoaders.Clear();
         SurvivalCrafModEntity = new SurvivalCrafModEntity();
+        ModEntity FastDebug = new FastDebugModEntity();
         ModList.Add(SurvivalCrafModEntity);
-        ModList.Add(new FastDebugModEntity());
+        ModList.Add(FastDebug);
         GetScmods(ModsPath);
+        ModListAll.AddRange(ModList);
+        List<ModInfo> ToDisable = new List<ModInfo>();
+        ToDisable.AddRange(DisabledMods);
         DisabledMods.Clear();
         float api = float.Parse(APIVersion);
         List<ModEntity> ToRemove = new List<ModEntity>();
-        List<ModInfo> ToDisable = new List<ModInfo>();
-        ToDisable.AddRange(DisabledMods);
         foreach (ModEntity modEntity1 in ModList)
         {
             ModInfo modInfo = modEntity1.modInfo;
-            ModInfo disabledmod = ToDisable.Find(l => l == modInfo);
-            if (disabledmod != null)
+            ModInfo disabledmod = ToDisable.Find(l => l.PackageName == modInfo.PackageName);
+            if (disabledmod != null && disabledmod.PackageName != SurvivalCrafModEntity.modInfo.PackageName && disabledmod.PackageName != FastDebug.modInfo.PackageName)
             {
                 ToDisable.Add(modInfo);
                 ToRemove.Add(modEntity1);

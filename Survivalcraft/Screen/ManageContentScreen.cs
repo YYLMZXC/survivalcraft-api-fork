@@ -320,7 +320,7 @@ public class ManageContentScreen : Screen
         }
         if (m_filter == ExternalContentType.Mod || m_filter == ExternalContentType.Unknown)
         {
-            foreach (ModEntity modEntity in ModsManager.ModList)
+            foreach (ModEntity modEntity in ModsManager.ModListAll)
             {
                 string dis = string.Empty;
                 if (ModsManager.DisabledMods.Contains(modEntity.modInfo)) dis = "[已禁用]";

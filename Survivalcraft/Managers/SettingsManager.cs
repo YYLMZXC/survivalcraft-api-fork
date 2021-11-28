@@ -590,12 +590,15 @@ namespace Game
                 }
                 var xElement1 = new XElement("DisableMods");
                 var xElement2 = new XElement("ModSettings");
-                foreach (ModEntity modEntity in ModsManager.ModList)
+                foreach (ModEntity modEntity in ModsManager.ModListAll)
                 {
-                    var element = new XElement("Mod");
-                    element.SetAttributeValue("PackageName", modEntity.modInfo.PackageName);
-                    element.SetAttributeValue("Version", modEntity.modInfo.Version);
-                    xElement1.Add(element);
+                    if (ModsManager.DisabledMods.Contains(modEntity.modInfo))
+                    {
+                        var element = new XElement("Mod");
+                        element.SetAttributeValue("PackageName", modEntity.modInfo.PackageName);
+                        element.SetAttributeValue("Version", modEntity.modInfo.Version);
+                        xElement1.Add(element);
+                    }
                 }
                 xElement.Add(xElement1);
                 ModsManager.SaveSettings(xElement);
