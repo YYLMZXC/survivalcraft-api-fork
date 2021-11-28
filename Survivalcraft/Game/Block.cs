@@ -261,6 +261,10 @@ namespace Game
             }
             return DefaultDisplayName;
         }
+        public virtual int GetTextureSlotCount(int value)
+        {
+            return 16;
+        }
         public virtual bool IsEditable_(int value) {
             return IsEditable;
         }
