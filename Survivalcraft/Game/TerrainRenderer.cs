@@ -182,7 +182,6 @@ namespace Game
 			OpaqueShader.GetParameter("u_origin").SetValue(v.XZ);
 			OpaqueShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
 			OpaqueShader.GetParameter("u_viewPosition").SetValue(viewPosition);
-			OpaqueShader.GetParameter("u_texture").SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
 			OpaqueShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
 			OpaqueShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			OpaqueShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
@@ -230,7 +229,6 @@ namespace Game
 			AlphatestedShader.GetParameter("u_origin").SetValue(v.XZ);
 			AlphatestedShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
 			AlphatestedShader.GetParameter("u_viewPosition").SetValue(viewPosition);
-			AlphatestedShader.GetParameter("u_texture").SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
 			AlphatestedShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
 			AlphatestedShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			AlphatestedShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
@@ -259,7 +257,6 @@ namespace Game
 			TransparentShader.GetParameter("u_origin").SetValue(v.XZ);
 			TransparentShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
 			TransparentShader.GetParameter("u_viewPosition").SetValue(viewPosition);
-			TransparentShader.GetParameter("u_texture").SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
 			TransparentShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
 			TransparentShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			TransparentShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
@@ -406,6 +403,7 @@ namespace Game
 					{
 						if (num2 > num)
 						{
+							shader.GetParameter("u_texture").SetValue(buffer.Texture);
 							Display.DrawIndexed(PrimitiveType.TriangleList, shader, buffer.VertexBuffer, buffer.IndexBuffer, num, num2 - num);
 							ChunkTrianglesDrawn += (num2 - num) / 3;
 							ChunkDrawCalls++;
