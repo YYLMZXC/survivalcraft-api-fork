@@ -1,3 +1,4 @@
+using Engine.Media;
 using OpenTK.Audio.OpenAL;
 using System;
 
@@ -30,6 +31,25 @@ namespace Engine.Audio
 		}
 
 		public Sound(SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
+		{
+			if (soundBuffer == null)
+			{
+				throw new ArgumentNullException(nameof(soundBuffer));
+			}
+			AL.Source(m_source, ALSourcei.Buffer, soundBuffer.m_buffer);
+			Mixer.CheckALError();
+			Initialize(soundBuffer);
+			base.ChannelsCount = soundBuffer.ChannelsCount;
+			base.SamplingFrequency = soundBuffer.SamplingFrequency;
+			base.Volume = volume;
+			base.Pitch = pitch;
+			base.Pan = pan;
+			base.IsLooped = isLooped;
+			base.DisposeOnStop = disposeOnStop;
+			Mixer.m_soundsToStopPoll.Add(this);
+		}
+
+		public Sound(StreamingSource streamingSource, SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
 		{
 			if (soundBuffer == null)
 			{

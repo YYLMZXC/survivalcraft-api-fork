@@ -164,6 +164,12 @@ namespace Game
                 }
             }
         }
+
+        public static bool ContainsKey(string key)
+        {
+            return Resources.ContainsKey(key);
+        }
+
         public static bool IsContent(object content)
         {
             foreach (var l in Caches.Values)
@@ -172,6 +178,7 @@ namespace Game
             }
             return false;
         }
+
         public static void Display_DeviceReset()
         {
             foreach (var i in Caches)
@@ -187,10 +194,12 @@ namespace Game
                 }
             }
         }
+
         public static ReadOnlyList<ContentInfo> List()
         {
             return new ReadOnlyList<ContentInfo>(Resources.Values.ToDynamicArray());
         }
+
         public static ReadOnlyList<ContentInfo> List(string directory)
         {
             List<ContentInfo> contents = new List<ContentInfo>();
