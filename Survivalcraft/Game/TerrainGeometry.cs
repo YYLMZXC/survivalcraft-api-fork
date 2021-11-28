@@ -33,6 +33,7 @@ namespace Game
 
 		public TerrainGeometry GetGeometry(Texture2D texture)
 		{
+			if (texture == null) throw new System.Exception("Texture can not be null");
 			if (!Draws.TryGetValue(texture, out var geometry))
 			{
 				geometry = new TerrainGeometry();
