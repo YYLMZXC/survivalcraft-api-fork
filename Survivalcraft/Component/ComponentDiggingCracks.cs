@@ -184,7 +184,7 @@ namespace Game
 			{
 				foreach (var r in c.Value)
 				{
-					r.Dispose();
+					if(r != null) r.Dispose();
 				}
 			}
 		}
