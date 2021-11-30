@@ -23,7 +23,7 @@ public static class ModsManager
     public const int Apiv = 3;
 
 #if desktop
-    public static string ExternelPath = "app:",
+    public const string ExternelPath = "app:",
                          UserDataPath = ExternelPath + "/UserId.dat",
                          CharacterSkinsDirectoryName = ExternelPath + "/CharacterSkins",
                          FurniturePacksDirectoryName = ExternelPath + "/FurniturePacks",
@@ -32,12 +32,13 @@ public static class ModsManager
                          CommunityContentCachePath = ExternelPath + "CommunityContentCache.xml",
                          ModsSetPath = ExternelPath + "/ModSettings.xml",
                          SettingPath = ExternelPath + "/Settings.xml",
+                         ModCachePath = ExternelPath + "/ModsCache",
                          LogPath = ExternelPath + "/Bugs";
-    public static bool IsAndroid = false;
+    public const bool IsAndroid = false;
 
 #endif
 #if android
-    public static string ExternelPath = EngineActivity.BasePath,
+    public const string ExternelPath = EngineActivity.BasePath,
                          ScreenCapturePath = ExternelPath + "/ScreenCapture",
                          UserDataPath = "config:/UserId.dat",
                          FurniturePacksDirectoryName = "config:/FurniturePacks",
@@ -47,8 +48,9 @@ public static class ModsManager
                          CommunityContentCachePath = "config:/CommunityContentCache.xml",
                          ModsSetPath = "config:/ModSettings.xml",
                          SettingPath = "config:/Settings.xml",
+                         ModCachePath = ExternelPath + "/ModsCache",
                          LogPath = ExternelPath + "/Bugs";
-    public static bool IsAndroid = true;
+    public const bool IsAndroid = true;
 
 #endif
     public static string ModsPath = ExternelPath + "/Mods",
@@ -292,13 +294,14 @@ public static class ModsManager
 
     public static string ImportMod(string name, Stream stream)
     {
-        string path = Storage.CombinePaths(ModsPath, name);
+        if (Storage.DirectoryExists(ModCachePath)) Storage.CreateDirectory(ModCachePath);
+        string path = Storage.CombinePaths(ModCachePath, name + ".scmod");
         using (Stream fileStream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
         {
             stream.CopyTo(fileStream);
             stream.Close();
         }
-        return "下载成功";
+        return "下载成功,请到Mod管理中进行手动安装";
     }
 
     public static void ModListAllDo(Action<ModEntity> entity)
