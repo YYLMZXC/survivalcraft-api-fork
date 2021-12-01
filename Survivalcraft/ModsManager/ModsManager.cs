@@ -38,7 +38,7 @@ public static class ModsManager
 
 #endif
 #if android
-    public const string ExternelPath = "android:",
+    public static string ExternelPath = EngineActivity.BasePath,
                          ScreenCapturePath = ExternelPath + "/ScreenCapture",
                          UserDataPath = "config:/UserId.dat",
                          FurniturePacksDirectoryName = "config:/FurniturePacks",
