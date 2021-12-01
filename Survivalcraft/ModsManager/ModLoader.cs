@@ -55,11 +55,11 @@ namespace Game
         /// <param name="processedValue"></param>
         /// <param name="processedCount"></param>
         /// <returns>true 不移交 false 移交到下一个mod处理</returns>
-        public virtual bool OnPlayerEat(ComponentPlayer componentPlayer, Block block, int value)
+        public virtual bool ClothingProcessSlotItems(ComponentPlayer componentPlayer, Block block, int slotIndex, int value, int count)
         {
             return false;
         }
-       
+
         /// <summary>
         /// 动物吃掉落物时执行
         /// </summary>

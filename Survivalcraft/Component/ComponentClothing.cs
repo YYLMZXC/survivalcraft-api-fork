@@ -471,10 +471,9 @@ namespace Game
                 return;
             }
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
+            ModsManager.HookAction("ClothingProcessSlotItems", modLoader => { return modLoader.ClothingProcessSlotItems(m_componentPlayer, block, slotIndex, value, count); });
             if (block.GetNutritionalValue(value) > 0f)
             {
-                ModsManager.HookAction("OnPlayerEat", modLoader => { return modLoader.OnPlayerEat(m_componentPlayer, block, value); });
-
                 if (block is BucketBlock)
                 {
                     processedValue = Terrain.MakeBlockValue(90, 0, Terrain.ExtractData(value));
