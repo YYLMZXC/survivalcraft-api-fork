@@ -37,7 +37,7 @@ namespace Game
         public override void Enter(object[] parameters)
         {
             m_descriptionLabel.Text = string.Empty;
-#if Desktop
+#if desktop
             m_useAudioTrackCachingButton.IsVisible = false;
             m_useReducedZRangeContainer.IsVisible = false;
 #endif

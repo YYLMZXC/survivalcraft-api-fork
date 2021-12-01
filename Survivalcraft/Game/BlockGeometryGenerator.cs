@@ -84,7 +84,7 @@ namespace Game
         }
         public static void SetupLitCornerVertex(float x, float y, float z, Color color, int textureSlot, int corner, ref TerrainVertex vertex)
         {
-            SetupLitCornerVertex(x, y, z, color, textureSlot, corner, 16, ref vertex);
+            SetupLitCornerVertex(x, y, z, color, textureSlot, 16, corner, ref vertex);
         }
 
         public static void SetupLitCornerVertex(float x, float y, float z, Color color, int textureSlot, int textureSlotCount, int corner, ref TerrainVertex vertex)

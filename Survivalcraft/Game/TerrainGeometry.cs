@@ -3,16 +3,6 @@ using System.Collections.Generic;
 
 namespace Game
 {
-	public enum SubsetType
-	{
-		OpaqueFace0,
-		OpaqueFace1,
-		OpaqueFace2,
-		OpaqueFace3,
-		Opaque,
-		AlphaTest,
-		Transparent
-	}
 	public class TerrainGeometry
 	{
 		public TerrainGeometrySubset SubsetOpaque;

@@ -321,18 +321,15 @@ namespace Game
 					{
 						var source = c.Value.Subsets[j];
 						var target = v[j];
-						if (source.Indices.Count > 0)
+						if (target.Vertices.Count > 0)
 						{
-							if (target.Vertices.Count > 0)
+							for (k = 0; k < source.Indices.Count; k++)
 							{
-								for (k = 0; k < source.Indices.Count; k++)
-								{
-									target.Indices.Add((ushort)(source.Indices[k] + target.Vertices.Count));//shift indices
-								}
+								target.Indices.Add((ushort)(source.Indices[k] + target.Vertices.Count));//shift indices
 							}
-							else target.Indices.AddRange(source.Indices);
-							target.Vertices.AddRange(source.Vertices);
 						}
+						else target.Indices.AddRange(source.Indices);
+						target.Vertices.AddRange(source.Vertices);
 					}
 				}
 			}
