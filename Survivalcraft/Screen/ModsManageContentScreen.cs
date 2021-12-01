@@ -73,7 +73,7 @@ public class ModsManageContentScreen : Screen
 
     public ModsManageContentScreen()
     {
-        androidSystem = (Environment.CurrentDirectory == "/");
+        androidSystem = ModsManager.IsAndroid;
         if (androidSystem)
         {
             m_uninstallPath = m_uninstallPath.Replace("app:", "android:/SurvivalCraft2.2");
