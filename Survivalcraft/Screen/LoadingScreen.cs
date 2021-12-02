@@ -70,6 +70,13 @@ namespace Game
             Dispatcher.Dispatch(delegate {
                 LogItem item = new LogItem(type, mesg);
                 LogList.AddItem(item);
+                switch (type) {
+                    case LogType.Info:
+                    case LogType.Advice: Log.Information(mesg); break;
+                    case LogType.Error: Log.Error(mesg); break;
+                    case LogType.Warning: Log.Warning(mesg); break;
+                    default: break;
+                }
                 LogList.ScrollToItem(item);
             });
         }

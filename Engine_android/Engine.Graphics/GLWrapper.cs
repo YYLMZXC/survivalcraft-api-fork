@@ -857,11 +857,15 @@ namespace Engine.Graphics
 
 		public static All TranslateIndexFormat(IndexFormat indexFormat)
 		{
-			if (indexFormat == IndexFormat.SixteenBits)
+			switch (indexFormat)
 			{
-				return All.UnsignedShort;
+				case IndexFormat.SixteenBits:
+					return All.UnsignedShort;
+				case IndexFormat.ThirtyTwoBits:
+					return All.UnsignedInt;
+				default:
+					throw new InvalidOperationException("Unsupported index format.");
 			}
-			throw new InvalidOperationException("Unsupported index format.");
 		}
 
 

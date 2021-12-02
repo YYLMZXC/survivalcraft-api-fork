@@ -141,6 +141,7 @@ namespace Game
                     Font = BitmapFont.DebugFont,
                     HorizontalAlignment = WidgetAlignment.Near,
                     VerticalAlignment = WidgetAlignment.Center,
+                    FontScale = 0.6f,
                     Color = color
                 };
             };
