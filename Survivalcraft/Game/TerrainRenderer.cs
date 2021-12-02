@@ -325,7 +325,7 @@ namespace Game
 						{
 							for (k = 0; k < source.Indices.Count; k++)
 							{
-								target.Indices.Add((ushort)(source.Indices[k] + target.Vertices.Count));//shift indices
+								target.Indices.Add((source.Indices[k] + target.Vertices.Count));//shift indices
 							}
 						}
 						else target.Indices.AddRange(source.Indices);
@@ -353,7 +353,7 @@ namespace Game
 				if (IndicesCount == 0) continue;
 				buffer.Texture = row.Key;
 				geometry.Buffers.Add(buffer);
-				buffer.IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits, IndicesCount);
+				buffer.IndexBuffer = new IndexBuffer(IndexFormat.ThirtyTwoBits, IndicesCount);
 				buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, VerticesCount);
 				VerticesCount = 0;
 				for (j = 0; j < 7; j++)
@@ -365,7 +365,7 @@ namespace Game
 						{
 							for (k = 0; k < subset.Indices.Count; k++)
 							{
-								subset.Indices[k] = ((ushort)(subset.Indices[k] + VerticesCount));//shift indices
+								subset.Indices[k] = ((subset.Indices[k] + VerticesCount));//shift indices
 							}
 						}
 						buffer.VertexBuffer.SetData(subset.Vertices.Array, 0, subset.Vertices.Count, buffer.SubsetVertexBufferStarts[j]);
@@ -434,11 +434,11 @@ namespace Game
 			}
 		}
 
-		public static void ShiftIndices(ushort[] source, ushort[] destination, int shift, int count)
+		public static void ShiftIndices(int[] source, int[] destination, int shift, int count)
 		{
 			for (int i = 0; i < count; i++)
 			{
-				destination[i] = (ushort)(source[i] + shift);
+				destination[i] = (source[i] + shift);
 			}
 		}
 	}

@@ -107,7 +107,7 @@ namespace Game
         public void GenerateCrossfaceVertices(Block block, int value, int x, int y, int z, Color color, int textureSlot, TerrainGeometrySubset subset)
         {
             DynamicArray<TerrainVertex> vertices = subset.Vertices;
-            DynamicArray<ushort> indices = subset.Indices;
+            var indices = subset.Indices;
             int num = Terrain.ExtractLight(value);
             float num2 = LightingManager.LightIntensityByLightValueAndFace[num + 64];
             Color color2 = new Color((byte)((float)(int)color.R * num2), (byte)((float)(int)color.G * num2), (byte)((float)(int)color.B * num2), color.A);
@@ -144,30 +144,30 @@ namespace Game
             }
             int count2 = indices.Count;
             indices.Count += 24;
-            indices.Array[count2] = (ushort)count;
-            indices.Array[count2 + 1] = (ushort)(count + 1);
-            indices.Array[count2 + 2] = (ushort)(count + 2);
-            indices.Array[count2 + 3] = (ushort)(count + 2);
-            indices.Array[count2 + 4] = (ushort)(count + 1);
-            indices.Array[count2 + 5] = (ushort)count;
-            indices.Array[count2 + 6] = (ushort)(count + 2);
-            indices.Array[count2 + 7] = (ushort)(count + 3);
-            indices.Array[count2 + 8] = (ushort)count;
-            indices.Array[count2 + 9] = (ushort)count;
-            indices.Array[count2 + 10] = (ushort)(count + 3);
-            indices.Array[count2 + 11] = (ushort)(count + 2);
-            indices.Array[count2 + 12] = (ushort)(count + 4);
-            indices.Array[count2 + 13] = (ushort)(count + 5);
-            indices.Array[count2 + 14] = (ushort)(count + 6);
-            indices.Array[count2 + 15] = (ushort)(count + 6);
-            indices.Array[count2 + 16] = (ushort)(count + 5);
-            indices.Array[count2 + 17] = (ushort)(count + 4);
-            indices.Array[count2 + 18] = (ushort)(count + 6);
-            indices.Array[count2 + 19] = (ushort)(count + 7);
-            indices.Array[count2 + 20] = (ushort)(count + 4);
-            indices.Array[count2 + 21] = (ushort)(count + 4);
-            indices.Array[count2 + 22] = (ushort)(count + 7);
-            indices.Array[count2 + 23] = (ushort)(count + 6);
+            indices.Array[count2] = count;
+            indices.Array[count2 + 1] = (count + 1);
+            indices.Array[count2 + 2] = (count + 2);
+            indices.Array[count2 + 3] = (count + 2);
+            indices.Array[count2 + 4] = (count + 1);
+            indices.Array[count2 + 5] = count;
+            indices.Array[count2 + 6] = (count + 2);
+            indices.Array[count2 + 7] = (count + 3);
+            indices.Array[count2 + 8] = count;
+            indices.Array[count2 + 9] = count;
+            indices.Array[count2 + 10] = (count + 3);
+            indices.Array[count2 + 11] = (count + 2);
+            indices.Array[count2 + 12] = (count + 4);
+            indices.Array[count2 + 13] = (count + 5);
+            indices.Array[count2 + 14] = (count + 6);
+            indices.Array[count2 + 15] = (count + 6);
+            indices.Array[count2 + 16] = (count + 5);
+            indices.Array[count2 + 17] = (count + 4);
+            indices.Array[count2 + 18] = (count + 6);
+            indices.Array[count2 + 19] = (count + 7);
+            indices.Array[count2 + 20] = (count + 4);
+            indices.Array[count2 + 21] = (count + 4);
+            indices.Array[count2 + 22] = (count + 7);
+            indices.Array[count2 + 23] = (count + 6);
         }
 
         public void GenerateCubeVertices(Block block, int value, int x, int y, int z, Color color, TerrainGeometrySubset[] subsetsByFace)
@@ -183,7 +183,7 @@ namespace Game
             if (block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices = subsetsByFace[0].Vertices;
-                DynamicArray<ushort> indices = subsetsByFace[0].Indices;
+                var indices = subsetsByFace[0].Indices;
                 int faceTextureSlot = block.GetFaceTextureSlot(0, value);
                 int count = vertices.Count;
                 vertices.Count += 4;
@@ -193,18 +193,18 @@ namespace Game
                 SetupCubeVertexFace0(x, y + 1, z + 1, 1f, 3, faceTextureSlot, textureSlotCount, color,  ref vertices.Array[count + 3]);//D
                 int count2 = indices.Count;
                 indices.Count += 6;
-                indices.Array[count2] = (ushort)count;//A
-                indices.Array[count2 + 1] = (ushort)(count + 2);//C
-                indices.Array[count2 + 2] = (ushort)(count + 1);//B
-                indices.Array[count2 + 3] = (ushort)(count + 2);//C
-                indices.Array[count2 + 4] = (ushort)count;//A
-                indices.Array[count2 + 5] = (ushort)(count + 3);//D
+                indices.Array[count2] = count;//A
+                indices.Array[count2 + 1] = (count + 2);//C
+                indices.Array[count2 + 2] = (count + 1);//B
+                indices.Array[count2 + 3] = (count + 2);//C
+                indices.Array[count2 + 4] = count;//A
+                indices.Array[count2 + 5] = (count + 3);//D
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices2 = subsetsByFace[1].Vertices;
-                DynamicArray<ushort> indices2 = subsetsByFace[1].Indices;
+                var indices2 = subsetsByFace[1].Indices;
                 int faceTextureSlot2 = block.GetFaceTextureSlot(1, value);
                 int count3 = vertices2.Count;
                 vertices2.Count += 4;
@@ -214,18 +214,18 @@ namespace Game
                 SetupCubeVertexFace1(x + 1, y, z + 1, 1f, 0, faceTextureSlot2, textureSlotCount, color,ref vertices2.Array[count3 + 3]);
                 int count4 = indices2.Count;
                 indices2.Count += 6;
-                indices2.Array[count4] = (ushort)count3;
-                indices2.Array[count4 + 1] = (ushort)(count3 + 2);
-                indices2.Array[count4 + 2] = (ushort)(count3 + 1);
-                indices2.Array[count4 + 3] = (ushort)(count3 + 2);
-                indices2.Array[count4 + 4] = (ushort)count3;
-                indices2.Array[count4 + 5] = (ushort)(count3 + 3);
+                indices2.Array[count4] = count3;
+                indices2.Array[count4 + 1] = (count3 + 2);
+                indices2.Array[count4 + 2] = (count3 + 1);
+                indices2.Array[count4 + 3] = (count3 + 2);
+                indices2.Array[count4 + 4] = count3;
+                indices2.Array[count4 + 5] = (count3 + 3);
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices3 = subsetsByFace[2].Vertices;
-                DynamicArray<ushort> indices3 = subsetsByFace[2].Indices;
+                var indices3 = subsetsByFace[2].Indices;
                 int faceTextureSlot3 = block.GetFaceTextureSlot(2, value);
                 int count5 = vertices3.Count;
                 vertices3.Count += 4;
@@ -235,18 +235,18 @@ namespace Game
                 SetupCubeVertexFace2(x, y + 1, z, 1f, 2, faceTextureSlot3, textureSlotCount, color, ref vertices3.Array[count5 + 3]);
                 int count6 = indices3.Count;
                 indices3.Count += 6;
-                indices3.Array[count6] = (ushort)count5;
-                indices3.Array[count6 + 1] = (ushort)(count5 + 1);
-                indices3.Array[count6 + 2] = (ushort)(count5 + 2);
-                indices3.Array[count6 + 3] = (ushort)(count5 + 2);
-                indices3.Array[count6 + 4] = (ushort)(count5 + 3);
-                indices3.Array[count6 + 5] = (ushort)count5;
+                indices3.Array[count6] = count5;
+                indices3.Array[count6 + 1] = (count5 + 1);
+                indices3.Array[count6 + 2] = (count5 + 2);
+                indices3.Array[count6 + 3] = (count5 + 2);
+                indices3.Array[count6 + 4] = (count5 + 3);
+                indices3.Array[count6 + 5] = count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices4 = subsetsByFace[3].Vertices;
-                DynamicArray<ushort> indices4 = subsetsByFace[3].Indices;
+                var indices4 = subsetsByFace[3].Indices;
                 int faceTextureSlot4 = block.GetFaceTextureSlot(3, value);
                 int count7 = vertices4.Count;
                 vertices4.Count += 4;
@@ -256,18 +256,18 @@ namespace Game
                 SetupCubeVertexFace3(x, y, z + 1, 1f, 1, faceTextureSlot4, textureSlotCount, color,  ref vertices4.Array[count7 + 3]);
                 int count8 = indices4.Count;
                 indices4.Count += 6;
-                indices4.Array[count8] = (ushort)count7;
-                indices4.Array[count8 + 1] = (ushort)(count7 + 1);
-                indices4.Array[count8 + 2] = (ushort)(count7 + 2);
-                indices4.Array[count8 + 3] = (ushort)(count7 + 2);
-                indices4.Array[count8 + 4] = (ushort)(count7 + 3);
-                indices4.Array[count8 + 5] = (ushort)count7;
+                indices4.Array[count8] = count7;
+                indices4.Array[count8 + 1] = (count7 + 1);
+                indices4.Array[count8 + 2] = (count7 + 2);
+                indices4.Array[count8 + 3] = (count7 + 2);
+                indices4.Array[count8 + 4] = (count7 + 3);
+                indices4.Array[count8 + 5] = count7;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices5 = subsetsByFace[4].Vertices;
-                DynamicArray<ushort> indices5 = subsetsByFace[4].Indices;
+                var indices5 = subsetsByFace[4].Indices;
                 int faceTextureSlot5 = block.GetFaceTextureSlot(4, value);
                 int count9 = vertices5.Count;
                 vertices5.Count += 4;
@@ -277,18 +277,18 @@ namespace Game
                 SetupCubeVertexFace4(x, y + 1, z + 1, 1f, 0, faceTextureSlot5, textureSlotCount, color,  ref vertices5.Array[count9 + 3]);
                 int count10 = indices5.Count;
                 indices5.Count += 6;
-                indices5.Array[count10] = (ushort)count9;
-                indices5.Array[count10 + 1] = (ushort)(count9 + 1);
-                indices5.Array[count10 + 2] = (ushort)(count9 + 2);
-                indices5.Array[count10 + 3] = (ushort)(count9 + 2);
-                indices5.Array[count10 + 4] = (ushort)(count9 + 3);
-                indices5.Array[count10 + 5] = (ushort)count9;
+                indices5.Array[count10] = count9;
+                indices5.Array[count10 + 1] = (count9 + 1);
+                indices5.Array[count10 + 2] = (count9 + 2);
+                indices5.Array[count10 + 3] = (count9 + 2);
+                indices5.Array[count10 + 4] = (count9 + 3);
+                indices5.Array[count10 + 5] = count9;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices6 = subsetsByFace[5].Vertices;
-                DynamicArray<ushort> indices6 = subsetsByFace[5].Indices;
+                var indices6 = subsetsByFace[5].Indices;
                 int faceTextureSlot6 = block.GetFaceTextureSlot(5, value);
                 int count11 = vertices6.Count;
                 vertices6.Count += 4;
@@ -298,12 +298,12 @@ namespace Game
                 SetupCubeVertexFace5(x, y, z + 1, 1f, 3, faceTextureSlot6, textureSlotCount, color,  ref vertices6.Array[count11 + 3]);
                 int count12 = indices6.Count;
                 indices6.Count += 6;
-                indices6.Array[count12] = (ushort)count11;
-                indices6.Array[count12 + 1] = (ushort)(count11 + 2);
-                indices6.Array[count12 + 2] = (ushort)(count11 + 1);
-                indices6.Array[count12 + 3] = (ushort)(count11 + 2);
-                indices6.Array[count12 + 4] = (ushort)count11;
-                indices6.Array[count12 + 5] = (ushort)(count11 + 3);
+                indices6.Array[count12] = count11;
+                indices6.Array[count12 + 1] = (count11 + 2);
+                indices6.Array[count12 + 2] = (count11 + 1);
+                indices6.Array[count12 + 3] = (count11 + 2);
+                indices6.Array[count12 + 4] = count11;
+                indices6.Array[count12 + 5] = (count11 + 3);
             }
         }
 
@@ -320,7 +320,7 @@ namespace Game
             if (block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices = subsetsByFace[0].Vertices;
-                DynamicArray<ushort> indices = subsetsByFace[0].Indices;
+                var indices = subsetsByFace[0].Indices;
                 int faceTextureSlot = block.GetFaceTextureSlot(0, value);
                 int count = vertices.Count;
                 vertices.Count += 4;
@@ -330,18 +330,18 @@ namespace Game
                 SetupCubeVertexFace0(x, y + 1, z + 1, height12, 3, faceTextureSlot, textureSlotCount, sideColor, ref vertices.Array[count + 3]);
                 int count2 = indices.Count;
                 indices.Count += 6;
-                indices.Array[count2] = (ushort)count;
-                indices.Array[count2 + 1] = (ushort)(count + 2);
-                indices.Array[count2 + 2] = (ushort)(count + 1);
-                indices.Array[count2 + 3] = (ushort)(count + 2);
-                indices.Array[count2 + 4] = (ushort)count;
-                indices.Array[count2 + 5] = (ushort)(count + 3);
+                indices.Array[count2] = count;
+                indices.Array[count2 + 1] = (count + 2);
+                indices.Array[count2 + 2] = (count + 1);
+                indices.Array[count2 + 3] = (count + 2);
+                indices.Array[count2 + 4] = count;
+                indices.Array[count2 + 5] = (count + 3);
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices2 = subsetsByFace[1].Vertices;
-                DynamicArray<ushort> indices2 = subsetsByFace[1].Indices;
+                var indices2 = subsetsByFace[1].Indices;
                 int faceTextureSlot2 = block.GetFaceTextureSlot(1, value);
                 int count3 = vertices2.Count;
                 vertices2.Count += 4;
@@ -351,18 +351,18 @@ namespace Game
                 SetupCubeVertexFace1(x + 1, y, z + 1, 1f, 0, faceTextureSlot2, textureSlotCount, sideColor,ref vertices2.Array[count3 + 3]);
                 int count4 = indices2.Count;
                 indices2.Count += 6;
-                indices2.Array[count4] = (ushort)count3;
-                indices2.Array[count4 + 1] = (ushort)(count3 + 2);
-                indices2.Array[count4 + 2] = (ushort)(count3 + 1);
-                indices2.Array[count4 + 3] = (ushort)(count3 + 2);
-                indices2.Array[count4 + 4] = (ushort)count3;
-                indices2.Array[count4 + 5] = (ushort)(count3 + 3);
+                indices2.Array[count4] = count3;
+                indices2.Array[count4 + 1] = (count3 + 2);
+                indices2.Array[count4 + 2] = (count3 + 1);
+                indices2.Array[count4 + 3] = (count3 + 2);
+                indices2.Array[count4 + 4] = count3;
+                indices2.Array[count4 + 5] = (count3 + 3);
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices3 = subsetsByFace[2].Vertices;
-                DynamicArray<ushort> indices3 = subsetsByFace[2].Indices;
+                var indices3 = subsetsByFace[2].Indices;
                 int faceTextureSlot3 = block.GetFaceTextureSlot(2, value);
                 int count5 = vertices3.Count;
                 vertices3.Count += 4;
@@ -372,18 +372,18 @@ namespace Game
                 SetupCubeVertexFace2(x, y + 1, z, height11, 2, faceTextureSlot3, textureSlotCount, sideColor, ref vertices3.Array[count5 + 3]);
                 int count6 = indices3.Count;
                 indices3.Count += 6;
-                indices3.Array[count6] = (ushort)count5;
-                indices3.Array[count6 + 1] = (ushort)(count5 + 1);
-                indices3.Array[count6 + 2] = (ushort)(count5 + 2);
-                indices3.Array[count6 + 3] = (ushort)(count5 + 2);
-                indices3.Array[count6 + 4] = (ushort)(count5 + 3);
-                indices3.Array[count6 + 5] = (ushort)count5;
+                indices3.Array[count6] = count5;
+                indices3.Array[count6 + 1] = (count5 + 1);
+                indices3.Array[count6 + 2] = (count5 + 2);
+                indices3.Array[count6 + 3] = (count5 + 2);
+                indices3.Array[count6 + 4] = (count5 + 3);
+                indices3.Array[count6 + 5] = count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices4 = subsetsByFace[3].Vertices;
-                DynamicArray<ushort> indices4 = subsetsByFace[3].Indices;
+                var indices4 = subsetsByFace[3].Indices;
                 int faceTextureSlot4 = block.GetFaceTextureSlot(3, value);
                 int count7 = vertices4.Count;
                 vertices4.Count += 4;
@@ -393,18 +393,18 @@ namespace Game
                 SetupCubeVertexFace3(x, y, z + 1, 1f, 1, faceTextureSlot4, textureSlotCount, sideColor, ref vertices4.Array[count7 + 3]);
                 int count8 = indices4.Count;
                 indices4.Count += 6;
-                indices4.Array[count8] = (ushort)count7;
-                indices4.Array[count8 + 1] = (ushort)(count7 + 1);
-                indices4.Array[count8 + 2] = (ushort)(count7 + 2);
-                indices4.Array[count8 + 3] = (ushort)(count7 + 2);
-                indices4.Array[count8 + 4] = (ushort)(count7 + 3);
-                indices4.Array[count8 + 5] = (ushort)count7;
+                indices4.Array[count8] = count7;
+                indices4.Array[count8 + 1] = (count7 + 1);
+                indices4.Array[count8 + 2] = (count7 + 2);
+                indices4.Array[count8 + 3] = (count7 + 2);
+                indices4.Array[count8 + 4] = (count7 + 3);
+                indices4.Array[count8 + 5] = count7;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF);
             if ((block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast)) || height11 < 1f || height12 < 1f || height21 < 1f || height22 < 1f)
             {
                 DynamicArray<TerrainVertex> vertices5 = subsetsByFace[4].Vertices;
-                DynamicArray<ushort> indices5 = subsetsByFace[4].Indices;
+                var indices5 = subsetsByFace[4].Indices;
                 int textureSlot = (overrideTopTextureSlot >= 0) ? overrideTopTextureSlot : block.GetFaceTextureSlot(4, value);
                 int count9 = vertices5.Count;
                 vertices5.Count += 4;
@@ -414,18 +414,18 @@ namespace Game
                 SetupCubeVertexFace4(x, y + 1, z + 1, height12, 0, textureSlot, textureSlotCount, topColor12, ref vertices5.Array[count9 + 3]);
                 int count10 = indices5.Count;
                 indices5.Count += 6;
-                indices5.Array[count10] = (ushort)count9;
-                indices5.Array[count10 + 1] = (ushort)(count9 + 1);
-                indices5.Array[count10 + 2] = (ushort)(count9 + 2);
-                indices5.Array[count10 + 3] = (ushort)(count9 + 2);
-                indices5.Array[count10 + 4] = (ushort)(count9 + 3);
-                indices5.Array[count10 + 5] = (ushort)count9;
+                indices5.Array[count10] = count9;
+                indices5.Array[count10 + 1] = (count9 + 1);
+                indices5.Array[count10 + 2] = (count9 + 2);
+                indices5.Array[count10 + 3] = (count9 + 2);
+                indices5.Array[count10 + 4] = (count9 + 3);
+                indices5.Array[count10 + 5] = count9;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices6 = subsetsByFace[5].Vertices;
-                DynamicArray<ushort> indices6 = subsetsByFace[5].Indices;
+                var indices6 = subsetsByFace[5].Indices;
                 int faceTextureSlot5 = block.GetFaceTextureSlot(5, value);
                 int count11 = vertices6.Count;
                 vertices6.Count += 4;
@@ -435,12 +435,12 @@ namespace Game
                 SetupCubeVertexFace5(x, y, z + 1, 1f, 3, faceTextureSlot5, textureSlotCount, sideColor, ref vertices6.Array[count11 + 3]);
                 int count12 = indices6.Count;
                 indices6.Count += 6;
-                indices6.Array[count12] = (ushort)count11;
-                indices6.Array[count12 + 1] = (ushort)(count11 + 2);
-                indices6.Array[count12 + 2] = (ushort)(count11 + 1);
-                indices6.Array[count12 + 3] = (ushort)(count11 + 2);
-                indices6.Array[count12 + 4] = (ushort)count11;
-                indices6.Array[count12 + 5] = (ushort)(count11 + 3);
+                indices6.Array[count12] = count11;
+                indices6.Array[count12 + 1] = (count11 + 2);
+                indices6.Array[count12 + 2] = (count11 + 1);
+                indices6.Array[count12 + 3] = (count11 + 2);
+                indices6.Array[count12 + 4] = count11;
+                indices6.Array[count12 + 5] = (count11 + 3);
             }
         }
 
@@ -457,7 +457,7 @@ namespace Game
             if (block.ShouldGenerateFace(SubsystemTerrain, 0, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices = subsetsByFace[0].Vertices;
-                DynamicArray<ushort> indices = subsetsByFace[0].Indices;
+                var indices = subsetsByFace[0].Indices;
                 int faceTextureSlot = block.GetFaceTextureSlot(0, value);
                 int count = vertices.Count;
                 vertices.Count += 4;
@@ -467,18 +467,18 @@ namespace Game
                 SetupCubeVertexFace0(x, y + 1, z + 1, 1f, 3 + rotationZ, faceTextureSlot, textureSlotCount, color, ref vertices.Array[count + 3]);
                 int count2 = indices.Count;
                 indices.Count += 6;
-                indices.Array[count2] = (ushort)count;
-                indices.Array[count2 + 1] = (ushort)(count + 2);
-                indices.Array[count2 + 2] = (ushort)(count + 1);
-                indices.Array[count2 + 3] = (ushort)(count + 2);
-                indices.Array[count2 + 4] = (ushort)count;
-                indices.Array[count2 + 5] = (ushort)(count + 3);
+                indices.Array[count2] = count;
+                indices.Array[count2 + 1] = (count + 2);
+                indices.Array[count2 + 2] = (count + 1);
+                indices.Array[count2 + 3] = (count + 2);
+                indices.Array[count2 + 4] = count;
+                indices.Array[count2 + 5] = (count + 3);
             }
             cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices2 = subsetsByFace[1].Vertices;
-                DynamicArray<ushort> indices2 = subsetsByFace[1].Indices;
+                var indices2 = subsetsByFace[1].Indices;
                 int faceTextureSlot2 = block.GetFaceTextureSlot(1, value);
                 int count3 = vertices2.Count;
                 vertices2.Count += 4;
@@ -488,18 +488,18 @@ namespace Game
                 SetupCubeVertexFace1(x + 1, y, z + 1, 1f, rotationX, faceTextureSlot2, textureSlotCount, color, ref vertices2.Array[count3 + 3]);
                 int count4 = indices2.Count;
                 indices2.Count += 6;
-                indices2.Array[count4] = (ushort)count3;
-                indices2.Array[count4 + 1] = (ushort)(count3 + 2);
-                indices2.Array[count4 + 2] = (ushort)(count3 + 1);
-                indices2.Array[count4 + 3] = (ushort)(count3 + 2);
-                indices2.Array[count4 + 4] = (ushort)count3;
-                indices2.Array[count4 + 5] = (ushort)(count3 + 3);
+                indices2.Array[count4] = count3;
+                indices2.Array[count4 + 1] = (count3 + 2);
+                indices2.Array[count4 + 2] = (count3 + 1);
+                indices2.Array[count4 + 3] = (count3 + 2);
+                indices2.Array[count4 + 4] = count3;
+                indices2.Array[count4 + 5] = (count3 + 3);
             }
             cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices3 = subsetsByFace[2].Vertices;
-                DynamicArray<ushort> indices3 = subsetsByFace[2].Indices;
+                var indices3 = subsetsByFace[2].Indices;
                 int faceTextureSlot3 = block.GetFaceTextureSlot(2, value);
                 int count5 = vertices3.Count;
                 vertices3.Count += 4;
@@ -509,18 +509,18 @@ namespace Game
                 SetupCubeVertexFace2(x, y + 1, z, 1f, 2 + rotationZ, faceTextureSlot3, textureSlotCount, color, ref vertices3.Array[count5 + 3]);
                 int count6 = indices3.Count;
                 indices3.Count += 6;
-                indices3.Array[count6] = (ushort)count5;
-                indices3.Array[count6 + 1] = (ushort)(count5 + 1);
-                indices3.Array[count6 + 2] = (ushort)(count5 + 2);
-                indices3.Array[count6 + 3] = (ushort)(count5 + 2);
-                indices3.Array[count6 + 4] = (ushort)(count5 + 3);
-                indices3.Array[count6 + 5] = (ushort)count5;
+                indices3.Array[count6] = count5;
+                indices3.Array[count6 + 1] = (count5 + 1);
+                indices3.Array[count6 + 2] = (count5 + 2);
+                indices3.Array[count6 + 3] = (count5 + 2);
+                indices3.Array[count6 + 4] = (count5 + 3);
+                indices3.Array[count6 + 5] = count5;
             }
             cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 3, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices4 = subsetsByFace[3].Vertices;
-                DynamicArray<ushort> indices4 = subsetsByFace[3].Indices;
+                var indices4 = subsetsByFace[3].Indices;
                 int faceTextureSlot4 = block.GetFaceTextureSlot(3, value);
                 int count7 = vertices4.Count;
                 vertices4.Count += 4;
@@ -530,18 +530,18 @@ namespace Game
                 SetupCubeVertexFace3(x, y, z + 1, 1f, 1 + rotationX, faceTextureSlot4, textureSlotCount, color, ref vertices4.Array[count7 + 3]);
                 int count8 = indices4.Count;
                 indices4.Count += 6;
-                indices4.Array[count8] = (ushort)count7;
-                indices4.Array[count8 + 1] = (ushort)(count7 + 1);
-                indices4.Array[count8 + 2] = (ushort)(count7 + 2);
-                indices4.Array[count8 + 3] = (ushort)(count7 + 2);
-                indices4.Array[count8 + 4] = (ushort)(count7 + 3);
-                indices4.Array[count8 + 5] = (ushort)count7;
+                indices4.Array[count8] = count7;
+                indices4.Array[count8 + 1] = (count7 + 1);
+                indices4.Array[count8 + 2] = (count7 + 2);
+                indices4.Array[count8 + 3] = (count7 + 2);
+                indices4.Array[count8 + 4] = (count7 + 3);
+                indices4.Array[count8 + 5] = count7;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices5 = subsetsByFace[4].Vertices;
-                DynamicArray<ushort> indices5 = subsetsByFace[4].Indices;
+                var indices5 = subsetsByFace[4].Indices;
                 int faceTextureSlot5 = block.GetFaceTextureSlot(4, value);
                 int count9 = vertices5.Count;
                 vertices5.Count += 4;
@@ -551,18 +551,18 @@ namespace Game
                 SetupCubeVertexFace4(x, y + 1, z + 1, 1f, rotationY, faceTextureSlot5, textureSlotCount, color, ref vertices5.Array[count9 + 3]);
                 int count10 = indices5.Count;
                 indices5.Count += 6;
-                indices5.Array[count10] = (ushort)count9;
-                indices5.Array[count10 + 1] = (ushort)(count9 + 1);
-                indices5.Array[count10 + 2] = (ushort)(count9 + 2);
-                indices5.Array[count10 + 3] = (ushort)(count9 + 2);
-                indices5.Array[count10 + 4] = (ushort)(count9 + 3);
-                indices5.Array[count10 + 5] = (ushort)count9;
+                indices5.Array[count10] = count9;
+                indices5.Array[count10 + 1] = (count9 + 1);
+                indices5.Array[count10 + 2] = (count9 + 2);
+                indices5.Array[count10 + 3] = (count9 + 2);
+                indices5.Array[count10 + 4] = (count9 + 3);
+                indices5.Array[count10 + 5] = count9;
             }
             cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF);
             if (block.ShouldGenerateFace(SubsystemTerrain, 5, value, cellValueFast))
             {
                 DynamicArray<TerrainVertex> vertices6 = subsetsByFace[5].Vertices;
-                DynamicArray<ushort> indices6 = subsetsByFace[5].Indices;
+                var indices6 = subsetsByFace[5].Indices;
                 int faceTextureSlot6 = block.GetFaceTextureSlot(5, value);
                 int count11 = vertices6.Count;
                 vertices6.Count += 4;
@@ -572,19 +572,19 @@ namespace Game
                 SetupCubeVertexFace5(x, y, z + 1, 1f, 3 + rotationY, faceTextureSlot6, textureSlotCount, color, ref vertices6.Array[count11 + 3]);
                 int count12 = indices6.Count;
                 indices6.Count += 6;
-                indices6.Array[count12] = (ushort)count11;
-                indices6.Array[count12 + 1] = (ushort)(count11 + 2);
-                indices6.Array[count12 + 2] = (ushort)(count11 + 1);
-                indices6.Array[count12 + 3] = (ushort)(count11 + 2);
-                indices6.Array[count12 + 4] = (ushort)count11;
-                indices6.Array[count12 + 5] = (ushort)(count11 + 3);
+                indices6.Array[count12] = count11;
+                indices6.Array[count12 + 1] = (count11 + 2);
+                indices6.Array[count12 + 2] = (count11 + 1);
+                indices6.Array[count12 + 3] = (count11 + 2);
+                indices6.Array[count12 + 4] = count11;
+                indices6.Array[count12 + 5] = (count11 + 3);
             }
         }
 
         public void GenerateMeshVertices(Block block, int x, int y, int z, BlockMesh blockMesh, Color color, Matrix? matrix, TerrainGeometrySubset subset)
         {
             DynamicArray<TerrainVertex> vertices = subset.Vertices;
-            DynamicArray<ushort> indices = subset.Indices;
+            var indices = subset.Indices;
             int count = vertices.Count;
             int cellLightFast = Terrain.GetCellLightFast(x, y, z);
             float num = LightingManager.LightIntensityByLightValue[cellLightFast];
@@ -622,9 +622,9 @@ namespace Game
                     int num3 = (blockMesh.Sides == null) ? (-1) : blockMesh.Sides.Array[k];
                     if (num3 < 0 || m_visibleSides[num3])
                     {
-                        indices.Add((ushort)(blockMesh.Indices.Array[3 * k] + count));
-                        indices.Add((ushort)(blockMesh.Indices.Array[3 * k + 1] + count));
-                        indices.Add((ushort)(blockMesh.Indices.Array[3 * k + 2] + count));
+                        indices.Add((blockMesh.Indices.Array[3 * k] + count));
+                        indices.Add((blockMesh.Indices.Array[3 * k + 1] + count));
+                        indices.Add((blockMesh.Indices.Array[3 * k + 2] + count));
                     }
                 }
             }
@@ -632,7 +632,7 @@ namespace Game
             {
                 for (int l = 0; l < blockMesh.Indices.Count; l++)
                 {
-                    indices.Add((ushort)(blockMesh.Indices.Array[l] + count));
+                    indices.Add((blockMesh.Indices.Array[l] + count));
                 }
             }
         }
@@ -641,7 +641,7 @@ namespace Game
         {
             CalculateCornerLights(x, y, z);
             DynamicArray<TerrainVertex> vertices = subset.Vertices;
-            DynamicArray<ushort> indices = subset.Indices;
+            var indices = subset.Indices;
             int count = vertices.Count;
             vertices.Count += blockMesh.Vertices.Count;
             for (int i = 0; i < blockMesh.Vertices.Count; i++)
@@ -678,9 +678,9 @@ namespace Game
                     int num2 = (blockMesh.Sides == null) ? (-1) : blockMesh.Sides.Array[k];
                     if (num2 < 0 || m_visibleSides[(facesMap != null) ? facesMap[num2] : num2])
                     {
-                        indices.Add((ushort)(blockMesh.Indices.Array[3 * k] + count));
-                        indices.Add((ushort)(blockMesh.Indices.Array[3 * k + 1] + count));
-                        indices.Add((ushort)(blockMesh.Indices.Array[3 * k + 2] + count));
+                        indices.Add((blockMesh.Indices.Array[3 * k] + count));
+                        indices.Add((blockMesh.Indices.Array[3 * k + 1] + count));
+                        indices.Add((blockMesh.Indices.Array[3 * k + 2] + count));
                     }
                 }
             }
@@ -688,7 +688,7 @@ namespace Game
             {
                 for (int l = 0; l < blockMesh.Indices.Count; l++)
                 {
-                    indices.Add((ushort)(blockMesh.Indices.Array[l] + count));
+                    indices.Add((blockMesh.Indices.Array[l] + count));
                 }
             }
         }
@@ -797,24 +797,24 @@ namespace Game
                         SetupVertex(vector8.X, vector8.Y, vector8.Z, color10, vector15.X, vector15.Y, ref array[count + 5]);
                         int count2 = subset.Indices.Count;
                         subset.Indices.Count += ((connectorDirection == ElectricConnectorDirection.In) ? 15 : 12);
-                        ushort[] array2 = subset.Indices.Array;
-                        array2[count2] = (ushort)count;
-                        array2[count2 + 1] = (ushort)(count + 5);
-                        array2[count2 + 2] = (ushort)(count + 1);
-                        array2[count2 + 3] = (ushort)(count + 5);
-                        array2[count2 + 4] = (ushort)count;
-                        array2[count2 + 5] = (ushort)(count + 4);
-                        array2[count2 + 6] = (ushort)(count + 4);
-                        array2[count2 + 7] = (ushort)(count + 2);
-                        array2[count2 + 8] = (ushort)(count + 5);
-                        array2[count2 + 9] = (ushort)(count + 2);
-                        array2[count2 + 10] = (ushort)(count + 4);
-                        array2[count2 + 11] = (ushort)(count + 3);
+                        var array2 = subset.Indices.Array;
+                        array2[count2] = count;
+                        array2[count2 + 1] = (count + 5);
+                        array2[count2 + 2] = (count + 1);
+                        array2[count2 + 3] = (count + 5);
+                        array2[count2 + 4] = count;
+                        array2[count2 + 5] = (count + 4);
+                        array2[count2 + 6] = (count + 4);
+                        array2[count2 + 7] = (count + 2);
+                        array2[count2 + 8] = (count + 5);
+                        array2[count2 + 9] = (count + 2);
+                        array2[count2 + 10] = (count + 4);
+                        array2[count2 + 11] = (count + 3);
                         if (connectorDirection == ElectricConnectorDirection.In)
                         {
-                            array2[count2 + 12] = (ushort)(count + 2);
-                            array2[count2 + 13] = (ushort)(count + 1);
-                            array2[count2 + 14] = (ushort)(count + 5);
+                            array2[count2 + 12] = (count + 2);
+                            array2[count2 + 13] = (count + 1);
+                            array2[count2 + 14] = (count + 5);
                         }
                     }
                 }
@@ -854,10 +854,10 @@ namespace Game
                     SetupVertex(vector17.X, vector17.Y, vector17.Z, color12, vector21.X, vector21.Y, ref array3[count3 + 2]);
                     int count4 = subset.Indices.Count;
                     subset.Indices.Count += 3;
-                    ushort[] array4 = subset.Indices.Array;
-                    array4[count4] = (ushort)count3;
-                    array4[count4 + 1] = (ushort)(count3 + 2);
-                    array4[count4 + 2] = (ushort)(count3 + 1);
+                    var array4 = subset.Indices.Array;
+                    array4[count4] = count3;
+                    array4[count4 + 1] = (count3 + 2);
+                    array4[count4 + 2] = (count3 + 1);
                 }
             }
         }

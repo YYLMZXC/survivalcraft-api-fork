@@ -35,25 +35,25 @@ namespace Game
                     }
                 }
                 DynamicArray<TerrainVertex> vertices = alphaTestSubsetsByFace[0].Vertices;
-                DynamicArray<ushort> indices = alphaTestSubsetsByFace[0].Indices;
+                var indices = alphaTestSubsetsByFace[0].Indices;
                 int count = vertices.Count;
                 vertices.Count += 4;
                 BlockGeometryGenerator.SetupLitCornerVertex(x, y, z + 1, Color.White, num5, 0, ref vertices.Array[count]);
                 BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y, z + 1, Color.White, num5, 1, ref vertices.Array[count + 1]);
                 BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z + 1, Color.White, num5, 2, ref vertices.Array[count + 2]);
                 BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z + 1, Color.White, num5, 3, ref vertices.Array[count + 3]);
-                indices.Add((ushort)count);
-                indices.Add((ushort)(count + 1));
-                indices.Add((ushort)(count + 2));
-                indices.Add((ushort)(count + 2));
-                indices.Add((ushort)(count + 1));
-                indices.Add((ushort)count);
-                indices.Add((ushort)(count + 2));
-                indices.Add((ushort)(count + 3));
-                indices.Add((ushort)count);
-                indices.Add((ushort)count);
-                indices.Add((ushort)(count + 3));
-                indices.Add((ushort)(count + 2));
+                indices.Add(count);
+                indices.Add((count + 1));
+                indices.Add((count + 2));
+                indices.Add((count + 2));
+                indices.Add((count + 1));
+                indices.Add(count);
+                indices.Add((count + 2));
+                indices.Add((count + 3));
+                indices.Add(count);
+                indices.Add(count);
+                indices.Add((count + 3));
+                indices.Add((count + 2));
             }
             if (HasFireOnFace(data, 1))
             {
@@ -73,25 +73,25 @@ namespace Game
                     }
                 }
                 DynamicArray<TerrainVertex> vertices2 = alphaTestSubsetsByFace[1].Vertices;
-                DynamicArray<ushort> indices2 = alphaTestSubsetsByFace[1].Indices;
+                var indices2 = alphaTestSubsetsByFace[1].Indices;
                 int count2 = vertices2.Count;
                 vertices2.Count += 4;
                 BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y, z, Color.White, num8, 0, ref vertices2.Array[count2]);
                 BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z, Color.White, num8, 3, ref vertices2.Array[count2 + 1]);
                 BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z + 1, Color.White, num8, 2, ref vertices2.Array[count2 + 2]);
                 BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y, z + 1, Color.White, num8, 1, ref vertices2.Array[count2 + 3]);
-                indices2.Add((ushort)count2);
-                indices2.Add((ushort)(count2 + 1));
-                indices2.Add((ushort)(count2 + 2));
-                indices2.Add((ushort)(count2 + 2));
-                indices2.Add((ushort)(count2 + 1));
-                indices2.Add((ushort)count2);
-                indices2.Add((ushort)(count2 + 2));
-                indices2.Add((ushort)(count2 + 3));
-                indices2.Add((ushort)count2);
-                indices2.Add((ushort)count2);
-                indices2.Add((ushort)(count2 + 3));
-                indices2.Add((ushort)(count2 + 2));
+                indices2.Add(count2);
+                indices2.Add((count2 + 1));
+                indices2.Add((count2 + 2));
+                indices2.Add((count2 + 2));
+                indices2.Add((count2 + 1));
+                indices2.Add(count2);
+                indices2.Add((count2 + 2));
+                indices2.Add((count2 + 3));
+                indices2.Add(count2);
+                indices2.Add(count2);
+                indices2.Add((count2 + 3));
+                indices2.Add((count2 + 2));
             }
             if (HasFireOnFace(data, 2))
             {
@@ -111,25 +111,25 @@ namespace Game
                     }
                 }
                 DynamicArray<TerrainVertex> vertices3 = alphaTestSubsetsByFace[2].Vertices;
-                DynamicArray<ushort> indices3 = alphaTestSubsetsByFace[2].Indices;
+                var indices3 = alphaTestSubsetsByFace[2].Indices;
                 int count3 = vertices3.Count;
                 vertices3.Count += 4;
                 BlockGeometryGenerator.SetupLitCornerVertex(x, y, z, Color.White, num11, 0, ref vertices3.Array[count3]);
                 BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y, z, Color.White, num11, 1, ref vertices3.Array[count3 + 1]);
                 BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z, Color.White, num11, 2, ref vertices3.Array[count3 + 2]);
                 BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z, Color.White, num11, 3, ref vertices3.Array[count3 + 3]);
-                indices3.Add((ushort)count3);
-                indices3.Add((ushort)(count3 + 2));
-                indices3.Add((ushort)(count3 + 1));
-                indices3.Add((ushort)(count3 + 1));
-                indices3.Add((ushort)(count3 + 2));
-                indices3.Add((ushort)count3);
-                indices3.Add((ushort)(count3 + 2));
-                indices3.Add((ushort)count3);
-                indices3.Add((ushort)(count3 + 3));
-                indices3.Add((ushort)(count3 + 3));
-                indices3.Add((ushort)count3);
-                indices3.Add((ushort)(count3 + 2));
+                indices3.Add(count3);
+                indices3.Add((count3 + 2));
+                indices3.Add((count3 + 1));
+                indices3.Add((count3 + 1));
+                indices3.Add((count3 + 2));
+                indices3.Add(count3);
+                indices3.Add((count3 + 2));
+                indices3.Add(count3);
+                indices3.Add((count3 + 3));
+                indices3.Add((count3 + 3));
+                indices3.Add(count3);
+                indices3.Add((count3 + 2));
             }
             if (!HasFireOnFace(data, 3))
             {
@@ -151,25 +151,25 @@ namespace Game
                 }
             }
             DynamicArray<TerrainVertex> vertices4 = alphaTestSubsetsByFace[3].Vertices;
-            DynamicArray<ushort> indices4 = alphaTestSubsetsByFace[3].Indices;
+            var indices4 = alphaTestSubsetsByFace[3].Indices;
             int count4 = vertices4.Count;
             vertices4.Count += 4;
             BlockGeometryGenerator.SetupLitCornerVertex(x, y, z, Color.White, num14, 0, ref vertices4.Array[count4]);
             BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z, Color.White, num14, 3, ref vertices4.Array[count4 + 1]);
             BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z + 1, Color.White, num14, 2, ref vertices4.Array[count4 + 2]);
             BlockGeometryGenerator.SetupLitCornerVertex(x, y, z + 1, Color.White, num14, 1, ref vertices4.Array[count4 + 3]);
-            indices4.Add((ushort)count4);
-            indices4.Add((ushort)(count4 + 2));
-            indices4.Add((ushort)(count4 + 1));
-            indices4.Add((ushort)(count4 + 1));
-            indices4.Add((ushort)(count4 + 2));
-            indices4.Add((ushort)count4);
-            indices4.Add((ushort)(count4 + 2));
-            indices4.Add((ushort)count4);
-            indices4.Add((ushort)(count4 + 3));
-            indices4.Add((ushort)(count4 + 3));
-            indices4.Add((ushort)count4);
-            indices4.Add((ushort)(count4 + 2));
+            indices4.Add(count4);
+            indices4.Add((count4 + 2));
+            indices4.Add((count4 + 1));
+            indices4.Add((count4 + 1));
+            indices4.Add((count4 + 2));
+            indices4.Add(count4);
+            indices4.Add((count4 + 2));
+            indices4.Add(count4);
+            indices4.Add((count4 + 3));
+            indices4.Add((count4 + 3));
+            indices4.Add(count4);
+            indices4.Add((count4 + 2));
         }
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
