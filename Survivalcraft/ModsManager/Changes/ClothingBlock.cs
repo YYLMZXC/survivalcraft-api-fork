@@ -28,14 +28,16 @@ namespace Game
 
         public void LoadClothingData(XElement item) {
             if (item.Name.LocalName == "ClothingData") {
-                int ClothIndex = XmlUtils.GetAttributeValue<int>(item, "Index");
-                if (!LanguageControl.TryGetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "Description", out string newDescription) && item.Attribute("Description") != null)
+                int.TryParse(item.Attribute("Index").Value, out int ClothIndex);
+                string newDescription = item.Attribute("Description")?.Value;
+                string newDisplayName = item.Attribute("DisplayName")?.Value;
+                if (newDescription != null && newDescription.StartsWith("[") && newDescription.EndsWith("]") && LanguageControl.TryGetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "Description", out var d))
                 {
-                    newDescription = XmlUtils.GetAttributeValue<string>(item, "Description");
+                    newDescription = d;
                 }
-                if (!LanguageControl.TryGetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "DisplayName", out string newDisplayName) && item.Attribute("Description") != null)
+                if (newDisplayName != null && newDisplayName.StartsWith("[") && newDisplayName.EndsWith("]") && LanguageControl.TryGetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "DisplayName", out string n))
                 {
-                    newDisplayName = XmlUtils.GetAttributeValue<string>(item, "DisplayName");
+                    newDisplayName = n;
                 }
                 var clothingData = new ClothingData
                 {
@@ -128,9 +130,7 @@ namespace Game
         {
             int data = Terrain.ExtractData(value);
             ClothingData clothingData = GetClothingData(value);
-            string desc = LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, clothingData.Index), "Description");
-            if (string.IsNullOrEmpty(desc)) desc = clothingData.Description;
-            return desc;
+            return clothingData.Description;
         }
 
         public override string GetCategory(int value)

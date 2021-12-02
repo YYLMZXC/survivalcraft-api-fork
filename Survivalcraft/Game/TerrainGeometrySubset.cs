@@ -6,13 +6,13 @@ namespace Game
 	{
 		public DynamicArray<TerrainVertex> Vertices = new DynamicArray<TerrainVertex>();
 
-		public DynamicArray<ushort> Indices = new DynamicArray<ushort>();
+		public DynamicArray<int> Indices = new DynamicArray<int>();
 
 		public TerrainGeometrySubset()
 		{
 		}
 
-		public TerrainGeometrySubset(DynamicArray<TerrainVertex> vertices, DynamicArray<ushort> indices)
+		public TerrainGeometrySubset(DynamicArray<TerrainVertex> vertices, DynamicArray<int> indices)
 		{
 			Vertices = vertices;
 			Indices = indices;
