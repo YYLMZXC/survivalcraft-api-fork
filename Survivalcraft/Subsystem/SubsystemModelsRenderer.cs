@@ -287,15 +287,7 @@ namespace Game
                 {
                     if (ShaderOpaque != null && ShaderAlphaTested != null)
                     {
-                        float angle = 2f * m_subsystemTimeOfDay.TimeOfDay * (float)Math.PI; //½Ç¶È
-                        if (((angle * 57.29578) - 90) >= 0 && ((angle * 57.29578) - 90) <= 20) { m_size = 5; }
-                        if (((angle * 57.29578) - 90) >= 20 && ((angle * 57.29578) - 90) <= 80) { m_size = 4; }
-                        if (((angle * 57.29578) - 90) >= 80 && ((angle * 57.29578) - 90) <= 110) { m_size = 3; }
-                        if (((angle * 57.29578) - 90) >= 110 && ((angle * 57.29578) - 90) <= 170) { m_size = 4; }
-                        if (((angle * 57.29578) - 90) >= 170 && ((angle * 57.29578) - 90) <= 190) { m_size = 5; }
-                        if (((angle * 57.29578) - 90) >= 190 && ((angle * 57.29578) - 90) <= 260) { m_size = 5; }
-                        if (((angle * 57.29578) - 90) >= 260 && ((angle * 57.29578) - 90) <= 280) { m_size = 5; }
-                        if (((angle * 57.29578) - 90) >= 280 && ((angle * 57.29578) - 90) <= 360) { m_size = 5; }
+                        m_size = 3;
                         Vector3 shadowPosition = modelData.ComponentBody.Position + new Vector3(0f, 0.1f, 0f);
                         BoundingBox boundingBox = modelData.ComponentBody.BoundingBox;
                         float shadowDiameter = 0.5f * m_size * (boundingBox.Max.X - boundingBox.Min.X);
