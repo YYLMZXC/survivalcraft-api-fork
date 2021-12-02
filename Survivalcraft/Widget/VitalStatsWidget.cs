@@ -60,7 +60,7 @@ namespace Game
         public LinkWidget m_insulationLink;
 
         public LabelWidget m_insulationLabel;
-        public static string fName = "VitalStatsWidget";
+
         public VitalStatsWidget(ComponentPlayer componentPlayer)
         {
             m_componentPlayer = componentPlayer;
@@ -143,25 +143,25 @@ namespace Game
             {
                 var factors = new List<ComponentLevel.Factor>();
                 float total = m_componentPlayer.ComponentLevel.CalculateStrengthFactor(factors);
-                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(fName, "Strength"), LanguageControl.GetContentWidgets(fName, 16), factors, total));
+                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Strength"), LanguageControl.GetContentWidgets(GetType().Name, 16), factors, total));
             }
             if (m_resilienceLink.IsClicked)
             {
                 var factors2 = new List<ComponentLevel.Factor>();
                 float total2 = m_componentPlayer.ComponentLevel.CalculateResilienceFactor(factors2);
-                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(fName, "Resilience"), LanguageControl.GetContentWidgets(fName, 17), factors2, total2));
+                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Resilience"), LanguageControl.GetContentWidgets(GetType().Name, 17), factors2, total2));
             }
             if (m_speedLink.IsClicked)
             {
                 var factors3 = new List<ComponentLevel.Factor>();
                 float total3 = m_componentPlayer.ComponentLevel.CalculateSpeedFactor(factors3);
-                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(fName, "Speed"), LanguageControl.GetContentWidgets(fName, 18), factors3, total3));
+                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Speed"), LanguageControl.GetContentWidgets(GetType().Name, 18), factors3, total3));
             }
             if (m_hungerLink.IsClicked)
             {
                 var factors4 = new List<ComponentLevel.Factor>();
                 float total4 = m_componentPlayer.ComponentLevel.CalculateHungerFactor(factors4);
-                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(fName, "Hunger"), LanguageControl.GetContentWidgets(fName, 19), factors4, total4));
+                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Hunger"), LanguageControl.GetContentWidgets(GetType().Name, 19), factors4, total4));
             }
             if (m_experienceLink.IsClicked)
             {
@@ -175,7 +175,7 @@ namespace Game
             }
             if (m_chokeButton.IsClicked)
             {
-                m_componentPlayer.ComponentHealth.Injure(0.1f, null, ignoreInvulnerability: true, LanguageControl.Get(fName, "Choked"));
+                m_componentPlayer.ComponentHealth.Injure(0.1f, null, ignoreInvulnerability: true, LanguageControl.GetContentWidgets(GetType().Name, "Choked"));
             }
         }
     }
