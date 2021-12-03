@@ -331,7 +331,7 @@ namespace Game
         public override void Update()
         {
             if (Input.Back || Input.Cancel) DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, "Quit?", LanguageControl.Ok, LanguageControl.No, (vt) => {
-                if (vt == MessageDialogButton.Button1) ModsManager.Reboot();
+                if (vt == MessageDialogButton.Button1) Environment.Exit(0);
                 else DialogsManager.HideAllDialogs();
             }));
             if (ModsManager.GetAllowContinue() == false) return;
