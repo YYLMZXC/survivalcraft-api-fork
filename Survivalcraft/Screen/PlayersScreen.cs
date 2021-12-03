@@ -49,15 +49,15 @@ namespace Game
                 SubsystemGameInfo subsystemGameInfo = m_subsystemPlayers.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
                 if (subsystemGameInfo.WorldSettings.GameMode == GameMode.Cruel)
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Unavailable, LanguageControl.Get(GetType().Name, 2), LanguageControl.Ok, null, null));
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Unavailable, LanguageControl.GetContentWidgets(GetType().Name, 3), LanguageControl.Ok, null, null));
                 }
                 else if (subsystemGameInfo.WorldSettings.GameMode == GameMode.Adventure)
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Unavailable, LanguageControl.Get(GetType().Name, 3), LanguageControl.Ok, null, null));
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Unavailable, LanguageControl.GetContentWidgets(GetType().Name, 4), LanguageControl.Ok, null, null));
                 }
                 else if (m_subsystemPlayers.PlayersData.Count >= 4)
                 {
-                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Unavailable, string.Format(LanguageControl.Get(GetType().Name, 4), SubsystemPlayers.MaxPlayers), LanguageControl.Ok, null, null));
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Unavailable, string.Format(LanguageControl.GetContentWidgets(GetType().Name, 5), SubsystemPlayers.MaxPlayers), LanguageControl.Ok, null, null));
                 }
                 else
                 {
@@ -100,7 +100,7 @@ namespace Game
                 }
                 if (array != null)
                 {
-                    DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(GetType().Name, 5), array, 80f, delegate (object o)
+                    DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.GetContentWidgets(GetType().Name, 6), array, 80f, delegate (object o)
                     {
                         string str = o.ToString();
                         string name = "Textures/Atlas/ScreenLayout" + str;
