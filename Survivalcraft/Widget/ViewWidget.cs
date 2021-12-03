@@ -1,7 +1,6 @@
 using Engine;
 using Engine.Graphics;
 using System;
-using System.Collections.Generic;
 
 namespace Game
 {
@@ -12,9 +11,7 @@ namespace Game
         public RenderTarget2D m_scalingRenderTarget;
 
         public static RenderTarget2D ScreenTexture = new RenderTarget2D(Window.Size.X, Window.Size.Y, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
-
-        public static bool CanScreenDraw = false;
-
+        
         public GameWidget GameWidget
         {
             get;
@@ -141,36 +138,7 @@ namespace Game
                 Display.RenderTarget = renderTarget;
             }
             ApplyScalingRenderTarget(dc);
-            if (CanScreenDraw)
-            {
-                try
-                {
-                    RenderTarget2D renderTarget2 = Display.RenderTarget;
-                    Display.RenderTarget = ScreenTexture;
-                    Display.Clear(Color.White, 1f);
-                    for (int j = 0; j < m_subsystemDrawing.m_sortedDrawables.Count; j++)
-                    {
-                        try
-                        {
-                            KeyValuePair<int, IDrawable> keyValuePair = m_subsystemDrawing.m_sortedDrawables[j];
-                            bool pass = (keyValuePair.Value is SubsystemTerrain && keyValuePair.Key == 100);
-                            bool pass2 = (keyValuePair.Value is ComponentFirstPersonModel);
-                            if (!(pass || pass2))
-                            {
-                                keyValuePair.Value.Draw(GameWidget.ActiveCamera, keyValuePair.Key);
-                            }
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
-                    Display.RenderTarget = renderTarget2;
-                }
-                catch (Exception e)
-                {
-                    Log.Warning(e.Message);
-                }
-            }
+            ModsManager.HookAction("DrawToScreen", loader => {loader.DrawToScreen(this, dc); return false;});
         }
     }
 }

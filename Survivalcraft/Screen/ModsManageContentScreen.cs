@@ -239,9 +239,9 @@ public class ModsManageContentScreen : Screen
                         UpdateList();
                         DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 22), fileName, LanguageControl.Get("Usual", "ok"), null, null));
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
-                        //System.Diagnostics.Debug.WriteLine(e.Message);
+                        Log.Warning(e.Message);
                     }
                 }
                 else

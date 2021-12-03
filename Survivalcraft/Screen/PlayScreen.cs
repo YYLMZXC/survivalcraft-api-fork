@@ -114,6 +114,10 @@ namespace Game
 
         public void Play(object item)
         {
+            ModsManager.HookAction("BeforeGameLoading", loader => {
+                item = loader.BeforeGameLoading(this, item);
+                return true;
+            });
             ScreensManager.SwitchScreen("GameLoading", item, null);
             m_worldsListWidget.SelectedItem = null;
         }
