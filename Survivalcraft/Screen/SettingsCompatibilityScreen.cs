@@ -38,6 +38,7 @@ namespace Game
         {
             m_descriptionLabel.Text = string.Empty;
 #if desktop
+            m_disableAudioTrackCachingContainer.IsVisible = false;
             m_useAudioTrackCachingButton.IsVisible = false;
             m_useReducedZRangeContainer.IsVisible = false;
 #endif
