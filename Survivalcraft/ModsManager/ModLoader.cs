@@ -155,6 +155,13 @@ namespace Game
         }
 
         /// <summary>
+        /// ViewWidget绘制屏幕时执行
+        /// </summary>
+        public virtual void DrawToScreen(ViewWidget viewWidget, Widget.DrawContext dc)
+        {
+        }
+
+        /// <summary>
         /// 衣物背包界面被打开时执行
         /// </summary>
         /// <param name="componentGui"></param>
@@ -311,6 +318,14 @@ namespace Game
         /// </summary>
         public virtual void BlocksInitalized()
         {
+        }
+
+        /// <summary>
+        /// 存档开始加载前执行
+        /// </summary>
+        public virtual object BeforeGameLoading(PlayScreen playScreen, object item)
+        {
+            return item;
         }
 
         /// <summary>
