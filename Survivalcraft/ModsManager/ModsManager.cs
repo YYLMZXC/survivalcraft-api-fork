@@ -122,7 +122,12 @@ public static class ModsManager
     {
         return AllowContinue;
     }
-
+    internal static void Reboot()
+    {
+        SettingsManager.SaveSettings();
+        SettingsManager.LoadSettings();
+        ScreensManager.SwitchScreen("Loading");
+    }
     /// <summary>
     /// 执行Hook
     /// </summary>

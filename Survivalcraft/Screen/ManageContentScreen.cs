@@ -255,9 +255,7 @@ public class ManageContentScreen : Screen
                     DialogsManager.HideAllDialogs();
                     if (btn == MessageDialogButton.Button1)
                     {
-                        SettingsManager.SaveSettings();
-                        SettingsManager.LoadSettings();
-                        ScreensManager.SwitchScreen("Loading");
+                        ModsManager.Reboot();
                     }
                     else {
                         ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
