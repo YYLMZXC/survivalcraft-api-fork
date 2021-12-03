@@ -212,7 +212,6 @@ public class ManageContentScreen : Screen
                         changeed = true;
                         if (ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo))
                         {
-                            selectedItem.ModEntity.Dispose();
                             ModsManager.DisabledMods.Remove(selectedItem.ModEntity.modInfo);
                             ModsManager.ModList.Add(selectedItem.ModEntity);
                         }

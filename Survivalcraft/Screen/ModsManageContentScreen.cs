@@ -359,7 +359,7 @@ public class ModsManageContentScreen : Screen
                 {
                     if (result == MessageDialogButton.Button1)
                     {
-                        Environment.Exit(0);
+                        ModsManager.Reboot();
                     }
                     if (result == MessageDialogButton.Button2)
                     {

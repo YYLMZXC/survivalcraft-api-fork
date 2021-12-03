@@ -126,6 +126,10 @@ public static class ModsManager
     {
         SettingsManager.SaveSettings();
         SettingsManager.LoadSettings();
+        foreach (var mod in ModList)
+        {
+            mod.Dispose();
+        }
         ScreensManager.SwitchScreen("Loading");
     }
     /// <summary>
