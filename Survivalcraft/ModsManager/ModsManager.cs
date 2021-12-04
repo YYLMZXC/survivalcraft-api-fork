@@ -149,7 +149,7 @@ public static class ModsManager
                 }
                 catch(Exception e)
                 {
-                    Log.Warning(e.Message);
+                    Log.Warning(HookName + " Method has an error, error message:" + e.Message);
                 }
             }
         }
