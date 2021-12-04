@@ -55,11 +55,11 @@ namespace Game
                     num = base.RemoveSlotItems(slotIndex, count);
                     if (num > 0)
                     {
-                        for (int i = 0; i < m_craftingGridSize * m_craftingGridSize; i++)
+                        for (int i = 0; i < 9; i++)
                         {
                             if (!string.IsNullOrEmpty(m_matchedIngredients[i]))
                             {
-                                int index = i % m_craftingGridSize + m_craftingGridSize * (i / m_craftingGridSize);
+                                int index = i % 3 + m_craftingGridSize * (i / 3);
                                 m_slots[index].Count = MathUtils.Max(m_slots[index].Count - num / m_matchedRecipe.ResultCount, 0);
                             }
                         }
