@@ -1,14 +1,9 @@
-using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Net;
 using Android.Views;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using System.Threading;
 
 namespace Engine
@@ -34,6 +29,20 @@ namespace Engine
 		{
 			m_activity = this;
 		}
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+			RequestWindowFeature(WindowFeatures.NoTitle);
+			Window.AddFlags(WindowManagerFlags.Fullscreen);
+			VolumeControlStream = Android.Media.Stream.Music;
+			RequestedOrientation = ScreenOrientation.SensorLandscape;
+		}
+
+		public void Vibrate(long ms)
+		{
+			Vibrator vibrator = (Vibrator)GetSystemService(Context.VibratorService);
+			vibrator.Vibrate(1000);
+		}
 		public void OpenLink(string link)
 		{
 
@@ -49,31 +58,7 @@ namespace Engine
 
 			StartActivity(intent);
 		}
-		protected override void OnCreate(Bundle savedInstanceState)
-		{
-			base.OnCreate(savedInstanceState);
-			if (CheckSelfPermission(Manifest.Permission.WriteExternalStorage) != Permission.Granted)
-			{
-				RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, 0);
-			}
-			RequestWindowFeature(WindowFeatures.NoTitle);
-			Window.AddFlags(WindowManagerFlags.Fullscreen);
-			VolumeControlStream = Android.Media.Stream.Music;
-			RequestedOrientation = ScreenOrientation.SensorLandscape;
-			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-			string[] flist = Assets.List("");
-			BasePath = new StreamReader(Assets.Open("apppath.txt")).ReadToEnd();
-			ConfigPath = this.GetExternalFilesDir("").AbsolutePath;
-			foreach (string dll in flist)
-			{
-				if (dll.EndsWith(".dll"))
-				{
-					MemoryStream memoryStream = new MemoryStream();
-					Assets.Open(dll).CopyTo(memoryStream);
-					AppDomain.CurrentDomain.Load(memoryStream.ToArray());
-				}
-			}
-		}
+
 
 		protected override void OnPause()
 		{

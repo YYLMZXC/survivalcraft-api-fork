@@ -7,13 +7,15 @@ namespace Game
 {
     public class LoadingScreen : Screen
     {
-        public enum LogType { 
+        public enum LogType
+        {
             Info,
             Warning,
             Error,
             Advice
         }
-        private class LogItem {
+        private class LogItem
+        {
             public LogType LogType;
             public string Message;
             public LogItem(LogType type, string log) { LogType = type; Message = log; }
@@ -21,35 +23,54 @@ namespace Game
         private List<Action> LoadingActoins = new List<Action>();
         private List<Action> ModLoadingActoins = new List<Action>();
         private CanvasWidget Canvas = new CanvasWidget();
+        private RectangleWidget Background = new RectangleWidget() { FillColor = Color.White, OutlineThickness = 0f, DepthWriteEnabled = true };
         private static ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
-        static LoadingScreen() {
+        static LoadingScreen()
+        {
             LogList.ItemWidgetFactory = (obj) => {
                 LogItem logItem = obj as LogItem;
-                CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(Display.Viewport.Width, 40), Margin = new Vector2(0, 2),HorizontalAlignment=WidgetAlignment.Near };
-                FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 0.7f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
+                CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(Display.Viewport.Width, 40), Margin = new Vector2(0, 2), HorizontalAlignment = WidgetAlignment.Near };
+                FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 0.6f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
                 canvasWidget.Children.Add(fontTextWidget);
                 return canvasWidget;
             };
             LogList.ItemSize = 30;
         }
-        public static Color GetColor(LogType type) {
-            switch (type) {
-                case LogType.Advice:return Color.Cyan;
-                case LogType.Error:return Color.Red;
-                case LogType.Warning:return Color.Yellow;
-                case LogType.Info:return Color.White;
-                default:return Color.White;
+        public static Color GetColor(LogType type)
+        {
+            switch (type)
+            {
+                case LogType.Advice: return Color.Cyan;
+                case LogType.Error: return Color.Red;
+                case LogType.Warning: return Color.Yellow;
+                case LogType.Info: return Color.Black;
+                default: return Color.Black;
             }
         }
         public LoadingScreen()
         {
-            RectangleWidget rectangle = new RectangleWidget() { FillColor = Color.Black, OutlineThickness = 0f };
             Canvas.Size = new Vector2(float.PositiveInfinity);
-            Canvas.Children.Add(rectangle);
-            Canvas.Children.Add(LogList);
-            Children.Add(Canvas);
+            Canvas.AddChildren(Background);
+            Canvas.AddChildren(LogList);
+            AddChildren(Canvas);
             Info("Initilizing Mods Manager. Api Version: " + ModsManager.APIVersion);
         }
+        public void ContentLoaded()
+        {
+            ClearChildren();
+            RectangleWidget rectangle1 = new RectangleWidget() { FillColor = Color.White, OutlineColor = Color.Transparent, Size = new Vector2(256f), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Center };
+            rectangle1.Subtexture = ContentManager.Get<Subtexture>("Textures/Gui/CandyRufusLogo");
+            RectangleWidget rectangle2 = new RectangleWidget() { FillColor = Color.White, OutlineColor = Color.Transparent, Size = new Vector2(80), VerticalAlignment = WidgetAlignment.Far, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10f) };
+            rectangle2.Subtexture = ContentManager.Get<Subtexture>("Textures/Gui/EngineLogo");
+            BusyBarWidget busyBar = new BusyBarWidget() { VerticalAlignment = WidgetAlignment.Far, HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0, 40) };
+            Canvas.AddChildren(Background);
+            Canvas.AddChildren(rectangle1);
+            Canvas.AddChildren(rectangle2);
+            Canvas.AddChildren(busyBar);
+            Canvas.AddChildren(LogList);
+            AddChildren(Canvas);
+        }
+
         public static void Error(string mesg)
         {
             Add(LogType.Error, "[Error]" + mesg);
@@ -66,11 +87,13 @@ namespace Game
         {
             Add(LogType.Advice, "[Advice]" + mesg);
         }
-        public static void Add(LogType type,string mesg) {
+        public static void Add(LogType type, string mesg)
+        {
             Dispatcher.Dispatch(delegate {
                 LogItem item = new LogItem(type, mesg);
                 LogList.AddItem(item);
-                switch (type) {
+                switch (type)
+                {
                     case LogType.Info:
                     case LogType.Advice: Log.Information(mesg); break;
                     case LogType.Error: Log.Error(mesg); break;
@@ -84,19 +107,20 @@ namespace Game
         {
             AddLoadAction(delegate {//将所有的有效的scmod读取为ModEntity，并自动添加SurvivalCraftModEntity
                 ContentManager.Initialize();
-                MusicManager.CurrentMix = MusicManager.Mix.Menu;
                 ModsManager.Initialize();
             });
+            AddLoadAction(ContentLoaded);
             AddLoadAction(delegate {//检查所有Mod依赖项 
-                ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });            
+                ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });
             });
             AddLoadAction(delegate { //初始化所有ModEntity的语言包
                 //>>>初始化语言列表
                 ReadOnlyList<ContentInfo> axa = ContentManager.List("Lang");
                 LanguageControl.LanguageTypes.Clear();
-                foreach (ContentInfo contentInfo in axa) {
+                foreach (ContentInfo contentInfo in axa)
+                {
                     string px = System.IO.Path.GetFileNameWithoutExtension(contentInfo.Filename);
-                    if(!LanguageControl.LanguageTypes.Contains(px))LanguageControl.LanguageTypes.Add(px);
+                    if (!LanguageControl.LanguageTypes.Contains(px)) LanguageControl.LanguageTypes.Add(px);
                 }
                 //<<<结束
                 if (ModsManager.Configs.ContainsKey("Language")) LanguageControl.Initialize(ModsManager.Configs["Language"]);
@@ -154,7 +178,8 @@ namespace Game
             });
             AddLoadAction(delegate {
                 Info("初始化Mod设置参数");
-                if (Storage.FileExists(ModsManager.ModsSetPath)) {
+                if (Storage.FileExists(ModsManager.ModsSetPath))
+                {
                     using (System.IO.Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Read))
                     {
                         try
@@ -169,14 +194,15 @@ namespace Game
                     }
                 }
             });
-            AddLoadAction(()=> {
+            AddLoadAction(() => {
                 ModsManager.ModListAllDo((modEntity) => { Info("等待剩下的任务完成:" + modEntity.modInfo?.PackageName); modEntity.OnLoadingFinished(ModLoadingActoins); });
             });
-            AddLoadAction(()=> {
+            AddLoadAction(() => {
                 ScreensManager.SwitchScreen("MainMenu");
             });
         }
-        private void InitScreens() {
+        private void InitScreens()
+        {
 
             AddLoadAction(delegate
             {
@@ -311,6 +337,8 @@ namespace Game
         {
             LogList.ClearItems();
             Window.PresentationInterval = SettingsManager.PresentationInterval;
+            ContentManager.Dispose("Textures/Gui/CandyRufusLogo");
+            ContentManager.Dispose("Textures/Gui/EngineLogo");
         }
         public override void Enter(object[] parameters)
         {
@@ -345,12 +373,14 @@ namespace Game
                 {
                     Error(e.Message);
                 }
-                finally {
+                finally
+                {
                     ModLoadingActoins.RemoveAt(0);
                 }
 
             }
-            else {
+            else
+            {
                 if (LoadingActoins.Count > 0)
                 {
                     try
@@ -361,7 +391,8 @@ namespace Game
                     {
                         Error(e.Message);
                     }
-                    finally {
+                    finally
+                    {
                         LoadingActoins.RemoveAt(0);
                     }
                 }

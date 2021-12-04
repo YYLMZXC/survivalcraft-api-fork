@@ -16,6 +16,8 @@ namespace Game
 
         public BlockMesh m_innerMesh;
 
+        public int num = 0;
+
         public BlockMesh m_outerMesh;
 
         public static Matrix[] m_slotTransforms = new Matrix[4]
@@ -26,8 +28,10 @@ namespace Game
             Matrix.CreateTranslation(0f, -0.1f, 0f) * Matrix.CreateScale(2.7f)
         };
 
-        public void LoadClothingData(XElement item) {
-            if (item.Name.LocalName == "ClothingData") {
+        public void LoadClothingData(XElement item)
+        {
+            if (item.Name.LocalName == "ClothingData")
+            {
                 int.TryParse(item.Attribute("Index").Value, out int ClothIndex);
                 string newDescription = item.Attribute("Description")?.Value;
                 string newDisplayName = item.Attribute("DisplayName")?.Value;
@@ -42,7 +46,7 @@ namespace Game
                 var clothingData = new ClothingData
                 {
                     Index = ClothIndex,
-                    DisplayIndex = DisplayOrder,
+                    DisplayIndex = num,
                     DisplayName = newDisplayName,
                     Slot = XmlUtils.GetAttributeValue<ClothingSlot>(item, "Slot"),
                     ArmorProtection = XmlUtils.GetAttributeValue<float>(item, "ArmorProtection"),
@@ -60,15 +64,18 @@ namespace Game
                     Description = newDescription
                 };
                 if (ClothIndex >= m_clothingData.Count) m_clothingData.Count = ClothIndex + 1;
-                m_clothingData[ClothIndex]=clothingData;
+                m_clothingData[ClothIndex] = clothingData;
             }
-            foreach (XElement xElement1 in item.Elements()) {
-                LoadClothingData(xElement1);            
+            num++;
+            foreach (XElement xElement1 in item.Elements())
+            {
+                LoadClothingData(xElement1);
             }
         }
 
         public override void Initialize()
         {
+            num = 0;
             XElement xElement = null;
             ModsManager.ModListAllDo((modEntity) => { modEntity.LoadClo(this, ref xElement); });
             LoadClothingData(xElement);
@@ -145,6 +152,10 @@ namespace Game
         public override int GetDamage(int value)
         {
             return (Terrain.ExtractData(value) >> 8) & 0xF;
+        }
+        public override int GetDisplayOrder(int value)
+        {
+            return GetClothingData(value).DisplayIndex;
         }
 
         public override int SetDamage(int value, int damage)

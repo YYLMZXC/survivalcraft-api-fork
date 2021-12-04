@@ -2172,6 +2172,9 @@
     <Compile Include="..\Survivalcraft\Managers\GameManager.cs">
       <Link>Managers\GameManager.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Managers\HardwareManager.cs">
+      <Link>Managers\HardwareManager.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Managers\InstancedModelsManager.cs">
       <Link>Managers\InstancedModelsManager.cs</Link>
     </Compile>

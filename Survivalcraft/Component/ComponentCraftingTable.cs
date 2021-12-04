@@ -98,7 +98,7 @@ namespace Game
             {
                 for (int j = 0; j < m_craftingGridSize; j++)
                 {
-                    int num2 = i + j * m_craftingGridSize;
+                    int num2 = i + j * 3;
                     int slotIndex = i + j * m_craftingGridSize;
                     int slotValue = GetSlotValue(slotIndex);
                     int num3 = Terrain.ExtractContents(slotValue);

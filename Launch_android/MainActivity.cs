@@ -1,7 +1,12 @@
-﻿using Android.App;
+﻿using System;
+using System.IO;
+using Android;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
+using Android.Widget;
 using Engine;
 using Game;
 namespace SC.Android
@@ -14,7 +19,40 @@ namespace SC.Android
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            Program.Main();  
-        }
-    }
+			if (CheckSelfPermission(Manifest.Permission.WriteExternalStorage) != Permission.Granted)
+			{
+				Toast.MakeText(this,"请授权游戏存储读写权限",ToastLength.Long).Show();
+				RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, 0);
+			}
+			else
+			{
+				Run();
+			}
+		}
+		public void Run()
+		{
+			string[] flist = Assets.List("");
+			BasePath = new StreamReader(Assets.Open("apppath.txt")).ReadToEnd();
+			ConfigPath = this.GetExternalFilesDir("").AbsolutePath;
+			foreach (string dll in flist)
+			{
+				if (dll.EndsWith(".dll"))
+				{
+					MemoryStream memoryStream = new MemoryStream();
+					Assets.Open(dll).CopyTo(memoryStream);
+					AppDomain.CurrentDomain.Load(memoryStream.ToArray());
+				}
+			}
+			Program.Main();
+		}
+		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+		{
+			bool flag = true;
+			foreach (var g in grantResults)
+			{
+				if (g != Permission.Granted) { flag = false; break; }
+			}
+			if (flag) Run();
+		}
+	}
 }

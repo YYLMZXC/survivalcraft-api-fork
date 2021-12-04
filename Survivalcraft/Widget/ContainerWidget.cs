@@ -39,6 +39,10 @@ namespace Game
             }
         }
 
+        public void AddChildren(Widget widget) { if (Children.IndexOf(widget) < 0) Children.Add(widget); }
+        public void RemoveChildren(Widget widget) { if (Children.IndexOf(widget) >= 0) Children.Remove(widget); }
+        public void ClearChildren() { Children.Clear(); }
+
         public virtual void WidgetAdded(Widget widget)
         {
         }
@@ -62,7 +66,6 @@ namespace Game
                 ArrangeChildWidgetInCell(Vector2.Zero, ActualSize, child);
             }
         }
-
         public static void ArrangeChildWidgetInCell(Vector2 c1, Vector2 c2, Widget widget)
         {
             Vector2 zero = Vector2.Zero;

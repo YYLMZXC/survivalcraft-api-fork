@@ -19,6 +19,7 @@ namespace Game
 
         public override void Enter(object[] parameters)
         {
+            MusicManager.CurrentMix = MusicManager.Mix.Menu;
             Children.Find<MotdWidget>().Restart();
             if (SettingsManager.IsolatedStorageMigrationCounter < 3)
             {

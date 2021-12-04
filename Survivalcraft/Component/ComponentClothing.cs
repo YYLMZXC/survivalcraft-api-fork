@@ -484,12 +484,7 @@ namespace Game
                     processedValue = value;
                     processedCount = processCount;
                 }
-                else if (!block.Eat(value))
-                {
-                    processedValue = value;
-                    processedCount = processCount;
-                }
-                else if (!m_componentVitalStats.Eat(value))
+                else if (block.Eat(value) || !m_componentVitalStats.Eat(value))
                 {
                     processedValue = value;
                     processedCount = processCount;
