@@ -143,7 +143,14 @@ public static class ModsManager
         {
             foreach (ModLoader modLoader in modHook.Loaders.Keys)
             {
-                if (action.Invoke(modLoader)) break;
+                try
+                {
+                    if (action.Invoke(modLoader)) break;
+                }
+                catch(Exception e)
+                {
+                    Log.Warning(e.Message);
+                }
             }
         }
     }
