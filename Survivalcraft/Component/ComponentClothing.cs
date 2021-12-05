@@ -451,7 +451,7 @@ namespace Game
             {
                 return 1;
             }
-            if (block is ClothingBlock || block.CanWear(value))
+            if (block is ClothingBlock && CanWearClothing(value))
             {
                 return 1;
             }
