@@ -21,11 +21,10 @@ namespace Game
 
         public LogType m_filter;
 
+        public static string fName = "ViewGameLogDialog";
 
         public ViewGameLogDialog()
         {
-            m_uploadButton = new BevelledButtonWidget() { Style = ContentManager.Get<XElement>("Styles/ButtonStyle_160x60") ,VerticalAlignment=WidgetAlignment.Center,Text="上传"};
-            var canvasWidget = new CanvasWidget() { Size=new Vector2(40,0)};
             XElement node = ContentManager.Get<XElement>("Dialogs/ViewGameLogDialog");
             LoadContents(this, node);
             m_listPanel = Children.Find<ListPanelWidget>("ViewGameLogDialog.ListPanel");
@@ -33,8 +32,7 @@ namespace Game
             m_filterButton = Children.Find<ButtonWidget>("ViewGameLogDialog.FilterButton");
             m_filterButton.Style = ContentManager.Get<XElement>("Styles/ButtonStyle_160x60");
             m_closeButton = Children.Find<ButtonWidget>("ViewGameLogDialog.CloseButton");
-            m_closeButton.ParentWidget.Children.Add(canvasWidget);
-            m_closeButton.ParentWidget.Children.Add(m_uploadButton);
+            m_uploadButton = Children.Find<ButtonWidget>("ViewGameLogDialog.UploadButton");
             m_listPanel.ItemClicked += delegate (object item)
             {
                 if (m_listPanel.SelectedItem == item)
@@ -82,14 +80,14 @@ namespace Game
             if (m_uploadButton.IsClicked) {
                 if (string.IsNullOrEmpty(SettingsManager.ScpboxAccessToken))
                 {
-                    var messageDialog = new MessageDialog("错误", "请登陆后进行日志提交操作","确定","取消",(btn)=> {
+                    var messageDialog = new MessageDialog(LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), LanguageControl.Get(fName, 3), LanguageControl.Get(fName, 4),(btn)=> {
                         DialogsManager.HideAllDialogs();
                     });
                     DialogsManager.ShowDialog(this, messageDialog);
                 }
                 else {
                     var cancellableProgress = new CancellableProgress();
-                    var dialog = new CancellableBusyDialog("上传日志中...", true);
+                    var dialog = new CancellableBusyDialog(LanguageControl.Get(fName, 5), true);
                     DialogsManager.ShowDialog(this, dialog);
                     var jsonObject = new JsonObject();
                     jsonObject.Add("path", "/GameLog/" + DateTime.Now.Ticks + ".log");
@@ -103,14 +101,14 @@ namespace Game
                     memoryStream.Seek(0,SeekOrigin.Begin);
                     WebManager.Post(SPMBoxExternalContentProvider.m_redirectUri + "/com/files/upload", null, dictionary, memoryStream, cancellableProgress, delegate
                     {
-                        dialog.LargeMessage = "上传成功";
-                        dialog.m_cancelButtonWidget.Text = "确定";
+                        dialog.LargeMessage = LanguageControl.Get(fName, 6);
+                        dialog.m_cancelButtonWidget.Text = "OK";
                         GameLogSink.m_writer.BaseStream.SetLength(0);
                         GameLogSink.m_writer.Flush();
                         PopulateList();
                     }, delegate (Exception error)
                     {
-                        dialog.LargeMessage = "上传失败";
+                        dialog.LargeMessage = LanguageControl.Get(fName, 7);
                         dialog.SmallMessage = error.Message;
                     });
                 }
