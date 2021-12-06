@@ -419,10 +419,17 @@ namespace Game
             }
         }
 
+        public static bool DisplayLog
+        {
+            get;
+            set;
+        }
+
         public static event Action<string> SettingChanged;
 
         public static void Initialize()
         {
+            DisplayLog = false;
             VisibilityRange = 128;
             m_resolutionMode = ResolutionMode.High;
             ViewAngleMode = ViewAngleMode.Normal;
