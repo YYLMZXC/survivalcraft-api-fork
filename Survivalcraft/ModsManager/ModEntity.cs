@@ -36,7 +36,7 @@ namespace Game {
         /// </summary>
         /// <param name="extension"></param>
         /// <returns></returns>
-        public virtual List<Stream> GetFiles(string extension)
+        public virtual void GetFiles(string extension,Action<string,Stream> action)
         {
             var files = new List<Stream>();
             //将每个zip里面的文件读进内存中
@@ -47,31 +47,49 @@ namespace Game {
                     var stream = new MemoryStream();
                     ModArchive.ExtractFile(zipArchiveEntry, stream);
                     stream.Position = 0L;
-                    files.Add(stream);
+                    try
+                    {
+                        action.Invoke(zipArchiveEntry.FilenameInZip, stream);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(string.Format("GetFile {0} Error:{1}", zipArchiveEntry.FilenameInZip, e.Message));
+                    }
+                    finally
+                    {
+                        stream.Dispose();
+                    }
                 }
             }
-            return files;
         }
         /// <summary>
         /// 获取指定文件，将ZipArchive解压到内存中
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public virtual bool GetFile(string filename, out Stream stream)
+        public virtual bool GetFile(string filename, Action<Stream> stream)
         {            
             if (ModFiles.TryGetValue(filename, out ZipArchiveEntry entry))
             {
-                stream = new MemoryStream();
-                ModArchive.ExtractFile(entry, stream);
-                stream.Position = 0L;
-                return true;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    ModArchive.ExtractFile(entry, ms);
+                    ms.Position = 0L;
+                    try
+                    {
+                        stream?.Invoke(ms);
+                    }
+                    catch (Exception e)
+                    {
+                        LoadingScreen.Error("GetFile " + filename + " Error:" + e.Message);
+                    }
+                }
             }
-            stream = null;
             return false;
         }
-        public virtual bool GetAssetsFile(string filename, out Stream stream)
+        public virtual bool GetAssetsFile(string filename, Action<Stream> stream)
         {
-            return GetFile("Assets/" + filename, out stream);
+            return GetFile("Assets/" + filename, stream);
         }
         /// <summary>
         /// 初始化语言包
@@ -79,10 +97,7 @@ namespace Game {
         public virtual void LoadLauguage()
         {
             LoadingScreen.Info("加载语言:" + modInfo?.Name);
-            if (GetAssetsFile($"Lang/{ModsManager.Configs["Language"]}.json", out Stream stream))
-            {
-                LanguageControl.loadJson(stream);
-            }
+            GetAssetsFile($"Lang/{ModsManager.Configs["Language"]}.json", (stream) => { LanguageControl.loadJson(stream); });
         }
         /// <summary>
         /// Mod初始化
@@ -105,17 +120,13 @@ namespace Game {
                     ModFiles.Add(zipArchiveEntry.FilenameInZip, zipArchiveEntry);
                 }
             }
-            if (GetFile("modinfo.json", out Stream stream))
-            {
+            GetFile("modinfo.json", (stream) => {
                 modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
-                stream.Close();
-            }
+            });
             if (modInfo == null) return;
-            if (GetFile("icon.png", out Stream stream2))
-            {
-                LoadIcon(stream2);
-                stream2.Close();
-            }
+            GetFile("icon.png", (stream) => {
+                LoadIcon(stream);
+            });
             foreach (var c in ModFiles) {
                 ZipArchiveEntry zipArchiveEntry = c.Value;
                 string filename = zipArchiveEntry.FilenameInZip;
@@ -140,18 +151,9 @@ namespace Game {
         public virtual void LoadBlocksData()
         {
             LoadingScreen.Info("加载方块数据:" + modInfo?.Name);
-            foreach (Stream stream in GetFiles(".csv"))
-            {
-                try
-                {
-                    BlocksManager.LoadBlocksData(ModsManager.StreamToString(stream));
-                }
-                catch (Exception e)
-                {
-                    LoadingScreen.Warning("<" + modInfo?.PackageName + ">" + e.Message);
-                }
-                stream.Dispose();
-            }
+            GetFiles(".csv", (filename, stream) => {
+                BlocksManager.LoadBlocksData(ModsManager.StreamToString(stream));
+            });
         }
         /// <summary>
         /// 初始化Database数据
@@ -159,12 +161,11 @@ namespace Game {
         /// <param name="xElement"></param>
         public virtual void LoadXdb(ref XElement xElement)
         {
+            XElement element = xElement;
             LoadingScreen.Info("加载数据库:" + modInfo?.Name);
-            foreach (Stream stream in GetFiles(".xdb"))
-            {
-                ModsManager.CombineDataBase(xElement, stream);
-                stream.Dispose();
-            }
+            GetFiles(".xdb", (filename, stream) => {
+                ModsManager.CombineDataBase(element, stream);
+            });
             if (Loader != null)
             {
                 Loader.OnXdbLoad(xElement);
@@ -177,12 +178,11 @@ namespace Game {
         /// <param name="xElement"></param>
         public virtual void LoadClo(ClothingBlock block, ref XElement xElement)
         {
+            XElement element = xElement;
             LoadingScreen.Info("加载衣物数据:" + modInfo?.Name);
-            foreach (Stream stream in GetFiles(".clo"))
-            {
-                ModsManager.CombineClo(xElement, stream);
-                stream.Dispose();
-            }
+            GetFiles(".clo", (filename, stream) => {
+                ModsManager.CombineClo(element, stream);
+            });
         }
         /// <summary>
         /// 初始化CraftingRecipe
@@ -190,12 +190,9 @@ namespace Game {
         /// <param name="xElement"></param>
         public virtual void LoadCr(ref XElement xElement)
         {
+            XElement element = xElement;
             LoadingScreen.Info("加载合成谱:" + modInfo?.Name);
-            foreach (Stream stream in GetFiles(".cr"))
-            {
-                ModsManager.CombineCr(xElement, stream);
-                stream.Dispose();
-            }
+            GetFiles(".cr", (filename, stream) => { ModsManager.CombineCr(element, stream); });
         }
         /// <summary>
         /// 加载mod程序集
@@ -203,11 +200,9 @@ namespace Game {
         public virtual void LoadDll()
         {
             LoadingScreen.Info("加载程序集:" + modInfo?.PackageName);
-            foreach (Stream stream in GetFiles(".dll"))
-            {
+            GetFiles(".dll",(filename,stream)=> {
                 LoadDllLogic(stream);
-                stream.Dispose();
-            }
+            });
         }
         public void LoadDllLogic(Stream stream)
         {
@@ -314,14 +309,6 @@ namespace Game {
         public virtual void OnBlocksInitalized()
         {
             if (Loader != null) Loader.BlocksInitalized();
-        }
-        /// <summary>
-        /// LoadingScreen任务执行完毕
-        /// </summary>
-        /// <param name="loading"></param>
-        public virtual void OnLoadingFinished(List<Action> LoadingActions)
-        {
-            if (Loader != null) Loader.OnLoadingFinished(LoadingActions);
         }
         //释放资源
         public virtual void Dispose() {

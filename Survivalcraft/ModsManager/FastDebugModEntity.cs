@@ -1,4 +1,5 @@
 using Engine;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
@@ -18,21 +19,15 @@ namespace Game
         public override void InitResources()
         {
             ReadDirResouces(ModsManager.ModsPath, "");
-            if (GetFile("modinfo.json", out Stream stream))
+            if (!GetFile("modinfo.json", (stream) =>
             {
                 modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
                 modInfo.Name = $"[Debug]{modInfo.Name}";
-                stream.Close();
-            }
-            else
+            }))
             {
                 modInfo = new ModInfo() { Name = "FastDebug", Version = "1.0.0", ApiVersion = ModsManager.APIVersion, Author = "Mod", Description = "调试Mod插件", ScVersion = "2.2.10.4", PackageName = "com.fastdebug" };
             }
-            if (GetFile("icon.png", out Stream stream2))
-            {
-                LoadIcon(stream2);
-                stream2.Close();
-            }
+            GetFile("icon.png", (stream) => { LoadIcon(stream); });
         }
 
         public void ReadDirResouces(string basepath, string path)
@@ -46,7 +41,6 @@ namespace Game
                 if (FilenameInZip.StartsWith("Assets/"))
                 {
                     string name = FilenameInZip.Substring(7);
-                    FModFiles.Add(name,new FileInfo(Storage.GetSystemPath(abpath)));
                     ContentInfo contentInfo = new ContentInfo(name);
                     MemoryStream memoryStream = new MemoryStream();
                     using (Stream stream = Storage.OpenFile(abpath, OpenFileMode.Read))
@@ -56,7 +50,7 @@ namespace Game
                         ContentManager.Add(contentInfo);
                     }
                 }
-
+                FModFiles.Add(FilenameInZip, new FileInfo(Storage.GetSystemPath(abpath)));
             }
         }
 
@@ -123,35 +117,38 @@ namespace Game
         /// </summary>
         /// <param name="extension"></param>
         /// <returns></returns>
-        public override List<Stream> GetFiles(string extension)
+        public override void GetFiles(string extension, Action<string, Stream> action)
         {
-            var files = new List<Stream>();
             foreach (string name in Storage.ListFileNames(ModsManager.ModsPath))
             {
-                if (name.EndsWith(extension)) files.Add(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, name), OpenFileMode.Read));
+                using (Stream stream = Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, name), OpenFileMode.Read))
+                {
+                    try { action.Invoke(name, stream); } catch (Exception e) { LoadingScreen.Error(string.Format("GetFile {0} Error:{1}", name, e.Message)); }
+                }
             }
-            return files;
         }
-
-        /// <summary>
-        /// 获取指定文件，这里申请的流需要Mod自行释放
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        public override bool GetFile(string filename, out Stream stream)
+        public override bool GetFile(string filename, Action<Stream> stream)
         {
-            stream = null;
             if (FModFiles.TryGetValue(filename, out FileInfo fileInfo))
             {
-                stream = fileInfo.OpenRead();
+                using (Stream fs = fileInfo.OpenRead())
+                {
+                    try
+                    {
+                        stream?.Invoke(fs);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(string.Format("GetFile {0} Error:{1}", filename, e.Message));
+                    }
+                }
                 return true;
             }
             return false;
         }
-
-        public override bool GetAssetsFile(string filename, out Stream stream)
+        public override bool GetAssetsFile(string filename, Action<Stream> stream)
         {
-            return GetFile("Assets/" + filename, out stream);
+            return GetFile("Assets/" + filename, stream);
         }
     }
 }

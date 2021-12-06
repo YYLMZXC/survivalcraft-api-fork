@@ -32,6 +32,7 @@ namespace Game
             Hitted = false;
         }
 
+
         /// <summary>
         /// 当人物挖掘时执行
         /// </summary>
@@ -327,12 +328,20 @@ namespace Game
         {
             return item;
         }
+        /// <summary>
+        /// 加载任务开始时执行
+        /// 在BlocksManager初始化之前
+        /// </summary>
+        public virtual void OnLoadingStart(List<System.Action> actions) { 
+        
+        }
 
         /// <summary>
         /// 加载任务结束时执行
+        /// 在BlocksMAnager初始化之后
         /// </summary>
         /// <param name="loadingActions"></param>
-        public virtual void OnLoadingFinished(List<System.Action> loadingActions) 
+        public virtual void OnLoadingFinished(List<System.Action> actions) 
         { 
         }
 

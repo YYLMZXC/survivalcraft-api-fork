@@ -110,6 +110,7 @@ namespace Game
                 ModsManager.Initialize();
             });
             AddLoadAction(ContentLoaded);
+
             AddLoadAction(delegate {//检查所有Mod依赖项 
                 ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });
             });
@@ -129,6 +130,17 @@ namespace Game
             });
             AddLoadAction(delegate { //读取所有的ModEntity的dll，并分离出ModLoader，保存Blocks
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadDll(); });
+            });
+            AddLoadAction(delegate {
+                Info("执行初始化任务");
+                List<Action> actions = new List<Action>();
+                ModsManager.ModListAllDo((modEntity) => { 
+                    modEntity.Loader?.OnLoadingStart(actions);
+                });
+                foreach (var ac in actions)
+                {
+                    ModLoadingActoins.Add(ac);
+                }
             });
             AddLoadAction(delegate {//初始化TextureAtlas
                 Info("初始化纹理地图");
@@ -195,7 +207,7 @@ namespace Game
                 }
             });
             AddLoadAction(() => {
-                ModsManager.ModListAllDo((modEntity) => { Info("等待剩下的任务完成:" + modEntity.modInfo?.PackageName); modEntity.OnLoadingFinished(ModLoadingActoins); });
+                ModsManager.ModListAllDo((modEntity) => { Info("等待剩下的任务完成:" + modEntity.modInfo?.PackageName); modEntity.Loader?.OnLoadingFinished(ModLoadingActoins); });
             });
             AddLoadAction(() => {
                 ScreensManager.SwitchScreen("MainMenu");
