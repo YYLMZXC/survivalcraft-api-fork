@@ -285,14 +285,14 @@ namespace Game
             if (furnitureSet != null)
             {
                 ComponentPlayer componentPlayer = ComponentFurnitureInventory.Entity.FindComponent<ComponentPlayer>(throwOnError: true);
-                Input.EnterText(componentPlayer.GuiWidget, LanguageControl.Get(fName, 17), furnitureSet.Name, 20, delegate (string s)
+                DialogsManager.ShowDialog(null, new TextBoxDialog(LanguageControl.Get(fName, 15), LanguageControl.Get(fName, 16), 30, delegate (string s)
                 {
                     if (s != null)
                     {
                         furnitureSet.Name = s;
                         Invalidate();
                     }
-                });
+                }));
             }
         }
 
