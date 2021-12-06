@@ -380,7 +380,7 @@ public static class ModsManager
     public static void AddException(Exception e, bool AllowContinue_ = false)
     {
         LoadingScreen.Error(e.Message);
-        AllowContinue = AllowContinue_;
+        AllowContinue = SettingsManager.DisplayLog ? AllowContinue_ : true;
     }
 
     /// <summary>
