@@ -42,8 +42,6 @@ namespace Game
 
         public List<BlockDropValue> m_dropValues = new List<BlockDropValue>();
 
-        public static RenderTarget2D ShadowTexture = new RenderTarget2D(Window.Size.X, Window.Size.Y, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
-
         public static int[] m_drawOrders = new int[2]
         {
             0,
@@ -372,15 +370,6 @@ namespace Game
                 if (drawOrder == DrawOrders[0])
                 {
                     TerrainUpdater.PrepareForDrawing(camera);
-                    if(TerrainRenderer.ShadowShader != null)
-                    {
-                        RenderTarget2D renderTarget = Display.RenderTarget;
-                        Display.RenderTarget = ShadowTexture;
-                        Display.Clear(Color.White, 1f);
-                        TerrainRenderer.DrawShadow(camera);
-                        Display.RenderTarget = renderTarget;
-                        Display.Clear(Color.White, 1f);
-                    }
                     TerrainRenderer.PrepareForDrawing(camera);
                     TerrainRenderer.DrawOpaque(camera);
                     TerrainRenderer.DrawAlphaTested(camera);

@@ -47,8 +47,6 @@ namespace Game
 
         private ModelShader m_shaderAlphaTested;
 
-        public int m_size; //ด๓ะก
-
         private Vector3 m_sunLightDirection;
 
         public int MaxInstancesCount;
@@ -115,29 +113,14 @@ namespace Game
                 m_sunLightDirection = 1.25f * Vector3.TransformNormal(SunVector(m_subsystemSky), camera.ViewMatrix);
                 if (drawOrder == m_drawOrders[1])
                 {
-                    if (ShaderOpaque != null && ShaderAlphaTested != null)
-                    {
-                        Display.DepthStencilState = DepthStencilState.Default;
-                        Display.RasterizerState = RasterizerState.CullNoneScissor;
-                        Display.BlendState = BlendState.Opaque;
-                        DrawModels(camera, m_modelsToDraw[0], null);
-                        Display.RasterizerState = RasterizerState.CullNoneScissor;
-                        Display.BlendState = BlendState.AlphaBlend;
-                        DrawModels(camera, m_modelsToDraw[1], new float?(0f));
-                        Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-                        m_primitivesRenderer.Flush(camera.ProjectionMatrix, true, 0);
-                    }
-                    else
-                    {
-                        Display.DepthStencilState = DepthStencilState.Default;
-                        Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-                        Display.BlendState = BlendState.Opaque;
-                        DrawModels(camera, m_modelsToDraw[0], null);
-                        Display.RasterizerState = RasterizerState.CullNoneScissor;
-                        DrawModels(camera, m_modelsToDraw[1], 0f);
-                        Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-                        m_primitivesRenderer.Flush(camera.ProjectionMatrix, clearAfterFlush: true, 0);
-                    }
+                    Display.DepthStencilState = DepthStencilState.Default;
+                    Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
+                    Display.BlendState = BlendState.Opaque;
+                    DrawModels(camera, m_modelsToDraw[0], null);
+                    Display.RasterizerState = RasterizerState.CullNoneScissor;
+                    DrawModels(camera, m_modelsToDraw[1], 0f);
+                    Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
+                    m_primitivesRenderer.Flush(camera.ProjectionMatrix, clearAfterFlush: true, 0);
                 }
                 else if (drawOrder == m_drawOrders[2])
                 {
@@ -235,13 +218,12 @@ namespace Game
             if (ShaderOpaque != null && ShaderAlphaTested != null)
             {
                 modelShader = alphaThreshold.HasValue ? ShaderAlphaTested : ShaderOpaque;
-                modelShader.LightDirection1 = m_sunLightDirection;
             }
             else
             {
                 modelShader = alphaThreshold.HasValue ? m_shaderAlphaTested : m_shaderOpaque;
-                modelShader.LightDirection1 = -Vector3.TransformNormal(LightingManager.DirectionToLight1, camera.ViewMatrix);//
             }
+            modelShader.LightDirection1 = -Vector3.TransformNormal(LightingManager.DirectionToLight1, camera.ViewMatrix);
             modelShader.LightDirection2 = -Vector3.TransformNormal(LightingManager.DirectionToLight2, camera.ViewMatrix);
             modelShader.FogColor = new Vector3(m_subsystemSky.ViewFogColor);
             modelShader.FogStartInvLength = new Vector2(m_subsystemSky.ViewFogRange.X, 1f / (m_subsystemSky.ViewFogRange.Y - m_subsystemSky.ViewFogRange.X));
@@ -254,6 +236,7 @@ namespace Game
             {
                 modelShader.AlphaThreshold = alphaThreshold.Value;
             }
+            ModsManager.HookAction("ModelShaderParameter", (modLoader) => { modLoader.ModelShaderParameter(modelShader, camera, modelsData, alphaThreshold); return true; });
             ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(modelShader, camera); return true; });
             foreach (ModelData modelsDatum in modelsData)
             {
@@ -285,21 +268,10 @@ namespace Game
             {
                 if (modelData.ComponentBody != null && modelData.ComponentModel.CastsShadow)
                 {
-                    if (ShaderOpaque != null && ShaderAlphaTested != null)
-                    {
-                        m_size = 3;
-                        Vector3 shadowPosition = modelData.ComponentBody.Position + new Vector3(0f, 0.1f, 0f);
-                        BoundingBox boundingBox = modelData.ComponentBody.BoundingBox;
-                        float shadowDiameter = 0.5f * m_size * (boundingBox.Max.X - boundingBox.Min.X);
-                        ShadowDraw(m_subsystemShadows, camera, shadowPosition, shadowDiameter, modelData.ComponentModel.Opacity ?? 1f);
-                    }
-                    else
-                    {
-                        Vector3 shadowPosition = modelData.ComponentBody.Position + new Vector3(0f, 0.1f, 0f);
-                        BoundingBox boundingBox = modelData.ComponentBody.BoundingBox;
-                        float shadowDiameter = 2.25f * (boundingBox.Max.X - boundingBox.Min.X);
-                        m_subsystemShadows.QueueShadow(camera, shadowPosition, shadowDiameter, modelData.ComponentModel.Opacity ?? 1f);
-                    }
+                    Vector3 shadowPosition = modelData.ComponentBody.Position + new Vector3(0f, 0.1f, 0f);
+                    BoundingBox boundingBox = modelData.ComponentBody.BoundingBox;
+                    float shadowDiameter = 2.25f * (boundingBox.Max.X - boundingBox.Min.X);
+                    m_subsystemShadows.QueueShadow(camera, shadowPosition, shadowDiameter, modelData.ComponentModel.Opacity ?? 1f);
                 }
                 modelData.ComponentModel.DrawExtras(camera);
             }
