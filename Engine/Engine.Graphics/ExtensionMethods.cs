@@ -68,6 +68,8 @@ namespace Engine.Graphics
 				return 2;
 			case ColorFormat.R8:
 				return 1;
+			case ColorFormat.Depth: 
+				return 4;
 			default:
 				throw new InvalidOperationException("Unsupported ColorFormat.");
 			}
