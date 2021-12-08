@@ -76,7 +76,7 @@ namespace Engine.Graphics
 			AllocateRenderTarget();
 		}
 
-		private void AllocateRenderTarget()
+        private void AllocateRenderTarget()
 		{
 			GL.GenFramebuffers(1, out m_frameBuffer);
 			GLWrapper.BindFramebuffer(m_frameBuffer);
@@ -92,6 +92,7 @@ namespace Engine.Graphics
 				// 这样就会绑定到空贴图
 				// （虽然没试过只是猜的）
 				DepthBuffer = new Texture2D(base.Width, base.Height, 1, ColorFormat.Depth);
+				GL.FramebufferTexture2D(All.Framebuffer, All.DepthAttachment, All.Texture2D, DepthBuffer.m_texture, 0);
 				GL.GenRenderbuffers(1, out m_depthBuffer);
 				GL.BindRenderbuffer(All.Renderbuffer, m_depthBuffer);
 				GL.RenderbufferStorage(All.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), base.Width, base.Height);

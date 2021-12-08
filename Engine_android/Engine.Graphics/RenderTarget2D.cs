@@ -142,7 +142,8 @@ namespace Engine.Graphics
 				// 除非在新建这个对象前就new好了DepthBuffer
 				// 不然DepthBuffer的HandleDeviceReset必定会晚于这个RenderTarget2D
 				// 这样就会绑定到空贴图
-				this.DepthBuffer = new Texture2D(base.Width, base.Height, 1, ColorFormat.Depth);
+				DepthBuffer = new Texture2D(base.Width, base.Height, 1, ColorFormat.Depth);
+				GL.FramebufferTexture2D(All.Framebuffer, All.DepthAttachment, All.Texture2D, DepthBuffer.m_texture, 0);
 				GL.GenRenderbuffers(1, out m_depthBuffer);
 				GL.BindRenderbuffer(All.Renderbuffer, m_depthBuffer);
 				GL.RenderbufferStorage(All.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), base.Width, base.Height);
