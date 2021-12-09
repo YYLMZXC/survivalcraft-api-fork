@@ -17,12 +17,9 @@ namespace Game
                 {
                     try
                     {
-#if android
-                        Sound sound = new Sound(ContentManager.Get<StreamingSource>(name, ".wav").Duplicate(), num, ToEnginePitch(pitch), pan, false, true);
-#else
-                        Sound sound = new Sound(ContentManager.Get<SoundBuffer>(name, ".wav"), num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true);
-#endif
-                        sound.Volume = num;
+                        SoundBuffer soundBuffer = ContentManager.Get<SoundBuffer>(name, ".wav");
+                        if (soundBuffer == null) soundBuffer = ContentManager.Get<SoundBuffer>(name, ".ogg");
+                        Sound sound = new Sound(soundBuffer, num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true);
                         sound.Play();
                     }
                     catch (Exception)

@@ -19,13 +19,19 @@ namespace SC.Android
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-			if (CheckSelfPermission(Manifest.Permission.WriteExternalStorage) != Permission.Granted)
+			try
 			{
-				Toast.MakeText(this,"请授权游戏存储读写权限",ToastLength.Long).Show();
-				RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, 0);
+				if (CheckSelfPermission(Manifest.Permission.WriteExternalStorage) != Permission.Granted)
+				{
+					Toast.MakeText(this, "请授权游戏存储读写权限", ToastLength.Long).Show();
+					RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, 0);
+				}
+				else
+				{
+					Run();
+				}
 			}
-			else
-			{
+			catch {
 				Run();
 			}
 		}

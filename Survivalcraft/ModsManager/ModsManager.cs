@@ -563,6 +563,17 @@ public static class ModsManager
                     }
                 }
             }
+            else if (HasAttribute(element, (name) => { return name.StartsWith("r-"); }, out var attribute1))
+            {
+                if (HasAttribute(element, (name) => { return name == "Index"; }, out XAttribute xAttribute))
+                {
+                    if (FindElement(xElement, (ele) => { return element.Attribute("Index").Value == xAttribute.Value; }, out XElement element1))
+                    {
+                        element1.Remove();
+                        element.Remove();
+                    }
+                }
+            }
             xElement.Add(MergeXml);
         }
     }
@@ -601,6 +612,20 @@ public static class ModsManager
                             element1.SetAttributeValue(px[0], attribute.Value);
                             element1.SetValue(element.Value);
                         }
+                    }
+                }
+                else if (HasAttribute(element, (name) => { return name.StartsWith("r-"); }, out XAttribute attribute1)) {
+                    if (FindElement(xElement, (ele) =>
+                    {//原始标签
+                        foreach (XAttribute xAttribute in element.Attributes())//待修改的标签
+                        {
+                            if (xAttribute.Name == attribute1.Name) continue;
+                            if (!HasAttribute(ele, (tname) => { return tname == xAttribute.Name; }, out XAttribute attribute2)) { return false; }
+                        }
+                        return true;
+                    }, out XElement element1)) {
+                        element1.Remove();
+                        element.Remove();
                     }
                 }
                 else

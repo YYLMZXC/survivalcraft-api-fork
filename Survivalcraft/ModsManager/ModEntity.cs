@@ -35,7 +35,7 @@ namespace Game {
         /// 获取指定后缀文件列表，带.
         /// </summary>
         /// <param name="extension"></param>
-        /// <returns></returns>
+        /// <param name="action">参数1文件名参数，2打开的文件流</param>
         public virtual void GetFiles(string extension,Action<string,Stream> action)
         {
             var files = new List<Stream>();
@@ -63,9 +63,10 @@ namespace Game {
             }
         }
         /// <summary>
-        /// 获取指定文件，将ZipArchive解压到内存中
+        /// 获取指定文件
         /// </summary>
         /// <param name="filename"></param>
+        /// <param name="stream">参数1打开的文件流</param>
         /// <returns></returns>
         public virtual bool GetFile(string filename, Action<Stream> stream)
         {            

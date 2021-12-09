@@ -107,11 +107,7 @@ namespace Engine.Audio
 				}
 			}
 			AudioManager audioManager = (AudioManager)EngineActivity.m_activity.GetSystemService(Android.Content.Context.AudioService);
-			AudioTrack audioTrack = new AudioTrack(
-				new AudioAttributes.Builder().SetUsage(AudioUsageKind.Game).SetContentType(AudioContentType.Music).Build(),
-				new AudioFormat.Builder().SetEncoding(Encoding.Pcm16bit).SetSampleRate(soundBuffer.SamplingFrequency).SetChannelMask(ChannelOut.Default).Build(),
-				2 * soundBuffer.ChannelsCount * (int)(soundBuffer.SamplingFrequency * 0.3f), AudioTrackMode.Stream, audioManager.GenerateAudioSessionId());
-			//AudioTrack audioTrack = new AudioTrack(null, null, soundBuffer.m_data.Length, AudioTrackMode.Stream, 0);
+			AudioTrack audioTrack = new AudioTrack(Stream.Music, soundBuffer.SamplingFrequency, (soundBuffer.ChannelsCount == 1) ? ChannelOut.FrontLeft : ChannelOut.Stereo, Encoding.Pcm16bit, soundBuffer.m_data.Length, AudioTrackMode.Static);
 			if (audioTrack.State != 0)
 			{
 				audioTrack.Write(soundBuffer.m_data, 0, soundBuffer.m_data.Length);
