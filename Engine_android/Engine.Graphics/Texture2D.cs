@@ -187,6 +187,11 @@ namespace Engine.Graphics
 					m_pixelFormat = All.Luminance;
 					m_pixelType = All.UnsignedByte;
 					break;
+				// 新增：这里增加了深度贴图格式，是固定的
+				case ColorFormat.Depth:
+					this.m_pixelFormat = All.DepthComponent;
+					this.m_pixelType = All.Float;
+					break;
 				default:
 					throw new InvalidOperationException("Unsupported surface format.");
 			}

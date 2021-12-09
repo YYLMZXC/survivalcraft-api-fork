@@ -23,7 +23,7 @@ namespace Game
         private List<Action> LoadingActoins = new List<Action>();
         private List<Action> ModLoadingActoins = new List<Action>();
         private CanvasWidget Canvas = new CanvasWidget();
-        private RectangleWidget Background = new RectangleWidget() { FillColor = Color.White, OutlineThickness = 0f, DepthWriteEnabled = true };
+        private RectangleWidget Background = new RectangleWidget() { FillColor = (SettingsManager.DisplayLog? Color.Black : Color.White), OutlineThickness = 0f, DepthWriteEnabled = true };
         private static ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
         static LoadingScreen()
         {
@@ -32,6 +32,8 @@ namespace Game
                 CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(Display.Viewport.Width, 40), Margin = new Vector2(0, 2), HorizontalAlignment = WidgetAlignment.Near };
                 FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 0.6f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
                 canvasWidget.Children.Add(fontTextWidget);
+                canvasWidget.IsVisible = SettingsManager.DisplayLog;
+                LogList.IsEnabled = SettingsManager.DisplayLog;
                 return canvasWidget;
             };
             LogList.ItemSize = 30;
@@ -43,8 +45,8 @@ namespace Game
                 case LogType.Advice: return Color.Cyan;
                 case LogType.Error: return Color.Red;
                 case LogType.Warning: return Color.Yellow;
-                case LogType.Info: return Color.Black;
-                default: return Color.Black;
+                case LogType.Info: return Color.White;
+                default: return Color.White;
             }
         }
         public LoadingScreen()
@@ -57,6 +59,7 @@ namespace Game
         }
         public void ContentLoaded()
         {
+            if (SettingsManager.DisplayLog) return;
             ClearChildren();
             RectangleWidget rectangle1 = new RectangleWidget() { FillColor = Color.White, OutlineColor = Color.Transparent, Size = new Vector2(256f), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Center };
             rectangle1.Subtexture = ContentManager.Get<Subtexture>("Textures/Gui/CandyRufusLogo");

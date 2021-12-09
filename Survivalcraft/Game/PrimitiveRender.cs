@@ -76,7 +76,6 @@ namespace Game
 				}
 				else
 				{
-					// I added support only for items(TexturedBatch3D), if not item, it will be rendered normally without rendered shaders
 					baseBatch.Flush(matrix, clearAfterFlush: true);
 				}
 			}

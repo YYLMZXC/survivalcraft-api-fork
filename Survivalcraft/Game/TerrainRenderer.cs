@@ -19,8 +19,6 @@ namespace Game
 
 		public static Shader TransparentShader;
 
-		public static Shader ShadowShader;
-
 		public SamplerState m_samplerState = new SamplerState
 		{
 			AddressModeU = TextureAddressMode.Clamp,
@@ -134,40 +132,6 @@ namespace Game
 			ChunksDrawn = 0;
 			ChunkDrawCalls = 0;
 			ChunkTrianglesDrawn = 0;
-		}
-
-		public void DrawShadow(Camera camera)
-		{
-			Vector3 viewPosition = camera.ViewPosition;
-			Display.BlendState = BlendState.Opaque;
-			Display.DepthStencilState = DepthStencilState.Default;
-			Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShadowShader, camera); return true; });
-			for (int i = 0; i < m_chunksToDraw.Count; i++)
-			{
-				TerrainChunk terrainChunk = m_chunksToDraw[i];
-				int num3 = 16;
-				if (viewPosition.Z > terrainChunk.BoundingBox.Min.Z)
-				{
-					num3 |= 1;
-				}
-				if (viewPosition.X > terrainChunk.BoundingBox.Min.X)
-				{
-					num3 |= 2;
-				}
-				if (viewPosition.Z < terrainChunk.BoundingBox.Max.Z)
-				{
-					num3 |= 4;
-				}
-				if (viewPosition.X < terrainChunk.BoundingBox.Max.X)
-				{
-					num3 |= 8;
-				}
-				DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry, num3);
-				DrawTerrainChunkGeometrySubsets(ShadowShader, terrainChunk.Geometry, 32);
-				DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk.Geometry, 64);
-				ChunksDrawn++;
-			}
 		}
 
 		public void DrawOpaque(Camera camera)
@@ -377,7 +341,7 @@ namespace Game
 			geometry.CopySliceContentsHashes(chunk);
 		}
 
-		public void DrawTerrainChunkGeometrySubsets(Shader shader, TerrainChunkGeometry geometry, int subsetsMask)
+		public void DrawTerrainChunkGeometrySubsets(Shader shader, TerrainChunkGeometry geometry, int subsetsMask, bool ApplyTexture = true)
 		{
 			foreach (TerrainChunkGeometry.Buffer buffer in geometry.Buffers)
 			{
@@ -400,7 +364,7 @@ namespace Game
 					{
 						if (num2 > num)
 						{
-							shader.GetParameter("u_texture").SetValue(buffer.Texture);
+							if(ApplyTexture) shader.GetParameter("u_texture").SetValue(buffer.Texture);
 							Display.DrawIndexed(PrimitiveType.TriangleList, shader, buffer.VertexBuffer, buffer.IndexBuffer, num, num2 - num);
 							ChunkTrianglesDrawn += (num2 - num) / 3;
 							ChunkDrawCalls++;
@@ -442,5 +406,4 @@ namespace Game
 			}
 		}
 	}
-
 }

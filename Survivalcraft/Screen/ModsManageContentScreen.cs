@@ -58,7 +58,7 @@ public class ModsManageContentScreen : Screen
 
     public string m_installPath = "app:/Mods";
 
-    public string[] m_commonPaths = new string[9]
+    public string[] m_commonPaths = new string[10]
     {
         "android:/Download",
         "android:/Android/data/com.tencent.mobileqq/Tencent/QQfile_recv",
@@ -68,7 +68,8 @@ public class ModsManageContentScreen : Screen
         "android:/Quark/Download",
         "android:/BaiduNetdisk",
         "android:/UCDownloads",
-        "android:/baidu/searchbox/downloads"
+        "android:/baidu/searchbox/downloads",
+        "android:/SurvivalCraft2.2/Mods"
     };
 
     public ModsManageContentScreen()
@@ -241,7 +242,7 @@ public class ModsManageContentScreen : Screen
                     }
                     catch (Exception e)
                     {
-                        Log.Warning(e.Message);
+                        Log.Warning(fName + ":" + e.Message);
                     }
                 }
                 else

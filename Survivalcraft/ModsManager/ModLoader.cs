@@ -1,5 +1,6 @@
 using Engine;
 using Engine.Graphics;
+using Engine.Media;
 using GameEntitySystem;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -228,6 +229,20 @@ namespace Game
         /// <param name="shader"></param>
         /// <param name="camera"></param>
         public virtual void SetShaderParameter(Shader shader, Camera camera)
+        {
+        }
+
+        /// <summary>
+        /// 更改模型着色器参数的值
+        /// </summary>
+        public virtual void ModelShaderParameter(Shader shader, Camera camera, List<SubsystemModelsRenderer.ModelData> modelsData, float? alphaThreshold)
+        {
+        }
+
+        /// <summary>
+        /// 天空额外绘制
+        /// </summary>
+        public virtual void SkyDrawExtra(SubsystemSky subsystemSky, Camera camera)
         {
         }
 

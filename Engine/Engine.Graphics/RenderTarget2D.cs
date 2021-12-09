@@ -12,10 +12,16 @@ namespace Engine.Graphics
 
 		internal int m_depthBuffer;
 
+		public Texture2D DepthBuffer
+        {
+			get;
+			set;
+		}
+
 		public DepthFormat DepthFormat
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public RenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
@@ -70,13 +76,23 @@ namespace Engine.Graphics
 			AllocateRenderTarget();
 		}
 
-		private void AllocateRenderTarget()
+        private void AllocateRenderTarget()
 		{
 			GL.GenFramebuffers(1, out m_frameBuffer);
 			GLWrapper.BindFramebuffer(m_frameBuffer);
 			GL.FramebufferTexture2D(All.Framebuffer, All.ColorAttachment0, All.Texture2D, m_texture, 0);
 			if (DepthFormat != 0)
 			{
+				// 新增：
+				// 这边用一个Texture2D代替原本不可读的RenderBuffer
+				// 可能会有点点问题……因为我并不熟悉GL，直接抄的，可能少了些什么处理
+				// 之所以在这里直接new是因为
+				// 除非在新建这个对象前就new好了DepthBuffer
+				// 不然DepthBuffer的HandleDeviceReset必定会晚于这个RenderTarget2D
+				// 这样就会绑定到空贴图
+				// （虽然没试过只是猜的）
+				DepthBuffer = new Texture2D(base.Width, base.Height, 1, ColorFormat.Depth);
+				GL.FramebufferTexture2D(All.Framebuffer, All.DepthAttachment, All.Texture2D, DepthBuffer.m_texture, 0);
 				GL.GenRenderbuffers(1, out m_depthBuffer);
 				GL.BindRenderbuffer(All.Renderbuffer, m_depthBuffer);
 				GL.RenderbufferStorage(All.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), base.Width, base.Height);
@@ -97,6 +113,11 @@ namespace Engine.Graphics
 
 		private void DeleteRenderTarget()
 		{
+			// 新增：
+			if (DepthBuffer != null)
+			{
+				DepthBuffer = null;
+			}
 			if (m_depthBuffer != 0)
 			{
 				GL.DeleteRenderbuffers(1, ref m_depthBuffer);

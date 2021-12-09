@@ -11,6 +11,8 @@ namespace Game
 
         public ButtonWidget m_languageButton;
 
+        public ButtonWidget m_displayLogButton;
+
         public ButtonWidget m_uiSizeButton;
 
         public ButtonWidget m_upsideDownButton;
@@ -33,6 +35,7 @@ namespace Game
             LoadContents(this, node);
             m_windowModeContainer = Children.Find<ContainerWidget>("WindowModeContainer");
             m_languageButton = Children.Find<ButtonWidget>("LanguageButton");
+            m_displayLogButton = Children.Find<ButtonWidget>("DisplayLogButton");
             m_windowModeButton = Children.Find<ButtonWidget>("WindowModeButton");
             m_uiSizeButton = Children.Find<ButtonWidget>("UiSizeButton");
             m_upsideDownButton = Children.Find<ButtonWidget>("UpsideDownButton");
@@ -82,6 +85,10 @@ namespace Game
                     }
                 }));
             }
+            if (m_displayLogButton.IsClicked)
+            {
+                SettingsManager.DisplayLog = !SettingsManager.DisplayLog;
+            }
             if (m_uiSizeButton.IsClicked)
             {
                 SettingsManager.GuiSize = (GuiSize)((int)(SettingsManager.GuiSize + 1) % EnumUtils.GetEnumValues(typeof(GuiSize)).Count);
@@ -113,6 +120,7 @@ namespace Game
             m_windowModeButton.Text = LanguageControl.Get("WindowMode", SettingsManager.WindowMode.ToString());
             m_uiSizeButton.Text = LanguageControl.Get("GuiSize", SettingsManager.GuiSize.ToString());
             m_languageButton.Text = LanguageControl.Get("Language","Name");
+            m_displayLogButton.Text = (SettingsManager.DisplayLog ? LanguageControl.Yes : LanguageControl.No);
             m_upsideDownButton.Text = (SettingsManager.UpsideDownLayout ? LanguageControl.Yes : LanguageControl.No);
             m_hideMoveLookPadsButton.Text = (SettingsManager.HideMoveLookPads ? LanguageControl.Yes : LanguageControl.No);
             m_showGuiInScreenshotsButton.Text = (SettingsManager.ShowGuiInScreenshots ? LanguageControl.Yes : LanguageControl.No);
