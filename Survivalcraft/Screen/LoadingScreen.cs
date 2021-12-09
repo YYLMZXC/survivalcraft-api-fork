@@ -206,10 +206,10 @@ namespace Game
                     }
                 }
             });
-            AddLoadAction(() => {
+            AddLoadAction(delegate {
                 ModsManager.ModListAllDo((modEntity) => { Info("等待剩下的任务完成:" + modEntity.modInfo?.PackageName); modEntity.Loader?.OnLoadingFinished(ModLoadingActoins); });
             });
-            AddLoadAction(() => {
+            AddLoadAction(delegate {
                 ScreensManager.SwitchScreen("MainMenu");
             });
         }
