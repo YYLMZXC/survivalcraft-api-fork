@@ -153,14 +153,16 @@ namespace Game
             {
                 if (Caches.TryGetValue(name, out var list))
                 {
+                    var toRemove = new List<object>();
                     foreach (var t in list)
                     {
                         if (t is IDisposable d)
                         {
                             d.Dispose();
                         }
+                        toRemove.Add(t);
                     }
-                    list.Remove(name);
+                    foreach (var t in toRemove) list.Remove(t);
                 }
             }
         }
