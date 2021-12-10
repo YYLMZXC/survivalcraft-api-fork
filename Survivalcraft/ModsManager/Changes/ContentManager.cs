@@ -162,6 +162,7 @@ namespace Game
                     }
                     list.Remove(name);
                 }
+                if (list.Count == 0) Caches.Remove(name);
             }
         }
 
