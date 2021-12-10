@@ -148,6 +148,7 @@ namespace Engine.Graphics
 				GL.BindRenderbuffer(All.Renderbuffer, m_depthBuffer);
 				GL.RenderbufferStorage(All.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), base.Width, base.Height);
 				GL.FramebufferRenderbuffer(All.Framebuffer, All.DepthAttachment, All.Renderbuffer, m_depthBuffer);
+				//GL.FramebufferTexture2D(All.Framebuffer, All.DepthAttachment, All.Texture2D, DepthBuffer.m_texture, 0); //ÐÂÔö
 				GL.FramebufferRenderbuffer(All.Framebuffer, All.StencilAttachment, All.Renderbuffer, 0);
 			}
 			else
