@@ -173,6 +173,13 @@ namespace Game
         }
 
         /// <summary>
+        /// 当方块被炸掉时执行
+        /// </summary>
+        public virtual void OnBlockExploded(SubsystemTerrain subsystemTerrain, int x, int y, int z, int value)
+        {
+        }
+
+        /// <summary>
         /// 当实体被添加时执行
         /// </summary>
         public virtual void OnEntityAdd(Entity entity)
