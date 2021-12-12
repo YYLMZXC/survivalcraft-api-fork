@@ -146,7 +146,8 @@ namespace Game
                 }
             }
             bool flag = ComponentPlayer != null && !ComponentPlayer.ComponentInput.IsControlledByTouch && m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative;
-            ModsManager.HookAction("OnMinerDig", modLoader => {
+            ModsManager.HookAction("OnMinerDig", modLoader =>
+            {
                 modLoader.OnMinerDig(this, raycastResult, ref m_digProgress, out bool flag2);
                 flag |= flag2;
                 return false;
@@ -274,7 +275,7 @@ namespace Game
         }
 
         public bool Interact(TerrainRaycastResult raycastResult)
-        {            
+        {
             SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(raycastResult.Value));
             for (int i = 0; i < blockBehaviors.Length; i++)
             {
@@ -319,7 +320,8 @@ namespace Game
             }
             bool flag;
 
-            ModsManager.HookAction("OnMinerHit", modLoader => {
+            ModsManager.HookAction("OnMinerHit", modLoader =>
+            {
                 modLoader.OnMinerHit(this, componentBody, hitPoint, hitDirection, ref num, ref num2, out bool Hitted);
                 return Hitted;
             });
@@ -342,7 +344,8 @@ namespace Game
             else if (ComponentCreature is ComponentPlayer)
             {
                 HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
-                ModsManager.HookAction("SetHitValueParticleSystem", modLoader => {
+                ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
+                {
                     modLoader.SetHitValueParticleSystem(particleSystem, false);
                     return false;
                 });
@@ -473,7 +476,8 @@ namespace Game
                 {
                     Inventory.AddSlotItems(Inventory.ActiveSlotIndex, num, slotCount);
                 }
-            }else
+            }
+            else
             {
                 Inventory.RemoveSlotItems(Inventory.ActiveSlotIndex, 1);
             }
@@ -544,7 +548,8 @@ namespace Game
                         {
                             string text2 = (0f - num2).ToString("0", CultureInfo.InvariantCulture);
                             HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + attacker.ComponentBody.Velocity, Color.White, text2);
-                            ModsManager.HookAction("SetHitValueParticleSystem", modLoader => {
+                            ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
+                            {
                                 modLoader.SetHitValueParticleSystem(particleSystem, true);
                                 return false;
                             });
@@ -625,7 +630,10 @@ namespace Game
                 : (IInventory)Entity.FindComponent<ComponentInventory>();
             AttackPower = valuesDictionary.GetValue<float>("AttackPower");
         }
-
+        public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)
+        {
+            valuesDictionary.SetValue("AttackPower", AttackPower);
+        }
         public static bool IsBlockPlacingAllowed(ComponentBody componentBody)
         {
             if (componentBody.StandingOnBody != null || componentBody.StandingOnValue.HasValue)
