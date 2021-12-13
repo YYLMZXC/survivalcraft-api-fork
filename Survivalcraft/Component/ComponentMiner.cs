@@ -231,13 +231,11 @@ namespace Game
                         }
                         if (!flag)
                         {
-                            /*
                             SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(placementData.Value));
                             for (int i = 0; i < blockBehaviors.Length; i++)
                             {
                                 blockBehaviors[i].OnItemPlaced(num2, num3, num4, ref placementData, value);
                             }
-                            */
                             m_subsystemTerrain.DestroyCell(0, num2, num3, num4, placementData.Value, noDrop: false, noParticleSystem: false);
                             m_subsystemAudio.PlaySound("Audio/BlockPlaced", 1f, 0f, new Vector3(placementData.CellFace.X, placementData.CellFace.Y, placementData.CellFace.Z), 5f, autoDelay: false);
                             Poke(forceRestart: false);

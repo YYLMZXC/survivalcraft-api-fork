@@ -19,7 +19,6 @@ namespace Engine.Audio
 
 		internal GCHandle m_gcHandle;
 #endif
-		public Stream SoundStream = null;
 
 		public int ChannelsCount
 		{
@@ -44,7 +43,7 @@ namespace Engine.Audio
 			get;
 			internal set;
 		}
-		public string cachePath;
+
 #if desktop
 		public SoundBuffer(byte[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
 		{

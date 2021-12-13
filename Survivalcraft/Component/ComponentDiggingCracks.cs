@@ -71,7 +71,7 @@ namespace Game
 
 		public int textureSlotSize;
 
-		public static Dictionary<int, RenderTarget2D[]> CrackTextures = new Dictionary<int, RenderTarget2D[]>();
+		public Dictionary<int, RenderTarget2D[]> CrackTextures = new Dictionary<int, RenderTarget2D[]>();
 
 		public void Draw(Camera camera, int drawOrder)
 		{

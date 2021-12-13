@@ -2130,9 +2130,6 @@
     <Compile Include="..\Survivalcraft\IContentReader\SoundBufferReader.cs">
       <Link>IContentReader\SoundBufferReader.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\IContentReader\SoundReader.cs">
-      <Link>IContentReader\SoundReader.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\IContentReader\StreamingSourceReader.cs">
       <Link>IContentReader\StreamingSourceReader.cs</Link>
     </Compile>

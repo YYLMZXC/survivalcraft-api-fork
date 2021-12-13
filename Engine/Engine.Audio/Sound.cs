@@ -27,6 +27,7 @@ namespace Engine.Audio
 				throw new ArgumentNullException(nameof(soundBuffer));
 			}
 			m_soundBuffer = soundBuffer;
+			int num = ++m_soundBuffer.UseCount;
 		}
 
 		public Sound(SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
@@ -68,7 +69,7 @@ namespace Engine.Audio
 		}
 
 		internal override void InternalPlay()
-		{			
+		{
 			AL.Source(m_source, ALSourceb.Looping, m_isLooped);
 			AL.SourcePlay(m_source);
 			Mixer.CheckALError();

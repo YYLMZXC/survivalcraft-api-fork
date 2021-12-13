@@ -28,7 +28,6 @@ namespace Game
             readers.Add(new IContentReader.SubtextureReader());
             readers.Add(new IContentReader.Texture2DReader());
             readers.Add(new IContentReader.XmlReader());
-            readers.Add(new IContentReader.SoundReader());
             for (int i = 0; i < readers.Count; i++)
             {
                 ContentManager.ReaderList.Add(readers[i].Type, readers[i]);
