@@ -17,13 +17,12 @@ namespace Game
                 {
                     try
                     {
-                        SoundBuffer soundBuffer = ContentManager.Get<SoundBuffer>(name, ".wav");
-                        if (soundBuffer == null) soundBuffer = ContentManager.Get<SoundBuffer>(name, ".ogg");
-                        Sound sound = new Sound(soundBuffer, num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true);
-                        sound.Play();
+                        SoundBuffer sound = ContentManager.Get<SoundBuffer>(name);
+                        new Sound(sound, 1f, ToEnginePitch(pitch), pan, false, true).Play();
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        Log.Error(e.Message);
                     }
                 }
             }

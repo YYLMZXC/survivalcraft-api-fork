@@ -157,7 +157,7 @@ namespace Engine.Audio
 		{
 			if (m_audioTrack != null)
 			{
-				CalculateStereoVolumes(volume * Mixer.MasterVolume, Pan, out float left, out float right);//º∆À„◊Û”“…˘µ¿
+				CalculateStereoVolumes(volume * Mixer.MasterVolume, Pan, out float left, out float right);
 				Mixer.CheckTrackStatus(m_audioTrack.SetStereoVolume(left, right));
 			}
 		}

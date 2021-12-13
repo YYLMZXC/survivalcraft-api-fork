@@ -35,7 +35,6 @@ namespace Engine.Audio
 			ChannelOut channelConfig = (streamingSource.ChannelsCount == 1) ? ChannelOut.FrontLeft : ChannelOut.Stereo;
 			int minBufferSize = AudioTrack.GetMinBufferSize(streamingSource.SamplingFrequency, channelConfig, Encoding.Pcm16bit);
 			int bufferSizeInBytes = MathUtils.Max(CalculateBufferSize(m_bufferDuration), minBufferSize);
-			//m_audioTrack = new AudioTrack(Stream.Music, streamingSource.SamplingFrequency, channelConfig, Encoding.Pcm16bit, bufferSizeInBytes, AudioTrackMode.Stream);			
 			AudioManager audioManager =(AudioManager) EngineActivity.m_activity.GetSystemService(Android.Content.Context.AudioService);
 			m_audioTrack = new AudioTrack(
 				new AudioAttributes.Builder().SetUsage(AudioUsageKind.Game).SetContentType(AudioContentType.Music).Build(),

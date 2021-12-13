@@ -96,13 +96,13 @@ namespace Engine.Audio
 		{
 			foreach (BaseSound sound in m_sounds)
 			{
-				sound.InternalSetVolume(sound.Volume);
+				sound.InternalSetVolume(volume);
 			}
 		}
 
 		internal static void CheckTrackStatus(TrackStatus status)
 		{
-			if (status != 0)
+			if (status != TrackStatus.Success)
 			{
 				throw new InvalidOperationException("AudioTrack error " + status.ToString() + ".");
 			}
