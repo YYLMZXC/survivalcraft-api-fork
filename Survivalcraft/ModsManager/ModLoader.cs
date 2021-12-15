@@ -306,11 +306,34 @@ namespace Game
         }
 
         /// <summary>
-        /// 区块地形生成时
+        /// 区块地形构造第一步
         /// 注意此方法运行在子线程中
         /// </summary>
-        /// <param name="chunk"></param>
-        public virtual void OnTerrainContentsGenerated(TerrainChunk chunk)
+        public virtual void GenerateChunkContentsPass1(TerrainChunk chunk)
+        {
+        }
+
+        /// <summary>
+        /// 区块地形构造第二步
+        /// 注意此方法运行在子线程中
+        /// </summary>
+        public virtual void GenerateChunkContentsPass2(TerrainChunk chunk)
+        {
+        }
+
+        /// <summary>
+        /// 区块地形构造第三步
+        /// 注意此方法运行在子线程中
+        /// </summary>
+        public virtual void GenerateChunkContentsPass3(TerrainChunk chunk)
+        {
+        }
+
+        /// <summary>
+        /// 区块地形构造第四步
+        /// 注意此方法运行在子线程中
+        /// </summary>
+        public virtual void GenerateChunkContentsPass4(TerrainChunk chunk)
         {
         }
 

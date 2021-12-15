@@ -713,6 +713,7 @@ namespace Game
 					{
 						double realTime17 = Time.RealTime;
 						m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass1(chunk);
+						ModsManager.HookAction("GenerateChunkContentsPass1", (modLoader) => { modLoader.GenerateChunkContentsPass1(chunk); return true; });
 						chunk.ThreadState = TerrainChunkState.InvalidContents2;
 						chunk.WasUpgraded = true;
 						double realTime18 = Time.RealTime;
@@ -724,6 +725,7 @@ namespace Game
 					{
 						double realTime15 = Time.RealTime;
 						m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass2(chunk);
+						ModsManager.HookAction("GenerateChunkContentsPass2", (modLoader) => { modLoader.GenerateChunkContentsPass2(chunk); return true; });
 						chunk.ThreadState = TerrainChunkState.InvalidContents3;
 						chunk.WasUpgraded = true;
 						double realTime16 = Time.RealTime;
@@ -735,19 +737,19 @@ namespace Game
 					{
 						double realTime13 = Time.RealTime;
 						m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass3(chunk);
+						ModsManager.HookAction("GenerateChunkContentsPass3", (modLoader) => { modLoader.GenerateChunkContentsPass3(chunk); return true; });
 						chunk.ThreadState = TerrainChunkState.InvalidContents4;
 						chunk.WasUpgraded = true;
 						double realTime14 = Time.RealTime;
 						m_statistics.ContentsCount3++;
 						m_statistics.ContentsTime3 += realTime14 - realTime13;
-						ModsManager.HookAction("OnTerrainContentsGenerated", (modLoader) => { modLoader.OnTerrainContentsGenerated(chunk); return true; });
-
 						break;
 					}
 				case TerrainChunkState.InvalidContents4:
 					{
 						double realTime7 = Time.RealTime;
 						m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass4(chunk);
+						ModsManager.HookAction("GenerateChunkContentsPass4", (modLoader) => { modLoader.GenerateChunkContentsPass4(chunk); return true; });
 						chunk.ThreadState = TerrainChunkState.InvalidLight;
 						chunk.WasUpgraded = true;
 						double realTime8 = Time.RealTime;
