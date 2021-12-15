@@ -1734,9 +1734,6 @@
     <Compile Include="..\Survivalcraft\Game\PressurePlateElectricElement.cs">
       <Link>Game\PressurePlateElectricElement.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Game\PrimitiveRender.cs">
-      <Link>Game\PrimitiveRender.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Game\Profiler.cs">
       <Link>Game\Profiler.cs</Link>
     </Compile>
