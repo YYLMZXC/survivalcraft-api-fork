@@ -761,7 +761,6 @@ namespace Game
 					{
 						double realTime3 = Time.RealTime;
 						GenerateChunkSunLightAndHeight(chunk, skylightValue);
-						ModsManager.HookAction("GenerateChunkContentsPass5", (modLoader) => { modLoader.GenerateChunkContentsPass5(chunk, skylightValue); return true; });
 						chunk.ThreadState = TerrainChunkState.InvalidPropagatedLight;
 						chunk.WasUpgraded = true;
 						chunk.LightPropagationMask = 0;

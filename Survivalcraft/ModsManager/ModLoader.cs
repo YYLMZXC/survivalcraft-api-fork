@@ -372,13 +372,6 @@ namespace Game
         }
 
         /// <summary>
-        /// 构造区块太阳光和高度后执行
-        /// </summary>
-        public virtual void GenerateChunkContentsPass5(TerrainChunk chunk, int skylightValue)
-        {
-        }
-
-        /// <summary>
         /// 子系统帧更新时执行
         /// </summary>
         public virtual void SubsystemUpdate(float dt)
