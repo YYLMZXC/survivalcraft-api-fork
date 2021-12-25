@@ -1,4 +1,4 @@
-using Engine.Media;
+锘縰sing Engine.Media;
 using OpenTK.Graphics.ES20;
 using System;
 using System.IO;
@@ -11,12 +11,6 @@ namespace Engine.Graphics
 		public int m_frameBuffer;
 
 		public int m_depthBuffer;
-
-		public Texture2D DepthBuffer 
-		{
-			get;
-			set;
-		}
 
 		public DepthFormat DepthFormat
 		{
@@ -135,20 +129,10 @@ namespace Engine.Graphics
 			GL.FramebufferTexture2D(All.Framebuffer, All.ColorAttachment0, All.Texture2D, m_texture, 0);
 			if (DepthFormat != 0)
 			{
-				// 新增：
-				// 这边用一个Texture2D代替原本不可读的RenderBuffer
-				// 可能会有点点问题……因为我并不熟悉GL，直接抄的，可能少了些什么处理
-				// 之所以在这里直接new是因为
-				// 除非在新建这个对象前就new好了DepthBuffer
-				// 不然DepthBuffer的HandleDeviceReset必定会晚于这个RenderTarget2D
-				// 这样就会绑定到空贴图
-				DepthBuffer = new Texture2D(base.Width, base.Height, 1, ColorFormat.Depth);
-				GL.FramebufferTexture2D(All.Framebuffer, All.DepthAttachment, All.Texture2D, DepthBuffer.m_texture, 0);
 				GL.GenRenderbuffers(1, out m_depthBuffer);
 				GL.BindRenderbuffer(All.Renderbuffer, m_depthBuffer);
 				GL.RenderbufferStorage(All.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), base.Width, base.Height);
 				GL.FramebufferRenderbuffer(All.Framebuffer, All.DepthAttachment, All.Renderbuffer, m_depthBuffer);
-				//GL.FramebufferTexture2D(All.Framebuffer, All.DepthAttachment, All.Texture2D, DepthBuffer.m_texture, 0); //新增
 				GL.FramebufferRenderbuffer(All.Framebuffer, All.StencilAttachment, All.Renderbuffer, 0);
 			}
 			else
@@ -165,11 +149,6 @@ namespace Engine.Graphics
 
 		public void DeleteRenderTarget()
 		{
-			// 新增
-			if (DepthBuffer != null)
-			{
-				DepthBuffer = null;
-			}
 			if (m_depthBuffer != 0)
 			{
 				GL.DeleteRenderbuffers(1, ref m_depthBuffer);
