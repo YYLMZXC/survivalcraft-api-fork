@@ -42,8 +42,6 @@ namespace Game
 
         public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
 
-        public PrimitiveRender PrimitiveRender = new PrimitiveRender();
-
         public static UnlitShader UnlitShader = new UnlitShader(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
        
         public static UnlitShader UnlitShaderAlphaTest = new UnlitShader(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: true);
@@ -150,8 +148,7 @@ namespace Game
                         m_drawBlockEnvironmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
                         m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(num5);
                         block.DrawBlock(m_primitivesRenderer, m_value, Color.White, block.GetFirstPersonScale(m_value), ref matrix, m_drawBlockEnvironmentData);
-                        //m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
-                        PrimitiveRender.Flush(m_primitivesRenderer, camera.ViewProjectionMatrix);
+                        m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
                     }
                     else
                     {
@@ -245,8 +242,6 @@ namespace Game
             m_componentRider = Entity.FindComponent<ComponentRider>(throwOnError: true);
             m_componentMiner = Entity.FindComponent<ComponentMiner>(throwOnError: true);
             m_handModel = ContentManager.Get<Model>(valuesDictionary.GetValue<string>("HandModelName"));
-            PrimitiveRender.Shader = UnlitShader;
-            PrimitiveRender.ShaderAlphaTest = UnlitShaderAlphaTest;
         }
     }
 }

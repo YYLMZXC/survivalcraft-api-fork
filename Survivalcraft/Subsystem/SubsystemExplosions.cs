@@ -281,6 +281,7 @@ namespace Game
 
         public void SimulateExplosion(int x, int y, int z, float pressure, bool isIncendiary)
         {
+            int explosionPointValue = m_subsystemTerrain.Terrain.GetCellValue(x, y, z);
             float num = MathUtils.Max(0.13f * MathUtils.Pow(pressure, 0.5f), 1f);
             m_subsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(0));
             var processed = new SparseSpatialArray<bool>(x, y, z, outside: true);
@@ -290,6 +291,10 @@ namespace Game
             TryAddPoint(x, y, z, -1, pressure, isIncendiary, list, processed);
             int num2 = 0;
             int num3 = 0;
+            if (Terrain.ExtractContents(explosionPointValue) != 0)
+            {
+                ModsManager.HookAction("OnBlockExploded", loader => { loader.OnBlockExploded(m_subsystemTerrain, x, y, z, explosionPointValue); return false; });
+            }
             while (list.Count > 0 || list2.Count > 0)
             {
                 num2 += list.Count;
@@ -385,6 +390,7 @@ namespace Game
                         bool flag2 = false;
                         var list = new List<BlockDropValue>();
                         block.GetDropValues(m_subsystemTerrain, cellValue, newValue, 0, list, out bool _);
+                        ModsManager.HookAction("OnBlockExploded", loader => { loader.OnBlockExploded(m_subsystemTerrain, x, y, z, cellValue); return false; });
                         if (list.Count == 0)
                         {
                             list.Add(new BlockDropValue

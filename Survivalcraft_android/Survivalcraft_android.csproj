@@ -29,6 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AndroidKeyStore>false</AndroidKeyStore>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>portable</DebugType>
@@ -1733,9 +1734,6 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\PressurePlateElectricElement.cs">
       <Link>Game\PressurePlateElectricElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Game\PrimitiveRender.cs">
-      <Link>Game\PrimitiveRender.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\Profiler.cs">
       <Link>Game\Profiler.cs</Link>
