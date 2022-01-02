@@ -13,6 +13,12 @@ namespace Game
             0
         };
 
+		private int[] FPSString = new int[2]
+		{
+			60,
+			30
+		};
+
         public static List<int> m_visibilityRanges = new List<int>
         {
             32,
@@ -170,7 +176,7 @@ namespace Game
             m_skyRenderingModeButton.Text = LanguageControl.Get("SkyRenderingMode", SettingsManager.SkyRenderingMode.ToString());
             m_objectShadowsButton.Text = SettingsManager.ObjectsShadowsEnabled ? LanguageControl.Enable : LanguageControl.Disable;
             m_framerateLimitSlider.Value = (m_presentationIntervals.IndexOf(SettingsManager.PresentationInterval) >= 0) ? m_presentationIntervals.IndexOf(SettingsManager.PresentationInterval) : (m_presentationIntervals.Count - 1);
-            m_framerateLimitSlider.Text = (SettingsManager.PresentationInterval != 0) ? string.Format(LanguageControl.Get(fName, 8), SettingsManager.PresentationInterval) : LanguageControl.Get(fName, 9);
+            m_framerateLimitSlider.Text = (SettingsManager.PresentationInterval != 0) ? string.Format(LanguageControl.Get(fName, 8), FPSString[SettingsManager.PresentationInterval - 1, 0]) : LanguageControl.Get(fName, 9);
             m_displayFpsCounterButton.Text = (SettingsManager.DisplayFpsCounter ? LanguageControl.Yes : LanguageControl.No);
             m_displayFpsRibbonButton.Text = (SettingsManager.DisplayFpsRibbon ? LanguageControl.Yes : LanguageControl.No);
             if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
