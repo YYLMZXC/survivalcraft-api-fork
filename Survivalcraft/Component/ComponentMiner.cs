@@ -604,7 +604,6 @@ namespace Game
                     componentLocomotion.StunTime = MathUtils.Max(componentLocomotion.StunTime, x);
                 }
             }
-
         }
 
         public void Update(float dt)

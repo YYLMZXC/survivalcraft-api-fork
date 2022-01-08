@@ -18,7 +18,7 @@ namespace Game
 
         public override bool UsesMovementControls => true;
 
-        public override bool IsEntityControlEnabled => false;
+        public override bool IsEntityControlEnabled => true;
 
         public DebugCamera(GameWidget gameWidget)
             : base(gameWidget)
@@ -36,23 +36,13 @@ namespace Game
         {
             dt = MathUtils.Min(dt, 0.1f);
             Vector3 zero = Vector3.Zero;
-            if (Keyboard.IsKeyDown(Key.A))
+            Vector2 vector = Vector2.Zero;
+            ComponentInput componentInput = base.GameWidget.PlayerData.ComponentPlayer?.ComponentInput;
+            if (componentInput != null)
             {
-                zero.X = -1f;
+                zero = componentInput.PlayerInput.CameraMove * new Vector3(1f, 0f, 1f);
+                vector = componentInput.PlayerInput.CameraLook;
             }
-            if (Keyboard.IsKeyDown(Key.D))
-            {
-                zero.X = 1f;
-            }
-            if (Keyboard.IsKeyDown(Key.W))
-            {
-                zero.Z = 1f;
-            }
-            if (Keyboard.IsKeyDown(Key.S))
-            {
-                zero.Z = -1f;
-            }
-            Vector2 vector = 0.03f * new Vector2(Mouse.MouseMovement.X, -Mouse.MouseMovement.Y);
             bool num = Keyboard.IsKeyDown(Key.Shift);
             bool flag = Keyboard.IsKeyDown(Key.Control);
             Vector3 direction = m_direction;
