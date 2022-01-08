@@ -23,6 +23,8 @@ namespace Game
             int num = Terrain.ToCell(position.X);
             int num2 = Terrain.ToCell(position.Y);
             int num3 = Terrain.ToCell(position.Z);
+            //int value = terrain.Terrain.GetCellValue(num, num2, num3);
+            //ModsManager.HookAction("ChangeBlockDebrisParticleColor", loader => { loader.ChangeBlockDebrisParticleColor(color, value, num, num2, num3, terrain, out color); return false; });
             int x = 0;
             x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num + 1, num2, num3));
             x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num - 1, num2, num3));

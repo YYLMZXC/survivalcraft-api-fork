@@ -60,6 +60,7 @@ namespace Game
             float s = LightingManager.LightIntensityByLightValueAndFace[num + 16 * CellFace.OppositeFace(face)];
             Color color = BlockColorsMap.IvyColorsMap.Lookup(generator.Terrain, x, y, z) * s;
             color.A = byte.MaxValue;
+            //ModsManager.HookAction("ChangePlacedBlockColor", loader => { loader.ChangePlacedBlockColor(color, value, x, y, z, out color); return false; });
             switch (face)
             {
                 case 0:
