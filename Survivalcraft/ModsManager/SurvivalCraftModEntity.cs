@@ -7,10 +7,10 @@ using System.IO;
 using System.Reflection;
 namespace Game
 {
-    public class SurvivalCrafModEntity : ModEntity
+    public class SurvivalCraftModEntity : ModEntity
     {
 
-        public SurvivalCrafModEntity()
+        public SurvivalCraftModEntity()
         {
             List<IContentReader.IContentReader> readers = new List<IContentReader.IContentReader>();
             readers.Add(new IContentReader.BitmapFontReader());

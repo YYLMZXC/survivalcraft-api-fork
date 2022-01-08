@@ -188,7 +188,7 @@ public class ManageContentScreen : Screen
             if (selectedItem.Type == ExternalContentType.Mod)
             {
                 m_deleteButton.Text = ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo) ? LanguageControl.Enable : LanguageControl.Disable;
-                m_deleteButton.IsEnabled = !(selectedItem.ModEntity is SurvivalCrafModEntity || selectedItem.ModEntity is FastDebugModEntity);
+                m_deleteButton.IsEnabled = !(selectedItem.ModEntity is SurvivalCraftModEntity || selectedItem.ModEntity is FastDebugModEntity);
             }
             else
             {

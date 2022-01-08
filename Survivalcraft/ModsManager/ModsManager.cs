@@ -55,7 +55,7 @@ public static class ModsManager
 #endif
     public static string ModsPath = ExternelPath + "/Mods",
                          path;//移动端mods数据文件夹
-    internal static ModEntity SurvivalCrafModEntity;
+    internal static ModEntity SurvivalCraftModEntity;
     internal static bool ConfigLoaded = false;
 
     public class ModSettings
@@ -333,9 +333,9 @@ public static class ModsManager
         ModListAll.Clear();
         ModList.Clear();
         ModLoaders.Clear();
-        SurvivalCrafModEntity = new SurvivalCrafModEntity();
+        SurvivalCraftModEntity = new SurvivalCraftModEntity();
         ModEntity FastDebug = new FastDebugModEntity();
-        ModList.Add(SurvivalCrafModEntity);
+        ModList.Add(SurvivalCraftModEntity);
         ModList.Add(FastDebug);
         GetScmods(ModsPath);
         ModListAll.AddRange(ModList);
@@ -348,7 +348,7 @@ public static class ModsManager
         {
             ModInfo modInfo = modEntity1.modInfo;
             ModInfo disabledmod = ToDisable.Find(l => l.PackageName == modInfo.PackageName);
-            if (disabledmod != null && disabledmod.PackageName != SurvivalCrafModEntity.modInfo.PackageName && disabledmod.PackageName != FastDebug.modInfo.PackageName)
+            if (disabledmod != null && disabledmod.PackageName != SurvivalCraftModEntity.modInfo.PackageName && disabledmod.PackageName != FastDebug.modInfo.PackageName)
             {
                 ToDisable.Add(modInfo);
                 ToRemove.Add(modEntity1);
