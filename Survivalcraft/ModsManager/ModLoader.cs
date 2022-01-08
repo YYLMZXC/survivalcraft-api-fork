@@ -25,14 +25,13 @@ namespace Game
         {
         }
 
-        /// <summary>
-        /// 当人物击打时执行
-        /// </summary>
-        public virtual void OnMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection, ref float AttackPower, ref float Probability, out bool Hitted)
+        /// <param name="attackPower">伤害值</param>
+        /// <param name="playerProbability">玩家命中率</param>
+        /// <param name="creatureProbability">生物命中率</param>
+        public virtual void OnMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, ref float playerProbability, ref float creatureProbability, out bool Hitted)
         {
             Hitted = false;
         }
-
 
         /// <summary>
         /// 当人物挖掘时执行
@@ -44,6 +43,13 @@ namespace Game
         {
             Digged = false;
             return false;
+        }
+
+        /// <summary>
+        /// 更改击退和晕眩效果
+        /// </summary>
+        public virtual void AttackPowerParameter(ref float impulseFactor, ref float stunTimeFactor)
+        {
         }
 
         /// <summary>

@@ -112,6 +112,8 @@ namespace Game
             }
         }
 
+        public bool m_canSqueezeBlock = true;
+
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
         public virtual void Poke(bool forceRestart)
@@ -208,6 +210,10 @@ namespace Game
                     int num3 = placementData.CellFace.Y + point.Y;
                     int num4 = placementData.CellFace.Z + point.Z;
                     bool pass = false;
+                    if (!m_canSqueezeBlock)
+                    {
+                        if (m_subsystemTerrain.Terrain.GetCellContents(num2, num3, num4) != 0) return false;
+                    }
                     ModsManager.HookAction("JumpToPlace", loader => { loader.JumpToPlace(out pass); return true; });
                     if (num3 > 0 && num3 < 255 && (pass || (IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Harmless)))
                     {
@@ -307,7 +313,8 @@ namespace Game
                 return;
             }
             float num = 0f;//伤害
-            float num2 = 1f;//命中率
+            float num2 = 1f;//玩家命中率
+            float num3 = 1f;//生物命中率
             if (ActiveBlockValue != 0)
             {
                 num = block.GetMeleePower(ActiveBlockValue) * AttackPower * m_random.Float(0.8f, 1.2f);
@@ -322,7 +329,7 @@ namespace Game
 
             ModsManager.HookAction("OnMinerHit", modLoader =>
             {
-                modLoader.OnMinerHit(this, componentBody, hitPoint, hitDirection, ref num, ref num2, out bool Hitted);
+                modLoader.OnMinerHit(this, componentBody, hitPoint, hitDirection, ref num, ref num2, ref num3, out bool Hitted);
                 return Hitted;
             });
 
@@ -334,7 +341,7 @@ namespace Game
             }
             else
             {
-                flag = true;
+                flag = m_random.Bool(num3);
             }
             if (flag)
             {
@@ -582,6 +589,11 @@ namespace Game
             {
                 num4 = 2f;
                 x = 0.2f;
+                ModsManager.HookAction("AttackPowerParameter", modloader =>
+                {
+                    modloader.AttackPowerParameter(ref num4, ref x);
+                    return false;
+                });
             }
             if (num4 > 0f)
             {
