@@ -70,7 +70,7 @@ namespace Game
                     {
                         if (!ModsManager.IsAndroid)
                         {
-                            includeText += lines[l].Replace("highp", "") + "\n";
+                            includeText += lines[l].Replace("highp", "").Replace("lowp","").Replace("mediump","") + "\n";
                         }
                         else
                         {
