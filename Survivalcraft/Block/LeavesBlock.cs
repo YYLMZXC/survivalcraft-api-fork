@@ -32,6 +32,11 @@ namespace Game
             Color color = m_blockColorsMap.Lookup(subsystemTerrain.Terrain, Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
             return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, color, GetFaceTextureSlot(4, value));
         }
+        public override bool ShouldGenerateFace(SubsystemTerrain subsystemTerrain, int face, int value, int neighborValue)
+        {
+            if (Terrain.ExtractContents(neighborValue) == BlockIndex) return false;
+            return base.ShouldGenerateFace(subsystemTerrain, face, value, neighborValue);
+        }
 
         public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)
         {

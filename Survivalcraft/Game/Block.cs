@@ -615,8 +615,5 @@ namespace Game
             nearestBox = array[nearestBoxIndex];
             return result;
         }
-        public virtual void DrawGeometry(int x,int y,int z) { 
-        
-        }
     }
 }
