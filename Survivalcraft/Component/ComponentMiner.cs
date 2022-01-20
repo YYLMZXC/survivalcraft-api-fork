@@ -150,9 +150,7 @@ namespace Game
             bool flag = ComponentPlayer != null && !ComponentPlayer.ComponentInput.IsControlledByTouch && m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative;
             ModsManager.HookAction("OnMinerDig", modLoader =>
             {
-                modLoader.OnMinerDig(this, raycastResult, ref m_digProgress, out bool flag2);
-                flag |= flag2;
-                return false;
+                return modLoader.OnMinerDig(this, raycastResult, ref m_digProgress);
             });
             if (flag || (m_lastPokingPhase <= 0.5f && PokingPhase > 0.5f))
             {
@@ -312,9 +310,9 @@ namespace Game
                 Poke(forceRestart: false);
                 return;
             }
-            float num = 0f;//伤害
-            float num2 = 1f;//玩家命中率
-            float num3 = 1f;//生物命中率
+            float num = 0f;
+            float num2 = 1f;
+            float num3 = 1f;
             if (ActiveBlockValue != 0)
             {
                 num = block.GetMeleePower(ActiveBlockValue) * AttackPower * m_random.Float(0.8f, 1.2f);
@@ -329,8 +327,7 @@ namespace Game
 
             ModsManager.HookAction("OnMinerHit", modLoader =>
             {
-                modLoader.OnMinerHit(this, componentBody, hitPoint, hitDirection, ref num, ref num2, ref num3, out bool Hitted);
-                return Hitted;
+                return modLoader.OnMinerHit(this, componentBody, hitPoint, hitDirection, ref num, ref num2, ref num3);
             });
 
             if (ComponentPlayer != null)

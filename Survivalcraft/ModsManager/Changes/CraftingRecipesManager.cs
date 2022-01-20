@@ -44,15 +44,9 @@ namespace Game
                 }
                 return;
             }
-            bool flag = false;
             ModsManager.HookAction("OnCraftingRecipeDecode", modLoader => {
-                modLoader.OnCraftingRecipeDecode(m_recipes, item, out flag);
-                return flag;
+                return modLoader.OnCraftingRecipeDecode(m_recipes, item);
             });
-            if (flag == false) {
-                CraftingRecipe craftingRecipe = DecodeElementToCraftingRecipe(item);
-                m_recipes.Add(craftingRecipe);
-            }
         }
 
         public static CraftingRecipe DecodeElementToCraftingRecipe(XElement item, int HorizontalLen=3)
@@ -191,14 +185,13 @@ namespace Game
 
         public static void DecodeIngredient(string ingredient, out string craftingId, out int? data)
         {
-            bool flag2 = false;
-            string craftingId_R=string.Empty;
-            int? data_R = null;
+            string c1 = null;
+            int? d1 = null;
             ModsManager.HookAction("DecodeIngredient", modLoader => {
-                modLoader.DecodeIngredient(ingredient, out craftingId_R, out data_R, out flag2);
-                return flag2;
+                return modLoader.DecodeIngredient(ingredient, out c1, out d1);
             });
-            if (flag2) { craftingId = craftingId_R; data = data_R; return; } 
+            craftingId = c1;
+            data = d1;
             string[] array = ingredient.Split(new char[] { ':' }, StringSplitOptions.None);
             craftingId = array[0];
             data = ((array.Length >= 2) ? new int?(int.Parse(array[1], CultureInfo.InvariantCulture)) : null);
@@ -206,43 +199,11 @@ namespace Game
 
         public static bool MatchRecipe(string[] requiredIngredients, string[] actualIngredients)
         {
-            bool flag2 = false;
-            bool result = false;
+            bool flag = false;
             ModsManager.HookAction("MatchRecipe", modLoader => {
-                result = modLoader.MatchRecipe(requiredIngredients, actualIngredients, out flag2);
-                return flag2;
+                return flag |= !(modLoader.MatchRecipe(requiredIngredients, actualIngredients));
             });
-            if (flag2) return result;
-            if (actualIngredients.Length > 9) return false;
-            string[] array = new string[9];
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = -3; j <= 3; j++)
-                {
-                    for (int k = -3; k <= 3; k++)
-                    {
-                        bool flip = (i != 0) ? true : false;
-                        if (!TransformRecipe(array, requiredIngredients, k, j, flip))
-                        {
-                            continue;
-                        }
-                        bool flag = true;
-                        for (int l = 0; l < 9; l++)
-                        {
-                            if ( l==actualIngredients.Length || !CompareIngredients(array[l], actualIngredients[l]))
-                            {
-                                flag = false;
-                                break;
-                            }
-                        }
-                        if (flag)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
+            return flag;
         }
 
         public static bool TransformRecipe(string[] transformedIngredients, string[] ingredients, int shiftX, int shiftY, bool flip)

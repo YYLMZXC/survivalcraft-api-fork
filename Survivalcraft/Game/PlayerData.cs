@@ -741,7 +741,8 @@ namespace Game
             LastSpawnTime = m_subsystemGameInfo.TotalElapsedGameTime;
             int num = ++SpawnsCount;
             ModsManager.HookAction("OnPlayerSpawned", modLoader => {
-                return modLoader.OnPlayerSpawned(spawnMode, entity2.FindComponent<ComponentPlayer>(), position);
+                 modLoader.OnPlayerSpawned(spawnMode, entity2.FindComponent<ComponentPlayer>(), position);
+                return true;
             });
         }
 

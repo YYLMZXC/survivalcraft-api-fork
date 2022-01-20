@@ -125,7 +125,7 @@ namespace Game
                         Image.Save(image, stream, ImageFileFormat.Jpg, saveAlpha: false);
                     }
                 }
-                ModsManager.HookAction("OnCapture", loader => { loader.OnCapture(); return false; });
+                ModsManager.HookAction("OnCapture", loader => { loader.OnCapture(); return true; });
             }
         }
     }

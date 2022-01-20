@@ -40,7 +40,6 @@ namespace Game
                 return;
             }
             else fileStream = File.OpenRead(path);
-            Exception e = default;
             ThreadPool.QueueUserWorkItem(delegate
             {
                 try
@@ -62,7 +61,6 @@ namespace Game
         public void List(string path, CancellableProgress progress, Action<ExternalContentEntry> success, Action<Exception> failure)
         {
             ExternalContentEntry entry = default;
-            Exception e = default;
             ThreadPool.QueueUserWorkItem(delegate
             {
                 try

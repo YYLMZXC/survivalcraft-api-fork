@@ -59,7 +59,7 @@ namespace Game
 
             ModsManager.HookAction("CallNearbyCreaturesHelp", (modLoader) => {
                 modLoader.CallNearbyCreaturesHelp(this, target, maxRange, maxChaseTime, isPersistent);
-                return false;
+                return true;
             });
 
         }

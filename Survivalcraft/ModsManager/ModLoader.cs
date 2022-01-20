@@ -25,31 +25,41 @@ namespace Game
         {
         }
 
-        /// <param name="attackPower">伤害值</param>
-        /// <param name="playerProbability">玩家命中率</param>
-        /// <param name="creatureProbability">生物命中率</param>
-        public virtual void OnMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, ref float playerProbability, ref float creatureProbability, out bool Hitted)
+        /// <summary>
+        /// 实体打其它实体时执行
+        /// </summary>
+        /// <param name="miner">发出者</param>
+        /// <param name="componentBody">目标实体</param>
+        /// <param name="hitPoint">打击点</param>
+        /// <param name="hitDirection">打击方向</param>
+        /// <param name="attackPower">攻击力</param>
+        /// <param name="playerProbability">(攻击者是玩家)武器攻击的命中率</param>
+        /// <param name="creatureProbability">(攻击者不是玩家)其它实体攻击命中率</param>
+        /// <returns>true 移交 false 不移交 下一个Mod处理</returns>
+        public virtual bool OnMinerHit(ComponentMiner miner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, ref float playerProbability, ref float creatureProbability)
         {
-            Hitted = false;
+            return true;
         }
-
         /// <summary>
         /// 当人物挖掘时执行
         /// </summary>
-        /// <param name="miner"></param>
-        /// <param name="raycastResult"></param>
-        /// <returns></returns>
-        public virtual bool OnMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult, ref float DigProgress, out bool Digged)
+        /// <param name="miner">发出者</param>
+        /// <param name="raycastResult">挖掘目标</param>
+        /// <param name="DigProgress">挖掘进度</param>
+        /// <returns>true 移交 false 不移交 下一个Mod处理</returns>
+        public virtual bool OnMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult, ref float DigProgress)
         {
-            Digged = false;
-            return false;
+            return true;
         }
 
         /// <summary>
         /// 更改击退和晕眩效果
         /// </summary>
+        /// <param name="impulseFactor">击退系数，越大越远，所有Mod共享参数</param>
+        /// <param name="stunTimeFactor">眩晕系数，越大越长，所有Mod共享参数</param>
         public virtual void AttackPowerParameter(ref float impulseFactor, ref float stunTimeFactor)
         {
+
         }
 
         /// <summary>
@@ -71,17 +81,22 @@ namespace Game
         /// <summary>
         /// 动物吃掉落物时执行
         /// </summary>
-        public virtual void OnEatPickable(ComponentEatPickableBehavior eatPickableBehavior, Pickable EatPickable, out bool Dealed)
+        /// <param name="eatPickableBehavior"></param>
+        /// <param name="EatPickable"></param>
+        /// <returns>true 移交 false 不移交下一个Mod</returns>
+        public virtual bool OnEatPickable(ComponentEatPickableBehavior eatPickableBehavior, Pickable EatPickable)
         {
-            Dealed = false;
+            return true;
         }
 
         /// <summary>
         /// 人物出生时执行
         /// </summary>
-        public virtual bool OnPlayerSpawned(PlayerData.SpawnMode spawnMode, ComponentPlayer componentPlayer, Vector3 position)
+        /// <param name="spawnMode"></param>
+        /// <param name="componentPlayer"></param>
+        /// <param name="position"></param>
+        public virtual void OnPlayerSpawned(PlayerData.SpawnMode spawnMode, ComponentPlayer componentPlayer, Vector3 position)
         {
-            return false;
         }
 
         /// <summary>
@@ -90,29 +105,31 @@ namespace Game
         /// <param name="playerData"></param>
         public virtual void OnPlayerDead(PlayerData playerData)
         {
+
         }
 
         /// <summary>
         /// 当Miner执行AttackBody方法时执行
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="attacker"></param>
-        /// <param name="hitPoint"></param>
-        /// <param name="hitDirection"></param>
-        /// <param name="attackPower"></param>
-        /// <param name="isMeleeAttack"></param>
-        /// <returns>false移交到下一个Mod处理,true不移交</returns>
+        /// <param name="target">攻击目标</param>
+        /// <param name="attacker">发出者</param>
+        /// <param name="hitPoint">攻击位置</param>
+        /// <param name="hitDirection">攻击方向</param>
+        /// <param name="attackPower">Hit计算后的攻击力，所有Mod共享参数</param>
+        /// <param name="isMeleeAttack">是否是近战武器伤害</param>
+        /// <returns>true移交 false不移交 到下一个Mod处理</returns>
         public virtual bool AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, bool isMeleeAttack)
         {
-            return false;
+            return true;
         }
 
         /// <summary>
         /// 当模型对象进行模型设值时执行
         /// </summary>
-        public virtual void OnSetModel(ComponentModel componentModel, Model model, out bool IsSet)
+        /// <param name="componentModel"></param>
+        /// <param name="model"></param>
+        public virtual void OnSetModel(ComponentModel componentModel, Model model)
         {
-            IsSet = false;
         }
 
         /// <summary>
@@ -123,17 +140,14 @@ namespace Game
         {
             Skip = false;
         }
-
         /// <summary>
         /// 计算护甲免伤时执行
         /// </summary>
         /// <param name="componentClothing"></param>
-        /// <param name="attackPower">未计算免伤前的伤害</param>
-        /// <returns>免伤后的伤害，当多个mod都有免伤计算时，取最小值</returns>
-        public virtual float ApplyArmorProtection(ComponentClothing componentClothing, float attackPower, out bool Applied)
+        /// <param name="baseAttackPower">原始伤害</param>
+        /// <param name="attackPower">计算护甲后的伤害，Mod共用数值</param>
+        public virtual void ApplyArmorProtection(ComponentClothing componentClothing, float baseAttackPower, ref float attackPower)
         {
-            Applied = false;
-            return attackPower;
         }
 
         /// <summary>
@@ -448,13 +462,13 @@ namespace Game
         }
 
         /// <summary>
-        /// 配方解码时执行
+        /// CraftingRecipts.xml解析
         /// </summary>
         /// <param name="element">配方的Xelement</param>
-        /// <param name="Decoded">是否解码成功，不成功交由下一个Mod处理</param>
-        public virtual void OnCraftingRecipeDecode(List<CraftingRecipe> m_recipes, XElement element, out bool Decoded)
+        /// <return>true 是 false 否交给下一个Mod处理</return>
+        public virtual bool OnCraftingRecipeDecode(List<CraftingRecipe> m_recipes, XElement element)
         {
-            Decoded = false;
+            return true;
         }
 
         /// <summary>
@@ -462,10 +476,38 @@ namespace Game
         /// </summary>
         /// <param name="requiredIngredients"></param>
         /// <param name="actualIngredient"></param>
-        /// <param name="Matched">是否匹配成功，不成功交由下一个Mod处理</param>
-        public virtual bool MatchRecipe(string[] requiredIngredients, string[] actualIngredient, out bool Matched)
+        /// <returns>是否匹配成功，不成功交由下一个Mod处理</returns>
+        public virtual bool MatchRecipe(string[] requiredIngredients, string[] actualIngredients)
         {
-            Matched = false;
+            if (actualIngredients.Length > 9) return true;
+            string[] array = new string[9];
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = -3; j <= 3; j++)
+                {
+                    for (int k = -3; k <= 3; k++)
+                    {
+                        bool flip = (i != 0) ? true : false;
+                        if (!CraftingRecipesManager.TransformRecipe(array, requiredIngredients, k, j, flip))
+                        {
+                            continue;
+                        }
+                        bool flag = true;
+                        for (int l = 0; l < 9; l++)
+                        {
+                            if (l == actualIngredients.Length || !CraftingRecipesManager.CompareIngredients(array[l], actualIngredients[l]))
+                            {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if (flag)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
             return false;
         }
 
@@ -473,11 +515,11 @@ namespace Game
         /// 获得解码结果时执行
         /// </summary>
         /// <param name="result">结果字符串</param>
-        /// <param name="Decoded">是否解码成功，不成功交由下一个Mod处理</param>
+        /// <param name="Decoded">true 是 false 否 不成功交由下一个Mod处理</param>
         /// <returns></returns>
-        public virtual int DecodeResult(string result, out bool Decoded)
+        public virtual int DecodeResult(string result, out bool deal)
         {
-            Decoded = false;
+            deal = false;
             return 0;
         }
 
@@ -487,12 +529,12 @@ namespace Game
         /// <param name="ingredient"></param>
         /// <param name="craftingId"></param>
         /// <param name="data"></param>
-        /// <param name="Decoded">是否解码成功，不成功交由下一个Mod处理</param>
-        public virtual void DecodeIngredient(string ingredient, out string craftingId, out int? data, out bool Decoded)
+        /// <returns>true是 false 否交给下一个mod处理</returns>
+        public virtual bool DecodeIngredient(string ingredient, out string craftingId, out int? data)
         {
-            Decoded = false;
-            craftingId = string.Empty;
+            craftingId = "";
             data = null;
+            return true;
         }
 
         /// <summary>
@@ -522,16 +564,24 @@ namespace Game
         public virtual void CallNearbyCreaturesHelp(ComponentHerdBehavior herdBehavior, ComponentCreature target, float maxRange, float maxChaseTime, bool isPersistent) 
         { 
         }
-       
+
         /// <summary>
-        /// 挖掘触发宝物生成时，注意这里能获取到上个Mod生成宝物的情况
+        /// 挖掘触发宝物生成时，BlockValue和Count也可能是上一个Mod的结果
         /// </summary>
         /// <param name="BlockValue">宝物的方块值</param>
         /// <param name="Count">宝物数量</param>
-        /// <param name="IsGenerate">是否继续让其它Mod处理</param>
-        public virtual void OnTreasureGenerate(SubsystemTerrain subsystemTerrain, int x, int y, int z, int neighborX, int neighborY, int neighborZ, ref int BlockValue, ref int Count, out bool IsGenerate)
+        /// <param name="IsGenerate">true 是 false 否 交给下一个mod处理</param>
+        public virtual void OnTreasureGenerate(SubsystemTerrain subsystemTerrain, int x, int y, int z, int neighborX, int neighborY, int neighborZ, ref int BlockValue, ref int Count)
         {
-            IsGenerate = false;
+        }
+        /// <summary>
+        /// 当实体掉落到岩浆时
+        /// </summary>
+        /// <param name="componentHealth"></param>
+        /// <returns>true 是 false 否 交给下一个mod处理</returns>
+        public virtual bool OnBodyInMagmaBlock(ComponentHealth componentHealth, float dt)
+        {
+            return true;
         }
     }
 }
