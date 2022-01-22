@@ -123,12 +123,6 @@ namespace Game
                 componentBody.Rotation = m_componentBody.Rotation;
                 componentBody.Velocity = m_componentBody.Velocity;
                 entity.FindComponent<ComponentSpawn>(throwOnError: true).SpawnDuration = 0.5f;
-
-                ModsManager.HookAction("OnDespawned", modLoader => {
-                    modLoader.OnDespawned(entity, componentSpawn);
-                    return false;
-                });
-
                 Project.AddEntity(entity);
             }
             if (m_particleSystem != null)

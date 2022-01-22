@@ -4,6 +4,7 @@ using Engine.Media;
 using GameEntitySystem;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using TemplatesDatabase;
 
 namespace Game
 {
@@ -223,25 +224,25 @@ namespace Game
         }
 
         /// <summary>
-        /// 生物出生时执行
+        /// 还原消失生物数据时执行
         /// </summary>
         /// <param name="spawn"></param>
         /// <param name="entity"></param>
         /// <param name="spawnEntityData"></param>
-        public virtual void SpawnEntity(SubsystemSpawn spawn, Entity entity, SpawnEntityData spawnEntityData, out bool Spawned)
+        public virtual void OnSubsystemSpawnSpawn(Entity entity, ValuesDictionary spawnEntityData)
         {
-            Spawned = false;
         }
 
         /// <summary>
-        /// 当生物消失时执行
+        /// 存储消失生物数据时执行
         /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="componentSpawn"></param>
-        public virtual void OnDespawned(Entity entity, ComponentSpawn componentSpawn)
+        /// <param name="spawn"></param>
+        /// <param name="data"></param>
+        public virtual void OnSubsystemSpawnDespawn(ComponentSpawn spawn, ValuesDictionary data)
         {
-        }
 
+
+        }
         /// <summary>
         /// 设置跳跃是否可放置方块
         /// </summary>
@@ -308,9 +309,8 @@ namespace Game
         /// <param name="spawn"></param>
         /// <param name="data"></param>
         /// <param name="creaturesData"></param>
-        public virtual void LoadSpawnsData(SubsystemSpawn spawn, string data, List<SpawnEntityData> creaturesData, out bool Decoded) 
+        public virtual void LoadSpawnsData(SubsystemSpawn spawn, List<ValuesDictionary> creaturesData) 
         { 
-            Decoded = false; 
         }
 
         /// <summary>
@@ -319,10 +319,8 @@ namespace Game
         /// <param name="spawn"></param>
         /// <param name="spawnsData"></param>
         /// <returns></returns>
-        public virtual string SaveSpawnsData(SubsystemSpawn spawn, List<SpawnEntityData> spawnsData, out bool Encoded) 
+        public virtual void SaveSpawnsData(SubsystemSpawn spawn, List<ValuesDictionary> spawnsData) 
         { 
-            Encoded = false; 
-            return ""; 
         }
 
         /// <summary>
