@@ -395,7 +395,7 @@ namespace Game
 				Vector3 viewPosition = camera.ViewPosition;
 				Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
 				Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
-				Display.BlendState = BlendState.Opaque;
+				Display.BlendState = BlendState.AlphaBlend;
 				Display.DepthStencilState = DepthStencilState.Default;
 				Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
 				m_shader.GetParameter("u_origin").SetValue(v.XZ);
