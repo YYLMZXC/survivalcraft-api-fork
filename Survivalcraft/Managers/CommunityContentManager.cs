@@ -81,7 +81,8 @@ namespace Game
             {
                 try
                 {
-                    XElement xElement = XmlUtils.LoadXmlFromString(Encoding.UTF8.GetString(result, 0, result.Length), throwOnError: true);
+                    var body = Encoding.UTF8.GetString(result, 0, result.Length);
+                    XElement xElement = XmlUtils.LoadXmlFromString(body, throwOnError: true);
                     string attributeValue = XmlUtils.GetAttributeValue<string>(xElement, "NextCursor");
                     var list = new List<CommunityContentEntry>();
                     foreach (XElement item in xElement.Elements())

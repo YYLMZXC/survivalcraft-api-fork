@@ -581,5 +581,45 @@ namespace Game
         {
             return true;
         }
+        /// <summary>
+        /// 计算攻击力加成系数
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="factors">影响因素列表</param>
+        /// <returns></returns>
+        public virtual void CalculateStrengthFactor(ComponentLevel level, ICollection<ComponentLevel.Factor> factors)
+        {
+
+        }
+        /// <summary>
+        /// 计算生命恢复速度加成系数
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="factors">影响因素列表</param>
+        /// <returns></returns>
+        public virtual void CalculateResilienceFactor(ComponentLevel level, ICollection<ComponentLevel.Factor> factors)
+        {
+
+        }
+        /// <summary>
+        /// 计算移动速度加成系数
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="factors">影响因素列表</param>
+        /// <returns></returns>
+        public virtual void CalculateSpeedFactor(ComponentLevel level, ICollection<ComponentLevel.Factor> factors)
+        {
+
+        }
+        /// <summary>
+        /// 计算饥饿速度加成系数
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="factors">影响因素列表</param>
+        /// <returns></returns>
+        public virtual void CalculateHungerFactor(ComponentLevel level, ICollection<ComponentLevel.Factor> factors)
+        {
+
+        }
     }
 }
