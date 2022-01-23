@@ -106,7 +106,6 @@ namespace Game
 
         public void GenerateCrossfaceVertices(Block block, int value, int x, int y, int z, Color color, int textureSlot, TerrainGeometrySubset subset)
         {
-            //ModsManager.HookAction("ChangePlacedBlockColor", loader => { loader.ChangePlacedBlockColor(color, value, x, y, z, out color); return false; });
             DynamicArray<TerrainVertex> vertices = subset.Vertices;
             var indices = subset.Indices;
             int num = Terrain.ExtractLight(value);
@@ -173,7 +172,6 @@ namespace Game
 
         public void GenerateCubeVertices(Block block, int value, int x, int y, int z, Color color, TerrainGeometrySubset[] subsetsByFace)
         {
-            //ModsManager.HookAction("ChangePlacedBlockColor", loader => { loader.ChangePlacedBlockColor(color, value, x, y, z, out color); return false; });
             int blockIndex = block.BlockIndex;
             TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
             TerrainChunk chunkAtCell2 = Terrain.GetChunkAtCell(x, z + 1);
@@ -448,7 +446,6 @@ namespace Game
 
         public void GenerateCubeVertices(Block block, int value, int x, int y, int z, int rotationX, int rotationY, int rotationZ, Color color, TerrainGeometrySubset[] subsetsByFace)
         {
-            //ModsManager.HookAction("ChangePlacedBlockColor", loader => { loader.ChangePlacedBlockColor(color, value, x, y, z, out color); return false; });
             int blockIndex = block.BlockIndex;
             TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
             TerrainChunk chunkAtCell2 = Terrain.GetChunkAtCell(x, z + 1);

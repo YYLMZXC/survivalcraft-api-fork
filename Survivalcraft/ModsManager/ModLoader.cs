@@ -321,40 +321,6 @@ namespace Game
         }
 
         /// <summary>
-        /// 更改方块颜色，只对使用DrawCubeBlock和DrawFlatBlock的方块生效
-        /// </summary>
-        /// <param name="oldColor">原来的颜色</param>
-        /// <param name="oldTopColor">原来的顶部颜色</param>
-        /// <param name="value">方块的值</param>
-        /// <returns></returns>
-        public virtual void ChangeBlockColor(Color oldColor, Color oldTopColor, int value, DrawBlockEnvironmentData environmentData, out Color color, out Color topColor)
-        {
-            color = oldColor;
-            topColor = oldTopColor;
-        }
-
-        /// <summary>
-        /// 更改已放置方块颜色，只对使用GenerateCubeVertices(单一颜色绘制)和GenerateCrossfaceVertices的方块生效
-        /// </summary>
-        /// <param name="oldColor">原来的颜色</param>
-        /// <param name="value">方块的值</param>
-        /// <returns></returns>
-        public virtual void ChangePlacedBlockColor(Color oldColor, int value, int x, int y, int z, out Color color)
-        {
-            color = oldColor;
-        }
-
-        /// <summary>
-        /// 更改方块碎屑颜色，只对使用BlockDebrisParticleSystem的方块生效
-        /// </summary>
-        /// <param name="oldColor">原来的颜色</param>
-        /// <param name="value">方块的值</param>
-        public virtual void ChangeBlockDebrisParticleColor(Color oldColor, int value, int x, int y, int z, SubsystemTerrain subsystemTerrain, out Color color)
-        {
-            color = oldColor;
-        }
-
-        /// <summary>
         /// 子系统帧更新时执行
         /// </summary>
         public virtual void SubsystemUpdate(float dt)

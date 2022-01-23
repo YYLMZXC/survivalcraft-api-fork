@@ -125,7 +125,6 @@ namespace Game
         public static void DrawCubeBlock(PrimitivesRenderer3D primitivesRenderer, int value, Vector3 size, ref Matrix matrix, Color color, Color topColor, DrawBlockEnvironmentData environmentData, Texture2D texture)
         {
             environmentData = (environmentData ?? m_defaultEnvironmentData);
-            //ModsManager.HookAction("ChangeBlockColor", loader => { loader.ChangeBlockColor(color, topColor, value, environmentData, out color, out topColor); return false; });
             TexturedBatch3D texturedBatch3D = primitivesRenderer.TexturedBatch(texture, useAlphaTest: true, 0, null, RasterizerState.CullCounterClockwiseScissor, null, SamplerState.PointClamp);
             float s = LightingManager.LightIntensityByLightValue[environmentData.Light];
             color = Color.MultiplyColorOnly(color, s);
@@ -183,8 +182,6 @@ namespace Game
         public static void DrawFlatBlock(PrimitivesRenderer3D primitivesRenderer, int value, float size, ref Matrix matrix, Texture2D texture, Color color, bool isEmissive, DrawBlockEnvironmentData environmentData)
         {
             environmentData = (environmentData ?? m_defaultEnvironmentData);
-            //Color topColor = Color.White;
-            //ModsManager.HookAction("ChangeBlockColor", loader => { loader.ChangeBlockColor(color, topColor, value, environmentData, out color, out topColor); return false; });
             if (!isEmissive)
             {
                 float s = LightingManager.LightIntensityByLightValue[environmentData.Light];
