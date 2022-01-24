@@ -94,7 +94,14 @@ namespace Game
 
         public override void Enter(object[] parameters)
         {
-            m_filter = string.Empty;
+            if(parameters.Length > 0 && parameters[0].ToString() == "Mod")
+            {
+                m_filter = ExternalContentType.Mod;
+            }
+            else
+            {
+                m_filter = string.Empty;
+            }
             m_order = Order.ByRank;
             m_inputKey.Text = string.Empty;
             PopulateList(null);

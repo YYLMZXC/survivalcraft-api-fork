@@ -303,14 +303,26 @@ public static class ModsManager
 
     public static string ImportMod(string name, Stream stream)
     {
-        if (Storage.DirectoryExists(ModCachePath)) Storage.CreateDirectory(ModCachePath);
+        if (!Storage.DirectoryExists(ModCachePath)) Storage.CreateDirectory(ModCachePath);
         string path = Storage.CombinePaths(ModCachePath, name + ".scmod");
+        int num = 1;
+        while (Storage.FileExists(path))
+        {
+            path = Storage.CombinePaths(ModCachePath, name + "(" + num + ").scmod");
+            num++;
+        }
         using (Stream fileStream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
         {
             stream.CopyTo(fileStream);
-            stream.Close();
         }
-        return "下载成功,请到Mod管理中进行手动安装";
+        DialogsManager.ShowDialog(null, new MessageDialog("Mod下载成功", "请到Mod管理器中进行手动安装，是否跳转", "前往", "返回", delegate (MessageDialogButton result)
+        {
+            if (result == MessageDialogButton.Button1)
+            {
+                ScreensManager.SwitchScreen("ModsManageContent");
+            }
+        }));
+        return "Mod下载成功";
     }
 
     public static void ModListAllDo(Action<ModEntity> entity)

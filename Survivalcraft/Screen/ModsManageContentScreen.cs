@@ -42,6 +42,10 @@ public class ModsManageContentScreen : Screen
 
     public StateFilter m_filter;
 
+    public List<ModItem> m_installModList = new List<ModItem>();
+
+    public List<ModItem> m_uninstallModList = new List<ModItem>();
+
     public List<ModInfo> m_installModInfo = new List<ModInfo>();
 
     public List<ModInfo> m_lastInstallModInfo = new List<ModInfo>();
@@ -129,18 +133,39 @@ public class ModsManageContentScreen : Screen
                         DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 5) + "\n" + modItem.ExternalContentEntry.Path, LanguageControl.Get("Usual", "ok"), null, null));
                     }
                 }
-                else if (modItem.ExternalContentEntry.Type == ExternalContentType.Mod && m_filter == StateFilter.UninstallState)
+                else if (modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
                 {
                     string modName = Storage.GetFileName(modItem.ExternalContentEntry.Path);
-                    string modDescription = LanguageControl.Get(fName, 6) + modItem.ModInfo.Description + "\n" + LanguageControl.Get(fName, 7) + modItem.ModInfo.PackageName + "，" + LanguageControl.Get(fName, 8);
-                    DialogsManager.ShowDialog(null, new MessageDialog(modName, modDescription, LanguageControl.Get(fName, 9), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
+                    if (m_filter == StateFilter.UninstallState)
                     {
-                        if (result == MessageDialogButton.Button1)
+                        string modDescription = LanguageControl.Get(fName, 6) + modItem.ModInfo.Description + "\n" + LanguageControl.Get(fName, 7) + modItem.ModInfo.PackageName + "，" + LanguageControl.Get(fName, 8);
+                        DialogsManager.ShowDialog(null, new MessageDialog(modName, modDescription, LanguageControl.Get(fName, 9), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
                         {
-                            Storage.DeleteFile(modItem.ExternalContentEntry.Path);
-                            UpdateList();
-                        }
-                    }));
+                            if (result == MessageDialogButton.Button1)
+                            {
+                                Storage.DeleteFile(modItem.ExternalContentEntry.Path);
+                                UpdateList();
+                            }
+                        }));
+                    }
+                    else
+                    {
+                        string modDescription = LanguageControl.Get(fName, 6) + modItem.ModInfo.Description + "\n" + LanguageControl.Get(fName, 7) + modItem.ModInfo.PackageName;
+                        CommunityContentScreen communityContentScreen = ScreensManager.FindScreen<CommunityContentScreen>("CommunityContent");
+                        communityContentScreen.m_filter = ExternalContentType.Mod;
+                        communityContentScreen.PopulateList(null);
+                        DialogsManager.ShowDialog(null, new MessageDialog(modName, modDescription, "更新", "返回", delegate (MessageDialogButton result)
+                        {
+                            if (result == MessageDialogButton.Button1)
+                            {
+                                foreach(var item2 in communityContentScreen.m_listPanel.Items)
+                                {
+                                    CommunityContentEntry communityContentEntry = item2 as CommunityContentEntry;
+                                }
+                                //mod更新
+                            }
+                        }));
+                    }
                 }
             }
         };
@@ -234,36 +259,69 @@ public class ModsManageContentScreen : Screen
                 string uninstallPathName = modItem.ExternalContentEntry.Path;
                 if (m_filter == StateFilter.InstallState)
                 {
-                    try
+                    string modDescription = LanguageControl.Get(fName, 6) + modItem.ModInfo.Description + "\n" + LanguageControl.Get(fName, 7) + modItem.ModInfo.PackageName + "，" + LanguageControl.Get(fName, 8);
+                    DialogsManager.ShowDialog(null, new MessageDialog("确定卸载该Mod?", modDescription, "确定", "取消", delegate (MessageDialogButton result)
                     {
-                        Storage.DeleteFile(installPathName);
-                        UpdateList();
-                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 22), fileName, LanguageControl.Get("Usual", "ok"), null, null));
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Warning(fName + ":" + e.Message);
-                    }
+                        if (result == MessageDialogButton.Button1)
+                        {
+                            try
+                            {
+                                Storage.DeleteFile(installPathName);
+                                UpdateList();
+                            }
+                            catch (Exception e)
+                            {
+                                DialogsManager.ShowDialog(null, new MessageDialog("Mod卸载失败", "发生了异常:" + e.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                            }
+                        }
+                    }));
                 }
                 else
                 {
-                    bool onlyPackage = true;
+                    ModInfo samePackmModInfo = null;
                     foreach (ModInfo modInfo in m_installModInfo)
                     {
                         if (modInfo.PackageName == modItem.ModInfo.PackageName)
                         {
-                            onlyPackage = false;
+                            samePackmModInfo = modInfo;
                         }
                     }
-                    if (!Storage.FileExists(installPathName) && onlyPackage)
+                    if (!Storage.FileExists(installPathName) && samePackmModInfo == null)
                     {
                         Storage.CopyFile(uninstallPathName, installPathName);
                         m_installModInfo.Add(modItem.ModInfo);
+                        m_installModList.Add(modItem);
                         DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 23), fileName, LanguageControl.Get("Usual", "ok"), null, null));
                     }
-                    else
+                    else if (samePackmModInfo != null)
                     {
-                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 24), fileName + LanguageControl.Get(fName, 25), LanguageControl.Get("Usual", "ok"), null, null));
+                        string tips = string.Format("当前Mod版本为{0},已安装Mod版本为{1},是否替换", modItem.ModInfo.Version, samePackmModInfo.Version);
+                        DialogsManager.ShowDialog(null, new MessageDialog("已安装相同的Mod", tips, "替换", "取消", delegate (MessageDialogButton result)
+                        {
+                            if (result == MessageDialogButton.Button1)
+                            {
+                                foreach (ModItem modItem3 in m_installModList)
+                                {
+                                    if(modItem3.ModInfo.PackageName == samePackmModInfo.PackageName)
+                                    {
+                                        try
+                                        {
+                                            Storage.DeleteFile(modItem3.ExternalContentEntry.Path);
+                                            Storage.CopyFile(uninstallPathName, installPathName);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            DialogsManager.ShowDialog(null, new MessageDialog("Mod替换失败", "发生了异常:" + e.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }));
+                    }
+                    else if (Storage.FileExists(installPathName))
+                    {
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 24), fileName + "文件已存在", LanguageControl.Get("Usual", "ok"), null, null));
                     }
                 }
             }
@@ -299,8 +357,7 @@ public class ModsManageContentScreen : Screen
                     {
                         if (result == MessageDialogButton.Button1)
                         {
-                            string url = "https://m.schub.top/com/mods/viewlist";
-                            WebBrowserManager.LaunchBrowser(url);
+                            ScreensManager.SwitchScreen("CommunityContent", "Mod");
                         }
                     }));
                 }
@@ -331,7 +388,7 @@ public class ModsManageContentScreen : Screen
                 m_filter = StateFilter.UninstallState;
                 SetPath(m_uninstallPath);
             }
-            UpdateList();
+            UpdateList(!InstallModChange());
         }
         if (m_upDirectoryButton.IsClicked)
         {
@@ -375,12 +432,42 @@ public class ModsManageContentScreen : Screen
         }
     }
 
-    public void UpdateList()
+    public void UpdateList(bool fast = false)
     {
-        m_modsContentList.ClearItems();
         m_modsContentLabel.Text = LanguageControl.Get(fName, 40) + SetPathText(m_path);
         m_filterLabel.Text = (m_filter == StateFilter.UninstallState) ? LanguageControl.Get(fName, 36) : LanguageControl.Get(fName, 37);
-        if (m_filter == StateFilter.InstallState) m_installModInfo.Clear();
+        if (!fast)
+        {
+            SetModItemList();
+        }
+        m_modsContentList.ClearItems();
+        if (m_filter == StateFilter.InstallState)
+        {
+            foreach(ModItem modItem in m_installModList)
+            {
+                m_modsContentList.AddItem(modItem);
+            }
+        }
+        else
+        {
+            foreach (ModItem modItem in m_uninstallModList)
+            {
+                m_modsContentList.AddItem(modItem);
+            }
+        }
+    }
+
+    public void SetModItemList()
+    {
+        if (m_filter == StateFilter.InstallState)
+        {
+            m_installModInfo.Clear();
+            m_installModList.Clear();
+        }
+        else
+        {
+            m_uninstallModList.Clear();
+        }
         IEnumerable<string> fileNameList = Storage.ListFileNames(m_path);
         foreach (string fileName in fileNameList)
         {
@@ -405,11 +492,16 @@ public class ModsManageContentScreen : Screen
                     {
                         subtexture = new Subtexture(modEntity.Icon, Vector2.Zero, Vector2.One);
                     }
+                    ModItem modItem = new ModItem(modEntity.modInfo, externalContentEntry, subtexture);
                     if (m_filter == StateFilter.InstallState)
                     {
                         m_installModInfo.Add(modEntity.modInfo);
+                        m_installModList.Add(modItem);
                     }
-                    m_modsContentList.AddItem(new ModItem(modEntity.modInfo, externalContentEntry, subtexture));
+                    else
+                    {
+                        m_uninstallModList.Add(modItem);
+                    }
                 }
                 catch
                 {
@@ -434,7 +526,15 @@ public class ModsManageContentScreen : Screen
                 Size = 0,
                 Time = Storage.GetFileLastWriteTime(directory)
             };
-            m_modsContentList.AddItem(new ModItem(modInfo, externalContentEntry, subtexture));
+            ModItem modItem = new ModItem(modInfo, externalContentEntry, subtexture);
+            if (m_filter == StateFilter.InstallState)
+            {
+                m_installModList.Add(modItem);
+            }
+            else
+            {
+                m_uninstallModList.Add(modItem);
+            }
         }
     }
 
