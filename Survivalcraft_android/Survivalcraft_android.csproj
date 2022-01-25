@@ -1483,6 +1483,9 @@
     <Compile Include="..\Survivalcraft\Game\ExternalContentType.cs">
       <Link>Game\ExternalContentType.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\Factor.cs">
+      <Link>Game\Factor.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\FenceGateElectricElement.cs">
       <Link>Game\FenceGateElectricElement.cs</Link>
     </Compile>
