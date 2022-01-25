@@ -19,7 +19,7 @@ namespace Engine.Audio
 			public bool IsAvailable;
 		}
 
-		public const int MaxCacheSize = 16;
+		public const int MaxCacheSize = 64;
 
 		public static List<AudioTrackData> m_audioTracks;
 
@@ -101,8 +101,8 @@ namespace Engine.Audio
 				if (flag)
 				{
 					m_cacheFulls++;
-					Log.Warning("AudioTrackCache full, no audio tracks available.");
-					LogCacheStats();
+					//Log.Warning("AudioTrackCache full, no audio tracks available.");
+					//LogCacheStats();
 					return null;
 				}
 			}
@@ -133,7 +133,7 @@ namespace Engine.Audio
 				Log.Warning("Failed to create Cache AudioTrack.");
 			}
 			m_cacheMisses++;
-			if (Mixer.EnableAudioTrackCaching && m_cacheMisses > 200 && m_cacheMisses % 100 == 0)
+			if (Mixer.EnableAudioTrackCaching && m_cacheMisses > 400 && m_cacheMisses % 100 == 0)
 			{
 				Log.Warning("Over {0} AudioTrack objects created.", m_cacheMisses);
 			}

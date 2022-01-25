@@ -59,9 +59,6 @@ namespace Game
             if (m_useAudioTrackCachingButton.IsClicked)
             {
                 SettingsManager.EnableAndroidAudioTrackCaching = !SettingsManager.EnableAndroidAudioTrackCaching;
-#if android
-                Engine.Audio.Mixer.EnableAudioTrackCaching = SettingsManager.EnableAndroidAudioTrackCaching;
-#endif
                 m_descriptionLabel.Text = StringsManager.GetString("Settings.Compatibility.UseAudioTrackCaching.Description");
             }
 

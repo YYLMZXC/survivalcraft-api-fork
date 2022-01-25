@@ -343,8 +343,20 @@ namespace Game
 
         public static bool EnableAndroidAudioTrackCaching
         {
+#if android
+            get
+            {
+                return Engine.Audio.Mixer.EnableAudioTrackCaching;
+            }
+            set
+            {
+                Engine.Audio.Mixer.EnableAudioTrackCaching = value;
+            }
+#endif
+#if desktop
             get;
             set;
+#endif
         }
 
         public static bool UseReducedZRange

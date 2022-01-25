@@ -62,6 +62,8 @@ public class ModsManageContentScreen : Screen
 
     public string m_installPath = "app:/Mods";
 
+    public bool m_updatable;
+
     public string[] m_commonPaths = new string[10]
     {
         "android:/Download",
@@ -78,12 +80,13 @@ public class ModsManageContentScreen : Screen
 
     public ModsManageContentScreen()
     {
-        androidSystem = ModsManager.IsAndroid;
+        androidSystem = Environment.CurrentDirectory == "/";
         if (androidSystem)
         {
             m_uninstallPath = m_uninstallPath.Replace("app:", "android:/SurvivalCraft2.2");
             m_installPath = m_installPath.Replace("app:", "android:/SurvivalCraft2.2");
         }
+        m_updatable = true;
         XElement node = ContentManager.Get<XElement>("Screens/ModsManageContentScreen");
         LoadContents(this, node);
         m_modsContentList = Children.Find<ListPanelWidget>("ModsContentList");
@@ -162,7 +165,7 @@ public class ModsManageContentScreen : Screen
                                 {
                                     CommunityContentEntry communityContentEntry = item2 as CommunityContentEntry;
                                 }
-                                //mod更新
+                                DialogsManager.ShowDialog(null, new MessageDialog("该功能正在开发中", null, LanguageControl.Ok, null, null));
                             }
                         }));
                     }
@@ -180,6 +183,7 @@ public class ModsManageContentScreen : Screen
         SetPath(m_uninstallPath);
         m_filter = StateFilter.UninstallState;
         UpdateList();
+        m_updatable = true;
         foreach (ModInfo modInfo in m_installModInfo)
         {
             m_lastInstallModInfo.Add(modInfo);
@@ -268,6 +272,7 @@ public class ModsManageContentScreen : Screen
                             {
                                 Storage.DeleteFile(installPathName);
                                 UpdateList();
+                                m_updatable = false;
                             }
                             catch (Exception e)
                             {
@@ -295,29 +300,37 @@ public class ModsManageContentScreen : Screen
                     }
                     else if (samePackmModInfo != null)
                     {
-                        string tips = string.Format("当前Mod版本为{0},已安装Mod版本为{1},是否替换", modItem.ModInfo.Version, samePackmModInfo.Version);
-                        DialogsManager.ShowDialog(null, new MessageDialog("已安装相同的Mod", tips, "替换", "取消", delegate (MessageDialogButton result)
+                        if(samePackmModInfo.Version == modItem.ModInfo.Version)
                         {
-                            if (result == MessageDialogButton.Button1)
+                            DialogsManager.ShowDialog(null, new MessageDialog("已安装相同的Mod", "安装的Mod版本一致，无需重复安装", LanguageControl.Get("Usual", "ok"), null, null));
+                        }
+                        else
+                        {
+                            string tips = string.Format("当前Mod版本为{0},已安装Mod版本为{1},是否替换", modItem.ModInfo.Version, samePackmModInfo.Version);
+                            DialogsManager.ShowDialog(null, new MessageDialog("已安装相同的Mod", tips, "替换", "取消", delegate (MessageDialogButton result)
                             {
-                                foreach (ModItem modItem3 in m_installModList)
+                                if (result == MessageDialogButton.Button1)
                                 {
-                                    if(modItem3.ModInfo.PackageName == samePackmModInfo.PackageName)
+                                    foreach (ModItem modItem3 in m_installModList)
                                     {
-                                        try
+                                        if (modItem3.ModInfo.PackageName == samePackmModInfo.PackageName)
                                         {
-                                            Storage.DeleteFile(modItem3.ExternalContentEntry.Path);
-                                            Storage.CopyFile(uninstallPathName, installPathName);
+                                            try
+                                            {
+                                                Storage.DeleteFile(modItem3.ExternalContentEntry.Path);
+                                                Storage.CopyFile(uninstallPathName, installPathName);
+                                                m_updatable = true;
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                DialogsManager.ShowDialog(null, new MessageDialog("Mod替换失败", "发生了异常:" + e.Message, LanguageControl.Get("Usual", "ok"), null, null));
+                                            }
+                                            break;
                                         }
-                                        catch (Exception e)
-                                        {
-                                            DialogsManager.ShowDialog(null, new MessageDialog("Mod替换失败", "发生了异常:" + e.Message, LanguageControl.Get("Usual", "ok"), null, null));
-                                        }
-                                        break;
                                     }
                                 }
-                            }
-                        }));
+                            }));
+                        }
                     }
                     else if (Storage.FileExists(installPathName))
                     {
@@ -388,7 +401,7 @@ public class ModsManageContentScreen : Screen
                 m_filter = StateFilter.UninstallState;
                 SetPath(m_uninstallPath);
             }
-            UpdateList(!InstallModChange());
+            UpdateList(true);
         }
         if (m_upDirectoryButton.IsClicked)
         {
@@ -436,9 +449,10 @@ public class ModsManageContentScreen : Screen
     {
         m_modsContentLabel.Text = LanguageControl.Get(fName, 40) + SetPathText(m_path);
         m_filterLabel.Text = (m_filter == StateFilter.UninstallState) ? LanguageControl.Get(fName, 36) : LanguageControl.Get(fName, 37);
-        if (!fast)
+        if (!fast || m_updatable)
         {
             SetModItemList();
+            if (fast) m_updatable = false;
         }
         m_modsContentList.ClearItems();
         if (m_filter == StateFilter.InstallState)
@@ -459,6 +473,7 @@ public class ModsManageContentScreen : Screen
 
     public void SetModItemList()
     {
+        m_updatable = true;
         if (m_filter == StateFilter.InstallState)
         {
             m_installModInfo.Clear();
