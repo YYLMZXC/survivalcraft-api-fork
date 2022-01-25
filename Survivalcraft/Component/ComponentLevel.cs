@@ -9,19 +9,7 @@ namespace Game
 {
     public class ComponentLevel : Component, IUpdateable
     {
-        public struct Factor
-        {
-            public string Description;
 
-            public Texture2D IconTexture;
-
-            public double endTime;
-
-            public float Value;
-
-            public double startTime;
-
-        }
 
         public Random m_random = new Random();
 
@@ -57,6 +45,10 @@ namespace Game
             factor.endTime = m_subsystemTime.GameTime + existsSeconds;
             return factor;
         }
+        public List<Factor> StrengthFactors = new List<Factor>();
+        public List<Factor> ResilienceFactors = new List<Factor>();
+        public List<Factor> SpeedFactors = new List<Factor>();
+        public List<Factor> HungerFactors = new List<Factor>();
 
         public float StrengthFactor
         {
@@ -82,10 +74,6 @@ namespace Game
             set;
         }
 
-        public List<Factor> StrengthFactors = new List<Factor>();
-        public List<Factor> ResilienceFactors = new List<Factor>();
-        public List<Factor> SpeedFactors = new List<Factor>();
-        public List<Factor> HungerFactors = new List<Factor>();
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -133,7 +121,7 @@ namespace Game
             }
         }
 
-        public virtual float CalculateStrengthFactor()
+        public virtual void CalculateStrengthFactor()
         {
             StrengthFactors.Clear();
             ModsManager.HookAction("CalculateStrengthFactor", modLoader => {
@@ -180,19 +168,14 @@ namespace Game
                 Value = (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless) ? 1.25f : 1f,
                 Description = string.Format(LanguageControl.Get(fName, 12), m_subsystemGameInfo.WorldSettings.GameMode.ToString())
             });
-            float result = 1f;
-            foreach (var f in StrengthFactors)
-            {
-                result *= f.Value;
-            }
-            return result;
+            StrengthFactor = GetFatorsResult(StrengthFactors);
         }
 
-        public virtual float CalculateResilienceFactor()
+        public virtual void CalculateResilienceFactor()
         {
             ResilienceFactors.Clear();
             ModsManager.HookAction("CalculateResilienceFactor", modLoader => {
-                modLoader.CalculateResilienceFactor(this, StrengthFactors);
+                modLoader.CalculateResilienceFactor(this, ResilienceFactors);
                 return true;
             });
             ResilienceFactors.Add(new Factor
@@ -220,19 +203,14 @@ namespace Game
                 Value = m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless ? 1.5f : (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative ? float.PositiveInfinity : 1f),
                 Description = string.Format(LanguageControl.Get(fName, 12), m_subsystemGameInfo.WorldSettings.GameMode.ToString())
             });
-            float result = 1f;
-            foreach (var f in ResilienceFactors)
-            {
-                result *= f.Value;
-            }
-            return result;
+            ResilienceFactor = GetFatorsResult(ResilienceFactors);
         }
 
-        public virtual float CalculateSpeedFactor()
+        public virtual void CalculateSpeedFactor()
         {
             SpeedFactors.Clear();
             ModsManager.HookAction("CalculateSpeedFactor", modLoader => {
-                modLoader.CalculateSpeedFactor(this, StrengthFactors);
+                modLoader.CalculateSpeedFactor(this, SpeedFactors);
                 return true;
             });
             SpeedFactors.Add(new Factor
@@ -288,20 +266,14 @@ namespace Game
                 Value = (!m_componentPlayer.ComponentFlu.IsCoughing) ? 1 : 0,
                 Description = (m_componentPlayer.ComponentFlu.IsCoughing ? LanguageControl.Get(fName, 10) : LanguageControl.Get(fName, 11))
             });
-            float result = clothingFactor;
-            foreach (var f in SpeedFactors)
-            {
-                result *= f.Value;
-            }
-            return result;
-
+            SpeedFactor = GetFatorsResult(SpeedFactors);
         }
 
-        public virtual float CalculateHungerFactor()
+        public virtual void CalculateHungerFactor()
         {
             HungerFactors.Clear();
-            ModsManager.HookAction("CalculateSpeedFactor", modLoader => {
-                modLoader.CalculateSpeedFactor(this, StrengthFactors);
+            ModsManager.HookAction("CalculateHungerFactor", modLoader => {
+                modLoader.CalculateHungerFactor(this, HungerFactors);
                 return true;
             });
             HungerFactors.Add(new Factor
@@ -319,13 +291,10 @@ namespace Game
                 Value = (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless) ? 1.25f : 1f,
                 Description = string.Format(LanguageControl.Get(fName, 12), m_subsystemGameInfo.WorldSettings.GameMode.ToString())
             });
-            float result = 1f;
-            foreach (var f in HungerFactors)
-            {
-                result *= f.Value;
-            }
-            return result;
+            HungerFactor = GetFatorsResult(HungerFactors);
         }
+
+
 
         public virtual void Update(float dt)
         {
@@ -339,14 +308,24 @@ namespace Game
                 m_lastLevelTextValue = MathUtils.Floor(m_componentPlayer.PlayerData.Level);
             }
             m_componentPlayer.PlayerStats.HighestLevel = MathUtils.Max(m_componentPlayer.PlayerStats.HighestLevel, m_componentPlayer.PlayerData.Level);
-            StrengthFactor = CalculateStrengthFactor();
-            SpeedFactor = CalculateSpeedFactor();
-            HungerFactor = CalculateHungerFactor();
-            ResilienceFactor = CalculateResilienceFactor();
+            CalculateStrengthFactor();
+            CalculateSpeedFactor();
+            CalculateHungerFactor();
+            CalculateResilienceFactor();
             ModsManager.HookAction("OnLevelUpdate", modLoader => {
                 modLoader.OnLevelUpdate(this);
                 return false;
             });
+        }
+
+        public static float GetFatorsResult(List<Factor> factors)
+        {
+            float result = 1f;
+            foreach (var f in factors)
+            {
+                result *= f.Value;
+            }
+            return result;
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)

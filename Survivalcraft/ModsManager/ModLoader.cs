@@ -142,16 +142,6 @@ namespace Game
             Skip = false;
         }
         /// <summary>
-        /// 计算护甲免伤时执行
-        /// </summary>
-        /// <param name="componentClothing"></param>
-        /// <param name="baseAttackPower">原始伤害</param>
-        /// <param name="attackPower">计算护甲后的伤害，Mod共用数值</param>
-        public virtual void ApplyArmorProtection(ComponentClothing componentClothing, float baseAttackPower, ref float attackPower)
-        {
-        }
-
-        /// <summary>
         /// 等级更新时执行
         /// </summary>
         /// <param name="level"></param>
@@ -587,7 +577,7 @@ namespace Game
         /// <param name="level"></param>
         /// <param name="factors">影响因素列表</param>
         /// <returns></returns>
-        public virtual void CalculateStrengthFactor(ComponentLevel level, ICollection<ComponentLevel.Factor> factors)
+        public virtual void CalculateStrengthFactor(ComponentLevel level, ICollection<Factor> factors)
         {
 
         }
@@ -597,7 +587,7 @@ namespace Game
         /// <param name="level"></param>
         /// <param name="factors">影响因素列表</param>
         /// <returns></returns>
-        public virtual void CalculateResilienceFactor(ComponentLevel level, ICollection<ComponentLevel.Factor> factors)
+        public virtual void CalculateResilienceFactor(ComponentLevel level, ICollection<Factor> factors)
         {
 
         }
@@ -607,7 +597,7 @@ namespace Game
         /// <param name="level"></param>
         /// <param name="factors">影响因素列表</param>
         /// <returns></returns>
-        public virtual void CalculateSpeedFactor(ComponentLevel level, ICollection<ComponentLevel.Factor> factors)
+        public virtual void CalculateSpeedFactor(ComponentLevel level, ICollection<Factor> factors)
         {
 
         }
@@ -617,7 +607,68 @@ namespace Game
         /// <param name="level"></param>
         /// <param name="factors">影响因素列表</param>
         /// <returns></returns>
-        public virtual void CalculateHungerFactor(ComponentLevel level, ICollection<ComponentLevel.Factor> factors)
+        public virtual void CalculateHungerFactor(ComponentLevel level, ICollection<Factor> factors)
+        {
+
+        }
+        /// <summary>
+        /// 计算火伤害抗性系数
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="factors">影响因素列表</param>
+        /// <returns></returns>
+        public virtual void CalculateFireResilienceFactor(ComponentBody body, ICollection<Factor> factors)
+        {
+
+        }
+
+        /// <summary>
+        /// 计算每帧生命恢复值系数
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="factors">影响因素列表</param>
+        /// <returns></returns>
+        public virtual void CalculateHealFactor(ComponentHealth health, ICollection<Factor> factors)
+        {
+
+        }
+        /// <summary>
+        /// 计算每帧空气消耗系数
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="factors">影响因素列表</param>
+        /// <returns></returns>
+        public virtual void CalculateAirFactor(ComponentLevel level, ICollection<Factor> factors)
+        {
+
+        }
+        /// <summary>
+        /// 计算护甲防御值倍数系数
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="factors">影响因素列表</param>
+        /// <returns></returns>
+        public virtual void CalculateArmorProtectionFactor(ComponentClothing clothing, ICollection<Factor> factors)
+        {
+
+        }
+        /// <summary>
+        /// 计算掉落伤害保护系数
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="factors">影响因素列表</param>
+        /// <returns></returns>
+        public virtual void CalculateFallResilienceFactor(ComponentBody body, ICollection<Factor> factors)
+        {
+
+        }
+        /// <summary>
+        /// 计算最大空气量系数
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="factors">影响因素列表</param>
+        /// <returns></returns>
+        public virtual void CalculateAirCapacityFactor(ComponentBody body, ICollection<Factor> factors)
         {
 
         }

@@ -104,6 +104,8 @@ namespace Game
         }
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
+        public float ArmorProtectionFator { get; set; }
+        public List<Factor> ArmorProtectionFators = new List<Factor>();
 
         Project IInventory.Project => Project;
 
@@ -134,6 +136,12 @@ namespace Game
         public virtual ReadOnlyList<int> GetClothes(ClothingSlot slot)
         {
             return new ReadOnlyList<int>(m_clothes[slot]);
+        }
+        public virtual void CalculateArmorProtectionFator()
+        {
+            ArmorProtectionFators.Clear();
+            ModsManager.HookAction("CalculateArmorProtectionFator", loader => { loader.CalculateArmorProtectionFactor(this, ArmorProtectionFators); return true; });
+            ArmorProtectionFator = ComponentLevel.GetFatorsResult(ArmorProtectionFators);
         }
 
         public virtual void SetClothes(ClothingSlot slot, IEnumerable<int> clothes)
@@ -212,7 +220,6 @@ namespace Game
 
         public float ApplyArmorProtection(float attackPower)
         {
-            float attackpower2 = attackPower;
             float num = m_random.Float(0f, 1f);
             ClothingSlot slot = (num < 0.1f) ? ClothingSlot.Feet : ((num < 0.3f) ? ClothingSlot.Legs : ((num < 0.9f) ? ClothingSlot.Torso : ClothingSlot.Head));
             float num2 = ((ClothingBlock)BlocksManager.Blocks[203]).Durability + 1;
@@ -221,14 +228,16 @@ namespace Game
             {
                 int value = list[i];
                 Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-                ClothingData clothingData = block.GetClothingData(value); float x = (num2 - (float)BlocksManager.Blocks[203].GetDamage(value)) / num2 * clothingData.Sturdiness;
-                float num3 = MathUtils.Min(attackpower2 * MathUtils.Saturate(clothingData.ArmorProtection), x);
+                ClothingData clothingData = block.GetClothingData(value); 
+                float x = (num2 - (float)BlocksManager.Blocks[203].GetDamage(value)) / num2 * clothingData.Sturdiness;
+                float num3 = MathUtils.Min(attackPower * MathUtils.Saturate(clothingData.ArmorProtection), x);
                 if (num3 > 0f)
                 {
-                    attackpower2 -= num3;
+                    attackPower -= num3;
                     if (m_subsystemGameInfo.WorldSettings.GameMode != 0)
                     {
                         float x2 = num3 / clothingData.Sturdiness * num2 + 0.001f;
+                        //¼ÆËãÄÍ¾ÃËðºÄ
                         int damageCount = (int)(MathUtils.Floor(x2) + (float)(m_random.Bool(MathUtils.Remainder(x2, 1f)) ? 1 : 0));
                         list[i] = BlocksManager.DamageItem(value, damageCount);
                     }
@@ -251,12 +260,10 @@ namespace Game
                     num4++;
                 }
             }
-            ModsManager.HookAction("ApplyArmorProtection", modLoader => {
-                modLoader.ApplyArmorProtection(this,attackPower, ref attackpower2);
-                return true;
-            });
             SetClothes(slot, list);
-            return attackpower2;
+            CalculateArmorProtectionFator();
+            attackPower *= ArmorProtectionFator;
+            return attackPower;
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
@@ -287,6 +294,7 @@ namespace Game
             SetClothes(ClothingSlot.Legs, HumanReadableConverter.ValuesListFromString<int>(';', value.GetValue<string>("Legs")));
             SetClothes(ClothingSlot.Feet, HumanReadableConverter.ValuesListFromString<int>(';', value.GetValue<string>("Feet")));
             Display.DeviceReset += Display_DeviceReset;
+            ArmorProtectionFator = 1f;
         }
 
         public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)

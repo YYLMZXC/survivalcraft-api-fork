@@ -224,6 +224,18 @@ namespace Game
             }
         }
 
+        public List<Factor> FireResilienceFactors = new List<Factor>();
+        public List<Factor> FallResilienceFactors = new List<Factor>();
+        public List<Factor> AirFactors = new List<Factor>();
+        public List<Factor> AirCapacityFactors = new List<Factor>();
+
+
+        public float FireResilienceFactor { get; set; }
+        public float FallResilienceFactor { get; set; }
+        public float AirFactor { get; set; }
+        public float AirCapacityFactor { get; set; }
+
+
         public ReadOnlyList<ComponentBody> ChildBodies => new ReadOnlyList<ComponentBody>(m_childBodies);
 
         public ComponentBody ParentBody
@@ -343,6 +355,10 @@ namespace Game
             IsGravityEnabled = true;
             IsGroundDragEnabled = true;
             IsWaterDragEnabled = true;
+            FireResilienceFactor = 1f;
+            FallResilienceFactor = 1f;
+            AirCapacityFactor = 1f;
+            AirFactor = 1f;
         }
 
         public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)
@@ -1063,6 +1079,34 @@ namespace Game
             }
             return num;
         }
+        public virtual void CalculateFireResilienceFactor()
+        {
+            FireResilienceFactors.Clear();
+            ModsManager.HookAction("CalculateFireResilienceFactor", loader => { loader.CalculateFireResilienceFactor(this, FireResilienceFactors); return true; });
+            FireResilienceFactor = ComponentLevel.GetFatorsResult(FireResilienceFactors);
+        }
+        public virtual void CalculateFallResilienceFactor()
+        {
+            FallResilienceFactors.Clear();
+            ModsManager.HookAction("CalculateFallResilienceFactor", loader => { loader.CalculateFallResilienceFactor(this, FallResilienceFactors); return true; });
+            FireResilienceFactor = ComponentLevel.GetFatorsResult(FallResilienceFactors);
+
+        }
+        public virtual void CalculateAirFactor()
+        {
+            AirCapacityFactors.Clear();
+            ModsManager.HookAction("CalculateAirFactor", loader => { loader.CalculateFireResilienceFactor(this, AirCapacityFactors); return true; });
+            AirFactor = ComponentLevel.GetFatorsResult(AirCapacityFactors);
+
+        }
+        public virtual void CalculateAirCapacityFactor()
+        {
+            AirCapacityFactors.Clear();
+            ModsManager.HookAction("CalculateAirCapacityFactor", loader => { loader.CalculateAirCapacityFactor(this, AirCapacityFactors); return true; });
+            AirCapacityFactor = ComponentLevel.GetFatorsResult(AirCapacityFactors);
+
+        }
+
 
         public float CalculateSmoothRisePushBack(BoundingBox normalBox, BoundingBox smoothRiseBox, int axis, DynamicArray<CollisionBox> collisionBoxes, out CollisionBox pushingCollisionBox)
         {

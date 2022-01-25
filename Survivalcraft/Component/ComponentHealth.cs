@@ -2,6 +2,7 @@ using Engine;
 using GameEntitySystem;
 using System;
 using TemplatesDatabase;
+using System.Collections.Generic;
 
 namespace Game
 {
@@ -117,11 +118,20 @@ namespace Game
         public virtual Action<ComponentCreature> Attacked { get; set; }
         public virtual Action<ComponentCreature> Injured { get; set; }
 
+        public List<Factor> HealFactors = new List<Factor>();
+        public float HealFactor { get; set; }
+        public virtual void CalculateHealFactor()
+        {
+            HealFactors.Clear();
+            ModsManager.HookAction("CalculateHealFactor", loader => { loader.CalculateHealFactor(this, HealFactors); return true; });
+            HealFactor = ComponentLevel.GetFatorsResult(HealFactors);
+        }
         public virtual void Heal(float amount)
         {
             if (amount > 0f)
             {
-                Health = MathUtils.Min(Health + amount, 1f);
+                CalculateHealFactor();
+                Health = MathUtils.Min(Health + amount * HealFactor, 1f);
             }
         }
 
@@ -223,17 +233,20 @@ namespace Game
             }
             else if (BreathingMode == BreathingMode.Water)
             {
-                Air = m_componentCreature.ComponentBody.ImmersionFactor > 0.25f ? 1f : MathUtils.Saturate(Air - dt / AirCapacity);
+                m_componentCreature.ComponentBody.CalculateAirFactor();
+                Air = m_componentCreature.ComponentBody.ImmersionFactor > 0.25f ? 1f : MathUtils.Saturate(Air - dt * m_componentCreature.ComponentBody.AirFactor / AirCapacity );
             }
             //µôÂäÑÒ½¬
             if (m_componentCreature.ComponentBody.ImmersionFactor > 0f && m_componentCreature.ComponentBody.ImmersionFluidBlock is MagmaBlock)
             {
                 ModsManager.HookAction("OnBodyInMagmaBlock", loader => { return loader.OnBodyInMagmaBlock(this, dt); });
             }
+            m_componentCreature.ComponentBody.CalculateFallResilienceFactor();
             float num3 = MathUtils.Abs(m_componentCreature.ComponentBody.CollisionVelocityChange.Y);
-            if (!m_wasStanding && num3 > FallResilience)
+            float nFallResilience = FallResilience * m_componentCreature.ComponentBody.FallResilienceFactor;
+            if (!m_wasStanding && num3 > nFallResilience)
             {
-                float num4 = MathUtils.Sqr(MathUtils.Max(num3 - FallResilience, 0f)) / 15f;
+                float num4 = MathUtils.Sqr(MathUtils.Max(num3 - nFallResilience, 0f)) / 15f;
                 if (m_componentPlayer != null)
                 {
                     num4 /= m_componentPlayer.ComponentLevel.ResilienceFactor;
@@ -258,7 +271,7 @@ namespace Game
             }
             if (num5 && (m_componentOnFire.IsOnFire || m_componentOnFire.TouchesFire))
             {
-                float num7 = 1f / FireResilience;
+                float num7 = 1f / (FireResilience * m_componentCreature.ComponentBody.FireResilienceFactor);
                 if (m_componentPlayer != null)
                 {
                     num7 /= m_componentPlayer.ComponentLevel.ResilienceFactor;
@@ -334,6 +347,7 @@ namespace Game
             double value = valuesDictionary.GetValue<double>("DeathTime");
             DeathTime = ((value >= 0.0) ? new double?(value) : null);
             CauseOfDeath = valuesDictionary.GetValue<string>("CauseOfDeath");
+            HealFactor = 1f;
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && Entity.FindComponent<ComponentPlayer>() != null)
             {
                 IsInvulnerable = true;
