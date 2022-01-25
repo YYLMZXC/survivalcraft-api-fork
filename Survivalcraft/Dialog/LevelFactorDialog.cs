@@ -20,7 +20,7 @@ namespace Game
 
         public ButtonWidget m_okWidget;
 
-        public LevelFactorDialog(string title, string description, IEnumerable<ComponentLevel.Factor> factors, float total)
+        public LevelFactorDialog(string title, string description, IEnumerable<Factor> factors, float total)
         {
             XElement node = ContentManager.Get<XElement>("Dialogs/LevelFactorDialog");
             LoadContents(this, node);
@@ -35,7 +35,7 @@ namespace Game
             m_descriptionWidget.Text = description;
             m_namesWidget.Text = string.Empty;
             m_valuesWidget.Text = string.Empty;
-            foreach (ComponentLevel.Factor factor in factors)
+            foreach (Factor factor in factors)
             {
                 m_namesWidget.Text += string.Format("{0,24}\n", factor.Description);
                 m_valuesWidget.Text += string.Format(CultureInfo.InvariantCulture, "x {0:0.00}\n", factor.Value);

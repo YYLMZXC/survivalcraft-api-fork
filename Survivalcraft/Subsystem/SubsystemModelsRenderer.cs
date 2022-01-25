@@ -257,7 +257,7 @@ namespace Game
                 //»­Ãû³Æ
                 ModsManager.HookAction("OnModelRendererDrawExtra", modLoader => {
                     modLoader.OnModelRendererDrawExtra(this, componentModel, camera, alphaThreshold);
-                    return false;
+                    return true;
                 });
             }
         }

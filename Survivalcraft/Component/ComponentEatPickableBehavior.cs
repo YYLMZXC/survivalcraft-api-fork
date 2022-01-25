@@ -204,8 +204,7 @@ namespace Game
                                 m_importanceLevel = 0f;
                             }
                             ModsManager.HookAction("OnEatPickable", (modLoader) => {
-                                modLoader.OnEatPickable(this, m_pickable,out bool Dealed);
-                                return Dealed;
+                                return modLoader.OnEatPickable(this, m_pickable);
                             });
                         }
                     }

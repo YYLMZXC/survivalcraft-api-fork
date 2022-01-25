@@ -689,7 +689,7 @@ namespace Game
             {
                 ModsManager.HookAction("OnCameraChange", modLoader => {
                     modLoader.OnCameraChange(m_componentPlayer, this);
-                    return false;
+                    return true;
                 });
             }
             if (m_photoButtonWidget.IsClicked || playerInput.TakeScreenshot)

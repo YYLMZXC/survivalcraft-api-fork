@@ -143,7 +143,7 @@ public static class ModsManager
         {
             foreach (ModLoader modLoader in modHook.Loaders.Keys)
             {
-                if (action.Invoke(modLoader)) break;
+                if (!action.Invoke(modLoader)) break;
             }
         }
     }

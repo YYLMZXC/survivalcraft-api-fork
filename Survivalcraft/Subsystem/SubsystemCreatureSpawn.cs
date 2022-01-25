@@ -1224,11 +1224,12 @@ namespace Game
                     SpawnChunk spawnChunk = m_subsystemSpawn.GetSpawnChunk(new Point2(j, k));
                     if (spawnChunk != null)
                     {
-                        foreach (SpawnEntityData spawnsDatum in spawnChunk.SpawnsData)
+                        foreach (ValuesDictionary spawnsDatum in spawnChunk.SpawnsData)
                         {
-                            if (spawnsDatum.ConstantSpawn == constantSpawn)
+                            bool ConstantSpawn = spawnsDatum.GetValue<bool>("ConstantSpawn");
+                            if (ConstantSpawn == constantSpawn)
                             {
-                                Vector3 position2 = spawnsDatum.Position;
+                                Vector3 position2 = spawnsDatum.GetValue<Vector3>("Position");
                                 if (position2.X >= c1.X && position2.X <= c2.X && position2.Z >= c1.Y && position2.Z <= c2.Y)
                                 {
                                     num++;

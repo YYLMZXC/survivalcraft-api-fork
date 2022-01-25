@@ -159,8 +159,8 @@ namespace Game
         {
             IsSet = false;
             ModsManager.HookAction("OnSetModel", (modLoader) => {
-                modLoader.OnSetModel(this, model, out IsSet);
-                return IsSet;
+                modLoader.OnSetModel(this, model);
+                return true;
             });
             if (IsSet) return;
             m_model = model;

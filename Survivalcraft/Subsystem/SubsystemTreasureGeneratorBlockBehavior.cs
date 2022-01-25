@@ -54,8 +54,8 @@ namespace Game
                 }
             }
             ModsManager.HookAction("OnTreasureGenerate", (modLoader) => {
-                modLoader.OnTreasureGenerate(SubsystemTerrain,x, y, z, neighborX, neighborY, neighborZ, ref num, ref num2, out bool IsGenerate);
-                return IsGenerate;
+                modLoader.OnTreasureGenerate(SubsystemTerrain, x, y, z, neighborX, neighborY, neighborZ, ref num, ref num2);
+                return true;
             });
             if (num != 0 && num2 > 0)
             {

@@ -141,27 +141,19 @@ namespace Game
             }
             if (m_strengthLink.IsClicked)
             {
-                var factors = new List<ComponentLevel.Factor>();
-                float total = m_componentPlayer.ComponentLevel.CalculateStrengthFactor(factors);
-                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Strength"), LanguageControl.GetContentWidgets(GetType().Name, 16), factors, total));
+                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Strength"), LanguageControl.GetContentWidgets(GetType().Name, 16), m_componentPlayer.ComponentLevel.StrengthFactors, m_componentPlayer.ComponentLevel.StrengthFactor));
             }
             if (m_resilienceLink.IsClicked)
             {
-                var factors2 = new List<ComponentLevel.Factor>();
-                float total2 = m_componentPlayer.ComponentLevel.CalculateResilienceFactor(factors2);
-                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Resilience"), LanguageControl.GetContentWidgets(GetType().Name, 17), factors2, total2));
+                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Resilience"), LanguageControl.GetContentWidgets(GetType().Name, 17), m_componentPlayer.ComponentLevel.ResilienceFactors, m_componentPlayer.ComponentLevel.ResilienceFactor));
             }
             if (m_speedLink.IsClicked)
             {
-                var factors3 = new List<ComponentLevel.Factor>();
-                float total3 = m_componentPlayer.ComponentLevel.CalculateSpeedFactor(factors3);
-                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Speed"), LanguageControl.GetContentWidgets(GetType().Name, 18), factors3, total3));
+                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Speed"), LanguageControl.GetContentWidgets(GetType().Name, 18), m_componentPlayer.ComponentLevel.SpeedFactors, m_componentPlayer.ComponentLevel.SpeedFactor));
             }
             if (m_hungerLink.IsClicked)
             {
-                var factors4 = new List<ComponentLevel.Factor>();
-                float total4 = m_componentPlayer.ComponentLevel.CalculateHungerFactor(factors4);
-                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Hunger"), LanguageControl.GetContentWidgets(GetType().Name, 19), factors4, total4));
+                DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new LevelFactorDialog(LanguageControl.GetContentWidgets(GetType().Name, "Hunger"), LanguageControl.GetContentWidgets(GetType().Name, 19), m_componentPlayer.ComponentLevel.HungerFactors, m_componentPlayer.ComponentLevel.HungerFactor));
             }
             if (m_experienceLink.IsClicked)
             {

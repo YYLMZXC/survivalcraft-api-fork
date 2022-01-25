@@ -394,32 +394,6 @@ namespace Game
 		public void PrepareForDrawing(Camera camera)
 		{
 			SetUpdateLocation(camera.GameWidget.PlayerData.PlayerIndex, camera.ViewPosition.XZ, m_subsystemSky.VisibilityRange, 64f);
-			if (m_synchronousUpdateFrame == Time.FrameIndex)
-			{
-				List<TerrainChunk> list = DetermineSynchronousUpdateChunks(camera.ViewPosition, camera.ViewDirection);
-				if (list.Count > 0)
-				{
-					m_updateEvent.WaitOne();
-					try
-					{
-						SendReceiveChunkStates();
-						SendReceiveChunkStatesThread();
-						foreach (TerrainChunk item in list)
-						{
-							while (item.ThreadState < TerrainChunkState.Valid)
-							{
-								UpdateChunkSingleStep(item, m_subsystemSky.SkyLightValue);
-							}
-						}
-						SendReceiveChunkStatesThread();
-						SendReceiveChunkStates();
-					}
-					finally
-					{
-						m_updateEvent.Set();
-					}
-				}
-			}
 		}
 
 		public void DowngradeChunkNeighborhoodState(Point2 coordinates, int radius, TerrainChunkState state, bool forceGeometryRegeneration)

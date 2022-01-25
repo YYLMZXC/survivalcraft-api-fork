@@ -104,6 +104,8 @@ namespace Game
         }
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
+        public float ArmorProtectionFator { get; set; }
+        public List<Factor> ArmorProtectionFators = new List<Factor>();
 
         Project IInventory.Project => Project;
 
@@ -134,6 +136,12 @@ namespace Game
         public virtual ReadOnlyList<int> GetClothes(ClothingSlot slot)
         {
             return new ReadOnlyList<int>(m_clothes[slot]);
+        }
+        public virtual void CalculateArmorProtectionFator()
+        {
+            ArmorProtectionFators.Clear();
+            ModsManager.HookAction("CalculateArmorProtectionFator", loader => { loader.CalculateArmorProtectionFactor(this, ArmorProtectionFators); return true; });
+            ArmorProtectionFator = ComponentLevel.GetFatorsResult(ArmorProtectionFators);
         }
 
         public virtual void SetClothes(ClothingSlot slot, IEnumerable<int> clothes)
@@ -212,56 +220,50 @@ namespace Game
 
         public float ApplyArmorProtection(float attackPower)
         {
-            bool Applied = false;
-            ModsManager.HookAction("ApplyArmorProtection", modLoader => {
-                attackPower = modLoader.ApplyArmorProtection(this, attackPower, out bool flag2);
-                Applied |= flag2;
-                return false;
-            });
-            if (Applied == false)
+            float num = m_random.Float(0f, 1f);
+            ClothingSlot slot = (num < 0.1f) ? ClothingSlot.Feet : ((num < 0.3f) ? ClothingSlot.Legs : ((num < 0.9f) ? ClothingSlot.Torso : ClothingSlot.Head));
+            float num2 = ((ClothingBlock)BlocksManager.Blocks[203]).Durability + 1;
+            List<int> list = new List<int>(GetClothes(slot));
+            for (int i = 0; i < list.Count; i++)
             {
-                float num = m_random.Float(0f, 1f);
-                ClothingSlot slot = (num < 0.1f) ? ClothingSlot.Feet : ((num < 0.3f) ? ClothingSlot.Legs : ((num < 0.9f) ? ClothingSlot.Torso : ClothingSlot.Head));
-                float num2 = ((ClothingBlock)BlocksManager.Blocks[203]).Durability + 1;
-                List<int> list = new List<int>(GetClothes(slot));
-                for (int i = 0; i < list.Count; i++)
+                int value = list[i];
+                Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
+                ClothingData clothingData = block.GetClothingData(value); 
+                float x = (num2 - (float)BlocksManager.Blocks[203].GetDamage(value)) / num2 * clothingData.Sturdiness;
+                float num3 = MathUtils.Min(attackPower * MathUtils.Saturate(clothingData.ArmorProtection), x);
+                if (num3 > 0f)
                 {
-                    int value = list[i];
-                    Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-                    ClothingData clothingData = block.GetClothingData(value); float x = (num2 - (float)BlocksManager.Blocks[203].GetDamage(value)) / num2 * clothingData.Sturdiness;
-                    float num3 = MathUtils.Min(attackPower * MathUtils.Saturate(clothingData.ArmorProtection), x);
-                    if (num3 > 0f)
+                    attackPower -= num3;
+                    if (m_subsystemGameInfo.WorldSettings.GameMode != 0)
                     {
-                        attackPower -= num3;
-                        if (m_subsystemGameInfo.WorldSettings.GameMode != 0)
-                        {
-                            float x2 = num3 / clothingData.Sturdiness * num2 + 0.001f;
-                            int damageCount = (int)(MathUtils.Floor(x2) + (float)(m_random.Bool(MathUtils.Remainder(x2, 1f)) ? 1 : 0));
-                            list[i] = BlocksManager.DamageItem(value, damageCount);
-                        }
-                        if (!string.IsNullOrEmpty(clothingData.ImpactSoundsFolder))
-                        {
-                            m_subsystemAudio.PlayRandomSound(clothingData.ImpactSoundsFolder, 1f, m_random.Float(-0.3f, 0.3f), m_componentBody.Position, 4f, 0.15f);
-                        }
+                        float x2 = num3 / clothingData.Sturdiness * num2 + 0.001f;
+                        //¼ÆËãÄÍ¾ÃËðºÄ
+                        int damageCount = (int)(MathUtils.Floor(x2) + (float)(m_random.Bool(MathUtils.Remainder(x2, 1f)) ? 1 : 0));
+                        list[i] = BlocksManager.DamageItem(value, damageCount);
+                    }
+                    if (!string.IsNullOrEmpty(clothingData.ImpactSoundsFolder))
+                    {
+                        m_subsystemAudio.PlayRandomSound(clothingData.ImpactSoundsFolder, 1f, m_random.Float(-0.3f, 0.3f), m_componentBody.Position, 4f, 0.15f);
                     }
                 }
-                int num4 = 0;
-                while (num4 < list.Count)
-                {
-                    if (Terrain.ExtractContents(list[num4]) != 203)
-                    {
-                        list.RemoveAt(num4);
-                        m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + m_componentBody.BoxSize / 2f, 1f, 1f, Color.White, 0));
-                    }
-                    else
-                    {
-                        num4++;
-                    }
-                }
-                SetClothes(slot, list);
-
             }
-            return MathUtils.Max(attackPower, 0f);
+            int num4 = 0;
+            while (num4 < list.Count)
+            {
+                if (Terrain.ExtractContents(list[num4]) != 203)
+                {
+                    list.RemoveAt(num4);
+                    m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + m_componentBody.BoxSize / 2f, 1f, 1f, Color.White, 0));
+                }
+                else
+                {
+                    num4++;
+                }
+            }
+            SetClothes(slot, list);
+            CalculateArmorProtectionFator();
+            attackPower *= ArmorProtectionFator;
+            return attackPower;
         }
 
         public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
@@ -292,6 +294,7 @@ namespace Game
             SetClothes(ClothingSlot.Legs, HumanReadableConverter.ValuesListFromString<int>(';', value.GetValue<string>("Legs")));
             SetClothes(ClothingSlot.Feet, HumanReadableConverter.ValuesListFromString<int>(';', value.GetValue<string>("Feet")));
             Display.DeviceReset += Display_DeviceReset;
+            ArmorProtectionFator = 1f;
         }
 
         public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)
@@ -484,7 +487,7 @@ namespace Game
                     processedValue = value;
                     processedCount = processCount;
                 }
-                else if (block.Eat(value) || !m_componentVitalStats.Eat(value))
+                else if (block.Eat(this, value) || !m_componentVitalStats.Eat(value))
                 {
                     processedValue = value;
                     processedCount = processCount;

@@ -1,4 +1,6 @@
-﻿using Engine;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
+using Engine;
 using Engine.Graphics;
 using Engine.Media;
 using GameEntitySystem;
@@ -13,6 +15,26 @@ namespace Game
             ModsManager.RegisterHook("OnPlayerDead", this);
             ModsManager.RegisterHook("OnModelRendererDrawExtra", this);
             ModsManager.RegisterHook("GetMaxInstancesCount", this);
+            ModsManager.RegisterHook("OnBodyInMagmaBlock", this);
+            ModsManager.RegisterHook("MatchRecipe", this);
+            ModsManager.RegisterHook("OnCraftingRecipeDecode", this);
+        }
+        public override bool MatchRecipe(string[] requiredIngredients, string[] actualIngredient)
+        {
+            return true;
+        }
+        public override bool OnCraftingRecipeDecode(List<CraftingRecipe> m_recipes, XElement element)
+        {
+            CraftingRecipe craftingRecipe = CraftingRecipesManager.DecodeElementToCraftingRecipe(element);
+            CraftingRecipesManager.m_recipes.Add(craftingRecipe);
+            return true;
+        }
+        public override bool OnBodyInMagmaBlock(ComponentHealth componentHealth, float dt)
+        {
+            componentHealth.Injure(2f * componentHealth.m_componentCreature.ComponentBody.ImmersionFactor * dt, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 1));
+            float num2 = 1.1f + 0.1f * (float)MathUtils.Sin(12.0 * componentHealth.m_subsystemTime.GameTime);
+            componentHealth.m_redScreenFactor = MathUtils.Max(componentHealth.m_redScreenFactor, num2 * 1.5f * componentHealth.m_componentCreature.ComponentBody.ImmersionFactor);
+            return true;
         }
 
         public override void OnCameraChange(ComponentPlayer m_componentPlayer,ComponentGui componentGui)

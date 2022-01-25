@@ -1,5 +1,6 @@
 using Engine;
 using System.Collections.Generic;
+using TemplatesDatabase;
 
 namespace Game
 {
@@ -11,7 +12,7 @@ namespace Game
 
         public double? LastVisitedTime;
 
-        public List<SpawnEntityData> SpawnsData = new List<SpawnEntityData>();
+        public List<ValuesDictionary> SpawnsData = new List<ValuesDictionary>();
 
 
     }
