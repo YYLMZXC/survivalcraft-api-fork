@@ -101,8 +101,8 @@ namespace Engine.Audio
 				if (flag)
 				{
 					m_cacheFulls++;
-					//Log.Warning("AudioTrackCache full, no audio tracks available.");
-					//LogCacheStats();
+					Log.Warning("AudioTrackCache full, no audio tracks available.");
+					LogCacheStats();
 					return null;
 				}
 			}
