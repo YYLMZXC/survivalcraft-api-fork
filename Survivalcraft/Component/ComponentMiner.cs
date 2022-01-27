@@ -212,7 +212,7 @@ namespace Game
                     {
                         if (m_subsystemTerrain.Terrain.GetCellContents(num2, num3, num4) != 0) return false;
                     }
-                    ModsManager.HookAction("JumpToPlace", loader => { loader.JumpToPlace(out pass); return true; });
+                    ModsManager.HookAction("JumpToPlace", loader => { pass |= loader.JumpToPlace(this); return true; });
                     if (num3 > 0 && num3 < 255 && (pass || (IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Harmless)))
                     {
                         bool flag = false;

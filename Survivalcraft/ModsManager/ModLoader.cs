@@ -236,9 +236,11 @@ namespace Game
         /// <summary>
         /// 设置跳跃是否可放置方块
         /// </summary>
-        public virtual void JumpToPlace(out bool Pass)
+        /// <param name="miner"></param>
+        /// <returns>true 可以 false 不可以</returns>
+        public virtual bool JumpToPlace(ComponentMiner miner)
         {
-            Pass = false;
+            return false;
         }
 
         /// <summary>
