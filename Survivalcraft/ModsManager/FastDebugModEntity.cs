@@ -83,14 +83,6 @@ namespace Game
 			}
 		}
 
-        public override void LoadLauguage()
-        {
-            foreach (string c in Storage.ListFileNames(ModsManager.ModsPath))
-            {
-                if (c == ModsManager.Configs["Language"] + ".json") LanguageControl.loadJson(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
-            }
-        }
-
         public override void LoadBlocksData()
         {
             foreach (string c in Storage.ListFileNames(ModsManager.ModsPath))
@@ -121,9 +113,12 @@ namespace Game
         {
             foreach (string name in Storage.ListFileNames(ModsManager.ModsPath))
             {
-                using (Stream stream = Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, name), OpenFileMode.Read))
+                if (name.EndsWith(extension))
                 {
-                    try { action.Invoke(name, stream); } catch (Exception e) { LoadingScreen.Error(string.Format("GetFile {0} Error:{1}", name, e.Message)); }
+                    using (Stream stream = Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, name), OpenFileMode.Read))
+                    {
+                        try { action.Invoke(name, stream); } catch (Exception e) { LoadingScreen.Error(string.Format("GetFile {0} Error:{1}", name, e.Message)); }
+                    }
                 }
             }
         }

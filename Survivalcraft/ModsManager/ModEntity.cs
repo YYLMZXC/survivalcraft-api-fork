@@ -42,7 +42,7 @@ namespace Game {
             //将每个zip里面的文件读进内存中
             foreach (ZipArchiveEntry zipArchiveEntry in ModArchive.ReadCentralDir())
             {
-                if (Storage.GetExtension(zipArchiveEntry.FilenameInZip) == extension)
+                if (zipArchiveEntry.FilenameInZip.EndsWith(extension))
                 {
                     var stream = new MemoryStream();
                     ModArchive.ExtractFile(zipArchiveEntry, stream);
@@ -99,6 +99,7 @@ namespace Game {
         {
             LoadingScreen.Info("加载语言:" + modInfo?.Name);
             GetAssetsFile($"Lang/{ModsManager.Configs["Language"]}.json", (stream) => { LanguageControl.loadJson(stream); });
+            GetAssetsFile($"Lang/{ModsManager.Configs["Language"]}.lng", (stream) => { LanguageControl.loadLng(stream); });
         }
         /// <summary>
         /// Mod初始化

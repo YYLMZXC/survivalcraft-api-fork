@@ -84,7 +84,27 @@ namespace Game
             if (Success == default) Success = Get("Usual", "success");
             if (Delete == default) Success = Get("Usual", "delete");
         }
-
+        public static void loadLng(Stream stream)
+        {
+            string text = new StreamReader(stream).ReadToEnd();
+            string[] list = text.Split(new char[] { '\r','\n'});
+            foreach (var t in list)
+            {
+                if (string.IsNullOrEmpty(t) || t.StartsWith("#")) continue;
+                int p = t.IndexOf('=');
+                string key = t.Substring(0, p);
+                string value = t.Substring(p, t.Length - p);
+                if (!KeyWords.TryGetValue("Lng", out var obj))
+                {
+                    KeyWords.Add("Lng", obj = new JsonObject());
+                }
+                if (obj is JsonObject job)
+                {
+                    if (job.TryGetValue(key, out var v)) job[key] = value;
+                    else job.Add(key, value);
+                }
+            }
+        }
         public static void loadJsonLogic(JsonObject node, object obj) {
             if (obj is JsonObject)
             {
@@ -144,6 +164,14 @@ namespace Game
         public static string GetWorldPalette(int index)
         {
             return Get("WorldPalette", "Colors", index.ToString());
+        }
+        public static string GetLng(string key)
+        {
+            if (KeyWords.ContainsKey("Lng") && (KeyWords["Lng"] is JsonObject obj) && obj.TryGetValue(key, out var v))
+            {
+                return v.ToString();
+            }
+            return "";
         }
         public static string Get(params string[] key)
         {
