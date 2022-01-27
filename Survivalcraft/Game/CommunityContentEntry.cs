@@ -1,3 +1,5 @@
+using Engine.Graphics;
+
 namespace Game
 {
     public class CommunityContentEntry
@@ -15,5 +17,10 @@ namespace Game
         public string ExtraText;
 
         public float RatingsAverage;
+
+        public Texture2D Icon;
+
+        public string IconSrc;
+
     }
 }

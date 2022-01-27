@@ -69,7 +69,7 @@ namespace Game
                 {
                     XElement node2 = ContentManager.Get<XElement>("Widgets/CommunityContentItem");
                     var obj = (ContainerWidget)LoadWidget(this, node2, null);
-                    obj.Children.Find<RectangleWidget>("CommunityContentItem.Icon").Subtexture = ExternalContentManager.GetEntryTypeIcon(communityContentEntry.Type);
+                    obj.Children.Find<RectangleWidget>("CommunityContentItem.Icon").Subtexture = communityContentEntry.Icon == null ? ExternalContentManager.GetEntryTypeIcon(communityContentEntry.Type) : new Subtexture(communityContentEntry.Icon,Vector2.Zero,Vector2.One);
                     obj.Children.Find<LabelWidget>("CommunityContentItem.Text").Text = communityContentEntry.Name;
                     obj.Children.Find<LabelWidget>("CommunityContentItem.Details").Text = $"{ExternalContentManager.GetEntryTypeDescription(communityContentEntry.Type)} {DataSizeFormatter.Format(communityContentEntry.Size)}";
                     obj.Children.Find<StarRatingWidget>("CommunityContentItem.Rating").Rating = communityContentEntry.RatingsAverage;
@@ -217,6 +217,25 @@ namespace Game
                 foreach (CommunityContentEntry item2 in list)
                 {
                     m_listPanel.AddItem(item2);
+                    if (item2.Icon == null && !string.IsNullOrEmpty(item2.IconSrc))
+                    {
+                        WebManager.Get(item2.IconSrc,null,null,new CancellableProgress(),delegate(byte[] data) {
+                            Dispatcher.Dispatch(delegate {
+                                if (data.Length > 0)
+                                {
+                                    try
+                                    {
+                                        item2.Icon = Engine.Graphics.Texture2D.Load(Engine.Media.Image.Load(new System.IO.MemoryStream(data), Engine.Media.ImageFileFormat.Png));
+                                        PopulateList(cursor);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine(e.Message);
+                                    }
+                                }
+                            });
+                        },delegate(Exception e) { });
+                    }
                 }
                 if (list.Count > 0 && !string.IsNullOrEmpty(nextCursor))
                 {

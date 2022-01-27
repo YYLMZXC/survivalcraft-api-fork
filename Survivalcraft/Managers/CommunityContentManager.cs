@@ -97,7 +97,9 @@ namespace Game
                                 UserId = XmlUtils.GetAttributeValue<string>(item, "UserId"),
                                 Size = XmlUtils.GetAttributeValue<long>(item, "Size"),
                                 ExtraText = XmlUtils.GetAttributeValue(item, "ExtraText", string.Empty),
-                                RatingsAverage = XmlUtils.GetAttributeValue(item, "RatingsAverage", 0f)
+                                RatingsAverage = XmlUtils.GetAttributeValue(item, "RatingsAverage", 0f),
+                                IconSrc = XmlUtils.GetAttributeValue(item, "Icon", "")
+
                             });
                         }
                         catch (Exception)
