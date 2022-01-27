@@ -93,7 +93,7 @@ namespace Game
                 if (string.IsNullOrEmpty(t) || t.StartsWith("#")) continue;
                 int p = t.IndexOf('=');
                 string key = t.Substring(0, p);
-                string value = t.Substring(p, t.Length - p);
+                string value = t.Substring(++p, t.Length - p);
                 if (!KeyWords.TryGetValue("Lng", out var obj))
                 {
                     KeyWords.Add("Lng", obj = new JsonObject());
@@ -171,7 +171,7 @@ namespace Game
             {
                 return v.ToString();
             }
-            return "";
+            return key;
         }
         public static string Get(params string[] key)
         {
