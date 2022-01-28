@@ -41,9 +41,17 @@ namespace Game
                     KeyValuePair<int, IDrawable> keyValuePair = m_sortedDrawables[j];
                     keyValuePair.Value.Draw(camera, keyValuePair.Key);
                 }
-                catch (Exception)
+#if DEBUG
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                }
+#endif
+#if TRACE
+                catch
                 {
                 }
+#endif
             }
         }
 

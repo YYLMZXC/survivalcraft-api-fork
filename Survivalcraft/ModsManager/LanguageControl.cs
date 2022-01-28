@@ -94,9 +94,9 @@ namespace Game
                 int p = t.IndexOf('=');
                 string key = t.Substring(0, p);
                 string value = t.Substring(++p, t.Length - p);
-                if (!KeyWords.TryGetValue("Lng", out var obj))
+                if (!KeyWords.TryGetValue("Usual", out var obj))
                 {
-                    KeyWords.Add("Lng", obj = new JsonObject());
+                    KeyWords.Add("Usual", obj = new JsonObject());
                 }
                 if (obj is JsonObject job)
                 {
@@ -167,7 +167,7 @@ namespace Game
         }
         public static string GetLng(string key)
         {
-            if (KeyWords.ContainsKey("Lng") && (KeyWords["Lng"] is JsonObject obj) && obj.TryGetValue(key, out var v))
+            if (KeyWords.ContainsKey("Usual") && (KeyWords["Usual"] is JsonObject obj) && obj.TryGetValue(key, out var v))
             {
                 return v.ToString();
             }
