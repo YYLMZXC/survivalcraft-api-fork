@@ -38,7 +38,7 @@ namespace Game
             {
                 if (external)
                 {
-                    string path =ModsManager.IsAndroid ? "android:/SurvivalCraft2.2/" : "app:/";
+                    string path = ModsManager.IsAndroid ? "android:/SurvivalCraft2.2/" : "app:/";
                     Stream stream = Storage.OpenFile(Storage.CombinePaths(path, includefname), OpenFileMode.Read);
                     StreamReader streamReader = new StreamReader(stream);
                     shaderTextTemp = streamReader.ReadToEnd();
@@ -57,10 +57,25 @@ namespace Game
                 }
                 if (shaderTextTemp == string.Empty) return string.Empty;
                 shaderTextTemp = shaderTextTemp.Replace("\n", "$");
-                string[] lines = shaderTextTemp.Split(new char[1] { '$' });
+                string[] lines = shaderTextTemp.Split(new char[1] { '$' }, StringSplitOptions.RemoveEmptyEntries);
                 for (int l = 0; l < lines.Length; l++)
                 {
-                    if (lines[l].Contains("#include"))
+                    lines[l] = lines[l].Trim();
+                    if (lines[l].StartsWith("//"))
+                    {
+                        string text = lines[l].Substring(2).TrimStart();
+                        if (text.StartsWith("<") && text.EndsWith("/>"))
+                        {
+                            includeText += lines[l] + "\n";
+                            continue;
+                        }
+                    }
+                    string[] arline = lines[l].Replace("//", "$").Split(new char[1] { '$' });
+                    if(arline.Length > 0)
+                    {
+                        lines[l] = arline[0];
+                    }
+                    if (lines[l].StartsWith("#include"))
                     {
                         Regex regex = new Regex("\"[^\"]*\"");
                         string fname = regex.Match(lines[l]).Value.Replace("\"", "");

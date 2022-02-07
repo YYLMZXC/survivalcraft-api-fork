@@ -78,8 +78,8 @@ namespace Engine.Graphics
 				throw;
 			}
 		}
-		public Shader(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros)  {
-
+		public Shader(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros) 
+		{
 			Construct(vertexShaderCode, pixelShaderCode, shaderMacros);
 		}
 		public override void Dispose()
@@ -231,7 +231,7 @@ namespace Engine.Graphics
 			if (params2 != 1)
 			{
 				string shaderInfoLog2 = GL.GetShaderInfoLog(m_pixelShader);
-				 throw new InvalidOperationException($"Error compiling pixel shader.\n{shaderInfoLog2}");
+				throw new InvalidOperationException($"Error compiling pixel shader.\n{shaderInfoLog2}");
 			}
 			m_program = GL.CreateProgram();
 			GL.AttachShader(m_program, m_vertexShader);
@@ -345,11 +345,18 @@ namespace Engine.Graphics
 
 		public ShaderParameter GetParameter(string name, bool allowNull = false)
 		{
-			if (!m_parametersByName.TryGetValue(name, out ShaderParameter value) && !allowNull)
+			if (m_parametersByName.TryGetValue(name, out ShaderParameter value))
+			{
+				return value;
+			}
+			else if (allowNull)
+			{
+				return new ShaderParameter("null", ShaderParameterType.Null);
+			}
+			else
 			{
 				throw new InvalidOperationException($"Parameter \"{name}\" not found.");
 			}
-			return value;
 		}
 
 		public override int GetGpuMemoryUsage()

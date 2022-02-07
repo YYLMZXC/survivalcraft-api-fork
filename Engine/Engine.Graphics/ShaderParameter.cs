@@ -20,6 +20,12 @@ namespace Engine.Graphics
 
 		public readonly int Count;
 
+		internal ShaderParameter(string name, ShaderParameterType type)
+		{
+			Name = name;
+			Type = type;
+		}
+
 		internal ShaderParameter(Shader shader, string name, ShaderParameterType type, int count)
 		{
 			Shader = shader;
@@ -53,6 +59,7 @@ namespace Engine.Graphics
 
 		public void SetValue(float value)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != 0 || Count != 1)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");
@@ -66,6 +73,7 @@ namespace Engine.Graphics
 
 		public void SetValue(float[] value, int count)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != 0)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");
@@ -97,6 +105,7 @@ namespace Engine.Graphics
 
 		public void SetValue(Vector2 value)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != ShaderParameterType.Vector2 || Count != 1)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");
@@ -111,6 +120,7 @@ namespace Engine.Graphics
 
 		public void SetValue(Vector2[] value, int count)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != ShaderParameterType.Vector2)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");
@@ -146,6 +156,7 @@ namespace Engine.Graphics
 
 		public void SetValue(Vector3 value)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != ShaderParameterType.Vector3 || Count != 1)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");
@@ -161,6 +172,7 @@ namespace Engine.Graphics
 
 		public void SetValue(Vector3[] value, int count)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != ShaderParameterType.Vector3)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");
@@ -197,6 +209,7 @@ namespace Engine.Graphics
 
 		public void SetValue(Vector4 value)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != ShaderParameterType.Vector4 || Count != 1)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");
@@ -213,6 +226,7 @@ namespace Engine.Graphics
 
 		public void SetValue(Vector4[] value, int count)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != ShaderParameterType.Vector4)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");
@@ -250,6 +264,7 @@ namespace Engine.Graphics
 
 		public void SetValue(Matrix value)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != ShaderParameterType.Matrix || Count != 1)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");
@@ -278,6 +293,7 @@ namespace Engine.Graphics
 
 		public void SetValue(Matrix[] value, int count)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != ShaderParameterType.Matrix)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");
@@ -327,6 +343,7 @@ namespace Engine.Graphics
 
 		public void SetValue(Texture2D value)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != ShaderParameterType.Texture2D || Count != 1)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");
@@ -340,6 +357,7 @@ namespace Engine.Graphics
 
 		public void SetValue(SamplerState value)
 		{
+			if (Type == ShaderParameterType.Null) return;
 			if (Type != ShaderParameterType.Sampler2D || Count != 1)
 			{
 				throw new InvalidOperationException("Shader parameter type mismatch.");

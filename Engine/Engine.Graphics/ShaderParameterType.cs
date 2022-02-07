@@ -8,6 +8,7 @@ namespace Engine.Graphics
 		Vector4,
 		Matrix,
 		Texture2D,
-		Sampler2D
+		Sampler2D,
+		Null
 	}
 }

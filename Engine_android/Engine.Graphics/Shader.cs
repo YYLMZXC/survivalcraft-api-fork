@@ -70,11 +70,18 @@ namespace Engine.Graphics
 
 		public ShaderParameter GetParameter(string name, bool allowNull = false)
 		{
-			if (!m_parametersByName.TryGetValue(name, out ShaderParameter value) && !allowNull)
+			if (m_parametersByName.TryGetValue(name, out ShaderParameter value))
+			{
+				return value;
+			}
+			else if (allowNull)
+			{
+				return new ShaderParameter("null", ShaderParameterType.Null);
+			}
+			else
 			{
 				throw new InvalidOperationException($"Parameter \"{name}\" not found.");
 			}
-			return value;
 		}
 
 		public override int GetGpuMemoryUsage()
