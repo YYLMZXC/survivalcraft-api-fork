@@ -74,7 +74,15 @@ namespace Engine
 			FileAccess access = (openFileMode == OpenFileMode.Read) ? FileAccess.Read : FileAccess.ReadWrite;
 			return File.Open(text, mode, access, FileShare.Read);
 		}
-
+		public static void MoveDirectory(string path, string newPath)
+		{
+			Directory.Move(path, newPath);
+		}
+		//TO DO: fix method
+		public static void DeleteDirectoryRecursive(string path)
+		{
+			Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: false));
+		}
 		public static void DeleteFile(string path)
 		{
 			File.Delete(ProcessPath(path, writeAccess: true, failIfApp: true));

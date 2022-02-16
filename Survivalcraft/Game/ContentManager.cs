@@ -10,7 +10,11 @@ namespace Game
 	{
 		public static void Initialize()
 		{
+#if android
+			ContentCache.AddPackage(delegate () { return Window.Activity.Assets.Open("Content.pak"); }, Encoding.UTF8.GetBytes(Pad()), new byte[1] { 63 });
+#else
 			ContentCache.AddPackage(delegate() { return File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + "Content.pak"); }, Encoding.UTF8.GetBytes(Pad()), new byte[1] { 63 });
+#endif
 		}
 
 		public static object Get(string name)

@@ -82,7 +82,7 @@ namespace Engine.Graphics
 			return 16384;
 		}
 
-        protected virtual void PrepareForDrawingOverride()
+        public virtual void PrepareForDrawingOverride()
 		{
 		}
 

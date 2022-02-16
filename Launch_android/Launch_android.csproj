@@ -84,8 +84,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="..\Survivalcraft\Content.zip">
-      <Link>Assets\Content.zip</Link>
+    <AndroidAsset Include="..\Survivalcraft\Content.pak">
+      <Link>Assets\Content.pak</Link>
     </AndroidAsset>
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
@@ -155,7 +155,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

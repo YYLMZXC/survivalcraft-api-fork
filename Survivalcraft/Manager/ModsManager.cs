@@ -9,7 +9,7 @@ namespace Game
     public class ModsManager
     {
         public static string CommunityContentCachePath = "data:/CommunityContentCache.xml";
-
+        public static string ScreenCapturePath = "data:/ScreenCapture";
 
     }
 }
