@@ -105,9 +105,77 @@ namespace Engine.Media
 			{
 				if (m_debugFont == null)
 				{
-					m_debugFont = BitmapFontContentReader.ReadBitmapFont(typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Embedded.DebugFont.dat"));
+#if android
+					using (Stream stream = Window.Activity.Assets.Open("Debugfont.png"))
+					{
+						using (Stream stream2 = Window.Activity.Assets.Open("Debugfont.lst"))
+						{
+							m_debugFont = Initialize2(stream, stream2);
+						}
+
+					}
+#else
+					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png"))
+					{
+						using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst"))
+						{
+							m_debugFont = Initialize2(stream, stream2);
+						}
+
+					}
+#endif
 				}
 				return m_debugFont;
+			}
+		}
+		/// <summary>
+		/// 纹理图
+		/// </summary>
+		/// <param name="texture">图片文件的输入流</param>
+		/// <param name="glyphs">位图数据的输入流</param>
+		public static BitmapFont Initialize2(Stream TextureStream, Stream GlyphsStream)
+		{
+			try
+			{
+				Texture2D texture = Texture2D.Load(TextureStream);
+				BitmapFont bitmapFont = new BitmapFont();
+				StreamReader streamReader = new StreamReader(GlyphsStream);
+				int num = int.Parse(streamReader.ReadLine());
+				var array = new Glyph[num];
+				for (int i = 0; i < num; i++)
+				{
+					string line = streamReader.ReadLine();
+					string[] arr = line.Split(new char[] { (char)0x20, (char)0x09 }, StringSplitOptions.None);
+					if (arr.Length == 9)
+					{
+						string[] tmp = new string[8];
+						tmp[0] = " ";
+						for (int j = 2; j < arr.Length; j++)
+						{
+							tmp[j - 1] = arr[j];
+						}
+						arr = tmp;
+					}
+					char code = char.Parse(arr[0]);
+					Vector2 texCoord = new Vector2(float.Parse(arr[1]), float.Parse(arr[2]));
+					Vector2 texCoord2 = new Vector2(float.Parse(arr[3]), float.Parse(arr[4]));
+					Vector2 offset = new Vector2(float.Parse(arr[5]), float.Parse(arr[6]));
+					float width = float.Parse(arr[7]);
+					array[i] = new Glyph(code, texCoord, texCoord2, offset, width);
+				}
+				float glyphHeight = float.Parse(streamReader.ReadLine());
+				string line2 = streamReader.ReadLine();
+				string[] arr2 = line2.Split(new char[] { (char)0x20, (char)0x09 }, StringSplitOptions.None);
+				Vector2 spacing = new Vector2(float.Parse(arr2[0]), float.Parse(arr2[1]));
+				float scale = float.Parse(streamReader.ReadLine());
+				char fallbackCode = char.Parse(streamReader.ReadLine());
+				bitmapFont.Initialize(texture, null, array, fallbackCode, glyphHeight, spacing, scale);
+				return bitmapFont;
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.Message);
+				return null;
 			}
 		}
 
