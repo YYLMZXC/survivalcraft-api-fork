@@ -1,11 +1,17 @@
-using Engine;
 using System;
-using System.Collections.Generic;
-using Engine.Graphics;
+using Engine;
+
 namespace Game
 {
 	public class TerrainChunk : IDisposable
 	{
+		private struct BrushPaint
+		{
+			public Point3 Position;
+
+			public TerrainBrush Brush;
+		}
+
 		public const int SizeBits = 4;
 
 		public const int Size = 16;
@@ -21,6 +27,8 @@ namespace Game
 		public const int SliceHeight = 16;
 
 		public const int SlicesCount = 16;
+
+		public const int SlicesCountMinusOne = 15;
 
 		public Terrain Terrain;
 
@@ -44,19 +52,11 @@ namespace Game
 
 		public TerrainChunkState? UpgradedState;
 
-		public float DrawDistanceSquared;
-
-		public int LightPropagationMask;
-
 		public int ModificationCounter;
 
 		public float[] FogEnds = new float[4];
 
-		public int[] SliceContentsHashes = new int[16];
-
 		public bool AreBehaviorsNotified;
-
-		public object lockobj = new object();
 
 		public bool IsLoaded;
 
@@ -64,11 +64,15 @@ namespace Game
 
 		public TerrainChunkGeometry Geometry = new TerrainChunkGeometry();
 
-		public int[] Cells = new int[65536];
+		private int[] Cells;
 
-		public int[] Shafts = new int[256];
+		private int[] Shafts;
 
-		public Dictionary<Texture2D, TerrainGeometrySubset[]> Draws = new Dictionary<Texture2D, TerrainGeometrySubset[]>();
+		private static ArrayCache<int> m_cellsCache = new ArrayCache<int>(new int[1] { 65536 }, 0.66f, 60f, 0.33f, 5f);
+
+		private static ArrayCache<int> m_shaftsCache = new ArrayCache<int>(new int[1] { 256 }, 0.66f, 60f, 0.33f, 5f);
+
+		private DynamicArray<BrushPaint> m_brushPaints = new DynamicArray<BrushPaint>();
 
 		public TerrainChunk(Terrain terrain, int x, int z)
 		{
@@ -77,11 +81,20 @@ namespace Game
 			Origin = new Point2(x * 16, z * 16);
 			BoundingBox = new BoundingBox(new Vector3(Origin.X, 0f, Origin.Y), new Vector3(Origin.X + 16, 256f, Origin.Y + 16));
 			Center = new Vector2((float)Origin.X + 8f, (float)Origin.Y + 8f);
+			Cells = m_cellsCache.Rent(65536, clearArray: true);
+			Shafts = m_shaftsCache.Rent(256, clearArray: true);
 		}
 
 		public void Dispose()
 		{
+			if (Geometry == null)
+			{
+				throw new InvalidOperationException();
+			}
 			Geometry.Dispose();
+			Geometry = null;
+			m_cellsCache.Return(Cells);
+			m_shaftsCache.Return(Shafts);
 		}
 
 		public static bool IsCellValid(int x, int y, int z)
@@ -211,6 +224,23 @@ namespace Game
 		public void SetSunlightHeightFast(int x, int z, int sunlightHeight)
 		{
 			SetShaftValueFast(x, z, Terrain.ReplaceSunlightHeight(GetShaftValueFast(x, z), sunlightHeight));
+		}
+
+		public void AddBrushPaint(int x, int y, int z, TerrainBrush brush)
+		{
+			m_brushPaints.Add(new BrushPaint
+			{
+				Position = new Point3(x, y, z),
+				Brush = brush
+			});
+		}
+
+		public void ApplyBrushPaints(TerrainChunk chunk)
+		{
+			foreach (BrushPaint brushPaint in m_brushPaints)
+			{
+				brushPaint.Brush.PaintFast(chunk, brushPaint.Position.X, brushPaint.Position.Y, brushPaint.Position.Z);
+			}
 		}
 	}
 }

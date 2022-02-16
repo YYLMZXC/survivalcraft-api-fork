@@ -1,11 +1,11 @@
 namespace Game
 {
-    public enum TreeType
-    {
-        Oak,
-        Birch,
-        Spruce,
-        TallSpruce,
-        Mimosa
-    }
+	public enum TreeType
+	{
+		Oak,
+		Birch,
+		Spruce,
+		TallSpruce,
+		Mimosa
+	}
 }

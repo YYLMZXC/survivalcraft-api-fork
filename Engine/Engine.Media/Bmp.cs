@@ -63,7 +63,7 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException(nameof(stream));
+				throw new ArgumentNullException("stream");
 			}
 			long position = stream.Position;
 			int num = stream.ReadByte();
@@ -79,7 +79,7 @@ namespace Engine.Media
 		public static BmpInfo GetInfo(Stream stream)
 		{
 			BitmapHeader bitmapHeader = ReadHeader(stream);
-			var result = default(BmpInfo);
+			BmpInfo result = default(BmpInfo);
 			result.Width = bitmapHeader.Width;
 			result.Height = bitmapHeader.Height;
 			if (bitmapHeader.BitCount == 32)
@@ -100,7 +100,7 @@ namespace Engine.Media
 		public static Image Load(Stream stream)
 		{
 			BitmapHeader bitmapHeader = ReadHeader(stream);
-			var image = new Image(bitmapHeader.Width, MathUtils.Abs(bitmapHeader.Height));
+			Image image = new Image(bitmapHeader.Width, MathUtils.Abs(bitmapHeader.Height));
 			if (bitmapHeader.BitCount == 32)
 			{
 				byte[] array = new byte[4 * image.Width];
@@ -110,7 +110,7 @@ namespace Engine.Media
 					{
 						throw new InvalidOperationException("BMP data truncated.");
 					}
-					int num = (bitmapHeader.Height < 0) ? (image.Width * (image.Height - i - 1)) : (image.Width * i);
+					int num = ((bitmapHeader.Height < 0) ? (image.Width * (image.Height - i - 1)) : (image.Width * i));
 					int j = 0;
 					int num2 = 0;
 					for (; j < image.Width; j++)
@@ -136,7 +136,7 @@ namespace Engine.Media
 					{
 						throw new InvalidOperationException("BMP data truncated.");
 					}
-					int num3 = (bitmapHeader.Height < 0) ? (image.Width * (image.Height - k - 1)) : (image.Width * k);
+					int num3 = ((bitmapHeader.Height < 0) ? (image.Width * (image.Height - k - 1)) : (image.Width * k));
 					int l = 0;
 					int num4 = 0;
 					for (; l < image.Width; l++)
@@ -153,7 +153,7 @@ namespace Engine.Media
 
 		public static void Save(Image image, Stream stream, Format format)
 		{
-			var structure = default(BitmapHeader);
+			BitmapHeader structure = default(BitmapHeader);
 			structure.Type1 = 66;
 			structure.Type2 = 77;
 			structure.Reserved1 = 0;
@@ -222,7 +222,7 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException(nameof(stream));
+				throw new ArgumentNullException("stream");
 			}
 			if (!BitConverter.IsLittleEndian)
 			{

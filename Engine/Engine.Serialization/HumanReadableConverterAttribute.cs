@@ -11,5 +11,10 @@ namespace Engine.Serialization
 		{
 			Type = type;
 		}
+		public HumanReadableConverterAttribute(Type[] type)
+		{
+			if (type != null && type.Length > 0)
+				Type = type[0];
+		}
 	}
 }

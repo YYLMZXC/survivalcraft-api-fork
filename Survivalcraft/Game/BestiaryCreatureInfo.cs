@@ -2,34 +2,34 @@ using System.Collections.Generic;
 
 namespace Game
 {
-    public class BestiaryCreatureInfo
-    {
-        public int Order;
+	public class BestiaryCreatureInfo
+	{
+		public int Order;
 
-        public string DisplayName;
+		public string DisplayName;
 
-        public string Description;
+		public string Description;
 
-        public string ModelName;
+		public string ModelName;
 
-        public string TextureOverride;
+		public string TextureOverride;
 
-        public float Mass;
+		public float Mass;
 
-        public float AttackResilience;
+		public float AttackResilience;
 
-        public float AttackPower;
+		public float AttackPower;
 
-        public float MovementSpeed;
+		public float MovementSpeed;
 
-        public float JumpHeight;
+		public float JumpHeight;
 
-        public bool IsHerding;
+		public bool IsHerding;
 
-        public bool CanBeRidden;
+		public bool CanBeRidden;
 
-        public bool HasSpawnerEgg;
+		public bool HasSpawnerEgg;
 
-        public List<ComponentLoot.Loot> Loot;
-    }
+		public List<ComponentLoot.Loot> Loot;
+	}
 }

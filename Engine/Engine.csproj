@@ -38,6 +38,24 @@
     <Reference Include="OpenTK">
       <HintPath>..\DllReference\OpenTK.dll</HintPath>
     </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\..\新建文件夹\生存战争2.1\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.D3DCompiler">
+      <HintPath>..\..\..\新建文件夹\生存战争2.1\SharpDX.D3DCompiler.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11">
+      <HintPath>..\..\..\新建文件夹\生存战争2.1\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI">
+      <HintPath>..\..\..\新建文件夹\生存战争2.1\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.XAudio2">
+      <HintPath>..\..\..\新建文件夹\生存战争2.1\SharpDX.XAudio2.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.XInput">
+      <HintPath>..\..\..\新建文件夹\生存战争2.1\SharpDX.XInput.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -52,6 +70,37 @@
     <Compile Include="Engine.Audio\SoundBuffer.cs" />
     <Compile Include="Engine.Audio\SoundState.cs" />
     <Compile Include="Engine.Audio\StreamingSound.cs" />
+    <Compile Include="Engine.Content\BitmapFontContentReader.cs" />
+    <Compile Include="Engine.Content\BitmapFontContentWriter.cs" />
+    <Compile Include="Engine.Content\ColorContentReader.cs" />
+    <Compile Include="Engine.Content\ColorContentWriter.cs" />
+    <Compile Include="Engine.Content\ContentCache.cs" />
+    <Compile Include="Engine.Content\ContentInfo.cs" />
+    <Compile Include="Engine.Content\ContentReaderAttribute.cs" />
+    <Compile Include="Engine.Content\ContentStream.cs" />
+    <Compile Include="Engine.Content\ContentWriterAttribute.cs" />
+    <Compile Include="Engine.Content\IContentReader.cs" />
+    <Compile Include="Engine.Content\IContentWriter.cs" />
+    <Compile Include="Engine.Content\ImageContentReader.cs" />
+    <Compile Include="Engine.Content\ImageContentWriter.cs" />
+    <Compile Include="Engine.Content\ModelContentReader.cs" />
+    <Compile Include="Engine.Content\ModelContentWriter.cs" />
+    <Compile Include="Engine.Content\ModelDataContentReader.cs" />
+    <Compile Include="Engine.Content\ModelDataContentWriter.cs" />
+    <Compile Include="Engine.Content\OptionalAttribute.cs" />
+    <Compile Include="Engine.Content\PadStream.cs" />
+    <Compile Include="Engine.Content\ShaderContentReader.cs" />
+    <Compile Include="Engine.Content\ShaderContentWriter.cs" />
+    <Compile Include="Engine.Content\SoundBufferContentReader.cs" />
+    <Compile Include="Engine.Content\SoundBufferContentWriter.cs" />
+    <Compile Include="Engine.Content\StreamingSourceContentReader.cs" />
+    <Compile Include="Engine.Content\StreamingSourceContentWriter.cs" />
+    <Compile Include="Engine.Content\StringContentReader.cs" />
+    <Compile Include="Engine.Content\StringContentWriter.cs" />
+    <Compile Include="Engine.Content\TextureContentReader.cs" />
+    <Compile Include="Engine.Content\TextureContentWriter.cs" />
+    <Compile Include="Engine.Content\XElementContentReader.cs" />
+    <Compile Include="Engine.Content\XElementContentWriter.cs" />
     <Compile Include="Engine.Graphics\BaseBatch.cs" />
     <Compile Include="Engine.Graphics\BaseFlatBatch.cs" />
     <Compile Include="Engine.Graphics\BaseFontBatch.cs" />
@@ -118,28 +167,13 @@
     <Compile Include="Engine.Input\MouseButton.cs" />
     <Compile Include="Engine.Input\MouseButtonEvent.cs" />
     <Compile Include="Engine.Input\MouseEvent.cs" />
+    <Compile Include="Engine.Input\MultiKeyboard.cs" />
+    <Compile Include="Engine.Input\MultiMouse.cs" />
+    <Compile Include="Engine.Input\MultiMouseButtonEvent.cs" />
+    <Compile Include="Engine.Input\MultiMouseEvent.cs" />
     <Compile Include="Engine.Input\Touch.cs" />
     <Compile Include="Engine.Input\TouchLocation.cs" />
     <Compile Include="Engine.Input\TouchLocationState.cs" />
-    <Compile Include="Engine.Media\BitmapFont.cs" />
-    <Compile Include="Engine.Media\Bmp.cs" />
-    <Compile Include="Engine.Media\Collada.cs" />
-    <Compile Include="Engine.Media\Image.cs" />
-    <Compile Include="Engine.Media\ImageFileFormat.cs" />
-    <Compile Include="Engine.Media\Jpg.cs" />
-    <Compile Include="Engine.Media\ModelBoneData.cs" />
-    <Compile Include="Engine.Media\ModelBuffersData.cs" />
-    <Compile Include="Engine.Media\ModelData.cs" />
-    <Compile Include="Engine.Media\ModelFileFormat.cs" />
-    <Compile Include="Engine.Media\ModelMeshData.cs" />
-    <Compile Include="Engine.Media\ModelMeshPartData.cs" />
-    <Compile Include="Engine.Media\Ogg.cs" />
-    <Compile Include="Engine.Media\PeekStream.cs" />
-    <Compile Include="Engine.Media\Png.cs" />
-    <Compile Include="Engine.Media\SoundData.cs" />
-    <Compile Include="Engine.Media\SoundFileFormat.cs" />
-    <Compile Include="Engine.Media\StreamingSource.cs" />
-    <Compile Include="Engine.Media\Wav.cs" />
     <Compile Include="Engine.Serialization\Archive.cs" />
     <Compile Include="Engine.Serialization\ArraySerializer.cs" />
     <Compile Include="Engine.Serialization\BinaryInputArchive.cs" />
@@ -362,6 +396,25 @@
     <Compile Include="Hjg.Pngcs\PngReader.cs" />
     <Compile Include="Hjg.Pngcs\PngWriter.cs" />
     <Compile Include="Hjg.Pngcs\ProgressiveOutputStream.cs" />
+    <Compile Include="Engine.Media\BitmapFont.cs" />
+    <Compile Include="Engine.Media\Bmp.cs" />
+    <Compile Include="Engine.Media\Collada.cs" />
+    <Compile Include="Engine.Media\Image.cs" />
+    <Compile Include="Engine.Media\ImageFileFormat.cs" />
+    <Compile Include="Engine.Media\Jpg.cs" />
+    <Compile Include="Engine.Media\ModelBoneData.cs" />
+    <Compile Include="Engine.Media\ModelBuffersData.cs" />
+    <Compile Include="Engine.Media\ModelData.cs" />
+    <Compile Include="Engine.Media\ModelFileFormat.cs" />
+    <Compile Include="Engine.Media\ModelMeshData.cs" />
+    <Compile Include="Engine.Media\ModelMeshPartData.cs" />
+    <Compile Include="Engine.Media\Ogg.cs" />
+    <Compile Include="Engine.Media\PeekStream.cs" />
+    <Compile Include="Engine.Media\Png.cs" />
+    <Compile Include="Engine.Media\SoundData.cs" />
+    <Compile Include="Engine.Media\SoundFileFormat.cs" />
+    <Compile Include="Engine.Media\StreamingSource.cs" />
+    <Compile Include="Engine.Media\Wav.cs" />
     <Compile Include="NVorbis.Ogg\ContainerReader.cs" />
     <Compile Include="NVorbis.Ogg\Crc.cs" />
     <Compile Include="NVorbis.Ogg\Packet.cs" />

@@ -1,9 +1,9 @@
 namespace Game
 {
-    public enum LookControlMode
-    {
-        Pad,
-        EntireScreen,
-        SplitTouch
-    }
+	public enum LookControlMode
+	{
+		Pad,
+		EntireScreen,
+		SplitTouch
+	}
 }

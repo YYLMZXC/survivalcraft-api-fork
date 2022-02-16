@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Engine
 {
-    public struct BoundingBox : IEquatable<BoundingBox>
+	public struct BoundingBox : IEquatable<BoundingBox>
 	{
 		public Vector3 Min;
 
@@ -44,11 +44,6 @@ namespace Engine
 			}
 		}
 
-		public static implicit operator BoundingBox((float X1, float Y1, float Z1, float X2, float Y2, float Z2) v)
-		{
-			return new BoundingBox(v.X1, v.Y1, v.Z1, v.X2, v.Y2, v.Z2);
-		}
-
 		public override bool Equals(object obj)
 		{
 			if (!(obj is BoundingBox))
@@ -65,7 +60,7 @@ namespace Engine
 
 		public override string ToString()
 		{
-			return $"{Min},{Max}";
+			return string.Format("{0},{1}", new object[2] { Min, Max });
 		}
 
 		public bool Equals(BoundingBox other)
@@ -174,8 +169,6 @@ namespace Engine
 			return new BoundingBox(min, max);
 		}
 
-#if android
-
 		public static float Distance(BoundingBox b, Vector3 p)
 		{
 			float num = MathUtils.Max(b.Min.X - p.X, 0f, p.X - b.Max.X);
@@ -184,11 +177,9 @@ namespace Engine
 			return MathUtils.Sqrt(num * num + num2 * num2 + num3 * num3);
 		}
 
-#endif
-
 		public static BoundingBox Transform(BoundingBox b, Matrix m)
 		{
-			Transform(ref b, ref m, out BoundingBox result);
+			Transform(ref b, ref m, out var result);
 			return result;
 		}
 

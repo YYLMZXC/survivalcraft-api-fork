@@ -1,8 +1,8 @@
 namespace Game
 {
-    public enum DragMode
-    {
-        AllItems,
-        SingleItem
-    }
+	public enum DragMode
+	{
+		AllItems,
+		SingleItem
+	}
 }

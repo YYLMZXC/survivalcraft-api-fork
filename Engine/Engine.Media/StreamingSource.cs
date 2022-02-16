@@ -5,26 +5,13 @@ namespace Engine.Media
 {
 	public abstract class StreamingSource : IDisposable
 	{
-		public abstract int ChannelsCount
-		{
-			get;
-		}
+		public abstract int ChannelsCount { get; }
 
-		public abstract int SamplingFrequency
-		{
-			get;
-		}
+		public abstract int SamplingFrequency { get; }
 
-		public virtual long Position
-		{
-			get;
-			set;
-		}
+		public virtual long Position { get; set; }
 
-		public abstract long BytesCount
-		{
-			get;
-		}
+		public abstract long BytesCount { get; }
 
 		public virtual void Dispose()
 		{

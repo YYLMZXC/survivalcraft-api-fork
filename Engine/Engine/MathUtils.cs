@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public static class MathUtils
+	public static class MathUtils
 	{
 		public const float PI = (float)Math.PI;
 
@@ -105,7 +105,7 @@ namespace Engine
 			key ^= key >> 16;
 			key *= 2146121005;
 			key ^= key >> 15;
-			key = (uint)((int)key * -2073254261);
+			key *= 2221713035u;
 			key ^= key >> 16;
 			return key;
 		}
@@ -347,6 +347,11 @@ namespace Engine
 			return (float)Math.Log(x);
 		}
 
+		public static float Log(float x, float logBase)
+		{
+			return (float)Math.Log(x, logBase);
+		}
+
 		public static float Log10(float x)
 		{
 			return (float)Math.Log10(x);
@@ -367,10 +372,29 @@ namespace Engine
 			return x1 + (x2 - x1) * f;
 		}
 
-		public static float SmoothStep(float min, float max, float x)
+		public static float LinearStep(float zero, float one, float f)
 		{
-			x = Clamp((x - min) / (max - min), 0f, 1f);
-			return x * x * (3f - 2f * x);
+			return Saturate((f - zero) / (one - zero));
+		}
+
+		public static float SmoothStep(float f)
+		{
+			return f * f * (3f - 2f * f);
+		}
+
+		public static float SmoothStep(float zero, float one, float f)
+		{
+			return SmoothStep(LinearStep(zero, one, f));
+		}
+
+		public static float CircleStep(float f)
+		{
+			return Sqrt(2f * f - f * f);
+		}
+
+		public static float CircleStep(float zero, float one, float f)
+		{
+			return CircleStep(LinearStep(zero, one, f));
 		}
 
 		public static float CatmullRom(float v1, float v2, float v3, float v4, float f)
@@ -568,6 +592,11 @@ namespace Engine
 			return Math.Log(x);
 		}
 
+		public static double Log(double x, double logBase)
+		{
+			return Math.Log(x, logBase);
+		}
+
 		public static double Log10(double x)
 		{
 			return Math.Log10(x);
@@ -588,10 +617,15 @@ namespace Engine
 			return x1 + (x2 - x1) * f;
 		}
 
-		public static double SmoothStep(double min, double max, double x)
+		public static double LinearStep(double zero, double one, double f)
 		{
-			x = Clamp((x - min) / (max - min), 0.0, 1.0);
-			return x * x * (3.0 - 2.0 * x);
+			return Saturate((f - zero) / (one - zero));
+		}
+
+		public static double SmoothStep(double zero, double one, double f)
+		{
+			f = Saturate((f - zero) / (one - zero));
+			return f * f * (3.0 - 2.0 * f);
 		}
 
 		public static double CatmullRom(double v1, double v2, double v3, double v4, double f)

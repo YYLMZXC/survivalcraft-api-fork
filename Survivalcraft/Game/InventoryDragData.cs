@@ -1,11 +1,11 @@
 namespace Game
 {
-    public class InventoryDragData
-    {
-        public IInventory Inventory;
+	public class InventoryDragData
+	{
+		public IInventory Inventory;
 
-        public int SlotIndex;
+		public int SlotIndex;
 
-        public DragMode DragMode;
-    }
+		public DragMode DragMode;
+	}
 }

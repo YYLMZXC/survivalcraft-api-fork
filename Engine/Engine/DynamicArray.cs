@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Engine
 {
-    public class DynamicArray<T> : IEnumerable<T>, IEnumerable, IList<T>, ICollection<T>
+	[DebuggerDisplay("Count = {Count}")]
+	public class DynamicArray<T> : IEnumerable<T>, IEnumerable, IList<T>, ICollection<T>, IReadOnlyList<T>, IReadOnlyCollection<T>
 	{
-		public struct Enumerator : IEnumerator<T>, IDisposable, IEnumerator
+		public struct Enumerator : IEnumerator<T>, IEnumerator, IDisposable
 		{
 			private DynamicArray<T> m_array;
 
@@ -65,15 +67,17 @@ namespace Engine
 				}
 				if (value > 0)
 				{
-					T[] array = new T[value];
-					if (m_array != null)
+					T[] array = Allocate(value);
+					if (m_array != m_emptyArray)
 					{
 						System.Array.Copy(m_array, 0, array, 0, m_count);
+						Free(m_array);
 					}
 					m_array = array;
 				}
-				else
+				else if (m_array != m_emptyArray)
 				{
+					Free(m_array);
 					m_array = m_emptyArray;
 				}
 			}
@@ -170,6 +174,17 @@ namespace Engine
 			{
 				throw new ArgumentNullException("items");
 			}
+			IList<T> list = items as IList<T>;
+			if (list != null)
+			{
+				Capacity = MathUtils.Max(Capacity, Count + list.Count);
+				for (int i = 0; i < list.Count; i++)
+				{
+					m_array[m_count] = list[i];
+					m_count++;
+				}
+				return;
+			}
 			ICollection collection = items as ICollection;
 			if (collection != null)
 			{
@@ -179,13 +194,11 @@ namespace Engine
 					m_array[m_count] = item;
 					m_count++;
 				}
+				return;
 			}
-			else
+			foreach (T item2 in items)
 			{
-				foreach (T item2 in items)
-				{
-					Add(item2);
-				}
+				Add(item2);
 			}
 		}
 
@@ -196,11 +209,8 @@ namespace Engine
 				throw new ArgumentNullException("items");
 			}
 			Capacity = MathUtils.Max(Capacity, Count + items.Count);
-			for (int i = 0; i < items.Count; i++)
-			{
-				m_array[m_count] = items.Array[i];
-				m_count++;
-			}
+			System.Array.Copy(items.Array, 0, m_array, Count, items.Count);
+			Count += items.Count;
 		}
 
 		public bool Remove(T item)
@@ -223,6 +233,7 @@ namespace Engine
 				{
 					System.Array.Copy(m_array, index + 1, m_array, index, m_count - index);
 				}
+				m_array[m_count] = default(T);
 				return;
 			}
 			throw new IndexOutOfRangeException();
@@ -233,19 +244,20 @@ namespace Engine
 			if (m_count > 0)
 			{
 				m_count--;
+				m_array[m_count] = default(T);
 				return;
 			}
 			throw new IndexOutOfRangeException();
 		}
 
-		public int RemoveAll(Predicate<T> match)
+		public int RemoveAll(Predicate<T> predicate)
 		{
-			if (match == null)
+			if (predicate == null)
 			{
-				throw new ArgumentNullException("match");
+				throw new ArgumentNullException("predicate");
 			}
 			int i;
-			for (i = 0; i < m_count && !match(m_array[i]); i++)
+			for (i = 0; i < m_count && !predicate(m_array[i]); i++)
 			{
 			}
 			if (i >= m_count)
@@ -255,7 +267,7 @@ namespace Engine
 			int j = i + 1;
 			while (j < m_count)
 			{
-				for (; j < m_count && match(m_array[j]); j++)
+				for (; j < m_count && predicate(m_array[j]); j++)
 				{
 				}
 				if (j < m_count)
@@ -263,9 +275,35 @@ namespace Engine
 					m_array[i++] = m_array[j++];
 				}
 			}
+			System.Array.Clear(m_array, i, m_count - i);
 			int result = m_count - i;
 			m_count = i;
 			return result;
+		}
+
+		public void RemoveRange(int index, int count)
+		{
+			if (index < 0 || count < 0 || m_count - index < count)
+			{
+				throw new IndexOutOfRangeException();
+			}
+			if (count > 0)
+			{
+				m_count -= count;
+				if (index < m_count)
+				{
+					System.Array.Copy(m_array, index + count, m_array, index, m_count - index);
+				}
+				System.Array.Clear(m_array, m_count, count);
+			}
+		}
+
+		public void RemoveRange(IEnumerable<T> items)
+		{
+			foreach (T item in items)
+			{
+				Remove(item);
+			}
 		}
 
 		public void Insert(int index, T item)
@@ -289,6 +327,7 @@ namespace Engine
 
 		public void Clear()
 		{
+			System.Array.Clear(m_array, 0, m_count);
 			m_count = 0;
 		}
 
@@ -347,6 +386,15 @@ namespace Engine
 		public void CopyTo(T[] array, int arrayIndex)
 		{
 			System.Array.Copy(m_array, 0, array, arrayIndex, m_count);
+		}
+
+		public virtual T[] Allocate(int capacity)
+		{
+			return new T[capacity];
+		}
+
+		public virtual void Free(T[] array)
+		{
 		}
 	}
 }

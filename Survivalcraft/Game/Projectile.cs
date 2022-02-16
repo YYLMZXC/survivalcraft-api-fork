@@ -2,26 +2,26 @@ using Engine;
 
 namespace Game
 {
-    public class Projectile : WorldItem
-    {
-        public Vector3 Rotation;
+	public class Projectile : WorldItem
+	{
+		public Vector3 Rotation;
 
-        public Vector3 AngularVelocity;
+		public Vector3 AngularVelocity;
 
-        public bool IsInWater;
+		public bool IsInWater;
 
-        public double LastNoiseTime;
+		public double LastNoiseTime;
 
-        public ComponentCreature Owner;
+		public ComponentCreature Owner;
 
-        public ProjectileStoppedAction ProjectileStoppedAction;
+		public ProjectileStoppedAction ProjectileStoppedAction;
 
-        public ITrailParticleSystem TrailParticleSystem;
+		public ITrailParticleSystem TrailParticleSystem;
 
-        public Vector3 TrailOffset;
+		public Vector3 TrailOffset;
 
-        public bool NoChunk;
+		public bool NoChunk;
 
-        public bool IsIncendiary;
-    }
+		public bool IsIncendiary;
+	}
 }

@@ -2,16 +2,16 @@ using Engine;
 
 namespace Game
 {
-    public class PathfindingResult
-    {
-        public volatile bool IsCompleted;
+	public class PathfindingResult
+	{
+		public volatile bool IsCompleted;
 
-        public bool IsInProgress;
+		public bool IsInProgress;
 
-        public float PathCost;
+		public float PathCost;
 
-        public int PositionsChecked;
+		public int PositionsChecked;
 
-        public DynamicArray<Vector3> Path = new DynamicArray<Vector3>();
-    }
+		public DynamicArray<Vector3> Path = new DynamicArray<Vector3>();
+	}
 }

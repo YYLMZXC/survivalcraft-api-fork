@@ -1,12 +1,13 @@
-using NVorbis;
 using System;
 using System.IO;
+using Engine.Content;
+using NVorbis;
 
 namespace Engine.Media
 {
 	public static class Ogg
 	{
-		public class OggStreamingSource : StreamingSource
+		private class OggStreamingSource : StreamingSource
 		{
 			private VorbisReader m_reader;
 
@@ -29,16 +30,29 @@ namespace Engine.Media
 					m_reader.DecodedPosition = value;
 				}
 			}
+
 			public override long BytesCount => m_reader.TotalSamples * 2;
+
 			public OggStreamingSource(Stream stream, bool leaveOpen = false)
 			{
-				MemoryStream memoryStream = new MemoryStream();
-				stream.Position = 0L;
-				stream.CopyTo(memoryStream);
-				memoryStream.Position = 0L;
-				m_stream = memoryStream;
-				m_reader = new VorbisReader(m_stream, leaveOpen);
+				m_stream = stream;
+				if (!stream.CanSeek)
+				{
+					MemoryStream memoryStream = new MemoryStream();
+					stream.CopyTo(memoryStream);
+					if (!leaveOpen)
+					{
+						stream.Dispose();
+					}
+					memoryStream.Seek(0L, SeekOrigin.Begin);
+					m_reader = new VorbisReader(memoryStream, closeStreamOnDispose: false);
+				}
+				else
+				{
+					m_reader = new VorbisReader(stream, !leaveOpen);
+				}
 			}
+
 			public override void Dispose()
 			{
 				m_reader.Dispose();
@@ -48,7 +62,7 @@ namespace Engine.Media
 			{
 				if (buffer == null)
 				{
-					throw new ArgumentNullException(nameof(buffer));
+					throw new ArgumentNullException("buffer");
 				}
 				if (offset < 0 || count < 0 || offset + count > buffer.Length)
 				{
@@ -86,19 +100,16 @@ namespace Engine.Media
 				}
 				return num * 2;
 			}
-			/// <summary>
-			/// 复制出一个新的流
-			/// </summary>
-			/// <returns></returns>
+
 			public override StreamingSource Duplicate()
 			{
-				MemoryStream memoryStream = new MemoryStream();
-				m_stream.Position = 0L;
-				m_stream.CopyTo(memoryStream);
-				memoryStream.Position = 0L;
-				return new OggStreamingSource(memoryStream);
+				ContentStream contentStream = m_stream as ContentStream;
+				if (contentStream != null)
+				{
+					return new OggStreamingSource(contentStream.Duplicate());
+				}
+				throw new InvalidOperationException("Underlying stream does not support duplication.");
 			}
-
 		}
 
 		public static bool IsOggStream(Stream stream)
@@ -120,7 +131,7 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException(nameof(stream));
+				throw new ArgumentNullException("stream");
 			}
 			return new OggStreamingSource(stream, leaveOpen);
 		}
@@ -135,7 +146,7 @@ namespace Engine.Media
 				}
 				byte[] array = new byte[(int)streamingSource.BytesCount];
 				streamingSource.Read(array, 0, array.Length);
-				var soundData = new SoundData(streamingSource.ChannelsCount, streamingSource.SamplingFrequency, array.Length);
+				SoundData soundData = new SoundData(streamingSource.ChannelsCount, streamingSource.SamplingFrequency, array.Length);
 				Buffer.BlockCopy(array, 0, soundData.Data, 0, array.Length);
 				return soundData;
 			}

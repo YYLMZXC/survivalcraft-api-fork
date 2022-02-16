@@ -1,6 +1,6 @@
 namespace Engine.Audio
 {
-    public enum SoundState
+	public enum SoundState
 	{
 		Stopped,
 		Playing,

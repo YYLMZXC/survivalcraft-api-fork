@@ -1,12 +1,18 @@
-using Engine.Media;
-using OpenTK.Audio.OpenAL;
 using System;
+using System.Runtime.InteropServices;
+using SharpDX;
+using SharpDX.Multimedia;
+using SharpDX.XAudio2;
 
 namespace Engine.Audio
 {
 	public sealed class Sound : BaseSound
 	{
 		private SoundBuffer m_soundBuffer;
+
+		private bool m_bufferSubmitted;
+
+		private GCHandle m_bufferHandle;
 
 		public SoundBuffer SoundBuffer => m_soundBuffer;
 
@@ -15,7 +21,7 @@ namespace Engine.Audio
 			base.Dispose();
 			if (m_soundBuffer != null)
 			{
-				int num = --m_soundBuffer.UseCount;
+				m_soundBuffer.UseCount--;
 				m_soundBuffer = null;
 			}
 		}
@@ -24,21 +30,21 @@ namespace Engine.Audio
 		{
 			if (soundBuffer == null)
 			{
-				throw new ArgumentNullException(nameof(soundBuffer));
+				throw new ArgumentNullException("soundBuffer");
 			}
 			m_soundBuffer = soundBuffer;
-			int num = ++m_soundBuffer.UseCount;
+			m_soundBuffer.UseCount++;
 		}
 
 		public Sound(SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
 		{
-			if (soundBuffer == null)
-			{
-				throw new ArgumentNullException(nameof(soundBuffer));
-			}
-			AL.Source(m_source, ALSourcei.Buffer, soundBuffer.m_buffer);
-			Mixer.CheckALError();
 			Initialize(soundBuffer);
+			WaveFormat sourceFormat = new WaveFormat(soundBuffer.SamplingFrequency, 16, soundBuffer.ChannelsCount);
+			m_sourceVoice = new SourceVoice(Mixer.m_xAudio2, sourceFormat, VoiceFlags.None, 2f, enableCallbackEvents: true);
+			m_sourceVoice.StreamEnd += delegate
+			{
+				Dispatcher.Dispatch(base.Stop);
+			};
 			base.ChannelsCount = soundBuffer.ChannelsCount;
 			base.SamplingFrequency = soundBuffer.SamplingFrequency;
 			base.Volume = volume;
@@ -46,51 +52,60 @@ namespace Engine.Audio
 			base.Pan = pan;
 			base.IsLooped = isLooped;
 			base.DisposeOnStop = disposeOnStop;
-			Mixer.m_soundsToStopPoll.Add(this);
-		}
-
-		public Sound(StreamingSource streamingSource, SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
-		{
-			if (soundBuffer == null)
-			{
-				throw new ArgumentNullException(nameof(soundBuffer));
-			}
-			AL.Source(m_source, ALSourcei.Buffer, soundBuffer.m_buffer);
-			Mixer.CheckALError();
-			Initialize(soundBuffer);
-			base.ChannelsCount = soundBuffer.ChannelsCount;
-			base.SamplingFrequency = soundBuffer.SamplingFrequency;
-			base.Volume = volume;
-			base.Pitch = pitch;
-			base.Pan = pan;
-			base.IsLooped = isLooped;
-			base.DisposeOnStop = disposeOnStop;
-			Mixer.m_soundsToStopPoll.Add(this);
 		}
 
 		internal override void InternalPlay()
 		{
-			AL.Source(m_source, ALSourceb.Looping, m_isLooped);
-			AL.SourcePlay(m_source);
-			Mixer.CheckALError();
+			if (!m_bufferSubmitted)
+			{
+				AudioBuffer audioBuffer = new AudioBuffer(new DataPointer(GetBufferPointer(), SoundBuffer.m_data.Length));
+				if (m_isLooped)
+				{
+					audioBuffer.LoopBegin = 0;
+					audioBuffer.LoopLength = 0;
+					audioBuffer.LoopCount = 255;
+				}
+				audioBuffer.Flags = BufferFlags.EndOfStream;
+				m_sourceVoice.SubmitSourceBuffer(audioBuffer, null);
+				m_bufferSubmitted = true;
+			}
+			m_sourceVoice.Start();
 		}
 
 		internal override void InternalPause()
 		{
-			AL.SourcePause(m_source);
-			Mixer.CheckALError();
+			m_sourceVoice.Stop();
 		}
 
 		internal override void InternalStop()
 		{
-			AL.SourceRewind(m_source);
-			Mixer.CheckALError();
+			m_sourceVoice.Stop();
+			m_sourceVoice.FlushSourceBuffers();
+			m_bufferSubmitted = false;
+			FreeBufferPointer();
 		}
 
 		internal override void InternalDispose()
 		{
 			base.InternalDispose();
-			Mixer.m_soundsToStopPoll.Remove(this);
+			FreeBufferPointer();
+		}
+
+		private IntPtr GetBufferPointer()
+		{
+			if (!m_bufferHandle.IsAllocated)
+			{
+				m_bufferHandle = GCHandle.Alloc(SoundBuffer.m_data, GCHandleType.Pinned);
+			}
+			return m_bufferHandle.AddrOfPinnedObject();
+		}
+
+		private void FreeBufferPointer()
+		{
+			if (m_bufferHandle.IsAllocated)
+			{
+				m_bufferHandle.Free();
+			}
 		}
 	}
 }

@@ -12,6 +12,7 @@ namespace Engine.Graphics
 		VerticalCenter = 0x2,
 		Right = 0x4,
 		Bottom = 0x8,
+		Center = 0x3,
 		DisableSnapToPixels = 0x10
 	}
 }

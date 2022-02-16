@@ -1,12 +1,9 @@
 namespace Game
 {
-    public interface IUpdateable
-    {
-        UpdateOrder UpdateOrder
-        {
-            get;
-        }
+	public interface IUpdateable
+	{
+		UpdateOrder UpdateOrder { get; }
 
-        void Update(float dt);
-    }
+		void Update(float dt);
+	}
 }

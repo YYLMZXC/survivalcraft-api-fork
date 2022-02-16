@@ -104,8 +104,16 @@ namespace Engine
 		{
 			Directory.CreateDirectory(ProcessPath(path, writeAccess: true, failIfApp: false));
 		}
-
+		public static void MoveDirectory(string path, string newPath)
+		{
+			Directory.Move(path, newPath);
+		}
 		public static void DeleteDirectory(string path)
+		{
+			Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: false));
+		}
+		//TO DO: fix method
+		public static void DeleteDirectoryRecursive(string path)
 		{
 			Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: false));
 		}

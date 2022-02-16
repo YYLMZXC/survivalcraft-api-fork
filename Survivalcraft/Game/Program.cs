@@ -1,152 +1,141 @@
-using Engine;
-using Engine.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Net;
+using Engine;
+using Engine.Graphics;
+
 namespace Game
 {
-    public static class Program
-    {
-        public static double m_frameBeginTime;
+	public static class Program
+	{
+		private static double m_frameBeginTime;
 
-        public static double m_cpuEndTime;
+		private static double m_cpuEndTime;
 
-        public static List<Uri> m_urisToHandle = new List<Uri>();
+		private static List<Uri> m_urisToHandle = new List<Uri>();
 
-        public static float LastFrameTime
-        {
-            get;
-            set;
-        }
+		public static float LastFrameTime { get; private set; }
 
-        public static float LastCpuFrameTime
-        {
-            get;
-            set;
-        }
+		public static float LastCpuFrameTime { get; private set; }
 
-        public static event Action<Uri> HandleUri;
-        [STAThread]
-        public static void Main()
-        {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
-            Log.RemoveAllLogSinks();
-            Log.AddLogSink(new GameLogSink());
-            Window.HandleUri += HandleUriHandler;
-            Window.Deactivated += DeactivatedHandler;
-            Window.Frame += FrameHandler;
-            Display.DeviceReset += ContentManager.Display_DeviceReset;
-            Window.UnhandledException += delegate (UnhandledExceptionInfo e)
-            {
-                ExceptionManager.ReportExceptionToUser("Unhandled exception.", e.Exception);
-                e.IsHandled = true;
-            };
-            Window.Run(480, 320, WindowMode.Resizable, "生存战争2.2插件版V" + ModsManager.APIVersion + "beta");
-        }
+		public static event Action<Uri> HandleUri;
 
-        public static void HandleUriHandler(Uri uri)
-        {
-            m_urisToHandle.Add(uri);
-        }
+		public static void Main()
+		{
+			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+			Log.RemoveAllLogSinks();
+			Log.AddLogSink(new GameLogSink());
+			Window.HandleUri += HandleUriHandler;
+			Window.Deactivated += DeactivatedHandler;
+			Window.Frame += FrameHandler;
+			Window.UnhandledException += delegate(UnhandledExceptionInfo e)
+			{
+				ExceptionManager.ReportExceptionToUser("Unhandled exception.", e.Exception);
+				e.IsHandled = true;
+			};
+#if DEBUG
+			Window.Run(480, 320, Engine.WindowMode.Resizable, "Survivalcraft 2.3");
+#endif
+#if TRACE
+			Window.Run(1920, 1080, Engine.WindowMode.Resizable, "Survivalcraft 2.3");
+#endif
+		}
 
-        public static void DeactivatedHandler()
-        {
-            GC.Collect();
-        }
+		private static void HandleUriHandler(Uri uri)
+		{
+			m_urisToHandle.Add(uri);
+		}
 
-        public static void FrameHandler()
-        {
-            if (Time.FrameIndex < 0)
-            {
-                Display.Clear(Vector4.Zero, 1f);
-            }
-            else if (Time.FrameIndex == 0)
-            {
-                Initialize();
-            }
-            else
-            {
-                Run();
-            }
-        }
+		private static void DeactivatedHandler()
+		{
+			GC.Collect();
+		}
 
-        public static void Initialize()
-        {
-            Log.Information($"Survivalcraft starting up at {DateTime.Now}, Version={VersionsManager.Version}, BuildConfiguration={VersionsManager.BuildConfiguration}, Platform={VersionsManager.Platform}, Storage.AvailableFreeSpace={Storage.FreeSpace / 1024 / 1024}MB, ApproximateScreenDpi={ScreenResolutionManager.ApproximateScreenDpi:0.0}, ApproxScreenInches={ScreenResolutionManager.ApproximateScreenInches:0.0}, ScreenResolution={Window.Size}, ProcessorsCount={Environment.ProcessorCount}, RAM={Utilities.GetTotalAvailableMemory() / 1024 / 1024}MB, 64bit={Marshal.SizeOf<IntPtr>() == 8}");
-            try
-            {
-                SettingsManager.Initialize();
-                VersionsManager.Initialize();
-                ExternalContentManager.Initialize();                
-                ScreensManager.Initialize();
-                Log.Information("Program Initialize Success");
-            }
-            catch (Exception e)
-            {
-                Log.Error(e.Message);
-            }
-        }
+		private static void FrameHandler()
+		{
+			if (Time.FrameIndex < 10)
+			{
+				Display.Clear(Vector4.Zero, 1f);
+			}
+			else if (Time.FrameIndex == 10)
+			{
+				Initialize();
+			}
+			else
+			{
+				Run();
+			}
+		}
 
-        public static void Run()
-        {
-            LastFrameTime = (float)(Time.RealTime - m_frameBeginTime);
-            LastCpuFrameTime = (float)(m_cpuEndTime - m_frameBeginTime);
-            m_frameBeginTime = Time.RealTime;
-            if (Engine.Input.Keyboard.IsKeyDown(Engine.Input.Key.F11))
-            {
-                SettingsManager.WindowMode = SettingsManager.WindowMode == WindowMode.Fullscreen ? WindowMode.Resizable : WindowMode.Fullscreen;
-            }            
-            try
-            {
-                if (ExceptionManager.Error == null)
-                {
-                    while (m_urisToHandle.Count > 0)
-                    {
-                        Uri obj = m_urisToHandle[0];
-                        m_urisToHandle.RemoveAt(0);
-                        HandleUri?.Invoke(obj);
-                    }
-                    PerformanceManager.Update();
-                    MotdManager.Update();
-                    MusicManager.Update();
-                    ScreensManager.Update();
-                    DialogsManager.Update();
-                }
-                else
-                {
-                    ExceptionManager.UpdateExceptionScreen();
-                }
-            }
-            catch (Exception e)
-            {
-                ModsManager.AddException(e);
-                ScreensManager.SwitchScreen("MainMenu");
-            }
-            try
-            {
-                Display.RenderTarget = null;
-                if (ExceptionManager.Error == null)
-                {
-                    ScreensManager.Draw();
-                    PerformanceManager.Draw();
-                    ScreenCaptureManager.Run();
-                }
-                else
-                {
-                    ExceptionManager.DrawExceptionScreen();
-                }
-                m_cpuEndTime = Time.RealTime;
-            }
-            catch (Exception e2)
-            {
-                if (GameManager.Project != null) GameManager.DisposeProject();
-                ExceptionManager.ReportExceptionToUser(null, e2);
-                ScreensManager.SwitchScreen("MainMenu");
-            }
-        }
-    }
+		private static void Initialize()
+		{
+			//fix me:set up language
+
+			Log.Information($"Survivalcraft starting up at {DateTime.Now}, Version={VersionsManager.Version}, BuildConfiguration={VersionsManager.BuildConfiguration}, Platform={VersionsManager.Platform}, Storage.AvailableFreeSpace={Storage.FreeSpace / 1024 / 1024}MB, ApproximateScreenDpi={ScreenResolutionManager.ApproximateScreenDpi:0.0}, ApproxScreenInches={ScreenResolutionManager.ApproximateScreenInches:0.0}, ScreenResolution={Window.Size}, ProcessorsCount={Environment.ProcessorCount}, RAM={Utilities.GetTotalAvailableMemory() / 1024 / 1024}MB, 64bit={Marshal.SizeOf<IntPtr>() == 8}");
+			SettingsManager.Initialize();
+			AnalyticsManager.Initialize();
+			VersionsManager.Initialize();
+			ExternalContentManager.Initialize();
+			ContentManager.Initialize();
+			ScreensManager.Initialize();
+		}
+
+		private static void Run()
+		{
+			VrManager.WaitGetPoses();
+			double realTime = Time.RealTime;
+			LastFrameTime = (float)(realTime - m_frameBeginTime);
+			LastCpuFrameTime = (float)(m_cpuEndTime - m_frameBeginTime);
+			m_frameBeginTime = realTime;
+			Window.PresentationInterval = ((!VrManager.IsVrStarted) ? SettingsManager.PresentationInterval : 0);
+			try
+			{
+				if (ExceptionManager.Error == null)
+				{
+					while (m_urisToHandle.Count > 0)
+					{
+						Uri obj = m_urisToHandle[0];
+						m_urisToHandle.RemoveAt(0);
+						Program.HandleUri?.Invoke(obj);
+					}
+					PerformanceManager.Update();
+					MotdManager.Update();
+					MusicManager.Update();
+					ScreensManager.Update();
+					DialogsManager.Update();
+				}
+				else
+				{
+					ExceptionManager.UpdateExceptionScreen();
+				}
+			}
+			catch (Exception e)
+			{
+				ExceptionManager.ReportExceptionToUser(null, e);
+				ScreensManager.SwitchScreen("MainMenu");
+			}
+			try
+			{
+				Display.RenderTarget = null;
+				if (ExceptionManager.Error == null)
+				{
+					ScreensManager.Draw();
+					PerformanceManager.Draw();
+					ScreenCaptureManager.Run();
+				}
+				else
+				{
+					ExceptionManager.DrawExceptionScreen();
+				}
+				m_cpuEndTime = Time.RealTime;
+			}
+			catch (Exception e2)
+			{
+				ExceptionManager.ReportExceptionToUser(null, e2);
+				ScreensManager.SwitchScreen("MainMenu");
+			}
+		}
+	}
 }

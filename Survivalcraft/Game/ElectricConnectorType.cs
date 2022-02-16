@@ -1,9 +1,9 @@
 namespace Game
 {
-    public enum ElectricConnectorType
-    {
-        Input,
-        Output,
-        InputOutput
-    }
+	public enum ElectricConnectorType
+	{
+		Input,
+		Output,
+		InputOutput
+	}
 }

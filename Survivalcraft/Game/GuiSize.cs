@@ -1,9 +1,9 @@
 namespace Game
 {
-    public enum GuiSize
-    {
-        Smallest,
-        Smaller,
-        Normal
-    }
+	public enum GuiSize
+	{
+		Smallest,
+		Smaller,
+		Normal
+	}
 }

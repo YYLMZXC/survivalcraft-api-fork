@@ -1,75 +1,59 @@
-﻿
-using Engine;
-using Engine.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Engine;
+using Engine.Graphics;
 
 namespace Game
 {
-    public class TextureAtlas
-    {
-        public Texture2D m_texture;
+	public class TextureAtlas
+	{
+		private Texture2D m_texture;
 
-        public Dictionary<string, Rectangle> m_rectangles = new Dictionary<string, Rectangle>();
+		private Dictionary<string, Rectangle> m_rectangles = new Dictionary<string, Rectangle>();
 
-        public Texture2D Texture => m_texture;
+		public Texture2D Texture => m_texture;
 
-        public TextureAtlas(Texture2D texture, string atlasDefinition, string prefix)
-        {
-            m_texture = texture;
-            string[] array = atlasDefinition.Split(new char[2]
-            {
-                '\n',
-                '\r'
-            }, StringSplitOptions.RemoveEmptyEntries);
-            int num = 0;
-            while (true)
-            {
-                if (num < array.Length)
-                {
-                    string[] array2 = array[num].Split(new char[1]
-                    {
-                        ' '
-                    }, StringSplitOptions.RemoveEmptyEntries);
-                    if (array2.Length < 5)
-                    {
-                        break;
-                    }
-                    string key = prefix + array2[0];
-                    var value = new Rectangle
-                    {
-                        Left = int.Parse(array2[1], CultureInfo.InvariantCulture),
-                        Top = int.Parse(array2[2], CultureInfo.InvariantCulture),
-                        Width = int.Parse(array2[3], CultureInfo.InvariantCulture),
-                        Height = int.Parse(array2[4], CultureInfo.InvariantCulture)
-                    };
-                    m_rectangles.Add(key, value);
-                    num++;
-                    continue;
-                }
-                return;
-            }
-            throw new InvalidOperationException("Invalid texture atlas definition.");
-        }
+		public TextureAtlas(Texture2D texture, string atlasDefinition, string prefix)
+		{
+			m_texture = texture;
+			string[] array = atlasDefinition.Split(new char[2] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+			for (int i = 0; i < array.Length; i++)
+			{
+				string[] array2 = array[i].Split(new char[1] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+				if (array2.Length < 5)
+				{
+					throw new InvalidOperationException("Invalid texture atlas definition.");
+				}
+				string key = prefix + array2[0];
+				Rectangle value = new Rectangle
+				{
+					Left = int.Parse(array2[1], CultureInfo.InvariantCulture),
+					Top = int.Parse(array2[2], CultureInfo.InvariantCulture),
+					Width = int.Parse(array2[3], CultureInfo.InvariantCulture),
+					Height = int.Parse(array2[4], CultureInfo.InvariantCulture)
+				};
+				m_rectangles.Add(key, value);
+			}
+		}
 
-        public bool ContainsTexture(string textureName)
-        {
-            return m_rectangles.ContainsKey(textureName);
-        }
+		public bool ContainsTexture(string textureName)
+		{
+			return m_rectangles.ContainsKey(textureName);
+		}
 
-        public Vector4? GetTextureCoordinates(string textureName)
-        {
-            if (m_rectangles.TryGetValue(textureName, out Rectangle value))
-            {
-                Vector4 value2 = default;
-                value2.X = value.Left / (float)m_texture.Width;
-                value2.Y = value.Top / (float)m_texture.Height;
-                value2.Z = value.Right / (float)m_texture.Width;
-                value2.W = value.Bottom / (float)m_texture.Height;
-                return value2;
-            }
-            return null;
-        }
-    }
+		public Vector4? GetTextureCoordinates(string textureName)
+		{
+			if (m_rectangles.TryGetValue(textureName, out var value))
+			{
+				Vector4 value2 = default(Vector4);
+				value2.X = (float)value.Left / (float)m_texture.Width;
+				value2.Y = (float)value.Top / (float)m_texture.Height;
+				value2.Z = (float)value.Right / (float)m_texture.Width;
+				value2.W = (float)value.Bottom / (float)m_texture.Height;
+				return value2;
+			}
+			return null;
+		}
+	}
 }

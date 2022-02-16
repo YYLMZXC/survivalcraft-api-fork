@@ -1,21 +1,18 @@
+using System;
 using Engine;
 
 namespace Game
 {
-	public class TerrainGeometrySubset
+	public class TerrainGeometrySubset : IDisposable
 	{
-		public DynamicArray<TerrainVertex> Vertices = new DynamicArray<TerrainVertex>();
+		public TerrainGeometryDynamicArray<TerrainVertex> Vertices = new TerrainGeometryDynamicArray<TerrainVertex>();
 
-		public DynamicArray<int> Indices = new DynamicArray<int>();
+		public TerrainGeometryDynamicArray<ushort> Indices = new TerrainGeometryDynamicArray<ushort>();
 
-		public TerrainGeometrySubset()
+		public void Dispose()
 		{
-		}
-
-		public TerrainGeometrySubset(DynamicArray<TerrainVertex> vertices, DynamicArray<int> indices)
-		{
-			Vertices = vertices;
-			Indices = indices;
+			Utilities.Dispose(ref Vertices);
+			Utilities.Dispose(ref Indices);
 		}
 	}
 }

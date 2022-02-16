@@ -2,18 +2,10 @@ using Engine;
 
 namespace Game
 {
-    public interface ITrailParticleSystem
-    {
-        Vector3 Position
-        {
-            get;
-            set;
-        }
+	public interface ITrailParticleSystem
+	{
+		Vector3 Position { get; set; }
 
-        bool IsStopped
-        {
-            get;
-            set;
-        }
-    }
+		bool IsStopped { get; set; }
+	}
 }

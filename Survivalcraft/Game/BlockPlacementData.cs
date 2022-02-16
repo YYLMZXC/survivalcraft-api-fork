@@ -1,9 +1,9 @@
 namespace Game
 {
-    public struct BlockPlacementData
-    {
-        public int Value;
+	public struct BlockPlacementData
+	{
+		public int Value;
 
-        public CellFace CellFace;
-    }
+		public CellFace CellFace;
+	}
 }

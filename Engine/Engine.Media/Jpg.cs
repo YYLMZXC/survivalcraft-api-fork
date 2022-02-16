@@ -1,8 +1,8 @@
+using System;
+using System.IO;
 using FluxJpeg.Core;
 using FluxJpeg.Core.Decoder;
 using FluxJpeg.Core.Encoder;
-using System;
-using System.IO;
 
 namespace Engine.Media
 {
@@ -12,7 +12,7 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException(nameof(stream));
+				throw new ArgumentNullException("stream");
 			}
 			long position = stream.Position;
 			int num = stream.ReadByte();
@@ -30,13 +30,14 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException(nameof(stream));
+				throw new ArgumentNullException("stream");
 			}
 			DecodedJpeg decodedJpeg = new JpegDecoder(stream).Decode();
+			decodedJpeg.Image.ChangeColorSpace(ColorSpace.RGB);
 			int width = decodedJpeg.Image.Width;
 			int height = decodedJpeg.Image.Height;
 			byte[][,] raster = decodedJpeg.Image.Raster;
-			var image = new Image(width, height);
+			Image image = new Image(width, height);
 			for (int i = 0; i < height; i++)
 			{
 				for (int j = 0; j < width; j++)
@@ -51,15 +52,15 @@ namespace Engine.Media
 		{
 			if (image == null)
 			{
-				throw new ArgumentNullException(nameof(image));
+				throw new ArgumentNullException("image");
 			}
 			if (stream == null)
 			{
-				throw new ArgumentNullException(nameof(stream));
+				throw new ArgumentNullException("stream");
 			}
 			if (quality < 0 || quality > 100)
 			{
-				throw new ArgumentOutOfRangeException(nameof(quality));
+				throw new ArgumentOutOfRangeException("quality");
 			}
 			int width = image.Width;
 			int height = image.Height;
@@ -83,7 +84,7 @@ namespace Engine.Media
 					array4[j, i] = color.B;
 				}
 			}
-			var cm = default(ColorModel);
+			ColorModel cm = default(ColorModel);
 			cm.colorspace = ColorSpace.RGB;
 			cm.Opaque = true;
 			new JpegEncoder(new FluxJpeg.Core.Image(cm, array), quality, stream).Encode();

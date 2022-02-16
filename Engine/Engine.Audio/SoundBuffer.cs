@@ -1,133 +1,22 @@
-using Engine.Media;
-
-#if desktop
-using OpenTK.Audio.OpenAL;
-#endif
-
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
+using Engine.Media;
 
 namespace Engine.Audio
 {
-	public class SoundBuffer : IDisposable
+	public sealed class SoundBuffer : IDisposable
 	{
-#if desktop
-		internal int m_buffer;
-#else
 		internal byte[] m_data;
 
-		internal GCHandle m_gcHandle;
-#endif
+		public int ChannelsCount { get; private set; }
 
-		public int ChannelsCount
-		{
-			get;
-			private set;
-		}
+		public int SamplingFrequency { get; private set; }
 
-		public int SamplingFrequency
-		{
-			get;
-			private set;
-		}
+		public int SamplesCount { get; private set; }
 
-		public int SamplesCount
-		{
-			get;
-			private set;
-		}
+		public int UseCount { get; internal set; }
 
-		public int UseCount
-		{
-			get;
-			internal set;
-		}
-
-#if desktop
-		public SoundBuffer(byte[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
-		{
-			Initialize(data, startIndex, itemsCount, channelsCount, samplingFrequency);
-			CreateBuffer(data, startIndex, itemsCount, channelsCount, samplingFrequency);
-		}
-
-		public SoundBuffer(short[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
-		{
-			Initialize(data, startIndex, itemsCount, channelsCount, samplingFrequency);
-			CreateBuffer(data, startIndex, itemsCount, channelsCount, samplingFrequency);
-		}
-
-		public SoundBuffer(Stream stream, int bytesCount, int channelsCount, int samplingFrequency)
-		{
-			byte[] array = Initialize(stream, bytesCount, channelsCount, samplingFrequency);
-			CreateBuffer(array, 0, array.Length, channelsCount, samplingFrequency);
-		}
-		public SoundBuffer() { }
-		private void InternalDispose()
-		{
-			if (m_buffer != 0)
-			{
-				AL.DeleteBuffer(m_buffer);
-				Mixer.CheckALError();
-				m_buffer = 0;
-			}
-		}
-
-		private void CreateBuffer<T>(T[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
-		{
-			m_buffer = AL.GenBuffer();
-			Mixer.CheckALError();
-			GCHandle gCHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			try
-			{
-				int num = Utilities.SizeOf<T>();
-				AL.BufferData(m_buffer, (channelsCount == 1) ? ALFormat.Mono16 : ALFormat.Stereo16, gCHandle.AddrOfPinnedObject() + startIndex * num, itemsCount * num, samplingFrequency);
-				Mixer.CheckALError();
-			}
-			finally
-			{
-				gCHandle.Free();
-			}
-		}
-#else
-
-		public SoundBuffer(byte[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
-		{
-			Initialize(data, startIndex, itemsCount, channelsCount, samplingFrequency);
-			m_data = new byte[itemsCount];
-			Buffer.BlockCopy(data, startIndex, m_data, 0, itemsCount);
-		}
-
-		public SoundBuffer(short[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
-		{
-			Initialize(data, startIndex, itemsCount, channelsCount, samplingFrequency);
-			m_data = new byte[2 * itemsCount];
-			Buffer.BlockCopy(data, startIndex, m_data, 0, itemsCount * 2);
-		}
-
-		public SoundBuffer(Stream stream, int bytesCount, int channelsCount, int samplingFrequency)
-		{
-			m_data = Initialize(stream, bytesCount, channelsCount, samplingFrequency);
-		}
-
-		public void InternalDispose()
-		{
-			if (m_gcHandle.IsAllocated)
-			{
-				m_gcHandle.Free();
-			}
-		}
-
-		internal GCHandle GetPinnedHandle()
-		{
-			if (!m_gcHandle.IsAllocated)
-			{
-				m_gcHandle = GCHandle.Alloc(m_data, GCHandleType.Pinned);
-			}
-			return m_gcHandle;
-		}
-
-#endif
+		public object Tag { get; set; }
 
 		public void Dispose()
 		{
@@ -205,6 +94,29 @@ namespace Engine.Audio
 			}
 			Initialize(array, 0, bytesCount, channelsCount, samplingFrequency);
 			return array;
+		}
+
+		public SoundBuffer(byte[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
+		{
+			Initialize(data, startIndex, itemsCount, channelsCount, samplingFrequency);
+			m_data = new byte[itemsCount];
+			Buffer.BlockCopy(data, startIndex, m_data, 0, itemsCount);
+		}
+
+		public SoundBuffer(short[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
+		{
+			Initialize(data, startIndex, itemsCount, channelsCount, samplingFrequency);
+			m_data = new byte[2 * itemsCount];
+			Buffer.BlockCopy(data, startIndex, m_data, 0, itemsCount * 2);
+		}
+
+		public SoundBuffer(Stream stream, int bytesCount, int channelsCount, int samplingFrequency)
+		{
+			m_data = Initialize(stream, bytesCount, channelsCount, samplingFrequency);
+		}
+
+		private void InternalDispose()
+		{
 		}
 	}
 }

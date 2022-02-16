@@ -5,41 +5,52 @@ namespace Engine.Media
 {
 	public class SoundData
 	{
-		public int ChannelsCount
-		{
-			get;
-			private set;
-		}
+		public int ChannelsCount { get; private set; }
 
-		public int SamplingFrequency
-		{
-			get;
-			private set;
-		}
+		public int SamplingFrequency { get; private set; }
 
-		public short[] Data
-		{
-			get;
-			private set;
-		}
+		public short[] Data { get; private set; }
 
 		public SoundData(int channelsCount, int samplingFrequency, int bytesCount)
 		{
 			if (channelsCount < 1 || channelsCount > 2)
 			{
-				throw new ArgumentOutOfRangeException(nameof(channelsCount));
+				throw new ArgumentOutOfRangeException("channelsCount");
 			}
 			if (samplingFrequency < 8000 || samplingFrequency > 48000)
 			{
-				throw new ArgumentOutOfRangeException(nameof(samplingFrequency));
+				throw new ArgumentOutOfRangeException("samplingFrequency");
 			}
 			if (bytesCount < 0 || bytesCount % (2 * channelsCount) != 0)
 			{
-				throw new ArgumentOutOfRangeException(nameof(bytesCount));
+				throw new ArgumentOutOfRangeException("bytesCount");
 			}
 			ChannelsCount = channelsCount;
 			SamplingFrequency = samplingFrequency;
 			Data = new short[bytesCount / 2];
+		}
+
+		public SoundData(byte[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
+			: this(channelsCount, samplingFrequency, itemsCount)
+		{
+			Buffer.BlockCopy(data, startIndex, Data, 0, itemsCount);
+		}
+
+		public SoundData(short[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
+			: this(channelsCount, samplingFrequency, itemsCount * 2)
+		{
+			Buffer.BlockCopy(data, startIndex, Data, 0, itemsCount * 2);
+		}
+
+		public SoundData(Stream stream, int bytesCount, int channelsCount, int samplingFrequency)
+			: this(channelsCount, samplingFrequency, bytesCount)
+		{
+			byte[] array = new byte[bytesCount];
+			if (stream.Read(array, 0, bytesCount) != bytesCount)
+			{
+				throw new InvalidOperationException("Not enough data in stream.");
+			}
+			Buffer.BlockCopy(array, 0, Data, 0, bytesCount);
 		}
 
 		public static SoundFileFormat DetermineFileFormat(string extension)
@@ -88,21 +99,14 @@ namespace Engine.Media
 				return Stream(stream, format);
 			}
 		}
-#if android
+
 		public static StreamingSource Stream(Stream stream)
 		{
-			SoundFileFormat format = DetermineFileFormat(stream);
-			stream.Position = 0L;
-			return Stream(stream, format);
-		}
-#else
-		public static StreamingSource Stream(Stream stream)
-		{
-			var peekStream = new PeekStream(stream, 64);
+			PeekStream peekStream = new PeekStream(stream, 64);
 			SoundFileFormat format = DetermineFileFormat(peekStream.GetInitialBytesStream());
 			return Stream(peekStream, format);
 		}
-#endif
+
 		public static StreamingSource Stream(string fileName)
 		{
 			using (Stream stream = Storage.OpenFile(fileName, OpenFileMode.Read))
@@ -134,7 +138,7 @@ namespace Engine.Media
 
 		public static SoundData Load(Stream stream)
 		{
-			var peekStream = new PeekStream(stream, 64);
+			PeekStream peekStream = new PeekStream(stream, 64);
 			SoundFileFormat format = DetermineFileFormat(peekStream.GetInitialBytesStream());
 			return Load(peekStream, format);
 		}

@@ -47,7 +47,7 @@ namespace Engine.Media
 		{
 			if (stream == null)
 			{
-				throw new ArgumentNullException(nameof(stream));
+				throw new ArgumentNullException("stream");
 			}
 			if (!stream.CanRead)
 			{
@@ -55,7 +55,7 @@ namespace Engine.Media
 			}
 			if (peekSize < 0)
 			{
-				throw new ArgumentOutOfRangeException(nameof(peekSize));
+				throw new ArgumentOutOfRangeException("peekSize");
 			}
 			m_stream = stream;
 			m_buffer = new byte[peekSize];
@@ -81,7 +81,7 @@ namespace Engine.Media
 				Position += offset;
 				break;
 			default:
-				throw new ArgumentException("Invalid origin.", nameof(origin));
+				throw new ArgumentException("Invalid origin.", "origin");
 			}
 			return Position;
 		}
@@ -95,15 +95,15 @@ namespace Engine.Media
 		{
 			if (buffer == null)
 			{
-				throw new ArgumentNullException(nameof(buffer));
+				throw new ArgumentNullException("buffer");
 			}
 			if (offset < 0)
 			{
-				throw new ArgumentOutOfRangeException(nameof(offset));
+				throw new ArgumentOutOfRangeException("offset");
 			}
 			if (offset + count > buffer.Length)
 			{
-				throw new ArgumentOutOfRangeException(nameof(count));
+				throw new ArgumentOutOfRangeException("count");
 			}
 			int num = 0;
 			if (m_position < m_end)

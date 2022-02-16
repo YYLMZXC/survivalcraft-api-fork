@@ -2182,9 +2182,6 @@
     <Compile Include="..\Survivalcraft\Managers\LightingManager.cs">
       <Link>Managers\LightingManager.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Managers\MarketplaceManager.cs">
-      <Link>Managers\MarketplaceManager.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Managers\MotdManager.cs">
       <Link>Managers\MotdManager.cs</Link>
     </Compile>

@@ -1,5 +1,6 @@
-using OpenTK.Audio.OpenAL;
 using System;
+using System.Threading.Tasks;
+using SharpDX.XAudio2;
 
 namespace Engine.Audio
 {
@@ -17,25 +18,13 @@ namespace Engine.Audio
 
 		internal bool m_disposeOnStop;
 
-		internal int m_source;
+		internal SourceVoice m_sourceVoice;
 
-		public SoundState State
-		{
-			get;
-			internal set;
-		}
+		public SoundState State { get; internal set; }
 
-		public int ChannelsCount
-		{
-			get;
-			internal set;
-		}
+		public int ChannelsCount { get; internal set; }
 
-		public int SamplingFrequency
-		{
-			get;
-			internal set;
-		}
+		public int SamplingFrequency { get; internal set; }
 
 		public float Volume
 		{
@@ -178,39 +167,6 @@ namespace Engine.Audio
 
 		internal BaseSound()
 		{
-			m_source = AL.GenSource();
-			Mixer.CheckALError();
-			AL.DistanceModel(ALDistanceModel.None);
-			Mixer.CheckALError();
-		}
-
-		private void InternalSetVolume(float volume)
-		{
-			if (m_source != 0)
-			{
-				AL.Source(m_source, ALSourcef.Gain, volume);
-				Mixer.CheckALError();
-			}
-		}
-
-		private void InternalSetPitch(float pitch)
-		{
-			if (m_source != 0)
-			{
-				AL.Source(m_source, ALSourcef.Pitch, pitch);
-				Mixer.CheckALError();
-			}
-		}
-
-		private void InternalSetPan(float pan)
-		{
-			if (m_source != 0)
-			{
-				float value = 0f;
-				float value2 = -0.1f;
-				AL.Source(m_source, ALSource3f.Position, pan, value, value2);
-				Mixer.CheckALError();
-			}
 		}
 
 		internal abstract void InternalPlay();
@@ -221,13 +177,43 @@ namespace Engine.Audio
 
 		internal virtual void InternalDispose()
 		{
-			if (m_source != 0)
+			if (m_sourceVoice != null)
 			{
-				AL.SourceStop(m_source);
-				Mixer.CheckALError();
-				AL.DeleteSource(m_source);
-				Mixer.CheckALError();
-				m_source = 0;
+				m_sourceVoice.Stop();
+				SourceVoice sourceVoiceCopy = m_sourceVoice;
+				Task.Run(delegate
+				{
+					sourceVoiceCopy.DestroyVoice();
+					sourceVoiceCopy.Dispose();
+				});
+				m_sourceVoice = null;
+			}
+		}
+
+		private void InternalSetVolume(float volume)
+		{
+			if (m_sourceVoice != null)
+			{
+				m_sourceVoice.SetVolume(volume);
+			}
+		}
+
+		private void InternalSetPitch(float pitch)
+		{
+			if (m_sourceVoice != null)
+			{
+				m_sourceVoice.SetFrequencyRatio(pitch);
+			}
+		}
+
+		private void InternalSetPan(float pan)
+		{
+			if (m_sourceVoice != null)
+			{
+				float num = MathUtils.Saturate(1f - pan);
+				float num2 = MathUtils.Saturate(1f + pan);
+				float[] levelMatrixRef = new float[2] { num, num2 };
+				m_sourceVoice.SetOutputMatrix(ChannelsCount, 2, levelMatrixRef);
 			}
 		}
 	}

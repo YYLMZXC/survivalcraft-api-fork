@@ -1,11 +1,10 @@
-using Android.OS;
+using System;
+using Engine;
 
 namespace Game
 {
 	public static class DeviceManager
 	{
-		public static string DeviceModel => Build.Model;
-
-		public static string OperatingSystemVersion => Build.VERSION.Release;
+		
 	}
 }

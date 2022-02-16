@@ -1,6 +1,6 @@
-﻿using Engine;
-using Engine.Graphics;
 using System;
+using Engine;
+using Engine.Graphics;
 
 namespace Game
 {
@@ -12,13 +12,9 @@ namespace Game
 
 			public IndexBuffer IndexBuffer;
 
-			public Texture2D Texture;
-
 			public int[] SubsetIndexBufferStarts = new int[7];
 
 			public int[] SubsetIndexBufferEnds = new int[7];
-
-			public int[] SubsetVertexBufferStarts = new int[7];
 
 			public void Dispose()
 			{
@@ -43,26 +39,30 @@ namespace Game
 
 		public void Dispose()
 		{
+			DisposeVertexIndexBuffers();
+			TerrainChunkSliceGeometry[] slices = Slices;
+			for (int i = 0; i < slices.Length; i++)
+			{
+				slices[i].Dispose();
+			}
+		}
+
+		public void InvalidateSlicesGeometryHashes()
+		{
+			TerrainChunkSliceGeometry[] slices = Slices;
+			for (int i = 0; i < slices.Length; i++)
+			{
+				slices[i].GeometryHash = 0;
+			}
+		}
+
+		public void DisposeVertexIndexBuffers()
+		{
 			foreach (Buffer buffer in Buffers)
 			{
 				buffer.Dispose();
 			}
-		}
-
-		public void InvalidateSliceContentsHashes()
-		{
-			for (int i = 0; i < Slices.Length; i++)
-			{
-				Slices[i].ContentsHash = 0;
-			}
-		}
-
-		public void CopySliceContentsHashes(TerrainChunk chunk)
-		{
-			for (int i = 0; i < Slices.Length; i++)
-			{
-				Slices[i].ContentsHash = chunk.SliceContentsHashes[i];
-			}
+			Buffers.Clear();
 		}
 	}
 }

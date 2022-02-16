@@ -16,7 +16,7 @@ namespace Engine.Media
 		{
 			if (image == null)
 			{
-				throw new ArgumentNullException(nameof(image));
+				throw new ArgumentNullException("image");
 			}
 			Width = image.Width;
 			Height = image.Height;
@@ -27,26 +27,45 @@ namespace Engine.Media
 		{
 			if (width < 0)
 			{
-				throw new ArgumentOutOfRangeException(nameof(width));
+				throw new ArgumentOutOfRangeException("width");
 			}
 			if (height < 0)
 			{
-				throw new ArgumentOutOfRangeException(nameof(height));
+				throw new ArgumentOutOfRangeException("height");
 			}
 			Width = width;
 			Height = height;
 			Pixels = new Color[width * height];
 		}
 
+		public Image(int width, int height, Color color)
+		{
+			if (width < 0)
+			{
+				throw new ArgumentOutOfRangeException("width");
+			}
+			if (height < 0)
+			{
+				throw new ArgumentOutOfRangeException("height");
+			}
+			Width = width;
+			Height = height;
+			Pixels = new Color[width * height];
+			for (int i = 0; i < Pixels.Length; i++)
+			{
+				Pixels[i] = color;
+			}
+		}
+
 		public Color GetPixel(int x, int y)
 		{
 			if (x < 0 || x >= Width)
 			{
-				throw new ArgumentOutOfRangeException(nameof(x));
+				throw new ArgumentOutOfRangeException("x");
 			}
 			if (y < 0 || y >= Height)
 			{
-				throw new ArgumentOutOfRangeException(nameof(y));
+				throw new ArgumentOutOfRangeException("y");
 			}
 			return Pixels[x + y * Width];
 		}
@@ -55,13 +74,38 @@ namespace Engine.Media
 		{
 			if (x < 0 || x >= Width)
 			{
-				throw new ArgumentOutOfRangeException(nameof(x));
+				throw new ArgumentOutOfRangeException("x");
 			}
 			if (y < 0 || y >= Height)
 			{
-				throw new ArgumentOutOfRangeException(nameof(y));
+				throw new ArgumentOutOfRangeException("y");
 			}
 			Pixels[x + y * Width] = color;
+		}
+
+		public Image Subimage(Rectangle bounds)
+		{
+			if (bounds.Left < 0 || bounds.Top < 0 || bounds.Right > Width || bounds.Bottom > Height)
+			{
+				throw new ArgumentOutOfRangeException("bounds");
+			}
+			Image image = new Image(bounds.Width, bounds.Height);
+			for (int i = bounds.Top; i < bounds.Bottom; i++)
+			{
+				for (int j = bounds.Left; j < bounds.Right; j++)
+				{
+					image.Pixels[j - bounds.Left + (i - bounds.Top) * bounds.Width] = Pixels[j + i * Width];
+				}
+			}
+			return image;
+		}
+
+		public void Fill(Color color)
+		{
+			for (int i = 0; i < Pixels.Length; i++)
+			{
+				Pixels[i] = color;
+			}
 		}
 
 		public static void PremultiplyAlpha(Image image)
@@ -76,11 +120,11 @@ namespace Engine.Media
 		{
 			if (image == null)
 			{
-				throw new ArgumentNullException(nameof(image));
+				throw new ArgumentNullException("image");
 			}
 			if (maxLevelsCount < 0)
 			{
-				throw new ArgumentOutOfRangeException(nameof(maxLevelsCount));
+				throw new ArgumentOutOfRangeException("maxLevelsCount");
 			}
 			if (maxLevelsCount == 0)
 			{
@@ -90,21 +134,17 @@ namespace Engine.Media
 			int mipHeight = image.Height;
 			yield return image;
 			int level = 1;
-			while (true)
+			while (level < maxLevelsCount)
 			{
-				if (level >= maxLevelsCount)
-				{
-					yield break;
-				}
 				if ((mipWidth > 1 && mipWidth % 2 != 0) || (mipHeight > 1 && mipHeight % 2 != 0))
 				{
-					break;
+					throw new InvalidOperationException("Generating mipmaps with not 2:1 scaling is not supported. Limit mipmap levels count using maxLevelsCount parameter.");
 				}
 				int num = mipWidth;
 				int num2 = mipHeight;
 				mipWidth = MathUtils.Max(num / 2, 1);
 				mipHeight = MathUtils.Max(num2 / 2, 1);
-				var mipImage = new Image(mipWidth, mipHeight);
+				Image mipImage = new Image(mipWidth, mipHeight);
 				int num3 = num / mipWidth;
 				int num4 = num2 / mipHeight;
 				if (num3 == 2 && num4 == 2)
@@ -159,7 +199,7 @@ namespace Engine.Media
 				{
 					if (num3 != 1 || num4 != 2)
 					{
-						yield break;
+						break;
 					}
 					int k = 0;
 					int num11 = 0;
@@ -187,7 +227,6 @@ namespace Engine.Media
 				int num14 = level + 1;
 				level = num14;
 			}
-			throw new InvalidOperationException("Generating mipmaps with not 2:1 scaling is not supported. Limit mipmap levels count using maxLevelsCount parameter.");
 		}
 
 		public static ImageFileFormat DetermineFileFormat(string extension)
@@ -249,7 +288,7 @@ namespace Engine.Media
 
 		public static Image Load(Stream stream)
 		{
-			var peekStream = new PeekStream(stream, 64);
+			PeekStream peekStream = new PeekStream(stream, 64);
 			ImageFileFormat format = DetermineFileFormat(peekStream.GetInitialBytesStream());
 			return Load(peekStream, format);
 		}

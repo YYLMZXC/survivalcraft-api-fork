@@ -1,27 +1,31 @@
-using Engine.Media;
-using OpenTK.Audio.OpenAL;
 using System;
-using System.Collections.Generic;
-using System.Threading;
+using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Engine.Media;
+using SharpDX;
+using SharpDX.Multimedia;
+using SharpDX.XAudio2;
 
 namespace Engine.Audio
 {
 	public sealed class StreamingSound : BaseSound
 	{
+		private enum Command
+		{
+			Play,
+			Pause,
+			Stop,
+			Exit
+		}
+
 		private Task m_task;
 
-		private ManualResetEvent m_stopTaskEvent = new ManualResetEvent(initialState: false);
-
-		private bool m_noMoreData;
+		private BlockingCollection<Command> m_queue = new BlockingCollection<Command>(100);
 
 		private float m_bufferDuration;
 
-		public StreamingSource StreamingSource
-		{
-			get;
-			private set;
-		}
+		public StreamingSource StreamingSource { get; private set; }
 
 		private int ReadStreamingSource(byte[] buffer, int count)
 		{
@@ -51,7 +55,7 @@ namespace Engine.Audio
 		{
 			if (streamingSource == null)
 			{
-				throw new ArgumentNullException(nameof(streamingSource));
+				throw new ArgumentNullException("streamingSource");
 			}
 			if (streamingSource.ChannelsCount < 1 || streamingSource.ChannelsCount > 2)
 			{
@@ -66,6 +70,8 @@ namespace Engine.Audio
 		public StreamingSound(StreamingSource streamingSource, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false, float bufferDuration = 0.3f)
 		{
 			VerifyStreamingSource(streamingSource);
+			WaveFormat sourceFormat = new WaveFormat(streamingSource.SamplingFrequency, 16, streamingSource.ChannelsCount);
+			m_sourceVoice = new SourceVoice(Mixer.m_xAudio2, sourceFormat, VoiceFlags.None, 2f, enableCallbackEvents: false);
 			StreamingSource = streamingSource;
 			base.ChannelsCount = streamingSource.ChannelsCount;
 			base.SamplingFrequency = streamingSource.SamplingFrequency;
@@ -90,112 +96,119 @@ namespace Engine.Audio
 
 		internal override void InternalPlay()
 		{
-			AL.SourcePlay(m_source);
-			Mixer.CheckALError();
+			m_queue.Add(Command.Play);
 		}
 
 		internal override void InternalPause()
 		{
-			AL.SourcePause(m_source);
-			Mixer.CheckALError();
+			m_queue.Add(Command.Pause);
 		}
 
 		internal override void InternalStop()
 		{
-			AL.SourceStop(m_source);
-			Mixer.CheckALError();
-			StreamingSource.Position = 0L;
-			m_noMoreData = false;
+			m_queue.Add(Command.Stop);
 		}
 
 		internal override void InternalDispose()
 		{
-			if (m_stopTaskEvent != null && m_task != null)
+			if (m_task != null)
 			{
-				m_stopTaskEvent.Set();
+				m_queue.Add(Command.Exit);
 				m_task.Wait();
 				m_task = null;
-				m_stopTaskEvent.Dispose();
-				m_stopTaskEvent = null;
+			}
+			if (m_sourceVoice != null)
+			{
+				m_sourceVoice.Dispose();
+				m_sourceVoice = null;
 			}
 			if (StreamingSource != null)
 			{
 				StreamingSource.Dispose();
 				StreamingSource = null;
 			}
+			m_queue.Dispose();
 			base.InternalDispose();
 		}
 
 		private void StreamingThreadFunction()
 		{
-			int[] array = new int[3];
-			var list = new List<int>();
-			int millisecondsTimeout = MathUtils.Clamp((int)(0.5f * m_bufferDuration / (float)array.Length * 1000f), 1, 100);
-			byte[] array2 = new byte[2 * base.ChannelsCount * (int)((float)base.SamplingFrequency * m_bufferDuration / (float)array.Length)];
-			for (int i = 0; i < array.Length; i++)
+			GCHandle[] array = new GCHandle[3];
+			try
 			{
-				int num = AL.GenBuffer();
-				Mixer.CheckALError();
-				array[i] = num;
-				list.Add(num);
-			}
-			do
-			{
-				lock (m_stateSync)
+				int num = 2 * base.ChannelsCount * (int)((float)base.SamplingFrequency * m_bufferDuration / (float)array.Length);
+				int num2 = 0;
+				byte[][] array2 = new byte[array.Length][];
+				for (int i = 0; i < array.Length; i++)
 				{
-					if (!m_noMoreData)
+					array2[i] = new byte[num];
+					array[i] = GCHandle.Alloc(array2[i], GCHandleType.Pinned);
+				}
+				bool flag = false;
+				bool flag2 = false;
+				int num3 = MathUtils.Clamp((int)(0.5f * m_bufferDuration / (float)array.Length * 1000f), 1, 100);
+				while (true)
+				{
+					if (m_queue.TryTake(out var item, flag ? num3 : 100))
 					{
-						AL.GetSource(m_source, ALGetSourcei.BuffersProcessed, out int value);
-						Mixer.CheckALError();
-						for (int j = 0; j < value; j++)
+						switch (item)
 						{
-							int item = AL.SourceUnqueueBuffer(m_source);
-							Mixer.CheckALError();
-							list.Add(item);
-						}
-						if (list.Count > 0 && !m_noMoreData && base.State == SoundState.Playing)
-						{
-							int num2 = ReadStreamingSource(array2, array2.Length);
-							m_noMoreData = (num2 < array2.Length);
-							if (num2 > 0)
-							{
-								int num3 = list[list.Count - 1];
-								AL.BufferData(num3, (base.ChannelsCount == 1) ? ALFormat.Mono16 : ALFormat.Stereo16, array2, num2, base.SamplingFrequency);
-								Mixer.CheckALError();
-								AL.SourceQueueBuffer(m_source, num3);
-								Mixer.CheckALError();
-								list.RemoveAt(list.Count - 1);
-								ALSourceState sourceState = AL.GetSourceState(m_source);
-								Mixer.CheckALError();
-								if (sourceState != ALSourceState.Playing)
-								{
-									AL.SourcePlay(m_source);
-									Mixer.CheckALError();
-								}
-							}
+						case Command.Play:
+							m_sourceVoice.Start();
+							flag = true;
+							flag2 = false;
+							break;
+						case Command.Pause:
+							m_sourceVoice.Stop();
+							flag = false;
+							break;
+						case Command.Stop:
+							m_sourceVoice.Stop();
+							m_sourceVoice.FlushSourceBuffers();
+							StreamingSource.Position = 0L;
+							num2 = 0;
+							flag = false;
+							break;
+						case Command.Exit:
+							m_sourceVoice.Stop();
+							return;
 						}
 					}
-					else if (AL.GetSourceState(m_source) == ALSourceState.Stopped)
+					while (flag && m_sourceVoice.State.BuffersQueued < array2.Length)
 					{
-						Dispatcher.Dispatch(delegate
+						byte[] array3 = array2[num2];
+						GCHandle gCHandle = array[num2];
+						num2 = (num2 + 1) % array2.Length;
+						int num4 = ReadStreamingSource(array3, array3.Length);
+						if (num4 > 0)
 						{
-							Stop();
-						});
+							AudioBuffer audioBuffer = new AudioBuffer(new DataPointer(gCHandle.AddrOfPinnedObject(), array3.Length));
+							audioBuffer.PlayLength = num4 / m_sourceVoice.VoiceDetails.InputChannelCount / 2;
+							audioBuffer.Flags = BufferFlags.None;
+							m_sourceVoice.SubmitSourceBuffer(audioBuffer, null);
+						}
+						if (num4 < array3.Length)
+						{
+							m_sourceVoice.Discontinuity();
+							flag2 = true;
+							break;
+						}
+					}
+					if (flag2 && m_sourceVoice.State.BuffersQueued == 0)
+					{
+						flag2 = false;
+						Dispatcher.Dispatch(base.Stop);
 					}
 				}
 			}
-			while (!m_stopTaskEvent.WaitOne(millisecondsTimeout));
-			AL.SourceStop(m_source);
-			Mixer.CheckALError();
-			AL.Source(m_source, ALSourcei.Buffer, 0);
-			Mixer.CheckALError();
-			for (int k = 0; k < array.Length; k++)
+			finally
 			{
-				if (array[k] != 0)
+				for (int j = 0; j < array.Length; j++)
 				{
-					AL.DeleteBuffer(array[k]);
-					Mixer.CheckALError();
-					array[k] = 0;
+					if (array[j].IsAllocated)
+					{
+						array[j].Free();
+					}
 				}
 			}
 		}
