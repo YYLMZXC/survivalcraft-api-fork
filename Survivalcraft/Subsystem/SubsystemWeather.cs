@@ -169,9 +169,12 @@ namespace Game
             int num2 = num * num;
             Dictionary<Point2, PrecipitationShaftParticleSystem> activeShafts = GetActiveShafts(camera.GameWidget);
             byte b = (byte)(255f * MathUtils.Lerp(0.15f, 1f, SubsystemSky.SkyLightIntensity));
-            RainColor = new Color(b, b, b);
             byte b2 = (byte)(255f * MathUtils.Lerp(0.15f, 1f, SubsystemSky.SkyLightIntensity));
-            SnowColor = new Color(b2, b2, b2);
+            Color rainColor= new Color(b, b, b);
+            Color snowColor = new Color(b2, b2, b2);
+            ModsManager.HookAction("SetRainAndSnowColor", modloader => { return modloader.SetRainAndSnowColor(ref rainColor, ref snowColor); });
+            RainColor = rainColor;
+            SnowColor = snowColor;          
             var vector = new Vector2(camera.ViewPosition.X, camera.ViewPosition.Z);
             Point2 point = Terrain.ToCell(vector);
             m_lastShaftsUpdatePositions.TryGetValue(camera.GameWidget, out Vector2? value);

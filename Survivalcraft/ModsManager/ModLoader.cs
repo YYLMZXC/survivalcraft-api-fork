@@ -43,8 +43,17 @@ namespace Game
         {
             Digged = false;
             return false;
-        }
-
+        }     
+        /// <summary>
+        /// 设置雨和雪的颜色
+        /// </summary>
+        /// <param name="rainColor"></param>
+        /// <param name="snowColor"></param>
+        /// <returns></returns>
+        public virtual bool SetRainAndSnowColor(ref Color rainColor, ref Color snowColor)
+        {
+            return false;
+        }      
         /// <summary>
         /// 更改击退和晕眩效果
         /// </summary>
