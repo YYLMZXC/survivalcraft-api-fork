@@ -143,13 +143,13 @@ namespace Game
 			Display.BlendState = BlendState.Opaque;
 			Display.DepthStencilState = DepthStencilState.Default;
 			Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-			OpaqueShader.GetParameter("u_origin").SetValue(v.XZ);
-			OpaqueShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
-			OpaqueShader.GetParameter("u_viewPosition").SetValue(viewPosition);
-			OpaqueShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
-			OpaqueShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
-			OpaqueShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-			ShaderParameter parameter = OpaqueShader.GetParameter("u_fogStartInvLength");
+			OpaqueShader.GetParameter("u_origin", true).SetValue(v.XZ);
+			OpaqueShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
+			OpaqueShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
+			OpaqueShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+			OpaqueShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
+			OpaqueShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+			ShaderParameter parameter = OpaqueShader.GetParameter("u_fogStartInvLength", true);
 			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(OpaqueShader, camera); return true; });
 			Point2 point = Terrain.ToChunk(camera.ViewPosition.XZ);
 			var chunk = m_subsystemTerrain.Terrain.GetChunkAtCoords(point.X, point.Y);
@@ -190,13 +190,13 @@ namespace Game
 			Display.BlendState = BlendState.Opaque;
 			Display.DepthStencilState = DepthStencilState.Default;
 			Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-			AlphatestedShader.GetParameter("u_origin").SetValue(v.XZ);
-			AlphatestedShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
-			AlphatestedShader.GetParameter("u_viewPosition").SetValue(viewPosition);
-			AlphatestedShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
-			AlphatestedShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
-			AlphatestedShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-			ShaderParameter parameter = AlphatestedShader.GetParameter("u_fogStartInvLength");
+			AlphatestedShader.GetParameter("u_origin", true).SetValue(v.XZ);
+			AlphatestedShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
+			AlphatestedShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
+			AlphatestedShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+			AlphatestedShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
+			AlphatestedShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+			ShaderParameter parameter = AlphatestedShader.GetParameter("u_fogStartInvLength", true);
 			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(AlphatestedShader, camera); return true; });
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
@@ -218,13 +218,13 @@ namespace Game
 			Display.BlendState = BlendState.AlphaBlend;
 			Display.DepthStencilState = DepthStencilState.Default;
 			Display.RasterizerState = ((m_subsystemSky.ViewUnderWaterDepth > 0f) ? RasterizerState.CullClockwiseScissor : RasterizerState.CullCounterClockwiseScissor);
-			TransparentShader.GetParameter("u_origin").SetValue(v.XZ);
-			TransparentShader.GetParameter("u_viewProjectionMatrix").SetValue(value);
-			TransparentShader.GetParameter("u_viewPosition").SetValue(viewPosition);
-			TransparentShader.GetParameter("u_samplerState").SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
-			TransparentShader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
-			TransparentShader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-			ShaderParameter parameter = TransparentShader.GetParameter("u_fogStartInvLength");
+			TransparentShader.GetParameter("u_origin", true).SetValue(v.XZ);
+			TransparentShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
+			TransparentShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
+			TransparentShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+			TransparentShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
+			TransparentShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+			ShaderParameter parameter = TransparentShader.GetParameter("u_fogStartInvLength", true);
 			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(TransparentShader, camera); return true; });
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
@@ -364,7 +364,7 @@ namespace Game
 					{
 						if (num2 > num)
 						{
-							if(ApplyTexture) shader.GetParameter("u_texture").SetValue(buffer.Texture);
+							if(ApplyTexture) shader.GetParameter("u_texture", true).SetValue(buffer.Texture);
 							Display.DrawIndexed(PrimitiveType.TriangleList, shader, buffer.VertexBuffer, buffer.IndexBuffer, num, num2 - num);
 							ChunkTrianglesDrawn += (num2 - num) / 3;
 							ChunkDrawCalls++;

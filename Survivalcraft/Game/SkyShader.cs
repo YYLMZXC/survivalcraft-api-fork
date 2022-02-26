@@ -48,8 +48,8 @@ namespace Engine.Graphics
 			}
 		}
 
-		public SkyShader(string vsc, string psc, bool useVertexColor, bool useTexture, bool useAlphaThreshold)
-			: base(vsc, psc, PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
+		public SkyShader(string vsc, string psc, bool useVertexColor, bool useTexture, bool useAlphaThreshold, ShaderMacro[] shaderMacros = null)
+			: base(vsc, psc, PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold, shaderMacros))
 		{
 			m_worldViewProjectionMatrixParameter = base.GetParameter("u_worldViewProjectionMatrix", true);
 			m_textureParameter = base.GetParameter("u_texture", true);
@@ -67,7 +67,7 @@ namespace Engine.Graphics
 
 		}
 
-		public static ShaderMacro[] PrepareShaderMacros(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
+		public static ShaderMacro[] PrepareShaderMacros(bool useVertexColor, bool useTexture, bool useAlphaThreshold, ShaderMacro[] shaderMacros = null)
 		{
 			List<ShaderMacro> list = new List<ShaderMacro>();
 			if (useVertexColor)
@@ -81,6 +81,13 @@ namespace Engine.Graphics
 			if (useAlphaThreshold)
 			{
 				list.Add(new ShaderMacro("USE_ALPHATHRESHOLD"));
+			}
+			if(shaderMacros != null && shaderMacros.Length > 0)
+            {
+				foreach (ShaderMacro shaderMacro in shaderMacros)
+				{
+					list.Add(shaderMacro);
+				}
 			}
 			return list.ToArray();
 		}

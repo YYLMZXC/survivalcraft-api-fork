@@ -172,8 +172,8 @@ namespace Game
             }
         }
 
-        public ModelShader(string vsc, string psc, bool useAlphaThreshold, int maxInstancesCount = 1)
-            : base(vsc, psc, PrepareShaderMacros(useAlphaThreshold, maxInstancesCount))
+        public ModelShader(string vsc, string psc, bool useAlphaThreshold, int maxInstancesCount = 1, ShaderMacro[] shaderMacros = null)
+            : base(vsc, psc, PrepareShaderMacros(useAlphaThreshold, maxInstancesCount, shaderMacros))
         {
             m_worldMatrixParameter = GetParameter("u_worldMatrix");
             m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix");
@@ -193,6 +193,7 @@ namespace Game
             m_worldUpParameter = GetParameter("u_worldUp");
             Transforms = new ShaderTransforms(maxInstancesCount);
         }
+
         protected override void PrepareForDrawingOverride()
         {
             Transforms.UpdateMatrices(m_instancesCount, worldView: false, viewProjection: false, worldViewProjection: true);
@@ -200,7 +201,7 @@ namespace Game
             m_worldMatrixParameter.SetValue(Transforms.World, InstancesCount);
         }
 
-        public static ShaderMacro[] PrepareShaderMacros(bool useAlphaThreshold, int maxInstancesCount)
+        public static ShaderMacro[] PrepareShaderMacros(bool useAlphaThreshold, int maxInstancesCount, ShaderMacro[] shaderMacros = null)
         {
             var list = new List<ShaderMacro>();
             if (useAlphaThreshold)
@@ -208,6 +209,13 @@ namespace Game
                 list.Add(new ShaderMacro("ALPHATESTED"));
             }
             list.Add(new ShaderMacro("MAX_INSTANCES_COUNT", maxInstancesCount.ToString(CultureInfo.InvariantCulture)));
+            if (shaderMacros != null && shaderMacros.Length > 0)
+            {
+                foreach (ShaderMacro shaderMacro in shaderMacros)
+                {
+                    list.Add(shaderMacro);
+                }
+            }
             return list.ToArray();
         }
     }
