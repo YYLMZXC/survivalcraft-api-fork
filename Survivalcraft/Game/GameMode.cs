@@ -4,6 +4,7 @@ namespace Game
     {
         Creative,
         Harmless,
+        Survival,
         Challenging,
         Cruel,
         Adventure

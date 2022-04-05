@@ -66,12 +66,10 @@ namespace Game
         {
             if (m_gameModeButton.IsClicked)
             {
-                IList<int> enumValues = EnumUtils.GetEnumValues(typeof(GameMode));
-                m_worldSettings.GameMode = (GameMode)((enumValues.IndexOf((int)m_worldSettings.GameMode) + 1) % enumValues.Count);
-                while (m_worldSettings.GameMode == GameMode.Adventure)
+                DialogsManager.ShowDialog(null, new SelectGameModeDialog(string.Empty, allowAdventure: false, delegate (GameMode gameMode)
                 {
-                    m_worldSettings.GameMode = (GameMode)((enumValues.IndexOf((int)m_worldSettings.GameMode) + 1) % enumValues.Count);
-                }
+                    m_worldSettings.GameMode = gameMode;
+                }));
             }
             if (m_startingPositionButton.IsClicked)
             {

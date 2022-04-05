@@ -11,7 +11,7 @@ namespace Game
 
         public string Seed = string.Empty;
 
-        public GameMode GameMode = GameMode.Challenging;
+        public GameMode GameMode = GameMode.Survival;
 
         public EnvironmentBehaviorMode EnvironmentBehaviorMode;
 

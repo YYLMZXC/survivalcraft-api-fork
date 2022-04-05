@@ -615,6 +615,7 @@ namespace Game
             string value2 = "";
             string value3 = "";
             string value4 = "";
+            int value5 = 0;
             if (spawnMode != SpawnMode.Respawn)
             {
                 if (PlayerClass == PlayerClass.Female)
@@ -676,56 +677,51 @@ namespace Game
                     value3 = MakeClothingValue(0, 12);
                     value4 = MakeClothingValue(26, 6) + ";" + MakeClothingValue(29, 0);
                 }
+                value5 = ((m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Survival) ? 1 : 0);
             }
-            var overrides = new ValuesDictionary
+            ValuesDictionary overrides = new ValuesDictionary
             {
                 {
                     "Player",
-                    new ValuesDictionary
-                    {
-                        {
-                            "PlayerIndex",
-                            PlayerIndex
-                        }
-                    }
+                    new ValuesDictionary { { "PlayerIndex", PlayerIndex } }
                 },
                 {
                     "Intro",
-                    new ValuesDictionary
+                    new ValuesDictionary {
                     {
-                        {
-                            "PlayIntro",
-                            spawnMode == SpawnMode.InitialIntro
-                        }
-                    }
+                        "PlayIntro",
+                        spawnMode == SpawnMode.InitialIntro
+                    } }
                 },
                 {
                     "Clothing",
-                    new ValuesDictionary
+                    new ValuesDictionary {
                     {
+                        "Clothes",
+                        new ValuesDictionary
                         {
-                            "Clothes",
+                            { "Feet", value4 },
+                            { "Legs", value3 },
+                            { "Torso", value2 },
+                            { "Head", value }
+                        }
+                    } }
+                },
+                {
+                    "Inventory",
+                    new ValuesDictionary {
+                    {
+                        "Slots",
+                        new ValuesDictionary {
+                        {
+                            "Slot1",
                             new ValuesDictionary
                             {
-                                {
-                                    "Feet",
-                                    value4
-                                },
-                                {
-                                    "Legs",
-                                    value3
-                                },
-                                {
-                                    "Torso",
-                                    value2
-                                },
-                                {
-                                    "Head",
-                                    value
-                                }
+                                { "Contents", 162 },
+                                { "Count", value5 }
                             }
-                        }
-                    }
+                        } }
+                    } }
                 }
             };
             Vector2 v = ComponentIntro.FindOceanDirection(m_subsystemTerrain.TerrainContentsGenerator, position.XZ);

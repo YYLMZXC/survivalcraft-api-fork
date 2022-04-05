@@ -347,7 +347,7 @@ namespace Game
             bool flag = m_componentPlayer.ComponentBody.ImmersionDepth > num2;
             bool flag2 = m_componentPlayer.ComponentBody.ImmersionFactor > 0.33f && !m_componentPlayer.ComponentBody.StandingOnValue.HasValue;
             _ = m_componentPlayer.ComponentSickness.IsPuking;
-            if (m_subsystemGameInfo.WorldSettings.GameMode != 0 && m_subsystemGameInfo.WorldSettings.GameMode != GameMode.Harmless && m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled)
+            if (m_subsystemGameInfo.WorldSettings.GameMode >= GameMode.Survival && m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled)
             {
                 float num3 = 1f / MathUtils.Max(m_componentPlayer.ComponentLevel.SpeedFactor, 0.75f);
                 if (m_componentPlayer.ComponentSickness.IsSick || m_componentPlayer.ComponentFlu.HasFlu)
@@ -495,6 +495,10 @@ namespace Game
             float gameTimeDelta = m_subsystemTime.GameTimeDelta;
             bool flag = m_subsystemTime.PeriodicGameTimeEvent(300.0, 17.0);
             float num = m_componentPlayer.ComponentClothing.Insulation * MathUtils.Lerp(1f, 0.05f, MathUtils.Saturate(4f * Wetness));
+            if (m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Survival)
+            {
+                num = num * 1.5f + 1f;
+            }
             string arg;
             switch (m_componentPlayer.ComponentClothing.LeastInsulatedSlot)
             {

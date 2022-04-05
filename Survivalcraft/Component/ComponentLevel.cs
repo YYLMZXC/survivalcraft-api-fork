@@ -258,6 +258,10 @@ namespace Game
             {
                 num9 = 1.5f;
             }
+            if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Survival)
+            {
+                num9 = 1.25f;
+            }
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative)
             {
                 num9 = float.PositiveInfinity;
@@ -409,6 +413,10 @@ namespace Game
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless)
             {
                 num5 = 0.66f;
+            }
+            if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Survival)
+            {
+                num5 = 0.75f;
             }
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative)
             {
