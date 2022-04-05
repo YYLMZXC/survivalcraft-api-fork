@@ -346,7 +346,7 @@ namespace Game
                                         DialogsManager.HideDialog(busyDialog);
                                         if (string.IsNullOrEmpty(link))
                                         {
-                                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Success, string.Format(LanguageControl.Get(fName, 15), DataSizeFormatter.Format(length)), LanguageControl.Ok, null, null));
+                                            DialogsManager.ShowDialog(null, new MessageDialog("Success", string.Format(LanguageControl.Get(fName, 15), DataSizeFormatter.Format(length)), LanguageControl.Ok, null, null));
                                         }
                                         else
                                         {

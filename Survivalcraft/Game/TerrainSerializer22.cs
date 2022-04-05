@@ -33,6 +33,8 @@ namespace Game
 
         public Dictionary<Point2, long> m_chunkOffsets = new Dictionary<Point2, long>();
 
+        public IEnumerable<Point2> Chunks => m_chunkOffsets.Keys;
+
         public Stream m_stream;
 
         public TerrainSerializer22(Terrain terrain, string directoryName)
@@ -115,77 +117,77 @@ namespace Game
             WriteInt(stream, index);
         }
 
-        public unsafe bool LoadChunkBlocks(TerrainChunk chunk)
+        private unsafe bool LoadChunkBlocks(TerrainChunk chunk)
         {
             bool result = false;
             int num = chunk.Origin.X >> 4;
             int num2 = chunk.Origin.Y >> 4;
             try
             {
-                if (!m_chunkOffsets.TryGetValue(new Point2(num, num2), out long value))
+                if (m_chunkOffsets.TryGetValue(new Point2(num, num2), out var value))
                 {
-                    return result;
-                }
-                _ = Time.RealTime;
-                m_stream.Seek(value, SeekOrigin.Begin);
-                ReadChunkHeader(m_stream);
-                m_stream.Read(m_buffer, 0, 262144);
-                try
-                {
-                    fixed (byte* ptr = &m_buffer[0])
+                    _ = Time.RealTime;
+                    m_stream.Seek(value, SeekOrigin.Begin);
+                    ReadChunkHeader(m_stream);
+                    m_stream.Read(m_buffer, 0, 262144);
+                    try
                     {
-                        int* ptr2 = (int*)ptr;
-                        for (int i = 0; i < 16; i++)
+                        fixed (byte* ptr = &m_buffer[0])
                         {
-                            for (int j = 0; j < 16; j++)
+                            int* ptr2 = (int*)ptr;
+                            for (int i = 0; i < 16; i++)
                             {
-                                int num3 = TerrainChunk.CalculateCellIndex(i, 0, j);
-                                int num4 = 0;
-                                while (num4 < 256)
+                                for (int j = 0; j < 16; j++)
                                 {
-                                    chunk.SetCellValueFast(num3, *ptr2);
-                                    num4++;
-                                    num3++;
-                                    ptr2++;
+                                    int num3 = TerrainChunk.CalculateCellIndex(i, 0, j);
+                                    int num4 = 0;
+                                    while (num4 < 256)
+                                    {
+                                        chunk.SetCellValueFast(num3, *ptr2);
+                                        num4++;
+                                        num3++;
+                                        ptr2++;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                finally
-                {
-                }
-                m_stream.Read(m_buffer, 0, 1024);
-                try
-                {
-                    fixed (byte* ptr = &m_buffer[0])
+                    finally
                     {
-                        int* ptr3 = (int*)ptr;
-                        for (int k = 0; k < 16; k++)
+                    }
+                    m_stream.Read(m_buffer, 0, 1024);
+                    try
+                    {
+                        fixed (byte* ptr3 = &m_buffer[0])
                         {
-                            for (int l = 0; l < 16; l++)
+                            int* ptr4 = (int*)ptr3;
+                            for (int k = 0; k < 16; k++)
                             {
-                                m_terrain.SetShaftValue(k + chunk.Origin.X, l + chunk.Origin.Y, *ptr3);
-                                ptr3++;
+                                for (int l = 0; l < 16; l++)
+                                {
+                                    chunk.SetShaftValueFast(k, l, *ptr4);
+                                    ptr4++;
+                                }
                             }
                         }
                     }
+                    finally
+                    {
+                    }
+                    result = true;
+                    _ = Time.RealTime;
+                    return result;
                 }
-                finally
-                {
-                }
-                result = true;
-                _ = Time.RealTime;
                 return result;
             }
             catch (Exception e)
             {
-                Log.Error(ExceptionManager.MakeFullErrorMessage($"Error loading data for chunk ({num},{num2}).", e));
+                Log.Error(ExceptionManager.MakeFullErrorMessage(string.Format("Error loading data for chunk ({0},{1}).", new object[2] { num, num2 }), e));
                 return result;
             }
         }
 
-        public unsafe void SaveChunkBlocks(TerrainChunk chunk)
+        private unsafe void SaveChunkBlocks(TerrainChunk chunk)
         {
             _ = Time.RealTime;
             int num = chunk.Origin.X >> 4;
@@ -193,7 +195,7 @@ namespace Game
             try
             {
                 bool flag = false;
-                if (m_chunkOffsets.TryGetValue(new Point2(num, num2), out long value))
+                if (m_chunkOffsets.TryGetValue(new Point2(num, num2), out var value))
                 {
                     m_stream.Seek(value, SeekOrigin.Begin);
                 }
@@ -232,15 +234,15 @@ namespace Game
                 m_stream.Write(m_buffer, 0, 262144);
                 try
                 {
-                    fixed (byte* ptr = &m_buffer[0])
+                    fixed (byte* ptr3 = &m_buffer[0])
                     {
-                        int* ptr3 = (int*)ptr;
+                        int* ptr4 = (int*)ptr3;
                         for (int k = 0; k < 16; k++)
                         {
                             for (int l = 0; l < 16; l++)
                             {
-                                *ptr3 = m_terrain.GetShaftValue(k + chunk.Origin.X, l + chunk.Origin.Y);
-                                ptr3++;
+                                *ptr4 = chunk.GetShaftValueFast(k, l);
+                                ptr4++;
                             }
                         }
                     }
@@ -263,7 +265,7 @@ namespace Game
             }
             catch (Exception e)
             {
-                Log.Error(ExceptionManager.MakeFullErrorMessage($"Error writing data for chunk ({num},{num2}).", e));
+                Log.Error(ExceptionManager.MakeFullErrorMessage(string.Format("Error writing data for chunk ({0},{1}).", new object[2] { num, num2 }), e));
             }
             _ = Time.RealTime;
         }

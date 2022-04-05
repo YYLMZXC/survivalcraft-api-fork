@@ -300,5 +300,15 @@ namespace Engine
 			}
 			return path;
 		}
+
+		public static void MoveDirectory(string path, string newPath)
+		{
+			Directory.Move(ProcessPath(path, true, false), ProcessPath(newPath, true, false));
+		}
+
+		public static void DeleteDirectoryRecursive(string path)
+		{
+			Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: false));
+		}
 	}
 }

@@ -46,10 +46,6 @@ namespace Game
             {
                 throw new InvalidOperationException("Cannot import worlds in trial mode.");
             }
-            if (WorldInfos.Count >= 30)
-            {
-                throw new InvalidOperationException($"Too many worlds on device, maximum allowed is {30}. Delete some to free up space.");
-            }
             string unusedWorldDirectoryName = GetUnusedWorldDirectoryName();
             Storage.CreateDirectory(unusedWorldDirectoryName);
             UnpackWorld(unusedWorldDirectoryName, sourceStream, importEmbeddedExternalContent: true);
@@ -430,6 +426,10 @@ namespace Game
                     using (Stream source = Storage.OpenFile(item, OpenFileMode.Read))
                     {
                         string fileName = Storage.GetFileName(item);
+                        if (fileName.StartsWith("Region"))
+                        {
+                            fileName = Storage.CombinePaths("Regions", fileName);
+                        }
                         zipArchive.AddStream(fileName, source);
                     }
                 }
@@ -504,7 +504,16 @@ namespace Game
                     }
                     else
                     {
-                        using (Stream stream = Storage.OpenFile(Storage.CombinePaths(directoryName, Storage.GetFileName(text)), OpenFileMode.Create))
+                        string fileName = Storage.GetFileName(text);
+                        if (fileName.StartsWith("Region"))
+                        {
+                            if(!Storage.DirectoryExists(Storage.CombinePaths(directoryName, "Regions")))
+                            {
+                                Storage.CreateDirectory(Storage.CombinePaths(directoryName, "Regions"));
+                            }
+                            fileName = Storage.CombinePaths("Regions", fileName);
+                        }
+                        using (Stream stream = Storage.OpenFile(Storage.CombinePaths(directoryName, fileName), OpenFileMode.Create))
                         {
                             zipArchive.ExtractFile(item, stream);
                         }

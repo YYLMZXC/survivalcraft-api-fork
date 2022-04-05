@@ -43,7 +43,7 @@ namespace Game
             m_versionConverters = new List<VersionConverter>();
             var assemblyName = new AssemblyName(typeof(VersionsManager).GetTypeInfo().Assembly.FullName);
             Version = $"{assemblyName.Version.Major}.{assemblyName.Version.Minor}.{assemblyName.Version.Build}.{assemblyName.Version.Revision}";
-            SerializationVersion = $"{assemblyName.Version.Major}.{assemblyName.Version.Minor}";
+            SerializationVersion = $"{assemblyName.Version.Major}.{assemblyName.Version.Minor}" + "A";
             Assembly[] array = TypeCache.LoadedAssemblies.ToArray();
             for (int i = 0; i < array.Length; i++)
             {
@@ -93,6 +93,7 @@ namespace Game
             {
                 throw new InvalidOperationException($"Cannot determine version of world at \"{directoryName}\"");
             }
+            if(worldInfo.SerializationVersion == "2.3") worldInfo.SerializationVersion = "2.2A";
             if (worldInfo.SerializationVersion != SerializationVersion)
             {
                 ProgressManager.UpdateProgress($"Upgrading World To {SerializationVersion}", 0f);
