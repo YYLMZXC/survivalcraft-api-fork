@@ -1,15 +1,42 @@
-using Engine;
-using Engine.Graphics;
-using Engine.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Engine;
+using Engine.Graphics;
+using Engine.Media;
+using Engine.Serialization;
 
 namespace Game
 {
     public static class BlocksManager
     {
+        public struct ImageExtrusionKey
+        {
+            public Image Image;
+
+            public int Slot;
+
+            public override int GetHashCode()
+            {
+                return Image.GetHashCode() ^ Slot.GetHashCode();
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj != null)
+                {
+                    ImageExtrusionKey imageExtrusionKey = (ImageExtrusionKey)obj;
+                    if (imageExtrusionKey.Image == Image)
+                    {
+                        return imageExtrusionKey.Slot == Slot;
+                    }
+                    return false;
+                }
+                return false;
+            }
+        }
+
         public static Block[] m_blocks = new Block[1024];
 
         public static FluidBlock[] m_fluidBlocks=new FluidBlock[1024];
@@ -19,6 +46,8 @@ namespace Game
         public static DrawBlockEnvironmentData m_defaultEnvironmentData = new DrawBlockEnvironmentData();
 
         public static Vector4[] m_slotTexCoords = new Vector4[256];
+
+        public static Dictionary<ImageExtrusionKey, BlockMesh> m_imageExtrusionsCache = new Dictionary<ImageExtrusionKey, BlockMesh>();
 
         public static Block[] Blocks => m_blocks;
 
@@ -84,7 +113,10 @@ namespace Game
                     AddCategory(category);
                 }
             }
-
+            GameManager.ProjectDisposed += delegate
+            {
+                m_imageExtrusionsCache.Clear();
+            };
             ModsManager.HookAction("BlocksInitalized", modLoader=> {
                 modLoader.BlocksInitalized();
                 return false;
@@ -179,57 +211,100 @@ namespace Game
             texturedBatch3D.QueueQuad(color: Color.MultiplyColorOnly(color, LightingManager.CalculateLighting(matrix.Right)), p1: v4, p2: v6, p3: v10, p4: v8, texCoord1: new Vector2(vector2.X, vector2.W), texCoord2: new Vector2(vector2.X, vector2.Y), texCoord3: new Vector2(vector2.Z, vector2.Y), texCoord4: new Vector2(vector2.Z, vector2.W));
         }
 
+        public static void DrawFlatOrImageExtrusionBlock(PrimitivesRenderer3D primitivesRenderer, int value, float size, ref Matrix matrix, Texture2D texture, Color color, bool isEmissive, DrawBlockEnvironmentData environmentData)
+        {
+            environmentData = environmentData ?? m_defaultEnvironmentData;
+            if (false && texture == null && !isEmissive && (environmentData.DrawBlockMode == DrawBlockMode.FirstPerson || environmentData.DrawBlockMode == DrawBlockMode.ThirdPerson))
+            {
+                DrawImageExtrusionBlock(primitivesRenderer, value, size, ref matrix, color, environmentData);
+            }
+            else
+            {
+                DrawFlatBlock(primitivesRenderer, value, size, ref matrix, texture, color, isEmissive, environmentData);
+            }
+        }
+
         public static void DrawFlatBlock(PrimitivesRenderer3D primitivesRenderer, int value, float size, ref Matrix matrix, Texture2D texture, Color color, bool isEmissive, DrawBlockEnvironmentData environmentData)
         {
-            environmentData = (environmentData ?? m_defaultEnvironmentData);
+            environmentData = environmentData ?? m_defaultEnvironmentData;
+            int num = Terrain.ExtractContents(value);
+            Block block = Blocks[num];
+            Vector4 vector;
+            if (texture == null)
+            {
+                texture = ((environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture);
+                vector = m_slotTexCoords[block.GetFaceTextureSlot(-1, value)];
+            }
+            else
+            {
+                vector = new Vector4(0f, 0f, 1f, 1f);
+            }
             if (!isEmissive)
             {
                 float s = LightingManager.LightIntensityByLightValue[environmentData.Light];
                 color = Color.MultiplyColorOnly(color, s);
             }
             Vector3 translation = matrix.Translation;
-            Vector3 vector;
-            Vector3 v;
+            Vector3 vector2;
+            Vector3 vector3;
             if (environmentData.BillboardDirection.HasValue)
             {
-                vector = Vector3.Normalize(Vector3.Cross(environmentData.BillboardDirection.Value, Vector3.UnitY));
-                v = -Vector3.Normalize(Vector3.Cross(environmentData.BillboardDirection.Value, vector));
+                vector2 = Vector3.Normalize(Vector3.Cross(environmentData.BillboardDirection.Value, Vector3.UnitY));
+                vector3 = -Vector3.Normalize(Vector3.Cross(environmentData.BillboardDirection.Value, vector2));
             }
             else
             {
-                vector = matrix.Right;
-                v = matrix.Up;
+                vector2 = matrix.Right;
+                vector3 = matrix.Up;
             }
-            Vector3 v2 = translation + 0.85f * size * (-vector - v);
-            Vector3 v3 = translation + 0.85f * size * (vector - v);
-            Vector3 v4 = translation + 0.85f * size * (-vector + v);
-            Vector3 v5 = translation + 0.85f * size * (vector + v);
+            Vector3 v = translation + 0.85f * size * (-vector2 - vector3);
+            Vector3 v2 = translation + 0.85f * size * (vector2 - vector3);
+            Vector3 v3 = translation + 0.85f * size * (-vector2 + vector3);
+            Vector3 v4 = translation + 0.85f * size * (vector2 + vector3);
             if (environmentData.ViewProjectionMatrix.HasValue)
             {
                 Matrix m = environmentData.ViewProjectionMatrix.Value;
+                Vector3.Transform(ref v, ref m, out v);
                 Vector3.Transform(ref v2, ref m, out v2);
                 Vector3.Transform(ref v3, ref m, out v3);
                 Vector3.Transform(ref v4, ref m, out v4);
-                Vector3.Transform(ref v5, ref m, out v5);
             }
-            int num = Terrain.ExtractContents(value);
-            Block block = Blocks[num];
-            Vector4 vector2;
-            if (texture != null)
-            {
-                vector2 = new Vector4(0f, 0f, 1f, 1f);
-            }
-            else
-            {
-                texture = ((environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture);
-                vector2 = m_slotTexCoords[block.GetFaceTextureSlot(-1, value)];
-            }
-            TexturedBatch3D texturedBatch3D = primitivesRenderer.TexturedBatch(texture, useAlphaTest: true, 0, null, RasterizerState.CullCounterClockwiseScissor, null, SamplerState.PointClamp);
-            texturedBatch3D.QueueQuad(v2, v4, v5, v3, new Vector2(vector2.X, vector2.W), new Vector2(vector2.X, vector2.Y), new Vector2(vector2.Z, vector2.Y), new Vector2(vector2.Z, vector2.W), color);
+            TexturedBatch3D texturedBatch3D = primitivesRenderer.TexturedBatch(texture, useAlphaTest: true, 0, null, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.PointClamp);
+            texturedBatch3D.QueueQuad(v, v3, v4, v2, new Vector2(vector.X, vector.W), new Vector2(vector.X, vector.Y), new Vector2(vector.Z, vector.Y), new Vector2(vector.Z, vector.W), color);
             if (!environmentData.BillboardDirection.HasValue)
             {
-                texturedBatch3D.QueueQuad(v2, v3, v5, v4, new Vector2(vector2.X, vector2.W), new Vector2(vector2.Z, vector2.W), new Vector2(vector2.Z, vector2.Y), new Vector2(vector2.X, vector2.Y), color);
+                texturedBatch3D.QueueQuad(v, v2, v4, v3, new Vector2(vector.X, vector.W), new Vector2(vector.Z, vector.W), new Vector2(vector.Z, vector.Y), new Vector2(vector.X, vector.Y), color);
             }
+        }
+
+        public static void DrawImageExtrusionBlock(PrimitivesRenderer3D primitivesRenderer, int value, float size, ref Matrix matrix, Color color, DrawBlockEnvironmentData environmentData)
+        {
+            environmentData = environmentData ?? m_defaultEnvironmentData;
+            int num = Terrain.ExtractContents(value);
+            Block block = Blocks[num];
+            Image image = (Image)environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture.Tag;
+            BlockMesh imageExtrusionBlockMesh = GetImageExtrusionBlockMesh(image, block.GetFaceTextureSlot(-1, value));
+            DrawMeshBlock(primitivesRenderer, imageExtrusionBlockMesh, color, 1.7f * size, ref matrix, environmentData);
+        }
+
+        public static BlockMesh GetImageExtrusionBlockMesh(Image image, int slot)
+        {
+            ImageExtrusionKey imageExtrusionKey = default(ImageExtrusionKey);
+            imageExtrusionKey.Image = image;
+            imageExtrusionKey.Slot = slot;
+            ImageExtrusionKey key = imageExtrusionKey;
+            if (!m_imageExtrusionsCache.TryGetValue(key, out var value))
+            {
+                value = new BlockMesh();
+                int num = (int)MathUtils.Round(m_slotTexCoords[slot].X * (float)image.Width);
+                int num2 = (int)MathUtils.Round(m_slotTexCoords[slot].Y * (float)image.Height);
+                int num3 = (int)MathUtils.Round(m_slotTexCoords[slot].Z * (float)image.Width);
+                int num4 = (int)MathUtils.Round(m_slotTexCoords[slot].W * (float)image.Height);
+                int num5 = MathUtils.Max(num3 - num, num4 - num2);
+                value.AppendImageExtrusion(image, new Rectangle(num, num2, num3 - num, num4 - num2), new Vector3(1f / (float)num5, 1f / (float)num5, 0.0833333358f), Color.White, 0);
+                m_imageExtrusionsCache.Add(key, value);
+            }
+            return value;
         }
 
         public static void DrawMeshBlock(PrimitivesRenderer3D primitivesRenderer, BlockMesh blockMesh, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)

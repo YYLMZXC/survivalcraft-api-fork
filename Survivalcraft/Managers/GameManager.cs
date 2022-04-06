@@ -27,6 +27,8 @@ namespace Game
 
         public static List<Func<bool>> SyncDispatcher = new List<Func<bool>>();
 
+        public static event Action<Project> ProjectDisposed;
+
         public static void LoadProject(WorldInfo worldInfo, ContainerWidget gamesWidget)
         {
             DisposeProject();
@@ -138,6 +140,7 @@ namespace Game
         {
             if (m_project != null)
             {
+                ProjectDisposed?.Invoke(m_project);
                 m_project.Dispose();
                 m_project = null;
                 m_subsystemUpdate = null;

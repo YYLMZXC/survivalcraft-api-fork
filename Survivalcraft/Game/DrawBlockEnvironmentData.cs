@@ -4,6 +4,8 @@ namespace Game
 {
     public class DrawBlockEnvironmentData
     {
+        public DrawBlockMode DrawBlockMode;
+
         public SubsystemTerrain SubsystemTerrain;
 
         public Matrix InWorldMatrix;

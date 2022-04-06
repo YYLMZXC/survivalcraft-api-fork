@@ -142,6 +142,7 @@ namespace Game
                         Vector3 position3 = block.GetFirstPersonOffset(m_value) + m_itemOffset;
                         position3 += m_itemOffset;
                         Matrix matrix = Matrix.CreateFromYawPitchRoll(vector.Y, vector.X, vector.Z) * identity * Matrix.CreateTranslation(position3) * Matrix.CreateFromYawPitchRoll(m_lagAngles.X, m_lagAngles.Y, 0f) * m;
+                        m_drawBlockEnvironmentData.DrawBlockMode = DrawBlockMode.FirstPerson;
                         m_drawBlockEnvironmentData.SubsystemTerrain = m_subsystemTerrain;
                         m_drawBlockEnvironmentData.InWorldMatrix = matrix;
                         m_drawBlockEnvironmentData.Light = m_itemLight;

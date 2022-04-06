@@ -563,5 +563,165 @@ namespace Game
             }
             return false;
         }
+
+        public void AppendImageExtrusion(Image image, Rectangle bounds, Vector3 scale, Color color, int alphaThreshold)
+        {
+            int count = Vertices.Count;
+            AppendImageExtrusionSlice(image, bounds, new Vector3(1f, 0f, 0f), new Vector3(0f, 1f, 0f), new Vector3(0f, 0f, 1f), new Vector3(0f, 0f, 0f), color, alphaThreshold);
+            AppendImageExtrusionSlice(image, bounds, new Vector3(1f, 0f, 0f), new Vector3(0f, 1f, 0f), new Vector3(0f, 0f, -1f), new Vector3(0f, 0f, 1f), color, alphaThreshold);
+            for (int i = bounds.Left; i < bounds.Right; i++)
+            {
+                Image image2 = new Image(1, bounds.Height);
+                for (int j = bounds.Top; j < bounds.Bottom; j++)
+                {
+                    if (i == bounds.Left || image.Pixels[i - 1 + j * image.Width].A <= alphaThreshold)
+                    {
+                        image2.Pixels[j - bounds.Top] = image.Pixels[i + j * image.Width];
+                    }
+                }
+                AppendImageExtrusionSlice(image2, new Rectangle(0, 0, image2.Width, image2.Height), new Vector3(0f, 0f, 1f), new Vector3(0f, 1f, 0f), new Vector3(1f, 0f, 0f), new Vector3(i, bounds.Top, 0f), color, alphaThreshold);
+            }
+            for (int k = bounds.Left; k < bounds.Right; k++)
+            {
+                Image image3 = new Image(1, bounds.Height);
+                for (int l = bounds.Top; l < bounds.Bottom; l++)
+                {
+                    if (k == bounds.Right - 1 || image.Pixels[k + 1 + l * image.Width].A <= alphaThreshold)
+                    {
+                        image3.Pixels[l - bounds.Top] = image.Pixels[k + l * image.Width];
+                    }
+                }
+                AppendImageExtrusionSlice(image3, new Rectangle(0, 0, image3.Width, image3.Height), new Vector3(0f, 0f, 1f), new Vector3(0f, 1f, 0f), new Vector3(-1f, 0f, 0f), new Vector3(k + 1, bounds.Top, 0f), color, alphaThreshold);
+            }
+            for (int m = bounds.Top; m < bounds.Bottom; m++)
+            {
+                Image image4 = new Image(bounds.Width, 1);
+                for (int n = bounds.Left; n < bounds.Right; n++)
+                {
+                    if (m == bounds.Top || image.Pixels[n + (m - 1) * image.Width].A <= alphaThreshold)
+                    {
+                        image4.Pixels[n - bounds.Left] = image.Pixels[n + m * image.Width];
+                    }
+                }
+                AppendImageExtrusionSlice(image4, new Rectangle(0, 0, image4.Width, image4.Height), new Vector3(1f, 0f, 0f), new Vector3(0f, 0f, 1f), new Vector3(0f, 1f, 0f), new Vector3(bounds.Left, m, 0f), color, alphaThreshold);
+            }
+            for (int num = bounds.Top; num < bounds.Bottom; num++)
+            {
+                Image image5 = new Image(bounds.Width, 1);
+                for (int num2 = bounds.Left; num2 < bounds.Right; num2++)
+                {
+                    if (num == bounds.Bottom - 1 || image.Pixels[num2 + (num + 1) * image.Width].A <= alphaThreshold)
+                    {
+                        image5.Pixels[num2 - bounds.Left] = image.Pixels[num2 + num * image.Width];
+                    }
+                }
+                AppendImageExtrusionSlice(image5, new Rectangle(0, 0, image5.Width, image5.Height), new Vector3(1f, 0f, 0f), new Vector3(0f, 0f, 1f), new Vector3(0f, -1f, 0f), new Vector3(bounds.Left, num + 1, 0f), color, alphaThreshold);
+            }
+            for (int num3 = count; num3 < Vertices.Count; num3++)
+            {
+                Vertices.Array[num3].Position.X -= (float)(bounds.Left + bounds.Right) / 2f;
+                Vertices.Array[num3].Position.Y -= (float)(bounds.Top + bounds.Bottom) / 2f;
+                Vertices.Array[num3].Position.Z -= 0.5f;
+                Vertices.Array[num3].Position.X *= scale.X;
+                Vertices.Array[num3].Position.Y *= 0f - scale.Y;
+                Vertices.Array[num3].Position.Z *= scale.Z;
+                Vertices.Array[num3].TextureCoordinates.X /= image.Width;
+                Vertices.Array[num3].TextureCoordinates.Y /= image.Height;
+                Vertices.Array[num3].Color *= color;
+            }
+        }
+
+        public void AppendImageExtrusionSlice(Image slice, Rectangle bounds, Vector3 right, Vector3 up, Vector3 forward, Vector3 position, Color color, int alphaThreshold)
+        {
+            int num = int.MaxValue;
+            int num2 = int.MaxValue;
+            int num3 = int.MinValue;
+            int num4 = int.MinValue;
+            for (int i = bounds.Top; i < bounds.Bottom; i++)
+            {
+                for (int j = bounds.Left; j < bounds.Right; j++)
+                {
+                    if (slice.Pixels[j + i * slice.Width].A > alphaThreshold)
+                    {
+                        num = MathUtils.Min(num, j);
+                        num2 = MathUtils.Min(num2, i);
+                        num3 = MathUtils.Max(num3, j);
+                        num4 = MathUtils.Max(num4, i);
+                    }
+                }
+            }
+            if (num != int.MaxValue)
+            {
+                Matrix m = new Matrix(right.X, right.Y, right.Z, 0f, up.X, up.Y, up.Z, 0f, forward.X, forward.Y, forward.Z, 0f, position.X, position.Y, position.Z, 1f);
+                bool flip = m.Determinant() > 0f;
+                float s = LightingManager.CalculateLighting(-forward);
+                Vector3 p = Vector3.Transform(new Vector3(num, num2, 0f), m);
+                Vector3 p2 = Vector3.Transform(new Vector3(num3 + 1, num2, 0f), m);
+                Vector3 p3 = Vector3.Transform(new Vector3(num, num4 + 1, 0f), m);
+                Vector3 p4 = Vector3.Transform(new Vector3(num3 + 1, num4 + 1, 0f), m);
+                AppendImageExtrusionRectangle(p, p2, p3, p4, forward, flip, Color.MultiplyColorOnly(color, s));
+            }
+        }
+
+        public void AppendImageExtrusionRectangle(Vector3 p11, Vector3 p21, Vector3 p12, Vector3 p22, Vector3 forward, bool flip, Color color)
+        {
+            int count = Vertices.Count;
+            Vertices.Count += 4;
+            DynamicArray<BlockMeshVertex> vertices = Vertices;
+            int index = Vertices.Count - 4;
+            BlockMeshVertex value = new BlockMeshVertex
+            {
+                Position = p11,
+                TextureCoordinates = p11.XY + forward.XY / 2f,
+                Color = color
+            };
+            vertices[index] = value;
+            DynamicArray<BlockMeshVertex> vertices2 = Vertices;
+            int index2 = Vertices.Count - 3;
+            value = new BlockMeshVertex
+            {
+                Position = p21,
+                TextureCoordinates = p21.XY + forward.XY / 2f,
+                Color = color
+            };
+            vertices2[index2] = value;
+            DynamicArray<BlockMeshVertex> vertices3 = Vertices;
+            int index3 = Vertices.Count - 2;
+            value = new BlockMeshVertex
+            {
+                Position = p12,
+                TextureCoordinates = p12.XY + forward.XY / 2f,
+                Color = color
+            };
+            vertices3[index3] = value;
+            DynamicArray<BlockMeshVertex> vertices4 = Vertices;
+            int index4 = Vertices.Count - 1;
+            value = new BlockMeshVertex
+            {
+                Position = p22,
+                TextureCoordinates = p22.XY + forward.XY / 2f,
+                Color = color
+            };
+            vertices4[index4] = value;
+            Indices.Count += 6;
+            if (flip)
+            {
+                Indices[Indices.Count - 6] = (ushort)count;
+                Indices[Indices.Count - 5] = (ushort)(count + 2);
+                Indices[Indices.Count - 4] = (ushort)(count + 1);
+                Indices[Indices.Count - 3] = (ushort)(count + 2);
+                Indices[Indices.Count - 2] = (ushort)(count + 3);
+                Indices[Indices.Count - 1] = (ushort)(count + 1);
+            }
+            else
+            {
+                Indices[Indices.Count - 6] = (ushort)count;
+                Indices[Indices.Count - 5] = (ushort)(count + 1);
+                Indices[Indices.Count - 4] = (ushort)(count + 2);
+                Indices[Indices.Count - 3] = (ushort)(count + 2);
+                Indices[Indices.Count - 2] = (ushort)(count + 1);
+                Indices[Indices.Count - 1] = (ushort)(count + 3);
+            }
+        }
     }
 }

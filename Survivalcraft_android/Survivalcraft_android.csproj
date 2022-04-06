@@ -151,6 +151,9 @@
     <Compile Include="..\Survivalcraft\Block\CactusBlock.cs">
       <Link>Block\CactusBlock.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Block\CairnBlock.cs">
+      <Link>Block\CairnBlock.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Block\CampfireBlock.cs">
       <Link>Block\CampfireBlock.cs</Link>
     </Compile>
@@ -736,6 +739,9 @@
     <Compile Include="..\Survivalcraft\Block\SevenSegmentDisplayBlock.cs">
       <Link>Block\SevenSegmentDisplayBlock.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Block\ShadowBlock.cs">
+      <Link>Block\ShadowBlock.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Block\ShovelBlock.cs">
       <Link>Block\ShovelBlock.cs</Link>
     </Compile>
@@ -1228,6 +1234,9 @@
     <Compile Include="..\Survivalcraft\Dialog\EditTruthTableDialog.cs">
       <Link>Dialog\EditTruthTableDialog.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Dialog\EditVoltageLevelDialog.cs">
+      <Link>Dialog\EditVoltageLevelDialog.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Dialog\ExternalContentLinkDialog.cs">
       <Link>Dialog\ExternalContentLinkDialog.cs</Link>
     </Compile>
@@ -1272,6 +1281,9 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Dialog\SelectExternalContentTypeDialog.cs">
       <Link>Dialog\SelectExternalContentTypeDialog.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Dialog\SelectGameModeDialog.cs">
+      <Link>Dialog\SelectGameModeDialog.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Dialog\SpawnDialog.cs">
       <Link>Dialog\SpawnDialog.cs</Link>
@@ -1446,6 +1458,9 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\DrawBlockEnvironmentData.cs">
       <Link>Game\DrawBlockEnvironmentData.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Game\DrawBlockMode.cs">
+      <Link>Game\DrawBlockMode.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\ElectricConnection.cs">
       <Link>Game\ElectricConnection.cs</Link>
@@ -1893,6 +1908,9 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\TerrainContentsGenerator22.cs">
       <Link>Game\TerrainContentsGenerator22.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Game\TerrainContentsGenerator23.cs">
+      <Link>Game\TerrainContentsGenerator23.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\TerrainContentsGeneratorFlat.cs">
       <Link>Game\TerrainContentsGeneratorFlat.cs</Link>
@@ -2449,6 +2467,9 @@
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemBulletBlockBehavior.cs">
       <Link>Subsystem\SubsystemBulletBlockBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Subsystem\SubsystemButtonBlockBehavior.cs">
+      <Link>Subsystem\SubsystemButtonBlockBehavior.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemCactusBlockBehavior.cs">
       <Link>Subsystem\SubsystemCactusBlockBehavior.cs</Link>
     </Compile>
@@ -2658,6 +2679,9 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemStairsBlockBehavior.cs">
       <Link>Subsystem\SubsystemStairsBlockBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Subsystem\SubsystemSwitchBlockBehavior.cs">
+      <Link>Subsystem\SubsystemSwitchBlockBehavior.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemTerrain.cs">
       <Link>Subsystem\SubsystemTerrain.cs</Link>

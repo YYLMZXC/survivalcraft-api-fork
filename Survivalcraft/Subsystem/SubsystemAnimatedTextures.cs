@@ -63,6 +63,7 @@ namespace Game
                 {
                     Utilities.Dispose(ref m_animatedBlocksTexture);
                     m_animatedBlocksTexture = new RenderTarget2D(blocksTexture.Width, blocksTexture.Height, (!SettingsManager.TerrainMipmapsEnabled) ? 1 : 4, ColorFormat.Rgba8888, DepthFormat.None);
+                    m_animatedBlocksTexture.Tag = blocksTexture.Tag;
                 }
                 Rectangle scissorRectangle = Display.ScissorRectangle;
                 RenderTarget2D renderTarget = Display.RenderTarget;

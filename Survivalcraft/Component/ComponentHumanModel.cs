@@ -374,6 +374,7 @@ namespace Game
                 int x = Terrain.ToCell(matrix.Translation.X);
                 int y = Terrain.ToCell(matrix.Translation.Y);
                 int z = Terrain.ToCell(matrix.Translation.Z);
+                m_drawBlockEnvironmentData.DrawBlockMode = DrawBlockMode.ThirdPerson;
                 m_drawBlockEnvironmentData.InWorldMatrix = matrix;
                 m_drawBlockEnvironmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
                 m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);

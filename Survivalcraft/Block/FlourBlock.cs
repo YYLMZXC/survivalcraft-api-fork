@@ -9,7 +9,7 @@ namespace Game
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
         {
-            BlocksManager.DrawFlatBlock(primitivesRenderer, value, size, ref matrix, null, color * new Color(248, 255, 232), isEmissive: false, environmentData);
+            BlocksManager.DrawFlatOrImageExtrusionBlock(primitivesRenderer, value, size, ref matrix, null, color * new Color(248, 255, 232), isEmissive: false, environmentData);
         }
     }
 }
