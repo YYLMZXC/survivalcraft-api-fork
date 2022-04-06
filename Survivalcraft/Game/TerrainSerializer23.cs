@@ -9,7 +9,7 @@ using Engine;
 
 namespace Game
 {
-	public class TerrainSerializer22A : IDisposable
+	public class TerrainSerializer23 : IDisposable
 	{
 		private interface IStorage : IDisposable
 		{
@@ -702,7 +702,7 @@ namespace Game
 
 		private byte[] m_compressBuffer = new byte[262400];
 
-		public TerrainSerializer22A(string directoryName, string suffix = "")
+		public TerrainSerializer23(string directoryName, string suffix = "")
 		{
 			m_storage = new RegionFileStorage();
 			m_storage.Open(directoryName, suffix);

@@ -7,11 +7,11 @@ using XmlUtilities;
 
 namespace Game
 {
-	public class VersionConverter22To22A : VersionConverter
+	public class VersionConverter22To23 : VersionConverter
 	{
 		public override string SourceVersion => "2.2";
 
-		public override string TargetVersion => "2.2A";
+		public override string TargetVersion => "2.3";
 
 		public override void ConvertProjectXml(XElement projectNode)
 		{
@@ -112,7 +112,7 @@ namespace Game
 			}
 			using (TerrainSerializer22 terrainSerializer = new TerrainSerializer22(null, directoryName))
 			{
-				using (TerrainSerializer22A terrainSerializer2 = new TerrainSerializer22A(directoryName, ".new"))
+				using (TerrainSerializer23 terrainSerializer2 = new TerrainSerializer23(directoryName, ".new"))
 				{
 					foreach (Point2 chunk2 in terrainSerializer.Chunks)
 					{

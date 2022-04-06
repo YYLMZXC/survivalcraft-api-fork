@@ -25,7 +25,7 @@ namespace Game
                 modInfo.Name = $"[Debug]{modInfo.Name}";
             }))
             {
-                modInfo = new ModInfo() { Name = "FastDebug", Version = "1.0.0", ApiVersion = ModsManager.APIVersion, Author = "Mod", Description = "调试Mod插件", ScVersion = "2.2.10.4", PackageName = "com.fastdebug" };
+                modInfo = new ModInfo() { Name = "FastDebug", Version = "1.0.0", ApiVersion = ModsManager.APIVersion, Author = "Mod", Description = "调试Mod插件", ScVersion = "2.3.0.0", PackageName = "com.fastdebug" };
             }
             GetFile("icon.png", (stream) => { LoadIcon(stream); });
         }

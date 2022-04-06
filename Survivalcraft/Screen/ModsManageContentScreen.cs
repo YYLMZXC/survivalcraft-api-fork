@@ -75,7 +75,7 @@ public class ModsManageContentScreen : Screen
         "android:/BaiduNetdisk",
         "android:/UCDownloads",
         "android:/baidu/searchbox/downloads",
-        "android:/SurvivalCraft2.2/Mods"
+        "android:/SurvivalCraft2.3/Mods"
     };
 
     public ModsManageContentScreen()
@@ -83,8 +83,8 @@ public class ModsManageContentScreen : Screen
         androidSystem = Environment.CurrentDirectory == "/";
         if (androidSystem)
         {
-            m_uninstallPath = m_uninstallPath.Replace("app:", "android:/SurvivalCraft2.2");
-            m_installPath = m_installPath.Replace("app:", "android:/SurvivalCraft2.2");
+            m_uninstallPath = m_uninstallPath.Replace("app:", "android:/SurvivalCraft2.3");
+            m_installPath = m_installPath.Replace("app:", "android:/SurvivalCraft2.3");
         }
         m_updatable = true;
         XElement node = ContentManager.Get<XElement>("Screens/ModsManageContentScreen");
