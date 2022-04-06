@@ -382,6 +382,7 @@
     <Compile Include="Block\WoodenStairsBlock.cs" />
     <Compile Include="Block\WoodenTrapdoorBlock.cs" />
     <Compile Include="Block\XorGateBlock.cs" />
+    <Compile Include="Dialog\EditVoltageLevelDialog.cs" />
     <Compile Include="Dialog\SelectGameModeDialog.cs" />
     <Compile Include="Game\ShaderCodeManager.cs" />
     <Compile Include="Game\SkyPrimitiveRender.cs" />
@@ -523,6 +524,7 @@
     <Compile Include="Subsystem\SubsystemFluidBlockBehavior.cs" />
     <Compile Include="Subsystem\SubsystemFurnaceBlockBehavior.cs" />
     <Compile Include="Subsystem\SubsystemFurnitureBlockBehavior.cs" />
+    <Compile Include="Subsystem\SubsystemButtonBlockBehavior.cs" />
     <Compile Include="Subsystem\SubsystemGameInfo.cs" />
     <Compile Include="Subsystem\SubsystemGlow.cs" />
     <Compile Include="Subsystem\SubsystemGrassBlockBehavior.cs" />
@@ -543,6 +545,7 @@
     <Compile Include="Subsystem\SubsystemMovingBlocks.cs" />
     <Compile Include="Subsystem\SubsystemMusketBlockBehavior.cs" />
     <Compile Include="Subsystem\SubsystemNames.cs" />
+    <Compile Include="Subsystem\SubsystemSwitchBlockBehavior.cs" />
     <Compile Include="Subsystem\SubsystemNoise.cs" />
     <Compile Include="Subsystem\SubsystemPalette.cs" />
     <Compile Include="Subsystem\SubsystemParticles.cs" />
