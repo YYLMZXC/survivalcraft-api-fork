@@ -78,7 +78,7 @@ namespace Game
 
 		public bool CanCrouch = false;
 
-		public Vector3 StanceBoxSize => new Vector3(BoxSize.X, ((CrouchFactor >= 1f) ? 0.6f : 1f) * BoxSize.Y, BoxSize.Z);
+		public Vector3 StanceBoxSize => new Vector3(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
 
 		public Vector3 BoxSize { get; set; }
 
@@ -291,7 +291,7 @@ namespace Game
 			m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
 			m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
 			m_subsystemFluidBlockBehavior = base.Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
-			CanCrouch = Entity.FindComponent<ComponentPlayer>() != null;
+			CanCrouch = valuesDictionary.GetValue<bool>("CanCrouch");
 			BoxSize = valuesDictionary.GetValue<Vector3>("BoxSize");
 			Mass = valuesDictionary.GetValue<float>("Mass");
 			Density = valuesDictionary.GetValue<float>("Density");
