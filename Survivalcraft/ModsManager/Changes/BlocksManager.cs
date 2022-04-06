@@ -214,7 +214,7 @@ namespace Game
         public static void DrawFlatOrImageExtrusionBlock(PrimitivesRenderer3D primitivesRenderer, int value, float size, ref Matrix matrix, Texture2D texture, Color color, bool isEmissive, DrawBlockEnvironmentData environmentData)
         {
             environmentData = environmentData ?? m_defaultEnvironmentData;
-            if (false && texture == null && !isEmissive && (environmentData.DrawBlockMode == DrawBlockMode.FirstPerson || environmentData.DrawBlockMode == DrawBlockMode.ThirdPerson))
+            if (texture == null && !isEmissive && (environmentData.DrawBlockMode == DrawBlockMode.FirstPerson || environmentData.DrawBlockMode == DrawBlockMode.ThirdPerson))
             {
                 DrawImageExtrusionBlock(primitivesRenderer, value, size, ref matrix, color, environmentData);
             }
@@ -282,9 +282,23 @@ namespace Game
             environmentData = environmentData ?? m_defaultEnvironmentData;
             int num = Terrain.ExtractContents(value);
             Block block = Blocks[num];
-            Image image = (Image)environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture.Tag;
-            BlockMesh imageExtrusionBlockMesh = GetImageExtrusionBlockMesh(image, block.GetFaceTextureSlot(-1, value));
-            DrawMeshBlock(primitivesRenderer, imageExtrusionBlockMesh, color, 1.7f * size, ref matrix, environmentData);
+            try
+            {
+                Image image;
+                if (environmentData.SubsystemTerrain != null)
+                {
+                    image = (Image)environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture.Tag;
+                }
+                else
+                {
+                    image = (Image)BlocksTexturesManager.DefaultBlocksTexture.Tag;
+                }
+                BlockMesh imageExtrusionBlockMesh = GetImageExtrusionBlockMesh(image, block.GetFaceTextureSlot(-1, value));
+                DrawMeshBlock(primitivesRenderer, imageExtrusionBlockMesh, color, 1.7f * size, ref matrix, environmentData);
+            }
+            catch (Exception e)
+            {
+            }
         }
 
         public static BlockMesh GetImageExtrusionBlockMesh(Image image, int slot)

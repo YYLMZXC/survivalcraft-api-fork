@@ -74,16 +74,14 @@ namespace Game
             {
                 try
                 {
-                    using (Stream stream = Storage.OpenFile(GetFileName(name), OpenFileMode.Read))
-                    {
-                        ValidateBlocksTexture(stream);
-                        stream.Position = 0L;
-                        texture2D = Texture2D.Load(stream);
-                    }
+                    Image image = Image.Load(GetFileName(name));
+                    ValidateBlocksTexture(image);
+                    texture2D = Texture2D.Load(image);
+                    texture2D.Tag = image;
                 }
                 catch (Exception ex)
                 {
-                    Log.Warning($"Could not load blocks texture \"{name}\". Reason: {ex.Message}.");
+                    Log.Warning(string.Format("Could not load blocks texture \"{0}\". Reason: {1}.", new object[2] { name, ex.Message }));
                 }
             }
             if (texture2D == null)
@@ -150,6 +148,18 @@ namespace Game
             if (!MathUtils.IsPowerOf2(image.Width) || !MathUtils.IsPowerOf2(image.Height))
             {
                 throw new InvalidOperationException($"Blocks texture does not have power-of-two size (size={image.Width}x{image.Height})");
+            }
+        }
+
+        public static void ValidateBlocksTexture(Image image)
+        {
+            if (image.Width > 1024 || image.Height > 1024)
+            {
+                throw new InvalidOperationException(string.Format("Blocks texture is larger than 1024x1024 pixels (size={0}x{1})", new object[2] { image.Width, image.Height }));
+            }
+            if (!MathUtils.IsPowerOf2(image.Width) || !MathUtils.IsPowerOf2(image.Height))
+            {
+                throw new InvalidOperationException(string.Format("Blocks texture does not have power-of-two size (size={0}x{1})", new object[2] { image.Width, image.Height }));
             }
         }
     }

@@ -167,6 +167,7 @@ namespace Engine.Graphics
 			{
 				texture2D.SetData(0, image.Pixels);
 			}
+			texture2D.Tag = image;
 			return texture2D;
 		}
 
