@@ -933,6 +933,36 @@ namespace Game
                 },
                 SpawnFunction = ((CreatureType creatureType, Point3 point) => SpawnCreatures(creatureType, "Hyena", point, m_random.Int(1, 2)).Count)
             });
+            m_creatureTypes.Add(new CreatureType("Pigeon", SpawnLocationType.Surface, randomSpawn: true, constantSpawn: false)
+            {
+                SpawnSuitabilityFunction = delegate (CreatureType creatureType, Point3 point)
+                {
+                    float num95 = m_subsystemTerrain.TerrainContentsGenerator.CalculateOceanShoreDistance(point.X, point.Z);
+                    int temperature38 = m_subsystemTerrain.Terrain.GetTemperature(point.X, point.Z);
+                    m_subsystemTerrain.Terrain.GetHumidity(point.X, point.Z);
+                    int num96 = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(point.X, point.Y - 1, point.Z));
+                    int topHeight2 = m_subsystemTerrain.Terrain.GetTopHeight(point.X, point.Z);
+                    return (temperature38 > 3 && num95 > 30f && point.Y >= topHeight2 && (BlocksManager.Blocks[num96] is LeavesBlock || num96 == 8 || num96 == 2 || num96 == 7)) ? 1.5f : 0f;
+                },
+                SpawnFunction = (CreatureType creatureType, Point3 point) => SpawnCreatures(creatureType, "Pigeon", point, 1).Count
+            });
+            m_creatureTypes.Add(new CreatureType("Sparrow", SpawnLocationType.Surface, randomSpawn: true, constantSpawn: false)
+            {
+                SpawnSuitabilityFunction = delegate (CreatureType creatureType, Point3 point)
+                {
+                    float num93 = m_subsystemTerrain.TerrainContentsGenerator.CalculateOceanShoreDistance(point.X, point.Z);
+                    int temperature37 = m_subsystemTerrain.Terrain.GetTemperature(point.X, point.Z);
+                    m_subsystemTerrain.Terrain.GetHumidity(point.X, point.Z);
+                    int num94 = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(point.X, point.Y - 1, point.Z));
+                    int topHeight = m_subsystemTerrain.Terrain.GetTopHeight(point.X, point.Z);
+                    return (temperature37 > 3 && num93 > 20f && point.Y >= topHeight && (BlocksManager.Blocks[num94] is LeavesBlock || num94 == 8 || num94 == 2 || num94 == 7)) ? 2f : 0f;
+                },
+                SpawnFunction = delegate (CreatureType creatureType, Point3 point)
+                {
+                    int count3 = m_random.Int(1, 2);
+                    return SpawnCreatures(creatureType, "Sparrow", point, count3).Count;
+                }
+            });
             ModsManager.HookAction("InitializeCreatureTypes", (modLoader) => {
                 modLoader.InitializeCreatureTypes(this, m_creatureTypes);
                 return false;
