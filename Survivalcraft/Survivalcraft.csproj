@@ -88,6 +88,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Block\AdjustableDelayGateBlock.cs" />
+    <Compile Include="Block\ShadowBlock.cs" />
+    <Compile Include="Block\CairnBlock.cs" />
     <Compile Include="Block\AirBlock.cs" />
     <Compile Include="Block\AlphaTestCubeBlock.cs" />
     <Compile Include="Block\AnalogToDigitalConverterBlock.cs" />
@@ -1100,7 +1102,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
