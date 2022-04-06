@@ -296,8 +296,8 @@ namespace Game
             }
             if (Health == 0f && HealthChange < 0f)
             {
-                Vector3 position2 = m_componentCreature.ComponentBody.Position + new Vector3(0f, m_componentCreature.ComponentBody.BoxSize.Y / 2f, 0f);
-                float x = m_componentCreature.ComponentBody.BoxSize.X;
+                Vector3 position2 = m_componentCreature.ComponentBody.Position + new Vector3(0f, m_componentCreature.ComponentBody.StanceBoxSize.Y / 2f, 0f);
+                float x = m_componentCreature.ComponentBody.StanceBoxSize.X;
                 m_subsystemParticles.AddParticleSystem(new KillParticleSystem(m_subsystemTerrain, position2, x));
                 Vector3 position3 = (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max) / 2f;
                 foreach (IInventory item in Entity.FindComponents<IInventory>())

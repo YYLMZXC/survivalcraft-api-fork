@@ -608,7 +608,7 @@ namespace Game
                 m_componentCreature.ComponentBody.IsGroundDragEnabled = false;
                 m_swimming = true;
             }
-            if (JumpOrder > 0f && (m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.ImmersionFactor > 0.5f) && !m_componentCreature.ComponentBody.IsSneaking)
+            if (JumpOrder > 0f && (m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.ImmersionFactor > 0.5f) && m_componentCreature.ComponentBody.CrouchFactor == 0f)
             {
                 float num6 = JumpSpeed;
                 if (m_componentLevel != null)

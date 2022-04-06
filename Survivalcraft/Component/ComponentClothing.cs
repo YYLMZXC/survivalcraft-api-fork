@@ -251,7 +251,7 @@ namespace Game
                     if (Terrain.ExtractContents(list[num4]) != 203)
                     {
                         list.RemoveAt(num4);
-                        m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + m_componentBody.BoxSize / 2f, 1f, 1f, Color.White, 0));
+                        m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + m_componentBody.StanceBoxSize / 2f, 1f, 1f, Color.White, 0));
                     }
                     else
                     {
@@ -406,7 +406,7 @@ namespace Game
                             if (Terrain.ExtractContents(m_clothesList[num4]) != 203)
                             {
                                 m_clothesList.RemoveAt(num4);
-                                m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + m_componentBody.BoxSize / 2f, 1f, 1f, Color.White, 0));
+                                m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + m_componentBody.StanceBoxSize / 2f, 1f, 1f, Color.White, 0));
                                 m_componentGui.DisplaySmallMessage(LanguageControl.Get(fName, 2), Color.White, blinking: true, playNotificationSound: true);
                             }
                             else

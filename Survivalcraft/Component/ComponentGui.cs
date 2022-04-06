@@ -466,7 +466,7 @@ namespace Game
                 m_moveRectangleWidget.FlipHorizontal = false;
                 m_lookRectangleWidget.FlipHorizontal = true;
             }
-            m_sneakButtonWidget.IsChecked = m_componentPlayer.ComponentBody.IsSneaking;
+            m_sneakButtonWidget.IsChecked = m_componentPlayer.ComponentBody.TargetCrouchFactor > 0f;
             m_creativeFlyButtonWidget.IsChecked = m_componentPlayer.ComponentLocomotion.IsCreativeFlyEnabled;
             m_inventoryButtonWidget.IsChecked = IsInventoryVisible();
             m_clothingButtonWidget.IsChecked = IsClothingVisible();
@@ -601,11 +601,11 @@ namespace Game
             }
             if (m_sneakButtonWidget.IsClicked || playerInput.ToggleSneak)
             {
-                bool isSneaking = m_componentPlayer.ComponentBody.IsSneaking;
-                m_componentPlayer.ComponentBody.IsSneaking = !isSneaking;
-                if (m_componentPlayer.ComponentBody.IsSneaking != isSneaking)
+                float targetCrouchFactor = m_componentPlayer.ComponentBody.TargetCrouchFactor;
+                m_componentPlayer.ComponentBody.TargetCrouchFactor = ((targetCrouchFactor == 0f) ? 1 : 0);
+                if (m_componentPlayer.ComponentBody.TargetCrouchFactor != targetCrouchFactor)
                 {
-                    if (m_componentPlayer.ComponentBody.IsSneaking)
+                    if (m_componentPlayer.ComponentBody.TargetCrouchFactor > 0f)
                     {
                         DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: false, playNotificationSound: false);
                     }

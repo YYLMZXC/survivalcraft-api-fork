@@ -199,7 +199,7 @@ namespace Game
             }
             else
             {
-                ComponentLocomotion.WalkOrder = (ComponentBody.IsSneaking ? (0.66f * new Vector2(playerInput.SneakMove.X, playerInput.SneakMove.Z)) : new Vector2(playerInput.Move.X, playerInput.Move.Z));
+                ComponentLocomotion.WalkOrder = ((ComponentBody.CrouchFactor > 0f) ? (0.66f * new Vector2(playerInput.SneakMove.X, playerInput.SneakMove.Z)) : new Vector2(playerInput.Move.X, playerInput.Move.Z));
                 ComponentLocomotion.FlyOrder = new Vector3(0f, playerInput.Move.Y, 0f);
                 ComponentLocomotion.TurnOrder = playerInput.Look * new Vector2(1f, 0f);
                 ComponentLocomotion.JumpOrder = MathUtils.Max(playerInput.Jump ? 1 : 0, ComponentLocomotion.JumpOrder);
@@ -262,7 +262,7 @@ namespace Game
                         {
                             Time.QueueTimeDelayedExecution(Time.RealTime + 3.0, delegate
                             {
-                                if (!m_aimHintIssued && m_aim.HasValue && !ComponentBody.IsSneaking)
+                                if (!m_aimHintIssued && m_aim.HasValue && ComponentBody.CrouchFactor == 0)
                                 {
                                     m_aimHintIssued = true;
                                     ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 1), Color.White, blinking: true, playNotificationSound: true);
@@ -322,7 +322,7 @@ namespace Game
                 int num3 = inventory.RemoveSlotItems(count: inventory.GetSlotCount(inventory.ActiveSlotIndex), slotIndex: inventory.ActiveSlotIndex);
                 if (slotValue != 0 && num3 != 0)
                 {
-                    Vector3 position = ComponentBody.Position + new Vector3(0f, ComponentBody.BoxSize.Y * 0.66f, 0f) + 0.25f * ComponentBody.Matrix.Forward;
+                    Vector3 position = ComponentBody.Position + new Vector3(0f, ComponentBody.StanceBoxSize.Y * 0.66f, 0f) + 0.25f * ComponentBody.Matrix.Forward;
                     Vector3 value2 = 8f * Matrix.CreateFromQuaternion(ComponentCreatureModel.EyeRotation).Forward;
                     m_subsystemPickables.AddPickable(slotValue, num3, position, value2, null);
                 }

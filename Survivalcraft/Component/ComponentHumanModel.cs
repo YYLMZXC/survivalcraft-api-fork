@@ -40,7 +40,6 @@ namespace Game
         public ModelBone m_hand2Bone;
 
         public float m_sneakFactor;
-
         public float m_lieDownFactorEye;
 
         public float m_lieDownFactorModel;
@@ -86,6 +85,7 @@ namespace Game
             m_sneakFactor = m_componentCreature.ComponentBody.IsSneaking
                 ? MathUtils.Min(m_sneakFactor + 2f * dt, 1f)
                 : MathUtils.Max(m_sneakFactor - 2f * dt, 0f);
+
             if ((m_componentSleep != null && m_componentSleep.IsSleeping) || m_componentCreature.ComponentHealth.Health <= 0f)
             {
                 m_lieDownFactorEye = MathUtils.Min(m_lieDownFactorEye + 1f * dt, 1f);
@@ -191,7 +191,7 @@ namespace Game
             float num6 = MathUtils.Floor(m_footstepsPhase);
             if (m_footstepsPhase > num6 && footstepsPhase <= num6)
             {
-                if (!m_componentCreature.ComponentBody.IsSneaking)
+                if (m_componentCreature.ComponentBody.CrouchFactor < 1f)
                 {
                     m_subsystemNoise.MakeNoise(m_componentCreature.ComponentBody, 0.25f, 8f);
                 }
@@ -431,7 +431,7 @@ namespace Game
         public override Vector3 CalculateEyePosition()
         {
             float f = MathUtils.Sigmoid(m_lieDownFactorEye, 1f);
-            float num = MathUtils.Sigmoid(m_sneakFactor, 4f);
+            float num = MathUtils.Sigmoid(m_componentCreature.ComponentBody.CrouchFactor, 4f);
             float num2 = 0.875f * m_componentCreature.ComponentBody.BoxSize.Y;
             float num3 = MathUtils.Lerp(MathUtils.Lerp(num2, 0.45f * num2, num), 0.2f * num2, f);
             Matrix matrix = m_componentCreature.ComponentBody.Matrix;
