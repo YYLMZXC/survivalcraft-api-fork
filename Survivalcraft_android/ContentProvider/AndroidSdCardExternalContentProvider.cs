@@ -188,8 +188,8 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 
 	private void InitializeFilesystemAccess()
 	{
-        Java.IO.File externalFilesDir = ((Context)Window.Activity).GetExternalFilesDir((string)null);
-		m_rootDirectory = (externalFilesDir != null) ? "android:SurvivalCraft2.2/files" : "android:SurvivalCraft2.2/files";
+        //Java.IO.File externalFilesDir = ((Context)Window.Activity).GetExternalFilesDir((string)null);
+		m_rootDirectory = "android:SurvivalCraft2.3/files";
 		if (!Storage.DirectoryExists(m_rootDirectory)) { Storage.CreateDirectory(m_rootDirectory); }
 	}
 }

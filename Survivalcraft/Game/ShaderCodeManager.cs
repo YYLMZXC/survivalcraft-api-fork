@@ -38,7 +38,7 @@ namespace Game
             {
                 if (external)
                 {
-                    string path = ModsManager.IsAndroid ? "android:/SurvivalCraft2.2/" : "app:/";
+                    string path = ModsManager.IsAndroid ? "android:/SurvivalCraft2.3/" : "app:/";
                     Stream stream = Storage.OpenFile(Storage.CombinePaths(path, includefname), OpenFileMode.Read);
                     StreamReader streamReader = new StreamReader(stream);
                     shaderTextTemp = streamReader.ReadToEnd();

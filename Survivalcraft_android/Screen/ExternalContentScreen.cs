@@ -192,7 +192,7 @@ namespace Game
 		{
 			if (string.IsNullOrEmpty(path))
 			{
-				path = Storage.GetSystemPath("android:SurvivalCraft2.2/files");
+				path = Storage.GetSystemPath("android:SurvivalCraft2.3/files");
 			}
 			path = path.Replace("\\", "/");
 			if (path != m_path)
