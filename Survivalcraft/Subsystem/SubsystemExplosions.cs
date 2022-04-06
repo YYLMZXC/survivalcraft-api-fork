@@ -403,34 +403,37 @@ namespace Game
                         foreach (BlockDropValue item in list)
                         {
                             int num7 = Terrain.ExtractContents(item.Value);
-                            if (!(BlocksManager.Blocks[num7] is FluidBlock))
+                            Block block2 = BlocksManager.Blocks[num7];
+                            if (block2 is FluidBlock)
                             {
-                                float num8 = (m_projectilesCount < 40) ? 1f : ((m_projectilesCount < 60) ? 0.5f : ((m_projectilesCount >= 80) ? 0.125f : 0.25f));
-                                if (m_random.Float(0f, 1f) < num8)
-                                {
-                                    Vector3 velocity = impulse + m_random.Vector3(0.05f * impulse.Length());
-                                    if (m_projectilesCount >= 1)
-                                    {
-                                        velocity *= m_random.Float(0.5f, 1f);
-                                        velocity += m_random.Vector3(0.2f * velocity.Length());
-                                    }
-                                    float num9 = flag2 ? 0f : MathUtils.Lerp(1f, 0f, m_projectilesCount / 20f);
-                                    Projectile projectile = m_subsystemProjectiles.AddProjectile(item.Value, new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), velocity, m_random.Vector3(0f, 20f), null);
-                                    projectile.ProjectileStoppedAction = ((!(m_random.Float(0f, 1f) < num9)) ? ProjectileStoppedAction.Disappear : ProjectileStoppedAction.TurnIntoPickable);
-                                    if (m_random.Float(0f, 1f) < 0.5f && m_projectilesCount < 35)
-                                    {
-                                        float num10 = (num4 > 60f) ? m_random.Float(3f, 7f) : m_random.Float(1f, 3f);
-                                        if (isIncendiary)
-                                        {
-                                            num10 += 10f;
-                                        }
-                                        m_subsystemProjectiles.AddTrail(projectile, Vector3.Zero, new SmokeTrailParticleSystem(15, m_random.Float(0.75f, 1.5f), num10, isIncendiary ? new Color(255, 140, 192) : Color.White));
-                                        projectile.IsIncendiary = isIncendiary;
-                                    }
-                                    m_generatedProjectiles.Add(projectile, value: true);
-                                    m_projectilesCount++;
-                                }
+                                continue;
                             }
+                            float num8 = ((m_projectilesCount < 40 || block2.IsExplosionTransparent) ? 1f : ((m_projectilesCount < 60) ? 0.5f : ((m_projectilesCount >= 80) ? 0.125f : 0.25f)));
+                            if (!(m_random.Float(0f, 1f) < num8))
+                            {
+                                continue;
+                            }
+                            Vector3 velocity = impulse + m_random.Vector3(0.05f * impulse.Length());
+                            if (m_projectilesCount >= 1)
+                            {
+                                velocity *= m_random.Float(0.5f, 1f);
+                                velocity += m_random.Vector3(0.2f * velocity.Length());
+                            }
+                            float num9 = (flag2 ? 0f : (block2.IsExplosionTransparent ? 1f : MathUtils.Lerp(1f, 0f, (float)m_projectilesCount / 25f)));
+                            Projectile projectile = m_subsystemProjectiles.AddProjectile(item.Value, new Vector3((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f), velocity, m_random.Vector3(0f, 20f), null);
+                            projectile.ProjectileStoppedAction = ((!(m_random.Float(0f, 1f) < num9)) ? ProjectileStoppedAction.Disappear : ProjectileStoppedAction.TurnIntoPickable);
+                            if (m_random.Float(0f, 1f) < 0.5f && m_projectilesCount < 35)
+                            {
+                                float num10 = ((num4 > 60f) ? m_random.Float(3f, 7f) : m_random.Float(1f, 3f));
+                                if (isIncendiary)
+                                {
+                                    num10 += 10f;
+                                }
+                                m_subsystemProjectiles.AddTrail(projectile, Vector3.Zero, new SmokeTrailParticleSystem(15, m_random.Float(0.75f, 1.5f), num10, isIncendiary ? new Color(255, 140, 192) : Color.White));
+                                projectile.IsIncendiary = isIncendiary;
+                            }
+                            m_generatedProjectiles.Add(projectile, value: true);
+                            m_projectilesCount++;
                         }
                     }
                 }
