@@ -389,6 +389,7 @@
     <Compile Include="Game\SkyShader.cs" />
     <Compile Include="Game\Subtexture.cs" />
     <Compile Include="Game\TerrainChunkGeometry.cs" />
+    <Compile Include="Game\TerrainContentsGenerator23.cs" />
     <Compile Include="Game\TerrainSerializer22A.cs" />
     <Compile Include="Game\TerrainSerializer22.cs" />
     <Compile Include="Game\TextureAtlas.cs" />

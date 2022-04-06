@@ -624,5 +624,10 @@ namespace Engine
 		{
 			return radians * 180.0 / Math.PI;
 		}
+
+		public static float LinearStep(float zero, float one, float f)
+		{
+			return Saturate((f - zero) / (one - zero));
+		}
 	}
 }

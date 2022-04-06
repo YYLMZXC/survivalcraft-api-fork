@@ -6,6 +6,13 @@ namespace Game
 {
 	public class TerrainChunk : IDisposable
 	{
+		public struct BrushPaint
+		{
+			public Point3 Position;
+
+			public TerrainBrush Brush;
+		}
+
 		public const int SizeBits = 4;
 
 		public const int Size = 16;
@@ -69,6 +76,8 @@ namespace Game
 		public int[] Shafts = new int[256];
 
 		public Dictionary<Texture2D, TerrainGeometrySubset[]> Draws = new Dictionary<Texture2D, TerrainGeometrySubset[]>();
+
+		public DynamicArray<BrushPaint> m_brushPaints = new DynamicArray<BrushPaint>();
 
 		public TerrainChunk(Terrain terrain, int x, int z)
 		{
@@ -211,6 +220,23 @@ namespace Game
 		public void SetSunlightHeightFast(int x, int z, int sunlightHeight)
 		{
 			SetShaftValueFast(x, z, Terrain.ReplaceSunlightHeight(GetShaftValueFast(x, z), sunlightHeight));
+		}
+
+		public void AddBrushPaint(int x, int y, int z, TerrainBrush brush)
+		{
+			m_brushPaints.Add(new BrushPaint
+			{
+				Position = new Point3(x, y, z),
+				Brush = brush
+			});
+		}
+
+		public void ApplyBrushPaints(TerrainChunk chunk)
+		{
+			foreach (BrushPaint brushPaint in m_brushPaints)
+			{
+				brushPaint.Brush.PaintFast(chunk, brushPaint.Position.X, brushPaint.Position.Y, brushPaint.Position.Z);
+			}
 		}
 	}
 }

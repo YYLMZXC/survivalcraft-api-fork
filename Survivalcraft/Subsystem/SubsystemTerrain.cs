@@ -417,7 +417,7 @@ namespace Game
                 TerrainGenerationMode terrainGenerationMode2 = SubsystemGameInfo.WorldSettings.TerrainGenerationMode;
                 TerrainContentsGenerator = terrainGenerationMode2 == TerrainGenerationMode.FlatContinent || terrainGenerationMode2 == TerrainGenerationMode.FlatIsland
                     ? new TerrainContentsGeneratorFlat(this)
-                    : (ITerrainContentsGenerator)new TerrainContentsGenerator22(this);
+                    : (ITerrainContentsGenerator)new TerrainContentsGenerator23(this);
             }
         }
 
