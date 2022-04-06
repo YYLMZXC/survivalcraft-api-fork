@@ -278,6 +278,14 @@ namespace Game
 
         public void ChangeCell(int x, int y, int z, int value, bool updateModificationCounter = true)
         {
+            bool pass = false;
+            ModsManager.HookAction("TerrainChangeCell", loader => 
+            { 
+                loader.JumpToPlace(out bool Skip);
+                pass |= Skip;
+                return false; 
+            });
+            if (pass) return;
             if (!Terrain.IsCellValid(x, y, z))
             {
                 return;

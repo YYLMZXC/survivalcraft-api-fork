@@ -238,11 +238,19 @@ namespace Game
         }
 
         /// <summary>
-        /// 设置跳跃是否可放置方块
+        /// 设置跳跃是否可放置方块，Pass为true则可放置方块
         /// </summary>
         public virtual void JumpToPlace(out bool Pass)
         {
             Pass = false;
+        }
+
+        /// <summary>
+        /// 重定义方块更改方法，Skip为true则不执行原ChangeCell代码
+        /// </summary>
+        public virtual void TerrainChangeCell(out bool Skip)
+        {
+            Skip = false;
         }
 
         /// <summary>
