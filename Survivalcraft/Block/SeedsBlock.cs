@@ -128,7 +128,7 @@ namespace Game
                     color *= new Color(240, 225, 190);
                     break;
             }
-            BlocksManager.DrawFlatBlock(primitivesRenderer, value, size, ref matrix, null, color, isEmissive: false, environmentData);
+            BlocksManager.DrawFlatOrImageExtrusionBlock(primitivesRenderer, value, size, ref matrix, null, color, isEmissive: false, environmentData);
         }
     }
 }

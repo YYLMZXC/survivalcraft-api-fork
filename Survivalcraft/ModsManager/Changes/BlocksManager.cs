@@ -296,7 +296,7 @@ namespace Game
                 BlockMesh imageExtrusionBlockMesh = GetImageExtrusionBlockMesh(image, block.GetFaceTextureSlot(-1, value));
                 DrawMeshBlock(primitivesRenderer, imageExtrusionBlockMesh, color, 1.7f * size, ref matrix, environmentData);
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
         }

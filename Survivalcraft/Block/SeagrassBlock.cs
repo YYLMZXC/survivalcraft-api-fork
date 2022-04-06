@@ -18,7 +18,7 @@ namespace Game
 
         public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
         {
-            BlocksManager.DrawFlatBlock(primitivesRenderer, value, size, ref matrix, null, color * BlockColorsMap.SeagrassColorsMap.Lookup(environmentData.Temperature, environmentData.Humidity), isEmissive: false, environmentData);
+            BlocksManager.DrawFlatOrImageExtrusionBlock(primitivesRenderer, value, size, ref matrix, null, color * BlockColorsMap.SeagrassColorsMap.Lookup(environmentData.Temperature, environmentData.Humidity), isEmissive: false, environmentData); BlocksManager.DrawFlatBlock(primitivesRenderer, value, size, ref matrix, null, color * BlockColorsMap.SeagrassColorsMap.Lookup(environmentData.Temperature, environmentData.Humidity), isEmissive: false, environmentData);
         }
 
         public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
