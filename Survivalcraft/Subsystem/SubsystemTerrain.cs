@@ -281,7 +281,7 @@ namespace Game
             bool pass = false;
             ModsManager.HookAction("TerrainChangeCell", loader => 
             { 
-                loader.JumpToPlace(out bool Skip);
+                loader.TerrainChangeCell(x, y, z, value, out bool Skip);
                 pass |= Skip;
                 return false; 
             });

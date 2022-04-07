@@ -70,15 +70,13 @@ namespace Game
 
 		public static bool DrawBodiesBounds;
 
-		public bool m_isSneaking;
-
 		public const float SleepThresholdSpeed = 1E-05f;
 
 		public const float MaxSpeed = 25f;
 
 		public bool CanCrouch = false;
 
-		public Vector3 StanceBoxSize => new Vector3(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
+		public Vector3 StanceBoxSize => new Vector3(BoxSize.X, ((CrouchFactor >= 1f) ? 0.4f : 1f) * BoxSize.Y, BoxSize.Z);
 
 		public Vector3 BoxSize { get; set; }
 
@@ -110,15 +108,11 @@ namespace Game
 		{
 			get
 			{
-				return m_isSneaking;
+				return CrouchFactor == 1;
 			}
 			set
 			{
-				if (!StandingOnValue.HasValue)
-				{
-					value = false;
-				}
-				m_isSneaking = value;
+				TargetCrouchFactor = value ? 1 : 0;
 			}
 		}
 
@@ -191,7 +185,7 @@ namespace Game
 			get
 			{
 				Vector3 stanceBoxSize = StanceBoxSize;
-				Vector3 position = base.Position;
+				Vector3 position = Position;
 				return new BoundingBox(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f), position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f));
 			}
 		}
@@ -291,7 +285,7 @@ namespace Game
 			m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
 			m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
 			m_subsystemFluidBlockBehavior = base.Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
-			CanCrouch = valuesDictionary.GetValue<bool>("CanCrouch");
+			CanCrouch = (Entity.FindComponent<ComponentPlayer>() != null);
 			BoxSize = valuesDictionary.GetValue<Vector3>("BoxSize");
 			Mass = valuesDictionary.GetValue<float>("Mass");
 			Density = valuesDictionary.GetValue<float>("Density");
@@ -326,7 +320,7 @@ namespace Game
 			}
 		}
 
-		public override void OnEntityRemoved()
+        public override void OnEntityRemoved()
 		{
 			ParentBody = null;
 			ComponentBody[] array = ChildBodies.ToArray();
@@ -372,9 +366,10 @@ namespace Game
 			FindBodiesCollisionBoxes(position, m_bodiesCollisionBoxes);
 			m_movingBlocksCollisionBoxes.Clear();
 			FindMovingBlocksCollisionBoxes(position, m_movingBlocksCollisionBoxes);
-			if (!MoveToFreeSpace(0.3f))
+			if (!MoveToFreeSpace(0.6f))
 			{
-				CrouchFactor = 1f;
+				m_crouchFactor = CanCrouch ? 1f : 0f;
+				m_targetCrouchFactor = CanCrouch ? 1f : 0f;
 				if (!MoveToFreeSpace(float.PositiveInfinity))
 				{
 					ComponentHealth componentHealth = base.Entity.FindComponent<ComponentHealth>();
@@ -460,7 +455,7 @@ namespace Game
 			{
 				m_velocity = Vector3.Lerp(m_velocity, StandingOnVelocity, 6f * dt);
 			}
-			if (!StandingOnValue.HasValue)
+			if (!StandingOnValue.HasValue && dt != 0)
 			{
 				TargetCrouchFactor = 0f;
 			}
@@ -481,12 +476,11 @@ namespace Game
 			{
 				m_fluidEffectsPlayed = false;
 			}
-			IsSneaking = (TargetCrouchFactor != 0f);
 		}
 
 		public void UpdateImmersionData()
 		{
-			Vector3 position = base.Position;
+			Vector3 position = Position;
 			int x = Terrain.ToCell(position.X);
 			int y = Terrain.ToCell(position.Y + 0.01f);
 			int z = Terrain.ToCell(position.Z);
@@ -510,7 +504,7 @@ namespace Game
 		public bool MoveToFreeSpace(float maxMoveDistance)
 		{
 			Vector3 stanceBoxSize = StanceBoxSize;
-			Vector3 position = base.Position;
+			Vector3 position = Position;
 			for (int i = 0; i < m_freeSpaceOffsets.Length; i++)
 			{
 				Vector3? vector = null;
@@ -601,9 +595,9 @@ namespace Game
 				{
 					vector = vector2;
 				}
-				if (vector.HasValue && Vector3.Distance(vector.Value, base.Position) <= maxMoveDistance)
+				if (vector.HasValue && Vector3.Distance(vector.Value, Position) <= maxMoveDistance)
 				{
-					base.Position = vector.Value;
+					Position = vector.Value;
 					return true;
 				}
 			}
@@ -612,12 +606,12 @@ namespace Game
 
 		public void MoveWithCollision(float dt, Vector3 move)
 		{
-			Vector3 position = base.Position;
+			Vector3 position = Position;
 			bool isSmoothRising = IsSmoothRiseEnabled && MaxSmoothRiseHeight > 0f && HandleSmoothRise(ref move, position, dt);
 			HandleAxisCollision(1, move.Y, ref position, isSmoothRising);
 			HandleAxisCollision(0, move.X, ref position, isSmoothRising);
 			HandleAxisCollision(2, move.Z, ref position, isSmoothRising);
-			base.Position = position;
+			Position = position;
 		}
 
 		public bool HandleSmoothRise(ref Vector3 move, Vector3 position, float dt)
@@ -753,9 +747,9 @@ namespace Game
 						position.Z += num2;
 						break;
 				}
-				if (this.CollidedWithBody != null)
+				if (CollidedWithBody != null)
 				{
-					this.CollidedWithBody(componentBody);
+					CollidedWithBody(componentBody);
 				}
 				if (componentBody.CollidedWithBody != null)
 				{

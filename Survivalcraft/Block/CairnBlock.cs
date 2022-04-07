@@ -28,10 +28,9 @@ namespace Game
 			m_mesh.AppendBlockMesh(blockMesh2);
 			m_standaloneMesh.AppendModelMeshPart(model.FindMesh("Cairn").MeshParts[0], boneAbsoluteTransform * Matrix.CreateScale(1.3f) * Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: true, flipNormals: false, white);
 			m_standaloneMesh.AppendModelMeshPart(model.FindMesh("Wood").MeshParts[0], boneAbsoluteTransform * Matrix.CreateScale(1.3f) * Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: true, flipNormals: false, white);
-			m_collisionBoxes = new BoundingBox[2]
+			m_collisionBoxes = new BoundingBox[1]
 			{
 				blockMesh.CalculateBoundingBox(),
-				blockMesh2.CalculateBoundingBox()
 			};
 			base.Initialize();
 		}

@@ -248,7 +248,7 @@ namespace Game
         /// <summary>
         /// 重定义方块更改方法，Skip为true则不执行原ChangeCell代码
         /// </summary>
-        public virtual void TerrainChangeCell(out bool Skip)
+        public virtual void TerrainChangeCell(int x, int y, int z, int value, out bool Skip)
         {
             Skip = false;
         }
