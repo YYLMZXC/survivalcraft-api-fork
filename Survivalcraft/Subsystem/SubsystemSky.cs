@@ -685,7 +685,13 @@ namespace Game
 			float f2 = MathUtils.Saturate((direction.Y - 0.1f) / 0.4f);
 			float s2 = num * MathUtils.Sqr(MathUtils.Saturate(0f - vector.X));
 			float s3 = num2 * MathUtils.Sqr(MathUtils.Saturate(vector.X));
-			return new Color(Vector3.Lerp(v5 + v6 * s2 + v7 * s3, v4, f2));
+			Color color = new Color(Vector3.Lerp(v5 + v6 * s2 + v7 * s3, v4, f2));
+			ModsManager.HookAction("ChangeSkyColor", loader =>
+			{
+				color = loader.ChangeSkyColor(color, direction, timeOfDay, precipitationIntensity, temperature);
+				return true;
+			});
+			return color;
 		}
 
 		public void FillSkyVertexBuffer(SkyDome skyDome, float timeOfDay, float precipitationIntensity, int temperature)

@@ -108,7 +108,7 @@ namespace Game
 		{
 			get
 			{
-				return CrouchFactor == 1;
+				return CrouchFactor > 0;
 			}
 			set
 			{

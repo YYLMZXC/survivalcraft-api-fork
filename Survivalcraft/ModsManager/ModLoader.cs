@@ -254,6 +254,14 @@ namespace Game
         }
 
         /// <summary>
+        /// 更改天空颜色
+        /// </summary>
+        public virtual Color ChangeSkyColor(Color oldColor, Vector3 direction, float timeOfDay, float precipitationIntensity, int temperature)
+        {
+            return oldColor;
+        }
+
+        /// <summary>
         /// 设置着色器参数
         /// </summary>
         /// <param name="shader"></param>
