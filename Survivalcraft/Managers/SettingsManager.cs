@@ -437,6 +437,12 @@ namespace Game
             set;
         }
 
+        public static string BulletinTime
+        {
+            get;
+            set;
+        }
+
         public static event Action<string> SettingChanged;
 
         public static void Initialize()
@@ -495,7 +501,7 @@ namespace Game
             ScreenLayout2 = ((Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.DoubleVertical : ScreenLayout.DoubleHorizontal);
             ScreenLayout3 = ((Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.TripleVertical : ScreenLayout.TripleHorizontal);
             ScreenLayout4 = ScreenLayout.Quadruple;
-            
+            BulletinTime = string.Empty;
             HorizontalCreativeFlight = true;
             LoadSettings();
             VersionsManager.CompareVersions(LastLaunchedVersion, "1.29");

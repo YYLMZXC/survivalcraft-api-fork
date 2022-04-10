@@ -24,6 +24,25 @@ namespace Game
             public string Text;
         }
 
+        public class Bulletin
+        {
+            public string Title = string.Empty;
+
+            public string EnTitle = string.Empty;
+
+            public string Time = string.Empty;
+
+            public string Content = string.Empty;
+
+            public string EnContent = string.Empty;
+        }
+
+        public static Bulletin m_bulletin;
+
+        public static bool CanShowBulletin = false;
+
+        public static bool CanDownloadMotd = true;
+
         public static Message m_message;
 
         public static SimpleJson.JsonObject UpdateResult = null;
@@ -55,7 +74,9 @@ namespace Game
                 ForceRedownload();
             }
         }
-        public static void UpdateVersion() {
+
+        public static void UpdateVersion() 
+        {
             string url = string.Format(SettingsManager.MotdUpdateCheckUrl, VersionsManager.SerializationVersion, VersionsManager.Platform, ModsManager.APIVersion, LanguageControl.LName());
             WebManager.Get(url, null, null, new CancellableProgress(), data => {
                 UpdateResult = SimpleJson.SimpleJson.DeserializeObject<SimpleJson.JsonObject>(System.Text.Encoding.UTF8.GetString(data));
@@ -63,6 +84,7 @@ namespace Game
                 Log.Error("Failed processing Update check. Reason: " + ex.Message);
             });
         }
+
         public static void DownloadMotd()
         {
             Log.Information("Downloading MOTD");
@@ -85,18 +107,24 @@ namespace Game
                 Log.Error("Failed downloading MOTD. Reason: {0}", error.Message);
             });
         }
+
         public static void Update()
         {
-            if (Time.PeriodicEvent(1.0, 0.0) && ModsManager.ConfigLoaded)
+            //if (Time.PeriodicEvent(1.0, 0.0) && ModsManager.ConfigLoaded)
+            //{
+            //    var t = TimeSpan.FromHours(SettingsManager.MotdUpdatePeriodHours);
+            //    DateTime now = DateTime.Now;
+            //    if (now >= SettingsManager.MotdLastUpdateTime + t)
+            //    {
+            //        SettingsManager.MotdLastUpdateTime = now;
+            //        DownloadMotd();
+            //        UpdateVersion();
+            //    }
+            //}
+            if (CanDownloadMotd)
             {
-                var t = TimeSpan.FromHours(SettingsManager.MotdUpdatePeriodHours);
-                DateTime now = DateTime.Now;
-                if (now >= SettingsManager.MotdLastUpdateTime + t)
-                {
-                    SettingsManager.MotdLastUpdateTime = now;
-                    DownloadMotd();
-                    UpdateVersion();
-                }
+                DownloadMotd();
+                CanDownloadMotd = false;
             }
             if (MessageOfTheDay == null && !string.IsNullOrEmpty(SettingsManager.MotdLastDownloadedData))
             {
@@ -104,6 +132,17 @@ namespace Game
                 if (MessageOfTheDay == null)
                 {
                     SettingsManager.MotdLastDownloadedData = string.Empty;
+                }
+                if (m_bulletin != null && SettingsManager.BulletinTime != m_bulletin.Time)
+                {
+                    if (IsCNLanguageType() && m_bulletin.Title.ToLower() != "null")
+                    {
+                        CanShowBulletin = true;
+                    }
+                    else if(!IsCNLanguageType() && m_bulletin.EnTitle.ToLower() != "null")
+                    {
+                        CanShowBulletin = true;
+                    }
                 }
             }
         }
@@ -146,6 +185,7 @@ namespace Game
                         message.Lines.Add(item);
                     }
                 }
+                LoadBulletin(dataString);
                 return message;
             }
             catch (Exception ex)
@@ -154,6 +194,64 @@ namespace Game
             }
             return null;
         }
-        public static string GetMotdUrl() => string.Format(SettingsManager.MotdUpdateUrl, VersionsManager.SerializationVersion, ModsManager.Configs["Language"]);
+
+        public static void LoadBulletin(string dataString)
+        {
+            int num = dataString.IndexOf("<Motd2");
+            if (num < 0)
+            {
+                throw new InvalidOperationException("Invalid MOTD data string.");
+            }
+            int num2 = dataString.IndexOf("</Motd2>");
+            if (num2 >= 0 && num2 > num)
+            {
+                num2 += 8;
+            }
+            XElement xElement = XmlUtils.LoadXmlFromString(dataString.Substring(num, num2 - num), throwOnError: true);
+            string languageType = ModsManager.Configs["Language"];
+            foreach (XElement item2 in xElement.Elements())
+            {
+                if (item2.Name.LocalName == "Bulletin")
+                {
+                    m_bulletin = new Bulletin();
+                    m_bulletin.Title = item2.Attribute("Title").Value;
+                    m_bulletin.EnTitle = item2.Attribute("EnTitle").Value;
+                    m_bulletin.Time = languageType + "$" + item2.Attribute("Time").Value;
+                    m_bulletin.Content = item2.Element("Content").Value;
+                    m_bulletin.EnContent = item2.Element("EnContent").Value;
+                    break;
+                }
+            }
+        }
+
+        public static void ShowBulletin()
+        {
+            try
+            {
+                if (CanShowBulletin)
+                {
+                    string title = IsCNLanguageType() ? m_bulletin.Title : m_bulletin.EnTitle;
+                    string content = IsCNLanguageType() ? m_bulletin.Content : m_bulletin.EnContent;
+                    DialogsManager.ShowDialog(null, new BulletinDialog(title, content, delegate
+                    {
+                        SettingsManager.BulletinTime = m_bulletin.Time;
+                    }));
+                    CanShowBulletin = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning("Failed ShowBulletin. Reason: " + ex.Message);
+            }
+        }
+
+        public static bool IsCNLanguageType()
+        {
+            string languageType = ModsManager.Configs["Language"];
+            return (languageType == "zh-CN");
+        }
+
+        public static string GetMotdUrl() => 
+            string.Format(SettingsManager.MotdUpdateUrl, VersionsManager.SerializationVersion, ModsManager.Configs["Language"]);
     }
 }

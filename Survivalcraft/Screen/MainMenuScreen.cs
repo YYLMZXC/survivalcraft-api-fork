@@ -26,6 +26,7 @@ namespace Game
                 SettingsManager.IsolatedStorageMigrationCounter++;
                 VersionConverter126To127.MigrateDataFromIsolatedStorageWithDialog();
             }
+            MotdManager.ShowBulletin();
         }
 
         public override void Leave()

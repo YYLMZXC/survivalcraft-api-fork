@@ -60,7 +60,7 @@ namespace Game
 
 		public static int[] m_drawOrders = new int[1]
 		{
-			1
+			200
 		};
 
 		public int[] DrawOrders => m_drawOrders;
@@ -136,35 +136,35 @@ namespace Game
 			}
 			if (list[num2] == null)
 			{
-				RenderTarget2D render = Display.RenderTarget;
-				RenderTarget2D target = new RenderTarget2D(textureSlotSize, textureSlotSize, 1, ColorFormat.Rgba8888, DepthFormat.None);
-				Display.RenderTarget = target;
-				PrimitivesRenderer2D primitives = new PrimitivesRenderer2D();
-				TexturedBatch2D texturedBatch = primitives.TexturedBatch(m_textures[num2], true);
-				for (int i = 0; i < textureSlotCount; i++)
-				{
-					for (int j = 0; j < textureSlotCount; j++)
-					{
-						Vector2 s = new Vector2(i * 32, j * 32);
-						Vector2 e = new Vector2((i + 1) * 32, (j + 1) * 32);
-						texturedBatch.QueueQuad(s, e, 1f, Vector2.Zero, Vector2.One, Color.White);
-					}
-				}
-				primitives.Flush();
-				Display.RenderTarget = render;
-				list[num2] = target;
-			}
+                RenderTarget2D render = Display.RenderTarget;
+                RenderTarget2D target = new RenderTarget2D(textureSlotSize, textureSlotSize, 1, ColorFormat.Rgba8888, DepthFormat.None);
+                Display.RenderTarget = target;
+                PrimitivesRenderer2D primitives = new PrimitivesRenderer2D();
+                TexturedBatch2D texturedBatch = primitives.TexturedBatch(m_textures[num2], true);
+                for (int i = 0; i < textureSlotCount; i++)
+                {
+                    for (int j = 0; j < textureSlotCount; j++)
+                    {
+                        Vector2 s = new Vector2(i * 32, j * 32);
+                        Vector2 e = new Vector2((i + 1) * 32, (j + 1) * 32);
+                        texturedBatch.QueueQuad(s, e, 1f, Vector2.Zero, Vector2.One, Color.White);
+                    }
+                }
+                primitives.Flush();
+                Display.RenderTarget = render;
+                list[num2] = target;
+            }
 			Display.BlendState = BlendState.NonPremultiplied;
 			Display.DepthStencilState = DepthStencilState.Default;
 			Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-			m_shader.GetParameter("u_origin").SetValue(v.XZ);
-			m_shader.GetParameter("u_texture").SetValue(list[num2]);
-			m_shader.GetParameter("u_viewProjectionMatrix").SetValue(value);
-			m_shader.GetParameter("u_viewPosition").SetValue(camera.ViewPosition);
-			m_shader.GetParameter("u_samplerState").SetValue(SamplerState.PointWrap);
-			m_shader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-			m_shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(x, 1f / (y - x)));
-			Display.DrawIndexed(PrimitiveType.TriangleList, m_shader, Buffer.VertexBuffer, Buffer.IndexBuffer, 0, Buffer.IndexBuffer.IndicesCount);
+            m_shader.GetParameter("u_origin").SetValue(v.XZ);
+            m_shader.GetParameter("u_texture").SetValue(list[num2]);
+            m_shader.GetParameter("u_viewProjectionMatrix").SetValue(value);
+            m_shader.GetParameter("u_viewPosition").SetValue(camera.ViewPosition);
+            m_shader.GetParameter("u_samplerState").SetValue(SamplerState.PointWrap);
+            m_shader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+            m_shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(x, 1f / (y - x)));
+            Display.DrawIndexed(PrimitiveType.TriangleList, m_shader, Buffer.VertexBuffer, Buffer.IndexBuffer, 0, Buffer.IndexBuffer.IndicesCount);
 		}
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{

@@ -1198,6 +1198,9 @@
     <Compile Include="..\Survivalcraft\Dialog\BuildFurnitureDialog.cs">
       <Link>Dialog\BuildFurnitureDialog.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Dialog\BulletinDialog.cs">
+      <Link>Dialog\BulletinDialog.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Dialog\BusyDialog.cs">
       <Link>Dialog\BusyDialog.cs</Link>
     </Compile>

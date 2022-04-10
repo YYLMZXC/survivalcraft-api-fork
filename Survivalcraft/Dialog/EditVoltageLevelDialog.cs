@@ -49,7 +49,7 @@ namespace Game
 			m_voltageSlider.Text = string.Format("{0:0.0}V ({1})", new object[2]
 			{
 				1.5f * (float)m_voltageLevel / 15f,
-				(m_voltageLevel < 8) ? "Low" : "High"
+				(m_voltageLevel < 8) ? LanguageControl.Get("EditBatteryDialog", 1) : LanguageControl.Get("EditBatteryDialog", 2)
 			});
 			m_voltageSlider.Value = m_voltageLevel;
 		}
