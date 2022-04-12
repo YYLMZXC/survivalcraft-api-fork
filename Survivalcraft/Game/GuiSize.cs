@@ -4,6 +4,8 @@ namespace Game
     {
         Smallest,
         Smaller,
-        Normal
+        Normal,
+        Large,
+        Larger
     }
 }

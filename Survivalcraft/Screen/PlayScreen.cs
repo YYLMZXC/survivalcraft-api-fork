@@ -10,13 +10,25 @@ namespace Game
     public class PlayScreen : Screen
     {
         public ListPanelWidget m_worldsListWidget;
+
+        public ButtonWidget m_playButton;
+
+        public ButtonWidget m_newWorldButton;
+
+        public ButtonWidget m_propertiesButton;
+
         public static int MaxWorlds = 300;
+
         public static string fName = "PlayScreen";
+
         public PlayScreen()
         {
             XElement node = ContentManager.Get<XElement>("Screens/PlayScreen");
             LoadContents(this, node);
             m_worldsListWidget = Children.Find<ListPanelWidget>("WorldsList");
+            m_playButton = Children.Find<ButtonWidget>("Play");
+            m_newWorldButton = Children.Find<ButtonWidget>("NewWorld");
+            m_propertiesButton = Children.Find<ButtonWidget>("Properties");
             ListPanelWidget worldsListWidget = m_worldsListWidget;
             worldsListWidget.ItemWidgetFactory = (Func<object, Widget>)Delegate.Combine(worldsListWidget.ItemWidgetFactory, (Func<object, Widget>)delegate (object item)
             {
@@ -77,18 +89,25 @@ namespace Game
 
         public override void Update()
         {
+            Vector2 size = new Vector2(310, 60);
+            if(SettingsManager.GuiSize == GuiSize.Larger || SettingsManager.GuiSize == GuiSize.Large)
+            {
+                size = new Vector2(230, 60);
+            }
+            m_playButton.Size = size;
+            m_newWorldButton.Size = size;
             if (m_worldsListWidget.SelectedItem != null && WorldsManager.WorldInfos.IndexOf((WorldInfo)m_worldsListWidget.SelectedItem) < 0)
             {
                 m_worldsListWidget.SelectedItem = null;
             }
             Children.Find<LabelWidget>("TopBar.Label").Text = string.Format(LanguageControl.GetContentWidgets(fName, 6), m_worldsListWidget.Items.Count);
-            Children.Find("Play").IsEnabled = (m_worldsListWidget.SelectedItem != null);
-            Children.Find("Properties").IsEnabled = (m_worldsListWidget.SelectedItem != null);
-            if (Children.Find<ButtonWidget>("Play").IsClicked && m_worldsListWidget.SelectedItem != null)
+            m_playButton.IsEnabled = (m_worldsListWidget.SelectedItem != null);
+            m_propertiesButton.IsEnabled = (m_worldsListWidget.SelectedItem != null);
+            if (m_playButton.IsClicked && m_worldsListWidget.SelectedItem != null)
             {
                 Play(m_worldsListWidget.SelectedItem);
             }
-            if (Children.Find<ButtonWidget>("NewWorld").IsClicked)
+            if (m_newWorldButton.IsClicked)
             {
                 if (WorldsManager.WorldInfos.Count >= MaxWorlds)
                 {
@@ -100,7 +119,7 @@ namespace Game
                     m_worldsListWidget.SelectedItem = null;
                 }
             }
-            if (Children.Find<ButtonWidget>("Properties").IsClicked && m_worldsListWidget.SelectedItem != null)
+            if (m_propertiesButton.IsClicked && m_worldsListWidget.SelectedItem != null)
             {
                 var worldInfo = (WorldInfo)m_worldsListWidget.SelectedItem;
                 ScreensManager.SwitchScreen("ModifyWorld", worldInfo.DirectoryName, worldInfo.WorldSettings);

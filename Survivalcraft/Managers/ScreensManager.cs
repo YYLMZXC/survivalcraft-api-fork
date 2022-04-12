@@ -274,6 +274,12 @@ namespace Game
             float num;
             switch (SettingsManager.GuiSize)
             {
+                case GuiSize.Larger:
+                    num = 720f;
+                    break;
+                case GuiSize.Large:
+                    num = 790f;
+                    break;
                 case GuiSize.Normal:
                     num = 850f;
                     break;
