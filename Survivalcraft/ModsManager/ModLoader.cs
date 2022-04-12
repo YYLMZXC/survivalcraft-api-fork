@@ -246,6 +246,14 @@ namespace Game
         }
 
         /// <summary>
+        /// 死亡前瞬间执行，Skip为true则跳过死亡后执行掉落等的代码
+        /// </summary>
+        public virtual void DeadBeforeDrops(ComponentHealth componentHealth, out bool Skip)
+        {
+            Skip = false;
+        }
+
+        /// <summary>
         /// 重定义方块更改方法，Skip为true则不执行原ChangeCell代码
         /// </summary>
         public virtual void TerrainChangeCell(SubsystemTerrain subsystemTerrain, int x, int y, int z, int value, out bool Skip)

@@ -303,15 +303,25 @@ namespace Game
             }
             if (Health == 0f && HealthChange < 0f)
             {
-                Vector3 position2 = m_componentCreature.ComponentBody.Position + new Vector3(0f, m_componentCreature.ComponentBody.StanceBoxSize.Y / 2f, 0f);
-                float x = m_componentCreature.ComponentBody.StanceBoxSize.X;
-                m_subsystemParticles.AddParticleSystem(new KillParticleSystem(m_subsystemTerrain, position2, x));
-                Vector3 position3 = (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max) / 2f;
-                foreach (IInventory item in Entity.FindComponents<IInventory>())
+                bool pass = false;
+                ModsManager.HookAction("DeadBeforeDrops", loader =>
                 {
-                    item.DropAllItems(position3);
+                    loader.DeadBeforeDrops(this, out bool Skip);
+                    pass |= Skip;
+                    return false;
+                });
+                if (!pass)
+                {
+                    Vector3 position2 = m_componentCreature.ComponentBody.Position + new Vector3(0f, m_componentCreature.ComponentBody.StanceBoxSize.Y / 2f, 0f);
+                    float x = m_componentCreature.ComponentBody.StanceBoxSize.X;
+                    m_subsystemParticles.AddParticleSystem(new KillParticleSystem(m_subsystemTerrain, position2, x));
+                    Vector3 position3 = (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max) / 2f;
+                    foreach (IInventory item in Entity.FindComponents<IInventory>())
+                    {
+                        item.DropAllItems(position3);
+                    }
+                    DeathTime = m_subsystemGameInfo.TotalElapsedGameTime;
                 }
-                DeathTime = m_subsystemGameInfo.TotalElapsedGameTime;
             }
             if (Health <= 0f && CorpseDuration > 0f && m_subsystemGameInfo.TotalElapsedGameTime - DeathTime > CorpseDuration)
             {
