@@ -87,7 +87,6 @@ namespace Game
 
         public static void DownloadMotd()
         {
-            Log.Information("Downloading MOTD");
             string url = GetMotdUrl();
             WebManager.Get(url, null, null, null, delegate (byte[] result)
             {
@@ -112,14 +111,14 @@ namespace Game
         {
             //if (Time.PeriodicEvent(1.0, 0.0) && ModsManager.ConfigLoaded)
             //{
-            //    var t = TimeSpan.FromHours(SettingsManager.MotdUpdatePeriodHours);
-            //    DateTime now = DateTime.Now;
-            //    if (now >= SettingsManager.MotdLastUpdateTime + t)
-            //    {
-            //        SettingsManager.MotdLastUpdateTime = now;
-            //        DownloadMotd();
-            //        UpdateVersion();
-            //    }
+                //var t = TimeSpan.FromHours(SettingsManager.MotdUpdatePeriodHours);
+                //DateTime now = DateTime.Now;
+                //if (now >= SettingsManager.MotdLastUpdateTime + t)
+                //{
+                //    SettingsManager.MotdLastUpdateTime = now;
+                //    DownloadMotd();
+                //    UpdateVersion();
+                //}
             //}
             if (CanDownloadMotd)
             {
@@ -139,7 +138,7 @@ namespace Game
                     {
                         CanShowBulletin = true;
                     }
-                    else if(!IsCNLanguageType() && m_bulletin.EnTitle.ToLower() != "null")
+                    else if (!IsCNLanguageType() && m_bulletin.EnTitle.ToLower() != "null")
                     {
                         CanShowBulletin = true;
                     }
@@ -208,7 +207,7 @@ namespace Game
                 num2 += 8;
             }
             XElement xElement = XmlUtils.LoadXmlFromString(dataString.Substring(num, num2 - num), throwOnError: true);
-            string languageType = ModsManager.Configs["Language"];
+            string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
             foreach (XElement item2 in xElement.Elements())
             {
                 if (item2.Name.LocalName == "Bulletin")
@@ -247,11 +246,14 @@ namespace Game
 
         public static bool IsCNLanguageType()
         {
-            string languageType = ModsManager.Configs["Language"];
+            string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
             return (languageType == "zh-CN");
         }
 
-        public static string GetMotdUrl() => 
-            string.Format(SettingsManager.MotdUpdateUrl, VersionsManager.SerializationVersion, ModsManager.Configs["Language"]);
+        public static string GetMotdUrl()
+        {
+            string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
+            return string.Format(SettingsManager.MotdUpdateUrl, VersionsManager.SerializationVersion, languageType);
+        }
     }
 }

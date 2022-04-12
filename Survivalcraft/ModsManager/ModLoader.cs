@@ -248,7 +248,15 @@ namespace Game
         /// <summary>
         /// 重定义方块更改方法，Skip为true则不执行原ChangeCell代码
         /// </summary>
-        public virtual void TerrainChangeCell(int x, int y, int z, int value, out bool Skip)
+        public virtual void TerrainChangeCell(SubsystemTerrain subsystemTerrain, int x, int y, int z, int value, out bool Skip)
+        {
+            Skip = false;
+        }
+
+        /// <summary>
+        /// 重定义生物受伤方法，Skip为true则不执行原Injure代码
+        /// </summary>
+        public virtual void OnCreatureInjure(ComponentHealth componentHealth, float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause, out bool Skip)
         {
             Skip = false;
         }

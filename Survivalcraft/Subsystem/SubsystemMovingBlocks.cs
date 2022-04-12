@@ -185,7 +185,7 @@ namespace Game
 
 		public static int[] m_drawOrders = new int[1]
 		{
-			10
+			150
 		};
 
 		public IReadOnlyList<IMovingBlockSet> MovingBlockSets => m_movingBlockSets;

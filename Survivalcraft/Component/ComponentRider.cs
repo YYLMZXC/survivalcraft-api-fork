@@ -152,7 +152,8 @@ namespace Game
                 {
                     StartDismounting();
                 }
-                ComponentCreature.ComponentBody.ParentBodyPositionOffset = mount.MountOffset + m_riderOffset;
+                Vector3 positionOffset = mount.MountOffset + m_riderOffset;
+                ComponentCreature.ComponentBody.ParentBodyPositionOffset = positionOffset;
                 ComponentCreature.ComponentBody.ParentBodyRotationOffset = Quaternion.Identity;
             }
         }

@@ -353,7 +353,10 @@ namespace Game
 			}
 			if (m_targetCrouchFactor < m_crouchFactor)
 			{
-				m_crouchFactor = MathUtils.Max(m_crouchFactor - 2f * dt, m_targetCrouchFactor);
+				if(Entity.FindComponent<ComponentRider>().Mount == null)
+                {
+					m_crouchFactor = MathUtils.Max(m_crouchFactor - 2f * dt, m_targetCrouchFactor);
+				}
 			}
 			Vector3 position = base.Position;
 			TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(Terrain.ToCell(position.X), Terrain.ToCell(position.Z));

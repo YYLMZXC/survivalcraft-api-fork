@@ -7,7 +7,6 @@ namespace Game
 {
     public class ComponentHealth : Component, IUpdateable
     {
-
         public SubsystemTime m_subsystemTime;
 
         public SubsystemTimeOfDay m_subsystemTimeOfDay;
@@ -127,6 +126,14 @@ namespace Game
 
         public virtual void Injure(float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause)
         {
+            bool pass = false;
+            ModsManager.HookAction("OnCreatureInjure", loader =>
+            {
+                loader.OnCreatureInjure(this, amount, attacker, ignoreInvulnerability, cause, out bool Skip);
+                pass |= Skip;
+                return false;
+            });
+            if (pass) return;
             if (!(amount > 0f) || (!ignoreInvulnerability && IsInvulnerable))
             {
                 return;
