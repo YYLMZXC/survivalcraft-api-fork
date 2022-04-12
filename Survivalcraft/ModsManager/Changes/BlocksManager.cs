@@ -55,6 +55,8 @@ namespace Game
 
         public static ReadOnlyList<string> Categories => new ReadOnlyList<string>(m_categories);
 
+        public static bool DrawImageExtrusionEnabled = true;
+
         public static void Initialize()
         {
             for (int i=0;i<m_blocks.Length;i++) {
@@ -214,7 +216,7 @@ namespace Game
         public static void DrawFlatOrImageExtrusionBlock(PrimitivesRenderer3D primitivesRenderer, int value, float size, ref Matrix matrix, Texture2D texture, Color color, bool isEmissive, DrawBlockEnvironmentData environmentData)
         {
             environmentData = environmentData ?? m_defaultEnvironmentData;
-            if (texture == null && !isEmissive && (environmentData.DrawBlockMode == DrawBlockMode.FirstPerson || environmentData.DrawBlockMode == DrawBlockMode.ThirdPerson))
+            if (DrawImageExtrusionEnabled && texture == null && !isEmissive && (environmentData.DrawBlockMode == DrawBlockMode.FirstPerson || environmentData.DrawBlockMode == DrawBlockMode.ThirdPerson))
             {
                 DrawImageExtrusionBlock(primitivesRenderer, value, size, ref matrix, color, environmentData);
             }

@@ -153,7 +153,7 @@ namespace Game
 
         public static void ValidateBlocksTexture(Image image)
         {
-            if (image.Width > 1024 || image.Height > 1024)
+            if (image.Width > 65535 || image.Height > 65535)
             {
                 throw new InvalidOperationException(string.Format("Blocks texture is larger than 1024x1024 pixels (size={0}x{1})", new object[2] { image.Width, image.Height }));
             }
