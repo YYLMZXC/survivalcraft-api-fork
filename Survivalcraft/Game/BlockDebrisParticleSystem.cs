@@ -1,4 +1,5 @@
 using Engine;
+using Engine.Graphics;
 
 namespace Game
 {
@@ -15,11 +16,11 @@ namespace Game
 
         public SubsystemTerrain m_subsystemTerrain;
 
-        public BlockDebrisParticleSystem(SubsystemTerrain terrain, Vector3 position, float strength, float scale, Color color, int textureSlot)
+        public BlockDebrisParticleSystem(SubsystemTerrain terrain, Vector3 position, float strength, float scale, Color color, int textureSlot, Texture2D texture = null)
             : base((int)(50f * strength))
         {
             m_subsystemTerrain = terrain;
-            Texture = terrain.Project.FindSubsystem<SubsystemBlocksTexture>(throwOnError: true).BlocksTexture;
+            Texture = (texture != null) ? texture : terrain.Project.FindSubsystem<SubsystemBlocksTexture>(throwOnError: true).BlocksTexture;
             int num = Terrain.ToCell(position.X);
             int num2 = Terrain.ToCell(position.Y);
             int num3 = Terrain.ToCell(position.Z);
