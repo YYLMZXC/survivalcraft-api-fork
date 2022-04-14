@@ -16,6 +16,7 @@ namespace Game
 
         public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
         {
+            if (componentPlayer.DragHostWidget.IsDragInProgress) return false;
             int value = inventory.GetSlotValue(slotIndex);
             int count = inventory.GetSlotCount(slotIndex);
             int id = Terrain.ExtractData(value);
@@ -26,7 +27,7 @@ namespace Game
                 int data = StoreItemDataAtUniqueId(truthTableData);
                 int value2 = Terrain.ReplaceData(value, data);
                 inventory.RemoveSlotItems(slotIndex, count);
-                inventory.AddSlotItems(slotIndex, value2, 1);
+                inventory.AddSlotItems(slotIndex, value2, count);
             }));
             return true;
         }

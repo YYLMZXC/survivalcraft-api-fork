@@ -130,6 +130,20 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
+        public DragHostWidget m_dragHostWidget;
+
+        public DragHostWidget DragHostWidget
+        {
+            get
+            {
+                if (m_dragHostWidget == null)
+                {
+                    m_dragHostWidget = ((GameWidget != null) ? GameWidget.Children.Find<DragHostWidget>(throwIfNotFound: false) : null);
+                }
+                return m_dragHostWidget;
+            }
+        }
+
         public void Update(float dt)
         {
             PlayerInput playerInput = ComponentInput.PlayerInput;
