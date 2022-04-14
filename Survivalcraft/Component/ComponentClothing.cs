@@ -509,7 +509,6 @@ namespace Game
                 if (list.Count > 0)
                 {
                     int value = list[list.Count - 1];
-                    int data = Terrain.ExtractData(value);
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
                     ClothingData clothingData = block.GetClothingData(value);
                     clothingData.OnDismount();

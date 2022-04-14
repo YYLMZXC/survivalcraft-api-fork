@@ -96,7 +96,15 @@ namespace Game
 
         public override void Update()
         {
-            m_titleLabel.Text = $"{m_componentPlayer.PlayerData.Name}, Level {MathUtils.Floor(m_componentPlayer.PlayerData.Level)} {m_componentPlayer.PlayerData.PlayerClass.ToString()}";
+            string languageType = (ModsManager.Configs.ContainsKey("Language")) ? ModsManager.Configs["Language"] : "zh-CN";
+            if(languageType == "zh-CN")
+            {
+                m_titleLabel.Text = $"{m_componentPlayer.PlayerData.Name}, 等级 {MathUtils.Floor(m_componentPlayer.PlayerData.Level)}  " + ((m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Male) ? "男性" : "女性");
+            }
+            else
+            {
+                m_titleLabel.Text = $"{m_componentPlayer.PlayerData.Name}, Level {MathUtils.Floor(m_componentPlayer.PlayerData.Level)}  {m_componentPlayer.PlayerData.PlayerClass.ToString()}";
+            }
             m_healthValueBar.Value = m_componentPlayer.ComponentHealth.Health;
             m_staminaValueBar.Value = m_componentPlayer.ComponentVitalStats.Stamina;
             m_foodValueBar.Value = m_componentPlayer.ComponentVitalStats.Food;

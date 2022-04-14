@@ -92,7 +92,7 @@ namespace Game
                 Color = white
             });
             AddStat(stackPanelWidget, LanguageControl.Get(fName, 18), playerData.Name);
-            AddStat(stackPanelWidget, LanguageControl.Get(fName, 19), playerData.PlayerClass.ToString());
+            AddStat(stackPanelWidget, LanguageControl.Get(fName, 19), (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Male) ? LanguageControl.Get(fName, 93) : LanguageControl.Get(fName, 94));
             string value = (playerData.FirstSpawnTime >= 0.0) ? (((subsystemGameInfo.TotalElapsedGameTime - playerData.FirstSpawnTime) / 1200.0).ToString("N1") + LanguageControl.Get(fName, 20)) : LanguageControl.Get(fName, 21);
             AddStat(stackPanelWidget, LanguageControl.Get(fName, 22), value);
             string value2 = (playerData.LastSpawnTime >= 0.0) ? (((subsystemGameInfo.TotalElapsedGameTime - playerData.LastSpawnTime) / 1200.0).ToString("N1") + LanguageControl.Get(fName, 23)) : LanguageControl.Get(fName, 24);
