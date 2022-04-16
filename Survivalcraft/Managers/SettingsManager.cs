@@ -65,6 +65,8 @@ namespace Game
             set;
         }
 
+        public static float UIScale { get; set; }
+
         public static ResolutionMode ResolutionMode
         {
             get
@@ -469,11 +471,11 @@ namespace Game
             FlipVerticalAxis = false;
 #if android
             EnableAndroidAudioTrackCaching = true;
-            GuiSize = GuiSize.Normal;
+            UIScale = 1f;
 #endif
 #if desktop
-            GuiSize = GuiSize.Smallest;
             EnableAndroidAudioTrackCaching = false;
+            UIScale = 0.8f;
 #endif
             MoveSensitivity = 0.5f;
             LookSensitivity = 0.5f;

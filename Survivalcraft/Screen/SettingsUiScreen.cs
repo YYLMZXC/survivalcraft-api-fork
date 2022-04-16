@@ -13,7 +13,7 @@ namespace Game
 
         public ButtonWidget m_displayLogButton;
 
-        public ButtonWidget m_uiSizeButton;
+        public SliderWidget m_uiScaleSlider;
 
         public ButtonWidget m_upsideDownButton;
 
@@ -37,7 +37,7 @@ namespace Game
             m_languageButton = Children.Find<ButtonWidget>("LanguageButton");
             m_displayLogButton = Children.Find<ButtonWidget>("DisplayLogButton");
             m_windowModeButton = Children.Find<ButtonWidget>("WindowModeButton");
-            m_uiSizeButton = Children.Find<ButtonWidget>("UiSizeButton");
+            m_uiScaleSlider = Children.Find<SliderWidget>("UIScaleSlider");
             m_upsideDownButton = Children.Find<ButtonWidget>("UpsideDownButton");
             m_hideMoveLookPadsButton = Children.Find<ButtonWidget>("HideMoveLookPads");
             m_showGuiInScreenshotsButton = Children.Find<ButtonWidget>("ShowGuiInScreenshotsButton");
@@ -56,6 +56,10 @@ namespace Game
             if (m_windowModeButton.IsClicked)
             {
                 SettingsManager.WindowMode = (Engine.WindowMode)((int)(SettingsManager.WindowMode + 1) % EnumUtils.GetEnumValues(typeof(Engine.WindowMode)).Count);
+            }
+            if (m_uiScaleSlider.SlidingCompleted)
+            {
+                SettingsManager.UIScale = m_uiScaleSlider.Value;
             }
             if (m_languageButton.IsClicked)
             {
@@ -89,10 +93,11 @@ namespace Game
             {
                 SettingsManager.DisplayLog = !SettingsManager.DisplayLog;
             }
-            if (m_uiSizeButton.IsClicked)
+            if (!m_uiScaleSlider.IsSliding)
             {
-                SettingsManager.GuiSize = (GuiSize)((int)(SettingsManager.GuiSize + 1) % EnumUtils.GetEnumValues(typeof(GuiSize)).Count);
+                m_uiScaleSlider.Value = SettingsManager.UIScale;
             }
+            m_uiScaleSlider.Text = $"{m_uiScaleSlider.Value * 100f:0}%";
             if (m_upsideDownButton.IsClicked)
             {
                 SettingsManager.UpsideDownLayout = !SettingsManager.UpsideDownLayout;
@@ -118,7 +123,6 @@ namespace Game
                 SettingsManager.CommunityContentMode = (CommunityContentMode)((int)(SettingsManager.CommunityContentMode + 1) % EnumUtils.GetEnumValues(typeof(CommunityContentMode)).Count);
             }
             m_windowModeButton.Text = LanguageControl.Get("WindowMode", SettingsManager.WindowMode.ToString());
-            m_uiSizeButton.Text = LanguageControl.Get("GuiSize", SettingsManager.GuiSize.ToString());
             m_languageButton.Text = LanguageControl.Get("Language","Name");
             m_displayLogButton.Text = (SettingsManager.DisplayLog ? LanguageControl.Yes : LanguageControl.No);
             m_upsideDownButton.Text = (SettingsManager.UpsideDownLayout ? LanguageControl.Yes : LanguageControl.No);

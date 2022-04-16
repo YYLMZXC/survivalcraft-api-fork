@@ -271,32 +271,10 @@ namespace Game
             {
                 Display.Clear(Color.Black, 1f, 0);
             }
-            float num;
-            switch (SettingsManager.GuiSize)
-            {
-                case GuiSize.Larger:
-                    num = 720f;
-                    break;
-                case GuiSize.Large:
-                    num = 790f;
-                    break;
-                case GuiSize.Normal:
-                    num = 850f;
-                    break;
-                case GuiSize.Smaller:
-                    num = 960f;
-                    break;
-                case GuiSize.Smallest:
-                    num = 1120f;
-                    break;
-                default:
-                    num = 850f;
-                    break;
-            }
-            num *= DebugUiScale;
-            var vector = new Vector2(Display.Viewport.Width, Display.Viewport.Height);
+            float num = 850f / MathUtils.Clamp(SettingsManager.UIScale, 0.5f, 1.2f) * DebugUiScale;
+            Vector2 vector = new Vector2(Display.Viewport.Width, Display.Viewport.Height);
             float num2 = vector.X / num;
-            var availableSize = new Vector2(num, num / vector.X * vector.Y);
+            Vector2 availableSize = new Vector2(num, num / vector.X * vector.Y);
             float num3 = num * 9f / 16f;
             if (vector.Y / num2 < num3)
             {

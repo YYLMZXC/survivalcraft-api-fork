@@ -90,10 +90,7 @@ namespace Game
         public override void Update()
         {
             Vector2 size = new Vector2(310, 60);
-            if(SettingsManager.GuiSize == GuiSize.Larger || SettingsManager.GuiSize == GuiSize.Large)
-            {
-                size = new Vector2(230, 60);
-            }
+            if(SettingsManager.UIScale > 1f) size = new Vector2(250, 60);
             m_playButton.Size = size;
             m_newWorldButton.Size = size;
             if (m_worldsListWidget.SelectedItem != null && WorldsManager.WorldInfos.IndexOf((WorldInfo)m_worldsListWidget.SelectedItem) < 0)

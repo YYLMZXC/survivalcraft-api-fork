@@ -150,6 +150,8 @@ namespace Game
             }
         }
 
+        public bool SlidingCompleted { get; private set; }
+
         public SliderWidget()
         {
             XElement node = ContentManager.Get<XElement>("Widgets/SliderContents");
@@ -224,7 +226,9 @@ namespace Game
             {
                 m_dragStartPoint = null;
             }
-            IsSliding = (m_dragStartPoint.HasValue && IsEnabledGlobal && IsVisibleGlobal);
+            bool flag = m_dragStartPoint.HasValue && IsEnabledGlobal && IsVisibleGlobal;
+            SlidingCompleted = IsSliding && !flag;
+            IsSliding = flag;
             if (m_dragStartPoint.HasValue)
             {
                 Input.Clear();
