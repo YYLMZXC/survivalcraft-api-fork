@@ -225,7 +225,11 @@ namespace Engine.Graphics
 
 		public string PrependShaderMacros(string shaderCode, ShaderMacro[] shaderMacros, bool isVertexShader)
 		{
-			string str = "#version 100" + Environment.NewLine;
+			string str = "";
+
+			if (!shaderCode.StartsWith("#version "))
+				str += "#version 100" + Environment.NewLine;
+
 			str = str + "#define GLSL" + Environment.NewLine;
 			if (isVertexShader)
 			{
