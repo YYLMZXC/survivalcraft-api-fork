@@ -141,9 +141,9 @@ namespace Game
         public static void ValidateBlocksTexture(Stream stream)
         {
             var image = Image.Load(stream);
-            if (image.Width > 65535 || image.Height > 65535)
+            if (image.Width > 65536 || image.Height > 65536)
             {
-                throw new InvalidOperationException($"Blocks texture is larger than 65535x65535 pixels (size={image.Width}x{image.Height})");
+                throw new InvalidOperationException($"Blocks texture is larger than 65536x65536 pixels (size={image.Width}x{image.Height})");
             }
             if (!MathUtils.IsPowerOf2(image.Width) || !MathUtils.IsPowerOf2(image.Height))
             {
@@ -153,9 +153,9 @@ namespace Game
 
         public static void ValidateBlocksTexture(Image image)
         {
-            if (image.Width > 65535 || image.Height > 65535)
+            if (image.Width > 65536 || image.Height > 65536)
             {
-                throw new InvalidOperationException(string.Format("Blocks texture is larger than 1024x1024 pixels (size={0}x{1})", new object[2] { image.Width, image.Height }));
+                throw new InvalidOperationException(string.Format("Blocks texture is larger than 65536x65536 pixels (size={0}x{1})", new object[2] { image.Width, image.Height }));
             }
             if (!MathUtils.IsPowerOf2(image.Width) || !MathUtils.IsPowerOf2(image.Height))
             {
