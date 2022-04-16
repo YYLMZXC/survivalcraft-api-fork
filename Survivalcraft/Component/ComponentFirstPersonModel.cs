@@ -138,7 +138,7 @@ namespace Game
                         }
                         int num6 = Terrain.ExtractContents(m_value);
                         Block block = BlocksManager.Blocks[num6];
-                        Vector3 vector = block.FirstPersonRotation * ((float)Math.PI / 180f) + m_itemRotation;
+                        Vector3 vector = block.GetFirstPersonRotation(m_value) * ((float)Math.PI / 180f) + m_itemRotation;
                         Vector3 position3 = block.GetFirstPersonOffset(m_value) + m_itemOffset;
                         position3 += m_itemOffset;
                         Matrix matrix = Matrix.CreateFromYawPitchRoll(vector.Y, vector.X, vector.Z) * identity * Matrix.CreateTranslation(position3) * Matrix.CreateFromYawPitchRoll(m_lagAngles.X, m_lagAngles.Y, 0f) * m;

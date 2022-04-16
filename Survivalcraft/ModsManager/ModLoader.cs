@@ -172,6 +172,14 @@ namespace Game
         }
 
         /// <summary>
+        /// 更新输入时执行
+        /// </summary>
+        /// <param name="componentGui"></param>
+        public virtual void UpdateInput(ComponentInput componentInput, WidgetInput widgetInput)
+        {
+        }
+
+        /// <summary>
         /// ViewWidget绘制屏幕时执行
         /// </summary>
         public virtual void DrawToScreen(ViewWidget viewWidget, Widget.DrawContext dc)

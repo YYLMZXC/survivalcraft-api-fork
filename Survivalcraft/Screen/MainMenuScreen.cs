@@ -1,6 +1,5 @@
 using Engine;
 using Engine.Input;
-using System;
 using System.Xml.Linq;
 
 namespace Game
@@ -11,10 +10,22 @@ namespace Game
 
         public bool m_versionStringTrial;
 
+        public ButtonWidget m_showBulletinButton;
+
+        public StackPanelWidget m_bulletinStackPanel;
+
+        public LabelWidget m_copyrightLabel;
+
         public MainMenuScreen()
         {
             XElement node = ContentManager.Get<XElement>("Screens/MainMenuScreen");
             LoadContents(this, node);
+            m_showBulletinButton = Children.Find<ButtonWidget>("BulletinButton");
+            m_bulletinStackPanel = Children.Find<StackPanelWidget>("BulletinStackPanel");
+            m_copyrightLabel = Children.Find<LabelWidget>("CopyrightLabel");
+            string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
+            m_bulletinStackPanel.IsVisible = (languageType == "zh-CN");
+            m_copyrightLabel.IsVisible = (languageType != "zh-CN");
         }
 
         public override void Enter(object[] parameters)
@@ -26,7 +37,7 @@ namespace Game
                 SettingsManager.IsolatedStorageMigrationCounter++;
                 VersionConverter126To127.MigrateDataFromIsolatedStorageWithDialog();
             }
-            MotdManager.ShowBulletin();
+            if (MotdManager.CanShowBulletin) MotdManager.ShowBulletin();
         }
 
         public override void Leave()
@@ -65,8 +76,18 @@ namespace Game
             }
             if (Children.Find<ButtonWidget>("Buy").IsClicked)
             {
-                
                 MarketplaceManager.ShowMarketplace();
+            }
+            if (m_showBulletinButton.IsClicked)
+            {
+                if(MotdManager.m_bulletin != null && MotdManager.m_bulletin.Title.ToLower() != "null")
+                {
+                    MotdManager.ShowBulletin();
+                }
+                else
+                {
+                    DialogsManager.ShowDialog(null, new MessageDialog("公告获取失败", "当前暂无发布公告，\n或者没有联网获取公告信息", LanguageControl.Ok, null, null));
+                }
             }
             if ((Input.Back && !Keyboard.BackButtonQuitsApp) || Input.IsKeyDownOnce(Key.Escape))
             {

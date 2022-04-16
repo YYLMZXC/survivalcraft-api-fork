@@ -227,16 +227,15 @@ namespace Game
         {
             try
             {
-                if (CanShowBulletin)
+                string time = m_bulletin.Time.Contains("$") ? m_bulletin.Time.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[1] : string.Empty;
+                if (!string.IsNullOrEmpty(time)) time = (IsCNLanguageType() ? "公告发布时间: " : "Time: ") + time;
+                string title = IsCNLanguageType() ? m_bulletin.Title : m_bulletin.EnTitle;
+                string content = IsCNLanguageType() ? m_bulletin.Content : m_bulletin.EnContent;
+                DialogsManager.ShowDialog(null, new BulletinDialog(title, time + "\n" + content, delegate
                 {
-                    string title = IsCNLanguageType() ? m_bulletin.Title : m_bulletin.EnTitle;
-                    string content = IsCNLanguageType() ? m_bulletin.Content : m_bulletin.EnContent;
-                    DialogsManager.ShowDialog(null, new BulletinDialog(title, content, delegate
-                    {
-                        SettingsManager.BulletinTime = m_bulletin.Time;
-                    }));
-                    CanShowBulletin = false;
-                }
+                    SettingsManager.BulletinTime = m_bulletin.Time;
+                }));
+                CanShowBulletin = false;
             }
             catch (Exception ex)
             {

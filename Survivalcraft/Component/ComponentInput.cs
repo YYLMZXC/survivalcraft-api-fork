@@ -233,6 +233,7 @@ namespace Game
                     m_playerInput.SelectInventorySlot = 9;
                 }
             }
+            ModsManager.HookAction("UpdateInput", loader => {  loader.UpdateInput(this, input); return false; });
         }
 
         public virtual void UpdateInputFromGamepad(WidgetInput input)
