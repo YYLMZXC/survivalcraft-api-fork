@@ -172,8 +172,21 @@ namespace Game
             }
         }
 
+        public ModelShader(string vsc, string psc, bool useAlphaThreshold, int maxInstancesCount = 1)
+           : base(vsc, psc, PrepareShaderMacros(useAlphaThreshold, maxInstancesCount))
+        {
+            SetParameter();
+            Transforms = new ShaderTransforms(maxInstancesCount);
+        }
+
         public ModelShader(string vsc, string psc, bool useAlphaThreshold, int maxInstancesCount = 1, ShaderMacro[] shaderMacros = null)
             : base(vsc, psc, PrepareShaderMacros(useAlphaThreshold, maxInstancesCount, shaderMacros))
+        {
+            SetParameter();
+            Transforms = new ShaderTransforms(maxInstancesCount);
+        }
+
+        public void SetParameter()
         {
             m_worldMatrixParameter = GetParameter("u_worldMatrix");
             m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix");
@@ -191,7 +204,6 @@ namespace Game
             m_fogStartInvLengthParameter = GetParameter("u_fogStartInvLength");
             m_fogYMultiplierParameter = GetParameter("u_fogYMultiplier");
             m_worldUpParameter = GetParameter("u_worldUp");
-            Transforms = new ShaderTransforms(maxInstancesCount);
         }
 
         protected override void PrepareForDrawingOverride()

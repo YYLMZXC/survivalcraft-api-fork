@@ -48,16 +48,29 @@ namespace Engine.Graphics
 			}
 		}
 
+		public SkyShader(string vsc, string psc, bool useVertexColor, bool useTexture, bool useAlphaThreshold)
+			: base(vsc, psc, PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
+		{
+			SetParameter();
+			Transforms = new ShaderTransforms(1);
+			Color = Vector4.One;
+		}
+
 		public SkyShader(string vsc, string psc, bool useVertexColor, bool useTexture, bool useAlphaThreshold, ShaderMacro[] shaderMacros = null)
 			: base(vsc, psc, PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold, shaderMacros))
 		{
+			SetParameter();
+			Transforms = new ShaderTransforms(1);
+			Color = Vector4.One;
+		}
+
+		public void SetParameter()
+        {
 			m_worldViewProjectionMatrixParameter = base.GetParameter("u_worldViewProjectionMatrix", true);
 			m_textureParameter = base.GetParameter("u_texture", true);
 			m_samplerStateParameter = base.GetParameter("u_samplerState", true);
 			m_colorParameter = base.GetParameter("u_color", true);
 			m_alphaThresholdParameter = base.GetParameter("u_alphaThreshold", true);
-			Transforms = new ShaderTransforms(1);
-			Color = Vector4.One;
 		}
 
 		protected override void PrepareForDrawingOverride()

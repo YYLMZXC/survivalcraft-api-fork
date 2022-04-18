@@ -231,7 +231,9 @@ namespace Game
 			}
 		}
 
-		public event Action<ComponentBody> CollidedWithBody;
+		public bool m_isSneaking; //如果有使用此属性，请改用IsSneaking
+
+		public virtual Action<ComponentBody> CollidedWithBody { get; set; }
 
 		static ComponentBody()
 		{
@@ -1114,6 +1116,269 @@ namespace Game
 			float num = 1f / (m1 + m2);
 			result1 = (cr * m2 * (v2 - v1) + m1 * v1 + m2 * v2) * num;
 			result2 = (cr * m1 * (v1 - v2) + m1 * v1 + m2 * v2) * num;
+		}
+
+		public bool MoveToFreeSpace()
+		{
+			Vector3 boxSize = BoxSize;
+			Vector3 position = Position;
+			for (int i = 0; i < m_freeSpaceOffsets.Length; i++)
+			{
+				Vector3? vector = null;
+				Vector3 vector2 = position + m_freeSpaceOffsets[i];
+				if (Terrain.ToCell(vector2) != Terrain.ToCell(position))
+				{
+					continue;
+				}
+				var box = new BoundingBox(vector2 - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f), vector2 + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f));
+				box.Min += new Vector3(0.01f, MaxSmoothRiseHeight + 0.01f, 0.01f);
+				box.Max -= new Vector3(0.01f);
+				m_collisionBoxes.Clear();
+				FindTerrainCollisionBoxes(box, m_collisionBoxes);
+				m_collisionBoxes.AddRange(m_movingBlocksCollisionBoxes);
+				m_collisionBoxes.AddRange(m_bodiesCollisionBoxes);
+				if (!IsColliding(box, m_collisionBoxes))
+				{
+					vector = vector2;
+				}
+				else
+				{
+					m_stoppedTime = 0f;
+					float num = CalculatePushBack(box, 0, m_collisionBoxes, out CollisionBox pushingCollisionBox);
+					float num2 = CalculatePushBack(box, 1, m_collisionBoxes, out CollisionBox pushingCollisionBox2);
+					float num3 = CalculatePushBack(box, 2, m_collisionBoxes, out CollisionBox pushingCollisionBox3);
+					float num4 = num * num;
+					float num5 = num2 * num2;
+					float num6 = num3 * num3;
+					var list = new List<Vector3>();
+					if (num4 <= num5 && num4 <= num6)
+					{
+						list.Add(vector2 + new Vector3(num, 0f, 0f));
+						if (num5 <= num6)
+						{
+							list.Add(vector2 + new Vector3(0f, num2, 0f));
+							list.Add(vector2 + new Vector3(0f, 0f, num3));
+						}
+						else
+						{
+							list.Add(vector2 + new Vector3(0f, 0f, num3));
+							list.Add(vector2 + new Vector3(0f, num2, 0f));
+						}
+					}
+					else if (num5 <= num4 && num5 <= num6)
+					{
+						list.Add(vector2 + new Vector3(0f, num2, 0f));
+						if (num4 <= num6)
+						{
+							list.Add(vector2 + new Vector3(num, 0f, 0f));
+							list.Add(vector2 + new Vector3(0f, 0f, num3));
+						}
+						else
+						{
+							list.Add(vector2 + new Vector3(0f, 0f, num3));
+							list.Add(vector2 + new Vector3(num, 0f, 0f));
+						}
+					}
+					else
+					{
+						list.Add(vector2 + new Vector3(0f, 0f, num3));
+						if (num4 <= num5)
+						{
+							list.Add(vector2 + new Vector3(num, 0f, 0f));
+							list.Add(vector2 + new Vector3(0f, num2, 0f));
+						}
+						else
+						{
+							list.Add(vector2 + new Vector3(0f, num2, 0f));
+							list.Add(vector2 + new Vector3(num, 0f, 0f));
+						}
+					}
+					foreach (Vector3 item in list)
+					{
+						box = new BoundingBox(item - new Vector3(boxSize.X / 2f, 0f, boxSize.Z / 2f), item + new Vector3(boxSize.X / 2f, boxSize.Y, boxSize.Z / 2f));
+						box.Min += new Vector3(0.02f, MaxSmoothRiseHeight + 0.02f, 0.02f);
+						box.Max -= new Vector3(0.02f);
+						m_collisionBoxes.Clear();
+						FindTerrainCollisionBoxes(box, m_collisionBoxes);
+						m_collisionBoxes.AddRange(m_movingBlocksCollisionBoxes);
+						m_collisionBoxes.AddRange(m_bodiesCollisionBoxes);
+						if (!IsColliding(box, m_collisionBoxes))
+						{
+							vector = item;
+							break;
+						}
+					}
+				}
+				if (vector.HasValue)
+				{
+					Position = vector.Value;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public void FindSneakCollisionBoxes(Vector3 position, Vector2 overhang, DynamicArray<CollisionBox> result)
+		{
+			int num = Terrain.ToCell(position.X);
+			int num2 = Terrain.ToCell(position.Y);
+			int num3 = Terrain.ToCell(position.Z);
+			int value = m_subsystemTerrain.Terrain.GetCellValue(num, num2 - 1, num3);
+			if (BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value))
+			{
+				return;
+			}
+			bool num4 = position.X < num + 0.5f;
+			bool flag = position.Z < num3 + 0.5f;
+			CollisionBox item;
+			if (num4)
+			{
+				if (flag)
+				{
+					int value1 = m_subsystemTerrain.Terrain.GetCellValue(num, num2 - 1, num3 - 1);
+					int value2 = m_subsystemTerrain.Terrain.GetCellValue(num - 1, num2 - 1, num3);
+					int value3 = m_subsystemTerrain.Terrain.GetCellValue(num - 1, num2 - 1, num3 - 1);
+					bool isCollidable = BlocksManager.Blocks[Terrain.ExtractContents(value1)].IsCollidable_(value1);
+					bool isCollidable2 = BlocksManager.Blocks[Terrain.ExtractContents(value2)].IsCollidable_(value2);
+					bool isCollidable3 = BlocksManager.Blocks[Terrain.ExtractContents(value3)].IsCollidable_(value3);
+					if ((isCollidable && !isCollidable2) || ((!isCollidable && !isCollidable2) & isCollidable3))
+					{
+						item = new CollisionBox
+						{
+							Box = new BoundingBox(new Vector3(num, num2, num3 + overhang.Y), new Vector3(num + 1, num2 + 1, num3 + 1)),
+							BlockValue = 0
+						};
+						result.Add(item);
+					}
+					if ((!isCollidable && isCollidable2) || ((!isCollidable && !isCollidable2) & isCollidable3))
+					{
+						item = new CollisionBox
+						{
+							Box = new BoundingBox(new Vector3(num + overhang.X, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1)),
+							BlockValue = 0
+						};
+						result.Add(item);
+					}
+					if (isCollidable && isCollidable2)
+					{
+						item = new CollisionBox
+						{
+							Box = new BoundingBox(new Vector3(num + overhang.X, num2, num3 + overhang.Y), new Vector3(num + 1, num2 + 1, num3 + 1)),
+							BlockValue = 0
+						};
+						result.Add(item);
+					}
+				}
+				else
+				{
+					int value4 = m_subsystemTerrain.Terrain.GetCellValue(num, num2 - 1, num3 + 1);
+					int value5 = m_subsystemTerrain.Terrain.GetCellValue(num - 1, num2 - 1, num3);
+					int value6 = m_subsystemTerrain.Terrain.GetCellValue(num - 1, num2 - 1, num3 + 1);
+					bool isCollidable4 = BlocksManager.Blocks[Terrain.ExtractContents(value4)].IsCollidable_(value4);
+					bool isCollidable5 = BlocksManager.Blocks[Terrain.ExtractContents(value5)].IsCollidable_(value5);
+					bool isCollidable6 = BlocksManager.Blocks[Terrain.ExtractContents(value6)].IsCollidable_(value6);
+					if ((isCollidable4 && !isCollidable5) || ((!isCollidable4 && !isCollidable5) & isCollidable6))
+					{
+						item = new CollisionBox
+						{
+							Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1 - overhang.Y)),
+							BlockValue = 0
+						};
+						result.Add(item);
+					}
+					if ((!isCollidable4 && isCollidable5) || ((!isCollidable4 && !isCollidable5) & isCollidable6))
+					{
+						item = new CollisionBox
+						{
+							Box = new BoundingBox(new Vector3(num + overhang.X, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1)),
+							BlockValue = 0
+						};
+						result.Add(item);
+					}
+					if (isCollidable4 && isCollidable5)
+					{
+						item = new CollisionBox
+						{
+							Box = new BoundingBox(new Vector3(num + overhang.X, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1 - overhang.Y)),
+							BlockValue = 0
+						};
+						result.Add(item);
+					}
+				}
+			}
+			else if (flag)
+			{
+				int value7 = m_subsystemTerrain.Terrain.GetCellValue(num, num2 - 1, num3 - 1);
+				int value8 = m_subsystemTerrain.Terrain.GetCellValue(num + 1, num2 - 1, num3);
+				int value9 = m_subsystemTerrain.Terrain.GetCellValue(num + 1, num2 - 1, num3 - 1);
+
+				bool isCollidable7 = BlocksManager.Blocks[Terrain.ExtractContents(value7)].IsCollidable_(value7);
+				bool isCollidable8 = BlocksManager.Blocks[Terrain.ExtractContents(value8)].IsCollidable_(value8);
+				bool isCollidable9 = BlocksManager.Blocks[Terrain.ExtractContents(value9)].IsCollidable_(value9);
+				if ((isCollidable7 && !isCollidable8) || ((!isCollidable7 && !isCollidable8) & isCollidable9))
+				{
+					item = new CollisionBox
+					{
+						Box = new BoundingBox(new Vector3(num, num2, num3 + overhang.Y), new Vector3(num + 1, num2 + 1, num3 + 1)),
+						BlockValue = 0
+					};
+					result.Add(item);
+				}
+				if ((!isCollidable7 && isCollidable8) || ((!isCollidable7 && !isCollidable8) & isCollidable9))
+				{
+					item = new CollisionBox
+					{
+						Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1 - overhang.X, num2 + 1, num3 + 1)),
+						BlockValue = 0
+					};
+					result.Add(item);
+				}
+				if (isCollidable7 && isCollidable8)
+				{
+					item = new CollisionBox
+					{
+						Box = new BoundingBox(new Vector3(num, num2, num3 + overhang.Y), new Vector3(num + 1 - overhang.X, num2 + 1, num3 + 1)),
+						BlockValue = 0
+					};
+					result.Add(item);
+				}
+			}
+			else
+			{
+				int value10 = m_subsystemTerrain.Terrain.GetCellValue(num, num2 - 1, num3 + 1);
+				int value11 = m_subsystemTerrain.Terrain.GetCellValue(num + 1, num2 - 1, num3);
+				int value12 = m_subsystemTerrain.Terrain.GetCellValue(num + 1, num2 - 1, num3 + 1);
+				bool isCollidable10 = BlocksManager.Blocks[Terrain.ExtractContents(value10)].IsCollidable_(value10);
+				bool isCollidable11 = BlocksManager.Blocks[Terrain.ExtractContents(value11)].IsCollidable_(value11);
+				bool isCollidable12 = BlocksManager.Blocks[Terrain.ExtractContents(value12)].IsCollidable_(value12);
+				if ((isCollidable10 && !isCollidable11) || ((!isCollidable10 && !isCollidable11) & isCollidable12))
+				{
+					item = new CollisionBox
+					{
+						Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1, num2 + 1, num3 + 1 - overhang.Y)),
+						BlockValue = 0
+					};
+					result.Add(item);
+				}
+				if ((!isCollidable10 && isCollidable11) || ((!isCollidable10 && !isCollidable11) & isCollidable12))
+				{
+					item = new CollisionBox
+					{
+						Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1 - overhang.X, num2 + 1, num3 + 1)),
+						BlockValue = 0
+					};
+					result.Add(item);
+				}
+				if (isCollidable10 && isCollidable11)
+				{
+					item = new CollisionBox
+					{
+						Box = new BoundingBox(new Vector3(num, num2, num3), new Vector3(num + 1 - overhang.X, num2 + 1, num3 + 1 - overhang.Y)),
+						BlockValue = 0
+					};
+					result.Add(item);
+				}
+			}
 		}
 	}
 }

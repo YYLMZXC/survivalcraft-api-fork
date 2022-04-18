@@ -213,6 +213,14 @@ namespace Game
 
 		public int[] DrawOrders => m_drawOrders;
 
+		public SkyPrimitiveRender m_primitiveRender;
+
+		public static SkyShader Shader;
+
+		public static SkyShader ShaderAlphaTest;
+
+		public static bool DrawGalaxyEnabled = true;
+
 		public void MakeLightningStrike(Vector3 targetPosition)
 		{
 			if (m_lightningStrikePosition.HasValue || !(m_subsystemTime.GameTime - m_lastLightningStrikeTime > 1.0))
@@ -348,10 +356,28 @@ namespace Game
 				if (DrawSkyEnabled && m_viewIsSkyVisible && SettingsManager.SkyRenderingMode != SkyRenderingMode.Disabled)
 				{
 					DrawSkydome(camera);
-					DrawStars(camera);
-					DrawSunAndMoon(camera);
+					if (DrawGalaxyEnabled)
+					{
+						DrawStars(camera);
+						DrawSunAndMoon(camera);
+					}
 					DrawClouds(camera);
-					m_primitivesRenderer3d.Flush(camera.ViewProjectionMatrix);
+					ModsManager.HookAction("SkyDrawExtra", loader => { loader.SkyDrawExtra(this, camera); return false; });
+					if (Shader != null && ShaderAlphaTest != null)
+					{
+						if (m_primitiveRender.Shader == null && m_primitiveRender.ShaderAlphaTest == null)
+						{
+							m_primitiveRender.Shader = Shader;
+							m_primitiveRender.ShaderAlphaTest = ShaderAlphaTest;
+							m_primitiveRender.Camera = camera;
+						}
+						m_primitiveRender.Flush(m_primitivesRenderer3d, camera.ViewProjectionMatrix, true, int.MaxValue);
+					}
+					else
+					{
+						m_primitivesRenderer3d.Flush(camera.ViewProjectionMatrix);
+					}
+					return;
 				}
 			}
 			else
@@ -374,6 +400,7 @@ namespace Game
 			m_sunTexture = ContentManager.Get<Texture2D>("Textures/Sun");
 			m_glowTexture = ContentManager.Get<Texture2D>("Textures/SkyGlow");
 			m_cloudsTexture = ContentManager.Get<Texture2D>("Textures/Clouds");
+			m_primitiveRender = new SkyPrimitiveRender();
 			for (int i = 0; i < 8; i++)
 			{
 				m_moonTextures[i] = ContentManager.Get<Texture2D>("Textures/Moon" + (i + 1).ToString(CultureInfo.InvariantCulture));

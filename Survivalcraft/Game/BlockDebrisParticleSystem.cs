@@ -16,11 +16,23 @@ namespace Game
 
         public SubsystemTerrain m_subsystemTerrain;
 
-        public BlockDebrisParticleSystem(SubsystemTerrain terrain, Vector3 position, float strength, float scale, Color color, int textureSlot, Texture2D texture = null)
+        public BlockDebrisParticleSystem(SubsystemTerrain terrain, Vector3 position, float strength, float scale, Color color, int textureSlot)
+           : base((int)(50f * strength))
+        {
+            Texture = terrain.Project.FindSubsystem<SubsystemBlocksTexture>(throwOnError: true).BlocksTexture;
+            SetBlockDebrisParticle(terrain, position, strength, scale, color, textureSlot);
+        }
+
+        public BlockDebrisParticleSystem(SubsystemTerrain terrain, Vector3 position, float strength, float scale, Color color, int textureSlot, Texture2D texture)
             : base((int)(50f * strength))
         {
+            Texture = texture;
+            SetBlockDebrisParticle(terrain, position, strength, scale, color, textureSlot);
+        }
+
+        public void SetBlockDebrisParticle(SubsystemTerrain terrain, Vector3 position, float strength, float scale, Color color, int textureSlot)
+        {
             m_subsystemTerrain = terrain;
-            Texture = (texture != null) ? texture : terrain.Project.FindSubsystem<SubsystemBlocksTexture>(throwOnError: true).BlocksTexture;
             int num = Terrain.ToCell(position.X);
             int num2 = Terrain.ToCell(position.Y);
             int num3 = Terrain.ToCell(position.Z);
