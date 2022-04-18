@@ -24,19 +24,12 @@ namespace Game
             bool isLaid = EggBlock.GetIsLaid(data);
             if (!isCooked && (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative || m_random.Float(0f, 1f) <= (isLaid ? 0.15f : 1f)))
             {
-                if (m_subsystemCreatureSpawn.Creatures.Count < 35)
-                {
-                    EggBlock.EggType eggType = m_eggBlock.GetEggType(data);
-                    Entity entity = DatabaseManager.CreateEntity(Project, eggType.TemplateName, throwIfNotFound: true);
-                    entity.FindComponent<ComponentBody>(throwOnError: true).Position = worldItem.Position;
-                    entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
-                    entity.FindComponent<ComponentSpawn>(throwOnError: true).SpawnDuration = 0.25f;
-                    Project.AddEntity(entity);
-                }
-                else
-                {
-                    ((worldItem as Projectile)?.Owner as ComponentPlayer)?.ComponentGui.DisplaySmallMessage("Too many creatures", Color.White, blinking: true, playNotificationSound: false);
-                }
+                EggBlock.EggType eggType = m_eggBlock.GetEggType(data);
+                Entity entity = DatabaseManager.CreateEntity(Project, eggType.TemplateName, throwIfNotFound: true);
+                entity.FindComponent<ComponentBody>(throwOnError: true).Position = worldItem.Position;
+                entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
+                entity.FindComponent<ComponentSpawn>(throwOnError: true).SpawnDuration = 0.25f;
+                Project.AddEntity(entity);
             }
             return true;
         }

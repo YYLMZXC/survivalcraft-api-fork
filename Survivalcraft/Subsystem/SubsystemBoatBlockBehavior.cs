@@ -12,8 +12,12 @@ namespace Game
 
         public SubsystemBodies m_subsystemBodies;
 
+        public SubsystemGameInfo m_subsystemGameInfo;
+
         public Random m_random = new Random();
+
         public static string fName = "SubsystemBoatBlockBehavior";
+
         public override int[] HandledBlocks => new int[1]
         {
             178
@@ -30,7 +34,7 @@ namespace Game
                     Vector3 position = terrainRaycastResult.Value.HitPoint();
                     var dynamicArray = new DynamicArray<ComponentBody>();
                     m_subsystemBodies.FindBodiesInArea(new Vector2(position.X, position.Z) - new Vector2(8f), new Vector2(position.X, position.Z) + new Vector2(8f), dynamicArray);
-                    if (dynamicArray.Count((ComponentBody b) => b.Entity.ValuesDictionary.DatabaseObject.Name == "Boat") < 6)
+                    if ((dynamicArray.Count((ComponentBody b) => b.Entity.ValuesDictionary.DatabaseObject.Name == "Boat") < 6) || m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative)
                     {
                         Entity entity = DatabaseManager.CreateEntity(Project, "Boat", throwIfNotFound: true);
                         entity.FindComponent<ComponentFrame>(throwOnError: true).Position = position;
@@ -55,6 +59,7 @@ namespace Game
             base.Load(valuesDictionary);
             m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
             m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
+            m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
         }
     }
 }

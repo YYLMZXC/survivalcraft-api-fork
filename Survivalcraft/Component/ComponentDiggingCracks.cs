@@ -154,17 +154,23 @@ namespace Game
                 Display.RenderTarget = render;
                 list[num2] = target;
             }
-			Display.BlendState = BlendState.NonPremultiplied;
-			Display.DepthStencilState = DepthStencilState.Default;
-			Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-            m_shader.GetParameter("u_origin").SetValue(v.XZ);
-            m_shader.GetParameter("u_texture").SetValue(list[num2]);
-            m_shader.GetParameter("u_viewProjectionMatrix").SetValue(value);
-            m_shader.GetParameter("u_viewPosition").SetValue(camera.ViewPosition);
-            m_shader.GetParameter("u_samplerState").SetValue(SamplerState.PointWrap);
-            m_shader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-            m_shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(x, 1f / (y - x)));
-            Display.DrawIndexed(PrimitiveType.TriangleList, m_shader, Buffer.VertexBuffer, Buffer.IndexBuffer, 0, Buffer.IndexBuffer.IndicesCount);
+            try
+            {
+				Display.BlendState = BlendState.NonPremultiplied;
+				Display.DepthStencilState = DepthStencilState.Default;
+				Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
+				m_shader.GetParameter("u_origin").SetValue(v.XZ);
+				m_shader.GetParameter("u_texture").SetValue(list[num2]);
+				m_shader.GetParameter("u_viewProjectionMatrix").SetValue(value);
+				m_shader.GetParameter("u_viewPosition").SetValue(camera.ViewPosition);
+				m_shader.GetParameter("u_samplerState").SetValue(SamplerState.PointWrap);
+				m_shader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+				m_shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(x, 1f / (y - x)));
+				Display.DrawIndexed(PrimitiveType.TriangleList, m_shader, Buffer.VertexBuffer, Buffer.IndexBuffer, 0, Buffer.IndexBuffer.IndicesCount);
+			}
+            catch
+            {
+            }
 		}
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{

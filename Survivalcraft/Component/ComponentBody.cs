@@ -76,7 +76,7 @@ namespace Game
 
 		public bool CanCrouch = false;
 
-		public Vector3 StanceBoxSize => new Vector3(BoxSize.X, ((CrouchFactor >= 1f) ? 0.4f : 1f) * BoxSize.Y, BoxSize.Z);
+		public Vector3 StanceBoxSize => new Vector3(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
 
 		public Vector3 BoxSize { get; set; }
 
@@ -233,6 +233,8 @@ namespace Game
 
 		public bool m_isSneaking; //如果有使用此属性，请改用IsSneaking
 
+		public float m_crushInjureTime;
+
 		public virtual Action<ComponentBody> CollidedWithBody { get; set; }
 
 		static ComponentBody()
@@ -304,6 +306,7 @@ namespace Game
 			IsGravityEnabled = true;
 			IsGroundDragEnabled = true;
 			IsWaterDragEnabled = true;
+			m_crushInjureTime = 1f;
 		}
 
 		public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)
@@ -371,7 +374,7 @@ namespace Game
 			FindBodiesCollisionBoxes(position, m_bodiesCollisionBoxes);
 			m_movingBlocksCollisionBoxes.Clear();
 			FindMovingBlocksCollisionBoxes(position, m_movingBlocksCollisionBoxes);
-			if (!MoveToFreeSpace(0.6f))
+			if (!MoveToFreeSpace(0.56f))
 			{
 				m_crouchFactor = CanCrouch ? 1f : 0f;
 				m_targetCrouchFactor = CanCrouch ? 1f : 0f;
@@ -380,13 +383,23 @@ namespace Game
 					ComponentHealth componentHealth = base.Entity.FindComponent<ComponentHealth>();
 					if (componentHealth != null)
 					{
-						componentHealth.Injure(1f, null, ignoreInvulnerability: true, "Crushed");
+						if (m_crushInjureTime >= 1f)
+                        {
+							componentHealth.Injure(0.15f, null, ignoreInvulnerability: true, "Crushed");
+							m_crushInjureTime = 0f;
+						}
+						componentHealth.m_redScreenFactor = 1f;
+						m_crushInjureTime += dt;
 					}
 					else
 					{
 						base.Project.RemoveEntity(base.Entity, disposeEntity: true);
 					}
 					return;
+				}
+                else
+                {
+					m_crushInjureTime = 1f;
 				}
 			}
 			if (IsGravityEnabled)
