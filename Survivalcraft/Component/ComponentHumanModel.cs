@@ -337,12 +337,22 @@ namespace Game
                 m_handAngles2 += s * (new Vector2(num6, num7) - m_handAngles2);
                 m_legAngles1 += s * (new Vector2(num3, y2) - m_legAngles1);
                 m_legAngles2 += s * (new Vector2(x2, y3) - m_legAngles2);
-                SetBoneTransform(m_bodyBone.Index, Matrix.CreateRotationY(vector.X) * Matrix.CreateTranslation(position));
+                if(m_componentCreature.ComponentBody.CrouchFactor == 1)
+                {
+                    m_legAngles1 *= 0.5f;
+                    m_legAngles2 *= 0.5f;
+                }
+                float f = MathUtils.Sigmoid(m_componentCreature.ComponentBody.CrouchFactor, 4f);
+                Vector3 position2 = new Vector3(0f, MathUtils.Lerp(0f, 4f, f), MathUtils.Lerp(0f, -3.3f, f));
+                Vector3 position3 = new Vector3(position.X, position.Y - MathUtils.Lerp(0f, 0.7f, f), position.Z);
+                Vector3 position4 = new Vector3(0f, MathUtils.Lerp(0f, 7f, f), MathUtils.Lerp(0f, 28f, f));
+                Vector3 scale = new Vector3(1f, 1f, MathUtils.Lerp(1f, 0.5f, f));
+                SetBoneTransform(m_bodyBone.Index, Matrix.CreateRotationY(vector.X) * Matrix.CreateTranslation(position3));
                 SetBoneTransform(m_headBone.Index, Matrix.CreateRotationX(m_headAngles.Y) * Matrix.CreateRotationZ(0f - m_headAngles.X));
                 SetBoneTransform(m_hand1Bone.Index, Matrix.CreateRotationY(m_handAngles1.Y) * Matrix.CreateRotationX(m_handAngles1.X));
                 SetBoneTransform(m_hand2Bone.Index, Matrix.CreateRotationY(m_handAngles2.Y) * Matrix.CreateRotationX(m_handAngles2.X));
-                SetBoneTransform(m_leg1Bone.Index, Matrix.CreateRotationY(m_legAngles1.Y) * Matrix.CreateRotationX(m_legAngles1.X));
-                SetBoneTransform(m_leg2Bone.Index, Matrix.CreateRotationY(m_legAngles2.Y) * Matrix.CreateRotationX(m_legAngles2.X));
+                SetBoneTransform(m_leg1Bone.Index, Matrix.CreateRotationY(m_legAngles1.Y) * Matrix.CreateRotationX(m_legAngles1.X) * Matrix.CreateTranslation(position4) * Matrix.CreateScale(scale));
+                SetBoneTransform(m_leg2Bone.Index, Matrix.CreateRotationY(m_legAngles2.Y) * Matrix.CreateRotationX(m_legAngles2.X) * Matrix.CreateTranslation(position4) * Matrix.CreateScale(scale));
             }
             else
             {
