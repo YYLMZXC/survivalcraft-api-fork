@@ -15,5 +15,11 @@ namespace Game
         public string ExtraText;
 
         public float RatingsAverage;
+
+        public string IconSrc;
+
+        public Engine.Graphics.Texture2D Icon;
+
+        public RectangleWidget IconInstance = null;
     }
 }
