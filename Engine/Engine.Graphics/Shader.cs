@@ -187,7 +187,10 @@ namespace Engine.Graphics
 				str += "#version 110" + Environment.NewLine;
 			else
 			{
-				str += shaderCode.Split(new char[] { '\n' })[0];
+				string versioncode = shaderCode.Split(new char[] { '\n' })[0];
+				string versionnum = versioncode.Split(new char[] { ' ' })[1];
+
+				str += $"#version {versionnum}" + Environment.NewLine;
 				shaderCode = "//" + shaderCode;
 			}
 
