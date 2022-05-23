@@ -119,11 +119,21 @@ namespace Game
         /// <returns></returns>
         public override void GetFiles(string extension, Action<string, Stream> action)
         {
-            foreach (string name in Storage.ListFileNames(ModsManager.ModsPath))
+            foreach (var item in FModFiles)
             {
-                using (Stream stream = Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, name), OpenFileMode.Read))
+                if (item.Key.EndsWith(extension))
                 {
-                    try { action.Invoke(name, stream); } catch (Exception e) { LoadingScreen.Error(string.Format("GetFile {0} Error:{1}", name, e.Message)); }
+                    using (Stream fs = item.Value.OpenRead())
+                    {
+                        try
+                        {
+                            action?.Invoke(item.Key, fs);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error(string.Format("GetFile {0} Error:{1}", item.Key, e.Message));
+                        }
+                    }
                 }
             }
         }
