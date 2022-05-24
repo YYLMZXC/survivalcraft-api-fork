@@ -80,13 +80,21 @@ namespace Game
             get;
             set;
         }
+        public float m_attackResilience;
+        public float m_fallResilience;
+        public float m_fireResilience;
 
+        /// <summary>
+        /// 生命值
+        /// </summary>
         public float AttackResilience
         {
             get;
             set;
         }
-
+        /// <summary>
+        /// 掉落抗性
+        /// </summary>
         public float FallResilience
         {
             get;
@@ -111,9 +119,23 @@ namespace Game
             set;
         }
 
+        /// <summary>
+        /// 生命值加成系数
+        /// </summary>
+        public float AttackResilienceFactor { get; set; }
+        /// <summary>
+        /// 掉落抗性加成系数
+        /// </summary>
+        public float FallResilienceFactor { get; set; }
+        /// <summary>
+        /// 火焰伤害抗性系数
+        /// </summary>
+        public float FireResilienceFactor { get; set; }
+
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
         public virtual Action<ComponentCreature> Attacked { get; set; }
+
         public virtual Action<ComponentCreature> Injured { get; set; }
 
         public virtual void Heal(float amount)
@@ -201,6 +223,10 @@ namespace Game
             Vector3 position = m_componentCreature.ComponentBody.Position;
             if (Health > 0f && Health < 1f)
             {
+                //更新属性加成
+                AttackResilience = m_attackResilience * AttackResilienceFactor;
+                FallResilience = m_fallResilience * FallResilienceFactor;
+                FireResilienceFactor = m_fireResilience * FireResilienceFactor;
                 float num = 0f;
                 if (m_componentPlayer != null)
                 {
@@ -343,6 +369,9 @@ namespace Game
             AttackResilience = valuesDictionary.GetValue<float>("AttackResilience");
             FallResilience = valuesDictionary.GetValue<float>("FallResilience");
             FireResilience = valuesDictionary.GetValue<float>("FireResilience");
+            m_attackResilience = AttackResilience;
+            m_fallResilience = FallResilience;
+            m_fireResilience = FireResilience;
             CorpseDuration = valuesDictionary.GetValue<float>("CorpseDuration");
             BreathingMode = valuesDictionary.GetValue<BreathingMode>("BreathingMode");
             CanStrand = valuesDictionary.GetValue<bool>("CanStrand");
@@ -350,6 +379,9 @@ namespace Game
             Air = valuesDictionary.GetValue<float>("Air");
             AirCapacity = valuesDictionary.GetValue<float>("AirCapacity");
             double value = valuesDictionary.GetValue<double>("DeathTime");
+            AttackResilienceFactor = 1f;
+            FallResilienceFactor = 1f;
+            FireResilienceFactor = 1f;
             DeathTime = ((value >= 0.0) ? new double?(value) : null);
             CauseOfDeath = valuesDictionary.GetValue<string>("CauseOfDeath");
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && Entity.FindComponent<ComponentPlayer>() != null)
