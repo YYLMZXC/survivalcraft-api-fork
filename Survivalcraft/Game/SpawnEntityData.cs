@@ -1,4 +1,5 @@
 using Engine;
+using TemplatesDatabase;
 
 namespace Game
 {
@@ -10,7 +11,7 @@ namespace Game
 
         public bool ConstantSpawn;
 
-        public string ExtraData;
+        public ValuesDictionary Data;
 
     }
 }

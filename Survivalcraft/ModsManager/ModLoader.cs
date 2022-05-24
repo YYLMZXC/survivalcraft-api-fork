@@ -336,30 +336,23 @@ namespace Game
         public virtual void SetHitValueParticleSystem(HitValueParticleSystem hitValueParticleSystem, bool Hit)
         {
         }
-
         /// <summary>
-        /// 当区块加载时，区块的生物数据被读取时执行
+        /// 当储存生物数据时
         /// </summary>
         /// <param name="spawn"></param>
-        /// <param name="data"></param>
-        /// <param name="creaturesData"></param>
-        public virtual void LoadSpawnsData(SubsystemSpawn spawn, string data, List<SpawnEntityData> creaturesData, out bool Decoded) 
-        { 
-            Decoded = false; 
-        }
+        /// <param name="spawnEntityData"></param>
+        public virtual void OnSaveSpawnData(ComponentSpawn spawn,SpawnEntityData spawnEntityData)
+        {
 
+
+        }
         /// <summary>
-        /// 当区块卸载时，区块的生物数据被保存时执行
+        /// 当读取生物数据时
         /// </summary>
-        /// <param name="spawn"></param>
-        /// <param name="spawnsData"></param>
-        /// <returns></returns>
-        public virtual string SaveSpawnsData(SubsystemSpawn spawn, List<SpawnEntityData> spawnsData, out bool Encoded) 
-        { 
-            Encoded = false; 
-            return ""; 
-        }
+        public virtual void OnReadSpawnData(Entity entity, SpawnEntityData spawnEntityData)
+        {
 
+        }
         /// <summary>
         /// 区块地形生成时
         /// 注意此方法运行在子线程中

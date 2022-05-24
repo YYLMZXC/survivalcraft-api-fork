@@ -93,11 +93,8 @@ namespace Game
                 spawnChunk.Point = HumanReadableConverter.ConvertFromString<Point2>(item.Key);
                 spawnChunk.IsSpawned = valuesDictionary2.GetValue<bool>("IsSpawned");
                 spawnChunk.LastVisitedTime = valuesDictionary2.GetValue<double>("LastVisitedTime");
-                string value = valuesDictionary2.GetValue("SpawnsData", string.Empty);
-                if (!string.IsNullOrEmpty(value))
-                {
-                    LoadSpawnsData(value, spawnChunk.SpawnsData);
-                }
+                ValuesDictionary data = valuesDictionary2.GetValue("SpawnsData", new ValuesDictionary());
+                LoadSpawnsData(data, spawnChunk.SpawnsData);
                 m_chunks[spawnChunk.Point] = spawnChunk;
             }
         }
@@ -114,11 +111,9 @@ namespace Game
                     valuesDictionary2.SetValue(HumanReadableConverter.ConvertToString(value2.Point), valuesDictionary3);
                     valuesDictionary3.SetValue("IsSpawned", value2.IsSpawned);
                     valuesDictionary3.SetValue("LastVisitedTime", value2.LastVisitedTime.Value);
-                    string value = SaveSpawnsData(value2.SpawnsData);
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        valuesDictionary3.SetValue("SpawnsData", value);
-                    }
+                    ValuesDictionary v = new ValuesDictionary();
+                    SaveSpawnsData(v, value2.SpawnsData);
+                    valuesDictionary3.SetValue("SpawnsData", v);
                 }
             }
         }
@@ -265,12 +260,15 @@ namespace Game
             foreach (ComponentSpawn item in list)
             {
                 Point2 point = Terrain.ToChunk(item.ComponentFrame.Position.XZ);
-                GetOrCreateSpawnChunk(point).SpawnsData.Add(new SpawnEntityData
+                var data = new SpawnEntityData
                 {
                     TemplateName = item.Entity.ValuesDictionary.DatabaseObject.Name,
                     Position = item.ComponentFrame.Position,
-                    ConstantSpawn = (item.ComponentCreature?.ConstantSpawn ?? false)
-                });
+                    ConstantSpawn = (item.ComponentCreature?.ConstantSpawn ?? false),
+                    Data = new ValuesDictionary()
+                };
+                ModsManager.HookAction("OnSaveSpawnData", (ModLoader loader) => { loader.OnSaveSpawnData(item, data); return true; });
+                GetOrCreateSpawnChunk(point).SpawnsData.Add(data);
                 item.Despawn();
             }
         }
@@ -280,20 +278,13 @@ namespace Game
             try
             {
                 Entity entity = DatabaseManager.CreateEntity(Project, data.TemplateName, throwIfNotFound: true);
-                bool flag = false;
-                ModsManager.HookAction("SpawnEntity", modLoader => {
-                    modLoader.SpawnEntity(this, entity, data,out bool flag2);
-                    return flag2;
-                });
-                if (flag == false)
+                ModsManager.HookAction("OnReadSpawnData", (ModLoader loader) => { loader.OnReadSpawnData(entity, data); return true; });
+                entity.FindComponent<ComponentBody>(throwOnError: true).Position = data.Position;
+                entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
+                ComponentCreature componentCreature = entity.FindComponent<ComponentCreature>();
+                if (componentCreature != null)
                 {
-                    entity.FindComponent<ComponentBody>(throwOnError: true).Position = data.Position;
-                    entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
-                    ComponentCreature componentCreature = entity.FindComponent<ComponentCreature>();
-                    if (componentCreature != null)
-                    {
-                        componentCreature.ConstantSpawn = data.ConstantSpawn;
-                    }
+                    componentCreature.ConstantSpawn = data.ConstantSpawn;
                 }
                 Project.AddEntity(entity);
                 return entity;
@@ -305,87 +296,31 @@ namespace Game
             }
         }
 
-        public virtual void LoadSpawnsData(string data, List<SpawnEntityData> creaturesData)
+        public virtual void LoadSpawnsData(ValuesDictionary loadData, List<SpawnEntityData> creaturesData)
         {
-            bool flag = false;
-            ModsManager.HookAction("LoadSpawnsData", modLoader => {
-                modLoader.LoadSpawnsData(this, data, creaturesData, out flag);
-                return flag;
-            });
-            if (flag == false) {
-                string[] array = data.Split(new char[1]
-                {
-                ';'
-                }, StringSplitOptions.RemoveEmptyEntries);
-                int num = 0;
-                while (true)
-                {
-                    if (num < array.Length)
-                    {
-                        string[] array2 = array[num].Split(new char[1]
-                        {
-                        ','
-                        }, StringSplitOptions.RemoveEmptyEntries);
-                        if (array2.Length < 4)
-                        {
-                            break;
-                        }
-                        var spawnEntityData = new SpawnEntityData
-                        {
-                            TemplateName = array2[0],
-                            Position = new Vector3
-                            {
-                                X = float.Parse(array2[1], CultureInfo.InvariantCulture),
-                                Y = float.Parse(array2[2], CultureInfo.InvariantCulture),
-                                Z = float.Parse(array2[3], CultureInfo.InvariantCulture)
-                            }
-                        };
-                        if (array2.Length == 5)
-                        {
-                            spawnEntityData.ConstantSpawn = bool.Parse(array2[4]);
-                        }
-                        creaturesData.Add(spawnEntityData);
-                        num++;
-                        continue;
-                    }
-                    return;
-                }
-                throw new InvalidOperationException("Invalid spawn data string.");
-
+            foreach (ValuesDictionary item in loadData.Values)
+            {
+                var data = new SpawnEntityData();
+                data.ConstantSpawn = item.GetValue<bool>("c");
+                data.Position = item.GetValue<Vector3>("p");
+                data.TemplateName = item.GetValue<string>("n");
+                data.Data = item.GetValue<ValuesDictionary>("d");
+                creaturesData.Add(data);
             }
         }
 
-        public virtual string SaveSpawnsData(List<SpawnEntityData> spawnsData)
+        public virtual void SaveSpawnsData(ValuesDictionary saveData, List<SpawnEntityData> spawnsData)
         {
-            bool flag = false;
-            string data=string.Empty;
-            ModsManager.HookAction("SaveSpawnsData", modLoader => {
-                data = modLoader.SaveSpawnsData(this, spawnsData, out flag);
-                return flag;
-            });
-            if (flag == false) {
-                var stringBuilder = new StringBuilder();
-                foreach (SpawnEntityData spawnsDatum in spawnsData)
-                {
-                    stringBuilder.Append(spawnsDatum.TemplateName);
-                    stringBuilder.Append(',');
-                    stringBuilder.Append((MathUtils.Round(spawnsDatum.Position.X * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
-                    stringBuilder.Append(',');
-                    stringBuilder.Append((MathUtils.Round(spawnsDatum.Position.Y * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
-                    stringBuilder.Append(',');
-                    stringBuilder.Append((MathUtils.Round(spawnsDatum.Position.Z * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
-                    stringBuilder.Append(',');
-                    stringBuilder.Append(spawnsDatum.ConstantSpawn.ToString());
-                    if (!string.IsNullOrEmpty(spawnsDatum.ExtraData))
-                    {
-                        stringBuilder.Append(',');
-                        stringBuilder.Append(spawnsDatum.ExtraData);
-                    }
-                    stringBuilder.Append(';');
-                }
-                data = stringBuilder.ToString();
+            int i = 0;
+            foreach (var d in spawnsData)
+            {
+                ValuesDictionary v2 = new ValuesDictionary();
+                v2.SetValue("c", d.ConstantSpawn);
+                v2.SetValue("p", d.Position);
+                v2.SetValue("n", d.TemplateName);
+                v2.SetValue("d", d.Data);
+                saveData.SetValue($"{i++}", v2);
             }
-            return data;
         }
     }
 }
