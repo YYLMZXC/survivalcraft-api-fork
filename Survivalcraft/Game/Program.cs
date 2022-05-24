@@ -45,7 +45,7 @@ namespace Game
                 ExceptionManager.ReportExceptionToUser("Unhandled exception.", e.Exception);
                 e.IsHandled = true;
             };
-            Window.Run(960, 540, WindowMode.Resizable, "生存战争2.3插件版V" + ModsManager.APIVersion);
+            Window.Run(480, 320, WindowMode.Resizable, "生存战争2.3插件版V" + ModsManager.APIVersion);
         }
 
         public static void HandleUriHandler(Uri uri)
