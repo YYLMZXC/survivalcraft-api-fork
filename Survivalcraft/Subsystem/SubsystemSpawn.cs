@@ -93,7 +93,26 @@ namespace Game
                 spawnChunk.Point = HumanReadableConverter.ConvertFromString<Point2>(item.Key);
                 spawnChunk.IsSpawned = valuesDictionary2.GetValue<bool>("IsSpawned");
                 spawnChunk.LastVisitedTime = valuesDictionary2.GetValue<double>("LastVisitedTime");
-                ValuesDictionary data = valuesDictionary2.GetValue("SpawnsData", new ValuesDictionary());
+                ValuesDictionary data = new ValuesDictionary();
+                object obj = valuesDictionary2.GetValue("SpawnsData", new object());
+                if (obj is string)
+                {
+                    string[] oldData = ((string)obj).Split(new char[] { ';' });
+                    int i = 0;
+                    foreach (var oldItem in oldData) {
+                        if (!string.IsNullOrEmpty(oldItem))
+                        {
+                            ValuesDictionary va = new ValuesDictionary();
+                            string[] parmas = oldItem.Split(new char[] { ','});
+                            data.SetValue(i++.ToString(), va);
+                            va.SetValue("n", parmas[0]);
+                            va.SetValue("p", new Vector3(float.Parse(parmas[1]), float.Parse(parmas[2]), float.Parse(parmas[3])));
+                            va.SetValue("c", bool.Parse(parmas[4]));
+                            va.SetValue("d", new ValuesDictionary());
+                        }
+                    }
+                }
+                else if (obj is ValuesDictionary) data = (ValuesDictionary)obj;
                 LoadSpawnsData(data, spawnChunk.SpawnsData);
                 m_chunks[spawnChunk.Point] = spawnChunk;
             }
