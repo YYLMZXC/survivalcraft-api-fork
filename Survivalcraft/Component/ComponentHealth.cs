@@ -131,6 +131,10 @@ namespace Game
         /// 火焰伤害抗性系数
         /// </summary>
         public float FireResilienceFactor { get; set; }
+        /// <summary>
+        /// 生命恢复速度系数
+        /// </summary>
+        public float HealFactor { get; set; }
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -142,7 +146,7 @@ namespace Game
         {
             if (amount > 0f)
             {
-                Health = MathUtils.Min(Health + amount, 1f);
+                Health = MathUtils.Min(Health + amount * HealFactor, 1f);
             }
         }
 
@@ -220,13 +224,13 @@ namespace Game
 
         public void Update(float dt)
         {
+            //更新属性加成
+            AttackResilience = m_attackResilience * AttackResilienceFactor;
+            FallResilience = m_fallResilience * FallResilienceFactor;
+            FireResilienceFactor = m_fireResilience * FireResilienceFactor;
             Vector3 position = m_componentCreature.ComponentBody.Position;
             if (Health > 0f && Health < 1f)
             {
-                //更新属性加成
-                AttackResilience = m_attackResilience * AttackResilienceFactor;
-                FallResilience = m_fallResilience * FallResilienceFactor;
-                FireResilienceFactor = m_fireResilience * FireResilienceFactor;
                 float num = 0f;
                 if (m_componentPlayer != null)
                 {
@@ -382,6 +386,7 @@ namespace Game
             AttackResilienceFactor = 1f;
             FallResilienceFactor = 1f;
             FireResilienceFactor = 1f;
+            HealFactor = 1f;
             DeathTime = ((value >= 0.0) ? new double?(value) : null);
             CauseOfDeath = valuesDictionary.GetValue<string>("CauseOfDeath");
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && Entity.FindComponent<ComponentPlayer>() != null)
