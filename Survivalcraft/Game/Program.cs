@@ -126,6 +126,7 @@ namespace Game
                 ModsManager.AddException(e);
                 ScreensManager.SwitchScreen("MainMenu");
             }
+            m_cpuEndTime = Time.RealTime;
             try
             {
                 Display.RenderTarget = null;
@@ -139,7 +140,6 @@ namespace Game
                 {
                     ExceptionManager.DrawExceptionScreen();
                 }
-                m_cpuEndTime = Time.RealTime;
             }
             catch (Exception e2)
             {
