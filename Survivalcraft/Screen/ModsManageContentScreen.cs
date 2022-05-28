@@ -210,6 +210,12 @@ public class ModsManageContentScreen : Screen
             }
             DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 14), explanation, LanguageControl.Get(fName, 15), null, null));
         }
+        if(parameters.Length > 0 && (bool)parameters[0])
+        {
+            SetPath(m_installPath);
+            m_filter = StateFilter.InstallState;
+            UpdateList();
+        }
     }
 
     public override void Leave()
@@ -270,6 +276,10 @@ public class ModsManageContentScreen : Screen
                         {
                             try
                             {
+                                foreach(ModEntity modEntity in ModsManager.ModList)
+                                {
+
+                                }
                                 Storage.DeleteFile(installPathName);
                                 UpdateList();
                                 m_updatable = false;

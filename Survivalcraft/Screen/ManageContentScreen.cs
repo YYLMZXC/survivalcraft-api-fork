@@ -182,50 +182,56 @@ public class ManageContentScreen : Screen
     public override void Update()
     {
         var selectedItem = (ListItem)m_contentList.SelectedItem;
-        if (selectedItem != null) {
+        m_deleteButton.Text = LanguageControl.Get("ModsManageContentScreen", 9);
+        if(selectedItem != null)
+        {
             m_deleteButton.IsEnabled = !selectedItem.IsBuiltIn;
             m_uploadButton.IsEnabled = !selectedItem.IsBuiltIn;
             if (selectedItem.Type == ExternalContentType.Mod)
             {
-                m_deleteButton.Text = ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo) ? LanguageControl.Enable : LanguageControl.Disable;
+                m_deleteButton.Text = LanguageControl.Get("ModsManageContentScreen", 42);
+                //m_deleteButton.Text = ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo) ? LanguageControl.Enable : LanguageControl.Disable;
                 m_deleteButton.IsEnabled = !(selectedItem.ModEntity is SurvivalCraftModEntity || selectedItem.ModEntity is FastDebugModEntity);
             }
-            else
-            {
-                m_deleteButton.Text = LanguageControl.Delete;
-            }
-
         }
         m_filterLabel.Text = GetFilterDisplayName(m_filter);
         if (m_deleteButton.IsClicked)
         {
             string smallMessage = (selectedItem.UseCount <= 0) ? string.Format(LanguageControl.Get(fName, 5), selectedItem.DisplayName) : string.Format(LanguageControl.Get(fName, 6), selectedItem.DisplayName, selectedItem.UseCount);
-            if (selectedItem.Type == ExternalContentType.Mod) {
-                smallMessage = (ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo) ? LanguageControl.Enable : LanguageControl.Disable) + $"[{selectedItem.ModEntity.modInfo.Name}]?";
-            }
-            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 9), smallMessage, LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
+            if (selectedItem.Type == ExternalContentType.Mod) 
             {
-                if (button == MessageDialogButton.Button1)
+                ScreensManager.SwitchScreen("ModsManageContent", true);
+                //smallMessage = (ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo) ? LanguageControl.Enable : LanguageControl.Disable) + $"[{selectedItem.ModEntity.modInfo.Name}]?";
+            }
+            else
+            {
+                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 9), smallMessage, LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
                 {
-                    if (selectedItem.Type == ExternalContentType.Mod)
+                    if (button == MessageDialogButton.Button1)
                     {
-                        changeed = true;
-                        if (ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo))
-                        {
-                            ModsManager.DisabledMods.Remove(selectedItem.ModEntity.modInfo);
-                            ModsManager.ModList.Add(selectedItem.ModEntity);
-                        }
-                        else {
-                            ModsManager.DisabledMods.Add(selectedItem.ModEntity.modInfo);
-                            ModsManager.ModList.Remove(selectedItem.ModEntity);
-                        }
-                    }
-                    else {
                         ExternalContentManager.DeleteExternalContent(selectedItem.Type, selectedItem.Name);
+                        //if (selectedItem.Type == ExternalContentType.Mod)
+                        //{
+                        //    changeed = true;
+                        //    if (ModsManager.DisabledMods.Contains(selectedItem.ModEntity.modInfo))
+                        //    {
+                        //        ModsManager.DisabledMods.Remove(selectedItem.ModEntity.modInfo);
+                        //        ModsManager.ModList.Add(selectedItem.ModEntity);
+                        //    }
+                        //    else
+                        //    {
+                        //        ModsManager.DisabledMods.Add(selectedItem.ModEntity.modInfo);
+                        //        ModsManager.ModList.Remove(selectedItem.ModEntity);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    ExternalContentManager.DeleteExternalContent(selectedItem.Type, selectedItem.Name);
+                        //}
+                        UpdateList();
                     }
-                    UpdateList();
-                }
-            }));
+                }));
+            }
         }
         if (m_uploadButton.IsClicked)
         {
@@ -327,7 +333,7 @@ public class ManageContentScreen : Screen
                     Name = $"[模组]{modEntity.modInfo.Description}<{author}>",
                     IsBuiltIn = false,
                     Type = ExternalContentType.Mod,
-                    DisplayName = $"{dis}{modEntity.modInfo.Name} 版本:{modEntity.modInfo.Version}",
+                    DisplayName = $"{modEntity.modInfo.Name} 版本:{modEntity.modInfo.Version}",
                     CreationTime = DateTime.Now,
                     Texture = modEntity.Icon,
                     ModEntity = modEntity
