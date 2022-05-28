@@ -154,17 +154,17 @@ public class ModsManageContentScreen : Screen
                     else
                     {
                         string modDescription = LanguageControl.Get(fName, 6) + modItem.ModInfo.Description + "\n" + LanguageControl.Get(fName, 7) + modItem.ModInfo.PackageName;
-                        CommunityContentScreen communityContentScreen = ScreensManager.FindScreen<CommunityContentScreen>("CommunityContent");
-                        communityContentScreen.m_filter = ExternalContentType.Mod;
-                        communityContentScreen.PopulateList(null);
+                        //CommunityContentScreen communityContentScreen = ScreensManager.FindScreen<CommunityContentScreen>("CommunityContent");
+                        //communityContentScreen.m_filter = ExternalContentType.Mod;
+                        //communityContentScreen.PopulateList(null);
                         DialogsManager.ShowDialog(null, new MessageDialog(modName, modDescription, "更新", "返回", delegate (MessageDialogButton result)
                         {
                             if (result == MessageDialogButton.Button1)
                             {
-                                foreach(var item2 in communityContentScreen.m_listPanel.Items)
-                                {
-                                    CommunityContentEntry communityContentEntry = item2 as CommunityContentEntry;
-                                }
+                                //foreach(var item2 in communityContentScreen.m_listPanel.Items)
+                                //{
+                                //    CommunityContentEntry communityContentEntry = item2 as CommunityContentEntry;
+                                //}
                                 DialogsManager.ShowDialog(null, new MessageDialog("该功能正在开发中", null, LanguageControl.Ok, null, null));
                             }
                         }));
@@ -430,7 +430,7 @@ public class ModsManageContentScreen : Screen
                 {
                     if (result == MessageDialogButton.Button1)
                     {
-                        ModsManager.Reboot();
+                        Environment.Exit(0);
                     }
                     if (result == MessageDialogButton.Button2)
                     {
