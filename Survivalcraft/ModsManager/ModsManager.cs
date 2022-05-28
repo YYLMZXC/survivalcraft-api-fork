@@ -398,21 +398,26 @@ public static class ModsManager
         {
             string ms = Storage.GetExtension(item);
             string ks = Storage.CombinePaths(path, item);
-            Stream stream = Storage.OpenFile(ks, OpenFileMode.Read);
-            try
+            using (Stream stream = Storage.OpenFile(ks, OpenFileMode.Read))
             {
-                if (ms == ".scmod")
+                Stream keepOpenStream = new MemoryStream();
+                stream.CopyTo(keepOpenStream);
+                try
                 {
-                    var modEntity = new ModEntity(ZipArchive.Open(stream, true));
-                    if (modEntity.modInfo == null) continue;
-                    if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
-                    ModList.Add(modEntity);
+                    if (ms == ".scmod")
+                    {
+                        var modEntity = new ModEntity(ZipArchive.Open(keepOpenStream, true));
+                        if (modEntity.modInfo == null) continue;
+                        if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
+                        ModList.Add(modEntity);
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                AddException(e);
-                stream.Close();
+                catch (Exception e)
+                {
+                    AddException(e);
+                    stream.Close();
+                    keepOpenStream.Close();
+                }
             }
         }
         foreach (string dir in Storage.ListDirectoryNames(path))

@@ -276,10 +276,6 @@ public class ModsManageContentScreen : Screen
                         {
                             try
                             {
-                                foreach(ModEntity modEntity in ModsManager.ModList)
-                                {
-
-                                }
                                 Storage.DeleteFile(installPathName);
                                 UpdateList();
                                 m_updatable = false;
