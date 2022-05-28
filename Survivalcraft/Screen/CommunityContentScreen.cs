@@ -230,9 +230,9 @@ namespace Game
                                         item2.Icon = texture;
                                         if (item2.IconInstance != null) item2.IconInstance.Subtexture = new Subtexture(texture, Vector2.Zero, Vector2.One);
                                     }
-                                    catch (Exception e)
+                                    catch (Exception)
                                     {
-                                        System.Diagnostics.Debug.WriteLine(e.Message);
+                                        //System.Diagnostics.Debug.WriteLine(e.Message);
                                     }
                                 }
                             });
