@@ -55,6 +55,12 @@ namespace Game
             }
         }
 
+        public bool ShowProgressMessage
+        {
+            get;
+            set;
+        }
+
         public CancellableBusyDialog(string largeMessage, bool autoHideOnCancel)
         {
             XElement node = ContentManager.Get<XElement>("Dialogs/CancellableBusyDialog");
@@ -65,11 +71,15 @@ namespace Game
             Progress = new CancellableProgress();
             m_autoHideOnCancel = autoHideOnCancel;
             LargeMessage = largeMessage;
+            ShowProgressMessage = true;
         }
 
         public override void Update()
         {
-            SmallMessage = Progress.Completed > 0f && Progress.Total > 0f ? $"{Progress.Completed / Progress.Total * 100f:0}%" : string.Empty;
+            if (ShowProgressMessage)
+            {
+                SmallMessage = Progress.Completed > 0f && Progress.Total > 0f ? $"{Progress.Completed / Progress.Total * 100f:0}%" : string.Empty;
+            }
             if (m_cancelButtonWidget.IsClicked)
             {
                 Progress.Cancel();
