@@ -310,7 +310,7 @@ namespace Game
 			return 0f;
 		}
 
-		public void Update()
+		public virtual void Update()
 		{
 			if (m_subsystemSky.SkyLightValue != m_lastSkylightValue)
 			{
