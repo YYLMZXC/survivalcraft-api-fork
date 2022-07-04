@@ -1,4 +1,5 @@
 ﻿using Engine;
+using Engine.Graphics;
 using Game;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ public class ModsManageContentScreen : Screen
         public ModInfo ModInfo;
         public ExternalContentEntry ExternalContentEntry;
         public Subtexture Subtexture;
+        public ModItem() { }
         public ModItem(string Name, ModInfo ModInfo, ExternalContentEntry ExternalContentEntry, Subtexture Subtexture)
         {
             this.Name = Name;
@@ -55,8 +57,6 @@ public class ModsManageContentScreen : Screen
 
     public int m_count;
 
-    public int m_scanCount;
-
     public bool androidSystem;
 
     public string m_path;
@@ -76,6 +76,10 @@ public class ModsManageContentScreen : Screen
     public bool m_cancelScan;
 
     public List<string> m_scanFailPaths = new List<string>();
+
+    public CancellableBusyDialog m_cancellableBusyDialog;
+
+    public List<string> m_commonPathList = new List<string>();
 
     public string[] m_commonPaths = new string[10]
     {
@@ -118,14 +122,12 @@ public class ModsManageContentScreen : Screen
             ModItem modItem = (ModItem)item;
             XElement node2 = ContentManager.Get<XElement>("Widgets/ExternalContentItem");
             ContainerWidget containerWidget = (ContainerWidget)Widget.LoadWidget(this, node2, null);
-            string title = Storage.GetFileName(modItem.ExternalContentEntry.Path);
             string details = LanguageControl.Get(fName, 2);
             if (modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
             {
-                title = modItem.Name;
                 details = string.Format(LanguageControl.Get(fName, 3), modItem.ModInfo.Version, modItem.ModInfo.Author, MathUtils.Round(modItem.ExternalContentEntry.Size / 1000));
             }
-            containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Text").Text = title;
+            containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Text").Text = modItem.Name;
             containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Details").Text = details;
             RectangleWidget iconWidget = containerWidget.Children.Find<RectangleWidget>("ExternalContentItem.Icon");
             iconWidget.Subtexture = modItem.Subtexture;
@@ -186,37 +188,55 @@ public class ModsManageContentScreen : Screen
         if (!Storage.DirectoryExists(m_uninstallPath)) Storage.CreateDirectory(m_uninstallPath);
         BusyDialog busyDialog = new BusyDialog(LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 32));
         DialogsManager.ShowDialog(null, busyDialog);
+        foreach (string commonPath in m_commonPaths)
+        {
+            if ((androidSystem && commonPath.StartsWith("android:")) || (!androidSystem && !commonPath.StartsWith("android:")))
+            {
+                AddCommonPath(commonPath);
+            }
+        }
+        string commonPathsFile = Storage.CombinePaths(m_uninstallPath, "CommonPaths.txt");
+        if (Storage.FileExists(commonPathsFile))
+        {
+            Stream stream = Storage.OpenFile(commonPathsFile, OpenFileMode.Read);
+            StreamReader streamReader = new StreamReader(stream);
+            string line;
+            while((line = streamReader.ReadLine()) != null)
+            {
+                AddCommonPath(line.Replace("\n", "").Replace("\r", ""));
+            }
+            stream.Dispose();
+        }
         if (!m_firstEnterScreen)
         {
             m_firstEnterScreen = true;
-            bool androidDataPathEnterEnabled = true;
-            string androidDataPath = "android:/Android/data";
-            try
+            string explanation = "";
+            if (androidSystem)
             {
-                Storage.ListFileNames(androidDataPath);
-            }
-            catch
-            {
-                androidDataPathEnterEnabled = false;
-            }
-            string explanation = LanguageControl.Get(fName, 11);
-            explanation = androidDataPathEnterEnabled ? "注意：检测到你的设备不能访问/Android/data目录,无法扫描QQ下载的mod文件，建议用自带浏览器到中文社区下载mod\n\n" : "";
-            List<string> commonPathList = new List<string>();
-            foreach (string commonPath in m_commonPaths)
-            {
-                if ((androidSystem && commonPath.StartsWith("android:")) || (!androidSystem && !commonPath.StartsWith("android:")))
+                bool androidDataPathEnterEnabled = true;
+                string androidDataPath = "android:/Android/data";
+                try
                 {
-                    commonPathList.Add(commonPath);
+                    Storage.ListFileNames(androidDataPath);
+                }
+                catch
+                {
+                    androidDataPathEnterEnabled = false;
+                }
+                if (!androidDataPathEnterEnabled)
+                {
+                    explanation += "注意：检测到你的设备不能访问/Android/data目录,无法扫描QQ下载的mod文件，建议用自带浏览器到中文社区下载mod。\n\n";
                 }
             }
-            for (int i = 0; i < commonPathList.Count; i++)
+            explanation += "下载mod后可以进行一次全盘扫描，扫描到mod的目录会自动列入自动扫描目录。";
+            if (m_commonPathList.Count > 0)
             {
-                explanation += "\n" + (i + 1) + ". " + commonPathList[i];
-            }
-            explanation += "\n\n" + LanguageControl.Get(fName, 12);
-            if (commonPathList.Count == 0)
-            {
-                explanation = LanguageControl.Get(fName, 13);
+                explanation += "\n\n以下为进入管理器时自动扫描的目录:";
+                for (int i = 0; i < m_commonPathList.Count; i++)
+                {
+                    explanation += "\n" + (i + 1) + ". " + m_commonPathList[i];
+                }
+                explanation += "\n\n" + LanguageControl.Get(fName, 12);
             }
             DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 14), explanation, LanguageControl.Get(fName, 15), null, null));
         }
@@ -257,6 +277,20 @@ public class ModsManageContentScreen : Screen
         m_uninstallModList.Clear();
         m_installModList.Clear();
         m_scanFailPaths.Clear();
+        if (!Storage.DirectoryExists(m_uninstallPath)) Storage.CreateDirectory(m_uninstallPath);
+        string commonPathsFile = Storage.CombinePaths(m_uninstallPath, "CommonPaths.txt");
+        if(m_commonPathList.Count > 0)
+        {
+            Stream stream = Storage.OpenFile(commonPathsFile, OpenFileMode.Create);
+            StreamWriter streamWriter = new StreamWriter(stream);
+            foreach (string commonPath in m_commonPathList)
+            {
+                streamWriter.WriteLine(commonPath);
+            }
+            streamWriter.Flush();
+            stream.Dispose();
+        }
+        m_commonPathList.Clear();
     }
 
     public override void Update()
@@ -403,8 +437,13 @@ public class ModsManageContentScreen : Screen
         {
             if (m_path == m_uninstallPath)
             {
-                CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 26), true);
-                ReadyForScan(busyDialog);
+                if (m_cancellableBusyDialog != null)
+                {
+                    DialogsManager.ShowDialog(null, m_cancellableBusyDialog);
+                    return;
+                }
+                m_cancellableBusyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 26), true, true);
+                ReadyForScan(m_cancellableBusyDialog);
                 Task.Run(delegate
                 {
                     string scanPath;
@@ -419,8 +458,9 @@ public class ModsManageContentScreen : Screen
                         int index = systemPath.IndexOf('/');
                         scanPath = "system:" + systemPath.Substring(0, index) + "/";
                     }
-                    int allCount = ScanModFile(scanPath, busyDialog); 
-                    DialogsManager.HideDialog(busyDialog);
+                    int allCount = ScanModFile(scanPath, m_cancellableBusyDialog);
+                    DialogsManager.HideDialog(m_cancellableBusyDialog);
+                    m_cancellableBusyDialog = null;
                     if (allCount == 0)
                     {
                         DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 33), LanguageControl.Get(fName, 34), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
@@ -442,11 +482,18 @@ public class ModsManageContentScreen : Screen
                                 tips += p + "\n";
                             }
                         }
-                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 28), tips, LanguageControl.Get(fName, 30), null, delegate (MessageDialogButton result)
+                        if (ScreensManager.CurrentScreen == this)
                         {
-                            SetPath(m_uninstallPath);
-                            UpdateListWithBusyDialog();
-                        }));
+                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 28), tips, LanguageControl.Get(fName, 30), null, delegate (MessageDialogButton result)
+                            {
+                                SetPath(m_uninstallPath);
+                                UpdateListWithBusyDialog();
+                            }));
+                        }
+                        else
+                        {
+                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 28), tips, LanguageControl.Ok, null, null));
+                        }
                     }
                 });
             }
@@ -578,59 +625,23 @@ public class ModsManageContentScreen : Screen
             string extension = Storage.GetExtension(fileName);
             if (!string.IsNullOrEmpty(extension) && extension.ToLower() == ".scmod")
             {
-                string pathName = Storage.CombinePaths(m_path, fileName);
-                Stream stream = Storage.OpenFile(pathName, OpenFileMode.Read);
-                try
+                ModItem modItem = GetModItem(fileName, false);
+                if (modItem == null || modItem.ModInfo == null || string.IsNullOrEmpty(modItem.ModInfo.PackageName) || !modItem.ModInfo.ApiVersion.Contains("1.4")) continue;
+                if (m_filter == StateFilter.InstallState)
                 {
-                    ModEntity modEntity = new ModEntity(ZipArchive.Open(stream, true));
-                    if (modEntity.modInfo == null || string.IsNullOrEmpty(modEntity.modInfo.PackageName) || !modEntity.modInfo.ApiVersion.Contains("1.4")) continue;
-                    ExternalContentEntry externalContentEntry = new ExternalContentEntry
-                    {
-                        Type = ExternalContentType.Mod,
-                        Path = pathName,
-                        Size = Storage.GetFileSize(pathName),
-                        Time = Storage.GetFileLastWriteTime(pathName)
-                    };
-                    Subtexture subtexture = ExternalContentManager.GetEntryTypeIcon(ExternalContentType.Mod);
-                    if (modEntity.Icon != null)
-                    {
-                        subtexture = new Subtexture(modEntity.Icon, Vector2.Zero, Vector2.One);
-                    }
-                    ModItem modItem = new ModItem(fileName, modEntity.modInfo, externalContentEntry, subtexture);
-                    if (m_filter == StateFilter.InstallState)
-                    {
-                        m_installModInfo.Add(modEntity.modInfo);
-                        m_installModList.Add(modItem);
-                    }
-                    else
-                    {
-                        m_uninstallModList.Add(modItem);
-                    }
+                    m_installModInfo.Add(modItem.ModInfo);
+                    m_installModList.Add(modItem);
                 }
-                catch
+                else
                 {
-                    throw new InvalidOperationException("Mod file acquisition failed");
-                }
-                finally
-                {
-                    if (stream != null) stream.Close();
+                    m_uninstallModList.Add(modItem);
                 }
             }
         }
         IEnumerable<string> directoryNameList = Storage.ListDirectoryNames(m_path);
         foreach (string directoryName in directoryNameList)
         {
-            string directory = Storage.CombinePaths(m_path, directoryName);
-            ModInfo modInfo = null;
-            Subtexture subtexture = ExternalContentManager.GetEntryTypeIcon(ExternalContentType.Directory);
-            ExternalContentEntry externalContentEntry = new ExternalContentEntry
-            {
-                Type = ExternalContentType.Directory,
-                Path = directory,
-                Size = 0,
-                Time = Storage.GetFileLastWriteTime(directory)
-            };
-            ModItem modItem = new ModItem(directory, modInfo, externalContentEntry, subtexture);
+            ModItem modItem = GetModItem(directoryName, true);
             if (m_filter == StateFilter.InstallState)
             {
                 m_installModList.Add(modItem);
@@ -647,14 +658,12 @@ public class ModsManageContentScreen : Screen
         m_cancelScan = false;
         m_scanFailPaths.Clear();
         m_count = 0;
-        m_scanCount = -1;
         DialogsManager.ShowDialog(null, busyDialog);
         busyDialog.ShowProgressMessage = false;
         busyDialog.Progress.Cancelled += delegate
         {
             m_cancelScan = true;
         };
-
     }
 
     public int ScanModFile(string path, CancellableBusyDialog busyDialog = null)
@@ -670,12 +679,14 @@ public class ModsManageContentScreen : Screen
                 {
                     validPath = path.Substring(0, validPath.Length - 1);
                 }
-                string f = Storage.CombinePaths(validPath, fileName);
-                System.Diagnostics.Debug.WriteLine(f);
-                if (busyDialog != null && m_scanCount != m_count)
+                if (busyDialog != null)
                 {
-                    m_scanCount = m_count;
-                    busyDialog.SmallMessage = string.Format("已扫描到{0}个有效的MOD文件", m_count);
+                    string showName = validPath;
+                    if (validPath.Length > 40)
+                    {
+                        showName = validPath.Substring(0, 40) + "...";
+                    }
+                    busyDialog.SmallMessage = string.Format("已扫描到{0}个有效的MOD文件\n" + showName, m_count);
                 }
                 if (validPath == m_uninstallPath) continue;
                 string extension = Storage.GetExtension(fileName);
@@ -683,21 +694,36 @@ public class ModsManageContentScreen : Screen
                 {
                     string pathName = Storage.CombinePaths(validPath, fileName);
                     Stream stream = null;
-                    ModEntity modEntity = null;
+                    ModInfo modInfo = null;
                     try
                     {
                         stream = Storage.OpenFile(pathName, OpenFileMode.Read);
-                        modEntity = new ModEntity(ZipArchive.Open(stream, true));
+                        ZipArchive zipArchive = ZipArchive.Open(stream, true);
+                        foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.ReadCentralDir())
+                        {
+                            if (zipArchiveEntry.FilenameInZip == "modinfo.json")
+                            {
+                                MemoryStream memoryStream = new MemoryStream();
+                                zipArchive.ExtractFile(zipArchiveEntry, memoryStream);
+                                memoryStream.Position = 0L;
+                                modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(memoryStream));
+                                memoryStream.Dispose();
+                                break;
+                            }
+                        }
+                        stream.Dispose();
                     }
                     catch
                     {
                     }
-                    if (stream == null || modEntity == null) continue;
-                    if (modEntity.modInfo == null || string.IsNullOrEmpty(modEntity.modInfo.PackageName) || !modEntity.modInfo.ApiVersion.Contains("1.4")) continue;
+                    if (stream == null || modInfo == null) continue;
+                    if (string.IsNullOrEmpty(modInfo.PackageName) || !modInfo.ApiVersion.Contains("1.4")) continue;
                     string uninstallPathName = Storage.CombinePaths(m_uninstallPath, fileName);
                     if (!Storage.FileExists(uninstallPathName))
                     {
                         Storage.CopyFile(pathName, uninstallPathName);
+                        Storage.DeleteFile(pathName);
+                        AddCommonPath(validPath);
                         m_count++;
                     }
                     if (stream != null) stream.Close();
@@ -724,7 +750,7 @@ public class ModsManageContentScreen : Screen
     public int FastScanModFile(bool showTips = true)
     {
         int allCount = 0;
-        foreach (string commonPath in m_commonPaths)
+        foreach (string commonPath in m_commonPathList)
         {
             if ((androidSystem && commonPath.StartsWith("android:")) || (!androidSystem && !commonPath.StartsWith("android:")))
             {
@@ -747,6 +773,55 @@ public class ModsManageContentScreen : Screen
             }
         }
         return allCount;
+    }
+
+    public ModItem GetModItem(string fileName, bool IsDirectory)
+    {
+        ModItem modItem = new ModItem();
+        string pathName = Storage.CombinePaths(m_path, fileName);
+        modItem.Name = fileName;
+        modItem.Subtexture = ExternalContentManager.GetEntryTypeIcon((IsDirectory) ? ExternalContentType.Directory : ExternalContentType.Mod);
+        modItem.ExternalContentEntry = new ExternalContentEntry
+        {
+            Type = (IsDirectory) ? ExternalContentType.Directory : ExternalContentType.Mod,
+            Path = pathName,
+            Size = (IsDirectory) ? 0 : Storage.GetFileSize(pathName),
+            Time = Storage.GetFileLastWriteTime(pathName)
+        };
+        if (IsDirectory) return modItem;
+        Stream stream = Storage.OpenFile(pathName, OpenFileMode.Read);
+        try
+        {
+            ZipArchive zipArchive = ZipArchive.Open(stream, true);
+            foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.ReadCentralDir())
+            {
+                if (zipArchiveEntry.FilenameInZip == "icon.png")
+                {
+                    MemoryStream memoryStream = new MemoryStream();
+                    zipArchive.ExtractFile(zipArchiveEntry, memoryStream);
+                    memoryStream.Position = 0L;
+                    modItem.Subtexture = new Subtexture(Texture2D.Load(memoryStream), Vector2.Zero, Vector2.One);
+                    memoryStream.Dispose();
+                }
+                else if (zipArchiveEntry.FilenameInZip == "modinfo.json")
+                {
+                    MemoryStream memoryStream = new MemoryStream();
+                    zipArchive.ExtractFile(zipArchiveEntry, memoryStream);
+                    memoryStream.Position = 0L;
+                    modItem.ModInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(memoryStream));
+                    memoryStream.Dispose();
+                }
+            }
+        }
+        catch
+        {
+            modItem = null;
+        }
+        finally
+        {
+            stream.Dispose();
+        }
+        return modItem;
     }
 
     public bool InstallModChange()
@@ -786,6 +861,14 @@ public class ModsManageContentScreen : Screen
             newText = ".../" + arPath[arPath.Length - 3] + "/" +  arPath[arPath.Length - 2] + "/" + arPath[arPath.Length - 1];
         }
         return newText;
+    }
+
+    public void AddCommonPath(string path)
+    {
+        if (!m_commonPathList.Contains(path) && !string.IsNullOrEmpty(path))
+        {
+            m_commonPathList.Add(path);
+        }
     }
 
     public void UpdateModFromCommunity(ModInfo modInfo)
