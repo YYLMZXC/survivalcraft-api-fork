@@ -71,6 +71,7 @@
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
     <AndroidUseAapt2>false</AndroidUseAapt2>
+    <MandroidI18n />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -155,7 +156,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

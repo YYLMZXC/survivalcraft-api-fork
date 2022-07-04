@@ -9,35 +9,23 @@ namespace Engine.Audio
 
 		internal int m_stopPosition = -1;
 
-		public float m_volume = 1f;
+		private float m_volume = 1f;
 
-		public float m_pitch = 1f;
+		private float m_pitch = 1f;
 
-		public float m_pan;
+		private float m_pan;
 
-		internal object m_stateSync = new object();
+		internal object m_lock = new object();
 
 		internal bool m_isLooped;
 
 		internal bool m_disposeOnStop;
 
-		public SoundState State
-		{
-			get;
-			internal set;
-		}
+		public SoundState State { get; internal set; }
 
-		public int ChannelsCount
-		{
-			get;
-			internal set;
-		}
+		public int ChannelsCount { get; internal set; }
 
-		public int SamplingFrequency
-		{
-			get;
-			internal set;
-		}
+		public int SamplingFrequency { get; internal set; }
 
 		public float Volume
 		{
@@ -50,8 +38,8 @@ namespace Engine.Audio
 				value = MathUtils.Saturate(value);
 				if (value != m_volume)
 				{
-					InternalSetVolume(value);
 					m_volume = value;
+					InternalSetVolume(value);
 				}
 			}
 		}
@@ -67,8 +55,8 @@ namespace Engine.Audio
 				value = MathUtils.Clamp(value, 0.5f, 2f);
 				if (value != m_pitch)
 				{
-					InternalSetPitch(value);
 					m_pitch = value;
+					InternalSetPitch(value);
 				}
 			}
 		}
@@ -86,8 +74,8 @@ namespace Engine.Audio
 					value = MathUtils.Clamp(value, -1f, 1f);
 					if (value != m_pan)
 					{
-						InternalSetPan(value);
 						m_pan = value;
+						InternalSetPan(value);
 					}
 				}
 			}
@@ -101,7 +89,7 @@ namespace Engine.Audio
 			}
 			set
 			{
-				lock (m_stateSync)
+				lock (m_lock)
 				{
 					if (State == SoundState.Stopped)
 					{
@@ -119,7 +107,7 @@ namespace Engine.Audio
 			}
 			set
 			{
-				lock (m_stateSync)
+				lock (m_lock)
 				{
 					if (State == SoundState.Stopped)
 					{
@@ -131,7 +119,7 @@ namespace Engine.Audio
 
 		internal BaseSound()
 		{
-			Mixer.m_sounds.Add(this);
+			Mixer.AddSound(this);
 		}
 
 		internal abstract void InternalPlay();
@@ -142,7 +130,7 @@ namespace Engine.Audio
 
 		internal virtual void InternalDispose()
 		{
-			Mixer.m_sounds.Remove(this);
+			Mixer.RemoveSound(this);
 			if (m_audioTrack != null)
 			{
 				m_audioTrack.Pause();
@@ -153,16 +141,16 @@ namespace Engine.Audio
 			}
 		}
 
-		internal virtual void InternalSetVolume(float volume)
+		internal void InternalSetVolume(float volume)
 		{
 			if (m_audioTrack != null)
 			{
-				CalculateStereoVolumes(volume * Mixer.MasterVolume, Pan, out float left, out float right);//º∆À„◊Û”“…˘µ¿
+				CalculateStereoVolumes(volume * Mixer.MasterVolume, Pan, out var left, out var right);
 				Mixer.CheckTrackStatus(m_audioTrack.SetStereoVolume(left, right));
 			}
 		}
 
-		internal virtual void InternalSetPitch(float pitch)
+		internal void InternalSetPitch(float pitch)
 		{
 			if (m_audioTrack != null)
 			{
@@ -172,16 +160,16 @@ namespace Engine.Audio
 			}
 		}
 
-		internal virtual void InternalSetPan(float pan)
+		internal void InternalSetPan(float pan)
 		{
 			if (m_audioTrack != null)
 			{
-				CalculateStereoVolumes(Volume, pan, out float left, out float right);
+				CalculateStereoVolumes(Volume, pan, out var left, out var right);
 				Mixer.CheckTrackStatus(m_audioTrack.SetStereoVolume(left, right));
 			}
 		}
 
-		public static void CalculateStereoVolumes(float volume, float pan, out float left, out float right)
+		private static void CalculateStereoVolumes(float volume, float pan, out float left, out float right)
 		{
 			left = volume * MathUtils.Saturate(0f - pan + 1f);
 			right = volume * MathUtils.Saturate(pan + 1f);
@@ -189,7 +177,7 @@ namespace Engine.Audio
 
 		public void Play()
 		{
-			lock (m_stateSync)
+			lock (m_lock)
 			{
 				if (State == SoundState.Stopped || State == SoundState.Paused)
 				{
@@ -201,7 +189,7 @@ namespace Engine.Audio
 
 		public void Pause()
 		{
-			lock (m_stateSync)
+			lock (m_lock)
 			{
 				if (State == SoundState.Playing)
 				{
@@ -217,7 +205,7 @@ namespace Engine.Audio
 			{
 				Dispose();
 			}
-			lock (m_stateSync)
+			lock (m_lock)
 			{
 				if (State == SoundState.Playing || State == SoundState.Paused)
 				{

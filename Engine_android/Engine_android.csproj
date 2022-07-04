@@ -40,8 +40,8 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="OpenTK_1_0">
-      <HintPath>..\dllReference\OpenTK_1_0.dll</HintPath>
+    <Reference Include="OpenTK-1.0.1">
+      <HintPath>..\DllReference\OpenTK-1.0.1.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
