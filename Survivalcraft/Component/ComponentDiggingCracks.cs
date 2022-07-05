@@ -9,37 +9,6 @@ namespace Game
 	{
 		public class Geometry : TerrainGeometry
 		{
-			public Geometry()
-			{
-				TerrainGeometrySubset terrainGeometrySubset = SubsetTransparent = (SubsetAlphaTest = (SubsetOpaque = new TerrainGeometrySubset()));
-				OpaqueSubsetsByFace = new TerrainGeometrySubset[6]
-				{
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset
-				};
-				AlphaTestSubsetsByFace = new TerrainGeometrySubset[6]
-				{
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset
-				};
-				TransparentSubsetsByFace = new TerrainGeometrySubset[6]
-				{
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset,
-					terrainGeometrySubset
-				};
-			}
 		}
 
 		public SubsystemTerrain m_subsystemTerrain;
@@ -86,7 +55,6 @@ namespace Game
 			if (m_geometry == null || cellValue != m_value || point != m_point)
 			{
 				m_geometry = new Geometry();
-				m_geometry.ClearSubsets(Project.FindSubsystem<SubsystemAnimatedTextures>());
 				block.GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, m_geometry, cellValue, point.X, point.Y, point.Z);
 				textureSlotCount = block.GetTextureSlotCount(cellValue);
 				textureSlotSize = 32 * textureSlotCount;
@@ -94,24 +62,20 @@ namespace Game
 				m_value = cellValue;
 				DynamicArray<TerrainVertex> vertices = new DynamicArray<TerrainVertex>();
 				DynamicArray<ushort> indices = new DynamicArray<ushort>();
-				foreach (var c in m_geometry.Draws)
+				foreach (var c in m_geometry.Subsets)
 				{
-					for (int i = 0; i < c.Value.Subsets.Length; i++)
+					if (c.Indices.Count > 0)
 					{
-						TerrainGeometrySubset subset = c.Value.Subsets[i];
-						if (subset.Indices.Count > 0)
+						for (int j = 0; j < c.Indices.Count; j++)
 						{
-							for (int j = 0; j < subset.Indices.Count; j++)
-							{
-								indices.Add((ushort)(subset.Indices[j] + vertices.Count));
-							}
-							for (int j = 0; j < subset.Vertices.Count; j++)
-							{
-								TerrainVertex vertex = subset.Vertices[j];
-								byte b = (byte)((vertex.Color.R + vertex.Color.G + vertex.Color.B) / 3);
-								vertex.Color = new Color(b, b, b, (byte)128);
-								vertices.Add(vertex);
-							}
+							indices.Add((ushort)(c.Indices[j] + vertices.Count));
+						}
+						for (int j = 0; j < c.Vertices.Count; j++)
+						{
+							TerrainVertex vertex = c.Vertices[j];
+							byte b = (byte)((vertex.Color.R + vertex.Color.G + vertex.Color.B) / 3);
+							vertex.Color = new Color(b, b, b, (byte)128);
+							vertices.Add(vertex);
 						}
 					}
 				}

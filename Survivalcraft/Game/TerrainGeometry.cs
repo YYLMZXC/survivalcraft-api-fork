@@ -19,63 +19,56 @@ namespace Game
 
 		public TerrainGeometrySubset[] Subsets;
 
-		public Dictionary<Texture2D, TerrainGeometry> Draws = new Dictionary<Texture2D, TerrainGeometry>();
+		public TerrainChunk terrainChunk;
+
+		public int slice;
+
+		public TerrainGeometry()
+		{
+			Subsets = new TerrainGeometrySubset[7];
+			for (int i = 0; i < 7; i++) { Subsets[i] = new TerrainGeometrySubset(); }
+			SubsetOpaque = Subsets[4];
+			SubsetAlphaTest = Subsets[5];
+			SubsetTransparent = Subsets[6];
+			OpaqueSubsetsByFace = new TerrainGeometrySubset[6]
+			{
+					Subsets[0],
+					Subsets[1],
+					Subsets[2],
+					Subsets[3],
+					Subsets[4],
+					Subsets[4]
+			};
+			AlphaTestSubsetsByFace = new TerrainGeometrySubset[6]
+			{
+					Subsets[5],
+					Subsets[5],
+					Subsets[5],
+					Subsets[5],
+					Subsets[5],
+					Subsets[5]
+			};
+			TransparentSubsetsByFace = new TerrainGeometrySubset[6]
+			{
+					Subsets[6],
+					Subsets[6],
+					Subsets[6],
+					Subsets[6],
+					Subsets[6],
+					Subsets[6]
+			};
+		}
 
 		public TerrainGeometry GetGeometry(Texture2D texture)
 		{
-			if (texture == null) throw new System.Exception("Texture can not be null");
-			if (!Draws.TryGetValue(texture, out var geometry))
+			if (terrainChunk.Draws.TryGetValue(texture, out var geometries)) return geometries[slice];
+			else
 			{
-				geometry = new TerrainGeometry();
-				geometry.Subsets = new TerrainGeometrySubset[7];
-				for (int i = 0; i < 7; i++) { geometry.Subsets[i] = new TerrainGeometrySubset(); }
-				geometry.SubsetOpaque = geometry.Subsets[4];
-				geometry.SubsetAlphaTest = geometry.Subsets[5];
-				geometry.SubsetTransparent = geometry.Subsets[6];
-				geometry.OpaqueSubsetsByFace = new TerrainGeometrySubset[6]
-				{
-					geometry.Subsets[0],
-					geometry.Subsets[1],
-					geometry.Subsets[2],
-					geometry.Subsets[3],
-					geometry.Subsets[4],
-					geometry.Subsets[4]
-				};
-				geometry.AlphaTestSubsetsByFace = new TerrainGeometrySubset[6]
-				{
-					geometry.Subsets[5],
-					geometry.Subsets[5],
-					geometry.Subsets[5],
-					geometry.Subsets[5],
-					geometry.Subsets[5],
-					geometry.Subsets[5]
-				};
-				geometry.TransparentSubsetsByFace = new TerrainGeometrySubset[6]
-				{
-					geometry.Subsets[6],
-					geometry.Subsets[6],
-					geometry.Subsets[6],
-					geometry.Subsets[6],
-					geometry.Subsets[6],
-					geometry.Subsets[6]
-				};
-				Draws.Add(texture, geometry);
+				var list = new TerrainGeometry[16];
+				for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(); t.slice = i; t.terrainChunk = terrainChunk; list[i] = t; }
+				terrainChunk.Draws.Add(texture, list);
+				return list[slice];
 			}
-			return geometry;
 		}
-
-		public void ClearSubsets(SubsystemAnimatedTextures animatedTextures)
-		{
-			Draws.Clear();
-			TerrainGeometry geometry = GetGeometry(animatedTextures.AnimatedBlocksTexture);
-			SubsetOpaque = geometry.SubsetOpaque;
-			SubsetAlphaTest = geometry.SubsetAlphaTest;
-			SubsetTransparent = geometry.SubsetOpaque;
-			OpaqueSubsetsByFace = geometry.OpaqueSubsetsByFace;
-			AlphaTestSubsetsByFace = geometry.AlphaTestSubsetsByFace;
-			TransparentSubsetsByFace = geometry.TransparentSubsetsByFace;
-			Subsets = geometry.Subsets;
-		}
-
 	}
 }

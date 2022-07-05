@@ -48,21 +48,5 @@ namespace Game
 				buffer.Dispose();
 			}
 		}
-
-		public void InvalidateSliceContentsHashes()
-		{
-			for (int i = 0; i < Slices.Length; i++)
-			{
-				Slices[i].ContentsHash = 0;
-			}
-		}
-
-		public void CopySliceContentsHashes(TerrainChunk chunk)
-		{
-			for (int i = 0; i < Slices.Length; i++)
-			{
-				Slices[i].ContentsHash = chunk.SliceContentsHashes[i];
-			}
-		}
 	}
 }

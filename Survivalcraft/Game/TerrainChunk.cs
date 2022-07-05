@@ -61,6 +61,8 @@ namespace Game
 
 		public int[] SliceContentsHashes = new int[16];
 
+		public int[] GeneratedSliceContentsHashes = new int[16];
+
 		public bool AreBehaviorsNotified;
 
 		public object lockobj = new object();
@@ -75,7 +77,9 @@ namespace Game
 
 		public int[] Shafts = new int[256];
 
-		public Dictionary<Texture2D, TerrainGeometrySubset[]> Draws = new Dictionary<Texture2D, TerrainGeometrySubset[]>();
+		public Dictionary<Texture2D, TerrainGeometry[]> Draws = new Dictionary<Texture2D, TerrainGeometry[]>();
+
+		public DynamicArray<TerrainChunkGeometry.Buffer> Buffers = new DynamicArray<TerrainChunkGeometry.Buffer>();
 
 		public DynamicArray<BrushPaint> m_brushPaints = new DynamicArray<BrushPaint>();
 
@@ -87,7 +91,20 @@ namespace Game
 			BoundingBox = new BoundingBox(new Vector3(Origin.X, 0f, Origin.Y), new Vector3(Origin.X + 16, 256f, Origin.Y + 16));
 			Center = new Vector2((float)Origin.X + 8f, (float)Origin.Y + 8f);
 		}
+		public void InvalidateSliceContentsHashes()
+		{
+			for (int i = 0; i < GeneratedSliceContentsHashes.Length; i++)
+			{
+				GeneratedSliceContentsHashes[i] = 0;
+			}
+		}
+		public void CopySliceContentsHashes() {
+			for (int i = 0; i < GeneratedSliceContentsHashes.Length; i++)
+			{
+				GeneratedSliceContentsHashes[i] = SliceContentsHashes[i];
+			}
 
+		}
 		public void Dispose()
 		{
 			Geometry.Dispose();
