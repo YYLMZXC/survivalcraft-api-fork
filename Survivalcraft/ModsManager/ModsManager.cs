@@ -347,7 +347,7 @@ public static class ModsManager
         List<ModInfo> ToDisable = new List<ModInfo>();
         ToDisable.AddRange(DisabledMods);
         DisabledMods.Clear();
-        float api = float.Parse(APIVersion);
+        //float api = float.Parse(APIVersion);
         List<ModEntity> ToRemove = new List<ModEntity>();
         foreach (ModEntity modEntity1 in ModList)
         {
@@ -360,13 +360,13 @@ public static class ModsManager
                 continue;
             }
             if (modEntity1.IsChecked) continue;
-            float.TryParse(modInfo.ApiVersion, out float curr);
-            if (curr < api)
-            {//api版本检测
-                ToDisable.Add(modInfo);
-                ToRemove.Add(modEntity1);
-                AddException(new Exception($"[{modEntity1.modInfo.PackageName}]Target version {modInfo.Version} is less than api version {APIVersion}."), true);
-            }
+            //float.TryParse(modInfo.ApiVersion, out float curr);
+            //if (curr < api)
+            //{//api版本检测
+            //    ToDisable.Add(modInfo);
+            //    ToRemove.Add(modEntity1);
+            //    AddException(new Exception($"[{modEntity1.modInfo.PackageName}]Target version {modInfo.Version} is less than api version {APIVersion}."), true);
+            //}
             List<ModEntity> modEntities = ModList.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
             if (modEntities.Count > 1) AddException(new Exception($"Multiple installed [{modInfo.PackageName}]"));
             modEntity1.IsChecked = true;
@@ -398,21 +398,26 @@ public static class ModsManager
         {
             string ms = Storage.GetExtension(item);
             string ks = Storage.CombinePaths(path, item);
-            Stream stream = Storage.OpenFile(ks, OpenFileMode.Read);
-            try
+            using (Stream stream = Storage.OpenFile(ks, OpenFileMode.Read))
             {
-                if (ms == ".scmod")
+                Stream keepOpenStream = new MemoryStream();
+                stream.CopyTo(keepOpenStream);
+                try
                 {
-                    var modEntity = new ModEntity(ZipArchive.Open(stream, true));
-                    if (modEntity.modInfo == null) continue;
-                    if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
-                    ModList.Add(modEntity);
+                    if (ms == ".scmod")
+                    {
+                        var modEntity = new ModEntity(ZipArchive.Open(keepOpenStream, true));
+                        if (modEntity.modInfo == null) continue;
+                        if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
+                        ModList.Add(modEntity);
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                AddException(e);
-                stream.Close();
+                catch (Exception e)
+                {
+                    AddException(e);
+                    stream.Close();
+                    keepOpenStream.Close();
+                }
             }
         }
         foreach (string dir in Storage.ListDirectoryNames(path))

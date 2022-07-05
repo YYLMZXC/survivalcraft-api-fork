@@ -48,6 +48,10 @@ namespace Game
                     loader.ProjectXmlLoad(projectNode);
                     return false;
                 });
+                var projectData = new ProjectData(DatabaseManager.GameDatabase, projectNode, valuesDictionary, ignoreInvalidEntities: true);
+                m_project = new Project(DatabaseManager.GameDatabase, projectData);
+                m_subsystemUpdate = m_project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
+                ModsManager.HookAction("OnProjectLoaded", loader => { loader.OnProjectLoaded(m_project);return false; });
                 Project.EntityAdded += new EventHandler<EntityAddRemoveEventArgs>((s, arg) => {
                     ModsManager.HookAction("OnEntityAdd", loader => {
                         loader.OnEntityAdd(arg.Entity);
@@ -60,10 +64,6 @@ namespace Game
                         return false;
                     });
                 });
-                var projectData = new ProjectData(DatabaseManager.GameDatabase, projectNode, valuesDictionary, ignoreInvalidEntities: true);
-                m_project = new Project(DatabaseManager.GameDatabase, projectData);
-                m_subsystemUpdate = m_project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
-                ModsManager.HookAction("OnProjectLoaded", loader => { loader.OnProjectLoaded(m_project);return false; });
             }
             m_worldInfo = worldInfo;
             Log.Information("Loaded world, GameMode={0}, StartingPosition={1}, WorldName={2}, VisibilityRange={3}, Resolution={4}", worldInfo.WorldSettings.GameMode, worldInfo.WorldSettings.StartingPositionMode, worldInfo.WorldSettings.Name, SettingsManager.VisibilityRange.ToString(), SettingsManager.ResolutionMode.ToString());

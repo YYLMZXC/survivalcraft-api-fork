@@ -76,6 +76,8 @@ namespace Game
 
 		public bool CanCrouch = false;
 
+		public bool TerrainCollidable = true;
+
 		public Vector3 StanceBoxSize => new Vector3(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
 
 		public Vector3 BoxSize { get; set; }
@@ -856,7 +858,7 @@ namespace Game
 						if (num3 != 0)
 						{
 							Block block = BlocksManager.Blocks[num3];
-							if (block.IsCollidable)
+							if (block.IsCollidable && TerrainCollidable)
 							{
 								BoundingBox[] customCollisionBoxes = block.GetCustomCollisionBoxes(m_subsystemTerrain, cellValueFast);
 								Vector3 vector = new Vector3(i, num2, j);
