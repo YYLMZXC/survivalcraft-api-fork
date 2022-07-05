@@ -1055,7 +1055,7 @@ namespace Game
 			if (!chunk.Draws.TryGetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture, out var terrainGeometry))
 			{
 				terrainGeometry = new TerrainGeometry[16];
-				for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(); t.slice = i; t.terrainChunk = chunk; terrainGeometry[i] = t; }
+				for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(chunk.Draws, i); terrainGeometry[i] = t; }
 				chunk.Draws.Add(m_subsystemAnimatedTextures.AnimatedBlocksTexture, terrainGeometry);
 			}
 			TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y - 1);
@@ -1142,8 +1142,7 @@ namespace Game
 							int num10 = Terrain.ExtractContents(cellValueFast);
 							if (num10 != 0)
 							{
-								var block = BlocksManager.Blocks[num10];
-								block.GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, terrainGeometry[i], cellValueFast, num5, m, num6);
+								BlocksManager.Blocks[num10].GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, terrainGeometry[i], cellValueFast, num5, m, num6);
 							}
 						}
 					}

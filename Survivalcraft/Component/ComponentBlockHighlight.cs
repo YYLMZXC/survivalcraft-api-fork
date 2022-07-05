@@ -7,28 +7,6 @@ namespace Game
 {
     public class ComponentBlockHighlight : Component, IDrawable, IUpdateable
     {
-        public class Geometry : TerrainGeometry
-        {
-            public Geometry()
-            {
-                var terrainGeometrySubset = new TerrainGeometrySubset();
-                var array = new TerrainGeometrySubset[6]
-                {
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset,
-                    terrainGeometrySubset
-                };
-                SubsetOpaque = terrainGeometrySubset;
-                SubsetAlphaTest = terrainGeometrySubset;
-                SubsetTransparent = terrainGeometrySubset;
-                OpaqueSubsetsByFace = array;
-                AlphaTestSubsetsByFace = array;
-                TransparentSubsetsByFace = array;
-            }
-        }
 
         public SubsystemTerrain m_subsystemTerrain;
 
@@ -41,8 +19,6 @@ namespace Game
         public PrimitivesRenderer3D m_primitivesRenderer3D = new PrimitivesRenderer3D();
 
         public Shader m_shader;
-
-        public Geometry m_geometry;
 
         public CellFace m_cellFace;
 

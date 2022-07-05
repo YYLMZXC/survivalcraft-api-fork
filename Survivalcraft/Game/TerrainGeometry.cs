@@ -19,11 +19,18 @@ namespace Game
 
 		public TerrainGeometrySubset[] Subsets;
 
-		public TerrainChunk terrainChunk;
+		public Dictionary<Texture2D, TerrainGeometry[]> Draws = null;
 
 		public int slice;
 
+		public TerrainGeometry(Dictionary<Texture2D, TerrainGeometry[]> Draws, int slice = 0) { InitSubsets(); this.Draws = Draws; this.slice = slice; }
+
 		public TerrainGeometry()
+		{
+			InitSubsets();
+		}
+
+		public void InitSubsets()
 		{
 			Subsets = new TerrainGeometrySubset[7];
 			for (int i = 0; i < 7; i++) { Subsets[i] = new TerrainGeometrySubset(); }
@@ -61,12 +68,12 @@ namespace Game
 
 		public TerrainGeometry GetGeometry(Texture2D texture)
 		{
-			if (terrainChunk.Draws.TryGetValue(texture, out var geometries)) return geometries[slice];
+			if (Draws.TryGetValue(texture, out var geometries)) return geometries[slice];
 			else
 			{
 				var list = new TerrainGeometry[16];
-				for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(); t.slice = i; t.terrainChunk = terrainChunk; list[i] = t; }
-				terrainChunk.Draws.Add(texture, list);
+				for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(Draws, i); list[i] = t; }
+				Draws.Add(texture, list);
 				return list[slice];
 			}
 		}

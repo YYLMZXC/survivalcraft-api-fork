@@ -1900,9 +1900,6 @@
     <Compile Include="..\Survivalcraft\Game\TerrainChunkGeometry.cs">
       <Link>Game\TerrainChunkGeometry.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Game\TerrainChunkSliceGeometry.cs">
-      <Link>Game\TerrainChunkSliceGeometry.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Game\TerrainChunkState.cs">
       <Link>Game\TerrainChunkState.cs</Link>
     </Compile>

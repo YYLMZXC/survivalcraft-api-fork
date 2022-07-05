@@ -7,10 +7,6 @@ namespace Game
 {
 	public class ComponentDiggingCracks : Component, IDrawable
 	{
-		public class Geometry : TerrainGeometry
-		{
-		}
-
 		public SubsystemTerrain m_subsystemTerrain;
 
 		public SubsystemSky m_subsystemSky;
@@ -19,9 +15,15 @@ namespace Game
 
 		public Texture2D[] m_textures;
 
+		private Texture2D defaultTexture;
+
+		private int defaultSlice = 0;
+
 		public Shader m_shader;
 
-		public Geometry m_geometry;
+		public Dictionary<Texture2D, TerrainGeometry[]> DrawItem;
+
+		public TerrainGeometry m_geometry;
 
 		public Point3 m_point;
 
@@ -34,14 +36,13 @@ namespace Game
 
 		public int[] DrawOrders => m_drawOrders;
 
-		public TerrainChunkGeometry.Buffer Buffer = null;
+		public DynamicArray<TerrainChunkGeometry.Buffer> Buffers = new DynamicArray<TerrainChunkGeometry.Buffer>();
 
-		public int textureSlotCount;
-
-		public int textureSlotSize;
-
-		public Dictionary<int, RenderTarget2D[]> CrackTextures = new Dictionary<int, RenderTarget2D[]>();
-
+		public void DisposeBuffers()
+		{
+			foreach (var b in Buffers) { b.Dispose(); }
+			Buffers.Clear();
+		}
 		public void Draw(Camera camera, int drawOrder)
 		{
 			if (!m_componentMiner.DigCellFace.HasValue || !(m_componentMiner.DigProgress > 0f) || !(m_componentMiner.DigTime > 0.2f))
@@ -52,92 +53,53 @@ namespace Game
 			int cellValue = m_subsystemTerrain.Terrain.GetCellValue(point.X, point.Y, point.Z);
 			int num = Terrain.ExtractContents(cellValue);
 			Block block = BlocksManager.Blocks[num];
-			if (m_geometry == null || cellValue != m_value || point != m_point)
+			if (cellValue != m_value || point != m_point)
 			{
-				m_geometry = new Geometry();
-				block.GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, m_geometry, cellValue, point.X, point.Y, point.Z);
-				textureSlotCount = block.GetTextureSlotCount(cellValue);
-				textureSlotSize = 32 * textureSlotCount;
+				foreach (var item in DrawItem)
+				{
+					var subsets = item.Value[defaultSlice].Subsets;
+					for (int p = 0; p < subsets.Length; p++) { subsets[p].Indices.Clear(); subsets[p].Vertices.Clear(); }
+				}
+				DisposeBuffers();
+				block.GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, DrawItem[defaultTexture][defaultSlice], cellValue, point.X, point.Y, point.Z);
 				m_point = point;
 				m_value = cellValue;
-				DynamicArray<TerrainVertex> vertices = new DynamicArray<TerrainVertex>();
-				DynamicArray<ushort> indices = new DynamicArray<ushort>();
-				foreach (var c in m_geometry.Subsets)
-				{
-					if (c.Indices.Count > 0)
-					{
-						for (int j = 0; j < c.Indices.Count; j++)
-						{
-							indices.Add((ushort)(c.Indices[j] + vertices.Count));
-						}
-						for (int j = 0; j < c.Vertices.Count; j++)
-						{
-							TerrainVertex vertex = c.Vertices[j];
-							byte b = (byte)((vertex.Color.R + vertex.Color.G + vertex.Color.B) / 3);
-							vertex.Color = new Color(b, b, b, (byte)128);
-							vertices.Add(vertex);
-						}
-					}
-				}
-				Buffer?.Dispose();
-				Buffer = new TerrainChunkGeometry.Buffer();
-				Buffer.IndexBuffer = new IndexBuffer(IndexFormat.SixteenBits, indices.Count);
-				Buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, vertices.Count);
-				Buffer.IndexBuffer.SetData(indices.Array, 0, indices.Count);
-				Buffer.VertexBuffer.SetData(vertices.Array, 0, vertices.Count);
+				TerrainRenderer.CompileDrawSubsets(DrawItem, Buffers, block.SetDiggingCrackingTextureTransform);
 			}
 			Vector3 viewPosition = camera.ViewPosition;
 			Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			float x = m_subsystemSky.ViewFogRange.X;
 			float y = m_subsystemSky.ViewFogRange.Y;
-			int num2 = MathUtils.Clamp((int)(m_componentMiner.DigProgress * 8f), 0, 7);
-
-			if (!CrackTextures.TryGetValue(textureSlotSize, out var list))
-			{
-				list = new RenderTarget2D[8];
-				CrackTextures.Add(textureSlotSize,list);
-			}
-			if (list[num2] == null)
-			{
-                RenderTarget2D render = Display.RenderTarget;
-                RenderTarget2D target = new RenderTarget2D(textureSlotSize, textureSlotSize, 1, ColorFormat.Rgba8888, DepthFormat.None);
-                Display.RenderTarget = target;
-                PrimitivesRenderer2D primitives = new PrimitivesRenderer2D();
-                TexturedBatch2D texturedBatch = primitives.TexturedBatch(m_textures[num2], true);
-                for (int i = 0; i < textureSlotCount; i++)
-                {
-                    for (int j = 0; j < textureSlotCount; j++)
-                    {
-                        Vector2 s = new Vector2(i * 32, j * 32);
-                        Vector2 e = new Vector2((i + 1) * 32, (j + 1) * 32);
-                        texturedBatch.QueueQuad(s, e, 1f, Vector2.Zero, Vector2.One, Color.White);
-                    }
-                }
-                primitives.Flush();
-                Display.RenderTarget = render;
-                list[num2] = target;
-            }
-            try
+			//根据外置材质生成破坏纹理
+			try
             {
 				Display.BlendState = BlendState.NonPremultiplied;
 				Display.DepthStencilState = DepthStencilState.Default;
 				Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
 				m_shader.GetParameter("u_origin").SetValue(v.XZ);
-				m_shader.GetParameter("u_texture").SetValue(list[num2]);
 				m_shader.GetParameter("u_viewProjectionMatrix").SetValue(value);
 				m_shader.GetParameter("u_viewPosition").SetValue(camera.ViewPosition);
 				m_shader.GetParameter("u_samplerState").SetValue(SamplerState.PointWrap);
 				m_shader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 				m_shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(x, 1f / (y - x)));
-				Display.DrawIndexed(PrimitiveType.TriangleList, m_shader, Buffer.VertexBuffer, Buffer.IndexBuffer, 0, Buffer.IndexBuffer.IndicesCount);
+				for (int i = 0; i < Buffers.Count; i++)
+				{
+					m_shader.GetParameter("u_texture").SetValue(block.GetDiggingCrackingTexture(m_componentMiner, m_componentMiner.m_digProgress, cellValue, m_textures));
+					Display.DrawIndexed(PrimitiveType.TriangleList, m_shader, Buffers[i].VertexBuffer, Buffers[i].IndexBuffer, 0, Buffers[i].IndexBuffer.IndicesCount);
+				}
 			}
-            catch
+			catch
             {
             }
 		}
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{
+			defaultTexture = Project.FindSubsystem<SubsystemAnimatedTextures>().AnimatedBlocksTexture;
+			DrawItem = new Dictionary<Texture2D, TerrainGeometry[]>();
+			var list = new TerrainGeometry[16];
+			for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(DrawItem, i); list[i] = t; }
+			DrawItem.Add(defaultTexture, list);
 			m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
 			m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
 			m_componentMiner = base.Entity.FindComponent<ComponentMiner>(throwOnError: true);
@@ -146,16 +108,6 @@ namespace Game
 			for (int i = 0; i < 8; i++)
 			{
 				m_textures[i] = ContentManager.Get<Texture2D>($"Textures/Cracks{i + 1}");
-			}
-		}
-		public override void Dispose()
-		{
-			foreach (var c in CrackTextures)
-			{
-				foreach (var r in c.Value)
-				{
-					if(r != null) r.Dispose();
-				}
 			}
 		}
 	}

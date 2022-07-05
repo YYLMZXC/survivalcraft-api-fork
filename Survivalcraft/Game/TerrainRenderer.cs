@@ -57,7 +57,7 @@ namespace Game
 				{
 					if (terrainChunk.Geometry != null)
 					{
-						foreach (TerrainChunkGeometry.Buffer buffer in terrainChunk.Geometry.Buffers)
+						foreach (TerrainChunkGeometry.Buffer buffer in terrainChunk.Buffers)
 						{
 							num += (buffer.VertexBuffer?.GetGpuMemoryUsage() ?? 0);
 							num += (buffer.IndexBuffer?.GetGpuMemoryUsage() ?? 0);
@@ -265,7 +265,13 @@ namespace Game
 		public void SetupTerrainChunkGeometryVertexIndexBuffers(TerrainChunk chunk)
 		{
 			DisposeTerrainChunkGeometryVertexIndexBuffers(chunk);
-			foreach (var item in chunk.Draws)
+			CompileDrawSubsets(chunk.Draws, chunk.Buffers);
+			chunk.CopySliceContentsHashes();
+		}
+
+		public static void CompileDrawSubsets(Dictionary<Texture2D, TerrainGeometry[]> list, DynamicArray<TerrainChunkGeometry.Buffer> buffers, Func<TerrainVertex, TerrainVertex> vertexTransform = null)
+		{
+			foreach (var item in list)
 			{
 				var geometry = item.Value;
 				int num = 0;
@@ -279,6 +285,16 @@ namespace Game
 						int num4 = i / 16;
 						int num5 = i % 16;
 						TerrainGeometrySubset terrainGeometrySubset = geometry[num5].Subsets[num4];
+						if (vertexTransform != null)
+						{
+							var tmpList = new DynamicArray<TerrainVertex>();
+							for (int p = 0; p < terrainGeometrySubset.Vertices.Count; p++)
+							{
+								var vertex = vertexTransform(terrainGeometrySubset.Vertices[p]);
+								tmpList.Add(vertex);
+							}
+							terrainGeometrySubset.Vertices = tmpList;
+						}
 						if (num2 + terrainGeometrySubset.Vertices.Count > 65535 && i > num)
 						{
 							break;
@@ -290,7 +306,7 @@ namespace Game
 					{
 						TerrainChunkGeometry.Buffer buffer = new TerrainChunkGeometry.Buffer();
 						buffer.Texture = item.Key;
-						chunk.Buffers.Add(buffer);
+						buffers.Add(buffer);
 						buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, num2);
 						buffer.IndexBuffer = new IndexBuffer(IndexFormat.ThirtyTwoBits, num3);
 						int num6 = 0;
@@ -325,9 +341,8 @@ namespace Game
 					num = i;
 				}
 			}
-			chunk.CopySliceContentsHashes();
-		}
 
+		}
 		public void DrawTerrainChunkGeometrySubsets(Shader shader, TerrainChunk chunk, int subsetsMask, bool ApplyTexture = true)
 		{
 			foreach (TerrainChunkGeometry.Buffer buffer in chunk.Buffers)

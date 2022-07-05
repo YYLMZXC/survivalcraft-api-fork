@@ -4,7 +4,7 @@ using System;
 
 namespace Game
 {
-	public class TerrainChunkGeometry : IDisposable
+	public class TerrainChunkGeometry
 	{
 		public class Buffer : IDisposable
 		{
@@ -24,28 +24,6 @@ namespace Game
 			{
 				Utilities.Dispose(ref VertexBuffer);
 				Utilities.Dispose(ref IndexBuffer);
-			}
-		}
-
-		public const int SubsetsCount = 7;
-
-		public TerrainChunkSliceGeometry[] Slices = new TerrainChunkSliceGeometry[16];
-
-		public DynamicArray<Buffer> Buffers = new DynamicArray<Buffer>();
-
-		public TerrainChunkGeometry()
-		{
-			for (int i = 0; i < Slices.Length; i++)
-			{
-				Slices[i] = new TerrainChunkSliceGeometry();
-			}
-		}
-
-		public void Dispose()
-		{
-			foreach (Buffer buffer in Buffers)
-			{
-				buffer.Dispose();
 			}
 		}
 	}

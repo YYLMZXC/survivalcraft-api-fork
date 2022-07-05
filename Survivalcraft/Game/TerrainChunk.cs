@@ -107,7 +107,7 @@ namespace Game
 		}
 		public void Dispose()
 		{
-			Geometry.Dispose();
+			for (int i = 0; i < Buffers.Count; i++) { Buffers[i].Dispose(); }
 		}
 
 		public static bool IsCellValid(int x, int y, int z)

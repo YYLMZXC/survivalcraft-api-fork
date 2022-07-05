@@ -202,6 +202,19 @@ namespace Game
                 throw new InvalidOperationException(string.Format(LanguageControl.Get(fName, 1), DefaultDisplayName));
             }
         }
+        public virtual TerrainVertex SetDiggingCrackingTextureTransform(TerrainVertex vertex)
+        {
+            byte b = (byte)((vertex.Color.R + vertex.Color.G + vertex.Color.B) / 3);
+            vertex.Tx = (short)(vertex.Tx * 16f);
+            vertex.Ty = (short)(vertex.Ty * 16f);
+            vertex.Color = new Color(b, b, b, (byte)128);
+            return vertex;
+        }
+        public virtual Texture2D GetDiggingCrackingTexture(ComponentMiner miner, float digProgress,int value, Texture2D[] defaultCrackTextures)
+        {
+            int num2 = MathUtils.Clamp((int)(digProgress * 8f), 0, 7);
+            return defaultCrackTextures[num2];
+        }
         public virtual bool GetIsDiggingTransparent(int value)
         {
             return IsDiggingTransparent;

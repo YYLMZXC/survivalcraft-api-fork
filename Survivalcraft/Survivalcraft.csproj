@@ -897,7 +897,6 @@
     <Compile Include="Game\Terrain.cs" />
     <Compile Include="Game\TerrainBrush.cs" />
     <Compile Include="Game\TerrainChunk.cs" />
-    <Compile Include="Game\TerrainChunkSliceGeometry.cs" />
     <Compile Include="Game\TerrainChunkState.cs" />
     <Compile Include="Game\TerrainContentsGenerator21.cs" />
     <Compile Include="Game\TerrainContentsGenerator22.cs" />
@@ -1108,7 +1107,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
