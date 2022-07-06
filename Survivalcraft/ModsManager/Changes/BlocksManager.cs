@@ -111,7 +111,7 @@ namespace Game
                 }
                 catch (Exception e)
                 {
-                    LoadingScreen.Warning("Loading Block " + block.GetType().FullName + " errro." + e.Message);
+                    LoadingScreen.Warning("Loading Block " + block.GetType().FullName + " error." + e.Message);
                 }
                 foreach (int value in block.GetCreativeValues())
                 {

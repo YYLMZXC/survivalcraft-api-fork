@@ -114,60 +114,60 @@ namespace Engine.Audio
 
 		public void StreamingThreadFunction()
 		{
+
 			long num = 0L;
 			int num2 = 0;
 			byte[] array = new byte[256];
 			bool flag = false;
-			while (true)
+			while(true)
 			{
-				if (m_queue.TryTake(out Command item, (!flag) ? 100 : 0))
+				Command command;
+				if (!this.m_queue.TryTake(out command, flag ? 0 : 100))
 				{
-					switch (item)
+					if (flag)
 					{
-						case Command.Exit:
-							return;
-						case Command.Play:
-							m_audioTrack.Play();
-							flag = true;
-							break;
-						case Command.Pause:
-							m_audioTrack.Pause();
-							flag = false;
-							break;
-						case Command.Stop:
-							m_audioTrack.Pause();
-							m_audioTrack.Flush();
-							StreamingSource.Position = 0L;
-							num2 = 0;
-							num = 0L;
-							flag = false;
-							break;
+						if (num2 == 0)
+						{
+							num2 = ReadStreamingSource(array, array.Length);
+							if (num2 == 0 && (long)m_audioTrack.PlaybackHeadPosition >= num / 2L / (long)ChannelsCount - 1L)
+							{
+								flag = false;
+								Dispatcher.Dispatch(Stop, false);
+							}
+						}
+						if (num2 > 0)
+						{
+							int num3 = this.m_audioTrack.Write(array, array.Length - num2, num2);
+							if (num3 > 0)
+							{
+								num2 -= num3;
+								num += (long)num3;
+							}
+						}
 					}
 				}
-				else
+				else if (command == Command.Play)
 				{
-					if (!flag)
-					{
-						continue;
-					}
-					if (num2 == 0)
-					{
-						num2 = ReadStreamingSource(array, array.Length);
-						if (num2 == 0 && m_audioTrack.PlaybackHeadPosition >= num / 2 / base.ChannelsCount - 1)
-						{
-							flag = false;
-							Dispatcher.Dispatch(Stop);
-						}
-					}
-					if (num2 > 0)
-					{
-						int num3 = m_audioTrack.Write(array, array.Length - num2, num2);
-						if (num3 > 0)
-						{
-							num2 -= num3;
-							num += num3;
-						}
-					}
+					m_audioTrack.Play();
+					flag = true;
+				}
+				else if (command == Command.Pause)
+				{
+					m_audioTrack.Pause();
+					flag = false;
+				}
+				else if (command == Command.Stop)
+				{
+					m_audioTrack.Pause();
+					m_audioTrack.Flush();
+					StreamingSource.Position = 0L;
+					num2 = 0;
+					num = 0L;
+					flag = false;
+				}
+				else if (command == Command.Exit)
+				{
+					break;
 				}
 			}
 		}
