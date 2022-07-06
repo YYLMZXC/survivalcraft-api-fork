@@ -345,6 +345,9 @@ namespace Game
 		}
 		public void DrawTerrainChunkGeometrySubsets(Shader shader, TerrainChunk chunk, int subsetsMask, bool ApplyTexture = true)
 		{
+			if (chunk.Buffers.Count > 1) { 
+			
+			}
 			foreach (TerrainChunkGeometry.Buffer buffer in chunk.Buffers)
 			{
 				int num = 2147483647;
