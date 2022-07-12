@@ -70,8 +70,10 @@
     <AndroidSigningKeyPass>android</AndroidSigningKeyPass>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
-    <AndroidUseAapt2>false</AndroidUseAapt2>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
     <MandroidI18n />
+    <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -88,6 +90,9 @@
     <AndroidAsset Include="..\Survivalcraft\Content.zip">
       <Link>Assets\Content.zip</Link>
     </AndroidAsset>
+    <AndroidNativeLibrary Include="libopenal32.so">
+      <Abi>arm64-v8a</Abi>
+    </AndroidNativeLibrary>
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>

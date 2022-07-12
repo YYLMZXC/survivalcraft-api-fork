@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Engine.Audio
 {
@@ -32,6 +33,7 @@ namespace Engine.Audio
 			}
 		}
 
+#if desktop
 		internal static void Initialize()
 		{
 			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
@@ -41,7 +43,12 @@ namespace Engine.Audio
 			Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
 			new AudioContext();
 		}
-
+#else
+		internal static void Initialize()
+		{
+			new AudioContext();
+		}
+#endif
 		internal static void Dispose()
 		{
 		}

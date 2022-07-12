@@ -229,11 +229,7 @@ namespace Engine
 			{
 				m_state = State.Inactive;
 				Keyboard.Clear();
-				Mixer.Deactivate();
-				if (Window.Deactivated != null)
-				{
-					Window.Deactivated();
-				}
+				Deactivated?.Invoke();
 			}
 		}
 
@@ -242,9 +238,8 @@ namespace Engine
 			if (m_state == State.Inactive)
 			{
 				m_state = State.Active;
-				Mixer.Activate();
 				View.EnableImmersiveMode();
-				Window.Activated?.Invoke();
+				Activated?.Invoke();
 			}
 		}
 
@@ -253,21 +248,21 @@ namespace Engine
 			if (m_state == State.Active)
 			{
 				m_state = State.Inactive;
-				Window.Deactivated?.Invoke();
+				Deactivated?.Invoke();
 			}
 			m_state = State.Uncreated;
-			Window.Closed?.Invoke();
+			Closed?.Invoke();
 			DisposeAll();
 		}
 
 		public static void NewIntentHandler(Intent intent)
 		{
-			if (Window.HandleUri != null && intent != null)
+			if (HandleUri != null && intent != null)
 			{
 				Uri uriFromIntent = GetUriFromIntent(intent);
 				if (uriFromIntent != null)
 				{
-					Window.HandleUri(uriFromIntent);
+					HandleUri(uriFromIntent);
 				}
 			}
 		}
@@ -277,7 +272,7 @@ namespace Engine
 			if (m_state != 0)
 			{
 				Display.Resize();
-				Window.Resized?.Invoke();
+				Resized?.Invoke();
 			}
 		}
 
@@ -302,9 +297,9 @@ namespace Engine
 			{
 				InitializeAll();
 				m_state = State.Inactive;
-				Window.Created?.Invoke();
+				Created?.Invoke();
 				m_state = State.Active;
-				Window.Activated?.Invoke();
+				Activated?.Invoke();
 				NewIntentHandler(Activity.Intent);
 			}
 			if (m_state != State.Active)
@@ -312,7 +307,7 @@ namespace Engine
 				return;
 			}
 			BeforeFrameAll();
-			Window.Frame?.Invoke();
+			Frame?.Invoke();
 			AfterFrameAll();
 			View.GraphicsContext.SwapBuffers();
 			if (m_presentationInterval >= 2)
