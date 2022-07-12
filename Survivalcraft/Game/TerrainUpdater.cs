@@ -310,7 +310,7 @@ namespace Game
 			return 0f;
 		}
 
-		public virtual void Update()
+		public void Update()
 		{
 			if (m_subsystemSky.SkyLightValue != m_lastSkylightValue)
 			{
@@ -483,6 +483,14 @@ namespace Game
 			{
 				if (!IsChunkInRange(terrainChunk.Center, locations))
 				{
+					bool noToFree = false;
+					ModsManager.HookAction("ToFreeChunks", (ModLoader modLoader) => 
+					{
+					    modLoader.ToFreeChunks(this, terrainChunk, out bool keepWorking);
+						noToFree |= keepWorking;
+						return false;
+					});
+					if (noToFree) continue;
 					result = true;
 					foreach (SubsystemBlockBehavior blockBehavior in m_subsystemBlockBehaviors.BlockBehaviors)
 					{
@@ -520,6 +528,12 @@ namespace Game
 					}
 				}
 			}
+			ModsManager.HookAction("ToAllocateChunks", (ModLoader modLoader) =>
+			{
+				bool modification = modLoader.ToAllocateChunks(this, locations);
+				result |= modification;
+				return false;
+			});
 			return result;
 		}
 

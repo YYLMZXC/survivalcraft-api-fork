@@ -672,61 +672,67 @@ public class ModsManageContentScreen : Screen
         if (m_cancelScan) return m_count;
         try
         {
-            foreach (string fileName in Storage.ListFileNames(validPath))
+            string systemPath = Storage.GetSystemPath(path);
+            if(systemPath != Storage.GetSystemPath(m_uninstallPath))
             {
-                if (m_cancelScan) return m_count;
-                if (validPath.EndsWith("/"))
+                foreach (string fileName in Storage.ListFileNames(validPath))
                 {
-                    validPath = path.Substring(0, validPath.Length - 1);
-                }
-                if (busyDialog != null)
-                {
-                    string showName = validPath;
-                    if (validPath.Length > 40)
+                    if (m_cancelScan) return m_count;
+                    if (validPath.EndsWith("/"))
                     {
-                        showName = validPath.Substring(0, 40) + "...";
+                        validPath = path.Substring(0, validPath.Length - 1);
                     }
-                    busyDialog.SmallMessage = string.Format("已扫描到{0}个有效的MOD文件\n" + showName, m_count);
-                }
-                if (validPath == m_uninstallPath) continue;
-                string extension = Storage.GetExtension(fileName);
-                if (!string.IsNullOrEmpty(extension) && extension.ToLower() == ".scmod")
-                {
-                    string pathName = Storage.CombinePaths(validPath, fileName);
-                    Stream stream = null;
-                    ModInfo modInfo = null;
-                    try
+                    if (busyDialog != null)
                     {
-                        stream = Storage.OpenFile(pathName, OpenFileMode.Read);
-                        ZipArchive zipArchive = ZipArchive.Open(stream, true);
-                        foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.ReadCentralDir())
+                        string showName = validPath;
+                        if (validPath.Length > 40)
                         {
-                            if (zipArchiveEntry.FilenameInZip == "modinfo.json")
-                            {
-                                MemoryStream memoryStream = new MemoryStream();
-                                zipArchive.ExtractFile(zipArchiveEntry, memoryStream);
-                                memoryStream.Position = 0L;
-                                modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(memoryStream));
-                                memoryStream.Dispose();
-                                break;
-                            }
+                            showName = validPath.Substring(0, 40) + "...";
                         }
-                        stream.Dispose();
+                        busyDialog.SmallMessage = string.Format("已扫描到{0}个有效的MOD文件\n" + showName, m_count);
                     }
-                    catch
+                    string extension = Storage.GetExtension(fileName);
+                    if (!string.IsNullOrEmpty(extension) && extension.ToLower() == ".scmod")
                     {
+                        string pathName = Storage.CombinePaths(validPath, fileName);
+                        Stream stream = null;
+                        ModInfo modInfo = null;
+                        try
+                        {
+                            stream = Storage.OpenFile(pathName, OpenFileMode.Read);
+                            ZipArchive zipArchive = ZipArchive.Open(stream, true);
+                            foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.ReadCentralDir())
+                            {
+                                if (zipArchiveEntry.FilenameInZip == "modinfo.json")
+                                {
+                                    MemoryStream memoryStream = new MemoryStream();
+                                    zipArchive.ExtractFile(zipArchiveEntry, memoryStream);
+                                    memoryStream.Position = 0L;
+                                    modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(memoryStream));
+                                    memoryStream.Dispose();
+                                    break;
+                                }
+                            }
+                            stream.Dispose();
+                        }
+                        catch
+                        {
+                        }
+                        if (stream == null || modInfo == null) continue;
+                        if (string.IsNullOrEmpty(modInfo.PackageName) || !modInfo.ApiVersion.Contains("1.4")) continue;
+                        string uninstallPathName = Storage.CombinePaths(m_uninstallPath, fileName);
+                        if (!Storage.FileExists(uninstallPathName))
+                        {
+                            Storage.CopyFile(pathName, uninstallPathName);
+                            if (systemPath != Storage.GetSystemPath(m_installPath))
+                            {
+                                Storage.DeleteFile(pathName);
+                            }
+                            AddCommonPath(validPath);
+                            m_count++;
+                        }
+                        if (stream != null) stream.Close();
                     }
-                    if (stream == null || modInfo == null) continue;
-                    if (string.IsNullOrEmpty(modInfo.PackageName) || !modInfo.ApiVersion.Contains("1.4")) continue;
-                    string uninstallPathName = Storage.CombinePaths(m_uninstallPath, fileName);
-                    if (!Storage.FileExists(uninstallPathName))
-                    {
-                        Storage.CopyFile(pathName, uninstallPathName);
-                        Storage.DeleteFile(pathName);
-                        AddCommonPath(validPath);
-                        m_count++;
-                    }
-                    if (stream != null) stream.Close();
                 }
             }
             foreach (string directory in Storage.ListDirectoryNames(path))

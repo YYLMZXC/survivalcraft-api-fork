@@ -52,22 +52,21 @@ namespace Game
                 m_project = new Project(DatabaseManager.GameDatabase, projectData);
                 m_subsystemUpdate = m_project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
                 ModsManager.HookAction("OnProjectLoaded", loader => { loader.OnProjectLoaded(m_project);return false; });
-                Project.EntityAdded += new EventHandler<EntityAddRemoveEventArgs>((s, arg) => {
-                    ModsManager.HookAction("OnEntityAdd", loader => {
-                        loader.OnEntityAdd(arg.Entity);
-                        return false;
-                    });
-                });
-                Project.EntityRemoved += new EventHandler<EntityAddRemoveEventArgs>((s, arg) => {
-                    ModsManager.HookAction("OnEntityRemove", loader => {
-                        loader.OnEntityRemove(arg.Entity);
-                        return false;
-                    });
-                });
             }
             m_worldInfo = worldInfo;
+            Project.EntityAdded += new EventHandler<EntityAddRemoveEventArgs>((s, arg) => {
+                ModsManager.HookAction("OnEntityAdd", loader => {
+                    loader.OnEntityAdd(arg.Entity);
+                    return false;
+                });
+            });
+            Project.EntityRemoved += new EventHandler<EntityAddRemoveEventArgs>((s, arg) => {
+                ModsManager.HookAction("OnEntityRemove", loader => {
+                    loader.OnEntityRemove(arg.Entity);
+                    return false;
+                });
+            });
             Log.Information("Loaded world, GameMode={0}, StartingPosition={1}, WorldName={2}, VisibilityRange={3}, Resolution={4}", worldInfo.WorldSettings.GameMode, worldInfo.WorldSettings.StartingPositionMode, worldInfo.WorldSettings.Name, SettingsManager.VisibilityRange.ToString(), SettingsManager.ResolutionMode.ToString());
-            
             GC.Collect();
         }
 

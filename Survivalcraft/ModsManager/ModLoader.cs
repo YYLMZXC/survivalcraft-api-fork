@@ -351,8 +351,8 @@ namespace Game
         /// </summary>
         public virtual void OnReadSpawnData(Entity entity, SpawnEntityData spawnEntityData)
         {
-
         }
+
         /// <summary>
         /// 区块地形生成时
         /// 注意此方法运行在子线程中
@@ -360,6 +360,24 @@ namespace Game
         /// <param name="chunk"></param>
         public virtual void OnTerrainContentsGenerated(TerrainChunk chunk)
         {
+        }
+
+        /// <summary>
+        /// 当区块即将被释放时
+        /// KeepWorking为True时该区块会继续保持运作，不被释放
+        /// </summary>
+        public virtual void ToFreeChunks(TerrainUpdater terrainUpdater, TerrainChunk chunk, out bool KeepWorking)
+        {
+            KeepWorking = false;
+        }
+
+        /// <summary>
+        /// 加载指定区块,如有区块数变动返回true，否则返回false
+        /// </summary>
+        /// <param name="chunk"></param>
+        public virtual bool ToAllocateChunks(TerrainUpdater terrainUpdater, TerrainUpdater.UpdateLocation[] locations)
+        {
+            return false;
         }
 
         /// <summary>
