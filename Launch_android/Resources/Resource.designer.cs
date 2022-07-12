@@ -43,17 +43,17 @@ namespace SC2.Droid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f030003
-			public const int colorAccent = 2130903043;
+			// aapt resource value: 0x7F010000
+			public const int colorAccent = 2130771968;
 			
-			// aapt resource value: 0x7f030001
-			public const int colorPrimary = 2130903041;
+			// aapt resource value: 0x7F010001
+			public const int colorPrimary = 2130771969;
 			
-			// aapt resource value: 0x7f030002
-			public const int colorPrimaryDark = 2130903042;
+			// aapt resource value: 0x7F010002
+			public const int colorPrimaryDark = 2130771970;
 			
-			// aapt resource value: 0x7f030000
-			public const int launcher_background = 2130903040;
+			// aapt resource value: 0x7F010003
+			public const int launcher_background = 2130771971;
 			
 			static Color()
 			{
@@ -68,13 +68,13 @@ namespace SC2.Droid
 		public partial class Mipmap
 		{
 			
-			// aapt resource value: 0x7f020000
+			// aapt resource value: 0x7F020000
 			public const int icon = 2130837504;
 			
-			// aapt resource value: 0x7f020001
+			// aapt resource value: 0x7F020001
 			public const int icon_round = 2130837505;
 			
-			// aapt resource value: 0x7f020002
+			// aapt resource value: 0x7F020002
 			public const int launcher_foreground = 2130837506;
 			
 			static Mipmap()
@@ -90,8 +90,8 @@ namespace SC2.Droid
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f040000
-			public const int MainTheme = 2130968576;
+			// aapt resource value: 0x7F030000
+			public const int MainTheme = 2130903040;
 			
 			static Style()
 			{
