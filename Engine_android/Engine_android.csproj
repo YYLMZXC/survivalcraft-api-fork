@@ -55,11 +55,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Engine\Engine.Audio\BaseSound.cs">
+      <Link>Engine.Audio\BaseSound.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\Mixer.cs">
+      <Link>Engine.Audio\Mixer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\Sound.cs">
+      <Link>Engine.Audio\Sound.cs</Link>
+    </Compile>
     <Compile Include="..\Engine\Engine.Audio\SoundBuffer.cs">
       <Link>Engine.Audio\SoundBuffer.cs</Link>
     </Compile>
     <Compile Include="..\Engine\Engine.Audio\SoundState.cs">
       <Link>Engine.Audio\SoundState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\StreamingSound.cs">
+      <Link>Engine.Audio\StreamingSound.cs</Link>
     </Compile>
     <Compile Include="..\Engine\Engine.Graphics\BaseBatch.cs">
       <Link>Engine.Graphics\BaseBatch.cs</Link>
@@ -1039,11 +1051,6 @@
     <Compile Include="..\Engine\NVorbis\VorbisTime.cs">
       <Link>NVorbis\VorbisTime.cs</Link>
     </Compile>
-    <Compile Include="Engine.Audio\AudioTrackCache.cs" />
-    <Compile Include="Engine.Audio\BaseSound.cs" />
-    <Compile Include="Engine.Audio\Mixer.cs" />
-    <Compile Include="Engine.Audio\Sound.cs" />
-    <Compile Include="Engine.Audio\StreamingSound.cs" />
     <Compile Include="Engine.Graphics\Display.cs" />
     <Compile Include="Engine.Graphics\GLWrapper.cs" />
     <Compile Include="Engine.Graphics\RenderTarget2D.cs" />

@@ -345,20 +345,8 @@ namespace Game
 
         public static bool EnableAndroidAudioTrackCaching
         {
-#if android
-            get
-            {
-                return Engine.Audio.Mixer.EnableAudioTrackCaching;
-            }
-            set
-            {
-                Engine.Audio.Mixer.EnableAudioTrackCaching = value;
-            }
-#endif
-#if desktop
             get;
             set;
-#endif
         }
 
         public static bool UseReducedZRange
@@ -470,11 +458,9 @@ namespace Game
             LookControlMode = LookControlMode.EntireScreen;
             FlipVerticalAxis = false;
 #if android
-            EnableAndroidAudioTrackCaching = true;
             UIScale = 1f;
 #endif
 #if desktop
-            EnableAndroidAudioTrackCaching = false;
             UIScale = 0.8f;
 #endif
             MoveSensitivity = 0.5f;
