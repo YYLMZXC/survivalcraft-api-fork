@@ -577,6 +577,7 @@ namespace Game
             }
             float num4 = 0f;
             float x = 0f;
+            bool recalculate=false;
             if (isMeleeAttack && attacker != null)
             {
                 float num5 = (attackPower >= 2f) ? 1.25f : 1f;
@@ -591,7 +592,7 @@ namespace Game
                 x = 0.2f;
                 ModsManager.HookAction("AttackPowerParameter", modloader =>
                 {
-                    modloader.AttackPowerParameter(ref num4, ref x);
+                    modloader.AttackPowerParameter(target, attacker, hitPoint, ref num4, ref x,ref recalculate);
                     return false;
                 });
             }
@@ -601,7 +602,10 @@ namespace Game
                 ComponentLocomotion componentLocomotion = target.Entity.FindComponent<ComponentLocomotion>();
                 if (componentLocomotion != null)
                 {
-                    componentLocomotion.StunTime = MathUtils.Max(componentLocomotion.StunTime, x);
+                    if(!recalculate)
+                        componentLocomotion.StunTime = MathUtils.Max(componentLocomotion.StunTime, x);
+                    else
+                        componentLocomotion.StunTime += x;
                 }
             }
         }
