@@ -64,14 +64,19 @@ namespace Game
         public virtual bool SetRainAndSnowColor(ref Color rainColor, ref Color snowColor)
         {
             return false;
-        }      
+        }
         /// <summary>
         /// 更改击退和晕眩效果
         /// </summary>
-        public virtual void AttackPowerParameter(ref float impulseFactor, ref float stunTimeFactor)
+        /// <param name="target">目标</param>
+        /// <param name="attacker">攻击者</param>
+        /// <param name="hitPoint">伤害位置</param>
+        /// <param name="impulseFactor">击退效果</param>
+        /// <param name="stunTimeFactor">眩晕时间</param>
+        /// <param name="recalculate">是否重写眩晕？</param>
+        public virtual void AttackPowerParameter(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, ref float impulseFactor, ref float stunTimeFactor, ref bool recalculate)
         {
         }
-
         /// <summary>
         /// 当人物吃东西时执行
         /// </summary>

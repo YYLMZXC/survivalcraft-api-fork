@@ -585,6 +585,7 @@ namespace Game
             }
             float num4 = 0f;
             float x = 0f;
+            bool recalculate = false;
             if (isMeleeAttack && attacker != null)
             {
                 float num5 = (attackPower >= 2f) ? 1.25f : 1f;
@@ -596,20 +597,23 @@ namespace Game
             else if (attackPower > 0f)
             {
                 num4 = 2f;
-                x = 0.2f;
-                ModsManager.HookAction("AttackPowerParameter", modloader =>
-                {
-                    modloader.AttackPowerParameter(ref num4, ref x);
-                    return false;
-                });
+                x = 0.2f;               
             }
+            ModsManager.HookAction("AttackPowerParameter", modloader =>
+            {
+                modloader.AttackPowerParameter(target, attacker, hitPoint, hitDirection, ref num4, ref x, ref recalculate);
+                return false;
+            });
             if (num4 > 0f)
             {
                 target.ApplyImpulse(num4 * Vector3.Normalize(hitDirection + s_random.Vector3(0.1f) + 0.2f * Vector3.UnitY));
                 ComponentLocomotion componentLocomotion = target.Entity.FindComponent<ComponentLocomotion>();
                 if (componentLocomotion != null)
                 {
-                    componentLocomotion.StunTime = MathUtils.Max(componentLocomotion.StunTime, x);
+                    if (!recalculate)
+                        componentLocomotion.StunTime = MathUtils.Max(componentLocomotion.StunTime, x);
+                    else
+                        componentLocomotion.StunTime += x;
                 }
             }
         }
