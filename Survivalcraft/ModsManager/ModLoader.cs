@@ -39,11 +39,22 @@ namespace Game
         /// <param name="miner"></param>
         /// <param name="raycastResult"></param>
         /// <returns></returns>
-        public virtual bool OnMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult, ref float DigProgress, out bool Digged)
+        public virtual void OnMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult, ref float DigProgress, out bool Digged)
         {
             Digged = false;
-            return false;
-        }     
+        }
+
+        /// <summary>
+        /// 当人物放置时执行，若Placed为true则不执行原放置操作
+        /// </summary>
+        /// <param name="miner"></param>
+        /// <param name="raycastResult"></param>
+        /// <returns></returns>
+        public virtual void OnMinerPlace(ComponentMiner miner, TerrainRaycastResult raycastResult, int x, int y, int z, int value, out bool Placed)
+        {
+            Placed = false;
+        }
+
         /// <summary>
         /// 设置雨和雪的颜色
         /// </summary>
@@ -243,14 +254,6 @@ namespace Game
         /// <param name="componentSpawn"></param>
         public virtual void OnDespawned(Entity entity, ComponentSpawn componentSpawn)
         {
-        }
-
-        /// <summary>
-        /// 设置跳跃是否可放置方块，Pass为true则可放置方块
-        /// </summary>
-        public virtual void JumpToPlace(out bool Pass)
-        {
-            Pass = false;
         }
 
         /// <summary>

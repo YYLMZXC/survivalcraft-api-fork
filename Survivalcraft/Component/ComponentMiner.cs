@@ -114,6 +114,8 @@ namespace Game
 
         public bool m_canSqueezeBlock = true;
 
+        public bool m_canJumpToPlace = false;
+
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
         public virtual void Poke(bool forceRestart)
@@ -209,13 +211,19 @@ namespace Game
                     int num2 = placementData.CellFace.X + point.X;
                     int num3 = placementData.CellFace.Y + point.Y;
                     int num4 = placementData.CellFace.Z + point.Z;
-                    bool pass = false;
+                    bool placed = false;
+                    ModsManager.HookAction("OnMinerPlace", modLoader =>
+                    {
+                        modLoader.OnMinerPlace(this, raycastResult, num2, num3, num4, value, out bool Placed);
+                        placed |= Placed;
+                        return false;
+                    });
+                    if (placed) return true;
                     if (!m_canSqueezeBlock)
                     {
                         if (m_subsystemTerrain.Terrain.GetCellContents(num2, num3, num4) != 0) return false;
                     }
-                    ModsManager.HookAction("JumpToPlace", loader => { loader.JumpToPlace(out pass); return true; });
-                    if (num3 > 0 && num3 < 255 && (pass || (IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Survival)))
+                    if (num3 > 0 && num3 < 255 && (m_canJumpToPlace || (IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Survival)))
                     {
                         bool flag = false;
                         if (block.IsCollidable)
