@@ -30,6 +30,8 @@ namespace GameEntitySystem
 
 		public static event EventHandler<EntityAddRemoveEventArgs> EntityRemoved;
 
+		public static event Action<Project> OnProjectLoad;
+
 		public ProjectData m_projectData;
 
 		public Project(GameDatabase gameDatabase, ProjectData projectData)
@@ -73,6 +75,10 @@ namespace GameEntitySystem
 				foreach (Subsystem value3 in dictionary.Values)
 				{
 					LoadSubsystem(value3, dictionary, loadedSubsystems, 0);
+				}
+				if(OnProjectLoad != null)
+                {
+					OnProjectLoad.Invoke(this);
 				}
 				if (projectData.EntityDataList != null)
 				{
@@ -304,6 +310,7 @@ namespace GameEntitySystem
 					subsystem.Dispose();
 				}
 			}
+			OnProjectLoad = null;
 			EntityRemoved = null;
 			EntityAdded = null;
 		}
@@ -321,6 +328,7 @@ namespace GameEntitySystem
 			if (EntityAdded != null)
 			{
 				EntityAdded(this, new EntityAddRemoveEventArgs(entity));
+
 			}
 			entity.FireEntityAddedEvent();
 		}
