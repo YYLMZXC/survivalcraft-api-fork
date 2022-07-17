@@ -17,9 +17,9 @@ using XmlUtilities;
 
 public static class ModsManager
 {
-    public const string APIVersion = "1.42";
+    public const string APIVersion = "1.43";
     public const string SCVersion = "2.3.0.0";
-    //1为api1.33 2为api1.4
+    //1为api1.33 2为api1.40
     public const int Apiv = 3;
 
 #if desktop

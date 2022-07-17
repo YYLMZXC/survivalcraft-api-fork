@@ -63,7 +63,7 @@ namespace Game
             set;
         }
 
-        public CancellableBusyDialog(string largeMessage, bool autoHideOnCancel, bool CanHideDialog = false)
+        public CancellableBusyDialog(string largeMessage, bool autoHideOnCancel)
         {
             XElement node = ContentManager.Get<XElement>("Dialogs/CancellableBusyDialog");
             LoadContents(this, node);
@@ -72,17 +72,30 @@ namespace Game
             m_cancelButtonWidget = Children.Find<ButtonWidget>("CancellableBusyDialog.CancelButton");
             m_hideButtonWidget = Children.Find<ButtonWidget>("CancellableBusyDialog.HideButton");
             m_hideButtonWidget.IsVisible = false;
-            if (CanHideDialog)
-            {
-                m_hideButtonWidget.IsVisible = true;
-                m_cancelButtonWidget.Size = new Engine.Vector2(160, 60);
-                m_hideButtonWidget.Size = new Engine.Vector2(160, 60);
-            }
             Progress = new CancellableProgress();
             m_autoHideOnCancel = autoHideOnCancel;
             LargeMessage = largeMessage;
             ShowProgressMessage = true;
         }
+
+        public CancellableBusyDialog(string largeMessage, string hideButtonName, bool autoHideOnCancel)
+        {
+            XElement node = ContentManager.Get<XElement>("Dialogs/CancellableBusyDialog");
+            LoadContents(this, node);
+            m_largeLabelWidget = Children.Find<LabelWidget>("CancellableBusyDialog.LargeLabel");
+            m_smallLabelWidget = Children.Find<LabelWidget>("CancellableBusyDialog.SmallLabel");
+            m_cancelButtonWidget = Children.Find<ButtonWidget>("CancellableBusyDialog.CancelButton");
+            m_hideButtonWidget = Children.Find<ButtonWidget>("CancellableBusyDialog.HideButton");
+            m_hideButtonWidget.IsVisible = true;
+            m_hideButtonWidget.Text = hideButtonName;
+            m_cancelButtonWidget.Size = new Engine.Vector2(160, 60);
+            m_hideButtonWidget.Size = new Engine.Vector2(160, 60);
+            Progress = new CancellableProgress();
+            m_autoHideOnCancel = autoHideOnCancel;
+            LargeMessage = largeMessage;
+            ShowProgressMessage = true;
+        }
+
 
         public override void Update()
         {
