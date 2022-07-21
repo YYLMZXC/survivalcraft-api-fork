@@ -239,6 +239,8 @@ namespace Game
 
 		public virtual Action<ComponentBody> CollidedWithBody { get; set; }
 
+		public Action<IMovingBlockSet> CollidedWithMovingBlock { get; set; }
+
 		static ComponentBody()
 		{
 			List<Vector3> list = new List<Vector3>();
@@ -806,6 +808,10 @@ namespace Game
 			m_subsystemMovingBlocks.FindMovingBlocks(boundingBox, extendToFillCells: false, m_movingBlockSets);
 			for (int i = 0; i < m_movingBlockSets.Count; i++)
 			{
+				if (CollidedWithMovingBlock != null)
+				{
+					CollidedWithMovingBlock.Invoke(m_movingBlockSets[i]);
+				}
 				IMovingBlockSet movingBlockSet = m_movingBlockSets.Array[i];
 				for (int j = 0; j < movingBlockSet.Blocks.Count; j++)
 				{
