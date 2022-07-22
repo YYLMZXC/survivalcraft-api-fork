@@ -959,46 +959,39 @@ public class ModsManageContentScreen : Screen
 
     private static bool StrengtheningMod(string path)
     {
-        try
+        Stream stream = Storage.OpenFile(path, OpenFileMode.Read);
+        byte[] buff = new byte[stream.Length];
+        stream.Read(buff, 0, buff.Length);
+        byte[] hc = Encoding.UTF8.GetBytes(ModsManager.HeadingCode);
+        bool decipher = true;
+        for (int i = 0; i < hc.Length; i++)
         {
-            Stream stream = Storage.OpenFile(path, OpenFileMode.Read);
-            byte[] buff = new byte[stream.Length];
-            stream.Read(buff, 0, buff.Length);
-            byte[] hc = Encoding.UTF8.GetBytes(ModsManager.HeadingCode);
-            bool decipher = true;
+            if (hc[i] != buff[i])
+            {
+                decipher = false;
+                break;
+            }
+        }
+        if (!decipher)
+        {
+            byte[] buff2 = new byte[buff.Length + hc.Length];
             for (int i = 0; i < hc.Length; i++)
             {
-                if (hc[i] != buff[i])
-                {
-                    decipher = false;
-                    break;
-                }
+                buff2[i] = hc[i];
             }
-            if (!decipher)
+            for (int i = 0; i < buff.Length; i++)
             {
-                byte[] buff2 = new byte[buff.Length + hc.Length];
-                for (int i = 0; i < hc.Length; i++)
-                {
-                    buff2[i] = hc[i];
-                }
-                for (int i = 0; i < buff.Length; i++)
-                {
-                    buff2[i + hc.Length] = buff[buff.Length - 1 - i];
-                }
-                string newPath = string.Format("{0}({1}).scmod", path.Substring(0, path.LastIndexOf('.')), LanguageControl.Get(fName, 63));
-                FileStream fileStream = new FileStream(Storage.GetSystemPath(newPath), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-                fileStream.Write(buff2, 0, buff2.Length);
-                fileStream.Flush();
-                stream.Dispose();
-                fileStream.Dispose();
-                return true;
+                buff2[i + hc.Length] = buff[buff.Length - 1 - i];
             }
-            else return false;
+            string newPath = string.Format("{0}({1}).scmod", path.Substring(0, path.LastIndexOf('.')), LanguageControl.Get(fName, 63));
+            FileStream fileStream = new FileStream(Storage.GetSystemPath(newPath), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            fileStream.Write(buff2, 0, buff2.Length);
+            fileStream.Flush();
+            stream.Dispose();
+            fileStream.Dispose();
+            return true;
         }
-        catch (Exception)
-        {
-            return false;
-        }
+        else return false;
     }
 
     public void UpdateModFromCommunity(ModInfo modInfo)
