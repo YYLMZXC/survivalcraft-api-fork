@@ -425,9 +425,9 @@ public static class ModsManager
         }
     }
 
-    public static Stream GetDecipherStream(Stream stream)
+    private static Stream GetDecipherStream(Stream stream)
     {
-        Stream keepOpenStream = new MemoryStream();
+        MemoryStream keepOpenStream = new MemoryStream();
         byte[] buff = new byte[stream.Length];
         stream.Read(buff, 0, buff.Length);
         byte[] hc = Encoding.UTF8.GetBytes(HeadingCode);
@@ -449,17 +449,18 @@ public static class ModsManager
             }
             keepOpenStream.Write(buff2, 0, buff2.Length);
             keepOpenStream.Flush();
-            keepOpenStream.Position = 0L;
         }
         else
         {
+            stream.Position = 0L;
             stream.CopyTo(keepOpenStream);
-            keepOpenStream.Position = 0L;
         }
+        stream.Dispose();
+        keepOpenStream.Position = 0L;
         return keepOpenStream;
     }
 
-    public static bool StrengtheningMod(string path)
+    private static bool StrengtheningMod(string path)
     {
         try
         {
@@ -497,7 +498,7 @@ public static class ModsManager
             }
             else return false;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return false;
         }

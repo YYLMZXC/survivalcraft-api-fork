@@ -4,6 +4,7 @@ using Game;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -706,7 +707,7 @@ public class ModsManageContentScreen : Screen
                         try
                         {
                             stream = Storage.OpenFile(pathName, OpenFileMode.Read);
-                            stream = ModsManager.GetDecipherStream(stream);
+                            stream = GetDecipherStream(stream);
                             ZipArchive zipArchive = ZipArchive.Open(stream, false);
                             foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.ReadCentralDir())
                             {
@@ -803,7 +804,7 @@ public class ModsManageContentScreen : Screen
         };
         if (IsDirectory) return modItem;
         Stream stream = Storage.OpenFile(pathName, OpenFileMode.Read);
-        stream = ModsManager.GetDecipherStream(stream);
+        stream = GetDecipherStream(stream);
         try
         {
             ZipArchive zipArchive = ZipArchive.Open(stream, false);
@@ -883,6 +884,41 @@ public class ModsManageContentScreen : Screen
         {
             m_commonPathList.Add(path);
         }
+    }
+
+    private static Stream GetDecipherStream(Stream stream)
+    {
+        MemoryStream keepOpenStream = new MemoryStream();
+        byte[] buff = new byte[stream.Length];
+        stream.Read(buff, 0, buff.Length);
+        byte[] hc = Encoding.UTF8.GetBytes(ModsManager.HeadingCode);
+        bool decipher = true;
+        for (int i = 0; i < hc.Length; i++)
+        {
+            if (hc[i] != buff[i])
+            {
+                decipher = false;
+                break;
+            }
+        }
+        if (decipher)
+        {
+            byte[] buff2 = new byte[buff.Length - hc.Length];
+            for (int i = 0; i < buff2.Length; i++)
+            {
+                buff2[i] = buff[buff.Length - 1 - i];
+            }
+            keepOpenStream.Write(buff2, 0, buff2.Length);
+            keepOpenStream.Flush();
+        }
+        else
+        {
+            stream.Position = 0L;
+            stream.CopyTo(keepOpenStream);
+        }
+        stream.Dispose();
+        keepOpenStream.Position = 0L;
+        return keepOpenStream;
     }
 
     public void UpdateModFromCommunity(ModInfo modInfo)
