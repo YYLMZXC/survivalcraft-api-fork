@@ -57,6 +57,7 @@ public static class ModsManager
                          path;//移动端mods数据文件夹
     internal static ModEntity SurvivalCraftModEntity;
     internal static bool ConfigLoaded = false;
+    internal static string HeadingCode = "有头有脸天才少年,耍猴表演敢为人先";
 
     public class ModSettings
     {
@@ -400,10 +401,9 @@ public static class ModsManager
             string ks = Storage.CombinePaths(path, item);
             using (Stream stream = Storage.OpenFile(ks, OpenFileMode.Read))
             {
-                Stream keepOpenStream = new MemoryStream();
-                stream.CopyTo(keepOpenStream);
                 try
                 {
+                    Stream keepOpenStream = GetDecipherStream(stream);
                     if (ms == ".scmod")
                     {
                         var modEntity = new ModEntity(ZipArchive.Open(keepOpenStream, true));
@@ -416,13 +416,90 @@ public static class ModsManager
                 {
                     AddException(e);
                     stream.Close();
-                    keepOpenStream.Close();
                 }
             }
         }
         foreach (string dir in Storage.ListDirectoryNames(path))
         {
             GetScmods(Storage.CombinePaths(path, dir));
+        }
+    }
+
+    public static Stream GetDecipherStream(Stream stream)
+    {
+        Stream keepOpenStream = new MemoryStream();
+        byte[] buff = new byte[stream.Length];
+        stream.Read(buff, 0, buff.Length);
+        byte[] hc = Encoding.UTF8.GetBytes(HeadingCode);
+        bool decipher = true;
+        for (int i = 0; i < hc.Length; i++)
+        {
+            if (hc[i] != buff[i])
+            {
+                decipher = false;
+                break;
+            }
+        }
+        if (decipher)
+        {
+            byte[] buff2 = new byte[buff.Length - hc.Length];
+            for (int i = 0; i < buff2.Length; i++)
+            {
+                buff2[i] = buff[buff.Length - 1 - i];
+            }
+            keepOpenStream.Write(buff2, 0, buff2.Length);
+            keepOpenStream.Flush();
+            keepOpenStream.Position = 0L;
+        }
+        else
+        {
+            stream.CopyTo(keepOpenStream);
+            keepOpenStream.Position = 0L;
+        }
+        return keepOpenStream;
+    }
+
+    public static bool StrengtheningMod(string path)
+    {
+        try
+        {
+            Stream stream = Storage.OpenFile(path, OpenFileMode.Read);
+            byte[] buff = new byte[stream.Length];
+            stream.Read(buff, 0, buff.Length);
+            byte[] hc = Encoding.UTF8.GetBytes(HeadingCode);
+            bool decipher = true;
+            for (int i = 0; i < hc.Length; i++)
+            {
+                if (hc[i] != buff[i])
+                {
+                    decipher = false;
+                    break;
+                }
+            }
+            if (!decipher)
+            {
+                byte[] buff2 = new byte[buff.Length + hc.Length];
+                for (int i = 0; i < hc.Length; i++)
+                {
+                    buff2[i] = hc[i];
+                }
+                for (int i = 0; i < buff.Length; i++)
+                {
+                    buff2[i + hc.Length] = buff[buff.Length - 1 - i];
+                }
+                string newPath = path.Substring(0, path.LastIndexOf('.')) + "(加固).scmod";
+                FileStream fileStream = new FileStream(Storage.GetSystemPath(newPath), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+                fileStream.Write(buff2, 0, buff2.Length);
+                fileStream.Flush();
+                stream.Dispose();
+                fileStream.Dispose();
+                return true;
+            }
+            else return false;
+        }
+        catch (Exception e)
+        {
+            return false;
         }
     }
 

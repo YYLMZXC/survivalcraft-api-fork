@@ -546,6 +546,14 @@ namespace Game
         }
 
         /// <summary>
+        /// 播放主页背景音乐，返回true则不播放原歌曲
+        /// </summary>
+        public virtual bool MenuPlayMusic()
+        {
+            return false;
+        }
+
+        /// <summary>
         /// 摇人行为
         /// </summary>
         /// <param name="herdBehavior"></param>

@@ -83,6 +83,10 @@ namespace Game
                 VersionsManager.Initialize();
                 ExternalContentManager.Initialize();                
                 ScreensManager.Initialize();
+                Window.Deactivated += delegate 
+                {
+                    MusicManager.StopMusic();
+                };
                 Log.Information("Program Initialize Success");
             }
             catch (Exception e)

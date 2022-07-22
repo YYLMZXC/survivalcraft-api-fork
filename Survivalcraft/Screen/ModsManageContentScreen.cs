@@ -706,7 +706,8 @@ public class ModsManageContentScreen : Screen
                         try
                         {
                             stream = Storage.OpenFile(pathName, OpenFileMode.Read);
-                            ZipArchive zipArchive = ZipArchive.Open(stream, true);
+                            stream = ModsManager.GetDecipherStream(stream);
+                            ZipArchive zipArchive = ZipArchive.Open(stream, false);
                             foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.ReadCentralDir())
                             {
                                 if (zipArchiveEntry.FilenameInZip == "modinfo.json")
@@ -802,9 +803,10 @@ public class ModsManageContentScreen : Screen
         };
         if (IsDirectory) return modItem;
         Stream stream = Storage.OpenFile(pathName, OpenFileMode.Read);
+        stream = ModsManager.GetDecipherStream(stream);
         try
         {
-            ZipArchive zipArchive = ZipArchive.Open(stream, true);
+            ZipArchive zipArchive = ZipArchive.Open(stream, false);
             foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.ReadCentralDir())
             {
                 if (zipArchiveEntry.FilenameInZip == "icon.png")
@@ -825,7 +827,7 @@ public class ModsManageContentScreen : Screen
                 }
             }
         }
-        catch
+        catch(Exception)
         {
             modItem = null;
         }
