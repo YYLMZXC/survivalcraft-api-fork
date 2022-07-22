@@ -302,11 +302,13 @@ public class ModsManageContentScreen : Screen
         m_uninstallFilterButton.Color = (m_filter == StateFilter.InstallState) ? Color.White : Color.Green;
         m_installFilterButton.Color = (m_filter == StateFilter.InstallState) ? Color.Green : Color.White;
         m_upDirectoryButton.IsVisible = (m_filter != StateFilter.InstallState);
-        m_actionButton2.IsVisible = (m_filter != StateFilter.InstallState);
-        m_actionButton2.IsEnabled = (m_filter != StateFilter.InstallState);
         if (m_filter != StateFilter.InstallState)
         {
             m_actionButton2.Text = (m_path == m_uninstallPath) ? LanguageControl.Get(fName, 16) : LanguageControl.Get(fName, 17);
+        }
+        else
+        {
+            m_actionButton2.Text = LanguageControl.Get(fName, 63);
         }
         ModItem modItem = null;
         if (m_modsContentList.SelectedIndex.HasValue)
@@ -317,16 +319,19 @@ public class ModsManageContentScreen : Screen
         {
             m_actionButton.Text = (m_filter == StateFilter.InstallState) ? LanguageControl.Get(fName, 18) : LanguageControl.Get(fName, 19);
             m_actionButton.IsEnabled = true;
+            m_actionButton2.IsEnabled = true;
         }
         else if (modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Directory)
         {
             m_actionButton.Text = LanguageControl.Get(fName, 20);
             m_actionButton.IsEnabled = (modItem.ExternalContentEntry.Path != "android:/Android");
+            m_actionButton2.IsEnabled = (m_filter != StateFilter.InstallState);
         }
         else
         {
             m_actionButton.Text = LanguageControl.Get(fName, 21);
             m_actionButton.IsEnabled = false;
+            m_actionButton2.IsEnabled = (m_filter != StateFilter.InstallState);
         }
         if (m_actionButton.IsClicked)
         {
@@ -447,72 +452,103 @@ public class ModsManageContentScreen : Screen
         }
         if (m_actionButton2.IsClicked)
         {
-            if (m_path == m_uninstallPath)
+            if(m_filter == StateFilter.InstallState)
             {
-                if (m_cancellableBusyDialog != null)
+                if(modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
                 {
-                    DialogsManager.ShowDialog(null, m_cancellableBusyDialog);
-                    return;
-                }
-                m_cancellableBusyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 62), true);
-                ReadyForScan(m_cancellableBusyDialog);
-                Task.Run(delegate
-                {
-                    string scanPath;
-                    if (androidSystem)
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 64), LanguageControl.Get(fName, 65), LanguageControl.Get(fName, 63), LanguageControl.Cancel, delegate (MessageDialogButton result)
                     {
-                        scanPath = "android:";
-                    }
-                    else
-                    {
-                        string systemPath = Storage.GetSystemPath(m_path);
-                        systemPath = systemPath.Replace("\\", "/");
-                        int index = systemPath.IndexOf('/');
-                        scanPath = "system:" + systemPath.Substring(0, index) + "/";
-                    }
-                    int allCount = ScanModFile(scanPath, m_cancellableBusyDialog);
-                    DialogsManager.HideDialog(m_cancellableBusyDialog);
-                    m_cancellableBusyDialog = null;
-                    if (allCount == 0)
-                    {
-                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 33), LanguageControl.Get(fName, 34), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
+                        if (result == MessageDialogButton.Button1)
                         {
-                            if (result == MessageDialogButton.Button1)
+                            try
                             {
-                                ScreensManager.SwitchScreen("CommunityContent", "Mod");
+                                if (StrengtheningMod(modItem.ExternalContentEntry.Path))
+                                {
+                                    Storage.DeleteFile(modItem.ExternalContentEntry.Path);
+                                    UpdateListWithBusyDialog();
+                                }
+                                else
+                                {
+                                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 66), LanguageControl.Ok, null, null));
+                                }
                             }
-                        }));
-                    }
-                    else
-                    {
-                        string tips = string.Format(LanguageControl.Get(fName, 35), allCount);
-                        if(m_scanFailPaths.Count > 0)
-                        {
-                            tips += "\n\n" + LanguageControl.Get(fName, 58) + "\n";
-                            foreach (string p in m_scanFailPaths)
+                            catch(Exception e)
                             {
-                                tips += p + "\n";
+                                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 67) + e, LanguageControl.Ok, null, null));
                             }
                         }
-                        if (ScreensManager.CurrentScreen == this)
+                    }));
+                }
+            }
+            else
+            {
+                if (m_path == m_uninstallPath)
+                {
+                    if (m_cancellableBusyDialog != null)
+                    {
+                        DialogsManager.ShowDialog(null, m_cancellableBusyDialog);
+                        return;
+                    }
+                    m_cancellableBusyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 62), true);
+                    ReadyForScan(m_cancellableBusyDialog);
+                    Task.Run(delegate
+                    {
+                        string scanPath;
+                        if (androidSystem)
                         {
-                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 28), tips, LanguageControl.Get(fName, 30), null, delegate (MessageDialogButton result)
+                            scanPath = "android:";
+                        }
+                        else
+                        {
+                            string systemPath = Storage.GetSystemPath(m_path);
+                            systemPath = systemPath.Replace("\\", "/");
+                            int index = systemPath.IndexOf('/');
+                            scanPath = "system:" + systemPath.Substring(0, index) + "/";
+                        }
+                        int allCount = ScanModFile(scanPath, m_cancellableBusyDialog);
+                        DialogsManager.HideDialog(m_cancellableBusyDialog);
+                        m_cancellableBusyDialog = null;
+                        if (allCount == 0)
+                        {
+                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 33), LanguageControl.Get(fName, 34), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
                             {
-                                SetPath(m_uninstallPath);
-                                UpdateListWithBusyDialog();
+                                if (result == MessageDialogButton.Button1)
+                                {
+                                    ScreensManager.SwitchScreen("CommunityContent", "Mod");
+                                }
                             }));
                         }
                         else
                         {
-                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 28), tips, LanguageControl.Ok, null, null));
+                            string tips = string.Format(LanguageControl.Get(fName, 35), allCount);
+                            if (m_scanFailPaths.Count > 0)
+                            {
+                                tips += "\n\n" + LanguageControl.Get(fName, 58) + "\n";
+                                foreach (string p in m_scanFailPaths)
+                                {
+                                    tips += p + "\n";
+                                }
+                            }
+                            if (ScreensManager.CurrentScreen == this)
+                            {
+                                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 28), tips, LanguageControl.Get(fName, 30), null, delegate (MessageDialogButton result)
+                                {
+                                    SetPath(m_uninstallPath);
+                                    UpdateListWithBusyDialog();
+                                }));
+                            }
+                            else
+                            {
+                                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 28), tips, LanguageControl.Ok, null, null));
+                            }
                         }
-                    }
-                });
-            }
-            else
-            {
-                SetPath(m_uninstallPath);
-                UpdateListWithBusyDialog();
+                    });
+                }
+                else
+                {
+                    SetPath(m_uninstallPath);
+                    UpdateListWithBusyDialog();
+                }
             }
         }
         if (m_uninstallFilterButton.IsClicked && m_filter == StateFilter.InstallState)
@@ -919,6 +955,50 @@ public class ModsManageContentScreen : Screen
         stream.Dispose();
         keepOpenStream.Position = 0L;
         return keepOpenStream;
+    }
+
+    private static bool StrengtheningMod(string path)
+    {
+        try
+        {
+            Stream stream = Storage.OpenFile(path, OpenFileMode.Read);
+            byte[] buff = new byte[stream.Length];
+            stream.Read(buff, 0, buff.Length);
+            byte[] hc = Encoding.UTF8.GetBytes(ModsManager.HeadingCode);
+            bool decipher = true;
+            for (int i = 0; i < hc.Length; i++)
+            {
+                if (hc[i] != buff[i])
+                {
+                    decipher = false;
+                    break;
+                }
+            }
+            if (!decipher)
+            {
+                byte[] buff2 = new byte[buff.Length + hc.Length];
+                for (int i = 0; i < hc.Length; i++)
+                {
+                    buff2[i] = hc[i];
+                }
+                for (int i = 0; i < buff.Length; i++)
+                {
+                    buff2[i + hc.Length] = buff[buff.Length - 1 - i];
+                }
+                string newPath = string.Format("{0}({1}).scmod", path.Substring(0, path.LastIndexOf('.')), LanguageControl.Get(fName, 63));
+                FileStream fileStream = new FileStream(Storage.GetSystemPath(newPath), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+                fileStream.Write(buff2, 0, buff2.Length);
+                fileStream.Flush();
+                stream.Dispose();
+                fileStream.Dispose();
+                return true;
+            }
+            else return false;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     public void UpdateModFromCommunity(ModInfo modInfo)
