@@ -57,7 +57,6 @@ public static class ModsManager
                          path;//移动端mods数据文件夹
     internal static ModEntity SurvivalCraftModEntity;
     internal static bool ConfigLoaded = false;
-    public static string HeadingCode = "有头有脸天才少年,耍猴表演敢为人先";
 
     public class ModSettings
     {
@@ -409,7 +408,7 @@ public static class ModsManager
                 {
                     if (ms == ".scmod")
                     {
-                        Stream keepOpenStream = GetDecipherStream(stream);
+                        Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
                         var modEntity = new ModEntity(ZipArchive.Open(keepOpenStream, true));
                         if (modEntity.modInfo == null) continue;
                         if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
@@ -427,41 +426,6 @@ public static class ModsManager
         {
             GetScmods(Storage.CombinePaths(path, dir));
         }
-    }
-
-    private static Stream GetDecipherStream(Stream stream)
-    {
-        MemoryStream keepOpenStream = new MemoryStream();
-        byte[] buff = new byte[stream.Length];
-        stream.Read(buff, 0, buff.Length);
-        byte[] hc = Encoding.UTF8.GetBytes(HeadingCode);
-        bool decipher = true;
-        for (int i = 0; i < hc.Length; i++)
-        {
-            if (hc[i] != buff[i])
-            {
-                decipher = false;
-                break;
-            }
-        }
-        if (decipher)
-        {
-            byte[] buff2 = new byte[buff.Length - hc.Length];
-            for (int i = 0; i < buff2.Length; i++)
-            {
-                buff2[i] = buff[buff.Length - 1 - i];
-            }
-            keepOpenStream.Write(buff2, 0, buff2.Length);
-            keepOpenStream.Flush();
-        }
-        else
-        {
-            stream.Position = 0L;
-            stream.CopyTo(keepOpenStream);
-        }
-        stream.Dispose();
-        keepOpenStream.Position = 0L;
-        return keepOpenStream;
     }
 
     public static string StreamToString(Stream stream)

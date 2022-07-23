@@ -12,6 +12,8 @@ public class ModsManageContentScreen : Screen
 {
     public static string fName = "ModsManageContentScreen";
 
+    public static string HeadingCode = "有头有脸天才少年,耍猴表演敢为人先";
+
     public enum StateFilter { UninstallState, InstallState };
 
     public class ModItem
@@ -971,12 +973,12 @@ public class ModsManageContentScreen : Screen
         }
     }
 
-    private static Stream GetDecipherStream(Stream stream)
+    public static Stream GetDecipherStream(Stream stream)
     {
         MemoryStream keepOpenStream = new MemoryStream();
         byte[] buff = new byte[stream.Length];
         stream.Read(buff, 0, buff.Length);
-        byte[] hc = Encoding.UTF8.GetBytes(ModsManager.HeadingCode);
+        byte[] hc = Encoding.UTF8.GetBytes(HeadingCode);
         bool decipher = true;
         for (int i = 0; i < hc.Length; i++)
         {
@@ -1006,12 +1008,12 @@ public class ModsManageContentScreen : Screen
         return keepOpenStream;
     }
 
-    private static bool StrengtheningMod(string path)
+    public static bool StrengtheningMod(string path)
     {
         Stream stream = Storage.OpenFile(path, OpenFileMode.Read);
         byte[] buff = new byte[stream.Length];
         stream.Read(buff, 0, buff.Length);
-        byte[] hc = Encoding.UTF8.GetBytes(ModsManager.HeadingCode);
+        byte[] hc = Encoding.UTF8.GetBytes(HeadingCode);
         bool decipher = true;
         for (int i = 0; i < hc.Length; i++)
         {
