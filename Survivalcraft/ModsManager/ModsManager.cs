@@ -305,17 +305,21 @@ public static class ModsManager
     public static string ImportMod(string name, Stream stream)
     {
         if (!Storage.DirectoryExists(ModCachePath)) Storage.CreateDirectory(ModCachePath);
-        string path = Storage.CombinePaths(ModCachePath, name + ".scmod");
+        string realName = name + ".scmod";
+        string path = Storage.CombinePaths(ModCachePath, realName);
         int num = 1;
         while (Storage.FileExists(path))
         {
-            path = Storage.CombinePaths(ModCachePath, name + "(" + num + ").scmod");
+            realName = name + "(" + num + ").scmod";
+            path = Storage.CombinePaths(ModCachePath, realName);
             num++;
         }
         using (Stream fileStream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
         {
             stream.CopyTo(fileStream);
         }
+        var importModList = ScreensManager.FindScreen<ModsManageContentScreen>("ModsManageContent").m_latestScanModList;
+        if (!importModList.Contains(realName)) importModList.Add(realName);
         DialogsManager.ShowDialog(null, new MessageDialog("Mod下载成功", "请到Mod管理器中进行手动安装，是否跳转", "前往", "返回", delegate (MessageDialogButton result)
         {
             if (result == MessageDialogButton.Button1)
@@ -403,9 +407,9 @@ public static class ModsManager
             {
                 try
                 {
-                    Stream keepOpenStream = GetDecipherStream(stream);
                     if (ms == ".scmod")
                     {
+                        Stream keepOpenStream = GetDecipherStream(stream);
                         var modEntity = new ModEntity(ZipArchive.Open(keepOpenStream, true));
                         if (modEntity.modInfo == null) continue;
                         if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;

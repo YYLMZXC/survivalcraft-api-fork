@@ -56,6 +56,8 @@ public class ModsManageContentScreen : Screen
 
     public List<ModInfo> m_lastInstallModInfo = new List<ModInfo>();
 
+    public List<string> m_latestScanModList = new List<string>();
+
     public int m_count;
 
     public bool androidSystem;
@@ -125,11 +127,25 @@ public class ModsManageContentScreen : Screen
             XElement node2 = ContentManager.Get<XElement>("Widgets/ExternalContentItem");
             ContainerWidget containerWidget = (ContainerWidget)Widget.LoadWidget(this, node2, null);
             string details = LanguageControl.Get(fName, 2);
+            Color color = Color.White;
+            if (m_latestScanModList.Contains(modItem.Name))
+            {
+                color = Color.Green;
+            }
             if (modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
             {
-                details = string.Format(LanguageControl.Get(fName, 3), modItem.ModInfo.Version, modItem.ModInfo.Author, MathUtils.Round(modItem.ExternalContentEntry.Size / 1000));
+                if(modItem.ModInfo == null)
+                {
+                    details = LanguageControl.Get(fName, 68);
+                    color = Color.Red;
+                }
+                else
+                {
+                    details = string.Format(LanguageControl.Get(fName, 3), modItem.ModInfo.Version, modItem.ModInfo.Author, MathUtils.Round(modItem.ExternalContentEntry.Size / 1000));
+                }
             }
             containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Text").Text = modItem.Name;
+            containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Text").Color = color;
             containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Details").Text = details;
             RectangleWidget iconWidget = containerWidget.Children.Find<RectangleWidget>("ExternalContentItem.Icon");
             iconWidget.Subtexture = modItem.Subtexture;
@@ -158,8 +174,19 @@ public class ModsManageContentScreen : Screen
                 {
                     if (m_filter == StateFilter.UninstallState)
                     {
-                        string modDescription = LanguageControl.Get(fName, 6) + modItem.ModInfo.Description + "\n" + LanguageControl.Get(fName, 7) + modItem.ModInfo.PackageName + "，" + LanguageControl.Get(fName, 8);
-                        DialogsManager.ShowDialog(null, new MessageDialog(modItem.ModInfo.Name, modDescription, LanguageControl.Get(fName, 9), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
+                        string title;
+                        string modDescription;
+                        if (modItem.ModInfo != null)
+                        {
+                            title = modItem.ModInfo.Name;
+                            modDescription = LanguageControl.Get(fName, 6) + modItem.ModInfo.Description + "\n" + LanguageControl.Get(fName, 7) + modItem.ModInfo.PackageName + "，" + LanguageControl.Get(fName, 8);
+                        }
+                        else
+                        {
+                            title = LanguageControl.Get(fName, 8);
+                            modDescription = LanguageControl.Get(fName, 69);
+                        }
+                        DialogsManager.ShowDialog(null, new MessageDialog(title, modDescription, LanguageControl.Get(fName, 9), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
                         {
                             if (result == MessageDialogButton.Button1)
                             {
@@ -170,6 +197,7 @@ public class ModsManageContentScreen : Screen
                     }
                     else
                     {
+                        if (modItem.ModInfo == null) return;
                         string modDescription = LanguageControl.Get(fName, 6) + modItem.ModInfo.Description + "\n" + LanguageControl.Get(fName, 7) + modItem.ModInfo.PackageName;
                         DialogsManager.ShowDialog(null, new MessageDialog(modItem.ModInfo.Name, modDescription, LanguageControl.Get(fName, 60), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
                         {
@@ -279,6 +307,7 @@ public class ModsManageContentScreen : Screen
         m_uninstallModList.Clear();
         m_installModList.Clear();
         m_scanFailPaths.Clear();
+        m_latestScanModList.Clear();
         if (!Storage.DirectoryExists(m_uninstallPath)) Storage.CreateDirectory(m_uninstallPath);
         string commonPathsFile = Storage.CombinePaths(m_uninstallPath, "CommonPaths.txt");
         if(m_commonPathList.Count > 0)
@@ -318,13 +347,13 @@ public class ModsManageContentScreen : Screen
         if (modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
         {
             m_actionButton.Text = (m_filter == StateFilter.InstallState) ? LanguageControl.Get(fName, 18) : LanguageControl.Get(fName, 19);
-            m_actionButton.IsEnabled = true;
-            m_actionButton2.IsEnabled = true;
+            m_actionButton.IsEnabled = !(modItem.ModInfo == null && m_filter != StateFilter.InstallState);
+            m_actionButton2.IsEnabled = !(modItem.ModInfo == null && m_filter == StateFilter.InstallState);
         }
         else if (modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Directory)
         {
+            m_actionButton.IsEnabled = true;
             m_actionButton.Text = LanguageControl.Get(fName, 20);
-            m_actionButton.IsEnabled = (modItem.ExternalContentEntry.Path != "android:/Android");
             m_actionButton2.IsEnabled = (m_filter != StateFilter.InstallState);
         }
         else
@@ -342,7 +371,15 @@ public class ModsManageContentScreen : Screen
                 string uninstallPathName = modItem.ExternalContentEntry.Path;
                 if (m_filter == StateFilter.InstallState)
                 {
-                    string modDescription = LanguageControl.Get(fName, 6) + modItem.ModInfo.Description + "\n" + LanguageControl.Get(fName, 7) + modItem.ModInfo.PackageName + "，" + LanguageControl.Get(fName, 8);
+                    string modDescription;
+                    if (modItem.ModInfo != null)
+                    {
+                        modDescription = LanguageControl.Get(fName, 6) + modItem.ModInfo.Description + "\n" + LanguageControl.Get(fName, 7) + modItem.ModInfo.PackageName + "，" + LanguageControl.Get(fName, 8);
+                    }
+                    else
+                    {
+                        modDescription = LanguageControl.Get(fName, 70);
+                    }
                     DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 49), modDescription, LanguageControl.Ok, LanguageControl.Cancel, delegate (MessageDialogButton result)
                     {
                         if (result == MessageDialogButton.Button1)
@@ -559,6 +596,7 @@ public class ModsManageContentScreen : Screen
         }
         if (m_installFilterButton.IsClicked && m_filter != StateFilter.InstallState)
         {
+            m_latestScanModList.Clear();
             m_filter = StateFilter.InstallState;
             SetPath(m_installPath);
             if (!m_firstEnterInstallScreen)
@@ -669,10 +707,17 @@ public class ModsManageContentScreen : Screen
             if (!string.IsNullOrEmpty(extension) && extension.ToLower() == ".scmod")
             {
                 ModItem modItem = GetModItem(fileName, false);
-                if (modItem == null || modItem.ModInfo == null || string.IsNullOrEmpty(modItem.ModInfo.PackageName) || !modItem.ModInfo.ApiVersion.Contains("1.4")) continue;
+                if (modItem == null || (modItem.ModInfo != null && string.IsNullOrEmpty(modItem.ModInfo.PackageName))) continue;
+                if (modItem.ModInfo != null && !modItem.ModInfo.ApiVersion.StartsWith("1.4"))
+                {
+                    modItem.ModInfo = null;
+                }
                 if (m_filter == StateFilter.InstallState)
                 {
-                    m_installModInfo.Add(modItem.ModInfo);
+                    if(modItem.ModInfo != null)
+                    {
+                        m_installModInfo.Add(modItem.ModInfo);
+                    }
                     m_installModList.Add(modItem);
                 }
                 else
@@ -762,8 +807,8 @@ public class ModsManageContentScreen : Screen
                         catch
                         {
                         }
-                        if (stream == null || modInfo == null) continue;
-                        if (string.IsNullOrEmpty(modInfo.PackageName) || !modInfo.ApiVersion.Contains("1.4")) continue;
+                        if (stream == null) continue;
+                        if(modInfo != null && string.IsNullOrEmpty(modInfo.PackageName)) continue;
                         string uninstallPathName = Storage.CombinePaths(m_uninstallPath, fileName);
                         if (!Storage.FileExists(uninstallPathName))
                         {
@@ -773,7 +818,11 @@ public class ModsManageContentScreen : Screen
                                 Storage.DeleteFile(pathName);
                             }
                             AddCommonPath(validPath);
-                            m_count++;
+                            if(modInfo != null && modInfo.ApiVersion.StartsWith("1.4"))
+                            {
+                                m_latestScanModList.Add(fileName);
+                                m_count++;
+                            }
                         }
                         if (stream != null) stream.Close();
                     }
