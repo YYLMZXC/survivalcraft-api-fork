@@ -253,16 +253,15 @@ namespace Game
             environmentData = environmentData ?? m_defaultEnvironmentData;
             int num = Terrain.ExtractContents(value);
             Block block = Blocks[num];
-            Vector4 vector = Vector4.Zero;
-            int textureSlotCount = block.GetTextureSlotCount(value);
-            int textureSlot = block.GetFaceTextureSlot(-1, value);
-            vector.X = ((float)(textureSlot % textureSlotCount)) / textureSlotCount;
-            vector.Y = ((float)(textureSlot / textureSlotCount)) / textureSlotCount;
-            vector.W = vector.Y + 1f / textureSlotCount;
-            vector.Z = vector.X + 1f / textureSlotCount;
+            Vector4 vector;
             if (texture == null)
             {
                 texture = ((environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture);
+                vector = m_slotTexCoords[block.GetFaceTextureSlot(-1, value)];
+            }
+            else
+            {
+                vector = new Vector4(0f, 0f, 1f, 1f);
             }
             if (!isEmissive)
             {
