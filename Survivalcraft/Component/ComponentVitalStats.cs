@@ -503,16 +503,16 @@ namespace Game
             switch (m_componentPlayer.ComponentClothing.LeastInsulatedSlot)
             {
                 case ClothingSlot.Head:
-                    arg = LanguageControl.Get(fName, 40);
-                    break;
-                case ClothingSlot.Torso:
                     arg = LanguageControl.Get(fName, 41);
                     break;
-                case ClothingSlot.Legs:
+                case ClothingSlot.Torso:
                     arg = LanguageControl.Get(fName, 42);
                     break;
-                default:
+                case ClothingSlot.Legs:
                     arg = LanguageControl.Get(fName, 43);
+                    break;
+                default:
+                    arg = LanguageControl.Get(fName, 44);
                     break;
             }
             if (m_subsystemTime.PeriodicGameTimeEvent(2.0, 2.0 * GetHashCode() % 1000.0 / 1000.0))

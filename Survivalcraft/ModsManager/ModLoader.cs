@@ -65,6 +65,14 @@ namespace Game
         {
             return false;
         }
+
+        /// <summary>
+        /// 设置家具的颜色
+        /// </summary>
+        public virtual void SetFurnitureDesignColor(FurnitureDesign design, Block block, int value, ref int FaceTextureSlot, ref Color Color)
+        {
+        }
+
         /// <summary>
         /// 更改击退和晕眩效果
         /// </summary>

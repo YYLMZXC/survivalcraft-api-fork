@@ -19,6 +19,8 @@ namespace Game
 
         public static int MaxWorlds = 300;
 
+        public double m_modTipsTime;
+
         public static string fName = "PlayScreen";
 
         public PlayScreen()
@@ -59,6 +61,7 @@ namespace Game
                     Play(item);
                 }
             };
+            m_modTipsTime = -10000000f;
         }
 
         public override void Enter(object[] parameters)
@@ -130,12 +133,99 @@ namespace Game
 
         public void Play(object item)
         {
+            bool flag = false;
+            string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
+            if (languageType == "zh-CN" && Time.RealTime - m_modTipsTime > 3600f)
+            {
+                m_modTipsTime = Time.RealTime;
+                flag = ShowTips(item);
+            }
+            if (!flag) GameLoad(item);
+        }
+
+        public void GameLoad(object item)
+        {
             ModsManager.HookAction("BeforeGameLoading", loader => {
                 item = loader.BeforeGameLoading(this, item);
                 return true;
             });
             ScreensManager.SwitchScreen("GameLoading", item, null);
             m_worldsListWidget.SelectedItem = null;
+        }
+
+        public bool ShowTips(object item)
+        {
+            string tips = string.Empty;
+            int num = 1;
+            try
+            {
+                foreach (ModEntity modEntity in ModsManager.ModListAll)
+                {
+                    foreach(var value in MotdManager.FilterModAll)
+                    {
+                        if (value.FilterAPIVersion == ModsManager.APIVersion && value.PackageName == modEntity.modInfo.PackageName && CompareVersion(value.Version, modEntity.modInfo.Version))
+                        {
+                            tips += string.Format("{0}.{1}(v{2})  {3}\n", num, modEntity.modInfo.Name, modEntity.modInfo.Version, value.Explanation);
+                            num++;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            if (!string.IsNullOrEmpty(tips))
+            {
+                DialogsManager.ShowDialog(null, new MessageDialog("Mod不兼容警告！", tips, "继续", "返回", delegate(MessageDialogButton button)
+                {
+                    if(button == MessageDialogButton.Button1)
+                    {
+                        GameLoad(item);
+                    }
+                }));
+                return true;
+            }
+            return false;
+        }
+
+        public bool CompareVersion(string v1, string v2)
+        {
+            if (v1 == "all")
+            {
+                return true;
+            }
+            else if (v1.Contains("~"))
+            {
+                string[] versions = v1.Split(new char[1] { '~' }, StringSplitOptions.RemoveEmptyEntries);
+                try
+                {
+                    double minv = double.Parse(versions[0]);
+                    double maxv = double.Parse(versions[1]);
+                    double v = double.Parse(v2);
+                    return (v >= minv && v <= maxv);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            else if (v1.Contains(";"))
+            {
+                string[] versions = v1.Split(new char[1] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach(string v in versions)
+                {
+                    if(v == v2)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                return (v1 == v2);
+            }
         }
     }
 }

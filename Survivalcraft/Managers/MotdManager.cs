@@ -37,11 +37,26 @@ namespace Game
             public string EnContent = string.Empty;
         }
 
+        public class FilterMod
+        {
+            public string Name = string.Empty;
+
+            public string PackageName = string.Empty;
+
+            public string Version = string.Empty;
+
+            public string FilterAPIVersion = string.Empty;
+
+            public string Explanation = string.Empty;
+        }
+
         public static Bulletin m_bulletin;
 
         public static bool CanShowBulletin = false;
 
         public static bool CanDownloadMotd = true;
+
+        public static List<FilterMod> FilterModAll = new List<FilterMod>();
 
         public static Message m_message;
 
@@ -185,6 +200,7 @@ namespace Game
                     }
                 }
                 LoadBulletin(dataString);
+                LoadFilterMods(dataString);
                 return message;
             }
             catch (Exception ex)
@@ -199,7 +215,7 @@ namespace Game
             int num = dataString.IndexOf("<Motd2");
             if (num < 0)
             {
-                throw new InvalidOperationException("Invalid MOTD data string.");
+                throw new InvalidOperationException("Invalid MOTD2 data string.");
             }
             int num2 = dataString.IndexOf("</Motd2>");
             if (num2 >= 0 && num2 > num)
@@ -208,17 +224,46 @@ namespace Game
             }
             XElement xElement = XmlUtils.LoadXmlFromString(dataString.Substring(num, num2 - num), throwOnError: true);
             string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
-            foreach (XElement item2 in xElement.Elements())
+            foreach (XElement item in xElement.Elements())
             {
-                if (item2.Name.LocalName == "Bulletin")
+                if (item.Name.LocalName == "Bulletin")
                 {
                     m_bulletin = new Bulletin();
-                    m_bulletin.Title = item2.Attribute("Title").Value;
-                    m_bulletin.EnTitle = item2.Attribute("EnTitle").Value;
-                    m_bulletin.Time = languageType + "$" + item2.Attribute("Time").Value;
-                    m_bulletin.Content = item2.Element("Content").Value;
-                    m_bulletin.EnContent = item2.Element("EnContent").Value;
+                    m_bulletin.Title = item.Attribute("Title").Value;
+                    m_bulletin.EnTitle = item.Attribute("EnTitle").Value;
+                    m_bulletin.Time = languageType + "$" + item.Attribute("Time").Value;
+                    m_bulletin.Content = item.Element("Content").Value;
+                    m_bulletin.EnContent = item.Element("EnContent").Value;
                     break;
+                }
+            }
+        }
+
+        public static void LoadFilterMods(string dataString)
+        {
+            int num = dataString.IndexOf("<Motd3");
+            if (num < 0)
+            {
+                throw new InvalidOperationException("Invalid MOTD3 data string.");
+            }
+            int num2 = dataString.IndexOf("</Motd3>");
+            if (num2 >= 0 && num2 > num)
+            {
+                num2 += 8;
+            }
+            XElement xElement = XmlUtils.LoadXmlFromString(dataString.Substring(num, num2 - num), throwOnError: true);
+            FilterModAll.Clear();
+            foreach (XElement item in xElement.Elements())
+            {
+                if (item.Name.LocalName == "FilterMod")
+                {
+                    FilterMod filterMod = new FilterMod();
+                    filterMod.Name = item.Attribute("Name").Value;
+                    filterMod.PackageName = item.Attribute("PackageName").Value;
+                    filterMod.Version = item.Attribute("Version").Value;
+                    filterMod.FilterAPIVersion = item.Attribute("FilterAPIVersion").Value;
+                    filterMod.Explanation = item.Value;
+                    FilterModAll.Add(filterMod);
                 }
             }
         }

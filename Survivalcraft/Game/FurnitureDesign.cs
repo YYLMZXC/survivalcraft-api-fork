@@ -884,6 +884,11 @@ namespace Game
                                 {
                                     blockMesh3 = blockMesh2;
                                 }
+                                ModsManager.HookAction("SetFurnitureDesignColor", (ModLoader loader) =>
+                                {
+                                    loader.SetFurnitureDesignColor(this, block, value2, ref num14, ref color);
+                                    return false;
+                                });
                                 int num15 = num14 % 16;
                                 int num16 = num14 / 16;
                                 int count = blockMesh3.Vertices.Count;
@@ -1035,7 +1040,6 @@ namespace Game
                         }
                     }
                     return;
-                    continue;
                 end_IL_0263:
                     break;
                 }

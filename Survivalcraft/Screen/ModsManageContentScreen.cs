@@ -62,7 +62,11 @@ public class ModsManageContentScreen : Screen
 
     public int m_count;
 
-    public bool androidSystem;
+    public bool m_androidSystem;
+
+    public bool m_androidDataPathEnterEnabled;
+
+    public string m_androidDataPath = "android:/Android/data";
 
     public string m_path;
 
@@ -102,11 +106,20 @@ public class ModsManageContentScreen : Screen
 
     public ModsManageContentScreen()
     {
-        androidSystem = Environment.CurrentDirectory == "/";
-        if (androidSystem)
+        m_androidSystem = Environment.CurrentDirectory == "/";
+        if (m_androidSystem)
         {
             m_uninstallPath = m_uninstallPath.Replace("app:", "android:/SurvivalCraft2.3");
             m_installPath = m_installPath.Replace("app:", "android:/SurvivalCraft2.3");
+        }
+        m_androidDataPathEnterEnabled = true;
+        try
+        {
+            Storage.ListFileNames(m_androidDataPath);
+        }
+        catch
+        {
+            m_androidDataPathEnterEnabled = false;
         }
         m_updatable = true;
         XElement node = ContentManager.Get<XElement>("Screens/ModsManageContentScreen");
@@ -164,12 +177,19 @@ public class ModsManageContentScreen : Screen
                 {
                     try
                     {
-                        SetPath(modItem.ExternalContentEntry.Path);
-                        UpdateListWithBusyDialog();
+                        if(modItem.ExternalContentEntry.Path != m_androidDataPath)
+                        {
+                            SetPath(modItem.ExternalContentEntry.Path);
+                            UpdateListWithBusyDialog();
+                        }
+                        else
+                        {
+                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 71), LanguageControl.Get(fName, 72) + m_androidDataPath, LanguageControl.Ok, null, null));
+                        }
                     }
                     catch
                     {
-                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 5) + "\n" + modItem.ExternalContentEntry.Path, LanguageControl.Get("Usual", "ok"), null, null));
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 5) + "\n" + modItem.ExternalContentEntry.Path, LanguageControl.Ok, null, null));
                     }
                 }
                 else if (modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
@@ -222,7 +242,7 @@ public class ModsManageContentScreen : Screen
         DialogsManager.ShowDialog(null, busyDialog);
         foreach (string commonPath in m_commonPaths)
         {
-            if ((androidSystem && commonPath.StartsWith("android:")) || (!androidSystem && !commonPath.StartsWith("android:")))
+            if ((m_androidSystem && commonPath.StartsWith("android:")) || (!m_androidSystem && !commonPath.StartsWith("android:")))
             {
                 AddCommonPath(commonPath);
             }
@@ -243,22 +263,9 @@ public class ModsManageContentScreen : Screen
         {
             m_firstEnterScreen = true;
             string explanation = "";
-            if (androidSystem)
+            if (m_androidSystem && !m_androidDataPathEnterEnabled)
             {
-                bool androidDataPathEnterEnabled = true;
-                string androidDataPath = "android:/Android/data";
-                try
-                {
-                    Storage.ListFileNames(androidDataPath);
-                }
-                catch
-                {
-                    androidDataPathEnterEnabled = false;
-                }
-                if (!androidDataPathEnterEnabled)
-                {
-                    explanation += LanguageControl.Get(fName, 46) + "\n\n";
-                }
+                explanation += LanguageControl.Get(fName, 46) + "\n\n";
             }
             explanation += LanguageControl.Get(fName, 47);
             if (m_commonPathList.Count > 0)
@@ -533,7 +540,7 @@ public class ModsManageContentScreen : Screen
                     Task.Run(delegate
                     {
                         string scanPath;
-                        if (androidSystem)
+                        if (m_androidSystem)
                         {
                             scanPath = "android:";
                         }
@@ -549,7 +556,16 @@ public class ModsManageContentScreen : Screen
                         m_cancellableBusyDialog = null;
                         if (allCount == 0)
                         {
-                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 33), LanguageControl.Get(fName, 34), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
+                            string tips = LanguageControl.Get(fName, 33);
+                            if (m_scanFailPaths.Count > 0)
+                            {
+                                tips += "\n\n" + LanguageControl.Get(fName, 58) + "\n";
+                                foreach (string p in m_scanFailPaths)
+                                {
+                                    tips += p + "\n";
+                                }
+                            }
+                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), tips, LanguageControl.Get(fName, 34), LanguageControl.Get(fName, 10), delegate (MessageDialogButton result)
                             {
                                 if (result == MessageDialogButton.Button1)
                                 {
@@ -853,7 +869,7 @@ public class ModsManageContentScreen : Screen
         int allCount = 0;
         foreach (string commonPath in m_commonPathList)
         {
-            if ((androidSystem && commonPath.StartsWith("android:")) || (!androidSystem && !commonPath.StartsWith("android:")))
+            if ((m_androidSystem && commonPath.StartsWith("android:")) || (!m_androidSystem && !commonPath.StartsWith("android:")))
             {
                 try
                 {
