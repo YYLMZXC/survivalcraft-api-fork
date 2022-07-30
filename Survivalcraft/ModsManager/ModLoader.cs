@@ -554,11 +554,11 @@ namespace Game
         }
 
         /// <summary>
-        /// 播放主页背景音乐，返回true则不播放原歌曲
+        /// 更改主页背景音乐
         /// </summary>
-        public virtual bool MenuPlayMusic()
+        public virtual void MenuPlayMusic(out string ContentMusicPath)
         {
-            return false;
+            ContentMusicPath = string.Empty;
         }
 
         /// <summary>

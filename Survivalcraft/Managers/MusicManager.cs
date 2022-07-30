@@ -79,18 +79,19 @@ namespace Game
             }
             else if (m_currentMix == Mix.Menu && (Time.FrameStartTime >= m_nextSongTime || !IsPlaying))
             {
-                bool skip = false;
+                float startPercentage = IsPlaying ? m_random.Float(0f, 0.75f) : 0f;
+                string ContentMusicPath = string.Empty;
                 ModsManager.HookAction("MenuPlayMusic", (ModLoader loader) =>
                 {
-                    skip |= loader.MenuPlayMusic();
+                    loader.MenuPlayMusic(out ContentMusicPath);
                     return false;
                 });
-                if (skip)
+                if (!string.IsNullOrEmpty(ContentMusicPath))
                 {
-                    StopMusic();
+                    PlayMusic(ContentMusicPath, startPercentage);
+                    m_nextSongTime = Time.FrameStartTime + m_random.Float(40f, 60f);
                     return;
                 }
-                float startPercentage = IsPlaying ? m_random.Float(0f, 0.75f) : 0f;
                 switch (m_random.Int(0, 5))
                 {
                     case 0:
