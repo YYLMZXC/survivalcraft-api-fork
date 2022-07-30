@@ -888,7 +888,7 @@ namespace Game
 					{
 						int cellValueFast2 = chunk.GetCellValueFast(num5);
 						int num6 = Terrain.ExtractContents(cellValueFast2);
-						if (BlocksManager.Blocks[num6].IsTransparent)
+						if (BlocksManager.Blocks[num6].IsTransparent_(cellValueFast2))
 						{
 							num2 = num4;
 							break;
@@ -910,7 +910,7 @@ namespace Game
 							if (num8 != 0)
 							{
 								Block block = BlocksManager.Blocks[num8];
-								if (!block.IsTransparent || block.LightAttenuation >= num7)
+								if (!block.IsTransparent_(cellValueFast3) || block.LightAttenuation >= num7)
 								{
 									break;
 								}
@@ -981,7 +981,7 @@ namespace Game
 						int cellValueFast = chunk.GetCellValueFast(num5);
 						int num6 = 0;
 						Block block = blocks[Terrain.ExtractContents(cellValueFast)];
-						if (num4 >= num3 && block.IsTransparent)
+						if (num4 >= num3 && block.IsTransparent_(cellValueFast))
 						{
 							int cellLightFast = chunkAtCell.GetCellLightFast(x, num4, z);
 							int cellLightFast2 = chunkAtCell2.GetCellLightFast(x2, num4, z2);
@@ -1022,7 +1022,7 @@ namespace Game
 			int cellValueFast = chunkAtCell.GetCellValueFast(index);
 			int num = Terrain.ExtractContents(cellValueFast);
 			Block block = BlocksManager.Blocks[num];
-			if (block.IsTransparent)
+			if (block.IsTransparent_(cellValueFast))
 			{
 				int num2 = light - block.LightAttenuation - 1;
 				if (num2 > Terrain.ExtractLight(cellValueFast))

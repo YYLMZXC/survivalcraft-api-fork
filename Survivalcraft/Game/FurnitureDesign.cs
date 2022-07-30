@@ -14,6 +14,7 @@ namespace Game
             public int Value;
         }
         public static string fName = "FurnitureDesign";
+
         public struct Subdivision
         {
             public int TotalVolume;
@@ -27,11 +28,11 @@ namespace Game
 
         public const int maxDesign = 8192;//家具上限数量
 
-        public const int MaxResolution = 128;//家具大小128x128
+        public const int MaxResolution = 256;//家具格分辨率
 
-        public const int MaxTriangles = 300;
+        public const int MaxTriangles = 65536; //家具复杂度
 
-        public const int MaxNameLength = 20;
+        public const int MaxNameLength = 100;
 
         public int m_index = -1;
 

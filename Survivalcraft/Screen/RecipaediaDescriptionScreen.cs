@@ -96,12 +96,12 @@ namespace Game
             }
             if (block.DigMethod != 0)
             {
-                dictionary.Add("Digging Method", LanguageControl.Get("DigMethod", block.DigMethod.ToString()));
-                dictionary.Add("Digging Resilience", block.DigResilience.ToString());
+                dictionary.Add("Digging Method", LanguageControl.Get("DigMethod", block.GetBlockDigMethod(value).ToString()));
+                dictionary.Add("Digging Resilience", block.GetDigResilience(value).ToString());
             }
             if (block.ExplosionResilience > 0f)
             {
-                dictionary.Add("Explosion Resilience", block.ExplosionResilience.ToString());
+                dictionary.Add("Explosion Resilience", block.GetExplosionResilience(value).ToString());
             }
             if (block.GetExplosionPressure(value) > 0f)
             {
@@ -125,22 +125,22 @@ namespace Game
             }
             if (block.ShovelPower > 1f)
             {
-                dictionary.Add("Shoveling", block.ShovelPower.ToString());
+                dictionary.Add("Shoveling", block.GetShovelPower(value).ToString());
                 flag = true;
             }
             if (block.HackPower > 1f)
             {
-                dictionary.Add("Hacking", block.HackPower.ToString());
+                dictionary.Add("Hacking", block.GetHackPower(value).ToString());
                 flag = true;
             }
             if (block.QuarryPower > 1f)
             {
-                dictionary.Add("Quarrying", block.QuarryPower.ToString());
+                dictionary.Add("Quarrying", block.GetQuarryPower(value).ToString());
                 flag = true;
             }
             if (flag && block.Durability > 0)
             {
-                dictionary.Add("Durability", block.Durability.ToString());
+                dictionary.Add("Durability", block.GetDurability(value).ToString());
             }
             if (block.DefaultExperienceCount > 0f)
             {

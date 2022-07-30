@@ -372,7 +372,7 @@ namespace Game
                 }
                 Block block = BlocksManager.Blocks[num];
                 float num4 = m_pressureByPoint.Get(x - 1, y, z) + m_pressureByPoint.Get(x + 1, y, z) + m_pressureByPoint.Get(x, y - 1, z) + m_pressureByPoint.Get(x, y + 1, z) + m_pressureByPoint.Get(x, y, z - 1) + m_pressureByPoint.Get(x, y, z + 1);
-                float num5 = MathUtils.Max(block.ExplosionResilience * num3, 1f);
+                float num5 = MathUtils.Max(block.GetExplosionResilience(cellValue) * num3, 1f);
                 float num6 = num4 / num5;
                 if (num6 > 1f)
                 {
@@ -495,7 +495,7 @@ namespace Game
                 }
                 float probability = item2.Value.IsIncendiary ? 0.5f : 0.2f;
                 Block block = BlocksManager.Blocks[num6];
-                if (block.FireDuration > 0f && item2.Value.Pressure / block.ExplosionResilience > 0.2f && m_random.Bool(probability))
+                if (block.FireDuration > 0f && item2.Value.Pressure / block.GetExplosionResilience(cellValue) > 0.2f && m_random.Bool(probability))
                 {
                     m_subsystemFireBlockBehavior.SetCellOnFire(item2.Key.X, item2.Key.Y, item2.Key.Z, item2.Value.IsIncendiary ? 1f : 0.3f);
                 }
@@ -518,7 +518,7 @@ namespace Game
             {
                 Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(pickable.Value)];
                 CalculateImpulseAndDamage(pickable.Position + new Vector3(0f, 0.5f, 0f), 20f, null, out Vector3 impulse2, out float damage2);
-                if (damage2 / block2.ExplosionResilience > 0.1f)
+                if (damage2 / block2.GetExplosionResilience(pickable.Value) > 0.1f)
                 {
                     TryExplodeBlock(Terrain.ToCell(pickable.Position.X), Terrain.ToCell(pickable.Position.Y), Terrain.ToCell(pickable.Position.Z), pickable.Value);
                     pickable.ToRemove = true;

@@ -63,31 +63,25 @@ namespace Game
             }
             if (m_languageButton.IsClicked)
             {
-                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
+                if(LanguageControl.LanguageTypes.Count > 2)
                 {
-                    if (button == MessageDialogButton.Button1)
+                    DialogsManager.ShowDialog(null, new ListSelectionDialog(null, LanguageControl.LanguageTypes, 70f, (object item) => (string)item, delegate (object item)
                     {
-                        int next = LanguageControl.LanguageTypes.IndexOf(ModsManager.Configs["Language"]) + 1;
-                        if (next == LanguageControl.LanguageTypes.Count) next = 0;
-                        LanguageControl.Initialize(LanguageControl.LanguageTypes[next]);
-                        foreach (var c in ModsManager.ModList)
+                        ChangeLanguage((string)item);
+                    }));
+                }
+                else
+                {
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
+                    {
+                        if (button == MessageDialogButton.Button1)
                         {
-                            c.LoadLauguage();
+                            int next = LanguageControl.LanguageTypes.IndexOf(ModsManager.Configs["Language"]) + 1;
+                            if (next == LanguageControl.LanguageTypes.Count) next = 0;
+                            ChangeLanguage(LanguageControl.LanguageTypes[next]);
                         }
-                        Dictionary<string, object> objs = new Dictionary<string, object>();
-                        foreach (var c in ScreensManager.m_screens) {
-                            Type type = c.Value.GetType();
-                            object obj = Activator.CreateInstance(type);
-                            objs.Add(c.Key,obj);
-                        }
-                        foreach (var c in objs)
-                        {
-                            ScreensManager.m_screens[c.Key] = c.Value as Screen;
-                        }
-                        CraftingRecipesManager.Initialize();
-                        ScreensManager.SwitchScreen("MainMenu");
-                    }
-                }));
+                    }));
+                }
             }
             if (m_displayLogButton.IsClicked)
             {
@@ -135,6 +129,28 @@ namespace Game
             {
                 ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
             }
+        }
+
+        public void ChangeLanguage(string languageType)
+        {
+            LanguageControl.Initialize(languageType);
+            foreach (var c in ModsManager.ModList)
+            {
+                c.LoadLauguage();
+            }
+            Dictionary<string, object> objs = new Dictionary<string, object>();
+            foreach (var c in ScreensManager.m_screens)
+            {
+                Type type = c.Value.GetType();
+                object obj = Activator.CreateInstance(type);
+                objs.Add(c.Key, obj);
+            }
+            foreach (var c in objs)
+            {
+                ScreensManager.m_screens[c.Key] = c.Value as Screen;
+            }
+            CraftingRecipesManager.Initialize();
+            ScreensManager.SwitchScreen("MainMenu");
         }
     }
 }

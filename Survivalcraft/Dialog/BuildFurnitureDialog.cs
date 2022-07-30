@@ -81,8 +81,8 @@ namespace Game
             int num = 0;
             num += m_design.Geometry.SubsetOpaqueByFace.Sum((BlockMesh b) => (b != null) ? (b.Indices.Count / 3) : 0);
             num += m_design.Geometry.SubsetAlphaTestByFace.Sum((BlockMesh b) => (b != null) ? (b.Indices.Count / 3) : 0);
-            m_isValid = (num <= FurnitureDesign.maxDesign);
-            m_statusLabel.Text = string.Format(LanguageControl.Get(fName, 1), num, FurnitureDesign.maxDesign, m_isValid ? LanguageControl.Get(fName, 2) : LanguageControl.Get(fName, 3));
+            m_isValid = (num <= FurnitureDesign.MaxTriangles);
+            m_statusLabel.Text = string.Format(LanguageControl.Get(fName, 1), num, FurnitureDesign.MaxTriangles, m_isValid ? LanguageControl.Get(fName, 2) : LanguageControl.Get(fName, 3));
             m_designWidget2d.Design = m_design;
             m_designWidget3d.Design = m_design;
         }
