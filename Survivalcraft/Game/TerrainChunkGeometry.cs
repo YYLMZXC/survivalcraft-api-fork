@@ -6,6 +6,8 @@ namespace Game
 {
 	public class TerrainChunkGeometry
 	{
+		public TerrainChunk TerrainChunk;
+
 		public class Buffer : IDisposable
 		{
 			public VertexBuffer VertexBuffer;

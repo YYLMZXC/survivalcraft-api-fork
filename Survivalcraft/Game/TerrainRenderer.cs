@@ -269,85 +269,83 @@ namespace Game
 			chunk.CopySliceContentsHashes();
 		}
 
-		public static void CompileDrawSubsets(Dictionary<Texture2D, TerrainGeometry[]> list, DynamicArray<TerrainChunkGeometry.Buffer> buffers, Func<TerrainVertex, TerrainVertex> vertexTransform = null)
-		{
-			foreach (var item in list)
-			{
-				var geometry = item.Value;
-				int num = 0;
-				while (num < 112)
-				{
-					int num2 = 0;
-					int num3 = 0;
-					int i;
-					for (i = num; i < 112; i++)
-					{
-						int num4 = i / 16;
-						int num5 = i % 16;
-						TerrainGeometrySubset terrainGeometrySubset = geometry[num5].Subsets[num4];
-						if (vertexTransform != null)
-						{
-							var tmpList = new DynamicArray<TerrainVertex>();
-							for (int p = 0; p < terrainGeometrySubset.Vertices.Count; p++)
-							{
-								var vertex = vertexTransform(terrainGeometrySubset.Vertices[p]);
-								tmpList.Add(vertex);
-							}
-							terrainGeometrySubset.Vertices = tmpList;
-						}
-						if (num2 + terrainGeometrySubset.Vertices.Count > 65535 && i > num)
-						{
-							break;
-						}
-						num2 += terrainGeometrySubset.Vertices.Count;
-						num3 += terrainGeometrySubset.Indices.Count;
-					}
-					if (num2 > 0 && num3 > 0)
-					{
-						TerrainChunkGeometry.Buffer buffer = new TerrainChunkGeometry.Buffer();
-						buffer.Texture = item.Key;
-						buffers.Add(buffer);
-						buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, num2);
-						buffer.IndexBuffer = new IndexBuffer(IndexFormat.ThirtyTwoBits, num3);
-						int num6 = 0;
-						int num7 = 0;
-						for (int j = num; j < i; j++)
-						{
-							int num8 = j / 16;
-							int num9 = j % 16;
-							TerrainGeometrySubset terrainGeometrySubset2 = geometry[num9].Subsets[num8];
-							if (num9 == 0 || j == num)
-							{
-								buffer.SubsetIndexBufferStarts[num8] = num7;
-							}
-							if (terrainGeometrySubset2.Indices.Count > 0)
-							{
-								m_tmpIndices.Count = terrainGeometrySubset2.Indices.Count;
-								ShiftIndices(terrainGeometrySubset2.Indices.Array, m_tmpIndices.Array, num6, terrainGeometrySubset2.Indices.Count);
-								buffer.IndexBuffer.SetData(m_tmpIndices.Array, 0, m_tmpIndices.Count, num7);
-								num7 += m_tmpIndices.Count;
-							}
-							if (terrainGeometrySubset2.Vertices.Count > 0)
-							{
-								buffer.VertexBuffer.SetData(terrainGeometrySubset2.Vertices.Array, 0, terrainGeometrySubset2.Vertices.Count, num6);
-								num6 += terrainGeometrySubset2.Vertices.Count;
-							}
-							if (num9 == 15 || j == i - 1)
-							{
-								buffer.SubsetIndexBufferEnds[num8] = num7;
-							}
-						}
-					}
-					num = i;
-				}
-			}
+        public static void CompileDrawSubsets(Dictionary<Texture2D, TerrainGeometry[]> list, DynamicArray<TerrainChunkGeometry.Buffer> buffers, Func<TerrainVertex, TerrainVertex> vertexTransform = null)
+        {
+            foreach (var item in list)
+            {
+                var geometry = item.Value;
+                int num = 0;
+                while (num < 112)
+                {
+                    int num2 = 0;
+                    int num3 = 0;
+                    int i;
+                    for (i = num; i < 112; i++)
+                    {
+                        int num4 = i / 16;
+                        int num5 = i % 16;
+                        TerrainGeometrySubset terrainGeometrySubset = geometry[num5].Subsets[num4];
+                        if (vertexTransform != null)
+                        {
+                            var tmpList = new DynamicArray<TerrainVertex>();
+                            for (int p = 0; p < terrainGeometrySubset.Vertices.Count; p++)
+                            {
+                                var vertex = vertexTransform(terrainGeometrySubset.Vertices[p]);
+                                tmpList.Add(vertex);
+                            }
+                            terrainGeometrySubset.Vertices = tmpList;
+                        }
+                        if (num2 + terrainGeometrySubset.Vertices.Count > 65535 && i > num)
+                        {
+                            break;
+                        }
+                        num2 += terrainGeometrySubset.Vertices.Count;
+                        num3 += terrainGeometrySubset.Indices.Count;
+                    }
+                    if (num2 > 0 && num3 > 0)
+                    {
+                        TerrainChunkGeometry.Buffer buffer = new TerrainChunkGeometry.Buffer();
+                        buffer.Texture = item.Key;
+                        buffers.Add(buffer);
+                        buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, num2);
+                        buffer.IndexBuffer = new IndexBuffer(IndexFormat.ThirtyTwoBits, num3);
+                        int num6 = 0;
+                        int num7 = 0;
+                        for (int j = num; j < i; j++)
+                        {
+                            int num8 = j / 16;
+                            int num9 = j % 16;
+                            TerrainGeometrySubset terrainGeometrySubset2 = geometry[num9].Subsets[num8];
+                            if (num9 == 0 || j == num)
+                            {
+                                buffer.SubsetIndexBufferStarts[num8] = num7;
+                            }
+                            if (terrainGeometrySubset2.Indices.Count > 0)
+                            {
+                                m_tmpIndices.Count = terrainGeometrySubset2.Indices.Count;
+                                ShiftIndices(terrainGeometrySubset2.Indices.Array, m_tmpIndices.Array, num6, terrainGeometrySubset2.Indices.Count);
+                                buffer.IndexBuffer.SetData(m_tmpIndices.Array, 0, m_tmpIndices.Count, num7);
+                                num7 += m_tmpIndices.Count;
+                            }
+                            if (terrainGeometrySubset2.Vertices.Count > 0)
+                            {
+                                buffer.VertexBuffer.SetData(terrainGeometrySubset2.Vertices.Array, 0, terrainGeometrySubset2.Vertices.Count, num6);
+                                num6 += terrainGeometrySubset2.Vertices.Count;
+                            }
+                            if (num9 == 15 || j == i - 1)
+                            {
+                                buffer.SubsetIndexBufferEnds[num8] = num7;
+                            }
+                        }
+                    }
+                    num = i;
+                }
+            }
+        }
 
-		}
+
 		public void DrawTerrainChunkGeometrySubsets(Shader shader, TerrainChunk chunk, int subsetsMask, bool ApplyTexture = true)
 		{
-			if (chunk.Buffers.Count > 1) { 
-			
-			}
 			foreach (TerrainChunkGeometry.Buffer buffer in chunk.Buffers)
 			{
 				int num = 2147483647;
@@ -377,6 +375,14 @@ namespace Game
 						num = 2147483647;
 					}
 				}
+			}
+		}
+
+		public void DrawTerrainChunkGeometrySubsets(Shader shader, TerrainChunkGeometry geometry, int subsetsMask, bool ApplyTexture = true)
+		{
+			if(geometry != null && geometry.TerrainChunk != null)
+            {
+				DrawTerrainChunkGeometrySubsets(shader, geometry.TerrainChunk, subsetsMask, ApplyTexture);
 			}
 		}
 

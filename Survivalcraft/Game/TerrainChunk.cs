@@ -90,6 +90,7 @@ namespace Game
 			Origin = new Point2(x * 16, z * 16);
 			BoundingBox = new BoundingBox(new Vector3(Origin.X, 0f, Origin.Y), new Vector3(Origin.X + 16, 256f, Origin.Y + 16));
 			Center = new Vector2((float)Origin.X + 8f, (float)Origin.Y + 8f);
+			Geometry.TerrainChunk = this;
 		}
 		public void InvalidateSliceContentsHashes()
 		{
@@ -103,8 +104,8 @@ namespace Game
 			{
 				GeneratedSliceContentsHashes[i] = SliceContentsHashes[i];
 			}
-
 		}
+
 		public void Dispose()
 		{
 			for (int i = 0; i < Buffers.Count; i++) { Buffers[i].Dispose(); }
