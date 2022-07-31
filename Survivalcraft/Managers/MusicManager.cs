@@ -117,6 +117,16 @@ namespace Game
             }
         }
 
+        public static void Initialize()
+        {
+#if android
+            Window.Activity.Paused += delegate
+            {
+                StopMusic();
+            };
+#endif
+        }
+
         public static void PlayMusic(string name, float startPercentage)
         {
             if (string.IsNullOrEmpty(name))
@@ -150,6 +160,7 @@ namespace Game
                 {
                     m_fadeSound.Dispose();
                 }
+                m_sound.Stop();
                 m_fadeSound = m_sound;
                 m_sound = null;
             }

@@ -81,7 +81,8 @@ namespace Game
             {
                 SettingsManager.Initialize();
                 VersionsManager.Initialize();
-                ExternalContentManager.Initialize();                
+                ExternalContentManager.Initialize();
+                MusicManager.Initialize();
                 ScreensManager.Initialize();
                 Log.Information("Program Initialize Success");
             }
