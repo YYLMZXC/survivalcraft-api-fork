@@ -15,6 +15,8 @@ namespace Game
 
         public static List<Uri> m_urisToHandle = new List<Uri>();
 
+        public static string SystemLanguage { get; set; }
+
         public static float LastFrameTime
         {
             get;
@@ -28,9 +30,17 @@ namespace Game
         }
 
         public static event Action<Uri> HandleUri;
+        
         [STAThread]
         public static void Main()
         {
+            try
+            {
+                SystemLanguage = CultureInfo.CurrentUICulture.Name;
+            } catch {}
+            if (string.IsNullOrEmpty(SystemLanguage))
+                SystemLanguage = "zh-CN";
+            
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
