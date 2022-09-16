@@ -42,8 +42,6 @@ namespace Game
 
             public int ToBeRenderedFrame;
 
-            public RenderTarget2D renderTarget2D;
-
             public int Light;
         }
 
@@ -200,10 +198,10 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            base.Load(valuesDictionary);
             m_subsystemViews = Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
             m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
             m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            CreateRenderTarget();
             foreach (ValuesDictionary value11 in valuesDictionary.GetValue<ValuesDictionary>("Texts").Values)
             {
                 Point3 value = value11.GetValue<Point3>("Point");
@@ -235,7 +233,7 @@ namespace Game
 
         public override void Save(ValuesDictionary valuesDictionary)
         {
-            base.Save(valuesDictionary);
+            Save(valuesDictionary);
             int num = 0;
             var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Texts", valuesDictionary2);
@@ -285,7 +283,7 @@ namespace Game
 
         public override void Dispose()
         {
-            base.Dispose();
+            Dispose();
             Utilities.Dispose(ref m_renderTarget);
             Display.DeviceReset -= Display_DeviceReset;
         }
@@ -295,9 +293,9 @@ namespace Game
             InvalidateRenderTarget();
         }
 
-        public RenderTarget2D CreateRenderTarget()
+        public void CreateRenderTarget()
         {
-            return new RenderTarget2D(128, 128, 1, ColorFormat.Rgba8888, DepthFormat.None);
+            m_renderTarget = new RenderTarget2D((int)m_font.GlyphHeight * 16, (int)m_font.GlyphHeight * 4 * 32, 1, ColorFormat.Rgba8888, DepthFormat.None);
         }
 
         public void InvalidateRenderTarget()
@@ -319,8 +317,8 @@ namespace Game
             {
                 return;
             }
-            var list = new List<string>();
-            var list2 = new List<Color>();
+            List<string> list = new List<string>();
+            List<Color> list2 = new List<Color>();
             for (int i = 0; i < textData.Lines.Length; i++)
             {
                 if (!string.IsNullOrEmpty(textData.Lines[i]))
@@ -329,17 +327,32 @@ namespace Game
                     list2.Add(textData.Colors[i]);
                 }
             }
-            if (list.Count <= 0)
+            if (list.Count > 0)
             {
-                return;
-            }
-
-            for (int k = 0; k < list.Count; k++)
-            {
-                fontBatch.QueueText(list[k], new Vector2(0, k * fontBatch.Font.LineHeight), 0f, list2[k], TextAnchor.Default);
+                float num = list.Max((string l) => l.Length) * m_font.GlyphHeight;
+                float num2 = list.Count * m_font.GlyphHeight;
+                float num3 = 4f;
+                float num4;
+                float num5;
+                if (num / num2 < num3)
+                {
+                    num4 = num2 * num3;
+                    num5 = num2;
+                }
+                else
+                {
+                    num4 = num;
+                    num5 = num / num3;
+                }
+                bool flag = !string.IsNullOrEmpty(textData.Url);
+                for (int j = 0; j < list.Count; j++)
+                {
+                    fontBatch.QueueText(position: new Vector2(num4 / 2f, (float)j * m_font.GlyphHeight + (float)textData.TextureLocation.Value * (4f * m_font.GlyphHeight) + (num5 - num2) / 2f), text: list[j], depth: 0f, color: flag ? new Color(0, 0, 64) : list2[j], anchor: TextAnchor.HorizontalCenter, scale: new Vector2(1f / m_font.Scale), spacing: Vector2.Zero);
+                }
+                textData.UsedTextureWidth = num4;
+                textData.UsedTextureHeight = num5;
             }
         }
-
         public void UpdateRenderTarget()
         {
             bool flag = false;
@@ -367,7 +380,6 @@ namespace Game
             m_lastUpdatePositions.Clear();
             m_lastUpdatePositions.AddRange(m_subsystemViews.GameWidgets.Select((GameWidget v) => v.ActiveCamera.ViewPosition));
             m_nearTexts.Clear();
-            m_texturesByPoint.Clear();
             foreach (TextData value in m_textsByPoint.Values)
             {
                 Point3 point = value.Point;
@@ -413,81 +425,93 @@ namespace Game
                     flag3 = true;
                 }
             }
-            if (flag3)
+            if (!flag3)
             {
-                RenderTarget2D renderTarget = Display.RenderTarget;
-                try
+                return;
+            }
+            RenderTarget2D renderTarget = Display.RenderTarget;
+            Display.RenderTarget = m_renderTarget;
+            try
+            {
+                Display.Clear(new Vector4(Color.Transparent));
+                FlatBatch2D flatBatch = m_primitivesRenderer2D.FlatBatch(0, DepthStencilState.None, null, BlendState.Opaque);
+                FontBatch2D fontBatch = m_primitivesRenderer2D.FontBatch(m_font, 1, DepthStencilState.None, null, BlendState.Opaque, SamplerState.PointClamp);
+                for (int j = 0; j < m_textureLocations.Length; j++)
                 {
-                    FlatBatch2D flatBatch = m_primitivesRenderer2D.FlatBatch(0, DepthStencilState.None, null, BlendState.Opaque);
-                    FontBatch2D fontBatch = m_primitivesRenderer2D.FontBatch(m_font, 1, DepthStencilState.None, null, BlendState.Opaque, SamplerState.PointClamp);
-                    for (int j = 0; j < m_textsByPoint.Values.Count; j++)
+                    TextData textData3 = m_textureLocations[j];
+                    if (textData3 != null)
                     {
-                        TextData textData3 = m_textsByPoint.Values.ElementAt(j);
-                        if (textData3.renderTarget2D == null) textData3.renderTarget2D = CreateRenderTarget();
-                        Display.RenderTarget = textData3.renderTarget2D;
-                        Display.Clear(new Vector4(Color.Transparent));
-                        if (textData3 != null)
-                        {
-                            RenderText(fontBatch, flatBatch, textData3);
-                        }
-                        m_primitivesRenderer2D.Flush();
+                        RenderText(fontBatch, flatBatch, textData3);
                     }
                 }
-                finally
-                {
-                    Display.RenderTarget = renderTarget;
-                }
+                m_primitivesRenderer2D.Flush();
+            }
+            finally
+            {
+                Display.RenderTarget = renderTarget;
             }
         }
 
         public void DrawSigns(Camera camera)
         {
-            if (m_nearTexts.Count > 0)
+            if (m_nearTexts.Count <= 0)
             {
-                foreach (TextData nearText in m_nearTexts)
+                return;
+            }
+            TexturedBatch3D texturedBatch3D = m_primitivesRenderer3D.TexturedBatch(m_renderTarget, useAlphaTest: false, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, null, SamplerState.PointClamp);
+            foreach (TextData nearText in m_nearTexts)
+            {
+                if (!nearText.TextureLocation.HasValue)
                 {
-                    TexturedBatch3D texturedBatch3D = m_primitivesRenderer3D.TexturedBatch(nearText.renderTarget2D, useAlphaTest: false, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, null, SamplerState.PointClamp);
-                    if (nearText.TextureLocation.HasValue)
+                    continue;
+                }
+                int cellValue = m_subsystemTerrain.Terrain.GetCellValue(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
+                int num = Terrain.ExtractContents(cellValue);
+                if (!(BlocksManager.Blocks[num] is SignBlock signBlock))
+                {
+                    continue;
+                }
+                int data = Terrain.ExtractData(cellValue);
+                BlockMesh signSurfaceBlockMesh = signBlock.GetSignSurfaceBlockMesh(data);
+                if (signSurfaceBlockMesh != null)
+                {
+                    TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(nearText.Point.X, nearText.Point.Z);
+                    if (chunkAtCell != null && chunkAtCell.State >= TerrainChunkState.InvalidVertices1)
                     {
-                        int cellValue = m_subsystemTerrain.Terrain.GetCellValue(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
-                        int num = Terrain.ExtractContents(cellValue);
-                        var signBlock = BlocksManager.Blocks[num] as SignBlock;
-                        if (signBlock != null)
-                        {
-                            int data = Terrain.ExtractData(cellValue);
-                            BlockMesh signSurfaceBlockMesh = signBlock.GetSignSurfaceBlockMesh(data);
-                            if (signSurfaceBlockMesh != null)
-                            {
-                                TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(nearText.Point.X, nearText.Point.Z);
-                                if (chunkAtCell != null && chunkAtCell.State >= TerrainChunkState.InvalidVertices1)
-                                {
-                                    nearText.Light = Terrain.ExtractLight(cellValue);
-                                }
-                                float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
-                                var color = new Color(num2, num2, num2);
-                                Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
-                                var vector = new Vector3(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
-                                float num3 = Vector3.Dot(camera.ViewPosition - (vector + new Vector3(0.5f)), signSurfaceNormal);
-                                Vector3 v = MathUtils.Max(0.01f * num3, 0.005f) * signSurfaceNormal;
-                                for (int i = 0; i < signSurfaceBlockMesh.Indices.Count / 3; i++)
-                                {
-                                    BlockMeshVertex blockMeshVertex = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3]];
-                                    BlockMeshVertex blockMeshVertex2 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 1]];
-                                    BlockMeshVertex blockMeshVertex3 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 2]];
-                                    Vector3 p = blockMeshVertex.Position + vector + v;
-                                    Vector3 p2 = blockMeshVertex2.Position + vector + v;
-                                    Vector3 p3 = blockMeshVertex3.Position + vector + v;
-                                    Vector2 textureCoordinates = blockMeshVertex.TextureCoordinates;
-                                    Vector2 textureCoordinates2 = blockMeshVertex2.TextureCoordinates;
-                                    Vector2 textureCoordinates3 = blockMeshVertex3.TextureCoordinates;
-                                    texturedBatch3D.QueueTriangle(p, p2, p3, textureCoordinates, textureCoordinates2, textureCoordinates3, color);
-                                }
-                            }
-                        }
+                        nearText.Light = Terrain.ExtractLight(cellValue);
+                    }
+                    float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
+                    Color color = new Color(num2, num2, num2);
+                    float x = 0f;
+                    float x2 = nearText.UsedTextureWidth / (m_font.GlyphHeight * 16f);
+                    float x3 = (float)nearText.TextureLocation.Value / 32f;
+                    float x4 = ((float)nearText.TextureLocation.Value + nearText.UsedTextureHeight / (m_font.GlyphHeight * 4f)) / 32f;
+                    Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
+                    Vector3 vector = new Vector3(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
+                    float num3 = Vector3.Dot(camera.ViewPosition - (vector + new Vector3(0.5f)), signSurfaceNormal);
+                    Vector3 vector2 = MathUtils.Max(0.01f * num3, 0.005f) * signSurfaceNormal;
+                    for (int i = 0; i < signSurfaceBlockMesh.Indices.Count / 3; i++)
+                    {
+                        BlockMeshVertex blockMeshVertex = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3]];
+                        BlockMeshVertex blockMeshVertex2 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 1]];
+                        BlockMeshVertex blockMeshVertex3 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 2]];
+                        Vector3 p = blockMeshVertex.Position + vector + vector2;
+                        Vector3 p2 = blockMeshVertex2.Position + vector + vector2;
+                        Vector3 p3 = blockMeshVertex3.Position + vector + vector2;
+                        Vector2 textureCoordinates = blockMeshVertex.TextureCoordinates;
+                        Vector2 textureCoordinates2 = blockMeshVertex2.TextureCoordinates;
+                        Vector2 textureCoordinates3 = blockMeshVertex3.TextureCoordinates;
+                        textureCoordinates.X = MathUtils.Lerp(x, x2, textureCoordinates.X);
+                        textureCoordinates2.X = MathUtils.Lerp(x, x2, textureCoordinates2.X);
+                        textureCoordinates3.X = MathUtils.Lerp(x, x2, textureCoordinates3.X);
+                        textureCoordinates.Y = MathUtils.Lerp(x3, x4, textureCoordinates.Y);
+                        textureCoordinates2.Y = MathUtils.Lerp(x3, x4, textureCoordinates2.Y);
+                        textureCoordinates3.Y = MathUtils.Lerp(x3, x4, textureCoordinates3.Y);
+                        texturedBatch3D.QueueTriangle(p, p2, p3, textureCoordinates, textureCoordinates2, textureCoordinates3, color);
                     }
                 }
-                m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
             }
+            m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);
         }
     }
 }
