@@ -282,7 +282,6 @@ namespace Game
 
         public override void Dispose()
         {
-            Dispose();
             Utilities.Dispose(ref m_renderTarget);
             Display.DeviceReset -= Display_DeviceReset;
         }
