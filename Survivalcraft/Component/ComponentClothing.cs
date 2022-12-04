@@ -333,6 +333,7 @@ namespace Game
                 {
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(clothe)];
                     ClothingData clothingData = block.GetClothingData(clothe);
+                    clothingData.ClothingValue = clothe;
                     clothingData.OnUpdate();
                 }
             }
@@ -342,6 +343,7 @@ namespace Game
                 {
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(clothe)];
                     ClothingData clothingData = block.GetClothingData(clothe);
+                    clothingData.ClothingValue = clothe;
                     clothingData.OnUpdate();
                 }
             }
@@ -484,7 +486,7 @@ namespace Game
                     processedValue = value;
                     processedCount = processCount;
                 }
-                else if (block.Eat(value) || !m_componentVitalStats.Eat(value))
+                else if (block.Eat(m_componentVitalStats,value) || !m_componentVitalStats.Eat(value))
                 {
                     processedValue = value;
                     processedCount = processCount;
@@ -494,6 +496,8 @@ namespace Game
             if (block.CanWear(value))
             {
                 ClothingData clothingData = block.GetClothingData(value);
+                clothingData.Clothing = this;
+                clothingData.ClothingValue = value;
                 clothingData.OnMount();
                 var list = new List<int>(GetClothes(clothingData.Slot));
                 list.Add(value);
@@ -511,6 +515,7 @@ namespace Game
                     int value = list[list.Count - 1];
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
                     ClothingData clothingData = block.GetClothingData(value);
+                    clothingData.ClothingValue = value;
                     clothingData.OnDismount();
                     list.RemoveAt(list.Count - 1);
                     SetClothes((ClothingSlot)slotIndex, list);

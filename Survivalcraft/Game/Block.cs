@@ -285,7 +285,7 @@ namespace Game
         {
             return IsAimable;
         }
-        public virtual bool Eat(int value)
+        public virtual bool Eat(ComponentVitalStats vitalStats, int value)
         {
             return false;
         }

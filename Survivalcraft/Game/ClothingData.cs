@@ -39,6 +39,10 @@ namespace Game
 
         public int PlayerLevelRequired;
 
+        public ComponentClothing Clothing { get; internal set; }
+
+        public int ClothingValue { get; internal set; }
+
         /// <summary>
         /// 装备
         /// </summary>
@@ -51,6 +55,8 @@ namespace Game
         /// 更新
         /// </summary>
         public event Action Update;
+
+
 
         public void OnMount()
         {

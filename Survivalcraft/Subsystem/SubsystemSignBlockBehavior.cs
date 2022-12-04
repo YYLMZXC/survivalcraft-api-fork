@@ -233,7 +233,6 @@ namespace Game
 
         public override void Save(ValuesDictionary valuesDictionary)
         {
-            Save(valuesDictionary);
             int num = 0;
             var valuesDictionary2 = new ValuesDictionary();
             valuesDictionary.SetValue("Texts", valuesDictionary2);
