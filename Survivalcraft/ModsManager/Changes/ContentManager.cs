@@ -111,24 +111,7 @@ namespace Game
                 return obj;
             }
         }
-        public static object StreamConvertType(Type type, Stream stream)
-        {
-            switch (type.FullName)
-            {
-                case "SimpleJson.JsonObject": return SimpleJson.SimpleJson.DeserializeObject(new StreamReader(stream).ReadToEnd());
-                case "Engine.Media.StreamingSource": return SoundData.Stream(stream);
-                case "Engine.Audio.SoundBuffer": return Engine.Audio.SoundBuffer.Load(stream);
-                case "Engine.Graphics.Texture2D": return Texture2D.Load(stream);
-                case "System.String": return new StreamReader(stream).ReadToEnd();
-                case "Engine.Media.Image": return Image.Load(stream);
-                case "Game.ObjModel": return ObjModelReader.Load(stream);
-                case "Game.JsonModel": return JsonModelReader.Load(stream);
-                case "System.Xml.Linq.XElement": return XElement.Load(stream);
-                case "Engine.Graphics.Model": return Model.Load(stream, true);
-                case "Game.MtllibStruct": return MtllibStruct.Load(stream);
-            }
-            return null;
-        }
+
         public static void Add(ContentInfo contentInfo)
         {
             lock (syncobj)

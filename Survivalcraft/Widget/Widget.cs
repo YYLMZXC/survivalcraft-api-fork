@@ -24,6 +24,7 @@ namespace Game
             public readonly PrimitivesRenderer3D PrimitivesRenderer3D = new PrimitivesRenderer3D();
 
             public readonly PrimitivesRenderer2D CursorPrimitivesRenderer2D = new PrimitivesRenderer2D();
+
             public void DrawWidgetsHierarchy(Widget rootWidget)
             {
                 m_drawItems.Clear();
@@ -168,7 +169,9 @@ namespace Game
                 }
             }
         }
+
         public Action<Vector2> MeasureOverride1;
+
         public Action Update1;
 
         public class DrawItem : IComparable<DrawItem>
@@ -537,6 +540,7 @@ namespace Game
             {
                 throw new Exception($"Type \"{node.Name.LocalName}\" is not a Widget.");
             }
+            ModsManager.HookAction("OnWidgetConstruct", loader => { loader.OnWidgetConstruct(ref widget); return false; });
             parentWidget?.Children.Add(widget);
             widget.LoadContents(eventsTarget, node);
             return widget;

@@ -198,6 +198,7 @@ namespace Game
 
         public override void Load(ValuesDictionary valuesDictionary)
         {
+            base.Load(valuesDictionary);
             m_subsystemViews = Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
             m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
             m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);

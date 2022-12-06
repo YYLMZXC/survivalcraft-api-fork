@@ -583,5 +583,22 @@ namespace Game
         {
             IsGenerate = false;
         }
+        /// <summary>
+        /// 当界面被创建时
+        /// </summary>
+        /// <param name="widget"></param>
+        public virtual void OnWidgetConstruct(ref Widget widget)
+        {
+
+        }
+        /// <summary>
+        /// 当ModalPanelWidget被设置时执行
+        /// </summary>
+        /// <param name="Old"></param>
+        /// <param name="New"></param>
+        public virtual void OnModalPanelWidgetSet(ComponentGui gui, Widget Old, Widget New)
+        {
+
+        }
     }
 }

@@ -333,8 +333,7 @@ namespace Game
                 {
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(clothe)];
                     ClothingData clothingData = block.GetClothingData(clothe);
-                    clothingData.ClothingValue = clothe;
-                    clothingData.OnUpdate();
+                    clothingData.Update?.Invoke(clothe,this);
                 }
             }
             foreach (ClothingSlot slot in m_outerSlotsOrder)
@@ -343,8 +342,7 @@ namespace Game
                 {
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(clothe)];
                     ClothingData clothingData = block.GetClothingData(clothe);
-                    clothingData.ClothingValue = clothe;
-                    clothingData.OnUpdate();
+                    clothingData.Update?.Invoke(clothe, this);
                 }
             }
 
@@ -496,9 +494,7 @@ namespace Game
             if (block.CanWear(value))
             {
                 ClothingData clothingData = block.GetClothingData(value);
-                clothingData.Clothing = this;
-                clothingData.ClothingValue = value;
-                clothingData.OnMount();
+                clothingData.Mount(value,this);
                 var list = new List<int>(GetClothes(clothingData.Slot));
                 list.Add(value);
                 SetClothes(clothingData.Slot, list);
@@ -515,8 +511,7 @@ namespace Game
                     int value = list[list.Count - 1];
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
                     ClothingData clothingData = block.GetClothingData(value);
-                    clothingData.ClothingValue = value;
-                    clothingData.OnDismount();
+                    clothingData.Dismount(value, this);
                     list.RemoveAt(list.Count - 1);
                     SetClothes((ClothingSlot)slotIndex, list);
                     return 1;

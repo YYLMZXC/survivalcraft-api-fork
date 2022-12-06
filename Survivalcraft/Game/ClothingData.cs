@@ -39,37 +39,18 @@ namespace Game
 
         public int PlayerLevelRequired;
 
-        public ComponentClothing Clothing { get; internal set; }
-
-        public int ClothingValue { get; internal set; }
-
         /// <summary>
         /// 装备
         /// </summary>
-        public event Action Mount;
+        public Action<int,ComponentClothing> Mount;
         /// <summary>
         /// 卸载
         /// </summary>
-        public event Action Dismount;
+        public Action<int, ComponentClothing> Dismount;
         /// <summary>
         /// 更新
         /// </summary>
-        public event Action Update;
-
-
-
-        public void OnMount()
-        {
-            Mount?.Invoke();
-        }
-        public void OnDismount()
-        {
-            Dismount?.Invoke();
-        }
-
-        public void OnUpdate() {
-            Update?.Invoke();
-        }
+        public Action<int, ComponentClothing> Update;
 
     }
 }

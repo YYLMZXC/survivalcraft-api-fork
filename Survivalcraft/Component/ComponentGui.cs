@@ -207,6 +207,7 @@ namespace Game
                     UpdateModalPanelAnimation();
                     m_componentPlayer.GameWidget.Input.Clear();
                     m_componentPlayer.ComponentInput.SetSplitSourceInventoryAndSlot(null, -1);
+                    ModsManager.HookAction("", loader => { loader.OnModalPanelWidgetSet(this, ModalPanelWidget, value); return false; });
                 }
             }
         }
