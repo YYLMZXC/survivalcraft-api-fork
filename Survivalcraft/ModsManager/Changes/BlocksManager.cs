@@ -257,11 +257,18 @@ namespace Game
             if (texture == null)
             {
                 texture = ((environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture);
-                vector = m_slotTexCoords[block.GetFaceTextureSlot(-1, value)];
+            }
+            int textureSlotCount = block.GetTextureSlotCount(value);
+            int textureSlot = block.GetFaceTextureSlot(-1, value);
+            if (textureSlotCount == 16)
+            {
+                vector = m_slotTexCoords[textureSlot];
             }
             else
             {
-                vector = new Vector4(0f, 0f, 1f, 1f);
+                float tx = (float)(textureSlot % textureSlotCount) / textureSlotCount;
+                float ty = (float)(textureSlot / textureSlotCount) / textureSlotCount;
+                vector = new Vector4(tx, ty, tx + 1f / textureSlotCount, ty + 1f / textureSlotCount);
             }
             if (!isEmissive)
             {
