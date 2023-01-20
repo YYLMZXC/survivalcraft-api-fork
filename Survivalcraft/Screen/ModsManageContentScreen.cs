@@ -718,24 +718,40 @@ public class ModsManageContentScreen : Screen
         {
             m_uninstallModList.Clear();
         }
-        IEnumerable<string> fileNameList = Storage.ListFileNames(m_path);
-        foreach (string fileName in fileNameList)
+        try
         {
-            string extension = Storage.GetExtension(fileName);
-            if (!string.IsNullOrEmpty(extension) && extension.ToLower() == ".scmod")
+            IEnumerable<string> fileNameList = Storage.ListFileNames(m_path);
+            foreach (string fileName in fileNameList)
             {
-                ModItem modItem = GetModItem(fileName, false);
-                if (modItem == null || (modItem.ModInfo != null && string.IsNullOrEmpty(modItem.ModInfo.PackageName))) continue;
-                if (modItem.ModInfo != null && !modItem.ModInfo.ApiVersion.StartsWith("1.4"))
+                string extension = Storage.GetExtension(fileName);
+                if (!string.IsNullOrEmpty(extension) && extension.ToLower() == ".scmod")
                 {
-                    modItem.ModInfo = null;
+                    ModItem modItem = GetModItem(fileName, false);
+                    if (modItem == null || (modItem.ModInfo != null && string.IsNullOrEmpty(modItem.ModInfo.PackageName))) continue;
+                    if (modItem.ModInfo != null && !modItem.ModInfo.ApiVersion.StartsWith("1.4"))
+                    {
+                        modItem.ModInfo = null;
+                    }
+                    if (m_filter == StateFilter.InstallState)
+                    {
+                        if (modItem.ModInfo != null)
+                        {
+                            m_installModInfo.Add(modItem.ModInfo);
+                        }
+                        m_installModList.Add(modItem);
+                    }
+                    else
+                    {
+                        m_uninstallModList.Add(modItem);
+                    }
                 }
+            }
+            IEnumerable<string> directoryNameList = Storage.ListDirectoryNames(m_path);
+            foreach (string directoryName in directoryNameList)
+            {
+                ModItem modItem = GetModItem(directoryName, true);
                 if (m_filter == StateFilter.InstallState)
                 {
-                    if(modItem.ModInfo != null)
-                    {
-                        m_installModInfo.Add(modItem.ModInfo);
-                    }
                     m_installModList.Add(modItem);
                 }
                 else
@@ -744,18 +760,9 @@ public class ModsManageContentScreen : Screen
                 }
             }
         }
-        IEnumerable<string> directoryNameList = Storage.ListDirectoryNames(m_path);
-        foreach (string directoryName in directoryNameList)
+        catch (Exception e)
         {
-            ModItem modItem = GetModItem(directoryName, true);
-            if (m_filter == StateFilter.InstallState)
-            {
-                m_installModList.Add(modItem);
-            }
-            else
-            {
-                m_uninstallModList.Add(modItem);
-            }
+            Log.Warning("SetModItemList:" + e.Message);
         }
     }
 
@@ -907,9 +914,9 @@ public class ModsManageContentScreen : Screen
         };
         if (IsDirectory) return modItem;
         Stream stream = Storage.OpenFile(pathName, OpenFileMode.Read);
-        stream = GetDecipherStream(stream);
         try
         {
+            stream = GetDecipherStream(stream);
             ZipArchive zipArchive = ZipArchive.Open(stream, false);
             foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.ReadCentralDir())
             {
