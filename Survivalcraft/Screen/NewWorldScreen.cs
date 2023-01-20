@@ -44,6 +44,7 @@ namespace Game
             {
                 m_worldSettings.Name = m_nameTextBox.Text;
             };
+            m_nameTextBox.MaximumLength = 128;
             m_seedTextBox.TextChanged += delegate
             {
                 m_worldSettings.Seed = m_seedTextBox.Text;
