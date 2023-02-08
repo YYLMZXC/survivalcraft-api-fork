@@ -588,7 +588,7 @@ namespace Game
 			Vector2 v = new Vector2((float)MathUtils.Remainder(0.0020000000949949026 * gameTime - (double)(viewPosition.X / 1900f * 1.75f), 1.0) + viewPosition.X / 1900f * 1.75f, (float)MathUtils.Remainder(0.0020000000949949026 * gameTime - (double)(viewPosition.Z / 1900f * 1.75f), 1.0) + viewPosition.Z / 1900f * 1.75f);
 			TexturedBatch3D texturedBatch3D = m_primitivesRenderer3d.TexturedBatch(m_cloudsTexture, useAlphaTest: false, 2, DepthStencilState.DepthRead, null, BlendState.AlphaBlend, SamplerState.LinearWrap);
 			DynamicArray<VertexPositionColorTexture> triangleVertices = texturedBatch3D.TriangleVertices;
-			DynamicArray<ushort> triangleIndices = texturedBatch3D.TriangleIndices;
+			DynamicArray<int> triangleIndices = texturedBatch3D.TriangleIndices;
 			int count = triangleVertices.Count;
 			int count2 = triangleVertices.Count;
 			int count3 = triangleIndices.Count;

@@ -6,11 +6,11 @@ namespace Engine.Graphics
 
 		public readonly DynamicArray<VertexPositionColor> LineVertices = new DynamicArray<VertexPositionColor>();
 
-		public readonly DynamicArray<ushort> LineIndices = new DynamicArray<ushort>();
+		public readonly DynamicArray<int> LineIndices = new DynamicArray<int>();
 
 		public readonly DynamicArray<VertexPositionColor> TriangleVertices = new DynamicArray<VertexPositionColor>();
 
-		public readonly DynamicArray<ushort> TriangleIndices = new DynamicArray<ushort>();
+		public readonly DynamicArray<int> TriangleIndices = new DynamicArray<int>();
 
 		internal BaseFlatBatch()
 		{

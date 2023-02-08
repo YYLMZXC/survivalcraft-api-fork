@@ -174,7 +174,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		internal static void VerifyParametersDrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, ushort[] indexData, int startIndex, int indicesCount) where T : struct
+		internal static void VerifyParametersDrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct
 		{
 			shader.VerifyNotDisposed();
 			int num = Utilities.SizeOf<T>();
@@ -293,7 +293,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void DrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, ushort[] indexData, int startIndex, int indicesCount) where T : struct
+		public static void DrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct
 		{
 			VerifyParametersDrawUserIndexed(primitiveType, shader, vertexDeclaration, vertexData, startVertex, verticesCount, indexData, startIndex, indicesCount);
 			GCHandle gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
@@ -306,7 +306,7 @@ namespace Engine.Graphics
 				GLWrapper.ApplyRasterizerState(RasterizerState);
 				GLWrapper.ApplyDepthStencilState(DepthStencilState);
 				GLWrapper.ApplyBlendState(BlendState);
-				GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), indicesCount, All.UnsignedShort, gCHandle2.AddrOfPinnedObject() + 2 * startIndex);
+				GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), indicesCount, All.UnsignedInt, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
 			}
 			finally
 			{

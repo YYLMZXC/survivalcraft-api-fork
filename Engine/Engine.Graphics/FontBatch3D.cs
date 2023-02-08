@@ -47,12 +47,12 @@ namespace Engine.Graphics
 					TriangleVertices.Array[count + 3] = new VertexPositionColorTexture(new Vector3(vector4.X, vector4.Y, vector4.Z), color, new Vector2(glyph.TexCoord1.X, glyph.TexCoord2.Y));
 					int count2 = TriangleIndices.Count;
 					TriangleIndices.Count += 6;
-					TriangleIndices.Array[count2] = (ushort)count;
-					TriangleIndices.Array[count2 + 1] = (ushort)(count + 1);
-					TriangleIndices.Array[count2 + 2] = (ushort)(count + 2);
-					TriangleIndices.Array[count2 + 3] = (ushort)(count + 2);
-					TriangleIndices.Array[count2 + 4] = (ushort)(count + 3);
-					TriangleIndices.Array[count2 + 5] = (ushort)count;
+					TriangleIndices.Array[count2] = count;
+					TriangleIndices.Array[count2 + 1] = count + 1;
+					TriangleIndices.Array[count2 + 2] = count + 2;
+					TriangleIndices.Array[count2 + 3] = count + 2;
+					TriangleIndices.Array[count2 + 4] = count + 3;
+					TriangleIndices.Array[count2 + 5] = count;
 				}
 				v += right * (glyph.Width + base.Font.Spacing.X + spacing.X);
 			}

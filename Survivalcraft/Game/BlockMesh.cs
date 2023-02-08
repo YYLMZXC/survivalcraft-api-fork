@@ -21,7 +21,7 @@ namespace Game
 
         public DynamicArray<BlockMeshVertex> Vertices = new DynamicArray<BlockMeshVertex>();
 
-        public DynamicArray<ushort> Indices = new DynamicArray<ushort>();
+        public DynamicArray<int> Indices = new DynamicArray<int>();
 
         public DynamicArray<sbyte> Sides;
 
@@ -48,7 +48,7 @@ namespace Game
         {
             var blockMesh = new BlockMesh();
             DynamicArray<BlockMeshVertex> vertices = blockMesh.Vertices;
-            DynamicArray<ushort> indices = blockMesh.Indices;
+            DynamicArray<int> indices = blockMesh.Indices;
             var item = new BlockMeshVertex
             {
                 Position = new Vector3(bounds.Left, bounds.Top, -1f),
@@ -73,12 +73,12 @@ namespace Game
                 TextureCoordinates = new Vector2(bounds.Right, bounds.Bottom)
             };
             vertices.Add(item);
-            indices.Add((ushort)(vertices.Count - 4));
-            indices.Add((ushort)(vertices.Count - 1));
-            indices.Add((ushort)(vertices.Count - 3));
-            indices.Add((ushort)(vertices.Count - 1));
-            indices.Add((ushort)(vertices.Count - 4));
-            indices.Add((ushort)(vertices.Count - 2));
+            indices.Add(vertices.Count - 4);
+            indices.Add(vertices.Count - 1);
+            indices.Add(vertices.Count - 3);
+            indices.Add(vertices.Count - 1);
+            indices.Add(vertices.Count - 4);
+            indices.Add(vertices.Count - 2);
             item = new BlockMeshVertex
             {
                 Position = new Vector3(bounds.Left, bounds.Top, 1f),
@@ -103,12 +103,12 @@ namespace Game
                 TextureCoordinates = new Vector2(bounds.Right, bounds.Bottom)
             };
             vertices.Add(item);
-            indices.Add((ushort)(vertices.Count - 4));
-            indices.Add((ushort)(vertices.Count - 3));
-            indices.Add((ushort)(vertices.Count - 1));
-            indices.Add((ushort)(vertices.Count - 1));
-            indices.Add((ushort)(vertices.Count - 2));
-            indices.Add((ushort)(vertices.Count - 4));
+            indices.Add(vertices.Count - 4);
+            indices.Add(vertices.Count - 3);
+            indices.Add(vertices.Count - 1);
+            indices.Add(vertices.Count - 1);
+            indices.Add(vertices.Count - 2);
+            indices.Add(vertices.Count - 4);
             for (int i = bounds.Left - 1; i <= bounds.Right; i++)
             {
                 int num = -1;
@@ -149,12 +149,12 @@ namespace Game
                             TextureCoordinates = new Vector2(i - 0.01f, j - 0.01f)
                         };
                         vertices.Add(item);
-                        indices.Add((ushort)(vertices.Count - 4));
-                        indices.Add((ushort)(vertices.Count - 1));
-                        indices.Add((ushort)(vertices.Count - 3));
-                        indices.Add((ushort)(vertices.Count - 1));
-                        indices.Add((ushort)(vertices.Count - 4));
-                        indices.Add((ushort)(vertices.Count - 2));
+                        indices.Add(vertices.Count - 4);
+                        indices.Add(vertices.Count - 1);
+                        indices.Add(vertices.Count - 3);
+                        indices.Add(vertices.Count - 1);
+                        indices.Add(vertices.Count - 4);
+                        indices.Add(vertices.Count - 2);
                         num = -1;
                     }
                 }
@@ -199,12 +199,12 @@ namespace Game
                             TextureCoordinates = new Vector2(k + 2 - 0.01f, l - 0.01f)
                         };
                         vertices.Add(item);
-                        indices.Add((ushort)(vertices.Count - 4));
-                        indices.Add((ushort)(vertices.Count - 3));
-                        indices.Add((ushort)(vertices.Count - 1));
-                        indices.Add((ushort)(vertices.Count - 1));
-                        indices.Add((ushort)(vertices.Count - 2));
-                        indices.Add((ushort)(vertices.Count - 4));
+                        indices.Add(vertices.Count - 4);
+                        indices.Add(vertices.Count - 3);
+                        indices.Add(vertices.Count - 1);
+                        indices.Add(vertices.Count - 1);
+                        indices.Add(vertices.Count - 2);
+                        indices.Add(vertices.Count - 4);
                         num3 = -1;
                     }
                 }
@@ -249,12 +249,12 @@ namespace Game
                             TextureCoordinates = new Vector2(n - 0.01f, m - 0.01f)
                         };
                         vertices.Add(item);
-                        indices.Add((ushort)(vertices.Count - 4));
-                        indices.Add((ushort)(vertices.Count - 3));
-                        indices.Add((ushort)(vertices.Count - 1));
-                        indices.Add((ushort)(vertices.Count - 1));
-                        indices.Add((ushort)(vertices.Count - 2));
-                        indices.Add((ushort)(vertices.Count - 4));
+                        indices.Add(vertices.Count - 4);
+                        indices.Add(vertices.Count - 3);
+                        indices.Add(vertices.Count - 1);
+                        indices.Add(vertices.Count - 1);
+                        indices.Add(vertices.Count - 2);
+                        indices.Add(vertices.Count - 4);
                         num5 = -1;
                     }
                 }
@@ -299,12 +299,12 @@ namespace Game
                             TextureCoordinates = new Vector2(num9 - 0.01f, num7 + 2 - 0.01f)
                         };
                         vertices.Add(item);
-                        indices.Add((ushort)(vertices.Count - 4));
-                        indices.Add((ushort)(vertices.Count - 1));
-                        indices.Add((ushort)(vertices.Count - 3));
-                        indices.Add((ushort)(vertices.Count - 1));
-                        indices.Add((ushort)(vertices.Count - 4));
-                        indices.Add((ushort)(vertices.Count - 2));
+                        indices.Add(vertices.Count - 4);
+                        indices.Add(vertices.Count - 1);
+                        indices.Add(vertices.Count - 3);
+                        indices.Add(vertices.Count - 1);
+                        indices.Add(vertices.Count - 4);
+                        indices.Add(vertices.Count - 2);
                         num8 = -1;
                     }
                 }
@@ -334,13 +334,13 @@ namespace Game
             }
             InternalVertex[] vertexData = GetVertexData<InternalVertex>(vertexBuffer);
             ushort[] indexData = GetIndexData<ushort>(indexBuffer);
-            var dictionary = new Dictionary<ushort, ushort>();
+            var dictionary = new Dictionary<ushort, int>();
             for (int i = meshPart.StartIndex; i < meshPart.StartIndex + meshPart.IndicesCount; i++)
             {
                 ushort num = indexData[i];
                 if (!dictionary.ContainsKey(num))
                 {
-                    dictionary.Add(num, (ushort)Vertices.Count);
+                    dictionary.Add(num, Vertices.Count);
                     BlockMeshVertex item = default;
                     item.Position = Vector3.Transform(vertexData[num].Position, matrix);
                     item.TextureCoordinates = vertexData[num].TextureCoordinate;
@@ -395,7 +395,7 @@ namespace Game
             }
             for (int j = 0; j < blockMesh.Indices.Count; j++)
             {
-                Indices.Add((ushort)(blockMesh.Indices.Array[j] + count));
+                Indices.Add(blockMesh.Indices.Array[j] + count);
             }
             Trim();
         }
@@ -706,21 +706,21 @@ namespace Game
             Indices.Count += 6;
             if (flip)
             {
-                Indices[Indices.Count - 6] = (ushort)count;
-                Indices[Indices.Count - 5] = (ushort)(count + 2);
-                Indices[Indices.Count - 4] = (ushort)(count + 1);
-                Indices[Indices.Count - 3] = (ushort)(count + 2);
-                Indices[Indices.Count - 2] = (ushort)(count + 3);
-                Indices[Indices.Count - 1] = (ushort)(count + 1);
+                Indices[Indices.Count - 6] = count;
+                Indices[Indices.Count - 5] = count + 2;
+                Indices[Indices.Count - 4] = count + 1;
+                Indices[Indices.Count - 3] = count + 2;
+                Indices[Indices.Count - 2] = count + 3;
+                Indices[Indices.Count - 1] = count + 1;
             }
             else
             {
-                Indices[Indices.Count - 6] = (ushort)count;
-                Indices[Indices.Count - 5] = (ushort)(count + 1);
-                Indices[Indices.Count - 4] = (ushort)(count + 2);
-                Indices[Indices.Count - 3] = (ushort)(count + 2);
-                Indices[Indices.Count - 2] = (ushort)(count + 1);
-                Indices[Indices.Count - 1] = (ushort)(count + 3);
+                Indices[Indices.Count - 6] = count;
+                Indices[Indices.Count - 5] = count + 1;
+                Indices[Indices.Count - 4] = count + 2;
+                Indices[Indices.Count - 3] = count + 2;
+                Indices[Indices.Count - 2] = count + 1;
+                Indices[Indices.Count - 1] = count + 3;
             }
         }
     }
