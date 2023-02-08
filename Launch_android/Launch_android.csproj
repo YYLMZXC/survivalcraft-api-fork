@@ -74,6 +74,7 @@
     <MandroidI18n />
     <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -161,7 +162,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
