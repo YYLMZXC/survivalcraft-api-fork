@@ -249,6 +249,13 @@ namespace Game {
 
             }
         }
+        public virtual void LoadJs()
+        {
+            LoadingScreen.Info("加载Javascript脚本:" + modInfo?.PackageName);
+            GetFiles(".js", (filename, stream) => {
+                JsInterface.Execute(new StreamReader(stream).ReadToEnd());
+            });
+        }
         /// <summary>
         /// 检查依赖项
         /// </summary>

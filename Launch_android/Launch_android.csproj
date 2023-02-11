@@ -91,9 +91,13 @@
     <AndroidAsset Include="..\Survivalcraft\Content.zip">
       <Link>Assets\Content.zip</Link>
     </AndroidAsset>
+    <AndroidAsset Include="..\Survivalcraft\init.js">
+      <Link>Assets\init.js</Link>
+    </AndroidAsset>
     <AndroidNativeLibrary Include="libopenal32.so">
       <Abi>arm64-v8a</Abi>
     </AndroidNativeLibrary>
+    <None Include="app.config" />
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
