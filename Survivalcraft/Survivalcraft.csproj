@@ -403,6 +403,7 @@
     <Compile Include="Block\XorGateBlock.cs" />
     <Compile Include="Dialog\EditVoltageLevelDialog.cs" />
     <Compile Include="Dialog\SelectGameModeDialog.cs" />
+    <Compile Include="Dialog\RunJsDialog.cs" />
     <Compile Include="Game\DrawBlockMode.cs" />
     <Compile Include="Game\JsInterface.cs" />
     <Compile Include="Game\ShaderCodeManager.cs" />
@@ -1106,7 +1107,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content.zip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\Assets\Lang\en-US.json" />
     <None Include="Content\Assets\Lang\zh-CN.json" />
@@ -1876,6 +1877,7 @@
     <None Include="Content\Assets\Widgets\SmeltingRecipe.xml" />
     <None Include="Content\Assets\Widgets\TopBarContents.xml" />
     <None Include="Content\Assets\Widgets\VitalStatsWidget.xml" />
+    <None Include="Content\Assets\Dialogs\RunJsDialog.xml" />
     <Content Include="Content\icon.ico" />
     <Content Include="OpenAL\x64\openal32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1891,9 +1893,5 @@
 cd "$(SolutionDir)Survivalcraft\Content"
 "$(SolutionDir)zip.exe" -qr9 ..\Content.zip *</PreBuildEvent>
   </PropertyGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
-    </VisualStudio>
-  </ProjectExtensions>
+  <ProjectExtensions />
 </Project>

@@ -29,11 +29,15 @@ namespace Game
             {
                 Dismiss(true);
             };
+            m_InputBox.Escape += delegate
+            {
+                Dismiss(false);
+            };
         }
 
         public override void Update()
         {
-            if (Input.Cancel)
+            if (Input.Back || Input.Cancel)
             {
                 Dismiss(false);
             }
