@@ -1886,11 +1886,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)zip.exe" -qrj9 "$(SolutionDir)Survivalcraft\Content.zip" "$(SolutionDir)Survivalcraft\Content"</PreBuildEvent>
+    <PreBuildEvent>set p=$(SolutionDir)
+%2525p:~0,2%2525
+cd "$(SolutionDir)Survivalcraft\Content"
+"$(SolutionDir)zip.exe" -qr9 ..\Content.zip *</PreBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" />
+      <UserProperties lang_4ot_3ot_1json__JsonSchema="https://beaujs.com/schema.json" lang_4zh_3cn_1json__JsonSchema="https://beaujs.com/schema.json" lang_4en_3us_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

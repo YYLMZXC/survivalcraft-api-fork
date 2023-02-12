@@ -2956,7 +2956,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)zip.exe" -qrj9 "$(SolutionDir)Survivalcraft\Content.zip" "$(SolutionDir)Survivalcraft\Content"</PreBuildEvent>
+    <PreBuildEvent>set p=$(SolutionDir)
+%2525p:~0,2%2525
+cd "$(SolutionDir)Survivalcraft\Content"
+"$(SolutionDir)zip.exe" -qr9 ..\Content.zip *</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
