@@ -24,6 +24,15 @@ namespace Game
         public virtual void ModDispose()
         {
         }
+        /// <summary>
+        /// 方块亮度
+        /// （黑暗区域亮度）
+        /// </summary>
+        /// <param name="brightness">亮度值</param>
+        public virtual void CalculateLighting(ref float brightness)
+        {
+            
+        }
 
         /// <param name="attackPower">伤害值</param>
         /// <param name="playerProbability">玩家命中率</param>
