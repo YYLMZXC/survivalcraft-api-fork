@@ -129,6 +129,19 @@ namespace Game
                 Log.Error(ex);
             }
         }
+        public static string Evaluate(string str)
+        {
+            try
+            {
+                return engine.Evaluate(str).ToString();
+            }
+            catch (Exception ex)
+            {
+                string errors = ex.ToString();
+                Log.Error(errors);
+                return errors;
+            }
+        }
         public static JsValue Invoke(string str,params object[] arguments)
         {
             try

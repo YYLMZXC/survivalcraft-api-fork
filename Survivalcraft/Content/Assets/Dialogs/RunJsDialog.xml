@@ -1,0 +1,35 @@
+<CanvasWidget xmlns="runtime-namespace:Game">
+    <CanvasWidget Size="720, 420" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
+        <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="10, 10">
+            <LabelWidget Text="[RunJsDialog:3]" Color="255, 255, 255" HorizontalAlignment="Center" Margin="0, 5" />
+            <CanvasWidget Size="0, Infinity" />
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+				<LabelWidget Text="[RunJsDialog:4]" Color="255, 255, 255" HorizontalAlignment="Center" Margin="4, 0" />
+                <CanvasWidget Margin="10, 0">
+                    <RectangleWidget Size="Infinity, 45" FillColor="0, 0, 0, 0" OutlineColor="64, 64, 64, 64"/>
+					<TextBoxWidget Name="RunJsDialog.Input"  Color="255, 255, 255" Margin="4, 0" VerticalAlignment="Near" HorizontalAlignment="Stretch" MaximumLength="100000" />
+                </CanvasWidget>
+			</StackPanelWidget>
+			<CanvasWidget Size="0, 10" />
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+				<LabelWidget Text="[RunJsDialog:5]" Color="255, 255, 255" HorizontalAlignment="Center" Margin="4, 0" />
+				<CanvasWidget Margin="10, 0">
+					<RectangleWidget Size="Infinity, 80" FillColor="0, 0, 0, 0" OutlineColor="64, 64, 64, 64"/>
+					<TextBoxWidget Name="RunJsDialog.Output"  Color="255, 255, 255" Margin="4, 0" VerticalAlignment="Near" HorizontalAlignment="Stretch" MaximumLength="100000"/>
+				</CanvasWidget>
+			</StackPanelWidget>
+			<CanvasWidget Size="0, 10" />
+			<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Near">
+				<LabelWidget Text="[RunJsDialog:6]" Color="255, 255, 255" HorizontalAlignment="Center" Margin="4, 0" />
+				<LabelWidget Name="RunJsDialog.TimeCosted" Text="" Color="255, 255, 255" HorizontalAlignment="Center" Margin="4, 0" />
+			</StackPanelWidget>
+            <CanvasWidget Size="0, Infinity" />
+            <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
+                <BevelledButtonWidget Name="RunJsDialog.RunButton" Text="[RunJsDialog:1]" Style="{Styles/ButtonStyle_160x60}" />
+                <CanvasWidget Size="40, 0" />
+                <BevelledButtonWidget Name="RunJsDialog.CloseButton" Text="[RunJsDialog:2]" Style="{Styles/ButtonStyle_160x60}" />
+            </StackPanelWidget>
+        </StackPanelWidget>
+    </CanvasWidget>
+</CanvasWidget>
