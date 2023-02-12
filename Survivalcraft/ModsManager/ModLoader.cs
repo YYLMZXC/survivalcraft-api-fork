@@ -25,6 +25,16 @@ namespace Game
         {
         }
         /// <summary>
+        /// 视图雾颜色调整
+        /// </summary>
+        /// <param name="ViewUnderWaterDepth">大于0则表示在水下</param>
+        /// <param name="ViewUnderMagmaDepth">大于0则表示在岩浆中</param>
+        /// <param name="viewFogColor">视图雾颜色</param>
+        public virtual void ViewFogColor(float ViewUnderWaterDepth, float ViewUnderMagmaDepth, ref Color viewFogColor)
+        {
+           
+        }
+        /// <summary>
         /// 方块亮度
         /// （黑暗区域亮度）
         /// </summary>
@@ -33,7 +43,6 @@ namespace Game
         {
             
         }
-
         /// <param name="attackPower">伤害值</param>
         /// <param name="playerProbability">玩家命中率</param>
         /// <param name="creatureProbability">生物命中率</param>
