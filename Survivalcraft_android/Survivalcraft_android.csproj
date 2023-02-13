@@ -41,7 +41,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Esprima, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Esprima.3.0.0-beta-10\lib\netstandard2.1\Esprima.dll</HintPath>
+    </Reference>
     <Reference Include="I18N" />
+    <Reference Include="Jint, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jint.3.0.0-beta-2046\lib\netstandard2.1\Jint.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android">
       <HintPath>G:\program files\VS\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v8.0\Mono.Android.dll</HintPath>
     </Reference>
@@ -1279,6 +1285,9 @@
     <Compile Include="..\Survivalcraft\Dialog\ReportCommunityContentDialog.cs">
       <Link>Dialog\ReportCommunityContentDialog.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Dialog\RunJsDialog.cs">
+      <Link>Dialog\RunJsDialog.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Dialog\SelectExternalContentProviderDialog.cs">
       <Link>Dialog\SelectExternalContentProviderDialog.cs</Link>
     </Compile>
@@ -1620,6 +1629,9 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Game\IUpdateable.cs">
       <Link>Game\IUpdateable.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Game\JsInterface.cs">
+      <Link>Game\JsInterface.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Game\KillParticleSystem.cs">
       <Link>Game\KillParticleSystem.cs</Link>
@@ -2941,8 +2953,17 @@
       <Name>EntitySystem</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>set p=$(SolutionDir)
+%2525p:~0,2%2525
+cd "$(SolutionDir)Survivalcraft\Content"
+"$(SolutionDir)zip.exe" -qr9 ..\Content.zip *</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

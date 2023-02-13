@@ -389,7 +389,7 @@ namespace Game
             int count = blockMesh.Vertices.Count;
             BlockMeshVertex[] array = blockMesh.Vertices.Array;
             int count2 = blockMesh.Indices.Count;
-            ushort[] array2 = blockMesh.Indices.Array;
+            int[] array2 = blockMesh.Indices.Array;
             DynamicArray<VertexPositionColorTexture> triangleVertices = texturedBatch3D.TriangleVertices;
             int count3 = triangleVertices.Count;
             int count4 = triangleVertices.Count;
@@ -416,12 +416,12 @@ namespace Game
                 var color2 = new Color((byte)(blockMeshVertex.Color.R * v.X), (byte)(blockMeshVertex.Color.G * v.Y), (byte)(blockMeshVertex.Color.B * v.Z), (byte)(blockMeshVertex.Color.A * v.W));
                 triangleVertices.Array[count4++] = new VertexPositionColorTexture(blockMeshVertex.Position, color2, blockMeshVertex.TextureCoordinates);
             }
-            DynamicArray<ushort> triangleIndices = texturedBatch3D.TriangleIndices;
+            DynamicArray<int> triangleIndices = texturedBatch3D.TriangleIndices;
             int count5 = triangleIndices.Count;
             triangleIndices.Count += count2;
             for (int j = 0; j < count2; j++)
             {
-                triangleIndices.Array[count5++] = (ushort)(count3 + array2[j]);
+                triangleIndices.Array[count5++] = count3 + array2[j];
             }
         }
 

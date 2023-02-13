@@ -217,9 +217,9 @@ namespace Game
                                     //生成第一个三角面的顶点法线
                                     //Vector3 normal = NormalDic[facename];
                                     int startcount = childMesh.Vertices.Count;
-                                    childMesh.Indices.Add((ushort)(startcount++));
-                                    childMesh.Indices.Add((ushort)(startcount++));
-                                    childMesh.Indices.Add((ushort)(startcount++));
+                                    childMesh.Indices.Add(startcount++);
+                                    childMesh.Indices.Add(startcount++);
+                                    childMesh.Indices.Add(startcount++);
                                     childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[0], objNormal = new ObjModelReader.ObjNormal(0, 0, 0), texCood = ots[0] });
                                     childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[1], objNormal = new ObjModelReader.ObjNormal(0, 0, 0), texCood = ots[1] });
                                     childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[2], objNormal = new ObjModelReader.ObjNormal(0, 0, 0), texCood = ots[2] });
@@ -241,9 +241,9 @@ namespace Game
                                     ots[1] = new ObjModelReader.ObjTexCood(t2.X, t2.Y);
                                     ots[2] = new ObjModelReader.ObjTexCood(t3.X, t3.Y);
                                     //生成第二个三角面的顶点法线
-                                    childMesh.Indices.Add((ushort)(startcount++));
-                                    childMesh.Indices.Add((ushort)(startcount++));
-                                    childMesh.Indices.Add((ushort)(startcount++));
+                                    childMesh.Indices.Add(startcount++);
+                                    childMesh.Indices.Add(startcount++);
+                                    childMesh.Indices.Add(startcount++);
                                     childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[0], objNormal = new ObjModelReader.ObjNormal(0, 0, 0), texCood = ots[0] });
                                     childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[1], objNormal = new ObjModelReader.ObjNormal(0, 0, 0), texCood = ots[1] });
                                     childMesh.Vertices.Add(new ObjModelReader.ObjVertex() { position = ops[2], objNormal = new ObjModelReader.ObjNormal(0, 0, 0), texCood = ots[2] });

@@ -933,13 +933,13 @@ namespace Game
                                 });
                                 int count2 = blockMesh3.Indices.Count;
                                 blockMesh3.Indices.Count += 6;
-                                ushort[] array3 = blockMesh3.Indices.Array;
-                                array3[count2] = (ushort)count;
-                                array3[count2 + 1] = (ushort)(count + 1);
-                                array3[count2 + 2] = (ushort)(count + 2);
-                                array3[count2 + 3] = (ushort)(count + 2);
-                                array3[count2 + 4] = (ushort)(count + 3);
-                                array3[count2 + 5] = (ushort)count;
+                                int[] array3 = blockMesh3.Indices.Array;
+                                array3[count2] = count;
+                                array3[count2 + 1] = count + 1;
+                                array3[count2 + 2] = count + 2;
+                                array3[count2 + 3] = count + 2;
+                                array3[count2 + 4] = count + 3;
+                                array3[count2 + 5] = count;
                             }
                         }
                     }

@@ -73,7 +73,7 @@ namespace Game
         public class ObjMesh {
             public int ElementIndex;
             public DynamicArray<ObjVertex> Vertices = new DynamicArray<ObjVertex>();
-            public DynamicArray<ushort> Indices = new DynamicArray<ushort>();
+            public DynamicArray<int> Indices = new DynamicArray<int>();
             public string TexturePath = "Textures/NoneTexture";//默认位置
             public string MeshName;
             public Matrix? MeshMatrix;
@@ -178,7 +178,7 @@ namespace Game
                                             ObjTexCood texCood = objTexCoods[pb - 1];
                                             ObjNormal objNormal = objNormals[pc - 1];
                                             int face = CellFace.Vector3ToFace(new Vector3(objNormal.x, objNormal.y, objNormal.z));
-                                            objMesh.Indices.Add((ushort)(startCount + FaceMap[face][i - 1]));
+                                            objMesh.Indices.Add(startCount + FaceMap[face][i - 1]);
                                             objMesh.Vertices.Add(new ObjVertex() { position = objPosition,objNormal= objNormal, texCood = texCood });
                                         }
                                     }

@@ -1,7 +1,10 @@
 ﻿using Engine;
 using Engine.Graphics;
 using Engine.Media;
+using Esprima;
 using GameEntitySystem;
+using Jint;
+using System;
 
 namespace Game
 {
@@ -14,7 +17,23 @@ namespace Game
             ModsManager.RegisterHook("OnModelRendererDrawExtra", this);
             ModsManager.RegisterHook("GetMaxInstancesCount", this);
         }
-
+        public override void OnMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult, ref float DigProgress, out bool Digged)
+        {
+            float DigProgress1 = DigProgress;
+            bool Digged1 = false;
+            JsInterface.handlersDictionary["OnMinerDig"].ForEach(function => {
+                Digged1 |= JsInterface.Invoke(function, miner, raycastResult, DigProgress1).AsBoolean();
+            });
+            Digged = Digged1;
+        }
+        public override void OnMinerPlace(ComponentMiner miner, TerrainRaycastResult raycastResult, int x, int y, int z, int value, out bool Placed)
+        {
+            bool Placed1 = false;
+            JsInterface.handlersDictionary["OnMinerPlace"].ForEach(function => {
+                Placed1 |= JsInterface.Invoke(function, miner, raycastResult,x,y,z,value).AsBoolean();
+            });
+            Placed = Placed1;
+        }
         public override void OnCameraChange(ComponentPlayer m_componentPlayer,ComponentGui componentGui)
         {
             GameWidget gameWidget = m_componentPlayer.GameWidget;
@@ -47,6 +66,13 @@ namespace Game
                 }
             }
         }
+        public override bool OnPlayerSpawned(PlayerData.SpawnMode spawnMode, ComponentPlayer componentPlayer, Vector3 position)
+        {
+            JsInterface.handlersDictionary["OnPlayerSpawned"].ForEach(function => {
+                JsInterface.Invoke(function, spawnMode, componentPlayer, position);
+            });
+            return false;
+        }
         public override void OnPlayerDead(PlayerData playerData)
         {
             playerData.GameWidget.ActiveCamera = playerData.GameWidget.FindCamera<DeathCamera>();
@@ -72,6 +98,9 @@ namespace Game
                 }
             }
             playerData.Level = MathUtils.Max(MathUtils.Floor(playerData.Level / 2f), 1f);
+            JsInterface.handlersDictionary["OnPlayerDead"].ForEach(function => {
+                JsInterface.Invoke(function, playerData);
+            });
         }
         public override void OnModelRendererDrawExtra(SubsystemModelsRenderer modelsRenderer, ComponentModel componentModel, Camera camera, float? alphaThreshold)
         {
@@ -100,6 +129,34 @@ namespace Game
         {
             return 7;
         }
-
+        public override bool AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, bool isMeleeAttack)
+        {
+            float attackPower1 = attackPower;
+            bool flag = false;
+            JsInterface.handlersDictionary["OnMinerPlace"].ForEach(function => {
+                flag |= JsInterface.Invoke(function, target, attacker, hitPoint, hitDirection, attackPower1, isMeleeAttack).AsBoolean();
+            });
+            return flag;
+        }
+        public override void OnCreatureInjure(ComponentHealth componentHealth, float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause, out bool Skip)
+        {
+            bool Skip1 = false;
+            JsInterface.handlersDictionary["OnCreatureInjure"].ForEach(function => {
+                Skip1 |= JsInterface.Invoke(function, componentHealth, amount, attacker, ignoreInvulnerability, cause).AsBoolean();
+            });
+            Skip = Skip1;
+        }
+        public override void OnProjectLoaded(Project project)
+        {
+            JsInterface.handlersDictionary["OnProjectLoaded"].ForEach(function => {
+                JsInterface.Invoke(function, project);
+            });
+        }
+        public override void OnProjectDisposed()
+        {
+            JsInterface.handlersDictionary["OnProjectLoaded"].ForEach(function => {
+                JsInterface.Invoke(function);
+            });
+        }
     }
 }

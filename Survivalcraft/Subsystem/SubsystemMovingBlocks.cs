@@ -156,7 +156,7 @@ namespace Game
 
 		public DynamicArray<TerrainVertex> m_vertices = new DynamicArray<TerrainVertex>();
 
-		public DynamicArray<ushort> m_indices = new DynamicArray<ushort>();
+		public DynamicArray<int> m_indices = new DynamicArray<int>();
 
 		public DynamicArray<IMovingBlockSet> m_result = new DynamicArray<IMovingBlockSet>();
 
@@ -645,7 +645,7 @@ namespace Game
 				}
 				for (int j = 0; j < count2; j++)
 				{
-					m_indices.Add((ushort)(array[j] + count));
+					m_indices.Add((array[j] + count));
 				}
 			}
 		}

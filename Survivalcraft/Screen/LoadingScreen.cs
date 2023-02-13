@@ -148,6 +148,10 @@ namespace Game
             AddLoadAction(delegate { //读取所有的ModEntity的dll，并分离出ModLoader，保存Blocks
                 ModsManager.ModListAllDo((modEntity) => { modEntity.LoadDll(); });
             });
+            AddLoadAction(delegate { //读取所有的ModEntity的javascript
+                ModsManager.ModListAllDo((modEntity) => { modEntity.LoadJs(); });
+                JsInterface.RegisterEvent();
+            });
             AddLoadAction(delegate {
                 Info("执行初始化任务");
                 List<Action> actions = new List<Action>();

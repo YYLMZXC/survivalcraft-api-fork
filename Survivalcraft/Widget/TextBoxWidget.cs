@@ -337,6 +337,14 @@ namespace Game
                 {
                     CaretPosition = Text.Length;
                 }
+                if (Input.IsKeyDownRepeat(Key.Enter))
+                {
+                    this.Enter?.Invoke(this);
+                }
+                if (Input.IsKeyDownRepeat(Key.Escape))
+                {
+                    this.Escape?.Invoke(this);
+                }
             }
         }
         public void MoveNext(WidgetsList widgets)

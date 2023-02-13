@@ -276,6 +276,10 @@ namespace Game
                         DialogsManager.ShowDialog(ParentWidget, new GamepadHelpDialog());
                     }));
                 }
+                list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 95), delegate
+                {
+                    DialogsManager.ShowDialog(ParentWidget, new RunJsDialog());
+                }));
                 var dialog = new ListSelectionDialog(LanguageControl.Get(fName, 92), list, 60f, (object t) => ((Tuple<string, Action>)t).Item1, delegate (object t)
                 {
                     ((Tuple<string, Action>)t).Item2();

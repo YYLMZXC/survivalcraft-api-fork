@@ -8,7 +8,7 @@ namespace Engine.Graphics
 
 		public readonly DynamicArray<VertexPositionColorTexture> TriangleVertices = new DynamicArray<VertexPositionColorTexture>();
 
-		public readonly DynamicArray<ushort> TriangleIndices = new DynamicArray<ushort>();
+		public readonly DynamicArray<int> TriangleIndices = new DynamicArray<int>();
 
 		public Texture2D Texture
 		{
