@@ -111,6 +111,7 @@ public static class ModsManager
     public static List<ModLoader> ModLoaders = new List<ModLoader>();
     public static List<ModInfo> DisabledMods = new List<ModInfo>();
     public static Dictionary<string, ModHook> ModHooks = new Dictionary<string, ModHook>();
+    public static Dictionary<string, Assembly> Dlls = new Dictionary<string, Assembly>();
 
     public static bool GetModEntity(string packagename, out ModEntity modEntity)
     {
@@ -384,6 +385,7 @@ public static class ModsManager
         {
             ModList.Remove(item);
         }
+        AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
     }
 
     public static void AddException(Exception e, bool AllowContinue_ = false)
@@ -686,6 +688,21 @@ public static class ModsManager
                 }
             }
             Modify(DataObjects, element);
+        }
+    }
+    static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+    {
+        try
+        {
+            if(Dlls.TryGetValue(args.Name, out var dll))
+            {
+                return dll;
+            }
+            return null;
+        }
+        catch
+        {
+            throw;
         }
     }
 

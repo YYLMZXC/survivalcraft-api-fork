@@ -208,6 +208,7 @@ namespace Game {
         public void LoadDllLogic(Stream stream)
         {
             var assembly = Assembly.Load(ModsManager.StreamToBytes(stream));
+            ModsManager.Dlls.Add(assembly.FullName, assembly);
             var BlockTypes = new List<Type>();
             Type[] types = assembly.GetTypes();
             for (int i = 0; i < types.Length; i++)
@@ -246,7 +247,6 @@ namespace Game {
                     block.BlockIndex = staticIndex;
                     Blocks.Add(block);
                 }
-
             }
         }
         public virtual void LoadJs()
