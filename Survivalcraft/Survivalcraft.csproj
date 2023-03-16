@@ -1107,7 +1107,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Assets\Lang\en-US.json" />
     <None Include="Content\Assets\Lang\zh-CN.json" />
