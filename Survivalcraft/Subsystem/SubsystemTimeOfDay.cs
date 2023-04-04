@@ -10,7 +10,7 @@ namespace Game
 
         public bool TimeOfDayEnabled = true;
 
-        public const float DayDuration = 1200f;
+        public float DayDuration { get; set; } = 1200f;
 
         public float TimeOfDay
         {
@@ -54,12 +54,12 @@ namespace Game
 
         public double CalculateDay(double totalElapsedGameTime)
         {
-            return (totalElapsedGameTime + (TimeOfDayOffset + 0.30000001192092896) * 1200.0) / 1200.0;
+            return (totalElapsedGameTime + (TimeOfDayOffset + 0.30000001192092896) * DayDuration) / DayDuration;
         }
 
         public float CalculateTimeOfDay(double totalElapsedGameTime)
         {
-            return (float)MathUtils.Remainder(totalElapsedGameTime + (TimeOfDayOffset + 0.30000001192092896) * 1200.0, 1200.0) / 1200f;
+            return (float)MathUtils.Remainder(totalElapsedGameTime + (TimeOfDayOffset + 0.30000001192092896) * DayDuration, DayDuration) / DayDuration;
         }
 
         public override void Load(ValuesDictionary valuesDictionary)
