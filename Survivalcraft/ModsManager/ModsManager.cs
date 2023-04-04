@@ -111,6 +111,7 @@ public static class ModsManager
     public static List<ModLoader> ModLoaders = new List<ModLoader>();
     public static List<ModInfo> DisabledMods = new List<ModInfo>();
     public static Dictionary<string, ModHook> ModHooks = new Dictionary<string, ModHook>();
+    public static Dictionary<string, Assembly> Dlls = new Dictionary<string, Assembly>();
 
     public static bool GetModEntity(string packagename, out ModEntity modEntity)
     {
@@ -340,22 +341,25 @@ public static class ModsManager
         if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
         ModHooks.Clear();
         ModListAll.Clear();
-        ModList.Clear();
         ModLoaders.Clear();
         SurvivalCraftModEntity = new SurvivalCraftModEntity();
         ModEntity FastDebug = new FastDebugModEntity();
-        ModList.Add(SurvivalCraftModEntity);
-        ModList.Add(FastDebug);
+        ModListAll.Add(SurvivalCraftModEntity);
+        ModListAll.Add(FastDebug);
         GetScmods(ModsPath);
-        ModListAll.AddRange(ModList);
         List<ModInfo> ToDisable = new List<ModInfo>();
         ToDisable.AddRange(DisabledMods);
         DisabledMods.Clear();
         //float api = float.Parse(APIVersion);
         List<ModEntity> ToRemove = new List<ModEntity>();
-        foreach (ModEntity modEntity1 in ModList)
+        //读取SCMOD文件到ModListAll列表
+        foreach (ModEntity modEntity1 in ModListAll)
         {
             ModInfo modInfo = modEntity1.modInfo;
+            if (modInfo == null)
+            {
+                LoadingScreen.Info($"[{modEntity1.ModFilePath}]缺少ModInfo文件，忽略加载");
+            }
             ModInfo disabledmod = ToDisable.Find(l => l.PackageName == modInfo.PackageName);
             if (disabledmod != null && disabledmod.PackageName != SurvivalCraftModEntity.modInfo.PackageName && disabledmod.PackageName != FastDebug.modInfo.PackageName)
             {
@@ -363,7 +367,6 @@ public static class ModsManager
                 ToRemove.Add(modEntity1);
                 continue;
             }
-            if (modEntity1.IsChecked) continue;
             //float.TryParse(modInfo.ApiVersion, out float curr);
             //if (curr < api)
             //{//api版本检测
@@ -371,9 +374,8 @@ public static class ModsManager
             //    ToRemove.Add(modEntity1);
             //    AddException(new Exception($"[{modEntity1.modInfo.PackageName}]Target version {modInfo.Version} is less than api version {APIVersion}."), true);
             //}
-            List<ModEntity> modEntities = ModList.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
+            List<ModEntity> modEntities = ModListAll.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
             if (modEntities.Count > 1) AddException(new Exception($"Multiple installed [{modInfo.PackageName}]"));
-            modEntity1.IsChecked = true;
         }
         DisabledMods.Clear();
         foreach (var item in ToDisable)
@@ -382,8 +384,9 @@ public static class ModsManager
         }
         foreach (var item in ToRemove)
         {
-            ModList.Remove(item);
+            ModListAll.Remove(item);
         }
+        AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
     }
 
     public static void AddException(Exception e, bool AllowContinue_ = false)
@@ -409,10 +412,10 @@ public static class ModsManager
                     if (ms == ".scmod")
                     {
                         Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
-                        var modEntity = new ModEntity(ZipArchive.Open(keepOpenStream, true));
+                        var modEntity = new ModEntity(ks, ZipArchive.Open(keepOpenStream, true));
                         if (modEntity.modInfo == null) continue;
                         if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
-                        ModList.Add(modEntity);
+                        ModListAll.Add(modEntity);
                     }
                 }
                 catch (Exception e)
@@ -686,6 +689,21 @@ public static class ModsManager
                 }
             }
             Modify(DataObjects, element);
+        }
+    }
+    static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+    {
+        try
+        {
+            if(Dlls.TryGetValue(args.Name, out var dll))
+            {
+                return dll;
+            }
+            return null;
+        }
+        catch
+        {
+            throw;
         }
     }
 

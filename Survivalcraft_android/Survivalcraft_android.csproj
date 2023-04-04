@@ -1285,6 +1285,9 @@
     <Compile Include="..\Survivalcraft\Dialog\ReportCommunityContentDialog.cs">
       <Link>Dialog\ReportCommunityContentDialog.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Dialog\RunJsDialog.cs">
+      <Link>Dialog\RunJsDialog.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Dialog\SelectExternalContentProviderDialog.cs">
       <Link>Dialog\SelectExternalContentProviderDialog.cs</Link>
     </Compile>
@@ -2955,6 +2958,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>set p=$(SolutionDir)
+%2525p:~0,2%2525
+cd "$(SolutionDir)Survivalcraft\Content"
+"$(SolutionDir)zip.exe" -qr9 ..\Content.zip *</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

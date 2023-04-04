@@ -81,7 +81,13 @@ namespace Game
 
         public static void CalculateLightingTables()
         {
-            float x = MathUtils.Lerp(0f, 0.1f, SettingsManager.Brightness);
+            float brightness = SettingsManager.Brightness;
+            ModsManager.HookAction("CalculateLighting", modLoader =>
+            {
+                modLoader.CalculateLighting(ref brightness);
+                return false;
+            });
+            float x = MathUtils.Lerp(0f, 0.1f, brightness);
             for (int i = 0; i < 16; i++)
             {
                 LightIntensityByLightValue[i] = MathUtils.Saturate(MathUtils.Lerp(x, 1f, MathUtils.Pow(i / 15f, 1.25f)));

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Engine.Graphics;
+using System.Security.Principal;
+
 namespace Game
 {
     public class LoadingScreen : Screen
@@ -115,7 +117,14 @@ namespace Game
             AddLoadAction(ContentLoaded);
 
             AddLoadAction(delegate {//检查所有Mod依赖项 
-                ModsManager.ModListAllDo((modEntity) => { modEntity.CheckDependencies(); });
+                //根据加载顺序排序后的结果
+                ModsManager.ModList.Clear();
+                foreach (var item in ModsManager.ModListAll)
+                {
+                    if (item.IsDependencyChecked) continue;
+                    item.CheckDependencies(ModsManager.ModList);
+                }
+                foreach (var item in ModsManager.ModListAll) item.IsDependencyChecked = false;
             });
             AddLoadAction(delegate { //初始化所有ModEntity的语言包
                 //>>>初始化语言列表

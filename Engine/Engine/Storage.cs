@@ -181,7 +181,7 @@ namespace Engine
 
 		public static string GetFileName(string path)
 		{
-			int num = path.LastIndexOf('/');
+			int num = MathUtils.Max(path.LastIndexOf('/'), path.LastIndexOf("\\"));
 			if (num >= 0)
 			{
 				return path.Substring(num + 1);
