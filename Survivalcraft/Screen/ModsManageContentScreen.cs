@@ -14,6 +14,8 @@ public class ModsManageContentScreen : Screen
 
     public static string HeadingCode = "有头有脸天才少年,耍猴表演敢为人先";
 
+    public static string HeadingCode2 = "修改他人mod请获得原作者授权，否则小心出名！";
+
     public enum StateFilter { UninstallState, InstallState };
 
     public class ModItem
@@ -1011,12 +1013,44 @@ public class ModsManageContentScreen : Screen
                 break;
             }
         }
+        byte[] hc2 = Encoding.UTF8.GetBytes(HeadingCode2);
+        bool decipher2 = true;
+        for (int i = 0; i < hc2.Length; i++)
+        {
+            if (hc2[i] != buff[i])
+            {
+                decipher2 = false;
+                break;
+            }
+        }
         if (decipher)
         {
             byte[] buff2 = new byte[buff.Length - hc.Length];
             for (int i = 0; i < buff2.Length; i++)
             {
                 buff2[i] = buff[buff.Length - 1 - i];
+            }
+            keepOpenStream.Write(buff2, 0, buff2.Length);
+            keepOpenStream.Flush();
+        }
+        else if (decipher2)
+        {
+            byte[] buff2 = new byte[buff.Length - hc2.Length];
+            int k = 0;
+            int t = 0;
+            int l = (buff2.Length + 1) / 2;
+            for (int i = 0; i < buff2.Length; i++)
+            {
+                if(i % 2 == 0)
+                {
+                    buff2[i] = buff[hc2.Length + k];
+                    k++;
+                }
+                else
+                {
+                    buff2[i] = buff[hc2.Length + l + t];
+                    t++;
+                }
             }
             keepOpenStream.Write(buff2, 0, buff2.Length);
             keepOpenStream.Flush();
@@ -1046,28 +1080,50 @@ public class ModsManageContentScreen : Screen
                 break;
             }
         }
-        if (!decipher)
+        byte[] hc2 = Encoding.UTF8.GetBytes(HeadingCode2);
+        bool decipher2 = true;
+        for (int i = 0; i < hc2.Length; i++)
         {
-            byte[] buff2 = new byte[buff.Length + hc.Length];
-            for (int i = 0; i < hc.Length; i++)
+            if (hc2[i] != buff[i])
             {
-                buff2[i] = hc[i];
+                decipher2 = false;
+                break;
             }
-            for (int i = 0; i < buff.Length; i++)
-            {
-                buff2[i + hc.Length] = buff[buff.Length - 1 - i];
-            }
-            string newPath = string.Format("{0}({1}).scmod", path.Substring(0, path.LastIndexOf('.')), LanguageControl.Get(fName, 63));
-            FileStream fileStream = new FileStream(Storage.GetSystemPath(newPath), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-            fileStream.Write(buff2, 0, buff2.Length);
-            fileStream.Flush();
-            stream.Dispose();
-            fileStream.Dispose();
-            return true;
         }
-        else return false;
+        if (decipher || decipher2) return false;
+        byte[] buff2 = new byte[buff.Length + hc2.Length];
+        int k = 0;
+        int l = hc2.Length;
+        for (int i = 0; i < hc2.Length; i++)
+        {
+            buff2[i] = hc2[i];
+        }
+        for (int i = 0; i < buff.Length; i++)
+        {
+            if(i % 2 == 0)
+            {
+                buff2[k + l] = buff[i];
+                k++;
+            }
+        }
+        k = 0;
+        l = hc2.Length + ((buff.Length + 1) / 2);
+        for (int i = 0; i < buff.Length; i++)
+        {
+            if (i % 2 != 0)
+            {
+                buff2[k + l] = buff[i];
+                k++;
+            }
+        }
+        string newPath = string.Format("{0}({1}).scmod", path.Substring(0, path.LastIndexOf('.')), LanguageControl.Get(fName, 63));
+        FileStream fileStream = new FileStream(Storage.GetSystemPath(newPath), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        fileStream.Write(buff2, 0, buff2.Length);
+        fileStream.Flush();
+        stream.Dispose();
+        fileStream.Dispose();
+        return true;
     }
-
     public void UpdateModFromCommunity(ModInfo modInfo)
     {
         //从社区拉取MOD并更新
