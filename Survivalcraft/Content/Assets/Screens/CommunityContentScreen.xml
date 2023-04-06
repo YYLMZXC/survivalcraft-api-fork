@@ -18,12 +18,12 @@
           <CanvasWidget Size="10, 0"/>
           <BevelledButtonWidget Name="ChangeOrder" Text="[CommunityContentScreen:3]" Style="{Styles/ButtonStyle_70x60}" VerticalAlignment="Center"/>
         </StackPanelWidget>
-        <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" Margin="-30,0">
+        <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" Margin="-40,0">
           <BevelledButtonWidget Name="SearchType" Text="[CommunityContentScreen:10]" Size="100,60" VerticalAlignment="Far"/>
-          <CanvasWidget Size="300, 60">
+          <CanvasWidget Size="240, 60">
             <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
             <LabelWidget VerticalAlignment="Center" Name="placeholder" Text="[CommunityContentScreen:9]"  Margin="10,0"/>
-            <TextBoxWidget Size="300, 60" Name="key" VerticalAlignment="Center" Margin="10,0"/>
+            <TextBoxWidget Size="240, 60" Name="key" VerticalAlignment="Center" Margin="10,0"/>
           </CanvasWidget>
           <BevelledButtonWidget Name="Search" Text="[CommunityContentScreen:10]" Style="{Styles/ButtonStyle_70x60}" VerticalAlignment="Far"/>
         </StackPanelWidget>

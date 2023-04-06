@@ -14,6 +14,7 @@
 
       <UniformSpacingPanelWidget Direction="Horizontal" Margin="10, 0">
         <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" Margin="-30,0">
+          <CanvasWidget Size="20, 0"/>
           <BevelledButtonWidget Name="SearchType" Text="[CommunityContentScreen:10]" Size="100,60" VerticalAlignment="Far"/>
           <CanvasWidget Size="300, 60">
             <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />

@@ -358,6 +358,14 @@ namespace Game
             {
                 try
                 {
+                    //if (result != null)
+                    //{
+                    //    using (FileStream fileStream = new FileStream(Storage.GetSystemPath(ModsManager.ModCachePath) + "/123≤‚ ‘.txt", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                    //    {
+                    //        fileStream.Write(result, 0, result.Length);
+                    //        fileStream.Flush();
+                    //    }
+                    //}
                     //var json = (JsonObject)WebManager.JsonFromBytes(result);
                     XElement xElement = XmlUtils.LoadXmlFromString(Encoding.UTF8.GetString(result, 0, result.Length), throwOnError: true);
                     string attributeValue = XmlUtils.GetAttributeValue<string>(xElement, "NextCursor");
