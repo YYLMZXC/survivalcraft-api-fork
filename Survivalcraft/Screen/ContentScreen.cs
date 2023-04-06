@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
@@ -15,6 +16,7 @@ namespace Game
 
         public ButtonWidget m_manageButton;
 
+        public bool m_isAdmin;
         public ContentScreen()
         {
             XElement node = ContentManager.Get<XElement>("Screens/ContentScreen");
@@ -23,6 +25,16 @@ namespace Game
             m_communityContentButton = Children.Find<ButtonWidget>("Community");
             m_linkButton = Children.Find<ButtonWidget>("Link");
             m_manageButton = Children.Find<ButtonWidget>("Manage");
+        }
+
+        public override void Enter(object[] parameters)
+        {
+            base.Enter(parameters);
+            CommunityContentManager.IsAdmin(new CancellableProgress(), delegate (bool isAdmin)
+            {
+                m_isAdmin = isAdmin;
+            }, delegate (Exception e) {
+            });
         }
 
         public override void Update()
@@ -42,16 +54,25 @@ namespace Game
             }
             if (m_manageButton.IsClicked)
             {
-                DialogsManager.ShowDialog(null, new ListSelectionDialog(null, new List<string> { LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2) }, 70f, (object item) => (string)item, delegate (object item)
+                List<string> list = new List<string> { LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2) };
+                if (m_isAdmin)
+                {
+                    list = new List<string> { LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), "用户管理" };
+                }
+                DialogsManager.ShowDialog(null, new ListSelectionDialog(null, list, 70f, (object item) => (string)item, delegate (object item)
                 {
                     string selectionResult = (string)item;
                     if (selectionResult == LanguageControl.Get(fName, 1))
                     {
                         ScreensManager.SwitchScreen("ModsManageContent");
                     }
-                    else
+                    else if ((selectionResult == LanguageControl.Get(fName, 2)))
                     {
                         ScreensManager.SwitchScreen("ManageContent");
+                    }
+                    else
+                    {
+                        ScreensManager.SwitchScreen("ManageUser");
                     }
                 }));
             }

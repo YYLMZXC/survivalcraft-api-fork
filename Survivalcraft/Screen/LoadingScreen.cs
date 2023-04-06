@@ -360,6 +360,10 @@ namespace Game
             });
             AddLoadAction(delegate
             {
+                AddScreen("ManageUser", new ManageUserScreen());
+            });
+            AddLoadAction(delegate
+            {
                 AddScreen("Players", new PlayersScreen());
             });
             AddLoadAction(delegate

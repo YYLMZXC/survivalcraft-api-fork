@@ -2338,6 +2338,9 @@
     <Compile Include="..\Survivalcraft\Screen\ManageContentScreen.cs">
       <Link>Screen\ManageContentScreen.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Screen\ManageUserScreen.cs">
+      <Link>Screen\ManageUserScreen.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Screen\ModifyWorldScreen.cs">
       <Link>Screen\ModifyWorldScreen.cs</Link>
     </Compile>

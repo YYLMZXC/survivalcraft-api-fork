@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using XmlUtilities;
+using static ManageUserScreen;
 
 namespace Game
 {
@@ -334,6 +335,128 @@ namespace Game
             });
         }
 
+
+        public static void UserList(string cursor, string searchKey, string searchType, string filter, int order, CancellableProgress progress, Action<List<ComUserInfo>, string> success, Action<Exception> failure)
+        {
+            progress = (progress ?? new CancellableProgress());
+            if (!WebManager.IsInternetConnectionAvailable())
+            {
+                failure(new InvalidOperationException("Internet connection is unavailable."));
+                return;
+            }
+            var Header = new Dictionary<string, string>();
+            Header.Add("Content-Type", "application/x-www-form-urlencoded");
+            var dictionary = new Dictionary<string, string>();
+            dictionary.Add("Cursor", cursor ?? string.Empty);
+            dictionary.Add("Action", "GetUserList");
+            dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
+            dictionary.Add("SearchKey", searchKey);
+            dictionary.Add("SearchType", searchType);
+            dictionary.Add("Filter", filter);
+            dictionary.Add("Order", order.ToString());
+            WebManager.Post("https://m.schub.top/com/api/zh/userList", null, Header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
+            {
+                try
+                {
+                    //var json = (JsonObject)WebManager.JsonFromBytes(result);
+                    XElement xElement = XmlUtils.LoadXmlFromString(Encoding.UTF8.GetString(result, 0, result.Length), throwOnError: true);
+                    string attributeValue = XmlUtils.GetAttributeValue<string>(xElement, "NextCursor");
+                    var list = new List<ComUserInfo>();
+                    foreach (XElement item in xElement.Elements())
+                    {
+                        try
+                        {
+                            list.Add(new ComUserInfo
+                            {
+                                Id = XmlUtils.GetAttributeValue<int>(item, "Id"),
+                                UserNo = XmlUtils.GetAttributeValue<string>(item, "User", "null"),
+                                Name = XmlUtils.GetAttributeValue<string>(item, "Nickname", "null"),
+                                Token = XmlUtils.GetAttributeValue<string>(item, "Token", "null"),
+                                LastLoginTime = XmlUtils.GetAttributeValue<string>(item, "LastLoginTime", "null"),
+                                ErrCount = XmlUtils.GetAttributeValue<int>(item, "ErrorTimes", 0),
+                                IsLock = XmlUtils.GetAttributeValue<int>(item, "IsLock", 0),
+                                Money = XmlUtils.GetAttributeValue<int>(item, "Money", 0),
+                                Authority = XmlUtils.GetAttributeValue<int>(item, "Authority", 0),
+                                HeadImg = XmlUtils.GetAttributeValue<string>(item, "HeadImg", "null"),
+                                IsAdmin = XmlUtils.GetAttributeValue<int>(item, "IsAdmin", 0),
+                                RegTime = XmlUtils.GetAttributeValue<int>(item, "RegTime", 0),
+                                LoginIP = XmlUtils.GetAttributeValue<string>(item, "LoginIP", "null"),
+                                MGroup = XmlUtils.GetAttributeValue<string>(item, "MGroup", "null"),
+                                PawToken = XmlUtils.GetAttributeValue<string>(item, "PassToken", "null"),
+                                Email = XmlUtils.GetAttributeValue<string>(item, "Email", "null"),
+                                Status = XmlUtils.GetAttributeValue<int>(item, "Status", 1),
+                                LockReason = XmlUtils.GetAttributeValue<string>(item, "LockReason", "null"),
+                                EmailCount = XmlUtils.GetAttributeValue<int>(item, "EmailCount", 0),
+                                EmailTime = XmlUtils.GetAttributeValue<int>(item, "EmailTime", 0),
+                                Die = XmlUtils.GetAttributeValue<int>(item, "Die", 0),
+                                Moblie = XmlUtils.GetAttributeValue<string>(item, "Moblie", "null"),
+                                AreaCode = XmlUtils.GetAttributeValue<string>(item, "AreaCode", "null"),
+                            });
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                    success(list, attributeValue);
+                }
+                catch (Exception obj)
+                {
+                    failure(obj);
+                }
+            }, delegate (Exception error)
+            {
+                failure(error);
+            });
+        }
+
+        public static void UpdateLockState(int id, int lockState, string reason, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
+        {
+            progress = (progress ?? new CancellableProgress());
+            if (!WebManager.IsInternetConnectionAvailable())
+            {
+                failure(new InvalidOperationException("Internet connection is unavailable."));
+                return;
+            }
+            var header = new Dictionary<string, string>();
+            header.Add("Content-Type", "application/x-www-form-urlencoded");
+            var dictionary = new Dictionary<string, string>();
+            dictionary.Add("Action", "UpdateLockState");
+            dictionary.Add("Id", id.ToString());
+            dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
+            dictionary.Add("LockState", lockState.ToString());
+            dictionary.Add("Reason", reason);
+            WebManager.Post("https://m.schub.top/com/api/zh/userList", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            {
+                success(data);
+            }, delegate (Exception error)
+            {
+                failure(error);
+            });
+        }
+
+        public static void ResetPassword(int id, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
+        {
+            progress = (progress ?? new CancellableProgress());
+            if (!WebManager.IsInternetConnectionAvailable())
+            {
+                failure(new InvalidOperationException("Internet connection is unavailable."));
+                return;
+            }
+            var header = new Dictionary<string, string>();
+            header.Add("Content-Type", "application/x-www-form-urlencoded");
+            var dictionary = new Dictionary<string, string>();
+            dictionary.Add("Action", "ResetPassword");
+            dictionary.Add("Id", id.ToString());
+            dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
+            WebManager.Post("https://m.schub.top/com/api/zh/userList", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            {
+                success(data);
+            }, delegate (Exception error)
+            {
+                failure(error);
+            });
+        }
+
         public static void UpdateBoutique(string type, int id, int boutique, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
         {
             progress = (progress ?? new CancellableProgress());
@@ -349,7 +472,7 @@ namespace Game
             dictionary.Add("Id", id.ToString());
             dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
             dictionary.Add("Boutique", boutique.ToString());
-            WebManager.Post("https://m.schub.top/com/api/resource/boutique", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            WebManager.Post("https://m.schub.top/com/api/zh/boutique", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {
                 success(data);
             }, delegate (Exception error)
@@ -372,7 +495,7 @@ namespace Game
             dictionary.Add("Id", id.ToString());
             dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
             dictionary.Add("IsShow", isShow.ToString());
-            WebManager.Post("https://m.schub.top/com/api/resource/hide", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            WebManager.Post("https://m.schub.top/com/api/zh/hide", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {
                 success(data);
             }, delegate (Exception error)
@@ -394,7 +517,7 @@ namespace Game
             var dictionary = new Dictionary<string, string>();
             dictionary.Add("Id", id.ToString());
             dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
-            WebManager.Post("https://m.schub.top/com/api/resource/deleteFile", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            WebManager.Post("https://m.schub.top/com/api/zh/deleteFile", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {
                 success(data);
             }, delegate (Exception error)
@@ -415,7 +538,7 @@ namespace Game
             header.Add("Content-Type", "application/x-www-form-urlencoded");
             var dictionary = new Dictionary<string, string>();
             dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
-            WebManager.Post("https://m.schub.top/com/api/resource/isadmin", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            WebManager.Post("https://m.schub.top/com/api/zh/isadmin", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {
                 var result = (JsonObject)WebManager.JsonFromBytes(data);
                 success(result[2].ToString() == "Y");
@@ -424,6 +547,7 @@ namespace Game
                 failure(error);
             });
         }
+
         public static string CalculateContentHashString(byte[] data)
         {
             using (var sHA1Managed = new SHA1Managed())
