@@ -1,4 +1,5 @@
 using Engine;
+using SimpleJson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,16 @@ namespace Game
         public enum Order
         {
             ByRank,
-            ByTime
+            ByTime,
+            ByBoutique,
+            ByHide
+        }
+
+        public enum SearchType
+        {
+            ByName,
+            ByAuthor,
+            ByUserId
         }
 
         public ListPanelWidget m_listPanel;
@@ -29,11 +39,15 @@ namespace Game
 
         public ButtonWidget m_downloadButton;
 
-        public ButtonWidget m_deleteButton;
+        public ButtonWidget m_actionButton;
+
+        public ButtonWidget m_action2Button;
 
         public ButtonWidget m_moreOptionsButton;
 
         public ButtonWidget m_searchKey;
+
+        public ButtonWidget m_searchTypeButton;
 
         public TextBoxWidget m_inputKey;
 
@@ -43,7 +57,13 @@ namespace Game
 
         public Order m_order;
 
+        public SearchType m_searchType;
+
         public double m_contentExpiryTime;
+
+        public bool m_isOwn;
+
+        public bool m_isAdmin;
 
         public Dictionary<string, IEnumerable<object>> m_itemsCache = new Dictionary<string, IEnumerable<object>>();
 
@@ -57,11 +77,14 @@ namespace Game
             m_filterLabel = Children.Find<LabelWidget>("Filter");
             m_changeFilterButton = Children.Find<ButtonWidget>("ChangeFilter");
             m_downloadButton = Children.Find<ButtonWidget>("Download");
-            m_deleteButton = Children.Find<ButtonWidget>("Delete");
+            m_actionButton = Children.Find<ButtonWidget>("Action");
+            m_action2Button = Children.Find<ButtonWidget>("Action2");
             m_moreOptionsButton = Children.Find<ButtonWidget>("MoreOptions");
             m_inputKey = Children.Find<TextBoxWidget>("key");
             m_placeHolder = Children.Find<LabelWidget>("placeholder");
             m_searchKey = Children.Find<ButtonWidget>("Search");
+            m_searchTypeButton = Children.Find<ButtonWidget>("SearchType");
+            m_searchType = SearchType.ByName;
             m_listPanel.ItemWidgetFactory = delegate (object item)
             {
                 var communityContentEntry = item as CommunityContentEntry;
@@ -72,6 +95,16 @@ namespace Game
                     communityContentEntry.IconInstance = obj.Children.Find<RectangleWidget>("CommunityContentItem.Icon");
                     communityContentEntry.IconInstance.Subtexture = communityContentEntry.Icon == null ? ExternalContentManager.GetEntryTypeIcon(communityContentEntry.Type) : new Subtexture(communityContentEntry.Icon, Vector2.Zero, Vector2.One);
                     obj.Children.Find<LabelWidget>("CommunityContentItem.Text").Text = communityContentEntry.Name;
+                    Color txtColor = Color.White;
+                    if (communityContentEntry.Boutique > 0)
+                    {
+                        txtColor = new Color(255, 215, 0);
+                    }
+                    if(m_isOwn && communityContentEntry.IsShow == 0)
+                    {
+                        txtColor = Color.Gray;
+                    }
+                    obj.Children.Find<LabelWidget>("CommunityContentItem.Text").Color = txtColor;
                     obj.Children.Find<LabelWidget>("CommunityContentItem.Details").Text = $"{ExternalContentManager.GetEntryTypeDescription(communityContentEntry.Type)} {DataSizeFormatter.Format(communityContentEntry.Size)}";
                     obj.Children.Find<StarRatingWidget>("CommunityContentItem.Rating").Rating = communityContentEntry.RatingsAverage;
                     obj.Children.Find<StarRatingWidget>("CommunityContentItem.Rating").IsVisible = (communityContentEntry.RatingsAverage > 0f);
@@ -105,24 +138,71 @@ namespace Game
             }
             m_order = Order.ByRank;
             m_inputKey.Text = string.Empty;
+            m_isOwn = false;
+            CommunityContentManager.IsAdmin(new CancellableProgress(), delegate (bool isAdmin)
+            {
+                m_isAdmin = isAdmin;
+            }, delegate (Exception e) {
+                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, e.Message, LanguageControl.Ok, null, null));
+            });
             PopulateList(null);
         }
 
         public override void Update()
         {
             m_placeHolder.IsVisible = string.IsNullOrEmpty(m_inputKey.Text);
+            m_actionButton.IsVisible = (m_isAdmin || m_isOwn);
+            m_action2Button.IsVisible = (m_isAdmin || m_isOwn);
             var communityContentEntry = m_listPanel.SelectedItem as CommunityContentEntry;
             m_downloadButton.IsEnabled = (communityContentEntry != null);
-            m_deleteButton.IsEnabled = (UserManager.ActiveUser != null && communityContentEntry != null && communityContentEntry.UserId == UserManager.ActiveUser.UniqueId);
+            if (communityContentEntry != null)
+            {
+                m_actionButton.IsEnabled = m_isAdmin ? true : m_isOwn;
+                if (m_order == Order.ByHide || m_isOwn)
+                {
+                    m_actionButton.Text = LanguageControl.Get(GetType().Name, 23);
+                }
+                else
+                {
+                    m_actionButton.Text = (communityContentEntry.Boutique == 0) ? LanguageControl.Get(GetType().Name, 15) : LanguageControl.Get(GetType().Name, 16);
+                }
+                m_action2Button.IsEnabled = (m_filter.ToString() != "Mod") ? (m_isAdmin ? true : m_isOwn) : false;
+            }
+            else
+            {
+                m_actionButton.IsEnabled = false;
+                m_action2Button.IsEnabled = false;
+                m_actionButton.Text = LanguageControl.Get(GetType().Name, 17);
+            }
+            if (m_isOwn)
+            {
+                m_searchType = SearchType.ByName;
+                m_searchTypeButton.IsEnabled = false;
+            }
+            else
+            {
+                m_searchTypeButton.IsEnabled = true;
+            }
+            m_action2Button.Text = (communityContentEntry != null && communityContentEntry.IsShow == 0) ? LanguageControl.Get(GetType().Name, 24) : LanguageControl.Get(GetType().Name, 25);
             m_orderLabel.Text = GetOrderDisplayName(m_order);
             m_filterLabel.Text = GetFilterDisplayName(m_filter);
+            switch (m_searchType) 
+            {
+                case SearchType.ByName: m_searchTypeButton.Text = "资源名"; break;
+                case SearchType.ByAuthor: m_searchTypeButton.Text = "用户名"; break;
+                case SearchType.ByUserId: m_searchTypeButton.Text = "用户ID"; break;
+            }
             if (m_changeOrderButton.IsClicked)
             {
                 var items = EnumUtils.GetEnumValues(typeof(Order)).Cast<Order>().ToList();
+                if (!m_isAdmin)
+                {
+                    items.Remove(Order.ByHide);
+                }
                 DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(GetType().Name, "Order Type"), items, 60f, (object item) => GetOrderDisplayName((Order)item), delegate (object item)
                 {
                     m_order = (Order)item;
-                    PopulateList(null);
+                    PopulateList(null, true);
                 }));
             }
             if (m_searchKey.IsClicked)
@@ -139,23 +219,141 @@ namespace Game
                 {
                     list.Add(item);
                 }
-                if (UserManager.ActiveUser != null)
+                if (!string.IsNullOrEmpty(SettingsManager.ScpboxAccessToken))
                 {
-                    list.Add(UserManager.ActiveUser.UniqueId);
+                    list.Add(SettingsManager.ScpboxAccessToken);
                 }
                 DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(GetType().Name, "Filter"), list, 60f, (object item) => GetFilterDisplayName(item), delegate (object item)
                 {
                     m_filter = item;
-                    PopulateList(null);
+                    m_isOwn = (GetFilterDisplayName(item) == "只看自己");
+                    PopulateList(null, true);
                 }));
             }
             if (m_downloadButton.IsClicked && communityContentEntry != null)
             {
                 DownloadEntry(communityContentEntry);
             }
-            if (m_deleteButton.IsClicked && communityContentEntry != null)
+            if (m_actionButton.IsClicked && communityContentEntry != null)
             {
-                DeleteEntry(communityContentEntry);
+                if(m_order == Order.ByHide || m_isOwn)
+                {
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 26), communityContentEntry.Name, LanguageControl.Ok, LanguageControl.Cancel, delegate (MessageDialogButton button)
+                    {
+                        if (button == MessageDialogButton.Button1)
+                        {
+                            var busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 2), autoHideOnCancel: false);
+                            DialogsManager.ShowDialog(null, busyDialog);
+                            CommunityContentManager.DeleteFile(communityContentEntry.Index, busyDialog.Progress, delegate (byte[] data)
+                            {
+                                DialogsManager.HideDialog(busyDialog);
+                                m_listPanel.RemoveItem(communityContentEntry);
+                                var result = (JsonObject)WebManager.JsonFromBytes(data);
+                                string msg = result[0].ToString() == "200" ? LanguageControl.Get(GetType().Name, 27) + communityContentEntry.Name : result[1].ToString();
+                                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 20), msg, LanguageControl.Ok, null, null));
+                            }, delegate (Exception e) {
+                                DialogsManager.HideDialog(busyDialog);
+                                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, e.Message, LanguageControl.Ok, null, null));
+                            });
+                        }
+                    }));
+                }
+                else
+                {
+                    if (communityContentEntry.Boutique == 0)
+                    {
+                        DialogsManager.ShowDialog(null, new TextBoxDialog(LanguageControl.Get(GetType().Name, 18), "5", 4, delegate (string s)
+                        {
+                            if (!string.IsNullOrEmpty(s))
+                            {
+                                int boutique = 5;
+                                try
+                                {
+                                    boutique = int.Parse(s);
+                                }
+                                catch
+                                {
+                                }
+                                var busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 2), autoHideOnCancel: false);
+                                DialogsManager.ShowDialog(null, busyDialog);
+                                CommunityContentManager.UpdateBoutique(communityContentEntry.Type.ToString(), communityContentEntry.Index, boutique, busyDialog.Progress, delegate (byte[] data)
+                                {
+                                    DialogsManager.HideDialog(busyDialog);
+                                    m_order = Order.ByBoutique;
+                                    PopulateList(null, true);
+                                    var result = (JsonObject)WebManager.JsonFromBytes(data);
+                                    string msg = result[0].ToString() == "200" ? LanguageControl.Get(GetType().Name, 19) + communityContentEntry.Name : result[1].ToString();
+                                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 20), msg, LanguageControl.Ok, null, null));
+                                }, delegate (Exception e) {
+                                    DialogsManager.HideDialog(busyDialog);
+                                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, e.Message, LanguageControl.Ok, null, null));
+                                });
+                            }
+                        }));
+                    }
+                    else
+                    {
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 21), communityContentEntry.Name, LanguageControl.Ok, LanguageControl.Cancel, delegate (MessageDialogButton button)
+                        {
+                            if (button == MessageDialogButton.Button1)
+                            {
+                                var busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 2), autoHideOnCancel: false);
+                                DialogsManager.ShowDialog(null, busyDialog);
+                                CommunityContentManager.UpdateBoutique(communityContentEntry.Type.ToString(), communityContentEntry.Index, 0, busyDialog.Progress, delegate (byte[] data)
+                                {
+                                    DialogsManager.HideDialog(busyDialog);
+                                    PopulateList(null, true);
+                                    var result = (JsonObject)WebManager.JsonFromBytes(data);
+                                    string msg = result[0].ToString() == "200" ? LanguageControl.Get(GetType().Name, 22) + communityContentEntry.Name : result[1].ToString();
+                                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 20), msg, LanguageControl.Ok, null, null));
+                                }, delegate (Exception e) {
+                                    DialogsManager.HideDialog(busyDialog);
+                                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, e.Message, LanguageControl.Ok, null, null));
+                                });
+                            }
+                        }));
+                    }
+                }
+            }
+            if (m_action2Button.IsClicked && communityContentEntry != null)
+            {
+                var busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 2), autoHideOnCancel: false);
+                DialogsManager.ShowDialog(null, busyDialog);
+                int isShow = (communityContentEntry.IsShow + 1) % 2;
+                string sucessMsg = (isShow == 1) ? LanguageControl.Get(GetType().Name, 28) : LanguageControl.Get(GetType().Name, 29);
+                CommunityContentManager.UpdateHidePara(communityContentEntry.Index, isShow, busyDialog.Progress, delegate (byte[] data)
+                {
+                    DialogsManager.HideDialog(busyDialog);
+                    if (!m_isOwn)
+                    {
+                        m_listPanel.RemoveItem(communityContentEntry);
+                    }
+                    else
+                    {
+                        PopulateList(null, true);
+                    }
+                    var result = (JsonObject)WebManager.JsonFromBytes(data);
+                    string msg = result[0].ToString() == "200" ? sucessMsg + communityContentEntry.Name : result[1].ToString();
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 20), msg, LanguageControl.Ok, null, null));
+                }, delegate (Exception e) {
+                    DialogsManager.HideDialog(busyDialog);
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, e.Message, LanguageControl.Ok, null, null));
+                });
+            }
+            if (m_searchTypeButton.IsClicked)
+            {
+                if (m_isAdmin)
+                {
+                    if (m_searchType == SearchType.ByName) m_searchType = SearchType.ByAuthor;
+                    else if (m_searchType == SearchType.ByAuthor) m_searchType = SearchType.ByUserId;
+                    else if (m_searchType == SearchType.ByUserId) m_searchType = SearchType.ByName;
+                }
+                else
+                {
+                    if (m_searchType == SearchType.ByName) m_searchType = SearchType.ByAuthor;
+                    else if (m_searchType == SearchType.ByAuthor) m_searchType = SearchType.ByName;
+                    else if (m_searchType == SearchType.ByUserId) m_searchType = SearchType.ByName;
+                }
             }
             if (m_moreOptionsButton.IsClicked)
             {
@@ -176,7 +374,7 @@ namespace Game
             }
         }
 
-        public void PopulateList(string cursor)
+        public void PopulateList(string cursor, bool force = false)
         {
             string text = string.Empty;
             if (SettingsManager.CommunityContentMode == CommunityContentMode.Strict)
@@ -189,10 +387,10 @@ namespace Game
             }
             string text2 = (m_filter is string) ? ((string)m_filter) : string.Empty;
             string text3 = (m_filter is ExternalContentType) ? LanguageControl.Get(GetType().Name, m_filter.ToString()) : string.Empty;
-            string text4 = LanguageControl.Get(GetType().Name, m_order.ToString());
+            string text4 = m_order.ToString();
             string cacheKey = text2 + "\n" + text3 + "\n" + text4 + "\n" + text + "\n" + m_inputKey.Text;
             m_moreLink = null;
-            if (string.IsNullOrEmpty(cursor))
+            if (string.IsNullOrEmpty(cursor) && !force)
             {
                 m_listPanel.ClearItems();
                 m_listPanel.ScrollPosition = 0f;
@@ -205,9 +403,13 @@ namespace Game
                     return;
                 }
             }
+            if (force)
+            {
+                m_listPanel.ClearItems();
+            }
             var busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 2), autoHideOnCancel: false);
             DialogsManager.ShowDialog(null, busyDialog);
-            CommunityContentManager.List(cursor, text2, text3, text, text4, m_inputKey.Text, busyDialog.Progress, delegate (List<CommunityContentEntry> list, string nextCursor)
+            CommunityContentManager.List(cursor, text2, text3, text, text4, m_inputKey.Text, m_searchType.ToString(), busyDialog.Progress, delegate (List<CommunityContentEntry> list, string nextCursor)
             {
                 DialogsManager.HideDialog(busyDialog);
                 m_contentExpiryTime = Time.RealTime + 300.0;
@@ -315,6 +517,10 @@ namespace Game
                     return LanguageControl.Get(typeof(CommunityContentScreen).Name, 11);
                 case Order.ByTime:
                     return LanguageControl.Get(typeof(CommunityContentScreen).Name, 12);
+                case Order.ByBoutique:
+                    return LanguageControl.Get(typeof(CommunityContentScreen).Name, 14);
+                case Order.ByHide:
+                    return LanguageControl.Get(typeof(CommunityContentScreen).Name, 30);
                 default:
                     throw new InvalidOperationException(LanguageControl.Get(typeof(CommunityContentScreen).Name, 13));
             }

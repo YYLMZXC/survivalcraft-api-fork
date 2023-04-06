@@ -1,4 +1,5 @@
 using Engine;
+using SimpleJson;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -56,7 +57,7 @@ namespace Game
             return m_feedbackCache.ContainsKey(key);
         }
 
-        public static void List(string cursor, string userFilter, string typeFilter, string moderationFilter, string sortOrder,string keySearch, CancellableProgress progress, Action<List<CommunityContentEntry>, string> success, Action<Exception> failure)
+        public static void List(string cursor, string userFilter, string typeFilter, string moderationFilter, string sortOrder,string keySearch, string searchType, CancellableProgress progress, Action<List<CommunityContentEntry>, string> success, Action<Exception> failure)
         {
             progress = (progress ?? new CancellableProgress());
             if (!WebManager.IsInternetConnectionAvailable())
@@ -77,6 +78,7 @@ namespace Game
             dictionary.Add("Version", VersionsManager.Version);
             dictionary.Add("Apiv", ModsManager.Apiv.ToString());
             dictionary.Add("key", keySearch);
+            dictionary.Add("SearchType", searchType);
             WebManager.Post(m_scResDirAddress, null, Header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
             {
                 try
@@ -94,10 +96,14 @@ namespace Game
                                 Name = XmlUtils.GetAttributeValue<string>(item, "Name"),
                                 Address = XmlUtils.GetAttributeValue<string>(item, "Url"),
                                 UserId = XmlUtils.GetAttributeValue<string>(item, "UserId"),
+                                UserName = XmlUtils.GetAttributeValue<string>(item, "UName"),
+                                Boutique = XmlUtils.GetAttributeValue<int>(item, "Boutique"),
+                                IsShow = XmlUtils.GetAttributeValue<int>(item, "IsShow"),
                                 Size = XmlUtils.GetAttributeValue<long>(item, "Size"),
                                 ExtraText = XmlUtils.GetAttributeValue(item, "ExtraText", string.Empty),
                                 RatingsAverage = XmlUtils.GetAttributeValue(item, "RatingsAverage", 0f),
-                                IconSrc = XmlUtils.GetAttributeValue(item, "Icon", "")
+                                IconSrc = XmlUtils.GetAttributeValue(item, "Icon", ""),
+                                Index = XmlUtils.GetAttributeValue<int>(item, "Id")
                             });
                         }
                         catch (Exception)
@@ -328,6 +334,96 @@ namespace Game
             });
         }
 
+        public static void UpdateBoutique(string type, int id, int boutique, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
+        {
+            progress = (progress ?? new CancellableProgress());
+            if (!WebManager.IsInternetConnectionAvailable())
+            {
+                failure(new InvalidOperationException("Internet connection is unavailable."));
+                return;
+            }
+            var header = new Dictionary<string, string>();
+            header.Add("Content-Type", "application/x-www-form-urlencoded");
+            var dictionary = new Dictionary<string, string>();
+            dictionary.Add("Type", type);
+            dictionary.Add("Id", id.ToString());
+            dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
+            dictionary.Add("Boutique", boutique.ToString());
+            WebManager.Post("https://m.schub.top/com/api/resource/boutique", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            {
+                success(data);
+            }, delegate (Exception error)
+            {
+                failure(error);
+            });
+        }
+
+        public static void UpdateHidePara(int id, int isShow, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
+        {
+            progress = (progress ?? new CancellableProgress());
+            if (!WebManager.IsInternetConnectionAvailable())
+            {
+                failure(new InvalidOperationException("Internet connection is unavailable."));
+                return;
+            }
+            var header = new Dictionary<string, string>();
+            header.Add("Content-Type", "application/x-www-form-urlencoded");
+            var dictionary = new Dictionary<string, string>();
+            dictionary.Add("Id", id.ToString());
+            dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
+            dictionary.Add("IsShow", isShow.ToString());
+            WebManager.Post("https://m.schub.top/com/api/resource/hide", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            {
+                success(data);
+            }, delegate (Exception error)
+            {
+                failure(error);
+            });
+        }
+
+        public static void DeleteFile(int id, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
+        {
+            progress = (progress ?? new CancellableProgress());
+            if (!WebManager.IsInternetConnectionAvailable())
+            {
+                failure(new InvalidOperationException("Internet connection is unavailable."));
+                return;
+            }
+            var header = new Dictionary<string, string>();
+            header.Add("Content-Type", "application/x-www-form-urlencoded");
+            var dictionary = new Dictionary<string, string>();
+            dictionary.Add("Id", id.ToString());
+            dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
+            WebManager.Post("https://m.schub.top/com/api/resource/deleteFile", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            {
+                success(data);
+            }, delegate (Exception error)
+            {
+                failure(error);
+            });
+        }
+
+        public static void IsAdmin(CancellableProgress progress, Action<bool> success, Action<Exception> failure)
+        {
+            progress = (progress ?? new CancellableProgress());
+            if (!WebManager.IsInternetConnectionAvailable())
+            {
+                failure(new InvalidOperationException("Internet connection is unavailable."));
+                return;
+            }
+            var header = new Dictionary<string, string>();
+            header.Add("Content-Type", "application/x-www-form-urlencoded");
+            var dictionary = new Dictionary<string, string>();
+            dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
+            WebManager.Post("https://m.schub.top/com/api/resource/isadmin", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            {
+                var result = (JsonObject)WebManager.JsonFromBytes(data);
+                success(result[2].ToString() == "Y");
+            }, delegate (Exception error)
+            {
+                failure(error);
+            });
+        }
         public static string CalculateContentHashString(byte[] data)
         {
             using (var sHA1Managed = new SHA1Managed())
