@@ -377,28 +377,31 @@ namespace Game
                             list.Add(new ComUserInfo
                             {
                                 Id = XmlUtils.GetAttributeValue<int>(item, "Id"),
-                                UserNo = XmlUtils.GetAttributeValue<string>(item, "User", "null"),
-                                Name = XmlUtils.GetAttributeValue<string>(item, "Nickname", "null"),
-                                Token = XmlUtils.GetAttributeValue<string>(item, "Token", "null"),
-                                LastLoginTime = XmlUtils.GetAttributeValue<string>(item, "LastLoginTime", "null"),
+                                UserNo = XmlUtils.GetAttributeValue<string>(item, "User"),
+                                Name = XmlUtils.GetAttributeValue<string>(item, "Nickname"),
+                                Token = XmlUtils.GetAttributeValue<string>(item, "Token"),
+                                LastLoginTime = XmlUtils.GetAttributeValue<string>(item, "LastLoginTime"),
                                 ErrCount = XmlUtils.GetAttributeValue<int>(item, "ErrorTimes", 0),
                                 IsLock = XmlUtils.GetAttributeValue<int>(item, "IsLock", 0),
+                                LockTime = XmlUtils.GetAttributeValue<string>(item, "LockTime"),
+                                UnlockTime = XmlUtils.GetAttributeValue<string>(item, "UnlockTime"),
+                                LockDuration = XmlUtils.GetAttributeValue<int>(item, "LockDuration", 0),
                                 Money = XmlUtils.GetAttributeValue<int>(item, "Money", 0),
                                 Authority = XmlUtils.GetAttributeValue<int>(item, "Authority", 0),
-                                HeadImg = XmlUtils.GetAttributeValue<string>(item, "HeadImg", "null"),
+                                HeadImg = XmlUtils.GetAttributeValue<string>(item, "HeadImg"),
                                 IsAdmin = XmlUtils.GetAttributeValue<int>(item, "IsAdmin", 0),
-                                RegTime = XmlUtils.GetAttributeValue<int>(item, "RegTime", 0),
-                                LoginIP = XmlUtils.GetAttributeValue<string>(item, "LoginIP", "null"),
-                                MGroup = XmlUtils.GetAttributeValue<string>(item, "MGroup", "null"),
-                                PawToken = XmlUtils.GetAttributeValue<string>(item, "PassToken", "null"),
-                                Email = XmlUtils.GetAttributeValue<string>(item, "Email", "null"),
+                                RegTime = XmlUtils.GetAttributeValue<string>(item, "RegTime"),
+                                LoginIP = XmlUtils.GetAttributeValue<string>(item, "LoginIP"),
+                                MGroup = XmlUtils.GetAttributeValue<string>(item, "MGroup"),
+                                PawToken = XmlUtils.GetAttributeValue<string>(item, "PassToken"),
+                                Email = XmlUtils.GetAttributeValue<string>(item, "Email"),
                                 Status = XmlUtils.GetAttributeValue<int>(item, "Status", 1),
-                                LockReason = XmlUtils.GetAttributeValue<string>(item, "LockReason", "null"),
+                                LockReason = XmlUtils.GetAttributeValue<string>(item, "LockReason"),
                                 EmailCount = XmlUtils.GetAttributeValue<int>(item, "EmailCount", 0),
-                                EmailTime = XmlUtils.GetAttributeValue<int>(item, "EmailTime", 0),
+                                EmailTime = XmlUtils.GetAttributeValue<string>(item, "EmailTime"),
                                 Die = XmlUtils.GetAttributeValue<int>(item, "Die", 0),
-                                Moblie = XmlUtils.GetAttributeValue<string>(item, "Moblie", "null"),
-                                AreaCode = XmlUtils.GetAttributeValue<string>(item, "AreaCode", "null"),
+                                Moblie = XmlUtils.GetAttributeValue<string>(item, "Moblie"),
+                                AreaCode = XmlUtils.GetAttributeValue<string>(item, "AreaCode")
                             });
                         }
                         catch (Exception)
@@ -417,7 +420,7 @@ namespace Game
             });
         }
 
-        public static void UpdateLockState(int id, int lockState, string reason, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
+        public static void UpdateLockState(int id, int lockState, string reason, int duration, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
         {
             progress = (progress ?? new CancellableProgress());
             if (!WebManager.IsInternetConnectionAvailable())
@@ -432,6 +435,7 @@ namespace Game
             dictionary.Add("Id", id.ToString());
             dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
             dictionary.Add("LockState", lockState.ToString());
+            dictionary.Add("Duration", duration.ToString());
             dictionary.Add("Reason", reason);
             WebManager.Post("https://m.schub.top/com/api/zh/userList", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {

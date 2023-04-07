@@ -21,11 +21,14 @@ public class ManageUserScreen : Screen
         public string LastLoginTime;
         public int ErrCount;
         public int IsLock;
+        public string LockTime;
+        public string UnlockTime;
+        public int LockDuration;
         public int Money;
         public int Authority;
         public string HeadImg;
         public int IsAdmin;
-        public int RegTime;
+        public string RegTime;
         public string LoginIP;
         public string MGroup;
         public string PawToken;
@@ -33,7 +36,7 @@ public class ManageUserScreen : Screen
         public int Status = 1;
         public string LockReason;
         public int EmailCount;
-        public int EmailTime;
+        public string EmailTime;
         public int Die;
         public string Moblie;
         public string AreaCode;
@@ -56,7 +59,8 @@ public class ManageUserScreen : Screen
         ByName = 2,
         ByEmail = 3,
         ByToken = 4,
-        ByLoginIP = 5
+        ByLoginIP = 5,
+        ByLockReason = 6
     }
 
     public static string fName = "ManageUserScreen";
@@ -115,7 +119,9 @@ public class ManageUserScreen : Screen
                 labelWidget.Text = $"{listItem.Name}   ID:{listItem.Id}   账号:{listItem.UserNo}";
                 if (listItem.IsLock == 1)
                 {
-                    labelWidget2.Text = "封禁原因:" + GetMsg(listItem.LockReason);
+                    labelWidget2.Text = "锁定时长: " + (float)((int)(listItem.LockDuration / 8.64f)) / 10000f + "天";
+                    labelWidget2.Text += "  解锁时间: " + GetMsg(listItem.UnlockTime);
+                    labelWidget2.Text += "  锁定原因:" + GetMsg(listItem.LockReason);
                 }
                 else
                 {
@@ -155,12 +161,13 @@ public class ManageUserScreen : Screen
             if (listItem != null && m_contentList.SelectedItem == listItem)
             {
                 string msg = $"用户ID: {listItem.Id}\n用户名: {GetMsg(listItem.UserNo)}\n昵称: {GetMsg(listItem.Name)}\n邮箱{GetMsg(listItem.Email)}\nIP:{GetMsg(listItem.LoginIP)}";
-                msg += $"\n用户Token: {GetMsg(listItem.Token)}\n状态: " + (listItem.IsLock == 1 ? "封禁" : (listItem.Status == 0 ? "未激活" : (listItem.Die == 1 ? "死鱼" : "正常")));
+                msg += $"\n用户Token: {GetMsg(listItem.Token)}\n状态: " + (listItem.IsLock == 1 ? "锁定" : (listItem.Status == 0 ? "未激活" : (listItem.Die == 1 ? "死鱼" : "正常")));
                 msg += $"\n是否为管理: " + (listItem.IsAdmin == 1 ? "是" : "否") + "  " + "权限等级: " + listItem.Authority;
                 msg += $"\n找回密码Token: {GetMsg(listItem.PawToken)}\n称号组: {GetMsg(listItem.MGroup)}\n注册时间: {GetMsg(listItem.RegTime)}\n最后登录时间: {GetMsg(listItem.LastLoginTime)}";
                 msg += $"\n当天发送邮件次数: {GetMsg(listItem.EmailCount)}\n邮箱锁定时间: {GetMsg(listItem.EmailTime)}";
                 msg += $"\n手机号: {GetMsg(listItem.Moblie)}\n区号: {GetMsg(listItem.AreaCode)}";
-                msg += $"\n锁定原因: " + ((listItem.IsLock == 0) ? "未锁定" : (string.IsNullOrEmpty(listItem.LockReason) ? "Null" : listItem.LockReason));
+                msg += $"\n上次锁定时间: " + GetMsg(listItem.LockTime) + "\n锁定原因: " + GetMsg(listItem.LockReason);
+                msg += $"\n锁定时长: " + (float)((int)(listItem.LockDuration / 8.64f)) / 10000f + "天\n解锁时间: " + GetMsg(listItem.UnlockTime);
                 var messageDialog = new MessageDialog("详细信息:" + listItem.Name, msg, LanguageControl.Ok, null, null);
                 DialogsManager.ShowDialog(null, messageDialog);
             }
@@ -235,22 +242,26 @@ public class ManageUserScreen : Screen
             {
                 DialogsManager.ShowDialog(null, new TextBoxDialog("请输入锁定原因", item.LockReason, 1024, delegate (string reason)
                 {
-                    if (!string.IsNullOrEmpty(reason))
+                    DialogsManager.ShowDialog(null, new TextBoxDialog("请输入锁定时间，单位为天", "1", 1024, delegate (string duration)
                     {
-                        var busyDialog = new CancellableBusyDialog("操作等待中", autoHideOnCancel: false);
-                        DialogsManager.ShowDialog(null, busyDialog);
-                        CommunityContentManager.UpdateLockState(item.Id, 1, reason, busyDialog.Progress, delegate (byte[] data)
+                        if (!string.IsNullOrEmpty(reason) && !string.IsNullOrEmpty(duration))
                         {
-                            DialogsManager.HideDialog(busyDialog);
-                            UpdateList(null);
-                            var result = (JsonObject)WebManager.JsonFromBytes(data);
-                            string msg = result[0].ToString() == "200" ? "成功锁定：" + item.Name : result[1].ToString();
-                            DialogsManager.ShowDialog(null, new MessageDialog("操作成功", msg, LanguageControl.Ok, null, null));
-                        }, delegate (Exception e) {
-                            DialogsManager.HideDialog(busyDialog);
-                            DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, e.Message, LanguageControl.Ok, null, null));
-                        });
-                    }
+                            var busyDialog = new CancellableBusyDialog("操作等待中", autoHideOnCancel: false);
+                            DialogsManager.ShowDialog(null, busyDialog);
+                            int s_duration = (int)(double.Parse(duration) * 86400);
+                            CommunityContentManager.UpdateLockState(item.Id, 1, reason, s_duration, busyDialog.Progress, delegate (byte[] data)
+                            {
+                                DialogsManager.HideDialog(busyDialog);
+                                UpdateList(null);
+                                var result = (JsonObject)WebManager.JsonFromBytes(data);
+                                string msg = result[0].ToString() == "200" ? "成功锁定：" + item.Name : result[1].ToString();
+                                DialogsManager.ShowDialog(null, new MessageDialog("操作成功", msg, LanguageControl.Ok, null, null));
+                            }, delegate (Exception e) {
+                                DialogsManager.HideDialog(busyDialog);
+                                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, e.Message, LanguageControl.Ok, null, null));
+                            });
+                        }
+                    }));
                 }));
             }
             else
@@ -261,7 +272,7 @@ public class ManageUserScreen : Screen
                     {
                         var busyDialog = new CancellableBusyDialog("操作等待中", autoHideOnCancel: false);
                         DialogsManager.ShowDialog(null, busyDialog);
-                        CommunityContentManager.UpdateLockState(item.Id, 0, "", busyDialog.Progress, delegate (byte[] data)
+                        CommunityContentManager.UpdateLockState(item.Id, 0, "", 0, busyDialog.Progress, delegate (byte[] data)
                         {
                             DialogsManager.HideDialog(busyDialog);
                             UpdateList(null);
@@ -380,6 +391,7 @@ public class ManageUserScreen : Screen
             case SearchType.ByUserNo: return "用户名";
             case SearchType.ByToken: return "Token";
             case SearchType.ByLoginIP: return "登录IP";
+            case SearchType.ByLockReason: return "锁定原因";
         }
         return "";
     }
