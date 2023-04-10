@@ -307,8 +307,7 @@ namespace Game
                 if (!string.IsNullOrEmpty(time)) time = (IsCNLanguageType() ? "公告发布时间: " : "Time: ") + time;
                 string title = IsCNLanguageType() ? m_bulletin.Title : m_bulletin.EnTitle;
                 string content = IsCNLanguageType() ? m_bulletin.Content : m_bulletin.EnContent;
-                string titleTemp= (IsCNLanguageType() ? "公告:" : "Title:") + title;
-                BulletinDialog bulletinDialog = new BulletinDialog(titleTemp, content, time, delegate
+                BulletinDialog bulletinDialog = new BulletinDialog(title, content, time, delegate
                 {
                     SettingsManager.BulletinTime = m_bulletin.Time;
                 }, delegate(LabelWidget titleLabel, LabelWidget contentLabel) {
