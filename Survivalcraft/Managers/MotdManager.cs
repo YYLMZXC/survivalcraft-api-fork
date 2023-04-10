@@ -312,14 +312,14 @@ namespace Game
                 {
                     SettingsManager.BulletinTime = m_bulletin.Time;
                 }, delegate(LabelWidget titleLabel, LabelWidget contentLabel) {
-                    DialogsManager.ShowDialog(null, new TextBoxDialog("请输入标题", title, 1024, delegate (string inputTitle)
+                    DialogsManager.ShowDialog(null, new TextBoxDialog("请输入标题", titleLabel.Text, 1024, delegate (string inputTitle)
                     {
-                        DialogsManager.ShowDialog(null, new TextBoxDialog("请输入内容", content.Replace("\n","[n]"), 8192, delegate (string inputContent)
+                        DialogsManager.ShowDialog(null, new TextBoxDialog("请输入内容", contentLabel.Text.Replace("\n","[n]"), 8192, delegate (string inputContent)
                         {
                             if (!string.IsNullOrEmpty(inputTitle) && !string.IsNullOrEmpty(inputContent))
                             {
                                 titleLabel.Text = inputTitle;
-                                contentLabel.Text = inputContent.Replace("[n]", "\n") + "\n";
+                                contentLabel.Text = inputContent.Replace("[n]", "\n");
                                 if (IsCNLanguageType())
                                 {
                                     m_bulletin.Title = titleLabel.Text;
@@ -333,6 +333,9 @@ namespace Game
                                 string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
                                 m_bulletin.Time = languageType + "$" + DateTime.Now.ToString();
                             }
+                        }, delegate (TextBoxWidget textBox)
+                        {
+                            textBox.Text = textBox.Text.Replace("\n", "[n]");
                         }));
                     }));
                 }, delegate (LabelWidget titleLabel, LabelWidget contentLabel) {

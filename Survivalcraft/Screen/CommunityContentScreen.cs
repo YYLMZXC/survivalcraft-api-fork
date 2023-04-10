@@ -71,6 +71,8 @@ namespace Game
 
         public Dictionary<string, IEnumerable<object>> m_itemsCache = new Dictionary<string, IEnumerable<object>>();
 
+        public SPMBoxExternalContentProvider m_provider;
+
         public CommunityContentScreen()
         {
             XElement node = ContentManager.Get<XElement>("Screens/CommunityContentScreen");
@@ -133,6 +135,14 @@ namespace Game
 
         public override void Enter(object[] parameters)
         {
+            foreach(var provider in ExternalContentManager.m_providers)
+            {
+                if(provider is SPMBoxExternalContentProvider)
+                {
+                    m_provider = (SPMBoxExternalContentProvider)provider;
+                    break;
+                }
+            }
             if (parameters.Length > 0 && parameters[0].ToString() == "Mod")
             {
                 m_filter = ExternalContentType.Mod;
@@ -371,7 +381,24 @@ namespace Game
             }
             if (m_moreOptionsButton.IsClicked)
             {
-                DialogsManager.ShowDialog(null, new MoreCommunityLinkDialog());
+                //DialogsManager.ShowDialog(null, new MoreCommunityLinkDialog());
+                if (m_provider.IsLoggedIn)
+                {
+                    string info = string.IsNullOrEmpty(SettingsManager.ScpboxUserInfo) ? "暂无用户信息" : SettingsManager.ScpboxUserInfo;
+                    DialogsManager.ShowDialog(null, new MessageDialog("账号已登录,是否登出?", info, LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
+                    {
+                        if (button == MessageDialogButton.Button1)
+                        {
+                            m_provider.Logout();
+                        }
+                    }));
+                }
+                else
+                {
+                    ExternalContentManager.ShowLoginUiIfNeeded(m_provider, showWarningDialog: false, delegate
+                    {
+                    });
+                }
             }
             if (m_moreLink != null && m_moreLink.IsClicked)
             {

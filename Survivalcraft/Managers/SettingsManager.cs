@@ -294,7 +294,16 @@ namespace Game
             get;
             set;
         }
-        public static string ScpboxAccessToken { get; set; }
+        public static string ScpboxAccessToken { 
+            get; 
+            set; 
+        }
+
+        public static string ScpboxUserInfo { 
+            get; 
+            set; 
+        }
+
         public static bool MotdUseBackupUrl
         {
             get;
