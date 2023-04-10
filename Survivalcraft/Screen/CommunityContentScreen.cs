@@ -43,6 +43,8 @@ namespace Game
 
         public ButtonWidget m_action2Button;
 
+        public ButtonWidget m_action3Button;
+
         public ButtonWidget m_moreOptionsButton;
 
         public ButtonWidget m_searchKey;
@@ -65,6 +67,8 @@ namespace Game
 
         public bool m_isAdmin;
 
+        public bool m_isCNLanguageType;
+
         public Dictionary<string, IEnumerable<object>> m_itemsCache = new Dictionary<string, IEnumerable<object>>();
 
         public CommunityContentScreen()
@@ -79,6 +83,7 @@ namespace Game
             m_downloadButton = Children.Find<ButtonWidget>("Download");
             m_actionButton = Children.Find<ButtonWidget>("Action");
             m_action2Button = Children.Find<ButtonWidget>("Action2");
+            m_action3Button = Children.Find<ButtonWidget>("Action3");
             m_moreOptionsButton = Children.Find<ButtonWidget>("MoreOptions");
             m_inputKey = Children.Find<TextBoxWidget>("key");
             m_placeHolder = Children.Find<LabelWidget>("placeholder");
@@ -139,6 +144,8 @@ namespace Game
             m_order = Order.ByRank;
             m_inputKey.Text = string.Empty;
             m_isOwn = false;
+            string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
+            m_isCNLanguageType = (languageType == "zh-CN");
             CommunityContentManager.IsAdmin(new CancellableProgress(), delegate (bool isAdmin)
             {
                 m_isAdmin = isAdmin;
@@ -153,6 +160,12 @@ namespace Game
             m_placeHolder.IsVisible = string.IsNullOrEmpty(m_inputKey.Text);
             m_actionButton.IsVisible = (m_isAdmin || m_isOwn);
             m_action2Button.IsVisible = (m_isAdmin || m_isOwn);
+            if (!m_isCNLanguageType)
+            {
+                m_actionButton.IsVisible = false;
+                m_action2Button.IsVisible = false;
+                m_action3Button.IsVisible = false;
+            }
             var communityContentEntry = m_listPanel.SelectedItem as CommunityContentEntry;
             m_downloadButton.IsEnabled = (communityContentEntry != null);
             if (communityContentEntry != null)
@@ -186,12 +199,7 @@ namespace Game
             m_action2Button.Text = (communityContentEntry != null && communityContentEntry.IsShow == 0) ? LanguageControl.Get(GetType().Name, 24) : LanguageControl.Get(GetType().Name, 25);
             m_orderLabel.Text = GetOrderDisplayName(m_order);
             m_filterLabel.Text = GetFilterDisplayName(m_filter);
-            switch (m_searchType) 
-            {
-                case SearchType.ByName: m_searchTypeButton.Text = "资源名"; break;
-                case SearchType.ByAuthor: m_searchTypeButton.Text = "用户名"; break;
-                case SearchType.ByUserId: m_searchTypeButton.Text = "用户ID"; break;
-            }
+            m_searchTypeButton.Text = GetSearchTypeDisplayName(m_searchType);
             if (m_changeOrderButton.IsClicked)
             {
                 var items = EnumUtils.GetEnumValues(typeof(Order)).Cast<Order>().ToList();
@@ -339,6 +347,12 @@ namespace Game
                     DialogsManager.HideDialog(busyDialog);
                     DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, e.Message, LanguageControl.Ok, null, null));
                 });
+            }
+            m_action3Button.Text = "申精";
+            if (m_action3Button.IsClicked)
+            {
+                string msg = "如果你觉得你的作品足够优秀，\n可以申请加入精品区，让更多人看到。\n加精作品将会是社区认证的作品，是有机会上游戏公告推广的。\n\n具体申精方式\n请加[SC中文社区存档交流群(745540296)]了解。\n同时，如果你对某个作品有异议，\n也可加群举报，本群会受理作品归属问题，守护玩家的劳动成果！\n";
+                DialogsManager.ShowDialog(null, new MessageDialog("作品如何申精？", msg, LanguageControl.Ok, null, null));
             }
             if (m_searchTypeButton.IsClicked)
             {
@@ -492,7 +506,7 @@ namespace Game
             }
         }
 
-        public static string GetFilterDisplayName(object filter)
+        public string GetFilterDisplayName(object filter)
         {
             if (filter is string)
             {
@@ -509,20 +523,31 @@ namespace Game
             throw new InvalidOperationException(LanguageControl.Get(typeof(CommunityContentScreen).Name, 10));
         }
 
-        public static string GetOrderDisplayName(Order order)
+        public string GetOrderDisplayName(Order order)
         {
             switch (order)
             {
                 case Order.ByRank:
-                    return LanguageControl.Get(typeof(CommunityContentScreen).Name, 11);
+                    return m_isCNLanguageType ? "评分最高" : "ByRank";
                 case Order.ByTime:
-                    return LanguageControl.Get(typeof(CommunityContentScreen).Name, 12);
+                    return m_isCNLanguageType ? "最新发布" : "ByTime";
                 case Order.ByBoutique:
-                    return LanguageControl.Get(typeof(CommunityContentScreen).Name, 14);
+                    return m_isCNLanguageType ? "精品推荐" : "ByBoutique";
                 case Order.ByHide:
-                    return LanguageControl.Get(typeof(CommunityContentScreen).Name, 30);
+                    return m_isCNLanguageType ? "尚未发布" : "ByHide";
                 default:
                     throw new InvalidOperationException(LanguageControl.Get(typeof(CommunityContentScreen).Name, 13));
+            }
+        }
+
+        public string GetSearchTypeDisplayName(SearchType searchType)
+        {
+            switch (searchType)
+            {
+                case SearchType.ByName: return m_isCNLanguageType ? "资源名" : "Name";
+                case SearchType.ByAuthor: return m_isCNLanguageType ? "用户名" : "User";
+                case SearchType.ByUserId: return m_isCNLanguageType ? "用户ID" : "UID";
+                default: return "null";
             }
         }
     }

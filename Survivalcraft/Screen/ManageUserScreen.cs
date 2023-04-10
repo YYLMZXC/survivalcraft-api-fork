@@ -4,11 +4,8 @@ using Game;
 using SimpleJson;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Linq;
-using static Game.CommunityContentScreen;
-using static Game.ComponentCreativeInventory;
-using static ManageUserScreen;
+
 
 public class ManageUserScreen : Screen
 {
@@ -242,7 +239,7 @@ public class ManageUserScreen : Screen
             {
                 DialogsManager.ShowDialog(null, new TextBoxDialog("请输入锁定原因", item.LockReason, 1024, delegate (string reason)
                 {
-                    DialogsManager.ShowDialog(null, new TextBoxDialog("请输入锁定时间，单位为天", "1", 1024, delegate (string duration)
+                    DialogsManager.ShowDialog(null, new TextBoxDialog("请输入锁定时长，单位为天", "1", 1024, delegate (string duration)
                     {
                         if (!string.IsNullOrEmpty(reason) && !string.IsNullOrEmpty(duration))
                         {

@@ -44,6 +44,8 @@ public class ModsManageContentScreen : Screen
 
     public ButtonWidget m_actionButton2;
 
+    public ButtonWidget m_actionButton3;
+
     public ButtonWidget m_uninstallFilterButton;
 
     public ButtonWidget m_installFilterButton;
@@ -92,6 +94,8 @@ public class ModsManageContentScreen : Screen
 
     public List<string> m_commonPathList = new List<string>();
 
+    public bool m_isAdmin;
+
     public string[] m_commonPaths = new string[10]
     {
         "android:/Download",
@@ -131,6 +135,7 @@ public class ModsManageContentScreen : Screen
         m_modsContentLabel = Children.Find<LabelWidget>("ModsContentLabel");
         m_actionButton = Children.Find<ButtonWidget>("ActionButton");
         m_actionButton2 = Children.Find<ButtonWidget>("ActionButton2");
+        m_actionButton3 = Children.Find<ButtonWidget>("ActionButton3");
         m_uninstallFilterButton = Children.Find<ButtonWidget>("UninstallFilter");
         m_installFilterButton = Children.Find<ButtonWidget>("InstallFilter");
         m_upDirectoryButton = Children.Find<ButtonWidget>("UpDirectory");
@@ -138,6 +143,7 @@ public class ModsManageContentScreen : Screen
         m_uninstallFilterButton.Text = LanguageControl.Get(fName, 44);
         m_installFilterButton.Text = LanguageControl.Get(fName, 45);
         m_firstEnterScreen = false;
+        m_actionButton3.Text = LanguageControl.Get(fName, 73);
         m_modsContentList.ItemWidgetFactory = delegate (object item)
         {
             ModItem modItem = (ModItem)item;
@@ -239,6 +245,11 @@ public class ModsManageContentScreen : Screen
 
     public override void Enter(object[] parameters)
     {
+        CommunityContentManager.IsAdmin(new CancellableProgress(), delegate (bool isAdmin)
+        {
+            m_isAdmin = isAdmin;
+        }, delegate (Exception e) {
+        });
         if (!Storage.DirectoryExists(m_uninstallPath)) Storage.CreateDirectory(m_uninstallPath);
         BusyDialog busyDialog = new BusyDialog(LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 32));
         DialogsManager.ShowDialog(null, busyDialog);
@@ -337,6 +348,7 @@ public class ModsManageContentScreen : Screen
 
     public override void Update()
     {
+        m_actionButton3.IsVisible = m_isAdmin;
         m_uninstallFilterButton.IsChecked = (m_filter != StateFilter.InstallState);
         m_installFilterButton.IsChecked = (m_filter == StateFilter.InstallState);
         m_uninstallFilterButton.Color = (m_filter == StateFilter.InstallState) ? Color.White : Color.Green;
@@ -625,6 +637,21 @@ public class ModsManageContentScreen : Screen
                 m_updatable = true;
             }
             UpdateList(true);
+        }
+        if (m_actionButton3.IsClicked && modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
+        {
+            Stream stream = Storage.OpenFile(modItem.ExternalContentEntry.Path, OpenFileMode.ReadWrite);
+            if (stream == null) return;
+            Stream stream2 = GetDecipherStream(stream);
+            FileStream fileStream = new FileStream(Storage.GetSystemPath(ModsManager.ModCachePath) + "/Original.scmod", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            byte[] buff = new byte[stream2.Length];
+            stream2.Read(buff, 0, buff.Length);
+            fileStream.Write(buff, 0, buff.Length);
+            fileStream.Flush();
+            fileStream.Dispose();
+            stream.Dispose();
+            stream2.Dispose();
+            DialogsManager.ShowDialog(null, new MessageDialog("操作成功", Storage.GetSystemPath(ModsManager.ModCachePath) + "/Original.scmod", LanguageControl.Ok, null, null));
         }
         if (m_upDirectoryButton.IsClicked)
         {

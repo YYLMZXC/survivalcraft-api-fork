@@ -50,6 +50,8 @@
         <CanvasWidget Size="10, 0"/>
         <BevelledButtonWidget Name="Action2" Style="{Styles/ButtonStyle_160x60}" Text="[CommunityContentScreen:7]"/>
         <CanvasWidget Size="10, 0"/>
+        <BevelledButtonWidget Name="Action3" Style="{Styles/ButtonStyle_160x60}" Text="[CommunityContentScreen:11]"/>
+        <CanvasWidget Size="10, 0"/>
         <BevelledButtonWidget Name="MoreOptions" Style="{Styles/ButtonStyle_70x60}" Text="[CommunityContentScreen:8]"/>
       </StackPanelWidget>
 
