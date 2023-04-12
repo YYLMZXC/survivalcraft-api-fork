@@ -22,7 +22,7 @@ public class ManageUserScreen : Screen
         public string UnlockTime;
         public int LockDuration;
         public int Money;
-        public int Authority;
+        public string Authority;
         public string HeadImg;
         public int IsAdmin;
         public string RegTime;

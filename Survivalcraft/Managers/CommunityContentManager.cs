@@ -387,7 +387,7 @@ namespace Game
                                 UnlockTime = XmlUtils.GetAttributeValue<string>(item, "UnlockTime"),
                                 LockDuration = XmlUtils.GetAttributeValue<int>(item, "LockDuration", 0),
                                 Money = XmlUtils.GetAttributeValue<int>(item, "Money", 0),
-                                Authority = XmlUtils.GetAttributeValue<int>(item, "Authority", 0),
+                                Authority = XmlUtils.GetAttributeValue<string>(item, "Authority"),
                                 HeadImg = XmlUtils.GetAttributeValue<string>(item, "HeadImg"),
                                 IsAdmin = XmlUtils.GetAttributeValue<int>(item, "IsAdmin", 0),
                                 RegTime = XmlUtils.GetAttributeValue<string>(item, "RegTime"),

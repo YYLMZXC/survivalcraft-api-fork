@@ -499,6 +499,7 @@ namespace Game
             ScreenLayout3 = ((Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.TripleVertical : ScreenLayout.TripleHorizontal);
             ScreenLayout4 = ScreenLayout.Quadruple;
             BulletinTime = string.Empty;
+            ScpboxUserInfo = string.Empty;
             HorizontalCreativeFlight = true;
             LoadSettings();
             VersionsManager.CompareVersions(LastLaunchedVersion, "1.29");
