@@ -47,6 +47,7 @@ namespace Game
             PlayerData playerData = componentPlayer.PlayerData;
             PlayerStats playerStats = componentPlayer.PlayerStats;
             SubsystemGameInfo subsystemGameInfo = project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            SubsystemTimeOfDay subsystemTimeOfDay = project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true);
             SubsystemFurnitureBlockBehavior subsystemFurnitureBlockBehavior = project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true);
             BitmapFont font = LabelWidget.BitmapFont;
             BitmapFont font2 = LabelWidget.BitmapFont;
@@ -93,9 +94,9 @@ namespace Game
             });
             AddStat(stackPanelWidget, LanguageControl.Get(fName, 18), playerData.Name);
             AddStat(stackPanelWidget, LanguageControl.Get(fName, 19), (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Male) ? LanguageControl.Get(fName, 93) : LanguageControl.Get(fName, 94));
-            string value = (playerData.FirstSpawnTime >= 0.0) ? (((subsystemGameInfo.TotalElapsedGameTime - playerData.FirstSpawnTime) / 1200.0).ToString("N1") + LanguageControl.Get(fName, 20)) : LanguageControl.Get(fName, 21);
+            string value = (playerData.FirstSpawnTime >= 0.0) ? (((subsystemGameInfo.TotalElapsedGameTime - playerData.FirstSpawnTime) / subsystemTimeOfDay.DayDuration).ToString("N1") + LanguageControl.Get(fName, 20)) : LanguageControl.Get(fName, 21);
             AddStat(stackPanelWidget, LanguageControl.Get(fName, 22), value);
-            string value2 = (playerData.LastSpawnTime >= 0.0) ? (((subsystemGameInfo.TotalElapsedGameTime - playerData.LastSpawnTime) / 1200.0).ToString("N1") + LanguageControl.Get(fName, 23)) : LanguageControl.Get(fName, 24);
+            string value2 = (playerData.LastSpawnTime >= 0.0) ? (((subsystemGameInfo.TotalElapsedGameTime - playerData.LastSpawnTime) / subsystemTimeOfDay.DayDuration).ToString("N1") + LanguageControl.Get(fName, 23)) : LanguageControl.Get(fName, 24);
             AddStat(stackPanelWidget, LanguageControl.Get(fName, 25), value2);
             AddStat(stackPanelWidget, LanguageControl.Get(fName, 26), MathUtils.Max(playerData.SpawnsCount - 1, 0).ToString("N0") + LanguageControl.Get(fName, 27));
             AddStat(stackPanelWidget, LanguageControl.Get(fName, 28), string.Format(LanguageControl.Get(fName, 29), ((int)MathUtils.Floor(playerStats.HighestLevel)).ToString("N0")));
@@ -173,7 +174,7 @@ namespace Game
                 AddStat(stackPanelWidget, LanguageControl.Get(fName, 62), (playerStats.TotalHealthLost * 100.0).ToString("N0") + "%");
                 AddStat(stackPanelWidget, LanguageControl.Get(fName, 63), playerStats.FoodItemsEaten.ToString("N0") + LanguageControl.Get(fName, 64));
                 AddStat(stackPanelWidget, LanguageControl.Get(fName, 65), playerStats.TimesWentToSleep.ToString("N0") + LanguageControl.Get(fName, 66));
-                AddStat(stackPanelWidget, LanguageControl.Get(fName, 67), (playerStats.TimeSlept / 1200.0).ToString("N1") + LanguageControl.Get(fName, 68));
+                AddStat(stackPanelWidget, LanguageControl.Get(fName, 67), (playerStats.TimeSlept / subsystemTimeOfDay.DayDuration).ToString("N1") + LanguageControl.Get(fName, 68));
                 AddStat(stackPanelWidget, LanguageControl.Get(fName, 69), playerStats.TimesWasSick.ToString("N0") + LanguageControl.Get(fName, 66));
                 AddStat(stackPanelWidget, LanguageControl.Get(fName, 70), playerStats.TimesPuked.ToString("N0") + LanguageControl.Get(fName, 66));
                 AddStat(stackPanelWidget, LanguageControl.Get(fName, 71), playerStats.TimesHadFlu.ToString("N0") + LanguageControl.Get(fName, 66));

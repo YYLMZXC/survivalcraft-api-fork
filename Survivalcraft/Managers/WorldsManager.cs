@@ -430,6 +430,10 @@ namespace Game
                         {
                             fileName = Storage.CombinePaths("Regions", fileName);
                         }
+                        else
+                        {
+                            fileName = item.Replace($"{directoryName}/", "");
+                        }
                         zipArchive.AddStream(fileName, source);
                     }
                 }
@@ -512,6 +516,15 @@ namespace Game
                                 Storage.CreateDirectory(Storage.CombinePaths(directoryName, "Regions"));
                             }
                             fileName = Storage.CombinePaths("Regions", fileName);
+                        }
+                        else
+                        {
+                            string directory = Path.GetDirectoryName(Storage.CombinePaths(directoryName, text));
+                            if (!Storage.DirectoryExists(directory))
+                            {
+                                Storage.CreateDirectory(directory);
+                            }
+                            fileName = text;
                         }
                         using (Stream stream = Storage.OpenFile(Storage.CombinePaths(directoryName, fileName), OpenFileMode.Create))
                         {

@@ -21,6 +21,8 @@ namespace Game
 
         public SubsystemGameInfo m_subsystemGameInfo;
 
+        public SubsystemTimeOfDay m_subsystemTimeOfDay;
+
         public Dictionary<Point3, SaplingData> m_saplings = new Dictionary<Point3, SaplingData>();
 
         public Dictionary<Point3, SaplingData>.ValueCollection.Enumerator m_enumerator;
@@ -65,6 +67,7 @@ namespace Game
         {
             base.Load(valuesDictionary);
             m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+            m_subsystemTimeOfDay = Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true);
             m_enumerator = m_saplings.Values.GetEnumerator();
             foreach (string value in valuesDictionary.GetValue<ValuesDictionary>("Saplings").Values)
             {
@@ -191,7 +194,7 @@ namespace Game
                             SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(28, 0, 0));
                         }
                     }
-                    else if (m_subsystemGameInfo.TotalElapsedGameTime > saplingData.MatureTime + 1200.0)
+                    else if (m_subsystemGameInfo.TotalElapsedGameTime > saplingData.MatureTime + m_subsystemTimeOfDay.DayDuration)
                     {
                         SubsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(28, 0, 0));
                     }

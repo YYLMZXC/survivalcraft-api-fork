@@ -14,6 +14,8 @@ public class ModsManageContentScreen : Screen
 
     public static string HeadingCode = "有头有脸天才少年,耍猴表演敢为人先";
 
+    public static string HeadingCode2 = "修改他人mod请获得原作者授权，否则小心出名！";
+
     public enum StateFilter { UninstallState, InstallState };
 
     public class ModItem
@@ -41,6 +43,8 @@ public class ModsManageContentScreen : Screen
     public ButtonWidget m_actionButton;
 
     public ButtonWidget m_actionButton2;
+
+    public ButtonWidget m_actionButton3;
 
     public ButtonWidget m_uninstallFilterButton;
 
@@ -90,6 +94,8 @@ public class ModsManageContentScreen : Screen
 
     public List<string> m_commonPathList = new List<string>();
 
+    public bool m_isAdmin;
+
     public string[] m_commonPaths = new string[10]
     {
         "android:/Download",
@@ -129,6 +135,7 @@ public class ModsManageContentScreen : Screen
         m_modsContentLabel = Children.Find<LabelWidget>("ModsContentLabel");
         m_actionButton = Children.Find<ButtonWidget>("ActionButton");
         m_actionButton2 = Children.Find<ButtonWidget>("ActionButton2");
+        m_actionButton3 = Children.Find<ButtonWidget>("ActionButton3");
         m_uninstallFilterButton = Children.Find<ButtonWidget>("UninstallFilter");
         m_installFilterButton = Children.Find<ButtonWidget>("InstallFilter");
         m_upDirectoryButton = Children.Find<ButtonWidget>("UpDirectory");
@@ -136,6 +143,7 @@ public class ModsManageContentScreen : Screen
         m_uninstallFilterButton.Text = LanguageControl.Get(fName, 44);
         m_installFilterButton.Text = LanguageControl.Get(fName, 45);
         m_firstEnterScreen = false;
+        m_actionButton3.Text = LanguageControl.Get(fName, 73);
         m_modsContentList.ItemWidgetFactory = delegate (object item)
         {
             ModItem modItem = (ModItem)item;
@@ -237,6 +245,11 @@ public class ModsManageContentScreen : Screen
 
     public override void Enter(object[] parameters)
     {
+        CommunityContentManager.IsAdmin(new CancellableProgress(), delegate (bool isAdmin)
+        {
+            m_isAdmin = isAdmin;
+        }, delegate (Exception e) {
+        });
         if (!Storage.DirectoryExists(m_uninstallPath)) Storage.CreateDirectory(m_uninstallPath);
         BusyDialog busyDialog = new BusyDialog(LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 32));
         DialogsManager.ShowDialog(null, busyDialog);
@@ -335,6 +348,7 @@ public class ModsManageContentScreen : Screen
 
     public override void Update()
     {
+        m_actionButton3.IsVisible = m_isAdmin;
         m_uninstallFilterButton.IsChecked = (m_filter != StateFilter.InstallState);
         m_installFilterButton.IsChecked = (m_filter == StateFilter.InstallState);
         m_uninstallFilterButton.Color = (m_filter == StateFilter.InstallState) ? Color.White : Color.Green;
@@ -623,6 +637,21 @@ public class ModsManageContentScreen : Screen
                 m_updatable = true;
             }
             UpdateList(true);
+        }
+        if (m_actionButton3.IsClicked && modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
+        {
+            Stream stream = Storage.OpenFile(modItem.ExternalContentEntry.Path, OpenFileMode.ReadWrite);
+            if (stream == null) return;
+            Stream stream2 = GetDecipherStream(stream);
+            FileStream fileStream = new FileStream(Storage.GetSystemPath(ModsManager.ModCachePath) + "/Original.scmod", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            byte[] buff = new byte[stream2.Length];
+            stream2.Read(buff, 0, buff.Length);
+            fileStream.Write(buff, 0, buff.Length);
+            fileStream.Flush();
+            fileStream.Dispose();
+            stream.Dispose();
+            stream2.Dispose();
+            DialogsManager.ShowDialog(null, new MessageDialog("操作成功", Storage.GetSystemPath(ModsManager.ModCachePath) + "/Original.scmod", LanguageControl.Ok, null, null));
         }
         if (m_upDirectoryButton.IsClicked)
         {
@@ -1011,12 +1040,44 @@ public class ModsManageContentScreen : Screen
                 break;
             }
         }
+        byte[] hc2 = Encoding.UTF8.GetBytes(HeadingCode2);
+        bool decipher2 = true;
+        for (int i = 0; i < hc2.Length; i++)
+        {
+            if (hc2[i] != buff[i])
+            {
+                decipher2 = false;
+                break;
+            }
+        }
         if (decipher)
         {
             byte[] buff2 = new byte[buff.Length - hc.Length];
             for (int i = 0; i < buff2.Length; i++)
             {
                 buff2[i] = buff[buff.Length - 1 - i];
+            }
+            keepOpenStream.Write(buff2, 0, buff2.Length);
+            keepOpenStream.Flush();
+        }
+        else if (decipher2)
+        {
+            byte[] buff2 = new byte[buff.Length - hc2.Length];
+            int k = 0;
+            int t = 0;
+            int l = (buff2.Length + 1) / 2;
+            for (int i = 0; i < buff2.Length; i++)
+            {
+                if(i % 2 == 0)
+                {
+                    buff2[i] = buff[hc2.Length + k];
+                    k++;
+                }
+                else
+                {
+                    buff2[i] = buff[hc2.Length + l + t];
+                    t++;
+                }
             }
             keepOpenStream.Write(buff2, 0, buff2.Length);
             keepOpenStream.Flush();
@@ -1046,28 +1107,50 @@ public class ModsManageContentScreen : Screen
                 break;
             }
         }
-        if (!decipher)
+        byte[] hc2 = Encoding.UTF8.GetBytes(HeadingCode2);
+        bool decipher2 = true;
+        for (int i = 0; i < hc2.Length; i++)
         {
-            byte[] buff2 = new byte[buff.Length + hc.Length];
-            for (int i = 0; i < hc.Length; i++)
+            if (hc2[i] != buff[i])
             {
-                buff2[i] = hc[i];
+                decipher2 = false;
+                break;
             }
-            for (int i = 0; i < buff.Length; i++)
-            {
-                buff2[i + hc.Length] = buff[buff.Length - 1 - i];
-            }
-            string newPath = string.Format("{0}({1}).scmod", path.Substring(0, path.LastIndexOf('.')), LanguageControl.Get(fName, 63));
-            FileStream fileStream = new FileStream(Storage.GetSystemPath(newPath), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-            fileStream.Write(buff2, 0, buff2.Length);
-            fileStream.Flush();
-            stream.Dispose();
-            fileStream.Dispose();
-            return true;
         }
-        else return false;
+        if (decipher || decipher2) return false;
+        byte[] buff2 = new byte[buff.Length + hc2.Length];
+        int k = 0;
+        int l = hc2.Length;
+        for (int i = 0; i < hc2.Length; i++)
+        {
+            buff2[i] = hc2[i];
+        }
+        for (int i = 0; i < buff.Length; i++)
+        {
+            if(i % 2 == 0)
+            {
+                buff2[k + l] = buff[i];
+                k++;
+            }
+        }
+        k = 0;
+        l = hc2.Length + ((buff.Length + 1) / 2);
+        for (int i = 0; i < buff.Length; i++)
+        {
+            if (i % 2 != 0)
+            {
+                buff2[k + l] = buff[i];
+                k++;
+            }
+        }
+        string newPath = string.Format("{0}({1}).scmod", path.Substring(0, path.LastIndexOf('.')), LanguageControl.Get(fName, 63));
+        FileStream fileStream = new FileStream(Storage.GetSystemPath(newPath), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        fileStream.Write(buff2, 0, buff2.Length);
+        fileStream.Flush();
+        stream.Dispose();
+        fileStream.Dispose();
+        return true;
     }
-
     public void UpdateModFromCommunity(ModInfo modInfo)
     {
         //从社区拉取MOD并更新

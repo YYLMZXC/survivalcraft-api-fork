@@ -41,7 +41,7 @@ namespace Game
 
         public LoginProcessData m_loginProcessData;
 
-        public string DisplayName => "SPMBox中国社区";
+        public string DisplayName => "SC中文社区";
 
         public string Description
         {
@@ -113,6 +113,7 @@ namespace Game
         {
             m_loginProcessData = null;
             SettingsManager.ScpboxAccessToken = string.Empty;
+            SettingsManager.ScpboxUserInfo = string.Empty;
         }
 
         public void List(string path, CancellableProgress progress, Action<ExternalContentEntry> success, Action<Exception> failure)
@@ -251,16 +252,42 @@ namespace Game
                     string msg = json["msg"].ToString();
                     if (code == 200)
                     {
-                        var token = (JsonObject)json["data"];
-                        SettingsManager.ScpboxAccessToken = token["accessToken"].ToString();
-                        DialogsManager.HideAllDialogs();
+                        var data = (JsonObject)json["data"];
+                        SettingsManager.ScpboxAccessToken = data["accessToken"].ToString();
+                        SettingsManager.ScpboxUserInfo = string.Empty;
+                        SettingsManager.ScpboxUserInfo += "昵称：" + data["nickName"].ToString();
+                        SettingsManager.ScpboxUserInfo += "\n账号：" + data["user"].ToString();
+                        SettingsManager.ScpboxUserInfo += "\n登录时间：" + data["loginTime"].ToString();
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Ok, "登录成功:" + data["nickName"].ToString(), LanguageControl.Ok, null, delegate 
+                        {
+                            m_loginProcessData = null;
+                            DialogsManager.HideAllDialogs();
+                        }));
                     }
                     else
                     {
                         login.tip.Text = msg;
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Ok, "登录失败:" + msg, LanguageControl.Ok, null, delegate
+                        {
+                            m_loginProcessData = null;
+                            DialogsManager.HideAllDialogs();
+                        }));
                     }
                 };
-                login.fail = delegate (Exception e) { login.tip.Text = e.ToString(); };
+                login.fail = delegate (Exception e) 
+                { 
+                    login.tip.Text = e.ToString();
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, "登录失败:" + e.Message, LanguageControl.Ok, null, delegate
+                    {
+                        m_loginProcessData = null;
+                        DialogsManager.HideAllDialogs();
+                    }));
+                };
+                login.cancel = delegate
+                {
+                    m_loginProcessData = null;
+                    DialogsManager.HideAllDialogs();
+                };
                 DialogsManager.ShowDialog(null, login);
             }
             catch (Exception error)
@@ -271,6 +298,8 @@ namespace Game
 
         public void WindowActivated()
         {
+            //不需要token验证
+            /*
             if (m_loginProcessData != null && !m_loginProcessData.IsTokenFlow)
             {
                 LoginProcessData loginProcessData = m_loginProcessData;
@@ -320,6 +349,7 @@ namespace Game
                 });
                 DialogsManager.ShowDialog(null, dialog);
             }
+            */
         }
 
         public void HandleUri(Uri uri)

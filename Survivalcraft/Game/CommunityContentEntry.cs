@@ -10,6 +10,12 @@ namespace Game
 
         public string UserId;
 
+        public string UserName;
+
+        public int Boutique;
+
+        public int IsShow;
+
         public long Size;
 
         public string ExtraText;
@@ -21,5 +27,7 @@ namespace Game
         public Engine.Graphics.Texture2D Icon;
 
         public RectangleWidget IconInstance = null;
+
+        public int Index;
     }
 }

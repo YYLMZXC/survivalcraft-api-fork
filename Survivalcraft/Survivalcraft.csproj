@@ -477,6 +477,7 @@
     <Compile Include="Screen\HelpTopicScreen.cs" />
     <Compile Include="Screen\LoadingScreen.cs" />
     <Compile Include="Screen\MainMenuScreen.cs" />
+    <Compile Include="Screen\ManageUserScreen.cs" />
     <Compile Include="Screen\ManageContentScreen.cs" />
     <Compile Include="Screen\ModifyWorldScreen.cs" />
     <Compile Include="Screen\ModsManageContentScreen.cs" />
@@ -1878,6 +1879,7 @@
     <None Include="Content\Assets\Widgets\TopBarContents.xml" />
     <None Include="Content\Assets\Widgets\VitalStatsWidget.xml" />
     <None Include="Content\Assets\Dialogs\RunJsDialog.xml" />
+    <None Include="Content\Assets\Screens\ManageUserScreen.xml" />
     <Content Include="Content\icon.ico" />
     <Content Include="OpenAL\x64\openal32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

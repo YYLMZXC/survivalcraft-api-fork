@@ -1201,6 +1201,9 @@
     <Compile Include="..\Survivalcraft\Component\ComponentWalkAroundBehavior.cs">
       <Link>Component\ComponentWalkAroundBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\ContentProvider\SPMBoxExternalContentProvider.cs">
+      <Link>ContentProvider\SPMBoxExternalContentProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Dialog\BuildFurnitureDialog.cs">
       <Link>Dialog\BuildFurnitureDialog.cs</Link>
     </Compile>
@@ -2338,6 +2341,9 @@
     <Compile Include="..\Survivalcraft\Screen\ManageContentScreen.cs">
       <Link>Screen\ManageContentScreen.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Screen\ManageUserScreen.cs">
+      <Link>Screen\ManageUserScreen.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Screen\ModifyWorldScreen.cs">
       <Link>Screen\ModifyWorldScreen.cs</Link>
     </Compile>
@@ -2932,7 +2938,6 @@
     <Compile Include="..\Survivalcraft\Widget\WidgetsList.cs">
       <Link>Widget\WidgetsList.cs</Link>
     </Compile>
-    <Compile Include="ContentProvider\SPMBoxExternalContentProvider.cs" />
     <Compile Include="ContentProvider\AndroidSdCardExternalContentProvider.cs" />
     <Compile Include="ContentProvider\DropboxExternalContentProvider.cs" />
     <Compile Include="ContentProvider\IExternalContentProvider.cs" />

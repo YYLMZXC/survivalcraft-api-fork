@@ -14,6 +14,7 @@ namespace Game
         public TextBoxWidget txa, txb;
         public BusyDialog busyDialog = new BusyDialog("提示", "登陆中");
         public LabelWidget tip = new LabelWidget() { HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Near, Margin = new Vector2(1f, 1f) };
+        public Action cancel;
         public LoginDialog()
         {
             var canvasWidget = new CanvasWidget() { Size = new Vector2(600f, 240f), HorizontalAlignment = WidgetAlignment.Center, VerticalAlignment = WidgetAlignment.Center };
@@ -24,8 +25,8 @@ namespace Game
             canvasWidget.Children.Add(stackPanelWidget);
             MainView = stackPanelWidget;
             MainView.Children.Add(tip);
-            MainView.Children.Add(makeTextBox("用户名:"));
-            MainView.Children.Add(makeTextBox("密  码:"));
+            MainView.Children.Add(makeTextBox("账号:"));
+            MainView.Children.Add(makeTextBox("密码:"));
             MainView.Children.Add(makeButton());
 
         }
@@ -36,8 +37,8 @@ namespace Game
             var stack = new StackPanelWidget() { Direction = LayoutDirection.Horizontal };
             var label = new LabelWidget() { HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Near, Text = title, Margin = new Vector2(1f, 1f) };
             var textBox = new TextBoxWidget() { VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Stretch, Color = new Color(255, 255, 255), Margin = new Vector2(4f, 0f), Size = new Vector2(float.PositiveInfinity, 80) };
-            if (title == "用户名:") txa = textBox;
-            if (title == "密  码:") txb = textBox;
+            if (title == "账号:") txa = textBox;
+            if (title == "密码:") txb = textBox;
             stack.Children.Add(label);
             stack.Children.Add(textBox);
             canvasWidget.Children.Add(rectangleWidget);
@@ -74,7 +75,7 @@ namespace Game
             }
             if (btnc.IsClicked)
             {
-                DialogsManager.HideDialog(this);
+                cancel?.Invoke();
             }
 
         }

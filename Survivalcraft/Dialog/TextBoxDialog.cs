@@ -7,6 +7,8 @@ namespace Game
     {
         public Action<string> m_handler;
 
+        public Action<TextBoxWidget> m_handler2;
+
         public LabelWidget m_titleWidget;
 
         public TextBoxWidget m_textBoxWidget;
@@ -39,6 +41,35 @@ namespace Game
             {
                 Dismiss(m_textBoxWidget.Text);
             };
+            AutoHide = true;
+        }
+
+        public TextBoxDialog(string title, string text, int maximumLength, Action<string> handler, Action<TextBoxWidget> handler2)
+        {
+            m_handler = handler;
+            m_handler2 = handler2;
+            XElement node = ContentManager.Get<XElement>("Dialogs/TextBoxDialog");
+            LoadContents(this, node);
+            m_titleWidget = Children.Find<LabelWidget>("TextBoxDialog.Title");
+            m_textBoxWidget = Children.Find<TextBoxWidget>("TextBoxDialog.TextBox");
+            m_okButtonWidget = Children.Find<ButtonWidget>("TextBoxDialog.OkButton");
+            m_cancelButtonWidget = Children.Find<ButtonWidget>("TextBoxDialog.CancelButton");
+            m_titleWidget.IsVisible = !string.IsNullOrEmpty(title);
+            m_titleWidget.Text = (title ?? string.Empty);
+            m_textBoxWidget.MaximumLength = maximumLength;
+            m_textBoxWidget.Text = (text ?? string.Empty);
+            m_textBoxWidget.HasFocus = true;
+            m_textBoxWidget.Enter += delegate
+            {
+                Dismiss(m_textBoxWidget.Text);
+            };
+            if(m_handler2 != null)
+            {
+                m_textBoxWidget.TextChanged += delegate (TextBoxWidget textBox)
+                {
+                    m_handler2.Invoke(textBox);
+                };
+            }
             AutoHide = true;
         }
 

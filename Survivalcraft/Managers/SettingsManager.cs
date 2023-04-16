@@ -294,7 +294,16 @@ namespace Game
             get;
             set;
         }
-        public static string ScpboxAccessToken { get; set; }
+        public static string ScpboxAccessToken { 
+            get; 
+            set; 
+        }
+
+        public static string ScpboxUserInfo { 
+            get; 
+            set; 
+        }
+
         public static bool MotdUseBackupUrl
         {
             get;
@@ -490,6 +499,7 @@ namespace Game
             ScreenLayout3 = ((Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.TripleVertical : ScreenLayout.TripleHorizontal);
             ScreenLayout4 = ScreenLayout.Quadruple;
             BulletinTime = string.Empty;
+            ScpboxUserInfo = string.Empty;
             HorizontalCreativeFlight = true;
             LoadSettings();
             VersionsManager.CompareVersions(LastLaunchedVersion, "1.29");

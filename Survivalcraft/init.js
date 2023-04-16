@@ -42,9 +42,9 @@ var OnCreatureInjureHandlers = new Array();//当生物受伤时执行，任一�
 /*OnCreatureInjureHandlers.push((componentHealth, amount, attacker, ignoreInvulnerability, cause) => {//ComponentHealth componentHealth, float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause
     return false;
 });*/
-var OnProjectLoadedHandlers = new Array();//当Project被加载时执行，即存档加载完成时
+var OnProjectLoadedHandlers = new Array();//当Project被加载时执行
 /*OnProjectLoadedHandlers.push((project) => {//Project project，无返回值
 })*/
-var OnProjectDisposedHandlers = new Array();//当Project被加载时执行，即存档加载完成时
+var OnProjectDisposedHandlers = new Array();//当Project被卸载时执行
 /*OnProjectDisposedHandlers.push(() => {//无参数，无返回值
 });*/

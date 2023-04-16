@@ -55,7 +55,9 @@ namespace Game
                 var obj = (ContainerWidget)LoadWidget(this, node2, null);
                 obj.Children.Find<BlockIconWidget>("RecipaediaItem.Icon").Value = value;
                 obj.Children.Find<LabelWidget>("RecipaediaItem.Text").Text = block.GetDisplayName(null, value);
-                obj.Children.Find<LabelWidget>("RecipaediaItem.Details").Text = block.GetDescription(value);
+                string description = block.GetDescription(value);
+                description = description.Replace("\n", "  ");
+                obj.Children.Find<LabelWidget>("RecipaediaItem.Details").Text = description;
                 return obj;
             };
             m_blocksList.ItemClicked += delegate (object item)
