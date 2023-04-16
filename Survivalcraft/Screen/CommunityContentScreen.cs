@@ -12,7 +12,8 @@ namespace Game
         public enum Order
         {
             ByRank,
-            ByTime
+            ByTime,
+            ByStar
         }
 
         public ListPanelWidget m_listPanel;
@@ -315,6 +316,8 @@ namespace Game
                     return LanguageControl.Get(typeof(CommunityContentScreen).Name, 11);
                 case Order.ByTime:
                     return LanguageControl.Get(typeof(CommunityContentScreen).Name, 12);
+                case Order.ByStar:
+                    return LanguageControl.Get(typeof(CommunityContentScreen).Name, 14);
                 default:
                     throw new InvalidOperationException(LanguageControl.Get(typeof(CommunityContentScreen).Name, 13));
             }

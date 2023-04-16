@@ -1889,9 +1889,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>set p=$(SolutionDir)
-%2525p:~0,2%2525
 cd "$(SolutionDir)Survivalcraft\Content"
-"$(SolutionDir)zip.exe" -qr9 ..\Content.zip *</PreBuildEvent>
+"$(SolutionDir)\zip.exe" -qr9 ..\Content.zip *</PreBuildEvent>
   </PropertyGroup>
   <ProjectExtensions />
 </Project>

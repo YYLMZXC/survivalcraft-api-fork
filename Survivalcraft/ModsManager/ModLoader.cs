@@ -355,10 +355,10 @@ namespace Game
         /// 绘制额外模型数据的方法，如人物头顶的名字
         /// </summary>
         /// <param name="modelsRenderer"></param>
-        /// <param name="componentModel"></param>
+        /// <param name="modelData">正在绘制的模型</param>
         /// <param name="camera"></param>
         /// <param name="alphaThreshold"></param>
-        public virtual void OnModelRendererDrawExtra(SubsystemModelsRenderer modelsRenderer, ComponentModel componentModel, Camera camera, float? alphaThreshold)
+        public virtual void OnModelRendererDrawExtra(SubsystemModelsRenderer modelsRenderer, SubsystemModelsRenderer.ModelData modelData, Camera camera, float? alphaThreshold)
         {
         }
 
@@ -615,6 +615,32 @@ namespace Game
         /// <param name="Old"></param>
         /// <param name="New"></param>
         public virtual void OnModalPanelWidgetSet(ComponentGui gui, Widget Old, Widget New)
+        {
+
+        }
+        /// <summary>
+        /// 生成地形顶点时使用
+        /// </summary>
+        /// <param name="chunk"></param>
+        public virtual void GenerateChunkVertices(TerrainChunk chunk,bool even)
+        {
+
+        }
+        /// <summary>
+        /// 生成光源数据
+        /// </summary>
+        /// <param name="lightSources">光源</param>
+        /// <param name="chunk">区块</param>
+        public virtual void GenerateChunkLightSources(DynamicArray<TerrainUpdater.LightSource> lightSources,TerrainChunk chunk) { 
+        
+        }
+        /// <summary>
+        /// 计算动物模型光照
+        /// </summary>
+        /// <param name="subsystemTerrain"></param>
+        /// <param name="p">动物位置</param>
+        /// <param name="num">原版计算出来的强度</param>
+        public virtual void CalculateSmoothLight(SubsystemTerrain subsystemTerrain, Vector3 p, ref float num)
         {
 
         }

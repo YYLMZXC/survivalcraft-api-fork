@@ -102,8 +102,9 @@ namespace Game
                 JsInterface.Invoke(function, playerData);
             });
         }
-        public override void OnModelRendererDrawExtra(SubsystemModelsRenderer modelsRenderer, ComponentModel componentModel, Camera camera, float? alphaThreshold)
+        public override void OnModelRendererDrawExtra(SubsystemModelsRenderer modelsRenderer, SubsystemModelsRenderer.ModelData modelData, Camera camera, float? alphaThreshold)
         {
+            ComponentModel componentModel = modelData.ComponentModel;
             if (componentModel is ComponentHumanModel) {
                 ComponentPlayer m_componentPlayer = componentModel.Entity.FindComponent<ComponentPlayer>();
                 if (m_componentPlayer != null && camera.GameWidget.PlayerData != m_componentPlayer.PlayerData)

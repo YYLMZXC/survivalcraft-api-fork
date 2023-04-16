@@ -495,8 +495,10 @@ namespace Game
             {
                 ClothingData clothingData = block.GetClothingData(value);
                 clothingData.Mount?.Invoke(value,this);
-                var list = new List<int>(GetClothes(clothingData.Slot));
-                list.Add(value);
+                var list = new List<int>(GetClothes(clothingData.Slot))
+                {
+                    value
+                };
                 SetClothes(clothingData.Slot, list);
             }
         }
