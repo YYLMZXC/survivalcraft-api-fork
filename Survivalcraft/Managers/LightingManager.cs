@@ -73,6 +73,7 @@ namespace Game
                     int num6 = (int)MathUtils.Floor(num5);
                     int num7 = (int)MathUtils.Ceiling(num5);
                     float f4 = num5 - num6;
+                    ModsManager.HookAction("CalculateSmoothLight", l => { l.CalculateSmoothLight(subsystemTerrain, p, ref f4); return false; });
                     return MathUtils.Lerp(LightIntensityByLightValue[num6], LightIntensityByLightValue[num7], f4);
                 }
             }

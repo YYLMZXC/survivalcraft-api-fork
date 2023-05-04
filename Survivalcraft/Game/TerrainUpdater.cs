@@ -835,8 +835,9 @@ namespace Game
 						{
 							chunk.NewGeometryData = false;
 							GenerateChunkVertices(chunk, even: true);
-						}
-						chunk.ThreadState = TerrainChunkState.InvalidVertices2;
+                            ModsManager.HookAction("GenerateChunkVertices", modLoader => { modLoader.GenerateChunkVertices(chunk, true); return true; });
+                        }
+                        chunk.ThreadState = TerrainChunkState.InvalidVertices2;
 						chunk.WasUpgraded = true;
 						double realTime6 = Time.RealTime;
 						m_statistics.VerticesCount1++;
@@ -849,7 +850,8 @@ namespace Game
 						lock (chunk.Geometry)
 						{
 							GenerateChunkVertices(chunk, even: false);
-							chunk.NewGeometryData = true;
+                            ModsManager.HookAction("GenerateChunkVertices", modLoader => { modLoader.GenerateChunkVertices(chunk, true); return false; });
+                            chunk.NewGeometryData = true;
 						}
 						chunk.ThreadState = TerrainChunkState.Valid;
 						chunk.WasUpgraded = true;
@@ -943,7 +945,8 @@ namespace Game
 
 		public void GenerateChunkLightSources(TerrainChunk chunk)
 		{
-			Block[] blocks = BlocksManager.Blocks;
+            ModsManager.HookAction("GenerateChunkLightSources", loader => { loader.GenerateChunkLightSources(m_lightSources, chunk); return false; });
+            Block[] blocks = BlocksManager.Blocks;
 			for (int i = 0; i < 16; i++)
 			{
 				for (int j = 0; j < 16; j++)

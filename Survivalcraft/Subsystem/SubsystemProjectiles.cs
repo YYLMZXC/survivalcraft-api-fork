@@ -413,6 +413,7 @@ namespace Game
                 {
                     item.TrailParticleSystem.IsStopped = true;
                 }
+                item.OnRemove?.Invoke();
                 m_projectiles.Remove(item);
                 ProjectileRemoved?.Invoke(item);
             }
@@ -442,6 +443,7 @@ namespace Game
                 projectile.Position = item.GetValue<Vector3>("Position");
                 projectile.Velocity = item.GetValue<Vector3>("Velocity");
                 projectile.CreationTime = item.GetValue<double>("CreationTime");
+                projectile.ProjectileStoppedAction = item.GetValue("ProjectileStoppedAction", projectile.ProjectileStoppedAction);
                 m_projectiles.Add(projectile);
             }
         }
@@ -459,6 +461,7 @@ namespace Game
                 valuesDictionary3.SetValue("Position", projectile.Position);
                 valuesDictionary3.SetValue("Velocity", projectile.Velocity);
                 valuesDictionary3.SetValue("CreationTime", projectile.CreationTime);
+                valuesDictionary3.SetValue("ProjectileStoppedAction", projectile.ProjectileStoppedAction);
                 num++;
             }
         }

@@ -11,33 +11,28 @@ namespace Game
     {
         public ListPanelWidget m_listPanel;
 
-        public ButtonWidget m_copyButton;
-
-        public ButtonWidget m_filterButton;
-
-        public ButtonWidget m_closeButton;
-
-        public ButtonWidget m_uploadButton;
+        public ButtonWidget m_copyButton, m_filterButton, m_closeButton, m_uploadButton, m_clearButton;
 
         public LogType m_filter;
 
         public static string fName = "ViewGameLogDialog";
 
         public ViewGameLogDialog()
-        {
+        {            
             XElement node = ContentManager.Get<XElement>("Dialogs/ViewGameLogDialog");
             LoadContents(this, node);
             m_listPanel = Children.Find<ListPanelWidget>("ViewGameLogDialog.ListPanel");
-            m_copyButton = Children.Find<ButtonWidget>("ViewGameLogDialog.CopyButton");
-            m_filterButton = Children.Find<ButtonWidget>("ViewGameLogDialog.FilterButton");
+            m_clearButton = Children.Find<ButtonWidget>("ViewGameLogDialog.Clear");
+            m_copyButton = Children.Find<ButtonWidget>("ViewGameLogDialog.Copy");
+            m_filterButton = Children.Find<ButtonWidget>("ViewGameLogDialog.Filter");
             m_filterButton.Style = ContentManager.Get<XElement>("Styles/ButtonStyle_160x60");
-            m_closeButton = Children.Find<ButtonWidget>("ViewGameLogDialog.CloseButton");
-            m_uploadButton = Children.Find<ButtonWidget>("ViewGameLogDialog.UploadButton");
+            m_closeButton = Children.Find<ButtonWidget>("ViewGameLogDialog.Close");
+            m_uploadButton = Children.Find<ButtonWidget>("ViewGameLogDialog.Upload");
             m_listPanel.ItemClicked += delegate (object item)
             {
                 if (m_listPanel.SelectedItem == item)
                 {
-                    DialogsManager.ShowDialog(ParentWidget, new MessageDialog("Log Item", item.ToString(), "OK", null, null));
+                    DialogsManager.ShowDialog(ParentWidget, new MessageDialog("Log Item", item.ToString(), LanguageControl.Ok, null, null));
                 }
             };
             PopulateList();
@@ -45,10 +40,14 @@ namespace Game
 
         public override void Update()
         {
-            if (m_copyButton.IsClicked)
+            if (m_clearButton.IsClicked)
             {
-                ClipboardManager.ClipboardString = GameLogSink.GetRecentLog(131072);
+                GameLogSink.m_stream.SetLength(0);
+                m_listPanel.ClearItems();
             }
+
+            if (m_copyButton.IsClicked) ClipboardManager.ClipboardString = GameLogSink.GetRecentLog(131072);
+
             if (m_filterButton.IsClicked)
             {
                 if (m_filter < LogType.Warning)
@@ -67,15 +66,15 @@ namespace Game
             }
             if (m_filter == LogType.Debug)
             {
-                m_filterButton.Text = "All";
+                m_filterButton.Text = LanguageControl.Get("Usual", "All");
             }
             else if (m_filter == LogType.Warning)
             {
-                m_filterButton.Text = "Warnings";
+                m_filterButton.Text = LanguageControl.Get("Usual", "Warnings");
             }
             else if (m_filter == LogType.Error)
             {
-                m_filterButton.Text = "Errors";
+                m_filterButton.Text = LanguageControl.Get("Usual", "Errors");
             }
             if (m_uploadButton.IsClicked) {
                 if (string.IsNullOrEmpty(SettingsManager.ScpboxAccessToken))
@@ -90,8 +89,8 @@ namespace Game
                     var dialog = new CancellableBusyDialog(LanguageControl.Get(fName, 5), true);
                     DialogsManager.ShowDialog(this, dialog);
                     var jsonObject = new JsonObject();
-                    jsonObject.Add("path", "/GameLog/" + DateTime.Now.Ticks + ".log");
                     var dictionary = new Dictionary<string, string>();
+                    jsonObject.Add("path", "/GameLog/" + DateTime.Now.Ticks + ".log");
                     dictionary.Add("Authorization", "Bearer " + SettingsManager.ScpboxAccessToken);
                     dictionary.Add("Content-Type", "application/octet-stream");
                     dictionary.Add("Dropbox-API-Arg", jsonObject.ToString());

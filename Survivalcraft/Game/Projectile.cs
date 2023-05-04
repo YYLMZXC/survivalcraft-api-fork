@@ -1,4 +1,5 @@
 using Engine;
+using System;
 
 namespace Game
 {
@@ -23,5 +24,7 @@ namespace Game
         public bool NoChunk;
 
         public bool IsIncendiary;
+
+        public Action OnRemove;
     }
 }

@@ -134,6 +134,7 @@ namespace Game
 
         public virtual void Animate()
         {
+
         }
 
         public virtual void DrawExtras(Camera camera)
