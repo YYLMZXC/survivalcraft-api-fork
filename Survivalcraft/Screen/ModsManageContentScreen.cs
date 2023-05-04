@@ -117,15 +117,15 @@ public class ModsManageContentScreen : Screen
         {
             m_uninstallPath = m_uninstallPath.Replace("app:", "android:/SurvivalCraft2.3");
             m_installPath = m_installPath.Replace("app:", "android:/SurvivalCraft2.3");
-        }
-        m_androidDataPathEnterEnabled = true;
-        try
-        {
-            Storage.ListFileNames(m_androidDataPath);
-        }
-        catch
-        {
-            m_androidDataPathEnterEnabled = false;
+            m_androidDataPathEnterEnabled = true;
+            try
+            {
+                Storage.ListFileNames(m_androidDataPath);
+            }
+            catch
+            {
+                m_androidDataPathEnterEnabled = false;
+            }
         }
         m_updatable = true;
         XElement node = ContentManager.Get<XElement>("Screens/ModsManageContentScreen");
@@ -757,7 +757,7 @@ public class ModsManageContentScreen : Screen
                 {
                     ModItem modItem = GetModItem(fileName, false);
                     if (modItem == null || (modItem.ModInfo != null && string.IsNullOrEmpty(modItem.ModInfo.PackageName))) continue;
-                    if (modItem.ModInfo != null && !modItem.ModInfo.ApiVersion.StartsWith("1.4"))
+                    if (modItem.ModInfo != null && modItem.ModInfo.ApiVersion.StartsWith("1.3"))
                     {
                         modItem.ModInfo = null;
                     }
@@ -872,7 +872,7 @@ public class ModsManageContentScreen : Screen
                                 Storage.DeleteFile(pathName);
                             }
                             AddCommonPath(validPath);
-                            if(modInfo != null && modInfo.ApiVersion.StartsWith("1.4"))
+                            if(modInfo != null && !modInfo.ApiVersion.StartsWith("1.3"))
                             {
                                 m_latestScanModList.Add(fileName);
                                 m_count++;
