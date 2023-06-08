@@ -303,8 +303,8 @@ namespace Game
                 }
                 else
                 {
-                    ModsManager.AddException(new Exception($"[{modInfo.Name}]缺少依赖项{name}"), false);
-                    return;
+                    var e = new Exception($"[{modInfo.Name}]缺少依赖项{name}");
+                    throw e;
                 }
             }
             IsDependencyChecked = true;

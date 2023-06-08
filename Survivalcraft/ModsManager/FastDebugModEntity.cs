@@ -85,9 +85,18 @@ namespace Game
 
         public override void LoadLauguage()
         {
-            foreach (string c in Storage.ListFileNames(ModsManager.ModsPath))
+            string path = Storage.CombinePaths(ModsManager.ModsPath, "Assets/Lang");
+            if (Storage.DirectoryExists(path))
             {
-                if (c == ModsManager.Configs["Language"] + ".json") LanguageControl.loadJson(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
+                foreach (string c in Storage.ListFileNames(path))
+                {
+                    string fn = ModsManager.Configs["Language"] + ".json";
+                    string fpn = Storage.CombinePaths(path, c);
+                    if (c == fn && Storage.FileExists(fpn))
+                    {
+                        LanguageControl.loadJson(Storage.OpenFile(fpn, OpenFileMode.Read));
+                    }
+                }
             }
         }
 
