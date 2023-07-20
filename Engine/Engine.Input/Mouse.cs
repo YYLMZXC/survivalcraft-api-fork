@@ -164,9 +164,11 @@ namespace Engine.Input
 			{
 				m_mouseButtonsDownOnceArray[i] = false;
 			}
-			if (!IsMouseVisible)
+			if (!IsMouseVisible)//处于三维模式
 			{
 				MousePosition = null;
+				if (Engine.Window.IsActive)//by把红色赋予黑海 1003705691
+					Mouse.SetMousePosition(Window.Size.X / 2, Window.Size.Y / 2);//鼠标自动归位
 			}
 		}
 
