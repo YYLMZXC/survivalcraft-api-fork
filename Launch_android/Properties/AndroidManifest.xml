@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="15000" android:versionName="API1.50" package="com.candy.survivalcraftAPI1_5" android:installLocation="preferExternal">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="15000" android:versionName="API1.51" package="com.candy.survivalcraftAPI1_5" android:installLocation="preferExternal">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
 	<application android:label="生存战争2.3插件版" android:theme="@style/MainTheme" android:requestLegacyExternalStorage="true" android:icon="@mipmap/launcher_foreground" android:usesCleartextTraffic="true"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
