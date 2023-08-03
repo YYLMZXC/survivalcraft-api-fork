@@ -1100,6 +1100,10 @@
       <Project>{4cc1004a-3b04-4129-8ffa-b2fefef6644c}</Project>
       <Name>EntitySystem</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HMS_of_SC\HMS_of_SC.csproj">
+      <Project>{5bd29447-59ef-47de-a32b-10ffd2427326}</Project>
+      <Name>HMS_of_SC</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
