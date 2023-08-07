@@ -1,6 +1,6 @@
-using System;
 using Engine;
 using Engine.Graphics;
+using System;
 
 namespace Game
 {
@@ -48,7 +48,7 @@ namespace Game
 		{
 			BlockPlacementData result = default(BlockPlacementData);
 			result.Value = Terrain.ReplaceData(value, raycastResult.CellFace.Face);
-			int data = SetVoltageLevel(Terrain.ExtractData(result.Value),GetVoltageLevel(Terrain.ExtractData(value)));
+			int data = SetVoltageLevel(Terrain.ExtractData(result.Value), GetVoltageLevel(Terrain.ExtractData(value)));
 			result.Value = Terrain.ReplaceData(value, data);
 			result.CellFace = raycastResult.CellFace;
 			return result;

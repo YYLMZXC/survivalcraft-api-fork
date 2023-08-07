@@ -1,6 +1,6 @@
 namespace Game
 {
-    public class ComponentChest : ComponentInventoryBase
-    {
-    }
+	public class ComponentChest : ComponentInventoryBase
+	{
+	}
 }

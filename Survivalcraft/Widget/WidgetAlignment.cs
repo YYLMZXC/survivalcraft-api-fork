@@ -1,10 +1,10 @@
 namespace Game
 {
-    public enum WidgetAlignment
-    {
-        Near,
-        Center,
-        Far,
-        Stretch
-    }
+	public enum WidgetAlignment
+	{
+		Near,
+		Center,
+		Far,
+		Stretch
+	}
 }

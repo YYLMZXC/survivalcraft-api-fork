@@ -1,7 +1,7 @@
 namespace Game
 {
-    public class IceBlock : CubeBlock
-    {
-        public const int Index = 62;
-    }
+	public class IceBlock : CubeBlock
+	{
+		public const int Index = 62;
+	}
 }

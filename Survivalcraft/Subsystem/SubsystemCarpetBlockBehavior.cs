@@ -2,39 +2,39 @@ using TemplatesDatabase;
 
 namespace Game
 {
-    public class SubsystemCarpetBlockBehavior : SubsystemPollableBlockBehavior
-    {
-        public SubsystemWeather m_subsystemWeather;
+	public class SubsystemCarpetBlockBehavior : SubsystemPollableBlockBehavior
+	{
+		public SubsystemWeather m_subsystemWeather;
 
-        public Random m_random = new Random();
+		public Random m_random = new Random();
 
-        public override int[] HandledBlocks => new int[0];
+		public override int[] HandledBlocks => new int[0];
 
-        public override void Load(ValuesDictionary valuesDictionary)
-        {
-            m_subsystemWeather = Project.FindSubsystem<SubsystemWeather>(throwOnError: true);
-            base.Load(valuesDictionary);
-        }
+		public override void Load(ValuesDictionary valuesDictionary)
+		{
+			m_subsystemWeather = Project.FindSubsystem<SubsystemWeather>(throwOnError: true);
+			base.Load(valuesDictionary);
+		}
 
-        public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
-        {
-            int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
-            if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue))
-            {
-                SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
-            }
-        }
+		public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
+		{
+			int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+			if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue))
+			{
+				SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+			}
+		}
 
-        public override void OnPoll(int value, int x, int y, int z, int pollPass)
-        {
-            if (m_random.Float(0f, 1f) < 0.25f)
-            {
-                PrecipitationShaftInfo precipitationShaftInfo = m_subsystemWeather.GetPrecipitationShaftInfo(x, z);
-                if (precipitationShaftInfo.Intensity > 0f && y >= precipitationShaftInfo.YLimit - 1)
-                {
-                    SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: true, noParticleSystem: false);
-                }
-            }
-        }
-    }
+		public override void OnPoll(int value, int x, int y, int z, int pollPass)
+		{
+			if (m_random.Float(0f, 1f) < 0.25f)
+			{
+				PrecipitationShaftInfo precipitationShaftInfo = m_subsystemWeather.GetPrecipitationShaftInfo(x, z);
+				if (precipitationShaftInfo.Intensity > 0f && y >= precipitationShaftInfo.YLimit - 1)
+				{
+					SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: true, noParticleSystem: false);
+				}
+			}
+		}
+	}
 }

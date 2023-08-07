@@ -1,12 +1,12 @@
 namespace Game
 {
-    public class CellDoorBlock : DoorBlock
-    {
-        public const int Index = 58;
+	public class CellDoorBlock : DoorBlock
+	{
+		public const int Index = 58;
 
-        public CellDoorBlock()
-            : base("Models/CellDoor", 0.0625f)
-        {
-        }
-    }
+		public CellDoorBlock()
+			: base("Models/CellDoor", 0.0625f)
+		{
+		}
+	}
 }

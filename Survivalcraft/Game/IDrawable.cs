@@ -1,12 +1,12 @@
 namespace Game
 {
-    public interface IDrawable
-    {
-        int[] DrawOrders
-        {
-            get;
-        }
+	public interface IDrawable
+	{
+		int[] DrawOrders
+		{
+			get;
+		}
 
-        void Draw(Camera camera, int drawOrder);
-    }
+		void Draw(Camera camera, int drawOrder);
+	}
 }

@@ -1,8 +1,8 @@
 namespace Game
 {
-    public enum BuildConfiguration
-    {
-        Debug,
-        Release
-    }
+	public enum BuildConfiguration
+	{
+		Debug,
+		Release
+	}
 }

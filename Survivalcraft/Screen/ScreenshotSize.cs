@@ -1,8 +1,8 @@
 namespace Game
 {
-    public enum ScreenshotSize
-    {
-        ScreenSize,
-        FullHD
-    }
+	public enum ScreenshotSize
+	{
+		ScreenSize,
+		FullHD
+	}
 }

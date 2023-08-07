@@ -1,12 +1,12 @@
 namespace Game
 {
-    public class CobblestoneSlabBlock : SlabBlock
-    {
-        public const int Index = 53;
+	public class CobblestoneSlabBlock : SlabBlock
+	{
+		public const int Index = 53;
 
-        public CobblestoneSlabBlock()
-            : base(69, 5)
-        {
-        }
-    }
+		public CobblestoneSlabBlock()
+			: base(69, 5)
+		{
+		}
+	}
 }

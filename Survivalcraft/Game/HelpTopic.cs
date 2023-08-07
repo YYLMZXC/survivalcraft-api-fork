@@ -1,11 +1,11 @@
 namespace Game
 {
-    public class HelpTopic
-    {
-        public string Name;
+	public class HelpTopic
+	{
+		public string Name;
 
-        public string Title;
+		public string Title;
 
-        public string Text;
-    }
+		public string Text;
+	}
 }

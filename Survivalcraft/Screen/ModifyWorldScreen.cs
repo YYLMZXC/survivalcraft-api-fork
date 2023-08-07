@@ -52,7 +52,7 @@ namespace Game
 				m_worldSettings.Name = m_nameTextBox.Text;
 			};
 			m_nameTextBox.MaximumLength = 128;
-        }
+		}
 
 		public override void Enter(object[] parameters)
 		{

@@ -1,7 +1,7 @@
 using Engine;
+using Engine.Graphics;
 using System;
 using System.Collections.Generic;
-using Engine.Graphics;
 namespace Game
 {
 	public class TerrainChunk : IDisposable
@@ -99,7 +99,8 @@ namespace Game
 				GeneratedSliceContentsHashes[i] = 0;
 			}
 		}
-		public void CopySliceContentsHashes() {
+		public void CopySliceContentsHashes()
+		{
 			for (int i = 0; i < GeneratedSliceContentsHashes.Length; i++)
 			{
 				GeneratedSliceContentsHashes[i] = SliceContentsHashes[i];

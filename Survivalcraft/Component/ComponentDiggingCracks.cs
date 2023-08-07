@@ -1,8 +1,8 @@
 using Engine;
 using Engine.Graphics;
 using GameEntitySystem;
-using TemplatesDatabase;
 using System.Collections.Generic;
+using TemplatesDatabase;
 namespace Game
 {
 	public class ComponentDiggingCracks : Component, IDrawable
@@ -73,7 +73,7 @@ namespace Game
 			float y = m_subsystemSky.ViewFogRange.Y;
 			//根据外置材质生成破坏纹理
 			try
-            {
+			{
 				Display.BlendState = BlendState.NonPremultiplied;
 				Display.DepthStencilState = DepthStencilState.Default;
 				Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
@@ -90,8 +90,8 @@ namespace Game
 				}
 			}
 			catch
-            {
-            }
+			{
+			}
 		}
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{

@@ -1,12 +1,12 @@
 namespace Game
 {
-    public class SandstoneStairsBlock : StairsBlock
-    {
-        public const int Index = 51;
+	public class SandstoneStairsBlock : StairsBlock
+	{
+		public const int Index = 51;
 
-        public SandstoneStairsBlock()
-            : base(64)
-        {
-        }
-    }
+		public SandstoneStairsBlock()
+			: base(64)
+		{
+		}
+	}
 }

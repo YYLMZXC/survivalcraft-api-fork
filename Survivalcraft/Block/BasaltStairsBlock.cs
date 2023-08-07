@@ -1,12 +1,12 @@
 namespace Game
 {
-    public class BasaltStairsBlock : StairsBlock
-    {
-        public const int Index = 96;
+	public class BasaltStairsBlock : StairsBlock
+	{
+		public const int Index = 96;
 
-        public BasaltStairsBlock()
-            : base(40)
-        {
-        }
-    }
+		public BasaltStairsBlock()
+			: base(40)
+		{
+		}
+	}
 }

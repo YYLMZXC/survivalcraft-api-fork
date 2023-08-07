@@ -65,7 +65,7 @@ namespace Engine.Graphics
 		}
 
 		public void SetParameter()
-        {
+		{
 			m_worldViewProjectionMatrixParameter = base.GetParameter("u_worldViewProjectionMatrix", true);
 			m_textureParameter = base.GetParameter("u_texture", true);
 			m_samplerStateParameter = base.GetParameter("u_samplerState", true);
@@ -95,8 +95,8 @@ namespace Engine.Graphics
 			{
 				list.Add(new ShaderMacro("USE_ALPHATHRESHOLD"));
 			}
-			if(shaderMacros != null && shaderMacros.Length > 0)
-            {
+			if (shaderMacros != null && shaderMacros.Length > 0)
+			{
 				foreach (ShaderMacro shaderMacro in shaderMacros)
 				{
 					list.Add(shaderMacro);

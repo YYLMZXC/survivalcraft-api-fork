@@ -1,12 +1,12 @@
 namespace Game
 {
-    public class MarbleSlabBlock : SlabBlock
-    {
-        public const int Index = 70;
+	public class MarbleSlabBlock : SlabBlock
+	{
+		public const int Index = 70;
 
-        public MarbleSlabBlock()
-            : base(51, 68)
-        {
-        }
-    }
+		public MarbleSlabBlock()
+			: base(51, 68)
+		{
+		}
+	}
 }

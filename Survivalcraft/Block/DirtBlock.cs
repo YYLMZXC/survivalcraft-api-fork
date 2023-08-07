@@ -1,9 +1,7 @@
-using Engine;
-
 namespace Game
 {
-    public class DirtBlock : CubeBlock
-    {
-        public const int Index = 2;
-    }
+	public class DirtBlock : CubeBlock
+	{
+		public const int Index = 2;
+	}
 }

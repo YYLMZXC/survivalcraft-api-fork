@@ -1,8 +1,8 @@
+using Engine;
+using GameEntitySystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Engine;
-using GameEntitySystem;
 using TemplatesDatabase;
 
 namespace Game
@@ -329,7 +329,7 @@ namespace Game
 			}
 		}
 
-        public override void OnEntityRemoved()
+		public override void OnEntityRemoved()
 		{
 			ParentBody = null;
 			ComponentBody[] array = ChildBodies.ToArray();
@@ -362,8 +362,8 @@ namespace Game
 			}
 			if (m_targetCrouchFactor < m_crouchFactor)
 			{
-				if(Entity.FindComponent<ComponentRider>().Mount == null)
-                {
+				if (Entity.FindComponent<ComponentRider>().Mount == null)
+				{
 					m_crouchFactor = MathUtils.Max(m_crouchFactor - 2f * dt, m_targetCrouchFactor);
 				}
 			}
@@ -388,7 +388,7 @@ namespace Game
 					if (componentHealth != null)
 					{
 						if (m_crushInjureTime >= 1f)
-                        {
+						{
 							componentHealth.Injure(0.15f, null, ignoreInvulnerability: true, "Crushed");
 							m_crushInjureTime = 0f;
 						}
@@ -401,8 +401,8 @@ namespace Game
 					}
 					return;
 				}
-                else
-                {
+				else
+				{
 					m_crushInjureTime = 1f;
 				}
 			}

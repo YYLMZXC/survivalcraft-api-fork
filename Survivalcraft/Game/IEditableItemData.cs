@@ -1,11 +1,11 @@
 namespace Game
 {
-    public interface IEditableItemData
-    {
-        IEditableItemData Copy();
+	public interface IEditableItemData
+	{
+		IEditableItemData Copy();
 
-        void LoadString(string data);
+		void LoadString(string data);
 
-        string SaveString();
-    }
+		string SaveString();
+	}
 }

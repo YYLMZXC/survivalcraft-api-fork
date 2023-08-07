@@ -1,9 +1,9 @@
 namespace Game
 {
-    public enum ViewAngleMode
-    {
-        Normal,
-        Narrow,
-        Wide
-    }
+	public enum ViewAngleMode
+	{
+		Normal,
+		Narrow,
+		Wide
+	}
 }

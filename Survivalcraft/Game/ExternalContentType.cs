@@ -1,13 +1,13 @@
 namespace Game
 {
-    public enum ExternalContentType
-    {
-        Unknown,
-        Directory,
-        World,
-        BlocksTexture,
-        CharacterSkin,
-        FurniturePack,
-        Mod
-    }
+	public enum ExternalContentType
+	{
+		Unknown,
+		Directory,
+		World,
+		BlocksTexture,
+		CharacterSkin,
+		FurniturePack,
+		Mod
+	}
 }

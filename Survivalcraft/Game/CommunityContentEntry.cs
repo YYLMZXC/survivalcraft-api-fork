@@ -1,33 +1,33 @@
 namespace Game
 {
-    public class CommunityContentEntry
-    {
-        public ExternalContentType Type;
+	public class CommunityContentEntry
+	{
+		public ExternalContentType Type;
 
-        public string Name;
+		public string Name;
 
-        public string Address;
+		public string Address;
 
-        public string UserId;
+		public string UserId;
 
-        public string UserName;
+		public string UserName;
 
-        public int Boutique;
+		public int Boutique;
 
-        public int IsShow;
+		public int IsShow;
 
-        public long Size;
+		public long Size;
 
-        public string ExtraText;
+		public string ExtraText;
 
-        public float RatingsAverage;
+		public float RatingsAverage;
 
-        public string IconSrc;
+		public string IconSrc;
 
-        public Engine.Graphics.Texture2D Icon;
+		public Engine.Graphics.Texture2D Icon;
 
-        public RectangleWidget IconInstance = null;
+		public RectangleWidget IconInstance = null;
 
-        public int Index;
-    }
+		public int Index;
+	}
 }
