@@ -119,7 +119,7 @@ namespace Engine.Graphics
 				-1,
 				-1
 			};
-			m_activeTextureUnit = All.AllShaderBitsExt;
+			m_activeTextureUnit = (All)(-1);
 			m_program = -1;
 			m_framebuffer = -1;
 			m_clearColor = null;
@@ -127,21 +127,21 @@ namespace Engine.Graphics
 			m_clearStencil = null;
 			m_cullFace = All.False;
 			m_frontFace = All.False;
-			m_depthFunction = All.AllShaderBitsExt;
+			m_depthFunction = (All)(-1);
 			m_colorMask = null;
 			m_depthMask = null;
 			m_polygonOffsetFactor = 0f;
 			m_polygonOffsetUnits = 0f;
 			m_blendColor = new Vector4(float.MinValue);
-			m_blendEquation = All.AllShaderBitsExt;
-			m_blendEquationColor = All.AllShaderBitsExt;
-			m_blendEquationAlpha = All.AllShaderBitsExt;
-			m_blendFuncSource = All.AllShaderBitsExt;
-			m_blendFuncSourceColor = All.AllShaderBitsExt;
-			m_blendFuncSourceAlpha = All.AllShaderBitsExt;
-			m_blendFuncDestination = All.AllShaderBitsExt;
-			m_blendFuncDestinationColor = All.AllShaderBitsExt;
-			m_blendFuncDestinationAlpha = All.AllShaderBitsExt;
+			m_blendEquation = (All)(-1);
+			m_blendEquationColor = (All)(-1);
+			m_blendEquationAlpha = (All)(-1);
+			m_blendFuncSource = (All)(-1);
+			m_blendFuncSourceColor = (All)(-1);
+			m_blendFuncSourceAlpha = (All)(-1);
+			m_blendFuncDestination = (All)(-1);
+			m_blendFuncDestinationColor = (All)(-1);
+			m_blendFuncDestinationAlpha = (All)(-1);
 			m_enableDisableStates = new Dictionary<All, bool>();
 			m_vertexAttribArray = new bool?[16];
 			m_rasterizerState = null;
@@ -297,8 +297,8 @@ namespace Engine.Graphics
 			{
 				GL.BlendEquation(blendEquation);
 				m_blendEquation = blendEquation;
-				m_blendEquationColor = All.AllShaderBitsExt;
-				m_blendEquationAlpha = All.AllShaderBitsExt;
+				m_blendEquationColor = (All)(-1);
+				m_blendEquationAlpha = (All)(-1);
 			}
 		}
 
@@ -310,7 +310,7 @@ namespace Engine.Graphics
 				GL.BlendEquationSeparate(blendEquationColor, blendEquationAlpha);
 				m_blendEquationColor = blendEquationColor;
 				m_blendEquationAlpha = blendEquationAlpha;
-				m_blendEquation = All.AllShaderBitsExt;
+				m_blendEquation = (All)(-1);
 			}
 		}
 
@@ -322,10 +322,10 @@ namespace Engine.Graphics
 				GL.BlendFunc(blendFuncSource, blendFuncDestination);
 				m_blendFuncSource = blendFuncSource;
 				m_blendFuncDestination = blendFuncDestination;
-				m_blendFuncSourceColor = All.AllShaderBitsExt;
-				m_blendFuncSourceAlpha = All.AllShaderBitsExt;
-				m_blendFuncDestinationColor = All.AllShaderBitsExt;
-				m_blendFuncDestinationAlpha = All.AllShaderBitsExt;
+				m_blendFuncSourceColor = (All)(-1);
+				m_blendFuncSourceAlpha = (All)(-1);
+				m_blendFuncDestinationColor = (All)(-1);
+				m_blendFuncDestinationAlpha = (All)(-1);
 			}
 		}
 
@@ -339,8 +339,8 @@ namespace Engine.Graphics
 				m_blendFuncSourceAlpha = blendFuncSourceAlpha;
 				m_blendFuncDestinationColor = blendFuncDestinationColor;
 				m_blendFuncDestinationAlpha = blendFuncDestinationAlpha;
-				m_blendFuncSource = All.AllShaderBitsExt;
-				m_blendFuncDestination = All.AllShaderBitsExt;
+				m_blendFuncSource = (All)(-1);
+				m_blendFuncDestination = (All)(-1);
 			}
 		}
 
@@ -731,7 +731,7 @@ namespace Engine.Graphics
 							BindTexture(All.Texture2D, texture2D.m_texture, forceBind: false);
 							if (GL_EXT_texture_filter_anisotropic)
 							{
-								GL.TexParameter(All.Texture2D, All.TextureMaxAnisotropyExt, (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? ((float)samplerState.MaxAnisotropy) : 1f);
+								GL.TexParameter(All.Texture2D, (All)(34046), (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? ((float)samplerState.MaxAnisotropy) : 1f);
 							}
 							GL.TexParameter(All.Texture2D, All.TextureMinFilter, (int)TranslateTextureFilterModeMin(samplerState.FilterMode, texture2D.MipLevelsCount > 1));
 							GL.TexParameter(All.Texture2D, All.TextureMagFilter, (int)TranslateTextureFilterModeMag(samplerState.FilterMode));
@@ -772,7 +772,7 @@ namespace Engine.Graphics
 			}
 			if (stencil.HasValue)
 			{
-				all |= All.DepthBufferBit2Qcom;
+				all |= (All)(0x0400);
 				ClearStencil(stencil.Value);
 			}
 			if (all != 0)
@@ -896,11 +896,11 @@ namespace Engine.Graphics
 			switch (primitiveType)
 			{
 				case PrimitiveType.LineList:
-					return All.ColorBufferBit0Qcom;
+					return (All)(0x0001);
 				case PrimitiveType.LineStrip:
 					return All.LineStrip;
 				case PrimitiveType.TriangleList:
-					return All.ColorBufferBit2Qcom;
+					return (All)(0x0004);
 				case PrimitiveType.TriangleStrip:
 					return All.TriangleStrip;
 				default:
@@ -1032,7 +1032,7 @@ namespace Engine.Graphics
 				case CompareFunction.LessEqual:
 					return All.Lequal;
 				case CompareFunction.Never:
-					return All.DepthBufferBit1Qcom;
+					return (All)(0x0200);
 				case CompareFunction.NotEqual:
 					return All.Notequal;
 				default:
@@ -1064,7 +1064,7 @@ namespace Engine.Graphics
 				case Blend.Zero:
 					return All.False;
 				case Blend.One:
-					return All.ColorBufferBit0Qcom;
+					return (All)(0x0001);
 				case Blend.SourceColor:
 					return All.SrcColor;
 				case Blend.InverseSourceColor:
@@ -1102,7 +1102,7 @@ namespace Engine.Graphics
 				case DepthFormat.Depth24Stencil8:
 					if (GL_OES_packed_depth_stencil)
 					{
-						return All.Depth24Stencil8Oes;
+						return All.Depth24Stencil8;
 					}
 					return All.DepthComponent16;
 				default:

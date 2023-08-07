@@ -760,7 +760,7 @@ namespace Engine.Graphics
 			}
 			if (stencil.HasValue)
 			{
-				all |= All.DepthBufferBit2Qcom;
+				all |= (All)(0x0400);
 				ClearStencil(stencil.Value);
 			}
 			if (all != 0)
@@ -884,7 +884,7 @@ namespace Engine.Graphics
 			case PrimitiveType.LineStrip:
 				return All.LineStrip;
 			case PrimitiveType.TriangleList:
-				return All.ColorBufferBit2Qcom;
+				return (All)(0x0004);
 			case PrimitiveType.TriangleStrip:
 				return All.TriangleStrip;
 			default:
