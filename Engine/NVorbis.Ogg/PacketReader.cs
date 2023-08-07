@@ -379,7 +379,6 @@ namespace NVorbis.Ogg
 			{
 				throw new ArgumentOutOfRangeException(nameof(granulePos));
 			}
-			Packet packet = null;
 			Packet packet2 = _current ?? _first;
 			if (granulePos > packet2.PageGranulePosition)
 			{

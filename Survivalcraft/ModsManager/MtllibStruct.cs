@@ -13,7 +13,6 @@ namespace Game
 			{
 				StreamReader streamReader = new StreamReader(stream);
 				string Tkey = null;
-				string CurrentTkey = null;
 				while (streamReader.EndOfStream == false)
 				{
 
