@@ -1,4 +1,4 @@
-using OpenTK.Graphics.ES20;
+using OpenTK.Graphics.ES30;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -277,7 +277,7 @@ namespace Engine.Graphics
 			m_vertexShader = GL.CreateShader(All.VertexShader);
 			GL.ShaderSource(m_vertexShader, @string);
 			GL.CompileShader(m_vertexShader);
-			GL.GetShader(m_vertexShader, OpenTK.Graphics.ES20.ShaderParameter.CompileStatus, out int @params);
+			GL.GetShader(m_vertexShader, OpenTK.Graphics.ES30.ShaderParameter.CompileStatus, out int @params);
 			if (@params != 1)
 			{
 				string shaderInfoLog = GL.GetShaderInfoLog(m_vertexShader);
@@ -286,7 +286,7 @@ namespace Engine.Graphics
 			m_pixelShader = GL.CreateShader(All.FragmentShader);
 			GL.ShaderSource(m_pixelShader, string2);
 			GL.CompileShader(m_pixelShader);
-			GL.GetShader(m_pixelShader, OpenTK.Graphics.ES20.ShaderParameter.CompileStatus, out int params2);
+			GL.GetShader(m_pixelShader, OpenTK.Graphics.ES30.ShaderParameter.CompileStatus, out int params2);
 			if (params2 != 1)
 			{
 				string shaderInfoLog2 = GL.GetShaderInfoLog(m_pixelShader);

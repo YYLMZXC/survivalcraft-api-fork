@@ -1,4 +1,4 @@
-using OpenTK.Graphics.ES20;
+using OpenTK.Graphics.ES30;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -230,7 +230,7 @@ namespace Engine.Graphics
 			m_vertexShader = GL.CreateShader(All.VertexShader);
 			GL.ShaderSource(m_vertexShader, @string);
 			GL.CompileShader(m_vertexShader);
-			GL.GetShader(m_vertexShader, OpenTK.Graphics.ES20.ShaderParameter.CompileStatus, out int @params);
+			GL.GetShader(m_vertexShader, OpenTK.Graphics.ES30.ShaderParameter.CompileStatus, out int @params);
 			if (@params != 1)
 			{
 				string shaderInfoLog = GL.GetShaderInfoLog(m_vertexShader);
@@ -239,7 +239,7 @@ namespace Engine.Graphics
 			m_pixelShader = GL.CreateShader(All.FragmentShader);
 			GL.ShaderSource(m_pixelShader, string2);
 			GL.CompileShader(m_pixelShader);
-			GL.GetShader(m_pixelShader, OpenTK.Graphics.ES20.ShaderParameter.CompileStatus, out int params2);
+			GL.GetShader(m_pixelShader, OpenTK.Graphics.ES30.ShaderParameter.CompileStatus, out int params2);
 			if (params2 != 1)
 			{
 				string shaderInfoLog2 = GL.GetShaderInfoLog(m_pixelShader);
@@ -249,13 +249,13 @@ namespace Engine.Graphics
 			GL.AttachShader(m_program, m_vertexShader);
 			GL.AttachShader(m_program, m_pixelShader);
 			GL.LinkProgram(m_program);
-			GL.GetProgram(m_program, ProgramParameter.LinkStatus, out int params3);
+			GL.GetProgram(m_program, (All)ProgramParameter.LinkStatus, out int params3);
 			if (params3 != 1)
 			{
 				string programInfoLog = GL.GetProgramInfoLog(m_program);
 				throw new InvalidOperationException($"Error linking program.\n{programInfoLog}");
 			}
-			GL.GetProgram(m_program, ProgramParameter.ActiveAttributes, out int params4);
+			GL.GetProgram(m_program, (All)ProgramParameter.ActiveAttributes, out int params4);
 			for (int i = 0; i < params4; i++)
 			{
 				var stringBuilder = new StringBuilder(256);
@@ -271,7 +271,7 @@ namespace Engine.Graphics
 					Semantic = value
 				});
 			}
-			GL.GetProgram(m_program, ProgramParameter.ActiveUniforms, out int params5);
+			GL.GetProgram(m_program, (All)ProgramParameter.ActiveUniforms, out int params5);
 			var list = new List<ShaderParameter>();
 			var dictionary3 = new Dictionary<string, ShaderParameter>();
 			for (int j = 0; j < params5; j++)
