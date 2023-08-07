@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "ConsoleTest\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMS_of_SC", "HMS_of_SC\HMS_of_SC.csproj", "{5BD29447-59EF-47DE-A32B-10FFD2427326}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdrasteaLoader", "AdrasteaLoader\AdrasteaLoader.csproj", "{C02FDF96-260A-47B0-BC9D-437314721D97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{5BD29447-59EF-47DE-A32B-10FFD2427326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BD29447-59EF-47DE-A32B-10FFD2427326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BD29447-59EF-47DE-A32B-10FFD2427326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C02FDF96-260A-47B0-BC9D-437314721D97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C02FDF96-260A-47B0-BC9D-437314721D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C02FDF96-260A-47B0-BC9D-437314721D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C02FDF96-260A-47B0-BC9D-437314721D97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8} = {A9146056-4560-4FC8-8AA6-903299A7FE26}
 		{BD74188C-54D3-48C6-A4DB-B7E4B30FB120} = {6F48CB29-CB63-4BF6-9FC3-58A4A4B4DD2F}
 		{5BD29447-59EF-47DE-A32B-10FFD2427326} = {528DAACD-0030-4435-B208-CEB0771F1E63}
+		{C02FDF96-260A-47B0-BC9D-437314721D97} = {B616DEEE-DF47-4BC3-BAA9-D223D221B6EB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3B94A30-8A32-415E-BF3C-0B94F6F144C0}

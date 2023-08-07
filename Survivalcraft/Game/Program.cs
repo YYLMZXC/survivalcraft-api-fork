@@ -40,7 +40,18 @@ namespace Game
 			}
 			catch { }
 			if (string.IsNullOrEmpty(SystemLanguage))
-				SystemLanguage = "zh-CN";
+			{
+				Log.Debug(RegionInfo.CurrentRegion.DisplayName);
+				if (RegionInfo.CurrentRegion.DisplayName != "United States")
+				{
+					SystemLanguage = "zh-CN";
+				}
+				else
+				{
+					SystemLanguage = "en-US";
+				}
+			}
+				
 
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
