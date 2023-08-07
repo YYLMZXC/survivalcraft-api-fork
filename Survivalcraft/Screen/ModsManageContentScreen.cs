@@ -350,11 +350,11 @@ public class ModsManageContentScreen : Screen
 	public override void Update()
 	{
 		m_actionButton3.IsVisible = m_isAdmin;
-		m_uninstallFilterButton.IsChecked = (m_filter != StateFilter.InstallState);
-		m_installFilterButton.IsChecked = (m_filter == StateFilter.InstallState);
+		m_uninstallFilterButton.IsChecked = m_filter != StateFilter.InstallState;
+		m_installFilterButton.IsChecked = m_filter == StateFilter.InstallState;
 		m_uninstallFilterButton.Color = (m_filter == StateFilter.InstallState) ? Color.White : Color.Green;
 		m_installFilterButton.Color = (m_filter == StateFilter.InstallState) ? Color.Green : Color.White;
-		m_upDirectoryButton.IsVisible = (m_filter != StateFilter.InstallState);
+		m_upDirectoryButton.IsVisible = m_filter != StateFilter.InstallState;
 		if (m_filter != StateFilter.InstallState)
 		{
 			m_actionButton2.Text = (m_path == m_uninstallPath) ? LanguageControl.Get(fName, 16) : LanguageControl.Get(fName, 17);
@@ -366,7 +366,7 @@ public class ModsManageContentScreen : Screen
 		ModItem modItem = null;
 		if (m_modsContentList.SelectedIndex.HasValue)
 		{
-			modItem = (m_modsContentList.Items[m_modsContentList.SelectedIndex.Value] as ModItem);
+			modItem = m_modsContentList.Items[m_modsContentList.SelectedIndex.Value] as ModItem;
 		}
 		if (modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
 		{
@@ -378,13 +378,13 @@ public class ModsManageContentScreen : Screen
 		{
 			m_actionButton.IsEnabled = true;
 			m_actionButton.Text = LanguageControl.Get(fName, 20);
-			m_actionButton2.IsEnabled = (m_filter != StateFilter.InstallState);
+			m_actionButton2.IsEnabled = m_filter != StateFilter.InstallState;
 		}
 		else
 		{
 			m_actionButton.Text = LanguageControl.Get(fName, 21);
 			m_actionButton.IsEnabled = false;
-			m_actionButton2.IsEnabled = (m_filter != StateFilter.InstallState);
+			m_actionButton2.IsEnabled = m_filter != StateFilter.InstallState;
 		}
 		if (m_actionButton.IsClicked)
 		{
@@ -934,12 +934,12 @@ public class ModsManageContentScreen : Screen
 		ModItem modItem = new ModItem();
 		string pathName = Storage.CombinePaths(m_path, fileName);
 		modItem.Name = fileName;
-		modItem.Subtexture = ExternalContentManager.GetEntryTypeIcon((IsDirectory) ? ExternalContentType.Directory : ExternalContentType.Mod);
+		modItem.Subtexture = ExternalContentManager.GetEntryTypeIcon(IsDirectory ? ExternalContentType.Directory : ExternalContentType.Mod);
 		modItem.ExternalContentEntry = new ExternalContentEntry
 		{
-			Type = (IsDirectory) ? ExternalContentType.Directory : ExternalContentType.Mod,
+			Type = IsDirectory ? ExternalContentType.Directory : ExternalContentType.Mod,
 			Path = pathName,
-			Size = (IsDirectory) ? 0 : Storage.GetFileSize(pathName),
+			Size = IsDirectory ? 0 : Storage.GetFileSize(pathName),
 			Time = Storage.GetFileLastWriteTime(pathName)
 		};
 		if (IsDirectory) return modItem;

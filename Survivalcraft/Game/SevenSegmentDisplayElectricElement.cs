@@ -73,7 +73,7 @@ namespace Game
 				Vector3 vector2 = (mountingFace < 4) ? Vector3.UnitY : Vector3.UnitX;
 				var v2 = Vector3.Cross(vector, vector2);
 				m_glowPoints[i] = m_subsystemGlow.AddGlowPoint();
-				m_glowPoints[i].Position = v - 0.4375f * CellFace.FaceToVector3(mountingFace) + m_centers[i].X * 0.0625f * v2 + m_centers[i].Y * 0.0625f * vector2;
+				m_glowPoints[i].Position = v - (0.4375f * CellFace.FaceToVector3(mountingFace)) + (m_centers[i].X * 0.0625f * v2) + (m_centers[i].Y * 0.0625f * vector2);
 				m_glowPoints[i].Forward = vector;
 				m_glowPoints[i].Right = v2 * m_sizes[i].X * 0.0625f;
 				m_glowPoints[i].Up = vector2 * m_sizes[i].Y * 0.0625f;
@@ -81,7 +81,7 @@ namespace Game
 				m_glowPoints[i].Size = 1.35f;
 				m_glowPoints[i].FarSize = 1.35f;
 				m_glowPoints[i].FarDistance = 1f;
-				m_glowPoints[i].Type = ((m_sizes[i].X > m_sizes[i].Y) ? GlowPointType.HorizontalRectangle : GlowPointType.VerticalRectangle);
+				m_glowPoints[i].Type = (m_sizes[i].X > m_sizes[i].Y) ? GlowPointType.HorizontalRectangle : GlowPointType.VerticalRectangle;
 			}
 		}
 

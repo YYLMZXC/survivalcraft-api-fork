@@ -59,7 +59,7 @@ namespace Game
 				float dt2 = (float)MathUtils.Min(m_subsystemTime.GameTime - m_lastAnimateGameTime, 1.0);
 				m_lastAnimateGameTime = m_subsystemTime.GameTime;
 				Texture2D blocksTexture = m_subsystemBlocksTexture.BlocksTexture;
-				if (m_animatedBlocksTexture == null || m_animatedBlocksTexture.Width != blocksTexture.Width || m_animatedBlocksTexture.Height != blocksTexture.Height || m_animatedBlocksTexture.MipLevelsCount > 1 != SettingsManager.TerrainMipmapsEnabled)
+				if (m_animatedBlocksTexture == null || m_animatedBlocksTexture.Width != blocksTexture.Width || m_animatedBlocksTexture.Height != blocksTexture.Height || (m_animatedBlocksTexture.MipLevelsCount > 1) != SettingsManager.TerrainMipmapsEnabled)
 				{
 					Utilities.Dispose(ref m_animatedBlocksTexture);
 					m_animatedBlocksTexture = new RenderTarget2D(blocksTexture.Width, blocksTexture.Height, (!SettingsManager.TerrainMipmapsEnabled) ? 1 : 4, ColorFormat.Rgba8888, DepthFormat.None);
@@ -255,7 +255,7 @@ namespace Game
 			m_screenSpaceFireRenderer.MaxTimeToLive = float.PositiveInfinity;
 			m_screenSpaceFireRenderer.ParticleAnimationOffset = 1f;
 			m_screenSpaceFireRenderer.ParticleAnimationPeriod = 3f;
-			m_screenSpaceFireRenderer.Origin = new Vector2(num2, num3 + 3) * num + new Vector2(0f, 0.5f * m_screenSpaceFireRenderer.ParticleSize);
+			m_screenSpaceFireRenderer.Origin = (new Vector2(num2, num3 + 3) * num) + new Vector2(0f, 0.5f * m_screenSpaceFireRenderer.ParticleSize);
 			m_screenSpaceFireRenderer.Width = num;
 			m_screenSpaceFireRenderer.CutoffPosition = num3 * num;
 			m_screenSpaceFireRenderer.Update(dt);

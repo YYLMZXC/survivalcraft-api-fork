@@ -189,8 +189,8 @@ namespace TemplatesDatabase
 			foreach (DatabaseObject databaseObject in databaseObjects)
 			{
 				list.AddRange(from x in databaseObject.GetExplicitNestingChildren(null, directChildrenOnly: false)
-					where x.Type.SaveStandalone
-					select x);
+							  where x.Type.SaveStandalone
+							  select x);
 			}
 			InternalSaveDatabaseObjectsList(node, list, saveNestingParents: true);
 			InternalSaveDatabaseObjectsList(node, databaseObjects, saveNestingParents: false);
@@ -286,8 +286,8 @@ namespace TemplatesDatabase
 				XmlUtils.SetAttributeValue(node, "NestingParent", databaseObject.NestingParent.Guid);
 			}
 			InternalSaveDatabaseObjectsList(node, from x in databaseObject.GetExplicitNestingChildren(null, directChildrenOnly: true)
-				where !x.Type.SaveStandalone
-				select x, saveNestingParents: false);
+												  where !x.Type.SaveStandalone
+												  select x, saveNestingParents: false);
 		}
 	}
 }

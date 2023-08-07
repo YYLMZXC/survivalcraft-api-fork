@@ -183,11 +183,11 @@ namespace FluxJpeg.Core.Filtering
 		{
 			int num = opLR.Width - 1;
 			int num2 = opLR.Height - 1;
-			var grayImage = new GrayImage(data.Width + 2 * num, data.Height + 2 * num2);
+			var grayImage = new GrayImage(data.Width + (2 * num), data.Height + (2 * num2));
 			int num3 = 0;
 			for (int i = 0; i < data.Height; i++)
 			{
-				int num4 = (i + num2) * (data.Width + 2 * num) + num;
+				int num4 = ((i + num2) * (data.Width + (2 * num))) + num;
 				for (int j = 0; j < data.Width; j++)
 				{
 					grayImage.Scan0[num4 + j] = data.Scan0[num3];
@@ -205,7 +205,7 @@ namespace FluxJpeg.Core.Filtering
 			}
 			int num = opLR.Width - 1;
 			int num2 = opLR.Height - 1;
-			var grayImage = new GrayImage(data.Width - 2 * num, data.Height - 2 * num2);
+			var grayImage = new GrayImage(data.Width - (2 * num), data.Height - (2 * num2));
 			for (int i = num2; i < data.Height - num2; i++)
 			{
 				for (int j = num; j < data.Width - num; j++)
@@ -222,8 +222,8 @@ namespace FluxJpeg.Core.Filtering
 					int num4 = 1;
 					for (int m = 1; m < opLR.Height; m++)
 					{
-						int num5 = (i + m) * data.Width + j;
-						int num6 = (i - m) * data.Width + j;
+						int num5 = ((i + m) * data.Width) + j;
+						int num6 = ((i - m) * data.Width) + j;
 						for (int n = 1; n < opLR.Width; n++)
 						{
 							num3 += (data.Scan0[num5 + n] + data.Scan0[num6 + n] + data.Scan0[num5 - n] + data.Scan0[num6 - n]) * opLR.Scan0[num4];

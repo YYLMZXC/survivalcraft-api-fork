@@ -71,9 +71,9 @@ namespace Game
 				{
 					if (m_touchId.HasValue && touchLocation.Id == m_touchId.Value)
 					{
-						m_touchMoved |= (Vector2.Distance(touchLocation.Position, m_touchOrigin) > SettingsManager.MinimumDragDistance * GlobalScale);
+						m_touchMoved |= Vector2.Distance(touchLocation.Position, m_touchOrigin) > SettingsManager.MinimumDragDistance * GlobalScale;
 						TouchInput value = default;
-						value.InputType = ((!m_touchMoved) ? TouchInputType.Hold : TouchInputType.Move);
+						value.InputType = (!m_touchMoved) ? TouchInputType.Hold : TouchInputType.Move;
 						value.Duration = (float)(frameStartTime - m_touchTime);
 						value.DurationFrames = frameIndex - m_touchFrameIndex;
 						value.Position = touchLocation.Position;
@@ -82,11 +82,11 @@ namespace Game
 						value.TotalMoveLimited = touchLocation.Position - m_touchOriginLimited;
 						if (MathUtils.Abs(value.TotalMoveLimited.X) > m_radius)
 						{
-							m_touchOriginLimited.X = touchLocation.Position.X - MathUtils.Sign(value.TotalMoveLimited.X) * m_radius;
+							m_touchOriginLimited.X = touchLocation.Position.X - (MathUtils.Sign(value.TotalMoveLimited.X) * m_radius);
 						}
 						if (MathUtils.Abs(value.TotalMoveLimited.Y) > m_radius)
 						{
-							m_touchOriginLimited.Y = touchLocation.Position.Y - MathUtils.Sign(value.TotalMoveLimited.Y) * m_radius;
+							m_touchOriginLimited.Y = touchLocation.Position.Y - (MathUtils.Sign(value.TotalMoveLimited.Y) * m_radius);
 						}
 						m_touchInput = value;
 						m_touchLastPosition = touchLocation.Position;

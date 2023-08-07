@@ -34,9 +34,9 @@ namespace Game
 			ComponentInput componentInput = componentPlayer.ComponentInput;
 			Vector3 cameraSneakMove = componentInput.PlayerInput.CameraSneakMove;
 			Vector2 cameraLook = componentInput.PlayerInput.CameraLook;
-			m_angles.X = MathUtils.NormalizeAngle(m_angles.X + 4f * cameraLook.X * dt + 0.5f * cameraSneakMove.X * dt);
-			m_angles.Y = MathUtils.Clamp(MathUtils.NormalizeAngle(m_angles.Y + 4f * cameraLook.Y * dt), MathUtils.DegToRad(-20f), MathUtils.DegToRad(70f));
-			m_distance = MathUtils.Clamp(m_distance - 10f * cameraSneakMove.Z * dt, 2f, 16f);
+			m_angles.X = MathUtils.NormalizeAngle(m_angles.X + (4f * cameraLook.X * dt) + (0.5f * cameraSneakMove.X * dt));
+			m_angles.Y = MathUtils.Clamp(MathUtils.NormalizeAngle(m_angles.Y + (4f * cameraLook.Y * dt)), MathUtils.DegToRad(-20f), MathUtils.DegToRad(70f));
+			m_distance = MathUtils.Clamp(m_distance - (10f * cameraSneakMove.Z * dt), 2f, 16f);
 			var v = Vector3.Transform(new Vector3(m_distance, 0f, 0f), Matrix.CreateFromYawPitchRoll(m_angles.X, 0f, m_angles.Y));
 			Vector3 vector = GameWidget.Target.ComponentBody.BoundingBox.Center();
 			Vector3 vector2 = vector + v;
@@ -58,17 +58,17 @@ namespace Game
 			{
 				for (int j = 0; j <= 0; j++)
 				{
-					Vector3 v4 = 0.5f * (vector4 * i + v3 * j);
+					Vector3 v4 = 0.5f * ((vector4 * i) + (v3 * j));
 					Vector3 vector5 = vector + v4;
-					Vector3 end = vector5 + vector3 + Vector3.Normalize(vector3) * 0.5f;
+					Vector3 end = vector5 + vector3 + (Vector3.Normalize(vector3) * 0.5f);
 					TerrainRaycastResult? terrainRaycastResult = GameWidget.SubsystemGameWidgets.SubsystemTerrain.Raycast(vector5, end, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => !BlocksManager.Blocks[Terrain.ExtractContents(value)].IsTransparent_(value));
 					if (terrainRaycastResult.HasValue)
 					{
-						num = (num.HasValue ? MathUtils.Min(num.Value, terrainRaycastResult.Value.Distance) : terrainRaycastResult.Value.Distance);
+						num = num.HasValue ? MathUtils.Min(num.Value, terrainRaycastResult.Value.Distance) : terrainRaycastResult.Value.Distance;
 					}
 				}
 			}
-			Vector3 vector6 = (!num.HasValue) ? (vector + vector3) : (vector + Vector3.Normalize(vector3) * MathUtils.Max(num.Value - 0.5f, 0.2f));
+			Vector3 vector6 = (!num.HasValue) ? (vector + vector3) : (vector + (Vector3.Normalize(vector3) * MathUtils.Max(num.Value - 0.5f, 0.2f)));
 			SetupPerspectiveCamera(vector6, vector - vector6, Vector3.UnitY);
 		}
 	}

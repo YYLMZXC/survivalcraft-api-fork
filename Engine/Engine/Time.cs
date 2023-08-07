@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Engine
 {
-    public static class Time
+	public static class Time
 	{
 		private struct DelayedExecutionRequest
 		{

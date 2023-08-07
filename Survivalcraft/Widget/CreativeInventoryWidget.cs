@@ -139,8 +139,8 @@ namespace Game
 			}
 			m_componentCreativeInventory.CategoryIndex = MathUtils.Clamp(m_componentCreativeInventory.CategoryIndex, 0, m_categories.Count - 1);
 			m_categoryButton.Text = LanguageControl.Get("BlocksManager", m_categories[m_componentCreativeInventory.CategoryIndex].Name);
-			m_categoryLeftButton.IsEnabled = (m_componentCreativeInventory.CategoryIndex > 0);
-			m_categoryRightButton.IsEnabled = (m_componentCreativeInventory.CategoryIndex < m_categories.Count - 1);
+			m_categoryLeftButton.IsEnabled = m_componentCreativeInventory.CategoryIndex > 0;
+			m_categoryRightButton.IsEnabled = m_componentCreativeInventory.CategoryIndex < m_categories.Count - 1;
 			if (m_componentCreativeInventory.CategoryIndex != m_activeCategoryIndex)
 			{
 				foreach (Category category in m_categories)

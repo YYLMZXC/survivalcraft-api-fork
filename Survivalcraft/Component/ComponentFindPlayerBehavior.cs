@@ -154,7 +154,7 @@ namespace Game
 			{
 				return 0f;
 			}
-			return num * num - num2;
+			return (num * num) - num2;
 		}
 	}
 }

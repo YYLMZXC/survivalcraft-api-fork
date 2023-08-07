@@ -26,7 +26,7 @@ namespace Hjg.Pngcs
 				pal.GetEntryRgb(num4, buf, i * num);
 				if (flag)
 				{
-					int num5 = buf[i * num + 3] = ((num4 < num3) ? trns.GetPalletteAlpha()[num4] : 255);
+					int num5 = buf[(i * num) + 3] = (num4 < num3) ? trns.GetPalletteAlpha()[num4] : 255;
 				}
 			}
 			return buf;
@@ -67,12 +67,12 @@ namespace Hjg.Pngcs
 
 		public static void FromARGB8(int val, int[] buff, int offset, bool alpha)
 		{
-			buff[offset++] = ((val >> 16) & 0xFF);
-			buff[offset++] = ((val >> 8) & 0xFF);
-			buff[offset] = (val & 0xFF);
+			buff[offset++] = (val >> 16) & 0xFF;
+			buff[offset++] = (val >> 8) & 0xFF;
+			buff[offset] = val & 0xFF;
 			if (alpha)
 			{
-				buff[offset + 1] = ((val >> 24) & 0xFF);
+				buff[offset + 1] = (val >> 24) & 0xFF;
 			}
 		}
 
@@ -161,9 +161,9 @@ namespace Hjg.Pngcs
 
 		public static int Interpol(int a, int b, int c, int d, double dx, double dy)
 		{
-			double num = (double)a * (1.0 - dx) + (double)b * dx;
-			double num2 = (double)c * (1.0 - dx) + (double)d * dx;
-			return (int)(num * (1.0 - dy) + num2 * dy + 0.5);
+			double num = ((double)a * (1.0 - dx)) + ((double)b * dx);
+			double num2 = ((double)c * (1.0 - dx)) + ((double)d * dx);
+			return (int)((num * (1.0 - dy)) + (num2 * dy) + 0.5);
 		}
 
 		public static int ClampTo_0_255(int i)

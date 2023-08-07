@@ -357,7 +357,7 @@ namespace Game
 					stream.Write(array, 0, num2);
 					for (uint num3 = 0u; num3 < num2; num3++)
 					{
-						_zfe.Crc32 = (CrcTable[(_zfe.Crc32 ^ array[num3]) & 0xFF] ^ (_zfe.Crc32 >> 8));
+						_zfe.Crc32 = CrcTable[(_zfe.Crc32 ^ array[num3]) & 0xFF] ^ (_zfe.Crc32 >> 8);
 					}
 				}
 			}
@@ -382,7 +382,7 @@ namespace Game
 
 		public uint DateTimeToDosTime(DateTime _dt)
 		{
-			return (uint)((_dt.Second / 2) | (_dt.Minute << 5) | (_dt.Hour << 11) | (_dt.Day << 16) | (_dt.Month << 21) | (_dt.Year - 1980 << 25));
+			return (uint)((_dt.Second / 2) | (_dt.Minute << 5) | (_dt.Hour << 11) | (_dt.Day << 16) | (_dt.Month << 21) | ((_dt.Year - 1980) << 25));
 		}
 
 		public DateTime DosTimeToDateTime(uint _dt)

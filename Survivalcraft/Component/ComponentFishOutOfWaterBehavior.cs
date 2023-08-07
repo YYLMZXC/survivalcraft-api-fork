@@ -60,7 +60,7 @@ namespace Game
 			}, null);
 			m_stateMachine.AddState("Jump", null, delegate
 			{
-				m_componentFishModel.BendOrder = 2f * (2f * MathUtils.Saturate(SimplexNoise.OctavedNoise((float)MathUtils.Remainder(m_subsystemTime.GameTime, 1000.0), 1.2f * m_componentCreature.ComponentLocomotion.TurnSpeed, 1, 1f, 1f)) - 1f);
+				m_componentFishModel.BendOrder = 2f * ((2f * MathUtils.Saturate(SimplexNoise.OctavedNoise((float)MathUtils.Remainder(m_subsystemTime.GameTime, 1000.0), 1.2f * m_componentCreature.ComponentLocomotion.TurnSpeed, 1, 1f, 1f))) - 1f);
 				if (!IsActive)
 				{
 					m_stateMachine.TransitionTo("Inactive");
@@ -95,7 +95,7 @@ namespace Game
 				Vector2 vector = m_random.Vector2(1f, 1f);
 				float y = 0.2f * m_random.Float(-0.8f, 1f);
 				var v = Vector3.Normalize(new Vector3(vector.X, y, vector.Y));
-				Vector3 vector2 = m_componentCreature.ComponentBody.Position + m_random.Float(8f, 16f) * v;
+				Vector3 vector2 = m_componentCreature.ComponentBody.Position + (m_random.Float(8f, 16f) * v);
 				TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(m_componentCreature.ComponentBody.Position, vector2, useInteractionBoxes: false, skipAirBlocks: false, delegate (int value, float d)
 				{
 					int num = Terrain.ExtractContents(value);
@@ -107,7 +107,7 @@ namespace Game
 				}
 				if (terrainRaycastResult.Value.Distance > 4f)
 				{
-					return m_componentCreature.ComponentBody.Position + v * terrainRaycastResult.Value.Distance;
+					return m_componentCreature.ComponentBody.Position + (v * terrainRaycastResult.Value.Distance);
 				}
 			}
 			return null;

@@ -73,7 +73,7 @@ namespace Game
 
 		public static void SetupCornerVertex(float x, float y, float z, Color color, int light, int face, int textureSlot, int textureSlotCount, int corner, ref TerrainVertex vertex)
 		{
-			float num = LightingManager.LightIntensityByLightValueAndFace[light + 16 * face];
+			float num = LightingManager.LightIntensityByLightValueAndFace[light + (16 * face)];
 			Color color2 = new Color((byte)((float)(int)color.R * num), (byte)((float)(int)color.G * num), (byte)((float)(int)color.B * num), color.A);
 			float tx = (m_textureCoordinates[corner].X + (float)(textureSlot % textureSlotCount)) / textureSlotCount;
 			float ty = (m_textureCoordinates[corner].Y + (float)(textureSlot / textureSlotCount)) / textureSlotCount;
@@ -142,29 +142,29 @@ namespace Game
 			int count2 = indices.Count;
 			indices.Count += 24;
 			indices.Array[count2] = count;
-			indices.Array[count2 + 1] = (count + 1);
-			indices.Array[count2 + 2] = (count + 2);
-			indices.Array[count2 + 3] = (count + 2);
-			indices.Array[count2 + 4] = (count + 1);
+			indices.Array[count2 + 1] = count + 1;
+			indices.Array[count2 + 2] = count + 2;
+			indices.Array[count2 + 3] = count + 2;
+			indices.Array[count2 + 4] = count + 1;
 			indices.Array[count2 + 5] = count;
-			indices.Array[count2 + 6] = (count + 2);
-			indices.Array[count2 + 7] = (count + 3);
+			indices.Array[count2 + 6] = count + 2;
+			indices.Array[count2 + 7] = count + 3;
 			indices.Array[count2 + 8] = count;
 			indices.Array[count2 + 9] = count;
-			indices.Array[count2 + 10] = (count + 3);
-			indices.Array[count2 + 11] = (count + 2);
-			indices.Array[count2 + 12] = (count + 4);
-			indices.Array[count2 + 13] = (count + 5);
-			indices.Array[count2 + 14] = (count + 6);
-			indices.Array[count2 + 15] = (count + 6);
-			indices.Array[count2 + 16] = (count + 5);
-			indices.Array[count2 + 17] = (count + 4);
-			indices.Array[count2 + 18] = (count + 6);
-			indices.Array[count2 + 19] = (count + 7);
-			indices.Array[count2 + 20] = (count + 4);
-			indices.Array[count2 + 21] = (count + 4);
-			indices.Array[count2 + 22] = (count + 7);
-			indices.Array[count2 + 23] = (count + 6);
+			indices.Array[count2 + 10] = count + 3;
+			indices.Array[count2 + 11] = count + 2;
+			indices.Array[count2 + 12] = count + 4;
+			indices.Array[count2 + 13] = count + 5;
+			indices.Array[count2 + 14] = count + 6;
+			indices.Array[count2 + 15] = count + 6;
+			indices.Array[count2 + 16] = count + 5;
+			indices.Array[count2 + 17] = count + 4;
+			indices.Array[count2 + 18] = count + 6;
+			indices.Array[count2 + 19] = count + 7;
+			indices.Array[count2 + 20] = count + 4;
+			indices.Array[count2 + 21] = count + 4;
+			indices.Array[count2 + 22] = count + 7;
+			indices.Array[count2 + 23] = count + 6;
 		}
 
 		public void GenerateCubeVertices(Block block, int value, int x, int y, int z, Color color, TerrainGeometrySubset[] subsetsByFace)
@@ -191,11 +191,11 @@ namespace Game
 				int count2 = indices.Count;
 				indices.Count += 6;
 				indices.Array[count2] = count;//A
-				indices.Array[count2 + 1] = (count + 2);//C
-				indices.Array[count2 + 2] = (count + 1);//B
-				indices.Array[count2 + 3] = (count + 2);//C
+				indices.Array[count2 + 1] = count + 2;//C
+				indices.Array[count2 + 2] = count + 1;//B
+				indices.Array[count2 + 3] = count + 2;//C
 				indices.Array[count2 + 4] = count;//A
-				indices.Array[count2 + 5] = (count + 3);//D
+				indices.Array[count2 + 5] = count + 3;//D
 			}
 			cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
 			if (block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
@@ -212,11 +212,11 @@ namespace Game
 				int count4 = indices2.Count;
 				indices2.Count += 6;
 				indices2.Array[count4] = count3;
-				indices2.Array[count4 + 1] = (count3 + 2);
-				indices2.Array[count4 + 2] = (count3 + 1);
-				indices2.Array[count4 + 3] = (count3 + 2);
+				indices2.Array[count4 + 1] = count3 + 2;
+				indices2.Array[count4 + 2] = count3 + 1;
+				indices2.Array[count4 + 3] = count3 + 2;
 				indices2.Array[count4 + 4] = count3;
-				indices2.Array[count4 + 5] = (count3 + 3);
+				indices2.Array[count4 + 5] = count3 + 3;
 			}
 			cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
 			if (block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
@@ -233,10 +233,10 @@ namespace Game
 				int count6 = indices3.Count;
 				indices3.Count += 6;
 				indices3.Array[count6] = count5;
-				indices3.Array[count6 + 1] = (count5 + 1);
-				indices3.Array[count6 + 2] = (count5 + 2);
-				indices3.Array[count6 + 3] = (count5 + 2);
-				indices3.Array[count6 + 4] = (count5 + 3);
+				indices3.Array[count6 + 1] = count5 + 1;
+				indices3.Array[count6 + 2] = count5 + 2;
+				indices3.Array[count6 + 3] = count5 + 2;
+				indices3.Array[count6 + 4] = count5 + 3;
 				indices3.Array[count6 + 5] = count5;
 			}
 			cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
@@ -254,10 +254,10 @@ namespace Game
 				int count8 = indices4.Count;
 				indices4.Count += 6;
 				indices4.Array[count8] = count7;
-				indices4.Array[count8 + 1] = (count7 + 1);
-				indices4.Array[count8 + 2] = (count7 + 2);
-				indices4.Array[count8 + 3] = (count7 + 2);
-				indices4.Array[count8 + 4] = (count7 + 3);
+				indices4.Array[count8 + 1] = count7 + 1;
+				indices4.Array[count8 + 2] = count7 + 2;
+				indices4.Array[count8 + 3] = count7 + 2;
+				indices4.Array[count8 + 4] = count7 + 3;
 				indices4.Array[count8 + 5] = count7;
 			}
 			cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF);
@@ -275,10 +275,10 @@ namespace Game
 				int count10 = indices5.Count;
 				indices5.Count += 6;
 				indices5.Array[count10] = count9;
-				indices5.Array[count10 + 1] = (count9 + 1);
-				indices5.Array[count10 + 2] = (count9 + 2);
-				indices5.Array[count10 + 3] = (count9 + 2);
-				indices5.Array[count10 + 4] = (count9 + 3);
+				indices5.Array[count10 + 1] = count9 + 1;
+				indices5.Array[count10 + 2] = count9 + 2;
+				indices5.Array[count10 + 3] = count9 + 2;
+				indices5.Array[count10 + 4] = count9 + 3;
 				indices5.Array[count10 + 5] = count9;
 			}
 			cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF);
@@ -296,11 +296,11 @@ namespace Game
 				int count12 = indices6.Count;
 				indices6.Count += 6;
 				indices6.Array[count12] = count11;
-				indices6.Array[count12 + 1] = (count11 + 2);
-				indices6.Array[count12 + 2] = (count11 + 1);
-				indices6.Array[count12 + 3] = (count11 + 2);
+				indices6.Array[count12 + 1] = count11 + 2;
+				indices6.Array[count12 + 2] = count11 + 1;
+				indices6.Array[count12 + 3] = count11 + 2;
 				indices6.Array[count12 + 4] = count11;
-				indices6.Array[count12 + 5] = (count11 + 3);
+				indices6.Array[count12 + 5] = count11 + 3;
 			}
 		}
 
@@ -328,11 +328,11 @@ namespace Game
 				int count2 = indices.Count;
 				indices.Count += 6;
 				indices.Array[count2] = count;
-				indices.Array[count2 + 1] = (count + 2);
-				indices.Array[count2 + 2] = (count + 1);
-				indices.Array[count2 + 3] = (count + 2);
+				indices.Array[count2 + 1] = count + 2;
+				indices.Array[count2 + 2] = count + 1;
+				indices.Array[count2 + 3] = count + 2;
 				indices.Array[count2 + 4] = count;
-				indices.Array[count2 + 5] = (count + 3);
+				indices.Array[count2 + 5] = count + 3;
 			}
 			cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
 			if (block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
@@ -349,11 +349,11 @@ namespace Game
 				int count4 = indices2.Count;
 				indices2.Count += 6;
 				indices2.Array[count4] = count3;
-				indices2.Array[count4 + 1] = (count3 + 2);
-				indices2.Array[count4 + 2] = (count3 + 1);
-				indices2.Array[count4 + 3] = (count3 + 2);
+				indices2.Array[count4 + 1] = count3 + 2;
+				indices2.Array[count4 + 2] = count3 + 1;
+				indices2.Array[count4 + 3] = count3 + 2;
 				indices2.Array[count4 + 4] = count3;
-				indices2.Array[count4 + 5] = (count3 + 3);
+				indices2.Array[count4 + 5] = count3 + 3;
 			}
 			cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
 			if (block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
@@ -370,10 +370,10 @@ namespace Game
 				int count6 = indices3.Count;
 				indices3.Count += 6;
 				indices3.Array[count6] = count5;
-				indices3.Array[count6 + 1] = (count5 + 1);
-				indices3.Array[count6 + 2] = (count5 + 2);
-				indices3.Array[count6 + 3] = (count5 + 2);
-				indices3.Array[count6 + 4] = (count5 + 3);
+				indices3.Array[count6 + 1] = count5 + 1;
+				indices3.Array[count6 + 2] = count5 + 2;
+				indices3.Array[count6 + 3] = count5 + 2;
+				indices3.Array[count6 + 4] = count5 + 3;
 				indices3.Array[count6 + 5] = count5;
 			}
 			cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
@@ -391,14 +391,14 @@ namespace Game
 				int count8 = indices4.Count;
 				indices4.Count += 6;
 				indices4.Array[count8] = count7;
-				indices4.Array[count8 + 1] = (count7 + 1);
-				indices4.Array[count8 + 2] = (count7 + 2);
-				indices4.Array[count8 + 3] = (count7 + 2);
-				indices4.Array[count8 + 4] = (count7 + 3);
+				indices4.Array[count8 + 1] = count7 + 1;
+				indices4.Array[count8 + 2] = count7 + 2;
+				indices4.Array[count8 + 3] = count7 + 2;
+				indices4.Array[count8 + 4] = count7 + 3;
 				indices4.Array[count8 + 5] = count7;
 			}
 			cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF);
-			if ((block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast)) || height11 < 1f || height12 < 1f || height21 < 1f || height22 < 1f)
+			if (block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast) || height11 < 1f || height12 < 1f || height21 < 1f || height22 < 1f)
 			{
 				DynamicArray<TerrainVertex> vertices5 = subsetsByFace[4].Vertices;
 				var indices5 = subsetsByFace[4].Indices;
@@ -412,10 +412,10 @@ namespace Game
 				int count10 = indices5.Count;
 				indices5.Count += 6;
 				indices5.Array[count10] = count9;
-				indices5.Array[count10 + 1] = (count9 + 1);
-				indices5.Array[count10 + 2] = (count9 + 2);
-				indices5.Array[count10 + 3] = (count9 + 2);
-				indices5.Array[count10 + 4] = (count9 + 3);
+				indices5.Array[count10 + 1] = count9 + 1;
+				indices5.Array[count10 + 2] = count9 + 2;
+				indices5.Array[count10 + 3] = count9 + 2;
+				indices5.Array[count10 + 4] = count9 + 3;
 				indices5.Array[count10 + 5] = count9;
 			}
 			cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF);
@@ -433,11 +433,11 @@ namespace Game
 				int count12 = indices6.Count;
 				indices6.Count += 6;
 				indices6.Array[count12] = count11;
-				indices6.Array[count12 + 1] = (count11 + 2);
-				indices6.Array[count12 + 2] = (count11 + 1);
-				indices6.Array[count12 + 3] = (count11 + 2);
+				indices6.Array[count12 + 1] = count11 + 2;
+				indices6.Array[count12 + 2] = count11 + 1;
+				indices6.Array[count12 + 3] = count11 + 2;
 				indices6.Array[count12 + 4] = count11;
-				indices6.Array[count12 + 5] = (count11 + 3);
+				indices6.Array[count12 + 5] = count11 + 3;
 			}
 		}
 
@@ -465,11 +465,11 @@ namespace Game
 				int count2 = indices.Count;
 				indices.Count += 6;
 				indices.Array[count2] = count;
-				indices.Array[count2 + 1] = (count + 2);
-				indices.Array[count2 + 2] = (count + 1);
-				indices.Array[count2 + 3] = (count + 2);
+				indices.Array[count2 + 1] = count + 2;
+				indices.Array[count2 + 2] = count + 1;
+				indices.Array[count2 + 3] = count + 2;
 				indices.Array[count2 + 4] = count;
-				indices.Array[count2 + 5] = (count + 3);
+				indices.Array[count2 + 5] = count + 3;
 			}
 			cellValueFast = chunkAtCell3.GetCellValueFast((x + 1) & 0xF, y, z & 0xF);
 			if (block.ShouldGenerateFace(SubsystemTerrain, 1, value, cellValueFast))
@@ -486,11 +486,11 @@ namespace Game
 				int count4 = indices2.Count;
 				indices2.Count += 6;
 				indices2.Array[count4] = count3;
-				indices2.Array[count4 + 1] = (count3 + 2);
-				indices2.Array[count4 + 2] = (count3 + 1);
-				indices2.Array[count4 + 3] = (count3 + 2);
+				indices2.Array[count4 + 1] = count3 + 2;
+				indices2.Array[count4 + 2] = count3 + 1;
+				indices2.Array[count4 + 3] = count3 + 2;
 				indices2.Array[count4 + 4] = count3;
-				indices2.Array[count4 + 5] = (count3 + 3);
+				indices2.Array[count4 + 5] = count3 + 3;
 			}
 			cellValueFast = chunkAtCell4.GetCellValueFast(x & 0xF, y, (z - 1) & 0xF);
 			if (block.ShouldGenerateFace(SubsystemTerrain, 2, value, cellValueFast))
@@ -507,10 +507,10 @@ namespace Game
 				int count6 = indices3.Count;
 				indices3.Count += 6;
 				indices3.Array[count6] = count5;
-				indices3.Array[count6 + 1] = (count5 + 1);
-				indices3.Array[count6 + 2] = (count5 + 2);
-				indices3.Array[count6 + 3] = (count5 + 2);
-				indices3.Array[count6 + 4] = (count5 + 3);
+				indices3.Array[count6 + 1] = count5 + 1;
+				indices3.Array[count6 + 2] = count5 + 2;
+				indices3.Array[count6 + 3] = count5 + 2;
+				indices3.Array[count6 + 4] = count5 + 3;
 				indices3.Array[count6 + 5] = count5;
 			}
 			cellValueFast = chunkAtCell5.GetCellValueFast((x - 1) & 0xF, y, z & 0xF);
@@ -528,10 +528,10 @@ namespace Game
 				int count8 = indices4.Count;
 				indices4.Count += 6;
 				indices4.Array[count8] = count7;
-				indices4.Array[count8 + 1] = (count7 + 1);
-				indices4.Array[count8 + 2] = (count7 + 2);
-				indices4.Array[count8 + 3] = (count7 + 2);
-				indices4.Array[count8 + 4] = (count7 + 3);
+				indices4.Array[count8 + 1] = count7 + 1;
+				indices4.Array[count8 + 2] = count7 + 2;
+				indices4.Array[count8 + 3] = count7 + 2;
+				indices4.Array[count8 + 4] = count7 + 3;
 				indices4.Array[count8 + 5] = count7;
 			}
 			cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y + 1, z & 0xF);
@@ -549,10 +549,10 @@ namespace Game
 				int count10 = indices5.Count;
 				indices5.Count += 6;
 				indices5.Array[count10] = count9;
-				indices5.Array[count10 + 1] = (count9 + 1);
-				indices5.Array[count10 + 2] = (count9 + 2);
-				indices5.Array[count10 + 3] = (count9 + 2);
-				indices5.Array[count10 + 4] = (count9 + 3);
+				indices5.Array[count10 + 1] = count9 + 1;
+				indices5.Array[count10 + 2] = count9 + 2;
+				indices5.Array[count10 + 3] = count9 + 2;
+				indices5.Array[count10 + 4] = count9 + 3;
 				indices5.Array[count10 + 5] = count9;
 			}
 			cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF);
@@ -570,11 +570,11 @@ namespace Game
 				int count12 = indices6.Count;
 				indices6.Count += 6;
 				indices6.Array[count12] = count11;
-				indices6.Array[count12 + 1] = (count11 + 2);
-				indices6.Array[count12 + 2] = (count11 + 1);
-				indices6.Array[count12 + 3] = (count11 + 2);
+				indices6.Array[count12 + 1] = count11 + 2;
+				indices6.Array[count12 + 2] = count11 + 1;
+				indices6.Array[count12 + 3] = count11 + 2;
 				indices6.Array[count12 + 4] = count11;
-				indices6.Array[count12 + 5] = (count11 + 3);
+				indices6.Array[count12 + 5] = count11 + 3;
 			}
 		}
 
@@ -619,9 +619,9 @@ namespace Game
 					int num3 = (blockMesh.Sides == null) ? (-1) : blockMesh.Sides.Array[k];
 					if (num3 < 0 || m_visibleSides[num3])
 					{
-						indices.Add((blockMesh.Indices.Array[3 * k] + count));
-						indices.Add((blockMesh.Indices.Array[3 * k + 1] + count));
-						indices.Add((blockMesh.Indices.Array[3 * k + 2] + count));
+						indices.Add(blockMesh.Indices.Array[3 * k] + count);
+						indices.Add(blockMesh.Indices.Array[(3 * k) + 1] + count);
+						indices.Add(blockMesh.Indices.Array[(3 * k) + 2] + count);
 					}
 				}
 			}
@@ -629,7 +629,7 @@ namespace Game
 			{
 				for (int l = 0; l < blockMesh.Indices.Count; l++)
 				{
-					indices.Add((blockMesh.Indices.Array[l] + count));
+					indices.Add(blockMesh.Indices.Array[l] + count);
 				}
 			}
 		}
@@ -675,9 +675,9 @@ namespace Game
 					int num2 = (blockMesh.Sides == null) ? (-1) : blockMesh.Sides.Array[k];
 					if (num2 < 0 || m_visibleSides[(facesMap != null) ? facesMap[num2] : num2])
 					{
-						indices.Add((blockMesh.Indices.Array[3 * k] + count));
-						indices.Add((blockMesh.Indices.Array[3 * k + 1] + count));
-						indices.Add((blockMesh.Indices.Array[3 * k + 2] + count));
+						indices.Add(blockMesh.Indices.Array[3 * k] + count);
+						indices.Add(blockMesh.Indices.Array[(3 * k) + 1] + count);
+						indices.Add(blockMesh.Indices.Array[(3 * k) + 2] + count);
 					}
 				}
 			}
@@ -685,7 +685,7 @@ namespace Game
 			{
 				for (int l = 0; l < blockMesh.Indices.Count; l++)
 				{
-					indices.Add((blockMesh.Indices.Array[l] + count));
+					indices.Add(blockMesh.Indices.Array[l] + count);
 				}
 			}
 		}
@@ -708,7 +708,7 @@ namespace Game
 			}
 			int num2 = Terrain.ExtractLight(value);
 			float num3 = LightingManager.LightIntensityByLightValue[num2];
-			Vector3 v = new Vector3((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f) - 0.5f * CellFace.FaceToVector3(mountingFace);
+			Vector3 v = new Vector3((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f) - (0.5f * CellFace.FaceToVector3(mountingFace));
 			Vector3 vector = CellFace.FaceToVector3(mountingFace);
 			Vector2 v2 = new Vector2(0.9376f, 0.0001f);
 			Vector2 v3 = new Vector2(0.03125f, 0.00550781237f);
@@ -716,7 +716,7 @@ namespace Game
 			int cellContents = Terrain.GetCellContents(x - point.X, y - point.Y, z - point.Z);
 			bool flag = cellContents == 2 || cellContents == 7 || cellContents == 8 || cellContents == 6 || cellContents == 62 || cellContents == 72;
 			Vector3 v4 = CellFace.FaceToVector3(SubsystemElectricity.GetConnectorFace(mountingFace, ElectricConnectorDirection.Top));
-			Vector3 vector2 = CellFace.FaceToVector3(SubsystemElectricity.GetConnectorFace(mountingFace, ElectricConnectorDirection.Left)) * centerOffset.X + v4 * centerOffset.Y;
+			Vector3 vector2 = (CellFace.FaceToVector3(SubsystemElectricity.GetConnectorFace(mountingFace, ElectricConnectorDirection.Left)) * centerOffset.X) + (v4 * centerOffset.Y);
 			int num4 = 0;
 			m_tmpConnectionPaths.Clear();
 			SubsystemElectricity.GetAllConnectedNeighbors(x, y, z, mountingFace, m_tmpConnectionPaths);
@@ -746,12 +746,12 @@ namespace Game
 						float s = (centerBoxSize >= 0f) ? MathUtils.Max(0.03125f, centerBoxSize / 2f) : (centerBoxSize / 2f);
 						float num5 = (connectorDirection == ElectricConnectorDirection.In) ? 0.03125f : 0.5f;
 						float num6 = (connectorDirection == ElectricConnectorDirection.In) ? 0f : ((tmpConnectionPath.ConnectorFace == tmpConnectionPath.NeighborFace) ? (num5 + 0.03125f) : ((tmpConnectionPath.ConnectorFace != CellFace.OppositeFace(tmpConnectionPath.NeighborFace)) ? num5 : (num5 - 0.03125f)));
-						Vector3 v5 = v - vector4 * 0.03125f + vector3 * s + vector2;
-						Vector3 vector5 = v - vector4 * 0.03125f + vector3 * num5;
-						Vector3 vector6 = v + vector4 * 0.03125f + vector3 * num5;
-						Vector3 v6 = v + vector4 * 0.03125f + vector3 * s + vector2;
-						Vector3 vector7 = v + vector * 0.03125f + vector3 * (centerBoxSize / 2f) + vector2;
-						Vector3 vector8 = v + vector * 0.03125f + vector3 * num6;
+						Vector3 v5 = v - (vector4 * 0.03125f) + (vector3 * s) + vector2;
+						Vector3 vector5 = v - (vector4 * 0.03125f) + (vector3 * num5);
+						Vector3 vector6 = v + (vector4 * 0.03125f) + (vector3 * num5);
+						Vector3 v6 = v + (vector4 * 0.03125f) + (vector3 * s) + vector2;
+						Vector3 vector7 = v + (vector * 0.03125f) + (vector3 * (centerBoxSize / 2f)) + vector2;
+						Vector3 vector8 = v + (vector * 0.03125f) + (vector3 * num6);
 						if (flag && centerBoxSize == 0f)
 						{
 							Vector3 vector9 = 0.25f * GetRandomWireOffset(0.5f * (v5 + v6), vector);
@@ -759,12 +759,12 @@ namespace Game
 							v6 += vector9;
 							vector7 += vector9;
 						}
-						Vector2 vector10 = v2 + v3 * new Vector2(MathUtils.Max(0.0625f, centerBoxSize), 0f);
-						Vector2 vector11 = v2 + v3 * new Vector2(num5 * 2f, 0f);
-						Vector2 vector12 = v2 + v3 * new Vector2(num5 * 2f, 1f);
-						Vector2 vector13 = v2 + v3 * new Vector2(MathUtils.Max(0.0625f, centerBoxSize), 1f);
-						Vector2 vector14 = v2 + v3 * new Vector2(centerBoxSize, 0.5f);
-						Vector2 vector15 = v2 + v3 * new Vector2(num6 * 2f, 0.5f);
+						Vector2 vector10 = v2 + (v3 * new Vector2(MathUtils.Max(0.0625f, centerBoxSize), 0f));
+						Vector2 vector11 = v2 + (v3 * new Vector2(num5 * 2f, 0f));
+						Vector2 vector12 = v2 + (v3 * new Vector2(num5 * 2f, 1f));
+						Vector2 vector13 = v2 + (v3 * new Vector2(MathUtils.Max(0.0625f, centerBoxSize), 1f));
+						Vector2 vector14 = v2 + (v3 * new Vector2(centerBoxSize, 0.5f));
+						Vector2 vector15 = v2 + (v3 * new Vector2(num6 * 2f, 0.5f));
 						int num7 = Terrain.ExtractLight(Terrain.GetCellValue(x + tmpConnectionPath.NeighborOffsetX, y + tmpConnectionPath.NeighborOffsetY, z + tmpConnectionPath.NeighborOffsetZ));
 						float num8 = LightingManager.LightIntensityByLightValue[num7];
 						float num9 = 0.5f * (num3 + num8);
@@ -793,25 +793,25 @@ namespace Game
 						SetupVertex(vector7.X, vector7.Y, vector7.Z, color9, vector14.X, vector14.Y, ref array[count + 4]);
 						SetupVertex(vector8.X, vector8.Y, vector8.Z, color10, vector15.X, vector15.Y, ref array[count + 5]);
 						int count2 = subset.Indices.Count;
-						subset.Indices.Count += ((connectorDirection == ElectricConnectorDirection.In) ? 15 : 12);
+						subset.Indices.Count += (connectorDirection == ElectricConnectorDirection.In) ? 15 : 12;
 						var array2 = subset.Indices.Array;
 						array2[count2] = count;
-						array2[count2 + 1] = (count + 5);
-						array2[count2 + 2] = (count + 1);
-						array2[count2 + 3] = (count + 5);
+						array2[count2 + 1] = count + 5;
+						array2[count2 + 2] = count + 1;
+						array2[count2 + 3] = count + 5;
 						array2[count2 + 4] = count;
-						array2[count2 + 5] = (count + 4);
-						array2[count2 + 6] = (count + 4);
-						array2[count2 + 7] = (count + 2);
-						array2[count2 + 8] = (count + 5);
-						array2[count2 + 9] = (count + 2);
-						array2[count2 + 10] = (count + 4);
-						array2[count2 + 11] = (count + 3);
+						array2[count2 + 5] = count + 4;
+						array2[count2 + 6] = count + 4;
+						array2[count2 + 7] = count + 2;
+						array2[count2 + 8] = count + 5;
+						array2[count2 + 9] = count + 2;
+						array2[count2 + 10] = count + 4;
+						array2[count2 + 11] = count + 3;
 						if (connectorDirection == ElectricConnectorDirection.In)
 						{
-							array2[count2 + 12] = (count + 2);
-							array2[count2 + 13] = (count + 1);
-							array2[count2 + 14] = (count + 5);
+							array2[count2 + 12] = count + 2;
+							array2[count2 + 13] = count + 1;
+							array2[count2 + 14] = count + 5;
 						}
 					}
 				}
@@ -826,9 +826,9 @@ namespace Game
 				{
 					Vector3 vector16 = CellFace.FaceToVector3(i);
 					Vector3 v7 = Vector3.Cross(vector, vector16);
-					Vector3 v8 = v - v7 * 0.03125f + vector16 * 0.03125f;
-					Vector3 v9 = v + v7 * 0.03125f + vector16 * 0.03125f;
-					Vector3 vector17 = v + vector * 0.03125f;
+					Vector3 v8 = v - (v7 * 0.03125f) + (vector16 * 0.03125f);
+					Vector3 v9 = v + (v7 * 0.03125f) + (vector16 * 0.03125f);
+					Vector3 vector17 = v + (vector * 0.03125f);
 					if (flag)
 					{
 						Vector3 vector18 = 0.25f * GetRandomWireOffset(0.5f * (v8 + v9), vector);
@@ -836,9 +836,9 @@ namespace Game
 						v9 += vector18;
 						vector17 += vector18;
 					}
-					Vector2 vector19 = v2 + v3 * new Vector2(0.0625f, 0f);
-					Vector2 vector20 = v2 + v3 * new Vector2(0.0625f, 1f);
-					Vector2 vector21 = v2 + v3 * new Vector2(0f, 0.5f);
+					Vector2 vector19 = v2 + (v3 * new Vector2(0.0625f, 0f));
+					Vector2 vector20 = v2 + (v3 * new Vector2(0.0625f, 1f));
+					Vector2 vector21 = v2 + (v3 * new Vector2(0f, 0.5f));
 					float num19 = LightingManager.CalculateLighting(vector16) * num3;
 					float num20 = LightingManager.CalculateLighting(vector) * num3;
 					Color color11 = new Color((byte)((float)(int)color.R * num19), (byte)((float)(int)color.G * num19), (byte)((float)(int)color.B * num19));
@@ -853,8 +853,8 @@ namespace Game
 					subset.Indices.Count += 3;
 					var array4 = subset.Indices.Array;
 					array4[count4] = count3;
-					array4[count4 + 1] = (count3 + 2);
-					array4[count4 + 2] = (count3 + 1);
+					array4[count4 + 1] = count3 + 2;
+					array4[count4 + 2] = count3 + 1;
 				}
 			}
 		}
@@ -1020,9 +1020,9 @@ namespace Game
 		{
 			int hashCode = Vector3.Round(2f * position).GetHashCode();
 			Vector3 result = default(Vector3);
-			result.X = ((normal.X == 0f) ? ((float)(double)(MathUtils.Hash((uint)hashCode) % 255u) / 255f - 0.5f) : 0f);
-			result.Y = ((normal.Y == 0f) ? ((float)(double)(MathUtils.Hash((uint)(hashCode + 1)) % 255u) / 255f - 0.5f) : 0f);
-			result.Z = ((normal.Z == 0f) ? ((float)(double)(MathUtils.Hash((uint)(hashCode + 2)) % 255u) / 255f - 0.5f) : 0f);
+			result.X = (normal.X == 0f) ? (((float)(double)(MathUtils.Hash((uint)hashCode) % 255u) / 255f) - 0.5f) : 0f;
+			result.Y = (normal.Y == 0f) ? (((float)(double)(MathUtils.Hash((uint)(hashCode + 1)) % 255u) / 255f) - 0.5f) : 0f;
+			result.Z = (normal.Z == 0f) ? (((float)(double)(MathUtils.Hash((uint)(hashCode + 2)) % 255u) / 255f) - 0.5f) : 0f;
 			return result;
 		}
 
@@ -1090,7 +1090,7 @@ namespace Game
 			float num = 1f - x;
 			float num2 = 1f - y;
 			float num3 = 1f - z;
-			return m_cornerLightsByFace[face].L000 * num * num2 * num3 + m_cornerLightsByFace[face].L001 * num * num2 * z + m_cornerLightsByFace[face].L010 * num * y * num3 + m_cornerLightsByFace[face].L011 * num * y * z + m_cornerLightsByFace[face].L100 * x * num2 * num3 + m_cornerLightsByFace[face].L101 * x * num2 * z + m_cornerLightsByFace[face].L110 * x * y * num3 + m_cornerLightsByFace[face].L111 * x * y * z;
+			return (m_cornerLightsByFace[face].L000 * num * num2 * num3) + (m_cornerLightsByFace[face].L001 * num * num2 * z) + (m_cornerLightsByFace[face].L010 * num * y * num3) + (m_cornerLightsByFace[face].L011 * num * y * z) + (m_cornerLightsByFace[face].L100 * x * num2 * num3) + (m_cornerLightsByFace[face].L101 * x * num2 * z) + (m_cornerLightsByFace[face].L110 * x * y * num3) + (m_cornerLightsByFace[face].L111 * x * y * z);
 		}
 	}
 }

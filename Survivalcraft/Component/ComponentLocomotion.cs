@@ -371,7 +371,7 @@ namespace Game
 					playerStats.EasiestModeUsed = (GameMode)MathUtils.Min((int)m_subsystemGameInfo.WorldSettings.GameMode, (int)playerStats.EasiestModeUsed);
 				}
 				m_lastPosition = position;
-				m_swimBurstRemaining = MathUtils.Saturate(0.1f * m_swimBurstRemaining + dt);
+				m_swimBurstRemaining = MathUtils.Saturate((0.1f * m_swimBurstRemaining) + dt);
 				int x2 = Terrain.ToCell(position.X);
 				int y = Terrain.ToCell(position.Y + 0.2f);
 				int z = Terrain.ToCell(position.Z);
@@ -389,7 +389,7 @@ namespace Game
 					}
 				}
 				Quaternion rotation = m_componentCreature.ComponentBody.Rotation;
-				float num2 = MathUtils.Atan2(2f * rotation.Y * rotation.W - 2f * rotation.X * rotation.Z, 1f - 2f * rotation.Y * rotation.Y - 2f * rotation.Z * rotation.Z);
+				float num2 = MathUtils.Atan2((2f * rotation.Y * rotation.W) - (2f * rotation.X * rotation.Z), 1f - (2f * rotation.Y * rotation.Y) - (2f * rotation.Z * rotation.Z));
 				num2 += (0f - TurnSpeed) * TurnOrder.X * dt;
 				if (VrLookOrder.HasValue)
 				{
@@ -492,8 +492,8 @@ namespace Game
 					{
 						v += FlyOrder.Value;
 					}
-					Vector3 v2 = (!SettingsManager.HorizontalCreativeFlight || m_componentPlayer == null || m_componentPlayer.ComponentInput.IsControlledByTouch) ? Vector3.Normalize(vector + 0.1f * Vector3.UnitY) : Vector3.Normalize(vector * new Vector3(1f, 0f, 1f));
-					Vector3 v3 = CreativeFlySpeed * (right * v.X + Vector3.UnitY * v.Y + v2 * v.Z);
+					Vector3 v2 = (!SettingsManager.HorizontalCreativeFlight || m_componentPlayer == null || m_componentPlayer.ComponentInput.IsControlledByTouch) ? Vector3.Normalize(vector + (0.1f * Vector3.UnitY)) : Vector3.Normalize(vector * new Vector3(1f, 0f, 1f));
+					Vector3 v3 = CreativeFlySpeed * ((right * v.X) + (Vector3.UnitY * v.Y) + (v2 * v.Z));
 					float num = (v == Vector3.Zero) ? 5f : 3f;
 					velocity += MathUtils.Saturate(num * dt) * (v3 - velocity);
 					m_componentCreature.ComponentBody.IsGravityEnabled = false;
@@ -532,8 +532,8 @@ namespace Game
 							}
 						}
 					}
-					Vector3 v4 = value.X * Vector3.Normalize(new Vector3(right.X, 0f, right.Z)) + value.Y * Vector3.Normalize(new Vector3(vector.X, 0f, vector.Z));
-					Vector3 vector2 = num2 * v4 + m_componentCreature.ComponentBody.StandingOnVelocity;
+					Vector3 v4 = (value.X * Vector3.Normalize(new Vector3(right.X, 0f, right.Z))) + (value.Y * Vector3.Normalize(new Vector3(vector.X, 0f, vector.Z)));
+					Vector3 vector2 = (num2 * v4) + m_componentCreature.ComponentBody.StandingOnVelocity;
 					float num4;
 					if (m_componentCreature.ComponentBody.StandingOnValue.HasValue)
 					{
@@ -559,7 +559,7 @@ namespace Game
 					}
 					velocity.X += num4 * (vector2.X - velocity.X);
 					velocity.Z += num4 * (vector2.Z - velocity.Z);
-					Vector3 vector3 = value.X * right + value.Y * vector;
+					Vector3 vector3 = (value.X * right) + (value.Y * vector);
 					if (m_componentLevel != null)
 					{
 						vector3 *= m_componentLevel.SpeedFactor;
@@ -573,7 +573,7 @@ namespace Game
 						if (Terrain.ExtractContents(value2) == 203)
 						{
 							Block block = BlocksManager.Blocks[Terrain.ExtractContents(value2)];
-							flag = (block.GetClothingData(value2).MovementSpeedFactor > 1f);
+							flag = block.GetClothingData(value2).MovementSpeedFactor > 1f;
 						}
 						if (!flag && vector2.LengthSquared() / velocity.LengthSquared() > 0.99f && WalkOrder.Value.LengthSquared() > 0.99f)
 						{
@@ -603,7 +603,7 @@ namespace Game
 					m_swimBurstRemaining -= dt;
 				}
 				velocity += MathUtils.Saturate(num5 * AccelerationFactor * dt) * (v6 - velocity);
-				m_componentCreature.ComponentBody.IsGravityEnabled = (MathUtils.Abs(value4.Y) <= 0.07f);
+				m_componentCreature.ComponentBody.IsGravityEnabled = MathUtils.Abs(value4.Y) <= 0.07f;
 				m_componentCreature.ComponentBody.IsWaterDragEnabled = false;
 				m_componentCreature.ComponentBody.IsGroundDragEnabled = false;
 				m_swimming = true;
@@ -613,9 +613,9 @@ namespace Game
 				float num6 = JumpSpeed;
 				if (m_componentLevel != null)
 				{
-					num6 *= 0.25f * (m_componentLevel.SpeedFactor - 1f) + 1f;
+					num6 *= (0.25f * (m_componentLevel.SpeedFactor - 1f)) + 1f;
 				}
-				velocity.Y = MathUtils.Min(velocity.Y + MathUtils.Saturate(JumpOrder) * num6, num6);
+				velocity.Y = MathUtils.Min(velocity.Y + (MathUtils.Saturate(JumpOrder) * num6), num6);
 				m_jumping = true;
 				m_componentCreature.ComponentCreatureSounds.PlayFootstepSound(2f);
 				m_subsystemNoise.MakeNoise(m_componentCreature.ComponentBody, 0.25f, 10f);

@@ -53,12 +53,12 @@ namespace Game
 				Particle obj = Particles[i];
 				obj.IsActive = true;
 				var vector = new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
-				obj.Position = position + strength * 0.45f * vector;
+				obj.Position = position + (strength * 0.45f * vector);
 				obj.Color = Color.MultiplyColorOnly(color, m_random.Float(0.7f, 1f));
 				obj.Size = num5 * scale * new Vector2(m_random.Float(0.05f, 0.06f));
 				obj.TimeToLive = num5 * m_random.Float(1f, 3f);
 				obj.Velocity = num5 * 2f * (vector + new Vector3(m_random.Float(-0.2f, 0.2f), 0.6f, m_random.Float(-0.2f, 0.2f)));
-				obj.TextureSlot = textureSlot % 16 * 2 + m_random.Int(0, 1) + 32 * (textureSlot / 16 * 2 + m_random.Int(0, 1));
+				obj.TextureSlot = (textureSlot % 16 * 2) + m_random.Int(0, 1) + (32 * ((textureSlot / 16 * 2) + m_random.Int(0, 1)));
 			}
 		}
 
@@ -79,7 +79,7 @@ namespace Game
 				if (particle.TimeToLive > 0f)
 				{
 					Vector3 position = particle.Position;
-					Vector3 vector = position + particle.Velocity * dt;
+					Vector3 vector = position + (particle.Velocity * dt);
 					TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(position, vector, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
 					if (terrainRaycastResult.HasValue)
 					{

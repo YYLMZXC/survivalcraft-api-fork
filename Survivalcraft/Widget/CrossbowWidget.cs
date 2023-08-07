@@ -68,7 +68,7 @@ namespace Game
 				{
 					Vector2 vector = m_inventorySlotWidget.ScreenToWidget(Input.Press.Value);
 					float num2 = vector.Y - DrawToPosition(draw);
-					if (MathUtils.Abs(vector.X - m_inventorySlotWidget.ActualSize.X / 2f) < 25f && MathUtils.Abs(num2) < 25f)
+					if (MathUtils.Abs(vector.X - (m_inventorySlotWidget.ActualSize.X / 2f)) < 25f && MathUtils.Abs(num2) < 25f)
 					{
 						m_dragStartOffset = num2;
 					}
@@ -114,7 +114,7 @@ namespace Game
 
 		public static float DrawToPosition(int draw)
 		{
-			return draw * 5.4f + 85f;
+			return (draw * 5.4f) + 85f;
 		}
 
 		public static int PositionToDraw(float position)

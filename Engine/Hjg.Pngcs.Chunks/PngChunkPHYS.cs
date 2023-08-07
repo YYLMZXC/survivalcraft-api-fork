@@ -97,15 +97,15 @@ namespace Hjg.Pngcs.Chunks
 		public void SetAsDpi(double dpi)
 		{
 			Units = 1;
-			PixelsxUnitX = (long)(dpi / 0.0254 + 0.5);
+			PixelsxUnitX = (long)((dpi / 0.0254) + 0.5);
 			PixelsxUnitY = PixelsxUnitX;
 		}
 
 		public void SetAsDpi2(double dpix, double dpiy)
 		{
 			Units = 1;
-			PixelsxUnitX = (long)(dpix / 0.0254 + 0.5);
-			PixelsxUnitY = (long)(dpiy / 0.0254 + 0.5);
+			PixelsxUnitX = (long)((dpix / 0.0254) + 0.5);
+			PixelsxUnitY = (long)((dpiy / 0.0254) + 0.5);
 		}
 	}
 }

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Engine.Input
 {
-    public static class Touch
+	public static class Touch
 	{
 		private static List<TouchLocation> m_touchLocations = new List<TouchLocation>();
 

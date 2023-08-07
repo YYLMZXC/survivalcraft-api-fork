@@ -62,30 +62,30 @@ namespace Engine
 				VerifyWindowOpened();
 				switch (value)
 				{
-				case WindowMode.Fixed:
-					m_gameWindow.WindowBorder = WindowBorder.Fixed;
-					if (m_gameWindow.WindowState == WindowState.Fullscreen)
-					{
-						m_gameWindow.WindowState = WindowState.Normal;
-					}
-					break;
-				case WindowMode.Resizable:
-					m_gameWindow.WindowBorder = WindowBorder.Resizable;
-					if (m_gameWindow.WindowState == WindowState.Fullscreen)
-					{
-						m_gameWindow.WindowState = WindowState.Normal;
-					}
-					break;
-				case WindowMode.Borderless:
-					m_gameWindow.WindowBorder = WindowBorder.Hidden;
-					if (m_gameWindow.WindowState == WindowState.Fullscreen)
-					{
-						m_gameWindow.WindowState = WindowState.Normal;
-					}
-					break;
-				case WindowMode.Fullscreen:
-					m_gameWindow.WindowState = WindowState.Fullscreen;
-					break;
+					case WindowMode.Fixed:
+						m_gameWindow.WindowBorder = WindowBorder.Fixed;
+						if (m_gameWindow.WindowState == WindowState.Fullscreen)
+						{
+							m_gameWindow.WindowState = WindowState.Normal;
+						}
+						break;
+					case WindowMode.Resizable:
+						m_gameWindow.WindowBorder = WindowBorder.Resizable;
+						if (m_gameWindow.WindowState == WindowState.Fullscreen)
+						{
+							m_gameWindow.WindowState = WindowState.Normal;
+						}
+						break;
+					case WindowMode.Borderless:
+						m_gameWindow.WindowBorder = WindowBorder.Hidden;
+						if (m_gameWindow.WindowState == WindowState.Fullscreen)
+						{
+							m_gameWindow.WindowState = WindowState.Normal;
+						}
+						break;
+					case WindowMode.Fullscreen:
+						m_gameWindow.WindowState = WindowState.Fullscreen;
+						break;
 				}
 			}
 		}
@@ -205,7 +205,7 @@ namespace Engine
 			{
 				throw new ArgumentOutOfRangeException("size");
 			}
-			AppDomain.CurrentDomain.UnhandledException += delegate(object sender, UnhandledExceptionEventArgs args)
+			AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs args)
 			{
 				Exception ex = args.ExceptionObject as Exception;
 				if (ex == null)
@@ -225,10 +225,10 @@ namespace Engine
 			};
 			GraphicsMode mode = new GraphicsMode(new OpenTK.Graphics.ColorFormat(24), 16, 0, 0, OpenTK.Graphics.ColorFormat.Empty, 2);
 			m_gameWindow = new GameWindow(400, 300, mode, title, GameWindowFlags.Default, DisplayDevice.Default, 2, 0, GraphicsContextFlags.Default);
-			m_gameWindow.Icon = new Icon(typeof(Window).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.icon.ico"),new Size(32,32));
+			m_gameWindow.Icon = new Icon(typeof(Window).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.icon.ico"), new Size(32, 32));
 			m_dpiScale = (float)m_gameWindow.ClientSize.Width / 400f;
-			width = ((width == 0) ? (ScreenSize.X * 3 / 4) : width);
-			height = ((height == 0) ? (ScreenSize.Y * 3 / 4) : height);
+			width = (width == 0) ? (ScreenSize.X * 3 / 4) : width;
+			height = (height == 0) ? (ScreenSize.Y * 3 / 4) : height;
 			m_gameWindow.ClientSize = new Size(width, height);
 			if (Configuration.RunningOnMacOS)
 			{

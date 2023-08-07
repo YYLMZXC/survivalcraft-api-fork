@@ -134,7 +134,7 @@ namespace Game
 
 		public static int Key(int x, int y, int z)
 		{
-			return y + 128 + (x + 128 << 8) + (z + 128 << 16);
+			return y + 128 + ((x + 128) << 8) + ((z + 128) << 16);
 		}
 
 		public void Compile()
@@ -196,9 +196,9 @@ namespace Game
 				if (flag)
 				{
 					flag = false;
-					min.X = (max.X = value.X);
-					min.Y = (max.Y = value.Y);
-					min.Z = (max.Z = value.Z);
+					min.X = max.X = value.X;
+					min.Y = max.Y = value.Y;
+					min.Z = max.Z = value.Z;
 				}
 				else
 				{

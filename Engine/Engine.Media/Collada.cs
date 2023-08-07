@@ -29,7 +29,7 @@ namespace Engine.Media
 				m_hashCode = 0;
 				for (int i = 0; i < Count; i++)
 				{
-					m_hashCode += (7919 * i + 977) * Data[i + Start];
+					m_hashCode += ((7919 * i) + 977) * Data[i + Start];
 				}
 			}
 
@@ -200,25 +200,25 @@ namespace Engine.Media
 					if (item.Name == ColladaRoot.Namespace + "matrix")
 					{
 						float[] array = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+										 select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.Transpose(new Matrix(array[0], array[1], array[2], array[3], array[4], array[5], array[6], array[7], array[8], array[9], array[10], array[11], array[12], array[13], array[14], array[15])) * Transform;
 					}
 					else if (item.Name == ColladaRoot.Namespace + "translate")
 					{
 						float[] array2 = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+										  select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.CreateTranslation(array2[0], array2[1], array2[2]) * Transform;
 					}
 					else if (item.Name == ColladaRoot.Namespace + "rotate")
 					{
 						float[] array3 = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+										  select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.CreateFromAxisAngle(new Vector3(array3[0], array3[1], array3[2]), MathUtils.DegToRad(array3[3])) * Transform;
 					}
 					else if (item.Name == ColladaRoot.Namespace + "scale")
 					{
 						float[] array4 = (from s in item.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-							select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+										  select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 						Transform = Matrix.CreateScale(array4[0], array4[1], array4[2]) * Transform;
 					}
 				}
@@ -305,7 +305,7 @@ namespace Engine.Media
 				: base(collada, node)
 			{
 				Array = (from s in node.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-					select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+						 select float.Parse(s, CultureInfo.InvariantCulture)).ToArray();
 			}
 		}
 
@@ -365,12 +365,12 @@ namespace Engine.Media
 				foreach (XElement item2 in node.Elements(ColladaRoot.Namespace + "vcount"))
 				{
 					VCount.AddRange(from s in item2.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-						select int.Parse(s, CultureInfo.InvariantCulture));
+									select int.Parse(s, CultureInfo.InvariantCulture));
 				}
 				foreach (XElement item3 in node.Elements(ColladaRoot.Namespace + "p"))
 				{
 					P.AddRange(from s in item3.Value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)
-						select int.Parse(s, CultureInfo.InvariantCulture));
+							   select int.Parse(s, CultureInfo.InvariantCulture));
 				}
 			}
 		}
@@ -476,7 +476,7 @@ namespace Engine.Media
 		{
 			var modelBoneData = new ModelBoneData();
 			data.Bones.Add(modelBoneData);
-			modelBoneData.ParentBoneIndex = ((parentBoneData != null) ? data.Bones.IndexOf(parentBoneData) : (-1));
+			modelBoneData.ParentBoneIndex = (parentBoneData != null) ? data.Bones.IndexOf(parentBoneData) : (-1);
 			modelBoneData.Name = node.Name;
 			modelBoneData.Transform = node.Transform * transform;
 			foreach (ColladaNode node2 in node.Nodes)
@@ -501,7 +501,7 @@ namespace Engine.Media
 			{
 				ModelMeshPartData modelMeshPartData = LoadPolygons(data, polygon);
 				modelMeshData.MeshParts.Add(modelMeshPartData);
-				modelMeshData.BoundingBox = (flag ? BoundingBox.Union(modelMeshData.BoundingBox, modelMeshPartData.BoundingBox) : modelMeshPartData.BoundingBox);
+				modelMeshData.BoundingBox = flag ? BoundingBox.Union(modelMeshData.BoundingBox, modelMeshPartData.BoundingBox) : modelMeshPartData.BoundingBox;
 				flag = true;
 			}
 			return modelMeshData;
@@ -567,23 +567,23 @@ namespace Engine.Media
 					{
 						switch (enumerator2.Current)
 						{
-						case 3:
-							list.Add(num4);
-							list.Add(num4 + 2);
-							list.Add(num4 + 1);
-							num4 += 3;
-							break;
-						case 4:
-							list.Add(num4);
-							list.Add(num4 + 2);
-							list.Add(num4 + 1);
-							list.Add(num4 + 2);
-							list.Add(num4);
-							list.Add(num4 + 3);
-							num4 += 4;
-							break;
-						default:
-							throw new NotSupportedException("Collada polygons with less than 3 or more than 4 vertices are not supported.");
+							case 3:
+								list.Add(num4);
+								list.Add(num4 + 2);
+								list.Add(num4 + 1);
+								num4 += 3;
+								break;
+							case 4:
+								list.Add(num4);
+								list.Add(num4 + 2);
+								list.Add(num4 + 1);
+								list.Add(num4 + 2);
+								list.Add(num4);
+								list.Add(num4 + 3);
+								num4 += 4;
+								break;
+							default:
+								throw new NotSupportedException("Collada polygons with less than 3 or more than 4 vertices are not supported.");
 						}
 					}
 				}
@@ -605,12 +605,12 @@ namespace Engine.Media
 							float[] array = value.Source.Accessor.Source.Array;
 							int offset = value.Source.Accessor.Offset;
 							int stride = value.Source.Accessor.Stride;
-							int num6 = polygons.P[list[j] * polygons.Inputs.Count + value.Offset];
-							binaryWriter.BaseStream.Position = j * vertexStride + key.Offset;
-							float num7 = array[offset + stride * num6];
-							float num8 = array[offset + stride * num6 + 1];
-							float num9 = array[offset + stride * num6 + 2];
-							modelMeshPartData.BoundingBox = (flag ? BoundingBox.Union(modelMeshPartData.BoundingBox, new Vector3(num7, num8, num9)) : new BoundingBox(num7, num8, num9, num7, num8, num9));
+							int num6 = polygons.P[(list[j] * polygons.Inputs.Count) + value.Offset];
+							binaryWriter.BaseStream.Position = (j * vertexStride) + key.Offset;
+							float num7 = array[offset + (stride * num6)];
+							float num8 = array[offset + (stride * num6) + 1];
+							float num9 = array[offset + (stride * num6) + 2];
+							modelMeshPartData.BoundingBox = flag ? BoundingBox.Union(modelMeshPartData.BoundingBox, new Vector3(num7, num8, num9)) : new BoundingBox(num7, num8, num9, num7, num8, num9);
 							flag = true;
 							binaryWriter.Write(num7);
 							binaryWriter.Write(num8);
@@ -624,12 +624,12 @@ namespace Engine.Media
 							float[] array2 = value.Source.Accessor.Source.Array;
 							int offset2 = value.Source.Accessor.Offset;
 							int stride2 = value.Source.Accessor.Stride;
-							int num10 = polygons.P[list[k] * polygons.Inputs.Count + value.Offset];
-							binaryWriter.BaseStream.Position = k * vertexStride + key.Offset;
-							float num11 = array2[offset2 + stride2 * num10];
-							float num12 = array2[offset2 + stride2 * num10 + 1];
-							float num13 = array2[offset2 + stride2 * num10 + 2];
-							float num14 = 1f / MathUtils.Sqrt(num11 * num11 + num12 * num12 + num13 * num13);
+							int num10 = polygons.P[(list[k] * polygons.Inputs.Count) + value.Offset];
+							binaryWriter.BaseStream.Position = (k * vertexStride) + key.Offset;
+							float num11 = array2[offset2 + (stride2 * num10)];
+							float num12 = array2[offset2 + (stride2 * num10) + 1];
+							float num13 = array2[offset2 + (stride2 * num10) + 2];
+							float num14 = 1f / MathUtils.Sqrt((num11 * num11) + (num12 * num12) + (num13 * num13));
 							binaryWriter.Write(num14 * num11);
 							binaryWriter.Write(num14 * num12);
 							binaryWriter.Write(num14 * num13);
@@ -642,10 +642,10 @@ namespace Engine.Media
 							float[] array3 = value.Source.Accessor.Source.Array;
 							int offset3 = value.Source.Accessor.Offset;
 							int stride3 = value.Source.Accessor.Stride;
-							int num15 = polygons.P[list[l] * polygons.Inputs.Count + value.Offset];
-							binaryWriter.BaseStream.Position = l * vertexStride + key.Offset;
-							binaryWriter.Write(array3[offset3 + stride3 * num15]);
-							binaryWriter.Write(1f - array3[offset3 + stride3 * num15 + 1]);
+							int num15 = polygons.P[(list[l] * polygons.Inputs.Count) + value.Offset];
+							binaryWriter.BaseStream.Position = (l * vertexStride) + key.Offset;
+							binaryWriter.Write(array3[offset3 + (stride3 * num15)]);
+							binaryWriter.Write(1f - array3[offset3 + (stride3 * num15) + 1]);
 						}
 					}
 					else
@@ -659,9 +659,9 @@ namespace Engine.Media
 							float[] array4 = value.Source.Accessor.Source.Array;
 							int offset4 = value.Source.Accessor.Offset;
 							int stride4 = value.Source.Accessor.Stride;
-							int num16 = polygons.P[list[m] * polygons.Inputs.Count + value.Offset];
-							binaryWriter.BaseStream.Position = m * vertexStride + key.Offset;
-							var color = new Color(array4[offset4 + stride4 * num16], array4[offset4 + stride4 * num16 + 1], array4[offset4 + stride4 * num16 + 2], array4[offset4 + stride4 * num16 + 3]);
+							int num16 = polygons.P[(list[m] * polygons.Inputs.Count) + value.Offset];
+							binaryWriter.BaseStream.Position = (m * vertexStride) + key.Offset;
+							var color = new Color(array4[offset4 + (stride4 * num16)], array4[offset4 + (stride4 * num16) + 1], array4[offset4 + (stride4 * num16) + 2], array4[offset4 + (stride4 * num16) + 3]);
 							binaryWriter.Write(color.PackedValue);
 						}
 					}
@@ -693,7 +693,7 @@ namespace Engine.Media
 					dictionary.Add(key, value);
 				}
 				resultIndices[i * 2] = (byte)value;
-				resultIndices[i * 2 + 1] = (byte)(value >> 8);
+				resultIndices[(i * 2) + 1] = (byte)(value >> 8);
 			}
 			resultVertices = new byte[dictionary.Count * vertexStride];
 			foreach (KeyValuePair<Vertex, ushort> item in dictionary)

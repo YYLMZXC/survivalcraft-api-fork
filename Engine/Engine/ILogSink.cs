@@ -1,6 +1,6 @@
 namespace Engine
 {
-    public interface ILogSink
+	public interface ILogSink
 	{
 		void Log(LogType type, string message);
 	}

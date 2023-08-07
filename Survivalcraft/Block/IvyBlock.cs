@@ -57,7 +57,7 @@ namespace Game
 			int data = Terrain.ExtractData(value);
 			int num = Terrain.ExtractLight(value);
 			int face = GetFace(data);
-			float s = LightingManager.LightIntensityByLightValueAndFace[num + 16 * CellFace.OppositeFace(face)];
+			float s = LightingManager.LightIntensityByLightValueAndFace[num + (16 * CellFace.OppositeFace(face))];
 			Color color = BlockColorsMap.IvyColorsMap.Lookup(generator.Terrain, x, y, z) * s;
 			color.A = byte.MaxValue;
 			switch (face)
@@ -69,17 +69,17 @@ namespace Game
 					BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z + 1, color, DefaultTextureSlot, 2, ref vertices.Array[count + 2]);
 					BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z + 1, color, DefaultTextureSlot, 3, ref vertices.Array[count + 3]);
 					indices.Add(count);
-					indices.Add((count + 1));
-					indices.Add((count + 2));
-					indices.Add((count + 2));
-					indices.Add((count + 1));
+					indices.Add(count + 1);
+					indices.Add(count + 2);
+					indices.Add(count + 2);
+					indices.Add(count + 1);
 					indices.Add(count);
-					indices.Add((count + 2));
-					indices.Add((count + 3));
+					indices.Add(count + 2);
+					indices.Add(count + 3);
 					indices.Add(count);
 					indices.Add(count);
-					indices.Add((count + 3));
-					indices.Add((count + 2));
+					indices.Add(count + 3);
+					indices.Add(count + 2);
 					break;
 				case 1:
 					vertices.Count += 4;
@@ -88,17 +88,17 @@ namespace Game
 					BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z + 1, color, DefaultTextureSlot, 2, ref vertices.Array[count + 2]);
 					BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y, z + 1, color, DefaultTextureSlot, 1, ref vertices.Array[count + 3]);
 					indices.Add(count);
-					indices.Add((count + 1));
-					indices.Add((count + 2));
-					indices.Add((count + 2));
-					indices.Add((count + 1));
+					indices.Add(count + 1);
+					indices.Add(count + 2);
+					indices.Add(count + 2);
+					indices.Add(count + 1);
 					indices.Add(count);
-					indices.Add((count + 2));
-					indices.Add((count + 3));
+					indices.Add(count + 2);
+					indices.Add(count + 3);
 					indices.Add(count);
 					indices.Add(count);
-					indices.Add((count + 3));
-					indices.Add((count + 2));
+					indices.Add(count + 3);
+					indices.Add(count + 2);
 					break;
 				case 2:
 					vertices.Count += 4;
@@ -107,17 +107,17 @@ namespace Game
 					BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z, color, DefaultTextureSlot, 2, ref vertices.Array[count + 2]);
 					BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z, color, DefaultTextureSlot, 3, ref vertices.Array[count + 3]);
 					indices.Add(count);
-					indices.Add((count + 2));
-					indices.Add((count + 1));
-					indices.Add((count + 1));
-					indices.Add((count + 2));
+					indices.Add(count + 2);
+					indices.Add(count + 1);
+					indices.Add(count + 1);
+					indices.Add(count + 2);
 					indices.Add(count);
-					indices.Add((count + 2));
+					indices.Add(count + 2);
 					indices.Add(count);
-					indices.Add((count + 3));
-					indices.Add((count + 3));
+					indices.Add(count + 3);
+					indices.Add(count + 3);
 					indices.Add(count);
-					indices.Add((count + 2));
+					indices.Add(count + 2);
 					break;
 				case 3:
 					vertices.Count += 4;
@@ -126,17 +126,17 @@ namespace Game
 					BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z + 1, color, DefaultTextureSlot, 2, ref vertices.Array[count + 2]);
 					BlockGeometryGenerator.SetupLitCornerVertex(x, y, z + 1, color, DefaultTextureSlot, 1, ref vertices.Array[count + 3]);
 					indices.Add(count);
-					indices.Add((count + 2));
-					indices.Add((count + 1));
-					indices.Add((count + 1));
-					indices.Add((count + 2));
+					indices.Add(count + 2);
+					indices.Add(count + 1);
+					indices.Add(count + 1);
+					indices.Add(count + 2);
 					indices.Add(count);
-					indices.Add((count + 2));
+					indices.Add(count + 2);
 					indices.Add(count);
-					indices.Add((count + 3));
-					indices.Add((count + 3));
+					indices.Add(count + 3);
+					indices.Add(count + 3);
 					indices.Add(count);
-					indices.Add((count + 2));
+					indices.Add(count + 2);
 					break;
 			}
 		}
@@ -165,7 +165,7 @@ namespace Game
 
 		public static bool IsGrowthStopCell(int x, int y, int z)
 		{
-			return MathUtils.Hash((uint)(x + y * 451 + z * 77437)) % 5u == 0;
+			return MathUtils.Hash((uint)(x + (y * 451) + (z * 77437))) % 5u == 0;
 		}
 	}
 }

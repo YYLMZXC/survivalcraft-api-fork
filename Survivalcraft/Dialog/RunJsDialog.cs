@@ -61,7 +61,7 @@ namespace Game
 			{
 				DateTime now = DateTime.Now;
 				string result = JsInterface.Evaluate(m_InputBox.Text);
-				TimeSpan timeCosted = (DateTime.Now - now);
+				TimeSpan timeCosted = DateTime.Now - now;
 				m_OutputBox.Text = result;
 				m_timeCostedLabel.Text = $"{MathUtils.Floor(timeCosted.TotalSeconds)}s {timeCosted.Milliseconds}ms";
 			}

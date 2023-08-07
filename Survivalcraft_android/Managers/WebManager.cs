@@ -1,6 +1,5 @@
 ﻿using Android.Net;
 using Engine;
-using SimpleJson;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +21,7 @@ namespace Game
 			public ProgressHttpContent(Stream sourceStream, CancellableProgress progress)
 			{
 				m_sourceStream = sourceStream;
-				m_progress = (progress ?? new CancellableProgress());
+				m_progress = progress ?? new CancellableProgress();
 			}
 
 			protected override bool TryComputeLength(out long length)
@@ -80,7 +79,7 @@ namespace Game
 				_ = 3;
 				try
 				{
-					progress = (progress ?? new CancellableProgress());
+					progress = progress ?? new CancellableProgress();
 					if (!IsInternetConnectionAvailable())
 					{
 						throw new InvalidOperationException("Internet connection is unavailable.");

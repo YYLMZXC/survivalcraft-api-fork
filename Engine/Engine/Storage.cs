@@ -62,15 +62,15 @@ namespace Engine
 			FileMode mode;
 			switch (openFileMode)
 			{
-			case OpenFileMode.Create:
-				mode = FileMode.Create;
-				break;
-			case OpenFileMode.CreateOrOpen:
-				mode = FileMode.OpenOrCreate;
-				break;
-			default:
-				mode = FileMode.Open;
-				break;
+				case OpenFileMode.Create:
+					mode = FileMode.Create;
+					break;
+				case OpenFileMode.CreateOrOpen:
+					mode = FileMode.OpenOrCreate;
+					break;
+				default:
+					mode = FileMode.Open;
+					break;
 			}
 			FileAccess access = (openFileMode == OpenFileMode.Read) ? FileAccess.Read : FileAccess.ReadWrite;
 			return File.Open(path2, mode, access, FileShare.Read);
@@ -113,13 +113,13 @@ namespace Engine
 		public static IEnumerable<string> ListFileNames(string path)
 		{
 			return from s in Directory.EnumerateFiles(ProcessPath(path, writeAccess: false, failIfApp: false))
-				select Path.GetFileName(s);
+				   select Path.GetFileName(s);
 		}
 
 		public static IEnumerable<string> ListDirectoryNames(string path)
 		{
 			return from s in Directory.EnumerateDirectories(ProcessPath(path, writeAccess: false, failIfApp: false))
-				select Path.GetFileName(s);
+				   select Path.GetFileName(s);
 		}
 
 		public static string ReadAllText(string path)

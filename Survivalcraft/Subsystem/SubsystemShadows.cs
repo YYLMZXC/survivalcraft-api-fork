@@ -32,7 +32,7 @@ namespace Game
 				return;
 			}
 			float num2 = MathUtils.Sqrt(num);
-			float num3 = MathUtils.Saturate(4f * (1f - num2 / 32f));
+			float num3 = MathUtils.Saturate(4f * (1f - (num2 / 32f)));
 			float num4 = shadowDiameter / 2f;
 			int num5 = Terrain.ToCell(shadowPosition.X - num4);
 			int num6 = Terrain.ToCell(shadowPosition.Z - num4);
@@ -62,7 +62,7 @@ namespace Game
 									if (num14 > 0f)
 									{
 										float num15 = MathUtils.Max(num14 * 0.01f, 0.005f);
-										float num16 = MathUtils.Saturate(1f - (shadowPosition.Y - num13) / 2f);
+										float num16 = MathUtils.Saturate(1f - ((shadowPosition.Y - num13) / 2f));
 										var p = new Vector3(boundingBox.Min.X + i, num13 + num15, boundingBox.Min.Z + j);
 										var p2 = new Vector3(boundingBox.Max.X + i, num13 + num15, boundingBox.Min.Z + j);
 										var p3 = new Vector3(boundingBox.Max.X + i, num13 + num15, boundingBox.Max.Z + j);
@@ -107,7 +107,7 @@ namespace Game
 
 		public static Vector2 CalculateShadowTextureCoordinate(Vector3 p, Vector3 shadowPosition, float shadowDiameter)
 		{
-			return new Vector2(0.5f + (p.X - shadowPosition.X) / shadowDiameter, 0.5f + (p.Z - shadowPosition.Z) / shadowDiameter);
+			return new Vector2(0.5f + ((p.X - shadowPosition.X) / shadowDiameter), 0.5f + ((p.Z - shadowPosition.Z) / shadowDiameter));
 		}
 	}
 }

@@ -37,7 +37,7 @@ namespace Game
 			m_componentCreature.ComponentBody.CollidedWithBody += delegate (ComponentBody body)
 			{
 				m_target = body;
-				m_isFast = (MathUtils.Max(body.Velocity.Length(), m_componentCreature.ComponentBody.Velocity.Length()) > 3f);
+				m_isFast = MathUtils.Max(body.Velocity.Length(), m_componentCreature.ComponentBody.Velocity.Length()) > 3f;
 			};
 			m_stateMachine.AddState("Inactive", delegate
 			{
@@ -62,7 +62,7 @@ namespace Game
 				}
 				if (m_target != null)
 				{
-					Vector3 vector = m_target.Position + 0.5f * m_target.Velocity;
+					Vector3 vector = m_target.Position + (0.5f * m_target.Velocity);
 					var v = Vector2.Normalize(m_componentCreature.ComponentBody.Position.XZ - vector.XZ);
 					Vector2 vector2 = Vector2.Zero;
 					float num = float.MinValue;
@@ -81,7 +81,7 @@ namespace Game
 					}
 					float s = m_random.Float(1.5f, 2f);
 					float speed = m_isFast ? 0.7f : 0.35f;
-					m_componentPathfinding.SetDestination(m_componentCreature.ComponentBody.Position + s * new Vector3(vector2.X, 0f, vector2.Y), speed, 1f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
+					m_componentPathfinding.SetDestination(m_componentCreature.ComponentBody.Position + (s * new Vector3(vector2.X, 0f, vector2.Y)), speed, 1f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
 				}
 			}, delegate
 			{

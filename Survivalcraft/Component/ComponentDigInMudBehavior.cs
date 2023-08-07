@@ -59,7 +59,7 @@ namespace Game
 			m_componentFishModel = Entity.FindComponent<ComponentFishModel>(throwOnError: true);
 			m_componentSwimAwayBehavior = Entity.FindComponent<ComponentSwimAwayBehavior>(throwOnError: true);
 			string digInBlockName = valuesDictionary.GetValue<string>("DigInBlockName");
-			m_digInBlockIndex = ((!string.IsNullOrEmpty(digInBlockName)) ? BlocksManager.Blocks.First((Block b) => b.GetType().Name == digInBlockName).BlockIndex : 0);
+			m_digInBlockIndex = (!string.IsNullOrEmpty(digInBlockName)) ? BlocksManager.Blocks.First((Block b) => b.GetType().Name == digInBlockName).BlockIndex : 0;
 			m_maxDigInDepth = valuesDictionary.GetValue<float>("MaxDigInDepth");
 			m_componentCreature.ComponentBody.CollidedWithBody += delegate (ComponentBody b)
 			{
@@ -132,7 +132,7 @@ namespace Game
 				Vector2 vector = m_random.Vector2(1f, 1f);
 				float y = 0.2f * m_random.Float(-0.8f, 1f);
 				var v = Vector3.Normalize(new Vector3(vector.X, y, vector.Y));
-				Vector3 vector2 = m_componentCreature.ComponentBody.Position + m_random.Float(8f, 16f) * v;
+				Vector3 vector2 = m_componentCreature.ComponentBody.Position + (m_random.Float(8f, 16f) * v);
 				TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(m_componentCreature.ComponentBody.Position, vector2, useInteractionBoxes: false, skipAirBlocks: false, delegate (int value, float d)
 				{
 					int num = Terrain.ExtractContents(value);
@@ -144,7 +144,7 @@ namespace Game
 				}
 				if (terrainRaycastResult.Value.Distance > 4f)
 				{
-					return m_componentCreature.ComponentBody.Position + v * terrainRaycastResult.Value.Distance;
+					return m_componentCreature.ComponentBody.Position + (v * terrainRaycastResult.Value.Distance);
 				}
 			}
 			return null;

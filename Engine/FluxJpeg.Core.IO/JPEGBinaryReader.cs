@@ -54,7 +54,7 @@ namespace FluxJpeg.Core.IO
 			if (_bitsLeft >= n)
 			{
 				_bitsLeft -= n;
-				num = _bitBuffer >> 8 - n;
+				num = _bitBuffer >> (8 - n);
 				_bitBuffer = (byte)(_bitBuffer << n);
 				return num;
 			}
@@ -66,7 +66,7 @@ namespace FluxJpeg.Core.IO
 					_bitsLeft = 8;
 				}
 				int num2 = (n <= _bitsLeft) ? n : _bitsLeft;
-				num |= _bitBuffer >> 8 - num2 << n - num2;
+				num |= _bitBuffer >> (8 - num2) << (n - num2);
 				_bitBuffer = (byte)(_bitBuffer << num2);
 				_bitsLeft -= num2;
 				n -= num2;

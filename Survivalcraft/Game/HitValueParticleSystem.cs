@@ -26,7 +26,7 @@ namespace Game
 			obj.IsActive = true;
 			obj.Position = position;
 			obj.TimeToLive = 0.9f;
-			obj.Velocity = velocity + random.Vector3(0.75f) * new Vector3(1f, 0f, 1f) + 0.5f * Vector3.UnitY;
+			obj.Velocity = velocity + (random.Vector3(0.75f) * new Vector3(1f, 0f, 1f)) + (0.5f * Vector3.UnitY);
 			obj.BaseColor = color;
 			obj.Text = text;
 		}

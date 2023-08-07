@@ -54,7 +54,7 @@ namespace Game
 			if (ExternalContentManager.DoesEntryTypeRequireName(m_type))
 			{
 				m_nameTextBoxWidget.IsEnabled = true;
-				m_downloadButtonWidget.IsEnabled = (text.Length > 0 && name.Length > 0 && m_type != ExternalContentType.Unknown);
+				m_downloadButtonWidget.IsEnabled = text.Length > 0 && name.Length > 0 && m_type != ExternalContentType.Unknown;
 				if (m_updateContentName)
 				{
 					m_nameTextBoxWidget.Text = GetNameFromLink(m_linkTextBoxWidget.Text);
@@ -65,7 +65,7 @@ namespace Game
 			{
 				m_nameTextBoxWidget.IsEnabled = false;
 				m_nameTextBoxWidget.Text = string.Empty;
-				m_downloadButtonWidget.IsEnabled = (text.Length > 0 && m_type != ExternalContentType.Unknown);
+				m_downloadButtonWidget.IsEnabled = text.Length > 0 && m_type != ExternalContentType.Unknown;
 			}
 			if (m_updateContentType)
 			{

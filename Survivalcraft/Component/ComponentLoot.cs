@@ -95,7 +95,7 @@ namespace Game
 					result.Value = v;
 					result.MinCount = int.Parse(array[1]);
 					result.MaxCount = int.Parse(array[2]);
-					result.Probability = ((array.Length >= 4) ? float.Parse(array[3]) : 1f);
+					result.Probability = (array.Length >= 4) ? float.Parse(array[3]) : 1f;
 					return result;
 				}
 				catch

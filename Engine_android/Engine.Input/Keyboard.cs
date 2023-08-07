@@ -5,7 +5,7 @@ using System;
 
 namespace Engine.Input
 {
-    public static class Keyboard
+	public static class Keyboard
 	{
 		public const double m_keyFirstRepeatTime = 0.2;
 

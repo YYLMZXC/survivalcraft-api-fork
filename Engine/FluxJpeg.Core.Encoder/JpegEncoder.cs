@@ -1,4 +1,3 @@
-using FluxJpeg.Core.IO;
 using System;
 using System.IO;
 
@@ -228,18 +227,18 @@ namespace FluxJpeg.Core.Encoder
 				int num5;
 				switch (i)
 				{
-				default:
-					num5 = 17;
-					break;
-				case 2:
-					num5 = 1;
-					break;
-				case 1:
-					num5 = 16;
-					break;
-				case 0:
-					num5 = 0;
-					break;
+					default:
+						num5 = 17;
+						break;
+					case 2:
+						num5 = 1;
+						break;
+					case 1:
+						num5 = 16;
+						break;
+					case 0:
+						num5 = 0;
+						break;
 				}
 				byte b = (byte)num5;
 				array4[num2++ - num3] = b;
@@ -262,7 +261,7 @@ namespace FluxJpeg.Core.Encoder
 				array5 = array7;
 				num3 = num2;
 			}
-			array5[2] = (byte)((num2 - 2 >> 8) & 0xFF);
+			array5[2] = (byte)(((num2 - 2) >> 8) & 0xFF);
 			array5[3] = (byte)((num2 - 2) & 0xFF);
 			WriteArray(array5);
 			byte[] array8 = new byte[14]

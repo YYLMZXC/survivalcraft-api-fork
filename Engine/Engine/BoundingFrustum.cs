@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public class BoundingFrustum : IEquatable<BoundingFrustum>
+	public class BoundingFrustum : IEquatable<BoundingFrustum>
 	{
 		private Matrix m_viewProjection;
 
@@ -122,7 +122,7 @@ namespace Engine
 				float y = m_planes[i].Normal.Y;
 				float z = m_planes[i].Normal.Z;
 				float d = m_planes[i].D;
-				if (x * point.X + y * point.Y + z * point.Z + d > 0f)
+				if ((x * point.X) + (y * point.Y) + (z * point.Z) + d > 0f)
 				{
 					return false;
 				}
@@ -138,7 +138,7 @@ namespace Engine
 				float y = m_planes[i].Normal.Y;
 				float z = m_planes[i].Normal.Z;
 				float d = m_planes[i].D;
-				if (x * sphere.Center.X + y * sphere.Center.Y + z * sphere.Center.Z + d > sphere.Radius)
+				if ((x * sphere.Center.X) + (y * sphere.Center.Y) + (z * sphere.Center.Z) + d > sphere.Radius)
 				{
 					return false;
 				}
@@ -157,7 +157,7 @@ namespace Engine
 				float num = (x > 0f) ? box.Min.X : box.Max.X;
 				float num2 = (y > 0f) ? box.Min.Y : box.Max.Y;
 				float num3 = (z > 0f) ? box.Min.Z : box.Max.Z;
-				if (x * num + y * num2 + z * num3 + d > 0f)
+				if ((x * num) + (y * num2) + (z * num3) + d > 0f)
 				{
 					return false;
 				}
@@ -178,7 +178,7 @@ namespace Engine
 		private static Vector3 ComputeIntersection(Plane plane, Ray3 ray)
 		{
 			float s = (0f - plane.D - Vector3.Dot(plane.Normal, ray.Position)) / Vector3.Dot(plane.Normal, ray.Direction);
-			return ray.Position + ray.Direction * s;
+			return ray.Position + (ray.Direction * s);
 		}
 
 		private static Ray3 ComputeIntersectionLine(Plane p1, Plane p2)
@@ -186,7 +186,7 @@ namespace Engine
 			Ray3 result = default(Ray3);
 			result.Direction = Vector3.Cross(p1.Normal, p2.Normal);
 			float d = result.Direction.LengthSquared();
-			result.Position = Vector3.Cross((0f - p1.D) * p2.Normal + p2.D * p1.Normal, result.Direction) / d;
+			result.Position = Vector3.Cross(((0f - p1.D) * p2.Normal) + (p2.D * p1.Normal), result.Direction) / d;
 			return result;
 		}
 	}

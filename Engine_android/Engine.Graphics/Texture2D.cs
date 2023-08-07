@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
-    public class Texture2D : GraphicsResource
+	public class Texture2D : GraphicsResource
 	{
 		public int m_texture;
 		public All m_pixelFormat;
@@ -208,7 +208,7 @@ namespace Engine.Graphics
 			{
 				int width = MathUtils.Max(Width >> mipLevel, 1);
 				int height = MathUtils.Max(Height >> mipLevel, 1);
-				IntPtr pixels = gCHandle.AddrOfPinnedObject() + sourceStartIndex * Utilities.SizeOf<T>();
+				IntPtr pixels = gCHandle.AddrOfPinnedObject() + (sourceStartIndex * Utilities.SizeOf<T>());
 				GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
 				GL.TexImage2D(All.Texture2D, mipLevel, (int)m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, pixels);
 			}
@@ -223,7 +223,7 @@ namespace Engine.Graphics
 			DeleteTexture();
 		}
 
-        internal override void HandleDeviceReset()
+		internal override void HandleDeviceReset()
 		{
 			AllocateTexture();
 		}

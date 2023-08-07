@@ -12,7 +12,7 @@ namespace Game
 
 		public Vector3 HitPoint()
 		{
-			return Ray.Position + Ray.Direction * Distance;
+			return Ray.Position + (Ray.Direction * Distance);
 		}
 	}
 }

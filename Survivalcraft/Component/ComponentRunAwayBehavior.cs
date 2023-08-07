@@ -182,7 +182,7 @@ namespace Game
 				var vector3 = new Vector2(position.X, position.Z);
 				float num2 = Vector2.Distance(vector3, vector2);
 				float num3 = Segment2.Distance(s, vector3);
-				num += num2 + 3f * num3;
+				num += num2 + (3f * num3);
 			}
 			else
 			{

@@ -2,7 +2,7 @@
 
 namespace Engine.Input
 {
-    public class KeyboardInput
+	public class KeyboardInput
 	{
 		public static List<char> Chars = new List<char>();
 		public static bool _DeletePressed;

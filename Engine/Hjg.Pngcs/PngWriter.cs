@@ -74,7 +74,7 @@ namespace Hjg.Pngcs
 
 		public PngWriter(Stream outputStream, ImageInfo imgInfo, string filename)
 		{
-			this.filename = ((filename == null) ? "" : filename);
+			this.filename = (filename == null) ? "" : filename;
 			this.outputStream = outputStream;
 			ImgInfo = imgInfo;
 			CompLevel = 6;
@@ -88,7 +88,7 @@ namespace Hjg.Pngcs
 			metadata = new PngMetadata(chunksList);
 			filterStrat = new FilterWriteStrategy(ImgInfo, FilterType.FILTER_DEFAULT);
 			unpackedMode = false;
-			needsPack = (unpackedMode && imgInfo.Packed);
+			needsPack = unpackedMode && imgInfo.Packed;
 		}
 
 		private void init()
@@ -109,7 +109,7 @@ namespace Hjg.Pngcs
 			for (int j = 1; j <= ImgInfo.BytesPerRow; j++)
 			{
 				int num2 = rowbfilter[j];
-				num = ((num2 >= 0) ? (num + num2) : (num - num2));
+				num = (num2 >= 0) ? (num + num2) : (num - num2);
 				histox[num2 & 0xFF]++;
 			}
 			filterStrat.fillResultsForFilter(rown, type, num, histox, tentative);
@@ -292,23 +292,23 @@ namespace Hjg.Pngcs
 			rowbfilter[0] = (byte)filterType;
 			switch (filterType)
 			{
-			case FilterType.FILTER_NONE:
-				FilterRowNone();
-				break;
-			case FilterType.FILTER_SUB:
-				FilterRowSub();
-				break;
-			case FilterType.FILTER_UP:
-				FilterRowUp();
-				break;
-			case FilterType.FILTER_AVERAGE:
-				FilterRowAverage();
-				break;
-			case FilterType.FILTER_PAETH:
-				FilterRowPaeth();
-				break;
-			default:
-				throw new PngjOutputException("Filter type " + filterType.ToString() + " not implemented");
+				case FilterType.FILTER_NONE:
+					FilterRowNone();
+					break;
+				case FilterType.FILTER_SUB:
+					FilterRowSub();
+					break;
+				case FilterType.FILTER_UP:
+					FilterRowUp();
+					break;
+				case FilterType.FILTER_AVERAGE:
+					FilterRowAverage();
+					break;
+				case FilterType.FILTER_PAETH:
+					FilterRowPaeth();
+					break;
+				default:
+					throw new PngjOutputException("Filter type " + filterType.ToString() + " not implemented");
 			}
 			reportResultsForFilter(rown, filterType, tentative: false);
 		}
@@ -342,7 +342,7 @@ namespace Hjg.Pngcs
 			int num2 = 1;
 			while (num2 <= bytesPerRow)
 			{
-				rowbfilter[num2] = (byte)(rowb[num2] - (rowbprev[num2] + ((num > 0) ? rowb[num] : 0)) / 2);
+				rowbfilter[num2] = (byte)(rowb[num2] - ((rowbprev[num2] + ((num > 0) ? rowb[num] : 0)) / 2));
 				num2++;
 				num++;
 			}
@@ -399,7 +399,7 @@ namespace Hjg.Pngcs
 			long num = 0L;
 			for (int i = 1; i <= ImgInfo.BytesPerRow; i++)
 			{
-				num = ((rowbfilter[i] >= 0) ? (num + rowbfilter[i]) : (num - rowbfilter[i]));
+				num = (rowbfilter[i] >= 0) ? (num + rowbfilter[i]) : (num - rowbfilter[i]);
 			}
 			return num;
 		}
@@ -596,7 +596,7 @@ namespace Hjg.Pngcs
 		public void SetUseUnPackedMode(bool useUnpackedMode)
 		{
 			unpackedMode = useUnpackedMode;
-			needsPack = (unpackedMode && ImgInfo.Packed);
+			needsPack = unpackedMode && ImgInfo.Packed;
 		}
 	}
 }

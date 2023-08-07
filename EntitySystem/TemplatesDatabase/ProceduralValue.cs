@@ -27,7 +27,7 @@ namespace TemplatesDatabase
 				}
 				return $"%'{value}' not found%";
 			}
-			return m_regEx.Replace(Procedure, delegate(Match m)
+			return m_regEx.Replace(Procedure, delegate (Match m)
 			{
 				string value2 = m.Groups[1].Value;
 				DatabaseObject databaseObject2 = ResolveReference(context, value2);

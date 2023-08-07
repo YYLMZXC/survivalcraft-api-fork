@@ -54,12 +54,12 @@ namespace Game
 
 		public double CalculateDay(double totalElapsedGameTime)
 		{
-			return (totalElapsedGameTime + (TimeOfDayOffset + 0.30000001192092896) * DayDuration) / DayDuration;
+			return (totalElapsedGameTime + ((TimeOfDayOffset + 0.30000001192092896) * DayDuration)) / DayDuration;
 		}
 
 		public float CalculateTimeOfDay(double totalElapsedGameTime)
 		{
-			return (float)MathUtils.Remainder(totalElapsedGameTime + (TimeOfDayOffset + 0.30000001192092896) * DayDuration, DayDuration) / DayDuration;
+			return (float)MathUtils.Remainder(totalElapsedGameTime + ((TimeOfDayOffset + 0.30000001192092896) * DayDuration), DayDuration) / DayDuration;
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary)

@@ -29,7 +29,7 @@ namespace Game
 				SettingsManager.Brightness = m_brightnessSlider.Value;
 			}
 			m_virtualRealityButton.IsEnabled = false;
-			m_virtualRealityButton.Text = (SettingsManager.UseVr ? "Enabled" : "Disabled");
+			m_virtualRealityButton.Text = SettingsManager.UseVr ? "Enabled" : "Disabled";
 			m_brightnessSlider.Value = SettingsManager.Brightness;
 			m_brightnessSlider.Text = MathUtils.Round(SettingsManager.Brightness * 10f).ToString();
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)

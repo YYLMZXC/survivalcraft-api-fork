@@ -169,8 +169,8 @@ namespace Game
 					}
 					if (!m_fluidRandomFlowDirections.TryGetValue(new Point3(x, y, z), out Vector2 value))
 					{
-						value.X = 0.05f * (2f * SimplexNoise.OctavedNoise(x + 0.2f * (float)SubsystemTime.GameTime, z, 0.1f, 1, 1f, 1f) - 1f);
-						value.Y = 0.05f * (2f * SimplexNoise.OctavedNoise(x + 0.2f * (float)SubsystemTime.GameTime + 100f, z, 0.1f, 1, 1f, 1f) - 1f);
+						value.X = 0.05f * ((2f * SimplexNoise.OctavedNoise(x + (0.2f * (float)SubsystemTime.GameTime), z, 0.1f, 1, 1f, 1f)) - 1f);
+						value.Y = 0.05f * ((2f * SimplexNoise.OctavedNoise(x + (0.2f * (float)SubsystemTime.GameTime) + 100f, z, 0.1f, 1, 1f, 1f)) - 1f);
 						if (m_fluidRandomFlowDirections.Count < 1000)
 						{
 							m_fluidRandomFlowDirections[new Point3(x, y, z)] = value;
@@ -375,7 +375,7 @@ namespace Game
 						float num8 = p.X - (j + 0.5f);
 						float num9 = p.Y - (l + 1f);
 						float num10 = p.Z - (i + 0.5f);
-						float num11 = num8 * num8 + num9 * num9 + num10 * num10;
+						float num11 = (num8 * num8) + (num9 * num9) + (num10 * num10);
 						if (num11 < num)
 						{
 							num = num11;

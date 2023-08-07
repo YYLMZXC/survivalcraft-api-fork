@@ -187,7 +187,7 @@ namespace Game
 				}
 				else if (m_autoChaseSuppressionTime <= 0f && (m_target == null || ScoreTarget(m_target) <= 0f) && m_componentCreature.ComponentHealth.Health > 0.4f)
 				{
-					m_range = ((m_subsystemSky.SkyLightIntensity < 0.2f) ? m_nightChaseRange : m_dayChaseRange);
+					m_range = (m_subsystemSky.SkyLightIntensity < 0.2f) ? m_nightChaseRange : m_dayChaseRange;
 					ComponentCreature componentCreature = FindTarget();
 					if (componentCreature != null)
 					{
@@ -202,7 +202,7 @@ namespace Game
 						bool flag = m_subsystemSky.SkyLightIntensity >= 0.1f;
 						float maxRange = flag ? (m_dayChaseRange + 6f) : (m_nightChaseRange + 6f);
 						float maxChaseTime = flag ? (m_dayChaseTime * m_random.Float(0.75f, 1f)) : (m_nightChaseTime * m_random.Float(0.75f, 1f));
-						Attack(componentCreature, maxRange, maxChaseTime, (!flag) ? true : false);
+						Attack(componentCreature, maxRange, maxChaseTime, !flag);
 					}
 				}
 			}, null);
@@ -284,7 +284,7 @@ namespace Game
 						int maxPathfindingPositions = 0;
 						if (m_isPersistent)
 						{
-							maxPathfindingPositions = (m_subsystemTime.FixedTimeStep.HasValue ? 1500 : 500);
+							maxPathfindingPositions = m_subsystemTime.FixedTimeStep.HasValue ? 1500 : 500;
 						}
 						BoundingBox boundingBox = m_componentCreature.ComponentBody.BoundingBox;
 						BoundingBox boundingBox2 = m_target.ComponentBody.BoundingBox;
@@ -292,7 +292,7 @@ namespace Game
 						Vector3 vector = 0.5f * (boundingBox2.Min + boundingBox2.Max);
 						float num = Vector3.Distance(v, vector);
 						float num2 = (num < 4f) ? 0.2f : 0f;
-						m_componentPathfinding.SetDestination(vector + num2 * num * m_target.ComponentBody.Velocity, 1f, 1.5f, maxPathfindingPositions, useRandomMovements: true, ignoreHeightDifference: false, raycastDestination: true, m_target.ComponentBody);
+						m_componentPathfinding.SetDestination(vector + (num2 * num * m_target.ComponentBody.Velocity), 1f, 1.5f, maxPathfindingPositions, useRandomMovements: true, ignoreHeightDifference: false, raycastDestination: true, m_target.ComponentBody);
 						if (m_random.Float(0f, 1f) < 0.33f * m_dt)
 						{
 							m_componentCreature.ComponentCreatureSounds.PlayAttackSound();
@@ -332,7 +332,7 @@ namespace Game
 			bool flag2 = m_componentCreature.Category != CreatureCategory.WaterPredator && m_componentCreature.Category != CreatureCategory.WaterOther;
 			bool flag3 = componentCreature == Target || m_subsystemGameInfo.WorldSettings.GameMode > GameMode.Harmless;
 			bool flag4 = (componentCreature.Category & m_autoChaseMask) != 0;
-			bool flag5 = componentCreature == Target || (flag4 && MathUtils.Remainder(0.004999999888241291 * m_subsystemTime.GameTime + GetHashCode() % 1000 / 1000f + componentCreature.GetHashCode() % 1000 / 1000f, 1.0) < m_chaseNonPlayerProbability);
+			bool flag5 = componentCreature == Target || (flag4 && MathUtils.Remainder((0.004999999888241291 * m_subsystemTime.GameTime) + (GetHashCode() % 1000 / 1000f) + (componentCreature.GetHashCode() % 1000 / 1000f), 1.0) < m_chaseNonPlayerProbability);
 			if (componentCreature != m_componentCreature && ((!flag && flag5) || (flag && flag3)) && componentCreature.Entity.IsAddedToProject && componentCreature.ComponentHealth.Health > 0f && (flag2 || IsTargetInWater(componentCreature.ComponentBody)))
 			{
 				float num = Vector3.Distance(m_componentCreature.ComponentBody.Position, componentCreature.ComponentBody.Position);
@@ -370,7 +370,7 @@ namespace Game
 			BoundingBox boundingBox = m_componentCreature.ComponentBody.BoundingBox;
 			BoundingBox boundingBox2 = target.BoundingBox;
 			Vector3 v = 0.5f * (boundingBox.Min + boundingBox.Max);
-			Vector3 v2 = 0.5f * (boundingBox2.Min + boundingBox2.Max) - v;
+			Vector3 v2 = (0.5f * (boundingBox2.Min + boundingBox2.Max)) - v;
 			float num = v2.Length();
 			Vector3 v3 = v2 / num;
 			float num2 = 0.5f * (boundingBox.Max.X - boundingBox.Min.X + boundingBox2.Max.X - boundingBox2.Min.X);
@@ -402,7 +402,7 @@ namespace Game
 			BoundingBox boundingBox = m_componentCreature.ComponentBody.BoundingBox;
 			BoundingBox boundingBox2 = target.BoundingBox;
 			Vector3 v = 0.5f * (boundingBox.Min + boundingBox.Max);
-			Vector3 v2 = 0.5f * (boundingBox2.Min + boundingBox2.Max) - v;
+			Vector3 v2 = (0.5f * (boundingBox2.Min + boundingBox2.Max)) - v;
 			float num = v2.Length();
 			Vector3 v3 = v2 / num;
 			float num2 = 0.5f * (boundingBox.Max.X - boundingBox.Min.X + boundingBox2.Max.X - boundingBox2.Min.X);

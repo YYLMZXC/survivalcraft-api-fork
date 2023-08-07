@@ -37,7 +37,7 @@ namespace Game
 					var c = Color.Lerp(th11, th21, f);
 					var c2 = Color.Lerp(th12, th22, f);
 					var color = Color.Lerp(c, c2, f2);
-					int num = i + j * 16;
+					int num = i + (j * 16);
 					m_map[num] = color;
 				}
 			}
@@ -45,7 +45,7 @@ namespace Game
 
 		public Color Lookup(int temperature, int humidity)
 		{
-			int num = MathUtils.Clamp(temperature, 0, 15) + 16 * MathUtils.Clamp(humidity, 0, 15);
+			int num = MathUtils.Clamp(temperature, 0, 15) + (16 * MathUtils.Clamp(humidity, 0, 15));
 			return m_map[num];
 		}
 

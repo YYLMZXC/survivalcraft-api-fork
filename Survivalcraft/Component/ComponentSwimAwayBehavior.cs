@@ -68,7 +68,7 @@ namespace Game
 				}
 				if (m_componentCreature.ComponentHealth.HealthChange < 0f)
 				{
-					m_importanceLevel = ((m_componentCreature.ComponentHealth.Health < 0.33f) ? 300 : 100);
+					m_importanceLevel = (m_componentCreature.ComponentHealth.Health < 0.33f) ? 300 : 100;
 				}
 				else if (m_attacker != null && Vector3.DistanceSquared(m_attacker.Position, m_componentCreature.ComponentBody.Position) < 25f)
 				{
@@ -103,13 +103,13 @@ namespace Game
 				Vector2 vector2 = m_random.Vector2(1f, 1f);
 				float y = 0.4f * m_random.Float(-1f, 1f);
 				var v = Vector3.Normalize(new Vector3(vector2.X, y, vector2.Y));
-				Vector3 vector3 = vector + m_random.Float(10f, 20f) * v;
+				Vector3 vector3 = vector + (m_random.Float(10f, 20f) * v);
 				TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(vector, vector3, useInteractionBoxes: false, skipAirBlocks: false, delegate (int value, float d)
 				{
 					int num3 = Terrain.ExtractContents(value);
 					return !(BlocksManager.Blocks[num3] is WaterBlock);
 				});
-				Vector3 vector4 = terrainRaycastResult.HasValue ? (vector + v * terrainRaycastResult.Value.Distance) : vector3;
+				Vector3 vector4 = terrainRaycastResult.HasValue ? (vector + (v * terrainRaycastResult.Value.Distance)) : vector3;
 				float num2 = ScoreSafePlace(vector, vector4, herdPosition);
 				if (num2 > num)
 				{
@@ -133,9 +133,9 @@ namespace Game
 				var vector4 = new Vector2(position.X, position.Z);
 				float num2 = Vector2.Distance(vector4, vector2);
 				float num3 = Segment2.Distance(s, vector4);
-				return num2 + 1.5f * num3 - num;
+				return num2 + (1.5f * num3) - num;
 			}
-			return 1.5f * Vector2.Distance(vector, vector2) - num;
+			return (1.5f * Vector2.Distance(vector, vector2)) - num;
 		}
 	}
 }

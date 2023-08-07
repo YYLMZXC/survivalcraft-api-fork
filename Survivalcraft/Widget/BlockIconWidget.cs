@@ -117,7 +117,7 @@ namespace Game
 				: BlocksTexturesManager.DefaultBlocksTexture;
 			Viewport viewport = Display.Viewport;
 			float num = MathUtils.Min(ActualSize.X, ActualSize.Y) * Scale;
-			var m = Matrix.CreateOrthographic(3.6f, 3.6f, -10f - 1f * Depth, 10f - 1f * Depth);
+			var m = Matrix.CreateOrthographic(3.6f, 3.6f, -10f - (1f * Depth), 10f - (1f * Depth));
 			Matrix m2 = MatrixUtils.CreateScaleTranslation(num, 0f - num, ActualSize.X / 2f, ActualSize.Y / 2f) * GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / viewport.Width, -2f / viewport.Height, -1f, 1f);
 			DrawBlockEnvironmentData.DrawBlockMode = DrawBlockMode.UI;
 			DrawBlockEnvironmentData.ViewProjectionMatrix = (CustomViewMatrix.HasValue ? CustomViewMatrix.Value : m_viewMatrix) * m * m2;

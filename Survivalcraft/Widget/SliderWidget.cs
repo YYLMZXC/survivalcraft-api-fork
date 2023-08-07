@@ -208,12 +208,12 @@ namespace Game
 					float value = Value;
 					if (LayoutDirection == LayoutDirection.Horizontal)
 					{
-						float f = (vector.X - num2 / 2f) / (num - num2);
+						float f = (vector.X - (num2 / 2f)) / (num - num2);
 						Value = MathUtils.Lerp(MinValue, MaxValue, f);
 					}
 					else
 					{
-						float f2 = (vector.Y - num2 / 2f) / (num - num2);
+						float f2 = (vector.Y - (num2 / 2f)) / (num - num2);
 						Value = MathUtils.Lerp(MinValue, MaxValue, f2);
 					}
 					if (Value != value && m_granularity > 0f && !string.IsNullOrEmpty(SoundName))

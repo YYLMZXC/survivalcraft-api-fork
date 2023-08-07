@@ -53,8 +53,8 @@ namespace Game
 
 		public override void Update()
 		{
-			m_leftButtonWidget.IsEnabled = (m_index > 0);
-			m_rightButtonWidget.IsEnabled = (m_index < m_valuesList.Count - 1);
+			m_leftButtonWidget.IsEnabled = m_index > 0;
+			m_rightButtonWidget.IsEnabled = m_index < m_valuesList.Count - 1;
 			if (m_leftButtonWidget.IsClicked || Input.Left)
 			{
 				m_index = MathUtils.Max(m_index - 1, 0);
@@ -92,7 +92,7 @@ namespace Game
 			}
 			if (block.GetRotPeriod(value) > 0)
 			{
-				dictionary.Add("Max Storage Time", string.Format(LanguageControl.Get(fName, 2), $"{(2 * block.GetRotPeriod(value) * 60f / 1200f):0.0}"));
+				dictionary.Add("Max Storage Time", string.Format(LanguageControl.Get(fName, 2), $"{2 * block.GetRotPeriod(value) * 60f / 1200f:0.0}"));
 			}
 			if (block.DigMethod != 0)
 			{
@@ -176,7 +176,7 @@ namespace Game
 				int num2 = 0;
 				foreach (KeyValuePair<string, string> item in blockProperties)
 				{
-					if (num2 < blockProperties.Count - blockProperties.Count / 2)
+					if (num2 < blockProperties.Count - (blockProperties.Count / 2))
 					{
 						LabelWidget propertyNames1Widget = m_propertyNames1Widget;
 						propertyNames1Widget.Text = propertyNames1Widget.Text + LanguageControl.Get(fName, item.Key) + ":\n";

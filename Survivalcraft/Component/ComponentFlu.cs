@@ -97,7 +97,7 @@ namespace Game
 				{
 					num = 0.5f;
 				}
-				m_fluDuration = MathUtils.Max(m_fluDuration - num * dt, 0f);
+				m_fluDuration = MathUtils.Max(m_fluDuration - (num * dt), 0f);
 				if (m_componentPlayer.ComponentHealth.Health > 0f && !m_componentPlayer.ComponentSleep.IsSleeping && m_subsystemTime.PeriodicGameTimeEvent(5.0, -0.0099999997764825821) && m_subsystemTime.GameTime - m_lastEffectTime > 13.0)
 				{
 					FluEffect();
@@ -143,11 +143,11 @@ namespace Game
 			if (m_blackoutDuration > 0f)
 			{
 				m_blackoutDuration = MathUtils.Max(m_blackoutDuration - dt, 0f);
-				m_blackoutFactor = MathUtils.Min(m_blackoutFactor + 0.5f * dt, 0.95f);
+				m_blackoutFactor = MathUtils.Min(m_blackoutFactor + (0.5f * dt), 0.95f);
 			}
 			else if (m_blackoutFactor > 0f)
 			{
-				m_blackoutFactor = MathUtils.Max(m_blackoutFactor - 0.5f * dt, 0f);
+				m_blackoutFactor = MathUtils.Max(m_blackoutFactor - (0.5f * dt), 0f);
 			}
 			m_componentPlayer.ComponentScreenOverlays.BlackoutFactor = MathUtils.Max(m_blackoutFactor, m_componentPlayer.ComponentScreenOverlays.BlackoutFactor);
 		}

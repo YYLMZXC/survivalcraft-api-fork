@@ -105,7 +105,7 @@ namespace Game
 
 		private void ConvertChunks(string directoryName)
 		{
-			long num = Storage.GetFileSize(Storage.CombinePaths(directoryName, "Chunks32h.dat")) / 10 + 52428800;
+			long num = (Storage.GetFileSize(Storage.CombinePaths(directoryName, "Chunks32h.dat")) / 10) + 52428800;
 			if (Storage.FreeSpace < num)
 			{
 				throw new InvalidOperationException($"Not enough free space to convert world. {num / 1024 / 1024}MB required.");

@@ -24,7 +24,7 @@ namespace FluxJpeg.Core
 		public Image ResizeToScale(int maxEdgeLength, ResamplingFilters technique)
 		{
 			double num = 0.0;
-			num = ((_input.Width <= _input.Height) ? ((double)maxEdgeLength / (double)_input.Height) : ((double)maxEdgeLength / (double)_input.Width));
+			num = (_input.Width <= _input.Height) ? ((double)maxEdgeLength / (double)_input.Height) : ((double)maxEdgeLength / (double)_input.Width);
 			if (num >= 1.0)
 			{
 				throw new ResizeNotNeededException();
@@ -37,7 +37,7 @@ namespace FluxJpeg.Core
 			double num = (double)maxWidth / (double)_input.Width;
 			double num2 = (double)maxHeight / (double)_input.Height;
 			double num3 = 0.0;
-			num3 = ((!(num < num2)) ? num2 : num);
+			num3 = (!(num < num2)) ? num2 : num;
 			if (num3 >= 1.0)
 			{
 				throw new ResizeNotNeededException();
@@ -67,14 +67,14 @@ namespace FluxJpeg.Core
 			Filter filter;
 			switch (technique)
 			{
-			case ResamplingFilters.NearestNeighbor:
-				filter = new NNResize();
-				break;
-			case ResamplingFilters.LowpassAntiAlias:
-				filter = new LowpassResize();
-				break;
-			default:
-				throw new NotSupportedException();
+				case ResamplingFilters.NearestNeighbor:
+					filter = new NNResize();
+					break;
+				case ResamplingFilters.LowpassAntiAlias:
+					filter = new LowpassResize();
+					break;
+				default:
+					throw new NotSupportedException();
 			}
 			filter.ProgressChanged += ResizeProgressChanged;
 			return filter;

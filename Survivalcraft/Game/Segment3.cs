@@ -54,7 +54,7 @@ namespace Game
 				{
 					return s.Start;
 				}
-				float num3 = MathUtils.Sqrt(v2.LengthSquared() - Vector3.Cross(p - s.Start, v).LengthSquared() / num2);
+				float num3 = MathUtils.Sqrt(v2.LengthSquared() - (Vector3.Cross(p - s.Start, v).LengthSquared() / num2));
 				return Vector3.Lerp(s.Start, s.End, num3 / MathUtils.Sqrt(num2));
 			}
 			if (!(num > 0f))

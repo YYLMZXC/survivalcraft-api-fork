@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Engine.Serialization
 {
-    public class Archive
+	public class Archive
 	{
 		private delegate void ReadDelegateGeneric<T>(InputArchive archive, ref T value);
 
@@ -278,7 +278,7 @@ namespace Engine.Serialization
 			return new SerializeData
 			{
 				Type = type,
-				UseObjectInfo = (!type.GetTypeInfo().IsValueType && type != typeof(string)),
+				UseObjectInfo = !type.GetTypeInfo().IsValueType && type != typeof(string),
 				IsHumanReadableSupported = HumanReadableConverter.IsTypeSupported(type)
 			};
 		}

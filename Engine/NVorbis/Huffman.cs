@@ -16,7 +16,7 @@ namespace NVorbis
 				array[i] = new HuffmanListNode
 				{
 					Value = values[i],
-					Length = ((lengthList[i] <= 0) ? 99999 : lengthList[i]),
+					Length = (lengthList[i] <= 0) ? 99999 : lengthList[i],
 					Bits = codeList[i],
 					Mask = (1 << lengthList[i]) - 1
 				};
@@ -26,7 +26,7 @@ namespace NVorbis
 				}
 			}
 			Array.Sort(array, SortCallback);
-			tableBits = ((num > 10) ? 10 : num);
+			tableBits = (num > 10) ? 10 : num;
 			var list = new List<HuffmanListNode>(1 << tableBits);
 			firstOverflowNode = null;
 			for (int j = 0; j < array.Length && array[j].Length < 99999; j++)
@@ -39,7 +39,7 @@ namespace NVorbis
 						firstOverflowNode = array[j];
 						continue;
 					}
-					int num2 = 1 << tableBits - length;
+					int num2 = 1 << (tableBits - length);
 					HuffmanListNode huffmanListNode = array[j];
 					for (int k = 0; k < num2; k++)
 					{

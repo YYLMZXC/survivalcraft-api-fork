@@ -56,8 +56,8 @@ namespace Game
 						else if (connectorDirection == ElectricConnectorDirection.Bottom)
 						{
 							int num4 = (int)MathUtils.Round(connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace) * 15f);
-							flag = (num4 >= 8);
-							flag3 = (num4 > 0 && num4 < 8);
+							flag = num4 >= 8;
+							flag3 = num4 > 0 && num4 < 8;
 							flag2 = true;
 						}
 						else if (connectorDirection == ElectricConnectorDirection.In)
@@ -74,7 +74,7 @@ namespace Game
 				if (flag && m_clockAllowed)
 				{
 					m_clockAllowed = false;
-					m_voltage = ((memoryBankData != null) ? (memoryBankData.Read(address) / 15f) : 0f);
+					m_voltage = (memoryBankData != null) ? (memoryBankData.Read(address) / 15f) : 0f;
 				}
 				else if (flag3 && m_writeAllowed)
 				{
@@ -89,7 +89,7 @@ namespace Game
 			}
 			else
 			{
-				m_voltage = ((memoryBankData != null) ? (memoryBankData.Read(address) / 15f) : 0f);
+				m_voltage = (memoryBankData != null) ? (memoryBankData.Read(address) / 15f) : 0f;
 			}
 			if (!flag)
 			{

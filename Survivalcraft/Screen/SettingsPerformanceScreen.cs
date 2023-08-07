@@ -134,7 +134,7 @@ namespace Game
 				SettingsManager.DisplayFpsRibbon = !SettingsManager.DisplayFpsRibbon;
 			}
 			m_resolutionButton.Text = LanguageControl.Get("ResolutionMode", SettingsManager.ResolutionMode.ToString());
-			m_visibilityRangeSlider.Value = ((m_visibilityRanges.IndexOf(SettingsManager.VisibilityRange) >= 0) ? m_visibilityRanges.IndexOf(SettingsManager.VisibilityRange) : 64);
+			m_visibilityRangeSlider.Value = (m_visibilityRanges.IndexOf(SettingsManager.VisibilityRange) >= 0) ? m_visibilityRanges.IndexOf(SettingsManager.VisibilityRange) : 64;
 			m_visibilityRangeSlider.Text = string.Format(LanguageControl.Get(fName, 1), SettingsManager.VisibilityRange);
 			if (SettingsManager.VisibilityRange <= 48)
 			{
@@ -176,8 +176,8 @@ namespace Game
 			m_objectShadowsButton.Text = SettingsManager.ObjectsShadowsEnabled ? LanguageControl.Enable : LanguageControl.Disable;
 			m_framerateLimitSlider.Value = (m_presentationIntervals.IndexOf(SettingsManager.PresentationInterval) >= 0) ? m_presentationIntervals.IndexOf(SettingsManager.PresentationInterval) : (m_presentationIntervals.Count - 1);
 			m_framerateLimitSlider.Text = (SettingsManager.PresentationInterval != 0) ? string.Format(LanguageControl.Get(fName, 8), FPSString[SettingsManager.PresentationInterval - 1]) : LanguageControl.Get(fName, 9);
-			m_displayFpsCounterButton.Text = (SettingsManager.DisplayFpsCounter ? LanguageControl.Yes : LanguageControl.No);
-			m_displayFpsRibbonButton.Text = (SettingsManager.DisplayFpsRibbon ? LanguageControl.Yes : LanguageControl.No);
+			m_displayFpsCounterButton.Text = SettingsManager.DisplayFpsCounter ? LanguageControl.Yes : LanguageControl.No;
+			m_displayFpsRibbonButton.Text = SettingsManager.DisplayFpsRibbon ? LanguageControl.Yes : LanguageControl.No;
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
 			{
 				bool flag = SettingsManager.VisibilityRange > 128;

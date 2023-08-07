@@ -67,7 +67,7 @@ namespace Game
 			Vector3 position = m_componentBody.Position;
 			if (Hitpoints <= 0f)
 			{
-				m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, position + m_componentBody.StanceBoxSize.Y / 2f * Vector3.UnitY, m_debrisStrength, m_debrisScale, Color.White, m_debrisTextureSlot));
+				m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, position + (m_componentBody.StanceBoxSize.Y / 2f * Vector3.UnitY), m_debrisStrength, m_debrisScale, Color.White, m_debrisTextureSlot));
 				m_subsystemAudio.PlayRandomSound(DamageSoundName, 1f, 0f, m_componentBody.Position, 4f, autoDelay: true);
 				Project.RemoveEntity(Entity, disposeEntity: true);
 			}

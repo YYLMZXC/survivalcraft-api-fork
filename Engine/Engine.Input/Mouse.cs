@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Engine.Input
 {
-    public static class Mouse
+	public static class Mouse
 	{
 #if desktop
 		private static Point2? m_lastMousePosition;
@@ -120,14 +120,14 @@ namespace Engine.Input
 		{
 			switch (mouseButton)
 			{
-			case OpenTK.Input.MouseButton.Left:
-				return MouseButton.Left;
-			case OpenTK.Input.MouseButton.Right:
-				return MouseButton.Right;
-			case OpenTK.Input.MouseButton.Middle:
-				return MouseButton.Middle;
-			default:
-				return (MouseButton)(-1);
+				case OpenTK.Input.MouseButton.Left:
+					return MouseButton.Left;
+				case OpenTK.Input.MouseButton.Right:
+					return MouseButton.Right;
+				case OpenTK.Input.MouseButton.Middle:
+					return MouseButton.Middle;
+				default:
+					return (MouseButton)(-1);
 			}
 		}
 #endif

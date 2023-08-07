@@ -92,7 +92,7 @@ namespace Game
 		public override int GetShadowStrength(int value)
 		{
 			int lightIntensity = GetLightIntensity(Terrain.ExtractData(value));
-			return DefaultShadowStrength - 10 * lightIntensity;
+			return DefaultShadowStrength - (10 * lightIntensity);
 		}
 
 		public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
@@ -139,9 +139,9 @@ namespace Game
 				}
 				else
 				{
-					byte r = (byte)(195 + lightIntensity * 4);
-					byte g = (byte)(180 + lightIntensity * 5);
-					byte b = (byte)(165 + lightIntensity * 6);
+					byte r = (byte)(195 + (lightIntensity * 4));
+					byte g = (byte)(180 + (lightIntensity * 5));
+					byte b = (byte)(165 + (lightIntensity * 6));
 					generator.GenerateMeshVertices(this, x, y, z, m_bulbBlockMeshesLit[mountingFace], new Color(r, g, b), null, geometry.SubsetOpaque);
 				}
 				generator.GenerateMeshVertices(this, x, y, z, m_sidesBlockMeshes[mountingFace], color2, null, geometry.SubsetOpaque);

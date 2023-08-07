@@ -52,7 +52,7 @@ namespace Game
 		public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{
 			int bulletType = (int)GetBulletType(Terrain.ExtractData(value));
-			float size2 = ((bulletType >= 0 && bulletType < m_sizes.Length) ? (size * m_sizes[bulletType]) : size);
+			float size2 = (bulletType >= 0 && bulletType < m_sizes.Length) ? (size * m_sizes[bulletType]) : size;
 			BlocksManager.DrawFlatOrImageExtrusionBlock(primitivesRenderer, value, size2, ref matrix, null, color, isEmissive: false, environmentData);
 		}
 

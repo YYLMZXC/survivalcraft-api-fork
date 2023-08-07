@@ -82,7 +82,8 @@ namespace Engine.Graphics
 			}
 			return modelBone;
 		}
-		public void AddMesh(ModelMesh mesh) {
+		public void AddMesh(ModelMesh mesh)
+		{
 			m_meshes.Add(mesh);
 		}
 

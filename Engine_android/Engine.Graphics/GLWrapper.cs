@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Engine.Graphics
 {
-    internal static class GLWrapper
+	internal static class GLWrapper
 	{
 		internal static int m_mainFramebuffer;
 
@@ -731,7 +731,7 @@ namespace Engine.Graphics
 							BindTexture(All.Texture2D, texture2D.m_texture, forceBind: false);
 							if (GL_EXT_texture_filter_anisotropic)
 							{
-								GL.TexParameter(All.Texture2D, (All)(34046), (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? ((float)samplerState.MaxAnisotropy) : 1f);
+								GL.TexParameter(All.Texture2D, (All)34046, (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? samplerState.MaxAnisotropy : 1f);
 							}
 							GL.TexParameter(All.Texture2D, All.TextureMinFilter, (int)TranslateTextureFilterModeMin(samplerState.FilterMode, texture2D.MipLevelsCount > 1));
 							GL.TexParameter(All.Texture2D, All.TextureMagFilter, (int)TranslateTextureFilterModeMag(samplerState.FilterMode));
@@ -772,7 +772,7 @@ namespace Engine.Graphics
 			}
 			if (stencil.HasValue)
 			{
-				all |= (All)(0x0400);
+				all |= (All)0x0400;
 				ClearStencil(stencil.Value);
 			}
 			if (all != 0)
@@ -896,11 +896,11 @@ namespace Engine.Graphics
 			switch (primitiveType)
 			{
 				case PrimitiveType.LineList:
-					return (All)(0x0001);
+					return (All)0x0001;
 				case PrimitiveType.LineStrip:
 					return All.LineStrip;
 				case PrimitiveType.TriangleList:
-					return (All)(0x0004);
+					return (All)0x0004;
 				case PrimitiveType.TriangleStrip:
 					return All.TriangleStrip;
 				default:
@@ -1032,7 +1032,7 @@ namespace Engine.Graphics
 				case CompareFunction.LessEqual:
 					return All.Lequal;
 				case CompareFunction.Never:
-					return (All)(0x0200);
+					return (All)0x0200;
 				case CompareFunction.NotEqual:
 					return All.Notequal;
 				default:
@@ -1064,7 +1064,7 @@ namespace Engine.Graphics
 				case Blend.Zero:
 					return All.False;
 				case Blend.One:
-					return (All)(0x0001);
+					return (All)0x0001;
 				case Blend.SourceColor:
 					return All.SrcColor;
 				case Blend.InverseSourceColor:

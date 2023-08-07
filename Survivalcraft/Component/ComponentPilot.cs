@@ -156,7 +156,7 @@ namespace Game
 						{
 							m_stuckCount++;
 						}
-						IsStuck = (m_stuckCount >= 4);
+						IsStuck = m_stuckCount >= 4;
 					}
 					if (m_componentCreature.ComponentLocomotion.FlySpeed > 0f && (num > 9f || vector.Y > 0.5f || vector.Y < -1.5f || (!m_componentCreature.ComponentBody.StandingOnValue.HasValue && m_componentCreature.ComponentBody.ImmersionFactor == 0f)) && m_componentCreature.ComponentBody.ImmersionFactor < 1f)
 					{
@@ -334,16 +334,16 @@ namespace Game
 			ComponentBody componentBody = FindNearestBodyInFront(position, Vector2.Normalize(v));
 			if (componentBody != null && componentBody != DoNotAvoidBody)
 			{
-				float num = 0.72f * (componentBody.BoxSize.X + m_componentCreature.ComponentBody.BoxSize.X) + 0.5f;
+				float num = (0.72f * (componentBody.BoxSize.X + m_componentCreature.ComponentBody.BoxSize.X)) + 0.5f;
 				Vector2 xZ = componentBody.Position.XZ;
 				Vector2 v2 = Segment2.NearestPoint(new Segment2(position.XZ, destination.XZ), xZ) - xZ;
 				if (v2.LengthSquared() < num * num)
 				{
 					float num2 = v.Length();
-					var v3 = Vector2.Normalize(xZ + Vector2.Normalize(v2) * num - position.XZ);
+					var v3 = Vector2.Normalize(xZ + (Vector2.Normalize(v2) * num) - position.XZ);
 					if (Vector2.Dot(v / num2, v3) > 0.5f)
 					{
-						return new Vector3(position.X + v3.X * num2, destination.Y, position.Z + v3.Y * num2);
+						return new Vector3(position.X + (v3.X * num2), destination.Y, position.Z + (v3.Y * num2));
 					}
 				}
 			}

@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Engine.Media
 {
-    public class BitmapFont : IDisposable
+	public class BitmapFont : IDisposable
 	{
 		public class Glyph
 		{
@@ -26,7 +26,7 @@ namespace Engine.Media
 			public Glyph(char code, Vector2 texCoord1, Vector2 texCoord2, Vector2 offset, float width)
 			{
 				Code = code;
-				IsBlank = (texCoord1 == texCoord2);
+				IsBlank = texCoord1 == texCoord2;
 				TexCoord1 = texCoord1;
 				TexCoord2 = texCoord2;
 				Offset = offset;
@@ -89,7 +89,7 @@ namespace Engine.Media
 				if (m_debugFont == null)
 				{
 #if android
-					using (Stream stream =EngineActivity.m_activity.Assets.Open("Debugfont.png"))
+					using (Stream stream = EngineActivity.m_activity.Assets.Open("Debugfont.png"))
 					{
 						using (Stream stream2 = EngineActivity.m_activity.Assets.Open("Debugfont.lst"))
 						{
@@ -116,7 +116,8 @@ namespace Engine.Media
 		/// </summary>
 		/// <param name="texture">图片文件的输入流</param>
 		/// <param name="glyphs">位图数据的输入流</param>
-		public static BitmapFont Initialize(Stream TextureStream,Stream GlyphsStream) {
+		public static BitmapFont Initialize(Stream TextureStream, Stream GlyphsStream)
+		{
 			try
 			{
 				Texture2D texture = Texture2D.Load(TextureStream);
@@ -209,15 +210,15 @@ namespace Engine.Media
 						}
 						break;
 					default:
-					{
-						Glyph glyph = GetGlyph(c);
-						vector.X += (glyph.Width + spacing.X) * scale.X;
-						if (vector.X > result.X)
 						{
-							result.X = vector.X;
+							Glyph glyph = GetGlyph(c);
+							vector.X += (glyph.Width + spacing.X) * scale.X;
+							if (vector.X > result.X)
+							{
+								result.X = vector.X;
+							}
+							break;
 						}
-						break;
-					}
 					case '\r':
 						break;
 				}
@@ -353,7 +354,7 @@ namespace Engine.Media
 			Image image2 = new Image(image.Width, image.Height);
 			for (int k = 0; k < image.Pixels.Length; k++)
 			{
-				image2.Pixels[k] = ((image.Pixels[k] == Color.Magenta) ? Color.Transparent : image.Pixels[k]);
+				image2.Pixels[k] = (image.Pixels[k] == Color.Magenta) ? Color.Transparent : image.Pixels[k];
 			}
 			if (premultiplyAlpha)
 			{

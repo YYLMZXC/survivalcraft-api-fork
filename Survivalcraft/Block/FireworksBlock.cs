@@ -69,7 +69,7 @@ namespace Game
 			}
 			for (int j = 0; j < 2; j++)
 			{
-				float num3 = 0.5f + j * 0.5f;
+				float num3 = 0.5f + (j * 0.5f);
 				var m = Matrix.CreateScale(new Vector3(num3, 1f, num3));
 				m_bodyBlockMeshes[j] = new BlockMesh();
 				m_bodyBlockMeshes[j].AppendModelMeshPart(model.FindMesh("Body").MeshParts[0], boneAbsoluteTransform * m * Matrix.CreateTranslation(0f, -0.25f, 0f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
@@ -93,7 +93,7 @@ namespace Game
 			Shape shape = GetShape(data);
 			int altitude = GetAltitude(data);
 			bool flickering = GetFlickering(data);
-			BlocksManager.DrawMeshBlock(primitivesRenderer, m_headBlockMeshes[(int)shape * 8 + color2], color, 2f * size, ref matrix, environmentData);
+			BlocksManager.DrawMeshBlock(primitivesRenderer, m_headBlockMeshes[((int)shape * 8) + color2], color, 2f * size, ref matrix, environmentData);
 			BlocksManager.DrawMeshBlock(primitivesRenderer, m_bodyBlockMeshes[altitude], color, 2f * size, ref matrix, environmentData);
 			BlocksManager.DrawMeshBlock(primitivesRenderer, m_finsBlockMeshes[flickering ? 1 : 0], color, 2f * size, ref matrix, environmentData);
 		}

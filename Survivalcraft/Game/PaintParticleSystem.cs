@@ -49,11 +49,11 @@ namespace Game
 				Particle obj = Particles[i];
 				obj.IsActive = true;
 				var vector2 = new Vector2(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
-				obj.Position = position + 0.4f * (vector2.X * vector + vector2.Y * v) + 0.03f * normal;
+				obj.Position = position + (0.4f * ((vector2.X * vector) + (vector2.Y * v))) + (0.03f * normal);
 				obj.Color = m_color;
 				obj.Size = new Vector2(m_random.Float(0.025f, 0.035f));
 				obj.TimeToLive = m_random.Float(0.5f, 1.5f);
-				obj.Velocity = 1f * (vector2.X * vector + vector2.Y * v) + m_random.Float(-3f, 0.5f) * normal;
+				obj.Velocity = (1f * ((vector2.X * vector) + (vector2.Y * v))) + (m_random.Float(-3f, 0.5f) * normal);
 				obj.TextureSlot = 15;
 				obj.Alpha = m_random.Float(0.3f, 0.6f);
 			}
@@ -77,7 +77,7 @@ namespace Game
 				if (particle.TimeToLive > 0f)
 				{
 					Vector3 position = particle.Position;
-					Vector3 vector = position + particle.Velocity * dt;
+					Vector3 vector = position + (particle.Velocity * dt);
 					TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(position, vector, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
 					if (terrainRaycastResult.HasValue)
 					{
@@ -97,7 +97,7 @@ namespace Game
 					{
 						particle.Velocity.Y += -9.81f * dt;
 					}
-					particle.Velocity *= ((particle.HighDampingFactor > 0f) ? (num2 * particle.HighDampingFactor) : num);
+					particle.Velocity *= (particle.HighDampingFactor > 0f) ? (num2 * particle.HighDampingFactor) : num;
 					particle.Color = m_color * MathUtils.Saturate(1.5f * particle.TimeToLive * particle.Alpha);
 				}
 				else

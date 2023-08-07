@@ -88,7 +88,7 @@ namespace Game
 			ExternalContentEntry externalContentEntry = null;
 			if (m_directoryList.SelectedIndex.HasValue)
 			{
-				externalContentEntry = (m_directoryList.Items[m_directoryList.SelectedIndex.Value] as ExternalContentEntry);
+				externalContentEntry = m_directoryList.Items[m_directoryList.SelectedIndex.Value] as ExternalContentEntry;
 			}
 			if (externalContentEntry != null)
 			{
@@ -121,11 +121,11 @@ namespace Game
 			}
 			m_directoryLabel.Text = m_externalContentProvider.IsLoggedIn ? string.Format(LanguageControl.Get(fName, 3), m_path) : LanguageControl.Get(fName, 4);
 			m_providerNameLabel.Text = m_externalContentProvider.DisplayName;
-			m_upDirectoryButton.IsEnabled = (m_externalContentProvider.IsLoggedIn && m_path != "/");
-			m_loginLogoutButton.Text = (m_externalContentProvider.IsLoggedIn ? LanguageControl.Get(fName, 5) : LanguageControl.Get(fName, 6));
+			m_upDirectoryButton.IsEnabled = m_externalContentProvider.IsLoggedIn && m_path != "/";
+			m_loginLogoutButton.Text = m_externalContentProvider.IsLoggedIn ? LanguageControl.Get(fName, 5) : LanguageControl.Get(fName, 6);
 			m_loginLogoutButton.IsVisible = m_externalContentProvider.RequiresLogin;
 			m_copyLinkButton.IsVisible = m_externalContentProvider.SupportsLinks;
-			m_copyLinkButton.IsEnabled = (externalContentEntry != null && ExternalContentManager.IsEntryTypeDownloadSupported(externalContentEntry.Type));
+			m_copyLinkButton.IsEnabled = externalContentEntry != null && ExternalContentManager.IsEntryTypeDownloadSupported(externalContentEntry.Type);
 			if (m_changeProviderButton.IsClicked)
 			{
 				DialogsManager.ShowDialog(null, new SelectExternalContentProviderDialog(LanguageControl.Get(fName, 7), listingSupportRequired: true, delegate (IExternalContentProvider provider)

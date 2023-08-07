@@ -101,7 +101,7 @@ namespace Hjg.Pngcs
 
 		public PngReader(Stream inputStream, string filename)
 		{
-			this.filename = ((filename == null) ? "" : filename);
+			this.filename = (filename == null) ? "" : filename;
 			this.inputStream = inputStream;
 			chunksList = new ChunksList(null);
 			metadata = new PngMetadata(chunksList);
@@ -145,8 +145,8 @@ namespace Hjg.Pngcs
 			rowb = new byte[ImgInfo.BytesPerRow + 1];
 			rowbprev = new byte[rowb.Length];
 			rowbfilter = new byte[rowb.Length];
-			interlaced = (pngChunkIHDR.Interlaced == 1);
-			deinterlacer = (interlaced ? new PngDeinterlacer(ImgInfo) : null);
+			interlaced = pngChunkIHDR.Interlaced == 1;
+			deinterlacer = interlaced ? new PngDeinterlacer(ImgInfo) : null;
 			if (pngChunkIHDR.Filmeth != 0 || pngChunkIHDR.Compmeth != 0 || (pngChunkIHDR.Interlaced & 0xFFFE) != 0)
 			{
 				throw new PngjInputException("compmethod or filtermethod or interlaced unrecognized");
@@ -206,23 +206,23 @@ namespace Hjg.Pngcs
 			int num = rowbfilter[0];
 			switch (num)
 			{
-			case 0:
-				UnfilterRowNone(nbytes);
-				break;
-			case 1:
-				UnfilterRowSub(nbytes);
-				break;
-			case 2:
-				UnfilterRowUp(nbytes);
-				break;
-			case 3:
-				UnfilterRowAverage(nbytes);
-				break;
-			case 4:
-				UnfilterRowPaeth(nbytes);
-				break;
-			default:
-				throw new PngjInputException("Filter type " + num.ToString() + " not implemented");
+				case 0:
+					UnfilterRowNone(nbytes);
+					break;
+				case 1:
+					UnfilterRowSub(nbytes);
+					break;
+				case 2:
+					UnfilterRowUp(nbytes);
+					break;
+				case 3:
+					UnfilterRowAverage(nbytes);
+					break;
+				case 4:
+					UnfilterRowPaeth(nbytes);
+					break;
+				default:
+					throw new PngjInputException("Filter type " + num.ToString() + " not implemented");
 			}
 			if (crctest != null)
 			{
@@ -237,7 +237,7 @@ namespace Hjg.Pngcs
 			while (num2 <= nbytes)
 			{
 				int num3 = (num > 0) ? rowb[num] : 0;
-				rowb[num2] = (byte)(rowbfilter[num2] + (num3 + (rowbprev[num2] & 0xFF)) / 2);
+				rowb[num2] = (byte)(rowbfilter[num2] + ((num3 + (rowbprev[num2] & 0xFF)) / 2));
 				num2++;
 				num++;
 			}
@@ -417,7 +417,7 @@ namespace Hjg.Pngcs
 			}
 			if (CurrentChunkGroup > 0 && !ChunkHelper.IsCritical(text))
 			{
-				flag2 = (flag2 || (SkipChunkMaxSize > 0 && clen >= SkipChunkMaxSize) || skipChunkIdsSet.ContainsKey(text) || (MaxBytesMetadata > 0 && clen > MaxBytesMetadata - bytesChunksLoaded) || !ChunkHelper.ShouldLoad(text, ChunkLoadBehaviour));
+				flag2 = flag2 || (SkipChunkMaxSize > 0 && clen >= SkipChunkMaxSize) || skipChunkIdsSet.ContainsKey(text) || (MaxBytesMetadata > 0 && clen > MaxBytesMetadata - bytesChunksLoaded) || !ChunkHelper.ShouldLoad(text, ChunkLoadBehaviour);
 			}
 			if (flag2)
 			{
@@ -629,7 +629,7 @@ namespace Hjg.Pngcs
 			{
 				nRows = (ImgInfo.Rows - rowOffset) / rowStep;
 			}
-			if (rowStep < 1 || rowOffset < 0 || nRows * rowStep + rowOffset > ImgInfo.Rows)
+			if (rowStep < 1 || rowOffset < 0 || (nRows * rowStep) + rowOffset > ImgInfo.Rows)
 			{
 				throw new PngjInputException("bad args");
 			}
@@ -680,7 +680,7 @@ namespace Hjg.Pngcs
 			{
 				nRows = (ImgInfo.Rows - rowOffset) / rowStep;
 			}
-			if (rowStep < 1 || rowOffset < 0 || nRows * rowStep + rowOffset > ImgInfo.Rows)
+			if (rowStep < 1 || rowOffset < 0 || (nRows * rowStep) + rowOffset > ImgInfo.Rows)
 			{
 				throw new PngjInputException("bad args");
 			}
@@ -743,7 +743,7 @@ namespace Hjg.Pngcs
 					throw new PngjInputException("invalid row in interlaced mode: " + nrow.ToString());
 				}
 				deinterlacer.setRow(nrow);
-				num = (ImgInfo.BitspPixel * deinterlacer.getPixelsToRead() + 7) / 8;
+				num = ((ImgInfo.BitspPixel * deinterlacer.getPixelsToRead()) + 7) / 8;
 				if (num < 1)
 				{
 					throw new PngjExceptionInternal("wtf??");

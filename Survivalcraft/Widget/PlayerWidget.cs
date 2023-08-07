@@ -45,7 +45,7 @@ namespace Game
 				m_subsystemTimeOfDay = m_playerData.m_subsystemGameInfo.Project.FindSubsystem<SubsystemTimeOfDay>();
 			}
 			if (m_subsystemTimeOfDay != null) time = m_subsystemTimeOfDay.DayDuration;
-			m_detailsLabel.Text += ((m_playerData.LastSpawnTime >= 0.0) ? string.Format(LanguageControl.Get(GetType().Name, 1), $"{(subsystemGameInfo.TotalElapsedGameTime - m_playerData.LastSpawnTime) / time:N1}") : LanguageControl.Get(GetType().Name, 2));
+			m_detailsLabel.Text += (m_playerData.LastSpawnTime >= 0.0) ? string.Format(LanguageControl.Get(GetType().Name, 1), $"{(subsystemGameInfo.TotalElapsedGameTime - m_playerData.LastSpawnTime) / time:N1}") : LanguageControl.Get(GetType().Name, 2);
 			if (m_editButton.IsClicked)
 			{
 				ScreensManager.SwitchScreen("Player", PlayerScreen.Mode.Edit, m_playerData);

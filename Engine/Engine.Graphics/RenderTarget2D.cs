@@ -70,7 +70,7 @@ namespace Engine.Graphics
 			AllocateRenderTarget();
 		}
 
-        private void AllocateRenderTarget()
+		private void AllocateRenderTarget()
 		{
 			GL.GenFramebuffers(1, out m_frameBuffer);
 			GLWrapper.BindFramebuffer(m_frameBuffer);
@@ -122,7 +122,7 @@ namespace Engine.Graphics
 
 		public override int GetGpuMemoryUsage()
 		{
-			return base.GetGpuMemoryUsage() + DepthFormat.GetSize() * base.Width * base.Height;
+			return base.GetGpuMemoryUsage() + (DepthFormat.GetSize() * base.Width * base.Height);
 		}
 
 		private void InitializeRenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)

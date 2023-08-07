@@ -116,7 +116,7 @@ namespace Hjg.Pngcs.Chunks
 			PngChunkTextVar pngChunkTextVar;
 			if (useLatin1)
 			{
-				pngChunkTextVar = ((!compress) ? ((PngChunkTextVar)new PngChunkTEXT(chunkList.imageInfo)) : ((PngChunkTextVar)new PngChunkZTXT(chunkList.imageInfo)));
+				pngChunkTextVar = (!compress) ? ((PngChunkTextVar)new PngChunkTEXT(chunkList.imageInfo)) : ((PngChunkTextVar)new PngChunkZTXT(chunkList.imageInfo));
 			}
 			else
 			{

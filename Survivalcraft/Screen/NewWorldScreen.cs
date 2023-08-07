@@ -84,7 +84,7 @@ namespace Game
 			m_startingPositionButton.Text = LanguageControl.Get("StartingPositionMode", m_worldSettings.StartingPositionMode.ToString());
 			m_playButton.IsVisible = flag;
 			m_errorLabel.IsVisible = !flag;
-			m_blankSeedLabel.IsVisible = (m_worldSettings.Seed.Length == 0 && !m_seedTextBox.HasFocus);
+			m_blankSeedLabel.IsVisible = m_worldSettings.Seed.Length == 0 && !m_seedTextBox.HasFocus;
 			m_descriptionLabel.Text = StringsManager.GetString("GameMode." + m_worldSettings.GameMode.ToString() + ".Description");
 			if (m_worldOptionsButton.IsClicked)
 			{

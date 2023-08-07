@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public struct Vector2 : IEquatable<Vector2>
+	public struct Vector2 : IEquatable<Vector2>
 	{
 		public float X;
 
@@ -98,12 +98,12 @@ namespace Engine
 
 		public static float Dot(Vector2 v1, Vector2 v2)
 		{
-			return v1.X * v2.X + v1.Y * v2.Y;
+			return (v1.X * v2.X) + (v1.Y * v2.Y);
 		}
 
 		public static float Cross(Vector2 v1, Vector2 v2)
 		{
-			return v1.X * v2.Y - v1.Y * v2.X;
+			return (v1.X * v2.Y) - (v1.Y * v2.X);
 		}
 
 		public static Vector2 Perpendicular(Vector2 v)
@@ -115,17 +115,17 @@ namespace Engine
 		{
 			float num = MathUtils.Cos(angle);
 			float num2 = MathUtils.Sin(angle);
-			return new Vector2(num * v.X + num2 * v.Y, (0f - num2) * v.X + num * v.Y);
+			return new Vector2((num * v.X) + (num2 * v.Y), ((0f - num2) * v.X) + (num * v.Y));
 		}
 
 		public float Length()
 		{
-			return MathUtils.Sqrt(X * X + Y * Y);
+			return MathUtils.Sqrt((X * X) + (Y * Y));
 		}
 
 		public float LengthSquared()
 		{
-			return X * X + Y * Y;
+			return (X * X) + (Y * Y);
 		}
 
 		public static Vector2 Floor(Vector2 v)
@@ -234,12 +234,12 @@ namespace Engine
 
 		public static Vector2 Transform(Vector2 v, Matrix m)
 		{
-			return new Vector2(v.X * m.M11 + v.Y * m.M21 + m.M41, v.X * m.M12 + v.Y * m.M22 + m.M42);
+			return new Vector2((v.X * m.M11) + (v.Y * m.M21) + m.M41, (v.X * m.M12) + (v.Y * m.M22) + m.M42);
 		}
 
 		public static void Transform(ref Vector2 v, ref Matrix m, out Vector2 result)
 		{
-			result = new Vector2(v.X * m.M11 + v.Y * m.M21 + m.M41, v.X * m.M12 + v.Y * m.M22 + m.M42);
+			result = new Vector2((v.X * m.M11) + (v.Y * m.M21) + m.M41, (v.X * m.M12) + (v.Y * m.M22) + m.M42);
 		}
 
 		public static Vector2 Transform(Vector2 v, Quaternion q)
@@ -252,7 +252,7 @@ namespace Engine
 			float num6 = q.X * num2;
 			float num7 = q.Y * num2;
 			float num8 = q.Z * num3;
-			return new Vector2(v.X * (1f - num7 - num8) + v.Y * (num6 - num4), v.X * (num6 + num4) + v.Y * (1f - num5 - num8));
+			return new Vector2((v.X * (1f - num7 - num8)) + (v.Y * (num6 - num4)), (v.X * (num6 + num4)) + (v.Y * (1f - num5 - num8)));
 		}
 
 		public static void Transform(ref Vector2 v, ref Quaternion q, out Vector2 result)
@@ -265,7 +265,7 @@ namespace Engine
 			float num6 = q.X * num2;
 			float num7 = q.Y * num2;
 			float num8 = q.Z * num3;
-			result = new Vector2(v.X * (1f - num7 - num8) + v.Y * (num6 - num4), v.X * (num6 + num4) + v.Y * (1f - num5 - num8));
+			result = new Vector2((v.X * (1f - num7 - num8)) + (v.Y * (num6 - num4)), (v.X * (num6 + num4)) + (v.Y * (1f - num5 - num8)));
 		}
 
 		public static void Transform(Vector2[] sourceArray, int sourceIndex, ref Matrix m, Vector2[] destinationArray, int destinationIndex, int count)
@@ -273,18 +273,18 @@ namespace Engine
 			for (int i = 0; i < count; i++)
 			{
 				Vector2 vector = sourceArray[sourceIndex + i];
-				destinationArray[destinationIndex + i] = new Vector2(vector.X * m.M11 + vector.Y * m.M21 + m.M41, vector.X * m.M12 + vector.Y * m.M22 + m.M42);
+				destinationArray[destinationIndex + i] = new Vector2((vector.X * m.M11) + (vector.Y * m.M21) + m.M41, (vector.X * m.M12) + (vector.Y * m.M22) + m.M42);
 			}
 		}
 
 		public static Vector2 TransformNormal(Vector2 v, Matrix m)
 		{
-			return new Vector2(v.X * m.M11 + v.Y * m.M21, v.X * m.M12 + v.Y * m.M22);
+			return new Vector2((v.X * m.M11) + (v.Y * m.M21), (v.X * m.M12) + (v.Y * m.M22));
 		}
 
 		public static void TransformNormal(ref Vector2 v, ref Matrix m, out Vector2 result)
 		{
-			result = new Vector2(v.X * m.M11 + v.Y * m.M21, v.X * m.M12 + v.Y * m.M22);
+			result = new Vector2((v.X * m.M11) + (v.Y * m.M21), (v.X * m.M12) + (v.Y * m.M22));
 		}
 
 		public static void TransformNormal(Vector2[] sourceArray, int sourceIndex, ref Matrix m, Vector2[] destinationArray, int destinationIndex, int count)
@@ -292,7 +292,7 @@ namespace Engine
 			for (int i = 0; i < count; i++)
 			{
 				Vector2 vector = sourceArray[sourceIndex + i];
-				destinationArray[destinationIndex + i] = new Vector2(vector.X * m.M11 + vector.Y * m.M21, vector.X * m.M12 + vector.Y * m.M22);
+				destinationArray[destinationIndex + i] = new Vector2((vector.X * m.M11) + (vector.Y * m.M21), (vector.X * m.M12) + (vector.Y * m.M22));
 			}
 		}
 

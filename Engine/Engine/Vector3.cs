@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public struct Vector3 : IEquatable<Vector3>
+	public struct Vector3 : IEquatable<Vector3>
 	{
 		public float X;
 
@@ -178,12 +178,12 @@ namespace Engine
 
 		public static float Dot(Vector3 v1, Vector3 v2)
 		{
-			return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
+			return (v1.X * v2.X) + (v1.Y * v2.Y) + (v1.Z * v2.Z);
 		}
 
 		public static Vector3 Cross(Vector3 v1, Vector3 v2)
 		{
-			return new Vector3(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
+			return new Vector3((v1.Y * v2.Z) - (v1.Z * v2.Y), (v1.Z * v2.X) - (v1.X * v2.Z), (v1.X * v2.Y) - (v1.Y * v2.X));
 		}
 
 		public float Length()
@@ -193,7 +193,7 @@ namespace Engine
 
 		public float LengthSquared()
 		{
-			return X * X + Y * Y + Z * Z;
+			return (X * X) + (Y * Y) + (Z * Z);
 		}
 
 		public static Vector3 Floor(Vector3 v)
@@ -283,12 +283,12 @@ namespace Engine
 
 		public static Vector3 Transform(Vector3 v, Matrix m)
 		{
-			return new Vector3(v.X * m.M11 + v.Y * m.M21 + v.Z * m.M31 + m.M41, v.X * m.M12 + v.Y * m.M22 + v.Z * m.M32 + m.M42, v.X * m.M13 + v.Y * m.M23 + v.Z * m.M33 + m.M43);
+			return new Vector3((v.X * m.M11) + (v.Y * m.M21) + (v.Z * m.M31) + m.M41, (v.X * m.M12) + (v.Y * m.M22) + (v.Z * m.M32) + m.M42, (v.X * m.M13) + (v.Y * m.M23) + (v.Z * m.M33) + m.M43);
 		}
 
 		public static void Transform(ref Vector3 v, ref Matrix m, out Vector3 result)
 		{
-			result = new Vector3(v.X * m.M11 + v.Y * m.M21 + v.Z * m.M31 + m.M41, v.X * m.M12 + v.Y * m.M22 + v.Z * m.M32 + m.M42, v.X * m.M13 + v.Y * m.M23 + v.Z * m.M33 + m.M43);
+			result = new Vector3((v.X * m.M11) + (v.Y * m.M21) + (v.Z * m.M31) + m.M41, (v.X * m.M12) + (v.Y * m.M22) + (v.Z * m.M32) + m.M42, (v.X * m.M13) + (v.Y * m.M23) + (v.Z * m.M33) + m.M43);
 		}
 
 		public static Vector3 Transform(Vector3 v, Quaternion q)
@@ -305,7 +305,7 @@ namespace Engine
 			float num10 = q.Y * num2;
 			float num11 = q.Y * num3;
 			float num12 = q.Z * num3;
-			return new Vector3(v.X * (1f - num10 - num12) + v.Y * (num8 - num6) + v.Z * (num9 + num5), v.X * (num8 + num6) + v.Y * (1f - num7 - num12) + v.Z * (num11 - num4), v.X * (num9 - num5) + v.Y * (num11 + num4) + v.Z * (1f - num7 - num10));
+			return new Vector3((v.X * (1f - num10 - num12)) + (v.Y * (num8 - num6)) + (v.Z * (num9 + num5)), (v.X * (num8 + num6)) + (v.Y * (1f - num7 - num12)) + (v.Z * (num11 - num4)), (v.X * (num9 - num5)) + (v.Y * (num11 + num4)) + (v.Z * (1f - num7 - num10)));
 		}
 
 		public static void Transform(ref Vector3 v, ref Quaternion q, out Vector3 result)
@@ -322,7 +322,7 @@ namespace Engine
 			float num10 = q.Y * num2;
 			float num11 = q.Y * num3;
 			float num12 = q.Z * num3;
-			result = new Vector3(v.X * (1f - num10 - num12) + v.Y * (num8 - num6) + v.Z * (num9 + num5), v.X * (num8 + num6) + v.Y * (1f - num7 - num12) + v.Z * (num11 - num4), v.X * (num9 - num5) + v.Y * (num11 + num4) + v.Z * (1f - num7 - num10));
+			result = new Vector3((v.X * (1f - num10 - num12)) + (v.Y * (num8 - num6)) + (v.Z * (num9 + num5)), (v.X * (num8 + num6)) + (v.Y * (1f - num7 - num12)) + (v.Z * (num11 - num4)), (v.X * (num9 - num5)) + (v.Y * (num11 + num4)) + (v.Z * (1f - num7 - num10)));
 		}
 
 		public static void Transform(Vector3[] sourceArray, int sourceIndex, ref Matrix m, Vector3[] destinationArray, int destinationIndex, int count)
@@ -330,18 +330,18 @@ namespace Engine
 			for (int i = 0; i < count; i++)
 			{
 				Vector3 vector = sourceArray[sourceIndex + i];
-				destinationArray[destinationIndex + i] = new Vector3(vector.X * m.M11 + vector.Y * m.M21 + vector.Z * m.M31 + m.M41, vector.X * m.M12 + vector.Y * m.M22 + vector.Z * m.M32 + m.M42, vector.X * m.M13 + vector.Y * m.M23 + vector.Z * m.M33 + m.M43);
+				destinationArray[destinationIndex + i] = new Vector3((vector.X * m.M11) + (vector.Y * m.M21) + (vector.Z * m.M31) + m.M41, (vector.X * m.M12) + (vector.Y * m.M22) + (vector.Z * m.M32) + m.M42, (vector.X * m.M13) + (vector.Y * m.M23) + (vector.Z * m.M33) + m.M43);
 			}
 		}
 
 		public static Vector3 TransformNormal(Vector3 v, Matrix m)
 		{
-			return new Vector3(v.X * m.M11 + v.Y * m.M21 + v.Z * m.M31, v.X * m.M12 + v.Y * m.M22 + v.Z * m.M32, v.X * m.M13 + v.Y * m.M23 + v.Z * m.M33);
+			return new Vector3((v.X * m.M11) + (v.Y * m.M21) + (v.Z * m.M31), (v.X * m.M12) + (v.Y * m.M22) + (v.Z * m.M32), (v.X * m.M13) + (v.Y * m.M23) + (v.Z * m.M33));
 		}
 
 		public static void TransformNormal(ref Vector3 v, ref Matrix m, out Vector3 result)
 		{
-			result = new Vector3(v.X * m.M11 + v.Y * m.M21 + v.Z * m.M31, v.X * m.M12 + v.Y * m.M22 + v.Z * m.M32, v.X * m.M13 + v.Y * m.M23 + v.Z * m.M33);
+			result = new Vector3((v.X * m.M11) + (v.Y * m.M21) + (v.Z * m.M31), (v.X * m.M12) + (v.Y * m.M22) + (v.Z * m.M32), (v.X * m.M13) + (v.Y * m.M23) + (v.Z * m.M33));
 		}
 
 		public static void TransformNormal(Vector3[] sourceArray, int sourceIndex, ref Matrix m, Vector3[] destinationArray, int destinationIndex, int count)
@@ -349,7 +349,7 @@ namespace Engine
 			for (int i = 0; i < count; i++)
 			{
 				Vector3 vector = sourceArray[sourceIndex + i];
-				destinationArray[destinationIndex + i] = new Vector3(vector.X * m.M11 + vector.Y * m.M21 + vector.Z * m.M31, vector.X * m.M12 + vector.Y * m.M22 + vector.Z * m.M32, vector.X * m.M13 + vector.Y * m.M23 + vector.Z * m.M33);
+				destinationArray[destinationIndex + i] = new Vector3((vector.X * m.M11) + (vector.Y * m.M21) + (vector.Z * m.M31), (vector.X * m.M12) + (vector.Y * m.M22) + (vector.Z * m.M32), (vector.X * m.M13) + (vector.Y * m.M23) + (vector.Z * m.M33));
 			}
 		}
 

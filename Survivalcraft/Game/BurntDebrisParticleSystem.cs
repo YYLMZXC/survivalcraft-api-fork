@@ -45,7 +45,7 @@ namespace Game
 			{
 				Particle obj = Particles[i];
 				obj.IsActive = true;
-				obj.Position = position + 0.5f * new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
+				obj.Position = position + (0.5f * new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f)));
 				obj.Color = white;
 				obj.Size = new Vector2(0.5f);
 				obj.TimeToLive = m_random.Float(0.75f, 2f);
@@ -71,7 +71,7 @@ namespace Game
 				if (particle.TimeToLive > 0f)
 				{
 					Vector3 position = particle.Position;
-					Vector3 vector = position + particle.Velocity * dt;
+					Vector3 vector = position + (particle.Velocity * dt);
 					TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(position, vector, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
 					if (terrainRaycastResult.HasValue)
 					{

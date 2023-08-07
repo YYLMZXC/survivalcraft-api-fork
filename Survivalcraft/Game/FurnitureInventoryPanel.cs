@@ -72,10 +72,10 @@ namespace Game
 			furnitureSetList.ItemWidgetFactory = (Func<object, Widget>)Delegate.Combine(furnitureSetList.ItemWidgetFactory, (Func<object, Widget>)((object item) => new FurnitureSetItemWidget(this, (FurnitureSet)item)));
 			m_furnitureSetList.SelectionChanged += delegate
 			{
-				if (!m_ignoreSelectionChanged && ComponentFurnitureInventory.FurnitureSet != m_furnitureSetList.SelectedItem as FurnitureSet)
+				if (!m_ignoreSelectionChanged && ComponentFurnitureInventory.FurnitureSet != (m_furnitureSetList.SelectedItem as FurnitureSet))
 				{
 					ComponentFurnitureInventory.PageIndex = 0;
-					ComponentFurnitureInventory.FurnitureSet = (m_furnitureSetList.SelectedItem as FurnitureSet);
+					ComponentFurnitureInventory.FurnitureSet = m_furnitureSetList.SelectedItem as FurnitureSet;
 					if (ComponentFurnitureInventory.FurnitureSet == null)
 					{
 						m_furnitureSetList.SelectedIndex = 0;
@@ -97,10 +97,10 @@ namespace Game
 			{
 				AssignInventorySlots();
 			}
-			m_creativeInventoryWidget.PageUpButton.IsEnabled = (ComponentFurnitureInventory.PageIndex > 0);
-			m_creativeInventoryWidget.PageDownButton.IsEnabled = (ComponentFurnitureInventory.PageIndex < m_pagesCount - 1);
-			m_creativeInventoryWidget.PageLabel.Text = ((m_pagesCount > 0) ? $"{ComponentFurnitureInventory.PageIndex + 1}/{m_pagesCount}" : string.Empty);
-			m_moreButton.IsEnabled = (ComponentFurnitureInventory.FurnitureSet != null);
+			m_creativeInventoryWidget.PageUpButton.IsEnabled = ComponentFurnitureInventory.PageIndex > 0;
+			m_creativeInventoryWidget.PageDownButton.IsEnabled = ComponentFurnitureInventory.PageIndex < m_pagesCount - 1;
+			m_creativeInventoryWidget.PageLabel.Text = (m_pagesCount > 0) ? $"{ComponentFurnitureInventory.PageIndex + 1}/{m_pagesCount}" : string.Empty;
+			m_moreButton.IsEnabled = ComponentFurnitureInventory.FurnitureSet != null;
 			if (Input.Scroll.HasValue && HitTestGlobal(Input.Scroll.Value.XY).IsChildWidgetOf(m_inventoryGrid))
 			{
 				ComponentFurnitureInventory.PageIndex -= (int)Input.Scroll.Value.Z;
@@ -113,7 +113,7 @@ namespace Game
 			{
 				int num = ++ComponentFurnitureInventory.PageIndex;
 			}
-			ComponentFurnitureInventory.PageIndex = ((m_pagesCount > 0) ? MathUtils.Clamp(ComponentFurnitureInventory.PageIndex, 0, m_pagesCount - 1) : 0);
+			ComponentFurnitureInventory.PageIndex = (m_pagesCount > 0) ? MathUtils.Clamp(ComponentFurnitureInventory.PageIndex, 0, m_pagesCount - 1) : 0;
 			if (m_addButton.IsClicked)
 			{
 				var list = new List<Tuple<string, Action>>();
@@ -274,7 +274,7 @@ namespace Game
 				int num = SubsystemFurnitureBlockBehavior.FurnitureSets.IndexOf(furnitureSet);
 				SubsystemFurnitureBlockBehavior.DeleteFurnitureSet(furnitureSet);
 				SubsystemFurnitureBlockBehavior.GarbageCollectDesigns();
-				ComponentFurnitureInventory.FurnitureSet = ((num > 0) ? SubsystemFurnitureBlockBehavior.FurnitureSets[num - 1] : null);
+				ComponentFurnitureInventory.FurnitureSet = (num > 0) ? SubsystemFurnitureBlockBehavior.FurnitureSets[num - 1] : null;
 				Invalidate();
 			}
 		}

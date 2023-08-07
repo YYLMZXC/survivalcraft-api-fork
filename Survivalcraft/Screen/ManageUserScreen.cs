@@ -116,7 +116,7 @@ public class ManageUserScreen : Screen
 				labelWidget.Text = $"{listItem.Name}   ID:{listItem.Id}   账号:{listItem.UserNo}";
 				if (listItem.IsLock == 1)
 				{
-					labelWidget2.Text = "锁定时长: " + (float)((int)(listItem.LockDuration / 8.64f)) / 10000f + "天";
+					labelWidget2.Text = "锁定时长: " + ((float)(int)(listItem.LockDuration / 8.64f) / 10000f) + "天";
 					labelWidget2.Text += "  解锁时间: " + GetMsg(listItem.UnlockTime);
 					labelWidget2.Text += "  锁定原因:" + GetMsg(listItem.LockReason);
 				}
@@ -148,7 +148,7 @@ public class ManageUserScreen : Screen
 				XElement node2 = ContentManager.Get<XElement>("Widgets/CommunityContentItemMore");
 				var containerWidget = (ContainerWidget)LoadWidget(this, node2, null);
 				m_moreLink = containerWidget.Children.Find<LinkWidget>("CommunityContentItemMore.Link");
-				m_moreLink.Tag = (obj as string);
+				m_moreLink.Tag = obj as string;
 				return containerWidget;
 			}
 		};
@@ -164,7 +164,7 @@ public class ManageUserScreen : Screen
 				msg += $"\n当天发送邮件次数: {GetMsg(listItem.EmailCount)}\n邮箱锁定时间: {GetMsg(listItem.EmailTime)}";
 				msg += $"\n手机号: {GetMsg(listItem.Moblie)}\n区号: {GetMsg(listItem.AreaCode)}";
 				msg += $"\n上次锁定时间: " + GetMsg(listItem.LockTime) + "\n锁定原因: " + GetMsg(listItem.LockReason);
-				msg += $"\n锁定时长: " + (float)((int)(listItem.LockDuration / 8.64f)) / 10000f + "天\n解锁时间: " + GetMsg(listItem.UnlockTime);
+				msg += $"\n锁定时长: " + ((float)(int)(listItem.LockDuration / 8.64f) / 10000f) + "天\n解锁时间: " + GetMsg(listItem.UnlockTime);
 				var messageDialog = new MessageDialog("详细信息:" + listItem.Name, msg, LanguageControl.Ok, null, null);
 				DialogsManager.ShowDialog(null, messageDialog);
 			}

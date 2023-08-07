@@ -165,7 +165,7 @@ namespace Game
 						if (chunkAtCell != null && chunkAtCell.State > TerrainChunkState.InvalidContents4)
 						{
 							Vector3 position = pickable.Position;
-							Vector3 vector = position + pickable.Velocity * dt;
+							Vector3 vector = position + (pickable.Velocity * dt);
 							if (!pickable.FlyToPosition.HasValue && num5 > 0.5)
 							{
 								foreach (ComponentPlayer tmpPlayer in m_tmpPlayers)
@@ -198,7 +198,7 @@ namespace Game
 											}
 											else if (!pickable.StuckMatrix.HasValue)
 											{
-												pickable.FlyToPosition = v + 0.1f * MathUtils.Sqrt(num6) * componentBody.Velocity;
+												pickable.FlyToPosition = v + (0.1f * MathUtils.Sqrt(num6) * componentBody.Velocity);
 											}
 										}
 									}
@@ -249,7 +249,7 @@ namespace Game
 														int value = m_subsystemTerrain.Terrain.GetCellContents(j + num8, k + num9, l + num10);
 														if (!BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value))
 														{
-															int num15 = j * j + k * k + l * l;
+															int num15 = (j * j) + (k * k) + (l * l);
 															if (!num14.HasValue || num15 < num14.Value)
 															{
 																num11 = j + num8;
@@ -299,7 +299,7 @@ namespace Game
 								}
 								else
 								{
-									Vector3 vector3 = pickable.StuckMatrix.Value.Translation + pickable.StuckMatrix.Value.Up * block.ProjectileTipOffset;
+									Vector3 vector3 = pickable.StuckMatrix.Value.Translation + (pickable.StuckMatrix.Value.Up * block.ProjectileTipOffset);
 									if (!m_subsystemTerrain.Raycast(vector3, vector3, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value)).HasValue)
 									{
 										pickable.Position = pickable.StuckMatrix.Value.Translation;

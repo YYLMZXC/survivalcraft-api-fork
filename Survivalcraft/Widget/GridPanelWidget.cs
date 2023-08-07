@@ -96,14 +96,14 @@ namespace Game
 			}
 			foreach (Widget child in Children)
 			{
-				child.Measure(Vector2.Max(parentAvailableSize - 2f * child.Margin, Vector2.Zero));
+				child.Measure(Vector2.Max(parentAvailableSize - (2f * child.Margin), Vector2.Zero));
 				Point2 widgetCell = GetWidgetCell(child);
 				if (IsCellValid(widgetCell))
 				{
 					Column column = m_columns[widgetCell.X];
-					column.ActualWidth = MathUtils.Max(column.ActualWidth, child.ParentDesiredSize.X + 2f * child.Margin.X);
+					column.ActualWidth = MathUtils.Max(column.ActualWidth, child.ParentDesiredSize.X + (2f * child.Margin.X));
 					Row row = m_rows[widgetCell.Y];
-					row.ActualHeight = MathUtils.Max(row.ActualHeight, child.ParentDesiredSize.Y + 2f * child.Margin.Y);
+					row.ActualHeight = MathUtils.Max(row.ActualHeight, child.ParentDesiredSize.Y + (2f * child.Margin.Y));
 				}
 			}
 			Vector2 zero = Vector2.Zero;

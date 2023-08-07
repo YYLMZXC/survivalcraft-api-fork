@@ -101,10 +101,10 @@ namespace Hjg.Pngcs
 			for (int i = 0; i < 256; i++)
 			{
 				double num4 = (double)histo[i] / (double)imgInfo.Cols;
-				num4 = histogram1[i] * num + num4 * num2;
+				num4 = (histogram1[i] * num) + (num4 * num2);
 				if (tentative)
 				{
-					num3 += ((num4 > 1E-08) ? (num4 * Math.Log(num4)) : 0.0);
+					num3 += (num4 > 1E-08) ? (num4 * Math.Log(num4)) : 0.0;
 				}
 				else
 				{

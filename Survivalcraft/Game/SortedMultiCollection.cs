@@ -222,7 +222,7 @@ namespace Game
 				int num2 = m_count - 1;
 				while (num <= num2)
 				{
-					int num3 = num + num2 >> 1;
+					int num3 = (num + num2) >> 1;
 					int num4 = m_comparer.Compare(m_array[num3].Key, key);
 					if (num4 == 0)
 					{

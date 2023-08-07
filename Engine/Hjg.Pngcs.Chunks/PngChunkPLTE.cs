@@ -76,7 +76,7 @@ namespace Hjg.Pngcs.Chunks
 
 		public void SetEntry(int n, int r, int g, int b)
 		{
-			entries[n] = ((r << 16) | (g << 8) | b);
+			entries[n] = (r << 16) | (g << 8) | b;
 		}
 
 		public int GetEntry(int n)
@@ -89,7 +89,7 @@ namespace Hjg.Pngcs.Chunks
 			int num = entries[index];
 			rgb[offset] = (num & 0xFF0000) >> 16;
 			rgb[offset + 1] = (num & 0xFF00) >> 8;
-			rgb[offset + 2] = (num & 0xFF);
+			rgb[offset + 2] = num & 0xFF;
 		}
 
 		public void GetEntryRgb(int n, int[] rgb)

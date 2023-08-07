@@ -26,7 +26,7 @@ namespace Game
 
 		public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
 		{
-			componentPlayer.ComponentGui.ModalPanelWidget = ((componentPlayer.ComponentGui.ModalPanelWidget == null) ? new MusketWidget(inventory, slotIndex) : null);
+			componentPlayer.ComponentGui.ModalPanelWidget = (componentPlayer.ComponentGui.ModalPanelWidget == null) ? new MusketWidget(inventory, slotIndex) : null;
 			return true;
 		}
 
@@ -53,7 +53,7 @@ namespace Game
 						}
 						float num4 = (float)(m_subsystemTime.GameTime - value);
 						float num5 = (float)MathUtils.Remainder(m_subsystemTime.GameTime, 1000.0);
-						Vector3 v = ((componentMiner.ComponentCreature.ComponentBody.IsSneaking ? 0.01f : 0.03f) + 0.2f * MathUtils.Saturate((num4 - 2.5f) / 6f)) * new Vector3
+						Vector3 v = ((componentMiner.ComponentCreature.ComponentBody.IsSneaking ? 0.01f : 0.03f) + (0.2f * MathUtils.Saturate((num4 - 2.5f) / 6f))) * new Vector3
 						{
 							X = SimplexNoise.OctavedNoise(num5, 2f, 3, 2f, 0.5f),
 							Y = SimplexNoise.OctavedNoise(num5 + 100f, 2f, 3, 2f, 0.5f),
@@ -148,13 +148,13 @@ namespace Game
 										}
 										else
 										{
-											Vector3 vector2 = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.3f - componentMiner.ComponentCreature.ComponentBody.Matrix.Up * 0.2f;
-											var vector3 = Vector3.Normalize(vector2 + aim.Direction * 10f - vector2);
+											Vector3 vector2 = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + (componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.3f) - (componentMiner.ComponentCreature.ComponentBody.Matrix.Up * 0.2f);
+											var vector3 = Vector3.Normalize(vector2 + (aim.Direction * 10f) - vector2);
 											var vector4 = Vector3.Normalize(Vector3.Cross(vector3, Vector3.UnitY));
 											var v2 = Vector3.Normalize(Vector3.Cross(vector3, vector4));
 											for (int i = 0; i < num6; i++)
 											{
-												Vector3 v3 = m_random.Float(0f - vector.X, vector.X) * vector4 + m_random.Float(0f - vector.Y, vector.Y) * v2 + m_random.Float(0f - vector.Z, vector.Z) * vector3;
+												Vector3 v3 = (m_random.Float(0f - vector.X, vector.X) * vector4) + (m_random.Float(0f - vector.Y, vector.Y) * v2) + (m_random.Float(0f - vector.Z, vector.Z) * vector3);
 												Projectile projectile = m_subsystemProjectiles.FireProjectile(value2, vector2, s * (vector3 + v3), Vector3.Zero, componentMiner.ComponentCreature);
 												if (projectile != null)
 												{
@@ -162,7 +162,7 @@ namespace Game
 												}
 											}
 											m_subsystemAudio.PlaySound("Audio/MusketFire", 1f, m_random.Float(-0.1f, 0.1f), componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition, 10f, autoDelay: true);
-											m_subsystemParticles.AddParticleSystem(new GunSmokeParticleSystem(m_subsystemTerrain, vector2 + 0.3f * vector3, vector3));
+											m_subsystemParticles.AddParticleSystem(new GunSmokeParticleSystem(m_subsystemTerrain, vector2 + (0.3f * vector3), vector3));
 											m_subsystemNoise.MakeNoise(vector2, 1f, 40f);
 											componentMiner.ComponentCreature.ComponentBody.ApplyImpulse(-4f * vector3);
 										}

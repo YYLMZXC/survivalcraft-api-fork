@@ -34,7 +34,7 @@ namespace Hjg.Pngcs.Chunks
 			var dictionary = new Dictionary<string, int>();
 			foreach (PngChunk chunk in chunks)
 			{
-				dictionary[chunk.Id] = ((!dictionary.ContainsKey(chunk.Id)) ? 1 : (dictionary[chunk.Id] + 1));
+				dictionary[chunk.Id] = (!dictionary.ContainsKey(chunk.Id)) ? 1 : (dictionary[chunk.Id] + 1);
 			}
 			return dictionary;
 		}

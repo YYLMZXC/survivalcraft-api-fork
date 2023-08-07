@@ -211,11 +211,11 @@ namespace Game
 						data4 = RyeBlock.SetIsWild(data4, isWild: true);
 					}
 					int value4 = Terrain.ReplaceData(value, data4);
-					value3 = (m_toReplace[new Point3(x, y, z)] = new Replacement
+					value3 = m_toReplace[new Point3(x, y, z)] = new Replacement
 					{
 						Value = value4,
 						RequiredValue = value
-					});
+					};
 					if (size + 1 == 7)
 					{
 						int data5 = SoilBlock.SetNitrogen(data3, MathUtils.Max(nitrogen - 1, 0));
@@ -301,11 +301,11 @@ namespace Game
 						data4 = CottonBlock.SetIsWild(data4, isWild: true);
 					}
 					int value4 = Terrain.ReplaceData(value, data4);
-					value3 = (m_toReplace[new Point3(x, y, z)] = new Replacement
+					value3 = m_toReplace[new Point3(x, y, z)] = new Replacement
 					{
 						Value = value4,
 						RequiredValue = value
-					});
+					};
 					if (size + 1 == 2)
 					{
 						int data5 = SoilBlock.SetNitrogen(data3, MathUtils.Max(nitrogen - 1, 0));

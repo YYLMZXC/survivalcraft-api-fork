@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
-    public static class Display
+	public static class Display
 	{
 		public static RenderTarget2D m_renderTarget;
 
@@ -281,7 +281,7 @@ namespace Engine.Graphics
 			{
 				GLWrapper.ApplyRenderTarget(RenderTarget);
 				GLWrapper.ApplyViewportScissor(Viewport, ScissorRectangle, RasterizerState.ScissorTestEnable);
-				GLWrapper.ApplyShaderAndBuffers(shader, vertexDeclaration, gCHandle.AddrOfPinnedObject() + startVertex * vertexDeclaration.VertexStride, 0, null);
+				GLWrapper.ApplyShaderAndBuffers(shader, vertexDeclaration, gCHandle.AddrOfPinnedObject() + (startVertex * vertexDeclaration.VertexStride), 0, null);
 				GLWrapper.ApplyRasterizerState(RasterizerState);
 				GLWrapper.ApplyDepthStencilState(DepthStencilState);
 				GLWrapper.ApplyBlendState(BlendState);
@@ -306,7 +306,7 @@ namespace Engine.Graphics
 				GLWrapper.ApplyRasterizerState(RasterizerState);
 				GLWrapper.ApplyDepthStencilState(DepthStencilState);
 				GLWrapper.ApplyBlendState(BlendState);
-				GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), indicesCount, All.UnsignedInt, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
+				GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), indicesCount, All.UnsignedInt, gCHandle2.AddrOfPinnedObject() + (4 * startIndex));
 			}
 			finally
 			{

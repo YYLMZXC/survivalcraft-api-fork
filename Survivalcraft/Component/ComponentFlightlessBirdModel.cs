@@ -61,13 +61,13 @@ namespace Game
 			{
 				m_componentCreature.ComponentCreatureSounds.PlayFootstepSound(1f);
 			}
-			m_feedFactor = FeedOrder ? MathUtils.Min(m_feedFactor + 2f * dt, 1f) : MathUtils.Max(m_feedFactor - 2f * dt, 0f);
+			m_feedFactor = FeedOrder ? MathUtils.Min(m_feedFactor + (2f * dt), 1f) : MathUtils.Max(m_feedFactor - (2f * dt), 0f);
 			IsAttackHitMoment = false;
 			if (AttackOrder)
 			{
-				m_kickFactor = MathUtils.Min(m_kickFactor + 6f * dt, 1f);
+				m_kickFactor = MathUtils.Min(m_kickFactor + (6f * dt), 1f);
 				float kickPhase = m_kickPhase;
-				m_kickPhase = MathUtils.Remainder(m_kickPhase + dt * 2f, 1f);
+				m_kickPhase = MathUtils.Remainder(m_kickPhase + (dt * 2f), 1f);
 				if (kickPhase < 0.5f && m_kickPhase >= 0.5f)
 				{
 					IsAttackHitMoment = true;
@@ -75,16 +75,16 @@ namespace Game
 			}
 			else
 			{
-				m_kickFactor = MathUtils.Max(m_kickFactor - 6f * dt, 0f);
+				m_kickFactor = MathUtils.Max(m_kickFactor - (6f * dt), 0f);
 				if (m_kickPhase != 0f)
 				{
 					if (m_kickPhase > 0.5f)
 					{
-						m_kickPhase = MathUtils.Remainder(MathUtils.Min(m_kickPhase + dt * 2f, 1f), 1f);
+						m_kickPhase = MathUtils.Remainder(MathUtils.Min(m_kickPhase + (dt * 2f), 1f), 1f);
 					}
 					else if (m_kickPhase > 0f)
 					{
-						m_kickPhase = MathUtils.Max(m_kickPhase - dt * 2f, 0f);
+						m_kickPhase = MathUtils.Max(m_kickPhase - (dt * 2f), 0f);
 					}
 				}
 			}
@@ -100,7 +100,7 @@ namespace Game
 			ModsManager.HookAction("OnModelAnimate", loader =>
 			{
 				loader.OnModelAnimate(this, out skip);
-				flag = (flag | skip);
+				flag = flag | skip;
 				return false;
 			});
 			if (flag)
@@ -120,7 +120,7 @@ namespace Game
 					float num4 = (Vector3.Dot(m_componentCreature.ComponentBody.Velocity, m_componentCreature.ComponentBody.Matrix.Forward) > 0.75f * m_componentCreature.ComponentLocomotion.WalkSpeed) ? (1.5f * m_walkLegsAngle) : m_walkLegsAngle;
 					float num5 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0f));
 					float num6 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.5f));
-					num = num4 * num5 + m_kickPhase;
+					num = (num4 * num5) + m_kickPhase;
 					num2 = num4 * num6;
 					num3 = MathUtils.DegToRad(5f) * MathUtils.Sin((float)Math.PI * 4f * MovementAnimationPhase);
 				}
@@ -137,7 +137,7 @@ namespace Game
 				vector2.Y += m_headAngleY;
 				if (m_feedFactor > 0f)
 				{
-					float y = 0f - MathUtils.DegToRad(35f + 55f * SimplexNoise.OctavedNoise((float)m_subsystemTime.GameTime, 3f, 2, 2f, 0.75f));
+					float y = 0f - MathUtils.DegToRad(35f + (55f * SimplexNoise.OctavedNoise((float)m_subsystemTime.GameTime, 3f, 2, 2f, 0.75f)));
 					vector2 = Vector2.Lerp(v2: new Vector2(0f, y), v1: vector2, f: m_feedFactor);
 				}
 				vector2.X = MathUtils.Clamp(vector2.X, 0f - MathUtils.DegToRad(90f), MathUtils.DegToRad(90f));

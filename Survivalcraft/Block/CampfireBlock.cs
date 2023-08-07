@@ -90,7 +90,7 @@ namespace Game
 			int num = Terrain.ExtractData(value);
 			if (num > 0)
 			{
-				return MathUtils.Min(8 + num / 2, 15);
+				return MathUtils.Min(8 + (num / 2), 15);
 			}
 			return 0;
 		}

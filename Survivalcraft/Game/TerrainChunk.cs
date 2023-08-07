@@ -132,7 +132,7 @@ namespace Game
 
 		public static int CalculateCellIndex(int x, int y, int z)
 		{
-			return y + x * 256 + z * 256 * 16;
+			return y + (x * 256) + (z * 256 * 16);
 		}
 
 		public int CalculateTopmostCellHeight(int x, int z)
@@ -158,12 +158,12 @@ namespace Game
 
 		public int GetCellValueFast(int x, int y, int z)
 		{
-			return Cells[y + x * 256 + z * 256 * 16];
+			return Cells[y + (x * 256) + (z * 256 * 16)];
 		}
 
 		public void SetCellValueFast(int x, int y, int z, int value)
 		{
-			Cells[y + x * 256 + z * 256 * 16] = value;
+			Cells[y + (x * 256) + (z * 256 * 16)] = value;
 		}
 
 		public void SetCellValueFast(int index, int value)
@@ -183,12 +183,12 @@ namespace Game
 
 		public int GetShaftValueFast(int x, int z)
 		{
-			return Shafts[x + z * 16];
+			return Shafts[x + (z * 16)];
 		}
 
 		public void SetShaftValueFast(int x, int z, int value)
 		{
-			Shafts[x + z * 16] = value;
+			Shafts[x + (z * 16)] = value;
 		}
 
 		public int GetTemperatureFast(int x, int z)

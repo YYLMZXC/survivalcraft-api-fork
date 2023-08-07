@@ -114,7 +114,7 @@ namespace Game
 			{
 				ParsePoints();
 			}
-			IsDrawRequired = (Color.A > 0 && Width > 0f);
+			IsDrawRequired = Color.A > 0 && Width > 0f;
 		}
 
 		public void ParsePoints()
@@ -148,10 +148,10 @@ namespace Game
 					var v3 = Vector2.Perpendicular(vector3);
 					float num = (float)Math.PI - Vector2.Angle(vector4, vector3);
 					float s = 0.5f * Width / MathUtils.Tan(num / 2f);
-					Vector2 v4 = 0.5f * v2 * Width - vector4 * s;
+					Vector2 v4 = (0.5f * v2 * Width) - (vector4 * s);
 					float num2 = (float)Math.PI - Vector2.Angle(vector3, v);
 					float s2 = 0.5f * Width / MathUtils.Tan(num2 / 2f);
-					Vector2 v5 = 0.5f * v3 * Width - vector3 * s2;
+					Vector2 v5 = (0.5f * v3 * Width) - (vector3 * s2);
 					m_vertices.Add(vector + v4);
 					m_vertices.Add(vector - v4);
 					m_vertices.Add(vector2 - v5);
@@ -160,9 +160,9 @@ namespace Game
 					m_vertices.Add(vector + v4);
 					if (j == list.Count - 1)
 					{
-						m_vertices.Add(vector2 - 0.5f * ArrowWidth * v3);
-						m_vertices.Add(vector2 + 0.5f * ArrowWidth * v3);
-						m_vertices.Add(vector2 + 0.5f * ArrowWidth * vector3);
+						m_vertices.Add(vector2 - (0.5f * ArrowWidth * v3));
+						m_vertices.Add(vector2 + (0.5f * ArrowWidth * v3));
+						m_vertices.Add(vector2 + (0.5f * ArrowWidth * vector3));
 					}
 				}
 			}

@@ -32,7 +32,7 @@ namespace Game
 #endif
 
 #if android
-            m_providers.Add(new AndroidSdCardExternalContentProvider());
+			m_providers.Add(new AndroidSdCardExternalContentProvider());
 #endif
 			m_providers.Add(new SPMBoxExternalContentProvider());
 			m_providers.Add(new DropboxExternalContentProvider());

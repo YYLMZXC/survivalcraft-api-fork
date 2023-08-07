@@ -58,7 +58,7 @@ namespace Engine.Graphics
 				int num = Utilities.SizeOf<T>();
 				int size = IndexFormat.GetSize();
 				GLWrapper.BindBuffer(All.ElementArrayBuffer, m_buffer);
-				GL.BufferSubData(All.ElementArrayBuffer, new IntPtr(targetStartIndex * size), new IntPtr(num * sourceCount), gCHandle.AddrOfPinnedObject() + sourceStartIndex * num);
+				GL.BufferSubData(All.ElementArrayBuffer, new IntPtr(targetStartIndex * size), new IntPtr(num * sourceCount), gCHandle.AddrOfPinnedObject() + (sourceStartIndex * num));
 			}
 			finally
 			{
@@ -120,7 +120,7 @@ namespace Engine.Graphics
 			{
 				throw new ArgumentException("Range is out of source bounds.");
 			}
-			if (targetStartIndex < 0 || targetStartIndex * size + sourceCount * num > IndicesCount * size)
+			if (targetStartIndex < 0 || (targetStartIndex * size) + (sourceCount * num) > IndicesCount * size)
 			{
 				throw new ArgumentException("Range is out of target bounds.");
 			}

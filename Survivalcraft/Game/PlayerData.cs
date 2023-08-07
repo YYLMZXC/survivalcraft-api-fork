@@ -292,7 +292,7 @@ namespace Game
 				if (Time.PeriodicEvent(0.1, 0.0))
 				{
 					float updateProgress = m_subsystemTerrain.TerrainUpdater.GetUpdateProgress(PlayerIndex, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
-					UpdateSpawnDialog(null, null, 0.5f + 0.5f * updateProgress, resetProgress: false);
+					UpdateSpawnDialog(null, null, 0.5f + (0.5f * updateProgress), resetProgress: false);
 					if ((updateProgress >= 1f && Time.FrameStartTime - m_terrainWaitStartTime > 2.0) || Time.FrameStartTime - m_terrainWaitStartTime >= 15.0)
 					{
 						if (ComponentPlayer == null)
@@ -678,7 +678,7 @@ namespace Game
 					value3 = MakeClothingValue(0, 12);
 					value4 = MakeClothingValue(26, 6) + ";" + MakeClothingValue(29, 0);
 				}
-				value5 = ((m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Survival) ? 1 : 0);
+				value5 = (m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Survival) ? 1 : 0;
 			}
 			ValuesDictionary overrides = new ValuesDictionary
 			{

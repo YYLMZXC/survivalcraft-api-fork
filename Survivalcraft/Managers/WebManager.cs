@@ -21,7 +21,7 @@ namespace Game
 			public ProgressHttpContent(Stream sourceStream, CancellableProgress progress)
 			{
 				m_sourceStream = sourceStream;
-				m_progress = (progress ?? new CancellableProgress());
+				m_progress = progress ?? new CancellableProgress();
 			}
 
 			protected override bool TryComputeLength(out long length)
@@ -80,7 +80,7 @@ namespace Game
 			{
 				try
 				{
-					progress = (progress ?? new CancellableProgress());
+					progress = progress ?? new CancellableProgress();
 					if (!IsInternetConnectionAvailable())
 					{
 						throw new InvalidOperationException("Internet connection is unavailable.");
@@ -103,7 +103,7 @@ namespace Game
 						HttpResponseMessage responseMessage = await client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, progress.CancellationToken);
 						await VerifyResponse(responseMessage);
 						long? contentLength = responseMessage.Content.Headers.ContentLength;
-						progress.Total = (contentLength ?? 0);
+						progress.Total = contentLength ?? 0;
 						using (Stream responseStream = await responseMessage.Content.ReadAsStreamAsync())
 						{
 							targetStream = new MemoryStream();

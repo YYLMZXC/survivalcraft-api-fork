@@ -155,10 +155,10 @@ namespace Game
 
 		public override void Animate()
 		{
-			Opacity = ((m_componentCreature.ComponentSpawn.SpawnDuration > 0f) ? ((float)MathUtils.Saturate((m_subsystemGameInfo.TotalElapsedGameTime - m_componentCreature.ComponentSpawn.SpawnTime) / m_componentCreature.ComponentSpawn.SpawnDuration)) : 1f);
+			Opacity = (m_componentCreature.ComponentSpawn.SpawnDuration > 0f) ? ((float)MathUtils.Saturate((m_subsystemGameInfo.TotalElapsedGameTime - m_componentCreature.ComponentSpawn.SpawnTime) / m_componentCreature.ComponentSpawn.SpawnDuration)) : 1f;
 			if (m_componentCreature.ComponentSpawn.DespawnTime.HasValue)
 			{
-				Opacity = MathUtils.Min(Opacity.Value, (float)MathUtils.Saturate(1.0 - (m_subsystemGameInfo.TotalElapsedGameTime - m_componentCreature.ComponentSpawn.DespawnTime.Value) / m_componentCreature.ComponentSpawn.DespawnDuration));
+				Opacity = MathUtils.Min(Opacity.Value, (float)MathUtils.Saturate(1.0 - ((m_subsystemGameInfo.TotalElapsedGameTime - m_componentCreature.ComponentSpawn.DespawnTime.Value) / m_componentCreature.ComponentSpawn.DespawnDuration)));
 			}
 			DiffuseColor = Vector3.Lerp(Vector3.One, new Vector3(1f, 0f, 0f), m_injuryColorFactor);
 			if (Opacity.HasValue && Opacity.Value < 1f)
@@ -212,7 +212,7 @@ namespace Game
 					float s = m_random.Float(-5f, 5f);
 					float s2 = m_random.Float(-1f, 1f);
 					float s3 = m_random.Float(3f, 8f);
-					m_randomLookPoint = m_componentCreature.ComponentCreatureModel.EyePosition + s3 * matrix.Forward + s2 * matrix.Up + s * matrix.Right;
+					m_randomLookPoint = m_componentCreature.ComponentCreatureModel.EyePosition + (s3 * matrix.Forward) + (s2 * matrix.Up) + (s * matrix.Right);
 				}
 				LookAtOrder = m_randomLookPoint;
 			}
@@ -228,17 +228,17 @@ namespace Game
 			{
 				HeadShakeOrder = MathUtils.Max(HeadShakeOrder - dt, 0f);
 				float num = 1f * MathUtils.Saturate(4f * HeadShakeOrder);
-				m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(num * (float)MathUtils.Sin(16.0 * m_subsystemTime.GameTime + 0.01f * GetHashCode()), 0f) - m_componentCreature.ComponentLocomotion.LookAngles;
+				m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(num * (float)MathUtils.Sin((16.0 * m_subsystemTime.GameTime) + (0.01f * GetHashCode())), 0f) - m_componentCreature.ComponentLocomotion.LookAngles;
 			}
 			if (m_componentCreature.ComponentHealth.Health == 0f)
 			{
-				DeathPhase = MathUtils.Min(DeathPhase + 3f * dt, 1f);
+				DeathPhase = MathUtils.Min(DeathPhase + (3f * dt), 1f);
 			}
 			if (m_componentCreature.ComponentHealth.HealthChange < 0f)
 			{
 				m_injuryColorFactor = 1f;
 			}
-			m_injuryColorFactor = MathUtils.Saturate(m_injuryColorFactor - 3f * dt);
+			m_injuryColorFactor = MathUtils.Saturate(m_injuryColorFactor - (3f * dt));
 			m_eyePosition = null;
 			m_eyeRotation = null;
 			LookRandomOrder = false;
@@ -248,7 +248,7 @@ namespace Game
 		public virtual Vector3 CalculateEyePosition()
 		{
 			Matrix matrix = m_componentCreature.ComponentBody.Matrix;
-			return m_componentCreature.ComponentBody.Position + matrix.Up * 0.95f * m_componentCreature.ComponentBody.BoxSize.Y + matrix.Forward * 0.45f * m_componentCreature.ComponentBody.BoxSize.Z;
+			return m_componentCreature.ComponentBody.Position + (matrix.Up * 0.95f * m_componentCreature.ComponentBody.BoxSize.Y) + (matrix.Forward * 0.45f * m_componentCreature.ComponentBody.BoxSize.Z);
 		}
 
 		public virtual Quaternion CalculateEyeRotation()

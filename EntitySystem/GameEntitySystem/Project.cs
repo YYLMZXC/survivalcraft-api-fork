@@ -43,9 +43,9 @@ namespace GameEntitySystem
 				m_projectTemplate = m_projectData.ValuesDictionary.DatabaseObject;
 				Dictionary<string, Subsystem> dictionary = new Dictionary<string, Subsystem>();
 				foreach (ValuesDictionary item in from x in projectData.ValuesDictionary.Values
-					select x as ValuesDictionary into x
-					where x != null && x.DatabaseObject != null && x.DatabaseObject.Type == gameDatabase.MemberSubsystemTemplateType
-					select x)
+												  select x as ValuesDictionary into x
+												  where x != null && x.DatabaseObject != null && x.DatabaseObject.Type == gameDatabase.MemberSubsystemTemplateType
+												  select x)
 				{
 					bool value = item.GetValue<bool>("IsOptional");
 					string value2 = item.GetValue<string>("Class");
@@ -76,8 +76,8 @@ namespace GameEntitySystem
 				{
 					LoadSubsystem(value3, dictionary, loadedSubsystems, 0);
 				}
-				if(OnProjectLoad != null)
-                {
+				if (OnProjectLoad != null)
+				{
 					OnProjectLoad.Invoke(this);
 				}
 				if (projectData.EntityDataList != null)

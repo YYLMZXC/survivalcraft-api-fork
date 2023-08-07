@@ -358,11 +358,11 @@ namespace Game
 				Stamina -= 0.025f * lastJumpOrder * num3;
 				if (flag2 | flag)
 				{
-					Stamina -= gameTimeDelta * (0.07f + 0.006f * num3 + 0.008f * num);
+					Stamina -= gameTimeDelta * (0.07f + (0.006f * num3) + (0.008f * num));
 				}
 				else
 				{
-					Stamina -= gameTimeDelta * (0.07f + 0.006f * num3) * num;
+					Stamina -= gameTimeDelta * (0.07f + (0.006f * num3)) * num;
 				}
 				if (!flag2 && !flag && Stamina < 0.33f && m_lastStamina >= 0.33f)
 				{
@@ -396,8 +396,8 @@ namespace Game
 				if (!flag && num4 > 0f)
 				{
 					float num5 = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.2f : 0f;
-					m_pantingSound.Volume = 1f * SettingsManager.SoundsVolume * MathUtils.Saturate(1f * num4) * MathUtils.Lerp(0.8f, 1f, SimplexNoise.Noise((float)MathUtils.Remainder(3.0 * Time.RealTime + 100.0, 1000.0)));
-					m_pantingSound.Pitch = AudioManager.ToEnginePitch(num5 + MathUtils.Lerp(-0.15f, 0.05f, num4) * MathUtils.Lerp(0.8f, 1.2f, SimplexNoise.Noise((float)MathUtils.Remainder(3.0 * Time.RealTime + 200.0, 1000.0))));
+					m_pantingSound.Volume = 1f * SettingsManager.SoundsVolume * MathUtils.Saturate(1f * num4) * MathUtils.Lerp(0.8f, 1f, SimplexNoise.Noise((float)MathUtils.Remainder((3.0 * Time.RealTime) + 100.0, 1000.0)));
+					m_pantingSound.Pitch = AudioManager.ToEnginePitch(num5 + (MathUtils.Lerp(-0.15f, 0.05f, num4) * MathUtils.Lerp(0.8f, 1.2f, SimplexNoise.Noise((float)MathUtils.Remainder((3.0 * Time.RealTime) + 200.0, 1000.0)))));
 					m_pantingSound.Play();
 				}
 				else
@@ -478,7 +478,7 @@ namespace Game
 			m_lastSleep = Sleep;
 			m_sleepBlackoutDuration -= gameTimeDelta;
 			float num2 = MathUtils.Saturate(0.5f * m_sleepBlackoutDuration);
-			m_sleepBlackoutFactor = MathUtils.Saturate(m_sleepBlackoutFactor + 2f * gameTimeDelta * (num2 - m_sleepBlackoutFactor));
+			m_sleepBlackoutFactor = MathUtils.Saturate(m_sleepBlackoutFactor + (2f * gameTimeDelta * (num2 - m_sleepBlackoutFactor)));
 			if (!m_componentPlayer.ComponentSleep.IsSleeping)
 			{
 				m_componentPlayer.ComponentScreenOverlays.BlackoutFactor = MathUtils.Max(m_sleepBlackoutFactor, m_componentPlayer.ComponentScreenOverlays.BlackoutFactor);
@@ -497,7 +497,7 @@ namespace Game
 			float num = m_componentPlayer.ComponentClothing.Insulation * MathUtils.Lerp(1f, 0.05f, MathUtils.Saturate(4f * Wetness));
 			if (m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Survival)
 			{
-				num = num * 1.5f + 1f;
+				num = (num * 1.5f) + 1f;
 			}
 			string arg;
 			switch (m_componentPlayer.ComponentClothing.LeastInsulatedSlot)
@@ -525,7 +525,7 @@ namespace Game
 			if (m_subsystemGameInfo.WorldSettings.GameMode != 0 && m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled)
 			{
 				float num2 = m_environmentTemperature - Temperature;
-				float num3 = 0.01f + 0.005f * m_environmentTemperatureFlux;
+				float num3 = 0.01f + (0.005f * m_environmentTemperatureFlux);
 				Temperature += MathUtils.Saturate(num3 * gameTimeDelta) * num2;
 			}
 			else
@@ -579,10 +579,10 @@ namespace Game
 				m_componentPlayer.ComponentCreatureSounds.PlayMoanSound();
 			}
 			m_lastTemperature = Temperature;
-			m_componentPlayer.ComponentScreenOverlays.IceFactor = MathUtils.Saturate(1f - Temperature / 6f);
+			m_componentPlayer.ComponentScreenOverlays.IceFactor = MathUtils.Saturate(1f - (Temperature / 6f));
 			m_temperatureBlackoutDuration -= gameTimeDelta;
 			float num4 = MathUtils.Saturate(0.5f * m_temperatureBlackoutDuration);
-			m_temperatureBlackoutFactor = MathUtils.Saturate(m_temperatureBlackoutFactor + 2f * gameTimeDelta * (num4 - m_temperatureBlackoutFactor));
+			m_temperatureBlackoutFactor = MathUtils.Saturate(m_temperatureBlackoutFactor + (2f * gameTimeDelta * (num4 - m_temperatureBlackoutFactor)));
 			m_componentPlayer.ComponentScreenOverlays.BlackoutFactor = MathUtils.Max(m_temperatureBlackoutFactor, m_componentPlayer.ComponentScreenOverlays.BlackoutFactor);
 			if (m_temperatureBlackoutFactor > 0.01)
 			{

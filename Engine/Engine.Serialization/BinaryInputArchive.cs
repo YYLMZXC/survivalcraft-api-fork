@@ -158,7 +158,7 @@ namespace Engine.Serialization
 			int value = 0;
 			Serialize(null, ref value);
 			objectId = value >> 3;
-			isReference = ((value & 1) == 0);
+			isReference = (value & 1) == 0;
 			if ((value & 2) != 0)
 			{
 				int value2 = 0;

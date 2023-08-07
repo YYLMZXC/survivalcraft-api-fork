@@ -19,7 +19,7 @@ namespace Game
 			MaxLevel = maxLevel;
 			for (int i = 0; i < 16; i++)
 			{
-				float num = 0.875f * MathUtils.Saturate(1f - i / (float)MaxLevel);
+				float num = 0.875f * MathUtils.Saturate(1f - (i / (float)MaxLevel));
 				m_heightByLevel[i] = num;
 				m_boundingBoxesByLevel[i] = new BoundingBox[1]
 				{
@@ -50,7 +50,7 @@ namespace Game
 			for (int i = 0; i < BlocksManager.Blocks.Length; i++)
 			{
 				Block block = BlocksManager.Blocks[i];
-				m_theSameFluidsByIndex[i] = (block.GetType().GetTypeInfo() == typeInfo || block.GetType().GetTypeInfo().IsSubclassOf(typeInfo.AsType()));
+				m_theSameFluidsByIndex[i] = block.GetType().GetTypeInfo() == typeInfo || block.GetType().GetTypeInfo().IsSubclassOf(typeInfo.AsType());
 			}
 		}
 
@@ -98,7 +98,7 @@ namespace Game
 				float height4 = CalculateFluidVertexHeight(num2, levelHeight, h3, num4);
 				float x2 = ZeroSubst(num3, levelHeight) - ZeroSubst(num2, levelHeight);
 				float x3 = ZeroSubst(num4, levelHeight) - ZeroSubst(num, levelHeight);
-				int overrideTopTextureSlot = DefaultTextureSlot - (int)MathUtils.Sign(x2) - 16 * (int)MathUtils.Sign(x3);
+				int overrideTopTextureSlot = DefaultTextureSlot - (int)MathUtils.Sign(x2) - (16 * (int)MathUtils.Sign(x3));
 				generator.GenerateCubeVertices(this, value, x, y, z, height, height2, height3, height4, sideColor, topColor, topColor, topColor, topColor, overrideTopTextureSlot, subset);
 			}
 			else

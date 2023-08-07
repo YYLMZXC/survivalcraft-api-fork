@@ -565,7 +565,7 @@ namespace Game
 				Texture2D texture2D = m_mouseDragInProgress ? ContentManager.Get<Texture2D>("Textures/Gui/PadCursorDrag") : ((!m_mouseDownPoint.HasValue) ? ContentManager.Get<Texture2D>("Textures/Gui/PadCursor") : ContentManager.Get<Texture2D>("Textures/Gui/PadCursorDown"));
 				TexturedBatch2D texturedBatch2D = dc.CursorPrimitivesRenderer2D.TexturedBatch(texture2D);
 				Vector2 corner;
-				Vector2 corner2 = (corner = Vector2.Transform(MousePosition.Value, Widget.InvertedGlobalTransform)) + new Vector2(texture2D.Width, texture2D.Height) * 0.8f;
+				Vector2 corner2 = (corner = Vector2.Transform(MousePosition.Value, Widget.InvertedGlobalTransform)) + (new Vector2(texture2D.Width, texture2D.Height) * 0.8f);
 				int count = texturedBatch2D.TriangleVertices.Count;
 				texturedBatch2D.QueueQuad(corner, corner2, 0f, Vector2.Zero, Vector2.One, Color.White);
 				texturedBatch2D.TransformTriangles(Widget.GlobalTransform, count);
@@ -575,7 +575,7 @@ namespace Game
 				Texture2D texture2D2 = m_padDragInProgress ? ContentManager.Get<Texture2D>("Textures/Gui/PadCursorDrag") : ((!m_padDownPoint.HasValue) ? ContentManager.Get<Texture2D>("Textures/Gui/PadCursor") : ContentManager.Get<Texture2D>("Textures/Gui/PadCursorDown"));
 				TexturedBatch2D texturedBatch2D2 = dc.CursorPrimitivesRenderer2D.TexturedBatch(texture2D2);
 				Vector2 corner3;
-				Vector2 corner4 = (corner3 = Vector2.Transform(PadCursorPosition, Widget.InvertedGlobalTransform)) + new Vector2(texture2D2.Width, texture2D2.Height) * 0.8f;
+				Vector2 corner4 = (corner3 = Vector2.Transform(PadCursorPosition, Widget.InvertedGlobalTransform)) + (new Vector2(texture2D2.Width, texture2D2.Height) * 0.8f);
 				int count2 = texturedBatch2D2.TriangleVertices.Count;
 				texturedBatch2D2.QueueQuad(corner3, corner4, 0f, Vector2.Zero, Vector2.One, Color.White);
 				texturedBatch2D2.TransformTriangles(Widget.GlobalTransform, count2);
@@ -650,7 +650,7 @@ namespace Game
 				{
 					Tap = value;
 					m_mouseDownPoint = value;
-					m_mouseDownButton = ((!IsMouseButtonDownOnce(MouseButton.Left)) ? MouseButton.Right : MouseButton.Left);
+					m_mouseDownButton = (!IsMouseButtonDownOnce(MouseButton.Left)) ? MouseButton.Right : MouseButton.Left;
 					m_mouseDragTime = Time.FrameStartTime;
 				}
 				if (!IsMouseButtonDown(MouseButton.Left) && m_mouseDownPoint.HasValue && m_mouseDownButton == MouseButton.Left)
@@ -686,7 +686,7 @@ namespace Game
 					if (Vector2.Distance(m_mouseDownPoint.Value, value) > SettingsManager.MinimumDragDistance * Widget.GlobalScale)
 					{
 						m_mouseDragInProgress = true;
-						DragMode = ((!IsMouseButtonDown(MouseButton.Left)) ? DragMode.SingleItem : DragMode.AllItems);
+						DragMode = (!IsMouseButtonDown(MouseButton.Left)) ? DragMode.SingleItem : DragMode.AllItems;
 						Drag = m_mouseDownPoint.Value;
 					}
 					else if (Time.FrameStartTime - m_mouseDragTime > SettingsManager.MinimumHoldDuration)

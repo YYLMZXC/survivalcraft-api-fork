@@ -24,7 +24,7 @@ namespace Game
 		private List<Action> LoadingActoins = new List<Action>();
 		private List<Action> ModLoadingActoins = new List<Action>();
 		private CanvasWidget Canvas = new CanvasWidget();
-		private RectangleWidget Background = new RectangleWidget() { FillColor = (SettingsManager.DisplayLog ? Color.Black : Color.White), OutlineThickness = 0f, DepthWriteEnabled = true };
+		private RectangleWidget Background = new RectangleWidget() { FillColor = SettingsManager.DisplayLog ? Color.Black : Color.White, OutlineThickness = 0f, DepthWriteEnabled = true };
 		private static ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
 		static LoadingScreen()
 		{

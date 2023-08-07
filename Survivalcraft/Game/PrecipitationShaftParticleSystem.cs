@@ -109,9 +109,9 @@ namespace Game
 			if (!m_isEmpty || (m_intensity > 0f && m_yLimit < activeCamera.ViewPosition.Y + 5f))
 			{
 				var v = Vector2.Normalize(new Vector2(activeCamera.ViewDirection.X, activeCamera.ViewDirection.Z));
-				var v2 = Vector2.Normalize(new Vector2(Point.X + 0.5f - activeCamera.ViewPosition.X + 0.7f * v.X, Point.Y + 0.5f - activeCamera.ViewPosition.Z + 0.7f * v.Y));
+				var v2 = Vector2.Normalize(new Vector2(Point.X + 0.5f - activeCamera.ViewPosition.X + (0.7f * v.X), Point.Y + 0.5f - activeCamera.ViewPosition.Z + (0.7f * v.Y)));
 				float num = Vector2.Dot(v, v2);
-				m_isVisible = (num > 0.5f);
+				m_isVisible = num > 0.5f;
 				if (m_isVisible)
 				{
 					if (m_needsInitialize)
@@ -182,16 +182,16 @@ namespace Game
 							particle.Position.X = Point.X + m_random.Float(0f, 1f);
 							particle.Position.Y = m_random.Float(num4, num5);
 							particle.Position.Z = Point.Y + m_random.Float(0f, 1f);
-							particle.IsActive = (particle.Position.Y >= m_yLimit);
+							particle.IsActive = particle.Position.Y >= m_yLimit;
 							particle.YLimit = 0f;
 							num7--;
 						}
 						else if (m_toCreate >= 1f)
 						{
 							particle.Position.X = Point.X + m_random.Float(0f, 1f);
-							particle.Position.Y = m_random.Float(num3 - m_averageSpeed * dt, num3);
+							particle.Position.Y = m_random.Float(num3 - (m_averageSpeed * dt), num3);
 							particle.Position.Z = Point.Y + m_random.Float(0f, 1f);
-							particle.IsActive = (particle.Position.Y >= m_yLimit);
+							particle.IsActive = particle.Position.Y >= m_yLimit;
 							particle.YLimit = 0f;
 							m_toCreate -= 1f;
 						}

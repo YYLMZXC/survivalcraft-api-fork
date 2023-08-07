@@ -14,10 +14,10 @@ namespace Game
 		{
 			if (m_componentSpawn != null)
 			{
-				Opacity = ((m_componentSpawn.SpawnDuration > 0f) ? ((float)MathUtils.Saturate((m_subsystemGameInfo.TotalElapsedGameTime - m_componentSpawn.SpawnTime) / m_componentSpawn.SpawnDuration)) : 1f);
+				Opacity = (m_componentSpawn.SpawnDuration > 0f) ? ((float)MathUtils.Saturate((m_subsystemGameInfo.TotalElapsedGameTime - m_componentSpawn.SpawnTime) / m_componentSpawn.SpawnDuration)) : 1f;
 				if (m_componentSpawn.DespawnTime.HasValue)
 				{
-					Opacity = MathUtils.Min(Opacity.Value, (float)MathUtils.Saturate(1.0 - (m_subsystemGameInfo.TotalElapsedGameTime - m_componentSpawn.DespawnTime.Value) / m_componentSpawn.DespawnDuration));
+					Opacity = MathUtils.Min(Opacity.Value, (float)MathUtils.Saturate(1.0 - ((m_subsystemGameInfo.TotalElapsedGameTime - m_componentSpawn.DespawnTime.Value) / m_componentSpawn.DespawnDuration)));
 				}
 			}
 			SetBoneTransform(Model.RootBone.Index, m_componentFrame.Matrix);

@@ -1,5 +1,4 @@
-﻿using Android.Text;
-using Engine;
+﻿using Engine;
 
 namespace Game
 {

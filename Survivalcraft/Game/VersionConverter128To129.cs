@@ -192,14 +192,14 @@ namespace Game
 							{
 								for (int l = 0; l < 128; l++)
 								{
-									int num3 = array[2 * num2] | (array[2 * num2 + 1] << 8);
+									int num3 = array[2 * num2] | (array[(2 * num2) + 1] << 8);
 									int num4 = ConvertValue(num3);
 									if (l < 127)
 									{
 										int num5 = num3 & 0xFF;
 										if (num5 == 18 || num5 == 92)
 										{
-											int num6 = (array[2 * num2 + 2] | (array[2 * num2 + 3] << 8)) & 0xFF;
+											int num6 = (array[(2 * num2) + 2] | (array[(2 * num2) + 3] << 8)) & 0xFF;
 											if (num5 != num6)
 											{
 												num4 |= 0x40000;
@@ -207,9 +207,9 @@ namespace Game
 										}
 									}
 									array2[4 * num2] = (byte)num4;
-									array2[4 * num2 + 1] = (byte)(num4 >> 8);
-									array2[4 * num2 + 2] = (byte)(num4 >> 16);
-									array2[4 * num2 + 3] = (byte)(num4 >> 24);
+									array2[(4 * num2) + 1] = (byte)(num4 >> 8);
+									array2[(4 * num2) + 2] = (byte)(num4 >> 16);
+									array2[(4 * num2) + 3] = (byte)(num4 >> 24);
 									num2++;
 								}
 							}
@@ -237,7 +237,7 @@ namespace Game
 		{
 			if (contents >= 133 && contents <= 136)
 			{
-				data |= contents - 133 << 4;
+				data |= (contents - 133) << 4;
 				contents = 133;
 				return;
 			}
@@ -246,7 +246,7 @@ namespace Game
 				int num = data & 1;
 				int num2 = (data >> 1) & 7;
 				int num3 = (num == 0) ? 2 : 5;
-				data = (num2 | (num3 << 3));
+				data = num2 | (num3 << 3);
 				return;
 			}
 			if (contents == 182)
@@ -254,7 +254,7 @@ namespace Game
 				int num4 = data & 1;
 				int num5 = (data >> 1) & 7;
 				int num6 = (num4 == 0) ? 3 : 0;
-				data = (num5 | (num6 << 3));
+				data = num5 | (num6 << 3);
 				return;
 			}
 			if (contents == 185)
@@ -274,7 +274,7 @@ namespace Game
 				{
 					num9 = 3;
 				}
-				data = (num8 | (num9 << 3));
+				data = num8 | (num9 << 3);
 				return;
 			}
 			if (contents == 139)
@@ -282,28 +282,28 @@ namespace Game
 				int num10 = data & 1;
 				int num11 = (data >> 1) & 7;
 				int num12 = num10 * 15;
-				data = (num11 | (num12 << 3));
+				data = num11 | (num12 << 3);
 				return;
 			}
 			if (contents == 128)
 			{
 				contents = 21;
-				data = ((data << 1) | 1);
+				data = (data << 1) | 1;
 			}
 			if (contents == 163)
 			{
 				contents = 3;
-				data = ((data << 1) | 1);
+				data = (data << 1) | 1;
 			}
 			if (contents == 164)
 			{
 				contents = 73;
-				data = ((data << 1) | 1);
+				data = (data << 1) | 1;
 			}
 			if (contents == 165)
 			{
 				contents = 67;
-				data = ((data << 1) | 1);
+				data = (data << 1) | 1;
 			}
 		}
 	}

@@ -114,14 +114,14 @@ namespace Game
 					m_layTime += m_dt;
 					if (m_componentCreature.ComponentBody.StandingOnValue.HasValue)
 					{
-						m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(0f, 0.25f * (float)MathUtils.Sin(20.0 * m_subsystemTime.GameTime) + m_layTime / 3f) - m_componentCreature.ComponentLocomotion.LookAngles;
+						m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(0f, (0.25f * (float)MathUtils.Sin(20.0 * m_subsystemTime.GameTime)) + (m_layTime / 3f)) - m_componentCreature.ComponentLocomotion.LookAngles;
 						if (m_layTime >= 3f)
 						{
 							m_importanceLevel = 0f;
 							int value = Terrain.MakeBlockValue(118, 0, EggBlock.SetIsLaid(EggBlock.SetEggType(0, m_eggType.EggTypeIndex), isLaid: true));
 							Matrix matrix = m_componentCreature.ComponentBody.Matrix;
 							Vector3 position = 0.5f * (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max);
-							Vector3 value2 = 3f * Vector3.Normalize(-matrix.Forward + 0.1f * matrix.Up + 0.2f * m_random.Float(-1f, 1f) * matrix.Right);
+							Vector3 value2 = 3f * Vector3.Normalize(-matrix.Forward + (0.1f * matrix.Up) + (0.2f * m_random.Float(-1f, 1f) * matrix.Right));
 							m_subsystemPickables.AddPickable(value, 1, position, value2, null);
 							m_subsystemAudio.PlaySound("Audio/EggLaid", 1f, m_random.Float(-0.1f, 0.1f), position, 2f, autoDelay: true);
 						}

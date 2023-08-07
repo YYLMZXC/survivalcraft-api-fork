@@ -53,7 +53,7 @@ namespace Game
 
 			public float Cost(Vector3 p1, Vector3 p2)
 			{
-				return 0.999f - 0.1f * Vector3.Dot(Vector3.Normalize(p2 - p1), Vector3.Normalize(Request.End - p1));
+				return 0.999f - (0.1f * Vector3.Dot(Vector3.Normalize(p2 - p1), Vector3.Normalize(Request.End - p1)));
 			}
 
 			public void Neighbors(Vector3 p, DynamicArray<Vector3> neighbors)
@@ -75,9 +75,9 @@ namespace Game
 				float num2 = MathUtils.Abs(p1.Z - p2.Z);
 				if (num > num2)
 				{
-					return 1.41f * num2 + 1f * (num - num2);
+					return (1.41f * num2) + (1f * (num - num2));
 				}
-				return 1.41f * num + 1f * (num2 - num);
+				return (1.41f * num) + (1f * (num2 - num));
 			}
 
 			public bool IsGoal(Vector3 p)
@@ -139,8 +139,8 @@ namespace Game
 				Vector3 v2 = 1f / num8 * (v - vector);
 				for (int i = 1; i <= num8; i++)
 				{
-					Vector3 v3 = vector + i * v2;
-					var box = new BoundingBox(v3 - new Vector3(Request.BoxSize.X / 2f + 0.01f, 0f, Request.BoxSize.Z / 2f + 0.01f), v3 + new Vector3(Request.BoxSize.X / 2f - 0.01f, Request.BoxSize.Y, Request.BoxSize.Z / 2f - 0.01f));
+					Vector3 v3 = vector + (i * v2);
+					var box = new BoundingBox(v3 - new Vector3((Request.BoxSize.X / 2f) + 0.01f, 0f, (Request.BoxSize.Z / 2f) + 0.01f), v3 + new Vector3((Request.BoxSize.X / 2f) - 0.01f, Request.BoxSize.Y, (Request.BoxSize.Z / 2f) - 0.01f));
 					if (IsBlocked(box))
 					{
 						return;
@@ -327,7 +327,7 @@ namespace Game
 		{
 			var vector = new Vector3(p1.X, p1.Y + 0.5f, p1.Z);
 			var vector2 = new Vector3(p2.X, p2.Y + 0.5f, p2.Z);
-			Vector3 v = (0.5f * boxSize.X + 0.1f) * Vector3.Normalize(Vector3.Cross(Vector3.UnitY, vector2 - vector));
+			Vector3 v = ((0.5f * boxSize.X) + 0.1f) * Vector3.Normalize(Vector3.Cross(Vector3.UnitY, vector2 - vector));
 			if (m_subsystemTerrain.Raycast(vector, vector2, useInteractionBoxes: false, skipAirBlocks: true, SmoothingRaycastFunction_Obstacle).HasValue)
 			{
 				return false;

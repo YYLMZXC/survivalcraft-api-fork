@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Engine.Serialization
 {
-    public static class HumanReadableConverter
+	public static class HumanReadableConverter
 	{
 		private static Dictionary<Type, IHumanReadableConverter> m_humanReadableConvertersByType = new Dictionary<Type, IHumanReadableConverter>();
 

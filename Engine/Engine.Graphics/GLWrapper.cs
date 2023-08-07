@@ -381,23 +381,23 @@ namespace Engine.Graphics
 		{
 			switch (target)
 			{
-			case All.ArrayBuffer:
-				if (buffer != m_arrayBuffer)
-				{
+				case All.ArrayBuffer:
+					if (buffer != m_arrayBuffer)
+					{
+						GL.BindBuffer(target, buffer);
+						m_arrayBuffer = buffer;
+					}
+					break;
+				case All.ElementArrayBuffer:
+					if (buffer != m_elementArrayBuffer)
+					{
+						GL.BindBuffer(target, buffer);
+						m_elementArrayBuffer = buffer;
+					}
+					break;
+				default:
 					GL.BindBuffer(target, buffer);
-					m_arrayBuffer = buffer;
-				}
-				break;
-			case All.ElementArrayBuffer:
-				if (buffer != m_elementArrayBuffer)
-				{
-					GL.BindBuffer(target, buffer);
-					m_elementArrayBuffer = buffer;
-				}
-				break;
-			default:
-				GL.BindBuffer(target, buffer);
-				break;
+					break;
 			}
 		}
 
@@ -514,19 +514,19 @@ namespace Engine.Graphics
 				m_rasterizerState = state;
 				switch (state.CullMode)
 				{
-				case CullMode.None:
-					Disable(All.CullFace);
-					break;
-				case CullMode.CullClockwise:
-					Enable(All.CullFace);
-					CullFace(All.Back);
-					FrontFace((Display.RenderTarget != null) ? All.Cw : All.Ccw);
-					break;
-				case CullMode.CullCounterClockwise:
-					Enable(All.CullFace);
-					CullFace(All.Back);
-					FrontFace((Display.RenderTarget != null) ? All.Ccw : All.Cw);
-					break;
+					case CullMode.None:
+						Disable(All.CullFace);
+						break;
+					case CullMode.CullClockwise:
+						Enable(All.CullFace);
+						CullFace(All.Back);
+						FrontFace((Display.RenderTarget != null) ? All.Cw : All.Ccw);
+						break;
+					case CullMode.CullCounterClockwise:
+						Enable(All.CullFace);
+						CullFace(All.Back);
+						FrontFace((Display.RenderTarget != null) ? All.Ccw : All.Cw);
+						break;
 				}
 				if (state.ScissorTestEnable)
 				{
@@ -661,31 +661,31 @@ namespace Engine.Graphics
 				{
 					switch (shaderParameter.Type)
 					{
-					case ShaderParameterType.Float:
-						GL.Uniform1(shaderParameter.Location, shaderParameter.Count, shaderParameter.Value);
-						shaderParameter.IsChanged = false;
-						break;
-					case ShaderParameterType.Vector2:
-						GL.Uniform2(shaderParameter.Location, shaderParameter.Count, shaderParameter.Value);
-						shaderParameter.IsChanged = false;
-						break;
-					case ShaderParameterType.Vector3:
-						GL.Uniform3(shaderParameter.Location, shaderParameter.Count, shaderParameter.Value);
-						shaderParameter.IsChanged = false;
-						break;
-					case ShaderParameterType.Vector4:
-						GL.Uniform4(shaderParameter.Location, shaderParameter.Count, shaderParameter.Value);
-						shaderParameter.IsChanged = false;
-						break;
-					case ShaderParameterType.Matrix:
-						GL.UniformMatrix4(shaderParameter.Location, shaderParameter.Count, transpose: false, shaderParameter.Value);
-						shaderParameter.IsChanged = false;
-						break;
-					default:
-						throw new InvalidOperationException("Unsupported shader parameter type.");
-					case ShaderParameterType.Texture2D:
-					case ShaderParameterType.Sampler2D:
-						break;
+						case ShaderParameterType.Float:
+							GL.Uniform1(shaderParameter.Location, shaderParameter.Count, shaderParameter.Value);
+							shaderParameter.IsChanged = false;
+							break;
+						case ShaderParameterType.Vector2:
+							GL.Uniform2(shaderParameter.Location, shaderParameter.Count, shaderParameter.Value);
+							shaderParameter.IsChanged = false;
+							break;
+						case ShaderParameterType.Vector3:
+							GL.Uniform3(shaderParameter.Location, shaderParameter.Count, shaderParameter.Value);
+							shaderParameter.IsChanged = false;
+							break;
+						case ShaderParameterType.Vector4:
+							GL.Uniform4(shaderParameter.Location, shaderParameter.Count, shaderParameter.Value);
+							shaderParameter.IsChanged = false;
+							break;
+						case ShaderParameterType.Matrix:
+							GL.UniformMatrix4(shaderParameter.Location, shaderParameter.Count, transpose: false, shaderParameter.Value);
+							shaderParameter.IsChanged = false;
+							break;
+						default:
+							throw new InvalidOperationException("Unsupported shader parameter type.");
+						case ShaderParameterType.Texture2D:
+						case ShaderParameterType.Sampler2D:
+							break;
 					}
 				}
 				if (shaderParameter.Type == ShaderParameterType.Texture2D)
@@ -760,7 +760,7 @@ namespace Engine.Graphics
 			}
 			if (stencil.HasValue)
 			{
-				all |= (All)(0x0400);
+				all |= (All)0x0400;
 				ClearStencil(stencil.Value);
 			}
 			if (all != 0)
@@ -796,48 +796,48 @@ namespace Engine.Graphics
 		{
 			switch (vertexElementFormat)
 			{
-			case VertexElementFormat.Single:
-				type = All.Float;
-				normalize = false;
-				break;
-			case VertexElementFormat.Vector2:
-				type = All.Float;
-				normalize = false;
-				break;
-			case VertexElementFormat.Vector3:
-				type = All.Float;
-				normalize = false;
-				break;
-			case VertexElementFormat.Vector4:
-				type = All.Float;
-				normalize = false;
-				break;
-			case VertexElementFormat.Byte4:
-				type = All.UnsignedByte;
-				normalize = false;
-				break;
-			case VertexElementFormat.NormalizedByte4:
-				type = All.UnsignedByte;
-				normalize = true;
-				break;
-			case VertexElementFormat.Short2:
-				type = All.Short;
-				normalize = false;
-				break;
-			case VertexElementFormat.NormalizedShort2:
-				type = All.Short;
-				normalize = true;
-				break;
-			case VertexElementFormat.Short4:
-				type = All.Short;
-				normalize = false;
-				break;
-			case VertexElementFormat.NormalizedShort4:
-				type = All.Short;
-				normalize = true;
-				break;
-			default:
-				throw new InvalidOperationException("Unsupported vertex element format.");
+				case VertexElementFormat.Single:
+					type = All.Float;
+					normalize = false;
+					break;
+				case VertexElementFormat.Vector2:
+					type = All.Float;
+					normalize = false;
+					break;
+				case VertexElementFormat.Vector3:
+					type = All.Float;
+					normalize = false;
+					break;
+				case VertexElementFormat.Vector4:
+					type = All.Float;
+					normalize = false;
+					break;
+				case VertexElementFormat.Byte4:
+					type = All.UnsignedByte;
+					normalize = false;
+					break;
+				case VertexElementFormat.NormalizedByte4:
+					type = All.UnsignedByte;
+					normalize = true;
+					break;
+				case VertexElementFormat.Short2:
+					type = All.Short;
+					normalize = false;
+					break;
+				case VertexElementFormat.NormalizedShort2:
+					type = All.Short;
+					normalize = true;
+					break;
+				case VertexElementFormat.Short4:
+					type = All.Short;
+					normalize = false;
+					break;
+				case VertexElementFormat.NormalizedShort4:
+					type = All.Short;
+					normalize = true;
+					break;
+				default:
+					throw new InvalidOperationException("Unsupported vertex element format.");
 			}
 		}
 
@@ -845,12 +845,12 @@ namespace Engine.Graphics
 		{
 			switch (indexFormat)
 			{
-			case IndexFormat.SixteenBits:
-				return All.UnsignedShort;
-			case IndexFormat.ThirtyTwoBits:
-				return All.UnsignedInt;
-			default:
-				throw new InvalidOperationException("Unsupported index format.");
+				case IndexFormat.SixteenBits:
+					return All.UnsignedShort;
+				case IndexFormat.ThirtyTwoBits:
+					return All.UnsignedInt;
+				default:
+					throw new InvalidOperationException("Unsupported index format.");
 			}
 		}
 
@@ -858,20 +858,20 @@ namespace Engine.Graphics
 		{
 			switch (type)
 			{
-			case ActiveUniformType.Float:
-				return ShaderParameterType.Float;
-			case ActiveUniformType.FloatVec2:
-				return ShaderParameterType.Vector2;
-			case ActiveUniformType.FloatVec3:
-				return ShaderParameterType.Vector3;
-			case ActiveUniformType.FloatVec4:
-				return ShaderParameterType.Vector4;
-			case ActiveUniformType.FloatMat4:
-				return ShaderParameterType.Matrix;
-			case ActiveUniformType.Sampler2D:
-				return ShaderParameterType.Texture2D;
-			default:
-				throw new InvalidOperationException("Unsupported shader parameter type.");
+				case ActiveUniformType.Float:
+					return ShaderParameterType.Float;
+				case ActiveUniformType.FloatVec2:
+					return ShaderParameterType.Vector2;
+				case ActiveUniformType.FloatVec3:
+					return ShaderParameterType.Vector3;
+				case ActiveUniformType.FloatVec4:
+					return ShaderParameterType.Vector4;
+				case ActiveUniformType.FloatMat4:
+					return ShaderParameterType.Matrix;
+				case ActiveUniformType.Sampler2D:
+					return ShaderParameterType.Texture2D;
+				default:
+					throw new InvalidOperationException("Unsupported shader parameter type.");
 			}
 		}
 
@@ -879,16 +879,16 @@ namespace Engine.Graphics
 		{
 			switch (primitiveType)
 			{
-			case PrimitiveType.LineList:
-				return All.ClientPixelStoreBit;
-			case PrimitiveType.LineStrip:
-				return All.LineStrip;
-			case PrimitiveType.TriangleList:
-				return (All)(0x0004);
-			case PrimitiveType.TriangleStrip:
-				return All.TriangleStrip;
-			default:
-				throw new InvalidOperationException("Unsupported primitive type.");
+				case PrimitiveType.LineList:
+					return All.ClientPixelStoreBit;
+				case PrimitiveType.LineStrip:
+					return All.LineStrip;
+				case PrimitiveType.TriangleList:
+					return (All)0x0004;
+				case PrimitiveType.TriangleStrip:
+					return All.TriangleStrip;
+				default:
+					throw new InvalidOperationException("Unsupported primitive type.");
 			}
 		}
 
@@ -896,62 +896,62 @@ namespace Engine.Graphics
 		{
 			switch (filterMode)
 			{
-			case TextureFilterMode.Point:
-				if (!isMipmapped)
-				{
-					return All.Nearest;
-				}
-				return All.NearestMipmapNearest;
-			case TextureFilterMode.Linear:
-				if (!isMipmapped)
-				{
-					return All.Linear;
-				}
-				return All.LinearMipmapLinear;
-			case TextureFilterMode.Anisotropic:
-				if (!isMipmapped)
-				{
-					return All.Linear;
-				}
-				return All.LinearMipmapLinear;
-			case TextureFilterMode.PointMipLinear:
-				if (!isMipmapped)
-				{
-					return All.Nearest;
-				}
-				return All.NearestMipmapLinear;
-			case TextureFilterMode.LinearMipPoint:
-				if (!isMipmapped)
-				{
-					return All.Linear;
-				}
-				return All.LinearMipmapNearest;
-			case TextureFilterMode.MinPointMagLinearMipPoint:
-				if (!isMipmapped)
-				{
-					return All.Nearest;
-				}
-				return All.NearestMipmapNearest;
-			case TextureFilterMode.MinPointMagLinearMipLinear:
-				if (!isMipmapped)
-				{
-					return All.Nearest;
-				}
-				return All.NearestMipmapLinear;
-			case TextureFilterMode.MinLinearMagPointMipPoint:
-				if (!isMipmapped)
-				{
-					return All.Linear;
-				}
-				return All.LinearMipmapNearest;
-			case TextureFilterMode.MinLinearMagPointMipLinear:
-				if (!isMipmapped)
-				{
-					return All.Linear;
-				}
-				return All.LinearMipmapLinear;
-			default:
-				throw new InvalidOperationException("Unsupported texture filter mode.");
+				case TextureFilterMode.Point:
+					if (!isMipmapped)
+					{
+						return All.Nearest;
+					}
+					return All.NearestMipmapNearest;
+				case TextureFilterMode.Linear:
+					if (!isMipmapped)
+					{
+						return All.Linear;
+					}
+					return All.LinearMipmapLinear;
+				case TextureFilterMode.Anisotropic:
+					if (!isMipmapped)
+					{
+						return All.Linear;
+					}
+					return All.LinearMipmapLinear;
+				case TextureFilterMode.PointMipLinear:
+					if (!isMipmapped)
+					{
+						return All.Nearest;
+					}
+					return All.NearestMipmapLinear;
+				case TextureFilterMode.LinearMipPoint:
+					if (!isMipmapped)
+					{
+						return All.Linear;
+					}
+					return All.LinearMipmapNearest;
+				case TextureFilterMode.MinPointMagLinearMipPoint:
+					if (!isMipmapped)
+					{
+						return All.Nearest;
+					}
+					return All.NearestMipmapNearest;
+				case TextureFilterMode.MinPointMagLinearMipLinear:
+					if (!isMipmapped)
+					{
+						return All.Nearest;
+					}
+					return All.NearestMipmapLinear;
+				case TextureFilterMode.MinLinearMagPointMipPoint:
+					if (!isMipmapped)
+					{
+						return All.Linear;
+					}
+					return All.LinearMipmapNearest;
+				case TextureFilterMode.MinLinearMagPointMipLinear:
+					if (!isMipmapped)
+					{
+						return All.Linear;
+					}
+					return All.LinearMipmapLinear;
+				default:
+					throw new InvalidOperationException("Unsupported texture filter mode.");
 			}
 		}
 
@@ -959,26 +959,26 @@ namespace Engine.Graphics
 		{
 			switch (filterMode)
 			{
-			case TextureFilterMode.Point:
-				return All.Nearest;
-			case TextureFilterMode.Linear:
-				return All.Linear;
-			case TextureFilterMode.Anisotropic:
-				return All.Linear;
-			case TextureFilterMode.PointMipLinear:
-				return All.Nearest;
-			case TextureFilterMode.LinearMipPoint:
-				return All.Nearest;
-			case TextureFilterMode.MinPointMagLinearMipPoint:
-				return All.Linear;
-			case TextureFilterMode.MinPointMagLinearMipLinear:
-				return All.Linear;
-			case TextureFilterMode.MinLinearMagPointMipPoint:
-				return All.Nearest;
-			case TextureFilterMode.MinLinearMagPointMipLinear:
-				return All.Nearest;
-			default:
-				throw new InvalidOperationException("Unsupported texture filter mode.");
+				case TextureFilterMode.Point:
+					return All.Nearest;
+				case TextureFilterMode.Linear:
+					return All.Linear;
+				case TextureFilterMode.Anisotropic:
+					return All.Linear;
+				case TextureFilterMode.PointMipLinear:
+					return All.Nearest;
+				case TextureFilterMode.LinearMipPoint:
+					return All.Nearest;
+				case TextureFilterMode.MinPointMagLinearMipPoint:
+					return All.Linear;
+				case TextureFilterMode.MinPointMagLinearMipLinear:
+					return All.Linear;
+				case TextureFilterMode.MinLinearMagPointMipPoint:
+					return All.Nearest;
+				case TextureFilterMode.MinLinearMagPointMipLinear:
+					return All.Nearest;
+				default:
+					throw new InvalidOperationException("Unsupported texture filter mode.");
 			}
 		}
 
@@ -986,12 +986,12 @@ namespace Engine.Graphics
 		{
 			switch (addressMode)
 			{
-			case TextureAddressMode.Clamp:
-				return All.ClampToEdge;
-			case TextureAddressMode.Wrap:
-				return All.Repeat;
-			default:
-				throw new InvalidOperationException("Unsupported texture address mode.");
+				case TextureAddressMode.Clamp:
+					return All.ClampToEdge;
+				case TextureAddressMode.Wrap:
+					return All.Repeat;
+				default:
+					throw new InvalidOperationException("Unsupported texture address mode.");
 			}
 		}
 
@@ -999,24 +999,24 @@ namespace Engine.Graphics
 		{
 			switch (compareFunction)
 			{
-			case CompareFunction.Always:
-				return All.Always;
-			case CompareFunction.Equal:
-				return All.Equal;
-			case CompareFunction.Greater:
-				return All.Greater;
-			case CompareFunction.GreaterEqual:
-				return All.Gequal;
-			case CompareFunction.Less:
-				return All.Less;
-			case CompareFunction.LessEqual:
-				return All.Lequal;
-			case CompareFunction.Never:
-				return All.AccumBufferBit;
-			case CompareFunction.NotEqual:
-				return All.Notequal;
-			default:
-				throw new InvalidOperationException("Unsupported texture address mode.");
+				case CompareFunction.Always:
+					return All.Always;
+				case CompareFunction.Equal:
+					return All.Equal;
+				case CompareFunction.Greater:
+					return All.Greater;
+				case CompareFunction.GreaterEqual:
+					return All.Gequal;
+				case CompareFunction.Less:
+					return All.Less;
+				case CompareFunction.LessEqual:
+					return All.Lequal;
+				case CompareFunction.Never:
+					return All.AccumBufferBit;
+				case CompareFunction.NotEqual:
+					return All.Notequal;
+				default:
+					throw new InvalidOperationException("Unsupported texture address mode.");
 			}
 		}
 
@@ -1024,14 +1024,14 @@ namespace Engine.Graphics
 		{
 			switch (blendFunction)
 			{
-			case BlendFunction.Add:
-				return All.FuncAdd;
-			case BlendFunction.Subtract:
-				return All.FuncSubtract;
-			case BlendFunction.ReverseSubtract:
-				return All.FuncReverseSubtract;
-			default:
-				throw new InvalidOperationException("Unsupported blend function.");
+				case BlendFunction.Add:
+					return All.FuncAdd;
+				case BlendFunction.Subtract:
+					return All.FuncSubtract;
+				case BlendFunction.ReverseSubtract:
+					return All.FuncReverseSubtract;
+				default:
+					throw new InvalidOperationException("Unsupported blend function.");
 			}
 		}
 
@@ -1039,34 +1039,34 @@ namespace Engine.Graphics
 		{
 			switch (blend)
 			{
-			case Blend.Zero:
-				return All.False;
-			case Blend.One:
-				return All.ClientPixelStoreBit;
-			case Blend.SourceColor:
-				return All.SrcColor;
-			case Blend.InverseSourceColor:
-				return All.OneMinusSrcColor;
-			case Blend.DestinationColor:
-				return All.DstColor;
-			case Blend.InverseDestinationColor:
-				return All.OneMinusDstColor;
-			case Blend.SourceAlpha:
-				return All.SrcAlpha;
-			case Blend.InverseSourceAlpha:
-				return All.OneMinusSrcAlpha;
-			case Blend.DestinationAlpha:
-				return All.DstAlpha;
-			case Blend.InverseDestinationAlpha:
-				return All.OneMinusDstAlpha;
-			case Blend.BlendFactor:
-				return All.ConstantColor;
-			case Blend.InverseBlendFactor:
-				return All.OneMinusConstantColor;
-			case Blend.SourceAlphaSaturation:
-				return All.SrcAlphaSaturate;
-			default:
-				throw new InvalidOperationException("Unsupported blend.");
+				case Blend.Zero:
+					return All.False;
+				case Blend.One:
+					return All.ClientPixelStoreBit;
+				case Blend.SourceColor:
+					return All.SrcColor;
+				case Blend.InverseSourceColor:
+					return All.OneMinusSrcColor;
+				case Blend.DestinationColor:
+					return All.DstColor;
+				case Blend.InverseDestinationColor:
+					return All.OneMinusDstColor;
+				case Blend.SourceAlpha:
+					return All.SrcAlpha;
+				case Blend.InverseSourceAlpha:
+					return All.OneMinusSrcAlpha;
+				case Blend.DestinationAlpha:
+					return All.DstAlpha;
+				case Blend.InverseDestinationAlpha:
+					return All.OneMinusDstAlpha;
+				case Blend.BlendFactor:
+					return All.ConstantColor;
+				case Blend.InverseBlendFactor:
+					return All.OneMinusConstantColor;
+				case Blend.SourceAlphaSaturation:
+					return All.SrcAlphaSaturate;
+				default:
+					throw new InvalidOperationException("Unsupported blend.");
 			}
 		}
 
@@ -1074,12 +1074,12 @@ namespace Engine.Graphics
 		{
 			switch (depthFormat)
 			{
-			case DepthFormat.Depth16:
-				return All.DepthComponent16;
-			case DepthFormat.Depth24Stencil8:
-				return All.Depth24Stencil8Oes;
-			default:
-				throw new InvalidOperationException("Unsupported DepthFormat.");
+				case DepthFormat.Depth16:
+					return All.DepthComponent16;
+				case DepthFormat.Depth24Stencil8:
+					return All.Depth24Stencil8Oes;
+				default:
+					throw new InvalidOperationException("Unsupported DepthFormat.");
 			}
 		}
 

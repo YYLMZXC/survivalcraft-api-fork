@@ -468,7 +468,7 @@ namespace Game
 		}
 		public virtual void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)
 		{
-			showDebris = (DestructionDebrisScale > 0f);
+			showDebris = DestructionDebrisScale > 0f;
 			if (toolLevel < RequiredToolLevel)
 			{
 				return;

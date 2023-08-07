@@ -49,14 +49,14 @@ namespace Hjg.Pngcs.Chunks
 				{
 					if (SampleDepth == 8)
 					{
-						PngHelperInternal.WriteByte(memoryStream, (byte)Palette[i * 5 + j]);
+						PngHelperInternal.WriteByte(memoryStream, (byte)Palette[(i * 5) + j]);
 					}
 					else
 					{
-						PngHelperInternal.WriteInt2(memoryStream, Palette[i * 5 + j]);
+						PngHelperInternal.WriteInt2(memoryStream, Palette[(i * 5) + j]);
 					}
 				}
-				PngHelperInternal.WriteInt2(memoryStream, Palette[i * 5 + 4]);
+				PngHelperInternal.WriteInt2(memoryStream, Palette[(i * 5) + 4]);
 			}
 			byte[] array = memoryStream.ToArray();
 			ChunkRaw chunkRaw = createEmptyChunk(array.Length, alloc: false);

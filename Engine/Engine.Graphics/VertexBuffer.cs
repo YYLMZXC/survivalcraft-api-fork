@@ -58,7 +58,7 @@ namespace Engine.Graphics
 				int num = Utilities.SizeOf<T>();
 				int vertexStride = VertexDeclaration.VertexStride;
 				GLWrapper.BindBuffer(All.ArrayBuffer, m_buffer);
-				GL.BufferSubData(All.ArrayBuffer, new IntPtr(targetStartIndex * vertexStride), new IntPtr(num * sourceCount), gCHandle.AddrOfPinnedObject() + sourceStartIndex * num);
+				GL.BufferSubData(All.ArrayBuffer, new IntPtr(targetStartIndex * vertexStride), new IntPtr(num * sourceCount), gCHandle.AddrOfPinnedObject() + (sourceStartIndex * num));
 			}
 			finally
 			{
@@ -124,7 +124,7 @@ namespace Engine.Graphics
 			{
 				throw new ArgumentException("Range is out of source bounds.");
 			}
-			if (targetStartIndex < 0 || targetStartIndex * vertexStride + sourceCount * num > VerticesCount * vertexStride)
+			if (targetStartIndex < 0 || (targetStartIndex * vertexStride) + (sourceCount * num) > VerticesCount * vertexStride)
 			{
 				throw new ArgumentException("Range is out of target bounds.");
 			}

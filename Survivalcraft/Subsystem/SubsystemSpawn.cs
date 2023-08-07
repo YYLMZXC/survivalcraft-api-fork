@@ -282,7 +282,7 @@ namespace Game
 				{
 					TemplateName = item.Entity.ValuesDictionary.DatabaseObject.Name,
 					Position = item.ComponentFrame.Position,
-					ConstantSpawn = (item.ComponentCreature?.ConstantSpawn ?? false),
+					ConstantSpawn = item.ComponentCreature?.ConstantSpawn ?? false,
 					Data = new ValuesDictionary()
 				};
 				ModsManager.HookAction("OnSaveSpawnData", (ModLoader loader) => { loader.OnSaveSpawnData(item, data); return true; });

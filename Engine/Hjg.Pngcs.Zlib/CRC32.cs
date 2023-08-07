@@ -37,7 +37,7 @@ namespace Hjg.Pngcs.Zlib
 			int num2 = start;
 			while (num < length)
 			{
-				hash = ((hash >> 8) ^ table[buffer[num2] ^ (hash & 0xFF)]);
+				hash = (hash >> 8) ^ table[buffer[num2] ^ (hash & 0xFF)];
 				num++;
 				num2++;
 			}
@@ -65,7 +65,7 @@ namespace Hjg.Pngcs.Zlib
 				uint num = (uint)i;
 				for (int j = 0; j < 8; j++)
 				{
-					num = (((num & 1) != 1) ? (num >> 1) : ((num >> 1) ^ polynomial));
+					num = ((num & 1) != 1) ? (num >> 1) : ((num >> 1) ^ polynomial);
 				}
 				array[i] = num;
 			}

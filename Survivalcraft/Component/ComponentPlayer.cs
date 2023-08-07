@@ -138,7 +138,7 @@ namespace Game
 			{
 				if (m_dragHostWidget == null)
 				{
-					m_dragHostWidget = ((GameWidget != null) ? GameWidget.Children.Find<DragHostWidget>(throwIfNotFound: false) : null);
+					m_dragHostWidget = (GameWidget != null) ? GameWidget.Children.Find<DragHostWidget>(throwIfNotFound: false) : null;
 				}
 				return m_dragHostWidget;
 			}
@@ -200,7 +200,7 @@ namespace Game
 					m_speedOrderBlocked = false;
 				}
 				componentSteedBehavior.TurnOrder = playerInput.Move.X;
-				componentSteedBehavior.JumpOrder = (playerInput.Jump ? 1 : 0);
+				componentSteedBehavior.JumpOrder = playerInput.Jump ? 1 : 0;
 				ComponentLocomotion.LookOrder = new Vector2(playerInput.Look.X, 0f);
 			}
 			else if (componentBoat != null)
@@ -208,12 +208,12 @@ namespace Game
 				componentBoat.TurnOrder = playerInput.Move.X;
 				componentBoat.MoveOrder = playerInput.Move.Z;
 				ComponentLocomotion.LookOrder = new Vector2(playerInput.Look.X, 0f);
-				ComponentCreatureModel.RowLeftOrder = (playerInput.Move.X < -0.2f || playerInput.Move.Z > 0.2f);
-				ComponentCreatureModel.RowRightOrder = (playerInput.Move.X > 0.2f || playerInput.Move.Z > 0.2f);
+				ComponentCreatureModel.RowLeftOrder = playerInput.Move.X < -0.2f || playerInput.Move.Z > 0.2f;
+				ComponentCreatureModel.RowRightOrder = playerInput.Move.X > 0.2f || playerInput.Move.Z > 0.2f;
 			}
 			else
 			{
-				ComponentLocomotion.WalkOrder = (ComponentBody.IsSneaking ? (0.66f * new Vector2(playerInput.SneakMove.X, playerInput.SneakMove.Z)) : new Vector2(playerInput.Move.X, playerInput.Move.Z));
+				ComponentLocomotion.WalkOrder = ComponentBody.IsSneaking ? (0.66f * new Vector2(playerInput.SneakMove.X, playerInput.SneakMove.Z)) : new Vector2(playerInput.Move.X, playerInput.Move.Z);
 				ComponentLocomotion.FlyOrder = new Vector3(0f, playerInput.Move.Y, 0f);
 				ComponentLocomotion.TurnOrder = playerInput.Look * new Vector2(1f, 0f);
 				ComponentLocomotion.JumpOrder = MathUtils.Max(playerInput.Jump ? 1 : 0, ComponentLocomotion.JumpOrder);
@@ -263,7 +263,7 @@ namespace Game
 					Ray3 value = playerInput.Aim.Value;
 					Vector3 vector = GameWidget.ActiveCamera.WorldToScreen(value.Position + value.Direction, Matrix.Identity);
 					Point2 size = Window.Size;
-					if ((vector.X >= size.X * 0.02f && vector.X < size.X * 0.98f && vector.Y >= size.Y * 0.02f && vector.Y < size.Y * 0.98f))
+					if (vector.X >= size.X * 0.02f && vector.X < size.X * 0.98f && vector.Y >= size.Y * 0.02f && vector.Y < size.Y * 0.98f)
 					{
 						m_aim = value;
 						if (ComponentMiner.Aim(value, AimState.InProgress))
@@ -336,7 +336,7 @@ namespace Game
 				int num3 = inventory.RemoveSlotItems(count: inventory.GetSlotCount(inventory.ActiveSlotIndex), slotIndex: inventory.ActiveSlotIndex);
 				if (slotValue != 0 && num3 != 0)
 				{
-					Vector3 position = ComponentBody.Position + new Vector3(0f, ComponentBody.StanceBoxSize.Y * 0.66f, 0f) + 0.25f * ComponentBody.Matrix.Forward;
+					Vector3 position = ComponentBody.Position + new Vector3(0f, ComponentBody.StanceBoxSize.Y * 0.66f, 0f) + (0.25f * ComponentBody.Matrix.Forward);
 					Vector3 value2 = 8f * Matrix.CreateFromQuaternion(ComponentCreatureModel.EyeRotation).Forward;
 					m_subsystemPickables.AddPickable(slotValue, num3, position, value2, null);
 				}

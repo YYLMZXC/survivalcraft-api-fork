@@ -66,7 +66,8 @@ namespace Engine.Graphics
 		}
 
 		public ReadOnlyList<ShaderParameter> Parameters => new ReadOnlyList<ShaderParameter>(m_parameters);
-		public void Construct(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros) {
+		public void Construct(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros)
+		{
 			try
 			{
 				InitializeShader(vertexShaderCode, pixelShaderCode, shaderMacros);
@@ -78,7 +79,7 @@ namespace Engine.Graphics
 				throw;
 			}
 		}
-		public Shader(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros) 
+		public Shader(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros)
 		{
 			Construct(vertexShaderCode, pixelShaderCode, shaderMacros);
 		}
@@ -197,7 +198,7 @@ namespace Engine.Graphics
 			str = str + "#define GLSL" + Environment.NewLine;
 			if (isVertexShader)
 			{
-				str = ((!Display.UseReducedZRange) ? (str + "#define OPENGL_POSITION_FIX gl_Position.y *= u_glymul; gl_Position.z = 2.0 * gl_Position.z - gl_Position.w;" + Environment.NewLine) : (str + "#define OPENGL_POSITION_FIX gl_Position.y *= u_glymul;" + Environment.NewLine));
+				str = (!Display.UseReducedZRange) ? (str + "#define OPENGL_POSITION_FIX gl_Position.y *= u_glymul; gl_Position.z = 2.0 * gl_Position.z - gl_Position.w;" + Environment.NewLine) : (str + "#define OPENGL_POSITION_FIX gl_Position.y *= u_glymul;" + Environment.NewLine);
 				str = str + "uniform float u_glymul;" + Environment.NewLine;
 			}
 			foreach (ShaderMacro shaderMacro in shaderMacros)

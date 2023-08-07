@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public struct Matrix : IEquatable<Matrix>
+	public struct Matrix : IEquatable<Matrix>
 	{
 		public float M11;
 
@@ -180,13 +180,13 @@ namespace Engine
 
 		public float Determinant()
 		{
-			float num = M33 * M44 - M34 * M43;
-			float num2 = M32 * M44 - M34 * M42;
-			float num3 = M32 * M43 - M33 * M42;
-			float num4 = M31 * M44 - M34 * M41;
-			float num5 = M31 * M43 - M33 * M41;
-			float num6 = M31 * M42 - M32 * M41;
-			return M11 * (M22 * num - M23 * num2 + M24 * num3) - M12 * (M21 * num - M23 * num4 + M24 * num5) + M13 * (M21 * num2 - M22 * num4 + M24 * num6) - M14 * (M21 * num3 - M22 * num5 + M23 * num6);
+			float num = (M33 * M44) - (M34 * M43);
+			float num2 = (M32 * M44) - (M34 * M42);
+			float num3 = (M32 * M43) - (M33 * M42);
+			float num4 = (M31 * M44) - (M34 * M41);
+			float num5 = (M31 * M43) - (M33 * M41);
+			float num6 = (M31 * M42) - (M32 * M41);
+			return (M11 * ((M22 * num) - (M23 * num2) + (M24 * num3))) - (M12 * ((M21 * num) - (M23 * num4) + (M24 * num5))) + (M13 * ((M21 * num2) - (M22 * num4) + (M24 * num6))) - (M14 * ((M21 * num3) - (M22 * num5) + (M23 * num6)));
 		}
 
 		public Vector3 ToYawPitchRoll()
@@ -203,9 +203,9 @@ namespace Engine
 			float num = (!(M11 * M12 * M13 * M14 < 0f)) ? 1 : (-1);
 			float num2 = (!(M21 * M22 * M23 * M24 < 0f)) ? 1 : (-1);
 			float num3 = (!(M31 * M32 * M33 * M34 < 0f)) ? 1 : (-1);
-			scale.X = num * MathUtils.Sqrt(M11 * M11 + M12 * M12 + M13 * M13);
-			scale.Y = num2 * MathUtils.Sqrt(M21 * M21 + M22 * M22 + M23 * M23);
-			scale.Z = num3 * MathUtils.Sqrt(M31 * M31 + M32 * M32 + M33 * M33);
+			scale.X = num * MathUtils.Sqrt((M11 * M11) + (M12 * M12) + (M13 * M13));
+			scale.Y = num2 * MathUtils.Sqrt((M21 * M21) + (M22 * M22) + (M23 * M23));
+			scale.Z = num3 * MathUtils.Sqrt((M31 * M31) + (M32 * M32) + (M33 * M33));
 			if (scale.X == 0f || scale.Y == 0f || scale.Z == 0f)
 			{
 				rotation = Quaternion.Identity;
@@ -229,17 +229,17 @@ namespace Engine
 			float num7 = x * z;
 			float num8 = y * z;
 			Matrix result = default(Matrix);
-			result.M11 = num3 + num2 * (1f - num3);
-			result.M12 = num6 - num2 * num6 + num * z;
-			result.M13 = num7 - num2 * num7 - num * y;
+			result.M11 = num3 + (num2 * (1f - num3));
+			result.M12 = num6 - (num2 * num6) + (num * z);
+			result.M13 = num7 - (num2 * num7) - (num * y);
 			result.M14 = 0f;
-			result.M21 = num6 - num2 * num6 - num * z;
-			result.M22 = num4 + num2 * (1f - num4);
-			result.M23 = num8 - num2 * num8 + num * x;
+			result.M21 = num6 - (num2 * num6) - (num * z);
+			result.M22 = num4 + (num2 * (1f - num4));
+			result.M23 = num8 - (num2 * num8) + (num * x);
 			result.M24 = 0f;
-			result.M31 = num7 - num2 * num7 + num * y;
-			result.M32 = num8 - num2 * num8 - num * x;
-			result.M33 = num5 + num2 * (1f - num5);
+			result.M31 = num7 - (num2 * num7) + (num * y);
+			result.M32 = num8 - (num2 * num8) - (num * x);
+			result.M33 = num5 + (num2 * (1f - num5));
 			result.M34 = 0f;
 			result.M41 = 0f;
 			result.M42 = 0f;
@@ -287,12 +287,12 @@ namespace Engine
 		{
 			Matrix result = default(Matrix);
 			result.M11 = 2f / width;
-			result.M12 = (result.M13 = (result.M14 = 0f));
+			result.M12 = result.M13 = result.M14 = 0f;
 			result.M22 = 2f / height;
-			result.M21 = (result.M23 = (result.M24 = 0f));
+			result.M21 = result.M23 = result.M24 = 0f;
 			result.M33 = 1f / (nearPlane - farPlane);
-			result.M31 = (result.M32 = (result.M34 = 0f));
-			result.M41 = (result.M42 = 0f);
+			result.M31 = result.M32 = result.M34 = 0f;
+			result.M41 = result.M42 = 0f;
 			result.M43 = nearPlane / (nearPlane - farPlane);
 			result.M44 = 1f;
 			return result;
@@ -324,13 +324,13 @@ namespace Engine
 		{
 			Matrix result = default(Matrix);
 			result.M11 = 2f * nearPlane / width;
-			result.M12 = (result.M13 = (result.M14 = 0f));
+			result.M12 = result.M13 = result.M14 = 0f;
 			result.M22 = 2f * nearPlane / height;
-			result.M21 = (result.M23 = (result.M24 = 0f));
+			result.M21 = result.M23 = result.M24 = 0f;
 			result.M33 = farPlane / (nearPlane - farPlane);
-			result.M31 = (result.M32 = 0f);
+			result.M31 = result.M32 = 0f;
 			result.M34 = -1f;
-			result.M41 = (result.M42 = (result.M44 = 0f));
+			result.M41 = result.M42 = result.M44 = 0f;
 			result.M43 = nearPlane * farPlane / (nearPlane - farPlane);
 			return result;
 		}
@@ -340,13 +340,13 @@ namespace Engine
 			float num = 1f / MathUtils.Tan(fieldOfViewY * 0.5f);
 			Matrix result = default(Matrix);
 			result.M11 = num / aspectRatio;
-			result.M12 = (result.M13 = (result.M14 = 0f));
+			result.M12 = result.M13 = result.M14 = 0f;
 			result.M22 = num;
-			result.M21 = (result.M23 = (result.M24 = 0f));
-			result.M31 = (result.M32 = 0f);
+			result.M21 = result.M23 = result.M24 = 0f;
+			result.M31 = result.M32 = 0f;
 			result.M33 = farPlane / (nearPlane - farPlane);
 			result.M34 = -1f;
-			result.M41 = (result.M42 = (result.M44 = 0f));
+			result.M41 = result.M42 = result.M44 = 0f;
 			result.M43 = nearPlane * farPlane / (nearPlane - farPlane);
 			return result;
 		}
@@ -355,15 +355,15 @@ namespace Engine
 		{
 			Matrix result = default(Matrix);
 			result.M11 = 2f * nearPlane / (right - left);
-			result.M12 = (result.M13 = (result.M14 = 0f));
+			result.M12 = result.M13 = result.M14 = 0f;
 			result.M22 = 2f * nearPlane / (top - bottom);
-			result.M21 = (result.M23 = (result.M24 = 0f));
+			result.M21 = result.M23 = result.M24 = 0f;
 			result.M31 = (left + right) / (right - left);
 			result.M32 = (top + bottom) / (top - bottom);
 			result.M33 = farPlane / (nearPlane - farPlane);
 			result.M34 = -1f;
 			result.M43 = nearPlane * farPlane / (nearPlane - farPlane);
-			result.M41 = (result.M42 = (result.M44 = 0f));
+			result.M41 = result.M42 = result.M44 = 0f;
 			return result;
 		}
 
@@ -444,28 +444,28 @@ namespace Engine
 
 		public static Matrix CreateShadow(Vector4 lightDirection, Plane plane)
 		{
-			float num = plane.Normal.X * lightDirection.X + plane.Normal.Y * lightDirection.Y + plane.Normal.Z * lightDirection.Z;
+			float num = (plane.Normal.X * lightDirection.X) + (plane.Normal.Y * lightDirection.Y) + (plane.Normal.Z * lightDirection.Z);
 			float num2 = 0f - plane.Normal.X;
 			float num3 = 0f - plane.Normal.Y;
 			float num4 = 0f - plane.Normal.Z;
 			float num5 = 0f - plane.D;
 			Matrix result = default(Matrix);
-			result.M11 = num2 * lightDirection.X + num;
+			result.M11 = (num2 * lightDirection.X) + num;
 			result.M21 = num3 * lightDirection.X;
 			result.M31 = num4 * lightDirection.X;
 			result.M41 = num5 * lightDirection.X;
 			result.M12 = num2 * lightDirection.Y;
-			result.M22 = num3 * lightDirection.Y + num;
+			result.M22 = (num3 * lightDirection.Y) + num;
 			result.M32 = num4 * lightDirection.Y;
 			result.M42 = num5 * lightDirection.Y;
 			result.M13 = num2 * lightDirection.Z;
 			result.M23 = num3 * lightDirection.Z;
-			result.M33 = num4 * lightDirection.Z + num;
+			result.M33 = (num4 * lightDirection.Z) + num;
 			result.M43 = num5 * lightDirection.Z;
 			result.M14 = num2 * lightDirection.W;
 			result.M24 = num3 * lightDirection.W;
 			result.M34 = num4 * lightDirection.W;
-			result.M44 = num5 * lightDirection.W + num;
+			result.M44 = (num5 * lightDirection.W) + num;
 			return result;
 		}
 
@@ -492,46 +492,46 @@ namespace Engine
 			float m15 = m.M42;
 			float m16 = m.M43;
 			float m17 = m.M44;
-			float num = m12 * m17 - m13 * m16;
-			float num2 = m11 * m17 - m13 * m15;
-			float num3 = m11 * m16 - m12 * m15;
-			float num4 = m10 * m17 - m13 * m14;
-			float num5 = m10 * m16 - m12 * m14;
-			float num6 = m10 * m15 - m11 * m14;
-			float num7 = m7 * num - m8 * num2 + m9 * num3;
-			float num8 = 0f - (m6 * num - m8 * num4 + m9 * num5);
-			float num9 = m6 * num2 - m7 * num4 + m9 * num6;
-			float num10 = 0f - (m6 * num3 - m7 * num5 + m8 * num6);
-			float num11 = 1f / (m2 * num7 + m3 * num8 + m4 * num9 + m5 * num10);
+			float num = (m12 * m17) - (m13 * m16);
+			float num2 = (m11 * m17) - (m13 * m15);
+			float num3 = (m11 * m16) - (m12 * m15);
+			float num4 = (m10 * m17) - (m13 * m14);
+			float num5 = (m10 * m16) - (m12 * m14);
+			float num6 = (m10 * m15) - (m11 * m14);
+			float num7 = (m7 * num) - (m8 * num2) + (m9 * num3);
+			float num8 = 0f - ((m6 * num) - (m8 * num4) + (m9 * num5));
+			float num9 = (m6 * num2) - (m7 * num4) + (m9 * num6);
+			float num10 = 0f - ((m6 * num3) - (m7 * num5) + (m8 * num6));
+			float num11 = 1f / ((m2 * num7) + (m3 * num8) + (m4 * num9) + (m5 * num10));
 			Matrix result = default(Matrix);
 			result.M11 = num7 * num11;
 			result.M21 = num8 * num11;
 			result.M31 = num9 * num11;
 			result.M41 = num10 * num11;
-			result.M12 = (0f - (m3 * num - m4 * num2 + m5 * num3)) * num11;
-			result.M22 = (m2 * num - m4 * num4 + m5 * num5) * num11;
-			result.M32 = (0f - (m2 * num2 - m3 * num4 + m5 * num6)) * num11;
-			result.M42 = (m2 * num3 - m3 * num5 + m4 * num6) * num11;
-			float num12 = m8 * m17 - m9 * m16;
-			float num13 = m7 * m17 - m9 * m15;
-			float num14 = m7 * m16 - m8 * m15;
-			float num15 = m6 * m17 - m9 * m14;
-			float num16 = m6 * m16 - m8 * m14;
-			float num17 = m6 * m15 - m7 * m14;
-			result.M13 = (m3 * num12 - m4 * num13 + m5 * num14) * num11;
-			result.M23 = (0f - (m2 * num12 - m4 * num15 + m5 * num16)) * num11;
-			result.M33 = (m2 * num13 - m3 * num15 + m5 * num17) * num11;
-			result.M43 = (0f - (m2 * num14 - m3 * num16 + m4 * num17)) * num11;
-			float num18 = m8 * m13 - m9 * m12;
-			float num19 = m7 * m13 - m9 * m11;
-			float num20 = m7 * m12 - m8 * m11;
-			float num21 = m6 * m13 - m9 * m10;
-			float num22 = m6 * m12 - m8 * m10;
-			float num23 = m6 * m11 - m7 * m10;
-			result.M14 = (0f - (m3 * num18 - m4 * num19 + m5 * num20)) * num11;
-			result.M24 = (m2 * num18 - m4 * num21 + m5 * num22) * num11;
-			result.M34 = (0f - (m2 * num19 - m3 * num21 + m5 * num23)) * num11;
-			result.M44 = (m2 * num20 - m3 * num22 + m4 * num23) * num11;
+			result.M12 = (0f - ((m3 * num) - (m4 * num2) + (m5 * num3))) * num11;
+			result.M22 = ((m2 * num) - (m4 * num4) + (m5 * num5)) * num11;
+			result.M32 = (0f - ((m2 * num2) - (m3 * num4) + (m5 * num6))) * num11;
+			result.M42 = ((m2 * num3) - (m3 * num5) + (m4 * num6)) * num11;
+			float num12 = (m8 * m17) - (m9 * m16);
+			float num13 = (m7 * m17) - (m9 * m15);
+			float num14 = (m7 * m16) - (m8 * m15);
+			float num15 = (m6 * m17) - (m9 * m14);
+			float num16 = (m6 * m16) - (m8 * m14);
+			float num17 = (m6 * m15) - (m7 * m14);
+			result.M13 = ((m3 * num12) - (m4 * num13) + (m5 * num14)) * num11;
+			result.M23 = (0f - ((m2 * num12) - (m4 * num15) + (m5 * num16))) * num11;
+			result.M33 = ((m2 * num13) - (m3 * num15) + (m5 * num17)) * num11;
+			result.M43 = (0f - ((m2 * num14) - (m3 * num16) + (m4 * num17))) * num11;
+			float num18 = (m8 * m13) - (m9 * m12);
+			float num19 = (m7 * m13) - (m9 * m11);
+			float num20 = (m7 * m12) - (m8 * m11);
+			float num21 = (m6 * m13) - (m9 * m10);
+			float num22 = (m6 * m12) - (m8 * m10);
+			float num23 = (m6 * m11) - (m7 * m10);
+			result.M14 = (0f - ((m3 * num18) - (m4 * num19) + (m5 * num20))) * num11;
+			result.M24 = ((m2 * num18) - (m4 * num21) + (m5 * num22)) * num11;
+			result.M34 = (0f - ((m2 * num19) - (m3 * num21) + (m5 * num23))) * num11;
+			result.M44 = ((m2 * num20) - (m3 * num22) + (m4 * num23)) * num11;
 			return result;
 		}
 
@@ -558,22 +558,22 @@ namespace Engine
 
 		public static void MultiplyRestricted(ref Matrix m1, ref Matrix m2, out Matrix result)
 		{
-			result.M11 = m1.M11 * m2.M11 + m1.M12 * m2.M21 + m1.M13 * m2.M31 + m1.M14 * m2.M41;
-			result.M12 = m1.M11 * m2.M12 + m1.M12 * m2.M22 + m1.M13 * m2.M32 + m1.M14 * m2.M42;
-			result.M13 = m1.M11 * m2.M13 + m1.M12 * m2.M23 + m1.M13 * m2.M33 + m1.M14 * m2.M43;
-			result.M14 = m1.M11 * m2.M14 + m1.M12 * m2.M24 + m1.M13 * m2.M34 + m1.M14 * m2.M44;
-			result.M21 = m1.M21 * m2.M11 + m1.M22 * m2.M21 + m1.M23 * m2.M31 + m1.M24 * m2.M41;
-			result.M22 = m1.M21 * m2.M12 + m1.M22 * m2.M22 + m1.M23 * m2.M32 + m1.M24 * m2.M42;
-			result.M23 = m1.M21 * m2.M13 + m1.M22 * m2.M23 + m1.M23 * m2.M33 + m1.M24 * m2.M43;
-			result.M24 = m1.M21 * m2.M14 + m1.M22 * m2.M24 + m1.M23 * m2.M34 + m1.M24 * m2.M44;
-			result.M31 = m1.M31 * m2.M11 + m1.M32 * m2.M21 + m1.M33 * m2.M31 + m1.M34 * m2.M41;
-			result.M32 = m1.M31 * m2.M12 + m1.M32 * m2.M22 + m1.M33 * m2.M32 + m1.M34 * m2.M42;
-			result.M33 = m1.M31 * m2.M13 + m1.M32 * m2.M23 + m1.M33 * m2.M33 + m1.M34 * m2.M43;
-			result.M34 = m1.M31 * m2.M14 + m1.M32 * m2.M24 + m1.M33 * m2.M34 + m1.M34 * m2.M44;
-			result.M41 = m1.M41 * m2.M11 + m1.M42 * m2.M21 + m1.M43 * m2.M31 + m1.M44 * m2.M41;
-			result.M42 = m1.M41 * m2.M12 + m1.M42 * m2.M22 + m1.M43 * m2.M32 + m1.M44 * m2.M42;
-			result.M43 = m1.M41 * m2.M13 + m1.M42 * m2.M23 + m1.M43 * m2.M33 + m1.M44 * m2.M43;
-			result.M44 = m1.M41 * m2.M14 + m1.M42 * m2.M24 + m1.M43 * m2.M34 + m1.M44 * m2.M44;
+			result.M11 = (m1.M11 * m2.M11) + (m1.M12 * m2.M21) + (m1.M13 * m2.M31) + (m1.M14 * m2.M41);
+			result.M12 = (m1.M11 * m2.M12) + (m1.M12 * m2.M22) + (m1.M13 * m2.M32) + (m1.M14 * m2.M42);
+			result.M13 = (m1.M11 * m2.M13) + (m1.M12 * m2.M23) + (m1.M13 * m2.M33) + (m1.M14 * m2.M43);
+			result.M14 = (m1.M11 * m2.M14) + (m1.M12 * m2.M24) + (m1.M13 * m2.M34) + (m1.M14 * m2.M44);
+			result.M21 = (m1.M21 * m2.M11) + (m1.M22 * m2.M21) + (m1.M23 * m2.M31) + (m1.M24 * m2.M41);
+			result.M22 = (m1.M21 * m2.M12) + (m1.M22 * m2.M22) + (m1.M23 * m2.M32) + (m1.M24 * m2.M42);
+			result.M23 = (m1.M21 * m2.M13) + (m1.M22 * m2.M23) + (m1.M23 * m2.M33) + (m1.M24 * m2.M43);
+			result.M24 = (m1.M21 * m2.M14) + (m1.M22 * m2.M24) + (m1.M23 * m2.M34) + (m1.M24 * m2.M44);
+			result.M31 = (m1.M31 * m2.M11) + (m1.M32 * m2.M21) + (m1.M33 * m2.M31) + (m1.M34 * m2.M41);
+			result.M32 = (m1.M31 * m2.M12) + (m1.M32 * m2.M22) + (m1.M33 * m2.M32) + (m1.M34 * m2.M42);
+			result.M33 = (m1.M31 * m2.M13) + (m1.M32 * m2.M23) + (m1.M33 * m2.M33) + (m1.M34 * m2.M43);
+			result.M34 = (m1.M31 * m2.M14) + (m1.M32 * m2.M24) + (m1.M33 * m2.M34) + (m1.M34 * m2.M44);
+			result.M41 = (m1.M41 * m2.M11) + (m1.M42 * m2.M21) + (m1.M43 * m2.M31) + (m1.M44 * m2.M41);
+			result.M42 = (m1.M41 * m2.M12) + (m1.M42 * m2.M22) + (m1.M43 * m2.M32) + (m1.M44 * m2.M42);
+			result.M43 = (m1.M41 * m2.M13) + (m1.M42 * m2.M23) + (m1.M43 * m2.M33) + (m1.M44 * m2.M43);
+			result.M44 = (m1.M41 * m2.M14) + (m1.M42 * m2.M24) + (m1.M43 * m2.M34) + (m1.M44 * m2.M44);
 		}
 
 		public static bool operator ==(Matrix m1, Matrix m2)

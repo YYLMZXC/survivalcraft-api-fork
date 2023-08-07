@@ -102,7 +102,7 @@ namespace FluxJpeg.Core.Decoder
 
 		private int mcus_per_row(JpegComponent c)
 		{
-			return ((Width * c.factorH + (Scan.MaxH - 1)) / Scan.MaxH + 7) / 8;
+			return ((((Width * c.factorH) + (Scan.MaxH - 1)) / Scan.MaxH) + 7) / 8;
 		}
 
 		private void DecodeScan(byte numberOfComponents, byte[] componentSelector, int resetInterval, JPEGBinaryReader jpegReader, ref byte marker)

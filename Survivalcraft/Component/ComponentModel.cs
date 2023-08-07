@@ -151,7 +151,7 @@ namespace Game
 			Model = (Model)ContentManager.Get(type, value);
 			CastsShadow = valuesDictionary.GetValue<bool>("CastsShadow");
 			string value2 = valuesDictionary.GetValue<string>("TextureOverride");
-			TextureOverride = (string.IsNullOrEmpty(value2) ? null : ContentManager.Get<Texture2D>(value2));
+			TextureOverride = string.IsNullOrEmpty(value2) ? null : ContentManager.Get<Texture2D>(value2);
 			PrepareOrder = valuesDictionary.GetValue<int>("PrepareOrder");
 			m_boundingSphereRadius = valuesDictionary.GetValue<float>("BoundingSphereRadius");
 		}

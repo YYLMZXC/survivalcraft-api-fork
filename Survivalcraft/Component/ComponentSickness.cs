@@ -102,8 +102,8 @@ namespace Game
 				m_componentPlayer.ComponentLocomotion.LookOrder = new Vector2(m_componentPlayer.ComponentLocomotion.LookOrder.X, MathUtils.Clamp(num - m_componentPlayer.ComponentLocomotion.LookAngles.Y, -2f, 2f));
 				Vector3 upVector = m_componentPlayer.ComponentCreatureModel.EyeRotation.GetUpVector();
 				Vector3 forwardVector = m_componentPlayer.ComponentCreatureModel.EyeRotation.GetForwardVector();
-				m_pukeParticleSystem.Position = m_componentPlayer.ComponentCreatureModel.EyePosition - 0.08f * upVector + 0.3f * forwardVector;
-				m_pukeParticleSystem.Direction = Vector3.Normalize(forwardVector + 0.5f * upVector);
+				m_pukeParticleSystem.Position = m_componentPlayer.ComponentCreatureModel.EyePosition - (0.08f * upVector) + (0.3f * forwardVector);
+				m_pukeParticleSystem.Direction = Vector3.Normalize(forwardVector + (0.5f * upVector));
 				if (m_pukeParticleSystem.IsStopped)
 				{
 					m_pukeParticleSystem = null;
@@ -112,11 +112,11 @@ namespace Game
 			if (m_greenoutDuration > 0f)
 			{
 				m_greenoutDuration = MathUtils.Max(m_greenoutDuration - dt, 0f);
-				m_greenoutFactor = MathUtils.Min(m_greenoutFactor + 0.5f * dt, 0.95f);
+				m_greenoutFactor = MathUtils.Min(m_greenoutFactor + (0.5f * dt), 0.95f);
 			}
 			else if (m_greenoutFactor > 0f)
 			{
-				m_greenoutFactor = MathUtils.Max(m_greenoutFactor - 0.5f * dt, 0f);
+				m_greenoutFactor = MathUtils.Max(m_greenoutFactor - (0.5f * dt), 0f);
 			}
 			m_componentPlayer.ComponentScreenOverlays.GreenoutFactor = MathUtils.Max(m_greenoutFactor, m_componentPlayer.ComponentScreenOverlays.GreenoutFactor);
 		}

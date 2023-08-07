@@ -77,7 +77,7 @@ namespace Game
 						{
 							particle.IsActive = true;
 							var v = new Vector3(m_random.Float(-1f, 1f), m_random.Float(0f, 1f), m_random.Float(-1f, 1f));
-							particle.Position = Position + 0.75f * Radius * v;
+							particle.Position = Position + (0.75f * Radius * v);
 							particle.Color = Color.White;
 							particle.Velocity = 1.5f * v;
 							particle.Size = new Vector2(0.5f);

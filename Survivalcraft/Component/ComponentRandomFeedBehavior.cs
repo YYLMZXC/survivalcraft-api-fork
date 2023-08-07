@@ -76,7 +76,7 @@ namespace Game
 					Vector3 position = m_componentCreature.ComponentBody.Position;
 					Vector3 forward = m_componentCreature.ComponentBody.Matrix.Forward;
 					float num4 = (m_random.Float(0f, 1f) < 0.2f) ? 5f : 1.5f;
-					value = position + num4 * forward + 0.5f * num4 * new Vector3(m_random.Float(-1f, 1f), 0f, m_random.Float(-1f, 1f));
+					value = position + (num4 * forward) + (0.5f * num4 * new Vector3(m_random.Float(-1f, 1f), 0f, m_random.Float(-1f, 1f)));
 				}
 				value.Y = m_subsystemTerrain.Terrain.GetTopHeight(Terrain.ToCell(value.X), Terrain.ToCell(value.Z)) + 1;
 				m_componentPathfinding.SetDestination(value, m_random.Float(0.25f, 0.35f), 1f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);

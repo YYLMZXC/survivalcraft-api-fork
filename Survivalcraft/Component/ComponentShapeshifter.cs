@@ -97,7 +97,7 @@ namespace Game
 				DatabaseManager.FindEntityValuesDictionary(m_nightEntityTemplateName, throwIfNotFound: true);
 			}
 			m_timeToSwitch = s_random.Float(3f, 15f);
-			IsEnabled = (s_random.Float(0f, 1f) < value);
+			IsEnabled = s_random.Float(0f, 1f) < value;
 			m_componentSpawn.Despawned += ComponentSpawn_Despawned;
 		}
 

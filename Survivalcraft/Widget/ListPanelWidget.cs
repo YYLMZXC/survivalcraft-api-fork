@@ -114,7 +114,7 @@ namespace Game
 			set
 			{
 				int num = m_items.IndexOf(value);
-				SelectedIndex = ((num >= 0) ? new int?(num) : null);
+				SelectedIndex = (num >= 0) ? new int?(num) : null;
 			}
 		}
 
@@ -133,12 +133,12 @@ namespace Game
 		public ListPanelWidget()
 		{
 			SelectionColor = Color.Gray;
-			ItemWidgetFactory = ((object item) => new LabelWidget
+			ItemWidgetFactory = (object item) => new LabelWidget
 			{
-				Text = ((item != null) ? item.ToString() : string.Empty),
+				Text = (item != null) ? item.ToString() : string.Empty,
 				HorizontalAlignment = WidgetAlignment.Center,
 				VerticalAlignment = WidgetAlignment.Center
-			});
+			};
 			ItemSize = 48f;
 		}
 
@@ -209,11 +209,11 @@ namespace Game
 				{
 					if (Direction == LayoutDirection.Horizontal)
 					{
-						child.Measure(new Vector2(ItemSize, MathUtils.Max(parentAvailableSize.Y - 2f * child.Margin.Y, 0f)));
+						child.Measure(new Vector2(ItemSize, MathUtils.Max(parentAvailableSize.Y - (2f * child.Margin.Y), 0f)));
 					}
 					else
 					{
-						child.Measure(new Vector2(MathUtils.Max(parentAvailableSize.X - 2f * child.Margin.X, 0f), ItemSize));
+						child.Measure(new Vector2(MathUtils.Max(parentAvailableSize.X - (2f * child.Margin.X), 0f), ItemSize));
 					}
 				}
 			}
@@ -236,12 +236,12 @@ namespace Game
 			{
 				if (Direction == LayoutDirection.Horizontal)
 				{
-					var vector = new Vector2(num * ItemSize - ScrollPosition, 0f);
+					var vector = new Vector2((num * ItemSize) - ScrollPosition, 0f);
 					ArrangeChildWidgetInCell(vector, vector + new Vector2(ItemSize, ActualSize.Y), child);
 				}
 				else
 				{
-					var vector2 = new Vector2(0f, num * ItemSize - ScrollPosition);
+					var vector2 = new Vector2(0f, (num * ItemSize) - ScrollPosition);
 					ArrangeChildWidgetInCell(vector2, vector2 + new Vector2(ActualSize.X, ItemSize), child);
 				}
 				num++;
@@ -275,7 +275,7 @@ namespace Game
 		{
 			if (SelectedIndex.HasValue && SelectedIndex.Value >= m_firstVisibleIndex && SelectedIndex.Value <= m_lastVisibleIndex)
 			{
-				Vector2 vector = (Direction == LayoutDirection.Horizontal) ? new Vector2(SelectedIndex.Value * ItemSize - ScrollPosition, 0f) : new Vector2(0f, SelectedIndex.Value * ItemSize - ScrollPosition);
+				Vector2 vector = (Direction == LayoutDirection.Horizontal) ? new Vector2((SelectedIndex.Value * ItemSize) - ScrollPosition, 0f) : new Vector2(0f, (SelectedIndex.Value * ItemSize) - ScrollPosition);
 				FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(0, DepthStencilState.None);
 				int count = flatBatch2D.TriangleVertices.Count;
 				Vector2 v = (Direction == LayoutDirection.Horizontal) ? new Vector2(ItemSize, ActualSize.Y) : new Vector2(ActualSize.X, ItemSize);

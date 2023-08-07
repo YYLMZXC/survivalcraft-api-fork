@@ -13,7 +13,7 @@ namespace Engine.Graphics
 		{
 			var scale = new Vector2(right.Length(), down.Length());
 			Vector2 vector = CalculateTextOffset(text, anchor, scale, spacing);
-			Vector3 vector2 = position + vector.X * Vector3.Normalize(right) + vector.Y * Vector3.Normalize(down);
+			Vector3 vector2 = position + (vector.X * Vector3.Normalize(right)) + (vector.Y * Vector3.Normalize(down));
 			Vector3 v = vector2;
 			right *= base.Font.Scale;
 			down *= base.Font.Scale;
@@ -22,19 +22,19 @@ namespace Engine.Graphics
 			{
 				switch (c)
 				{
-				case '\n':
-					num++;
-					v = vector2 + (float)num * (base.Font.GlyphHeight + base.Font.Spacing.Y + spacing.Y) * down;
-					continue;
-				case '\r':
-					continue;
+					case '\n':
+						num++;
+						v = vector2 + ((float)num * (base.Font.GlyphHeight + base.Font.Spacing.Y + spacing.Y) * down);
+						continue;
+					case '\r':
+						continue;
 				}
 				BitmapFont.Glyph glyph = base.Font.GetGlyph(c);
 				if (!glyph.IsBlank)
 				{
 					Vector3 v2 = right * (glyph.TexCoord2.X - glyph.TexCoord1.X) * base.Font.Texture.Width;
 					Vector3 v3 = down * (glyph.TexCoord2.Y - glyph.TexCoord1.Y) * base.Font.Texture.Height;
-					Vector3 v4 = right * glyph.Offset.X + down * glyph.Offset.Y;
+					Vector3 v4 = (right * glyph.Offset.X) + (down * glyph.Offset.Y);
 					Vector3 v5 = v + v4;
 					Vector3 vector3 = v5 + v2;
 					Vector3 vector4 = v5 + v3;

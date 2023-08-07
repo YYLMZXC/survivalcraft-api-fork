@@ -124,7 +124,7 @@ namespace Game
 				factors.Add(item);
 			}
 			float level = m_componentPlayer.PlayerData.Level;
-			float num3 = 1f + 0.05f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f);
+			float num3 = 1f + (0.05f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f));
 			float num4 = num2 * num3;
 			if (factors != null)
 			{
@@ -154,7 +154,7 @@ namespace Game
 				item = new Factor
 				{
 					Value = num7,
-					Description = (m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5))
+					Description = m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5)
 				};
 				factors.Add(item);
 			}
@@ -165,7 +165,7 @@ namespace Game
 				item = new Factor
 				{
 					Value = num9,
-					Description = (m_componentPlayer.ComponentSickness.IsPuking ? LanguageControl.Get(fName, 6) : LanguageControl.Get(fName, 7))
+					Description = m_componentPlayer.ComponentSickness.IsPuking ? LanguageControl.Get(fName, 6) : LanguageControl.Get(fName, 7)
 				};
 				factors.Add(item);
 			}
@@ -176,7 +176,7 @@ namespace Game
 				item = new Factor
 				{
 					Value = num11,
-					Description = (m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9))
+					Description = m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9)
 				};
 				factors.Add(item);
 			}
@@ -187,7 +187,7 @@ namespace Game
 				item = new Factor
 				{
 					Value = num13,
-					Description = (m_componentPlayer.ComponentFlu.IsCoughing ? LanguageControl.Get(fName, 10) : LanguageControl.Get(fName, 11))
+					Description = m_componentPlayer.ComponentFlu.IsCoughing ? LanguageControl.Get(fName, 10) : LanguageControl.Get(fName, 11)
 				};
 				factors.Add(item);
 			}
@@ -220,7 +220,7 @@ namespace Game
 				factors.Add(item);
 			}
 			float level = m_componentPlayer.PlayerData.Level;
-			float num3 = 1f + 0.05f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f);
+			float num3 = 1f + (0.05f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f));
 			float num4 = num2 * num3;
 			if (factors != null)
 			{
@@ -238,7 +238,7 @@ namespace Game
 				item = new Factor
 				{
 					Value = num5,
-					Description = (m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5))
+					Description = m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5)
 				};
 				factors.Add(item);
 			}
@@ -249,7 +249,7 @@ namespace Game
 				item = new Factor
 				{
 					Value = num7,
-					Description = (m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9))
+					Description = m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9)
 				};
 				factors.Add(item);
 			}
@@ -295,7 +295,7 @@ namespace Game
 				factors.Add(item);
 			}
 			float level = m_componentPlayer.PlayerData.Level;
-			float num3 = 1f + 0.02f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f);
+			float num3 = 1f + (0.02f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f));
 			num *= num3;
 			if (factors != null)
 			{
@@ -343,7 +343,7 @@ namespace Game
 				item = new Factor
 				{
 					Value = num5,
-					Description = (m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5))
+					Description = m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5)
 				};
 				factors.Add(item);
 			}
@@ -354,7 +354,7 @@ namespace Game
 				item = new Factor
 				{
 					Value = num6,
-					Description = (m_componentPlayer.ComponentSickness.IsPuking ? LanguageControl.Get(fName, 6) : LanguageControl.Get(fName, 7))
+					Description = m_componentPlayer.ComponentSickness.IsPuking ? LanguageControl.Get(fName, 6) : LanguageControl.Get(fName, 7)
 				};
 				factors.Add(item);
 			}
@@ -365,7 +365,7 @@ namespace Game
 				item = new Factor
 				{
 					Value = num7,
-					Description = (m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9))
+					Description = m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9)
 				};
 				factors.Add(item);
 			}
@@ -376,7 +376,7 @@ namespace Game
 				item = new Factor
 				{
 					Value = num8,
-					Description = (m_componentPlayer.ComponentFlu.IsCoughing ? LanguageControl.Get(fName, 10) : LanguageControl.Get(fName, 11))
+					Description = m_componentPlayer.ComponentFlu.IsCoughing ? LanguageControl.Get(fName, 10) : LanguageControl.Get(fName, 11)
 				};
 				factors.Add(item);
 			}
@@ -398,7 +398,7 @@ namespace Game
 				factors.Add(item);
 			}
 			float level = m_componentPlayer.PlayerData.Level;
-			float num3 = 1f - 0.01f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f);
+			float num3 = 1f - (0.01f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f));
 			float num4 = num2 * num3;
 			if (factors != null)
 			{

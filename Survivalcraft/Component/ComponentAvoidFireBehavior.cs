@@ -98,7 +98,7 @@ namespace Game
 				if (m_target.HasValue)
 				{
 					var vector2 = Vector3.Normalize(Vector3.Normalize(m_componentCreature.ComponentBody.Position - m_target.Value) + m_random.Vector3(0.5f));
-					Vector3 value2 = m_componentCreature.ComponentBody.Position + m_random.Float(6f, 8f) * Vector3.Normalize(new Vector3(vector2.X, 0f, vector2.Z));
+					Vector3 value2 = m_componentCreature.ComponentBody.Position + (m_random.Float(6f, 8f) * Vector3.Normalize(new Vector3(vector2.X, 0f, vector2.Z)));
 					m_componentPathfinding.SetDestination(value2, m_random.Float(0.6f, 0.8f), 1f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
 				}
 			}, delegate
@@ -122,7 +122,7 @@ namespace Game
 				if (m_target.HasValue)
 				{
 					Vector3 vector = Vector3.Cross(Vector3.Normalize(m_componentCreature.ComponentBody.Position - m_target.Value), Vector3.UnitY) * m_circlingDirection;
-					Vector3 value = m_componentCreature.ComponentBody.Position + m_random.Float(6f, 8f) * Vector3.Normalize(new Vector3(vector.X, 0f, vector.Z));
+					Vector3 value = m_componentCreature.ComponentBody.Position + (m_random.Float(6f, 8f) * Vector3.Normalize(new Vector3(vector.X, 0f, vector.Z)));
 					m_componentPathfinding.SetDestination(value, m_random.Float(0.4f, 0.9f), 1f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
 				}
 			}, delegate
@@ -174,7 +174,7 @@ namespace Game
 			if (num > 0f)
 			{
 				float num2 = Vector3.Distance(target, m_componentCreature.ComponentBody.Position);
-				return MathUtils.Saturate(1f - num2 / num);
+				return MathUtils.Saturate(1f - (num2 / num));
 			}
 			return 0f;
 		}

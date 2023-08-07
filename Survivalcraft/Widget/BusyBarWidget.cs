@@ -54,7 +54,7 @@ namespace Game
 				var v = new Vector2((i + 0.5f) * 24f, 6f);
 				Color c = (i == m_boxIndex % 5) ? LitBarColor : UnlitBarColor;
 				float v2 = (i == m_boxIndex % 5) ? 12f : 8f;
-				flatBatch2D.QueueQuad(v - new Vector2(v2) / 2f, v + new Vector2(v2) / 2f, 0f, c * GlobalColorTransform);
+				flatBatch2D.QueueQuad(v - (new Vector2(v2) / 2f), v + (new Vector2(v2) / 2f), 0f, c * GlobalColorTransform);
 			}
 			flatBatch2D.TransformTriangles(GlobalTransform, count);
 		}

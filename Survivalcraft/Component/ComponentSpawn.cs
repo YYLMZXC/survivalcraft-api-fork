@@ -74,8 +74,8 @@ namespace Game
 			double value2 = valuesDictionary.GetValue<double>("DespawnTime");
 			SpawnDuration = 2f;
 			DespawnDuration = 2f;
-			SpawnTime = ((value < 0.0) ? m_subsystemGameInfo.TotalElapsedGameTime : value);
-			DespawnTime = ((value2 >= 0.0) ? new double?(value2) : null);
+			SpawnTime = (value < 0.0) ? m_subsystemGameInfo.TotalElapsedGameTime : value;
+			DespawnTime = (value2 >= 0.0) ? new double?(value2) : null;
 		}
 
 		public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)

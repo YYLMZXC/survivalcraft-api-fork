@@ -120,7 +120,7 @@ namespace Game
 			for (int i = 0; i < 6; i++)
 			{
 				int num = CellFace.OppositeFace((i < 4) ? ((i + rotation) % 4) : i);
-				byte b = (byte)(LightingManager.LightIntensityByLightValueAndFace[15 + 16 * num] * 255f);
+				byte b = (byte)(LightingManager.LightIntensityByLightValueAndFace[15 + (16 * num)] * 255f);
 				var color = new Color(b, b, b);
 				if (geometry2.SubsetOpaqueByFace[i] != null)
 				{
@@ -158,7 +158,7 @@ namespace Game
 			FurnitureGeometry geometry = design.Geometry;
 			for (int i = 0; i < 6; i++)
 			{
-				float s = LightingManager.LightIntensityByLightValueAndFace[environmentData.Light + 16 * CellFace.OppositeFace(i)];
+				float s = LightingManager.LightIntensityByLightValueAndFace[environmentData.Light + (16 * CellFace.OppositeFace(i))];
 				var color2 = Color.MultiplyColorOnly(color, s);
 				if (geometry.SubsetOpaqueByFace[i] != null)
 				{
@@ -194,7 +194,7 @@ namespace Game
 			{
 				return -99;
 			}
-			return GetShadowStrengthFactor(data) * 3 + 1;
+			return (GetShadowStrengthFactor(data) * 3) + 1;
 		}
 
 		public override int GetEmittedLightAmount(int value)
@@ -485,7 +485,7 @@ namespace Game
 				var list3 = list.Select((FurnitureDesign d) => d.Clone()).ToList();
 				for (int k = 0; k < list3.Count; k++)
 				{
-					list3[k].InteractionMode = ((num3 == 0) ? FurnitureInteractionMode.Multistate : FurnitureInteractionMode.ConnectedMultistate);
+					list3[k].InteractionMode = (num3 == 0) ? FurnitureInteractionMode.Multistate : FurnitureInteractionMode.ConnectedMultistate;
 					list3[k].LinkedDesign = list3[(k + 1) % list3.Count];
 				}
 				FurnitureDesign furnitureDesign4 = terrain.SubsystemFurnitureBlockBehavior.TryAddDesignChain(list3[0], garbageCollectIfNeeded: true);
@@ -586,10 +586,10 @@ namespace Game
 			int IndexI3 = designIndex >> 10;
 			int IndexI10 = designIndex & 1023;
 
-			data = ((data & 3) | ((IndexI10 & 1023) << 2));//设置旋转，和方块索引前10位
-			data = ((data & 4095) | ((shadowStrengthFactor & 3) << 12));//设置光强
-			data = ((data & 16383) | ((isLightEmitter ? 1 : 0) << 14));//设置是否发光
-			data = ((data & 32767) | IndexI3 << 15);//设置索引后3位
+			data = (data & 3) | ((IndexI10 & 1023) << 2);//设置旋转，和方块索引前10位
+			data = (data & 4095) | ((shadowStrengthFactor & 3) << 12);//设置光强
+			data = (data & 16383) | ((isLightEmitter ? 1 : 0) << 14);//设置是否发光
+			data = (data & 32767) | (IndexI3 << 15);//设置索引后3位
 
 			return data;
 		}

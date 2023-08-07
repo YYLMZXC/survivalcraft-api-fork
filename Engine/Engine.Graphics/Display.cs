@@ -138,7 +138,7 @@ namespace Engine.Graphics
 			{
 				GLWrapper.ApplyRenderTarget(RenderTarget);
 				GLWrapper.ApplyViewportScissor(Viewport, ScissorRectangle, RasterizerState.ScissorTestEnable);
-				GLWrapper.ApplyShaderAndBuffers(shader, vertexDeclaration, gCHandle.AddrOfPinnedObject() + startVertex * vertexDeclaration.VertexStride, 0, null);
+				GLWrapper.ApplyShaderAndBuffers(shader, vertexDeclaration, gCHandle.AddrOfPinnedObject() + (startVertex * vertexDeclaration.VertexStride), 0, null);
 				GLWrapper.ApplyRasterizerState(RasterizerState);
 				GLWrapper.ApplyDepthStencilState(DepthStencilState);
 				GLWrapper.ApplyBlendState(BlendState);
@@ -150,7 +150,7 @@ namespace Engine.Graphics
 			}
 		}
 
-        public static void DrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct
+		public static void DrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct
 		{
 			VerifyParametersDrawUserIndexed(primitiveType, shader, vertexDeclaration, vertexData, startVertex, verticesCount, indexData, startIndex, indicesCount);
 			var gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
@@ -163,9 +163,9 @@ namespace Engine.Graphics
 				GLWrapper.ApplyRasterizerState(RasterizerState);
 				GLWrapper.ApplyDepthStencilState(DepthStencilState);
 				GLWrapper.ApplyBlendState(BlendState);
-				GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), indicesCount, All.UnsignedInt, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
+				GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), indicesCount, All.UnsignedInt, gCHandle2.AddrOfPinnedObject() + (4 * startIndex));
 			}
-            finally
+			finally
 			{
 				gCHandle.Free();
 				gCHandle2.Free();

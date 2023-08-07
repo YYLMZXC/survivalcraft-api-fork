@@ -34,11 +34,11 @@ namespace NVorbis
 
 		internal static uint BitReverse(uint n, int bits)
 		{
-			n = (((uint)((int)n & -1431655766) >> 1) | ((n & 0x55555555) << 1));
-			n = (((uint)((int)n & -858993460) >> 2) | ((n & 0x33333333) << 2));
-			n = (((uint)((int)n & -252645136) >> 4) | ((n & 0xF0F0F0F) << 4));
-			n = (((uint)((int)n & -16711936) >> 8) | ((n & 0xFF00FF) << 8));
-			return ((n >> 16) | (n << 16)) >> 32 - bits;
+			n = ((uint)((int)n & -1431655766) >> 1) | ((n & 0x55555555) << 1);
+			n = ((uint)((int)n & -858993460) >> 2) | ((n & 0x33333333) << 2);
+			n = ((uint)((int)n & -252645136) >> 4) | ((n & 0xF0F0F0F) << 4);
+			n = ((uint)((int)n & -16711936) >> 8) | ((n & 0xFF00FF) << 8);
+			return ((n >> 16) | (n << 16)) >> (32 - bits);
 		}
 
 		internal static float ClipValue(float value, ref bool clipped)

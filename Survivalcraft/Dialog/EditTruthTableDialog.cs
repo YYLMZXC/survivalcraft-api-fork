@@ -72,7 +72,7 @@ namespace Game
 				{
 					m_tmpTruthTableData.Data[i] = (byte)((m_tmpTruthTableData.Data[i] == 0) ? 15 : 0);
 				}
-				m_lineCheckboxes[i].IsChecked = (m_tmpTruthTableData.Data[i] > 0);
+				m_lineCheckboxes[i].IsChecked = m_tmpTruthTableData.Data[i] > 0;
 			}
 			if (m_linearPanel.IsVisible)
 			{

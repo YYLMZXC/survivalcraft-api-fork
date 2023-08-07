@@ -53,8 +53,8 @@ namespace Game
 		public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)
 		{
 			int num = Terrain.ExtractData(oldValue);
-			int num2 = 10 + 4 * num;
-			int num3 = ((num >= 3) ? 1 : 0);
+			int num2 = 10 + (4 * num);
+			int num3 = (num >= 3) ? 1 : 0;
 			BlockDropValue item;
 			for (int i = 0; i < 3; i++)
 			{

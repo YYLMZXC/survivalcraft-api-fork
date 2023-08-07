@@ -33,9 +33,9 @@ namespace Game
 			m_okButtonWidget = Children.Find<ButtonWidget>("TextBoxDialog.OkButton");
 			m_cancelButtonWidget = Children.Find<ButtonWidget>("TextBoxDialog.CancelButton");
 			m_titleWidget.IsVisible = !string.IsNullOrEmpty(title);
-			m_titleWidget.Text = (title ?? string.Empty);
+			m_titleWidget.Text = title ?? string.Empty;
 			m_textBoxWidget.MaximumLength = maximumLength;
-			m_textBoxWidget.Text = (text ?? string.Empty);
+			m_textBoxWidget.Text = text ?? string.Empty;
 			m_textBoxWidget.HasFocus = true;
 			m_textBoxWidget.Enter += delegate
 			{
@@ -55,9 +55,9 @@ namespace Game
 			m_okButtonWidget = Children.Find<ButtonWidget>("TextBoxDialog.OkButton");
 			m_cancelButtonWidget = Children.Find<ButtonWidget>("TextBoxDialog.CancelButton");
 			m_titleWidget.IsVisible = !string.IsNullOrEmpty(title);
-			m_titleWidget.Text = (title ?? string.Empty);
+			m_titleWidget.Text = title ?? string.Empty;
 			m_textBoxWidget.MaximumLength = maximumLength;
-			m_textBoxWidget.Text = (text ?? string.Empty);
+			m_textBoxWidget.Text = text ?? string.Empty;
 			m_textBoxWidget.HasFocus = true;
 			m_textBoxWidget.Enter += delegate
 			{

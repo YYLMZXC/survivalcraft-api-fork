@@ -57,7 +57,7 @@ namespace Game
 			int data = Terrain.ExtractData(value);
 			int num = Terrain.ExtractLight(value);
 			int mountingFace = GetMountingFace(data);
-			float s = LightingManager.LightIntensityByLightValueAndFace[num + 16 * mountingFace];
+			float s = LightingManager.LightIntensityByLightValueAndFace[num + (16 * mountingFace)];
 			Color color = Color.White * s;
 			switch (mountingFace)
 			{
@@ -68,17 +68,17 @@ namespace Game
 					BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z + 1, color, DefaultTextureSlot, 2, ref vertices.Array[count + 2]);
 					BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z + 1, color, DefaultTextureSlot, 3, ref vertices.Array[count + 3]);
 					indices.Add(count);
-					indices.Add((count + 1));
-					indices.Add((count + 2));
-					indices.Add((count + 2));
-					indices.Add((count + 1));
+					indices.Add(count + 1);
+					indices.Add(count + 2);
+					indices.Add(count + 2);
+					indices.Add(count + 1);
 					indices.Add(count);
-					indices.Add((count + 2));
-					indices.Add((count + 3));
+					indices.Add(count + 2);
+					indices.Add(count + 3);
 					indices.Add(count);
 					indices.Add(count);
-					indices.Add((count + 3));
-					indices.Add((count + 2));
+					indices.Add(count + 3);
+					indices.Add(count + 2);
 					break;
 				case 3:
 					vertices.Count += 4;
@@ -87,17 +87,17 @@ namespace Game
 					BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z + 1, color, DefaultTextureSlot, 2, ref vertices.Array[count + 2]);
 					BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y, z + 1, color, DefaultTextureSlot, 1, ref vertices.Array[count + 3]);
 					indices.Add(count);
-					indices.Add((count + 1));
-					indices.Add((count + 2));
-					indices.Add((count + 2));
-					indices.Add((count + 1));
+					indices.Add(count + 1);
+					indices.Add(count + 2);
+					indices.Add(count + 2);
+					indices.Add(count + 1);
 					indices.Add(count);
-					indices.Add((count + 2));
-					indices.Add((count + 3));
+					indices.Add(count + 2);
+					indices.Add(count + 3);
 					indices.Add(count);
 					indices.Add(count);
-					indices.Add((count + 3));
-					indices.Add((count + 2));
+					indices.Add(count + 3);
+					indices.Add(count + 2);
 					break;
 				case 0:
 					vertices.Count += 4;
@@ -106,17 +106,17 @@ namespace Game
 					BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z, color, DefaultTextureSlot, 2, ref vertices.Array[count + 2]);
 					BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z, color, DefaultTextureSlot, 3, ref vertices.Array[count + 3]);
 					indices.Add(count);
-					indices.Add((count + 2));
-					indices.Add((count + 1));
-					indices.Add((count + 1));
-					indices.Add((count + 2));
+					indices.Add(count + 2);
+					indices.Add(count + 1);
+					indices.Add(count + 1);
+					indices.Add(count + 2);
 					indices.Add(count);
-					indices.Add((count + 2));
+					indices.Add(count + 2);
 					indices.Add(count);
-					indices.Add((count + 3));
-					indices.Add((count + 3));
+					indices.Add(count + 3);
+					indices.Add(count + 3);
 					indices.Add(count);
-					indices.Add((count + 2));
+					indices.Add(count + 2);
 					break;
 				case 1:
 					vertices.Count += 4;
@@ -125,17 +125,17 @@ namespace Game
 					BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z + 1, color, DefaultTextureSlot, 2, ref vertices.Array[count + 2]);
 					BlockGeometryGenerator.SetupLitCornerVertex(x, y, z + 1, color, DefaultTextureSlot, 1, ref vertices.Array[count + 3]);
 					indices.Add(count);
-					indices.Add((count + 2));
-					indices.Add((count + 1));
-					indices.Add((count + 1));
-					indices.Add((count + 2));
+					indices.Add(count + 2);
+					indices.Add(count + 1);
+					indices.Add(count + 1);
+					indices.Add(count + 2);
 					indices.Add(count);
-					indices.Add((count + 2));
+					indices.Add(count + 2);
 					indices.Add(count);
-					indices.Add((count + 3));
-					indices.Add((count + 3));
+					indices.Add(count + 3);
+					indices.Add(count + 3);
 					indices.Add(count);
-					indices.Add((count + 2));
+					indices.Add(count + 2);
 					break;
 			}
 		}

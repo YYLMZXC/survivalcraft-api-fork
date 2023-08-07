@@ -98,7 +98,7 @@ namespace Game
 				float num = CalculateLighting(CellFace.FaceToVector3(j));
 				for (int k = 0; k < 16; k++)
 				{
-					LightIntensityByLightValueAndFace[k + j * 16] = LightIntensityByLightValue[k] * num;
+					LightIntensityByLightValueAndFace[k + (j * 16)] = LightIntensityByLightValue[k] * num;
 				}
 			}
 		}

@@ -76,7 +76,7 @@ namespace Game
 			m_subsystemNoise = subsystemElectricity.Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
 			m_subsystemParticles = subsystemElectricity.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
 			Vector3 vector = CellFace.FaceToVector3(cellFace.Face);
-			Vector3 position = new Vector3(cellFace.Point) + new Vector3(0.5f) - 0.2f * vector;
+			Vector3 position = new Vector3(cellFace.Point) + new Vector3(0.5f) - (0.2f * vector);
 			m_particleSystem = new SoundParticleSystem(subsystemElectricity.SubsystemTerrain, position, vector);
 		}
 
@@ -129,7 +129,7 @@ namespace Game
 				}
 				else if (!string.IsNullOrEmpty(text))
 				{
-					float num6 = 130.8125f * MathUtils.Pow(1.05946314f, num + 12 * num3);
+					float num6 = 130.8125f * MathUtils.Pow(1.05946314f, num + (12 * num3));
 					int num7 = 0;
 					for (int i = 4; i <= m_maxOctaves[num4]; i++)
 					{
@@ -148,7 +148,7 @@ namespace Game
 					var position = new Vector3(cellFace.X, cellFace.Y, cellFace.Z);
 					float volume = num2 / 15f;
 					float pitch = MathUtils.Clamp(MathUtils.Log(num5) / MathUtils.Log(2f), -1f, 1f);
-					float minDistance = 0.5f + 5f * num2 / 15f;
+					float minDistance = 0.5f + (5f * num2 / 15f);
 					SubsystemElectricity.SubsystemAudio.PlaySound(text2, volume, pitch, position, minDistance, autoDelay: true);
 					float loudness = (num2 < 8) ? 0.25f : 0.5f;
 					float range = MathUtils.Lerp(2f, 20f, num2 / 15f);
@@ -157,7 +157,7 @@ namespace Game
 					{
 						m_subsystemParticles.AddParticleSystem(m_particleSystem);
 					}
-					var hsv = new Vector3(22.5f * num + m_random.Float(0f, 22f), 0.5f + num2 / 30f, 1f);
+					var hsv = new Vector3((22.5f * num) + m_random.Float(0f, 22f), 0.5f + (num2 / 30f), 1f);
 					m_particleSystem.AddNote(new Color(Color.HsvToRgb(hsv)));
 				}
 			}

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Engine
 {
-    public static class Storage
+	public static class Storage
 	{
 		public static long FreeSpace
 		{

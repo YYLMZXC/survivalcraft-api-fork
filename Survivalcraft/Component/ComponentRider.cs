@@ -94,9 +94,9 @@ namespace Game
 				{
 					float s = Mount.DismountOffset.X + 0.5f;
 					Vector3 vector = 0.5f * (ComponentCreature.ComponentBody.BoundingBox.Min + ComponentCreature.ComponentBody.BoundingBox.Max);
-					TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(vector, vector - s * ComponentCreature.ComponentBody.Matrix.Right, useInteractionBoxes: false, skipAirBlocks: true, null);
-					TerrainRaycastResult? terrainRaycastResult2 = m_subsystemTerrain.Raycast(vector, vector + s * ComponentCreature.ComponentBody.Matrix.Right, useInteractionBoxes: false, skipAirBlocks: true, null);
-					x = ((!terrainRaycastResult.HasValue) ? (0f - Mount.DismountOffset.X) : ((!terrainRaycastResult2.HasValue) ? Mount.DismountOffset.X : ((!(terrainRaycastResult.Value.Distance > terrainRaycastResult2.Value.Distance)) ? MathUtils.Min(terrainRaycastResult2.Value.Distance, Mount.DismountOffset.X) : (0f - MathUtils.Min(terrainRaycastResult.Value.Distance, Mount.DismountOffset.X)))));
+					TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(vector, vector - (s * ComponentCreature.ComponentBody.Matrix.Right), useInteractionBoxes: false, skipAirBlocks: true, null);
+					TerrainRaycastResult? terrainRaycastResult2 = m_subsystemTerrain.Raycast(vector, vector + (s * ComponentCreature.ComponentBody.Matrix.Right), useInteractionBoxes: false, skipAirBlocks: true, null);
+					x = (!terrainRaycastResult.HasValue) ? (0f - Mount.DismountOffset.X) : ((!terrainRaycastResult2.HasValue) ? Mount.DismountOffset.X : ((!(terrainRaycastResult.Value.Distance > terrainRaycastResult2.Value.Distance)) ? MathUtils.Min(terrainRaycastResult2.Value.Distance, Mount.DismountOffset.X) : (0f - MathUtils.Min(terrainRaycastResult.Value.Distance, Mount.DismountOffset.X))));
 				}
 				m_isAnimating = true;
 				m_animationTime = 0f;

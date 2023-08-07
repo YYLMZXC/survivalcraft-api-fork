@@ -27,13 +27,13 @@ namespace Game
 			m_subsystemTerrain = subsystemTerrain;
 			SubsystemGameInfo subsystemGameInfo = subsystemTerrain.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
 			m_worldSettings = subsystemGameInfo.WorldSettings;
-			m_oceanCorner = ((string.CompareOrdinal(subsystemGameInfo.WorldSettings.OriginalSerializationVersion, "2.1") < 0) ? (m_oceanCorner = new Vector2(2001f, 2001f)) : (m_oceanCorner = new Vector2(-199f, -199f)));
-			m_islandSize = ((m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatIsland) ? new Vector2?(m_worldSettings.IslandSize) : null);
+			m_oceanCorner = (string.CompareOrdinal(subsystemGameInfo.WorldSettings.OriginalSerializationVersion, "2.1") < 0) ? (m_oceanCorner = new Vector2(2001f, 2001f)) : (m_oceanCorner = new Vector2(-199f, -199f));
+			m_islandSize = (m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatIsland) ? new Vector2?(m_worldSettings.IslandSize) : null;
 			m_shoreRoughnessAmplitude.X = MathUtils.Pow(m_worldSettings.ShoreRoughness, 2f) * (m_islandSize.HasValue ? MathUtils.Min(4f * m_islandSize.Value.X, 400f) : 400f);
 			m_shoreRoughnessAmplitude.Y = MathUtils.Pow(m_worldSettings.ShoreRoughness, 2f) * (m_islandSize.HasValue ? MathUtils.Min(4f * m_islandSize.Value.Y, 400f) : 400f);
 			m_shoreRoughnessFrequency = MathUtils.Lerp(0.5f, 1f, m_worldSettings.ShoreRoughness) * new Vector2(1f) / m_shoreRoughnessAmplitude;
-			m_shoreRoughnessOctaves.X = (int)MathUtils.Clamp(MathUtils.Log(1f / m_shoreRoughnessFrequency.X) / MathUtils.Log(2f) - 1f, 1f, 7f);
-			m_shoreRoughnessOctaves.Y = (int)MathUtils.Clamp(MathUtils.Log(1f / m_shoreRoughnessFrequency.Y) / MathUtils.Log(2f) - 1f, 1f, 7f);
+			m_shoreRoughnessOctaves.X = (int)MathUtils.Clamp((MathUtils.Log(1f / m_shoreRoughnessFrequency.X) / MathUtils.Log(2f)) - 1f, 1f, 7f);
+			m_shoreRoughnessOctaves.Y = (int)MathUtils.Clamp((MathUtils.Log(1f / m_shoreRoughnessFrequency.Y) / MathUtils.Log(2f)) - 1f, 1f, 7f);
 			var random = new Random(subsystemGameInfo.WorldSeed);
 			m_shoreRoughnessOffset[0] = random.Float(-2000f, 2000f);
 			m_shoreRoughnessOffset[1] = random.Float(-2000f, 2000f);

@@ -64,7 +64,7 @@ namespace Game
 			{
 				Viewport viewport = Display.Viewport;
 				var vector = new Vector3(0.5f, 0.5f, 0.5f);
-				var m = Matrix.CreateLookAt(2.65f * m_direction + vector, vector, Vector3.UnitY);
+				var m = Matrix.CreateLookAt((2.65f * m_direction) + vector, vector, Vector3.UnitY);
 				var m2 = Matrix.CreatePerspectiveFieldOfView(1.2f, ActualSize.X / ActualSize.Y, 0.4f, 4f);
 				Matrix m3 = MatrixUtils.CreateScaleTranslation(ActualSize.X, 0f - ActualSize.Y, ActualSize.X / 2f, ActualSize.Y / 2f) * GlobalTransform * MatrixUtils.CreateScaleTranslation(2f / viewport.Width, -2f / viewport.Height, -1f, 1f);
 				matrix = m * m2 * m3;
@@ -145,7 +145,7 @@ namespace Game
 				Color globalColorTransform = GlobalColorTransform;
 				if (Mode == ViewMode.Perspective)
 				{
-					float num4 = LightingManager.LightIntensityByLightValueAndFace[15 + 16 * CellFace.OppositeFace(k)];
+					float num4 = LightingManager.LightIntensityByLightValueAndFace[15 + (16 * CellFace.OppositeFace(k))];
 					globalColorTransform *= new Color(num4, num4, num4);
 				}
 				if (geometry.SubsetOpaqueByFace[k] != null)
@@ -197,7 +197,7 @@ namespace Game
 
 		public override void MeasureOverride(Vector2 parentAvailableSize)
 		{
-			IsDrawRequired = (Design != null);
+			IsDrawRequired = Design != null;
 			DesiredSize = Size;
 		}
 

@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public struct Rectangle : IEquatable<Rectangle>
+	public struct Rectangle : IEquatable<Rectangle>
 	{
 		public int Left;
 

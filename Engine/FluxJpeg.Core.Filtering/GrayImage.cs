@@ -16,11 +16,11 @@ namespace FluxJpeg.Core.Filtering
 		{
 			get
 			{
-				return Scan0[y * _width + x];
+				return Scan0[(y * _width) + x];
 			}
 			set
 			{
-				Scan0[y * _width + x] = value;
+				Scan0[(y * _width) + x] = value;
 			}
 		}
 

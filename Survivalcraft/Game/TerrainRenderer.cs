@@ -59,8 +59,8 @@ namespace Game
 					{
 						foreach (TerrainChunkGeometry.Buffer buffer in terrainChunk.Buffers)
 						{
-							num += (buffer.VertexBuffer?.GetGpuMemoryUsage() ?? 0);
-							num += (buffer.IndexBuffer?.GetGpuMemoryUsage() ?? 0);
+							num += buffer.VertexBuffer?.GetGpuMemoryUsage() ?? 0;
+							num += buffer.IndexBuffer?.GetGpuMemoryUsage() ?? 0;
 						}
 					}
 				}
@@ -217,7 +217,7 @@ namespace Game
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			Display.BlendState = BlendState.AlphaBlend;
 			Display.DepthStencilState = DepthStencilState.Default;
-			Display.RasterizerState = ((m_subsystemSky.ViewUnderWaterDepth > 0f) ? RasterizerState.CullClockwiseScissor : RasterizerState.CullCounterClockwiseScissor);
+			Display.RasterizerState = (m_subsystemSky.ViewUnderWaterDepth > 0f) ? RasterizerState.CullClockwiseScissor : RasterizerState.CullCounterClockwiseScissor;
 			TransparentShader.GetParameter("u_origin", true).SetValue(v.XZ);
 			TransparentShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
 			TransparentShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
@@ -413,7 +413,7 @@ namespace Game
 		{
 			for (int i = 0; i < count; i++)
 			{
-				destination[i] = (source[i] + shift);
+				destination[i] = source[i] + shift;
 			}
 		}
 	}

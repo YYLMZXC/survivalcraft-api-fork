@@ -19,7 +19,7 @@ namespace Hjg.Pngcs.Chunks
 		public override ChunkRaw CreateRawChunk()
 		{
 			ChunkRaw chunkRaw = createEmptyChunk(4, alloc: true);
-			PngHelperInternal.WriteInt4tobytes((int)(gamma * 100000.0 + 0.5), chunkRaw.Data, 0);
+			PngHelperInternal.WriteInt4tobytes((int)((gamma * 100000.0) + 0.5), chunkRaw.Data, 0);
 			return chunkRaw;
 		}
 

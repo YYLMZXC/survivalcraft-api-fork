@@ -104,7 +104,7 @@ namespace Game
 		{
 			if (IsSleeping && m_componentPlayer.ComponentHealth.Health > 0f)
 			{
-				m_sleepFactor = MathUtils.Min(m_sleepFactor + 0.33f * Time.FrameDuration, 1f);
+				m_sleepFactor = MathUtils.Min(m_sleepFactor + (0.33f * Time.FrameDuration), 1f);
 				m_minWetness = MathUtils.Min(m_minWetness, m_componentPlayer.ComponentVitalStats.Wetness);
 				m_componentPlayer.PlayerStats.TimeSlept += m_subsystemGameInfo.TotalElapsedGameTimeDelta;
 				if ((m_componentPlayer.ComponentVitalStats.Sleep >= 1f || m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative) && m_subsystemTimeOfDay.TimeOfDay > 0.3f && m_subsystemTimeOfDay.TimeOfDay < 0.599999964f && m_sleepStartTime.HasValue && m_subsystemGameInfo.TotalElapsedGameTime > m_sleepStartTime + 180.0)
@@ -137,13 +137,13 @@ namespace Game
 								m_componentPlayer.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 7), Color.White, blinking: true, playNotificationSound: false);
 							});
 						}
-						m_messageFactor = MathUtils.Min(m_messageFactor + 0.5f * Time.FrameDuration, 1f);
+						m_messageFactor = MathUtils.Min(m_messageFactor + (0.5f * Time.FrameDuration), 1f);
 						m_componentPlayer.ComponentScreenOverlays.Message = LanguageControl.Get(fName, 8);
 						m_componentPlayer.ComponentScreenOverlays.MessageFactor = m_messageFactor;
 					}
 					if (!m_allowManualWakeUp && num > 5f)
 					{
-						m_messageFactor = MathUtils.Min(m_messageFactor + 1f * Time.FrameDuration, 1f);
+						m_messageFactor = MathUtils.Min(m_messageFactor + (1f * Time.FrameDuration), 1f);
 						m_componentPlayer.ComponentScreenOverlays.Message = LanguageControl.Get(fName, 9);
 						m_componentPlayer.ComponentScreenOverlays.MessageFactor = m_messageFactor;
 					}
@@ -151,7 +151,7 @@ namespace Game
 			}
 			else
 			{
-				m_sleepFactor = MathUtils.Max(m_sleepFactor - 1f * Time.FrameDuration, 0f);
+				m_sleepFactor = MathUtils.Max(m_sleepFactor - (1f * Time.FrameDuration), 0f);
 			}
 			m_componentPlayer.ComponentScreenOverlays.BlackoutFactor = MathUtils.Max(m_componentPlayer.ComponentScreenOverlays.BlackoutFactor, m_sleepFactor);
 			if (m_sleepFactor > 0.01f)

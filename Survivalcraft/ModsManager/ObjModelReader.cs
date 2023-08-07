@@ -31,9 +31,9 @@ namespace Game
 			}
 			public ObjPosition(float x_, float y_, float z_)
 			{
-				x = (x_);
-				y = (y_);
-				z = (z_);
+				x = x_;
+				y = y_;
+				z = z_;
 			}
 
 		}
@@ -54,9 +54,9 @@ namespace Game
 			}
 			public ObjNormal(float x_, float y_, float z_)
 			{
-				x = (x_);
-				y = (y_);
-				z = (z_);
+				x = x_;
+				y = y_;
+				z = z_;
 			}
 		}
 		public struct ObjTexCood
@@ -69,8 +69,8 @@ namespace Game
 			}
 			public ObjTexCood(float tx_, float ty_)
 			{
-				tx = (tx_);
-				ty = (ty_);
+				tx = tx_;
+				ty = ty_;
 			}
 		}
 		public class ObjMesh

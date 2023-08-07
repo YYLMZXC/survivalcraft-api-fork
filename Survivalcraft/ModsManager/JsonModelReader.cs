@@ -182,7 +182,7 @@ namespace Game
 										{
 											uvs[k] = ObjConvertFloat(uvarr[k]) / 16f;
 										}
-										Vector2 center = new Vector2(uvs[2] - uvs[0], uvs[3] - uvs[1]) / 2f + new Vector2(uvs[0], uvs[1]);//中心点
+										Vector2 center = (new Vector2(uvs[2] - uvs[0], uvs[3] - uvs[1]) / 2f) + new Vector2(uvs[0], uvs[1]);//中心点
 										TexCoords.Add(new Vector2(uvs[TextureRotate[rotate][0]], uvs[TextureRotate[rotate][1]]));//x1,y2
 										TexCoords.Add(new Vector2(uvs[TextureRotate[rotate][2]], uvs[TextureRotate[rotate][3]]));//x1,y2
 										TexCoords.Add(new Vector2(uvs[TextureRotate[rotate][4]], uvs[TextureRotate[rotate][5]]));//x1,y2

@@ -67,7 +67,7 @@ namespace NVorbis
 				num2++;
 				num += 2;
 			}
-			num2 = (num = 0);
+			num2 = num = 0;
 			while (num2 < _n8)
 			{
 				_C[num] = (float)Math.Cos((float)(2 * (num + 1)) * (float)Math.PI / (float)n);
@@ -88,7 +88,7 @@ namespace NVorbis
 			{
 				if (!_threadLocalBuffers.TryGetValue(Environment.CurrentManagedThreadId, out float[] value))
 				{
-					value = (_threadLocalBuffers[Environment.CurrentManagedThreadId] = new float[_n2]);
+					value = _threadLocalBuffers[Environment.CurrentManagedThreadId] = new float[_n2];
 				}
 				return value;
 			}
@@ -102,16 +102,16 @@ namespace NVorbis
 			int i = 0;
 			for (int n = _n2; i != n; i += 4)
 			{
-				buffer2[num + 1] = buffer[i] * _A[num2] - buffer[i + 2] * _A[num2 + 1];
-				buffer2[num] = buffer[i] * _A[num2 + 1] + buffer[i + 2] * _A[num2];
+				buffer2[num + 1] = (buffer[i] * _A[num2]) - (buffer[i + 2] * _A[num2 + 1]);
+				buffer2[num] = (buffer[i] * _A[num2 + 1]) + (buffer[i + 2] * _A[num2]);
 				num -= 2;
 				num2 += 2;
 			}
 			i = _n2 - 3;
 			while (num >= 0)
 			{
-				buffer2[num + 1] = (0f - buffer[i + 2]) * _A[num2] - (0f - buffer[i]) * _A[num2 + 1];
-				buffer2[num] = (0f - buffer[i + 2]) * _A[num2 + 1] + (0f - buffer[i]) * _A[num2];
+				buffer2[num + 1] = ((0f - buffer[i + 2]) * _A[num2]) - ((0f - buffer[i]) * _A[num2 + 1]);
+				buffer2[num] = ((0f - buffer[i + 2]) * _A[num2 + 1]) + ((0f - buffer[i]) * _A[num2]);
 				num -= 2;
 				num2 += 2;
 				i -= 4;
@@ -128,14 +128,14 @@ namespace NVorbis
 				float num9 = array[num4] - array[num5];
 				buffer[num6 + 1] = array[num4 + 1] + array[num5 + 1];
 				buffer[num6] = array[num4] + array[num5];
-				buffer[num7 + 1] = num8 * _A[num3 + 4] - num9 * _A[num3 + 5];
-				buffer[num7] = num9 * _A[num3 + 4] + num8 * _A[num3 + 5];
+				buffer[num7 + 1] = (num8 * _A[num3 + 4]) - (num9 * _A[num3 + 5]);
+				buffer[num7] = (num9 * _A[num3 + 4]) + (num8 * _A[num3 + 5]);
 				num8 = array[num4 + 3] - array[num5 + 3];
 				num9 = array[num4 + 2] - array[num5 + 2];
 				buffer[num6 + 3] = array[num4 + 3] + array[num5 + 3];
 				buffer[num6 + 2] = array[num4 + 2] + array[num5 + 2];
-				buffer[num7 + 3] = num8 * _A[num3] - num9 * _A[num3 + 1];
-				buffer[num7 + 2] = num9 * _A[num3] + num8 * _A[num3 + 1];
+				buffer[num7 + 3] = (num8 * _A[num3]) - (num9 * _A[num3 + 1]);
+				buffer[num7 + 2] = (num9 * _A[num3]) + (num8 * _A[num3 + 1]);
 				num3 -= 8;
 				num6 += 4;
 				num7 += 4;
@@ -152,26 +152,26 @@ namespace NVorbis
 			_ = _n8;
 			step3_inner_r_loop(lim, buffer, num11 - 0, -(_n >> 4), 16);
 			step3_inner_r_loop(_n >> 5, buffer, _n2 - 1 - _n8, -(_n >> 4), 16);
-			step3_inner_r_loop(_n >> 5, buffer, _n2 - 1 - _n8 * 2, -(_n >> 4), 16);
-			step3_inner_r_loop(_n >> 5, buffer, _n2 - 1 - _n8 * 3, -(_n >> 4), 16);
+			step3_inner_r_loop(_n >> 5, buffer, _n2 - 1 - (_n8 * 2), -(_n >> 4), 16);
+			step3_inner_r_loop(_n >> 5, buffer, _n2 - 1 - (_n8 * 3), -(_n >> 4), 16);
 			int j;
-			for (j = 2; j < _ld - 3 >> 1; j++)
+			for (j = 2; j < (_ld - 3) >> 1; j++)
 			{
-				int num12 = _n >> j + 2;
+				int num12 = _n >> (j + 2);
 				int num13 = num12 >> 1;
-				int num14 = 1 << j + 1;
+				int num14 = 1 << (j + 1);
 				for (int k = 0; k < num14; k++)
 				{
-					step3_inner_r_loop(_n >> j + 4, buffer, _n2 - 1 - num12 * k, -num13, 1 << j + 3);
+					step3_inner_r_loop(_n >> (j + 4), buffer, _n2 - 1 - (num12 * k), -num13, 1 << (j + 3));
 				}
 			}
 			for (; j < _ld - 6; j++)
 			{
-				int num15 = _n >> j + 2;
-				int num16 = 1 << j + 3;
+				int num15 = _n >> (j + 2);
+				int num16 = 1 << (j + 3);
 				int num17 = num15 >> 1;
-				int num18 = _n >> j + 6;
-				int n3 = 1 << j + 1;
+				int num18 = _n >> (j + 6);
+				int n3 = 1 << (j + 1);
 				int num19 = _n2 - 1;
 				int num20 = 0;
 				for (int num21 = num18; num21 > 0; num21--)
@@ -208,8 +208,8 @@ namespace NVorbis
 			{
 				float num29 = array[num27] - array[num28 + 2];
 				float num30 = array[num27 + 1] + array[num28 + 3];
-				float num31 = _C[num26 + 1] * num29 + _C[num26] * num30;
-				float num32 = _C[num26 + 1] * num30 - _C[num26] * num29;
+				float num31 = (_C[num26 + 1] * num29) + (_C[num26] * num30);
+				float num32 = (_C[num26 + 1] * num30) - (_C[num26] * num29);
 				float num33 = array[num27] + array[num28 + 2];
 				float num34 = array[num27 + 1] - array[num28 + 3];
 				array[num27] = num33 + num31;
@@ -218,8 +218,8 @@ namespace NVorbis
 				array[num28 + 3] = num32 - num34;
 				num29 = array[num27 + 2] - array[num28];
 				num30 = array[num27 + 3] + array[num28 + 1];
-				num31 = _C[num26 + 3] * num29 + _C[num26 + 2] * num30;
-				num32 = _C[num26 + 3] * num30 - _C[num26 + 2] * num29;
+				num31 = (_C[num26 + 3] * num29) + (_C[num26 + 2] * num30);
+				num32 = (_C[num26 + 3] * num30) - (_C[num26 + 2] * num29);
 				num33 = array[num27 + 2] + array[num28];
 				num34 = array[num27 + 3] - array[num28 + 1];
 				array[num27 + 2] = num33 + num31;
@@ -238,26 +238,26 @@ namespace NVorbis
 			int num40 = _n - 4;
 			while (num36 >= 0)
 			{
-				float num41 = buffer2[num36 + 6] * _B[num35 + 7] - buffer2[num36 + 7] * _B[num35 + 6];
-				float num42 = (0f - buffer2[num36 + 6]) * _B[num35 + 6] - buffer2[num36 + 7] * _B[num35 + 7];
+				float num41 = (buffer2[num36 + 6] * _B[num35 + 7]) - (buffer2[num36 + 7] * _B[num35 + 6]);
+				float num42 = ((0f - buffer2[num36 + 6]) * _B[num35 + 6]) - (buffer2[num36 + 7] * _B[num35 + 7]);
 				buffer[num37] = num41;
 				buffer[num38 + 3] = 0f - num41;
 				buffer[num39] = num42;
 				buffer[num40 + 3] = num42;
-				float num43 = buffer2[num36 + 4] * _B[num35 + 5] - buffer2[num36 + 5] * _B[num35 + 4];
-				float num44 = (0f - buffer2[num36 + 4]) * _B[num35 + 4] - buffer2[num36 + 5] * _B[num35 + 5];
+				float num43 = (buffer2[num36 + 4] * _B[num35 + 5]) - (buffer2[num36 + 5] * _B[num35 + 4]);
+				float num44 = ((0f - buffer2[num36 + 4]) * _B[num35 + 4]) - (buffer2[num36 + 5] * _B[num35 + 5]);
 				buffer[num37 + 1] = num43;
 				buffer[num38 + 2] = 0f - num43;
 				buffer[num39 + 1] = num44;
 				buffer[num40 + 2] = num44;
-				num41 = buffer2[num36 + 2] * _B[num35 + 3] - buffer2[num36 + 3] * _B[num35 + 2];
-				num42 = (0f - buffer2[num36 + 2]) * _B[num35 + 2] - buffer2[num36 + 3] * _B[num35 + 3];
+				num41 = (buffer2[num36 + 2] * _B[num35 + 3]) - (buffer2[num36 + 3] * _B[num35 + 2]);
+				num42 = ((0f - buffer2[num36 + 2]) * _B[num35 + 2]) - (buffer2[num36 + 3] * _B[num35 + 3]);
 				buffer[num37 + 2] = num41;
 				buffer[num38 + 1] = 0f - num41;
 				buffer[num39 + 2] = num42;
 				buffer[num40 + 1] = num42;
-				num43 = buffer2[num36] * _B[num35 + 1] - buffer2[num36 + 1] * _B[num35];
-				num44 = (0f - buffer2[num36]) * _B[num35] - buffer2[num36 + 1] * _B[num35 + 1];
+				num43 = (buffer2[num36] * _B[num35 + 1]) - (buffer2[num36 + 1] * _B[num35]);
+				num44 = ((0f - buffer2[num36]) * _B[num35]) - (buffer2[num36 + 1] * _B[num35 + 1]);
 				buffer[num37 + 3] = num43;
 				buffer[num38] = 0f - num43;
 				buffer[num39 + 3] = num44;
@@ -282,29 +282,29 @@ namespace NVorbis
 				float num6 = e[num - 1] - e[num2 - 1];
 				e[num] += e[num2];
 				e[num - 1] += e[num2 - 1];
-				e[num2] = num5 * _A[num3] - num6 * _A[num3 + 1];
-				e[num2 - 1] = num6 * _A[num3] + num5 * _A[num3 + 1];
+				e[num2] = (num5 * _A[num3]) - (num6 * _A[num3 + 1]);
+				e[num2 - 1] = (num6 * _A[num3]) + (num5 * _A[num3 + 1]);
 				num3 += 8;
 				num5 = e[num - 2] - e[num2 - 2];
 				num6 = e[num - 3] - e[num2 - 3];
 				e[num - 2] += e[num2 - 2];
 				e[num - 3] += e[num2 - 3];
-				e[num2 - 2] = num5 * _A[num3] - num6 * _A[num3 + 1];
-				e[num2 - 3] = num6 * _A[num3] + num5 * _A[num3 + 1];
+				e[num2 - 2] = (num5 * _A[num3]) - (num6 * _A[num3 + 1]);
+				e[num2 - 3] = (num6 * _A[num3]) + (num5 * _A[num3 + 1]);
 				num3 += 8;
 				num5 = e[num - 4] - e[num2 - 4];
 				num6 = e[num - 5] - e[num2 - 5];
 				e[num - 4] += e[num2 - 4];
 				e[num - 5] += e[num2 - 5];
-				e[num2 - 4] = num5 * _A[num3] - num6 * _A[num3 + 1];
-				e[num2 - 5] = num6 * _A[num3] + num5 * _A[num3 + 1];
+				e[num2 - 4] = (num5 * _A[num3]) - (num6 * _A[num3 + 1]);
+				e[num2 - 5] = (num6 * _A[num3]) + (num5 * _A[num3 + 1]);
 				num3 += 8;
 				num5 = e[num - 6] - e[num2 - 6];
 				num6 = e[num - 7] - e[num2 - 7];
 				e[num - 6] += e[num2 - 6];
 				e[num - 7] += e[num2 - 7];
-				e[num2 - 6] = num5 * _A[num3] - num6 * _A[num3 + 1];
-				e[num2 - 7] = num6 * _A[num3] + num5 * _A[num3 + 1];
+				e[num2 - 6] = (num5 * _A[num3]) - (num6 * _A[num3 + 1]);
+				e[num2 - 7] = (num6 * _A[num3]) + (num5 * _A[num3 + 1]);
 				num3 += 8;
 				num -= 8;
 				num2 -= 8;
@@ -322,29 +322,29 @@ namespace NVorbis
 				float num6 = e[num - 1] - e[num2 - 1];
 				e[num] += e[num2];
 				e[num - 1] += e[num2 - 1];
-				e[num2] = num5 * _A[num3] - num6 * _A[num3 + 1];
-				e[num2 - 1] = num6 * _A[num3] + num5 * _A[num3 + 1];
+				e[num2] = (num5 * _A[num3]) - (num6 * _A[num3 + 1]);
+				e[num2 - 1] = (num6 * _A[num3]) + (num5 * _A[num3 + 1]);
 				num3 += k1;
 				num5 = e[num - 2] - e[num2 - 2];
 				num6 = e[num - 3] - e[num2 - 3];
 				e[num - 2] += e[num2 - 2];
 				e[num - 3] += e[num2 - 3];
-				e[num2 - 2] = num5 * _A[num3] - num6 * _A[num3 + 1];
-				e[num2 - 3] = num6 * _A[num3] + num5 * _A[num3 + 1];
+				e[num2 - 2] = (num5 * _A[num3]) - (num6 * _A[num3 + 1]);
+				e[num2 - 3] = (num6 * _A[num3]) + (num5 * _A[num3 + 1]);
 				num3 += k1;
 				num5 = e[num - 4] - e[num2 - 4];
 				num6 = e[num - 5] - e[num2 - 5];
 				e[num - 4] += e[num2 - 4];
 				e[num - 5] += e[num2 - 5];
-				e[num2 - 4] = num5 * _A[num3] - num6 * _A[num3 + 1];
-				e[num2 - 5] = num6 * _A[num3] + num5 * _A[num3 + 1];
+				e[num2 - 4] = (num5 * _A[num3]) - (num6 * _A[num3 + 1]);
+				e[num2 - 5] = (num6 * _A[num3]) + (num5 * _A[num3 + 1]);
 				num3 += k1;
 				num5 = e[num - 6] - e[num2 - 6];
 				num6 = e[num - 7] - e[num2 - 7];
 				e[num - 6] += e[num2 - 6];
 				e[num - 7] += e[num2 - 7];
-				e[num2 - 6] = num5 * _A[num3] - num6 * _A[num3 + 1];
-				e[num2 - 7] = num6 * _A[num3] + num5 * _A[num3 + 1];
+				e[num2 - 6] = (num5 * _A[num3]) - (num6 * _A[num3 + 1]);
+				e[num2 - 7] = (num6 * _A[num3]) + (num5 * _A[num3 + 1]);
 				num3 += k1;
 				num -= 8;
 				num2 -= 8;
@@ -357,10 +357,10 @@ namespace NVorbis
 			float num2 = _A[a + 1];
 			float num3 = _A[a + a_off];
 			float num4 = _A[a + a_off + 1];
-			float num5 = _A[a + a_off * 2];
-			float num6 = _A[a + a_off * 2 + 1];
-			float num7 = _A[a + a_off * 3];
-			float num8 = _A[a + a_off * 3 + 1];
+			float num5 = _A[a + (a_off * 2)];
+			float num6 = _A[a + (a_off * 2) + 1];
+			float num7 = _A[a + (a_off * 3)];
+			float num8 = _A[a + (a_off * 3) + 1];
 			int num9 = i_off;
 			int num10 = num9 + k_off;
 			for (int num11 = n; num11 > 0; num11--)
@@ -369,26 +369,26 @@ namespace NVorbis
 				float num13 = e[num9 - 1] - e[num10 - 1];
 				e[num9] += e[num10];
 				e[num9 - 1] += e[num10 - 1];
-				e[num10] = num12 * num - num13 * num2;
-				e[num10 - 1] = num13 * num + num12 * num2;
+				e[num10] = (num12 * num) - (num13 * num2);
+				e[num10 - 1] = (num13 * num) + (num12 * num2);
 				num12 = e[num9 - 2] - e[num10 - 2];
 				num13 = e[num9 - 3] - e[num10 - 3];
 				e[num9 - 2] += e[num10 - 2];
 				e[num9 - 3] += e[num10 - 3];
-				e[num10 - 2] = num12 * num3 - num13 * num4;
-				e[num10 - 3] = num13 * num3 + num12 * num4;
+				e[num10 - 2] = (num12 * num3) - (num13 * num4);
+				e[num10 - 3] = (num13 * num3) + (num12 * num4);
 				num12 = e[num9 - 4] - e[num10 - 4];
 				num13 = e[num9 - 5] - e[num10 - 5];
 				e[num9 - 4] += e[num10 - 4];
 				e[num9 - 5] += e[num10 - 5];
-				e[num10 - 4] = num12 * num5 - num13 * num6;
-				e[num10 - 5] = num13 * num5 + num12 * num6;
+				e[num10 - 4] = (num12 * num5) - (num13 * num6);
+				e[num10 - 5] = (num13 * num5) + (num12 * num6);
 				num12 = e[num9 - 6] - e[num10 - 6];
 				num13 = e[num9 - 7] - e[num10 - 7];
 				e[num9 - 6] += e[num10 - 6];
 				e[num9 - 7] += e[num10 - 7];
-				e[num10 - 6] = num12 * num7 - num13 * num8;
-				e[num10 - 7] = num13 * num7 + num12 * num8;
+				e[num10 - 6] = (num12 * num7) - (num13 * num8);
+				e[num10 - 7] = (num13 * num7) + (num12 * num8);
 				num9 -= k0;
 				num10 -= k0;
 			}
@@ -399,7 +399,7 @@ namespace NVorbis
 			int num = base_n >> 3;
 			float num2 = _A[num];
 			int num3 = i_off;
-			int num4 = num3 - 16 * n;
+			int num4 = num3 - (16 * n);
 			while (num3 > num4)
 			{
 				float num5 = e[num3] - e[num3 - 8];

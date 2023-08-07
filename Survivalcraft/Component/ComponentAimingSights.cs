@@ -56,13 +56,13 @@ namespace Game
 				{
 					Texture2D texture = ContentManager.Get<Texture2D>("Textures/Gui/Sights");
 					float s = 8f;
-					Vector3 v = m_sightsPosition + m_sightsDirection * 50f;
+					Vector3 v = m_sightsPosition + (m_sightsDirection * 50f);
 					var vector = Vector3.Normalize(Vector3.Cross(m_sightsDirection, Vector3.UnitY));
 					var v2 = Vector3.Normalize(Vector3.Cross(m_sightsDirection, vector));
-					Vector3 p = v + s * (-vector - v2);
-					Vector3 p2 = v + s * (vector - v2);
-					Vector3 p3 = v + s * (vector + v2);
-					Vector3 p4 = v + s * (-vector + v2);
+					Vector3 p = v + (s * (-vector - v2));
+					Vector3 p2 = v + (s * (vector - v2));
+					Vector3 p3 = v + (s * (vector + v2));
+					Vector3 p4 = v + (s * (-vector + v2));
 					TexturedBatch3D texturedBatch3D = m_primitivesRenderer3D.TexturedBatch(texture, useAlphaTest: false, 0, DepthStencilState.None);
 					int count = texturedBatch3D.TriangleVertices.Count;
 					texturedBatch3D.QueueQuad(p, p2, p3, p4, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(0f, 1f), Color.White);
@@ -72,13 +72,13 @@ namespace Game
 				{
 					Subtexture subtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Crosshair");
 					float s2 = 1.25f;
-					Vector3 v3 = camera.ViewPosition + camera.ViewDirection * 50f;
+					Vector3 v3 = camera.ViewPosition + (camera.ViewDirection * 50f);
 					var vector2 = Vector3.Normalize(Vector3.Cross(camera.ViewDirection, Vector3.UnitY));
 					var v4 = Vector3.Normalize(Vector3.Cross(camera.ViewDirection, vector2));
-					Vector3 p5 = v3 + s2 * (-vector2 - v4);
-					Vector3 p6 = v3 + s2 * (vector2 - v4);
-					Vector3 p7 = v3 + s2 * (vector2 + v4);
-					Vector3 p8 = v3 + s2 * (-vector2 + v4);
+					Vector3 p5 = v3 + (s2 * (-vector2 - v4));
+					Vector3 p6 = v3 + (s2 * (vector2 - v4));
+					Vector3 p7 = v3 + (s2 * (vector2 + v4));
+					Vector3 p8 = v3 + (s2 * (-vector2 + v4));
 					TexturedBatch3D texturedBatch3D2 = m_primitivesRenderer3D.TexturedBatch(subtexture.Texture, useAlphaTest: false, 0, DepthStencilState.None);
 					int count2 = texturedBatch3D2.TriangleVertices.Count;
 					texturedBatch3D2.QueueQuad(p5, p6, p7, p8, new Vector2(subtexture.TopLeft.X, subtexture.TopLeft.Y), new Vector2(subtexture.BottomRight.X, subtexture.TopLeft.Y), new Vector2(subtexture.BottomRight.X, subtexture.BottomRight.Y), new Vector2(subtexture.TopLeft.X, subtexture.BottomRight.Y), Color.White);

@@ -111,9 +111,9 @@ namespace GameEntitySystem
 			m_valuesDictionary = valuesDictionary;
 			List<KeyValuePair<int, Component>> list = new List<KeyValuePair<int, Component>>();
 			foreach (ValuesDictionary item in from x in valuesDictionary.Values
-				select x as ValuesDictionary into x
-				where x != null && x.DatabaseObject != null && x.DatabaseObject.Type == project.GameDatabase.MemberComponentTemplateType
-				select x)
+											  select x as ValuesDictionary into x
+											  where x != null && x.DatabaseObject != null && x.DatabaseObject.Type == project.GameDatabase.MemberComponentTemplateType
+											  select x)
 			{
 				bool value = item.GetValue<bool>("IsOptional");
 				string value2 = item.GetValue<string>("Class");
@@ -197,7 +197,7 @@ namespace GameEntitySystem
 			foreach (Component component in m_components)
 			{
 				IEnumerable<Entity> ownedEntities = component.GetOwnedEntities();
-				list = ((list != null) ? list : new List<Entity>());
+				list = (list != null) ? list : new List<Entity>();
 				list.AddRange(ownedEntities);
 			}
 			return list;

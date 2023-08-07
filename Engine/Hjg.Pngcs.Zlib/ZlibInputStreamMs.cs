@@ -99,7 +99,7 @@ namespace Hjg.Pngcs.Zlib
 			{
 				throw new Exception("Bad compression method for ZLIB header: cmf=" + num.ToString());
 			}
-			fdict = ((num2 & 0x20) != 0);
+			fdict = (num2 & 0x20) != 0;
 			if (fdict)
 			{
 				dictid = new byte[4];

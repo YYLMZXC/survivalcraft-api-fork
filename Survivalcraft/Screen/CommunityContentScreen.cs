@@ -114,14 +114,14 @@ namespace Game
 					obj.Children.Find<LabelWidget>("CommunityContentItem.Text").Color = txtColor;
 					obj.Children.Find<LabelWidget>("CommunityContentItem.Details").Text = $"{ExternalContentManager.GetEntryTypeDescription(communityContentEntry.Type)} {DataSizeFormatter.Format(communityContentEntry.Size)}";
 					obj.Children.Find<StarRatingWidget>("CommunityContentItem.Rating").Rating = communityContentEntry.RatingsAverage;
-					obj.Children.Find<StarRatingWidget>("CommunityContentItem.Rating").IsVisible = (communityContentEntry.RatingsAverage > 0f);
+					obj.Children.Find<StarRatingWidget>("CommunityContentItem.Rating").IsVisible = communityContentEntry.RatingsAverage > 0f;
 					obj.Children.Find<LabelWidget>("CommunityContentItem.ExtraText").Text = communityContentEntry.ExtraText;
 					return obj;
 				}
 				XElement node3 = ContentManager.Get<XElement>("Widgets/CommunityContentItemMore");
 				var containerWidget = (ContainerWidget)LoadWidget(this, node3, null);
 				m_moreLink = containerWidget.Children.Find<LinkWidget>("CommunityContentItemMore.Link");
-				m_moreLink.Tag = (item as string);
+				m_moreLink.Tag = item as string;
 				return containerWidget;
 			};
 			m_listPanel.SelectionChanged += delegate
@@ -155,7 +155,7 @@ namespace Game
 			m_inputKey.Text = string.Empty;
 			m_isOwn = false;
 			string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
-			m_isCNLanguageType = (languageType == "zh-CN");
+			m_isCNLanguageType = languageType == "zh-CN";
 			CommunityContentManager.IsAdmin(new CancellableProgress(), delegate (bool isAdmin)
 			{
 				m_isAdmin = isAdmin;
@@ -169,8 +169,8 @@ namespace Game
 		public override void Update()
 		{
 			m_placeHolder.IsVisible = string.IsNullOrEmpty(m_inputKey.Text);
-			m_actionButton.IsVisible = (m_isAdmin || m_isOwn);
-			m_action2Button.IsVisible = (m_isAdmin || m_isOwn);
+			m_actionButton.IsVisible = m_isAdmin || m_isOwn;
+			m_action2Button.IsVisible = m_isAdmin || m_isOwn;
 			if (!m_isCNLanguageType)
 			{
 				m_actionButton.IsVisible = false;
@@ -178,10 +178,10 @@ namespace Game
 				m_action3Button.IsVisible = false;
 			}
 			var communityContentEntry = m_listPanel.SelectedItem as CommunityContentEntry;
-			m_downloadButton.IsEnabled = (communityContentEntry != null);
+			m_downloadButton.IsEnabled = communityContentEntry != null;
 			if (communityContentEntry != null)
 			{
-				m_actionButton.IsEnabled = m_isAdmin ? true : m_isOwn;
+				m_actionButton.IsEnabled = m_isAdmin || m_isOwn;
 				if (m_order == Order.ByHide || m_isOwn)
 				{
 					m_actionButton.Text = LanguageControl.Get(GetType().Name, 23);
@@ -190,7 +190,7 @@ namespace Game
 				{
 					m_actionButton.Text = (communityContentEntry.Boutique == 0) ? LanguageControl.Get(GetType().Name, 15) : LanguageControl.Get(GetType().Name, 16);
 				}
-				m_action2Button.IsEnabled = (m_filter.ToString() != "Mod") ? (m_isAdmin ? true : m_isOwn) : false;
+				m_action2Button.IsEnabled = (m_filter.ToString() != "Mod") && (m_isAdmin || m_isOwn);
 			}
 			else
 			{
@@ -245,7 +245,7 @@ namespace Game
 				DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(GetType().Name, "Filter"), list, 60f, (object item) => GetFilterDisplayName(item), delegate (object item)
 				{
 					m_filter = item;
-					m_isOwn = (GetFilterDisplayName(item) == "只看自己");
+					m_isOwn = GetFilterDisplayName(item) == "只看自己";
 					PopulateList(null, true);
 				}));
 			}

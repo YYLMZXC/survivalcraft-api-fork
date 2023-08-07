@@ -90,8 +90,8 @@ namespace Game
 				Point3? point2 = null;
 				foreach (MovingBlock block in Blocks)
 				{
-					point = (point.HasValue ? Point3.Min(point.Value, block.Offset) : block.Offset);
-					point2 = (point2.HasValue ? Point3.Max(point2.Value, block.Offset) : block.Offset);
+					point = point.HasValue ? Point3.Min(point.Value, block.Offset) : block.Offset;
+					point2 = point2.HasValue ? Point3.Max(point2.Value, block.Offset) : block.Offset;
 				}
 				if (point.HasValue)
 				{
@@ -291,12 +291,12 @@ namespace Game
 				}
 				float x = Vector3.Distance(movingBlockSet.StartPosition, movingBlockSet.Position);
 				float num = Vector3.Distance(movingBlockSet.TargetPosition, movingBlockSet.Position);
-				float num2 = ((movingBlockSet.Smoothness.X > 0f) ? MathUtils.Saturate((MathUtils.Sqrt(x) + 0.05f) / movingBlockSet.Smoothness.X) : 1f);
-				float num3 = ((movingBlockSet.Smoothness.Y > 0f) ? MathUtils.Saturate((num + 0.05f) / movingBlockSet.Smoothness.Y) : 1f);
+				float num2 = (movingBlockSet.Smoothness.X > 0f) ? MathUtils.Saturate((MathUtils.Sqrt(x) + 0.05f) / movingBlockSet.Smoothness.X) : 1f;
+				float num3 = (movingBlockSet.Smoothness.Y > 0f) ? MathUtils.Saturate((num + 0.05f) / movingBlockSet.Smoothness.Y) : 1f;
 				float num4 = num2 * num3;
 				bool flag = false;
-				Vector3 vector = ((num > 0f) ? ((movingBlockSet.TargetPosition - movingBlockSet.Position) / num) : Vector3.Zero);
-				float x2 = ((m_subsystemTime.GameTimeDelta > 0f) ? (0.95f / m_subsystemTime.GameTimeDelta) : 0f);
+				Vector3 vector = (num > 0f) ? ((movingBlockSet.TargetPosition - movingBlockSet.Position) / num) : Vector3.Zero;
+				float x2 = (m_subsystemTime.GameTimeDelta > 0f) ? (0.95f / m_subsystemTime.GameTimeDelta) : 0f;
 				float num5 = MathUtils.Min(movingBlockSet.Speed * num4, x2);
 				if (num5 * m_subsystemTime.GameTimeDelta >= num)
 				{
@@ -536,9 +536,9 @@ namespace Game
 		public void GenerateGeometry(MovingBlockSet movingBlockSet)
 		{
 			Point3 point = default(Point3);
-			point.X = ((movingBlockSet.CurrentVelocity.X > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.X)) : (point.X = (int)MathUtils.Ceiling(movingBlockSet.Position.X)));
-			point.Y = ((movingBlockSet.CurrentVelocity.Y > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.Y)) : (point.Y = (int)MathUtils.Ceiling(movingBlockSet.Position.Y)));
-			point.Z = ((movingBlockSet.CurrentVelocity.Z > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.Z)) : (point.Z = (int)MathUtils.Ceiling(movingBlockSet.Position.Z)));
+			point.X = (movingBlockSet.CurrentVelocity.X > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.X)) : (point.X = (int)MathUtils.Ceiling(movingBlockSet.Position.X));
+			point.Y = (movingBlockSet.CurrentVelocity.Y > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.Y)) : (point.Y = (int)MathUtils.Ceiling(movingBlockSet.Position.Y));
+			point.Z = (movingBlockSet.CurrentVelocity.Z > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.Z)) : (point.Z = (int)MathUtils.Ceiling(movingBlockSet.Position.Z));
 			if (!(point != movingBlockSet.GeometryGenerationPosition))
 			{
 				return;
@@ -645,7 +645,7 @@ namespace Game
 				}
 				for (int j = 0; j < count2; j++)
 				{
-					m_indices.Add((array[j] + count));
+					m_indices.Add(array[j] + count);
 				}
 			}
 		}

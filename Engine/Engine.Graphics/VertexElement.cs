@@ -61,7 +61,7 @@ namespace Engine.Graphics
 			Format = format;
 			Semantic = semantic;
 			SemanticName = semantic.Substring(0, num);
-			SemanticIndex = ((num < semantic.Length) ? int.Parse(semantic.Substring(num)) : 0);
+			SemanticIndex = (num < semantic.Length) ? int.Parse(semantic.Substring(num)) : 0;
 			m_hashCode = Offset.GetHashCode() + Format.GetHashCode() + Semantic.GetHashCode();
 		}
 

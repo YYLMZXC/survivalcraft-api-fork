@@ -30,7 +30,7 @@ namespace Game
 
 
 #if android
-        public bool IsControlledByTouch { get; set; } = true;
+		public bool IsControlledByTouch { get; set; } = true;
 #endif
 #if desktop
 		public bool IsControlledByTouch { get; set; }
@@ -161,7 +161,7 @@ namespace Game
 						IsControlledByTouch = false;
 					}
 				}
-				Vector3 vector = default(Vector3) + Vector3.UnitX * (input.IsKeyDown(Key.D) ? 1 : 0);
+				Vector3 vector = default(Vector3) + (Vector3.UnitX * (input.IsKeyDown(Key.D) ? 1 : 0));
 				vector += -Vector3.UnitZ * (input.IsKeyDown(Key.S) ? 1 : 0);
 				vector += Vector3.UnitZ * (input.IsKeyDown(Key.W) ? 1 : 0);
 				vector += -Vector3.UnitX * (input.IsKeyDown(Key.A) ? 1 : 0);
@@ -172,14 +172,14 @@ namespace Game
 				m_playerInput.SneakMove += vector;
 				m_playerInput.Jump |= input.IsKeyDownOnce(Key.Space);
 				m_playerInput.ScrollInventory -= num;
-				m_playerInput.Dig = (input.IsMouseButtonDown(MouseButton.Left) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Dig);
-				m_playerInput.Hit = (input.IsMouseButtonDownOnce(MouseButton.Left) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Hit);
-				m_playerInput.Aim = (input.IsMouseButtonDown(MouseButton.Right) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Aim);
-				m_playerInput.Interact = (input.IsMouseButtonDownOnce(MouseButton.Right) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Interact);
+				m_playerInput.Dig = input.IsMouseButtonDown(MouseButton.Left) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Dig;
+				m_playerInput.Hit = input.IsMouseButtonDownOnce(MouseButton.Left) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Hit;
+				m_playerInput.Aim = input.IsMouseButtonDown(MouseButton.Right) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Aim;
+				m_playerInput.Interact = input.IsMouseButtonDownOnce(MouseButton.Right) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Interact;
 				m_playerInput.ToggleSneak |= input.IsKeyDownOnce(Key.Shift);
 				m_playerInput.ToggleMount |= input.IsKeyDownOnce(Key.R);
 				m_playerInput.ToggleCreativeFly |= input.IsKeyDownOnce(Key.F);
-				m_playerInput.PickBlockType = (input.IsMouseButtonDownOnce(MouseButton.Middle) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.PickBlockType);
+				m_playerInput.PickBlockType = input.IsMouseButtonDownOnce(MouseButton.Middle) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.PickBlockType;
 			}
 			if (!DialogsManager.HasDialogs(m_componentPlayer.GuiWidget) && AllowHandleInput)
 			{
@@ -265,15 +265,15 @@ namespace Game
 				m_playerInput.SneakMove += zero;
 				m_playerInput.Look += 0.75f * padStickPosition2 * MathUtils.Pow(padStickPosition2.LengthSquared(), 0.25f);
 				m_playerInput.Jump |= input.IsPadButtonDownOnce(GamePadButton.A);
-				m_playerInput.Dig = ((padTriggerPosition2 >= 0.5f) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Dig);
-				m_playerInput.Hit = ((padTriggerPosition2 >= 0.5f && m_lastRightTrigger < 0.5f) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Hit);
-				m_playerInput.Aim = ((padTriggerPosition >= 0.5f) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Aim);
-				m_playerInput.Interact = ((padTriggerPosition >= 0.5f && m_lastLeftTrigger < 0.5f) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Interact);
+				m_playerInput.Dig = (padTriggerPosition2 >= 0.5f) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Dig;
+				m_playerInput.Hit = (padTriggerPosition2 >= 0.5f && m_lastRightTrigger < 0.5f) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Hit;
+				m_playerInput.Aim = (padTriggerPosition >= 0.5f) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Aim;
+				m_playerInput.Interact = (padTriggerPosition >= 0.5f && m_lastLeftTrigger < 0.5f) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Interact;
 				m_playerInput.Drop |= input.IsPadButtonDownOnce(GamePadButton.B);
-				m_playerInput.ToggleMount |= (input.IsPadButtonDownOnce(GamePadButton.LeftThumb) || input.IsPadButtonDownOnce(GamePadButton.DPadUp));
+				m_playerInput.ToggleMount |= input.IsPadButtonDownOnce(GamePadButton.LeftThumb) || input.IsPadButtonDownOnce(GamePadButton.DPadUp);
 				m_playerInput.EditItem |= input.IsPadButtonDownOnce(GamePadButton.LeftShoulder);
 				m_playerInput.ToggleSneak |= input.IsPadButtonDownOnce(GamePadButton.RightShoulder);
-				m_playerInput.SwitchCameraMode |= (input.IsPadButtonDownOnce(GamePadButton.RightThumb) || input.IsPadButtonDownOnce(GamePadButton.DPadDown));
+				m_playerInput.SwitchCameraMode |= input.IsPadButtonDownOnce(GamePadButton.RightThumb) || input.IsPadButtonDownOnce(GamePadButton.DPadDown);
 				if (input.IsPadButtonDownRepeat(GamePadButton.DPadLeft))
 				{
 					m_playerInput.ScrollInventory--;

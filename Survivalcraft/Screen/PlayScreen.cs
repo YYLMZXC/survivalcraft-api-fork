@@ -101,8 +101,8 @@ namespace Game
 				m_worldsListWidget.SelectedItem = null;
 			}
 			Children.Find<LabelWidget>("TopBar.Label").Text = string.Format(LanguageControl.GetContentWidgets(fName, 6), m_worldsListWidget.Items.Count);
-			m_playButton.IsEnabled = (m_worldsListWidget.SelectedItem != null);
-			m_propertiesButton.IsEnabled = (m_worldsListWidget.SelectedItem != null);
+			m_playButton.IsEnabled = m_worldsListWidget.SelectedItem != null;
+			m_propertiesButton.IsEnabled = m_worldsListWidget.SelectedItem != null;
 			if (m_playButton.IsClicked && m_worldsListWidget.SelectedItem != null)
 			{
 				Play(m_worldsListWidget.SelectedItem);
@@ -204,7 +204,7 @@ namespace Game
 					double minv = double.Parse(versions[0]);
 					double maxv = double.Parse(versions[1]);
 					double v = double.Parse(v2);
-					return (v >= minv && v <= maxv);
+					return v >= minv && v <= maxv;
 				}
 				catch
 				{
@@ -225,7 +225,7 @@ namespace Game
 			}
 			else
 			{
-				return (v1 == v2);
+				return v1 == v2;
 			}
 		}
 	}

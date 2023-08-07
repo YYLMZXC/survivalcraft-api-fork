@@ -73,7 +73,7 @@ namespace Game
 				{
 					Vector3 position = m_componentCreature.ComponentBody.Position;
 					var v = Vector3.Normalize(m_target.ComponentBody.Position - position);
-					m_componentPathfinding.SetDestination(position + 1.1f * v, m_random.Float(0.3f, 0.4f), 1f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
+					m_componentPathfinding.SetDestination(position + (1.1f * v), m_random.Float(0.3f, 0.4f), 1f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
 					if (m_random.Float(0f, 1f) < 0.5f)
 					{
 						m_componentCreature.ComponentCreatureSounds.PlayIdleSound(skipIfRecentlyPlayed: false);

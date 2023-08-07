@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public struct BoundingSphere : IEquatable<BoundingSphere>
+	public struct BoundingSphere : IEquatable<BoundingSphere>
 	{
 		public Vector3 Center;
 

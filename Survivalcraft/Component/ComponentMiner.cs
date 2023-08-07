@@ -139,7 +139,7 @@ namespace Game
 				DigCellFace = cellFace;
 			}
 			float num3 = CalculateDigTime(cellValue, activeBlockValue);
-			m_digProgress = ((num3 > 0f) ? MathUtils.Saturate((float)(m_subsystemTime.GameTime - m_digStartTime) / num3) : 1f);
+			m_digProgress = (num3 > 0f) ? MathUtils.Saturate((float)(m_subsystemTime.GameTime - m_digStartTime) / num3) : 1f;
 			if (!CanUseTool(activeBlockValue))
 			{
 				m_digProgress = 0f;
@@ -222,7 +222,7 @@ namespace Game
 					{
 						if (m_subsystemTerrain.Terrain.GetCellContents(num2, num3, num4) != 0) return false;
 					}
-					if (num3 > 0 && num3 < 255 && (m_canJumpToPlace || (IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Survival)))
+					if (num3 > 0 && num3 < 255 && (m_canJumpToPlace || IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Survival))
 					{
 						bool flag = false;
 						if (block.IsCollidable)
@@ -357,7 +357,7 @@ namespace Game
 			}
 			else if (ComponentCreature is ComponentPlayer)
 			{
-				HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
+				HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
 				ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
 				{
 					modLoader.SetHitValueParticleSystem(particleSystem, false);
@@ -407,13 +407,13 @@ namespace Game
 			Vector3 creaturePosition = ComponentCreature.ComponentCreatureModel.EyePosition;
 			Vector3 start = ray.Position;
 			var direction = Vector3.Normalize(ray.Direction);
-			Vector3 end = ray.Position + direction * 15f;
+			Vector3 end = ray.Position + (direction * 15f);
 			Point3 startCell = Terrain.ToCell(start);
-			BodyRaycastResult? bodyRaycastResult = m_subsystemBodies.Raycast(start, end, 0.35f, (ComponentBody body, float distance) => (Vector3.DistanceSquared(start + distance * direction, creaturePosition) <= reach * reach && body.Entity != Entity && !body.IsChildOfBody(ComponentCreature.ComponentBody) && !ComponentCreature.ComponentBody.IsChildOfBody(body) && Vector3.Dot(Vector3.Normalize(body.BoundingBox.Center() - start), direction) > 0.7f) ? true : false);
+			BodyRaycastResult? bodyRaycastResult = m_subsystemBodies.Raycast(start, end, 0.35f, (ComponentBody body, float distance) => Vector3.DistanceSquared(start + (distance * direction), creaturePosition) <= reach * reach && body.Entity != Entity && !body.IsChildOfBody(ComponentCreature.ComponentBody) && !ComponentCreature.ComponentBody.IsChildOfBody(body) && Vector3.Dot(Vector3.Normalize(body.BoundingBox.Center() - start), direction) > 0.7f);
 			MovingBlocksRaycastResult? movingBlocksRaycastResult = m_subsystemMovingBlocks.Raycast(start, end, extendToFillCells: true);
 			TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(start, end, useInteractionBoxes: true, skipAirBlocks: true, delegate (int value, float distance)
 			{
-				if (Vector3.DistanceSquared(start + distance * direction, creaturePosition) <= reach * reach)
+				if (Vector3.DistanceSquared(start + (distance * direction), creaturePosition) <= reach * reach)
 				{
 					Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
 					if (distance == 0f && block is CrossBlock && Vector3.Dot(direction, new Vector3(startCell) + new Vector3(0.5f) - start) < 0f)
@@ -561,7 +561,7 @@ namespace Game
 						if (attacker is ComponentPlayer && num2 > 0f)
 						{
 							string text2 = (0f - num2).ToString("0", CultureInfo.InvariantCulture);
-							HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + 0.75f * hitDirection, 1f * hitDirection + attacker.ComponentBody.Velocity, Color.White, text2);
+							HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + attacker.ComponentBody.Velocity, Color.White, text2);
 							ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
 							{
 								modLoader.SetHitValueParticleSystem(particleSystem, true);
@@ -605,7 +605,7 @@ namespace Game
 			});
 			if (num4 > 0f)
 			{
-				target.ApplyImpulse(num4 * Vector3.Normalize(hitDirection + s_random.Vector3(0.1f) + 0.2f * Vector3.UnitY));
+				target.ApplyImpulse(num4 * Vector3.Normalize(hitDirection + s_random.Vector3(0.1f) + (0.2f * Vector3.UnitY)));
 				ComponentLocomotion componentLocomotion = target.Entity.FindComponent<ComponentLocomotion>();
 				if (componentLocomotion != null)
 				{

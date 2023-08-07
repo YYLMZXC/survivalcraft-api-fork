@@ -30,7 +30,7 @@ namespace Game
 		{
 			m_message = text;
 			m_messageStartTime = Time.RealTime;
-			m_duration = (blinking ? 6f : (4f + MathUtils.Min(1f * m_message.Count((char c) => c == '\n'), 4f)));
+			m_duration = blinking ? 6f : (4f + MathUtils.Min(1f * m_message.Count((char c) => c == '\n'), 4f));
 			m_color = color;
 			m_blinking = blinking;
 		}

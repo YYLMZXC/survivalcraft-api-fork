@@ -71,17 +71,17 @@ namespace Engine.Media
 		{
 			switch (origin)
 			{
-			case SeekOrigin.Begin:
-				Position = offset;
-				break;
-			case SeekOrigin.End:
-				Position = Length + offset;
-				break;
-			case SeekOrigin.Current:
-				Position += offset;
-				break;
-			default:
-				throw new ArgumentException("Invalid origin.", nameof(origin));
+				case SeekOrigin.Begin:
+					Position = offset;
+					break;
+				case SeekOrigin.End:
+					Position = Length + offset;
+					break;
+				case SeekOrigin.Current:
+					Position += offset;
+					break;
+				default:
+					throw new ArgumentException("Invalid origin.", nameof(origin));
 			}
 			return Position;
 		}

@@ -52,7 +52,7 @@ namespace Game
 			if (Input.Press.HasValue && HitTestGlobal(Input.Press.Value) == this)
 			{
 				Vector2 vector = ScreenToWidget(Input.Press.Value);
-				Rating = (int)MathUtils.Floor(5f * vector.X / ActualSize.X + 1f);
+				Rating = (int)MathUtils.Floor((5f * vector.X / ActualSize.X) + 1f);
 			}
 		}
 

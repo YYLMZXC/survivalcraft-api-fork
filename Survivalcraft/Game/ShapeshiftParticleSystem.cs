@@ -48,7 +48,7 @@ namespace Game
 		public override bool Simulate(float dt)
 		{
 			bool flag = false;
-			m_generationSpeed = MathUtils.Min(m_generationSpeed + 15f * dt, 35f);
+			m_generationSpeed = MathUtils.Min(m_generationSpeed + (15f * dt), 35f);
 			m_toGenerate += m_generationSpeed * dt;
 			for (int i = 0; i < Particles.Length; i++)
 			{

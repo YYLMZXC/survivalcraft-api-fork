@@ -141,7 +141,7 @@ namespace Game
 			if (num > 1000f)
 			{
 				Log.Warning("Terrain raycast too long, trimming.");
-				end = start + 1000f * Vector3.Normalize(end - start);
+				end = start + (1000f * Vector3.Normalize(end - start));
 			}
 			var ray = new Ray3(start, Vector3.Normalize(end - start));
 			float x = start.X;
@@ -192,7 +192,7 @@ namespace Game
 				if (num23.HasValue && num23.Value <= num && (action == null || action(cellValue, num23.Value)))
 				{
 					int face = 0;
-					Vector3 vector = start - new Vector3(num2, num3, num4) + num23.Value * ray.Direction;
+					Vector3 vector = start - new Vector3(num2, num3, num4) + (num23.Value * ray.Direction);
 					float num26 = float.MaxValue;
 					float num27 = MathUtils.Abs(vector.X - boundingBox.Min.X);
 					if (num27 < num26)

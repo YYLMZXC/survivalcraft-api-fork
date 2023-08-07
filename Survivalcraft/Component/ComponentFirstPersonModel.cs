@@ -104,7 +104,7 @@ namespace Game
 						ComponentCreatureModel componentCreatureModel = m_componentRider.Mount.Entity.FindComponent<ComponentCreatureModel>();
 						if (componentCreatureModel != null)
 						{
-							float num3 = componentCreatureModel.MovementAnimationPhase * (float)Math.PI * 2f + 0.5f;
+							float num3 = (componentCreatureModel.MovementAnimationPhase * (float)Math.PI * 2f) + 0.5f;
 							Vector3 position = default;
 							position.Y = 0.02f * MathUtils.Sin(num3);
 							position.Z = 0.02f * MathUtils.Sin(num3);
@@ -138,7 +138,7 @@ namespace Game
 						}
 						int num6 = Terrain.ExtractContents(m_value);
 						Block block = BlocksManager.Blocks[num6];
-						Vector3 vector = block.GetFirstPersonRotation(m_value) * ((float)Math.PI / 180f) + m_itemRotation;
+						Vector3 vector = (block.GetFirstPersonRotation(m_value) * ((float)Math.PI / 180f)) + m_itemRotation;
 						Vector3 position3 = block.GetFirstPersonOffset(m_value) + m_itemOffset;
 						position3 += m_itemOffset;
 						Matrix matrix = Matrix.CreateFromYawPitchRoll(vector.Y, vector.X, vector.Z) * identity * Matrix.CreateTranslation(position3) * Matrix.CreateFromYawPitchRoll(m_lagAngles.X, m_lagAngles.Y, 0f) * m;
@@ -200,8 +200,8 @@ namespace Game
 			if (m_lastYpr.HasValue)
 			{
 				Vector3 vector2 = vector - m_lastYpr.Value;
-				m_lagAngles.X = MathUtils.Clamp(m_lagAngles.X - 0.08f * MathUtils.NormalizeAngle(vector2.X), -0.1f, 0.1f);
-				m_lagAngles.Y = MathUtils.Clamp(m_lagAngles.Y - 0.08f * MathUtils.NormalizeAngle(vector2.Y), -0.1f, 0.1f);
+				m_lagAngles.X = MathUtils.Clamp(m_lagAngles.X - (0.08f * MathUtils.NormalizeAngle(vector2.X)), -0.1f, 0.1f);
+				m_lagAngles.Y = MathUtils.Clamp(m_lagAngles.Y - (0.08f * MathUtils.NormalizeAngle(vector2.Y)), -0.1f, 0.1f);
 			}
 			m_lastYpr = vector;
 			int activeBlockValue = m_componentMiner.ActiveBlockValue;

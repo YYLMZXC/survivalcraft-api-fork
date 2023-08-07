@@ -51,7 +51,7 @@ namespace Game
 				inventorySlotWidget.HideFoodOverlay = true;
 				inventorySlotWidget.HideHighlightRectangle = true;
 				inventorySlotWidget.HideBlockIcon = true;
-				inventorySlotWidget.HideHealthBar = (m_componentPlayer.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true).WorldSettings.GameMode == GameMode.Creative);
+				inventorySlotWidget.HideHealthBar = m_componentPlayer.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true).WorldSettings.GameMode == GameMode.Creative;
 				m_clothingStack.Children.Add(inventorySlotWidget);
 			}
 			int num = 10;

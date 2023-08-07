@@ -17,7 +17,7 @@ namespace Game
 			}
 			set
 			{
-				SettingsManager.UserId = ((value != null) ? value.UniqueId : string.Empty);
+				SettingsManager.UserId = (value != null) ? value.UniqueId : string.Empty;
 			}
 		}
 

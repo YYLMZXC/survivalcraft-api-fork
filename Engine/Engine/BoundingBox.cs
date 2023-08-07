@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Engine
 {
-    public struct BoundingBox : IEquatable<BoundingBox>
+	public struct BoundingBox : IEquatable<BoundingBox>
 	{
 		public Vector3 Min;
 
@@ -179,7 +179,7 @@ namespace Engine
 			float num = MathUtils.Max(b.Min.X - p.X, 0f, p.X - b.Max.X);
 			float num2 = MathUtils.Max(b.Min.Y - p.Y, 0f, p.Y - b.Max.Y);
 			float num3 = MathUtils.Max(b.Min.Z - p.Z, 0f, p.Z - b.Max.Z);
-			return MathUtils.Sqrt(num * num + num2 * num2 + num3 * num3);
+			return MathUtils.Sqrt((num * num) + (num2 * num2) + (num3 * num3));
 		}
 
 		public static BoundingBox Transform(BoundingBox b, Matrix m)

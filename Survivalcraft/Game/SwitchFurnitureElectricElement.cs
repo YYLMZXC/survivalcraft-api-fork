@@ -12,7 +12,7 @@ namespace Game
 			FurnitureDesign design = FurnitureBlock.GetDesign(subsystemElectricity.SubsystemTerrain.SubsystemFurnitureBlockBehavior, value);
 			if (design != null && design.LinkedDesign != null)
 			{
-				m_voltage = ((design.Index >= design.LinkedDesign.Index) ? 1 : 0);
+				m_voltage = (design.Index >= design.LinkedDesign.Index) ? 1 : 0;
 			}
 		}
 

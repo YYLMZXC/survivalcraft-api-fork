@@ -1,10 +1,7 @@
 ﻿using Android.Content;
 using Android.Graphics;
-using Android.Net;
-using Android.OS;
 using Engine;
 using Engine.Graphics;
-using Java.IO;
 using Java.Nio;
 using System;
 using System.Collections.Generic;

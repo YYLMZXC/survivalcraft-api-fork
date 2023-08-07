@@ -33,7 +33,7 @@ namespace Game
 					if (vector != Vector2.Zero && !m_collidedWithBody)
 					{
 						var v = Vector2.Normalize(vector);
-						Vector3 vector2 = m_componentCreature.ComponentBody.Matrix.Right * lastWalkOrder.Value.X + m_componentCreature.ComponentBody.Matrix.Forward * lastWalkOrder.Value.Y;
+						Vector3 vector2 = (m_componentCreature.ComponentBody.Matrix.Right * lastWalkOrder.Value.X) + (m_componentCreature.ComponentBody.Matrix.Forward * lastWalkOrder.Value.Y);
 						var v2 = Vector2.Normalize(new Vector2(vector2.X, vector2.Z));
 						bool flag = false;
 						Vector3 v3 = Vector3.Zero;

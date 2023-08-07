@@ -1,6 +1,6 @@
 namespace Engine
 {
-    public class DebugLogSink : ILogSink
+	public class DebugLogSink : ILogSink
 	{
 		public LogType MinimumLogType
 		{

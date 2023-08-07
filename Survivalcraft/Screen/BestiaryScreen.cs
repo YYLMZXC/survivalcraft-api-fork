@@ -85,13 +85,13 @@ namespace Game
 								TextureOverride = valuesDictionary2.GetValue<string>("TextureOverride"),
 								Mass = valuesDictionary3.GetValue<float>("Mass"),
 								AttackResilience = valuesDictionary4.GetValue<float>("AttackResilience"),
-								AttackPower = (valuesDictionary5?.GetValue<float>("AttackPower") ?? 0f),
+								AttackPower = valuesDictionary5?.GetValue<float>("AttackPower") ?? 0f,
 								MovementSpeed = MathUtils.Max(valuesDictionary6.GetValue<float>("WalkSpeed"), valuesDictionary6.GetValue<float>("FlySpeed"), valuesDictionary6.GetValue<float>("SwimSpeed")),
 								JumpHeight = MathUtils.Sqr(valuesDictionary6.GetValue<float>("JumpSpeed")) / 20f,
-								IsHerding = (valuesDictionary7 != null),
-								CanBeRidden = (valuesDictionary8 != null),
-								HasSpawnerEgg = (value2?.GetValue<bool>("ShowEgg") ?? false),
-								Loot = ((valuesDictionary9 != null) ? ComponentLoot.ParseLootList(valuesDictionary9.GetValue<ValuesDictionary>("Loot")) : new List<ComponentLoot.Loot>())
+								IsHerding = valuesDictionary7 != null,
+								CanBeRidden = valuesDictionary8 != null,
+								HasSpawnerEgg = value2?.GetValue<bool>("ShowEgg") ?? false,
+								Loot = (valuesDictionary9 != null) ? ComponentLoot.ParseLootList(valuesDictionary9.GetValue<ValuesDictionary>("Loot")) : new List<ComponentLoot.Loot>()
 							};
 							if (value3 != null && entitiesValuesDictionary.DatabaseObject.Name.ToLower().Contains("female"))
 							{
@@ -136,10 +136,10 @@ namespace Game
 			modelWidget.Model.CopyAbsoluteBoneTransformsTo(absoluteTransforms);
 			BoundingBox boundingBox = modelWidget.Model.CalculateAbsoluteBoundingBox(absoluteTransforms);
 			float x = MathUtils.Max(boundingBox.Size().X, 1.4f * boundingBox.Size().Y, boundingBox.Size().Z);
-			modelWidget.ViewPosition = new Vector3(boundingBox.Center().X, 1.5f, boundingBox.Center().Z) + 2.6f * MathUtils.Pow(x, 0.75f) * offset;
+			modelWidget.ViewPosition = new Vector3(boundingBox.Center().X, 1.5f, boundingBox.Center().Z) + (2.6f * MathUtils.Pow(x, 0.75f) * offset);
 			modelWidget.ViewTarget = boundingBox.Center();
 			modelWidget.ViewFov = 0.3f;
-			modelWidget.AutoRotationVector = (autoRotate ? new Vector3(0f, MathUtils.Clamp(1.7f / boundingBox.Size().Length(), 0.25f, 1.4f), 0f) : Vector3.Zero);
+			modelWidget.AutoRotationVector = autoRotate ? new Vector3(0f, MathUtils.Clamp(1.7f / boundingBox.Size().Length(), 0.25f, 1.4f), 0f) : Vector3.Zero;
 			if (autoAspect)
 			{
 				float num = MathUtils.Clamp(boundingBox.Size().XZ.Length() / boundingBox.Size().Y, 1f, 1.5f);

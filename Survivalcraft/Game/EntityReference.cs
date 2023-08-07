@@ -108,7 +108,7 @@ namespace Game
 		{
 			EntityReference result = default;
 			result.m_referenceType = ReferenceType.Local;
-			result.m_componentReference = ((component != null) ? component.ValuesDictionary.DatabaseObject.Name : string.Empty);
+			result.m_componentReference = (component != null) ? component.ValuesDictionary.DatabaseObject.Name : string.Empty;
 			return result;
 		}
 
@@ -118,7 +118,7 @@ namespace Game
 			EntityReference result = default;
 			result.m_referenceType = ReferenceType.ByEntityId;
 			result.m_entityReference = num.ToString(CultureInfo.InvariantCulture);
-			result.m_componentReference = ((component != null) ? component.ValuesDictionary.DatabaseObject.Name : string.Empty);
+			result.m_componentReference = (component != null) ? component.ValuesDictionary.DatabaseObject.Name : string.Empty;
 			return result;
 		}
 
@@ -138,7 +138,7 @@ namespace Game
 			EntityReference result = default;
 			result.m_referenceType = ReferenceType.ByEntityName;
 			result.m_entityReference = entityReference;
-			result.m_componentReference = ((component != null) ? component.ValuesDictionary.DatabaseObject.Name : string.Empty);
+			result.m_componentReference = (component != null) ? component.ValuesDictionary.DatabaseObject.Name : string.Empty;
 			return result;
 		}
 
@@ -191,7 +191,7 @@ namespace Game
 					{
 						result.m_referenceType = ReferenceType.ByEntityId;
 						result.m_entityReference = array[1];
-						result.m_componentReference = ((array.Length == 3) ? array[2] : string.Empty);
+						result.m_componentReference = (array.Length == 3) ? array[2] : string.Empty;
 					}
 					else
 					{
@@ -201,7 +201,7 @@ namespace Game
 						}
 						result.m_referenceType = ReferenceType.ByEntityId;
 						result.m_entityReference = array[1];
-						result.m_componentReference = ((array.Length == 3) ? array[2] : string.Empty);
+						result.m_componentReference = (array.Length == 3) ? array[2] : string.Empty;
 					}
 				}
 			}

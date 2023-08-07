@@ -69,7 +69,7 @@ namespace Game
 			{
 				IsStopped = true;
 			}
-			float num6 = MathUtils.Saturate(1.3f * SimplexNoise.Noise(3f * m_duration + GetHashCode() % 100) - 0.3f);
+			float num6 = MathUtils.Saturate((1.3f * SimplexNoise.Noise((3f * m_duration) + (GetHashCode() % 100))) - 0.3f);
 			float num7 = 30f * num6;
 			m_toGenerate += num7 * dt;
 			bool flag = false;
@@ -83,7 +83,7 @@ namespace Game
 					if (particle.TimeToLive > 0f)
 					{
 						Vector3 position = particle.Position;
-						Vector3 vector = position + particle.Velocity * dt;
+						Vector3 vector = position + (particle.Velocity * dt);
 						TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(position, vector, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
 						if (terrainRaycastResult.HasValue)
 						{
@@ -117,9 +117,9 @@ namespace Game
 				{
 					Vector3 v = m_random.Vector3(0f, 1f);
 					particle.IsActive = true;
-					particle.Position = Position + 0.05f * v;
+					particle.Position = Position + (0.05f * v);
 					particle.Color = Color.MultiplyColorOnly(white, m_random.Float(0.7f, 1f));
-					particle.Velocity = MathUtils.Lerp(1f, 2.5f, num6) * Vector3.Normalize(Direction + 0.25f * v);
+					particle.Velocity = MathUtils.Lerp(1f, 2.5f, num6) * Vector3.Normalize(Direction + (0.25f * v));
 					particle.TimeToLive = 3f;
 					particle.Size = new Vector2(0.1f);
 					particle.FlipX = m_random.Bool();

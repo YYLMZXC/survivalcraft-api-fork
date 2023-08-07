@@ -56,7 +56,7 @@ namespace Hjg.Pngcs.Chunks
 			}
 			if (ImgInfo.Indexed)
 			{
-				paletteIndex = (c.Data[0] & 0xFF);
+				paletteIndex = c.Data[0] & 0xFF;
 				return;
 			}
 			red = PngHelperInternal.ReadInt2fromBytes(c.Data, 0);

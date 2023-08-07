@@ -22,9 +22,9 @@ namespace Game
 			CellFace cellFace = CellFaces[0];
 			int mountingFace = MulticoloredLedBlock.GetMountingFace(Terrain.ExtractData(SubsystemElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)));
 			var v = new Vector3(cellFace.X + 0.5f, cellFace.Y + 0.5f, cellFace.Z + 0.5f);
-			m_glowPoint.Position = v - 0.4375f * CellFace.FaceToVector3(mountingFace);
+			m_glowPoint.Position = v - (0.4375f * CellFace.FaceToVector3(mountingFace));
 			m_glowPoint.Forward = CellFace.FaceToVector3(mountingFace);
-			m_glowPoint.Up = ((mountingFace < 4) ? Vector3.UnitY : Vector3.UnitX);
+			m_glowPoint.Up = (mountingFace < 4) ? Vector3.UnitY : Vector3.UnitX;
 			m_glowPoint.Right = Vector3.Cross(m_glowPoint.Forward, m_glowPoint.Up);
 			m_glowPoint.Color = Color.Transparent;
 			m_glowPoint.Size = 0.0324f;

@@ -23,7 +23,7 @@ namespace Game
 			{
 				int variant = GetVariant(i);
 				float radians = (GetRotation(i) == 0) ? 0f : ((float)Math.PI / 2f);
-				string name = "Grave" + (variant % 4 + 1).ToString(CultureInfo.InvariantCulture);
+				string name = "Grave" + ((variant % 4) + 1).ToString(CultureInfo.InvariantCulture);
 				bool num = variant >= 4;
 				Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh(name).ParentBone);
 				m_blockMeshes[i] = new BlockMesh();
@@ -52,13 +52,13 @@ namespace Game
 				int num2 = Terrain.ExtractContents((y > 0) ? generator.Terrain.GetCellValueFast(x, y - 1, z) : 0);
 				bool num3 = BlocksManager.Blocks[num2].DigMethod != BlockDigMethod.Shovel;
 				bool flag = num2 == 7 || num2 == 4 || num2 == 52;
-				int num4 = (int)(MathUtils.Hash((uint)(x + 172 * y + 18271 * z)) & 0xFFFF);
+				int num4 = (int)(MathUtils.Hash((uint)(x + (172 * y) + (18271 * z))) & 0xFFFF);
 				Matrix value2 = Matrix.Identity;
 				if (!num3)
 				{
-					float radians = 0.2f * (num4 % 16 / 7.5f - 1f);
-					float radians2 = 0.1f * ((num4 >> 4) % 16 / 7.5f - 1f);
-					value2 = ((GetRotation(num) != 0) ? (Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationZ(radians) * Matrix.CreateRotationY(radians2) * Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationX(radians) * Matrix.CreateRotationY(radians2) * Matrix.CreateTranslation(0.5f, 0f, 0.5f)));
+					float radians = 0.2f * ((num4 % 16 / 7.5f) - 1f);
+					float radians2 = 0.1f * (((num4 >> 4) % 16 / 7.5f) - 1f);
+					value2 = (GetRotation(num) != 0) ? (Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationZ(radians) * Matrix.CreateRotationY(radians2) * Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateTranslation(-0.5f, 0f, -0.5f) * Matrix.CreateRotationX(radians) * Matrix.CreateRotationY(radians2) * Matrix.CreateTranslation(0.5f, 0f, 0.5f));
 				}
 				float f = num3 ? 0f : MathUtils.Sqr((num4 >> 8) % 16 / 15f);
 				generator.GenerateMeshVertices(color: (!flag) ? Color.Lerp(Color.White, new Color(255, 233, 199), f) : Color.Lerp(new Color(217, 206, 123), new Color(229, 206, 123), f), block: this, x: x, y: y, z: z, blockMesh: m_blockMeshes[num], matrix: value2, subset: geometry.SubsetOpaque);

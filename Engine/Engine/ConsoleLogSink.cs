@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine
 {
-    public class ConsoleLogSink : ILogSink
+	public class ConsoleLogSink : ILogSink
 	{
 		public LogType MinimumLogType
 		{

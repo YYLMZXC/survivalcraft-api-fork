@@ -16,7 +16,7 @@ namespace Game
 
 		public Vector3 HitPoint(float offsetFromSurface = 0f)
 		{
-			return Ray.Position + Ray.Direction * Distance + CellFace.FaceToVector3(CellFace.Face) * offsetFromSurface;
+			return Ray.Position + (Ray.Direction * Distance) + (CellFace.FaceToVector3(CellFace.Face) * offsetFromSurface);
 		}
 	}
 }

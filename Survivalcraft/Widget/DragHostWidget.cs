@@ -78,7 +78,7 @@ namespace Game
 				Vector2 parentDesiredSize = child.ParentDesiredSize;
 				parentDesiredSize.X = MathUtils.Min(parentDesiredSize.X, ActualSize.X);
 				parentDesiredSize.Y = MathUtils.Min(parentDesiredSize.Y, ActualSize.Y);
-				child.Arrange(ScreenToWidget(m_dragPosition) - 0.5f * parentDesiredSize, parentDesiredSize);
+				child.Arrange(ScreenToWidget(m_dragPosition) - (0.5f * parentDesiredSize), parentDesiredSize);
 			}
 		}
 

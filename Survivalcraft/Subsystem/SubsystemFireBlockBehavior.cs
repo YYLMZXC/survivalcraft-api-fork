@@ -106,7 +106,7 @@ namespace Game
 				{
 					int num3 = (num2 == 104) ? Terrain.ExtractData(cellValue2) : 0;
 					int num4 = CellFace.OppositeFace(i);
-					num3 |= ((1 << num4) & 0xF);
+					num3 |= (1 << num4) & 0xF;
 					cellValue = Terrain.ReplaceData(Terrain.ReplaceContents(0, 104), num3);
 					AddFire(x + point.X, y + point.Y, z + point.Z, fireExpandability);
 					SubsystemTerrain.ChangeCell(x + point.X, y + point.Y, z + point.Z, cellValue);
@@ -132,7 +132,7 @@ namespace Game
 			}
 			if (m_firePointsCopy.Count > 0)
 			{
-				float num = MathUtils.Min(1f * dt * m_firePointsCopy.Count + m_remainderToScan, 50f);
+				float num = MathUtils.Min((1f * dt * m_firePointsCopy.Count) + m_remainderToScan, 50f);
 				int num2 = (int)num;
 				m_remainderToScan = num - num2;
 				int num3 = MathUtils.Min(m_copyIndex + num2, m_firePointsCopy.Count);
@@ -361,9 +361,9 @@ namespace Game
 						if (i != 0 || j != 0 || k != 0)
 						{
 							float num = (j < 0) ? 1.5f : 2.5f;
-							if (MathUtils.Sqrt(i * i + j * j + k * k) <= num)
+							if (MathUtils.Sqrt((i * i) + (j * j) + (k * k)) <= num)
 							{
-								float num2 = MathUtils.Sqrt(i * i + k * k);
+								float num2 = MathUtils.Sqrt((i * i) + (k * k));
 								float num3 = (j > 0) ? (0.5f * j) : -j;
 								m_expansionProbabilities[new Point3(i, j, k)] = 0.02f / (num2 + num3);
 							}

@@ -16,7 +16,7 @@ namespace Game
 			}
 			set
 			{
-				m_largeLabelWidget.Text = (value ?? string.Empty);
+				m_largeLabelWidget.Text = value ?? string.Empty;
 				m_largeLabelWidget.IsVisible = !string.IsNullOrEmpty(value);
 			}
 		}
@@ -29,7 +29,7 @@ namespace Game
 			}
 			set
 			{
-				m_smallLabelWidget.Text = (value ?? string.Empty);
+				m_smallLabelWidget.Text = value ?? string.Empty;
 				m_smallLabelWidget.IsVisible = !string.IsNullOrEmpty(value);
 			}
 		}

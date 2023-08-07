@@ -87,7 +87,7 @@ namespace Game
 
 		public override void Update()
 		{
-			m_reportButton.IsEnabled = (m_reasonWidgetsList.Count((CheckboxWidget w) => w.IsChecked) == 1);
+			m_reportButton.IsEnabled = m_reasonWidgetsList.Count((CheckboxWidget w) => w.IsChecked) == 1;
 			if (m_reportButton.IsClicked)
 			{
 				DialogsManager.HideDialog(this);

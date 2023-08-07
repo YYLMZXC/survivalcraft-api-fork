@@ -92,7 +92,7 @@ namespace Game
 			}, null);
 			m_stateMachine.AddState("DangerDetected", delegate
 			{
-				m_importanceLevel = ((m_componentCreature.ComponentHealth.Health < 0.33f) ? 300 : 100);
+				m_importanceLevel = (m_componentCreature.ComponentHealth.Health < 0.33f) ? 300 : 100;
 				m_nextUpdateTime = 0.0;
 			}, delegate
 			{

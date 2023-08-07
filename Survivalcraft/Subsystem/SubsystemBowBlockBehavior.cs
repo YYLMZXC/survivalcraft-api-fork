@@ -31,7 +31,7 @@ namespace Game
 
 		public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
 		{
-			componentPlayer.ComponentGui.ModalPanelWidget = ((componentPlayer.ComponentGui.ModalPanelWidget == null) ? new BowWidget(inventory, slotIndex) : null);
+			componentPlayer.ComponentGui.ModalPanelWidget = (componentPlayer.ComponentGui.ModalPanelWidget == null) ? new BowWidget(inventory, slotIndex) : null;
 			return true;
 		}
 
@@ -56,7 +56,7 @@ namespace Game
 						}
 						float num2 = (float)(m_subsystemTime.GameTime - value);
 						float num3 = (float)MathUtils.Remainder(m_subsystemTime.GameTime, 1000.0);
-						Vector3 v = ((componentMiner.ComponentCreature.ComponentBody.IsSneaking ? 0.02f : 0.04f) + 0.25f * MathUtils.Saturate((num2 - 2.1f) / 5f)) * new Vector3
+						Vector3 v = ((componentMiner.ComponentCreature.ComponentBody.IsSneaking ? 0.02f : 0.04f) + (0.25f * MathUtils.Saturate((num2 - 2.1f) / 5f))) * new Vector3
 						{
 							X = SimplexNoise.OctavedNoise(num3, 2f, 3, 2f, 0.5f),
 							Y = SimplexNoise.OctavedNoise(num3 + 100f, 2f, 3, 2f, 0.5f),
@@ -101,12 +101,12 @@ namespace Game
 									ArrowBlock.ArrowType? arrowType = BowBlock.GetArrowType(data);
 									if (arrowType.HasValue)
 									{
-										Vector3 vector = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.3f - componentMiner.ComponentCreature.ComponentBody.Matrix.Up * 0.2f;
-										var vector2 = Vector3.Normalize(vector + aim.Direction * 10f - vector);
+										Vector3 vector = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + (componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.3f) - (componentMiner.ComponentCreature.ComponentBody.Matrix.Up * 0.2f);
+										var vector2 = Vector3.Normalize(vector + (aim.Direction * 10f) - vector);
 										float num4 = MathUtils.Lerp(0f, 28f, MathUtils.Pow(draw / 15f, 0.75f));
 										if (componentMiner.ComponentPlayer != null)
 										{
-											num4 *= 0.5f * (componentMiner.ComponentPlayer.ComponentLevel.StrengthFactor - 1f) + 1f;
+											num4 *= (0.5f * (componentMiner.ComponentPlayer.ComponentLevel.StrengthFactor - 1f)) + 1f;
 										}
 										Vector3 vector3 = Vector3.Zero;
 										if (arrowType == ArrowBlock.ArrowType.WoodenArrow)
@@ -120,7 +120,7 @@ namespace Game
 										int value2 = Terrain.MakeBlockValue(192, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
 										var vector4 = Vector3.Normalize(Vector3.Cross(vector2, Vector3.UnitY));
 										var v2 = Vector3.Normalize(Vector3.Cross(vector2, vector4));
-										Vector3 v3 = m_random.Float(0f - vector3.X, vector3.X) * vector4 + m_random.Float(0f - vector3.Y, vector3.Y) * v2 + m_random.Float(0f - vector3.Z, vector3.Z) * vector2;
+										Vector3 v3 = (m_random.Float(0f - vector3.X, vector3.X) * vector4) + (m_random.Float(0f - vector3.Y, vector3.Y) * v2) + (m_random.Float(0f - vector3.Z, vector3.Z) * vector2);
 										if (m_subsystemProjectiles.FireProjectile(value2, vector, (vector2 + v3) * num4, Vector3.Zero, componentMiner.ComponentCreature) != null)
 										{
 											data = BowBlock.SetArrowType(data, null);

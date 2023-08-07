@@ -31,7 +31,7 @@ namespace Game
 		{
 			if (parentWidget == null)
 			{
-				parentWidget = (ScreensManager.CurrentScreen ?? ScreensManager.RootWidget);
+				parentWidget = ScreensManager.CurrentScreen ?? ScreensManager.RootWidget;
 			}
 			foreach (Dialog dialog in m_dialogs)
 			{
@@ -51,7 +51,7 @@ namespace Game
 				{
 					if (parentWidget == null)
 					{
-						parentWidget = (ScreensManager.CurrentScreen ?? ScreensManager.RootWidget);
+						parentWidget = ScreensManager.CurrentScreen ?? ScreensManager.RootWidget;
 					}
 					dialog.WidgetsHierarchyInput = null;
 					m_dialogs.Add(dialog);
@@ -103,11 +103,11 @@ namespace Game
 				AnimationData value = animationDatum.Value;
 				if (value.Direction > 0)
 				{
-					value.Factor = MathUtils.Min(value.Factor + 6f * Time.FrameDuration, 1f);
+					value.Factor = MathUtils.Min(value.Factor + (6f * Time.FrameDuration), 1f);
 				}
 				else if (value.Direction < 0)
 				{
-					value.Factor = MathUtils.Max(value.Factor - 6f * Time.FrameDuration, 0f);
+					value.Factor = MathUtils.Max(value.Factor - (6f * Time.FrameDuration), 0f);
 					if (value.Factor <= 0f)
 					{
 						m_toRemove.Add(key);
@@ -130,7 +130,7 @@ namespace Game
 			if (animationData.Factor < 1f)
 			{
 				float factor = animationData.Factor;
-				float num = 0.75f + 0.25f * MathUtils.Pow(animationData.Factor, 0.25f);
+				float num = 0.75f + (0.25f * MathUtils.Pow(animationData.Factor, 0.25f));
 				dialog.RenderTransform = Matrix.CreateTranslation((0f - dialog.ActualSize.X) / 2f, (0f - dialog.ActualSize.Y) / 2f, 0f) * Matrix.CreateScale(num, num, 1f) * Matrix.CreateTranslation(dialog.ActualSize.X / 2f, dialog.ActualSize.Y / 2f, 0f);
 				dialog.ColorTransform = Color.White * factor;
 				animationData.CoverRectangle.ColorTransform = Color.White * factor;

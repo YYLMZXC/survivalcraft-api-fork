@@ -35,7 +35,7 @@ namespace NVorbis
 				throw new InvalidDataException();
 			}
 			vorbisMode.Mapping = vorbis.Maps[num];
-			vorbisMode.BlockSize = (vorbisMode.BlockFlag ? vorbis.Block1Size : vorbis.Block0Size);
+			vorbisMode.BlockSize = vorbisMode.BlockFlag ? vorbis.Block1Size : vorbis.Block0Size;
 			if (vorbisMode.BlockFlag)
 			{
 				vorbisMode._windows = new float[4][];
@@ -66,8 +66,8 @@ namespace NVorbis
 				int num = (((i & 1) == 0) ? _vorbis.Block0Size : _vorbis.Block1Size) / 2;
 				int blockSize = BlockSize;
 				int num2 = (((i & 2) == 0) ? _vorbis.Block0Size : _vorbis.Block1Size) / 2;
-				int num3 = blockSize / 4 - num / 2;
-				int num4 = blockSize - blockSize / 4 - num2 / 2;
+				int num3 = (blockSize / 4) - (num / 2);
+				int num4 = blockSize - (blockSize / 4) - (num2 / 2);
 				for (int j = 0; j < num; j++)
 				{
 					float num5 = (float)Math.Sin(((double)j + 0.5) / (double)num * 1.5707963705062866);

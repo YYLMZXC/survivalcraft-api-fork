@@ -72,12 +72,12 @@ namespace Engine.Media
 		{
 			switch (format)
 			{
-			case SoundFileFormat.Wav:
-				return Wav.Stream(stream);
-			case SoundFileFormat.Ogg:
-				return Ogg.Stream(stream);
-			default:
-				throw new InvalidOperationException("Unsupported sound file format.");
+				case SoundFileFormat.Wav:
+					return Wav.Stream(stream);
+				case SoundFileFormat.Ogg:
+					return Ogg.Stream(stream);
+				default:
+					throw new InvalidOperationException("Unsupported sound file format.");
 			}
 		}
 
@@ -115,12 +115,12 @@ namespace Engine.Media
 		{
 			switch (format)
 			{
-			case SoundFileFormat.Wav:
-				return Wav.Load(stream);
-			case SoundFileFormat.Ogg:
-				return Ogg.Load(stream);
-			default:
-				throw new InvalidOperationException("Unsupported sound file format.");
+				case SoundFileFormat.Wav:
+					return Wav.Load(stream);
+				case SoundFileFormat.Ogg:
+					return Ogg.Load(stream);
+				default:
+					throw new InvalidOperationException("Unsupported sound file format.");
 			}
 		}
 
@@ -174,7 +174,7 @@ namespace Engine.Media
 			short[] array = new short[soundData.Data.Length / 2];
 			for (int i = 0; i < array.Length; i++)
 			{
-				array[i] = (short)((soundData.Data[2 * i] + soundData.Data[2 * i + 1]) / 2);
+				array[i] = (short)((soundData.Data[2 * i] + soundData.Data[(2 * i) + 1]) / 2);
 			}
 			soundData.ChannelsCount = 1;
 			soundData.Data = array;

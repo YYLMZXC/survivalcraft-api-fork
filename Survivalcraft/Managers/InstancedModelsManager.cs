@@ -115,9 +115,9 @@ namespace Game
 					}
 					for (int k = 0; k < meshPart.IndicesCount / 3; k++)
 					{
-						dynamicArray2.Add(dictionary[indexData[meshPart.StartIndex + 3 * k]]);
-						dynamicArray2.Add(dictionary[indexData[meshPart.StartIndex + 3 * k + 1]]);
-						dynamicArray2.Add(dictionary[indexData[meshPart.StartIndex + 3 * k + 2]]);
+						dynamicArray2.Add(dictionary[indexData[meshPart.StartIndex + (3 * k)]]);
+						dynamicArray2.Add(dictionary[indexData[meshPart.StartIndex + (3 * k) + 1]]);
+						dynamicArray2.Add(dictionary[indexData[meshPart.StartIndex + (3 * k) + 2]]);
 					}
 				}
 			}

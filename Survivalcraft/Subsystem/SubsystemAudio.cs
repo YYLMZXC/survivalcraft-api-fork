@@ -229,7 +229,7 @@ namespace Game
 			double lastUpdateTime = value.LastUpdateTime;
 			double lastPlayedTime = value.LastPlayedTime;
 			float num = (lastUpdateTime > 0.0) ? ((float)(realTime - lastUpdateTime)) : 0f;
-			value.Value = MathUtils.Max(value.Value - 10f * num, 0f);
+			value.Value = MathUtils.Max(value.Value - (10f * num), 0f);
 			value.LastUpdateTime = realTime;
 			if (value.Value <= 6f && (lastPlayedTime == 0.0 || volume > value.LastPlayedVolume || realTime - lastPlayedTime >= 0.0))
 			{

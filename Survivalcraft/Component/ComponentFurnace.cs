@@ -96,7 +96,7 @@ namespace Game
 				CraftingRecipe craftingRecipe = FindSmeltingRecipe(heatLevel);
 				if (craftingRecipe != m_smeltingRecipe)
 				{
-					m_smeltingRecipe = ((craftingRecipe != null && craftingRecipe.ResultValue != 0) ? craftingRecipe : null);
+					m_smeltingRecipe = (craftingRecipe != null && craftingRecipe.ResultValue != 0) ? craftingRecipe : null;
 					m_smeltingProgress = 0f;
 				}
 			}
@@ -132,7 +132,7 @@ namespace Game
 			}
 			if (m_smeltingRecipe != null)
 			{
-				m_smeltingProgress = MathUtils.Min(m_smeltingProgress + 0.15f * dt, 1f);
+				m_smeltingProgress = MathUtils.Min(m_smeltingProgress + (0.15f * dt), 1f);
 				if (m_smeltingProgress >= 1f)
 				{
 					for (int i = 0; i < m_furnaceSize; i++)

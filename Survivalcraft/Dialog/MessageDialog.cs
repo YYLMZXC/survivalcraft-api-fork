@@ -33,13 +33,13 @@ namespace Game
 			m_button1Widget = Children.Find<ButtonWidget>("MessageDialog.Button1");
 			m_button2Widget = Children.Find<ButtonWidget>("MessageDialog.Button2");
 			m_largeLabelWidget.IsVisible = !string.IsNullOrEmpty(largeMessage);
-			m_largeLabelWidget.Text = (largeMessage ?? string.Empty);
+			m_largeLabelWidget.Text = largeMessage ?? string.Empty;
 			m_smallLabelWidget.IsVisible = !string.IsNullOrEmpty(smallMessage);
-			m_smallLabelWidget.Text = (smallMessage ?? string.Empty);
+			m_smallLabelWidget.Text = smallMessage ?? string.Empty;
 			m_button1Widget.IsVisible = !string.IsNullOrEmpty(button1Text);
-			m_button1Widget.Text = (button1Text ?? string.Empty);
+			m_button1Widget.Text = button1Text ?? string.Empty;
 			m_button2Widget.IsVisible = !string.IsNullOrEmpty(button2Text);
-			m_button2Widget.Text = (button2Text ?? string.Empty);
+			m_button2Widget.Text = button2Text ?? string.Empty;
 			if (!m_button1Widget.IsVisible && !m_button2Widget.IsVisible)
 			{
 				throw new InvalidOperationException("MessageDialog must have at least one button.");

@@ -85,7 +85,7 @@ namespace Game
 				NewScreen = screen,
 				OldScreen = CurrentScreen,
 				Parameters = parameters,
-				Speed = ((CurrentScreen == null) ? float.MaxValue : 4f)
+				Speed = (CurrentScreen == null) ? float.MaxValue : 4f
 			};
 			if (CurrentScreen != null)
 			{
@@ -137,7 +137,7 @@ namespace Game
 		{
 			float num = MathUtils.Min(Time.FrameDuration, 0.1f);
 			float factor = m_animationData.Factor;
-			m_animationData.Factor = MathUtils.Min(m_animationData.Factor + m_animationData.Speed * num, 1f);
+			m_animationData.Factor = MathUtils.Min(m_animationData.Factor + (m_animationData.Speed * num), 1f);
 			if (m_animationData.Factor < 0.5f)
 			{
 				if (m_animationData.OldScreen != null)
@@ -202,19 +202,19 @@ namespace Game
 			{
 				float num = 6f;
 				Matrix hmdMatrix = Matrix.Identity;
-				Vector3 vector = hmdMatrix.Translation + num * (Vector3.Normalize(hmdMatrix.Forward * new Vector3(1f, 0f, 1f)) + new Vector3(0f, 0.1f, 0f));
+				Vector3 vector = hmdMatrix.Translation + (num * (Vector3.Normalize(hmdMatrix.Forward * new Vector3(1f, 0f, 1f)) + new Vector3(0f, 0.1f, 0f)));
 				if (m_vrQuadPosition == Vector3.Zero)
 				{
 					m_vrQuadPosition = vector;
 				}
 				if (Vector3.Distance(m_vrQuadPosition, vector) > 0f)
 				{
-					Vector3 v = vector * new Vector3(1f, 0f, 1f) - m_vrQuadPosition * new Vector3(1f, 0f, 1f);
-					Vector3 v2 = vector * new Vector3(0f, 1f, 0f) - m_vrQuadPosition * new Vector3(0f, 1f, 0f);
+					Vector3 v = (vector * new Vector3(1f, 0f, 1f)) - (m_vrQuadPosition * new Vector3(1f, 0f, 1f));
+					Vector3 v2 = (vector * new Vector3(0f, 1f, 0f)) - (m_vrQuadPosition * new Vector3(0f, 1f, 0f));
 					float num2 = v.Length();
 					float num3 = v2.Length();
-					m_vrQuadPosition += v * MathUtils.Min(0.75f * MathUtils.Pow(MathUtils.Max(num2 - 0.15f * num, 0f), 0.33f) * Time.FrameDuration, 1f);
-					m_vrQuadPosition += v2 * MathUtils.Min(1.5f * MathUtils.Pow(MathUtils.Max(num3 - 0.05f * num, 0f), 0.33f) * Time.FrameDuration, 1f);
+					m_vrQuadPosition += v * MathUtils.Min(0.75f * MathUtils.Pow(MathUtils.Max(num2 - (0.15f * num), 0f), 0.33f) * Time.FrameDuration, 1f);
+					m_vrQuadPosition += v2 * MathUtils.Min(1.5f * MathUtils.Pow(MathUtils.Max(num3 - (0.05f * num), 0f), 0.33f) * Time.FrameDuration, 1f);
 				}
 				var vector2 = new Vector2(m_uiRenderTarget.Width / (float)m_uiRenderTarget.Height, 1f);
 				vector2 /= MathUtils.Max(vector2.X, vector2.Y);
@@ -222,7 +222,7 @@ namespace Game
 				m_vrQuadMatrix.Forward = Vector3.Normalize(hmdMatrix.Translation - m_vrQuadPosition);
 				m_vrQuadMatrix.Right = Vector3.Normalize(Vector3.Cross(Vector3.UnitY, m_vrQuadMatrix.Forward)) * vector2.X;
 				m_vrQuadMatrix.Up = Vector3.Normalize(Vector3.Cross(m_vrQuadMatrix.Forward, m_vrQuadMatrix.Right)) * vector2.Y;
-				m_vrQuadMatrix.Translation = m_vrQuadPosition - 0.5f * (m_vrQuadMatrix.Right + m_vrQuadMatrix.Up);
+				m_vrQuadMatrix.Translation = m_vrQuadPosition - (0.5f * (m_vrQuadMatrix.Right + m_vrQuadMatrix.Up));
 				RootWidget.WidgetsHierarchyInput.VrQuadMatrix = m_vrQuadMatrix;
 			}
 		}

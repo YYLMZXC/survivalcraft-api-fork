@@ -31,7 +31,7 @@ namespace FluxJpeg.Core
 			{
 				for (int j = 0; j < 8; j++)
 				{
-					array[i, j] = ((i == 0) ? 0.353553385f : ((float)(0.5 * Math.Cos((2.0 * (double)j + 1.0) * (double)i * Math.PI / 16.0))));
+					array[i, j] = (i == 0) ? 0.353553385f : ((float)(0.5 * Math.Cos(((2.0 * (double)j) + 1.0) * (double)i * Math.PI / 16.0)));
 				}
 			}
 			return array;
@@ -67,7 +67,7 @@ namespace FluxJpeg.Core
 					num = 0f;
 					for (int k = 0; k < 8; k++)
 					{
-						num += input[i * 8 + k] * c[k, j];
+						num += input[(i * 8) + k] * c[k, j];
 					}
 					_temp[num2++] = num;
 				}
@@ -79,7 +79,7 @@ namespace FluxJpeg.Core
 					float num3 = 128f;
 					for (int n = 0; n < 8; n++)
 					{
-						num3 += cT[l, n] * _temp[n * 8 + m];
+						num3 += cT[l, n] * _temp[(n * 8) + m];
 					}
 					if (num3 < 0f)
 					{
@@ -126,7 +126,7 @@ namespace FluxJpeg.Core
 			{
 				num = 100;
 			}
-			num = ((quality >= 50) ? (200 - quality * 2) : (5000 / quality));
+			num = (quality >= 50) ? (200 - (quality * 2)) : (5000 / quality);
 			int[] table = JpegQuantizationTable.K1Luminance.getScaledInstance((float)num / 100f, forceBaseline: true).Table;
 			int num2 = 0;
 			for (int i = 0; i < 8; i++)
@@ -186,8 +186,8 @@ namespace FluxJpeg.Core
 				num11 = num6 + num4;
 				num12 = num4 + num2;
 				float num14 = (num9 - num12) * 0.382683426f;
-				float num15 = 0.5411961f * num9 + num14;
-				float num16 = 1.306563f * num12 + num14;
+				float num15 = (0.5411961f * num9) + num14;
+				float num16 = (1.306563f * num12) + num14;
 				float num17 = num11 * 0.707106769f;
 				float num18 = num2 + num17;
 				float num19 = num2 - num17;
@@ -219,8 +219,8 @@ namespace FluxJpeg.Core
 				num11 = num6 + num4;
 				num12 = num4 + num2;
 				float num14 = (num9 - num12) * 0.382683426f;
-				float num15 = 0.5411961f * num9 + num14;
-				float num16 = 1.306563f * num12 + num14;
+				float num15 = (0.5411961f * num9) + num14;
+				float num16 = (1.306563f * num12) + num14;
 				float num17 = num11 * 0.707106769f;
 				float num18 = num2 + num17;
 				float num19 = num2 - num17;

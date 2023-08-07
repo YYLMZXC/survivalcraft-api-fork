@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Engine
 {
-    public static class Dispatcher
+	public static class Dispatcher
 	{
 		private struct ActionInfo
 		{

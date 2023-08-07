@@ -215,12 +215,12 @@ namespace Game
 				float num = 0f;
 				if ((TextAnchor & TextAnchor.VerticalCenter) != 0)
 				{
-					float num2 = Font.GlyphHeight * FontScale * Font.Scale + (m_lines.Count - 1) * ((Font.GlyphHeight + Font.Spacing.Y) * FontScale * Font.Scale + FontSpacing.Y);
+					float num2 = (Font.GlyphHeight * FontScale * Font.Scale) + ((m_lines.Count - 1) * (((Font.GlyphHeight + Font.Spacing.Y) * FontScale * Font.Scale) + FontSpacing.Y));
 					num = (ActualSize.Y - num2) / 2f;
 				}
 				else if ((TextAnchor & TextAnchor.Bottom) != 0)
 				{
-					float num3 = Font.GlyphHeight * FontScale * Font.Scale + (m_lines.Count - 1) * ((Font.GlyphHeight + Font.Spacing.Y) * FontScale * Font.Scale + FontSpacing.Y);
+					float num3 = (Font.GlyphHeight * FontScale * Font.Scale) + ((m_lines.Count - 1) * (((Font.GlyphHeight + Font.Spacing.Y) * FontScale * Font.Scale) + FontSpacing.Y));
 					num = ActualSize.Y - num3;
 				}
 				TextAnchor anchor = TextAnchor & ~(TextAnchor.VerticalCenter | TextAnchor.Bottom);
@@ -257,7 +257,7 @@ namespace Game
 					{
 						if (DropShadow)
 						{
-							fontBatch2D.QueueText(line, vector + 1f * new Vector2(FontScale), 0f, new Color((byte)0, (byte)0, (byte)0, color.A), anchor, new Vector2(FontScale), FontSpacing, angle);
+							fontBatch2D.QueueText(line, vector + (1f * new Vector2(FontScale)), 0f, new Color((byte)0, (byte)0, (byte)0, color.A), anchor, new Vector2(FontScale), FontSpacing, angle);
 						}
 						fontBatch2D.QueueText(line, vector, 0f, color, anchor, new Vector2(FontScale), FontSpacing, angle);
 					}
@@ -269,7 +269,7 @@ namespace Game
 
 		public override void MeasureOverride(Vector2 parentAvailableSize)
 		{
-			IsDrawRequired = (!string.IsNullOrEmpty(Text) && Color.A != 0);
+			IsDrawRequired = !string.IsNullOrEmpty(Text) && Color.A != 0;
 			if (TextOrientation == TextOrientation.Horizontal)
 			{
 				UpdateLines(parentAvailableSize.X, parentAvailableSize.Y);

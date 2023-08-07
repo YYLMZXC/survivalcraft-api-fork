@@ -49,7 +49,7 @@ namespace NVorbis
 					int num2 = (int)packet.ReadBits(3);
 					if (packet.ReadBit())
 					{
-						_cascade[i] = ((int)((uint)packet.ReadBits(5) << 3) | num2);
+						_cascade[i] = (int)((uint)packet.ReadBits(5) << 3) | num2;
 					}
 					else
 					{
@@ -116,7 +116,7 @@ namespace NVorbis
 				}
 				_entryCache = new int[_partitionSize];
 				_partWordCache = new int[_vorbis._channels][][];
-				int num10 = ((_end - _begin) / _partitionSize + _classBook.Dimensions - 1) / _classBook.Dimensions;
+				int num10 = (((_end - _begin) / _partitionSize) + _classBook.Dimensions - 1) / _classBook.Dimensions;
 				for (int num11 = 0; num11 < _vorbis._channels; num11++)
 				{
 					_partWordCache[num11] = new int[num10][];
@@ -163,7 +163,7 @@ namespace NVorbis
 								{
 									break;
 								}
-								int offset = _begin + k * _partitionSize;
+								int offset = _begin + (k * _partitionSize);
 								for (int m = 0; m < channels; m++)
 								{
 									int num6 = _partWordCache[m][num3][num5];
@@ -294,15 +294,15 @@ namespace NVorbis
 			VorbisResidue vorbisResidue = null;
 			switch (num)
 			{
-			case 0:
-				vorbisResidue = new Residue0(vorbis);
-				break;
-			case 1:
-				vorbisResidue = new Residue1(vorbis);
-				break;
-			case 2:
-				vorbisResidue = new Residue2(vorbis);
-				break;
+				case 0:
+					vorbisResidue = new Residue0(vorbis);
+					break;
+				case 1:
+					vorbisResidue = new Residue1(vorbis);
+					break;
+				case 2:
+					vorbisResidue = new Residue2(vorbis);
+					break;
 			}
 			if (vorbisResidue == null)
 			{
@@ -317,7 +317,7 @@ namespace NVorbis
 			int num = 0;
 			while (v != 0)
 			{
-				num += (v & 1);
+				num += v & 1;
 				v >>= 1;
 			}
 			return num;

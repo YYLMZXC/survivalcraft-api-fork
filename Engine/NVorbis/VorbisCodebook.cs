@@ -27,7 +27,7 @@ namespace NVorbis
 
 		private int MaxBits;
 
-		internal float this[int entry, int dim] => LookupTable[entry * Dimensions + dim];
+		internal float this[int entry, int dim] => LookupTable[(entry * Dimensions) + dim];
 
 		internal static VorbisCodebook Init(VorbisStreamDecoder vorbis, DataPacket packet, int number)
 		{
@@ -99,7 +99,7 @@ namespace NVorbis
 				Array.Copy(Lengths, array, Entries);
 				flag = false;
 			}
-			num5 = (flag ? num : 0);
+			num5 = flag ? num : 0;
 			int num6 = num5;
 			int[] array2 = null;
 			int[] array3 = null;
@@ -135,7 +135,7 @@ namespace NVorbis
 			AddEntry(sparse, codewords, codewordLengths, 0u, i, num++, len[i], values);
 			for (int j = 1; j <= len[i]; j++)
 			{
-				array[j] = (uint)(1 << 32 - j);
+				array[j] = (uint)(1 << (32 - j));
 			}
 			for (int j = i + 1; j < n; j++)
 			{
@@ -159,7 +159,7 @@ namespace NVorbis
 				{
 					for (int num4 = len[j]; num4 > num2; num4--)
 					{
-						array[num4] = (uint)((int)num3 + (1 << 32 - num4));
+						array[num4] = (uint)((int)num3 + (1 << (32 - num4)));
 					}
 				}
 			}
@@ -211,8 +211,8 @@ namespace NVorbis
 					for (int k = 0; k < Dimensions; k++)
 					{
 						int num6 = j / num5 % num3;
-						double num7 = (double)((float)(double)array2[num6] * num2 + num) + num4;
-						array[j * Dimensions + k] = (float)num7;
+						double num7 = (double)(((float)(double)array2[num6] * num2) + num) + num4;
+						array[(j * Dimensions) + k] = (float)num7;
 						if (flag)
 						{
 							num4 = num7;
@@ -229,8 +229,8 @@ namespace NVorbis
 					int num9 = l * Dimensions;
 					for (int m = 0; m < Dimensions; m++)
 					{
-						double num10 = (double)((float)(double)array2[num9] * num2 + num) + num8;
-						array[l * Dimensions + m] = (float)num10;
+						double num10 = (double)(((float)(double)array2[num9] * num2) + num) + num8;
+						array[(l * Dimensions) + m] = (float)num10;
 						if (flag)
 						{
 							num8 = num10;

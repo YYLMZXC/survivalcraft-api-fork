@@ -155,7 +155,7 @@ namespace FluxJpeg.Core
 
 		private JpegQuantizationTable(int[] table, bool copy)
 		{
-			this.table = (copy ? ((int[])table.Clone()) : table);
+			this.table = copy ? ((int[])table.Clone()) : table;
 		}
 
 		private static int[] checkTable(int[] table)

@@ -156,7 +156,7 @@ namespace Engine.Audio
 						if (list.Count > 0 && !m_noMoreData && base.State == SoundState.Playing)
 						{
 							int num2 = ReadStreamingSource(array2, array2.Length);
-							m_noMoreData = (num2 < array2.Length);
+							m_noMoreData = num2 < array2.Length;
 							if (num2 > 0)
 							{
 								int num3 = list[list.Count - 1];

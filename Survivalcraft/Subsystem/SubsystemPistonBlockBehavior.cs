@@ -206,7 +206,7 @@ namespace Game
 					{
 						for (int j = -1; j <= 1; j++)
 						{
-							TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(key2.X + i * 16, key2.Z + j * 16);
+							TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(key2.X + (i * 16), key2.Z + (j * 16));
 							if (chunkAtCell == null || chunkAtCell.State <= TerrainChunkState.InvalidContents4)
 							{
 								flag = false;
@@ -247,10 +247,10 @@ namespace Game
 						int num = int.MaxValue;
 						foreach (MovingBlock block in movingBlockSet.Blocks)
 						{
-							num = MathUtils.Min(num, block.Offset.X * p.X + block.Offset.Y * p.Y + block.Offset.Z * p.Z);
+							num = MathUtils.Min(num, (block.Offset.X * p.X) + (block.Offset.Y * p.Y) + (block.Offset.Z * p.Z));
 						}
-						float num2 = movingBlockSet.Position.X * p.X + movingBlockSet.Position.Y * p.Y + movingBlockSet.Position.Z * p.Z;
-						float num3 = point.X * p.X + point.Y * p.Y + point.Z * p.Z;
+						float num2 = (movingBlockSet.Position.X * p.X) + (movingBlockSet.Position.Y * p.Y) + (movingBlockSet.Position.Z * p.Z);
+						float num3 = (point.X * p.X) + (point.Y * p.Y) + (point.Z * p.Z);
 						if (num2 > num3)
 						{
 							if (num + num2 - num3 > 1f)
@@ -358,8 +358,8 @@ namespace Game
 				if (!IsBlockBlocking(terrain.GetCellValue(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z)))
 				{
 					GetSpeedAndSmoothness(speed, out float speed2, out Vector2 smoothness);
-					Point3 p = position + (length - num) * point;
-					if (m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(position) + 0.01f * new Vector3(point), new Vector3(p), speed2, 0f, 0f, smoothness, m_movingBlocks, "Piston", position, testCollision: true) != null)
+					Point3 p = position + ((length - num) * point);
+					if (m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(position) + (0.01f * new Vector3(point)), new Vector3(p), speed2, 0f, 0f, smoothness, m_movingBlocks, "Piston", position, testCollision: true) != null)
 					{
 						m_allowPistonHeadRemove = true;
 						try
@@ -415,7 +415,7 @@ namespace Game
 				}
 				GetSpeedAndSmoothness(speed, out float speed3, out Vector2 smoothness2);
 				float s = (length == 0) ? 0.01f : 0f;
-				Vector3 targetPosition = new Vector3(position) + (length - num) * new Vector3(point) + s * new Vector3(point);
+				Vector3 targetPosition = new Vector3(position) + ((length - num) * new Vector3(point)) + (s * new Vector3(point));
 				if (m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(position), targetPosition, speed3, 0f, 0f, smoothness2, m_movingBlocks, "Piston", position, testCollision: true) != null)
 				{
 					m_allowPistonHeadRemove = true;
@@ -486,8 +486,8 @@ namespace Game
 				return;
 			}
 			Point3 point2 = CellFace.FaceToPoint3(PistonBlock.GetFace(Terrain.ExtractData(cellValue)));
-			int num = p.X * point2.X + p.Y * point2.Y + p.Z * point2.Z;
-			int num2 = point.X * point2.X + point.Y * point2.Y + point.Z * point2.Z;
+			int num = (p.X * point2.X) + (p.Y * point2.Y) + (p.Z * point2.Z);
+			int num2 = (point.X * point2.X) + (point.Y * point2.Y) + (point.Z * point2.Z);
 			if (num > num2)
 			{
 				if (IsBlockBlocking(SubsystemTerrain.Terrain.GetCellValue(p.X, p.Y, p.Z)))

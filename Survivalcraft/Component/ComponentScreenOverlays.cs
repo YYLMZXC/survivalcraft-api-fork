@@ -119,7 +119,7 @@ namespace Game
 			if (m_waterSurfaceCrossTime.HasValue)
 			{
 				float num = (float)(m_subsystemTime.GameTime - m_waterSurfaceCrossTime.Value);
-				float num2 = 0.66f * MathUtils.Sqr(MathUtils.Saturate(1f - 0.75f * num));
+				float num2 = 0.66f * MathUtils.Sqr(MathUtils.Saturate(1f - (0.75f * num)));
 				if (num2 > 0.01f)
 				{
 					Matrix matrix = default;
@@ -129,8 +129,8 @@ namespace Game
 					matrix.Up = Vector3.Normalize(Vector3.Cross(matrix.Right, matrix.Forward));
 					Vector3 vector = matrix.ToYawPitchRoll();
 					Vector2 zero = Vector2.Zero;
-					zero.X -= 2f * vector.X / (float)Math.PI + 0.05f * MathUtils.Sin(5f * num);
-					zero.Y += 2f * vector.Y / (float)Math.PI + (m_isUnderWater ? (0.75f * num) : (-0.75f * num));
+					zero.X -= (2f * vector.X / (float)Math.PI) + (0.05f * MathUtils.Sin(5f * num));
+					zero.Y += (2f * vector.Y / (float)Math.PI) + (m_isUnderWater ? (0.75f * num) : (-0.75f * num));
 					Texture2D texture = ContentManager.Get<Texture2D>("Textures/SplashOverlay");
 					DrawTexturedOverlay(camera, texture, new Color(156, 206, 210), num2, num2, zero);
 				}
@@ -247,16 +247,16 @@ namespace Game
 						}
 						float x = num3 / point.X;
 						float y = num4 / point.Y;
-						m_iceVertices[i + j * (point.X + 1)] = new Vector2(x, y);
+						m_iceVertices[i + (j * (point.X + 1))] = new Vector2(x, y);
 					}
 				}
 			}
 			Vector3 vector = Vector3.UnitX / camera.ProjectionMatrix.M11 * 2f * 0.2f * s;
 			Vector3 vector2 = Vector3.UnitY / camera.ProjectionMatrix.M22 * 2f * 0.2f * s;
-			Vector3 v2 = -0.2f * Vector3.UnitZ - 0.5f * (vector + vector2);
+			Vector3 v2 = (-0.2f * Vector3.UnitZ) - (0.5f * (vector + vector2));
 			if (!m_light.HasValue || Time.PeriodicEvent(0.05000000074505806, 0.0))
 			{
-				m_light = (LightingManager.CalculateSmoothLight(m_subsystemTerrain, camera.ViewPosition) ?? m_light ?? 1f);
+				m_light = LightingManager.CalculateSmoothLight(m_subsystemTerrain, camera.ViewPosition) ?? m_light ?? 1f;
 			}
 			var color = Color.MultiplyColorOnly(Color.White, m_light.Value);
 			m_random.Seed(0);
@@ -268,17 +268,17 @@ namespace Game
 			{
 				for (int l = 0; l < point.Y; l++)
 				{
-					float num5 = (new Vector2(2 * k / vector3.X - 1f, 2 * l / vector3.Y - 1f) * v).Length() / num2;
+					float num5 = (new Vector2((2 * k / vector3.X) - 1f, (2 * l / vector3.Y) - 1f) * v).Length() / num2;
 					if (1f - num5 + m_random.Float(0f, 0.05f) < num)
 					{
-						Vector2 v4 = m_iceVertices[k + l * (point.X + 1)];
-						Vector2 v5 = m_iceVertices[k + 1 + l * (point.X + 1)];
-						Vector2 v6 = m_iceVertices[k + 1 + (l + 1) * (point.X + 1)];
-						Vector2 v7 = m_iceVertices[k + (l + 1) * (point.X + 1)];
-						Vector3 vector4 = v2 + v4.X * vector + v4.Y * vector2;
-						Vector3 p = v2 + v5.X * vector + v5.Y * vector2;
-						Vector3 vector5 = v2 + v6.X * vector + v6.Y * vector2;
-						Vector3 p2 = v2 + v7.X * vector + v7.Y * vector2;
+						Vector2 v4 = m_iceVertices[k + (l * (point.X + 1))];
+						Vector2 v5 = m_iceVertices[k + 1 + (l * (point.X + 1))];
+						Vector2 v6 = m_iceVertices[k + 1 + ((l + 1) * (point.X + 1))];
+						Vector2 v7 = m_iceVertices[k + ((l + 1) * (point.X + 1))];
+						Vector3 vector4 = v2 + (v4.X * vector) + (v4.Y * vector2);
+						Vector3 p = v2 + (v5.X * vector) + (v5.Y * vector2);
+						Vector3 vector5 = v2 + (v6.X * vector) + (v6.Y * vector2);
+						Vector3 p2 = v2 + (v7.X * vector) + (v7.Y * vector2);
 						Vector2 vector6 = v4 * v3;
 						Vector2 texCoord = v5 * v3;
 						Vector2 vector7 = v6 * v3;

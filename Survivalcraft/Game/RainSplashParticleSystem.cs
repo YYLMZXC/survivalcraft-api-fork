@@ -51,7 +51,7 @@ namespace Game
 						particle.Position.Y += 0.05f;
 						particle.BaseSize1 = 0.02f;
 						particle.BaseSize2 = 0.09f;
-						particle.Duration = (particle.TimeToLive = m_random.Float(0.3f, 0.5f));
+						particle.Duration = particle.TimeToLive = m_random.Float(0.3f, 0.5f);
 						particle.Velocity = Vector3.Zero;
 						particle.Gravity = 0f;
 						particle.BillboardingMode = ParticleBillboardingMode.Horizontal;
@@ -61,7 +61,7 @@ namespace Game
 					{
 						particle.BaseSize1 = 0.03f;
 						particle.BaseSize2 = 0.08f;
-						particle.Duration = (particle.TimeToLive = m_random.Float(0.25f, 0.3f));
+						particle.Duration = particle.TimeToLive = m_random.Float(0.25f, 0.3f);
 						particle.Velocity = m_random.Float(0.7f, 0.9f) * Vector3.UnitY;
 						particle.Gravity = -10f;
 						particle.BillboardingMode = ParticleBillboardingMode.Camera;
@@ -71,7 +71,7 @@ namespace Game
 					{
 						particle.BaseSize1 = m_random.Float(0.015f, 0.025f);
 						particle.BaseSize2 = particle.BaseSize1;
-						particle.Duration = (particle.TimeToLive = m_random.Float(0.25f, 0.3f));
+						particle.Duration = particle.TimeToLive = m_random.Float(0.25f, 0.3f);
 						particle.Velocity = m_random.Vector3(0f, 1.5f) * new Vector3(1f, 0f, 1f);
 						particle.Gravity = -10f;
 						particle.BillboardingMode = ParticleBillboardingMode.Camera;

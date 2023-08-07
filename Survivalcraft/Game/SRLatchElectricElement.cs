@@ -63,7 +63,7 @@ namespace Game
 					m_clockAllowed = false;
 					if (flag && flag2)
 					{
-						m_voltage = ((!IsSignalHigh(m_voltage)) ? 1 : 0);
+						m_voltage = (!IsSignalHigh(m_voltage)) ? 1 : 0;
 					}
 					else if (flag)
 					{

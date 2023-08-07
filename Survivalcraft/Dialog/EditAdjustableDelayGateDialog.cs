@@ -65,8 +65,8 @@ namespace Game
 		public void UpdateControls()
 		{
 			m_delaySlider.Value = m_delay;
-			m_minusButton.IsEnabled = (m_delay > m_delaySlider.MinValue);
-			m_plusButton.IsEnabled = (m_delay < m_delaySlider.MaxValue);
+			m_minusButton.IsEnabled = m_delay > m_delaySlider.MinValue;
+			m_plusButton.IsEnabled = m_delay < m_delaySlider.MaxValue;
 			m_delayLabel.Text = string.Format(LanguageControl.Get(GetType().Name, 1), Math.Round((m_delay + 1) * 0.01f, 2));
 		}
 

@@ -364,7 +364,7 @@ namespace Game
 			int num = Terrain.ExtractContents(cellValue);
 			if (num != 0)
 			{
-				int num2 = (int)(MathUtils.Hash((uint)(x + 913 * y + 217546 * z)) % 100u);
+				int num2 = (int)(MathUtils.Hash((uint)(x + (913 * y) + (217546 * z))) % 100u);
 				float num3 = MathUtils.Lerp(1f, 2f, num2 / 100f);
 				if (num2 % 8 == 0)
 				{
@@ -408,7 +408,7 @@ namespace Game
 							{
 								continue;
 							}
-							float num8 = ((m_projectilesCount < 40 || block2.IsExplosionTransparent) ? 1f : ((m_projectilesCount < 60) ? 0.5f : ((m_projectilesCount >= 80) ? 0.125f : 0.25f)));
+							float num8 = (m_projectilesCount < 40 || block2.IsExplosionTransparent) ? 1f : ((m_projectilesCount < 60) ? 0.5f : ((m_projectilesCount >= 80) ? 0.125f : 0.25f));
 							if (!(m_random.Float(0f, 1f) < num8))
 							{
 								continue;
@@ -419,12 +419,12 @@ namespace Game
 								velocity *= m_random.Float(0.5f, 1f);
 								velocity += m_random.Vector3(0.2f * velocity.Length());
 							}
-							float num9 = (flag2 ? 0f : (block2.IsExplosionTransparent ? 1f : MathUtils.Lerp(1f, 0f, (float)m_projectilesCount / 25f)));
+							float num9 = flag2 ? 0f : (block2.IsExplosionTransparent ? 1f : MathUtils.Lerp(1f, 0f, (float)m_projectilesCount / 25f));
 							Projectile projectile = m_subsystemProjectiles.AddProjectile(item.Value, new Vector3((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f), velocity, m_random.Vector3(0f, 20f), null);
-							projectile.ProjectileStoppedAction = ((!(m_random.Float(0f, 1f) < num9)) ? ProjectileStoppedAction.Disappear : ProjectileStoppedAction.TurnIntoPickable);
+							projectile.ProjectileStoppedAction = (!(m_random.Float(0f, 1f) < num9)) ? ProjectileStoppedAction.Disappear : ProjectileStoppedAction.TurnIntoPickable;
 							if (m_random.Float(0f, 1f) < 0.5f && m_projectilesCount < 35)
 							{
-								float num10 = ((num4 > 60f) ? m_random.Float(3f, 7f) : m_random.Float(1f, 3f));
+								float num10 = (num4 > 60f) ? m_random.Float(3f, 7f) : m_random.Float(1f, 3f);
 								if (isIncendiary)
 								{
 									num10 += 10f;
@@ -475,7 +475,7 @@ namespace Game
 					point = item.Key;
 				}
 				float num4 = 0.001f * MathUtils.Pow(num2, 0.5f);
-				float num5 = MathUtils.Saturate(item.Value / 15f - num4) * m_random.Float(0.2f, 1f);
+				float num5 = MathUtils.Saturate((item.Value / 15f) - num4) * m_random.Float(0.2f, 1f);
 				if (num5 > 0.1f)
 				{
 					m_explosionParticleSystem.SetExplosionCell(item.Key, num5);

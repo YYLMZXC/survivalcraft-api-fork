@@ -37,7 +37,7 @@ namespace Game
 			{
 				Particle obj = Particles[i];
 				obj.IsActive = true;
-				obj.Position = position + 0.4f * size * new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
+				obj.Position = position + (0.4f * size * new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f)));
 				obj.Color = white;
 				obj.Size = new Vector2(0.3f * size);
 				obj.TimeToLive = m_random.Float(0.5f, 3.5f);

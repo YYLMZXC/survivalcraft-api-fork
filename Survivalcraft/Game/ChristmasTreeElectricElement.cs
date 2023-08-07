@@ -10,7 +10,7 @@ namespace Game
 			: base(subsystemElectricity, cellFace)
 		{
 			m_lastChangeCircuitStep = SubsystemElectricity.CircuitStep;
-			m_voltage = (ChristmasTreeBlock.GetLightState(Terrain.ExtractData(value)) ? 1 : 0);
+			m_voltage = ChristmasTreeBlock.GetLightState(Terrain.ExtractData(value)) ? 1 : 0;
 		}
 
 		public override bool Simulate()

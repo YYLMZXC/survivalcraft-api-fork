@@ -30,7 +30,7 @@ namespace Game
 			for (int i = 0; i < 36; i++)
 			{
 				var vector = Vector2.CreateFromAngle(i / 36f * 2f * (float)Math.PI);
-				Vector2 vector2 = position + 50f * vector;
+				Vector2 vector2 = position + (50f * vector);
 				float num2 = generator.CalculateOceanShoreDistance(vector2.X, vector2.Y);
 				if (num2 < num)
 				{
@@ -70,7 +70,7 @@ namespace Game
 		{
 			ComponentBody componentBody = m_componentPlayer.Entity.FindComponent<ComponentBody>(throwOnError: true);
 			Vector2 vector = FindOceanDirection(m_subsystemTerrain.TerrainContentsGenerator, componentBody.Position.XZ);
-			Vector2 vector2 = componentBody.Position.XZ + 25f * vector;
+			Vector2 vector2 = componentBody.Position.XZ + (25f * vector);
 			bool isPlayerMounted = m_componentPlayer.ComponentRider.Mount != null;
 			Vector2 vector3 = vector2;
 			float num = float.MinValue;
@@ -116,7 +116,7 @@ namespace Game
 			IntroCamera introCamera = m_componentPlayer.GameWidget.FindCamera<IntroCamera>();
 			m_componentPlayer.GameWidget.ActiveCamera = introCamera;
 			introCamera.CameraPosition = vector4 + new Vector3(12f * vector.X, 8f, 12f * vector.Y) + new Vector3(-5f * vector.Y, 0f, 5f * vector.X);
-			introCamera.TargetPosition = m_componentPlayer.ComponentCreatureModel.EyePosition + 2.5f * new Vector3(vector.X, 0f, vector.Y);
+			introCamera.TargetPosition = m_componentPlayer.ComponentCreatureModel.EyePosition + (2.5f * new Vector3(vector.X, 0f, vector.Y));
 			introCamera.Speed = 0f;
 			introCamera.TargetCameraPosition = m_componentPlayer.ComponentCreatureModel.EyePosition;
 		}
@@ -168,7 +168,7 @@ namespace Game
 			{
 				num -= 100f;
 			}
-			return num + 2f * num4;
+			return num + (2f * num4);
 		}
 	}
 }

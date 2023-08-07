@@ -47,11 +47,11 @@ namespace Game
 			if (m_componentCreature.ComponentLocomotion.LastSwimOrder.HasValue && m_componentCreature.ComponentLocomotion.LastSwimOrder.Value != Vector3.Zero)
 			{
 				float num = (m_componentCreature.ComponentLocomotion.LastSwimOrder.Value.LengthSquared() > 0.99f) ? 1.75f : 1f;
-				MovementAnimationPhase = MathUtils.Remainder(MovementAnimationPhase + m_swimAnimationSpeed * num * dt, 1000f);
+				MovementAnimationPhase = MathUtils.Remainder(MovementAnimationPhase + (m_swimAnimationSpeed * num * dt), 1000f);
 			}
 			else
 			{
-				MovementAnimationPhase = MathUtils.Remainder(MovementAnimationPhase + 0.15f * m_swimAnimationSpeed * dt, 1000f);
+				MovementAnimationPhase = MathUtils.Remainder(MovementAnimationPhase + (0.15f * m_swimAnimationSpeed * dt), 1000f);
 			}
 			if (BendOrder.HasValue)
 			{
@@ -87,10 +87,10 @@ namespace Game
 			{
 				if (AttackOrder)
 				{
-					m_tailWagPhase = MathUtils.Remainder(m_tailWagPhase + num3 * dt, 1f);
+					m_tailWagPhase = MathUtils.Remainder(m_tailWagPhase + (num3 * dt), 1f);
 				}
 				float bitingPhase = m_bitingPhase;
-				m_bitingPhase = MathUtils.Remainder(m_bitingPhase + num4 * dt, 1f);
+				m_bitingPhase = MathUtils.Remainder(m_bitingPhase + (num4 * dt), 1f);
 				if (AttackOrder && bitingPhase < 0.5f && m_bitingPhase >= 0.5f)
 				{
 					IsAttackHitMoment = true;
@@ -100,11 +100,11 @@ namespace Game
 			{
 				if (m_tailWagPhase != 0f)
 				{
-					m_tailWagPhase = MathUtils.Remainder(MathUtils.Min(m_tailWagPhase + num3 * dt, 1f), 1f);
+					m_tailWagPhase = MathUtils.Remainder(MathUtils.Min(m_tailWagPhase + (num3 * dt), 1f), 1f);
 				}
 				if (m_bitingPhase != 0f)
 				{
-					m_bitingPhase = MathUtils.Remainder(MathUtils.Min(m_bitingPhase + num4 * dt, 1f), 1f);
+					m_bitingPhase = MathUtils.Remainder(MathUtils.Min(m_bitingPhase + (num4 * dt), 1f), 1f);
 				}
 			}
 			AttackOrder = false;
@@ -121,7 +121,7 @@ namespace Game
 			ModsManager.HookAction("OnModelAnimate", loader =>
 			{
 				loader.OnModelAnimate(this, out skip);
-				flag = (flag | skip);
+				flag = flag | skip;
 				return false;
 			});
 			if (flag)
@@ -139,15 +139,15 @@ namespace Game
 				float num5;
 				if (m_hasVerticalTail)
 				{
-					num2 = MathUtils.DegToRad(25f) * MathUtils.Clamp(0.5f * MathUtils.Sin((float)Math.PI * 2f * num) - m_tailTurn.X, -1f, 1f);
-					num3 = MathUtils.DegToRad(30f) * MathUtils.Clamp(0.5f * MathUtils.Sin(2f * ((float)Math.PI * MathUtils.Max(num - 0.25f, 0f))) - m_tailTurn.X, -1f, 1f);
-					num4 = MathUtils.DegToRad(25f) * MathUtils.Clamp(0.5f * MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase) - m_tailTurn.Y, -1f, 1f);
-					num5 = MathUtils.DegToRad(30f) * MathUtils.Clamp(0.5f * MathUtils.Sin((float)Math.PI * 2f * MathUtils.Max(MovementAnimationPhase - 0.25f, 0f)) - m_tailTurn.Y, -1f, 1f);
+					num2 = MathUtils.DegToRad(25f) * MathUtils.Clamp((0.5f * MathUtils.Sin((float)Math.PI * 2f * num)) - m_tailTurn.X, -1f, 1f);
+					num3 = MathUtils.DegToRad(30f) * MathUtils.Clamp((0.5f * MathUtils.Sin(2f * ((float)Math.PI * MathUtils.Max(num - 0.25f, 0f)))) - m_tailTurn.X, -1f, 1f);
+					num4 = MathUtils.DegToRad(25f) * MathUtils.Clamp((0.5f * MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase)) - m_tailTurn.Y, -1f, 1f);
+					num5 = MathUtils.DegToRad(30f) * MathUtils.Clamp((0.5f * MathUtils.Sin((float)Math.PI * 2f * MathUtils.Max(MovementAnimationPhase - 0.25f, 0f))) - m_tailTurn.Y, -1f, 1f);
 				}
 				else
 				{
-					num2 = MathUtils.DegToRad(25f) * MathUtils.Clamp(0.5f * MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + num)) - m_tailTurn.X, -1f, 1f);
-					num3 = MathUtils.DegToRad(30f) * MathUtils.Clamp(0.5f * MathUtils.Sin(2f * ((float)Math.PI * MathUtils.Max(MovementAnimationPhase + num - 0.25f, 0f))) - m_tailTurn.X, -1f, 1f);
+					num2 = MathUtils.DegToRad(25f) * MathUtils.Clamp((0.5f * MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + num))) - m_tailTurn.X, -1f, 1f);
+					num3 = MathUtils.DegToRad(30f) * MathUtils.Clamp((0.5f * MathUtils.Sin(2f * ((float)Math.PI * MathUtils.Max(MovementAnimationPhase + num - 0.25f, 0f)))) - m_tailTurn.X, -1f, 1f);
 					num4 = MathUtils.DegToRad(25f) * MathUtils.Clamp(0f - m_tailTurn.Y, -1f, 1f);
 					num5 = MathUtils.DegToRad(30f) * MathUtils.Clamp(0f - m_tailTurn.Y, -1f, 1f);
 				}
@@ -186,7 +186,7 @@ namespace Game
 			else
 			{
 				float num6 = m_componentCreature.ComponentBody.BoundingBox.Max.Y - m_componentCreature.ComponentBody.BoundingBox.Min.Y;
-				Vector3 position = m_componentCreature.ComponentBody.Position + 1f * num6 * DeathPhase * Vector3.UnitY;
+				Vector3 position = m_componentCreature.ComponentBody.Position + (1f * num6 * DeathPhase * Vector3.UnitY);
 				SetBoneTransform(m_bodyBone.Index, Matrix.CreateFromYawPitchRoll(vector.X, 0f, (float)Math.PI * DeathPhase) * Matrix.CreateTranslation(position));
 				SetBoneTransform(m_tail1Bone.Index, Matrix.Identity);
 				SetBoneTransform(m_tail2Bone.Index, Matrix.Identity);
@@ -227,7 +227,7 @@ namespace Game
 		public override Vector3 CalculateEyePosition()
 		{
 			Matrix matrix = m_componentCreature.ComponentBody.Matrix;
-			return m_componentCreature.ComponentBody.Position + matrix.Up * 1f * m_componentCreature.ComponentBody.BoxSize.Y + matrix.Forward * 0.45f * m_componentCreature.ComponentBody.BoxSize.Z;
+			return m_componentCreature.ComponentBody.Position + (matrix.Up * 1f * m_componentCreature.ComponentBody.BoxSize.Y) + (matrix.Forward * 0.45f * m_componentCreature.ComponentBody.BoxSize.Z);
 		}
 	}
 }

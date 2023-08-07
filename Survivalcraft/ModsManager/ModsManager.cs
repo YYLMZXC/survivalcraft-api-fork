@@ -35,19 +35,19 @@ public static class ModsManager
 
 #endif
 #if android
-    public static string ExternelPath = EngineActivity.BasePath,
-                         ScreenCapturePath = ExternelPath + "/ScreenCapture",
-                         UserDataPath = "config:/UserId.dat",
-                         FurniturePacksDirectoryName = "config:/FurniturePacks",
-                         CharacterSkinsDirectoryName = "config:/CharacterSkins",
-                         BlockTexturesDirectoryName = "config:/TexturePacks",
-                         WorldsDirectoryName = "config:/Worlds",
-                         CommunityContentCachePath = "config:/CommunityContentCache.xml",
-                         ModsSetPath = "config:/ModSettings.xml",
-                         SettingPath = "config:/Settings.xml",
-                         ModCachePath = ExternelPath + "/ModsCache",
-                         LogPath = ExternelPath + "/Bugs";
-    public const bool IsAndroid = true;
+	public static string ExternelPath = EngineActivity.BasePath,
+						 ScreenCapturePath = ExternelPath + "/ScreenCapture",
+						 UserDataPath = "config:/UserId.dat",
+						 FurniturePacksDirectoryName = "config:/FurniturePacks",
+						 CharacterSkinsDirectoryName = "config:/CharacterSkins",
+						 BlockTexturesDirectoryName = "config:/TexturePacks",
+						 WorldsDirectoryName = "config:/Worlds",
+						 CommunityContentCachePath = "config:/CommunityContentCache.xml",
+						 ModsSetPath = "config:/ModSettings.xml",
+						 SettingPath = "config:/Settings.xml",
+						 ModCachePath = ExternelPath + "/ModsCache",
+						 LogPath = ExternelPath + "/Bugs";
+	public const bool IsAndroid = true;
 
 #endif
 	public static string ModsPath = ExternelPath + "/Mods",
@@ -390,7 +390,7 @@ public static class ModsManager
 	public static void AddException(Exception e, bool AllowContinue_ = false)
 	{
 		LoadingScreen.Error(e.Message);
-		AllowContinue = SettingsManager.DisplayLog ? AllowContinue_ : true;
+		AllowContinue = !SettingsManager.DisplayLog || AllowContinue_;
 	}
 
 	/// <summary>

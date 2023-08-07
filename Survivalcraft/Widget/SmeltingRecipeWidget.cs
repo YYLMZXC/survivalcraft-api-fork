@@ -95,7 +95,7 @@ namespace Game
 				foreach (CraftingRecipeSlotWidget child in m_gridWidget.Children)
 				{
 					Point2 widgetCell = m_gridWidget.GetWidgetCell(child);
-					child.SetIngredient(m_recipe.Ingredients[widgetCell.X + widgetCell.Y * 3]);
+					child.SetIngredient(m_recipe.Ingredients[widgetCell.X + (widgetCell.Y * 3)]);
 				}
 				m_resultWidget.SetResult(m_recipe.ResultValue, m_recipe.ResultCount);
 				m_fireWidget.ParticlesPerSecond = 40f;

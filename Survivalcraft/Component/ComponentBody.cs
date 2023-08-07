@@ -293,7 +293,7 @@ namespace Game
 			m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
 			m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
 			m_subsystemFluidBlockBehavior = base.Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
-			CanCrouch = (Entity.FindComponent<ComponentPlayer>() != null);
+			CanCrouch = Entity.FindComponent<ComponentPlayer>() != null;
 			BoxSize = valuesDictionary.GetValue<Vector3>("BoxSize");
 			Mass = valuesDictionary.GetValue<float>("Mass");
 			Density = valuesDictionary.GetValue<float>("Density");
@@ -358,13 +358,13 @@ namespace Game
 			}
 			if (m_targetCrouchFactor > m_crouchFactor)
 			{
-				m_crouchFactor = MathUtils.Min(m_crouchFactor + 2f * dt, m_targetCrouchFactor);
+				m_crouchFactor = MathUtils.Min(m_crouchFactor + (2f * dt), m_targetCrouchFactor);
 			}
 			if (m_targetCrouchFactor < m_crouchFactor)
 			{
 				if (Entity.FindComponent<ComponentRider>().Mount == null)
 				{
-					m_crouchFactor = MathUtils.Max(m_crouchFactor - 2f * dt, m_targetCrouchFactor);
+					m_crouchFactor = MathUtils.Max(m_crouchFactor - (2f * dt), m_targetCrouchFactor);
 				}
 			}
 			Vector3 position = base.Position;
@@ -411,7 +411,7 @@ namespace Game
 				m_velocity.Y -= 10f * dt;
 				if (ImmersionFactor > 0f)
 				{
-					float num = ImmersionFactor * (1f + 0.03f * MathUtils.Sin((float)MathUtils.Remainder(2.0 * m_subsystemTime.GameTime, 6.2831854820251465)));
+					float num = ImmersionFactor * (1f + (0.03f * MathUtils.Sin((float)MathUtils.Remainder(2.0 * m_subsystemTime.GameTime, 6.2831854820251465))));
 					m_velocity.Y += 10f * (1f / Density * num) * dt;
 				}
 			}
@@ -423,11 +423,11 @@ namespace Game
 			if (IsWaterDragEnabled && ImmersionFactor > 0f && ImmersionFluidBlock != null)
 			{
 				Vector2? vector = m_subsystemFluidBlockBehavior.CalculateFlowSpeed(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
-				Vector3 vector2 = (vector.HasValue ? new Vector3(vector.Value.X, 0f, vector.Value.Y) : Vector3.Zero);
+				Vector3 vector2 = vector.HasValue ? new Vector3(vector.Value.X, 0f, vector.Value.Y) : Vector3.Zero;
 				float num4 = 1f;
 				if (ImmersionFluidBlock.FrictionFactor != 1f)
 				{
-					num4 = ((SimplexNoise.Noise((float)MathUtils.Remainder(6.0 * Time.FrameStartTime + (double)(GetHashCode() % 1000), 1000.0)) > 0.5f) ? ImmersionFluidBlock.FrictionFactor : 1f);
+					num4 = (SimplexNoise.Noise((float)MathUtils.Remainder((6.0 * Time.FrameStartTime) + (double)(GetHashCode() % 1000), 1000.0)) > 0.5f) ? ImmersionFluidBlock.FrictionFactor : 1f;
 				}
 				float f = MathUtils.Saturate(WaterDrag.X * num4 * ImmersionFactor * dt);
 				float f2 = MathUtils.Saturate(WaterDrag.Y * num4 * dt);
@@ -440,7 +440,7 @@ namespace Game
 					{
 						float num5 = MathUtils.Saturate(MathUtils.Lerp(1f, 0f, m_velocity.Length()));
 						Vector2 vector3 = Vector2.Normalize(vector.Value) * num5;
-						base.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitY, WaterTurnSpeed * (-1f * vector3.X + 0.71f * vector3.Y) * dt);
+						base.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitY, WaterTurnSpeed * ((-1f * vector3.X) + (0.71f * vector3.Y)) * dt);
 					}
 					if (WaterSwayAngle > 0f)
 					{
@@ -451,7 +451,7 @@ namespace Game
 			if (m_parentBody != null)
 			{
 				Vector3 vector4 = Vector3.Transform(ParentBodyPositionOffset, m_parentBody.Rotation) + m_parentBody.Position - position;
-				m_velocity = ((dt > 0f) ? (vector4 / dt) : Vector3.Zero);
+				m_velocity = (dt > 0f) ? (vector4 / dt) : Vector3.Zero;
 				base.Rotation = ParentBodyRotationOffset * m_parentBody.Rotation;
 			}
 			StandingOnValue = null;
@@ -467,7 +467,7 @@ namespace Game
 				while (num7 > 0f)
 				{
 					float num8 = MathUtils.Min(num7, x);
-					MoveWithCollision(num8, m_velocity * num8 + m_directMove);
+					MoveWithCollision(num8, (m_velocity * num8) + m_directMove);
 					m_directMove = Vector3.Zero;
 					num7 -= num8;
 				}
@@ -1068,7 +1068,7 @@ namespace Game
 			float num = 0f;
 			for (int i = 0; i < collisionBoxes.Count; i++)
 			{
-				float num2 = ((!BlocksManager.Blocks[Terrain.ExtractContents(collisionBoxes.Array[i].BlockValue)].NoSmoothRise) ? CalculateBoxBoxOverlap(ref smoothRiseBox, ref collisionBoxes.Array[i].Box, axis) : CalculateBoxBoxOverlap(ref normalBox, ref collisionBoxes.Array[i].Box, axis));
+				float num2 = (!BlocksManager.Blocks[Terrain.ExtractContents(collisionBoxes.Array[i].BlockValue)].NoSmoothRise) ? CalculateBoxBoxOverlap(ref smoothRiseBox, ref collisionBoxes.Array[i].Box, axis) : CalculateBoxBoxOverlap(ref normalBox, ref collisionBoxes.Array[i].Box, axis);
 				if (MathUtils.Abs(num2) > MathUtils.Abs(num))
 				{
 					num = num2;
@@ -1135,8 +1135,8 @@ namespace Game
 		public static void InelasticCollision(float v1, float v2, float m1, float m2, float cr, out float result1, out float result2)
 		{
 			float num = 1f / (m1 + m2);
-			result1 = (cr * m2 * (v2 - v1) + m1 * v1 + m2 * v2) * num;
-			result2 = (cr * m1 * (v1 - v2) + m1 * v1 + m2 * v2) * num;
+			result1 = ((cr * m2 * (v2 - v1)) + (m1 * v1) + (m2 * v2)) * num;
+			result2 = ((cr * m1 * (v1 - v2)) + (m1 * v1) + (m2 * v2)) * num;
 		}
 
 		public bool MoveToFreeSpace()

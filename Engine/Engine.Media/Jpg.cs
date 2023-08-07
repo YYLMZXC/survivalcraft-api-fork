@@ -41,7 +41,7 @@ namespace Engine.Media
 			{
 				for (int j = 0; j < width; j++)
 				{
-					image.Pixels[j + i * width] = new Color(raster[0][j, i], raster[1][j, i], raster[2][j, i]);
+					image.Pixels[j + (i * width)] = new Color(raster[0][j, i], raster[1][j, i], raster[2][j, i]);
 				}
 			}
 			return image;
@@ -77,7 +77,7 @@ namespace Engine.Media
 			{
 				for (int j = 0; j < width; j++)
 				{
-					Color color = pixels[j + i * width];
+					Color color = pixels[j + (i * width)];
 					array2[j, i] = color.R;
 					array3[j, i] = color.G;
 					array4[j, i] = color.B;

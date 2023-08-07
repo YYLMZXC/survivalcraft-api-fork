@@ -24,7 +24,7 @@ namespace Game
 				for (int j = 0; j < 2; j++)
 				{
 					int num = (i << 1) | j;
-					Matrix matrix = ((i >= 4) ? ((i != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY((float)i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f)));
+					Matrix matrix = (i >= 4) ? ((i != 4) ? (Matrix.CreateRotationX((float)Math.PI) * Matrix.CreateTranslation(0.5f, 1f, 0.5f)) : Matrix.CreateTranslation(0.5f, 0f, 0.5f)) : (Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0f, -0.5f) * Matrix.CreateRotationY((float)i * (float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f));
 					Matrix matrix2 = Matrix.CreateRotationX((j == 0) ? MathUtils.DegToRad(30f) : MathUtils.DegToRad(-30f));
 					m_blockMeshesByIndex[num] = new BlockMesh();
 					m_blockMeshesByIndex[num].AppendModelMeshPart(model.FindMesh("Body").MeshParts[0], boneAbsoluteTransform * matrix, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
@@ -54,7 +54,7 @@ namespace Game
 
 		public static int SetVoltageLevel(int data, int voltageLevel)
 		{
-			return (data & -241) | (15 - (voltageLevel & 0xF) << 4);
+			return (data & -241) | ((15 - (voltageLevel & 0xF)) << 4);
 		}
 
 		public override int GetFace(int value)

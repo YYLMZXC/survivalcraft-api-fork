@@ -117,13 +117,13 @@ namespace Game
 			switch (axis)
 			{
 				case 0:
-					result.Face = ((direction > 0f) ? 1 : 3);
+					result.Face = (direction > 0f) ? 1 : 3;
 					break;
 				case 1:
-					result.Face = ((direction > 0f) ? 4 : 5);
+					result.Face = (direction > 0f) ? 4 : 5;
 					break;
 				case 2:
-					result.Face = ((!(direction > 0f)) ? 2 : 0);
+					result.Face = (!(direction > 0f)) ? 2 : 0;
 					break;
 			}
 			return result;

@@ -62,7 +62,7 @@ namespace Game
 		{
 			if (m_fadeSound != null)
 			{
-				m_fadeSound.Volume = MathUtils.Min(m_fadeSound.Volume - 0.33f * Volume * Time.FrameDuration, Volume);
+				m_fadeSound.Volume = MathUtils.Min(m_fadeSound.Volume - (0.33f * Volume * Time.FrameDuration), Volume);
 				if (m_fadeSound.Volume <= 0f)
 				{
 					m_fadeSound.Dispose();
@@ -71,7 +71,7 @@ namespace Game
 			}
 			if (m_sound != null && Time.FrameStartTime >= m_fadeStartTime)
 			{
-				m_sound.Volume = MathUtils.Min(m_sound.Volume + 0.33f * Volume * Time.FrameDuration, Volume);
+				m_sound.Volume = MathUtils.Min(m_sound.Volume + (0.33f * Volume * Time.FrameDuration), Volume);
 			}
 			if (m_currentMix == Mix.None || Volume == 0f)
 			{
@@ -120,10 +120,10 @@ namespace Game
 		public static void Initialize()
 		{
 #if android
-            Window.Activity.Paused += delegate
-            {
-                StopMusic();
-            };
+			Window.Activity.Paused += delegate
+			{
+				StopMusic();
+			};
 #endif
 		}
 

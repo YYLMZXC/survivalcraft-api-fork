@@ -31,7 +31,7 @@ namespace FluxJpeg.Core.Filtering
 		{
 			_newHeight = newHeight;
 			_newWidth = newWidth;
-			_color = (imageData.Length != 1);
+			_color = imageData.Length != 1;
 			_destinationData = Image.CreateRaster(newWidth, newHeight, imageData.Length);
 			_sourceData = imageData;
 			ApplyFilter();

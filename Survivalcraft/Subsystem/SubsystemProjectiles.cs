@@ -95,7 +95,7 @@ namespace Game
 			Vector3 vector = position;
 			if (owner != null)
 			{
-				var ray = new Ray3(position + v * 5f, -v);
+				var ray = new Ray3(position + (v * 5f), -v);
 				BoundingBox boundingBox = owner.ComponentBody.BoundingBox;
 				boundingBox.Min -= new Vector3(0.4f);
 				boundingBox.Max += new Vector3(0.4f);
@@ -106,10 +106,10 @@ namespace Game
 					{
 						return null;
 					}
-					vector = position + v * (5f - num2.Value + 0.1f);
+					vector = position + (v * (5f - num2.Value + 0.1f));
 				}
 			}
-			Vector3 end = vector + v * block.ProjectileTipOffset;
+			Vector3 end = vector + (v * block.ProjectileTipOffset);
 			if (!m_subsystemTerrain.Raycast(position, end, useInteractionBoxes: false, skipAirBlocks: true, (int testValue, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(testValue)].IsCollidable_(testValue)).HasValue)
 			{
 				Projectile projectile = AddProjectile(value, vector, velocity, angularVelocity, owner);
@@ -165,7 +165,7 @@ namespace Game
 						projectile.Light = m_subsystemTerrain.Terrain.GetCellLightFast(x, num2, z);
 					}
 					m_drawBlockEnvironmentData.Light = projectile.Light;
-					m_drawBlockEnvironmentData.BillboardDirection = (block.GetAlignToVelocity(projectile.Value) ? null : new Vector3?(camera.ViewDirection));
+					m_drawBlockEnvironmentData.BillboardDirection = block.GetAlignToVelocity(projectile.Value) ? null : new Vector3?(camera.ViewDirection);
 					m_drawBlockEnvironmentData.InWorldMatrix.Translation = position;
 					Matrix matrix;
 					if (block.GetAlignToVelocity(projectile.Value))
@@ -216,7 +216,7 @@ namespace Game
 					{
 						projectile.NoChunk = false;
 						Vector3 position = projectile.Position;
-						Vector3 vector = position + projectile.Velocity * dt;
+						Vector3 vector = position + (projectile.Velocity * dt);
 						Vector3 v = block.ProjectileTipOffset * Vector3.Normalize(projectile.Velocity);
 						BodyRaycastResult? bodyRaycastResult = m_subsystemBodies.Raycast(position + v, vector + v, 0.2f, (ComponentBody body, float distance) => true);
 						TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(position + v, vector + v, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
@@ -272,7 +272,7 @@ namespace Game
 							if (projectile.IsIncendiary)
 							{
 								m_subsystemFireBlockBehavior.SetCellOnFire(terrainRaycastResult.Value.CellFace.X, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z, 1f);
-								Vector3 vector3 = projectile.Position - 0.75f * Vector3.Normalize(projectile.Velocity);
+								Vector3 vector3 = projectile.Position - (0.75f * Vector3.Normalize(projectile.Velocity));
 								for (int k = 0; k < 8; k++)
 								{
 									Vector3 v2 = (k == 0) ? Vector3.Normalize(projectile.Velocity) : m_random.Vector3(1.5f);
@@ -291,7 +291,7 @@ namespace Game
 							{
 								var v3 = Vector3.Normalize(projectile.Velocity);
 								float s = MathUtils.Lerp(0.1f, 0.2f, MathUtils.Saturate((num2 - 15f) / 20f));
-								vector2 = position + terrainRaycastResult.Value.Distance * Vector3.Normalize(projectile.Velocity) + v3 * s;
+								vector2 = position + (terrainRaycastResult.Value.Distance * Vector3.Normalize(projectile.Velocity)) + (v3 * s);
 							}
 							else
 							{

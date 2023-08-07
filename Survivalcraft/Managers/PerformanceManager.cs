@@ -179,10 +179,10 @@ namespace Game
 					FrameData frameData = m_frameData[num6];
 					float x = num5 * num;
 					float x2 = (num5 + 1) * num;
-					flatBatch2D.QueueQuad(new Vector2(x, num3), new Vector2(x2, num3 + frameData.CpuTime * num2), 0f, color);
-					flatBatch2D.QueueQuad(new Vector2(x, num3 + frameData.CpuTime * num2), new Vector2(x2, num3 + frameData.TotalTime * num2), 0f, color2);
+					flatBatch2D.QueueQuad(new Vector2(x, num3), new Vector2(x2, num3 + (frameData.CpuTime * num2)), 0f, color);
+					flatBatch2D.QueueQuad(new Vector2(x, num3 + (frameData.CpuTime * num2)), new Vector2(x2, num3 + (frameData.TotalTime * num2)), 0f, color2);
 				}
-				flatBatch2D.QueueLine(new Vector2(0f, num3 + 0.0166666675f * num2), new Vector2(viewport.Width, num3 + 0.0166666675f * num2), 0f, Color.Green);
+				flatBatch2D.QueueLine(new Vector2(0f, num3 + (0.0166666675f * num2)), new Vector2(viewport.Width, num3 + (0.0166666675f * num2)), 0f, Color.Green);
 			}
 			else
 			{

@@ -28,8 +28,8 @@ namespace Game
 				return;
 			}
 			var matrix = Matrix.CreateFromQuaternion(GameWidget.Target.ComponentCreatureModel.EyeRotation);
-			matrix.Translation = GameWidget.Target.ComponentBody.Position + 0.5f * GameWidget.Target.ComponentBody.BoxSize.Y * Vector3.UnitY;
-			Vector3 v = -2.25f * matrix.Forward + 1.75f * matrix.Up;
+			matrix.Translation = GameWidget.Target.ComponentBody.Position + (0.5f * GameWidget.Target.ComponentBody.BoxSize.Y * Vector3.UnitY);
+			Vector3 v = (-2.25f * matrix.Forward) + (1.75f * matrix.Up);
 			Vector3 vector = matrix.Translation + v;
 			if (Vector3.Distance(vector, m_position) < 10f)
 			{
@@ -49,17 +49,17 @@ namespace Game
 			{
 				for (int j = 0; j <= 0; j++)
 				{
-					Vector3 v4 = 0.5f * (vector3 * i + v3 * j);
+					Vector3 v4 = 0.5f * ((vector3 * i) + (v3 * j));
 					Vector3 vector4 = matrix.Translation + v4;
-					Vector3 end = vector4 + vector2 + Vector3.Normalize(vector2) * 0.5f;
+					Vector3 end = vector4 + vector2 + (Vector3.Normalize(vector2) * 0.5f);
 					TerrainRaycastResult? terrainRaycastResult = GameWidget.SubsystemGameWidgets.SubsystemTerrain.Raycast(vector4, end, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => !BlocksManager.Blocks[Terrain.ExtractContents(value)].IsTransparent_(value));
 					if (terrainRaycastResult.HasValue)
 					{
-						num = (num.HasValue ? MathUtils.Min(num.Value, terrainRaycastResult.Value.Distance) : terrainRaycastResult.Value.Distance);
+						num = num.HasValue ? MathUtils.Min(num.Value, terrainRaycastResult.Value.Distance) : terrainRaycastResult.Value.Distance;
 					}
 				}
 			}
-			Vector3 vector5 = (!num.HasValue) ? (matrix.Translation + vector2) : (matrix.Translation + Vector3.Normalize(vector2) * MathUtils.Max(num.Value - 0.5f, 0.2f));
+			Vector3 vector5 = (!num.HasValue) ? (matrix.Translation + vector2) : (matrix.Translation + (Vector3.Normalize(vector2) * MathUtils.Max(num.Value - 0.5f, 0.2f)));
 			SetupPerspectiveCamera(vector5, matrix.Translation - vector5, Vector3.UnitY);
 		}
 	}

@@ -46,34 +46,34 @@ namespace Hjg.Pngcs
 			{
 				throw new PngjException("palette and greyscale are exclusive");
 			}
-			Channels = ((!(grayscale | palette)) ? (alpha ? 4 : 3) : ((!alpha) ? 1 : 2));
+			Channels = (!(grayscale | palette)) ? (alpha ? 4 : 3) : ((!alpha) ? 1 : 2);
 			BitDepth = bitdepth;
-			Packed = (bitdepth < 8);
+			Packed = bitdepth < 8;
 			BitspPixel = Channels * BitDepth;
 			BytesPixel = (BitspPixel + 7) / 8;
-			BytesPerRow = (BitspPixel * cols + 7) / 8;
+			BytesPerRow = ((BitspPixel * cols) + 7) / 8;
 			SamplesPerRow = Channels * Cols;
-			SamplesPerRowPacked = (Packed ? BytesPerRow : SamplesPerRow);
+			SamplesPerRowPacked = Packed ? BytesPerRow : SamplesPerRow;
 			switch (BitDepth)
 			{
-			case 1:
-			case 2:
-			case 4:
-				if (!Indexed && !Greyscale)
-				{
-					throw new PngjException("only indexed or grayscale can have bitdepth=" + BitDepth.ToString());
-				}
-				break;
-			case 16:
-				if (Indexed)
-				{
-					throw new PngjException("indexed can't have bitdepth=" + BitDepth.ToString());
-				}
-				break;
-			default:
-				throw new PngjException("invalid bitdepth=" + BitDepth.ToString());
-			case 8:
-				break;
+				case 1:
+				case 2:
+				case 4:
+					if (!Indexed && !Greyscale)
+					{
+						throw new PngjException("only indexed or grayscale can have bitdepth=" + BitDepth.ToString());
+					}
+					break;
+				case 16:
+					if (Indexed)
+					{
+						throw new PngjException("indexed can't have bitdepth=" + BitDepth.ToString());
+					}
+					break;
+				default:
+					throw new PngjException("invalid bitdepth=" + BitDepth.ToString());
+				case 8:
+					break;
 			}
 			if (cols < 1 || cols > 400000)
 			{
@@ -93,13 +93,13 @@ namespace Hjg.Pngcs
 		public override int GetHashCode()
 		{
 			int num = 1;
-			num = 31 * num + (Alpha ? 1231 : 1237);
-			num = 31 * num + BitDepth;
-			num = 31 * num + Channels;
-			num = 31 * num + Cols;
-			num = 31 * num + (Greyscale ? 1231 : 1237);
-			num = 31 * num + (Indexed ? 1231 : 1237);
-			return 31 * num + Rows;
+			num = (31 * num) + (Alpha ? 1231 : 1237);
+			num = (31 * num) + BitDepth;
+			num = (31 * num) + Channels;
+			num = (31 * num) + Cols;
+			num = (31 * num) + (Greyscale ? 1231 : 1237);
+			num = (31 * num) + (Indexed ? 1231 : 1237);
+			return (31 * num) + Rows;
 		}
 
 		public override bool Equals(object obj)

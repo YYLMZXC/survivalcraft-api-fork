@@ -103,7 +103,7 @@ namespace Game
 		public override int GetShadowStrength(int value)
 		{
 			int size = GetSize(Terrain.ExtractData(value));
-			return 2 + size * 2;
+			return 2 + (size * 2);
 		}
 
 		public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength)

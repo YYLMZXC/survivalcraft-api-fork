@@ -64,7 +64,7 @@ namespace Hjg.Pngcs.Chunks
 				paletteAlpha = new int[num];
 				for (int i = 0; i < num; i++)
 				{
-					paletteAlpha[i] = (c.Data[i] & 0xFF);
+					paletteAlpha[i] = c.Data[i] & 0xFF;
 				}
 			}
 			else

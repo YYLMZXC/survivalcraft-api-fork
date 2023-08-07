@@ -87,7 +87,7 @@ namespace Game
 					m_hash = m_resolution + ((int)m_interactionMode << 4);
 					for (int i = 0; i < m_values.Length; i++)
 					{
-						m_hash += m_values[i] * (1 + 113 * i);
+						m_hash += m_values[i] * (1 + (113 * i));
 					}
 				}
 				return m_hash.Value;
@@ -419,7 +419,7 @@ namespace Game
 					{
 						if (k >= 0 && k < m_resolution && j >= 0 && j < m_resolution && i >= 0 && i < m_resolution)
 						{
-							array[k + j * resolution + i * resolution * resolution] = m_values[k + j * m_resolution + i * m_resolution * m_resolution];
+							array[k + (j * resolution) + (i * resolution * resolution)] = m_values[k + (j * m_resolution) + (i * m_resolution * m_resolution)];
 						}
 					}
 				}
@@ -445,7 +445,7 @@ namespace Game
 						int num3 = i + delta.Z;
 						if (num >= 0 && num < m_resolution && num2 >= 0 && num2 < m_resolution && num3 >= 0 && num3 < m_resolution)
 						{
-							array[num + num2 * m_resolution + num3 * m_resolution * m_resolution] = m_values[k + j * m_resolution + i * m_resolution * m_resolution];
+							array[num + (num2 * m_resolution) + (num3 * m_resolution * m_resolution)] = m_values[k + (j * m_resolution) + (i * m_resolution * m_resolution)];
 						}
 					}
 				}
@@ -471,11 +471,11 @@ namespace Game
 				{
 					for (int k = 0; k < m_resolution; k++)
 					{
-						Vector3 vector = RotatePoint(new Vector3(k, j, i) - new Vector3(m_resolution / 2f - 0.5f), axis, steps) + new Vector3(m_resolution / 2f - 0.5f);
+						Vector3 vector = RotatePoint(new Vector3(k, j, i) - new Vector3((m_resolution / 2f) - 0.5f), axis, steps) + new Vector3((m_resolution / 2f) - 0.5f);
 						var point = new Point3((int)MathUtils.Round(vector.X), (int)MathUtils.Round(vector.Y), (int)MathUtils.Round(vector.Z));
 						if (point.X >= 0 && point.X < m_resolution && point.Y >= 0 && point.Y < m_resolution && point.Z >= 0 && point.Z < m_resolution)
 						{
-							array[point.X + point.Y * m_resolution + point.Z * m_resolution * m_resolution] = m_values[k + j * m_resolution + i * m_resolution * m_resolution];
+							array[point.X + (point.Y * m_resolution) + (point.Z * m_resolution * m_resolution)] = m_values[k + (j * m_resolution) + (i * m_resolution * m_resolution)];
 						}
 					}
 				}
@@ -492,11 +492,11 @@ namespace Game
 				{
 					for (int k = 0; k < m_resolution; k++)
 					{
-						Vector3 vector = MirrorPoint(new Vector3(k, j, i) - new Vector3(m_resolution / 2f - 0.5f), axis) + new Vector3(m_resolution / 2f - 0.5f);
+						Vector3 vector = MirrorPoint(new Vector3(k, j, i) - new Vector3((m_resolution / 2f) - 0.5f), axis) + new Vector3((m_resolution / 2f) - 0.5f);
 						var point = new Point3((int)MathUtils.Round(vector.X), (int)MathUtils.Round(vector.Y), (int)MathUtils.Round(vector.Z));
 						if (point.X >= 0 && point.X < m_resolution && point.Y >= 0 && point.Y < m_resolution && point.Z >= 0 && point.Z < m_resolution)
 						{
-							array[point.X + point.Y * m_resolution + point.Z * m_resolution * m_resolution] = m_values[k + j * m_resolution + i * m_resolution * m_resolution];
+							array[point.X + (point.Y * m_resolution) + (point.Z * m_resolution * m_resolution)] = m_values[k + (j * m_resolution) + (i * m_resolution * m_resolution)];
 						}
 					}
 				}
@@ -660,7 +660,7 @@ namespace Game
 					int num3 = 0;
 					while (num3 < Resolution)
 					{
-						num2 = ((m_values[num] == 0) ? (num2 + 1) : 0);
+						num2 = (m_values[num] == 0) ? (num2 + 1) : 0;
 						array[num] = (byte)num2;
 						num3++;
 						num++;
@@ -683,7 +683,7 @@ namespace Game
 				int num7 = Math.Min(num3, i);
 				int num8 = Math.Max(num6, i);
 				int num9 = box.Top;
-				int num10 = (num9 + i * Resolution) * Resolution;
+				int num10 = (num9 + (i * Resolution)) * Resolution;
 				while (num9 < box.Bottom)
 				{
 					int num11 = box.Right - 1 - precedingEmptySpaces[num10 + box.Right - 1];
@@ -724,7 +724,7 @@ namespace Game
 					{
 						if (!IsValueTransparent(m_values[num++]))
 						{
-							array[k + i * Resolution] = MathUtils.Max(array[k + i * Resolution], x);
+							array[k + (i * Resolution)] = MathUtils.Max(array[k + (i * Resolution)], x);
 						}
 					}
 				}
@@ -804,31 +804,31 @@ namespace Game
 					{
 						for (int l = 0; l < m_resolution; l++)
 						{
-							int num2 = j * point.X + k * point3.X + l * point2.X + point5.X;
-							int num3 = j * point.Y + k * point3.Y + l * point2.Y + point5.Y;
-							int num4 = j * point.Z + k * point3.Z + l * point2.Z + point5.Z;
-							int num5 = num2 + num3 * m_resolution + num4 * m_resolution * m_resolution;
+							int num2 = (j * point.X) + (k * point3.X) + (l * point2.X) + point5.X;
+							int num3 = (j * point.Y) + (k * point3.Y) + (l * point2.Y) + point5.Y;
+							int num4 = (j * point.Z) + (k * point3.Z) + (l * point2.Z) + point5.Z;
+							int num5 = num2 + (num3 * m_resolution) + (num4 * m_resolution * m_resolution);
 							int num6 = m_values[num5];
 							Cell cell = default;
 							cell.Value = num6;
 							Cell cell2 = cell;
 							if (j > 0 && num6 != 0)
 							{
-								int num7 = num2 - point.X + (num3 - point.Y) * m_resolution + (num4 - point.Z) * m_resolution * m_resolution;
+								int num7 = num2 - point.X + ((num3 - point.Y) * m_resolution) + ((num4 - point.Z) * m_resolution * m_resolution);
 								int value = m_values[num7];
 								if (!IsValueTransparent(value) || Terrain.ExtractContents(num6) == Terrain.ExtractContents(value))
 								{
 									cell2.Value = 0;
 								}
 							}
-							array[l + k * m_resolution] = cell2;
+							array[l + (k * m_resolution)] = cell2;
 						}
 					}
 					for (int m = 0; m < m_resolution; m++)
 					{
 						for (int n = 0; n < m_resolution; n++)
 						{
-							int value2 = array[n + m * m_resolution].Value;
+							int value2 = array[n + (m * m_resolution)].Value;
 							if (value2 == 0)
 							{
 								continue;
@@ -842,18 +842,18 @@ namespace Game
 								float num10 = n + point6.X + num8;
 								float num11 = m - num8;
 								float num12 = m + point6.Y + num8;
-								float x = j * point.X + num11 * point3.X + num9 * point2.X + point4.X;
-								float y = j * point.Y + num11 * point3.Y + num9 * point2.Y + point4.Y;
-								float z = j * point.Z + num11 * point3.Z + num9 * point2.Z + point4.Z;
-								float x2 = j * point.X + num11 * point3.X + num10 * point2.X + point4.X;
-								float y2 = j * point.Y + num11 * point3.Y + num10 * point2.Y + point4.Y;
-								float z2 = j * point.Z + num11 * point3.Z + num10 * point2.Z + point4.Z;
-								float x3 = j * point.X + num12 * point3.X + num10 * point2.X + point4.X;
-								float y3 = j * point.Y + num12 * point3.Y + num10 * point2.Y + point4.Y;
-								float z3 = j * point.Z + num12 * point3.Z + num10 * point2.Z + point4.Z;
-								float x4 = j * point.X + num12 * point3.X + num9 * point2.X + point4.X;
-								float y4 = j * point.Y + num12 * point3.Y + num9 * point2.Y + point4.Y;
-								float z4 = j * point.Z + num12 * point3.Z + num9 * point2.Z + point4.Z;
+								float x = (j * point.X) + (num11 * point3.X) + (num9 * point2.X) + point4.X;
+								float y = (j * point.Y) + (num11 * point3.Y) + (num9 * point2.Y) + point4.Y;
+								float z = (j * point.Z) + (num11 * point3.Z) + (num9 * point2.Z) + point4.Z;
+								float x2 = (j * point.X) + (num11 * point3.X) + (num10 * point2.X) + point4.X;
+								float y2 = (j * point.Y) + (num11 * point3.Y) + (num10 * point2.Y) + point4.Y;
+								float z2 = (j * point.Z) + (num11 * point3.Z) + (num10 * point2.Z) + point4.Z;
+								float x3 = (j * point.X) + (num12 * point3.X) + (num10 * point2.X) + point4.X;
+								float y3 = (j * point.Y) + (num12 * point3.Y) + (num10 * point2.Y) + point4.Y;
+								float z3 = (j * point.Z) + (num12 * point3.Z) + (num10 * point2.Z) + point4.Z;
+								float x4 = (j * point.X) + (num12 * point3.X) + (num9 * point2.X) + point4.X;
+								float y4 = (j * point.Y) + (num12 * point3.Y) + (num9 * point2.Y) + point4.Y;
+								float z4 = (j * point.Z) + (num12 * point3.Z) + (num9 * point2.Z) + point4.Z;
 								BlockMesh blockMesh3 = blockMesh;
 								int num13 = Terrain.ExtractContents(value2);
 								Block block = BlocksManager.Blocks[num13];
@@ -895,10 +895,10 @@ namespace Game
 								int count = blockMesh3.Vertices.Count;
 								blockMesh3.Vertices.Count += 4;
 								BlockMeshVertex[] array2 = blockMesh3.Vertices.Array;
-								float x5 = ((n + 0.01f) / m_resolution + num15) / 16f;
-								float x6 = ((n + point6.X - 0.01f) / m_resolution + num15) / 16f;
-								float y5 = ((m + 0.01f) / m_resolution + num16) / 16f;
-								float y6 = ((m + point6.Y - 0.01f) / m_resolution + num16) / 16f;
+								float x5 = (((n + 0.01f) / m_resolution) + num15) / 16f;
+								float x6 = (((n + point6.X - 0.01f) / m_resolution) + num15) / 16f;
+								float y5 = (((m + 0.01f) / m_resolution) + num16) / 16f;
+								float y6 = (((m + point6.Y - 0.01f) / m_resolution) + num16) / 16f;
 								BlockMeshVertex blockMeshVertex = array2[count] = new BlockMeshVertex
 								{
 									Position = new Vector3(x, y, z) / m_resolution,
@@ -907,30 +907,30 @@ namespace Game
 									TextureCoordinates = new Vector2(x5, y5),
 									IsEmissive = isEmissive
 								};
-								blockMeshVertex = (array2[count + 1] = new BlockMeshVertex
+								blockMeshVertex = array2[count + 1] = new BlockMeshVertex
 								{
 									Position = new Vector3(x2, y2, z2) / m_resolution,
 									Color = color,
 									Face = (byte)num,
 									TextureCoordinates = new Vector2(x6, y5),
 									IsEmissive = isEmissive
-								});
-								blockMeshVertex = (array2[count + 2] = new BlockMeshVertex
+								};
+								blockMeshVertex = array2[count + 2] = new BlockMeshVertex
 								{
 									Position = new Vector3(x3, y3, z3) / m_resolution,
 									Color = color,
 									Face = (byte)num,
 									TextureCoordinates = new Vector2(x6, y6),
 									IsEmissive = isEmissive
-								});
-								blockMeshVertex = (array2[count + 3] = new BlockMeshVertex
+								};
+								blockMeshVertex = array2[count + 3] = new BlockMeshVertex
 								{
 									Position = new Vector3(x4, y4, z4) / m_resolution,
 									Color = color,
 									Face = (byte)num,
 									TextureCoordinates = new Vector2(x5, y6),
 									IsEmissive = isEmissive
-								});
+								};
 								int count2 = blockMesh3.Indices.Count;
 								blockMesh3.Indices.Count += 6;
 								int[] array3 = blockMesh3.Indices.Array;
@@ -1014,9 +1014,9 @@ namespace Game
 					for (int n = 0; n < list2.Count; n++)
 					{
 						Vector3 vector2 = list2[n].Size();
-						flag |= (vector2.X >= 0.6f && vector2.Y >= 0.6f);
-						flag |= (vector2.X >= 0.6f && vector2.Z >= 0.6f);
-						flag |= (vector2.Y >= 0.6f && vector2.Z >= 0.6f);
+						flag |= vector2.X >= 0.6f && vector2.Y >= 0.6f;
+						flag |= vector2.X >= 0.6f && vector2.Z >= 0.6f;
+						flag |= vector2.Y >= 0.6f && vector2.Z >= 0.6f;
 					}
 					float minSize = flag ? 0.0625f : 0.6f;
 					for (int num2 = 0; num2 < list2.Count; num2++)
@@ -1059,7 +1059,7 @@ namespace Game
 				{
 					for (int k = 0; k < Resolution; k++)
 					{
-						int num = Terrain.ExtractContents(m_values[k + j * Resolution + i * Resolution * Resolution]);
+						int num = Terrain.ExtractContents(m_values[k + (j * Resolution) + (i * Resolution * Resolution)]);
 						if (num != 31 && num != 17)
 						{
 							continue;
@@ -1071,9 +1071,9 @@ namespace Game
 							BoundingBox boundingBox2 = list[l];
 							Vector3 vector = boundingBox2.Size();
 							Vector3 vector2 = boundingBox2.Center() - boundingBox.Center();
-							vector2.X = MathUtils.Max(MathUtils.Abs(vector2.X) - vector.X / 2f, 0f);
-							vector2.Y = MathUtils.Max(MathUtils.Abs(vector2.Y) - vector.Y / 2f, 0f);
-							vector2.Z = MathUtils.Max(MathUtils.Abs(vector2.Z) - vector.Z / 2f, 0f);
+							vector2.X = MathUtils.Max(MathUtils.Abs(vector2.X) - (vector.X / 2f), 0f);
+							vector2.Y = MathUtils.Max(MathUtils.Abs(vector2.Y) - (vector.Y / 2f), 0f);
+							vector2.Z = MathUtils.Max(MathUtils.Abs(vector2.Z) - (vector.Z / 2f), 0f);
 							if (vector2.Length() < 0.15f)
 							{
 								num2 = l;
@@ -1114,7 +1114,7 @@ namespace Game
 				{
 					for (int num = Resolution - 1; num >= 0; num--)
 					{
-						int num2 = m_values[j + num * Resolution + i * Resolution * Resolution];
+						int num2 = m_values[j + (num * Resolution) + (i * Resolution * Resolution)];
 						if (num2 != 0)
 						{
 							dictionary.TryGetValue(num2, out int value);
@@ -1144,10 +1144,10 @@ namespace Game
 				for (int j = 0; j < Resolution; j++)
 				{
 					int[] values = m_values;
-					int num = i + j * Resolution;
+					int num = i + (j * Resolution);
 					_ = Resolution;
-					int value = values[num + 0 * Resolution];
-					int value2 = m_values[i + j * Resolution + (Resolution - 1) * Resolution * Resolution];
+					int value = values[num + (0 * Resolution)];
+					int value2 = m_values[i + (j * Resolution) + ((Resolution - 1) * Resolution * Resolution)];
 					if (IsValueTransparent(value))
 					{
 						m_transparentFacesMask |= 4;
@@ -1170,8 +1170,8 @@ namespace Game
 			{
 				for (int l = 0; l < Resolution; l++)
 				{
-					int value3 = m_values[k * Resolution + l * Resolution * Resolution];
-					int value4 = m_values[Resolution - 1 + k * Resolution + l * Resolution * Resolution];
+					int value3 = m_values[(k * Resolution) + (l * Resolution * Resolution)];
+					int value4 = m_values[Resolution - 1 + (k * Resolution) + (l * Resolution * Resolution)];
 					if (IsValueTransparent(value3))
 					{
 						m_transparentFacesMask |= 8;
@@ -1197,8 +1197,8 @@ namespace Game
 					int[] values2 = m_values;
 					int num2 = m;
 					_ = Resolution;
-					int value5 = values2[num2 + 0 + n * Resolution * Resolution];
-					int value6 = m_values[m + (Resolution - 1) * Resolution + n * Resolution * Resolution];
+					int value5 = values2[num2 + 0 + (n * Resolution * Resolution)];
+					int value6 = m_values[m + ((Resolution - 1) * Resolution) + (n * Resolution * Resolution)];
 					if (IsValueTransparent(value5))
 					{
 						m_transparentFacesMask |= 32;
@@ -1297,7 +1297,7 @@ namespace Game
 			{
 				for (int j = start.X; j <= num; j++)
 				{
-					if (j == num || surface[j + i * m_resolution].Value != value)
+					if (j == num || surface[j + (i * m_resolution)].Value != value)
 					{
 						num = j;
 						var point = new Point2(num - start.X, i - start.Y + 1);
@@ -1317,7 +1317,7 @@ namespace Game
 			{
 				for (int j = start.X; j < start.X + size.X; j++)
 				{
-					surface[j + i * m_resolution].Value = 0;
+					surface[j + (i * m_resolution)].Value = 0;
 				}
 			}
 		}

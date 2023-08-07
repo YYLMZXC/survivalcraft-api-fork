@@ -599,18 +599,18 @@ namespace Game
 
 		public static float Dot(int[] g, float x, float y)
 		{
-			return g[0] * x + g[1] * y;
+			return (g[0] * x) + (g[1] * y);
 		}
 
 		public static float Dot(int[] g, float x, float y, float z)
 		{
-			return g[0] * x + g[1] * y + g[2] * z;
+			return (g[0] * x) + (g[1] * y) + (g[2] * z);
 		}
 
 		public static float Hash(int x)
 		{
-			x = ((x << 13) ^ x);
-			return ((x * (x * x * 15731 + 789221) + 1376312589) & 0x7FFFFFFF) / 2.14748365E+09f;
+			x = (x << 13) ^ x;
+			return (((x * ((x * x * 15731) + 789221)) + 1376312589) & 0x7FFFFFFF) / 2.14748365E+09f;
 		}
 
 		public static float Noise(float x)
@@ -620,7 +620,7 @@ namespace Game
 			float num2 = x - num;
 			float num3 = Hash(num);
 			float num4 = Hash(x2);
-			return num3 + num2 * num2 * (3f - 2f * num2) * (num4 - num3);
+			return num3 + (num2 * num2 * (3f - (2f * num2)) * (num4 - num3));
 		}
 
 		public static float Noise(float x, float y)
@@ -654,7 +654,7 @@ namespace Game
 			int num17 = m_permutations[num15 + m_permutations[num16]] % 12;
 			int num18 = m_permutations[num15 + num9 + m_permutations[num16 + num10]] % 12;
 			int num19 = m_permutations[num15 + 1 + m_permutations[num16 + 1]] % 12;
-			float num20 = 0.5f - num7 * num7 - num8 * num8;
+			float num20 = 0.5f - (num7 * num7) - (num8 * num8);
 			float num21;
 			if (num20 < 0f)
 			{
@@ -665,7 +665,7 @@ namespace Game
 				num20 *= num20;
 				num21 = num20 * num20 * Dot(m_grad3[num17], num7, num8);
 			}
-			float num22 = 0.5f - num11 * num11 - num12 * num12;
+			float num22 = 0.5f - (num11 * num11) - (num12 * num12);
 			float num23;
 			if (num22 < 0f)
 			{
@@ -676,7 +676,7 @@ namespace Game
 				num22 *= num22;
 				num23 = num22 * num22 * Dot(m_grad3[num18], num11, num12);
 			}
-			float num24 = 0.5f - num13 * num13 - num14 * num14;
+			float num24 = 0.5f - (num13 * num13) - (num14 * num14);
 			float num25;
 			if (num24 < 0f)
 			{
@@ -687,7 +687,7 @@ namespace Game
 				num24 *= num24;
 				num25 = num24 * num24 * Dot(m_grad3[num19], num13, num14);
 			}
-			return 35f * (num21 + num23 + num25) + 0.5f;
+			return (35f * (num21 + num23 + num25)) + 0.5f;
 		}
 
 		public static float Noise(float x, float y, float z)
@@ -766,9 +766,9 @@ namespace Game
 				num16 = 1;
 				num17 = 0;
 			}
-			float num18 = num9 - num12 + 355f / (678f * (float)Math.PI);
-			float num19 = num10 - num13 + 355f / (678f * (float)Math.PI);
-			float num20 = num11 - num14 + 355f / (678f * (float)Math.PI);
+			float num18 = num9 - num12 + (355f / (678f * (float)Math.PI));
+			float num19 = num10 - num13 + (355f / (678f * (float)Math.PI));
+			float num20 = num11 - num14 + (355f / (678f * (float)Math.PI));
 			float num21 = num9 - num15 + 0.333333343f;
 			float num22 = num10 - num16 + 0.333333343f;
 			float num23 = num11 - num17 + 0.333333343f;
@@ -782,7 +782,7 @@ namespace Game
 			int num31 = m_permutations[num27 + num12 + m_permutations[num28 + num13 + m_permutations[num29 + num14]]] % 12;
 			int num32 = m_permutations[num27 + num15 + m_permutations[num28 + num16 + m_permutations[num29 + num17]]] % 12;
 			int num33 = m_permutations[num27 + 1 + m_permutations[num28 + 1 + m_permutations[num29 + 1]]] % 12;
-			float num34 = 0.6f - num9 * num9 - num10 * num10 - num11 * num11;
+			float num34 = 0.6f - (num9 * num9) - (num10 * num10) - (num11 * num11);
 			float num35;
 			if (num34 < 0f)
 			{
@@ -793,7 +793,7 @@ namespace Game
 				num34 *= num34;
 				num35 = num34 * num34 * Dot(m_grad3[num30], num9, num10, num11);
 			}
-			float num36 = 0.6f - num18 * num18 - num19 * num19 - num20 * num20;
+			float num36 = 0.6f - (num18 * num18) - (num19 * num19) - (num20 * num20);
 			float num37;
 			if (num36 < 0f)
 			{
@@ -804,7 +804,7 @@ namespace Game
 				num36 *= num36;
 				num37 = num36 * num36 * Dot(m_grad3[num31], num18, num19, num20);
 			}
-			float num38 = 0.6f - num21 * num21 - num22 * num22 - num23 * num23;
+			float num38 = 0.6f - (num21 * num21) - (num22 * num22) - (num23 * num23);
 			float num39;
 			if (num38 < 0f)
 			{
@@ -815,7 +815,7 @@ namespace Game
 				num38 *= num38;
 				num39 = num38 * num38 * Dot(m_grad3[num32], num21, num22, num23);
 			}
-			float num40 = 0.6f - num24 * num24 - num25 * num25 - num26 * num26;
+			float num40 = 0.6f - (num24 * num24) - (num25 * num25) - (num26 * num26);
 			float num41;
 			if (num40 < 0f)
 			{
@@ -826,7 +826,7 @@ namespace Game
 				num40 *= num40;
 				num41 = num40 * num40 * Dot(m_grad3[num33], num24, num25, num26);
 			}
-			return 16f * (num35 + num37 + num39 + num41) + 0.5f;
+			return (16f * (num35 + num37 + num39 + num41)) + 0.5f;
 		}
 
 		public static float OctavedNoise(float x, float frequency, int octaves, float frequencyStep, float amplitudeStep, bool ridged = false)
@@ -845,7 +845,7 @@ namespace Game
 			{
 				return num / num2;
 			}
-			return 1f - MathUtils.Abs(2f * num / num2 - 1f);
+			return 1f - MathUtils.Abs((2f * num / num2) - 1f);
 		}
 
 		public static float OctavedNoise(float x, float y, float frequency, int octaves, float frequencyStep, float amplitudeStep, bool ridged = false)
@@ -864,7 +864,7 @@ namespace Game
 			{
 				return num / num2;
 			}
-			return 1f - MathUtils.Abs(2f * num / num2 - 1f);
+			return 1f - MathUtils.Abs((2f * num / num2) - 1f);
 		}
 
 		public static float OctavedNoise(float x, float y, float z, float frequency, int octaves, float frequencyStep, float amplitudeStep, bool ridged = false)
@@ -883,7 +883,7 @@ namespace Game
 			{
 				return num / num2;
 			}
-			return 1f - MathUtils.Abs(2f * num / num2 - 1f);
+			return 1f - MathUtils.Abs((2f * num / num2) - 1f);
 		}
 	}
 }

@@ -100,7 +100,7 @@ namespace Game
 				m_addButton.IsVisible = false;
 				m_deleteButton.IsVisible = false;
 				m_playButton.IsVisible = true;
-				m_addAnotherButton.IsVisible = (m_playerData.SubsystemPlayers.PlayersData.Count < 3);
+				m_addAnotherButton.IsVisible = m_playerData.SubsystemPlayers.PlayersData.Count < 3;
 			}
 			else if (m_mode == Mode.Add)
 			{
@@ -114,7 +114,7 @@ namespace Game
 			{
 				m_playerClassButton.IsEnabled = false;
 				m_addButton.IsVisible = false;
-				m_deleteButton.IsVisible = (m_playerData.SubsystemPlayers.PlayersData.Count > 1);
+				m_deleteButton.IsVisible = m_playerData.SubsystemPlayers.PlayersData.Count > 1;
 				m_playButton.IsVisible = false;
 				m_addAnotherButton.IsVisible = false;
 			}
@@ -148,7 +148,7 @@ namespace Game
 			m_descriptionLabel.Text = dy;
 			if (m_playerClassButton.IsClicked)
 			{
-				m_playerData.PlayerClass = ((m_playerData.PlayerClass == PlayerClass.Male) ? PlayerClass.Female : PlayerClass.Male);
+				m_playerData.PlayerClass = (m_playerData.PlayerClass == PlayerClass.Male) ? PlayerClass.Female : PlayerClass.Male;
 				m_playerData.RandomizeCharacterSkin();
 				if (m_playerData.IsDefaultName)
 				{

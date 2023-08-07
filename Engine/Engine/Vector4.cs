@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public struct Vector4 : IEquatable<Vector4>
+	public struct Vector4 : IEquatable<Vector4>
 	{
 		public float X;
 
@@ -101,7 +101,7 @@ namespace Engine
 
 		public static float Dot(Vector4 v1, Vector4 v2)
 		{
-			return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z + v1.W * v2.W;
+			return (v1.X * v2.X) + (v1.Y * v2.Y) + (v1.Z * v2.Z) + (v1.W * v2.W);
 		}
 
 		public float Length()
@@ -111,7 +111,7 @@ namespace Engine
 
 		public float LengthSquared()
 		{
-			return X * X + Y * Y + Z * Z;
+			return (X * X) + (Y * Y) + (Z * Z);
 		}
 
 		public static Vector4 Floor(Vector4 v)
@@ -205,12 +205,12 @@ namespace Engine
 
 		public static Vector4 Transform(Vector4 v, Matrix m)
 		{
-			return new Vector4(v.X * m.M11 + v.Y * m.M21 + v.Z * m.M31 + m.M41, v.X * m.M12 + v.Y * m.M22 + v.Z * m.M32 + m.M42, v.X * m.M13 + v.Y * m.M23 + v.Z * m.M33 + m.M43, v.X * m.M14 + v.Y * m.M24 + v.Z * m.M34 + m.M44);
+			return new Vector4((v.X * m.M11) + (v.Y * m.M21) + (v.Z * m.M31) + m.M41, (v.X * m.M12) + (v.Y * m.M22) + (v.Z * m.M32) + m.M42, (v.X * m.M13) + (v.Y * m.M23) + (v.Z * m.M33) + m.M43, (v.X * m.M14) + (v.Y * m.M24) + (v.Z * m.M34) + m.M44);
 		}
 
 		public static void Transform(ref Vector4 v, ref Matrix m, out Vector4 result)
 		{
-			result = new Vector4(v.X * m.M11 + v.Y * m.M21 + v.Z * m.M31 + m.M41, v.X * m.M12 + v.Y * m.M22 + v.Z * m.M32 + m.M42, v.X * m.M13 + v.Y * m.M23 + v.Z * m.M33 + m.M43, v.X * m.M14 + v.Y * m.M24 + v.Z * m.M34 + m.M44);
+			result = new Vector4((v.X * m.M11) + (v.Y * m.M21) + (v.Z * m.M31) + m.M41, (v.X * m.M12) + (v.Y * m.M22) + (v.Z * m.M32) + m.M42, (v.X * m.M13) + (v.Y * m.M23) + (v.Z * m.M33) + m.M43, (v.X * m.M14) + (v.Y * m.M24) + (v.Z * m.M34) + m.M44);
 		}
 
 		public static void Transform(Vector4[] sourceArray, int sourceIndex, ref Matrix m, Vector4[] destinationArray, int destinationIndex, int count)
@@ -218,7 +218,7 @@ namespace Engine
 			for (int i = 0; i < count; i++)
 			{
 				Vector4 vector = sourceArray[sourceIndex + i];
-				destinationArray[destinationIndex + i] = new Vector4(vector.X * m.M11 + vector.Y * m.M21 + vector.Z * m.M31 + m.M41, vector.X * m.M12 + vector.Y * m.M22 + vector.Z * m.M32 + m.M42, vector.X * m.M13 + vector.Y * m.M23 + vector.Z * m.M33 + m.M43, vector.X * m.M14 + vector.Y * m.M24 + vector.Z * m.M34 + m.M44);
+				destinationArray[destinationIndex + i] = new Vector4((vector.X * m.M11) + (vector.Y * m.M21) + (vector.Z * m.M31) + m.M41, (vector.X * m.M12) + (vector.Y * m.M22) + (vector.Z * m.M32) + m.M42, (vector.X * m.M13) + (vector.Y * m.M23) + (vector.Z * m.M33) + m.M43, (vector.X * m.M14) + (vector.Y * m.M24) + (vector.Z * m.M34) + m.M44);
 			}
 		}
 

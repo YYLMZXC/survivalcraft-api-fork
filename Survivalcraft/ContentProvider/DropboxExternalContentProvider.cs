@@ -364,11 +364,11 @@ namespace Game
 				{
 					var externalContentEntry2 = new ExternalContentEntry();
 					externalContentEntry2.Path = item["path_display"].ToString();
-					externalContentEntry2.Type = ((item[".tag"].ToString() == "folder") ? ExternalContentType.Directory : ExternalContentManager.ExtensionToType(Storage.GetExtension(externalContentEntry2.Path)));
+					externalContentEntry2.Type = (item[".tag"].ToString() == "folder") ? ExternalContentType.Directory : ExternalContentManager.ExtensionToType(Storage.GetExtension(externalContentEntry2.Path));
 					if (externalContentEntry2.Type != ExternalContentType.Directory)
 					{
-						externalContentEntry2.Time = (item.ContainsKey("server_modified") ? DateTime.Parse(item["server_modified"].ToString(), CultureInfo.InvariantCulture) : new DateTime(2000, 1, 1));
-						externalContentEntry2.Size = (item.ContainsKey("size") ? ((long)item["size"]) : 0);
+						externalContentEntry2.Time = item.ContainsKey("server_modified") ? DateTime.Parse(item["server_modified"].ToString(), CultureInfo.InvariantCulture) : new DateTime(2000, 1, 1);
+						externalContentEntry2.Size = item.ContainsKey("size") ? ((long)item["size"]) : 0;
 					}
 					externalContentEntry.ChildEntries.Add(externalContentEntry2);
 				}

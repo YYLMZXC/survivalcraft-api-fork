@@ -79,7 +79,7 @@ namespace Game
 			m_stateMachine.AddState("Breathe", delegate
 			{
 				Vector3 forward = m_componentCreature.ComponentBody.Matrix.Forward;
-				Vector3 value = m_componentCreature.ComponentBody.Matrix.Translation + 10f * forward + new Vector3(0f, 2f, 0f);
+				Vector3 value = m_componentCreature.ComponentBody.Matrix.Translation + (10f * forward) + new Vector3(0f, 2f, 0f);
 				m_componentPathfinding.SetDestination(value, 0.6f, 1f, 0, useRandomMovements: false, ignoreHeightDifference: false, raycastDestination: false, null);
 				m_particleSystem = new WhalePlumeParticleSystem(m_subsystemTerrain, m_random.Float(0.8f, 1.1f), m_random.Float(1f, 1.3f));
 				m_subsystemParticles.AddParticleSystem(m_particleSystem);
@@ -107,7 +107,7 @@ namespace Game
 			{
 				Vector2 vector2 = (i < 4) ? (new Vector2(forward.X, forward.Z) + m_random.Vector2(0f, 0.25f)) : m_random.Vector2(0.5f, 1f);
 				var v = Vector3.Normalize(new Vector3(vector2.X, 1f, vector2.Y));
-				Vector3 end = vector + s * v;
+				Vector3 end = vector + (s * v);
 				TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(vector, end, useInteractionBoxes: false, skipAirBlocks: false, (int value, float d) => Terrain.ExtractContents(value) != 18);
 				if (terrainRaycastResult.HasValue && Terrain.ExtractContents(terrainRaycastResult.Value.Value) == 0)
 				{

@@ -30,7 +30,7 @@ namespace NVorbis
 		internal RingBuffer(int size)
 		{
 			_buffer = new float[size];
-			_start = (_end = 0);
+			_start = _end = 0;
 			_bufLen = size;
 		}
 
@@ -93,13 +93,13 @@ namespace NVorbis
 
 		internal void Clear()
 		{
-			_start = (_end = 0);
+			_start = _end = 0;
 		}
 
 		internal void Write(int channel, int index, int start, int switchPoint, int end, float[] pcm, float[] window)
 		{
 			int num;
-			for (num = (index + start) * Channels + channel + _start; num >= _bufLen; num -= _bufLen)
+			for (num = ((index + start) * Channels) + channel + _start; num >= _bufLen; num -= _bufLen)
 			{
 			}
 			if (num < 0)

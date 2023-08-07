@@ -134,13 +134,13 @@ namespace Game
 					m_componentCreature.ComponentCreatureSounds.PlayFootstepSound(1f);
 				}
 			}
-			m_feedFactor = FeedOrder ? MathUtils.Min(m_feedFactor + 2f * dt, 1f) : MathUtils.Max(m_feedFactor - 2f * dt, 0f);
+			m_feedFactor = FeedOrder ? MathUtils.Min(m_feedFactor + (2f * dt), 1f) : MathUtils.Max(m_feedFactor - (2f * dt), 0f);
 			IsAttackHitMoment = false;
 			if (AttackOrder)
 			{
-				m_buttFactor = MathUtils.Min(m_buttFactor + 4f * dt, 1f);
+				m_buttFactor = MathUtils.Min(m_buttFactor + (4f * dt), 1f);
 				float buttPhase = m_buttPhase;
-				m_buttPhase = MathUtils.Remainder(m_buttPhase + dt * 2f, 1f);
+				m_buttPhase = MathUtils.Remainder(m_buttPhase + (dt * 2f), 1f);
 				if (buttPhase < 0.5f && m_buttPhase >= 0.5f)
 				{
 					IsAttackHitMoment = true;
@@ -148,16 +148,16 @@ namespace Game
 			}
 			else
 			{
-				m_buttFactor = MathUtils.Max(m_buttFactor - 4f * dt, 0f);
+				m_buttFactor = MathUtils.Max(m_buttFactor - (4f * dt), 0f);
 				if (m_buttPhase != 0f)
 				{
 					if (m_buttPhase > 0.5f)
 					{
-						m_buttPhase = MathUtils.Remainder(MathUtils.Min(m_buttPhase + dt * 2f, 1f), 1f);
+						m_buttPhase = MathUtils.Remainder(MathUtils.Min(m_buttPhase + (dt * 2f), 1f), 1f);
 					}
 					else if (m_buttPhase > 0f)
 					{
-						m_buttPhase = MathUtils.Max(m_buttPhase - dt * 2f, 0f);
+						m_buttPhase = MathUtils.Max(m_buttPhase - (dt * 2f), 0f);
 					}
 				}
 			}
@@ -173,7 +173,7 @@ namespace Game
 			ModsManager.HookAction("OnModelAnimate", loader =>
 			{
 				loader.OnModelAnimate(this, out skip);
-				flag = (flag | skip);
+				flag = flag | skip;
 				return false;
 			});
 			if (flag)
@@ -247,11 +247,11 @@ namespace Game
 				}
 				if (m_feedFactor > 0f)
 				{
-					float y = 0f - MathUtils.DegToRad(25f + 45f * SimplexNoise.OctavedNoise((float)m_subsystemTime.GameTime, 3f, 2, 2f, 0.75f));
+					float y = 0f - MathUtils.DegToRad(25f + (45f * SimplexNoise.OctavedNoise((float)m_subsystemTime.GameTime, 3f, 2, 2f, 0.75f)));
 					vector2 = Vector2.Lerp(v2: new Vector2(0f, y), v1: vector2, f: m_feedFactor);
 					if (m_moveLegWhenFeeding)
 					{
-						float x = MathUtils.DegToRad(20f) + MathUtils.PowSign(SimplexNoise.OctavedNoise((float)m_subsystemTime.GameTime, 1f, 1, 1f, 1f) - 0.5f, 0.33f) / 0.5f * MathUtils.DegToRad(25f) * (float)MathUtils.Sin(17.0 * m_subsystemTime.GameTime);
+						float x = MathUtils.DegToRad(20f) + (MathUtils.PowSign(SimplexNoise.OctavedNoise((float)m_subsystemTime.GameTime, 1f, 1, 1f, 1f) - 0.5f, 0.33f) / 0.5f * MathUtils.DegToRad(25f) * (float)MathUtils.Sin(17.0 * m_subsystemTime.GameTime));
 						num2 = MathUtils.Lerp(num2, x, m_feedFactor);
 					}
 				}

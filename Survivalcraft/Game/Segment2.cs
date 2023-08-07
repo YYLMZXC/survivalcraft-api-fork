@@ -52,14 +52,14 @@ namespace Game
 				return false;
 			}
 			float num2 = 1f / num;
-			float num3 = (v2.X * (s1.Start.Y - s2.Start.Y) - v2.Y * (s1.Start.X - s2.Start.X)) * num2;
-			float num4 = (v.X * (s1.Start.Y - s2.Start.Y) - v.Y * (s1.Start.X - s2.Start.X)) * num2;
+			float num3 = ((v2.X * (s1.Start.Y - s2.Start.Y)) - (v2.Y * (s1.Start.X - s2.Start.X))) * num2;
+			float num4 = ((v.X * (s1.Start.Y - s2.Start.Y)) - (v.Y * (s1.Start.X - s2.Start.X))) * num2;
 			if (num3 < 0f || num3 > 1f || num4 < 0f || num4 > 1f)
 			{
 				result = Vector2.Zero;
 				return false;
 			}
-			result = new Vector2(s1.Start.X + num3 * v.X, s1.Start.Y + num3 * v.Y);
+			result = new Vector2(s1.Start.X + (num3 * v.X), s1.Start.Y + (num3 * v.Y));
 			return true;
 		}
 

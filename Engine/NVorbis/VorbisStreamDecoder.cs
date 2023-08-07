@@ -328,7 +328,7 @@ namespace NVorbis
 				_nominalBitrate = (_upperBitrate + _lowerBitrate) / 2;
 			}
 			_metaBits += packet.BitsRead - bitsRead + 8;
-			_wasteHdrBits += 8 * packet.Length - packet.BitsRead;
+			_wasteHdrBits += (8 * packet.Length) - packet.BitsRead;
 			return true;
 		}
 
@@ -361,7 +361,7 @@ namespace NVorbis
 				_comments[i] = Encoding.UTF8.GetString(array2, 0, array2.Length);
 			}
 			_metaBits += packet.BitsRead - 56;
-			_wasteHdrBits += 8 * packet.Length - packet.BitsRead;
+			_wasteHdrBits += (8 * packet.Length) - packet.BitsRead;
 			return true;
 		}
 
@@ -432,7 +432,7 @@ namespace NVorbis
 				throw new InvalidDataException();
 			}
 			_glueBits++;
-			_wasteHdrBits += 8 * packet.Length - packet.BitsRead;
+			_wasteHdrBits += (8 * packet.Length) - packet.BitsRead;
 			_modeFieldBits = Utils.ilog(Modes.Length - 1);
 			return true;
 		}
@@ -494,7 +494,7 @@ namespace NVorbis
 			}
 			else
 			{
-				_prevFlag = (_nextFlag = false);
+				_prevFlag = _nextFlag = false;
 			}
 			if (packet.IsShort)
 			{
@@ -544,7 +544,7 @@ namespace NVorbis
 			_modeBits += num;
 			_floorBits += num3;
 			_resBits += packet.BitsRead - bitsRead;
-			_wasteBits += 8 * packet.Length - packet.BitsRead;
+			_wasteBits += (8 * packet.Length) - packet.BitsRead;
 			_packetCount++;
 			return true;
 		}
@@ -620,22 +620,22 @@ namespace NVorbis
 			{
 				if (!_prevFlag)
 				{
-					num3 = Block1Size / 4 - Block0Size / 4;
-					num2 = num3 + Block0Size / 2;
-					num4 = Block0Size / -2 - num3;
+					num3 = (Block1Size / 4) - (Block0Size / 4);
+					num2 = num3 + (Block0Size / 2);
+					num4 = (Block0Size / -2) - num3;
 				}
 				if (!_nextFlag)
 				{
-					num -= blockSize / 4 - Block0Size / 4;
-					num5 = blockSize / 4 + Block0Size / 4;
+					num -= (blockSize / 4) - (Block0Size / 4);
+					num5 = (blockSize / 4) + (Block0Size / 4);
 				}
 			}
-			int index = _outputBuffer.Length / _channels + num4;
+			int index = (_outputBuffer.Length / _channels) + num4;
 			for (int i = 0; i < _channels; i++)
 			{
 				_outputBuffer.Write(i, index, num3, num2, num, _residue[i], window);
 			}
-			int num6 = _outputBuffer.Length / _channels - num5;
+			int num6 = (_outputBuffer.Length / _channels) - num5;
 			int result = num6 - _preparedLength;
 			_preparedLength = num6;
 			return result;
@@ -787,7 +787,7 @@ namespace NVorbis
 				return 0;
 			}
 			VorbisMode vorbisMode2 = Modes[num];
-			return vorbisMode.BlockSize / 4 + vorbisMode2.BlockSize / 4;
+			return (vorbisMode.BlockSize / 4) + (vorbisMode2.BlockSize / 4);
 		}
 
 		internal int ReadSamples(float[] buffer, int offset, int count)
@@ -817,7 +817,7 @@ namespace NVorbis
 				{
 					throw new InvalidOperationException("Currently pending a parameter change.  Read new parameters before requesting further samples!");
 				}
-				int size = count + Block1Size * _channels;
+				int size = count + (Block1Size * _channels);
 				_outputBuffer.EnsureSize(size);
 				while (_preparedLength * _channels < count && !_eosFound && !_isParameterChange)
 				{

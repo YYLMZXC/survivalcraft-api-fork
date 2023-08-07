@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Engine.Graphics
 {
-	public class BasePrimitivesRenderer<T1, T2, T3> where T1 : BaseFlatBatch, new()where T2 : BaseTexturedBatch, new()where T3 : BaseFontBatch, new()
+	public class BasePrimitivesRenderer<T1, T2, T3> where T1 : BaseFlatBatch, new() where T2 : BaseTexturedBatch, new() where T3 : BaseFontBatch, new()
 	{
 		public bool m_sortNeeded;
 
@@ -35,7 +35,7 @@ namespace Engine.Graphics
 					return value;
 				}
 			}
-			m_sortNeeded |= (m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer);
+			m_sortNeeded |= m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer;
 			var val = new T1();
 			val.Layer = layer;
 			val.DepthStencilState = depthStencilState;
@@ -65,7 +65,7 @@ namespace Engine.Graphics
 					return value;
 				}
 			}
-			m_sortNeeded |= (m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer);
+			m_sortNeeded |= m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer;
 			var val = new T2();
 			val.Layer = layer;
 			val.UseAlphaTest = useAlphaTest;
@@ -98,7 +98,7 @@ namespace Engine.Graphics
 					return value;
 				}
 			}
-			m_sortNeeded |= (m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer);
+			m_sortNeeded |= m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer;
 			var val = new T3();
 			val.Layer = layer;
 			val.Font = font;
@@ -116,7 +116,7 @@ namespace Engine.Graphics
 			if (m_sortNeeded)
 			{
 				m_sortNeeded = false;
-				m_allBatches.Sort(delegate(BaseBatch b1, BaseBatch b2)
+				m_allBatches.Sort(delegate (BaseBatch b1, BaseBatch b2)
 				{
 					if (b1.Layer < b2.Layer)
 					{

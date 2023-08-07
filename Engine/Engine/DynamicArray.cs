@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Engine
 {
-    public class DynamicArray<T> : IEnumerable<T>, IEnumerable, IList<T>, ICollection<T>
+	public class DynamicArray<T> : IEnumerable<T>, IEnumerable, IList<T>, ICollection<T>
 	{
 		public struct Enumerator : IEnumerator<T>, IDisposable, IEnumerator
 		{

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Engine.Input
 {
-    public static class GamePad
+	public static class GamePad
 	{
 		public class State
 		{
@@ -124,10 +124,10 @@ namespace Engine.Input
 				m_states[num].Triggers[1] = MathUtils.Max(e.GetAxisValue(Axis.Rtrigger), e.GetAxisValue(Axis.Gas));
 				float axisValue = e.GetAxisValue(Axis.HatX);
 				float axisValue2 = e.GetAxisValue(Axis.HatY);
-				m_states[num].Buttons[10] = (axisValue < -0.5f);
-				m_states[num].Buttons[12] = (axisValue > 0.5f);
-				m_states[num].Buttons[11] = (axisValue2 < -0.5f);
-				m_states[num].Buttons[13] = (axisValue2 > 0.5f);
+				m_states[num].Buttons[10] = axisValue < -0.5f;
+				m_states[num].Buttons[12] = axisValue > 0.5f;
+				m_states[num].Buttons[11] = axisValue2 < -0.5f;
+				m_states[num].Buttons[13] = axisValue2 > 0.5f;
 			}
 		}
 

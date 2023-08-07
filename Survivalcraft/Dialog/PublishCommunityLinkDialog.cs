@@ -56,7 +56,7 @@ namespace Game
 			string text2 = m_nameTextBoxWidget.Text.Trim();
 			m_typeLabelWidget.Text = ExternalContentManager.GetEntryTypeDescription(m_type);
 			m_typeIconWidget.Subtexture = ExternalContentManager.GetEntryTypeIcon(m_type);
-			m_publishButtonWidget.IsEnabled = (text.Length > 0 && text2.Length > 0);
+			m_publishButtonWidget.IsEnabled = text.Length > 0 && text2.Length > 0;
 			if (m_changeTypeButtonWidget.IsClicked)
 			{
 				DialogsManager.ShowDialog(ParentWidget, new SelectExternalContentTypeDialog("Select Content Type", delegate (ExternalContentType item)

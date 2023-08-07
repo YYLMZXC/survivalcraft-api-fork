@@ -43,17 +43,17 @@ namespace Game
 				BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z + 1, Color.White, num5, 2, ref vertices.Array[count + 2]);
 				BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z + 1, Color.White, num5, 3, ref vertices.Array[count + 3]);
 				indices.Add(count);
-				indices.Add((count + 1));
-				indices.Add((count + 2));
-				indices.Add((count + 2));
-				indices.Add((count + 1));
+				indices.Add(count + 1);
+				indices.Add(count + 2);
+				indices.Add(count + 2);
+				indices.Add(count + 1);
 				indices.Add(count);
-				indices.Add((count + 2));
-				indices.Add((count + 3));
+				indices.Add(count + 2);
+				indices.Add(count + 3);
 				indices.Add(count);
 				indices.Add(count);
-				indices.Add((count + 3));
-				indices.Add((count + 2));
+				indices.Add(count + 3);
+				indices.Add(count + 2);
 			}
 			if (HasFireOnFace(data, 1))
 			{
@@ -81,17 +81,17 @@ namespace Game
 				BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z + 1, Color.White, num8, 2, ref vertices2.Array[count2 + 2]);
 				BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y, z + 1, Color.White, num8, 1, ref vertices2.Array[count2 + 3]);
 				indices2.Add(count2);
-				indices2.Add((count2 + 1));
-				indices2.Add((count2 + 2));
-				indices2.Add((count2 + 2));
-				indices2.Add((count2 + 1));
+				indices2.Add(count2 + 1);
+				indices2.Add(count2 + 2);
+				indices2.Add(count2 + 2);
+				indices2.Add(count2 + 1);
 				indices2.Add(count2);
-				indices2.Add((count2 + 2));
-				indices2.Add((count2 + 3));
+				indices2.Add(count2 + 2);
+				indices2.Add(count2 + 3);
 				indices2.Add(count2);
 				indices2.Add(count2);
-				indices2.Add((count2 + 3));
-				indices2.Add((count2 + 2));
+				indices2.Add(count2 + 3);
+				indices2.Add(count2 + 2);
 			}
 			if (HasFireOnFace(data, 2))
 			{
@@ -119,17 +119,17 @@ namespace Game
 				BlockGeometryGenerator.SetupLitCornerVertex(x + 1, y + 1, z, Color.White, num11, 2, ref vertices3.Array[count3 + 2]);
 				BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z, Color.White, num11, 3, ref vertices3.Array[count3 + 3]);
 				indices3.Add(count3);
-				indices3.Add((count3 + 2));
-				indices3.Add((count3 + 1));
-				indices3.Add((count3 + 1));
-				indices3.Add((count3 + 2));
+				indices3.Add(count3 + 2);
+				indices3.Add(count3 + 1);
+				indices3.Add(count3 + 1);
+				indices3.Add(count3 + 2);
 				indices3.Add(count3);
-				indices3.Add((count3 + 2));
+				indices3.Add(count3 + 2);
 				indices3.Add(count3);
-				indices3.Add((count3 + 3));
-				indices3.Add((count3 + 3));
+				indices3.Add(count3 + 3);
+				indices3.Add(count3 + 3);
 				indices3.Add(count3);
-				indices3.Add((count3 + 2));
+				indices3.Add(count3 + 2);
 			}
 			if (!HasFireOnFace(data, 3))
 			{
@@ -159,17 +159,17 @@ namespace Game
 			BlockGeometryGenerator.SetupLitCornerVertex(x, y + 1, z + 1, Color.White, num14, 2, ref vertices4.Array[count4 + 2]);
 			BlockGeometryGenerator.SetupLitCornerVertex(x, y, z + 1, Color.White, num14, 1, ref vertices4.Array[count4 + 3]);
 			indices4.Add(count4);
-			indices4.Add((count4 + 2));
-			indices4.Add((count4 + 1));
-			indices4.Add((count4 + 1));
-			indices4.Add((count4 + 2));
+			indices4.Add(count4 + 2);
+			indices4.Add(count4 + 1);
+			indices4.Add(count4 + 1);
+			indices4.Add(count4 + 2);
 			indices4.Add(count4);
-			indices4.Add((count4 + 2));
+			indices4.Add(count4 + 2);
 			indices4.Add(count4);
-			indices4.Add((count4 + 3));
-			indices4.Add((count4 + 3));
+			indices4.Add(count4 + 3);
+			indices4.Add(count4 + 3);
 			indices4.Add(count4);
-			indices4.Add((count4 + 2));
+			indices4.Add(count4 + 2);
 		}
 
 		public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)

@@ -115,7 +115,7 @@ namespace Hjg.Pngcs.Zlib
 				{
 					num2 = 1;
 				}
-				num2 -= (num * 256 + num2) % 31;
+				num2 -= ((num * 256) + num2) % 31;
 				if (num2 < 0)
 				{
 					num2 += 31;

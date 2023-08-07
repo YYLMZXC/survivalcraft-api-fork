@@ -253,7 +253,7 @@ namespace Game
 
 		public static void SaveBulletin(string dataString, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
@@ -406,7 +406,7 @@ namespace Game
 		public static bool IsCNLanguageType()
 		{
 			string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
-			return (languageType == "zh-CN");
+			return languageType == "zh-CN";
 		}
 
 		public static string GetMotdUrl()

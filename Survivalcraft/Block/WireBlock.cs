@@ -23,7 +23,7 @@ namespace Game
 			for (int i = 0; i < 6; i++)
 			{
 				Vector3 v = CellFace.FaceToVector3(i);
-				Vector3 v2 = new Vector3(0.5f, 0.5f, 0.5f) - 0.5f * v;
+				Vector3 v2 = new Vector3(0.5f, 0.5f, 0.5f) - (0.5f * v);
 				Vector3 v3;
 				Vector3 v4;
 				if (v.X != 0f)
@@ -41,8 +41,8 @@ namespace Game
 					v3 = new Vector3(1f, 0f, 0f);
 					v4 = new Vector3(0f, 1f, 0f);
 				}
-				Vector3 v5 = v2 - 0.5f * v3 - 0.5f * v4;
-				Vector3 v6 = v2 + 0.5f * v3 + 0.5f * v4 + 0.05f * v;
+				Vector3 v5 = v2 - (0.5f * v3) - (0.5f * v4);
+				Vector3 v6 = v2 + (0.5f * v3) + (0.5f * v4) + (0.05f * v);
 				m_collisionBoxesByFace[i] = new BoundingBox(Vector3.Min(v5, v6), Vector3.Max(v5, v6));
 			}
 		}
@@ -170,7 +170,7 @@ namespace Game
 					});
 				}
 			}
-			showDebris = (dropValues.Count > 0);
+			showDebris = dropValues.Count > 0;
 		}
 
 		public override IEnumerable<int> GetCreativeValues()
@@ -220,7 +220,7 @@ namespace Game
 		{
 			int num = Terrain.ExtractData(value);
 			num &= -64;
-			num |= (bitmask & 0x3F);
+			num |= bitmask & 0x3F;
 			return Terrain.ReplaceData(Terrain.ReplaceContents(value, 133), num);
 		}
 

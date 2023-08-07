@@ -10,7 +10,7 @@ namespace Game
 			: base(subsystemElectricity, cellFace)
 		{
 			int voltageLevel = SwitchBlock.GetVoltageLevel(Terrain.ExtractData(value));
-			m_voltage = (SwitchBlock.GetLeverState(value) ? ((float)voltageLevel / 15f) : 0f);
+			m_voltage = SwitchBlock.GetLeverState(value) ? ((float)voltageLevel / 15f) : 0f;
 		}
 
 		public override float GetOutputVoltage(int face)

@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public struct Color : IEquatable<Color>
+	public struct Color : IEquatable<Color>
 	{
 		public uint PackedValue;
 
@@ -279,7 +279,7 @@ namespace Engine
 			if (num2 != 0f)
 			{
 				y = num3 / num2;
-				num4 = ((num3 == 0f) ? 0f : ((rgb.X == num2) ? ((rgb.Y - rgb.Z) / num3) : ((rgb.Y != num2) ? (4f + (rgb.X - rgb.Y) / num3) : (2f + (rgb.Z - rgb.X) / num3))));
+				num4 = (num3 == 0f) ? 0f : ((rgb.X == num2) ? ((rgb.Y - rgb.Z) / num3) : ((rgb.Y != num2) ? (4f + ((rgb.X - rgb.Y) / num3)) : (2f + ((rgb.Z - rgb.X) / num3))));
 				num4 *= 60f;
 				if (num4 < 0f)
 				{
@@ -302,8 +302,8 @@ namespace Engine
 			int num = (int)MathUtils.Floor(hsv.X);
 			float num2 = hsv.X - (float)num;
 			float num3 = hsv.Z * (1f - hsv.Y);
-			float num4 = hsv.Z * (1f - hsv.Y * num2);
-			float num5 = hsv.Z * (1f - hsv.Y * (1f - num2));
+			float num4 = hsv.Z * (1f - (hsv.Y * num2));
+			float num5 = hsv.Z * (1f - (hsv.Y * (1f - num2)));
 			float x;
 			float y;
 			float z;

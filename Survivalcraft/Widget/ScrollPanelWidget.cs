@@ -50,7 +50,7 @@ namespace Game
 			{
 				if (child.IsVisible)
 				{
-					num = ((Direction != 0) ? MathUtils.Max(num, child.ParentDesiredSize.Y + 2f * child.Margin.Y) : MathUtils.Max(num, child.ParentDesiredSize.X + 2f * child.Margin.X));
+					num = (Direction != 0) ? MathUtils.Max(num, child.ParentDesiredSize.Y + (2f * child.Margin.Y)) : MathUtils.Max(num, child.ParentDesiredSize.X + (2f * child.Margin.X));
 				}
 			}
 			return num;
@@ -65,11 +65,11 @@ namespace Game
 				{
 					if (Direction == LayoutDirection.Horizontal)
 					{
-						child.Measure(new Vector2(float.MaxValue, MathUtils.Max(parentAvailableSize.Y - 2f * child.Margin.Y, 0f)));
+						child.Measure(new Vector2(float.MaxValue, MathUtils.Max(parentAvailableSize.Y - (2f * child.Margin.Y), 0f)));
 					}
 					else
 					{
-						child.Measure(new Vector2(MathUtils.Max(parentAvailableSize.X - 2f * child.Margin.X, 0f), float.MaxValue));
+						child.Measure(new Vector2(MathUtils.Max(parentAvailableSize.X - (2f * child.Margin.X), 0f), float.MaxValue));
 					}
 				}
 			}
@@ -99,7 +99,7 @@ namespace Game
 		{
 			float num = 50f;
 			m_scrollAreaLength = CalculateScrollAreaLength();
-			m_scrollBarAlpha = MathUtils.Max(m_scrollBarAlpha - 2f * Time.FrameDuration, 0f);
+			m_scrollBarAlpha = MathUtils.Max(m_scrollBarAlpha - (2f * Time.FrameDuration), 0f);
 			if (Input.Tap.HasValue && HitTestPanel(Input.Tap.Value))
 			{
 				m_lastDragPosition = ScreenToWidget(Input.Tap.Value);
@@ -156,7 +156,7 @@ namespace Game
 			{
 				if (!m_lastDragPosition.HasValue)
 				{
-					ScrollPosition = MathUtils.Min(ScrollPosition + 6f * Time.FrameDuration * (0f - ScrollPosition + 5f), 0f);
+					ScrollPosition = MathUtils.Min(ScrollPosition + (6f * Time.FrameDuration * (0f - ScrollPosition + 5f)), 0f);
 				}
 				ScrollPosition = MathUtils.Max(ScrollPosition, 0f - num);
 				ScrollSpeed = 0f;
@@ -165,7 +165,7 @@ namespace Game
 			{
 				if (!m_lastDragPosition.HasValue)
 				{
-					ScrollPosition = MathUtils.Max(ScrollPosition + 6f * Time.FrameDuration * (num4 - ScrollPosition - 5f), num4);
+					ScrollPosition = MathUtils.Max(ScrollPosition + (6f * Time.FrameDuration * (num4 - ScrollPosition - 5f)), num4);
 				}
 				ScrollPosition = MathUtils.Min(ScrollPosition, num4 + num);
 				ScrollSpeed = 0f;
@@ -208,7 +208,7 @@ namespace Game
 			bool found = false;
 			HitTestGlobal(position, delegate (Widget widget)
 			{
-				found = (widget.IsChildWidgetOf(this) || widget == this);
+				found = widget.IsChildWidgetOf(this) || widget == this;
 				return true;
 			});
 			return found;

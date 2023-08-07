@@ -362,8 +362,8 @@ namespace Game
 			if (m_modalPanelAnimationData.Factor < 1f)
 			{
 				float factor = m_modalPanelAnimationData.Factor;
-				float num = 0.5f + 0.5f * MathUtils.Pow(1f - factor, 0.1f);
-				float num2 = 0.5f + 0.5f * MathUtils.Pow(factor, 0.1f);
+				float num = 0.5f + (0.5f * MathUtils.Pow(1f - factor, 0.1f));
+				float num2 = 0.5f + (0.5f * MathUtils.Pow(factor, 0.1f));
 				float s = 1f - factor;
 				float s2 = factor;
 				if (m_modalPanelAnimationData.OldWidget != null)
@@ -433,8 +433,8 @@ namespace Game
 			{
 				m_largeMessageWidget.IsVisible = false;
 			}
-			ControlsContainerWidget.IsVisible = (m_componentPlayer.PlayerData.IsReadyForPlaying && m_componentPlayer.GameWidget.ActiveCamera.IsEntityControlEnabled && componentSleep.SleepFactor <= 0f);
-			m_moveRectangleContainerWidget.IsVisible = (!SettingsManager.HideMoveLookPads && componentInput.IsControlledByTouch);
+			ControlsContainerWidget.IsVisible = m_componentPlayer.PlayerData.IsReadyForPlaying && m_componentPlayer.GameWidget.ActiveCamera.IsEntityControlEnabled && componentSleep.SleepFactor <= 0f;
+			m_moveRectangleContainerWidget.IsVisible = !SettingsManager.HideMoveLookPads && componentInput.IsControlledByTouch;
 			bool flag = false;
 			if (!SettingsManager.HideMoveLookPads && componentInput.IsControlledByTouch)
 			{
@@ -442,18 +442,18 @@ namespace Game
 				else if (SettingsManager.MoveControlMode == MoveControlMode.Pad) flag = true;
 			}
 			m_lookRectangleContainerWidget.IsVisible = flag;
-			m_lookPadContainerWidget.IsVisible = (!SettingsManager.HideMoveLookPads && componentInput.IsControlledByTouch);
+			m_lookPadContainerWidget.IsVisible = !SettingsManager.HideMoveLookPads && componentInput.IsControlledByTouch;
 			MoveRoseWidget.IsVisible = componentInput.IsControlledByTouch;
 			m_moreContentsWidget.IsVisible = m_moreButtonWidget.IsChecked;
-			HealthBarWidget.IsVisible = (gameMode != GameMode.Creative);
-			FoodBarWidget.IsVisible = (gameMode != 0 && worldSettings.AreAdventureSurvivalMechanicsEnabled);
-			TemperatureBarWidget.IsVisible = (gameMode != 0 && worldSettings.AreAdventureSurvivalMechanicsEnabled);
-			LevelLabelWidget.IsVisible = (gameMode != 0 && worldSettings.AreAdventureSurvivalMechanicsEnabled);
-			m_creativeFlyButtonWidget.IsVisible = (gameMode == GameMode.Creative);
-			m_timeOfDayButtonWidget.IsVisible = (gameMode == GameMode.Creative);
-			m_lightningButtonWidget.IsVisible = (gameMode == GameMode.Creative);
-			m_moveButtonsContainerWidget.IsVisible = (SettingsManager.MoveControlMode == MoveControlMode.Buttons);
-			m_movePadContainerWidget.IsVisible = (SettingsManager.MoveControlMode == MoveControlMode.Pad);
+			HealthBarWidget.IsVisible = gameMode != GameMode.Creative;
+			FoodBarWidget.IsVisible = gameMode != 0 && worldSettings.AreAdventureSurvivalMechanicsEnabled;
+			TemperatureBarWidget.IsVisible = gameMode != 0 && worldSettings.AreAdventureSurvivalMechanicsEnabled;
+			LevelLabelWidget.IsVisible = gameMode != 0 && worldSettings.AreAdventureSurvivalMechanicsEnabled;
+			m_creativeFlyButtonWidget.IsVisible = gameMode == GameMode.Creative;
+			m_timeOfDayButtonWidget.IsVisible = gameMode == GameMode.Creative;
+			m_lightningButtonWidget.IsVisible = gameMode == GameMode.Creative;
+			m_moveButtonsContainerWidget.IsVisible = SettingsManager.MoveControlMode == MoveControlMode.Buttons;
+			m_movePadContainerWidget.IsVisible = SettingsManager.MoveControlMode == MoveControlMode.Pad;
 			if (SettingsManager.LeftHandedLayout)
 			{
 				m_moveContainerWidget.HorizontalAlignment = WidgetAlignment.Far;
@@ -605,7 +605,7 @@ namespace Game
 			if (m_sneakButtonWidget.IsClicked || playerInput.ToggleSneak)
 			{
 				float targetCrouchFactor = m_componentPlayer.ComponentBody.TargetCrouchFactor;
-				m_componentPlayer.ComponentBody.TargetCrouchFactor = ((targetCrouchFactor == 0f) ? 1 : 0);
+				m_componentPlayer.ComponentBody.TargetCrouchFactor = (targetCrouchFactor == 0f) ? 1 : 0;
 				if (m_componentPlayer.ComponentBody.TargetCrouchFactor != targetCrouchFactor)
 				{
 					if (m_componentPlayer.ComponentBody.TargetCrouchFactor > 0f)

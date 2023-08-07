@@ -14,28 +14,28 @@ namespace Engine.Graphics
 
 		public FlatBatch2D FlatBatch(int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null)
 		{
-			depthStencilState = (depthStencilState ?? DepthStencilState.None);
-			rasterizerState = (rasterizerState ?? RasterizerState.CullNoneScissor);
-			blendState = (blendState ?? BlendState.AlphaBlend);
+			depthStencilState = depthStencilState ?? DepthStencilState.None;
+			rasterizerState = rasterizerState ?? RasterizerState.CullNoneScissor;
+			blendState = blendState ?? BlendState.AlphaBlend;
 			return FindFlatBatch(layer, depthStencilState, rasterizerState, blendState);
 		}
 
 		public TexturedBatch2D TexturedBatch(Texture2D texture, bool useAlphaTest = false, int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null, SamplerState samplerState = null)
 		{
-			depthStencilState = (depthStencilState ?? DepthStencilState.None);
-			rasterizerState = (rasterizerState ?? RasterizerState.CullNoneScissor);
-			blendState = (blendState ?? BlendState.AlphaBlend);
-			samplerState = (samplerState ?? SamplerState.LinearClamp);
+			depthStencilState = depthStencilState ?? DepthStencilState.None;
+			rasterizerState = rasterizerState ?? RasterizerState.CullNoneScissor;
+			blendState = blendState ?? BlendState.AlphaBlend;
+			samplerState = samplerState ?? SamplerState.LinearClamp;
 			return FindTexturedBatch(texture, useAlphaTest, layer, depthStencilState, rasterizerState, blendState, samplerState);
 		}
 
 		public FontBatch2D FontBatch(BitmapFont font = null, int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null, SamplerState samplerState = null)
 		{
-			font = (font ?? BitmapFont.DebugFont);
-			depthStencilState = (depthStencilState ?? DepthStencilState.None);
-			rasterizerState = (rasterizerState ?? RasterizerState.CullNoneScissor);
-			blendState = (blendState ?? BlendState.AlphaBlend);
-			samplerState = (samplerState ?? SamplerState.LinearClamp);
+			font = font ?? BitmapFont.DebugFont;
+			depthStencilState = depthStencilState ?? DepthStencilState.None;
+			rasterizerState = rasterizerState ?? RasterizerState.CullNoneScissor;
+			blendState = blendState ?? BlendState.AlphaBlend;
+			samplerState = samplerState ?? SamplerState.LinearClamp;
 			return FindFontBatch(font, layer, depthStencilState, rasterizerState, blendState, samplerState);
 		}
 

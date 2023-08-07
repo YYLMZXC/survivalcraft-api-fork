@@ -161,7 +161,7 @@ namespace Engine.Serialization
 			SerializeData serializeData;
 			if (!(type != null))
 			{
-				serializeData = ((!(runtimeType != null)) ? staticSerializeData : Archive.GetSerializeData(runtimeType, allowEmptySerializer: false));
+				serializeData = (!(runtimeType != null)) ? staticSerializeData : Archive.GetSerializeData(runtimeType, allowEmptySerializer: false);
 			}
 			else
 			{

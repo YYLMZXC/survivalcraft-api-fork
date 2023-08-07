@@ -157,7 +157,7 @@ namespace Game
 		public override int SetDamage(int value, int damage)
 		{
 			int num = Terrain.ExtractData(value);
-			num = ((num & -65537) | ((damage & 1) << 16));
+			num = (num & -65537) | ((damage & 1) << 16);
 			return Terrain.ReplaceData(value, num);
 		}
 

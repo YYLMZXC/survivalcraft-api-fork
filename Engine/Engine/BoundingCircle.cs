@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public struct BoundingCircle : IEquatable<BoundingCircle>
+	public struct BoundingCircle : IEquatable<BoundingCircle>
 	{
 		public Vector2 Center;
 

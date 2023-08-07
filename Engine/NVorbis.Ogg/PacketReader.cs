@@ -163,7 +163,7 @@ namespace NVorbis.Ogg
 						else
 						{
 							Packet packet2 = packet.Prev = _last;
-							Packet packet4 = _last = (packet2.Next = packet);
+							Packet packet4 = _last = packet2.Next = packet;
 						}
 					}
 					if (packet.IsEndOfStream)
@@ -218,7 +218,7 @@ namespace NVorbis.Ogg
 						}
 					}
 					break;
-					IL_004f:
+				IL_004f:
 					_container.GatherNextPage(_streamSerial);
 				}
 			}

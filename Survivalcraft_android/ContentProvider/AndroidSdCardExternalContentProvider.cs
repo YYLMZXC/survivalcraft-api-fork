@@ -1,7 +1,5 @@
-using Android.Content;
 using Engine;
 using Game;
-using Java.IO;
 using System;
 using System.IO;
 using System.Threading;
@@ -10,7 +8,7 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 {
 	private string m_rootDirectory;
 	public static string fName = "AndroidSdCardExternalContentProvider";
-	public string DisplayName => LanguageControl.Get(fName,1);
+	public string DisplayName => LanguageControl.Get(fName, 1);
 
 	public string Description
 	{
@@ -188,7 +186,7 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 
 	private void InitializeFilesystemAccess()
 	{
-        //Java.IO.File externalFilesDir = ((Context)Window.Activity).GetExternalFilesDir((string)null);
+		//Java.IO.File externalFilesDir = ((Context)Window.Activity).GetExternalFilesDir((string)null);
 		m_rootDirectory = "android:SurvivalCraft2.3/files";
 		if (!Storage.DirectoryExists(m_rootDirectory)) { Storage.CreateDirectory(m_rootDirectory); }
 	}

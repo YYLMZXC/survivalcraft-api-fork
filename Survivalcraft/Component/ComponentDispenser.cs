@@ -59,7 +59,7 @@ namespace Game
 		public virtual void DispenseItem(Point3 point, int face, int value, DispenserBlock.Mode mode)
 		{
 			Vector3 vector = CellFace.FaceToVector3(face);
-			Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + 0.6f * vector;
+			Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + (0.6f * vector);
 			if (mode == DispenserBlock.Mode.Dispense)
 			{
 				float s = 1.8f;

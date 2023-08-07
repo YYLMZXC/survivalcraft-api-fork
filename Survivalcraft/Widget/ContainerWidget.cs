@@ -55,7 +55,7 @@ namespace Game
 		{
 			foreach (Widget child in Children)
 			{
-				child.Measure(Vector2.Max(parentAvailableSize - 2f * child.Margin, Vector2.Zero));
+				child.Measure(Vector2.Max(parentAvailableSize - (2f * child.Margin), Vector2.Zero));
 			}
 		}
 
@@ -73,13 +73,13 @@ namespace Game
 			Vector2 vector = c2 - c1;
 			Vector2 margin = widget.Margin;
 			Vector2 parentDesiredSize = widget.ParentDesiredSize;
-			if (float.IsPositiveInfinity(parentDesiredSize.X) || parentDesiredSize.X > vector.X - 2f * margin.X)
+			if (float.IsPositiveInfinity(parentDesiredSize.X) || parentDesiredSize.X > vector.X - (2f * margin.X))
 			{
-				parentDesiredSize.X = MathUtils.Max(vector.X - 2f * margin.X, 0f);
+				parentDesiredSize.X = MathUtils.Max(vector.X - (2f * margin.X), 0f);
 			}
-			if (float.IsPositiveInfinity(parentDesiredSize.Y) || parentDesiredSize.Y > vector.Y - 2f * margin.Y)
+			if (float.IsPositiveInfinity(parentDesiredSize.Y) || parentDesiredSize.Y > vector.Y - (2f * margin.Y))
 			{
-				parentDesiredSize.Y = MathUtils.Max(vector.Y - 2f * margin.Y, 0f);
+				parentDesiredSize.Y = MathUtils.Max(vector.Y - (2f * margin.Y), 0f);
 			}
 			if (widget.HorizontalAlignment == WidgetAlignment.Near)
 			{
@@ -88,7 +88,7 @@ namespace Game
 			}
 			else if (widget.HorizontalAlignment == WidgetAlignment.Center)
 			{
-				zero.X = c1.X + (vector.X - parentDesiredSize.X) / 2f;
+				zero.X = c1.X + ((vector.X - parentDesiredSize.X) / 2f);
 				zero2.X = parentDesiredSize.X;
 			}
 			else if (widget.HorizontalAlignment == WidgetAlignment.Far)
@@ -99,7 +99,7 @@ namespace Game
 			else if (widget.HorizontalAlignment == WidgetAlignment.Stretch)
 			{
 				zero.X = c1.X + margin.X;
-				zero2.X = MathUtils.Max(vector.X - 2f * margin.X, 0f);
+				zero2.X = MathUtils.Max(vector.X - (2f * margin.X), 0f);
 			}
 			if (widget.VerticalAlignment == WidgetAlignment.Near)
 			{
@@ -108,7 +108,7 @@ namespace Game
 			}
 			else if (widget.VerticalAlignment == WidgetAlignment.Center)
 			{
-				zero.Y = c1.Y + (vector.Y - parentDesiredSize.Y) / 2f;
+				zero.Y = c1.Y + ((vector.Y - parentDesiredSize.Y) / 2f);
 				zero2.Y = parentDesiredSize.Y;
 			}
 			else if (widget.VerticalAlignment == WidgetAlignment.Far)
@@ -119,7 +119,7 @@ namespace Game
 			else if (widget.VerticalAlignment == WidgetAlignment.Stretch)
 			{
 				zero.Y = c1.Y + margin.Y;
-				zero2.Y = MathUtils.Max(vector.Y - 2f * margin.Y, 0f);
+				zero2.Y = MathUtils.Max(vector.Y - (2f * margin.Y), 0f);
 			}
 			widget.Arrange(zero, zero2);
 		}

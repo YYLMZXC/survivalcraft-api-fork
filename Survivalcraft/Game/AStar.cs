@@ -96,7 +96,7 @@ namespace Game
 			Node node3;
 			while (true)
 			{
-				node3 = ((m_openHeap.Count > 0) ? HeapDequeue() : null);
+				node3 = (m_openHeap.Count > 0) ? HeapDequeue() : null;
 				if (node3 == null || num >= maxPositionsToCheck)
 				{
 					if (node2 != null)
@@ -196,8 +196,8 @@ namespace Game
 			while (true)
 			{
 				int num = pos;
-				int num2 = 2 * pos + 1;
-				int num3 = 2 * pos + 2;
+				int num2 = (2 * pos) + 1;
+				int num3 = (2 * pos) + 2;
 				if (num2 < m_openHeap.Count && m_openHeap.Array[num2].F < m_openHeap.Array[num].F)
 				{
 					num = num2;

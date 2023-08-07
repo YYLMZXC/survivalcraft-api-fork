@@ -90,10 +90,10 @@ namespace NVorbis.Ogg
 		{
 			_packetReaders = new Dictionary<int, PacketReader>();
 			_disposedStreamSerials = new List<int>();
-			_stream = ((stream as BufferedReadStream) ?? new BufferedReadStream(stream)
+			_stream = (stream as BufferedReadStream) ?? new BufferedReadStream(stream)
 			{
 				CloseBaseStream = closeOnDispose
-			});
+			};
 		}
 
 		public bool Init()
@@ -269,26 +269,26 @@ namespace NVorbis.Ogg
 			{
 				isResync = true;
 				_wasteBits += 8L;
-				num = (_stream.Position = num + 1);
+				num = _stream.Position = num + 1;
 				int num3 = 0;
 				do
 				{
 					switch (_stream.ReadByte())
 					{
-					case 79:
-						if (_stream.ReadByte() == 103 && _stream.ReadByte() == 103 && _stream.ReadByte() == 83)
-						{
-							num += num3;
-							goto end_IL_0032;
-						}
-						_stream.Seek(-3L, SeekOrigin.Current);
-						break;
-					case -1:
-						return null;
+						case 79:
+							if (_stream.ReadByte() == 103 && _stream.ReadByte() == 103 && _stream.ReadByte() == 83)
+							{
+								num += num3;
+								goto end_IL_0032;
+							}
+							_stream.Seek(-3L, SeekOrigin.Current);
+							break;
+						case -1:
+							return null;
 					}
 					_wasteBits += 8L;
 					continue;
-					end_IL_0032:
+				end_IL_0032:
 					break;
 				}
 				while (++num3 < 65536);
@@ -339,7 +339,7 @@ namespace NVorbis.Ogg
 				if (--num2 == 1)
 				{
 					isContinued = hdr.LastPacketContinues;
-					isEndOfStream = ((hdr.Flags & PageFlags.EndOfStream) == PageFlags.EndOfStream);
+					isEndOfStream = (hdr.Flags & PageFlags.EndOfStream) == PageFlags.EndOfStream;
 				}
 			}
 			if (!_packetReaders.ContainsKey(hdr.StreamSerial))

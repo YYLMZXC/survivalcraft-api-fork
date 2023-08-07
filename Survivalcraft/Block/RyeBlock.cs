@@ -82,7 +82,7 @@ namespace Game
 			bool isWild = GetIsWild(data2);
 			if (isWild)
 			{
-				num = ((size > 2 && Random.Float(0f, 1f) < 0.33f) ? 1 : 0);
+				num = (size > 2 && Random.Float(0f, 1f) < 0.33f) ? 1 : 0;
 				data = 4;
 			}
 			else

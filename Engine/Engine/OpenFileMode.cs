@@ -1,6 +1,6 @@
 namespace Engine
 {
-    public enum OpenFileMode
+	public enum OpenFileMode
 	{
 		Read,
 		ReadWrite,

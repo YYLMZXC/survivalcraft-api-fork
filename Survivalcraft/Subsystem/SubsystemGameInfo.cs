@@ -117,7 +117,7 @@ namespace Game
 		public void Update(float dt)
 		{
 			TotalElapsedGameTime += dt;
-			TotalElapsedGameTimeDelta = (m_lastTotalElapsedGameTime.HasValue ? ((float)(TotalElapsedGameTime - m_lastTotalElapsedGameTime.Value)) : 0f);
+			TotalElapsedGameTimeDelta = m_lastTotalElapsedGameTime.HasValue ? ((float)(TotalElapsedGameTime - m_lastTotalElapsedGameTime.Value)) : 0f;
 			m_lastTotalElapsedGameTime = TotalElapsedGameTime;
 			if (m_subsystemTime.GameTime >= 600.0 && m_subsystemTime.GameTime - m_subsystemTime.GameTimeDelta < 600.0 && UserManager.ActiveUser != null)
 			{

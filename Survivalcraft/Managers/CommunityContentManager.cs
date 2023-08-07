@@ -60,7 +60,7 @@ namespace Game
 
 		public static void List(string cursor, string userFilter, string typeFilter, string moderationFilter, string sortOrder, string keySearch, string searchType, CancellableProgress progress, Action<List<CommunityContentEntry>, string> success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
@@ -125,7 +125,7 @@ namespace Game
 
 		public static void Download(string address, string name, ExternalContentType type, string userId, CancellableProgress progress, Action success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
@@ -167,7 +167,7 @@ namespace Game
 
 		public static void Publish(string address, string name, ExternalContentType type, string userId, CancellableProgress progress, Action success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (MarketplaceManager.IsTrialMode)
 			{
 				failure(new InvalidOperationException("Cannot publish links in trial mode."));
@@ -232,7 +232,7 @@ namespace Game
 
 		public static void Delete(string address, string userId, CancellableProgress progress, Action success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
@@ -273,7 +273,7 @@ namespace Game
 
 		public static void VerifyLinkContent(string address, string name, ExternalContentType type, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			WebManager.Get(address, null, null, progress, delegate (byte[] data)
 			{
 				ExternalContentManager.ImportExternalContent(new MemoryStream(data), type, "__Temp", delegate (string downloadedName)
@@ -286,7 +286,7 @@ namespace Game
 
 		public static void Feedback(string address, string feedback, string feedbackParameter, string hash, long size, string userId, CancellableProgress progress, Action success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
@@ -338,7 +338,7 @@ namespace Game
 
 		public static void UserList(string cursor, string searchKey, string searchType, string filter, int order, CancellableProgress progress, Action<List<ComUserInfo>, string> success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
@@ -422,7 +422,7 @@ namespace Game
 
 		public static void UpdateLockState(int id, int lockState, string reason, int duration, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
@@ -448,7 +448,7 @@ namespace Game
 
 		public static void ResetPassword(int id, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
@@ -471,7 +471,7 @@ namespace Game
 
 		public static void UpdateBoutique(string type, int id, int boutique, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
@@ -495,7 +495,7 @@ namespace Game
 
 		public static void UpdateHidePara(int id, int isShow, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
@@ -518,7 +518,7 @@ namespace Game
 
 		public static void DeleteFile(int id, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
@@ -540,7 +540,7 @@ namespace Game
 
 		public static void IsAdmin(CancellableProgress progress, Action<bool> success, Action<Exception> failure)
 		{
-			progress = (progress ?? new CancellableProgress());
+			progress = progress ?? new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));

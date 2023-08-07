@@ -468,7 +468,7 @@ namespace Game
 			LookControlMode = LookControlMode.EntireScreen;
 			FlipVerticalAxis = false;
 #if android
-            UIScale = 1f;
+			UIScale = 1f;
 #endif
 #if desktop
 			UIScale = 0.8f;
@@ -496,8 +496,8 @@ namespace Game
 			MultithreadedTerrainUpdate = true;
 			NewYearCelebrationLastYear = 2015;
 			ScreenLayout1 = ScreenLayout.Single;
-			ScreenLayout2 = ((Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.DoubleVertical : ScreenLayout.DoubleHorizontal);
-			ScreenLayout3 = ((Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.TripleVertical : ScreenLayout.TripleHorizontal);
+			ScreenLayout2 = (Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.DoubleVertical : ScreenLayout.DoubleHorizontal;
+			ScreenLayout3 = (Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.TripleVertical : ScreenLayout.TripleHorizontal;
 			ScreenLayout4 = ScreenLayout.Quadruple;
 			BulletinTime = string.Empty;
 			ScpboxUserInfo = string.Empty;

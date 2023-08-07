@@ -48,8 +48,8 @@ namespace Game
 					{
 						zero.X = i == 4 ? -(float)Math.PI / 2f : (float)Math.PI / 2f;
 					}
-					Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateRotationZ(0.3f + 2f * j) * Matrix.CreateTranslation(m_offsets[j].X, m_offsets[j].Y, -0.49f) * Matrix.CreateRotationX(zero.X) * Matrix.CreateRotationY(zero.Y) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
-					int num = 4 * i + j;
+					Matrix m = Matrix.CreateRotationX((float)Math.PI / 2f) * Matrix.CreateRotationZ(0.3f + (2f * j)) * Matrix.CreateTranslation(m_offsets[j].X, m_offsets[j].Y, -0.49f) * Matrix.CreateRotationX(zero.X) * Matrix.CreateRotationY(zero.Y) * Matrix.CreateTranslation(0.5f, 0.5f, 0.5f);
+					int num = (4 * i) + j;
 					m_blockMeshes[num] = new BlockMesh();
 					m_blockMeshes[num].AppendModelMeshPart(model.FindMesh("Urchin").MeshParts[0], boneAbsoluteTransform * m, makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
 					m_collisionBoxes[num] = new BoundingBox[1]
@@ -69,7 +69,7 @@ namespace Game
 			int data = Terrain.ExtractData(value);
 			int face = GetFace(data);
 			int subvariant = GetSubvariant(data);
-			return m_collisionBoxes[4 * face + subvariant];
+			return m_collisionBoxes[(4 * face) + subvariant];
 		}
 
 		public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
@@ -78,7 +78,7 @@ namespace Game
 			int face = GetFace(data);
 			int subvariant = GetSubvariant(data);
 			Color color = m_colors[subvariant];
-			generator.GenerateMeshVertices(this, x, y, z, m_blockMeshes[4 * face + subvariant], color, null, geometry.SubsetOpaque);
+			generator.GenerateMeshVertices(this, x, y, z, m_blockMeshes[(4 * face) + subvariant], color, null, geometry.SubsetOpaque);
 			base.GenerateTerrainVertices(generator, geometry, value, x, y, z);
 		}
 

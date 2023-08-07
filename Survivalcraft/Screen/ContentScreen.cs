@@ -40,7 +40,7 @@ namespace Game
 
 		public override void Update()
 		{
-			m_communityContentButton.IsEnabled = (SettingsManager.CommunityContentMode != CommunityContentMode.Disabled);
+			m_communityContentButton.IsEnabled = SettingsManager.CommunityContentMode != CommunityContentMode.Disabled;
 			if (m_externalContentButton.IsClicked)
 			{
 				ScreensManager.SwitchScreen("ExternalContent");
@@ -67,7 +67,7 @@ namespace Game
 					{
 						ScreensManager.SwitchScreen("ModsManageContent");
 					}
-					else if ((selectionResult == LanguageControl.Get(fName, 2)))
+					else if (selectionResult == LanguageControl.Get(fName, 2))
 					{
 						ScreensManager.SwitchScreen("ManageContent");
 					}

@@ -307,7 +307,7 @@ namespace Game
 
 		public static ElectricConnectorDirection? GetConnectorDirection(int mountingFace, int rotation, int connectorFace)
 		{
-			ElectricConnectorDirection? result = m_connectorDirectionsTable[6 * mountingFace + connectorFace];
+			ElectricConnectorDirection? result = m_connectorDirectionsTable[(6 * mountingFace) + connectorFace];
 			if (result.HasValue)
 			{
 				if (result.Value < ElectricConnectorDirection.In)
@@ -321,7 +321,7 @@ namespace Game
 
 		public static int GetConnectorFace(int mountingFace, ElectricConnectorDirection connectionDirection)
 		{
-			return m_connectorFacesTable[(int)(5 * mountingFace + connectionDirection)];
+			return m_connectorFacesTable[(int)((5 * mountingFace) + connectionDirection)];
 		}
 
 		public void GetAllConnectedNeighbors(int x, int y, int z, int mountingFace, DynamicArray<ElectricConnectionPath> list)
@@ -336,7 +336,7 @@ namespace Game
 			{
 				for (int i = 0; i < 4; i++)
 				{
-					ElectricConnectionPath electricConnectionPath = m_connectionPathsTable[20 * mountingFace + 4 * (int)electricConnectorDirection + i];
+					ElectricConnectionPath electricConnectionPath = m_connectionPathsTable[(20 * mountingFace) + (4 * (int)electricConnectorDirection) + i];
 					if (electricConnectionPath == null)
 					{
 						break;
@@ -510,7 +510,7 @@ namespace Game
 
 		public static ElectricConnectionPath GetConnectionPath(int mountingFace, ElectricConnectorDirection localConnector, int neighborIndex)
 		{
-			return m_connectionPathsTable[16 * mountingFace + 4 * (int)localConnector + neighborIndex];
+			return m_connectionPathsTable[(16 * mountingFace) + (4 * (int)localConnector) + neighborIndex];
 		}
 
 		public void SimulateElectricElement(ElectricElement electricElement)

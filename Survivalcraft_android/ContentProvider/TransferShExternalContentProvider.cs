@@ -49,11 +49,11 @@ namespace Game
 			{
 				Dictionary<string, string> dictionary = new Dictionary<string, string>();
 				dictionary.Add("Content-Type", "application/octet-stream");
-				WebManager.Put("https://transfer.sh/" + path, null, dictionary, stream, progress, delegate(byte[] result)
+				WebManager.Put("https://transfer.sh/" + path, null, dictionary, stream, progress, delegate (byte[] result)
 				{
 					string obj2 = Encoding.UTF8.GetString(result, 0, result.Length).Trim();
 					success(obj2);
-				}, delegate(Exception error)
+				}, delegate (Exception error)
 				{
 					failure(error);
 				});

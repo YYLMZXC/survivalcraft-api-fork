@@ -127,20 +127,20 @@ namespace Hjg.Pngcs.Chunks
 			bool flag = PngChunk.isKnown(id);
 			switch (behav)
 			{
-			case ChunkLoadBehaviour.LOAD_CHUNK_ALWAYS:
-				return true;
-			case ChunkLoadBehaviour.LOAD_CHUNK_IF_SAFE:
-				if (!flag)
-				{
-					return IsSafeToCopy(id);
-				}
-				return true;
-			case ChunkLoadBehaviour.LOAD_CHUNK_KNOWN:
-				return flag;
-			case ChunkLoadBehaviour.LOAD_CHUNK_NEVER:
-				return false;
-			default:
-				return false;
+				case ChunkLoadBehaviour.LOAD_CHUNK_ALWAYS:
+					return true;
+				case ChunkLoadBehaviour.LOAD_CHUNK_IF_SAFE:
+					if (!flag)
+					{
+						return IsSafeToCopy(id);
+					}
+					return true;
+				case ChunkLoadBehaviour.LOAD_CHUNK_KNOWN:
+					return flag;
+				case ChunkLoadBehaviour.LOAD_CHUNK_NEVER:
+					return false;
+				default:
+					return false;
 			}
 		}
 

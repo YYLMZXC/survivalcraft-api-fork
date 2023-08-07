@@ -131,7 +131,7 @@ namespace Game
 					m_rotation = 0f;
 				}
 			}
-			m_modelWidget.ModelMatrix = ((m_rotation != 0f) ? Matrix.CreateRotationY(m_rotation) : Matrix.Identity);
+			m_modelWidget.ModelMatrix = (m_rotation != 0f) ? Matrix.CreateRotationY(m_rotation) : Matrix.Identity;
 		}
 
 		public override void MeasureOverride(Vector2 parentAvailableSize)
@@ -139,8 +139,8 @@ namespace Game
 			m_modelWidget.Model = OuterClothing ? CharacterSkinsManager.GetOuterClothingModel(PlayerClass) : CharacterSkinsManager.GetPlayerModel(PlayerClass);
 			if (CameraShot == Shot.Body)
 			{
-				m_modelWidget.ViewPosition = ((PlayerClass == PlayerClass.Male) ? new Vector3(0f, 1.46f, -3.2f) : new Vector3(0f, 1.39f, -3.04f));
-				m_modelWidget.ViewTarget = ((PlayerClass == PlayerClass.Male) ? new Vector3(0f, 0.9f, 0f) : new Vector3(0f, 0.86f, 0f));
+				m_modelWidget.ViewPosition = (PlayerClass == PlayerClass.Male) ? new Vector3(0f, 1.46f, -3.2f) : new Vector3(0f, 1.39f, -3.04f);
+				m_modelWidget.ViewTarget = (PlayerClass == PlayerClass.Male) ? new Vector3(0f, 0.9f, 0f) : new Vector3(0f, 0.86f, 0f);
 				m_modelWidget.ViewFov = 0.57f;
 			}
 			else
@@ -149,8 +149,8 @@ namespace Game
 				{
 					throw new InvalidOperationException("Unknown shot.");
 				}
-				m_modelWidget.ViewPosition = ((PlayerClass == PlayerClass.Male) ? new Vector3(0f, 1.5f, -1.05f) : new Vector3(0f, 1.43f, -1f));
-				m_modelWidget.ViewTarget = ((PlayerClass == PlayerClass.Male) ? new Vector3(0f, 1.5f, 0f) : new Vector3(0f, 1.43f, 0f));
+				m_modelWidget.ViewPosition = (PlayerClass == PlayerClass.Male) ? new Vector3(0f, 1.5f, -1.05f) : new Vector3(0f, 1.43f, -1f);
+				m_modelWidget.ViewTarget = (PlayerClass == PlayerClass.Male) ? new Vector3(0f, 1.5f, 0f) : new Vector3(0f, 1.43f, 0f);
 				m_modelWidget.ViewFov = 0.57f;
 			}
 			m_modelWidget.TextureOverride = OuterClothing
@@ -159,7 +159,7 @@ namespace Game
 			if (AnimateHeadSeed != 0)
 			{
 				int num = (AnimateHeadSeed < 0) ? GetHashCode() : AnimateHeadSeed;
-				float num2 = (float)MathUtils.Remainder(Time.FrameStartTime + 1000.0 * num, 10000.0);
+				float num2 = (float)MathUtils.Remainder(Time.FrameStartTime + (1000.0 * num), 10000.0);
 				Vector2 vector = default;
 				vector.X = MathUtils.Lerp(-0.75f, 0.75f, SimplexNoise.OctavedNoise(num2 + 100f, 0.2f, 1, 2f, 0.5f));
 				vector.Y = MathUtils.Lerp(-0.5f, 0.5f, SimplexNoise.OctavedNoise(num2 + 200f, 0.17f, 1, 2f, 0.5f));
@@ -169,7 +169,7 @@ namespace Game
 			if (!OuterClothing && AnimateHandsSeed != 0)
 			{
 				int num3 = (AnimateHandsSeed < 0) ? GetHashCode() : AnimateHandsSeed;
-				float num4 = (float)MathUtils.Remainder(Time.FrameStartTime + 1000.0 * num3, 10000.0);
+				float num4 = (float)MathUtils.Remainder(Time.FrameStartTime + (1000.0 * num3), 10000.0);
 				Vector2 vector2 = default;
 				vector2.X = MathUtils.Lerp(0.2f, 0f, SimplexNoise.OctavedNoise(num4 + 100f, 0.7f, 1, 2f, 0.5f));
 				vector2.Y = MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.OctavedNoise(num4 + 200f, 0.7f, 1, 2f, 0.5f));

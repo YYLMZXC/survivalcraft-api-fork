@@ -87,9 +87,9 @@ namespace Game
 				{
 					particle.IsActive = true;
 					Vector3 v2 = m_random.Vector3(0f, 1f);
-					particle.Position = m_position + 0.3f * v2;
+					particle.Position = m_position + (0.3f * v2);
 					particle.Color = m_color;
-					particle.Velocity = s * (m_direction + m_random.Vector3(0f, 0.1f)) + 2.5f * v2;
+					particle.Velocity = (s * (m_direction + m_random.Vector3(0f, 0.1f))) + (2.5f * v2);
 					particle.Size = Vector2.Zero;
 					particle.Time = 0f;
 					particle.Duration = m_random.Float(0.5f, 2f);

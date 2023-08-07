@@ -15,7 +15,7 @@ namespace Hjg.Pngcs.Chunks
 		public override int GetHashCode()
 		{
 			int num = 1;
-			return 31 * num + ((Id != null) ? Id.GetHashCode() : 0);
+			return (31 * num) + ((Id != null) ? Id.GetHashCode() : 0);
 		}
 
 		public override bool Equals(object obj)

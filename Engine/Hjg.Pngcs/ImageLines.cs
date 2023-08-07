@@ -62,35 +62,35 @@ namespace Hjg.Pngcs
 			channels = ImgInfo.Channels;
 			bitDepth = ImgInfo.BitDepth;
 			this.sampleType = sampleType;
-			SamplesUnpacked = (unpackedMode || !ImgInfo.Packed);
+			SamplesUnpacked = unpackedMode || !ImgInfo.Packed;
 			RowOffset = rowOffset;
 			Nrows = nRows;
 			RowStep = rowStep;
-			elementsPerRow = (unpackedMode ? ImgInfo.SamplesPerRow : ImgInfo.SamplesPerRowPacked);
+			elementsPerRow = unpackedMode ? ImgInfo.SamplesPerRow : ImgInfo.SamplesPerRowPacked;
 			switch (sampleType)
 			{
-			case ImageLine.ESampleType.INT:
-			{
-				Scanlines = new int[nRows][];
-				for (int j = 0; j < nRows; j++)
-				{
-					Scanlines[j] = new int[elementsPerRow];
-				}
-				ScanlinesB = null;
-				break;
-			}
-			case ImageLine.ESampleType.BYTE:
-			{
-				ScanlinesB = new byte[nRows][];
-				for (int i = 0; i < nRows; i++)
-				{
-					ScanlinesB[i] = new byte[elementsPerRow];
-				}
-				Scanlines = null;
-				break;
-			}
-			default:
-				throw new PngjExceptionInternal("bad ImageLine initialization");
+				case ImageLine.ESampleType.INT:
+					{
+						Scanlines = new int[nRows][];
+						for (int j = 0; j < nRows; j++)
+						{
+							Scanlines[j] = new int[elementsPerRow];
+						}
+						ScanlinesB = null;
+						break;
+					}
+				case ImageLine.ESampleType.BYTE:
+					{
+						ScanlinesB = new byte[nRows][];
+						for (int i = 0; i < nRows; i++)
+						{
+							ScanlinesB[i] = new byte[elementsPerRow];
+						}
+						Scanlines = null;
+						break;
+					}
+				default:
+					throw new PngjExceptionInternal("bad ImageLine initialization");
 			}
 		}
 
@@ -121,7 +121,7 @@ namespace Hjg.Pngcs
 
 		public int MatrixRowToImageRow(int mrow)
 		{
-			return mrow * RowStep + RowOffset;
+			return (mrow * RowStep) + RowOffset;
 		}
 
 		public ImageLine GetImageLineAtMatrixRow(int mrow)

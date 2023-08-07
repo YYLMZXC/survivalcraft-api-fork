@@ -29,7 +29,7 @@ namespace Game
 					num++;
 				}
 			}
-			m_voltage = ((num == 2) ? ((~num2 & 0xF) / 15f) : 0f);
+			m_voltage = (num == 2) ? ((~num2 & 0xF) / 15f) : 0f;
 			return m_voltage != voltage;
 		}
 	}

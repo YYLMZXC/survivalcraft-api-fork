@@ -211,7 +211,7 @@ namespace Game
 		{
 			string path = Storage.CombinePaths(directoryName, "Chunks32.dat");
 			string path2 = Storage.CombinePaths(directoryName, "Chunks32h.dat.new");
-			long num = 2 * Storage.GetFileSize(path) + 52428800;
+			long num = (2 * Storage.GetFileSize(path)) + 52428800;
 			if (Storage.FreeSpace < num)
 			{
 				throw new InvalidOperationException($"Not enough free space to convert world. {num / 1024 / 1024}MB required.");
@@ -237,7 +237,7 @@ namespace Game
 						}
 						stream.Position = 12 * num2;
 						TerrainSerializer22.WriteTOCEntry(stream, cx, cz, num2);
-						stream2.Position = 786444 + 132112L * index;
+						stream2.Position = 786444 + (132112L * index);
 						stream.Position = stream.Length;
 						TerrainSerializer129.ReadChunkHeader(stream2);
 						TerrainSerializer22.WriteChunkHeader(stream, cx, cz);
@@ -253,7 +253,7 @@ namespace Game
 									int num5;
 									if (l <= 127)
 									{
-										num5 = ConvertValue(array[4 * num3] | (array[4 * num3 + 1] << 8) | (array[4 * num3 + 2] << 16) | (array[4 * num3 + 3] << 24));
+										num5 = ConvertValue(array[4 * num3] | (array[(4 * num3) + 1] << 8) | (array[(4 * num3) + 2] << 16) | (array[(4 * num3) + 3] << 24));
 										num3++;
 									}
 									else
@@ -261,9 +261,9 @@ namespace Game
 										num5 = 0;
 									}
 									array2[4 * num4] = (byte)num5;
-									array2[4 * num4 + 1] = (byte)(num5 >> 8);
-									array2[4 * num4 + 2] = (byte)(num5 >> 16);
-									array2[4 * num4 + 3] = (byte)(num5 >> 24);
+									array2[(4 * num4) + 1] = (byte)(num5 >> 8);
+									array2[(4 * num4) + 2] = (byte)(num5 >> 16);
+									array2[(4 * num4) + 3] = (byte)(num5 >> 24);
 									num4++;
 								}
 							}

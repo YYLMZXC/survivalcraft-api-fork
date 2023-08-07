@@ -48,7 +48,7 @@ namespace Engine.Media
 			{
 				throw new ArgumentOutOfRangeException(nameof(y));
 			}
-			return Pixels[x + y * Width];
+			return Pixels[x + (y * Width)];
 		}
 
 		public void SetPixel(int x, int y, Color color)
@@ -61,7 +61,7 @@ namespace Engine.Media
 			{
 				throw new ArgumentOutOfRangeException(nameof(y));
 			}
-			Pixels[x + y * Width] = color;
+			Pixels[x + (y * Width)] = color;
 		}
 
 		public static void PremultiplyAlpha(Image image)
@@ -228,14 +228,14 @@ namespace Engine.Media
 		{
 			switch (format)
 			{
-			case ImageFileFormat.Bmp:
-				return Bmp.Load(stream);
-			case ImageFileFormat.Png:
-				return Png.Load(stream);
-			case ImageFileFormat.Jpg:
-				return Jpg.Load(stream);
-			default:
-				throw new InvalidOperationException("Unsupported image file format.");
+				case ImageFileFormat.Bmp:
+					return Bmp.Load(stream);
+				case ImageFileFormat.Png:
+					return Png.Load(stream);
+				case ImageFileFormat.Jpg:
+					return Jpg.Load(stream);
+				default:
+					throw new InvalidOperationException("Unsupported image file format.");
 			}
 		}
 
@@ -266,17 +266,17 @@ namespace Engine.Media
 		{
 			switch (format)
 			{
-			case ImageFileFormat.Bmp:
-				Bmp.Save(image, stream, (!saveAlpha) ? Bmp.Format.RGB8 : Bmp.Format.RGBA8);
-				break;
-			case ImageFileFormat.Png:
-				Png.Save(image, stream, (!saveAlpha) ? Png.Format.RGB8 : Png.Format.RGBA8);
-				break;
-			case ImageFileFormat.Jpg:
-				Jpg.Save(image, stream, 95);
-				break;
-			default:
-				throw new InvalidOperationException("Unsupported image file format.");
+				case ImageFileFormat.Bmp:
+					Bmp.Save(image, stream, (!saveAlpha) ? Bmp.Format.RGB8 : Bmp.Format.RGBA8);
+					break;
+				case ImageFileFormat.Png:
+					Png.Save(image, stream, (!saveAlpha) ? Png.Format.RGB8 : Png.Format.RGBA8);
+					break;
+				case ImageFileFormat.Jpg:
+					Jpg.Save(image, stream, 95);
+					break;
+				default:
+					throw new InvalidOperationException("Unsupported image file format.");
 			}
 		}
 

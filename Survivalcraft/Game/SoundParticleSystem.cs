@@ -54,7 +54,7 @@ namespace Game
 			particle.TimeToLive = m_random.Float(1f, 1.5f);
 			particle.Velocity = 3f * (m_direction + m_random.Vector3(0.5f));
 			particle.BaseColor = color;
-			particle.TextureSlot = m_random.Int(0, TextureSlotsCount * TextureSlotsCount - 1);
+			particle.TextureSlot = m_random.Int(0, (TextureSlotsCount * TextureSlotsCount) - 1);
 			particle.BillboardingMode = ParticleBillboardingMode.Vertical;
 		}
 

@@ -146,7 +146,7 @@ namespace Game
 		{
 			if (amount > 0f)
 			{
-				Health = MathUtils.Min(Health + amount * HealFactor, 1f);
+				Health = MathUtils.Min(Health + (amount * HealFactor), 1f);
 			}
 		}
 
@@ -256,16 +256,16 @@ namespace Game
 			if (BreathingMode == BreathingMode.Air)
 			{
 				int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(m_componentCreature.ComponentCreatureModel.EyePosition.Y), Terrain.ToCell(position.Z));
-				Air = BlocksManager.Blocks[cellContents] is FluidBlock || position.Y > 259f ? MathUtils.Saturate(Air - dt / AirCapacity) : 1f;
+				Air = BlocksManager.Blocks[cellContents] is FluidBlock || position.Y > 259f ? MathUtils.Saturate(Air - (dt / AirCapacity)) : 1f;
 			}
 			else if (BreathingMode == BreathingMode.Water)
 			{
-				Air = m_componentCreature.ComponentBody.ImmersionFactor > 0.25f ? 1f : MathUtils.Saturate(Air - dt / AirCapacity);
+				Air = m_componentCreature.ComponentBody.ImmersionFactor > 0.25f ? 1f : MathUtils.Saturate(Air - (dt / AirCapacity));
 			}
 			if (m_componentCreature.ComponentBody.ImmersionFactor > 0f && m_componentCreature.ComponentBody.ImmersionFluidBlock is MagmaBlock)
 			{
 				Injure(2f * m_componentCreature.ComponentBody.ImmersionFactor * dt, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 1));
-				float num2 = 1.1f + 0.1f * (float)MathUtils.Sin(12.0 * m_subsystemTime.GameTime);
+				float num2 = 1.1f + (0.1f * (float)MathUtils.Sin(12.0 * m_subsystemTime.GameTime));
 				m_redScreenFactor = MathUtils.Max(m_redScreenFactor, num2 * 1.5f * m_componentCreature.ComponentBody.ImmersionFactor);
 			}
 			float num3 = MathUtils.Abs(m_componentCreature.ComponentBody.CollisionVelocityChange.Y);
@@ -278,7 +278,7 @@ namespace Game
 				}
 				Injure(num4, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 2));
 			}
-			m_wasStanding = (m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.StandingOnBody != null);
+			m_wasStanding = m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.StandingOnBody != null;
 			if ((position.Y < 0f || position.Y > 296f) && m_subsystemTime.PeriodicGameTimeEvent(2.0, 0.0))
 			{
 				Injure(0.1f, null, ignoreInvulnerability: true, LanguageControl.Get(GetType().Name, 3));
@@ -387,7 +387,7 @@ namespace Game
 			FallResilienceFactor = 1f;
 			FireResilienceFactor = 1f;
 			HealFactor = 1f;
-			DeathTime = ((value >= 0.0) ? new double?(value) : null);
+			DeathTime = (value >= 0.0) ? new double?(value) : null;
 			CauseOfDeath = valuesDictionary.GetValue<string>("CauseOfDeath");
 			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && Entity.FindComponent<ComponentPlayer>() != null)
 			{

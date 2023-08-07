@@ -8,7 +8,7 @@ namespace Engine.Graphics
 {
 	public class Shader : GraphicsResource
 	{
-		
+
 		public struct ShaderAttributeData
 		{
 			public string Semantic;
@@ -89,7 +89,7 @@ namespace Engine.Graphics
 			return 16384;
 		}
 
-        protected virtual void PrepareForDrawingOverride()
+		protected virtual void PrepareForDrawingOverride()
 		{
 		}
 
@@ -230,21 +230,21 @@ namespace Engine.Graphics
 			if (!shaderCode.StartsWith("#version "))
 				str += "#version 100" + Environment.NewLine;
 			else
-            {
+			{
 				string versioncode = shaderCode.Split(new char[] { '\n' })[0];
 				string versionnum = versioncode.Split(new char[] { ' ' })[1];
-				
+
 				if (int.Parse(versionnum) >= 300 || versioncode.EndsWith("es"))
 					str += $"#version {versionnum} es" + Environment.NewLine;
 				else
 					str += $"#version {versionnum}" + Environment.NewLine;
 				shaderCode = "//" + shaderCode;
-            }
+			}
 
 			str = str + "#define GLSL" + Environment.NewLine;
 			if (isVertexShader)
 			{
-				str = ((!Display.UseReducedZRange) ? (str + "#define OPENGL_POSITION_FIX gl_Position.y *= u_glymul; gl_Position.z = 2.0 * gl_Position.z - gl_Position.w;" + Environment.NewLine) : (str + "#define OPENGL_POSITION_FIX gl_Position.y *= u_glymul;" + Environment.NewLine));
+				str = (!Display.UseReducedZRange) ? (str + "#define OPENGL_POSITION_FIX gl_Position.y *= u_glymul; gl_Position.z = 2.0 * gl_Position.z - gl_Position.w;" + Environment.NewLine) : (str + "#define OPENGL_POSITION_FIX gl_Position.y *= u_glymul;" + Environment.NewLine);
 				str = str + "uniform float u_glymul;" + Environment.NewLine;
 			}
 			foreach (ShaderMacro shaderMacro in shaderMacros)
@@ -260,7 +260,7 @@ namespace Engine.Graphics
 			DeleteShaders();
 		}
 
-        internal override void HandleDeviceReset()
+		internal override void HandleDeviceReset()
 		{
 			CompileShaders();
 		}

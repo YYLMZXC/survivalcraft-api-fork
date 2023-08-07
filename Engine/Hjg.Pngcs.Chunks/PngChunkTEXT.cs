@@ -34,7 +34,7 @@ namespace Hjg.Pngcs.Chunks
 			}
 			key = PngHelperInternal.charsetLatin1.GetString(c.Data, 0, i);
 			i++;
-			val = ((i < c.Data.Length) ? PngHelperInternal.charsetLatin1.GetString(c.Data, i, c.Data.Length - i) : "");
+			val = (i < c.Data.Length) ? PngHelperInternal.charsetLatin1.GetString(c.Data, i, c.Data.Length - i) : "";
 		}
 
 		public override void CloneDataFromRead(PngChunk other)

@@ -456,8 +456,8 @@ namespace FluxJpeg.Core
 
 		private JpegHuffmanTable(short[] lengths, short[] values, bool copy)
 		{
-			this.lengths = (copy ? ((short[])lengths.Clone()) : lengths);
-			this.values = (copy ? ((short[])values.Clone()) : values);
+			this.lengths = copy ? ((short[])lengths.Clone()) : lengths;
+			this.values = copy ? ((short[])values.Clone()) : values;
 		}
 
 		private static short[] checkLengths(short[] lengths)
@@ -472,7 +472,7 @@ namespace FluxJpeg.Core
 			}
 			for (int i = 0; i < lengths.Length; i++)
 			{
-				if (lengths[i] > (1 << i + 1) - 1)
+				if (lengths[i] > (1 << (i + 1)) - 1)
 				{
 					throw new ArgumentException($"Invalid number of codes for code length {(i + 1).ToString()}");
 				}

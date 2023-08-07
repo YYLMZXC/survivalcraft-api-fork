@@ -29,32 +29,32 @@ namespace Game
 			{
 				if (child.IsVisible)
 				{
-					child.Measure(Vector2.Max(parentAvailableSize - 2f * child.Margin, Vector2.Zero));
+					child.Measure(Vector2.Max(parentAvailableSize - (2f * child.Margin), Vector2.Zero));
 					if (Direction == LayoutDirection.Horizontal)
 					{
 						if (child.ParentDesiredSize.X != float.PositiveInfinity)
 						{
-							m_fixedSize += child.ParentDesiredSize.X + 2f * child.Margin.X;
-							parentAvailableSize.X = MathUtils.Max(parentAvailableSize.X - (child.ParentDesiredSize.X + 2f * child.Margin.X), 0f);
+							m_fixedSize += child.ParentDesiredSize.X + (2f * child.Margin.X);
+							parentAvailableSize.X = MathUtils.Max(parentAvailableSize.X - (child.ParentDesiredSize.X + (2f * child.Margin.X)), 0f);
 						}
 						else
 						{
 							m_fillCount++;
 						}
-						num = MathUtils.Max(num, child.ParentDesiredSize.Y + 2f * child.Margin.Y);
+						num = MathUtils.Max(num, child.ParentDesiredSize.Y + (2f * child.Margin.Y));
 					}
 					else
 					{
 						if (child.ParentDesiredSize.Y != float.PositiveInfinity)
 						{
-							m_fixedSize += child.ParentDesiredSize.Y + 2f * child.Margin.Y;
-							parentAvailableSize.Y = MathUtils.Max(parentAvailableSize.Y - (child.ParentDesiredSize.Y + 2f * child.Margin.Y), 0f);
+							m_fixedSize += child.ParentDesiredSize.Y + (2f * child.Margin.Y);
+							parentAvailableSize.Y = MathUtils.Max(parentAvailableSize.Y - (child.ParentDesiredSize.Y + (2f * child.Margin.Y)), 0f);
 						}
 						else
 						{
 							m_fillCount++;
 						}
-						num = MathUtils.Max(num, child.ParentDesiredSize.X + 2f * child.Margin.X);
+						num = MathUtils.Max(num, child.ParentDesiredSize.X + (2f * child.Margin.X));
 					}
 				}
 			}
@@ -77,7 +77,7 @@ namespace Game
 				{
 					if (Direction == LayoutDirection.Horizontal)
 					{
-						float num2 = (child.ParentDesiredSize.X == float.PositiveInfinity) ? ((m_fillCount > 0) ? (MathUtils.Max(ActualSize.X - m_fixedSize, 0f) / m_fillCount) : 0f) : (child.ParentDesiredSize.X + 2f * child.Margin.X);
+						float num2 = (child.ParentDesiredSize.X == float.PositiveInfinity) ? ((m_fillCount > 0) ? (MathUtils.Max(ActualSize.X - m_fixedSize, 0f) / m_fillCount) : 0f) : (child.ParentDesiredSize.X + (2f * child.Margin.X));
 						Vector2 c;
 						Vector2 c2;
 						if (!IsInverted)
@@ -95,7 +95,7 @@ namespace Game
 					}
 					else
 					{
-						float num3 = (child.ParentDesiredSize.Y == float.PositiveInfinity) ? ((m_fillCount > 0) ? (MathUtils.Max(ActualSize.Y - m_fixedSize, 0f) / m_fillCount) : 0f) : (child.ParentDesiredSize.Y + 2f * child.Margin.Y);
+						float num3 = (child.ParentDesiredSize.Y == float.PositiveInfinity) ? ((m_fillCount > 0) ? (MathUtils.Max(ActualSize.Y - m_fixedSize, 0f) / m_fillCount) : 0f) : (child.ParentDesiredSize.Y + (2f * child.Margin.Y));
 						Vector2 c3;
 						Vector2 c4;
 						if (!IsInverted)

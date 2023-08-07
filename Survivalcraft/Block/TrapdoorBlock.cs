@@ -66,7 +66,7 @@ namespace Game
 			if (raycastResult.CellFace.Face < 4)
 			{
 				rotation = raycastResult.CellFace.Face;
-				upsideDown = (raycastResult.HitPoint().Y - raycastResult.CellFace.Y > 0.5f);
+				upsideDown = raycastResult.HitPoint().Y - raycastResult.CellFace.Y > 0.5f;
 			}
 			else
 			{
@@ -75,8 +75,8 @@ namespace Game
 				float num2 = Vector3.Dot(forward, Vector3.UnitX);
 				float num3 = Vector3.Dot(forward, -Vector3.UnitZ);
 				float num4 = Vector3.Dot(forward, -Vector3.UnitX);
-				rotation = ((num == MathUtils.Max(num, num2, num3, num4)) ? 2 : ((num2 == MathUtils.Max(num, num2, num3, num4)) ? 3 : ((num3 != MathUtils.Max(num, num2, num3, num4)) ? ((num4 == MathUtils.Max(num, num2, num3, num4)) ? 1 : 0) : 0)));
-				upsideDown = (raycastResult.CellFace.Face == 5);
+				rotation = (num == MathUtils.Max(num, num2, num3, num4)) ? 2 : ((num2 == MathUtils.Max(num, num2, num3, num4)) ? 3 : ((num3 != MathUtils.Max(num, num2, num3, num4)) ? ((num4 == MathUtils.Max(num, num2, num3, num4)) ? 1 : 0) : 0));
+				upsideDown = raycastResult.CellFace.Face == 5;
 			}
 			int data = SetOpen(SetRotation(SetUpsideDown(0, upsideDown), rotation), open: false);
 			BlockPlacementData result = default;

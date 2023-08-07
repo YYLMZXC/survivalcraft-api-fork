@@ -85,8 +85,8 @@ namespace Game
 			}
 			string arg = m_categories[m_categoryIndex] == null ? LanguageControl.Get("BlocksManager", "All Blocks") : LanguageControl.Get("BlocksManager", m_categories[m_categoryIndex]);
 			m_categoryLabel.Text = $"{arg} ({m_blocksList.Items.Count})";
-			m_prevCategoryButton.IsEnabled = (m_categoryIndex > 0);
-			m_nextCategoryButton.IsEnabled = (m_categoryIndex < m_categories.Count - 1);
+			m_prevCategoryButton.IsEnabled = m_categoryIndex > 0;
+			m_nextCategoryButton.IsEnabled = m_categoryIndex < m_categories.Count - 1;
 			int? value = null;
 			int num = 0;
 			if (m_blocksList.SelectedItem is int)

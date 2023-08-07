@@ -57,7 +57,7 @@ namespace Game
 			if (value != null)
 			{
 				value.IsActive = true;
-				value.Position = new Vector3(point.X, point.Y, point.Z) + new Vector3(0.5f) + 0.2f * new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
+				value.Position = new Vector3(point.X, point.Y, point.Z) + new Vector3(0.5f) + (0.2f * new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f)));
 				value.Size = new Vector2(m_random.Float(0.6f, 0.9f));
 				value.Strength = strength;
 				value.Color = Color.White;

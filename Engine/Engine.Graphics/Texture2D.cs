@@ -63,24 +63,24 @@ namespace Engine.Graphics
 			InitializeTexture2D(width, height, mipLevelsCount, colorFormat);
 			switch (ColorFormat)
 			{
-			case ColorFormat.Rgba8888:
-				m_pixelFormat = All.Rgba;
-				m_pixelType = All.UnsignedByte;
-				break;
-			case ColorFormat.Rgb565:
-				m_pixelFormat = All.Rgb;
-				m_pixelType = All.UnsignedShort565;
-				break;
-			case ColorFormat.Rgba5551:
-				m_pixelFormat = All.Rgba;
-				m_pixelType = All.UnsignedShort5551;
-				break;
-			case ColorFormat.R8:
-				m_pixelFormat = All.Luminance;
-				m_pixelType = All.UnsignedByte;
-				break;
-			default:
-				throw new InvalidOperationException("Unsupported surface format.");
+				case ColorFormat.Rgba8888:
+					m_pixelFormat = All.Rgba;
+					m_pixelType = All.UnsignedByte;
+					break;
+				case ColorFormat.Rgb565:
+					m_pixelFormat = All.Rgb;
+					m_pixelType = All.UnsignedShort565;
+					break;
+				case ColorFormat.Rgba5551:
+					m_pixelFormat = All.Rgba;
+					m_pixelType = All.UnsignedShort5551;
+					break;
+				case ColorFormat.R8:
+					m_pixelFormat = All.Luminance;
+					m_pixelType = All.UnsignedByte;
+					break;
+				default:
+					throw new InvalidOperationException("Unsupported surface format.");
 			}
 			AllocateTexture();
 		}
@@ -99,7 +99,7 @@ namespace Engine.Graphics
 			{
 				int width = MathUtils.Max(Width >> mipLevel, 1);
 				int height = MathUtils.Max(Height >> mipLevel, 1);
-				IntPtr pixels = gCHandle.AddrOfPinnedObject() + sourceStartIndex * Utilities.SizeOf<T>();
+				IntPtr pixels = gCHandle.AddrOfPinnedObject() + (sourceStartIndex * Utilities.SizeOf<T>());
 				GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
 				GL.TexImage2D(All.Texture2D, mipLevel, m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, pixels);
 			}

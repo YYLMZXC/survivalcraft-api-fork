@@ -128,8 +128,8 @@ namespace Game
 					particle.Speed = (0f - m_random.Float(0.75f, 1.25f)) * ParticleSpeed;
 					particle.AnimationTime = m_random.Float(0f, ParticleAnimationOffset);
 					particle.TimeToLive = MathUtils.Lerp(MinTimeToLive, MaxTimeToLive, m_random.Float(0f, 1f));
-					particle.FlipX = (m_random.Int(0, 1) == 0);
-					particle.FlipY = (m_random.Int(0, 1) == 0);
+					particle.FlipX = m_random.Int(0, 1) == 0;
+					particle.FlipY = m_random.Int(0, 1) == 0;
 					m_toGenerate -= 1f;
 				}
 			}
@@ -152,8 +152,8 @@ namespace Game
 
 		public void DrawParticle(TexturedBatch2D batch, Particle particle, float depth, Color color)
 		{
-			Vector2 corner = particle.Position - particle.Size / 2f;
-			Vector2 corner2 = particle.Position + particle.Size / 2f;
+			Vector2 corner = particle.Position - (particle.Size / 2f);
+			Vector2 corner2 = particle.Position + (particle.Size / 2f);
 			int textureSlot = particle.TextureSlot;
 			var v = new Vector2(textureSlot % 3, textureSlot / 3);
 			float num = 0f;

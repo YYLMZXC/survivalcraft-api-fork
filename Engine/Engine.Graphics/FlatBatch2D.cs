@@ -53,7 +53,7 @@ namespace Engine.Graphics
 			for (int i = 0; i <= sides; i++)
 			{
 				float x = MathUtils.Lerp(startAngle, endAngle, (float)i / (float)sides);
-				Vector2 vector = center + radius * new Vector2(MathUtils.Sin(x), 0f - MathUtils.Cos(x));
+				Vector2 vector = center + (radius * new Vector2(MathUtils.Sin(x), 0f - MathUtils.Cos(x)));
 				if (i > 0)
 				{
 					QueueLine(p, vector, depth, color);
@@ -68,7 +68,7 @@ namespace Engine.Graphics
 			for (int i = 0; i <= sides; i++)
 			{
 				float x = MathUtils.Lerp(startAngle, endAngle, (float)i / (float)sides);
-				Vector2 vector = center + radius * new Vector2(MathUtils.Sin(x), 0f - MathUtils.Cos(x));
+				Vector2 vector = center + (radius * new Vector2(MathUtils.Sin(x), 0f - MathUtils.Cos(x)));
 				if (i > 0)
 				{
 					QueueTriangle(p, vector, center, depth, color);
@@ -85,8 +85,8 @@ namespace Engine.Graphics
 			{
 				float x = MathUtils.Lerp(startAngle, endAngle, (float)i / (float)sides);
 				var v = new Vector2(MathUtils.Sin(x), 0f - MathUtils.Cos(x));
-				Vector2 vector = center + outerRadius * v;
-				Vector2 vector2 = center + innerRadius * v;
+				Vector2 vector = center + (outerRadius * v);
+				Vector2 vector2 = center + (innerRadius * v);
 				if (i > 0)
 				{
 					QueueTriangle(p, vector, p2, depth, outerColor, outerColor, innerColor);

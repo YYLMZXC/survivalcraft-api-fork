@@ -32,17 +32,17 @@ namespace Engine.Serialization
 			{
 				if (data.Length == 7)
 				{
-					byte r = (byte)(16 * HexToDecimal(data[1]) + HexToDecimal(data[2]));
-					byte g = (byte)(16 * HexToDecimal(data[3]) + HexToDecimal(data[4]));
-					byte b = (byte)(16 * HexToDecimal(data[5]) + HexToDecimal(data[6]));
+					byte r = (byte)((16 * HexToDecimal(data[1])) + HexToDecimal(data[2]));
+					byte g = (byte)((16 * HexToDecimal(data[3])) + HexToDecimal(data[4]));
+					byte b = (byte)((16 * HexToDecimal(data[5])) + HexToDecimal(data[6]));
 					return new Color(r, g, b);
 				}
 				if (data.Length == 9)
 				{
-					byte r2 = (byte)(16 * HexToDecimal(data[1]) + HexToDecimal(data[2]));
-					byte g2 = (byte)(16 * HexToDecimal(data[3]) + HexToDecimal(data[4]));
-					byte b2 = (byte)(16 * HexToDecimal(data[5]) + HexToDecimal(data[6]));
-					byte a = (byte)(16 * HexToDecimal(data[7]) + HexToDecimal(data[8]));
+					byte r2 = (byte)((16 * HexToDecimal(data[1])) + HexToDecimal(data[2]));
+					byte g2 = (byte)((16 * HexToDecimal(data[3])) + HexToDecimal(data[4]));
+					byte b2 = (byte)((16 * HexToDecimal(data[5])) + HexToDecimal(data[6]));
+					byte a = (byte)((16 * HexToDecimal(data[7])) + HexToDecimal(data[8]));
 					return new Color(r2, g2, b2, a);
 				}
 				throw new Exception();

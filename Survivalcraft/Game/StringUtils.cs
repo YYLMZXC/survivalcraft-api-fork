@@ -80,7 +80,7 @@ namespace Game
 			{
 				return CalculateNumberLength((uint)value, numberBase);
 			}
-			return CalculateNumberLength((uint)(-value), numberBase) + 1;
+			return CalculateNumberLength((uint)-value, numberBase) + 1;
 		}
 
 		public static int CalculateNumberLength(ulong value, int numberBase)
@@ -105,7 +105,7 @@ namespace Game
 			{
 				return CalculateNumberLength((ulong)value, numberBase);
 			}
-			return CalculateNumberLength((ulong)(-value), numberBase) + 1;
+			return CalculateNumberLength((ulong)-value, numberBase) + 1;
 		}
 
 		public static void AppendNumber(this StringBuilder stringBuilder, uint value, int padding = 0, char paddingCharacter = ' ', int numberBase = 10)
@@ -132,7 +132,7 @@ namespace Game
 				return;
 			}
 			stringBuilder.Append('-');
-			stringBuilder.AppendNumber((uint)(-value), padding - 1, paddingCharacter, numberBase);
+			stringBuilder.AppendNumber((uint)-value, padding - 1, paddingCharacter, numberBase);
 		}
 
 		public static void AppendNumber(this StringBuilder stringBuilder, ulong value, int padding = 0, char paddingCharacter = ' ', int numberBase = 10)
@@ -159,7 +159,7 @@ namespace Game
 				return;
 			}
 			stringBuilder.Append('-');
-			stringBuilder.AppendNumber((ulong)(-value), padding - 1, paddingCharacter, numberBase);
+			stringBuilder.AppendNumber((ulong)-value, padding - 1, paddingCharacter, numberBase);
 		}
 
 		public static void AppendNumber(this StringBuilder stringBuilder, float value, int precision)

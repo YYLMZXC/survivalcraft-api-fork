@@ -171,7 +171,7 @@ namespace Game
 			Display.BlendState = BlendState.AlphaBlend;
 			Display.RasterizerState = RasterizerState.CullNoneScissor;
 			ProcessBoneHierarchy(Model.RootBone, Matrix.Identity, m_absoluteBoneTransforms);
-			float num2 = (float)Time.RealTime + GetHashCode() % 1000 / 100f;
+			float num2 = (float)Time.RealTime + (GetHashCode() % 1000 / 100f);
 			Matrix m = (AutoRotationVector.LengthSquared() > 0f) ? Matrix.CreateFromAxisAngle(Vector3.Normalize(AutoRotationVector), AutoRotationVector.Length() * num2) : Matrix.Identity;
 			foreach (ModelMesh mesh in Model.Meshes)
 			{
@@ -188,7 +188,7 @@ namespace Game
 
 		public override void MeasureOverride(Vector2 parentAvailableSize)
 		{
-			IsDrawRequired = (Model != null);
+			IsDrawRequired = Model != null;
 			DesiredSize = Size;
 		}
 

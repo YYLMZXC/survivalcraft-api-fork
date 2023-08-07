@@ -163,7 +163,7 @@ namespace Game
 				if (heat > 0f)
 				{
 					int num15 = MathUtils.Abs(num8) + MathUtils.Abs(num9) + MathUtils.Abs(num10);
-					int num16 = (num15 <= 0) ? 1 : (4 * num15 * num15 + 2);
+					int num16 = (num15 <= 0) ? 1 : ((4 * num15 * num15) + 2);
 					float num17 = 1f / num16;
 					num5 += num17 * 36f * heat;
 					num6 += num17;
@@ -171,7 +171,7 @@ namespace Game
 				else if (block.IsHeatBlocker(cellValueFast))
 				{
 					int num18 = MathUtils.Abs(num8) + MathUtils.Abs(num9) + MathUtils.Abs(num10);
-					int num19 = (num18 <= 0) ? 1 : (4 * num18 * num18 + 2);
+					int num19 = (num18 <= 0) ? 1 : ((4 * num18 * num18) + 2);
 					float num20 = 1f / num19;
 					float num21 = terrain.SeasonTemperature;
 					float num22 = SubsystemWeather.GetTemperatureAdjustmentAtHeight(y2);
@@ -182,7 +182,7 @@ namespace Game
 				else if (y >= chunkAtCell.GetTopHeightFast(x2, z2))
 				{
 					int num24 = MathUtils.Abs(num8) + MathUtils.Abs(num9) + MathUtils.Abs(num10);
-					int num25 = (num24 <= 0) ? 1 : (4 * num24 * num24 + 2);
+					int num25 = (num24 <= 0) ? 1 : ((4 * num24 * num24) + 2);
 					float num26 = 1f / num25;
 					PrecipitationShaftInfo precipitationShaftInfo = m_subsystemWeather.GetPrecipitationShaftInfo(x, z);
 					float num27 = terrain.SeasonTemperature;
@@ -232,7 +232,7 @@ namespace Game
 					}
 					for (int m = -7; m <= 7; m++)
 					{
-						int num32 = k * k + m * m + l * l;
+						int num32 = (k * k) + (m * m) + (l * l);
 						if (num32 > 49 || num32 <= 0)
 						{
 							continue;
@@ -286,7 +286,7 @@ namespace Game
 				num34 += meterTemperature * meterInsulation;
 				num35 += meterInsulation;
 			}
-			temperature = ((num35 > 0f) ? (num34 / num35) : meterTemperature);
+			temperature = (num35 > 0f) ? (num34 / num35) : meterTemperature;
 			temperatureFlux = num35 - meterInsulation;
 		}
 

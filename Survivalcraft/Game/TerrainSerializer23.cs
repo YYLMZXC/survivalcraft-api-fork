@@ -183,7 +183,7 @@ namespace Game
 					int num = count - list.Count;
 					int num2 = (int)((Stream.Length - 786444) / NodeSize);
 					int num3 = num2 + num - 1;
-					Stream.SetLength(Stream.Length + NodeSize * num);
+					Stream.SetLength(Stream.Length + (NodeSize * num));
 					WriteNode(num3, null, 0, 0, -1);
 					if (list.Count > 0)
 					{
@@ -225,7 +225,7 @@ namespace Game
 
 			private ChunkDescriptor ReadChunkDescriptor(int i)
 			{
-				Stream.Position = 12 + i * 12;
+				Stream.Position = 12 + (i * 12);
 				ChunkDescriptor result = default(ChunkDescriptor);
 				result.Index = i;
 				result.Coords.X = Reader.ReadInt32();
@@ -236,7 +236,7 @@ namespace Game
 
 			private void WriteChunkDescriptor(ChunkDescriptor desc)
 			{
-				Stream.Position = 12 + desc.Index * 12;
+				Stream.Position = 12 + (desc.Index * 12);
 				Writer.Write(desc.Coords.X);
 				Writer.Write(desc.Coords.Y);
 				Writer.Write(desc.StartNode);
@@ -248,7 +248,7 @@ namespace Game
 				{
 					throw new InvalidOperationException("Invalid node.");
 				}
-				Stream.Position = 786444 + node * NodeSize;
+				Stream.Position = 786444 + (node * NodeSize);
 				if (ReverseEndianness(Reader.ReadUInt32()) != 3735927296u)
 				{
 					throw new InvalidOperationException("Invalid node magic.");
@@ -268,7 +268,7 @@ namespace Game
 				{
 					throw new InvalidOperationException("Invalid node.");
 				}
-				Stream.Position = 786444 + node * NodeSize;
+				Stream.Position = 786444 + (node * NodeSize);
 				int value = MakeNodeHeader(node, size, nextNode);
 				Writer.Write(ReverseEndianness(3735927296u));
 				Writer.Write(value);
@@ -284,7 +284,7 @@ namespace Game
 				{
 					return (dataSize << 1) | 1;
 				}
-				return nextNode - (node + 1) << 1;
+				return (nextNode - (node + 1)) << 1;
 			}
 
 			private void ParseNodeHeader(int node, int nodeHeader, out int dataSize, out int nextNode)
@@ -425,7 +425,7 @@ namespace Game
 				{
 					using (BinaryWriter writer = new BinaryWriter(regionStream, Encoding.UTF8, leaveOpen: true))
 					{
-						int num = point.X + 16 * point.Y;
+						int num = point.X + (16 * point.Y);
 						DirectoryEntry[] array = ReadDirectoryEntries(reader);
 						DirectoryEntry directoryEntry = array[num];
 						DirectoryEntry entry;
@@ -605,8 +605,8 @@ namespace Game
 
 			private static DirectoryEntry ReadDirectoryEntry(BinaryReader reader, Point2 chunk)
 			{
-				int num = chunk.X + 16 * chunk.Y;
-				reader.BaseStream.Position = 4 + num * 8;
+				int num = chunk.X + (16 * chunk.Y);
+				reader.BaseStream.Position = 4 + (num * 8);
 				return ReadDirectoryEntry(reader);
 			}
 
@@ -636,8 +636,8 @@ namespace Game
 
 			private static void WriteDirectoryEntry(BinaryWriter writer, Point2 chunk, DirectoryEntry entry)
 			{
-				int num = chunk.X + 16 * chunk.Y;
-				writer.BaseStream.Position = 4 + num * 8;
+				int num = chunk.X + (16 * chunk.Y);
+				writer.BaseStream.Position = 4 + (num * 8);
 				WriteDirectoryEntry(writer, entry);
 			}
 

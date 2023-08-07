@@ -53,7 +53,7 @@ namespace Game
 		{
 			if (m_satiation > 0f)
 			{
-				m_satiation = MathUtils.Max(m_satiation - 0.01f * m_subsystemTime.GameTimeDelta, 0f);
+				m_satiation = MathUtils.Max(m_satiation - (0.01f * m_subsystemTime.GameTimeDelta), 0f);
 			}
 			m_stateMachine.Update();
 		}

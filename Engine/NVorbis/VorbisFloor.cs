@@ -127,7 +127,7 @@ namespace NVorbis
 
 			private static float toBARK(double lsp)
 			{
-				return (float)(13.1 * Math.Atan(0.00074 * lsp) + 2.24 * Math.Atan(1.85E-08 * lsp * lsp) + 0.0001 * lsp);
+				return (float)((13.1 * Math.Atan(0.00074 * lsp)) + (2.24 * Math.Atan(1.85E-08 * lsp * lsp)) + (0.0001 * lsp));
 			}
 
 			private float[] SynthesizeWDelMap(int n)
@@ -229,7 +229,7 @@ namespace NVorbis
 						if (i == _order)
 						{
 							num5 *= num6 - packetData2.Coeff[i - 1];
-							num4 *= num4 * (4f - num6 * num6);
+							num4 *= num4 * (4f - (num6 * num6));
 							num5 *= num5;
 						}
 						else
@@ -237,7 +237,7 @@ namespace NVorbis
 							num4 *= num4 * (2f - num6);
 							num5 *= num5 * (2f + num6);
 						}
-						num5 = packetData2.Amp / (float)Math.Sqrt(num4 + num5) - (float)_ampOfs;
+						num5 = (packetData2.Amp / (float)Math.Sqrt(num4 + num5)) - (float)_ampOfs;
 						num5 = (float)Math.Exp(num5 * 0.115129247f);
 						residue[num2] *= num5;
 						while (array[++num2] == num3)
@@ -801,11 +801,11 @@ namespace NVorbis
 						}
 						else if (num4 % 2 == 1)
 						{
-							_finalY[i] = num3 - (num4 + 1) / 2;
+							_finalY[i] = num3 - ((num4 + 1) / 2);
 						}
 						else
 						{
-							_finalY[i] = num3 + num4 / 2;
+							_finalY[i] = num3 + (num4 / 2);
 						}
 					}
 					else
@@ -838,7 +838,7 @@ namespace NVorbis
 				int num = y1 - y0;
 				int num2 = x1 - x0;
 				int num3 = Math.Abs(num);
-				int num4 = 1 - ((num >> 31) & 1) * 2;
+				int num4 = 1 - (((num >> 31) & 1) * 2);
 				int num5 = num / num2;
 				int num6 = x0;
 				int num7 = y0;
@@ -867,12 +867,12 @@ namespace NVorbis
 			VorbisFloor vorbisFloor = null;
 			switch (num)
 			{
-			case 0:
-				vorbisFloor = new Floor0(vorbis);
-				break;
-			case 1:
-				vorbisFloor = new Floor1(vorbis);
-				break;
+				case 0:
+					vorbisFloor = new Floor0(vorbis);
+					break;
+				case 1:
+					vorbisFloor = new Floor1(vorbis);
+					break;
 			}
 			if (vorbisFloor == null)
 			{

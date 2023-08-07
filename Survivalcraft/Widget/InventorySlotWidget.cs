@@ -150,7 +150,7 @@ namespace Game
 			{
 				if (m_dragHostWidget == null)
 				{
-					m_dragHostWidget = ((GameWidget != null) ? GameWidget.Children.Find<DragHostWidget>(throwIfNotFound: false) : null);
+					m_dragHostWidget = (GameWidget != null) ? GameWidget.Children.Find<DragHostWidget>(throwIfNotFound: false) : null;
 				}
 				return m_dragHostWidget;
 			}
@@ -375,7 +375,7 @@ namespace Game
 				containerWidget.Children.Find<BlockIconWidget>("InventoryDragWidget.Icon").DrawBlockEnvironmentData.SubsystemTerrain = subsystemTerrain;
 				containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Name").Text = block.GetDisplayName(subsystemTerrain, slotValue);
 				containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Count").Text = num3.ToString();
-				containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Count").IsVisible = (!(m_inventory is ComponentCreativeInventory) && !(m_inventory is ComponentFurnitureInventory));
+				containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Count").IsVisible = !(m_inventory is ComponentCreativeInventory) && !(m_inventory is ComponentFurnitureInventory);
 				DragHostWidget.BeginDrag(containerWidget, new InventoryDragData
 				{
 					Inventory = m_inventory,
@@ -397,7 +397,7 @@ namespace Game
 				int num = m_inventory.GetSlotCount(m_slotIndex);
 				if (!flag && m_dragMode.HasValue)
 				{
-					num = ((m_dragMode.Value != 0) ? MathUtils.Max(num - 1, 0) : 0);
+					num = (m_dragMode.Value != 0) ? MathUtils.Max(num - 1, 0) : 0;
 				}
 				m_rectangleWidget.IsVisible = true;
 				if (num > 0)
@@ -413,11 +413,11 @@ namespace Game
 						m_countWidget.Text = num.ToString();
 						m_lastCount = num;
 					}
-					m_countWidget.IsVisible = (num > 1 && !flag);
-					m_editOverlayWidget.IsVisible = (!HideEditOverlay && block.IsEditable_(slotValue));
-					m_interactiveOverlayWidget.IsVisible = (!HideInteractiveOverlay && (block.IsInteractive(m_subsystemTerrain, slotValue)));
-					m_foodOverlayWidget.IsVisible = (!HideFoodOverlay && block.GetRotPeriod(slotValue) > 0);
-					m_foodOverlayWidget.FillColor = (flag2 ? new Color(128, 64, 0) : new Color(160, 160, 160));
+					m_countWidget.IsVisible = num > 1 && !flag;
+					m_editOverlayWidget.IsVisible = !HideEditOverlay && block.IsEditable_(slotValue);
+					m_interactiveOverlayWidget.IsVisible = !HideInteractiveOverlay && block.IsInteractive(m_subsystemTerrain, slotValue);
+					m_foodOverlayWidget.IsVisible = !HideFoodOverlay && block.GetRotPeriod(slotValue) > 0;
+					m_foodOverlayWidget.FillColor = flag2 ? new Color(128, 64, 0) : new Color(160, 160, 160);
 					if (!flag)
 					{
 						float percent = block.GetBlockHealth(slotValue);
@@ -473,7 +473,7 @@ namespace Game
 				m_foodOverlayWidget.IsVisible = false;
 				m_splitLabelWidget.IsVisible = false;
 			}
-			IsDrawRequired = (m_inventoryDragData != null);
+			IsDrawRequired = m_inventoryDragData != null;
 			base.MeasureOverride(parentAvailableSize);
 		}
 
@@ -498,7 +498,7 @@ namespace Game
 
 		public void DragOver(Widget dragWidget, object data)
 		{
-			m_inventoryDragData = (data as InventoryDragData);
+			m_inventoryDragData = data as InventoryDragData;
 		}
 
 		public void DragDrop(Widget dragWidget, object data)

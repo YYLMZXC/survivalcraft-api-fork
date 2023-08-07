@@ -106,7 +106,7 @@ namespace Game
 				return;
 			}
 			m_newYearCelebrationTimeRemaining -= dt;
-			float num = (m_newYearCelebrationTimeRemaining > 10f) ? MathUtils.Lerp(1f, 7f, 0.5f * MathUtils.Sin(0.25f * m_newYearCelebrationTimeRemaining) + 0.5f) : 20f;
+			float num = (m_newYearCelebrationTimeRemaining > 10f) ? MathUtils.Lerp(1f, 7f, (0.5f * MathUtils.Sin(0.25f * m_newYearCelebrationTimeRemaining)) + 0.5f) : 20f;
 			if (m_random.Float(0f, 1f) < num * dt)
 			{
 				Vector2 vector = m_random.Vector2(35f, 50f);

@@ -29,7 +29,7 @@ namespace Game
 
 		public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
 		{
-			componentPlayer.ComponentGui.ModalPanelWidget = ((componentPlayer.ComponentGui.ModalPanelWidget == null) ? new CrossbowWidget(inventory, slotIndex) : null);
+			componentPlayer.ComponentGui.ModalPanelWidget = (componentPlayer.ComponentGui.ModalPanelWidget == null) ? new CrossbowWidget(inventory, slotIndex) : null;
 			return true;
 		}
 
@@ -55,7 +55,7 @@ namespace Game
 						}
 						float num2 = (float)(m_subsystemTime.GameTime - value);
 						float num3 = (float)MathUtils.Remainder(m_subsystemTime.GameTime, 1000.0);
-						Vector3 v = ((componentMiner.ComponentCreature.ComponentBody.IsSneaking ? 0.01f : 0.03f) + 0.15f * MathUtils.Saturate((num2 - 2.5f) / 6f)) * new Vector3
+						Vector3 v = ((componentMiner.ComponentCreature.ComponentBody.IsSneaking ? 0.01f : 0.03f) + (0.15f * MathUtils.Saturate((num2 - 2.5f) / 6f))) * new Vector3
 						{
 							X = SimplexNoise.OctavedNoise(num3, 2f, 3, 2f, 0.5f),
 							Y = SimplexNoise.OctavedNoise(num3 + 100f, 2f, 3, 2f, 0.5f),
@@ -99,8 +99,8 @@ namespace Game
 									}
 									else
 									{
-										Vector3 vector = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.3f - componentMiner.ComponentCreature.ComponentBody.Matrix.Up * 0.2f;
-										var v2 = Vector3.Normalize(vector + aim.Direction * 10f - vector);
+										Vector3 vector = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + (componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.3f) - (componentMiner.ComponentCreature.ComponentBody.Matrix.Up * 0.2f);
+										var v2 = Vector3.Normalize(vector + (aim.Direction * 10f) - vector);
 										int value2 = Terrain.MakeBlockValue(192, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
 										float s = 38f;
 										if (m_subsystemProjectiles.FireProjectile(value2, vector, s * v2, Vector3.Zero, componentMiner.ComponentCreature) != null)

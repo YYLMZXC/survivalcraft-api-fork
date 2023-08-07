@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Engine
 {
-    public struct BoundingRectangle : IEquatable<BoundingRectangle>
+	public struct BoundingRectangle : IEquatable<BoundingRectangle>
 	{
 		public Vector2 Min;
 
@@ -113,7 +113,7 @@ namespace Engine
 		{
 			float num = circle.Center.X - MathUtils.Clamp(circle.Center.X, Min.X, Max.X);
 			float num2 = circle.Center.Y - MathUtils.Clamp(circle.Center.Y, Min.Y, Max.Y);
-			return num * num + num2 * num2 <= circle.Radius * circle.Radius;
+			return (num * num) + (num2 * num2) <= circle.Radius * circle.Radius;
 		}
 
 		public static BoundingRectangle Intersection(BoundingRectangle r1, BoundingRectangle r2)
@@ -145,7 +145,7 @@ namespace Engine
 		{
 			float num = MathUtils.Max(r.Min.X - p.X, 0f, p.X - r.Max.X);
 			float num2 = MathUtils.Max(r.Min.Y - p.Y, 0f, p.Y - r.Max.Y);
-			return MathUtils.Sqrt(num * num + num2 * num2);
+			return MathUtils.Sqrt((num * num) + (num2 * num2));
 		}
 
 		public static bool operator ==(BoundingRectangle a, BoundingRectangle b)

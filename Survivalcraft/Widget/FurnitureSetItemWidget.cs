@@ -36,7 +36,7 @@ namespace Game
 
 		public void DragOver(Widget dragWidget, object data)
 		{
-			m_highlighted = (GetFurnitureDesign(data) != null);
+			m_highlighted = GetFurnitureDesign(data) != null;
 		}
 
 		public override void MeasureOverride(Vector2 parentAvailableSize)

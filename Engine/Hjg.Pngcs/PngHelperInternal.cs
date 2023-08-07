@@ -39,7 +39,7 @@ namespace Hjg.Pngcs
 
 		public static int DoubleToInt100000(double d)
 		{
-			return (int)(d * 100000.0 + 0.5);
+			return (int)((d * 100000.0) + 0.5);
 		}
 
 		public static double IntToDouble100000(int i)

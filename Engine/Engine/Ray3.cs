@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public struct Ray3 : IEquatable<Ray3>
+	public struct Ray3 : IEquatable<Ray3>
 	{
 		public Vector3 Position;
 
@@ -88,12 +88,12 @@ namespace Engine
 				{
 					return null;
 				}
-				float num = Position.Z + vector.X * Direction.Z;
+				float num = Position.Z + (vector.X * Direction.Z);
 				if (num < box.Min.Z || num > box.Max.Z)
 				{
 					return null;
 				}
-				num = Position.Y + vector.X * Direction.Y;
+				num = Position.Y + (vector.X * Direction.Y);
 				if (num < box.Min.Y || num > box.Max.Y)
 				{
 					return null;
@@ -106,12 +106,12 @@ namespace Engine
 				{
 					return null;
 				}
-				float num2 = Position.Z + vector.Y * Direction.Z;
+				float num2 = Position.Z + (vector.Y * Direction.Z);
 				if (num2 < box.Min.Z || num2 > box.Max.Z)
 				{
 					return null;
 				}
-				num2 = Position.X + vector.Y * Direction.X;
+				num2 = Position.X + (vector.Y * Direction.X);
 				if (num2 < box.Min.X || num2 > box.Max.X)
 				{
 					return null;
@@ -122,12 +122,12 @@ namespace Engine
 			{
 				return null;
 			}
-			float num3 = Position.X + vector.Z * Direction.X;
+			float num3 = Position.X + (vector.Z * Direction.X);
 			if (num3 < box.Min.X || num3 > box.Max.X)
 			{
 				return null;
 			}
-			num3 = Position.Y + vector.Z * Direction.Y;
+			num3 = Position.Y + (vector.Z * Direction.Y);
 			if (num3 < box.Min.Y || num3 > box.Max.Y)
 			{
 				return null;
@@ -149,7 +149,7 @@ namespace Engine
 			{
 				return null;
 			}
-			float num4 = num2 + num3 * num3 - num;
+			float num4 = num2 + (num3 * num3) - num;
 			if (!(num4 < 0f))
 			{
 				return num3 - MathUtils.Sqrt(num4);

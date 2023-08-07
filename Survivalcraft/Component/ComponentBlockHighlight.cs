@@ -138,7 +138,7 @@ namespace Game
 			Color color = Color.White * 0.5f;
 			var color2 = Color.Lerp(color, Color.Transparent, MathUtils.Saturate(num / 2f));
 			FlatBatch3D flatBatch3D = m_primitivesRenderer3D.FlatBatch();
-			flatBatch3D.QueueLine(ray.Position, ray.Position + ray.Direction * num, color, color2);
+			flatBatch3D.QueueLine(ray.Position, ray.Position + (ray.Direction * num), color, color2);
 			flatBatch3D.Flush(camera.ViewProjectionMatrix);
 		}
 
@@ -235,7 +235,7 @@ namespace Game
 				{
 					if (customCollisionBoxes[i] != default)
 					{
-						boundingBox = (boundingBox.HasValue ? BoundingBox.Union(boundingBox.Value, customCollisionBoxes[i]) : customCollisionBoxes[i]);
+						boundingBox = boundingBox.HasValue ? BoundingBox.Union(boundingBox.Value, customCollisionBoxes[i]) : customCollisionBoxes[i];
 					}
 				}
 				if (!boundingBox.HasValue)

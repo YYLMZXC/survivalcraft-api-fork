@@ -93,7 +93,7 @@ namespace Game
 					float num = ScoreTarget(m_target);
 					SetImportanceLevel(num);
 					var vector = Vector3.Normalize(m_componentCreature.ComponentBody.Position - m_target.ComponentBody.Position);
-					Vector3 value = m_componentCreature.ComponentBody.Position + 10f * Vector3.Normalize(new Vector3(vector.X, 0f, vector.Z));
+					Vector3 value = m_componentCreature.ComponentBody.Position + (10f * Vector3.Normalize(new Vector3(vector.X, 0f, vector.Z)));
 					m_componentPathfinding.SetDestination(value, MathUtils.Lerp(0.6f, 1f, num), 1f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
 					m_componentCreature.ComponentCreatureModel.LookRandomOrder = true;
 					if (m_random.Float(0f, 1f) < 0.1f * m_dt)
@@ -144,7 +144,7 @@ namespace Game
 					return 0f;
 				}
 				float num2 = Vector3.Distance(target.ComponentBody.Position, m_componentCreature.ComponentBody.Position);
-				return MathUtils.Saturate(1f - num2 / num);
+				return MathUtils.Saturate(1f - (num2 / num));
 			}
 			return 0f;
 		}

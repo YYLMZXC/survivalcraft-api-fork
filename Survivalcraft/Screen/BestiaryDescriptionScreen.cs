@@ -55,8 +55,8 @@ namespace Game
 
 		public override void Update()
 		{
-			m_leftButtonWidget.IsEnabled = (m_index > 0);
-			m_rightButtonWidget.IsEnabled = (m_index < m_infoList.Count - 1);
+			m_leftButtonWidget.IsEnabled = m_index > 0;
+			m_rightButtonWidget.IsEnabled = m_index < m_infoList.Count - 1;
 			if (m_leftButtonWidget.IsClicked || Input.Left)
 			{
 				m_index = MathUtils.Max(m_index - 1, 0);

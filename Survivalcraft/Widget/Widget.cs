@@ -282,7 +282,7 @@ namespace Game
 			set
 			{
 				m_layoutTransform = value;
-				m_isLayoutTransformIdentity = (value == Matrix.Identity);
+				m_isLayoutTransformIdentity = value == Matrix.Identity;
 			}
 		}
 
@@ -295,7 +295,7 @@ namespace Game
 			set
 			{
 				m_renderTransform = value;
-				m_isRenderTransformIdentity = (value == Matrix.Identity);
+				m_isRenderTransformIdentity = value == Matrix.Identity;
 			}
 		}
 
@@ -695,8 +695,8 @@ namespace Game
 			float num2 = m_layoutTransform.M12 * m_layoutTransform.M12;
 			float num3 = m_layoutTransform.M21 * m_layoutTransform.M21;
 			float num4 = m_layoutTransform.M22 * m_layoutTransform.M22;
-			m_actualSize.X = (num * parentActualSize.X + num3 * parentActualSize.Y) / (num + num3);
-			m_actualSize.Y = (num2 * parentActualSize.X + num4 * parentActualSize.Y) / (num2 + num4);
+			m_actualSize.X = ((num * parentActualSize.X) + (num3 * parentActualSize.Y)) / (num + num3);
+			m_actualSize.Y = ((num2 * parentActualSize.X) + (num4 * parentActualSize.Y)) / (num2 + num4);
 			m_parentOffset = -TransformBoundsToParent(m_actualSize).Min;
 			m_globalColorTransform = ParentWidget != null ? ParentWidget.m_globalColorTransform * m_colorTransform : m_colorTransform;
 			if (m_isRenderTransformIdentity)

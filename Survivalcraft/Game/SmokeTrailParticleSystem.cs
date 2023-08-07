@@ -50,7 +50,7 @@ namespace Game
 			Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
 			TextureSlotsCount = 3;
 			m_textureSlotMultiplier = m_random.Float(1.1f, 1.9f);
-			m_textureSlotOffset = ((m_random.Float(0f, 1f) < 0.33f) ? 3 : 0);
+			m_textureSlotOffset = (m_random.Float(0f, 1f) < 0.33f) ? 3 : 0;
 			m_color = color;
 		}
 
@@ -77,8 +77,8 @@ namespace Game
 						particle.Position += particle.Velocity * dt;
 						particle.Velocity *= num2;
 						particle.Velocity.Y += 10f * dt;
-						particle.TextureSlot = (int)MathUtils.Min(9f * particle.Time / particle.Duration * m_textureSlotMultiplier + m_textureSlotOffset, 8f);
-						particle.Size = new Vector2(m_size * (0.15f + 0.8f * particle.Time / particle.Duration));
+						particle.TextureSlot = (int)MathUtils.Min((9f * particle.Time / particle.Duration * m_textureSlotMultiplier) + m_textureSlotOffset, 8f);
+						particle.Size = new Vector2(m_size * (0.15f + (0.8f * particle.Time / particle.Duration)));
 					}
 					else
 					{
@@ -89,7 +89,7 @@ namespace Game
 				{
 					particle.IsActive = true;
 					var v = new Vector3(m_random.Float(-1f, 1f), m_random.Float(-1f, 1f), m_random.Float(-1f, 1f));
-					particle.Position = Position + 0.025f * v;
+					particle.Position = Position + (0.025f * v);
 					particle.Color = m_color;
 					particle.Velocity = 0.2f * v;
 					particle.Time = 0f;

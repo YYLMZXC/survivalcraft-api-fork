@@ -86,7 +86,7 @@ namespace Game
 					var vector2 = Vector3.Normalize(matrix.Right);
 					Vector3 vector3 = -Vector3.Normalize(matrix.Forward);
 					Color color = GlowingEyesColor * num3;
-					m_eyeGlowPoints[0].Position = translation + vector2 * GlowingEyesOffset.X + vector3 * GlowingEyesOffset.Y + vector * GlowingEyesOffset.Z;
+					m_eyeGlowPoints[0].Position = translation + (vector2 * GlowingEyesOffset.X) + (vector3 * GlowingEyesOffset.Y) + (vector * GlowingEyesOffset.Z);
 					m_eyeGlowPoints[0].Right = vector2;
 					m_eyeGlowPoints[0].Up = vector3;
 					m_eyeGlowPoints[0].Forward = vector;
@@ -94,7 +94,7 @@ namespace Game
 					m_eyeGlowPoints[0].FarSize = 0.06f;
 					m_eyeGlowPoints[0].FarDistance = 14f;
 					m_eyeGlowPoints[0].Color = color;
-					m_eyeGlowPoints[1].Position = translation - vector2 * GlowingEyesOffset.X + vector3 * GlowingEyesOffset.Y + vector * GlowingEyesOffset.Z;
+					m_eyeGlowPoints[1].Position = translation - (vector2 * GlowingEyesOffset.X) + (vector3 * GlowingEyesOffset.Y) + (vector * GlowingEyesOffset.Z);
 					m_eyeGlowPoints[1].Right = vector2;
 					m_eyeGlowPoints[1].Up = vector3;
 					m_eyeGlowPoints[1].Forward = vector;

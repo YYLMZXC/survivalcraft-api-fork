@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine
 {
-    public class StreamLogSink : ILogSink
+	public class StreamLogSink : ILogSink
 	{
 		private StreamWriter m_writer;
 

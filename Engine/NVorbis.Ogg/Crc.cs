@@ -34,7 +34,7 @@ namespace NVorbis.Ogg
 
 		public void Update(int nextVal)
 		{
-			_crc = ((_crc << 8) ^ crcTable[nextVal ^ (_crc >> 24)]);
+			_crc = (_crc << 8) ^ crcTable[nextVal ^ (_crc >> 24)];
 		}
 
 		public bool Test(uint checkCrc)

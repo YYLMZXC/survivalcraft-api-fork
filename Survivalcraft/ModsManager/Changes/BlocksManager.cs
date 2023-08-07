@@ -165,7 +165,7 @@ namespace Game
 
 		public static void DrawCubeBlock(PrimitivesRenderer3D primitivesRenderer, int value, Vector3 size, ref Matrix matrix, Color color, Color topColor, DrawBlockEnvironmentData environmentData, Texture2D texture)
 		{
-			environmentData = (environmentData ?? m_defaultEnvironmentData);
+			environmentData = environmentData ?? m_defaultEnvironmentData;
 			TexturedBatch3D texturedBatch3D = primitivesRenderer.TexturedBatch(texture, useAlphaTest: true, 0, null, RasterizerState.CullCounterClockwiseScissor, null, SamplerState.PointClamp);
 			float s = LightingManager.LightIntensityByLightValue[environmentData.Light];
 			color = Color.MultiplyColorOnly(color, s);
@@ -174,14 +174,14 @@ namespace Game
 			Vector3 vector = matrix.Right * size.X;
 			Vector3 v = matrix.Up * size.Y;
 			Vector3 v2 = matrix.Forward * size.Z;
-			Vector3 v3 = translation + 0.5f * (-vector - v - v2);
-			Vector3 v4 = translation + 0.5f * (vector - v - v2);
-			Vector3 v5 = translation + 0.5f * (-vector + v - v2);
-			Vector3 v6 = translation + 0.5f * (vector + v - v2);
-			Vector3 v7 = translation + 0.5f * (-vector - v + v2);
-			Vector3 v8 = translation + 0.5f * (vector - v + v2);
-			Vector3 v9 = translation + 0.5f * (-vector + v + v2);
-			Vector3 v10 = translation + 0.5f * (vector + v + v2);
+			Vector3 v3 = translation + (0.5f * (-vector - v - v2));
+			Vector3 v4 = translation + (0.5f * (vector - v - v2));
+			Vector3 v5 = translation + (0.5f * (-vector + v - v2));
+			Vector3 v6 = translation + (0.5f * (vector + v - v2));
+			Vector3 v7 = translation + (0.5f * (-vector - v + v2));
+			Vector3 v8 = translation + (0.5f * (vector - v + v2));
+			Vector3 v9 = translation + (0.5f * (-vector + v + v2));
+			Vector3 v10 = translation + (0.5f * (vector + v + v2));
 			if (environmentData.ViewProjectionMatrix.HasValue)
 			{
 				Matrix m = environmentData.ViewProjectionMatrix.Value;
@@ -201,38 +201,38 @@ namespace Game
 			int textureSlot = block.GetFaceTextureSlot(0, value);
 			vector2.X = ((float)(textureSlot % textureSlotCount)) / textureSlotCount;
 			vector2.Y = ((float)(textureSlot / textureSlotCount)) / textureSlotCount;
-			vector2.W = vector2.Y + 1f / textureSlotCount;
-			vector2.Z = vector2.X + 1f / textureSlotCount;
+			vector2.W = vector2.Y + (1f / textureSlotCount);
+			vector2.Z = vector2.X + (1f / textureSlotCount);
 			texturedBatch3D.QueueQuad(color: Color.MultiplyColorOnly(color, LightingManager.CalculateLighting(-matrix.Forward)), p1: v3, p2: v5, p3: v6, p4: v4, texCoord1: new Vector2(vector2.X, vector2.W), texCoord2: new Vector2(vector2.X, vector2.Y), texCoord3: new Vector2(vector2.Z, vector2.Y), texCoord4: new Vector2(vector2.Z, vector2.W));
 			textureSlot = block.GetFaceTextureSlot(2, value);
 			vector2.X = ((float)(textureSlot % textureSlotCount)) / textureSlotCount;
 			vector2.Y = ((float)(textureSlot / textureSlotCount)) / textureSlotCount;
-			vector2.W = vector2.Y + 1f / textureSlotCount;
-			vector2.Z = vector2.X + 1f / textureSlotCount;
+			vector2.W = vector2.Y + (1f / textureSlotCount);
+			vector2.Z = vector2.X + (1f / textureSlotCount);
 			texturedBatch3D.QueueQuad(color: Color.MultiplyColorOnly(color, LightingManager.CalculateLighting(matrix.Forward)), p1: v7, p2: v8, p3: v10, p4: v9, texCoord1: new Vector2(vector2.Z, vector2.W), texCoord2: new Vector2(vector2.X, vector2.W), texCoord3: new Vector2(vector2.X, vector2.Y), texCoord4: new Vector2(vector2.Z, vector2.Y));
 			textureSlot = block.GetFaceTextureSlot(5, value);
 			vector2.X = ((float)(textureSlot % textureSlotCount)) / textureSlotCount;
 			vector2.Y = ((float)(textureSlot / textureSlotCount)) / textureSlotCount;
-			vector2.W = vector2.Y + 1f / textureSlotCount;
-			vector2.Z = vector2.X + 1f / textureSlotCount;
+			vector2.W = vector2.Y + (1f / textureSlotCount);
+			vector2.Z = vector2.X + (1f / textureSlotCount);
 			texturedBatch3D.QueueQuad(color: Color.MultiplyColorOnly(color, LightingManager.CalculateLighting(-matrix.Up)), p1: v3, p2: v4, p3: v8, p4: v7, texCoord1: new Vector2(vector2.X, vector2.Y), texCoord2: new Vector2(vector2.Z, vector2.Y), texCoord3: new Vector2(vector2.Z, vector2.W), texCoord4: new Vector2(vector2.X, vector2.W));
 			textureSlot = block.GetFaceTextureSlot(4, value);
 			vector2.X = ((float)(textureSlot % textureSlotCount)) / textureSlotCount;
 			vector2.Y = ((float)(textureSlot / textureSlotCount)) / textureSlotCount;
-			vector2.W = vector2.Y + 1f / textureSlotCount;
-			vector2.Z = vector2.X + 1f / textureSlotCount;
+			vector2.W = vector2.Y + (1f / textureSlotCount);
+			vector2.Z = vector2.X + (1f / textureSlotCount);
 			texturedBatch3D.QueueQuad(color: Color.MultiplyColorOnly(topColor, LightingManager.CalculateLighting(matrix.Up)), p1: v5, p2: v9, p3: v10, p4: v6, texCoord1: new Vector2(vector2.X, vector2.W), texCoord2: new Vector2(vector2.X, vector2.Y), texCoord3: new Vector2(vector2.Z, vector2.Y), texCoord4: new Vector2(vector2.Z, vector2.W));
 			textureSlot = block.GetFaceTextureSlot(1, value);
 			vector2.X = ((float)(textureSlot % textureSlotCount)) / textureSlotCount;
 			vector2.Y = ((float)(textureSlot / textureSlotCount)) / textureSlotCount;
-			vector2.W = vector2.Y + 1f / textureSlotCount;
-			vector2.Z = vector2.X + 1f / textureSlotCount;
+			vector2.W = vector2.Y + (1f / textureSlotCount);
+			vector2.Z = vector2.X + (1f / textureSlotCount);
 			texturedBatch3D.QueueQuad(color: Color.MultiplyColorOnly(color, LightingManager.CalculateLighting(-matrix.Right)), p1: v3, p2: v7, p3: v9, p4: v5, texCoord1: new Vector2(vector2.Z, vector2.W), texCoord2: new Vector2(vector2.X, vector2.W), texCoord3: new Vector2(vector2.X, vector2.Y), texCoord4: new Vector2(vector2.Z, vector2.Y));
 			textureSlot = block.GetFaceTextureSlot(3, value);
 			vector2.X = ((float)(textureSlot % textureSlotCount)) / textureSlotCount;
 			vector2.Y = ((float)(textureSlot / textureSlotCount)) / textureSlotCount;
-			vector2.W = vector2.Y + 1f / textureSlotCount;
-			vector2.Z = vector2.X + 1f / textureSlotCount;
+			vector2.W = vector2.Y + (1f / textureSlotCount);
+			vector2.Z = vector2.X + (1f / textureSlotCount);
 			texturedBatch3D.QueueQuad(color: Color.MultiplyColorOnly(color, LightingManager.CalculateLighting(matrix.Right)), p1: v4, p2: v6, p3: v10, p4: v8, texCoord1: new Vector2(vector2.X, vector2.W), texCoord2: new Vector2(vector2.X, vector2.Y), texCoord3: new Vector2(vector2.Z, vector2.Y), texCoord4: new Vector2(vector2.Z, vector2.W));
 		}
 
@@ -257,7 +257,7 @@ namespace Game
 			Vector4 vector;
 			if (texture == null)
 			{
-				texture = ((environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture);
+				texture = (environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture;
 			}
 			int textureSlotCount = block.GetTextureSlotCount(value);
 			int textureSlot = block.GetFaceTextureSlot(-1, value);
@@ -269,7 +269,7 @@ namespace Game
 			{
 				float tx = (float)(textureSlot % textureSlotCount) / textureSlotCount;
 				float ty = (float)(textureSlot / textureSlotCount) / textureSlotCount;
-				vector = new Vector4(tx, ty, tx + 1f / textureSlotCount, ty + 1f / textureSlotCount);
+				vector = new Vector4(tx, ty, tx + (1f / textureSlotCount), ty + (1f / textureSlotCount));
 			}
 			if (!isEmissive)
 			{
@@ -289,10 +289,10 @@ namespace Game
 				vector2 = matrix.Right;
 				vector3 = matrix.Up;
 			}
-			Vector3 v = translation + 0.85f * size * (-vector2 - vector3);
-			Vector3 v2 = translation + 0.85f * size * (vector2 - vector3);
-			Vector3 v3 = translation + 0.85f * size * (-vector2 + vector3);
-			Vector3 v4 = translation + 0.85f * size * (vector2 + vector3);
+			Vector3 v = translation + (0.85f * size * (-vector2 - vector3));
+			Vector3 v2 = translation + (0.85f * size * (vector2 - vector3));
+			Vector3 v3 = translation + (0.85f * size * (-vector2 + vector3));
+			Vector3 v4 = translation + (0.85f * size * (vector2 + vector3));
 			if (environmentData.ViewProjectionMatrix.HasValue)
 			{
 				Matrix m = environmentData.ViewProjectionMatrix.Value;
@@ -355,21 +355,21 @@ namespace Game
 
 		public static void DrawMeshBlock(PrimitivesRenderer3D primitivesRenderer, BlockMesh blockMesh, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{
-			environmentData = (environmentData ?? m_defaultEnvironmentData);
+			environmentData = environmentData ?? m_defaultEnvironmentData;
 			Texture2D texture = (environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture;
 			DrawMeshBlock(primitivesRenderer, blockMesh, texture, Color.White, size, ref matrix, environmentData);
 		}
 
 		public static void DrawMeshBlock(PrimitivesRenderer3D primitivesRenderer, BlockMesh blockMesh, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{
-			environmentData = (environmentData ?? m_defaultEnvironmentData);
+			environmentData = environmentData ?? m_defaultEnvironmentData;
 			Texture2D texture = (environmentData.SubsystemTerrain != null) ? environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture : BlocksTexturesManager.DefaultBlocksTexture;
 			DrawMeshBlock(primitivesRenderer, blockMesh, texture, color, size, ref matrix, environmentData);
 		}
 
 		public static void DrawMeshBlock(PrimitivesRenderer3D primitivesRenderer, BlockMesh blockMesh, Texture2D texture, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{
-			environmentData = (environmentData ?? m_defaultEnvironmentData);
+			environmentData = environmentData ?? m_defaultEnvironmentData;
 			float num = LightingManager.LightIntensityByLightValue[environmentData.Light];
 			var v = new Vector4(color);
 			v.X *= num;
@@ -498,7 +498,7 @@ namespace Game
 						if (text2.StartsWith("#"))
 						{
 							string refTypeName = text2.Substring(1);
-							obj = ((!string.IsNullOrEmpty(refTypeName)) ? (m_blocks.FirstOrDefault((Block v) => v.GetType().Name == refTypeName) ?? throw new InvalidOperationException(string.Format(LanguageControl.Get("BlocksManager", 6), refTypeName))).BlockIndex : ((object)block.BlockIndex));
+							obj = (!string.IsNullOrEmpty(refTypeName)) ? (m_blocks.FirstOrDefault((Block v) => v.GetType().Name == refTypeName) ?? throw new InvalidOperationException(string.Format(LanguageControl.Get("BlocksManager", 6), refTypeName))).BlockIndex : ((object)block.BlockIndex);
 						}
 						else
 						{

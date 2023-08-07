@@ -129,7 +129,7 @@ namespace Game
 				jsonObject.Add("include_deleted", false);
 				jsonObject.Add("include_has_explicit_shared_members", false);
 				MemoryStream data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
-				WebManager.Post("https://api.dropboxapi.com/2/files/list_folder", null, dictionary, data, progress, delegate(byte[] result)
+				WebManager.Post("https://api.dropboxapi.com/2/files/list_folder", null, dictionary, data, progress, delegate (byte[] result)
 				{
 					try
 					{
@@ -140,7 +140,7 @@ namespace Game
 					{
 						failure(obj2);
 					}
-				}, delegate(Exception error)
+				}, delegate (Exception error)
 				{
 					failure(error);
 				});
@@ -161,10 +161,10 @@ namespace Game
 				Dictionary<string, string> dictionary = new Dictionary<string, string>();
 				dictionary.Add("Authorization", "Bearer " + SettingsManager.DropboxAccessToken);
 				dictionary.Add("Dropbox-API-Arg", jsonObject.ToString());
-				WebManager.Get("https://content.dropboxapi.com/2/files/download", null, dictionary, progress, delegate(byte[] result)
+				WebManager.Get("https://content.dropboxapi.com/2/files/download", null, dictionary, progress, delegate (byte[] result)
 				{
 					success(new MemoryStream(result));
-				}, delegate(Exception error)
+				}, delegate (Exception error)
 				{
 					failure(error);
 				});
@@ -192,7 +192,7 @@ namespace Game
 				WebManager.Post("https://content.dropboxapi.com/2/files/upload", null, dictionary, stream, progress, delegate
 				{
 					success(null);
-				}, delegate(Exception error)
+				}, delegate (Exception error)
 				{
 					failure(error);
 				});
@@ -215,7 +215,7 @@ namespace Game
 				jsonObject.Add("path", NormalizePath(path));
 				jsonObject.Add("short_url", false);
 				MemoryStream data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
-				WebManager.Post("https://api.dropboxapi.com/2/sharing/create_shared_link", null, dictionary, data, progress, delegate(byte[] result)
+				WebManager.Post("https://api.dropboxapi.com/2/sharing/create_shared_link", null, dictionary, data, progress, delegate (byte[] result)
 				{
 					try
 					{
@@ -226,7 +226,7 @@ namespace Game
 					{
 						failure(obj2);
 					}
-				}, delegate(Exception error)
+				}, delegate (Exception error)
 				{
 					failure(error);
 				});
@@ -260,7 +260,7 @@ namespace Game
 			{
 				LoginProcessData loginProcessData = m_loginProcessData;
 				m_loginProcessData = null;
-				TextBoxDialog dialog = new TextBoxDialog("Enter Dropbox authorization code", "", 256, delegate(string s)
+				TextBoxDialog dialog = new TextBoxDialog("Enter Dropbox authorization code", "", 256, delegate (string s)
 				{
 					if (s != null)
 					{
@@ -284,11 +284,11 @@ namespace Game
 									"grant_type",
 									"authorization_code"
 								}
-							}, null, new MemoryStream(), loginProcessData.Progress, delegate(byte[] result)
+							}, null, new MemoryStream(), loginProcessData.Progress, delegate (byte[] result)
 							{
 								SettingsManager.DropboxAccessToken = ((IDictionary<string, object>)WebManager.JsonFromBytes(result))["access_token"].ToString();
 								loginProcessData.Succeed(this);
-							}, delegate(Exception error)
+							}, delegate (Exception error)
 							{
 								loginProcessData.Fail(this, error);
 							});
@@ -336,9 +336,9 @@ namespace Game
 					SettingsManager.DropboxAccessToken = dictionary["access_token"];
 					loginProcessData.Succeed(this);
 					goto end_IL_0038;
-					IL_00a5:
+				IL_00a5:
 					throw new Exception("Could not retrieve Dropbox access token.");
-					end_IL_0038:;
+				end_IL_0038:;
 				}
 				catch (Exception error)
 				{
@@ -364,11 +364,11 @@ namespace Game
 				{
 					ExternalContentEntry externalContentEntry2 = new ExternalContentEntry();
 					externalContentEntry2.Path = item["path_display"].ToString();
-					externalContentEntry2.Type = ((item[".tag"].ToString() == "folder") ? ExternalContentType.Directory : ExternalContentManager.ExtensionToType(Storage.GetExtension(externalContentEntry2.Path)));
+					externalContentEntry2.Type = (item[".tag"].ToString() == "folder") ? ExternalContentType.Directory : ExternalContentManager.ExtensionToType(Storage.GetExtension(externalContentEntry2.Path));
 					if (externalContentEntry2.Type != ExternalContentType.Directory)
 					{
-						externalContentEntry2.Time = (item.ContainsKey("server_modified") ? DateTime.Parse(item["server_modified"].ToString(), CultureInfo.InvariantCulture) : new DateTime(2000, 1, 1));
-						externalContentEntry2.Size = (item.ContainsKey("size") ? ((long)item["size"]) : 0);
+						externalContentEntry2.Time = item.ContainsKey("server_modified") ? DateTime.Parse(item["server_modified"].ToString(), CultureInfo.InvariantCulture) : new DateTime(2000, 1, 1);
+						externalContentEntry2.Size = item.ContainsKey("size") ? ((long)item["size"]) : 0;
 					}
 					externalContentEntry.ChildEntries.Add(externalContentEntry2);
 				}

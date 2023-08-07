@@ -160,7 +160,7 @@ namespace Game
 		public override int SetDamage(int value, int damage)
 		{
 			int num = Terrain.ExtractData(value);
-			num = ((num & -3841) | ((damage & 0xF) << 8));
+			num = (num & -3841) | ((damage & 0xF) << 8);
 			return Terrain.ReplaceData(value, num);
 		}
 		public override bool CanWear(int value)

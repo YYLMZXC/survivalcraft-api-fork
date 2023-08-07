@@ -125,7 +125,7 @@ namespace Game
 
 		public override void MeasureOverride(Vector2 parentAvailableSize)
 		{
-			IsDrawRequired = (BevelColor.A != 0 || CenterColor.A != 0);
+			IsDrawRequired = BevelColor.A != 0 || CenterColor.A != 0;
 			DesiredSize = Size;
 		}
 
@@ -147,11 +147,11 @@ namespace Game
 			float y3 = vector3.Y;
 			float y4 = vector4.Y;
 			float y5 = vector5.Y;
-			float num2 = MathUtils.Saturate(((bevelSize > 0f) ? 1f : (-0.75f)) * directionalLight + ambientLight);
-			float num3 = MathUtils.Saturate(((bevelSize > 0f) ? (-0.75f) : 1f) * directionalLight + ambientLight);
-			float num4 = MathUtils.Saturate(((bevelSize > 0f) ? (-0.375f) : 0.5f) * directionalLight + ambientLight);
-			float num5 = MathUtils.Saturate(((bevelSize > 0f) ? 0.5f : (-0.375f)) * directionalLight + ambientLight);
-			float num6 = MathUtils.Saturate(0f * directionalLight + ambientLight);
+			float num2 = MathUtils.Saturate((((bevelSize > 0f) ? 1f : (-0.75f)) * directionalLight) + ambientLight);
+			float num3 = MathUtils.Saturate((((bevelSize > 0f) ? (-0.75f) : 1f) * directionalLight) + ambientLight);
+			float num4 = MathUtils.Saturate((((bevelSize > 0f) ? (-0.375f) : 0.5f) * directionalLight) + ambientLight);
+			float num5 = MathUtils.Saturate((((bevelSize > 0f) ? 0.5f : (-0.375f)) * directionalLight) + ambientLight);
+			float num6 = MathUtils.Saturate((0f * directionalLight) + ambientLight);
 			var color2 = new Color((byte)(num4 * bevelColor.R), (byte)(num4 * bevelColor.G), (byte)(num4 * bevelColor.B), bevelColor.A);
 			var color3 = new Color((byte)(num5 * bevelColor.R), (byte)(num5 * bevelColor.G), (byte)(num5 * bevelColor.B), bevelColor.A);
 			var color4 = new Color((byte)(num2 * bevelColor.R), (byte)(num2 * bevelColor.G), (byte)(num2 * bevelColor.B), bevelColor.A);
@@ -164,13 +164,13 @@ namespace Game
 				float num9 = x * num7;
 				float num10 = y * num8;
 				float x6 = num9;
-				float x7 = (x2 - x) * num7 + num9;
-				float x8 = (x3 - x) * num7 + num9;
-				float x9 = (x4 - x) * num7 + num9;
+				float x7 = ((x2 - x) * num7) + num9;
+				float x8 = ((x3 - x) * num7) + num9;
+				float x9 = ((x4 - x) * num7) + num9;
 				float y6 = num10;
-				float y7 = (y2 - y) * num8 + num10;
-				float y8 = (y3 - y) * num8 + num10;
-				float y9 = (y4 - y) * num8 + num10;
+				float y7 = ((y2 - y) * num8) + num10;
+				float y8 = ((y3 - y) * num8) + num10;
+				float y9 = ((y4 - y) * num8) + num10;
 				if (bevelColor.A > 0)
 				{
 					texturedBatch.QueueQuad(new Vector2(x, y), new Vector2(x2, y2), new Vector2(x3, y2), new Vector2(x4, y), depth, new Vector2(x6, y6), new Vector2(x7, y7), new Vector2(x8, y7), new Vector2(x9, y6), color4);

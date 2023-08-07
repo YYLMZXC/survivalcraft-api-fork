@@ -37,11 +37,11 @@ namespace Game
 			m_subsystemMovingBlocks = subsystemElectricity.Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true);
 			m_subsystemProjectiles = subsystemElectricity.Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
 			m_subsystemPickables = subsystemElectricity.Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
-			m_center = new Vector3(cellFace.X, cellFace.Y, cellFace.Z) + new Vector3(0.5f) - 0.25f * m_direction;
+			m_center = new Vector3(cellFace.X, cellFace.Y, cellFace.Z) + new Vector3(0.5f) - (0.25f * m_direction);
 			m_direction = CellFace.FaceToVector3(cellFace.Face);
 			Vector3 vector = Vector3.One - new Vector3(MathUtils.Abs(m_direction.X), MathUtils.Abs(m_direction.Y), MathUtils.Abs(m_direction.Z));
-			Vector3 vector2 = m_center - 8f * vector;
-			Vector3 vector3 = m_center + 8f * (vector + m_direction);
+			Vector3 vector2 = m_center - (8f * vector);
+			Vector3 vector3 = m_center + (8f * (vector + m_direction));
 			m_corner1 = new Vector2(vector2.X, vector2.Z);
 			m_corner2 = new Vector2(vector3.X, vector3.Z);
 		}
@@ -59,7 +59,7 @@ namespace Game
 			{
 				base.SubsystemElectricity.SubsystemAudio.PlaySound("Audio/MotionDetectorClick", 1f, 0f, m_center, 1f, autoDelay: true);
 			}
-			float num = 0.25f * (0.9f + 0.000200000009f * (float)(GetHashCode() % 1000));
+			float num = 0.25f * (0.9f + (0.000200000009f * (float)(GetHashCode() % 1000)));
 			base.SubsystemElectricity.QueueElectricElementForSimulation(this, base.SubsystemElectricity.CircuitStep + MathUtils.Max((int)(num / 0.01f), 1));
 			return m_voltage != voltage;
 		}
@@ -112,13 +112,13 @@ namespace Game
 		public float TestPoint(Vector3 p)
 		{
 			float num = Vector3.DistanceSquared(p, m_center);
-			if (num < 64f && Vector3.Dot(Vector3.Normalize(p - (m_center - 0.75f * m_direction)), m_direction) > 0.5f && !base.SubsystemElectricity.SubsystemTerrain.Raycast(m_center, p, useInteractionBoxes: false, skipAirBlocks: true, delegate (int value, float d)
+			if (num < 64f && Vector3.Dot(Vector3.Normalize(p - (m_center - (0.75f * m_direction))), m_direction) > 0.5f && !base.SubsystemElectricity.SubsystemTerrain.Raycast(m_center, p, useInteractionBoxes: false, skipAirBlocks: true, delegate (int value, float d)
 			{
 				Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
 				return block.IsCollidable && block.BlockIndex != 15 && block.BlockIndex != 60 && block.BlockIndex != 44 && block.BlockIndex != 18;
 			}).HasValue)
 			{
-				return MathUtils.Saturate(1f - MathUtils.Sqrt(num) / 8f);
+				return MathUtils.Saturate(1f - (MathUtils.Sqrt(num) / 8f));
 			}
 			return 0f;
 		}

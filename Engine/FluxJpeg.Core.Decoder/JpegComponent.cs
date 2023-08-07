@@ -169,50 +169,50 @@ namespace FluxJpeg.Core.Decoder
 				byte[,] array2 = new byte[num, num2];
 				switch (mode)
 				{
-				case BlockUpsamplingMode.BoxFilter:
-				{
-					for (int n = 0; n < num2; n++)
-					{
-						int num6 = n / factorUpH;
-						for (int num7 = 0; num7 < num; num7++)
+					case BlockUpsamplingMode.BoxFilter:
 						{
-							int num8 = num7 / factorUpV;
-							array2[num7, n] = array[num8, num6];
-						}
-					}
-					break;
-				}
-				case BlockUpsamplingMode.Interpolate:
-				{
-					for (int j = 0; j < num2; j++)
-					{
-						for (int k = 0; k < num; k++)
-						{
-							int num3 = 0;
-							for (int l = 0; l < factorUpH; l++)
+							for (int n = 0; n < num2; n++)
 							{
-								int num4 = (j + l) / factorUpH;
-								if (num4 >= length2)
+								int num6 = n / factorUpH;
+								for (int num7 = 0; num7 < num; num7++)
 								{
-									num4 = length2 - 1;
-								}
-								for (int m = 0; m < factorUpV; m++)
-								{
-									int num5 = (k + m) / factorUpV;
-									if (num5 >= length)
-									{
-										num5 = length - 1;
-									}
-									num3 += array[num5, num4];
+									int num8 = num7 / factorUpV;
+									array2[num7, n] = array[num8, num6];
 								}
 							}
-							array2[k, j] = (byte)(num3 / (factorUpH * factorUpV));
+							break;
 						}
-					}
-					break;
-				}
-				default:
-					throw new ArgumentException("Upsampling mode not supported.");
+					case BlockUpsamplingMode.Interpolate:
+						{
+							for (int j = 0; j < num2; j++)
+							{
+								for (int k = 0; k < num; k++)
+								{
+									int num3 = 0;
+									for (int l = 0; l < factorUpH; l++)
+									{
+										int num4 = (j + l) / factorUpH;
+										if (num4 >= length2)
+										{
+											num4 = length2 - 1;
+										}
+										for (int m = 0; m < factorUpV; m++)
+										{
+											int num5 = (k + m) / factorUpV;
+											if (num5 >= length)
+											{
+												num5 = length - 1;
+											}
+											num3 += array[num5, num4];
+										}
+									}
+									array2[k, j] = (byte)(num3 / (factorUpH * factorUpV));
+								}
+							}
+							break;
+						}
+					default:
+						throw new ArgumentException("Upsampling mode not supported.");
 				}
 				scanDecoded[i] = array2;
 			}
@@ -319,11 +319,11 @@ namespace FluxJpeg.Core.Decoder
 				{
 					for (int k = 0; k < length4; k++)
 					{
-						int num5 = k * 2 + x;
+						int num5 = (k * 2) + x;
 						for (int l = 0; l < length3; l++)
 						{
 							byte b = blockdata[l, k];
-							int num6 = l * 2 + y;
+							int num6 = (l * 2) + y;
 							array[num5, num6] = b;
 							array[num5, num6 + 1] = b;
 							array[num5 + 1, num6] = b;
@@ -409,7 +409,7 @@ namespace FluxJpeg.Core.Decoder
 		{
 			if (stream.ReadBits(1) == 1)
 			{
-				dest[0] = ((int)dest[0] | (1 << successiveLow));
+				dest[0] = (int)dest[0] | (1 << successiveLow);
 			}
 		}
 
@@ -431,7 +431,7 @@ namespace FluxJpeg.Core.Decoder
 						{
 							throw new Exception("Decode Error");
 						}
-						num3 = ((stream.ReadBits(1) != 1) ? num2 : num);
+						num3 = (stream.ReadBits(1) != 1) ? num2 : num;
 					}
 					else if (num4 != 15)
 					{

@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
-    public sealed class RenderTarget2D : Texture2D
+	public sealed class RenderTarget2D : Texture2D
 	{
 		public int m_frameBuffer;
 
@@ -31,7 +31,7 @@ namespace Engine.Graphics
 
 		public override int GetGpuMemoryUsage()
 		{
-			return base.GetGpuMemoryUsage() + DepthFormat.GetSize() * base.Width * base.Height;
+			return base.GetGpuMemoryUsage() + (DepthFormat.GetSize() * base.Width * base.Height);
 		}
 
 		public void InitializeRenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
@@ -112,12 +112,12 @@ namespace Engine.Graphics
 			GL.GenerateMipmap(All.Texture2D);
 		}
 
-        internal override void HandleDeviceLost()
+		internal override void HandleDeviceLost()
 		{
 			DeleteRenderTarget();
 		}
 
-        internal override void HandleDeviceReset()
+		internal override void HandleDeviceReset()
 		{
 			AllocateRenderTarget();
 		}

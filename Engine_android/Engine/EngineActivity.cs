@@ -29,9 +29,9 @@ namespace Engine
 		{
 			m_activity = this;
 		}
-        protected override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
+		protected override void OnCreate(Bundle savedInstanceState)
+		{
+			base.OnCreate(savedInstanceState);
 			RequestWindowFeature(WindowFeatures.NoTitle);
 			Window.AddFlags(WindowManagerFlags.Fullscreen);
 			VolumeControlStream = Android.Media.Stream.Music;

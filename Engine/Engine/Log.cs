@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Engine
 {
-    public static class Log
+	public static class Log
 	{
 		private static object m_lock;
 

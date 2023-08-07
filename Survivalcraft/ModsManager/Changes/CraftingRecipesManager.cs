@@ -115,7 +115,7 @@ namespace Game
 					if (char.IsLower(c))
 					{
 						string text2 = dictionary[c];
-						craftingRecipe.Ingredients[j + i * HorizontalLen] = text2;
+						craftingRecipe.Ingredients[j + (i * HorizontalLen)] = text2;
 					}
 				}
 			}
@@ -151,23 +151,23 @@ namespace Game
 			{
 				if (heatLevel < craftingRecipe.RequiredHeatLevel)
 				{
-					craftingRecipe = ((!(heatLevel > 0f)) ? new CraftingRecipe
+					craftingRecipe = (!(heatLevel > 0f)) ? new CraftingRecipe
 					{
 						Message = LanguageControl.Get(fName, 0)
 					} : new CraftingRecipe
 					{
 						Message = LanguageControl.Get(fName, 1)
-					});
+					};
 				}
 				else if (playerLevel < craftingRecipe.RequiredPlayerLevel)
 				{
-					craftingRecipe = ((!(craftingRecipe.RequiredHeatLevel > 0f)) ? new CraftingRecipe
+					craftingRecipe = (!(craftingRecipe.RequiredHeatLevel > 0f)) ? new CraftingRecipe
 					{
 						Message = String.Format(LanguageControl.Get(fName, 2), craftingRecipe.RequiredPlayerLevel)
 					} : new CraftingRecipe
 					{
 						Message = String.Format(LanguageControl.Get(fName, 3), craftingRecipe.RequiredPlayerLevel)
-					});
+					};
 				}
 			}
 			return craftingRecipe;
@@ -205,7 +205,7 @@ namespace Game
 			if (flag2) { craftingId = craftingId_R; data = data_R; return; }
 			string[] array = ingredient.Split(new char[] { ':' }, StringSplitOptions.None);
 			craftingId = array[0];
-			data = ((array.Length >= 2) ? new int?(int.Parse(array[1], CultureInfo.InvariantCulture)) : null);
+			data = (array.Length >= 2) ? new int?(int.Parse(array[1], CultureInfo.InvariantCulture)) : null;
 		}
 
 		public static bool MatchRecipe(string[] requiredIngredients, string[] actualIngredients)
@@ -226,7 +226,7 @@ namespace Game
 				{
 					for (int k = -3; k <= 3; k++)
 					{
-						bool flip = (i != 0) ? true : false;
+						bool flip = i != 0;
 						if (!TransformRecipe(array, requiredIngredients, k, j, flip))
 						{
 							continue;
@@ -262,10 +262,10 @@ namespace Game
 				{
 					int num = (flip ? (3 - k - 1) : k) + shiftX;
 					int num2 = j + shiftY;
-					string text = ingredients[k + j * 3];
+					string text = ingredients[k + (j * 3)];
 					if (num >= 0 && num2 >= 0 && num < 3 && num2 < 3)
 					{
-						transformedIngredients[num + num2 * 3] = text;
+						transformedIngredients[num + (num2 * 3)] = text;
 					}
 					else if (!string.IsNullOrEmpty(text))
 					{

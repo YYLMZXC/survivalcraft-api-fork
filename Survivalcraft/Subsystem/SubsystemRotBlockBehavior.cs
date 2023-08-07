@@ -29,7 +29,7 @@ namespace Game
 			m_lastRotTime = valuesDictionary.GetValue<double>("LastRotTime");
 			m_rotStep = valuesDictionary.GetValue<int>("RotStep");
 			m_subsystemItemsScanner.ItemsScanned += ItemsScanned;
-			m_isRotEnabled = (m_subsystemGameInfo.WorldSettings.GameMode != 0 && m_subsystemGameInfo.WorldSettings.GameMode != GameMode.Adventure);
+			m_isRotEnabled = m_subsystemGameInfo.WorldSettings.GameMode != 0 && m_subsystemGameInfo.WorldSettings.GameMode != GameMode.Adventure;
 		}
 
 		public override void Save(ValuesDictionary valuesDictionary)
@@ -49,7 +49,7 @@ namespace Game
 				if (rotPeriod > 0 && pollPass % rotPeriod == 0)
 				{
 					int num2 = block.GetDamage(value) + 1;
-					value = ((num2 > 1) ? block.GetDamageDestructionValue(value) : block.SetDamage(value, num2));
+					value = (num2 > 1) ? block.GetDamageDestructionValue(value) : block.SetDamage(value, num2);
 					SubsystemTerrain.ChangeCell(x, y, z, value);
 				}
 			}

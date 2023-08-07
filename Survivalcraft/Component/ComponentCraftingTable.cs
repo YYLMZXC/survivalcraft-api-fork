@@ -59,8 +59,8 @@ namespace Game
 						{
 							if (!string.IsNullOrEmpty(m_matchedIngredients[i]))
 							{
-								int index = i % 3 + m_craftingGridSize * (i / 3);
-								m_slots[index].Count = MathUtils.Max(m_slots[index].Count - num / m_matchedRecipe.ResultCount, 0);
+								int index = (i % 3) + (m_craftingGridSize * (i / 3));
+								m_slots[index].Count = MathUtils.Max(m_slots[index].Count - (num / m_matchedRecipe.ResultCount), 0);
 							}
 						}
 						if (m_matchedRecipe.RemainsValue != 0 && m_matchedRecipe.RemainsCount > 0)
@@ -98,8 +98,8 @@ namespace Game
 			{
 				for (int j = 0; j < m_craftingGridSize; j++)
 				{
-					int num2 = i + j * 3;
-					int slotIndex = i + j * m_craftingGridSize;
+					int num2 = i + (j * 3);
+					int slotIndex = i + (j * m_craftingGridSize);
 					int slotValue = GetSlotValue(slotIndex);
 					int num3 = Terrain.ExtractContents(slotValue);
 					int num4 = Terrain.ExtractData(slotValue);

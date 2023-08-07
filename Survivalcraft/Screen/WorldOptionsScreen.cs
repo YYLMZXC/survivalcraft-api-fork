@@ -254,7 +254,7 @@ namespace Game
 			}
 			if (m_flatTerrainMagmaOceanCheckbox.IsClicked)
 			{
-				m_worldSettings.TerrainOceanBlockIndex = ((m_worldSettings.TerrainOceanBlockIndex == 18) ? 92 : 18);
+				m_worldSettings.TerrainOceanBlockIndex = (m_worldSettings.TerrainOceanBlockIndex == 18) ? 92 : 18;
 				m_descriptionLabel.Text = StringsManager.GetString("FlatTerrainMagmaOcean.Description");
 			}
 			if (m_seaLevelOffsetSlider.IsSliding && !m_isExistingWorld)
@@ -337,11 +337,11 @@ namespace Game
 				m_worldSettings.AreAdventureSurvivalMechanicsEnabled = !m_worldSettings.AreAdventureSurvivalMechanicsEnabled;
 				m_descriptionLabel.Text = StringsManager.GetString("AdventureSurvivalMechanics." + m_worldSettings.AreAdventureSurvivalMechanicsEnabled.ToString());
 			}
-			m_creativeModePanel.IsVisible = (m_worldSettings.GameMode == GameMode.Creative);
+			m_creativeModePanel.IsVisible = m_worldSettings.GameMode == GameMode.Creative;
 			m_newWorldOnlyPanel.IsVisible = !m_isExistingWorld;
-			m_continentTerrainPanel.IsVisible = (m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.Continent || m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatContinent);
-			m_islandTerrainPanel.IsVisible = (m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.Island || m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatIsland);
-			m_flatTerrainPanel.IsVisible = (m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatContinent || m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatIsland);
+			m_continentTerrainPanel.IsVisible = m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.Continent || m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatContinent;
+			m_islandTerrainPanel.IsVisible = m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.Island || m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatIsland;
+			m_flatTerrainPanel.IsVisible = m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatContinent || m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatIsland;
 			m_terrainGenerationButton.Text = StringsManager.GetString("TerrainGenerationMode." + m_worldSettings.TerrainGenerationMode.ToString() + ".Name");
 			m_islandSizeEW.Value = FindNearestIndex(m_islandSizes, m_worldSettings.IslandSize.X);
 			m_islandSizeEW.Text = m_worldSettings.IslandSize.X.ToString();
@@ -352,9 +352,9 @@ namespace Game
 			m_flatTerrainShoreRoughnessSlider.Value = m_worldSettings.ShoreRoughness;
 			m_flatTerrainShoreRoughnessSlider.Text = $"{m_worldSettings.ShoreRoughness * 100f:0}%";
 			m_flatTerrainBlock.Contents = m_worldSettings.TerrainBlockIndex;
-			m_flatTerrainMagmaOceanCheckbox.IsChecked = (m_worldSettings.TerrainOceanBlockIndex == 92);
+			m_flatTerrainMagmaOceanCheckbox.IsChecked = m_worldSettings.TerrainOceanBlockIndex == 92;
 			string text = (BlocksManager.Blocks[m_worldSettings.TerrainBlockIndex] != null) ? BlocksManager.Blocks[m_worldSettings.TerrainBlockIndex].GetDisplayName(null, Terrain.MakeBlockValue(m_worldSettings.TerrainBlockIndex)) : string.Empty;
-			m_flatTerrainBlockLabel.Text = ((text.Length > 10) ? (text.Substring(0, 10) + "...") : text);
+			m_flatTerrainBlockLabel.Text = (text.Length > 10) ? (text.Substring(0, 10) + "...") : text;
 			Texture2D texture = m_blockTexturesCache.GetTexture(m_worldSettings.BlocksTextureName);
 			m_blocksTextureIcon.Subtexture = new Subtexture(texture, Vector2.Zero, Vector2.One);
 			m_blocksTextureLabel.Text = BlocksTexturesManager.GetDisplayName(m_worldSettings.BlocksTextureName);
@@ -369,11 +369,11 @@ namespace Game
 			m_biomeSizeSlider.Text = m_worldSettings.BiomeSize.ToString() + "x";
 			m_environmentBehaviorButton.Text = LanguageControl.Get("EnvironmentBehaviorMode", m_worldSettings.EnvironmentBehaviorMode.ToString());
 			m_timeOfDayButton.Text = LanguageControl.Get("TimeOfDayMode", m_worldSettings.TimeOfDayMode.ToString());
-			m_weatherEffectsButton.Text = (m_worldSettings.AreWeatherEffectsEnabled ? LanguageControl.Enable : LanguageControl.Disable);
-			m_adventureRespawnButton.Text = (m_worldSettings.IsAdventureRespawnAllowed ? LanguageControl.Allowed : LanguageControl.NAllowed);
-			m_adventureSurvivalMechanicsButton.Text = (m_worldSettings.AreAdventureSurvivalMechanicsEnabled ? LanguageControl.Enable : LanguageControl.Disable);
-			m_supernaturalCreaturesButton.Text = (m_worldSettings.AreSupernaturalCreaturesEnabled ? LanguageControl.Enable : LanguageControl.Disable);
-			m_friendlyFireButton.Text = (m_worldSettings.IsFriendlyFireEnabled ? LanguageControl.Allowed : LanguageControl.NAllowed);
+			m_weatherEffectsButton.Text = m_worldSettings.AreWeatherEffectsEnabled ? LanguageControl.Enable : LanguageControl.Disable;
+			m_adventureRespawnButton.Text = m_worldSettings.IsAdventureRespawnAllowed ? LanguageControl.Allowed : LanguageControl.NAllowed;
+			m_adventureSurvivalMechanicsButton.Text = m_worldSettings.AreAdventureSurvivalMechanicsEnabled ? LanguageControl.Enable : LanguageControl.Disable;
+			m_supernaturalCreaturesButton.Text = m_worldSettings.AreSupernaturalCreaturesEnabled ? LanguageControl.Enable : LanguageControl.Disable;
+			m_friendlyFireButton.Text = m_worldSettings.IsFriendlyFireEnabled ? LanguageControl.Allowed : LanguageControl.NAllowed;
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
 			{
 				ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);

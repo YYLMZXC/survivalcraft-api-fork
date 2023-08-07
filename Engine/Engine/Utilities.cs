@@ -13,7 +13,7 @@ using Microsoft.VisualBasic.Devices;
 
 namespace Engine
 {
-    public static class Utilities
+	public static class Utilities
 	{
 		public static void Swap<T>(ref T a, ref T b)
 		{

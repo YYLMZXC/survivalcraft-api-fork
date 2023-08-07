@@ -222,7 +222,7 @@ namespace Game
 
 		public override void MeasureOverride(Vector2 parentAvailableSize)
 		{
-			IsDrawRequired = (FillColor.A != 0 || (OutlineColor.A != 0 && OutlineThickness > 0f));
+			IsDrawRequired = FillColor.A != 0 || (OutlineColor.A != 0 && OutlineThickness > 0f);
 			DesiredSize = Size;
 		}
 	}

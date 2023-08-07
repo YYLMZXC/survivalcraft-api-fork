@@ -66,9 +66,9 @@ namespace Game
 			}
 			bool num = m_componentBody.ImmersionFactor > 0.95f;
 			bool num2 = !num && m_componentBody.ImmersionFactor > 0.01f && !m_componentBody.StandingOnValue.HasValue && m_componentBody.StandingOnBody == null;
-			m_turnSpeed += 2.5f * m_subsystemTime.GameTimeDelta * (1f * TurnOrder - m_turnSpeed);
+			m_turnSpeed += 2.5f * m_subsystemTime.GameTimeDelta * ((1f * TurnOrder) - m_turnSpeed);
 			Quaternion rotation = m_componentBody.Rotation;
-			float num3 = MathUtils.Atan2(2f * rotation.Y * rotation.W - 2f * rotation.X * rotation.Z, 1f - 2f * rotation.Y * rotation.Y - 2f * rotation.Z * rotation.Z);
+			float num3 = MathUtils.Atan2((2f * rotation.Y * rotation.W) - (2f * rotation.X * rotation.Z), 1f - (2f * rotation.Y * rotation.Y) - (2f * rotation.Z * rotation.Z));
 			if (num2)
 			{
 				num3 -= m_turnSpeed * dt;

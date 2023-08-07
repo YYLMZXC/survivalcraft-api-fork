@@ -96,7 +96,7 @@ namespace Game
 
 		public override void Update()
 		{
-			string languageType = (ModsManager.Configs.ContainsKey("Language")) ? ModsManager.Configs["Language"] : "zh-CN";
+			string languageType = ModsManager.Configs.ContainsKey("Language") ? ModsManager.Configs["Language"] : "zh-CN";
 			if (languageType == "zh-CN")
 			{
 				m_titleLabel.Text = $"{m_componentPlayer.PlayerData.Name}, 等级 {MathUtils.Floor(m_componentPlayer.PlayerData.Level)}  " + ((m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Male) ? "男性" : "女性");

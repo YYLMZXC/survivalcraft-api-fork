@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public static class Window
+	public static class Window
 	{
 		public enum State
 		{

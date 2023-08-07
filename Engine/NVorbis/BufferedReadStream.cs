@@ -205,12 +205,12 @@ namespace NVorbis
 			CheckLock();
 			switch (origin)
 			{
-			case SeekOrigin.Current:
-				offset += Position;
-				break;
-			case SeekOrigin.End:
-				offset += _baseStream.Length;
-				break;
+				case SeekOrigin.Current:
+					offset += Position;
+					break;
+				case SeekOrigin.End:
+					offset += _baseStream.Length;
+					break;
 			}
 			if (!_baseStream.CanSeek)
 			{

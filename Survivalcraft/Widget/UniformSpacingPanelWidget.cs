@@ -53,14 +53,14 @@ namespace Game
 					m_count++;
 				}
 			}
-			parentAvailableSize = ((m_direction != 0) ? Vector2.Min(parentAvailableSize, new Vector2(parentAvailableSize.X, parentAvailableSize.Y / m_count)) : Vector2.Min(parentAvailableSize, new Vector2(parentAvailableSize.X / m_count, parentAvailableSize.Y)));
+			parentAvailableSize = (m_direction != 0) ? Vector2.Min(parentAvailableSize, new Vector2(parentAvailableSize.X, parentAvailableSize.Y / m_count)) : Vector2.Min(parentAvailableSize, new Vector2(parentAvailableSize.X / m_count, parentAvailableSize.Y));
 			float num = 0f;
 			foreach (Widget child2 in Children)
 			{
 				if (child2.IsVisible)
 				{
-					child2.Measure(Vector2.Max(parentAvailableSize - 2f * child2.Margin, Vector2.Zero));
-					num = ((m_direction != 0) ? MathUtils.Max(num, child2.ParentDesiredSize.X + 2f * child2.Margin.X) : MathUtils.Max(num, child2.ParentDesiredSize.Y + 2f * child2.Margin.Y));
+					child2.Measure(Vector2.Max(parentAvailableSize - (2f * child2.Margin), Vector2.Zero));
+					num = (m_direction != 0) ? MathUtils.Max(num, child2.ParentDesiredSize.X + (2f * child2.Margin.X)) : MathUtils.Max(num, child2.ParentDesiredSize.Y + (2f * child2.Margin.Y));
 				}
 			}
 			DesiredSize = m_direction == LayoutDirection.Horizontal

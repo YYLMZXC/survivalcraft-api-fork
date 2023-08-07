@@ -276,7 +276,7 @@ namespace Game
 
 		public void Update(float dt)
 		{
-			MoonPhase = ((int)MathUtils.Floor(m_subsystemTimeOfDay.Day - 0.5 + 5.0) % 8 + 8) % 8;
+			MoonPhase = (((int)MathUtils.Floor(m_subsystemTimeOfDay.Day - 0.5 + 5.0) % 8) + 8) % 8;
 			UpdateLightAndViewParameters();
 		}
 
@@ -542,21 +542,21 @@ namespace Game
 			{
 				float s = m_random.NormalFloat(0f, 1f * num);
 				float s2 = m_random.NormalFloat(0f, 1f * num);
-				Vector3 v2 = s * v + s2 * unitY;
+				Vector3 v2 = (s * v) + (s2 * unitY);
 				float num2 = 260f;
 				while (num2 > value.Y)
 				{
-					uint num3 = MathUtils.Hash((uint)(m_lightningStrikePosition.Value.X + 100f * m_lightningStrikePosition.Value.Z + 200f * num2));
+					uint num3 = MathUtils.Hash((uint)(m_lightningStrikePosition.Value.X + (100f * m_lightningStrikePosition.Value.Z) + (200f * num2)));
 					float num4 = MathUtils.Lerp(4f, 10f, (float)(double)(num3 & 0xFF) / 255f);
 					float s3 = ((num3 & 1) == 0) ? 1 : (-1);
 					float s4 = MathUtils.Lerp(0.05f, 0.2f, (float)(double)((num3 >> 8) & 0xFF) / 255f);
 					float num5 = num2;
-					float num6 = num5 - num4 * MathUtils.Lerp(0.45f, 0.55f, (float)(double)((num3 >> 16) & 0xFF) / 255f);
-					float num7 = num5 - num4 * MathUtils.Lerp(0.45f, 0.55f, (float)(double)((num3 >> 24) & 0xFF) / 255f);
+					float num6 = num5 - (num4 * MathUtils.Lerp(0.45f, 0.55f, (float)(double)((num3 >> 16) & 0xFF) / 255f));
+					float num7 = num5 - (num4 * MathUtils.Lerp(0.45f, 0.55f, (float)(double)((num3 >> 24) & 0xFF) / 255f));
 					float num8 = num5 - num4;
 					Vector3 p = new Vector3(value.X, num5, value.Z) + v2;
-					Vector3 vector = new Vector3(value.X, num6, value.Z) + v2 - num4 * v * s3 * s4;
-					Vector3 vector2 = new Vector3(value.X, num7, value.Z) + v2 + num4 * v * s3 * s4;
+					Vector3 vector = new Vector3(value.X, num6, value.Z) + v2 - (num4 * v * s3 * s4);
+					Vector3 vector2 = new Vector3(value.X, num7, value.Z) + v2 + (num4 * v * s3 * s4);
 					Vector3 p2 = new Vector3(value.X, num8, value.Z) + v2;
 					Color color = Color.White * 0.2f * MathUtils.Saturate((260f - num5) * 0.2f);
 					Color color2 = Color.White * 0.2f * MathUtils.Saturate((260f - num6) * 0.2f);
@@ -568,7 +568,7 @@ namespace Game
 					num2 -= num4;
 				}
 			}
-			float num9 = MathUtils.Lerp(0.3f, 0.75f, 0.5f * (float)MathUtils.Sin(MathUtils.Remainder(1.0 * m_subsystemTime.GameTime, 6.2831854820251465)) + 0.5f);
+			float num9 = MathUtils.Lerp(0.3f, 0.75f, (0.5f * (float)MathUtils.Sin(MathUtils.Remainder(1.0 * m_subsystemTime.GameTime, 6.2831854820251465))) + 0.5f);
 			m_lightningStrikeBrightness -= m_subsystemTime.GameTimeDelta / num9;
 			if (m_lightningStrikeBrightness <= 0f)
 			{
@@ -591,7 +591,7 @@ namespace Game
 			m_cloudsLayerColors[3] = Color.Transparent;
 			double gameTime = m_subsystemTime.GameTime;
 			Vector3 viewPosition = camera.ViewPosition;
-			Vector2 v = new Vector2((float)MathUtils.Remainder(0.0020000000949949026 * gameTime - (double)(viewPosition.X / 1900f * 1.75f), 1.0) + viewPosition.X / 1900f * 1.75f, (float)MathUtils.Remainder(0.0020000000949949026 * gameTime - (double)(viewPosition.Z / 1900f * 1.75f), 1.0) + viewPosition.Z / 1900f * 1.75f);
+			Vector2 v = new Vector2((float)MathUtils.Remainder((0.0020000000949949026 * gameTime) - (double)(viewPosition.X / 1900f * 1.75f), 1.0) + (viewPosition.X / 1900f * 1.75f), (float)MathUtils.Remainder((0.0020000000949949026 * gameTime) - (double)(viewPosition.Z / 1900f * 1.75f), 1.0) + (viewPosition.Z / 1900f * 1.75f));
 			TexturedBatch3D texturedBatch3D = m_primitivesRenderer3d.TexturedBatch(m_cloudsTexture, useAlphaTest: false, 2, DepthStencilState.DepthRead, null, BlendState.AlphaBlend, SamplerState.LinearWrap);
 			DynamicArray<VertexPositionColorTexture> triangleVertices = texturedBatch3D.TriangleVertices;
 			DynamicArray<int> triangleIndices = texturedBatch3D.TriangleIndices;
@@ -608,20 +608,20 @@ namespace Game
 					int num3 = i - 3;
 					int num4 = MathUtils.Max(MathUtils.Abs(num2), MathUtils.Abs(num3));
 					float num5 = m_cloudsLayerRadii[num4];
-					float num6 = (num4 > 0) ? (num5 / MathUtils.Sqrt(num2 * num2 + num3 * num3)) : 0f;
+					float num6 = (num4 > 0) ? (num5 / MathUtils.Sqrt((num2 * num2) + (num3 * num3))) : 0f;
 					float num7 = (float)num2 * num6;
 					float num8 = (float)num3 * num6;
 					float y = MathUtils.Lerp(600f, 60f, num5 * num5);
-					Vector3 position = new Vector3(viewPosition.X + num7 * 1900f, y, viewPosition.Z + num8 * 1900f);
-					Vector2 texCoord = new Vector2(position.X, position.Z) / 1900f * 1.75f - v;
+					Vector3 position = new Vector3(viewPosition.X + (num7 * 1900f), y, viewPosition.Z + (num8 * 1900f));
+					Vector2 texCoord = (new Vector2(position.X, position.Z) / 1900f * 1.75f) - v;
 					Color color = m_cloudsLayerColors[num4];
 					texturedBatch3D.TriangleVertices.Array[count2++] = new VertexPositionColorTexture(position, color, texCoord);
 					if (j > 0 && i > 0)
 					{
-						ushort num9 = (ushort)(count + j + i * 7);
-						ushort num10 = (ushort)(count + (j - 1) + i * 7);
-						ushort num11 = (ushort)(count + (j - 1) + (i - 1) * 7);
-						ushort num12 = (ushort)(count + j + (i - 1) * 7);
+						ushort num9 = (ushort)(count + j + (i * 7));
+						ushort num10 = (ushort)(count + (j - 1) + (i * 7));
+						ushort num11 = (ushort)(count + (j - 1) + ((i - 1) * 7));
+						ushort num12 = (ushort)(count + j + ((i - 1) * 7));
 						if ((num2 <= 0 && num3 <= 0) || (num2 > 0 && num3 > 0))
 						{
 							texturedBatch3D.TriangleIndices.Array[count3++] = num9;
@@ -657,10 +657,10 @@ namespace Game
 				Vector3 vector2 = vector;
 				Vector3 unitZ = Vector3.UnitZ;
 				Vector3 v = Vector3.Cross(unitZ, vector2);
-				Vector3 p = viewPosition + vector2 * distance - radius * unitZ - radius * v;
-				Vector3 p2 = viewPosition + vector2 * distance + radius * unitZ - radius * v;
-				Vector3 p3 = viewPosition + vector2 * distance + radius * unitZ + radius * v;
-				Vector3 p4 = viewPosition + vector2 * distance - radius * unitZ + radius * v;
+				Vector3 p = viewPosition + (vector2 * distance) - (radius * unitZ) - (radius * v);
+				Vector3 p2 = viewPosition + (vector2 * distance) + (radius * unitZ) - (radius * v);
+				Vector3 p3 = viewPosition + (vector2 * distance) + (radius * unitZ) + (radius * v);
+				Vector3 p4 = viewPosition + (vector2 * distance) - (radius * unitZ) + (radius * v);
 				batch.QueueQuad(p, p2, p3, p4, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(0f, 1f), color);
 			}
 		}
@@ -693,7 +693,7 @@ namespace Game
 			{
 				return 1f;
 			}
-			return 1f - (timeOfDay - 0.7f) / 0.100000024f;
+			return 1f - ((timeOfDay - 0.7f) / 0.100000024f);
 		}
 
 		public Color CalculateSkyColor(Vector3 direction, float timeOfDay, float precipitationIntensity, int temperature)
@@ -718,7 +718,7 @@ namespace Game
 			float f2 = MathUtils.Saturate((direction.Y - 0.1f) / 0.4f);
 			float s2 = num * MathUtils.Sqr(MathUtils.Saturate(0f - vector.X));
 			float s3 = num2 * MathUtils.Sqr(MathUtils.Saturate(vector.X));
-			Color color = new Color(Vector3.Lerp(v5 + v6 * s2 + v7 * s3, v4, f2));
+			Color color = new Color(Vector3.Lerp(v5 + (v6 * s2) + (v7 * s3), v4, f2));
 			ModsManager.HookAction("ChangeSkyColor", loader =>
 			{
 				color = loader.ChangeSkyColor(color, direction, timeOfDay, precipitationIntensity, temperature);
@@ -734,12 +734,12 @@ namespace Game
 				float x = (float)Math.PI / 2f * MathUtils.Sqr((float)i / 7f);
 				for (int j = 0; j < 10; j++)
 				{
-					int num = j + i * 10;
+					int num = j + (i * 10);
 					float x2 = (float)Math.PI * 2f * (float)j / 10f;
 					float num2 = 1800f * MathUtils.Cos(x);
 					skyDome.Vertices[num].Position.X = num2 * MathUtils.Sin(x2);
 					skyDome.Vertices[num].Position.Z = num2 * MathUtils.Cos(x2);
-					skyDome.Vertices[num].Position.Y = 1800f * MathUtils.Sin(x) - ((i == 0) ? 450f : 0f);
+					skyDome.Vertices[num].Position.Y = (1800f * MathUtils.Sin(x)) - ((i == 0) ? 450f : 0f);
 					skyDome.Vertices[num].Color = CalculateSkyColor(skyDome.Vertices[num].Position, timeOfDay, precipitationIntensity, temperature);
 				}
 			}
@@ -757,12 +757,12 @@ namespace Game
 					int num3 = (j + 1) % 10;
 					int num4 = i;
 					int num5 = i + 1;
-					skyDome.Indices[num++] = (ushort)(num2 + num4 * 10);
-					skyDome.Indices[num++] = (ushort)(num3 + num4 * 10);
-					skyDome.Indices[num++] = (ushort)(num3 + num5 * 10);
-					skyDome.Indices[num++] = (ushort)(num3 + num5 * 10);
-					skyDome.Indices[num++] = (ushort)(num2 + num5 * 10);
-					skyDome.Indices[num++] = (ushort)(num2 + num4 * 10);
+					skyDome.Indices[num++] = (ushort)(num2 + (num4 * 10));
+					skyDome.Indices[num++] = (ushort)(num3 + (num4 * 10));
+					skyDome.Indices[num++] = (ushort)(num3 + (num5 * 10));
+					skyDome.Indices[num++] = (ushort)(num3 + (num5 * 10));
+					skyDome.Indices[num++] = (ushort)(num2 + (num5 * 10));
+					skyDome.Indices[num++] = (ushort)(num2 + (num4 * 10));
 				}
 			}
 			for (int k = 2; k < 10; k++)
@@ -793,57 +793,57 @@ namespace Game
 				Vector3 v2 = 900f * v;
 				Vector3 vector = Vector3.Normalize(Vector3.Cross((v.X > v.Y) ? Vector3.UnitY : Vector3.UnitX, v));
 				Vector3 v3 = Vector3.Normalize(Vector3.Cross(vector, v));
-				Vector3 position = v2 + s * (-vector - v3);
-				Vector3 position2 = v2 + s * (vector - v3);
-				Vector3 position3 = v2 + s * (vector + v3);
-				Vector3 position4 = v2 + s * (-vector + v3);
+				Vector3 position = v2 + (s * (-vector - v3));
+				Vector3 position2 = v2 + (s * (vector - v3));
+				Vector3 position3 = v2 + (s * (vector + v3));
+				Vector3 position4 = v2 + (s * (-vector + v3));
 				StarVertex starVertex = array[i * 4] = new StarVertex
 				{
 					Position = position,
 					TextureCoordinate = new Vector2(0f, 0f),
 					Color = color
 				};
-				starVertex = (array[i * 4 + 1] = new StarVertex
+				starVertex = array[(i * 4) + 1] = new StarVertex
 				{
 					Position = position2,
 					TextureCoordinate = new Vector2(1f, 0f),
 					Color = color
-				});
-				starVertex = (array[i * 4 + 2] = new StarVertex
+				};
+				starVertex = array[(i * 4) + 2] = new StarVertex
 				{
 					Position = position3,
 					TextureCoordinate = new Vector2(1f, 1f),
 					Color = color
-				});
-				starVertex = (array[i * 4 + 3] = new StarVertex
+				};
+				starVertex = array[(i * 4) + 3] = new StarVertex
 				{
 					Position = position4,
 					TextureCoordinate = new Vector2(0f, 1f),
 					Color = color
-				});
+				};
 			}
 			m_starsVertexBuffer.SetData(array, 0, array.Length);
 			ushort[] array2 = new ushort[900];
 			for (int j = 0; j < 150; j++)
 			{
 				array2[j * 6] = (ushort)(j * 4);
-				array2[j * 6 + 1] = (ushort)(j * 4 + 1);
-				array2[j * 6 + 2] = (ushort)(j * 4 + 2);
-				array2[j * 6 + 3] = (ushort)(j * 4 + 2);
-				array2[j * 6 + 4] = (ushort)(j * 4 + 3);
-				array2[j * 6 + 5] = (ushort)(j * 4);
+				array2[(j * 6) + 1] = (ushort)((j * 4) + 1);
+				array2[(j * 6) + 2] = (ushort)((j * 4) + 2);
+				array2[(j * 6) + 3] = (ushort)((j * 4) + 2);
+				array2[(j * 6) + 4] = (ushort)((j * 4) + 3);
+				array2[(j * 6) + 5] = (ushort)(j * 4);
 			}
 			m_starsIndexBuffer.SetData(array2, 0, array2.Length);
 		}
 
 		public static float CalculateDawnGlowIntensity(float timeOfDay)
 		{
-			return MathUtils.Max(1f - MathUtils.Abs(timeOfDay - 0.25f) / (71f / (226f * (float)Math.PI)) * 2f, 0f);
+			return MathUtils.Max(1f - (MathUtils.Abs(timeOfDay - 0.25f) / (71f / (226f * (float)Math.PI)) * 2f), 0f);
 		}
 
 		public static float CalculateDuskGlowIntensity(float timeOfDay)
 		{
-			return MathUtils.Max(1f - MathUtils.Abs(timeOfDay - 0.75f) / 0.100000024f * 2f, 0f);
+			return MathUtils.Max(1f - (MathUtils.Abs(timeOfDay - 0.75f) / 0.100000024f * 2f), 0f);
 		}
 	}
 }

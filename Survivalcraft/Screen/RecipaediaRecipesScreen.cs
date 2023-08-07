@@ -57,8 +57,8 @@ namespace Game
 					m_craftingRecipeWidget.IsVisible = false;
 				}
 			}
-			m_prevRecipeButton.IsEnabled = (m_recipeIndex > 0);
-			m_nextRecipeButton.IsEnabled = (m_recipeIndex < m_craftingRecipes.Count - 1);
+			m_prevRecipeButton.IsEnabled = m_recipeIndex > 0;
+			m_nextRecipeButton.IsEnabled = m_recipeIndex < m_craftingRecipes.Count - 1;
 			if (m_prevRecipeButton.IsClicked)
 			{
 				m_recipeIndex = MathUtils.Max(m_recipeIndex - 1, 0);

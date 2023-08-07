@@ -100,7 +100,7 @@ namespace Game
 			{
 				m_labels[j].Text = m_tmpPalette.Names[j];
 				m_rectangles[j].CenterColor = m_tmpPalette.Colors[j];
-				m_resetButtons[j].IsEnabled = (m_tmpPalette.Colors[j] != WorldPalette.DefaultColors[j] || m_tmpPalette.Names[j] != LanguageControl.GetWorldPalette(j));
+				m_resetButtons[j].IsEnabled = m_tmpPalette.Colors[j] != WorldPalette.DefaultColors[j] || m_tmpPalette.Names[j] != LanguageControl.GetWorldPalette(j);
 			}
 			for (int k = 0; k < 16; k++)
 			{

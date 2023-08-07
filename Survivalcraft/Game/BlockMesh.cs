@@ -311,8 +311,8 @@ namespace Game
 			}
 			for (int num11 = 0; num11 < vertices.Count; num11++)
 			{
-				vertices.Array[num11].Position.X -= bounds.Left + bounds.Width / 2f;
-				vertices.Array[num11].Position.Y = bounds.Bottom - vertices.Array[num11].Position.Y - bounds.Height / 2f;
+				vertices.Array[num11].Position.X -= bounds.Left + (bounds.Width / 2f);
+				vertices.Array[num11].Position.Y = bounds.Bottom - vertices.Array[num11].Position.Y - (bounds.Height / 2f);
 				vertices.Array[num11].Position.X *= size.X / bounds.Width;
 				vertices.Array[num11].Position.Y *= size.Y / bounds.Height;
 				vertices.Array[num11].Position.Z *= size.Z / 2f;
@@ -363,24 +363,24 @@ namespace Game
 			{
 				if (doubleSided)
 				{
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j]]);
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j + 1]]);
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j + 2]]);
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j]]);
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j + 2]]);
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j + 1]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j)]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j) + 1]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j) + 2]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j)]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j) + 2]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j) + 1]]);
 				}
 				else if (flipWindingOrder)
 				{
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j]]);
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j + 2]]);
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j + 1]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j)]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j) + 2]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j) + 1]]);
 				}
 				else
 				{
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j]]);
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j + 1]]);
-					Indices.Add(dictionary[indexData[meshPart.StartIndex + 3 * j + 2]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j)]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j) + 1]]);
+					Indices.Add(dictionary[indexData[meshPart.StartIndex + (3 * j) + 2]]);
 				}
 			}
 			Trim();
@@ -465,8 +465,8 @@ namespace Game
 			for (int i = 0; i < Sides.Count; i++)
 			{
 				int num = Indices.Array[3 * i];
-				int num2 = Indices.Array[3 * i + 1];
-				int num3 = Indices.Array[3 * i + 2];
+				int num2 = Indices.Array[(3 * i) + 1];
+				int num3 = Indices.Array[(3 * i) + 2];
 				Vector3 position = Vertices.Array[num].Position;
 				Vector3 position2 = Vertices.Array[num2].Position;
 				Vector3 position3 = Vertices.Array[num3].Position;
@@ -574,9 +574,9 @@ namespace Game
 				Image image2 = new Image(1, bounds.Height);
 				for (int j = bounds.Top; j < bounds.Bottom; j++)
 				{
-					if (i == bounds.Left || image.Pixels[i - 1 + j * image.Width].A <= alphaThreshold)
+					if (i == bounds.Left || image.Pixels[i - 1 + (j * image.Width)].A <= alphaThreshold)
 					{
-						image2.Pixels[j - bounds.Top] = image.Pixels[i + j * image.Width];
+						image2.Pixels[j - bounds.Top] = image.Pixels[i + (j * image.Width)];
 					}
 				}
 				AppendImageExtrusionSlice(image2, new Rectangle(0, 0, image2.Width, image2.Height), new Vector3(0f, 0f, 1f), new Vector3(0f, 1f, 0f), new Vector3(1f, 0f, 0f), new Vector3(i, bounds.Top, 0f), color, alphaThreshold);
@@ -586,9 +586,9 @@ namespace Game
 				Image image3 = new Image(1, bounds.Height);
 				for (int l = bounds.Top; l < bounds.Bottom; l++)
 				{
-					if (k == bounds.Right - 1 || image.Pixels[k + 1 + l * image.Width].A <= alphaThreshold)
+					if (k == bounds.Right - 1 || image.Pixels[k + 1 + (l * image.Width)].A <= alphaThreshold)
 					{
-						image3.Pixels[l - bounds.Top] = image.Pixels[k + l * image.Width];
+						image3.Pixels[l - bounds.Top] = image.Pixels[k + (l * image.Width)];
 					}
 				}
 				AppendImageExtrusionSlice(image3, new Rectangle(0, 0, image3.Width, image3.Height), new Vector3(0f, 0f, 1f), new Vector3(0f, 1f, 0f), new Vector3(-1f, 0f, 0f), new Vector3(k + 1, bounds.Top, 0f), color, alphaThreshold);
@@ -598,9 +598,9 @@ namespace Game
 				Image image4 = new Image(bounds.Width, 1);
 				for (int n = bounds.Left; n < bounds.Right; n++)
 				{
-					if (m == bounds.Top || image.Pixels[n + (m - 1) * image.Width].A <= alphaThreshold)
+					if (m == bounds.Top || image.Pixels[n + ((m - 1) * image.Width)].A <= alphaThreshold)
 					{
-						image4.Pixels[n - bounds.Left] = image.Pixels[n + m * image.Width];
+						image4.Pixels[n - bounds.Left] = image.Pixels[n + (m * image.Width)];
 					}
 				}
 				AppendImageExtrusionSlice(image4, new Rectangle(0, 0, image4.Width, image4.Height), new Vector3(1f, 0f, 0f), new Vector3(0f, 0f, 1f), new Vector3(0f, 1f, 0f), new Vector3(bounds.Left, m, 0f), color, alphaThreshold);
@@ -610,9 +610,9 @@ namespace Game
 				Image image5 = new Image(bounds.Width, 1);
 				for (int num2 = bounds.Left; num2 < bounds.Right; num2++)
 				{
-					if (num == bounds.Bottom - 1 || image.Pixels[num2 + (num + 1) * image.Width].A <= alphaThreshold)
+					if (num == bounds.Bottom - 1 || image.Pixels[num2 + ((num + 1) * image.Width)].A <= alphaThreshold)
 					{
-						image5.Pixels[num2 - bounds.Left] = image.Pixels[num2 + num * image.Width];
+						image5.Pixels[num2 - bounds.Left] = image.Pixels[num2 + (num * image.Width)];
 					}
 				}
 				AppendImageExtrusionSlice(image5, new Rectangle(0, 0, image5.Width, image5.Height), new Vector3(1f, 0f, 0f), new Vector3(0f, 0f, 1f), new Vector3(0f, -1f, 0f), new Vector3(bounds.Left, num + 1, 0f), color, alphaThreshold);
@@ -641,7 +641,7 @@ namespace Game
 			{
 				for (int j = bounds.Left; j < bounds.Right; j++)
 				{
-					if (slice.Pixels[j + i * slice.Width].A > alphaThreshold)
+					if (slice.Pixels[j + (i * slice.Width)].A > alphaThreshold)
 					{
 						num = MathUtils.Min(num, j);
 						num2 = MathUtils.Min(num2, i);
@@ -672,7 +672,7 @@ namespace Game
 			BlockMeshVertex value = new BlockMeshVertex
 			{
 				Position = p11,
-				TextureCoordinates = p11.XY + forward.XY / 2f,
+				TextureCoordinates = p11.XY + (forward.XY / 2f),
 				Color = color
 			};
 			vertices[index] = value;
@@ -681,7 +681,7 @@ namespace Game
 			value = new BlockMeshVertex
 			{
 				Position = p21,
-				TextureCoordinates = p21.XY + forward.XY / 2f,
+				TextureCoordinates = p21.XY + (forward.XY / 2f),
 				Color = color
 			};
 			vertices2[index2] = value;
@@ -690,7 +690,7 @@ namespace Game
 			value = new BlockMeshVertex
 			{
 				Position = p12,
-				TextureCoordinates = p12.XY + forward.XY / 2f,
+				TextureCoordinates = p12.XY + (forward.XY / 2f),
 				Color = color
 			};
 			vertices3[index3] = value;
@@ -699,7 +699,7 @@ namespace Game
 			value = new BlockMeshVertex
 			{
 				Position = p22,
-				TextureCoordinates = p22.XY + forward.XY / 2f,
+				TextureCoordinates = p22.XY + (forward.XY / 2f),
 				Color = color
 			};
 			vertices4[index4] = value;

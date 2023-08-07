@@ -189,7 +189,7 @@ namespace Game
 					num6 += clothingData5.Insulation;
 					SteedMovementSpeedFactor *= clothingData5.SteedMovementSpeedFactor;
 				}
-				Insulation = 1f / (1f / num3 + 1f / num4 + 1f / num5 + 1f / num6);
+				Insulation = 1f / ((1f / num3) + (1f / num4) + (1f / num5) + (1f / num6));
 				float num7 = MathUtils.Min(num3, num4, num5, num6);
 				if (num3 == num7)
 				{
@@ -236,7 +236,7 @@ namespace Game
 						attackPower -= num3;
 						if (m_subsystemGameInfo.WorldSettings.GameMode != 0)
 						{
-							float x2 = num3 / clothingData.Sturdiness * num2 + 0.001f;
+							float x2 = (num3 / clothingData.Sturdiness * num2) + 0.001f;
 							int damageCount = (int)(MathUtils.Floor(x2) + (float)(m_random.Bool(MathUtils.Remainder(x2, 1f)) ? 1 : 0));
 							list[i] = BlocksManager.DamageItem(value, damageCount);
 						}
@@ -252,7 +252,7 @@ namespace Game
 					if (Terrain.ExtractContents(list[num4]) != 203)
 					{
 						list.RemoveAt(num4);
-						m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + m_componentBody.StanceBoxSize / 2f, 1f, 1f, Color.White, 0));
+						m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + (m_componentBody.StanceBoxSize / 2f), 1f, 1f, Color.White, 0));
 					}
 					else
 					{
@@ -407,7 +407,7 @@ namespace Game
 							if (Terrain.ExtractContents(m_clothesList[num4]) != 203)
 							{
 								m_clothesList.RemoveAt(num4);
-								m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + m_componentBody.StanceBoxSize / 2f, 1f, 1f, Color.White, 0));
+								m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + (m_componentBody.StanceBoxSize / 2f), 1f, 1f, Color.White, 0));
 								m_componentGui.DisplaySmallMessage(LanguageControl.Get(fName, 2), Color.White, blinking: true, playNotificationSound: true);
 							}
 							else

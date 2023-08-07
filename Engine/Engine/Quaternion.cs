@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public struct Quaternion : IEquatable<Quaternion>
+	public struct Quaternion : IEquatable<Quaternion>
 	{
 		public float X;
 
@@ -135,17 +135,17 @@ namespace Engine
 			float num4 = MathUtils.Cos(x2);
 			float num5 = MathUtils.Sin(x3);
 			float num6 = MathUtils.Cos(x3);
-			return new Quaternion(num6 * num3 * num2 + num5 * num4 * num, num5 * num4 * num2 - num6 * num3 * num, num6 * num4 * num - num5 * num3 * num2, num6 * num4 * num2 + num5 * num3 * num);
+			return new Quaternion((num6 * num3 * num2) + (num5 * num4 * num), (num5 * num4 * num2) - (num6 * num3 * num), (num6 * num4 * num) - (num5 * num3 * num2), (num6 * num4 * num2) + (num5 * num3 * num));
 		}
 
 		public static float Dot(Quaternion q1, Quaternion q2)
 		{
-			return q1.X * q2.X + q1.Y * q2.Y + q1.Z * q2.Z + q1.W * q2.W;
+			return (q1.X * q2.X) + (q1.Y * q2.Y) + (q1.Z * q2.Z) + (q1.W * q2.W);
 		}
 
 		public static Quaternion Inverse(Quaternion q)
 		{
-			float num = q.X * q.X + q.Y * q.Y + q.Z * q.Z + q.W * q.W;
+			float num = (q.X * q.X) + (q.Y * q.Y) + (q.Z * q.Z) + (q.W * q.W);
 			float num2 = 1f / num;
 			Quaternion result = default(Quaternion);
 			result.X = (0f - q.X) * num2;
@@ -162,26 +162,26 @@ namespace Engine
 
 		public float LengthSquared()
 		{
-			return X * X + Y * Y + Z * Z + W * W;
+			return (X * X) + (Y * Y) + (Z * Z) + (W * W);
 		}
 
 		public static Quaternion Lerp(Quaternion q1, Quaternion q2, float f)
 		{
 			float num = 1f - f;
 			Quaternion result = default(Quaternion);
-			if (q1.X * q2.X + q1.Y * q2.Y + q1.Z * q2.Z + q1.W * q2.W >= 0f)
+			if ((q1.X * q2.X) + (q1.Y * q2.Y) + (q1.Z * q2.Z) + (q1.W * q2.W) >= 0f)
 			{
-				result.X = num * q1.X + f * q2.X;
-				result.Y = num * q1.Y + f * q2.Y;
-				result.Z = num * q1.Z + f * q2.Z;
-				result.W = num * q1.W + f * q2.W;
+				result.X = (num * q1.X) + (f * q2.X);
+				result.Y = (num * q1.Y) + (f * q2.Y);
+				result.Z = (num * q1.Z) + (f * q2.Z);
+				result.W = (num * q1.W) + (f * q2.W);
 			}
 			else
 			{
-				result.X = num * q1.X - f * q2.X;
-				result.Y = num * q1.Y - f * q2.Y;
-				result.Z = num * q1.Z - f * q2.Z;
-				result.W = num * q1.W - f * q2.W;
+				result.X = (num * q1.X) - (f * q2.X);
+				result.Y = (num * q1.Y) - (f * q2.Y);
+				result.Z = (num * q1.Z) - (f * q2.Z);
+				result.W = (num * q1.W) - (f * q2.W);
 			}
 			float num2 = 1f / result.Length();
 			result.X *= num2;
@@ -193,7 +193,7 @@ namespace Engine
 
 		public static Quaternion Slerp(Quaternion q1, Quaternion q2, float f)
 		{
-			float num = q1.X * q2.X + q1.Y * q2.Y + q1.Z * q2.Z + q1.W * q2.W;
+			float num = (q1.X * q2.X) + (q1.Y * q2.Y) + (q1.Z * q2.Z) + (q1.W * q2.W);
 			bool flag = false;
 			if (num < 0f)
 			{
@@ -205,20 +205,20 @@ namespace Engine
 			if (num > 0.999999f)
 			{
 				num2 = 1f - f;
-				num3 = (flag ? (0f - f) : f);
+				num3 = flag ? (0f - f) : f;
 			}
 			else
 			{
 				float num4 = MathUtils.Acos(num);
 				float num5 = 1f / MathUtils.Sin(num4);
 				num2 = MathUtils.Sin((1f - f) * num4) * num5;
-				num3 = (flag ? ((0f - MathUtils.Sin(f * num4)) * num5) : (MathUtils.Sin(f * num4) * num5));
+				num3 = flag ? ((0f - MathUtils.Sin(f * num4)) * num5) : (MathUtils.Sin(f * num4) * num5);
 			}
 			Quaternion result = default(Quaternion);
-			result.X = num2 * q1.X + num3 * q2.X;
-			result.Y = num2 * q1.Y + num3 * q2.Y;
-			result.Z = num2 * q1.Z + num3 * q2.Z;
-			result.W = num2 * q1.W + num3 * q2.W;
+			result.X = (num2 * q1.X) + (num3 * q2.X);
+			result.Y = (num2 * q1.Y) + (num3 * q2.Y);
+			result.Z = (num2 * q1.Z) + (num3 * q2.Z);
+			result.W = (num2 * q1.W) + (num3 * q2.W);
 			return result;
 		}
 
@@ -244,17 +244,17 @@ namespace Engine
 			float num8 = Y * Z;
 			float num9 = X * W;
 			Matrix result = default(Matrix);
-			result.M11 = 1f - 2f * (num2 + num3);
+			result.M11 = 1f - (2f * (num2 + num3));
 			result.M12 = 2f * (num4 + num5);
 			result.M13 = 2f * (num6 - num7);
 			result.M14 = 0f;
 			result.M21 = 2f * (num4 - num5);
-			result.M22 = 1f - 2f * (num3 + num);
+			result.M22 = 1f - (2f * (num3 + num));
 			result.M23 = 2f * (num8 + num9);
 			result.M24 = 0f;
 			result.M31 = 2f * (num6 + num7);
 			result.M32 = 2f * (num8 - num9);
-			result.M33 = 1f - 2f * (num2 + num);
+			result.M33 = 1f - (2f * (num2 + num));
 			result.M34 = 0f;
 			result.M41 = 0f;
 			result.M42 = 0f;
@@ -265,26 +265,26 @@ namespace Engine
 
 		public Vector3 GetRightVector()
 		{
-			return new Vector3(1f - 2f * (Y * Y + Z * Z), 2f * (X * Y + Z * W), 2f * (X * Z - W * Y));
+			return new Vector3(1f - (2f * ((Y * Y) + (Z * Z))), 2f * ((X * Y) + (Z * W)), 2f * ((X * Z) - (W * Y)));
 		}
 
 		public Vector3 GetUpVector()
 		{
-			return new Vector3(2f * (X * Y - Z * W), 1f - 2f * (X * X + Z * Z), 2f * (Y * Z + X * W));
+			return new Vector3(2f * ((X * Y) - (Z * W)), 1f - (2f * ((X * X) + (Z * Z))), 2f * ((Y * Z) + (X * W)));
 		}
 
 		public Vector3 GetForwardVector()
 		{
-			return new Vector3(-2f * (Y * W + X * Z), 2f * (X * W - Y * Z), 2f * (X * X + Y * Y) - 1f);
+			return new Vector3(-2f * ((Y * W) + (X * Z)), 2f * ((X * W) - (Y * Z)), (2f * ((X * X) + (Y * Y))) - 1f);
 		}
 
 		public Vector3 ToYawPitchRoll()
 		{
-			float num = -2f * (Y * W + X * Z);
-			float x = 2f * (X * W - Y * Z);
-			float num2 = 2f * (X * X + Y * Y) - 1f;
-			float y = 2f * (X * Y + Z * W);
-			float x2 = 1f - 2f * (X * X + Z * Z);
+			float num = -2f * ((Y * W) + (X * Z));
+			float x = 2f * ((X * W) - (Y * Z));
+			float num2 = (2f * ((X * X) + (Y * Y))) - 1f;
+			float y = 2f * ((X * Y) + (Z * W));
+			float x2 = 1f - (2f * ((X * X) + (Z * Z)));
 			float x3 = MathUtils.Atan2(0f - num, 0f - num2);
 			float y2 = MathUtils.Asin(x);
 			float z = MathUtils.Atan2(y, x2);
@@ -331,15 +331,15 @@ namespace Engine
 			float y2 = q2.Y;
 			float z2 = q2.Z;
 			float w2 = q2.W;
-			float num = y * z2 - z * y2;
-			float num2 = z * x2 - x * z2;
-			float num3 = x * y2 - y * x2;
-			float num4 = x * x2 + y * y2 + z * z2;
+			float num = (y * z2) - (z * y2);
+			float num2 = (z * x2) - (x * z2);
+			float num3 = (x * y2) - (y * x2);
+			float num4 = (x * x2) + (y * y2) + (z * z2);
 			Quaternion result = default(Quaternion);
-			result.X = x * w2 + x2 * w + num;
-			result.Y = y * w2 + y2 * w + num2;
-			result.Z = z * w2 + z2 * w + num3;
-			result.W = w * w2 - num4;
+			result.X = (x * w2) + (x2 * w) + num;
+			result.Y = (y * w2) + (y2 * w) + num2;
+			result.Z = (z * w2) + (z2 * w) + num3;
+			result.W = (w * w2) - num4;
 			return result;
 		}
 
@@ -354,21 +354,21 @@ namespace Engine
 			float y = q1.Y;
 			float z = q1.Z;
 			float w = q1.W;
-			float num = q2.X * q2.X + q2.Y * q2.Y + q2.Z * q2.Z + q2.W * q2.W;
+			float num = (q2.X * q2.X) + (q2.Y * q2.Y) + (q2.Z * q2.Z) + (q2.W * q2.W);
 			float num2 = 1f / num;
 			float num3 = (0f - q2.X) * num2;
 			float num4 = (0f - q2.Y) * num2;
 			float num5 = (0f - q2.Z) * num2;
 			float num6 = q2.W * num2;
-			float num7 = y * num5 - z * num4;
-			float num8 = z * num3 - x * num5;
-			float num9 = x * num4 - y * num3;
-			float num10 = x * num3 + y * num4 + z * num5;
+			float num7 = (y * num5) - (z * num4);
+			float num8 = (z * num3) - (x * num5);
+			float num9 = (x * num4) - (y * num3);
+			float num10 = (x * num3) + (y * num4) + (z * num5);
 			Quaternion result = default(Quaternion);
-			result.X = x * num6 + num3 * w + num7;
-			result.Y = y * num6 + num4 * w + num8;
-			result.Z = z * num6 + num5 * w + num9;
-			result.W = w * num6 - num10;
+			result.X = (x * num6) + (num3 * w) + num7;
+			result.Y = (y * num6) + (num4 * w) + num8;
+			result.Z = (z * num6) + (num5 * w) + num9;
+			result.W = (w * num6) - num10;
 			return result;
 		}
 

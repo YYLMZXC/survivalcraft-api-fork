@@ -21,7 +21,7 @@ namespace Game
 			if (num.HasValue)
 			{
 				m_counter = (int)MathUtils.Round(MathUtils.Abs(num.Value) * 15f);
-				m_overflow = (num.Value < 0f);
+				m_overflow = num.Value < 0f;
 			}
 		}
 

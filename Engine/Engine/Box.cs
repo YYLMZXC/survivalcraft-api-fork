@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public struct Box : IEquatable<Box>
+	public struct Box : IEquatable<Box>
 	{
 		public int Left;
 

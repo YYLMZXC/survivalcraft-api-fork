@@ -53,8 +53,8 @@ namespace Game
 				if (MovementAnimationPhase != num2)
 				{
 					MovementAnimationPhase = MovementAnimationPhase - num2 > 0.5f
-						? MathUtils.Min(MovementAnimationPhase + 2f * dt, num2 + 1f)
-						: MathUtils.Max(MovementAnimationPhase - 2f * dt, num2);
+						? MathUtils.Min(MovementAnimationPhase + (2f * dt), num2 + 1f)
+						: MathUtils.Max(MovementAnimationPhase - (2f * dt), num2);
 				}
 			}
 			float num3 = 0f;
@@ -66,7 +66,7 @@ namespace Game
 				if (m_componentCreature.ComponentLocomotion.LastFlyOrder.HasValue)
 				{
 					float num5 = (m_componentCreature.ComponentLocomotion.LastFlyOrder.Value.LengthSquared() > 0.99f) ? 1.5f : 1f;
-					FlyPhase = MathUtils.Remainder(FlyPhase + m_flyAnimationSpeed * num5 * dt, 1f);
+					FlyPhase = MathUtils.Remainder(FlyPhase + (m_flyAnimationSpeed * num5 * dt), 1f);
 					if (m_componentCreature.ComponentLocomotion.LastFlyOrder.Value.Y < -0.1f && m_componentCreature.ComponentBody.Velocity.Length() > 4f)
 					{
 						FlyPhase = 0.72f;
@@ -74,7 +74,7 @@ namespace Game
 				}
 				else if (FlyPhase != 1f)
 				{
-					FlyPhase = MathUtils.Min(FlyPhase + m_flyAnimationSpeed * dt, 1f);
+					FlyPhase = MathUtils.Min(FlyPhase + (m_flyAnimationSpeed * dt), 1f);
 				}
 			}
 			if (FeedOrder)
@@ -87,7 +87,7 @@ namespace Game
 			}
 			else if (m_peckPhase != 0f)
 			{
-				m_peckPhase = MathUtils.Remainder(MathUtils.Min(m_peckPhase + m_peckAnimationSpeed * dt, 1f), 1f);
+				m_peckPhase = MathUtils.Remainder(MathUtils.Min(m_peckPhase + (m_peckAnimationSpeed * dt), 1f), 1f);
 			}
 			FeedOrder = false;
 			base.Update(dt);
@@ -100,7 +100,7 @@ namespace Game
 			ModsManager.HookAction("OnModelAnimate", loader =>
 			{
 				loader.OnModelAnimate(this, out skip);
-				flag = (flag | skip);
+				flag = flag | skip;
 				return false;
 			});
 			if (flag)
@@ -126,7 +126,7 @@ namespace Game
 			}
 			else
 			{
-				num2 = (num3 = 0f - MathUtils.DegToRad(60f));
+				num2 = num3 = 0f - MathUtils.DegToRad(60f);
 			}
 			Vector3 vector = m_componentCreature.ComponentBody.Rotation.ToYawPitchRoll();
 			if (m_componentCreature.ComponentHealth.Health > 0f)
@@ -158,7 +158,7 @@ namespace Game
 			{
 				float num7 = 1f - DeathPhase;
 				float num8 = m_componentCreature.ComponentBody.BoundingBox.Max.Y - m_componentCreature.ComponentBody.BoundingBox.Min.Y;
-				Vector3 position = m_componentCreature.ComponentBody.Position + 0.5f * num8 * Vector3.Normalize(m_componentCreature.ComponentBody.Matrix.Forward * new Vector3(1f, 0f, 1f));
+				Vector3 position = m_componentCreature.ComponentBody.Position + (0.5f * num8 * Vector3.Normalize(m_componentCreature.ComponentBody.Matrix.Forward * new Vector3(1f, 0f, 1f)));
 				SetBoneTransform(m_bodyBone.Index, Matrix.CreateFromYawPitchRoll(vector.X, (float)Math.PI / 2f * DeathPhase, 0f) * Matrix.CreateTranslation(position));
 				SetBoneTransform(m_neckBone.Index, Matrix.Identity);
 				SetBoneTransform(m_headBone.Index, Matrix.Identity);
@@ -205,7 +205,7 @@ namespace Game
 				m_wing1Bone = null;
 				m_wing2Bone = null;
 			}
-			m_hasWings = (m_wing1Bone != null && m_wing2Bone != null);
+			m_hasWings = m_wing1Bone != null && m_wing2Bone != null;
 		}
 	}
 }

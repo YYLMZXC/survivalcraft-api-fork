@@ -246,7 +246,7 @@ namespace Game
 				float num = componentModel.Opacity.HasValue ? componentModel.Opacity.Value : 1f;
 				modelShader.InstancesCount = componentModel.AbsoluteBoneTransformsForCamera.Length;
 				modelShader.MaterialColor = new Vector4(v * num, num);
-				modelShader.EmissionColor = (componentModel.EmissionColor.HasValue ? componentModel.EmissionColor.Value : Vector4.Zero);
+				modelShader.EmissionColor = componentModel.EmissionColor.HasValue ? componentModel.EmissionColor.Value : Vector4.Zero;
 				modelShader.AmbientLightColor = new Vector3(LightingManager.LightAmbient * modelsDatum.Light);
 				modelShader.DiffuseLightColor1 = new Vector3(modelsDatum.Light);
 				modelShader.DiffuseLightColor2 = new Vector3(modelsDatum.Light);
@@ -290,7 +290,7 @@ namespace Game
 			else
 			{
 				Matrix? boneTransform = modelData.ComponentModel.GetBoneTransform(modelData.ComponentModel.Model.RootBone.Index);
-				p = ((!boneTransform.HasValue) ? Vector3.Zero : (boneTransform.Value.Translation + new Vector3(0f, 0.9f, 0f)));
+				p = (!boneTransform.HasValue) ? Vector3.Zero : (boneTransform.Value.Translation + new Vector3(0f, 0.9f, 0f));
 			}
 			return LightingManager.CalculateSmoothLight(m_subsystemTerrain, p);
 		}
@@ -311,7 +311,7 @@ namespace Game
 			};
 			Vector3 unitZ = Vector3.UnitZ;
 			Vector3 v = Vector3.Cross(unitZ, vector);
-			Vector3 v2 = vector * 900f - s * unitZ - num * v;
+			Vector3 v2 = (vector * 900f) - (s * unitZ) - (num * v);
 			return Vector3.Normalize(v2);
 		}
 
@@ -328,7 +328,7 @@ namespace Game
 				return;
 			}
 			float num2 = MathUtils.Sqrt(num);
-			float num3 = MathUtils.Saturate(4f * (1f - num2 / 32f));
+			float num3 = MathUtils.Saturate(4f * (1f - (num2 / 32f)));
 			float num4 = shadowDiameter / 2f;  //ÒõÓ°Ö±¾¶/2
 			int num5 = Terrain.ToCell(shadowPosition.X - num4);
 			int num6 = Terrain.ToCell(shadowPosition.Z - num4);
@@ -358,7 +358,7 @@ namespace Game
 									if (num14 > 0f)
 									{
 										float num15 = MathUtils.Max(num14 * 0.01f, 0.005f);
-										float num16 = MathUtils.Saturate(1f - (shadowPosition.Y - num13) / 2f);
+										float num16 = MathUtils.Saturate(1f - ((shadowPosition.Y - num13) / 2f));
 										Vector3 p = new Vector3(boundingBox.Min.X + (float)i, num13 + num15, boundingBox.Min.Z + (float)j);
 										Vector3 p2 = new Vector3(boundingBox.Max.X + (float)i, num13 + num15, boundingBox.Min.Z + (float)j);
 										Vector3 p3 = new Vector3(boundingBox.Max.X + (float)i, num13 + num15, boundingBox.Max.Z + (float)j);

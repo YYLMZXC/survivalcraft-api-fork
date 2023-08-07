@@ -80,8 +80,8 @@ namespace Game
 				m_subsystemTerrain.ChangeCell(m_componentBlockEntity.Coordinates.X, m_componentBlockEntity.Coordinates.Y, m_componentBlockEntity.Coordinates.Z, value);
 			}
 			DispenserBlock.Mode mode = DispenserBlock.GetMode(data);
-			m_dispenseButton.IsChecked = (mode == DispenserBlock.Mode.Dispense);
-			m_shootButton.IsChecked = (mode == DispenserBlock.Mode.Shoot);
+			m_dispenseButton.IsChecked = mode == DispenserBlock.Mode.Dispense;
+			m_shootButton.IsChecked = mode == DispenserBlock.Mode.Shoot;
 			m_acceptsDropsBox.IsChecked = DispenserBlock.GetAcceptsDrops(data);
 			if (!m_componentDispenser.IsAddedToProject)
 			{

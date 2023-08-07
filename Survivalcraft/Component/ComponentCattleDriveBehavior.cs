@@ -33,7 +33,7 @@ namespace Game
 			if (loudness >= 0.5f)
 			{
 				Vector3 v = m_componentCreature.ComponentBody.Position - sourcePosition;
-				m_driveVector += Vector3.Normalize(v) * MathUtils.Max(8f - 0.25f * v.Length(), 1f);
+				m_driveVector += Vector3.Normalize(v) * MathUtils.Max(8f - (0.25f * v.Length()), 1f);
 				float num = 12f + m_random.Float(0f, 3f);
 				if (m_driveVector.Length() > num)
 				{
@@ -90,7 +90,7 @@ namespace Game
 				{
 					Vector3 v = CalculateDriveDirectionAndSpeed();
 					float speed = MathUtils.Saturate(0.2f * v.Length());
-					m_componentPathfinding.SetDestination(m_componentCreature.ComponentBody.Position + 15f * Vector3.Normalize(v), speed, 5f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
+					m_componentPathfinding.SetDestination(m_componentCreature.ComponentBody.Position + (15f * Vector3.Normalize(v)), speed, 5f, 0, useRandomMovements: false, ignoreHeightDifference: true, raycastDestination: false, null);
 				}
 				FadeDriveVector();
 			}, null);
@@ -132,8 +132,8 @@ namespace Game
 			v /= num;
 			driveVector /= num;
 			Vector3 v2 = v - position;
-			float s = MathUtils.Max(1.5f * v2.Length() - 3f, 0f);
-			return 0.33f * m_driveVector + 0.66f * driveVector + s * Vector3.Normalize(v2);
+			float s = MathUtils.Max((1.5f * v2.Length()) - 3f, 0f);
+			return (0.33f * m_driveVector) + (0.66f * driveVector) + (s * Vector3.Normalize(v2));
 		}
 	}
 }

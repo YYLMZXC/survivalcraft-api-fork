@@ -113,7 +113,7 @@ namespace Game
 				if (m_componentPlayer != null && camera.GameWidget.PlayerData != m_componentPlayer.PlayerData)
 				{
 					ComponentCreature m_componentCreature = m_componentPlayer.ComponentMiner.ComponentCreature;
-					var position = Vector3.Transform(m_componentCreature.ComponentBody.Position + 1.02f * Vector3.UnitY * m_componentCreature.ComponentBody.BoxSize.Y, camera.ViewMatrix);
+					var position = Vector3.Transform(m_componentCreature.ComponentBody.Position + (1.02f * Vector3.UnitY * m_componentCreature.ComponentBody.BoxSize.Y), camera.ViewMatrix);
 					if (position.Z < 0f)
 					{
 						var color = Color.Lerp(Color.White, Color.Transparent, MathUtils.Saturate((position.Length() - 4f) / 3f));

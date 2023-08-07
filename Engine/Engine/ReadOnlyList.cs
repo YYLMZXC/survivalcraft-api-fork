@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Engine
 {
-    public struct ReadOnlyList<T> : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
+	public struct ReadOnlyList<T> : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
 	{
 		public struct Enumerator : IEnumerator<T>, IDisposable, IEnumerator
 		{

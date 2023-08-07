@@ -129,7 +129,7 @@ namespace Game
 				var line = new StackPanelWidget() { Direction = LayoutDirection.Horizontal };
 				for (int j = 0; j < 17; j++)
 				{
-					int addr = (i - 1) * 16 + (j - 1);
+					int addr = ((i - 1) * 16) + (j - 1);
 					if (j > 0 && i > 0)
 					{
 						var clickTextWidget = new ClickTextWidget(new Vector2(22), string.Format("{0}", MemoryBankData.m_hexChars[Read(addr)]), delegate ()
@@ -183,7 +183,7 @@ namespace Game
 				var stackPanelWidget = new StackPanelWidget() { Direction = LayoutDirection.Horizontal };
 				for (int j = 0; j < 3; j++)
 				{
-					int cc = i * 3 + j;
+					int cc = (i * 3) + j;
 					if (cc < 15)
 					{
 						int pp = cc + 1;
@@ -274,7 +274,7 @@ namespace Game
 							{
 								for (int d = 0; d < 16; d++)
 								{
-									Write(c + d * 16, tmp[c * 16 + d]);
+									Write(c + (d * 16), tmp[(c * 16) + d]);
 								}
 							}
 							clickpos = 0;

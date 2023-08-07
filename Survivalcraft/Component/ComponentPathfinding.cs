@@ -125,7 +125,7 @@ namespace Game
 			{
 				float num = m_random.Float(0.08f, 0.12f);
 				m_nextUpdateTime = m_subsystemTime.GameTime + num;
-				m_pathfindingCongestion = MathUtils.Max(m_pathfindingCongestion - 20f * num, 0f);
+				m_pathfindingCongestion = MathUtils.Max(m_pathfindingCongestion - (20f * num), 0f);
 				m_stateMachine.Update();
 			}
 		}

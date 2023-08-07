@@ -46,7 +46,7 @@ namespace Game
 			if (arrowType.HasValue)
 			{
 				float num = MathUtils.Lerp(0.14f, 0.68f, draw / 15f);
-				Matrix matrix2 = Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0.4f * size, (-1f + 2f * num) * size) * matrix;
+				Matrix matrix2 = Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0.4f * size, (-1f + (2f * num)) * size) * matrix;
 				int value2 = Terrain.MakeBlockValue(192, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
 				BlocksManager.Blocks[192].DrawBlock(primitivesRenderer, value2, color, size, ref matrix2, environmentData);
 			}

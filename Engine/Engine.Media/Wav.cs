@@ -56,7 +56,7 @@ namespace Engine.Media
 				stream.Position = 0L;
 				stream.CopyTo(memoryStream);
 				memoryStream.Position = 0L;
-				m_stream = memoryStream; 
+				m_stream = memoryStream;
 				m_leaveOpen = leaveOpen;
 				ReadHeaders(m_stream, out FmtHeader fmtHeader, out DataHeader dataHeader, out long dataStart);
 				m_channelsCount = fmtHeader.ChannelsCount;
@@ -91,7 +91,7 @@ namespace Engine.Media
 				{
 					throw new InvalidOperationException("Cannot read partial samples.");
 				}
-				count = (int)MathUtils.Min(count, m_bytesCount - m_position * 2 * ChannelsCount);
+				count = (int)MathUtils.Min(count, m_bytesCount - (m_position * 2 * ChannelsCount));
 				int num = m_stream.Read(buffer, offset, count);
 				m_position += num / 2 / ChannelsCount;
 				return num;

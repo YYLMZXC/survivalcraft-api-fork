@@ -2,7 +2,7 @@ using System;
 
 namespace Engine
 {
-    public static class MathUtils
+	public static class MathUtils
 	{
 		public const float PI = (float)Math.PI;
 
@@ -289,7 +289,7 @@ namespace Engine
 
 		public static float Remainder(float x, float y)
 		{
-			return x - Floor(x / y) * y;
+			return x - (Floor(x / y) * y);
 		}
 
 		public static float Sqr(float x)
@@ -364,20 +364,20 @@ namespace Engine
 
 		public static float Lerp(float x1, float x2, float f)
 		{
-			return x1 + (x2 - x1) * f;
+			return x1 + ((x2 - x1) * f);
 		}
 
 		public static float SmoothStep(float min, float max, float x)
 		{
 			x = Clamp((x - min) / (max - min), 0f, 1f);
-			return x * x * (3f - 2f * x);
+			return x * x * (3f - (2f * x));
 		}
 
 		public static float CatmullRom(float v1, float v2, float v3, float v4, float f)
 		{
 			float num = f * f;
 			float num2 = num * f;
-			return 0.5f * (2f * v2 + (v3 - v1) * f + (2f * v1 - 5f * v2 + 4f * v3 - v4) * num + (3f * v2 - v1 - 3f * v3 + v4) * num2);
+			return 0.5f * ((2f * v2) + ((v3 - v1) * f) + (((2f * v1) - (5f * v2) + (4f * v3) - v4) * num) + (((3f * v2) - v1 - (3f * v3) + v4) * num2));
 		}
 
 		public static float NormalizeAngle(float angle)
@@ -510,7 +510,7 @@ namespace Engine
 
 		public static double Remainder(double x, double y)
 		{
-			return x - Floor(x / y) * y;
+			return x - (Floor(x / y) * y);
 		}
 
 		public static double Sqr(double x)
@@ -585,20 +585,20 @@ namespace Engine
 
 		public static double Lerp(double x1, double x2, double f)
 		{
-			return x1 + (x2 - x1) * f;
+			return x1 + ((x2 - x1) * f);
 		}
 
 		public static double SmoothStep(double min, double max, double x)
 		{
 			x = Clamp((x - min) / (max - min), 0.0, 1.0);
-			return x * x * (3.0 - 2.0 * x);
+			return x * x * (3.0 - (2.0 * x));
 		}
 
 		public static double CatmullRom(double v1, double v2, double v3, double v4, double f)
 		{
 			double num = f * f;
 			double num2 = num * f;
-			return 0.5 * (2.0 * v2 + (v3 - v1) * f + (2.0 * v1 - 5.0 * v2 + 4.0 * v3 - v4) * num + (3.0 * v2 - v1 - 3.0 * v3 + v4) * num2);
+			return 0.5 * ((2.0 * v2) + ((v3 - v1) * f) + (((2.0 * v1) - (5.0 * v2) + (4.0 * v3) - v4) * num) + (((3.0 * v2) - v1 - (3.0 * v3) + v4) * num2));
 		}
 
 		public static double NormalizeAngle(double angle)

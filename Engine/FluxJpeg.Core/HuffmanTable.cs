@@ -171,7 +171,7 @@ namespace FluxJpeg.Core
 
 		public static int Extend(int diff, int t)
 		{
-			int num = 1 << t - 1;
+			int num = 1 << (t - 1);
 			if (diff < num)
 			{
 				num = (-1 << t) + 1;

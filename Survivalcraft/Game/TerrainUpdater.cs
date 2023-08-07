@@ -680,11 +680,11 @@ namespace Game
 			Vector3[] obj = new Vector3[6]
 			{
 				viewPosition,
-				viewPosition + 6f * viewDirection,
-				viewPosition + 6f * viewDirection - 6f * vector,
-				viewPosition + 6f * viewDirection + 6f * vector,
-				viewPosition + 6f * viewDirection - 2f * v,
-				viewPosition + 6f * viewDirection + 2f * v
+				viewPosition + (6f * viewDirection),
+				viewPosition + (6f * viewDirection) - (6f * vector),
+				viewPosition + (6f * viewDirection) + (6f * vector),
+				viewPosition + (6f * viewDirection) - (2f * v),
+				viewPosition + (6f * viewDirection) + (2f * v)
 			};
 			List<TerrainChunk> list = new List<TerrainChunk>();
 			Vector3[] array = obj;
@@ -790,7 +790,7 @@ namespace Game
 						{
 							for (int j = -2; j <= 2; j++)
 							{
-								TerrainChunk chunkAtCell = m_terrain.GetChunkAtCell(chunk.Origin.X + i * 16, chunk.Origin.Y + j * 16);
+								TerrainChunk chunkAtCell = m_terrain.GetChunkAtCell(chunk.Origin.X + (i * 16), chunk.Origin.Y + (j * 16));
 								if (chunkAtCell != null && chunkAtCell.ThreadState < TerrainChunkState.InvalidPropagatedLight)
 								{
 									UpdateChunkSingleStep(chunkAtCell, skylightValue);
@@ -807,7 +807,7 @@ namespace Game
 								int num = CalculateLightPropagationBitIndex(k, l);
 								if (((chunk.LightPropagationMask >> num) & 1) == 0)
 								{
-									TerrainChunk chunkAtCell2 = m_terrain.GetChunkAtCell(chunk.Origin.X + k * 16, chunk.Origin.Y + l * 16);
+									TerrainChunk chunkAtCell2 = m_terrain.GetChunkAtCell(chunk.Origin.X + (k * 16), chunk.Origin.Y + (l * 16));
 									if (chunkAtCell2 != null)
 									{
 										GenerateChunkLightSources(chunkAtCell2);
@@ -1173,7 +1173,7 @@ namespace Game
 
 		public static int CalculateLightPropagationBitIndex(int x, int z)
 		{
-			return x + 1 + 3 * (z + 1);
+			return x + 1 + (3 * (z + 1));
 		}
 
 		public void UpdateNeighborsLightPropagationBitmasks(TerrainChunk chunk)
@@ -1200,8 +1200,8 @@ namespace Game
 			int num3 = chunk.Origin.X + 16 + 1;
 			int num4 = chunk.Origin.Y - 1;
 			int num5 = chunk.Origin.Y + 16 + 1;
-			int x = MathUtils.Max(16 * sliceIndex - 1, 0);
-			int x2 = MathUtils.Min(16 * (sliceIndex + 1) + 1, 256);
+			int x = MathUtils.Max((16 * sliceIndex) - 1, 0);
+			int x2 = MathUtils.Min((16 * (sliceIndex + 1)) + 1, 256);
 			for (int i = num2; i < num3; i++)
 			{
 				for (int j = num4; j < num5; j++)

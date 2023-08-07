@@ -56,7 +56,7 @@ namespace FluxJpeg.Core
 		public DecodedJpeg(Image image, IEnumerable<JpegHeader> metaHeaders)
 		{
 			_image = image;
-			_metaHeaders = ((metaHeaders == null) ? new List<JpegHeader>(0) : new List<JpegHeader>(metaHeaders));
+			_metaHeaders = (metaHeaders == null) ? new List<JpegHeader>(0) : new List<JpegHeader>(metaHeaders);
 			foreach (JpegHeader metaHeader in _metaHeaders)
 			{
 				if (metaHeader.IsJFIF)

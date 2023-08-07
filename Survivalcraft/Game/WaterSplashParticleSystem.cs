@@ -51,7 +51,7 @@ namespace Game
 				obj.Position = position;
 				obj.Color = white;
 				obj.Size = new Vector2(0.14f * num5);
-				obj.TimeToLive = (obj.Duration = m_random.Float(0.5f, 2.5f));
+				obj.TimeToLive = obj.Duration = m_random.Float(0.5f, 2.5f);
 				Vector3 v = 1.5f * m_random.Float(0f, 1f) * Vector3.Normalize(new Vector3(m_random.Float(-1f, 1f), 0f, m_random.Float(-1f, 1f)));
 				obj.Velocity = num5 * (v + new Vector3(0f, m_random.Float(0f, 5f), 0f));
 			}
@@ -77,8 +77,8 @@ namespace Game
 				particle.Color *= MathUtils.Saturate(particle.TimeToLive);
 				particle.TimeToLive -= dt;
 				particle.TextureSlot = (int)(3.99f * particle.TimeToLive / particle.Duration);
-				particle.FlipX = (m_random.Sign() > 0);
-				particle.FlipY = (m_random.Sign() > 0);
+				particle.FlipX = m_random.Sign() > 0;
+				particle.FlipY = m_random.Sign() > 0;
 				if (particle.TimeToLive <= 0f || particle.Size.X <= 0f)
 				{
 					particle.IsActive = false;
@@ -103,7 +103,7 @@ namespace Game
 					{
 						particle.Velocity.Y = 0f;
 						float num3 = Vector2.Distance(new Vector2(particle.Position.X, particle.Position.Z), new Vector2(m_position.X, m_position.Z));
-						float num4 = 0.02f * MathUtils.Sin(2f * num3 + 10f * m_time);
+						float num4 = 0.02f * MathUtils.Sin((2f * num3) + (10f * m_time));
 						particle.Position.Y = MathUtils.Floor(particle.Position.Y) + levelHeight + num4;
 						particle.TimeToLive -= 1f * dt;
 						particle.Size -= new Vector2(0.04f * dt);

@@ -75,12 +75,12 @@ namespace Hjg.Pngcs.Chunks
 			int num;
 			if (c.mustGoBeforePLTE())
 			{
-				num2 = (num = 1);
+				num2 = num = 1;
 			}
 			else if (c.mustGoBeforeIDAT())
 			{
 				num = 3;
-				num2 = ((!c.mustGoAfterPLTE()) ? 1 : 3);
+				num2 = (!c.mustGoAfterPLTE()) ? 1 : 3;
 			}
 			else
 			{
@@ -125,7 +125,7 @@ namespace Hjg.Pngcs.Chunks
 					}
 					pngChunk.write(os);
 					chunks.Add(pngChunk);
-					alreadyWrittenKeys[pngChunk.Id] = ((!alreadyWrittenKeys.ContainsKey(pngChunk.Id)) ? 1 : (alreadyWrittenKeys[pngChunk.Id] + 1));
+					alreadyWrittenKeys[pngChunk.Id] = (!alreadyWrittenKeys.ContainsKey(pngChunk.Id)) ? 1 : (alreadyWrittenKeys[pngChunk.Id] + 1);
 					list.Add(i);
 					pngChunk.ChunkGroup = currentGroup;
 				}

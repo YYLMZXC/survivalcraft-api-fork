@@ -223,7 +223,7 @@ namespace Game
 				foreach (KeyValuePair<Point3, int> item in valuesDictionary)
 				{
 					Point3 point4 = item.Key - point;
-					array[point4.X + point4.Y * num2 + point4.Z * num2 * num2] = item.Value;
+					array[point4.X + (point4.Y * num2) + (point4.Z * num2 * num2)] = item.Value;
 				}
 				design.SetValues(num2, array);
 				int steps = (start.Face > 3) ? CellFace.Vector3ToFace(direction, 3) : CellFace.OppositeFace(start.Face);
@@ -254,13 +254,13 @@ namespace Game
 						int value = Terrain.MakeBlockValue(227, 0, FurnitureBlock.SetDesignIndex(0, design.Index, design.ShadowStrengthFactor, design.IsLightEmitter));
 						int num3 = MathUtils.Clamp(design.Resolution, 4, 8);
 						Matrix matrix = componentMiner.ComponentCreature.ComponentBody.Matrix;
-						Vector3 position = matrix.Translation + 1f * matrix.Forward + 1f * Vector3.UnitY;
+						Vector3 position = matrix.Translation + (1f * matrix.Forward) + (1f * Vector3.UnitY);
 						m_subsystemPickables.AddPickable(value, num3, position, null, null);
 						componentMiner.DamageActiveTool(1);
 						componentMiner.Poke(forceRestart: false);
 						for (int i = 0; i < 3; i++)
 						{
-							Time.QueueTimeDelayedExecution(Time.FrameStartTime + i * 0.25f, delegate
+							Time.QueueTimeDelayedExecution(Time.FrameStartTime + (i * 0.25f), delegate
 							{
 								m_subsystemSoundMaterials.PlayImpactSound(startValue, new Vector3(start.Point), 1f);
 							});
@@ -336,7 +336,7 @@ namespace Game
 			while (FurnitureSets.FirstOrDefault((FurnitureSet fs) => fs.Name == name) != null)
 			{
 				num++;
-				name = ((num > 0) ? (name + num.ToString(CultureInfo.InvariantCulture)) : name);
+				name = (num > 0) ? (name + num.ToString(CultureInfo.InvariantCulture)) : name;
 			}
 			var furnitureSet = new FurnitureSet
 			{
@@ -569,7 +569,7 @@ namespace Game
 			{
 				if (m_furnitureDesigns[i] != null)
 				{
-					m_furnitureDesigns[i].m_gcUsed = (m_furnitureDesigns[i].m_terrainUseCount > 0);
+					m_furnitureDesigns[i].m_gcUsed = m_furnitureDesigns[i].m_terrainUseCount > 0;
 				}
 			}
 			foreach (ScannedItemData item in allExistingItems)

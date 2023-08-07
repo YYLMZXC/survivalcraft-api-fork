@@ -42,8 +42,8 @@ namespace Game
 				text2 = text2.Substring(0, 15) + "...";
 			}
 			m_userIdLabel.Text = text2;
-			m_publishButton.IsEnabled = (UserManager.ActiveUser != null);
-			m_copyUserIdButton.IsEnabled = (UserManager.ActiveUser != null);
+			m_publishButton.IsEnabled = UserManager.ActiveUser != null;
+			m_copyUserIdButton.IsEnabled = UserManager.ActiveUser != null;
 			if (m_changeUserButton.IsClicked)
 			{
 				DialogsManager.ShowDialog(ParentWidget, new ListSelectionDialog("Select Active User", UserManager.GetUsers(), 60f, (object item) => ((UserInfo)item).DisplayName, delegate (object item)

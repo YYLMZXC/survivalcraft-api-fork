@@ -346,7 +346,7 @@ namespace Game
 				bool flag = !string.IsNullOrEmpty(textData.Url);
 				for (int j = 0; j < list.Count; j++)
 				{
-					fontBatch.QueueText(position: new Vector2(num4 / 2f, (float)j * m_font.GlyphHeight + (float)textData.TextureLocation.Value * (4f * m_font.GlyphHeight) + (num5 - num2) / 2f), text: list[j], depth: 0f, color: flag ? new Color(0, 0, 64) : list2[j], anchor: TextAnchor.HorizontalCenter, scale: new Vector2(1f / m_font.Scale), spacing: Vector2.Zero);
+					fontBatch.QueueText(position: new Vector2(num4 / 2f, ((float)j * m_font.GlyphHeight) + ((float)textData.TextureLocation.Value * (4f * m_font.GlyphHeight)) + ((num5 - num2) / 2f)), text: list[j], depth: 0f, color: flag ? new Color(0, 0, 64) : list2[j], anchor: TextAnchor.HorizontalCenter, scale: new Vector2(1f / m_font.Scale), spacing: Vector2.Zero);
 				}
 				textData.UsedTextureWidth = num4;
 				textData.UsedTextureHeight = num5;
@@ -484,7 +484,7 @@ namespace Game
 					float x = 0f;
 					float x2 = nearText.UsedTextureWidth / (m_font.GlyphHeight * 16f);
 					float x3 = (float)nearText.TextureLocation.Value / 32f;
-					float x4 = ((float)nearText.TextureLocation.Value + nearText.UsedTextureHeight / (m_font.GlyphHeight * 4f)) / 32f;
+					float x4 = ((float)nearText.TextureLocation.Value + (nearText.UsedTextureHeight / (m_font.GlyphHeight * 4f))) / 32f;
 					Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
 					Vector3 vector = new Vector3(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
 					float num3 = Vector3.Dot(camera.ViewPosition - (vector + new Vector3(0.5f)), signSurfaceNormal);
@@ -492,8 +492,8 @@ namespace Game
 					for (int i = 0; i < signSurfaceBlockMesh.Indices.Count / 3; i++)
 					{
 						BlockMeshVertex blockMeshVertex = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3]];
-						BlockMeshVertex blockMeshVertex2 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 1]];
-						BlockMeshVertex blockMeshVertex3 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[i * 3 + 2]];
+						BlockMeshVertex blockMeshVertex2 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[(i * 3) + 1]];
+						BlockMeshVertex blockMeshVertex3 = signSurfaceBlockMesh.Vertices.Array[signSurfaceBlockMesh.Indices.Array[(i * 3) + 2]];
 						Vector3 p = blockMeshVertex.Position + vector + vector2;
 						Vector3 p2 = blockMeshVertex2.Position + vector + vector2;
 						Vector3 p3 = blockMeshVertex3.Position + vector + vector2;

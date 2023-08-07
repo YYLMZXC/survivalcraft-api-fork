@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NVorbis
 {
-    internal abstract class DataPacket
+	internal abstract class DataPacket
 	{
 		[Flags]
 		protected enum PacketFlags : byte
@@ -161,7 +161,7 @@ namespace NVorbis
 			}
 			else
 			{
-				_packetFlags &= (PacketFlags)(byte)(~(uint)flag);
+				_packetFlags &= (PacketFlags)(byte)~(uint)flag;
 			}
 		}
 
@@ -268,7 +268,7 @@ namespace NVorbis
 				_bitCount += 8;
 				if (_bitCount > 64)
 				{
-					_overflowBits = (byte)(num2 >> 72 - _bitCount);
+					_overflowBits = (byte)(num2 >> (72 - _bitCount));
 				}
 			}
 			num = _bitBucket;
@@ -299,7 +299,7 @@ namespace NVorbis
 				if (_bitCount > 64)
 				{
 					int num = _bitCount - 64;
-					_bitBucket |= (ulong)_overflowBits << _bitCount - count - num;
+					_bitBucket |= (ulong)_overflowBits << (_bitCount - count - num);
 					if (num > count)
 					{
 						_overflowBits = (byte)(_overflowBits >> count);

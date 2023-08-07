@@ -129,7 +129,7 @@ namespace Engine.Media
 				{
 					throw new InvalidOperationException("Unsupported BMP pixel format.");
 				}
-				byte[] array2 = new byte[(3 * image.Width + 3) / 4 * 4];
+				byte[] array2 = new byte[((3 * image.Width) + 3) / 4 * 4];
 				for (int k = 0; k < image.Height; k++)
 				{
 					if (stream.Read(array2, 0, array2.Length) != array2.Length)
@@ -171,12 +171,12 @@ namespace Engine.Media
 			structure.ClrImportant = 0;
 			if (format == Format.RGBA8)
 			{
-				structure.Size = 54 + 4 * image.Width * image.Height;
+				structure.Size = 54 + (4 * image.Width * image.Height);
 				structure.BitCount = 32;
 			}
 			else
 			{
-				structure.Size = 54 + (3 * image.Width + 3) / 4 * 4 * image.Height;
+				structure.Size = 54 + (((3 * image.Width) + 3) / 4 * 4 * image.Height);
 				structure.BitCount = 24;
 			}
 			byte[] array = Utilities.StructureToArray(structure);
@@ -201,7 +201,7 @@ namespace Engine.Media
 				}
 				return;
 			}
-			byte[] array3 = new byte[(3 * image.Width + 3) / 4 * 4];
+			byte[] array3 = new byte[((3 * image.Width) + 3) / 4 * 4];
 			for (int k = 0; k < image.Height; k++)
 			{
 				int num3 = image.Width * k;

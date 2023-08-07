@@ -82,18 +82,18 @@ namespace Game
 		public override void Update(float dt)
 		{
 			m_sneakFactor = m_componentCreature.ComponentBody.IsSneaking
-				? MathUtils.Min(m_sneakFactor + 2f * dt, 1f)
-				: MathUtils.Max(m_sneakFactor - 2f * dt, 0f);
+				? MathUtils.Min(m_sneakFactor + (2f * dt), 1f)
+				: MathUtils.Max(m_sneakFactor - (2f * dt), 0f);
 
 			if ((m_componentSleep != null && m_componentSleep.IsSleeping) || m_componentCreature.ComponentHealth.Health <= 0f)
 			{
-				m_lieDownFactorEye = MathUtils.Min(m_lieDownFactorEye + 1f * dt, 1f);
-				m_lieDownFactorModel = MathUtils.Min(m_lieDownFactorModel + 3f * dt, 1f);
+				m_lieDownFactorEye = MathUtils.Min(m_lieDownFactorEye + (1f * dt), 1f);
+				m_lieDownFactorModel = MathUtils.Min(m_lieDownFactorModel + (3f * dt), 1f);
 			}
 			else
 			{
-				m_lieDownFactorEye = MathUtils.Max(m_lieDownFactorEye - 1f * dt, 0f);
-				m_lieDownFactorModel = MathUtils.Max(m_lieDownFactorModel - 3f * dt, 0f);
+				m_lieDownFactorEye = MathUtils.Max(m_lieDownFactorEye - (1f * dt), 0f);
+				m_lieDownFactorModel = MathUtils.Max(m_lieDownFactorModel - (3f * dt), 0f);
 			}
 			bool flag = true;
 			bool flag2 = true;
@@ -120,8 +120,8 @@ namespace Game
 				if (MovementAnimationPhase != num2)
 				{
 					MovementAnimationPhase = MovementAnimationPhase - num2 > 0.25f
-						? MathUtils.Min(MovementAnimationPhase + 2f * dt, num2 + 0.5f)
-						: MathUtils.Max(MovementAnimationPhase - 2f * dt, num2);
+						? MathUtils.Min(MovementAnimationPhase + (2f * dt), num2 + 0.5f)
+						: MathUtils.Max(MovementAnimationPhase - (2f * dt), num2);
 				}
 			}
 			if (flag2)
@@ -157,9 +157,9 @@ namespace Game
 			IsAttackHitMoment = false;
 			if (AttackOrder)
 			{
-				m_punchFactor = MathUtils.Min(m_punchFactor + 4f * dt, 1f);
+				m_punchFactor = MathUtils.Min(m_punchFactor + (4f * dt), 1f);
 				float punchPhase = m_punchPhase;
-				m_punchPhase = MathUtils.Remainder(m_punchPhase + dt * 2f, 1f);
+				m_punchPhase = MathUtils.Remainder(m_punchPhase + (dt * 2f), 1f);
 				if (punchPhase < 0.5f && m_punchPhase >= 0.5f)
 				{
 					IsAttackHitMoment = true;
@@ -168,16 +168,16 @@ namespace Game
 			}
 			else
 			{
-				m_punchFactor = MathUtils.Max(m_punchFactor - 4f * dt, 0f);
+				m_punchFactor = MathUtils.Max(m_punchFactor - (4f * dt), 0f);
 				if (m_punchPhase != 0f)
 				{
 					if (m_punchPhase > 0.5f)
 					{
-						m_punchPhase = MathUtils.Remainder(MathUtils.Min(m_punchPhase + dt * 2f, 1f), 1f);
+						m_punchPhase = MathUtils.Remainder(MathUtils.Min(m_punchPhase + (dt * 2f), 1f), 1f);
 					}
 					else if (m_punchPhase > 0f)
 					{
-						m_punchPhase = MathUtils.Max(m_punchPhase - dt * m_punchPhase, 0f);
+						m_punchPhase = MathUtils.Max(m_punchPhase - (dt * m_punchPhase), 0f);
 					}
 				}
 			}
@@ -218,7 +218,7 @@ namespace Game
 			ModsManager.HookAction("OnModelAnimate", loader =>
 			{
 				loader.OnModelAnimate(this, out skip);
-				flag = (flag | skip);
+				flag = flag | skip;
 				return false;
 			});
 			if (flag)
@@ -236,9 +236,9 @@ namespace Game
 				float num = MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase);
 				position.Y += Bob;
 				vector.X += m_headingOffset;
-				float num2 = (float)MathUtils.Remainder(0.75 * m_subsystemGameInfo.TotalElapsedGameTime + (GetHashCode() & 0xFFFF), 10000.0);
-				float x = MathUtils.Clamp(MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.Noise(1.02f * num2 - 100f)) + m_componentCreature.ComponentLocomotion.LookAngles.X + 1f * m_componentCreature.ComponentLocomotion.LastTurnOrder.X + m_headingOffset, 0f - MathUtils.DegToRad(80f), MathUtils.DegToRad(80f));
-				float y = MathUtils.Clamp(MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.Noise(0.96f * num2 - 200f)) + m_componentCreature.ComponentLocomotion.LookAngles.Y, 0f - MathUtils.DegToRad(45f), MathUtils.DegToRad(45f));
+				float num2 = (float)MathUtils.Remainder((0.75 * m_subsystemGameInfo.TotalElapsedGameTime) + (GetHashCode() & 0xFFFF), 10000.0);
+				float x = MathUtils.Clamp(MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.Noise((1.02f * num2) - 100f)) + m_componentCreature.ComponentLocomotion.LookAngles.X + (1f * m_componentCreature.ComponentLocomotion.LastTurnOrder.X) + m_headingOffset, 0f - MathUtils.DegToRad(80f), MathUtils.DegToRad(80f));
+				float y = MathUtils.Clamp(MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.Noise((0.96f * num2) - 200f)) + m_componentCreature.ComponentLocomotion.LookAngles.Y, 0f - MathUtils.DegToRad(45f), MathUtils.DegToRad(45f));
 				float num3 = 0f;
 				float y2 = 0f;
 				float x2 = 0f;
@@ -277,8 +277,8 @@ namespace Game
 					float num8 = m_componentCreature.ComponentLocomotion.LastWalkOrder.HasValue ? MathUtils.Min(0.03f * m_componentCreature.ComponentBody.Velocity.XZ.LengthSquared(), 0.5f) : 0f;
 					num3 = -0.1f - num8;
 					x2 = num3;
-					y2 = MathUtils.Lerp(0f, 0.25f, SimplexNoise.Noise(1.07f * num2 + 400f));
-					y3 = 0f - MathUtils.Lerp(0f, 0.25f, SimplexNoise.Noise(0.93f * num2 + 500f));
+					y2 = MathUtils.Lerp(0f, 0.25f, SimplexNoise.Noise((1.07f * num2) + 400f));
+					y3 = 0f - MathUtils.Lerp(0f, 0.25f, SimplexNoise.Noise((0.93f * num2) + 500f));
 				}
 				else if (MovementAnimationPhase != 0f)
 				{
@@ -291,7 +291,7 @@ namespace Game
 				if (m_componentMiner != null)
 				{
 					float num10 = MathUtils.Sin(MathUtils.Sqrt(m_componentMiner.PokingPhase) * (float)Math.PI);
-					num9 = ((m_componentMiner.ActiveBlockValue == 0) ? (1f * num10) : (0.3f + 1f * num10));
+					num9 = (m_componentMiner.ActiveBlockValue == 0) ? (1f * num10) : (0.3f + (1f * num10));
 				}
 				float num11 = (m_punchPhase != 0f) ? ((0f - MathUtils.DegToRad(90f)) * MathUtils.Sin((float)Math.PI * 2f * MathUtils.Sigmoid(m_punchPhase, 4f))) : 0f;
 				float num12 = ((m_punchCounter & 1) == 0) ? num11 : 0f;
@@ -303,7 +303,7 @@ namespace Game
 				if (m_rowLeft || m_rowRight)
 				{
 					float num18 = 0.6f * (float)MathUtils.Sin(6.91150426864624 * m_subsystemTime.GameTime);
-					float num19 = 0.2f + 0.2f * (float)MathUtils.Cos(6.91150426864624 * (m_subsystemTime.GameTime + 0.5));
+					float num19 = 0.2f + (0.2f * (float)MathUtils.Cos(6.91150426864624 * (m_subsystemTime.GameTime + 0.5)));
 					if (m_rowLeft)
 					{
 						num14 = num18;
@@ -328,9 +328,9 @@ namespace Game
 				}
 				float num24 = (!m_componentCreature.ComponentLocomotion.IsCreativeFlyEnabled) ? 1 : 4;
 				num4 += MathUtils.Lerp(-0.1f, 0.1f, SimplexNoise.Noise(num2)) + num12 + num14 + num20;
-				num5 += MathUtils.Lerp(0f, num24 * 0.15f, SimplexNoise.Noise(1.1f * num2 + 100f)) + num15 + num21;
-				num6 += num9 + MathUtils.Lerp(-0.1f, 0.1f, SimplexNoise.Noise(0.9f * num2 + 200f)) + num13 + num16 + num22;
-				num7 += 0f - MathUtils.Lerp(0f, num24 * 0.15f, SimplexNoise.Noise(1.05f * num2 + 300f)) + num17 + num23;
+				num5 += MathUtils.Lerp(0f, num24 * 0.15f, SimplexNoise.Noise((1.1f * num2) + 100f)) + num15 + num21;
+				num6 += num9 + MathUtils.Lerp(-0.1f, 0.1f, SimplexNoise.Noise((0.9f * num2) + 200f)) + num13 + num16 + num22;
+				num7 += 0f - MathUtils.Lerp(0f, num24 * 0.15f, SimplexNoise.Noise((1.05f * num2) + 300f)) + num17 + num23;
 				float s = MathUtils.Min(12f * m_subsystemTime.GameTimeDelta, 1f);
 				m_headAngles += s * (new Vector2(x, y) - m_headAngles);
 				m_handAngles1 += s * (new Vector2(num4, num5) - m_handAngles1);
@@ -358,7 +358,7 @@ namespace Game
 			{
 				float num25 = MathUtils.Max(DeathPhase, m_lieDownFactorModel);
 				float num26 = 1f - num25;
-				Vector3 position2 = position + num25 * 0.5f * m_componentCreature.ComponentBody.BoxSize.Y * Vector3.Normalize(m_componentCreature.ComponentBody.Matrix.Forward * new Vector3(1f, 0f, 1f)) + num25 * Vector3.UnitY * m_componentCreature.ComponentBody.BoxSize.Z * 0.1f;
+				Vector3 position2 = position + (num25 * 0.5f * m_componentCreature.ComponentBody.BoxSize.Y * Vector3.Normalize(m_componentCreature.ComponentBody.Matrix.Forward * new Vector3(1f, 0f, 1f))) + (num25 * Vector3.UnitY * m_componentCreature.ComponentBody.BoxSize.Z * 0.1f);
 				SetBoneTransform(m_bodyBone.Index, Matrix.CreateFromYawPitchRoll(vector.X, (float)Math.PI / 2f * num25, 0f) * Matrix.CreateTranslation(position2));
 				SetBoneTransform(m_headBone.Index, Matrix.Identity);
 				SetBoneTransform(m_hand1Bone.Index, Matrix.CreateRotationY(m_handAngles1.Y * num26) * Matrix.CreateRotationX(m_handAngles1.X * num26));
@@ -445,7 +445,7 @@ namespace Game
 			float num2 = 0.875f * m_componentCreature.ComponentBody.BoxSize.Y;
 			float num3 = MathUtils.Lerp(MathUtils.Lerp(num2, 0.45f * num2, num), 0.2f * num2, f);
 			Matrix matrix = m_componentCreature.ComponentBody.Matrix;
-			return m_componentCreature.ComponentBody.Position + matrix.Up * (num3 + 2f * Bob) + matrix.Forward * -0.2f * num;
+			return m_componentCreature.ComponentBody.Position + (matrix.Up * (num3 + (2f * Bob))) + (matrix.Forward * -0.2f * num);
 		}
 
 		public override Quaternion CalculateEyeRotation()

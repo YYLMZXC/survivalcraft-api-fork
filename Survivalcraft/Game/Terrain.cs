@@ -34,7 +34,7 @@ namespace Game
 					{
 						break;
 					}
-					num = ((num + 1) & 0xFFFF);
+					num = (num + 1) & 0xFFFF;
 				}
 				return terrainChunk;
 			}
@@ -44,7 +44,7 @@ namespace Game
 				int num = (x + (y << 8)) & 0xFFFF;
 				while (m_array[num] != null)
 				{
-					num = ((num + 1) & 0xFFFF);
+					num = (num + 1) & 0xFFFF;
 				}
 				m_array[num] = chunk;
 			}
@@ -63,7 +63,7 @@ namespace Game
 					{
 						break;
 					}
-					num = ((num + 1) & 0xFFFF);
+					num = (num + 1) & 0xFFFF;
 				}
 				m_array[num] = null;
 			}

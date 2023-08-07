@@ -38,7 +38,7 @@ namespace Game
 
 		public override void Update()
 		{
-			m_rateButton.IsEnabled = (m_starRating.Rating != 0f);
+			m_rateButton.IsEnabled = m_starRating.Rating != 0f;
 			if (m_rateButton.IsClicked)
 			{
 				DialogsManager.HideDialog(this);

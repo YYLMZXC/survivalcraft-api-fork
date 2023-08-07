@@ -127,8 +127,8 @@ namespace Game
 
 		public void ManualLightingStrike(Vector3 position, Vector3 direction)
 		{
-			int num = Terrain.ToCell(position.X + direction.X * 32f);
-			int num2 = Terrain.ToCell(position.Z + direction.Z * 32f);
+			int num = Terrain.ToCell(position.X + (direction.X * 32f));
+			int num2 = Terrain.ToCell(position.Z + (direction.Z * 32f));
 			Vector3? vector = null;
 			for (int i = 0; i < 300; i++)
 			{
@@ -225,24 +225,24 @@ namespace Game
 				{
 					if (m_subsystemGameInfo.WorldSettings.StartingPositionMode == StartingPositionMode.Hard)
 					{
-						m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + 60f * m_random.Float(2f, 3f);
+						m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + (60f * m_random.Float(2f, 3f));
 						m_lightningIntensity = m_random.Float(0.5f, 1f);
 					}
 					else
 					{
-						m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + 60f * m_random.Float(3f, 6f);
+						m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + (60f * m_random.Float(3f, 6f));
 						m_lightningIntensity = m_random.Float(0.33f, 0.66f);
 					}
 				}
 				else
 				{
-					m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + 60f * m_random.Float(5f, 45f);
-					m_lightningIntensity = ((m_random.Float(0f, 1f) < 0.5f) ? m_random.Float(0.33f, 1f) : 0f);
+					m_precipitationStartTime = m_subsystemGameInfo.TotalElapsedGameTime + (60f * m_random.Float(5f, 45f));
+					m_lightningIntensity = (m_random.Float(0f, 1f) < 0.5f) ? m_random.Float(0.33f, 1f) : 0f;
 				}
-				m_precipitationEndTime = m_precipitationStartTime + 60f * m_random.Float(3f, 6f);
+				m_precipitationEndTime = m_precipitationStartTime + (60f * m_random.Float(3f, 6f));
 			}
 			float num = (float)MathUtils.Max(0.0, MathUtils.Min(m_subsystemGameInfo.TotalElapsedGameTime - m_precipitationStartTime, m_precipitationEndTime - m_subsystemGameInfo.TotalElapsedGameTime));
-			GlobalPrecipitationIntensity = (m_subsystemGameInfo.WorldSettings.AreWeatherEffectsEnabled ? MathUtils.Saturate(num * 0.04f) : 0f);
+			GlobalPrecipitationIntensity = m_subsystemGameInfo.WorldSettings.AreWeatherEffectsEnabled ? MathUtils.Saturate(num * 0.04f) : 0f;
 			if (GlobalPrecipitationIntensity == 1f && SubsystemTime.PeriodicGameTimeEvent(1.0, 0.0))
 			{
 				TerrainChunk[] allocatedChunks = SubsystemTerrain.Terrain.AllocatedChunks;
@@ -300,7 +300,7 @@ namespace Game
 									float num10 = vector2.X - listenerPosition.X;
 									float num11 = 8f * (vector2.Y - listenerPosition.Y);
 									float num12 = vector2.Z - listenerPosition.Z;
-									float distance = MathUtils.Sqrt(num10 * num10 + num11 * num11 + num12 * num12);
+									float distance = MathUtils.Sqrt((num10 * num10) + (num11 * num11) + (num12 * num12));
 									num5 += m_subsystemAudio.CalculateVolume(distance, 1.5f) * precipitationShaftInfo.Intensity;
 								}
 							}
@@ -345,7 +345,7 @@ namespace Game
 			{
 				for (int j = -5; j <= 5; j++)
 				{
-					float distance = MathUtils.Sqrt(i * i + j * j);
+					float distance = MathUtils.Sqrt((i * i) + (j * j));
 					m_rainVolumeFactor += m_subsystemAudio.CalculateVolume(distance, 1.5f);
 				}
 			}

@@ -64,7 +64,7 @@ namespace Game
 				{
 					int num = --m_componentCreativeInventory.PageIndex;
 				}
-				m_componentCreativeInventory.PageIndex = ((m_pagesCount > 0) ? MathUtils.Clamp(m_componentCreativeInventory.PageIndex, 0, m_pagesCount - 1) : 0);
+				m_componentCreativeInventory.PageIndex = (m_pagesCount > 0) ? MathUtils.Clamp(m_componentCreativeInventory.PageIndex, 0, m_pagesCount - 1) : 0;
 			}
 			if (m_componentCreativeInventory.CategoryIndex != m_assignedCategoryIndex)
 			{
@@ -112,9 +112,9 @@ namespace Game
 				}
 				m_assignedPageIndex = m_componentCreativeInventory.PageIndex;
 			}
-			m_creativeInventoryWidget.PageLabel.Text = ((m_pagesCount > 0) ? $"{m_componentCreativeInventory.PageIndex + 1}/{m_pagesCount}" : string.Empty);
-			m_creativeInventoryWidget.PageDownButton.IsEnabled = (m_componentCreativeInventory.PageIndex < m_pagesCount - 1);
-			m_creativeInventoryWidget.PageUpButton.IsEnabled = (m_componentCreativeInventory.PageIndex > 0);
+			m_creativeInventoryWidget.PageLabel.Text = (m_pagesCount > 0) ? $"{m_componentCreativeInventory.PageIndex + 1}/{m_pagesCount}" : string.Empty;
+			m_creativeInventoryWidget.PageDownButton.IsEnabled = m_componentCreativeInventory.PageIndex < m_pagesCount - 1;
+			m_creativeInventoryWidget.PageUpButton.IsEnabled = m_componentCreativeInventory.PageIndex > 0;
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace Engine.Graphics
 				v = vector;
 				v2 = new Vector2(0f - vector.Y, vector.X);
 				Vector2 vector2 = CalculateTextOffset(text, anchor, scale, spacing);
-				Vector2 v3 = v * vector2.X + v2 * vector2.Y;
+				Vector2 v3 = (v * vector2.X) + (v2 * vector2.Y);
 				v *= scale.X * base.Font.Scale;
 				v2 *= scale.Y * base.Font.Scale;
 				vector3 = position + v3;
@@ -32,7 +32,7 @@ namespace Engine.Graphics
 				vector3 = position + CalculateTextOffset(text, anchor, scale, spacing);
 			}
 			spacing += base.Font.Spacing;
-			vector3 += 0.5f * (v * spacing.X + v2 * spacing.Y);
+			vector3 += 0.5f * ((v * spacing.X) + (v2 * spacing.Y));
 			if ((anchor & TextAnchor.DisableSnapToPixels) == 0)
 			{
 				vector3 = Vector2.Round(vector3);
@@ -43,19 +43,19 @@ namespace Engine.Graphics
 			{
 				switch (c)
 				{
-				case '\n':
-					num++;
-					v4 = vector3 + (float)num * (base.Font.GlyphHeight + spacing.Y) * v2;
-					continue;
-				case '\r':
-					continue;
+					case '\n':
+						num++;
+						v4 = vector3 + ((float)num * (base.Font.GlyphHeight + spacing.Y) * v2);
+						continue;
+					case '\r':
+						continue;
 				}
 				BitmapFont.Glyph glyph = base.Font.GetGlyph(c);
 				if (!glyph.IsBlank)
 				{
 					Vector2 v5 = v * (glyph.TexCoord2.X - glyph.TexCoord1.X) * base.Font.Texture.Width;
 					Vector2 v6 = v2 * (glyph.TexCoord2.Y - glyph.TexCoord1.Y) * base.Font.Texture.Height;
-					Vector2 v7 = v * glyph.Offset.X + v2 * glyph.Offset.Y;
+					Vector2 v7 = (v * glyph.Offset.X) + (v2 * glyph.Offset.Y);
 					Vector2 v8 = v4 + v7;
 					Vector2 vector4 = v8 + v5;
 					Vector2 vector5 = v8 + v6;
