@@ -4,6 +4,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Views;
 using Android.Widget;
 using Engine;
 using Game;
@@ -50,6 +51,8 @@ namespace SC.Android
 					AppDomain.CurrentDomain.Load(memoryStream.ToArray());
 				}
 			}
+			
+			
 			Program.Main();
 		}
 		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
