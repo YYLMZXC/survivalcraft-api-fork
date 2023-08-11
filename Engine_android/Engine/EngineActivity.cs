@@ -40,8 +40,8 @@ namespace Engine
 
 		public void Vibrate(long ms)
 		{
-			Vibrator vibrator = (Vibrator)GetSystemService(Context.VibratorService);
-			vibrator.Vibrate(1000);
+			Vibrator vibrator = (Vibrator)GetSystemService("vibrator");
+			vibrator.Vibrate(VibrationEffect.CreateOneShot(1000, VibrationEffect.DefaultAmplitude));
 		}
 		public void OpenLink(string link)
 		{

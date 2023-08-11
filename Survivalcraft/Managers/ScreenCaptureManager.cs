@@ -1,6 +1,4 @@
 using Engine;
-using Engine.Graphics;
-using Engine.Media;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,8 +39,8 @@ namespace Game
 							height = 3240;
 							break;
 						default:
-							num = 1920;
-							height = 1080;
+							num = 3840;
+							height = 2160;
 							break;
 					}
 					DateTime now = DateTime.Now;
