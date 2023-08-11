@@ -37,8 +37,8 @@ namespace Game
 								break;
 							}
 						case ScreenshotSize.FullHD:
-							num = 1920;
-							height = 1080;
+							num = 5760;
+							height = 3240;
 							break;
 						default:
 							num = 1920;
