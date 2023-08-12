@@ -5,6 +5,7 @@
 	
 		public string 点击方块的部位(int part)
 		{
+			L_点击方块的部位_top:
 			switch (part)
 			{
 				case 0:
@@ -16,7 +17,7 @@
 				case 3: 
 					return"click_rightpart ";
 				default:
-					return null;
+					goto L_点击方块的部位_top;
 			}
 			}
 	}

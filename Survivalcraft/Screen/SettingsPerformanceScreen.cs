@@ -13,7 +13,7 @@ namespace Game
 			0
 		};
 
-		private int[] FPSString = new int[2]
+		private readonly int[] FPSString = new int[2]
 		{
 			60,
 			30
