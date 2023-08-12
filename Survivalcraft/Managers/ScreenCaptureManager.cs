@@ -1,4 +1,6 @@
 using Engine;
+using Engine.Graphics;
+using Engine.Media;
 using System;
 using System.Collections.Generic;
 using System.IO;
