@@ -29,7 +29,7 @@ namespace Engine.Media
 			{
 				throw new ArgumentOutOfRangeException(nameof(channelsCount));
 			}
-			if (samplingFrequency < 8000 || samplingFrequency > 48000)
+			if (samplingFrequency < 8000 || samplingFrequency > 192000)
 			{
 				throw new ArgumentOutOfRangeException(nameof(samplingFrequency));
 			}
