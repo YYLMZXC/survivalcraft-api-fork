@@ -1264,6 +1264,10 @@
     <None Include="Properties\app.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="OpenAL86\openal32.dll" />
+    <Content Include="OpenAL\openal32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="init.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -1895,13 +1899,8 @@
     <None Include="Content\Assets\Dialogs\RunJsDialog.xml" />
     <None Include="Content\Assets\Screens\ManageUserScreen.xml" />
     <Content Include="Content\icon.ico" />
-    <Content Include="OpenAL\x64\openal32.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="OpenAL\x86\openal32.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>set p=$(SolutionDir)
