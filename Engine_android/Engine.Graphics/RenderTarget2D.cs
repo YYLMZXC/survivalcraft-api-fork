@@ -109,7 +109,7 @@ namespace Engine.Graphics
 		public void GenerateMipMaps()
 		{
 			GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
-			GL.GenerateMipmap(All.Texture2D);
+			GL.GenerateMipmap(TextureTarget.Texture2D);
 		}
 
 		internal override void HandleDeviceLost()
