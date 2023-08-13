@@ -57,8 +57,8 @@ namespace Engine.Graphics
 			{
 				int num = Utilities.SizeOf<T>();
 				int vertexStride = VertexDeclaration.VertexStride;
-				GLWrapper.BindBuffer(All.ArrayBuffer, m_buffer);
-				GL.BufferSubData(All.ArrayBuffer, new IntPtr(targetStartIndex * vertexStride), new IntPtr(num * sourceCount), gCHandle.AddrOfPinnedObject() + (sourceStartIndex * num));
+				GLWrapper.BindBuffer(BufferTarget.ArrayBuffer, m_buffer);
+				GL.BufferSubData(BufferTarget.ArrayBuffer, new IntPtr(targetStartIndex * vertexStride), new IntPtr(num * sourceCount), gCHandle.AddrOfPinnedObject() + (sourceStartIndex * num));
 			}
 			finally
 			{
@@ -79,7 +79,7 @@ namespace Engine.Graphics
 		private void AllocateBuffer()
 		{
 			GL.GenBuffers(1, out m_buffer);
-			GLWrapper.BindBuffer(All.ArrayBuffer, m_buffer);
+			GLWrapper.BindBuffer(BufferTarget.ArrayBuffer, m_buffer);
 			GL.BufferData(All.ArrayBuffer, new IntPtr(VertexDeclaration.VertexStride * VerticesCount), IntPtr.Zero, All.StaticDraw);
 		}
 
