@@ -209,7 +209,7 @@ namespace Engine.Graphics
 				int width = MathUtils.Max(Width >> mipLevel, 1);
 				int height = MathUtils.Max(Height >> mipLevel, 1);
 				IntPtr pixels = gCHandle.AddrOfPinnedObject() + (sourceStartIndex * Utilities.SizeOf<T>());
-				GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
+				GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
 				GL.TexImage2D(All.Texture2D, mipLevel, (int)m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, pixels);
 			}
 			finally
@@ -231,7 +231,7 @@ namespace Engine.Graphics
 		public void AllocateTexture()
 		{
 			GL.GenTextures(1, out m_texture);
-			GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
+			GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
 			for (int i = 0; i < MipLevelsCount; i++)
 			{
 				int width = MathUtils.Max(Width >> i, 1);

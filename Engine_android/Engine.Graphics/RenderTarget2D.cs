@@ -108,7 +108,7 @@ namespace Engine.Graphics
 
 		public void GenerateMipMaps()
 		{
-			GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
+			GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
 			GL.GenerateMipmap(TextureTarget.Texture2D);
 		}
 
