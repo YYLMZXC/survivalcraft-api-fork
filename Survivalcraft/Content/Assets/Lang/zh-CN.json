@@ -1650,11 +1650,11 @@
 			"DisplayName": "岩浆桶",
 			"Description": "桶是用铜制成的容器，用于运送水，岩浆或牛奶等流体。桶可以在流体方块处装入流体，然后运输到其他位置，在该位置可以放置流体方块以增加一处新的流体。您无法从非流体方块源头中填充存储桶。"
 		},
-		"PaintStripperBucketBlock:0": {
-			"DisplayName": "油漆桶",
-			"Description": "一个装满脱漆剂的桶。可用于从先前涂漆的表面上剥除油漆并使它们恢复到原始外观。",
-			"CRDescription:0": "溶解硝石制作脱漆剂"
-		},
+    "PaintStripperBucketBlock:0": {
+      "DisplayName": "脱漆剂桶",
+      "Description": "一个装满脱漆剂的桶。可用于从先前涂漆的表面上剥除油漆并使它们恢复到原始外观。",
+      "CRDescription:0": "溶解硝石制作脱漆剂"
+    },
 		"PaintBucketBlock:0": {
 			"DisplayName": "油漆桶",
 			"Description": "一个装满油漆的桶。可用于油漆表面以作装饰。将孔雀石或紫色花等有色成分溶解在白色涂料中可获得不同颜色的涂料。",
