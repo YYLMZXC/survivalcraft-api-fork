@@ -15,7 +15,7 @@ namespace Engine.Audio
 
 		private bool m_noMoreData;
 
-		private float m_bufferDuration;
+		private readonly float m_bufferDuration;
 
 		public StreamingSource StreamingSource
 		{

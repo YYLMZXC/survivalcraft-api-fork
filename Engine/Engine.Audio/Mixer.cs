@@ -11,7 +11,7 @@ namespace Engine.Audio
 	{
 		private static float m_masterVolume = 1f;
 
-		private static List<Sound> m_soundsToStop = new List<Sound>();
+		private static readonly List<Sound> m_soundsToStop = new List<Sound>();
 
 		internal static HashSet<Sound> m_soundsToStopPoll = new HashSet<Sound>();
 
@@ -37,8 +37,8 @@ namespace Engine.Audio
 		{
 			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
 			string fullPath = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-			string path = Environment.Is64BitProcess ? "x64" : "x86";
-			string str = Path.Combine(fullPath, "OpenAL", path);
+			string path = Environment.Is64BitProcess ? "OpenAL" : "OpenAL86";
+			string str = Path.Combine(fullPath,  path);
 			Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
 			new AudioContext();
 		}
