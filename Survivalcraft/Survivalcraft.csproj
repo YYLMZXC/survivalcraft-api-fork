@@ -1268,6 +1268,8 @@
     <Content Include="OpenAL\openal32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="运行库\framework4.8.1.exe" />
+    <Content Include="运行库\oalinst.exe" />
     <None Include="init.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

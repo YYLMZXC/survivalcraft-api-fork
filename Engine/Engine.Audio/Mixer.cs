@@ -31,23 +31,17 @@ namespace Engine.Audio
 				}
 			}
 		}
-
+		internal static void Initialize()
+		{
 #if desktop
-		internal static void Initialize()
-		{
-			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
-			string fullPath = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-			string path = Environment.Is64BitProcess ? "OpenAL" : "OpenAL86";
-			string str = Path.Combine(fullPath,  path);
-			Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
-			new AudioContext();
-		}
-#else
-		internal static void Initialize()
-		{
-			new AudioContext();
-		}
+			//string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
+			//string fullPath = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+			//string path = Environment.Is64BitProcess ? "OpenAL" : "OpenAL86";
+			//string str = Path.Combine(fullPath,  path);
+			//Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
 #endif
+			new AudioContext();
+		}
 		internal static void Dispose()
 		{
 		}
