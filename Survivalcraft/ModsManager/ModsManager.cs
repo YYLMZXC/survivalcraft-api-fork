@@ -1,10 +1,13 @@
 // Game.ModsManager
 using Engine;
+using Engine.Graphics;
+using Engine.Media;
 using Game;
 using SimpleJson;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
