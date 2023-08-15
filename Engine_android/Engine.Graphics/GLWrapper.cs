@@ -95,10 +95,10 @@ namespace Engine.Graphics
 
 		public static void Initialize()
 		{
-			Log.Information("GLES Vendor: " + GL.GetString(StringName.Vendor));
-			Log.Information("GLES Renderer: " + GL.GetString(StringName.Renderer));
-			Log.Information("GLES Version: " + GL.GetString(StringName.Version));
-			string @string = GL.GetString(StringName.Extensions);
+			Log.Information("GLES Vendor: " + GL.GetString(All.Vendor));
+			Log.Information("GLES Renderer: " + GL.GetString(All.Renderer));
+			Log.Information("GLES Version: " + GL.GetString(All.Version));
+			string @string = GL.GetString(All.Extensions);
 			GL_EXT_texture_filter_anisotropic = @string.Contains("GL_EXT_texture_filter_anisotropic");
 			GL_OES_packed_depth_stencil = @string.Contains("GL_OES_packed_depth_stencil");
 		}
@@ -156,6 +156,7 @@ namespace Engine.Graphics
 			m_scissorRectangle = null;
 		}
 
+
 		public static bool Enable(All state)
 		{
 			if (!m_enableDisableStates.TryGetValue(state, out bool value) || !value)
@@ -167,6 +168,7 @@ namespace Engine.Graphics
 			return false;
 		}
 
+
 		public static bool Disable(All state)
 		{
 			if (!m_enableDisableStates.TryGetValue(state, out bool value) | value)
@@ -177,6 +179,7 @@ namespace Engine.Graphics
 			}
 			return false;
 		}
+
 
 		public static bool IsEnabled(All state)
 		{
@@ -217,6 +220,7 @@ namespace Engine.Graphics
 			}
 		}
 
+
 		public static void CullFace(All cullFace)
 		{
 			if (cullFace != m_cullFace)
@@ -226,6 +230,7 @@ namespace Engine.Graphics
 			}
 		}
 
+
 		public static void FrontFace(All frontFace)
 		{
 			if (frontFace != m_frontFace)
@@ -234,6 +239,7 @@ namespace Engine.Graphics
 				m_frontFace = frontFace;
 			}
 		}
+
 
 		public static void DepthFunc(All depthFunction)
 		{
@@ -284,6 +290,7 @@ namespace Engine.Graphics
 			}
 		}
 
+
 		public static void BlendEquation(All blendEquation)
 		{
 			if (blendEquation != m_blendEquation)
@@ -295,6 +302,7 @@ namespace Engine.Graphics
 			}
 		}
 
+
 		public static void BlendEquationSeparate(All blendEquationColor, All blendEquationAlpha)
 		{
 			if (blendEquationColor != m_blendEquationColor || blendEquationAlpha != m_blendEquationAlpha)
@@ -305,6 +313,7 @@ namespace Engine.Graphics
 				m_blendEquation = (All)(-1);
 			}
 		}
+
 
 		public static void BlendFunc(All blendFuncSource, All blendFuncDestination)
 		{
@@ -319,6 +328,7 @@ namespace Engine.Graphics
 				m_blendFuncDestinationAlpha = (All)(-1);
 			}
 		}
+
 
 		public static void BlendFuncSeparate(All blendFuncSourceColor, All blendFuncDestinationColor, All blendFuncSourceAlpha, All blendFuncDestinationAlpha)
 		{
@@ -348,9 +358,10 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void BindTexture(TextureTarget target, int texture, bool forceBind)
+
+		public static void BindTexture(All target, int texture, bool forceBind)
 		{
-			if (target == TextureTarget.Texture2D)
+			if (target == All.Texture2D)
 			{
 				if (forceBind || texture != m_texture2D)
 				{
@@ -368,6 +379,7 @@ namespace Engine.Graphics
 			}
 		}
 
+
 		public static void ActiveTexture(All textureUnit)
 		{
 			if (textureUnit != m_activeTextureUnit)
@@ -377,18 +389,19 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void BindBuffer(BufferTarget target, int buffer)
+
+		public static void BindBuffer(All target, int buffer)
 		{
 			switch (target)
 			{
-				case BufferTarget.ArrayBuffer:
+				case All.ArrayBuffer:
 					if (buffer != m_arrayBuffer)
 					{
 						GL.BindBuffer(target, buffer);
 						m_arrayBuffer = buffer;
 					}
 					break;
-				case BufferTarget.ElementArrayBuffer:
+				case All.ElementArrayBuffer:
 					if (buffer != m_elementArrayBuffer)
 					{
 						GL.BindBuffer(target, buffer);
@@ -453,6 +466,7 @@ namespace Engine.Graphics
 			}
 			GL.DeleteFramebuffers(1, ref framebuffer);
 		}
+
 
 		public static void DeleteBuffer(All target, int buffer)
 		{
@@ -621,10 +635,10 @@ namespace Engine.Graphics
 		public static void ApplyShaderAndBuffers(Shader shader, VertexDeclaration vertexDeclaration, IntPtr vertexOffset, int arrayBuffer, int? elementArrayBuffer)
 		{
 			shader.PrepareForDrawing();
-			BindBuffer(BufferTarget.ArrayBuffer, arrayBuffer);
+			BindBuffer(All.ArrayBuffer, arrayBuffer);
 			if (elementArrayBuffer.HasValue)
 			{
-				BindBuffer(BufferTarget.ElementArrayBuffer, elementArrayBuffer.Value);
+				BindBuffer(All.ElementArrayBuffer, elementArrayBuffer.Value);
 			}
 			UseProgram(shader.m_program);
 			if (shader != m_lastShader || vertexOffset != m_lastVertexOffset || arrayBuffer != m_lastArrayBuffer || vertexDeclaration.m_elements != m_lastVertexDeclaration.m_elements)
@@ -710,25 +724,25 @@ namespace Engine.Graphics
 						}
 						if (m_activeTexturesByUnit[num] != texture2D.m_texture)
 						{
-							BindTexture(TextureTarget.Texture2D, texture2D.m_texture, forceBind: true);
+							BindTexture(All.Texture2D, texture2D.m_texture, forceBind: true);
 						}
 						if (!m_textureSamplerStates.TryGetValue(texture2D.m_texture, out SamplerState value) || value != samplerState)
 						{
-							BindTexture(TextureTarget.Texture2D, texture2D.m_texture, forceBind: false);
+							BindTexture(All.Texture2D, texture2D.m_texture, forceBind: false);
 							if (GL_EXT_texture_filter_anisotropic)
 							{
 								GL.TexParameter(All.Texture2D, (All)34046, (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? samplerState.MaxAnisotropy : 1f);
 							}
-							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TranslateTextureFilterModeMin(samplerState.FilterMode, texture2D.MipLevelsCount > 1));
-							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TranslateTextureFilterModeMag(samplerState.FilterMode));
-							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TranslateTextureAddressMode(samplerState.AddressModeU));
-							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TranslateTextureAddressMode(samplerState.AddressModeV));
+							GL.TexParameter(All.Texture2D, All.TextureMinFilter, (int)TranslateTextureFilterModeMin(samplerState.FilterMode, texture2D.MipLevelsCount > 1));
+							GL.TexParameter(All.Texture2D, All.TextureMagFilter, (int)TranslateTextureFilterModeMag(samplerState.FilterMode));
+							GL.TexParameter(All.Texture2D, All.TextureWrapS, (int)TranslateTextureAddressMode(samplerState.AddressModeU));
+							GL.TexParameter(All.Texture2D, All.TextureWrapT, (int)TranslateTextureAddressMode(samplerState.AddressModeV));
 							m_textureSamplerStates[texture2D.m_texture] = samplerState;
 						}
 					}
 					else if (m_activeTexturesByUnit[num] != 0)
 					{
-						BindTexture(TextureTarget.Texture2D, 0, forceBind: true);
+						BindTexture(All.Texture2D, 0, forceBind: true);
 					}
 					num++;
 					shaderParameter.IsChanged = false;
@@ -790,6 +804,7 @@ namespace Engine.Graphics
 			}
 		}
 
+
 		public static void TranslateVertexElementFormat(VertexElementFormat vertexElementFormat, out All type, out bool normalize)
 		{
 			switch (vertexElementFormat)
@@ -839,6 +854,7 @@ namespace Engine.Graphics
 			}
 		}
 
+
 		public static All TranslateIndexFormat(IndexFormat indexFormat)
 		{
 			switch (indexFormat)
@@ -851,6 +867,7 @@ namespace Engine.Graphics
 					throw new InvalidOperationException("Unsupported index format.");
 			}
 		}
+
 
 		public static ShaderParameterType TranslateActiveUniformType(ActiveUniformType type)
 		{
@@ -873,6 +890,7 @@ namespace Engine.Graphics
 			}
 		}
 
+
 		public static All TranslatePrimitiveType(PrimitiveType primitiveType)
 		{
 			switch (primitiveType)
@@ -889,6 +907,7 @@ namespace Engine.Graphics
 					throw new InvalidOperationException("Unsupported primitive type.");
 			}
 		}
+
 
 		public static All TranslateTextureFilterModeMin(TextureFilterMode filterMode, bool isMipmapped)
 		{
@@ -953,6 +972,7 @@ namespace Engine.Graphics
 			}
 		}
 
+
 		public static All TranslateTextureFilterModeMag(TextureFilterMode filterMode)
 		{
 			switch (filterMode)
@@ -980,6 +1000,7 @@ namespace Engine.Graphics
 			}
 		}
 
+
 		public static All TranslateTextureAddressMode(TextureAddressMode addressMode)
 		{
 			switch (addressMode)
@@ -992,6 +1013,7 @@ namespace Engine.Graphics
 					throw new InvalidOperationException("Unsupported texture address mode.");
 			}
 		}
+
 
 		public static All TranslateCompareFunction(CompareFunction compareFunction)
 		{
@@ -1017,6 +1039,7 @@ namespace Engine.Graphics
 					throw new InvalidOperationException("Unsupported texture address mode.");
 			}
 		}
+
 
 		public static All TranslateBlendFunction(BlendFunction blendFunction)
 		{
