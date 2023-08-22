@@ -34,13 +34,17 @@
     <EmbeddedResource Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0-preview.7.23375.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK">
+      <HintPath>..\DllReference\OpenTK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="OpenCL.Net" Version="2.2.9.0" />
-    <PackageReference Include="OpenTK" Version="5.0.0-pre.8" />
   </ItemGroup>
 </Project>

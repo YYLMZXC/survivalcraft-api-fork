@@ -20,7 +20,7 @@
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <UseWindowsForms>False</UseWindowsForms>
+    <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -113,6 +113,7 @@
     <PreBuildEvent>set p=$(SolutionDir)
 cd "$(SolutionDir)Survivalcraft\Content"
 "$(SolutionDir)\zip.exe" -qr9 ..\Content.zip *</PreBuildEvent>
+    <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ProjectExtensions />
 </Project>

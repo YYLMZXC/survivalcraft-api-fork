@@ -6,9 +6,6 @@ using System.Runtime.InteropServices;
 
 using Android.App;
 using static Android.App.ActivityManager;
-
-#else
-using Microsoft.VisualBasic.Devices;
 #endif
 
 namespace Engine
@@ -98,10 +95,37 @@ namespace Engine
 		}
 
 #else
-		public static int GetTotalAvailableMemory()
+		[DllImport("kernel32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GlobalMemoryStatusEx(ref MEMORYINFO mi);
+		//Define the information structure of memory
+		[StructLayout(LayoutKind.Sequential)]
+		struct MEMORYINFO
 		{
-			return (int)new ComputerInfo().AvailablePhysicalMemory;
+			public uint dwLength; //Current structure size
+			public uint dwMemoryLoad; //Current memory utilization
+			public ulong ullTotalPhys; //Total physical memory size
+			public ulong ullAvailPhys; //Available physical memory size
+			public ulong ullTotalPageFile; //Total Exchange File Size
+			public ulong ullAvailPageFile; //Total Exchange File Size
+			public ulong ullTotalVirtual; //Total virtual memory size
+			public ulong ullAvailVirtual; //Available virtual memory size
+			public ulong ullAvailExtendedVirtual; //Keep this value always zero
 		}
+		private static MEMORYINFO GetMemoryStatus()
+		{
+			MEMORYINFO memoryInfo = new();
+			memoryInfo.dwLength = (uint)Marshal.SizeOf(memoryInfo);
+			GlobalMemoryStatusEx(ref memoryInfo);
+			return memoryInfo;
+		}
+		public static double GetMemoryAvailable()
+		{
+			var memoryStatus = GetMemoryStatus();
+			var memoryAvailable = (long)memoryStatus.ullAvailPhys;
+			return memoryAvailable;
+		}
+		public static int GetTotalAvailableMemory() => (int)GetMemoryAvailable();
 #endif
 	}
 }
