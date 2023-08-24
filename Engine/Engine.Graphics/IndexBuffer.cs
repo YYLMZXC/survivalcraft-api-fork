@@ -112,10 +112,7 @@ namespace Engine.Graphics
 			VerifyNotDisposed();
 			int num = Utilities.SizeOf<T>();
 			int size = IndexFormat.GetSize();
-			if (source == null)
-			{
-				throw new ArgumentNullException(nameof(source));
-			}
+			ArgumentNullException.ThrowIfNull(source);
 			if (sourceStartIndex < 0 || sourceCount < 0 || sourceStartIndex + sourceCount > source.Length)
 			{
 				throw new ArgumentException("Range is out of source bounds.");

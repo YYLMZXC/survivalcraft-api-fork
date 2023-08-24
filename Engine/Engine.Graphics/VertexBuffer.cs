@@ -99,10 +99,7 @@ namespace Engine.Graphics
 
 		private void InitializeVertexBuffer(VertexDeclaration vertexDeclaration, int verticesCount)
 		{
-			if (vertexDeclaration == null)
-			{
-				throw new ArgumentNullException(nameof(vertexDeclaration));
-			}
+			ArgumentNullException.ThrowIfNull(vertexDeclaration);
 			if (verticesCount <= 0)
 			{
 				throw new ArgumentException("verticesCount must be greater than 0.");
@@ -116,10 +113,7 @@ namespace Engine.Graphics
 			VerifyNotDisposed();
 			int num = Utilities.SizeOf<T>();
 			int vertexStride = VertexDeclaration.VertexStride;
-			if (source == null)
-			{
-				throw new ArgumentNullException(nameof(source));
-			}
+			ArgumentNullException.ThrowIfNull(source);
 			if (sourceStartIndex < 0 || sourceCount < 0 || sourceStartIndex + sourceCount > source.Length)
 			{
 				throw new ArgumentException("Range is out of source bounds.");

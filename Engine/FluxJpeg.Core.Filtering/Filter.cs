@@ -21,10 +21,7 @@ namespace FluxJpeg.Core.Filtering
 		protected void UpdateProgress(double progress)
 		{
 			progressArgs.Progress = progress;
-			if (this.ProgressChanged != null)
-			{
-				this.ProgressChanged(this, progressArgs);
-			}
+			this.ProgressChanged?.Invoke(this, progressArgs);
 		}
 
 		public byte[][,] Apply(byte[][,] imageData, int newWidth, int newHeight)

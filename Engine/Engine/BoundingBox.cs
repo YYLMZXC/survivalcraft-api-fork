@@ -23,10 +23,7 @@ namespace Engine
 
 		public BoundingBox(IEnumerable<Vector3> points)
 		{
-			if (points == null)
-			{
-				throw new ArgumentNullException("points");
-			}
+			ArgumentNullException.ThrowIfNull(points);
 			Min = new Vector3(float.MaxValue);
 			Max = new Vector3(float.MinValue);
 			foreach (Vector3 point in points)

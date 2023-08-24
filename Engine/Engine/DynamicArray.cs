@@ -130,10 +130,7 @@ namespace Engine
 
 		public DynamicArray(IEnumerable<T> items)
 		{
-			if (items == null)
-			{
-				throw new ArgumentNullException("items");
-			}
+			ArgumentNullException.ThrowIfNull(items);
 			Capacity = items.Count();
 			foreach (T item in items)
 			{
@@ -166,10 +163,7 @@ namespace Engine
 
 		public void AddRange(IEnumerable<T> items)
 		{
-			if (items == null)
-			{
-				throw new ArgumentNullException("items");
-			}
+			ArgumentNullException.ThrowIfNull(items);
 			ICollection collection = items as ICollection;
 			if (collection != null)
 			{
@@ -191,10 +185,7 @@ namespace Engine
 
 		public void AddRange(DynamicArray<T> items)
 		{
-			if (items == null)
-			{
-				throw new ArgumentNullException("items");
-			}
+			ArgumentNullException.ThrowIfNull(items);
 			Capacity = MathUtils.Max(Capacity, Count + items.Count);
 			for (int i = 0; i < items.Count; i++)
 			{
@@ -240,10 +231,7 @@ namespace Engine
 
 		public int RemoveAll(Predicate<T> match)
 		{
-			if (match == null)
-			{
-				throw new ArgumentNullException("match");
-			}
+			ArgumentNullException.ThrowIfNull(match);
 			int i;
 			for (i = 0; i < m_count && !match(m_array[i]); i++)
 			{

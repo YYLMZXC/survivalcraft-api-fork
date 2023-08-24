@@ -769,14 +769,8 @@ namespace Game
 						position.Z += num2;
 						break;
 				}
-				if (CollidedWithBody != null)
-				{
-					CollidedWithBody(componentBody);
-				}
-				if (componentBody.CollidedWithBody != null)
-				{
-					componentBody.CollidedWithBody(this);
-				}
+				CollidedWithBody?.Invoke(componentBody);
+				componentBody.CollidedWithBody?.Invoke(this);
 			}
 		}
 
@@ -808,10 +802,7 @@ namespace Game
 			m_subsystemMovingBlocks.FindMovingBlocks(boundingBox, extendToFillCells: false, m_movingBlockSets);
 			for (int i = 0; i < m_movingBlockSets.Count; i++)
 			{
-				if (CollidedWithMovingBlock != null)
-				{
-					CollidedWithMovingBlock.Invoke(m_movingBlockSets[i]);
-				}
+				CollidedWithMovingBlock?.Invoke(m_movingBlockSets[i]);
 				IMovingBlockSet movingBlockSet = m_movingBlockSets.Array[i];
 				for (int j = 0; j < movingBlockSet.Blocks.Count; j++)
 				{

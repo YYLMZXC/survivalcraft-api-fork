@@ -210,13 +210,10 @@ namespace Engine.Input
 			if (Window.IsActive && !Keyboard.IsKeyboardVisible && IsMouseVisible)
 			{
 				MousePosition = position;
-				if (Mouse.MouseMove != null)
+				Mouse.MouseMove?.Invoke(new MouseEvent
 				{
-					Mouse.MouseMove(new MouseEvent
-					{
-						Position = position
-					});
-				}
+					Position = position
+				});
 			}
 		}
 	}

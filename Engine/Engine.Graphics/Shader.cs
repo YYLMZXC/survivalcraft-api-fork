@@ -383,18 +383,9 @@ namespace Engine.Graphics
 
 		private void InitializeShader(string vertexShaderCode, string pixelShaderCode, ShaderMacro[] shaderMacros)
 		{
-			if (vertexShaderCode == null)
-			{
-				throw new ArgumentNullException(nameof(vertexShaderCode));
-			}
-			if (pixelShaderCode == null)
-			{
-				throw new ArgumentNullException(nameof(pixelShaderCode));
-			}
-			if (shaderMacros == null)
-			{
-				throw new ArgumentNullException(nameof(shaderMacros));
-			}
+			ArgumentNullException.ThrowIfNull(vertexShaderCode);
+			ArgumentNullException.ThrowIfNull(pixelShaderCode);
+			ArgumentNullException.ThrowIfNull(shaderMacros);
 			m_vertexShaderCode = vertexShaderCode;
 			m_pixelShaderCode = pixelShaderCode;
 			m_shaderMacros = (ShaderMacro[])shaderMacros.Clone();

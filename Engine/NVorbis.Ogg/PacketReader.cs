@@ -58,10 +58,7 @@ namespace NVorbis.Ogg
 
 			public DebugView(PacketReader reader)
 			{
-				if (reader == null)
-				{
-					throw new ArgumentNullException(nameof(reader));
-				}
+				ArgumentNullException.ThrowIfNull(reader);
 				_reader = reader;
 			}
 		}
@@ -410,10 +407,7 @@ namespace NVorbis.Ogg
 			{
 				throw new ArgumentOutOfRangeException(nameof(preRoll));
 			}
-			if (packet == null)
-			{
-				throw new ArgumentNullException("granulePos");
-			}
+			ArgumentNullException.ThrowIfNull(packet);
 			var packet2 = packet as Packet;
 			if (packet2 == null)
 			{

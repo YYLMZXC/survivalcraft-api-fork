@@ -10,10 +10,7 @@ namespace Engine.Media
 	{
 		public static bool IsJpgStream(Stream stream)
 		{
-			if (stream == null)
-			{
-				throw new ArgumentNullException(nameof(stream));
-			}
+			ArgumentNullException.ThrowIfNull(stream);
 			long position = stream.Position;
 			int num = stream.ReadByte();
 			int num2 = stream.ReadByte();
@@ -28,10 +25,7 @@ namespace Engine.Media
 
 		public static Image Load(Stream stream)
 		{
-			if (stream == null)
-			{
-				throw new ArgumentNullException(nameof(stream));
-			}
+			ArgumentNullException.ThrowIfNull(stream);
 			DecodedJpeg decodedJpeg = new JpegDecoder(stream).Decode();
 			int width = decodedJpeg.Image.Width;
 			int height = decodedJpeg.Image.Height;
@@ -49,14 +43,8 @@ namespace Engine.Media
 
 		public static void Save(Image image, Stream stream, int quality)
 		{
-			if (image == null)
-			{
-				throw new ArgumentNullException(nameof(image));
-			}
-			if (stream == null)
-			{
-				throw new ArgumentNullException(nameof(stream));
-			}
+			ArgumentNullException.ThrowIfNull(image);
+			ArgumentNullException.ThrowIfNull(stream);
 			if (quality < 0 || quality > 100)
 			{
 				throw new ArgumentOutOfRangeException(nameof(quality));

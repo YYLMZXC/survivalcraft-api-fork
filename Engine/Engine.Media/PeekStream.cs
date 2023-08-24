@@ -45,10 +45,7 @@ namespace Engine.Media
 
 		public PeekStream(Stream stream, int peekSize)
 		{
-			if (stream == null)
-			{
-				throw new ArgumentNullException(nameof(stream));
-			}
+			ArgumentNullException.ThrowIfNull(stream);
 			if (!stream.CanRead)
 			{
 				throw new ArgumentException("Stream is not readable.");
@@ -93,10 +90,7 @@ namespace Engine.Media
 
 		public override int Read(byte[] buffer, int offset, int count)
 		{
-			if (buffer == null)
-			{
-				throw new ArgumentNullException(nameof(buffer));
-			}
+			ArgumentNullException.ThrowIfNull(buffer);
 			if (offset < 0)
 			{
 				throw new ArgumentOutOfRangeException(nameof(offset));

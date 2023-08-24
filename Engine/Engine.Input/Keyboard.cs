@@ -70,18 +70,9 @@ namespace Engine.Input
 
 		public static void ShowKeyboard(string title, string description, string defaultText, bool passwordMode, Action<string> enter, Action cancel)
 		{
-			if (title == null)
-			{
-				throw new ArgumentNullException("title");
-			}
-			if (description == null)
-			{
-				throw new ArgumentNullException("description");
-			}
-			if (defaultText == null)
-			{
-				throw new ArgumentNullException("defaultText");
-			}
+			ArgumentNullException.ThrowIfNull(title);
+			ArgumentNullException.ThrowIfNull(description);
+			ArgumentNullException.ThrowIfNull(defaultText);
 			if (!IsKeyboardVisible)
 			{
 				Clear();
@@ -95,20 +86,14 @@ namespace Engine.Input
 						Dispatcher.Dispatch(delegate
 						{
 							IsKeyboardVisible = false;
-							if (enter != null)
-							{
-								enter(text ?? string.Empty);
-							}
+							enter?.Invoke(text ?? string.Empty);
 						});
 					}, delegate
 					{
 						Dispatcher.Dispatch(delegate
 						{
 							IsKeyboardVisible = false;
-							if (cancel != null)
-							{
-								cancel();
-							}
+							cancel?.Invoke();
 						});
 					});
 				}

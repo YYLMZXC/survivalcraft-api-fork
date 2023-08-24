@@ -61,10 +61,7 @@ namespace Engine.Media
 
 		public static bool IsBmpStream(Stream stream)
 		{
-			if (stream == null)
-			{
-				throw new ArgumentNullException(nameof(stream));
-			}
+			ArgumentNullException.ThrowIfNull(stream);
 			long position = stream.Position;
 			int num = stream.ReadByte();
 			int num2 = stream.ReadByte();
@@ -220,10 +217,7 @@ namespace Engine.Media
 
 		private static BitmapHeader ReadHeader(Stream stream)
 		{
-			if (stream == null)
-			{
-				throw new ArgumentNullException(nameof(stream));
-			}
+			ArgumentNullException.ThrowIfNull(stream);
 			if (!BitConverter.IsLittleEndian)
 			{
 				throw new InvalidOperationException("Unsupported system endianness.");

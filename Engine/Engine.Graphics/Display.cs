@@ -61,10 +61,7 @@ namespace Engine.Graphics
 			}
 			set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException();
-				}
+				ArgumentNullException.ThrowIfNull(value);
 				m_rasterizerState = value;
 				value.IsLocked = true;
 			}
@@ -78,10 +75,7 @@ namespace Engine.Graphics
 			}
 			set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException();
-				}
+				ArgumentNullException.ThrowIfNull(value);
 				m_depthStencilState = value;
 				value.IsLocked = true;
 			}
@@ -95,10 +89,7 @@ namespace Engine.Graphics
 			}
 			set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException();
-				}
+				ArgumentNullException.ThrowIfNull(value);
 				m_blendState = value;
 				value.IsLocked = true;
 			}
@@ -251,18 +242,9 @@ namespace Engine.Graphics
 		{
 			shader.VerifyNotDisposed();
 			int num = Utilities.SizeOf<T>();
-			if (shader == null)
-			{
-				throw new ArgumentNullException(nameof(shader));
-			}
-			if (vertexDeclaration == null)
-			{
-				throw new ArgumentNullException(nameof(vertexDeclaration));
-			}
-			if (vertexData == null)
-			{
-				throw new ArgumentNullException(nameof(vertexData));
-			}
+			ArgumentNullException.ThrowIfNull(shader);
+			ArgumentNullException.ThrowIfNull(vertexDeclaration);
+			ArgumentNullException.ThrowIfNull(vertexData);
 			if (vertexDeclaration.VertexStride / num * num != vertexDeclaration.VertexStride)
 			{
 				throw new InvalidOperationException($"Vertex is not an integer multiple of array element, vertex stride is {vertexDeclaration.VertexStride}, array element is {num}.");
@@ -277,22 +259,10 @@ namespace Engine.Graphics
 		{
 			shader.VerifyNotDisposed();
 			int num = Utilities.SizeOf<T>();
-			if (shader == null)
-			{
-				throw new ArgumentNullException(nameof(shader));
-			}
-			if (vertexDeclaration == null)
-			{
-				throw new ArgumentNullException(nameof(vertexDeclaration));
-			}
-			if (vertexData == null)
-			{
-				throw new ArgumentNullException(nameof(vertexData));
-			}
-			if (indexData == null)
-			{
-				throw new ArgumentNullException(nameof(indexData));
-			}
+			ArgumentNullException.ThrowIfNull(shader);
+			ArgumentNullException.ThrowIfNull(vertexDeclaration);
+			ArgumentNullException.ThrowIfNull(vertexData);
+			ArgumentNullException.ThrowIfNull(indexData);
 			if (vertexDeclaration.VertexStride / num * num != vertexDeclaration.VertexStride)
 			{
 				throw new InvalidOperationException($"Vertex is not an integer multiple of array element, vertex stride is {vertexDeclaration.VertexStride}, array element is {num}.");
@@ -311,14 +281,8 @@ namespace Engine.Graphics
 		{
 			shader.VerifyNotDisposed();
 			vertexBuffer.VerifyNotDisposed();
-			if (shader == null)
-			{
-				throw new ArgumentNullException(nameof(shader));
-			}
-			if (vertexBuffer == null)
-			{
-				throw new ArgumentNullException(nameof(vertexBuffer));
-			}
+			ArgumentNullException.ThrowIfNull(shader);
+			ArgumentNullException.ThrowIfNull(vertexBuffer);
 			if (startVertex < 0 || verticesCount < 0 || startVertex + verticesCount > vertexBuffer.VerticesCount)
 			{
 				throw new ArgumentException("Vertices range is out of bounds.");
@@ -330,18 +294,9 @@ namespace Engine.Graphics
 			shader.VerifyNotDisposed();
 			vertexBuffer.VerifyNotDisposed();
 			indexBuffer.VerifyNotDisposed();
-			if (shader == null)
-			{
-				throw new ArgumentNullException(nameof(shader));
-			}
-			if (vertexBuffer == null)
-			{
-				throw new ArgumentNullException(nameof(vertexBuffer));
-			}
-			if (indexBuffer == null)
-			{
-				throw new ArgumentNullException(nameof(indexBuffer));
-			}
+			ArgumentNullException.ThrowIfNull(shader);
+			ArgumentNullException.ThrowIfNull(vertexBuffer);
+			ArgumentNullException.ThrowIfNull(indexBuffer);
 			if (startIndex < 0 || indicesCount < 0 || startIndex + indicesCount > indexBuffer.IndicesCount)
 			{
 				throw new ArgumentException("Indices range is out of bounds.");
@@ -354,10 +309,7 @@ namespace Engine.Graphics
 			{
 				resource.HandleDeviceLost();
 			}
-			if (Display.DeviceLost != null)
-			{
-				Display.DeviceLost();
-			}
+			Display.DeviceLost?.Invoke();
 		}
 
 		internal static void HandleDeviceReset()
@@ -366,10 +318,7 @@ namespace Engine.Graphics
 			{
 				resource.HandleDeviceReset();
 			}
-			if (Display.DeviceReset != null)
-			{
-				Display.DeviceReset();
-			}
+			Display.DeviceReset?.Invoke();
 		}
 	}
 }

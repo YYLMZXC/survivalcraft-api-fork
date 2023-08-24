@@ -89,10 +89,7 @@ namespace FluxJpeg.Core
 		private void ResizeProgressChanged(object sender, FilterProgressEventArgs e)
 		{
 			progress.Progress = e.Progress;
-			if (this.ProgressChanged != null)
-			{
-				this.ProgressChanged(this, progress);
-			}
+			this.ProgressChanged?.Invoke(this, progress);
 		}
 	}
 }

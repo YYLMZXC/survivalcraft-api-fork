@@ -76,10 +76,7 @@ namespace GameEntitySystem
 				{
 					LoadSubsystem(value3, dictionary, loadedSubsystems, 0);
 				}
-				if (OnProjectLoad != null)
-				{
-					OnProjectLoad.Invoke(this);
-				}
+				OnProjectLoad?.Invoke(this);
 				if (projectData.EntityDataList != null)
 				{
 					List<Entity> entities = LoadEntities(projectData.EntityDataList);
@@ -325,11 +322,7 @@ namespace GameEntitySystem
 			{
 				subsystem.OnEntityAdded(entity);
 			}
-			if (EntityAdded != null)
-			{
-				EntityAdded(this, new EntityAddRemoveEventArgs(entity));
-
-			}
+			EntityAdded?.Invoke(this, new EntityAddRemoveEventArgs(entity));
 			entity.FireEntityAddedEvent();
 		}
 
@@ -343,10 +336,7 @@ namespace GameEntitySystem
 			{
 				subsystem.OnEntityRemoved(entity);
 			}
-			if (EntityRemoved != null)
-			{
-				EntityRemoved(this, new EntityAddRemoveEventArgs(entity));
-			}
+			EntityRemoved?.Invoke(this, new EntityAddRemoveEventArgs(entity));
 			entity.FireEntityRemovedEvent();
 		}
 

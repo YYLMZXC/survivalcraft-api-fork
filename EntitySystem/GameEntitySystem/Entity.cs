@@ -233,18 +233,12 @@ namespace GameEntitySystem
 
 		internal void FireEntityAddedEvent()
 		{
-			if (this.EntityAdded != null)
-			{
-				this.EntityAdded(this, EventArgs.Empty);
-			}
+			this.EntityAdded?.Invoke(this, EventArgs.Empty);
 		}
 
 		internal void FireEntityRemovedEvent()
 		{
-			if (this.EntityRemoved != null)
-			{
-				this.EntityRemoved(this, EventArgs.Empty);
-			}
+			this.EntityRemoved?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

@@ -53,10 +53,7 @@ namespace Engine.Graphics
 
 		public ModelBone NewBone(string name, Matrix transform, ModelBone parentBone)
 		{
-			if (name == null)
-			{
-				throw new ArgumentNullException(nameof(name));
-			}
+			ArgumentNullException.ThrowIfNull(name);
 			if (parentBone == null && m_bones.Count > 0)
 			{
 				throw new InvalidOperationException("There can be only one root bone.");
@@ -89,14 +86,8 @@ namespace Engine.Graphics
 
 		public ModelMesh NewMesh(string name, ModelBone parentBone, BoundingBox boundingBox)
 		{
-			if (name == null)
-			{
-				throw new ArgumentNullException(nameof(name));
-			}
-			if (parentBone == null)
-			{
-				throw new ArgumentNullException(nameof(parentBone));
-			}
+			ArgumentNullException.ThrowIfNull(name);
+			ArgumentNullException.ThrowIfNull(parentBone);
 			if (parentBone.Model != this)
 			{
 				throw new InvalidOperationException("Parent bone must belong to the same model.");
@@ -111,10 +102,7 @@ namespace Engine.Graphics
 
 		public void CopyAbsoluteBoneTransformsTo(Matrix[] absoluteTransforms)
 		{
-			if (absoluteTransforms == null)
-			{
-				throw new ArgumentNullException("transforms");
-			}
+			ArgumentNullException.ThrowIfNull(absoluteTransforms);
 			if (absoluteTransforms.Length < m_bones.Count)
 			{
 				throw new ArgumentOutOfRangeException("transforms");
@@ -135,10 +123,7 @@ namespace Engine.Graphics
 
 		public BoundingBox CalculateAbsoluteBoundingBox(Matrix[] absoluteTransforms)
 		{
-			if (absoluteTransforms == null)
-			{
-				throw new ArgumentNullException("transforms");
-			}
+			ArgumentNullException.ThrowIfNull(absoluteTransforms);
 			if (absoluteTransforms.Length < m_bones.Count)
 			{
 				throw new ArgumentOutOfRangeException("transforms");
@@ -185,10 +170,7 @@ namespace Engine.Graphics
 
 		internal void Initialize(ModelData modelData, bool keepSourceVertexDataInTags)
 		{
-			if (modelData == null)
-			{
-				throw new ArgumentNullException(nameof(modelData));
-			}
+			ArgumentNullException.ThrowIfNull(modelData);
 			InternalDispose();
 			var array = new VertexBuffer[modelData.Buffers.Count];
 			var array2 = new IndexBuffer[modelData.Buffers.Count];

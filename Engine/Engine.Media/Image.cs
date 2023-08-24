@@ -14,10 +14,7 @@ namespace Engine.Media
 
 		public Image(Image image)
 		{
-			if (image == null)
-			{
-				throw new ArgumentNullException(nameof(image));
-			}
+			ArgumentNullException.ThrowIfNull(image);
 			Width = image.Width;
 			Height = image.Height;
 			Pixels = (Color[])image.Pixels.Clone();
@@ -74,10 +71,7 @@ namespace Engine.Media
 
 		public static IEnumerable<Image> GenerateMipmaps(Image image, int maxLevelsCount = int.MaxValue)
 		{
-			if (image == null)
-			{
-				throw new ArgumentNullException(nameof(image));
-			}
+			ArgumentNullException.ThrowIfNull(image);
 			if (maxLevelsCount < 0)
 			{
 				throw new ArgumentOutOfRangeException(nameof(maxLevelsCount));

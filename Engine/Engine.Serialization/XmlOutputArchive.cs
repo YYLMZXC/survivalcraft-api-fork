@@ -21,10 +21,7 @@ namespace Engine.Serialization
 		public XmlOutputArchive(XElement node, int version = 0)
 			: base(version)
 		{
-			if (node == null)
-			{
-				throw new ArgumentNullException(nameof(node));
-			}
+			ArgumentNullException.ThrowIfNull(node);
 			Node = node;
 		}
 

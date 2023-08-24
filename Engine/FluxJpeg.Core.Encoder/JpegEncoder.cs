@@ -87,10 +87,7 @@ namespace FluxJpeg.Core.Encoder
 				217
 			});
 			_progress.EncodeProgress = 1.0;
-			if (this.EncodeProgressChanged != null)
-			{
-				this.EncodeProgressChanged(this, _progress);
-			}
+			this.EncodeProgressChanged?.Invoke(this, _progress);
 			_outStream.Flush();
 		}
 
@@ -317,10 +314,7 @@ namespace FluxJpeg.Core.Encoder
 			for (num3 = 0; num3 < num8; num3++)
 			{
 				_progress.EncodeProgress = (double)num3 / (double)num8;
-				if (this.EncodeProgressChanged != null)
-				{
-					this.EncodeProgressChanged(this, _progress);
-				}
+				this.EncodeProgressChanged?.Invoke(this, _progress);
 				for (num4 = 0; num4 < num7; num4++)
 				{
 					num9 = num4 * 8;

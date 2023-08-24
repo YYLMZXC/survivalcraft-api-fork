@@ -213,10 +213,7 @@ namespace Engine
 					ex = new Exception($"Unknown exception. Additional information: {args.ExceptionObject}");
 				}
 				UnhandledExceptionInfo unhandledExceptionInfo = new UnhandledExceptionInfo(ex);
-				if (Window.UnhandledException != null)
-				{
-					Window.UnhandledException(unhandledExceptionInfo);
-				}
+				Window.UnhandledException?.Invoke(unhandledExceptionInfo);
 				if (!unhandledExceptionInfo.IsHandled)
 				{
 					Log.Error("Application terminating due to unhandled exception {0}", unhandledExceptionInfo.Exception);
@@ -263,17 +260,11 @@ namespace Engine
 			InitializeAll();
 			SubscribeToEvents();
 			m_state = State.Inactive;
-			if (Window.Created != null)
-			{
-				Window.Created();
-			}
+			Window.Created?.Invoke();
 			if (m_state == State.Inactive)
 			{
 				m_state = State.Active;
-				if (Window.Activated != null)
-				{
-					Window.Activated();
-				}
+				Window.Activated?.Invoke();
 			}
 		}
 
@@ -284,20 +275,14 @@ namespace Engine
 				if (m_state == State.Inactive)
 				{
 					m_state = State.Active;
-					if (Window.Activated != null)
-					{
-						Window.Activated();
-					}
+					Window.Activated?.Invoke();
 				}
 				return;
 			}
 			if (m_state == State.Active)
 			{
 				m_state = State.Inactive;
-				if (Window.Deactivated != null)
-				{
-					Window.Deactivated();
-				}
+				Window.Deactivated?.Invoke();
 			}
 			Keyboard.Clear();
 			Mouse.Clear();
@@ -309,18 +294,12 @@ namespace Engine
 			if (m_state == State.Active)
 			{
 				m_state = State.Inactive;
-				if (Window.Deactivated != null)
-				{
-					Window.Deactivated();
-				}
+				Window.Deactivated?.Invoke();
 			}
 			if (m_state == State.Inactive)
 			{
 				m_state = State.Uncreated;
-				if (Window.Closed != null)
-				{
-					Window.Closed();
-				}
+				Window.Closed?.Invoke();
 			}
 			UnsubscribeFromEvents();
 			DisposeAll();
@@ -331,19 +310,13 @@ namespace Engine
 		private static void ResizeHandler(object sender, EventArgs args)
 		{
 			Display.Resize();
-			if (Window.Resized != null)
-			{
-				Window.Resized();
-			}
+			Window.Resized?.Invoke();
 		}
 
 		private static void RenderFrameHandler(object sender, EventArgs args)
 		{
 			BeforeFrameAll();
-			if (Window.Frame != null)
-			{
-				Window.Frame();
-			}
+			Window.Frame?.Invoke();
 			AfterFrameAll();
 			if (!m_closing)
 			{

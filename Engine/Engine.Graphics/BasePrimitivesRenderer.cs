@@ -48,10 +48,7 @@ namespace Engine.Graphics
 
 		protected T2 FindTexturedBatch(Texture2D texture, bool useAlphaTest, int layer, DepthStencilState depthStencilState, RasterizerState rasterizerState, BlendState blendState, SamplerState samplerState)
 		{
-			if (texture == null)
-			{
-				throw new ArgumentNullException(nameof(texture));
-			}
+			ArgumentNullException.ThrowIfNull(texture);
 			for (LinkedListNode<T2> linkedListNode = m_texturedBatches.First; linkedListNode != null; linkedListNode = linkedListNode.Next)
 			{
 				T2 value = linkedListNode.Value;
@@ -81,10 +78,7 @@ namespace Engine.Graphics
 
 		protected T3 FindFontBatch(BitmapFont font, int layer, DepthStencilState depthStencilState, RasterizerState rasterizerState, BlendState blendState, SamplerState samplerState)
 		{
-			if (font == null)
-			{
-				throw new ArgumentNullException(nameof(font));
-			}
+			ArgumentNullException.ThrowIfNull(font);
 			for (LinkedListNode<T3> linkedListNode = m_fontBatches.First; linkedListNode != null; linkedListNode = linkedListNode.Next)
 			{
 				T3 value = linkedListNode.Value;

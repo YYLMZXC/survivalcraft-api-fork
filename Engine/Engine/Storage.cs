@@ -262,10 +262,7 @@ namespace Engine
 
 		private static string ProcessPath(string path, bool writeAccess, bool failIfApp)
 		{
-			if (path == null)
-			{
-				throw new ArgumentNullException("path");
-			}
+			ArgumentNullException.ThrowIfNull(path);
 			if (Path.DirectorySeparatorChar != '/')
 			{
 				path = path.Replace('/', Path.DirectorySeparatorChar);

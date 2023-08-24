@@ -147,10 +147,7 @@ namespace Engine.Input
 					};
 					touchLocations[num] = touchLocation;
 				}
-				if (Touch.TouchMoved != null)
-				{
-					Touch.TouchMoved(m_touchLocations[num]);
-				}
+				Touch.TouchMoved?.Invoke(m_touchLocations[num]);
 			}
 			else
 			{
@@ -162,10 +159,7 @@ namespace Engine.Input
 					State = TouchLocationState.Pressed
 				};
 				touchLocations2.Add(touchLocation);
-				if (Touch.TouchPressed != null)
-				{
-					Touch.TouchPressed(m_touchLocations[m_touchLocations.Count - 1]);
-				}
+				Touch.TouchPressed?.Invoke(m_touchLocations[m_touchLocations.Count - 1]);
 			}
 		}
 
@@ -202,10 +196,7 @@ namespace Engine.Input
 					};
 					touchLocations2[num] = value;
 				}
-				if (Touch.TouchReleased != null)
-				{
-					Touch.TouchReleased(m_touchLocations[num]);
-				}
+				Touch.TouchReleased?.Invoke(m_touchLocations[num]);
 			}
 		}
 	}

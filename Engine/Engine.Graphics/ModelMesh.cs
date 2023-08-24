@@ -46,14 +46,8 @@ namespace Engine.Graphics
 
 		public ModelMeshPart NewMeshPart(VertexBuffer vertexBuffer, IndexBuffer indexBuffer, int startIndex, int indicesCount, BoundingBox boundingBox)
 		{
-			if (vertexBuffer == null)
-			{
-				throw new ArgumentNullException(nameof(vertexBuffer));
-			}
-			if (indexBuffer == null)
-			{
-				throw new ArgumentNullException(nameof(indexBuffer));
-			}
+			ArgumentNullException.ThrowIfNull(vertexBuffer);
+			ArgumentNullException.ThrowIfNull(indexBuffer);
 			if (startIndex < 0 || indicesCount < 0 || startIndex + indicesCount > indexBuffer.IndicesCount)
 			{
 				throw new InvalidOperationException("Specified range is outside of index buffer.");

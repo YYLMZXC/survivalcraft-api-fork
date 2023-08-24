@@ -229,10 +229,7 @@ namespace Engine.Graphics
 			int num2 = MathUtils.Max(Width >> mipLevel, 1);
 			int num3 = MathUtils.Max(Height >> mipLevel, 1);
 			int num4 = size * num2 * num3;
-			if (source == null)
-			{
-				throw new ArgumentNullException(nameof(source));
-			}
+			ArgumentNullException.ThrowIfNull(source);
 			if (mipLevel < 0 || mipLevel >= MipLevelsCount)
 			{
 				throw new ArgumentOutOfRangeException(nameof(mipLevel));

@@ -22,20 +22,14 @@ namespace Engine.Audio
 
 		internal void Initialize(SoundBuffer soundBuffer)
 		{
-			if (soundBuffer == null)
-			{
-				throw new ArgumentNullException(nameof(soundBuffer));
-			}
+			ArgumentNullException.ThrowIfNull(soundBuffer);
 			m_soundBuffer = soundBuffer;
 			int num = ++m_soundBuffer.UseCount;
 		}
 
 		public Sound(SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
 		{
-			if (soundBuffer == null)
-			{
-				throw new ArgumentNullException(nameof(soundBuffer));
-			}
+			ArgumentNullException.ThrowIfNull(soundBuffer);
 			AL.Source(m_source, ALSourcei.Buffer, soundBuffer.m_buffer);
 			Mixer.CheckALError();
 			Initialize(soundBuffer);
@@ -51,10 +45,7 @@ namespace Engine.Audio
 
 		public Sound(StreamingSource streamingSource, SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
 		{
-			if (soundBuffer == null)
-			{
-				throw new ArgumentNullException(nameof(soundBuffer));
-			}
+			ArgumentNullException.ThrowIfNull(soundBuffer);
 			AL.Source(m_source, ALSourcei.Buffer, soundBuffer.m_buffer);
 			Mixer.CheckALError();
 			Initialize(soundBuffer);

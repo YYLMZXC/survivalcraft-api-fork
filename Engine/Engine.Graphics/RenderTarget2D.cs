@@ -135,10 +135,7 @@ namespace Engine.Graphics
 			VerifyNotDisposed();
 			int size = base.ColorFormat.GetSize();
 			int num = Utilities.SizeOf<T>();
-			if (target == null)
-			{
-				throw new ArgumentNullException(nameof(target));
-			}
+			ArgumentNullException.ThrowIfNull(target);
 			if (num > size)
 			{
 				throw new ArgumentNullException("Target array element size is larger than pixel size.");

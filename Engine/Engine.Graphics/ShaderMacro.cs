@@ -23,10 +23,7 @@ namespace Engine.Graphics
 			{
 				throw new ArgumentNullException(nameof(name));
 			}
-			if (value == null)
-			{
-				throw new ArgumentNullException(nameof(value));
-			}
+			ArgumentNullException.ThrowIfNull(value);
 			for (int i = 0; i < name.Length; i++)
 			{
 				if ((i == 0 && m_nameChars1.IndexOf(name[i]) == -1) || (i > 0 && m_nameChars2.IndexOf(name[i]) == -1))

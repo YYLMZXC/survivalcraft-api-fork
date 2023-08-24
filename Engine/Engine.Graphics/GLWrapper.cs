@@ -843,53 +843,38 @@ namespace Engine.Graphics
 
 		public static All TranslateIndexFormat(IndexFormat indexFormat)
 		{
-			switch (indexFormat)
+			return indexFormat switch
 			{
-				case IndexFormat.SixteenBits:
-					return All.UnsignedShort;
-				case IndexFormat.ThirtyTwoBits:
-					return All.UnsignedInt;
-				default:
-					throw new InvalidOperationException("Unsupported index format.");
-			}
+				IndexFormat.SixteenBits => All.UnsignedShort,
+				IndexFormat.ThirtyTwoBits => All.UnsignedInt,
+				_ => throw new InvalidOperationException("Unsupported index format."),
+			};
 		}
 
 		public static ShaderParameterType TranslateActiveUniformType(ActiveUniformType type)
 		{
-			switch (type)
+			return type switch
 			{
-				case ActiveUniformType.Float:
-					return ShaderParameterType.Float;
-				case ActiveUniformType.FloatVec2:
-					return ShaderParameterType.Vector2;
-				case ActiveUniformType.FloatVec3:
-					return ShaderParameterType.Vector3;
-				case ActiveUniformType.FloatVec4:
-					return ShaderParameterType.Vector4;
-				case ActiveUniformType.FloatMat4:
-					return ShaderParameterType.Matrix;
-				case ActiveUniformType.Sampler2D:
-					return ShaderParameterType.Texture2D;
-				default:
-					throw new InvalidOperationException("Unsupported shader parameter type.");
-			}
+				ActiveUniformType.Float => ShaderParameterType.Float,
+				ActiveUniformType.FloatVec2 => ShaderParameterType.Vector2,
+				ActiveUniformType.FloatVec3 => ShaderParameterType.Vector3,
+				ActiveUniformType.FloatVec4 => ShaderParameterType.Vector4,
+				ActiveUniformType.FloatMat4 => ShaderParameterType.Matrix,
+				ActiveUniformType.Sampler2D => ShaderParameterType.Texture2D,
+				_ => throw new InvalidOperationException("Unsupported shader parameter type."),
+			};
 		}
 
 		public static All TranslatePrimitiveType(PrimitiveType primitiveType)
 		{
-			switch (primitiveType)
+			return primitiveType switch
 			{
-				case PrimitiveType.LineList:
-					return All.ClientPixelStoreBit;
-				case PrimitiveType.LineStrip:
-					return All.LineStrip;
-				case PrimitiveType.TriangleList:
-					return (All)0x0004;
-				case PrimitiveType.TriangleStrip:
-					return All.TriangleStrip;
-				default:
-					throw new InvalidOperationException("Unsupported primitive type.");
-			}
+				PrimitiveType.LineList => All.ClientPixelStoreBit,
+				PrimitiveType.LineStrip => All.LineStrip,
+				PrimitiveType.TriangleList => (All)0x0004,
+				PrimitiveType.TriangleStrip => All.TriangleStrip,
+				_ => throw new InvalidOperationException("Unsupported primitive type."),
+			};
 		}
 
 		public static All TranslateTextureFilterModeMin(TextureFilterMode filterMode, bool isMipmapped)
@@ -957,130 +942,87 @@ namespace Engine.Graphics
 
 		public static All TranslateTextureFilterModeMag(TextureFilterMode filterMode)
 		{
-			switch (filterMode)
+			return filterMode switch
 			{
-				case TextureFilterMode.Point:
-					return All.Nearest;
-				case TextureFilterMode.Linear:
-					return All.Linear;
-				case TextureFilterMode.Anisotropic:
-					return All.Linear;
-				case TextureFilterMode.PointMipLinear:
-					return All.Nearest;
-				case TextureFilterMode.LinearMipPoint:
-					return All.Nearest;
-				case TextureFilterMode.MinPointMagLinearMipPoint:
-					return All.Linear;
-				case TextureFilterMode.MinPointMagLinearMipLinear:
-					return All.Linear;
-				case TextureFilterMode.MinLinearMagPointMipPoint:
-					return All.Nearest;
-				case TextureFilterMode.MinLinearMagPointMipLinear:
-					return All.Nearest;
-				default:
-					throw new InvalidOperationException("Unsupported texture filter mode.");
-			}
+				TextureFilterMode.Point => All.Nearest,
+				TextureFilterMode.Linear => All.Linear,
+				TextureFilterMode.Anisotropic => All.Linear,
+				TextureFilterMode.PointMipLinear => All.Nearest,
+				TextureFilterMode.LinearMipPoint => All.Nearest,
+				TextureFilterMode.MinPointMagLinearMipPoint => All.Linear,
+				TextureFilterMode.MinPointMagLinearMipLinear => All.Linear,
+				TextureFilterMode.MinLinearMagPointMipPoint => All.Nearest,
+				TextureFilterMode.MinLinearMagPointMipLinear => All.Nearest,
+				_ => throw new InvalidOperationException("Unsupported texture filter mode."),
+			};
 		}
 
 		public static All TranslateTextureAddressMode(TextureAddressMode addressMode)
 		{
-			switch (addressMode)
+			return addressMode switch
 			{
-				case TextureAddressMode.Clamp:
-					return All.ClampToEdge;
-				case TextureAddressMode.Wrap:
-					return All.Repeat;
-				default:
-					throw new InvalidOperationException("Unsupported texture address mode.");
-			}
+				TextureAddressMode.Clamp => All.ClampToEdge,
+				TextureAddressMode.Wrap => All.Repeat,
+				_ => throw new InvalidOperationException("Unsupported texture address mode."),
+			};
 		}
 
 		public static All TranslateCompareFunction(CompareFunction compareFunction)
 		{
-			switch (compareFunction)
+			return compareFunction switch
 			{
-				case CompareFunction.Always:
-					return All.Always;
-				case CompareFunction.Equal:
-					return All.Equal;
-				case CompareFunction.Greater:
-					return All.Greater;
-				case CompareFunction.GreaterEqual:
-					return All.Gequal;
-				case CompareFunction.Less:
-					return All.Less;
-				case CompareFunction.LessEqual:
-					return All.Lequal;
-				case CompareFunction.Never:
-					return All.AccumBufferBit;
-				case CompareFunction.NotEqual:
-					return All.Notequal;
-				default:
-					throw new InvalidOperationException("Unsupported texture address mode.");
-			}
+				CompareFunction.Always => All.Always,
+				CompareFunction.Equal => All.Equal,
+				CompareFunction.Greater => All.Greater,
+				CompareFunction.GreaterEqual => All.Gequal,
+				CompareFunction.Less => All.Less,
+				CompareFunction.LessEqual => All.Lequal,
+				CompareFunction.Never => All.AccumBufferBit,
+				CompareFunction.NotEqual => All.Notequal,
+				_ => throw new InvalidOperationException("Unsupported texture address mode."),
+			};
 		}
 
 		public static All TranslateBlendFunction(BlendFunction blendFunction)
 		{
-			switch (blendFunction)
+			return blendFunction switch
 			{
-				case BlendFunction.Add:
-					return All.FuncAdd;
-				case BlendFunction.Subtract:
-					return All.FuncSubtract;
-				case BlendFunction.ReverseSubtract:
-					return All.FuncReverseSubtract;
-				default:
-					throw new InvalidOperationException("Unsupported blend function.");
-			}
+				BlendFunction.Add => All.FuncAdd,
+				BlendFunction.Subtract => All.FuncSubtract,
+				BlendFunction.ReverseSubtract => All.FuncReverseSubtract,
+				_ => throw new InvalidOperationException("Unsupported blend function."),
+			};
 		}
 
 		public static All TranslateBlend(Blend blend)
 		{
-			switch (blend)
+			return blend switch
 			{
-				case Blend.Zero:
-					return All.False;
-				case Blend.One:
-					return All.ClientPixelStoreBit;
-				case Blend.SourceColor:
-					return All.SrcColor;
-				case Blend.InverseSourceColor:
-					return All.OneMinusSrcColor;
-				case Blend.DestinationColor:
-					return All.DstColor;
-				case Blend.InverseDestinationColor:
-					return All.OneMinusDstColor;
-				case Blend.SourceAlpha:
-					return All.SrcAlpha;
-				case Blend.InverseSourceAlpha:
-					return All.OneMinusSrcAlpha;
-				case Blend.DestinationAlpha:
-					return All.DstAlpha;
-				case Blend.InverseDestinationAlpha:
-					return All.OneMinusDstAlpha;
-				case Blend.BlendFactor:
-					return All.ConstantColor;
-				case Blend.InverseBlendFactor:
-					return All.OneMinusConstantColor;
-				case Blend.SourceAlphaSaturation:
-					return All.SrcAlphaSaturate;
-				default:
-					throw new InvalidOperationException("Unsupported blend.");
-			}
+				Blend.Zero => All.False,
+				Blend.One => All.ClientPixelStoreBit,
+				Blend.SourceColor => All.SrcColor,
+				Blend.InverseSourceColor => All.OneMinusSrcColor,
+				Blend.DestinationColor => All.DstColor,
+				Blend.InverseDestinationColor => All.OneMinusDstColor,
+				Blend.SourceAlpha => All.SrcAlpha,
+				Blend.InverseSourceAlpha => All.OneMinusSrcAlpha,
+				Blend.DestinationAlpha => All.DstAlpha,
+				Blend.InverseDestinationAlpha => All.OneMinusDstAlpha,
+				Blend.BlendFactor => All.ConstantColor,
+				Blend.InverseBlendFactor => All.OneMinusConstantColor,
+				Blend.SourceAlphaSaturation => All.SrcAlphaSaturate,
+				_ => throw new InvalidOperationException("Unsupported blend."),
+			};
 		}
 
 		public static All TranslateDepthFormat(DepthFormat depthFormat)
 		{
-			switch (depthFormat)
+			return depthFormat switch
 			{
-				case DepthFormat.Depth16:
-					return All.DepthComponent16;
-				case DepthFormat.Depth24Stencil8:
-					return All.Depth24Stencil8Oes;
-				default:
-					throw new InvalidOperationException("Unsupported DepthFormat.");
-			}
+				DepthFormat.Depth16 => All.DepthComponent16,
+				DepthFormat.Depth24Stencil8 => All.Depth24Stencil8Oes,
+				_ => throw new InvalidOperationException("Unsupported DepthFormat."),
+			};
 		}
 
 		[Conditional("DEBUG")]

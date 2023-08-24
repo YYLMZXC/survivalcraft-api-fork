@@ -18,10 +18,7 @@ namespace NVorbis
 
 		public NewStreamEventArgs(IPacketProvider packetProvider)
 		{
-			if (packetProvider == null)
-			{
-				throw new ArgumentNullException(nameof(packetProvider));
-			}
+			ArgumentNullException.ThrowIfNull(packetProvider);
 			PacketProvider = packetProvider;
 		}
 	}

@@ -46,10 +46,7 @@ namespace Engine.Media
 
 			public override int Read(byte[] buffer, int offset, int count)
 			{
-				if (buffer == null)
-				{
-					throw new ArgumentNullException(nameof(buffer));
-				}
+				ArgumentNullException.ThrowIfNull(buffer);
 				if (offset < 0 || count < 0 || offset + count > buffer.Length)
 				{
 					throw new InvalidOperationException("Invalid range.");
@@ -118,10 +115,7 @@ namespace Engine.Media
 
 		public static StreamingSource Stream(Stream stream, bool leaveOpen = false)
 		{
-			if (stream == null)
-			{
-				throw new ArgumentNullException(nameof(stream));
-			}
+			ArgumentNullException.ThrowIfNull(stream);
 			return new OggStreamingSource(stream, leaveOpen);
 		}
 

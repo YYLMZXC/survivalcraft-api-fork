@@ -102,10 +102,7 @@ namespace Engine.Serialization
 
 		private static IHumanReadableConverter GetConverter(Type type, bool throwIfNotFound)
 		{
-			if (type == null)
-			{
-				throw new ArgumentNullException("type");
-			}
+			ArgumentNullException.ThrowIfNull(type);
 			lock (m_humanReadableConvertersByType)
 			{
 				if (!m_humanReadableConvertersByType.TryGetValue(type, out IHumanReadableConverter value))

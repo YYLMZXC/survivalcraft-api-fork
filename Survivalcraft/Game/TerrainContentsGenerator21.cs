@@ -251,10 +251,7 @@ namespace Game
 
 				public void NextBytes(byte[] buffer)
 				{
-					if (buffer == null)
-					{
-						throw new ArgumentNullException("buffer");
-					}
+					ArgumentNullException.ThrowIfNull(buffer);
 					for (int i = 0; i < buffer.Length; i++)
 					{
 						buffer[i] = (byte)(InternalSample() % 256);

@@ -410,10 +410,7 @@ namespace Engine.Media
 
 		public static bool IsColladaStream(Stream stream)
 		{
-			if (stream == null)
-			{
-				throw new ArgumentNullException(nameof(stream));
-			}
+			ArgumentNullException.ThrowIfNull(stream);
 			bool result = false;
 			long position = stream.Position;
 			try
