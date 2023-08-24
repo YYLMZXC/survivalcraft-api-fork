@@ -27,6 +27,7 @@
     <DefineConstants>DEBUG;desktop</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <Optimize>True</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -114,6 +115,8 @@
 cd "$(SolutionDir)Survivalcraft\Content"
 "$(SolutionDir)\zip.exe" -qr9 ..\Content.zip *</PreBuildEvent>
     <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
+    <AssemblyVersion>2.3.0.0</AssemblyVersion>
+    <FileVersion>2.3.0.0</FileVersion>
   </PropertyGroup>
   <ProjectExtensions />
 </Project>

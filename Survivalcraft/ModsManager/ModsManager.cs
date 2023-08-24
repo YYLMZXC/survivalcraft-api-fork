@@ -17,10 +17,10 @@ using XmlUtilities;
 
 public static class ModsManager
 {
-	public const string APIVersion = "1.53";
+	public const string APIVersion = "1.60";
 	public const string SCVersion = "2.3.0.0";
 	//1为api1.33 2为api1.40
-	public const int Apiv = 3;
+	public const int Apiv = 10;
 
 #if desktop
 	public const string ExternelPath = "app:",
