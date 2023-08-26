@@ -6,9 +6,10 @@
     <AndroidUseAapt2>true</AndroidUseAapt2>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-android</TargetFramework>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
+    <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>none</DebugType>
@@ -29,5 +30,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Resource.designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Mono.android-arm64" Version="7.0.2.106" />
   </ItemGroup>
 </Project>
