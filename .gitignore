@@ -340,3 +340,4 @@ healthchecksdb
 /Engine.dll
 /EntitySystem.dll
 /OpenTK.dll
+/net8.0-windows10.0.22621.0
