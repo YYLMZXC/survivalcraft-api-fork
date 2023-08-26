@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "ConsoleTest\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMS_of_SC", "HMS_of_SC\HMS_of_SC.csproj", "{5BD29447-59EF-47DE-A32B-10FFD2427326}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdrasteaLoader", "AdrasteaLoader\AdrasteaLoader.csproj", "{C02FDF96-260A-47B0-BC9D-437314721D97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SedecimLoader", "AdrasteaLoader\SedecimLoader.csproj", "{C02FDF96-260A-47B0-BC9D-437314721D97}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "统一端", "统一端", "{D3AB47ED-7C46-4886-AAAC-5A81485F587D}"
 EndProject
