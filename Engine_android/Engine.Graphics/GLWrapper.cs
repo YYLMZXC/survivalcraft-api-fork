@@ -95,10 +95,10 @@ namespace Engine.Graphics
 
 		public static void Initialize()
 		{
-			Log.Information("GLES Vendor: " + GL.GetString(All.Vendor));
-			Log.Information("GLES Renderer: " + GL.GetString(All.Renderer));
-			Log.Information("GLES Version: " + GL.GetString(All.Version));
-			string @string = GL.GetString(All.Extensions);
+			Log.Information("GLES Vendor: " + GL.GetString(StringName.Vendor));
+			Log.Information("GLES Renderer: " + GL.GetString(StringName.Renderer));
+			Log.Information("GLES Version: " + GL.GetString(StringName.Version));
+			string @string = GL.GetString(StringName.Extensions);
 			GL_EXT_texture_filter_anisotropic = @string.Contains("GL_EXT_texture_filter_anisotropic");
 			GL_OES_packed_depth_stencil = @string.Contains("GL_OES_packed_depth_stencil");
 		}

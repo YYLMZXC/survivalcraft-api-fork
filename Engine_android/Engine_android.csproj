@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -36,9 +36,12 @@
     <DefineConstants>TRACE;android</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android">
+      <HintPath>..\..\Microsoft Visual Studio\2022\Preview\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v4.4.87\Mono.Android.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="OpenTK-1.0.1">
       <HintPath>..\DllReference\OpenTK-1.0.1.dll</HintPath>
