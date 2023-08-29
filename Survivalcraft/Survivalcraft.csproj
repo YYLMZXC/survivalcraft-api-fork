@@ -84,11 +84,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OpenAL86\openal32.dll" />
-    <Content Include="OpenAL\openal32.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="运行库\framework4.8.1.exe" />
     <Content Include="运行库\oalinst.exe" />
     <None Update="init.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -109,6 +104,9 @@
     <Compile Remove="ModsManager\JsModLoader.cs" />
     <Compile Remove="Screen\ModsInitScreen.cs" />
     <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="innerhms8\" />
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>set p=$(SolutionDir)
