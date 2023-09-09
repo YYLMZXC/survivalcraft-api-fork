@@ -27,6 +27,7 @@
     <DefineConstants>DEBUG;desktop</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <Optimize>True</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -115,7 +116,11 @@
   <PropertyGroup>
     <PreBuildEvent>set p=$(SolutionDir)
 cd "$(SolutionDir)Survivalcraft\Content"
-"$(SolutionDir)\zip.exe" -qr9 ..\Content.zip *</PreBuildEvent>
+"$(SolutionDir)\7za.exe" a -tzip -mx=9 ..\Content.zip</PreBuildEvent>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ProjectExtensions />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="$(SolutionDir)7za.exe a -t7z -x!SC*.7z SC进阶版.7z $(TargetDir)\" />
+  </Target>
 </Project>
