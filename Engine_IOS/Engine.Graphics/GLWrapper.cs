@@ -41,11 +41,11 @@ namespace Engine.Graphics
 
         public static bool? m_depthMask;
 
-        public static float m_polygonOffsetFactor;
+        public static float? m_polygonOffsetFactor;
 
-        public static float m_polygonOffsetUnits;
+        public static float? m_polygonOffsetUnits;
 
-        public static Vector4 m_blendColor;
+        public static Vector4? m_blendColor;
 
         public static BlendEquationMode? m_blendEquation;//??
 
@@ -101,6 +101,7 @@ namespace Engine.Graphics
             string @string = GL.GetString(StringName.Extensions);
             GL_EXT_texture_filter_anisotropic = @string.Contains("GL_EXT_texture_filter_anisotropic");
             GL_OES_packed_depth_stencil = @string.Contains("GL_OES_packed_depth_stencil");
+            Log.Information("GLES Extensions: " + @string);
         }
 
         public static void InitializeCache()
@@ -130,9 +131,9 @@ namespace Engine.Graphics
             m_depthFunction = null;
             m_colorMask = null;
             m_depthMask = null;
-            m_polygonOffsetFactor = 0f;
-            m_polygonOffsetUnits = 0f;
-            m_blendColor = new Vector4(float.MinValue);
+            m_polygonOffsetFactor = null;
+            m_polygonOffsetUnits = null;
+            m_blendColor = null;
             m_blendEquation = null;
             m_blendEquationColor = null;
             m_blendEquationAlpha = null;
@@ -304,8 +305,8 @@ namespace Engine.Graphics
             if (blendEquation != m_blendEquation)
             {
                 m_blendEquation = blendEquation;
-                m_blendEquationColor = BlendEquationMode.FuncAdd;
-                m_blendEquationAlpha = BlendEquationMode.FuncAdd;
+                m_blendEquationColor = null;
+                m_blendEquationAlpha = null;
             }
         }
 
@@ -317,7 +318,7 @@ namespace Engine.Graphics
                 GL.BlendEquationSeparate(blendEquationColor, blendEquationAlpha);
                 m_blendEquationColor = blendEquationColor;
                 m_blendEquationAlpha = blendEquationAlpha;
-                m_blendEquation = BlendEquationMode.FuncAdd;
+                m_blendEquation = null;
             }
         }
 
@@ -425,7 +426,7 @@ namespace Engine.Graphics
         {
             if (framebuffer != m_framebuffer)
             {
-                GL.BindFramebuffer(All.Framebuffer, framebuffer);
+                GL.BindFramebuffer(FramebufferTarget.Framebuffer, framebuffer);
                 m_framebuffer = framebuffer;
             }
         }
@@ -511,14 +512,9 @@ namespace Engine.Graphics
             {
                 return;
             }
-            if (m_scissorRectangle.HasValue)
+            if (scissorRectangle == m_scissorRectangle)
             {
-                Rectangle value = scissorRectangle;
-                Rectangle? scissorRectangle2 = m_scissorRectangle;
-                if (!(value != scissorRectangle2))
-                {
-                    return;
-                }
+                return;
             }
             if (Display.RenderTarget == null)
             {
@@ -571,60 +567,61 @@ namespace Engine.Graphics
 
         public static void ApplyDepthStencilState(DepthStencilState state)
         {
-            if (state == m_depthStencilState)
+            if (state != m_depthStencilState)
             {
-                return;
-            }
-            m_depthStencilState = state;
-            if (state.DepthBufferTestEnable || state.DepthBufferWriteEnable)
-            {
-                Enable(EnableCap.DepthTest);
-                if (state.DepthBufferTestEnable)
+                m_depthStencilState = state;
+                if (state.DepthBufferTestEnable || state.DepthBufferWriteEnable)
                 {
-                    DepthFunc(TranslateCompareFunction(state.DepthBufferFunction));
+                    Enable(EnableCap.DepthTest);
+                    if (state.DepthBufferTestEnable)
+                    {
+                        DepthFunc(TranslateCompareFunction(state.DepthBufferFunction));
+                    }
+                    else
+                    {
+                        DepthFunc(DepthFunction.Always);
+                    }
+                    DepthMask(state.DepthBufferWriteEnable);
                 }
                 else
                 {
-                    DepthFunc(DepthFunction.Always);
+                    Disable(EnableCap.DepthTest);
                 }
-                DepthMask(state.DepthBufferWriteEnable);
-            }
-            else
-            {
-                Disable(EnableCap.DepthTest);
             }
         }
 
         public static void ApplyBlendState(BlendState state)
         {
-            if (state == m_blendState)
+            if (state != m_blendState)
             {
-                return;
+                m_blendState = state;
+                if (state.ColorBlendFunction == BlendFunction.Add && state.ColorSourceBlend == Blend.One && state.ColorDestinationBlend == Blend.Zero && state.AlphaBlendFunction == BlendFunction.Add && state.AlphaSourceBlend == Blend.One && state.AlphaDestinationBlend == Blend.Zero)
+                {
+                    Disable(EnableCap.Blend);
+                    return;
+                }
+                BlendEquationMode all = TranslateBlendFunction(state.ColorBlendFunction);
+                BlendEquationMode all2 = TranslateBlendFunction(state.AlphaBlendFunction);
+
+                BlendingFactorSrc all3 = TranslateBlendSrc(state.ColorSourceBlend);
+                BlendingFactorSrc all5 = TranslateBlendSrc(state.AlphaSourceBlend);
+
+                BlendingFactorDest all4 = TranslateBlendDest(state.ColorDestinationBlend);
+                BlendingFactorDest all6 = TranslateBlendDest(state.AlphaDestinationBlend);
+
+                if (all == all2 && all3 == all5 && all4 == all6)
+                {
+                    BlendEquation(all);
+                    BlendFunc(all3, all4);
+                }
+                else
+                {
+                    BlendEquationSeparate(all, all2);
+                    BlendFuncSeparate(all3, all4, all5, all6);
+                }
+                BlendColor(state.BlendFactor);
+                Enable(EnableCap.Blend);
             }
-            m_blendState = state;
-            if (state.ColorBlendFunction == BlendFunction.Add && state.ColorSourceBlend == Blend.One && state.ColorDestinationBlend == Blend.Zero && state.AlphaBlendFunction == BlendFunction.Add && state.AlphaSourceBlend == Blend.One && state.AlphaDestinationBlend == Blend.Zero)
-            {
-                Disable(EnableCap.Blend);
-                return;
-            }
-            BlendEquationMode all = TranslateBlendFunction(state.ColorBlendFunction);
-            BlendEquationMode all2 = TranslateBlendFunction(state.AlphaBlendFunction);
-            BlendingFactorSrc all3 = TranslateBlendSrc(state.ColorSourceBlend);
-            BlendingFactorDest all4 = TranslateBlendDest(state.ColorDestinationBlend);
-            BlendingFactorSrc all5 = TranslateBlendSrc(state.AlphaSourceBlend);
-            BlendingFactorDest all6 = TranslateBlendDest(state.AlphaDestinationBlend);
-            if (all == all2 && all3 == all5 && all4 == all6)
-            {
-                BlendEquation(all);
-                BlendFunc(all3, all4);
-            }
-            else
-            {
-                BlendEquationSeparate(all, all2);
-                BlendFuncSeparate(all3, all4, all5, all6);
-            }
-            BlendColor(state.BlendFactor);
-            Enable(EnableCap.Blend);
         }
 
         public static void ApplyRenderTarget(RenderTarget2D renderTarget)
@@ -756,16 +753,16 @@ namespace Engine.Graphics
 
         public static void Clear(RenderTarget2D renderTarget, Vector4? color, float? depth, int? stencil)
         {
-            All all = All.False;
+            ClearBufferMask all = ClearBufferMask.ColorBufferBit;
             if (color.HasValue)
             {
-                all |= All.ColorBufferBit;
+                all |= ClearBufferMask.ColorBufferBit;
                 ClearColor(color.Value);
                 ColorMask(15);
             }
             if (depth.HasValue)
             {
-                all |= All.DepthBufferBit;
+                all |= ClearBufferMask.DepthBufferBit;
                 ClearDepth(depth.Value);
                 if (DepthMask(depthMask: true))
                 {
@@ -774,17 +771,17 @@ namespace Engine.Graphics
             }
             if (stencil.HasValue)
             {
-                all |= All.StencilBufferBit;
+                all |= ClearBufferMask.StencilBufferBit;
                 ClearStencil(stencil.Value);
             }
-            if (all != 0)
+            if (color.HasValue || depth.HasValue || stencil.HasValue)
             {
                 ApplyRenderTarget(renderTarget);
                 if (Disable(EnableCap.ScissorTest))
                 {
                     m_rasterizerState = null;
                 }
-                GL.Clear((ClearBufferMask)all);
+                GL.Clear(all);
             }
         }
 
@@ -1128,18 +1125,14 @@ namespace Engine.Graphics
             }
         }
 
-        public static All TranslateDepthFormat(DepthFormat depthFormat)
+        public static RenderbufferInternalFormat TranslateDepthFormat(DepthFormat depthFormat)
         {
             switch (depthFormat)
             {
                 case DepthFormat.Depth16:
-                    return All.DepthComponent16;
+                    return RenderbufferInternalFormat.DepthComponent16;
                 case DepthFormat.Depth24Stencil8:
-                    if (GL_OES_packed_depth_stencil)
-                    {
-                        return All.Depth24Stencil8Oes;
-                    }
-                    return All.DepthComponent16;
+                    return RenderbufferInternalFormat.StencilIndex8;
                 default:
                     throw new InvalidOperationException("Unsupported DepthFormat.");
             }
