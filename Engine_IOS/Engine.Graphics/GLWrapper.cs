@@ -19,7 +19,7 @@ namespace Engine.Graphics
 
         public static int[] m_activeTexturesByUnit;
 
-        public static TextureUnit m_activeTextureUnit;
+        public static TextureUnit? m_activeTextureUnit;
 
         public static int m_program;
 
@@ -95,10 +95,10 @@ namespace Engine.Graphics
 
         public static void Initialize()
         {
-            Log.Information("GLES Vendor: " + GL.GetString(All.Vendor));
-            Log.Information("GLES Renderer: " + GL.GetString(All.Renderer));
-            Log.Information("GLES Version: " + GL.GetString(All.Version));
-            string @string = GL.GetString(All.Extensions);
+            Log.Information("GLES Vendor: " + GL.GetString(StringName.Vendor));
+            Log.Information("GLES Renderer: " + GL.GetString(StringName.Renderer));
+            Log.Information("GLES Version: " + GL.GetString(StringName.Version));
+            string @string = GL.GetString(StringName.Extensions);
             GL_EXT_texture_filter_anisotropic = @string.Contains("GL_EXT_texture_filter_anisotropic");
             GL_OES_packed_depth_stencil = @string.Contains("GL_OES_packed_depth_stencil");
         }
@@ -119,7 +119,7 @@ namespace Engine.Graphics
                 -1,
                 -1
             };
-            m_activeTextureUnit = TextureUnit.Texture0;
+            m_activeTextureUnit = null;
             m_program = -1;
             m_framebuffer = -1;
             m_clearColor = null;
@@ -376,7 +376,7 @@ namespace Engine.Graphics
                     m_texture2D = texture;
                     if (m_activeTextureUnit >= TextureUnit.Texture0)
                     {
-                        m_activeTexturesByUnit[m_activeTextureUnit - TextureUnit.Texture0] = texture;
+                        m_activeTexturesByUnit[m_activeTextureUnit.Value - TextureUnit.Texture0] = texture;
                     }
                 }
             }
@@ -397,18 +397,18 @@ namespace Engine.Graphics
         }
 
 
-        public static void BindBuffer(All target, int buffer)
+        public static void BindBuffer(BufferTarget target, int buffer)
         {
             switch (target)
             {
-                case All.ArrayBuffer:
+                case BufferTarget.ArrayBuffer:
                     if (buffer != m_arrayBuffer)
                     {
                         GL.BindBuffer(target, buffer);
                         m_arrayBuffer = buffer;
                     }
                     break;
-                case All.ElementArrayBuffer:
+                case BufferTarget.ElementArrayBuffer:
                     if (buffer != m_elementArrayBuffer)
                     {
                         GL.BindBuffer(target, buffer);
@@ -642,10 +642,10 @@ namespace Engine.Graphics
         public static void ApplyShaderAndBuffers(Shader shader, VertexDeclaration vertexDeclaration, IntPtr vertexOffset, int arrayBuffer, int? elementArrayBuffer)
         {
             shader.PrepareForDrawing();
-            BindBuffer(All.ArrayBuffer, arrayBuffer);
+            BindBuffer(BufferTarget.ArrayBuffer, arrayBuffer);
             if (elementArrayBuffer.HasValue)
             {
-                BindBuffer(All.ElementArrayBuffer, elementArrayBuffer.Value);
+                BindBuffer(BufferTarget.ElementArrayBuffer, elementArrayBuffer.Value);
             }
             UseProgram(shader.m_program);
             if (shader != m_lastShader || vertexOffset != m_lastVertexOffset || arrayBuffer != m_lastArrayBuffer || vertexDeclaration.m_elements != m_lastVertexDeclaration.m_elements)
