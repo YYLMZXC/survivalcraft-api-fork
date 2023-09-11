@@ -19,7 +19,7 @@ namespace Engine.Graphics
 
         public static int[] m_activeTexturesByUnit;
 
-        public static All m_activeTextureUnit;
+        public static TextureUnit m_activeTextureUnit;
 
         public static int m_program;
 
@@ -119,7 +119,7 @@ namespace Engine.Graphics
                 -1,
                 -1
             };
-            m_activeTextureUnit = All.AllShaderBitsExt;
+            m_activeTextureUnit = TextureUnit.Texture0;
             m_program = -1;
             m_framebuffer = -1;
             m_clearColor = null;
@@ -359,17 +359,17 @@ namespace Engine.Graphics
         }
 
 
-        public static void BindTexture(All target, int texture, bool forceBind)
+        public static void BindTexture(TextureTarget target, int texture, bool forceBind)
         {
-            if (target == All.Texture2D)
+            if (target == TextureTarget.Texture2D)
             {
                 if (forceBind || texture != m_texture2D)
                 {
                     GL.BindTexture(target, texture);
                     m_texture2D = texture;
-                    if (m_activeTextureUnit >= All.False)
+                    if (m_activeTextureUnit >= TextureUnit.Texture0)
                     {
-                        m_activeTexturesByUnit[(int)(m_activeTextureUnit - 33984)] = texture;
+                        m_activeTexturesByUnit[m_activeTextureUnit - TextureUnit.Texture0] = texture;
                     }
                 }
             }
@@ -380,7 +380,7 @@ namespace Engine.Graphics
         }
 
 
-        public static void ActiveTexture(All textureUnit)
+        public static void ActiveTexture(TextureUnit textureUnit)
         {
             if (textureUnit != m_activeTextureUnit)
             {
@@ -708,7 +708,7 @@ namespace Engine.Graphics
                     {
                         throw new InvalidOperationException("Too many simultaneous textures.");
                     }
-                    ActiveTexture((All)(33984 + num));
+                    ActiveTexture(TextureUnit.Texture0 + num);
                     if (shaderParameter.IsChanged)
                     {
                         GL.Uniform1(shaderParameter.Location, num);
@@ -724,25 +724,20 @@ namespace Engine.Graphics
                         }
                         if (m_activeTexturesByUnit[num] != texture2D.m_texture)
                         {
-                            BindTexture(All.Texture2D, texture2D.m_texture, forceBind: true);
+                            BindTexture(TextureTarget.Texture2D, texture2D.m_texture, forceBind: true);
                         }
                         if (!m_textureSamplerStates.TryGetValue(texture2D.m_texture, out SamplerState value) || value != samplerState)
                         {
-                            BindTexture(All.Texture2D, texture2D.m_texture, forceBind: false);
-                            if (GL_EXT_texture_filter_anisotropic)
-                            {
-                                GL.TexParameter(All.Texture2D, All.TextureMaxAnisotropyExt, (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? ((float)samplerState.MaxAnisotropy) : 1f);
-                            }
-                            GL.TexParameter(All.Texture2D, All.TextureMinFilter, (int)TranslateTextureFilterModeMin(samplerState.FilterMode, texture2D.MipLevelsCount > 1));
-                            GL.TexParameter(All.Texture2D, All.TextureMagFilter, (int)TranslateTextureFilterModeMag(samplerState.FilterMode));
-                            GL.TexParameter(All.Texture2D, All.TextureWrapS, (int)TranslateTextureAddressMode(samplerState.AddressModeU));
-                            GL.TexParameter(All.Texture2D, All.TextureWrapT, (int)TranslateTextureAddressMode(samplerState.AddressModeV));
+                            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TranslateTextureFilterModeMin(samplerState.FilterMode, texture2D.MipLevelsCount > 1));
+                            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TranslateTextureFilterModeMag(samplerState.FilterMode));
+                            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TranslateTextureAddressMode(samplerState.AddressModeU));
+                            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TranslateTextureAddressMode(samplerState.AddressModeV));
                             m_textureSamplerStates[texture2D.m_texture] = samplerState;
                         }
                     }
                     else if (m_activeTexturesByUnit[num] != 0)
                     {
-                        BindTexture(All.Texture2D, 0, forceBind: true);
+                        BindTexture(TextureTarget.Texture2D, 0, forceBind: true);
                     }
                     num++;
                     shaderParameter.IsChanged = false;

@@ -11,9 +11,9 @@ namespace Engine.Graphics
 	{
 		internal int m_texture;
 
-		private All m_pixelFormat;
+		private PixelFormat m_pixelFormat;
 
-		private All m_pixelType;
+		private PixelType m_pixelType;
 
 		public IntPtr NativeHandle => (IntPtr)m_texture;
 
@@ -64,20 +64,20 @@ namespace Engine.Graphics
 			switch (ColorFormat)
 			{
 			case ColorFormat.Rgba8888:
-				m_pixelFormat = All.Rgba;
-				m_pixelType = All.UnsignedByte;
+				m_pixelFormat = PixelFormat.Rgba;
+				m_pixelType = PixelType.UnsignedByte;
 				break;
 			case ColorFormat.Rgb565:
-				m_pixelFormat = All.Rgb;
-				m_pixelType = All.UnsignedShort565;
+				m_pixelFormat = PixelFormat.Rgb;
+				m_pixelType = PixelType.UnsignedShort565;
 				break;
 			case ColorFormat.Rgba5551:
-				m_pixelFormat = All.Rgba;
-				m_pixelType = All.UnsignedShort5551;
+				m_pixelFormat = PixelFormat.Rgba;
+				m_pixelType = PixelType.UnsignedShort5551;
 				break;
 			case ColorFormat.R8:
-				m_pixelFormat = All.Luminance;
-				m_pixelType = All.UnsignedByte;
+				m_pixelFormat = PixelFormat.Luminance;
+				m_pixelType = PixelType.UnsignedByte;
 				break;
 			default:
 				throw new InvalidOperationException("Unsupported surface format.");
@@ -100,9 +100,9 @@ namespace Engine.Graphics
 				int width = MathUtils.Max(Width >> mipLevel, 1);
 				int height = MathUtils.Max(Height >> mipLevel, 1);
 				IntPtr pixels = gCHandle.AddrOfPinnedObject() + sourceStartIndex * Utilities.SizeOf<T>();
-				GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
+				GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
 				int border = 0;
-				GL.TexImage2D(All.Texture2D, mipLevel, (int)All.Rgba, width, height, border, m_pixelFormat, m_pixelType, pixels);
+				GL.TexImage2D(TextureTarget.Texture2D, mipLevel,PixelInternalFormat.Rgba, width, height, border, m_pixelFormat, m_pixelType, pixels);
 			}
 			finally
 			{
@@ -123,21 +123,21 @@ namespace Engine.Graphics
 		private void AllocateTexture()
 		{
 			GL.GenTextures(1, out m_texture);
-			GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
+			GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
 			for (int i = 0; i < MipLevelsCount; i++)
 			{
 				int width = MathUtils.Max(Width >> i, 1);
 				int height = MathUtils.Max(Height >> i, 1);
-                All pixelInternalFormat = default;
+                PixelInternalFormat pixelInternalFormat = default;
                 switch (m_pixelFormat)
                 {
-                    case All.Alpha: pixelInternalFormat = All.Alpha; break;
-                    case All.LuminanceAlpha: pixelInternalFormat = All.LuminanceAlpha; break;
-                    case All.Rgba: pixelInternalFormat = All.Rgba; break;
-                    case All.Rgb: pixelInternalFormat = All.Rgb; break;
-                    case All.Luminance: pixelInternalFormat = All.Luminance; break;
+                    case PixelFormat.Alpha: pixelInternalFormat = PixelInternalFormat.Alpha; break;
+                    case PixelFormat.LuminanceAlpha: pixelInternalFormat = PixelInternalFormat.LuminanceAlpha; break;
+                    case PixelFormat.Rgba: pixelInternalFormat = PixelInternalFormat.Rgba; break;
+                    case PixelFormat.Rgb: pixelInternalFormat = PixelInternalFormat.Rgb; break;
+                    case PixelFormat.Luminance: pixelInternalFormat = PixelInternalFormat.Luminance; break;
                 }
-                GL.TexImage2D(All.Texture2D, i, (int)pixelInternalFormat, width, height, 0, m_pixelFormat, m_pixelType, IntPtr.Zero);
+                GL.TexImage2D(TextureTarget.Texture2D, i, pixelInternalFormat, width, height, 0, m_pixelFormat, m_pixelType, IntPtr.Zero);
 			}
 		}
 
