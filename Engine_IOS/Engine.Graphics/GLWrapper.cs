@@ -131,9 +131,9 @@ namespace Engine.Graphics
             m_depthFunction = null;
             m_colorMask = null;
             m_depthMask = null;
-            m_polygonOffsetFactor = null;
-            m_polygonOffsetUnits = null;
-            m_blendColor = null;
+            m_polygonOffsetFactor = 0;
+            m_polygonOffsetUnits = 0;
+            m_blendColor = new Vector4(float.MinValue);
             m_blendEquation = null;
             m_blendEquationColor = null;
             m_blendEquationAlpha = null;
@@ -202,9 +202,7 @@ namespace Engine.Graphics
 
         public static void ClearColor(Vector4 color)
         {
-            Vector4 value = color;
-            Vector4? clearColor = m_clearColor;
-            if (value != clearColor)
+            if (color != m_clearColor)
             {
                 GL.ClearColor(color.X, color.Y, color.Z, color.W);
                 m_clearColor = color;
@@ -592,36 +590,34 @@ namespace Engine.Graphics
 
         public static void ApplyBlendState(BlendState state)
         {
-            if (state != m_blendState)
+            if (state == m_blendState)
             {
-                m_blendState = state;
-                if (state.ColorBlendFunction == BlendFunction.Add && state.ColorSourceBlend == Blend.One && state.ColorDestinationBlend == Blend.Zero && state.AlphaBlendFunction == BlendFunction.Add && state.AlphaSourceBlend == Blend.One && state.AlphaDestinationBlend == Blend.Zero)
-                {
-                    Disable(EnableCap.Blend);
-                    return;
-                }
-                BlendEquationMode all = TranslateBlendFunction(state.ColorBlendFunction);
-                BlendEquationMode all2 = TranslateBlendFunction(state.AlphaBlendFunction);
-
-                BlendingFactorSrc all3 = TranslateBlendSrc(state.ColorSourceBlend);
-                BlendingFactorSrc all5 = TranslateBlendSrc(state.AlphaSourceBlend);
-
-                BlendingFactorDest all4 = TranslateBlendDest(state.ColorDestinationBlend);
-                BlendingFactorDest all6 = TranslateBlendDest(state.AlphaDestinationBlend);
-
-                if (all == all2 && all3 == all5 && all4 == all6)
-                {
-                    BlendEquation(all);
-                    BlendFunc(all3, all4);
-                }
-                else
-                {
-                    BlendEquationSeparate(all, all2);
-                    BlendFuncSeparate(all3, all4, all5, all6);
-                }
-                BlendColor(state.BlendFactor);
-                Enable(EnableCap.Blend);
+                return;
             }
+            m_blendState = state;
+            if (state.ColorBlendFunction == BlendFunction.Add && state.ColorSourceBlend == Blend.One && state.ColorDestinationBlend == Blend.Zero && state.AlphaBlendFunction == BlendFunction.Add && state.AlphaSourceBlend == Blend.One && state.AlphaDestinationBlend == Blend.Zero)
+            {
+                Disable(EnableCap.Blend);
+                return;
+            }
+            BlendEquationMode all = TranslateBlendFunction(state.ColorBlendFunction);
+            BlendEquationMode all2 = TranslateBlendFunction(state.AlphaBlendFunction);
+            BlendingFactorSrc all3 = TranslateBlendSrc(state.ColorSourceBlend);
+            BlendingFactorDest all4 = TranslateBlendDest(state.ColorDestinationBlend);
+            BlendingFactorSrc all5 = TranslateBlendSrc(state.AlphaSourceBlend);
+            BlendingFactorDest all6 = TranslateBlendDest(state.AlphaDestinationBlend);
+            if (all == all2 && all3 == all5 && all4 == all6)
+            {
+                BlendEquation(all);
+                BlendFunc(all3, all4);
+            }
+            else
+            {
+                BlendEquationSeparate(all, all2);
+                BlendFuncSeparate(all3, all4, all5, all6);
+            }
+            BlendColor(state.BlendFactor);
+            Enable(EnableCap.Blend);
         }
 
         public static void ApplyRenderTarget(RenderTarget2D renderTarget)
@@ -753,7 +749,7 @@ namespace Engine.Graphics
 
         public static void Clear(RenderTarget2D renderTarget, Vector4? color, float? depth, int? stencil)
         {
-            ClearBufferMask all = ClearBufferMask.ColorBufferBit;
+            ClearBufferMask all = default;
             if (color.HasValue)
             {
                 all |= ClearBufferMask.ColorBufferBit;
