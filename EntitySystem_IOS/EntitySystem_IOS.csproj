@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{90A1D9E6-530A-4E49-9356-663B2475CE42}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TemplateGuid>{a52b8a63-bc84-4b47-910d-692533484892}</TemplateGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>EntitySystem_IOS</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>EntitySystem_IOS</AssemblyName>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml">
+      <HintPath>..\DllReference\System.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <HintPath>..\DllReference\System.Xml.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.iOS" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine_IOS\Engine_IOS.csproj">
+      <Project>{ae2e15d6-6021-48dc-ae89-4a99f1d09ba6}</Project>
+      <Name>Engine_IOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EntitySystem\GameEntitySystem\Component.cs">
+      <Link>GameEntitySystem\Component.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\Entity.cs">
+      <Link>GameEntitySystem\Entity.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\EntityAddRemoveEventArgs.cs">
+      <Link>GameEntitySystem\EntityAddRemoveEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\EntityData.cs">
+      <Link>GameEntitySystem\EntityData.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\EntityDataList.cs">
+      <Link>GameEntitySystem\EntityDataList.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\EntityToIdMap.cs">
+      <Link>GameEntitySystem\EntityToIdMap.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\GameDatabase.cs">
+      <Link>GameEntitySystem\GameDatabase.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\IdToEntityMap.cs">
+      <Link>GameEntitySystem\IdToEntityMap.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\Project.cs">
+      <Link>GameEntitySystem\Project.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\ProjectData.cs">
+      <Link>GameEntitySystem\ProjectData.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\Subsystem.cs">
+      <Link>GameEntitySystem\Subsystem.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\Database.cs">
+      <Link>TemplatesDatabase\Database.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\DatabaseObject.cs">
+      <Link>TemplatesDatabase\DatabaseObject.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\DatabaseObjectType.cs">
+      <Link>TemplatesDatabase\DatabaseObjectType.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\ProceduralValue.cs">
+      <Link>TemplatesDatabase\ProceduralValue.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\ProceduralValueStringConverter.cs">
+      <Link>TemplatesDatabase\ProceduralValueStringConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\ValuesDictionary.cs">
+      <Link>TemplatesDatabase\ValuesDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\XmlDatabaseSerializer.cs">
+      <Link>TemplatesDatabase\XmlDatabaseSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\XmlUtilities\XmlUtils.cs">
+      <Link>XmlUtilities\XmlUtils.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+</Project>

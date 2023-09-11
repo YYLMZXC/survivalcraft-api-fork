@@ -15,7 +15,7 @@ namespace Game
 {
     public static class CommunityContentManager
     {
-        public const string m_scResDirAddress = "https://m.schub.top/com/list";
+        public const string m_scResDirAddress = SPMBoxExternalContentProvider.m_redirectUri + "/com/list";
 
         public static Dictionary<string, string> m_idToAddressMap = new Dictionary<string, string>();
 
@@ -354,7 +354,7 @@ namespace Game
             dictionary.Add("SearchType", searchType);
             dictionary.Add("Filter", filter);
             dictionary.Add("Order", order.ToString());
-            WebManager.Post("https://m.schub.top/com/api/zh/userList", null, Header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
+            WebManager.Post(SPMBoxExternalContentProvider.m_redirectUri+"/com/api/zh/userList", null, Header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
             {
                 try
                 {
@@ -437,7 +437,7 @@ namespace Game
             dictionary.Add("LockState", lockState.ToString());
             dictionary.Add("Duration", duration.ToString());
             dictionary.Add("Reason", reason);
-            WebManager.Post("https://m.schub.top/com/api/zh/userList", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            WebManager.Post(SPMBoxExternalContentProvider.m_redirectUri + SPMBoxExternalContentProvider.m_redirectUri+"/com/api/zh/userList", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {
                 success(data);
             }, delegate (Exception error)
@@ -460,7 +460,7 @@ namespace Game
             dictionary.Add("Action", "ResetPassword");
             dictionary.Add("Id", id.ToString());
             dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
-            WebManager.Post("https://m.schub.top/com/api/zh/userList", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            WebManager.Post(SPMBoxExternalContentProvider.m_redirectUri+"/com/api/zh/userList", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {
                 success(data);
             }, delegate (Exception error)
@@ -484,7 +484,7 @@ namespace Game
             dictionary.Add("Id", id.ToString());
             dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
             dictionary.Add("Boutique", boutique.ToString());
-            WebManager.Post("https://m.schub.top/com/api/zh/boutique", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            WebManager.Post(SPMBoxExternalContentProvider.m_redirectUri+"/com/api/zh/boutique", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {
                 success(data);
             }, delegate (Exception error)
@@ -507,7 +507,7 @@ namespace Game
             dictionary.Add("Id", id.ToString());
             dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
             dictionary.Add("IsShow", isShow.ToString());
-            WebManager.Post("https://m.schub.top/com/api/zh/hide", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            WebManager.Post(SPMBoxExternalContentProvider.m_redirectUri+"/com/api/zh/hide", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {
                 success(data);
             }, delegate (Exception error)
@@ -529,7 +529,7 @@ namespace Game
             var dictionary = new Dictionary<string, string>();
             dictionary.Add("Id", id.ToString());
             dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
-            WebManager.Post("https://m.schub.top/com/api/zh/deleteFile", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            WebManager.Post(SPMBoxExternalContentProvider.m_redirectUri+"/com/api/zh/deleteFile", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {
                 success(data);
             }, delegate (Exception error)
@@ -550,9 +550,10 @@ namespace Game
             header.Add("Content-Type", "application/x-www-form-urlencoded");
             var dictionary = new Dictionary<string, string>();
             dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
-            WebManager.Post("https://m.schub.top/com/api/zh/isadmin", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            WebManager.Post(SPMBoxExternalContentProvider.m_redirectUri+"/com/api/zh/isadmin", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {
                 var result = (JsonObject)WebManager.JsonFromBytes(data);
+                var o = result[2];
                 success(result[2].ToString() == "Y");
             }, delegate (Exception error)
             {

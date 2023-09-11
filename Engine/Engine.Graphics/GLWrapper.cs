@@ -745,7 +745,7 @@ namespace Engine.Graphics
 			All all = All.False;
 			if (color.HasValue)
 			{
-				all |= All.ClientMappedBufferBarrierBit;
+				all |= All.ColorBufferBit;
 				ClearColor(color.Value);
 				ColorMask(15);
 			}
@@ -760,7 +760,7 @@ namespace Engine.Graphics
 			}
 			if (stencil.HasValue)
 			{
-				all |= All.DepthBufferBit2Qcom;
+				all |= All.StencilBufferBit;
 				ClearStencil(stencil.Value);
 			}
 			if (all != 0)

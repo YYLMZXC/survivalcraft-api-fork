@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Engine;
-using Engine.Content;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,7 +21,6 @@ namespace Game
             LogLabel.Text = "Loading";
             try {
                 ContentManager.Initialize();
-                ContentManager.Get("Shaders/AlphaTested");
             }
             catch (Exception e){ 
             

@@ -57,8 +57,17 @@ namespace Game
             }
         }
 
+#if desktop
         [DllImport("wininet.dll")]
         public extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
+#else
+        public static bool InternetGetConnectedState(out int Description, int ReservedValue)
+        {
+            Description = 0;
+            ReservedValue = 0;
+            return true;
+        }
+#endif
         public static bool IsInternetConnectionAvailable()
         {
             try
@@ -262,6 +271,10 @@ namespace Game
                         responseData = await responseMessage.Content.ReadAsByteArrayAsync();
                         Dispatcher.Dispatch(delegate
                         {
+                            var srr = Encoding.UTF8.GetString(responseData);
+                            System.Diagnostics.Debug.WriteLine(address);
+                            System.Diagnostics.Debug.WriteLine(isPost ? "POST" : "GET");
+                            System.Diagnostics.Debug.WriteLine(srr);
                             success(responseData);
                         });
                     }
@@ -272,6 +285,9 @@ namespace Game
                     Log.Error(ExceptionManager.MakeFullErrorMessage(e));
                     Dispatcher.Dispatch(delegate
                     {
+                        System.Diagnostics.Debug.WriteLine(address);
+                        System.Diagnostics.Debug.WriteLine(isPost?"POST":"GET");
+                        System.Diagnostics.Debug.WriteLine(e.Message);
                         failure(e);
                     });
                 }

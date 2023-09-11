@@ -237,30 +237,23 @@ namespace Game
                     {
                         x = ActualSize.X;
                     }
-                    bool flag = true;
                     Vector2 vector = Vector2.Zero;
                     float angle = 0f;
                     if (TextOrientation == TextOrientation.Horizontal)
                     {
                         vector = new Vector2(x, num);
-                        angle = 0f;
-                        _ = Display.ScissorRectangle;
-                        flag = true;
                     }
                     else if (TextOrientation == TextOrientation.VerticalLeft)
                     {
                         vector = new Vector2(x, ActualSize.Y + num);
                         angle = MathUtils.DegToRad(-90f);
-                        flag = true;
                     }
-                    if (flag)
+                    if (DropShadow)
                     {
-                        if (DropShadow)
-                        {
-                            fontBatch2D.QueueText(line, vector + 1f * new Vector2(FontScale), 0f, new Color((byte)0, (byte)0, (byte)0, color.A), anchor, new Vector2(FontScale), FontSpacing, angle);
-                        }
-                        fontBatch2D.QueueText(line, vector, 0f, color, anchor, new Vector2(FontScale), FontSpacing, angle);
+                        fontBatch2D.QueueText(line, vector + 1f * new Vector2(FontScale), 0f, new Color((byte)0, (byte)0, (byte)0, color.A), anchor, new Vector2(FontScale), FontSpacing, angle);
                     }
+                    fontBatch2D.QueueText(line, vector, 0f, color, anchor, new Vector2(FontScale), FontSpacing, angle);
+
                     num += num4;
                 }
                 fontBatch2D.TransformTriangles(GlobalTransform, count);

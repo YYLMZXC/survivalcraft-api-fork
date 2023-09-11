@@ -97,6 +97,17 @@ namespace Engine.Media
 						}
 
 					}
+#elif __IOS__
+                    using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine_IOS.Debugfont.png"))
+                    {
+                        using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine_IOS.Debugfont.lst"))
+                        {
+							Log.Information("init bitmapfont:"+stream+" / "+stream2);
+                            m_debugFont = Initialize(stream, stream2);
+                        }
+
+                    }
+
 #else
 					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png"))
 					{
@@ -107,8 +118,8 @@ namespace Engine.Media
 
 					}
 #endif
-				}
-				return m_debugFont;
+                }
+                return m_debugFont;
 			}
 		}
 		/// <summary>

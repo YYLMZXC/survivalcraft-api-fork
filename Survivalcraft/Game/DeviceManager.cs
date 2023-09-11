@@ -1,3 +1,6 @@
+#if __IOS__
+
+#else
 using Android.OS;
 
 namespace Game
@@ -9,3 +12,4 @@ namespace Game
 		public static string OperatingSystemVersion => Build.VERSION.Release;
 	}
 }
+#endif

@@ -126,7 +126,6 @@ namespace Game
             }
             Widget.UpdateWidgetsHierarchy(RootWidget);
         }
-
         public static void Draw()
         {
             Utilities.Dispose(ref m_uiRenderTarget);

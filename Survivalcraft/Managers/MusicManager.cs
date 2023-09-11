@@ -124,6 +124,11 @@ namespace Game
             {
                 StopMusic();
             };
+#elif __IOS__
+            Window.Deactivated += delegate
+            {
+                StopMusic();
+            };
 #endif
         }
 

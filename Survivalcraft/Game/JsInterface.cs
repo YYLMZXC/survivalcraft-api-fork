@@ -69,11 +69,17 @@ namespace Game
                 });
                 cfg.DebugMode(true);
             });
+#if __IOS__
+
+#else
             string initCode = Storage.ReadAllText("app:init.js");
             Execute(initCode);
+#endif
         }
         public static void RegisterEvent()
         {
+#if __IOS__
+#else
             FunctionInstance keyDown = engine.GetValue("keyDown").AsFunctionInstance();
             Keyboard.KeyDown += delegate (Key key)
             {
@@ -106,6 +112,7 @@ namespace Game
             GetAndRegisterHandlers("OnCreatureInjure");
             GetAndRegisterHandlers("OnProjectLoaded");
             GetAndRegisterHandlers("OnProjectDisposed");
+#endif
         }
         public static void Execute(string str)
         {
@@ -122,7 +129,11 @@ namespace Game
         {
             try
             {
+#if __IOS__
+                engine.Execute(script.ToString());
+#else
                 engine.Execute(script);
+#endif
             }
             catch (Exception ex)
             {
@@ -133,7 +144,11 @@ namespace Game
         {
             try
             {
+#if __IOS__
+                return engine.Execute(str).ToString();
+#else
                 return engine.Evaluate(str).ToString();
+#endif
             }
             catch (Exception ex)
             {
@@ -168,6 +183,9 @@ namespace Game
         }
         public static List<FunctionInstance> GetHandlers(string str)
         {
+#if __IOS__
+            return new List<FunctionInstance>();
+#else
             JsArray array = engine.GetValue(str).AsArray();
             if (array.IsNull()) return null;
             List<FunctionInstance> list = new List<FunctionInstance>();
@@ -180,13 +198,14 @@ namespace Game
                     {
                         list.Add(function);
                     }
-                }
+        }
                 catch (Exception ex)
                 {
                     Log.Error(ex);
                 }
             }
             return list;
+#endif
         }
         public static void GetAndRegisterHandlers(string handlesName)
         {

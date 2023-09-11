@@ -14,9 +14,10 @@ namespace Game
         public static List<VersionConverter> m_versionConverters;
 #if android
         public static Platform Platform => Platform.Android;
-#endif
-#if desktop
+#elif desktop
         public static Platform Platform => Platform.Desktop;
+#else
+        public static Platform Platform => Platform.Ios;
 #endif
         public static BuildConfiguration BuildConfiguration => BuildConfiguration.Release;
 

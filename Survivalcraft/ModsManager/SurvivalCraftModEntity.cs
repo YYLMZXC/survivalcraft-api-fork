@@ -33,7 +33,11 @@ namespace Game
                 ContentManager.ReaderList.Add(readers[i].Type, readers[i]);
             }
 
+#if __IOS__
+            Stream stream = typeof(ContentManager).Assembly.GetManifestResourceStream("SurvivalCraftIOS.Content.zip");
+#else
             Stream stream = Storage.OpenFile("app:Content.zip",OpenFileMode.Read);
+#endif
             MemoryStream memoryStream = new MemoryStream();
             stream.CopyTo(memoryStream);
             stream.Close();

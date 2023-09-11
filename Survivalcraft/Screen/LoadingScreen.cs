@@ -144,7 +144,9 @@ namespace Game
                 {
                    if (LanguageControl.LanguageTypes.Contains(Program.SystemLanguage))
                    {
-                       LanguageControl.Initialize(Program.SystemLanguage);
+                        LanguageControl.Initialize("zh-CN");
+
+//                        LanguageControl.Initialize(Program.SystemLanguage);
                    }
                    else
                    {

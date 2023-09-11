@@ -158,18 +158,6 @@ namespace Game
             {
                 if (value != m_windowMode)
                 {
-                    if (value == WindowMode.Borderless)
-                    {
-                        m_resizableWindowSize = Window.Size;
-                        Window.Position = Point2.Zero;
-                        Window.Size = Window.ScreenSize;
-                    }
-                    else if (value == WindowMode.Resizable)
-                    {
-                        Window.Position = m_resizableWindowPosition;
-                        Window.Size = m_resizableWindowSize;
-                    }
-                    Window.WindowMode = value;
                     m_windowMode = value;
                 }
             }
@@ -484,8 +472,8 @@ namespace Game
             HorizontalCreativeFlight = false;
             DropboxAccessToken = string.Empty;
             ScpboxAccessToken = string.Empty;
-            MotdUpdateUrl = "https://m.schub.top/com/motd?v={0}&l={1}";
-            MotdUpdateCheckUrl = "https://m.schub.top/com/motd?v={0}&cmd=version_check&platform={1}&apiv={2}&l={3}";
+            MotdUpdateUrl = SPMBoxExternalContentProvider.m_redirectUri+"/com/motd?v={0}&l={1}";
+            MotdUpdateCheckUrl = SPMBoxExternalContentProvider.m_redirectUri+"/com/motd?v={0}&cmd=version_check&platform={1}&apiv={2}&l={3}";
             MotdUpdatePeriodHours = 12.0;
             MotdLastUpdateTime = DateTime.MinValue;
             MotdLastDownloadedData = string.Empty;

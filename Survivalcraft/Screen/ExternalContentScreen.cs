@@ -190,10 +190,9 @@ namespace Game
 
 		public void SetPath(string path)
 		{
-			if (string.IsNullOrEmpty(path))
-			{
-				path = DiskExternalContentProvider.LocalPath;
-			}
+#if desktop
+			if (path == null) path = DiskExternalContentProvider.LocalPath;
+#endif
 			path = path.Replace("\\", "/");
 			if (path != m_path)
 			{

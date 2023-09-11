@@ -1,3 +1,4 @@
+using Engine;
 using Engine.Serialization;
 using System;
 using System.Collections.Generic;
@@ -68,10 +69,21 @@ namespace TemplatesDatabase
 				}
 				dictionary[attributeValue9].InitializeRelations(list, list2, value4);
 			}
+#if __IOS__
+#else
 			foreach (XElement item3 in XmlUtils.FindChildElement(node, "Assemblies", throwIfNotFound: true).Elements())
 			{
-				Assembly.Load(new AssemblyName(XmlUtils.GetAttributeValue<string>(item3, "Name")));
-			}
+                try
+                {
+					var s = new AssemblyName(XmlUtils.GetAttributeValue<string>(item3, "Name"));
+                    Assembly.Load(s);
+                }
+                catch (Exception e)
+                {
+					Log.Information(e);
+                }
+            }
+#endif
 			XElement node2 = XmlUtils.FindChildElement(node, "DatabaseObjects", throwIfNotFound: true);
 			Database database = new Database(new DatabaseObject(guid: XmlUtils.GetAttributeValue<Guid>(node2, "RootGuid"), databaseObjectType: dictionary["Root"], name: "Root", value: null), dictionary.Values);
 			foreach (DatabaseObject item4 in LoadDatabaseObjectsList(node2, database))

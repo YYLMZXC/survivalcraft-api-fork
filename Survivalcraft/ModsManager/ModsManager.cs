@@ -36,8 +36,7 @@ public static class ModsManager
                          LogPath = ExternelPath + "/Bugs";
     public const bool IsAndroid = false;
 
-#endif
-#if android
+#elif android
     public static string ExternelPath = EngineActivity.BasePath,
                          ScreenCapturePath = ExternelPath + "/ScreenCapture",
                          UserDataPath = "config:/UserId.dat",
@@ -51,7 +50,20 @@ public static class ModsManager
                          ModCachePath = ExternelPath + "/ModsCache",
                          LogPath = ExternelPath + "/Bugs";
     public const bool IsAndroid = true;
-
+#else
+    public static string ExternelPath = "data:",
+                         ScreenCapturePath = "data:/ScreenCapture",
+                         UserDataPath = "data:/UserId.dat",
+                         FurniturePacksDirectoryName = "data:/FurniturePacks",
+                         CharacterSkinsDirectoryName = "data:/CharacterSkins",
+                         BlockTexturesDirectoryName = "data:/TexturePacks",
+                         WorldsDirectoryName = "data:/Worlds",
+                         CommunityContentCachePath = "data:/CommunityContentCache.xml",
+                         ModsSetPath = "data:/ModSettings.xml",
+                         SettingPath = "data:/Settings.xml",
+                         ModCachePath = "data:/ModsCache",
+                         LogPath = "data:/Bugs";
+    public const bool IsAndroid = false;
 #endif
     public static string ModsPath = ExternelPath + "/Mods",
                          path;//移动端mods数据文件夹

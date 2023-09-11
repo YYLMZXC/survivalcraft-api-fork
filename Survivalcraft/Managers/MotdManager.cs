@@ -261,7 +261,7 @@ namespace Game
             var dictionary = new Dictionary<string, string>();
             dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
             dictionary.Add("Content", dataString);
-            WebManager.Post("https://m.schub.top/com/api/zh/setnotice", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
+            WebManager.Post(SPMBoxExternalContentProvider.m_redirectUri+"/com/api/zh/setnotice", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
             {
                 success(data);
             }, delegate (Exception error)
