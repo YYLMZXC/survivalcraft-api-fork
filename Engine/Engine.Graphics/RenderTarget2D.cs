@@ -56,8 +56,8 @@ namespace Engine.Graphics
 
 		public void GenerateMipMaps()
 		{
-			GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
-			GL.GenerateMipmap(All.Texture2D);
+			GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
+			GL.GenerateMipmap(TextureTarget.Texture2D);
 		}
 
 		internal override void HandleDeviceLost()
@@ -78,20 +78,20 @@ namespace Engine.Graphics
 			if (DepthFormat != 0)
 			{
 				GL.GenRenderbuffers(1, out m_depthBuffer);
-				GL.BindRenderbuffer(All.Renderbuffer, m_depthBuffer);
-				GL.RenderbufferStorage(All.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), base.Width, base.Height);
-				GL.FramebufferRenderbuffer(All.Framebuffer, All.DepthAttachment, All.Renderbuffer, m_depthBuffer);
-				GL.FramebufferRenderbuffer(All.Framebuffer, All.StencilAttachment, All.Renderbuffer, 0);
+				GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, m_depthBuffer);
+				GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), Width, Height);
+				GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferSlot.DepthAttachment, RenderbufferTarget.Renderbuffer, m_depthBuffer);
+				GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferSlot.StencilAttachment, RenderbufferTarget.Renderbuffer, 0);
 			}
 			else
 			{
-				GL.FramebufferRenderbuffer(All.Framebuffer, All.DepthAttachment, All.Renderbuffer, 0);
-				GL.FramebufferRenderbuffer(All.Framebuffer, All.StencilAttachment, All.Renderbuffer, 0);
+				GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferSlot.DepthAttachment, RenderbufferTarget.Renderbuffer, 0);
+				GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferSlot.StencilAttachment, RenderbufferTarget.Renderbuffer, 0);
 			}
-			FramebufferErrorCode framebufferErrorCode = GL.CheckFramebufferStatus(All.Framebuffer);
+			FramebufferErrorCode framebufferErrorCode = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
 			if (framebufferErrorCode != FramebufferErrorCode.FramebufferComplete)
 			{
-				throw new InvalidOperationException($"Error creating framebuffer ({framebufferErrorCode.ToString()}).");
+				throw new InvalidOperationException($"Error creating framebuffer ({framebufferErrorCode}).");
 			}
 		}
 

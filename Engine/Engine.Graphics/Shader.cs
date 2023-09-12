@@ -258,9 +258,9 @@ namespace Engine.Graphics
 			GL.GetProgram(m_program, ProgramParameter.ActiveAttributes, out int params4);
 			for (int i = 0; i < params4; i++)
 			{
-				var stringBuilder = new StringBuilder(256);
-				GL.GetActiveAttrib(m_program, i, stringBuilder.Capacity, out int _, out int _, out ActiveAttribType _, stringBuilder);
-				int attribLocation = GL.GetAttribLocation(m_program, stringBuilder.ToString());
+				var stringBuilder = "";
+                GL.GetActiveAttrib(m_program, i, 4096, out int _, out int _, out ActiveAttribType _, out stringBuilder);
+                int attribLocation = GL.GetAttribLocation(m_program, stringBuilder.ToString());
 				if (!dictionary.TryGetValue(stringBuilder.ToString(), out string value))
 				{
 					throw new InvalidOperationException($"Attribute \"{stringBuilder.ToString()}\" has no semantic defined in shader metadata.");
@@ -276,9 +276,9 @@ namespace Engine.Graphics
 			var dictionary3 = new Dictionary<string, ShaderParameter>();
 			for (int j = 0; j < params5; j++)
 			{
-				var stringBuilder2 = new StringBuilder(256);
-				GL.GetActiveUniform(m_program, j, stringBuilder2.Capacity, out int _, out int size2, out ActiveUniformType type2, stringBuilder2);
-				int uniformLocation = GL.GetUniformLocation(m_program, stringBuilder2.ToString());
+				var stringBuilder2 = "";
+                GL.GetActiveUniform(m_program, j, 4096, out int _, out int size2, out ActiveUniformType type2, out stringBuilder2);
+                int uniformLocation = GL.GetUniformLocation(m_program, stringBuilder2.ToString());
 				ShaderParameterType shaderParameterType = GLWrapper.TranslateActiveUniformType(type2);
 				int num = stringBuilder2.ToString().IndexOf('[');
 				if (num >= 0)

@@ -7,13 +7,41 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
-	public class Texture2D : GraphicsResource
+    public class Texture2D : GraphicsResource
 	{
-		internal int m_texture;
+		public int m_texture;
+		public PixelFormat m_pixelFormat;
+		public PixelType m_pixelType;
 
-		private All m_pixelFormat;
+		public int Width
+		{
+			get;
+			set;
+		}
 
-		private All m_pixelType;
+		public int Height
+		{
+			get;
+			set;
+		}
+
+		public ColorFormat ColorFormat
+		{
+			get;
+			set;
+		}
+
+		public int MipLevelsCount
+		{
+			get;
+			set;
+		}
+
+		public object Tag
+		{
+			get;
+			set;
+		}
 
 		public IntPtr NativeHandle => (IntPtr)m_texture;
 
@@ -25,118 +53,6 @@ namespace Engine.Graphics
 			}
 			set
 			{
-			}
-		}
-
-		public int Width
-		{
-			get;
-			private set;
-		}
-
-		public int Height
-		{
-			get;
-			private set;
-		}
-
-		public ColorFormat ColorFormat
-		{
-			get;
-			private set;
-		}
-
-		public int MipLevelsCount
-		{
-			get;
-			private set;
-		}
-
-		public object Tag
-		{
-			get;
-			set;
-		}
-
-		public Texture2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat)
-		{
-			InitializeTexture2D(width, height, mipLevelsCount, colorFormat);
-			switch (ColorFormat)
-			{
-			case ColorFormat.Rgba8888:
-				m_pixelFormat = All.Rgba;
-				m_pixelType = All.UnsignedByte;
-				break;
-			case ColorFormat.Rgb565:
-				m_pixelFormat = All.Rgb;
-				m_pixelType = All.UnsignedShort565;
-				break;
-			case ColorFormat.Rgba5551:
-				m_pixelFormat = All.Rgba;
-				m_pixelType = All.UnsignedShort5551;
-				break;
-			case ColorFormat.R8:
-				m_pixelFormat = All.Luminance;
-				m_pixelType = All.UnsignedByte;
-				break;
-			default:
-				throw new InvalidOperationException("Unsupported surface format.");
-			}
-			AllocateTexture();
-		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-			DeleteTexture();
-		}
-
-		public void SetData<T>(int mipLevel, T[] source, int sourceStartIndex = 0) where T : struct
-		{
-			VerifyParametersSetData(mipLevel, source, sourceStartIndex);
-			var gCHandle = GCHandle.Alloc(source, GCHandleType.Pinned);
-			try
-			{
-				int width = MathUtils.Max(Width >> mipLevel, 1);
-				int height = MathUtils.Max(Height >> mipLevel, 1);
-				IntPtr pixels = gCHandle.AddrOfPinnedObject() + sourceStartIndex * Utilities.SizeOf<T>();
-				GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
-				GL.TexImage2D(All.Texture2D, mipLevel, m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, pixels);
-			}
-			finally
-			{
-				gCHandle.Free();
-			}
-		}
-
-		internal override void HandleDeviceLost()
-		{
-			DeleteTexture();
-		}
-
-		internal override void HandleDeviceReset()
-		{
-			AllocateTexture();
-		}
-
-		private void AllocateTexture()
-		{
-			GL.GenTextures(1, out m_texture);
-			GLWrapper.BindTexture(All.Texture2D, m_texture, forceBind: false);
-			for (int i = 0; i < MipLevelsCount; i++)
-			{
-				int width = MathUtils.Max(Width >> i, 1);
-				int height = MathUtils.Max(Height >> i, 1);
-				GL.TexImage2D(All.Texture2D, i, m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, IntPtr.Zero);
-			}
-		}
-
-		private void DeleteTexture()
-		{
-			if (m_texture != 0)
-			{
-				GLWrapper.DeleteTexture(m_texture);
-				m_texture = 0;
 			}
 		}
 
@@ -154,7 +70,7 @@ namespace Engine.Graphics
 
 		public static Texture2D Load(Image image, int mipLevelsCount = 1)
 		{
-			var texture2D = new Texture2D(image.Width, image.Height, mipLevelsCount, ColorFormat.Rgba8888);
+			Texture2D texture2D = new Texture2D(image.Width, image.Height, mipLevelsCount, ColorFormat.Rgba8888);
 			if (mipLevelsCount > 1)
 			{
 				Image[] array = Image.GenerateMipmaps(image, mipLevelsCount).ToArray();
@@ -173,7 +89,7 @@ namespace Engine.Graphics
 
 		public static Texture2D Load(Stream stream, bool premultiplyAlpha = false, int mipLevelsCount = 1)
 		{
-			var image = Image.Load(stream);
+			Image image = Image.Load(stream);
 			if (premultiplyAlpha)
 			{
 				Image.PremultiplyAlpha(image);
@@ -189,19 +105,19 @@ namespace Engine.Graphics
 			}
 		}
 
-		internal void InitializeTexture2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat)
+		public void InitializeTexture2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat)
 		{
 			if (width < 1)
 			{
-				throw new ArgumentOutOfRangeException(nameof(width));
+				throw new ArgumentOutOfRangeException("width");
 			}
 			if (height < 1)
 			{
-				throw new ArgumentOutOfRangeException(nameof(height));
+				throw new ArgumentOutOfRangeException("height");
 			}
 			if (mipLevelsCount < 1)
 			{
-				throw new ArgumentOutOfRangeException(nameof(mipLevelsCount));
+				throw new ArgumentOutOfRangeException("mipLevelsCount");
 			}
 			Width = width;
 			Height = height;
@@ -221,7 +137,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		private void VerifyParametersSetData<T>(int mipLevel, T[] source, int sourceStartIndex = 0) where T : struct
+		public void VerifyParametersSetData<T>(int mipLevel, T[] source, int sourceStartIndex = 0) where T : struct
 		{
 			VerifyNotDisposed();
 			int num = Utilities.SizeOf<T>();
@@ -231,11 +147,11 @@ namespace Engine.Graphics
 			int num4 = size * num2 * num3;
 			if (source == null)
 			{
-				throw new ArgumentNullException(nameof(source));
+				throw new ArgumentNullException("source");
 			}
 			if (mipLevel < 0 || mipLevel >= MipLevelsCount)
 			{
-				throw new ArgumentOutOfRangeException(nameof(mipLevel));
+				throw new ArgumentOutOfRangeException("mipLevel");
 			}
 			if (num > size)
 			{
@@ -248,6 +164,102 @@ namespace Engine.Graphics
 			if (sourceStartIndex < 0 || (source.Length - sourceStartIndex) * num < num4)
 			{
 				throw new InvalidOperationException("Not enough data in source array.");
+			}
+		}
+
+		public Texture2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat)
+		{
+			InitializeTexture2D(width, height, mipLevelsCount, colorFormat);
+			switch (ColorFormat)
+			{
+				case ColorFormat.Rgba8888:
+					m_pixelFormat = PixelFormat.Rgba;
+					m_pixelType = PixelType.UnsignedByte;
+					break;
+				case ColorFormat.Rgb565:
+					m_pixelFormat = PixelFormat.Rgb;
+					m_pixelType = PixelType.UnsignedShort565;
+					break;
+				case ColorFormat.Rgba5551:
+					m_pixelFormat = PixelFormat.Rgba;
+					m_pixelType = PixelType.UnsignedShort5551;
+					break;
+				case ColorFormat.R8:
+					m_pixelFormat = PixelFormat.Luminance;
+					m_pixelType = PixelType.UnsignedByte;
+					break;
+				default:
+					throw new InvalidOperationException("Unsupported surface format.");
+			}
+			AllocateTexture();
+		}
+
+		public override void Dispose()
+		{
+			base.Dispose();
+			DeleteTexture();
+		}
+
+		public void SetData<T>(int mipLevel, T[] source, int sourceStartIndex = 0) where T : struct
+		{
+			VerifyParametersSetData(mipLevel, source, sourceStartIndex);
+			GCHandle gCHandle = GCHandle.Alloc(source, GCHandleType.Pinned);
+			try
+			{
+				int width = MathUtils.Max(Width >> mipLevel, 1);
+				int height = MathUtils.Max(Height >> mipLevel, 1);
+				IntPtr pixels = gCHandle.AddrOfPinnedObject() + sourceStartIndex * Utilities.SizeOf<T>();
+				GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
+
+                GL.TexImage2D(TextureTarget.Texture2D, mipLevel, TranslateInternalPixelFormatType(m_pixelFormat), width, height, 0, m_pixelFormat, m_pixelType, pixels);
+			}
+			finally
+			{
+				gCHandle.Free();
+			}
+		}
+        internal PixelInternalFormat TranslateInternalPixelFormatType(PixelFormat m_pixelFormat)
+        {
+            PixelInternalFormat p = default;
+            switch (m_pixelFormat)
+            {
+                case PixelFormat.LuminanceAlpha: p = PixelInternalFormat.LuminanceAlpha; break;
+                case PixelFormat.Luminance: p = PixelInternalFormat.LuminanceAlpha; break;
+                case PixelFormat.Alpha: p = PixelInternalFormat.LuminanceAlpha; break;
+                case PixelFormat.Rgb: p = PixelInternalFormat.LuminanceAlpha; break;
+                case PixelFormat.Rgba: p = PixelInternalFormat.LuminanceAlpha; break;
+                default: throw new NotSupportedException("Unkown PixelFormatType");
+            }
+            return p;
+        }
+        internal override void HandleDeviceLost()
+		{
+			DeleteTexture();
+		}
+
+        internal override void HandleDeviceReset()
+		{
+			AllocateTexture();
+		}
+
+		public void AllocateTexture()
+		{
+			GL.GenTextures(1, out m_texture);
+			GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
+			for (int i = 0; i < MipLevelsCount; i++)
+			{
+				int width = MathUtils.Max(Width >> i, 1);
+				int height = MathUtils.Max(Height >> i, 1);
+				GL.TexImage2D(TextureTarget.Texture2D, i, TranslateInternalPixelFormatType(m_pixelFormat), width, height, 0, m_pixelFormat, m_pixelType, IntPtr.Zero);
+			}
+		}
+
+		public void DeleteTexture()
+		{
+			if (m_texture != 0)
+			{
+				GLWrapper.DeleteTexture(m_texture);
+				m_texture = 0;
 			}
 		}
 	}

@@ -192,8 +192,10 @@ namespace Game
 		{
 #if desktop
 			if (path == null) path = DiskExternalContentProvider.LocalPath;
+#elif __IOS__
+			if (path == null) path = Storage.GetSystemPath(ModsManager.ExternelPath);
 #endif
-			path = path.Replace("\\", "/");
+            path = path.Replace("\\", "/");
 			if (path != m_path)
 			{
 				m_path = path;

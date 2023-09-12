@@ -88,36 +88,14 @@ namespace Engine.Media
 			{
 				if (m_debugFont == null)
 				{
-#if android
-					using (Stream stream =EngineActivity.m_activity.Assets.Open("Debugfont.png"))
-					{
-						using (Stream stream2 = EngineActivity.m_activity.Assets.Open("Debugfont.lst"))
-						{
-							m_debugFont = Initialize(stream, stream2);
-						}
-
-					}
-#elif __IOS__
-                    using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine_IOS.Debugfont.png"))
+                    using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png"))
                     {
-                        using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine_IOS.Debugfont.lst"))
+                        using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst"))
                         {
-							Log.Information("init bitmapfont:"+stream+" / "+stream2);
                             m_debugFont = Initialize(stream, stream2);
                         }
 
                     }
-
-#else
-					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png"))
-					{
-						using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst"))
-						{
-							m_debugFont = Initialize(stream, stream2);
-						}
-
-					}
-#endif
                 }
                 return m_debugFont;
 			}

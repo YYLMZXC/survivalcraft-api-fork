@@ -163,8 +163,12 @@ namespace Engine.Graphics
 				GLWrapper.ApplyRasterizerState(RasterizerState);
 				GLWrapper.ApplyDepthStencilState(DepthStencilState);
 				GLWrapper.ApplyBlendState(BlendState);
-				GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), indicesCount, All.UnsignedInt, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
-			}
+#if desktop
+				GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), indicesCount, (DrawElementsType)All.UnsignedInt, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
+#else
+				GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), indicesCount, DrawElementsType.UnsignedInt, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
+#endif
+            }
             finally
 			{
 				gCHandle.Free();

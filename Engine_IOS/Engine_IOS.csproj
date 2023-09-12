@@ -9,9 +9,9 @@
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{a52b8a63-bc84-4b47-910d-692533484892}</TemplateGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Engine_IOS</RootNamespace>
+    <RootNamespace>Engine</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>Engine_IOS</AssemblyName>
+    <AssemblyName>Engine</AssemblyName>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -44,6 +44,165 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="..\Engine\Engine.Graphics\BaseBatch.cs">
+      <Link>Engine.Graphics\BaseBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BaseFlatBatch.cs">
+      <Link>Engine.Graphics\BaseFlatBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BaseFontBatch.cs">
+      <Link>Engine.Graphics\BaseFontBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BasePrimitivesRenderer.cs">
+      <Link>Engine.Graphics\BasePrimitivesRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BaseTexturedBatch.cs">
+      <Link>Engine.Graphics\BaseTexturedBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Blend.cs">
+      <Link>Engine.Graphics\Blend.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BlendFunction.cs">
+      <Link>Engine.Graphics\BlendFunction.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BlendState.cs">
+      <Link>Engine.Graphics\BlendState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ColorFormat.cs">
+      <Link>Engine.Graphics\ColorFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\CompareFunction.cs">
+      <Link>Engine.Graphics\CompareFunction.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\CullMode.cs">
+      <Link>Engine.Graphics\CullMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\DepthFormat.cs">
+      <Link>Engine.Graphics\DepthFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\DepthStencilState.cs">
+      <Link>Engine.Graphics\DepthStencilState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Display.cs">
+      <Link>Engine.Graphics\Display.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ExtensionMethods.cs">
+      <Link>Engine.Graphics\ExtensionMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\FlatBatch2D.cs">
+      <Link>Engine.Graphics\FlatBatch2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\FlatBatch3D.cs">
+      <Link>Engine.Graphics\FlatBatch3D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\FontBatch2D.cs">
+      <Link>Engine.Graphics\FontBatch2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\FontBatch3D.cs">
+      <Link>Engine.Graphics\FontBatch3D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\GraphicsResource.cs">
+      <Link>Engine.Graphics\GraphicsResource.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\IndexBuffer.cs">
+      <Link>Engine.Graphics\IndexBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\IndexFormat.cs">
+      <Link>Engine.Graphics\IndexFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\LitShader.cs">
+      <Link>Engine.Graphics\LitShader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\LockOnFirstUse.cs">
+      <Link>Engine.Graphics\LockOnFirstUse.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Model.cs">
+      <Link>Engine.Graphics\Model.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ModelBone.cs">
+      <Link>Engine.Graphics\ModelBone.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ModelMesh.cs">
+      <Link>Engine.Graphics\ModelMesh.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ModelMeshPart.cs">
+      <Link>Engine.Graphics\ModelMeshPart.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\PrimitivesRenderer2D.cs">
+      <Link>Engine.Graphics\PrimitivesRenderer2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\PrimitivesRenderer3D.cs">
+      <Link>Engine.Graphics\PrimitivesRenderer3D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\PrimitiveType.cs">
+      <Link>Engine.Graphics\PrimitiveType.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\RasterizerState.cs">
+      <Link>Engine.Graphics\RasterizerState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\RenderTarget2D.cs">
+      <Link>Engine.Graphics\RenderTarget2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\SamplerState.cs">
+      <Link>Engine.Graphics\SamplerState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ShaderMacro.cs">
+      <Link>Engine.Graphics\ShaderMacro.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ShaderParameter.cs">
+      <Link>Engine.Graphics\ShaderParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ShaderParameterType.cs">
+      <Link>Engine.Graphics\ShaderParameterType.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ShaderTransforms.cs">
+      <Link>Engine.Graphics\ShaderTransforms.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\TextAnchor.cs">
+      <Link>Engine.Graphics\TextAnchor.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Texture2D.cs">
+      <Link>Engine.Graphics\Texture2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\TextureAddressMode.cs">
+      <Link>Engine.Graphics\TextureAddressMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\TexturedBatch2D.cs">
+      <Link>Engine.Graphics\TexturedBatch2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\TexturedBatch3D.cs">
+      <Link>Engine.Graphics\TexturedBatch3D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\TextureFilterMode.cs">
+      <Link>Engine.Graphics\TextureFilterMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\UnlitShader.cs">
+      <Link>Engine.Graphics\UnlitShader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexBuffer.cs">
+      <Link>Engine.Graphics\VertexBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexDeclaration.cs">
+      <Link>Engine.Graphics\VertexDeclaration.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexElement.cs">
+      <Link>Engine.Graphics\VertexElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexElementFormat.cs">
+      <Link>Engine.Graphics\VertexElementFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexElementSemantic.cs">
+      <Link>Engine.Graphics\VertexElementSemantic.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexPositionColor.cs">
+      <Link>Engine.Graphics\VertexPositionColor.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexPositionColorTexture.cs">
+      <Link>Engine.Graphics\VertexPositionColorTexture.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Viewport.cs">
+      <Link>Engine.Graphics\Viewport.cs</Link>
+    </Compile>
     <Compile Include="..\Engine\Engine.Media\BitmapFont.cs">
       <Link>Engine.Media\BitmapFont.cs</Link>
     </Compile>
@@ -359,61 +518,8 @@
     <Compile Include="Engine.Audio\SoundBuffer.cs" />
     <Compile Include="Engine.Audio\SoundState.cs" />
     <Compile Include="Engine.Audio\StreamingSound.cs" />
-    <Compile Include="Engine.Graphics\BaseBatch.cs" />
-    <Compile Include="Engine.Graphics\BaseFlatBatch.cs" />
-    <Compile Include="Engine.Graphics\BaseFontBatch.cs" />
-    <Compile Include="Engine.Graphics\BasePrimitivesRenderer.cs" />
-    <Compile Include="Engine.Graphics\BaseTexturedBatch.cs" />
-    <Compile Include="Engine.Graphics\Blend.cs" />
-    <Compile Include="Engine.Graphics\BlendFunction.cs" />
-    <Compile Include="Engine.Graphics\BlendState.cs" />
-    <Compile Include="Engine.Graphics\ColorFormat.cs" />
-    <Compile Include="Engine.Graphics\CompareFunction.cs" />
-    <Compile Include="Engine.Graphics\CullMode.cs" />
-    <Compile Include="Engine.Graphics\DepthFormat.cs" />
-    <Compile Include="Engine.Graphics\DepthStencilState.cs" />
-    <Compile Include="Engine.Graphics\Display.cs" />
-    <Compile Include="Engine.Graphics\ExtensionMethods.cs" />
-    <Compile Include="Engine.Graphics\FlatBatch2D.cs" />
-    <Compile Include="Engine.Graphics\FlatBatch3D.cs" />
-    <Compile Include="Engine.Graphics\FontBatch2D.cs" />
-    <Compile Include="Engine.Graphics\FontBatch3D.cs" />
     <Compile Include="Engine.Graphics\GLWrapper.cs" />
-    <Compile Include="Engine.Graphics\GraphicsResource.cs" />
-    <Compile Include="Engine.Graphics\IndexBuffer.cs" />
-    <Compile Include="Engine.Graphics\IndexFormat.cs" />
-    <Compile Include="Engine.Graphics\LitShader.cs" />
-    <Compile Include="Engine.Graphics\LockOnFirstUse.cs" />
-    <Compile Include="Engine.Graphics\Model.cs" />
-    <Compile Include="Engine.Graphics\ModelBone.cs" />
-    <Compile Include="Engine.Graphics\ModelMesh.cs" />
-    <Compile Include="Engine.Graphics\ModelMeshPart.cs" />
-    <Compile Include="Engine.Graphics\PrimitivesRenderer2D.cs" />
-    <Compile Include="Engine.Graphics\PrimitivesRenderer3D.cs" />
-    <Compile Include="Engine.Graphics\PrimitiveType.cs" />
-    <Compile Include="Engine.Graphics\RasterizerState.cs" />
-    <Compile Include="Engine.Graphics\RenderTarget2D.cs" />
-    <Compile Include="Engine.Graphics\SamplerState.cs" />
     <Compile Include="Engine.Graphics\Shader.cs" />
-    <Compile Include="Engine.Graphics\ShaderMacro.cs" />
-    <Compile Include="Engine.Graphics\ShaderParameter.cs" />
-    <Compile Include="Engine.Graphics\ShaderParameterType.cs" />
-    <Compile Include="Engine.Graphics\ShaderTransforms.cs" />
-    <Compile Include="Engine.Graphics\TextAnchor.cs" />
-    <Compile Include="Engine.Graphics\Texture2D.cs" />
-    <Compile Include="Engine.Graphics\TextureAddressMode.cs" />
-    <Compile Include="Engine.Graphics\TexturedBatch2D.cs" />
-    <Compile Include="Engine.Graphics\TexturedBatch3D.cs" />
-    <Compile Include="Engine.Graphics\TextureFilterMode.cs" />
-    <Compile Include="Engine.Graphics\UnlitShader.cs" />
-    <Compile Include="Engine.Graphics\VertexBuffer.cs" />
-    <Compile Include="Engine.Graphics\VertexDeclaration.cs" />
-    <Compile Include="Engine.Graphics\VertexElement.cs" />
-    <Compile Include="Engine.Graphics\VertexElementFormat.cs" />
-    <Compile Include="Engine.Graphics\VertexElementSemantic.cs" />
-    <Compile Include="Engine.Graphics\VertexPositionColor.cs" />
-    <Compile Include="Engine.Graphics\VertexPositionColorTexture.cs" />
-    <Compile Include="Engine.Graphics\Viewport.cs" />
     <Compile Include="Engine.Input\GamePad.cs" />
     <Compile Include="Engine.Input\GamePadButton.cs" />
     <Compile Include="Engine.Input\GamePadStick.cs" />
@@ -475,22 +581,22 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Engine\Resources\Debugfont.lst">
-      <Link>Debugfont.lst</Link>
+      <Link>Resources\Debugfont.lst</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Engine\Resources\Debugfont.png">
-      <Link>Debugfont.png</Link>
+      <Link>Resources\Debugfont.png</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Engine\Resources\Lit.psh">
-      <Link>Lit.psh</Link>
+      <Link>Resources\Lit.psh</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Engine\Resources\Lit.vsh">
-      <Link>Lit.vsh</Link>
+      <Link>Resources\Lit.vsh</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Engine\Resources\Unlit.psh">
-      <Link>Unlit.psh</Link>
+      <Link>Resources\Unlit.psh</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Engine\Resources\Unlit.vsh">
-      <Link>Unlit.vsh</Link>
+      <Link>Resources\Unlit.vsh</Link>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

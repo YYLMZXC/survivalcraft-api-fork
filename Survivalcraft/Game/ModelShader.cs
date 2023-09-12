@@ -188,8 +188,8 @@ namespace Game
 
         public void SetParameter()
         {
-            m_worldMatrixParameter = GetParameter("u_worldMatrix");
-            m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix");
+            m_worldMatrixParameter = GetParameter("u_worldMatrix[0]");
+            m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix[0]");
             m_textureParameter = GetParameter("u_texture");
             m_samplerStateParameter = GetParameter("u_samplerState");
             m_materialColorParameter = GetParameter("u_materialColor");

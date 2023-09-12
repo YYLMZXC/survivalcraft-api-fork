@@ -112,6 +112,9 @@
     <Compile Include="..\Engine\Engine.Graphics\DepthStencilState.cs">
       <Link>Engine.Graphics\DepthStencilState.cs</Link>
     </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Display.cs">
+      <Link>Engine.Graphics\Display.cs</Link>
+    </Compile>
     <Compile Include="..\Engine\Engine.Graphics\ExtensionMethods.cs">
       <Link>Engine.Graphics\ExtensionMethods.cs</Link>
     </Compile>
@@ -166,6 +169,9 @@
     <Compile Include="..\Engine\Engine.Graphics\RasterizerState.cs">
       <Link>Engine.Graphics\RasterizerState.cs</Link>
     </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\RenderTarget2D.cs">
+      <Link>Engine.Graphics\RenderTarget2D.cs</Link>
+    </Compile>
     <Compile Include="..\Engine\Engine.Graphics\SamplerState.cs">
       <Link>Engine.Graphics\SamplerState.cs</Link>
     </Compile>
@@ -183,6 +189,9 @@
     </Compile>
     <Compile Include="..\Engine\Engine.Graphics\TextAnchor.cs">
       <Link>Engine.Graphics\TextAnchor.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Texture2D.cs">
+      <Link>Engine.Graphics\Texture2D.cs</Link>
     </Compile>
     <Compile Include="..\Engine\Engine.Graphics\TextureAddressMode.cs">
       <Link>Engine.Graphics\TextureAddressMode.cs</Link>
@@ -670,11 +679,10 @@
     <Compile Include="..\Engine\Engine\WindowMode.cs">
       <Link>Engine\WindowMode.cs</Link>
     </Compile>
-    <Compile Include="Engine.Graphics\Display.cs" />
-    <Compile Include="Engine.Graphics\GLWrapper.cs" />
-    <Compile Include="Engine.Graphics\RenderTarget2D.cs" />
+    <Compile Include="..\Engine_IOS\Engine.Graphics\GLWrapper.cs">
+      <Link>Engine.Graphics\GLWrapper.cs</Link>
+    </Compile>
     <Compile Include="Engine.Graphics\Shader.cs" />
-    <Compile Include="Engine.Graphics\Texture2D.cs" />
     <Compile Include="Engine.Input\GamePad.cs" />
     <Compile Include="Engine.Input\Keyboard.cs" />
     <Compile Include="Engine\EngineActivity.cs" />
@@ -689,6 +697,26 @@
       <Project>{418bd1a3-fac5-43b5-a292-2b87c120c046}</Project>
       <Name>Engine_Lib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Engine\Resources\Debugfont.lst">
+      <Link>NewFolder1\Debugfont.lst</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Engine\Resources\Debugfont.png">
+      <Link>NewFolder1\Debugfont.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Engine\Resources\Lit.psh">
+      <Link>NewFolder1\Lit.psh</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Engine\Resources\Lit.vsh">
+      <Link>NewFolder1\Lit.vsh</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Engine\Resources\Unlit.psh">
+      <Link>NewFolder1\Unlit.psh</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Engine\Resources\Unlit.vsh">
+      <Link>NewFolder1\Unlit.vsh</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

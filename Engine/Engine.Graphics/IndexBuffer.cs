@@ -57,8 +57,8 @@ namespace Engine.Graphics
 			{
 				int num = Utilities.SizeOf<T>();
 				int size = IndexFormat.GetSize();
-				GLWrapper.BindBuffer(All.ElementArrayBuffer, m_buffer);
-				GL.BufferSubData(All.ElementArrayBuffer, new IntPtr(targetStartIndex * size), new IntPtr(num * sourceCount), gCHandle.AddrOfPinnedObject() + sourceStartIndex * num);
+				GLWrapper.BindBuffer(BufferTarget.ElementArrayBuffer, m_buffer);
+				GL.BufferSubData(BufferTarget.ElementArrayBuffer, new IntPtr(targetStartIndex * size), new IntPtr(num * sourceCount), gCHandle.AddrOfPinnedObject() + sourceStartIndex * num);
 			}
 			finally
 			{
@@ -79,8 +79,8 @@ namespace Engine.Graphics
 		private void AllocateBuffer()
 		{
 			GL.GenBuffers(1, out m_buffer);
-			GLWrapper.BindBuffer(All.ElementArrayBuffer, m_buffer);
-			GL.BufferData(All.ElementArrayBuffer, new IntPtr(IndexFormat.GetSize() * IndicesCount), IntPtr.Zero, All.StaticDraw);
+			GLWrapper.BindBuffer(BufferTarget.ElementArrayBuffer, m_buffer);
+			GL.BufferData(BufferTarget.ElementArrayBuffer, new IntPtr(IndexFormat.GetSize() * IndicesCount), IntPtr.Zero, BufferUsage.StaticDraw);
 		}
 
 		private void DeleteBuffer()

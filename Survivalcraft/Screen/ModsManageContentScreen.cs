@@ -112,6 +112,7 @@ public class ModsManageContentScreen : Screen
 
     public ModsManageContentScreen()
     {
+#if android
         m_androidSystem = Environment.CurrentDirectory == "/";
         if (m_androidSystem)
         {
@@ -127,6 +128,11 @@ public class ModsManageContentScreen : Screen
                 m_androidDataPathEnterEnabled = false;
             }
         }
+#elif __IOS__
+            m_uninstallPath = m_uninstallPath.Replace("app:", "data:");
+            m_installPath = m_installPath.Replace("app:", "data:");
+#endif
+
         m_updatable = true;
         XElement node = ContentManager.Get<XElement>("Screens/ModsManageContentScreen");
         LoadContents(this, node);

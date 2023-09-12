@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Engine;
 using Engine.Input;
 using Esprima.Ast;
-using Game;
 using GameEntitySystem;
 using Jint;
 using Jint.Native;
-using Jint.Native.Function;
+using Jint.Native.Array;
 using JsEngine = Jint.Engine;
 
 namespace Game
@@ -17,7 +17,7 @@ namespace Game
     {
         public static JsEngine engine;
         public static SurvivalCraftModLoader loader;
-        public static Dictionary<string,List<FunctionInstance>> handlersDictionary;
+        public static Dictionary<string,List<JsValue>> handlersDictionary;
         private static Project Project
         {
             get
@@ -27,7 +27,7 @@ namespace Game
         }
         public static Project getProject()
         {
-            return JsInterface.Project;
+            return Project;
         }
         public static Subsystem findSubsystem(string name)
         {
@@ -69,28 +69,23 @@ namespace Game
                 });
                 cfg.DebugMode(true);
             });
-#if __IOS__
-
-#else
-            string initCode = Storage.ReadAllText("app:init.js");
+            var s = typeof(JsInterface).Assembly.GetManifestResourceStream("Game.init.js");
+            string initCode = new StreamReader(s).ReadToEnd();
             Execute(initCode);
-#endif
         }
         public static void RegisterEvent()
         {
-#if __IOS__
-#else
-            FunctionInstance keyDown = engine.GetValue("keyDown").AsFunctionInstance();
+            var keyDown = engine.GetValue("keyDown");
             Keyboard.KeyDown += delegate (Key key)
             {
                 Invoke(keyDown, key.ToString());
             };
-            FunctionInstance keyUp = engine.GetValue("keyUp").AsFunctionInstance();
+            var keyUp = engine.GetValue("keyUp");
             Keyboard.KeyUp += delegate (Key key)
             {
                 Invoke(keyUp, key.ToString());
             };
-            List<FunctionInstance> array = GetHandlers("frameHandlers");
+            List<JsValue> array = GetHandlers("frameHandlers");
             if (array != null && array.Count > 0)
             {
                 Window.Frame += delegate ()
@@ -101,7 +96,8 @@ namespace Game
                     });
                 };
             }
-            handlersDictionary = new Dictionary<string, List<FunctionInstance>>();
+
+            handlersDictionary = new Dictionary<string, List<JsValue>>();
             List<ModLoader> mods = ModsManager.ModLoaders;
             loader = (SurvivalCraftModLoader)ModsManager.ModLoaders.Find((item) => item is SurvivalCraftModLoader);
             GetAndRegisterHandlers("OnMinerDig");
@@ -112,7 +108,6 @@ namespace Game
             GetAndRegisterHandlers("OnCreatureInjure");
             GetAndRegisterHandlers("OnProjectLoaded");
             GetAndRegisterHandlers("OnProjectDisposed");
-#endif
         }
         public static void Execute(string str)
         {
@@ -181,38 +176,27 @@ namespace Game
             }
             return null;
         }
-        public static List<FunctionInstance> GetHandlers(string str)
+        public static List<JsValue> GetHandlers(string str)
         {
+            ArrayInstance array = engine.GetValue(str).AsArray();
+            List<JsValue> list = new List<JsValue>();
 #if __IOS__
-            return new List<FunctionInstance>();
+            for (int i = 0; i < array.GetLength(); i++)
 #else
-            JsArray array = engine.GetValue(str).AsArray();
-            if (array.IsNull()) return null;
-            List<FunctionInstance> list = new List<FunctionInstance>();
-            foreach (JsValue item in array)
+            for (int i = 0; i < array.Length; i++)
+#endif
             {
-                try
-                {
-                    FunctionInstance function = item.AsFunctionInstance();
-                    if (!function.IsNull())
-                    {
-                        list.Add(function);
-                    }
-        }
-                catch (Exception ex)
-                {
-                    Log.Error(ex);
-                }
+                var obj = array.Get(i.ToString());
+                list.Add(obj);
             }
             return list;
-#endif
         }
         public static void GetAndRegisterHandlers(string handlesName)
         {
             try
             {
                 if (handlersDictionary.ContainsKey(handlesName)) return;
-                List<FunctionInstance> handlers = GetHandlers($"{handlesName}Handlers");
+                var handlers = GetHandlers($"{handlesName}Handlers");
                 if (handlers != null && handlers.Count > 0)
                 {
                     handlersDictionary.Add(handlesName, handlers);

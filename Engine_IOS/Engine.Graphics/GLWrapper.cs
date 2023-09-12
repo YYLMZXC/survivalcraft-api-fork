@@ -1,3 +1,4 @@
+
 using OpenTK.Graphics.ES20;
 using System;
 using System.Collections.Generic;
@@ -85,19 +86,12 @@ namespace Engine.Graphics
 
         public static Rectangle? m_scissorRectangle;
 
-        public static bool GL_EXT_texture_filter_anisotropic;
-
-        public static bool GL_OES_packed_depth_stencil;
-
         public static void Initialize()
         {
             Log.Information("GLES Vendor: " + GL.GetString(StringName.Vendor));
             Log.Information("GLES Renderer: " + GL.GetString(StringName.Renderer));
             Log.Information("GLES Version: " + GL.GetString(StringName.Version));
-            string @string = GL.GetString(StringName.Extensions);
-            GL_EXT_texture_filter_anisotropic = @string.Contains("GL_EXT_texture_filter_anisotropic");
-            GL_OES_packed_depth_stencil = @string.Contains("GL_OES_packed_depth_stencil");
-            Log.Information("GLES Extensions: " + @string);
+            Log.Information("GLES Extensions: " + GL.GetString(StringName.Extensions));
         }
 
         public static void InitializeCache()
@@ -299,8 +293,8 @@ namespace Engine.Graphics
             if (blendEquation != m_blendEquation)
             {
                 m_blendEquation = blendEquation;
-                m_blendEquationColor = null;
-                m_blendEquationAlpha = null;
+                m_blendEquationColor = BlendEquationMode.FuncAdd;
+                m_blendEquationAlpha = BlendEquationMode.FuncAdd;
             }
         }
 
@@ -312,7 +306,7 @@ namespace Engine.Graphics
                 GL.BlendEquationSeparate(blendEquationColor, blendEquationAlpha);
                 m_blendEquationColor = blendEquationColor;
                 m_blendEquationAlpha = blendEquationAlpha;
-                m_blendEquation = null;
+                m_blendEquation = BlendEquationMode.FuncAdd;
             }
         }
 
@@ -324,10 +318,10 @@ namespace Engine.Graphics
                 GL.BlendFunc(blendFuncSource, blendFuncDestination);
                 m_blendFuncSource = blendFuncSource;
                 m_blendFuncDestination = blendFuncDestination;
-                m_blendFuncSourceColor = null;
-                m_blendFuncSourceAlpha = null;
-                m_blendFuncDestinationColor = null;
-                m_blendFuncDestinationAlpha = null;
+                m_blendFuncSourceColor = BlendingFactorSrc.Zero;
+                m_blendFuncSourceAlpha = BlendingFactorSrc.Zero;
+                m_blendFuncDestinationColor = BlendingFactorDest.Zero;
+                m_blendFuncDestinationAlpha = BlendingFactorDest.Zero;
             }
         }
 
@@ -341,8 +335,8 @@ namespace Engine.Graphics
                 m_blendFuncSourceAlpha = blendFuncSourceAlpha;
                 m_blendFuncDestinationColor = blendFuncDestinationColor;
                 m_blendFuncDestinationAlpha = blendFuncDestinationAlpha;
-                m_blendFuncSource = null;
-                m_blendFuncDestination = null;
+                m_blendFuncSource = BlendingFactorSrc.Zero;
+                m_blendFuncDestination = BlendingFactorDest.Zero;
             }
         }
 
@@ -586,34 +580,34 @@ namespace Engine.Graphics
 
         public static void ApplyBlendState(BlendState state)
         {
-            if (state == m_blendState)
+            if (state != m_blendState)
             {
-                return;
+                m_blendState = state;
+                if (state.ColorBlendFunction == BlendFunction.Add && state.ColorSourceBlend == Blend.One && state.ColorDestinationBlend == Blend.Zero && state.AlphaBlendFunction == BlendFunction.Add && state.AlphaSourceBlend == Blend.One && state.AlphaDestinationBlend == Blend.Zero)
+                {
+                    Disable(EnableCap.Blend);
+                    return;
+                }
+                BlendEquationMode all = TranslateBlendFunction(state.ColorBlendFunction);
+                BlendEquationMode all2 = TranslateBlendFunction(state.AlphaBlendFunction);
+                BlendingFactorSrc all3 = TranslateBlendSrc(state.ColorSourceBlend);
+                BlendingFactorDest all4 = TranslateBlendDest(state.ColorDestinationBlend);
+                BlendingFactorSrc all5 = TranslateBlendSrc(state.AlphaSourceBlend);
+                BlendingFactorDest all6 = TranslateBlendDest(state.AlphaDestinationBlend);
+                if (all == all2 && all3 == all5 && all4 == all6)
+                {
+                    BlendEquation(all);
+                    BlendFunc(all3, all4);
+                }
+                else
+                {
+                    BlendEquationSeparate(all, all2);
+                    BlendFuncSeparate(all3, all4, all5, all6);
+                }
+                BlendColor(state.BlendFactor);
+                Enable(EnableCap.Blend);
             }
-            m_blendState = state;
-            if (state.ColorBlendFunction == BlendFunction.Add && state.ColorSourceBlend == Blend.One && state.ColorDestinationBlend == Blend.Zero && state.AlphaBlendFunction == BlendFunction.Add && state.AlphaSourceBlend == Blend.One && state.AlphaDestinationBlend == Blend.Zero)
-            {
-                Disable(EnableCap.Blend);
-                return;
-            }
-            BlendEquationMode all = TranslateBlendFunction(state.ColorBlendFunction);
-            BlendEquationMode all2 = TranslateBlendFunction(state.AlphaBlendFunction);
-            BlendingFactorSrc all3 = TranslateBlendSrc(state.ColorSourceBlend);
-            BlendingFactorDest all4 = TranslateBlendDest(state.ColorDestinationBlend);
-            BlendingFactorSrc all5 = TranslateBlendSrc(state.AlphaSourceBlend);
-            BlendingFactorDest all6 = TranslateBlendDest(state.AlphaDestinationBlend);
-            if (all == all2 && all3 == all5 && all4 == all6)
-            {
-                BlendEquation(all);
-                BlendFunc(all3, all4);
-            }
-            else
-            {
-                BlendEquationSeparate(all, all2);
-                BlendFuncSeparate(all3, all4, all5, all6);
-            }
-            BlendColor(state.BlendFactor);
-            Enable(EnableCap.Blend);
+
         }
 
         public static void ApplyRenderTarget(RenderTarget2D renderTarget)
@@ -624,7 +618,11 @@ namespace Engine.Graphics
             }
             else
             {
+#if __IOS__
                 BindFramebuffer(1);
+#else
+                BindFramebuffer(0);
+#endif
             }
         }
 

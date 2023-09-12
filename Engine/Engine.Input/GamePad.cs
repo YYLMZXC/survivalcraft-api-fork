@@ -39,6 +39,7 @@ namespace Engine.Input
         }
 		internal static void BeforeFrame()
 		{
+			return;
 			for (int i = 0; i < 4; i++)
 			{
 				GamePadState state = OpenTK.Input.GamePad.GetState(i);

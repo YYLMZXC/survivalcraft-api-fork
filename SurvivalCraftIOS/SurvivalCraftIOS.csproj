@@ -1765,6 +1765,9 @@
     <Compile Include="..\Survivalcraft\Game\Profiler.cs">
       <Link>Game\Profiler.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\Program.cs">
+      <Link>Game\Program.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Game\Progress.cs">
       <Link>Game\Progress.cs</Link>
     </Compile>
@@ -2944,7 +2947,7 @@
     <Compile Include="..\Survivalcraft\Widget\WidgetsList.cs">
       <Link>Widget\WidgetsList.cs</Link>
     </Compile>
-    <Compile Include="Game\Program.cs" />
+    <Compile Include="ContentProvider\IOSExternalContentProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

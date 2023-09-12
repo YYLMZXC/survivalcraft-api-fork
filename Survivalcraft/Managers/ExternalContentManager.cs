@@ -29,10 +29,10 @@ namespace Game
             m_providers = new List<IExternalContentProvider>();
 #if desktop
             m_providers.Add(new DiskExternalContentProvider());
-#endif
-
-#if android
+#elif android
             m_providers.Add(new AndroidSdCardExternalContentProvider());
+#elif __IOS__
+            m_providers.Add(new IOSExternalContentProvider());
 #endif
             m_providers.Add(new SPMBoxExternalContentProvider());
             m_providers.Add(new DropboxExternalContentProvider());
