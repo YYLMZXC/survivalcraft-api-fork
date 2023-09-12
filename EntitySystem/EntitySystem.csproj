@@ -2,11 +2,12 @@
   <PropertyGroup>
     <TargetFramework>net481</TargetFramework>
     <OutputType>Library</OutputType>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\..\</OutputPath>
-    <DebugType>portable</DebugType>
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>..\</OutputPath>
