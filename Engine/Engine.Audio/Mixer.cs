@@ -2,9 +2,6 @@ using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace Engine.Audio
 {
@@ -46,10 +43,18 @@ namespace Engine.Audio
 #else
 		internal static void Initialize()
 		{
-			new AudioContext();
-		}
+            try
+            {
+                new AudioContext();
+            }
+            catch
+            {
+                Log.Error("º”‘ÿ“Ù∆µœµÕ≥ ß∞‹");
+            }
+
+        }
 #endif
-		internal static void Dispose()
+        internal static void Dispose()
 		{
 		}
 

@@ -285,8 +285,18 @@ namespace Engine
 				text = GetDataDirectory(writeAccess);
 				path = path.Substring(5).TrimStart(Path.DirectorySeparatorChar);
 			}
-			else
-			{
+#if android
+            else if (path.StartsWith("android:"))
+            {
+                return Path.Combine(Storage.CombinePaths(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, path.Substring(8).TrimStart(Path.DirectorySeparatorChar)));
+            }
+			else if (path.StartsWith("config:"))
+            {
+                return Path.Combine(EngineActivity.ConfigPath, path.Substring(8).TrimStart(Path.DirectorySeparatorChar));
+            }
+#endif
+            else
+            {
 				if (!path.StartsWith("system:"))
 				{
 					throw new InvalidOperationException("Invalid path.");

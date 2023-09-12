@@ -655,6 +655,9 @@
     <Compile Include="..\Engine\Engine\Rectangle.cs">
       <Link>Engine\Rectangle.cs</Link>
     </Compile>
+    <Compile Include="..\Engine\Engine\Storage.cs">
+      <Link>Engine\Storage.cs</Link>
+    </Compile>
     <Compile Include="..\Engine\Engine\StreamLogSink.cs">
       <Link>Engine\StreamLogSink.cs</Link>
     </Compile>
@@ -688,7 +691,6 @@
     <Compile Include="Engine\EngineActivity.cs" />
     <Compile Include="Engine\EngineView.cs" />
     <Compile Include="Engine\Random.cs" />
-    <Compile Include="Engine\Storage.cs" />
     <Compile Include="Engine\Window.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -700,22 +702,22 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Engine\Resources\Debugfont.lst">
-      <Link>NewFolder1\Debugfont.lst</Link>
+      <Link>Resources\Debugfont.lst</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Engine\Resources\Debugfont.png">
-      <Link>NewFolder1\Debugfont.png</Link>
+      <Link>Resources\Debugfont.png</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Engine\Resources\Lit.psh">
-      <Link>NewFolder1\Lit.psh</Link>
+      <Link>Resources\Lit.psh</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Engine\Resources\Lit.vsh">
-      <Link>NewFolder1\Lit.vsh</Link>
+      <Link>Resources\Lit.vsh</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Engine\Resources\Unlit.psh">
-      <Link>NewFolder1\Unlit.psh</Link>
+      <Link>Resources\Unlit.psh</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Engine\Resources\Unlit.vsh">
-      <Link>NewFolder1\Unlit.vsh</Link>
+      <Link>Resources\Unlit.vsh</Link>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

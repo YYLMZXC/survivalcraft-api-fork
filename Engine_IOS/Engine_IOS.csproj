@@ -44,6 +44,24 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="..\Engine\Engine.Audio\BaseSound.cs">
+      <Link>Engine.Audio\BaseSound.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\Mixer.cs">
+      <Link>Engine.Audio\Mixer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\Sound.cs">
+      <Link>Engine.Audio\Sound.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\SoundBuffer.cs">
+      <Link>Engine.Audio\SoundBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\SoundState.cs">
+      <Link>Engine.Audio\SoundState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\StreamingSound.cs">
+      <Link>Engine.Audio\StreamingSound.cs</Link>
+    </Compile>
     <Compile Include="..\Engine\Engine.Graphics\BaseBatch.cs">
       <Link>Engine.Graphics\BaseBatch.cs</Link>
     </Compile>
@@ -512,12 +530,9 @@
     <Compile Include="..\Engine\Engine.Serialization\XmlOutputArchive.cs">
       <Link>Engine.Serialization\XmlOutputArchive.cs</Link>
     </Compile>
-    <Compile Include="Engine.Audio\BaseSound.cs" />
-    <Compile Include="Engine.Audio\Mixer.cs" />
-    <Compile Include="Engine.Audio\Sound.cs" />
-    <Compile Include="Engine.Audio\SoundBuffer.cs" />
-    <Compile Include="Engine.Audio\SoundState.cs" />
-    <Compile Include="Engine.Audio\StreamingSound.cs" />
+    <Compile Include="..\Engine\Engine\Storage.cs">
+      <Link>Engine\Storage.cs</Link>
+    </Compile>
     <Compile Include="Engine.Graphics\GLWrapper.cs" />
     <Compile Include="Engine.Graphics\Shader.cs" />
     <Compile Include="Engine.Input\GamePad.cs" />
@@ -561,7 +576,6 @@
     <Compile Include="Engine\Ray3.cs" />
     <Compile Include="Engine\ReadOnlyList.cs" />
     <Compile Include="Engine\Rectangle.cs" />
-    <Compile Include="Engine\Storage.cs" />
     <Compile Include="Engine\StreamLogSink.cs" />
     <Compile Include="Engine\Time.cs" />
     <Compile Include="Engine\UnhandledExceptionInfo.cs" />

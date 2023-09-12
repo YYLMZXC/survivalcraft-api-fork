@@ -74,13 +74,9 @@ namespace Engine.Graphics
 		}
 
 		public UnlitShader(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
-#if android
-			: base(new StreamReader(Storage.OpenFile("app:Unlit.vsh", OpenFileMode.Read)).ReadToEnd(), new StreamReader(Storage.OpenFile("app:Unlit.psh", OpenFileMode.Read)).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
-#else
-			: base(new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.vsh")).ReadToEnd(), new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.psh")).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
-#endif
-		{
-			m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix", allowNull: true);
+            : base(new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.vsh")).ReadToEnd(), new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.psh")).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
+        {
+            m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix", allowNull: true);
 			m_textureParameter = GetParameter("u_texture", allowNull: true);
 			m_samplerStateParameter = GetParameter("u_samplerState", allowNull: true);
 			m_colorParameter = GetParameter("u_color", allowNull: true);

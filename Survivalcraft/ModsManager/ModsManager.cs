@@ -34,7 +34,6 @@ public static class ModsManager
                          SettingPath = ExternelPath + "/Settings.xml",
                          ModCachePath = ExternelPath + "/ModsCache",
                          LogPath = ExternelPath + "/Bugs";
-    public const bool IsAndroid = false;
 
 #elif android
     public static string ExternelPath = EngineActivity.BasePath,
@@ -49,7 +48,6 @@ public static class ModsManager
                          SettingPath = "config:/Settings.xml",
                          ModCachePath = ExternelPath + "/ModsCache",
                          LogPath = ExternelPath + "/Bugs";
-    public const bool IsAndroid = true;
 #else
     public static string ExternelPath = "data:",
                          ScreenCapturePath = "data:/ScreenCapture",
@@ -63,7 +61,6 @@ public static class ModsManager
                          SettingPath = "data:/Settings.xml",
                          ModCachePath = "data:/ModsCache",
                          LogPath = "data:/Bugs";
-    public const bool IsAndroid = false;
 #endif
     public static string ModsPath = ExternelPath + "/Mods",
                          path;//移动端mods数据文件夹
