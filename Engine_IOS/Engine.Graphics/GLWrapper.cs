@@ -7,10 +7,6 @@ namespace Engine.Graphics
 {
     internal static class GLWrapper
     {
-        internal static int m_mainFramebuffer;
-
-        internal static int m_mainColorbuffer;
-
         public static int m_arrayBuffer;
 
         public static int m_elementArrayBuffer;
@@ -628,7 +624,7 @@ namespace Engine.Graphics
             }
             else
             {
-                BindFramebuffer(m_mainFramebuffer);
+                BindFramebuffer(1);
             }
         }
 
@@ -850,14 +846,14 @@ namespace Engine.Graphics
         }
 
 
-        public static All TranslateIndexFormat(IndexFormat indexFormat)
+        public static DrawElementsType TranslateIndexFormat(IndexFormat indexFormat)
         {
             switch (indexFormat)
             {
                 case IndexFormat.SixteenBits:
-                    return All.UnsignedShort;
+                    return DrawElementsType.UnsignedShort;
                 case IndexFormat.ThirtyTwoBits:
-                    return All.UnsignedInt;
+                    return DrawElementsType.UnsignedInt;
                 default:
                     throw new InvalidOperationException("Unsupported index format.");
             }
@@ -886,18 +882,18 @@ namespace Engine.Graphics
         }
 
 
-        public static All TranslatePrimitiveType(PrimitiveType primitiveType)
+        public static BeginMode TranslatePrimitiveType(PrimitiveType primitiveType)
         {
             switch (primitiveType)
             {
                 case PrimitiveType.LineList:
-                    return All.Lines;
+                    return BeginMode.Lines;
                 case PrimitiveType.LineStrip:
-                    return All.LineStrip;
+                    return BeginMode.LineStrip;
                 case PrimitiveType.TriangleList:
-                    return All.Triangles;
+                    return BeginMode.Triangles;
                 case PrimitiveType.TriangleStrip:
-                    return All.TriangleStrip;
+                    return BeginMode.TriangleStrip;
                 default:
                     throw new InvalidOperationException("Unsupported primitive type.");
             }
@@ -1125,10 +1121,9 @@ namespace Engine.Graphics
         {
             switch (depthFormat)
             {
+                case DepthFormat.Depth24Stencil8:
                 case DepthFormat.Depth16:
                     return RenderbufferInternalFormat.DepthComponent16;
-                case DepthFormat.Depth24Stencil8:
-                    return RenderbufferInternalFormat.StencilIndex8;
                 default:
                     throw new InvalidOperationException("Unsupported DepthFormat.");
             }

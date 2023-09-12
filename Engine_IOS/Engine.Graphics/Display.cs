@@ -152,18 +152,18 @@ namespace Engine.Graphics
 
         public static void DrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct
 		{
-			VerifyParametersDrawUserIndexed(primitiveType, shader, vertexDeclaration, vertexData, startVertex, verticesCount, indexData, startIndex, indicesCount);
+            VerifyParametersDrawUserIndexed(primitiveType, shader, vertexDeclaration, vertexData, startVertex, verticesCount, indexData, startIndex, indicesCount);
 			var gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
 			var gCHandle2 = GCHandle.Alloc(indexData, GCHandleType.Pinned);
 			try
 			{
-				GLWrapper.ApplyRenderTarget(RenderTarget);
+                GLWrapper.ApplyRenderTarget(RenderTarget);
                 GLWrapper.ApplyViewportScissor(Viewport, ScissorRectangle, RasterizerState.ScissorTestEnable);
                 GLWrapper.ApplyShaderAndBuffers(shader, vertexDeclaration, gCHandle.AddrOfPinnedObject(), 0, 0);
 				GLWrapper.ApplyRasterizerState(RasterizerState);
 				GLWrapper.ApplyDepthStencilState(DepthStencilState);
 				GLWrapper.ApplyBlendState(BlendState);
-				GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), indicesCount, All.UnsignedInt, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
+				GL.DrawElements(GLWrapper.TranslatePrimitiveType(primitiveType), indicesCount, DrawElementsType.UnsignedInt, gCHandle2.AddrOfPinnedObject() + 4 * startIndex);
             }
             finally
 			{
@@ -228,15 +228,13 @@ namespace Engine.Graphics
 		internal static void Dispose()
 		{
 		}
-
-		internal static void BeforeFrame()
+        internal static void BeforeFrame()
 		{
-		}
+        }
 
-		internal static void AfterFrame()
+        internal static void AfterFrame()
 		{
-		}
-
+        }
 
         public static long GetGpuMemoryUsage()
 		{

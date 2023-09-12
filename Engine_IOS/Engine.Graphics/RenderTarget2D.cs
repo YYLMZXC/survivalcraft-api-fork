@@ -79,7 +79,7 @@ namespace Engine.Graphics
             {
                 GL.GenRenderbuffers(1, out m_depthBuffer);
                 GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, m_depthBuffer);
-                GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), base.Width, base.Height);
+                GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), Width, Height);
                 GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferSlot.DepthAttachment, RenderbufferTarget.Renderbuffer, m_depthBuffer);
                 GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferSlot.StencilAttachment, RenderbufferTarget.Renderbuffer, 0);
             }
