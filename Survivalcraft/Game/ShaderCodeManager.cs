@@ -38,7 +38,7 @@ namespace Game
             {
                 if (external)
                 {
-                    string path = ModsManager.IsAndroid ? "android:/SurvivalCraft2.3/" : "app:/";
+                    string path = VersionsManager.Platform == Platform.Android ? "android:/SurvivalCraft2.3/" : "app:/";
                     Stream stream = Storage.OpenFile(Storage.CombinePaths(path, includefname), OpenFileMode.Read);
                     StreamReader streamReader = new StreamReader(stream);
                     shaderTextTemp = streamReader.ReadToEnd();
@@ -83,7 +83,7 @@ namespace Game
                     }
                     else
                     {
-                        if (!ModsManager.IsAndroid)
+                        if (VersionsManager.Platform != Platform.Android)
                         {
                             includeText += lines[l].Replace("highp", "").Replace("lowp","").Replace("mediump","") + "\n";
                         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace Engine.Serialization
 {
@@ -50,14 +51,16 @@ namespace Engine.Serialization
 		}
 
 		public static object ConvertFromString(Type type, string data)
-		{
-			try
+        {
+            try
 			{
-				return GetConverter(type, throwIfNotFound: true).ConvertFromString(type, data);
+
+                return GetConverter(type, throwIfNotFound: true).ConvertFromString(type, data);
 			}
 			catch (Exception innerException)
 			{
-				throw new InvalidOperationException($"Cannot convert string \"{data}\" to value of type \"{type.FullName}\".", innerException);
+
+                throw new InvalidOperationException($"Cannot convert string \"{data}\" to value of type \"{type.FullName}\".", innerException);
 			}
 		}
 
@@ -106,7 +109,7 @@ namespace Engine.Serialization
 			{
 				throw new ArgumentNullException("type");
 			}
-			lock (m_humanReadableConvertersByType)
+            lock (m_humanReadableConvertersByType)
 			{
 				if (!m_humanReadableConvertersByType.TryGetValue(type, out IHumanReadableConverter value))
 				{
@@ -117,7 +120,8 @@ namespace Engine.Serialization
 						{
 							foreach (KeyValuePair<Type, IHumanReadableConverter> item in m_humanReadableConvertersByType)
 							{
-								if (type.GetTypeInfo().IsSubclassOf(item.Key))
+
+                                if (type.IsSubclassOf(item.Key))
 								{
 									value = item.Value;
 									break;

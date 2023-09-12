@@ -2,7 +2,6 @@ using System;
 
 namespace Game
 {
-    [Flags]
     public enum CreatureCategory
     {
         LandPredator = 0x1,

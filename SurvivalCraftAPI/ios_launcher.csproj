@@ -13,7 +13,7 @@
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <ProvisioningType>manual</ProvisioningType>
+    <ProvisioningType>automatic</ProvisioningType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -87,8 +87,6 @@
     <Reference Include="OpenTK-1.0" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
@@ -151,20 +149,14 @@
     <ProjectReference Include="..\Engine_IOS\Engine_IOS.csproj">
       <Project>{ae2e15d6-6021-48dc-ae89-4a99f1d09ba6}</Project>
       <Name>Engine_IOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
     <ProjectReference Include="..\EntitySystem_IOS\EntitySystem_IOS.csproj">
       <Project>{90a1d9e6-530a-4e49-9356-663b2475ce42}</Project>
       <Name>EntitySystem_IOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
     <ProjectReference Include="..\SurvivalCraftIOS\SurvivalCraftIOS.csproj">
       <Project>{db4d4aeb-9689-4fe0-8ec8-43409c9144f8}</Project>
       <Name>SurvivalCraftIOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

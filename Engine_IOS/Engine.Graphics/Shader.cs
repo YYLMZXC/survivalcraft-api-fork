@@ -182,7 +182,7 @@ namespace Engine.Graphics
 
         private string PrependShaderMacros(string shaderCode, ShaderMacro[] shaderMacros, bool isVertexShader)
         {
-#if __IOS
+#if __IOS__
             string str = "";
 #else
             string str = "#version 110";

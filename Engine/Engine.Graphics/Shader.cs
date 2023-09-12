@@ -258,12 +258,11 @@ namespace Engine.Graphics
 			GL.GetProgram(m_program, ProgramParameter.ActiveAttributes, out int params4);
 			for (int i = 0; i < params4; i++)
 			{
-				var stringBuilder = "";
-                GL.GetActiveAttrib(m_program, i, 4096, out int _, out int _, out ActiveAttribType _, out stringBuilder);
-                int attribLocation = GL.GetAttribLocation(m_program, stringBuilder.ToString());
-				if (!dictionary.TryGetValue(stringBuilder.ToString(), out string value))
+                GL.GetActiveAttrib(m_program, i, 4096, out int _, out int _, out ActiveAttribType _, out string stringBuilder);
+                int attribLocation = GL.GetAttribLocation(m_program, stringBuilder);
+				if (!dictionary.TryGetValue(stringBuilder, out string value))
 				{
-					throw new InvalidOperationException($"Attribute \"{stringBuilder.ToString()}\" has no semantic defined in shader metadata.");
+					throw new InvalidOperationException($"Attribute \"{stringBuilder}\" has no semantic defined in shader metadata.");
 				}
 				m_shaderAttributeData.Add(new ShaderAttributeData
 				{
@@ -276,16 +275,15 @@ namespace Engine.Graphics
 			var dictionary3 = new Dictionary<string, ShaderParameter>();
 			for (int j = 0; j < params5; j++)
 			{
-				var stringBuilder2 = "";
-                GL.GetActiveUniform(m_program, j, 4096, out int _, out int size2, out ActiveUniformType type2, out stringBuilder2);
-                int uniformLocation = GL.GetUniformLocation(m_program, stringBuilder2.ToString());
+                GL.GetActiveUniform(m_program, j, 256, out int _, out int size2, out ActiveUniformType type2, out string stringBuilder2);
+                int uniformLocation = GL.GetUniformLocation(m_program, stringBuilder2);
 				ShaderParameterType shaderParameterType = GLWrapper.TranslateActiveUniformType(type2);
-				int num = stringBuilder2.ToString().IndexOf('[');
+				int num = stringBuilder2.IndexOf('[');
 				if (num >= 0)
 				{
-					stringBuilder2.Remove(num, stringBuilder2.Length - num);
+                    stringBuilder2 = stringBuilder2.Remove(num, stringBuilder2.Length - num);
 				}
-				var shaderParameter = new ShaderParameter(this, stringBuilder2.ToString(), shaderParameterType, size2);
+				var shaderParameter = new ShaderParameter(this, stringBuilder2, shaderParameterType, size2);
 				shaderParameter.Location = uniformLocation;
 				dictionary3.Add(shaderParameter.Name, shaderParameter);
 				list.Add(shaderParameter);

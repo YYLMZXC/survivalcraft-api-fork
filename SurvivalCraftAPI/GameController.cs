@@ -1,12 +1,9 @@
-﻿using CoreGraphics;
-using Engine;
-using Engine.Graphics;
+﻿using Engine;
 using Foundation;
 using GLKit;
 using OpenGLES;
 using System.Text;
 using UIKit;
-using static CoreMedia.CMTime;
 
 namespace survivalcraftAPI
 {

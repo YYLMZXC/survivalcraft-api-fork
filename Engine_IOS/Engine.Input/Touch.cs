@@ -45,7 +45,7 @@ namespace Engine.Input
 				var point = cc.LocationInView(uIView);
 				int x = (int)point.X;
 				int y = (int)point.Y;
-				int processId = cc.Handle.ToInt32();
+				int processId = cc.GetHashCode();
                 Vector2 vector = new Vector2(x, y) * Window.PixelScale;
                 switch (motionEvent)
                 {
@@ -148,11 +148,9 @@ namespace Engine.Input
 					};
 					touchLocations[num] = touchLocation;
 				}
-				if (Touch.TouchMoved != null)
-				{
-					Touch.TouchMoved(m_touchLocations[num]);
-				}
-			}
+				TouchMoved?.Invoke(m_touchLocations[num]);
+
+            }
 			else
 			{
 				List<TouchLocation> touchLocations2 = m_touchLocations;
@@ -163,10 +161,7 @@ namespace Engine.Input
 					State = TouchLocationState.Pressed
 				};
 				touchLocations2.Add(touchLocation);
-				if (Touch.TouchPressed != null)
-				{
-					Touch.TouchPressed(m_touchLocations[m_touchLocations.Count - 1]);
-				}
+                TouchPressed?.Invoke(m_touchLocations[m_touchLocations.Count - 1]);                
 			}
 		}
 
@@ -203,10 +198,7 @@ namespace Engine.Input
 					};
 					touchLocations2[num] = value;
 				}
-				if (Touch.TouchReleased != null)
-				{
-					Touch.TouchReleased(m_touchLocations[num]);
-				}
+				TouchReleased?.Invoke(m_touchLocations[num]);
 			}
 		}
 	}
