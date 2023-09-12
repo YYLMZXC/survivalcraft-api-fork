@@ -224,10 +224,10 @@ namespace Engine.Graphics
             switch (m_pixelFormat)
             {
                 case PixelFormat.LuminanceAlpha: p = PixelInternalFormat.LuminanceAlpha; break;
-                case PixelFormat.Luminance: p = PixelInternalFormat.LuminanceAlpha; break;
-                case PixelFormat.Alpha: p = PixelInternalFormat.LuminanceAlpha; break;
-                case PixelFormat.Rgb: p = PixelInternalFormat.LuminanceAlpha; break;
-                case PixelFormat.Rgba: p = PixelInternalFormat.LuminanceAlpha; break;
+                case PixelFormat.Luminance: p = PixelInternalFormat.Luminance; break;
+                case PixelFormat.Alpha: p = PixelInternalFormat.Alpha; break;
+                case PixelFormat.Rgb: p = PixelInternalFormat.Rgb; break;
+                case PixelFormat.Rgba: p = PixelInternalFormat.Rgba; break;
                 default: throw new NotSupportedException("Unkown PixelFormatType");
             }
             return p;
