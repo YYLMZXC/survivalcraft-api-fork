@@ -304,7 +304,7 @@ public static class ModsManager
         }
     }
     public static void SetConfig(string key,string value) {
-        if (!Configs.TryGetValue(key, out string mm))
+        if (!Configs.ContainsKey(key))
         {
             Configs.Add(key, value);
         }
@@ -359,7 +359,6 @@ public static class ModsManager
         List<ModInfo> ToDisable = new List<ModInfo>();
         ToDisable.AddRange(DisabledMods);
         DisabledMods.Clear();
-        //float api = float.Parse(APIVersion);
         List<ModEntity> ToRemove = new List<ModEntity>();
         //读取SCMOD文件到ModListAll列表
         foreach (ModEntity modEntity1 in ModListAll)
@@ -376,13 +375,13 @@ public static class ModsManager
                 ToRemove.Add(modEntity1);
                 continue;
             }
-            //float.TryParse(modInfo.ApiVersion, out float curr);
-            //if (curr < api)
-            //{//api版本检测
-            //    ToDisable.Add(modInfo);
-            //    ToRemove.Add(modEntity1);
-            //    AddException(new Exception($"[{modEntity1.modInfo.PackageName}]Target version {modInfo.Version} is less than api version {APIVersion}."), true);
-            //}
+            float.TryParse(modInfo.ApiVersion, out float curr);
+            if (Version.Parse(modInfo.ApiVersion) < Version.Parse(APIVersion))
+            {//api版本检测
+                ToDisable.Add(modInfo);
+                ToRemove.Add(modEntity1);
+                AddException(new Exception($"[{modEntity1.modInfo.PackageName}]Target version {modInfo.Version} is less than api version {APIVersion}."), true);
+            }
             List<ModEntity> modEntities = ModListAll.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
             if (modEntities.Count > 1) AddException(new Exception($"Multiple installed [{modInfo.PackageName}]"));
         }

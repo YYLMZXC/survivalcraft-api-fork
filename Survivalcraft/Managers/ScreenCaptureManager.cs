@@ -82,7 +82,8 @@ namespace Game
                 {
                     RenderTarget2D renderTarget = Display.RenderTarget;
                     var dictionary = new Dictionary<ComponentGui, bool>();
-                    ResolutionMode resolutionMode = ResolutionMode.High;
+                    ResolutionMode resolutionMode = SettingsManager.ResolutionMode;
+                    SettingsManager.ResolutionMode = ResolutionMode.High;
                     try
                     {
                         if (!SettingsManager.ShowGuiInScreenshots)
@@ -93,8 +94,6 @@ namespace Game
                                 componentPlayer.ComponentGui.ControlsContainerWidget.IsVisible = false;
                             }
                         }
-                        resolutionMode = SettingsManager.ResolutionMode;
-                        SettingsManager.ResolutionMode = ResolutionMode.High;
                         Display.RenderTarget = renderTarget2D;
                         ScreensManager.Draw();
                         if (SettingsManager.ShowLogoInScreenshots)

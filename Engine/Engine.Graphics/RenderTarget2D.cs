@@ -74,7 +74,7 @@ namespace Engine.Graphics
 		{
 			GL.GenFramebuffers(1, out m_frameBuffer);
 			GLWrapper.BindFramebuffer(m_frameBuffer);
-			GL.FramebufferTexture2D(All.Framebuffer, All.ColorAttachment0, All.Texture2D, m_texture, 0);
+			GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferSlot.ColorAttachment0, TextureTarget.Texture2D, m_texture, 0);
 			if (DepthFormat != 0)
 			{
 				GL.GenRenderbuffers(1, out m_depthBuffer);

@@ -39,26 +39,25 @@ namespace survivalcraftAPI
         public override void TouchesBegan(NSSet touches, UIEvent evt)
         {
             base.TouchesBegan(touches, evt);
-            Engine.Input.Touch.HandleTouchEvent(gLKView, touches, Engine.Input.Touch.MotionEventActions.Down);
+            Engine.Input.Touch.HandleTouchEvent(gLKView, evt.AllTouches, Engine.Input.Touch.MotionEventActions.Down);
         }
 
         public override void TouchesMoved(NSSet touches, UIEvent evt)
         {
             base.TouchesMoved(touches, evt);
-            Engine.Input.Touch.HandleTouchEvent(gLKView, touches, Engine.Input.Touch.MotionEventActions.Move);
+            Engine.Input.Touch.HandleTouchEvent(gLKView, evt.AllTouches, Engine.Input.Touch.MotionEventActions.Move);
         }
 
         public override void TouchesEnded(NSSet touches, UIEvent evt)
         {
             base.TouchesEnded(touches, evt);
-            Engine.Input.Touch.HandleTouchEvent(gLKView, touches, Engine.Input.Touch.MotionEventActions.Up);
+            Engine.Input.Touch.HandleTouchEvent(gLKView, evt.AllTouches, Engine.Input.Touch.MotionEventActions.Up);
         }
 
         public override void TouchesCancelled(NSSet touches, UIEvent evt)
         {
             base.TouchesCancelled(touches, evt);
-
-            // 在触摸取消时执行操作
+            Engine.Input.Touch.HandleTouchEvent(gLKView, evt.AllTouches, Engine.Input.Touch.MotionEventActions.Up);
         }
         /// <summary>
         /// 程序进入焦点

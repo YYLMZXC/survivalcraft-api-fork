@@ -87,7 +87,11 @@ namespace Game
 
         public void SetupScalingRenderTarget()
         {
-            float num = (SettingsManager.ResolutionMode == ResolutionMode.Low) ? 0.5f : ((SettingsManager.ResolutionMode != ResolutionMode.Medium) ? 1f : 0.75f);
+#if __IOS__
+            float num = (SettingsManager.ResolutionMode == ResolutionMode.Low) ? 0.5f : ((SettingsManager.ResolutionMode == ResolutionMode.Medium) ? 0.75f : 0.95f);
+#else
+            float num = (SettingsManager.ResolutionMode == ResolutionMode.Low) ? 0.5f : ((SettingsManager.ResolutionMode == ResolutionMode.Medium) ? 0.75f : 1f);
+#endif
             float num2 = GlobalTransform.Right.Length();
             float num3 = GlobalTransform.Up.Length();
             var vector = new Vector2(ActualSize.X * num2, ActualSize.Y * num3);
