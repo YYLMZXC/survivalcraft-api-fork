@@ -53,14 +53,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml">
       <HintPath>..\DllReference\System.Xml.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <HintPath>..\DllReference\System.Xml.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System_Net_Http">
-      <HintPath>..\dllReference\System_Net_Http.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -2953,9 +2951,9 @@
       <Project>{2b5cfe67-d78b-4ccd-a6bb-616bf772c094}</Project>
       <Name>Engine_android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EntitySystem\EntitySystem.csproj">
-      <Project>{4cc1004a-3b04-4129-8ffa-b2fefef6644c}</Project>
-      <Name>EntitySystem</Name>
+    <ProjectReference Include="..\EntitySystem_android\EntitySystem_android.csproj">
+      <Project>{9a3be64a-12ec-4637-ac81-a1987bed4e6e}</Project>
+      <Name>EntitySystem_android</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9A3BE64A-12EC-4637-AC81-A1987BED4E6E}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TemplateGuid>{9ef11e43-1701-4396-8835-8392d57abb70}</TemplateGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EntitySystem</RootNamespace>
+    <AssemblyName>EntitySystem</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>True</Deterministic>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mono.Android">
+      <HintPath>..\..\..\VS Cache\IDE\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v9.0\Mono.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EntitySystem\GameEntitySystem\Component.cs">
+      <Link>GameEntitySystem\Component.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\Entity.cs">
+      <Link>GameEntitySystem\Entity.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\EntityAddRemoveEventArgs.cs">
+      <Link>GameEntitySystem\EntityAddRemoveEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\EntityData.cs">
+      <Link>GameEntitySystem\EntityData.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\EntityDataList.cs">
+      <Link>GameEntitySystem\EntityDataList.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\EntityToIdMap.cs">
+      <Link>GameEntitySystem\EntityToIdMap.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\GameDatabase.cs">
+      <Link>GameEntitySystem\GameDatabase.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\IdToEntityMap.cs">
+      <Link>GameEntitySystem\IdToEntityMap.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\Project.cs">
+      <Link>GameEntitySystem\Project.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\ProjectData.cs">
+      <Link>GameEntitySystem\ProjectData.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\GameEntitySystem\Subsystem.cs">
+      <Link>GameEntitySystem\Subsystem.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\Database.cs">
+      <Link>TemplatesDatabase\Database.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\DatabaseObject.cs">
+      <Link>TemplatesDatabase\DatabaseObject.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\DatabaseObjectType.cs">
+      <Link>TemplatesDatabase\DatabaseObjectType.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\ProceduralValue.cs">
+      <Link>TemplatesDatabase\ProceduralValue.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\ProceduralValueStringConverter.cs">
+      <Link>TemplatesDatabase\ProceduralValueStringConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\ValuesDictionary.cs">
+      <Link>TemplatesDatabase\ValuesDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\TemplatesDatabase\XmlDatabaseSerializer.cs">
+      <Link>TemplatesDatabase\XmlDatabaseSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\EntitySystem\XmlUtilities\XmlUtils.cs">
+      <Link>XmlUtilities\XmlUtils.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine_android\Engine_android.csproj">
+      <Project>{2b5cfe67-d78b-4ccd-a6bb-616bf772c094}</Project>
+      <Name>Engine_android</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

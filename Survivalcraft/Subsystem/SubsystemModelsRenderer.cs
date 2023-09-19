@@ -238,6 +238,7 @@ namespace Game
             }
             ModsManager.HookAction("ModelShaderParameter", (modLoader) => { modLoader.ModelShaderParameter(modelShader, camera, modelsData, alphaThreshold); return true; });
             ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(modelShader, camera); return true; });
+
             foreach (ModelData modelsDatum in modelsData)
             {
                 ComponentModel componentModel = modelsDatum.ComponentModel;

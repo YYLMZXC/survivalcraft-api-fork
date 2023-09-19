@@ -40,18 +40,13 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="OpenTK-1.0.1">
-      <HintPath>..\DllReference\OpenTK-1.0.1.dll</HintPath>
-    </Reference>
+    <Reference Include="OpenTK-1.0" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="System_IO_Compression">
       <HintPath>..\dllReference\System_IO_Compression.dll</HintPath>
-    </Reference>
-    <Reference Include="System_Net_Http">
-      <HintPath>..\dllReference\System_Net_Http.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

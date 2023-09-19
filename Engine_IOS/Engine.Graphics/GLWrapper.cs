@@ -292,9 +292,8 @@ namespace Engine.Graphics
         {
             if (blendEquation != m_blendEquation)
             {
+                GL.BlendEquation(blendEquation);
                 m_blendEquation = blendEquation;
-                m_blendEquationColor = BlendEquationMode.FuncAdd;
-                m_blendEquationAlpha = BlendEquationMode.FuncAdd;
             }
         }
 
@@ -306,7 +305,6 @@ namespace Engine.Graphics
                 GL.BlendEquationSeparate(blendEquationColor, blendEquationAlpha);
                 m_blendEquationColor = blendEquationColor;
                 m_blendEquationAlpha = blendEquationAlpha;
-                m_blendEquation = BlendEquationMode.FuncAdd;
             }
         }
 
@@ -318,10 +316,6 @@ namespace Engine.Graphics
                 GL.BlendFunc(blendFuncSource, blendFuncDestination);
                 m_blendFuncSource = blendFuncSource;
                 m_blendFuncDestination = blendFuncDestination;
-                m_blendFuncSourceColor = BlendingFactorSrc.Zero;
-                m_blendFuncSourceAlpha = BlendingFactorSrc.Zero;
-                m_blendFuncDestinationColor = BlendingFactorDest.Zero;
-                m_blendFuncDestinationAlpha = BlendingFactorDest.Zero;
             }
         }
 
@@ -335,8 +329,6 @@ namespace Engine.Graphics
                 m_blendFuncSourceAlpha = blendFuncSourceAlpha;
                 m_blendFuncDestinationColor = blendFuncDestinationColor;
                 m_blendFuncDestinationAlpha = blendFuncDestinationAlpha;
-                m_blendFuncSource = BlendingFactorSrc.Zero;
-                m_blendFuncDestination = BlendingFactorDest.Zero;
             }
         }
 
@@ -525,12 +517,12 @@ namespace Engine.Graphics
                     case CullMode.CullClockwise:
                         Enable(EnableCap.CullFace);
                         CullFace(CullFaceMode.Back);
-                        FrontFace((Display.RenderTarget != null) ? FrontFaceDirection.Cw : FrontFaceDirection.Ccw);
+                        FrontFace((Display.RenderTarget!= null) ? FrontFaceDirection.Cw : FrontFaceDirection.Ccw);
                         break;
                     case CullMode.CullCounterClockwise:
                         Enable(EnableCap.CullFace);
                         CullFace(CullFaceMode.Back);
-                        FrontFace((Display.RenderTarget != null) ? FrontFaceDirection.Ccw : FrontFaceDirection.Cw);
+                        FrontFace((Display.RenderTarget!= null) ? FrontFaceDirection.Ccw : FrontFaceDirection.Cw);
                         break;
                 }
                 if (state.ScissorTestEnable)

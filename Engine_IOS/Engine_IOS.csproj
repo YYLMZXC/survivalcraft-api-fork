@@ -38,7 +38,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Compile Include="..\Engine\Engine.Audio\BaseSound.cs">
       <Link>Engine.Audio\BaseSound.cs</Link>
