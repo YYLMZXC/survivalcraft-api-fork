@@ -61,8 +61,10 @@ namespace Engine.Graphics
 				m_cullMode = value;
 			}
 		}
-
-		public bool ScissorTestEnable
+        /// <summary>
+        /// 剪裁测试是OpenGL中一个用于控制渲染区域的功能。当剪裁测试被启用时，只有位于指定剪裁矩形内的像素才会被绘制，而在剪裁矩形外的像素将被忽略。这在一些情况下非常有用，比如创建镜头视野范围或者限制渲染到特定区域。
+        /// </summary>
+        public bool ScissorTestEnable
 		{
 			get
 			{

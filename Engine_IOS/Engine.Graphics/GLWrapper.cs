@@ -267,7 +267,11 @@ namespace Engine.Graphics
             }
             return false;
         }
-
+        /// <summary>
+        /// 多边形偏移通常用于解决深度缓冲区（depth buffer）中的Z-fighting问题。Z-fighting是指当两个或多个几何体在相同的位置上进行渲染时，由于精度限制导致深度缓冲区中的值产生冲突，从而出现可见性问题
+        /// </summary>
+        /// <param name="factor"></param>
+        /// <param name="units"></param>
         public static void PolygonOffset(float factor, float units)
         {
             if (factor != m_polygonOffsetFactor || units != m_polygonOffsetUnits)
@@ -297,7 +301,11 @@ namespace Engine.Graphics
             }
         }
 
-
+        /// <summary>
+        /// 混合方程用于控制在绘制过程中，源颜色和目标颜色如何进行混合计算。在渲染对象时，我们通常希望将新的像素颜色与后台缓冲区的颜色进行混合，以实现透明度效果或其他特定的混合效果。
+        /// </summary>
+        /// <param name="blendEquationColor"></param>
+        /// <param name="blendEquationAlpha"></param>
         public static void BlendEquationSeparate(BlendEquationMode blendEquationColor, BlendEquationMode blendEquationAlpha)
         {
             if (blendEquationColor != m_blendEquationColor || blendEquationAlpha != m_blendEquationAlpha)
@@ -511,12 +519,13 @@ namespace Engine.Graphics
                 m_rasterizerState = state;
                 switch (state.CullMode)
                 {
-                    case CullMode.None:
+                    case CullMode.None://关闭正面背面剔除
                         Disable(EnableCap.CullFace);
                         break;
                     case CullMode.CullClockwise:
                         Enable(EnableCap.CullFace);
-                        CullFace(CullFaceMode.Back);
+                        CullFace(CullFaceMode.Back);//开启背面剔除
+                        //Cw表示顺时针方向 Cww表示逆时针方向
                         FrontFace((Display.RenderTarget!= null) ? FrontFaceDirection.Cw : FrontFaceDirection.Ccw);
                         break;
                     case CullMode.CullCounterClockwise:
@@ -1026,11 +1035,11 @@ namespace Engine.Graphics
         {
             switch (blendFunction)
             {
-                case BlendFunction.Add:
+                case BlendFunction.Add://将源颜色和目标颜色相加
                     return BlendEquationMode.FuncAdd;
-                case BlendFunction.Subtract:
+                case BlendFunction.Subtract://从源颜色中减去目标颜色
                     return BlendEquationMode.FuncSubtract;
-                case BlendFunction.ReverseSubtract:
+                case BlendFunction.ReverseSubtract://从目标颜色中减去源颜色
                     return BlendEquationMode.FuncReverseSubtract;
                 default:
                     throw new InvalidOperationException("Unsupported blend function.");
@@ -1042,25 +1051,25 @@ namespace Engine.Graphics
         {
             switch (blend)
             {
-                case Blend.Zero:
+                case Blend.Zero://用零来代替源颜色或目标颜色
                     return BlendingFactorSrc.Zero;
-                case Blend.One:
+                case Blend.One://将源颜色或目标颜色保留原样
                     return BlendingFactorSrc.One;
-                case Blend.SourceColor:
+                case Blend.SourceColor://使用源颜色作为混合因子
                     return BlendingFactorSrc.SrcColor;
-                case Blend.InverseSourceColor:
+                case Blend.InverseSourceColor://使用1减去源颜色作为混合因子
                     return BlendingFactorSrc.OneMinusSrcColor;
-                case Blend.DestinationColor:
+                case Blend.DestinationColor://使用目标颜色作为混合因子
                     return BlendingFactorSrc.DstColor;
-                case Blend.InverseDestinationColor:
+                case Blend.InverseDestinationColor://使用1减去目标颜色作为混合因子
                     return BlendingFactorSrc.OneMinusDstColor;
-                case Blend.SourceAlpha:
+                case Blend.SourceAlpha://使用源Alpha通道值作为混合因子
                     return BlendingFactorSrc.SrcAlpha;
-                case Blend.InverseSourceAlpha:
+                case Blend.InverseSourceAlpha://使用1减去源Alpha通道值作为混合因子
                     return BlendingFactorSrc.OneMinusSrcAlpha;
-                case Blend.DestinationAlpha:
+                case Blend.DestinationAlpha://使用目标Alpha通道值作为混合因子
                     return BlendingFactorSrc.DstAlpha;
-                case Blend.InverseDestinationAlpha:
+                case Blend.InverseDestinationAlpha://使用1减去目标Alpha通道值作为混合因子
                     return BlendingFactorSrc.OneMinusDstAlpha;
                 case Blend.BlendFactor:
                     return BlendingFactorSrc.ConstantColor;
