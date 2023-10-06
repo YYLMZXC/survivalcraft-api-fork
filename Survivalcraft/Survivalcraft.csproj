@@ -95,6 +95,9 @@
     <None Update="init.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="SC-Spin重启.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Content\icon.ico" />
   </ItemGroup>
   <ItemGroup>
