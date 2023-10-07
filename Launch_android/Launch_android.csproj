@@ -133,10 +133,6 @@
       <Project>{2b5cfe67-d78b-4ccd-a6bb-616bf772c094}</Project>
       <Name>Engine_android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EntitySystem\EntitySystem.csproj">
-      <Project>{4cc1004a-3b04-4129-8ffa-b2fefef6644c}</Project>
-      <Name>EntitySystem</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Survivalcraft_android\Survivalcraft_android.csproj">
       <Project>{8f0cb2a0-6f8c-4bb2-bdd2-ebaebbc122b8}</Project>
       <Name>Survivalcraft_android</Name>
@@ -168,12 +164,11 @@
     </AndroidAsset>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Mono.Android" />
     <Reference Include="OpenTK-1.0">
       <HintPath>..\..\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v4.4\OpenTK-1.0.dll</HintPath>
     </Reference>
-    <Reference Include="System">
-      <HintPath>..\..\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v1.0\System.dll</HintPath>
-    </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Xml">
       <HintPath>..\..\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v1.0\System.Xml.dll</HintPath>
     </Reference>
@@ -184,7 +179,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionLaunch_androidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionSC22AndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

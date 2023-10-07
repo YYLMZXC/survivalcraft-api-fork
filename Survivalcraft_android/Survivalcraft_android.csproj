@@ -41,31 +41,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Esprima, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Esprima.3.0.1\lib\netstandard2.1\Esprima.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="I18N" />
-    <Reference Include="Jint, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jint.3.0.0-beta-2052\lib\netstandard2.1\Jint.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Mono.Android">
-      <HintPath>G:\program files\VS\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v8.0\Mono.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml">
-      <HintPath>..\DllReference\System.Xml.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <HintPath>..\DllReference\System.Xml.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System_Net_Http">
-      <HintPath>..\dllReference\System_Net_Http.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\Survivalcraft\Block\AdjustableDelayGateBlock.cs">
       <Link>Block\AdjustableDelayGateBlock.cs</Link>
     </Compile>
@@ -2951,18 +2926,32 @@
     <Compile Include="Screen\ExternalContentScreen.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Engine_android\Engine_android.csproj">
       <Project>{2b5cfe67-d78b-4ccd-a6bb-616bf772c094}</Project>
       <Name>Engine_android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EntitySystem\EntitySystem.csproj">
-      <Project>{4cc1004a-3b04-4129-8ffa-b2fefef6644c}</Project>
-      <Name>EntitySystem</Name>
+    <ProjectReference Include="..\EntitySystem_android\EntitySystem_android.csproj">
+      <Project>{0f5fb351-8d3f-4ec4-a7ba-e1c111d06d54}</Project>
+      <Name>EntitySystem_android</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <Reference Include="Esprima, Version=3.0.1.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Esprima.3.0.1\lib\netstandard2.1\Esprima.dll</HintPath>
+    </Reference>
+    <Reference Include="Jint, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jint.3.0.0-beta-2052\lib\netstandard2.1\Jint.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Android" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <PropertyGroup>
