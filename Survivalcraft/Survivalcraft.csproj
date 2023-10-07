@@ -126,6 +126,6 @@ cd "$(SolutionDir)Survivalcraft\Content"
   </PropertyGroup>
   <ProjectExtensions />
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="$(SolutionDir)7za.exe a -t7z -x!SC*.7z SC进阶版.7z $(TargetDir)\" />
+    <Exec Command="&quot;$(SolutionDir)7za.exe&quot; a -t7z -x!SC*.7z SC进阶版.7z &quot;$(TargetDir)\&quot;" />
   </Target>
 </Project>
