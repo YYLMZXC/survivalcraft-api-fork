@@ -27,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "ConsoleTest\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMS_of_SC", "HMS_of_SC\HMS_of_SC.csproj", "{5BD29447-59EF-47DE-A32B-10FFD2427326}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SedecimLoader", "AdrasteaLoader\SedecimLoader.csproj", "{C02FDF96-260A-47B0-BC9D-437314721D97}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySystem_android", "EntitySystem_android\EntitySystem_android.csproj", "{0F5FB351-8D3F-4EC4-A7BA-E1C111D06D54}"
 EndProject
 Global
@@ -71,10 +69,6 @@ Global
 		{5BD29447-59EF-47DE-A32B-10FFD2427326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BD29447-59EF-47DE-A32B-10FFD2427326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BD29447-59EF-47DE-A32B-10FFD2427326}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C02FDF96-260A-47B0-BC9D-437314721D97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C02FDF96-260A-47B0-BC9D-437314721D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C02FDF96-260A-47B0-BC9D-437314721D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C02FDF96-260A-47B0-BC9D-437314721D97}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0F5FB351-8D3F-4EC4-A7BA-E1C111D06D54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0F5FB351-8D3F-4EC4-A7BA-E1C111D06D54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F5FB351-8D3F-4EC4-A7BA-E1C111D06D54}.Release|Any CPU.ActiveCfg = Release|Any CPU
