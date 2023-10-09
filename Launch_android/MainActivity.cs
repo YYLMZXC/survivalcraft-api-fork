@@ -1,14 +1,18 @@
-﻿using Android;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Widget;
+using Permission = Android.Content.PM.Permission;
 using Engine;
 using Game;
 using System;
 using System.IO;
+using System.Threading.Tasks;
+using Android.Provider;
+using Android.Widget;
+using Xamarin.Essentials;
+using Permissions = Xamarin.Essentials.Permissions;
 namespace SC.Android
 {
 	[Activity(Label = "生存战争2.3插件版", LaunchMode = LaunchMode.SingleTask, Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
@@ -21,15 +25,31 @@ namespace SC.Android
 			base.OnCreate(savedInstanceState);
 			try
 			{
-				if (CheckSelfPermission(Manifest.Permission.WriteExternalStorage) != Permission.Granted)
+				if ((Convert.ToInt32(Android.OS.Build.VERSION.Release) >= 11) && !Android.OS.Environment.IsExternalStorageManager)
 				{
-					Toast.MakeText(this, "请授权游戏存储读写权限", ToastLength.Long).Show();
-					RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, 0);
+					Toast.MakeText(this, "Android11以上无法直接访问\n需要手动授权，请在稍后的页面中 选择Android/data目录并点击\"选择\"按钮", ToastLength.Long).Show();
+					var intent = new Intent(Intent.ActionOpenDocumentTree);
+					intent.AddFlags(ActivityFlags.GrantWriteUriPermission);
+					StartActivity(intent);
+					if ((int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.O)
+					{
+						Task.Run(() => intent.PutExtra(DocumentsContract.ExtraInitialUri, "/sdcard/"));
+					}
 				}
-				else
+				var status = Permissions.CheckStatusAsync<Permissions.StorageWrite>();
+				if (status == PermissionStatus.Granted)
 				{
-					Run();
+					return;
 				}
+				Toast.MakeText(this, "权限需要\", \"此软件需要权限以更改Config文件", ToastLength.Long).Show();
+				var request = Permissions.RequestAsync<Permissions.StorageWrite>();
+
+				if (request == PermissionStatus.Granted)
+				{
+					return;
+				}
+				Toast.MakeText(this, "请到应用设置里授权：允许\"读取本机存储\"", ToastLength.Long).Show();
+				throw new Exception("应用权限不足");
 			}
 			catch
 			{
