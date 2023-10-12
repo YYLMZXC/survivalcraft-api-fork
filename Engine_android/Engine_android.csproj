@@ -10,6 +10,7 @@
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
     <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+    <RootNamespace>Engine</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>none</DebugType>
@@ -18,8 +19,8 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK-1.0.1">
-      <HintPath>..\DllReference\OpenTK-1.0.1.dll</HintPath>
+    <Reference Include="OpenTK">
+      <HintPath>..\..\生存战争API\API1.53P\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System_IO_Compression">
       <HintPath>..\dllReference\System_IO_Compression.dll</HintPath>
