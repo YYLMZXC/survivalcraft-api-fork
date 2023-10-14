@@ -40,11 +40,11 @@ namespace Game
 
 		static VersionsManager()
 		{
-			m_versionConverters = new List<VersionConverter>();
+			m_versionConverters = [];
 			var assemblyName = new AssemblyName(typeof(VersionsManager).GetTypeInfo().Assembly.FullName);
 			Version = $"{assemblyName.Version.Major}.{assemblyName.Version.Minor}.{assemblyName.Version.Build}.{assemblyName.Version.Revision}";
 			SerializationVersion = $"{assemblyName.Version.Major}.{assemblyName.Version.Minor}";
-			Assembly[] array = TypeCache.LoadedAssemblies.ToArray();
+			Assembly[] array = [.. TypeCache.LoadedAssemblies];
 			for (int i = 0; i < array.Length; i++)
 			{
 				foreach (TypeInfo definedType in array[i].DefinedTypes)

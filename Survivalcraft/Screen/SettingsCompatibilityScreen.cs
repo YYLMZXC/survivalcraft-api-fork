@@ -20,6 +20,8 @@ namespace Game
 
 		public LabelWidget m_descriptionLabel;
 
+		public ButtonWidget m_使用内置路径;
+
 		public SettingsCompatibilityScreen()
 		{
 			XElement node = ContentManager.Get<XElement>("Screens/SettingsCompatibilityScreen");
@@ -32,6 +34,7 @@ namespace Game
 			m_viewGameLogButton = Children.Find<ButtonWidget>("ViewGameLogButton");
 			m_resetDefaultsButton = Children.Find<ButtonWidget>("ResetDefaultsButton");
 			m_descriptionLabel = Children.Find<LabelWidget>("Description");
+			m_使用内置路径 = Children.Find<ButtonWidget>("使用内置路径");
 		}
 
 		public override void Enter(object[] parameters)
@@ -44,11 +47,11 @@ namespace Game
 
 		public override void Update()
 		{
-			if (m_singlethreadedTerrainUpdateButton.IsClicked)
-			{
-				SettingsManager.MultithreadedTerrainUpdate = !SettingsManager.MultithreadedTerrainUpdate;
-				m_descriptionLabel.Text = StringsManager.GetString("Settings.Compatibility.SinglethreadedTerrainUpdate.Description");
-			}
+			//if (m_singlethreadedTerrainUpdateButton.IsClicked)
+			//{
+			//	SettingsManager.MultithreadedTerrainUpdate = !SettingsManager.MultithreadedTerrainUpdate;
+			//	m_descriptionLabel.Text = StringsManager.GetString("Settings.Compatibility.SinglethreadedTerrainUpdate.Description");
+			//}
 			if (m_useReducedZRangeButton.IsClicked)
 			{
 				SettingsManager.UseReducedZRange = !SettingsManager.UseReducedZRange;
@@ -69,7 +72,12 @@ namespace Game
 				SettingsManager.MultithreadedTerrainUpdate = true;
 				SettingsManager.UseReducedZRange = false;
 			}
-			m_singlethreadedTerrainUpdateButton.Text = SettingsManager.MultithreadedTerrainUpdate ? LanguageControl.Off : LanguageControl.On;
+			if(m_使用内置路径.IsClicked)
+			{
+				SettingsManager.使用内置路径 = !SettingsManager.使用内置路径;
+				m_使用内置路径.Text = SettingsManager.使用内置路径 ? LanguageControl.On : LanguageControl.Off;
+			}
+			//m_singlethreadedTerrainUpdateButton.Text = SettingsManager.MultithreadedTerrainUpdate ? LanguageControl.Off : LanguageControl.On;
 			m_useAudioTrackCachingButton.Text = SettingsManager.EnableAndroidAudioTrackCaching ? LanguageControl.On : LanguageControl.Off;
 			m_useReducedZRangeButton.Text = SettingsManager.UseReducedZRange ? LanguageControl.On : LanguageControl.Off;
 

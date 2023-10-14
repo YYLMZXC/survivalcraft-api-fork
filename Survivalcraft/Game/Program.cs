@@ -68,7 +68,7 @@ namespace Game
 				e.IsHandled = true;
 			};
 			JsInterface.Initiate();
-			Window.Run((int)(Window.ScreenSize.X / 1.25f), (int)(Window.ScreenSize.Y * 0.8f), WindowMode.Resizable, "生存战争2.3插件版V" + ModsManager.APIVersion);
+			Window.Run((int)(Window.ScreenSize.X / 1.25f), (int)(Window.ScreenSize.Y * 0.8f), WindowMode.Resizable, "生存战争2.3插件版NEXT" + ModsManager.APIVersion);
 		}
 
 		public static void HandleUriHandler(Uri uri)

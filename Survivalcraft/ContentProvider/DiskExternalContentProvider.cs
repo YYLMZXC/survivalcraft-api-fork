@@ -43,7 +43,9 @@ namespace Game
 				return;
 			}
 			else fileStream = File.OpenRead(path);
+#pragma warning disable CS0219 // 变量已被赋值，但从未使用过它的值
 			Exception e = default;
+#pragma warning restore CS0219 // 变量已被赋值，但从未使用过它的值
 			ThreadPool.QueueUserWorkItem(delegate
 			{
 				try
@@ -65,7 +67,9 @@ namespace Game
 		public void List(string path, CancellableProgress progress, Action<ExternalContentEntry> success, Action<Exception> failure)
 		{
 			ExternalContentEntry entry = default;
+#pragma warning disable CS0219 // 变量已被赋值，但从未使用过它的值
 			Exception e = default;
+#pragma warning restore CS0219 // 变量已被赋值，但从未使用过它的值
 			ThreadPool.QueueUserWorkItem(delegate
 			{
 				try

@@ -107,7 +107,6 @@ namespace Game
 			{
 				StreamReader streamReader = new StreamReader(stream);
 				ObjMesh objMesh = null;
-				string Tkey = null;
 				string CurrentTkey = null;
 				while (streamReader.EndOfStream == false)
 				{

@@ -28,6 +28,8 @@ namespace Game
 
 		public static bool AllowInitialIntro { get; set; }
 
+		public static bool 使用内置路径;
+
 		public static float SoundsVolume
 		{
 			get

@@ -33,7 +33,7 @@
     <DebugType>none</DebugType>
     <DefineConstants>TRACE;desktop</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Game.Program</StartupObject>
