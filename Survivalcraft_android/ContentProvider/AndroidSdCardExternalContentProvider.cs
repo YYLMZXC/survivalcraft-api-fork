@@ -31,10 +31,7 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 	{
 	}
 
-	public void Login(CancellableProgress progress, Action success, Action<Exception> failure)
-	{
-		failure(new NotSupportedException());
-	}
+	public void Login(CancellableProgress progress, Action success, Action<Exception> failure) => failure(new NotSupportedException());
 
 	public void Logout()
 	{

@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -32,7 +31,9 @@
     <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
     <AndroidSupportedAbis></AndroidSupportedAbis>
     <AndroidHttpClientHandlerType />
-    <RunAOTCompilation>False</RunAOTCompilation>
+    <RunAOTCompilation>True</RunAOTCompilation>
+    <PublishTrimmed>True</PublishTrimmed>
+    <TrimMode>link</TrimMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
@@ -58,12 +59,19 @@
     <AndroidDexTool>d8</AndroidDexTool>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <PlatformTarget>x64</PlatformTarget>
-    <RunAOTCompilation>False</RunAOTCompilation>
+    <RunAOTCompilation>True</RunAOTCompilation>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <PublishTrimmed>True</PublishTrimmed>
+    <TrimMode>link</TrimMode>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>
     <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Product>Survivalcraft</Product>
+    <AssemblyVersion>2.3.0.0</AssemblyVersion>
+    <FileVersion>2.3.0.0</FileVersion>
+    <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
   <ItemGroup>
     <AndroidNativeLibrary Include="libopenal32.so">
@@ -71,7 +79,9 @@
     </AndroidNativeLibrary>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.csproj" />
     <ProjectReference Include="..\Engine_android\Engine_android.csproj" />
+    <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
     <ProjectReference Include="..\Survivalcraft_android\Survivalcraft_android.csproj" />
   </ItemGroup>
   <ProjectExtensions>

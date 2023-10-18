@@ -13,14 +13,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="I18N">
-      <HintPath>..\..\Microsoft Visual Studio\2022\Preview\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v1.0\I18N.dll</HintPath>
-    </Reference>
     <Reference Include="System_Net_Http">
       <HintPath>..\dllReference\System_Net_Http.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.csproj" />
     <ProjectReference Include="..\Engine_android\Engine_android.csproj" />
     <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
   </ItemGroup>

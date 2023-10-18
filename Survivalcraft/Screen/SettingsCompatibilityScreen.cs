@@ -75,11 +75,12 @@ namespace Game
 			if(m_使用内置路径.IsClicked)
 			{
 				SettingsManager.使用内置路径 = !SettingsManager.使用内置路径;
-				m_使用内置路径.Text = SettingsManager.使用内置路径 ? LanguageControl.On : LanguageControl.Off;
+				
 			}
-			//m_singlethreadedTerrainUpdateButton.Text = SettingsManager.MultithreadedTerrainUpdate ? LanguageControl.Off : LanguageControl.On;
+			m_singlethreadedTerrainUpdateButton.Text = "已弃用";
 			m_useAudioTrackCachingButton.Text = SettingsManager.EnableAndroidAudioTrackCaching ? LanguageControl.On : LanguageControl.Off;
 			m_useReducedZRangeButton.Text = SettingsManager.UseReducedZRange ? LanguageControl.On : LanguageControl.Off;
+			m_使用内置路径.Text = SettingsManager.使用内置路径 ? LanguageControl.On : LanguageControl.Off;
 
 			m_resetDefaultsButton.IsEnabled = !SettingsManager.MultithreadedTerrainUpdate || SettingsManager.UseReducedZRange;
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)

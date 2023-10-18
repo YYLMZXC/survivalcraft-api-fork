@@ -1,4 +1,5 @@
 using Android.Views;
+using OpenTK.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,7 +149,7 @@ namespace Engine.Input
 			return -1;
 		}
 
-		public static GamePadButton TranslateKey(Keycode keyCode)
+		public static GamePadButtons TranslateKey(Keycode keyCode)
 		{
 			switch (keyCode)
 			{

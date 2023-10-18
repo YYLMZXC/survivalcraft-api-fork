@@ -23,13 +23,13 @@ namespace Engine
 
 		protected override void CreateFrameBuffer()
 		{
-			base.ContextRenderingApi = GLVersion.ES2;
-			GraphicsMode[] obj = new GraphicsMode[3]
-			{
+			base.ContextRenderingApi = GLVersion.ES3;
+			GraphicsMode[] obj =
+			[
 				new GraphicsMode(16, 16, 0, 0, ColorFormat.Empty, 2),
 				new AndroidGraphicsMode(16, 0, 0, 0, 0, stereo: false),
 				new AndroidGraphicsMode(0, 4, 0, 0, 0, stereo: false)
-			};
+			];
 			Exception ex = null;
 			GraphicsMode[] array = obj;
 			foreach (GraphicsMode graphicsMode in array)

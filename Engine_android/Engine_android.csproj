@@ -19,8 +19,11 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK">
-      <HintPath>..\..\生存战争API\API1.53P\OpenTK.dll</HintPath>
+    <Reference Include="OpenTK-1.0">
+      <HintPath>..\DllReference\OpenTK_1_0.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK-1.0">
+      <HintPath>..\DllReference\OpenTK_1_0.dll</HintPath>
     </Reference>
     <Reference Include="System_IO_Compression">
       <HintPath>..\dllReference\System_IO_Compression.dll</HintPath>
@@ -34,5 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Mono.android-arm64" Version="7.0.2.106" />
+    <PackageReference Include="Xamarin.Legacy.OpenTK" Version="1.0.2" />
   </ItemGroup>
 </Project>
