@@ -13,18 +13,14 @@
     <RootNamespace>Engine</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>none</DebugType>
+    <DebugType>portable</DebugType>
+	<DefineConstants>DEBUG;android</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<DefineConstants>TRACE;android</DefineConstants>
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK-1.0">
-      <HintPath>..\DllReference\OpenTK_1_0.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenTK-1.0">
-      <HintPath>..\DllReference\OpenTK_1_0.dll</HintPath>
-    </Reference>
     <Reference Include="System_IO_Compression">
       <HintPath>..\dllReference\System_IO_Compression.dll</HintPath>
     </Reference>
@@ -33,10 +29,1009 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Engine\Engine.Audio\BaseSound.cs">
+      <Link>Engine.Audio\BaseSound.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\Mixer.cs">
+      <Link>Engine.Audio\Mixer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\Sound.cs">
+      <Link>Engine.Audio\Sound.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\SoundBuffer.cs">
+      <Link>Engine.Audio\SoundBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\SoundState.cs">
+      <Link>Engine.Audio\SoundState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Audio\StreamingSound.cs">
+      <Link>Engine.Audio\StreamingSound.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BaseBatch.cs">
+      <Link>Engine.Graphics\BaseBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BaseFlatBatch.cs">
+      <Link>Engine.Graphics\BaseFlatBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BaseFontBatch.cs">
+      <Link>Engine.Graphics\BaseFontBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BasePrimitivesRenderer.cs">
+      <Link>Engine.Graphics\BasePrimitivesRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BaseTexturedBatch.cs">
+      <Link>Engine.Graphics\BaseTexturedBatch.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Blend.cs">
+      <Link>Engine.Graphics\Blend.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BlendFunction.cs">
+      <Link>Engine.Graphics\BlendFunction.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\BlendState.cs">
+      <Link>Engine.Graphics\BlendState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ColorFormat.cs">
+      <Link>Engine.Graphics\ColorFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\CompareFunction.cs">
+      <Link>Engine.Graphics\CompareFunction.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\CullMode.cs">
+      <Link>Engine.Graphics\CullMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\DepthFormat.cs">
+      <Link>Engine.Graphics\DepthFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\DepthStencilState.cs">
+      <Link>Engine.Graphics\DepthStencilState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ExtensionMethods.cs">
+      <Link>Engine.Graphics\ExtensionMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\FlatBatch2D.cs">
+      <Link>Engine.Graphics\FlatBatch2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\FlatBatch3D.cs">
+      <Link>Engine.Graphics\FlatBatch3D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\FontBatch2D.cs">
+      <Link>Engine.Graphics\FontBatch2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\FontBatch3D.cs">
+      <Link>Engine.Graphics\FontBatch3D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\GraphicsResource.cs">
+      <Link>Engine.Graphics\GraphicsResource.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\IndexBuffer.cs">
+      <Link>Engine.Graphics\IndexBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\IndexFormat.cs">
+      <Link>Engine.Graphics\IndexFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\LitShader.cs">
+      <Link>Engine.Graphics\LitShader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\LockOnFirstUse.cs">
+      <Link>Engine.Graphics\LockOnFirstUse.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Model.cs">
+      <Link>Engine.Graphics\Model.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ModelBone.cs">
+      <Link>Engine.Graphics\ModelBone.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ModelMesh.cs">
+      <Link>Engine.Graphics\ModelMesh.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ModelMeshPart.cs">
+      <Link>Engine.Graphics\ModelMeshPart.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\PrimitivesRenderer2D.cs">
+      <Link>Engine.Graphics\PrimitivesRenderer2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\PrimitivesRenderer3D.cs">
+      <Link>Engine.Graphics\PrimitivesRenderer3D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\PrimitiveType.cs">
+      <Link>Engine.Graphics\PrimitiveType.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\RasterizerState.cs">
+      <Link>Engine.Graphics\RasterizerState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\SamplerState.cs">
+      <Link>Engine.Graphics\SamplerState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ShaderMacro.cs">
+      <Link>Engine.Graphics\ShaderMacro.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ShaderParameter.cs">
+      <Link>Engine.Graphics\ShaderParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ShaderParameterType.cs">
+      <Link>Engine.Graphics\ShaderParameterType.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\ShaderTransforms.cs">
+      <Link>Engine.Graphics\ShaderTransforms.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\TextAnchor.cs">
+      <Link>Engine.Graphics\TextAnchor.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\TextureAddressMode.cs">
+      <Link>Engine.Graphics\TextureAddressMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\TexturedBatch2D.cs">
+      <Link>Engine.Graphics\TexturedBatch2D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\TexturedBatch3D.cs">
+      <Link>Engine.Graphics\TexturedBatch3D.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\TextureFilterMode.cs">
+      <Link>Engine.Graphics\TextureFilterMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\UnlitShader.cs">
+      <Link>Engine.Graphics\UnlitShader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexBuffer.cs">
+      <Link>Engine.Graphics\VertexBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexDeclaration.cs">
+      <Link>Engine.Graphics\VertexDeclaration.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexElement.cs">
+      <Link>Engine.Graphics\VertexElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexElementFormat.cs">
+      <Link>Engine.Graphics\VertexElementFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexElementSemantic.cs">
+      <Link>Engine.Graphics\VertexElementSemantic.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexPositionColor.cs">
+      <Link>Engine.Graphics\VertexPositionColor.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\VertexPositionColorTexture.cs">
+      <Link>Engine.Graphics\VertexPositionColorTexture.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Graphics\Viewport.cs">
+      <Link>Engine.Graphics\Viewport.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\GamePadButton.cs">
+      <Link>Engine.Input\GamePadButton.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\GamePadStick.cs">
+      <Link>Engine.Input\GamePadStick.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\GamePadTrigger.cs">
+      <Link>Engine.Input\GamePadTrigger.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\Key.cs">
+      <Link>Engine.Input\Key.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\KeyboardInput.cs">
+      <Link>Engine.Input\KeyboardInput.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\Mouse.cs">
+      <Link>Engine.Input\Mouse.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\MouseButton.cs">
+      <Link>Engine.Input\MouseButton.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\MouseButtonEvent.cs">
+      <Link>Engine.Input\MouseButtonEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\MouseEvent.cs">
+      <Link>Engine.Input\MouseEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\Touch.cs">
+      <Link>Engine.Input\Touch.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\TouchLocation.cs">
+      <Link>Engine.Input\TouchLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Input\TouchLocationState.cs">
+      <Link>Engine.Input\TouchLocationState.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\BitmapFont.cs">
+      <Link>Engine.Media\BitmapFont.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\Bmp.cs">
+      <Link>Engine.Media\Bmp.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\Collada.cs">
+      <Link>Engine.Media\Collada.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\Image.cs">
+      <Link>Engine.Media\Image.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\ImageFileFormat.cs">
+      <Link>Engine.Media\ImageFileFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\Jpg.cs">
+      <Link>Engine.Media\Jpg.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\ModelBoneData.cs">
+      <Link>Engine.Media\ModelBoneData.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\ModelBuffersData.cs">
+      <Link>Engine.Media\ModelBuffersData.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\ModelData.cs">
+      <Link>Engine.Media\ModelData.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\ModelFileFormat.cs">
+      <Link>Engine.Media\ModelFileFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\ModelMeshData.cs">
+      <Link>Engine.Media\ModelMeshData.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\ModelMeshPartData.cs">
+      <Link>Engine.Media\ModelMeshPartData.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\Ogg.cs">
+      <Link>Engine.Media\Ogg.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\PeekStream.cs">
+      <Link>Engine.Media\PeekStream.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\Png.cs">
+      <Link>Engine.Media\Png.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\SoundData.cs">
+      <Link>Engine.Media\SoundData.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\SoundFileFormat.cs">
+      <Link>Engine.Media\SoundFileFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\StreamingSource.cs">
+      <Link>Engine.Media\StreamingSource.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Media\Wav.cs">
+      <Link>Engine.Media\Wav.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Archive.cs">
+      <Link>Engine.Serialization\Archive.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\ArraySerializer.cs">
+      <Link>Engine.Serialization\ArraySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\BinaryInputArchive.cs">
+      <Link>Engine.Serialization\BinaryInputArchive.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\BinaryOutputArchive.cs">
+      <Link>Engine.Serialization\BinaryOutputArchive.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\BooleanHumanReadableConverter.cs">
+      <Link>Engine.Serialization\BooleanHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\BooleanSerializer.cs">
+      <Link>Engine.Serialization\BooleanSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\BoundingBoxHumanReadableConverter.cs">
+      <Link>Engine.Serialization\BoundingBoxHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\BoundingCircleHumanReadableConverter.cs">
+      <Link>Engine.Serialization\BoundingCircleHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\BoundingRectangleHumanReadableConverter.cs">
+      <Link>Engine.Serialization\BoundingRectangleHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\BoundingSphereHumanReadableConverter.cs">
+      <Link>Engine.Serialization\BoundingSphereHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\BoxHumanReadableConverter.cs">
+      <Link>Engine.Serialization\BoxHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\BoxSerializer.cs">
+      <Link>Engine.Serialization\BoxSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\ByteHumanReadableConverter.cs">
+      <Link>Engine.Serialization\ByteHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\ByteSerializer.cs">
+      <Link>Engine.Serialization\ByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\CharHumanReadableConverter.cs">
+      <Link>Engine.Serialization\CharHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\CharSerializer.cs">
+      <Link>Engine.Serialization\CharSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\ColorHumanReadableConverter.cs">
+      <Link>Engine.Serialization\ColorHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\ColorSerializer.cs">
+      <Link>Engine.Serialization\ColorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\ContentSerializer.cs">
+      <Link>Engine.Serialization\ContentSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\DateTimeHumanReadableConverter.cs">
+      <Link>Engine.Serialization\DateTimeHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\DecimalHumanReadableConverter.cs">
+      <Link>Engine.Serialization\DecimalHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\DictionarySerializer.cs">
+      <Link>Engine.Serialization\DictionarySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\DoubleHumanReadableConverter.cs">
+      <Link>Engine.Serialization\DoubleHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\DoubleSerializer.cs">
+      <Link>Engine.Serialization\DoubleSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\DynamicArraySerializer.cs">
+      <Link>Engine.Serialization\DynamicArraySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\EngineBinaryReader.cs">
+      <Link>Engine.Serialization\EngineBinaryReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\EngineBinaryWriter.cs">
+      <Link>Engine.Serialization\EngineBinaryWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\EnumHumanReadableConverter.cs">
+      <Link>Engine.Serialization\EnumHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\GuidHumanReadableConverter.cs">
+      <Link>Engine.Serialization\GuidHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\GuidSerializer.cs">
+      <Link>Engine.Serialization\GuidSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\HashSetSerializer.cs">
+      <Link>Engine.Serialization\HashSetSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\HumanReadableConverter.cs">
+      <Link>Engine.Serialization\HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\HumanReadableConverterAttribute.cs">
+      <Link>Engine.Serialization\HumanReadableConverterAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\IHumanReadableConverter.cs">
+      <Link>Engine.Serialization\IHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\InputArchive.cs">
+      <Link>Engine.Serialization\InputArchive.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Int16HumanReadableConverter.cs">
+      <Link>Engine.Serialization\Int16HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Int16Serializer.cs">
+      <Link>Engine.Serialization\Int16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Int32HumanReadableConverter.cs">
+      <Link>Engine.Serialization\Int32HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Int32Serializer.cs">
+      <Link>Engine.Serialization\Int32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Int64HumanReadableConverter.cs">
+      <Link>Engine.Serialization\Int64HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Int64Serializer.cs">
+      <Link>Engine.Serialization\Int64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\ISerializable.cs">
+      <Link>Engine.Serialization\ISerializable.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\ISerializer.cs">
+      <Link>Engine.Serialization\ISerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\KeyValuePairSerializer.cs">
+      <Link>Engine.Serialization\KeyValuePairSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\ListSerializer.cs">
+      <Link>Engine.Serialization\ListSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\MatrixHumanReadableConverter.cs">
+      <Link>Engine.Serialization\MatrixHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\MatrixSerializer.cs">
+      <Link>Engine.Serialization\MatrixSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\NullableSerializer.cs">
+      <Link>Engine.Serialization\NullableSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\OutputArchive.cs">
+      <Link>Engine.Serialization\OutputArchive.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\PlaneHumanReadableConverter.cs">
+      <Link>Engine.Serialization\PlaneHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\PlaneSerializer.cs">
+      <Link>Engine.Serialization\PlaneSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Point2HumanReadableConverter.cs">
+      <Link>Engine.Serialization\Point2HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Point2Serializer.cs">
+      <Link>Engine.Serialization\Point2Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Point3HumanReadableConverter.cs">
+      <Link>Engine.Serialization\Point3HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Point3Serializer.cs">
+      <Link>Engine.Serialization\Point3Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\QuaternionHumanReadableConverter.cs">
+      <Link>Engine.Serialization\QuaternionHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\QuaternionSerializer.cs">
+      <Link>Engine.Serialization\QuaternionSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\RectangleHumanReadableConverter.cs">
+      <Link>Engine.Serialization\RectangleHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\RectangleSerializer.cs">
+      <Link>Engine.Serialization\RectangleSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\SByteSerializer.cs">
+      <Link>Engine.Serialization\SByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\SingleHumanReadableConverter.cs">
+      <Link>Engine.Serialization\SingleHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\SingleSerializer.cs">
+      <Link>Engine.Serialization\SingleSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\SortedDictionarySerializer.cs">
+      <Link>Engine.Serialization\SortedDictionarySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\SortedListSerializer.cs">
+      <Link>Engine.Serialization\SortedListSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\StringHumanReadableConverter.cs">
+      <Link>Engine.Serialization\StringHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\StringSerializer.cs">
+      <Link>Engine.Serialization\StringSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\SystemDrawingTypesConverters.cs">
+      <Link>Engine.Serialization\SystemDrawingTypesConverters.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\TypeCache.cs">
+      <Link>Engine.Serialization\TypeCache.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\UInt16HumanReadableConverter.cs">
+      <Link>Engine.Serialization\UInt16HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\UInt16Serializer.cs">
+      <Link>Engine.Serialization\UInt16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\UInt32HumanReadableConverter.cs">
+      <Link>Engine.Serialization\UInt32HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\UInt32Serializer.cs">
+      <Link>Engine.Serialization\UInt32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\UInt64HumanReadableConverter.cs">
+      <Link>Engine.Serialization\UInt64HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\UInt64Serializer.cs">
+      <Link>Engine.Serialization\UInt64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Vector2HumanReadableConverter.cs">
+      <Link>Engine.Serialization\Vector2HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Vector2Serializer.cs">
+      <Link>Engine.Serialization\Vector2Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Vector3HumanReadableConverter.cs">
+      <Link>Engine.Serialization\Vector3HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Vector3Serializer.cs">
+      <Link>Engine.Serialization\Vector3Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Vector4HumanReadableConverter.cs">
+      <Link>Engine.Serialization\Vector4HumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\Vector4Serializer.cs">
+      <Link>Engine.Serialization\Vector4Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\VersionHumanReadableConverter.cs">
+      <Link>Engine.Serialization\VersionHumanReadableConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\XElementSerializer.cs">
+      <Link>Engine.Serialization\XElementSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\XmlInputArchive.cs">
+      <Link>Engine.Serialization\XmlInputArchive.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine.Serialization\XmlOutputArchive.cs">
+      <Link>Engine.Serialization\XmlOutputArchive.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\BoundingBox.cs">
+      <Link>Engine\BoundingBox.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\BoundingCircle.cs">
+      <Link>Engine\BoundingCircle.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\BoundingFrustum.cs">
+      <Link>Engine\BoundingFrustum.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\BoundingRectangle.cs">
+      <Link>Engine\BoundingRectangle.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\BoundingSphere.cs">
+      <Link>Engine\BoundingSphere.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Box.cs">
+      <Link>Engine\Box.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Color.cs">
+      <Link>Engine\Color.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\ConsoleLogSink.cs">
+      <Link>Engine\ConsoleLogSink.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\DebugLogSink.cs">
+      <Link>Engine\DebugLogSink.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Dispatcher.cs">
+      <Link>Engine\Dispatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\DynamicArray.cs">
+      <Link>Engine\DynamicArray.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\DynamicArrayExtensions.cs">
+      <Link>Engine\DynamicArrayExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\ILogSink.cs">
+      <Link>Engine\ILogSink.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Log.cs">
+      <Link>Engine\Log.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\LogType.cs">
+      <Link>Engine\LogType.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\MathUtils.cs">
+      <Link>Engine\MathUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Matrix.cs">
+      <Link>Engine\Matrix.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\OpenFileMode.cs">
+      <Link>Engine\OpenFileMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Plane.cs">
+      <Link>Engine\Plane.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Point2.cs">
+      <Link>Engine\Point2.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Point3.cs">
+      <Link>Engine\Point3.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Quaternion.cs">
+      <Link>Engine\Quaternion.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Ray2.cs">
+      <Link>Engine\Ray2.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Ray3.cs">
+      <Link>Engine\Ray3.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\ReadOnlyList.cs">
+      <Link>Engine\ReadOnlyList.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Rectangle.cs">
+      <Link>Engine\Rectangle.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\StreamLogSink.cs">
+      <Link>Engine\StreamLogSink.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Time.cs">
+      <Link>Engine\Time.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\UnhandledExceptionInfo.cs">
+      <Link>Engine\UnhandledExceptionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Utilities.cs">
+      <Link>Engine\Utilities.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Vector2.cs">
+      <Link>Engine\Vector2.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Vector3.cs">
+      <Link>Engine\Vector3.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\Vector4.cs">
+      <Link>Engine\Vector4.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Engine\WindowMode.cs">
+      <Link>Engine\WindowMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Decoder\BlockUpsamplingMode.cs">
+      <Link>FluxJpeg.Core.Decoder\BlockUpsamplingMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Decoder\JpegComponent.cs">
+      <Link>FluxJpeg.Core.Decoder\JpegComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Decoder\JpegDecodeProgressChangedArgs.cs">
+      <Link>FluxJpeg.Core.Decoder\JpegDecodeProgressChangedArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Decoder\JpegDecoder.cs">
+      <Link>FluxJpeg.Core.Decoder\JpegDecoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Decoder\JPEGFrame.cs">
+      <Link>FluxJpeg.Core.Decoder\JPEGFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Decoder\JpegScan.cs">
+      <Link>FluxJpeg.Core.Decoder\JpegScan.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Encoder\JpegEncodeProgressChangedArgs.cs">
+      <Link>FluxJpeg.Core.Encoder\JpegEncodeProgressChangedArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Encoder\JpegEncoder.cs">
+      <Link>FluxJpeg.Core.Encoder\JpegEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Filtering\Convolution.cs">
+      <Link>FluxJpeg.Core.Filtering\Convolution.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Filtering\Filter.cs">
+      <Link>FluxJpeg.Core.Filtering\Filter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Filtering\FilterProgressEventArgs.cs">
+      <Link>FluxJpeg.Core.Filtering\FilterProgressEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Filtering\GrayImage.cs">
+      <Link>FluxJpeg.Core.Filtering\GrayImage.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Filtering\LowpassResize.cs">
+      <Link>FluxJpeg.Core.Filtering\LowpassResize.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Filtering\NNResize.cs">
+      <Link>FluxJpeg.Core.Filtering\NNResize.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.Filtering\ResamplingFilters.cs">
+      <Link>FluxJpeg.Core.Filtering\ResamplingFilters.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.IO\BinaryReader.cs">
+      <Link>FluxJpeg.Core.IO\BinaryReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.IO\BinaryWriter.cs">
+      <Link>FluxJpeg.Core.IO\BinaryWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.IO\JPEGBinaryReader.cs">
+      <Link>FluxJpeg.Core.IO\JPEGBinaryReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core.IO\JPEGMarkerFoundException.cs">
+      <Link>FluxJpeg.Core.IO\JPEGMarkerFoundException.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\ColorModel.cs">
+      <Link>FluxJpeg.Core\ColorModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\ColorSpace.cs">
+      <Link>FluxJpeg.Core\ColorSpace.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\DCT.cs">
+      <Link>FluxJpeg.Core\DCT.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\DecodedJpeg.cs">
+      <Link>FluxJpeg.Core\DecodedJpeg.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\HuffmanTable.cs">
+      <Link>FluxJpeg.Core\HuffmanTable.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\Image.cs">
+      <Link>FluxJpeg.Core\Image.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\ImageResizer.cs">
+      <Link>FluxJpeg.Core\ImageResizer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\JpegHeader.cs">
+      <Link>FluxJpeg.Core\JpegHeader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\JpegHuffmanTable.cs">
+      <Link>FluxJpeg.Core\JpegHuffmanTable.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\JPEGMarker.cs">
+      <Link>FluxJpeg.Core\JPEGMarker.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\JpegQuantizationTable.cs">
+      <Link>FluxJpeg.Core\JpegQuantizationTable.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\ResizeNotNeededException.cs">
+      <Link>FluxJpeg.Core\ResizeNotNeededException.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\ResizeProgressChangedEventArgs.cs">
+      <Link>FluxJpeg.Core\ResizeProgressChangedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\YCbCr.cs">
+      <Link>FluxJpeg.Core\YCbCr.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\FluxJpeg.Core\ZigZag.cs">
+      <Link>FluxJpeg.Core\ZigZag.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\ChunkCopyBehaviour.cs">
+      <Link>Hjg.Pngcs.Chunks\ChunkCopyBehaviour.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\ChunkHelper.cs">
+      <Link>Hjg.Pngcs.Chunks\ChunkHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\ChunkLoadBehaviour.cs">
+      <Link>Hjg.Pngcs.Chunks\ChunkLoadBehaviour.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\ChunkPredicate.cs">
+      <Link>Hjg.Pngcs.Chunks\ChunkPredicate.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\ChunkPredicateEquiv.cs">
+      <Link>Hjg.Pngcs.Chunks\ChunkPredicateEquiv.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\ChunkPredicateId.cs">
+      <Link>Hjg.Pngcs.Chunks\ChunkPredicateId.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\ChunkPredicateId2.cs">
+      <Link>Hjg.Pngcs.Chunks\ChunkPredicateId2.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\ChunkRaw.cs">
+      <Link>Hjg.Pngcs.Chunks\ChunkRaw.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\ChunksList.cs">
+      <Link>Hjg.Pngcs.Chunks\ChunksList.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\ChunksListForWrite.cs">
+      <Link>Hjg.Pngcs.Chunks\ChunksListForWrite.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunk.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunk.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkBKGD.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkBKGD.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkCHRM.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkCHRM.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkGAMA.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkGAMA.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkHIST.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkHIST.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkICCP.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkICCP.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkIDAT.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkIDAT.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkIEND.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkIEND.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkIHDR.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkIHDR.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkITXT.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkITXT.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkMultiple.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkMultiple.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkOFFS.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkOFFS.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkPHYS.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkPHYS.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkPLTE.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkPLTE.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkSBIT.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkSBIT.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkSingle.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkSingle.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkSkipped.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkSkipped.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkSPLT.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkSPLT.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkSRGB.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkSRGB.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkSTER.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkSTER.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkTEXT.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkTEXT.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkTextVar.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkTextVar.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkTIME.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkTIME.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkTRNS.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkTRNS.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkUNKNOWN.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkUNKNOWN.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngChunkZTXT.cs">
+      <Link>Hjg.Pngcs.Chunks\PngChunkZTXT.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Chunks\PngMetadata.cs">
+      <Link>Hjg.Pngcs.Chunks\PngMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Zlib\Adler32.cs">
+      <Link>Hjg.Pngcs.Zlib\Adler32.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Zlib\AZlibInputStream.cs">
+      <Link>Hjg.Pngcs.Zlib\AZlibInputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Zlib\AZlibOutputStream.cs">
+      <Link>Hjg.Pngcs.Zlib\AZlibOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Zlib\CRC32.cs">
+      <Link>Hjg.Pngcs.Zlib\CRC32.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Zlib\DeflateCompressLevel.cs">
+      <Link>Hjg.Pngcs.Zlib\DeflateCompressLevel.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Zlib\EDeflateCompressStrategy.cs">
+      <Link>Hjg.Pngcs.Zlib\EDeflateCompressStrategy.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Zlib\ZlibInputStreamMs.cs">
+      <Link>Hjg.Pngcs.Zlib\ZlibInputStreamMs.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Zlib\ZlibOutputStreamMs.cs">
+      <Link>Hjg.Pngcs.Zlib\ZlibOutputStreamMs.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs.Zlib\ZlibStreamFactory.cs">
+      <Link>Hjg.Pngcs.Zlib\ZlibStreamFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\CustomMemoryStream.cs">
+      <Link>Hjg.Pngcs\CustomMemoryStream.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\FilterType.cs">
+      <Link>Hjg.Pngcs\FilterType.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\FilterWriteStrategy.cs">
+      <Link>Hjg.Pngcs\FilterWriteStrategy.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\ImageInfo.cs">
+      <Link>Hjg.Pngcs\ImageInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\ImageLine.cs">
+      <Link>Hjg.Pngcs\ImageLine.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\ImageLineHelper.cs">
+      <Link>Hjg.Pngcs\ImageLineHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\ImageLines.cs">
+      <Link>Hjg.Pngcs\ImageLines.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngCsUtils.cs">
+      <Link>Hjg.Pngcs\PngCsUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngDeinterlacer.cs">
+      <Link>Hjg.Pngcs\PngDeinterlacer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngHelperInternal.cs">
+      <Link>Hjg.Pngcs\PngHelperInternal.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngIDatChunkInputStream.cs">
+      <Link>Hjg.Pngcs\PngIDatChunkInputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngIDatChunkOutputStream.cs">
+      <Link>Hjg.Pngcs\PngIDatChunkOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngjBadCrcException.cs">
+      <Link>Hjg.Pngcs\PngjBadCrcException.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngjException.cs">
+      <Link>Hjg.Pngcs\PngjException.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngjExceptionInternal.cs">
+      <Link>Hjg.Pngcs\PngjExceptionInternal.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngjInputException.cs">
+      <Link>Hjg.Pngcs\PngjInputException.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngjOutputException.cs">
+      <Link>Hjg.Pngcs\PngjOutputException.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngjUnsupportedException.cs">
+      <Link>Hjg.Pngcs\PngjUnsupportedException.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngReader.cs">
+      <Link>Hjg.Pngcs\PngReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\PngWriter.cs">
+      <Link>Hjg.Pngcs\PngWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\Hjg.Pngcs\ProgressiveOutputStream.cs">
+      <Link>Hjg.Pngcs\ProgressiveOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis.Ogg\ContainerReader.cs">
+      <Link>NVorbis.Ogg\ContainerReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis.Ogg\Crc.cs">
+      <Link>NVorbis.Ogg\Crc.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis.Ogg\Packet.cs">
+      <Link>NVorbis.Ogg\Packet.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis.Ogg\PacketReader.cs">
+      <Link>NVorbis.Ogg\PacketReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis.Ogg\PageFlags.cs">
+      <Link>NVorbis.Ogg\PageFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\BufferedReadStream.cs">
+      <Link>NVorbis\BufferedReadStream.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\DataPacket.cs">
+      <Link>NVorbis\DataPacket.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\Huffman.cs">
+      <Link>NVorbis\Huffman.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\HuffmanListNode.cs">
+      <Link>NVorbis\HuffmanListNode.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\IContainerReader.cs">
+      <Link>NVorbis\IContainerReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\IPacketProvider.cs">
+      <Link>NVorbis\IPacketProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\IVorbisStreamStatus.cs">
+      <Link>NVorbis\IVorbisStreamStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\Mdct.cs">
+      <Link>NVorbis\Mdct.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\NewStreamEventArgs.cs">
+      <Link>NVorbis\NewStreamEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\ParameterChangeEventArgs.cs">
+      <Link>NVorbis\ParameterChangeEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\RingBuffer.cs">
+      <Link>NVorbis\RingBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\StreamReadBuffer.cs">
+      <Link>NVorbis\StreamReadBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\Utils.cs">
+      <Link>NVorbis\Utils.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\VorbisCodebook.cs">
+      <Link>NVorbis\VorbisCodebook.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\VorbisFloor.cs">
+      <Link>NVorbis\VorbisFloor.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\VorbisMapping.cs">
+      <Link>NVorbis\VorbisMapping.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\VorbisMode.cs">
+      <Link>NVorbis\VorbisMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\VorbisReader.cs">
+      <Link>NVorbis\VorbisReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\VorbisResidue.cs">
+      <Link>NVorbis\VorbisResidue.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\VorbisStreamDecoder.cs">
+      <Link>NVorbis\VorbisStreamDecoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Engine\NVorbis\VorbisTime.cs">
+      <Link>NVorbis\VorbisTime.cs</Link>
+    </Compile>
     <Compile Remove="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Mono.android-arm64" Version="7.0.2.106" />
     <PackageReference Include="Xamarin.Legacy.OpenTK" Version="1.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 </Project>

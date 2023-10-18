@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survivalcraft_android", "Su
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "统一端", "统一端", "{D3AB47ED-7C46-4886-AAAC-5A81485F587D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySystem_android", "EntitySystem_android\EntitySystem_android.csproj", "{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{4CC1004A-3B04-4129-8FFA-B2FEFEF6644C} = {B616DEEE-DF47-4BC3-BAA9-D223D221B6EB}
 		{8DF9DBBC-F471-406E-A247-B07935723E07} = {528DAACD-0030-4435-B208-CEB0771F1E63}
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8} = {A9146056-4560-4FC8-8AA6-903299A7FE26}
+		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F} = {B616DEEE-DF47-4BC3-BAA9-D223D221B6EB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3B94A30-8A32-415E-BF3C-0B94F6F144C0}

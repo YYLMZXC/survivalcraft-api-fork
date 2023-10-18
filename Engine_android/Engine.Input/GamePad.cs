@@ -149,7 +149,7 @@ namespace Engine.Input
 			return -1;
 		}
 
-		public static GamePadButtons TranslateKey(Keycode keyCode)
+		public static GamePadButton TranslateKey(Keycode keyCode)
 		{
 			switch (keyCode)
 			{
