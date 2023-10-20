@@ -1,40 +1,57 @@
-﻿using Android;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Widget;
+using Permission = Android.Content.PM.Permission;
 using Engine;
 using Game;
 using System;
 using System.IO;
-namespace SC.Android
+using Android.Provider;
+using Android;
+using Environment = Android.OS.Environment;
+namespace SC4Android
 {
 	[Activity(Label = "生存战争2.3插件版", LaunchMode = LaunchMode.SingleTask, Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
 	[IntentFilter(new string[] { "android.intent.action.VIEW" }, DataScheme = "com.candy.survivalcraft", Categories = new string[] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
 
 	public class MainActivity : EngineActivity
 	{
-		protected override void OnCreate(Bundle savedInstanceState)
+		private async void CheckAndRequestPermissions()
+		{
+			if (((int)Build.VERSION.SdkInt) >= (int)BuildVersionCodes.R)
+			{
+				//当版本大于安卓11时
+				if (!Environment.IsExternalStorageManager)
+				{
+					StartActivity(new Intent(Settings.ActionManageAllFilesAccessPermission));
+				}
+			}
+			else if ((int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.M)
+			{
+				bool permissionGranted = true;
+				//当版本大于安卓6
+				var readPermissionStatus = CheckSelfPermission(Manifest.Permission.ReadExternalStorage);
+				if (readPermissionStatus != Permission.Granted)
+				{
+					permissionGranted = false;
+					RequestPermissions(new string[] { Manifest.Permission.ReadExternalStorage }, 0);
+				}
+
+				var writePermissionStatus = CheckSelfPermission(Manifest.Permission.WriteExternalStorage);
+				if (writePermissionStatus != Permission.Granted)
+				{
+					permissionGranted = false;
+					RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, 1);
+				}
+			}
+		}
+		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-			try
-			{
-				if (CheckSelfPermission(Manifest.Permission.WriteExternalStorage) != Permission.Granted)
-				{
-					Toast.MakeText(this, "请授权游戏存储读写权限", ToastLength.Long).Show();
-					RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, 0);
-				}
-				else
-				{
-					Run();
-				}
-			}
-			catch
-			{
-				Run();
-			}
+			CheckAndRequestPermissions();
+			Run();
 		}
 		public void Run()
 		{
@@ -50,8 +67,6 @@ namespace SC.Android
 					AppDomain.CurrentDomain.Load(memoryStream.ToArray());
 				}
 			}
-			
-			
 			Program.Main();
 		}
 		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
