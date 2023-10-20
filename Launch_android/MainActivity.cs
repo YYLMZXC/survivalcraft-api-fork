@@ -13,19 +13,19 @@ using Android.Provider;
 using Android.Widget;
 using Xamarin.Essentials;
 using Permissions = Xamarin.Essentials.Permissions;
-namespace SC.Android
+namespace SC4Android
 {
 	[Activity(Label = "生存战争2.3插件版", LaunchMode = LaunchMode.SingleTask, Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
 	[IntentFilter(new string[] { "android.intent.action.VIEW" }, DataScheme = "com.candy.survivalcraft", Categories = new string[] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
 
 	public class MainActivity : EngineActivity
 	{
-		protected override void OnCreate(Bundle savedInstanceState)
+		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			try
 			{
-				if ((Convert.ToInt32(Android.OS.Build.VERSION.Release) >= 11) && !Android.OS.Environment.IsExternalStorageManager)
+				if ((Convert.ToInt32(Build.VERSION.Release) >= 11) && !Android.OS.Environment.IsExternalStorageManager)
 				{
 					Toast.MakeText(this, "Android11以上无法直接访问\n需要手动授权，请在稍后的页面中 选择Android/data目录并点击\"选择\"按钮", ToastLength.Long).Show();
 					var intent = new Intent(Intent.ActionOpenDocumentTree);
@@ -33,16 +33,16 @@ namespace SC.Android
 					StartActivity(intent);
 					if ((int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.O)
 					{
-						Task.Run(() => intent.PutExtra(DocumentsContract.ExtraInitialUri, "/sdcard/"));
+						await Task.Run(() => intent.PutExtra(DocumentsContract.ExtraInitialUri, "/sdcard/"));
 					}
 				}
-				var status = Permissions.CheckStatusAsync<Permissions.StorageWrite>();
+				var status = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
 				if (status == PermissionStatus.Granted)
 				{
 					return;
 				}
 				Toast.MakeText(this, "权限需要\", \"此软件需要权限以更改Config文件", ToastLength.Long).Show();
-				var request = Permissions.RequestAsync<Permissions.StorageWrite>();
+				var request = await Permissions.RequestAsync<Permissions.StorageWrite>();
 
 				if (request == PermissionStatus.Granted)
 				{
