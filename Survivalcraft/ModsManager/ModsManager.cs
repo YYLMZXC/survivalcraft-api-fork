@@ -17,23 +17,25 @@ using XmlUtilities;
 
 public static class ModsManager
 {
-	public const string APIVersion = "1.60";
+	public const string APIVersion = "1.60P";
 	public const string SCVersion = "2.3.0.0";
 	//1为api1.33 2为api1.40
 	public const int Apiv = 10;
 
 #if desktop
-	public const string ExternelPath = "app:",
-						 UserDataPath = ExternelPath + "/UserId.dat",
-						 CharacterSkinsDirectoryName = ExternelPath + "/CharacterSkins",
-						 FurniturePacksDirectoryName = ExternelPath + "/FurniturePacks",
-						 BlockTexturesDirectoryName = ExternelPath + "/TexturePacks",
-						 WorldsDirectoryName = ExternelPath + "/Worlds",
-						 CommunityContentCachePath = ExternelPath + "CommunityContentCache.xml",
-						 ModsSetPath = ExternelPath + "/ModSettings.xml",
-						 SettingPath = ExternelPath + "/Settings.xml",
-						 ModCachePath = ExternelPath + "/ModsCache",
-						 LogPath = ExternelPath + "/Bugs";
+	public const string 
+		ExternelPath = "app:",
+		DocumentPath = "/doc",
+		UserDataPath = ExternelPath + "/UserId.dat",
+		CharacterSkinsDirectoryName = ExternelPath + DocumentPath + "/CharacterSkins",
+		FurniturePacksDirectoryName = ExternelPath + DocumentPath + "/FurniturePacks",
+		BlockTexturesDirectoryName = ExternelPath + DocumentPath + "/TexturePacks",
+		WorldsDirectoryName = ExternelPath + "/Worlds",
+		CommunityContentCachePath = ExternelPath + "CommunityContentCache.xml",
+		ModsSetPath = ExternelPath + "/ModSettings.xml",
+		SettingPath = ExternelPath + "/Settings.xml",
+		ModCachePath = ExternelPath + "/Mods/ModsCache",
+		LogPath = ExternelPath + "/Bugs";
 	public const bool IsAndroid = false;
 
 #endif
@@ -73,7 +75,7 @@ public static class ModsManager
 			HookName = name;
 		}
 
-		public void Add(ModLoader modLoader)
+		public async void Add(ModLoader modLoader)
 		{
 			if (Loaders.TryGetValue(modLoader, out _) == false)
 			{
@@ -81,7 +83,7 @@ public static class ModsManager
 			}
 		}
 
-		public void Remove(ModLoader modLoader)
+		public async void Remove(ModLoader modLoader)
 		{
 			if (Loaders.TryGetValue(modLoader, out _))
 			{
@@ -89,7 +91,7 @@ public static class ModsManager
 			}
 		}
 
-		public void Disable(ModLoader from, ModLoader toDisable, string reason)
+		public async void Disable(ModLoader from, ModLoader toDisable, string reason)
 		{
 			if (Loaders.TryGetValue(toDisable, out _))
 			{
@@ -337,7 +339,7 @@ public static class ModsManager
 			entity?.Invoke(ModList[i]);
 	}
 
-	public static void Initialize()
+	public async static void Initialize()
 	{
 		if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
 		ModHooks.Clear();
@@ -655,7 +657,7 @@ public static class ModsManager
 		}
 	}
 
-	public static void Modify(XElement source, XElement change)
+	public async static void Modify(XElement source, XElement change)
 	{
 		if (FindElement(source, (item) => { if (item.Name.LocalName == change.Name.LocalName && item.Attribute("Guid") != null && change.Attribute("Guid") != null && item.Attribute("Guid").Value == change.Attribute("Guid").Value) return true; return false; }, out XElement xElement1))
 		{

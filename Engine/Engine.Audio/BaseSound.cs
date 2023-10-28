@@ -127,7 +127,7 @@ namespace Engine.Audio
 			}
 		}
 
-		public void Play()
+		public async void Play()
 		{
 			lock (m_stateSync)
 			{
@@ -139,7 +139,7 @@ namespace Engine.Audio
 			}
 		}
 
-		public void Pause()
+		public async void Pause()
 		{
 			lock (m_stateSync)
 			{
@@ -151,7 +151,7 @@ namespace Engine.Audio
 			}
 		}
 
-		public void Stop()
+		public async void Stop()
 		{
 			if (m_disposeOnStop)
 			{

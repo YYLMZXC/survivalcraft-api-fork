@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <AndroidUseAapt2>true</AndroidUseAapt2>
   </PropertyGroup>
   <PropertyGroup>
@@ -20,14 +20,6 @@
 	<DefineConstants>TRACE;android</DefineConstants>
     <DebugType>none</DebugType>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System_IO_Compression">
-      <HintPath>..\dllReference\System_IO_Compression.dll</HintPath>
-    </Reference>
-    <Reference Include="System_Net_Http">
-      <HintPath>..\dllReference\System_Net_Http.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Engine\Engine.Audio\BaseSound.cs">
       <Link>Engine.Audio\BaseSound.cs</Link>

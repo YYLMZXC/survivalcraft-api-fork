@@ -1,10 +1,12 @@
 using Engine;
 using Engine.Graphics;
+using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Runtime.InteropServices;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Game
 {
 	public static class Program
@@ -68,7 +70,12 @@ namespace Game
 				e.IsHandled = true;
 			};
 			JsInterface.Initiate();
-			Window.Run((int)(Window.ScreenSize.X / 1.25f), (int)(Window.ScreenSize.Y * 0.8f), WindowMode.Resizable, "生存战争2.3插件版NEXT" + ModsManager.APIVersion);
+			string Error = "";
+			//if(AL.GetError()!=0)
+			//{
+				Error = "OPENAL疑似未安装!";
+			//}
+			Window.Run((int)(Window.ScreenSize.X / 1.2f), (int)(Window.ScreenSize.Y * 0.85f), WindowMode.Resizable, "生存战争2.3插件版NEXT" + ModsManager.APIVersion + " #" + Error);
 		}
 
 		public static void HandleUriHandler(Uri uri)

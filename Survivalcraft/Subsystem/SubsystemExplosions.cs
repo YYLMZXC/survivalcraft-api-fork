@@ -63,7 +63,7 @@ namespace Game
 				return m_outside;
 			}
 
-			public void Set(int x, int y, int z, T value)
+			public async void Set(int x, int y, int z, T value)
 			{
 				x -= m_originX;
 				y -= m_originY;
@@ -207,7 +207,7 @@ namespace Game
 			return false;
 		}
 
-		public void AddExplosion(int x, int y, int z, float pressure, bool isIncendiary, bool noExplosionSound)
+		public async void AddExplosion(int x, int y, int z, float pressure, bool isIncendiary, bool noExplosionSound)
 		{
 			if (pressure > 0f)
 			{
@@ -223,7 +223,7 @@ namespace Game
 			}
 		}
 
-		public void Update(float dt)
+		public async void Update(float dt)
 		{
 			if (m_queuedExplosions.Count <= 0)
 			{
@@ -264,7 +264,7 @@ namespace Game
 			}
 		}
 
-		public override void Load(ValuesDictionary valuesDictionary)
+		public override async void Load(ValuesDictionary valuesDictionary)
 		{
 			m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
 			m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
@@ -279,7 +279,7 @@ namespace Game
 			m_subsystemParticles.AddParticleSystem(m_explosionParticleSystem);
 		}
 
-		public void SimulateExplosion(int x, int y, int z, float pressure, bool isIncendiary)
+		public async void SimulateExplosion(int x, int y, int z, float pressure, bool isIncendiary)
 		{
 			int explosionPointValue = m_subsystemTerrain.Terrain.GetCellValue(x, y, z);
 			float num = MathUtils.Max(0.13f * MathUtils.Pow(pressure, 0.5f), 1f);
@@ -354,7 +354,7 @@ namespace Game
 			}
 		}
 
-		public void TryAddPoint(int x, int y, int z, int axis, float currentPressure, bool isIncendiary, List<ProcessPoint> toProcess, SparseSpatialArray<bool> processed)
+		public async void TryAddPoint(int x, int y, int z, int axis, float currentPressure, bool isIncendiary, List<ProcessPoint> toProcess, SparseSpatialArray<bool> processed)
 		{
 			if (processed.Get(x, y, z))
 			{
@@ -460,7 +460,7 @@ namespace Game
 			processed.Set(x, y, z, value: true);
 		}
 
-		public virtual void PostprocessExplosions(bool playExplosionSound)
+		public virtual async void PostprocessExplosions(bool playExplosionSound)
 		{
 			Point3 point = Point3.Zero;
 			float num = float.MaxValue;
