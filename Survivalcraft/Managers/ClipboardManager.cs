@@ -9,10 +9,13 @@ namespace Game
 			get
 			{
 				return Clipboard.GetText();
-			}
+				//return Windows.ApplicationModel.DataTransfer.Clipboard.GetContent().ToString();
+
+            }
 			set
 			{
 				Clipboard.SetText(value);
+				//Clipboard.SetContent((C)value);
 			}
 		}
 	}

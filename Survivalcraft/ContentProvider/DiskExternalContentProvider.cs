@@ -97,7 +97,7 @@ namespace Game
 
 		public void Upload(string path, Stream stream, CancellableProgress progress, Action<string> success, Action<Exception> failure)
 		{
-			var saveFileDialog1 = new SaveFileDialog();
+			//var saveFileDialog1 = new SaveFileDialog();
 			try
 			{
 				FileStream fileStream = null;

@@ -22,6 +22,7 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <UseWindowsForms>True</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <Configurations>Debug;Release;正弦™极致优化</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DefineConstants>DEBUG;desktop</DefineConstants>
@@ -34,6 +35,23 @@
     <DefineConstants>TRACE;desktop</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='正弦™极致优化|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DefineConstants>TRACE;desktop</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+	  <PublishAot>true</PublishAot>
+    <_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
+	  <IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata>
+	  <IlcOptimizationPreference>Size</IlcOptimizationPreference>
+	  <EventSourceSupport>false</EventSourceSupport>
+	  <UseSystemResourceKeys>true</UseSystemResourceKeys>
+	  <InvariantGlobalization>true</InvariantGlobalization>
+	  <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+	  <IlcInvariantGlobalization>true</IlcInvariantGlobalization>
+	  <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+	  <IlcDisableReflection>true</IlcDisableReflection>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Game.Program</StartupObject>

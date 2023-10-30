@@ -70,11 +70,12 @@ namespace Game
 				e.IsHandled = true;
 			};
 			JsInterface.Initiate();
-			string Error = "";
-			//if(AL.GetError()!=0)
-			//{
+			string Error = "正常运行中";
+			if(AL.GetError()!=0)
+			{
 				Error = "OPENAL疑似未安装!";
-			//}
+				WebBrowserManager.LaunchBrowser("http://www.openal.org/downloads/oalinst.zip");
+			}
 			Window.Run((int)(Window.ScreenSize.X / 1.2f), (int)(Window.ScreenSize.Y * 0.85f), WindowMode.Resizable, "生存战争2.3插件版NEXT" + ModsManager.APIVersion + " #" + Error);
 		}
 

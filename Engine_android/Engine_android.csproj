@@ -4,6 +4,7 @@
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <AndroidUseAapt2>true</AndroidUseAapt2>
+    <Configurations>Debug;Release;正弦™极致优化</Configurations>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>
@@ -18,6 +19,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	<DefineConstants>TRACE;android</DefineConstants>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='正弦™极致优化|AnyCPU'">
+    <DefineConstants>TRACE;android</DefineConstants>
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>

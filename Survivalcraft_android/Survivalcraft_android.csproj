@@ -4,6 +4,7 @@
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <AndroidUseAapt2>true</AndroidUseAapt2>
+    <Configurations>Debug;Release;正弦™极致优化</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	<DefineConstants>DEBUG;android</DefineConstants>
@@ -12,6 +13,10 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 	<DefineConstants>TRACE;android</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='正弦™极致优化|AnyCPU'">
+    <DefineConstants>TRACE;android</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>

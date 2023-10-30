@@ -23,44 +23,60 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survivalcraft_android", "Su
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "统一端", "统一端", "{D3AB47ED-7C46-4886-AAAC-5A81485F587D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitySystem_android", "EntitySystem_android\EntitySystem_android.csproj", "{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntitySystem_android", "EntitySystem_android\EntitySystem_android.csproj", "{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		正弦™极致优化|Any CPU = 正弦™极致优化|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1BD2F152-AB0E-4351-BCF7-9ACC22D66032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1BD2F152-AB0E-4351-BCF7-9ACC22D66032}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BD2F152-AB0E-4351-BCF7-9ACC22D66032}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BD2F152-AB0E-4351-BCF7-9ACC22D66032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BD2F152-AB0E-4351-BCF7-9ACC22D66032}.正弦™极致优化|Any CPU.ActiveCfg = 正弦™极致优化|Any CPU
+		{1BD2F152-AB0E-4351-BCF7-9ACC22D66032}.正弦™极致优化|Any CPU.Build.0 = 正弦™极致优化|Any CPU
 		{2B5CFE67-D78B-4CCD-A6BB-616BF772C094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B5CFE67-D78B-4CCD-A6BB-616BF772C094}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B5CFE67-D78B-4CCD-A6BB-616BF772C094}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B5CFE67-D78B-4CCD-A6BB-616BF772C094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B5CFE67-D78B-4CCD-A6BB-616BF772C094}.正弦™极致优化|Any CPU.ActiveCfg = 正弦™极致优化|Any CPU
+		{2B5CFE67-D78B-4CCD-A6BB-616BF772C094}.正弦™极致优化|Any CPU.Build.0 = 正弦™极致优化|Any CPU
 		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.正弦™极致优化|Any CPU.ActiveCfg = 正弦™极致优化|Any CPU
+		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.正弦™极致优化|Any CPU.Build.0 = 正弦™极致优化|Any CPU
+		{16D7BCA8-E82F-40B0-9142-78B16FA597BF}.正弦™极致优化|Any CPU.Deploy.0 = 正弦™极致优化|Any CPU
 		{4CC1004A-3B04-4129-8FFA-B2FEFEF6644C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4CC1004A-3B04-4129-8FFA-B2FEFEF6644C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CC1004A-3B04-4129-8FFA-B2FEFEF6644C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CC1004A-3B04-4129-8FFA-B2FEFEF6644C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CC1004A-3B04-4129-8FFA-B2FEFEF6644C}.正弦™极致优化|Any CPU.ActiveCfg = 正弦™极致优化|Any CPU
+		{4CC1004A-3B04-4129-8FFA-B2FEFEF6644C}.正弦™极致优化|Any CPU.Build.0 = 正弦™极致优化|Any CPU
 		{8DF9DBBC-F471-406E-A247-B07935723E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8DF9DBBC-F471-406E-A247-B07935723E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DF9DBBC-F471-406E-A247-B07935723E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DF9DBBC-F471-406E-A247-B07935723E07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DF9DBBC-F471-406E-A247-B07935723E07}.正弦™极致优化|Any CPU.ActiveCfg = 正弦™极致优化|Any CPU
+		{8DF9DBBC-F471-406E-A247-B07935723E07}.正弦™极致优化|Any CPU.Build.0 = 正弦™极致优化|Any CPU
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}.正弦™极致优化|Any CPU.ActiveCfg = 正弦™极致优化|Any CPU
+		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}.正弦™极致优化|Any CPU.Build.0 = 正弦™极致优化|Any CPU
 		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.正弦™极致优化|Any CPU.ActiveCfg = 正弦™极致优化|Any CPU
+		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.正弦™极致优化|Any CPU.Build.0 = 正弦™极致优化|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
