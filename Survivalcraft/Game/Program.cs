@@ -76,7 +76,7 @@ namespace Game
 				Error = "OPENAL疑似未安装!";
 				WebBrowserManager.LaunchBrowser("http://www.openal.org/downloads/oalinst.zip");
 			}
-			Window.Run((int)(Window.ScreenSize.X / 1.2f), (int)(Window.ScreenSize.Y * 0.85f), WindowMode.Resizable, "生存战争2.3插件版NEXT" + ModsManager.APIVersion + " #" + Error);
+			Window.Run(0, 0, WindowMode.Resizable, "生存战争2.3插件版NEXT" + ModsManager.APIVersion + " #" + Error);
 		}
 
 		public static void HandleUriHandler(Uri uri)

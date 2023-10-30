@@ -221,11 +221,11 @@ namespace Engine
 				}
 			};
 			GraphicsMode mode = new GraphicsMode(new OpenTK.Graphics.ColorFormat(24), 16, 0, 0, OpenTK.Graphics.ColorFormat.Empty, 2);
-			m_gameWindow = new GameWindow(400, 300, mode, title, GameWindowFlags.Default, DisplayDevice.Default, 2, 0, GraphicsContextFlags.Default);
+			width = (width == 0) ? (ScreenSize.X * 4 / 5) : width;
+			height = (height == 0) ? (ScreenSize.Y * 4 / 5) : height;
+			m_gameWindow = new GameWindow(width, height, mode, title, GameWindowFlags.Default, DisplayDevice.Default, 2, 0, GraphicsContextFlags.Default);
 			m_gameWindow.Icon = new Icon(typeof(Window).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.icon.ico"), new Size(32, 32));
 			m_dpiScale = (float)m_gameWindow.ClientSize.Width / 400f;
-			width = (width == 0) ? (ScreenSize.X * 3 / 4) : width;
-			height = (height == 0) ? (ScreenSize.Y * 3 / 4) : height;
 			m_gameWindow.ClientSize = new Size(width, height);
 			if (Configuration.RunningOnMacOS)
 			{
