@@ -52,6 +52,7 @@
 	  <IlcInvariantGlobalization>true</IlcInvariantGlobalization>
 	  <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
 	  <IlcDisableReflection>true</IlcDisableReflection>
+	  <Optimize>True</Optimize>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Game.Program</StartupObject>
@@ -123,6 +124,7 @@ cd "$(SolutionDir)Survivalcraft\Content"
     <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
     <AssemblyVersion>2.3.0.0</AssemblyVersion>
     <FileVersion>2.3.0.0</FileVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
   <ProjectExtensions />
 </Project>
