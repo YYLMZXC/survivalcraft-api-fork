@@ -456,24 +456,26 @@ namespace Game
 			SkyRenderingMode = SkyRenderingMode.Full;
 			TerrainMipmapsEnabled = false;
 			ObjectsShadowsEnabled = true;
-			m_soundsVolume = 0.5f;
-			m_musicVolume = 0.5f;
-			m_brightness = 0.5f;
+			m_soundsVolume = 1.0f;
+			m_musicVolume = 0.2f;
+			m_brightness = 0.8f;
 			PresentationInterval = 1;
 			ShowGuiInScreenshots = false;
 			ShowLogoInScreenshots = true;
 			ScreenshotSize = ScreenshotSize.ScreenSize;
-			MoveControlMode = MoveControlMode.Pad;
+			MoveControlMode = MoveControlMode.Buttons;
 			HideMoveLookPads = false;
 			AllowInitialIntro = true;
 			BlocksTextureFileName = string.Empty;
 			LookControlMode = LookControlMode.EntireScreen;
 			FlipVerticalAxis = false;
 #if android
-			UIScale = 1f;
+			UIScale = 0.9f;
+			AutoJump = true;
 #endif
 #if desktop
 			UIScale = 0.8f;
+			AutoJump = false;
 #endif
 			MoveSensitivity = 0.5f;
 			LookSensitivity = 0.5f;
@@ -483,7 +485,6 @@ namespace Game
 			CreativeReach = 7.5f;
 			MinimumHoldDuration = 0.5f;
 			MinimumDragDistance = 10f;
-			AutoJump = true;
 			HorizontalCreativeFlight = false;
 			DropboxAccessToken = string.Empty;
 			ScpboxAccessToken = string.Empty;
@@ -496,7 +497,7 @@ namespace Game
 			LastLaunchedVersion = string.Empty;
 			CommunityContentMode = CommunityContentMode.Normal;
 			MultithreadedTerrainUpdate = true;
-			NewYearCelebrationLastYear = 2015;
+			NewYearCelebrationLastYear = 2035;
 			ScreenLayout1 = ScreenLayout.Single;
 			ScreenLayout2 = (Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.DoubleVertical : ScreenLayout.DoubleHorizontal;
 			ScreenLayout3 = (Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.TripleVertical : ScreenLayout.TripleHorizontal;

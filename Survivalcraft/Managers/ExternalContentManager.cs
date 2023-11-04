@@ -26,18 +26,21 @@ namespace Game
 
 		public static void Initialize()
 		{
-			m_providers = new List<IExternalContentProvider>();
+			m_providers =
+			[
+				new SPMBoxExternalContentProvider(),
+				new DropboxExternalContentProvider(),
+				new TransferShExternalContentProvider(),
 #if desktop
-			m_providers.Add(new DiskExternalContentProvider());
+				new DiskExternalContentProvider()
 #endif
-
 #if android
-			m_providers.Add(new AndroidSdCardExternalContentProvider());
+				new AndroidSdCardExternalContentProvider()
 #endif
-			m_providers.Add(new SPMBoxExternalContentProvider());
-			m_providers.Add(new DropboxExternalContentProvider());
-			m_providers.Add(new TransferShExternalContentProvider());
+			];
 		}
+
+
 
 		public static ExternalContentType ExtensionToType(string extension)
 		{
