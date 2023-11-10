@@ -562,9 +562,9 @@ namespace Game
 
 		public static string CalculateContentHashString(byte[] data)
 		{
-			using (var sHA1Managed = new SHA1Managed())
+			using (var sHA384Managed = new SHA384Managed())
 			{
-				return Convert.ToBase64String(sHA1Managed.ComputeHash(data));
+				return Convert.ToBase64String(sHA384Managed.ComputeHash(data));
 			}
 		}
 

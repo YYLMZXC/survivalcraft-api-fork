@@ -6,39 +6,57 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidKeyStore>true</AndroidKeyStore>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
-    <Configurations>Debug;Release;正弦™极致优化</Configurations>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>True</EnableLLVM>
+    <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <AndroidKeyStore>true</AndroidKeyStore>
     <AndroidSigningKeyStore>.\debug.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>android</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>android</AndroidSigningKeyPass>
-    <TrimMode>link</TrimMode>
     <AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
-    <PublishTrimmed>True</PublishTrimmed>
-    <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
-    <EnableLLVM>True</EnableLLVM>
     <MandroidI18n />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
+    <AndroidSupportedAbis></AndroidSupportedAbis>
     <AndroidHttpClientHandlerType />
-    <RunAOTCompilation>False</RunAOTCompilation>
+    <RunAOTCompilation>True</RunAOTCompilation>
+    <PublishTrimmed>True</PublishTrimmed>
+    <TrimMode>link</TrimMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
-    <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>True</EnableLLVM>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
-    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
+    <BundleAssemblies>false</BundleAssemblies>
+    <AndroidKeyStore>true</AndroidKeyStore>
+    <AndroidSigningKeyStore>.\debug.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>android</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>android</AndroidSigningKeyPass>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <MandroidI18n />
+    <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidDexTool>d8</AndroidDexTool>
+	  <AndroidSupportedAbis>arm64-v8a</AndroidSupportedAbis>
+	  <AndroidDexTool>d8</AndroidDexTool>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <RunAOTCompilation>False</RunAOTCompilation>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
@@ -55,6 +73,8 @@
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <RunAOTCompilation>true</RunAOTCompilation>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <PublishTrimmed>True</PublishTrimmed>
+    <TrimMode>link</TrimMode>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>
