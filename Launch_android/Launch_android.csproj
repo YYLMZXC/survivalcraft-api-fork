@@ -87,11 +87,6 @@
     <RootNamespace>SCNEXT</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <AndroidNativeLibrary Include="libopenal32.so">
-      <Abi>arm64-v8a</Abi>
-    </AndroidNativeLibrary>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Engine_android\Engine_android.csproj" />
     <ProjectReference Include="..\Survivalcraft_android\Survivalcraft_android.csproj" />
   </ItemGroup>
