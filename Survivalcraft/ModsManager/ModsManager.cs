@@ -26,15 +26,15 @@ public static class ModsManager
 	public const string 
 		ExternelPath = "app:",
 		DocumentPath = "/doc",
-		UserDataPath = ExternelPath + "/UserId.dat",
+		UserDataPath = ExternelPath + DocumentPath + "/UserId.dat",
 		CharacterSkinsDirectoryName = ExternelPath + DocumentPath + "/CharacterSkins",
 		FurniturePacksDirectoryName = ExternelPath + DocumentPath + "/FurniturePacks",
 		BlockTexturesDirectoryName = ExternelPath + DocumentPath + "/TexturePacks",
 		WorldsDirectoryName = ExternelPath + "/Worlds",
-		CommunityContentCachePath = ExternelPath + "CommunityContentCache.xml",
+		CommunityContentCachePath = ExternelPath + DocumentPath + "CommunityContentCache.xml",
 		ModsSetPath = ExternelPath + "/ModSettings.xml",
 		SettingPath = ExternelPath + "/Settings.xml",
-		ModCachePath = ExternelPath + "/Mods/ModsCache",
+		ModCachePath = ExternelPath + "/Mods/Cache",
 		LogPath = ExternelPath + "/Bugs";
 	public const bool IsAndroid = false;
 
@@ -75,7 +75,7 @@ public static class ModsManager
 			HookName = name;
 		}
 
-		public async void Add(ModLoader modLoader)
+		public void Add(ModLoader modLoader)
 		{
 			if (Loaders.TryGetValue(modLoader, out _) == false)
 			{
@@ -83,7 +83,7 @@ public static class ModsManager
 			}
 		}
 
-		public async void Remove(ModLoader modLoader)
+		public void Remove(ModLoader modLoader)
 		{
 			if (Loaders.TryGetValue(modLoader, out _))
 			{
@@ -91,7 +91,7 @@ public static class ModsManager
 			}
 		}
 
-		public async void Disable(ModLoader from, ModLoader toDisable, string reason)
+		public void Disable(ModLoader from, ModLoader toDisable, string reason)
 		{
 			if (Loaders.TryGetValue(toDisable, out _))
 			{
@@ -339,7 +339,7 @@ public static class ModsManager
 			entity?.Invoke(ModList[i]);
 	}
 
-	public async static void Initialize()
+	public static void Initialize()
 	{
 		if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
 		ModHooks.Clear();
@@ -657,7 +657,7 @@ public static class ModsManager
 		}
 	}
 
-	public async static void Modify(XElement source, XElement change)
+	public static void Modify(XElement source, XElement change)
 	{
 		if (FindElement(source, (item) => { if (item.Name.LocalName == change.Name.LocalName && item.Attribute("Guid") != null && change.Attribute("Guid") != null && item.Attribute("Guid").Value == change.Attribute("Guid").Value) return true; return false; }, out XElement xElement1))
 		{

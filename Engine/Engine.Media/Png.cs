@@ -195,7 +195,7 @@ namespace Engine.Media
 			throw new InvalidOperationException("Unsupported PNG pixel format.");
 		}
 
-		public async static void Save(Image image, Stream stream, Format format)
+		public static void Save(Image image, Stream stream, Format format)
 		{
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentNullException.ThrowIfNull(stream);

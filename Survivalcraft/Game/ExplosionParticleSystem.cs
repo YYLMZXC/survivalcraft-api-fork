@@ -29,7 +29,7 @@ namespace Game
 			m_inactiveParticles.AddRange(Particles);
 		}
 
-		public async void SetExplosionCell(Point3 point, float strength)
+		public void SetExplosionCell(Point3 point, float strength)
 		{
 			if (!m_particlesByPoint.TryGetValue(point, out Particle value))
 			{
@@ -93,7 +93,7 @@ namespace Game
 			return false;
 		}
 
-		public override async void Draw(Camera camera)
+		public override void Draw(Camera camera)
 		{
 			if (!m_isEmpty)
 			{

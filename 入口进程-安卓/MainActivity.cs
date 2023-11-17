@@ -15,7 +15,7 @@ namespace SC4Android
 
 	public class MainActivity : EngineActivity
 	{
-		private async void CheckAndRequestPermissions()
+		private void CheckAndRequestPermissions()
 		{
 			if (((int)Build.VERSION.SdkInt) >= (int)BuildVersionCodes.R)
 			{
@@ -44,7 +44,7 @@ namespace SC4Android
 				}
 			}
 		}
-		protected override async void OnCreate(Bundle savedInstanceState)
+		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			CheckAndRequestPermissions();

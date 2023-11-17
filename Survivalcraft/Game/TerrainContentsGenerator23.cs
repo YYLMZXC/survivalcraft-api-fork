@@ -363,19 +363,19 @@ namespace Game
 			return new Vector3(vector.X, CalculateHeight(vector.X, vector.Y), vector.Y);
 		}
 
-		async public void GenerateChunkContentsPass1(TerrainChunk chunk)
+		public void GenerateChunkContentsPass1(TerrainChunk chunk)
 		{
 			GenerateSurfaceParameters(chunk, 0, 0, 16, 8);
 			GenerateTerrain(chunk, 0, 0, 16, 8);
 		}
 
-		async public void GenerateChunkContentsPass2(TerrainChunk chunk)
+		public void GenerateChunkContentsPass2(TerrainChunk chunk)
 		{
 			GenerateSurfaceParameters(chunk, 0, 8, 16, 16);
 			GenerateTerrain(chunk, 0, 8, 16, 16);
 		}
 
-		async public void GenerateChunkContentsPass3(TerrainChunk chunk)
+		public void GenerateChunkContentsPass3(TerrainChunk chunk)
 		{
 			GenerateCaves(chunk);
 			GeneratePockets(chunk);
@@ -384,7 +384,7 @@ namespace Game
 			PropagateFluidsDownwards(chunk);
 		}
 
-		async public void GenerateChunkContentsPass4(TerrainChunk chunk)
+		public void GenerateChunkContentsPass4(TerrainChunk chunk)
 		{
 			GenerateGrassAndPlants(chunk);
 			GenerateLogs(chunk);
@@ -616,7 +616,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateTerrain(TerrainChunk chunk, int x1, int z1, int x2, int z2)
+		public void GenerateTerrain(TerrainChunk chunk, int x1, int z1, int x2, int z2)
 		{
 			int num = x2 - x1;
 			int num2 = z2 - z1;
@@ -724,7 +724,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateSurface(TerrainChunk chunk)
+		public void GenerateSurface(TerrainChunk chunk)
 		{
 			Terrain terrain = m_subsystemTerrain.Terrain;
 			Random random = new Random(m_seed + chunk.Coords.X + (101 * chunk.Coords.Y));
@@ -787,7 +787,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateMinerals(TerrainChunk chunk)
+		public void GenerateMinerals(TerrainChunk chunk)
 		{
 			if (!TGCavesAndPockets)
 			{
@@ -866,7 +866,7 @@ namespace Game
 			}
 		}
 
-		async public void GeneratePockets(TerrainChunk chunk)
+		public void GeneratePockets(TerrainChunk chunk)
 		{
 			if (!TGCavesAndPockets)
 			{
@@ -975,7 +975,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateCaves(TerrainChunk chunk)
+		public void GenerateCaves(TerrainChunk chunk)
 		{
 			if (!TGCavesAndPockets)
 			{
@@ -1095,7 +1095,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateLogs(TerrainChunk chunk)
+		public void GenerateLogs(TerrainChunk chunk)
 		{
 			if (!TGExtras)
 			{
@@ -1239,7 +1239,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateTrees(TerrainChunk chunk)
+		public void GenerateTrees(TerrainChunk chunk)
 		{
 			if (!TGExtras)
 			{
@@ -1296,7 +1296,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateBedrockAndAir(TerrainChunk chunk)
+		public void GenerateBedrockAndAir(TerrainChunk chunk)
 		{
 			int value = Terrain.MakeBlockValue(1);
 			for (int i = 0; i < 16; i++)
@@ -1315,7 +1315,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateGrassAndPlants(TerrainChunk chunk)
+		public void GenerateGrassAndPlants(TerrainChunk chunk)
 		{
 			if (!TGExtras)
 			{
@@ -1353,7 +1353,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateBottomSuckers(TerrainChunk chunk)
+		public void GenerateBottomSuckers(TerrainChunk chunk)
 		{
 			if (!TGExtras)
 			{
@@ -1443,7 +1443,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateCacti(TerrainChunk chunk)
+		public void GenerateCacti(TerrainChunk chunk)
 		{
 			if (!TGExtras)
 			{
@@ -1492,7 +1492,7 @@ namespace Game
 			}
 		}
 
-		async public void GeneratePumpkins(TerrainChunk chunk)
+		public void GeneratePumpkins(TerrainChunk chunk)
 		{
 			if (!TGExtras)
 			{
@@ -1536,7 +1536,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateKelp(TerrainChunk chunk)
+		public void GenerateKelp(TerrainChunk chunk)
 		{
 			if (!TGExtras)
 			{
@@ -1618,7 +1618,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateSeagrass(TerrainChunk chunk)
+		public void GenerateSeagrass(TerrainChunk chunk)
 		{
 			if (!TGExtras)
 			{
@@ -1672,7 +1672,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateIvy(TerrainChunk chunk)
+		public void GenerateIvy(TerrainChunk chunk)
 		{
 			if (!TGExtras)
 			{
@@ -1744,7 +1744,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateTraps(TerrainChunk chunk)
+		public void GenerateTraps(TerrainChunk chunk)
 		{
 			if (!TGExtras)
 			{
@@ -1821,7 +1821,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateGraves(TerrainChunk chunk)
+		public void GenerateGraves(TerrainChunk chunk)
 		{
 			if (!TGExtras)
 			{
@@ -2015,7 +2015,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateCairns(TerrainChunk chunk)
+		public void GenerateCairns(TerrainChunk chunk)
 		{
 			int num = 190;
 			Point2 point = default(Point2);
@@ -2045,7 +2045,7 @@ namespace Game
 			}
 		}
 
-		async public void GenerateSnowAndIce(TerrainChunk chunk)
+		public void GenerateSnowAndIce(TerrainChunk chunk)
 		{
 			for (int i = 0; i < 16; i++)
 			{
@@ -2100,7 +2100,7 @@ namespace Game
 			}
 		}
 
-		async public void PropagateFluidsDownwards(TerrainChunk chunk)
+		public void PropagateFluidsDownwards(TerrainChunk chunk)
 		{
 			for (int i = 0; i < 16; i++)
 			{
@@ -2125,7 +2125,7 @@ namespace Game
 			}
 		}
 
-		async public void UpdateFluidIsTop(TerrainChunk chunk)
+		public void UpdateFluidIsTop(TerrainChunk chunk)
 		{
 			for (int i = 0; i < 16; i++)
 			{

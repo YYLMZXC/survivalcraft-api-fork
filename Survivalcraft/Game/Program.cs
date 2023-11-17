@@ -124,7 +124,7 @@ namespace Game
 			}
 		}
 
-		async public static void Run()
+		public static void Run()
 		{
 			LastFrameTime = (float)(Time.RealTime - m_frameBeginTime);
 			LastCpuFrameTime = (float)(m_cpuEndTime - m_frameBeginTime);

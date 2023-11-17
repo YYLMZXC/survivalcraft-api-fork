@@ -127,7 +127,7 @@ namespace Game
 #endif
 		}
 
-		async public static void PlayMusic(string name, float startPercentage)
+		public static void PlayMusic(string name, float startPercentage)
 		{
 			if (string.IsNullOrEmpty(name))
 			{
