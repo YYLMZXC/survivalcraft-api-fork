@@ -25,14 +25,14 @@ public static class ModsManager
 #if desktop
 	public const string ExternelPath = "app:",
 						 UserDataPath = ExternelPath + "/UserId.dat",
-						 CharacterSkinsDirectoryName = ExternelPath + "/CharacterSkins",
-						 FurniturePacksDirectoryName = ExternelPath + "/FurniturePacks",
-						 BlockTexturesDirectoryName = ExternelPath + "/TexturePacks",
+						 CharacterSkinsDirectoryName = ExternelPath + "/doc/CharacterSkins",
+						 FurniturePacksDirectoryName = ExternelPath + "/doc/FurniturePacks",
+						 BlockTexturesDirectoryName = ExternelPath + "/doc/TexturePacks",
 						 WorldsDirectoryName = ExternelPath + "/Worlds",
-						 CommunityContentCachePath = ExternelPath + "CommunityContentCache.xml",
+						 CommunityContentCachePath = ExternelPath + "/doc/CommunityContentCache.xml",
 						 ModsSetPath = ExternelPath + "/ModSettings.xml",
 						 SettingPath = ExternelPath + "/Settings.xml",
-						 ModCachePath = ExternelPath + "/ModsCache",
+						 ModCachePath = ExternelPath + "/Mods/Cache",
 						 LogPath = ExternelPath + "/Bugs";
 	public const bool IsAndroid = false;
 
