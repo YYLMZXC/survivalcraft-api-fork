@@ -31,7 +31,7 @@ namespace Game
         }
         public static Subsystem findSubsystem(string name)
         {
-            if (JsInterface.Project == null)
+            if (Project == null)
             {
                 return null;
             }
@@ -40,7 +40,7 @@ namespace Game
             {
                 return null;
             }
-            return JsInterface.Project.FindSubsystem(t, null, false);
+            return Project.FindSubsystem(t, null, false);
         }
         public static void Initiate()
         {
@@ -124,11 +124,7 @@ namespace Game
         {
             try
             {
-#if __IOS__
-                engine.Execute(script.ToString());
-#else
                 engine.Execute(script);
-#endif
             }
             catch (Exception ex)
             {
@@ -139,11 +135,7 @@ namespace Game
         {
             try
             {
-#if __IOS__
-                return engine.Execute(str).ToString();
-#else
                 return engine.Evaluate(str).ToString();
-#endif
             }
             catch (Exception ex)
             {
@@ -180,11 +172,7 @@ namespace Game
         {
             ArrayInstance array = engine.GetValue(str).AsArray();
             List<JsValue> list = new List<JsValue>();
-#if __IOS__
-            for (int i = 0; i < array.GetLength(); i++)
-#else
             for (int i = 0; i < array.Length; i++)
-#endif
             {
                 var obj = array.Get(i.ToString());
                 list.Add(obj);
