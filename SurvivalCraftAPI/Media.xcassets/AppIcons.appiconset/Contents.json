@@ -2,22 +2,7 @@
   "images": [
     {
       "scale": "3x",
-      "size": "20x20",
-      "idiom": "iphone"
-    },
-    {
-      "scale": "2x",
       "size": "29x29",
-      "idiom": "iphone"
-    },
-    {
-      "scale": "3x",
-      "size": "29x29",
-      "idiom": "iphone"
-    },
-    {
-      "scale": "2x",
-      "size": "40x40",
       "idiom": "iphone"
     },
     {
@@ -31,28 +16,13 @@
       "idiom": "ipad"
     },
     {
-      "scale": "2x",
-      "size": "20x20",
-      "idiom": "ipad"
-    },
-    {
       "scale": "1x",
       "size": "29x29",
       "idiom": "ipad"
     },
     {
-      "scale": "2x",
-      "size": "29x29",
-      "idiom": "ipad"
-    },
-    {
       "scale": "1x",
-      "size": "40x40",
-      "idiom": "ipad"
-    },
-    {
-      "scale": "2x",
-      "size": "40x40",
+      "size": "76x76",
       "idiom": "ipad"
     },
     {
@@ -66,15 +36,28 @@
       "idiom": "ipad"
     },
     {
-      "scale": "1x",
-      "size": "1024x1024",
-      "idiom": "ios-marketing"
-    },
-    {
       "scale": "2x",
       "size": "20x20",
       "idiom": "iphone",
       "filename": "launc40.png"
+    },
+    {
+      "scale": "3x",
+      "size": "20x20",
+      "idiom": "iphone",
+      "filename": "launcher60.png"
+    },
+    {
+      "scale": "2x",
+      "size": "29x29",
+      "idiom": "iphone",
+      "filename": "lau58.png"
+    },
+    {
+      "scale": "2x",
+      "size": "40x40",
+      "idiom": "iphone",
+      "filename": "laun80.png"
     },
     {
       "scale": "3x",
@@ -89,10 +72,34 @@
       "filename": "laun1201.png"
     },
     {
-      "scale": "1x",
-      "size": "76x76",
+      "scale": "2x",
+      "size": "20x20",
       "idiom": "ipad",
-      "filename": "lau76.png"
+      "filename": "launc401.png"
+    },
+    {
+      "scale": "2x",
+      "size": "29x29",
+      "idiom": "ipad",
+      "filename": "lau581.png"
+    },
+    {
+      "scale": "1x",
+      "size": "40x40",
+      "idiom": "ipad",
+      "filename": "launc402.png"
+    },
+    {
+      "scale": "2x",
+      "size": "40x40",
+      "idiom": "ipad",
+      "filename": "laun801.png"
+    },
+    {
+      "scale": "1x",
+      "size": "1024x1024",
+      "idiom": "ios-marketing",
+      "filename": "launc21024.png"
     }
   ],
   "properties": {},
