@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Threading;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Game
 {
@@ -71,7 +72,14 @@ namespace Game
 			};
 			JsInterface.Initiate();
 			string Error = "正常运行中";
-			if(AL.GetError()!=0)
+			try
+			{
+				if (AL.GetError() != 0)
+				{
+					Error = "OPENAL出错!";
+				}
+			}
+			catch
 			{
 				Error = "OPENAL疑似未安装!";
 				WebBrowserManager.LaunchBrowser("http://www.openal.org/downloads/oalinst.zip");
@@ -178,6 +186,7 @@ namespace Game
 			{
 				if (GameManager.Project != null) GameManager.DisposeProject();
 				ExceptionManager.ReportExceptionToUser(null, e2);
+				Log.Error("sine:"+e2);
 				ScreensManager.SwitchScreen("MainMenu");
 			}
 		}

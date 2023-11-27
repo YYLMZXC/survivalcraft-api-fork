@@ -1,13 +1,10 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Permission = Android.Content.PM.Permission;
 using Engine;
 using Game;
-using System;
-using System.IO;
 using Android.Provider;
 using Android;
 using Environment = Android.OS.Environment;

@@ -3,7 +3,6 @@
     <TargetFramework>net8.0-android</TargetFramework>
     <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
     <RootNamespace>SCNEXT</RootNamespace>
-    <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationId>com.candy.SurvivalcraftAPI16</ApplicationId>
@@ -34,28 +33,16 @@
     <AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>android</AndroidSigningKeyPass>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Assets\apppath.txt" />
-    <None Remove="Assets\Lit.psh" />
-    <None Remove="Assets\Lit.vsh" />
-    <None Remove="Assets\Unlit.psh" />
-    <None Remove="Assets\Unlit.vsh" />
-    <None Remove="libs\arm64-v8a\libopenal32.so" />
-    <None Remove="Resources\mipmap-anydpi-v26\icon.xml" />
-    <None Remove="Resources\mipmap-anydpi-v26\icon_round.xml" />
-    <None Remove="Resources\mipmap-hdpi\icon.png" />
-    <None Remove="Resources\mipmap-hdpi\launcher_foreground.png" />
-    <None Remove="Resources\mipmap-mdpi\icon.png" />
-    <None Remove="Resources\mipmap-mdpi\launcher_foreground.png" />
-    <None Remove="Resources\mipmap-xhdpi\icon.png" />
-    <None Remove="Resources\mipmap-xhdpi\launcher_foreground.png" />
-    <None Remove="Resources\mipmap-xxhdpi\icon.png" />
-    <None Remove="Resources\mipmap-xxhdpi\launcher_foreground.png" />
-    <None Remove="Resources\mipmap-xxxhdpi\icon.png" />
-    <None Remove="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
-    <None Remove="Resources\values\colors.xml" />
-    <None Remove="Resources\values\styles.xml" />
-  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Product>Survivalcraft</Product>
+    <AssemblyVersion>2.3.0.0</AssemblyVersion>
+    <FileVersion>2.3.0.0</FileVersion>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <RootNamespace>SCNEXT</RootNamespace>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine_android\Engine_android.csproj" />
     <ProjectReference Include="..\Survivalcraft_android\Survivalcraft_android.csproj" />
