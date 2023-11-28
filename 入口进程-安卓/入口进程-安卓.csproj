@@ -34,6 +34,13 @@
     <RootNamespace>SCNEXT</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+	<AndroidAsset Include="Assets\apppath.txt" />
+	<AndroidAsset Include="Assets\Lit.psh" />
+	<AndroidAsset Include="Assets\Lit.vsh" />
+	<AndroidAsset Include="Assets\Unlit.psh" />
+	<AndroidAsset Include="Assets\Unlit.vsh" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Engine_android\Engine_android.csproj" />
     <ProjectReference Include="..\Survivalcraft_android\Survivalcraft_android.csproj" />
   </ItemGroup>
