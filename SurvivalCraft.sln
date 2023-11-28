@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "统一端", "统一端", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntitySystem_android", "EntitySystem_android\EntitySystem_android.csproj", "{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "入口进程-安卓", "入口进程-安卓\入口进程-安卓.csproj", "{1B3ADAB9-B2EB-4B08-9071-84C615D5A748}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,12 @@ Global
 		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.正弦™极致优化|Any CPU.ActiveCfg = 正弦™极致优化|Any CPU
 		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F}.正弦™极致优化|Any CPU.Build.0 = 正弦™极致优化|Any CPU
+		{1B3ADAB9-B2EB-4B08-9071-84C615D5A748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B3ADAB9-B2EB-4B08-9071-84C615D5A748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B3ADAB9-B2EB-4B08-9071-84C615D5A748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B3ADAB9-B2EB-4B08-9071-84C615D5A748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B3ADAB9-B2EB-4B08-9071-84C615D5A748}.正弦™极致优化|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B3ADAB9-B2EB-4B08-9071-84C615D5A748}.正弦™极致优化|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +97,7 @@ Global
 		{8DF9DBBC-F471-406E-A247-B07935723E07} = {528DAACD-0030-4435-B208-CEB0771F1E63}
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8} = {A9146056-4560-4FC8-8AA6-903299A7FE26}
 		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F} = {B616DEEE-DF47-4BC3-BAA9-D223D221B6EB}
+		{1B3ADAB9-B2EB-4B08-9071-84C615D5A748} = {A9146056-4560-4FC8-8AA6-903299A7FE26}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3B94A30-8A32-415E-BF3C-0B94F6F144C0}

@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>
     <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+    <AndroidApplication>True</AndroidApplication>
     <RootNamespace>SCNEXT</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -12,20 +13,9 @@
     <Product>SurvivalcraftAPI</Product>
     <AssemblyVersion>2.3.0.0</AssemblyVersion>
     <FileVersion>2.3.0.0</FileVersion>
-    <AndroidSigningKeyStore>debug.keystore</AndroidSigningKeyStore>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AndroidSigningKeyStore>签名.keystore</AndroidSigningKeyStore>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidLinkTool>r8</AndroidLinkTool>
-    <AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
-    <EnableLLVM>True</EnableLLVM>
-    <AndroidKeyStore>True</AndroidKeyStore>
-    <AndroidSigningStorePass>android</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>android</AndroidSigningKeyPass>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
     <EnableLLVM>True</EnableLLVM>
     <AndroidKeyStore>True</AndroidKeyStore>

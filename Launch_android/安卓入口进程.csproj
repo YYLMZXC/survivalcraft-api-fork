@@ -1,27 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationId>com.candy.SurvivalcraftAPI16</ApplicationId>
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <AssemblyName>Launch_android</AssemblyName>
-    <Product>SurvivalcraftAPI</Product>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <AssemblyVersion>2.3.0.0</AssemblyVersion>
-    <FileVersion>2.3.0.0</FileVersion>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <RootNamespace>SCNEXT</RootNamespace>
-    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidSigningKeyStore>签名.keystore</AndroidSigningKeyStore>
     <AndroidLinkTool>r8</AndroidLinkTool>
     <AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
     <EnableLLVM>True</EnableLLVM>
+    <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningStorePass>android</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>android</AndroidSigningKeyPass>
-    <AndroidSigningKeyStore>debug.keystore</AndroidSigningKeyStore>
     <AndroidApplication>True</AndroidApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
@@ -30,7 +27,6 @@
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
-    <AndroidKeyStore>true</AndroidKeyStore>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AotAssemblies>false</AotAssemblies>
@@ -43,7 +39,15 @@
     <PublishTrimmed>True</PublishTrimmed>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <Optimize>True</Optimize>
+  </PropertyGroup>
+    <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
     <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Product>Survivalcraft</Product>
+    <AssemblyVersion>2.3.0.0</AssemblyVersion>
+    <FileVersion>2.3.0.0</FileVersion>
+    <AnalysisLevel>latest</AnalysisLevel>
     <RootNamespace>SCNEXT</RootNamespace>
   </PropertyGroup>
   <ProjectExtensions>
