@@ -34,6 +34,9 @@
     <RootNamespace>SCNEXT</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content.zip" />
+  </ItemGroup>
+  <ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
@@ -48,6 +51,9 @@
 	</AndroidAsset>
 	<AndroidAsset Include="Assets\Unlit.vsh">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</AndroidAsset>
+	<AndroidAsset Include="Content.zip">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</AndroidAsset>
   </ItemGroup>
   <ItemGroup>
