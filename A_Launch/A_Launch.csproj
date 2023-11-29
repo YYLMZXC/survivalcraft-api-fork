@@ -34,11 +34,21 @@
     <RootNamespace>SCNEXT</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-	<AndroidAsset Include="Assets\apppath.txt" />
-	<AndroidAsset Include="Assets\Lit.psh" />
-	<AndroidAsset Include="Assets\Lit.vsh" />
-	<AndroidAsset Include="Assets\Unlit.psh" />
-	<AndroidAsset Include="Assets\Unlit.vsh" />
+	<AndroidAsset Include="Assets\apppath.txt">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</AndroidAsset>
+	<AndroidAsset Include="Assets\Lit.psh">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</AndroidAsset>
+	<AndroidAsset Include="Assets\Lit.vsh">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</AndroidAsset>
+	<AndroidAsset Include="Assets\Unlit.psh">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</AndroidAsset>
+	<AndroidAsset Include="Assets\Unlit.vsh">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</AndroidAsset>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine_android\Engine_android.csproj" />
