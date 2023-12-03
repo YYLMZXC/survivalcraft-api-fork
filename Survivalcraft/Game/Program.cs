@@ -75,6 +75,7 @@ namespace Game
 			{
 				if (AL.GetError() != 0)
 				{
+					Log.Error(AL.GetError());
 					Error = "OPENAL³ö´í!";
 					Log.Error(Error);
 				}

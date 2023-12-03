@@ -33,7 +33,7 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <RootNamespace>SCNEXT</RootNamespace>
   </PropertyGroup>
-  <ItemGroup>
+	<ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
@@ -64,6 +64,6 @@
     <AndroidAsset Include="..\Survivalcraft\init.js">
       <Link>Assets\init.js</Link>
     </AndroidAsset>
-    <AndroidNativeLibrary Include="libopenal32.so" />
+	  <AndroidNativeLibrary Include="libs/arm64-v8a/libopenal32.so" />
   </ItemGroup>
 </Project>
