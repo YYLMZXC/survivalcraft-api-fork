@@ -1025,7 +1025,6 @@
     <Compile Remove="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Mono.android-arm64" Version="7.0.2.106" />
     <PackageReference Include="Xamarin.Legacy.OpenTK" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>

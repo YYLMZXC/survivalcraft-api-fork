@@ -7,7 +7,6 @@ using System.Globalization;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Game
 {
 	public static class Program
@@ -54,7 +53,7 @@ namespace Game
 					SystemLanguage = "en-US";
 				}
 			}
-				
+
 
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
@@ -77,16 +76,21 @@ namespace Game
 				if (AL.GetError() != 0)
 				{
 					Error = "OPENAL出错!";
+					Log.Error(Error);
+				}
+				else
+				{
+					Window.Run(2160, 3840, WindowMode.Resizable, "生存战争2.3插件版NEXT" + ModsManager.APIVersion + " #" + Error);
 				}
 			}
 			catch
 			{
 				Error = "OPENAL疑似未安装!";
+				Log.Error(Error);
 				WebBrowserManager.LaunchBrowser("http://www.openal.org/downloads/oalinst.zip");
 			}
-			Window.Run(0, 0, WindowMode.Resizable, "生存战争2.3插件版NEXT" + ModsManager.APIVersion + " #" + Error);
-		}
 
+		}
 		public static void HandleUriHandler(Uri uri)
 		{
 			m_urisToHandle.Add(uri);
@@ -131,7 +135,7 @@ namespace Game
 				Log.Error(e.Message);
 			}
 		}
-
+		
 		public static void Run()
 		{
 			LastFrameTime = (float)(Time.RealTime - m_frameBeginTime);

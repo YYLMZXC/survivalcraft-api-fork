@@ -11,7 +11,7 @@ using Environment = Android.OS.Environment;
 namespace SC4Android
 {
 	[Activity(Label = "生存战争2.3插件版", LaunchMode = LaunchMode.SingleTask, Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
-	[IntentFilter(new string[] { "android.intent.action.VIEW" }, DataScheme = "com.candy.survivalcraft", Categories = new string[] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]
+	[IntentFilter(["android.intent.action.VIEW"], DataScheme = "com.candy.survivalcraft", Categories = ["android.intent.category.DEFAULT", "android.intent.category.BROWSABLE"])]
 
 	public class MainActivity : EngineActivity
 	{
@@ -27,20 +27,17 @@ namespace SC4Android
 			}
 			else if ((int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.M)
 			{
-				bool permissionGranted = true;
 				//当版本大于安卓6
 				var readPermissionStatus = CheckSelfPermission(Manifest.Permission.ReadExternalStorage);
 				if (readPermissionStatus != Permission.Granted)
 				{
-					permissionGranted = false;
-					RequestPermissions(new string[] { Manifest.Permission.ReadExternalStorage }, 0);
+					RequestPermissions([Manifest.Permission.ReadExternalStorage], 0);
 				}
 
 				var writePermissionStatus = CheckSelfPermission(Manifest.Permission.WriteExternalStorage);
 				if (writePermissionStatus != Permission.Granted)
 				{
-					permissionGranted = false;
-					RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, 1);
+					RequestPermissions([Manifest.Permission.WriteExternalStorage], 1);
 				}
 			}
 		}
@@ -54,12 +51,12 @@ namespace SC4Android
 		{
 			string[] flist = Assets.List("");
 			BasePath = new StreamReader(Assets.Open("apppath.txt")).ReadToEnd();
-			ConfigPath = this.GetExternalFilesDir("").AbsolutePath;
+			ConfigPath = GetExternalFilesDir("").AbsolutePath;
 			foreach (string dll in flist)
 			{
 				if (dll.EndsWith(".dll"))
 				{
-					MemoryStream memoryStream = new MemoryStream();
+					MemoryStream memoryStream = new();
 					Assets.Open(dll).CopyTo(memoryStream);
 					AppDomain.CurrentDomain.Load(memoryStream.ToArray());
 				}
