@@ -64,5 +64,6 @@
     <AndroidAsset Include="..\Survivalcraft\init.js">
       <Link>Assets\init.js</Link>
     </AndroidAsset>
+    <AndroidNativeLibrary Include="libopenal32.so" />
   </ItemGroup>
 </Project>
