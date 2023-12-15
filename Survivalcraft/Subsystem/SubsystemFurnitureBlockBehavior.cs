@@ -25,15 +25,15 @@ namespace Game
 		public SubsystemParticles m_subsystemParticles;
 		public static string fName = "SubsystemFurnitureBlockBehavior";
 
-		public List<FurnitureSet> m_furnitureSets = new List<FurnitureSet>();
+		public List<FurnitureSet> m_furnitureSets = [];
 
 		public FurnitureDesign[] m_furnitureDesigns = new FurnitureDesign[FurnitureDesign.maxDesign];
 
-		public Dictionary<Point3, List<FireParticleSystem>> m_particleSystemsByCell = new Dictionary<Point3, List<FireParticleSystem>>();
+		public Dictionary<Point3, List<FireParticleSystem>> m_particleSystemsByCell = [];
 
 		public override int[] HandledBlocks => new int[0];
 
-		public ReadOnlyList<FurnitureSet> FurnitureSets => new ReadOnlyList<FurnitureSet>(m_furnitureSets);
+		public ReadOnlyList<FurnitureSet> FurnitureSets => new(m_furnitureSets);
 
 		public FurnitureDesign GetDesign(int index)
 		{
@@ -281,8 +281,10 @@ namespace Game
 		public void SwitchToNextState(int x, int y, int z, bool playSound)
 		{
 			var hashSet = new HashSet<Point3>();
-			var list = new List<Point3>();
-			list.Add(new Point3(x, y, z));
+			var list = new List<Point3>
+			{
+				new(x, y, z)
+			};
 			int num = 0;
 			while (num < list.Count && num < 4096)
 			{

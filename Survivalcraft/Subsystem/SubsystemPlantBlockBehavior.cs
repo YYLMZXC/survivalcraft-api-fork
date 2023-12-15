@@ -17,9 +17,9 @@ namespace Game
 
 		public SubsystemGameInfo m_subsystemGameInfo;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public Dictionary<Point3, Replacement> m_toReplace = new Dictionary<Point3, Replacement>();
+		public Dictionary<Point3, Replacement> m_toReplace = [];
 
 		public override int[] HandledBlocks => new int[11]
 		{

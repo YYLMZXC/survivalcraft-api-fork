@@ -68,8 +68,8 @@ public static class ModsManager
 	public class ModHook
 	{
 		public string HookName;
-		public Dictionary<ModLoader, bool> Loaders = new Dictionary<ModLoader, bool>();
-		public Dictionary<ModLoader, string> DisableReason = new Dictionary<ModLoader, string>();
+		public Dictionary<ModLoader, bool> Loaders = [];
+		public Dictionary<ModLoader, string> DisableReason = [];
 		public ModHook(string name)
 		{
 			HookName = name;
@@ -107,13 +107,13 @@ public static class ModsManager
 	}
 
 	private static bool AllowContinue = true;
-	public static Dictionary<string, string> Configs = new Dictionary<string, string>();
-	public static List<ModEntity> ModListAll = new List<ModEntity>();
-	public static List<ModEntity> ModList = new List<ModEntity>();
-	public static List<ModLoader> ModLoaders = new List<ModLoader>();
-	public static List<ModInfo> DisabledMods = new List<ModInfo>();
-	public static Dictionary<string, ModHook> ModHooks = new Dictionary<string, ModHook>();
-	public static Dictionary<string, Assembly> Dlls = new Dictionary<string, Assembly>();
+	public static Dictionary<string, string> Configs = [];
+	public static List<ModEntity> ModListAll = [];
+	public static List<ModEntity> ModList = [];
+	public static List<ModLoader> ModLoaders = [];
+	public static List<ModInfo> DisabledMods = [];
+	public static Dictionary<string, ModHook> ModHooks = [];
+	public static Dictionary<string, Assembly> Dlls = [];
 
 	public static bool GetModEntity(string packagename, out ModEntity modEntity)
 	{
@@ -273,7 +273,7 @@ public static class ModsManager
 	}
 	public static void SaveSettings(XElement xElement)
 	{
-		XElement element = new XElement("Configs");
+		XElement element = new("Configs");
 		foreach (var c in Configs)
 		{
 			element.SetAttributeValue(c.Key, c.Value);
@@ -350,11 +350,10 @@ public static class ModsManager
 		ModListAll.Add(SurvivalCraftModEntity);
 		ModListAll.Add(FastDebug);
 		GetScmods(ModsPath);
-		List<ModInfo> ToDisable = new List<ModInfo>();
-		ToDisable.AddRange(DisabledMods);
+		List<ModInfo> ToDisable = [.. DisabledMods];
 		DisabledMods.Clear();
 		//float api = float.Parse(APIVersion);
-		List<ModEntity> ToRemove = new List<ModEntity>();
+		List<ModEntity> ToRemove = [];
 		//读取SCMOD文件到ModListAll列表
 		foreach (ModEntity modEntity1 in ModListAll)
 		{

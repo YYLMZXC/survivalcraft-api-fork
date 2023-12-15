@@ -43,9 +43,9 @@ namespace Engine.Graphics
 
 		public int m_pixelShader;
 
-		public Dictionary<VertexDeclaration, VertexAttributeData[]> m_vertexAttributeDataByDeclaration = new Dictionary<VertexDeclaration, VertexAttributeData[]>();
+		public Dictionary<VertexDeclaration, VertexAttributeData[]> m_vertexAttributeDataByDeclaration = [];
 
-		public List<ShaderAttributeData> m_shaderAttributeData = new List<ShaderAttributeData>();
+		public List<ShaderAttributeData> m_shaderAttributeData = [];
 
 		public ShaderParameter m_glymulParameter;
 
@@ -55,7 +55,7 @@ namespace Engine.Graphics
 			set;
 		}
 
-		public ReadOnlyList<ShaderParameter> Parameters => new ReadOnlyList<ShaderParameter>(m_parameters);
+		public ReadOnlyList<ShaderParameter> Parameters => new(m_parameters);
 
 		public string DebugName
 		{
@@ -268,8 +268,8 @@ namespace Engine.Graphics
 		public void CompileShaders()
 		{
 			DeleteShaders();
-			Dictionary<string, string> dictionary = new Dictionary<string, string>();
-			Dictionary<string, string> dictionary2 = new Dictionary<string, string>();
+			Dictionary<string, string> dictionary = [];
+			Dictionary<string, string> dictionary2 = [];
 			ParseShaderMetadata(m_vertexShaderCode, dictionary, dictionary2);
 			ParseShaderMetadata(m_pixelShaderCode, dictionary, dictionary2);
 			string @string = PrependShaderMacros(m_vertexShaderCode, m_shaderMacros, isVertexShader: true);
@@ -305,7 +305,7 @@ namespace Engine.Graphics
 			GL.GetProgram(m_program, ProgramParameter.ActiveAttributes, out int params4);
 			for (int i = 0; i < params4; i++)
 			{
-				StringBuilder stringBuilder = new StringBuilder(256);
+				StringBuilder stringBuilder = new(256);
 				GL.GetActiveAttrib(m_program, i, stringBuilder.Capacity, out int _, out int _, out ActiveAttribType _, stringBuilder);
 				int attribLocation = GL.GetAttribLocation(m_program, stringBuilder.ToString());
 				if (!dictionary.TryGetValue(stringBuilder.ToString(), out string value))
@@ -319,11 +319,11 @@ namespace Engine.Graphics
 				});
 			}
 			GL.GetProgram(m_program, ProgramParameter.ActiveUniforms, out int params5);
-			List<ShaderParameter> list = new List<ShaderParameter>();
-			Dictionary<string, ShaderParameter> dictionary3 = new Dictionary<string, ShaderParameter>();
+			List<ShaderParameter> list = [];
+			Dictionary<string, ShaderParameter> dictionary3 = [];
 			for (int j = 0; j < params5; j++)
 			{
-				StringBuilder stringBuilder2 = new StringBuilder(256);
+				StringBuilder stringBuilder2 = new(256);
 				GL.GetActiveUniform(m_program, j, stringBuilder2.Capacity, out int _, out int size2, out ActiveUniformType type2, stringBuilder2);
 				int uniformLocation = GL.GetUniformLocation(m_program, stringBuilder2.ToString());
 				ShaderParameterType shaderParameterType = GLWrapper.TranslateActiveUniformType(type2);
@@ -332,7 +332,7 @@ namespace Engine.Graphics
 				{
 					stringBuilder2.Remove(num, stringBuilder2.Length - num);
 				}
-				ShaderParameter shaderParameter = new ShaderParameter(this, stringBuilder2.ToString(), shaderParameterType, size2);
+				ShaderParameter shaderParameter = new(this, stringBuilder2.ToString(), shaderParameterType, size2);
 				shaderParameter.Location = uniformLocation;
 				dictionary3.Add(shaderParameter.Name, shaderParameter);
 				list.Add(shaderParameter);
@@ -342,7 +342,7 @@ namespace Engine.Graphics
 					{
 						throw new InvalidOperationException($"Texture \"{shaderParameter.Name}\" has no sampler defined in shader metadata.");
 					}
-					ShaderParameter shaderParameter2 = new ShaderParameter(this, value2, ShaderParameterType.Sampler2D, 1);
+					ShaderParameter shaderParameter2 = new(this, value2, ShaderParameterType.Sampler2D, 1);
 					shaderParameter2.Location = int.MaxValue;
 					dictionary3.Add(value2, shaderParameter2);
 					list.Add(shaderParameter2);

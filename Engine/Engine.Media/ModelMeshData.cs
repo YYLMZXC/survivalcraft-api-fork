@@ -8,7 +8,7 @@ namespace Engine.Media
 
 		public int ParentBoneIndex;
 
-		public List<ModelMeshPartData> MeshParts = new List<ModelMeshPartData>();
+		public List<ModelMeshPartData> MeshParts = [];
 
 		public BoundingBox BoundingBox;
 	}

@@ -36,8 +36,8 @@ namespace Game
 		}
 		public new static string fName = "EggBlock";
 		public const int Index = 118;
-		public DynamicArray<EggType> m_eggTypes = new DynamicArray<EggType>();
-		public ReadOnlyList<EggType> EggTypes => new ReadOnlyList<EggType>(m_eggTypes);
+		public DynamicArray<EggType> m_eggTypes = [];
+		public ReadOnlyList<EggType> EggTypes => new(m_eggTypes);
 		public override void Initialize()
 		{
 			m_eggTypes.Clear();

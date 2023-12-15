@@ -27,7 +27,7 @@ namespace Game
 
 		public GameWidget m_gameWidget;
 
-		public StateMachine m_stateMachine = new StateMachine();
+		public StateMachine m_stateMachine = new();
 
 		public PlayerClass m_playerClass;
 
@@ -680,7 +680,7 @@ namespace Game
 				}
 				value5 = (m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Survival) ? 1 : 0;
 			}
-			ValuesDictionary overrides = new ValuesDictionary
+			ValuesDictionary overrides = new()
 			{
 				{
 					"Player",

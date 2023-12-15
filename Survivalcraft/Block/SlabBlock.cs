@@ -10,9 +10,9 @@ namespace Game
 
 		public int m_fullBlockIndex;
 
-		public BlockMesh m_standaloneColoredBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneColoredBlockMesh = new();
 
-		public BlockMesh m_standaloneUncoloredBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneUncoloredBlockMesh = new();
 
 		public BlockMesh[] m_coloredBlockMeshes = new BlockMesh[2];
 
@@ -49,11 +49,11 @@ namespace Game
 			m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
 			m_collisionBoxes[0] = new BoundingBox[1]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f))
 			};
 			m_collisionBoxes[1] = new BoundingBox[1]
 			{
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f))
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f))
 			};
 			base.Initialize();
 		}

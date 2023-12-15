@@ -8,7 +8,7 @@ namespace Game
 {
 	public static class TextureAtlasManager
 	{
-		public static Dictionary<string, Subtexture> m_subtextures = new Dictionary<string, Subtexture>();
+		public static Dictionary<string, Subtexture> m_subtextures = [];
 		public static Texture2D AtlasTexture;
 		public static void Clear()
 		{

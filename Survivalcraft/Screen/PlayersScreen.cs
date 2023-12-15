@@ -13,7 +13,7 @@ namespace Game
 
 		public SubsystemPlayers m_subsystemPlayers;
 
-		public CharacterSkinsCache m_characterSkinsCache = new CharacterSkinsCache();
+		public CharacterSkinsCache m_characterSkinsCache = new();
 
 		public PlayersScreen()
 		{

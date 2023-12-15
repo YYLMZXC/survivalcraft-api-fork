@@ -10,9 +10,9 @@ namespace Game
 	{
 		public SubsystemBlockBehavior[][] m_blockBehaviorsByContents;
 
-		public List<SubsystemBlockBehavior> m_blockBehaviors = new List<SubsystemBlockBehavior>();
+		public List<SubsystemBlockBehavior> m_blockBehaviors = [];
 
-		public ReadOnlyList<SubsystemBlockBehavior> BlockBehaviors => new ReadOnlyList<SubsystemBlockBehavior>(m_blockBehaviors);
+		public ReadOnlyList<SubsystemBlockBehavior> BlockBehaviors => new(m_blockBehaviors);
 
 		public SubsystemBlockBehavior[] GetBlockBehaviors(int contents)
 		{
@@ -22,10 +22,10 @@ namespace Game
 		public override void Load(ValuesDictionary valuesDictionary)
 		{
 			m_blockBehaviorsByContents = new SubsystemBlockBehavior[BlocksManager.Blocks.Length][];
-			Dictionary<int, List<SubsystemBlockBehavior>> dictionary = new Dictionary<int, List<SubsystemBlockBehavior>>();
+			Dictionary<int, List<SubsystemBlockBehavior>> dictionary = [];
 			for (int i = 0; i < m_blockBehaviorsByContents.Length; i++)
 			{
-				dictionary[i] = new List<SubsystemBlockBehavior>();
+				dictionary[i] = [];
 				string[] array = BlocksManager.Blocks[i].Behaviors.Split(new char[1]
 				{
 					','

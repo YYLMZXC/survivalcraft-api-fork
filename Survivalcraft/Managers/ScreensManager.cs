@@ -20,15 +20,15 @@ namespace Game
 			public object[] Parameters;
 		}
 
-		public static Dictionary<string, Screen> m_screens = new Dictionary<string, Screen>();
+		public static Dictionary<string, Screen> m_screens = [];
 
 		public static AnimationData m_animationData;
 
-		public static PrimitivesRenderer2D m_pr2 = new PrimitivesRenderer2D();
+		public static PrimitivesRenderer2D m_pr2 = new();
 
-		public static PrimitivesRenderer3D m_pr3 = new PrimitivesRenderer3D();
+		public static PrimitivesRenderer3D m_pr3 = new();
 
-		public static Random Random = new Random(0);
+		public static Random Random = new(0);
 
 		public static RenderTarget2D m_uiRenderTarget;
 
@@ -272,9 +272,9 @@ namespace Game
 				Display.Clear(Color.Black, 1f, 0);
 			}
 			float num = 850f / MathUtils.Clamp(SettingsManager.UIScale, 0.5f, 1.2f) * DebugUiScale;
-			Vector2 vector = new Vector2(Display.Viewport.Width, Display.Viewport.Height);
+			Vector2 vector = new(Display.Viewport.Width, Display.Viewport.Height);
 			float num2 = vector.X / num;
-			Vector2 availableSize = new Vector2(num, num / vector.X * vector.Y);
+			Vector2 availableSize = new(num, num / vector.X * vector.Y);
 			float num3 = num * 9f / 16f;
 			if (vector.Y / num2 < num3)
 			{

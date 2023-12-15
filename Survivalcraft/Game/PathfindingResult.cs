@@ -12,6 +12,6 @@ namespace Game
 
 		public int PositionsChecked;
 
-		public DynamicArray<Vector3> Path = new DynamicArray<Vector3>();
+		public DynamicArray<Vector3> Path = [];
 	}
 }

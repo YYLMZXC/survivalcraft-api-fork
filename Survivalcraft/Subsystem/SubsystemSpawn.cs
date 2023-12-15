@@ -19,7 +19,7 @@ namespace Game
 
 		public SubsystemTime m_subsystemTime;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public double m_nextDiscardOldChunksTime = 1.0;
 
@@ -29,9 +29,9 @@ namespace Game
 
 		public double m_nextDespawnTime = 1.0;
 
-		public Dictionary<Point2, SpawnChunk> m_chunks = new Dictionary<Point2, SpawnChunk>();
+		public Dictionary<Point2, SpawnChunk> m_chunks = [];
 
-		public Dictionary<ComponentSpawn, bool> m_spawns = new Dictionary<ComponentSpawn, bool>();
+		public Dictionary<ComponentSpawn, bool> m_spawns = [];
 
 		public const float MaxChunkAge = 76800f;
 
@@ -91,7 +91,7 @@ namespace Game
 				spawnChunk.Point = HumanReadableConverter.ConvertFromString<Point2>(item.Key);
 				spawnChunk.IsSpawned = valuesDictionary2.GetValue<bool>("IsSpawned");
 				spawnChunk.LastVisitedTime = valuesDictionary2.GetValue<double>("LastVisitedTime");
-				ValuesDictionary data = new ValuesDictionary();
+				ValuesDictionary data = [];
 				object obj = valuesDictionary2.GetValue("SpawnsData", new object());
 				if (obj is string)
 				{
@@ -101,7 +101,7 @@ namespace Game
 					{
 						if (!string.IsNullOrEmpty(oldItem))
 						{
-							ValuesDictionary va = new ValuesDictionary();
+							ValuesDictionary va = [];
 							string[] parmas = oldItem.Split(new char[] { ',' });
 							data.SetValue(i++.ToString(), va);
 							va.SetValue("n", parmas[0]);
@@ -129,7 +129,7 @@ namespace Game
 					valuesDictionary2.SetValue(HumanReadableConverter.ConvertToString(value2.Point), valuesDictionary3);
 					valuesDictionary3.SetValue("IsSpawned", value2.IsSpawned);
 					valuesDictionary3.SetValue("LastVisitedTime", value2.LastVisitedTime.Value);
-					ValuesDictionary v = new ValuesDictionary();
+					ValuesDictionary v = [];
 					SaveSpawnsData(v, value2.SpawnsData);
 					valuesDictionary3.SetValue("SpawnsData", v);
 				}
@@ -283,7 +283,7 @@ namespace Game
 					TemplateName = item.Entity.ValuesDictionary.DatabaseObject.Name,
 					Position = item.ComponentFrame.Position,
 					ConstantSpawn = item.ComponentCreature?.ConstantSpawn ?? false,
-					Data = new ValuesDictionary()
+					Data = []
 				};
 				ModsManager.HookAction("OnSaveSpawnData", (ModLoader loader) => { loader.OnSaveSpawnData(item, data); return true; });
 				GetOrCreateSpawnChunk(point).SpawnsData.Add(data);
@@ -332,7 +332,7 @@ namespace Game
 			int i = 0;
 			foreach (var d in spawnsData)
 			{
-				ValuesDictionary v2 = new ValuesDictionary();
+				ValuesDictionary v2 = [];
 				v2.SetValue("c", d.ConstantSpawn);
 				v2.SetValue("p", d.Position);
 				v2.SetValue("n", d.TemplateName);

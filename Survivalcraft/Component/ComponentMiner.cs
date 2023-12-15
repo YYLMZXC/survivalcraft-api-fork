@@ -23,9 +23,9 @@ namespace Game
 
 		public SubsystemBlockBehaviors m_subsystemBlockBehaviors;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public static Random s_random = new Random();
+		public static Random s_random = new();
 
 		public double m_digStartTime;
 
@@ -357,7 +357,7 @@ namespace Game
 			}
 			else if (ComponentCreature is ComponentPlayer)
 			{
-				HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
+				HitValueParticleSystem particleSystem = new(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
 				ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
 				{
 					modLoader.SetHitValueParticleSystem(particleSystem, false);
@@ -561,7 +561,7 @@ namespace Game
 						if (attacker is ComponentPlayer && num2 > 0f)
 						{
 							string text2 = (0f - num2).ToString("0", CultureInfo.InvariantCulture);
-							HitValueParticleSystem particleSystem = new HitValueParticleSystem(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + attacker.ComponentBody.Velocity, Color.White, text2);
+							HitValueParticleSystem particleSystem = new(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + attacker.ComponentBody.Velocity, Color.White, text2);
 							ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
 							{
 								modLoader.SetHitValueParticleSystem(particleSystem, true);

@@ -6,7 +6,7 @@ namespace FluxJpeg.Core
 	{
 		private int[] table;
 
-		public static JpegQuantizationTable K1Luminance = new JpegQuantizationTable(new int[64]
+		public static JpegQuantizationTable K1Luminance = new(new int[64]
 		{
 			16,
 			11,
@@ -76,7 +76,7 @@ namespace FluxJpeg.Core
 
 		public static JpegQuantizationTable K1Div2Luminance = K1Luminance.getScaledInstance(0.5f, forceBaseline: true);
 
-		public static JpegQuantizationTable K2Chrominance = new JpegQuantizationTable(new int[64]
+		public static JpegQuantizationTable K2Chrominance = new(new int[64]
 		{
 			17,
 			18,

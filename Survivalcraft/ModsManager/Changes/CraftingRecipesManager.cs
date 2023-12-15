@@ -10,8 +10,8 @@ namespace Game
 {
 	public static class CraftingRecipesManager
 	{
-		public static List<CraftingRecipe> m_recipes = new List<CraftingRecipe>();
-		public static ReadOnlyList<CraftingRecipe> Recipes => new ReadOnlyList<CraftingRecipe>(m_recipes);
+		public static List<CraftingRecipe> m_recipes = [];
+		public static ReadOnlyList<CraftingRecipe> Recipes => new(m_recipes);
 		public static string fName = "CraftingRecipesManager";
 		public static void Initialize()
 		{

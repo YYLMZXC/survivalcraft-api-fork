@@ -38,15 +38,15 @@ namespace Game
 
 		public int m_itemLight;
 
-		public DrawBlockEnvironmentData m_drawBlockEnvironmentData = new DrawBlockEnvironmentData();
+		public DrawBlockEnvironmentData m_drawBlockEnvironmentData = new();
 
-		public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
+		public PrimitivesRenderer3D m_primitivesRenderer = new();
 
-		public static UnlitShader UnlitShader = new UnlitShader(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+		public static UnlitShader UnlitShader = new(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
 
-		public static UnlitShader UnlitShaderAlphaTest = new UnlitShader(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: true);
+		public static UnlitShader UnlitShaderAlphaTest = new(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: true);
 
-		public static LitShader LitShader = new LitShader(ShaderCodeManager.GetFast("Shaders/Lit.vsh"), ShaderCodeManager.GetFast("Shaders/Lit.psh"), 2, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: false);
+		public static LitShader LitShader = new(ShaderCodeManager.GetFast("Shaders/Lit.vsh"), ShaderCodeManager.GetFast("Shaders/Lit.psh"), 2, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: false);
 
 		public static int[] m_drawOrders = new int[1]
 		{

@@ -12,7 +12,7 @@ namespace Game
 
 		public static BoundingBox[] m_collisionBoxes = new BoundingBox[1]
 		{
-			new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.9375f, 1f))
+			new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.9375f, 1f))
 		};
 
 		public override int GetFaceTextureSlot(int face, int value)

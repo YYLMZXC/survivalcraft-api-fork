@@ -7,7 +7,7 @@ namespace Game
 	{
 		public SubsystemElectricity m_subsystemElectricity;
 
-		public static Random m_random = new Random();
+		public static Random m_random = new();
 
 		public override int[] HandledBlocks => new int[2]
 		{

@@ -5,7 +5,7 @@ namespace Engine.Serialization
 {
 	public abstract class InputArchive : Archive
 	{
-		private Dictionary<int, object> m_objectById = new Dictionary<int, object>();
+		private Dictionary<int, object> m_objectById = [];
 
 		protected InputArchive(int version)
 			: base(version)

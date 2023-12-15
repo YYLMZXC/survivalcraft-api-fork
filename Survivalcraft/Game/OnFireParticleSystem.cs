@@ -14,7 +14,7 @@ namespace Game
 			public Vector3 Velocity;
 		}
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_toGenerate;
 

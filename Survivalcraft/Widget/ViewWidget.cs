@@ -10,7 +10,7 @@ namespace Game
 
 		public RenderTarget2D m_scalingRenderTarget;
 
-		public static RenderTarget2D ScreenTexture = new RenderTarget2D(Window.Size.X, Window.Size.Y, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
+		public static RenderTarget2D ScreenTexture = new(Window.Size.X, Window.Size.Y, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
 
 		public GameWidget GameWidget
 		{

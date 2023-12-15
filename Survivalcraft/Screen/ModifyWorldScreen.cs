@@ -28,9 +28,9 @@ namespace Game
 
 		public WorldSettings m_worldSettings;
 
-		public ValuesDictionary m_currentWorldSettingsData = new ValuesDictionary();
+		public ValuesDictionary m_currentWorldSettingsData = [];
 
-		public ValuesDictionary m_originalWorldSettingsData = new ValuesDictionary();
+		public ValuesDictionary m_originalWorldSettingsData = [];
 
 		public bool m_changingGameModeAllowed;
 

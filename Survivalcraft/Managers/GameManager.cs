@@ -19,13 +19,13 @@ namespace Game
 
 		public static SubsystemUpdate m_subsystemUpdate;
 
-		public static ManualResetEvent m_saveCompleted = new ManualResetEvent(initialState: true);
+		public static ManualResetEvent m_saveCompleted = new(initialState: true);
 
 		public static Project Project => m_project;
 
 		public static WorldInfo WorldInfo => m_worldInfo;
 
-		public static List<Func<bool>> SyncDispatcher = new List<Func<bool>>();
+		public static List<Func<bool>> SyncDispatcher = [];
 
 		public static event Action<Project> ProjectDisposed;
 

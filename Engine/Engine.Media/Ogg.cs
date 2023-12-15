@@ -32,7 +32,7 @@ namespace Engine.Media
 			public override long BytesCount => m_reader.TotalSamples * 2;
 			public OggStreamingSource(Stream stream, bool leaveOpen = false)
 			{
-				MemoryStream memoryStream = new MemoryStream();
+				MemoryStream memoryStream = new();
 				stream.Position = 0L;
 				stream.CopyTo(memoryStream);
 				memoryStream.Position = 0L;
@@ -89,7 +89,7 @@ namespace Engine.Media
 			/// <returns></returns>
 			public override StreamingSource Duplicate()
 			{
-				MemoryStream memoryStream = new MemoryStream();
+				MemoryStream memoryStream = new();
 				m_stream.Position = 0L;
 				m_stream.CopyTo(memoryStream);
 				memoryStream.Position = 0L;

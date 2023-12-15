@@ -34,10 +34,10 @@ namespace Engine.Serialization
 
 		static TypeCache()
 		{
-			m_typesByName = new Dictionary<string, Type>();
-			m_shortToLong = new Dictionary<string, string>();
-			m_longToShort = new Dictionary<string, string>();
-			m_loadedAssemblies = new List<Assembly>();
+			m_typesByName = [];
+			m_shortToLong = [];
+			m_longToShort = [];
+			m_loadedAssemblies = [];
 			m_rescanAssemblies = true;
 			AddShortTypeName("bool", typeof(bool).FullName);
 			AddShortTypeName("sbyte", typeof(sbyte).FullName);

@@ -12,7 +12,7 @@ namespace Game
 					  Link,
 					  Author,
 					  PackageName;
-		public List<string> Dependencies = new List<string>();
+		public List<string> Dependencies = [];
 		public override int GetHashCode() => (PackageName + ApiVersion + Version).GetHashCode();
 		public override bool Equals(object obj) => obj is ModInfo && obj.GetHashCode() == GetHashCode();
 	}

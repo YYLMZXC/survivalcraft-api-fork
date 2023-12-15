@@ -16,7 +16,7 @@ namespace Game
 			public Action Leave;
 		}
 
-		public Dictionary<string, State> m_states = new Dictionary<string, State>();
+		public Dictionary<string, State> m_states = [];
 
 		public State m_currentState;
 

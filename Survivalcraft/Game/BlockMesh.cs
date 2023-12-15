@@ -19,9 +19,9 @@ namespace Game
 			public Vector2 TextureCoordinate;
 		}
 
-		public DynamicArray<BlockMeshVertex> Vertices = new DynamicArray<BlockMeshVertex>();
+		public DynamicArray<BlockMeshVertex> Vertices = [];
 
-		public DynamicArray<int> Indices = new DynamicArray<int>();
+		public DynamicArray<int> Indices = [];
 
 		public DynamicArray<sbyte> Sides;
 
@@ -460,7 +460,7 @@ namespace Game
 
 		public void GenerateSidesData()
 		{
-			Sides = new DynamicArray<sbyte>();
+			Sides = [];
 			Sides.Count = Indices.Count / 3;
 			for (int i = 0; i < Sides.Count; i++)
 			{
@@ -571,7 +571,7 @@ namespace Game
 			AppendImageExtrusionSlice(image, bounds, new Vector3(1f, 0f, 0f), new Vector3(0f, 1f, 0f), new Vector3(0f, 0f, -1f), new Vector3(0f, 0f, 1f), color, alphaThreshold);
 			for (int i = bounds.Left; i < bounds.Right; i++)
 			{
-				Image image2 = new Image(1, bounds.Height);
+				Image image2 = new(1, bounds.Height);
 				for (int j = bounds.Top; j < bounds.Bottom; j++)
 				{
 					if (i == bounds.Left || image.Pixels[i - 1 + (j * image.Width)].A <= alphaThreshold)
@@ -583,7 +583,7 @@ namespace Game
 			}
 			for (int k = bounds.Left; k < bounds.Right; k++)
 			{
-				Image image3 = new Image(1, bounds.Height);
+				Image image3 = new(1, bounds.Height);
 				for (int l = bounds.Top; l < bounds.Bottom; l++)
 				{
 					if (k == bounds.Right - 1 || image.Pixels[k + 1 + (l * image.Width)].A <= alphaThreshold)
@@ -595,7 +595,7 @@ namespace Game
 			}
 			for (int m = bounds.Top; m < bounds.Bottom; m++)
 			{
-				Image image4 = new Image(bounds.Width, 1);
+				Image image4 = new(bounds.Width, 1);
 				for (int n = bounds.Left; n < bounds.Right; n++)
 				{
 					if (m == bounds.Top || image.Pixels[n + ((m - 1) * image.Width)].A <= alphaThreshold)
@@ -607,7 +607,7 @@ namespace Game
 			}
 			for (int num = bounds.Top; num < bounds.Bottom; num++)
 			{
-				Image image5 = new Image(bounds.Width, 1);
+				Image image5 = new(bounds.Width, 1);
 				for (int num2 = bounds.Left; num2 < bounds.Right; num2++)
 				{
 					if (num == bounds.Bottom - 1 || image.Pixels[num2 + ((num + 1) * image.Width)].A <= alphaThreshold)
@@ -652,7 +652,7 @@ namespace Game
 			}
 			if (num != int.MaxValue)
 			{
-				Matrix m = new Matrix(right.X, right.Y, right.Z, 0f, up.X, up.Y, up.Z, 0f, forward.X, forward.Y, forward.Z, 0f, position.X, position.Y, position.Z, 1f);
+				Matrix m = new(right.X, right.Y, right.Z, 0f, up.X, up.Y, up.Z, 0f, forward.X, forward.Y, forward.Z, 0f, position.X, position.Y, position.Z, 1f);
 				bool flip = m.Determinant() > 0f;
 				float s = LightingManager.CalculateLighting(-forward);
 				Vector3 p = Vector3.Transform(new Vector3(num, num2, 0f), m);
@@ -669,7 +669,7 @@ namespace Game
 			Vertices.Count += 4;
 			DynamicArray<BlockMeshVertex> vertices = Vertices;
 			int index = Vertices.Count - 4;
-			BlockMeshVertex value = new BlockMeshVertex
+			BlockMeshVertex value = new()
 			{
 				Position = p11,
 				TextureCoordinates = p11.XY + (forward.XY / 2f),
@@ -706,21 +706,21 @@ namespace Game
 			Indices.Count += 6;
 			if (flip)
 			{
-				Indices[Indices.Count - 6] = count;
-				Indices[Indices.Count - 5] = count + 2;
-				Indices[Indices.Count - 4] = count + 1;
-				Indices[Indices.Count - 3] = count + 2;
-				Indices[Indices.Count - 2] = count + 3;
-				Indices[Indices.Count - 1] = count + 1;
+				Indices[^6] = count;
+				Indices[^5] = count + 2;
+				Indices[^4] = count + 1;
+				Indices[^3] = count + 2;
+				Indices[^2] = count + 3;
+				Indices[^1] = count + 1;
 			}
 			else
 			{
-				Indices[Indices.Count - 6] = count;
-				Indices[Indices.Count - 5] = count + 1;
-				Indices[Indices.Count - 4] = count + 2;
-				Indices[Indices.Count - 3] = count + 2;
-				Indices[Indices.Count - 2] = count + 1;
-				Indices[Indices.Count - 1] = count + 3;
+				Indices[^6] = count;
+				Indices[^5] = count + 1;
+				Indices[^4] = count + 2;
+				Indices[^3] = count + 2;
+				Indices[^2] = count + 1;
+				Indices[^1] = count + 3;
 			}
 		}
 	}

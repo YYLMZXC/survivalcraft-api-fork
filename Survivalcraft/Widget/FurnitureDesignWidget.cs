@@ -14,9 +14,9 @@ namespace Game
 		}
 		public static string fName = "FurnitureDesignWidget";
 
-		public PrimitivesRenderer2D m_primitivesRenderer2d = new PrimitivesRenderer2D();
+		public PrimitivesRenderer2D m_primitivesRenderer2d = new();
 
-		public PrimitivesRenderer3D m_primitivesRenderer3d = new PrimitivesRenderer3D();
+		public PrimitivesRenderer3D m_primitivesRenderer3d = new();
 
 		public Vector2? m_dragStartPoint;
 

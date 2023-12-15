@@ -9,7 +9,7 @@ namespace Game
 
 		public int m_headTextureSlot;
 
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBlockMesh = new();
 
 		public AxeBlock(int handleTextureSlot, int headTextureSlot)
 		{

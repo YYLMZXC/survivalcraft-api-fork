@@ -13,7 +13,7 @@ namespace Game
 
 		public double m_nextAutomaticScanTime;
 
-		public List<ScannedItemData> m_items = new List<ScannedItemData>();
+		public List<ScannedItemData> m_items = [];
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 

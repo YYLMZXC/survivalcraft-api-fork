@@ -10,11 +10,11 @@ namespace Engine
 
 		public static readonly Point2 Zero = default(Point2);
 
-		public static readonly Point2 One = new Point2(1, 1);
+		public static readonly Point2 One = new(1, 1);
 
-		public static readonly Point2 UnitX = new Point2(1, 0);
+		public static readonly Point2 UnitX = new(1, 0);
 
-		public static readonly Point2 UnitY = new Point2(0, 1);
+		public static readonly Point2 UnitY = new(0, 1);
 
 		public Point2(int v)
 		{

@@ -25,7 +25,7 @@ namespace Hjg.Pngcs.Chunks
 
 		internal ChunksList(ImageInfo imfinfo)
 		{
-			chunks = new List<PngChunk>();
+			chunks = [];
 			imageInfo = imfinfo;
 		}
 
@@ -90,7 +90,7 @@ namespace Hjg.Pngcs.Chunks
 			{
 				throw new PngjException("unexpected multiple chunks id=" + id);
 			}
-			return byId[byId.Count - 1];
+			return byId[^1];
 		}
 
 		public List<PngChunk> GetEquivalent(PngChunk chunk)

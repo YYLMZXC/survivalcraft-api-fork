@@ -4,11 +4,11 @@ namespace Engine.Graphics
 {
 	public abstract class BaseFontBatch : BaseBatch
 	{
-		internal static UnlitShader m_shader = new UnlitShader(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+		internal static UnlitShader m_shader = new(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
 
-		public readonly DynamicArray<VertexPositionColorTexture> TriangleVertices = new DynamicArray<VertexPositionColorTexture>();
+		public readonly DynamicArray<VertexPositionColorTexture> TriangleVertices = [];
 
-		public readonly DynamicArray<int> TriangleIndices = new DynamicArray<int>();
+		public readonly DynamicArray<int> TriangleIndices = [];
 
 		public BitmapFont Font
 		{

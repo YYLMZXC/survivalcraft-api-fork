@@ -18,7 +18,7 @@ namespace Game
 					{
 						SoundBuffer soundBuffer = ContentManager.Get<SoundBuffer>(name, ".wav");
 						if (soundBuffer == null) soundBuffer = ContentManager.Get<SoundBuffer>(name, ".ogg");
-						Sound sound = new Sound(soundBuffer, num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true);
+						Sound sound = new(soundBuffer, num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true);
 						sound.Play();
 					}
 					catch (Exception)

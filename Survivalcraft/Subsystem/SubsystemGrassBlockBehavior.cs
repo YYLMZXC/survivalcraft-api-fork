@@ -10,9 +10,9 @@ namespace Game
 
 		public SubsystemTime m_subsystemTime;
 
-		public Dictionary<Point3, int> m_toUpdate = new Dictionary<Point3, int>();
+		public Dictionary<Point3, int> m_toUpdate = [];
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public override int[] HandledBlocks => new int[1]
 		{

@@ -16,7 +16,7 @@ namespace NVorbis
 
 		private long _readPosition;
 
-		private object _localLock = new object();
+		private object _localLock = new();
 
 		private int _owningThreadId;
 

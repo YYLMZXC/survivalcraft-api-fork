@@ -31,7 +31,7 @@ namespace Game
 
 		public float m_redScreenFactor;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public string CauseOfDeath
 		{

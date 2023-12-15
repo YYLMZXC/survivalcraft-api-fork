@@ -7,8 +7,8 @@ namespace Game
 {
 	public class MemoryBankData : IEditableItemData
 	{
-		public static List<char> m_hexChars = new List<char>
-		{
+		public static List<char> m_hexChars =
+		[
 			'0',
 			'1',
 			'2',
@@ -25,9 +25,9 @@ namespace Game
 			'D',
 			'E',
 			'F'
-		};
+		];
 
-		public DynamicArray<byte> Data = new DynamicArray<byte>();
+		public DynamicArray<byte> Data = [];
 
 		public byte LastOutput
 		{

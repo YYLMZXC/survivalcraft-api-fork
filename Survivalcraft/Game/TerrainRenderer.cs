@@ -19,7 +19,7 @@ namespace Game
 
 		public static Shader TransparentShader;
 
-		public SamplerState m_samplerState = new SamplerState
+		public SamplerState m_samplerState = new()
 		{
 			AddressModeU = TextureAddressMode.Clamp,
 			AddressModeV = TextureAddressMode.Clamp,
@@ -27,7 +27,7 @@ namespace Game
 			MaxLod = 0f
 		};
 
-		public SamplerState m_samplerStateMips = new SamplerState
+		public SamplerState m_samplerStateMips = new()
 		{
 			AddressModeU = TextureAddressMode.Clamp,
 			AddressModeV = TextureAddressMode.Clamp,
@@ -35,9 +35,9 @@ namespace Game
 			MaxLod = 4f
 		};
 
-		public DynamicArray<TerrainChunk> m_chunksToDraw = new DynamicArray<TerrainChunk>();
+		public DynamicArray<TerrainChunk> m_chunksToDraw = [];
 
-		public static DynamicArray<int> m_tmpIndices = new DynamicArray<int>();
+		public static DynamicArray<int> m_tmpIndices = [];
 
 		public static bool DrawChunksMap;
 
@@ -73,9 +73,9 @@ namespace Game
 			m_subsystemTerrain = subsystemTerrain;
 			m_subsystemSky = subsystemTerrain.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
 			m_subsystemAnimatedTextures = subsystemTerrain.SubsystemAnimatedTextures;
-			if (OpaqueShader == null) OpaqueShader = new Shader(ShaderCodeManager.GetFast("Shaders/Opaque.vsh"), ShaderCodeManager.GetFast("Shaders/Opaque.psh"), new ShaderMacro[] { new ShaderMacro("Opaque") });
-			if (AlphatestedShader == null) AlphatestedShader = new Shader(ShaderCodeManager.GetFast("Shaders/AlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/AlphaTested.psh"), new ShaderMacro[] { new ShaderMacro("ALPHATESTED") });
-			if (TransparentShader == null) TransparentShader = new Shader(ShaderCodeManager.GetFast("Shaders/Transparent.vsh"), ShaderCodeManager.GetFast("Shaders/Transparent.psh"), new ShaderMacro[] { new ShaderMacro("Transparent") });
+			if (OpaqueShader == null) OpaqueShader = new Shader(ShaderCodeManager.GetFast("Shaders/Opaque.vsh"), ShaderCodeManager.GetFast("Shaders/Opaque.psh"), new ShaderMacro[] { new("Opaque") });
+			if (AlphatestedShader == null) AlphatestedShader = new Shader(ShaderCodeManager.GetFast("Shaders/AlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/AlphaTested.psh"), new ShaderMacro[] { new("ALPHATESTED") });
+			if (TransparentShader == null) TransparentShader = new Shader(ShaderCodeManager.GetFast("Shaders/Transparent.vsh"), ShaderCodeManager.GetFast("Shaders/Transparent.psh"), new ShaderMacro[] { new("Transparent") });
 			Display.DeviceReset += Display_DeviceReset;
 		}
 
@@ -138,7 +138,7 @@ namespace Game
 		{
 			int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
 			Vector3 viewPosition = camera.ViewPosition;
-			Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+			Vector3 v = new(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			Display.BlendState = BlendState.Opaque;
 			Display.DepthStencilState = DepthStencilState.Default;
@@ -185,7 +185,7 @@ namespace Game
 		{
 			int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
 			Vector3 viewPosition = camera.ViewPosition;
-			Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+			Vector3 v = new(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			Display.BlendState = BlendState.Opaque;
 			Display.DepthStencilState = DepthStencilState.Default;
@@ -213,7 +213,7 @@ namespace Game
 		{
 			int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
 			Vector3 viewPosition = camera.ViewPosition;
-			Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+			Vector3 v = new(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			Display.BlendState = BlendState.AlphaBlend;
 			Display.DepthStencilState = DepthStencilState.Default;
@@ -304,7 +304,7 @@ namespace Game
 					}
 					if (num2 > 0 && num3 > 0)
 					{
-						TerrainChunkGeometry.Buffer buffer = new TerrainChunkGeometry.Buffer();
+						TerrainChunkGeometry.Buffer buffer = new();
 						buffer.Texture = item.Key;
 						buffers.Add(buffer);
 						buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, num2);
@@ -389,10 +389,10 @@ namespace Game
 		public void StartChunkFadeIn(Camera camera, TerrainChunk chunk)
 		{
 			Vector3 viewPosition = camera.ViewPosition;
-			Vector2 v = new Vector2(chunk.Origin.X, chunk.Origin.Y);
-			Vector2 v2 = new Vector2(chunk.Origin.X + 16, chunk.Origin.Y);
-			Vector2 v3 = new Vector2(chunk.Origin.X, chunk.Origin.Y + 16);
-			Vector2 v4 = new Vector2(chunk.Origin.X + 16, chunk.Origin.Y + 16);
+			Vector2 v = new(chunk.Origin.X, chunk.Origin.Y);
+			Vector2 v2 = new(chunk.Origin.X + 16, chunk.Origin.Y);
+			Vector2 v3 = new(chunk.Origin.X, chunk.Origin.Y + 16);
+			Vector2 v4 = new(chunk.Origin.X + 16, chunk.Origin.Y + 16);
 			float x = Vector2.Distance(viewPosition.XZ, v);
 			float x2 = Vector2.Distance(viewPosition.XZ, v2);
 			float x3 = Vector2.Distance(viewPosition.XZ, v3);

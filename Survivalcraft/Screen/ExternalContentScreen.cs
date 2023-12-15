@@ -29,7 +29,7 @@ namespace Game
 
 		public bool m_listDirty;
 
-		public Dictionary<string, bool> m_downloadedFiles = new Dictionary<string, bool>();
+		public Dictionary<string, bool> m_downloadedFiles = [];
 
 		public IExternalContentProvider m_externalContentProvider = ExternalContentManager.DefaultProvider;
 

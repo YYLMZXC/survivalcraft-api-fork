@@ -40,7 +40,7 @@ namespace Game
 				{
 					string path = ModsManager.IsAndroid ? "android:/SurvivalCraft2.3/" : "app:/";
 					Stream stream = Storage.OpenFile(Storage.CombinePaths(path, includefname), OpenFileMode.Read);
-					StreamReader streamReader = new StreamReader(stream);
+					StreamReader streamReader = new(stream);
 					shaderTextTemp = streamReader.ReadToEnd();
 				}
 				else
@@ -77,7 +77,7 @@ namespace Game
 					}
 					if (lines[l].StartsWith("#include"))
 					{
-						Regex regex = new Regex("\"[^\"]*\"");
+						Regex regex = new("\"[^\"]*\"");
 						string fname = regex.Match(lines[l]).Value.Replace("\"", "");
 						includeText += GetIncludeText(shaderText, fname, external);
 					}

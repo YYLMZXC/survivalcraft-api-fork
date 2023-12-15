@@ -36,21 +36,21 @@ namespace Game
 
 		public SubsystemFluidBlockBehavior m_subsystemFluidBlockBehavior;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public DynamicArray<CollisionBox> m_collisionBoxes = new DynamicArray<CollisionBox>();
+		public DynamicArray<CollisionBox> m_collisionBoxes = [];
 
-		public DynamicArray<ComponentBody> m_componentBodies = new DynamicArray<ComponentBody>();
+		public DynamicArray<ComponentBody> m_componentBodies = [];
 
-		public DynamicArray<IMovingBlockSet> m_movingBlockSets = new DynamicArray<IMovingBlockSet>();
+		public DynamicArray<IMovingBlockSet> m_movingBlockSets = [];
 
-		public DynamicArray<CollisionBox> m_bodiesCollisionBoxes = new DynamicArray<CollisionBox>();
+		public DynamicArray<CollisionBox> m_bodiesCollisionBoxes = [];
 
-		public DynamicArray<CollisionBox> m_movingBlocksCollisionBoxes = new DynamicArray<CollisionBox>();
+		public DynamicArray<CollisionBox> m_movingBlocksCollisionBoxes = [];
 
 		public ComponentBody m_parentBody;
 
-		public List<ComponentBody> m_childBodies = new List<ComponentBody>();
+		public List<ComponentBody> m_childBodies = [];
 
 		public Vector3 m_velocity;
 
@@ -78,7 +78,7 @@ namespace Game
 
 		public bool TerrainCollidable = true;
 
-		public Vector3 StanceBoxSize => new Vector3(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
+		public Vector3 StanceBoxSize => new(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
 
 		public Vector3 BoxSize { get; set; }
 
@@ -192,7 +192,7 @@ namespace Game
 			}
 		}
 
-		public ReadOnlyList<ComponentBody> ChildBodies => new ReadOnlyList<ComponentBody>(m_childBodies);
+		public ReadOnlyList<ComponentBody> ChildBodies => new(m_childBodies);
 
 		public ComponentBody ParentBody
 		{
@@ -243,14 +243,14 @@ namespace Game
 
 		static ComponentBody()
 		{
-			List<Vector3> list = new List<Vector3>();
+			List<Vector3> list = [];
 			for (int i = -2; i <= 2; i++)
 			{
 				for (int j = -2; j <= 2; j++)
 				{
 					for (int k = -2; k <= 2; k++)
 					{
-						Vector3 item = new Vector3(0.25f * (float)i, 0.25f * (float)j, 0.25f * (float)k);
+						Vector3 item = new(0.25f * (float)i, 0.25f * (float)j, 0.25f * (float)k);
 						list.Add(item);
 					}
 				}
@@ -535,7 +535,7 @@ namespace Game
 				{
 					continue;
 				}
-				BoundingBox box = new BoundingBox(vector2 - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f), vector2 + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f));
+				BoundingBox box = new(vector2 - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f), vector2 + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f));
 				box.Min += new Vector3(0.01f, MaxSmoothRiseHeight + 0.01f, 0.01f);
 				box.Max -= new Vector3(0.01f);
 				m_collisionBoxes.Clear();
@@ -554,7 +554,7 @@ namespace Game
 					float num4 = num * num;
 					float num5 = num2 * num2;
 					float num6 = num3 * num3;
-					List<Vector3> list = new List<Vector3>();
+					List<Vector3> list = [];
 					if (num4 <= num5 && num4 <= num6)
 					{
 						list.Add(vector2 + new Vector3(num, 0f, 0f));
@@ -639,7 +639,7 @@ namespace Game
 		public bool HandleSmoothRise(ref Vector3 move, Vector3 position, float dt)
 		{
 			Vector3 stanceBoxSize = StanceBoxSize;
-			BoundingBox box = new BoundingBox(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f), position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f));
+			BoundingBox box = new(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f), position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f));
 			box.Min += new Vector3(0.04f, 0f, 0.04f);
 			box.Max -= new Vector3(0.04f, 0f, 0.04f);
 			m_collisionBoxes.Clear();
@@ -684,7 +684,7 @@ namespace Game
 					vector = new Vector3(0.04f, 0.04f, 0f);
 					break;
 			}
-			BoundingBox boundingBox = new BoundingBox(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f) + vector, position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f) - vector);
+			BoundingBox boundingBox = new(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f) + vector, position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f) - vector);
 			FindTerrainCollisionBoxes(boundingBox, m_collisionBoxes);
 			m_collisionBoxes.AddRange(m_movingBlocksCollisionBoxes);
 			float num;
@@ -699,7 +699,7 @@ namespace Game
 			{
 				num = CalculatePushBack(boundingBox, axis, m_collisionBoxes, out pushingCollisionBox);
 			}
-			BoundingBox box = new BoundingBox(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f) + vector, position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f) - vector);
+			BoundingBox box = new(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f) + vector, position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f) - vector);
 			CollisionBox pushingCollisionBox2;
 			float num2 = CalculatePushBack(box, axis, m_bodiesCollisionBoxes, out pushingCollisionBox2);
 			if (MathUtils.Abs(num) > MathUtils.Abs(num2))
@@ -795,7 +795,7 @@ namespace Game
 		public void FindMovingBlocksCollisionBoxes(Vector3 position, DynamicArray<CollisionBox> result)
 		{
 			Vector3 stanceBoxSize = StanceBoxSize;
-			BoundingBox boundingBox = new BoundingBox(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f), position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f));
+			BoundingBox boundingBox = new(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f), position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f));
 			boundingBox.Min -= new Vector3(1f);
 			boundingBox.Max += new Vector3(1f);
 			m_movingBlockSets.Clear();
@@ -858,7 +858,7 @@ namespace Game
 							if (block.IsCollidable && TerrainCollidable)
 							{
 								BoundingBox[] customCollisionBoxes = block.GetCustomCollisionBoxes(m_subsystemTerrain, cellValueFast);
-								Vector3 vector = new Vector3(i, num2, j);
+								Vector3 vector = new(i, num2, j);
 								for (int k = 0; k < customCollisionBoxes.Length; k++)
 								{
 									result.Add(new CollisionBox

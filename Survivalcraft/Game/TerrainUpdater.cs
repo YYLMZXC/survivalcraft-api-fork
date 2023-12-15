@@ -171,23 +171,23 @@ namespace Game
 
 		public Terrain m_terrain;
 
-		public DynamicArray<LightSource> m_lightSources = new DynamicArray<LightSource>();
+		public DynamicArray<LightSource> m_lightSources = [];
 
-		public UpdateStatistics m_statistics = new UpdateStatistics();
+		public UpdateStatistics m_statistics = new();
 
 		public Task m_task;
 
-		public AutoResetEvent m_updateEvent = new AutoResetEvent(initialState: true);
+		public AutoResetEvent m_updateEvent = new(initialState: true);
 
-		public ManualResetEvent m_pauseEvent = new ManualResetEvent(initialState: true);
+		public ManualResetEvent m_pauseEvent = new(initialState: true);
 
 		public volatile bool m_quitUpdateThread;
 
 		public bool m_unpauseUpdateThread;
 
-		public object m_updateParametersLock = new object();
+		public object m_updateParametersLock = new();
 
-		public object m_unpauseLock = new object();
+		public object m_unpauseLock = new();
 
 		public UpdateParameters m_updateParameters;
 
@@ -197,7 +197,7 @@ namespace Game
 
 		public int m_synchronousUpdateFrame;
 
-		public Dictionary<int, UpdateLocation?> m_pendingLocations = new Dictionary<int, UpdateLocation?>();
+		public Dictionary<int, UpdateLocation?> m_pendingLocations = [];
 
 		public static int SlowTerrainUpdate;
 
@@ -213,9 +213,9 @@ namespace Game
 			m_subsystemAnimatedTextures = m_subsystemTerrain.Project.FindSubsystem<SubsystemAnimatedTextures>(true);
 			m_terrain = subsystemTerrain.Terrain;
 			m_updateParameters.Chunks = new TerrainChunk[0];
-			m_updateParameters.Locations = new Dictionary<int, UpdateLocation>();
+			m_updateParameters.Locations = [];
 			m_threadUpdateParameters.Chunks = new TerrainChunk[0];
-			m_threadUpdateParameters.Locations = new Dictionary<int, UpdateLocation>();
+			m_threadUpdateParameters.Locations = [];
 			SettingsManager.SettingChanged += SettingsManager_SettingChanged;
 		}
 
@@ -509,7 +509,7 @@ namespace Game
 				{
 					for (int l = point.Y; l <= point2.Y; l++)
 					{
-						Vector2 chunkCenter = new Vector2(((float)k + 0.5f) * 16f, ((float)l + 0.5f) * 16f);
+						Vector2 chunkCenter = new(((float)k + 0.5f) * 16f, ((float)l + 0.5f) * 16f);
 						TerrainChunk chunkAtCoords = m_terrain.GetChunkAtCoords(k, l);
 						if (chunkAtCoords == null)
 						{
@@ -686,7 +686,7 @@ namespace Game
 				viewPosition + (6f * viewDirection) - (2f * v),
 				viewPosition + (6f * viewDirection) + (2f * v)
 			};
-			List<TerrainChunk> list = new List<TerrainChunk>();
+			List<TerrainChunk> list = [];
 			Vector3[] array = obj;
 			for (int i = 0; i < array.Length; i++)
 			{

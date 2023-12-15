@@ -8,7 +8,7 @@ namespace Game
 	{
 		public SubsystemParticles m_subsystemParticles;
 
-		public Dictionary<Point3, FireParticleSystem> m_particleSystemsByCell = new Dictionary<Point3, FireParticleSystem>();
+		public Dictionary<Point3, FireParticleSystem> m_particleSystemsByCell = [];
 
 		public override int[] HandledBlocks => new int[3]
 		{

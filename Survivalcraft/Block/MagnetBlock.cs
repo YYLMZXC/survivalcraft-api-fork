@@ -10,7 +10,7 @@ namespace Game
 
 		public BlockMesh[] m_meshesByData = new BlockMesh[2];
 
-		public BlockMesh m_standaloneMesh = new BlockMesh();
+		public BlockMesh m_standaloneMesh = new();
 
 		public BoundingBox[][] m_collisionBoxesByData = new BoundingBox[2][];
 

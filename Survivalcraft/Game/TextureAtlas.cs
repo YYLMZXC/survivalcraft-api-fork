@@ -11,7 +11,7 @@ namespace Game
 	{
 		public Texture2D m_texture;
 
-		public Dictionary<string, Rectangle> m_rectangles = new Dictionary<string, Rectangle>();
+		public Dictionary<string, Rectangle> m_rectangles = [];
 
 		public Texture2D Texture => m_texture;
 

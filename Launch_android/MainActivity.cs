@@ -56,7 +56,7 @@ namespace SC4Android
 			{
 				if (dll.EndsWith(".dll"))
 				{
-					MemoryStream memoryStream = new MemoryStream();
+					MemoryStream memoryStream = new();
 					Assets.Open(dll).CopyTo(memoryStream);
 					AppDomain.CurrentDomain.Load(memoryStream.ToArray());
 				}

@@ -105,7 +105,7 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 				if (po.StartsWith("android:")) po = Storage.GetSystemPath(po);
 				string pp = Storage.GetDirectoryName(po);
 				Directory.CreateDirectory(pp);
-				using (FileStream destination = new FileStream(po, FileMode.Create, FileAccess.Write, FileShare.None))
+				using (FileStream destination = new(po, FileMode.Create, FileAccess.Write, FileShare.None))
 				{
 					stream.CopyTo(destination);
 				}
@@ -132,7 +132,7 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 
 	private ExternalContentEntry GetDirectoryEntry(string internalPath, bool scanContents)
 	{
-		ExternalContentEntry externalContentEntry = new ExternalContentEntry();
+		ExternalContentEntry externalContentEntry = new();
 		externalContentEntry.Type = ExternalContentType.Directory;
 		externalContentEntry.Path = ToExternalPath(internalPath);
 		externalContentEntry.Time = new DateTime(1970, 1, 1);
@@ -146,8 +146,8 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 			directories = Directory.GetFiles(internalPath);
 			foreach (string text in directories)
 			{
-				FileInfo fileInfo = new FileInfo(text);
-				ExternalContentEntry externalContentEntry2 = new ExternalContentEntry();
+				FileInfo fileInfo = new(text);
+				ExternalContentEntry externalContentEntry2 = new();
 				externalContentEntry2.Type = ExternalContentManager.ExtensionToType(Path.GetExtension(text));
 				externalContentEntry2.Path = ToExternalPath(text);
 				externalContentEntry2.Size = fileInfo.Length;

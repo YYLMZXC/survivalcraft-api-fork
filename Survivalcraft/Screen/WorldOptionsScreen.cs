@@ -74,7 +74,7 @@ namespace Game
 
 		public bool m_isExistingWorld;
 
-		public BlocksTexturesCache m_blockTexturesCache = new BlocksTexturesCache();
+		public BlocksTexturesCache m_blockTexturesCache = new();
 
 		public static float[] m_islandSizes = new float[20]
 		{

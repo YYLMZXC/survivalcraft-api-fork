@@ -39,7 +39,7 @@ namespace Engine
 			set;
 		}
 
-		public static Point2 ScreenSize => new Point2(EngineActivity.m_activity.Resources.DisplayMetrics.WidthPixels, EngineActivity.m_activity.Resources.DisplayMetrics.HeightPixels);
+		public static Point2 ScreenSize => new(EngineActivity.m_activity.Resources.DisplayMetrics.WidthPixels, EngineActivity.m_activity.Resources.DisplayMetrics.HeightPixels);
 
 		public static WindowMode WindowMode
 		{

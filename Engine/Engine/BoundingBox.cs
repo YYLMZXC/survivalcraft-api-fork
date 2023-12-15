@@ -189,14 +189,14 @@ namespace Engine
 		{
 			Vector3[] sourceArray = new Vector3[8]
 			{
-				new Vector3(b.Min.X, b.Min.Y, b.Min.Z),
-				new Vector3(b.Max.X, b.Min.Y, b.Min.Z),
-				new Vector3(b.Min.X, b.Max.Y, b.Min.Z),
-				new Vector3(b.Max.X, b.Max.Y, b.Min.Z),
-				new Vector3(b.Min.X, b.Min.Y, b.Max.Z),
-				new Vector3(b.Max.X, b.Min.Y, b.Max.Z),
-				new Vector3(b.Min.X, b.Max.Y, b.Max.Z),
-				new Vector3(b.Max.X, b.Max.Y, b.Max.Z)
+				new(b.Min.X, b.Min.Y, b.Min.Z),
+				new(b.Max.X, b.Min.Y, b.Min.Z),
+				new(b.Min.X, b.Max.Y, b.Min.Z),
+				new(b.Max.X, b.Max.Y, b.Min.Z),
+				new(b.Min.X, b.Min.Y, b.Max.Z),
+				new(b.Max.X, b.Min.Y, b.Max.Z),
+				new(b.Min.X, b.Max.Y, b.Max.Z),
+				new(b.Max.X, b.Max.Y, b.Max.Z)
 			};
 			Vector3[] array = new Vector3[8];
 			Vector3.Transform(sourceArray, 0, ref m, array, 0, 8);

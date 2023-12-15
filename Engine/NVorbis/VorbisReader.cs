@@ -111,8 +111,8 @@ namespace NVorbis
 		private VorbisReader()
 		{
 			ClipSamples = true;
-			_decoders = new List<VorbisStreamDecoder>();
-			_serials = new List<int>();
+			_decoders = [];
+			_serials = [];
 		}
 
 		public VorbisReader(Stream stream, bool closeStreamOnDispose)

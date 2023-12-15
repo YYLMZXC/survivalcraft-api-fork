@@ -9,9 +9,9 @@ namespace Game
 	{
 		public const int Index = 139;
 
-		public BlockMesh m_standaloneBulbBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBulbBlockMesh = new();
 
-		public BlockMesh m_standaloneSidesBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneSidesBlockMesh = new();
 
 		public BlockMesh[] m_bulbBlockMeshes = new BlockMesh[6];
 
@@ -21,7 +21,7 @@ namespace Game
 
 		public BoundingBox[][] m_collisionBoxes = new BoundingBox[6][];
 		public static new string fName = "LightbulbBlock";
-		public Color m_copperColor = new Color(118, 56, 32);
+		public Color m_copperColor = new(118, 56, 32);
 
 		public override void Initialize()
 		{

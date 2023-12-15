@@ -8,24 +8,24 @@ namespace Engine.Graphics
 
 		private CompareFunction m_depthBufferFunction = CompareFunction.LessEqual;
 
-		public static readonly DepthStencilState Default = new DepthStencilState
+		public static readonly DepthStencilState Default = new()
 		{
 			IsLocked = true
 		};
 
-		public static readonly DepthStencilState DepthRead = new DepthStencilState
+		public static readonly DepthStencilState DepthRead = new()
 		{
 			DepthBufferWriteEnable = false,
 			IsLocked = true
 		};
 
-		public static readonly DepthStencilState DepthWrite = new DepthStencilState
+		public static readonly DepthStencilState DepthWrite = new()
 		{
 			DepthBufferTestEnable = false,
 			IsLocked = true
 		};
 
-		public static readonly DepthStencilState None = new DepthStencilState
+		public static readonly DepthStencilState None = new()
 		{
 			DepthBufferTestEnable = false,
 			DepthBufferWriteEnable = false,

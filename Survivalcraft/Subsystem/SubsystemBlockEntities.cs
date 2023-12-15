@@ -6,7 +6,7 @@ namespace Game
 {
 	public class SubsystemBlockEntities : Subsystem
 	{
-		public Dictionary<Point3, ComponentBlockEntity> m_blockEntities = new Dictionary<Point3, ComponentBlockEntity>();
+		public Dictionary<Point3, ComponentBlockEntity> m_blockEntities = [];
 
 		public ComponentBlockEntity GetBlockEntity(int x, int y, int z)
 		{

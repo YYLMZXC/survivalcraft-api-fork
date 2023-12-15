@@ -16,9 +16,9 @@ namespace Game
 			public int Count;
 		}
 
-		public List<Slot> m_slots = new List<Slot>();
+		public List<Slot> m_slots = [];
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		Project IInventory.Project => Project;
 

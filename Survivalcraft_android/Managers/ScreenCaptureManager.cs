@@ -78,10 +78,10 @@ namespace Game
 		{
 			if (GameManager.Project != null)
 			{
-				using (RenderTarget2D renderTarget2D = new RenderTarget2D(width, height, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8))
+				using (RenderTarget2D renderTarget2D = new(width, height, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8))
 				{
 					RenderTarget2D renderTarget = Display.RenderTarget;
-					Dictionary<ComponentGui, bool> dictionary = new Dictionary<ComponentGui, bool>();
+					Dictionary<ComponentGui, bool> dictionary = [];
 					ResolutionMode resolutionMode = ResolutionMode.High;
 					try
 					{
@@ -99,9 +99,9 @@ namespace Game
 						ScreensManager.Draw();
 						if (SettingsManager.ShowLogoInScreenshots)
 						{
-							PrimitivesRenderer2D primitivesRenderer2D = new PrimitivesRenderer2D();
+							PrimitivesRenderer2D primitivesRenderer2D = new();
 							Texture2D texture2D = ContentManager.Get<Texture2D>("Textures/Gui/ScreenCaptureOverlay");
-							Vector2 vector = new Vector2((width - texture2D.Width) / 2, 0f);
+							Vector2 vector = new((width - texture2D.Width) / 2, 0f);
 							Vector2 corner = vector + new Vector2(texture2D.Width, texture2D.Height);
 							primitivesRenderer2D.TexturedBatch(texture2D, useAlphaTest: false, 0, DepthStencilState.None).QueueQuad(vector, corner, 0f, new Vector2(0f, 0f), new Vector2(1f, 1f), Engine.Color.White);
 							primitivesRenderer2D.Flush();
@@ -127,7 +127,7 @@ namespace Game
 						bitmap.CopyPixelsFromBuffer(src);
 						bitmap.Compress(Bitmap.CompressFormat.Png, 100, stream);
 					}
-					Intent intent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+					Intent intent = new("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
 					intent.SetData(Android.Net.Uri.FromFile(new Java.IO.File(Storage.GetSystemPath(path))));
 					Window.Activity.SendBroadcast(intent);
 				}

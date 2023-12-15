@@ -10,7 +10,7 @@ namespace Game
 	{
 		public SubsystemFurnitureBlockBehavior m_subsystemFurnitureBlockBehavior;
 
-		public List<int> m_slots = new List<int>();
+		public List<int> m_slots = [];
 
 		public const int m_largeNumber = 9999;
 

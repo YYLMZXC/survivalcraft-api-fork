@@ -12,17 +12,17 @@ namespace Engine
 
 		public float W;
 
-		public static readonly Vector4 Zero = new Vector4(0f);
+		public static readonly Vector4 Zero = new(0f);
 
-		public static readonly Vector4 One = new Vector4(1f);
+		public static readonly Vector4 One = new(1f);
 
-		public static readonly Vector4 UnitX = new Vector4(1f, 0f, 0f, 0f);
+		public static readonly Vector4 UnitX = new(1f, 0f, 0f, 0f);
 
-		public static readonly Vector4 UnitY = new Vector4(0f, 1f, 0f, 0f);
+		public static readonly Vector4 UnitY = new(0f, 1f, 0f, 0f);
 
-		public static readonly Vector4 UnitZ = new Vector4(0f, 0f, 1f, 0f);
+		public static readonly Vector4 UnitZ = new(0f, 0f, 1f, 0f);
 
-		public static readonly Vector4 UnitW = new Vector4(0f, 0f, 0f, 1f);
+		public static readonly Vector4 UnitW = new(0f, 0f, 0f, 1f);
 
 		public Vector4(float v)
 		{

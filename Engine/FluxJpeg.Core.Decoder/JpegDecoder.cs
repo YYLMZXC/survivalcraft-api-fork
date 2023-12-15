@@ -18,7 +18,7 @@ namespace FluxJpeg.Core.Decoder
 
 		public static long ProgressUpdateByteInterval = 100L;
 
-		private JpegDecodeProgressChangedArgs DecodeProgress = new JpegDecodeProgressChangedArgs();
+		private JpegDecodeProgressChangedArgs DecodeProgress = new();
 
 		private byte majorVersion;
 
@@ -52,7 +52,7 @@ namespace FluxJpeg.Core.Decoder
 
 		private JPEGBinaryReader jpegReader;
 
-		private List<JPEGFrame> jpegFrames = new List<JPEGFrame>();
+		private List<JPEGFrame> jpegFrames = [];
 
 		private JpegHuffmanTable[] dcTables = new JpegHuffmanTable[4];
 
@@ -195,7 +195,7 @@ namespace FluxJpeg.Core.Decoder
 						{
 							progressive = marker == 194;
 							jpegFrames.Add(new JPEGFrame());
-							jPEGFrame = jpegFrames[jpegFrames.Count - 1];
+							jPEGFrame = jpegFrames[^1];
 							jPEGFrame.ProgressUpdateMethod = UpdateStreamProgress;
 							jpegReader.ReadShort();
 							jPEGFrame.setPrecision(jpegReader.ReadByte());

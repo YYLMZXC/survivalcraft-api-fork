@@ -4,7 +4,7 @@ namespace Engine.Serialization
 	{
 		public void Serialize(InputArchive archive, ref DynamicArray<T> value)
 		{
-			value = new DynamicArray<T>();
+			value = [];
 			archive.SerializeCollection(null, value);
 		}
 

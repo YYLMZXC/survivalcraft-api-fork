@@ -14,7 +14,7 @@ namespace Game
 
 		public ComponentFishModel m_componentFishModel;
 
-		public StateMachine m_stateMachine = new StateMachine();
+		public StateMachine m_stateMachine = new();
 
 		public float m_importanceLevel;
 
@@ -22,7 +22,7 @@ namespace Game
 
 		public Vector2 m_direction;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 

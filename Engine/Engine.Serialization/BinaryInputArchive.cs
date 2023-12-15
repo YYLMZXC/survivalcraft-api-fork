@@ -6,7 +6,7 @@ namespace Engine.Serialization
 {
 	public class BinaryInputArchive : InputArchive, IDisposable
 	{
-		private Dictionary<int, Type> m_typeIds = new Dictionary<int, Type>();
+		private Dictionary<int, Type> m_typeIds = [];
 
 		private EngineBinaryReader m_reader;
 

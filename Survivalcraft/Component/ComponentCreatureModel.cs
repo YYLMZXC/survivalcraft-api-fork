@@ -20,7 +20,7 @@ namespace Game
 
 		public Vector3 m_randomLookPoint;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float Bob
 		{

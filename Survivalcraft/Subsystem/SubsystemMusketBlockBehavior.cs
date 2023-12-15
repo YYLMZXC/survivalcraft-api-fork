@@ -18,9 +18,9 @@ namespace Game
 
 		public SubsystemNoise m_subsystemNoise;
 		public static string fName = "SubsystemMusketBlockBehavior";
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public Dictionary<ComponentMiner, double> m_aimStartTimes = new Dictionary<ComponentMiner, double>();
+		public Dictionary<ComponentMiner, double> m_aimStartTimes = [];
 
 		public override int[] HandledBlocks => new int[0];
 

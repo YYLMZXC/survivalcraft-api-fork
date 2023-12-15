@@ -9,7 +9,7 @@ namespace Game
 {
 	public class GameWidget : CanvasWidget
 	{
-		public List<Camera> m_cameras = new List<Camera>();
+		public List<Camera> m_cameras = [];
 
 		public Camera m_activeCamera;
 
@@ -43,7 +43,7 @@ namespace Game
 			set;
 		}
 
-		public ReadOnlyList<Camera> Cameras => new ReadOnlyList<Camera>(m_cameras);
+		public ReadOnlyList<Camera> Cameras => new(m_cameras);
 
 		public Camera ActiveCamera
 		{

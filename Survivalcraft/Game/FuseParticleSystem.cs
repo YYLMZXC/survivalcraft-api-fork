@@ -16,7 +16,7 @@ namespace Game
 			public float TargetSpeed;
 		}
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public Vector3 m_position;
 

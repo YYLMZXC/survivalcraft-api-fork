@@ -23,7 +23,7 @@ namespace Game
 				m_heightByLevel[i] = num;
 				m_boundingBoxesByLevel[i] = new BoundingBox[1]
 				{
-					new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, num, 1f))
+					new(new Vector3(0f, 0f, 0f), new Vector3(1f, num, 1f))
 				};
 			}
 		}

@@ -29,7 +29,7 @@ namespace Game
 
 		public List<Loot> m_lootOnFireList;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public bool m_lootDropped;
 

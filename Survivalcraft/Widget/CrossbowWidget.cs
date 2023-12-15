@@ -17,7 +17,7 @@ namespace Game
 
 		public LabelWidget m_instructionsLabel;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 		public static string fName = "CrossbowWidget";
 		public CrossbowWidget(IInventory inventory, int slotIndex)
 		{

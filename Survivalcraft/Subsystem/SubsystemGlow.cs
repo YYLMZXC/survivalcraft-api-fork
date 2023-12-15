@@ -10,9 +10,9 @@ namespace Game
 	{
 		public SubsystemSky m_subsystemSky;
 
-		public Dictionary<GlowPoint, bool> m_glowPoints = new Dictionary<GlowPoint, bool>();
+		public Dictionary<GlowPoint, bool> m_glowPoints = [];
 
-		public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
+		public PrimitivesRenderer3D m_primitivesRenderer = new();
 
 		public TexturedBatch3D[] m_batchesByType = new TexturedBatch3D[4];
 

@@ -12,29 +12,31 @@ namespace Game
 
 		public SurvivalCraftModEntity()
 		{
-			List<IContentReader.IContentReader> readers = new List<IContentReader.IContentReader>();
-			readers.Add(new IContentReader.BitmapFontReader());
-			readers.Add(new IContentReader.DaeModelReader());
-			readers.Add(new IContentReader.ImageReader());
-			readers.Add(new IContentReader.JsonArrayReader());
-			readers.Add(new IContentReader.JsonObjectReader());
-			readers.Add(new IContentReader.JsonModelReader());
-			readers.Add(new IContentReader.MtllibStructReader());
-			readers.Add(new IContentReader.ObjModelReader());
-			readers.Add(new IContentReader.ShaderReader());
-			readers.Add(new IContentReader.SoundBufferReader());
-			readers.Add(new IContentReader.StreamingSourceReader());
-			readers.Add(new IContentReader.StringReader());
-			readers.Add(new IContentReader.SubtextureReader());
-			readers.Add(new IContentReader.Texture2DReader());
-			readers.Add(new IContentReader.XmlReader());
+			List<IContentReader.IContentReader> readers =
+			[
+				new IContentReader.BitmapFontReader(),
+				new IContentReader.DaeModelReader(),
+				new IContentReader.ImageReader(),
+				new IContentReader.JsonArrayReader(),
+				new IContentReader.JsonObjectReader(),
+				new IContentReader.JsonModelReader(),
+				new IContentReader.MtllibStructReader(),
+				new IContentReader.ObjModelReader(),
+				new IContentReader.ShaderReader(),
+				new IContentReader.SoundBufferReader(),
+				new IContentReader.StreamingSourceReader(),
+				new IContentReader.StringReader(),
+				new IContentReader.SubtextureReader(),
+				new IContentReader.Texture2DReader(),
+				new IContentReader.XmlReader(),
+			];
 			for (int i = 0; i < readers.Count; i++)
 			{
 				ContentManager.ReaderList.Add(readers[i].Type, readers[i]);
 			}
 
 			Stream stream = Storage.OpenFile("app:Content.zip", OpenFileMode.Read);
-			MemoryStream memoryStream = new MemoryStream();
+			MemoryStream memoryStream = new();
 			stream.CopyTo(memoryStream);
 			stream.Close();
 			memoryStream.Position = 0L;
@@ -51,7 +53,7 @@ namespace Game
 		}
 		public override void LoadDll()
 		{
-			List<Type> BlockTypes = new List<Type>();
+			List<Type> BlockTypes = [];
 			Type[] types = typeof(BlocksManager).Assembly.GetTypes();
 			for (int i = 0; i < types.Length; i++)
 			{

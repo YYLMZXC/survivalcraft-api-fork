@@ -4,7 +4,7 @@ namespace Engine.Graphics
 {
 	public class ModelBone
 	{
-		internal List<ModelBone> m_childBones = new List<ModelBone>();
+		internal List<ModelBone> m_childBones = [];
 
 		internal Matrix m_transform;
 
@@ -44,7 +44,7 @@ namespace Engine.Graphics
 			internal set;
 		}
 
-		public ReadOnlyList<ModelBone> ChildBones => new ReadOnlyList<ModelBone>(m_childBones);
+		public ReadOnlyList<ModelBone> ChildBones => new(m_childBones);
 
 		internal ModelBone()
 		{

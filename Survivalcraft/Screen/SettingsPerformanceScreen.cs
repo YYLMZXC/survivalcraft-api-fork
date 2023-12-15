@@ -6,12 +6,12 @@ namespace Game
 {
 	public class SettingsPerformanceScreen : Screen
 	{
-		public static List<int> m_presentationIntervals = new List<int>
-		{
+		public static List<int> m_presentationIntervals =
+		[
 			2,
 			1,
 			0
-		};
+		];
 
 		private readonly int[] FPSString = new int[2]
 		{
@@ -19,8 +19,8 @@ namespace Game
 			30
 		};
 
-		public static List<int> m_visibilityRanges = new List<int>
-		{
+		public static List<int> m_visibilityRanges =
+		[
 			32,
 			48,
 			64,
@@ -44,7 +44,7 @@ namespace Game
 			896,
 			960,
 			1024
-		};
+		];
 
 		public ButtonWidget m_resolutionButton;
 

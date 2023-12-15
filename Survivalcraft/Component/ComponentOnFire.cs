@@ -16,7 +16,7 @@ namespace Game
 
 		public SubsystemParticles m_subsystemParticles;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public double m_nextCheckTime;
 

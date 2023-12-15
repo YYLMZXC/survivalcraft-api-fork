@@ -8,7 +8,7 @@ namespace Game
 
 		public float m_lastStoredVoltage;
 
-		public Dictionary<int, float> m_voltagesHistory = new Dictionary<int, float>();
+		public Dictionary<int, float> m_voltagesHistory = [];
 
 		public abstract int DelaySteps
 		{

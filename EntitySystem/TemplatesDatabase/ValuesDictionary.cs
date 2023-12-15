@@ -9,7 +9,7 @@ namespace TemplatesDatabase
 {
 	public class ValuesDictionary : IEnumerable<KeyValuePair<string, object>>, IEnumerable
 	{
-		private Dictionary<string, object> m_dictionary = new Dictionary<string, object>();
+		private Dictionary<string, object> m_dictionary = [];
 
 		private DatabaseObject m_databaseObject;
 
@@ -121,7 +121,7 @@ namespace TemplatesDatabase
 				}
 				else
 				{
-					ValuesDictionary valuesDictionary = new ValuesDictionary();
+					ValuesDictionary valuesDictionary = [];
 					valuesDictionary.PopulateFromDatabaseObject(effectiveNestingChild);
 					SetValue(effectiveNestingChild.Name, valuesDictionary);
 				}
@@ -138,7 +138,7 @@ namespace TemplatesDatabase
 					ValuesDictionary valuesDictionary2 = GetValue<object>(item.Key, null) as ValuesDictionary;
 					if (valuesDictionary2 == null)
 					{
-						valuesDictionary2 = new ValuesDictionary();
+						valuesDictionary2 = [];
 						SetValue(item.Key, valuesDictionary2);
 					}
 					valuesDictionary2.ApplyOverrides(valuesDictionary);
@@ -185,7 +185,7 @@ namespace TemplatesDatabase
 					ValuesDictionary valuesDictionary = GetValue<object>(attributeValue4, null) as ValuesDictionary;
 					if (valuesDictionary == null)
 					{
-						valuesDictionary = new ValuesDictionary();
+						valuesDictionary = [];
 						SetValue(attributeValue4, valuesDictionary);
 					}
 					valuesDictionary.ApplyOverrides(item);

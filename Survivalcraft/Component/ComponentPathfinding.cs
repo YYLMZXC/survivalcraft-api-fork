@@ -14,9 +14,9 @@ namespace Game
 
 		public ComponentPilot m_componentPilot;
 
-		public StateMachine m_stateMachine = new StateMachine();
+		public StateMachine m_stateMachine = new();
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public Vector3? m_lastPathfindingDestination;
 
@@ -24,7 +24,7 @@ namespace Game
 
 		public float m_pathfindingCongestion;
 
-		public PathfindingResult m_pathfindingResult = new PathfindingResult();
+		public PathfindingResult m_pathfindingResult = new();
 
 		public double m_nextUpdateTime;
 

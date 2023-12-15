@@ -8,7 +8,7 @@ namespace Game
 	{
 		public BlockColorsMap m_blockColorsMap;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public LeavesBlock(BlockColorsMap blockColorsMap)
 		{

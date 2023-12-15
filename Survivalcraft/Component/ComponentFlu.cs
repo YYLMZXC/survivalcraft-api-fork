@@ -18,7 +18,7 @@ namespace Game
 
 		public ComponentPlayer m_componentPlayer;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_fluOnset;
 		public static string fName = "ComponentFlu";

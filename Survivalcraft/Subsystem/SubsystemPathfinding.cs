@@ -26,7 +26,7 @@ namespace Game
 
 		public class Storage : IAStarStorage<Vector3>
 		{
-			public Dictionary<Vector3, object> Dictionary = new Dictionary<Vector3, object>();
+			public Dictionary<Vector3, object> Dictionary = [];
 
 			public void Clear()
 			{
@@ -220,9 +220,9 @@ namespace Game
 
 		public SubsystemTerrain m_subsystemTerrain;
 
-		public Queue<Request> m_requests = new Queue<Request>();
+		public Queue<Request> m_requests = new();
 
-		public AStar<Vector3> m_astar = new AStar<Vector3>();
+		public AStar<Vector3> m_astar = new();
 
 		public void QueuePathSearch(Vector3 start, Vector3 end, float minDistance, Vector3 boxSize, int maxPositionsToCheck, PathfindingResult result)
 		{

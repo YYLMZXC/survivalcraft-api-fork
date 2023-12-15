@@ -262,23 +262,23 @@ namespace Game
 
 		static TerrainContentsGenerator22()
 		{
-			m_coalBrushes = new List<TerrainBrush>();
-			m_ironBrushes = new List<TerrainBrush>();
-			m_copperBrushes = new List<TerrainBrush>();
-			m_saltpeterBrushes = new List<TerrainBrush>();
-			m_sulphurBrushes = new List<TerrainBrush>();
-			m_diamondBrushes = new List<TerrainBrush>();
-			m_germaniumBrushes = new List<TerrainBrush>();
-			m_dirtPocketBrushes = new List<TerrainBrush>();
-			m_gravelPocketBrushes = new List<TerrainBrush>();
-			m_limestonePocketBrushes = new List<TerrainBrush>();
-			m_sandPocketBrushes = new List<TerrainBrush>();
-			m_basaltPocketBrushes = new List<TerrainBrush>();
-			m_granitePocketBrushes = new List<TerrainBrush>();
-			m_clayPocketBrushes = new List<TerrainBrush>();
-			m_waterPocketBrushes = new List<TerrainBrush>();
-			m_magmaPocketBrushes = new List<TerrainBrush>();
-			m_caveBrushesByType = new List<List<TerrainBrush>>();
+			m_coalBrushes = [];
+			m_ironBrushes = [];
+			m_copperBrushes = [];
+			m_saltpeterBrushes = [];
+			m_sulphurBrushes = [];
+			m_diamondBrushes = [];
+			m_germaniumBrushes = [];
+			m_dirtPocketBrushes = [];
+			m_gravelPocketBrushes = [];
+			m_limestonePocketBrushes = [];
+			m_sandPocketBrushes = [];
+			m_basaltPocketBrushes = [];
+			m_granitePocketBrushes = [];
+			m_clayPocketBrushes = [];
+			m_waterPocketBrushes = [];
+			m_magmaPocketBrushes = [];
+			m_caveBrushesByType = [];
 			CreateBrushes();
 		}
 
@@ -2422,7 +2422,7 @@ namespace Game
 			}
 			for (int num82 = 0; num82 < 7; num82++)
 			{
-				m_caveBrushesByType.Add(new List<TerrainBrush>());
+				m_caveBrushesByType.Add([]);
 				for (int num83 = 0; num83 < 3; num83++)
 				{
 					var terrainBrush17 = new TerrainBrush();

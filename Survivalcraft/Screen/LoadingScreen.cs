@@ -21,18 +21,18 @@ namespace Game
 			public string Message;
 			public LogItem(LogType type, string log) { LogType = type; Message = log; }
 		}
-		private List<Action> LoadingActoins = new List<Action>();
-		private List<Action> ModLoadingActoins = new List<Action>();
-		private CanvasWidget Canvas = new CanvasWidget();
-		private RectangleWidget Background = new RectangleWidget() { FillColor = SettingsManager.DisplayLog ? Color.Black : Color.White, OutlineThickness = 0f, DepthWriteEnabled = true };
-		private static ListPanelWidget LogList = new ListPanelWidget() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
+		private List<Action> LoadingActoins = [];
+		private List<Action> ModLoadingActoins = [];
+		private CanvasWidget Canvas = new();
+		private RectangleWidget Background = new() { FillColor = SettingsManager.DisplayLog ? Color.Black : Color.White, OutlineThickness = 0f, DepthWriteEnabled = true };
+		private static ListPanelWidget LogList = new() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
 		static LoadingScreen()
 		{
 			LogList.ItemWidgetFactory = (obj) =>
 			{
 				LogItem logItem = obj as LogItem;
-				CanvasWidget canvasWidget = new CanvasWidget() { Size = new Vector2(Display.Viewport.Width, 40), Margin = new Vector2(0, 2), HorizontalAlignment = WidgetAlignment.Near };
-				FontTextWidget fontTextWidget = new FontTextWidget() { FontScale = 0.6f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
+				CanvasWidget canvasWidget = new() { Size = new Vector2(Display.Viewport.Width, 40), Margin = new Vector2(0, 2), HorizontalAlignment = WidgetAlignment.Near };
+				FontTextWidget fontTextWidget = new() { FontScale = 0.6f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
 				canvasWidget.Children.Add(fontTextWidget);
 				canvasWidget.IsVisible = SettingsManager.DisplayLog;
 				LogList.IsEnabled = SettingsManager.DisplayLog;
@@ -63,11 +63,11 @@ namespace Game
 		{
 			if (SettingsManager.DisplayLog) return;
 			ClearChildren();
-			RectangleWidget rectangle1 = new RectangleWidget() { FillColor = Color.White, OutlineColor = Color.Transparent, Size = new Vector2(256f), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Center };
+			RectangleWidget rectangle1 = new() { FillColor = Color.White, OutlineColor = Color.Transparent, Size = new Vector2(256f), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Center };
 			rectangle1.Subtexture = ContentManager.Get<Subtexture>("Textures/Gui/CandyRufusLogo");
-			RectangleWidget rectangle2 = new RectangleWidget() { FillColor = Color.White, OutlineColor = Color.Transparent, Size = new Vector2(80), VerticalAlignment = WidgetAlignment.Far, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10f) };
+			RectangleWidget rectangle2 = new() { FillColor = Color.White, OutlineColor = Color.Transparent, Size = new Vector2(80), VerticalAlignment = WidgetAlignment.Far, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10f) };
 			rectangle2.Subtexture = ContentManager.Get<Subtexture>("Textures/Gui/EngineLogo");
-			BusyBarWidget busyBar = new BusyBarWidget() { VerticalAlignment = WidgetAlignment.Far, HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0, 40) };
+			BusyBarWidget busyBar = new() { VerticalAlignment = WidgetAlignment.Far, HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0, 40) };
 			Canvas.AddChildren(Background);
 			Canvas.AddChildren(rectangle1);
 			Canvas.AddChildren(rectangle2);
@@ -96,7 +96,7 @@ namespace Game
 		{
 			Dispatcher.Dispatch(delegate
 			{
-				LogItem item = new LogItem(type, mesg);
+				LogItem item = new(type, mesg);
 				LogList.AddItem(item);
 				switch (type)
 				{
@@ -170,7 +170,7 @@ namespace Game
 			AddLoadAction(delegate
 			{
 				Info("执行初始化任务");
-				List<Action> actions = new List<Action>();
+				List<Action> actions = [];
 				ModsManager.ModListAllDo((modEntity) =>
 				{
 					modEntity.Loader?.OnLoadingStart(actions);

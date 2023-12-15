@@ -6,9 +6,9 @@ namespace Game
 	{
 		public static readonly float LightAmbient = 0.5f;
 
-		public static readonly Vector3 DirectionToLight1 = new Vector3(0.12f, 0.25f, 0.34f);
+		public static readonly Vector3 DirectionToLight1 = new(0.12f, 0.25f, 0.34f);
 
-		public static readonly Vector3 DirectionToLight2 = new Vector3(-0.12f, 0.25f, -0.34f);
+		public static readonly Vector3 DirectionToLight2 = new(-0.12f, 0.25f, -0.34f);
 
 		public static readonly float[] LightIntensityByLightValue = new float[16];
 

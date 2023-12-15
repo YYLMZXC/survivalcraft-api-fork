@@ -5,9 +5,9 @@ namespace Game
 {
 	public abstract class GunpowderKegBlock : Block, IElectricElementBlock
 	{
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBlockMesh = new();
 
-		public BlockMesh m_blockMesh = new BlockMesh();
+		public BlockMesh m_blockMesh = new();
 
 		public BoundingBox[] m_collisionBoxes;
 

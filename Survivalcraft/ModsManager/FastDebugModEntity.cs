@@ -8,7 +8,7 @@ namespace Game
 {
 	public class FastDebugModEntity : ModEntity
 	{
-		public Dictionary<string, FileInfo> FModFiles = new Dictionary<string, FileInfo>();
+		public Dictionary<string, FileInfo> FModFiles = [];
 
 		public FastDebugModEntity()
 		{
@@ -41,8 +41,8 @@ namespace Game
 				if (FilenameInZip.StartsWith("Assets/"))
 				{
 					string name = FilenameInZip.Substring(7);
-					ContentInfo contentInfo = new ContentInfo(name);
-					MemoryStream memoryStream = new MemoryStream();
+					ContentInfo contentInfo = new(name);
+					MemoryStream memoryStream = new();
 					using (Stream stream = Storage.OpenFile(abpath, OpenFileMode.Read))
 					{
 						stream.CopyTo(memoryStream);

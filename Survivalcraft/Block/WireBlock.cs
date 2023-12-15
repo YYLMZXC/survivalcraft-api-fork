@@ -8,11 +8,11 @@ namespace Game
 	{
 		public const int Index = 133;
 
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBlockMesh = new();
 
 		public BoundingBox[] m_collisionBoxesByFace = new BoundingBox[6];
 
-		public static readonly Color WireColor = new Color(79, 36, 21);
+		public static readonly Color WireColor = new(79, 36, 21);
 
 		public override void Initialize()
 		{

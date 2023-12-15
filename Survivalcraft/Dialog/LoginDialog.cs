@@ -12,8 +12,8 @@ namespace Game
 		public StackPanelWidget MainView;
 		public BevelledButtonWidget btna, btnb, btnc;
 		public TextBoxWidget txa, txb;
-		public BusyDialog busyDialog = new BusyDialog("提示", "登陆中");
-		public LabelWidget tip = new LabelWidget() { HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Near, Margin = new Vector2(1f, 1f) };
+		public BusyDialog busyDialog = new("提示", "登陆中");
+		public LabelWidget tip = new() { HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Near, Margin = new Vector2(1f, 1f) };
 		public Action cancel;
 		public LoginDialog()
 		{
@@ -63,9 +63,11 @@ namespace Game
 		{
 			if (btna.IsClicked)
 			{
-				var par = new Dictionary<string, string>();
-				par.Add("user", txa.Text);
-				par.Add("pass", txb.Text);
+				var par = new Dictionary<string, string>
+				{
+					{ "user", txa.Text },
+					{ "pass", txb.Text }
+				};
 				DialogsManager.ShowDialog(this, busyDialog);
 				WebManager.Post(SPMBoxExternalContentProvider.m_redirectUri + "/com/api/login", par, null, new MemoryStream(), new CancellableProgress(), succ, fail);
 			}

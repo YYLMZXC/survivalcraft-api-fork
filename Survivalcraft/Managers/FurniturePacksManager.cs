@@ -11,7 +11,7 @@ namespace Game
 	{
 		public static List<string> m_furniturePackNames;
 
-		public static ReadOnlyList<string> FurniturePackNames => new ReadOnlyList<string>(m_furniturePackNames);
+		public static ReadOnlyList<string> FurniturePackNames => new(m_furniturePackNames);
 
 		public static string FurniturePacksDirectoryName => ModsManager.FurniturePacksDirectoryName;
 
@@ -19,7 +19,7 @@ namespace Game
 
 		static FurniturePacksManager()
 		{
-			m_furniturePackNames = new List<string>();
+			m_furniturePackNames = [];
 		}
 
 		public static void Initialize()

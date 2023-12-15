@@ -51,17 +51,17 @@ namespace Game
 
 		public SubsystemGameWidgets m_subsystemViews;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public List<CreatureType> m_creatureTypes = new List<CreatureType>();
+		public List<CreatureType> m_creatureTypes = [];
 
-		public Dictionary<ComponentCreature, bool> m_creatures = new Dictionary<ComponentCreature, bool>();
+		public Dictionary<ComponentCreature, bool> m_creatures = [];
 
-		public DynamicArray<ComponentBody> m_componentBodies = new DynamicArray<ComponentBody>();
+		public DynamicArray<ComponentBody> m_componentBodies = [];
 
-		public List<SpawnChunk> m_newSpawnChunks = new List<SpawnChunk>();
+		public List<SpawnChunk> m_newSpawnChunks = [];
 
-		public List<SpawnChunk> m_spawnChunks = new List<SpawnChunk>();
+		public List<SpawnChunk> m_spawnChunks = [];
 
 		public static SpawnLocationType[] m_spawnLocations = EnumUtils.GetEnumValues(typeof(SpawnLocationType)).Cast<SpawnLocationType>().ToArray();
 

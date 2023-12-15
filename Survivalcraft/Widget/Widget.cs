@@ -15,15 +15,15 @@ namespace Game
 	{
 		public class DrawContext
 		{
-			public List<DrawItem> m_drawItems = new List<DrawItem>();
+			public List<DrawItem> m_drawItems = [];
 
-			public static List<DrawItem> m_drawItemsCache = new List<DrawItem>();
+			public static List<DrawItem> m_drawItemsCache = [];
 
-			public readonly PrimitivesRenderer2D PrimitivesRenderer2D = new PrimitivesRenderer2D();
+			public readonly PrimitivesRenderer2D PrimitivesRenderer2D = new();
 
-			public readonly PrimitivesRenderer3D PrimitivesRenderer3D = new PrimitivesRenderer3D();
+			public readonly PrimitivesRenderer3D PrimitivesRenderer3D = new();
 
-			public readonly PrimitivesRenderer2D CursorPrimitivesRenderer2D = new PrimitivesRenderer2D();
+			public readonly PrimitivesRenderer2D CursorPrimitivesRenderer2D = new();
 
 			public void DrawWidgetsHierarchy(Widget rootWidget)
 			{
@@ -150,7 +150,7 @@ namespace Game
 			{
 				if (m_drawItemsCache.Count > 0)
 				{
-					DrawItem result = m_drawItemsCache[m_drawItemsCache.Count - 1];
+					DrawItem result = m_drawItemsCache[^1];
 					m_drawItemsCache.RemoveAt(m_drawItemsCache.Count - 1);
 					return result;
 				}
@@ -224,7 +224,7 @@ namespace Game
 
 		public WidgetInput m_widgetsHierarchyInput;
 
-		public static Queue<DrawContext> m_drawContextsCache = new Queue<DrawContext>();
+		public static Queue<DrawContext> m_drawContextsCache = new();
 
 		public static int LayersLimit = -1;
 

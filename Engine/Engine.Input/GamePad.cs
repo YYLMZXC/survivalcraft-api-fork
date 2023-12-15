@@ -26,10 +26,10 @@ namespace Engine.Input
 
 		private static State[] m_states = new State[4]
 		{
-			new State(),
-			new State(),
-			new State(),
-			new State()
+			new(),
+			new(),
+			new(),
+			new()
 		};
 		internal static void Initialize()
 		{

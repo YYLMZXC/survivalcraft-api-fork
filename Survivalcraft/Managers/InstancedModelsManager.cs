@@ -51,7 +51,7 @@ namespace Game
 
 		static InstancedModelsManager()
 		{
-			m_cache = new Dictionary<Model, InstancedModelData>();
+			m_cache = [];
 			Display.DeviceReset += delegate
 			{
 				foreach (InstancedModelData value in m_cache.Values)

@@ -262,23 +262,23 @@ namespace Game
 
 		static TerrainContentsGenerator23()
 		{
-			m_coalBrushes = new List<TerrainBrush>();
-			m_ironBrushes = new List<TerrainBrush>();
-			m_copperBrushes = new List<TerrainBrush>();
-			m_saltpeterBrushes = new List<TerrainBrush>();
-			m_sulphurBrushes = new List<TerrainBrush>();
-			m_diamondBrushes = new List<TerrainBrush>();
-			m_germaniumBrushes = new List<TerrainBrush>();
-			m_dirtPocketBrushes = new List<TerrainBrush>();
-			m_gravelPocketBrushes = new List<TerrainBrush>();
-			m_limestonePocketBrushes = new List<TerrainBrush>();
-			m_sandPocketBrushes = new List<TerrainBrush>();
-			m_basaltPocketBrushes = new List<TerrainBrush>();
-			m_granitePocketBrushes = new List<TerrainBrush>();
-			m_clayPocketBrushes = new List<TerrainBrush>();
-			m_waterPocketBrushes = new List<TerrainBrush>();
-			m_magmaPocketBrushes = new List<TerrainBrush>();
-			m_caveBrushesByType = new List<List<TerrainBrush>>();
+			m_coalBrushes = [];
+			m_ironBrushes = [];
+			m_copperBrushes = [];
+			m_saltpeterBrushes = [];
+			m_sulphurBrushes = [];
+			m_diamondBrushes = [];
+			m_germaniumBrushes = [];
+			m_dirtPocketBrushes = [];
+			m_gravelPocketBrushes = [];
+			m_limestonePocketBrushes = [];
+			m_sandPocketBrushes = [];
+			m_basaltPocketBrushes = [];
+			m_granitePocketBrushes = [];
+			m_clayPocketBrushes = [];
+			m_waterPocketBrushes = [];
+			m_magmaPocketBrushes = [];
+			m_caveBrushesByType = [];
 			CreateBrushes();
 		}
 
@@ -290,7 +290,7 @@ namespace Game
 			m_worldSettings = subsystemGameInfo.WorldSettings;
 			m_seed = subsystemGameInfo.WorldSeed;
 			m_islandSize = (m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.Island) ? new Vector2?(m_worldSettings.IslandSize) : null;
-			Random random = new Random(m_seed);
+			Random random = new(m_seed);
 			float num = m_islandSize.HasValue ? MathUtils.Min(m_islandSize.Value.X, m_islandSize.Value.Y) : float.MaxValue;
 			m_oceanCorner = new Vector2(-200f, -200f);
 			m_temperatureOffset = new Vector2(random.Float(-3000f, 3000f), random.Float(-3000f, 3000f));
@@ -623,8 +623,8 @@ namespace Game
 			_ = m_subsystemTerrain.Terrain;
 			int num3 = chunk.Origin.X + x1;
 			int num4 = chunk.Origin.Y + z1;
-			Grid2d grid2d = new Grid2d(num, num2);
-			Grid2d grid2d2 = new Grid2d(num, num2);
+			Grid2d grid2d = new(num, num2);
+			Grid2d grid2d2 = new(num, num2);
 			for (int i = 0; i < num2; i++)
 			{
 				for (int j = 0; j < num; j++)
@@ -633,7 +633,7 @@ namespace Game
 					grid2d2.Set(j, i, CalculateMountainRangeFactor(j + num3, i + num4));
 				}
 			}
-			Grid3d grid3d = new Grid3d((num / 4) + 1, 33, (num2 / 4) + 1);
+			Grid3d grid3d = new((num / 4) + 1, 33, (num2 / 4) + 1);
 			for (int k = 0; k < grid3d.SizeX; k++)
 			{
 				for (int l = 0; l < grid3d.SizeZ; l++)
@@ -727,7 +727,7 @@ namespace Game
 		public void GenerateSurface(TerrainChunk chunk)
 		{
 			Terrain terrain = m_subsystemTerrain.Terrain;
-			Random random = new Random(m_seed + chunk.Coords.X + (101 * chunk.Coords.Y));
+			Random random = new(m_seed + chunk.Coords.X + (101 * chunk.Coords.Y));
 			for (int i = 0; i < 16; i++)
 			{
 				for (int j = 0; j < 16; j++)
@@ -799,7 +799,7 @@ namespace Game
 			{
 				for (int j = y - 1; j <= y + 1; j++)
 				{
-					Random random = new Random(m_seed + i + (119 * j));
+					Random random = new(m_seed + i + (119 * j));
 					int num = random.Int(0, 10);
 					for (int k = 0; k < num; k++)
 					{
@@ -878,7 +878,7 @@ namespace Game
 				{
 					int num = i + chunk.Coords.X;
 					int num2 = j + chunk.Coords.Y;
-					Random random = new Random(m_seed + num + (71 * num2));
+					Random random = new(m_seed + num + (71 * num2));
 					int num3 = random.Int(0, 10);
 					for (int k = 0; k < num3; k++)
 					{
@@ -981,7 +981,7 @@ namespace Game
 			{
 				return;
 			}
-			List<CavePoint> list = new List<CavePoint>();
+			List<CavePoint> list = [];
 			int x = chunk.Coords.X;
 			int y = chunk.Coords.Y;
 			for (int i = x - 2; i <= x + 2; i++)
@@ -989,7 +989,7 @@ namespace Game
 				for (int j = y - 2; j <= y + 2; j++)
 				{
 					list.Clear();
-					Random random = new Random(m_seed + i + (9973 * j));
+					Random random = new(m_seed + i + (9973 * j));
 					int num = (i * 16) + random.Int(0, 15);
 					int num2 = (j * 16) + random.Int(0, 15);
 					float probability = 0.5f;
@@ -1000,9 +1000,9 @@ namespace Game
 					int num3 = (int)CalculateHeight(num, num2);
 					int num4 = (int)CalculateHeight(num + 3, num2);
 					int num5 = (int)CalculateHeight(num, num2 + 3);
-					Vector3 position = new Vector3(num, num3 - 1, num2);
-					Vector3 v = new Vector3(3f, num4 - num3, 0f);
-					Vector3 v2 = new Vector3(0f, num5 - num3, 3f);
+					Vector3 position = new(num, num3 - 1, num2);
+					Vector3 v = new(3f, num4 - num3, 0f);
+					Vector3 v2 = new(0f, num5 - num3, 3f);
 					Vector3 direction = Vector3.Normalize(Vector3.Cross(v, v2));
 					if (direction.Y > -0.6f)
 					{
@@ -1112,7 +1112,7 @@ namespace Game
 			{
 				for (int j = y2; j <= y2; j++)
 				{
-					Random random = new Random(m_seed + i + (3943 * j));
+					Random random = new(m_seed + i + (3943 * j));
 					int humidity = CalculateHumidity(i * 16, j * 16);
 					int num3 = CalculateTemperature(i * 16, j * 16);
 					float num4 = MathUtils.Saturate(((SimplexNoise.OctavedNoise(i, j, 0.1f, 2, 2f, 0.5f) - 0.25f) / 0.2f) + (random.Bool(0.25f) ? 0.5f : 0f));
@@ -1254,7 +1254,7 @@ namespace Game
 			{
 				for (int j = y; j <= y; j++)
 				{
-					Random random = new Random(m_seed + i + (3943 * j));
+					Random random = new(m_seed + i + (3943 * j));
 					int humidity = CalculateHumidity(i * 16, j * 16);
 					int num = CalculateTemperature(i * 16, j * 16);
 					float num2 = MathUtils.Saturate(((SimplexNoise.OctavedNoise(i, j, 0.1f, 2, 2f, 0.5f) - 0.25f) / 0.2f) + (random.Bool(0.25f) ? 0.5f : 0f));
@@ -1321,7 +1321,7 @@ namespace Game
 			{
 				return;
 			}
-			Random random = new Random(m_seed + chunk.Coords.X + (3943 * chunk.Coords.Y));
+			Random random = new(m_seed + chunk.Coords.X + (3943 * chunk.Coords.Y));
 			for (int i = 0; i < 16; i++)
 			{
 				for (int j = 0; j < 16; j++)
@@ -1359,7 +1359,7 @@ namespace Game
 			{
 				return;
 			}
-			Random random = new Random(m_seed + chunk.Coords.X + (2210 * chunk.Coords.Y));
+			Random random = new(m_seed + chunk.Coords.X + (2210 * chunk.Coords.Y));
 			for (int i = 0; i < 16; i++)
 			{
 				for (int j = 0; j < 16; j++)
@@ -1451,7 +1451,7 @@ namespace Game
 			}
 			int x = chunk.Coords.X;
 			int y = chunk.Coords.Y;
-			Random random = new Random(m_seed + x + (1991 * y));
+			Random random = new(m_seed + x + (1991 * y));
 			if (!random.Bool(0.5f))
 			{
 				return;
@@ -1500,7 +1500,7 @@ namespace Game
 			}
 			int x = chunk.Coords.X;
 			int y = chunk.Coords.Y;
-			Random random = new Random(m_seed + x + (1495 * y));
+			Random random = new(m_seed + x + (1495 * y));
 			if (!random.Bool(0.2f))
 			{
 				return;
@@ -1544,7 +1544,7 @@ namespace Game
 			}
 			int x = chunk.Coords.X;
 			int y = chunk.Coords.Y;
-			Random random = new Random(0);
+			Random random = new(0);
 			float num = 0f;
 			for (int i = 0; i < 9; i++)
 			{
@@ -1626,7 +1626,7 @@ namespace Game
 			}
 			int x = chunk.Coords.X;
 			int y = chunk.Coords.Y;
-			Random random = new Random(m_seed + x + (378 * y));
+			Random random = new(m_seed + x + (378 * y));
 			for (int i = 0; i < 6; i++)
 			{
 				int num = random.Int(1, 14);
@@ -1678,7 +1678,7 @@ namespace Game
 			{
 				return;
 			}
-			Random random = new Random(m_seed + chunk.Coords.X + (2191 * chunk.Coords.Y));
+			Random random = new(m_seed + chunk.Coords.X + (2191 * chunk.Coords.Y));
 			int num = random.Int(0, MathUtils.Max(12, 1));
 			for (int i = 0; i < num; i++)
 			{
@@ -1753,7 +1753,7 @@ namespace Game
 			int x = chunk.Coords.X;
 			int y = chunk.Coords.Y;
 			_ = m_subsystemTerrain.Terrain;
-			Random random = new Random(m_seed + x + (2113 * y));
+			Random random = new(m_seed + x + (2113 * y));
 			if (!random.Bool(0.15f) || !(CalculateOceanShoreDistance(chunk.Origin.X, chunk.Origin.Y) > 50f))
 			{
 				return;
@@ -1829,7 +1829,7 @@ namespace Game
 			}
 			int x = chunk.Coords.X;
 			int y = chunk.Coords.Y;
-			Random random = new Random((int)MathUtils.Hash((uint)(m_seed + x + (10323 * y))));
+			Random random = new((int)MathUtils.Hash((uint)(m_seed + x + (10323 * y))));
 			if (!(random.Float(0f, 1f) < 0.033f) || !(CalculateOceanShoreDistance(chunk.Origin.X, chunk.Origin.Y) > 10f))
 			{
 				return;
@@ -1855,7 +1855,7 @@ namespace Game
 					{
 						int num9 = (k + num8) % 4;
 						Point3 p = CellFace.FaceToPoint3(num9);
-						Point3 p2 = new Point3(-p.Z, p.Y, p.X);
+						Point3 p2 = new(-p.Z, p.Y, p.X);
 						int num10 = (p.X < 0) ? (num5 - 2) : (num5 - 1);
 						int num11 = (p.X > 0) ? (num5 + 2) : (num5 + 1);
 						int num12 = (p.Z < 0) ? (num6 - 2) : (num6 - 1);
@@ -2153,10 +2153,10 @@ namespace Game
 
 		public static void CreateBrushes()
 		{
-			Random random = new Random(17);
+			Random random = new(17);
 			for (int i = 0; i < 16; i++)
 			{
-				TerrainBrush terrainBrush = new TerrainBrush();
+				TerrainBrush terrainBrush = new();
 				int num = random.Int(4, 12);
 				for (int j = 0; j < num; j++)
 				{
@@ -2178,7 +2178,7 @@ namespace Game
 			}
 			for (int l = 0; l < 16; l++)
 			{
-				TerrainBrush terrainBrush2 = new TerrainBrush();
+				TerrainBrush terrainBrush2 = new();
 				int num3 = random.Int(3, 7);
 				for (int m = 0; m < num3; m++)
 				{
@@ -2196,7 +2196,7 @@ namespace Game
 			}
 			for (int num5 = 0; num5 < 16; num5++)
 			{
-				TerrainBrush terrainBrush3 = new TerrainBrush();
+				TerrainBrush terrainBrush3 = new();
 				int num6 = random.Int(4, 10);
 				for (int num7 = 0; num7 < num6; num7++)
 				{
@@ -2214,7 +2214,7 @@ namespace Game
 			}
 			for (int num10 = 0; num10 < 16; num10++)
 			{
-				TerrainBrush terrainBrush4 = new TerrainBrush();
+				TerrainBrush terrainBrush4 = new();
 				int num11 = random.Int(8, 16);
 				for (int num12 = 0; num12 < num11; num12++)
 				{
@@ -2232,7 +2232,7 @@ namespace Game
 			}
 			for (int num15 = 0; num15 < 16; num15++)
 			{
-				TerrainBrush terrainBrush5 = new TerrainBrush();
+				TerrainBrush terrainBrush5 = new();
 				int num16 = random.Int(4, 10);
 				for (int num17 = 0; num17 < num16; num17++)
 				{
@@ -2250,7 +2250,7 @@ namespace Game
 			}
 			for (int num20 = 0; num20 < 16; num20++)
 			{
-				TerrainBrush terrainBrush6 = new TerrainBrush();
+				TerrainBrush terrainBrush6 = new();
 				int num21 = random.Int(2, 6);
 				for (int num22 = 0; num22 < num21; num22++)
 				{
@@ -2268,7 +2268,7 @@ namespace Game
 			}
 			for (int num25 = 0; num25 < 16; num25++)
 			{
-				TerrainBrush terrainBrush7 = new TerrainBrush();
+				TerrainBrush terrainBrush7 = new();
 				int num26 = random.Int(4, 10);
 				for (int num27 = 0; num27 < num26; num27++)
 				{
@@ -2286,7 +2286,7 @@ namespace Game
 			}
 			for (int num30 = 0; num30 < 16; num30++)
 			{
-				TerrainBrush terrainBrush8 = new TerrainBrush();
+				TerrainBrush terrainBrush8 = new();
 				int num31 = random.Int(16, 32);
 				for (int num32 = 0; num32 < num31; num32++)
 				{
@@ -2304,7 +2304,7 @@ namespace Game
 			}
 			for (int num35 = 0; num35 < 16; num35++)
 			{
-				TerrainBrush terrainBrush9 = new TerrainBrush();
+				TerrainBrush terrainBrush9 = new();
 				int num36 = random.Int(16, 32);
 				for (int num37 = 0; num37 < num36; num37++)
 				{
@@ -2322,7 +2322,7 @@ namespace Game
 			}
 			for (int num40 = 0; num40 < 16; num40++)
 			{
-				TerrainBrush terrainBrush10 = new TerrainBrush();
+				TerrainBrush terrainBrush10 = new();
 				int num41 = random.Int(16, 32);
 				for (int num42 = 0; num42 < num41; num42++)
 				{
@@ -2340,7 +2340,7 @@ namespace Game
 			}
 			for (int num45 = 0; num45 < 16; num45++)
 			{
-				TerrainBrush terrainBrush11 = new TerrainBrush();
+				TerrainBrush terrainBrush11 = new();
 				int num46 = random.Int(16, 32);
 				for (int num47 = 0; num47 < num46; num47++)
 				{
@@ -2358,7 +2358,7 @@ namespace Game
 			}
 			for (int num50 = 0; num50 < 16; num50++)
 			{
-				TerrainBrush terrainBrush12 = new TerrainBrush();
+				TerrainBrush terrainBrush12 = new();
 				int num51 = random.Int(16, 32);
 				for (int num52 = 0; num52 < num51; num52++)
 				{
@@ -2376,7 +2376,7 @@ namespace Game
 			}
 			for (int num55 = 0; num55 < 16; num55++)
 			{
-				TerrainBrush terrainBrush13 = new TerrainBrush();
+				TerrainBrush terrainBrush13 = new();
 				int num56 = random.Int(16, 32);
 				for (int num57 = 0; num57 < num56; num57++)
 				{
@@ -2394,7 +2394,7 @@ namespace Game
 			}
 			for (int num60 = 0; num60 < 16; num60++)
 			{
-				TerrainBrush terrainBrush14 = new TerrainBrush();
+				TerrainBrush terrainBrush14 = new();
 				int num61 = random.Int(16, 32);
 				for (int num62 = 0; num62 < num61; num62++)
 				{
@@ -2413,7 +2413,7 @@ namespace Game
 			int[] array = new int[3] { 4, 6, 8 };
 			for (int num65 = 0; num65 < 4 * array.Length; num65++)
 			{
-				TerrainBrush terrainBrush15 = new TerrainBrush();
+				TerrainBrush terrainBrush15 = new();
 				int num66 = array[num65 / 4];
 				int num67 = (num65 % 2) + 1;
 				float num68 = (num65 % 4 == 2) ? 0.5f : 1f;
@@ -2433,7 +2433,7 @@ namespace Game
 			int[] array2 = new int[4] { 8, 12, 14, 16 };
 			for (int num73 = 0; num73 < 4 * array2.Length; num73++)
 			{
-				TerrainBrush terrainBrush16 = new TerrainBrush();
+				TerrainBrush terrainBrush16 = new();
 				int num74 = array2[num73 / 4];
 				int num75 = num74 + 2;
 				float num76 = (num73 % 4 == 2) ? 0.5f : 1f;
@@ -2453,10 +2453,10 @@ namespace Game
 			}
 			for (int num82 = 0; num82 < 7; num82++)
 			{
-				m_caveBrushesByType.Add(new List<TerrainBrush>());
+				m_caveBrushesByType.Add([]);
 				for (int num83 = 0; num83 < 3; num83++)
 				{
-					TerrainBrush terrainBrush17 = new TerrainBrush();
+					TerrainBrush terrainBrush17 = new();
 					int num84 = 6 + (4 * num82);
 					int max = 3 + (num82 / 3);
 					int max2 = 9 + num82;

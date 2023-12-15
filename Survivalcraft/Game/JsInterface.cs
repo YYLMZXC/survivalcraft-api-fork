@@ -94,7 +94,7 @@ namespace Game
 					});
 				};
 			}
-			handlersDictionary = new Dictionary<string, List<FunctionInstance>>();
+			handlersDictionary = [];
 			List<ModLoader> mods = ModsManager.ModLoaders;
 			loader = (SurvivalCraftModLoader)ModsManager.ModLoaders.Find((item) => item is SurvivalCraftModLoader);
 			GetAndRegisterHandlers("OnMinerDig");
@@ -169,7 +169,7 @@ namespace Game
 		{
 			JsArray array = engine.GetValue(str).AsArray();
 			if (array.IsNull()) return null;
-			List<FunctionInstance> list = new List<FunctionInstance>();
+			List<FunctionInstance> list = [];
 			foreach (JsValue item in array)
 			{
 				try

@@ -10,9 +10,9 @@ namespace Game
 	{
 		public SubsystemTime m_subsystemTime;
 
-		public Dictionary<ParticleSystemBase, bool> m_particleSystems = new Dictionary<ParticleSystemBase, bool>();
+		public Dictionary<ParticleSystemBase, bool> m_particleSystems = [];
 
-		public PrimitivesRenderer3D PrimitivesRenderer = new PrimitivesRenderer3D();
+		public PrimitivesRenderer3D PrimitivesRenderer = new();
 
 		public bool ParticleSystemsDraw = true;
 
@@ -23,7 +23,7 @@ namespace Game
 			300
 		};
 
-		public List<ParticleSystemBase> m_endedParticleSystems = new List<ParticleSystemBase>();
+		public List<ParticleSystemBase> m_endedParticleSystems = [];
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 

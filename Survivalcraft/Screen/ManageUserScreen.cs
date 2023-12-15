@@ -204,11 +204,7 @@ public class ManageUserScreen : Screen
 		m_filterLabel.Text = GetFilterDisplayName(m_filter);
 		if (m_filterButton.IsClicked)
 		{
-			List<Filter> filters = new List<Filter>();
-			foreach (Filter item in EnumUtils.GetEnumValues(typeof(Filter)))
-			{
-				filters.Add(item);
-			}
+			List<Filter> filters = [.. EnumUtils.GetEnumValues(typeof(Filter))];
 			DialogsManager.ShowDialog(null, new ListSelectionDialog("请选择", filters, 60f, (object item) => GetFilterDisplayName((Filter)item), delegate (object result)
 			{
 				m_filter = (Filter)result;
@@ -218,11 +214,7 @@ public class ManageUserScreen : Screen
 		m_searchTypeButton.Text = GetSearchTypeName(m_searchType);
 		if (m_searchTypeButton.IsClicked)
 		{
-			List<SearchType> searchTypes = new List<SearchType>();
-			foreach (SearchType item in EnumUtils.GetEnumValues(typeof(SearchType)))
-			{
-				searchTypes.Add(item);
-			}
+			List<SearchType> searchTypes = [.. EnumUtils.GetEnumValues(typeof(SearchType))];
 			DialogsManager.ShowDialog(null, new ListSelectionDialog("请选择", searchTypes, 60f, (object item) => GetSearchTypeName((SearchType)item), delegate (object result)
 			{
 				m_searchType = (SearchType)result;
@@ -349,7 +341,7 @@ public class ManageUserScreen : Screen
 		CommunityContentManager.UserList(cursor, m_searchKeyTextBox.Text, m_searchType.ToString(), m_filter.ToString(), order, busyDialog.Progress, delegate (List<ComUserInfo> list, string nextCursor)
 		{
 			DialogsManager.HideDialog(busyDialog);
-			while (m_contentList.Items.Count > 0 && !(m_contentList.Items[m_contentList.Items.Count - 1] is ComUserInfo))
+			while (m_contentList.Items.Count > 0 && !(m_contentList.Items[^1] is ComUserInfo))
 			{
 				m_contentList.RemoveItemAt(m_contentList.Items.Count - 1);
 			}

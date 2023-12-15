@@ -71,7 +71,7 @@ namespace NVorbis
 
 		internal int _packetCount;
 
-		internal Stopwatch _sw = new Stopwatch();
+		internal Stopwatch _sw = new();
 
 		private IPacketProvider _packetProvider;
 
@@ -83,7 +83,7 @@ namespace NVorbis
 
 		private bool _eosFound;
 
-		private object _seekLock = new object();
+		private object _seekLock = new();
 
 		private float[] _prevBuffer;
 
@@ -200,7 +200,7 @@ namespace NVorbis
 		{
 			_packetProvider = packetProvider;
 			_packetProvider.ParameterChange += SetParametersChanging;
-			_pagesSeen = new List<int>();
+			_pagesSeen = [];
 			_lastPageSeen = -1;
 		}
 

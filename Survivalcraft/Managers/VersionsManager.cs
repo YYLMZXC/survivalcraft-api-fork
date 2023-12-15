@@ -133,7 +133,7 @@ namespace Game
 			}
 			if (sourceVersion == targetVersion)
 			{
-				return new List<VersionConverter>();
+				return [];
 			}
 			List<VersionConverter> result = null;
 			int num = 2147483647;

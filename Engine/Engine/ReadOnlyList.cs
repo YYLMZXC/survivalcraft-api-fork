@@ -39,7 +39,7 @@ namespace Engine
 
 		private IList<T> m_list;
 
-		private static ReadOnlyList<T> m_empty = new ReadOnlyList<T>(new T[0]);
+		private static ReadOnlyList<T> m_empty = new(new T[0]);
 
 		public static ReadOnlyList<T> Empty => m_empty;
 

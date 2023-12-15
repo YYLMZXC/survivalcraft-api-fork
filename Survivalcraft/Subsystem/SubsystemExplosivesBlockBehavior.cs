@@ -28,9 +28,9 @@ namespace Game
 
 		public SubsystemAudio m_subsystemAudio;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public Dictionary<Point3, ExplosiveData> m_explosiveDataByPoint = new Dictionary<Point3, ExplosiveData>();
+		public Dictionary<Point3, ExplosiveData> m_explosiveDataByPoint = [];
 
 		public Sound m_fuseSound;
 

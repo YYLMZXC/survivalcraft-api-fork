@@ -12,123 +12,123 @@ namespace Game
 	{
 		public static ElectricConnectionPath[] m_connectionPathsTable = new ElectricConnectionPath[120]
 		{
-			new ElectricConnectionPath(0, 1, -1, 4, 4, 0),
-			new ElectricConnectionPath(0, 1, 0, 0, 4, 5),
-			new ElectricConnectionPath(0, 1, -1, 2, 4, 5),
-			new ElectricConnectionPath(0, 0, 0, 5, 4, 2),
-			new ElectricConnectionPath(-1, 0, -1, 3, 3, 0),
-			new ElectricConnectionPath(-1, 0, 0, 0, 3, 1),
-			new ElectricConnectionPath(-1, 0, -1, 2, 3, 1),
-			new ElectricConnectionPath(0, 0, 0, 1, 3, 2),
-			new ElectricConnectionPath(0, -1, -1, 5, 5, 0),
-			new ElectricConnectionPath(0, -1, 0, 0, 5, 4),
-			new ElectricConnectionPath(0, -1, -1, 2, 5, 4),
-			new ElectricConnectionPath(0, 0, 0, 4, 5, 2),
-			new ElectricConnectionPath(1, 0, -1, 1, 1, 0),
-			new ElectricConnectionPath(1, 0, 0, 0, 1, 3),
-			new ElectricConnectionPath(1, 0, -1, 2, 1, 3),
-			new ElectricConnectionPath(0, 0, 0, 3, 1, 2),
-			new ElectricConnectionPath(0, 0, -1, 2, 2, 0),
+			new(0, 1, -1, 4, 4, 0),
+			new(0, 1, 0, 0, 4, 5),
+			new(0, 1, -1, 2, 4, 5),
+			new(0, 0, 0, 5, 4, 2),
+			new(-1, 0, -1, 3, 3, 0),
+			new(-1, 0, 0, 0, 3, 1),
+			new(-1, 0, -1, 2, 3, 1),
+			new(0, 0, 0, 1, 3, 2),
+			new(0, -1, -1, 5, 5, 0),
+			new(0, -1, 0, 0, 5, 4),
+			new(0, -1, -1, 2, 5, 4),
+			new(0, 0, 0, 4, 5, 2),
+			new(1, 0, -1, 1, 1, 0),
+			new(1, 0, 0, 0, 1, 3),
+			new(1, 0, -1, 2, 1, 3),
+			new(0, 0, 0, 3, 1, 2),
+			new(0, 0, -1, 2, 2, 0),
 			null,
 			null,
 			null,
-			new ElectricConnectionPath(-1, 1, 0, 4, 4, 1),
-			new ElectricConnectionPath(0, 1, 0, 1, 4, 5),
-			new ElectricConnectionPath(-1, 1, 0, 3, 4, 5),
-			new ElectricConnectionPath(0, 0, 0, 5, 4, 3),
-			new ElectricConnectionPath(-1, 0, 1, 0, 0, 1),
-			new ElectricConnectionPath(0, 0, 1, 1, 0, 2),
-			new ElectricConnectionPath(-1, 0, 1, 3, 0, 2),
-			new ElectricConnectionPath(0, 0, 0, 2, 0, 3),
-			new ElectricConnectionPath(-1, -1, 0, 5, 5, 1),
-			new ElectricConnectionPath(0, -1, 0, 1, 5, 4),
-			new ElectricConnectionPath(-1, -1, 0, 3, 5, 4),
-			new ElectricConnectionPath(0, 0, 0, 4, 5, 3),
-			new ElectricConnectionPath(-1, 0, -1, 2, 2, 1),
-			new ElectricConnectionPath(0, 0, -1, 1, 2, 0),
-			new ElectricConnectionPath(-1, 0, -1, 3, 2, 0),
-			new ElectricConnectionPath(0, 0, 0, 0, 2, 3),
-			new ElectricConnectionPath(-1, 0, 0, 3, 3, 1),
+			new(-1, 1, 0, 4, 4, 1),
+			new(0, 1, 0, 1, 4, 5),
+			new(-1, 1, 0, 3, 4, 5),
+			new(0, 0, 0, 5, 4, 3),
+			new(-1, 0, 1, 0, 0, 1),
+			new(0, 0, 1, 1, 0, 2),
+			new(-1, 0, 1, 3, 0, 2),
+			new(0, 0, 0, 2, 0, 3),
+			new(-1, -1, 0, 5, 5, 1),
+			new(0, -1, 0, 1, 5, 4),
+			new(-1, -1, 0, 3, 5, 4),
+			new(0, 0, 0, 4, 5, 3),
+			new(-1, 0, -1, 2, 2, 1),
+			new(0, 0, -1, 1, 2, 0),
+			new(-1, 0, -1, 3, 2, 0),
+			new(0, 0, 0, 0, 2, 3),
+			new(-1, 0, 0, 3, 3, 1),
 			null,
 			null,
 			null,
-			new ElectricConnectionPath(0, 1, 1, 4, 4, 2),
-			new ElectricConnectionPath(0, 1, 0, 2, 4, 5),
-			new ElectricConnectionPath(0, 1, 1, 0, 4, 5),
-			new ElectricConnectionPath(0, 0, 0, 5, 4, 0),
-			new ElectricConnectionPath(1, 0, 1, 1, 1, 2),
-			new ElectricConnectionPath(1, 0, 0, 2, 1, 3),
-			new ElectricConnectionPath(1, 0, 1, 0, 1, 3),
-			new ElectricConnectionPath(0, 0, 0, 3, 1, 0),
-			new ElectricConnectionPath(0, -1, 1, 5, 5, 2),
-			new ElectricConnectionPath(0, -1, 0, 2, 5, 4),
-			new ElectricConnectionPath(0, -1, 1, 0, 5, 4),
-			new ElectricConnectionPath(0, 0, 0, 4, 5, 0),
-			new ElectricConnectionPath(-1, 0, 1, 3, 3, 2),
-			new ElectricConnectionPath(-1, 0, 0, 2, 3, 1),
-			new ElectricConnectionPath(-1, 0, 1, 0, 3, 1),
-			new ElectricConnectionPath(0, 0, 0, 1, 3, 0),
-			new ElectricConnectionPath(0, 0, 1, 0, 0, 2),
+			new(0, 1, 1, 4, 4, 2),
+			new(0, 1, 0, 2, 4, 5),
+			new(0, 1, 1, 0, 4, 5),
+			new(0, 0, 0, 5, 4, 0),
+			new(1, 0, 1, 1, 1, 2),
+			new(1, 0, 0, 2, 1, 3),
+			new(1, 0, 1, 0, 1, 3),
+			new(0, 0, 0, 3, 1, 0),
+			new(0, -1, 1, 5, 5, 2),
+			new(0, -1, 0, 2, 5, 4),
+			new(0, -1, 1, 0, 5, 4),
+			new(0, 0, 0, 4, 5, 0),
+			new(-1, 0, 1, 3, 3, 2),
+			new(-1, 0, 0, 2, 3, 1),
+			new(-1, 0, 1, 0, 3, 1),
+			new(0, 0, 0, 1, 3, 0),
+			new(0, 0, 1, 0, 0, 2),
 			null,
 			null,
 			null,
-			new ElectricConnectionPath(1, 1, 0, 4, 4, 3),
-			new ElectricConnectionPath(0, 1, 0, 3, 4, 5),
-			new ElectricConnectionPath(1, 1, 0, 1, 4, 5),
-			new ElectricConnectionPath(0, 0, 0, 5, 4, 1),
-			new ElectricConnectionPath(1, 0, -1, 2, 2, 3),
-			new ElectricConnectionPath(0, 0, -1, 3, 2, 0),
-			new ElectricConnectionPath(1, 0, -1, 1, 2, 0),
-			new ElectricConnectionPath(0, 0, 0, 0, 2, 1),
-			new ElectricConnectionPath(1, -1, 0, 5, 5, 3),
-			new ElectricConnectionPath(0, -1, 0, 3, 5, 4),
-			new ElectricConnectionPath(1, -1, 0, 1, 5, 4),
-			new ElectricConnectionPath(0, 0, 0, 4, 5, 1),
-			new ElectricConnectionPath(1, 0, 1, 0, 0, 3),
-			new ElectricConnectionPath(0, 0, 1, 3, 0, 2),
-			new ElectricConnectionPath(1, 0, 1, 1, 0, 2),
-			new ElectricConnectionPath(0, 0, 0, 2, 0, 1),
-			new ElectricConnectionPath(1, 0, 0, 1, 1, 3),
+			new(1, 1, 0, 4, 4, 3),
+			new(0, 1, 0, 3, 4, 5),
+			new(1, 1, 0, 1, 4, 5),
+			new(0, 0, 0, 5, 4, 1),
+			new(1, 0, -1, 2, 2, 3),
+			new(0, 0, -1, 3, 2, 0),
+			new(1, 0, -1, 1, 2, 0),
+			new(0, 0, 0, 0, 2, 1),
+			new(1, -1, 0, 5, 5, 3),
+			new(0, -1, 0, 3, 5, 4),
+			new(1, -1, 0, 1, 5, 4),
+			new(0, 0, 0, 4, 5, 1),
+			new(1, 0, 1, 0, 0, 3),
+			new(0, 0, 1, 3, 0, 2),
+			new(1, 0, 1, 1, 0, 2),
+			new(0, 0, 0, 2, 0, 1),
+			new(1, 0, 0, 1, 1, 3),
 			null,
 			null,
 			null,
-			new ElectricConnectionPath(0, -1, -1, 2, 2, 4),
-			new ElectricConnectionPath(0, 0, -1, 4, 2, 0),
-			new ElectricConnectionPath(0, -1, -1, 5, 2, 0),
-			new ElectricConnectionPath(0, 0, 0, 0, 2, 5),
-			new ElectricConnectionPath(-1, -1, 0, 3, 3, 4),
-			new ElectricConnectionPath(-1, 0, 0, 4, 3, 1),
-			new ElectricConnectionPath(-1, -1, 0, 5, 3, 1),
-			new ElectricConnectionPath(0, 0, 0, 1, 3, 5),
-			new ElectricConnectionPath(0, -1, 1, 0, 0, 4),
-			new ElectricConnectionPath(0, 0, 1, 4, 0, 2),
-			new ElectricConnectionPath(0, -1, 1, 5, 0, 2),
-			new ElectricConnectionPath(0, 0, 0, 2, 0, 5),
-			new ElectricConnectionPath(1, -1, 0, 1, 1, 4),
-			new ElectricConnectionPath(1, 0, 0, 4, 1, 3),
-			new ElectricConnectionPath(1, -1, 0, 5, 1, 3),
-			new ElectricConnectionPath(0, 0, 0, 3, 1, 5),
-			new ElectricConnectionPath(0, -1, 0, 5, 5, 4),
+			new(0, -1, -1, 2, 2, 4),
+			new(0, 0, -1, 4, 2, 0),
+			new(0, -1, -1, 5, 2, 0),
+			new(0, 0, 0, 0, 2, 5),
+			new(-1, -1, 0, 3, 3, 4),
+			new(-1, 0, 0, 4, 3, 1),
+			new(-1, -1, 0, 5, 3, 1),
+			new(0, 0, 0, 1, 3, 5),
+			new(0, -1, 1, 0, 0, 4),
+			new(0, 0, 1, 4, 0, 2),
+			new(0, -1, 1, 5, 0, 2),
+			new(0, 0, 0, 2, 0, 5),
+			new(1, -1, 0, 1, 1, 4),
+			new(1, 0, 0, 4, 1, 3),
+			new(1, -1, 0, 5, 1, 3),
+			new(0, 0, 0, 3, 1, 5),
+			new(0, -1, 0, 5, 5, 4),
 			null,
 			null,
 			null,
-			new ElectricConnectionPath(0, 1, -1, 2, 2, 5),
-			new ElectricConnectionPath(0, 0, -1, 5, 2, 0),
-			new ElectricConnectionPath(0, 1, -1, 4, 2, 0),
-			new ElectricConnectionPath(0, 0, 0, 0, 2, 4),
-			new ElectricConnectionPath(1, 1, 0, 1, 1, 5),
-			new ElectricConnectionPath(1, 0, 0, 5, 1, 3),
-			new ElectricConnectionPath(1, 1, 0, 4, 1, 3),
-			new ElectricConnectionPath(0, 0, 0, 3, 1, 4),
-			new ElectricConnectionPath(0, 1, 1, 0, 0, 5),
-			new ElectricConnectionPath(0, 0, 1, 5, 0, 2),
-			new ElectricConnectionPath(0, 1, 1, 4, 0, 2),
-			new ElectricConnectionPath(0, 0, 0, 2, 0, 4),
-			new ElectricConnectionPath(-1, 1, 0, 3, 3, 5),
-			new ElectricConnectionPath(-1, 0, 0, 5, 3, 1),
-			new ElectricConnectionPath(-1, 1, 0, 4, 3, 1),
-			new ElectricConnectionPath(0, 0, 0, 1, 3, 4),
-			new ElectricConnectionPath(0, 1, 0, 4, 4, 5),
+			new(0, 1, -1, 2, 2, 5),
+			new(0, 0, -1, 5, 2, 0),
+			new(0, 1, -1, 4, 2, 0),
+			new(0, 0, 0, 0, 2, 4),
+			new(1, 1, 0, 1, 1, 5),
+			new(1, 0, 0, 5, 1, 3),
+			new(1, 1, 0, 4, 1, 3),
+			new(0, 0, 0, 3, 1, 4),
+			new(0, 1, 1, 0, 0, 5),
+			new(0, 0, 1, 5, 0, 2),
+			new(0, 1, 1, 4, 0, 2),
+			new(0, 0, 0, 2, 0, 4),
+			new(-1, 1, 0, 3, 3, 5),
+			new(-1, 0, 0, 5, 3, 1),
+			new(-1, 1, 0, 4, 3, 1),
+			new(0, 0, 0, 1, 3, 4),
+			new(0, 1, 0, 4, 4, 5),
 			null,
 			null,
 			null
@@ -210,31 +210,31 @@ namespace Game
 
 		public float m_remainingSimulationTime;
 
-		public Dictionary<Point3, float> m_persistentElementsVoltages = new Dictionary<Point3, float>();
+		public Dictionary<Point3, float> m_persistentElementsVoltages = [];
 
-		public Dictionary<ElectricElement, bool> m_electricElements = new Dictionary<ElectricElement, bool>();
+		public Dictionary<ElectricElement, bool> m_electricElements = [];
 
-		public Dictionary<CellFace, ElectricElement> m_electricElementsByCellFace = new Dictionary<CellFace, ElectricElement>();
+		public Dictionary<CellFace, ElectricElement> m_electricElementsByCellFace = [];
 
-		public Dictionary<Point3, bool> m_pointsToUpdate = new Dictionary<Point3, bool>();
+		public Dictionary<Point3, bool> m_pointsToUpdate = [];
 
-		public Dictionary<Point3, ElectricElement> m_electricElementsToAdd = new Dictionary<Point3, ElectricElement>();
+		public Dictionary<Point3, ElectricElement> m_electricElementsToAdd = [];
 
-		public Dictionary<ElectricElement, bool> m_electricElementsToRemove = new Dictionary<ElectricElement, bool>();
+		public Dictionary<ElectricElement, bool> m_electricElementsToRemove = [];
 
-		public Dictionary<Point3, bool> m_wiresToUpdate = new Dictionary<Point3, bool>();
+		public Dictionary<Point3, bool> m_wiresToUpdate = [];
 
-		public List<Dictionary<ElectricElement, bool>> m_listsCache = new List<Dictionary<ElectricElement, bool>>();
+		public List<Dictionary<ElectricElement, bool>> m_listsCache = [];
 
-		public Dictionary<int, Dictionary<ElectricElement, bool>> m_futureSimulateLists = new Dictionary<int, Dictionary<ElectricElement, bool>>();
+		public Dictionary<int, Dictionary<ElectricElement, bool>> m_futureSimulateLists = [];
 
 		public Dictionary<ElectricElement, bool> m_nextStepSimulateList;
 
-		public DynamicArray<ElectricConnectionPath> m_tmpConnectionPaths = new DynamicArray<ElectricConnectionPath>();
+		public DynamicArray<ElectricConnectionPath> m_tmpConnectionPaths = [];
 
-		public Dictionary<CellFace, bool> m_tmpVisited = new Dictionary<CellFace, bool>();
+		public Dictionary<CellFace, bool> m_tmpVisited = [];
 
-		public Dictionary<CellFace, bool> m_tmpResult = new Dictionary<CellFace, bool>();
+		public Dictionary<CellFace, bool> m_tmpResult = [];
 
 		public static bool DebugDrawElectrics = false;
 
@@ -698,8 +698,10 @@ namespace Game
 
 		public void ScanWireDomain(CellFace startCellFace, Dictionary<CellFace, bool> visited, Dictionary<CellFace, bool> result)
 		{
-			var dynamicArray = new DynamicArray<CellFace>();
-			dynamicArray.Add(startCellFace);
+			var dynamicArray = new DynamicArray<CellFace>
+			{
+				startCellFace
+			};
 			while (dynamicArray.Count > 0)
 			{
 				CellFace key = dynamicArray.Array[--dynamicArray.Count];
@@ -749,11 +751,11 @@ namespace Game
 		{
 			if (m_listsCache.Count > 0)
 			{
-				Dictionary<ElectricElement, bool> result = m_listsCache[m_listsCache.Count - 1];
+				Dictionary<ElectricElement, bool> result = m_listsCache[^1];
 				m_listsCache.RemoveAt(m_listsCache.Count - 1);
 				return result;
 			}
-			return new Dictionary<ElectricElement, bool>();
+			return [];
 		}
 
 		public void ReturnListToCache(Dictionary<ElectricElement, bool> list)

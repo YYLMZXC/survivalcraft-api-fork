@@ -22,7 +22,7 @@ namespace Game
 
 		public SubsystemPlayers m_subsystemPlayers;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_newYearCelebrationTimeRemaining;
 

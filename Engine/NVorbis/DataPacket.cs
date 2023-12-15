@@ -378,7 +378,7 @@ namespace NVorbis
 
 		public byte[] ReadBytes(int count)
 		{
-			List<byte> list = new List<byte>(count);
+			List<byte> list = new(count);
 			while (list.Count < count)
 			{
 				list.Add(ReadByte());

@@ -7,7 +7,7 @@ namespace Hjg.Pngcs.Zlib
 	{
 		private DeflateStream deflateStream;
 
-		private Adler32 adler32 = new Adler32();
+		private Adler32 adler32 = new();
 
 		private bool initdone;
 

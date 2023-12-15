@@ -121,8 +121,8 @@ namespace Engine.Media
 			try
 			{
 				Texture2D texture = Texture2D.Load(TextureStream);
-				BitmapFont bitmapFont = new BitmapFont();
-				StreamReader streamReader = new StreamReader(GlyphsStream);
+				BitmapFont bitmapFont = new();
+				StreamReader streamReader = new(GlyphsStream);
 				int num = int.Parse(streamReader.ReadLine());
 				var array = new Glyph[num];
 				for (int i = 0; i < num; i++)
@@ -140,16 +140,16 @@ namespace Engine.Media
 						arr = tmp;
 					}
 					char code = char.Parse(arr[0]);
-					Vector2 texCoord = new Vector2(float.Parse(arr[1]), float.Parse(arr[2]));
-					Vector2 texCoord2 = new Vector2(float.Parse(arr[3]), float.Parse(arr[4]));
-					Vector2 offset = new Vector2(float.Parse(arr[5]), float.Parse(arr[6]));
+					Vector2 texCoord = new(float.Parse(arr[1]), float.Parse(arr[2]));
+					Vector2 texCoord2 = new(float.Parse(arr[3]), float.Parse(arr[4]));
+					Vector2 offset = new(float.Parse(arr[5]), float.Parse(arr[6]));
 					float width = float.Parse(arr[7]);
 					array[i] = new Glyph(code, texCoord, texCoord2, offset, width);
 				}
 				float glyphHeight = float.Parse(streamReader.ReadLine());
 				string line2 = streamReader.ReadLine();
 				string[] arr2 = line2.Split(new char[] { (char)0x20, (char)0x09 }, StringSplitOptions.None);
-				Vector2 spacing = new Vector2(float.Parse(arr2[0]), float.Parse(arr2[1]));
+				Vector2 spacing = new(float.Parse(arr2[0]), float.Parse(arr2[1]));
 				float scale = float.Parse(streamReader.ReadLine());
 				char fallbackCode = char.Parse(streamReader.ReadLine());
 				bitmapFont.Initialize(texture, null, array, fallbackCode, glyphHeight, spacing, scale);
@@ -194,7 +194,7 @@ namespace Engine.Media
 		{
 			scale *= Scale;
 			spacing += Spacing;
-			Vector2 vector = new Vector2(0f, (GlyphHeight + spacing.Y) * scale.Y);
+			Vector2 vector = new(0f, (GlyphHeight + spacing.Y) * scale.Y);
 			Vector2 result = vector;
 			for (int i = start; i < start + length; i++)
 			{
@@ -305,8 +305,8 @@ namespace Engine.Media
 
 		internal static BitmapFont InternalLoad(Image image, char firstCode, char fallbackCode, Vector2 spacing, float scale, Vector2 offset, int mipLevelsCount, bool premultiplyAlpha, bool createTexture)
 		{
-			List<Rectangle> list = new List<Rectangle>(FindGlyphs(image));
-			List<Rectangle> list2 = new List<Rectangle>(list.Select((Rectangle r) => CropGlyph(image, r)));
+			List<Rectangle> list = new(FindGlyphs(image));
+			List<Rectangle> list2 = new(list.Select((Rectangle r) => CropGlyph(image, r)));
 			if (list.Count == 0)
 			{
 				throw new InvalidOperationException("No glyphs found in BitmapFont image.");
@@ -327,7 +327,7 @@ namespace Engine.Media
 			}
 			int num5 = firstCode;
 			float num6 = 0f;
-			List<Glyph> list3 = new List<Glyph>();
+			List<Glyph> list3 = [];
 			for (int j = 0; j < list2.Count; j++)
 			{
 				Vector2 texCoord;
@@ -351,7 +351,7 @@ namespace Engine.Media
 				list3.Add(new Glyph((char)num5, texCoord, texCoord2, offset2, width));
 				num5++;
 			}
-			Image image2 = new Image(image.Width, image.Height);
+			Image image2 = new(image.Width, image.Height);
 			for (int k = 0; k < image.Pixels.Length; k++)
 			{
 				image2.Pixels[k] = (image.Pixels[k] == Color.Magenta) ? Color.Transparent : image.Pixels[k];
@@ -362,7 +362,7 @@ namespace Engine.Media
 			}
 			Texture2D texture = createTexture ? Texture2D.Load(image2, mipLevelsCount) : null;
 			Image image3 = createTexture ? null : image2;
-			BitmapFont bitmapFont = new BitmapFont();
+			BitmapFont bitmapFont = new();
 			bitmapFont.Initialize(texture, image3, list3, fallbackCode, num6, spacing, scale);
 			return bitmapFont;
 		}

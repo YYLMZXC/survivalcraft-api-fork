@@ -13,7 +13,7 @@ namespace Game
 
 		public ComponentCreature m_componentCreature;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public string m_idleSound;
 

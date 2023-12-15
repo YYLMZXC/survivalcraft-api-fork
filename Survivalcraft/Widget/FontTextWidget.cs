@@ -24,7 +24,7 @@ namespace Game
 
 		public bool m_ellipsis;
 
-		public List<string> m_lines = new List<string>();
+		public List<string> m_lines = [];
 
 		public Vector2? m_linesSize;
 

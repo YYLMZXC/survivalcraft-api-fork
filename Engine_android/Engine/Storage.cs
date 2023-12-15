@@ -15,7 +15,7 @@ namespace Engine
 			{
 				try
 				{
-					StatFs statFs = new StatFs(Android.OS.Environment.DataDirectory.Path);
+					StatFs statFs = new(Android.OS.Environment.DataDirectory.Path);
 					long num = statFs.BlockSize;
 					return statFs.AvailableBlocks * num;
 				}
@@ -130,7 +130,7 @@ namespace Engine
 
 		public static string ReadAllText(string path, Encoding encoding)
 		{
-			using (StreamReader streamReader = new StreamReader(OpenFile(path, OpenFileMode.Read), encoding))
+			using (StreamReader streamReader = new(OpenFile(path, OpenFileMode.Read), encoding))
 			{
 				return streamReader.ReadToEnd();
 			}
@@ -143,7 +143,7 @@ namespace Engine
 
 		public static void WriteAllText(string path, string text, Encoding encoding)
 		{
-			using (StreamWriter streamWriter = new StreamWriter(OpenFile(path, OpenFileMode.Create), encoding))
+			using (StreamWriter streamWriter = new(OpenFile(path, OpenFileMode.Create), encoding))
 			{
 				streamWriter.Write(text);
 			}
@@ -151,7 +151,7 @@ namespace Engine
 
 		public static byte[] ReadAllBytes(string path)
 		{
-			using (BinaryReader binaryReader = new BinaryReader(OpenFile(path, OpenFileMode.Read)))
+			using (BinaryReader binaryReader = new(OpenFile(path, OpenFileMode.Read)))
 			{
 				return binaryReader.ReadBytes((int)binaryReader.BaseStream.Length);
 			}
@@ -159,7 +159,7 @@ namespace Engine
 
 		public static void WriteAllBytes(string path, byte[] bytes)
 		{
-			using (BinaryWriter binaryWriter = new BinaryWriter(OpenFile(path, OpenFileMode.Create)))
+			using (BinaryWriter binaryWriter = new(OpenFile(path, OpenFileMode.Create)))
 			{
 				binaryWriter.Write(bytes);
 			}
@@ -213,13 +213,13 @@ namespace Engine
 
 		public static string CombinePaths(params string[] paths)
 		{
-			StringBuilder stringBuilder = new StringBuilder();
+			StringBuilder stringBuilder = new();
 			for (int i = 0; i < paths.Length; i++)
 			{
 				if (paths[i].Length > 0)
 				{
 					stringBuilder.Append(paths[i]);
-					if (i < paths.Length - 1 && (stringBuilder.Length == 0 || stringBuilder[stringBuilder.Length - 1] != '/'))
+					if (i < paths.Length - 1 && (stringBuilder.Length == 0 || stringBuilder[^1] != '/'))
 					{
 						stringBuilder.Append('/');
 					}

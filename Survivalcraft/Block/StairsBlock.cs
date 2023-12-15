@@ -14,9 +14,9 @@ namespace Game
 			ThreeQuarters
 		}
 
-		public BlockMesh m_standaloneUncoloredBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneUncoloredBlockMesh = new();
 
-		public BlockMesh m_standaloneColoredBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneColoredBlockMesh = new();
 
 		public BlockMesh[] m_uncoloredBlockMeshes = new BlockMesh[24];
 
@@ -78,131 +78,131 @@ namespace Game
 			m_standaloneColoredBlockMesh.TransformTextureCoordinates(Matrix.CreateTranslation(m_coloredTextureSlot % 16 / 16f, m_coloredTextureSlot / 16 / 16f, 0f));
 			m_collisionBoxes[0] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 1f, 0.5f)),
-				new BoundingBox(new Vector3(0f, 0f, 0.5f), new Vector3(1f, 0.5f, 1f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 1f, 0.5f)),
+				new(new Vector3(0f, 0f, 0.5f), new Vector3(1f, 0.5f, 1f))
 			};
 			m_collisionBoxes[1] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(0.5f, 1f, 1f)),
-				new BoundingBox(new Vector3(0.5f, 0f, 0f), new Vector3(1f, 0.5f, 1f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(0.5f, 1f, 1f)),
+				new(new Vector3(0.5f, 0f, 0f), new Vector3(1f, 0.5f, 1f))
 			};
 			m_collisionBoxes[2] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 0.5f)),
-				new BoundingBox(new Vector3(0f, 0f, 0.5f), new Vector3(1f, 1f, 1f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 0.5f)),
+				new(new Vector3(0f, 0f, 0.5f), new Vector3(1f, 1f, 1f))
 			};
 			m_collisionBoxes[3] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.5f, 1f)),
-				new BoundingBox(new Vector3(0.5f, 0f, 0f), new Vector3(1f, 1f, 1f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.5f, 1f)),
+				new(new Vector3(0.5f, 0f, 0f), new Vector3(1f, 1f, 1f))
 			};
 			m_collisionBoxes[4] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 1f, 0.5f)),
-				new BoundingBox(new Vector3(0f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 1f, 0.5f)),
+				new(new Vector3(0f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f))
 			};
 			m_collisionBoxes[5] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(0.5f, 1f, 1f)),
-				new BoundingBox(new Vector3(0.5f, 0.5f, 0f), new Vector3(1f, 1f, 1f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(0.5f, 1f, 1f)),
+				new(new Vector3(0.5f, 0.5f, 0f), new Vector3(1f, 1f, 1f))
 			};
 			m_collisionBoxes[6] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 0.5f)),
-				new BoundingBox(new Vector3(0f, 0f, 0.5f), new Vector3(1f, 1f, 1f))
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 0.5f)),
+				new(new Vector3(0f, 0f, 0.5f), new Vector3(1f, 1f, 1f))
 			};
 			m_collisionBoxes[7] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(0.5f, 1f, 1f)),
-				new BoundingBox(new Vector3(0.5f, 0f, 0f), new Vector3(1f, 1f, 1f))
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(0.5f, 1f, 1f)),
+				new(new Vector3(0.5f, 0f, 0f), new Vector3(1f, 1f, 1f))
 			};
 			m_collisionBoxes[8] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
-				new BoundingBox(new Vector3(0.5f, 0.5f, 0f), new Vector3(1f, 1f, 0.5f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
+				new(new Vector3(0.5f, 0.5f, 0f), new Vector3(1f, 1f, 0.5f))
 			};
 			m_collisionBoxes[9] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(0.5f, 1f, 0.5f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(0.5f, 1f, 0.5f))
 			};
 			m_collisionBoxes[10] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
-				new BoundingBox(new Vector3(0f, 0.5f, 0.5f), new Vector3(0.5f, 1f, 1f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
+				new(new Vector3(0f, 0.5f, 0.5f), new Vector3(0.5f, 1f, 1f))
 			};
 			m_collisionBoxes[11] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
-				new BoundingBox(new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
+				new(new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f))
 			};
 			m_collisionBoxes[12] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
-				new BoundingBox(new Vector3(0.5f, 0f, 0f), new Vector3(1f, 0.5f, 0.5f))
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
+				new(new Vector3(0.5f, 0f, 0f), new Vector3(1f, 0.5f, 0.5f))
 			};
 			m_collisionBoxes[13] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.5f, 0.5f))
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
+				new(new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.5f, 0.5f))
 			};
 			m_collisionBoxes[14] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
-				new BoundingBox(new Vector3(0f, 0f, 0.5f), new Vector3(0.5f, 0.5f, 1f))
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
+				new(new Vector3(0f, 0f, 0.5f), new Vector3(0.5f, 0.5f, 1f))
 			};
 			m_collisionBoxes[15] = new BoundingBox[2]
 			{
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
-				new BoundingBox(new Vector3(0.5f, 0f, 0.5f), new Vector3(1f, 0.5f, 1f))
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
+				new(new Vector3(0.5f, 0f, 0.5f), new Vector3(1f, 0.5f, 1f))
 			};
 			m_collisionBoxes[16] = new BoundingBox[3]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 0.5f)),
-				new BoundingBox(new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 0.5f)),
+				new(new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f))
 			};
 			m_collisionBoxes[17] = new BoundingBox[3]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 0.5f)),
-				new BoundingBox(new Vector3(0f, 0.5f, 0.5f), new Vector3(0.5f, 1f, 1f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 0.5f)),
+				new(new Vector3(0f, 0.5f, 0.5f), new Vector3(0.5f, 1f, 1f))
 			};
 			m_collisionBoxes[18] = new BoundingBox[3]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
-				new BoundingBox(new Vector3(0f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f)),
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(0.5f, 1f, 0.5f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
+				new(new Vector3(0f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f)),
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(0.5f, 1f, 0.5f))
 			};
 			m_collisionBoxes[19] = new BoundingBox[3]
 			{
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
-				new BoundingBox(new Vector3(0f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f)),
-				new BoundingBox(new Vector3(0.5f, 0.5f, 0f), new Vector3(1f, 1f, 0.5f))
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 1f)),
+				new(new Vector3(0f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f)),
+				new(new Vector3(0.5f, 0.5f, 0f), new Vector3(1f, 1f, 0.5f))
 			};
 			m_collisionBoxes[20] = new BoundingBox[3]
 			{
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 0.5f)),
-				new BoundingBox(new Vector3(0.5f, 0f, 0.5f), new Vector3(1f, 0.5f, 1f))
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 0.5f)),
+				new(new Vector3(0.5f, 0f, 0.5f), new Vector3(1f, 0.5f, 1f))
 			};
 			m_collisionBoxes[21] = new BoundingBox[3]
 			{
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 0.5f)),
-				new BoundingBox(new Vector3(0f, 0f, 0.5f), new Vector3(0.5f, 0.5f, 1f))
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
+				new(new Vector3(0f, 0f, 0f), new Vector3(1f, 0.5f, 0.5f)),
+				new(new Vector3(0f, 0f, 0.5f), new Vector3(0.5f, 0.5f, 1f))
 			};
 			m_collisionBoxes[22] = new BoundingBox[3]
 			{
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
-				new BoundingBox(new Vector3(0f, 0f, 0.5f), new Vector3(1f, 0.5f, 1f)),
-				new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.5f, 0.5f))
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
+				new(new Vector3(0f, 0f, 0.5f), new Vector3(1f, 0.5f, 1f)),
+				new(new Vector3(0f, 0f, 0f), new Vector3(0.5f, 0.5f, 0.5f))
 			};
 			m_collisionBoxes[23] = new BoundingBox[3]
 			{
-				new BoundingBox(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
-				new BoundingBox(new Vector3(0f, 0f, 0.5f), new Vector3(1f, 0.5f, 1f)),
-				new BoundingBox(new Vector3(0.5f, 0f, 0f), new Vector3(1f, 0.5f, 0.5f))
+				new(new Vector3(0f, 0.5f, 0f), new Vector3(1f, 1f, 1f)),
+				new(new Vector3(0f, 0f, 0.5f), new Vector3(1f, 0.5f, 1f)),
+				new(new Vector3(0.5f, 0f, 0f), new Vector3(1f, 0.5f, 0.5f))
 			};
 			base.Initialize();
 		}

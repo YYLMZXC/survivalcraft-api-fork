@@ -10,7 +10,7 @@ namespace Game
 
 		public SoundParticleSystem m_particleSystem;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public int m_lastToneInput;
 

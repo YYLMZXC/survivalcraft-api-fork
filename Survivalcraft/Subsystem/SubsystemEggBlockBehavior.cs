@@ -13,7 +13,7 @@ namespace Game
 
 		public EggBlock m_eggBlock = (EggBlock)BlocksManager.Blocks[118];
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public override int[] HandledBlocks => new int[0];
 

@@ -14,15 +14,15 @@ namespace GameEntitySystem
 
 		public DatabaseObject m_projectTemplate;
 
-		public List<Subsystem> m_subsystems = new List<Subsystem>();
+		public List<Subsystem> m_subsystems = [];
 
-		public Dictionary<Entity, bool> m_entities = new Dictionary<Entity, bool>();
+		public Dictionary<Entity, bool> m_entities = [];
 
 		public GameDatabase GameDatabase => m_gameDatabase;
 
 		public DatabaseObject ProjectTemplate => m_projectTemplate;
 
-		public ReadOnlyList<Subsystem> Subsystems => new ReadOnlyList<Subsystem>(m_subsystems);
+		public ReadOnlyList<Subsystem> Subsystems => new(m_subsystems);
 
 		public Dictionary<Entity, bool>.KeyCollection Entities => m_entities.Keys;
 
@@ -41,7 +41,7 @@ namespace GameEntitySystem
 				m_gameDatabase = gameDatabase;
 				m_projectData = projectData;
 				m_projectTemplate = m_projectData.ValuesDictionary.DatabaseObject;
-				Dictionary<string, Subsystem> dictionary = new Dictionary<string, Subsystem>();
+				Dictionary<string, Subsystem> dictionary = [];
 				foreach (ValuesDictionary item in from x in projectData.ValuesDictionary.Values
 												  select x as ValuesDictionary into x
 												  where x != null && x.DatabaseObject != null && x.DatabaseObject.Type == gameDatabase.MemberSubsystemTemplateType
@@ -71,7 +71,7 @@ namespace GameEntitySystem
 						m_subsystems.Add(subsystem);
 					}
 				}
-				Dictionary<Subsystem, bool> loadedSubsystems = new Dictionary<Subsystem, bool>();
+				Dictionary<Subsystem, bool> loadedSubsystems = [];
 				foreach (Subsystem value3 in dictionary.Values)
 				{
 					LoadSubsystem(value3, dictionary, loadedSubsystems, 0);
@@ -159,8 +159,8 @@ namespace GameEntitySystem
 		{
 			try
 			{
-				Entity entity = new Entity(this, valuesDictionary);
-				IdToEntityMap idToEntityMap = new IdToEntityMap(new Dictionary<int, Entity>());
+				Entity entity = new(this, valuesDictionary);
+				IdToEntityMap idToEntityMap = new([]);
 				entity.InternalLoadEntity(valuesDictionary, idToEntityMap);
 				return entity;
 			}
@@ -220,14 +220,14 @@ namespace GameEntitySystem
 
 		public List<Entity> LoadEntities(EntityDataList entityDataList)
 		{
-			List<Entity> list = new List<Entity>(entityDataList.EntitiesData.Count);
-			Dictionary<int, Entity> dictionary = new Dictionary<int, Entity>();
-			IdToEntityMap idToEntityMap = new IdToEntityMap(dictionary);
+			List<Entity> list = new(entityDataList.EntitiesData.Count);
+			Dictionary<int, Entity> dictionary = [];
+			IdToEntityMap idToEntityMap = new(dictionary);
 			foreach (EntityData entitiesDatum in entityDataList.EntitiesData)
 			{
 				try
 				{
-					Entity entity = new Entity(this, entitiesDatum.ValuesDictionary);
+					Entity entity = new(this, entitiesDatum.ValuesDictionary);
 					list.Add(entity);
 					if (entitiesDatum.Id != 0)
 					{
@@ -252,20 +252,20 @@ namespace GameEntitySystem
 		{
 			Dictionary<Entity, bool> dictionary = DetermineNotOwnedEntities(entities);
 			int num = 1;
-			Dictionary<Entity, int> dictionary2 = new Dictionary<Entity, int>();
-			EntityToIdMap entityToIdMap = new EntityToIdMap(dictionary2);
+			Dictionary<Entity, int> dictionary2 = [];
+			EntityToIdMap entityToIdMap = new(dictionary2);
 			foreach (Entity key in dictionary.Keys)
 			{
 				dictionary2.Add(key, num);
 				num++;
 			}
-			EntityDataList entityDataList = new EntityDataList();
+			EntityDataList entityDataList = new();
 			entityDataList.EntitiesData = new List<EntityData>(dictionary.Keys.Count);
 			foreach (Entity key2 in dictionary.Keys)
 			{
-				EntityData entityData = new EntityData();
+				EntityData entityData = new();
 				entityData.Id = entityToIdMap.FindId(key2);
-				entityData.ValuesDictionary = new ValuesDictionary();
+				entityData.ValuesDictionary = [];
 				entityData.ValuesDictionary.DatabaseObject = key2.ValuesDictionary.DatabaseObject;
 				key2.InternalSaveEntity(entityData.ValuesDictionary, entityToIdMap);
 				entityDataList.EntitiesData.Add(entityData);
@@ -275,12 +275,12 @@ namespace GameEntitySystem
 
 		public ProjectData Save()
 		{
-			ProjectData projectData = new ProjectData();
-			projectData.ValuesDictionary = new ValuesDictionary();
+			ProjectData projectData = new();
+			projectData.ValuesDictionary = [];
 			projectData.ValuesDictionary.DatabaseObject = ProjectTemplate;
 			foreach (Subsystem subsystem in Subsystems)
 			{
-				ValuesDictionary valuesDictionary = new ValuesDictionary();
+				ValuesDictionary valuesDictionary = [];
 				subsystem.Save(valuesDictionary);
 				if (valuesDictionary.Count > 0)
 				{
@@ -342,8 +342,8 @@ namespace GameEntitySystem
 
 		public static Dictionary<Entity, bool> DetermineNotOwnedEntities(IEnumerable<Entity> entities)
 		{
-			Dictionary<Entity, bool> dictionary = new Dictionary<Entity, bool>();
-			List<Entity> list = new List<Entity>();
+			Dictionary<Entity, bool> dictionary = [];
+			List<Entity> list = [];
 			foreach (Entity entity in entities)
 			{
 				dictionary.Add(entity, value: true);

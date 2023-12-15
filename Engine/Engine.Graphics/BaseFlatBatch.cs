@@ -2,15 +2,15 @@ namespace Engine.Graphics
 {
 	public abstract class BaseFlatBatch : BaseBatch
 	{
-		internal static UnlitShader Shader = new UnlitShader(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
+		internal static UnlitShader Shader = new(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
 
-		public readonly DynamicArray<VertexPositionColor> LineVertices = new DynamicArray<VertexPositionColor>();
+		public readonly DynamicArray<VertexPositionColor> LineVertices = [];
 
-		public readonly DynamicArray<int> LineIndices = new DynamicArray<int>();
+		public readonly DynamicArray<int> LineIndices = [];
 
-		public readonly DynamicArray<VertexPositionColor> TriangleVertices = new DynamicArray<VertexPositionColor>();
+		public readonly DynamicArray<VertexPositionColor> TriangleVertices = [];
 
-		public readonly DynamicArray<int> TriangleIndices = new DynamicArray<int>();
+		public readonly DynamicArray<int> TriangleIndices = [];
 
 		internal BaseFlatBatch()
 		{

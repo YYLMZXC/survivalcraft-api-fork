@@ -31,24 +31,24 @@ namespace Game
 
 		public SubsystemFluidBlockBehavior m_subsystemFluidBlockBehavior;
 
-		public List<ComponentPlayer> m_tmpPlayers = new List<ComponentPlayer>();
+		public List<ComponentPlayer> m_tmpPlayers = [];
 
-		public List<Pickable> m_pickables = new List<Pickable>();
+		public List<Pickable> m_pickables = [];
 
-		public List<Pickable> m_pickablesToRemove = new List<Pickable>();
+		public List<Pickable> m_pickablesToRemove = [];
 
-		public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
+		public PrimitivesRenderer3D m_primitivesRenderer = new();
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public DrawBlockEnvironmentData m_drawBlockEnvironmentData = new DrawBlockEnvironmentData();
+		public DrawBlockEnvironmentData m_drawBlockEnvironmentData = new();
 
 		public static int[] m_drawOrders = new int[]
 		{
 			10
 		};
 
-		public ReadOnlyList<Pickable> Pickables => new ReadOnlyList<Pickable>(m_pickables);
+		public ReadOnlyList<Pickable> Pickables => new(m_pickables);
 
 		public int[] DrawOrders => m_drawOrders;
 

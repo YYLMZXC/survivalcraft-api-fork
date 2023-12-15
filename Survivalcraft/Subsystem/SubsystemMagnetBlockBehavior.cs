@@ -9,7 +9,7 @@ namespace Game
 	{
 		public SubsystemPlayers m_subsystemPlayers;
 
-		public DynamicArray<Vector3> m_magnets = new DynamicArray<Vector3>();
+		public DynamicArray<Vector3> m_magnets = [];
 
 		public const int MaxMagnets = 8;
 

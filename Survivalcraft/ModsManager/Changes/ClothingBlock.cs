@@ -11,7 +11,7 @@ namespace Game
 	{
 		public const int Index = 203;
 
-		public DynamicArray<ClothingData> m_clothingData = new DynamicArray<ClothingData>();
+		public DynamicArray<ClothingData> m_clothingData = [];
 
 		public BlockMesh m_innerMesh;
 

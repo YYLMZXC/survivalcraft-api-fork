@@ -14,7 +14,7 @@ namespace FluxJpeg.Core.Filtering
 
 		protected bool _color;
 
-		private FilterProgressEventArgs progressArgs = new FilterProgressEventArgs();
+		private FilterProgressEventArgs progressArgs = new();
 
 		public event EventHandler<FilterProgressEventArgs> ProgressChanged;
 

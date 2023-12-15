@@ -6,11 +6,11 @@ namespace Engine.Media
 {
 	public class ModelData
 	{
-		public List<ModelBoneData> Bones = new List<ModelBoneData>();
+		public List<ModelBoneData> Bones = [];
 
-		public List<ModelMeshData> Meshes = new List<ModelMeshData>();
+		public List<ModelMeshData> Meshes = [];
 
-		public List<ModelBuffersData> Buffers = new List<ModelBuffersData>();
+		public List<ModelBuffersData> Buffers = [];
 
 		public static ModelFileFormat DetermineFileFormat(Stream stream)
 		{

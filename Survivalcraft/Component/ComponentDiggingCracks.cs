@@ -36,7 +36,7 @@ namespace Game
 
 		public int[] DrawOrders => m_drawOrders;
 
-		public DynamicArray<TerrainChunkGeometry.Buffer> Buffers = new DynamicArray<TerrainChunkGeometry.Buffer>();
+		public DynamicArray<TerrainChunkGeometry.Buffer> Buffers = [];
 
 		public void DisposeBuffers()
 		{
@@ -67,7 +67,7 @@ namespace Game
 				TerrainRenderer.CompileDrawSubsets(DrawItem, Buffers, block.SetDiggingCrackingTextureTransform);
 			}
 			Vector3 viewPosition = camera.ViewPosition;
-			Vector3 v = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+			Vector3 v = new(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			float x = m_subsystemSky.ViewFogRange.X;
 			float y = m_subsystemSky.ViewFogRange.Y;
@@ -96,7 +96,7 @@ namespace Game
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{
 			defaultTexture = Project.FindSubsystem<SubsystemAnimatedTextures>().AnimatedBlocksTexture;
-			DrawItem = new Dictionary<Texture2D, TerrainGeometry[]>();
+			DrawItem = [];
 			var list = new TerrainGeometry[16];
 			for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(DrawItem, i); list[i] = t; }
 			DrawItem.Add(defaultTexture, list);

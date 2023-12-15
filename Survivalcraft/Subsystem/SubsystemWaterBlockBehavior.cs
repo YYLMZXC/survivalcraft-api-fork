@@ -4,7 +4,7 @@ namespace Game
 {
 	public class SubsystemWaterBlockBehavior : SubsystemFluidBlockBehavior, IUpdateable
 	{
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_soundVolume;
 

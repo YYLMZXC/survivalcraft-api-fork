@@ -10,12 +10,12 @@ namespace Game
 		public PistonElectricElement(SubsystemElectricity subsystemElectricity, Point3 point)
 			: base(subsystemElectricity, new List<CellFace>
 			{
-				new CellFace(point.X, point.Y, point.Z, 0),
-				new CellFace(point.X, point.Y, point.Z, 1),
-				new CellFace(point.X, point.Y, point.Z, 2),
-				new CellFace(point.X, point.Y, point.Z, 3),
-				new CellFace(point.X, point.Y, point.Z, 4),
-				new CellFace(point.X, point.Y, point.Z, 5)
+				new(point.X, point.Y, point.Z, 0),
+				new(point.X, point.Y, point.Z, 1),
+				new(point.X, point.Y, point.Z, 2),
+				new(point.X, point.Y, point.Z, 3),
+				new(point.X, point.Y, point.Z, 4),
+				new(point.X, point.Y, point.Z, 5)
 			})
 		{
 		}

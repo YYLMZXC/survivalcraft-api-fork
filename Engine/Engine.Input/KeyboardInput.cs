@@ -4,7 +4,7 @@ namespace Engine.Input
 {
 	public class KeyboardInput
 	{
-		public static List<char> Chars = new List<char>();
+		public static List<char> Chars = [];
 		public static bool _DeletePressed;
 
 		public static bool DeletePressed
@@ -17,7 +17,7 @@ namespace Engine.Input
 		{
 			if (Chars.Count > 0)
 			{
-				string str = new string(Chars.ToArray());
+				string str = new(Chars.ToArray());
 				Chars.Clear();
 				return str;
 			}

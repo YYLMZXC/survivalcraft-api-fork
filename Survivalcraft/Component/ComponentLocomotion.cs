@@ -27,7 +27,7 @@ namespace Game
 
 		public ComponentRider m_componentRider;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public Vector2? m_walkOrder;
 

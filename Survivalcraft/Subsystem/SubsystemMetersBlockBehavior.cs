@@ -12,9 +12,9 @@ namespace Game
 
 		public SubsystemSky m_subsystemSky;
 
-		public Dictionary<Point3, int> m_thermometersByPoint = new Dictionary<Point3, int>();
+		public Dictionary<Point3, int> m_thermometersByPoint = [];
 
-		public DynamicArray<Point3> m_thermometersToSimulate = new DynamicArray<Point3>();
+		public DynamicArray<Point3> m_thermometersToSimulate = [];
 
 		public int m_thermometersToSimulateIndex;
 
@@ -26,7 +26,7 @@ namespace Game
 
 		public const int m_radius = 32;
 
-		public DynamicArray<int> m_toVisit = new DynamicArray<int>();
+		public DynamicArray<int> m_toVisit = [];
 
 		public int[] m_visited = new int[8192];
 

@@ -6,7 +6,7 @@ namespace Engine.Serialization
 	{
 		public void Serialize(InputArchive archive, ref HashSet<T> value)
 		{
-			value = new HashSet<T>();
+			value = [];
 			archive.SerializeCollection(null, value);
 		}
 

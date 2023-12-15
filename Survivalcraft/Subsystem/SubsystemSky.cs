@@ -70,11 +70,11 @@ namespace Game
 
 		public SubsystemFluidBlockBehavior m_subsystemFluidBlockBehavior;
 
-		public PrimitivesRenderer2D m_primitivesRenderer2d = new PrimitivesRenderer2D();
+		public PrimitivesRenderer2D m_primitivesRenderer2d = new();
 
-		public PrimitivesRenderer3D m_primitivesRenderer3d = new PrimitivesRenderer3D();
+		public PrimitivesRenderer3D m_primitivesRenderer3d = new();
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public Color m_viewFogColor;
 
@@ -90,19 +90,19 @@ namespace Game
 
 		public Texture2D[] m_moonTextures = new Texture2D[8];
 
-		public static UnlitShader m_shaderFlat = new UnlitShader(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
+		public static UnlitShader m_shaderFlat = new(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
 
-		public static UnlitShader m_shaderTextured = new UnlitShader(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+		public static UnlitShader m_shaderTextured = new(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
 
-		public VertexDeclaration m_skyVertexDeclaration = new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color));
+		public VertexDeclaration m_skyVertexDeclaration = new(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color));
 
-		public Dictionary<GameWidget, SkyDome> m_skyDomes = new Dictionary<GameWidget, SkyDome>();
+		public Dictionary<GameWidget, SkyDome> m_skyDomes = [];
 
 		public VertexBuffer m_starsVertexBuffer;
 
 		public IndexBuffer m_starsIndexBuffer;
 
-		public VertexDeclaration m_starsVertexDeclaration = new VertexDeclaration(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.Vector2, VertexElementSemantic.TextureCoordinate), new VertexElement(20, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color));
+		public VertexDeclaration m_starsVertexDeclaration = new(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.Vector2, VertexElementSemantic.TextureCoordinate), new VertexElement(20, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color));
 
 		public const int m_starsCount = 150;
 
@@ -252,7 +252,7 @@ namespace Game
 			{
 				return;
 			}
-			DynamicArray<ComponentBody> dynamicArray = new DynamicArray<ComponentBody>();
+			DynamicArray<ComponentBody> dynamicArray = [];
 			m_subsystemBodies.FindBodiesAroundPoint(new Vector2(targetPosition.X, targetPosition.Z), 4f, dynamicArray);
 			for (int i = 0; i < dynamicArray.Count; i++)
 			{
@@ -591,7 +591,7 @@ namespace Game
 			m_cloudsLayerColors[3] = Color.Transparent;
 			double gameTime = m_subsystemTime.GameTime;
 			Vector3 viewPosition = camera.ViewPosition;
-			Vector2 v = new Vector2((float)MathUtils.Remainder((0.0020000000949949026 * gameTime) - (double)(viewPosition.X / 1900f * 1.75f), 1.0) + (viewPosition.X / 1900f * 1.75f), (float)MathUtils.Remainder((0.0020000000949949026 * gameTime) - (double)(viewPosition.Z / 1900f * 1.75f), 1.0) + (viewPosition.Z / 1900f * 1.75f));
+			Vector2 v = new((float)MathUtils.Remainder((0.0020000000949949026 * gameTime) - (double)(viewPosition.X / 1900f * 1.75f), 1.0) + (viewPosition.X / 1900f * 1.75f), (float)MathUtils.Remainder((0.0020000000949949026 * gameTime) - (double)(viewPosition.Z / 1900f * 1.75f), 1.0) + (viewPosition.Z / 1900f * 1.75f));
 			TexturedBatch3D texturedBatch3D = m_primitivesRenderer3d.TexturedBatch(m_cloudsTexture, useAlphaTest: false, 2, DepthStencilState.DepthRead, null, BlendState.AlphaBlend, SamplerState.LinearWrap);
 			DynamicArray<VertexPositionColorTexture> triangleVertices = texturedBatch3D.TriangleVertices;
 			DynamicArray<int> triangleIndices = texturedBatch3D.TriangleIndices;
@@ -612,7 +612,7 @@ namespace Game
 					float num7 = (float)num2 * num6;
 					float num8 = (float)num3 * num6;
 					float y = MathUtils.Lerp(600f, 60f, num5 * num5);
-					Vector3 position = new Vector3(viewPosition.X + (num7 * 1900f), y, viewPosition.Z + (num8 * 1900f));
+					Vector3 position = new(viewPosition.X + (num7 * 1900f), y, viewPosition.Z + (num8 * 1900f));
 					Vector2 texCoord = (new Vector2(position.X, position.Z) / 1900f * 1.75f) - v;
 					Color color = m_cloudsLayerColors[num4];
 					texturedBatch3D.TriangleVertices.Array[count2++] = new VertexPositionColorTexture(position, color, texCoord);
@@ -707,8 +707,8 @@ namespace Game
 			Vector3 v3 = Vector3.Lerp(new Vector3(0.7f, 0.79f, 0.88f), new Vector3(0.64f, 0.77f, 0.91f), f);
 			Vector3 v4 = Vector3.Lerp(v2, v, precipitationIntensity) * s;
 			Vector3 v5 = Vector3.Lerp(v3, v, precipitationIntensity) * s;
-			Vector3 v6 = new Vector3(1f, 0.3f, -0.2f);
-			Vector3 v7 = new Vector3(1f, 0.3f, -0.2f);
+			Vector3 v6 = new(1f, 0.3f, -0.2f);
+			Vector3 v7 = new(1f, 0.3f, -0.2f);
 			if (m_lightningStrikePosition.HasValue)
 			{
 				v4 = Vector3.Max(new Vector3(m_lightningStrikeBrightness), v4);
@@ -718,7 +718,7 @@ namespace Game
 			float f2 = MathUtils.Saturate((direction.Y - 0.1f) / 0.4f);
 			float s2 = num * MathUtils.Sqr(MathUtils.Saturate(0f - vector.X));
 			float s3 = num2 * MathUtils.Sqr(MathUtils.Saturate(vector.X));
-			Color color = new Color(Vector3.Lerp(v5 + (v6 * s2) + (v7 * s3), v4, f2));
+			Color color = new(Vector3.Lerp(v5 + (v6 * s2) + (v7 * s3), v4, f2));
 			ModsManager.HookAction("ChangeSkyColor", loader =>
 			{
 				color = loader.ChangeSkyColor(color, direction, timeOfDay, precipitationIntensity, temperature);
@@ -776,7 +776,7 @@ namespace Game
 
 		public void FillStarsBuffers()
 		{
-			Random random = new Random(7);
+			Random random = new(7);
 			StarVertex[] array = new StarVertex[600];
 			for (int i = 0; i < 150; i++)
 			{
@@ -789,7 +789,7 @@ namespace Game
 				v = Vector3.Normalize(v);
 				float s = 9f * random.NormalFloat(1f, 0.1f);
 				float w = MathUtils.Saturate(random.NormalFloat(0.6f, 0.4f));
-				Color color = new Color(new Vector4(random.Float(0.6f, 1f), 0.7f, random.Float(0.8f, 1f), w));
+				Color color = new(new Vector4(random.Float(0.6f, 1f), 0.7f, random.Float(0.8f, 1f), w));
 				Vector3 v2 = 900f * v;
 				Vector3 vector = Vector3.Normalize(Vector3.Cross((v.X > v.Y) ? Vector3.UnitY : Vector3.UnitX, v));
 				Vector3 v3 = Vector3.Normalize(Vector3.Cross(vector, v));

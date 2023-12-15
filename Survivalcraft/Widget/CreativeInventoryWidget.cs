@@ -16,7 +16,7 @@ namespace Game
 			public ContainerWidget Panel;
 		}
 
-		public List<Category> m_categories = new List<Category>();
+		public List<Category> m_categories = [];
 
 		public int m_activeCategoryIndex = -1;
 

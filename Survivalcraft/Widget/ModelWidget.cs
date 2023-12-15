@@ -5,9 +5,9 @@ namespace Game
 {
 	public class ModelWidget : Widget
 	{
-		public static LitShader m_shader = new LitShader(1, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: false);
+		public static LitShader m_shader = new(1, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: false);
 
-		public static LitShader m_shaderAlpha = new LitShader(1, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: true);
+		public static LitShader m_shaderAlpha = new(1, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: true);
 
 		public Model m_model;
 

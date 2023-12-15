@@ -6,7 +6,7 @@ namespace Engine.Serialization
 	{
 		public void Serialize(InputArchive archive, ref Dictionary<K, V> value)
 		{
-			value = new Dictionary<K, V>();
+			value = [];
 			archive.SerializeDictionary(null, value);
 		}
 

@@ -6,7 +6,7 @@ namespace Game
 	{
 		public const float frequencyFactor = 0.5f;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_frequency = 0.5f;
 

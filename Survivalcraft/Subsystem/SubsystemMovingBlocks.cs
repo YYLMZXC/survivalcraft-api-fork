@@ -51,7 +51,7 @@ namespace Game
 
 			public Vector3 GeometryOffset;
 
-			public Point3 GeometryGenerationPosition = new Point3(int.MaxValue);
+			public Point3 GeometryGenerationPosition = new(int.MaxValue);
 
 			Vector3 IMovingBlockSet.Position => Position;
 
@@ -61,11 +61,11 @@ namespace Game
 
 			Vector3 IMovingBlockSet.CurrentVelocity => CurrentVelocity;
 
-			ReadOnlyList<MovingBlock> IMovingBlockSet.Blocks => new ReadOnlyList<MovingBlock>(Blocks);
+			ReadOnlyList<MovingBlock> IMovingBlockSet.Blocks => new(Blocks);
 
 			public MovingBlockSet()
 			{
-				TerrainGeometrySubset terrainGeometrySubset = new TerrainGeometrySubset();
+				TerrainGeometrySubset terrainGeometrySubset = new();
 				Vertices = terrainGeometrySubset.Vertices;
 				Indices = terrainGeometrySubset.Indices;
 				Geometry = new TerrainGeometry();
@@ -105,8 +105,8 @@ namespace Game
 
 			public BoundingBox BoundingBox(bool extendToFillCells)
 			{
-				Vector3 min = new Vector3(Position.X + (float)Box.Left, Position.Y + (float)Box.Top, Position.Z + (float)Box.Near);
-				Vector3 max = new Vector3(Position.X + (float)Box.Right, Position.Y + (float)Box.Bottom, Position.Z + (float)Box.Far);
+				Vector3 min = new(Position.X + (float)Box.Left, Position.Y + (float)Box.Top, Position.Z + (float)Box.Near);
+				Vector3 max = new(Position.X + (float)Box.Right, Position.Y + (float)Box.Bottom, Position.Z + (float)Box.Far);
 				if (extendToFillCells)
 				{
 					min.X = MathUtils.Floor(min.X);
@@ -148,17 +148,17 @@ namespace Game
 
 		public SubsystemAnimatedTextures m_subsystemAnimatedTextures;
 
-		public List<MovingBlockSet> m_movingBlockSets = new List<MovingBlockSet>();
+		public List<MovingBlockSet> m_movingBlockSets = [];
 
-		public List<MovingBlockSet> m_stopped = new List<MovingBlockSet>();
+		public List<MovingBlockSet> m_stopped = [];
 
-		public List<MovingBlockSet> m_removing = new List<MovingBlockSet>();
+		public List<MovingBlockSet> m_removing = [];
 
-		public DynamicArray<TerrainVertex> m_vertices = new DynamicArray<TerrainVertex>();
+		public DynamicArray<TerrainVertex> m_vertices = [];
 
-		public DynamicArray<int> m_indices = new DynamicArray<int>();
+		public DynamicArray<int> m_indices = [];
 
-		public DynamicArray<IMovingBlockSet> m_result = new DynamicArray<IMovingBlockSet>();
+		public DynamicArray<IMovingBlockSet> m_result = [];
 
 		public Shader m_shader;
 
@@ -182,7 +182,7 @@ namespace Game
 
 		public IMovingBlockSet AddMovingBlockSet(Vector3 position, Vector3 targetPosition, float speed, float acceleration, float drag, Vector2 smoothness, IEnumerable<MovingBlock> blocks, string id, object tag, bool testCollision)
 		{
-			MovingBlockSet movingBlockSet = new MovingBlockSet
+			MovingBlockSet movingBlockSet = new()
 			{
 				Position = position,
 				StartPosition = position,
@@ -247,8 +247,8 @@ namespace Game
 
 		public MovingBlocksRaycastResult? Raycast(Vector3 start, Vector3 end, bool extendToFillCells)
 		{
-			Ray3 ray = new Ray3(start, Vector3.Normalize(end - start));
-			BoundingBox boundingBox = new BoundingBox(Vector3.Min(start, end), Vector3.Max(start, end));
+			Ray3 ray = new(start, Vector3.Normalize(end - start));
+			BoundingBox boundingBox = new(Vector3.Min(start, end), Vector3.Max(start, end));
 			m_result.Clear();
 			FindMovingBlocks(boundingBox, extendToFillCells, m_result);
 			float num = float.MaxValue;
@@ -377,7 +377,7 @@ namespace Game
 			if (m_vertices.Count > 0)
 			{
 				Vector3 viewPosition = camera.ViewPosition;
-				Vector3 vector = new Vector3(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+				Vector3 vector = new(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
 				Matrix value = Matrix.CreateTranslation(vector - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 				Display.BlendState = BlendState.AlphaBlend;
 				Display.DepthStencilState = DepthStencilState.Default;
@@ -414,7 +414,7 @@ namespace Game
 				Vector2 value6 = value9.GetValue("Smoothness", Vector2.Zero);
 				string value7 = value9.GetValue<string>("Id", null);
 				object value8 = value9.GetValue<object>("Tag", null);
-				List<MovingBlock> list = new List<MovingBlock>();
+				List<MovingBlock> list = [];
 				string[] array = value9.GetValue<string>("Blocks").Split(new char[1] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 				foreach (string obj2 in array)
 				{
@@ -432,12 +432,12 @@ namespace Game
 
 		public override void Save(ValuesDictionary valuesDictionary)
 		{
-			ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+			ValuesDictionary valuesDictionary2 = [];
 			valuesDictionary.SetValue("MovingBlockSets", valuesDictionary2);
 			int num = 0;
 			foreach (MovingBlockSet movingBlockSet in m_movingBlockSets)
 			{
-				ValuesDictionary valuesDictionary3 = new ValuesDictionary();
+				ValuesDictionary valuesDictionary3 = [];
 				valuesDictionary2.SetValue(num.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
 				valuesDictionary3.SetValue("Position", movingBlockSet.Position);
 				valuesDictionary3.SetValue("TargetPosition", movingBlockSet.TargetPosition);
@@ -456,7 +456,7 @@ namespace Game
 				{
 					valuesDictionary3.SetValue("Tag", movingBlockSet.Tag);
 				}
-				StringBuilder stringBuilder = new StringBuilder();
+				StringBuilder stringBuilder = new();
 				foreach (MovingBlock block in movingBlockSet.Blocks)
 				{
 					stringBuilder.Append(HumanReadableConverter.ConvertToString(block.Value));
@@ -543,8 +543,8 @@ namespace Game
 			{
 				return;
 			}
-			Point3 p = new Point3(movingBlockSet.Box.Left, movingBlockSet.Box.Top, movingBlockSet.Box.Near);
-			Point3 point2 = new Point3(movingBlockSet.Box.Width, movingBlockSet.Box.Height, movingBlockSet.Box.Depth);
+			Point3 p = new(movingBlockSet.Box.Left, movingBlockSet.Box.Top, movingBlockSet.Box.Near);
+			Point3 point2 = new(movingBlockSet.Box.Width, movingBlockSet.Box.Height, movingBlockSet.Box.Depth);
 			int num = point.Y + p.Y;
 			point2.Y = MathUtils.Min(point2.Y, 254);
 			if (m_blockGeometryGenerator == null)

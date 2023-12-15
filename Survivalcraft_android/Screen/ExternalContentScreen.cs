@@ -29,7 +29,7 @@ namespace Game
 		public static string fName = "ExternalContentScreen";
 		public bool m_listDirty;
 
-		public Dictionary<string, bool> m_downloadedFiles = new Dictionary<string, bool>();
+		public Dictionary<string, bool> m_downloadedFiles = [];
 
 		public IExternalContentProvider m_externalContentProvider = ExternalContentManager.DefaultProvider;
 
@@ -153,7 +153,7 @@ namespace Game
 			}
 			if (m_copyLinkButton.IsClicked && externalContentEntry != null && ExternalContentManager.IsEntryTypeDownloadSupported(externalContentEntry.Type))
 			{
-				CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 8), autoHideOnCancel: false);
+				CancellableBusyDialog busyDialog = new(LanguageControl.Get(fName, 8), autoHideOnCancel: false);
 				DialogsManager.ShowDialog(null, busyDialog);
 				m_externalContentProvider.Link(externalContentEntry.Path, busyDialog.Progress, delegate (string link)
 				{
@@ -207,12 +207,12 @@ namespace Game
 			m_directoryList.ClearItems();
 			if (m_externalContentProvider != null && m_externalContentProvider.IsLoggedIn)
 			{
-				CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 9), autoHideOnCancel: false);
+				CancellableBusyDialog busyDialog = new(LanguageControl.Get(fName, 9), autoHideOnCancel: false);
 				DialogsManager.ShowDialog(null, busyDialog);
 				m_externalContentProvider.List(m_path, busyDialog.Progress, delegate (ExternalContentEntry entry)
 				{
 					DialogsManager.HideDialog(busyDialog);
-					List<ExternalContentEntry> list = new List<ExternalContentEntry>(entry.ChildEntries.Where((ExternalContentEntry e) => EntryFilter(e)).Take(1000));
+					List<ExternalContentEntry> list = new(entry.ChildEntries.Where((ExternalContentEntry e) => EntryFilter(e)).Take(1000));
 					m_directoryList.ClearItems();
 					list.Sort(delegate (ExternalContentEntry e1, ExternalContentEntry e2)
 					{
@@ -236,7 +236,7 @@ namespace Game
 
 		public void DownloadEntry(ExternalContentEntry entry)
 		{
-			CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 10), autoHideOnCancel: false);
+			CancellableBusyDialog busyDialog = new(LanguageControl.Get(fName, 10), autoHideOnCancel: false);
 			DialogsManager.ShowDialog(null, busyDialog);
 			m_externalContentProvider.Download(entry.Path, busyDialog.Progress, delegate (Stream stream)
 			{

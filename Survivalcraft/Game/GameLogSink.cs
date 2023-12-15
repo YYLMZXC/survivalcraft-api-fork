@@ -61,7 +61,7 @@ namespace Game
 		{
 			if (m_stream == null)
 			{
-				return new List<string>();
+				return [];
 			}
 			lock (m_stream)
 			{

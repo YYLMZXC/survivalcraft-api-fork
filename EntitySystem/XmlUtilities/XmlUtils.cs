@@ -77,14 +77,14 @@ namespace XmlUtilities
 
 		public static XElement AddElement(XElement parentNode, string name)
 		{
-			XElement xElement = new XElement(name);
+			XElement xElement = new(name);
 			parentNode.Add(xElement);
 			return xElement;
 		}
 
 		public static XElement LoadXmlFromTextReader(TextReader textReader, bool throwOnError)
 		{
-			XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
+			XmlReaderSettings xmlReaderSettings = new();
 			xmlReaderSettings.CheckCharacters = false;
 			xmlReaderSettings.IgnoreComments = true;
 			xmlReaderSettings.IgnoreProcessingInstructions = true;
@@ -104,7 +104,7 @@ namespace XmlUtilities
 
 		public static XElement LoadXmlFromString(string data, bool throwOnError)
 		{
-			using (StringReader textReader = new StringReader(data))
+			using (StringReader textReader = new(data))
 			{
 				return LoadXmlFromTextReader(textReader, throwOnError);
 			}
@@ -112,7 +112,7 @@ namespace XmlUtilities
 
 		public static void SaveXmlToTextWriter(XElement node, TextWriter textWriter, bool throwOnError)
 		{
-			XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+			XmlWriterSettings xmlWriterSettings = new();
 			xmlWriterSettings.OmitXmlDeclaration = true;
 			xmlWriterSettings.Indent = true;
 			xmlWriterSettings.Encoding = Encoding.UTF8;
@@ -134,7 +134,7 @@ namespace XmlUtilities
 
 		public static string SaveXmlToString(XElement node, bool throwOnError)
 		{
-			using (StringWriter stringWriter = new StringWriter())
+			using (StringWriter stringWriter = new())
 			{
 				SaveXmlToTextWriter(node, stringWriter, throwOnError);
 				return stringWriter.ToString();

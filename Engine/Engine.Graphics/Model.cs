@@ -9,15 +9,15 @@ namespace Engine.Graphics
 	{
 		internal ModelBone m_rootBone;
 
-		internal List<ModelBone> m_bones = new List<ModelBone>();
+		internal List<ModelBone> m_bones = [];
 
-		internal List<ModelMesh> m_meshes = new List<ModelMesh>();
+		internal List<ModelMesh> m_meshes = [];
 
 		public ModelBone RootBone => m_rootBone;
 
-		public ReadOnlyList<ModelBone> Bones => new ReadOnlyList<ModelBone>(m_bones);
+		public ReadOnlyList<ModelBone> Bones => new(m_bones);
 
-		public ReadOnlyList<ModelMesh> Meshes => new ReadOnlyList<ModelMesh>(m_meshes);
+		public ReadOnlyList<ModelMesh> Meshes => new(m_meshes);
 
 		public ModelBone FindBone(string name, bool throwIfNotFound = true)
 		{

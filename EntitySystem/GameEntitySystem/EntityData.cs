@@ -33,7 +33,7 @@ namespace GameEntitySystem
 				}
 				databaseObject = gameDatabase.Database.FindDatabaseObject(attributeValue2, gameDatabase.EntityTemplateType, throwIfNotFound: true);
 			}
-			ValuesDictionary = new ValuesDictionary();
+			ValuesDictionary = [];
 			ValuesDictionary.PopulateFromDatabaseObject(databaseObject);
 			ValuesDictionary.ApplyOverrides(entityNode);
 		}

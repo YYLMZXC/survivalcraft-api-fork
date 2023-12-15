@@ -41,13 +41,13 @@ namespace Engine.Serialization
 			}
 		}
 
-		private static HashSet<Assembly> m_scannedAssemblies = new HashSet<Assembly>();
+		private static HashSet<Assembly> m_scannedAssemblies = [];
 
-		private static Dictionary<Type, SerializeData> m_serializeDataByType = new Dictionary<Type, SerializeData>();
+		private static Dictionary<Type, SerializeData> m_serializeDataByType = [];
 
-		private static Dictionary<Type, SerializeData> m_pendingOptionsByType = new Dictionary<Type, SerializeData>();
+		private static Dictionary<Type, SerializeData> m_pendingOptionsByType = [];
 
-		private static Dictionary<Type, TypeInfo> m_genericSerializersByType = new Dictionary<Type, TypeInfo>();
+		private static Dictionary<Type, TypeInfo> m_genericSerializersByType = [];
 
 		public int Version
 		{
@@ -75,7 +75,7 @@ namespace Engine.Serialization
 		{
 			lock (m_serializeDataByType)
 			{
-				SerializeData serializeData = new SerializeData
+				SerializeData serializeData = new()
 				{
 					UseObjectInfo = useObjectInfo,
 					AutoConstructObject = autoConstructObject

@@ -32,9 +32,9 @@ namespace Engine.Graphics
 
 		internal int m_pixelShader;
 
-		internal Dictionary<VertexDeclaration, VertexAttributeData[]> m_vertexAttributeDataByDeclaration = new Dictionary<VertexDeclaration, VertexAttributeData[]>();
+		internal Dictionary<VertexDeclaration, VertexAttributeData[]> m_vertexAttributeDataByDeclaration = [];
 
-		internal List<ShaderAttributeData> m_shaderAttributeData = new List<ShaderAttributeData>();
+		internal List<ShaderAttributeData> m_shaderAttributeData = [];
 
 		private ShaderParameter m_glymulParameter;
 
@@ -65,7 +65,7 @@ namespace Engine.Graphics
 			set;
 		}
 
-		public ReadOnlyList<ShaderParameter> Parameters => new ReadOnlyList<ShaderParameter>(m_parameters);
+		public ReadOnlyList<ShaderParameter> Parameters => new(m_parameters);
 		public void Construct(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros)
 		{
 			try

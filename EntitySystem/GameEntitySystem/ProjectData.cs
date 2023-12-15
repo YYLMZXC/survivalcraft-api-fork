@@ -17,7 +17,7 @@ namespace GameEntitySystem
 
 		public ProjectData(GameDatabase gameDatabase, DatabaseObject projectTemplate, ValuesDictionary overrides)
 		{
-			ValuesDictionary = new ValuesDictionary();
+			ValuesDictionary = [];
 			ValuesDictionary.PopulateFromDatabaseObject(projectTemplate);
 			if (overrides != null)
 			{
@@ -42,7 +42,7 @@ namespace GameEntitySystem
 				}
 				databaseObject = gameDatabase.Database.FindDatabaseObject(attributeValue2, gameDatabase.ProjectTemplateType, throwIfNotFound: true);
 			}
-			ValuesDictionary = new ValuesDictionary();
+			ValuesDictionary = [];
 			ValuesDictionary.PopulateFromDatabaseObject(databaseObject);
 			XElement xElement = XmlUtils.FindChildElement(projectNode, "Subsystems", throwIfNotFound: false);
 			if (xElement != null)

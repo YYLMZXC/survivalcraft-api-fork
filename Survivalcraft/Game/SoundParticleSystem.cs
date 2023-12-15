@@ -14,7 +14,7 @@ namespace Game
 			public Color BaseColor;
 		}
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public Vector3 m_position;
 

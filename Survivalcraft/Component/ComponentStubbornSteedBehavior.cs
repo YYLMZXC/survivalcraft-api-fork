@@ -17,13 +17,13 @@ namespace Game
 
 		public ComponentEatPickableBehavior m_componentEatPickableBehavior;
 
-		public StateMachine m_stateMachine = new StateMachine();
+		public StateMachine m_stateMachine = new();
 
 		public float m_importanceLevel;
 
 		public bool m_isSaddled;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_periodicEventOffset;
 

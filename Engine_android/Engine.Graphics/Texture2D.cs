@@ -70,7 +70,7 @@ namespace Engine.Graphics
 
 		public static Texture2D Load(Image image, int mipLevelsCount = 1)
 		{
-			Texture2D texture2D = new Texture2D(image.Width, image.Height, mipLevelsCount, ColorFormat.Rgba8888);
+			Texture2D texture2D = new(image.Width, image.Height, mipLevelsCount, ColorFormat.Rgba8888);
 			if (mipLevelsCount > 1)
 			{
 				Image[] array = Image.GenerateMipmaps(image, mipLevelsCount).ToArray();

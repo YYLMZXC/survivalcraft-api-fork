@@ -61,23 +61,23 @@ namespace Game
 
 		public SubsystemGameInfo m_subsystemGameInfo;
 
-		public Dictionary<Point3, TextData> m_textsByPoint = new Dictionary<Point3, TextData>();
+		public Dictionary<Point3, TextData> m_textsByPoint = [];
 
-		public List<RenderTarget2D> m_texturesByPoint = new List<RenderTarget2D>();
+		public List<RenderTarget2D> m_texturesByPoint = [];
 
 		public TextData[] m_textureLocations = new TextData[32];
 
-		public List<TextData> m_nearTexts = new List<TextData>();
+		public List<TextData> m_nearTexts = [];
 
 		public BitmapFont m_font = LabelWidget.BitmapFont;
 
 		public RenderTarget2D m_renderTarget;
 
-		public List<Vector3> m_lastUpdatePositions = new List<Vector3>();
+		public List<Vector3> m_lastUpdatePositions = [];
 
-		public PrimitivesRenderer2D m_primitivesRenderer2D = new PrimitivesRenderer2D();
+		public PrimitivesRenderer2D m_primitivesRenderer2D = new();
 
-		public PrimitivesRenderer3D m_primitivesRenderer3D = new PrimitivesRenderer3D();
+		public PrimitivesRenderer3D m_primitivesRenderer3D = new();
 
 		public bool ShowSignsTexture;
 
@@ -316,8 +316,8 @@ namespace Game
 			{
 				return;
 			}
-			List<string> list = new List<string>();
-			List<Color> list2 = new List<Color>();
+			List<string> list = [];
+			List<Color> list2 = [];
 			for (int i = 0; i < textData.Lines.Length; i++)
 			{
 				if (!string.IsNullOrEmpty(textData.Lines[i]))
@@ -480,13 +480,13 @@ namespace Game
 						nearText.Light = Terrain.ExtractLight(cellValue);
 					}
 					float num2 = LightingManager.LightIntensityByLightValue[nearText.Light];
-					Color color = new Color(num2, num2, num2);
+					Color color = new(num2, num2, num2);
 					float x = 0f;
 					float x2 = nearText.UsedTextureWidth / (m_font.GlyphHeight * 16f);
 					float x3 = (float)nearText.TextureLocation.Value / 32f;
 					float x4 = ((float)nearText.TextureLocation.Value + (nearText.UsedTextureHeight / (m_font.GlyphHeight * 4f))) / 32f;
 					Vector3 signSurfaceNormal = signBlock.GetSignSurfaceNormal(data);
-					Vector3 vector = new Vector3(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
+					Vector3 vector = new(nearText.Point.X, nearText.Point.Y, nearText.Point.Z);
 					float num3 = Vector3.Dot(camera.ViewPosition - (vector + new Vector3(0.5f)), signSurfaceNormal);
 					Vector3 vector2 = MathUtils.Max(0.01f * num3, 0.005f) * signSurfaceNormal;
 					for (int i = 0; i < signSurfaceBlockMesh.Indices.Count / 3; i++)

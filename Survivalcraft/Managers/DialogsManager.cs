@@ -11,7 +11,7 @@ namespace Game
 
 			public int Direction;
 
-			public RectangleWidget CoverRectangle = new RectangleWidget
+			public RectangleWidget CoverRectangle = new()
 			{
 				OutlineColor = Color.Transparent,
 				FillColor = new Color(0, 0, 0, 192),
@@ -19,13 +19,13 @@ namespace Game
 			};
 		}
 
-		public static Dictionary<Dialog, AnimationData> m_animationData = new Dictionary<Dialog, AnimationData>();
+		public static Dictionary<Dialog, AnimationData> m_animationData = [];
 
-		public static List<Dialog> m_dialogs = new List<Dialog>();
+		public static List<Dialog> m_dialogs = [];
 
-		public static List<Dialog> m_toRemove = new List<Dialog>();
+		public static List<Dialog> m_toRemove = [];
 
-		public static ReadOnlyList<Dialog> Dialogs => new ReadOnlyList<Dialog>(m_dialogs);
+		public static ReadOnlyList<Dialog> Dialogs => new(m_dialogs);
 
 		public static bool HasDialogs(Widget parentWidget)
 		{

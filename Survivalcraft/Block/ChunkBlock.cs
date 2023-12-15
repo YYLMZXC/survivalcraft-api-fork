@@ -5,7 +5,7 @@ namespace Game
 {
 	public abstract class ChunkBlock : Block
 	{
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBlockMesh = new();
 
 		public Matrix m_transform;
 

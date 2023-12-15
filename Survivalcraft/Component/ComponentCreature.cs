@@ -79,7 +79,7 @@ namespace Game
 			set;
 		}
 
-		public ReadOnlyList<string> KillVerbs => new ReadOnlyList<string>(m_killVerbs);
+		public ReadOnlyList<string> KillVerbs => new(m_killVerbs);
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{

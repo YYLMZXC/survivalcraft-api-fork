@@ -45,9 +45,9 @@ namespace Game
 
 		public RenderTarget2D m_outerClothedTexture;
 
-		public PrimitivesRenderer2D m_primitivesRenderer = new PrimitivesRenderer2D();
+		public PrimitivesRenderer2D m_primitivesRenderer = new();
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_densityModifierApplied;
 
@@ -57,9 +57,9 @@ namespace Game
 
 		public static string fName = "ComponentClothing";
 
-		public List<int> m_clothesList = new List<int>();
+		public List<int> m_clothesList = [];
 
-		public Dictionary<ClothingSlot, List<int>> m_clothes = new Dictionary<ClothingSlot, List<int>>();
+		public Dictionary<ClothingSlot, List<int>> m_clothes = [];
 
 		public static ClothingSlot[] m_innerSlotsOrder = new ClothingSlot[4]
 		{
@@ -224,7 +224,7 @@ namespace Game
 				float num = m_random.Float(0f, 1f);
 				ClothingSlot slot = (num < 0.1f) ? ClothingSlot.Feet : ((num < 0.3f) ? ClothingSlot.Legs : ((num < 0.9f) ? ClothingSlot.Torso : ClothingSlot.Head));
 				float num2 = ((ClothingBlock)BlocksManager.Blocks[203]).Durability + 1;
-				List<int> list = new List<int>(GetClothes(slot));
+				List<int> list = new(GetClothes(slot));
 				for (int i = 0; i < list.Count; i++)
 				{
 					int value = list[i];
@@ -283,10 +283,10 @@ namespace Game
 			SteedMovementSpeedFactor = 1f;
 			Insulation = 0f;
 			LeastInsulatedSlot = ClothingSlot.Feet;
-			m_clothes[ClothingSlot.Head] = new List<int>();
-			m_clothes[ClothingSlot.Torso] = new List<int>();
-			m_clothes[ClothingSlot.Legs] = new List<int>();
-			m_clothes[ClothingSlot.Feet] = new List<int>();
+			m_clothes[ClothingSlot.Head] = [];
+			m_clothes[ClothingSlot.Torso] = [];
+			m_clothes[ClothingSlot.Legs] = [];
+			m_clothes[ClothingSlot.Feet] = [];
 			ValuesDictionary value = valuesDictionary.GetValue<ValuesDictionary>("Clothes");
 			SetClothes(ClothingSlot.Head, HumanReadableConverter.ValuesListFromString<int>(';', value.GetValue<string>("Head")));
 			SetClothes(ClothingSlot.Torso, HumanReadableConverter.ValuesListFromString<int>(';', value.GetValue<string>("Torso")));
@@ -511,7 +511,7 @@ namespace Game
 				var list = new List<int>(GetClothes((ClothingSlot)slotIndex));
 				if (list.Count > 0)
 				{
-					int value = list[list.Count - 1];
+					int value = list[^1];
 					Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
 					ClothingData clothingData = block.GetClothingData(value);
 					clothingData.Dismount?.Invoke(value, this);

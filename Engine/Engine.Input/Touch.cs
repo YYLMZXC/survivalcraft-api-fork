@@ -11,9 +11,9 @@ namespace Engine.Input
 {
 	public static class Touch
 	{
-		private static List<TouchLocation> m_touchLocations = new List<TouchLocation>();
+		private static List<TouchLocation> m_touchLocations = [];
 
-		public static ReadOnlyList<TouchLocation> TouchLocations => new ReadOnlyList<TouchLocation>(m_touchLocations);
+		public static ReadOnlyList<TouchLocation> TouchLocations => new(m_touchLocations);
 
 		public static event Action<TouchLocation> TouchPressed;
 
@@ -159,7 +159,7 @@ namespace Engine.Input
 					State = TouchLocationState.Pressed
 				};
 				touchLocations2.Add(touchLocation);
-				Touch.TouchPressed?.Invoke(m_touchLocations[m_touchLocations.Count - 1]);
+				Touch.TouchPressed?.Invoke(m_touchLocations[^1]);
 			}
 		}
 

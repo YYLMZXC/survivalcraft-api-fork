@@ -126,7 +126,7 @@ namespace Game
 			}
 		}
 
-		public Dictionary<int, Cell> m_cellsDictionary = new Dictionary<int, Cell>();
+		public Dictionary<int, Cell> m_cellsDictionary = [];
 
 		public Cell[] m_cells;
 

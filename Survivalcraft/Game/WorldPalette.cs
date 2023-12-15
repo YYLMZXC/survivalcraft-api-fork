@@ -14,22 +14,22 @@ namespace Game
 
 		public static readonly Color[] DefaultColors = new Color[16]
 		{
-			new Color(255, 255, 255),
-			new Color(181, 255, 255),
-			new Color(255, 181, 255),
-			new Color(160, 181, 255),
-			new Color(255, 240, 160),
-			new Color(181, 255, 181),
-			new Color(255, 181, 160),
-			new Color(181, 181, 181),
-			new Color(112, 112, 112),
-			new Color(32, 112, 112),
-			new Color(112, 32, 112),
-			new Color(26, 52, 128),
-			new Color(87, 54, 31),
-			new Color(24, 116, 24),
-			new Color(136, 32, 32),
-			new Color(24, 24, 24)
+			new(255, 255, 255),
+			new(181, 255, 255),
+			new(255, 181, 255),
+			new(160, 181, 255),
+			new(255, 240, 160),
+			new(181, 255, 181),
+			new(255, 181, 160),
+			new(181, 181, 181),
+			new(112, 112, 112),
+			new(32, 112, 112),
+			new(112, 32, 112),
+			new(26, 52, 128),
+			new(87, 54, 31),
+			new(24, 116, 24),
+			new(136, 32, 32),
+			new(24, 24, 24)
 		};
 
 		public Color[] Colors;

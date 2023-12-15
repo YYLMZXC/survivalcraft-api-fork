@@ -15,7 +15,7 @@ namespace Game
 
 		public static double m_cpuEndTime;
 
-		public static List<Uri> m_urisToHandle = new List<Uri>();
+		public static List<Uri> m_urisToHandle = [];
 
 		public static string SystemLanguage { get; set; }
 

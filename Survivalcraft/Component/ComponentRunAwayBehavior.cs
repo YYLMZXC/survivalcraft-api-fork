@@ -18,9 +18,9 @@ namespace Game
 
 		public ComponentHerdBehavior m_componentHerdBehavior;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public StateMachine m_stateMachine = new StateMachine();
+		public StateMachine m_stateMachine = new();
 
 		public float m_importanceLevel;
 

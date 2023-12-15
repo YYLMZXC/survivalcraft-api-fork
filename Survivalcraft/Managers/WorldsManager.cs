@@ -12,7 +12,7 @@ namespace Game
 {
 	public static class WorldsManager
 	{
-		public static List<WorldInfo> m_worldInfos = new List<WorldInfo>();
+		public static List<WorldInfo> m_worldInfos = [];
 
 		public static ReadOnlyList<string> m_newWorldNames;
 
@@ -22,7 +22,7 @@ namespace Game
 
 		public static ReadOnlyList<string> NewWorldNames => m_newWorldNames;
 
-		public static ReadOnlyList<WorldInfo> WorldInfos => new ReadOnlyList<WorldInfo>(m_worldInfos);
+		public static ReadOnlyList<WorldInfo> WorldInfos => new(m_worldInfos);
 
 		public static event Action<string> WorldDeleted;
 		public static bool Loaded = false;

@@ -16,7 +16,7 @@ namespace Game
 
 		public bool m_absoluteCoordinates;
 
-		public List<Vector2> m_vertices = new List<Vector2>();
+		public List<Vector2> m_vertices = [];
 
 		public bool m_parsingPending;
 

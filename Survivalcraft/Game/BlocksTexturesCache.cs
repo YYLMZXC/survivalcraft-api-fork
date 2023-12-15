@@ -5,7 +5,7 @@ namespace Game
 {
 	public class BlocksTexturesCache
 	{
-		public Dictionary<string, Texture2D> m_textures = new Dictionary<string, Texture2D>();
+		public Dictionary<string, Texture2D> m_textures = [];
 
 		public Texture2D GetTexture(string name)
 		{

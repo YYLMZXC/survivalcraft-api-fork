@@ -119,16 +119,20 @@ namespace Game
 			try
 			{
 				VerifyLoggedIn();
-				Dictionary<string, string> dictionary = new Dictionary<string, string>();
-				dictionary.Add("Authorization", "Bearer " + SettingsManager.DropboxAccessToken);
-				dictionary.Add("Content-Type", "application/json");
-				JsonObject jsonObject = new JsonObject();
-				jsonObject.Add("path", NormalizePath(path));
-				jsonObject.Add("recursive", false);
-				jsonObject.Add("include_media_info", false);
-				jsonObject.Add("include_deleted", false);
-				jsonObject.Add("include_has_explicit_shared_members", false);
-				MemoryStream data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
+				Dictionary<string, string> dictionary = new()
+				{
+					{ "Authorization", "Bearer " + SettingsManager.DropboxAccessToken },
+					{ "Content-Type", "application/json" }
+				};
+				JsonObject jsonObject = new()
+				{
+					{ "path", NormalizePath(path) },
+					{ "recursive", false },
+					{ "include_media_info", false },
+					{ "include_deleted", false },
+					{ "include_has_explicit_shared_members", false }
+				};
+				MemoryStream data = new(Encoding.UTF8.GetBytes(jsonObject.ToString()));
 				WebManager.Post("https://api.dropboxapi.com/2/files/list_folder", null, dictionary, data, progress, delegate (byte[] result)
 				{
 					try
@@ -156,11 +160,15 @@ namespace Game
 			try
 			{
 				VerifyLoggedIn();
-				JsonObject jsonObject = new JsonObject();
-				jsonObject.Add("path", NormalizePath(path));
-				Dictionary<string, string> dictionary = new Dictionary<string, string>();
-				dictionary.Add("Authorization", "Bearer " + SettingsManager.DropboxAccessToken);
-				dictionary.Add("Dropbox-API-Arg", jsonObject.ToString());
+				JsonObject jsonObject = new()
+				{
+					{ "path", NormalizePath(path) }
+				};
+				Dictionary<string, string> dictionary = new()
+				{
+					{ "Authorization", "Bearer " + SettingsManager.DropboxAccessToken },
+					{ "Dropbox-API-Arg", jsonObject.ToString() }
+				};
 				WebManager.Get("https://content.dropboxapi.com/2/files/download", null, dictionary, progress, delegate (byte[] result)
 				{
 					success(new MemoryStream(result));
@@ -180,15 +188,19 @@ namespace Game
 			try
 			{
 				VerifyLoggedIn();
-				JsonObject jsonObject = new JsonObject();
-				jsonObject.Add("path", NormalizePath(path));
-				jsonObject.Add("mode", "add");
-				jsonObject.Add("autorename", true);
-				jsonObject.Add("mute", false);
-				Dictionary<string, string> dictionary = new Dictionary<string, string>();
-				dictionary.Add("Authorization", "Bearer " + SettingsManager.DropboxAccessToken);
-				dictionary.Add("Content-Type", "application/octet-stream");
-				dictionary.Add("Dropbox-API-Arg", jsonObject.ToString());
+				JsonObject jsonObject = new()
+				{
+					{ "path", NormalizePath(path) },
+					{ "mode", "add" },
+					{ "autorename", true },
+					{ "mute", false }
+				};
+				Dictionary<string, string> dictionary = new()
+				{
+					{ "Authorization", "Bearer " + SettingsManager.DropboxAccessToken },
+					{ "Content-Type", "application/octet-stream" },
+					{ "Dropbox-API-Arg", jsonObject.ToString() }
+				};
 				WebManager.Post("https://content.dropboxapi.com/2/files/upload", null, dictionary, stream, progress, delegate
 				{
 					success(null);
@@ -208,13 +220,17 @@ namespace Game
 			try
 			{
 				VerifyLoggedIn();
-				Dictionary<string, string> dictionary = new Dictionary<string, string>();
-				dictionary.Add("Authorization", "Bearer " + SettingsManager.DropboxAccessToken);
-				dictionary.Add("Content-Type", "application/json");
-				JsonObject jsonObject = new JsonObject();
-				jsonObject.Add("path", NormalizePath(path));
-				jsonObject.Add("short_url", false);
-				MemoryStream data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
+				Dictionary<string, string> dictionary = new()
+				{
+					{ "Authorization", "Bearer " + SettingsManager.DropboxAccessToken },
+					{ "Content-Type", "application/json" }
+				};
+				JsonObject jsonObject = new()
+				{
+					{ "path", NormalizePath(path) },
+					{ "short_url", false }
+				};
+				MemoryStream data = new(Encoding.UTF8.GetBytes(jsonObject.ToString()));
 				WebManager.Post("https://api.dropboxapi.com/2/sharing/create_shared_link", null, dictionary, data, progress, delegate (byte[] result)
 				{
 					try
@@ -242,10 +258,12 @@ namespace Game
 			try
 			{
 				m_loginProcessData.IsTokenFlow = true;
-				Dictionary<string, string> dictionary = new Dictionary<string, string>();
-				dictionary.Add("response_type", "token");
-				dictionary.Add("client_id", "1unnzwkb8igx70k");
-				dictionary.Add("redirect_uri", "com.candyrufusgames.survivalcraft2://redirect");
+				Dictionary<string, string> dictionary = new()
+				{
+					{ "response_type", "token" },
+					{ "client_id", "1unnzwkb8igx70k" },
+					{ "redirect_uri", "com.candyrufusgames.survivalcraft2://redirect" }
+				};
 				WebBrowserManager.LaunchBrowser("https://www.dropbox.com/oauth2/authorize?" + WebManager.UrlParametersToString(dictionary));
 			}
 			catch (Exception error)
@@ -260,7 +278,7 @@ namespace Game
 			{
 				LoginProcessData loginProcessData = m_loginProcessData;
 				m_loginProcessData = null;
-				TextBoxDialog dialog = new TextBoxDialog("Enter Dropbox authorization code", "", 256, delegate (string s)
+				TextBoxDialog dialog = new("Enter Dropbox authorization code", "", 256, delegate (string s)
 				{
 					if (s != null)
 					{
@@ -357,12 +375,12 @@ namespace Game
 
 		internal static ExternalContentEntry JsonObjectToEntry(JsonObject jsonObject)
 		{
-			ExternalContentEntry externalContentEntry = new ExternalContentEntry();
+			ExternalContentEntry externalContentEntry = new();
 			if (jsonObject.ContainsKey("entries"))
 			{
 				foreach (JsonObject item in (JsonArray)jsonObject["entries"])
 				{
-					ExternalContentEntry externalContentEntry2 = new ExternalContentEntry();
+					ExternalContentEntry externalContentEntry2 = new();
 					externalContentEntry2.Path = item["path_display"].ToString();
 					externalContentEntry2.Type = (item[".tag"].ToString() == "folder") ? ExternalContentType.Directory : ExternalContentManager.ExtensionToType(Storage.GetExtension(externalContentEntry2.Path));
 					if (externalContentEntry2.Type != ExternalContentType.Directory)

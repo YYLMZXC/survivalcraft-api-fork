@@ -5,13 +5,13 @@ namespace Game
 {
 	public class MtllibStruct
 	{
-		public Dictionary<string, string> TexturePaths = new Dictionary<string, string>();
+		public Dictionary<string, string> TexturePaths = [];
 		public static MtllibStruct Load(Stream stream)
 		{
-			MtllibStruct mtllibStruct = new MtllibStruct();
+			MtllibStruct mtllibStruct = new();
 			using (stream)
 			{
-				StreamReader streamReader = new StreamReader(stream);
+				StreamReader streamReader = new(stream);
 				string Tkey = null;
 				while (streamReader.EndOfStream == false)
 				{

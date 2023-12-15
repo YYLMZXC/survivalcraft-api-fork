@@ -85,7 +85,7 @@ namespace GameEntitySystem
 
 		private ValuesDictionary m_valuesDictionary;
 
-		private List<Component> m_components = new List<Component>();
+		private List<Component> m_components = [];
 
 		internal bool m_isAddedToProject;
 
@@ -95,7 +95,7 @@ namespace GameEntitySystem
 
 		public bool IsAddedToProject => m_isAddedToProject;
 
-		public ReadOnlyList<Component> Components => new ReadOnlyList<Component>(m_components);
+		public ReadOnlyList<Component> Components => new(m_components);
 
 		public event EventHandler EntityAdded;
 
@@ -109,7 +109,7 @@ namespace GameEntitySystem
 			}
 			m_project = project;
 			m_valuesDictionary = valuesDictionary;
-			List<KeyValuePair<int, Component>> list = new List<KeyValuePair<int, Component>>();
+			List<KeyValuePair<int, Component>> list = [];
 			foreach (ValuesDictionary item in from x in valuesDictionary.Values
 											  select x as ValuesDictionary into x
 											  where x != null && x.DatabaseObject != null && x.DatabaseObject.Type == project.GameDatabase.MemberComponentTemplateType
@@ -197,7 +197,7 @@ namespace GameEntitySystem
 			foreach (Component component in m_components)
 			{
 				IEnumerable<Entity> ownedEntities = component.GetOwnedEntities();
-				list = (list != null) ? list : new List<Entity>();
+				list = (list != null) ? list : [];
 				list.AddRange(ownedEntities);
 			}
 			return list;
@@ -222,7 +222,7 @@ namespace GameEntitySystem
 		{
 			foreach (Component component in Components)
 			{
-				ValuesDictionary valuesDictionary2 = new ValuesDictionary();
+				ValuesDictionary valuesDictionary2 = [];
 				component.Save(valuesDictionary2, entityToIdMap);
 				if (valuesDictionary2.Count > 0)
 				{

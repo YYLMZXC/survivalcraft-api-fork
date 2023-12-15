@@ -12,13 +12,13 @@ namespace Engine
 
 		public static readonly Point3 Zero = default(Point3);
 
-		public static readonly Point3 One = new Point3(1, 1, 1);
+		public static readonly Point3 One = new(1, 1, 1);
 
-		public static readonly Point3 UnitX = new Point3(1, 0, 0);
+		public static readonly Point3 UnitX = new(1, 0, 0);
 
-		public static readonly Point3 UnitY = new Point3(0, 1, 0);
+		public static readonly Point3 UnitY = new(0, 1, 0);
 
-		public static readonly Point3 UnitZ = new Point3(0, 0, 1);
+		public static readonly Point3 UnitZ = new(0, 0, 1);
 
 		public Point3(int v)
 		{

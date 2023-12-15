@@ -16,10 +16,10 @@ namespace Game
 
 		public static Color[] m_colors = new Color[4]
 		{
-			new Color(100, 40, 20),
-			new Color(90, 30, 20),
-			new Color(100, 30, 30),
-			new Color(80, 20, 10)
+			new(100, 40, 20),
+			new(90, 30, 20),
+			new(100, 30, 30),
+			new(80, 20, 10)
 		};
 
 		public static Vector2[] m_offsets = new Vector2[4]

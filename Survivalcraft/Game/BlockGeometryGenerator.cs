@@ -25,14 +25,14 @@ namespace Game
 
 		public static Vector2[] m_textureCoordinates = new Vector2[8]
 		{
-			new Vector2(0.001f, 0.999f),
-			new Vector2(0.999f, 0.999f),
-			new Vector2(0.999f, 0.001f),
-			new Vector2(0.001f, 0.001f),
-			new Vector2(0.001f, 0.999f),
-			new Vector2(0.999f, 0.999f),
-			new Vector2(0.999f, 0.001f),
-			new Vector2(0.001f, 0.001f)
+			new(0.001f, 0.999f),
+			new(0.999f, 0.999f),
+			new(0.999f, 0.001f),
+			new(0.001f, 0.001f),
+			new(0.001f, 0.999f),
+			new(0.999f, 0.999f),
+			new(0.999f, 0.001f),
+			new(0.001f, 0.001f)
 		};
 
 		public readonly Terrain Terrain;
@@ -47,7 +47,7 @@ namespace Game
 
 		public readonly SubsystemPalette SubsystemPalette;
 
-		public DynamicArray<ElectricConnectionPath> m_tmpConnectionPaths = new DynamicArray<ElectricConnectionPath>();
+		public DynamicArray<ElectricConnectionPath> m_tmpConnectionPaths = [];
 
 		public Point3 m_cornerLightsPosition;
 
@@ -74,7 +74,7 @@ namespace Game
 		public static void SetupCornerVertex(float x, float y, float z, Color color, int light, int face, int textureSlot, int textureSlotCount, int corner, ref TerrainVertex vertex)
 		{
 			float num = LightingManager.LightIntensityByLightValueAndFace[light + (16 * face)];
-			Color color2 = new Color((byte)((float)(int)color.R * num), (byte)((float)(int)color.G * num), (byte)((float)(int)color.B * num), color.A);
+			Color color2 = new((byte)((float)(int)color.R * num), (byte)((float)(int)color.G * num), (byte)((float)(int)color.B * num), color.A);
 			float tx = (m_textureCoordinates[corner].X + (float)(textureSlot % textureSlotCount)) / textureSlotCount;
 			float ty = (m_textureCoordinates[corner].Y + (float)(textureSlot / textureSlotCount)) / textureSlotCount;
 			SetupVertex(x, y, z, color2, tx, ty, ref vertex);
@@ -107,7 +107,7 @@ namespace Game
 			var indices = subset.Indices;
 			int num = Terrain.ExtractLight(value);
 			float num2 = LightingManager.LightIntensityByLightValueAndFace[num + 64];
-			Color color2 = new Color((byte)((float)(int)color.R * num2), (byte)((float)(int)color.G * num2), (byte)((float)(int)color.B * num2), color.A);
+			Color color2 = new((byte)((float)(int)color.R * num2), (byte)((float)(int)color.G * num2), (byte)((float)(int)color.B * num2), color.A);
 			int count = vertices.Count;
 			vertices.Count += 8;
 			int textureSlotCount = block.GetTextureSlotCount(value);
@@ -710,8 +710,8 @@ namespace Game
 			float num3 = LightingManager.LightIntensityByLightValue[num2];
 			Vector3 v = new Vector3((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f) - (0.5f * CellFace.FaceToVector3(mountingFace));
 			Vector3 vector = CellFace.FaceToVector3(mountingFace);
-			Vector2 v2 = new Vector2(0.9376f, 0.0001f);
-			Vector2 v3 = new Vector2(0.03125f, 0.00550781237f);
+			Vector2 v2 = new(0.9376f, 0.0001f);
+			Vector2 v3 = new(0.03125f, 0.00550781237f);
 			Point3 point = CellFace.FaceToPoint3(mountingFace);
 			int cellContents = Terrain.GetCellContents(x - point.X, y - point.Y, z - point.Z);
 			bool flag = cellContents == 2 || cellContents == 7 || cellContents == 8 || cellContents == 6 || cellContents == 62 || cellContents == 72;
@@ -777,12 +777,12 @@ namespace Game
 						float num16 = num11 * num3;
 						float num17 = num12 * num3;
 						float num18 = num12 * num9;
-						Color color5 = new Color((byte)((float)(int)color3.R * num13), (byte)((float)(int)color3.G * num13), (byte)((float)(int)color3.B * num13));
-						Color color6 = new Color((byte)((float)(int)color3.R * num14), (byte)((float)(int)color3.G * num14), (byte)((float)(int)color3.B * num14));
-						Color color7 = new Color((byte)((float)(int)color3.R * num15), (byte)((float)(int)color3.G * num15), (byte)((float)(int)color3.B * num15));
-						Color color8 = new Color((byte)((float)(int)color3.R * num16), (byte)((float)(int)color3.G * num16), (byte)((float)(int)color3.B * num16));
-						Color color9 = new Color((byte)((float)(int)color3.R * num17), (byte)((float)(int)color3.G * num17), (byte)((float)(int)color3.B * num17));
-						Color color10 = new Color((byte)((float)(int)color3.R * num18), (byte)((float)(int)color3.G * num18), (byte)((float)(int)color3.B * num18));
+						Color color5 = new((byte)((float)(int)color3.R * num13), (byte)((float)(int)color3.G * num13), (byte)((float)(int)color3.B * num13));
+						Color color6 = new((byte)((float)(int)color3.R * num14), (byte)((float)(int)color3.G * num14), (byte)((float)(int)color3.B * num14));
+						Color color7 = new((byte)((float)(int)color3.R * num15), (byte)((float)(int)color3.G * num15), (byte)((float)(int)color3.B * num15));
+						Color color8 = new((byte)((float)(int)color3.R * num16), (byte)((float)(int)color3.G * num16), (byte)((float)(int)color3.B * num16));
+						Color color9 = new((byte)((float)(int)color3.R * num17), (byte)((float)(int)color3.G * num17), (byte)((float)(int)color3.B * num17));
+						Color color10 = new((byte)((float)(int)color3.R * num18), (byte)((float)(int)color3.G * num18), (byte)((float)(int)color3.B * num18));
 						int count = subset.Vertices.Count;
 						subset.Vertices.Count += 6;
 						TerrainVertex[] array = subset.Vertices.Array;
@@ -841,8 +841,8 @@ namespace Game
 					Vector2 vector21 = v2 + (v3 * new Vector2(0f, 0.5f));
 					float num19 = LightingManager.CalculateLighting(vector16) * num3;
 					float num20 = LightingManager.CalculateLighting(vector) * num3;
-					Color color11 = new Color((byte)((float)(int)color.R * num19), (byte)((float)(int)color.G * num19), (byte)((float)(int)color.B * num19));
-					Color color12 = new Color((byte)((float)(int)color.R * num20), (byte)((float)(int)color.G * num20), (byte)((float)(int)color.B * num20));
+					Color color11 = new((byte)((float)(int)color.R * num19), (byte)((float)(int)color.G * num19), (byte)((float)(int)color.B * num19));
+					Color color12 = new((byte)((float)(int)color.R * num20), (byte)((float)(int)color.G * num20), (byte)((float)(int)color.B * num20));
 					int count3 = subset.Vertices.Count;
 					subset.Vertices.Count += 3;
 					TerrainVertex[] array3 = subset.Vertices.Array;

@@ -55,10 +55,10 @@ namespace Game
 			}
 			if (m_manageButton.IsClicked)
 			{
-				List<string> list = new List<string> { LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2) };
+				List<string> list = [LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2)];
 				if (m_isAdmin)
 				{
-					list = new List<string> { LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), "用户管理" };
+					list = [LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), "用户管理"];
 				}
 				DialogsManager.ShowDialog(null, new ListSelectionDialog(null, list, 70f, (object item) => (string)item, delegate (object item)
 				{

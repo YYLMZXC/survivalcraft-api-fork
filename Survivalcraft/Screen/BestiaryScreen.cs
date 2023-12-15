@@ -91,7 +91,7 @@ namespace Game
 								IsHerding = valuesDictionary7 != null,
 								CanBeRidden = valuesDictionary8 != null,
 								HasSpawnerEgg = value2?.GetValue<bool>("ShowEgg") ?? false,
-								Loot = (valuesDictionary9 != null) ? ComponentLoot.ParseLootList(valuesDictionary9.GetValue<ValuesDictionary>("Loot")) : new List<ComponentLoot.Loot>()
+								Loot = (valuesDictionary9 != null) ? ComponentLoot.ParseLootList(valuesDictionary9.GetValue<ValuesDictionary>("Loot")) : []
 							};
 							if (value3 != null && entitiesValuesDictionary.DatabaseObject.Name.ToLower().Contains("female"))
 							{

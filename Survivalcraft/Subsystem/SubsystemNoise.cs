@@ -8,7 +8,7 @@ namespace Game
 	{
 		public SubsystemBodies m_subsystemBodies;
 
-		public DynamicArray<ComponentBody> m_componentBodies = new DynamicArray<ComponentBody>();
+		public DynamicArray<ComponentBody> m_componentBodies = [];
 
 		public void MakeNoise(Vector3 position, float loudness, float range)
 		{

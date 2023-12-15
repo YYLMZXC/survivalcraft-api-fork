@@ -14,11 +14,11 @@ namespace Game
 
 		public RenderTarget2D m_animatedBlocksTexture;
 
-		public PrimitivesRenderer2D m_primitivesRenderer = new PrimitivesRenderer2D();
+		public PrimitivesRenderer2D m_primitivesRenderer = new();
 
-		public ScreenSpaceFireRenderer m_screenSpaceFireRenderer = new ScreenSpaceFireRenderer(200);
+		public ScreenSpaceFireRenderer m_screenSpaceFireRenderer = new(200);
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public bool m_waterOrder;
 

@@ -41,14 +41,14 @@ namespace Game
 
 		public static readonly Color[] FireworksColors = new Color[8]
 		{
-			new Color(255, 255, 255),
-			new Color(85, 255, 255),
-			new Color(255, 85, 85),
-			new Color(85, 85, 255),
-			new Color(255, 255, 85),
-			new Color(85, 255, 85),
-			new Color(255, 170, 0),
-			new Color(255, 85, 255)
+			new(255, 255, 255),
+			new(85, 255, 255),
+			new(255, 85, 85),
+			new(85, 85, 255),
+			new(255, 255, 85),
+			new(85, 255, 85),
+			new(255, 170, 0),
+			new(255, 85, 255)
 		};
 
 		public override void Initialize()

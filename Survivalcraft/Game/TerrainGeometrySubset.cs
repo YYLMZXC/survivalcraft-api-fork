@@ -4,9 +4,9 @@ namespace Game
 {
 	public class TerrainGeometrySubset
 	{
-		public DynamicArray<TerrainVertex> Vertices = new DynamicArray<TerrainVertex>();
+		public DynamicArray<TerrainVertex> Vertices = [];
 
-		public DynamicArray<int> Indices = new DynamicArray<int>();
+		public DynamicArray<int> Indices = [];
 
 		public TerrainGeometrySubset()
 		{

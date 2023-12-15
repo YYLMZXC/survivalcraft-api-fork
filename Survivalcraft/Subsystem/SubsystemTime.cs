@@ -25,7 +25,7 @@ namespace Game
 
 		public float m_gameTimeFactor = 1f;
 
-		public List<DelayedExecutionRequest> m_delayedExecutionsRequests = new List<DelayedExecutionRequest>();
+		public List<DelayedExecutionRequest> m_delayedExecutionsRequests = [];
 
 		public SubsystemPlayers m_subsystemPlayers;
 

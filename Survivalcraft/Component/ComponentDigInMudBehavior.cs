@@ -21,9 +21,9 @@ namespace Game
 
 		public ComponentSwimAwayBehavior m_componentSwimAwayBehavior;
 
-		public StateMachine m_stateMachine = new StateMachine();
+		public StateMachine m_stateMachine = new();
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_importanceLevel;
 

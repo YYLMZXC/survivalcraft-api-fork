@@ -8,13 +8,13 @@ namespace Engine.Graphics
 	{
 		public bool m_sortNeeded;
 
-		public List<BaseBatch> m_allBatches = new List<BaseBatch>();
+		public List<BaseBatch> m_allBatches = [];
 
-		public LinkedList<T1> m_flatBatches = new LinkedList<T1>();
+		public LinkedList<T1> m_flatBatches = new();
 
-		public LinkedList<T2> m_texturedBatches = new LinkedList<T2>();
+		public LinkedList<T2> m_texturedBatches = new();
 
-		public LinkedList<T3> m_fontBatches = new LinkedList<T3>();
+		public LinkedList<T3> m_fontBatches = new();
 
 		internal BasePrimitivesRenderer()
 		{
@@ -35,7 +35,7 @@ namespace Engine.Graphics
 					return value;
 				}
 			}
-			m_sortNeeded |= m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer;
+			m_sortNeeded |= m_allBatches.Count > 0 && m_allBatches[^1].Layer > layer;
 			var val = new T1();
 			val.Layer = layer;
 			val.DepthStencilState = depthStencilState;
@@ -62,7 +62,7 @@ namespace Engine.Graphics
 					return value;
 				}
 			}
-			m_sortNeeded |= m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer;
+			m_sortNeeded |= m_allBatches.Count > 0 && m_allBatches[^1].Layer > layer;
 			var val = new T2();
 			val.Layer = layer;
 			val.UseAlphaTest = useAlphaTest;
@@ -92,7 +92,7 @@ namespace Engine.Graphics
 					return value;
 				}
 			}
-			m_sortNeeded |= m_allBatches.Count > 0 && m_allBatches[m_allBatches.Count - 1].Layer > layer;
+			m_sortNeeded |= m_allBatches.Count > 0 && m_allBatches[^1].Layer > layer;
 			var val = new T3();
 			val.Layer = layer;
 			val.Font = font;

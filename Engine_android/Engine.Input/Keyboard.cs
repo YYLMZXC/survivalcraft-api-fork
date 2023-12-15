@@ -395,10 +395,10 @@ namespace Engine.Input
 
 		public static void ShowKeyboardInternal(string title, string description, string defaultText, bool passwordMode, Action<string> enter, Action cancel)
 		{
-			AlertDialog.Builder builder = new AlertDialog.Builder(Window.Activity);
+			AlertDialog.Builder builder = new(Window.Activity);
 			builder.SetTitle(title);
 			builder.SetMessage(description);
-			EditText editText = new EditText(Window.Activity);
+			EditText editText = new(Window.Activity);
 			editText.Text = defaultText;
 			builder.SetView(editText);
 			builder.SetPositiveButton("Ok", delegate

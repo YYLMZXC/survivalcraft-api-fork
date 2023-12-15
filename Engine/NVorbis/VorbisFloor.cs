@@ -97,12 +97,16 @@ namespace NVorbis
 					_books[i] = vorbisCodebook;
 				}
 				_bookBits = Utils.ilog(_books.Length);
-				_barkMaps = new Dictionary<int, int[]>();
-				_barkMaps[_vorbis.Block0Size] = SynthesizeBarkCurve(_vorbis.Block0Size / 2);
-				_barkMaps[_vorbis.Block1Size] = SynthesizeBarkCurve(_vorbis.Block1Size / 2);
-				_wMap = new Dictionary<int, float[]>();
-				_wMap[_vorbis.Block0Size] = SynthesizeWDelMap(_vorbis.Block0Size / 2);
-				_wMap[_vorbis.Block1Size] = SynthesizeWDelMap(_vorbis.Block1Size / 2);
+				_barkMaps = new Dictionary<int, int[]>
+				{
+					[_vorbis.Block0Size] = SynthesizeBarkCurve(_vorbis.Block0Size / 2),
+					[_vorbis.Block1Size] = SynthesizeBarkCurve(_vorbis.Block1Size / 2)
+				};
+				_wMap = new Dictionary<int, float[]>
+				{
+					[_vorbis.Block0Size] = SynthesizeWDelMap(_vorbis.Block0Size / 2),
+					[_vorbis.Block1Size] = SynthesizeWDelMap(_vorbis.Block1Size / 2)
+				};
 				_reusablePacketData = new PacketData0[_vorbis._channels];
 				for (int j = 0; j < _reusablePacketData.Length; j++)
 				{
@@ -619,9 +623,11 @@ namespace NVorbis
 				_yBits = _yBitsLookup[_multiplier];
 				_multiplier++;
 				int num3 = (int)packet.ReadBits(4);
-				var list = new List<int>();
-				list.Add(0);
-				list.Add(1 << num3);
+				var list = new List<int>
+				{
+					0,
+					1 << num3
+				};
 				for (int l = 0; l < _partitionClass.Length; l++)
 				{
 					int num4 = _partitionClass[l];

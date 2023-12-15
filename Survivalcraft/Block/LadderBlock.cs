@@ -10,7 +10,7 @@ namespace Game
 
 		public float m_offset;
 
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBlockMesh = new();
 
 		public BlockMesh[] m_blockMeshesByData = new BlockMesh[4];
 

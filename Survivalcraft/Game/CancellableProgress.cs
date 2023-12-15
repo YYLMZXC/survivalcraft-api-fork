@@ -7,7 +7,7 @@ namespace Game
 	{
 		public readonly CancellationToken CancellationToken;
 
-		public readonly CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
+		public readonly CancellationTokenSource CancellationTokenSource = new();
 
 		public event Action Cancelled;
 

@@ -15,11 +15,11 @@ namespace Game
 			public float Value;
 		}
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public static string fName = "ComponentLevel";
 
-		public List<Factor> m_factors = new List<Factor>();
+		public List<Factor> m_factors = [];
 
 		public float? m_lastLevelTextValue;
 

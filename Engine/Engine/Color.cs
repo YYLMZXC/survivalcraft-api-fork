@@ -6,77 +6,77 @@ namespace Engine
 	{
 		public uint PackedValue;
 
-		public static Color Transparent = new Color(0, 0, 0, 0);
+		public static Color Transparent = new(0, 0, 0, 0);
 
-		public static Color Black = new Color(0, 0, 0, 255);
+		public static Color Black = new(0, 0, 0, 255);
 
-		public static Color DarkGray = new Color(64, 64, 64, 255);
+		public static Color DarkGray = new(64, 64, 64, 255);
 
-		public static Color Gray = new Color(128, 128, 128, 255);
+		public static Color Gray = new(128, 128, 128, 255);
 
-		public static Color LightGray = new Color(192, 192, 192, 255);
+		public static Color LightGray = new(192, 192, 192, 255);
 
-		public static Color White = new Color(255, 255, 255, 255);
+		public static Color White = new(255, 255, 255, 255);
 
-		public static Color Red = new Color(255, 0, 0, 255);
+		public static Color Red = new(255, 0, 0, 255);
 
-		public static Color Green = new Color(0, 255, 0, 255);
+		public static Color Green = new(0, 255, 0, 255);
 
-		public static Color Yellow = new Color(255, 255, 0, 255);
+		public static Color Yellow = new(255, 255, 0, 255);
 
-		public static Color Blue = new Color(0, 0, 255, 255);
+		public static Color Blue = new(0, 0, 255, 255);
 
-		public static Color Magenta = new Color(255, 0, 255, 255);
+		public static Color Magenta = new(255, 0, 255, 255);
 
-		public static Color Cyan = new Color(0, 255, 255, 255);
+		public static Color Cyan = new(0, 255, 255, 255);
 
-		public static Color DarkRed = new Color(128, 0, 0, 255);
+		public static Color DarkRed = new(128, 0, 0, 255);
 
-		public static Color DarkGreen = new Color(0, 128, 0, 255);
+		public static Color DarkGreen = new(0, 128, 0, 255);
 
-		public static Color DarkYellow = new Color(128, 128, 0, 255);
+		public static Color DarkYellow = new(128, 128, 0, 255);
 
-		public static Color DarkBlue = new Color(0, 0, 128, 255);
+		public static Color DarkBlue = new(0, 0, 128, 255);
 
-		public static Color DarkMagenta = new Color(128, 0, 128, 255);
+		public static Color DarkMagenta = new(128, 0, 128, 255);
 
-		public static Color DarkCyan = new Color(0, 128, 128, 255);
+		public static Color DarkCyan = new(0, 128, 128, 255);
 
-		public static Color LightRed = new Color(255, 128, 128, 255);
+		public static Color LightRed = new(255, 128, 128, 255);
 
-		public static Color LightGreen = new Color(128, 255, 128, 255);
+		public static Color LightGreen = new(128, 255, 128, 255);
 
-		public static Color LightYellow = new Color(255, 255, 128, 255);
+		public static Color LightYellow = new(255, 255, 128, 255);
 
-		public static Color LightBlue = new Color(128, 128, 255, 255);
+		public static Color LightBlue = new(128, 128, 255, 255);
 
-		public static Color LightMagenta = new Color(255, 128, 255, 255);
+		public static Color LightMagenta = new(255, 128, 255, 255);
 
-		public static Color LightCyan = new Color(128, 255, 255, 255);
+		public static Color LightCyan = new(128, 255, 255, 255);
 
-		public static Color Orange = new Color(255, 128, 0, 255);
+		public static Color Orange = new(255, 128, 0, 255);
 
-		public static Color Pink = new Color(255, 0, 128, 255);
+		public static Color Pink = new(255, 0, 128, 255);
 
-		public static Color Chartreuse = new Color(128, 255, 0, 255);
+		public static Color Chartreuse = new(128, 255, 0, 255);
 
-		public static Color Violet = new Color(128, 0, 255, 255);
+		public static Color Violet = new(128, 0, 255, 255);
 
-		public static Color MintGreen = new Color(0, 255, 128, 255);
+		public static Color MintGreen = new(0, 255, 128, 255);
 
-		public static Color SkyBlue = new Color(0, 128, 255, 255);
+		public static Color SkyBlue = new(0, 128, 255, 255);
 
-		public static Color Brown = new Color(128, 64, 0, 255);
+		public static Color Brown = new(128, 64, 0, 255);
 
-		public static Color Purple = new Color(128, 0, 64, 255);
+		public static Color Purple = new(128, 0, 64, 255);
 
-		public static Color Olive = new Color(64, 128, 0, 255);
+		public static Color Olive = new(64, 128, 0, 255);
 
-		public static Color Indigo = new Color(64, 0, 128, 255);
+		public static Color Indigo = new(64, 0, 128, 255);
 
-		public static Color MutedGreen = new Color(0, 128, 64, 255);
+		public static Color MutedGreen = new(0, 128, 64, 255);
 
-		public static Color InkBlue = new Color(0, 64, 128, 255);
+		public static Color InkBlue = new(0, 64, 128, 255);
 
 		public byte R
 		{

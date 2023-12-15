@@ -14,15 +14,15 @@ namespace Game
 
 		public SubsystemAmbientSounds m_subsystemAmbientSounds;
 
-		public Dictionary<Point3, FireParticleSystem> m_particleSystemsByCell = new Dictionary<Point3, FireParticleSystem>();
+		public Dictionary<Point3, FireParticleSystem> m_particleSystemsByCell = [];
 
 		public float m_fireSoundVolume;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public int m_updateIndex;
 
-		public List<Point3> m_toReduce = new List<Point3>();
+		public List<Point3> m_toReduce = [];
 
 		public Dictionary<Point3, FireParticleSystem>.KeyCollection Campfires => m_particleSystemsByCell.Keys;
 

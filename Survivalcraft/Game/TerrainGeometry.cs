@@ -68,7 +68,7 @@ namespace Game
 
 		public TerrainGeometry GetGeometry(Texture2D texture)
 		{
-			if (Draws == null) Draws = new Dictionary<Texture2D, TerrainGeometry[]>();
+			if (Draws == null) Draws = [];
 			if (Draws.TryGetValue(texture, out var geometries)) return geometries[slice];
 			else
 			{

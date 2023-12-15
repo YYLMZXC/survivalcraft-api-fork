@@ -10,19 +10,19 @@ namespace Game
 	{
 		public static bool TerrainRenderingEnabled = true;
 
-		public Dictionary<Point3, bool> m_modifiedCells = new Dictionary<Point3, bool>();
+		public Dictionary<Point3, bool> m_modifiedCells = [];
 
-		public DynamicArray<Point3> m_modifiedList = new DynamicArray<Point3>();
+		public DynamicArray<Point3> m_modifiedList = [];
 
 		public static Point3[] m_neighborOffsets = new Point3[7]
 		{
-			new Point3(0, 0, 0),
-			new Point3(-1, 0, 0),
-			new Point3(1, 0, 0),
-			new Point3(0, -1, 0),
-			new Point3(0, 1, 0),
-			new Point3(0, 0, -1),
-			new Point3(0, 0, 1)
+			new(0, 0, 0),
+			new(-1, 0, 0),
+			new(1, 0, 0),
+			new(0, -1, 0),
+			new(0, 1, 0),
+			new(0, 0, -1),
+			new(0, 0, 1)
 		};
 
 		public SubsystemSky m_subsystemsky;
@@ -39,7 +39,7 @@ namespace Game
 
 		public SubsystemBlockBehaviors m_subsystemBlockBehaviors;
 
-		public List<BlockDropValue> m_dropValues = new List<BlockDropValue>();
+		public List<BlockDropValue> m_dropValues = [];
 
 		public static int[] m_drawOrders = new int[2]
 		{

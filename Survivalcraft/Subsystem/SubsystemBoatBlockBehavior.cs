@@ -14,7 +14,7 @@ namespace Game
 
 		public SubsystemGameInfo m_subsystemGameInfo;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public static string fName = "SubsystemBoatBlockBehavior";
 

@@ -8,13 +8,13 @@ namespace Engine
 
 		public float Y;
 
-		public static readonly Vector2 Zero = new Vector2(0f);
+		public static readonly Vector2 Zero = new(0f);
 
-		public static readonly Vector2 One = new Vector2(1f);
+		public static readonly Vector2 One = new(1f);
 
-		public static readonly Vector2 UnitX = new Vector2(1f, 0f);
+		public static readonly Vector2 UnitX = new(1f, 0f);
 
-		public static readonly Vector2 UnitY = new Vector2(0f, 1f);
+		public static readonly Vector2 UnitY = new(0f, 1f);
 
 		public Vector2 YX
 		{

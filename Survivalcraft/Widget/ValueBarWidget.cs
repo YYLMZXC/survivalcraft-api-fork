@@ -10,11 +10,11 @@ namespace Game
 
 		public int m_barsCount = 8;
 
-		public Color m_litBarColor = new Color(16, 140, 0);
+		public Color m_litBarColor = new(16, 140, 0);
 
 		public Color m_litBarColor2 = Color.Transparent;
 
-		public Color m_unlitBarColor = new Color(48, 48, 48);
+		public Color m_unlitBarColor = new(48, 48, 48);
 
 		public Subtexture m_barSubtexture;
 

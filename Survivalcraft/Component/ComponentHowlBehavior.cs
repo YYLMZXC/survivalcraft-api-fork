@@ -16,7 +16,7 @@ namespace Game
 
 		public ComponentPathfinding m_componentPathfinding;
 
-		public StateMachine m_stateMachine = new StateMachine();
+		public StateMachine m_stateMachine = new();
 
 		public float m_importanceLevel;
 
@@ -26,7 +26,7 @@ namespace Game
 
 		public float m_howlDuration;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 

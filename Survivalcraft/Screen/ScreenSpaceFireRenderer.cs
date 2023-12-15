@@ -27,9 +27,9 @@ namespace Game
 			public float TimeToLive;
 		}
 
-		public List<Particle> m_particles = new List<Particle>();
+		public List<Particle> m_particles = [];
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_toGenerate;
 

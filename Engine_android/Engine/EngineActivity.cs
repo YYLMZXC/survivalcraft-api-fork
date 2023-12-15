@@ -46,7 +46,7 @@ namespace Engine
 		public void OpenLink(string link)
 		{
 
-			Intent intent = new Intent();
+			Intent intent = new();
 
 			intent.SetAction("android.intent.action.VIEW");
 

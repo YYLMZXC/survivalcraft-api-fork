@@ -11,9 +11,9 @@ namespace Game
 	{
 		public SubsystemTime m_subsystemTime;
 
-		public List<PlayerData> m_playersData = new List<PlayerData>();
+		public List<PlayerData> m_playersData = [];
 
-		public List<ComponentPlayer> m_componentPlayers = new List<ComponentPlayer>();
+		public List<ComponentPlayer> m_componentPlayers = [];
 
 		public int m_nextPlayerIndex;
 
@@ -21,9 +21,9 @@ namespace Game
 
 		public static int MaxPlayers = 4;
 
-		public ReadOnlyList<PlayerData> PlayersData => new ReadOnlyList<PlayerData>(m_playersData);
+		public ReadOnlyList<PlayerData> PlayersData => new(m_playersData);
 
-		public ReadOnlyList<ComponentPlayer> ComponentPlayers => new ReadOnlyList<ComponentPlayer>(m_componentPlayers);
+		public ReadOnlyList<ComponentPlayer> ComponentPlayers => new(m_componentPlayers);
 
 		public Vector3 GlobalSpawnPosition
 		{

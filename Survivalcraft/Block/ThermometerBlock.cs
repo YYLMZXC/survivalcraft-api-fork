@@ -9,9 +9,9 @@ namespace Game
 	{
 		public const int Index = 120;
 
-		public BlockMesh m_caseMesh = new BlockMesh();
+		public BlockMesh m_caseMesh = new();
 
-		public BlockMesh m_fluidMesh = new BlockMesh();
+		public BlockMesh m_fluidMesh = new();
 
 		public Matrix[] m_matricesByData = new Matrix[4];
 

@@ -8,7 +8,7 @@ namespace Game
 	{
 		public SubsystemAudio m_subsystemAudio;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public override int[] HandledBlocks => new int[1]
 		{

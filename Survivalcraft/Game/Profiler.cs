@@ -18,14 +18,14 @@ namespace Game
 
 			public long MaxTicks;
 
-			public readonly RunningAverage AverageHitCount = new RunningAverage(5f);
+			public readonly RunningAverage AverageHitCount = new(5f);
 
-			public readonly RunningAverage AverageTime = new RunningAverage(5f);
+			public readonly RunningAverage AverageTime = new(5f);
 		}
 
-		public static Dictionary<string, Metric> m_metrics = new Dictionary<string, Metric>();
+		public static Dictionary<string, Metric> m_metrics = [];
 
-		public static List<Metric> m_sortedMetrics = new List<Metric>();
+		public static List<Metric> m_sortedMetrics = [];
 
 		public static int m_maxNameLength;
 

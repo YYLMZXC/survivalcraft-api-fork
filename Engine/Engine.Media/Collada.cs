@@ -86,13 +86,13 @@ namespace Engine.Media
 		{
 			public static readonly XNamespace Namespace = "http://www.collada.org/2005/11/COLLADASchema";
 
-			public readonly Dictionary<string, ColladaNameId> ObjectsById = new Dictionary<string, ColladaNameId>();
+			public readonly Dictionary<string, ColladaNameId> ObjectsById = [];
 
 			public readonly Asset Asset;
 
-			public readonly List<ColladaLibraryGeometries> LibraryGeometries = new List<ColladaLibraryGeometries>();
+			public readonly List<ColladaLibraryGeometries> LibraryGeometries = [];
 
-			public readonly List<ColladaLibraryVisualScenes> LibraryVisualScenes = new List<ColladaLibraryVisualScenes>();
+			public readonly List<ColladaLibraryVisualScenes> LibraryVisualScenes = [];
 
 			public readonly ColladaScene Scene;
 
@@ -135,7 +135,7 @@ namespace Engine.Media
 
 		private class ColladaLibraryVisualScenes
 		{
-			public List<ColladaVisualScene> VisualScenes = new List<ColladaVisualScene>();
+			public List<ColladaVisualScene> VisualScenes = [];
 
 			public ColladaLibraryVisualScenes(ColladaRoot collada, XElement node)
 			{
@@ -148,7 +148,7 @@ namespace Engine.Media
 
 		private class ColladaLibraryGeometries
 		{
-			public List<ColladaGeometry> Geometries = new List<ColladaGeometry>();
+			public List<ColladaGeometry> Geometries = [];
 
 			public ColladaLibraryGeometries(ColladaRoot collada, XElement node)
 			{
@@ -172,7 +172,7 @@ namespace Engine.Media
 
 		private class ColladaVisualScene : ColladaNameId
 		{
-			public List<ColladaNode> Nodes = new List<ColladaNode>();
+			public List<ColladaNode> Nodes = [];
 
 			public ColladaVisualScene(ColladaRoot collada, XElement node)
 				: base(collada, node, "-ColladaVisualScene")
@@ -188,9 +188,9 @@ namespace Engine.Media
 		{
 			public Matrix Transform = Matrix.Identity;
 
-			public List<ColladaNode> Nodes = new List<ColladaNode>();
+			public List<ColladaNode> Nodes = [];
 
-			public List<ColladaGeometry> Geometries = new List<ColladaGeometry>();
+			public List<ColladaGeometry> Geometries = [];
 
 			public ColladaNode(ColladaRoot collada, XElement node)
 				: base(collada, node)
@@ -250,11 +250,11 @@ namespace Engine.Media
 
 		private class ColladaMesh
 		{
-			public List<ColladaSource> Sources = new List<ColladaSource>();
+			public List<ColladaSource> Sources = [];
 
 			public ColladaVertices Vertices;
 
-			public List<ColladaPolygons> Polygons = new List<ColladaPolygons>();
+			public List<ColladaPolygons> Polygons = [];
 
 			public ColladaMesh(ColladaRoot collada, XElement node)
 			{
@@ -350,11 +350,11 @@ namespace Engine.Media
 
 		private class ColladaPolygons
 		{
-			public List<ColladaInput> Inputs = new List<ColladaInput>();
+			public List<ColladaInput> Inputs = [];
 
-			public List<int> VCount = new List<int>();
+			public List<int> VCount = [];
 
-			public List<int> P = new List<int>();
+			public List<int> P = [];
 
 			public ColladaPolygons(ColladaRoot collada, XElement node)
 			{

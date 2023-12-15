@@ -16,7 +16,7 @@ namespace Game
 
 		public CanvasWidget m_containerWidget;
 
-		public List<LineData> m_lines = new List<LineData>();
+		public List<LineData> m_lines = [];
 
 		public int m_currentLineIndex;
 

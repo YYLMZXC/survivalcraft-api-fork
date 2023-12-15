@@ -14,7 +14,7 @@ namespace Game
 
 		public Vector3 m_direction;
 
-		public PrimitivesRenderer2D PrimitivesRenderer2D = new PrimitivesRenderer2D();
+		public PrimitivesRenderer2D PrimitivesRenderer2D = new();
 
 		public override bool UsesMovementControls => true;
 

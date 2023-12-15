@@ -31,7 +31,7 @@ namespace Engine.Graphics
 					throw new ArgumentException("Invalid shader macro name.");
 				}
 			}
-			if (value.IndexOf('\n') != -1 || (value.Length > 0 && (char.IsWhiteSpace(value[0]) || char.IsWhiteSpace(value[value.Length - 1]))))
+			if (value.IndexOf('\n') != -1 || (value.Length > 0 && (char.IsWhiteSpace(value[0]) || char.IsWhiteSpace(value[^1]))))
 			{
 				throw new ArgumentException("Invalid shader macro value.");
 			}

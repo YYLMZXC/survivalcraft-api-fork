@@ -15,9 +15,9 @@ namespace Engine
 
 		private static int? m_mainThreadId;
 
-		private static List<ActionInfo> m_actionInfos = new List<ActionInfo>();
+		private static List<ActionInfo> m_actionInfos = [];
 
-		private static List<ActionInfo> m_currentActionInfos = new List<ActionInfo>();
+		private static List<ActionInfo> m_currentActionInfos = [];
 
 		public static int MainThreadId
 		{

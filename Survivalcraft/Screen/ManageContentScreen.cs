@@ -38,9 +38,9 @@ public class ManageContentScreen : Screen
 
 	public ButtonWidget m_changeFilterButton;
 
-	public BlocksTexturesCache m_blocksTexturesCache = new BlocksTexturesCache();
+	public BlocksTexturesCache m_blocksTexturesCache = new();
 
-	public CharacterSkinsCache m_characterSkinsCache = new CharacterSkinsCache();
+	public CharacterSkinsCache m_characterSkinsCache = new();
 
 	public bool changeed = false;
 
@@ -245,11 +245,13 @@ public class ManageContentScreen : Screen
 		}
 		if (m_changeFilterButton.IsClicked)
 		{
-			var list = new List<ExternalContentType>();
-			list.Add(ExternalContentType.Unknown);
-			list.Add(ExternalContentType.BlocksTexture);
-			list.Add(ExternalContentType.CharacterSkin);
-			list.Add(ExternalContentType.FurniturePack);
+			var list = new List<ExternalContentType>
+			{
+				ExternalContentType.Unknown,
+				ExternalContentType.BlocksTexture,
+				ExternalContentType.CharacterSkin,
+				ExternalContentType.FurniturePack
+			};
 			DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(fName, 7), list, 60f, (object item) => GetFilterDisplayName((ExternalContentType)item), delegate (object item)
 			{
 				if ((ExternalContentType)item != m_filter)

@@ -58,7 +58,7 @@ namespace NVorbis.Ogg
 			}
 		}
 
-		private Crc _crc = new Crc();
+		private Crc _crc = new();
 
 		private BufferedReadStream _stream;
 
@@ -88,8 +88,8 @@ namespace NVorbis.Ogg
 
 		public ContainerReader(Stream stream, bool closeOnDispose)
 		{
-			_packetReaders = new Dictionary<int, PacketReader>();
-			_disposedStreamSerials = new List<int>();
+			_packetReaders = [];
+			_disposedStreamSerials = [];
 			_stream = (stream as BufferedReadStream) ?? new BufferedReadStream(stream)
 			{
 				CloseBaseStream = closeOnDispose

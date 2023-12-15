@@ -11,7 +11,7 @@ namespace Game
 
 		public SubsystemTerrain m_subsystemTerrain;
 
-		public DynamicArray<ComponentBody> m_componentBodies = new DynamicArray<ComponentBody>();
+		public DynamicArray<ComponentBody> m_componentBodies = [];
 
 		public Vector3 m_riderOffset;
 

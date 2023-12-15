@@ -7,7 +7,7 @@ namespace Game
 {
 	public class SubsystemSpikesBlockBehavior : SubsystemBlockBehavior, IUpdateable
 	{
-		public static Random m_random = new Random();
+		public static Random m_random = new();
 
 		public SubsystemAudio m_subsystemAudio;
 
@@ -15,7 +15,7 @@ namespace Game
 
 		public Vector3? m_closestSoundToPlay;
 
-		public Dictionary<ComponentCreature, double> m_lastInjuryTimes = new Dictionary<ComponentCreature, double>();
+		public Dictionary<ComponentCreature, double> m_lastInjuryTimes = [];
 
 		public override int[] HandledBlocks => new int[1]
 		{

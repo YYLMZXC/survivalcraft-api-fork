@@ -9,9 +9,9 @@ namespace Game
 	{
 		public ComponentPlayer m_componentPlayer;
 
-		public readonly PrimitivesRenderer2D m_primitivesRenderer2D = new PrimitivesRenderer2D();
+		public readonly PrimitivesRenderer2D m_primitivesRenderer2D = new();
 
-		public readonly PrimitivesRenderer3D m_primitivesRenderer3D = new PrimitivesRenderer3D();
+		public readonly PrimitivesRenderer3D m_primitivesRenderer3D = new();
 
 		public Vector3 m_sightsPosition;
 

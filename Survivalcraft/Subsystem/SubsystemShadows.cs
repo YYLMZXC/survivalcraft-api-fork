@@ -9,7 +9,7 @@ namespace Game
 	{
 		public SubsystemTerrain m_subsystemTerrain;
 
-		public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
+		public PrimitivesRenderer3D m_primitivesRenderer = new();
 
 		public TexturedBatch3D m_batch;
 

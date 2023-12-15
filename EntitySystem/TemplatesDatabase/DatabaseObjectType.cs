@@ -27,9 +27,9 @@ namespace TemplatesDatabase
 
 		private List<DatabaseObjectType> m_allowedInheritanceParents;
 
-		private List<DatabaseObjectType> m_allowedNestingChildren = new List<DatabaseObjectType>();
+		private List<DatabaseObjectType> m_allowedNestingChildren = [];
 
-		private List<DatabaseObjectType> m_allowedInheritanceChildren = new List<DatabaseObjectType>();
+		private List<DatabaseObjectType> m_allowedInheritanceChildren = [];
 
 		private DatabaseObjectType m_nestedValueType;
 
@@ -51,13 +51,13 @@ namespace TemplatesDatabase
 
 		public bool SaveStandalone => m_saveStandalone;
 
-		public ReadOnlyList<DatabaseObjectType> AllowedNestingParents => new ReadOnlyList<DatabaseObjectType>(m_allowedNestingParents);
+		public ReadOnlyList<DatabaseObjectType> AllowedNestingParents => new(m_allowedNestingParents);
 
-		public ReadOnlyList<DatabaseObjectType> AllowedInheritanceParents => new ReadOnlyList<DatabaseObjectType>(m_allowedInheritanceParents);
+		public ReadOnlyList<DatabaseObjectType> AllowedInheritanceParents => new(m_allowedInheritanceParents);
 
-		public ReadOnlyList<DatabaseObjectType> AllowedNestingChildren => new ReadOnlyList<DatabaseObjectType>(m_allowedNestingChildren);
+		public ReadOnlyList<DatabaseObjectType> AllowedNestingChildren => new(m_allowedNestingChildren);
 
-		public ReadOnlyList<DatabaseObjectType> AllowedInheritanceChildren => new ReadOnlyList<DatabaseObjectType>(m_allowedInheritanceChildren);
+		public ReadOnlyList<DatabaseObjectType> AllowedInheritanceChildren => new(m_allowedInheritanceChildren);
 
 		public DatabaseObjectType NestedValueType => m_nestedValueType;
 
@@ -79,8 +79,8 @@ namespace TemplatesDatabase
 			{
 				throw new InvalidOperationException("InitializeRelations of this DatabaseObjectType was already called.");
 			}
-			m_allowedNestingParents = (allowedNestingParents != null) ? allowedNestingParents.Distinct().ToList() : new List<DatabaseObjectType>(0);
-			m_allowedInheritanceParents = (allowedInheritanceParents != null) ? allowedInheritanceParents.Distinct().ToList() : new List<DatabaseObjectType>(0);
+			m_allowedNestingParents = (allowedNestingParents != null) ? allowedNestingParents.Distinct().ToList() : [];
+			m_allowedInheritanceParents = (allowedInheritanceParents != null) ? allowedInheritanceParents.Distinct().ToList() : [];
 			m_nestedValueType = nestedValueType;
 			foreach (DatabaseObjectType allowedNestingParent in m_allowedNestingParents)
 			{

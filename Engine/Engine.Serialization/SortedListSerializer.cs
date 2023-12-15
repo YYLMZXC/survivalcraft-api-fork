@@ -6,7 +6,7 @@ namespace Engine.Serialization
 	{
 		public void Serialize(InputArchive archive, ref SortedList<K, V> value)
 		{
-			value = new SortedList<K, V>();
+			value = [];
 			archive.SerializeDictionary(null, value);
 		}
 

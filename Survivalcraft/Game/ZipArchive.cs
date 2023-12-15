@@ -18,7 +18,7 @@ namespace Game
 
 		public bool KeepStreamOpen;
 
-		public List<ZipArchiveEntry> Files = new List<ZipArchiveEntry>();
+		public List<ZipArchiveEntry> Files = [];
 
 		public Stream ZipFileStream;
 

@@ -17,7 +17,7 @@ namespace Engine
 
 		private static long m_applicationStartTicks = Stopwatch.GetTimestamp();
 
-		private static List<DelayedExecutionRequest> m_delayedExecutionsRequests = new List<DelayedExecutionRequest>();
+		private static List<DelayedExecutionRequest> m_delayedExecutionsRequests = [];
 
 		public static int FrameIndex
 		{

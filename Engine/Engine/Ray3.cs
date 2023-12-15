@@ -48,7 +48,7 @@ namespace Engine
 			{
 				return 0f;
 			}
-			Vector3 vector = new Vector3(-1f);
+			Vector3 vector = new(-1f);
 			if (Direction.X != 0f)
 			{
 				if (Position.X < box.Min.X)

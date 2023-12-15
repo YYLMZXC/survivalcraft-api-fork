@@ -5,7 +5,7 @@ namespace Game
 {
 	public class CharacterSkinsCache
 	{
-		public Dictionary<string, Texture2D> m_textures = new Dictionary<string, Texture2D>();
+		public Dictionary<string, Texture2D> m_textures = [];
 
 		public bool ContainsTexture(Texture2D texture)
 		{

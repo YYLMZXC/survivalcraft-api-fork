@@ -8,7 +8,7 @@ namespace Game
 	public class EditMemoryBankDialogAPI : Dialog
 	{
 		public MemoryBankData memory;
-		public DynamicArray<byte> Data = new DynamicArray<byte>();
+		public DynamicArray<byte> Data = [];
 		public StackPanelWidget MainView;
 		public Action onCancel;
 		public int clickpos = 0;
@@ -16,7 +16,7 @@ namespace Game
 		public int setPosN = 0;//第几位数
 		public int lastvalue = 0;
 		public bool isclick = true;
-		public List<ClickTextWidget> list = new List<ClickTextWidget>();
+		public List<ClickTextWidget> list = [];
 
 		public byte LastOutput
 		{

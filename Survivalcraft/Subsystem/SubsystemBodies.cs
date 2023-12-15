@@ -9,11 +9,11 @@ namespace Game
 	{
 		public const float m_areaSize = 8f;
 
-		public DynamicArray<ComponentBody> m_componentBodies = new DynamicArray<ComponentBody>();
+		public DynamicArray<ComponentBody> m_componentBodies = [];
 
-		public Dictionary<ComponentBody, Point2> m_areaByComponentBody = new Dictionary<ComponentBody, Point2>();
+		public Dictionary<ComponentBody, Point2> m_areaByComponentBody = [];
 
-		public Dictionary<Point2, DynamicArray<ComponentBody>> m_componentBodiesByArea = new Dictionary<Point2, DynamicArray<ComponentBody>>();
+		public Dictionary<Point2, DynamicArray<ComponentBody>> m_componentBodiesByArea = [];
 
 		public Dictionary<ComponentBody, Point2>.KeyCollection Bodies => m_areaByComponentBody.Keys;
 
@@ -134,7 +134,7 @@ namespace Game
 			m_areaByComponentBody.Add(componentBody, point);
 			if (!m_componentBodiesByArea.TryGetValue(point, out DynamicArray<ComponentBody> value))
 			{
-				value = new DynamicArray<ComponentBody>();
+				value = [];
 				m_componentBodiesByArea.Add(point, value);
 			}
 			value.Add(componentBody);
@@ -160,7 +160,7 @@ namespace Game
 				m_componentBodiesByArea[point2].Remove(componentBody);
 				if (!m_componentBodiesByArea.TryGetValue(point, out DynamicArray<ComponentBody> value))
 				{
-					value = new DynamicArray<ComponentBody>();
+					value = [];
 					m_componentBodiesByArea.Add(point, value);
 				}
 				value.Add(componentBody);

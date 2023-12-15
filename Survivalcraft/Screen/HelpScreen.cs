@@ -15,7 +15,7 @@ namespace Game
 
 		public Screen m_previousScreen;
 
-		public Dictionary<string, HelpTopic> m_topics = new Dictionary<string, HelpTopic>();
+		public Dictionary<string, HelpTopic> m_topics = [];
 
 		public HelpScreen()
 		{

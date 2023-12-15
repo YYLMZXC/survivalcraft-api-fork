@@ -7,9 +7,9 @@ namespace Game
 {
 	public class SubsystemDrawing : Subsystem
 	{
-		public Dictionary<IDrawable, bool> m_drawables = new Dictionary<IDrawable, bool>();
+		public Dictionary<IDrawable, bool> m_drawables = [];
 
-		public SortedMultiCollection<int, IDrawable> m_sortedDrawables = new SortedMultiCollection<int, IDrawable>();
+		public SortedMultiCollection<int, IDrawable> m_sortedDrawables = [];
 
 		public int DrawablesCount => m_drawables.Count;
 

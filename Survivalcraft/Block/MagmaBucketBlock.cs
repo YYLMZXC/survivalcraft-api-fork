@@ -7,7 +7,7 @@ namespace Game
 	{
 		public const int Index = 93;
 
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBlockMesh = new();
 
 		public override void Initialize()
 		{

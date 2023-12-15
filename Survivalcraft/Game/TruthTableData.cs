@@ -6,8 +6,8 @@ namespace Game
 {
 	public class TruthTableData : IEditableItemData
 	{
-		public static List<char> m_hexChars = new List<char>
-		{
+		public static List<char> m_hexChars =
+		[
 			'0',
 			'1',
 			'2',
@@ -24,7 +24,7 @@ namespace Game
 			'D',
 			'E',
 			'F'
-		};
+		];
 
 		public byte[] Data = new byte[16];
 

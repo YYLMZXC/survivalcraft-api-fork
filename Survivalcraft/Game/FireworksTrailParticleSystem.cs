@@ -12,7 +12,7 @@ namespace Game
 			public float Duration;
 		}
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_toGenerate;
 

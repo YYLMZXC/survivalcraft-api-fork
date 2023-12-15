@@ -5,7 +5,7 @@ namespace Game
 {
 	public class CanvasWidget : ContainerWidget
 	{
-		public Dictionary<Widget, Vector2> m_positions = new Dictionary<Widget, Vector2>();
+		public Dictionary<Widget, Vector2> m_positions = [];
 
 		public Vector2 Size
 		{

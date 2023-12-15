@@ -5,7 +5,7 @@ namespace FluxJpeg.Core
 {
 	internal class ImageResizer
 	{
-		private ResizeProgressChangedEventArgs progress = new ResizeProgressChangedEventArgs();
+		private ResizeProgressChangedEventArgs progress = new();
 
 		private Image _input;
 

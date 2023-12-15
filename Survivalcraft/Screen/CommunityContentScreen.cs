@@ -69,7 +69,7 @@ namespace Game
 
 		public bool m_isCNLanguageType;
 
-		public Dictionary<string, IEnumerable<object>> m_itemsCache = new Dictionary<string, IEnumerable<object>>();
+		public Dictionary<string, IEnumerable<object>> m_itemsCache = [];
 
 		public SPMBoxExternalContentProvider m_provider;
 
@@ -230,8 +230,10 @@ namespace Game
 			}
 			if (m_changeFilterButton.IsClicked)
 			{
-				var list = new List<object>();
-				list.Add(string.Empty);
+				var list = new List<object>
+				{
+					string.Empty
+				};
 				foreach (ExternalContentType item in from ExternalContentType t in EnumUtils.GetEnumValues(typeof(ExternalContentType))
 													 where ExternalContentManager.IsEntryTypeDownloadSupported(t)
 													 select t)
@@ -459,7 +461,7 @@ namespace Game
 			{
 				DialogsManager.HideDialog(busyDialog);
 				m_contentExpiryTime = Time.RealTime + 300.0;
-				while (m_listPanel.Items.Count > 0 && !(m_listPanel.Items[m_listPanel.Items.Count - 1] is CommunityContentEntry))
+				while (m_listPanel.Items.Count > 0 && !(m_listPanel.Items[^1] is CommunityContentEntry))
 				{
 					m_listPanel.RemoveItemAt(m_listPanel.Items.Count - 1);
 				}

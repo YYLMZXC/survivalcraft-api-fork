@@ -9,7 +9,7 @@ namespace Engine.Serialization
 	{
 		private int m_nextTypeId;
 
-		private Dictionary<Type, int> m_typeIds = new Dictionary<Type, int>();
+		private Dictionary<Type, int> m_typeIds = [];
 
 		private EngineBinaryWriter m_writer;
 

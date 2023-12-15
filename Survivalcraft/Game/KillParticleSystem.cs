@@ -12,7 +12,7 @@ namespace Game
 			public float TimeToLive;
 		}
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public KillParticleSystem(SubsystemTerrain terrain, Vector3 position, float size)
 			: base(20)

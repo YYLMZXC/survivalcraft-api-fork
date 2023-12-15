@@ -16,7 +16,7 @@ namespace Game
 
 		public SubsystemTime m_subsystemTime;
 
-		public HashSet<Point3> m_leavesToCheck = new HashSet<Point3>();
+		public HashSet<Point3> m_leavesToCheck = [];
 
 		public override int[] HandledBlocks => new int[0];
 

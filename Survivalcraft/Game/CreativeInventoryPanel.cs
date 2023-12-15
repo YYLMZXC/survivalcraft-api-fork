@@ -11,7 +11,7 @@ namespace Game
 
 		public ComponentCreativeInventory m_componentCreativeInventory;
 
-		public List<int> m_slotIndices = new List<int>();
+		public List<int> m_slotIndices = [];
 
 		public GridPanelWidget m_inventoryGrid;
 

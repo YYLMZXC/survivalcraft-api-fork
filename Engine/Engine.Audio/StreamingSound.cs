@@ -11,7 +11,7 @@ namespace Engine.Audio
 	{
 		private Task m_task;
 
-		private ManualResetEvent m_stopTaskEvent = new ManualResetEvent(initialState: false);
+		private ManualResetEvent m_stopTaskEvent = new(initialState: false);
 
 		private bool m_noMoreData;
 
@@ -156,7 +156,7 @@ namespace Engine.Audio
 							m_noMoreData = num2 < array2.Length;
 							if (num2 > 0)
 							{
-								int num3 = list[list.Count - 1];
+								int num3 = list[^1];
 								AL.BufferData(num3, (base.ChannelsCount == 1) ? ALFormat.Mono16 : ALFormat.Stereo16, array2, num2, base.SamplingFrequency);
 								Mixer.CheckALError();
 								AL.SourceQueueBuffer(m_source, num3);

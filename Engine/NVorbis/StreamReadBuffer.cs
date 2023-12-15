@@ -10,7 +10,7 @@ namespace NVorbis
 		{
 			internal Stream Source;
 
-			internal object LockObject = new object();
+			internal object LockObject = new();
 
 			internal long EofOffset = long.MaxValue;
 
@@ -30,7 +30,7 @@ namespace NVorbis
 			public long VersionSaved;
 		}
 
-		private static Dictionary<Stream, StreamWrapper> _lockObjects = new Dictionary<Stream, StreamWrapper>();
+		private static Dictionary<Stream, StreamWrapper> _lockObjects = [];
 
 		private StreamWrapper _wrapper;
 
@@ -132,7 +132,7 @@ namespace NVorbis
 			_data = new byte[initialSize];
 			_maxSize = maxSize;
 			_minimalRead = minimalRead;
-			_savedBuffers = new List<SavedBuffer>();
+			_savedBuffers = [];
 		}
 
 		public void Dispose()

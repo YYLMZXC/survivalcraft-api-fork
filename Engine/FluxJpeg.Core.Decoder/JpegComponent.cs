@@ -32,9 +32,9 @@ namespace FluxJpeg.Core.Decoder
 
 		private float[,][] scanMCUs;
 
-		private List<float[,][]> scanData = new List<float[,][]>();
+		private List<float[,][]> scanData = [];
 
-		private List<byte[,]> scanDecoded = new List<byte[,]>();
+		private List<byte[,]> scanDecoded = [];
 
 		public int spectralStart;
 
@@ -42,7 +42,7 @@ namespace FluxJpeg.Core.Decoder
 
 		public int successiveLow;
 
-		private DCT _dct = new DCT();
+		private DCT _dct = new();
 
 		public DecodeFunction Decode;
 

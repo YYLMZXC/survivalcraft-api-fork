@@ -27,7 +27,7 @@ namespace Game
 		{
 			SubsystemElectricity = subsystemElectricity;
 			CellFaces = new ReadOnlyList<CellFace>(new List<CellFace>(cellFaces));
-			Connections = new List<ElectricConnection>();
+			Connections = [];
 		}
 
 		public ElectricElement(SubsystemElectricity subsystemElectricity, CellFace cellFace)

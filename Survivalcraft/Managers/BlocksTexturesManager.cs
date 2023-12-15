@@ -9,7 +9,7 @@ namespace Game
 {
 	public static class BlocksTexturesManager
 	{
-		public static List<string> m_blockTextureNames = new List<string>();
+		public static List<string> m_blockTextureNames = [];
 
 		public static Texture2D DefaultBlocksTexture
 		{
@@ -17,7 +17,7 @@ namespace Game
 			set;
 		}
 
-		public static ReadOnlyList<string> BlockTexturesNames => new ReadOnlyList<string>(m_blockTextureNames);
+		public static ReadOnlyList<string> BlockTexturesNames => new(m_blockTextureNames);
 
 		public static string BlockTexturesDirectoryName => ModsManager.BlockTexturesDirectoryName;
 

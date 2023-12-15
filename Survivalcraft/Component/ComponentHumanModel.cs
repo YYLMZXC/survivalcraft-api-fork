@@ -24,7 +24,7 @@ namespace Game
 
 		public ComponentPlayer m_componentPlayer;
 
-		public DrawBlockEnvironmentData m_drawBlockEnvironmentData = new DrawBlockEnvironmentData();
+		public DrawBlockEnvironmentData m_drawBlockEnvironmentData = new();
 
 		public ModelBone m_bodyBone;
 
@@ -343,10 +343,10 @@ namespace Game
 					m_legAngles2 *= 0.5f;
 				}
 				float f = MathUtils.Sigmoid(m_componentCreature.ComponentBody.CrouchFactor, 4f);
-				Vector3 position2 = new Vector3(0f, MathUtils.Lerp(0f, 4f, f), MathUtils.Lerp(0f, -3.3f, f));
-				Vector3 position3 = new Vector3(position.X, position.Y - MathUtils.Lerp(0f, 0.7f, f), position.Z);
-				Vector3 position4 = new Vector3(0f, MathUtils.Lerp(0f, 7f, f), MathUtils.Lerp(0f, 28f, f));
-				Vector3 scale = new Vector3(1f, 1f, MathUtils.Lerp(1f, 0.5f, f));
+				Vector3 position2 = new(0f, MathUtils.Lerp(0f, 4f, f), MathUtils.Lerp(0f, -3.3f, f));
+				Vector3 position3 = new(position.X, position.Y - MathUtils.Lerp(0f, 0.7f, f), position.Z);
+				Vector3 position4 = new(0f, MathUtils.Lerp(0f, 7f, f), MathUtils.Lerp(0f, 28f, f));
+				Vector3 scale = new(1f, 1f, MathUtils.Lerp(1f, 0.5f, f));
 				SetBoneTransform(m_bodyBone.Index, Matrix.CreateRotationY(vector.X) * Matrix.CreateTranslation(position3));
 				SetBoneTransform(m_headBone.Index, Matrix.CreateRotationX(m_headAngles.Y) * Matrix.CreateRotationZ(0f - m_headAngles.X));
 				SetBoneTransform(m_hand1Bone.Index, Matrix.CreateRotationY(m_handAngles1.Y) * Matrix.CreateRotationX(m_handAngles1.X));

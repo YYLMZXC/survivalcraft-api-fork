@@ -13,7 +13,7 @@ namespace Game
 
 		public SubsystemPlayers m_subsystemPlayers;
 
-		public List<GameWidget> m_gameWidgets = new List<GameWidget>();
+		public List<GameWidget> m_gameWidgets = [];
 
 		public GamesWidget GamesWidget
 		{
@@ -21,7 +21,7 @@ namespace Game
 			set;
 		}
 
-		public ReadOnlyList<GameWidget> GameWidgets => new ReadOnlyList<GameWidget>(m_gameWidgets);
+		public ReadOnlyList<GameWidget> GameWidgets => new(m_gameWidgets);
 
 		public SubsystemTerrain SubsystemTerrain
 		{

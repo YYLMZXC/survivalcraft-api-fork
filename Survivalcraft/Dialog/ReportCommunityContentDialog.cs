@@ -18,7 +18,7 @@ namespace Game
 
 		public ButtonWidget m_cancelButton;
 
-		public List<CheckboxWidget> m_reasonWidgetsList = new List<CheckboxWidget>();
+		public List<CheckboxWidget> m_reasonWidgetsList = [];
 
 		public ReportCommunityContentDialog(string address, string displayName, string userId)
 		{

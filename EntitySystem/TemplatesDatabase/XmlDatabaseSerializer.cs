@@ -12,7 +12,7 @@ namespace TemplatesDatabase
 	{
 		public static Database LoadDatabase(XElement node)
 		{
-			Dictionary<string, DatabaseObjectType> dictionary = new Dictionary<string, DatabaseObjectType>();
+			Dictionary<string, DatabaseObjectType> dictionary = [];
 			XElement xElement = XmlUtils.FindChildElement(node, "DatabaseObjectTypes", throwIfNotFound: true);
 			foreach (XElement item in xElement.Elements())
 			{
@@ -24,7 +24,7 @@ namespace TemplatesDatabase
 				bool attributeValue6 = XmlUtils.GetAttributeValue<bool>(item, "MustInherit");
 				int attributeValue7 = XmlUtils.GetAttributeValue<int>(item, "NameLengthLimit");
 				bool attributeValue8 = XmlUtils.GetAttributeValue<bool>(item, "SaveStandalone");
-				DatabaseObjectType value = new DatabaseObjectType(attributeValue, attributeValue2, attributeValue3, attributeValue4, attributeValue5, attributeValue6, attributeValue7, attributeValue8);
+				DatabaseObjectType value = new(attributeValue, attributeValue2, attributeValue3, attributeValue4, attributeValue5, attributeValue6, attributeValue7, attributeValue8);
 				dictionary.Add(attributeValue, value);
 			}
 			foreach (XElement item2 in xElement.Elements())
@@ -33,7 +33,7 @@ namespace TemplatesDatabase
 				string attributeValue10 = XmlUtils.GetAttributeValue<string>(item2, "AllowedNestingParents");
 				string attributeValue11 = XmlUtils.GetAttributeValue<string>(item2, "AllowedInheritanceParents");
 				string attributeValue12 = XmlUtils.GetAttributeValue<string>(item2, "NestedValueType");
-				List<DatabaseObjectType> list = new List<DatabaseObjectType>();
+				List<DatabaseObjectType> list = [];
 				string[] array = attributeValue10.Split(new char[2]
 				{
 					',',
@@ -47,7 +47,7 @@ namespace TemplatesDatabase
 					}
 					list.Add(value2);
 				}
-				List<DatabaseObjectType> list2 = new List<DatabaseObjectType>();
+				List<DatabaseObjectType> list2 = [];
 				array = attributeValue11.Split(new char[2]
 				{
 					',',
@@ -73,7 +73,7 @@ namespace TemplatesDatabase
 				Assembly.Load(new AssemblyName(XmlUtils.GetAttributeValue<string>(item3, "Name")));
 			}
 			XElement node2 = XmlUtils.FindChildElement(node, "DatabaseObjects", throwIfNotFound: true);
-			Database database = new Database(new DatabaseObject(guid: XmlUtils.GetAttributeValue<Guid>(node2, "RootGuid"), databaseObjectType: dictionary["Root"], name: "Root", value: null), dictionary.Values);
+			Database database = new(new DatabaseObject(guid: XmlUtils.GetAttributeValue<Guid>(node2, "RootGuid"), databaseObjectType: dictionary["Root"], name: "Root", value: null), dictionary.Values);
 			foreach (DatabaseObject item4 in LoadDatabaseObjectsList(node2, database))
 			{
 				item4.NestingParent = database.Root;
@@ -88,11 +88,11 @@ namespace TemplatesDatabase
 
 		public static List<DatabaseObject> LoadDatabaseObjectsList(XElement node, Database database, bool generateNewGuids)
 		{
-			Dictionary<DatabaseObject, Guid> dictionary = new Dictionary<DatabaseObject, Guid>();
-			Dictionary<DatabaseObject, Guid> dictionary2 = new Dictionary<DatabaseObject, Guid>();
-			Dictionary<Guid, Guid> dictionary3 = generateNewGuids ? new Dictionary<Guid, Guid>() : null;
+			Dictionary<DatabaseObject, Guid> dictionary = [];
+			Dictionary<DatabaseObject, Guid> dictionary2 = [];
+			Dictionary<Guid, Guid> dictionary3 = generateNewGuids ? [] : null;
 			List<DatabaseObject> list = InternalLoadDatabaseObjectsList(node, database, dictionary, dictionary2, dictionary3);
-			Dictionary<Guid, DatabaseObject> dictionary4 = new Dictionary<Guid, DatabaseObject>();
+			Dictionary<Guid, DatabaseObject> dictionary4 = [];
 			foreach (DatabaseObject item in list)
 			{
 				dictionary4.Add(item.Guid, item);
@@ -135,7 +135,7 @@ namespace TemplatesDatabase
 
 		public static DatabaseObject LoadDatabaseObject(XElement node, Database database)
 		{
-			Dictionary<DatabaseObject, Guid> dictionary = new Dictionary<DatabaseObject, Guid>();
+			Dictionary<DatabaseObject, Guid> dictionary = [];
 			DatabaseObject result = InternalLoadDatabaseObject(node, database, null, dictionary, null);
 			foreach (KeyValuePair<DatabaseObject, Guid> item in dictionary)
 			{
@@ -162,9 +162,9 @@ namespace TemplatesDatabase
 				XmlUtils.SetAttributeValue(node2, "AllowedInheritanceParents", databaseObjectType.AllowedInheritanceParents.Aggregate(string.Empty, (string r, DatabaseObjectType d) => (r.Length != 0) ? (r + "," + d.Name) : d.Name));
 				XmlUtils.SetAttributeValue(node2, "NestedValueType", (databaseObjectType.NestedValueType != null) ? databaseObjectType.NestedValueType.Name : string.Empty);
 			}
-			List<Type> list = new List<Type>();
+			List<Type> list = [];
 			database.FindUsedValueTypes(list);
-			List<Assembly> list2 = new List<Assembly>();
+			List<Assembly> list2 = [];
 			foreach (Type item in list)
 			{
 				if (!list2.Contains(item.GetTypeInfo().Assembly))
@@ -185,7 +185,7 @@ namespace TemplatesDatabase
 
 		public static void SaveDatabaseObjectsList(XElement node, IEnumerable<DatabaseObject> databaseObjects)
 		{
-			List<DatabaseObject> list = new List<DatabaseObject>();
+			List<DatabaseObject> list = [];
 			foreach (DatabaseObject databaseObject in databaseObjects)
 			{
 				list.AddRange(from x in databaseObject.GetExplicitNestingChildren(null, directChildrenOnly: false)
@@ -203,7 +203,7 @@ namespace TemplatesDatabase
 
 		public static List<DatabaseObject> InternalLoadDatabaseObjectsList(XElement node, Database database, Dictionary<DatabaseObject, Guid> nestingParents, Dictionary<DatabaseObject, Guid> inheritanceParents, Dictionary<Guid, Guid> guidTranslation)
 		{
-			List<DatabaseObject> list = new List<DatabaseObject>();
+			List<DatabaseObject> list = [];
 			foreach (XElement item2 in node.Elements())
 			{
 				DatabaseObject item = InternalLoadDatabaseObject(item2, database, nestingParents, inheritanceParents, guidTranslation);
@@ -237,7 +237,7 @@ namespace TemplatesDatabase
 				Type type = TypeCache.FindType(attributeValue5, skipSystemAssemblies: false, throwIfNotFound: true);
 				value = XmlUtils.GetAttributeValue(node, "Value", type);
 			}
-			DatabaseObject databaseObject = new DatabaseObject(databaseObjectType, guid, attributeValue, value);
+			DatabaseObject databaseObject = new(databaseObjectType, guid, attributeValue, value);
 			databaseObject.Description = attributeValue2;
 			if (nestingParents != null && attributeValue3 != Guid.Empty)
 			{
@@ -256,7 +256,7 @@ namespace TemplatesDatabase
 
 		public static void InternalSaveDatabaseObjectsList(XElement node, IEnumerable<DatabaseObject> databaseObjects, bool saveNestingParents)
 		{
-			List<DatabaseObject> list = new List<DatabaseObject>(databaseObjects);
+			List<DatabaseObject> list = new(databaseObjects);
 			list.Sort((DatabaseObject o1, DatabaseObject o2) => (o1.Type.Order != o2.Type.Order) ? (o1.Type.Order - o2.Type.Order) : o1.Guid.CompareTo(o2.Guid));
 			foreach (DatabaseObject item in list)
 			{

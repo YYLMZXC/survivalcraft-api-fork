@@ -7,11 +7,11 @@ namespace Game
 {
 	public class ListPanelWidget : ScrollPanelWidget
 	{
-		public List<object> m_items = new List<object>();
+		public List<object> m_items = [];
 
 		public int? m_selectedItemIndex;
 
-		public Dictionary<int, Widget> m_widgetsByIndex = new Dictionary<int, Widget>();
+		public Dictionary<int, Widget> m_widgetsByIndex = [];
 
 		public int m_firstVisibleIndex;
 
@@ -25,7 +25,7 @@ namespace Game
 
 		public bool m_clickAllowed;
 
-		public Vector2 lastActualSize = new Vector2(-1f);
+		public Vector2 lastActualSize = new(-1f);
 
 		public Func<object, Widget> ItemWidgetFactory
 		{
@@ -118,7 +118,7 @@ namespace Game
 			}
 		}
 
-		public ReadOnlyList<object> Items => new ReadOnlyList<object>(m_items);
+		public ReadOnlyList<object> Items => new(m_items);
 
 		public Color SelectionColor
 		{

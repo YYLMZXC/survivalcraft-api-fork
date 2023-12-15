@@ -13,9 +13,9 @@ namespace Game
 
 		public SubsystemAudio m_subsystemAudio;
 		public static string fName = "SubsystemBowBlockBehavior";
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public Dictionary<ComponentMiner, double> m_aimStartTimes = new Dictionary<ComponentMiner, double>();
+		public Dictionary<ComponentMiner, double> m_aimStartTimes = [];
 
 		public ArrowBlock.ArrowType[] m_supportedArrowTypes = new ArrowBlock.ArrowType[6]
 		{

@@ -8,11 +8,11 @@ namespace Game
 	{
 		public SubsystemTime m_subsystemTime;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public Dictionary<Point3, bool> m_toDegrade = new Dictionary<Point3, bool>();
+		public Dictionary<Point3, bool> m_toDegrade = [];
 
-		public Dictionary<Point3, bool> m_toHydrate = new Dictionary<Point3, bool>();
+		public Dictionary<Point3, bool> m_toHydrate = [];
 
 		public override int[] HandledBlocks => new int[1]
 		{

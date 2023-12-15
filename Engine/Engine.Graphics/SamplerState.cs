@@ -19,7 +19,7 @@ namespace Engine.Graphics
 
 		private float m_mipLodBias;
 
-		public static SamplerState PointClamp = new SamplerState
+		public static SamplerState PointClamp = new()
 		{
 			FilterMode = TextureFilterMode.Point,
 			AddressModeU = TextureAddressMode.Clamp,
@@ -27,7 +27,7 @@ namespace Engine.Graphics
 			IsLocked = true
 		};
 
-		public static SamplerState PointWrap = new SamplerState
+		public static SamplerState PointWrap = new()
 		{
 			FilterMode = TextureFilterMode.Point,
 			AddressModeU = TextureAddressMode.Wrap,
@@ -35,7 +35,7 @@ namespace Engine.Graphics
 			IsLocked = true
 		};
 
-		public static SamplerState LinearClamp = new SamplerState
+		public static SamplerState LinearClamp = new()
 		{
 			FilterMode = TextureFilterMode.Linear,
 			AddressModeU = TextureAddressMode.Clamp,
@@ -43,7 +43,7 @@ namespace Engine.Graphics
 			IsLocked = true
 		};
 
-		public static SamplerState LinearWrap = new SamplerState
+		public static SamplerState LinearWrap = new()
 		{
 			FilterMode = TextureFilterMode.Linear,
 			AddressModeU = TextureAddressMode.Wrap,
@@ -51,7 +51,7 @@ namespace Engine.Graphics
 			IsLocked = true
 		};
 
-		public static SamplerState AnisotropicClamp = new SamplerState
+		public static SamplerState AnisotropicClamp = new()
 		{
 			FilterMode = TextureFilterMode.Anisotropic,
 			AddressModeU = TextureAddressMode.Clamp,
@@ -60,7 +60,7 @@ namespace Engine.Graphics
 			IsLocked = true
 		};
 
-		public static SamplerState AnisotropicWrap = new SamplerState
+		public static SamplerState AnisotropicWrap = new()
 		{
 			FilterMode = TextureFilterMode.Anisotropic,
 			AddressModeU = TextureAddressMode.Wrap,

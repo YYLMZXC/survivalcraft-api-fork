@@ -19,7 +19,7 @@ namespace Game
 
 		public Vector3 DefaultIconBlockOffset = Vector3.Zero;
 
-		public Vector3 DefaultIconViewOffset = new Vector3(1f);
+		public Vector3 DefaultIconViewOffset = new(1f);
 
 		public float DefaultIconViewScale = 1f;
 
@@ -183,11 +183,11 @@ namespace Game
 
 		public static string fName = "Block";
 
-		public Random Random = new Random();
+		public Random Random = new();
 
 		public static BoundingBox[] m_defaultCollisionBoxes = new BoundingBox[1]
 		{
-			new BoundingBox(Vector3.Zero, Vector3.One)
+			new(Vector3.Zero, Vector3.One)
 		};
 		public virtual float GetDensity(int value)
 		{

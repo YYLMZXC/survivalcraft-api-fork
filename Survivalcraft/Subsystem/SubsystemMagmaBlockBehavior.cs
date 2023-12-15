@@ -5,7 +5,7 @@ namespace Game
 {
 	public class SubsystemMagmaBlockBehavior : SubsystemFluidBlockBehavior, IUpdateable
 	{
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public SubsystemFireBlockBehavior m_subsystemFireBlockBehavior;
 

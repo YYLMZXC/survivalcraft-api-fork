@@ -14,7 +14,7 @@ namespace Game
 
 		public ComponentCreature m_componentCreature;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public Vector2? m_walkOrder;
 
@@ -36,7 +36,7 @@ namespace Game
 
 		public Vector3? m_lastStuckCheckPosition;
 
-		public DynamicArray<ComponentBody> m_nearbyBodies = new DynamicArray<ComponentBody>();
+		public DynamicArray<ComponentBody> m_nearbyBodies = [];
 
 		public double m_nextBodiesUpdateTime;
 

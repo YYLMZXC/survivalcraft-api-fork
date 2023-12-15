@@ -121,15 +121,19 @@ namespace Game
 			try
 			{
 				VerifyLoggedIn();
-				var dictionary = new Dictionary<string, string>();
-				dictionary.Add("Authorization", "Bearer " + SettingsManager.ScpboxAccessToken);
-				dictionary.Add("Content-Type", "application/json");
-				var jsonObject = new JsonObject();
-				jsonObject.Add("path", NormalizePath(path));
-				jsonObject.Add("recursive", false);
-				jsonObject.Add("include_media_info", false);
-				jsonObject.Add("include_deleted", false);
-				jsonObject.Add("include_has_explicit_shared_members", false);
+				var dictionary = new Dictionary<string, string>
+				{
+					{ "Authorization", "Bearer " + SettingsManager.ScpboxAccessToken },
+					{ "Content-Type", "application/json" }
+				};
+				var jsonObject = new JsonObject
+				{
+					{ "path", NormalizePath(path) },
+					{ "recursive", false },
+					{ "include_media_info", false },
+					{ "include_deleted", false },
+					{ "include_has_explicit_shared_members", false }
+				};
 				var data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
 				WebManager.Post(m_redirectUri + "/com/files/list_folder", null, dictionary, data, progress, delegate (byte[] result)
 				{
@@ -158,11 +162,15 @@ namespace Game
 			try
 			{
 				VerifyLoggedIn();
-				var jsonObject = new JsonObject();
-				jsonObject.Add("path", NormalizePath(path));
-				var dictionary = new Dictionary<string, string>();
-				dictionary.Add("Authorization", "Bearer " + SettingsManager.ScpboxAccessToken);
-				dictionary.Add("Dropbox-API-Arg", jsonObject.ToString());
+				var jsonObject = new JsonObject
+				{
+					{ "path", NormalizePath(path) }
+				};
+				var dictionary = new Dictionary<string, string>
+				{
+					{ "Authorization", "Bearer " + SettingsManager.ScpboxAccessToken },
+					{ "Dropbox-API-Arg", jsonObject.ToString() }
+				};
 				WebManager.Get(m_redirectUri + "/com/files/download", null, dictionary, progress, delegate (byte[] result)
 				{
 					success(new MemoryStream(result));
@@ -182,15 +190,19 @@ namespace Game
 			try
 			{
 				VerifyLoggedIn();
-				var jsonObject = new JsonObject();
-				jsonObject.Add("path", NormalizePath(path));
-				jsonObject.Add("mode", "add");
-				jsonObject.Add("autorename", true);
-				jsonObject.Add("mute", false);
-				var dictionary = new Dictionary<string, string>();
-				dictionary.Add("Authorization", "Bearer " + SettingsManager.ScpboxAccessToken);
-				dictionary.Add("Content-Type", "application/octet-stream");
-				dictionary.Add("Dropbox-API-Arg", jsonObject.ToString());
+				var jsonObject = new JsonObject
+				{
+					{ "path", NormalizePath(path) },
+					{ "mode", "add" },
+					{ "autorename", true },
+					{ "mute", false }
+				};
+				var dictionary = new Dictionary<string, string>
+				{
+					{ "Authorization", "Bearer " + SettingsManager.ScpboxAccessToken },
+					{ "Content-Type", "application/octet-stream" },
+					{ "Dropbox-API-Arg", jsonObject.ToString() }
+				};
 				WebManager.Post(m_redirectUri + "/com/files/upload", null, dictionary, stream, progress, delegate
 				{
 					success(null);
@@ -210,12 +222,16 @@ namespace Game
 			try
 			{
 				VerifyLoggedIn();
-				var dictionary = new Dictionary<string, string>();
-				dictionary.Add("Authorization", "Bearer " + SettingsManager.ScpboxAccessToken);
-				dictionary.Add("Content-Type", "application/json");
-				var jsonObject = new JsonObject();
-				jsonObject.Add("path", NormalizePath(path));
-				jsonObject.Add("short_url", false);
+				var dictionary = new Dictionary<string, string>
+				{
+					{ "Authorization", "Bearer " + SettingsManager.ScpboxAccessToken },
+					{ "Content-Type", "application/json" }
+				};
+				var jsonObject = new JsonObject
+				{
+					{ "path", NormalizePath(path) },
+					{ "short_url", false }
+				};
 				var data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
 				WebManager.Post(m_redirectUri + "/com/sharing/create_shared_link", null, dictionary, data, progress, delegate (byte[] result)
 				{

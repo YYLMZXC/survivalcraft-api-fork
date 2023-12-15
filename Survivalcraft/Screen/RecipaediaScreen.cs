@@ -28,7 +28,7 @@ namespace Game
 
 		public Screen m_previousScreen;
 
-		public List<string> m_categories = new List<string>();
+		public List<string> m_categories = [];
 
 		public int m_categoryIndex;
 
@@ -134,7 +134,7 @@ namespace Game
 			m_blocksList.ScrollPosition = 0f;
 			m_blocksList.ClearItems();
 
-			List<Order> orders = new List<Order>();
+			List<Order> orders = [];
 			foreach (Block item in BlocksManager.Blocks)
 			{
 				foreach (int creativeValue in item.GetCreativeValues())

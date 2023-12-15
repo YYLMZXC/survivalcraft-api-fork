@@ -296,7 +296,7 @@ namespace Engine
 
 		public List<T> ToList()
 		{
-			List<T> list = new List<T>(Count);
+			List<T> list = new(Count);
 			for (int i = 0; i < Count; i++)
 			{
 				list.Add(Array[i]);

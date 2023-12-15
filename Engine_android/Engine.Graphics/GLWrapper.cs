@@ -142,12 +142,12 @@ namespace Engine.Graphics
 			m_blendFuncDestination = (All)(-1);
 			m_blendFuncDestinationColor = (All)(-1);
 			m_blendFuncDestinationAlpha = (All)(-1);
-			m_enableDisableStates = new Dictionary<All, bool>();
+			m_enableDisableStates = [];
 			m_vertexAttribArray = new bool?[16];
 			m_rasterizerState = null;
 			m_depthStencilState = null;
 			m_blendState = null;
-			m_textureSamplerStates = new Dictionary<int, SamplerState>();
+			m_textureSamplerStates = [];
 			m_lastShader = null;
 			m_lastVertexDeclaration = null;
 			m_lastVertexOffset = IntPtr.Zero;

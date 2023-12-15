@@ -41,19 +41,19 @@ namespace Game
 
 		public static FluidBlock[] m_fluidBlocks = new FluidBlock[1024];
 
-		public static List<string> m_categories = new List<string>();
+		public static List<string> m_categories = [];
 
-		public static DrawBlockEnvironmentData m_defaultEnvironmentData = new DrawBlockEnvironmentData();
+		public static DrawBlockEnvironmentData m_defaultEnvironmentData = new();
 
 		public static Vector4[] m_slotTexCoords = new Vector4[256];
 
-		public static Dictionary<ImageExtrusionKey, BlockMesh> m_imageExtrusionsCache = new Dictionary<ImageExtrusionKey, BlockMesh>();
+		public static Dictionary<ImageExtrusionKey, BlockMesh> m_imageExtrusionsCache = [];
 
 		public static Block[] Blocks => m_blocks;
 
 		public static FluidBlock[] FluidBlocks => m_fluidBlocks;
 
-		public static ReadOnlyList<string> Categories => new ReadOnlyList<string>(m_categories);
+		public static ReadOnlyList<string> Categories => new(m_categories);
 
 		public static bool DrawImageExtrusionEnabled = true;
 
@@ -150,7 +150,7 @@ namespace Game
 
 		public static Block[] FindBlocksByCraftingId(string craftingId)
 		{
-			List<Block> blocks = new List<Block>();
+			List<Block> blocks = [];
 			foreach (var c in BlocksManager.Blocks)
 			{
 				if (c.MatchCrafingId(craftingId)) blocks.Add(c);

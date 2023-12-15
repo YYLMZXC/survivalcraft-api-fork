@@ -13,6 +13,6 @@ namespace Game
 
 		public DateTime Time;
 
-		public List<ExternalContentEntry> ChildEntries = new List<ExternalContentEntry>();
+		public List<ExternalContentEntry> ChildEntries = [];
 	}
 }

@@ -17,7 +17,7 @@ namespace FluxJpeg.Core.Decoder
 
 		public byte colorMode = JPEG_COLOR_YCbCr;
 
-		public JpegScan Scan = new JpegScan();
+		public JpegScan Scan = new();
 
 		public Action<long> ProgressUpdateMethod;
 

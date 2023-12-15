@@ -23,9 +23,9 @@ namespace Engine.Input
 			public double[] ButtonsRepeat = new double[14];
 		}
 
-		public static Dictionary<int, int> m_deviceToIndex = new Dictionary<int, int>();
+		public static Dictionary<int, int> m_deviceToIndex = [];
 
-		public static List<int> m_toRemove = new List<int>();
+		public static List<int> m_toRemove = [];
 
 		public const double m_buttonFirstRepeatTime = 0.2;
 
@@ -33,10 +33,10 @@ namespace Engine.Input
 
 		public static State[] m_states = new State[4]
 		{
-			new State(),
-			new State(),
-			new State(),
-			new State()
+			new(),
+			new(),
+			new(),
+			new()
 		};
 
 		internal static void Initialize()

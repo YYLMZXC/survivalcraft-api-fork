@@ -25,11 +25,11 @@ namespace Game
 
 		public bool m_allowPistonHeadRemove;
 
-		public Dictionary<Point3, QueuedAction> m_actions = new Dictionary<Point3, QueuedAction>();
+		public Dictionary<Point3, QueuedAction> m_actions = [];
 
-		public List<KeyValuePair<Point3, QueuedAction>> m_tmpActions = new List<KeyValuePair<Point3, QueuedAction>>();
+		public List<KeyValuePair<Point3, QueuedAction>> m_tmpActions = [];
 
-		public DynamicArray<MovingBlock> m_movingBlocks = new DynamicArray<MovingBlock>();
+		public DynamicArray<MovingBlock> m_movingBlocks = [];
 
 		public const string IdString = "Piston";
 

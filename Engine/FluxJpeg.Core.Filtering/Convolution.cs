@@ -19,7 +19,7 @@ namespace FluxJpeg.Core.Filtering
 			public int destPtr;
 		}
 
-		public static readonly Convolution Instance = new Convolution();
+		public static readonly Convolution Instance = new();
 
 		public GrayImage GaussianConv(GrayImage data, double std)
 		{

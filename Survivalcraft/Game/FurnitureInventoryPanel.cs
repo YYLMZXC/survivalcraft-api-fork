@@ -116,8 +116,9 @@ namespace Game
 			ComponentFurnitureInventory.PageIndex = (m_pagesCount > 0) ? MathUtils.Clamp(ComponentFurnitureInventory.PageIndex, 0, m_pagesCount - 1) : 0;
 			if (m_addButton.IsClicked)
 			{
-				var list = new List<Tuple<string, Action>>();
-				list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 6), delegate
+				var list = new List<Tuple<string, Action>>
+				{
+					new(LanguageControl.Get(fName, 6), delegate
 				{
 					if (SubsystemFurnitureBlockBehavior.FurnitureSets.Count < 32)
 					{
@@ -127,11 +128,12 @@ namespace Game
 					{
 						DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Get(fName, 24), LanguageControl.Get(fName, 25), LanguageControl.Ok, null, null));
 					}
-				}));
-				list.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 7), delegate
-				{
-					ImportFurnitureSet(SubsystemTerrain);
-				}));
+				}),
+					new(LanguageControl.Get(fName, 7), delegate
+					{
+						ImportFurnitureSet(SubsystemTerrain);
+					})
+				};
 				DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new ListSelectionDialog(LanguageControl.Get(fName, 8), list, 64f, (object t) => ((Tuple<string, Action>)t).Item1, delegate (object t)
 				{
 					((Tuple<string, Action>)t).Item2();
@@ -139,40 +141,42 @@ namespace Game
 			}
 			if (m_moreButton.IsClicked && ComponentFurnitureInventory.FurnitureSet != null)
 			{
-				var list2 = new List<Tuple<string, Action>>();
-				list2.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 9), delegate
+				var list2 = new List<Tuple<string, Action>>
+				{
+					new(LanguageControl.Get(fName, 9), delegate
 				{
 					RenameFurnitureSet();
-				}));
-				list2.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 10), delegate
-				{
-					if (SubsystemFurnitureBlockBehavior.GetFurnitureSetDesigns(ComponentFurnitureInventory.FurnitureSet).Count() > 0)
+				}),
+					new(LanguageControl.Get(fName, 10), delegate
 					{
-						DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Warning, LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 27), LanguageControl.Get(fName, 28), delegate (MessageDialogButton b)
+						if (SubsystemFurnitureBlockBehavior.GetFurnitureSetDesigns(ComponentFurnitureInventory.FurnitureSet).Count() > 0)
 						{
-							if (b == MessageDialogButton.Button1)
+							DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new MessageDialog(LanguageControl.Warning, LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 27), LanguageControl.Get(fName, 28), delegate (MessageDialogButton b)
 							{
-								DeleteFurnitureSet();
-							}
-						}));
-					}
-					else
+								if (b == MessageDialogButton.Button1)
+								{
+									DeleteFurnitureSet();
+								}
+							}));
+						}
+						else
+						{
+							DeleteFurnitureSet();
+						}
+					}),
+					new(LanguageControl.Get(fName, 11), delegate
 					{
-						DeleteFurnitureSet();
-					}
-				}));
-				list2.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 11), delegate
-				{
-					MoveFurnitureSet(-1);
-				}));
-				list2.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 12), delegate
-				{
-					MoveFurnitureSet(1);
-				}));
-				list2.Add(new Tuple<string, Action>(LanguageControl.Get(fName, 13), delegate
-				{
-					ExportFurnitureSet();
-				}));
+						MoveFurnitureSet(-1);
+					}),
+					new(LanguageControl.Get(fName, 12), delegate
+					{
+						MoveFurnitureSet(1);
+					}),
+					new(LanguageControl.Get(fName, 13), delegate
+					{
+						ExportFurnitureSet();
+					})
+				};
 				DialogsManager.ShowDialog(m_componentPlayer.GuiWidget, new ListSelectionDialog(LanguageControl.Get(fName, 14), list2, 64f, (object t) => ((Tuple<string, Action>)t).Item1, delegate (object t)
 				{
 					((Tuple<string, Action>)t).Item2();

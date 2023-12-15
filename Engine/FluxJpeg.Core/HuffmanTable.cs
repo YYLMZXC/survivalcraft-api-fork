@@ -97,16 +97,20 @@ namespace FluxJpeg.Core
 				GenerateDecoderTables();
 				return;
 			}
-			bitsList = new List<short[]>();
-			bitsList.Add(JpegHuffmanTable.StdDCLuminance.Lengths);
-			bitsList.Add(JpegHuffmanTable.StdACLuminance.Lengths);
-			bitsList.Add(JpegHuffmanTable.StdDCChrominance.Lengths);
-			bitsList.Add(JpegHuffmanTable.StdACChrominance.Lengths);
-			val = new List<short[]>();
-			val.Add(JpegHuffmanTable.StdDCLuminance.Values);
-			val.Add(JpegHuffmanTable.StdACLuminance.Values);
-			val.Add(JpegHuffmanTable.StdDCChrominance.Values);
-			val.Add(JpegHuffmanTable.StdACChrominance.Values);
+			bitsList =
+			[
+				JpegHuffmanTable.StdDCLuminance.Lengths,
+				JpegHuffmanTable.StdACLuminance.Lengths,
+				JpegHuffmanTable.StdDCChrominance.Lengths,
+				JpegHuffmanTable.StdACChrominance.Lengths,
+			];
+			val =
+			[
+				JpegHuffmanTable.StdDCLuminance.Values,
+				JpegHuffmanTable.StdACLuminance.Values,
+				JpegHuffmanTable.StdDCChrominance.Values,
+				JpegHuffmanTable.StdACChrominance.Values,
+			];
 			initHuf();
 		}
 

@@ -8,17 +8,17 @@ namespace Game
 {
 	public class ObjModelReader
 	{
-		public static Dictionary<int, List<int>> FaceMap = new Dictionary<int, List<int>>();
+		public static Dictionary<int, List<int>> FaceMap = [];
 		static ObjModelReader()
 		{
-			FaceMap.Add(4, new List<int>() { 0, 2, 1 });//顶面
-			FaceMap.Add(5, new List<int>() { 0, 2, 1 });//底面
+			FaceMap.Add(4, [0, 2, 1]);//顶面
+			FaceMap.Add(5, [0, 2, 1]);//底面
 
-			FaceMap.Add(2, new List<int>() { 0, 2, 1 });//逆
-			FaceMap.Add(3, new List<int>() { 0, 2, 1 });//逆
+			FaceMap.Add(2, [0, 2, 1]);//逆
+			FaceMap.Add(3, [0, 2, 1]);//逆
 
-			FaceMap.Add(0, new List<int>() { 0, 2, 1 });//顺
-			FaceMap.Add(1, new List<int>() { 0, 2, 1 });//顺
+			FaceMap.Add(0, [0, 2, 1]);//顺
+			FaceMap.Add(1, [0, 2, 1]);//顺
 		}
 		public struct ObjPosition
 		{
@@ -76,8 +76,8 @@ namespace Game
 		public class ObjMesh
 		{
 			public int ElementIndex;
-			public DynamicArray<ObjVertex> Vertices = new DynamicArray<ObjVertex>();
-			public DynamicArray<int> Indices = new DynamicArray<int>();
+			public DynamicArray<ObjVertex> Vertices = [];
+			public DynamicArray<int> Indices = [];
 			public string TexturePath = "Textures/NoneTexture";//默认位置
 			public string MeshName;
 			public Matrix? MeshMatrix;
@@ -87,25 +87,25 @@ namespace Game
 			}
 			public BoundingBox CalculateBoundingBox()
 			{
-				List<Vector3> vectors = new List<Vector3>();
+				List<Vector3> vectors = [];
 				for (int i = 0; i < Vertices.Count; i++)
 				{
 					vectors.Add(new Vector3(Vertices[i].position.x, Vertices[i].position.y, Vertices[i].position.z));
 				}
 				return new BoundingBox(vectors);
 			}
-			public List<ObjMesh> ChildMeshes = new List<ObjMesh>();
+			public List<ObjMesh> ChildMeshes = [];
 		}
 		public static ObjModel Load(Stream stream)
 		{
-			Dictionary<string, ObjMesh> Meshes = new Dictionary<string, ObjMesh>();
-			Dictionary<string, string> TexturePaths = new Dictionary<string, string>();
-			List<ObjPosition> objPositions = new List<ObjPosition>();
-			List<ObjTexCood> objTexCoods = new List<ObjTexCood>();
-			List<ObjNormal> objNormals = new List<ObjNormal>();
+			Dictionary<string, ObjMesh> Meshes = [];
+			Dictionary<string, string> TexturePaths = [];
+			List<ObjPosition> objPositions = [];
+			List<ObjTexCood> objTexCoods = [];
+			List<ObjNormal> objNormals = [];
 			using (stream)
 			{
-				StreamReader streamReader = new StreamReader(stream);
+				StreamReader streamReader = new(stream);
 				ObjMesh objMesh = null;
 				string CurrentTkey = null;
 				while (streamReader.EndOfStream == false)
@@ -203,14 +203,14 @@ namespace Game
 			if (objMesh.Vertices.Count > 0)
 			{
 				ModelMesh mesh = model.NewMesh(objMesh.MeshName, modelBone, objMesh.CalculateBoundingBox());
-				VertexBuffer vertexBuffer = new VertexBuffer(new VertexDeclaration(
+				VertexBuffer vertexBuffer = new(new VertexDeclaration(
 					new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position),
 					new VertexElement(12, VertexElementFormat.Vector3, VertexElementSemantic.Normal),
 				   new VertexElement(24, VertexElementFormat.Vector2, VertexElementSemantic.TextureCoordinate)), objMesh.Vertices.Count);
-				MemoryStream stream1 = new MemoryStream();
-				MemoryStream stream2 = new MemoryStream();
-				BinaryWriter binaryWriter1 = new BinaryWriter(stream1);
-				BinaryWriter binaryWriter2 = new BinaryWriter(stream2);
+				MemoryStream stream1 = new();
+				MemoryStream stream2 = new();
+				BinaryWriter binaryWriter1 = new(stream1);
+				BinaryWriter binaryWriter2 = new(stream2);
 				for (int i = 0; i < objMesh.Vertices.Count; i++)
 				{
 					ObjVertex objVertex = objMesh.Vertices[i];
@@ -233,7 +233,7 @@ namespace Game
 				stream2.Close();
 				vertexBuffer.SetData(objMesh.Vertices.Array, 0, objMesh.Vertices.Count);
 				vertexBuffer.Tag = vs;
-				IndexBuffer indexBuffer = new IndexBuffer(IndexFormat.SixteenBits, objMesh.Indices.Count);
+				IndexBuffer indexBuffer = new(IndexFormat.SixteenBits, objMesh.Indices.Count);
 				indexBuffer.SetData(objMesh.Indices.Array, 0, objMesh.Indices.Count);
 				indexBuffer.Tag = ins;
 				ModelMeshPart modelMeshPart = mesh.NewMeshPart(vertexBuffer, indexBuffer, 0, objMesh.Indices.Count, objMesh.CalculateBoundingBox());

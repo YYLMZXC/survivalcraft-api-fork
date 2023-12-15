@@ -21,7 +21,7 @@ namespace Game
 
 		public ComponentPlayer m_componentPlayer;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public Sound m_pantingSound;
 
@@ -45,9 +45,9 @@ namespace Game
 
 		public float m_lastWetness;
 
-		public Dictionary<int, float> m_satiation = new Dictionary<int, float>();
+		public Dictionary<int, float> m_satiation = [];
 
-		public List<KeyValuePair<int, float>> m_satiationList = new List<KeyValuePair<int, float>>();
+		public List<KeyValuePair<int, float>> m_satiationList = [];
 
 		public float m_densityModifierApplied;
 

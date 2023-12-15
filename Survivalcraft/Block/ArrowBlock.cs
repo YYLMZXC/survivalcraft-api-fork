@@ -22,7 +22,7 @@ namespace Game
 
 		public const int Index = 192;
 
-		public List<BlockMesh> m_standaloneBlockMeshes = new List<BlockMesh>();
+		public List<BlockMesh> m_standaloneBlockMeshes = [];
 
 		public static int[] m_order = new int[9]
 		{

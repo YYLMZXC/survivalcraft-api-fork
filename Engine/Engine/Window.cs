@@ -212,7 +212,7 @@ namespace Engine
 				{
 					ex = new Exception($"Unknown exception. Additional information: {args.ExceptionObject}");
 				}
-				UnhandledExceptionInfo unhandledExceptionInfo = new UnhandledExceptionInfo(ex);
+				UnhandledExceptionInfo unhandledExceptionInfo = new(ex);
 				Window.UnhandledException?.Invoke(unhandledExceptionInfo);
 				if (!unhandledExceptionInfo.IsHandled)
 				{
@@ -220,7 +220,7 @@ namespace Engine
 					Environment.Exit(1);
 				}
 			};
-			GraphicsMode mode = new GraphicsMode(new OpenTK.Graphics.ColorFormat(24), 16, 0, 0, OpenTK.Graphics.ColorFormat.Empty, 2);
+			GraphicsMode mode = new(new OpenTK.Graphics.ColorFormat(24), 16, 0, 0, OpenTK.Graphics.ColorFormat.Empty, 2);
 			width = (width == 0) ? (ScreenSize.X * 4 / 5) : width;
 			height = (height == 0) ? (ScreenSize.Y * 4 / 5) : height;
 			m_gameWindow = new GameWindow(width, height, mode, title, GameWindowFlags.Default, DisplayDevice.Default, 2, 0, GraphicsContextFlags.Default);
@@ -229,7 +229,7 @@ namespace Engine
 			m_gameWindow.ClientSize = new Size(width, height);
 			if (Configuration.RunningOnMacOS)
 			{
-				Point2 point = new Point2((int)MathUtils.Round((float)ScreenSize.X / m_dpiScale), (int)MathUtils.Round((float)ScreenSize.Y / m_dpiScale));
+				Point2 point = new((int)MathUtils.Round((float)ScreenSize.X / m_dpiScale), (int)MathUtils.Round((float)ScreenSize.Y / m_dpiScale));
 				m_gameWindow.Location = new Point(MathUtils.Max((point.X - m_gameWindow.Size.Width) / 2, 0), MathUtils.Max((point.Y - m_gameWindow.Size.Height) / 2, 0));
 			}
 			else

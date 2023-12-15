@@ -110,13 +110,13 @@ namespace Game
 			{
 				throw new InvalidOperationException($"Not enough free space to convert world. {num / 1024 / 1024}MB required.");
 			}
-			using (TerrainSerializer22 terrainSerializer = new TerrainSerializer22(null, directoryName))
+			using (TerrainSerializer22 terrainSerializer = new(null, directoryName))
 			{
-				using (TerrainSerializer23 terrainSerializer2 = new TerrainSerializer23(directoryName, ".new"))
+				using (TerrainSerializer23 terrainSerializer2 = new(directoryName, ".new"))
 				{
 					foreach (Point2 chunk2 in terrainSerializer.Chunks)
 					{
-						TerrainChunk chunk = new TerrainChunk(null, chunk2.X, chunk2.Y);
+						TerrainChunk chunk = new(null, chunk2.X, chunk2.Y);
 						terrainSerializer.LoadChunk(chunk);
 						terrainSerializer2.SaveChunkData(chunk);
 					}

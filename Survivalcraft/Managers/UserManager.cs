@@ -23,7 +23,7 @@ namespace Game
 
 		static UserManager()
 		{
-			m_users = new List<UserInfo>();
+			m_users = [];
 			string text;
 			try
 			{

@@ -178,7 +178,7 @@ namespace Game
 			{
 				if (value.Length > 0)
 				{
-					if (value[0] == ' ' || value[value.Length - 1] == ' ')
+					if (value[0] == ' ' || value[^1] == ' ')
 					{
 						throw new InvalidOperationException(LanguageControl.Get(fName, 1));
 					}
@@ -609,10 +609,10 @@ namespace Game
 			{
 				list2[j].LinkedDesign = list2[j + 1];
 			}
-			int num = list.IndexOf(list[list.Count - 1].LinkedDesign);
+			int num = list.IndexOf(list[^1].LinkedDesign);
 			if (num >= 0)
 			{
-				list2[list2.Count - 1].LinkedDesign = list2[num];
+				list2[^1].LinkedDesign = list2[num];
 			}
 			return list2;
 		}
@@ -1225,10 +1225,10 @@ namespace Game
 			Subdivision result = default;
 			result.TotalVolume = box.Width * box.Height * box.Depth;
 			result.MinVolume = result.TotalVolume;
-			result.Boxes = new List<Box>
-			{
+			result.Boxes =
+			[
 				box
-			};
+			];
 			if (depth < 2)
 			{
 				for (int num2 = box.Bottom - 1; num2 >= box.Top + 1; num2--)

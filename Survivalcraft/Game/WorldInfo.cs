@@ -13,8 +13,8 @@ namespace Game
 
 		public string SerializationVersion = string.Empty;
 
-		public WorldSettings WorldSettings = new WorldSettings();
+		public WorldSettings WorldSettings = new();
 
-		public List<PlayerInfo> PlayerInfos = new List<PlayerInfo>();
+		public List<PlayerInfo> PlayerInfos = [];
 	}
 }

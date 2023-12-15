@@ -55,7 +55,7 @@ namespace Game
 
 			private BinaryWriter Writer;
 
-			private Dictionary<Point2, ChunkDescriptor> ChunkDescriptors = new Dictionary<Point2, ChunkDescriptor>();
+			private Dictionary<Point2, ChunkDescriptor> ChunkDescriptors = [];
 
 			private int FreeNode;
 
@@ -171,7 +171,7 @@ namespace Game
 
 			private List<int> GetFreeNodes(int count)
 			{
-				List<int> list = new List<int>();
+				List<int> list = [];
 				int nextNode = FreeNode;
 				while (nextNode >= 0 && list.Count < count)
 				{
@@ -359,9 +359,9 @@ namespace Game
 
 			private string TmpFilePath;
 
-			private Dictionary<Point2, Stream> StreamsByRegion = new Dictionary<Point2, Stream>();
+			private Dictionary<Point2, Stream> StreamsByRegion = [];
 
-			private Queue<Stream> OpenedStreams = new Queue<Stream>();
+			private Queue<Stream> OpenedStreams = new();
 
 			public void Dispose()
 			{
@@ -397,12 +397,12 @@ namespace Game
 
 			public int Load(Point2 coords, byte[] buffer)
 			{
-				Point2 region = new Point2(coords.X >> 4, coords.Y >> 4);
-				Point2 chunk = new Point2(coords.X & 0xF, coords.Y & 0xF);
+				Point2 region = new(coords.X >> 4, coords.Y >> 4);
+				Point2 chunk = new(coords.X & 0xF, coords.Y & 0xF);
 				Stream regionStream = GetRegionStream(region, createNew: false);
 				if (regionStream != null)
 				{
-					using (BinaryReader reader = new BinaryReader(regionStream, Encoding.UTF8, leaveOpen: true))
+					using (BinaryReader reader = new(regionStream, Encoding.UTF8, leaveOpen: true))
 					{
 						DirectoryEntry directoryEntry = ReadDirectoryEntry(reader, chunk);
 						if (directoryEntry.Offset > 0)
@@ -417,13 +417,13 @@ namespace Game
 
 			public void Save(Point2 coords, byte[] buffer, int size)
 			{
-				Point2 region = new Point2(coords.X >> 4, coords.Y >> 4);
-				Point2 point = new Point2(coords.X & 0xF, coords.Y & 0xF);
+				Point2 region = new(coords.X >> 4, coords.Y >> 4);
+				Point2 point = new(coords.X & 0xF, coords.Y & 0xF);
 				Stream regionStream = GetRegionStream(region, createNew: true);
 				string text = null;
-				using (BinaryReader reader = new BinaryReader(regionStream, Encoding.UTF8, leaveOpen: true))
+				using (BinaryReader reader = new(regionStream, Encoding.UTF8, leaveOpen: true))
 				{
-					using (BinaryWriter writer = new BinaryWriter(regionStream, Encoding.UTF8, leaveOpen: true))
+					using (BinaryWriter writer = new(regionStream, Encoding.UTF8, leaveOpen: true))
 					{
 						int num = point.X + (16 * point.Y);
 						DirectoryEntry[] array = ReadDirectoryEntries(reader);
@@ -452,7 +452,7 @@ namespace Game
 									text = GetRegionPath(region);
 									using (Stream stream = Storage.OpenFile(TmpFilePath, OpenFileMode.Create))
 									{
-										using (BinaryWriter binaryWriter = new BinaryWriter(stream))
+										using (BinaryWriter binaryWriter = new(stream))
 										{
 											DirectoryEntry[] array2 = new DirectoryEntry[array.Length];
 											int num4 = 2052;
@@ -546,7 +546,7 @@ namespace Game
 					if (Storage.FileExists(regionPath))
 					{
 						value = Storage.OpenFile(regionPath, OpenFileMode.ReadWrite);
-						using (BinaryReader binaryReader = new BinaryReader(value, Encoding.UTF8, leaveOpen: true))
+						using (BinaryReader binaryReader = new(value, Encoding.UTF8, leaveOpen: true))
 						{
 							if (binaryReader.ReadUInt32() != RegionMagic)
 							{
@@ -559,7 +559,7 @@ namespace Game
 					{
 						value = Storage.OpenFile(regionPath, OpenFileMode.Create);
 						OpenedStreams.Enqueue(value);
-						using (BinaryWriter binaryWriter = new BinaryWriter(value, Encoding.UTF8, leaveOpen: true))
+						using (BinaryWriter binaryWriter = new(value, Encoding.UTF8, leaveOpen: true))
 						{
 							binaryWriter.Write(RegionMagic);
 							WriteDirectoryEntries(binaryWriter, new DirectoryEntry[256]);
@@ -694,7 +694,7 @@ namespace Game
 
 		private const int WorstCaseChunkDataSize = 262400;
 
-		private object m_lock = new object();
+		private object m_lock = new();
 
 		private IStorage m_storage;
 
@@ -822,9 +822,9 @@ namespace Game
 			{
 				num = WriteRleValueToBuffer(m_compressBuffer, num, num3, num2);
 			}
-			using (MemoryStream memoryStream = new MemoryStream(buffer))
+			using (MemoryStream memoryStream = new(buffer))
 			{
-				using (DeflateStream deflateStream = new DeflateStream(memoryStream, CompressionLevel.Fastest, leaveOpen: true))
+				using (DeflateStream deflateStream = new(memoryStream, CompressionLevel.Fastest, leaveOpen: true))
 				{
 					deflateStream.Write(m_compressBuffer, 0, num);
 				}
@@ -834,7 +834,7 @@ namespace Game
 
 		private void DecompressChunkData(TerrainChunk chunk, byte[] buffer, int size)
 		{
-			using (DeflateStream deflateStream = new DeflateStream(new MemoryStream(buffer, 0, size), CompressionMode.Decompress))
+			using (DeflateStream deflateStream = new(new MemoryStream(buffer, 0, size), CompressionMode.Decompress))
 			{
 				size = deflateStream.Read(m_compressBuffer, 0, m_compressBuffer.Length);
 				if (size == m_compressBuffer.Length)

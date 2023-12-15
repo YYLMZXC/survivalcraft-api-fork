@@ -13,7 +13,7 @@ namespace Game
 
 		public Sound m_magmaSound;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public SubsystemAudio SubsystemAudio
 		{

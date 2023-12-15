@@ -37,7 +37,7 @@ namespace Game
 
 		public SubsystemTimeOfDay m_subsystemTimeOfDay;
 
-		public PrimitivesRenderer3D m_primitivesRenderer = new PrimitivesRenderer3D();
+		public PrimitivesRenderer3D m_primitivesRenderer = new();
 
 		public static ModelShader ShaderOpaque;
 
@@ -51,16 +51,16 @@ namespace Game
 
 		public int MaxInstancesCount;
 
-		public Dictionary<ComponentModel, ModelData> m_componentModels = new Dictionary<ComponentModel, ModelData>();
+		public Dictionary<ComponentModel, ModelData> m_componentModels = [];
 
-		public List<ModelData> m_modelsToPrepare = new List<ModelData>();
+		public List<ModelData> m_modelsToPrepare = [];
 
 		public List<ModelData>[] m_modelsToDraw = new List<ModelData>[4]
 		{
-			new List<ModelData>(),
-			new List<ModelData>(),
-			new List<ModelData>(),
-			new List<ModelData>()
+			[],
+			[],
+			[],
+			[]
 		};
 
 		public static bool DisableDrawingModels = false;
@@ -303,7 +303,7 @@ namespace Game
 			float x = num + (float)Math.PI;
 			float f = MathUtils.Max(SubsystemSky.CalculateDawnGlowIntensity(timeOfDay), SubsystemSky.CalculateDuskGlowIntensity(timeOfDay));
 			float s = MathUtils.Lerp(90f, 160f, f);
-			Vector3 vector = new Vector3
+			Vector3 vector = new()
 			{
 				X = 0f - MathUtils.Sin(x),
 				Y = 0f - MathUtils.Cos(x),
@@ -359,10 +359,10 @@ namespace Game
 									{
 										float num15 = MathUtils.Max(num14 * 0.01f, 0.005f);
 										float num16 = MathUtils.Saturate(1f - ((shadowPosition.Y - num13) / 2f));
-										Vector3 p = new Vector3(boundingBox.Min.X + (float)i, num13 + num15, boundingBox.Min.Z + (float)j);
-										Vector3 p2 = new Vector3(boundingBox.Max.X + (float)i, num13 + num15, boundingBox.Min.Z + (float)j);
-										Vector3 p3 = new Vector3(boundingBox.Max.X + (float)i, num13 + num15, boundingBox.Max.Z + (float)j);
-										Vector3 p4 = new Vector3(boundingBox.Min.X + (float)i, num13 + num15, boundingBox.Max.Z + (float)j);
+										Vector3 p = new(boundingBox.Min.X + (float)i, num13 + num15, boundingBox.Min.Z + (float)j);
+										Vector3 p2 = new(boundingBox.Max.X + (float)i, num13 + num15, boundingBox.Min.Z + (float)j);
+										Vector3 p3 = new(boundingBox.Max.X + (float)i, num13 + num15, boundingBox.Max.Z + (float)j);
+										Vector3 p4 = new(boundingBox.Min.X + (float)i, num13 + num15, boundingBox.Max.Z + (float)j);
 										subsystemShadows.DrawShadowOverQuad(p, p2, p3, p4, shadowPosition, shadowDiameter, 0.45f * block.ObjectShadowStrength * alpha * num3 * num16);
 									}
 								}

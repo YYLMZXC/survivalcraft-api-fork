@@ -15,7 +15,7 @@ namespace Game
 
 		public class Comparer : IComparer<IUpdateable>
 		{
-			public static Comparer Instance = new Comparer();
+			public static Comparer Instance = new();
 
 			public int Compare(IUpdateable u1, IUpdateable u2)
 			{
@@ -30,11 +30,11 @@ namespace Game
 
 		public SubsystemTime m_subsystemTime;
 
-		public Dictionary<IUpdateable, UpdateableInfo> m_updateables = new Dictionary<IUpdateable, UpdateableInfo>();
+		public Dictionary<IUpdateable, UpdateableInfo> m_updateables = [];
 
-		public Dictionary<IUpdateable, bool> m_toAddOrRemove = new Dictionary<IUpdateable, bool>();
+		public Dictionary<IUpdateable, bool> m_toAddOrRemove = [];
 
-		public List<IUpdateable> m_sortedUpdateables = new List<IUpdateable>();
+		public List<IUpdateable> m_sortedUpdateables = [];
 
 		public int UpdateablesCount => m_updateables.Count;
 

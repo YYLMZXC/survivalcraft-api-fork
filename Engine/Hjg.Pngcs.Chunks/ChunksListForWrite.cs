@@ -12,8 +12,8 @@ namespace Hjg.Pngcs.Chunks
 		internal ChunksListForWrite(ImageInfo info)
 			: base(info)
 		{
-			queuedChunks = new List<PngChunk>();
-			alreadyWrittenKeys = new Dictionary<string, int>();
+			queuedChunks = [];
+			alreadyWrittenKeys = [];
 		}
 
 		public List<PngChunk> GetQueuedById(string id)
@@ -37,7 +37,7 @@ namespace Hjg.Pngcs.Chunks
 			{
 				throw new PngjException("unexpected multiple chunks id=" + id);
 			}
-			return queuedById[queuedById.Count - 1];
+			return queuedById[^1];
 		}
 
 		public PngChunk GetQueuedById1(string id, bool failIfMultiple)

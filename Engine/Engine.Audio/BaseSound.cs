@@ -11,7 +11,7 @@ namespace Engine.Audio
 
 		private float m_pan;
 
-		internal object m_stateSync = new object();
+		internal object m_stateSync = new();
 
 		internal bool m_isLooped;
 

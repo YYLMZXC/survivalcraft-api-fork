@@ -6,7 +6,7 @@ namespace Game
 {
 	public class SubsystemNames : Subsystem
 	{
-		public Dictionary<string, ComponentName> m_componentsByName = new Dictionary<string, ComponentName>();
+		public Dictionary<string, ComponentName> m_componentsByName = [];
 
 		public Component FindComponentByName(string name, Type componentType, string componentName)
 		{

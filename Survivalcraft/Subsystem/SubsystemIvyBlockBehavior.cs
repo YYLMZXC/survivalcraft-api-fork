@@ -8,9 +8,9 @@ namespace Game
 	{
 		public SubsystemTime m_subsystemTime;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public Dictionary<Point3, int> m_toUpdate = new Dictionary<Point3, int>();
+		public Dictionary<Point3, int> m_toUpdate = [];
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 

@@ -62,7 +62,7 @@ namespace Game
 
 		public ContainerWidget m_containerWidget;
 
-		public List<Widget> m_widgets = new List<Widget>();
+		public List<Widget> m_widgets = [];
 
 		public int m_version;
 

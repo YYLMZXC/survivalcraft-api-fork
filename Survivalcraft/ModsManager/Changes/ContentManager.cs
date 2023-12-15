@@ -36,7 +36,7 @@ namespace Game
 		public Stream Duplicate()
 		{
 			if (ContentStream == null || !ContentStream.CanRead || !ContentStream.CanWrite) throw new Exception("ContentStream has been disposed");
-			MemoryStream memoryStream = new MemoryStream();
+			MemoryStream memoryStream = new();
 			ContentStream.CopyTo(memoryStream);
 			ContentStream.Position = 0L;
 			memoryStream.Position = 0L;
@@ -49,10 +49,10 @@ namespace Game
 	}
 	public static class ContentManager
 	{
-		internal static Dictionary<string, ContentInfo> Resources = new Dictionary<string, ContentInfo>();
-		internal static Dictionary<string, IContentReader.IContentReader> ReaderList = new Dictionary<string, IContentReader.IContentReader>();
-		internal static Dictionary<string, List<object>> Caches = new Dictionary<string, List<object>>();
-		internal static object syncobj = new object();
+		internal static Dictionary<string, ContentInfo> Resources = [];
+		internal static Dictionary<string, IContentReader.IContentReader> ReaderList = [];
+		internal static Dictionary<string, List<object>> Caches = [];
+		internal static object syncobj = new();
 		public static void Initialize()
 		{
 			ReaderList.Clear();
@@ -78,7 +78,7 @@ namespace Game
 				if (obj != null) return obj;
 				if (ReaderList.TryGetValue(type.FullName, out IContentReader.IContentReader reader))
 				{
-					List<ContentInfo> contents = new List<ContentInfo>();
+					List<ContentInfo> contents = [];
 					string p = string.Empty;
 					if (suffix == null)
 					{
@@ -105,7 +105,7 @@ namespace Game
 					}
 					obj = reader.Get(contents.ToArray());
 				}
-				if (cacheList == null) { cacheList = new List<object>(); Caches.Add(key, cacheList); }
+				if (cacheList == null) { cacheList = []; Caches.Add(key, cacheList); }
 				cacheList.Add(obj);
 				return obj;
 			}
@@ -186,7 +186,7 @@ namespace Game
 
 		public static ReadOnlyList<ContentInfo> List(string directory)
 		{
-			List<ContentInfo> contents = new List<ContentInfo>();
+			List<ContentInfo> contents = [];
 			if (!directory.EndsWith("/")) directory += "/";
 			foreach (var content in Resources.Values)
 			{

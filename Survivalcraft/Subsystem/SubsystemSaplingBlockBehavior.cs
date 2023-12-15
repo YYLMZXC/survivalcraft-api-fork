@@ -23,13 +23,13 @@ namespace Game
 
 		public SubsystemTimeOfDay m_subsystemTimeOfDay;
 
-		public Dictionary<Point3, SaplingData> m_saplings = new Dictionary<Point3, SaplingData>();
+		public Dictionary<Point3, SaplingData> m_saplings = [];
 
 		public Dictionary<Point3, SaplingData>.ValueCollection.Enumerator m_enumerator;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public StringBuilder m_stringBuilder = new StringBuilder();
+		public StringBuilder m_stringBuilder = new();
 
 		public override int[] HandledBlocks => new int[1]
 		{

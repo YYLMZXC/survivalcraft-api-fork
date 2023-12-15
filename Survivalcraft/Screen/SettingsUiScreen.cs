@@ -138,7 +138,7 @@ namespace Game
 			{
 				c.LoadLauguage();
 			}
-			Dictionary<string, object> objs = new Dictionary<string, object>();
+			Dictionary<string, object> objs = [];
 			foreach (var c in ScreensManager.m_screens)
 			{
 				Type type = c.Value.GetType();

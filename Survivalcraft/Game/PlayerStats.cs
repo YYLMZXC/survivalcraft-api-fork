@@ -56,7 +56,7 @@ namespace Game
 			}
 		}
 
-		public List<DeathRecord> m_deathRecords = new List<DeathRecord>();
+		public List<DeathRecord> m_deathRecords = [];
 
 		[Stat]
 		public double DistanceTravelled;
@@ -179,7 +179,7 @@ namespace Game
 			}
 		}
 
-		public ReadOnlyList<DeathRecord> DeathRecords => new ReadOnlyList<DeathRecord>(m_deathRecords);
+		public ReadOnlyList<DeathRecord> DeathRecords => new(m_deathRecords);
 
 		public void AddDeathRecord(DeathRecord deathRecord)
 		{

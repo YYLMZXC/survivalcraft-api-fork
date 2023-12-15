@@ -25,7 +25,7 @@ namespace Game
 			public bool HighDamping;
 		}
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public Color m_color;
 

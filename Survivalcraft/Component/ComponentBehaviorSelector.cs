@@ -8,7 +8,7 @@ namespace Game
 	{
 		public ComponentCreature m_componentCreature;
 
-		public List<ComponentBehavior> m_behaviors = new List<ComponentBehavior>();
+		public List<ComponentBehavior> m_behaviors = [];
 
 		public static bool ShowAIBehavior;
 

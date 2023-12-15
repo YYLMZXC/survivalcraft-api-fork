@@ -19,11 +19,11 @@ namespace Game
 
 		public ComponentPlayer m_componentPlayer;
 
-		public PrimitivesRenderer2D m_primitivesRenderer2D = new PrimitivesRenderer2D();
+		public PrimitivesRenderer2D m_primitivesRenderer2D = new();
 
-		public PrimitivesRenderer3D m_primitivesRenderer3D = new PrimitivesRenderer3D();
+		public PrimitivesRenderer3D m_primitivesRenderer3D = new();
 
-		public Random m_random = new Random(0);
+		public Random m_random = new(0);
 
 		public Vector2[] m_iceVertices;
 

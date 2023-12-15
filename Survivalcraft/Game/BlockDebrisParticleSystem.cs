@@ -12,7 +12,7 @@ namespace Game
 			public float TimeToLive;
 		}
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public SubsystemTerrain m_subsystemTerrain;
 

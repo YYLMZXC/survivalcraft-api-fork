@@ -9,7 +9,7 @@ namespace TemplatesDatabase
 		{
 			private int m_mask;
 
-			private List<string> m_list = new List<string>();
+			private List<string> m_list = [];
 
 			public bool Contains(string s)
 			{
@@ -312,7 +312,7 @@ namespace TemplatesDatabase
 			{
 				if (m_nestingChildren == null)
 				{
-					m_nestingChildren = new List<DatabaseObject>();
+					m_nestingChildren = [];
 				}
 				return m_nestingChildren;
 			}

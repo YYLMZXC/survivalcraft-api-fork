@@ -17,7 +17,7 @@ namespace Game
 			public float Alpha;
 		}
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public SubsystemTerrain m_subsystemTerrain;
 

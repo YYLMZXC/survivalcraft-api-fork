@@ -84,7 +84,7 @@ namespace Game
 					{
 						throw new InvalidOperationException("Internet connection is unavailable.");
 					}
-					using (HttpClient client = new HttpClient())
+					using (HttpClient client = new())
 					{
 						System.Uri requestUri = (parameters != null && parameters.Count > 0) ? new System.Uri($"{address}?{UrlParametersToString(parameters)}") : new System.Uri(address);
 						client.DefaultRequestHeaders.Referrer = new System.Uri(address);
@@ -164,7 +164,7 @@ namespace Game
 
 		public static string UrlParametersToString(Dictionary<string, string> values)
 		{
-			StringBuilder stringBuilder = new StringBuilder();
+			StringBuilder stringBuilder = new();
 			string value = string.Empty;
 			foreach (KeyValuePair<string, string> value2 in values)
 			{
@@ -192,7 +192,7 @@ namespace Game
 
 		public static Dictionary<string, string> UrlParametersFromString(string s)
 		{
-			Dictionary<string, string> dictionary = new Dictionary<string, string>();
+			Dictionary<string, string> dictionary = [];
 			string[] array = s.Split(new char[1]
 			{
 				'&'
@@ -236,9 +236,9 @@ namespace Game
 					{
 						throw new InvalidOperationException("Internet connection is unavailable.");
 					}
-					using (HttpClient client = new HttpClient())
+					using (HttpClient client = new())
 					{
-						Dictionary<string, string> dictionary = new Dictionary<string, string>();
+						Dictionary<string, string> dictionary = [];
 						if (headers != null)
 						{
 							foreach (KeyValuePair<string, string> header in headers)

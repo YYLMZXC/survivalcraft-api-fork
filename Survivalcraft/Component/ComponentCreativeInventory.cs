@@ -16,7 +16,7 @@ namespace Game
 			public int value;
 			public Order(Block b, int o, int v) { block = b; order = o; value = v; }
 		}
-		public List<int> m_slots = new List<int>();
+		public List<int> m_slots = [];
 
 		public int m_activeSlotIndex;
 
@@ -96,7 +96,7 @@ namespace Game
 			{
 				m_slots.Add(0);
 			}
-			List<Order> orders = new List<Order>();
+			List<Order> orders = [];
 			foreach (Block item in BlocksManager.Blocks)
 			{
 				foreach (int creativeValue in item.GetCreativeValues())

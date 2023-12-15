@@ -13,7 +13,7 @@ namespace Game
 	{
 		public class Message
 		{
-			public List<Line> Lines = new List<Line>();
+			public List<Line> Lines = [];
 		}
 
 		public class Line
@@ -57,7 +57,7 @@ namespace Game
 
 		public static bool CanDownloadMotd = true;
 
-		public static List<FilterMod> FilterModAll = new List<FilterMod>();
+		public static List<FilterMod> FilterModAll = [];
 
 		public static Message m_message;
 
@@ -259,11 +259,15 @@ namespace Game
 				failure(new InvalidOperationException("Internet connection is unavailable."));
 				return;
 			}
-			var header = new Dictionary<string, string>();
-			header.Add("Content-Type", "application/x-www-form-urlencoded");
-			var dictionary = new Dictionary<string, string>();
-			dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
-			dictionary.Add("Content", dataString);
+			var header = new Dictionary<string, string>
+			{
+				{ "Content-Type", "application/x-www-form-urlencoded" }
+			};
+			var dictionary = new Dictionary<string, string>
+			{
+				{ "Operater", SettingsManager.ScpboxAccessToken },
+				{ "Content", dataString }
+			};
 			WebManager.Post("https://m.schub.top/com/api/zh/setnotice", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
 			{
 				success(data);
@@ -291,7 +295,7 @@ namespace Game
 			{
 				if (item.Name.LocalName == "FilterMod")
 				{
-					FilterMod filterMod = new FilterMod();
+					FilterMod filterMod = new();
 					filterMod.Name = item.Attribute("Name").Value;
 					filterMod.PackageName = item.Attribute("PackageName").Value;
 					filterMod.Version = item.Attribute("Version").Value;
@@ -310,7 +314,7 @@ namespace Game
 				if (!string.IsNullOrEmpty(time)) time = (IsCNLanguageType() ? "公告发布时间: " : "Time: ") + time;
 				string title = IsCNLanguageType() ? m_bulletin.Title : m_bulletin.EnTitle;
 				string content = IsCNLanguageType() ? m_bulletin.Content : m_bulletin.EnContent;
-				BulletinDialog bulletinDialog = new BulletinDialog(title, content, time, delegate
+				BulletinDialog bulletinDialog = new(title, content, time, delegate
 				{
 					SettingsManager.BulletinTime = m_bulletin.Time;
 				}, delegate (LabelWidget titleLabel, LabelWidget contentLabel)

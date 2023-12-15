@@ -19,11 +19,11 @@ namespace Game
 			public float ActualHeight;
 		}
 
-		public List<Column> m_columns = new List<Column>();
+		public List<Column> m_columns = [];
 
-		public List<Row> m_rows = new List<Row>();
+		public List<Row> m_rows = [];
 
-		public Dictionary<Widget, Point2> m_cells = new Dictionary<Widget, Point2>();
+		public Dictionary<Widget, Point2> m_cells = [];
 
 		public int ColumnsCount
 		{

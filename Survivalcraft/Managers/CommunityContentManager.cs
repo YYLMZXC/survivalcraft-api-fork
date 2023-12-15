@@ -17,9 +17,9 @@ namespace Game
 	{
 		public const string m_scResDirAddress = "https://m.schub.top/com/list";
 
-		public static Dictionary<string, string> m_idToAddressMap = new Dictionary<string, string>();
+		public static Dictionary<string, string> m_idToAddressMap = [];
 
-		public static Dictionary<string, bool> m_feedbackCache = new Dictionary<string, bool>();
+		public static Dictionary<string, bool> m_feedbackCache = [];
 
 		public static void Initialize()
 		{
@@ -67,8 +67,10 @@ namespace Game
 				return;
 			}
 			var dictionary = new Dictionary<string, string>();
-			var Header = new Dictionary<string, string>();
-			Header.Add("Content-Type", "application/x-www-form-urlencoded");
+			var Header = new Dictionary<string, string>
+			{
+				{ "Content-Type", "application/x-www-form-urlencoded" }
+			};
 			dictionary.Add("Action", "list");
 			dictionary.Add("Cursor", cursor ?? string.Empty);
 			dictionary.Add("UserId", userFilter ?? string.Empty);
@@ -238,12 +240,14 @@ namespace Game
 				failure(new InvalidOperationException("Internet connection is unavailable."));
 				return;
 			}
-			var dictionary = new Dictionary<string, string>();
-			dictionary.Add("Action", "delete");
-			dictionary.Add("UserId", userId);
-			dictionary.Add("Url", address);
-			dictionary.Add("Platform", VersionsManager.Platform.ToString());
-			dictionary.Add("Version", VersionsManager.Version);
+			var dictionary = new Dictionary<string, string>
+			{
+				{ "Action", "delete" },
+				{ "UserId", userId },
+				{ "Url", address },
+				{ "Platform", VersionsManager.Platform.ToString() },
+				{ "Version", VersionsManager.Version }
+			};
 			WebManager.Post(m_scResDirAddress, null, null, WebManager.UrlParametersToStream(dictionary), progress, delegate
 			{
 				success();
@@ -293,9 +297,11 @@ namespace Game
 				return;
 			}
 
-			var dictionary = new Dictionary<string, string>();
-			dictionary.Add("Action", "feedback");
-			dictionary.Add("Feedback", feedback);
+			var dictionary = new Dictionary<string, string>
+			{
+				{ "Action", "feedback" },
+				{ "Feedback", feedback }
+			};
 			if (feedbackParameter != null)
 			{
 				dictionary.Add("FeedbackParameter", feedbackParameter);
@@ -344,16 +350,20 @@ namespace Game
 				failure(new InvalidOperationException("Internet connection is unavailable."));
 				return;
 			}
-			var Header = new Dictionary<string, string>();
-			Header.Add("Content-Type", "application/x-www-form-urlencoded");
-			var dictionary = new Dictionary<string, string>();
-			dictionary.Add("Cursor", cursor ?? string.Empty);
-			dictionary.Add("Action", "GetUserList");
-			dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
-			dictionary.Add("SearchKey", searchKey);
-			dictionary.Add("SearchType", searchType);
-			dictionary.Add("Filter", filter);
-			dictionary.Add("Order", order.ToString());
+			var Header = new Dictionary<string, string>
+			{
+				{ "Content-Type", "application/x-www-form-urlencoded" }
+			};
+			var dictionary = new Dictionary<string, string>
+			{
+				{ "Cursor", cursor ?? string.Empty },
+				{ "Action", "GetUserList" },
+				{ "Operater", SettingsManager.ScpboxAccessToken },
+				{ "SearchKey", searchKey },
+				{ "SearchType", searchType },
+				{ "Filter", filter },
+				{ "Order", order.ToString() }
+			};
 			WebManager.Post("https://m.schub.top/com/api/zh/userList", null, Header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
 			{
 				try
@@ -428,15 +438,19 @@ namespace Game
 				failure(new InvalidOperationException("Internet connection is unavailable."));
 				return;
 			}
-			var header = new Dictionary<string, string>();
-			header.Add("Content-Type", "application/x-www-form-urlencoded");
-			var dictionary = new Dictionary<string, string>();
-			dictionary.Add("Action", "UpdateLockState");
-			dictionary.Add("Id", id.ToString());
-			dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
-			dictionary.Add("LockState", lockState.ToString());
-			dictionary.Add("Duration", duration.ToString());
-			dictionary.Add("Reason", reason);
+			var header = new Dictionary<string, string>
+			{
+				{ "Content-Type", "application/x-www-form-urlencoded" }
+			};
+			var dictionary = new Dictionary<string, string>
+			{
+				{ "Action", "UpdateLockState" },
+				{ "Id", id.ToString() },
+				{ "Operater", SettingsManager.ScpboxAccessToken },
+				{ "LockState", lockState.ToString() },
+				{ "Duration", duration.ToString() },
+				{ "Reason", reason }
+			};
 			WebManager.Post("https://m.schub.top/com/api/zh/userList", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
 			{
 				success(data);
@@ -454,12 +468,16 @@ namespace Game
 				failure(new InvalidOperationException("Internet connection is unavailable."));
 				return;
 			}
-			var header = new Dictionary<string, string>();
-			header.Add("Content-Type", "application/x-www-form-urlencoded");
-			var dictionary = new Dictionary<string, string>();
-			dictionary.Add("Action", "ResetPassword");
-			dictionary.Add("Id", id.ToString());
-			dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
+			var header = new Dictionary<string, string>
+			{
+				{ "Content-Type", "application/x-www-form-urlencoded" }
+			};
+			var dictionary = new Dictionary<string, string>
+			{
+				{ "Action", "ResetPassword" },
+				{ "Id", id.ToString() },
+				{ "Operater", SettingsManager.ScpboxAccessToken }
+			};
 			WebManager.Post("https://m.schub.top/com/api/zh/userList", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
 			{
 				success(data);
@@ -477,13 +495,17 @@ namespace Game
 				failure(new InvalidOperationException("Internet connection is unavailable."));
 				return;
 			}
-			var header = new Dictionary<string, string>();
-			header.Add("Content-Type", "application/x-www-form-urlencoded");
-			var dictionary = new Dictionary<string, string>();
-			dictionary.Add("Type", type);
-			dictionary.Add("Id", id.ToString());
-			dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
-			dictionary.Add("Boutique", boutique.ToString());
+			var header = new Dictionary<string, string>
+			{
+				{ "Content-Type", "application/x-www-form-urlencoded" }
+			};
+			var dictionary = new Dictionary<string, string>
+			{
+				{ "Type", type },
+				{ "Id", id.ToString() },
+				{ "Operater", SettingsManager.ScpboxAccessToken },
+				{ "Boutique", boutique.ToString() }
+			};
 			WebManager.Post("https://m.schub.top/com/api/zh/boutique", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
 			{
 				success(data);
@@ -501,12 +523,16 @@ namespace Game
 				failure(new InvalidOperationException("Internet connection is unavailable."));
 				return;
 			}
-			var header = new Dictionary<string, string>();
-			header.Add("Content-Type", "application/x-www-form-urlencoded");
-			var dictionary = new Dictionary<string, string>();
-			dictionary.Add("Id", id.ToString());
-			dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
-			dictionary.Add("IsShow", isShow.ToString());
+			var header = new Dictionary<string, string>
+			{
+				{ "Content-Type", "application/x-www-form-urlencoded" }
+			};
+			var dictionary = new Dictionary<string, string>
+			{
+				{ "Id", id.ToString() },
+				{ "Operater", SettingsManager.ScpboxAccessToken },
+				{ "IsShow", isShow.ToString() }
+			};
 			WebManager.Post("https://m.schub.top/com/api/zh/hide", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
 			{
 				success(data);
@@ -524,11 +550,15 @@ namespace Game
 				failure(new InvalidOperationException("Internet connection is unavailable."));
 				return;
 			}
-			var header = new Dictionary<string, string>();
-			header.Add("Content-Type", "application/x-www-form-urlencoded");
-			var dictionary = new Dictionary<string, string>();
-			dictionary.Add("Id", id.ToString());
-			dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
+			var header = new Dictionary<string, string>
+			{
+				{ "Content-Type", "application/x-www-form-urlencoded" }
+			};
+			var dictionary = new Dictionary<string, string>
+			{
+				{ "Id", id.ToString() },
+				{ "Operater", SettingsManager.ScpboxAccessToken }
+			};
 			WebManager.Post("https://m.schub.top/com/api/zh/deleteFile", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
 			{
 				success(data);
@@ -546,10 +576,14 @@ namespace Game
 				failure(new InvalidOperationException("Internet connection is unavailable."));
 				return;
 			}
-			var header = new Dictionary<string, string>();
-			header.Add("Content-Type", "application/x-www-form-urlencoded");
-			var dictionary = new Dictionary<string, string>();
-			dictionary.Add("Operater", SettingsManager.ScpboxAccessToken);
+			var header = new Dictionary<string, string>
+			{
+				{ "Content-Type", "application/x-www-form-urlencoded" }
+			};
+			var dictionary = new Dictionary<string, string>
+			{
+				{ "Operater", SettingsManager.ScpboxAccessToken }
+			};
 			WebManager.Post("https://m.schub.top/com/api/zh/isadmin", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
 			{
 				var result = (JsonObject)WebManager.JsonFromBytes(data);

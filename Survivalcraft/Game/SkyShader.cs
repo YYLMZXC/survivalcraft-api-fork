@@ -82,7 +82,7 @@ namespace Engine.Graphics
 
 		public static ShaderMacro[] PrepareShaderMacros(bool useVertexColor, bool useTexture, bool useAlphaThreshold, ShaderMacro[] shaderMacros = null)
 		{
-			List<ShaderMacro> list = new List<ShaderMacro>();
+			List<ShaderMacro> list = [];
 			if (useVertexColor)
 			{
 				list.Add(new ShaderMacro("USE_VERTEXCOLOR"));

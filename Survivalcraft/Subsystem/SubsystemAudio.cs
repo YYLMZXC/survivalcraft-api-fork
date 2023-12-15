@@ -36,21 +36,21 @@ namespace Game
 
 		public SubsystemGameWidgets m_subsystemViews;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public List<Vector3> m_listenerPositions = new List<Vector3>();
+		public List<Vector3> m_listenerPositions = [];
 
-		public Dictionary<string, Congestion> m_congestions = new Dictionary<string, Congestion>();
+		public Dictionary<string, Congestion> m_congestions = [];
 
 		public double m_nextSoundTime;
 
-		public List<SoundInfo> m_queuedSounds = new List<SoundInfo>();
+		public List<SoundInfo> m_queuedSounds = [];
 
-		public List<Sound> m_sounds = new List<Sound>();
+		public List<Sound> m_sounds = [];
 
-		public Dictionary<Sound, bool> m_mutedSounds = new Dictionary<Sound, bool>();
+		public Dictionary<Sound, bool> m_mutedSounds = [];
 
-		public ReadOnlyList<Vector3> ListenerPositions => new ReadOnlyList<Vector3>(m_listenerPositions);
+		public ReadOnlyList<Vector3> ListenerPositions => new(m_listenerPositions);
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -148,7 +148,7 @@ namespace Game
 
 		public Sound CreateSound(string name)
 		{
-			Sound sound = new Sound(ContentManager.Get<SoundBuffer>(name));
+			Sound sound = new(ContentManager.Get<SoundBuffer>(name));
 			m_sounds.Add(sound);
 			return sound;
 		}

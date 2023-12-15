@@ -16,13 +16,13 @@ namespace Game
 
 		public SubsystemAudio m_subsystemAudio;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public Dictionary<GameWidget, Dictionary<Point2, PrecipitationShaftParticleSystem>> m_activeShafts = new Dictionary<GameWidget, Dictionary<Point2, PrecipitationShaftParticleSystem>>();
+		public Dictionary<GameWidget, Dictionary<Point2, PrecipitationShaftParticleSystem>> m_activeShafts = [];
 
-		public List<PrecipitationShaftParticleSystem> m_toRemove = new List<PrecipitationShaftParticleSystem>();
+		public List<PrecipitationShaftParticleSystem> m_toRemove = [];
 
-		public Dictionary<GameWidget, Vector2?> m_lastShaftsUpdatePositions = new Dictionary<GameWidget, Vector2?>();
+		public Dictionary<GameWidget, Vector2?> m_lastShaftsUpdatePositions = [];
 
 		public float m_targetRainSoundVolume;
 
@@ -170,8 +170,8 @@ namespace Game
 			Dictionary<Point2, PrecipitationShaftParticleSystem> activeShafts = GetActiveShafts(camera.GameWidget);
 			byte b = (byte)(255f * MathUtils.Lerp(0.15f, 1f, SubsystemSky.SkyLightIntensity));
 			byte b2 = (byte)(255f * MathUtils.Lerp(0.15f, 1f, SubsystemSky.SkyLightIntensity));
-			Color rainColor = new Color(b, b, b);
-			Color snowColor = new Color(b2, b2, b2);
+			Color rainColor = new(b, b, b);
+			Color snowColor = new(b2, b2, b2);
 			ModsManager.HookAction("SetRainAndSnowColor", modloader => { return modloader.SetRainAndSnowColor(ref rainColor, ref snowColor); });
 			RainColor = rainColor;
 			SnowColor = snowColor;
@@ -369,7 +369,7 @@ namespace Game
 		{
 			if (!m_activeShafts.TryGetValue(gameWidget, out Dictionary<Point2, PrecipitationShaftParticleSystem> value))
 			{
-				value = new Dictionary<Point2, PrecipitationShaftParticleSystem>();
+				value = [];
 				m_activeShafts.Add(gameWidget, value);
 			}
 			return value;

@@ -10,15 +10,15 @@ namespace Engine
 
 		public float Z;
 
-		public static readonly Vector3 Zero = new Vector3(0f);
+		public static readonly Vector3 Zero = new(0f);
 
-		public static readonly Vector3 One = new Vector3(1f);
+		public static readonly Vector3 One = new(1f);
 
-		public static readonly Vector3 UnitX = new Vector3(1f, 0f, 0f);
+		public static readonly Vector3 UnitX = new(1f, 0f, 0f);
 
-		public static readonly Vector3 UnitY = new Vector3(0f, 1f, 0f);
+		public static readonly Vector3 UnitY = new(0f, 1f, 0f);
 
-		public static readonly Vector3 UnitZ = new Vector3(0f, 0f, 1f);
+		public static readonly Vector3 UnitZ = new(0f, 0f, 1f);
 
 		public Vector2 XY
 		{

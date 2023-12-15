@@ -16,7 +16,7 @@ namespace Game
 
 		public static class Cache
 		{
-			public static Dictionary<Type, NamesValues> m_namesValuesByType = new Dictionary<Type, NamesValues>();
+			public static Dictionary<Type, NamesValues> m_namesValuesByType = [];
 
 			public static NamesValues Query(Type type)
 			{

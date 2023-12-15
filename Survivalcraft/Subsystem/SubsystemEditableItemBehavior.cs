@@ -11,9 +11,9 @@ namespace Game
 
 		public int m_contents;
 
-		public Dictionary<int, T> m_itemsData = new Dictionary<int, T>();
+		public Dictionary<int, T> m_itemsData = [];
 
-		public Dictionary<Point3, T> m_blocksData = new Dictionary<Point3, T>();
+		public Dictionary<Point3, T> m_blocksData = [];
 
 		public SubsystemEditableItemBehavior(int contents)
 		{

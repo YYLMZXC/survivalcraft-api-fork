@@ -8,7 +8,7 @@ namespace Game
 
 		public float m_voltage;
 
-		public static Random s_random = new Random();
+		public static Random s_random = new();
 
 		public RandomGeneratorElectricElement(SubsystemElectricity subsystemElectricity, CellFace cellFace)
 			: base(subsystemElectricity, cellFace)

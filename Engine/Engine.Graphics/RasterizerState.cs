@@ -10,39 +10,39 @@ namespace Engine.Graphics
 
 		private float m_slopeScaleDepthBias;
 
-		public static readonly RasterizerState CullNone = new RasterizerState
+		public static readonly RasterizerState CullNone = new()
 		{
 			CullMode = CullMode.None,
 			IsLocked = true
 		};
 
-		public static readonly RasterizerState CullNoneScissor = new RasterizerState
+		public static readonly RasterizerState CullNoneScissor = new()
 		{
 			CullMode = CullMode.None,
 			ScissorTestEnable = true,
 			IsLocked = true
 		};
 
-		public static readonly RasterizerState CullClockwise = new RasterizerState
+		public static readonly RasterizerState CullClockwise = new()
 		{
 			CullMode = CullMode.CullClockwise,
 			IsLocked = true
 		};
 
-		public static readonly RasterizerState CullClockwiseScissor = new RasterizerState
+		public static readonly RasterizerState CullClockwiseScissor = new()
 		{
 			CullMode = CullMode.CullClockwise,
 			ScissorTestEnable = true,
 			IsLocked = true
 		};
 
-		public static readonly RasterizerState CullCounterClockwise = new RasterizerState
+		public static readonly RasterizerState CullCounterClockwise = new()
 		{
 			CullMode = CullMode.CullCounterClockwise,
 			IsLocked = true
 		};
 
-		public static readonly RasterizerState CullCounterClockwiseScissor = new RasterizerState
+		public static readonly RasterizerState CullCounterClockwiseScissor = new()
 		{
 			CullMode = CullMode.CullCounterClockwise,
 			ScissorTestEnable = true,

@@ -9,7 +9,7 @@ namespace Game
 
 		public string m_worldSnapshotName;
 
-		public StateMachine m_stateMachine = new StateMachine();
+		public StateMachine m_stateMachine = new();
 		public static string fName = "GameLoadingScreen";
 		public GameLoadingScreen()
 		{

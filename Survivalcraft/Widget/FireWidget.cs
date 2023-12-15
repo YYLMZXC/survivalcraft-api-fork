@@ -4,7 +4,7 @@ namespace Game
 {
 	public class FireWidget : CanvasWidget
 	{
-		public ScreenSpaceFireRenderer m_fireRenderer = new ScreenSpaceFireRenderer(100);
+		public ScreenSpaceFireRenderer m_fireRenderer = new(100);
 
 		public float ParticlesPerSecond
 		{

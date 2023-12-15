@@ -7,15 +7,15 @@ namespace Game
 	{
 		public const int Index = 63;
 
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBlockMesh = new();
 
-		public BlockMesh m_leavesBlockMesh = new BlockMesh();
+		public BlockMesh m_leavesBlockMesh = new();
 
-		public BlockMesh m_standTrunkBlockMesh = new BlockMesh();
+		public BlockMesh m_standTrunkBlockMesh = new();
 
-		public BlockMesh m_decorationsBlockMesh = new BlockMesh();
+		public BlockMesh m_decorationsBlockMesh = new();
 
-		public BlockMesh m_litDecorationsBlockMesh = new BlockMesh();
+		public BlockMesh m_litDecorationsBlockMesh = new();
 
 		public override void Initialize()
 		{

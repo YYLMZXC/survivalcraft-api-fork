@@ -6,7 +6,7 @@ namespace FluxJpeg.Core.Decoder
 {
 	internal class JpegScan
 	{
-		private List<JpegComponent> components = new List<JpegComponent>();
+		private List<JpegComponent> components = [];
 
 		private int maxV;
 

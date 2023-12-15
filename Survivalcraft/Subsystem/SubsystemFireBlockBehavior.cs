@@ -33,15 +33,15 @@ namespace Game
 
 		public SubsystemAmbientSounds m_subsystemAmbientSounds;
 
-		public Dictionary<Point3, float> m_expansionProbabilities = new Dictionary<Point3, float>();
+		public Dictionary<Point3, float> m_expansionProbabilities = [];
 
-		public Dictionary<Point3, FireData> m_fireData = new Dictionary<Point3, FireData>();
+		public Dictionary<Point3, FireData> m_fireData = [];
 
-		public DynamicArray<Point3> m_firePointsCopy = new DynamicArray<Point3>();
+		public DynamicArray<Point3> m_firePointsCopy = [];
 
-		public Dictionary<Point3, float> m_toBurnAway = new Dictionary<Point3, float>();
+		public Dictionary<Point3, float> m_toBurnAway = [];
 
-		public Dictionary<Point3, float> m_toExpand = new Dictionary<Point3, float>();
+		public Dictionary<Point3, float> m_toExpand = [];
 
 		public int m_copyIndex;
 
@@ -51,7 +51,7 @@ namespace Game
 
 		public float m_lastScanDuration;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_fireSoundVolume;
 

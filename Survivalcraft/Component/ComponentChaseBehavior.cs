@@ -7,7 +7,7 @@ namespace Game
 {
 	public class ComponentChaseBehavior : ComponentBehavior, IUpdateable
 	{
-		private Dictionary<ModLoader, Action> Hooks = new Dictionary<ModLoader, Action>();
+		private Dictionary<ModLoader, Action> Hooks = [];
 
 		public SubsystemGameInfo m_subsystemGameInfo;
 
@@ -31,11 +31,11 @@ namespace Game
 
 		public ComponentCreatureModel m_componentCreatureModel;
 
-		public DynamicArray<ComponentBody> m_componentBodies = new DynamicArray<ComponentBody>();
+		public DynamicArray<ComponentBody> m_componentBodies = [];
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
-		public StateMachine m_stateMachine = new StateMachine();
+		public StateMachine m_stateMachine = new();
 
 		public float m_dayChaseRange;
 

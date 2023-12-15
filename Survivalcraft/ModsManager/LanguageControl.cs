@@ -6,7 +6,7 @@ namespace Game
 {
 	public static class LanguageControl
 	{
-		public static JsonObject KeyWords = new JsonObject();
+		public static JsonObject KeyWords = [];
 		public static string Ok = default;
 		public static string Cancel = default;
 		public static string None = default;
@@ -27,7 +27,7 @@ namespace Game
 		public static string Exists = default;
 		public static string Success = default;
 		public static string Delete = default;
-		public static List<string> LanguageTypes = new List<string>();
+		public static List<string> LanguageTypes = [];
 
 		public static void Initialize(string languageType)
 		{
@@ -124,7 +124,7 @@ namespace Game
 					}
 					else
 					{
-						JsonObject keys = new JsonObject();
+						JsonObject keys = [];
 						if (node.ContainsKey(i.ToString()))
 						{
 							node[i.ToString()] = keys;

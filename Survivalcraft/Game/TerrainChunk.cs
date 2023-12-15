@@ -65,23 +65,23 @@ namespace Game
 
 		public bool AreBehaviorsNotified;
 
-		public object lockobj = new object();
+		public object lockobj = new();
 
 		public bool IsLoaded;
 
 		public volatile bool NewGeometryData;
 
-		public TerrainChunkGeometry Geometry = new TerrainChunkGeometry();
+		public TerrainChunkGeometry Geometry = new();
 
 		public int[] Cells = new int[65536];
 
 		public int[] Shafts = new int[256];
 
-		public Dictionary<Texture2D, TerrainGeometry[]> Draws = new Dictionary<Texture2D, TerrainGeometry[]>();
+		public Dictionary<Texture2D, TerrainGeometry[]> Draws = [];
 
-		public DynamicArray<TerrainChunkGeometry.Buffer> Buffers = new DynamicArray<TerrainChunkGeometry.Buffer>();
+		public DynamicArray<TerrainChunkGeometry.Buffer> Buffers = [];
 
-		public DynamicArray<BrushPaint> m_brushPaints = new DynamicArray<BrushPaint>();
+		public DynamicArray<BrushPaint> m_brushPaints = [];
 
 		public TerrainChunk(Terrain terrain, int x, int z)
 		{

@@ -11,11 +11,11 @@ namespace Game
 			public float Strength;
 		}
 
-		public Dictionary<Point3, Particle> m_particlesByPoint = new Dictionary<Point3, Particle>();
+		public Dictionary<Point3, Particle> m_particlesByPoint = [];
 
-		public List<Particle> m_inactiveParticles = new List<Particle>();
+		public List<Particle> m_inactiveParticles = [];
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public const float m_duration = 1.5f;
 
@@ -35,7 +35,7 @@ namespace Game
 			{
 				if (m_inactiveParticles.Count > 0)
 				{
-					value = m_inactiveParticles[m_inactiveParticles.Count - 1];
+					value = m_inactiveParticles[^1];
 					m_inactiveParticles.RemoveAt(m_inactiveParticles.Count - 1);
 				}
 				else

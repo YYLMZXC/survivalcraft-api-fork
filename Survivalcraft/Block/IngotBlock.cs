@@ -7,7 +7,7 @@ namespace Game
 	{
 		public string m_meshName;
 
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBlockMesh = new();
 
 		public IngotBlock(string meshName)
 		{

@@ -7,9 +7,9 @@ namespace Game
 	{
 		public const int Index = 87;
 
-		public BlockMesh m_blockMesh = new BlockMesh();
+		public BlockMesh m_blockMesh = new();
 
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBlockMesh = new();
 
 		public BoundingBox[] m_collisionBoxes = new BoundingBox[1];
 

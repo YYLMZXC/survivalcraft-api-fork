@@ -13,9 +13,9 @@ namespace Game
 
 		public int m_attachedSignBlockIndex;
 
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBlockMesh = new();
 
-		public BlockMesh m_standaloneColoredBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneColoredBlockMesh = new();
 
 		public BlockMesh[] m_blockMeshes = new BlockMesh[16];
 

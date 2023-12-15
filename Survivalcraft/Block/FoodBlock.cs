@@ -7,7 +7,7 @@ namespace Game
 	{
 		public static int m_compostValue = Terrain.MakeBlockValue(168, 0, SoilBlock.SetHydration(SoilBlock.SetNitrogen(0, 1), hydration: false));
 
-		public BlockMesh m_standaloneBlockMesh = new BlockMesh();
+		public BlockMesh m_standaloneBlockMesh = new();
 
 		public string m_modelName;
 

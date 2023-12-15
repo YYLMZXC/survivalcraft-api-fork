@@ -16,7 +16,7 @@ namespace Engine.Graphics
 
 		public float MaxDepth;
 
-		public Rectangle Rectangle => new Rectangle(X, Y, Width, Height);
+		public Rectangle Rectangle => new(X, Y, Width, Height);
 
 		public float AspectRatio => (float)Width / (float)Height;
 

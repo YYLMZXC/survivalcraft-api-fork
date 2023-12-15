@@ -13,7 +13,7 @@ namespace Game
 	{
 		public static GameDatabase m_gameDatabase;
 
-		public static Dictionary<string, ValuesDictionary> m_valueDictionaries = new Dictionary<string, ValuesDictionary>();
+		public static Dictionary<string, ValuesDictionary> m_valueDictionaries = [];
 
 		public static GameDatabase GameDatabase
 		{

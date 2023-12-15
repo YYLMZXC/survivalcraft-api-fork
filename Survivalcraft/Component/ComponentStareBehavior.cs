@@ -14,11 +14,11 @@ namespace Game
 
 		public ComponentPathfinding m_componentPathfinding;
 
-		public DynamicArray<ComponentBody> m_componentBodies = new DynamicArray<ComponentBody>();
+		public DynamicArray<ComponentBody> m_componentBodies = [];
 
-		public StateMachine m_stateMachine = new StateMachine();
+		public StateMachine m_stateMachine = new();
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public float m_importanceLevel;
 

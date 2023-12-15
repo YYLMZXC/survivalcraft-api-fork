@@ -175,7 +175,7 @@ namespace Game
 
 		public SubsystemFireBlockBehavior m_subsystemFireBlockBehavior;
 
-		public List<ExplosionData> m_queuedExplosions = new List<ExplosionData>();
+		public List<ExplosionData> m_queuedExplosions = [];
 
 		public SparseSpatialArray<float> m_pressureByPoint;
 
@@ -183,9 +183,9 @@ namespace Game
 
 		public int m_projectilesCount;
 
-		public Dictionary<Projectile, bool> m_generatedProjectiles = new Dictionary<Projectile, bool>();
+		public Dictionary<Projectile, bool> m_generatedProjectiles = [];
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public ExplosionParticleSystem m_explosionParticleSystem;
 

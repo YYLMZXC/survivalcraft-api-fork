@@ -22,7 +22,7 @@ namespace Game
 			}
 		}
 
-		public static ReadOnlyList<IExternalContentProvider> Providers => new ReadOnlyList<IExternalContentProvider>(m_providers);
+		public static ReadOnlyList<IExternalContentProvider> Providers => new(m_providers);
 
 		public static void Initialize()
 		{
@@ -159,7 +159,7 @@ namespace Game
 			{
 				return new InvalidOperationException(LanguageControl.Get(fName, 2));
 			}
-			if (name[0] == ' ' || name[name.Length - 1] == ' ')
+			if (name[0] == ' ' || name[^1] == ' ')
 			{
 				return new InvalidOperationException(LanguageControl.Get(fName, 3));
 			}

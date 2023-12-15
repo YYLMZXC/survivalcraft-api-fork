@@ -10,13 +10,13 @@ namespace Game
 {
 	public static class CharacterSkinsManager
 	{
-		public static List<string> m_characterSkinNames = new List<string>();
+		public static List<string> m_characterSkinNames = [];
 
-		public static Dictionary<PlayerClass, Model> m_playerModels = new Dictionary<PlayerClass, Model>();
+		public static Dictionary<PlayerClass, Model> m_playerModels = [];
 
-		public static Dictionary<PlayerClass, Model> m_outerClothingModels = new Dictionary<PlayerClass, Model>();
+		public static Dictionary<PlayerClass, Model> m_outerClothingModels = [];
 
-		public static ReadOnlyList<string> CharacterSkinsNames => new ReadOnlyList<string>(m_characterSkinNames);
+		public static ReadOnlyList<string> CharacterSkinsNames => new(m_characterSkinNames);
 
 		public static string CharacterSkinsDirectoryName => ModsManager.CharacterSkinsDirectoryName;
 

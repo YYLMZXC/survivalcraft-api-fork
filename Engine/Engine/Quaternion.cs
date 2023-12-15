@@ -12,7 +12,7 @@ namespace Engine
 
 		public float W;
 
-		public static readonly Quaternion Identity = new Quaternion(0f, 0f, 0f, 1f);
+		public static readonly Quaternion Identity = new(0f, 0f, 0f, 1f);
 
 		public Quaternion(float x, float y, float z, float w)
 		{

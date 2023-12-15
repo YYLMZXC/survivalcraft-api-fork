@@ -5,7 +5,7 @@ namespace Engine.Graphics
 {
 	public abstract class GraphicsResource : IDisposable
 	{
-		internal static HashSet<GraphicsResource> m_resources = new HashSet<GraphicsResource>();
+		internal static HashSet<GraphicsResource> m_resources = [];
 
 		internal bool m_isDisposed;
 

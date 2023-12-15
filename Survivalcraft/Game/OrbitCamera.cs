@@ -6,7 +6,7 @@ namespace Game
 	{
 		public Vector3 m_position;
 
-		public Vector2 m_angles = new Vector2(0f, MathUtils.DegToRad(30f));
+		public Vector2 m_angles = new(0f, MathUtils.DegToRad(30f));
 
 		public float m_distance = 6f;
 

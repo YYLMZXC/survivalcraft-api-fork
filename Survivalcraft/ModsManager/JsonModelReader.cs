@@ -12,20 +12,20 @@ namespace Game
      **/
 	public class JsonModelReader
 	{
-		public static Dictionary<string, List<Vector3>> FacesDic = new Dictionary<string, List<Vector3>>();
-		public static Dictionary<string, Vector3> NormalDic = new Dictionary<string, Vector3>();
-		public static Dictionary<string, List<int>> FacedirecDic = new Dictionary<string, List<int>>();
-		public static Dictionary<float, List<int>> TextureRotate = new Dictionary<float, List<int>>();
+		public static Dictionary<string, List<Vector3>> FacesDic = [];
+		public static Dictionary<string, Vector3> NormalDic = [];
+		public static Dictionary<string, List<int>> FacedirecDic = [];
+		public static Dictionary<float, List<int>> TextureRotate = [];
 		static JsonModelReader()
 		{
-			FacesDic.Add("north", new List<Vector3>() { Vector3.UnitX, Vector3.Zero, Vector3.UnitY, new Vector3(1, 1, 0) });
-			FacesDic.Add("south", new List<Vector3>() { new Vector3(1, 0, 1), Vector3.UnitZ, new Vector3(0, 1, 1), new Vector3(1, 1, 1) });
+			FacesDic.Add("north", [Vector3.UnitX, Vector3.Zero, Vector3.UnitY, new Vector3(1, 1, 0)]);
+			FacesDic.Add("south", [new Vector3(1, 0, 1), Vector3.UnitZ, new Vector3(0, 1, 1), new Vector3(1, 1, 1)]);
 
-			FacesDic.Add("east", new List<Vector3>() { new Vector3(1, 0, 0), new Vector3(1, 0, 1), new Vector3(1, 1, 1), new Vector3(1, 1, 0) });
-			FacesDic.Add("west", new List<Vector3>() { Vector3.Zero, Vector3.UnitZ, new Vector3(0, 1, 1), Vector3.UnitY });
+			FacesDic.Add("east", [new Vector3(1, 0, 0), new Vector3(1, 0, 1), new Vector3(1, 1, 1), new Vector3(1, 1, 0)]);
+			FacesDic.Add("west", [Vector3.Zero, Vector3.UnitZ, new Vector3(0, 1, 1), Vector3.UnitY]);
 
-			FacesDic.Add("up", new List<Vector3>() { Vector3.UnitY, new Vector3(0, 1, 1), Vector3.One, new Vector3(1, 1, 0) });
-			FacesDic.Add("down", new List<Vector3>() { Vector3.Zero, Vector3.UnitZ, new Vector3(1, 0, 1), new Vector3(1, 0, 0) });
+			FacesDic.Add("up", [Vector3.UnitY, new Vector3(0, 1, 1), Vector3.One, new Vector3(1, 1, 0)]);
+			FacesDic.Add("down", [Vector3.Zero, Vector3.UnitZ, new Vector3(1, 0, 1), new Vector3(1, 0, 0)]);
 
 			NormalDic.Add("north", new Vector3(0, 0, -1));
 			NormalDic.Add("south", new Vector3(0, 0, 1));
@@ -34,18 +34,18 @@ namespace Game
 			NormalDic.Add("up", new Vector3(0, 1, 0));
 			NormalDic.Add("down", new Vector3(0, -1, 0));
 
-			FacedirecDic.Add("north", new List<int>() { 0, 2, 1, 0, 3, 2 });//逆
-			FacedirecDic.Add("west", new List<int>() { 0, 2, 1, 0, 3, 2 });//逆
-			FacedirecDic.Add("up", new List<int>() { 0, 2, 1, 0, 3, 2 });//逆
+			FacedirecDic.Add("north", [0, 2, 1, 0, 3, 2]);//逆
+			FacedirecDic.Add("west", [0, 2, 1, 0, 3, 2]);//逆
+			FacedirecDic.Add("up", [0, 2, 1, 0, 3, 2]);//逆
 
-			FacedirecDic.Add("south", new List<int>() { 0, 1, 2, 0, 2, 3 });//顺
-			FacedirecDic.Add("east", new List<int>() { 0, 1, 2, 0, 2, 3 });//顺
-			FacedirecDic.Add("down", new List<int>() { 0, 1, 2, 0, 2, 3 });//顺
+			FacedirecDic.Add("south", [0, 1, 2, 0, 2, 3]);//顺
+			FacedirecDic.Add("east", [0, 1, 2, 0, 2, 3]);//顺
+			FacedirecDic.Add("down", [0, 1, 2, 0, 2, 3]);//顺
 
-			TextureRotate.Add(0f, new List<int>() { 0, 3, 2, 3, 2, 1, 0, 1 });
-			TextureRotate.Add(90f, new List<int>() { 0, 1, 0, 3, 2, 3, 2, 1 });
-			TextureRotate.Add(180f, new List<int>() { 2, 1, 0, 1, 0, 3, 2, 3 });
-			TextureRotate.Add(270f, new List<int>() { 2, 3, 2, 1, 0, 1, 0, 3 });
+			TextureRotate.Add(0f, [0, 3, 2, 3, 2, 1, 0, 1]);
+			TextureRotate.Add(90f, [0, 1, 0, 3, 2, 3, 2, 1]);
+			TextureRotate.Add(180f, [2, 1, 0, 1, 0, 3, 2, 3]);
+			TextureRotate.Add(270f, [2, 3, 2, 1, 0, 1, 0, 3]);
 		}
 		public static float ObjConvertFloat(object obj)
 		{
@@ -56,7 +56,7 @@ namespace Game
 		}
 		public static JsonModel Load(Stream stream)
 		{
-			Dictionary<string, ObjModelReader.ObjMesh> Meshes = new Dictionary<string, ObjModelReader.ObjMesh>();
+			Dictionary<string, ObjModelReader.ObjMesh> Meshes = [];
 			Vector3 FirstPersonOffset = Vector3.One;
 			Vector3 FirstPersonRotation = Vector3.Zero;
 			Vector3 FirstPersonScale = Vector3.One;
@@ -71,7 +71,7 @@ namespace Game
 				{
 					JsonObject jsonObj = obj as JsonObject;
 					Vector2 textureSize = Vector2.Zero;
-					Dictionary<string, string> texturemap = new Dictionary<string, string>();
+					Dictionary<string, string> texturemap = [];
 					if (jsonObj.TryGetValue("display", out object obj13))
 					{
 						if ((obj13 as JsonObject).TryGetValue("thirdperson_righthand", out object obj1))
@@ -156,21 +156,21 @@ namespace Game
 								float ang = ObjConvertFloat(jobj8["angle"]);
 								//objMesh.MeshMatrix = Matrix.CreateFromAxisAngle(new Vector3(ObjConvertFloat(ori[0]) / 16f, ObjConvertFloat(ori[1]) / 16f, ObjConvertFloat(ori[2]) / 16f), ang);
 							}
-							Vector3 start = new Vector3(ObjConvertFloat(from[0]), ObjConvertFloat(from[1]), ObjConvertFloat(from[2]));
-							Vector3 end = new Vector3(ObjConvertFloat(to[0]), ObjConvertFloat(to[1]), ObjConvertFloat(to[2]));
+							Vector3 start = new(ObjConvertFloat(from[0]), ObjConvertFloat(from[1]), ObjConvertFloat(from[2]));
+							Vector3 end = new(ObjConvertFloat(to[0]), ObjConvertFloat(to[1]), ObjConvertFloat(to[2]));
 							Matrix transform = Matrix.CreateScale(end.X - start.X, end.Y - start.Y, end.Z - start.Z) * Matrix.CreateTranslation(start.X, start.Y, start.Z) * Matrix.CreateScale(0.0625f);//基础缩放变换
 							if (jobj.TryGetValue("faces", out object obj3))
 							{//每个面，开始生成六个面的顶点数据
 								JsonObject jsonobj2 = obj3 as JsonObject;
 								foreach (var jobj2 in jsonobj2)
 								{
-									ObjModelReader.ObjMesh childMesh = new ObjModelReader.ObjMesh(jobj2.Key);
+									ObjModelReader.ObjMesh childMesh = new(jobj2.Key);
 									List<Vector3> vectors = FacesDic[jobj2.Key];//预取出四个面的点
 									JsonObject jobj3 = jobj2.Value as JsonObject;
 									float rotate = 0f;
 									string facename = jobj2.Key;
 									float[] uvs = new float[4];
-									List<Vector2> TexCoords = new List<Vector2>();
+									List<Vector2> TexCoords = [];
 									if (jobj3.TryGetValue("rotation", out object obj6))
 									{//处理uv旋转数据
 										rotate = ObjConvertFloat(obj6);
@@ -254,21 +254,21 @@ namespace Game
 							}
 						}
 					}
-					List<ObjModelReader.ObjMesh> objMeshes = new List<ObjModelReader.ObjMesh>();
+					List<ObjModelReader.ObjMesh> objMeshes = [];
 					foreach (var c in Meshes)
 					{
 						objMeshes.Add(c.Value);
 					}
 					if (jsonObj.TryGetValue("groups", out object jobj9))
 					{//解析groups
-						Dictionary<string, ObjModelReader.ObjMesh> Meshes2 = new Dictionary<string, ObjModelReader.ObjMesh>();
+						Dictionary<string, ObjModelReader.ObjMesh> Meshes2 = [];
 						JsonArray jsonArray = jobj9 as JsonArray;
 						for (int m = 0; m < jsonArray.Count; m++)
 						{
 							JsonObject jobj10 = jsonArray[m] as JsonObject;
 							string jobj10name = m.ToString();
 							if (jobj10.TryGetValue("name", out object jobj10name_)) jobj10name = (string)jobj10name_;
-							ObjModelReader.ObjMesh mesh = new ObjModelReader.ObjMesh(jobj10name);
+							ObjModelReader.ObjMesh mesh = new(jobj10name);
 							if (jobj10.TryGetValue("oringin", out object jobj11))
 							{
 								JsonArray jarr2 = jobj11 as JsonArray;

@@ -24,7 +24,7 @@ namespace Engine.Graphics
 			{
 				throw new InvalidOperationException("Unsupported color format.");
 			}
-			Image image = new Image(renderTarget.Width, renderTarget.Height);
+			Image image = new(renderTarget.Width, renderTarget.Height);
 			renderTarget.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget.Width, renderTarget.Height));
 			Image.Save(image, stream, format, saveAlpha);
 		}

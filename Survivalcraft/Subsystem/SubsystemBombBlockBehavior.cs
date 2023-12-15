@@ -17,7 +17,7 @@ namespace Game
 
 		public SubsystemProjectiles m_subsystemProjectiles;
 
-		public Dictionary<Projectile, bool> m_projectiles = new Dictionary<Projectile, bool>();
+		public Dictionary<Projectile, bool> m_projectiles = [];
 
 		public override int[] HandledBlocks => new int[0];
 

@@ -10,9 +10,9 @@ namespace Game
 			public float Damage;
 		}
 
-		public Dictionary<Point3, TrapValue> m_trapValues = new Dictionary<Point3, TrapValue>();
+		public Dictionary<Point3, TrapValue> m_trapValues = [];
 
-		public List<Point3> m_toRemove = new List<Point3>();
+		public List<Point3> m_toRemove = [];
 
 		public override int[] HandledBlocks => new int[1]
 		{

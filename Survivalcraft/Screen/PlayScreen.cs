@@ -92,7 +92,7 @@ namespace Game
 
 		public override void Update()
 		{
-			Vector2 size = new Vector2(310, 60);
+			Vector2 size = new(310, 60);
 			if (SettingsManager.UIScale > 1f) size = new Vector2(250, 60);
 			m_playButton.Size = size;
 			m_newWorldButton.Size = size;

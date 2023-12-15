@@ -397,7 +397,7 @@ namespace Hjg.Pngcs
 			}
 			if (skipChunkIdsSet == null && CurrentChunkGroup > 0)
 			{
-				skipChunkIdsSet = new Dictionary<string, int>();
+				skipChunkIdsSet = [];
 				if (SkipChunkIds != null)
 				{
 					string[] skipChunkIds = SkipChunkIds;

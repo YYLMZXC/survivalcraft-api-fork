@@ -16,12 +16,12 @@ namespace Engine.Graphics
 
 		private Vector4 m_blendFactor = Vector4.Zero;
 
-		public static readonly BlendState Opaque = new BlendState
+		public static readonly BlendState Opaque = new()
 		{
 			IsLocked = true
 		};
 
-		public static readonly BlendState Additive = new BlendState
+		public static readonly BlendState Additive = new()
 		{
 			ColorSourceBlend = Blend.SourceAlpha,
 			ColorDestinationBlend = Blend.One,
@@ -30,7 +30,7 @@ namespace Engine.Graphics
 			IsLocked = true
 		};
 
-		public static readonly BlendState AlphaBlend = new BlendState
+		public static readonly BlendState AlphaBlend = new()
 		{
 			ColorSourceBlend = Blend.One,
 			ColorDestinationBlend = Blend.InverseSourceAlpha,
@@ -39,7 +39,7 @@ namespace Engine.Graphics
 			IsLocked = true
 		};
 
-		public static readonly BlendState NonPremultiplied = new BlendState
+		public static readonly BlendState NonPremultiplied = new()
 		{
 			ColorSourceBlend = Blend.SourceAlpha,
 			ColorDestinationBlend = Blend.InverseSourceAlpha,

@@ -19,7 +19,7 @@ namespace Game
 
 		public static string fName = "ComponentIntro";
 
-		public StateMachine m_stateMachine = new StateMachine();
+		public StateMachine m_stateMachine = new();
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 

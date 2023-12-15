@@ -26,7 +26,7 @@ namespace Game
 
 		public static double m_nextSongTime;
 
-		public static Random m_random = new Random();
+		public static Random m_random = new();
 
 		public static Mix CurrentMix
 		{

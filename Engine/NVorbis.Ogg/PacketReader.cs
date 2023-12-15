@@ -75,7 +75,7 @@ namespace NVorbis.Ogg
 
 		private Packet _last;
 
-		private object _packetLock = new object();
+		private object _packetLock = new();
 
 		internal bool HasEndOfStream => _eosFound;
 

@@ -6,7 +6,7 @@ namespace TemplatesDatabase
 {
 	public struct ProceduralValue
 	{
-		private static Regex m_regEx = new Regex("\\%([A-Za-z0-9_\\-\\.\\/\\^]+)\\%", RegexOptions.Compiled);
+		private static Regex m_regEx = new("\\%([A-Za-z0-9_\\-\\.\\/\\^]+)\\%", RegexOptions.Compiled);
 
 		public string Procedure;
 
@@ -39,7 +39,7 @@ namespace TemplatesDatabase
 		{
 			if (reference.Length == 36 && reference[8] == '-' && reference[13] == '-' && reference[18] == '-' && reference[23] == '-')
 			{
-				Guid guid = new Guid(reference);
+				Guid guid = new(reference);
 				return context.Database.FindDatabaseObject(guid, null, throwIfNotFound: false);
 			}
 			if (reference.Contains("/") || reference.Contains(".") || reference.Contains("^"))

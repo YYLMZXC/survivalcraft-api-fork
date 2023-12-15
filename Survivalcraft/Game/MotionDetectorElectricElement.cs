@@ -28,7 +28,7 @@ namespace Game
 
 		public Vector2 m_corner2;
 
-		public DynamicArray<ComponentBody> m_bodies = new DynamicArray<ComponentBody>();
+		public DynamicArray<ComponentBody> m_bodies = [];
 
 		public MotionDetectorElectricElement(SubsystemElectricity subsystemElectricity, CellFace cellFace)
 			: base(subsystemElectricity, cellFace)

@@ -17,7 +17,7 @@ namespace Game
 
 		public int m_recipeIndex;
 
-		public List<CraftingRecipe> m_craftingRecipes = new List<CraftingRecipe>();
+		public List<CraftingRecipe> m_craftingRecipes = [];
 
 		public RecipaediaRecipesScreen()
 		{

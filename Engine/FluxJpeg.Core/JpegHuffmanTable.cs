@@ -9,7 +9,7 @@ namespace FluxJpeg.Core
 
 		private short[] values;
 
-		public static JpegHuffmanTable StdACChrominance = new JpegHuffmanTable(new short[16]
+		public static JpegHuffmanTable StdACChrominance = new(new short[16]
 		{
 			0,
 			2,
@@ -193,7 +193,7 @@ namespace FluxJpeg.Core
 			250
 		}, copy: false);
 
-		public static JpegHuffmanTable StdACLuminance = new JpegHuffmanTable(new short[16]
+		public static JpegHuffmanTable StdACLuminance = new(new short[16]
 		{
 			0,
 			2,
@@ -377,7 +377,7 @@ namespace FluxJpeg.Core
 			250
 		}, copy: false);
 
-		public static JpegHuffmanTable StdDCChrominance = new JpegHuffmanTable(new short[16]
+		public static JpegHuffmanTable StdDCChrominance = new(new short[16]
 		{
 			0,
 			3,
@@ -411,7 +411,7 @@ namespace FluxJpeg.Core
 			11
 		}, copy: false);
 
-		public static JpegHuffmanTable StdDCLuminance = new JpegHuffmanTable(new short[16]
+		public static JpegHuffmanTable StdDCLuminance = new(new short[16]
 		{
 			0,
 			1,

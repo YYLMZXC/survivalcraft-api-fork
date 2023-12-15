@@ -54,15 +54,15 @@ public class ModsManageContentScreen : Screen
 
 	public StateFilter m_filter;
 
-	public List<ModItem> m_installModList = new List<ModItem>();
+	public List<ModItem> m_installModList = [];
 
-	public List<ModItem> m_uninstallModList = new List<ModItem>();
+	public List<ModItem> m_uninstallModList = [];
 
-	public List<ModInfo> m_installModInfo = new List<ModInfo>();
+	public List<ModInfo> m_installModInfo = [];
 
-	public List<ModInfo> m_lastInstallModInfo = new List<ModInfo>();
+	public List<ModInfo> m_lastInstallModInfo = [];
 
-	public List<string> m_latestScanModList = new List<string>();
+	public List<string> m_latestScanModList = [];
 
 	public int m_count;
 
@@ -88,11 +88,11 @@ public class ModsManageContentScreen : Screen
 
 	public bool m_cancelScan;
 
-	public List<string> m_scanFailPaths = new List<string>();
+	public List<string> m_scanFailPaths = [];
 
 	public CancellableBusyDialog m_cancellableBusyDialog;
 
-	public List<string> m_commonPathList = new List<string>();
+	public List<string> m_commonPathList = [];
 
 	public bool m_isAdmin;
 
@@ -252,7 +252,7 @@ public class ModsManageContentScreen : Screen
 		{
 		});
 		if (!Storage.DirectoryExists(m_uninstallPath)) Storage.CreateDirectory(m_uninstallPath);
-		BusyDialog busyDialog = new BusyDialog(LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 32));
+		BusyDialog busyDialog = new(LanguageControl.Get(fName, 26), LanguageControl.Get(fName, 32));
 		DialogsManager.ShowDialog(null, busyDialog);
 		foreach (string commonPath in m_commonPaths)
 		{
@@ -265,7 +265,7 @@ public class ModsManageContentScreen : Screen
 		if (Storage.FileExists(commonPathsFile))
 		{
 			Stream stream = Storage.OpenFile(commonPathsFile, OpenFileMode.Read);
-			StreamReader streamReader = new StreamReader(stream);
+			StreamReader streamReader = new(stream);
 			string line;
 			while ((line = streamReader.ReadLine()) != null)
 			{
@@ -336,7 +336,7 @@ public class ModsManageContentScreen : Screen
 		if (m_commonPathList.Count > 0)
 		{
 			Stream stream = Storage.OpenFile(commonPathsFile, OpenFileMode.Create);
-			StreamWriter streamWriter = new StreamWriter(stream);
+			StreamWriter streamWriter = new(stream);
 			foreach (string commonPath in m_commonPathList)
 			{
 				streamWriter.WriteLine(commonPath);
@@ -480,7 +480,7 @@ public class ModsManageContentScreen : Screen
 			}
 			else if (modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Directory)
 			{
-				CancellableBusyDialog busyDialog = new CancellableBusyDialog(LanguageControl.Get(fName, 26), true);
+				CancellableBusyDialog busyDialog = new(LanguageControl.Get(fName, 26), true);
 				ReadyForScan(busyDialog);
 				Task.Run(delegate
 				{
@@ -644,7 +644,7 @@ public class ModsManageContentScreen : Screen
 			Stream stream = Storage.OpenFile(modItem.ExternalContentEntry.Path, OpenFileMode.ReadWrite);
 			if (stream == null) return;
 			Stream stream2 = GetDecipherStream(stream);
-			FileStream fileStream = new FileStream(Storage.GetSystemPath(ModsManager.ModCachePath) + "/Original.scmod", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+			FileStream fileStream = new(Storage.GetSystemPath(ModsManager.ModCachePath) + "/Original.scmod", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 			byte[] buff = new byte[stream2.Length];
 			stream2.Read(buff, 0, buff.Length);
 			fileStream.Write(buff, 0, buff.Length);
@@ -698,7 +698,7 @@ public class ModsManageContentScreen : Screen
 
 	public void UpdateListWithBusyDialog(bool fast = false)
 	{
-		BusyDialog busyDialog = new BusyDialog(LanguageControl.Get(fName, 43), null);
+		BusyDialog busyDialog = new(LanguageControl.Get(fName, 43), null);
 		DialogsManager.ShowDialog(null, busyDialog);
 		Task.Run(delegate
 		{
@@ -849,7 +849,7 @@ public class ModsManageContentScreen : Screen
 							{
 								if (zipArchiveEntry.FilenameInZip == "modinfo.json")
 								{
-									MemoryStream memoryStream = new MemoryStream();
+									MemoryStream memoryStream = new();
 									zipArchive.ExtractFile(zipArchiveEntry, memoryStream);
 									memoryStream.Position = 0L;
 									modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(memoryStream));
@@ -931,7 +931,7 @@ public class ModsManageContentScreen : Screen
 
 	public ModItem GetModItem(string fileName, bool IsDirectory)
 	{
-		ModItem modItem = new ModItem();
+		ModItem modItem = new();
 		string pathName = Storage.CombinePaths(m_path, fileName);
 		modItem.Name = fileName;
 		modItem.Subtexture = ExternalContentManager.GetEntryTypeIcon(IsDirectory ? ExternalContentType.Directory : ExternalContentType.Mod);
@@ -952,7 +952,7 @@ public class ModsManageContentScreen : Screen
 			{
 				if (zipArchiveEntry.FilenameInZip == "icon.png")
 				{
-					MemoryStream memoryStream = new MemoryStream();
+					MemoryStream memoryStream = new();
 					zipArchive.ExtractFile(zipArchiveEntry, memoryStream);
 					memoryStream.Position = 0L;
 					modItem.Subtexture = new Subtexture(Texture2D.Load(memoryStream), Vector2.Zero, Vector2.One);
@@ -960,7 +960,7 @@ public class ModsManageContentScreen : Screen
 				}
 				else if (zipArchiveEntry.FilenameInZip == "modinfo.json")
 				{
-					MemoryStream memoryStream = new MemoryStream();
+					MemoryStream memoryStream = new();
 					zipArchive.ExtractFile(zipArchiveEntry, memoryStream);
 					memoryStream.Position = 0L;
 					modItem.ModInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(memoryStream));
@@ -1013,7 +1013,7 @@ public class ModsManageContentScreen : Screen
 		string[] arPath = path.Split(new char[] { '/' });
 		if (arPath.Length > 5)
 		{
-			newText = ".../" + arPath[arPath.Length - 3] + "/" + arPath[arPath.Length - 2] + "/" + arPath[arPath.Length - 1];
+			newText = ".../" + arPath[^3] + "/" + arPath[^2] + "/" + arPath[^1];
 		}
 		return newText;
 	}
@@ -1028,7 +1028,7 @@ public class ModsManageContentScreen : Screen
 
 	public static Stream GetDecipherStream(Stream stream)
 	{
-		MemoryStream keepOpenStream = new MemoryStream();
+		MemoryStream keepOpenStream = new();
 		byte[] buff = new byte[stream.Length];
 		stream.Read(buff, 0, buff.Length);
 		byte[] hc = Encoding.UTF8.GetBytes(HeadingCode);
@@ -1145,7 +1145,7 @@ public class ModsManageContentScreen : Screen
 			}
 		}
 		string newPath = string.Format("{0}({1}).scmod", path.Substring(0, path.LastIndexOf('.')), LanguageControl.Get(fName, 63));
-		FileStream fileStream = new FileStream(Storage.GetSystemPath(newPath), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+		FileStream fileStream = new(Storage.GetSystemPath(newPath), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 		fileStream.Write(buff2, 0, buff2.Length);
 		fileStream.Flush();
 		stream.Dispose();

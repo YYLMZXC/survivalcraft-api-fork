@@ -8,9 +8,9 @@ namespace Engine.Graphics
 	{
 		internal VertexElement[] m_elements;
 
-		private static List<VertexElement[]> m_allElements = new List<VertexElement[]>();
+		private static List<VertexElement[]> m_allElements = [];
 
-		public ReadOnlyList<VertexElement> VertexElements => new ReadOnlyList<VertexElement>(m_elements);
+		public ReadOnlyList<VertexElement> VertexElements => new(m_elements);
 
 		public int VertexStride
 		{

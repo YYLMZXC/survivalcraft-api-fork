@@ -7,9 +7,9 @@ namespace Engine.Serialization
 {
 	public static class HumanReadableConverter
 	{
-		private static Dictionary<Type, IHumanReadableConverter> m_humanReadableConvertersByType = new Dictionary<Type, IHumanReadableConverter>();
+		private static Dictionary<Type, IHumanReadableConverter> m_humanReadableConvertersByType = [];
 
-		private static HashSet<Assembly> m_scannedAssemblies = new HashSet<Assembly>();
+		private static HashSet<Assembly> m_scannedAssemblies = [];
 
 		public static string ConvertToString(object value)
 		{

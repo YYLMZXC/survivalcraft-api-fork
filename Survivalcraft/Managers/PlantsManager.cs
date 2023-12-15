@@ -33,7 +33,7 @@ namespace Game
 				256
 			};
 			var random = new Random(33);
-			m_treeBrushesByType[0] = new List<TerrainBrush>();
+			m_treeBrushesByType[0] = [];
 			for (int i = 0; i < 16; i++)
 			{
 				int[] array = new int[16]
@@ -80,7 +80,7 @@ namespace Game
 				});
 				m_treeBrushesByType[0].Add(item);
 			}
-			m_treeBrushesByType[1] = new List<TerrainBrush>();
+			m_treeBrushesByType[1] = [];
 			for (int j = 0; j < 16; j++)
 			{
 				int[] array2 = new int[16]
@@ -119,7 +119,7 @@ namespace Game
 				}, (int y) => (y < height3 * 0.35f || y > height3 * 0.75f) ? 0f : random.Float(0f, 0.33f * height3));
 				m_treeBrushesByType[1].Add(item2);
 			}
-			m_treeBrushesByType[2] = new List<TerrainBrush>();
+			m_treeBrushesByType[2] = [];
 			for (int k = 0; k < 16; k++)
 			{
 				int[] array3 = new int[16]
@@ -165,7 +165,7 @@ namespace Game
 				});
 				m_treeBrushesByType[2].Add(item3);
 			}
-			m_treeBrushesByType[3] = new List<TerrainBrush>();
+			m_treeBrushesByType[3] = [];
 			for (int l = 0; l < 16; l++)
 			{
 				int[] array4 = new int[18]
@@ -216,7 +216,7 @@ namespace Game
 				});
 				m_treeBrushesByType[3].Add(item4);
 			}
-			m_treeBrushesByType[4] = new List<TerrainBrush>();
+			m_treeBrushesByType[4] = [];
 			for (int m = 0; m < 16; m++)
 			{
 				m_treeBrushesByType[4].Add(CreateMimosaBrush(random, MathUtils.Lerp(6f, 9f, m / 15f)));

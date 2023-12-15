@@ -7,7 +7,7 @@ namespace Game
 {
 	public class SubsystemPlayerStats : Subsystem
 	{
-		public Dictionary<int, PlayerStats> m_playerStats = new Dictionary<int, PlayerStats>();
+		public Dictionary<int, PlayerStats> m_playerStats = [];
 
 		public PlayerStats GetPlayerStats(int playerIndex)
 		{

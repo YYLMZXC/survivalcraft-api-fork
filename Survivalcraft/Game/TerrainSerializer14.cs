@@ -15,7 +15,7 @@ namespace Game
 
 		public byte[] m_buffer = new byte[131072];
 
-		public Dictionary<Point2, int> m_chunkOffsets = new Dictionary<Point2, int>();
+		public Dictionary<Point2, int> m_chunkOffsets = [];
 
 		public Stream m_stream;
 

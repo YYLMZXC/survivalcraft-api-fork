@@ -20,11 +20,11 @@ namespace Game
 
 		public int m_nodesCacheIndex;
 
-		public DynamicArray<Node> m_nodesCache = new DynamicArray<Node>();
+		public DynamicArray<Node> m_nodesCache = [];
 
-		public DynamicArray<Node> m_openHeap = new DynamicArray<Node>();
+		public DynamicArray<Node> m_openHeap = [];
 
-		public DynamicArray<T> m_neighbors = new DynamicArray<T>();
+		public DynamicArray<T> m_neighbors = [];
 
 		public float PathCost
 		{

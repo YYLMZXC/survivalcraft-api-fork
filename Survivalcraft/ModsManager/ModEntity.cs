@@ -15,8 +15,8 @@ namespace Game
 		public ModInfo modInfo;
 		public Texture2D Icon;
 		public ZipArchive ModArchive;
-		public Dictionary<string, ZipArchiveEntry> ModFiles = new Dictionary<string, ZipArchiveEntry>();
-		public List<Block> Blocks = new List<Block>();
+		public Dictionary<string, ZipArchiveEntry> ModFiles = [];
+		public List<Block> Blocks = [];
 		public string ModFilePath;
 		public bool IsDependencyChecked;
 		public ModLoader Loader { get { return ModLoader_; } set { ModLoader_ = value; } }
@@ -83,7 +83,7 @@ namespace Game
 		{
 			if (ModFiles.TryGetValue(filename, out ZipArchiveEntry entry))
 			{
-				using (MemoryStream ms = new MemoryStream())
+				using (MemoryStream ms = new())
 				{
 					ModArchive.ExtractFile(entry, ms);
 					ms.Position = 0L;
@@ -156,8 +156,8 @@ namespace Game
 				}
 				if (filename.StartsWith("Assets/"))
 				{
-					MemoryStream memoryStream = new MemoryStream();
-					ContentInfo contentInfo = new ContentInfo(filename.Substring(7));
+					MemoryStream memoryStream = new();
+					ContentInfo contentInfo = new(filename.Substring(7));
 					ModArchive.ExtractFile(zipArchiveEntry, memoryStream);
 					contentInfo.SetContentStream(memoryStream);
 					ContentManager.Add(contentInfo);

@@ -29,7 +29,7 @@ namespace Game
 
 		public string m_spawnEntityTemplateName;
 
-		public static Random s_random = new Random();
+		public static Random s_random = new();
 
 		public bool IsEnabled
 		{

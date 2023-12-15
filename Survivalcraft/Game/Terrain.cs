@@ -124,7 +124,7 @@ namespace Game
 		public Terrain()
 		{
 			m_allChunks = new ChunksStorage();
-			m_allocatedChunks = new HashSet<TerrainChunk>();
+			m_allocatedChunks = [];
 		}
 
 		public void Dispose()

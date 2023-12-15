@@ -8,21 +8,21 @@ namespace Game
 	{
 		public static Point2[] m_sideNeighbors = new Point2[4]
 		{
-			new Point2(-1, 0),
-			new Point2(1, 0),
-			new Point2(0, -1),
-			new Point2(0, 1)
+			new(-1, 0),
+			new(1, 0),
+			new(0, -1),
+			new(0, 1)
 		};
 
 		public FluidBlock m_fluidBlock;
 
-		public Dictionary<Point3, bool> m_toUpdate = new Dictionary<Point3, bool>();
+		public Dictionary<Point3, bool> m_toUpdate = [];
 
-		public Dictionary<Point3, int> m_toSet = new Dictionary<Point3, int>();
+		public Dictionary<Point3, int> m_toSet = [];
 
-		public Dictionary<Point3, int> m_visited = new Dictionary<Point3, int>();
+		public Dictionary<Point3, int> m_visited = [];
 
-		public Dictionary<Point3, Vector2> m_fluidRandomFlowDirections = new Dictionary<Point3, Vector2>();
+		public Dictionary<Point3, Vector2> m_fluidRandomFlowDirections = [];
 
 		public bool m_generateSources;
 

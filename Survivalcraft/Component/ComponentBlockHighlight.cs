@@ -16,7 +16,7 @@ namespace Game
 
 		public ComponentPlayer m_componentPlayer;
 
-		public PrimitivesRenderer3D m_primitivesRenderer3D = new PrimitivesRenderer3D();
+		public PrimitivesRenderer3D m_primitivesRenderer3D = new();
 
 		public Shader m_shader;
 
@@ -100,7 +100,7 @@ namespace Game
 			m_subsystemAnimatedTextures = Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
 			m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
 			m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
-			m_shader = new Shader(ModsManager.GetInPakOrStorageFile<string>("Shaders/Highlight", ".vsh"), ModsManager.GetInPakOrStorageFile<string>("Shaders/Highlight", ".psh"), new ShaderMacro[] { new ShaderMacro("ShadowShader") });
+			m_shader = new Shader(ModsManager.GetInPakOrStorageFile<string>("Shaders/Highlight", ".vsh"), ModsManager.GetInPakOrStorageFile<string>("Shaders/Highlight", ".psh"), new ShaderMacro[] { new("ShadowShader") });
 
 		}
 

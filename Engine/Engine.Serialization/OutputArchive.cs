@@ -7,7 +7,7 @@ namespace Engine.Serialization
 	{
 		private int m_nextObjectId = 1;
 
-		private Dictionary<object, int> m_idByObject = new Dictionary<object, int>();
+		private Dictionary<object, int> m_idByObject = [];
 
 		protected OutputArchive(int version)
 			: base(version)

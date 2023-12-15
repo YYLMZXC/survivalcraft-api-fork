@@ -339,7 +339,7 @@ namespace Engine.Graphics
 
 		public static ShaderMacro[] PrepareShaderMacros(int lightsCount, bool useEmissionColor, bool useVertexColor, bool useTexture, bool useFog, bool useAlphaThreshold, int maxInstancesCount)
 		{
-			List<ShaderMacro> list = new List<ShaderMacro>();
+			List<ShaderMacro> list = [];
 			if (lightsCount > 0)
 			{
 				list.Add(new ShaderMacro("USE_LIGHTING"));

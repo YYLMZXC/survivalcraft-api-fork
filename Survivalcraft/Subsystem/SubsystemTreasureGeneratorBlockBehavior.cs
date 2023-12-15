@@ -17,7 +17,7 @@ namespace Game
 
 		public SubsystemPickables m_subsystemPickables;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public static TreasureData[] m_treasureData;
 

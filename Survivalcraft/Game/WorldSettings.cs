@@ -31,7 +31,7 @@ namespace Game
 
 		public TerrainGenerationMode TerrainGenerationMode;
 
-		public Vector2 IslandSize = new Vector2(400f, 400f);
+		public Vector2 IslandSize = new(400f, 400f);
 
 		public float BiomeSize = 1f;
 
@@ -51,7 +51,7 @@ namespace Game
 
 		public string BlocksTextureName = string.Empty;
 
-		public WorldPalette Palette = new WorldPalette();
+		public WorldPalette Palette = new();
 
 		public void ResetOptionsForNonCreativeMode()
 		{

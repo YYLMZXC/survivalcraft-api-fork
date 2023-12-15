@@ -23,7 +23,7 @@ namespace Game
 
 		public ButtonWidget m_playButton;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public WorldSettings m_worldSettings;
 

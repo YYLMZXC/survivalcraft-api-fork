@@ -5,7 +5,7 @@ namespace Engine.Graphics
 {
 	public class ModelMesh : IDisposable
 	{
-		internal List<ModelMeshPart> m_meshParts = new List<ModelMeshPart>();
+		internal List<ModelMeshPart> m_meshParts = [];
 
 		internal BoundingBox m_boundingBox;
 
@@ -33,7 +33,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public ReadOnlyList<ModelMeshPart> MeshParts => new ReadOnlyList<ModelMeshPart>(m_meshParts);
+		public ReadOnlyList<ModelMeshPart> MeshParts => new(m_meshParts);
 
 		internal ModelMesh()
 		{

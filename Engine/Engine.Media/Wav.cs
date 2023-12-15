@@ -52,7 +52,7 @@ namespace Engine.Media
 #if android
 			public WavStreamingSource(Stream stream, bool leaveOpen = false)
 			{
-				MemoryStream memoryStream = new MemoryStream();
+				MemoryStream memoryStream = new();
 				stream.Position = 0L;
 				stream.CopyTo(memoryStream);
 				memoryStream.Position = 0L;
@@ -99,7 +99,7 @@ namespace Engine.Media
 #if android
 			public override StreamingSource Duplicate()
 			{
-				MemoryStream memoryStream = new MemoryStream();
+				MemoryStream memoryStream = new();
 				m_stream.Position = 0L;
 				m_stream.CopyTo(memoryStream);
 				memoryStream.Position = 0L;
@@ -108,7 +108,7 @@ namespace Engine.Media
 #else
 			public override StreamingSource Duplicate()
 			{
-				MemoryStream memoryStream = new MemoryStream();
+				MemoryStream memoryStream = new();
 				m_stream.Position = 0L;
 				m_stream.CopyTo(memoryStream);
 				return new WavStreamingSource(memoryStream);

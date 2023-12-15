@@ -10,7 +10,7 @@ namespace Game
 
 		public SubsystemAudio m_subsystemAudio;
 
-		public Random m_random = new Random();
+		public Random m_random = new();
 
 		public ValuesDictionary m_impactsSoundsValuesDictionary;
 

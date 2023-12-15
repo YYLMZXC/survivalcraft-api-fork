@@ -9,9 +9,9 @@ namespace Game
 	{
 		public const int Index = 258;
 
-		private BlockMesh m_mesh = new BlockMesh();
+		private BlockMesh m_mesh = new();
 
-		private BlockMesh m_standaloneMesh = new BlockMesh();
+		private BlockMesh m_standaloneMesh = new();
 
 		private BoundingBox[] m_collisionBoxes;
 
@@ -20,9 +20,9 @@ namespace Game
 			Model model = ContentManager.Get<Model>("Models/Cairn");
 			Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Cairn").ParentBone);
 			Color white = Color.White;
-			BlockMesh blockMesh = new BlockMesh();
+			BlockMesh blockMesh = new();
 			blockMesh.AppendModelMeshPart(model.FindMesh("Cairn").MeshParts[0], boneAbsoluteTransform * Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, white);
-			BlockMesh blockMesh2 = new BlockMesh();
+			BlockMesh blockMesh2 = new();
 			blockMesh2.AppendModelMeshPart(model.FindMesh("Wood").MeshParts[0], boneAbsoluteTransform * Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, white);
 			m_mesh.AppendBlockMesh(blockMesh);
 			m_mesh.AppendBlockMesh(blockMesh2);
