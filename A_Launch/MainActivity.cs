@@ -1,13 +1,13 @@
-﻿using Android.Content;
+﻿using Android;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Provider;
 using Android.Runtime;
-using Permission = Android.Content.PM.Permission;
 using Engine;
 using Game;
-using Android.Provider;
-using Android;
 using Environment = Android.OS.Environment;
+using Permission = Android.Content.PM.Permission;
 namespace SC4Android
 {
 	[Activity(Label = "生存战争2.3插件版", LaunchMode = LaunchMode.SingleTask, Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]

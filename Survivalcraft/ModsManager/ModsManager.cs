@@ -1,13 +1,10 @@
 // Game.ModsManager
 using Engine;
-using Engine.Graphics;
-using Engine.Media;
 using Game;
 using SimpleJson;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -23,7 +20,7 @@ public static class ModsManager
 	public const int Apiv = 10;
 
 #if desktop
-	public const string 
+	public const string
 		ExternelPath = "app:",
 		DocumentPath = "/doc",
 		UserDataPath = ExternelPath + DocumentPath + "/UserId.dat",

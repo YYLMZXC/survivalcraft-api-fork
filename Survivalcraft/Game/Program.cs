@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Threading;
 namespace Game
 {
 	public static class Program
@@ -136,7 +135,7 @@ namespace Game
 				Log.Error(e.Message);
 			}
 		}
-		
+
 		public static void Run()
 		{
 			LastFrameTime = (float)(Time.RealTime - m_frameBeginTime);
@@ -191,7 +190,7 @@ namespace Game
 			{
 				if (GameManager.Project != null) GameManager.DisposeProject();
 				ExceptionManager.ReportExceptionToUser(null, e2);
-				Log.Error("sine:"+e2);
+				Log.Error("sine:" + e2);
 				ScreensManager.SwitchScreen("MainMenu");
 			}
 		}

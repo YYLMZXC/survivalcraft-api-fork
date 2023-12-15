@@ -1,6 +1,5 @@
 using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
-using System;
 using System.Collections.Generic;
 
 namespace Engine.Audio

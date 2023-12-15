@@ -72,10 +72,10 @@ namespace Game
 				SettingsManager.MultithreadedTerrainUpdate = true;
 				SettingsManager.UseReducedZRange = false;
 			}
-			if(m_使用内置路径.IsClicked)
+			if (m_使用内置路径.IsClicked)
 			{
 				SettingsManager.使用内置路径 = !SettingsManager.使用内置路径;
-				
+
 			}
 			m_singlethreadedTerrainUpdateButton.Text = "已弃用";
 			m_useAudioTrackCachingButton.Text = SettingsManager.EnableAndroidAudioTrackCaching ? LanguageControl.On : LanguageControl.Off;

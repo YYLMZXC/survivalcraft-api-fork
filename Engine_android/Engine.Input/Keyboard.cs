@@ -2,7 +2,6 @@ using Android.App;
 using Android.Views;
 using Android.Widget;
 using System;
-using OpenTK.Input;
 namespace Engine.Input
 {
 	public static class Keyboard
