@@ -1,7 +1,9 @@
 using Engine;
 using Engine.Graphics;
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml.Linq;
 
 namespace Game
@@ -159,8 +161,37 @@ namespace Game
 				ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLauguage(); });
 			});
 			AddLoadAction(delegate
-			{ //读取所有的ModEntity的dll，并分离出ModLoader，保存Blocks
-				ModsManager.ModListAllDo((modEntity) => { modEntity.LoadDll(); });
+			{
+			    Dictionary<string, Assembly[]> assemblies = [];
+				ModsManager.ModListAllDo((modEntity) =>
+				{
+					Log.Information("Get assemblies " + modEntity.modInfo.PackageName);
+				    assemblies[modEntity.modInfo.PackageName] = modEntity.GetAssemblies();
+				});
+				//加载 mod 程序集(.dll)文件
+				//但不进行处理操作(如添加block等)
+				
+				ModsManager.ModListAllDo((modEntity) =>
+				{
+				    foreach(var asm in assemblies[modEntity.modInfo.PackageName])
+				    {
+					    Log.Information("handle assembly " + modEntity.modInfo.PackageName + " " + asm.FullName);
+					    try
+					    {
+						    modEntity.HandleAssembly(asm);
+					    }
+					    catch(ReflectionTypeLoadException e)
+					    {
+						    Log.Error("Handle assembly failed");
+						    foreach (var asm2 in AppDomain.CurrentDomain.GetAssemblies())
+						    {
+							    Log.Information(asm2 + "\n" + string.Join<AssemblyName>("\n", asm2.GetReferencedAssemblies().AsEnumerable()));
+						    }
+					    }
+				    }
+				});
+				
+				//处理程序集
 			});
 			AddLoadAction(delegate
 			{ //读取所有的ModEntity的javascript
@@ -171,9 +202,10 @@ namespace Game
 			{
 				Info("执行初始化任务");
 				List<Action> actions = [];
-				ModsManager.ModListAllDo((modEntity) =>
+				ModsManager.HookAction("OnLoadingStart", (loader) =>
 				{
-					modEntity.Loader?.OnLoadingStart(actions);
+					loader.OnLoadingStart(actions);
+					return false;
 				});
 				foreach (var ac in actions)
 				{

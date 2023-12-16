@@ -1,12 +1,13 @@
 using Engine;
 using Engine.Graphics;
+
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
+using System.Linq;
 using System.Xml.Linq;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace Game
 {
@@ -120,7 +121,7 @@ namespace Game
 			ModLoader_?.__ModInitialize();
 		}
 		/// <summary>
-		/// 初始化Pak资源
+		/// 初始化Content资源
 		/// </summary>
 		public virtual void InitResources()
 		{
@@ -214,20 +215,26 @@ namespace Game
 			LoadingScreen.Info($"[{modInfo.Name}]加载.cr合成谱文件");
 			GetFiles(".cr", (filename, stream) => { ModsManager.CombineCr(element, stream); });
 		}
+		
 		/// <summary>
 		/// 加载mod程序集
 		/// </summary>
-		public virtual void LoadDll()
+		public virtual Assembly[] GetAssemblies()
 		{
-			LoadingScreen.Info($"[{modInfo.Name}]加载.dll程序集文件");
+			LoadingScreen.Info($"[{modInfo.Name}]加载 .NET .dll 程序集文件");
+			
+			var assemblies = new List<Assembly>();
+			
 			GetFiles(".dll", (filename, stream) =>
 			{
-				LoadDllLogic(stream);
-			});
+			    if(!filename.StartsWith("Assets/"))
+				    assemblies.Add(Assembly.Load(ModsManager.StreamToBytes(stream)));
+			});//获取mod文件内的dll文件（不包括Assets文件夹内的dll）
+			
+			return [.. assemblies];
 		}
-		public void LoadDllLogic(Stream stream)
+		public virtual void HandleAssembly(Assembly assembly)
 		{
-			var assembly = Assembly.Load(ModsManager.StreamToBytes(stream));
 			ModsManager.Dlls.Add(assembly.FullName, assembly);
 			var BlockTypes = new List<Type>();
 			Type[] types = assembly.GetTypes();

@@ -1,10 +1,13 @@
-﻿using Engine;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml.Linq;
+using System.Reflection;
+using System.Collections.Generic;
+
+using Engine;
+using Game.IContentReader;
+
 namespace Game
 {
 	public class SurvivalCraftModEntity : ModEntity
@@ -12,30 +15,32 @@ namespace Game
 
 		public SurvivalCraftModEntity()
 		{
-			List<IContentReader.IContentReader> readers =
-			[
-				new IContentReader.BitmapFontReader(),
-				new IContentReader.DaeModelReader(),
-				new IContentReader.ImageReader(),
-				new IContentReader.JsonArrayReader(),
-				new IContentReader.JsonObjectReader(),
+			var readers = new List<IContentReader.IContentReader>();
+			readers.AddRange(new IContentReader.IContentReader[]
+			{
+				new AssemblyReader(),
+				new BitmapFontReader(),
+				new DaeModelReader(),
+				new ImageReader(),
+				new JsonArrayReader(),
+				new JsonObjectReader(),
 				new IContentReader.JsonModelReader(),
-				new IContentReader.MtllibStructReader(),
+				new MtllibStructReader(),
 				new IContentReader.ObjModelReader(),
-				new IContentReader.ShaderReader(),
-				new IContentReader.SoundBufferReader(),
-				new IContentReader.StreamingSourceReader(),
+				new ShaderReader(),
+				new SoundBufferReader(),
+				new StreamingSourceReader(),
 				new IContentReader.StringReader(),
-				new IContentReader.SubtextureReader(),
-				new IContentReader.Texture2DReader(),
-				new IContentReader.XmlReader(),
-			];
+				new SubtextureReader(),
+				new Texture2DReader(),
+				new XmlReader()
+			});
 			for (int i = 0; i < readers.Count; i++)
 			{
 				ContentManager.ReaderList.Add(readers[i].Type, readers[i]);
 			}
 
-			Stream stream = Storage.OpenFile("app:Content.zip", OpenFileMode.Read);
+			Stream stream = Storage.OpenFile("app:/Content.zip", OpenFileMode.Read);
 			MemoryStream memoryStream = new();
 			stream.CopyTo(memoryStream);
 			stream.Close();
@@ -51,42 +56,38 @@ namespace Game
 			BlocksManager.LoadBlocksData(ContentManager.Get<string>("BlocksData"));
 			ContentManager.Dispose("BlocksData");
 		}
-		public override void LoadDll()
+		public override Assembly[] GetAssemblies()
 		{
-			List<Type> BlockTypes = [];
-			Type[] types = typeof(BlocksManager).Assembly.GetTypes();
-			for (int i = 0; i < types.Length; i++)
+			return [typeof(BlocksManager).Assembly];
+		}
+		public override void HandleAssembly(Assembly assembly)
+		{
+			var types = assembly.GetTypes();
+			foreach (var type in types)
 			{
-				Type type = types[i];
 				if (type.IsSubclassOf(typeof(ModLoader)) && !type.IsAbstract)
 				{
-					var modLoader = Activator.CreateInstance(types[i]) as ModLoader;
+					if(Activator.CreateInstance(type) is not ModLoader modLoader) continue;
 					modLoader.Entity = this;
 					modLoader.__ModInitialize();
 					Loader = modLoader;
 					ModsManager.ModLoaders.Add(modLoader);
 				}
-				if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
+				else if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
 				{
-					BlockTypes.Add(type);
+					var fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
+					if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
+					{
+						ModsManager.AddException(new InvalidOperationException($"Block type \"{type.FullName}\" does not have static field Index of type int."));
+					}
+					else
+					{
+						var index = (int)fieldInfo.GetValue(null);
+						var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
+						block.BlockIndex = index;
+						Blocks.Add(block);
+					}
 				}
-			}
-			for (int i = 0; i < BlockTypes.Count; i++)
-			{
-				Type type = BlockTypes[i];
-				FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
-				if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
-				{
-					ModsManager.AddException(new InvalidOperationException($"Block type \"{type.FullName}\" does not have static field Index of type int."));
-				}
-				else
-				{
-					int staticIndex = (int)fieldInfo.GetValue(null);
-					var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
-					block.BlockIndex = staticIndex;
-					Blocks.Add(block);
-				}
-
 			}
 		}
 		public override void LoadXdb(ref XElement xElement)

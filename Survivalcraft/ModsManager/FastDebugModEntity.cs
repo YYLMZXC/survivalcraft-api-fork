@@ -1,8 +1,10 @@
-using Engine;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using System.Reflection;
+using System.Collections.Generic;
+
+using Engine;
 
 namespace Game
 {
@@ -54,16 +56,19 @@ namespace Game
 			}
 		}
 
-		public override void LoadDll()
+		public override Assembly[] GetAssemblies()
 		{
+		    var assemblies = new List<Assembly>();
 			foreach (string c in Storage.ListFileNames(ModsManager.ModsPath))
 			{
 				if (c.EndsWith(".dll") && !(c.StartsWith("EntitySystem") || c.StartsWith("Engine") || c.StartsWith("Survivalcraft") || c.StartsWith("OpenTK")))
 				{
-					LoadDllLogic(Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
-					break;
+					var assemblyStream = Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath), OpenFileMode.Read);
+					
+					assemblies.Add(Assembly.Load(ModsManager.StreamToBytes(assemblyStream)));
 				}
 			}
+			return [.. assemblies];
 		}
 
 		public override void LoadClo(ClothingBlock block, ref XElement xElement)
