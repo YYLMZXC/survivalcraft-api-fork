@@ -204,7 +204,7 @@ public class ManageUserScreen : Screen
 		m_filterLabel.Text = GetFilterDisplayName(m_filter);
 		if (m_filterButton.IsClicked)
 		{
-			List<Filter> filters = [.. EnumUtils.GetEnumValues(typeof(Filter))];
+			List<int> filters = [.. EnumUtils.GetEnumValues(typeof(Filter))];
 			DialogsManager.ShowDialog(null, new ListSelectionDialog("请选择", filters, 60f, (object item) => GetFilterDisplayName((Filter)item), delegate (object result)
 			{
 				m_filter = (Filter)result;
@@ -214,7 +214,7 @@ public class ManageUserScreen : Screen
 		m_searchTypeButton.Text = GetSearchTypeName(m_searchType);
 		if (m_searchTypeButton.IsClicked)
 		{
-			List<SearchType> searchTypes = [.. EnumUtils.GetEnumValues(typeof(SearchType))];
+			List<int> searchTypes = [.. EnumUtils.GetEnumValues(typeof(SearchType))];
 			DialogsManager.ShowDialog(null, new ListSelectionDialog("请选择", searchTypes, 60f, (object item) => GetSearchTypeName((SearchType)item), delegate (object result)
 			{
 				m_searchType = (SearchType)result;

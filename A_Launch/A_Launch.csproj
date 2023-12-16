@@ -33,6 +33,9 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <RootNamespace>SCNEXT</RootNamespace>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <RunAOTCompilation>False</RunAOTCompilation>
+  </PropertyGroup>
 	<ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -64,6 +67,8 @@
     <AndroidAsset Include="..\Survivalcraft\init.js">
       <Link>Assets\init.js</Link>
     </AndroidAsset>
-	  <AndroidNativeLibrary Include="libs/arm64-v8a/libopenal32.so" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="OpenAL-Soft" Version="1.16.0" />
   </ItemGroup>
 </Project>
