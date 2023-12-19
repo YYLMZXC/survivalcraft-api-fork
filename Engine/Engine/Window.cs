@@ -213,7 +213,7 @@ namespace Engine
 					ex = new Exception($"Unknown exception. Additional information: {args.ExceptionObject}");
 				}
 				UnhandledExceptionInfo unhandledExceptionInfo = new(ex);
-				Window.UnhandledException?.Invoke(unhandledExceptionInfo);
+				UnhandledException?.Invoke(unhandledExceptionInfo);
 				if (!unhandledExceptionInfo.IsHandled)
 				{
 					Log.Error("Application terminating due to unhandled exception {0}", unhandledExceptionInfo.Exception);
@@ -225,7 +225,7 @@ namespace Engine
 			height = (height == 0) ? (ScreenSize.Y * 4 / 5) : height;
 			m_gameWindow = new GameWindow(width, height, mode, title, GameWindowFlags.Default, DisplayDevice.Default, 2, 0, GraphicsContextFlags.Default);
 			m_gameWindow.Icon = new Icon(typeof(Window).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.icon.ico"), new Size(32, 32));
-			m_dpiScale = (float)m_gameWindow.ClientSize.Width / 400f;
+			m_dpiScale = m_gameWindow.ClientSize.Width / 400f;
 			m_gameWindow.ClientSize = new Size(width, height);
 			if (Configuration.RunningOnMacOS)
 			{
@@ -260,11 +260,11 @@ namespace Engine
 			InitializeAll();
 			SubscribeToEvents();
 			m_state = State.Inactive;
-			Window.Created?.Invoke();
+			Created?.Invoke();
 			if (m_state == State.Inactive)
 			{
 				m_state = State.Active;
-				Window.Activated?.Invoke();
+				Activated?.Invoke();
 			}
 		}
 
@@ -275,14 +275,14 @@ namespace Engine
 				if (m_state == State.Inactive)
 				{
 					m_state = State.Active;
-					Window.Activated?.Invoke();
+					Activated?.Invoke();
 				}
 				return;
 			}
 			if (m_state == State.Active)
 			{
 				m_state = State.Inactive;
-				Window.Deactivated?.Invoke();
+				Deactivated?.Invoke();
 			}
 			Keyboard.Clear();
 			Mouse.Clear();
@@ -294,12 +294,12 @@ namespace Engine
 			if (m_state == State.Active)
 			{
 				m_state = State.Inactive;
-				Window.Deactivated?.Invoke();
+				Deactivated?.Invoke();
 			}
 			if (m_state == State.Inactive)
 			{
 				m_state = State.Uncreated;
-				Window.Closed?.Invoke();
+				Closed?.Invoke();
 			}
 			UnsubscribeFromEvents();
 			DisposeAll();
@@ -310,13 +310,13 @@ namespace Engine
 		private static void ResizeHandler(object sender, EventArgs args)
 		{
 			Display.Resize();
-			Window.Resized?.Invoke();
+			Resized?.Invoke();
 		}
 
 		private static void RenderFrameHandler(object sender, EventArgs args)
 		{
 			BeforeFrameAll();
-			Window.Frame?.Invoke();
+			Frame?.Invoke();
 			AfterFrameAll();
 			if (!m_closing)
 			{

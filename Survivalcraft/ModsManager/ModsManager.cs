@@ -21,24 +21,24 @@ public static class ModsManager
 
 #if desktop
 	public const string
-		ExternelPath = "app:",
-		DocumentPath = "/doc",
-		UserDataPath = ExternelPath + DocumentPath + "/UserId.dat",
-		CharacterSkinsDirectoryName = ExternelPath + DocumentPath + "/CharacterSkins",
-		FurniturePacksDirectoryName = ExternelPath + DocumentPath + "/FurniturePacks",
-		BlockTexturesDirectoryName = ExternelPath + DocumentPath + "/TexturePacks",
-		WorldsDirectoryName = ExternelPath + "/Worlds",
-		CommunityContentCachePath = ExternelPath + DocumentPath + "CommunityContentCache.xml",
-		ModsSetPath = ExternelPath + "/ModSettings.xml",
-		SettingPath = ExternelPath + "/Settings.xml",
-		ModCachePath = ExternelPath + "/Mods/Cache",
-		LogPath = ExternelPath + "/Bugs";
+		ExtPath = "app:",//ExternelPath
+		DocPath = "/doc",//DocumentPath
+		UserDataPath = ExtPath + DocPath + "/UserId.dat",
+		CharacterSkinsDirectoryName = ExtPath + DocPath + "/CharacterSkins",
+		FurniturePacksDirectoryName = ExtPath + DocPath + "/FurniturePacks",
+		BlockTexturesDirectoryName = ExtPath + DocPath + "/TexturePacks",
+		WorldsDirectoryName = ExtPath + "/Worlds",
+		CommunityContentCachePath = ExtPath + DocPath + "/CommunityContentCache.xml",
+		ModsSetPath = ExtPath + "/ModSettings.xml",
+		SettingPath = ExtPath + "/Settings.xml",
+		ModCachePath = ExtPath + "/Mods/Cache",
+		LogPath = ExtPath + "/Bugs";
 	public const bool IsAndroid = false;
 
 #endif
 #if android
-	public static string ExternelPath = EngineActivity.BasePath,
-						 ScreenCapturePath = ExternelPath + "/ScreenCapture",
+	public static string ExtPath = EngineActivity.BasePath,
+						 ScreenCapturePath = ExtPath + "/ScreenCapture",
 						 UserDataPath = "config:/UserId.dat",
 						 FurniturePacksDirectoryName = "config:/FurniturePacks",
 						 CharacterSkinsDirectoryName = "config:/CharacterSkins",
@@ -47,12 +47,12 @@ public static class ModsManager
 						 CommunityContentCachePath = "config:/CommunityContentCache.xml",
 						 ModsSetPath = "config:/ModSettings.xml",
 						 SettingPath = "config:/Settings.xml",
-						 ModCachePath = ExternelPath + "/ModsCache",
-						 LogPath = ExternelPath + "/Bugs";
+						 ModCachePath = ExtPath + "/ModsCache",
+						 LogPath = ExtPath + "/Bugs";
 	public const bool IsAndroid = true;
 
 #endif
-	public static string ModsPath = ExternelPath + "/Mods",
+	public static string ModsPath = ExtPath + "/Mods",
 						 path;//移动端mods数据文件夹
 	internal static ModEntity SurvivalCraftModEntity;
 	internal static bool ConfigLoaded = false;

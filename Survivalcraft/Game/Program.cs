@@ -80,7 +80,7 @@ namespace Game
 				}
 				else
 				{
-					Window.Run(2160, 3840, WindowMode.Resizable, "生存战争2.3插件版NEXT" + ModsManager.APIVersion + " #" + Error);
+					Window.Run(0, 0, WindowMode.Resizable, "生存战争2.3插件版NEXT" + ModsManager.APIVersion + " #" + Error);//宽高使用自动值
 				}
 			}
 			catch
