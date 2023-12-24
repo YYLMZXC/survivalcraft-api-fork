@@ -2108,6 +2108,9 @@
     <Compile Include="..\Survivalcraft\IContentReader\IContentReader.cs">
       <Link>IContentReader\IContentReader.cs</Link>
     </Compile>
+	<Compile Include="..\Survivalcraft\IContentReader\AssemblyReader.cs">
+      <Link>IContentReader\AssemblyReader.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\IContentReader\ImageReader.cs">
       <Link>IContentReader\ImageReader.cs</Link>
     </Compile>

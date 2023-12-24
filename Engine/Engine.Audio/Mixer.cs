@@ -1,5 +1,6 @@
 using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
+using System;
 using System.Collections.Generic;
 
 namespace Engine.Audio
@@ -38,6 +39,7 @@ namespace Engine.Audio
 			//Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
 #endif
 			new AudioContext();
+			CheckALError();
 		}
 		internal static void Dispose()
 		{
@@ -67,7 +69,7 @@ namespace Engine.Audio
 		{
 			AL.Listener(ALListenerf.Gain, volume);
 		}
-
+		/*
 		internal static void CheckALError()
 		{
 			ALError error = AL.GetError();
@@ -75,6 +77,30 @@ namespace Engine.Audio
 			//{
 			//	throw new InvalidOperationException(AL.GetErrorString(error));
 			//}
+		}*/
+			public static bool CheckALError()
+		{
+			try
+			{
+				ALError error = AL.GetError();
+				if (error != 0)
+				{
+					Log.Error("OPENAL出错!");
+					Log.Error(AL.GetError());
+					//throw new InvalidOperationException(AL.GetErrorString(error));
+					return true;//返回是否出错
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error("OPENAL疑似未安装!");
+				Log.Error (e);
+				return true;
+			}
 		}
 	}
 }

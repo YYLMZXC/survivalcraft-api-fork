@@ -68,7 +68,4 @@
       <Link>Assets\init.js</Link>
     </AndroidAsset>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="OpenAL-Soft" Version="1.16.0" />
-  </ItemGroup>
 </Project>

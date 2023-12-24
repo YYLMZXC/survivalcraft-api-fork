@@ -1025,6 +1025,8 @@
     <Compile Remove="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="OpenAL-Soft" Version="1.16.0" />
+    <PackageReference Include="Silk.NET.OpenAL.Soft.Native" Version="1.21.1.2" />
     <PackageReference Include="Xamarin.Legacy.OpenTK" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>

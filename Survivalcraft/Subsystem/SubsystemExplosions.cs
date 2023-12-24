@@ -1,6 +1,10 @@
 using Engine;
 using GameEntitySystem;
+using System.Collections.Concurrent;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TemplatesDatabase;
 
 namespace Game
@@ -241,6 +245,7 @@ namespace Game
 			m_projectilesCount = 0;
 			m_generatedProjectiles.Clear();
 			bool flag = false;
+			
 			int num = 0;
 			while (num < m_queuedExplosions.Count)
 			{
@@ -248,7 +253,8 @@ namespace Game
 				if (MathUtils.Abs(explosionData.X - x) <= 4 && MathUtils.Abs(explosionData.Y - y) <= 4 && MathUtils.Abs(explosionData.Z - z) <= 4)
 				{
 					m_queuedExplosions.RemoveAt(num);
-					SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary);
+					Task.Run(() => SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary));
+					//SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary);
 					flag |= !explosionData.NoExplosionSound;
 				}
 				else
@@ -256,6 +262,50 @@ namespace Game
 					num++;
 				}
 			}
+			/*
+			for (int num1 = 0; num1 < m_queuedExplosions.Count;num1++)
+			{
+				ExplosionData explosionData = m_queuedExplosions[num1];
+				while (!(MathUtils.Abs(explosionData.X - x) <= 4 && MathUtils.Abs(explosionData.Y - y) <= 4 && MathUtils.Abs(explosionData.Z - z) <= 4))
+				{
+					m_queuedExplosions.RemoveAt(num1);
+					SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary);
+					flag |= !explosionData.NoExplosionSound;
+				}
+			}
+			*//*
+			int m_queuedExplosionsCount = m_queuedExplosions.Count;
+			int[] indices = Enumerable.Range(0, m_queuedExplosionsCount).ToArray();
+
+			// 使用 Parallel.For 并行执行循环
+			Parallel.For(0, m_queuedExplosionsCount, (i, loopState) =>
+			{
+				int num1 = indices[i];
+				ExplosionData explosionData = m_queuedExplosions[num1];
+				if (MathUtils.Abs(explosionData.X - x) <= 4 && MathUtils.Abs(explosionData.Y - y) <= 4 && MathUtils.Abs(explosionData.Z - z) <= 4)
+				{
+					m_queuedExplosions.RemoveAt(num1);
+					SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary);
+					flag |= !explosionData.NoExplosionSound;
+				}
+			});
+			*//*
+			int index = 0;
+			foreach (var explosionData in m_queuedExplosions)
+			{
+				if (MathUtils.Abs(explosionData.X - x) <= 4 && MathUtils.Abs(explosionData.Y - y) <= 4 && MathUtils.Abs(explosionData.Z - z) <= 4)
+				{
+					m_queuedExplosions.RemoveAt(index);
+					Task.Run(() => SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary));
+					flag |= !explosionData.NoExplosionSound;
+				}
+				else
+				{
+					index++; 
+				}
+				
+			}
+			*/
 			PostprocessExplosions(flag);
 			if (!ShowExplosionPressure)
 			{

@@ -354,13 +354,21 @@ namespace Engine
 
 		private static void InitializeAll()
 		{
-			Dispatcher.Initialize();
-			Display.Initialize();
-			Keyboard.Initialize();
-			Mouse.Initialize();
-			Touch.Initialize();
-			GamePad.Initialize();
-			Mixer.Initialize();
+			try
+			{
+				Dispatcher.Initialize();
+				Display.Initialize();
+				Keyboard.Initialize();
+				Mouse.Initialize();
+				Touch.Initialize();
+				GamePad.Initialize();
+				Mixer.Initialize();
+			}
+			catch (Exception ex)
+			{
+				Log.Error("初始化时出错: " + ex.Message);
+			}
+
 		}
 
 		private static void DisposeAll()
