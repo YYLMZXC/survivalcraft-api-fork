@@ -1,6 +1,5 @@
 using Engine;
 using Engine.Graphics;
-using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -130,12 +129,11 @@ namespace Game
 			{
 				if (ExceptionManager.Error == null)
 				{
-					while (m_urisToHandle.Count > 0)
+					foreach (Uri obj in m_urisToHandle)
 					{
-						Uri obj = m_urisToHandle[0];
-						m_urisToHandle.RemoveAt(0);
 						HandleUri?.Invoke(obj);
 					}
+					m_urisToHandle.Clear();
 					PerformanceManager.Update();
 					MotdManager.Update();
 					MusicManager.Update();

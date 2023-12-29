@@ -269,17 +269,15 @@ namespace Game
 				Info("初始化Mod设置参数");
 				if (Storage.FileExists(ModsManager.ModsSetPath))
 				{
-					using (System.IO.Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Read))
+					using System.IO.Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Read);
+					try
 					{
-						try
-						{
-							XElement element = XElement.Load(stream);
-							ModsManager.LoadModSettings(element);
-						}
-						catch (Exception e)
-						{
-							Warning(e.Message);
-						}
+						XElement element = XElement.Load(stream);
+						ModsManager.LoadModSettings(element);
+					}
+					catch (Exception e)
+					{
+						Warning(e.Message);
 					}
 				}
 			});
