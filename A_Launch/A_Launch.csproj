@@ -36,6 +36,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <RunAOTCompilation>False</RunAOTCompilation>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="libs\arm64-v8a\libopenal32.so" />
+  </ItemGroup>
 	<ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>

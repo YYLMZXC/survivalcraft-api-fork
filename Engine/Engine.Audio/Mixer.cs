@@ -38,8 +38,9 @@ namespace Engine.Audio
 			//string str = Path.Combine(fullPath,  path);
 			//Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
 #endif
-			new AudioContext();
 			CheckALError();
+			new AudioContext();
+			
 		}
 		internal static void Dispose()
 		{
