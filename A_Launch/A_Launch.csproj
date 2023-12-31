@@ -36,10 +36,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <RunAOTCompilation>False</RunAOTCompilation>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="libs\arm64-v8a\2openal32.so" />
-    <None Remove="libs\arm64-v8a\openal32.dll" />
-  </ItemGroup>
 	<ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -54,6 +50,12 @@
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
 	<AndroidAsset Include="Assets\Unlit.vsh">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</AndroidAsset>
+	<AndroidAsset Include="Assets\Debugfont.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</AndroidAsset>
+	<AndroidAsset Include="Assets\Debugfont.lst">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
   </ItemGroup>

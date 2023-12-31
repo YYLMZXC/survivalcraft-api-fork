@@ -41,6 +41,9 @@ namespace Engine
 					}
 				}
 			}
+#if android
+            System.Console.WriteLine("SCAPI1.6["+ type.ToString() +"]" + message);
+#endif
 		}
 
 		[Conditional("DEBUG")]
