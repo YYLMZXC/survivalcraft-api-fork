@@ -34,9 +34,9 @@
     <RootNamespace>SCNEXT</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <RunAOTCompilation>False</RunAOTCompilation>
+    <RunAOTCompilation>True</RunAOTCompilation>
   </PropertyGroup>
-	<ItemGroup>
+  <ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
