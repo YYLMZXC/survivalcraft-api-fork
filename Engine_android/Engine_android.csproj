@@ -13,6 +13,7 @@
     <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
     <RootNamespace>Engine</RootNamespace>
     <Version>2.3.0.0</Version>
+	<AssemblyName>Engine</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>portable</DebugType>
@@ -1026,12 +1027,8 @@
     <Compile Remove="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="OpenTK-1.0.2moded">
       <HintPath>reference\OpenTK-1.0.2moded.dll</HintPath>
-      <Private>True</Private>
     </Reference>
   </ItemGroup>
 </Project>

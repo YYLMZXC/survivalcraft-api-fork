@@ -14,7 +14,6 @@
 	<Assemblies>
 		<Assembly Name="Engine" />
 		<Assembly Name="Survivalcraft" />
-		<Assembly Name="mscorlib" />
 	</Assemblies>
 	<DatabaseObjects RootGuid="2c273f6a-efce-4bf1-a8ae-e3aea7ffb75c">
 		<Folder Name="Entities" Guid="5fcdf35f-7001-442c-883e-e0502b15d291">

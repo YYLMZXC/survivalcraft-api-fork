@@ -2907,9 +2907,6 @@
       <Link>Widget\WidgetsList.cs</Link>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
   <PropertyGroup />
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>

@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>
     <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+	<PlatformTarget>AnyCPU</PlatformTarget>
     <AndroidApplication>True</AndroidApplication>
     <RootNamespace>SCNEXT</RootNamespace>
     <Nullable>enable</Nullable>
