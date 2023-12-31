@@ -1025,10 +1025,6 @@
     <Compile Remove="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="OpenAL.NETCore" Version="1.0.3" />
-	<PackageReference Include="Silk.NET.OpenAL.Soft.Native" Version="1.21.1.2" />
-    <PackageReference Include="OpenAL.Soft" Version="1.19.1" />
-    <PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.22" />
     <PackageReference Include="Xamarin.Legacy.OpenTK" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>

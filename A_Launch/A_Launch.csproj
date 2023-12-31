@@ -37,7 +37,8 @@
     <RunAOTCompilation>False</RunAOTCompilation>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="libs\arm64-v8a\libopenal32.so" />
+    <None Remove="libs\arm64-v8a\2openal32.so" />
+    <None Remove="libs\arm64-v8a\openal32.dll" />
   </ItemGroup>
 	<ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">

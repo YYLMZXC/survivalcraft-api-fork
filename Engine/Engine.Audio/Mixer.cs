@@ -39,7 +39,7 @@ namespace Engine.Audio
 			//Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
 #endif
 			CheckALError();
-			new AudioContext();
+			//new AudioContext();
 			
 		}
 		internal static void Dispose()
