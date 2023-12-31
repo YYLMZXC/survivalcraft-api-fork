@@ -1025,9 +1025,12 @@
     <Compile Remove="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Legacy.OpenTK" Version="1.0.2" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Reference Include="OpenTK-1.0.2moded">
+      <HintPath>reference\OpenTK-1.0.2moded.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
 </Project>
