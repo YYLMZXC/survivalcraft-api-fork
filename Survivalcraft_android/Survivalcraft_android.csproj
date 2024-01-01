@@ -24,7 +24,7 @@
     <ProjectReference Include="..\EntitySystem_android\EntitySystem_android.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Esprima" Version="3.0.3" />
+    <PackageReference Include="Esprima" Version="3.0.4" />
     <PackageReference Include="Jint" Version="3.0.0-beta-2057" />
   </ItemGroup>
   <ItemGroup>
@@ -2906,9 +2906,6 @@
     <Compile Include="..\Survivalcraft\Widget\WidgetsList.cs">
       <Link>Widget\WidgetsList.cs</Link>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   <PropertyGroup />
   <PropertyGroup>

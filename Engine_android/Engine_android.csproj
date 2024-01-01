@@ -1027,12 +1027,8 @@
     <Compile Remove="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="OpenTK-1.0.2moded">
       <HintPath>reference\OpenTK-1.0.2moded.dll</HintPath>
-      <Private>True</Private>
     </Reference>
   </ItemGroup>
 </Project>
