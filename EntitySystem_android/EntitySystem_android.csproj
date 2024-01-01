@@ -1,31 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Configurations>Debug;Release;正弦™极致优化</Configurations>
-  </PropertyGroup>
-  <PropertyGroup>
+    <Configurations>Debug;Release</Configurations>
 	<OutputType>Library</OutputType>
 	<AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
 	<AndroidUseAapt2>true</AndroidUseAapt2>
-  </PropertyGroup>
-  <PropertyGroup>
 	<TargetFramework>net8.0-android</TargetFramework>
 	<GenerateDocumentationFile>False</GenerateDocumentationFile>
 	<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
 	<SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
 	<RootNamespace>EntitySystem</RootNamespace>
+	<AssemblyName>EntitySystem</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 	<DebugType>portable</DebugType>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 	<DebugType>none</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='正弦™极致优化|AnyCPU'">
-    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
