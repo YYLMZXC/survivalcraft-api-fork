@@ -17,6 +17,7 @@ using XmlUtilities;
 
 public static class ModsManager
 {
+	public const string 模组后缀 = ".scmod";
 	public const string APIVersion = "1.60P";
 	public const string SCVersion = "2.3.0.0";
 	//1为api1.33 2为api1.40
@@ -95,10 +96,7 @@ public static class ModsManager
 		{
 			if (Loaders.TryGetValue(toDisable, out _))
 			{
-				if (DisableReason.TryGetValue(from, out _))
-				{
-				}
-				else
+				if (!DisableReason.TryGetValue(from, out _))
 				{
 					DisableReason.Add(from, reason);
 				}
@@ -308,12 +306,12 @@ public static class ModsManager
 	public static string ImportMod(string name, Stream stream)
 	{
 		if (!Storage.DirectoryExists(ModCachePath)) Storage.CreateDirectory(ModCachePath);
-		string realName = name + ".scmod";
+		string realName = name + 模组后缀;
 		string path = Storage.CombinePaths(ModCachePath, realName);
 		int num = 1;
 		while (Storage.FileExists(path))
 		{
-			realName = name + "(" + num + ").scmod";
+			realName = name + "(" + num + ")"+模组后缀;
 			path = Storage.CombinePaths(ModCachePath, realName);
 			num++;
 		}
@@ -411,7 +409,7 @@ public static class ModsManager
 			{
 				try
 				{
-					if (ms == ".scmod")
+					if (ms == 模组后缀)
 					{
 						Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
 						var modEntity = new ModEntity(ks, Game.ZipArchive.Open(keepOpenStream, true));

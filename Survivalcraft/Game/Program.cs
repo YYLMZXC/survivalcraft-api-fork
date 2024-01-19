@@ -68,7 +68,7 @@ namespace Game
 				e.IsHandled = true;
 			};
 			JsInterface.Initiate();
-			string Error = "正常运行中";
+			string Error = "";
 			Window.Run(0, 0, WindowMode.Resizable, "生存战争2.3插件版NEXT" + ModsManager.APIVersion + " #" + Error);//宽高使用自动值
 		}
 		public static void HandleUriHandler(Uri uri)
