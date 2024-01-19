@@ -25,6 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntitySystem_android", "Ent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A_Launch", "A_Launch\A_Launch.csproj", "{A3545922-3FF3-4076-9395-EE81D057B4BA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{C35F08AA-D8A3-40BB-BF37-3651E53DC9CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "远程库", "远程库", "{5FB287E4-C356-4E3F-9B1F-54796D26D02C}"
+	ProjectSection(SolutionItems) = preProject
+		..\Users\ROG\Downloads\OpenAL_2.0.7.exe = ..\Users\ROG\Downloads\OpenAL_2.0.7.exe
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +68,10 @@ Global
 		{A3545922-3FF3-4076-9395-EE81D057B4BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3545922-3FF3-4076-9395-EE81D057B4BA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A3545922-3FF3-4076-9395-EE81D057B4BA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C35F08AA-D8A3-40BB-BF37-3651E53DC9CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C35F08AA-D8A3-40BB-BF37-3651E53DC9CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C35F08AA-D8A3-40BB-BF37-3651E53DC9CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C35F08AA-D8A3-40BB-BF37-3651E53DC9CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +84,7 @@ Global
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8} = {A9146056-4560-4FC8-8AA6-903299A7FE26}
 		{C2FC4DCC-1E9C-4003-B789-B07EB5948A7F} = {B616DEEE-DF47-4BC3-BAA9-D223D221B6EB}
 		{A3545922-3FF3-4076-9395-EE81D057B4BA} = {A9146056-4560-4FC8-8AA6-903299A7FE26}
+		{C35F08AA-D8A3-40BB-BF37-3651E53DC9CE} = {B616DEEE-DF47-4BC3-BAA9-D223D221B6EB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3B94A30-8A32-415E-BF3C-0B94F6F144C0}

@@ -63,10 +63,12 @@ namespace Game
 
 		public static ZipArchive Open(Stream stream, bool keepStreamOpen = false)
 		{
-			var zipArchive = new ZipArchive();
-			zipArchive.ZipFileStream = stream;
-			zipArchive.ReadOnly = true;
-			zipArchive.KeepStreamOpen = keepStreamOpen;
+			var zipArchive = new ZipArchive
+			{
+				ZipFileStream = stream,
+				ReadOnly = true,
+				KeepStreamOpen = keepStreamOpen
+			};
 			if (zipArchive.ReadFileInfo())
 			{
 				return zipArchive;
@@ -80,13 +82,15 @@ namespace Game
 			{
 				throw new InvalidOperationException("Writing is not allowed");
 			}
-			var zipArchiveEntry = new ZipArchiveEntry();
-			zipArchiveEntry.Method = Compression.Deflate;
-			zipArchiveEntry.FilenameInZip = NormalizedFilename(filenameInZip);
-			zipArchiveEntry.Comment = string.Empty;
-			zipArchiveEntry.Crc32 = 0u;
-			zipArchiveEntry.HeaderOffset = (uint)ZipFileStream.Position;
-			zipArchiveEntry.ModifyTime = DateTime.Now;
+			var zipArchiveEntry = new ZipArchiveEntry
+			{
+				Method = Compression.Deflate,
+				FilenameInZip = NormalizedFilename(filenameInZip),
+				Comment = string.Empty,
+				Crc32 = 0u,
+				HeaderOffset = (uint)ZipFileStream.Position,
+				ModifyTime = DateTime.Now
+			};
 			WriteLocalHeader(zipArchiveEntry);
 			zipArchiveEntry.FileOffset = (uint)ZipFileStream.Position;
 			Store(zipArchiveEntry, source);

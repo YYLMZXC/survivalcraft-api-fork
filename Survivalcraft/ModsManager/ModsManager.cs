@@ -417,6 +417,14 @@ public static class ModsManager
 						if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
 						ModListAll.Add(modEntity);
 					}
+					if (ms == ".SCNEXT")
+					{
+						Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
+						var modEntity = new ModEntity(ks, Game.ZipArchive.Open(keepOpenStream, true));
+						if (modEntity.modInfo == null) continue;
+						if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
+						ModListAll.Add(modEntity);
+					}
 				}
 				catch (Exception e)
 				{
