@@ -1,13 +1,10 @@
 // Game.ModsManager
 using Engine;
-using Engine.Graphics;
-using Engine.Media;
 using Game;
 using SimpleJson;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -502,8 +499,7 @@ public static class ModsManager
 
 	public static string GetMd5(string input)
 	{
-		var md5Hasher = MD5.Create();
-		byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
+		byte[] data = MD5.HashData(Encoding.Default.GetBytes(input));
 		var sBuilder = new StringBuilder();
 		for (int i = 0; i < data.Length; i++)
 		{

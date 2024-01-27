@@ -1,11 +1,10 @@
-Images, layout descriptions, binary blobs and string dictionaries can be included 
-in your application as resource files.  Various Android APIs are designed to 
-operate on the resource IDs instead of dealing with images, strings or binary blobs 
-directly.
+可以包括图像、布局描述、二进制blobs和字符串字典
+在应用程序中作为资源文件。各种Android api被设计成
+操作资源id，而不是直接地处理图像、字符串或二进制blob
 
-For example, a sample Android app that contains a user interface layout (main.xml),
-an internationalization string table (strings.xml) and some icons (drawable-XXX/icon.png) 
-would keep its resources in the "Resources" directory of the application:
+例如，一个示例Android应用程序包含一个用户界面布局(main.xml)，
+一个国际化字符串表(strings.xml)和一些图标(drawable-XXX/icon.png)
+将其资源保存在应用程序的“资源”目录中:
 
 Resources/
     drawable/
@@ -17,12 +16,12 @@ Resources/
     values/
         strings.xml
 
-In order to get the build system to recognize Android resources, set the build action to
-"AndroidResource".  The native Android APIs do not operate directly with filenames, but 
-instead operate on resource IDs.  When you compile an Android application that uses resources, 
-the build system will package the resources for distribution and generate a class called "Resource" 
-(this is an Android convention) that contains the tokens for each one of the resources 
-included. For example, for the above Resources layout, this is what the Resource class would expose:
+为了让构建系统识别Android资源，将构建操作设置为
+“AndroidResource”。原生Android api不直接操作文件名，但是
+而是对资源id进行操作。当你编译一个使用资源的Android应用程序时，
+构建系统将打包分发的资源，并生成一个名为Resource的类。
+(这是Android约定)，其中包含每个资源的令牌
+包括在内。例如，对于上面的资源布局，这是Resource类将公开的内容:
 
 public class Resource {
     public class Drawable {
@@ -39,6 +38,6 @@ public class Resource {
     }
 }
 
-You would then use Resource.Drawable.icon to reference the drawable/icon.png file, or 
-Resource.Layout.main to reference the layout/main.xml file, or Resource.Strings.first_string 
-to reference the first string in the dictionary file values/strings.xml.
+然后你可以使用Resource.Drawable.icon来引用drawable/icon.png文件，或者
+Resource.Layout.main来引用layout/main.xml文件，或者Resource.Strings.first_string
+引用字典文件values/strings.xml中的第一个字符串。

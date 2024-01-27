@@ -28,15 +28,15 @@ namespace Game
 		{
 			m_providers =
 			[
-				new SPMBoxExternalContentProvider(),
-				new DropboxExternalContentProvider(),
-				new TransferShExternalContentProvider(),
 #if desktop
-				new DiskExternalContentProvider()
+				new DiskExternalContentProvider(),
 #endif
 #if android
-				new AndroidSdCardExternalContentProvider()
+				new AndroidSdCardExternalContentProvider(),
 #endif
+				new SPMBoxExternalContentProvider(),
+				new DropboxExternalContentProvider(),
+				new TransferShExternalContentProvider()
 			];
 		}
 
