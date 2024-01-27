@@ -253,8 +253,8 @@ namespace Game
 				if (MathUtils.Abs(explosionData.X - x) <= 4 && MathUtils.Abs(explosionData.Y - y) <= 4 && MathUtils.Abs(explosionData.Z - z) <= 4)
 				{
 					m_queuedExplosions.RemoveAt(num);
-					//Task.Run(() => SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary));
-					SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary);
+					Task.Run(() => SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary));
+					//SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary);
 					flag |= !explosionData.NoExplosionSound;
 				}
 				else
