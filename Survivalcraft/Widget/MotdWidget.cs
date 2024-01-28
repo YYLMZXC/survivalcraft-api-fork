@@ -73,7 +73,7 @@ namespace Game
 			if (m_tapsCount >= 5)
 			{
 				m_tapsCount = 0;
-				MotdManager.ForceRedownload();
+				MotdManager.ForceReDownload();
 				AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
 			}
 			if (Input.IsKeyDownOnce(Key.PageUp))

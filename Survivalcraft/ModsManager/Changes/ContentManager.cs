@@ -79,13 +79,13 @@ namespace Game
 				if (ReaderList.TryGetValue(type.FullName, out IContentReader.IContentReader reader))
 				{
 					List<ContentInfo> contents = [];
-					string p = string.Empty;
+					string possibleName;
 					if (suffix == null)
 					{
-						for (int i = 0; i < reader.DefaultSuffix.Length; i++)
+						foreach (string readerSuffix in reader.DefaultSuffix)
 						{
-							p = name + "." + reader.DefaultSuffix[i];
-							if (Resources.TryGetValue(p, out ContentInfo contentInfo))
+							possibleName = name + "." + readerSuffix;
+							if (Resources.TryGetValue(possibleName, out ContentInfo contentInfo))
 							{
 								contents.Add(contentInfo);
 							}
@@ -93,14 +93,14 @@ namespace Game
 					}
 					else
 					{
-						p = name + suffix;
-						if (Resources.TryGetValue(p, out ContentInfo contentInfo))
+						possibleName = name + suffix;
+						if (Resources.TryGetValue(possibleName, out ContentInfo contentInfo))
 						{
 							contents.Add(contentInfo);
 						}
 					}
 					if (contents.Count == 0)
-					{//û���ҵ���Ӧ��Դ?
+					{//没有找到对应资源?
 						throw new Exception("Not Found Res [" + name + "][" + type.FullName + "]");
 					}
 					obj = reader.Get(contents.ToArray());
@@ -126,7 +126,7 @@ namespace Game
 			}
 		}
 		/// <summary>
-		/// ������Ҫ�����ļ���׺������ȡ����+��ȡ�ĺ�׺
+		/// 可能需要带上文件后缀，即获取名字+获取的后缀
 		/// </summary>
 		/// <param name="name"></param>
 		public static void Dispose(string name)

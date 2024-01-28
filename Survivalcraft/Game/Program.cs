@@ -69,7 +69,7 @@ namespace Game
 			};
 			JsInterface.Initiate();
 			string Error = "";
-			Window.Run(0, 0, WindowMode.Resizable, "Éú´æÕ½Õù2.3²å¼ş°æNEXT" + ModsManager.APIVersion + " #" + Error);//¿í¸ßÊ¹ÓÃ×Ô¶¯Öµ
+			Window.Run(0, 0, WindowMode.Resizable, "ç”Ÿå­˜æˆ˜äº‰2.3æ’ä»¶ç‰ˆNEXT" + ModsManager.ApiCurrentVersionString + " #" + Error);//å®½é«˜ä½¿ç”¨è‡ªåŠ¨å€¼
 		}
 		public static void HandleUriHandler(Uri uri)
 		{

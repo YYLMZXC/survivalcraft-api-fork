@@ -61,7 +61,7 @@ namespace Game
 
 		public static Message m_message;
 
-		public static SimpleJson.JsonObject UpdateResult = null;
+		public static JsonObject UpdateResult = null;
 
 		public static bool m_isAdmin;
 
@@ -80,7 +80,7 @@ namespace Game
 
 		public static event Action MessageOfTheDayUpdated;
 
-		public static void ForceRedownload()
+		public static void ForceReDownload()
 		{
 			SettingsManager.MotdLastUpdateTime = DateTime.MinValue;
 		}
@@ -89,16 +89,16 @@ namespace Game
 		{
 			if (VersionsManager.Version != VersionsManager.LastLaunchedVersion)
 			{
-				ForceRedownload();
+				ForceReDownload();
 			}
 		}
 
 		public static void UpdateVersion()
 		{
-			string url = string.Format(SettingsManager.MotdUpdateCheckUrl, VersionsManager.SerializationVersion, VersionsManager.Platform, ModsManager.APIVersion, LanguageControl.LName());
+			string url = string.Format(SettingsManager.MotdUpdateCheckUrl, VersionsManager.SerializationVersion, VersionsManager.Platform, ModsManager.ApiCurrentVersionString, LanguageControl.LName());
 			WebManager.Get(url, null, null, new CancellableProgress(), data =>
 			{
-				UpdateResult = SimpleJson.SimpleJson.DeserializeObject<SimpleJson.JsonObject>(System.Text.Encoding.UTF8.GetString(data));
+				UpdateResult = SimpleJson.SimpleJson.DeserializeObject<JsonObject>(System.Text.Encoding.UTF8.GetString(data));
 			}, ex =>
 			{
 				Log.Error("Failed processing Update check. Reason: " + ex.Message);
@@ -311,7 +311,7 @@ namespace Game
 			try
 			{
 				string time = m_bulletin.Time.Contains("$") ? m_bulletin.Time.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[1] : string.Empty;
-				if (!string.IsNullOrEmpty(time)) time = (IsCNLanguageType() ? "¹«¸æ·¢²¼Ê±¼ä: " : "Time: ") + time;
+				if (!string.IsNullOrEmpty(time)) time = (IsCNLanguageType() ? "å…¬å‘Šå‘å¸ƒæ—¶é—´: " : "Time: ") + time;
 				string title = IsCNLanguageType() ? m_bulletin.Title : m_bulletin.EnTitle;
 				string content = IsCNLanguageType() ? m_bulletin.Content : m_bulletin.EnContent;
 				BulletinDialog bulletinDialog = new(title, content, time, delegate
@@ -319,9 +319,9 @@ namespace Game
 					SettingsManager.BulletinTime = m_bulletin.Time;
 				}, delegate (LabelWidget titleLabel, LabelWidget contentLabel)
 				{
-					DialogsManager.ShowDialog(null, new TextBoxDialog("ÇëÊäÈë±êÌâ", titleLabel.Text, 1024, delegate (string inputTitle)
+					DialogsManager.ShowDialog(null, new TextBoxDialog("è¯·è¾“å…¥æ ‡é¢˜", titleLabel.Text, 1024, delegate (string inputTitle)
 					{
-						DialogsManager.ShowDialog(null, new TextBoxDialog("ÇëÊäÈëÄÚÈİ", contentLabel.Text.Replace("\n", "[n]"), 8192, delegate (string inputContent)
+						DialogsManager.ShowDialog(null, new TextBoxDialog("è¯·è¾“å…¥å†…å®¹", contentLabel.Text.Replace("\n", "[n]"), 8192, delegate (string inputContent)
 						{
 							if (!string.IsNullOrEmpty(inputTitle) && !string.IsNullOrEmpty(inputContent))
 							{
@@ -372,18 +372,18 @@ namespace Game
 					string newDownloadedData = SettingsManager.MotdLastDownloadedData.Substring(0, num);
 					newDownloadedData += xElement.ToString();
 					newDownloadedData += SettingsManager.MotdLastDownloadedData.Substring(num2);
-					var busyDialog = new CancellableBusyDialog("²Ù×÷µÈ´ıÖĞ", autoHideOnCancel: false);
+					var busyDialog = new CancellableBusyDialog("æ“ä½œç­‰å¾…ä¸­", autoHideOnCancel: false);
 					DialogsManager.ShowDialog(null, busyDialog);
 					SaveBulletin(newDownloadedData, busyDialog.Progress, delegate (byte[] data)
 					{
 						DialogsManager.HideDialog(busyDialog);
 						var result = (JsonObject)WebManager.JsonFromBytes(data);
-						string msg = result[0].ToString() == "200" ? "¹«¸æÒÑ¸üĞÂ,½¨ÒéÖØÆôÓÎÏ·¼ì²éĞ§¹û" : result[1].ToString();
+						string msg = result[0].ToString() == "200" ? "å…¬å‘Šå·²æ›´æ–°,å»ºè®®é‡å¯æ¸¸æˆæ£€æŸ¥æ•ˆæœ" : result[1].ToString();
 						if (result[0].ToString() == "200")
 						{
 							SettingsManager.MotdLastDownloadedData = newDownloadedData;
 						}
-						DialogsManager.ShowDialog(null, new MessageDialog("²Ù×÷³É¹¦", msg, LanguageControl.Ok, null, null));
+						DialogsManager.ShowDialog(null, new MessageDialog("æ“ä½œæˆåŠŸ", msg, LanguageControl.Ok, null, null));
 					}, delegate (Exception e)
 					{
 						DialogsManager.HideDialog(busyDialog);

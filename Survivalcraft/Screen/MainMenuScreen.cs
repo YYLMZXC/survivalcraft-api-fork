@@ -50,11 +50,12 @@ namespace Game
 			Keyboard.BackButtonQuitsApp = !MarketplaceManager.IsTrialMode;
 			if (string.IsNullOrEmpty(m_versionString) || MarketplaceManager.IsTrialMode != m_versionStringTrial)
 			{
-				m_versionString = string.Format("Version {0}{1}", VersionsManager.Version, MarketplaceManager.IsTrialMode ? " (Day One)" : string.Empty);
+				m_versionString =
+					$"Version {VersionsManager.Version}{(MarketplaceManager.IsTrialMode ? " (Day One)" : string.Empty)}";
 				m_versionStringTrial = MarketplaceManager.IsTrialMode;
 			}
 			Children.Find("Buy").IsVisible = MarketplaceManager.IsTrialMode;
-			Children.Find<LabelWidget>("Version").Text = m_versionString + "  API" + ModsManager.APIVersion;
+			Children.Find<LabelWidget>("Version").Text = m_versionString + "  API" + ModsManager.ApiCurrentVersionString;
 			RectangleWidget rectangleWidget = Children.Find<RectangleWidget>("Logo");
 			float num = 1f + (0.02f * MathUtils.Sin(1.5f * (float)MathUtils.Remainder(Time.FrameStartTime, 10000.0)));
 			rectangleWidget.RenderTransform = Matrix.CreateTranslation((0f - rectangleWidget.ActualSize.X) / 2f, (0f - rectangleWidget.ActualSize.Y) / 2f, 0f) * Matrix.CreateScale(num, num, 1f) * Matrix.CreateTranslation(rectangleWidget.ActualSize.X / 2f, rectangleWidget.ActualSize.Y / 2f, 0f);
@@ -86,7 +87,7 @@ namespace Game
 				}
 				else
 				{
-					DialogsManager.ShowDialog(null, new MessageDialog("¹«¸æ»ñÈ¡Ê§°Ü", "µ±Ç°ÔİÎŞ·¢²¼¹«¸æ£¬\n»òÕßÃ»ÓĞÁªÍø»ñÈ¡¹«¸æĞÅÏ¢", LanguageControl.Ok, null, null));
+					DialogsManager.ShowDialog(null, new MessageDialog("å…¬å‘Šè·å–å¤±è´¥", "å½“å‰æš‚æ— å‘å¸ƒå…¬å‘Šï¼Œ\næˆ–è€…æ²¡æœ‰è”ç½‘è·å–å…¬å‘Šä¿¡æ¯", LanguageControl.Ok, null, null));
 				}
 			}
 			if ((Input.Back && !Keyboard.BackButtonQuitsApp) || Input.IsKeyDownOnce(Key.Escape))

@@ -28,7 +28,7 @@ namespace Game
 
 		public static bool AllowInitialIntro { get; set; }
 
-		public static bool 使用内置路径;
+		public static bool 浣跨敤鍐呯疆璺緞;
 
 		public static float SoundsVolume
 		{
@@ -634,7 +634,7 @@ namespace Game
 				{
 					XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);
 				}
-				using (Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Create))
+				using (Stream stream = Storage.OpenFile(ModsManager.ModSettingsPath, OpenFileMode.Create))
 				{
 					XmlUtils.SaveXmlToStream(xElement2, stream, null, throwOnError: true);
 				}

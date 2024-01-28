@@ -11,7 +11,7 @@ namespace Game
 		public DynamicArray<byte> Data = [];
 		public StackPanelWidget MainView;
 		public Action onCancel;
-		public int clickpos = 0;
+		public int ClickPos = 0;
 		public bool isSetPos = false;//是否为设定位置模式
 		public int setPosN = 0;//第几位数
 		public int lastvalue = 0;
@@ -39,7 +39,7 @@ namespace Game
 			canvasWidget.Children.Add(stackPanel);
 			stackPanel.Children.Add(labelWidget);
 			stackPanel.Children.Add(stackPanelWidget);
-			stackPanelWidget.Children.Add(initData());
+			stackPanelWidget.Children.Add(InitData());
 			stackPanelWidget.Children.Add(initButton());
 			MainView = stackPanel;
 			this.onCancel = onCancel;
@@ -121,7 +121,7 @@ namespace Game
 			return stringBuilder.ToString();
 		}
 
-		public Widget initData()
+		public Widget InitData()
 		{
 			var stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10, 0) };
 			for (int i = 0; i < 17; i++)
@@ -135,7 +135,7 @@ namespace Game
 						var clickTextWidget = new ClickTextWidget(new Vector2(22), string.Format("{0}", MemoryBankData.m_hexChars[Read(addr)]), delegate ()
 						{
 							AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
-							clickpos = addr;
+							ClickPos = addr;
 							isclick = true;
 						});
 						list.Add(clickTextWidget);
@@ -144,8 +144,14 @@ namespace Game
 					else
 					{
 						int p = 0;
-						if (i == 0 && j > 0) p = j - 1;
-						else if (j == 0 && i > 0) p = i - 1;
+						if (i == 0 && j > 0)
+						{
+							p = j - 1;
+						}
+						else if (j == 0 && i > 0)
+						{
+							p = i - 1;
+						}
 						else
 						{
 							var click = new ClickTextWidget(new Vector2(22), "", null);
@@ -192,23 +198,23 @@ namespace Game
 							AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
 							if (!isSetPos)
 							{
-								Write(clickpos, (byte)pp);//写入数据
+								Write(ClickPos, (byte)pp);//写入数据
 								lastvalue = pp;
-								clickpos += 1;//自动加1
-								if (clickpos >= 255)
+								ClickPos += 1;//自动加1
+								if (ClickPos >= 255)
 								{
-									clickpos = 0;
+									ClickPos = 0;
 								}
 								isclick = true;
 							}
 							else
 							{ //处于设定位置模式
-								if (setPosN == 0) clickpos = 16 * pp;
-								else if (setPosN == 1) clickpos += pp;
+								if (setPosN == 0) ClickPos = 16 * pp;
+								else if (setPosN == 1) ClickPos += pp;
 								setPosN += 1;
 								if (setPosN == 2)
 								{
-									if (clickpos > 0xff) clickpos = 0;
+									if (ClickPos > 0xff) ClickPos = 0;
 									setPosN = 0;
 									isclick = true;
 									isSetPos = false;
@@ -223,23 +229,23 @@ namespace Game
 							AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
 							if (!isSetPos)
 							{
-								Write(clickpos, 0);//写入数据
+								Write(ClickPos, 0);//写入数据
 								lastvalue = 0;
-								clickpos += 1;//自动加1
-								if (clickpos >= 255)
+								ClickPos += 1;//自动加1
+								if (ClickPos >= 255)
 								{
-									clickpos = 0;
+									ClickPos = 0;
 								}
 								isclick = true;
 							}
 							else
 							{ //处于设定位置模式
-								if (setPosN == 0) clickpos = 0;
-								else if (setPosN == 1) clickpos += 0;
+								if (setPosN == 0) ClickPos = 0;
+								else if (setPosN == 1) ClickPos += 0;
 								setPosN += 1;
 								if (setPosN == 2)
 								{
-									if (clickpos > 0xff) clickpos = 0;
+									if (ClickPos > 0xff) ClickPos = 0;
 									setPosN = 0;
 									isclick = true;
 									isSetPos = false;
@@ -277,7 +283,7 @@ namespace Game
 									Write(c + (d * 16), tmp[(c * 16) + d]);
 								}
 							}
-							clickpos = 0;
+							ClickPos = 0;
 							isclick = true;
 						}));
 						continue;
@@ -344,13 +350,13 @@ namespace Game
 			}
 			if (isSetPos)
 			{
-				list[clickpos].BorderColor = Color.Red;//设定选择颜色
+				list[ClickPos].BorderColor = Color.Red;//设定选择颜色
 				return;
 			}
 			if (!isclick) return;
 			for (int i = 0; i < list.Count; i++)
 			{
-				if (i == clickpos)
+				if (i == ClickPos)
 				{
 					list[i].BorderColor = Color.Yellow;//设定选择颜色
 				}

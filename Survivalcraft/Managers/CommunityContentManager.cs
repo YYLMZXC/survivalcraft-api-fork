@@ -60,14 +60,14 @@ namespace Game
 
 		public static void List(string cursor, string userFilter, string typeFilter, string moderationFilter, string sortOrder, string keySearch, string searchType, CancellableProgress progress, Action<List<CommunityContentEntry>, string> success, Action<Exception> failure)
 		{
-			progress = progress ?? new CancellableProgress();
+			progress ??= new CancellableProgress();
 			if (!WebManager.IsInternetConnectionAvailable())
 			{
 				failure(new InvalidOperationException("Internet connection is unavailable."));
 				return;
 			}
 			var dictionary = new Dictionary<string, string>();
-			var Header = new Dictionary<string, string>
+			var header = new Dictionary<string, string>
 			{
 				{ "Content-Type", "application/x-www-form-urlencoded" }
 			};
@@ -79,10 +79,10 @@ namespace Game
 			dictionary.Add("SortOrder", sortOrder ?? string.Empty);
 			dictionary.Add("Platform", VersionsManager.Platform.ToString());
 			dictionary.Add("Version", VersionsManager.Version);
-			dictionary.Add("Apiv", ModsManager.Apiv.ToString());
+			dictionary.Add("Apiv", ((int)ModsManager.ApiCurrentVersion).ToString());
 			dictionary.Add("key", keySearch);
 			dictionary.Add("SearchType", searchType);
-			WebManager.Post(m_scResDirAddress, null, Header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
+			WebManager.Post(m_scResDirAddress, null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
 			{
 				try
 				{
@@ -370,7 +370,7 @@ namespace Game
 				{
 					//if (result != null)
 					//{
-					//    using (FileStream fileStream = new FileStream(Storage.GetSystemPath(ModsManager.ModCachePath) + "/123²âÊÔ.txt", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+					//    using (FileStream fileStream = new FileStream(Storage.GetSystemPath(ModsManager.ModCachePath) + "/123æµ‹è¯•.txt", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
 					//    {
 					//        fileStream.Write(result, 0, result.Length);
 					//        fileStream.Flush();

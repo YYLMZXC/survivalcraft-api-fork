@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml.Linq;
 using System.Reflection;
 using System.Collections.Generic;
-
+using System.Linq;
 using Engine;
 
 namespace Game
@@ -15,44 +15,42 @@ namespace Game
 		public FastDebugModEntity()
 		{
 			modInfo = new ModInfo() { Name = "[Debug]", PackageName = "debug" };
-			InitResources();
+			InitializeResources();
 		}
 
-		public override void InitResources()
+		protected sealed override void InitializeResources()
 		{
-			ReadDirResouces(ModsManager.ModsPath, "");
+			ReadDirResources(ModsManager.ModsPath, "");
 			if (!GetFile("modinfo.json", (stream) =>
 			{
 				modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
 				modInfo.Name = $"[Debug]{modInfo.Name}";
 			}))
 			{
-				modInfo = new ModInfo() { Name = "FastDebug", Version = "1.0.0", ApiVersion = ModsManager.APIVersion, Author = "Mod", Description = "调试Mod插件", ScVersion = "2.3.0.0", PackageName = "com.fastdebug" };
+				modInfo = new ModInfo { Name = "FastDebug", Version = "1.0.0", ApiVersion = ModsManager.ApiCurrentVersionString, Author = "Mod", Description = "调试Mod插件", ScVersion = "2.3.0.0", PackageName = "com.fastdebug" };
 			}
 			GetFile("icon.png", (stream) => { LoadIcon(stream); });
 		}
 
-		public void ReadDirResouces(string basepath, string path)
+		public void ReadDirResources(string basePath, string path)
 		{
-			if (string.IsNullOrEmpty(path)) path = basepath;
-			foreach (string d in Storage.ListDirectoryNames(path)) ReadDirResouces(basepath, path + "/" + d);
+			if (string.IsNullOrEmpty(path)) path = basePath;
+			foreach (string d in Storage.ListDirectoryNames(path)) ReadDirResources(basePath, path + "/" + d);
 			foreach (string f in Storage.ListFileNames(path))
 			{
-				string abpath = path + "/" + f;
-				string FilenameInZip = abpath.Substring(basepath.Length + 1);
-				if (FilenameInZip.StartsWith("Assets/"))
+				string absPath = path + "/" + f;
+				string fileNameInZip = absPath[(basePath.Length + 1)..];
+				if (fileNameInZip.StartsWith("Assets/"))
 				{
-					string name = FilenameInZip.Substring(7);
+					string name = fileNameInZip.Substring(7);
 					ContentInfo contentInfo = new(name);
 					MemoryStream memoryStream = new();
-					using (Stream stream = Storage.OpenFile(abpath, OpenFileMode.Read))
-					{
-						stream.CopyTo(memoryStream);
-						contentInfo.SetContentStream(memoryStream);
-						ContentManager.Add(contentInfo);
-					}
+					using Stream stream = Storage.OpenFile(absPath, OpenFileMode.Read);
+					stream.CopyTo(memoryStream);
+					contentInfo.SetContentStream(memoryStream);
+					ContentManager.Add(contentInfo);
 				}
-				FModFiles.Add(FilenameInZip, new FileInfo(Storage.GetSystemPath(abpath)));
+				FModFiles.Add(fileNameInZip, new FileInfo(Storage.GetSystemPath(absPath)));
 			}
 		}
 
@@ -88,7 +86,7 @@ namespace Game
 			}
 		}
 
-		public override void LoadLauguage()
+		public override void LoadLanguage()
 		{
 			string path = Storage.CombinePaths(ModsManager.ModsPath, "Assets/Lang");
 			if (Storage.DirectoryExists(path))
@@ -127,48 +125,43 @@ namespace Game
 		}
 
 		/// <summary>
-		/// 获取指定后缀文件列表，带.
+		/// 遍历指定后缀文件列表，带 "."
 		/// </summary>
-		/// <param name="extension"></param>
+		/// <param name="extension">文件后缀，为null则遍历所有文件</param>
+		/// <param name="action"></param>
 		/// <returns></returns>
-		public override void GetFiles(string extension, Action<string, Stream> action)
+		public override void GetFiles(string? extension, Action<string, Stream> action)
 		{
-			foreach (var item in FModFiles)
+			foreach (KeyValuePair<string, FileInfo> item in 
+			         extension is null 
+				         ? FModFiles 
+				         : FModFiles.Where(item => item.Key.EndsWith(extension)))
 			{
-				if (item.Key.EndsWith(extension))
+				using Stream fs = item.Value.OpenRead();
+				try
 				{
-					using (Stream fs = item.Value.OpenRead())
-					{
-						try
-						{
-							action?.Invoke(item.Key, fs);
-						}
-						catch (Exception e)
-						{
-							Log.Error(string.Format("GetFile {0} Error:{1}", item.Key, e.Message));
-						}
-					}
+					action?.Invoke(item.Key, fs);
+				}
+				catch (Exception e)
+				{
+					Log.Error($"GetFile {item.Key} Exception:{e.Message}");
 				}
 			}
 		}
 		public override bool GetFile(string filename, Action<Stream> stream)
 		{
-			if (FModFiles.TryGetValue(filename, out FileInfo fileInfo))
+			if (!FModFiles.TryGetValue(filename, out FileInfo fileInfo)) return false;
+			using Stream fs = fileInfo.OpenRead();
+			try
 			{
-				using (Stream fs = fileInfo.OpenRead())
-				{
-					try
-					{
-						stream?.Invoke(fs);
-					}
-					catch (Exception e)
-					{
-						Log.Error(string.Format("GetFile {0} Error:{1}", filename, e.Message));
-					}
-				}
-				return true;
+				stream?.Invoke(fs);
 			}
-			return false;
+			catch (Exception e)
+			{
+				Log.Error($"GetFile {filename} Error:{e.Message}");
+			}
+
+			return true;
 		}
 		public override bool GetAssetsFile(string filename, Action<Stream> stream)
 		{

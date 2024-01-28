@@ -164,9 +164,10 @@ namespace Game
 				{
 					foreach (var value in MotdManager.FilterModAll)
 					{
-						if (value.FilterAPIVersion == ModsManager.APIVersion && value.PackageName == modEntity.modInfo.PackageName && CompareVersion(value.Version, modEntity.modInfo.Version))
+						if (value.FilterAPIVersion == ModsManager.ApiCurrentVersionString && value.PackageName == modEntity.modInfo.PackageName && CompareVersion(value.Version, modEntity.modInfo.Version))
 						{
-							tips += string.Format("{0}.{1}(v{2})  {3}\n", num, modEntity.modInfo.Name, modEntity.modInfo.Version, value.Explanation);
+							tips +=
+								$"{num}.{modEntity.modInfo.Name}(v{modEntity.modInfo.Version})  {value.Explanation}\n";
 							num++;
 						}
 					}
@@ -178,7 +179,7 @@ namespace Game
 			}
 			if (!string.IsNullOrEmpty(tips))
 			{
-				DialogsManager.ShowDialog(null, new MessageDialog("Mod≤ªºÊ»›æØ∏Ê£°", tips, "ºÃ–¯", "∑µªÿ", delegate (MessageDialogButton button)
+				DialogsManager.ShowDialog(null, new MessageDialog("Mod‰∏çÂÖºÂÆπË≠¶ÂëäÔºÅ", tips, "ÁªßÁª≠", "ËøîÂõû", delegate (MessageDialogButton button)
 				{
 					if (button == MessageDialogButton.Button1)
 					{

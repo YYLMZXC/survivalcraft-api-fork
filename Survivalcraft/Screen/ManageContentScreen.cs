@@ -170,7 +170,9 @@ public class ManageContentScreen : Screen
 				DialogsManager.ShowDialog(this, messageDialog);
 			}
 			else
+			{
 				listItem.IsClick = true;
+			}
 		};
 	}
 

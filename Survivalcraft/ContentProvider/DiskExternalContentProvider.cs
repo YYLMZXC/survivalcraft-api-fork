@@ -41,10 +41,9 @@ namespace Game
 				failure(new FileNotFoundException());
 				return;
 			}
-			else fileStream = File.OpenRead(path);
-#pragma warning disable CS0219 // 变量已被赋值，但从未使用过它的值
+
+			fileStream = File.OpenRead(path);
 			Exception e = default;
-#pragma warning restore CS0219 // 变量已被赋值，但从未使用过它的值
 			ThreadPool.QueueUserWorkItem(delegate
 			{
 				try

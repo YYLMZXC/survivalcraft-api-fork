@@ -46,7 +46,7 @@ namespace Game
 			stream.Close();
 			memoryStream.Position = 0L;
 			ModArchive = ZipArchive.Open(memoryStream, true);
-			InitResources();
+			InitializeResources();
 			LabelWidget.BitmapFont = ContentManager.Get<Engine.Media.BitmapFont>("Fonts/Pericles");
 			LoadingScreen.Info("加载资源:" + modInfo?.Name);
 		}
@@ -115,11 +115,8 @@ namespace Game
 		}
 		public override void LoadSettings(XElement xElement)
 		{
-
-
-
 		}
-		public override void OnBlocksInitalized()
+		public override void OnBlocksInitialized()
 		{
 			BlocksManager.AddCategory("Terrain");
 			BlocksManager.AddCategory("Plants");
