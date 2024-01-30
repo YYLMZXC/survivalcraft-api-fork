@@ -154,7 +154,7 @@ namespace Game
 				}
 				catch (Exception e)
 				{
-					Log.Error($"GetFile {fileName} Exception:{eS}");
+					Log.Error($"GetFile {fileName} Exception:{e}");
 				}
 			}
 		}
