@@ -13,54 +13,59 @@ namespace SimpleJson
 	[GeneratedCode("simple-json", "1.0.0")]
 	internal static class SimpleJson
 	{
-		public const int TOKEN_NONE = 0;
-
-		public const int TOKEN_CURLY_OPEN = 1;
-
-		public const int TOKEN_CURLY_CLOSE = 2;
-
-		public const int TOKEN_SQUARED_OPEN = 3;
-
-		public const int TOKEN_SQUARED_CLOSE = 4;
-
-		public const int TOKEN_COLON = 5;
-
-		public const int TOKEN_COMMA = 6;
-
-		public const int TOKEN_STRING = 7;
-
-		public const int TOKEN_NUMBER = 8;
-
-		public const int TOKEN_TRUE = 9;
-
-		public const int TOKEN_FALSE = 10;
-
-		public const int TOKEN_NULL = 11;
-
-		public const int BUILDER_CAPACITY = 2000;
-
+		public enum Token
+		{
+			None = 0,
+			CurlyOpen = 1,
+			CurlyClose = 2,
+			SquaredOpen = 3,
+			SquaredClose = 4,
+			Colon = 5,
+			Comma = 6,
+			String = 7,
+			Number = 8,
+			True = 9,
+			False = 10,
+			Null = 11
+		}
+		public static int BuilderCapacity => 2000; 
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_NONE = 0;
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_CURLY_OPEN = 1;
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_CURLY_CLOSE = 2;
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_SQUARED_OPEN = 3;
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_SQUARED_CLOSE = 4;
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_COLON = 5;
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_COMMA = 6;
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_STRING = 7;
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_NUMBER = 8;
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_TRUE = 9;
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_FALSE = 10;
+		[Obsolete(error:true, message:"请使用 enum SimpleJson.Token")] public const int TOKEN_NULL = 11;
+		[Obsolete(error:true, message:"请使用 SimpleJson.BuilderCapacity")] public const int BUILDER_CAPACITY = 2000;
+		
+		
 		public static readonly char[] EscapeTable;
 
 		public static readonly char[] EscapeCharacters;
 
-		public static IJsonSerializerStrategy _currentJsonSerializerStrategy;
+		private static IJsonSerializerStrategy m_currentJsonSerializerStrategy;
 
-		public static PocoJsonSerializerStrategy _pocoJsonSerializerStrategy;
+		private static PocoJsonSerializerStrategy m_pocoJsonSerializerStrategy;
 
 		public static IJsonSerializerStrategy CurrentJsonSerializerStrategy
 		{
 			get
 			{
-				return _currentJsonSerializerStrategy ?? (_currentJsonSerializerStrategy = PocoJsonSerializerStrategy);
+				return m_currentJsonSerializerStrategy ?? (m_currentJsonSerializerStrategy = PocoJsonSerializerStrategy);
 			}
 			set
 			{
-				_currentJsonSerializerStrategy = value;
+				m_currentJsonSerializerStrategy = value;
 			}
 		}
 
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		public static PocoJsonSerializerStrategy PocoJsonSerializerStrategy => _pocoJsonSerializerStrategy ?? (_pocoJsonSerializerStrategy = new PocoJsonSerializerStrategy());
+		public static PocoJsonSerializerStrategy PocoJsonSerializerStrategy => m_pocoJsonSerializerStrategy ??= new PocoJsonSerializerStrategy();
 
 		static SimpleJson()
 		{
@@ -205,8 +210,7 @@ namespace SimpleJson
 		{
 			IDictionary<string, object> dictionary = new JsonObject();
 			NextToken(json, ref index);
-			bool flag = false;
-			while (!flag)
+			while (true)
 			{
 				switch (LookAhead(json, index))
 				{
@@ -240,15 +244,13 @@ namespace SimpleJson
 				}
 				dictionary[key] = value;
 			}
-			return dictionary;
 		}
 
 		public static JsonArray ParseArray(char[] json, ref int index, ref bool success)
 		{
-			JsonArray jsonArray = new JsonArray();
+			JsonArray jsonArray = [];
 			NextToken(json, ref index);
-			bool flag = false;
-			while (!flag)
+			while (true)
 			{
 				switch (LookAhead(json, index))
 				{

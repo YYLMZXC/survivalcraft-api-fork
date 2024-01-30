@@ -134,10 +134,7 @@ namespace Game
 		public void ChangeLanguage(string languageType)
 		{
 			LanguageControl.Initialize(languageType);
-			foreach (var c in ModsManager.ModList)
-			{
-				c.LoadLauguage();
-			}
+			ModsManager.ModListAllDo(entity => entity.LoadLanguage());
 			Dictionary<string, object> objs = [];
 			foreach (var c in ScreensManager.m_screens)
 			{

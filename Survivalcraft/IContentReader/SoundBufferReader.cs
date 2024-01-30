@@ -4,9 +4,9 @@ namespace Game.IContentReader
 {
 	public class SoundBufferReader : IContentReader
 	{
-		public override string Type => "Engine.Audio.SoundBuffer";
-		public override string[] DefaultSuffix => new string[] { "wav", "ogg" };
-		public override object Get(ContentInfo[] contents)
+		public string Type => "Engine.Audio.SoundBuffer";
+		public string[] DefaultSuffix => new string[] { "wav", "ogg" };
+		public object Get(ContentInfo[] contents)
 		{
 			return SoundBuffer.Load(contents[0].Duplicate());
 		}

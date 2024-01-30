@@ -153,12 +153,13 @@ namespace Game
 		public virtual void Injure(float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause)
 		{
 			bool pass = false;
-			ModsManager.HookAction("OnCreatureInjure", loader =>
-			{
-				loader.OnCreatureInjure(this, amount, attacker, ignoreInvulnerability, cause, out bool Skip);
-				pass |= Skip;
-				return false;
-			});
+			ModInterfacesManager.InvokeHooks("OnCreatureInjure",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.OnCreatureInjure(this, amount, attacker, ignoreInvulnerability, cause, out bool skip);
+					pass |= skip;
+					isContinueRequired = true;
+				});
 			if (pass) return;
 			if (!(amount > 0f) || (!ignoreInvulnerability && IsInvulnerable))
 			{
@@ -334,11 +335,11 @@ namespace Game
 			if (Health == 0f && HealthChange < 0f)
 			{
 				bool pass = false;
-				ModsManager.HookAction("DeadBeforeDrops", loader =>
+				ModInterfacesManager.InvokeHooks("DeadBeforeDrops", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 				{
-					loader.DeadBeforeDrops(this, out bool Skip);
-					pass |= Skip;
-					return false;
+					modInterface.DeadBeforeDrops(this, out bool skip);
+					pass |= skip;
+					isContinueRequired = true;
 				});
 				if (!pass)
 				{

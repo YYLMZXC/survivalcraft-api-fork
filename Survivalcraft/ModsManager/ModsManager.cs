@@ -5,6 +5,7 @@ using SimpleJson;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -38,12 +39,14 @@ public static class ModsManager
 
     public static bool IsAndroid { get; } = VersionsManager.Platform == Platform.Android;
 
+    #region PathDefintions
 #if desktop
     /// <summary>
     /// ExternalPath, 用于存储地图、模组、家具包等文档
     /// </summary>
     public static string ExtPath { get; } = "app:";
 
+    public static string ScreenCapturePath { get; } = ExtPath + "/ScreenCapture";
     public static string DocPath { get; } = ExtPath + "/doc";
     public static string UserDataPath = ExtPath + DocPath + "/UserId.dat";
     public static string CharacterSkinsDirectoryName {get;} = DocPath + "/CharacterSkins";
@@ -71,16 +74,15 @@ public static class ModsManager
     public static string ModCachePath { get; } = ExtPath + "/ModsCache";
     public static string LogPath { get; } = ExtPath + "/Bugs";
 #endif
+
+    #endregion
+
     public static string ModsPath { get; } = ExtPath + "/Mods"; //移动端mods数据文件夹
 
     internal static ModEntity SurvivalCraftModEntity;
     internal static bool ConfigLoaded;
 
-    public class ModSettings
-    {
-        public string LanguageType;
-    }
-
+    [Obsolete(error:true, message:"Game.ModsManager.ModHook 已过时")]
     public class ModHook
     {
         public string HookName;
@@ -89,44 +91,42 @@ public static class ModsManager
 
         public ModHook(string name)
         {
-            HookName = name;
+            throw new NotSupportedException();
         }
 
-        public void Add(ModLoader modLoader)
+        public void AddModLoader(ModLoader modLoader)
         {
-            if (Loaders.TryGetValue(modLoader, out _) == false)
-            {
-                Loaders.Add(modLoader, true);
-            }
+            throw new NotSupportedException();
         }
 
-        public void Remove(ModLoader modLoader)
+        public void RemoveModLoader(ModLoader modLoader)
         {
-            Loaders.Remove(modLoader, out _);
+            throw new NotSupportedException();
         }
 
         public void Disable(ModLoader from, ModLoader toDisable, string reason)
         {
-            if (!Loaders.TryGetValue(toDisable, out _)) return;
-            if (!DisableReason.TryGetValue(from, out _))
-            {
-                DisableReason.Add(from, reason);
-            }
+            throw new NotSupportedException();
         }
     }
 
     private static bool m_allowContinue = true;
     public static readonly Dictionary<string, string> Configs = [];
-    public static readonly List<ModEntity> ModListAll = [];
     public static readonly List<ModEntity> ModList = [];
-    public static readonly List<ModLoader> ModLoaders = [];
+
+    public static List<IModLoader> ModLoaders => ModList.SelectMany(entity => entity.Loaders).ToList();
+    
+    [Obsolete(error: true, message: "Game.ModsManager.DisabledMods 字段已弃用")]
     public static readonly List<ModInfo> DisabledMods = [];
-    public static readonly Dictionary<string, ModHook> ModHooks = [];
+    
+    [Obsolete(error: true, message: "Game.ModsManager.ModHooks 字段已弃用")]
+    public static readonly List<ModHook> ModHooks = [];
+    
     public static readonly Dictionary<string, Assembly> Assemblies = [];
 
-    public static bool GetModEntity(string packageName, out ModEntity modEntity)
+    public static bool GetModEntity(string packageName, out ModEntity? modEntity)
     {
-        modEntity = ModList.Find(px => px.modInfo.PackageName == packageName);
+        modEntity = ModList.FirstOrDefault(px => px.ModInfo.PackageName == packageName);
         return modEntity != null;
     }
 
@@ -147,43 +147,22 @@ public static class ModsManager
         ScreensManager.SwitchScreen("Loading");
     }
 
-    /// <summary>
-    /// 执行Hook
-    /// </summary>
-    /// <param name="hookName"></param>
-    /// <param name="action"></param>
+    [Obsolete(error:true, message:"Game.ModsManager.HookAction 已过时，请使用静态方法 Game.ModInterface.InvokeHooks")]
     public static void HookAction(string hookName, Func<ModLoader, bool> action)
     {
-        if (!ModHooks.TryGetValue(hookName, out ModHook modHook)) return;
-        foreach (ModLoader unused in modHook.Loaders.Keys.Where(action.Invoke))
-        {
-            break;
-        }
+        throw new NotSupportedException();
     }
 
-    /// <summary>
-    /// 注册Hook
-    /// </summary>
-    /// <param name="hookName"></param>
-    /// <param name="modLoader"></param>
+    [Obsolete(error:true, message:"Game.ModsManager.RegisterHook 已过时，请使用实例方法 Game.ModInterface.RegisterHook")]
     public static void RegisterHook(string hookName, ModLoader modLoader)
     {
-        if (ModHooks.TryGetValue(hookName, out ModHook modHook) == false)
-        {
-            modHook = new ModHook(hookName);
-            ModHooks.Add(hookName, modHook);
-        }
-
-        modHook.Add(modLoader);
+        throw new NotSupportedException();
     }
 
+    [Obsolete(error: true, message:"Game.ModsManager.DisableHook 已弃用")]
     public static void DisableHook(ModLoader from, string hookName, string packageName, string reason)
     {
-        ModEntity modEntity = ModList.Find(p => p.modInfo.PackageName == packageName);
-        if (ModHooks.TryGetValue(hookName, out ModHook modHook))
-        {
-            modHook.Disable(from, modEntity.Loader, reason);
-        }
+        throw new NotSupportedException();
     }
 
 #if DEBUG
@@ -387,45 +366,33 @@ public static class ModsManager
         return "Mod下载成功";
     }
 
-    public static void ModListAllDo(Action<ModEntity> entity)
+    public static void ModListAllDo(Action<ModEntity> action)
     {
-        for (int i = 0; i < ModList.Count; i++)
-            entity?.Invoke(ModList[i]);
+        foreach (ModEntity entity in ModList)
+        {
+            action?.Invoke(entity);
+        }
     }
 
     public static void Initialize()
     {
         if (!Storage.DirectoryExists(ModsPath)) Storage.CreateDirectory(ModsPath);
-        ModHooks.Clear();
-        ModListAll.Clear();
         ModLoaders.Clear();
         SurvivalCraftModEntity = new SurvivalCraftModEntity();
-        ModEntity FastDebug = new FastDebugModEntity();
-        ModListAll.Add(SurvivalCraftModEntity);
-        ModListAll.Add(FastDebug);
-        GetScmods(ModsPath);
-        List<ModInfo> ToDisable = [.. DisabledMods];
-        DisabledMods.Clear();
-        //float api = float.Parse(APIVersion);
-        List<ModEntity> ToRemove = [];
-        //读取SCMOD文件到ModListAll列表
-        foreach (ModEntity modEntity1 in ModListAll)
+        ModEntity fastDebug = new FastDebugModEntity();
+        ModList.Add(SurvivalCraftModEntity);
+        ModList.Add(fastDebug);
+        LoadMods(ModsPath);
+        //读取SCMOD文件到ModList列表
+        
+        foreach (ModEntity modEntity1 in ModList)
         {
-            ModInfo modInfo = modEntity1.modInfo;
+            ModInfo modInfo = modEntity1.ModInfo;
             if (modInfo == null)
             {
-                LoadingScreen.Info($"[{modEntity1.ModFilePath}]缺少ModInfo文件，忽略加载");
-            }
-
-            ModInfo disabledmod = ToDisable.Find(l => l.PackageName == modInfo.PackageName);
-            if (disabledmod != null && disabledmod.PackageName != SurvivalCraftModEntity.modInfo.PackageName &&
-                disabledmod.PackageName != FastDebug.modInfo.PackageName)
-            {
-                ToDisable.Add(modInfo);
-                ToRemove.Add(modEntity1);
+                LoadingScreen.Info($"[{modEntity1.ModFilePath}]缺少ModInfo文件，模组将不会被加载");
                 continue;
             }
-
             //float.TryParse(modInfo.ApiVersion, out float curr);
             //if (curr < api)
             //{//api版本检测
@@ -433,73 +400,78 @@ public static class ModsManager
             //    ToRemove.Add(modEntity1);
             //    AddException(new Exception($"[{modEntity1.modInfo.PackageName}]Target version {modInfo.Version} is less than api version {APIVersion}."), true);
             //}
-            List<ModEntity> modEntities = ModListAll.FindAll(px => px.modInfo.PackageName == modInfo.PackageName);
+
+            List<ModEntity> modEntities = ModList.FindAll(px => px.ModInfo.PackageName == modInfo.PackageName);
             if (modEntities.Count > 1) AddException(new Exception($"Multiple installed [{modInfo.PackageName}]"));
         }
 
-        DisabledMods.Clear();
-        foreach (var item in ToDisable)
+        AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>
         {
-            DisabledMods.Add(item);
-        }
-
-        foreach (var item in ToRemove)
-        {
-            ModListAll.Remove(item);
-        }
-
-        AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+            Assembly? asm = null;
+            try
+            {
+                 asm = Assemblies.GetValueOrDefault(args.Name);
+                 asm ??= AppDomain.CurrentDomain.GetAssemblies()
+                     .FirstOrDefault(asm => asm.GetName().FullName == args.Name);
+                 return asm;
+            }
+            catch (Exception e)
+            {
+                Log.Information($"无法定位程序集 {args.Name} 异常:{e.Message}");
+                throw;
+            }
+        };
     }
 
-    public static void AddException(Exception e, bool AllowContinue_ = false)
+    public static void AddException(Exception e, bool allowContinue = false)
     {
         LoadingScreen.Error(e.Message);
-        m_allowContinue = !SettingsManager.DisplayLog || AllowContinue_;
+        m_allowContinue = !SettingsManager.DisplayLog || allowContinue;
     }
 
     /// <summary>
-    /// 获取所有文件
+    /// 加载所有 Mod
     /// </summary>
     /// <param name="path"></param>
-    public static void GetScmods(string path)
+    public static void LoadMods(string path)
     {
         foreach (string item in Storage.ListFileNames(path))
         {
-            string ms = Storage.GetExtension(item);
-            string ks = Storage.CombinePaths(path, item);
-            using (Stream stream = Storage.OpenFile(ks, OpenFileMode.Read))
+            string fileExtension = Storage.GetExtension(item);
+            string itemPath = Storage.CombinePaths(path, item);
+            Stream stream = null!;
+            try
             {
-                try
+                if (fileExtension.Equals(ModFileSuffix, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (ms == ModFileSuffix)
-                    {
-                        Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
-                        var modEntity = new ModEntity(ks, Game.ZipArchive.Open(keepOpenStream, true));
-                        if (modEntity.modInfo == null) continue;
-                        if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
-                        ModListAll.Add(modEntity);
-                    }
+                    stream = Storage.OpenFile(itemPath, OpenFileMode.Read);
+                    Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
+                    var modEntity = new ModEntity(itemPath, Game.ZipArchive.Open(keepOpenStream, true));
+                    if (modEntity.ModInfo == null) continue;
+                    if (string.IsNullOrEmpty(modEntity.ModInfo.PackageName)) continue;
+                    ModList.Add(modEntity);
+                }
 
-                    if (ms == ".SCNEXT")
-                    {
-                        Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
-                        var modEntity = new ModEntity(ks, Game.ZipArchive.Open(keepOpenStream, true));
-                        if (modEntity.modInfo == null) continue;
-                        if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
-                        ModListAll.Add(modEntity);
-                    }
-                }
-                catch (Exception e)
+                if (string.Equals(fileExtension, ".ScNext", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    AddException(e);
-                    stream.Close();
+                    stream = Storage.OpenFile(itemPath, OpenFileMode.Read);
+                    Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
+                    var modEntity = new ModEntity(itemPath, Game.ZipArchive.Open(keepOpenStream, true));
+                    if (modEntity.ModInfo == null) continue;
+                    if (string.IsNullOrEmpty(modEntity.ModInfo.PackageName)) continue;
+                    ModList.Add(modEntity);
                 }
+            }
+            catch (Exception e)
+            {
+                AddException(e);
+                stream?.Close();
             }
         }
 
         foreach (string dir in Storage.ListDirectoryNames(path))
         {
-            GetScmods(Storage.CombinePaths(path, dir));
+            LoadMods(Storage.CombinePaths(path, dir));
         }
     }
 
@@ -639,14 +611,14 @@ public static class ModsManager
 
     public static void CombineClo(XElement xElement, Stream cloorcr)
     {
-        XElement MergeXml = XmlUtils.LoadXmlFromStream(cloorcr, Encoding.UTF8, true);
-        foreach (XElement element in MergeXml.Elements())
+        XElement mergeXml = XmlUtils.LoadXmlFromStream(cloorcr, Encoding.UTF8, true);
+        foreach (XElement element in mergeXml.Elements())
         {
-            if (HasAttribute(element, (name) => { return name.StartsWith("new-"); }, out XAttribute attribute))
+            if (HasAttribute(element, (name) => name.StartsWith("new-"), out XAttribute attribute))
             {
-                if (HasAttribute(element, (name) => { return name == "Index"; }, out XAttribute xAttribute))
+                if (HasAttribute(element, (name) => name == "Index", out XAttribute xAttribute))
                 {
-                    if (FindElement(xElement, (ele) => { return element.Attribute("Index").Value == xAttribute.Value; },
+                    if (FindElement(xElement, (ele) => element.Attribute("Index")?.Value == xAttribute.Value,
                             out XElement element1))
                     {
                         string[] px = attribute.Name.ToString()
@@ -671,7 +643,7 @@ public static class ModsManager
                 }
             }
 
-            xElement.Add(MergeXml);
+            xElement.Add(mergeXml);
         }
     }
 
@@ -797,24 +769,6 @@ public static class ModsManager
             }
 
             Modify(DataObjects, element);
-        }
-    }
-
-    static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-    {
-        try
-        {
-            if (Assemblies.TryGetValue(args.Name, out var dll))
-            {
-                return dll;
-            }
-
-            return null;
-        }
-        catch (Exception e)
-        {
-            Log.Information($"加载程序集{args.Name}失败:{e.Message}");
-            throw;
         }
     }
 }

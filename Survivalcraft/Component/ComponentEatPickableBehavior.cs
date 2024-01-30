@@ -41,7 +41,7 @@ namespace Game
 
 		public int m_blockedCount;
 
-		public const float m_range = 16f;
+		public readonly float m_range = 16f;
 
 		public float Satiation => m_satiation;
 
@@ -205,10 +205,10 @@ namespace Game
 							{
 								m_importanceLevel = 0f;
 							}
-							ModsManager.HookAction("OnEatPickable", (modLoader) =>
+							ModInterfacesManager.InvokeHooks("OnEatPickable", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 							{
-								modLoader.OnEatPickable(this, m_pickable, out bool Dealed);
-								return Dealed;
+								modInterface.OnEatPickable(this, m_pickable, out bool dealed);
+								isContinueRequired = !dealed;
 							});
 						}
 					}

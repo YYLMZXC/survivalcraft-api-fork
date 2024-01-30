@@ -323,10 +323,10 @@ namespace Game
 			}, null);
 			m_stateMachine.AddState("PlayerDead", delegate
 			{
-				ModsManager.HookAction("OnPlayerDead", modLoader =>
+				ModInterfacesManager.InvokeHooks("OnPlayerDead", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 				{
-					modLoader.OnPlayerDead(this);
-					return false;
+					modInterface.OnPlayerDead(this);
+					isContinueRequired = true;
 				});
 			}, delegate
 			{
@@ -737,10 +737,13 @@ namespace Game
 			}
 			LastSpawnTime = m_subsystemGameInfo.TotalElapsedGameTime;
 			int num = ++SpawnsCount;
-			ModsManager.HookAction("OnPlayerSpawned", modLoader =>
-			{
-				return modLoader.OnPlayerSpawned(spawnMode, entity2.FindComponent<ComponentPlayer>(), position);
-			});
+			
+			ModInterfacesManager.InvokeHooks("OnPlayerSpawned",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					isContinueRequired =
+						!modInterface.OnPlayerSpawned(spawnMode, entity2.FindComponent<ComponentPlayer>(), position);
+				});
 		}
 
 		public string GetEntityTemplateName()

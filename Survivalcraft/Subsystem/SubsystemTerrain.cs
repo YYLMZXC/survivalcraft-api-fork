@@ -278,12 +278,13 @@ namespace Game
 		public void ChangeCell(int x, int y, int z, int value, bool updateModificationCounter = true)
 		{
 			bool pass = false;
-			ModsManager.HookAction("TerrainChangeCell", loader =>
-			{
-				loader.TerrainChangeCell(this, x, y, z, value, out bool Skip);
-				pass |= Skip;
-				return false;
-			});
+			ModInterfacesManager.InvokeHooks("TerrainChangeCell",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.TerrainChangeCell(this, x, y, z, value, out bool Skip);
+					pass |= Skip;
+					isContinueRequired = true;
+				});
 			if (pass) return;
 			if (!Terrain.IsCellValid(x, y, z))
 			{

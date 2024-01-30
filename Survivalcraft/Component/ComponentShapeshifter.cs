@@ -124,12 +124,11 @@ namespace Game
 				componentBody.Velocity = m_componentBody.Velocity;
 				entity.FindComponent<ComponentSpawn>(throwOnError: true).SpawnDuration = 0.5f;
 
-				ModsManager.HookAction("OnDespawned", modLoader =>
+				ModInterfacesManager.InvokeHooks("OnDeSpawned", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 				{
-					modLoader.OnDespawned(entity, componentSpawn);
-					return false;
+					modInterface.OnDeSpawned(entity, componentSpawn);
+					isContinueRequired = true;
 				});
-
 				Project.AddEntity(entity);
 			}
 			if (m_particleSystem != null)

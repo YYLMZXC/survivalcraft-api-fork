@@ -172,7 +172,11 @@ namespace Game
 			byte b2 = (byte)(255f * MathUtils.Lerp(0.15f, 1f, SubsystemSky.SkyLightIntensity));
 			Color rainColor = new(b, b, b);
 			Color snowColor = new(b2, b2, b2);
-			ModsManager.HookAction("SetRainAndSnowColor", modloader => { return modloader.SetRainAndSnowColor(ref rainColor, ref snowColor); });
+			ModInterfacesManager.InvokeHooks("SetRainAndSnowColor",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					isContinueRequired = !modInterface.SetRainAndSnowColor(ref rainColor, ref snowColor);;
+				});
 			RainColor = rainColor;
 			SnowColor = snowColor;
 			var vector = new Vector2(camera.ViewPosition.X, camera.ViewPosition.Z);

@@ -7,6 +7,7 @@ using Jint.Native;
 using Jint.Native.Function;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using JsEngine = Jint.Engine;
 
@@ -15,7 +16,7 @@ namespace Game
 	public class JsInterface
 	{
 		public static JsEngine engine;
-		public static SurvivalCraftModLoader loader;
+		public static SurvivalCraftModInterface? SurvivalCraftModInterface;
 		public static Dictionary<string, List<FunctionInstance>> handlersDictionary;
 		private static Project Project
 		{
@@ -94,9 +95,12 @@ namespace Game
 					});
 				};
 			}
+			//TODO:
 			handlersDictionary = [];
-			List<ModLoader> mods = ModsManager.ModLoaders;
-			loader = (SurvivalCraftModLoader)ModsManager.ModLoaders.Find((item) => item is SurvivalCraftModLoader);
+			SurvivalCraftModInterface = ModInterfacesManager.Interfaces
+				.Where(@interface => Equals(@interface.ModEntity, SurvivalCraftModEntity.Instance)).OfType<JsModLoader>()
+				.FirstOrDefault();
+			
 			GetAndRegisterHandlers("OnMinerDig");
 			GetAndRegisterHandlers("OnMinerPlace");
 			GetAndRegisterHandlers("OnPlayerSpawned");
@@ -196,12 +200,12 @@ namespace Game
 				if (handlers != null && handlers.Count > 0)
 				{
 					handlersDictionary.Add(handlesName, handlers);
-					ModsManager.RegisterHook(handlesName, loader);
+					//ModsManager.RegisterHook(handlesName, SurvivalCraftModInterface);
 				}
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex);
+				Log.Error(ex);
 			}
 		}
 	}

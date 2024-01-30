@@ -12,20 +12,20 @@ namespace Game
 		public MemoryStream ContentStream;
 		public string AbsolutePath;
 		public string ContentPath;
-		public string Filename;
+		public string FileName;
 		public object Instance;
-		public ContentInfo(string AbsolutePath_)
+		public ContentInfo(string absolutePath)
 		{
-			AbsolutePath = AbsolutePath_;
-			int pos = AbsolutePath_.LastIndexOf('.');
-			ContentPath = pos > -1 ? AbsolutePath_.Substring(0, pos) : AbsolutePath_;
-			Filename = Path.GetFileName(AbsolutePath);
+			AbsolutePath = absolutePath;
+			int pos = absolutePath.LastIndexOf('.');
+			ContentPath = pos > -1 ? absolutePath.Substring(0, pos) : absolutePath;
+			FileName = Path.GetFileName(AbsolutePath);
 		}
 		public void SetContentStream(Stream stream)
 		{
-			if (stream is MemoryStream)
+			if (stream is MemoryStream memoryStream)
 			{
-				ContentStream = stream as MemoryStream;
+				ContentStream = memoryStream;
 				ContentStream.Position = 0L;
 			}
 			else
@@ -52,7 +52,7 @@ namespace Game
 		internal static Dictionary<string, ContentInfo> Resources = [];
 		internal static Dictionary<string, IContentReader.IContentReader> ReaderList = [];
 		internal static Dictionary<string, List<object>> Caches = [];
-		internal static object syncobj = new();
+		internal static object m_syncObj = new();
 		public static void Initialize()
 		{
 			ReaderList.Clear();
@@ -66,7 +66,7 @@ namespace Game
 		}
 		public static object Get(Type type, string name, string suffix = null)
 		{
-			lock (syncobj)
+			lock (m_syncObj)
 			{
 				object obj = null;
 				string key = suffix == null ? name : name + "." + suffix;
@@ -113,7 +113,7 @@ namespace Game
 
 		public static void Add(ContentInfo contentInfo)
 		{
-			lock (syncobj)
+			lock (m_syncObj)
 			{
 				if (!Resources.TryGetValue(contentInfo.AbsolutePath, out ContentInfo info))
 				{
@@ -131,7 +131,7 @@ namespace Game
 		/// <param name="name"></param>
 		public static void Dispose(string name)
 		{
-			lock (syncobj)
+			lock (m_syncObj)
 			{
 				if (Caches.TryGetValue(name, out var list))
 				{

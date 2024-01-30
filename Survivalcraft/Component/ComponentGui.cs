@@ -207,7 +207,12 @@ namespace Game
 					UpdateModalPanelAnimation();
 					m_componentPlayer.GameWidget.Input.Clear();
 					m_componentPlayer.ComponentInput.SetSplitSourceInventoryAndSlot(null, -1);
-					ModsManager.HookAction("OnModalPanelWidgetSet", loader => { loader.OnModalPanelWidgetSet(this, ModalPanelWidget, value); return false; });
+					
+					ModInterfacesManager.InvokeHooks("OnModalPanelWidgetSet", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+					{
+						modInterface.OnModalPanelWidgetSet(this, ModalPanelWidget, value);
+						isContinueRequired = true;
+					});
 				}
 			}
 		}
@@ -251,10 +256,10 @@ namespace Game
 		{
 			HandleInput();
 			UpdateWidgets();
-			ModsManager.HookAction("GuiUpdate", modLoader =>
+			ModInterfacesManager.InvokeHooks("GuiUpdate", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 			{
-				modLoader.GuiUpdate(this);
-				return false;
+				modInterface.GuiUpdate(this);
+				isContinueRequired = true;
 			});
 		}
 
@@ -593,10 +598,10 @@ namespace Game
 				else
 				{
 					var clothingWidget = new ClothingWidget(m_componentPlayer);
-					ModsManager.HookAction("ClothingWidgetOpen", modLoader =>
+					ModInterfacesManager.InvokeHooks("ClothingWidgetOpen", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 					{
-						modLoader.ClothingWidgetOpen(this, clothingWidget);
-						return false;
+						modInterface.ClothingWidgetOpen(this, clothingWidget);
+						isContinueRequired = true;
 					});
 					ModalPanelWidget = clothingWidget;
 
@@ -690,10 +695,10 @@ namespace Game
 			}
 			if (m_cameraButtonWidget.IsClicked || playerInput.SwitchCameraMode /*|| input.IsKeyDownOnce(Engine.Input.Key.V) 这段会导致打字时点v触发相机*/|| input.IsPadButtonDownOnce(Engine.Input.GamePadButton.RightThumb) || input.IsPadButtonDownOnce(Engine.Input.GamePadButton.DPadDown))
 			{
-				ModsManager.HookAction("OnCameraChange", modLoader =>
+				ModInterfacesManager.InvokeHooks("OnCameraChange", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 				{
-					modLoader.OnCameraChange(m_componentPlayer, this);
-					return false;
+					modInterface.OnCameraChange(m_componentPlayer, this);
+					isContinueRequired = true;
 				});
 			}
 			if (m_photoButtonWidget.IsClicked || playerInput.TakeScreenshot)
@@ -788,7 +793,11 @@ namespace Game
 
 		public void Draw(Camera camera, int drawOrder)
 		{
-			ModsManager.HookAction("GuiDraw", (modloader) => { modloader.GuiDraw(this, camera, drawOrder); return false; });
+			ModInterfacesManager.InvokeHooks("GuiDraw", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+			{
+				modInterface.GuiDraw(this, camera, drawOrder);
+				isContinueRequired = true;
+			});
 		}
 	}
 }

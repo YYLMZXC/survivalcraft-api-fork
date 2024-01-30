@@ -56,13 +56,12 @@ namespace Game
 					}
 				}
 			}
-
-			ModsManager.HookAction("CallNearbyCreaturesHelp", (modLoader) =>
+			
+			ModInterfacesManager.InvokeHooks("CallNearbyCreaturesHelp", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 			{
-				modLoader.CallNearbyCreaturesHelp(this, target, maxRange, maxChaseTime, isPersistent);
-				return false;
+				modInterface.CallNearbyCreaturesHelp(this, target, maxRange, maxChaseTime, isPersistent);
+				isContinueRequired = true;
 			});
-
 		}
 
 		public Vector3? FindHerdCenter()

@@ -285,7 +285,12 @@ namespace Game
 					ConstantSpawn = item.ComponentCreature?.ConstantSpawn ?? false,
 					Data = []
 				};
-				ModsManager.HookAction("OnSaveSpawnData", (ModLoader loader) => { loader.OnSaveSpawnData(item, data); return true; });
+				ModInterfacesManager.InvokeHooks("OnSaveSpawnData",
+					(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+					{
+						modInterface.OnSaveSpawnData(item, data);
+						isContinueRequired = false;
+					});
 				GetOrCreateSpawnChunk(point).SpawnsData.Add(data);
 				item.Despawn();
 			}
@@ -296,7 +301,14 @@ namespace Game
 			try
 			{
 				Entity entity = DatabaseManager.CreateEntity(Project, data.TemplateName, throwIfNotFound: true);
-				ModsManager.HookAction("OnReadSpawnData", (ModLoader loader) => { loader.OnReadSpawnData(entity, data); return true; });
+				
+				ModInterfacesManager.InvokeHooks("OnReadSpawnData",
+					(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+					{
+						modInterface.OnReadSpawnData(entity, data);
+						isContinueRequired = false;
+					});
+				
 				entity.FindComponent<ComponentBody>(throwOnError: true).Position = data.Position;
 				entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
 				ComponentCreature componentCreature = entity.FindComponent<ComponentCreature>();

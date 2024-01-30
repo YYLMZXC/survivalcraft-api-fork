@@ -1,14 +1,15 @@
 ﻿namespace Game.IContentReader
 {
-	public abstract class IContentReader
+	public interface IContentReader
 	{
-		public abstract string Type { get; }
-		public abstract string[] DefaultSuffix { get; }
+		public string Type { get; }
+		public string[] DefaultSuffix { get; }
+
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="FullPath">文件路径，不带后缀</param>
+		/// <param name="contents"></param>
 		/// <returns></returns>
-		public abstract object Get(ContentInfo[] contents);
+		public object Get(ContentInfo[] contents);
 	}
 }

@@ -2,9 +2,9 @@
 {
 	public class JsonModelReader : IContentReader
 	{
-		public override string Type => "Game.JsonModel";
-		public override string[] DefaultSuffix => new string[] { "json" };
-		public override object Get(ContentInfo[] contents)
+		public string Type => "Game.JsonModel";
+		public string[] DefaultSuffix => new string[] { "json" };
+		public object Get(ContentInfo[] contents)
 		{
 			return Game.JsonModelReader.Load(contents[0].Duplicate());
 		}

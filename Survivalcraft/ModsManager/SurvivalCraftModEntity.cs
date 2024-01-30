@@ -10,11 +10,18 @@ using Game.IContentReader;
 
 namespace Game
 {
-	public class SurvivalCraftModEntity : ModEntity
+	public sealed class SurvivalCraftModEntity : ModEntity
 	{
-
-		public SurvivalCraftModEntity()
+		public static SurvivalCraftModEntity Instance = null!;
+		public SurvivalCraftModEntity() : base(null!)
 		{
+			if (Instance != null)
+			{
+				throw new InvalidOperationException($"{nameof(SurvivalCraftModEntity)} 被重复实例化。");
+			}
+
+			Instance = this;
+			
 			var readers = new List<IContentReader.IContentReader>();
 			readers.AddRange(new IContentReader.IContentReader[]
 			{
@@ -48,11 +55,11 @@ namespace Game
 			ModArchive = ZipArchive.Open(memoryStream, true);
 			InitializeResources();
 			LabelWidget.BitmapFont = ContentManager.Get<Engine.Media.BitmapFont>("Fonts/Pericles");
-			LoadingScreen.Info("加载资源:" + modInfo?.Name);
+			LoadingScreen.Info("加载资源:" + ModInfo?.Name);
 		}
 		public override void LoadBlocksData()
 		{
-			LoadingScreen.Info("加载方块数据:" + modInfo?.Name);
+			LoadingScreen.Info("加载方块数据:" + ModInfo?.Name);
 			BlocksManager.LoadBlocksData(ContentManager.Get<string>("BlocksData"));
 			ContentManager.Dispose("BlocksData");
 		}
@@ -62,49 +69,59 @@ namespace Game
 		}
 		public override void HandleAssembly(Assembly assembly)
 		{
-			var types = assembly.GetTypes();
+			Type[] types = assembly.GetTypes();
 			foreach (var type in types)
 			{
-				if (type.IsSubclassOf(typeof(ModLoader)) && !type.IsAbstract)
+				if (type.IsSubclassOf(typeof(IModLoader)) && !type.IsAbstract)
 				{
-					if(Activator.CreateInstance(type) is not ModLoader modLoader) continue;
-					modLoader.Entity = this;
-					modLoader.__ModInitialize();
-					Loader = modLoader;
+					if(Activator.CreateInstance(type) is not IModLoader modLoader) continue;
+					modLoader.ModEntity = this;
+					modLoader._OnLoaderInitialize();
 					ModsManager.ModLoaders.Add(modLoader);
+					continue;
 				}
-				else if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
+
+				if (!type.IsSubclassOf(typeof(Block)) || type.IsAbstract)
 				{
-					var fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
-					if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
-					{
-						ModsManager.AddException(new InvalidOperationException($"Block type \"{type.FullName}\" does not have static field Index of type int."));
-					}
-					else
-					{
-						var index = (int)fieldInfo.GetValue(null);
-						var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
-						block.BlockIndex = index;
-						Blocks.Add(block);
-					}
+					continue;
+				}
+
+				var fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p is { Name: "Index", IsPublic: true, IsStatic: true });
+				if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
+				{
+					ModsManager.AddException(new InvalidOperationException(
+						$"Block type \"{type.FullName}\" does not have static field Index of type int."));
+					continue;
+				}
+
+				var index = (int)fieldInfo.GetValue(null)!;
+				var block = (Block?)Activator.CreateInstance(type.GetTypeInfo().AsType());
+				if (block is null)
+				{
+					Log.Error($"Cannot construct block {type.FullName}");
+				}
+				else
+				{
+					block.BlockIndex = index;
+					Blocks.Add(block);
 				}
 			}
 		}
 		public override void LoadXdb(ref XElement xElement)
 		{
-			LoadingScreen.Info("加载数据库:" + modInfo?.Name);
+			LoadingScreen.Info("加载数据库:" + ModInfo?.Name);
 			xElement = ContentManager.Get<XElement>("Database");
 			ContentManager.Dispose("Database");
 		}
 		public override void LoadCr(ref XElement xElement)
 		{
-			LoadingScreen.Info("加载合成谱:" + modInfo?.Name);
+			LoadingScreen.Info("加载合成谱:" + ModInfo?.Name);
 			xElement = ContentManager.Get<XElement>("CraftingRecipes");
 			ContentManager.Dispose("CraftingRecipes");
 		}
 		public override void LoadClo(ClothingBlock block, ref XElement xElement)
 		{
-			LoadingScreen.Info("加载衣物数据:" + modInfo?.Name);
+			LoadingScreen.Info("加载衣物数据:" + ModInfo?.Name);
 			xElement = ContentManager.Get<XElement>("Clothes");
 			ContentManager.Dispose("Clothes");
 		}

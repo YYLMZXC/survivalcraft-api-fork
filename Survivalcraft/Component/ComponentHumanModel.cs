@@ -214,13 +214,13 @@ namespace Game
 		public override void Animate()
 		{
 			bool flag = false;
-			bool skip = false;
-			ModsManager.HookAction("OnModelAnimate", loader =>
-			{
-				loader.OnModelAnimate(this, out skip);
-				flag = flag | skip;
-				return false;
-			});
+			ModInterfacesManager.InvokeHooks("OnModelAnimate",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.OnModelAnimate(this, out bool skip);
+					flag = flag | skip;
+					isContinueRequired = true;
+				});
 			if (flag)
 			{
 				base.Animate();

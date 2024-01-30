@@ -161,7 +161,7 @@ public class ManageContentScreen : Screen
 			var listItem = (ListItem)obj;
 			if (listItem.Type == ExternalContentType.Mod && listItem.IsClick)
 			{
-				var messageDialog = new MessageDialog(listItem.ModEntity.modInfo.Name, listItem.ModEntity.modInfo.Description, LanguageControl.Ok, LanguageControl.Cancel, (btn) =>
+				var messageDialog = new MessageDialog(listItem.ModEntity.ModInfo.Name, listItem.ModEntity.ModInfo.Description, LanguageControl.Ok, LanguageControl.Cancel, (btn) =>
 				{
 					DialogsManager.HideAllDialogs();
 					listItem.IsClick = false;
@@ -337,17 +337,15 @@ public class ManageContentScreen : Screen
 		}
 		if (m_filter == ExternalContentType.Mod || m_filter == ExternalContentType.Unknown)
 		{
-			foreach (ModEntity modEntity in ModsManager.ModListAll)
+			foreach (ModEntity modEntity in ModsManager.ModList)
 			{
-				string dis = string.Empty;
-				if (ModsManager.DisabledMods.Contains(modEntity.modInfo)) dis = "[已禁用]";
-				string author = string.IsNullOrEmpty(modEntity.modInfo.Author) ? "无" : modEntity.modInfo.Author;
+				string author = string.IsNullOrEmpty(modEntity.ModInfo.Author) ? "无" : modEntity.ModInfo.Author;
 				list.Add(new ListItem
 				{
-					Name = $"[模组]{modEntity.modInfo.Description}<{author}>",
+					Name = $"[模组]{modEntity.ModInfo.Description}<{author}>",
 					IsBuiltIn = false,
 					Type = ExternalContentType.Mod,
-					DisplayName = $"{modEntity.modInfo.Name} 版本:{modEntity.modInfo.Version}",
+					DisplayName = $"{modEntity.ModInfo.Name} 版本:{modEntity.ModInfo.Version}",
 					CreationTime = DateTime.Now,
 					Texture = modEntity.Icon,
 					ModEntity = modEntity

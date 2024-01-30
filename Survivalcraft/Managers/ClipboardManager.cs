@@ -1,22 +1,33 @@
-using System.Windows.Forms;
-
 namespace Game
 {
-	public static class ClipboardManager
-	{
+    public static class ClipboardManager
+    {
+#if android
+		internal static Android.Content.ClipboardManager m_clipboardManager {get;} =
+ (Android.Content.ClipboardManager)Engine.Window.Activity.GetSystemService("clipboard");
 		public static string ClipboardString
 		{
 			get
 			{
-				return Clipboard.GetText();
-				//return Windows.ApplicationModel.DataTransfer.Clipboard.GetContent().ToString();
-
+				return m_clipboardManager.Text;
 			}
 			set
 			{
-				Clipboard.SetText(value);
-				//Clipboard.SetContent((C)value);
+				m_clipboardManager.Text = value;
 			}
 		}
-	}
+#else
+        public static string ClipboardString
+        {
+            get
+            {
+                return System.Windows.Forms.Clipboard.GetText();
+            }
+            set
+            {
+                System.Windows.Forms.Clipboard.SetText(value);
+            }
+        }
+#endif
+    }
 }

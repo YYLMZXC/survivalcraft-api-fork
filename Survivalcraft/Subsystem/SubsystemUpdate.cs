@@ -96,7 +96,13 @@ namespace Game
 					{
 					}
 				}
-				ModsManager.HookAction("SubsystemUpdate", loader => { loader.SubsystemUpdate(dt); return false; });
+
+				ModInterfacesManager.InvokeHooks("SubsystemUpdate",
+					(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+					{
+						modInterface.SubsystemUpdate(dt);
+						isContinueRequired = true;
+					});
 			}
 		}
 

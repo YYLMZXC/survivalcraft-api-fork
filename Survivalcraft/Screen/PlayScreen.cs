@@ -145,11 +145,12 @@ namespace Game
 
 		public void GameLoad(object item)
 		{
-			ModsManager.HookAction("BeforeGameLoading", loader =>
-			{
-				item = loader.BeforeGameLoading(this, item);
-				return true;
-			});
+			ModInterfacesManager.InvokeHooks("BeforeGameLoading",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					item = modInterface.BeforeGameLoading(this, item);
+					isContinueRequired = true;
+				});
 			ScreensManager.SwitchScreen("GameLoading", item, null);
 			m_worldsListWidget.SelectedItem = null;
 		}
@@ -160,14 +161,14 @@ namespace Game
 			int num = 1;
 			try
 			{
-				foreach (ModEntity modEntity in ModsManager.ModListAll)
+				foreach (ModEntity modEntity in ModsManager.ModList)
 				{
 					foreach (var value in MotdManager.FilterModAll)
 					{
-						if (value.FilterAPIVersion == ModsManager.ApiCurrentVersionString && value.PackageName == modEntity.modInfo.PackageName && CompareVersion(value.Version, modEntity.modInfo.Version))
+						if (value.FilterAPIVersion == ModsManager.ApiCurrentVersionString && value.PackageName == modEntity.ModInfo.PackageName && CompareVersion(value.Version, modEntity.ModInfo.Version))
 						{
 							tips +=
-								$"{num}.{modEntity.modInfo.Name}(v{modEntity.modInfo.Version})  {value.Explanation}\n";
+								$"{num}.{modEntity.ModInfo.Name}(v{modEntity.ModInfo.Version})  {value.Explanation}\n";
 							num++;
 						}
 					}

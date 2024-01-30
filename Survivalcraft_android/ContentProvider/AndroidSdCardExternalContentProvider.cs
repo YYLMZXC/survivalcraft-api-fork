@@ -1,8 +1,9 @@
-using Engine;
-using Game;
 using System;
 using System.IO;
 using System.Threading;
+using Engine;
+
+namespace Game.ContentProvider;
 
 public class AndroidSdCardExternalContentProvider : IExternalContentProvider, IDisposable
 {

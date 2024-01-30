@@ -484,12 +484,13 @@ namespace Game
 				if (!IsChunkInRange(terrainChunk.Center, locations))
 				{
 					bool noToFree = false;
-					ModsManager.HookAction("ToFreeChunks", (ModLoader modLoader) =>
-					{
-						modLoader.ToFreeChunks(this, terrainChunk, out bool keepWorking);
-						noToFree |= keepWorking;
-						return false;
-					});
+					ModInterfacesManager.InvokeHooks("ToFreeChunks",
+						(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+						{
+							modInterface.ToFreeChunks(this, terrainChunk, out bool keepWorking);
+							noToFree |= keepWorking;
+							isContinueRequired = true;
+						});
 					if (noToFree) continue;
 					result = true;
 					foreach (SubsystemBlockBehavior blockBehavior in m_subsystemBlockBehaviors.BlockBehaviors)
@@ -528,12 +529,13 @@ namespace Game
 					}
 				}
 			}
-			ModsManager.HookAction("ToAllocateChunks", (ModLoader modLoader) =>
-			{
-				bool modification = modLoader.ToAllocateChunks(this, locations);
-				result |= modification;
-				return false;
-			});
+			ModInterfacesManager.InvokeHooks("ToAllocateChunks",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					bool modification = modInterface.ToAllocateChunks(this, locations);
+					result |= modification;
+					isContinueRequired = true;
+				});
 			return result;
 		}
 
@@ -760,11 +762,13 @@ namespace Game
 					{
 						double realTime7 = Time.RealTime;
 						m_subsystemTerrain.TerrainContentsGenerator.GenerateChunkContentsPass4(chunk);
-						ModsManager.HookAction("OnTerrainContentsGenerated", (modLoader) =>
-						{
-							modLoader.OnTerrainContentsGenerated(chunk);
-							return false;
-						});
+						
+						ModInterfacesManager.InvokeHooks("OnTerrainContentsGenerated",
+							(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+							{
+								modInterface.OnTerrainContentsGenerated(chunk);
+								isContinueRequired = true;
+							});
 						chunk.ThreadState = TerrainChunkState.InvalidLight;
 						chunk.WasUpgraded = true;
 						double realTime8 = Time.RealTime;
@@ -836,8 +840,13 @@ namespace Game
 						{
 							chunk.NewGeometryData = false;
 							GenerateChunkVertices(chunk, even: true);
-							ModsManager.HookAction("GenerateChunkVertices", modLoader => { modLoader.GenerateChunkVertices(chunk, true); return true; });
+							ModInterfacesManager.InvokeHooks("GenerateChunkVertices", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+							{
+								modInterface.GenerateChunkVertices(chunk, true);
+								isContinueRequired = true;
+							});
 						}
+						
 						chunk.ThreadState = TerrainChunkState.InvalidVertices2;
 						chunk.WasUpgraded = true;
 						double realTime6 = Time.RealTime;
@@ -851,7 +860,12 @@ namespace Game
 						lock (chunk.Geometry)
 						{
 							GenerateChunkVertices(chunk, even: false);
-							ModsManager.HookAction("GenerateChunkVertices", modLoader => { modLoader.GenerateChunkVertices(chunk, true); return false; });
+							
+							ModInterfacesManager.InvokeHooks("GenerateChunkVertices", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+							{
+								modInterface.GenerateChunkVertices(chunk, true);
+								isContinueRequired = true;
+							});
 							chunk.NewGeometryData = true;
 						}
 						chunk.ThreadState = TerrainChunkState.Valid;
@@ -946,7 +960,12 @@ namespace Game
 
 		public void GenerateChunkLightSources(TerrainChunk chunk)
 		{
-			ModsManager.HookAction("GenerateChunkLightSources", loader => { loader.GenerateChunkLightSources(m_lightSources, chunk); return false; });
+			ModInterfacesManager.InvokeHooks("GenerateChunkLightSources",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.GenerateChunkLightSources(m_lightSources, chunk);
+					isContinueRequired = true;
+				});
 			Block[] blocks = BlocksManager.Blocks;
 			for (int i = 0; i < 16; i++)
 			{

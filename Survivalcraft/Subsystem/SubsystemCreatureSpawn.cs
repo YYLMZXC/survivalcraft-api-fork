@@ -963,11 +963,12 @@ namespace Game
 					return SpawnCreatures(creatureType, "Sparrow", point, count3).Count;
 				}
 			});
-			ModsManager.HookAction("InitializeCreatureTypes", (modLoader) =>
-			{
-				modLoader.InitializeCreatureTypes(this, m_creatureTypes);
-				return false;
-			});
+			ModInterfacesManager.InvokeHooks("InitializeCreatureTypes",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.InitializeCreatureTypes(this, m_creatureTypes);
+					isContinueRequired = true;
+				});
 		}
 
 		public virtual void SpawnRandomCreature()

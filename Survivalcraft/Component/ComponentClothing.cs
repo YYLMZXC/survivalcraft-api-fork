@@ -212,14 +212,15 @@ namespace Game
 
 		public float ApplyArmorProtection(float attackPower)
 		{
-			bool Applied = false;
-			ModsManager.HookAction("ApplyArmorProtection", modLoader =>
-			{
-				attackPower = modLoader.ApplyArmorProtection(this, attackPower, out bool flag2);
-				Applied |= flag2;
-				return false;
-			});
-			if (Applied == false)
+			bool applied = false;
+			ModInterfacesManager.InvokeHooks("ApplyArmorProtection",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					attackPower = modInterface.ApplyArmorProtection(this, attackPower, out bool tmp);
+					applied |= tmp;
+					isContinueRequired = true;
+				});
+			if (applied == false)
 			{
 				float num = m_random.Float(0f, 1f);
 				ClothingSlot slot = (num < 0.1f) ? ClothingSlot.Feet : ((num < 0.3f) ? ClothingSlot.Legs : ((num < 0.9f) ? ClothingSlot.Torso : ClothingSlot.Head));
@@ -472,7 +473,10 @@ namespace Game
 				return;
 			}
 			Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-			ModsManager.HookAction("ClothingProcessSlotItems", modLoader => { return modLoader.ClothingProcessSlotItems(m_componentPlayer, block, slotIndex, value, count); });
+			ModInterfacesManager.InvokeHooks("ClothingProcessSlotItems", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+			{
+				isContinueRequired = !modInterface.ClothingProcessSlotItems(m_componentPlayer, block, slotIndex, value, count);
+			});
 			if (block.GetNutritionalValue(value) > 0f)
 			{
 				if (block is BucketBlock)

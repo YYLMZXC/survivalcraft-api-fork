@@ -537,7 +537,6 @@ namespace Game
 				{
 					using (Stream stream = Storage.OpenFile(ModsManager.SettingPath, OpenFileMode.Read))
 					{
-						ModsManager.DisabledMods.Clear();
 						XElement xElement = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
 						ModsManager.LoadSettings(xElement);
 						foreach (XElement item in xElement.Elements())
@@ -566,7 +565,6 @@ namespace Game
 										var modInfo = new ModInfo();
 										modInfo.PackageName = xElement1.Attribute("PackageName").Value;
 										modInfo.Version = xElement1.Attribute("Version").Value;
-										ModsManager.DisabledMods.Add(modInfo);
 									}
 								}
 							}
@@ -615,19 +613,7 @@ namespace Game
 						}));
 					}
 				}
-				var xElement1 = new XElement("DisableMods");
 				var xElement2 = new XElement("ModSettings");
-				foreach (ModEntity modEntity in ModsManager.ModListAll)
-				{
-					if (ModsManager.DisabledMods.Contains(modEntity.modInfo))
-					{
-						var element = new XElement("Mod");
-						element.SetAttributeValue("PackageName", modEntity.modInfo.PackageName);
-						element.SetAttributeValue("Version", modEntity.modInfo.Version);
-						xElement1.Add(element);
-					}
-				}
-				xElement.Add(xElement1);
 				ModsManager.SaveSettings(xElement);
 				ModsManager.SaveModSettings(xElement2);
 				using (Stream stream = Storage.OpenFile(ModsManager.SettingPath, OpenFileMode.Create))

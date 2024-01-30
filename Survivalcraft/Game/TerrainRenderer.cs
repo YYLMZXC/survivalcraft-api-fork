@@ -150,7 +150,12 @@ namespace Game
 			OpaqueShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			OpaqueShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 			ShaderParameter parameter = OpaqueShader.GetParameter("u_fogStartInvLength", true);
-			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(OpaqueShader, camera); return true; });
+			
+			ModInterfacesManager.InvokeHooks("SetShaderParameter", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+			{
+				modInterface.SetShaderParameter(OpaqueShader, camera);
+				isContinueRequired = false;
+			});
 			Point2 point = Terrain.ToChunk(camera.ViewPosition.XZ);
 			var chunk = m_subsystemTerrain.Terrain.GetChunkAtCoords(point.X, point.Y);
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
@@ -197,7 +202,13 @@ namespace Game
 			AlphatestedShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			AlphatestedShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 			ShaderParameter parameter = AlphatestedShader.GetParameter("u_fogStartInvLength", true);
-			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(AlphatestedShader, camera); return true; });
+			
+			ModInterfacesManager.InvokeHooks("SetShaderParameter", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+			{
+				modInterface.SetShaderParameter(AlphatestedShader, camera);
+				isContinueRequired = false;
+			});
+			
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
@@ -225,7 +236,14 @@ namespace Game
 			TransparentShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			TransparentShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 			ShaderParameter parameter = TransparentShader.GetParameter("u_fogStartInvLength", true);
-			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(TransparentShader, camera); return true; });
+			
+			ModInterfacesManager.InvokeHooks("SetShaderParameter",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.SetShaderParameter(TransparentShader, camera);
+					isContinueRequired = false;
+				});
+			
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];

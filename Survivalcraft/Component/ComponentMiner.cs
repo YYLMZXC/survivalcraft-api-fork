@@ -149,11 +149,12 @@ namespace Game
 				}
 			}
 			bool flag = ComponentPlayer != null && !ComponentPlayer.ComponentInput.IsControlledByTouch && m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative;
-			ModsManager.HookAction("OnMinerDig", modLoader =>
+			
+			ModInterfacesManager.InvokeHooks("OnMinerDig", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 			{
-				modLoader.OnMinerDig(this, raycastResult, ref m_digProgress, out bool flag2);
+				modInterface.OnMinerDig(this, raycastResult, ref m_digProgress, out bool flag2);
 				flag |= flag2;
-				return false;
+				isContinueRequired = true;
 			});
 			if (flag || (m_lastPokingPhase <= 0.5f && PokingPhase > 0.5f))
 			{
@@ -211,11 +212,11 @@ namespace Game
 					int num3 = placementData.CellFace.Y + point.Y;
 					int num4 = placementData.CellFace.Z + point.Z;
 					bool placed = false;
-					ModsManager.HookAction("OnMinerPlace", modLoader =>
+					ModInterfacesManager.InvokeHooks("OnMinerPlace", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 					{
-						modLoader.OnMinerPlace(this, raycastResult, num2, num3, num4, value, out bool Placed);
-						placed |= Placed;
-						return false;
+						modInterface.OnMinerPlace(this, raycastResult, num2, num3, num4, value, out bool placed1);
+						placed |= placed1;
+						isContinueRequired = true;
 					});
 					if (placed) return true;
 					if (!m_canSqueezeBlock)
@@ -334,12 +335,11 @@ namespace Game
 			}
 			bool flag;
 
-			ModsManager.HookAction("OnMinerHit", modLoader =>
+			ModInterfacesManager.InvokeHooks("OnMinerHit", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 			{
-				modLoader.OnMinerHit(this, componentBody, hitPoint, hitDirection, ref num, ref num2, ref num3, out bool Hitted);
-				return Hitted;
+				modInterface.OnMinerHit(this, componentBody, hitPoint, hitDirection, ref num, ref num2, ref num3, out bool hit);
+				isContinueRequired = !hit;
 			});
-
 			if (ComponentPlayer != null)
 			{
 				m_subsystemAudio.PlaySound("Audio/Swoosh", 1f, m_random.Float(-0.2f, 0.2f), componentBody.Position, 3f, autoDelay: false);
@@ -358,10 +358,10 @@ namespace Game
 			else if (ComponentCreature is ComponentPlayer)
 			{
 				HitValueParticleSystem particleSystem = new(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
-				ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
+				ModInterfacesManager.InvokeHooks("SetHitValueParticleSystem", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 				{
-					modLoader.SetHitValueParticleSystem(particleSystem, false);
-					return false;
+					modInterface.SetHitValueParticleSystem(particleSystem, false);
+					isContinueRequired = true;
 				});
 				Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
 			}
@@ -504,7 +504,10 @@ namespace Game
 				attacker.Entity.FindComponent<ComponentGui>(throwOnError: true).DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: true, playNotificationSound: true);
 				return;
 			}
-			ModsManager.HookAction("AttackBody", modloader => { return modloader.AttackBody(target, attacker, hitPoint, hitDirection, ref attackPower, isMeleeAttack); });
+			ModInterfacesManager.InvokeHooks("AttackBody", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+			{
+				isContinueRequired = !modInterface.AttackBody(target, attacker, hitPoint, hitDirection, ref attackPower, isMeleeAttack);
+			});
 			if (attackPower > 0f)
 			{
 				ComponentClothing componentClothing = target.Entity.FindComponent<ComponentClothing>();
@@ -562,10 +565,11 @@ namespace Game
 						{
 							string text2 = (0f - num2).ToString("0", CultureInfo.InvariantCulture);
 							HitValueParticleSystem particleSystem = new(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + attacker.ComponentBody.Velocity, Color.White, text2);
-							ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
+							
+							ModInterfacesManager.InvokeHooks("SetHitValueParticleSystem", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 							{
-								modLoader.SetHitValueParticleSystem(particleSystem, true);
-								return false;
+								modInterface.SetHitValueParticleSystem(particleSystem, true);
+								isContinueRequired = true;
 							});
 							target.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
 						}
@@ -598,10 +602,11 @@ namespace Game
 				num4 = 2f;
 				x = 0.2f;
 			}
-			ModsManager.HookAction("AttackPowerParameter", modloader =>
+			
+			ModInterfacesManager.InvokeHooks("AttackPowerParameter", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 			{
-				modloader.AttackPowerParameter(target, attacker, hitPoint, hitDirection, ref num4, ref x, ref recalculate);
-				return false;
+				modInterface.AttackPowerParameter(target, attacker, hitPoint, hitDirection, ref num4, ref x, ref recalculate);
+				isContinueRequired = true;
 			});
 			if (num4 > 0f)
 			{

@@ -5,9 +5,9 @@ namespace Game.IContentReader
 {
 	public class SubtextureReader : IContentReader
 	{
-		public override string[] DefaultSuffix => new string[] { "png", "txt" };
-		public override string Type => "Game.Subtexture";
-		public override object Get(ContentInfo[] contents)
+		public string[] DefaultSuffix => new string[] { "png", "txt" };
+		public string Type => "Game.Subtexture";
+		public object Get(ContentInfo[] contents)
 		{
 			if (contents[0].ContentPath.Contains("Textures/Atlas/"))
 			{

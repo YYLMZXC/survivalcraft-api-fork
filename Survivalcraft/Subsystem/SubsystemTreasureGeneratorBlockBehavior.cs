@@ -53,11 +53,12 @@ namespace Game
 					break;
 				}
 			}
-			ModsManager.HookAction("OnTreasureGenerate", (modLoader) =>
-			{
-				modLoader.OnTreasureGenerate(SubsystemTerrain, x, y, z, neighborX, neighborY, neighborZ, ref num, ref num2, out bool IsGenerate);
-				return IsGenerate;
-			});
+			ModInterfacesManager.InvokeHooks("OnTreasureGenerate",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.OnTreasureGenerate(SubsystemTerrain, x, y, z, neighborX, neighborY, neighborZ, ref num, ref num2, out bool IsGenerate);
+					isContinueRequired = !IsGenerate;
+				});
 			if (num != 0 && num2 > 0)
 			{
 				for (int j = 0; j < num2; j++)

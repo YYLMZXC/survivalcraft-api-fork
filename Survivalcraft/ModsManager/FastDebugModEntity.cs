@@ -12,9 +12,9 @@ namespace Game
 	{
 		public Dictionary<string, FileInfo> FModFiles = [];
 
-		public FastDebugModEntity()
+		public FastDebugModEntity() : base(new ZipArchive())
 		{
-			modInfo = new ModInfo() { Name = "[Debug]", PackageName = "debug" };
+			ModInfo = new ModInfo() { Name = "[Debug]", PackageName = "debug" };
 			InitializeResources();
 		}
 
@@ -23,11 +23,11 @@ namespace Game
 			ReadDirResources(ModsManager.ModsPath, "");
 			if (!GetFile("modinfo.json", (stream) =>
 			{
-				modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
-				modInfo.Name = $"[Debug]{modInfo.Name}";
+				ModInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
+				ModInfo.Name = $"[Debug]{ModInfo.Name}";
 			}))
 			{
-				modInfo = new ModInfo { Name = "FastDebug", Version = "1.0.0", ApiVersion = ModsManager.ApiCurrentVersionString, Author = "Mod", Description = "调试Mod插件", ScVersion = "2.3.0.0", PackageName = "com.fastdebug" };
+				ModInfo = new ModInfo { Name = "FastDebug", Version = "1.0.0", ApiVersion = ModsManager.ApiCurrentVersionString, Author = "Mod", Description = "调试Mod插件", ScVersion = "2.3.0.0", PackageName = "com.fastdebug" };
 			}
 			GetFile("icon.png", (stream) => { LoadIcon(stream); });
 		}
@@ -121,7 +121,13 @@ namespace Game
 					ModsManager.CombineDataBase(xElement, Storage.OpenFile(Storage.CombinePaths(ModsManager.ModsPath, c), OpenFileMode.Read));
 				}
 			}
-			Loader?.OnXdbLoad(xElement);
+
+			XElement element = xElement;
+			ModInterfacesManager.InvokeHooks("OnXdbLoad", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+			{
+				modInterface.OnXdbLoad(element);
+				isContinueRequired = true;
+			}, this);
 		}
 
 		/// <summary>
@@ -132,33 +138,41 @@ namespace Game
 		/// <returns></returns>
 		public override void GetFiles(string? extension, Action<string, Stream> action)
 		{
-			foreach (KeyValuePair<string, FileInfo> item in 
+			foreach ((string? fileName, FileInfo? fileInfo) in 
 			         extension is null 
 				         ? FModFiles 
 				         : FModFiles.Where(item => item.Key.EndsWith(extension)))
 			{
-				using Stream fs = item.Value.OpenRead();
+				if (fileInfo is null)
+				{
+					return;
+				}
+				using Stream fs = fileInfo.OpenRead();
 				try
 				{
-					action?.Invoke(item.Key, fs);
+					action?.Invoke(fileName, fs);
 				}
 				catch (Exception e)
 				{
-					Log.Error($"GetFile {item.Key} Exception:{e.Message}");
+					Log.Error($"GetFile {fileName} Exception:{eS}");
 				}
 			}
 		}
-		public override bool GetFile(string filename, Action<Stream> stream)
+		public override bool GetFile(string filename, Action<Stream> action)
 		{
-			if (!FModFiles.TryGetValue(filename, out FileInfo fileInfo)) return false;
-			using Stream fs = fileInfo.OpenRead();
+			if (!FModFiles.TryGetValue(filename, out FileInfo? fileInfo) || string.IsNullOrEmpty(filename))
+			{
+				return false;
+			}
+
+			using Stream stream = fileInfo.OpenRead();
 			try
 			{
-				stream?.Invoke(fs);
+				action.Invoke(stream);
 			}
 			catch (Exception e)
 			{
-				Log.Error($"GetFile {filename} Error:{e.Message}");
+				Log.Error($"GetFile {filename} Error:{e}");
 			}
 
 			return true;

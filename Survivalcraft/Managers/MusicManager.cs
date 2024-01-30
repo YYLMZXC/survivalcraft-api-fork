@@ -80,15 +80,16 @@ namespace Game
 			else if (m_currentMix == Mix.Menu && (Time.FrameStartTime >= m_nextSongTime || !IsPlaying))
 			{
 				float startPercentage = IsPlaying ? m_random.Float(0f, 0.75f) : 0f;
-				string ContentMusicPath = string.Empty;
-				ModsManager.HookAction("MenuPlayMusic", (ModLoader loader) =>
+				string contentMusicPath = string.Empty;
+				
+				ModInterfacesManager.InvokeHooks("MenuPlayMusic", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 				{
-					loader.MenuPlayMusic(out ContentMusicPath);
-					return false;
+					modInterface.MenuPlayMusic(out contentMusicPath);
+					isContinueRequired = true;
 				});
-				if (!string.IsNullOrEmpty(ContentMusicPath))
+				if (!string.IsNullOrEmpty(contentMusicPath))
 				{
-					PlayMusic(ContentMusicPath, startPercentage);
+					PlayMusic(contentMusicPath, startPercentage);
 					m_nextSongTime = Time.FrameStartTime + m_random.Float(40f, 60f);
 					return;
 				}

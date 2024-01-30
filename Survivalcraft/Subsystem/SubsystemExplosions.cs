@@ -277,7 +277,7 @@ namespace Game
 			int m_queuedExplosionsCount = m_queuedExplosions.Count;
 			int[] indices = Enumerable.Range(0, m_queuedExplosionsCount).ToArray();
 
-			// 使用 Parallel.For 并行执行循环
+			// 浣跨敤 Parallel.For 骞惰鎵ц寰幆
 			Parallel.For(0, m_queuedExplosionsCount, (i, loopState) =>
 			{
 				int num1 = indices[i];
@@ -343,7 +343,12 @@ namespace Game
 			int num3 = 0;
 			if (Terrain.ExtractContents(explosionPointValue) != 0)
 			{
-				ModsManager.HookAction("OnBlockExploded", loader => { loader.OnBlockExploded(m_subsystemTerrain, x, y, z, explosionPointValue); return false; });
+				ModInterfacesManager.InvokeHooks("OnBlockExploded",
+					(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+					{
+						modInterface.OnBlockExploded(m_subsystemTerrain, x, y, z, explosionPointValue);
+						isContinueRequired = true;
+					});
 			}
 			while (list.Count > 0 || list2.Count > 0)
 			{
@@ -440,7 +445,14 @@ namespace Game
 						bool flag2 = false;
 						var list = new List<BlockDropValue>();
 						block.GetDropValues(m_subsystemTerrain, cellValue, newValue, 0, list, out bool _);
-						ModsManager.HookAction("OnBlockExploded", loader => { loader.OnBlockExploded(m_subsystemTerrain, x, y, z, cellValue); return false; });
+						
+						ModInterfacesManager.InvokeHooks("OnBlockExploded",
+							(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+							{
+								modInterface.OnBlockExploded(m_subsystemTerrain, x, y, z, cellValue);
+								isContinueRequired = true;
+							});
+						
 						if (list.Count == 0)
 						{
 							list.Add(new BlockDropValue

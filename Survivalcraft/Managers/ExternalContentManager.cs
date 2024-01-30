@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Game.ContentProvider;
+
 namespace Game
 {
 	public static class ExternalContentManager

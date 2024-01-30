@@ -61,7 +61,7 @@ namespace Game
 			};
 		}
 
-		public static ZipArchive Open(Stream stream, bool keepStreamOpen = false)
+		public static ZipArchive? Open(Stream stream, bool keepStreamOpen = false)
 		{
 			var zipArchive = new ZipArchive
 			{
@@ -132,8 +132,8 @@ namespace Game
 		}
 		private static bool IsUTF8Bytes(byte[] data, int start, int count)
 		{
-			int charByteCounter = 1; //¼ÆËãµ±Ç°Õı·ÖÎöµÄ×Ö·ûÓ¦»¹ÓĞµÄ×Ö½ÚÊı 
-			byte curByte; //µ±Ç°·ÖÎöµÄ×Ö½Ú. 
+			int charByteCounter = 1; //è®¡ç®—å½“å‰æ­£åˆ†æçš„å­—ç¬¦åº”è¿˜æœ‰çš„å­—èŠ‚æ•° 
+			byte curByte; //å½“å‰åˆ†æçš„å­—èŠ‚. 
 			int end = start + count;
 			for (int i = start; i < end; i++)
 			{
@@ -163,7 +163,7 @@ namespace Game
 			}
 			if (charByteCounter > 1)
 			{
-				throw new Exception("·ÇÔ¤ÆÚµÄbyte¸ñÊ½");
+				throw new Exception("éé¢„æœŸçš„byteæ ¼å¼");
 			}
 			return true;
 		}

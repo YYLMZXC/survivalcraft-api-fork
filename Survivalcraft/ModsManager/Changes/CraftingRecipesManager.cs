@@ -45,10 +45,11 @@ namespace Game
 				return;
 			}
 			bool flag = false;
-			ModsManager.HookAction("OnCraftingRecipeDecode", modLoader =>
+			
+			ModInterfacesManager.InvokeHooks("OnCraftingRecipeDecode", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 			{
-				modLoader.OnCraftingRecipeDecode(m_recipes, item, out flag);
-				return flag;
+				modInterface.OnCraftingRecipeDecode(m_recipes, item, out flag);
+				isContinueRequired = !flag;
 			});
 			if (flag == false)
 			{
@@ -177,11 +178,12 @@ namespace Game
 		{
 			bool flag2 = false;
 			int result2 = 0;
-			ModsManager.HookAction("DecodeResult", modLoader =>
-			{
-				result2 = modLoader.DecodeResult(result, out flag2);
-				return flag2;
-			});
+			ModInterfacesManager.InvokeHooks("DecodeResult",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					result2 = modInterface.DecodeResult(result, out flag2);
+					isContinueRequired = !flag2;
+				});
 			if (flag2) return result2;
 			if (!string.IsNullOrEmpty(result))
 			{
@@ -197,11 +199,13 @@ namespace Game
 			bool flag2 = false;
 			string craftingId_R = string.Empty;
 			int? data_R = null;
-			ModsManager.HookAction("DecodeIngredient", modLoader =>
-			{
-				modLoader.DecodeIngredient(ingredient, out craftingId_R, out data_R, out flag2);
-				return flag2;
-			});
+			
+			ModInterfacesManager.InvokeHooks("DecodeIngredient",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.DecodeIngredient(ingredient, out craftingId_R, out data_R, out flag2);
+					isContinueRequired = !flag2;
+				});
 			if (flag2) { craftingId = craftingId_R; data = data_R; return; }
 			string[] array = ingredient.Split(new char[] { ':' }, StringSplitOptions.None);
 			craftingId = array[0];
@@ -212,11 +216,13 @@ namespace Game
 		{
 			bool flag2 = false;
 			bool result = false;
-			ModsManager.HookAction("MatchRecipe", modLoader =>
-			{
-				result = modLoader.MatchRecipe(requiredIngredients, actualIngredients, out flag2);
-				return flag2;
-			});
+			
+			ModInterfacesManager.InvokeHooks("MatchRecipe",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					result = modInterface.MatchRecipe(requiredIngredients, actualIngredients, out flag2);
+					isContinueRequired = !flag2;
+				});
 			if (flag2) return result;
 			if (actualIngredients.Length > 9) return false;
 			string[] array = new string[9];

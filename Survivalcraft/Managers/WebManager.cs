@@ -2,9 +2,9 @@ using Engine;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,8 +32,8 @@ namespace Game
 
 			protected override async Task SerializeToStreamAsync(Stream targetStream, TransportContext context)
 			{
-				byte[] buffer = new byte[1024];
-				long written = 0L;
+				var buffer = new byte[1024];
+				var written = 0L;
 				while (true)
 				{
 					m_progress.Total = m_sourceStream.Length;
@@ -56,8 +56,21 @@ namespace Game
 				throw new OperationCanceledException("Operation cancelled.");
 			}
 		}
-
-		[DllImport("wininet.dll")]
+#if android
+		public static bool IsInternetConnectionAvailable()
+		{
+			try
+			{
+				return ((Android.Net.ConnectivityManager)Window.Activity.GetSystemService("connectivity")).ActiveNetworkInfo?.IsConnected ?? false;
+			}
+			catch (Exception e)
+			{
+				Log.Warning(ExceptionManager.MakeFullErrorMessage("Could not check internet connection availability.", e));
+			}
+			return true;
+		}
+#else
+		[System.Runtime.InteropServices.DllImport("wininet.dll")]
 		public extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
 		public static bool IsInternetConnectionAvailable()
 		{
@@ -71,11 +84,11 @@ namespace Game
 			}
 			return true;
 		}
+#endif
 
 		public static void Get(string address, Dictionary<string, string> parameters, Dictionary<string, string> headers, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
-			MemoryStream targetStream = default;
-			Exception e = default;
+			Exception e;
 			Task.Run(async delegate
 			{
 				try
@@ -85,57 +98,58 @@ namespace Game
 					{
 						throw new InvalidOperationException("Internet connection is unavailable.");
 					}
-					using (var client = new HttpClient())
+
+					using var client = new HttpClient();
+					
+					Uri requestUri = parameters is { Count: > 0 } 
+						? new Uri($"{address}?{UrlParametersToString(parameters)}") 
+						: new Uri(address);
+					client.DefaultRequestHeaders.Referrer = new Uri(address);
+						
+					if (headers != null)
 					{
-						Uri requestUri = (parameters != null && parameters.Count > 0) ? new Uri(string.Format("{0}?{1}", new object[2]
+						foreach (KeyValuePair<string, string> header in headers)
 						{
-							address,
-							UrlParametersToString(parameters)
-						})) : new Uri(address);
-						client.DefaultRequestHeaders.Referrer = new Uri(address);
-						if (headers != null)
-						{
-							foreach (KeyValuePair<string, string> header in headers)
-							{
-								client.DefaultRequestHeaders.Add(header.Key, header.Value);
-							}
+							client.DefaultRequestHeaders.Add(header.Key, header.Value);
 						}
-						HttpResponseMessage responseMessage = await client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, progress.CancellationToken);
-						await VerifyResponse(responseMessage);
-						long? contentLength = responseMessage.Content.Headers.ContentLength;
-						progress.Total = contentLength ?? 0;
-						using (Stream responseStream = await responseMessage.Content.ReadAsStreamAsync())
+					}
+					ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+					
+					HttpResponseMessage responseMessage = await client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, progress.CancellationToken);
+					await VerifyResponse(responseMessage);
+					long? contentLength = responseMessage.Content.Headers.ContentLength;
+					progress.Total = contentLength.GetValueOrDefault();
+					await using Stream responseStream = await responseMessage.Content.ReadAsStreamAsync();
+					using var targetStream = new MemoryStream();
+					try
+					{
+						var written = 0L;
+						var buffer = new byte[1024];
+						int readCount;
+						
+						do
 						{
-							targetStream = new MemoryStream();
-							try
-							{
-								long written = 0L;
-								byte[] buffer = new byte[1024];
-								int num;
-								do
-								{
-									num = await responseStream.ReadAsync(buffer, 0, buffer.Length, progress.CancellationToken);
-									if (num > 0)
-									{
-										targetStream.Write(buffer, 0, num);
-										written += num;
-										progress.Completed = written;
-									}
-								}
-								while (num > 0);
-								Dispatcher.Dispatch(delegate
-								{
-									success(targetStream.ToArray());
-								});
-							}
-							finally
-							{
-								if (targetStream != null)
-								{
-									((IDisposable)targetStream).Dispose();
-								}
-							}
+							readCount = await responseStream.ReadAsync(buffer, progress.CancellationToken);
+							if (readCount <= 0) continue;
+							
+							targetStream.Write(buffer, 0, readCount);
+							written += readCount;
+							progress.Completed = written;
 						}
+						while (readCount > 0);
+						
+						if (success != null)
+						{
+							byte[] result = targetStream.ToArray();
+							Dispatcher.Dispatch(() =>
+							{
+								success(result);
+							});
+						}
+					}
+					finally
+					{
+						targetStream.Close();
 					}
 				}
 				catch (Exception ex)
@@ -163,7 +177,7 @@ namespace Game
 		public static string UrlParametersToString(Dictionary<string, string> values)
 		{
 			var stringBuilder = new StringBuilder();
-			string value = string.Empty;
+			var value = string.Empty;
 			foreach (KeyValuePair<string, string> value2 in values)
 			{
 				stringBuilder.Append(value);
@@ -191,13 +205,10 @@ namespace Game
 		public static Dictionary<string, string> UrlParametersFromString(string s)
 		{
 			var dictionary = new Dictionary<string, string>();
-			string[] array = s.Split(new char[1]
+			string[] array = s.Split('&', StringSplitOptions.RemoveEmptyEntries);
+			foreach (string item in array)
 			{
-				'&'
-			}, StringSplitOptions.RemoveEmptyEntries);
-			for (int i = 0; i < array.Length; i++)
-			{
-				string[] array2 = Uri.UnescapeDataString(array[i]).Split('=');
+				string[] array2 = Uri.UnescapeDataString(item).Split('=');
 				if (array2.Length == 2)
 				{
 					dictionary[array2[0]] = array2[1];
@@ -224,8 +235,7 @@ namespace Game
 		public static void PutOrPost(bool isPost, string address, Dictionary<string, string> parameters, Dictionary<string, string> headers, Stream data, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
 			byte[] responseData = default;
-			Exception e = default;
-			Task.Run(async delegate
+			Task.Run(async () =>
 			{
 				try
 				{
@@ -233,46 +243,42 @@ namespace Game
 					{
 						throw new InvalidOperationException("Internet connection is unavailable.");
 					}
-					using (var client = new HttpClient())
+
+					using var client = new HttpClient();
+					var dictionary = new Dictionary<string, string>();
+					if (headers != null)
 					{
-						var dictionary = new Dictionary<string, string>();
-						if (headers != null)
+						foreach (KeyValuePair<string, string> header in 
+						         headers.Where(header => !client.DefaultRequestHeaders.TryAddWithoutValidation(header.Key, header.Value)))
 						{
-							foreach (KeyValuePair<string, string> header in headers)
-							{
-								if (!client.DefaultRequestHeaders.TryAddWithoutValidation(header.Key, header.Value))
-								{
-									dictionary.Add(header.Key, header.Value);
-								}
-							}
+							dictionary.Add(header.Key, header.Value);
 						}
-						Uri uri = (parameters != null && parameters.Count > 0) ? new Uri(string.Format("{0}?{1}", new object[2]
-						{
-							address,
-							UrlParametersToString(parameters)
-						})) : new Uri(address);
-						var content = new ProgressHttpContent(data, progress);
-						foreach (KeyValuePair<string, string> item in dictionary)
-						{
-							content.Headers.Add(item.Key, item.Value);
-						}
-						HttpResponseMessage responseMessage = (!isPost) ? (await client.PutAsync(uri, content, progress.CancellationToken)) : (await client.PostAsync(uri, content, progress.CancellationToken));
-						await VerifyResponse(responseMessage);
-						_ = responseData;
-						responseData = await responseMessage.Content.ReadAsByteArrayAsync();
-						Dispatcher.Dispatch(delegate
-						{
-							success(responseData);
-						});
 					}
+					Uri uri = parameters is { Count: > 0 } ? new Uri(string.Format("{0}?{1}", new object[2]
+					{
+						address,
+						UrlParametersToString(parameters)
+					})) : new Uri(address);
+					var content = new ProgressHttpContent(data, progress);
+					foreach (KeyValuePair<string, string> item in dictionary)
+					{
+						content.Headers.Add(item.Key, item.Value);
+					}
+					HttpResponseMessage responseMessage = (!isPost) ? (await client.PutAsync(uri, content, progress.CancellationToken)) : (await client.PostAsync(uri, content, progress.CancellationToken));
+					await VerifyResponse(responseMessage);
+					_ = responseData;
+					responseData = await responseMessage.Content.ReadAsByteArrayAsync();
+					Dispatcher.Dispatch(delegate
+					{
+						success(responseData);
+					});
 				}
 				catch (Exception ex)
 				{
-					e = ex;
-					Log.Error(ExceptionManager.MakeFullErrorMessage(e));
+					Log.Error(ExceptionManager.MakeFullErrorMessage(ex));
 					Dispatcher.Dispatch(delegate
 					{
-						failure(e);
+						failure(ex);
 					});
 				}
 			});
@@ -282,20 +288,17 @@ namespace Game
 		{
 			if (!message.IsSuccessStatusCode)
 			{
-				string responseText = string.Empty;
+				var responseText = string.Empty;
 				try
 				{
 					responseText = await message.Content.ReadAsStringAsync();
 				}
 				catch
 				{
+					// ignored
 				}
-				throw new InvalidOperationException(string.Format("{0} ({1})\n{2}", new object[3]
-				{
-					message.StatusCode.ToString(),
-					(int)message.StatusCode,
-					responseText
-				}));
+
+				throw new InvalidOperationException($"{message.StatusCode.ToString()} ({(int)message.StatusCode})\n{responseText}");
 			}
 		}
 	}

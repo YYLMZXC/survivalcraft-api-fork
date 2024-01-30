@@ -40,10 +40,7 @@ namespace Game
 			{
 				m_idToAddressMap.Remove(MakeContentIdString(ExternalContentType.FurniturePack, path));
 			};
-			Window.Deactivated += delegate
-			{
-				Save();
-			};
+			Window.Deactivated += Save;
 		}
 
 		public static string GetDownloadedContentAddress(ExternalContentType type, string name)

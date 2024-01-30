@@ -157,11 +157,13 @@ namespace Game
 			m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
 			m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
 			m_subsystemShadows = Project.FindSubsystem<SubsystemShadows>(throwOnError: true);
-			ModsManager.HookAction("GetMaxInstancesCount", modLoader =>
-			{
-				MaxInstancesCount = Math.Max(modLoader.GetMaxInstancesCount(), MaxInstancesCount);
-				return false;
-			});
+			
+			ModInterfacesManager.InvokeHooks("GetMaxInstancesCount",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					MaxInstancesCount = Math.Max(modInterface.GetMaxInstancesCount(), MaxInstancesCount);
+					isContinueRequired = true;
+				});
 			m_shaderOpaque = new ModelShader(ShaderCodeManager.GetFast("Shaders/Model.vsh"), ShaderCodeManager.GetFast("Shaders/Model.psh"), useAlphaThreshold: false, MaxInstancesCount);
 			m_shaderAlphaTested = new ModelShader(ShaderCodeManager.GetFast("Shaders/Model.vsh"), ShaderCodeManager.GetFast("Shaders/Model.psh"), useAlphaThreshold: true, MaxInstancesCount);
 		}
@@ -237,8 +239,19 @@ namespace Game
 			{
 				modelShader.AlphaThreshold = alphaThreshold.Value;
 			}
-			ModsManager.HookAction("ModelShaderParameter", (modLoader) => { modLoader.ModelShaderParameter(modelShader, camera, modelsData, alphaThreshold); return true; });
-			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(modelShader, camera); return true; });
+
+			ModInterfacesManager.InvokeHooks("ModelShaderParameter",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.ModelShaderParameter(modelShader, camera, modelsData, alphaThreshold);
+					isContinueRequired = false;
+				});
+			ModInterfacesManager.InvokeHooks("SetShaderParameter",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.SetShaderParameter(modelShader, camera);
+					isContinueRequired = false;
+				});
 			foreach (ModelData modelsDatum in modelsData)
 			{
 				ComponentModel componentModel = modelsDatum.ComponentModel;
@@ -255,12 +268,14 @@ namespace Game
 				InstancedModelData instancedModelData = InstancedModelsManager.GetInstancedModelData(componentModel.Model, componentModel.MeshDrawOrders);
 				Display.DrawIndexed(PrimitiveType.TriangleList, modelShader, instancedModelData.VertexBuffer, instancedModelData.IndexBuffer, 0, instancedModelData.IndexBuffer.IndicesCount);
 				ModelsDrawn++;
-				//»­Ãû³Æ
-				ModsManager.HookAction("OnModelRendererDrawExtra", modLoader =>
-				{
-					modLoader.OnModelRendererDrawExtra(this, modelsDatum, camera, alphaThreshold);
-					return false;
-				});
+				//ç”»åç§°
+				
+				ModInterfacesManager.InvokeHooks("OnModelRendererDrawExtra",
+					(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+					{
+						modInterface.OnModelRendererDrawExtra(this, modelsDatum, camera, alphaThreshold);
+						isContinueRequired = true;
+					});
 			}
 		}
 
@@ -295,7 +310,7 @@ namespace Game
 			return LightingManager.CalculateSmoothLight(m_subsystemTerrain, p);
 		}
 
-		//Ì«ÑôÏòÁ¿
+		//å¤ªé˜³å‘é‡
 		public Vector3 SunVector(SubsystemSky subsystemSky)
 		{
 			float timeOfDay = subsystemSky.m_subsystemTimeOfDay.TimeOfDay;
@@ -315,7 +330,7 @@ namespace Game
 			return Vector3.Normalize(v2);
 		}
 
-		//ÒõÓ°»æÖÆ
+		//é˜´å½±ç»˜åˆ¶
 		public void ShadowDraw(SubsystemShadows subsystemShadows, Camera camera, Vector3 shadowPosition, float shadowDiameter, float alpha)
 		{
 			if (!SettingsManager.ObjectsShadowsEnabled)
@@ -329,7 +344,7 @@ namespace Game
 			}
 			float num2 = MathUtils.Sqrt(num);
 			float num3 = MathUtils.Saturate(4f * (1f - (num2 / 32f)));
-			float num4 = shadowDiameter / 2f;  //ÒõÓ°Ö±¾¶/2
+			float num4 = shadowDiameter / 2f;  //é˜´å½±ç›´å¾„/2
 			int num5 = Terrain.ToCell(shadowPosition.X - num4);
 			int num6 = Terrain.ToCell(shadowPosition.Z - num4);
 			int num7 = Terrain.ToCell(shadowPosition.X + num4);

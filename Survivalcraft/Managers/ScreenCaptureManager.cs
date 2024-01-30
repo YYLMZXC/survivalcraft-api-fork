@@ -9,8 +9,7 @@ namespace Game
 {
 	public static class ScreenCaptureManager
 	{
-		public static readonly string ScreenshotDir = "app:/ScreenCapture";
-
+		public static string ScreenshotDir => ModsManager.ScreenCapturePath;
 		public static bool m_captureRequested;
 
 		public static Action m_successHandler;
@@ -23,30 +22,30 @@ namespace Game
 			{
 				try
 				{
-					int num;
+					int width;
 					int height;
 					switch (SettingsManager.ScreenshotSize)
 					{
 						case ScreenshotSize.ScreenSize:
 							{
-								num = MathUtils.Max(Window.ScreenSize.X, Window.ScreenSize.Y);
+								width = MathUtils.Max(Window.ScreenSize.X, Window.ScreenSize.Y);
 								height = MathUtils.Min(Window.ScreenSize.X, Window.ScreenSize.Y);
-								float num2 = num / (float)height;
-								num = MathUtils.Min(num, 2048);
-								height = (int)MathUtils.Round(num / num2);
+								float ratio = width / (float)height;
+								width = MathUtils.Min(width, 2048);
+								height = (int)MathUtils.Round(width / ratio);
 								break;
 							}
 						case ScreenshotSize.FullHD:
-							num = 5760;
+							width = 5760;
 							height = 3240;
 							break;
 						default:
-							num = 3840;
+							width = 3840;
 							height = 2160;
 							break;
 					}
 					DateTime now = DateTime.Now;
-					Capture(num, height, $"Survivalcraft {now.Year:D4}-{now.Month:D2}-{now.Day:D2} {now.Hour:D2}-{now.Minute:D2}-{now.Second:D2}.jpg");
+					Capture(width, height, $"Survivalcraft {now.Year:D4}-{now.Month:D2}-{now.Day:D2} {now.Hour:D2}-{now.Minute:D2}-{now.Second:D2}.jpg");
 					m_successHandler?.Invoke();
 					GC.Collect();
 				}
@@ -76,57 +75,80 @@ namespace Game
 
 		public static void Capture(int width, int height, string filename)
 		{
-			if (GameManager.Project != null)
+			if (GameManager.Project == null) return;
+
+			using var renderTarget2D = new RenderTarget2D(width, height, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8);
+			
+			RenderTarget2D renderTarget = Display.RenderTarget;
+			var dictionary = new Dictionary<ComponentGui, bool>();
+			ResolutionMode resolutionMode = ResolutionMode.High;
+			try
 			{
-				using (var renderTarget2D = new RenderTarget2D(width, height, 1, ColorFormat.Rgba8888, DepthFormat.Depth24Stencil8))
+				if (!SettingsManager.ShowGuiInScreenshots)
 				{
-					RenderTarget2D renderTarget = Display.RenderTarget;
-					var dictionary = new Dictionary<ComponentGui, bool>();
-					ResolutionMode resolutionMode = ResolutionMode.High;
-					try
+					foreach (ComponentPlayer componentPlayer in GameManager.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true).ComponentPlayers)
 					{
-						if (!SettingsManager.ShowGuiInScreenshots)
-						{
-							foreach (ComponentPlayer componentPlayer in GameManager.Project.FindSubsystem<SubsystemPlayers>(throwOnError: true).ComponentPlayers)
-							{
-								dictionary[componentPlayer.ComponentGui] = componentPlayer.ComponentGui.ControlsContainerWidget.IsVisible;
-								componentPlayer.ComponentGui.ControlsContainerWidget.IsVisible = false;
-							}
-						}
-						resolutionMode = SettingsManager.ResolutionMode;
-						SettingsManager.ResolutionMode = ResolutionMode.High;
-						Display.RenderTarget = renderTarget2D;
-						ScreensManager.Draw();
-						if (SettingsManager.ShowLogoInScreenshots)
-						{
-							var primitivesRenderer2D = new PrimitivesRenderer2D();
-							Texture2D texture2D = ContentManager.Get<Texture2D>("Textures/Gui/ScreenCaptureOverlay");
-							var vector = new Vector2((width - texture2D.Width) / 2, 0f);
-							Vector2 corner = vector + new Vector2(texture2D.Width, texture2D.Height);
-							primitivesRenderer2D.TexturedBatch(texture2D, useAlphaTest: false, 0, DepthStencilState.None).QueueQuad(vector, corner, 0f, new Vector2(0f, 0f), new Vector2(1f, 1f), Color.White);
-							primitivesRenderer2D.Flush();
-						}
-					}
-					finally
-					{
-						Display.RenderTarget = renderTarget;
-						foreach (KeyValuePair<ComponentGui, bool> item in dictionary)
-						{
-							item.Key.ControlsContainerWidget.IsVisible = item.Value;
-						}
-						SettingsManager.ResolutionMode = resolutionMode;
-					}
-					var image = new Image(renderTarget2D.Width, renderTarget2D.Height);
-					renderTarget2D.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));
-					if (!Storage.DirectoryExists(ScreenshotDir))
-						Storage.CreateDirectory(ScreenshotDir);
-					using (Stream stream = Storage.OpenFile(Storage.CombinePaths(ScreenshotDir, filename), OpenFileMode.CreateOrOpen))
-					{
-						Image.Save(image, stream, ImageFileFormat.Jpg, saveAlpha: false);
+						dictionary[componentPlayer.ComponentGui] = componentPlayer.ComponentGui.ControlsContainerWidget.IsVisible;
+						componentPlayer.ComponentGui.ControlsContainerWidget.IsVisible = false;
 					}
 				}
-				ModsManager.HookAction("OnCapture", loader => { loader.OnCapture(); return false; });
+				resolutionMode = SettingsManager.ResolutionMode;
+				SettingsManager.ResolutionMode = ResolutionMode.High;
+				Display.RenderTarget = renderTarget2D;
+				ScreensManager.Draw();
+				if (SettingsManager.ShowLogoInScreenshots)
+				{
+					var primitivesRenderer2D = new PrimitivesRenderer2D();
+					Texture2D texture2D = ContentManager.Get<Texture2D>("Textures/Gui/ScreenCaptureOverlay");
+					var offset = new Vector2((width - texture2D.Width) / 2, 0f);
+					Vector2 corner = offset + new Vector2(texture2D.Width, texture2D.Height);
+					primitivesRenderer2D.TexturedBatch(texture2D, useAlphaTest: false, 0, DepthStencilState.None).QueueQuad(offset, corner, 0f, new Vector2(0f, 0f), new Vector2(1f, 1f), Color.White);
+					primitivesRenderer2D.Flush();
+				}
 			}
+			finally
+			{
+				Display.RenderTarget = renderTarget;
+				foreach (KeyValuePair<ComponentGui, bool> item in dictionary)
+				{
+					item.Key.ControlsContainerWidget.IsVisible = item.Value;
+				}
+				SettingsManager.ResolutionMode = resolutionMode;
+			}
+#if android
+			string path = Storage.CombinePaths(ModsManager.ScreenCapturePath, filename);
+			if (!Storage.DirectoryExists(ModsManager.ScreenCapturePath)) Storage.CreateDirectory(ModsManager.ScreenCapturePath);
+			using (Stream stream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
+			{
+				var array = new byte[4 * renderTarget2D.Width * renderTarget2D.Height];
+				renderTarget2D.GetData(array, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));
+				var src = Java.Nio.ByteBuffer.Wrap(array);
+				var bitmap = Android.Graphics.Bitmap.CreateBitmap(renderTarget2D.Width, renderTarget2D.Height, Android.Graphics.Bitmap.Config.Argb8888!);
+				bitmap.CopyPixelsFromBuffer(src);
+				bitmap.Compress(Android.Graphics.Bitmap.CompressFormat.Png!, 100, stream);
+			}
+			Android.Content.Intent intent = new("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+			intent.SetData(Android.Net.Uri.FromFile(new Java.IO.File(Storage.GetSystemPath(path))));
+			Window.Activity.SendBroadcast(intent);
+#else
+					
+			var image = new Image(renderTarget2D.Width, renderTarget2D.Height); 
+			renderTarget2D.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));
+			if (!Storage.DirectoryExists(ScreenshotDir))
+			{ 
+				Storage.CreateDirectory(ScreenshotDir);
+			}
+			string path = Storage.CombinePaths(ScreenshotDir, filename);
+			using (Stream stream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
+			{
+				Image.Save(image, stream, ImageFileFormat.Jpg, saveAlpha: false);
+			}
+#endif
+			ModInterfacesManager.InvokeHooks("OnCapture", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+			{
+				modInterface.OnCapture();
+				isContinueRequired = true;
+			});
 		}
 	}
 }

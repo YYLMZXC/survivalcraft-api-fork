@@ -63,7 +63,12 @@ namespace Game
 						ShaderAlphaTest.SamplerState = baseTexturedBatch.SamplerState;
 						ShaderAlphaTest.Transforms.World[0] = matrix;
 						ShaderAlphaTest.AlphaThreshold = 0f;
-						ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderAlphaTest, Camera); return true; });
+						
+						ModInterfacesManager.InvokeHooks("SetShaderParameter", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+						{
+							modInterface.SetShaderParameter(ShaderAlphaTest, Camera);
+							isContinueRequired = false;
+						});
 						baseTexturedBatch.FlushWithCurrentStateAndShader(ShaderAlphaTest, clearAfterFlush);
 					}
 					else
@@ -71,7 +76,11 @@ namespace Game
 						Shader.Texture = baseTexturedBatch.Texture;
 						Shader.SamplerState = baseTexturedBatch.SamplerState;
 						Shader.Transforms.World[0] = matrix;
-						ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(Shader, Camera); return true; });
+						ModInterfacesManager.InvokeHooks("SetShaderParameter", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+						{
+							modInterface.SetShaderParameter(Shader, Camera);
+							isContinueRequired = false;
+						});
 						baseTexturedBatch.FlushWithCurrentStateAndShader(Shader, clearAfterFlush);
 					}
 				}

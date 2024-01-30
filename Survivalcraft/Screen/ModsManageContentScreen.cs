@@ -844,7 +844,7 @@ public class ModsManageContentScreen : Screen
 						{
 							stream = Storage.OpenFile(pathName, OpenFileMode.Read);
 							stream = GetDecipherStream(stream);
-							ZipArchive zipArchive = ZipArchive.Open(stream, false);
+							ZipArchive? zipArchive = ZipArchive.Open(stream, false);
 							foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.ReadCentralDir())
 							{
 								if (zipArchiveEntry.FilenameInZip == "modinfo.json")
@@ -947,7 +947,7 @@ public class ModsManageContentScreen : Screen
 		try
 		{
 			stream = GetDecipherStream(stream);
-			ZipArchive zipArchive = ZipArchive.Open(stream, false);
+			ZipArchive? zipArchive = ZipArchive.Open(stream, false);
 			foreach (ZipArchiveEntry zipArchiveEntry in zipArchive.ReadCentralDir())
 			{
 				if (zipArchiveEntry.FilenameInZip == "icon.png")

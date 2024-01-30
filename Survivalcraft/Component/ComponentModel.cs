@@ -159,10 +159,11 @@ namespace Game
 		public virtual void SetModel(Model model)
 		{
 			IsSet = false;
-			ModsManager.HookAction("OnSetModel", (modLoader) =>
+			
+			ModInterfacesManager.InvokeHooks("OnSetModel", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 			{
-				modLoader.OnSetModel(this, model, out IsSet);
-				return IsSet;
+				modInterface.OnSetModel(this, model, out IsSet);
+				isContinueRequired = !IsSet;
 			});
 			if (IsSet) return;
 			m_model = model;

@@ -73,7 +73,12 @@ namespace Game
 					int num6 = (int)MathUtils.Floor(num5);
 					int num7 = (int)MathUtils.Ceiling(num5);
 					float f4 = num5 - num6;
-					ModsManager.HookAction("CalculateSmoothLight", l => { l.CalculateSmoothLight(subsystemTerrain, p, ref f4); return false; });
+					ModInterfacesManager.InvokeHooks("CalculateSmoothLight",
+						(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+						{
+							modInterface.CalculateSmoothLight(subsystemTerrain, p, ref f4);
+							isContinueRequired = true;
+						});
 					return MathUtils.Lerp(LightIntensityByLightValue[num6], LightIntensityByLightValue[num7], f4);
 				}
 			}
@@ -83,11 +88,12 @@ namespace Game
 		public static void CalculateLightingTables()
 		{
 			float brightness = SettingsManager.Brightness;
-			ModsManager.HookAction("CalculateLighting", modLoader =>
-			{
-				modLoader.CalculateLighting(ref brightness);
-				return false;
-			});
+			ModInterfacesManager.InvokeHooks("CalculateLighting",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.CalculateLighting(ref brightness);
+					isContinueRequired = true;
+				});
 			float x = MathUtils.Lerp(0f, 0.1f, brightness);
 			for (int i = 0; i < 16; i++)
 			{

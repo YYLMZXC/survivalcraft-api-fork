@@ -451,10 +451,11 @@ namespace Game
 			SpeedFactor = CalculateSpeedFactor(null);
 			HungerFactor = CalculateHungerFactor(null);
 			ResilienceFactor = CalculateResilienceFactor(null);
-			ModsManager.HookAction("OnLevelUpdate", modLoader =>
+			
+			ModInterfacesManager.InvokeHooks("OnLevelUpdate", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 			{
-				modLoader.OnLevelUpdate(this);
-				return false;
+				modInterface.OnLevelUpdate(this);
+				isContinueRequired = true;
 			});
 		}
 

@@ -123,10 +123,11 @@ namespace Game
 			{
 				m_imageExtrusionsCache.Clear();
 			};
-			ModsManager.HookAction("BlocksInitalized", modLoader =>
+			
+			ModInterfacesManager.InvokeHooks("BlocksInitialized", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 			{
-				modLoader.BlocksInitalized();
-				return false;
+				modInterface.BlocksInitialized();
+				isContinueRequired = true;
 			});
 		}
 
@@ -138,9 +139,9 @@ namespace Game
 			}
 		}
 
-		public static Block FindBlockByTypeName(string typeName, bool throwIfNotFound)
+		public static Block? FindBlockByTypeName(string typeName, bool throwIfNotFound)
 		{
-			Block block = Blocks.FirstOrDefault((Block b) => b.GetType().Name == typeName);
+			var block = Blocks.FirstOrDefault(block => block.GetType().Name == typeName);
 			if (block == null && throwIfNotFound)
 			{
 				throw new InvalidOperationException(string.Format(LanguageControl.Get("BlocksManager", 1), typeName));

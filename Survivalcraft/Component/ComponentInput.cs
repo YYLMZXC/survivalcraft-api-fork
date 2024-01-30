@@ -233,7 +233,13 @@ namespace Game
 					m_playerInput.SelectInventorySlot = 9;
 				}
 			}
-			ModsManager.HookAction("UpdateInput", loader => { loader.UpdateInput(this, input); return false; });
+
+			ModInterfacesManager.InvokeHooks("UpdateInput",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.UpdateInput(this, input);
+					isContinueRequired = true;
+				});
 		}
 
 		public virtual void UpdateInputFromGamepad(WidgetInput input)

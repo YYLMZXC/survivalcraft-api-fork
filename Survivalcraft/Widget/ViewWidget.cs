@@ -138,7 +138,12 @@ namespace Game
 				Display.RenderTarget = renderTarget;
 			}
 			ApplyScalingRenderTarget(dc);
-			ModsManager.HookAction("DrawToScreen", loader => { loader.DrawToScreen(this, dc); return false; });
+			ModInterfacesManager.InvokeHooks("DrawToScreen",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.DrawToScreen(this, dc);
+					isContinueRequired = true;
+				});
 		}
 	}
 }

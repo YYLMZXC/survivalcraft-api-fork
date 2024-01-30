@@ -40,11 +40,11 @@ namespace Game
             DepthWriteEnabled = true
         };
 
-        private static ListPanelWidget LogList = new() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
+        private static ListPanelWidget m_logList = new() { Direction = LayoutDirection.Vertical, PlayClickSound = false };
 
         static LoadingScreen()
         {
-            LogList.ItemWidgetFactory = (obj) =>
+            m_logList.ItemWidgetFactory = (obj) =>
             {
                 LogItem logItem = obj as LogItem;
                 CanvasWidget canvasWidget = new()
@@ -59,10 +59,10 @@ namespace Game
                 };
                 canvasWidget.Children.Add(fontTextWidget);
                 canvasWidget.IsVisible = SettingsManager.DisplayLog;
-                LogList.IsEnabled = SettingsManager.DisplayLog;
+                m_logList.IsEnabled = SettingsManager.DisplayLog;
                 return canvasWidget;
             };
-            LogList.ItemSize = 30;
+            m_logList.ItemSize = 30;
         }
 
         public static Color GetColor(LogType type)
@@ -81,7 +81,7 @@ namespace Game
         {
             m_canvas.Size = new Vector2(float.PositiveInfinity);
             m_canvas.AddChildren(Background);
-            m_canvas.AddChildren(LogList);
+            m_canvas.AddChildren(m_logList);
             AddChildren(m_canvas);
             Info("Initializing Mods Manager. Api Version: " + ModsManager.ApiCurrentVersionString);
         }
@@ -112,7 +112,7 @@ namespace Game
             m_canvas.AddChildren(rectangle1);
             m_canvas.AddChildren(rectangle2);
             m_canvas.AddChildren(busyBar);
-            m_canvas.AddChildren(LogList);
+            m_canvas.AddChildren(m_logList);
             AddChildren(m_canvas);
         }
 
@@ -141,7 +141,7 @@ namespace Game
             Dispatcher.Dispatch(() =>
             {
                 LogItem item = new(type, message);
-                LogList.AddItem(item);
+                m_logList.AddItem(item);
                 switch (type)
                 {
                     case LogType.Info:
@@ -156,7 +156,7 @@ namespace Game
                         break;
                 }
 
-                LogList.ScrollToItem(item);
+                m_logList.ScrollToItem(item);
             });
         }
 
@@ -175,13 +175,10 @@ namespace Game
                 //检查所有Mod依赖项 
                 //根据加载顺序排序后的结果
                 ModsManager.ModList.Clear();
-                foreach (var item in ModsManager.ModListAll)
+                foreach (var item in ModsManager.ModList)
                 {
-                    if (item.IsDependencyChecked) continue;
-                    item.CheckDependencies(ModsManager.ModList);
+                    //item.CheckDependencies(ModsManager.ModList);
                 }
-
-                foreach (var item in ModsManager.ModListAll) item.IsDependencyChecked = false;
             });
             AddLoadAction(() =>
             {
@@ -191,7 +188,7 @@ namespace Game
                 LanguageControl.LanguageTypes.Clear();
                 foreach (ContentInfo contentInfo in axa)
                 {
-                    string px = System.IO.Path.GetFileNameWithoutExtension(contentInfo.Filename);
+                    string px = System.IO.Path.GetFileNameWithoutExtension(contentInfo.FileName);
                     if (!LanguageControl.LanguageTypes.Contains(px)) LanguageControl.LanguageTypes.Add(px);
                 }
 
@@ -214,24 +211,24 @@ namespace Game
                     }
                 }
 
-                ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLaunguage(); });
+                ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLanguage(); });
             });
             AddLoadAction(() =>
             {
                 Dictionary<string, Assembly[]> assemblies = [];
                 ModsManager.ModListAllDo((modEntity) =>
                 {
-                    Log.Information("Get assemblies " + modEntity.modInfo.PackageName);
-                    assemblies[modEntity.modInfo.PackageName] = modEntity.GetAssemblies();
+                    Log.Information("Get assemblies " + modEntity.ModInfo.PackageName);
+                    assemblies[modEntity.ModInfo.PackageName] = modEntity.GetAssemblies();
                 });
                 //加载 mod 程序集(.dll)文件
                 //但不进行处理操作(如添加block等)
 
                 ModsManager.ModListAllDo((modEntity) =>
                 {
-                    foreach (var asm in assemblies[modEntity.modInfo.PackageName])
+                    foreach (var asm in assemblies[modEntity.ModInfo.PackageName])
                     {
-                        Log.Information("handle assembly " + modEntity.modInfo.PackageName + " " + asm.FullName);
+                        Log.Information("Handle assembly " + modEntity.ModInfo.PackageName + " " + asm.FullName);
                         try
                         {
                             modEntity.HandleAssembly(asm);
@@ -265,10 +262,10 @@ namespace Game
             {
                 Info("执行初始化任务");
                 List<Action> actions = [];
-                ModsManager.HookAction("OnLoadingStart", (loader) =>
+                ModInterfacesManager.InvokeHooks("OnLoadingStart", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
                 {
-                    loader.OnLoadingStart(actions);
-                    return false;
+                    modInterface.OnLoadingStart(actions);
+                    isContinueRequired = true;
                 });
                 foreach (var ac in actions)
                 {
@@ -287,7 +284,10 @@ namespace Game
                 try
                 {
                     DatabaseManager.Initialize();
-                    ModsManager.ModListAllDo((modEntity) => { modEntity.LoadXdb(ref DatabaseManager.DatabaseNode); });
+                    ModsManager.ModListAllDo((modEntity) =>
+                    {
+                        modEntity.LoadXdb(ref DatabaseManager.DatabaseNode);
+                    });
                 }
                 catch (Exception e)
                 {
@@ -303,7 +303,7 @@ namespace Game
                 }
                 catch (Exception e)
                 {
-                    Warning(e.Message);
+                    Error(e.ToString());
                 }
             });
             AddLoadAction(() =>
@@ -349,10 +349,11 @@ namespace Game
             });
             AddLoadAction(() =>
             {
-                ModsManager.ModListAllDo((modEntity) =>
+                ModInterfacesManager.InvokeHooks("OnLoadingFinished", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
                 {
-                    Info("等待剩下的任务完成:" + modEntity.modInfo?.PackageName);
-                    modEntity.Loader?.OnLoadingFinished(m_modLoadingActions);
+                    Info("等待剩下的任务完成:" + modInterface.ModEntity.ModInfo.PackageName);
+                    modInterface.OnLoadingFinished(m_modLoadingActions);
+                    isContinueRequired = true;
                 });
             });
             AddLoadAction(() => { ScreensManager.SwitchScreen("MainMenu"); });
@@ -405,7 +406,7 @@ namespace Game
 
         public override void Leave()
         {
-            LogList.ClearItems();
+            m_logList.ClearItems();
             Window.PresentationInterval = SettingsManager.PresentationInterval;
             ContentManager.Dispose("Textures/Gui/CandyRufusLogo");
             ContentManager.Dispose("Textures/Gui/EngineLogo");
@@ -465,7 +466,7 @@ namespace Game
                     }
                     catch (Exception e)
                     {
-                        Error(e.Message);
+                        Error(e.ToString());
                     }
                     finally
                     {

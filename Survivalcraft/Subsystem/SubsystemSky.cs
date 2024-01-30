@@ -313,7 +313,7 @@ namespace Game
 					float num3 = MathUtils.Lerp(0.33f, 1f, SkyLightIntensity);
 					m_viewFogRange.X = 0f;
 					m_viewFogRange.Y = MathUtils.Lerp(4f, 10f, num * num2 * num3);
-					m_viewFogColor = Color.MultiplyColorOnly(c, 0.66f * num2 * num3);//ÔÚË®ÖÐµÄÊÓÍ¼ÎíÑÕÉ«
+					m_viewFogColor = Color.MultiplyColorOnly(c, 0.66f * num2 * num3);//åœ¨æ°´ä¸­çš„è§†å›¾é›¾é¢œè‰²
 					VisibilityRangeYMultiplier = 1f;
 					m_viewIsSkyVisible = false;
 				}
@@ -321,7 +321,7 @@ namespace Game
 				{
 					m_viewFogRange.X = 0f;
 					m_viewFogRange.Y = 0.1f;
-					m_viewFogColor = new Color(255, 80, 0);//ÔÚÑÒ½¬ÖÐµÄÊÓÍ¼ÎíÑÕÉ«
+					m_viewFogColor = new Color(255, 80, 0);//åœ¨å²©æµ†ä¸­çš„è§†å›¾é›¾é¢œè‰²
 					VisibilityRangeYMultiplier = 1f;
 					m_viewIsSkyVisible = false;
 				}
@@ -334,7 +334,7 @@ namespace Game
 					float num7 = MathUtils.Lerp(1f, 0.8f, m_subsystemWeather.GlobalPrecipitationIntensity);
 					m_viewFogRange.X = VisibilityRange * num6;
 					m_viewFogRange.Y = VisibilityRange * num7;
-					//ÔÚÕý³£Çé¿öÏÂ£¨¿ÕÆøÖÐ£©ÊÓÍ¼Îí
+					//åœ¨æ­£å¸¸æƒ…å†µä¸‹ï¼ˆç©ºæ°”ä¸­ï¼‰è§†å›¾é›¾
 					m_viewFogColor = CalculateSkyColor(new Vector3(camera.ViewDirection.X, 0f, camera.ViewDirection.Z), m_subsystemTimeOfDay.TimeOfDay, m_subsystemWeather.GlobalPrecipitationIntensity, seasonalTemperature);
 					VisibilityRangeYMultiplier = MathUtils.Lerp(VisibilityRange / num4, VisibilityRange / num5, MathUtils.Pow(m_subsystemWeather.GlobalPrecipitationIntensity, 4f));
 					m_viewIsSkyVisible = true;
@@ -347,11 +347,12 @@ namespace Game
 				{
 					FlatBatch2D flatBatch2D = m_primitivesRenderer2d.FlatBatch(-1, DepthStencilState.None, RasterizerState.CullNoneScissor, BlendState.Opaque);
 					int count = flatBatch2D.TriangleVertices.Count;
-					ModsManager.HookAction("ViewFogColor", modLoader =>
-					{
-						modLoader.ViewFogColor(ViewUnderWaterDepth, ViewUnderMagmaDepth, ref m_viewFogColor);
-						return false;
-					});
+					ModInterfacesManager.InvokeHooks("ViewFogColor",
+						(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+						{
+							modInterface.ViewFogColor(ViewUnderWaterDepth, ViewUnderMagmaDepth, ref m_viewFogColor);
+							isContinueRequired = true;
+						});
 					flatBatch2D.QueueQuad(Vector2.Zero, camera.ViewportSize, 0f, m_viewFogColor);
 					flatBatch2D.TransformTriangles(camera.ViewportMatrix, count);
 					m_primitivesRenderer2d.Flush();
@@ -368,7 +369,13 @@ namespace Game
 						DrawSunAndMoon(camera);
 					}
 					DrawClouds(camera);
-					ModsManager.HookAction("SkyDrawExtra", loader => { loader.SkyDrawExtra(this, camera); return false; });
+					
+					ModInterfacesManager.InvokeHooks("SkyDrawExtra",
+						(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+						{
+							modInterface.SkyDrawExtra(this, camera);
+							isContinueRequired = true;
+						});
 					if (Shader != null && ShaderAlphaTest != null)
 					{
 						if (m_primitiveRender.Shader == null && m_primitiveRender.ShaderAlphaTest == null)
@@ -719,11 +726,13 @@ namespace Game
 			float s2 = num * MathUtils.Sqr(MathUtils.Saturate(0f - vector.X));
 			float s3 = num2 * MathUtils.Sqr(MathUtils.Saturate(vector.X));
 			Color color = new(Vector3.Lerp(v5 + (v6 * s2) + (v7 * s3), v4, f2));
-			ModsManager.HookAction("ChangeSkyColor", loader =>
-			{
-				color = loader.ChangeSkyColor(color, direction, timeOfDay, precipitationIntensity, temperature);
-				return true;
-			});
+			
+			ModInterfacesManager.InvokeHooks("ChangeSkyColor",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					color = modInterface.ChangeSkyColor(color, direction, timeOfDay, precipitationIntensity, temperature);
+					isContinueRequired = false;
+				});
 			return color;
 		}
 

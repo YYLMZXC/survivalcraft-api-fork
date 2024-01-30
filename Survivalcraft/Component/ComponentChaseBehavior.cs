@@ -7,8 +7,6 @@ namespace Game
 {
 	public class ComponentChaseBehavior : ComponentBehavior, IUpdateable
 	{
-		private Dictionary<ModLoader, Action> Hooks = [];
-
 		public SubsystemGameInfo m_subsystemGameInfo;
 
 		public SubsystemPlayers m_subsystemPlayers;

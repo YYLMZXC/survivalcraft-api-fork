@@ -351,21 +351,29 @@ namespace Game
 		{
 			foreach (Widget widget in widgets)
 			{
-				if (widget is TextBoxWidget)
+				switch (widget)
 				{
-					if (MoveNextFlag == false && widget == this) MoveNextFlag = true;
-					else if (MoveNextFlag)
+					case TextBoxWidget when MoveNextFlag == false && widget == this:
+						MoveNextFlag = true;
+						break;
+					case TextBoxWidget boxWidget:
 					{
-						TextBoxWidget textBox = widget as TextBoxWidget;
-						textBox.HasFocus = true;
-						HasFocus = false;
-						MoveNextFlag = false;
+						if (MoveNextFlag)
+						{
+							TextBoxWidget textBox = boxWidget;
+							textBox.HasFocus = true;
+							HasFocus = false;
+							MoveNextFlag = false;
+						}
+
+						break;
 					}
-				}
-				if (widget is ContainerWidget)
-				{
-					ContainerWidget container = widget as ContainerWidget;
-					MoveNext(container.Children);
+					case ContainerWidget containerWidget:
+					{
+						ContainerWidget container = containerWidget;
+						MoveNext(container.Children);
+						break;
+					}
 				}
 			}
 		}

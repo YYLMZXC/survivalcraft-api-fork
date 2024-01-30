@@ -13,27 +13,20 @@ namespace Game
 {
 	public class ModEntity
 	{
-		public ModInfo modInfo { get; protected set; }
+		public ModInfo ModInfo { get; protected set; }
 		public Texture2D Icon;
-		public ZipArchive ModArchive;
+		public ZipArchive? ModArchive;
 		public Dictionary<string, ZipArchiveEntry> ModFiles = [];
 		public List<Block> Blocks = [];
 		public string ModFilePath;
-		public bool IsDependencyChecked;
-		public ModLoader Loader { get { return ModLoader_; } set { ModLoader_ = value; } }
-		private ModLoader ModLoader_;
+		public List<IModLoader> Loaders { get; } = [];
 
-		public ModEntity() { }
-
-		public ModEntity(ZipArchive zipArchive)
+		public ModEntity(ZipArchive? zipArchive): this(ModsManager.ModsPath, zipArchive)
 		{
-			ModFilePath = ModsManager.ModsPath;
-			ModArchive = zipArchive;
-			InitializeResources();
 		}
-		public ModEntity(string FileName, ZipArchive zipArchive)
+		public ModEntity(string fileName, ZipArchive? zipArchive)
 		{
-			ModFilePath = FileName;
+			ModFilePath = fileName;
 			ModArchive = zipArchive;
 			InitializeResources();
 		}
@@ -50,7 +43,6 @@ namespace Game
 		/// <param name="action">参数1文件名参数，2打开的文件流</param>
 		public virtual void GetFiles(string extension, Action<string, Stream> action)
 		{
-			var files = new List<Stream>();
 			//将每个zip里面的文件读进内存中
 			foreach (ZipArchiveEntry zipArchiveEntry in ModArchive.ReadCentralDir())
 			{
@@ -72,42 +64,42 @@ namespace Game
 				}
 			}
 		}
+
 		/// <summary>
 		/// 获取指定文件
 		/// </summary>
 		/// <param name="filename"></param>
-		/// <param name="stream">参数1打开的文件流</param>
+		/// <param name="action"></param>
 		/// <returns></returns>
-		public virtual bool GetFile(string filename, Action<Stream> stream)
+		public virtual bool GetFile(string filename, Action<Stream> action)
 		{
-			if (ModFiles.TryGetValue(filename, out ZipArchiveEntry entry))
+			if (!ModFiles.TryGetValue(filename, out ZipArchiveEntry entry)) return false;
+			using MemoryStream stream = new();
+			
+			ModArchive.ExtractFile(entry, stream);
+			stream.Position = 0L;
+			try
 			{
-				using (MemoryStream ms = new())
-				{
-					ModArchive.ExtractFile(entry, ms);
-					ms.Position = 0L;
-					try
-					{
-						stream?.Invoke(ms);
-					}
-					catch (Exception e)
-					{
-						LoadingScreen.Error($"[{modInfo.Name}]获取文件[{filename}]失败：" + e.Message);
-					}
-				}
+				action?.Invoke(stream);
 			}
+			catch (Exception e)
+			{
+				LoadingScreen.Error($"[{ModInfo.Name}]获取文件[{filename}]失败：" + e.Message);
+			}
+
 			return false;
 		}
 		public virtual bool GetAssetsFile(string filename, Action<Stream> stream)
 		{
 			return GetFile("Assets/" + filename, stream);
 		}
+		
 		/// <summary>
 		/// 初始化语言包
 		/// </summary>
 		public virtual void LoadLanguage()
 		{
-			LoadingScreen.Info($"[{modInfo.Name}]加载Lang语言目录");
+			LoadingScreen.Info($"[{ModInfo.Name}]加载Lang语言目录");
 			GetAssetsFile($"Lang/{ModsManager.Configs["Language"]}.json", (stream) => { LanguageControl.loadJson(stream); });
 		}
 		/// <summary>
@@ -115,8 +107,8 @@ namespace Game
 		/// </summary>
 		public void ModInitialize()
 		{
-			LoadingScreen.Info($"[{modInfo.Name}]初始化Mod方法");
-			ModLoader_?.__ModInitialize();
+			LoadingScreen.Info($"[{ModInfo.Name}]初始化Mod方法");
+			Loaders.ForEach(loader => loader?._OnLoaderInitialize());
 		}
 		/// <summary>
 		/// 初始化Content资源
@@ -132,9 +124,9 @@ namespace Game
 			}
 			GetFile("modinfo.json", (stream) =>
 			{
-				modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
+				ModInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
 			});
-			if (modInfo == null) return;
+			if (ModInfo == null) return;
 			GetFile("icon.png", LoadIcon);
 			foreach (var c in ModFiles)
 			{
@@ -145,7 +137,7 @@ namespace Game
 					var gbk = Encoding.GetEncoding("GBK");
 					var utf = Encoding.UTF8;
 					var p = utf.GetString(Encoding.Convert(gbk, utf, gbk.GetBytes(zipArchiveEntry.FilenameInZip)));
-					ModsManager.AddException(new Exception($"[{modInfo.Name}]文件名[{zipArchiveEntry.FilenameInZip}]编码不是UTF-8，请进行修正，GBK编码为[{p}]"));
+					ModsManager.AddException(new Exception($"[{ModInfo.Name}]文件名[{zipArchiveEntry.FilenameInZip}]编码不是UTF-8，请进行修正，GBK编码为[{p}]"));
 				}
 				if (filename.StartsWith("Assets/"))
 				{
@@ -156,15 +148,15 @@ namespace Game
 					ContentManager.Add(contentInfo);
 				}
 			}
-			LoadingScreen.Info($"[{modInfo.Name}]加载资源文件数:{ModFiles.Count}");
+			LoadingScreen.Info($"[{ModInfo.Name}]加载资源文件数:{ModFiles.Count}");
 		}
 		/// <summary>
 		/// 初始化BlocksData资源
 		/// </summary>
 		public virtual void LoadBlocksData()
 		{
-			LoadingScreen.Info($"[{modInfo.Name}]加载.csv方块数据文件");
-			GetFiles(".csv", (filename, stream) =>
+			LoadingScreen.Info($"[{ModInfo.Name}]加载.csv方块数据文件");
+			GetFiles(".csv", (_, stream) =>
 			{
 				BlocksManager.LoadBlocksData(ModsManager.StreamToString(stream));
 			});
@@ -176,12 +168,17 @@ namespace Game
 		public virtual void LoadXdb(ref XElement xElement)
 		{
 			XElement element = xElement;
-			LoadingScreen.Info($"[{modInfo.Name}]加载.xdb数据库文件");
-			GetFiles(".xdb", (filename, stream) =>
+			LoadingScreen.Info($"[{ModInfo.Name}]加载.xdb数据库文件");
+			GetFiles(".xdb", (_, stream) =>
 			{
 				ModsManager.CombineDataBase(element, stream);
 			});
-			Loader?.OnXdbLoad(xElement);
+			ModInterfacesManager.InvokeHooks("OnXdbLoad",
+				(SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+				{
+					modInterface.OnXdbLoad(element);
+					isContinueRequired = true;
+				}, this);
 		}
 		/// <summary>
 		/// 初始化Clothing数据
@@ -191,8 +188,8 @@ namespace Game
 		public virtual void LoadClo(ClothingBlock block, ref XElement xElement)
 		{
 			XElement element = xElement;
-			LoadingScreen.Info($"[{modInfo.Name}]加载.clo衣物数据文件");
-			GetFiles(".clo", (filename, stream) =>
+			LoadingScreen.Info($"[{ModInfo.Name}]加载.clo衣物数据文件");
+			GetFiles(".clo", (_, stream) =>
 			{
 				ModsManager.CombineClo(element, stream);
 			});
@@ -204,8 +201,8 @@ namespace Game
 		public virtual void LoadCr(ref XElement xElement)
 		{
 			XElement element = xElement;
-			LoadingScreen.Info($"[{modInfo.Name}]加载.cr合成谱文件");
-			GetFiles(".cr", (filename, stream) => { ModsManager.CombineCr(element, stream); });
+			LoadingScreen.Info($"[{ModInfo.Name}]加载.cr合成谱文件");
+			GetFiles(".cr", (_, stream) => { ModsManager.CombineCr(element, stream); });
 		}
 		
 		/// <summary>
@@ -213,38 +210,36 @@ namespace Game
 		/// </summary>
 		public virtual Assembly[] GetAssemblies()
 		{
-			LoadingScreen.Info($"[{modInfo.Name}]加载 .NET .dll 程序集文件");
+			LoadingScreen.Info($"[{ModInfo.Name}]加载 .NET .dll 程序集文件");
 			
 			var assemblies = new List<Assembly>();
 			
 			GetFiles(".dll", (filename, stream) =>
 			{
-			    if(!filename.StartsWith("Assets/"))
-				    assemblies.Add(Assembly.Load(ModsManager.StreamToBytes(stream)));
+				if (!filename.StartsWith("Assets/"))
+				{
+					assemblies.Add(Assembly.Load(ModsManager.StreamToBytes(stream)));
+				}
 			});//获取mod文件内的dll文件（不包括Assets文件夹内的dll）
 			
 			return [.. assemblies];
 		}
 		public virtual void HandleAssembly(Assembly assembly)
 		{
-			ModsManager.Assemblies.Add(assembly.FullName, assembly);
+			ModsManager.Assemblies.Add(assembly.GetName().FullName, assembly);
 			var blockTypes = new List<Type>();
 			Type[] types = assembly.GetTypes();
-			for (int i = 0; i < types.Length; i++)
+
+			foreach (Type type in types)
 			{
-				Type type = types[i];
-				if (type.IsSubclassOf(typeof(ModLoader)) && !type.IsAbstract)
+				if (type.IsSubclassOf(typeof(IModLoader)) && !type.IsAbstract)
 				{
-					var modLoader = Activator.CreateInstance(types[i]) as ModLoader;
-					modLoader.Entity = this;
-					Loader = modLoader;
-					modLoader.__ModInitialize();
-					ModsManager.ModLoaders.Add(modLoader);
-				}
-				if (type.IsSubclassOf(typeof(IContentReader.IContentReader)) && !type.IsAbstract)
-				{
-					IContentReader.IContentReader reader = Activator.CreateInstance(type) as IContentReader.IContentReader;
-					ContentManager.ReaderList.TryAdd(reader.Type, reader);
+					if (Activator.CreateInstance(type) is IModLoader modLoader)
+					{
+						modLoader.ModEntity = this;
+						modLoader._OnLoaderInitialize();
+						Loaders.Add(modLoader);
+					}
 				}
 				if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
 				{
@@ -253,15 +248,21 @@ namespace Game
 			}
 			foreach (Type type in blockTypes)
 			{
-				FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
+				FieldInfo? fieldInfo = type.GetRuntimeFields()
+					.FirstOrDefault(p => p is { Name: "Index", IsPublic: true, IsStatic: true });
 				if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
 				{
 					LoadingScreen.Warning($"Block type \"{type.FullName}\" does not have static field Index of type int.");
 				}
 				else
 				{
-					int staticIndex = (int)fieldInfo.GetValue(null);
-					var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
+					var staticIndex = (int)fieldInfo.GetValue(null)!;
+					var block = (Block?)Activator.CreateInstance(type.GetTypeInfo().AsType());
+					if (block is null)
+					{
+						Log.Error($"无法实例化类型 {type.FullName}");
+						continue;
+					}
 					block.BlockIndex = staticIndex;
 					Blocks.Add(block);
 				}
@@ -269,8 +270,8 @@ namespace Game
 		}
 		public void LoadJs()
 		{
-			LoadingScreen.Info($"[{modInfo.Name}]加载.js脚本文件");
-			GetFiles(".js", (filename, stream) =>
+			LoadingScreen.Info($"[{ModInfo.Name}]加载.js脚本文件");
+			GetFiles(".js", (_, stream) =>
 			{
 				JsInterface.Execute(new StreamReader(stream).ReadToEnd());
 			});
@@ -278,9 +279,8 @@ namespace Game
 		/// <summary>
 		/// 检查依赖项
 		/// </summary>
-		public void CheckDependencies(List<ModEntity> modEntities)
+		public void CheckDependencies(List<ModEntity> _)
 		{
-			return;
 			//此方法可能是不需要的
 			/*
 			LoadingScreen.Info($"[{modInfo.Name}]检查依赖项");
@@ -325,7 +325,11 @@ namespace Game
 		/// <param name="xElement"></param>
 		public virtual void SaveSettings(XElement xElement)
 		{
-			Loader?.SaveSettings(xElement);
+			ModInterfacesManager.InvokeHooks("SaveSettings", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+			{
+				modInterface.SaveSettings(xElement);
+				isContinueRequired = true;
+			}, this);
 		}
 		/// <summary>
 		/// 加载设置
@@ -333,34 +337,45 @@ namespace Game
 		/// <param name="xElement"></param>
 		public virtual void LoadSettings(XElement xElement)
 		{
-			Loader?.LoadSettings(xElement);
+			ModInterfacesManager.InvokeHooks("LoadSettings", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+			{
+				modInterface.LoadSettings(xElement);
+				isContinueRequired = true;
+			}, this);
 		}
 		/// <summary>
 		/// BlocksManager初始化完毕
 		/// </summary>
-		/// <param name="categories"></param>
 		public virtual void OnBlocksInitialized()
 		{
-			Loader?.BlocksInitalized();
+			ModInterfacesManager.InvokeHooks("BlocksInitialized", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+			{
+				modInterface.BlocksInitialized();
+				isContinueRequired = true;
+			}, this);
 		}
 		//释放资源
 		public virtual void Dispose()
 		{
-			Loader?.ModDispose();
+			ModInterfacesManager.InvokeHooks("ModDispose", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
+			{
+				modInterface.ModDispose();
+				isContinueRequired = true;
+			}, this);
 			ModArchive?.ZipFileStream.Close();
 		}
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			if (obj is ModEntity px)
 			{
-				return px.modInfo.PackageName == modInfo.PackageName && new Version(px.modInfo.Version) == new Version(modInfo.Version);
+				return px.ModInfo.PackageName == ModInfo.PackageName && new Version(px.ModInfo.Version) == new Version(ModInfo.Version);
 			}
 			return false;
 		}
 
 		public override int GetHashCode()
 		{
-			return modInfo.GetHashCode();
+			return ModInfo.GetHashCode();
 		}
 	}
 }
