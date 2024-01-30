@@ -45,6 +45,4 @@ public abstract class ModInterface
     {
         InternalRegisterHook(hookName);
     }
-
-    
 }

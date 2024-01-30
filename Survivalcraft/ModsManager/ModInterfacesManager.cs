@@ -8,7 +8,7 @@ namespace Game;
 public static class ModInterfacesManager
 {
     private static List<ModInterface> m_interfaces = [];
-    public static ReadOnlyList<ModInterface> Interfaces => new ReadOnlyList<ModInterface>(m_interfaces);
+    public static ReadOnlyList<ModInterface> Interfaces => new(m_interfaces);
     public static void RegisterInterface<TModInterface>() where TModInterface : ModInterface
     {
         var type = typeof(TModInterface);

@@ -19,7 +19,7 @@ namespace Engine.Graphics
 
 		private static int[] m_activeTexturesByUnit;
 
-		private static All m_activeTextureUnit;
+		private static TextureUnit m_activeTextureUnit;
 
 		private static int m_program;
 
@@ -31,11 +31,11 @@ namespace Engine.Graphics
 
 		private static int? m_clearStencil;
 
-		private static All m_cullFace;
+		private static CullFaceMode m_cullFace;
 
-		private static All m_frontFace;
+		private static FrontFaceDirection m_frontFace;
 
-		private static All m_depthFunction;
+		private static DepthFunction m_depthFunction;
 
 		private static int? m_colorMask;
 
@@ -53,13 +53,13 @@ namespace Engine.Graphics
 
 		private static All m_blendEquationAlpha;
 
-		private static All m_blendFuncSource;
+		private static BlendingFactorSrc m_blendFuncSource;
 
 		private static All m_blendFuncSourceColor;
 
 		private static All m_blendFuncSourceAlpha;
 
-		private static All m_blendFuncDestination;
+		private static BlendingFactorDest m_blendFuncDestination;
 
 		private static All m_blendFuncDestinationColor;
 
@@ -119,15 +119,15 @@ namespace Engine.Graphics
 				-1,
 				-1
 			};
-			m_activeTextureUnit = All.AllAttribBits;
+			m_activeTextureUnit = (TextureUnit)All.AllAttribBits;
 			m_program = -1;
 			m_framebuffer = -1;
 			m_clearColor = null;
 			m_clearDepth = null;
 			m_clearStencil = null;
-			m_cullFace = All.False;
-			m_frontFace = All.False;
-			m_depthFunction = All.AllAttribBits;
+			m_cullFace = (CullFaceMode)All.False;
+			m_frontFace = (FrontFaceDirection)All.False;
+			m_depthFunction = (DepthFunction)All.AllAttribBits;
 			m_colorMask = null;
 			m_depthMask = null;
 			m_polygonOffsetFactor = 0f;
@@ -136,10 +136,10 @@ namespace Engine.Graphics
 			m_blendEquation = All.AllAttribBits;
 			m_blendEquationColor = All.AllAttribBits;
 			m_blendEquationAlpha = All.AllAttribBits;
-			m_blendFuncSource = All.AllAttribBits;
+			m_blendFuncSource = (BlendingFactorSrc)All.AllAttribBits;
 			m_blendFuncSourceColor = All.AllAttribBits;
 			m_blendFuncSourceAlpha = All.AllAttribBits;
-			m_blendFuncDestination = All.AllAttribBits;
+			m_blendFuncDestination = (BlendingFactorDest)All.AllAttribBits;
 			m_blendFuncDestinationColor = All.AllAttribBits;
 			m_blendFuncDestinationAlpha = All.AllAttribBits;
 			m_enableDisableStates = [];
@@ -217,7 +217,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void CullFace(All cullFace)
+		public static void CullFace(CullFaceMode cullFace)
 		{
 			if (cullFace != m_cullFace)
 			{
@@ -226,7 +226,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void FrontFace(All frontFace)
+		public static void FrontFace(FrontFaceDirection frontFace)
 		{
 			if (frontFace != m_frontFace)
 			{
@@ -235,7 +235,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void DepthFunc(All depthFunction)
+		public static void DepthFunc(DepthFunction depthFunction)
 		{
 			if (depthFunction != m_depthFunction)
 			{
@@ -306,7 +306,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void BlendFunc(All blendFuncSource, All blendFuncDestination)
+		public static void BlendFunc(BlendingFactorSrc blendFuncSource, BlendingFactorDest blendFuncDestination)
 		{
 			if (blendFuncSource != m_blendFuncSource || blendFuncDestination != m_blendFuncDestination)
 			{
@@ -329,8 +329,8 @@ namespace Engine.Graphics
 				m_blendFuncSourceAlpha = blendFuncSourceAlpha;
 				m_blendFuncDestinationColor = blendFuncDestinationColor;
 				m_blendFuncDestinationAlpha = blendFuncDestinationAlpha;
-				m_blendFuncSource = All.AllAttribBits;
-				m_blendFuncDestination = All.AllAttribBits;
+				m_blendFuncSource = (BlendingFactorSrc)All.AllAttribBits;
+				m_blendFuncDestination = (BlendingFactorDest)All.AllAttribBits;
 			}
 		}
 
@@ -356,7 +356,7 @@ namespace Engine.Graphics
 				{
 					GL.BindTexture(target, texture);
 					m_texture2D = texture;
-					if (m_activeTextureUnit >= All.False)
+					if (m_activeTextureUnit >= 0)
 					{
 						m_activeTexturesByUnit[(int)(m_activeTextureUnit - 33984)] = texture;
 					}
@@ -368,7 +368,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void ActiveTexture(All textureUnit)
+		public static void ActiveTexture(TextureUnit textureUnit)
 		{
 			if (textureUnit != m_activeTextureUnit)
 			{
@@ -405,7 +405,7 @@ namespace Engine.Graphics
 		{
 			if (framebuffer != m_framebuffer)
 			{
-				GL.BindFramebuffer(All.Framebuffer, framebuffer);
+				GL.BindFramebuffer(FramebufferTarget.Framebuffer, framebuffer);
 				m_framebuffer = framebuffer;
 			}
 		}
@@ -519,13 +519,13 @@ namespace Engine.Graphics
 						break;
 					case CullMode.CullClockwise:
 						Enable(All.CullFace);
-						CullFace(All.Back);
-						FrontFace((Display.RenderTarget != null) ? All.Cw : All.Ccw);
+						CullFace(CullFaceMode.Back);
+						FrontFace((Display.RenderTarget != null) ? FrontFaceDirection.Cw : FrontFaceDirection.Ccw);
 						break;
 					case CullMode.CullCounterClockwise:
 						Enable(All.CullFace);
-						CullFace(All.Back);
-						FrontFace((Display.RenderTarget != null) ? All.Ccw : All.Cw);
+						CullFace(CullFaceMode.Back);
+						FrontFace((Display.RenderTarget != null) ? FrontFaceDirection.Ccw : FrontFaceDirection.Cw);
 						break;
 				}
 				if (state.ScissorTestEnable)
@@ -560,11 +560,11 @@ namespace Engine.Graphics
 				Enable(All.DepthTest);
 				if (state.DepthBufferTestEnable)
 				{
-					DepthFunc(TranslateCompareFunction(state.DepthBufferFunction));
+					DepthFunc((DepthFunction)TranslateCompareFunction(state.DepthBufferFunction));
 				}
 				else
 				{
-					DepthFunc(All.Always);
+					DepthFunc(DepthFunction.Always);
 				}
 				DepthMask(state.DepthBufferWriteEnable);
 			}
@@ -595,7 +595,7 @@ namespace Engine.Graphics
 			if (all == all2 && all3 == all5 && all4 == all6)
 			{
 				BlendEquation(all);
-				BlendFunc(all3, all4);
+				BlendFunc((BlendingFactorSrc)all3, (BlendingFactorDest)all4);
 			}
 			else
 			{
@@ -694,7 +694,7 @@ namespace Engine.Graphics
 					{
 						throw new InvalidOperationException("Too many simultaneous textures.");
 					}
-					ActiveTexture((All)(33984 + num));
+					ActiveTexture((TextureUnit)(33984 + num));
 					if (shaderParameter.IsChanged)
 					{
 						GL.Uniform1(shaderParameter.Location, num);

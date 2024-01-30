@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using System.Collections.Generic;
+using Engine;
 using Engine.Graphics;
 using Engine.Media;
 using GameEntitySystem;
@@ -137,36 +138,34 @@ namespace Game
             SubsystemModelsRenderer.ModelData modelData, Camera camera, float? alphaThreshold)
         {
             ComponentModel componentModel = modelData.ComponentModel;
-            if (componentModel is ComponentHumanModel)
-            {
-                ComponentPlayer m_componentPlayer = componentModel.Entity.FindComponent<ComponentPlayer>();
-                if (m_componentPlayer != null && camera.GameWidget.PlayerData != m_componentPlayer.PlayerData)
-                {
-                    ComponentCreature m_componentCreature = m_componentPlayer.ComponentMiner.ComponentCreature;
-                    var position =
-                        Vector3.Transform(
-                            m_componentCreature.ComponentBody.Position +
-                            (1.02f * Vector3.UnitY * m_componentCreature.ComponentBody.BoxSize.Y), camera.ViewMatrix);
-                    if (position.Z < 0f)
-                    {
-                        var color = Color.Lerp(Color.White, Color.Transparent,
-                            MathUtils.Saturate((position.Length() - 4f) / 3f));
-                        if (color.A > 8)
-                        {
-                            var right = Vector3.TransformNormal(
-                                0.005f * Vector3.Normalize(Vector3.Cross(camera.ViewDirection, Vector3.UnitY)),
-                                camera.ViewMatrix);
-                            var down = Vector3.TransformNormal(-0.005f * Vector3.UnitY, camera.ViewMatrix);
-                            BitmapFont font = LabelWidget.BitmapFont;
-                            modelsRenderer.PrimitivesRenderer
-                                .FontBatch(font, 1, DepthStencilState.DepthRead, RasterizerState.CullNoneScissor,
-                                    BlendState.AlphaBlend, SamplerState.LinearClamp)
-                                .QueueText(m_componentPlayer.PlayerData.Name, position, right, down, color,
-                                    TextAnchor.HorizontalCenter | TextAnchor.Bottom);
-                        }
-                    }
-                }
-            }
+            if (componentModel is not ComponentHumanModel) return;
+            
+            ComponentPlayer m_componentPlayer = componentModel.Entity.FindComponent<ComponentPlayer>();
+            if (m_componentPlayer == null || camera.GameWidget.PlayerData == m_componentPlayer.PlayerData) return;
+            
+            ComponentCreature m_componentCreature = m_componentPlayer.ComponentMiner.ComponentCreature;
+            var position =
+                Vector3.Transform(
+                    m_componentCreature.ComponentBody.Position +
+                    (1.02f * Vector3.UnitY * m_componentCreature.ComponentBody.BoxSize.Y), camera.ViewMatrix);
+            if (!(position.Z < 0f)) return;
+            
+            var color = Color.Lerp(Color.White, Color.Transparent,
+                MathUtils.Saturate((position.Length() - 4f) / 3f));
+            if (color.A <= 8) return;
+            
+            
+            var right = Vector3.TransformNormal(
+                0.005f * Vector3.Normalize(Vector3.Cross(camera.ViewDirection, Vector3.UnitY)),
+                camera.ViewMatrix);
+            var down = Vector3.TransformNormal(-0.005f * Vector3.UnitY, camera.ViewMatrix);
+            BitmapFont font = LabelWidget.BitmapFont;
+            
+            modelsRenderer.PrimitivesRenderer
+                .FontBatch(font, 1, DepthStencilState.DepthRead, RasterizerState.CullNoneScissor,
+                    BlendState.AlphaBlend, SamplerState.LinearClamp)
+                .QueueText(m_componentPlayer.PlayerData.Name, position, right, down, color,
+                    TextAnchor.HorizontalCenter | TextAnchor.Bottom);
         }
 
         public override int GetMaxInstancesCount()

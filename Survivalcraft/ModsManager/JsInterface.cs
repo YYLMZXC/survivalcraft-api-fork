@@ -16,34 +16,25 @@ namespace Game
 	public class JsInterface
 	{
 		public static JsEngine engine;
-		public static SurvivalCraftModInterface? SurvivalCraftModInterface;
+		public static JsModLoader? JsModLoader;
 		public static Dictionary<string, List<FunctionInstance>> handlersDictionary;
-		private static Project Project
+		private static Project? Project => GameManager.Project;
+
+		public static Project? getProject() => Project;
+
+		public static Subsystem? findSubsystem(string name)
 		{
-			get
-			{
-				return GameManager.Project;
-			}
-		}
-		public static Project getProject()
-		{
-			return JsInterface.Project;
-		}
-		public static Subsystem findSubsystem(string name)
-		{
-			if (JsInterface.Project == null)
+			if (Project is null)
 			{
 				return null;
 			}
 			Type t = Type.GetType("Game.Subsystem" + name + ",Survivalcraft");
-			if (t == null)
-			{
-				return null;
-			}
-			return JsInterface.Project.FindSubsystem(t, null, false);
+			return t == null ? null : Project.FindSubsystem(t, null, false);
 		}
 		public static void Initiate()
 		{
+			//TODO: 把 SurvivalcraftModLoader 中有关 JavaScript 的内容移动到 JsModLoader 中
+			return;
 			engine = new JsEngine(delegate (Jint.Options cfg)
 			{
 				cfg.AllowClr();
@@ -74,6 +65,7 @@ namespace Game
 		}
 		public static void RegisterEvent()
 		{
+			return;
 			FunctionInstance keyDown = engine.GetValue("keyDown").AsFunctionInstance();
 			Keyboard.KeyDown += delegate (Key key)
 			{
@@ -95,12 +87,10 @@ namespace Game
 					});
 				};
 			}
-			//TODO:
+			//TODO: 在移动完 SurvivalCraftModLoader 中的内容后取消 return
 			handlersDictionary = [];
-			SurvivalCraftModInterface = ModInterfacesManager.Interfaces
-				.Where(@interface => Equals(@interface.ModEntity, SurvivalCraftModEntity.Instance)).OfType<JsModLoader>()
-				.FirstOrDefault();
-			
+			JsModLoader = ModsManager.ModLoaders.FirstOrDefault(loader => loader is JsModLoader) as JsModLoader;
+			//把 linq 查询改为代码，合并两次类型检查
 			GetAndRegisterHandlers("OnMinerDig");
 			GetAndRegisterHandlers("OnMinerPlace");
 			GetAndRegisterHandlers("OnPlayerSpawned");
@@ -112,6 +102,7 @@ namespace Game
 		}
 		public static void Execute(string str)
 		{
+			return;
 			try
 			{
 				engine.Execute(str);
