@@ -169,7 +169,7 @@ namespace Game
                 ModsManager.Initialize();
             });
             AddLoadAction(ContentLoaded);
-
+            /*
             AddLoadAction(() =>
             {
                 //检查所有Mod依赖项 
@@ -180,6 +180,7 @@ namespace Game
                     //item.CheckDependencies(ModsManager.ModList);
                 }
             });
+            */
             AddLoadAction(() =>
             {
                 //初始化所有ModEntity的语言包
