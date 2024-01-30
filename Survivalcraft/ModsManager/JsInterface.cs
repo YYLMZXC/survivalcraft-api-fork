@@ -16,7 +16,7 @@ namespace Game
 	public class JsInterface
 	{
 		public static JsEngine engine;
-		public static JsModLoader? JsModLoader;
+		//public static JsModLoader? JsModLoader;
 		public static Dictionary<string, List<FunctionInstance>> handlersDictionary;
 		private static Project? Project => GameManager.Project;
 
@@ -89,7 +89,7 @@ namespace Game
 			}
 			//TODO: 在移动完 SurvivalCraftModLoader 中的内容后取消 return
 			handlersDictionary = [];
-			JsModLoader = ModsManager.ModLoaders.FirstOrDefault(loader => loader is JsModLoader) as JsModLoader;
+			//JsModLoader = ModsManager.ModLoaders.FirstOrDefault(loader => loader is JsModLoader) as JsModLoader;
 			//把 linq 查询改为代码，合并两次类型检查
 			GetAndRegisterHandlers("OnMinerDig");
 			GetAndRegisterHandlers("OnMinerPlace");

@@ -229,17 +229,17 @@ namespace Game
 			ModsManager.Assemblies.Add(assembly.GetName().FullName, assembly);
 			var blockTypes = new List<Type>();
 			Type[] types = assembly.GetTypes();
-
+			Type typeOfModLoader = typeof(IModLoader);
+			
 			foreach (Type type in types)
 			{
-				if (type.IsSubclassOf(typeof(IModLoader)) && !type.IsAbstract)
+				if (type.GetInterfaces().Any(@interface => @interface == typeOfModLoader) && !type.IsAbstract && type.IsClass)
 				{
-					if (Activator.CreateInstance(type) is IModLoader modLoader)
-					{
-						modLoader.ModEntity = this;
-						modLoader._OnLoaderInitialize();
-						Loaders.Add(modLoader);
-					}
+					if(Activator.CreateInstance(type) is not IModLoader modLoader) continue;
+					modLoader.ModEntity = this;
+					modLoader._OnLoaderInitialize();
+					ModsManager.ModLoaders.Add(modLoader);
+					continue;
 				}
 				if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
 				{

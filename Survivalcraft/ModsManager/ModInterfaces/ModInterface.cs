@@ -8,7 +8,7 @@ namespace Game;
 
 public abstract class ModInterface
 {
-    public IModLoader ParentModLoader { get; internal set; }
+    public IModLoader ParentModLoader { get; }
     public ModEntity ModEntity => ParentModLoader.ModEntity;
 
     protected internal ModInterface(IModLoader parent)

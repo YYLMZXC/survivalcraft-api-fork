@@ -69,10 +69,14 @@ namespace Game
 		}
 		public override void HandleAssembly(Assembly assembly)
 		{
+			ModsManager.Assemblies.Add(assembly.GetName().FullName, assembly);
+			var blockTypes = new List<Type>();
 			Type[] types = assembly.GetTypes();
+			Type typeOfModLoader = typeof(IModLoader);
+			
 			foreach (var type in types)
 			{
-				if (type.IsSubclassOf(typeof(IModLoader)) && !type.IsAbstract)
+				if (type.GetInterfaces().Any(@interface => @interface == typeOfModLoader) && type is { IsAbstract: false, IsClass: true })
 				{
 					if(Activator.CreateInstance(type) is not IModLoader modLoader) continue;
 					modLoader.ModEntity = this;
@@ -81,28 +85,29 @@ namespace Game
 					continue;
 				}
 
-				if (!type.IsSubclassOf(typeof(Block)) || type.IsAbstract)
+				if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
 				{
-					continue;
+					blockTypes.Add(type);
 				}
-
-				var fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p is { Name: "Index", IsPublic: true, IsStatic: true });
+			}
+			foreach (Type type in blockTypes)
+			{
+				FieldInfo? fieldInfo = type.GetRuntimeFields()
+					.FirstOrDefault(p => p is { Name: "Index", IsPublic: true, IsStatic: true });
 				if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
 				{
-					ModsManager.AddException(new InvalidOperationException(
-						$"Block type \"{type.FullName}\" does not have static field Index of type int."));
-					continue;
-				}
-
-				var index = (int)fieldInfo.GetValue(null)!;
-				var block = (Block?)Activator.CreateInstance(type.GetTypeInfo().AsType());
-				if (block is null)
-				{
-					Log.Error($"Cannot construct block {type.FullName}");
+					LoadingScreen.Warning($"Block type \"{type.FullName}\" does not have static field Index of type int.");
 				}
 				else
 				{
-					block.BlockIndex = index;
+					var staticIndex = (int)fieldInfo.GetValue(null)!;
+					var block = (Block?)Activator.CreateInstance(type.GetTypeInfo().AsType());
+					if (block is null)
+					{
+						Log.Error($"无法实例化类型 {type.FullName}");
+						continue;
+					}
+					block.BlockIndex = staticIndex;
 					Blocks.Add(block);
 				}
 			}

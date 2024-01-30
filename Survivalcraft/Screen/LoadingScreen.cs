@@ -237,7 +237,7 @@ namespace Game
                         catch (Exception e)
                         {
                             string separator = new('-', 10); //生成10个 '-' 连一起的字符串
-                            Log.Error($"H{separator}Handle assembly failed{separator}");
+                            Log.Error($"{separator}Handle assembly failed{separator}");
                             Log.Error("Loaded assembly:\n" + string.Join("\n",
                                 AppDomain.CurrentDomain.GetAssemblies()
                                     .Select(x => x.FullName ?? x.GetName().FullName)));

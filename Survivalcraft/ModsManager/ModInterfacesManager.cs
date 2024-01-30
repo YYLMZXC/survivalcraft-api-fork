@@ -9,10 +9,10 @@ public static class ModInterfacesManager
 {
     private static List<ModInterface> m_interfaces = [];
     public static ReadOnlyList<ModInterface> Interfaces => new(m_interfaces);
-    public static void RegisterInterface<TModInterface>() where TModInterface : ModInterface
+    public static void RegisterInterface<TModInterface>(IModLoader loader) where TModInterface : ModInterface
     {
         var type = typeof(TModInterface);
-        if (Activator.CreateInstance(type) is not TModInterface instance)
+        if (Activator.CreateInstance(type, [loader]) is not TModInterface instance)
         {
             throw new InvalidOperationException($"无法实例化类型 {type.FullName}。");
         }
