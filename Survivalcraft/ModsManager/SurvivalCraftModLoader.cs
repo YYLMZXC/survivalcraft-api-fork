@@ -9,15 +9,11 @@ namespace Game
 {
     public class SurvivalCraftModLoader: IModLoader
     {
-        public SurvivalCraftModLoader()
-        {
-            
-        }
         public ModEntity ModEntity { get; set; }
 
         public void _OnLoaderInitialize()
         {
-            ModInterfacesManager.RegisterInterface<SurvivalCraftModInterfaceImplement>(this);
+            ModInterfacesManager.RegisterInterface<InterfaceImplementForSurvivalCraft>(this);
         }
     }
 }

@@ -6,7 +6,7 @@ using Jint;
 
 namespace Game;
 
-public class SurvivalCraftModInterfaceImplement(IModLoader parent) : SurvivalCraftModInterface(parent)
+public class InterfaceImplementForSurvivalCraft(IModLoader parent) : SurvivalCraftModInterface(parent)
 {
     protected internal override void _InterfaceInitialized()
     {
@@ -16,27 +16,17 @@ public class SurvivalCraftModInterfaceImplement(IModLoader parent) : SurvivalCra
         RegisterHook("GetMaxInstancesCount");
     }
 
-    public override void OnMinerDig(ComponentMiner miner, TerrainRaycastResult raycastResult, ref float DigProgress,
-        out bool Digged)
-    {
-        float DigProgress1 = DigProgress;
-        bool Digged1 = false;
-        JsInterface.handlersDictionary["OnMinerDig"].ForEach(function =>
-        {
-            Digged1 |= JsInterface.Invoke(function, miner, raycastResult, DigProgress1).AsBoolean();
-        });
-        Digged = Digged1;
-    }
+    
 
     public override void OnMinerPlace(ComponentMiner miner, TerrainRaycastResult raycastResult, int x, int y, int z,
-        int value, out bool Placed)
+        int value, out bool placed)
     {
         bool Placed1 = false;
         JsInterface.handlersDictionary["OnMinerPlace"].ForEach(function =>
         {
             Placed1 |= JsInterface.Invoke(function, miner, raycastResult, x, y, z, value).AsBoolean();
         });
-        Placed = Placed1;
+        placed = Placed1;
     }
 
     public override bool OnPlayerSpawned(PlayerData.SpawnMode spawnMode, ComponentPlayer componentPlayer,
@@ -181,7 +171,7 @@ public class SurvivalCraftModInterfaceImplement(IModLoader parent) : SurvivalCra
     }
 
     public override void OnCreatureInjure(ComponentHealth componentHealth, float amount, ComponentCreature attacker,
-        bool ignoreInvulnerability, string cause, out bool Skip)
+        bool ignoreInvulnerability, string cause, out bool skipVanilla)
     {
         bool Skip1 = false;
         JsInterface.handlersDictionary["OnCreatureInjure"].ForEach(function =>
@@ -189,7 +179,7 @@ public class SurvivalCraftModInterfaceImplement(IModLoader parent) : SurvivalCra
             Skip1 |= JsInterface
                 .Invoke(function, componentHealth, amount, attacker, ignoreInvulnerability, cause).AsBoolean();
         });
-        Skip = Skip1;
+        skipVanilla = Skip1;
     }
 
     public override void OnProjectLoaded(Project project)
