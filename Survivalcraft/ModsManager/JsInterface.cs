@@ -13,11 +13,12 @@ using JsEngine = Jint.Engine;
 
 namespace Game
 {
-	public class JsInterface
+	public static class JsInterface
 	{
 		public static JsEngine engine;
-		//public static JsModLoader? JsModLoader;
-		public static Dictionary<string, List<FunctionInstance>> handlersDictionary;
+		private static InterfaceImplementForJs m_interfaceImplementForJs = null!;
+		
+		public static Dictionary<string, List<FunctionInstance>> handlersDictionary = [];
 		private static Project? Project => GameManager.Project;
 
 		public static Project? getProject() => Project;
@@ -28,44 +29,34 @@ namespace Game
 			{
 				return null;
 			}
-			Type t = Type.GetType("Game.Subsystem" + name + ",Survivalcraft");
+			Type? t = Type.GetType("Game.Subsystem" + name + ",Survivalcraft");
 			return t == null ? null : Project.FindSubsystem(t, null, false);
 		}
 		public static void Initiate()
 		{
-			//TODO: 把 SurvivalcraftModLoader 中有关 JavaScript 的内容移动到 JsModLoader 中
-			return;
-			engine = new JsEngine(delegate (Jint.Options cfg)
+			engine = new JsEngine( cfg =>
 			{
-				cfg.AllowClr();
-				cfg.AllowClr(new Assembly[]
-				{
-					IntrospectionExtensions.GetTypeInfo(typeof(Program)).Assembly
-				});
-				cfg.AllowClr(new Assembly[]
-				{
-					IntrospectionExtensions.GetTypeInfo(typeof(Matrix)).Assembly
-				});
-				cfg.AllowClr(new Assembly[]
-				{
-					IntrospectionExtensions.GetTypeInfo(typeof(Program)).Assembly
-				});
-				cfg.AllowClr(new Assembly[]
-				{
-					IntrospectionExtensions.GetTypeInfo(typeof(Project)).Assembly
-				});
-				cfg.AllowClr(new Assembly[]
-				{
-					IntrospectionExtensions.GetTypeInfo(typeof(JsInterface)).Assembly
-				});
-				cfg.DebugMode(true);
+				cfg.AllowClr([
+					typeof(Program).Assembly,
+					typeof(Matrix).Assembly,
+					typeof(Project).Assembly
+				]);
+				cfg.DebugMode();
 			});
-			string initCode = Storage.ReadAllText("app:init.js");
+			string initCode;
+			if (VersionsManager.Platform == Platform.Android)
+			{
+				//TODO: 适配安卓端
+				return;
+			}
+			else
+			{
+				initCode = Storage.ReadAllText(ModsManager.ExtPath + "init.js");
+			}
 			Execute(initCode);
 		}
 		public static void RegisterEvent()
 		{
-			return;
 			FunctionInstance keyDown = engine.GetValue("keyDown").AsFunctionInstance();
 			Keyboard.KeyDown += delegate (Key key)
 			{
@@ -76,21 +67,14 @@ namespace Game
 			{
 				Invoke(keyUp, key.ToString());
 			};
-			List<FunctionInstance> array = GetHandlers("frameHandlers");
-			if (array != null && array.Count > 0)
+			List<FunctionInstance>? instances = GetHandlers("frameHandlers");
+			if (instances is { Count: > 0 })
 			{
-				Window.Frame += delegate ()
-				{
-					array.ForEach(function =>
-					{
-						Invoke(function);
-					});
-				};
+				Window.Frame += () => instances.ForEach(InvokeVoid);
 			}
-			//TODO: 在移动完 SurvivalCraftModLoader 中的内容后取消 return
-			handlersDictionary = [];
-			//JsModLoader = ModsManager.ModLoaders.FirstOrDefault(loader => loader is JsModLoader) as JsModLoader;
-			//把 linq 查询改为代码，合并两次类型检查
+
+			m_interfaceImplementForJs = ModInterfacesManager.FindInterface<InterfaceImplementForJs>()!;
+			
 			GetAndRegisterHandlers("OnMinerDig");
 			GetAndRegisterHandlers("OnMinerPlace");
 			GetAndRegisterHandlers("OnPlayerSpawned");
@@ -100,9 +84,9 @@ namespace Game
 			GetAndRegisterHandlers("OnProjectLoaded");
 			GetAndRegisterHandlers("OnProjectDisposed");
 		}
+
 		public static void Execute(string str)
 		{
-			return;
 			try
 			{
 				engine.Execute(str);
@@ -131,12 +115,11 @@ namespace Game
 			}
 			catch (Exception ex)
 			{
-				string errors = ex.ToString();
-				Log.Error(errors);
-				return errors;
+				Log.Error(ex);
+				return ex.ToString();
 			}
 		}
-		public static JsValue Invoke(string str, params object[] arguments)
+		public static JsValue? Invoke(string str, params object[] arguments)
 		{
 			try
 			{
@@ -148,7 +131,7 @@ namespace Game
 			}
 			return null;
 		}
-		public static JsValue Invoke(JsValue jsValue, params object[] arguments)
+		public static JsValue? Invoke(this JsValue jsValue, params object[] arguments)
 		{
 			try
 			{
@@ -160,27 +143,30 @@ namespace Game
 			}
 			return null;
 		}
+		private static void InvokeVoid(FunctionInstance func)
+		{
+			try
+			{
+				engine.Invoke(func, []);
+			}
+			catch (Exception ex)
+			{
+				Log.Error(ex);
+			}
+		}
 		public static List<FunctionInstance> GetHandlers(string str)
 		{
 			JsArray array = engine.GetValue(str).AsArray();
-			if (array.IsNull()) return null;
-			List<FunctionInstance> list = [];
-			foreach (JsValue item in array)
+			try
 			{
-				try
-				{
-					FunctionInstance function = item.AsFunctionInstance();
-					if (!function.IsNull())
-					{
-						list.Add(function);
-					}
-				}
-				catch (Exception ex)
-				{
-					Log.Error(ex);
-				}
+				List<FunctionInstance> list = array.IsNull() ? [] : [..array.Select(item => item.AsFunctionInstance())];
+				return list;
 			}
-			return list;
+			catch (Exception ex)
+			{
+				Log.Error(ex);
+				return [];
+			}
 		}
 		public static void GetAndRegisterHandlers(string handlesName)
 		{
@@ -188,11 +174,10 @@ namespace Game
 			{
 				if (handlersDictionary.ContainsKey(handlesName)) return;
 				List<FunctionInstance> handlers = GetHandlers($"{handlesName}Handlers");
-				if (handlers != null && handlers.Count > 0)
-				{
-					handlersDictionary.Add(handlesName, handlers);
-					//ModsManager.RegisterHook(handlesName, SurvivalCraftModInterface);
-				}
+				if (handlers.Count <= 0) return;
+				
+				handlersDictionary.Add(handlesName, handlers);
+				m_interfaceImplementForJs.Register(handlesName);
 			}
 			catch (Exception ex)
 			{

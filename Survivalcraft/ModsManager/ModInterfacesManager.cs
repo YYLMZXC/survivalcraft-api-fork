@@ -49,4 +49,17 @@ public static class ModInterfacesManager
             if (!isContinueRequired) break;
         }
     }
+
+    public static TInterface? FindInterface<TInterface>() where TInterface : ModInterface
+    {
+        foreach (var modInterface in Interfaces)
+        {
+            if (modInterface is TInterface result)
+            {
+                return result;
+            }
+        }
+
+        return null;
+    }
 }
