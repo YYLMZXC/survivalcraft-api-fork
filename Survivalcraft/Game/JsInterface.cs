@@ -16,7 +16,7 @@ namespace Game
 	{
 		public static JsEngine engine;
 		public static SurvivalCraftModLoader loader;
-		public static Dictionary<string, List<FunctionInstance>> handlersDictionary;
+		public static Dictionary<string, List<Function>> handlersDictionary;
 		private static Project Project
 		{
 			get
@@ -26,11 +26,11 @@ namespace Game
 		}
 		public static Project getProject()
 		{
-			return JsInterface.Project;
+			return Project;
 		}
 		public static Subsystem findSubsystem(string name)
 		{
-			if (JsInterface.Project == null)
+			if (Project == null)
 			{
 				return null;
 			}
@@ -39,7 +39,7 @@ namespace Game
 			{
 				return null;
 			}
-			return JsInterface.Project.FindSubsystem(t, null, false);
+			return Project.FindSubsystem(t, null, false);
 		}
 		public static void Initiate()
 		{
@@ -73,17 +73,17 @@ namespace Game
 		}
 		public static void RegisterEvent()
 		{
-			FunctionInstance keyDown = engine.GetValue("keyDown").AsFunctionInstance();
+			Function keyDown = engine.GetValue("keyDown").AsFunctionInstance();
 			Keyboard.KeyDown += delegate (Key key)
 			{
 				Invoke(keyDown, key.ToString());
 			};
-			FunctionInstance keyUp = engine.GetValue("keyUp").AsFunctionInstance();
+			Function keyUp = engine.GetValue("keyUp").AsFunctionInstance();
 			Keyboard.KeyUp += delegate (Key key)
 			{
 				Invoke(keyUp, key.ToString());
 			};
-			List<FunctionInstance> array = GetHandlers("frameHandlers");
+			List<Function> array = GetHandlers("frameHandlers");
 			if (array != null && array.Count > 0)
 			{
 				Window.Frame += delegate ()
@@ -165,16 +165,16 @@ namespace Game
 			}
 			return null;
 		}
-		public static List<FunctionInstance> GetHandlers(string str)
+		public static List<Function> GetHandlers(string str)
 		{
 			JsArray array = engine.GetValue(str).AsArray();
 			if (array.IsNull()) return null;
-			List<FunctionInstance> list = [];
+			List<Function> list = [];
 			foreach (JsValue item in array)
 			{
 				try
 				{
-					FunctionInstance function = item.AsFunctionInstance();
+					Function function = item.AsFunctionInstance();
 					if (!function.IsNull())
 					{
 						list.Add(function);
@@ -192,7 +192,7 @@ namespace Game
 			try
 			{
 				if (handlersDictionary.ContainsKey(handlesName)) return;
-				List<FunctionInstance> handlers = GetHandlers($"{handlesName}Handlers");
+				List<Function> handlers = GetHandlers($"{handlesName}Handlers");
 				if (handlers != null && handlers.Count > 0)
 				{
 					handlersDictionary.Add(handlesName, handlers);

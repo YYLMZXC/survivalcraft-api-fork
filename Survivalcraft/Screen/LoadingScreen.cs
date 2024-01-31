@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml.Linq;
+using Color = Engine.Color;
 
 namespace Game
 {
@@ -182,10 +183,10 @@ namespace Game
 					    }
 					    catch(ReflectionTypeLoadException e)
 					    {
-						    Log.Error("Handle assembly failed");
+						    Log.Error("Handle assembly failed"+e);
 						    foreach (var asm2 in AppDomain.CurrentDomain.GetAssemblies())
 						    {
-							    Log.Information(asm2 + "\n" + string.Join<AssemblyName>("\n", asm2.GetReferencedAssemblies().AsEnumerable()));
+							    Log.Information(asm2 + "\n" + string.Join("\n", asm2.GetReferencedAssemblies().AsEnumerable()));
 						    }
 					    }
 				    }

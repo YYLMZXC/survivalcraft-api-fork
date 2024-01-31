@@ -80,19 +80,13 @@
     <Content Include="Content\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Esprima" Version="3.0.4" />
-    <PackageReference Include="Jint" Version="3.0.0-beta-2057" />
+    <PackageReference Include="Jint" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Game\DeviceManager.cs" />
     <Compile Remove="ModsManager\JsModLoader.cs" />
     <Compile Remove="Screen\ModsInitScreen.cs" />
     <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="OpenTK">
-      <HintPath>..\Engine\OpenTK.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>set p=$(SolutionDir)
@@ -101,7 +95,7 @@ cd "$(SolutionDir)Survivalcraft\Content"
     <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
     <AssemblyVersion>2.3.0.0</AssemblyVersion>
     <FileVersion>2.3.0.0</FileVersion>
-    <ImplicitUsings>disable</ImplicitUsings>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ProjectExtensions />
 </Project>
