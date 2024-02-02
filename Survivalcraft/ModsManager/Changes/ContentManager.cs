@@ -100,7 +100,7 @@ namespace Game
 						}
 					}
 					if (contents.Count == 0)
-					{//没有找到对应资源?
+					{//没有找到对应资源
 						throw new Exception("Not Found Res [" + name + "][" + type.FullName + "]");
 					}
 					obj = reader.Get(contents.ToArray());

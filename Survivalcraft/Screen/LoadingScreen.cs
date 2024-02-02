@@ -5,7 +5,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml.Linq;
-using Color = Engine.Color;
 
 namespace Game
 {
@@ -95,6 +94,7 @@ namespace Game
 		{
 			Add(LogType.Advice, "[Advice]" + mesg);
 		}
+		
 		public static void Add(LogType type, string mesg)
 		{
 			Dispatcher.Dispatch(delegate
@@ -114,6 +114,9 @@ namespace Game
 		}
 		private void InitActions()
 		{
+			
+		  var isLoadSucceed = true;
+		  Exception? exception = null;
 			AddLoadAction(delegate
 			{//将所有的有效的scmod读取为ModEntity，并自动添加SurvivalCraftModEntity
 				ContentManager.Initialize();
@@ -161,19 +164,23 @@ namespace Game
 				}
 				ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLauguage(); });
 			});
-			AddLoadAction(delegate
+			AddLoadAction(() =>
 			{
 			    Dictionary<string, Assembly[]> assemblies = [];
 				ModsManager.ModListAllDo((modEntity) =>
 				{
 					Log.Information("Get assemblies " + modEntity.modInfo.PackageName);
 				    assemblies[modEntity.modInfo.PackageName] = modEntity.GetAssemblies();
+				    foreach (var assembly in assemblies[modEntity.modInfo.PackageName])
+				    {
+					    ModsManager.Dlls.Add(assembly.GetName().FullName, assembly);
+				    }
 				});
 				//加载 mod 程序集(.dll)文件
 				//但不进行处理操作(如添加block等)
-				
 				ModsManager.ModListAllDo((modEntity) =>
 				{
+					if (!isLoadSucceed) return;
 				    foreach(var asm in assemblies[modEntity.modInfo.PackageName])
 				    {
 					    Log.Information("handle assembly " + modEntity.modInfo.PackageName + " " + asm.FullName);
@@ -181,17 +188,42 @@ namespace Game
 					    {
 						    modEntity.HandleAssembly(asm);
 					    }
-					    catch(ReflectionTypeLoadException e)
+					    catch(Exception e)
 					    {
-						    Log.Error("Handle assembly failed"+e);
-						    foreach (var asm2 in AppDomain.CurrentDomain.GetAssemblies())
-						    {
-							    Log.Information(asm2 + "\n" + string.Join("\n", asm2.GetReferencedAssemblies().AsEnumerable()));
-						    }
+						    exception = e;
+						    string separator = new('-', 10); //生成10个 '-' 连一起的字符串
+						    Log.Error($"{separator}Handle assembly failed{separator}");
+						    Log.Error("Loaded assembly:\n" + string.Join("\n",
+							    AppDomain.CurrentDomain.GetAssemblies()
+								    .Select(x => x.FullName ?? x.GetName().FullName)));
+						    Log.Error(separator);
+						    Log.Error("Error assembly: " + asm.FullName);
+						    Log.Error("Dependencies:\n" + string.Join("\n",
+							    asm.GetReferencedAssemblies().Select(x => x.FullName)));
+						    Log.Error(separator);
+						    Log.Error(e);
+						    isLoadSucceed = false;
+						    break;
 					    }
 				    }
 				});
-				
+				if (!isLoadSucceed)
+				{
+					ModsManager.ModList.RemoveAll(entity =>
+						entity is not SurvivalCraftModEntity && entity is not FastDebugModEntity);
+					LoadingActoins.RemoveRange(1, LoadingActoins.Count - 1);
+					ModLoadingActoins.Clear();
+					ScreensManager.SwitchScreen(new LoadingFailedScreen(
+						title: "加载失败",
+						details: ["缺失模组依赖", "异常信息：", ..exception!.ToString().Split('\n')],
+						solveMethods:
+						[
+							"检查模组是否缺失，并添加所缺失的模组", "查看模组版本与要求的模组版本是否一致",
+							$"若以上方式都无法解决，请联系管理员，并发送 {Storage.GetSystemPath(ModsManager.LogPath)} 中的 Game.log "
+						]
+					));
+
+				}
 				//处理程序集
 			});
 			AddLoadAction(delegate
@@ -239,7 +271,6 @@ namespace Game
 				}
 				catch (Exception e)
 				{
-
 					Warning(e.Message);
 				}
 			});
@@ -452,11 +483,13 @@ namespace Game
 		}
 		public override void Update()
 		{
-			if (Input.Back || Input.Cancel) DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, "Quit?", LanguageControl.Ok, LanguageControl.No, (vt) =>
-			{
-				if (vt == MessageDialogButton.Button1) Environment.Exit(0);
-				else DialogsManager.HideAllDialogs();
-			}));
+			if (Input.Back || Input.Cancel)
+				DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, "Quit?", LanguageControl.Ok,
+					LanguageControl.No, (vt) =>
+					{
+						if (vt == MessageDialogButton.Button1) Environment.Exit(0);
+						else DialogsManager.HideAllDialogs();
+					}));
 			if (ModsManager.GetAllowContinue() == false) return;
 			if (ModLoadingActoins.Count > 0)
 			{
@@ -472,7 +505,6 @@ namespace Game
 				{
 					ModLoadingActoins.RemoveAt(0);
 				}
-
 			}
 			else
 			{

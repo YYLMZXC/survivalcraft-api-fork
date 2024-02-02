@@ -235,8 +235,7 @@ namespace Game
 		}
 		public virtual void HandleAssembly(Assembly assembly)
 		{
-			ModsManager.Dlls.Add(assembly.FullName, assembly);
-			var BlockTypes = new List<Type>();
+			var blockTypes = new List<Type>();
 			Type[] types = assembly.GetTypes();
 			for (int i = 0; i < types.Length; i++)
 			{
@@ -256,12 +255,12 @@ namespace Game
 				}
 				if (type.IsSubclassOf(typeof(Block)) && !type.IsAbstract)
 				{
-					BlockTypes.Add(type);
+					blockTypes.Add(type);
 				}
 			}
-			for (int i = 0; i < BlockTypes.Count; i++)
+			for (int i = 0; i < blockTypes.Count; i++)
 			{
-				Type type = BlockTypes[i];
+				Type type = blockTypes[i];
 				FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
 				if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
 				{

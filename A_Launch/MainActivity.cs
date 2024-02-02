@@ -61,7 +61,7 @@ namespace SC4Android
 					AppDomain.CurrentDomain.Load(memoryStream.ToArray());
 				}
 			}
-			Program.Main();
+			Program.EntryPoint();
 		}
 		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
 		{

@@ -114,7 +114,6 @@ namespace Game
 		{
 			var loadingScreen = new LoadingScreen();
 			AddScreen("Loading", loadingScreen);
-
 		}
 
 

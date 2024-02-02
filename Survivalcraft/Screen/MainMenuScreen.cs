@@ -23,7 +23,7 @@ namespace Game
 			m_showBulletinButton = Children.Find<ButtonWidget>("BulletinButton");
 			m_bulletinStackPanel = Children.Find<StackPanelWidget>("BulletinStackPanel");
 			m_copyrightLabel = Children.Find<LabelWidget>("CopyrightLabel");
-			string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
+			string languageType = ModsManager.Configs.GetValueOrDefault("Language", "zh-CN");
 			m_bulletinStackPanel.IsVisible = languageType == "zh-CN";
 			m_copyrightLabel.IsVisible = languageType != "zh-CN";
 		}
@@ -86,7 +86,7 @@ namespace Game
 				}
 				else
 				{
-					DialogsManager.ShowDialog(null, new MessageDialog("¹«¸æ»ñÈ¡Ê§°Ü", "µ±Ç°ÔİÎŞ·¢²¼¹«¸æ£¬\n»òÕßÃ»ÓĞÁªÍø»ñÈ¡¹«¸æĞÅÏ¢", LanguageControl.Ok, null, null));
+					DialogsManager.ShowDialog(null, new MessageDialog("å…¬å‘Šè·å–å¤±è´¥", "å½“å‰æš‚æ— å‘å¸ƒå…¬å‘Šï¼Œ\næˆ–è€…æ²¡æœ‰è”ç½‘è·å–å…¬å‘Šä¿¡æ¯", LanguageControl.Ok, null, null));
 				}
 			}
 			if ((Input.Back && !Keyboard.BackButtonQuitsApp) || Input.IsKeyDownOnce(Key.Escape))

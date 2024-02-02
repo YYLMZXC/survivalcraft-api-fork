@@ -5,6 +5,7 @@
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <Configurations>Debug;Release</Configurations>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 	<DefineConstants>DEBUG;android</DefineConstants>
@@ -27,6 +28,9 @@
     <Compile Remove="Resources\Resource.designer.cs" />
     <Compile Include="..\Survivalcraft\Block\AdjustableDelayGateBlock.cs">
       <Link>Block\AdjustableDelayGateBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Properties\GlobalUsings.cs">
+      <Link>Properties\GlobalUsings.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Block\AirBlock.cs">
       <Link>Block\AirBlock.cs</Link>

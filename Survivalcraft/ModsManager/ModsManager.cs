@@ -1,14 +1,19 @@
 // Game.ModsManager
-using Engine;
-using Game;
-using SimpleJson;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
+using Engine;
+using Engine.Graphics;
+using Game;
+using SimpleJson;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
+using Engine.Media;
+using Engine.Serialization;
 using XmlUtilities;
 
 
@@ -383,7 +388,21 @@ public static class ModsManager
 		{
 			ModListAll.Remove(item);
 		}
-		AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+		AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+		{
+			try
+			{
+				Assembly? assembly = Dlls.GetValueOrDefault(args.Name) ??
+				                     TypeCache.LoadedAssemblies.FirstOrDefault(asm => asm.GetName().FullName == args.Name);
+				return assembly;
+			}
+			catch (Exception e)
+			{
+				Log.Error($"加载程序集{args.Name}失败:{e.Message}");
+				Log.Debug(e);
+				throw;
+			}
+		};
 	}
 
 	public static void AddException(Exception e, bool AllowContinue_ = false)
@@ -695,23 +714,6 @@ public static class ModsManager
 				}
 			}
 			Modify(DataObjects, element);
-		}
-	}
-	static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-	{
-		try
-		{
-			if (Dlls.TryGetValue(args.Name, out var dll))
-			{
-				return dll;
-			}
-			return null;
-		}
-		catch (Exception e)
-		{
-			Log.Error($"加载程序集{args.Name}失败:{e.Message}");
-			Log.Debug(e);
-			throw;
 		}
 	}
 
