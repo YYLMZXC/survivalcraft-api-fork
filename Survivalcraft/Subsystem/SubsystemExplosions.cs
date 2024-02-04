@@ -50,9 +50,9 @@ namespace Game
 				if (x >= 0 && x < 256 && y >= 0 && y < 256 && z >= 0 && z < 256)
 				{
 					int num = x >> 4;
-					int num2 = y >> 4;
+					int 爆炸强度 = y >> 4;
 					int num3 = z >> 4;
-					int num4 = num + (num2 << 4) + (num3 << 4 << 4);
+					int num4 = num + (爆炸强度 << 4) + (num3 << 4 << 4);
 					T[] array = m_data[num4];
 					if (array != null)
 					{
@@ -75,9 +75,9 @@ namespace Game
 				if (x >= 0 && x < 256 && y >= 0 && y < 256 && z >= 0 && z < 256)
 				{
 					int num = x >> 4;
-					int num2 = y >> 4;
+					int 爆炸强度 = y >> 4;
 					int num3 = z >> 4;
-					int num4 = num + (num2 << 4) + (num3 << 4 << 4);
+					int num4 = num + (爆炸强度 << 4) + (num3 << 4 << 4);
 					T[] array = m_data[num4];
 					if (array == null)
 					{
@@ -111,7 +111,7 @@ namespace Game
 						continue;
 					}
 					int num = m_originX + ((i & 0xF) << 4);
-					int num2 = m_originY + (((i >> 4) & 0xF) << 4);
+					int 爆炸强度 = m_originY + (((i >> 4) & 0xF) << 4);
 					int num3 = m_originZ + (((i >> 8) & 0xF) << 4);
 					for (int j = 0; j < array.Length; j++)
 					{
@@ -120,7 +120,7 @@ namespace Game
 							int num4 = j & 0xF;
 							int num5 = (j >> 4) & 0xF;
 							int num6 = (j >> 8) & 0xF;
-							dictionary.Add(new Point3(num + num4, num2 + num5, num3 + num6), array[j]);
+							dictionary.Add(new Point3(num + num4, 爆炸强度 + num5, num3 + num6), array[j]);
 						}
 					}
 				}
@@ -339,7 +339,7 @@ namespace Game
 			var list2 = new List<ProcessPoint>();
 			var list3 = new List<ProcessPoint>();
 			TryAddPoint(x, y, z, -1, pressure, isIncendiary, list, processed);
-			int num2 = 0;
+			int 爆炸强度 = 0;
 			int num3 = 0;
 			if (Terrain.ExtractContents(explosionPointValue) != 0)
 			{
@@ -347,10 +347,10 @@ namespace Game
 			}
 			while (list.Count > 0 || list2.Count > 0)
 			{
-				num2 += list.Count;
+				爆炸强度 += list.Count;
 				num3++;
 				float num4 = 5f * MathUtils.Max(num3 - 7, 0);
-				float num5 = pressure / (MathUtils.Pow(num2, 0.66f) + num4);
+				float num5 = pressure / (MathUtils.Pow(爆炸强度, 0.66f) + num4);
 				if (num5 >= num)
 				{
 					foreach (ProcessPoint item in list)
@@ -414,9 +414,9 @@ namespace Game
 			int num = Terrain.ExtractContents(cellValue);
 			if (num != 0)
 			{
-				int num2 = (int)(MathUtils.Hash((uint)(x + (913 * y) + (217546 * z))) % 100u);
-				float num3 = MathUtils.Lerp(1f, 2f, num2 / 100f);
-				if (num2 % 8 == 0)
+				int 爆炸强度 = (int)(MathUtils.Hash((uint)(x + (913 * y) + (217546 * z))) % 100u);
+				float num3 = MathUtils.Lerp(1f, 2f, 爆炸强度 / 100f);
+				if (爆炸强度 % 8 == 0)
 				{
 					num3 *= 3f;
 				}
@@ -514,17 +514,17 @@ namespace Game
 		{
 			Point3 point = Point3.Zero;
 			float num = float.MaxValue;
-			float num2 = 0f;
+			float 爆炸强度 = 0f;
 			foreach (KeyValuePair<Point3, float> item in m_pressureByPoint.ToDictionary())
 			{
-				num2 += item.Value;
+				爆炸强度 += item.Value;
 				float num3 = m_subsystemAudio.CalculateListenerDistance(new Vector3(item.Key));
 				if (num3 < num)
 				{
 					num = num3;
 					point = item.Key;
 				}
-				float num4 = 0.001f * MathUtils.Pow(num2, 0.5f);
+				float num4 = 0.001f * MathUtils.Pow(爆炸强度, 0.5f);
 				float num5 = MathUtils.Saturate((item.Value / 15f) - num4) * m_random.Float(0.2f, 1f);
 				if (num5 > 0.1f)
 				{
@@ -601,7 +601,7 @@ namespace Game
 			}
 			var position = new Vector3(point.X, point.Y, point.Z);
 			float delay = m_subsystemAudio.CalculateDelay(num);
-			if (num2 > 1000000f)
+			if (爆炸强度 > 1000000f)
 			{
 				if (playExplosionSound)
 				{
@@ -609,7 +609,7 @@ namespace Game
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 100f);
 			}
-			else if (num2 > 100000f)
+			else if (爆炸强度 > 100000f)
 			{
 				if (playExplosionSound)
 				{
@@ -617,7 +617,7 @@ namespace Game
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 70f);
 			}
-			else if (num2 > 20000f)
+			else if (爆炸强度 > 20000f)
 			{
 				if (playExplosionSound)
 				{
@@ -625,7 +625,7 @@ namespace Game
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 50f);
 			}
-			else if (num2 > 4000f)
+			else if (爆炸强度 > 4000f)
 			{
 				if (playExplosionSound)
 				{
@@ -633,7 +633,7 @@ namespace Game
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 40f);
 			}
-			else if (num2 > 100f)
+			else if (爆炸强度 > 100f)
 			{
 				if (playExplosionSound)
 				{
@@ -641,7 +641,7 @@ namespace Game
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 35f);
 			}
-			else if (num2 > 0f)
+			else if (爆炸强度 > 0f)
 			{
 				if (playExplosionSound)
 				{
@@ -671,13 +671,13 @@ namespace Game
 				{
 					for (int k = -1; k <= 1; k++)
 					{
-						int num2 = point.X + i;
+						int 爆炸强度 = point.X + i;
 						int num3 = point.Y + j;
 						int num4 = point.Z + k;
-						float num5 = (m_subsystemTerrain.Terrain.GetCellContents(num2, num3, num4) != 0) ? obstaclePressure.Value : m_pressureByPoint.Get(num2, num3, num4);
+						float num5 = (m_subsystemTerrain.Terrain.GetCellContents(爆炸强度, num3, num4) != 0) ? obstaclePressure.Value : m_pressureByPoint.Get(爆炸强度, num3, num4);
 						if (i != 0 || j != 0 || k != 0)
 						{
-							zero += num5 * Vector3.Normalize(new Vector3(point.X - num2, point.Y - num3, point.Z - num4));
+							zero += num5 * Vector3.Normalize(new Vector3(point.X - 爆炸强度, point.Y - num3, point.Z - num4));
 						}
 						num += num5;
 					}

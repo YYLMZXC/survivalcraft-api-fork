@@ -131,7 +131,7 @@ namespace Engine
 				m_gameWindow.Title = value;
 			}
 		}
-
+		/*
 		public static Icon Icon
 		{
 			get
@@ -145,6 +145,7 @@ namespace Engine
 				m_gameWindow.Icon = value;
 			}
 		}
+		*/
 
 		public static int PresentationInterval
 		{
