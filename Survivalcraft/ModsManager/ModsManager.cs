@@ -3,25 +3,23 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using Engine;
-using Engine.Graphics;
 using Game;
 using SimpleJson;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
-using Engine.Media;
 using Engine.Serialization;
 using XmlUtilities;
+using System.Linq;
 
 
 public static class ModsManager
 {
 	public const string 模组后缀 = ".scmod";
-	public const string APIVersion = "1.60P";
-	public const string SCVersion = "2.3.0.0";
+	public const string APIVersion = "1.61N";
+	public const string SCVersion = "2.3.10.4";
 	//1为api1.33 2为api1.40
 	public const int Apiv = 10;
 

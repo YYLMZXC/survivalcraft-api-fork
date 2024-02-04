@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>
-    <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
 	<PlatformTarget>AnyCPU</PlatformTarget>
     <AndroidApplication>True</AndroidApplication>
     <RootNamespace>SCNEXT</RootNamespace>
@@ -19,9 +19,10 @@
     <AndroidSigningStorePass>android</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>android</AndroidSigningKeyPass>
-    <Version>2.3.0.0</Version>
+    <Version>2.3.10.4</Version>
 	<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
 	<AndroidLinkMode>None</AndroidLinkMode>
+	<NeutralLanguage>zh-CN</NeutralLanguage>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <RunAOTCompilation>False</RunAOTCompilation>
