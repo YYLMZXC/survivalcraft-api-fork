@@ -23,6 +23,8 @@
 	<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
 	<AndroidLinkMode>None</AndroidLinkMode>
 	<NeutralLanguage>zh-CN</NeutralLanguage>
+	<LinkAll>true</LinkAll>
+	<EnableLLVM>true</EnableLLVM>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <RunAOTCompilation>False</RunAOTCompilation>
