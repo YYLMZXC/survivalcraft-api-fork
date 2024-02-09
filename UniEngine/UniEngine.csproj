@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName></AssemblyName>
+    <RootNamespace>Engine</RootNamespace>
+    <IsTrimmable>True</IsTrimmable>
+	  <GenerateDocumentationFile>False</GenerateDocumentationFile>
+	  <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
+	  <RootNamespace>Engine</RootNamespace>
+	  <Version>2.3.10.4</Version>
+	  <AssemblyName>Engine</AssemblyName>
+   </PropertyGroup>
+	<ItemGroup>
+		<Reference Include="OpenTK-1.0.2moded">
+			<HintPath>reference\OpenTK-1.0.2moded.dll</HintPath>
+		</Reference>
+		<Compile Remove="Resources\Resource.designer.cs" />
+	</ItemGroup>
+</Project>

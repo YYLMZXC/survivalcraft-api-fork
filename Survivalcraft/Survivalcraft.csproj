@@ -65,8 +65,14 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="path\**" />
+    <EmbeddedResource Remove="path\**" />
+    <None Remove="path\**" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj" />
     <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
+    <ProjectReference Include="..\UniEngine\UniEngine.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Content.zip">
@@ -89,11 +95,6 @@
     <Compile Remove="Screen\ModsInitScreen.cs" />
     <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs" />
   </ItemGroup>
-	<ItemGroup>
-		<None Include="path\to\your\Microsoft.Windows.SDK.NET.dll">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
 	<PropertyGroup>
     <PreBuildEvent>set p=$(SolutionDir)
 cd "$(SolutionDir)Survivalcraft\Content"
