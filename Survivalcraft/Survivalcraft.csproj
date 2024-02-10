@@ -72,7 +72,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj" />
     <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
-    <ProjectReference Include="..\UniEngine\UniEngine.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Content.zip">
