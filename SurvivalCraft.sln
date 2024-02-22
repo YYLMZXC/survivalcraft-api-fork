@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survivalcraft", "Survivalcr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survivalcraft_android", "Survivalcraft_android\Survivalcraft_android.csproj", "{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "统一端", "统一端", "{D3AB47ED-7C46-4886-AAAC-5A81485F587D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A_Launch", "A_Launch\A_Launch.csproj", "{A3545922-3FF3-4076-9395-EE81D057B4BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{C35F08AA-D8A3-40BB-BF37-3651E53DC9CE}"

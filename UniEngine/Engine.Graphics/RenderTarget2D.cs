@@ -1,4 +1,4 @@
-using Engine.Media;
+﻿using Engine.Media;
 using OpenTK.Graphics.ES30;
 using System;
 using System.IO;
@@ -88,7 +88,7 @@ namespace Engine.Graphics
                 GL.FramebufferRenderbuffer(All.Framebuffer, All.DepthAttachment, All.Renderbuffer, 0);
                 GL.FramebufferRenderbuffer(All.Framebuffer, All.StencilAttachment, All.Renderbuffer, 0);
             }
-            FramebufferErrorCode framebufferErrorCode = GL.CheckFramebufferStatus(All.Framebuffer);
+            FramebufferErrorCode framebufferErrorCode = (FramebufferErrorCode)GL.CheckFramebufferStatus(All.Framebuffer);
             if (framebufferErrorCode != FramebufferErrorCode.FramebufferComplete)
             {
                 throw new InvalidOperationException($"Error creating framebuffer ({framebufferErrorCode.ToString()}).");
@@ -109,53 +109,53 @@ namespace Engine.Graphics
             }
         }
 
-        public static void Save(RenderTarget2D renderTarget, Stream stream, ImageFileFormat format, bool saveAlpha)
-        {
-            if (renderTarget.ColorFormat != 0)
-            {
-                throw new InvalidOperationException("Unsupported color format.");
-            }
-            var image = new Image(renderTarget.Width, renderTarget.Height);
-            renderTarget.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget.Width, renderTarget.Height));
-            Image.Save(image, stream, format, saveAlpha);
-        }
+		public static void Save(RenderTarget2D renderTarget, Stream stream, ImageFileFormat format, bool saveAlpha)
+		{
+			if (renderTarget.ColorFormat != 0)
+			{
+				throw new InvalidOperationException("Unsupported color format.");
+			}
+			Image image = new(renderTarget.Width, renderTarget.Height);
+			renderTarget.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget.Width, renderTarget.Height));
+			Image.Save(image, stream, format, saveAlpha);
+		}
 
-        public override int GetGpuMemoryUsage()
-        {
-            return base.GetGpuMemoryUsage() + (DepthFormat.GetSize() * base.Width * base.Height);
-        }
+		public override int GetGpuMemoryUsage()
+		{
+			return base.GetGpuMemoryUsage() + (DepthFormat.GetSize() * base.Width * base.Height);
+		}
 
-        private void InitializeRenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
-        {
-            DepthFormat = depthFormat;
-        }
+		private void InitializeRenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
+		{
+			DepthFormat = depthFormat;
+		}
 
-        private void VerifyParametersGetData<T>(T[] target, int targetStartIndex, Rectangle sourceRectangle) where T : struct
-        {
-            VerifyNotDisposed();
-            int size = base.ColorFormat.GetSize();
-            int num = Utilities.SizeOf<T>();
-            ArgumentNullException.ThrowIfNull(target);
-            if (num > size)
-            {
-                throw new ArgumentNullException("Target array element size is larger than pixel size.");
-            }
-            if (size % num != 0)
-            {
-                throw new ArgumentNullException("Pixel size is not an integer multiple of target array element size.");
-            }
-            if (sourceRectangle.Left < 0 || sourceRectangle.Width <= 0 || sourceRectangle.Top < 0 || sourceRectangle.Height <= 0 || sourceRectangle.Left + sourceRectangle.Width > base.Width || sourceRectangle.Top + sourceRectangle.Height > base.Height)
-            {
-                throw new ArgumentOutOfRangeException(nameof(sourceRectangle));
-            }
-            if (targetStartIndex < 0 || targetStartIndex >= target.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(targetStartIndex));
-            }
-            if ((target.Length - targetStartIndex) * num < sourceRectangle.Width * sourceRectangle.Height * size)
-            {
-                throw new InvalidOperationException("Not enough space in target array.");
-            }
-        }
-    }
+		private void VerifyParametersGetData<T>(T[] target, int targetStartIndex, Rectangle sourceRectangle) where T : struct
+		{
+			VerifyNotDisposed();
+			int size = base.ColorFormat.GetSize();
+			int num = Utilities.SizeOf<T>();
+			ArgumentNullException.ThrowIfNull(target);
+			if (num > size)
+			{
+				throw new ArgumentNullException("Target array element size is larger than pixel size.");
+			}
+			if (size % num != 0)
+			{
+				throw new ArgumentNullException("Pixel size is not an integer multiple of target array element size.");
+			}
+			if (sourceRectangle.Left < 0 || sourceRectangle.Width <= 0 || sourceRectangle.Top < 0 || sourceRectangle.Height <= 0 || sourceRectangle.Left + sourceRectangle.Width > base.Width || sourceRectangle.Top + sourceRectangle.Height > base.Height)
+			{
+				throw new ArgumentOutOfRangeException("sourceRectangle");
+			}
+			if (targetStartIndex < 0 || targetStartIndex >= target.Length)
+			{
+				throw new ArgumentOutOfRangeException("targetStartIndex");
+			}
+			if ((target.Length - targetStartIndex) * num < sourceRectangle.Width * sourceRectangle.Height * size)
+			{
+				throw new InvalidOperationException("Not enough space in target array.");
+			}
+		}
+	}
 }
