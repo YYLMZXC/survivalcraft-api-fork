@@ -9,6 +9,7 @@ namespace Engine
 {
     public static class Storage
     {
+        bool 安卓平台 = true;
         public static long FreeSpace
         {
             get
@@ -28,22 +29,22 @@ namespace Engine
 
         public static bool FileExists(string path)
         {
-            return File.Exists(ProcessPath(path, writeAccess: false, failIfApp: true));
+            return File.Exists(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台));
         }
 
         public static bool DirectoryExists(string path)
         {
-            return Directory.Exists(ProcessPath(path, writeAccess: false, failIfApp: true));
+            return Directory.Exists(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台));
         }
 
         public static long GetFileSize(string path)
         {
-            return new FileInfo(ProcessPath(path, writeAccess: false, failIfApp: true)).Length;
+            return new FileInfo(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台)).Length;
         }
 
         public static DateTime GetFileLastWriteTime(string path)
         {
-            return File.GetLastWriteTimeUtc(ProcessPath(path, writeAccess: false, failIfApp: true));
+            return File.GetLastWriteTimeUtc(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台));
         }
 
         public static Stream OpenFile(string path, OpenFileMode openFileMode)
@@ -77,7 +78,7 @@ namespace Engine
 
         public static void DeleteFile(string path)
         {
-            File.Delete(ProcessPath(path, writeAccess: true, failIfApp: true));
+            File.Delete(ProcessPath(path, writeAccess: true, failIfApp: 安卓平台));
         }
 
         public static void CopyFile(string sourcePath, string destinationPath)
@@ -93,31 +94,31 @@ namespace Engine
 
         public static void MoveFile(string sourcePath, string destinationPath)
         {
-            string sourceFileName = ProcessPath(sourcePath, writeAccess: true, failIfApp: true);
-            string text = ProcessPath(destinationPath, writeAccess: true, failIfApp: true);
+            string sourceFileName = ProcessPath(sourcePath, writeAccess: true, failIfApp: 安卓平台);
+            string text = ProcessPath(destinationPath, writeAccess: true, failIfApp: 安卓平台);
             File.Delete(text);
             File.Move(sourceFileName, text);
         }
 
         public static void CreateDirectory(string path)
         {
-            Directory.CreateDirectory(ProcessPath(path, writeAccess: true, failIfApp: true));
+            Directory.CreateDirectory(ProcessPath(path, writeAccess: true, failIfApp: 安卓平台));
         }
 
         public static void DeleteDirectory(string path)
         {
-            Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: true));
+            Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: 安卓平台));
         }
 
         public static IEnumerable<string> ListFileNames(string path)
         {
-            return from s in Directory.EnumerateFiles(ProcessPath(path, writeAccess: false, failIfApp: true))
+            return from s in Directory.EnumerateFiles(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台))
                    select Path.GetFileName(s);
         }
 
         public static IEnumerable<string> ListDirectoryNames(string path)
         {
-            return from s in Directory.EnumerateDirectories(ProcessPath(path, writeAccess: false, failIfApp: true))
+            return from s in Directory.EnumerateDirectories(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台))
                    select Path.GetFileName(s) into s
                    where s != ".__override__"
                    select s;
@@ -167,7 +168,7 @@ namespace Engine
 
         public static string GetSystemPath(string path)
         {
-            return ProcessPath(path, writeAccess: false, failIfApp: true);
+            return ProcessPath(path, writeAccess: false, failIfApp: 安卓平台);
         }
 
         public static string GetExtension(string path)
@@ -239,13 +240,10 @@ namespace Engine
             return ProcessPath(path, writeAccess, failIfApp, out isApp);
         }
 
-        public static string ProcessPath(string path, bool writeAccess, bool failIfApp, out bool isApp)
+        private static string ProcessPath(string path, bool writeAccess, bool failIfApp, out bool isApp)
         {
-            if (path == null)
-            {
-                throw new ArgumentNullException("path");
-            }
-            if (Path.DirectorySeparatorChar != '/')
+            ArgumentNullException.ThrowIfNull(path);
+                        if (Path.DirectorySeparatorChar != '/')
             {
                 path = path.Replace('/', Path.DirectorySeparatorChar);
             }

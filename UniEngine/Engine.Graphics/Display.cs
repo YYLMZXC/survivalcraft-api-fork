@@ -1,6 +1,4 @@
-
 using OpenTK.Graphics.ES30;
-
 using System;
 using System.Runtime.InteropServices;
 
@@ -8,20 +6,20 @@ namespace Engine.Graphics
 {
     public static class Display
     {
-        public static RenderTarget2D m_renderTarget;
+        private static RenderTarget2D m_renderTarget;
 
-        public static RasterizerState m_rasterizerState = RasterizerState.CullCounterClockwise;
+        private static RasterizerState m_rasterizerState = RasterizerState.CullCounterClockwise;
 
-        public static DepthStencilState m_depthStencilState = DepthStencilState.Default;
+        private static DepthStencilState m_depthStencilState = DepthStencilState.Default;
 
-        public static BlendState m_blendState = BlendState.Opaque;
+        private static BlendState m_blendState = BlendState.Opaque;
 
-        public static bool m_useReducedZRange = false;
+        private static bool m_useReducedZRange = false;
 
         public static Point2 BackbufferSize
         {
             get;
-            set;
+            private set;
         }
 
         public static Viewport Viewport
@@ -44,10 +42,7 @@ namespace Engine.Graphics
             }
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException();
-                }
+                ArgumentNullException.ThrowIfNull(value);
                 m_rasterizerState = value;
                 value.IsLocked = true;
             }
@@ -61,10 +56,7 @@ namespace Engine.Graphics
             }
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException();
-                }
+                ArgumentNullException.ThrowIfNull(value);
                 m_depthStencilState = value;
                 value.IsLocked = true;
             }
@@ -78,10 +70,7 @@ namespace Engine.Graphics
             }
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException();
-                }
+                ArgumentNullException.ThrowIfNull(value);
                 m_blendState = value;
                 value.IsLocked = true;
             }
@@ -108,8 +97,8 @@ namespace Engine.Graphics
                 }
             }
         }
-
-        public static bool UseReducedZRange
+        
+                        public static bool UseReducedZRange
         {
             get
             {
@@ -132,150 +121,10 @@ namespace Engine.Graphics
 
         public static event Action DeviceReset;
 
-        public static long GetGpuMemoryUsage()
-        {
-            long num = 8 * BackbufferSize.X * BackbufferSize.Y;
-            foreach (GraphicsResource resource in GraphicsResource.m_resources)
-            {
-                num += resource.GetGpuMemoryUsage();
-            }
-            return num;
-        }
-
-        public static void Clear(Color? color, float? depth = null, int? stencil = null)
-        {
-            Clear(color.HasValue ? new Vector4?(new Vector4(color.Value)) : null, depth, stencil);
-        }
-
-        internal static void VerifyParametersDrawUser<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount) where T : struct
-        {
-            shader.VerifyNotDisposed();
-            int num = Utilities.SizeOf<T>();
-            if (shader == null)
-            {
-                throw new ArgumentNullException("shader");
-            }
-            if (vertexDeclaration == null)
-            {
-                throw new ArgumentNullException("vertexDeclaration");
-            }
-            if (vertexData == null)
-            {
-                throw new ArgumentNullException("vertexData");
-            }
-            if (vertexDeclaration.VertexStride / num * num != vertexDeclaration.VertexStride)
-            {
-                throw new InvalidOperationException($"Vertex is not an integer multiple of array element, vertex stride is {vertexDeclaration.VertexStride}, array element is {num}.");
-            }
-            if (startVertex < 0 || verticesCount < 0 || startVertex + verticesCount > vertexData.Length)
-            {
-                throw new ArgumentException("Vertices range is out of bounds.");
-            }
-        }
-
-        internal static void VerifyParametersDrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct
-        {
-            shader.VerifyNotDisposed();
-            int num = Utilities.SizeOf<T>();
-            if (shader == null)
-            {
-                throw new ArgumentNullException("shader");
-            }
-            if (vertexDeclaration == null)
-            {
-                throw new ArgumentNullException("vertexDeclaration");
-            }
-            if (vertexData == null)
-            {
-                throw new ArgumentNullException("vertexData");
-            }
-            if (indexData == null)
-            {
-                throw new ArgumentNullException("indexData");
-            }
-            if (vertexDeclaration.VertexStride / num * num != vertexDeclaration.VertexStride)
-            {
-                throw new InvalidOperationException($"Vertex is not an integer multiple of array element, vertex stride is {vertexDeclaration.VertexStride}, array element is {num}.");
-            }
-            if (startVertex < 0 || verticesCount < 0 || startVertex + verticesCount > vertexData.Length)
-            {
-                throw new ArgumentException("Vertices range is out of bounds.");
-            }
-            if (startIndex < 0 || indicesCount < 0 || startIndex + indicesCount > indexData.Length)
-            {
-                throw new ArgumentException("Indices range is out of bounds.");
-            }
-        }
-
-        internal static void VerifyParametersDraw(PrimitiveType primitiveType, Shader shader, VertexBuffer vertexBuffer, int startVertex, int verticesCount)
-        {
-            shader.VerifyNotDisposed();
-            vertexBuffer.VerifyNotDisposed();
-            if (shader == null)
-            {
-                throw new ArgumentNullException("shader");
-            }
-            if (vertexBuffer == null)
-            {
-                throw new ArgumentNullException("vertexBuffer");
-            }
-            if (startVertex < 0 || verticesCount < 0 || startVertex + verticesCount > vertexBuffer.VerticesCount)
-            {
-                throw new ArgumentException("Vertices range is out of bounds.");
-            }
-        }
-
-        internal static void VerifyParametersDrawIndexed(PrimitiveType primitiveType, Shader shader, VertexBuffer vertexBuffer, IndexBuffer indexBuffer, int startIndex, int indicesCount)
-        {
-            shader.VerifyNotDisposed();
-            vertexBuffer.VerifyNotDisposed();
-            indexBuffer.VerifyNotDisposed();
-            if (shader == null)
-            {
-                throw new ArgumentNullException("shader");
-            }
-            if (vertexBuffer == null)
-            {
-                throw new ArgumentNullException("vertexBuffer");
-            }
-            if (indexBuffer == null)
-            {
-                throw new ArgumentNullException("indexBuffer");
-            }
-            if (startIndex < 0 || indicesCount < 0 || startIndex + indicesCount > indexBuffer.IndicesCount)
-            {
-                throw new ArgumentException("Indices range is out of bounds.");
-            }
-        }
-
-        internal static void HandleDeviceLost()
-        {
-            foreach (GraphicsResource resource in GraphicsResource.m_resources)
-            {
-                resource.HandleDeviceLost();
-            }
-            if (Display.DeviceLost != null)
-            {
-                Display.DeviceLost();
-            }
-        }
-
-        internal static void HandleDeviceReset()
-        {
-            foreach (GraphicsResource resource in GraphicsResource.m_resources)
-            {
-                resource.HandleDeviceReset();
-            }
-            if (Display.DeviceReset != null)
-            {
-                Display.DeviceReset();
-            }
-        }
-
         public static void DrawUser<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount) where T : struct
         {
             VerifyParametersDrawUser(primitiveType, shader, vertexDeclaration, vertexData, startVertex, verticesCount);
-            GCHandle gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
+            var gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
             try
             {
                 GLWrapper.ApplyRenderTarget(RenderTarget);
@@ -295,8 +144,8 @@ namespace Engine.Graphics
         public static void DrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct
         {
             VerifyParametersDrawUserIndexed(primitiveType, shader, vertexDeclaration, vertexData, startVertex, verticesCount, indexData, startIndex, indicesCount);
-            GCHandle gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
-            GCHandle gCHandle2 = GCHandle.Alloc(indexData, GCHandleType.Pinned);
+            var gCHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
+            var gCHandle2 = GCHandle.Alloc(indexData, GCHandleType.Pinned);
             try
             {
                 GLWrapper.ApplyRenderTarget(RenderTarget);
@@ -372,6 +221,104 @@ namespace Engine.Graphics
             BackbufferSize = new Point2(Window.Size.X, Window.Size.Y);
             Viewport = new Viewport(0, 0, Window.Size.X, Window.Size.Y);
             ScissorRectangle = new Rectangle(0, 0, Window.Size.X, Window.Size.Y);
+        }
+
+        public static long GetGpuMemoryUsage()
+        {
+            long num = 8 * BackbufferSize.X * BackbufferSize.Y;
+            foreach (GraphicsResource resource in GraphicsResource.m_resources)
+            {
+                num += resource.GetGpuMemoryUsage();
+            }
+            return num;
+        }
+
+        public static void Clear(Color? color, float? depth = null, int? stencil = null)
+        {
+            Clear(color.HasValue ? new Vector4?(new Vector4(color.Value)) : null, depth, stencil);
+        }
+
+        internal static void VerifyParametersDrawUser<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount) where T : struct
+        {
+            shader.VerifyNotDisposed();
+            int num = Utilities.SizeOf<T>();
+            ArgumentNullException.ThrowIfNull(shader);
+            ArgumentNullException.ThrowIfNull(vertexDeclaration);
+            ArgumentNullException.ThrowIfNull(vertexData);
+            if (vertexDeclaration.VertexStride / num * num != vertexDeclaration.VertexStride)
+            {
+                throw new InvalidOperationException($"Vertex is not an integer multiple of array element, vertex stride is {vertexDeclaration.VertexStride}, array element is {num}.");
+            }
+            if (startVertex < 0 || verticesCount < 0 || startVertex + verticesCount > vertexData.Length)
+            {
+                throw new ArgumentException("Vertices range is out of bounds.");
+            }
+        }
+
+        internal static void VerifyParametersDrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct
+        {
+            shader.VerifyNotDisposed();
+            int num = Utilities.SizeOf<T>();
+            ArgumentNullException.ThrowIfNull(shader);
+            ArgumentNullException.ThrowIfNull(vertexDeclaration);
+            ArgumentNullException.ThrowIfNull(vertexData);
+            ArgumentNullException.ThrowIfNull(indexData);
+            if (vertexDeclaration.VertexStride / num * num != vertexDeclaration.VertexStride)
+            {
+                throw new InvalidOperationException($"Vertex is not an integer multiple of array element, vertex stride is {vertexDeclaration.VertexStride}, array element is {num}.");
+            }
+            if (startVertex < 0 || verticesCount < 0 || startVertex + verticesCount > vertexData.Length)
+            {
+                throw new ArgumentException("Vertices range is out of bounds.");
+            }
+            if (startIndex < 0 || indicesCount < 0 || startIndex + indicesCount > indexData.Length)
+            {
+                throw new ArgumentException("Indices range is out of bounds.");
+            }
+        }
+
+        internal static void VerifyParametersDraw(PrimitiveType primitiveType, Shader shader, VertexBuffer vertexBuffer, int startVertex, int verticesCount)
+        {
+            shader.VerifyNotDisposed();
+            vertexBuffer.VerifyNotDisposed();
+            ArgumentNullException.ThrowIfNull(shader);
+            ArgumentNullException.ThrowIfNull(vertexBuffer);
+            if (startVertex < 0 || verticesCount < 0 || startVertex + verticesCount > vertexBuffer.VerticesCount)
+            {
+                throw new ArgumentException("Vertices range is out of bounds.");
+            }
+        }
+
+        internal static void VerifyParametersDrawIndexed(PrimitiveType primitiveType, Shader shader, VertexBuffer vertexBuffer, IndexBuffer indexBuffer, int startIndex, int indicesCount)
+        {
+            shader.VerifyNotDisposed();
+            vertexBuffer.VerifyNotDisposed();
+            indexBuffer.VerifyNotDisposed();
+            ArgumentNullException.ThrowIfNull(shader);
+            ArgumentNullException.ThrowIfNull(vertexBuffer);
+            ArgumentNullException.ThrowIfNull(indexBuffer);
+            if (startIndex < 0 || indicesCount < 0 || startIndex + indicesCount > indexBuffer.IndicesCount)
+            {
+                throw new ArgumentException("Indices range is out of bounds.");
+            }
+        }
+
+        internal static void HandleDeviceLost()
+        {
+            foreach (GraphicsResource resource in GraphicsResource.m_resources)
+            {
+                resource.HandleDeviceLost();
+            }
+            Display.DeviceLost?.Invoke();
+        }
+
+        internal static void HandleDeviceReset()
+        {
+            foreach (GraphicsResource resource in GraphicsResource.m_resources)
+            {
+                resource.HandleDeviceReset();
+            }
+            Display.DeviceReset?.Invoke();
         }
     }
 }

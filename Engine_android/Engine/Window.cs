@@ -10,7 +10,7 @@ namespace Engine
 {
     public static class Window
     {
-        public enum State
+        private enum State
         {
             Uncreated,
             Inactive,
@@ -124,51 +124,7 @@ namespace Engine
         public static event Action<Uri> HandleUri;
 
         public static void InitializeAll()
-        {
-            Dispatcher.Initialize();
-            Display.Initialize();
-            Keyboard.Initialize();
-            Mouse.Initialize();
-            Touch.Initialize();
-            GamePad.Initialize();
-            Mixer.Initialize();
-        }
-
-        public static void DisposeAll()
-        {
-            Dispatcher.Dispose();
-            Display.Dispose();
-            Keyboard.Dispose();
-            Mouse.Dispose();
-            Touch.Dispose();
-            GamePad.Dispose();
-            Mixer.Dispose();
-        }
-
-        public static void BeforeFrameAll()
-        {
-            Time.BeforeFrame();
-            Dispatcher.BeforeFrame();
-            Display.BeforeFrame();
-            Keyboard.BeforeFrame();
-            Mouse.BeforeFrame();
-            Touch.BeforeFrame();
-            GamePad.BeforeFrame();
-            Mixer.BeforeFrame();
-        }
-
-        public static void AfterFrameAll()
-        {
-            Time.AfterFrame();
-            Dispatcher.AfterFrame();
-            Display.AfterFrame();
-            Keyboard.AfterFrame();
-            Mouse.AfterFrame();
-            Touch.AfterFrame();
-            GamePad.AfterFrame();
-            Mixer.AfterFrame();
-        }
-
+        
         public static void Run(int width = 0, int height = 0, WindowMode windowMode = WindowMode.Fullscreen, string title = "")
         {
             if (View != null)
@@ -267,7 +223,7 @@ namespace Engine
             }
         }
 
-        public static void ResizeHandler(object sender, EventArgs args)
+        private static void ResizeHandler(object sender, EventArgs args)
         {
             if (m_state != 0)
             {
@@ -335,6 +291,50 @@ namespace Engine
                 Uri.TryCreate(intent.DataString, UriKind.RelativeOrAbsolute, out result);
             }
             return result;
+        }
+        {
+            Dispatcher.Initialize();
+            Display.Initialize();
+            Keyboard.Initialize();
+            Mouse.Initialize();
+            Touch.Initialize();
+            GamePad.Initialize();
+            Mixer.Initialize();
+        }
+
+        private static void DisposeAll()
+        {
+            Dispatcher.Dispose();
+            Display.Dispose();
+            Keyboard.Dispose();
+            Mouse.Dispose();
+            Touch.Dispose();
+            GamePad.Dispose();
+            Mixer.Dispose();
+        }
+
+        private static void BeforeFrameAll()
+        {
+            Time.BeforeFrame();
+            Dispatcher.BeforeFrame();
+            Display.BeforeFrame();
+            Keyboard.BeforeFrame();
+            Mouse.BeforeFrame();
+            Touch.BeforeFrame();
+            GamePad.BeforeFrame();
+            Mixer.BeforeFrame();
+        }
+
+        private static void AfterFrameAll()
+        {
+            Time.AfterFrame();
+            Dispatcher.AfterFrame();
+            Display.AfterFrame();
+            Keyboard.AfterFrame();
+            Mouse.AfterFrame();
+            Touch.AfterFrame();
+            GamePad.AfterFrame();
+            Mixer.AfterFrame();
         }
     }
 }
