@@ -1,3 +1,4 @@
+#if android
 using Android.Content;
 using Android.Media;
 using Android.OS;
@@ -155,3 +156,4 @@ namespace Engine
         }
     }
 }
+#endif

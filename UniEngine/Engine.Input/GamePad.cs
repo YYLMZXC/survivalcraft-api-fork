@@ -1,6 +1,11 @@
 using OpenTK.Input;
 using System;
+#if android
 
+using Android.Views;
+using System.Collections.Generic;
+using System.Linq;
+#endif
 namespace Engine.Input
 {
     public static class GamePad
@@ -19,8 +24,11 @@ namespace Engine.Input
 
             public double[] ButtonsRepeat = new double[14];
         }
-
-        private const double m_buttonFirstRepeatTime = 0.2;
+#if android
+        public static Dictionary<int, int> m_deviceToIndex = [];
+        public static List<int> m_toRemove = [];
+#endif
+		private const double m_buttonFirstRepeatTime = 0.2;
 
         private const double m_buttonNextRepeatTime = 0.04;
 
@@ -39,6 +47,162 @@ namespace Engine.Input
         }
         internal static void BeforeFrame()
         {
+#if android
+            if (Time.PeriodicEvent(2.0, 0.0))
+            {
+                m_toRemove.Clear();
+                foreach (int key in m_deviceToIndex.Keys)
+                {
+                    if (InputDevice.GetDevice(key) == null)
+                    {
+                        m_toRemove.Add(key);
+                    }
+                }
+                foreach (int item in m_toRemove)
+                {
+                    Disconnect(item);
+                }
+            }
+        }
+
+        internal static void HandleKeyDown(int deviceId, Keycode keyCode)
+        {
+            int num = TranslateDeviceId(deviceId);
+            if (num < 0)
+            {
+                return;
+            }
+            GamePadButton gamePadButton = TranslateKey(keyCode);
+            if (gamePadButton >= GamePadButton.A)
+            {
+                m_states[num].Buttons[(int)gamePadButton] = true;
+                return;
+            }
+            switch (keyCode)
+            {
+                case Keycode.ButtonL2:
+                    m_states[num].Triggers[0] = 1f;
+                    break;
+                case Keycode.ButtonR2:
+                    m_states[num].Triggers[1] = 1f;
+                    break;
+            }
+        }
+
+        internal static void HandleKeyUp(int deviceId, Keycode keyCode)
+        {
+            int num = TranslateDeviceId(deviceId);
+            if (num < 0)
+            {
+                return;
+            }
+            GamePadButton gamePadButton = TranslateKey(keyCode);
+            if (gamePadButton >= GamePadButton.A)
+            {
+                m_states[num].Buttons[(int)gamePadButton] = false;
+                return;
+            }
+            switch (keyCode)
+            {
+                case Keycode.ButtonL2:
+                    m_states[num].Triggers[0] = 0f;
+                    break;
+                case Keycode.ButtonR2:
+                    m_states[num].Triggers[1] = 0f;
+                    break;
+            }
+        }
+
+        internal static void HandleMotionEvent(MotionEvent e)
+        {
+            int num = TranslateDeviceId(e.DeviceId);
+            if (num >= 0)
+            {
+                m_states[num].Sticks[0] = new Vector2(e.GetAxisValue(Axis.X), 0f - e.GetAxisValue(Axis.Y));
+                m_states[num].Sticks[1] = new Vector2(e.GetAxisValue(Axis.Z), 0f - e.GetAxisValue(Axis.Rz));
+                m_states[num].Triggers[0] = MathUtils.Max(e.GetAxisValue(Axis.Ltrigger), e.GetAxisValue(Axis.Brake));
+                m_states[num].Triggers[1] = MathUtils.Max(e.GetAxisValue(Axis.Rtrigger), e.GetAxisValue(Axis.Gas));
+                float axisValue = e.GetAxisValue(Axis.HatX);
+                float axisValue2 = e.GetAxisValue(Axis.HatY);
+                m_states[num].Buttons[10] = axisValue < -0.5f;
+                m_states[num].Buttons[12] = axisValue > 0.5f;
+                m_states[num].Buttons[11] = axisValue2 < -0.5f;
+                m_states[num].Buttons[13] = axisValue2 > 0.5f;
+            }
+        }
+#endif
+#if android
+        public static int TranslateDeviceId(int deviceId)
+        {
+            if (m_deviceToIndex.TryGetValue(deviceId, out int value))
+            {
+                return value;
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                if (!m_deviceToIndex.Values.Contains(i))
+                {
+                    Connect(deviceId, i);
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public static GamePadButton TranslateKey(Keycode keyCode)
+        {
+            switch (keyCode)
+            {
+                case Keycode.ButtonA:
+                    return GamePadButton.A;
+                case Keycode.ButtonB:
+                    return GamePadButton.B;
+                case Keycode.ButtonX:
+                    return GamePadButton.X;
+                case Keycode.ButtonY:
+                    return GamePadButton.Y;
+                case Keycode.Back:
+                    return GamePadButton.Back;
+                case Keycode.ButtonL1:
+                    return GamePadButton.LeftShoulder;
+                case Keycode.ButtonR1:
+                    return GamePadButton.RightShoulder;
+                case Keycode.ButtonThumbl:
+                    return GamePadButton.LeftThumb;
+                case Keycode.ButtonThumbr:
+                    return GamePadButton.RightThumb;
+                case Keycode.DpadLeft:
+                    return GamePadButton.DPadLeft;
+                case Keycode.DpadRight:
+                    return GamePadButton.DPadRight;
+                case Keycode.DpadUp:
+                    return GamePadButton.DPadUp;
+                case Keycode.DpadDown:
+                    return GamePadButton.DPadDown;
+                case Keycode.ButtonSelect:
+                    return GamePadButton.Back;
+                case Keycode.ButtonStart:
+                    return GamePadButton.Start;
+                default:
+                    return (GamePadButton)(-1);
+            }
+        }
+
+        public static void Connect(int deviceId, int index)
+        {
+            m_deviceToIndex.Add(deviceId, index);
+            m_states[index].IsConnected = true;
+        }
+
+        public static void Disconnect(int deviceId)
+        {
+            if (m_deviceToIndex.TryGetValue(deviceId, out int value))
+            {
+                m_deviceToIndex.Remove(deviceId);
+                m_states[value].IsConnected = false;
+            }
+        }
+#else
             for (int i = 0; i < 4; i++)
             {
                 GamePadState state = OpenTK.Input.GamePad.GetState(i);
@@ -73,6 +237,7 @@ namespace Engine.Input
                 }
             }
         }
+#endif
 
         public static bool IsConnected(int gamePadIndex)
         {

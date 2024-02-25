@@ -5,46 +5,58 @@ namespace Engine
 {
     public class Random
     {
-        public static int m_counter = (int)(Stopwatch.GetTimestamp() + DateTime.Now.Ticks);
+        private static int m_counter = (int)(Stopwatch.GetTimestamp() + DateTime.Now.Ticks);
 
-        public uint m_s0;
-
-        public uint m_s1;
-
+        private ulong m_seed;
+        /*
+        private const ulong m_multiplier = 25214903917uL;
+        private const ulong m_addend = 11uL;
+        private const ulong m_mask = 281474976710655uL;
+        */
         public ulong State
         {
             get
             {
-                return m_s0 + ((ulong)m_s1 << 32);
+                return m_seed;
             }
             set
             {
-                m_s0 = (uint)value;
-                m_s1 = (uint)(value >> 32);
+                m_seed = value;
             }
         }
 
         public Random()
+#if desktop
+            : this(997 * m_counter++)
+#endif
         {
-            Seed();
+#if android
+            Reset_A();
+#endif
         }
 
         public Random(int seed)
         {
-            Seed(seed);
+#if desktop
+            Reset_D(seed);
+#else
+            Reset_A(seed);
+#endif
         }
 
-        public void Seed()
+        public void Reset_D(int seed)
         {
-            Seed(m_counter++);
+            m_seed = (ulong)(seed ^ 0x5DEECE66D);
         }
-
-        public void Seed(int seed)
-        {
-            m_s0 = MathUtils.Hash((uint)seed);
-            m_s1 = MathUtils.Hash((uint)(seed + 1));
-        }
-
+		public static void Reset_A()
+		{
+			Reset_A(m_counter++);
+		}
+		public void Reset_A(int seed)
+		{
+			m_seed = MathUtils.Hash((uint)seed) + (MathUtils.Hash((uint)(seed + 1)) << 32);
+		}
+		/*
         public int Sign()
         {
             return (Int() % 2 * 2) - 1;
@@ -52,27 +64,31 @@ namespace Engine
 
         public bool Bool()
         {
-            return (Int() & 1) != 0;
+            return Int() % 2 == 0;
         }
-
-        public bool Bool(float probability)
+        */
+		public bool Bool(float probability)
         {
             return (float)Int() / 2.147484E+09f < probability;
         }
-
+#if android
         public uint UInt()
         {
-            uint s = m_s0;
-            uint s2 = m_s1;
+            uint s = (uint)m_seed;
+            uint s2 = (uint)(m_seed>>32);
             s2 ^= s;
-            m_s0 = RotateLeft(s, 26) ^ s2 ^ (s2 << 9);
-            m_s1 = RotateLeft(s2, 13);
-            return RotateLeft((uint)((int)s * -1640531525), 5) * 5;
+            m_seed = RotateLeft(s, 26) ^ s2 ^ (s2 << 9)+(RotateLeft(s2, 13)<<32);
+			return RotateLeft((uint)((int)s * -1640531525), 5) * 5;
         }
-
+#endif
         public int Int()
         {
+#if desktop
+            m_seed = ((m_seed * 25214903917L) + 11) & 0xFFFFFFFFFFFF;
+            return (int)(m_seed >> 17);
+#else
             return (int)(UInt() & int.MaxValue);
+#endif
         }
 
         public int Int(int bound)
@@ -167,9 +183,11 @@ namespace Engine
             return Engine.Vector3.Normalize(Vector3()) * Float(minLength, maxLength);
         }
 
+#if android
         public static uint RotateLeft(uint x, int k)
         {
             return (x << k) | (x >> (32 - k));
         }
+#endif
     }
 }

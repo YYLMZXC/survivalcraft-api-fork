@@ -1,3 +1,4 @@
+#if android
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -93,3 +94,4 @@ namespace Engine
         }
     }
 }
+#endif
