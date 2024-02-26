@@ -9,11 +9,13 @@ namespace Engine
 {
     public static class Storage
     {
-        bool 安卓平台 = false;
-        private static bool m_dataDirectoryCreated;
-
+#if desktop
+		bool 安卓平台 = false;
+		private static bool m_dataDirectoryCreated;
         private static object m_dataDirectoryCreationLock = new();
-
+#else
+        bool 安卓平台 = true;
+#endif
         public static long FreeSpace
         {
             get

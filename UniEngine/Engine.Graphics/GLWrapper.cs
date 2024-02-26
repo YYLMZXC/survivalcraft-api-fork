@@ -119,29 +119,29 @@ namespace Engine.Graphics
 				-1,
 				-1
 			};
-			m_activeTextureUnit = (TextureUnit)All.AllAttribBits;
+			m_activeTextureUnit = (TextureUnit)-1;
 			m_program = -1;
 			m_framebuffer = -1;
 			m_clearColor = null;
 			m_clearDepth = null;
 			m_clearStencil = null;
-			m_cullFace = (CullFaceMode)All.False;
-			m_frontFace = (FrontFaceDirection)All.False;
-			m_depthFunction = (DepthFunction)All.AllAttribBits;
+			m_cullFace = (CullFaceMode)0;
+			m_frontFace = (FrontFaceDirection)0;
+			m_depthFunction = (DepthFunction)-1;
 			m_colorMask = null;
 			m_depthMask = null;
 			m_polygonOffsetFactor = 0f;
 			m_polygonOffsetUnits = 0f;
 			m_blendColor = new Vector4(float.MinValue);
-			m_blendEquation = All.AllAttribBits;
-			m_blendEquationColor = All.AllAttribBits;
-			m_blendEquationAlpha = All.AllAttribBits;
-			m_blendFuncSource = (BlendingFactorSrc)All.AllAttribBits;
-			m_blendFuncSourceColor = All.AllAttribBits;
-			m_blendFuncSourceAlpha = All.AllAttribBits;
-			m_blendFuncDestination = (BlendingFactorDest)All.AllAttribBits;
-			m_blendFuncDestinationColor = All.AllAttribBits;
-			m_blendFuncDestinationAlpha = All.AllAttribBits;
+			m_blendEquation = (All)-1;
+			m_blendEquationColor = (All)-1;
+			m_blendEquationAlpha = (All)-1;
+			m_blendFuncSource = (BlendingFactorSrc)-1;
+			m_blendFuncSourceColor = (All)-1;
+			m_blendFuncSourceAlpha = (All)-1;
+			m_blendFuncDestination = (BlendingFactorDest)-1;
+			m_blendFuncDestinationColor = (All)-1;
+			m_blendFuncDestinationAlpha = (All)-1;
 			m_enableDisableStates = [];
 			m_vertexAttribArray = new bool?[16];
 			m_rasterizerState = null;
@@ -290,8 +290,8 @@ namespace Engine.Graphics
 			{
 				GL.BlendEquation(blendEquation);
 				m_blendEquation = blendEquation;
-				m_blendEquationColor = All.AllAttribBits;
-				m_blendEquationAlpha = All.AllAttribBits;
+				m_blendEquationColor = All.InvalidIndex;
+				m_blendEquationAlpha = All.InvalidIndex;
 			}
 		}
 
@@ -302,7 +302,7 @@ namespace Engine.Graphics
 				GL.BlendEquationSeparate(blendEquationColor, blendEquationAlpha);
 				m_blendEquationColor = blendEquationColor;
 				m_blendEquationAlpha = blendEquationAlpha;
-				m_blendEquation = All.AllAttribBits;
+				m_blendEquation = (All)(-1);
 			}
 		}
 
@@ -313,10 +313,10 @@ namespace Engine.Graphics
 				GL.BlendFunc(blendFuncSource, blendFuncDestination);
 				m_blendFuncSource = blendFuncSource;
 				m_blendFuncDestination = blendFuncDestination;
-				m_blendFuncSourceColor = All.AllAttribBits;
-				m_blendFuncSourceAlpha = All.AllAttribBits;
-				m_blendFuncDestinationColor = All.AllAttribBits;
-				m_blendFuncDestinationAlpha = All.AllAttribBits;
+				m_blendFuncSourceColor = (All)(-1);
+				m_blendFuncSourceAlpha = (All)(-1);
+				m_blendFuncDestinationColor = (All)(-1);
+				m_blendFuncDestinationAlpha = (All)(-1);
 			}
 		}
 
@@ -329,8 +329,8 @@ namespace Engine.Graphics
 				m_blendFuncSourceAlpha = blendFuncSourceAlpha;
 				m_blendFuncDestinationColor = blendFuncDestinationColor;
 				m_blendFuncDestinationAlpha = blendFuncDestinationAlpha;
-				m_blendFuncSource = (BlendingFactorSrc)All.AllAttribBits;
-				m_blendFuncDestination = (BlendingFactorDest)All.AllAttribBits;
+				m_blendFuncSource = (BlendingFactorDest)-1;
+				m_blendFuncDestination = (BlendingFactorDest)-1;
 			}
 		}
 
@@ -560,7 +560,7 @@ namespace Engine.Graphics
 				Enable(All.DepthTest);
 				if (state.DepthBufferTestEnable)
 				{
-					DepthFunc((DepthFunction)TranslateCompareFunction(state.DepthBufferFunction));
+					DepthFunc(TranslateCompareFunction(state.DepthBufferFunction));
 				}
 				else
 				{
@@ -694,7 +694,7 @@ namespace Engine.Graphics
 					{
 						throw new InvalidOperationException("Too many simultaneous textures.");
 					}
-					ActiveTexture((TextureUnit)(33984 + num));
+					ActiveTexture((All)(33984 + num));
 					if (shaderParameter.IsChanged)
 					{
 						GL.Uniform1(shaderParameter.Location, num);
@@ -717,14 +717,16 @@ namespace Engine.Graphics
 							BindTexture(TextureTarget.Texture2D, texture2D.m_texture, forceBind: false);
 							if (GL_EXT_texture_filter_anisotropic)
 							{
-								GL.TexParameter(All.Texture2D, All.TextureMaxAnisotropyExt, (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? ((float)samplerState.MaxAnisotropy) : 1f);
+								GL.TexParameter(All.Texture2D, (All)34046, (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? samplerState.MaxAnisotropy : 1f);
 							}
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TranslateTextureFilterModeMin(samplerState.FilterMode, texture2D.MipLevelsCount > 1));
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TranslateTextureFilterModeMag(samplerState.FilterMode));
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TranslateTextureAddressMode(samplerState.AddressModeU));
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TranslateTextureAddressMode(samplerState.AddressModeV));
+#if desktop
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinLod, samplerState.MinLod);
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLod, samplerState.MaxLod);
+#endif
 							m_textureSamplerStates[texture2D.m_texture] = samplerState;
 						}
 					}
@@ -745,7 +747,7 @@ namespace Engine.Graphics
 			All all = All.False;
 			if (color.HasValue)
 			{
-				all |= All.ClientMappedBufferBarrierBit;
+				all |= (All)16384;
 				ClearColor(color.Value);
 				ColorMask(15);
 			}
@@ -869,7 +871,7 @@ namespace Engine.Graphics
 		{
 			return primitiveType switch
 			{
-				PrimitiveType.LineList => All.ClientPixelStoreBit,
+				PrimitiveType.LineList => (All)1,
 				PrimitiveType.LineStrip => All.LineStrip,
 				PrimitiveType.TriangleList => (All)0x0004,
 				PrimitiveType.TriangleStrip => All.TriangleStrip,
@@ -977,7 +979,7 @@ namespace Engine.Graphics
 				CompareFunction.GreaterEqual => All.Gequal,
 				CompareFunction.Less => All.Less,
 				CompareFunction.LessEqual => All.Lequal,
-				CompareFunction.Never => All.AccumBufferBit,
+				CompareFunction.Never => (All)0x0200,
 				CompareFunction.NotEqual => All.Notequal,
 				_ => throw new InvalidOperationException("Unsupported texture address mode."),
 			};
@@ -998,8 +1000,8 @@ namespace Engine.Graphics
 		{
 			return blend switch
 			{
-				Blend.Zero => All.False,
-				Blend.One => All.ClientPixelStoreBit,
+				Blend.Zero => (All)0,
+				Blend.One => (All)1,
 				Blend.SourceColor => All.SrcColor,
 				Blend.InverseSourceColor => All.OneMinusSrcColor,
 				Blend.DestinationColor => All.DstColor,
@@ -1017,12 +1019,28 @@ namespace Engine.Graphics
 
 		public static All TranslateDepthFormat(DepthFormat depthFormat)
 		{
+#if desktop
 			return depthFormat switch
 			{
 				DepthFormat.Depth16 => All.DepthComponent16,
 				DepthFormat.Depth24Stencil8 => All.Depth24Stencil8Oes,
 				_ => throw new InvalidOperationException("Unsupported DepthFormat."),
 			};
+#else
+			switch (depthFormat)
+			{
+				case DepthFormat.Depth16:
+					return All.DepthComponent16;
+				case DepthFormat.Depth24Stencil8:
+					if (GL_OES_packed_depth_stencil)
+					{
+						return All.Depth24Stencil8;
+					}
+					return All.DepthComponent16;
+				default:
+					throw new InvalidOperationException("Unsupported DepthFormat.");
+			}
+#endif
 		}
 
 		[Conditional("DEBUG")]

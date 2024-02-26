@@ -19,13 +19,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\Lit.psh" />
     <EmbeddedResource Include="Resources\Lit.vsh" />
     <EmbeddedResource Include="Resources\Unlit.psh" />
@@ -35,17 +28,8 @@
     <EmbeddedResource Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="8.0.1" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="OpenTK">
       <HintPath>OpenTK.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 </Project>
