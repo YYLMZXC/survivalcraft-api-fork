@@ -2,11 +2,10 @@
 using Android.App;
 using Android.Views;
 using Android.Widget;
-#else
-using OpenTK;
-using OpenTK.Input;
 #endif
 using System;
+using OpenTK;
+using OpenTK.Input;
 
 namespace Engine.Input
 {

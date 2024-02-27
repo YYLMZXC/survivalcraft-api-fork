@@ -1,4 +1,8 @@
+#if android
 using Android.OS;
+#else
+using System.Reflection;
+#endif
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,11 +13,18 @@ namespace Engine
 {
     public static class Storage
     {
-        bool 安卓平台 = true;
+#if desktop
+		const bool 安卓平台 = false;
+		private static bool m_dataDirectoryCreated;
+        private static object m_dataDirectoryCreationLock = new();
+#else
+        const bool 安卓平台 = true;
+#endif
         public static long FreeSpace
         {
             get
             {
+#if android
                 try
                 {
                     StatFs statFs = new(Android.OS.Environment.DataDirectory.Path);
@@ -24,6 +35,20 @@ namespace Engine
                 {
                     return long.MaxValue;
                 }
+#else
+                string fullPath = Path.GetFullPath(ProcessPath("data:", writeAccess: false, failIfApp: false));
+                if (fullPath.Length > 0)
+                {
+                    try
+                    {
+                        return new DriveInfo(fullPath.Substring(0, 1)).AvailableFreeSpace;
+                    }
+                    catch
+                    {
+                    }
+                }
+                return long.MaxValue;
+#endif
             }
         }
 
@@ -53,12 +78,16 @@ namespace Engine
             {
                 throw new ArgumentException("openFileMode");
             }
+#if android
             bool isApp;
-            string text = ProcessPath(path, openFileMode != OpenFileMode.Read, failIfApp: false, out isApp);
+            string path2 = ProcessPath(path, openFileMode != OpenFileMode.Read, failIfApp: false, out isApp);
             if (isApp)
             {
-                return EngineActivity.m_activity.ApplicationContext.Assets.Open(text);
+                return EngineActivity.m_activity.ApplicationContext.Assets.Open(path2);
             }
+#else
+            string path2 = ProcessPath(path, openFileMode != OpenFileMode.Read, failIfApp: false);
+#endif
             FileMode mode;
             switch (openFileMode)
             {
@@ -73,7 +102,7 @@ namespace Engine
                     break;
             }
             FileAccess access = (openFileMode == OpenFileMode.Read) ? FileAccess.Read : FileAccess.ReadWrite;
-            return File.Open(text, mode, access, FileShare.Read);
+            return File.Open(path2, mode, access, FileShare.Read);
         }
 
         public static void DeleteFile(string path)
@@ -119,9 +148,13 @@ namespace Engine
         public static IEnumerable<string> ListDirectoryNames(string path)
         {
             return from s in Directory.EnumerateDirectories(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台))
+#if android
                    select Path.GetFileName(s) into s
                    where s != ".__override__"
                    select s;
+#else
+                   select Path.GetFileName(s);
+#endif
         }
 
         public static string ReadAllText(string path)
@@ -183,7 +216,7 @@ namespace Engine
 
         public static string GetFileName(string path)
         {
-            int num = path.LastIndexOf('/');
+            int num = MathUtils.Max(path.LastIndexOf('/'), path.LastIndexOf("\\"));
             if (num >= 0)
             {
                 return path.Substring(num + 1);
@@ -239,7 +272,7 @@ namespace Engine
             bool isApp;
             return ProcessPath(path, writeAccess, failIfApp, out isApp);
         }
-
+#if android
         private static string ProcessPath(string path, bool writeAccess, bool failIfApp, out bool isApp)
         {
             ArgumentNullException.ThrowIfNull(path);
@@ -277,7 +310,73 @@ namespace Engine
             }
             throw new InvalidOperationException($"Invalid path \"{path}\".");
         }
+#else
+        private static string GetAppDirectory(bool failIfApp)
+        {
+            if (failIfApp)
+            {
+                throw new InvalidOperationException("Access denied.");
+            }
+            return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        }
 
+        private static string GetDataDirectory(bool writeAccess)
+        {
+            string text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Assembly.GetEntryAssembly().GetName().Name);
+            if (writeAccess)
+            {
+                lock (m_dataDirectoryCreationLock)
+                {
+                    if (m_dataDirectoryCreated)
+                    {
+                        return text;
+                    }
+                    Directory.CreateDirectory(text);
+                    m_dataDirectoryCreated = true;
+                    return text;
+                }
+            }
+            return text;
+        }
+
+        private static string ProcessPath(string path, bool writeAccess, bool failIfApp)
+        {
+            ArgumentNullException.ThrowIfNull(path);
+            if (Path.DirectorySeparatorChar != '/')
+            {
+                path = path.Replace('/', Path.DirectorySeparatorChar);
+            }
+            if (Path.DirectorySeparatorChar != '\\')
+            {
+                path = path.Replace('\\', Path.DirectorySeparatorChar);
+            }
+            string text;
+            if (path.StartsWith("app:"))
+            {
+                text = GetAppDirectory(failIfApp);
+                path = path.Substring(4).TrimStart(Path.DirectorySeparatorChar);
+            }
+            else if (path.StartsWith("data:"))
+            {
+                text = GetDataDirectory(writeAccess);
+                path = path.Substring(5).TrimStart(Path.DirectorySeparatorChar);
+            }
+            else
+            {
+                if (!path.StartsWith("system:"))
+                {
+                    throw new InvalidOperationException("Invalid path.");
+                }
+                text = string.Empty;
+                path = path.Substring(7);
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                return Path.Combine(text, path);
+            }
+            return path;
+        }
+#endif
         public static void MoveDirectory(string path, string newPath)
         {
             Directory.Move(ProcessPath(path, true, false), ProcessPath(newPath, true, false));

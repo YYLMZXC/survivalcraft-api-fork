@@ -70,7 +70,6 @@
     <None Remove="path\**" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.csproj" />
     <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -1,22 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
+<PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName></AssemblyName>
     <RootNamespace>Engine</RootNamespace>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <IsTrimmable>True</IsTrimmable>
 	  <GenerateDocumentationFile>False</GenerateDocumentationFile>
 	  <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
 	  <RootNamespace>Engine</RootNamespace>
 	  <Version>2.3.10.4</Version>
+	  <WarningLevel>2</WarningLevel>
 	  <AssemblyName>Engine</AssemblyName>
-   </PropertyGroup>
+ </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Lit.psh" />
+    <EmbeddedResource Include="Resources\Lit.vsh" />
+    <EmbeddedResource Include="Resources\Unlit.psh" />
+    <EmbeddedResource Include="Resources\Unlit.vsh" />
+    <EmbeddedResource Include="Resources\Debugfont.lst" />
+    <EmbeddedResource Include="Resources\Debugfont.png" />
+    <EmbeddedResource Include="Resources\icon.ico" />
+  </ItemGroup>
 	<ItemGroup>
-		<Reference Include="OpenTK-1.0.2moded">
-			<HintPath>reference\OpenTK-1.0.2moded.dll</HintPath>
+		<Reference Include="OpenTK">
+			<HintPath>OpenTK.dll</HintPath>
 		</Reference>
-		<Compile Remove="Resources\Resource.designer.cs" />
 	</ItemGroup>
 </Project>

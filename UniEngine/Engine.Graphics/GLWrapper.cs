@@ -119,29 +119,29 @@ namespace Engine.Graphics
 				-1,
 				-1
 			};
-			m_activeTextureUnit = (TextureUnit)-1;
+			m_activeTextureUnit = (TextureUnit)(-1);
 			m_program = -1;
 			m_framebuffer = -1;
 			m_clearColor = null;
 			m_clearDepth = null;
 			m_clearStencil = null;
-			m_cullFace = (CullFaceMode)0;
-			m_frontFace = (FrontFaceDirection)0;
-			m_depthFunction = (DepthFunction)-1;
+			m_cullFace = (CullFaceMode)(0);
+			m_frontFace = (FrontFaceDirection)(0);
+			m_depthFunction = (DepthFunction)(-1);
 			m_colorMask = null;
 			m_depthMask = null;
 			m_polygonOffsetFactor = 0f;
 			m_polygonOffsetUnits = 0f;
 			m_blendColor = new Vector4(float.MinValue);
-			m_blendEquation = (All)-1;
-			m_blendEquationColor = (All)-1;
-			m_blendEquationAlpha = (All)-1;
-			m_blendFuncSource = (BlendingFactorSrc)-1;
-			m_blendFuncSourceColor = (All)-1;
-			m_blendFuncSourceAlpha = (All)-1;
-			m_blendFuncDestination = (BlendingFactorDest)-1;
-			m_blendFuncDestinationColor = (All)-1;
-			m_blendFuncDestinationAlpha = (All)-1;
+			m_blendEquation = (All)(-1);
+			m_blendEquationColor = (All)(-1);
+			m_blendEquationAlpha = (All)(-1);
+			m_blendFuncSource = (BlendingFactorSrc)(-1);
+			m_blendFuncSourceColor = (All)(-1);
+			m_blendFuncSourceAlpha = (All)(-1);
+			m_blendFuncDestination = (BlendingFactorDest)(-1);
+			m_blendFuncDestinationColor = (All)(-1);
+			m_blendFuncDestinationAlpha = (All)(-1);
 			m_enableDisableStates = [];
 			m_vertexAttribArray = new bool?[16];
 			m_rasterizerState = null;
@@ -329,8 +329,8 @@ namespace Engine.Graphics
 				m_blendFuncSourceAlpha = blendFuncSourceAlpha;
 				m_blendFuncDestinationColor = blendFuncDestinationColor;
 				m_blendFuncDestinationAlpha = blendFuncDestinationAlpha;
-				m_blendFuncSource = (BlendingFactorDest)-1;
-				m_blendFuncDestination = (BlendingFactorDest)-1;
+				m_blendFuncSource = (BlendingFactorDest)(-1);
+				m_blendFuncDestination = (BlendingFactorDest)(-1);
 			}
 		}
 
@@ -560,7 +560,7 @@ namespace Engine.Graphics
 				Enable(All.DepthTest);
 				if (state.DepthBufferTestEnable)
 				{
-					DepthFunc(TranslateCompareFunction(state.DepthBufferFunction));
+					DepthFunc((DepthFunction)TranslateCompareFunction(state.DepthBufferFunction));
 				}
 				else
 				{
@@ -694,7 +694,7 @@ namespace Engine.Graphics
 					{
 						throw new InvalidOperationException("Too many simultaneous textures.");
 					}
-					ActiveTexture((All)(33984 + num));
+					ActiveTexture((TextureUnit)(33984 + num));
 					if (shaderParameter.IsChanged)
 					{
 						GL.Uniform1(shaderParameter.Location, num);
