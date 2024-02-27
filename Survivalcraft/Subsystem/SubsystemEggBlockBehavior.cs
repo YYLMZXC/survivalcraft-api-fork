@@ -17,24 +17,42 @@ namespace Game
 
 		public override int[] HandledBlocks => new int[0];
 
-		public override bool OnHitAsProjectile(CellFace? cellFace, ComponentBody componentBody, WorldItem worldItem)
-		{
-			int data = Terrain.ExtractData(worldItem.Value);
-			bool isCooked = EggBlock.GetIsCooked(data);
-			bool isLaid = EggBlock.GetIsLaid(data);
-			if (!isCooked && (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative || m_random.Float(0f, 1f) <= (isLaid ? 0.15f : 1f)))
-			{
-				EggBlock.EggType eggType = m_eggBlock.GetEggType(data);
-				Entity entity = DatabaseManager.CreateEntity(Project, eggType.TemplateName, throwIfNotFound: true);
-				entity.FindComponent<ComponentBody>(throwOnError: true).Position = worldItem.Position;
-				entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
-				entity.FindComponent<ComponentSpawn>(throwOnError: true).SpawnDuration = 0.25f;
-				Project.AddEntity(entity);
-			}
-			return true;
-		}
+        public override bool OnHitAsProjectile(CellFace? cellFace, ComponentBody componentBody, WorldItem worldItem)
+        {
+            int data = Terrain.ExtractData(worldItem.Value);
+            bool isCooked = EggBlock.GetIsCooked(data);
+            bool isLaid = EggBlock.GetIsLaid(data);
 
-		public override void Load(ValuesDictionary valuesDictionary)
+            if (!isCooked && (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative || m_random.Float(0f, 1f) <= (isLaid ? 0.15f : 1f)))
+            {
+                try
+                {
+                    EggBlock.EggType eggType = m_eggBlock.GetEggType(data);
+                    Entity entity = DatabaseManager.CreateEntity(base.Project, eggType.TemplateName, throwIfNotFound: true);
+                    entity.FindComponent<ComponentBody>(throwOnError: true).Position = worldItem.Position;
+                    entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
+                    entity.FindComponent<ComponentSpawn>(throwOnError: true).SpawnDuration = 0.25f;
+                    base.Project.AddEntity(entity);
+                }
+                catch (Exception e)
+                {
+                    Engine.Log.Error("Spawning creature from egg error: " + e);
+                    Projectile projectile = worldItem as Projectile;
+                    if (projectile != null)
+                    {
+                        ComponentGui componentGui = projectile.Owner?.Entity.FindComponent<ComponentGui>();
+                        if (componentGui != null)
+                        {
+                            componentGui.DisplaySmallMessage("生成动物失败，请查看游戏日志或联系模组管理员处理！", Color.White, true, false);
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public override void Load(ValuesDictionary valuesDictionary)
 		{
 			base.Load(valuesDictionary);
 			m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
