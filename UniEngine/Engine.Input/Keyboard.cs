@@ -3,9 +3,6 @@ using Android.App;
 using Android.Views;
 using Android.Widget;
 #endif
-using System;
-using OpenTK;
-using OpenTK.Input;
 
 namespace Engine.Input
 {
