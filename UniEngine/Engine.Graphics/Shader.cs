@@ -1,4 +1,4 @@
-using OpenTK.Graphics.ES30;
+﻿using OpenTK.Graphics.ES30;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,15 +8,14 @@ namespace Engine.Graphics
 {
 	public class Shader : GraphicsResource
 	{
-
-		public struct ShaderAttributeData
+		internal struct ShaderAttributeData
 		{
 			public string Semantic;
 
 			public int Location;
 		}
 
-		public struct VertexAttributeData
+		internal struct VertexAttributeData
 		{
 			public int Size;
 
@@ -27,35 +26,17 @@ namespace Engine.Graphics
 			public int Offset;
 		}
 
-		public Dictionary<string, ShaderParameter> m_parametersByName;
-
-		public ShaderParameter[] m_parameters;
-
-		public string m_vertexShaderCode;
-
-		public string m_pixelShaderCode;
-
-		public ShaderMacro[] m_shaderMacros;
-
-		public int m_program;
-
-		public int m_vertexShader;
-
-		public int m_pixelShader;
-
-		public Dictionary<VertexDeclaration, VertexAttributeData[]> m_vertexAttributeDataByDeclaration = [];
-
-		public List<ShaderAttributeData> m_shaderAttributeData = [];
-
-		public ShaderParameter m_glymulParameter;
-
-		public object Tag
-		{
-			get;
-			set;
-		}
-
-		public ReadOnlyList<ShaderParameter> Parameters => new(m_parameters);
+		internal int m_program;
+		internal int m_vertexShader;
+		internal int m_pixelShader;
+		internal Dictionary<VertexDeclaration, VertexAttributeData[]> m_vertexAttributeDataByDeclaration = [];
+		internal List<ShaderAttributeData> m_shaderAttributeData = [];
+		private ShaderParameter m_glymulParameter;
+		private Dictionary<string, ShaderParameter> m_parametersByName;
+		internal ShaderParameter[] m_parameters;
+		private string m_vertexShaderCode;
+		private string m_pixelShaderCode;
+		private ShaderMacro[] m_shaderMacros;
 
 		public string DebugName
 		{
@@ -93,26 +74,23 @@ namespace Engine.Graphics
 		{
 		}
 
-		public void InitializeShader(string vertexShaderCode, string pixelShaderCode, ShaderMacro[] shaderMacros)
+		private void InitializeShader(string vertexShaderCode, string pixelShaderCode, ShaderMacro[] shaderMacros)
 		{
-			if (vertexShaderCode == null)
-			{
-				throw new ArgumentNullException("vertexShaderCode");
-			}
-			if (pixelShaderCode == null)
-			{
-				throw new ArgumentNullException("pixelShaderCode");
-			}
-			if (shaderMacros == null)
-			{
-				throw new ArgumentNullException("shaderMacros");
-			}
+			ArgumentNullException.ThrowIfNull(vertexShaderCode);
+			ArgumentNullException.ThrowIfNull(pixelShaderCode);
+			ArgumentNullException.ThrowIfNull(shaderMacros);
 			m_vertexShaderCode = vertexShaderCode;
 			m_pixelShaderCode = pixelShaderCode;
 			m_shaderMacros = (ShaderMacro[])shaderMacros.Clone();
 		}
+		public object Tag
+		{
+			get;
+			set;
+		}
 
-		public Shader(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros)
+		public ReadOnlyList<ShaderParameter> Parameters => new(m_parameters);
+		public void Construct(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros)
 		{
 			try
 			{
@@ -125,20 +103,23 @@ namespace Engine.Graphics
 				throw;
 			}
 		}
-
+		public Shader(string vertexShaderCode, string pixelShaderCode, params ShaderMacro[] shaderMacros)
+		{
+			Construct(vertexShaderCode, pixelShaderCode, shaderMacros);
+		}
 		public override void Dispose()
 		{
 			base.Dispose();
 			DeleteShaders();
 		}
 
-		public void PrepareForDrawing()
+		internal void PrepareForDrawing()
 		{
 			m_glymulParameter.SetValue((Display.RenderTarget != null) ? (-1f) : 1f);
 			PrepareForDrawingOverride();
 		}
 
-		public VertexAttributeData[] GetVertexAttribData(VertexDeclaration vertexDeclaration)
+		internal VertexAttributeData[] GetVertexAttribData(VertexDeclaration vertexDeclaration)
 		{
 			if (!m_vertexAttributeDataByDeclaration.TryGetValue(vertexDeclaration, out VertexAttributeData[] value))
 			{
@@ -170,9 +151,9 @@ namespace Engine.Graphics
 			return value;
 		}
 
-		public static void ParseShaderMetadata(string shaderCode, Dictionary<string, string> semanticsByAttribute, Dictionary<string, string> samplersByTexture)
+		private static void ParseShaderMetadata(string shaderCode, Dictionary<string, string> semanticsByAttribute, Dictionary<string, string> samplersByTexture)
 		{
-			string[] array = shaderCode.Split(new char[] { '\n' }, StringSplitOptions.None);
+			string[] array = shaderCode.Split('\n');
 			for (int i = 0; i < array.Length; i++)
 			{
 				try
@@ -184,7 +165,7 @@ namespace Engine.Graphics
 						text = text.Substring(2).TrimStart();
 						if (text.StartsWith("<") && text.EndsWith("/>"))
 						{
-							XElement xElement = XElement.Parse(text);
+							var xElement = XElement.Parse(text);
 							if (xElement.Name == "Semantic")
 							{
 								if (xElement.Attribute("Attribute") == null)
@@ -223,21 +204,22 @@ namespace Engine.Graphics
 			}
 		}
 
-		public string PrependShaderMacros(string shaderCode, ShaderMacro[] shaderMacros, bool isVertexShader)
+		private string PrependShaderMacros(string shaderCode, ShaderMacro[] shaderMacros, bool isVertexShader)
 		{
 			string str = "";
 
 			if (!shaderCode.StartsWith("#version "))
-				str += "#version 100" + Environment.NewLine;
+				str += "#version 110" + Environment.NewLine;
 			else
 			{
 				string versioncode = shaderCode.Split(new char[] { '\n' })[0];
 				string versionnum = versioncode.Split(new char[] { ' ' })[1];
-
-				if (int.Parse(versionnum) >= 300 || versioncode.EndsWith("es"))
-					str += $"#version {versionnum} es" + Environment.NewLine;
-				else
-					str += $"#version {versionnum}" + Environment.NewLine;
+#if android
+                if (int.Parse(versionnum) >= 300 || versioncode.EndsWith("es"))
+                    str += $"#version {versionnum} es" + Environment.NewLine;
+                else
+#endif
+				str += $"#version {versionnum}" + Environment.NewLine;
 				shaderCode = "//" + shaderCode;
 			}
 
@@ -265,7 +247,7 @@ namespace Engine.Graphics
 			CompileShaders();
 		}
 
-		public void CompileShaders()
+		internal void CompileShaders()
 		{
 			DeleteShaders();
 			Dictionary<string, string> dictionary = [];
@@ -296,13 +278,13 @@ namespace Engine.Graphics
 			GL.AttachShader(m_program, m_vertexShader);
 			GL.AttachShader(m_program, m_pixelShader);
 			GL.LinkProgram(m_program);
-			GL.GetProgram(m_program, ProgramParameter.LinkStatus, out int params3);
+			GL.GetProgram(m_program, (All)ProgramParameter.LinkStatus, out int params3);
 			if (params3 != 1)
 			{
 				string programInfoLog = GL.GetProgramInfoLog(m_program);
 				throw new InvalidOperationException($"Error linking program.\n{programInfoLog}");
 			}
-			GL.GetProgram(m_program, ProgramParameter.ActiveAttributes, out int params4);
+			GL.GetProgram(m_program, (All)ProgramParameter.ActiveAttributes, out int params4);
 			for (int i = 0; i < params4; i++)
 			{
 				StringBuilder stringBuilder = new(256);
@@ -318,7 +300,7 @@ namespace Engine.Graphics
 					Semantic = value
 				});
 			}
-			GL.GetProgram(m_program, ProgramParameter.ActiveUniforms, out int params5);
+			GL.GetProgram(m_program, (All)ProgramParameter.ActiveUniforms, out int params5);
 			List<ShaderParameter> list = [];
 			Dictionary<string, ShaderParameter> dictionary3 = [];
 			for (int j = 0; j < params5; j++)
@@ -375,7 +357,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public void DeleteShaders()
+		internal void DeleteShaders()
 		{
 			if (m_program != 0)
 			{

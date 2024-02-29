@@ -17,11 +17,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine_android\Engine_android.csproj" />
-    <ProjectReference Include="..\EntitySystem_android\EntitySystem_android.csproj" />
+    <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Esprima" Version="3.0.4" />
     <PackageReference Include="Jint" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>

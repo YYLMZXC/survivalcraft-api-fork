@@ -11,87 +11,87 @@ namespace Engine.Graphics
 
 		internal static int m_mainColorbuffer;
 
-		public static int m_arrayBuffer;
+		private static int m_arrayBuffer;
 
-		public static int m_elementArrayBuffer;
+		private static int m_elementArrayBuffer;
 
-		public static int m_texture2D;
+		private static int m_texture2D;
 
-		public static int[] m_activeTexturesByUnit;
+		private static int[] m_activeTexturesByUnit;
 
-		public static All m_activeTextureUnit;
+		private static TextureUnit m_activeTextureUnit;
 
-		public static int m_program;
+		private static int m_program;
 
-		public static int m_framebuffer;
+		private static int m_framebuffer;
 
-		public static Vector4? m_clearColor;
+		private static Vector4? m_clearColor;
 
-		public static float? m_clearDepth;
+		private static float? m_clearDepth;
 
-		public static int? m_clearStencil;
+		private static int? m_clearStencil;
 
-		public static All m_cullFace;
+		private static CullFaceMode m_cullFace;
 
-		public static All m_frontFace;
+		private static FrontFaceDirection m_frontFace;
 
-		public static All m_depthFunction;
+		private static DepthFunction m_depthFunction;
 
-		public static int? m_colorMask;
+		private static int? m_colorMask;
 
-		public static bool? m_depthMask;
+		private static bool? m_depthMask;
 
-		public static float m_polygonOffsetFactor;
+		private static float m_polygonOffsetFactor;
 
-		public static float m_polygonOffsetUnits;
+		private static float m_polygonOffsetUnits;
 
-		public static Vector4 m_blendColor;
+		private static Vector4 m_blendColor;
 
-		public static All m_blendEquation;
+		private static All m_blendEquation;
 
-		public static All m_blendEquationColor;
+		private static All m_blendEquationColor;
 
-		public static All m_blendEquationAlpha;
+		private static All m_blendEquationAlpha;
 
-		public static All m_blendFuncSource;
+		private static BlendingFactorSrc m_blendFuncSource;
 
-		public static All m_blendFuncSourceColor;
+		private static All m_blendFuncSourceColor;
 
-		public static All m_blendFuncSourceAlpha;
+		private static All m_blendFuncSourceAlpha;
 
-		public static All m_blendFuncDestination;
+		private static BlendingFactorDest m_blendFuncDestination;
 
-		public static All m_blendFuncDestinationColor;
+		private static All m_blendFuncDestinationColor;
 
-		public static All m_blendFuncDestinationAlpha;
+		private static All m_blendFuncDestinationAlpha;
 
-		public static Dictionary<All, bool> m_enableDisableStates;
+		private static Dictionary<All, bool> m_enableDisableStates;
 
-		public static bool?[] m_vertexAttribArray;
+		private static bool?[] m_vertexAttribArray;
 
-		public static RasterizerState m_rasterizerState;
+		private static RasterizerState m_rasterizerState;
 
-		public static DepthStencilState m_depthStencilState;
+		private static DepthStencilState m_depthStencilState;
 
-		public static BlendState m_blendState;
+		private static BlendState m_blendState;
 
-		public static Dictionary<int, SamplerState> m_textureSamplerStates;
+		private static Dictionary<int, SamplerState> m_textureSamplerStates;
 
-		public static Shader m_lastShader;
+		private static Shader m_lastShader;
 
-		public static VertexDeclaration m_lastVertexDeclaration;
+		private static VertexDeclaration m_lastVertexDeclaration;
 
-		public static IntPtr m_lastVertexOffset;
+		private static IntPtr m_lastVertexOffset;
 
-		public static int m_lastArrayBuffer;
+		private static int m_lastArrayBuffer;
 
-		public static Viewport? m_viewport;
+		private static Viewport? m_viewport;
 
-		public static Rectangle? m_scissorRectangle;
+		private static Rectangle? m_scissorRectangle;
 
-		public static bool GL_EXT_texture_filter_anisotropic;
+		private static bool GL_EXT_texture_filter_anisotropic;
 
-		public static bool GL_OES_packed_depth_stencil;
+		private static bool GL_OES_packed_depth_stencil;
 
 		public static void Initialize()
 		{
@@ -119,15 +119,15 @@ namespace Engine.Graphics
 				-1,
 				-1
 			};
-			m_activeTextureUnit = (All)(-1);
+			m_activeTextureUnit = (TextureUnit)(-1);
 			m_program = -1;
 			m_framebuffer = -1;
 			m_clearColor = null;
 			m_clearDepth = null;
 			m_clearStencil = null;
-			m_cullFace = All.False;
-			m_frontFace = All.False;
-			m_depthFunction = (All)(-1);
+			m_cullFace = (CullFaceMode)(0);
+			m_frontFace = (FrontFaceDirection)(0);
+			m_depthFunction = (DepthFunction)(-1);
 			m_colorMask = null;
 			m_depthMask = null;
 			m_polygonOffsetFactor = 0f;
@@ -136,10 +136,10 @@ namespace Engine.Graphics
 			m_blendEquation = (All)(-1);
 			m_blendEquationColor = (All)(-1);
 			m_blendEquationAlpha = (All)(-1);
-			m_blendFuncSource = (All)(-1);
+			m_blendFuncSource = (BlendingFactorSrc)(-1);
 			m_blendFuncSourceColor = (All)(-1);
 			m_blendFuncSourceAlpha = (All)(-1);
-			m_blendFuncDestination = (All)(-1);
+			m_blendFuncDestination = (BlendingFactorDest)(-1);
 			m_blendFuncDestinationColor = (All)(-1);
 			m_blendFuncDestinationAlpha = (All)(-1);
 			m_enableDisableStates = [];
@@ -217,7 +217,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void CullFace(All cullFace)
+		public static void CullFace(CullFaceMode cullFace)
 		{
 			if (cullFace != m_cullFace)
 			{
@@ -226,7 +226,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void FrontFace(All frontFace)
+		public static void FrontFace(FrontFaceDirection frontFace)
 		{
 			if (frontFace != m_frontFace)
 			{
@@ -235,7 +235,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void DepthFunc(All depthFunction)
+		public static void DepthFunc(DepthFunction depthFunction)
 		{
 			if (depthFunction != m_depthFunction)
 			{
@@ -290,8 +290,8 @@ namespace Engine.Graphics
 			{
 				GL.BlendEquation(blendEquation);
 				m_blendEquation = blendEquation;
-				m_blendEquationColor = (All)(-1);
-				m_blendEquationAlpha = (All)(-1);
+				m_blendEquationColor = All.InvalidIndex;
+				m_blendEquationAlpha = All.InvalidIndex;
 			}
 		}
 
@@ -306,7 +306,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void BlendFunc(All blendFuncSource, All blendFuncDestination)
+		public static void BlendFunc(BlendingFactorSrc blendFuncSource, BlendingFactorDest blendFuncDestination)
 		{
 			if (blendFuncSource != m_blendFuncSource || blendFuncDestination != m_blendFuncDestination)
 			{
@@ -329,8 +329,8 @@ namespace Engine.Graphics
 				m_blendFuncSourceAlpha = blendFuncSourceAlpha;
 				m_blendFuncDestinationColor = blendFuncDestinationColor;
 				m_blendFuncDestinationAlpha = blendFuncDestinationAlpha;
-				m_blendFuncSource = (All)(-1);
-				m_blendFuncDestination = (All)(-1);
+				m_blendFuncSource = (BlendingFactorDest)(-1);
+				m_blendFuncDestination = (BlendingFactorDest)(-1);
 			}
 		}
 
@@ -356,7 +356,7 @@ namespace Engine.Graphics
 				{
 					GL.BindTexture(target, texture);
 					m_texture2D = texture;
-					if (m_activeTextureUnit >= All.False)
+					if (m_activeTextureUnit >= 0)
 					{
 						m_activeTexturesByUnit[(int)(m_activeTextureUnit - 33984)] = texture;
 					}
@@ -368,7 +368,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void ActiveTexture(All textureUnit)
+		public static void ActiveTexture(TextureUnit textureUnit)
 		{
 			if (textureUnit != m_activeTextureUnit)
 			{
@@ -405,7 +405,7 @@ namespace Engine.Graphics
 		{
 			if (framebuffer != m_framebuffer)
 			{
-				GL.BindFramebuffer(All.Framebuffer, framebuffer);
+				GL.BindFramebuffer(FramebufferTarget.Framebuffer, framebuffer);
 				m_framebuffer = framebuffer;
 			}
 		}
@@ -519,13 +519,13 @@ namespace Engine.Graphics
 						break;
 					case CullMode.CullClockwise:
 						Enable(All.CullFace);
-						CullFace(All.Back);
-						FrontFace((Display.RenderTarget != null) ? All.Cw : All.Ccw);
+						CullFace(CullFaceMode.Back);
+						FrontFace((Display.RenderTarget != null) ? FrontFaceDirection.Cw : FrontFaceDirection.Ccw);
 						break;
 					case CullMode.CullCounterClockwise:
 						Enable(All.CullFace);
-						CullFace(All.Back);
-						FrontFace((Display.RenderTarget != null) ? All.Ccw : All.Cw);
+						CullFace(CullFaceMode.Back);
+						FrontFace((Display.RenderTarget != null) ? FrontFaceDirection.Ccw : FrontFaceDirection.Cw);
 						break;
 				}
 				if (state.ScissorTestEnable)
@@ -560,11 +560,11 @@ namespace Engine.Graphics
 				Enable(All.DepthTest);
 				if (state.DepthBufferTestEnable)
 				{
-					DepthFunc(TranslateCompareFunction(state.DepthBufferFunction));
+					DepthFunc((DepthFunction)TranslateCompareFunction(state.DepthBufferFunction));
 				}
 				else
 				{
-					DepthFunc(All.Always);
+					DepthFunc(DepthFunction.Always);
 				}
 				DepthMask(state.DepthBufferWriteEnable);
 			}
@@ -595,7 +595,7 @@ namespace Engine.Graphics
 			if (all == all2 && all3 == all5 && all4 == all6)
 			{
 				BlendEquation(all);
-				BlendFunc(all3, all4);
+				BlendFunc((BlendingFactorSrc)all3, (BlendingFactorDest)all4);
 			}
 			else
 			{
@@ -694,14 +694,14 @@ namespace Engine.Graphics
 					{
 						throw new InvalidOperationException("Too many simultaneous textures.");
 					}
-					ActiveTexture((All)(33984 + num));
+					ActiveTexture((TextureUnit)(33984 + num));
 					if (shaderParameter.IsChanged)
 					{
 						GL.Uniform1(shaderParameter.Location, num);
 					}
 					ShaderParameter obj = shader.m_parameters[num2 + 1];
-					Texture2D texture2D = (Texture2D)shaderParameter.Resource;
-					SamplerState samplerState = (SamplerState)obj.Resource;
+					var texture2D = (Texture2D)shaderParameter.Resource;
+					var samplerState = (SamplerState)obj.Resource;
 					if (texture2D != null)
 					{
 						if (samplerState == null)
@@ -723,6 +723,10 @@ namespace Engine.Graphics
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TranslateTextureFilterModeMag(samplerState.FilterMode));
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TranslateTextureAddressMode(samplerState.AddressModeU));
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TranslateTextureAddressMode(samplerState.AddressModeV));
+#if desktop
+							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinLod, samplerState.MinLod);
+							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLod, samplerState.MaxLod);
+#endif
 							m_textureSamplerStates[texture2D.m_texture] = samplerState;
 						}
 					}
@@ -743,7 +747,7 @@ namespace Engine.Graphics
 			All all = All.False;
 			if (color.HasValue)
 			{
-				all |= All.ColorBufferBit;
+				all |= (All)16384;
 				ClearColor(color.Value);
 				ColorMask(15);
 			}
@@ -841,53 +845,38 @@ namespace Engine.Graphics
 
 		public static All TranslateIndexFormat(IndexFormat indexFormat)
 		{
-			switch (indexFormat)
+			return indexFormat switch
 			{
-				case IndexFormat.SixteenBits:
-					return All.UnsignedShort;
-				case IndexFormat.ThirtyTwoBits:
-					return All.UnsignedInt;
-				default:
-					throw new InvalidOperationException("Unsupported index format.");
-			}
+				IndexFormat.SixteenBits => All.UnsignedShort,
+				IndexFormat.ThirtyTwoBits => All.UnsignedInt,
+				_ => throw new InvalidOperationException("Unsupported index format."),
+			};
 		}
 
 		public static ShaderParameterType TranslateActiveUniformType(ActiveUniformType type)
 		{
-			switch (type)
+			return type switch
 			{
-				case ActiveUniformType.Float:
-					return ShaderParameterType.Float;
-				case ActiveUniformType.FloatVec2:
-					return ShaderParameterType.Vector2;
-				case ActiveUniformType.FloatVec3:
-					return ShaderParameterType.Vector3;
-				case ActiveUniformType.FloatVec4:
-					return ShaderParameterType.Vector4;
-				case ActiveUniformType.FloatMat4:
-					return ShaderParameterType.Matrix;
-				case ActiveUniformType.Sampler2D:
-					return ShaderParameterType.Texture2D;
-				default:
-					throw new InvalidOperationException("Unsupported shader parameter type.");
-			}
+				ActiveUniformType.Float => ShaderParameterType.Float,
+				ActiveUniformType.FloatVec2 => ShaderParameterType.Vector2,
+				ActiveUniformType.FloatVec3 => ShaderParameterType.Vector3,
+				ActiveUniformType.FloatVec4 => ShaderParameterType.Vector4,
+				ActiveUniformType.FloatMat4 => ShaderParameterType.Matrix,
+				ActiveUniformType.Sampler2D => ShaderParameterType.Texture2D,
+				_ => throw new InvalidOperationException("Unsupported shader parameter type."),
+			};
 		}
 
 		public static All TranslatePrimitiveType(PrimitiveType primitiveType)
 		{
-			switch (primitiveType)
+			return primitiveType switch
 			{
-				case PrimitiveType.LineList:
-					return (All)0x0001;
-				case PrimitiveType.LineStrip:
-					return All.LineStrip;
-				case PrimitiveType.TriangleList:
-					return (All)0x0004;
-				case PrimitiveType.TriangleStrip:
-					return All.TriangleStrip;
-				default:
-					throw new InvalidOperationException("Unsupported primitive type.");
-			}
+				PrimitiveType.LineList => (All)1,
+				PrimitiveType.LineStrip => All.LineStrip,
+				PrimitiveType.TriangleList => (All)0x0004,
+				PrimitiveType.TriangleStrip => All.TriangleStrip,
+				_ => throw new InvalidOperationException("Unsupported primitive type."),
+			};
 		}
 
 		public static All TranslateTextureFilterModeMin(TextureFilterMode filterMode, bool isMipmapped)
@@ -955,123 +944,89 @@ namespace Engine.Graphics
 
 		public static All TranslateTextureFilterModeMag(TextureFilterMode filterMode)
 		{
-			switch (filterMode)
+			return filterMode switch
 			{
-				case TextureFilterMode.Point:
-					return All.Nearest;
-				case TextureFilterMode.Linear:
-					return All.Linear;
-				case TextureFilterMode.Anisotropic:
-					return All.Linear;
-				case TextureFilterMode.PointMipLinear:
-					return All.Nearest;
-				case TextureFilterMode.LinearMipPoint:
-					return All.Nearest;
-				case TextureFilterMode.MinPointMagLinearMipPoint:
-					return All.Linear;
-				case TextureFilterMode.MinPointMagLinearMipLinear:
-					return All.Linear;
-				case TextureFilterMode.MinLinearMagPointMipPoint:
-					return All.Nearest;
-				case TextureFilterMode.MinLinearMagPointMipLinear:
-					return All.Nearest;
-				default:
-					throw new InvalidOperationException("Unsupported texture filter mode.");
-			}
+				TextureFilterMode.Point => All.Nearest,
+				TextureFilterMode.Linear => All.Linear,
+				TextureFilterMode.Anisotropic => All.Linear,
+				TextureFilterMode.PointMipLinear => All.Nearest,
+				TextureFilterMode.LinearMipPoint => All.Nearest,
+				TextureFilterMode.MinPointMagLinearMipPoint => All.Linear,
+				TextureFilterMode.MinPointMagLinearMipLinear => All.Linear,
+				TextureFilterMode.MinLinearMagPointMipPoint => All.Nearest,
+				TextureFilterMode.MinLinearMagPointMipLinear => All.Nearest,
+				_ => throw new InvalidOperationException("Unsupported texture filter mode."),
+			};
 		}
 
 		public static All TranslateTextureAddressMode(TextureAddressMode addressMode)
 		{
-			switch (addressMode)
+			return addressMode switch
 			{
-				case TextureAddressMode.Clamp:
-					return All.ClampToEdge;
-				case TextureAddressMode.Wrap:
-					return All.Repeat;
-				default:
-					throw new InvalidOperationException("Unsupported texture address mode.");
-			}
+				TextureAddressMode.Clamp => All.ClampToEdge,
+				TextureAddressMode.Wrap => All.Repeat,
+				_ => throw new InvalidOperationException("Unsupported texture address mode."),
+			};
 		}
 
 		public static All TranslateCompareFunction(CompareFunction compareFunction)
 		{
-			switch (compareFunction)
+			return compareFunction switch
 			{
-				case CompareFunction.Always:
-					return All.Always;
-				case CompareFunction.Equal:
-					return All.Equal;
-				case CompareFunction.Greater:
-					return All.Greater;
-				case CompareFunction.GreaterEqual:
-					return All.Gequal;
-				case CompareFunction.Less:
-					return All.Less;
-				case CompareFunction.LessEqual:
-					return All.Lequal;
-				case CompareFunction.Never:
-					return (All)0x0200;
-				case CompareFunction.NotEqual:
-					return All.Notequal;
-				default:
-					throw new InvalidOperationException("Unsupported texture address mode.");
-			}
+				CompareFunction.Always => All.Always,
+				CompareFunction.Equal => All.Equal,
+				CompareFunction.Greater => All.Greater,
+				CompareFunction.GreaterEqual => All.Gequal,
+				CompareFunction.Less => All.Less,
+				CompareFunction.LessEqual => All.Lequal,
+				CompareFunction.Never => (All)0x0200,
+				CompareFunction.NotEqual => All.Notequal,
+				_ => throw new InvalidOperationException("Unsupported texture address mode."),
+			};
 		}
 
 		public static All TranslateBlendFunction(BlendFunction blendFunction)
 		{
-			switch (blendFunction)
+			return blendFunction switch
 			{
-				case BlendFunction.Add:
-					return All.FuncAdd;
-				case BlendFunction.Subtract:
-					return All.FuncSubtract;
-				case BlendFunction.ReverseSubtract:
-					return All.FuncReverseSubtract;
-				default:
-					throw new InvalidOperationException("Unsupported blend function.");
-			}
+				BlendFunction.Add => All.FuncAdd,
+				BlendFunction.Subtract => All.FuncSubtract,
+				BlendFunction.ReverseSubtract => All.FuncReverseSubtract,
+				_ => throw new InvalidOperationException("Unsupported blend function."),
+			};
 		}
-
 
 		public static All TranslateBlend(Blend blend)
 		{
-			switch (blend)
+			return blend switch
 			{
-				case Blend.Zero:
-					return All.False;
-				case Blend.One:
-					return (All)0x0001;
-				case Blend.SourceColor:
-					return All.SrcColor;
-				case Blend.InverseSourceColor:
-					return All.OneMinusSrcColor;
-				case Blend.DestinationColor:
-					return All.DstColor;
-				case Blend.InverseDestinationColor:
-					return All.OneMinusDstColor;
-				case Blend.SourceAlpha:
-					return All.SrcAlpha;
-				case Blend.InverseSourceAlpha:
-					return All.OneMinusSrcAlpha;
-				case Blend.DestinationAlpha:
-					return All.DstAlpha;
-				case Blend.InverseDestinationAlpha:
-					return All.OneMinusDstAlpha;
-				case Blend.BlendFactor:
-					return All.ConstantColor;
-				case Blend.InverseBlendFactor:
-					return All.OneMinusConstantColor;
-				case Blend.SourceAlphaSaturation:
-					return All.SrcAlphaSaturate;
-				default:
-					throw new InvalidOperationException("Unsupported blend.");
-			}
+				Blend.Zero => (All)0,
+				Blend.One => (All)1,
+				Blend.SourceColor => All.SrcColor,
+				Blend.InverseSourceColor => All.OneMinusSrcColor,
+				Blend.DestinationColor => All.DstColor,
+				Blend.InverseDestinationColor => All.OneMinusDstColor,
+				Blend.SourceAlpha => All.SrcAlpha,
+				Blend.InverseSourceAlpha => All.OneMinusSrcAlpha,
+				Blend.DestinationAlpha => All.DstAlpha,
+				Blend.InverseDestinationAlpha => All.OneMinusDstAlpha,
+				Blend.BlendFactor => All.ConstantColor,
+				Blend.InverseBlendFactor => All.OneMinusConstantColor,
+				Blend.SourceAlphaSaturation => All.SrcAlphaSaturate,
+				_ => throw new InvalidOperationException("Unsupported blend."),
+			};
 		}
-
 
 		public static All TranslateDepthFormat(DepthFormat depthFormat)
 		{
+#if desktop
+			return depthFormat switch
+			{
+				DepthFormat.Depth16 => All.DepthComponent16,
+				DepthFormat.Depth24Stencil8 => All.Depth24Stencil8Oes,
+				_ => throw new InvalidOperationException("Unsupported DepthFormat."),
+			};
+#else
 			switch (depthFormat)
 			{
 				case DepthFormat.Depth16:
@@ -1085,6 +1040,7 @@ namespace Engine.Graphics
 				default:
 					throw new InvalidOperationException("Unsupported DepthFormat.");
 			}
+#endif
 		}
 
 		[Conditional("DEBUG")]

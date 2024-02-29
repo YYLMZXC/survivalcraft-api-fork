@@ -23,6 +23,8 @@
 	<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
 	<AndroidLinkMode>None</AndroidLinkMode>
 	<NeutralLanguage>zh-CN</NeutralLanguage>
+	<LinkAll>true</LinkAll>
+	<EnableLLVM>true</EnableLLVM>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <RunAOTCompilation>False</RunAOTCompilation>
@@ -51,7 +53,6 @@
 	</AndroidAsset>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine_android\Engine_android.csproj" />
     <ProjectReference Include="..\Survivalcraft_android\Survivalcraft_android.csproj" />
   </ItemGroup>
   <ItemGroup>
