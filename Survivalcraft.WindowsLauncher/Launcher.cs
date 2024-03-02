@@ -19,18 +19,18 @@ internal static class Launcher
 
     private static void InitializeHandlers()
     {
-        BitmapFont.BitmapFontHandler = new BitmapFontHandler();
-        ClipboardManager.ClipboardManagerHandler = new ClipboardHandler();
-        ExternalContentManager.ExternalContentManagerHandler = new ExternalContentManagerHandler();
-        HardwareManager.HardwareManagerHandler = new HardwareManagerHandler();
-        LitShader.LitShaderHandler = new LitShaderHandler();
-        Mouse.MouseHandler = new MouseHandler();
-        MusicManager.MusicManagerHandler = new MusicManagerHandler();
-        ScreenCaptureManager.ScreenCaptureManagerHandler = new ScreenCaptureManagerHandler();
-        Touch.TouchHandler = new TouchHandler();
-        UnlitShader.UnlitShaderHandler = new UnlitShaderHandler();
-        Utilities.UtilitiesHandler = new UtilitiesHandler();
-        WebBrowserManager.WebBrowserManagerHandler = new WebBrowserManagerHandler();
-        WebManager.WebManagerHandler = new WebManagerHandler();
+        BitmapFont.BitmapFontServicesCollection = new BitmapFontServicesCollection();
+        ClipboardManager.ClipboardManagerServicesCollection = new ClipboardServicesCollection();
+        ExternalContentManager.ExternalContentManagerServicesCollection = new ExternalContentManagerServicesCollection();
+        HardwareManager.HardwareManagerServicesCollection = new HardwareManagerServicesCollection();
+        LitShader.LitShaderServicesCollection = new LitShaderServicesCollection();
+        Mouse.MouseServicesCollection = new MouseServicesCollection();
+        MusicManager.MusicManagerServicesCollection = new MusicManagerServicesCollection();
+        ScreenCaptureManager.ScreenCaptureManagerServicesCollection = new ScreenCaptureManagerServicesCollection();
+        Touch.TouchServicesCollection = new TouchServicesCollection();
+        UnlitShader.UnlitShaderServicesCollection = new UnlitShaderServicesCollection();
+        Utilities.UtilitiesServicesCollection = new UtilitiesServicesCollection();
+        WebBrowserManager.WebBrowserManagerServicesCollection = new WebBrowserManagerServicesCollection();
+        WebManager.WebManagerServicesCollection = new WebManagerServicesCollection();
     }
 }

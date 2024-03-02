@@ -8,7 +8,7 @@ using Rectangle = Engine.Rectangle;
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class ScreenCaptureManagerHandler : IScreenCaptureManagerHandler
+public class ScreenCaptureManagerServicesCollection : IScreenCaptureManagerHandler
 {
     public void SaveImage(RenderTarget2D renderTarget2D, string filename)
     {

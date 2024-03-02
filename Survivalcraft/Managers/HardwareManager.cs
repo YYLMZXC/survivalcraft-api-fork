@@ -5,23 +5,23 @@ namespace Game
 {
 	public class HardwareManager
 	{
-		public static IHardwareManagerHandler? HardwareManagerHandler
+		public static IHardwareManagerHandler? HardwareManagerServicesCollection
 		{
 			get;
 			set;
 		}
 		
 		private static string HandlerNotInitializedErrorString
-			=> $"{typeof(HardwareManager).FullName}.{nameof(HardwareManagerHandler)} 未初始化";
+			=> $"{typeof(HardwareManager).FullName}.{nameof(HardwareManagerServicesCollection)} 未初始化";
 		
 		public void Vibrate(long ms)
 		{
-			if (HardwareManagerHandler is null)
+			if (HardwareManagerServicesCollection is null)
 			{
 				Log.Error(HandlerNotInitializedErrorString);
 				return;
 			}
-			HardwareManagerHandler.Vibrate(ms);
+			HardwareManagerServicesCollection.Vibrate(ms);
 		}
 	}
 }

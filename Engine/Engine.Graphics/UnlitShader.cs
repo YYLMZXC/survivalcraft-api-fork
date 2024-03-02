@@ -8,14 +8,14 @@ namespace Engine.Graphics
 {
 	public class UnlitShader : Shader
 	{
-		public static IUnlitShaderHandler? UnlitShaderHandler
+		public static IUnlitShaderHandler? UnlitShaderServicesCollection
 		{
 			get;
 			set;
 		}
 
 		private static string HandlerNotInitializedExceptionString
-			=> $"{typeof(UnlitShader).FullName}.{nameof(UnlitShaderHandler)} 未初始化";
+			=> $"{typeof(UnlitShader).FullName}.{nameof(UnlitShaderServicesCollection)} 未初始化";
 
 		public ShaderParameter m_worldViewProjectionMatrixParameter;
 
@@ -85,7 +85,7 @@ namespace Engine.Graphics
 		}
 		
 		public UnlitShader(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
-			: base((UnlitShaderHandler ?? throw new Exception(HandlerNotInitializedExceptionString)).VertexShaderCode, UnlitShaderHandler.PixelShaderCode, PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
+			: base((UnlitShaderServicesCollection ?? throw new Exception(HandlerNotInitializedExceptionString)).VertexShaderCode, UnlitShaderServicesCollection.PixelShaderCode, PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
 		{
 			m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix", allowNull: true);
 			m_textureParameter = GetParameter("u_texture", allowNull: true);

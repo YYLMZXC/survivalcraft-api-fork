@@ -45,28 +45,28 @@ namespace Engine.Input
 
 		public static event Action<MouseButtonEvent>? MouseUp;
 
-		public static IMouseHandler? MouseHandler
+		public static IMouseHandler? MouseServicesCollection
 		{
 			get;
 			set;
 		}
 
 		private static string HandlerNullWarningString { get; } =
-			$"{typeof(Mouse).FullName}.{nameof(MouseHandler)} 未初始化";
+			$"{typeof(Mouse).FullName}.{nameof(MouseServicesCollection)} 未初始化";
 		public static void SetMousePosition(int x, int y)
 		{
-			if (MouseHandler is null)
+			if (MouseServicesCollection is null)
 			{
 				Log.Warning(HandlerNullWarningString);
 				return;
 			}
 			
-			MouseHandler.SetMousePosition(x, y);
+			MouseServicesCollection.SetMousePosition(x, y);
 		}
 
 		internal static void Initialize()
 		{
-			if (MouseHandler is null)
+			if (MouseServicesCollection is null)
 			{
 				Log.Warning(HandlerNullWarningString);
 				return;
@@ -81,36 +81,36 @@ namespace Engine.Input
 
 		private static void MouseUpHandler(object? sender, MouseButtonEventArgs e)
 		{
-			if (MouseHandler is null)
+			if (MouseServicesCollection is null)
 			{
 				Log.Warning(HandlerNullWarningString);
 				return;
 			}
 			
-			MouseHandler.MouseUpHandler(sender, e, m_mouseButtonsDownArray, MouseUp);
+			MouseServicesCollection.MouseUpHandler(sender, e, m_mouseButtonsDownArray, MouseUp);
 		}
 
 		private static void MouseMoveHandler(object? sender, MouseMoveEventArgs e)
 		{
-			if (MouseHandler is null)
+			if (MouseServicesCollection is null)
 			{
 				Log.Warning(HandlerNullWarningString);
 				return;
 			}
 			
-			MouseHandler.MouseMoveHandler(sender, e, MouseMove, out var newPosition);
+			MouseServicesCollection.MouseMoveHandler(sender, e, MouseMove, out var newPosition);
 			MousePosition = newPosition;
 		}
 
 		private static void MouseDownHandler(object? sender, MouseButtonEventArgs mouseButtonEventArgs)
 		{
-			if (MouseHandler is null)
+			if (MouseServicesCollection is null)
 			{
 				Log.Warning(HandlerNullWarningString);
 				return;
 			}
 			
-			MouseHandler.MouseDownHandler(sender, mouseButtonEventArgs, m_mouseButtonsDownArray,
+			MouseServicesCollection.MouseDownHandler(sender, mouseButtonEventArgs, m_mouseButtonsDownArray,
 				m_mouseButtonsDownOnceArray, MouseDown);
 		}
 		internal static void Dispose()

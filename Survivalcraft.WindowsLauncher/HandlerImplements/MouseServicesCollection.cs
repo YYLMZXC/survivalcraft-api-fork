@@ -8,7 +8,7 @@ using MouseButton = Engine.Input.MouseButton;
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class MouseHandler : IMouseHandler
+public class MouseServicesCollection : IMouseHandler
 {
     public void SetMousePosition(int x, int y)
     {

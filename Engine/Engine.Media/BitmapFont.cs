@@ -83,18 +83,17 @@ namespace Engine.Media
 			private set;
 		}
 
-		public static IBitmapFontHandler? BitmapFontHandler
+		public static IBitmapFontServicesCollection? BitmapFontServicesCollection
 		{
 			get;
 			set;
 		}
 		
-		private static string HandlerNotInitializedExceptionString
-			=> $"{typeof(BitmapFont).FullName}.{nameof(BitmapFontHandler)} 未初始化";
+		private static string ServicesCollectionExceptionString
+			=> $"{typeof(BitmapFont).FullName}.{nameof(BitmapFontServicesCollection)} 未初始化";
 
 		public static BitmapFont DebugFont =>
-			m_debugFont ??= (BitmapFontHandler ?? throw new Exception(HandlerNotInitializedExceptionString))
-				.DebugFont;
+			m_debugFont ??= (BitmapFontServicesCollection ?? throw new Exception(ServicesCollectionExceptionString)).DebugFont;
 
 		/// <summary>
 		/// 纹理图

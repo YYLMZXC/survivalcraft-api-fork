@@ -11,10 +11,10 @@ namespace Game
 	public static class ScreenCaptureManager
 	{
 		
-		public static IScreenCaptureManagerHandler? ScreenCaptureManagerHandler { get; set; }
+		public static IScreenCaptureManagerHandler? ScreenCaptureManagerServicesCollection { get; set; }
 		
 		private static string HandlerNotInitializedWarningString
-			=> $"{typeof(ScreenCaptureManager).FullName}.{nameof(ScreenCaptureManagerHandler)} 未初始化";
+			=> $"{typeof(ScreenCaptureManager).FullName}.{nameof(ScreenCaptureManagerServicesCollection)} 未初始化";
 		
 		public static string ScreenshotDir => ModsManager.ScreenCapturePath;
 		public static bool m_captureRequested;
@@ -123,13 +123,13 @@ namespace Game
 				SettingsManager.ResolutionMode = resolutionMode;
 			}
 
-			if (ScreenCaptureManagerHandler is null)
+			if (ScreenCaptureManagerServicesCollection is null)
 			{
 				Log.Warning(HandlerNotInitializedWarningString);
 			}
 			else
 			{
-				ScreenCaptureManagerHandler.SaveImage(renderTarget2D, filename);
+				ScreenCaptureManagerServicesCollection.SaveImage(renderTarget2D, filename);
 			}
 
 			ModInterfacesManager.InvokeHooks("OnCapture", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>

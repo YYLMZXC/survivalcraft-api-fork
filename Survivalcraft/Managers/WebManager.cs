@@ -14,13 +14,13 @@ namespace Game
 	public static class WebManager
 	{
 
-		public static IWebManagerHandler? WebManagerHandler
+		public static IWebManagerHandler? WebManagerServicesCollection
 		{
 			get;
 			set;
 		}
 		private static string HandlerNotInitializedWarningString
-			=> $"{typeof(WebManager).FullName}.{nameof(WebManagerHandler)} 未初始化";
+			=> $"{typeof(WebManager).FullName}.{nameof(WebManagerServicesCollection)} 未初始化";
 		public class ProgressHttpContent : HttpContent
 		{
 			public Stream m_sourceStream;
@@ -68,13 +68,13 @@ namespace Game
 
 		public static bool IsInternetConnectionAvailable()
 		{
-			if (WebManagerHandler is null)
+			if (WebManagerServicesCollection is null)
 			{
 				Log.Error(HandlerNotInitializedWarningString);
 				return false;
 			}
 
-			return WebManagerHandler.IsInternetConnectionAvailable();
+			return WebManagerServicesCollection.IsInternetConnectionAvailable();
 		}
 
 		public static void Get(string address, Dictionary<string, string> parameters, Dictionary<string, string> headers, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)

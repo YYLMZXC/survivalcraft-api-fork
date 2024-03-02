@@ -3,7 +3,7 @@ using Game.Handlers;
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class ExternalContentManagerHandler : IExternalContentManagerHandler
+public class ExternalContentManagerServicesCollection : IExternalContentManagerHandler
 {
     public void Initialize()
     {

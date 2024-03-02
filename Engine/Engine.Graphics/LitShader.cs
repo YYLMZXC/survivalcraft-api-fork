@@ -9,14 +9,14 @@ namespace Engine.Graphics
 {
 	public class LitShader : Shader
 	{
-		public static ILitShaderHandler? LitShaderHandler
+		public static ILitShaderHandler? LitShaderServicesCollection
 		{
 			get;
 			set;
 		}
 		
 		private static string HandlerNotInitializedExceptionString
-			=> $"{typeof(LitShader).FullName}.{nameof(LitShaderHandler)} 未初始化";
+			=> $"{typeof(LitShader).FullName}.{nameof(LitShaderServicesCollection)} 未初始化";
 		
 		public ShaderParameter m_worldMatrixParameter;
 
@@ -270,7 +270,7 @@ namespace Engine.Graphics
 		}
 
 		public LitShader(int lightsCount, bool useEmissionColor, bool useVertexColor, bool useTexture, bool useFog, bool useAlphaThreshold, int maxInstancesCount = 1)
-			: base((LitShaderHandler ?? throw new Exception(HandlerNotInitializedExceptionString)).VertexShaderCode, LitShaderHandler.PixelsShaderCode, PrepareShaderMacros(lightsCount, useEmissionColor, useVertexColor, useTexture, useFog, useAlphaThreshold, maxInstancesCount))
+			: base((LitShaderServicesCollection ?? throw new Exception(HandlerNotInitializedExceptionString)).VertexShaderCode, LitShaderServicesCollection.PixelsShaderCode, PrepareShaderMacros(lightsCount, useEmissionColor, useVertexColor, useTexture, useFog, useAlphaThreshold, maxInstancesCount))
 		{
 			if (lightsCount < 0 || lightsCount > 3)
 			{

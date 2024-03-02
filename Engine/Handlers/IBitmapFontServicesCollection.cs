@@ -2,7 +2,7 @@
 
 namespace Engine.Handlers;
 
-public interface IBitmapFontHandler
+public interface IBitmapFontServicesCollection
 {
     BitmapFont DebugFont { get; }
 }

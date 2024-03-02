@@ -3,7 +3,7 @@ using Engine.Handlers;
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class UtilitiesHandler : IUtilitiesHandler
+public class UtilitiesServicesCollection : IUtilitiesHandler
 {
     [DllImport("kernel32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]

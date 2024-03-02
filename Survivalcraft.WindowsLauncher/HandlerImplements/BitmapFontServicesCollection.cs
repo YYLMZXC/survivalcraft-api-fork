@@ -3,7 +3,7 @@ using Engine.Media;
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class BitmapFontHandler : IBitmapFontHandler
+public class BitmapFontServicesCollection : IBitmapFontServicesCollection
 {
     public BitmapFont DebugFont
     {

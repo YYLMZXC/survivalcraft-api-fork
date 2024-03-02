@@ -77,14 +77,14 @@ namespace Engine
 			}
 		}
 		
-		public static IUtilitiesHandler? UtilitiesHandler
+		public static IUtilitiesHandler? UtilitiesServicesCollection
 		{
 			get;
 			set;
 		}
 		public static long GetTotalAvailableMemory()
 		{
-			if (UtilitiesHandler is not null) return UtilitiesHandler.GetTotalAvailableMemory();
+			if (UtilitiesServicesCollection is not null) return UtilitiesServicesCollection.GetTotalAvailableMemory();
 
 			Log.Warning("Utilities.UtilitiesHandler 未初始化");
 			return long.MinValue;

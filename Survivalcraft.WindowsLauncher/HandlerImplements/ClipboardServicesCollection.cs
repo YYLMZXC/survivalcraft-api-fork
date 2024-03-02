@@ -2,7 +2,7 @@
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class ClipboardHandler : IClipboardHandler
+public class ClipboardServicesCollection : IClipboardHandler
 {
     public string Text
     {

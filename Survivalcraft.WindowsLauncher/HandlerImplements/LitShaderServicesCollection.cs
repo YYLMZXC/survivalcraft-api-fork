@@ -3,7 +3,7 @@ using Engine.Handlers;
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class LitShaderHandler : ILitShaderHandler
+public class LitShaderServicesCollection : ILitShaderHandler
 {
     public string VertexShaderCode =>
         new StreamReader(typeof(Shader).Assembly.GetManifestResourceStream("Engine.Resources.Lit.vsh")!).ReadToEnd();

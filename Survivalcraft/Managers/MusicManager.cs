@@ -8,10 +8,10 @@ namespace Game
 {
 	public static class MusicManager
 	{
-		public static IMusicManagerHandler? MusicManagerHandler { get; set; }
+		public static IMusicManagerHandler? MusicManagerServicesCollection { get; set; }
 		
 		private static string HandlerNotInitializedExceptionString
-			=> $"{typeof(MusicManager).FullName}.{nameof(MusicManagerHandler)} 未初始化";
+			=> $"{typeof(MusicManager).FullName}.{nameof(MusicManagerServicesCollection)} 未初始化";
 		
 		public enum Mix
 		{
@@ -127,11 +127,11 @@ namespace Game
 
 		public static void Initialize()
 		{
-			if (MusicManagerHandler is null)
+			if (MusicManagerServicesCollection is null)
 			{
 				throw new Exception(HandlerNotInitializedExceptionString);
 			}
-			MusicManagerHandler.Initialize();
+			MusicManagerServicesCollection.Initialize();
 		}
 
 		public static void PlayMusic(string name, float startPercentage)

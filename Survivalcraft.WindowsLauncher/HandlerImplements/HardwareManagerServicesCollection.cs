@@ -2,7 +2,7 @@
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class HardwareManagerHandler : IHardwareManagerHandler
+public class HardwareManagerServicesCollection : IHardwareManagerHandler
 {
     public void Vibrate(long ms) {}
 }

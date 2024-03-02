@@ -2,7 +2,7 @@
 
 namespace Engine.Handlers;
 
-public class UnlitShaderHandler : IUnlitShaderHandler
+public class UnlitShaderServicesCollection : IUnlitShaderHandler
 {
     public string PixelShaderCode { get; } =
         new StreamReader(typeof(Shader).Assembly.GetManifestResourceStream("Engine.Resources.Unlit.psh")!)

@@ -4,7 +4,7 @@ using Game.Handlers;
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class WebManagerHandler : IWebManagerHandler
+public class WebManagerServicesCollection : IWebManagerHandler
 {
     // ReSharper disable once StringLiteralTypo
     [System.Runtime.InteropServices.DllImport("wininet.dll")]

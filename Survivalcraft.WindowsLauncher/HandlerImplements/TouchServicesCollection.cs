@@ -3,7 +3,7 @@ using Engine.Handlers;
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class TouchHandler : ITouchHandler
+public class TouchServicesCollection : ITouchHandler
 {
     public void HandleTouchEvent(object motionEvent, out int id, out Point2 position)
     {

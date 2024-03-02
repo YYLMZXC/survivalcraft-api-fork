@@ -2,7 +2,7 @@
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class MusicManagerHandler : IMusicManagerHandler
+public class MusicManagerServicesCollection : IMusicManagerHandler
 {
     public void Initialize() {}
 }

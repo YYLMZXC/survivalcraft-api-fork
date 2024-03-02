@@ -6,13 +6,13 @@ namespace Game
 {
 	public static class WebBrowserManager
 	{
-		public static IWebBrowserManagerHandler? WebBrowserManagerHandler
+		public static IWebBrowserManagerHandler? WebBrowserManagerServicesCollection
 		{
 			get;
 			set;
 		}
 		private static string HandlerNotInitializedWarningString
-			=> $"{typeof(WebBrowserManager).FullName}.{nameof(WebBrowserManagerHandler)} 未初始化";
+			=> $"{typeof(WebBrowserManager).FullName}.{nameof(WebBrowserManagerServicesCollection)} 未初始化";
 		public static void LaunchBrowser(string url)
 		{
 
@@ -22,12 +22,12 @@ namespace Game
 			}
 			try
 			{
-				if (WebBrowserManagerHandler is null)
+				if (WebBrowserManagerServicesCollection is null)
 				{
 					Log.Warning(HandlerNotInitializedWarningString);
 					return;
 				}
-				WebBrowserManagerHandler.LaunchBrowser(url);
+				WebBrowserManagerServicesCollection.LaunchBrowser(url);
 			}
 			catch (Exception ex)
 			{

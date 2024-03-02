@@ -6,7 +6,7 @@ namespace Engine.Input
 {
 	public static class Touch
 	{
-		public static ITouchHandler? TouchHandler
+		public static ITouchHandler? TouchServicesCollection
 		{
 			get;
 			set;
@@ -37,7 +37,7 @@ namespace Engine.Input
 
 		internal static void HandleTouchEvent(object motionEvent)
 		{
-			TouchHandler?.HandleTouchEvent(motionEvent, out int id, out Point2 position);
+			TouchServicesCollection?.HandleTouchEvent(motionEvent, out int id, out Point2 position);
 		}
 		
 		internal static void BeforeFrame()

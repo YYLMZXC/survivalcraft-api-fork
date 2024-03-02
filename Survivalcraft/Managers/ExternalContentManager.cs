@@ -35,19 +35,19 @@ namespace Game
 				new DropboxExternalContentProvider(),
 				new TransferShExternalContentProvider()
 			];
-			if (ExternalContentManagerHandler is null)
+			if (ExternalContentManagerServicesCollection is null)
 			{
 				Log.Warning(HandlerNotInitializedWarningString);
 				return;
 			}
 
-			ExternalContentManagerHandler.Initialize();
+			ExternalContentManagerServicesCollection.Initialize();
 		}
 
-		public static IExternalContentManagerHandler? ExternalContentManagerHandler { get; set; }
+		public static IExternalContentManagerHandler? ExternalContentManagerServicesCollection { get; set; }
 		
 		private static string HandlerNotInitializedWarningString
-			=> $"{typeof(ExternalContentManager).FullName}.{nameof(ExternalContentManagerHandler)} 未初始化";
+			=> $"{typeof(ExternalContentManager).FullName}.{nameof(ExternalContentManagerServicesCollection)} 未初始化";
 		
 		public static ExternalContentType ExtensionToType(string extension)
 		{

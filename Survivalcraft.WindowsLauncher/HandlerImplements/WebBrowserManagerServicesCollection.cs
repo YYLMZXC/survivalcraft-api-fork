@@ -2,7 +2,7 @@
 
 namespace Survivalcraft.WindowsLauncher.HandlerImplements;
 
-public class WebBrowserManagerHandler : IWebBrowserManagerHandler
+public class WebBrowserManagerServicesCollection : IWebBrowserManagerHandler
 {
     public void LaunchBrowser(string url)
     {
