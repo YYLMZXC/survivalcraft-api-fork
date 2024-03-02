@@ -48,7 +48,7 @@ namespace Engine
         {
             m_seed = (ulong)(seed ^ 0x5DEECE66D);
         }
-		public static void Reset_A()
+		public void Reset_A()
 		{
 			Reset_A(m_counter++);
 		}

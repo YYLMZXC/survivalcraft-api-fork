@@ -329,7 +329,7 @@ namespace Engine.Graphics
 				m_blendFuncSourceAlpha = blendFuncSourceAlpha;
 				m_blendFuncDestinationColor = blendFuncDestinationColor;
 				m_blendFuncDestinationAlpha = blendFuncDestinationAlpha;
-				m_blendFuncSource = (BlendingFactorDest)(-1);
+				m_blendFuncSource = (BlendingFactorSrc)(-1);
 				m_blendFuncDestination = (BlendingFactorDest)(-1);
 			}
 		}

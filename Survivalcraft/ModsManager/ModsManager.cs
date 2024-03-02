@@ -1,8 +1,5 @@
 // Game.ModsManager
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Engine;
 using Game;
 using SimpleJson;
@@ -12,7 +9,10 @@ using System.Text;
 using System.Xml.Linq;
 using Engine.Serialization;
 using XmlUtilities;
-using System.Linq;
+using Engine.Media;
+using Engine.Graphics;
+using System.IO.Compression;
+using System.IO;
 
 
 public static class ModsManager

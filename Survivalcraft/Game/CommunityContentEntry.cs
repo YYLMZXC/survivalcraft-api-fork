@@ -24,7 +24,7 @@ namespace Game
 
 		public string IconSrc;
 
-		//public Engine.Graphics.Texture2D Icon;
+		public Engine.Graphics.Texture2D Icon;
 
 		public RectangleWidget IconInstance = null;
 

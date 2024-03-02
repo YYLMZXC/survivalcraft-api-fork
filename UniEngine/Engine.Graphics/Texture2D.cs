@@ -99,9 +99,13 @@ private PixelType m_pixelType;
 				int height = MathUtils.Max(Height >> mipLevel, 1);
 				IntPtr pixels = gCHandle.AddrOfPinnedObject() + (sourceStartIndex * Utilities.SizeOf<T>());
 				GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
-				GL.TexImage2D(TextureTarget2d.Texture2D, mipLevel,(TextureComponentCount)m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, pixels);
-			}
-			finally
+#if android
+                GL.TexImage2D(TextureTarget.Texture2D, mipLevel, (PixelInternalFormat)m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, pixels);
+#else
+                GL.TexImage2D(TextureTarget2d.Texture2D, mipLevel, (TextureComponentCount)m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, pixels);
+#endif
+            }
+            finally
 			{
 				gCHandle.Free();
 			}
@@ -125,9 +129,13 @@ private PixelType m_pixelType;
 			{
 				int width = MathUtils.Max(Width >> i, 1);
 				int height = MathUtils.Max(Height >> i, 1);
-				GL.TexImage2D(TextureTarget2d.Texture2D, i, (TextureComponentCount)m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, IntPtr.Zero);
-			}
-		}
+#if android
+                GL.TexImage2D(TextureTarget.Texture2D, i, (PixelInternalFormat)m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, IntPtr.Zero);
+#else
+                GL.TexImage2D(TextureTarget2d.Texture2D, i, (TextureComponentCount)m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, IntPtr.Zero);
+#endif
+            }
+        }
 
 		private void DeleteTexture()
 		{

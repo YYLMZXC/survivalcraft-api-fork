@@ -4,6 +4,9 @@ using Android.Views;
 using Android.Widget;
 #endif
 
+using OpenTK;
+using OpenTK.Input;
+
 namespace Engine.Input
 {
     public static class Keyboard

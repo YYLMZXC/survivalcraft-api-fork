@@ -49,11 +49,11 @@ namespace FluxJpeg.Core
 		{
 			int height = (int)(scale * (double)_input.Height);
 			int width = (int)(scale * (double)_input.Width);
-			Filter resizeFilter = GetResizeFilter(technique);
+			Filtering.Filter resizeFilter = GetResizeFilter(technique);
 			return PerformResize(resizeFilter, width, height);
 		}
 
-		private Image PerformResize(Filter resizeFilter, int width, int height)
+		private Image PerformResize(Filtering.Filter resizeFilter, int width, int height)
 		{
 			return new Image(_input.ColorModel, resizeFilter.Apply(_input.Raster, width, height))
 			{
@@ -62,9 +62,9 @@ namespace FluxJpeg.Core
 			};
 		}
 
-		private Filter GetResizeFilter(ResamplingFilters technique)
+		private Filtering.Filter GetResizeFilter(ResamplingFilters technique)
 		{
-			Filter filter;
+            Filtering.Filter filter;
 			switch (technique)
 			{
 				case ResamplingFilters.NearestNeighbor:
@@ -82,7 +82,7 @@ namespace FluxJpeg.Core
 
 		public Image Resize(int width, int height, ResamplingFilters technique)
 		{
-			Filter resizeFilter = GetResizeFilter(technique);
+            Filtering.Filter resizeFilter = GetResizeFilter(technique);
 			return PerformResize(resizeFilter, width, height);
 		}
 

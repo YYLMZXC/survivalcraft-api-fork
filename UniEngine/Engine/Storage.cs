@@ -267,12 +267,12 @@ namespace Engine
             return CombinePaths(GetDirectoryName(path), GetFileNameWithoutExtension(path)) + extension;
         }
 
+#if android
         public static string ProcessPath(string path, bool writeAccess, bool failIfApp)
         {
             bool isApp;
             return ProcessPath(path, writeAccess, failIfApp, out isApp);
         }
-#if android
         private static string ProcessPath(string path, bool writeAccess, bool failIfApp, out bool isApp)
         {
             ArgumentNullException.ThrowIfNull(path);

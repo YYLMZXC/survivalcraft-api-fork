@@ -1,4 +1,4 @@
-#if android
+#if ANDROID
 using Android.Content;
 using Android.Media;
 using Android.OS;
@@ -103,11 +103,11 @@ namespace Engine
             switch (keyCode)
             {
                 case Keycode.VolumeUp:
-                    ((AudioManager)base.Context.GetSystemService("audio")).AdjustStreamVolume(Stream.Music, Adjust.Raise, VolumeNotificationFlags.ShowUi);
+                    ((AudioManager)base.Context.GetSystemService("audio")).AdjustStreamVolume(Android.Media.Stream.Music, Adjust.Raise, VolumeNotificationFlags.ShowUi);
                     EnableImmersiveMode();
                     break;
                 case Keycode.VolumeDown:
-                    ((AudioManager)base.Context.GetSystemService("audio")).AdjustStreamVolume(Stream.Music, Adjust.Lower, VolumeNotificationFlags.ShowUi);
+                    ((AudioManager)base.Context.GetSystemService("audio")).AdjustStreamVolume(Android.Media.Stream.Music, Adjust.Lower, VolumeNotificationFlags.ShowUi);
                     EnableImmersiveMode();
                     break;
             }
