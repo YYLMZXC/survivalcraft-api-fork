@@ -31,8 +31,8 @@ public static class ModsManager
     
     public static string ModFileSuffix => ".scmod";
 
-    public static ApiVersion ApiCurrentVersion => ApiVersion.Api160;
-    public static string ApiCurrentVersionString => "1.60P";
+    public static ApiVersion ApiCurrentVersion => ApiVersion.Api170;
+    public static string ApiCurrentVersionString => "1.70";
 
     public static string SurvivalcraftCurrentVersion { get; } =
         typeof(SurvivalCraftModEntity).Assembly.GetName().Version?.ToString();
