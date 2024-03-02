@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>Survivalcraft</AssemblyName>
+        <ApplicationIcon>..\Survivalcraft\Content\icon.ico</ApplicationIcon>
+        <Version>2.3-Api1.6</Version>
+        <Authors />
+        <Description>生存战争插件版电脑端启动器</Description>
+        <Company>Candy Rufus Games</Company>
+        <Product>Survivalcraft</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Survivalcraft\Survivalcraft.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="OpenTK">
+        <HintPath>..\Engine\OpenTK.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\Survivalcraft\Content\icon.ico">
+        <Link>icon.ico</Link>
+      </None>
+    </ItemGroup>
+
+</Project>
