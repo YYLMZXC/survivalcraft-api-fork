@@ -57,7 +57,6 @@ namespace Engine.Audio
 			if (m_buffer != 0)
 			{
 				AL.DeleteBuffer(m_buffer);
-				Mixer.CheckALError();
 				m_buffer = 0;
 			}
 		}
@@ -65,13 +64,11 @@ namespace Engine.Audio
 		private void CreateBuffer<T>(T[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
 		{
 			m_buffer = AL.GenBuffer();
-			Mixer.CheckALError();
 			GCHandle gCHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
 			try
 			{
 				int num = Utilities.SizeOf<T>();
 				AL.BufferData(m_buffer, (channelsCount == 1) ? ALFormat.Mono16 : ALFormat.Stereo16, gCHandle.AddrOfPinnedObject() + (startIndex * num), itemsCount * num, samplingFrequency);
-				Mixer.CheckALError();
 			}
 			finally
 			{

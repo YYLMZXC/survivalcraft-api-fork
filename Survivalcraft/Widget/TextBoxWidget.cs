@@ -105,13 +105,12 @@ namespace Game
 					m_hasFocus = value;
 					if (value)
 					{
-#if desktop
-						if (m_hasFocus && Text == string.Empty)
+						if (VersionsManager.Platform == Platform.Desktop && m_hasFocus && Text == string.Empty)
 						{
 							//清空之前的输入
 							KeyboardInput.GetInput();
 						}
-#endif
+
 						CaretPosition = m_text.Length;
 						Keyboard.ShowKeyboard(Title, Description, Text, passwordMode: false, delegate (string text)
 						{
@@ -198,104 +197,117 @@ namespace Game
 			Description = string.Empty;
 			JustOpened = true;
 		}
+
+		private void UpdateInputAndroid()
+		{
+			if (base.Input.LastChar.HasValue && !base.Input.IsKeyDown(Key.Control) && !char.IsControl(base.Input.LastChar.Value))
+			{
+				EnterText(new string(base.Input.LastChar.Value, 1));
+				base.Input.Clear();
+			}
+			if (base.Input.LastKey.HasValue)
+			{
+				bool flag = false;
+				Key value = base.Input.LastKey.Value;
+				if (value == Key.V && base.Input.IsKeyDown(Key.Control))
+				{
+					EnterText(ClipboardManager.ClipboardString);
+					flag = true;
+				}
+				else if (value == Key.BackSpace && CaretPosition > 0)
+				{
+					CaretPosition--;
+					Text = Text.Remove(CaretPosition, 1);
+					flag = true;
+				}
+				else
+				{
+					switch (value)
+					{
+						case Key.Delete:
+							if (CaretPosition < m_text.Length)
+							{
+								Text = Text.Remove(CaretPosition, 1);
+								flag = true;
+							}
+							break;
+						case Key.LeftArrow:
+							CaretPosition--;
+							flag = true;
+							break;
+						case Key.RightArrow:
+							CaretPosition++;
+							flag = true;
+							break;
+						case Key.Home:
+							CaretPosition = 0;
+							flag = true;
+							break;
+						case Key.End:
+							CaretPosition = m_text.Length;
+							flag = true;
+							break;
+						case Key.Enter:
+							flag = true;
+							HasFocus = false;
+							this.Enter?.Invoke(this);
+							break;
+						case Key.Escape:
+							flag = true;
+							HasFocus = false;
+							this.Escape?.Invoke(this);
+							break;
+					}
+				}
+				if (flag)
+				{
+					base.Input.Clear();
+				}
+			}
+		}
+
+		private void UpdateInputOther()
+		{
+			//处理文字删除
+			if (KeyboardInput.DeletePressed)
+			{
+				if (CaretPosition != 0)
+				{
+					CaretPosition--;
+					CaretPosition = Math.Max(0, CaretPosition);
+					if (Text.Length > 0)
+					{
+						Text = Text.Remove(CaretPosition, 1);
+					}
+					float num = Font.CalculateCharacterPosition(Text, 0, new Vector2(FontScale), FontSpacing);
+					m_scroll = num - base.ActualSize.X;
+					m_scroll = MathUtils.Max(0, m_scroll);
+				}
+			}
+			//处理文字输入
+			string inputString = KeyboardInput.GetInput();
+			if (JustOpened)
+			{
+				inputString = string.Empty;
+				JustOpened = false;
+			}
+			if (!string.IsNullOrEmpty(inputString))
+			{
+				EnterText(inputString);
+			}
+		}
 		public override void Update()
 		{
 			if (HasFocus)
 			{
-#if android
-				if (base.Input.LastChar.HasValue && !base.Input.IsKeyDown(Key.Control) && !char.IsControl(base.Input.LastChar.Value))
+				if (VersionsManager.Platform == Platform.Android)
 				{
-					EnterText(new string(base.Input.LastChar.Value, 1));
-					base.Input.Clear();
+					UpdateInputAndroid();
 				}
-				if (base.Input.LastKey.HasValue)
+				else
 				{
-					bool flag = false;
-					Key value = base.Input.LastKey.Value;
-					if (value == Key.V && base.Input.IsKeyDown(Key.Control))
-					{
-						EnterText(ClipboardManager.ClipboardString);
-						flag = true;
-					}
-					else if (value == Key.BackSpace && CaretPosition > 0)
-					{
-						CaretPosition--;
-						Text = Text.Remove(CaretPosition, 1);
-						flag = true;
-					}
-					else
-					{
-						switch (value)
-						{
-							case Key.Delete:
-								if (CaretPosition < m_text.Length)
-								{
-									Text = Text.Remove(CaretPosition, 1);
-									flag = true;
-								}
-								break;
-							case Key.LeftArrow:
-								CaretPosition--;
-								flag = true;
-								break;
-							case Key.RightArrow:
-								CaretPosition++;
-								flag = true;
-								break;
-							case Key.Home:
-								CaretPosition = 0;
-								flag = true;
-								break;
-							case Key.End:
-								CaretPosition = m_text.Length;
-								flag = true;
-								break;
-							case Key.Enter:
-								flag = true;
-								HasFocus = false;
-								this.Enter?.Invoke(this);
-								break;
-							case Key.Escape:
-								flag = true;
-								HasFocus = false;
-								this.Escape?.Invoke(this);
-								break;
-						}
-					}
-					if (flag)
-					{
-						base.Input.Clear();
-					}
+					UpdateInputOther();
 				}
-#else
-				//处理文字删除
-				if (KeyboardInput.DeletePressed)
-				{
-					if (CaretPosition != 0)
-					{
-						CaretPosition--;
-						CaretPosition = Math.Max(0, CaretPosition);
-						if (Text.Length > 0)
-						{
-							Text = Text.Remove(CaretPosition, 1);
-						}
-						float num = Font.CalculateCharacterPosition(Text, 0, new Vector2(FontScale), FontSpacing);
-						m_scroll = num - base.ActualSize.X;
-						m_scroll = MathUtils.Max(0, m_scroll);
-					}
-				}
-				//处理文字输入
-				string inputString = KeyboardInput.GetInput();
-				if (JustOpened)
-				{
-					inputString = string.Empty;
-					JustOpened = false;
-				}
-				if (!string.IsNullOrEmpty(inputString))
-				{
-					EnterText(inputString);
-				}
-#endif
 			}
 			if (Input.Click.HasValue)
 			{

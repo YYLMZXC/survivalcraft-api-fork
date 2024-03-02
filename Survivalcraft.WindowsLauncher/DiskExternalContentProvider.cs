@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Threading;
+﻿using Engine;
+using Game;
 
-namespace Game
+namespace Survivalcraft.WindowsLauncher
 {
 	public class DiskExternalContentProvider : IExternalContentProvider
 	{
@@ -18,15 +17,15 @@ namespace Game
 
 		public static string fName = "DiskExternalContentProvider";
 
-		public static string LocalPath = AppDomain.CurrentDomain.BaseDirectory;
+		public static string LocalPath = ModsManager.ExtPath;
 
 		public string Description => LanguageControl.Get(fName, "Description");
 
 		public DiskExternalContentProvider()
 		{
-			if (!Directory.Exists(LocalPath))
+			if (!Storage.DirectoryExists(LocalPath))
 			{
-				Directory.CreateDirectory(LocalPath);
+				Storage.CreateDirectory(LocalPath);
 			}
 		}
 		public void Dispose()

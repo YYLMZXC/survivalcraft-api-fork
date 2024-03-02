@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Engine.Handlers;
 
 namespace Engine.Media
 {
@@ -34,7 +35,7 @@ namespace Engine.Media
 			}
 		}
 
-		private static BitmapFont m_debugFont;
+		private static BitmapFont? m_debugFont = null;
 
 		internal Glyph[] m_glyphsByCode;
 
@@ -82,35 +83,19 @@ namespace Engine.Media
 			private set;
 		}
 
-		public static BitmapFont DebugFont
+		public static IBitmapFontHandler? BitmapFontHandler
 		{
-			get
-			{
-				if (m_debugFont == null)
-				{
-#if android
-					using (Stream stream = EngineActivity.m_activity.Assets.Open("Debugfont.png"))
-					{
-						using (Stream stream2 = EngineActivity.m_activity.Assets.Open("Debugfont.lst"))
-						{
-							m_debugFont = Initialize(stream, stream2);
-						}
-
-					}
-#else
-					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png"))
-					{
-						using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst"))
-						{
-							m_debugFont = Initialize(stream, stream2);
-						}
-
-					}
-#endif
-				}
-				return m_debugFont;
-			}
+			get;
+			set;
 		}
+		
+		private static string HandlerNotInitializedExceptionString
+			=> $"{typeof(BitmapFont).FullName}.{nameof(BitmapFontHandler)} Œ¥≥ı ºªØ";
+
+		public static BitmapFont DebugFont =>
+			m_debugFont ??= (BitmapFontHandler ?? throw new Exception(HandlerNotInitializedExceptionString))
+				.DebugFont;
+
 		/// <summary>
 		/// Œ∆¿ÌÕº
 		/// </summary>
@@ -283,20 +268,6 @@ namespace Engine.Media
 
 		static BitmapFont()
 		{
-			Display.DeviceReset += delegate
-			{
-				if (m_debugFont != null)
-				{
-					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png"))
-					{
-						using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst"))
-						{
-							m_debugFont = Initialize(stream, stream2);
-						}
-
-					}
-				}
-			};
 		}
 
 		internal BitmapFont()

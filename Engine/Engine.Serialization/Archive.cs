@@ -124,21 +124,12 @@ namespace Engine.Serialization
 									AddSerializeData(value);
 								}
 							}
-#if android
 							else if (type.GetTypeInfo().BaseType != null && IsTypeSerializable(type.GetTypeInfo().BaseType))
 							{
 								value = GetSerializeData(type.GetTypeInfo().BaseType, allowEmptySerializer: true).Clone();
 								value.Type = type;
 								value.AutoConstructObject = true;
 							}
-#else
-							else if (type.BaseType != null && IsTypeSerializable(type.BaseType))
-							{
-								value = GetSerializeData(type.BaseType, allowEmptySerializer: true).Clone();
-								value.Type = type;
-								value.AutoConstructObject = true;
-							}
-#endif
 						}
 						if (value == null)
 						{

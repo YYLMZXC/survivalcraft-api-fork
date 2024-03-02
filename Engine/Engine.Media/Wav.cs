@@ -49,7 +49,6 @@ namespace Engine.Media
 					throw new NotSupportedException("Underlying stream cannot be seeked.");
 				}
 			}
-#if android
 			public WavStreamingSource(Stream stream, bool leaveOpen = false)
 			{
 				MemoryStream memoryStream = new();
@@ -64,18 +63,6 @@ namespace Engine.Media
 				m_bytesCount = dataHeader.DataSize;
 				m_stream.Position = dataStart;
 			}
-#else
-			public WavStreamingSource(Stream stream, bool leaveOpen = false)
-			{
-				m_stream = stream;
-				m_leaveOpen = leaveOpen;
-				ReadHeaders(stream, out FmtHeader fmtHeader, out DataHeader dataHeader, out long dataStart);
-				m_channelsCount = fmtHeader.ChannelsCount;
-				m_samplingFrequency = fmtHeader.SamplingFrequency;
-				m_bytesCount = dataHeader.DataSize;
-				stream.Position = dataStart;
-			}
-#endif
 			public override void Dispose()
 			{
 				if (!m_leaveOpen)
@@ -96,7 +83,7 @@ namespace Engine.Media
 				m_position += num / 2 / ChannelsCount;
 				return num;
 			}
-#if android
+			
 			public override StreamingSource Duplicate()
 			{
 				MemoryStream memoryStream = new();
@@ -105,16 +92,6 @@ namespace Engine.Media
 				memoryStream.Position = 0L;
 				return new WavStreamingSource(memoryStream);
 			}
-#else
-			public override StreamingSource Duplicate()
-			{
-				MemoryStream memoryStream = new();
-				m_stream.Position = 0L;
-				m_stream.CopyTo(memoryStream);
-				return new WavStreamingSource(memoryStream);
-			}
-
-#endif
 		}
 		public struct WavInfo
 		{

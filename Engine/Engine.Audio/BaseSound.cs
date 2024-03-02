@@ -179,9 +179,7 @@ namespace Engine.Audio
 		internal BaseSound()
 		{
 			m_source = AL.GenSource();
-			Mixer.CheckALError();
 			AL.DistanceModel(ALDistanceModel.None);
-			Mixer.CheckALError();
 		}
 
 		private void InternalSetVolume(float volume)
@@ -189,7 +187,6 @@ namespace Engine.Audio
 			if (m_source != 0)
 			{
 				AL.Source(m_source, ALSourcef.Gain, volume);
-				Mixer.CheckALError();
 			}
 		}
 
@@ -198,7 +195,6 @@ namespace Engine.Audio
 			if (m_source != 0)
 			{
 				AL.Source(m_source, ALSourcef.Pitch, pitch);
-				Mixer.CheckALError();
 			}
 		}
 
@@ -209,7 +205,6 @@ namespace Engine.Audio
 				float value = 0f;
 				float value2 = -0.1f;
 				AL.Source(m_source, ALSource3f.Position, pan, value, value2);
-				Mixer.CheckALError();
 			}
 		}
 
@@ -224,9 +219,7 @@ namespace Engine.Audio
 			if (m_source != 0)
 			{
 				AL.SourceStop(m_source);
-				Mixer.CheckALError();
 				AL.DeleteSource(m_source);
-				Mixer.CheckALError();
 				m_source = 0;
 			}
 		}

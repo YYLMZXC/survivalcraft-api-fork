@@ -469,14 +469,18 @@ namespace Game
 			BlocksTextureFileName = string.Empty;
 			LookControlMode = LookControlMode.EntireScreen;
 			FlipVerticalAxis = false;
-#if android
-			UIScale = 0.9f;
-			AutoJump = true;
-#endif
-#if desktop
-			UIScale = 0.8f;
-			AutoJump = false;
-#endif
+			AutoJump = VersionsManager.Platform switch
+			{
+				Platform.Android => true,
+				Platform.WindowsPhone81 => true,
+				_ => false
+			};
+			UIScale = VersionsManager.Platform switch
+			{
+				Platform.Android => 0.8f,
+				Platform.Desktop => 0.9f,
+				_ => 1f
+			};
 			MoveSensitivity = 0.5f;
 			LookSensitivity = 0.5f;
 			GamepadDeadZone = 0.16f;

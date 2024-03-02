@@ -31,7 +31,7 @@ namespace Engine.Audio
 		{
 			ArgumentNullException.ThrowIfNull(soundBuffer);
 			AL.Source(m_source, ALSourcei.Buffer, soundBuffer.m_buffer);
-			Mixer.CheckALError();
+			
 			Initialize(soundBuffer);
 			base.ChannelsCount = soundBuffer.ChannelsCount;
 			base.SamplingFrequency = soundBuffer.SamplingFrequency;
@@ -47,7 +47,7 @@ namespace Engine.Audio
 		{
 			ArgumentNullException.ThrowIfNull(soundBuffer);
 			AL.Source(m_source, ALSourcei.Buffer, soundBuffer.m_buffer);
-			Mixer.CheckALError();
+			
 			Initialize(soundBuffer);
 			base.ChannelsCount = soundBuffer.ChannelsCount;
 			base.SamplingFrequency = soundBuffer.SamplingFrequency;
@@ -69,13 +69,11 @@ namespace Engine.Audio
 		internal override void InternalPause()
 		{
 			AL.SourcePause(m_source);
-			Mixer.CheckALError();
 		}
 
 		internal override void InternalStop()
 		{
 			AL.SourceRewind(m_source);
-			Mixer.CheckALError();
 		}
 
 		internal override void InternalDispose()

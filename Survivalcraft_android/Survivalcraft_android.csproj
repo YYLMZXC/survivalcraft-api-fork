@@ -16,12 +16,16 @@
         <DefineConstants>DEBUG;android</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AndroidKeyStore>false</AndroidKeyStore>
+        <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DefineConstants>TRACE;android</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="..\Survivalcraft\Handlers\*.cs">
+            <Link>Handlers\*.cs</Link>
+        </Compile>
         <ProjectReference Include="..\Engine_android\Engine_android.csproj"/>
         <ProjectReference Include="..\EntitySystem_android\EntitySystem_android.csproj"/>
         <PackageReference Include="Esprima" Version="3.0.4"/>

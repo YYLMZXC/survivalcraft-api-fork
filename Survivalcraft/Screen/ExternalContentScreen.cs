@@ -192,11 +192,14 @@ namespace Game
 		{
 			if (string.IsNullOrEmpty(path))
 			{
-#if android
-				path = Storage.GetSystemPath("android:SurvivalCraft2.3/files");
-#else
-				path = DiskExternalContentProvider.LocalPath;
-#endif
+				if (VersionsManager.Platform == Platform.Android)
+				{
+					path = Storage.GetSystemPath("android:SurvivalCraft2.3/files");
+				}
+				else
+				{
+					path = ModsManager.ExtPath;
+				}
 			}
 			path = path.Replace("\\", "/");
 			if (path != m_path)

@@ -197,9 +197,9 @@ namespace Engine.Input
 
 		internal static void Initialize()
 		{
-			Window.m_gameWindow.KeyDown += KeyDownHandler;
-			Window.m_gameWindow.KeyUp += KeyUpHandler;
-			Window.m_gameWindow.KeyPress += KeyPressHandler;
+			Window.GameWindow.KeyDown += KeyDownHandler;
+			Window.GameWindow.KeyUp += KeyUpHandler;
+			Window.GameWindow.KeyPress += KeyPressHandler;
 		}
 
 		internal static void Dispose()

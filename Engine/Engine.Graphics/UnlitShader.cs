@@ -1,11 +1,22 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Engine.Handlers;
 
 namespace Engine.Graphics
 {
 	public class UnlitShader : Shader
 	{
+		public static IUnlitShaderHandler? UnlitShaderHandler
+		{
+			get;
+			set;
+		}
+
+		private static string HandlerNotInitializedExceptionString
+			=> $"{typeof(UnlitShader).FullName}.{nameof(UnlitShaderHandler)} 未初始化";
+
 		public ShaderParameter m_worldViewProjectionMatrixParameter;
 
 		public ShaderParameter m_textureParameter;
@@ -72,13 +83,9 @@ namespace Engine.Graphics
 			Transforms = new ShaderTransforms(1);
 			Color = Vector4.One;
 		}
-
+		
 		public UnlitShader(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
-#if android
-			: base(new StreamReader(Storage.OpenFile("app:Unlit.vsh", OpenFileMode.Read)).ReadToEnd(), new StreamReader(Storage.OpenFile("app:Unlit.psh", OpenFileMode.Read)).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
-#else
-			: base(new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.vsh")).ReadToEnd(), new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.psh")).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
-#endif
+			: base((UnlitShaderHandler ?? throw new Exception(HandlerNotInitializedExceptionString)).VertexShaderCode, UnlitShaderHandler.PixelShaderCode, PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
 		{
 			m_worldViewProjectionMatrixParameter = GetParameter("u_worldViewProjectionMatrix", allowNull: true);
 			m_textureParameter = GetParameter("u_texture", allowNull: true);

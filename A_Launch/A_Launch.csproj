@@ -64,4 +64,9 @@
       <Link>Assets\init.js</Link>
     </AndroidAsset>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK-1.0.2moded">
+      <HintPath>..\Engine_android\reference\OpenTK-1.0.2moded.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

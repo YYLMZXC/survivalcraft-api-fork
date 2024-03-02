@@ -88,19 +88,16 @@ namespace Engine.Audio
 		internal override void InternalPlay()
 		{
 			AL.SourcePlay(m_source);
-			Mixer.CheckALError();
 		}
 
 		internal override void InternalPause()
 		{
 			AL.SourcePause(m_source);
-			Mixer.CheckALError();
 		}
 
 		internal override void InternalStop()
 		{
 			AL.SourceStop(m_source);
-			Mixer.CheckALError();
 			StreamingSource.Position = 0L;
 			m_noMoreData = false;
 		}
@@ -132,7 +129,7 @@ namespace Engine.Audio
 			for (int i = 0; i < array.Length; i++)
 			{
 				int num = AL.GenBuffer();
-				Mixer.CheckALError();
+				
 				array[i] = num;
 				list.Add(num);
 			}
@@ -143,11 +140,11 @@ namespace Engine.Audio
 					if (!m_noMoreData)
 					{
 						AL.GetSource(m_source, ALGetSourcei.BuffersProcessed, out int value);
-						Mixer.CheckALError();
+						
 						for (int j = 0; j < value; j++)
 						{
 							int item = AL.SourceUnqueueBuffer(m_source);
-							Mixer.CheckALError();
+							
 							list.Add(item);
 						}
 						if (list.Count > 0 && !m_noMoreData && base.State == SoundState.Playing)
@@ -158,16 +155,16 @@ namespace Engine.Audio
 							{
 								int num3 = list[^1];
 								AL.BufferData(num3, (base.ChannelsCount == 1) ? ALFormat.Mono16 : ALFormat.Stereo16, array2, num2, base.SamplingFrequency);
-								Mixer.CheckALError();
+								
 								AL.SourceQueueBuffer(m_source, num3);
-								Mixer.CheckALError();
+								
 								list.RemoveAt(list.Count - 1);
 								ALSourceState sourceState = AL.GetSourceState(m_source);
-								Mixer.CheckALError();
+								
 								if (sourceState != ALSourceState.Playing)
 								{
 									AL.SourcePlay(m_source);
-									Mixer.CheckALError();
+									
 								}
 							}
 						}
@@ -183,15 +180,15 @@ namespace Engine.Audio
 			}
 			while (!m_stopTaskEvent.WaitOne(millisecondsTimeout));
 			AL.SourceStop(m_source);
-			Mixer.CheckALError();
+			
 			AL.Source(m_source, ALSourcei.Buffer, 0);
-			Mixer.CheckALError();
+			
 			for (int k = 0; k < array.Length; k++)
 			{
 				if (array[k] != 0)
 				{
 					AL.DeleteBuffer(array[k]);
-					Mixer.CheckALError();
+					
 					array[k] = 0;
 				}
 			}

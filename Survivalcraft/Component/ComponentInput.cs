@@ -27,14 +27,13 @@ namespace Game
 
 		public PlayerInput PlayerInput => m_playerInput;
 
-
-
-#if android
-		public bool IsControlledByTouch { get; set; } = true;
-#endif
-#if desktop
-		public bool IsControlledByTouch { get; set; }
-#endif
+		public bool IsControlledByTouch { get; set; } = VersionsManager.Platform switch
+		{
+			Platform.Android => true,
+			Platform.WindowsPhone81 => true,
+			Platform.Ios => true,
+			_ => false
+		};
 
 		public bool AllowHandleInput { get; set; } = true;
 

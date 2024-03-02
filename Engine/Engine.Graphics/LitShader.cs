@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using Engine.Handlers;
 
 namespace Engine.Graphics
 {
 	public class LitShader : Shader
 	{
+		public static ILitShaderHandler? LitShaderHandler
+		{
+			get;
+			set;
+		}
+		
+		private static string HandlerNotInitializedExceptionString
+			=> $"{typeof(LitShader).FullName}.{nameof(LitShaderHandler)} 未初始化";
+		
 		public ShaderParameter m_worldMatrixParameter;
 
 		public ShaderParameter m_worldViewMatrixParameter;
@@ -260,11 +270,7 @@ namespace Engine.Graphics
 		}
 
 		public LitShader(int lightsCount, bool useEmissionColor, bool useVertexColor, bool useTexture, bool useFog, bool useAlphaThreshold, int maxInstancesCount = 1)
-#if android
-			: base(new StreamReader(Storage.OpenFile("app:Lit.vsh", OpenFileMode.Read)).ReadToEnd(), new StreamReader(Storage.OpenFile("app:Lit.psh", OpenFileMode.Read)).ReadToEnd(), PrepareShaderMacros(lightsCount, useEmissionColor, useVertexColor, useTexture, useFog, useAlphaThreshold, maxInstancesCount))
-#else
-			: base(new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Lit.vsh")).ReadToEnd(), new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Lit.psh")).ReadToEnd(), PrepareShaderMacros(lightsCount, useEmissionColor, useVertexColor, useTexture, useFog, useAlphaThreshold, maxInstancesCount))
-#endif
+			: base((LitShaderHandler ?? throw new Exception(HandlerNotInitializedExceptionString)).VertexShaderCode, LitShaderHandler.PixelsShaderCode, PrepareShaderMacros(lightsCount, useEmissionColor, useVertexColor, useTexture, useFog, useAlphaThreshold, maxInstancesCount))
 		{
 			if (lightsCount < 0 || lightsCount > 3)
 			{

@@ -1,4 +1,4 @@
-﻿#ifdef HLSL
+#ifdef HLSL
 
 float4x4 u_worldViewProjectionMatrix;
 float4 u_color;

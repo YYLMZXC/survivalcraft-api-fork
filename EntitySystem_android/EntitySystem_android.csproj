@@ -20,10 +20,6 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 	<DebugType>none</DebugType>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Engine_android\Engine_android.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\EntitySystem\GameEntitySystem\Component.cs">
       <Link>GameEntitySystem\Component.cs</Link>
@@ -82,6 +78,9 @@
     <Compile Include="..\EntitySystem\XmlUtilities\XmlUtils.cs">
       <Link>XmlUtilities\XmlUtils.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.csproj" />
   </ItemGroup>
 
 </Project>

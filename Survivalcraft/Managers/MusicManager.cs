@@ -1,11 +1,18 @@
+using System;
 using Engine;
 using Engine.Audio;
 using Engine.Media;
+using Game.Handlers;
 
 namespace Game
 {
 	public static class MusicManager
 	{
+		public static IMusicManagerHandler? MusicManagerHandler { get; set; }
+		
+		private static string HandlerNotInitializedExceptionString
+			=> $"{typeof(MusicManager).FullName}.{nameof(MusicManagerHandler)} 未初始化";
+		
 		public enum Mix
 		{
 			None,
@@ -120,12 +127,11 @@ namespace Game
 
 		public static void Initialize()
 		{
-#if android
-			Window.Activity.Paused += delegate
+			if (MusicManagerHandler is null)
 			{
-				StopMusic();
-			};
-#endif
+				throw new Exception(HandlerNotInitializedExceptionString);
+			}
+			MusicManagerHandler.Initialize();
 		}
 
 		public static void PlayMusic(string name, float startPercentage)

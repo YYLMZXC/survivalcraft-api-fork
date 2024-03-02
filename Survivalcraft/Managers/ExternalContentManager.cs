@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Game.ContentProvider;
+using Game.Handlers;
 
 namespace Game
 {
@@ -30,20 +31,24 @@ namespace Game
 		{
 			m_providers =
 			[
-#if desktop
-				new DiskExternalContentProvider(),
-#endif
-#if android
-				new AndroidSdCardExternalContentProvider(),
-#endif
 				new SPMBoxExternalContentProvider(),
 				new DropboxExternalContentProvider(),
 				new TransferShExternalContentProvider()
 			];
+			if (ExternalContentManagerHandler is null)
+			{
+				Log.Warning(HandlerNotInitializedWarningString);
+				return;
+			}
+
+			ExternalContentManagerHandler.Initialize();
 		}
 
-
-
+		public static IExternalContentManagerHandler? ExternalContentManagerHandler { get; set; }
+		
+		private static string HandlerNotInitializedWarningString
+			=> $"{typeof(ExternalContentManager).FullName}.{nameof(ExternalContentManagerHandler)} 未初始化";
+		
 		public static ExternalContentType ExtensionToType(string extension)
 		{
 			extension = extension.ToLower();

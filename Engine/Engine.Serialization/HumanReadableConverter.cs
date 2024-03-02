@@ -85,11 +85,7 @@ namespace Engine.Serialization
 		{
 			if (!string.IsNullOrEmpty(data))
 			{
-#if android
 				string[] array = data.Split(new char[] { separator }, StringSplitOptions.None);
-#else
-				string[] array = data.Split(separator);
-#endif
 				T[] array2 = new T[array.Length];
 				for (int i = 0; i < array.Length; i++)
 				{

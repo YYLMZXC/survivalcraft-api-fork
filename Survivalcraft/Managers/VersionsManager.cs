@@ -2,6 +2,7 @@ using Engine;
 using Engine.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using XmlUtilities;
@@ -11,12 +12,12 @@ namespace Game
 	public static class VersionsManager
 	{
 		public static List<VersionConverter> m_versionConverters;
-#if android
-		public static Platform Platform => Platform.Android;
-#endif
-#if desktop
-		public static Platform Platform => Platform.Desktop;
-#endif
+
+		public static Platform Platform { get; } = IsAndroid ? Platform.Android : Platform.Desktop;
+
+		private static bool IsAndroid =>
+			AppDomain.CurrentDomain.GetAssemblies().Any(asm => asm.GetName().Name == "Mono.Android");
+
 		public static BuildConfiguration BuildConfiguration => BuildConfiguration.Release;
 
 		public static string Version

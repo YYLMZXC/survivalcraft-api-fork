@@ -19,7 +19,7 @@ namespace Engine
 			Active
 		}
 
-		internal static GameWindow m_gameWindow;
+		public static GameWindow GameWindow;
 
 		private static bool m_closing;
 
@@ -47,11 +47,11 @@ namespace Engine
 			get
 			{
 				VerifyWindowOpened();
-				if (m_gameWindow.WindowState == WindowState.Fullscreen)
+				if (GameWindow.WindowState == WindowState.Fullscreen)
 				{
 					return WindowMode.Fullscreen;
 				}
-				if (m_gameWindow.WindowBorder != 0)
+				if (GameWindow.WindowBorder != 0)
 				{
 					return WindowMode.Fixed;
 				}
@@ -63,28 +63,28 @@ namespace Engine
 				switch (value)
 				{
 					case WindowMode.Fixed:
-						m_gameWindow.WindowBorder = WindowBorder.Fixed;
-						if (m_gameWindow.WindowState == WindowState.Fullscreen)
+						GameWindow.WindowBorder = WindowBorder.Fixed;
+						if (GameWindow.WindowState == WindowState.Fullscreen)
 						{
-							m_gameWindow.WindowState = WindowState.Normal;
+							GameWindow.WindowState = WindowState.Normal;
 						}
 						break;
 					case WindowMode.Resizable:
-						m_gameWindow.WindowBorder = WindowBorder.Resizable;
-						if (m_gameWindow.WindowState == WindowState.Fullscreen)
+						GameWindow.WindowBorder = WindowBorder.Resizable;
+						if (GameWindow.WindowState == WindowState.Fullscreen)
 						{
-							m_gameWindow.WindowState = WindowState.Normal;
+							GameWindow.WindowState = WindowState.Normal;
 						}
 						break;
 					case WindowMode.Borderless:
-						m_gameWindow.WindowBorder = WindowBorder.Hidden;
-						if (m_gameWindow.WindowState == WindowState.Fullscreen)
+						GameWindow.WindowBorder = WindowBorder.Hidden;
+						if (GameWindow.WindowState == WindowState.Fullscreen)
 						{
-							m_gameWindow.WindowState = WindowState.Normal;
+							GameWindow.WindowState = WindowState.Normal;
 						}
 						break;
 					case WindowMode.Fullscreen:
-						m_gameWindow.WindowState = WindowState.Fullscreen;
+						GameWindow.WindowState = WindowState.Fullscreen;
 						break;
 				}
 			}
@@ -95,12 +95,12 @@ namespace Engine
 			get
 			{
 				VerifyWindowOpened();
-				return new Point2(m_gameWindow.Location.X, m_gameWindow.Location.Y);
+				return new Point2(GameWindow.Location.X, GameWindow.Location.Y);
 			}
 			set
 			{
 				VerifyWindowOpened();
-				m_gameWindow.Location = new Point(value.X, value.Y);
+				GameWindow.Location = new Point(value.X, value.Y);
 			}
 		}
 
@@ -109,12 +109,12 @@ namespace Engine
 			get
 			{
 				VerifyWindowOpened();
-				return new Point2(m_gameWindow.ClientSize.Width, m_gameWindow.ClientSize.Height);
+				return new Point2(GameWindow.ClientSize.Width, GameWindow.ClientSize.Height);
 			}
 			set
 			{
 				VerifyWindowOpened();
-				m_gameWindow.ClientSize = new Size(value.X, value.Y);
+				GameWindow.ClientSize = new Size(value.X, value.Y);
 			}
 		}
 
@@ -123,12 +123,12 @@ namespace Engine
 			get
 			{
 				VerifyWindowOpened();
-				return m_gameWindow.Title;
+				return GameWindow.Title;
 			}
 			set
 			{
 				VerifyWindowOpened();
-				m_gameWindow.Title = value;
+				GameWindow.Title = value;
 			}
 		}
 
@@ -137,12 +137,12 @@ namespace Engine
 			get
 			{
 				VerifyWindowOpened();
-				return m_gameWindow.Icon;
+				return GameWindow.Icon;
 			}
 			set
 			{
 				VerifyWindowOpened();
-				m_gameWindow.Icon = value;
+				GameWindow.Icon = value;
 			}
 		}
 
@@ -153,7 +153,7 @@ namespace Engine
 				VerifyWindowOpened();
 				if (!m_swapInterval.HasValue)
 				{
-					m_swapInterval = m_gameWindow.Context.SwapInterval;
+					m_swapInterval = GameWindow.Context.SwapInterval;
 				}
 				return m_swapInterval.Value;
 			}
@@ -163,7 +163,7 @@ namespace Engine
 				value = MathUtils.Clamp(value, 0, 4);
 				if (value != PresentationInterval)
 				{
-					m_gameWindow.Context.SwapInterval = value;
+					GameWindow.Context.SwapInterval = value;
 					m_swapInterval = value;
 				}
 			}
@@ -197,7 +197,7 @@ namespace Engine
 
 		public static void Run(int width = 0, int height = 0, WindowMode windowMode = WindowMode.Fixed, string title = "")
 		{
-			if (m_gameWindow != null)
+			if (GameWindow != null)
 			{
 				throw new InvalidOperationException("Window is already opened.");
 			}
@@ -223,21 +223,21 @@ namespace Engine
 			GraphicsMode mode = new(new OpenTK.Graphics.ColorFormat(24), 16, 0, 0, OpenTK.Graphics.ColorFormat.Empty, 2);
 			width = (width == 0) ? (ScreenSize.X * 4 / 5) : width;
 			height = (height == 0) ? (ScreenSize.Y * 4 / 5) : height;
-			m_gameWindow = new GameWindow(width, height, mode, title, GameWindowFlags.Default, DisplayDevice.Default, 2, 0, GraphicsContextFlags.Default);
-			m_gameWindow.Icon = new Icon(typeof(Window).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.icon.ico"), new Size(32, 32));
-			m_dpiScale = m_gameWindow.ClientSize.Width / 400f;
-			m_gameWindow.ClientSize = new Size(width, height);
+			GameWindow = new GameWindow(width, height, mode, title, GameWindowFlags.Default, DisplayDevice.Default, 2, 0, GraphicsContextFlags.Default);
+			GameWindow.Icon = new Icon(typeof(Window).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.icon.ico"), new Size(32, 32));
+			m_dpiScale = GameWindow.ClientSize.Width / 400f;
+			GameWindow.ClientSize = new Size(width, height);
 			if (Configuration.RunningOnMacOS)
 			{
 				Point2 point = new((int)MathUtils.Round((float)ScreenSize.X / m_dpiScale), (int)MathUtils.Round((float)ScreenSize.Y / m_dpiScale));
-				m_gameWindow.Location = new Point(MathUtils.Max((point.X - m_gameWindow.Size.Width) / 2, 0), MathUtils.Max((point.Y - m_gameWindow.Size.Height) / 2, 0));
+				GameWindow.Location = new Point(MathUtils.Max((point.X - GameWindow.Size.Width) / 2, 0), MathUtils.Max((point.Y - GameWindow.Size.Height) / 2, 0));
 			}
 			else
 			{
-				m_gameWindow.Location = new Point(MathUtils.Max((ScreenSize.X - m_gameWindow.Size.Width) / 2, 0), MathUtils.Max((ScreenSize.Y - m_gameWindow.Size.Height) / 2, 0));
+				GameWindow.Location = new Point(MathUtils.Max((ScreenSize.X - GameWindow.Size.Width) / 2, 0), MathUtils.Max((ScreenSize.Y - GameWindow.Size.Height) / 2, 0));
 			}
 			WindowMode = windowMode;
-			m_gameWindow.Load += LoadHandler;
+			GameWindow.Load += LoadHandler;
 			GL.GetInteger(GetPName.RedBits, out int data);
 			GL.GetInteger(GetPName.RedBits, out data);
 			GL.GetInteger(GetPName.GreenBits, out int data2);
@@ -246,7 +246,7 @@ namespace Engine
 			GL.GetInteger(GetPName.DepthBits, out int data5);
 			GL.GetInteger(GetPName.StencilBits, out int data6);
 			Log.Information("OpenGL framebuffer created, R={0} G={1} B={2} A={3}, D={4} S={5}", data, data2, data3, data4, data5, data6);
-			m_gameWindow.Run();
+			GameWindow.Run();
 		}
 
 		public static void Close()
@@ -270,7 +270,7 @@ namespace Engine
 
 		private static void FocusedChangedHandler(object sender, EventArgs args)
 		{
-			if (m_gameWindow.Focused)
+			if (GameWindow.Focused)
 			{
 				if (m_state == State.Inactive)
 				{
@@ -303,8 +303,8 @@ namespace Engine
 			}
 			UnsubscribeFromEvents();
 			DisposeAll();
-			m_gameWindow.Dispose();
-			m_gameWindow = null;
+			GameWindow.Dispose();
+			GameWindow = null;
 		}
 
 		private static void ResizeHandler(object sender, EventArgs args)
@@ -320,17 +320,17 @@ namespace Engine
 			AfterFrameAll();
 			if (!m_closing)
 			{
-				m_gameWindow.Context.SwapBuffers();
+				GameWindow.Context.SwapBuffers();
 			}
 			else
 			{
-				m_gameWindow.Close();
+				GameWindow.Close();
 			}
 		}
 
 		private static void VerifyWindowOpened()
 		{
-			if (m_gameWindow == null)
+			if (GameWindow == null)
 			{
 				throw new InvalidOperationException("Window is not opened.");
 			}
@@ -338,18 +338,18 @@ namespace Engine
 
 		private static void SubscribeToEvents()
 		{
-			m_gameWindow.FocusedChanged += FocusedChangedHandler;
-			m_gameWindow.Closed += ClosedHandler;
-			m_gameWindow.Resize += ResizeHandler;
-			m_gameWindow.RenderFrame += RenderFrameHandler;
+			GameWindow.FocusedChanged += FocusedChangedHandler;
+			GameWindow.Closed += ClosedHandler;
+			GameWindow.Resize += ResizeHandler;
+			GameWindow.RenderFrame += RenderFrameHandler;
 		}
 
 		private static void UnsubscribeFromEvents()
 		{
-			m_gameWindow.FocusedChanged -= FocusedChangedHandler;
-			m_gameWindow.Closed -= ClosedHandler;
-			m_gameWindow.Resize -= ResizeHandler;
-			m_gameWindow.RenderFrame -= RenderFrameHandler;
+			GameWindow.FocusedChanged -= FocusedChangedHandler;
+			GameWindow.Closed -= ClosedHandler;
+			GameWindow.Resize -= ResizeHandler;
+			GameWindow.RenderFrame -= RenderFrameHandler;
 		}
 
 		private static void InitializeAll()

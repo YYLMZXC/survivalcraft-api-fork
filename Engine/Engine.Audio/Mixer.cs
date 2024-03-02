@@ -31,15 +31,17 @@ namespace Engine.Audio
 		}
 		internal static void Initialize()
 		{
-#if desktop
 			//string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
 			//string fullPath = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 			//string path = Environment.Is64BitProcess ? "OpenAL" : "OpenAL86";
 			//string str = Path.Combine(fullPath,  path);
 			//Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
-#endif
-            new AudioContext();
-            CheckALError();
+
+			_ = new AudioContext();
+			if (!CheckOpenAlError(out Exception? ex))
+			{
+				Log.Warning("OpenAL 初始化失败，异常信息：\n" + ex);
+			}
 		}
 		internal static void Dispose()
 		{
@@ -78,28 +80,25 @@ namespace Engine.Audio
 			//	throw new InvalidOperationException(AL.GetErrorString(error));
 			//}
 		}*/
-			public static bool CheckALError()
+		private static bool CheckOpenAlError(out Exception? ex)
 		{
 			try
 			{
-				ALError error = AL.GetError();
-				if (error != 0)
+				var error = AL.GetError();
+
+				if (error != ALError.NoError)
 				{
-					Log.Error("OPENAL出错!");
-					Log.Error(AL.GetError());
-					//throw new InvalidOperationException(AL.GetErrorString(error));
-					return true;//返回是否出错
-				}
-				else
-				{
+					ex = new Exception("OpenAL error: {error}");
 					return false;
 				}
-			}
-			catch (Exception e)
-			{
-				Log.Error("OPENAL疑似未安装!");
-				Log.Error (e);
+
+				ex = null;
 				return true;
+			}
+			catch (Exception exception)
+			{
+				ex = exception;
+				return false;
 			}
 		}
 	}

@@ -18,7 +18,7 @@ namespace SimpleJson.Reflection
 
         public delegate TValue ThreadSafeDictionaryValueFactory<TKey, TValue>(TKey key);
 
-        public sealed class ThreadSafeDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerable
+        public sealed class ThreadSafeDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerable where TKey : notnull
         {
             public readonly object _lock = new object();
 

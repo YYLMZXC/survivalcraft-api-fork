@@ -1,55 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
-    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Game</RootNamespace>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
     <ApplicationVersion>2.3.0.0</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-    <UseWindowsForms>True</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <Configurations>Debug;Release</Configurations>
-	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<Nullable>enable</Nullable>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>DEBUG;desktop</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <Optimize>True</Optimize>
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    
+    <!--编译设置-->
     <DebugType>none</DebugType>
-    <DefineConstants>TRACE;desktop</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <DebugSymbols>false</DebugSymbols>
+    <AssemblyName>Game</AssemblyName>
+    
   </PropertyGroup>
   
-  <PropertyGroup>
-    <StartupObject>Game.Program</StartupObject>
-    <ManifestCertificateThumbprint>7727A446B0580C16A300D429D1BE0ABCE78B88E4</ManifestCertificateThumbprint>
-    <GenerateManifests>false</GenerateManifests>
-    <ManifestKeyFile>Survivalcraft_TemporaryKey.pfx</ManifestKeyFile>
-    <SignManifests>false</SignManifests>
-    <ApplicationIcon>Content\icon.ico</ApplicationIcon>
-    <TargetZone>LocalIntranet</TargetZone>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineConstants>DEBUG</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <Optimize>False</Optimize>
+    <DebugType>full</DebugType>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -81,11 +50,6 @@
   <ItemGroup>
     <PackageReference Include="Esprima" Version="3.0.4" />
     <PackageReference Include="Jint" Version="3.0.0-beta-2057" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Reference Include="OpenTK">
-      <HintPath>..\Engine\OpenTK.dll</HintPath>
-    </Reference>
+    <Reference Include="OpenTK" HintPath="..\Engine\OpenTK.dll"/>
   </ItemGroup>
 </Project>

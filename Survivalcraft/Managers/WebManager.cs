@@ -7,11 +7,20 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Game.Handlers;
 
 namespace Game
 {
 	public static class WebManager
 	{
+
+		public static IWebManagerHandler? WebManagerHandler
+		{
+			get;
+			set;
+		}
+		private static string HandlerNotInitializedWarningString
+			=> $"{typeof(WebManager).FullName}.{nameof(WebManagerHandler)} 未初始化";
 		public class ProgressHttpContent : HttpContent
 		{
 			public Stream m_sourceStream;
@@ -56,35 +65,17 @@ namespace Game
 				throw new OperationCanceledException("Operation cancelled.");
 			}
 		}
-#if android
+
 		public static bool IsInternetConnectionAvailable()
 		{
-			try
+			if (WebManagerHandler is null)
 			{
-				return ((Android.Net.ConnectivityManager)Window.Activity.GetSystemService("connectivity")).ActiveNetworkInfo?.IsConnected ?? false;
+				Log.Error(HandlerNotInitializedWarningString);
+				return false;
 			}
-			catch (Exception e)
-			{
-				Log.Warning(ExceptionManager.MakeFullErrorMessage("Could not check internet connection availability.", e));
-			}
-			return true;
+
+			return WebManagerHandler.IsInternetConnectionAvailable();
 		}
-#else
-		[System.Runtime.InteropServices.DllImport("wininet.dll")]
-		public extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
-		public static bool IsInternetConnectionAvailable()
-		{
-			try
-			{
-				return InternetGetConnectedState(out int Desc, 0);
-			}
-			catch (Exception e)
-			{
-				Log.Warning(ExceptionManager.MakeFullErrorMessage("Could not check internet connection availability.", e));
-			}
-			return true;
-		}
-#endif
 
 		public static void Get(string address, Dictionary<string, string> parameters, Dictionary<string, string> headers, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{

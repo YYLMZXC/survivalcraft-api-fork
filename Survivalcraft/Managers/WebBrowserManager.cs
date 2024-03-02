@@ -1,10 +1,18 @@
 using Engine;
 using System;
+using Game.Handlers;
 
 namespace Game
 {
 	public static class WebBrowserManager
 	{
+		public static IWebBrowserManagerHandler? WebBrowserManagerHandler
+		{
+			get;
+			set;
+		}
+		private static string HandlerNotInitializedWarningString
+			=> $"{typeof(WebBrowserManager).FullName}.{nameof(WebBrowserManagerHandler)} 未初始化";
 		public static void LaunchBrowser(string url)
 		{
 
@@ -14,12 +22,12 @@ namespace Game
 			}
 			try
 			{
-#if desktop
-				System.Diagnostics.Process.Start(url);
-#endif
-#if android
-				Engine.Window.Activity.OpenLink(url);
-#endif
+				if (WebBrowserManagerHandler is null)
+				{
+					Log.Warning(HandlerNotInitializedWarningString);
+					return;
+				}
+				WebBrowserManagerHandler.LaunchBrowser(url);
 			}
 			catch (Exception ex)
 			{

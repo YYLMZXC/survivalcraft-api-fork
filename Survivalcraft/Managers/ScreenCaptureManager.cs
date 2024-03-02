@@ -4,11 +4,18 @@ using Engine.Media;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Game.Handlers;
 
 namespace Game
 {
 	public static class ScreenCaptureManager
 	{
+		
+		public static IScreenCaptureManagerHandler? ScreenCaptureManagerHandler { get; set; }
+		
+		private static string HandlerNotInitializedWarningString
+			=> $"{typeof(ScreenCaptureManager).FullName}.{nameof(ScreenCaptureManagerHandler)} 未初始化";
+		
 		public static string ScreenshotDir => ModsManager.ScreenCapturePath;
 		public static bool m_captureRequested;
 
@@ -115,35 +122,16 @@ namespace Game
 				}
 				SettingsManager.ResolutionMode = resolutionMode;
 			}
-#if android
-			string path = Storage.CombinePaths(ModsManager.ScreenCapturePath, filename);
-			if (!Storage.DirectoryExists(ModsManager.ScreenCapturePath)) Storage.CreateDirectory(ModsManager.ScreenCapturePath);
-			using (Stream stream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
+
+			if (ScreenCaptureManagerHandler is null)
 			{
-				var array = new byte[4 * renderTarget2D.Width * renderTarget2D.Height];
-				renderTarget2D.GetData(array, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));
-				var src = Java.Nio.ByteBuffer.Wrap(array);
-				var bitmap = Android.Graphics.Bitmap.CreateBitmap(renderTarget2D.Width, renderTarget2D.Height, Android.Graphics.Bitmap.Config.Argb8888!);
-				bitmap.CopyPixelsFromBuffer(src);
-				bitmap.Compress(Android.Graphics.Bitmap.CompressFormat.Png!, 100, stream);
+				Log.Warning(HandlerNotInitializedWarningString);
 			}
-			Android.Content.Intent intent = new("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
-			intent.SetData(Android.Net.Uri.FromFile(new Java.IO.File(Storage.GetSystemPath(path))));
-			Window.Activity.SendBroadcast(intent);
-#else
-					
-			var image = new Image(renderTarget2D.Width, renderTarget2D.Height); 
-			renderTarget2D.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));
-			if (!Storage.DirectoryExists(ScreenshotDir))
-			{ 
-				Storage.CreateDirectory(ScreenshotDir);
-			}
-			string path = Storage.CombinePaths(ScreenshotDir, filename);
-			using (Stream stream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
+			else
 			{
-				Image.Save(image, stream, ImageFileFormat.Jpg, saveAlpha: false);
+				ScreenCaptureManagerHandler.SaveImage(renderTarget2D, filename);
 			}
-#endif
+
 			ModInterfacesManager.InvokeHooks("OnCapture", (SurvivalCraftModInterface modInterface, out bool isContinueRequired) =>
 			{
 				modInterface.OnCapture();

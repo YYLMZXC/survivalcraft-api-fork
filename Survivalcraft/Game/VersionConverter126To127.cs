@@ -36,10 +36,9 @@ namespace Game
 
 		public static void MigrateDataFromIsolatedStorageWithDialog()
 		{
-#if desktop
 			try
 			{
-				if (Storage.DirectoryExists("app:/.config/.isolated-storage"))
+				if (Storage.DirectoryExists(ModsManager.ExtPath + ".config/.isolated-storage"))
 				{
 					Log.Information("1.26 data found, starting migration to 1.27.");
 					var dialog = new BusyDialog("Please wait", "Migrating 1.26 data to 1.27 format...");
@@ -50,7 +49,7 @@ namespace Game
 						string empty2 = string.Empty;
 						try
 						{
-							int num = MigrateFolder("app:/.config/.isolated-storage", "data:");
+							int num = MigrateFolder(ModsManager.ExtPath + ".config/.isolated-storage", "data:");
 							empty = "Migration Successful";
 							empty2 = $"{num} file(s) were migrated from 1.26 to 1.27.";
 
@@ -74,7 +73,6 @@ namespace Game
 			{
 				Log.Error("Failed to migrate data. Reason: {0}", ex.Message);
 			}
-#endif
 		}
 
 		public void ConvertTypesToEngine(XElement node)

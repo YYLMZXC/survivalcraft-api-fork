@@ -40,11 +40,15 @@ public static class ModsManager
     public static bool IsAndroid { get; } = VersionsManager.Platform == Platform.Android;
 
     #region PathDefintions
-#if desktop
+    
     /// <summary>
     /// ExternalPath, 用于存储地图、模组、家具包等文档
     /// </summary>
-    public static string ExtPath { get; } = "app:";
+    public static string ExtPath { get; } = VersionsManager.Platform switch
+    {
+        Platform.Android => "android:/SurvivalcraftApi1.6",
+        _ => "app:"
+    };
 
     public static string ScreenCapturePath { get; } = ExtPath + "/ScreenCapture";
     public static string DocPath { get; } = ExtPath + "/doc";
@@ -58,22 +62,6 @@ public static class ModsManager
     public static string SettingPath { get; } = ExtPath + "/Settings.xml";
     public static string ModCachePath { get; } = ExtPath + "/Mods/Cache";
     public static string LogPath { get; } = ExtPath + "/Bugs";
-
-#endif
-#if android
-    public static string ExtPath { get; } = EngineActivity.BasePath;
-    public static string ScreenCapturePath { get; } = ExtPath + "/ScreenCapture";
-    public static string UserDataPath { get; } = "config:/UserId.dat";
-    public static string FurniturePacksDirectoryName { get; } = "config:/FurniturePacks";
-    public static string CharacterSkinsDirectoryName { get; } = "config:/CharacterSkins";
-    public static string BlockTexturesDirectoryName { get; } = "config:/TexturePacks";
-    public static string WorldsDirectoryName { get; } = "config:/Worlds";
-    public static string CommunityContentCachePath { get; } = "config:/CommunityContentCache.xml";
-    public static string ModSettingsPath { get; } = "config:/ModSettings.xml";
-    public static string SettingPath { get; } = "config:/Settings.xml";
-    public static string ModCachePath { get; } = ExtPath + "/ModsCache";
-    public static string LogPath { get; } = ExtPath + "/Bugs";
-#endif
 
     #endregion
 

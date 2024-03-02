@@ -6,6 +6,8 @@ using Android.Provider;
 using Android.Runtime;
 using Engine;
 using Game;
+using OpenTK.Graphics.ES10;
+using Console = Java.IO.Console;
 using Environment = Android.OS.Environment;
 using Permission = Android.Content.PM.Permission;
 namespace SC4Android
@@ -52,13 +54,14 @@ namespace SC4Android
 			string[] flist = Assets.List("");
 			BasePath = new StreamReader(Assets.Open("apppath.txt")).ReadToEnd();
 			ConfigPath = GetExternalFilesDir("").AbsolutePath;
-			foreach (string dll in flist)
-			{
-				if (dll.EndsWith(".dll"))
+			foreach (string file in flist)
+            {
+				if (file.EndsWith(".dll"))
 				{
 					MemoryStream memoryStream = new();
-					Assets.Open(dll).CopyTo(memoryStream);
+					Assets.Open(file).CopyTo(memoryStream);
 					AppDomain.CurrentDomain.Load(memoryStream.ToArray());
+					memoryStream.Close();
 				}
 			}
 			Program.Main();
