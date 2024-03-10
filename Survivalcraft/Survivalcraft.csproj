@@ -85,8 +85,8 @@
     <Content Include="Content\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Jint" Version="3.0.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="Jint" Version="3.0.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0-preview.1.24080.9" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Game\DeviceManager.cs" />

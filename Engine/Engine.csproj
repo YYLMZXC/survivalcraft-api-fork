@@ -1,22 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <OutputType>Library</OutputType>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Configurations>Debug;Release</Configurations>
+    <TargetFrameworks>net8.0-windows;net8.0-android</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName></AssemblyName>
+    <RootNamespace>Engine</RootNamespace>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <IsTrimmable>True</IsTrimmable>
+	<GenerateDocumentationFile>False</GenerateDocumentationFile>
+	<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
+	<RootNamespace>Engine</RootNamespace>
+	<Version>2.3.10.4</Version>
+	<WarningLevel>2</WarningLevel>
+	<AssemblyName>Engine</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>DEBUG;desktop</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <WarningLevel>2</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugType>none</DebugType>
-    <DefineConstants>TRACE;desktop</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-    <Version>2.3.10.4</Version>
-    <Nullable>enable</Nullable>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+    <DefineConstants>desktop</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+    <DefineConstants>android</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Lit.psh" />
@@ -28,8 +38,15 @@
     <EmbeddedResource Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="OpenTK">
+    <PackageReference Include="System.Drawing.Common" Version="9.0.0-preview.1.24081.2" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK" Condition="'$(TargetFramework)' == 'net8.0-windows'">
       <HintPath>OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK-1.0.2moded" Condition="'$(TargetFramework)' == 'net8.0-android'">
+      <HintPath>reference\OpenTK-1.0.2moded.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
 </Project>

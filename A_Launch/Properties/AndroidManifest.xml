@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="16101" android:versionName="API1.61N" package="com.candy.survivalcraftAPI1_6">
-	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
-	<application android:label="生存战争2.3插件版API1.6" android:theme="@style/MainTheme" android:requestLegacyExternalStorage="true" android:icon="@mipmap/icon" android:usesCleartextTraffic="true"></application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="16105" android:versionName="API1.61T" package="com.candy.survivalcraftAPI1_6">
+	<uses-sdk />
+	<application android:label="[API1.6]生存战争2.3插件版" android:theme="@style/MainTheme" android:requestLegacyExternalStorage="true" android:icon="@mipmap/icon" android:usesCleartextTraffic="true"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

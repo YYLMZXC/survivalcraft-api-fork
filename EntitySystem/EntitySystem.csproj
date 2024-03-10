@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	<TargetFrameworks>net8.0-windows;net8.0-android</TargetFrameworks>
+	  <TargetFrameworks>net8.0-windows;net8.0-android</TargetFrameworks>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
 	<GenerateDocumentationFile>False</GenerateDocumentationFile>
@@ -25,6 +25,6 @@
     <DefineConstants>android</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UniEngine\UniEngine.csproj" />
+    <ProjectReference Include="..\Engine\Engine.csproj" />
   </ItemGroup>
 </Project>

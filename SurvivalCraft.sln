@@ -12,14 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntitySystem", "EntitySystem\EntitySystem.csproj", "{4CC1004A-3B04-4129-8FFA-B2FEFEF6644C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survivalcraft", "Survivalcraft\Survivalcraft.csproj", "{8DF9DBBC-F471-406E-A247-B07935723E07}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0D69E7AD-5457-41F6-AA19-03603A2EF3E2} = {0D69E7AD-5457-41F6-AA19-03603A2EF3E2}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survivalcraft_android", "Survivalcraft_android\Survivalcraft_android.csproj", "{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0D69E7AD-5457-41F6-AA19-03603A2EF3E2} = {0D69E7AD-5457-41F6-AA19-03603A2EF3E2}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A_Launch", "A_Launch\A_Launch.csproj", "{A3545922-3FF3-4076-9395-EE81D057B4BA}"
 EndProject
@@ -33,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "远程库", "远程库", "{
 		..\Users\ROG\Downloads\OpenAL_2.0.7.exe = ..\Users\ROG\Downloads\OpenAL_2.0.7.exe
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniEngine", "UniEngine\UniEngine.csproj", "{0D69E7AD-5457-41F6-AA19-03603A2EF3E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine", "Engine\Engine.csproj", "{0F3ABA55-EDCA-4613-9651-8B3D11808D22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +57,10 @@ Global
 		{C35F08AA-D8A3-40BB-BF37-3651E53DC9CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C35F08AA-D8A3-40BB-BF37-3651E53DC9CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C35F08AA-D8A3-40BB-BF37-3651E53DC9CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D69E7AD-5457-41F6-AA19-03603A2EF3E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D69E7AD-5457-41F6-AA19-03603A2EF3E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D69E7AD-5457-41F6-AA19-03603A2EF3E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D69E7AD-5457-41F6-AA19-03603A2EF3E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F3ABA55-EDCA-4613-9651-8B3D11808D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F3ABA55-EDCA-4613-9651-8B3D11808D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F3ABA55-EDCA-4613-9651-8B3D11808D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F3ABA55-EDCA-4613-9651-8B3D11808D22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,7 +71,7 @@ Global
 		{8F0CB2A0-6F8C-4BB2-BDD2-EBAEBBC122B8} = {A9146056-4560-4FC8-8AA6-903299A7FE26}
 		{A3545922-3FF3-4076-9395-EE81D057B4BA} = {A9146056-4560-4FC8-8AA6-903299A7FE26}
 		{C35F08AA-D8A3-40BB-BF37-3651E53DC9CE} = {B616DEEE-DF47-4BC3-BAA9-D223D221B6EB}
-		{0D69E7AD-5457-41F6-AA19-03603A2EF3E2} = {B616DEEE-DF47-4BC3-BAA9-D223D221B6EB}
+		{0F3ABA55-EDCA-4613-9651-8B3D11808D22} = {528DAACD-0030-4435-B208-CEB0771F1E63}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3B94A30-8A32-415E-BF3C-0B94F6F144C0}
