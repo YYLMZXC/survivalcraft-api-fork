@@ -15,7 +15,7 @@ namespace SC4Android
 
 	public class MainActivity : EngineActivity
 	{
-		private void CheckAndRequestPermissions()
+		private void 检查和获取权限()
 		{
 			if (((int)Build.VERSION.SdkInt) >= (int)BuildVersionCodes.R)
 			{
