@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0-android34.0</TargetFramework>
+    <TargetFramework>net9.0-android</TargetFramework>
     <SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
 	<PlatformTarget>AnyCPU</PlatformTarget>
     <AndroidApplication>True</AndroidApplication>
@@ -28,6 +28,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <RunAOTCompilation>False</RunAOTCompilation>
+    <AndroidEnableMultiDex>True</AndroidEnableMultiDex>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AndroidEnableMultiDex>True</AndroidEnableMultiDex>
   </PropertyGroup>
   <ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">

@@ -44,7 +44,7 @@ namespace SC4Android
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-			CheckAndRequestPermissions();
+			检查和获取权限();
 			Run();
 		}
 		public void Run()
