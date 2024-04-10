@@ -49,16 +49,22 @@ namespace SC4Android
 		}
 		public void Run()
 		{
-			string[] flist = Assets.List("");
-			BasePath = new StreamReader(Assets.Open("apppath.txt")).ReadToEnd();
-			ConfigPath = GetExternalFilesDir("").AbsolutePath;
-			foreach (string dll in flist)
+			if (Assets != null)
 			{
-				if (dll.EndsWith(".dll"))
+				string[]? fList = Assets.List("");
+				BasePath = new StreamReader(Assets.Open("apppath.txt")).ReadToEnd();
+				ConfigPath = GetExternalFilesDir("")?.AbsolutePath;
+				if (fList != null)
 				{
-					MemoryStream memoryStream = new();
-					Assets.Open(dll).CopyTo(memoryStream);
-					AppDomain.CurrentDomain.Load(memoryStream.ToArray());
+					foreach (string dll in fList)
+					{
+						if (dll.EndsWith(".dll"))
+						{
+							MemoryStream memoryStream = new();
+							Assets.Open(dll).CopyTo(memoryStream);
+							AppDomain.CurrentDomain.Load(memoryStream.ToArray());
+						}
+					}
 				}
 			}
 			Program.EntryPoint();

@@ -17,7 +17,7 @@ using System.IO;
 
 public static class ModsManager
 {
-	public const string 模组后缀 = ".scmod";
+	public const string modSuffix = ".scmod";
 	public const string APIVersion = "1.61Q";
 	public const string SCVersion = "2.3.10.4";
 	//1为api1.33 2为api1.40
@@ -56,14 +56,13 @@ public static class ModsManager
 	public const bool IsAndroid = true;
 
 #endif
-	public static string ModsPath = ExtPath + "/Mods",
-						 path;//移动端mods数据文件夹
+	public static string ModsPath = ExtPath + "/Mods";//移动端mods数据文件夹
 	internal static ModEntity SurvivalCraftModEntity;
 	internal static bool ConfigLoaded = false;
 
 	public class ModSettings
 	{
-		public string languageType;
+		public string languageType = string.Empty;
 	}
 
 	public class ModHook
@@ -167,7 +166,7 @@ public static class ModsManager
 	public static void DisableHook(ModLoader from, string HookName, string packageName, string reason)
 	{
 		ModEntity modEntity = ModList.Find(p => p.modInfo.PackageName == packageName);
-		if (ModHooks.TryGetValue(HookName, out ModHook modHook))
+		if (modEntity != null && ModHooks.TryGetValue(HookName, out ModHook modHook))
 		{
 			modHook.Disable(from, modEntity.Loader, reason);
 		}
@@ -204,22 +203,21 @@ public static class ModsManager
 	public static T DeserializeJson<T>(string text) where T : class
 	{
 		var obj = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(text, typeof(JsonObject));
-		var outobj = Activator.CreateInstance(typeof(T)) as T;
-		Type outtype = outobj.GetType();
+		Type outType = typeof(T);
+		var outObj = Activator.CreateInstance(outType) as T;
 		foreach (var c in obj)
 		{
-			FieldInfo field = outtype.GetField(c.Key, BindingFlags.Public | BindingFlags.Instance);
+			FieldInfo field = outType.GetField(c.Key, BindingFlags.Public | BindingFlags.Instance);
 			if (field == null) continue;
-			if (c.Value is JsonArray)
+			if (c.Value is JsonArray jsonArray)
 			{
-				var jsonArray = c.Value as JsonArray;
 				Type[] types = field.FieldType.GetGenericArguments();
 				var list1 = Activator.CreateInstance(typeof(List<>).MakeGenericType(types));
 				foreach (var item in jsonArray)
 				{
 					Type type = list1.GetType();
 					MethodInfo methodInfo = type.GetMethod("Add");
-					if (types.Length == 1)
+					if (methodInfo != null && types.Length == 1)
 					{
 						string tn = types[0].Name.ToLower();
 						switch (tn)
@@ -252,15 +250,15 @@ public static class ModsManager
 				}
 				if (list1 != null)
 				{
-					field.SetValue(outobj, list1);
+					field.SetValue(outObj, list1);
 				}
 			}
 			else
 			{
-				field.SetValue(outobj, c.Value);
+				field.SetValue(outObj, c.Value);
 			}
 		}
-		return outobj;
+		return outObj;
 	}
 	public static void SaveModSettings(XElement xElement)
 	{
@@ -296,22 +294,21 @@ public static class ModsManager
 	}
 	public static void SetConfig(string key, string value)
 	{
-		if (!Configs.TryGetValue(key, out string mm))
+		if (!Configs.TryAdd(key, value))
 		{
-			Configs.Add(key, value);
+			Configs[key] = value;
 		}
-		Configs[key] = value;
-	}
+    }
 
 	public static string ImportMod(string name, Stream stream)
 	{
 		if (!Storage.DirectoryExists(ModCachePath)) Storage.CreateDirectory(ModCachePath);
-		string realName = name + 模组后缀;
+		string realName = name + modSuffix;
 		string path = Storage.CombinePaths(ModCachePath, realName);
 		int num = 1;
 		while (Storage.FileExists(path))
 		{
-			realName = name + "(" + num + ")"+模组后缀;
+			realName = name + "(" + num + ")"+modSuffix;
 			path = Storage.CombinePaths(ModCachePath, realName);
 			num++;
 		}
@@ -356,10 +353,6 @@ public static class ModsManager
 		foreach (ModEntity modEntity1 in ModListAll)
 		{
 			ModInfo modInfo = modEntity1.modInfo;
-			if (modInfo == null)
-			{
-				LoadingScreen.Info($"[{modEntity1.ModFilePath}]缺少ModInfo文件，忽略加载");
-			}
 			ModInfo disabledmod = ToDisable.Find(l => l.PackageName == modInfo.PackageName);
 			if (disabledmod != null && disabledmod.PackageName != SurvivalCraftModEntity.modInfo.PackageName && disabledmod.PackageName != FastDebug.modInfo.PackageName)
 			{
@@ -389,10 +382,12 @@ public static class ModsManager
 		AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
 		{
 			try
-			{
-				Assembly? assembly = Dlls.GetValueOrDefault(args.Name) ??
+            {
+#nullable enable
+                Assembly? assembly = Dlls.GetValueOrDefault(args.Name) ??
 				                     TypeCache.LoadedAssemblies.FirstOrDefault(asm => asm.GetName().FullName == args.Name);
 				return assembly;
+#nullable disable
 			}
 			catch (Exception e)
 			{
@@ -423,20 +418,16 @@ public static class ModsManager
 			{
 				try
 				{
-					if (ms == 模组后缀)
+					if (ms == modSuffix || ms == ".SCNEXT")
 					{
 						Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
 						var modEntity = new ModEntity(ks, Game.ZipArchive.Open(keepOpenStream, true));
-						if (modEntity.modInfo == null) continue;
-						if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
-						ModListAll.Add(modEntity);
-					}
-					if (ms == ".SCNEXT")
-					{
-						Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
-						var modEntity = new ModEntity(ks, Game.ZipArchive.Open(keepOpenStream, true));
-						if (modEntity.modInfo == null) continue;
-						if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
+                        if (modEntity.modInfo == null)
+                        {
+                            LoadingScreen.Warning($"[{modEntity.ModFilePath}]缺少ModInfo文件，忽略加载");
+							continue;
+                        }
+                        if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
 						ModListAll.Add(modEntity);
 					}
 				}
