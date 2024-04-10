@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	internal class Vector3Serializer : ISerializer<Vector3>
+    public class Vector3Serializer : ISerializer<Vector3>
 	{
 		public void Serialize(InputArchive archive, ref Vector3 value)
 		{

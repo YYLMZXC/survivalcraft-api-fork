@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	internal class BoxSerializer : ISerializer<Box>
+    public class BoxSerializer : ISerializer<Box>
 	{
 		public void Serialize(InputArchive archive, ref Box value)
 		{

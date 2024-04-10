@@ -28,9 +28,9 @@ namespace Engine.Input
         public static Dictionary<int, int> m_deviceToIndex = [];
         public static List<int> m_toRemove = [];
 #endif
-		private const double m_buttonFirstRepeatTime = 0.2;
+        public static double m_buttonFirstRepeatTime = 0.2;
 
-        private const double m_buttonNextRepeatTime = 0.04;
+        public static double m_buttonNextRepeatTime = 0.04;
 
         private static State[] m_states = new State[4]
         {
@@ -359,11 +359,11 @@ namespace Engine.Input
                     {
                         if (!state.LastButtons[j])
                         {
-                            state.ButtonsRepeat[j] = Time.FrameStartTime + 0.2;
+                            state.ButtonsRepeat[j] = Time.FrameStartTime + m_buttonFirstRepeatTime;
                         }
                         else if (Time.FrameStartTime >= state.ButtonsRepeat[j])
                         {
-                            state.ButtonsRepeat[j] = MathUtils.Max(Time.FrameStartTime, state.ButtonsRepeat[j] + 0.04);
+                            state.ButtonsRepeat[j] = MathUtils.Max(Time.FrameStartTime, state.ButtonsRepeat[j] + m_buttonNextRepeatTime);
                         }
                     }
                     else
@@ -375,7 +375,7 @@ namespace Engine.Input
             }
         }
 
-        private static float ApplyDeadZone(float value, float deadZone)
+        public static float ApplyDeadZone(float value, float deadZone)
         {
             return MathUtils.Sign(value) * MathUtils.Max(MathUtils.Abs(value) - deadZone, 0f) / (1f - deadZone);
         }

@@ -24,7 +24,7 @@ namespace Game
 			base.ContentSize = new Vector2(750f, 420f);
 		}
 
-		private static IEnumerable<GameMode> GetAllowedGameModes(bool allowAdventure)
+        public static IEnumerable<GameMode> GetAllowedGameModes(bool allowAdventure)
 		{
 			if (!allowAdventure)
 			{

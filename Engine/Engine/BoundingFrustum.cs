@@ -175,13 +175,13 @@ namespace Engine
 			return !object.Equals(f1, f2);
 		}
 
-		private static Vector3 ComputeIntersection(Plane plane, Ray3 ray)
+		public static Vector3 ComputeIntersection(Plane plane, Ray3 ray)
 		{
 			float s = (0f - plane.D - Vector3.Dot(plane.Normal, ray.Position)) / Vector3.Dot(plane.Normal, ray.Direction);
 			return ray.Position + (ray.Direction * s);
 		}
 
-		private static Ray3 ComputeIntersectionLine(Plane p1, Plane p2)
+        public static Ray3 ComputeIntersectionLine(Plane p1, Plane p2)
 		{
 			Ray3 result = default(Ray3);
 			result.Direction = Vector3.Cross(p1.Normal, p2.Normal);

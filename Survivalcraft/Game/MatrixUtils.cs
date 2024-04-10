@@ -2,7 +2,7 @@ using Engine;
 
 namespace Game
 {
-	internal class MatrixUtils
+    public class MatrixUtils
 	{
 		public static Matrix CreateScaleTranslation(float sx, float sy, float tx, float ty)
 		{

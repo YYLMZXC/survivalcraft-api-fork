@@ -9,11 +9,11 @@ namespace Game
 	{
 		public const int Index = 258;
 
-		private BlockMesh m_mesh = new();
+        public BlockMesh m_mesh = new();
 
-		private BlockMesh m_standaloneMesh = new();
+        public BlockMesh m_standaloneMesh = new();
 
-		private BoundingBox[] m_collisionBoxes;
+        public BoundingBox[] m_collisionBoxes;
 
 		public override void Initialize()
 		{

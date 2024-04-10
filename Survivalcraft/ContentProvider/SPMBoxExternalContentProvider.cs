@@ -412,7 +412,7 @@ namespace Game
 			}
 		}
 
-		internal static ExternalContentEntry JsonObjectToEntry(JsonObject jsonObject)
+		public static ExternalContentEntry JsonObjectToEntry(JsonObject jsonObject)
 		{
 			var externalContentEntry = new ExternalContentEntry();
 			if (jsonObject.ContainsKey("entries"))
@@ -433,8 +433,8 @@ namespace Game
 			}
 			return externalContentEntry;
 		}
-		//获取分享连接
-		internal static string JsonObjectToLinkAddress(JsonObject jsonObject)
+        //获取分享连接
+        public static string JsonObjectToLinkAddress(JsonObject jsonObject)
 		{
 			if (jsonObject.ContainsKey("url"))
 			{

@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Serialization
 {
-	internal class GuidSerializer : ISerializer<Guid>
+    public class GuidSerializer : ISerializer<Guid>
 	{
 		public void Serialize(InputArchive archive, ref Guid value)
 		{

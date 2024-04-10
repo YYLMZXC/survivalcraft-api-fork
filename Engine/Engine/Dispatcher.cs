@@ -6,7 +6,7 @@ namespace Engine
 {
 	public static class Dispatcher
 	{
-		private struct ActionInfo
+        public struct ActionInfo
 		{
 			public Action Action;
 

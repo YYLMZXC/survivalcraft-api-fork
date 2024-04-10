@@ -100,7 +100,7 @@ namespace Engine
 		static extern bool GlobalMemoryStatusEx(ref MEMORYINFO mi);
 		//Define the information structure of memory
 		[StructLayout(LayoutKind.Sequential)]
-		struct MEMORYINFO
+        public struct MEMORYINFO
 		{
 			public uint dwLength; //Current structure size
 			public uint dwMemoryLoad; //Current memory utilization
@@ -112,7 +112,7 @@ namespace Engine
 			public ulong ullAvailVirtual; //Available virtual memory size
 			public ulong ullAvailExtendedVirtual; //Keep this value always zero
 		}
-		private static MEMORYINFO GetMemoryStatus()
+        public static MEMORYINFO GetMemoryStatus()
 		{
 			MEMORYINFO memoryInfo = new();
 			memoryInfo.dwLength = (uint)Marshal.SizeOf(memoryInfo);

@@ -116,11 +116,11 @@ namespace Engine
             }
         }
 #else
-        internal static GameWindow m_gameWindow;
+        public static GameWindow m_gameWindow;
 
         private static bool m_closing;
 
-        private static float m_dpiScale;
+        public static float m_dpiScale;
 
         private static int? m_swapInterval;
 

@@ -11,7 +11,7 @@ namespace TemplatesDatabase
 
 		private ReadOnlyList<DatabaseObjectType> m_databaseObjectTypes;
 
-		private Dictionary<Guid, DatabaseObject> m_databaseObjectsByGuid = [];
+        public Dictionary<Guid, DatabaseObject> m_databaseObjectsByGuid = [];
 
 		public IList<DatabaseObjectType> DatabaseObjectTypes => m_databaseObjectTypes;
 

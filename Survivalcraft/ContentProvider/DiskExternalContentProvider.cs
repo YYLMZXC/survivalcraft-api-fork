@@ -111,7 +111,7 @@ namespace Game
 				failure(e);
 			}
 		}
-		private ExternalContentEntry GetDirectoryEntry(string internalPath, bool scanContents)
+        public ExternalContentEntry GetDirectoryEntry(string internalPath, bool scanContents)
 		{
 			var externalContentEntry = new ExternalContentEntry();
 			externalContentEntry.Type = ExternalContentType.Directory;

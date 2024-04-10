@@ -6,15 +6,15 @@ namespace Engine.Serialization
 {
 	public static class TypeCache
 	{
-		private static Dictionary<string, Type> m_typesByName;
+        public static Dictionary<string, Type> m_typesByName;
 
-		private static Dictionary<string, string> m_shortToLong;
+        public static Dictionary<string, string> m_shortToLong;
 
-		private static Dictionary<string, string> m_longToShort;
+        public static Dictionary<string, string> m_longToShort;
 
-		private static List<Assembly> m_loadedAssemblies;
+        public static List<Assembly> m_loadedAssemblies;
 
-		private static bool m_rescanAssemblies;
+        public static bool m_rescanAssemblies;
 
 		public static ReadOnlyList<Assembly> LoadedAssemblies
 		{
