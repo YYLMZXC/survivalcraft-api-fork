@@ -208,9 +208,7 @@ namespace Engine.Graphics
 		{
 			string str = "";
 
-			if (!shaderCode.StartsWith("#version "))
-				str += "#version 110" + Environment.NewLine;
-			else
+			if (shaderCode.StartsWith("#version "))
 			{
 				string versioncode = shaderCode.Split(new char[] { '\n' })[0];
 				string versionnum = versioncode.Split(new char[] { ' ' })[1];
@@ -255,11 +253,11 @@ namespace Engine.Graphics
 			ParseShaderMetadata(m_vertexShaderCode, dictionary, dictionary2);
 			ParseShaderMetadata(m_pixelShaderCode, dictionary, dictionary2);
 			string @string = PrependShaderMacros(m_vertexShaderCode, m_shaderMacros, isVertexShader: true);
-			string string2 = PrependShaderMacros(m_pixelShaderCode, m_shaderMacros, isVertexShader: false);
+            string string2 = PrependShaderMacros(m_pixelShaderCode, m_shaderMacros, isVertexShader: false);
 			m_vertexShader = GL.CreateShader(All.VertexShader);
 			GL.ShaderSource(m_vertexShader, @string);
-			GL.CompileShader(m_vertexShader);
-			GL.GetShader(m_vertexShader, OpenTK.Graphics.ES30.ShaderParameter.CompileStatus, out int @params);
+            GL.CompileShader(m_vertexShader);
+            GL.GetShader(m_vertexShader, OpenTK.Graphics.ES30.ShaderParameter.CompileStatus, out int @params);
 			if (@params != 1)
 			{
 				string shaderInfoLog = GL.GetShaderInfoLog(m_vertexShader);
