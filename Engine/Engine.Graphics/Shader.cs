@@ -19,7 +19,7 @@ namespace Engine.Graphics
 		{
 			public int Size;
 
-			public All Type;
+			public VertexAttribPointerType Type;
 
 			public bool Normalize;
 
@@ -145,7 +145,8 @@ namespace Engine.Graphics
 						Offset = vertexElement.Offset
 					};
 					GLWrapper.TranslateVertexElementFormat(vertexElement.Format, out value[shaderAttributeDatum.Location].Type, out value[shaderAttributeDatum.Location].Normalize);
-				}
+
+                }
 				m_vertexAttributeDataByDeclaration.Add(vertexDeclaration, value);
 			}
 			return value;
@@ -254,7 +255,7 @@ namespace Engine.Graphics
 			ParseShaderMetadata(m_pixelShaderCode, dictionary, dictionary2);
 			string @string = PrependShaderMacros(m_vertexShaderCode, m_shaderMacros, isVertexShader: true);
             string string2 = PrependShaderMacros(m_pixelShaderCode, m_shaderMacros, isVertexShader: false);
-			m_vertexShader = GL.CreateShader(All.VertexShader);
+			m_vertexShader = GL.CreateShader(ShaderType.VertexShader);
 			GL.ShaderSource(m_vertexShader, @string);
             GL.CompileShader(m_vertexShader);
             GL.GetShader(m_vertexShader, OpenTK.Graphics.ES30.ShaderParameter.CompileStatus, out int @params);
@@ -263,7 +264,7 @@ namespace Engine.Graphics
 				string shaderInfoLog = GL.GetShaderInfoLog(m_vertexShader);
 				throw new InvalidOperationException($"Error compiling vertex shader.\n{shaderInfoLog}");
 			}
-			m_pixelShader = GL.CreateShader(All.FragmentShader);
+			m_pixelShader = GL.CreateShader(ShaderType.FragmentShader);
 			GL.ShaderSource(m_pixelShader, string2);
 			GL.CompileShader(m_pixelShader);
 			GL.GetShader(m_pixelShader, OpenTK.Graphics.ES30.ShaderParameter.CompileStatus, out int params2);
@@ -276,13 +277,13 @@ namespace Engine.Graphics
 			GL.AttachShader(m_program, m_vertexShader);
 			GL.AttachShader(m_program, m_pixelShader);
 			GL.LinkProgram(m_program);
-			GL.GetProgram(m_program, (All)ProgramParameter.LinkStatus, out int params3);
-			if (params3 != 1)
+			GL.GetProgram(m_program, All.LinkStatus, out int params3);
+            if (params3 != 1)
 			{
 				string programInfoLog = GL.GetProgramInfoLog(m_program);
 				throw new InvalidOperationException($"Error linking program.\n{programInfoLog}");
 			}
-			GL.GetProgram(m_program, (All)ProgramParameter.ActiveAttributes, out int params4);
+			GL.GetProgram(m_program, All.ActiveAttributes, out int params4);
 			for (int i = 0; i < params4; i++)
 			{
 				StringBuilder stringBuilder = new(256);
@@ -298,7 +299,7 @@ namespace Engine.Graphics
 					Semantic = value
 				});
 			}
-			GL.GetProgram(m_program, (All)ProgramParameter.ActiveUniforms, out int params5);
+			GL.GetProgram(m_program, All.ActiveUniforms, out int params5);
 			List<ShaderParameter> list = [];
 			Dictionary<string, ShaderParameter> dictionary3 = [];
 			for (int j = 0; j < params5; j++)
