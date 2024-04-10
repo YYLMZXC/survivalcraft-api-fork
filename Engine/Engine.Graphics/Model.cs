@@ -7,11 +7,11 @@ namespace Engine.Graphics
 {
 	public class Model : IDisposable
 	{
-		internal ModelBone m_rootBone;
+		public ModelBone m_rootBone;
 
-		internal List<ModelBone> m_bones = [];
+        public List<ModelBone> m_bones = [];
 
-		internal List<ModelMesh> m_meshes = [];
+        public List<ModelMesh> m_meshes = [];
 
 		public ModelBone RootBone => m_rootBone;
 

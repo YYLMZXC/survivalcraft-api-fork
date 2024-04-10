@@ -5,25 +5,25 @@ namespace Engine.Graphics
 		public int Layer
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public DepthStencilState DepthStencilState
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public RasterizerState RasterizerState
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public BlendState BlendState
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		internal BaseBatch()

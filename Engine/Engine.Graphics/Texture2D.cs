@@ -9,9 +9,9 @@ namespace Engine.Graphics
 {
 	public class Texture2D : GraphicsResource
 	{
-		internal int m_texture;
-private PixelFormat m_pixelFormat;
-private PixelType m_pixelType;
+        public int m_texture;
+        public PixelFormat m_pixelFormat;
+        public PixelType m_pixelType;
 
 		public IntPtr NativeHandle => (IntPtr)m_texture;
 
@@ -29,25 +29,25 @@ private PixelType m_pixelType;
 		public int Width
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public int Height
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public ColorFormat ColorFormat
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public int MipLevelsCount
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public object Tag
@@ -121,7 +121,7 @@ private PixelType m_pixelType;
 			AllocateTexture();
 		}
 
-		private void AllocateTexture()
+        public void AllocateTexture()
 		{
 			GL.GenTextures(1, out m_texture);
 			GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
@@ -137,7 +137,7 @@ private PixelType m_pixelType;
             }
         }
 
-		private void DeleteTexture()
+        public void DeleteTexture()
 		{
 			if (m_texture != 0)
 			{

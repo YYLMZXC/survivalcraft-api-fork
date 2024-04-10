@@ -4,17 +4,17 @@ namespace Engine.Graphics
 {
 	public class ShaderTransforms
 	{
-		private Matrix[] m_world;
+		public Matrix[] m_world;
 
-		private Matrix m_view = Matrix.Identity;
+        public Matrix m_view = Matrix.Identity;
 
-		private Matrix m_projection = Matrix.Identity;
+        public Matrix m_projection = Matrix.Identity;
 
-		private Matrix[] m_worldView;
+        public Matrix[] m_worldView;
 
-		private Matrix m_viewProjection = Matrix.Identity;
+        public Matrix m_viewProjection = Matrix.Identity;
 
-		private Matrix[] m_worldViewProjection;
+        public Matrix[] m_worldViewProjection;
 
 		public int MaxWorldMatrices => m_world.Length;
 

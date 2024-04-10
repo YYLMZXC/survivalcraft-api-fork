@@ -5,9 +5,9 @@ namespace Engine.Graphics
 {
 	public abstract class GraphicsResource : IDisposable
 	{
-		internal static HashSet<GraphicsResource> m_resources = [];
+        public static HashSet<GraphicsResource> m_resources = [];
 
-		internal bool m_isDisposed;
+        public bool m_isDisposed;
 
 		internal GraphicsResource()
 		{
@@ -34,7 +34,7 @@ namespace Engine.Graphics
 
 		internal abstract void HandleDeviceReset();
 
-		internal void VerifyNotDisposed()
+        public void VerifyNotDisposed()
 		{
 			if (m_isDisposed)
 			{

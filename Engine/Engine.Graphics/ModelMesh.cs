@@ -5,20 +5,20 @@ namespace Engine.Graphics
 {
 	public class ModelMesh : IDisposable
 	{
-		internal List<ModelMeshPart> m_meshParts = [];
+        public List<ModelMeshPart> m_meshParts = [];
 
-		internal BoundingBox m_boundingBox;
+        public BoundingBox m_boundingBox;
 
 		public string Name
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public ModelBone ParentBone
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public BoundingBox BoundingBox
@@ -27,7 +27,7 @@ namespace Engine.Graphics
 			{
 				return m_boundingBox;
 			}
-			internal set
+			set
 			{
 				m_boundingBox = value;
 			}

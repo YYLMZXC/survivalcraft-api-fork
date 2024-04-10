@@ -4,7 +4,7 @@ namespace Engine.Graphics
 {
 	public abstract class BaseFontBatch : BaseBatch
 	{
-		internal static UnlitShader m_shader = new(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+        public static UnlitShader m_shader = new(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
 
 		public readonly DynamicArray<VertexPositionColorTexture> TriangleVertices = [];
 
@@ -13,13 +13,13 @@ namespace Engine.Graphics
 		public BitmapFont Font
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public SamplerState SamplerState
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		internal BaseFontBatch()

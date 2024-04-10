@@ -8,14 +8,14 @@ namespace Engine.Graphics
 {
     public sealed class RenderTarget2D : Texture2D
     {
-        internal int m_frameBuffer;
+        public int m_frameBuffer;
 
-        internal int m_depthBuffer;
+        public int m_depthBuffer;
 
         public DepthFormat DepthFormat
         {
             get;
-            private set;
+            set;
         }
 
         public RenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
@@ -70,7 +70,7 @@ namespace Engine.Graphics
             AllocateRenderTarget();
         }
 
-        private void AllocateRenderTarget()
+        public void AllocateRenderTarget()
         {
             GL.GenFramebuffers(1, out m_frameBuffer);
             GLWrapper.BindFramebuffer(m_frameBuffer);
@@ -95,7 +95,7 @@ namespace Engine.Graphics
             }
         }
 
-        private void DeleteRenderTarget()
+        public void DeleteRenderTarget()
         {
             if (m_depthBuffer != 0)
             {
