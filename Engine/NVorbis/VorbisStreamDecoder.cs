@@ -7,7 +7,7 @@ using System.Text;
 
 namespace NVorbis
 {
-	internal class VorbisStreamDecoder : IVorbisStreamStatus, IDisposable
+	public class VorbisStreamDecoder : IVorbisStreamStatus, IDisposable
 	{
 		internal int _upperBitrate;
 

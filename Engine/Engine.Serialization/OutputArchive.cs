@@ -55,7 +55,7 @@ namespace Engine.Serialization
 			Serialize(name, typeof(T), value);
 		}
 
-		protected abstract void WriteObjectInfo(int objectId, bool isReference, Type runtimeType);
+        public abstract void WriteObjectInfo(int objectId, bool isReference, Type runtimeType);
 
 		protected virtual void WriteObject(SerializeData staticSerializeData, object value)
 		{

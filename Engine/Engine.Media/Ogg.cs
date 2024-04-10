@@ -8,11 +8,11 @@ namespace Engine.Media
 	{
 		public class OggStreamingSource : StreamingSource
 		{
-			private VorbisReader m_reader;
+            public VorbisReader m_reader;
 
-			private Stream m_stream;
+            public Stream m_stream;
 
-			private float[] m_samples = new float[1024];
+            public float[] m_samples = new float[1024];
 
 			public override int ChannelsCount => m_reader.Channels;
 

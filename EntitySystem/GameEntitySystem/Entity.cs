@@ -9,7 +9,7 @@ using TemplatesDatabase;
 
 namespace GameEntitySystem
 {
-	public sealed class Entity : IDisposable
+	public class Entity : IDisposable
 	{
 		public struct FilteredComponentsEnumerable<T> : IEnumerable<T>, IEnumerable where T : class
 		{

@@ -4,9 +4,9 @@ using System;
 
 namespace Engine.Audio
 {
-	public sealed class Sound : BaseSound
+	public class Sound : BaseSound
 	{
-		private SoundBuffer m_soundBuffer;
+        public SoundBuffer m_soundBuffer;
 
 		public SoundBuffer SoundBuffer => m_soundBuffer;
 

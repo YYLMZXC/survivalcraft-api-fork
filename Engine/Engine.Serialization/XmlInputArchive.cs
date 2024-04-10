@@ -228,7 +228,7 @@ namespace Engine.Serialization
 			LeaveNode(name);
 		}
 
-		protected override void ReadObjectInfo(out int objectId, out bool isReference, out Type runtimeType)
+        public override void ReadObjectInfo(out int objectId, out bool isReference, out Type runtimeType)
 		{
 			XAttribute xAttribute = Node.Attribute("_ref");
 			if (xAttribute != null)

@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-	public sealed class SamplerState : LockOnFirstUse
+	public  class SamplerState : LockOnFirstUse
 	{
 		private TextureFilterMode m_filterMode;
 

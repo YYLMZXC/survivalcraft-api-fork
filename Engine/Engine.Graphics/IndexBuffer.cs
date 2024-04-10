@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
-	public sealed class IndexBuffer : GraphicsResource
+	public  class IndexBuffer : GraphicsResource
 	{
 		internal int m_buffer;
 

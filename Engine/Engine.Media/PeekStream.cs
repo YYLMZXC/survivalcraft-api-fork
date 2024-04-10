@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Engine.Media
 {
-	internal class PeekStream : Stream
+    public class PeekStream : Stream
 	{
 		private Stream m_stream;
 

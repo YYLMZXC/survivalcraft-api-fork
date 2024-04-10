@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NVorbis
 {
-	internal abstract class DataPacket
+    public abstract class DataPacket
 	{
 		[Flags]
 		protected enum PacketFlags : byte

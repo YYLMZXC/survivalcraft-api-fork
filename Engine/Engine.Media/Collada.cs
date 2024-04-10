@@ -11,7 +11,7 @@ namespace Engine.Media
 {
 	public static class Collada
 	{
-		private struct Vertex : IEquatable<Vertex>
+        public struct Vertex : IEquatable<Vertex>
 		{
 			public byte[] Data;
 
@@ -64,7 +64,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class Asset
+        public class Asset
 		{
 			public readonly float Meter = 1f;
 
@@ -82,7 +82,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaRoot
+        public class ColladaRoot
 		{
 			public static readonly XNamespace Namespace = "http://www.collada.org/2005/11/COLLADASchema";
 
@@ -111,7 +111,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaNameId
+        public class ColladaNameId
 		{
 			public string Id;
 
@@ -133,7 +133,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaLibraryVisualScenes
+        public class ColladaLibraryVisualScenes
 		{
 			public List<ColladaVisualScene> VisualScenes = [];
 
@@ -146,7 +146,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaLibraryGeometries
+        public class ColladaLibraryGeometries
 		{
 			public List<ColladaGeometry> Geometries = [];
 
@@ -159,7 +159,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaScene
+        public class ColladaScene
 		{
 			public ColladaVisualScene VisualScene;
 
@@ -170,7 +170,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaVisualScene : ColladaNameId
+        public class ColladaVisualScene : ColladaNameId
 		{
 			public List<ColladaNode> Nodes = [];
 
@@ -184,7 +184,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaNode : ColladaNameId
+        public class ColladaNode : ColladaNameId
 		{
 			public Matrix Transform = Matrix.Identity;
 
@@ -233,7 +233,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaGeometry : ColladaNameId
+        public class ColladaGeometry : ColladaNameId
 		{
 			public ColladaMesh Mesh;
 
@@ -248,7 +248,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaMesh
+		public class ColladaMesh
 		{
 			public List<ColladaSource> Sources = [];
 
@@ -271,7 +271,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaSource : ColladaNameId
+		public class ColladaSource : ColladaNameId
 		{
 			public ColladaFloatArray FloatArray;
 
@@ -297,7 +297,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaFloatArray : ColladaNameId
+		public class ColladaFloatArray : ColladaNameId
 		{
 			public float[] Array;
 
@@ -309,7 +309,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaAccessor
+		public class ColladaAccessor
 		{
 			public ColladaFloatArray Source;
 
@@ -333,7 +333,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaVertices : ColladaNameId
+		public class ColladaVertices : ColladaNameId
 		{
 			public string Semantic;
 
@@ -348,7 +348,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaPolygons
+		public class ColladaPolygons
 		{
 			public List<ColladaInput> Inputs = [];
 
@@ -375,7 +375,7 @@ namespace Engine.Media
 			}
 		}
 
-		private class ColladaInput
+		public class ColladaInput
 		{
 			public int Offset;
 
@@ -469,7 +469,7 @@ namespace Engine.Media
 			return modelData;
 		}
 
-		private static ModelBoneData LoadNode(ModelData data, ModelBoneData parentBoneData, ColladaNode node, Matrix transform)
+        public static ModelBoneData LoadNode(ModelData data, ModelBoneData parentBoneData, ColladaNode node, Matrix transform)
 		{
 			var modelBoneData = new ModelBoneData();
 			data.Bones.Add(modelBoneData);
@@ -487,7 +487,7 @@ namespace Engine.Media
 			return modelBoneData;
 		}
 
-		private static ModelMeshData LoadGeometry(ModelData data, ModelBoneData parentBoneData, ColladaGeometry geometry)
+        public static ModelMeshData LoadGeometry(ModelData data, ModelBoneData parentBoneData, ColladaGeometry geometry)
 		{
 			var modelMeshData = new ModelMeshData();
 			data.Meshes.Add(modelMeshData);
@@ -504,7 +504,7 @@ namespace Engine.Media
 			return modelMeshData;
 		}
 
-		private static ModelMeshPartData LoadPolygons(ModelData data, ColladaPolygons polygons)
+        public static ModelMeshPartData LoadPolygons(ModelData data, ColladaPolygons polygons)
 		{
 			var modelMeshPartData = new ModelMeshPartData();
 			int num = 0;
@@ -669,14 +669,14 @@ namespace Engine.Media
 			return modelMeshPartData;
 		}
 
-		private static T[] ExtendArray<T>(T[] array, int extensionLength)
+        public static T[] ExtendArray<T>(T[] array, int extensionLength)
 		{
 			var array2 = new T[array.Length + extensionLength];
 			Array.Copy(array, array2, array.Length);
 			return array2;
 		}
 
-		private static void IndexVertices(int vertexStride, byte[] vertices, out byte[] resultVertices, out byte[] resultIndices)
+        public static void IndexVertices(int vertexStride, byte[] vertices, out byte[] resultVertices, out byte[] resultIndices)
 		{
 			int num = vertices.Length / vertexStride;
 			var dictionary = new Dictionary<Vertex, ushort>();

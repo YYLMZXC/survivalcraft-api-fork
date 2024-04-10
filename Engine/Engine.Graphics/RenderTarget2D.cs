@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
-    public sealed class RenderTarget2D : Texture2D
+    public  class RenderTarget2D : Texture2D
     {
         public int m_frameBuffer;
 

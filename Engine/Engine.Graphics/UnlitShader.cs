@@ -89,7 +89,7 @@ namespace Engine.Graphics
 			Color = Vector4.One;
 		}
 
-		protected override void PrepareForDrawingOverride()
+        public override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(1, worldView: false, viewProjection: false, worldViewProjection: true);
 			m_worldViewProjectionMatrixParameter.SetValue(Transforms.WorldViewProjection, 1);

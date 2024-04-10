@@ -8,30 +8,30 @@ namespace Engine.Audio
 {
 	public class SoundBuffer : IDisposable
 	{
-		internal int m_buffer;
+        public int m_buffer;
 
 		public int ChannelsCount
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public int SamplingFrequency
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public int SamplesCount
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public int UseCount
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public SoundBuffer(byte[] data, int startIndex, int itemsCount, int channelsCount, int samplingFrequency)
@@ -114,7 +114,7 @@ namespace Engine.Audio
 			return Load(SoundData.Load(fileName));
 		}
 
-		private void InitializeProperties(int samplesCount, int channelsCount, int samplingFrequency)
+        public void InitializeProperties(int samplesCount, int channelsCount, int samplingFrequency)
 		{
 			if (samplesCount <= 0)
 			{

@@ -73,7 +73,7 @@ namespace Engine.Graphics
 			m_alphaThresholdParameter = base.GetParameter("u_alphaThreshold", true);
 		}
 
-		protected override void PrepareForDrawingOverride()
+        public override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(1, false, false, true);
 			m_worldViewProjectionMatrixParameter.SetValue(this.Transforms.WorldViewProjection, 1);

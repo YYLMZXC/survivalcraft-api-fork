@@ -2,7 +2,7 @@ using Engine.Media;
 
 namespace Engine.Graphics
 {
-	public sealed class PrimitivesRenderer3D : BasePrimitivesRenderer<FlatBatch3D, TexturedBatch3D, FontBatch3D>
+	public  class PrimitivesRenderer3D : BasePrimitivesRenderer<FlatBatch3D, TexturedBatch3D, FontBatch3D>
 	{
 		public FlatBatch3D FlatBatch(int layer = 0, DepthStencilState depthStencilState = null, RasterizerState rasterizerState = null, BlendState blendState = null)
 		{

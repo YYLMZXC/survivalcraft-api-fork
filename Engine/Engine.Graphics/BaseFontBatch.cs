@@ -73,7 +73,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		protected Vector2 CalculateTextOffset(string text, TextAnchor anchor, Vector2 scale, Vector2 spacing)
+		public Vector2 CalculateTextOffset(string text, TextAnchor anchor, Vector2 scale, Vector2 spacing)
 		{
 			Vector2 zero = Vector2.Zero;
 			if (anchor != 0)
