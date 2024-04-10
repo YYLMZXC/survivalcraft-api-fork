@@ -14,9 +14,9 @@ namespace Game
         public static double m_cpuEndTime;
 
         public static List<Uri> m_urisToHandle = [];
-
+#nullable enable
         public static string? SystemLanguage { get; set; }
-
+#nullable disable
         public static float LastFrameTime { get; set; }
 
         public static float LastCpuFrameTime { get; set; }
@@ -75,7 +75,6 @@ namespace Game
                 e.IsHandled = true;
             };
             JsInterface.Initiate();
-            string Error = "";
             Window.Run(0, 0, WindowMode.Resizable,
                 "生存战争2.3插件版NEXT" + ModsManager.APIVersion);
         }

@@ -28,8 +28,8 @@ namespace Engine
                 try
                 {
                     StatFs statFs = new(Android.OS.Environment.DataDirectory.Path);
-                    long num = statFs.BlockSize;
-                    return statFs.AvailableBlocks * num;
+                    long num = statFs.BlockSizeLong;
+                    return statFs.AvailableBlocksLong * num;
                 }
                 catch (Exception)
                 {

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Game
 {
@@ -85,9 +86,9 @@ namespace Game
 				{
 					Block block = entity.Blocks[i];
 					m_blocks[block.BlockIndex] = block;
-					if (block is FluidBlock)
+					if (block is FluidBlock fluidBlock)
 					{
-						m_fluidBlocks[block.BlockIndex] = block as FluidBlock;
+						m_fluidBlocks[block.BlockIndex] = fluidBlock;
 					}
 				}
 			}
@@ -450,17 +451,13 @@ namespace Game
 			{
 				'\n'
 			}, StringSplitOptions.RemoveEmptyEntries);
-			string[] array2 = null;
-			for (int i = 0; i < array.Length; i++)
+			string[] firstLine = array[0].Split(';');
+            string[] array2 = new string[firstLine.Length - 1];
+            Array.Copy(firstLine, 1, array2, 0, firstLine.Length - 1);
+            for (int i = 1; i < array.Length; i++)
 			{
 				if (string.IsNullOrEmpty(array[i])) continue;
 				string[] array3 = array[i].Split(';');
-				if (i == 0)
-				{
-					array2 = new string[array3.Length - 1];
-					Array.Copy(array3, 1, array2, 0, array3.Length - 1);
-					continue;
-				}
 				if (array3.Length != array2.Length + 1)
 				{
 					throw new InvalidOperationException(string.Format(LanguageControl.Get("BlocksManager", 2), (array3.Length != 0) ? array3[0] : LanguageControl.Unknown));

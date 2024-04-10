@@ -46,7 +46,7 @@ namespace Engine.Graphics
             try
             {
                 GLWrapper.BindFramebuffer(m_frameBuffer);
-                GL.ReadPixels(sourceRectangle.Left, sourceRectangle.Top, sourceRectangle.Width, sourceRectangle.Height, All.Rgba, All.UnsignedByte, gCHandle.AddrOfPinnedObject());
+                GL.ReadPixels(sourceRectangle.Left, sourceRectangle.Top, sourceRectangle.Width, sourceRectangle.Height, PixelFormat.Rgba, PixelType.UnsignedByte, gCHandle.AddrOfPinnedObject());
             }
             finally
             {
@@ -78,8 +78,8 @@ namespace Engine.Graphics
             if (DepthFormat != 0)
             {
                 GL.GenRenderbuffers(1, out m_depthBuffer);
-                GL.BindRenderbuffer(All.Renderbuffer, m_depthBuffer);
-                GL.RenderbufferStorage(All.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), base.Width, base.Height);
+                GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, m_depthBuffer);
+                GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), base.Width, base.Height);
                 GL.FramebufferRenderbuffer(All.Framebuffer, All.DepthAttachment, All.Renderbuffer, m_depthBuffer);
                 GL.FramebufferRenderbuffer(All.Framebuffer, All.StencilAttachment, All.Renderbuffer, 0);
             }
@@ -88,7 +88,7 @@ namespace Engine.Graphics
                 GL.FramebufferRenderbuffer(All.Framebuffer, All.DepthAttachment, All.Renderbuffer, 0);
                 GL.FramebufferRenderbuffer(All.Framebuffer, All.StencilAttachment, All.Renderbuffer, 0);
             }
-            FramebufferErrorCode framebufferErrorCode = (FramebufferErrorCode)GL.CheckFramebufferStatus(All.Framebuffer);
+            FramebufferErrorCode framebufferErrorCode = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
             if (framebufferErrorCode != FramebufferErrorCode.FramebufferComplete)
             {
                 throw new InvalidOperationException($"Error creating framebuffer ({framebufferErrorCode.ToString()}).");

@@ -150,10 +150,7 @@ namespace Game
 				string filename = zipArchiveEntry.FilenameInZip;
 				if (!zipArchiveEntry.IsFilenameUtf8)
 				{
-					var gbk = Encoding.GetEncoding("GBK");
-					var utf = Encoding.UTF8;
-					var p = utf.GetString(Encoding.Convert(gbk, utf, gbk.GetBytes(zipArchiveEntry.FilenameInZip)));
-					ModsManager.AddException(new Exception($"[{modInfo.Name}]文件名[{zipArchiveEntry.FilenameInZip}]编码不是UTF-8，请进行修正，GBK编码为[{p}]"));
+					ModsManager.AddException(new Exception($"[{modInfo.Name}]中的[{zipArchiveEntry.FilenameInZip}]文件名称编码不是UTF-8，请进行修正"));
 				}
 				if (filename.StartsWith("Assets/"))
 				{

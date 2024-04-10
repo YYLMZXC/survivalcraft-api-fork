@@ -32,13 +32,16 @@ namespace Game
 		{
 			LogList.ItemWidgetFactory = (obj) =>
 			{
-				LogItem logItem = obj as LogItem;
-				CanvasWidget canvasWidget = new() { Size = new Vector2(Display.Viewport.Width, 40), Margin = new Vector2(0, 2), HorizontalAlignment = WidgetAlignment.Near };
-				FontTextWidget fontTextWidget = new() { FontScale = 0.6f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
-				canvasWidget.Children.Add(fontTextWidget);
-				canvasWidget.IsVisible = SettingsManager.DisplayLog;
-				LogList.IsEnabled = SettingsManager.DisplayLog;
-				return canvasWidget;
+				if(obj is LogItem logItem)
+				{
+                    CanvasWidget canvasWidget = new() { Size = new Vector2(Display.Viewport.Width, 40), Margin = new Vector2(0, 2), HorizontalAlignment = WidgetAlignment.Near };
+                    FontTextWidget fontTextWidget = new() { FontScale = 0.6f, Text = logItem.Message, Color = GetColor(logItem.LogType), VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Near };
+                    canvasWidget.Children.Add(fontTextWidget);
+                    canvasWidget.IsVisible = SettingsManager.DisplayLog;
+                    LogList.IsEnabled = SettingsManager.DisplayLog;
+                    return canvasWidget;
+                }
+				return null;
 			};
 			LogList.ItemSize = 30;
 		}
@@ -114,9 +117,8 @@ namespace Game
 		}
 		private void InitActions()
 		{
-			
-		  var isLoadSucceed = true;
-		  Exception? exception = null;
+		    var isLoadSucceed = true;
+			Exception exception = null;
 			AddLoadAction(delegate
 			{//将所有的有效的scmod读取为ModEntity，并自动添加SurvivalCraftModEntity
 				ContentManager.Initialize();
@@ -227,7 +229,7 @@ namespace Game
 				//处理程序集
 			});
 			AddLoadAction(delegate
-			{ //读取所有的ModEntity的javascript
+			{ //读取所有的ModEntity的JavaScript
 				ModsManager.ModListAllDo((modEntity) => { modEntity.LoadJs(); });
 				JsInterface.RegisterEvent();
 			});

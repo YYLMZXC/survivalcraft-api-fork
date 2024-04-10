@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0-windows;net8.0-android</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <AssemblyName></AssemblyName>
     <RootNamespace>Engine</RootNamespace>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>

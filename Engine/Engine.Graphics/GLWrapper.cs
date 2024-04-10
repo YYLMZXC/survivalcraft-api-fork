@@ -47,25 +47,25 @@ namespace Engine.Graphics
 
 		private static Vector4 m_blendColor;
 
-		private static All m_blendEquation;
+		private static BlendEquationMode m_blendEquation;
 
-		private static All m_blendEquationColor;
+		private static BlendEquationMode m_blendEquationColor;
 
-		private static All m_blendEquationAlpha;
+		private static BlendEquationMode m_blendEquationAlpha;
 
 		private static BlendingFactorSrc m_blendFuncSource;
 
-		private static All m_blendFuncSourceColor;
+		private static BlendingFactorSrc m_blendFuncSourceColor;
 
-		private static All m_blendFuncSourceAlpha;
+		private static BlendingFactorSrc m_blendFuncSourceAlpha;
 
 		private static BlendingFactorDest m_blendFuncDestination;
 
-		private static All m_blendFuncDestinationColor;
+		private static BlendingFactorDest m_blendFuncDestinationColor;
 
-		private static All m_blendFuncDestinationAlpha;
+		private static BlendingFactorDest m_blendFuncDestinationAlpha;
 
-		private static Dictionary<All, bool> m_enableDisableStates;
+		private static Dictionary<EnableCap, bool> m_enableDisableStates;
 
 		private static bool?[] m_vertexAttribArray;
 
@@ -133,15 +133,15 @@ namespace Engine.Graphics
 			m_polygonOffsetFactor = 0f;
 			m_polygonOffsetUnits = 0f;
 			m_blendColor = new Vector4(float.MinValue);
-			m_blendEquation = (All)(-1);
-			m_blendEquationColor = (All)(-1);
-			m_blendEquationAlpha = (All)(-1);
+			m_blendEquation = (BlendEquationMode)(-1);
+			m_blendEquationColor = (BlendEquationMode)(-1);
+			m_blendEquationAlpha = (BlendEquationMode)(-1);
 			m_blendFuncSource = (BlendingFactorSrc)(-1);
-			m_blendFuncSourceColor = (All)(-1);
-			m_blendFuncSourceAlpha = (All)(-1);
+			m_blendFuncSourceColor = (BlendingFactorSrc)(-1);
+			m_blendFuncSourceAlpha = (BlendingFactorSrc)(-1);
 			m_blendFuncDestination = (BlendingFactorDest)(-1);
-			m_blendFuncDestinationColor = (All)(-1);
-			m_blendFuncDestinationAlpha = (All)(-1);
+			m_blendFuncDestinationColor = (BlendingFactorDest)(-1);
+			m_blendFuncDestinationAlpha = (BlendingFactorDest)(-1);
 			m_enableDisableStates = [];
 			m_vertexAttribArray = new bool?[16];
 			m_rasterizerState = null;
@@ -156,7 +156,7 @@ namespace Engine.Graphics
 			m_scissorRectangle = null;
 		}
 
-		public static bool Enable(All state)
+		public static bool Enable(EnableCap state)
 		{
 			if (!m_enableDisableStates.TryGetValue(state, out bool value) || !value)
 			{
@@ -167,7 +167,7 @@ namespace Engine.Graphics
 			return false;
 		}
 
-		public static bool Disable(All state)
+		public static bool Disable(EnableCap state)
 		{
 			if (!m_enableDisableStates.TryGetValue(state, out bool value) | value)
 			{
@@ -178,7 +178,7 @@ namespace Engine.Graphics
 			return false;
 		}
 
-		public static bool IsEnabled(All state)
+		public static bool IsEnabled(EnableCap state)
 		{
 			if (!m_enableDisableStates.TryGetValue(state, out bool value))
 			{
@@ -284,25 +284,25 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void BlendEquation(All blendEquation)
+		public static void BlendEquation(BlendEquationMode blendEquation)
 		{
 			if (blendEquation != m_blendEquation)
 			{
 				GL.BlendEquation(blendEquation);
 				m_blendEquation = blendEquation;
-				m_blendEquationColor = All.InvalidIndex;
-				m_blendEquationAlpha = All.InvalidIndex;
+				m_blendEquationColor = (BlendEquationMode)(-1);
+				m_blendEquationAlpha = (BlendEquationMode)(-1);
 			}
 		}
 
-		public static void BlendEquationSeparate(All blendEquationColor, All blendEquationAlpha)
+		public static void BlendEquationSeparate(BlendEquationMode blendEquationColor, BlendEquationMode blendEquationAlpha)
 		{
 			if (blendEquationColor != m_blendEquationColor || blendEquationAlpha != m_blendEquationAlpha)
 			{
 				GL.BlendEquationSeparate(blendEquationColor, blendEquationAlpha);
 				m_blendEquationColor = blendEquationColor;
 				m_blendEquationAlpha = blendEquationAlpha;
-				m_blendEquation = (All)(-1);
+				m_blendEquation = (BlendEquationMode)(-1);
 			}
 		}
 
@@ -313,14 +313,14 @@ namespace Engine.Graphics
 				GL.BlendFunc(blendFuncSource, blendFuncDestination);
 				m_blendFuncSource = blendFuncSource;
 				m_blendFuncDestination = blendFuncDestination;
-				m_blendFuncSourceColor = (All)(-1);
-				m_blendFuncSourceAlpha = (All)(-1);
-				m_blendFuncDestinationColor = (All)(-1);
-				m_blendFuncDestinationAlpha = (All)(-1);
+				m_blendFuncSourceColor = (BlendingFactorSrc)(-1);
+				m_blendFuncSourceAlpha = (BlendingFactorSrc)(-1);
+				m_blendFuncDestinationColor = (BlendingFactorDest)(-1);
+				m_blendFuncDestinationAlpha = (BlendingFactorDest)(-1);
 			}
 		}
 
-		public static void BlendFuncSeparate(All blendFuncSourceColor, All blendFuncDestinationColor, All blendFuncSourceAlpha, All blendFuncDestinationAlpha)
+		public static void BlendFuncSeparate(BlendingFactorSrc blendFuncSourceColor, BlendingFactorDest blendFuncDestinationColor, BlendingFactorSrc blendFuncSourceAlpha, BlendingFactorDest blendFuncDestinationAlpha)
 		{
 			if (blendFuncSourceColor != m_blendFuncSourceColor || blendFuncDestinationColor != m_blendFuncDestinationColor || blendFuncSourceAlpha != m_blendFuncSourceAlpha || blendFuncDestinationAlpha != m_blendFuncDestinationAlpha)
 			{
@@ -330,7 +330,7 @@ namespace Engine.Graphics
 				m_blendFuncDestinationColor = blendFuncDestinationColor;
 				m_blendFuncDestinationAlpha = blendFuncDestinationAlpha;
 				m_blendFuncSource = (BlendingFactorSrc)(-1);
-				m_blendFuncDestination = (BlendingFactorDest)(-1);
+                m_blendFuncDestination = (BlendingFactorDest)(-1);
 			}
 		}
 
@@ -515,35 +515,35 @@ namespace Engine.Graphics
 				switch (state.CullMode)
 				{
 					case CullMode.None:
-						Disable(All.CullFace);
+						Disable(EnableCap.CullFace);
 						break;
 					case CullMode.CullClockwise:
-						Enable(All.CullFace);
+						Enable(EnableCap.CullFace);
 						CullFace(CullFaceMode.Back);
 						FrontFace((Display.RenderTarget != null) ? FrontFaceDirection.Cw : FrontFaceDirection.Ccw);
 						break;
 					case CullMode.CullCounterClockwise:
-						Enable(All.CullFace);
+						Enable(EnableCap.CullFace);
 						CullFace(CullFaceMode.Back);
 						FrontFace((Display.RenderTarget != null) ? FrontFaceDirection.Ccw : FrontFaceDirection.Cw);
 						break;
 				}
 				if (state.ScissorTestEnable)
 				{
-					Enable(All.ScissorTest);
+					Enable(EnableCap.ScissorTest);
 				}
 				else
 				{
-					Disable(All.ScissorTest);
+					Disable(EnableCap.ScissorTest);
 				}
 				if (state.DepthBias != 0f || state.SlopeScaleDepthBias != 0f)
 				{
-					Enable(All.PolygonOffsetFill);
+					Enable(EnableCap.PolygonOffsetFill);
 					PolygonOffset(state.SlopeScaleDepthBias, state.DepthBias);
 				}
 				else
 				{
-					Disable(All.PolygonOffsetFill);
+					Disable(EnableCap.PolygonOffsetFill);
 				}
 			}
 		}
@@ -557,7 +557,7 @@ namespace Engine.Graphics
 			m_depthStencilState = state;
 			if (state.DepthBufferTestEnable || state.DepthBufferWriteEnable)
 			{
-				Enable(All.DepthTest);
+				Enable(EnableCap.DepthTest);
 				if (state.DepthBufferTestEnable)
 				{
 					DepthFunc((DepthFunction)TranslateCompareFunction(state.DepthBufferFunction));
@@ -570,7 +570,7 @@ namespace Engine.Graphics
 			}
 			else
 			{
-				Disable(All.DepthTest);
+				Disable(EnableCap.DepthTest);
 			}
 		}
 
@@ -583,19 +583,19 @@ namespace Engine.Graphics
 			m_blendState = state;
 			if (state.ColorBlendFunction == BlendFunction.Add && state.ColorSourceBlend == Blend.One && state.ColorDestinationBlend == Blend.Zero && state.AlphaBlendFunction == BlendFunction.Add && state.AlphaSourceBlend == Blend.One && state.AlphaDestinationBlend == Blend.Zero)
 			{
-				Disable(All.Blend);
+				Disable(EnableCap.Blend);
 				return;
 			}
-			All all = TranslateBlendFunction(state.ColorBlendFunction);
-			All all2 = TranslateBlendFunction(state.AlphaBlendFunction);
-			All all3 = TranslateBlend(state.ColorSourceBlend);
-			All all4 = TranslateBlend(state.ColorDestinationBlend);
-			All all5 = TranslateBlend(state.AlphaSourceBlend);
-			All all6 = TranslateBlend(state.AlphaDestinationBlend);
+            BlendEquationMode all = TranslateBlendFunction(state.ColorBlendFunction);
+            BlendEquationMode all2 = TranslateBlendFunction(state.AlphaBlendFunction);
+            BlendingFactorSrc all3 = TranslateBlendSrc(state.ColorSourceBlend);
+            BlendingFactorDest all4 = TranslateBlendDest(state.ColorDestinationBlend);
+            BlendingFactorSrc all5 = TranslateBlendSrc(state.AlphaSourceBlend);
+            BlendingFactorDest all6 = TranslateBlendDest(state.AlphaDestinationBlend);
 			if (all == all2 && all3 == all5 && all4 == all6)
 			{
 				BlendEquation(all);
-				BlendFunc((BlendingFactorSrc)all3, (BlendingFactorDest)all4);
+				BlendFunc(all3, all4);
 			}
 			else
 			{
@@ -603,7 +603,7 @@ namespace Engine.Graphics
 				BlendFuncSeparate(all3, all4, all5, all6);
 			}
 			BlendColor(state.BlendFactor);
-			Enable(All.Blend);
+			Enable(EnableCap.Blend);
 		}
 
 		public static void ApplyRenderTarget(RenderTarget2D renderTarget)
@@ -717,8 +717,8 @@ namespace Engine.Graphics
 							BindTexture(TextureTarget.Texture2D, texture2D.m_texture, forceBind: false);
 							if (GL_EXT_texture_filter_anisotropic)
 							{
-								GL.TexParameter(All.Texture2D, (All)34046, (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? samplerState.MaxAnisotropy : 1f);
-							}
+                                GL.TexParameter(TextureTarget.Texture2D, (TextureParameterName)34046, (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? samplerState.MaxAnisotropy : 1f);
+                            }
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TranslateTextureFilterModeMin(samplerState.FilterMode, texture2D.MipLevelsCount > 1));
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TranslateTextureFilterModeMag(samplerState.FilterMode));
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TranslateTextureAddressMode(samplerState.AddressModeU));
@@ -768,7 +768,7 @@ namespace Engine.Graphics
 			if (all != 0)
 			{
 				ApplyRenderTarget(renderTarget);
-				if (Disable(All.ScissorTest))
+				if (Disable(EnableCap.ScissorTest))
 				{
 					m_rasterizerState = null;
 				}
@@ -794,48 +794,48 @@ namespace Engine.Graphics
 			}
 		}
 
-		public static void TranslateVertexElementFormat(VertexElementFormat vertexElementFormat, out All type, out bool normalize)
+		public static void TranslateVertexElementFormat(VertexElementFormat vertexElementFormat, out VertexAttribPointerType type, out bool normalize)
 		{
 			switch (vertexElementFormat)
 			{
 				case VertexElementFormat.Single:
-					type = All.Float;
+					type = VertexAttribPointerType.Float;
 					normalize = false;
 					break;
 				case VertexElementFormat.Vector2:
-					type = All.Float;
+					type = VertexAttribPointerType.Float;
 					normalize = false;
 					break;
 				case VertexElementFormat.Vector3:
-					type = All.Float;
+					type = VertexAttribPointerType.Float;
 					normalize = false;
 					break;
 				case VertexElementFormat.Vector4:
-					type = All.Float;
+					type = VertexAttribPointerType.Float;
 					normalize = false;
 					break;
 				case VertexElementFormat.Byte4:
-					type = All.UnsignedByte;
+					type = VertexAttribPointerType.UnsignedByte;
 					normalize = false;
 					break;
 				case VertexElementFormat.NormalizedByte4:
-					type = All.UnsignedByte;
+					type = VertexAttribPointerType.UnsignedByte;
 					normalize = true;
 					break;
 				case VertexElementFormat.Short2:
-					type = All.Short;
+					type = VertexAttribPointerType.Short;
 					normalize = false;
 					break;
 				case VertexElementFormat.NormalizedShort2:
-					type = All.Short;
+					type = VertexAttribPointerType.Short;
 					normalize = true;
 					break;
 				case VertexElementFormat.Short4:
-					type = All.Short;
+					type = VertexAttribPointerType.Short;
 					normalize = false;
 					break;
 				case VertexElementFormat.NormalizedShort4:
-					type = All.Short;
+					type = VertexAttribPointerType.Short;
 					normalize = true;
 					break;
 				default:
@@ -985,65 +985,85 @@ namespace Engine.Graphics
 			};
 		}
 
-		public static All TranslateBlendFunction(BlendFunction blendFunction)
+		public static BlendEquationMode TranslateBlendFunction(BlendFunction blendFunction)
 		{
 			return blendFunction switch
 			{
-				BlendFunction.Add => All.FuncAdd,
-				BlendFunction.Subtract => All.FuncSubtract,
-				BlendFunction.ReverseSubtract => All.FuncReverseSubtract,
+				BlendFunction.Add => BlendEquationMode.FuncAdd,
+				BlendFunction.Subtract => BlendEquationMode.FuncSubtract,
+				BlendFunction.ReverseSubtract => BlendEquationMode.FuncReverseSubtract,
 				_ => throw new InvalidOperationException("Unsupported blend function."),
 			};
 		}
 
-		public static All TranslateBlend(Blend blend)
+		public static BlendingFactorSrc TranslateBlendSrc(Blend blend)
 		{
 			return blend switch
 			{
-				Blend.Zero => (All)0,
-				Blend.One => (All)1,
-				Blend.SourceColor => All.SrcColor,
-				Blend.InverseSourceColor => All.OneMinusSrcColor,
-				Blend.DestinationColor => All.DstColor,
-				Blend.InverseDestinationColor => All.OneMinusDstColor,
-				Blend.SourceAlpha => All.SrcAlpha,
-				Blend.InverseSourceAlpha => All.OneMinusSrcAlpha,
-				Blend.DestinationAlpha => All.DstAlpha,
-				Blend.InverseDestinationAlpha => All.OneMinusDstAlpha,
-				Blend.BlendFactor => All.ConstantColor,
-				Blend.InverseBlendFactor => All.OneMinusConstantColor,
-				Blend.SourceAlphaSaturation => All.SrcAlphaSaturate,
+				Blend.Zero => (BlendingFactorSrc)0,
+				Blend.One => (BlendingFactorSrc)1,
+				Blend.SourceColor => BlendingFactorSrc.SrcColor,
+				Blend.InverseSourceColor => BlendingFactorSrc.OneMinusSrcColor,
+				Blend.DestinationColor => BlendingFactorSrc.DstColor,
+				Blend.InverseDestinationColor => BlendingFactorSrc.OneMinusDstColor,
+				Blend.SourceAlpha => BlendingFactorSrc.SrcAlpha,
+				Blend.InverseSourceAlpha => BlendingFactorSrc.OneMinusSrcAlpha,
+				Blend.DestinationAlpha => BlendingFactorSrc.DstAlpha,
+				Blend.InverseDestinationAlpha => BlendingFactorSrc.OneMinusDstAlpha,
+				Blend.BlendFactor => BlendingFactorSrc.ConstantColor,
+				Blend.InverseBlendFactor => BlendingFactorSrc.OneMinusConstantColor,
+				Blend.SourceAlphaSaturation => BlendingFactorSrc.SrcAlphaSaturate,
 				_ => throw new InvalidOperationException("Unsupported blend."),
 			};
-		}
+        }
+        public static BlendingFactorDest TranslateBlendDest(Blend blend)
+        {
+            return blend switch
+            {
+                Blend.Zero => (BlendingFactorDest)0,
+                Blend.One => (BlendingFactorDest)1,
+                Blend.SourceColor => BlendingFactorDest.SrcColor,
+                Blend.InverseSourceColor => BlendingFactorDest.OneMinusSrcColor,
+                Blend.DestinationColor => BlendingFactorDest.DstColor,
+                Blend.InverseDestinationColor => BlendingFactorDest.OneMinusDstColor,
+                Blend.SourceAlpha => BlendingFactorDest.SrcAlpha,
+                Blend.InverseSourceAlpha => BlendingFactorDest.OneMinusSrcAlpha,
+                Blend.DestinationAlpha => BlendingFactorDest.DstAlpha,
+                Blend.InverseDestinationAlpha => BlendingFactorDest.OneMinusDstAlpha,
+                Blend.BlendFactor => BlendingFactorDest.ConstantColor,
+                Blend.InverseBlendFactor => BlendingFactorDest.OneMinusConstantColor,
+                Blend.SourceAlphaSaturation => BlendingFactorDest.SrcAlphaSaturate,
+                _ => throw new InvalidOperationException("Unsupported blend."),
+            };
+        }
 
-		public static All TranslateDepthFormat(DepthFormat depthFormat)
+        public static RenderbufferInternalFormat TranslateDepthFormat(DepthFormat depthFormat)
 		{
 #if desktop
 			return depthFormat switch
 			{
-				DepthFormat.Depth16 => All.DepthComponent16,
-				DepthFormat.Depth24Stencil8 => All.Depth24Stencil8Oes,
-				_ => throw new InvalidOperationException("Unsupported DepthFormat."),
+				DepthFormat.Depth16 => RenderbufferInternalFormat.DepthComponent16,
+				DepthFormat.Depth24Stencil8 => RenderbufferInternalFormat.Depth24Stencil8,
+                _ => throw new InvalidOperationException("Unsupported DepthFormat."),
 			};
 #else
 			switch (depthFormat)
 			{
 				case DepthFormat.Depth16:
-					return All.DepthComponent16;
+					return RenderbufferInternalFormat.DepthComponent16;
 				case DepthFormat.Depth24Stencil8:
 					if (GL_OES_packed_depth_stencil)
 					{
-						return All.Depth24Stencil8;
+						return RenderbufferInternalFormat.Depth24Stencil8;
 					}
-					return All.DepthComponent16;
+					return RenderbufferInternalFormat.DepthComponent16;
 				default:
 					throw new InvalidOperationException("Unsupported DepthFormat.");
 			}
 #endif
-		}
+        }
 
-		[Conditional("DEBUG")]
+        [Conditional("DEBUG")]
 		public static void CheckGLError()
 		{
 		}
