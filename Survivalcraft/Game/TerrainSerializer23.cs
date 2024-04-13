@@ -11,7 +11,7 @@ namespace Game
 {
 	public class TerrainSerializer23 : IDisposable
 	{
-		private interface IStorage : IDisposable
+        public interface IStorage : IDisposable
 		{
 			void Open(string directoryName, string suffix);
 
@@ -20,9 +20,9 @@ namespace Game
 			void Save(Point2 coords, byte[] buffer, int size);
 		}
 
-		private class SingleFileStorage : IStorage, IDisposable
+        public class SingleFileStorage : IStorage, IDisposable
 		{
-			private struct ChunkDescriptor
+            public struct ChunkDescriptor
 			{
 				public int Index;
 
@@ -49,7 +49,7 @@ namespace Game
 
 			private const int NodeHeaderSize = 8;
 
-			private Stream Stream;
+			public Stream Stream;
 
 			private BinaryReader Reader;
 
@@ -65,7 +65,7 @@ namespace Game
 
 			public void Open(string directoryName, string suffix)
 			{
-				string path = Storage.CombinePaths(directoryName, "Chunks32fs.dat" + suffix);
+				string path = Storage.CombinePaths(directoryName, FileName + suffix);
 				try
 				{
 					Stream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen);
@@ -75,10 +75,10 @@ namespace Game
 					{
 						FreeNode = -1;
 						NodeSize = 1024;
-						Writer.Write(ReverseEndianness(3735923200u));
+						Writer.Write(ReverseEndianness(FileHeaderMagic));
 						Writer.Write(NodeSize);
 						Writer.Write(FreeNode);
-						for (int i = 0; i < 65536; i++)
+						for (int i = 0; i < FileHeaderChunkDescriptorsCount; i++)
 						{
 							WriteChunkDescriptor(new ChunkDescriptor
 							{
@@ -94,17 +94,17 @@ namespace Game
 					throw ex;
 				}
 				Stream.Position = 0L;
-				if (ReverseEndianness(Reader.ReadUInt32()) != 3735923200u)
+				if (ReverseEndianness(Reader.ReadUInt32()) != FileHeaderMagic)
 				{
 					throw new InvalidOperationException("Invalid chunks file header magic.");
 				}
 				NodeSize = Reader.ReadInt32();
-				if (NodeSize < 64 || NodeSize > 65536)
+				if (NodeSize < 64 || NodeSize > FileHeaderChunkDescriptorsCount)
 				{
 					throw new InvalidOperationException("Invalid chunks file header node size.");
 				}
 				FreeNode = Reader.ReadInt32();
-				for (int j = 0; j < 65536; j++)
+				for (int j = 0; j < FileHeaderChunkDescriptorsCount; j++)
 				{
 					ChunkDescriptor value = ReadChunkDescriptor(j);
 					if (value.StartNode >= 0)
@@ -152,7 +152,7 @@ namespace Game
 				if (!ChunkDescriptors.TryGetValue(p, out var value))
 				{
 					ChunkDescriptor chunkDescriptor = default(ChunkDescriptor);
-					chunkDescriptor.Index = ChunkDescriptors.Count % 65536;
+					chunkDescriptor.Index = ChunkDescriptors.Count % FileHeaderChunkDescriptorsCount;
 					chunkDescriptor.Coords = p;
 					chunkDescriptor.StartNode = freeNodes.First();
 					value = chunkDescriptor;
@@ -169,7 +169,7 @@ namespace Game
 				ChunkDescriptors[p] = value;
 			}
 
-			private List<int> GetFreeNodes(int count)
+			public List<int> GetFreeNodes(int count)
 			{
 				List<int> list = [];
 				int nextNode = FreeNode;
@@ -181,7 +181,7 @@ namespace Game
 				if (list.Count < count)
 				{
 					int num = count - list.Count;
-					int num2 = (int)((Stream.Length - 786444) / NodeSize);
+					int num2 = (int)((Stream.Length - FileHeaderSize) / NodeSize);
 					int num3 = num2 + num - 1;
 					Stream.SetLength(Stream.Length + (NodeSize * num));
 					WriteNode(num3, null, 0, 0, -1);
@@ -201,7 +201,7 @@ namespace Game
 				return list;
 			}
 
-			private int FindLastNode(int startNode)
+            public int FindLastNode(int startNode)
 			{
 				int num = startNode;
 				while (true)
@@ -216,14 +216,14 @@ namespace Game
 				return num;
 			}
 
-			private void SetAndWriteFreeNode(int freeNode)
+            public void SetAndWriteFreeNode(int freeNode)
 			{
 				Stream.Position = 8L;
 				Writer.Write(freeNode);
 				FreeNode = freeNode;
 			}
 
-			private ChunkDescriptor ReadChunkDescriptor(int i)
+            public ChunkDescriptor ReadChunkDescriptor(int i)
 			{
 				Stream.Position = 12 + (i * 12);
 				ChunkDescriptor result = default(ChunkDescriptor);
@@ -234,7 +234,7 @@ namespace Game
 				return result;
 			}
 
-			private void WriteChunkDescriptor(ChunkDescriptor desc)
+            public void WriteChunkDescriptor(ChunkDescriptor desc)
 			{
 				Stream.Position = 12 + (desc.Index * 12);
 				Writer.Write(desc.Coords.X);
@@ -242,14 +242,14 @@ namespace Game
 				Writer.Write(desc.StartNode);
 			}
 
-			private int ReadNode(int node, byte[] data, int offset, out int nextNode)
+            public int ReadNode(int node, byte[] data, int offset, out int nextNode)
 			{
-				if (node < 0 || node >= (Stream.Length - 786444) / NodeSize)
+				if (node < 0 || node >= (Stream.Length - FileHeaderSize) / NodeSize)
 				{
 					throw new InvalidOperationException("Invalid node.");
 				}
-				Stream.Position = 786444 + (node * NodeSize);
-				if (ReverseEndianness(Reader.ReadUInt32()) != 3735927296u)
+				Stream.Position = FileHeaderSize + (node * NodeSize);
+				if (ReverseEndianness(Reader.ReadUInt32()) != NodeHeaderMagic)
 				{
 					throw new InvalidOperationException("Invalid node magic.");
 				}
@@ -262,15 +262,15 @@ namespace Game
 				return dataSize;
 			}
 
-			private void WriteNode(int node, byte[] data, int offset, int size, int nextNode)
+            public void WriteNode(int node, byte[] data, int offset, int size, int nextNode)
 			{
-				if (node < 0 || node >= (Stream.Length - 786444) / NodeSize)
+				if (node < 0 || node >= (Stream.Length - FileHeaderSize) / NodeSize)
 				{
 					throw new InvalidOperationException("Invalid node.");
 				}
-				Stream.Position = 786444 + (node * NodeSize);
+				Stream.Position = FileHeaderSize + (node * NodeSize);
 				int value = MakeNodeHeader(node, size, nextNode);
-				Writer.Write(ReverseEndianness(3735927296u));
+				Writer.Write(ReverseEndianness(NodeHeaderMagic));
 				Writer.Write(value);
 				if (data != null)
 				{
@@ -278,7 +278,7 @@ namespace Game
 				}
 			}
 
-			private int MakeNodeHeader(int node, int dataSize, int nextNode)
+            public int MakeNodeHeader(int node, int dataSize, int nextNode)
 			{
 				if (nextNode < 0)
 				{
@@ -287,7 +287,7 @@ namespace Game
 				return (nextNode - (node + 1)) << 1;
 			}
 
-			private void ParseNodeHeader(int node, int nodeHeader, out int dataSize, out int nextNode)
+            public void ParseNodeHeader(int node, int nodeHeader, out int dataSize, out int nextNode)
 			{
 				if (((uint)nodeHeader & (true ? 1u : 0u)) != 0)
 				{
@@ -301,7 +301,7 @@ namespace Game
 				}
 			}
 
-			private static uint ReverseEndianness(uint n)
+            public static uint ReverseEndianness(uint n)
 			{
 				return ((n & 0xFF000000u) >> 24) | ((n & 0xFF0000) >> 8) | ((n & 0xFF00) << 8) | (n << 24);
 			}
@@ -313,7 +313,7 @@ namespace Game
 				{
 					Log.Information("    Chunk {0}: p=({1}), startNode={2}", chunkDescriptor.Value.Index, chunkDescriptor.Key, chunkDescriptor.Value.StartNode);
 				}
-				int num = (int)((Stream.Length - 786444) / NodeSize);
+				int num = (int)((Stream.Length - FileHeaderSize) / NodeSize);
 				Log.Information("{0} nodes, FreeNode={1:0}:", num, FreeNode);
 				for (int i = 0; i < num; i++)
 				{
@@ -324,9 +324,9 @@ namespace Game
 			}
 		}
 
-		private class RegionFileStorage : IStorage, IDisposable
+        public class RegionFileStorage : IStorage, IDisposable
 		{
-			private struct DirectoryEntry
+            public struct DirectoryEntry
 			{
 				public int Offset;
 
@@ -355,7 +355,7 @@ namespace Game
 
 			private static uint RegionChunkMagic = MakeFourCC("CHK1");
 
-			private string RegionsDirectoryName;
+			public string RegionsDirectoryName;
 
 			private string TmpFilePath;
 
@@ -455,7 +455,7 @@ namespace Game
 										using (BinaryWriter binaryWriter = new(stream))
 										{
 											DirectoryEntry[] array2 = new DirectoryEntry[array.Length];
-											int num4 = 2052;
+											int num4 = RegionDataOffset;
 											for (int i = 0; i < array.Length; i++)
 											{
 												if (i == num)
@@ -533,12 +533,12 @@ namespace Game
 				}
 			}
 
-			private string GetRegionPath(Point2 region)
+            public string GetRegionPath(Point2 region)
 			{
 				return string.Format("{0}/Region {1},{2}.dat", new object[3] { RegionsDirectoryName, region.X, region.Y });
 			}
 
-			private Stream GetRegionStream(Point2 region, bool createNew)
+            public Stream GetRegionStream(Point2 region, bool createNew)
 			{
 				if (!StreamsByRegion.TryGetValue(region, out var value) || value == null || !value.CanRead)
 				{
@@ -570,7 +570,7 @@ namespace Game
 						value = null;
 					}
 					StreamsByRegion[region] = value;
-					while (OpenedStreams.Count > 100)
+					while (OpenedStreams.Count > MaxOpenedStreams)
 					{
 						OpenedStreams.Dequeue().Dispose();
 					}
@@ -578,7 +578,7 @@ namespace Game
 				return value;
 			}
 
-			private static void ReadData(BinaryReader reader, int offset, byte[] buffer, int size)
+            public static void ReadData(BinaryReader reader, int offset, byte[] buffer, int size)
 			{
 				reader.BaseStream.Position = offset;
 				if (reader.ReadUInt32() != RegionChunkMagic)
@@ -591,7 +591,7 @@ namespace Game
 				}
 			}
 
-			private static DirectoryEntry ReadDirectoryEntry(BinaryReader reader)
+            public static DirectoryEntry ReadDirectoryEntry(BinaryReader reader)
 			{
 				DirectoryEntry result = default(DirectoryEntry);
 				result.Offset = reader.ReadInt32();
@@ -603,14 +603,14 @@ namespace Game
 				return result;
 			}
 
-			private static DirectoryEntry ReadDirectoryEntry(BinaryReader reader, Point2 chunk)
+            public static DirectoryEntry ReadDirectoryEntry(BinaryReader reader, Point2 chunk)
 			{
 				int num = chunk.X + (16 * chunk.Y);
 				reader.BaseStream.Position = 4 + (num * 8);
 				return ReadDirectoryEntry(reader);
 			}
 
-			private static DirectoryEntry[] ReadDirectoryEntries(BinaryReader reader)
+            public static DirectoryEntry[] ReadDirectoryEntries(BinaryReader reader)
 			{
 				reader.BaseStream.Position = 4L;
 				DirectoryEntry[] array = new DirectoryEntry[256];
@@ -621,27 +621,27 @@ namespace Game
 				return array;
 			}
 
-			private static void WriteData(BinaryWriter writer, int offset, byte[] buffer, int size)
+            public static void WriteData(BinaryWriter writer, int offset, byte[] buffer, int size)
 			{
 				writer.BaseStream.Position = offset;
 				writer.Write(RegionChunkMagic);
 				writer.BaseStream.Write(buffer, 0, size);
 			}
 
-			private static void WriteDirectoryEntry(BinaryWriter writer, DirectoryEntry entry)
+            public static void WriteDirectoryEntry(BinaryWriter writer, DirectoryEntry entry)
 			{
 				writer.Write(entry.Offset);
 				writer.Write(entry.Size);
 			}
 
-			private static void WriteDirectoryEntry(BinaryWriter writer, Point2 chunk, DirectoryEntry entry)
+            public static void WriteDirectoryEntry(BinaryWriter writer, Point2 chunk, DirectoryEntry entry)
 			{
 				int num = chunk.X + (16 * chunk.Y);
 				writer.BaseStream.Position = 4 + (num * 8);
 				WriteDirectoryEntry(writer, entry);
 			}
 
-			private static void WriteDirectoryEntries(BinaryWriter writer, DirectoryEntry[] entries)
+            public static void WriteDirectoryEntries(BinaryWriter writer, DirectoryEntry[] entries)
 			{
 				writer.BaseStream.Position = 4L;
 				for (int i = 0; i < 256; i++)
@@ -650,7 +650,7 @@ namespace Game
 				}
 			}
 
-			private static void ResizeStream(Stream stream, int size)
+            public static void ResizeStream(Stream stream, int size)
 			{
 				if (size > 268435456)
 				{
@@ -659,7 +659,7 @@ namespace Game
 				stream.SetLength(size);
 			}
 
-			private static int FindNextEntryIndex(DirectoryEntry[] entries, int index)
+            public static int FindNextEntryIndex(DirectoryEntry[] entries, int index)
 			{
 				int result = -1;
 				int num = int.MaxValue;
@@ -675,12 +675,12 @@ namespace Game
 				return result;
 			}
 
-			private static int CalculateIdealEntrySpace(int size)
+            public static int CalculateIdealEntrySpace(int size)
 			{
-				return size + 1024 + 4;
+				return size + ExtraSpaceBytes + 4;
 			}
 
-			private static uint MakeFourCC(string s)
+            public static uint MakeFourCC(string s)
 			{
 				return ((uint)s[3] << 24) | ((uint)s[2] << 16) | ((uint)s[1] << 8) | s[0];
 			}
@@ -698,9 +698,9 @@ namespace Game
 
 		private IStorage m_storage;
 
-		private byte[] m_storageBuffer = new byte[262400];
+		private byte[] m_storageBuffer = new byte[WorstCaseChunkDataSize];
 
-		private byte[] m_compressBuffer = new byte[262400];
+		private byte[] m_compressBuffer = new byte[WorstCaseChunkDataSize];
 
 		public TerrainSerializer23(string directoryName, string suffix = "")
 		{
@@ -776,7 +776,7 @@ namespace Game
 			Utilities.Dispose(ref m_storage);
 		}
 
-		private int CompressChunkData(TerrainChunk chunk, byte[] buffer)
+        public int CompressChunkData(TerrainChunk chunk, byte[] buffer)
 		{
 			int num = 0;
 			for (int i = 0; i < 16; i++)
@@ -789,7 +789,7 @@ namespace Game
 			}
 			int num2 = 0;
 			int num3 = -1;
-			for (int k = 0; k < 256; k++)
+			for (int k = 0; k < ChunkSizeY; k++)
 			{
 				for (int l = 0; l < 16; l++)
 				{
@@ -832,7 +832,7 @@ namespace Game
 			}
 		}
 
-		private void DecompressChunkData(TerrainChunk chunk, byte[] buffer, int size)
+        public void DecompressChunkData(TerrainChunk chunk, byte[] buffer, int size)
 		{
 			using (DeflateStream deflateStream = new(new MemoryStream(buffer, 0, size), CompressionMode.Decompress))
 			{
@@ -874,20 +874,20 @@ namespace Game
 					}
 				}
 			}
-			if (num2 != 0 || num3 != 256 || num4 != 0)
+			if (num2 != 0 || num3 != ChunkSizeY || num4 != 0)
 			{
 				throw new InvalidOperationException("Corrupt chunk data.");
 			}
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static int ReadIntFromBuffer(byte[] buffer, int i)
+        public static int ReadIntFromBuffer(byte[] buffer, int i)
 		{
 			return buffer[i] + (buffer[i + 1] << 8) + (buffer[i + 2] << 16) + (buffer[i + 3] << 24);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static int ReadRleValueFromBuffer(byte[] buffer, int i, out int value, out int count)
+        public static int ReadRleValueFromBuffer(byte[] buffer, int i, out int value, out int count)
 		{
 			int value2 = ReadIntFromBuffer(buffer, i);
 			int num = Terrain.ExtractLight(value2);
@@ -902,7 +902,7 @@ namespace Game
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static void WriteIntToBuffer(byte[] buffer, int i, int data)
+        public static void WriteIntToBuffer(byte[] buffer, int i, int data)
 		{
 			buffer[i] = (byte)data;
 			buffer[i + 1] = (byte)(data >> 8);
@@ -911,7 +911,7 @@ namespace Game
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static int WriteRleValueToBuffer(byte[] buffer, int i, int value, int count)
+        public static int WriteRleValueToBuffer(byte[] buffer, int i, int value, int count)
 		{
 			if (count < 16)
 			{

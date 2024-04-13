@@ -2,7 +2,7 @@ using System;
 
 namespace Engine.Graphics
 {
-	public sealed class ShaderParameter
+	public  class ShaderParameter
 	{
 		internal int Location;
 

@@ -2,7 +2,7 @@ namespace Engine.Graphics
 {
 	public abstract class BaseFlatBatch : BaseBatch
 	{
-		internal static UnlitShader Shader = new(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
+        public static UnlitShader Shader = new(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
 
 		public readonly DynamicArray<VertexPositionColor> LineVertices = [];
 

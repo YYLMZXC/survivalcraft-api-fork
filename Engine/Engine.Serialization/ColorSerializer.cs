@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	internal class ColorSerializer : ISerializer<Color>
+    public class ColorSerializer : ISerializer<Color>
 	{
 		public void Serialize(InputArchive archive, ref Color value)
 		{

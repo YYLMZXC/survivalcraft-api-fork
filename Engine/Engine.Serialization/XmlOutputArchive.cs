@@ -158,7 +158,7 @@ namespace Engine.Serialization
 			LeaveNode(name);
 		}
 
-		protected override void WriteObjectInfo(int objectId, bool isReference, Type runtimeType)
+        public override void WriteObjectInfo(int objectId, bool isReference, Type runtimeType)
 		{
 			if (isReference)
 			{

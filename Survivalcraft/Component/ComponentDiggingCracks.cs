@@ -15,9 +15,9 @@ namespace Game
 
 		public Texture2D[] m_textures;
 
-		private Texture2D defaultTexture;
+        public Texture2D defaultTexture;
 
-		private int defaultSlice = 0;
+        public int defaultSlice = 0;
 
 		public Shader m_shader;
 

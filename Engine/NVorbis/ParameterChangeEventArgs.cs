@@ -2,7 +2,7 @@ using System;
 
 namespace NVorbis
 {
-	internal class ParameterChangeEventArgs : EventArgs
+    public class ParameterChangeEventArgs : EventArgs
 	{
 		public DataPacket FirstPacket
 		{

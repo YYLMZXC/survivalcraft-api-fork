@@ -121,12 +121,12 @@ namespace Engine.Input
 			return -1;
 		}
 
-		private static void ProcessTouchPressed(int id, Vector2 position)
+        public static void ProcessTouchPressed(int id, Vector2 position)
 		{
 			ProcessTouchMoved(id, position);
 		}
 
-		private static void ProcessTouchMoved(int id, Vector2 position)
+        public static void ProcessTouchMoved(int id, Vector2 position)
 		{
 			if (!Window.IsActive || Keyboard.IsKeyboardVisible)
 			{
@@ -163,7 +163,7 @@ namespace Engine.Input
 			}
 		}
 
-		private static void ProcessTouchReleased(int id, Vector2 position)
+        public static void ProcessTouchReleased(int id, Vector2 position)
 		{
 			if (!Window.IsActive || Keyboard.IsKeyboardVisible)
 			{

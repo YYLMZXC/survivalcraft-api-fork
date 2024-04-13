@@ -130,7 +130,7 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 		failure(new NotSupportedException());
 	}
 
-	private ExternalContentEntry GetDirectoryEntry(string internalPath, bool scanContents)
+    public ExternalContentEntry GetDirectoryEntry(string internalPath, bool scanContents)
 	{
 		ExternalContentEntry externalContentEntry = new();
 		externalContentEntry.Type = ExternalContentType.Directory;
@@ -158,7 +158,7 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 		return externalContentEntry;
 	}
 
-	private static string GetUniquePath(string path)
+    public static string GetUniquePath(string path)
 	{
 		int num = 1;
 		string text = path;
@@ -171,17 +171,17 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 		return text;
 	}
 
-	private string ToExternalPath(string internalPath)
+    public string ToExternalPath(string internalPath)
 	{
 		return Path.GetFullPath(internalPath);
 	}
 
-	private string ToInternalPath(string externalPath)
+    public string ToInternalPath(string externalPath)
 	{
 		return Path.Combine(m_rootDirectory, externalPath);
 	}
 
-	private void InitializeFilesystemAccess()
+    public void InitializeFilesystemAccess()
 	{
 		//Java.IO.File externalFilesDir = ((Context)Window.Activity).GetExternalFilesDir((string)null);
 		m_rootDirectory = "android:SurvivalCraft2.3/files";

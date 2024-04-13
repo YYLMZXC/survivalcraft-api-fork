@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Engine.Serialization
 {
-	internal class SortedDictionarySerializer<K, V> : ISerializer<SortedDictionary<K, V>>
+    public class SortedDictionarySerializer<K, V> : ISerializer<SortedDictionary<K, V>>
 	{
 		public void Serialize(InputArchive archive, ref SortedDictionary<K, V> value)
 		{

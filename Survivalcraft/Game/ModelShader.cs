@@ -206,7 +206,7 @@ namespace Game
 			m_worldUpParameter = GetParameter("u_worldUp");
 		}
 
-		protected override void PrepareForDrawingOverride()
+        public override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(m_instancesCount, worldView: false, viewProjection: false, worldViewProjection: true);
 			m_worldViewProjectionMatrixParameter.SetValue(Transforms.WorldViewProjection, InstancesCount);

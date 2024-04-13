@@ -116,7 +116,7 @@ namespace Engine.Input
 			ProcessMouseMove(new Point2(e.Position.X, e.Position.Y));
 		}
 
-		private static MouseButton TranslateMouseButton(OpenTK.Input.MouseButton mouseButton)
+		public static MouseButton TranslateMouseButton(OpenTK.Input.MouseButton mouseButton)
 		{
 			switch (mouseButton)
 			{
@@ -172,7 +172,7 @@ namespace Engine.Input
 			}
 		}
 
-		private static void ProcessMouseDown(MouseButton mouseButton, Point2 position)
+		public static void ProcessMouseDown(MouseButton mouseButton, Point2 position)
 		{
 			if (Window.IsActive && !Keyboard.IsKeyboardVisible)
 			{
@@ -189,7 +189,7 @@ namespace Engine.Input
 			}
 		}
 
-		private static void ProcessMouseUp(MouseButton mouseButton, Point2 position)
+        public static void ProcessMouseUp(MouseButton mouseButton, Point2 position)
 		{
 			if (Window.IsActive && !Keyboard.IsKeyboardVisible)
 			{
@@ -205,7 +205,7 @@ namespace Engine.Input
 			}
 		}
 
-		private static void ProcessMouseMove(Point2 position)
+        public static void ProcessMouseMove(Point2 position)
 		{
 			if (Window.IsActive && !Keyboard.IsKeyboardVisible && IsMouseVisible)
 			{

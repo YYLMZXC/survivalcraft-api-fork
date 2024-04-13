@@ -6,15 +6,15 @@ using System.Linq;
 
 namespace NVorbis
 {
-	internal class VorbisReader : IDisposable
+    public class VorbisReader : IDisposable
 	{
 		private int _streamIdx;
 
 		private IContainerReader _containerReader;
 
-		private List<VorbisStreamDecoder> _decoders;
+        public List<VorbisStreamDecoder> _decoders;
 
-		private List<int> _serials;
+		public List<int> _serials;
 
 		private VorbisStreamDecoder ActiveDecoder
 		{

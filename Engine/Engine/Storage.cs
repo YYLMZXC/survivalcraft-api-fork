@@ -14,11 +14,11 @@ namespace Engine
     public static class Storage
     {
 #if desktop
-		const bool 安卓平台 = false;
+		const bool m_isAndroidPlatform = false;
 		private static bool m_dataDirectoryCreated;
         private static object m_dataDirectoryCreationLock = new();
 #else
-        const bool 安卓平台 = true;
+        const bool m_isAndroidPlatform = true;
 #endif
         public static long FreeSpace
         {
@@ -54,22 +54,22 @@ namespace Engine
 
         public static bool FileExists(string path)
         {
-            return File.Exists(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台));
+            return File.Exists(ProcessPath(path, writeAccess: false, failIfApp: m_isAndroidPlatform));
         }
 
         public static bool DirectoryExists(string path)
         {
-            return Directory.Exists(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台));
+            return Directory.Exists(ProcessPath(path, writeAccess: false, failIfApp: m_isAndroidPlatform));
         }
 
         public static long GetFileSize(string path)
         {
-            return new FileInfo(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台)).Length;
+            return new FileInfo(ProcessPath(path, writeAccess: false, failIfApp: m_isAndroidPlatform)).Length;
         }
 
         public static DateTime GetFileLastWriteTime(string path)
         {
-            return File.GetLastWriteTimeUtc(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台));
+            return File.GetLastWriteTimeUtc(ProcessPath(path, writeAccess: false, failIfApp: m_isAndroidPlatform));
         }
 
         public static Stream OpenFile(string path, OpenFileMode openFileMode)
@@ -107,7 +107,7 @@ namespace Engine
 
         public static void DeleteFile(string path)
         {
-            File.Delete(ProcessPath(path, writeAccess: true, failIfApp: 安卓平台));
+            File.Delete(ProcessPath(path, writeAccess: true, failIfApp: m_isAndroidPlatform));
         }
 
         public static void CopyFile(string sourcePath, string destinationPath)
@@ -123,31 +123,31 @@ namespace Engine
 
         public static void MoveFile(string sourcePath, string destinationPath)
         {
-            string sourceFileName = ProcessPath(sourcePath, writeAccess: true, failIfApp: 安卓平台);
-            string text = ProcessPath(destinationPath, writeAccess: true, failIfApp: 安卓平台);
+            string sourceFileName = ProcessPath(sourcePath, writeAccess: true, failIfApp: m_isAndroidPlatform);
+            string text = ProcessPath(destinationPath, writeAccess: true, failIfApp: m_isAndroidPlatform);
             File.Delete(text);
             File.Move(sourceFileName, text);
         }
 
         public static void CreateDirectory(string path)
         {
-            Directory.CreateDirectory(ProcessPath(path, writeAccess: true, failIfApp: 安卓平台));
+            Directory.CreateDirectory(ProcessPath(path, writeAccess: true, failIfApp: m_isAndroidPlatform));
         }
 
         public static void DeleteDirectory(string path)
         {
-            Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: 安卓平台));
+            Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: m_isAndroidPlatform));
         }
 
         public static IEnumerable<string> ListFileNames(string path)
         {
-            return from s in Directory.EnumerateFiles(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台))
+            return from s in Directory.EnumerateFiles(ProcessPath(path, writeAccess: false, failIfApp: m_isAndroidPlatform))
                    select Path.GetFileName(s);
         }
 
         public static IEnumerable<string> ListDirectoryNames(string path)
         {
-            return from s in Directory.EnumerateDirectories(ProcessPath(path, writeAccess: false, failIfApp: 安卓平台))
+            return from s in Directory.EnumerateDirectories(ProcessPath(path, writeAccess: false, failIfApp: m_isAndroidPlatform))
 #if android
                    select Path.GetFileName(s) into s
                    where s != ".__override__"
@@ -201,7 +201,7 @@ namespace Engine
 
         public static string GetSystemPath(string path)
         {
-            return ProcessPath(path, writeAccess: false, failIfApp: 安卓平台);
+            return ProcessPath(path, writeAccess: false, failIfApp: m_isAndroidPlatform);
         }
 
         public static string GetExtension(string path)
@@ -273,7 +273,7 @@ namespace Engine
             bool isApp;
             return ProcessPath(path, writeAccess, failIfApp, out isApp);
         }
-        private static string ProcessPath(string path, bool writeAccess, bool failIfApp, out bool isApp)
+        public static string ProcessPath(string path, bool writeAccess, bool failIfApp, out bool isApp)
         {
             ArgumentNullException.ThrowIfNull(path);
                         if (Path.DirectorySeparatorChar != '/')
@@ -311,7 +311,7 @@ namespace Engine
             throw new InvalidOperationException($"Invalid path \"{path}\".");
         }
 #else
-        private static string GetAppDirectory(bool failIfApp)
+        public static string GetAppDirectory(bool failIfApp)
         {
             if (failIfApp)
             {
@@ -320,7 +320,7 @@ namespace Engine
             return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         }
 
-        private static string GetDataDirectory(bool writeAccess)
+        public static string GetDataDirectory(bool writeAccess)
         {
             string text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Assembly.GetEntryAssembly().GetName().Name);
             if (writeAccess)
@@ -339,7 +339,7 @@ namespace Engine
             return text;
         }
 
-        private static string ProcessPath(string path, bool writeAccess, bool failIfApp)
+        public static string ProcessPath(string path, bool writeAccess, bool failIfApp)
         {
             ArgumentNullException.ThrowIfNull(path);
             if (Path.DirectorySeparatorChar != '/')

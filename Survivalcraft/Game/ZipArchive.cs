@@ -130,7 +130,7 @@ namespace Game
 			}
 			ZipFileStream = null;
 		}
-		private static bool IsUTF8Bytes(byte[] data, int start, int count)
+        public static bool IsUTF8Bytes(byte[] data, int start, int count)
 		{
 			int charByteCounter = 1; //计算当前正分析的字符应还有的字节数 
 			byte curByte; //当前分析的字节. 

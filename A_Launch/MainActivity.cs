@@ -15,7 +15,7 @@ namespace SC4Android
 
 	public class MainActivity : EngineActivity
 	{
-		private void 检查和获取权限()
+		private void CheckAndRequestPermission()
 		{
 			if (((int)Build.VERSION.SdkInt) >= (int)BuildVersionCodes.R)
 			{
@@ -44,7 +44,7 @@ namespace SC4Android
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-			检查和获取权限();
+			CheckAndRequestPermission();
 			Run();
 		}
 		public void Run()

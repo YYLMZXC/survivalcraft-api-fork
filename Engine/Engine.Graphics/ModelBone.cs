@@ -4,20 +4,20 @@ namespace Engine.Graphics
 {
 	public class ModelBone
 	{
-		internal List<ModelBone> m_childBones = [];
+        public List<ModelBone> m_childBones = [];
 
-		internal Matrix m_transform;
+        public Matrix m_transform;
 
 		public Model Model
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public int Index
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public string Name
@@ -41,7 +41,7 @@ namespace Engine.Graphics
 		public ModelBone ParentBone
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public ReadOnlyList<ModelBone> ChildBones => new(m_childBones);

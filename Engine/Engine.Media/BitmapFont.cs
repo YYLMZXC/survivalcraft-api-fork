@@ -34,52 +34,52 @@ namespace Engine.Media
 			}
 		}
 
-		private static BitmapFont m_debugFont;
+        public static BitmapFont m_debugFont;
 
-		internal Glyph[] m_glyphsByCode;
+        public Glyph[] m_glyphsByCode;
 
-		internal Image m_image;
+		public Image m_image;
 
 		public Texture2D Texture
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public float GlyphHeight
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public float LineHeight
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public Vector2 Spacing
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public float Scale
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public Glyph FallbackGlyph
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public char MaxGlyphCode
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public static BitmapFont DebugFont
@@ -389,7 +389,7 @@ namespace Engine.Media
 			}
 		}
 
-		private static IEnumerable<Rectangle> FindGlyphs(Image image)
+        public static IEnumerable<Rectangle> FindGlyphs(Image image)
 		{
 			int y = 1;
 			while (y < image.Height)
@@ -416,7 +416,7 @@ namespace Engine.Media
 			}
 		}
 
-		private static Rectangle CropGlyph(Image image, Rectangle rectangle)
+        public static Rectangle CropGlyph(Image image, Rectangle rectangle)
 		{
 			int num = int.MaxValue;
 			int num2 = int.MaxValue;

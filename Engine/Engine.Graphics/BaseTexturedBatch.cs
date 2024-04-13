@@ -2,9 +2,9 @@ namespace Engine.Graphics
 {
 	public abstract class BaseTexturedBatch : BaseBatch
 	{
-		internal static UnlitShader Shader = new(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+        public static UnlitShader Shader = new(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
 
-		internal static UnlitShader ShaderAlphaTest = new(useVertexColor: true, useTexture: true, useAlphaThreshold: true);
+        public static UnlitShader ShaderAlphaTest = new(useVertexColor: true, useTexture: true, useAlphaThreshold: true);
 
 		public readonly DynamicArray<VertexPositionColorTexture> TriangleVertices = [];
 
@@ -13,19 +13,19 @@ namespace Engine.Graphics
 		public Texture2D Texture
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public bool UseAlphaTest
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public SamplerState SamplerState
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		internal BaseTexturedBatch()

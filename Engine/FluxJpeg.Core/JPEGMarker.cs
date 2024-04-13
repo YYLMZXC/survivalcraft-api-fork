@@ -1,6 +1,6 @@
 namespace FluxJpeg.Core
 {
-	internal sealed class JPEGMarker
+	internal  class JPEGMarker
 	{
 		public const byte JFIF_J = 74;
 

@@ -7,61 +7,61 @@ namespace GameEntitySystem
 		public Database Database
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public DatabaseObjectType FolderType
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public DatabaseObjectType ProjectTemplateType
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public DatabaseObjectType MemberSubsystemTemplateType
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public DatabaseObjectType SubsystemTemplateType
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public DatabaseObjectType EntityTemplateType
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public DatabaseObjectType MemberComponentTemplateType
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public DatabaseObjectType ComponentTemplateType
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public DatabaseObjectType ParameterSetType
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public DatabaseObjectType ParameterType
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public GameDatabase(Database database)

@@ -5,7 +5,7 @@ namespace TemplatesDatabase
 {
 	public class DatabaseObject
 	{
-		private class StringBin
+        public class StringBin
 		{
 			private int m_mask;
 

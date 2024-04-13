@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
-	public sealed class IndexBuffer : GraphicsResource
+	public  class IndexBuffer : GraphicsResource
 	{
 		internal int m_buffer;
 
@@ -22,13 +22,13 @@ namespace Engine.Graphics
 		public IndexFormat IndexFormat
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public int IndicesCount
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public object Tag
@@ -76,14 +76,14 @@ namespace Engine.Graphics
 			AllocateBuffer();
 		}
 
-		private void AllocateBuffer()
+		public void AllocateBuffer()
 		{
 			GL.GenBuffers(1, out m_buffer);
 			GLWrapper.BindBuffer(BufferTarget.ElementArrayBuffer, m_buffer);
 			GL.BufferData(All.ElementArrayBuffer, new IntPtr(IndexFormat.GetSize() * IndicesCount), IntPtr.Zero, All.StaticDraw);
 		}
 
-		private void DeleteBuffer()
+        public void DeleteBuffer()
 		{
 			if (m_buffer != 0)
 			{

@@ -8,19 +8,19 @@ namespace Engine.Media
 		public int ChannelsCount
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public int SamplingFrequency
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public short[] Data
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public SoundData(int channelsCount, int samplingFrequency, int bytesCount)

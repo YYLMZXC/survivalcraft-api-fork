@@ -9,9 +9,9 @@ namespace Engine.Audio
 	{
 		private static float m_masterVolume = 1f;
 
-		private static readonly List<Sound> m_soundsToStop = [];
+        public static readonly List<Sound> m_soundsToStop = [];
 
-		internal static HashSet<Sound> m_soundsToStopPoll = [];
+        public static HashSet<Sound> m_soundsToStopPoll = [];
 
 		public static float MasterVolume
 		{

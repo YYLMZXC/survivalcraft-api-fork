@@ -11,9 +11,9 @@ namespace Engine.Input
 {
     public static class Keyboard
     {
-        private const double m_keyFirstRepeatTime = 0.2;
+        public static double m_keyFirstRepeatTime = 0.2;
 
-        private const double m_keyNextRepeatTime = 0.033;
+        public static double m_keyNextRepeatTime = 0.033;
 
         private static bool[] m_keysDownArray = new bool[Enum.GetValues(typeof(Key)).Length];
 
@@ -144,11 +144,11 @@ namespace Engine.Input
                 {
                     if (m_keysDownRepeatArray[j] < 0.0)
                     {
-                        m_keysDownRepeatArray[j] = Time.FrameStartTime + 0.2;
+                        m_keysDownRepeatArray[j] = Time.FrameStartTime + m_keyFirstRepeatTime;
                     }
                     else if (Time.FrameStartTime >= m_keysDownRepeatArray[j])
                     {
-                        m_keysDownRepeatArray[j] = MathUtils.Max(Time.FrameStartTime, m_keysDownRepeatArray[j] + 0.033);
+                        m_keysDownRepeatArray[j] = MathUtils.Max(Time.FrameStartTime, m_keysDownRepeatArray[j] + m_keyNextRepeatTime);
                     }
                 }
                 else
@@ -158,7 +158,7 @@ namespace Engine.Input
             }
         }
 
-        private static bool ProcessKeyDown(Key key)
+        public static bool ProcessKeyDown(Key key)
         {
             if (!Window.IsActive || IsKeyboardVisible)
             {
@@ -175,7 +175,7 @@ namespace Engine.Input
             return true;
         }
 
-        private static bool ProcessKeyUp(Key key)
+        public static bool ProcessKeyUp(Key key)
         {
             if (!Window.IsActive || IsKeyboardVisible)
             {
@@ -189,7 +189,7 @@ namespace Engine.Input
             return true;
         }
 
-        private static bool ProcessCharacterEntered(char ch)
+        public static bool ProcessCharacterEntered(char ch)
         {
             if (!Window.IsActive || IsKeyboardVisible)
             {
@@ -268,7 +268,7 @@ namespace Engine.Input
         }
 
 #endif
-        private static Key TranslateKey(OpenTK.Input.Key key)
+        public static Key TranslateKey(OpenTK.Input.Key key)
         {
             switch (key)
             {

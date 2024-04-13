@@ -22,7 +22,7 @@ namespace Engine.Media
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		private struct BitmapHeader
+        public struct BitmapHeader
 		{
 			public byte Type1;
 
@@ -215,7 +215,7 @@ namespace Engine.Media
 			}
 		}
 
-		private static BitmapHeader ReadHeader(Stream stream)
+        public static BitmapHeader ReadHeader(Stream stream)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
 			if (!BitConverter.IsLittleEndian)

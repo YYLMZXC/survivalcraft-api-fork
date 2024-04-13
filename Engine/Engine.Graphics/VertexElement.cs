@@ -9,7 +9,7 @@ namespace Engine.Graphics
 		public int Offset
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public VertexElementFormat Format

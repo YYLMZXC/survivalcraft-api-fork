@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Audio
 {
-	public sealed class StreamingSound : BaseSound
+	public class StreamingSound : BaseSound
 	{
 		private Task m_task;
 
@@ -15,15 +15,15 @@ namespace Engine.Audio
 
 		private bool m_noMoreData;
 
-		private readonly float m_bufferDuration;
+        public readonly float m_bufferDuration;
 
 		public StreamingSource StreamingSource
 		{
 			get;
-			private set;
+			set;
 		}
 
-		private int ReadStreamingSource(byte[] buffer, int count)
+        public int ReadStreamingSource(byte[] buffer, int count)
 		{
 			int num = 0;
 			if (StreamingSource.BytesCount > 0)

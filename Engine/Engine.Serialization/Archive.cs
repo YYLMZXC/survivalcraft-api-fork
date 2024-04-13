@@ -11,11 +11,11 @@ namespace Engine.Serialization
 
 		private delegate void WriteDelegateGeneric<T>(OutputArchive archive, T value);
 
-		protected delegate void ReadDelegate(InputArchive archive, ref object value);
+        public delegate void ReadDelegate(InputArchive archive, ref object value);
 
-		protected delegate void WriteDelegate(OutputArchive archive, object value);
+        public delegate void WriteDelegate(OutputArchive archive, object value);
 
-		protected class SerializeData
+        public class SerializeData
 		{
 			public Type Type;
 

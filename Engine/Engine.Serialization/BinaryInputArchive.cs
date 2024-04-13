@@ -153,7 +153,7 @@ namespace Engine.Serialization
 			}
 		}
 
-		protected override void ReadObjectInfo(out int objectId, out bool isReference, out Type runtimeType)
+        public override void ReadObjectInfo(out int objectId, out bool isReference, out Type runtimeType)
 		{
 			int value = 0;
 			Serialize(null, ref value);

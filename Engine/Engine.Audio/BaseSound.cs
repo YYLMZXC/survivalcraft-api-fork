@@ -17,24 +17,24 @@ namespace Engine.Audio
 
 		internal bool m_disposeOnStop;
 
-		internal int m_source;
+        public int m_source;
 
 		public SoundState State
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public int ChannelsCount
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public int SamplingFrequency
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public float Volume

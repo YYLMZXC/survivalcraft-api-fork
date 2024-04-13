@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-	public sealed class DepthStencilState : LockOnFirstUse
+	public  class DepthStencilState : LockOnFirstUse
 	{
 		private bool m_depthBufferTestEnable = true;
 

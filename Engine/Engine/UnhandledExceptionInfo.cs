@@ -8,7 +8,7 @@ namespace Engine
 
 		public bool IsHandled;
 
-		internal UnhandledExceptionInfo(Exception e)
+		public UnhandledExceptionInfo(Exception e)
 		{
 			Exception = e;
 		}

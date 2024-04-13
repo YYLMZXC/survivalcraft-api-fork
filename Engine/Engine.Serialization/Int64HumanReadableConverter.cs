@@ -4,7 +4,7 @@ using System.Globalization;
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(long))]
-	internal class Int64HumanReadableConverter : IHumanReadableConverter
+    public class Int64HumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

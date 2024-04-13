@@ -3,7 +3,7 @@ using System;
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(bool))]
-	internal class BooleanHumanReadableConverter : IHumanReadableConverter
+    public class BooleanHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

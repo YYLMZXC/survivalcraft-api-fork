@@ -7,7 +7,7 @@ namespace Hjg.Pngcs.Chunks
 		{
 		}
 
-		public sealed override bool AllowsMultiple()
+		public  override bool AllowsMultiple()
 		{
 			return false;
 		}

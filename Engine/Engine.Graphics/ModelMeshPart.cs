@@ -4,32 +4,32 @@ namespace Engine.Graphics
 {
 	public class ModelMeshPart : IDisposable
 	{
-		internal BoundingBox m_boundingBox;
+        public BoundingBox m_boundingBox;
 
 		public string TexturePath;
 
 		public VertexBuffer VertexBuffer
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public IndexBuffer IndexBuffer
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public int StartIndex
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public int IndicesCount
 		{
 			get;
-			internal set;
+			set;
 		}
 
 		public BoundingBox BoundingBox
@@ -38,7 +38,7 @@ namespace Engine.Graphics
 			{
 				return m_boundingBox;
 			}
-			internal set
+			set
 			{
 				m_boundingBox = value;
 			}

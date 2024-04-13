@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-	public sealed class BlendState : LockOnFirstUse
+	public class BlendState : LockOnFirstUse
 	{
 		private BlendFunction m_alphaBlendFunction;
 

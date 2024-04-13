@@ -8,22 +8,22 @@ namespace Hjg.Pngcs.Chunks
 			base.Length = clen;
 		}
 
-		public sealed override bool AllowsMultiple()
+		public  override bool AllowsMultiple()
 		{
 			return true;
 		}
 
-		public sealed override ChunkRaw CreateRawChunk()
+		public  override ChunkRaw CreateRawChunk()
 		{
 			throw new PngjException("Non supported for a skipped chunk");
 		}
 
-		public sealed override void ParseFromRaw(ChunkRaw c)
+		public  override void ParseFromRaw(ChunkRaw c)
 		{
 			throw new PngjException("Non supported for a skipped chunk");
 		}
 
-		public sealed override void CloneDataFromRead(PngChunk other)
+		public  override void CloneDataFromRead(PngChunk other)
 		{
 			throw new PngjException("Non supported for a skipped chunk");
 		}

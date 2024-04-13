@@ -5,93 +5,93 @@ using System.Diagnostics;
 
 namespace Engine.Graphics
 {
-	internal static class GLWrapper
+	public static class GLWrapper
 	{
-		internal static int m_mainFramebuffer;
+		public static int m_mainFramebuffer;
 
-		internal static int m_mainColorbuffer;
+		public static int m_mainColorbuffer;
 
-		private static int m_arrayBuffer;
+		public static int m_arrayBuffer;
 
-		private static int m_elementArrayBuffer;
+		public static int m_elementArrayBuffer;
 
-		private static int m_texture2D;
+		public static int m_texture2D;
 
-		private static int[] m_activeTexturesByUnit;
+		public static int[] m_activeTexturesByUnit;
 
-		private static TextureUnit m_activeTextureUnit;
+		public static TextureUnit m_activeTextureUnit;
 
-		private static int m_program;
+		public static int m_program;
 
-		private static int m_framebuffer;
+		public static int m_framebuffer;
 
-		private static Vector4? m_clearColor;
+		public static Vector4? m_clearColor;
 
-		private static float? m_clearDepth;
+		public static float? m_clearDepth;
 
-		private static int? m_clearStencil;
+		public static int? m_clearStencil;
 
-		private static CullFaceMode m_cullFace;
+		public static CullFaceMode m_cullFace;
 
-		private static FrontFaceDirection m_frontFace;
+		public static FrontFaceDirection m_frontFace;
 
-		private static DepthFunction m_depthFunction;
+		public static DepthFunction m_depthFunction;
 
-		private static int? m_colorMask;
+		public static int? m_colorMask;
 
-		private static bool? m_depthMask;
+		public static bool? m_depthMask;
 
-		private static float m_polygonOffsetFactor;
+		public static float m_polygonOffsetFactor;
 
-		private static float m_polygonOffsetUnits;
+		public static float m_polygonOffsetUnits;
 
-		private static Vector4 m_blendColor;
+		public static Vector4 m_blendColor;
 
-		private static BlendEquationMode m_blendEquation;
+		public static BlendEquationMode m_blendEquation;
 
-		private static BlendEquationMode m_blendEquationColor;
+		public static BlendEquationMode m_blendEquationColor;
 
-		private static BlendEquationMode m_blendEquationAlpha;
+		public static BlendEquationMode m_blendEquationAlpha;
 
-		private static BlendingFactorSrc m_blendFuncSource;
+		public static BlendingFactorSrc m_blendFuncSource;
 
-		private static BlendingFactorSrc m_blendFuncSourceColor;
+		public static BlendingFactorSrc m_blendFuncSourceColor;
 
-		private static BlendingFactorSrc m_blendFuncSourceAlpha;
+		public static BlendingFactorSrc m_blendFuncSourceAlpha;
 
-		private static BlendingFactorDest m_blendFuncDestination;
+		public static BlendingFactorDest m_blendFuncDestination;
 
-		private static BlendingFactorDest m_blendFuncDestinationColor;
+		public static BlendingFactorDest m_blendFuncDestinationColor;
 
-		private static BlendingFactorDest m_blendFuncDestinationAlpha;
+		public static BlendingFactorDest m_blendFuncDestinationAlpha;
 
-		private static Dictionary<EnableCap, bool> m_enableDisableStates;
+		public static Dictionary<EnableCap, bool> m_enableDisableStates;
 
-		private static bool?[] m_vertexAttribArray;
+		public static bool?[] m_vertexAttribArray;
 
-		private static RasterizerState m_rasterizerState;
+		public static RasterizerState m_rasterizerState;
 
-		private static DepthStencilState m_depthStencilState;
+		public static DepthStencilState m_depthStencilState;
 
-		private static BlendState m_blendState;
+		public static BlendState m_blendState;
 
-		private static Dictionary<int, SamplerState> m_textureSamplerStates;
+		public static Dictionary<int, SamplerState> m_textureSamplerStates;
 
-		private static Shader m_lastShader;
+		public static Shader m_lastShader;
 
-		private static VertexDeclaration m_lastVertexDeclaration;
+		public static VertexDeclaration m_lastVertexDeclaration;
 
-		private static IntPtr m_lastVertexOffset;
+		public static IntPtr m_lastVertexOffset;
 
-		private static int m_lastArrayBuffer;
+		public static int m_lastArrayBuffer;
 
-		private static Viewport? m_viewport;
+		public static Viewport? m_viewport;
 
-		private static Rectangle? m_scissorRectangle;
+		public static Rectangle? m_scissorRectangle;
 
-		private static bool GL_EXT_texture_filter_anisotropic;
+		public static bool GL_EXT_texture_filter_anisotropic;
 
-		private static bool GL_OES_packed_depth_stencil;
+		public static bool GL_OES_packed_depth_stencil;
 
 		public static void Initialize()
 		{
