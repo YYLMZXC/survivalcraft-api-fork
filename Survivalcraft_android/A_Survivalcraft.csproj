@@ -19,7 +19,7 @@
     <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Jint" Version="3.0.1" />
+    <PackageReference Include="Jint" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Resource.designer.cs" />

@@ -117,7 +117,7 @@ namespace Game
 				Log.Error(ex);
 			}
 		}
-		public static void Execute(Script script)
+		public static void Execute(in Prepared<Script> script)
 		{
 			try
 			{
