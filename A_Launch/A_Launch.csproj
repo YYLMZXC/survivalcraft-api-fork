@@ -50,9 +50,6 @@
 	</AndroidAsset>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Survivalcraft_android\Survivalcraft_android.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Update="Assets\Content.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
@@ -62,5 +59,8 @@
     <AndroidAsset Include="..\Survivalcraft\init.js">
       <Link>Assets\init.js</Link>
     </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Survivalcraft_android\A_Survivalcraft.csproj" />
   </ItemGroup>
 </Project>
