@@ -4,6 +4,11 @@ namespace Engine.Media
 	{
 		Bmp,
 		Png,
-		Jpg
-	}
+		Jpg,
+        Gif,
+        Pbm,
+        Tiff,
+        Tga,
+        WebP
+    }
 }
