@@ -2,6 +2,7 @@
 using Android.Graphics;
 using Engine;
 using Engine.Graphics;
+using Engine.Media;
 using Java.Nio;
 using System;
 using System.Collections.Generic;
@@ -120,13 +121,8 @@ namespace Game
 					if (!Storage.DirectoryExists(ModsManager.ScreenCapturePath)) Storage.CreateDirectory(ModsManager.ScreenCapturePath);
 					using (Stream stream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
 					{
-						byte[] array = new byte[4 * renderTarget2D.Width * renderTarget2D.Height];
-						renderTarget2D.GetData(array, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));
-						ByteBuffer src = ByteBuffer.Wrap(array);
-						Bitmap bitmap = Bitmap.CreateBitmap(renderTarget2D.Width, renderTarget2D.Height, Bitmap.Config.Argb8888);
-						bitmap.CopyPixelsFromBuffer(src);
-						bitmap.Compress(Bitmap.CompressFormat.Png, 100, stream);
-					}
+                        Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), stream, ImageFileFormat.Png, saveAlpha: false);
+                    }
 					Intent intent = new("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
 					intent.SetData(Android.Net.Uri.FromFile(new Java.IO.File(Storage.GetSystemPath(path))));
 					Window.Activity.SendBroadcast(intent);

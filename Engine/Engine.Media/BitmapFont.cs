@@ -1,4 +1,5 @@
 using Engine.Graphics;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -352,14 +353,19 @@ namespace Engine.Media
 				num5++;
 			}
 			Image image2 = new(image.Width, image.Height);
-			for (int k = 0; k < image.Pixels.Length; k++)
-			{
-				image2.Pixels[k] = (image.Pixels[k] == Color.Magenta) ? Color.Transparent : image.Pixels[k];
-			}
-			if (premultiplyAlpha)
-			{
-				Image.PremultiplyAlpha(image2);
-			}
+            image.m_trueImage.ProcessPixelRows(image2.m_trueImage, (sourceAccessor, targetAccessor) =>
+            {
+                for (int i = 0; i < sourceAccessor.Height; i++)
+                {
+                    Span<Rgba32> sourceRow = sourceAccessor.GetRowSpan(i);
+                    Span<Rgba32> targetRow = targetAccessor.GetRowSpan(i);
+                    for (int x = 0; x < sourceRow.Length; x++)
+                    {
+                        Rgba32 sourcePixel = sourceRow[x];
+                        targetRow[x] = sourcePixel.IsMagenta() ? SixLabors.ImageSharp.Color.Transparent : premultiplyAlpha? sourcePixel.PremultiplyAlpha() : sourcePixel;
+                    }
+                }
+            });
 			Texture2D texture = createTexture ? Texture2D.Load(image2, mipLevelsCount) : null;
 			Image image3 = createTexture ? null : image2;
 			BitmapFont bitmapFont = new();

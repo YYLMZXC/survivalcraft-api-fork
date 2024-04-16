@@ -1,5 +1,7 @@
 using Hjg.Pngcs;
 using Hjg.Pngcs.Chunks;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using System;
 using System.IO;
 
@@ -28,275 +30,91 @@ namespace Engine.Media
 		public static bool IsPngStream(Stream stream)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
-			long position = stream.Position;
-			int num = stream.ReadByte();
-			int num2 = stream.ReadByte();
-			int num3 = stream.ReadByte();
-			int num4 = stream.ReadByte();
-			int num5 = stream.ReadByte();
-			int num6 = stream.ReadByte();
-			int num7 = stream.ReadByte();
-			int num8 = stream.ReadByte();
-			stream.Position = position;
-			if (num == 137 && num2 == 80 && num3 == 78 && num4 == 71 && num5 == 13 && num6 == 10 && num7 == 26)
-			{
-				return num8 == 10;
-			}
-			return false;
-		}
+			return SixLabors.ImageSharp.Image.DetectFormat(stream).Name == "PNG";
+        }
 
 		public static PngInfo GetInfo(Stream stream)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
-			var pngReader = new PngReader(stream);
-			pngReader.ShouldCloseStream = false;
-			pngReader.End();
-			var result = default(PngInfo);
-			result.Width = pngReader.ImgInfo.Cols;
-			result.Height = pngReader.ImgInfo.Rows;
-			if (pngReader.ImgInfo.BitDepth == 8 && pngReader.ImgInfo.Channels == 4)
+            SixLabors.ImageSharp.ImageInfo info = SixLabors.ImageSharp.Image.Identify(stream);
+			if(info.Metadata.DecodedImageFormat.Name != "PNG")
 			{
-				result.Format = Format.RGBA8;
+				throw new FormatException($"Image format({info.Metadata.DecodedImageFormat.Name}) is not Png");
 			}
-			else if (pngReader.ImgInfo.BitDepth == 8 && pngReader.ImgInfo.Channels == 3)
+            PngInfo result = default;
+			result.Width = info.Width;
+			result.Height = info.Height;
+			switch (info.Metadata.GetPngMetadata().ColorType)
 			{
-				result.Format = Format.RGB8;
-			}
-			else if (pngReader.ImgInfo.BitDepth == 8 && pngReader.ImgInfo.Channels == 2 && pngReader.ImgInfo.Greyscale)
-			{
-				result.Format = Format.LA8;
-			}
-			else if (pngReader.ImgInfo.BitDepth == 8 && pngReader.ImgInfo.Channels == 1 && pngReader.ImgInfo.Greyscale)
-			{
-				result.Format = Format.L8;
-			}
-			else
-			{
-				if (pngReader.ImgInfo.BitDepth != 8 || pngReader.ImgInfo.Channels != 1 || !pngReader.ImgInfo.Indexed)
-				{
-					throw new InvalidOperationException("Unsupported PNG pixel format.");
-				}
-				result.Format = Format.Indexed;
-			}
+				case SixLabors.ImageSharp.Formats.Png.PngColorType.RgbWithAlpha:
+                    result.Format = Format.RGBA8;
+					break;
+				case SixLabors.ImageSharp.Formats.Png.PngColorType.Rgb:
+                    result.Format = Format.RGB8;
+					break;
+				case SixLabors.ImageSharp.Formats.Png.PngColorType.GrayscaleWithAlpha:
+                    result.Format = Format.LA8;
+					break;
+				case SixLabors.ImageSharp.Formats.Png.PngColorType.Grayscale:
+					result.Format = Format.L8;
+					break;
+				case SixLabors.ImageSharp.Formats.Png.PngColorType.Palette:
+					result.Format = Format.Indexed;
+					break;
+				default:
+                    throw new InvalidOperationException("Unsupported PNG pixel format.");
+            }
 			return result;
 		}
 
 		public static Image Load(Stream stream)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
-			var pngReader = new PngReader(stream);
-			pngReader.ShouldCloseStream = false;
-			pngReader.ChunkLoadBehaviour = ChunkLoadBehaviour.LOAD_CHUNK_NEVER;
-			pngReader.MaxTotalBytesRead = long.MaxValue;
-			ImageLines imageLines = pngReader.ReadRowsByte();
-			pngReader.End();
-			if (imageLines.ImgInfo.BitDepth == 8 && imageLines.ImgInfo.Channels == 4)
-			{
-				var image = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
-				int i = 0;
-				int num = 0;
-				for (; i < image.Height; i++)
-				{
-					byte[] array = imageLines.ScanlinesB[i];
-					int j = 0;
-					int num2 = 0;
-					for (; j < image.Width; j++)
-					{
-						byte r = array[num2++];
-						byte g = array[num2++];
-						byte b = array[num2++];
-						byte a = array[num2++];
-						image.Pixels[num++] = new Color(r, g, b, a);
-					}
-				}
-				return image;
-			}
-			if (imageLines.ImgInfo.BitDepth == 8 && imageLines.ImgInfo.Channels == 3)
-			{
-				var image2 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
-				int k = 0;
-				int num3 = 0;
-				for (; k < image2.Height; k++)
-				{
-					byte[] array2 = imageLines.ScanlinesB[k];
-					int l = 0;
-					int num4 = 0;
-					for (; l < image2.Width; l++)
-					{
-						byte r2 = array2[num4++];
-						byte g2 = array2[num4++];
-						byte b2 = array2[num4++];
-						image2.Pixels[num3++] = new Color(r2, g2, b2);
-					}
-				}
-				return image2;
-			}
-			if (imageLines.ImgInfo.BitDepth == 8 && imageLines.ImgInfo.Channels == 2 && imageLines.ImgInfo.Greyscale)
-			{
-				var image3 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
-				int m = 0;
-				int num5 = 0;
-				for (; m < image3.Height; m++)
-				{
-					byte[] array3 = imageLines.ScanlinesB[m];
-					int n = 0;
-					int num6 = 0;
-					for (; n < image3.Width; n++)
-					{
-						byte b3 = array3[num6++];
-						byte a2 = array3[num6++];
-						image3.Pixels[num5++] = new Color(b3, b3, b3, a2);
-					}
-				}
-				return image3;
-			}
-			if (imageLines.ImgInfo.BitDepth == 8 && imageLines.ImgInfo.Channels == 1 && imageLines.ImgInfo.Greyscale)
-			{
-				var image4 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
-				int num7 = 0;
-				int num8 = 0;
-				for (; num7 < image4.Height; num7++)
-				{
-					byte[] array4 = imageLines.ScanlinesB[num7];
-					int num9 = 0;
-					int num10 = 0;
-					for (; num9 < image4.Width; num9++)
-					{
-						byte b4 = array4[num10++];
-						image4.Pixels[num8++] = new Color(b4, b4, b4);
-					}
-				}
-				return image4;
-			}
-			if (imageLines.ImgInfo.BitDepth == 8 && imageLines.ImgInfo.Channels == 1 && imageLines.ImgInfo.Indexed)
-			{
-				var pngChunkPLTE = (PngChunkPLTE)pngReader.GetChunksList().GetById1("PLTE");
-				if (pngChunkPLTE == null)
-				{
-					throw new InvalidOperationException("PLTE chunk not found in indexed PNG.");
-				}
-				var image5 = new Image(pngReader.ImgInfo.Cols, pngReader.ImgInfo.Rows);
-				int num11 = 0;
-				int num12 = 0;
-				for (; num11 < image5.Height; num11++)
-				{
-					byte[] array5 = imageLines.ScanlinesB[num11];
-					int num13 = 0;
-					int num14 = 0;
-					for (; num13 < image5.Width; num13++)
-					{
-						byte n2 = array5[num14++];
-						int entry = pngChunkPLTE.GetEntry(n2);
-						image5.Pixels[num12++] = new Color((entry >> 16) & 0xFF, (entry >> 8) & 0xFF, entry & 0xFF);
-					}
-				}
-				return image5;
-			}
-			throw new InvalidOperationException("Unsupported PNG pixel format.");
+            string formatName = SixLabors.ImageSharp.Image.DetectFormat(stream).Name;
+            if (formatName != "PNG")
+            {
+                throw new FormatException($"Image format({formatName}) is not Png");
+            }
+			return Image.Load(stream);
 		}
 
-		public static void Save(Image image, Stream stream, Format format)
+		public static void Save(Image image, Stream stream, Format format, PngCompressionLevel compressionLevel = PngCompressionLevel.DefaultCompression, bool sync = false)
 		{
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentNullException.ThrowIfNull(stream);
+			PngColorType pngColorType;
 			switch (format)
 			{
 				case Format.RGBA8:
-					{
-						var imgInfo3 = new ImageInfo(image.Width, image.Height, 8, alpha: true, grayscale: false, palette: false);
-						var pngWriter3 = new PngWriter(stream, imgInfo3);
-						pngWriter3.ShouldCloseStream = false;
-						byte[] array3 = new byte[4 * image.Width];
-						int m = 0;
-						int num5 = 0;
-						for (; m < image.Height; m++)
-						{
-							int n = 0;
-							int num6 = 0;
-							for (; n < image.Width; n++)
-							{
-								Color color3 = image.Pixels[num5++];
-								array3[num6++] = color3.R;
-								array3[num6++] = color3.G;
-								array3[num6++] = color3.B;
-								array3[num6++] = color3.A;
-							}
-							pngWriter3.WriteRowByte(array3, m);
-						}
-						pngWriter3.End();
-						break;
-					}
+					pngColorType = PngColorType.RgbWithAlpha;
+					break;
 				case Format.RGB8:
-					{
-						var imgInfo2 = new ImageInfo(image.Width, image.Height, 8, alpha: false, grayscale: false, palette: false);
-						var pngWriter2 = new PngWriter(stream, imgInfo2);
-						pngWriter2.ShouldCloseStream = false;
-						byte[] array2 = new byte[3 * image.Width];
-						int k = 0;
-						int num3 = 0;
-						for (; k < image.Height; k++)
-						{
-							int l = 0;
-							int num4 = 0;
-							for (; l < image.Width; l++)
-							{
-								Color color2 = image.Pixels[num3++];
-								array2[num4++] = color2.R;
-								array2[num4++] = color2.G;
-								array2[num4++] = color2.B;
-							}
-							pngWriter2.WriteRowByte(array2, k);
-						}
-						pngWriter2.End();
-						break;
-					}
+					pngColorType = PngColorType.Rgb;
+					break;
 				case Format.LA8:
-					{
-						var imgInfo4 = new ImageInfo(image.Width, image.Height, 8, alpha: true, grayscale: true, palette: false);
-						var pngWriter4 = new PngWriter(stream, imgInfo4);
-						pngWriter4.ShouldCloseStream = false;
-						byte[] array4 = new byte[2 * image.Width];
-						int num7 = 0;
-						int num8 = 0;
-						for (; num7 < image.Height; num7++)
-						{
-							int num9 = 0;
-							int num10 = 0;
-							for (; num9 < image.Width; num9++)
-							{
-								Color color4 = image.Pixels[num8++];
-								array4[num10++] = (byte)((color4.R + color4.G + color4.B) / 3);
-								array4[num10++] = color4.A;
-							}
-							pngWriter4.WriteRowByte(array4, num7);
-						}
-						pngWriter4.End();
-						break;
-					}
+					pngColorType = PngColorType.GrayscaleWithAlpha;
+					break;
 				case Format.L8:
-					{
-						var imgInfo = new ImageInfo(image.Width, image.Height, 8, alpha: false, grayscale: true, palette: false);
-						var pngWriter = new PngWriter(stream, imgInfo);
-						pngWriter.ShouldCloseStream = false;
-						byte[] array = new byte[image.Width];
-						int i = 0;
-						int num = 0;
-						for (; i < image.Height; i++)
-						{
-							int j = 0;
-							int num2 = 0;
-							for (; j < image.Width; j++)
-							{
-								Color color = image.Pixels[num++];
-								array[num2++] = (byte)((color.R + color.G + color.B) / 3);
-							}
-							pngWriter.WriteRowByte(array, i);
-						}
-						pngWriter.End();
-						break;
-					}
-				default:
-					throw new InvalidOperationException("Unsupported PNG pixel format.");
+					pngColorType = PngColorType.Grayscale;
+					break;
+				case Format.Indexed:
+					pngColorType = PngColorType.Palette;
+					break;
+                default:
+                    throw new InvalidOperationException("Unsupported PNG pixel format.");
+            }
+            PngEncoder encoder = new PngEncoder()
+			{
+				ColorType = pngColorType,
+				CompressionLevel = compressionLevel,
+				TransparentColorMode = PngTransparentColorMode.Clear
+			};
+			if (sync) {
+                image.m_trueImage.SaveAsPng(stream, encoder);
+            }
+			else
+			{
+				image.m_trueImage.SaveAsPngAsync(stream, encoder);
 			}
 		}
 	}

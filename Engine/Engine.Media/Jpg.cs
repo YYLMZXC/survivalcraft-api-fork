@@ -1,6 +1,5 @@
-using FluxJpeg.Core;
-using FluxJpeg.Core.Decoder;
-using FluxJpeg.Core.Encoder;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
 using System;
 using System.IO;
 
@@ -11,70 +10,40 @@ namespace Engine.Media
 		public static bool IsJpgStream(Stream stream)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
-			long position = stream.Position;
-			int num = stream.ReadByte();
-			int num2 = stream.ReadByte();
-			int num3 = stream.ReadByte();
-			stream.Position = position;
-			if (num == 255 && num2 == 216)
-			{
-				return num3 == 255;
-			}
-			return false;
-		}
+            return SixLabors.ImageSharp.Image.DetectFormat(stream).Name == "JPEG";
+        }
 
 		public static Image Load(Stream stream)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
-			DecodedJpeg decodedJpeg = new JpegDecoder(stream).Decode();
-			int width = decodedJpeg.Image.Width;
-			int height = decodedJpeg.Image.Height;
-			byte[][,] raster = decodedJpeg.Image.Raster;
-			var image = new Image(width, height);
-			for (int i = 0; i < height; i++)
-			{
-				for (int j = 0; j < width; j++)
-				{
-					image.Pixels[j + (i * width)] = new Color(raster[0][j, i], raster[1][j, i], raster[2][j, i]);
-				}
-			}
-			return image;
+            string formatName = SixLabors.ImageSharp.Image.DetectFormat(stream).Name;
+            if (formatName != "JPEG")
+            {
+                throw new FormatException($"Image format({formatName}) is not Jpeg");
+            }
+            return Image.Load(stream);
 		}
 
-		public static void Save(Image image, Stream stream, int quality)
+		public static void Save(Image image, Stream stream, int quality, bool sync = false)
 		{
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentNullException.ThrowIfNull(stream);
 			if (quality < 0 || quality > 100)
 			{
 				throw new ArgumentOutOfRangeException(nameof(quality));
-			}
-			int width = image.Width;
-			int height = image.Height;
-			Color[] pixels = image.Pixels;
-			byte[][,] array = new byte[3][,]
-			{
-				new byte[width, height],
-				new byte[width, height],
-				new byte[width, height]
-			};
-			byte[,] array2 = array[0];
-			byte[,] array3 = array[1];
-			byte[,] array4 = array[2];
-			for (int i = 0; i < height; i++)
-			{
-				for (int j = 0; j < width; j++)
-				{
-					Color color = pixels[j + (i * width)];
-					array2[j, i] = color.R;
-					array3[j, i] = color.G;
-					array4[j, i] = color.B;
-				}
-			}
-			var cm = default(ColorModel);
-			cm.colorspace = ColorSpace.RGB;
-			cm.Opaque = true;
-			new JpegEncoder(new FluxJpeg.Core.Image(cm, array), quality, stream).Encode();
-		}
+            }
+            JpegEncoder encoder = new JpegEncoder() {
+                Quality = quality,
+                ColorType = JpegEncodingColor.YCbCrRatio420
+            };
+            if (sync)
+            {
+                image.m_trueImage.SaveAsJpeg(stream, encoder);
+            }
+            else
+            {
+                image.m_trueImage.SaveAsJpegAsync(stream, encoder);
+            }
+        }
 	}
 }

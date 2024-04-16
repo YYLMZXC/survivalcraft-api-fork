@@ -574,9 +574,9 @@ namespace Game
 				Image image2 = new(1, bounds.Height);
 				for (int j = bounds.Top; j < bounds.Bottom; j++)
 				{
-					if (i == bounds.Left || image.Pixels[i - 1 + (j * image.Width)].A <= alphaThreshold)
+					if (i == bounds.Left || image.GetPixelFast(i - 1, j).A <= alphaThreshold)
 					{
-						image2.Pixels[j - bounds.Top] = image.Pixels[i + (j * image.Width)];
+						image2.SetPixelFast(0, j - bounds.Top, image.GetPixelFast(i, j));
 					}
 				}
 				AppendImageExtrusionSlice(image2, new Rectangle(0, 0, image2.Width, image2.Height), new Vector3(0f, 0f, 1f), new Vector3(0f, 1f, 0f), new Vector3(1f, 0f, 0f), new Vector3(i, bounds.Top, 0f), color, alphaThreshold);
@@ -586,10 +586,10 @@ namespace Game
 				Image image3 = new(1, bounds.Height);
 				for (int l = bounds.Top; l < bounds.Bottom; l++)
 				{
-					if (k == bounds.Right - 1 || image.Pixels[k + 1 + (l * image.Width)].A <= alphaThreshold)
+					if (k == bounds.Right - 1 || image.GetPixelFast(k + 1, l).A <= alphaThreshold)
 					{
-						image3.Pixels[l - bounds.Top] = image.Pixels[k + (l * image.Width)];
-					}
+                        image3.SetPixelFast(0, l - bounds.Top, image.GetPixelFast(k, l));
+                    }
 				}
 				AppendImageExtrusionSlice(image3, new Rectangle(0, 0, image3.Width, image3.Height), new Vector3(0f, 0f, 1f), new Vector3(0f, 1f, 0f), new Vector3(-1f, 0f, 0f), new Vector3(k + 1, bounds.Top, 0f), color, alphaThreshold);
 			}
@@ -598,9 +598,9 @@ namespace Game
 				Image image4 = new(bounds.Width, 1);
 				for (int n = bounds.Left; n < bounds.Right; n++)
 				{
-					if (m == bounds.Top || image.Pixels[n + ((m - 1) * image.Width)].A <= alphaThreshold)
+					if (m == bounds.Top || image.GetPixelFast(n, m-1).A <= alphaThreshold)
 					{
-						image4.Pixels[n - bounds.Left] = image.Pixels[n + (m * image.Width)];
+						image4.SetPixelFast(n - bounds.Left, 0, image.GetPixelFast(n, m));
 					}
 				}
 				AppendImageExtrusionSlice(image4, new Rectangle(0, 0, image4.Width, image4.Height), new Vector3(1f, 0f, 0f), new Vector3(0f, 0f, 1f), new Vector3(0f, 1f, 0f), new Vector3(bounds.Left, m, 0f), color, alphaThreshold);
@@ -610,9 +610,9 @@ namespace Game
 				Image image5 = new(bounds.Width, 1);
 				for (int num2 = bounds.Left; num2 < bounds.Right; num2++)
 				{
-					if (num == bounds.Bottom - 1 || image.Pixels[num2 + ((num + 1) * image.Width)].A <= alphaThreshold)
+					if (num == bounds.Bottom - 1 || image.GetPixelFast(num2, num +1).A <= alphaThreshold)
 					{
-						image5.Pixels[num2 - bounds.Left] = image.Pixels[num2 + (num * image.Width)];
+						image5.SetPixelFast(num2 - bounds.Left, 0, image.GetPixelFast(num2, num));
 					}
 				}
 				AppendImageExtrusionSlice(image5, new Rectangle(0, 0, image5.Width, image5.Height), new Vector3(1f, 0f, 0f), new Vector3(0f, 0f, 1f), new Vector3(0f, -1f, 0f), new Vector3(bounds.Left, num + 1, 0f), color, alphaThreshold);
@@ -641,7 +641,7 @@ namespace Game
 			{
 				for (int j = bounds.Left; j < bounds.Right; j++)
 				{
-					if (slice.Pixels[j + (i * slice.Width)].A > alphaThreshold)
+					if (slice.GetPixelFast(j, i).A > alphaThreshold)
 					{
 						num = MathUtils.Min(num, j);
 						num2 = MathUtils.Min(num2, i);
@@ -667,7 +667,6 @@ namespace Game
 		{
 			int count = Vertices.Count;
 			Vertices.Count += 4;
-			DynamicArray<BlockMeshVertex> vertices = Vertices;
 			int index = Vertices.Count - 4;
 			BlockMeshVertex value = new()
 			{
@@ -675,8 +674,7 @@ namespace Game
 				TextureCoordinates = p11.XY + (forward.XY / 2f),
 				Color = color
 			};
-			vertices[index] = value;
-			DynamicArray<BlockMeshVertex> vertices2 = Vertices;
+            Vertices[index] = value;
 			int index2 = Vertices.Count - 3;
 			value = new BlockMeshVertex
 			{
@@ -684,8 +682,7 @@ namespace Game
 				TextureCoordinates = p21.XY + (forward.XY / 2f),
 				Color = color
 			};
-			vertices2[index2] = value;
-			DynamicArray<BlockMeshVertex> vertices3 = Vertices;
+            Vertices[index2] = value;
 			int index3 = Vertices.Count - 2;
 			value = new BlockMeshVertex
 			{
@@ -693,8 +690,7 @@ namespace Game
 				TextureCoordinates = p12.XY + (forward.XY / 2f),
 				Color = color
 			};
-			vertices3[index3] = value;
-			DynamicArray<BlockMeshVertex> vertices4 = Vertices;
+            Vertices[index3] = value;
 			int index4 = Vertices.Count - 1;
 			value = new BlockMeshVertex
 			{
@@ -702,7 +698,7 @@ namespace Game
 				TextureCoordinates = p22.XY + (forward.XY / 2f),
 				Color = color
 			};
-			vertices4[index4] = value;
+            Vertices[index4] = value;
 			Indices.Count += 6;
 			if (flip)
 			{

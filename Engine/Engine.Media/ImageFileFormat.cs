@@ -7,6 +7,7 @@ namespace Engine.Media
 		Jpg,
         Gif,
         Pbm,
+        Qoi,
         Tiff,
         Tga,
         WebP

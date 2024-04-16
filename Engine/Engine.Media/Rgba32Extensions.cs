@@ -4,9 +4,13 @@ namespace Engine.Media
 {
     public static class Rgba32Extensions
     {
-        public static Rgba32 PremultiplyAlpha(this Rgba32 c)
+        public static Rgba32 PremultiplyAlpha(this Rgba32 pixel)
         {
-            return new Rgba32((byte)((float)(c.R * c.A) / 255f), (byte)((float)(c.G * c.A) / 255f), (byte)((float)(c.B * c.A) / 255f), c.A);
+            return new Rgba32((byte)(pixel.R * (uint)pixel.A / 255u), (byte)(pixel.G * (uint)pixel.A / 255u), (byte)(pixel.B * (uint)pixel.A / 255u), pixel.A);
+        }
+        public static bool IsMagenta(this Rgba32 pixel)
+        {
+            return pixel.R == 255 && pixel.G == 0 && pixel.B == 255 && pixel.A == 255;
         }
     }
 }

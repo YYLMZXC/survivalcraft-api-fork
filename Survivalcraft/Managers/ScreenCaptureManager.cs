@@ -116,13 +116,11 @@ namespace Game
 						}
 						SettingsManager.ResolutionMode = resolutionMode;
 					}
-					var image = new Image(renderTarget2D.Width, renderTarget2D.Height);
-					renderTarget2D.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));
 					if (!Storage.DirectoryExists(ScreenshotDir))
 						Storage.CreateDirectory(ScreenshotDir);
 					using (Stream stream = Storage.OpenFile(Storage.CombinePaths(ScreenshotDir, filename), OpenFileMode.CreateOrOpen))
 					{
-						Image.Save(image, stream, ImageFileFormat.Jpg, saveAlpha: false);
+						Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), stream, ImageFileFormat.Jpg, saveAlpha: false);
 					}
 				}
 				ModsManager.HookAction("OnCapture", loader => { loader.OnCapture(); return false; });

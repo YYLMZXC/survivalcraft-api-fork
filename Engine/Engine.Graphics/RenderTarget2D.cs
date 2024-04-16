@@ -1,5 +1,6 @@
 ﻿using Engine.Media;
 using OpenTK.Graphics.ES30;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -52,6 +53,15 @@ namespace Engine.Graphics
             {
                 gCHandle.Free();
             }
+        }
+        public unsafe Image GetData(Rectangle sourceRectangle)
+        {
+            VerifyNotDisposed();
+            SixLabors.ImageSharp.Image<Rgba32> image = new(Image.DefaultImageSharpConfiguration, sourceRectangle.Width, sourceRectangle.Height);
+            image.DangerousTryGetSinglePixelMemory(out Memory<Rgba32> memory);
+            GLWrapper.BindFramebuffer(m_frameBuffer);
+            GL.ReadPixels(sourceRectangle.Left, sourceRectangle.Top, sourceRectangle.Width, sourceRectangle.Height, PixelFormat.Rgba, PixelType.UnsignedByte, (IntPtr)memory.Pin().Pointer);
+            return new Image(image);
         }
 
         public void GenerateMipMaps()
@@ -111,13 +121,11 @@ namespace Engine.Graphics
 
 		public static void Save(RenderTarget2D renderTarget, Stream stream, ImageFileFormat format, bool saveAlpha)
 		{
-			if (renderTarget.ColorFormat != 0)
+			if (renderTarget.ColorFormat != ColorFormat.Rgba8888)
 			{
 				throw new InvalidOperationException("Unsupported color format.");
 			}
-			Image image = new(renderTarget.Width, renderTarget.Height);
-			renderTarget.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget.Width, renderTarget.Height));
-			Image.Save(image, stream, format, saveAlpha);
+			Image.Save(renderTarget.GetData(new Rectangle(0, 0, renderTarget.Width, renderTarget.Height)), stream, format, saveAlpha);
 		}
 
 		public override int GetGpuMemoryUsage()
@@ -157,5 +165,5 @@ namespace Engine.Graphics
 				throw new InvalidOperationException("Not enough space in target array.");
 			}
 		}
-	}
+    }
 }

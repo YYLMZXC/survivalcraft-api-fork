@@ -192,56 +192,13 @@ namespace Engine.Media
 			throw new InvalidOperationException("Generating mipmaps with not 2:1 scaling is not supported. Limit mipmap levels count using maxLevelsCount parameter.");
 		}
 
-		public static ImageFileFormat DetermineFileFormat(string extension)
-		{
-			if (extension.Equals(".bmp", StringComparison.OrdinalIgnoreCase))
-			{
-				return ImageFileFormat.Bmp;
-			}
-			if (extension.Equals(".png", StringComparison.OrdinalIgnoreCase))
-			{
-				return ImageFileFormat.Png;
-			}
-			if (extension.Equals(".jpg", StringComparison.OrdinalIgnoreCase) || extension.Equals(".jpeg", StringComparison.OrdinalIgnoreCase))
-			{
-				return ImageFileFormat.Jpg;
-			}
-			throw new InvalidOperationException("Unsupported image file format.");
-		}
+		public static ImageFileFormat DetermineFileFormat(string extension) => Image.DetermineFileFormat(extension);
 
-		public static ImageFileFormat DetermineFileFormat(Stream stream)
-		{
-			if (Bmp.IsBmpStream(stream))
-			{
-				return ImageFileFormat.Bmp;
-			}
-			if (Png.IsPngStream(stream))
-			{
-				return ImageFileFormat.Png;
-			}
-			if (Jpg.IsJpgStream(stream))
-			{
-				return ImageFileFormat.Jpg;
-			}
-			throw new InvalidOperationException("Unsupported image file format.");
-		}
+        public static ImageFileFormat DetermineFileFormat(Stream stream) => Image.DetermineFileFormat(stream);
 
-		public static LegacyImage Load(Stream stream, ImageFileFormat format)
-		{
-			switch (format)
-			{
-				case ImageFileFormat.Bmp:
-					return new LegacyImage(Bmp.Load(stream));
-				case ImageFileFormat.Png:
-					return new LegacyImage(Png.Load(stream));
-				case ImageFileFormat.Jpg:
-					return new LegacyImage(Jpg.Load(stream));
-				default:
-					throw new InvalidOperationException("Unsupported image file format.");
-			}
-		}
+        public static LegacyImage Load(Stream stream, ImageFileFormat format) => new LegacyImage(Image.Load(stream, format));
 
-		public static LegacyImage Load(string fileName, ImageFileFormat format)
+        public static LegacyImage Load(string fileName, ImageFileFormat format)
 		{
 			using (Stream stream = Storage.OpenFile(fileName, OpenFileMode.Read))
 			{
@@ -249,12 +206,7 @@ namespace Engine.Media
 			}
 		}
 
-		public static LegacyImage Load(Stream stream)
-		{
-			var peekStream = new PeekStream(stream, 64);
-			ImageFileFormat format = DetermineFileFormat(peekStream.GetInitialBytesStream());
-			return Load(peekStream, format);
-		}
+		public static LegacyImage Load(Stream stream) => new LegacyImage(Image.Load(stream));
 
 		public static LegacyImage Load(string fileName)
 		{
@@ -264,23 +216,7 @@ namespace Engine.Media
 			}
 		}
 
-		public static void Save(LegacyImage image, Stream stream, ImageFileFormat format, bool saveAlpha)
-		{
-			switch (format)
-			{
-				case ImageFileFormat.Bmp:
-					Bmp.Save(new Image(image), stream, (!saveAlpha) ? Bmp.Format.RGB8 : Bmp.Format.RGBA8);
-					break;
-				case ImageFileFormat.Png:
-					Png.Save(new Image(image), stream, (!saveAlpha) ? Png.Format.RGB8 : Png.Format.RGBA8);
-					break;
-				case ImageFileFormat.Jpg:
-					Jpg.Save(new Image(image), stream, 95);
-					break;
-				default:
-					throw new InvalidOperationException("Unsupported image file format.");
-			}
-		}
+		public static void Save(LegacyImage image, Stream stream, ImageFileFormat format, bool saveAlpha) => Image.Save(new Image(image), stream, format, saveAlpha);
 
 		public static void Save(LegacyImage image, string fileName, ImageFileFormat format, bool saveAlpha)
 		{

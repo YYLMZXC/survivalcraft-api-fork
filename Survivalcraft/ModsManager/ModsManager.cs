@@ -740,11 +740,9 @@ public static class ModsManager
     }
     public static void SaveToImage(string name, RenderTarget2D renderTarget2D)
     {
-        var image = new Image(renderTarget2D.Width, renderTarget2D.Height);
-        renderTarget2D.GetData(image.Pixels, 0, new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height));
         try
         {
-            Image.Save(image, Storage.CombinePaths("app:", name + ".png"), ImageFileFormat.Png, true);
+            Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), Storage.CombinePaths("app:", name + ".png"), ImageFileFormat.Png, true);
         }
         catch (Exception e)
         {

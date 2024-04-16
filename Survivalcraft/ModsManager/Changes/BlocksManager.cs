@@ -336,11 +336,10 @@ namespace Game
 
 		public static BlockMesh GetImageExtrusionBlockMesh(Image image, int slot)
 		{
-			ImageExtrusionKey imageExtrusionKey = default(ImageExtrusionKey);
+			ImageExtrusionKey imageExtrusionKey = default;
 			imageExtrusionKey.Image = image;
 			imageExtrusionKey.Slot = slot;
-			ImageExtrusionKey key = imageExtrusionKey;
-			if (!m_imageExtrusionsCache.TryGetValue(key, out var value))
+            if (!m_imageExtrusionsCache.TryGetValue(imageExtrusionKey, out var value))
 			{
 				value = new BlockMesh();
 				int num = (int)MathUtils.Round(m_slotTexCoords[slot].X * (float)image.Width);
@@ -349,7 +348,7 @@ namespace Game
 				int num4 = (int)MathUtils.Round(m_slotTexCoords[slot].W * (float)image.Height);
 				int num5 = MathUtils.Max(num3 - num, num4 - num2);
 				value.AppendImageExtrusion(image, new Rectangle(num, num2, num3 - num, num4 - num2), new Vector3(1f / (float)num5, 1f / (float)num5, 0.0833333358f), Color.White, 0);
-				m_imageExtrusionsCache.Add(key, value);
+				m_imageExtrusionsCache.Add(imageExtrusionKey, value);
 			}
 			return value;
 		}
