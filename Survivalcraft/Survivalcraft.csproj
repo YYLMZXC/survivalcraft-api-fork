@@ -102,6 +102,8 @@ cd "$(SolutionDir)Survivalcraft\Content"
     <FileVersion>2.3.10.4</FileVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <NeutralLanguage>zh-CN</NeutralLanguage>
+    <Title>BaseOFsc</Title>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
   <ProjectExtensions />
 </Project>
