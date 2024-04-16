@@ -24,7 +24,7 @@
 	<NeutralLanguage>zh-CN</NeutralLanguage>
 	<LinkAll>true</LinkAll>
 	<EnableLLVM>true</EnableLLVM>
-
+	<RunAOTCompilation>False</RunAOTCompilation>
   </PropertyGroup>
   <ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">
