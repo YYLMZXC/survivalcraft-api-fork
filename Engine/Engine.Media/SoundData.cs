@@ -51,8 +51,12 @@ namespace Engine.Media
 			if (extension.Equals(".ogg", StringComparison.OrdinalIgnoreCase))
 			{
 				return SoundFileFormat.Ogg;
-			}
-			throw new InvalidOperationException("Unsupported sound file format.");
+            }
+            if (extension.Equals(".flac", StringComparison.OrdinalIgnoreCase))
+            {
+                return SoundFileFormat.Flac;
+            }
+            throw new InvalidOperationException("Unsupported sound file format.");
 		}
 
 		public static SoundFileFormat DetermineFileFormat(Stream stream)
@@ -64,8 +68,12 @@ namespace Engine.Media
 			if (Ogg.IsOggStream(stream))
 			{
 				return SoundFileFormat.Ogg;
-			}
-			throw new InvalidOperationException("Unsupported sound file format.");
+            }
+            if (Flac.IsFlacStream(stream))
+            {
+                return SoundFileFormat.Flac;
+            }
+            throw new InvalidOperationException("Unsupported sound file format.");
 		}
 
 		public static StreamingSource Stream(Stream stream, SoundFileFormat format)
@@ -76,7 +84,9 @@ namespace Engine.Media
 					return Wav.Stream(stream);
 				case SoundFileFormat.Ogg:
 					return Ogg.Stream(stream);
-				default:
+                case SoundFileFormat.Flac:
+                    return Flac.Stream(stream);
+                default:
 					throw new InvalidOperationException("Unsupported sound file format.");
 			}
 		}
@@ -119,7 +129,9 @@ namespace Engine.Media
 					return Wav.Load(stream);
 				case SoundFileFormat.Ogg:
 					return Ogg.Load(stream);
-				default:
+                case SoundFileFormat.Flac:
+                    return Flac.Load(stream);
+                default:
 					throw new InvalidOperationException("Unsupported sound file format.");
 			}
 		}
@@ -154,7 +166,7 @@ namespace Engine.Media
 				Wav.Save(soundData, stream);
 				return;
 			}
-			throw new InvalidOperationException("Unsupported sound file format.");
+			throw new InvalidOperationException("Unsupported sound file format to save.");
 		}
 
 		public static void Save(SoundData soundData, string fileName, SoundFileFormat format)
