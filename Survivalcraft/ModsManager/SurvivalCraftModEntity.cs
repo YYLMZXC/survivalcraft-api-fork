@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 using Engine;
 using Game.IContentReader;
+using System.Linq.Expressions;
 
 namespace Game
 {
@@ -40,23 +41,17 @@ namespace Game
 				ContentManager.ReaderList.Add(readers[i].Type, readers[i]);
 			}
 			MemoryStream memoryStream = new();
-			string ContentPath = @"app:/Content.zip";
-			if(Directory.Exists(ContentPath))//检测外置资源是否存在，如果不存在就使用内置资源
+			string ContentPath = "app:/Content.zip";
+			try//检测外置资源是否存在，如果不存在就使用内置资源
 			{
-				Stream stream = Storage.OpenFile(ContentPath, OpenFileMode.Read);
-				stream.CopyTo(memoryStream);
-				stream.Close();
+				Storage.OpenFile(ContentPath, OpenFileMode.Read).CopyTo(memoryStream);
 			}
-			else
-			{
+			catch (Exception ex) {
 				Assembly assembly = Assembly.GetExecutingAssembly();
-				string resourceName = "Game.Content.zip";
-				Stream stream = assembly.GetManifestResourceStream(resourceName);
-				stream.CopyTo(memoryStream);
-				stream.Close();
+				assembly.GetManifestResourceStream("Game.Content.zip").CopyTo(memoryStream);
 			}
 			memoryStream.Position = 0L;
-			ModArchive = ZipArchive.Open(memoryStream, true);
+			ModArchive = ZipArchive.Open(memoryStream, false);
 			InitResources();
 			LabelWidget.BitmapFont = ContentManager.Get<Engine.Media.BitmapFont>("Fonts/Pericles");
 			LoadingScreen.Info("加载资源:" + modInfo?.Name);
