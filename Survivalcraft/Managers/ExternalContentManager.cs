@@ -64,8 +64,9 @@ namespace Game
 					break;
 				case ExternalContentType.BlocksTexture:
 					yield return ".scbtex";
+                    yield return ".webp";
 					yield return ".png";
-					break;
+                    break;
 				case ExternalContentType.CharacterSkin:
 					yield return ".scskin";
 					break;
