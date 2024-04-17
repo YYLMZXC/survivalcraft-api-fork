@@ -39,11 +39,22 @@ namespace Game
 			{
 				ContentManager.ReaderList.Add(readers[i].Type, readers[i]);
 			}
-
-			Stream stream = Storage.OpenFile("app:/Content.zip", OpenFileMode.Read);
 			MemoryStream memoryStream = new();
-			stream.CopyTo(memoryStream);
-			stream.Close();
+			string ContentPath = @"app:/Content.zip";
+			if(Directory.Exists(ContentPath))//检测外置资源是否存在，如果不存在就使用内置资源
+			{
+				Stream stream = Storage.OpenFile(ContentPath, OpenFileMode.Read);
+				stream.CopyTo(memoryStream);
+				stream.Close();
+			}
+			else
+			{
+				Assembly assembly = Assembly.GetExecutingAssembly();
+				string resourceName = "Game.Content.zip";
+				Stream stream = assembly.GetManifestResourceStream(resourceName);
+				stream.CopyTo(memoryStream);
+				stream.Close();
+			}
 			memoryStream.Position = 0L;
 			ModArchive = ZipArchive.Open(memoryStream, true);
 			InitResources();

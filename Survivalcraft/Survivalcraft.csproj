@@ -38,29 +38,13 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Game.Program</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup>
     <ManifestCertificateThumbprint>7727A446B0580C16A300D429D1BE0ABCE78B88E4</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
     <ManifestKeyFile>Survivalcraft_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
     <SignManifests>false</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup>
     <ApplicationIcon>Content\icon.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
-  </PropertyGroup>
-  <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
@@ -70,11 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Content.zip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="运行库\oalinst.exe" />
@@ -93,6 +72,16 @@
     <Compile Remove="Screen\ModsInitScreen.cs" />
     <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs" />
   </ItemGroup>
+	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+		<None Update="Content.zip">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+		<EmbeddedResource Include="Content.zip">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
 	<PropertyGroup>
     <PreBuildEvent>set p=$(SolutionDir)
 cd "$(SolutionDir)Survivalcraft\Content"
