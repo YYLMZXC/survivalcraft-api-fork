@@ -403,14 +403,14 @@ namespace Engine.Media
 				int num;
 				for (int x = 1; x < image.Width; x = num)
 				{
-					if (image.GetPixel(x, y) != Color.Magenta && image.GetPixel(x - 1, y) == Color.Magenta && image.GetPixel(x, y - 1) == Color.Magenta)
+					if (!image.GetPixelFast(x, y).IsMagenta() && image.GetPixelFast(x - 1, y).IsMagenta() && image.GetPixelFast(x, y - 1).IsMagenta())
 					{
 						int i = 1;
 						int j = 1;
-						for (; x + i < image.Width && image.GetPixel(x + i, y) != Color.Magenta; i++)
+						for (; x + i < image.Width && !image.GetPixelFast(x + i, y).IsMagenta(); i++)
 						{
 						}
-						for (; y + j < image.Height && image.GetPixel(x, y + j) != Color.Magenta; j++)
+						for (; y + j < image.Height && !image.GetPixelFast(x, y + j).IsMagenta(); j++)
 						{
 						}
 						yield return new Rectangle(x, y, i, j);
@@ -432,7 +432,7 @@ namespace Engine.Media
 			{
 				for (int j = rectangle.Top; j < rectangle.Top + rectangle.Height; j++)
 				{
-					if (image.GetPixel(i, j).A != 0)
+					if (image.GetPixelFast(i, j).A != 0)
 					{
 						num = MathUtils.Min(num, i);
 						num2 = MathUtils.Min(num2, j);

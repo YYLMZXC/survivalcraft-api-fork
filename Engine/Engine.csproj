@@ -29,13 +29,13 @@
     <DefineConstants>android</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Lit.psh" />
-    <EmbeddedResource Include="Resources\Lit.vsh" />
-    <EmbeddedResource Include="Resources\Unlit.psh" />
-    <EmbeddedResource Include="Resources\Unlit.vsh" />
-    <EmbeddedResource Include="Resources\Debugfont.lst" />
-    <EmbeddedResource Include="Resources\Debugfont.png" />
-    <EmbeddedResource Include="Resources\icon.ico" />
+    <EmbeddedResource Include="Resources\Lit.psh" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
+    <EmbeddedResource Include="Resources\Lit.vsh" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
+    <EmbeddedResource Include="Resources\Unlit.psh" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
+    <EmbeddedResource Include="Resources\Unlit.vsh" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
+    <EmbeddedResource Include="Resources\Debugfont.lst" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
+    <EmbeddedResource Include="Resources\Debugfont.png" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
+    <EmbeddedResource Include="Resources\icon.ico" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="9.0.0-preview.3.24172.9" Condition="'$(TargetFramework)' == 'net8.0-windows'" />

@@ -114,8 +114,8 @@ namespace Game
 				int num = -1;
 				for (int j = bounds.Top - 1; j <= bounds.Bottom; j++)
 				{
-					bool num2 = !bounds.Contains(new Point2(i, j)) || image.GetPixel(i, j) == Color.Transparent;
-					bool flag = bounds.Contains(new Point2(i - 1, j)) && image.GetPixel(i - 1, j) != Color.Transparent;
+					bool num2 = !bounds.Contains(new Point2(i, j)) || image.GetPixelFast(i, j).IsCompletelyTransparent();
+					bool flag = bounds.Contains(new Point2(i - 1, j)) && !image.GetPixelFast(i - 1, j).IsCompletelyTransparent();
 					if (num2 & flag)
 					{
 						if (num < 0)
@@ -164,8 +164,8 @@ namespace Game
 				int num3 = -1;
 				for (int l = bounds.Top - 1; l <= bounds.Bottom; l++)
 				{
-					bool num4 = !bounds.Contains(new Point2(k, l)) || image.GetPixel(k, l) == Color.Transparent;
-					bool flag2 = bounds.Contains(new Point2(k + 1, l)) && image.GetPixel(k + 1, l) != Color.Transparent;
+					bool num4 = !bounds.Contains(new Point2(k, l)) || image.GetPixelFast(k, l).IsCompletelyTransparent();
+					bool flag2 = bounds.Contains(new Point2(k + 1, l)) && !image.GetPixelFast(k + 1, l).IsCompletelyTransparent();
 					if (num4 & flag2)
 					{
 						if (num3 < 0)
@@ -214,8 +214,8 @@ namespace Game
 				int num5 = -1;
 				for (int n = bounds.Left - 1; n <= bounds.Right; n++)
 				{
-					bool num6 = !bounds.Contains(new Point2(n, m)) || image.GetPixel(n, m) == Color.Transparent;
-					bool flag3 = bounds.Contains(new Point2(n, m - 1)) && image.GetPixel(n, m - 1) != Color.Transparent;
+					bool num6 = !bounds.Contains(new Point2(n, m)) || image.GetPixelFast(n, m).IsCompletelyTransparent();
+					bool flag3 = bounds.Contains(new Point2(n, m - 1)) && !image.GetPixelFast(n, m - 1).IsCompletelyTransparent();
 					if (num6 & flag3)
 					{
 						if (num5 < 0)
@@ -264,8 +264,8 @@ namespace Game
 				int num8 = -1;
 				for (int num9 = bounds.Left - 1; num9 <= bounds.Right; num9++)
 				{
-					bool num10 = !bounds.Contains(new Point2(num9, num7)) || image.GetPixel(num9, num7) == Color.Transparent;
-					bool flag4 = bounds.Contains(new Point2(num9, num7 + 1)) && image.GetPixel(num9, num7 + 1) != Color.Transparent;
+					bool num10 = !bounds.Contains(new Point2(num9, num7)) || image.GetPixelFast(num9, num7).IsCompletelyTransparent();
+					bool flag4 = bounds.Contains(new Point2(num9, num7 + 1)) && !image.GetPixelFast(num9, num7 + 1).IsCompletelyTransparent();
 					if (num10 & flag4)
 					{
 						if (num8 < 0)

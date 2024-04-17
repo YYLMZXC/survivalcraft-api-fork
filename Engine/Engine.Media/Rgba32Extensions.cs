@@ -12,5 +12,9 @@ namespace Engine.Media
         {
             return pixel.R == 255 && pixel.G == 0 && pixel.B == 255 && pixel.A == 255;
         }
+        public static bool IsCompletelyTransparent(this Rgba32 pixel)
+        {
+            return pixel.R == 0 && pixel.G == 0 && pixel.B == 0 && pixel.A == 0;
+        }
     }
 }

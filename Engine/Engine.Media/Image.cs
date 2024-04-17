@@ -17,15 +17,15 @@ namespace Engine.Media
     public class Image
     {
         public static IImageFormatConfigurationModule[] ImageSharpModules = [
-            new SixLabors.ImageSharp.Formats.Bmp.BmpConfigurationModule(),
-            new SixLabors.ImageSharp.Formats.Gif.GifConfigurationModule(),
-            new SixLabors.ImageSharp.Formats.Jpeg.JpegConfigurationModule(),
-            new SixLabors.ImageSharp.Formats.Pbm.PbmConfigurationModule(),
-            new SixLabors.ImageSharp.Formats.Png.PngConfigurationModule(),
-            new SixLabors.ImageSharp.Formats.Qoi.QoiConfigurationModule(),
-            new SixLabors.ImageSharp.Formats.Tga.TgaConfigurationModule(),
-            new SixLabors.ImageSharp.Formats.Tiff.TiffConfigurationModule(),
-            new SixLabors.ImageSharp.Formats.Webp.WebpConfigurationModule()
+            new BmpConfigurationModule(),
+            new GifConfigurationModule(),
+            new JpegConfigurationModule(),
+            new PbmConfigurationModule(),
+            new PngConfigurationModule(),
+            new QoiConfigurationModule(),
+            new TgaConfigurationModule(),
+            new TiffConfigurationModule(),
+            new WebpConfigurationModule()
             ];
         public static Configuration DefaultImageSharpConfiguration = new Configuration(ImageSharpModules) { PreferContiguousImageBuffers = true };
         public static DecoderOptions DefaultImageSharpDecoderOptions = new DecoderOptions() { Configuration = DefaultImageSharpConfiguration};

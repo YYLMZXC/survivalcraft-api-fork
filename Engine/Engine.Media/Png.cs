@@ -1,9 +1,5 @@
-using Hjg.Pngcs;
-using Hjg.Pngcs.Chunks;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
-using System;
-using System.IO;
 
 namespace Engine.Media
 {
