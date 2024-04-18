@@ -4,6 +4,7 @@ namespace Engine.Media
 	{
 		Wav,
 		Ogg,
-		Flac
+		Flac,
+		Mp3
 	}
 }

@@ -1,12 +1,13 @@
-using NAudio.Flac;
+using NAudio.Wave;
+using NLayer.NAudioSupport;
 
 namespace Engine.Media
 {
-	public static class Flac
+	public static class Mp3
 	{
-		public class FlacStreamingSource : StreamingSource
+		public class Mp3StreamingSource : StreamingSource
 		{
-            public FlacReader m_reader;
+            public Mp3FileReaderBase m_reader;
 
             public Stream m_stream;
 
@@ -16,18 +17,17 @@ namespace Engine.Media
 
 			public override int SamplingFrequency => m_reader.WaveFormat.SampleRate;
 
-			public override long Position
-			{
-				get
-				{
-					return m_position;
-				}
-				set
-				{
-					m_reader.Position = value;
+            public override long Position
+            {
+                get
+                {
+                    return m_position;
+                }
+                set
+                {
                     if (m_reader.CanSeek)
                     {
-                        long num = value * ChannelsCount * 2;
+                        long num = value * ChannelsCount * 4;//NLayer获取到的是32位float拆分成的8位byte数组
                         if (num < 0 || num > BytesCount)
                         {
                             throw new ArgumentOutOfRangeException();
@@ -38,15 +38,15 @@ namespace Engine.Media
                     }
                     throw new NotSupportedException("Underlying stream cannot be seeked.");
                 }
-			}
-			public override long BytesCount => m_reader.Length;
-			public FlacStreamingSource(Stream stream)
+            }
+            public override long BytesCount => m_reader.Length / 2;
+			public Mp3StreamingSource(Stream stream)
 			{
                 m_stream = new MemoryStream();
 				stream.Position = 0L;
 				stream.CopyTo(m_stream);
                 m_stream.Position = 0L;
-				m_reader = new FlacReader(m_stream);
+				m_reader = new Mp3FileReaderBase(m_stream, wf => new Mp3FrameDecompressor(wf));
 			}
 			public override void Dispose()
 			{
@@ -65,9 +65,19 @@ namespace Engine.Media
                 {
                     throw new InvalidOperationException("Cannot read partial samples.");
                 }
-                int num = m_reader.Read(buffer, offset, (int)MathUtils.Min(count, BytesCount - Position));
+                count = (int)MathUtils.Min(count, BytesCount - Position);
+				byte[] sample = new byte[count * 2];
+				int num = m_reader.Read(sample, 0, count * 2);
+                for (int i = 0; i < num; i += 4)
+                {
+                    float sample32Bit = BitConverter.ToSingle(sample, i);
+                    short sample16Bit = (short)(sample32Bit * short.MaxValue);
+                    byte[] sampleBytes = BitConverter.GetBytes(sample16Bit);
+                    buffer[offset++] = sampleBytes[0];
+                    buffer[offset++] = sampleBytes[1];
+                }
                 m_position += num / 2 / ChannelsCount;
-                return num;
+                return num / 2;
             }
 			/// <summary>
 			/// 复制出一个新的流
@@ -79,7 +89,7 @@ namespace Engine.Media
 				m_stream.Position = 0L;
 				m_stream.CopyTo(memoryStream);
 				memoryStream.Position = 0L;
-				return new FlacStreamingSource(memoryStream);
+				return new Mp3StreamingSource(memoryStream);
 			}
 
 		}
@@ -89,19 +99,15 @@ namespace Engine.Media
             ArgumentNullException.ThrowIfNull(stream);
             long position = stream.Position;
 			stream.Position = 0;
-            ID3v2.SkipTag(stream);
-            var beginSync = new byte[4];
-            int read = stream.Read(beginSync, 0, beginSync.Length);
+            bool result = Id3v2Tag.ReadTag(stream) != null;
             stream.Position = position;
-            if (read < beginSync.Length)
-                throw new EndOfStreamException("Can not read \"fLaC\" sync.");
-			return beginSync[0] == 0x66 && beginSync[1] == 0x4C && beginSync[2] == 0x61 && beginSync[3] == 0x43;
+			return result;
 		}
 
 		public static StreamingSource Stream(Stream stream)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
-			return new FlacStreamingSource(stream);
+			return new Mp3StreamingSource(stream);
 		}
 
 		public static SoundData Load(Stream stream)

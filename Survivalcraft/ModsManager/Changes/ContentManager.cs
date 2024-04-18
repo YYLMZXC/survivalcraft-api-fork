@@ -59,12 +59,28 @@ namespace Game
 			Resources.Clear();
 			Caches.Clear();
 			Display.DeviceReset += Display_DeviceReset;
-		}
-		public static T Get<T>(string name, string suffix = null) where T : class
+        }
+        public static T Get<T>(string name) where T : class
+        {
+            return Get(typeof(T), name, null, true) as T;
+        }
+        public static T Get<T>(string name, string suffix = null) where T : class
+        {
+            return Get(typeof(T), name, suffix, true) as T;
+        }
+        public static T Get<T>(string name, string suffix = null, bool throwOnNotFound = true) where T : class
 		{
-			return Get(typeof(T), name, suffix) as T;
+			return Get(typeof(T), name, suffix, throwOnNotFound) as T;
+        }
+        public static object Get(Type type, string name)
+        {
+            return Get(type, name, null, true);
+        }
+        public static object Get(Type type, string name, string suffix = null)
+		{
+			return Get(type, name, suffix, true);
 		}
-		public static object Get(Type type, string name, string suffix = null)
+        public static object Get(Type type, string name, string suffix = null, bool throwOnNotFound = true)
 		{
 			lock (syncObj)
 			{
@@ -101,7 +117,14 @@ namespace Game
 					}
 					if (contents.Count == 0)
 					{//没有找到对应资源
-						throw new Exception("Not Found Res [" + name + "][" + type.FullName + "]");
+						if (throwOnNotFound)
+						{
+							throw new Exception("Not Found Res [" + name + "][" + type.FullName + "]");
+						}
+						else
+						{
+							return null;
+						}
 					}
 					obj = reader.Get(contents.ToArray());
 				}

@@ -16,9 +16,10 @@ namespace Game
 				{
 					try
 					{
-						SoundBuffer soundBuffer = ContentManager.Get<SoundBuffer>(name, ".flac");
-						if (soundBuffer == null) soundBuffer = ContentManager.Get<SoundBuffer>(name, ".wav");
-                        if (soundBuffer == null) soundBuffer = ContentManager.Get<SoundBuffer>(name, ".ogg");
+						SoundBuffer soundBuffer = ContentManager.Get<SoundBuffer>(name, ".flac", false);
+						if (soundBuffer == null) soundBuffer = ContentManager.Get<SoundBuffer>(name, ".wav", false);
+                        if (soundBuffer == null) soundBuffer = ContentManager.Get<SoundBuffer>(name, ".ogg", false);
+                        if (soundBuffer == null) soundBuffer = ContentManager.Get<SoundBuffer>(name, ".mp3", true);
                         Sound sound = new(soundBuffer, num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true);
 						sound.Play();
 					}

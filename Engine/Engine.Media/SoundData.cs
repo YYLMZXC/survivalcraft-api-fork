@@ -44,6 +44,10 @@ namespace Engine.Media
 
 		public static SoundFileFormat DetermineFileFormat(string extension)
 		{
+            if (extension.Equals(".flac", StringComparison.OrdinalIgnoreCase))
+            {
+                return SoundFileFormat.Flac;
+            }
 			if (extension.Equals(".wav", StringComparison.OrdinalIgnoreCase))
 			{
 				return SoundFileFormat.Wav;
@@ -52,15 +56,19 @@ namespace Engine.Media
 			{
 				return SoundFileFormat.Ogg;
             }
-            if (extension.Equals(".flac", StringComparison.OrdinalIgnoreCase))
+            if (extension.Equals(".mp3", StringComparison.OrdinalIgnoreCase))
             {
-                return SoundFileFormat.Flac;
+                return SoundFileFormat.Mp3;
             }
             throw new InvalidOperationException("Unsupported sound file format.");
 		}
 
 		public static SoundFileFormat DetermineFileFormat(Stream stream)
 		{
+            if (Flac.IsFlacStream(stream))
+            {
+                return SoundFileFormat.Flac;
+            }
 			if (Wav.IsWavStream(stream))
 			{
 				return SoundFileFormat.Wav;
@@ -69,9 +77,9 @@ namespace Engine.Media
 			{
 				return SoundFileFormat.Ogg;
             }
-            if (Flac.IsFlacStream(stream))
+            if (Mp3.IsFlacStream(stream))
             {
-                return SoundFileFormat.Flac;
+                return SoundFileFormat.Mp3;
             }
             throw new InvalidOperationException("Unsupported sound file format.");
 		}
@@ -80,12 +88,14 @@ namespace Engine.Media
 		{
 			switch (format)
 			{
+                case SoundFileFormat.Flac:
+                    return Flac.Stream(stream);
 				case SoundFileFormat.Wav:
 					return Wav.Stream(stream);
 				case SoundFileFormat.Ogg:
 					return Ogg.Stream(stream);
-                case SoundFileFormat.Flac:
-                    return Flac.Stream(stream);
+                case SoundFileFormat.Mp3:
+                    return Mp3.Stream(stream);
                 default:
 					throw new InvalidOperationException("Unsupported sound file format.");
 			}
@@ -131,6 +141,8 @@ namespace Engine.Media
 					return Ogg.Load(stream);
                 case SoundFileFormat.Flac:
                     return Flac.Load(stream);
+                case SoundFileFormat.Mp3:
+                    return Mp3.Load(stream);
                 default:
 					throw new InvalidOperationException("Unsupported sound file format.");
 			}
