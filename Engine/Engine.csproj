@@ -29,6 +29,11 @@
     <DefineConstants>android</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="reference\NAudio.Flac\**" />
+    <EmbeddedResource Remove="reference\NAudio.Flac\**" />
+    <None Remove="reference\NAudio.Flac\**" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Resources\Lit.psh" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
     <EmbeddedResource Include="Resources\Lit.vsh" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
     <EmbeddedResource Include="Resources\Unlit.psh" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
@@ -38,8 +43,12 @@
     <EmbeddedResource Include="Resources\icon.ico" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="reference\NAudio.Flac\NAudio.Flac\NAudio.Flac.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="9.0.0-preview.3.24172.9" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
+	<PackageReference Include="NAudio.Core" Version="2.2.1" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenTK" Condition="'$(TargetFramework)' == 'net8.0-windows'">

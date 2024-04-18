@@ -1,0 +1,3 @@
+[submodule "Engine/reference/NAudio.Flac"]
+	path = Engine/reference/NAudio.Flac
+	url = https://github.com/XiaofengdiZhu/NAudio.Flac
