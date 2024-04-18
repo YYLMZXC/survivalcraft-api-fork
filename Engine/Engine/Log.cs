@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Engine
@@ -42,7 +41,7 @@ namespace Engine
 				}
 			}
 #if android
-            System.Console.WriteLine("SCAPI1.6["+ type.ToString() +"]" + message);
+			System.Console.WriteLine("SCAPI1.6[" + type.ToString() + "]" + message);
 #endif
 		}
 

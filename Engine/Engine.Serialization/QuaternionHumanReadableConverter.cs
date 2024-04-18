@@ -1,9 +1,7 @@
-using System;
-
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(Quaternion))]
-    public class QuaternionHumanReadableConverter : IHumanReadableConverter
+	public class QuaternionHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

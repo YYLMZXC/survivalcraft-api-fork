@@ -1,5 +1,3 @@
-using System;
-
 namespace NVorbis
 {
 	internal class RingBuffer

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Engine.Input
+﻿namespace Engine.Input
 {
 	public class KeyboardInput
 	{

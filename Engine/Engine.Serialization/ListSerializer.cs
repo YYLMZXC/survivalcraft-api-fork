@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
 namespace Engine.Serialization
 {
-    public class ListSerializer<T> : ISerializer<List<T>>
+	public class ListSerializer<T> : ISerializer<List<T>>
 	{
 		public void Serialize(InputArchive archive, ref List<T> value)
 		{

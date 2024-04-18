@@ -1,5 +1,3 @@
-using System;
-
 namespace Engine
 {
 	public class BoundingFrustum : IEquatable<BoundingFrustum>
@@ -181,7 +179,7 @@ namespace Engine
 			return ray.Position + (ray.Direction * s);
 		}
 
-        public static Ray3 ComputeIntersectionLine(Plane p1, Plane p2)
+		public static Ray3 ComputeIntersectionLine(Plane p1, Plane p2)
 		{
 			Ray3 result = default(Ray3);
 			result.Direction = Vector3.Cross(p1.Normal, p2.Normal);

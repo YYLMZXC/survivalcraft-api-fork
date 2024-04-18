@@ -1,5 +1,4 @@
 using Engine.Serialization;
-using System;
 using System.Text.RegularExpressions;
 
 namespace TemplatesDatabase

@@ -1,9 +1,6 @@
-using System;
-using System.IO;
-
 namespace Engine.Media
 {
-    public class PeekStream : Stream
+	public class PeekStream : Stream
 	{
 		private Stream m_stream;
 

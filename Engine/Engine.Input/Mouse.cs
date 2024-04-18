@@ -1,5 +1,4 @@
 using OpenTK.Input;
-using System;
 using System.Drawing;
 
 namespace Engine.Input
@@ -189,7 +188,7 @@ namespace Engine.Input
 			}
 		}
 
-        public static void ProcessMouseUp(MouseButton mouseButton, Point2 position)
+		public static void ProcessMouseUp(MouseButton mouseButton, Point2 position)
 		{
 			if (Window.IsActive && !Keyboard.IsKeyboardVisible)
 			{
@@ -205,7 +204,7 @@ namespace Engine.Input
 			}
 		}
 
-        public static void ProcessMouseMove(Point2 position)
+		public static void ProcessMouseMove(Point2 position)
 		{
 			if (Window.IsActive && !Keyboard.IsKeyboardVisible && IsMouseVisible)
 			{

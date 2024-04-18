@@ -1,10 +1,9 @@
-using System;
 using System.Globalization;
 
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(double))]
-    public class DoubleHumanReadableConverter : IHumanReadableConverter
+	public class DoubleHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

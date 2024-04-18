@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Engine.Serialization
 {
 	public abstract class OutputArchive : Archive
@@ -55,7 +52,7 @@ namespace Engine.Serialization
 			Serialize(name, typeof(T), value);
 		}
 
-        public abstract void WriteObjectInfo(int objectId, bool isReference, Type runtimeType);
+		public abstract void WriteObjectInfo(int objectId, bool isReference, Type runtimeType);
 
 		protected virtual void WriteObject(SerializeData staticSerializeData, object value)
 		{

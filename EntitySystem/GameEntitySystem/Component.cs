@@ -1,15 +1,12 @@
-using Engine;
-using System;
-using System.Collections.Generic;
 using TemplatesDatabase;
 
 namespace GameEntitySystem
 {
 	public abstract class Component : IDisposable
 	{
-		public Entity m_entity;
+		public Entity? m_entity;
 
-		public ValuesDictionary m_valuesDictionary;
+		public ValuesDictionary? m_valuesDictionary;
 
 		public ValuesDictionary ValuesDictionary => m_valuesDictionary;
 

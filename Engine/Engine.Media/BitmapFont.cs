@@ -1,9 +1,5 @@
 using Engine.Graphics;
 using SixLabors.ImageSharp.PixelFormats;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace Engine.Media
@@ -35,9 +31,9 @@ namespace Engine.Media
 			}
 		}
 
-        public static BitmapFont m_debugFont;
+		public static BitmapFont m_debugFont;
 
-        public Glyph[] m_glyphsByCode;
+		public Glyph[] m_glyphsByCode;
 
 		public Image m_image;
 
@@ -353,19 +349,19 @@ namespace Engine.Media
 				num5++;
 			}
 			Image image2 = new(image.Width, image.Height);
-            image.m_trueImage.ProcessPixelRows(image2.m_trueImage, (sourceAccessor, targetAccessor) =>
-            {
-                for (int i = 0; i < sourceAccessor.Height; i++)
-                {
-                    Span<Rgba32> sourceRow = sourceAccessor.GetRowSpan(i);
-                    Span<Rgba32> targetRow = targetAccessor.GetRowSpan(i);
-                    for (int x = 0; x < sourceRow.Length; x++)
-                    {
-                        Rgba32 sourcePixel = sourceRow[x];
-                        targetRow[x] = sourcePixel.IsMagenta() ? SixLabors.ImageSharp.Color.Transparent : premultiplyAlpha? sourcePixel.PremultiplyAlpha() : sourcePixel;
-                    }
-                }
-            });
+			image.m_trueImage.ProcessPixelRows(image2.m_trueImage, (sourceAccessor, targetAccessor) =>
+			{
+				for (int i = 0; i < sourceAccessor.Height; i++)
+				{
+					Span<Rgba32> sourceRow = sourceAccessor.GetRowSpan(i);
+					Span<Rgba32> targetRow = targetAccessor.GetRowSpan(i);
+					for (int x = 0; x < sourceRow.Length; x++)
+					{
+						Rgba32 sourcePixel = sourceRow[x];
+						targetRow[x] = sourcePixel.IsMagenta() ? SixLabors.ImageSharp.Color.Transparent : premultiplyAlpha ? sourcePixel.PremultiplyAlpha() : sourcePixel;
+					}
+				}
+			});
 			Texture2D texture = createTexture ? Texture2D.Load(image2, mipLevelsCount) : null;
 			Image image3 = createTexture ? null : image2;
 			BitmapFont bitmapFont = new();
@@ -395,7 +391,7 @@ namespace Engine.Media
 			}
 		}
 
-        public static IEnumerable<Rectangle> FindGlyphs(Image image)
+		public static IEnumerable<Rectangle> FindGlyphs(Image image)
 		{
 			int y = 1;
 			while (y < image.Height)
@@ -422,7 +418,7 @@ namespace Engine.Media
 			}
 		}
 
-        public static Rectangle CropGlyph(Image image, Rectangle rectangle)
+		public static Rectangle CropGlyph(Image image, Rectangle rectangle)
 		{
 			int num = int.MaxValue;
 			int num2 = int.MaxValue;

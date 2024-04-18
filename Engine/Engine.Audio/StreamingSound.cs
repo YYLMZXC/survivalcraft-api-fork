@@ -1,9 +1,5 @@
 using Engine.Media;
 using OpenTK.Audio.OpenAL;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Engine.Audio
 {
@@ -15,7 +11,7 @@ namespace Engine.Audio
 
 		private bool m_noMoreData;
 
-        public readonly float m_bufferDuration;
+		public readonly float m_bufferDuration;
 
 		public StreamingSource StreamingSource
 		{
@@ -23,7 +19,7 @@ namespace Engine.Audio
 			set;
 		}
 
-        public int ReadStreamingSource(byte[] buffer, int count)
+		public int ReadStreamingSource(byte[] buffer, int count)
 		{
 			int num = 0;
 			if (StreamingSource.BytesCount > 0)

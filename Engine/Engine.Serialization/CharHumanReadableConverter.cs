@@ -1,9 +1,7 @@
-using System;
-
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(char))]
-    public class CharHumanReadableConverter : IHumanReadableConverter
+	public class CharHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

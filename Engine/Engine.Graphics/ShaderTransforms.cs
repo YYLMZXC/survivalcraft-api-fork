@@ -1,20 +1,18 @@
-using System;
-
 namespace Engine.Graphics
 {
 	public class ShaderTransforms
 	{
 		public Matrix[] m_world;
 
-        public Matrix m_view = Matrix.Identity;
+		public Matrix m_view = Matrix.Identity;
 
-        public Matrix m_projection = Matrix.Identity;
+		public Matrix m_projection = Matrix.Identity;
 
-        public Matrix[] m_worldView;
+		public Matrix[] m_worldView;
 
-        public Matrix m_viewProjection = Matrix.Identity;
+		public Matrix m_viewProjection = Matrix.Identity;
 
-        public Matrix[] m_worldViewProjection;
+		public Matrix[] m_worldViewProjection;
 
 		public int MaxWorldMatrices => m_world.Length;
 

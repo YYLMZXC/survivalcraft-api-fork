@@ -1,5 +1,3 @@
-using System.IO;
-
 namespace NVorbis
 {
 	internal abstract class VorbisTime

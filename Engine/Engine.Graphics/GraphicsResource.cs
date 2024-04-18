@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-
 namespace Engine.Graphics
 {
 	public abstract class GraphicsResource : IDisposable
 	{
-        public static HashSet<GraphicsResource> m_resources = [];
+		public static HashSet<GraphicsResource> m_resources = [];
 
-        public bool m_isDisposed;
+		public bool m_isDisposed;
 
 		internal GraphicsResource()
 		{
@@ -34,7 +31,7 @@ namespace Engine.Graphics
 
 		internal abstract void HandleDeviceReset();
 
-        public void VerifyNotDisposed()
+		public void VerifyNotDisposed()
 		{
 			if (m_isDisposed)
 			{

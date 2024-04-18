@@ -1,9 +1,7 @@
-using System;
-
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(Matrix))]
-    public class MatrixHumanReadableConverter : IHumanReadableConverter
+	public class MatrixHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

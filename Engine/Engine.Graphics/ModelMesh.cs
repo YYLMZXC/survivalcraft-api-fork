@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-
 namespace Engine.Graphics
 {
 	public class ModelMesh : IDisposable
 	{
-        public List<ModelMeshPart> m_meshParts = [];
+		public List<ModelMeshPart> m_meshParts = [];
 
-        public BoundingBox m_boundingBox;
+		public BoundingBox m_boundingBox;
 
 		public string Name
 		{

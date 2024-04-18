@@ -1,8 +1,6 @@
-using System;
-
 namespace NVorbis
 {
-    public interface IContainerReader : IDisposable
+	public interface IContainerReader : IDisposable
 	{
 		int[] StreamSerials
 		{

@@ -1,12 +1,11 @@
 using Engine.Media;
 using OpenTK.Audio.OpenAL;
-using System;
 
 namespace Engine.Audio
 {
 	public class Sound : BaseSound
 	{
-        public SoundBuffer m_soundBuffer;
+		public SoundBuffer m_soundBuffer;
 
 		public SoundBuffer SoundBuffer => m_soundBuffer;
 

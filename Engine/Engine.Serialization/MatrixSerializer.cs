@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-    public class MatrixSerializer : ISerializer<Matrix>
+	public class MatrixSerializer : ISerializer<Matrix>
 	{
 		public void Serialize(InputArchive archive, ref Matrix value)
 		{

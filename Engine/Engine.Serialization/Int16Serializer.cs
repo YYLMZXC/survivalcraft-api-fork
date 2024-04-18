@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-    public class Int16Serializer : ISerializer<short>
+	public class Int16Serializer : ISerializer<short>
 	{
 		public void Serialize(InputArchive archive, ref short value)
 		{

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace Engine.Serialization
@@ -11,11 +8,11 @@ namespace Engine.Serialization
 
 		private delegate void WriteDelegateGeneric<T>(OutputArchive archive, T value);
 
-        public delegate void ReadDelegate(InputArchive archive, ref object value);
+		public delegate void ReadDelegate(InputArchive archive, ref object value);
 
-        public delegate void WriteDelegate(OutputArchive archive, object value);
+		public delegate void WriteDelegate(OutputArchive archive, object value);
 
-        public class SerializeData
+		public class SerializeData
 		{
 			public Type Type;
 

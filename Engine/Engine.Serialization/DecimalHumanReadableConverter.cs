@@ -1,10 +1,9 @@
-using System;
 using System.Globalization;
 
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(decimal))]
-    public class DecimalHumanReadableConverter : IHumanReadableConverter
+	public class DecimalHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

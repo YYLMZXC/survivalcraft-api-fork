@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-
 namespace NVorbis
 {
-    public abstract class DataPacket
+	public abstract class DataPacket
 	{
 		[Flags]
 		protected enum PacketFlags : byte

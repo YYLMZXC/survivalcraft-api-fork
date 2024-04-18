@@ -25,6 +25,7 @@
 	<LinkAll>true</LinkAll>
 	<EnableLLVM>true</EnableLLVM>
 	<RunAOTCompilation>False</RunAOTCompilation>
+	<SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">

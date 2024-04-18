@@ -1,12 +1,11 @@
-using System;
 using System.Drawing;
 
 namespace Engine.Serialization
 {
-    public class SystemDrawingTypesConverters
+	public class SystemDrawingTypesConverters
 	{
 		[HumanReadableConverter(typeof(System.Drawing.Color))]
-        public class ColorStringConverter : IHumanReadableConverter
+		public class ColorStringConverter : IHumanReadableConverter
 		{
 			public string ConvertToString(object value)
 			{
@@ -42,7 +41,7 @@ namespace Engine.Serialization
 		}
 
 		[HumanReadableConverter(typeof(Point))]
-        public class PointStringConverter : IHumanReadableConverter
+		public class PointStringConverter : IHumanReadableConverter
 		{
 			public string ConvertToString(object value)
 			{
@@ -62,7 +61,7 @@ namespace Engine.Serialization
 		}
 
 		[HumanReadableConverter(typeof(PointF))]
-        public class PointFStringConverter : IHumanReadableConverter
+		public class PointFStringConverter : IHumanReadableConverter
 		{
 			public string ConvertToString(object value)
 			{
@@ -82,7 +81,7 @@ namespace Engine.Serialization
 		}
 
 		[HumanReadableConverter(typeof(Size))]
-        public class SizeStringConverter : IHumanReadableConverter
+		public class SizeStringConverter : IHumanReadableConverter
 		{
 			public string ConvertToString(object value)
 			{
@@ -102,7 +101,7 @@ namespace Engine.Serialization
 		}
 
 		[HumanReadableConverter(typeof(SizeF))]
-        public class SizeFStringConverter : IHumanReadableConverter
+		public class SizeFStringConverter : IHumanReadableConverter
 		{
 			public string ConvertToString(object value)
 			{
@@ -122,7 +121,7 @@ namespace Engine.Serialization
 		}
 
 		[HumanReadableConverter(typeof(System.Drawing.Rectangle))]
-        public class RectangleStringConverter : IHumanReadableConverter
+		public class RectangleStringConverter : IHumanReadableConverter
 		{
 			public string ConvertToString(object value)
 			{
@@ -142,7 +141,7 @@ namespace Engine.Serialization
 		}
 
 		[HumanReadableConverter(typeof(RectangleF))]
-        public class RectangleFStringConverter : IHumanReadableConverter
+		public class RectangleFStringConverter : IHumanReadableConverter
 		{
 			public string ConvertToString(object value)
 			{

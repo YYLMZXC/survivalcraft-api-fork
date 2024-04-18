@@ -2,7 +2,7 @@ using Engine.Media;
 
 namespace Engine.Graphics
 {
-	public  class PrimitivesRenderer2D : BasePrimitivesRenderer<FlatBatch2D, TexturedBatch2D, FontBatch2D>
+	public class PrimitivesRenderer2D : BasePrimitivesRenderer<FlatBatch2D, TexturedBatch2D, FontBatch2D>
 	{
 		public static Matrix ViewportMatrix()
 		{

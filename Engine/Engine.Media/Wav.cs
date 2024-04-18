@@ -1,6 +1,4 @@
 using Engine.Serialization;
-using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Engine.Media
@@ -9,15 +7,15 @@ namespace Engine.Media
 	{
 		public class WavStreamingSource : StreamingSource
 		{
-            public Stream m_stream;
+			public Stream m_stream;
 
-            public bool m_leaveOpen;
+			public bool m_leaveOpen;
 
-            public int m_channelsCount;
+			public int m_channelsCount;
 
-            public int m_samplingFrequency;
+			public int m_samplingFrequency;
 
-            public long m_bytesCount;
+			public long m_bytesCount;
 
 			private long m_position;
 
@@ -126,7 +124,7 @@ namespace Engine.Media
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct WavHeader
+		public struct WavHeader
 		{
 			public int Riff;
 
@@ -136,7 +134,7 @@ namespace Engine.Media
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct FmtHeader
+		public struct FmtHeader
 		{
 			public int Fmt;
 
@@ -156,7 +154,7 @@ namespace Engine.Media
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct DataHeader
+		public struct DataHeader
 		{
 			public int Data;
 
@@ -238,7 +236,7 @@ namespace Engine.Media
 			stream.Write(array, 0, array.Length);
 		}
 
-        public static void ReadHeaders(Stream stream, out FmtHeader fmtHeader, out DataHeader dataHeader, out long dataStart)
+		public static void ReadHeaders(Stream stream, out FmtHeader fmtHeader, out DataHeader dataHeader, out long dataStart)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
 			if (!BitConverter.IsLittleEndian)
@@ -284,7 +282,7 @@ namespace Engine.Media
 			}
 		}
 
-        public static int MakeFourCC(string text)
+		public static int MakeFourCC(string text)
 		{
 			return (int)(((uint)text[3] << 24) | ((uint)text[2] << 16) | ((uint)text[1] << 8) | text[0]);
 		}

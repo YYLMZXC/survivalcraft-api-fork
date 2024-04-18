@@ -1,8 +1,6 @@
-using System;
-
 namespace NVorbis
 {
-    public class NewStreamEventArgs : EventArgs
+	public class NewStreamEventArgs : EventArgs
 	{
 		public IPacketProvider PacketProvider
 		{

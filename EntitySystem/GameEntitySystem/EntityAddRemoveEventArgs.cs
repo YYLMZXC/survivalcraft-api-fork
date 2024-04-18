@@ -1,5 +1,3 @@
-using System;
-
 namespace GameEntitySystem
 {
 	public class EntityAddRemoveEventArgs : EventArgs

@@ -1,10 +1,9 @@
-using System;
 using System.Globalization;
 
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(float))]
-    public class SingleHumanReadableConverter : IHumanReadableConverter
+	public class SingleHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

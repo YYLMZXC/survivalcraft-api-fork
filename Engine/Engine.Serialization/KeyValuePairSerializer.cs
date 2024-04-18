@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
 namespace Engine.Serialization
 {
-    public class KeyValuePairSerializer<K, V> : ISerializer<KeyValuePair<K, V>>
+	public class KeyValuePairSerializer<K, V> : ISerializer<KeyValuePair<K, V>>
 	{
 		public void Serialize(InputArchive archive, ref KeyValuePair<K, V> value)
 		{

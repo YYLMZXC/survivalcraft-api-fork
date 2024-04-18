@@ -1,10 +1,9 @@
 using OpenTK.Graphics.ES30;
-using System;
 using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
-	public  class IndexBuffer : GraphicsResource
+	public class IndexBuffer : GraphicsResource
 	{
 		internal int m_buffer;
 
@@ -83,7 +82,7 @@ namespace Engine.Graphics
 			GL.BufferData(All.ElementArrayBuffer, new IntPtr(IndexFormat.GetSize() * IndicesCount), IntPtr.Zero, All.StaticDraw);
 		}
 
-        public void DeleteBuffer()
+		public void DeleteBuffer()
 		{
 			if (m_buffer != 0)
 			{

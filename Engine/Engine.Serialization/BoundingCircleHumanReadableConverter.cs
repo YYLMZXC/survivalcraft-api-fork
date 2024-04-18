@@ -1,9 +1,7 @@
-using System;
-
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(BoundingCircle))]
-    public class BoundingCircleHumanReadableConverter : IHumanReadableConverter
+	public class BoundingCircleHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

@@ -1,10 +1,9 @@
-using System;
 using System.Globalization;
 
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(ulong))]
-    public class UInt64HumanReadableConverter : IHumanReadableConverter
+	public class UInt64HumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

@@ -1,4 +1,3 @@
-using System;
 using TemplatesDatabase;
 
 namespace GameEntitySystem

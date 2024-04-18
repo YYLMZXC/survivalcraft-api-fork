@@ -1,123 +1,121 @@
 ﻿using Engine.Media;
 using OpenTK.Graphics.ES30;
 using SixLabors.ImageSharp.PixelFormats;
-using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
-    public  class RenderTarget2D : Texture2D
-    {
-        public int m_frameBuffer;
+	public class RenderTarget2D : Texture2D
+	{
+		public int m_frameBuffer;
 
-        public int m_depthBuffer;
+		public int m_depthBuffer;
 
-        public DepthFormat DepthFormat
-        {
-            get;
-            set;
-        }
+		public DepthFormat DepthFormat
+		{
+			get;
+			set;
+		}
 
-        public RenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
-            : base(width, height, mipLevelsCount, colorFormat)
-        {
-            try
-            {
-                InitializeRenderTarget2D(width, height, mipLevelsCount, colorFormat, depthFormat);
-                AllocateRenderTarget();
-            }
-            catch
-            {
-                Dispose();
-                throw;
-            }
-        }
+		public RenderTarget2D(int width, int height, int mipLevelsCount, ColorFormat colorFormat, DepthFormat depthFormat)
+			: base(width, height, mipLevelsCount, colorFormat)
+		{
+			try
+			{
+				InitializeRenderTarget2D(width, height, mipLevelsCount, colorFormat, depthFormat);
+				AllocateRenderTarget();
+			}
+			catch
+			{
+				Dispose();
+				throw;
+			}
+		}
 
-        public override void Dispose()
-        {
-            base.Dispose();
-            DeleteRenderTarget();
-        }
+		public override void Dispose()
+		{
+			base.Dispose();
+			DeleteRenderTarget();
+		}
 
-        public void GetData<T>(T[] target, int targetStartIndex, Rectangle sourceRectangle) where T : struct
-        {
-            VerifyParametersGetData(target, targetStartIndex, sourceRectangle);
-            var gCHandle = GCHandle.Alloc(target, GCHandleType.Pinned);
-            try
-            {
-                GLWrapper.BindFramebuffer(m_frameBuffer);
-                GL.ReadPixels(sourceRectangle.Left, sourceRectangle.Top, sourceRectangle.Width, sourceRectangle.Height, PixelFormat.Rgba, PixelType.UnsignedByte, gCHandle.AddrOfPinnedObject());
-            }
-            finally
-            {
-                gCHandle.Free();
-            }
-        }
-        public unsafe Image GetData(Rectangle sourceRectangle)
-        {
-            VerifyNotDisposed();
-            SixLabors.ImageSharp.Image<Rgba32> image = new(Image.DefaultImageSharpConfiguration, sourceRectangle.Width, sourceRectangle.Height);
-            image.DangerousTryGetSinglePixelMemory(out Memory<Rgba32> memory);
-            GLWrapper.BindFramebuffer(m_frameBuffer);
-            GL.ReadPixels(sourceRectangle.Left, sourceRectangle.Top, sourceRectangle.Width, sourceRectangle.Height, PixelFormat.Rgba, PixelType.UnsignedByte, (IntPtr)memory.Pin().Pointer);
-            return new Image(image);
-        }
+		public void GetData<T>(T[] target, int targetStartIndex, Rectangle sourceRectangle) where T : struct
+		{
+			VerifyParametersGetData(target, targetStartIndex, sourceRectangle);
+			var gCHandle = GCHandle.Alloc(target, GCHandleType.Pinned);
+			try
+			{
+				GLWrapper.BindFramebuffer(m_frameBuffer);
+				GL.ReadPixels(sourceRectangle.Left, sourceRectangle.Top, sourceRectangle.Width, sourceRectangle.Height, PixelFormat.Rgba, PixelType.UnsignedByte, gCHandle.AddrOfPinnedObject());
+			}
+			finally
+			{
+				gCHandle.Free();
+			}
+		}
+		public unsafe Image GetData(Rectangle sourceRectangle)
+		{
+			VerifyNotDisposed();
+			SixLabors.ImageSharp.Image<Rgba32> image = new(Image.DefaultImageSharpConfiguration, sourceRectangle.Width, sourceRectangle.Height);
+			image.DangerousTryGetSinglePixelMemory(out Memory<Rgba32> memory);
+			GLWrapper.BindFramebuffer(m_frameBuffer);
+			GL.ReadPixels(sourceRectangle.Left, sourceRectangle.Top, sourceRectangle.Width, sourceRectangle.Height, PixelFormat.Rgba, PixelType.UnsignedByte, (IntPtr)memory.Pin().Pointer);
+			return new Image(image);
+		}
 
-        public void GenerateMipMaps()
-        {
-            GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
-            GL.GenerateMipmap(TextureTarget.Texture2D);
-        }
+		public void GenerateMipMaps()
+		{
+			GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
+			GL.GenerateMipmap(TextureTarget.Texture2D);
+		}
 
-        internal override void HandleDeviceLost()
-        {
-            DeleteRenderTarget();
-        }
+		internal override void HandleDeviceLost()
+		{
+			DeleteRenderTarget();
+		}
 
-        internal override void HandleDeviceReset()
-        {
-            AllocateRenderTarget();
-        }
+		internal override void HandleDeviceReset()
+		{
+			AllocateRenderTarget();
+		}
 
-        public void AllocateRenderTarget()
-        {
-            GL.GenFramebuffers(1, out m_frameBuffer);
-            GLWrapper.BindFramebuffer(m_frameBuffer);
-            GL.FramebufferTexture2D(All.Framebuffer, All.ColorAttachment0, All.Texture2D, m_texture, 0);
-            if (DepthFormat != 0)
-            {
-                GL.GenRenderbuffers(1, out m_depthBuffer);
-                GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, m_depthBuffer);
-                GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), base.Width, base.Height);
-                GL.FramebufferRenderbuffer(All.Framebuffer, All.DepthAttachment, All.Renderbuffer, m_depthBuffer);
-                GL.FramebufferRenderbuffer(All.Framebuffer, All.StencilAttachment, All.Renderbuffer, 0);
-            }
-            else
-            {
-                GL.FramebufferRenderbuffer(All.Framebuffer, All.DepthAttachment, All.Renderbuffer, 0);
-                GL.FramebufferRenderbuffer(All.Framebuffer, All.StencilAttachment, All.Renderbuffer, 0);
-            }
-            FramebufferErrorCode framebufferErrorCode = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
-            if (framebufferErrorCode != FramebufferErrorCode.FramebufferComplete)
-            {
-                throw new InvalidOperationException($"Error creating framebuffer ({framebufferErrorCode.ToString()}).");
-            }
-        }
+		public void AllocateRenderTarget()
+		{
+			GL.GenFramebuffers(1, out m_frameBuffer);
+			GLWrapper.BindFramebuffer(m_frameBuffer);
+			GL.FramebufferTexture2D(All.Framebuffer, All.ColorAttachment0, All.Texture2D, m_texture, 0);
+			if (DepthFormat != 0)
+			{
+				GL.GenRenderbuffers(1, out m_depthBuffer);
+				GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, m_depthBuffer);
+				GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, GLWrapper.TranslateDepthFormat(DepthFormat), base.Width, base.Height);
+				GL.FramebufferRenderbuffer(All.Framebuffer, All.DepthAttachment, All.Renderbuffer, m_depthBuffer);
+				GL.FramebufferRenderbuffer(All.Framebuffer, All.StencilAttachment, All.Renderbuffer, 0);
+			}
+			else
+			{
+				GL.FramebufferRenderbuffer(All.Framebuffer, All.DepthAttachment, All.Renderbuffer, 0);
+				GL.FramebufferRenderbuffer(All.Framebuffer, All.StencilAttachment, All.Renderbuffer, 0);
+			}
+			FramebufferErrorCode framebufferErrorCode = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
+			if (framebufferErrorCode != FramebufferErrorCode.FramebufferComplete)
+			{
+				throw new InvalidOperationException($"Error creating framebuffer ({framebufferErrorCode.ToString()}).");
+			}
+		}
 
-        public void DeleteRenderTarget()
-        {
-            if (m_depthBuffer != 0)
-            {
-                GL.DeleteRenderbuffers(1, ref m_depthBuffer);
-                m_depthBuffer = 0;
-            }
-            if (m_frameBuffer != 0)
-            {
-                GLWrapper.DeleteFramebuffer(m_frameBuffer);
-                m_frameBuffer = 0;
-            }
-        }
+		public void DeleteRenderTarget()
+		{
+			if (m_depthBuffer != 0)
+			{
+				GL.DeleteRenderbuffers(1, ref m_depthBuffer);
+				m_depthBuffer = 0;
+			}
+			if (m_frameBuffer != 0)
+			{
+				GLWrapper.DeleteFramebuffer(m_frameBuffer);
+				m_frameBuffer = 0;
+			}
+		}
 
 		public static void Save(RenderTarget2D renderTarget, Stream stream, ImageFileFormat format, bool saveAlpha)
 		{
@@ -165,5 +163,5 @@ namespace Engine.Graphics
 				throw new InvalidOperationException("Not enough space in target array.");
 			}
 		}
-    }
+	}
 }

@@ -1,5 +1,3 @@
-using System;
-
 namespace Engine
 {
 	public struct Color : IEquatable<Color>

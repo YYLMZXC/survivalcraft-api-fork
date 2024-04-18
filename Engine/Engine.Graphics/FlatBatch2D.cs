@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-
 namespace Engine.Graphics
 {
-	public  class FlatBatch2D : BaseFlatBatch
+	public class FlatBatch2D : BaseFlatBatch
 	{
 		public void QueueLine(Vector2 p1, Vector2 p2, float depth, Color color)
 		{

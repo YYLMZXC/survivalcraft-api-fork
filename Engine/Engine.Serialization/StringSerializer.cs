@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-    public class StringSerializer : ISerializer<string>
+	public class StringSerializer : ISerializer<string>
 	{
 		public void Serialize(InputArchive archive, ref string value)
 		{
