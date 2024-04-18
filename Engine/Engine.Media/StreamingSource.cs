@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+
 namespace Engine.Media
 {
 	public abstract class StreamingSource : IDisposable

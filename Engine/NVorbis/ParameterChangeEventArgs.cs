@@ -1,6 +1,8 @@
+using System;
+
 namespace NVorbis
 {
-	public class ParameterChangeEventArgs : EventArgs
+    public class ParameterChangeEventArgs : EventArgs
 	{
 		public DataPacket FirstPacket
 		{

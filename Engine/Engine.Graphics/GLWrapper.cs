@@ -1,4 +1,6 @@
 using OpenTK.Graphics.ES30;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Engine.Graphics
@@ -328,7 +330,7 @@ namespace Engine.Graphics
 				m_blendFuncDestinationColor = blendFuncDestinationColor;
 				m_blendFuncDestinationAlpha = blendFuncDestinationAlpha;
 				m_blendFuncSource = (BlendingFactorSrc)(-1);
-				m_blendFuncDestination = (BlendingFactorDest)(-1);
+                m_blendFuncDestination = (BlendingFactorDest)(-1);
 			}
 		}
 
@@ -584,12 +586,12 @@ namespace Engine.Graphics
 				Disable(EnableCap.Blend);
 				return;
 			}
-			BlendEquationMode all = TranslateBlendFunction(state.ColorBlendFunction);
-			BlendEquationMode all2 = TranslateBlendFunction(state.AlphaBlendFunction);
-			BlendingFactorSrc all3 = TranslateBlendSrc(state.ColorSourceBlend);
-			BlendingFactorDest all4 = TranslateBlendDest(state.ColorDestinationBlend);
-			BlendingFactorSrc all5 = TranslateBlendSrc(state.AlphaSourceBlend);
-			BlendingFactorDest all6 = TranslateBlendDest(state.AlphaDestinationBlend);
+            BlendEquationMode all = TranslateBlendFunction(state.ColorBlendFunction);
+            BlendEquationMode all2 = TranslateBlendFunction(state.AlphaBlendFunction);
+            BlendingFactorSrc all3 = TranslateBlendSrc(state.ColorSourceBlend);
+            BlendingFactorDest all4 = TranslateBlendDest(state.ColorDestinationBlend);
+            BlendingFactorSrc all5 = TranslateBlendSrc(state.AlphaSourceBlend);
+            BlendingFactorDest all6 = TranslateBlendDest(state.AlphaDestinationBlend);
 			if (all == all2 && all3 == all5 && all4 == all6)
 			{
 				BlendEquation(all);
@@ -715,8 +717,8 @@ namespace Engine.Graphics
 							BindTexture(TextureTarget.Texture2D, texture2D.m_texture, forceBind: false);
 							if (GL_EXT_texture_filter_anisotropic)
 							{
-								GL.TexParameter(TextureTarget.Texture2D, (TextureParameterName)34046, (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? samplerState.MaxAnisotropy : 1f);
-							}
+                                GL.TexParameter(TextureTarget.Texture2D, (TextureParameterName)34046, (samplerState.FilterMode == TextureFilterMode.Anisotropic) ? samplerState.MaxAnisotropy : 1f);
+                            }
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TranslateTextureFilterModeMin(samplerState.FilterMode, texture2D.MipLevelsCount > 1));
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TranslateTextureFilterModeMag(samplerState.FilterMode));
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TranslateTextureAddressMode(samplerState.AddressModeU));
@@ -1013,36 +1015,36 @@ namespace Engine.Graphics
 				Blend.SourceAlphaSaturation => BlendingFactorSrc.SrcAlphaSaturate,
 				_ => throw new InvalidOperationException("Unsupported blend."),
 			};
-		}
-		public static BlendingFactorDest TranslateBlendDest(Blend blend)
-		{
-			return blend switch
-			{
-				Blend.Zero => (BlendingFactorDest)0,
-				Blend.One => (BlendingFactorDest)1,
-				Blend.SourceColor => BlendingFactorDest.SrcColor,
-				Blend.InverseSourceColor => BlendingFactorDest.OneMinusSrcColor,
-				Blend.DestinationColor => BlendingFactorDest.DstColor,
-				Blend.InverseDestinationColor => BlendingFactorDest.OneMinusDstColor,
-				Blend.SourceAlpha => BlendingFactorDest.SrcAlpha,
-				Blend.InverseSourceAlpha => BlendingFactorDest.OneMinusSrcAlpha,
-				Blend.DestinationAlpha => BlendingFactorDest.DstAlpha,
-				Blend.InverseDestinationAlpha => BlendingFactorDest.OneMinusDstAlpha,
-				Blend.BlendFactor => BlendingFactorDest.ConstantColor,
-				Blend.InverseBlendFactor => BlendingFactorDest.OneMinusConstantColor,
-				Blend.SourceAlphaSaturation => BlendingFactorDest.SrcAlphaSaturate,
-				_ => throw new InvalidOperationException("Unsupported blend."),
-			};
-		}
+        }
+        public static BlendingFactorDest TranslateBlendDest(Blend blend)
+        {
+            return blend switch
+            {
+                Blend.Zero => (BlendingFactorDest)0,
+                Blend.One => (BlendingFactorDest)1,
+                Blend.SourceColor => BlendingFactorDest.SrcColor,
+                Blend.InverseSourceColor => BlendingFactorDest.OneMinusSrcColor,
+                Blend.DestinationColor => BlendingFactorDest.DstColor,
+                Blend.InverseDestinationColor => BlendingFactorDest.OneMinusDstColor,
+                Blend.SourceAlpha => BlendingFactorDest.SrcAlpha,
+                Blend.InverseSourceAlpha => BlendingFactorDest.OneMinusSrcAlpha,
+                Blend.DestinationAlpha => BlendingFactorDest.DstAlpha,
+                Blend.InverseDestinationAlpha => BlendingFactorDest.OneMinusDstAlpha,
+                Blend.BlendFactor => BlendingFactorDest.ConstantColor,
+                Blend.InverseBlendFactor => BlendingFactorDest.OneMinusConstantColor,
+                Blend.SourceAlphaSaturation => BlendingFactorDest.SrcAlphaSaturate,
+                _ => throw new InvalidOperationException("Unsupported blend."),
+            };
+        }
 
-		public static RenderbufferInternalFormat TranslateDepthFormat(DepthFormat depthFormat)
+        public static RenderbufferInternalFormat TranslateDepthFormat(DepthFormat depthFormat)
 		{
 #if desktop
 			return depthFormat switch
 			{
 				DepthFormat.Depth16 => RenderbufferInternalFormat.DepthComponent16,
 				DepthFormat.Depth24Stencil8 => RenderbufferInternalFormat.Depth24Stencil8,
-				_ => throw new InvalidOperationException("Unsupported DepthFormat."),
+                _ => throw new InvalidOperationException("Unsupported DepthFormat."),
 			};
 #else
 			switch (depthFormat)
@@ -1059,9 +1061,9 @@ namespace Engine.Graphics
 					throw new InvalidOperationException("Unsupported DepthFormat.");
 			}
 #endif
-		}
+        }
 
-		[Conditional("DEBUG")]
+        [Conditional("DEBUG")]
 		public static void CheckGLError()
 		{
 		}

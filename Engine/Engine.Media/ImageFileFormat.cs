@@ -5,11 +5,11 @@ namespace Engine.Media
 		Bmp,
 		Png,
 		Jpg,
-		Gif,
-		Pbm,
-		Qoi,
-		Tiff,
-		Tga,
-		WebP
-	}
+        Gif,
+        Pbm,
+        Qoi,
+        Tiff,
+        Tga,
+        WebP
+    }
 }

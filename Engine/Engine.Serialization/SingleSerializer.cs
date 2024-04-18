@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	public class SingleSerializer : ISerializer<float>
+    public class SingleSerializer : ISerializer<float>
 	{
 		public void Serialize(InputArchive archive, ref float value)
 		{

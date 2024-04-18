@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace Engine
 {
 	public struct BoundingBox : IEquatable<BoundingBox>

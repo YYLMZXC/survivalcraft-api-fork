@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
 namespace Engine.Serialization
 {
 	public class BinaryInputArchive : InputArchive, IDisposable
@@ -149,7 +153,7 @@ namespace Engine.Serialization
 			}
 		}
 
-		public override void ReadObjectInfo(out int objectId, out bool isReference, out Type runtimeType)
+        public override void ReadObjectInfo(out int objectId, out bool isReference, out Type runtimeType)
 		{
 			int value = 0;
 			Serialize(null, ref value);

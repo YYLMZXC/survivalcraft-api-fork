@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	public class RectangleSerializer : ISerializer<Rectangle>
+    public class RectangleSerializer : ISerializer<Rectangle>
 	{
 		public void Serialize(InputArchive archive, ref Rectangle value)
 		{

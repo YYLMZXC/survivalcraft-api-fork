@@ -1,7 +1,9 @@
+using System;
+
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(Rectangle))]
-	public class RectangleHumanReadableConverter : IHumanReadableConverter
+    public class RectangleHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

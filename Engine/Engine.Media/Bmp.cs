@@ -1,5 +1,7 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Bmp;
+using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Engine.Media
@@ -27,7 +29,7 @@ namespace Engine.Media
 		}
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public struct BitmapHeader
+        public struct BitmapHeader
 		{
 			public byte Type1;
 
@@ -65,60 +67,60 @@ namespace Engine.Media
 		}
 
 		public static bool IsBmpStream(Stream stream)
-		{
-			ArgumentNullException.ThrowIfNull(stream);
-			return SixLabors.ImageSharp.Image.DetectFormat(stream).Name == "BMP";
-		}
+        {
+            ArgumentNullException.ThrowIfNull(stream);
+            return SixLabors.ImageSharp.Image.DetectFormat(stream).Name == "BMP";
+        }
 
 		public static BmpInfo GetInfo(Stream stream)
-		{
-			ArgumentNullException.ThrowIfNull(stream);
-			ImageInfo info = SixLabors.ImageSharp.Image.Identify(stream);
-			if (info.Metadata.DecodedImageFormat.Name != "BMP")
-			{
-				throw new FormatException($"Image format({info.Metadata.DecodedImageFormat.Name}) is not Bmp");
-			}
-			BmpInfo result = default;
+        {
+            ArgumentNullException.ThrowIfNull(stream);
+            ImageInfo info = SixLabors.ImageSharp.Image.Identify(stream);
+            if (info.Metadata.DecodedImageFormat.Name != "BMP")
+            {
+                throw new FormatException($"Image format({info.Metadata.DecodedImageFormat.Name}) is not Bmp");
+            }
+            BmpInfo result = default;
 			result.Width = info.Width;
 			result.Height = info.Height;
-			if (!ImageSharpBitsPerPixel2EngineBmpFormat.TryGetValue(info.Metadata.GetBmpMetadata().BitsPerPixel, out result.Format))
+			if(!ImageSharpBitsPerPixel2EngineBmpFormat.TryGetValue(info.Metadata.GetBmpMetadata().BitsPerPixel, out result.Format))
 			{
-				throw new InvalidOperationException("Unsupported BMP pixel format.");
-			}
+                throw new InvalidOperationException("Unsupported BMP pixel format.");
+            }
 			return result;
 		}
 
 		public static Image Load(Stream stream)
-		{
-			ArgumentNullException.ThrowIfNull(stream);
-			string formatName = SixLabors.ImageSharp.Image.DetectFormat(stream).Name;
-			if (formatName != "BMP")
-			{
-				throw new FormatException($"Image format({formatName}) is not BMP");
-			}
-			return Image.Load(stream);
-		}
+        {
+            ArgumentNullException.ThrowIfNull(stream);
+            string formatName = SixLabors.ImageSharp.Image.DetectFormat(stream).Name;
+            if (formatName != "BMP")
+            {
+                throw new FormatException($"Image format({formatName}) is not BMP");
+            }
+            return Image.Load(stream);
+        }
 
 		public static void Save(Image image, Stream stream, Format format, bool sync = false)
 		{
-			ArgumentNullException.ThrowIfNull(image);
-			ArgumentNullException.ThrowIfNull(stream);
-			if (!EngineBmpFormat2ImageSharpBitsPerPixel.TryGetValue(format, out BmpBitsPerPixel bitsPerPixel))
-			{
-				throw new InvalidOperationException("Unsupported BMP pixel format.");
-			}
-			BmpEncoder encoder = new BmpEncoder() { BitsPerPixel = bitsPerPixel };
+            ArgumentNullException.ThrowIfNull(image);
+            ArgumentNullException.ThrowIfNull(stream);
+            if (!EngineBmpFormat2ImageSharpBitsPerPixel.TryGetValue(format, out BmpBitsPerPixel bitsPerPixel))
+            {
+                throw new InvalidOperationException("Unsupported BMP pixel format.");
+            }
+            BmpEncoder encoder = new BmpEncoder() { BitsPerPixel= bitsPerPixel };
 			if (sync)
 			{
 				image.m_trueImage.SaveAsBmp(stream, encoder);
 			}
 			else
 			{
-				image.m_trueImage.SaveAsBmpAsync(stream, encoder);
-			}
-		}
+                image.m_trueImage.SaveAsBmpAsync(stream, encoder);
+            }
+        }
 
-		public static BitmapHeader ReadHeader(Stream stream)
+        public static BitmapHeader ReadHeader(Stream stream)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
 			if (!BitConverter.IsLittleEndian)
@@ -152,15 +154,15 @@ namespace Engine.Media
 			{ Format.Pixel4, BmpBitsPerPixel.Pixel4 },
 			{ Format.Pixel8, BmpBitsPerPixel.Pixel8 }
 		};
-		public static readonly Dictionary<BmpBitsPerPixel, Format> ImageSharpBitsPerPixel2EngineBmpFormat = new()
-		{
-			{ BmpBitsPerPixel.Pixel32, Format.RGBA8 },
-			{ BmpBitsPerPixel.Pixel24, Format.RGB8 },
+        public static readonly Dictionary<BmpBitsPerPixel, Format> ImageSharpBitsPerPixel2EngineBmpFormat = new()
+        {
+            { BmpBitsPerPixel.Pixel32, Format.RGBA8 },
+            { BmpBitsPerPixel.Pixel24, Format.RGB8 },
 			{ BmpBitsPerPixel.Pixel1, Format.Pixel1 },
 			{ BmpBitsPerPixel.Pixel16, Format.Pixel16 },
 			{ BmpBitsPerPixel.Pixel2, Format.Pixel2 },
 			{ BmpBitsPerPixel.Pixel4, Format.Pixel4 },
 			{ BmpBitsPerPixel.Pixel8, Format.Pixel8 }
-		};
-	}
+        };
+    }
 }

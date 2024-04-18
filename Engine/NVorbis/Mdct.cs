@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace NVorbis
 {
 	internal class Mdct

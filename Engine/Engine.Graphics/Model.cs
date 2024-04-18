@@ -1,4 +1,7 @@
 using Engine.Media;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Engine.Graphics
 {
@@ -6,9 +9,9 @@ namespace Engine.Graphics
 	{
 		public ModelBone m_rootBone;
 
-		public List<ModelBone> m_bones = [];
+        public List<ModelBone> m_bones = [];
 
-		public List<ModelMesh> m_meshes = [];
+        public List<ModelMesh> m_meshes = [];
 
 		public ModelBone RootBone => m_rootBone;
 

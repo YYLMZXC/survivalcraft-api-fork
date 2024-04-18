@@ -1,9 +1,10 @@
+using System;
 using System.Globalization;
 
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(uint))]
-	public class UInt32HumanReadableConverter : IHumanReadableConverter
+    public class UInt32HumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

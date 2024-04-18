@@ -1,11 +1,12 @@
 using OpenTK.Graphics.ES30;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
-	public class VertexBuffer : GraphicsResource
+	public  class VertexBuffer : GraphicsResource
 	{
-		public int m_buffer;
+        public int m_buffer;
 
 		public string DebugName
 		{
@@ -75,14 +76,14 @@ namespace Engine.Graphics
 			AllocateBuffer();
 		}
 
-		public void AllocateBuffer()
+        public void AllocateBuffer()
 		{
 			GL.GenBuffers(1, out m_buffer);
 			GLWrapper.BindBuffer(BufferTarget.ArrayBuffer, m_buffer);
 			GL.BufferData(All.ArrayBuffer, new IntPtr(VertexDeclaration.VertexStride * VerticesCount), IntPtr.Zero, All.StaticDraw);
 		}
 
-		public void DeleteBuffer()
+        public void DeleteBuffer()
 		{
 			if (m_buffer != 0)
 			{

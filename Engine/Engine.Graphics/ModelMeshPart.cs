@@ -1,8 +1,10 @@
+using System;
+
 namespace Engine.Graphics
 {
 	public class ModelMeshPart : IDisposable
 	{
-		public BoundingBox m_boundingBox;
+        public BoundingBox m_boundingBox;
 
 		public string TexturePath;
 

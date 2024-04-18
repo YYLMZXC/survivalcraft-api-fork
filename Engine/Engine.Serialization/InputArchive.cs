@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace Engine.Serialization
 {
 	public abstract class InputArchive : Archive
@@ -109,7 +112,7 @@ namespace Engine.Serialization
 			return dictionary;
 		}
 
-		public abstract void ReadObjectInfo(out int objectId, out bool isReference, out Type runtimeType);
+        public abstract void ReadObjectInfo(out int objectId, out bool isReference, out Type runtimeType);
 
 		protected virtual void ReadObject(SerializeData staticSerializeData, ref object value)
 		{

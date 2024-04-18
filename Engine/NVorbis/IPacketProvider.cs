@@ -1,6 +1,8 @@
+using System;
+
 namespace NVorbis
 {
-	public interface IPacketProvider : IDisposable
+    public interface IPacketProvider : IDisposable
 	{
 		int StreamSerial
 		{
@@ -17,7 +19,7 @@ namespace NVorbis
 			get;
 		}
 
-		event EventHandler<ParameterChangeEventArgs> ParameterChange;
+        event EventHandler<ParameterChangeEventArgs> ParameterChange;
 
 		int GetTotalPageCount();
 

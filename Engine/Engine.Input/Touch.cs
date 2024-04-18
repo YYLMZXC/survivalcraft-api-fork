@@ -4,6 +4,9 @@ using Android.Views;
 
 #endif
 
+using System;
+using System.Collections.Generic;
+
 namespace Engine.Input
 {
 	public static class Touch
@@ -118,12 +121,12 @@ namespace Engine.Input
 			return -1;
 		}
 
-		public static void ProcessTouchPressed(int id, Vector2 position)
+        public static void ProcessTouchPressed(int id, Vector2 position)
 		{
 			ProcessTouchMoved(id, position);
 		}
 
-		public static void ProcessTouchMoved(int id, Vector2 position)
+        public static void ProcessTouchMoved(int id, Vector2 position)
 		{
 			if (!Window.IsActive || Keyboard.IsKeyboardVisible)
 			{
@@ -160,7 +163,7 @@ namespace Engine.Input
 			}
 		}
 
-		public static void ProcessTouchReleased(int id, Vector2 position)
+        public static void ProcessTouchReleased(int id, Vector2 position)
 		{
 			if (!Window.IsActive || Keyboard.IsKeyboardVisible)
 			{

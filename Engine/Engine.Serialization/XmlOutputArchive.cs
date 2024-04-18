@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
 
@@ -156,7 +158,7 @@ namespace Engine.Serialization
 			LeaveNode(name);
 		}
 
-		public override void WriteObjectInfo(int objectId, bool isReference, Type runtimeType)
+        public override void WriteObjectInfo(int objectId, bool isReference, Type runtimeType)
 		{
 			if (isReference)
 			{

@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
 namespace Engine.Media
 {
 	public class LegacyImage
@@ -18,13 +22,13 @@ namespace Engine.Media
 
 		public LegacyImage(Image image)
 		{
-			ArgumentNullException.ThrowIfNull(image);
-			Width = image.Width;
-			Height = image.Height;
-			Pixels = (Color[])image.Pixels.Clone();
-		}
+            ArgumentNullException.ThrowIfNull(image);
+            Width = image.Width;
+            Height = image.Height;
+            Pixels = (Color[])image.Pixels.Clone();
+        }
 
-		public LegacyImage(int width, int height)
+        public LegacyImage(int width, int height)
 		{
 			if (width < 0)
 			{
@@ -190,11 +194,11 @@ namespace Engine.Media
 
 		public static ImageFileFormat DetermineFileFormat(string extension) => Image.DetermineFileFormat(extension);
 
-		public static ImageFileFormat DetermineFileFormat(Stream stream) => Image.DetermineFileFormat(stream);
+        public static ImageFileFormat DetermineFileFormat(Stream stream) => Image.DetermineFileFormat(stream);
 
-		public static LegacyImage Load(Stream stream, ImageFileFormat format) => new LegacyImage(Image.Load(stream, format));
+        public static LegacyImage Load(Stream stream, ImageFileFormat format) => new LegacyImage(Image.Load(stream, format));
 
-		public static LegacyImage Load(string fileName, ImageFileFormat format)
+        public static LegacyImage Load(string fileName, ImageFileFormat format)
 		{
 			using (Stream stream = Storage.OpenFile(fileName, OpenFileMode.Read))
 			{

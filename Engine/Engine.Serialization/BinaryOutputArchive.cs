@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
 namespace Engine.Serialization
 {
 	public class BinaryOutputArchive : OutputArchive, IDisposable
@@ -137,7 +142,7 @@ namespace Engine.Serialization
 			}
 		}
 
-		public override void WriteObjectInfo(int objectId, bool isReference, Type runtimeType)
+        public override void WriteObjectInfo(int objectId, bool isReference, Type runtimeType)
 		{
 			if (isReference)
 			{

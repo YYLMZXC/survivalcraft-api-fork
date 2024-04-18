@@ -1,5 +1,9 @@
 using Engine.Graphics;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -7,7 +11,7 @@ namespace Engine.Media
 {
 	public static class Collada
 	{
-		public struct Vertex : IEquatable<Vertex>
+        public struct Vertex : IEquatable<Vertex>
 		{
 			public byte[] Data;
 
@@ -60,7 +64,7 @@ namespace Engine.Media
 			}
 		}
 
-		public class Asset
+        public class Asset
 		{
 			public readonly float Meter = 1f;
 
@@ -78,7 +82,7 @@ namespace Engine.Media
 			}
 		}
 
-		public class ColladaRoot
+        public class ColladaRoot
 		{
 			public static readonly XNamespace Namespace = "http://www.collada.org/2005/11/COLLADASchema";
 
@@ -107,7 +111,7 @@ namespace Engine.Media
 			}
 		}
 
-		public class ColladaNameId
+        public class ColladaNameId
 		{
 			public string Id;
 
@@ -129,7 +133,7 @@ namespace Engine.Media
 			}
 		}
 
-		public class ColladaLibraryVisualScenes
+        public class ColladaLibraryVisualScenes
 		{
 			public List<ColladaVisualScene> VisualScenes = [];
 
@@ -142,7 +146,7 @@ namespace Engine.Media
 			}
 		}
 
-		public class ColladaLibraryGeometries
+        public class ColladaLibraryGeometries
 		{
 			public List<ColladaGeometry> Geometries = [];
 
@@ -155,7 +159,7 @@ namespace Engine.Media
 			}
 		}
 
-		public class ColladaScene
+        public class ColladaScene
 		{
 			public ColladaVisualScene VisualScene;
 
@@ -166,7 +170,7 @@ namespace Engine.Media
 			}
 		}
 
-		public class ColladaVisualScene : ColladaNameId
+        public class ColladaVisualScene : ColladaNameId
 		{
 			public List<ColladaNode> Nodes = [];
 
@@ -180,7 +184,7 @@ namespace Engine.Media
 			}
 		}
 
-		public class ColladaNode : ColladaNameId
+        public class ColladaNode : ColladaNameId
 		{
 			public Matrix Transform = Matrix.Identity;
 
@@ -229,7 +233,7 @@ namespace Engine.Media
 			}
 		}
 
-		public class ColladaGeometry : ColladaNameId
+        public class ColladaGeometry : ColladaNameId
 		{
 			public ColladaMesh Mesh;
 
@@ -465,7 +469,7 @@ namespace Engine.Media
 			return modelData;
 		}
 
-		public static ModelBoneData LoadNode(ModelData data, ModelBoneData parentBoneData, ColladaNode node, Matrix transform)
+        public static ModelBoneData LoadNode(ModelData data, ModelBoneData parentBoneData, ColladaNode node, Matrix transform)
 		{
 			var modelBoneData = new ModelBoneData();
 			data.Bones.Add(modelBoneData);
@@ -483,7 +487,7 @@ namespace Engine.Media
 			return modelBoneData;
 		}
 
-		public static ModelMeshData LoadGeometry(ModelData data, ModelBoneData parentBoneData, ColladaGeometry geometry)
+        public static ModelMeshData LoadGeometry(ModelData data, ModelBoneData parentBoneData, ColladaGeometry geometry)
 		{
 			var modelMeshData = new ModelMeshData();
 			data.Meshes.Add(modelMeshData);
@@ -500,7 +504,7 @@ namespace Engine.Media
 			return modelMeshData;
 		}
 
-		public static ModelMeshPartData LoadPolygons(ModelData data, ColladaPolygons polygons)
+        public static ModelMeshPartData LoadPolygons(ModelData data, ColladaPolygons polygons)
 		{
 			var modelMeshPartData = new ModelMeshPartData();
 			int num = 0;
@@ -665,14 +669,14 @@ namespace Engine.Media
 			return modelMeshPartData;
 		}
 
-		public static T[] ExtendArray<T>(T[] array, int extensionLength)
+        public static T[] ExtendArray<T>(T[] array, int extensionLength)
 		{
 			var array2 = new T[array.Length + extensionLength];
 			Array.Copy(array, array2, array.Length);
 			return array2;
 		}
 
-		public static void IndexVertices(int vertexStride, byte[] vertices, out byte[] resultVertices, out byte[] resultIndices)
+        public static void IndexVertices(int vertexStride, byte[] vertices, out byte[] resultVertices, out byte[] resultIndices)
 		{
 			int num = vertices.Length / vertexStride;
 			var dictionary = new Dictionary<Vertex, ushort>();

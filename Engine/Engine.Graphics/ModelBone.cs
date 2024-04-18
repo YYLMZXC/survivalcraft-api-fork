@@ -1,10 +1,12 @@
+using System.Collections.Generic;
+
 namespace Engine.Graphics
 {
 	public class ModelBone
 	{
-		public List<ModelBone> m_childBones = [];
+        public List<ModelBone> m_childBones = [];
 
-		public Matrix m_transform;
+        public Matrix m_transform;
 
 		public Model Model
 		{

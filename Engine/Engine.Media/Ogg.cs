@@ -1,4 +1,6 @@
 using NVorbis;
+using System;
+using System.IO;
 
 namespace Engine.Media
 {
@@ -6,11 +8,11 @@ namespace Engine.Media
 	{
 		public class OggStreamingSource : StreamingSource
 		{
-			public VorbisReader m_reader;
+            public VorbisReader m_reader;
 
-			public Stream m_stream;
+            public Stream m_stream;
 
-			public float[] m_samples = new float[1024];
+            public float[] m_samples = new float[1024];
 
 			public override int ChannelsCount => m_reader.Channels;
 

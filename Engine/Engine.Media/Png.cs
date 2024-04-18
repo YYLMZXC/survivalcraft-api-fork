@@ -27,29 +27,29 @@ namespace Engine.Media
 		{
 			ArgumentNullException.ThrowIfNull(stream);
 			return SixLabors.ImageSharp.Image.DetectFormat(stream).Name == "PNG";
-		}
+        }
 
 		public static PngInfo GetInfo(Stream stream)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
-			SixLabors.ImageSharp.ImageInfo info = SixLabors.ImageSharp.Image.Identify(stream);
-			if (info.Metadata.DecodedImageFormat.Name != "PNG")
+            SixLabors.ImageSharp.ImageInfo info = SixLabors.ImageSharp.Image.Identify(stream);
+			if(info.Metadata.DecodedImageFormat.Name != "PNG")
 			{
 				throw new FormatException($"Image format({info.Metadata.DecodedImageFormat.Name}) is not Png");
 			}
-			PngInfo result = default;
+            PngInfo result = default;
 			result.Width = info.Width;
 			result.Height = info.Height;
 			switch (info.Metadata.GetPngMetadata().ColorType)
 			{
 				case SixLabors.ImageSharp.Formats.Png.PngColorType.RgbWithAlpha:
-					result.Format = Format.RGBA8;
+                    result.Format = Format.RGBA8;
 					break;
 				case SixLabors.ImageSharp.Formats.Png.PngColorType.Rgb:
-					result.Format = Format.RGB8;
+                    result.Format = Format.RGB8;
 					break;
 				case SixLabors.ImageSharp.Formats.Png.PngColorType.GrayscaleWithAlpha:
-					result.Format = Format.LA8;
+                    result.Format = Format.LA8;
 					break;
 				case SixLabors.ImageSharp.Formats.Png.PngColorType.Grayscale:
 					result.Format = Format.L8;
@@ -58,19 +58,19 @@ namespace Engine.Media
 					result.Format = Format.Indexed;
 					break;
 				default:
-					throw new InvalidOperationException("Unsupported PNG pixel format.");
-			}
+                    throw new InvalidOperationException("Unsupported PNG pixel format.");
+            }
 			return result;
 		}
 
 		public static Image Load(Stream stream)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
-			string formatName = SixLabors.ImageSharp.Image.DetectFormat(stream).Name;
-			if (formatName != "PNG")
-			{
-				throw new FormatException($"Image format({formatName}) is not Png");
-			}
+            string formatName = SixLabors.ImageSharp.Image.DetectFormat(stream).Name;
+            if (formatName != "PNG")
+            {
+                throw new FormatException($"Image format({formatName}) is not Png");
+            }
 			return Image.Load(stream);
 		}
 
@@ -96,19 +96,18 @@ namespace Engine.Media
 				case Format.Indexed:
 					pngColorType = PngColorType.Palette;
 					break;
-				default:
-					throw new InvalidOperationException("Unsupported PNG pixel format.");
-			}
-			PngEncoder encoder = new PngEncoder()
+                default:
+                    throw new InvalidOperationException("Unsupported PNG pixel format.");
+            }
+            PngEncoder encoder = new PngEncoder()
 			{
 				ColorType = pngColorType,
 				CompressionLevel = compressionLevel,
 				TransparentColorMode = PngTransparentColorMode.Clear
 			};
-			if (sync)
-			{
-				image.m_trueImage.SaveAsPng(stream, encoder);
-			}
+			if (sync) {
+                image.m_trueImage.SaveAsPng(stream, encoder);
+            }
 			else
 			{
 				image.m_trueImage.SaveAsPngAsync(stream, encoder);

@@ -1,5 +1,7 @@
 using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
+using System;
+using System.Collections.Generic;
 
 namespace Engine.Audio
 {
@@ -7,9 +9,9 @@ namespace Engine.Audio
 	{
 		private static float m_masterVolume = 1f;
 
-		public static readonly List<Sound> m_soundsToStop = [];
+        public static readonly List<Sound> m_soundsToStop = [];
 
-		public static HashSet<Sound> m_soundsToStopPoll = [];
+        public static HashSet<Sound> m_soundsToStopPoll = [];
 
 		public static float MasterVolume
 		{
@@ -36,8 +38,8 @@ namespace Engine.Audio
 			//string str = Path.Combine(fullPath,  path);
 			//Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
 #endif
-			new AudioContext();
-			CheckALError();
+            new AudioContext();
+            CheckALError();
 		}
 		internal static void Dispose()
 		{
@@ -76,7 +78,7 @@ namespace Engine.Audio
 			//	throw new InvalidOperationException(AL.GetErrorString(error));
 			//}
 		}*/
-		public static bool CheckALError()
+			public static bool CheckALError()
 		{
 			try
 			{
@@ -96,7 +98,7 @@ namespace Engine.Audio
 			catch (Exception e)
 			{
 				Log.Error("OPENALÒÉËÆÎ´°²×°!");
-				Log.Error(e);
+				Log.Error (e);
 				return true;
 			}
 		}

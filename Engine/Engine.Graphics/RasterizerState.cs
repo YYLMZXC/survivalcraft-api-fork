@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-	public class RasterizerState : LockOnFirstUse
+	public  class RasterizerState : LockOnFirstUse
 	{
 		private CullMode m_cullMode = CullMode.CullCounterClockwise;
 

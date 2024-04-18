@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	public class DynamicArraySerializer<T> : ISerializer<DynamicArray<T>>
+    public class DynamicArraySerializer<T> : ISerializer<DynamicArray<T>>
 	{
 		public void Serialize(InputArchive archive, ref DynamicArray<T> value)
 		{

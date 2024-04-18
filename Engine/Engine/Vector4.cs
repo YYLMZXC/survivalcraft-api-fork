@@ -1,3 +1,5 @@
+using System;
+
 namespace Engine
 {
 	public struct Vector4 : IEquatable<Vector4>

@@ -27,7 +27,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Using Include="Engine" />
-  </ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Linq;
 using TemplatesDatabase;
 using XmlUtilities;

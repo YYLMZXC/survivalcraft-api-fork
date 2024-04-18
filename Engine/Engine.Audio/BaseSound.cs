@@ -1,4 +1,5 @@
 using OpenTK.Audio.OpenAL;
+using System;
 
 namespace Engine.Audio
 {
@@ -16,7 +17,7 @@ namespace Engine.Audio
 
 		internal bool m_disposeOnStop;
 
-		public int m_source;
+        public int m_source;
 
 		public SoundState State
 		{

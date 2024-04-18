@@ -1,3 +1,5 @@
+using System;
+
 namespace Engine.Graphics
 {
 	public struct Viewport : IEquatable<Viewport>

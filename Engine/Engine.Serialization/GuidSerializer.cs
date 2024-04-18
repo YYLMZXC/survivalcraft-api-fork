@@ -1,6 +1,8 @@
+using System;
+
 namespace Engine.Serialization
 {
-	public class GuidSerializer : ISerializer<Guid>
+    public class GuidSerializer : ISerializer<Guid>
 	{
 		public void Serialize(InputArchive archive, ref Guid value)
 		{

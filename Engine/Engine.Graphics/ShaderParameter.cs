@@ -1,6 +1,8 @@
+using System;
+
 namespace Engine.Graphics
 {
-	public class ShaderParameter
+	public  class ShaderParameter
 	{
 		internal int Location;
 

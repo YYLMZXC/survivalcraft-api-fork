@@ -1,8 +1,11 @@
+using System;
+using System.Collections.Generic;
+
 namespace TemplatesDatabase
 {
 	public class DatabaseObject
 	{
-		public class StringBin
+        public class StringBin
 		{
 			private int m_mask;
 

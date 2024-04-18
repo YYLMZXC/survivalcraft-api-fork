@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace Engine.Graphics
@@ -87,7 +89,7 @@ namespace Engine.Graphics
 			Color = Vector4.One;
 		}
 
-		public override void PrepareForDrawingOverride()
+        public override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(1, worldView: false, viewProjection: false, worldViewProjection: true);
 			m_worldViewProjectionMatrixParameter.SetValue(Transforms.WorldViewProjection, 1);

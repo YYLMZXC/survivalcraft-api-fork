@@ -1,10 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Engine.Graphics
 {
-	public class VertexDeclaration : IEquatable<VertexDeclaration>
+	public  class VertexDeclaration : IEquatable<VertexDeclaration>
 	{
-		public VertexElement[] m_elements;
+        public VertexElement[] m_elements;
 
-		public static List<VertexElement[]> m_allElements = [];
+        public static List<VertexElement[]> m_allElements = [];
 
 		public ReadOnlyList<VertexElement> VertexElements => new(m_elements);
 

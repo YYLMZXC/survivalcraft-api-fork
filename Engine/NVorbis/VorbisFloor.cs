@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
 namespace NVorbis
 {
 	internal abstract class VorbisFloor

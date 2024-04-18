@@ -1,6 +1,6 @@
 namespace Engine.Graphics
 {
-	public class SamplerState : LockOnFirstUse
+	public  class SamplerState : LockOnFirstUse
 	{
 		private TextureFilterMode m_filterMode;
 
@@ -10,7 +10,7 @@ namespace Engine.Graphics
 #if android
 		private int m_maxAnisotropy = 1;
 #else
-		private int m_maxAnisotropy;
+        private int m_maxAnisotropy;
 #endif
 
 		private float m_minLod = -1000f;

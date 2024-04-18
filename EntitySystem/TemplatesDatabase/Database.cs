@@ -1,3 +1,8 @@
+using Engine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace TemplatesDatabase
 {
 	public class Database
@@ -6,7 +11,7 @@ namespace TemplatesDatabase
 
 		private ReadOnlyList<DatabaseObjectType> m_databaseObjectTypes;
 
-		public Dictionary<Guid, DatabaseObject> m_databaseObjectsByGuid = [];
+        public Dictionary<Guid, DatabaseObject> m_databaseObjectsByGuid = [];
 
 		public IList<DatabaseObjectType> DatabaseObjectTypes => m_databaseObjectTypes;
 

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace GameEntitySystem
 {
 	public class IdToEntityMap

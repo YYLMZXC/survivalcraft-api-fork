@@ -1,6 +1,6 @@
 namespace Engine.Serialization
 {
-	public class NullableSerializer<T> : ISerializer<T?> where T : struct
+    public class NullableSerializer<T> : ISerializer<T?> where T : struct
 	{
 		public void Serialize(InputArchive archive, ref T? value)
 		{

@@ -1,12 +1,14 @@
 using Engine.Media;
 using OpenTK.Audio.OpenAL;
+using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Engine.Audio
 {
 	public class SoundBuffer : IDisposable
 	{
-		public int m_buffer;
+        public int m_buffer;
 
 		public int ChannelsCount
 		{
@@ -112,7 +114,7 @@ namespace Engine.Audio
 			return Load(SoundData.Load(fileName));
 		}
 
-		public void InitializeProperties(int samplesCount, int channelsCount, int samplingFrequency)
+        public void InitializeProperties(int samplesCount, int channelsCount, int samplingFrequency)
 		{
 			if (samplesCount <= 0)
 			{

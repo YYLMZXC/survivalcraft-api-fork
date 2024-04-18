@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Reflection;
 
 namespace Engine.Graphics
@@ -320,7 +323,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		public override void PrepareForDrawingOverride()
+        public override void PrepareForDrawingOverride()
 		{
 			Transforms.UpdateMatrices(m_instancesCount, m_useFog, viewProjection: false, worldViewProjection: true);
 			m_worldViewProjectionMatrixParameter.SetValue(Transforms.WorldViewProjection, InstancesCount);

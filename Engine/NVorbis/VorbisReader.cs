@@ -1,14 +1,18 @@
 using NVorbis.Ogg;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace NVorbis
 {
-	public class VorbisReader : IDisposable
+    public class VorbisReader : IDisposable
 	{
 		private int _streamIdx;
 
 		private IContainerReader _containerReader;
 
-		public List<VorbisStreamDecoder> _decoders;
+        public List<VorbisStreamDecoder> _decoders;
 
 		public List<int> _serials;
 

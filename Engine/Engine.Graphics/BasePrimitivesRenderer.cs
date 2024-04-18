@@ -1,4 +1,6 @@
 using Engine.Media;
+using System;
+using System.Collections.Generic;
 
 namespace Engine.Graphics
 {
@@ -18,7 +20,7 @@ namespace Engine.Graphics
 		{
 		}
 
-		public T1 FindFlatBatch(int layer, DepthStencilState depthStencilState, RasterizerState rasterizerState, BlendState blendState)
+        public T1 FindFlatBatch(int layer, DepthStencilState depthStencilState, RasterizerState rasterizerState, BlendState blendState)
 		{
 			for (LinkedListNode<T1> linkedListNode = m_flatBatches.First; linkedListNode != null; linkedListNode = linkedListNode.Next)
 			{
@@ -44,7 +46,7 @@ namespace Engine.Graphics
 			return val;
 		}
 
-		public T2 FindTexturedBatch(Texture2D texture, bool useAlphaTest, int layer, DepthStencilState depthStencilState, RasterizerState rasterizerState, BlendState blendState, SamplerState samplerState)
+        public T2 FindTexturedBatch(Texture2D texture, bool useAlphaTest, int layer, DepthStencilState depthStencilState, RasterizerState rasterizerState, BlendState blendState, SamplerState samplerState)
 		{
 			ArgumentNullException.ThrowIfNull(texture);
 			for (LinkedListNode<T2> linkedListNode = m_texturedBatches.First; linkedListNode != null; linkedListNode = linkedListNode.Next)
@@ -74,7 +76,7 @@ namespace Engine.Graphics
 			return val;
 		}
 
-		public T3 FindFontBatch(BitmapFont font, int layer, DepthStencilState depthStencilState, RasterizerState rasterizerState, BlendState blendState, SamplerState samplerState)
+        public T3 FindFontBatch(BitmapFont font, int layer, DepthStencilState depthStencilState, RasterizerState rasterizerState, BlendState blendState, SamplerState samplerState)
 		{
 			ArgumentNullException.ThrowIfNull(font);
 			for (LinkedListNode<T3> linkedListNode = m_fontBatches.First; linkedListNode != null; linkedListNode = linkedListNode.Next)

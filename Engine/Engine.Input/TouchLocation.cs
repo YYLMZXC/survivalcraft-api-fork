@@ -8,6 +8,6 @@ namespace Engine.Input
 
 		public TouchLocationState State;
 
-		public bool ReleaseQueued;
+        public bool ReleaseQueued;
 	}
 }

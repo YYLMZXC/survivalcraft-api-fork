@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace Engine.Serialization
 {
 	public class ArraySerializer<T> : ISerializer<Array>

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
+
 namespace Engine.Serialization
 {
-	public class HashSetSerializer<T> : ISerializer<HashSet<T>>
+    public class HashSetSerializer<T> : ISerializer<HashSet<T>>
 	{
 		public void Serialize(InputArchive archive, ref HashSet<T> value)
 		{

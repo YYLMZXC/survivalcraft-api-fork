@@ -4,7 +4,7 @@ namespace Engine.Graphics
 {
 	public abstract class BaseFontBatch : BaseBatch
 	{
-		public static UnlitShader m_shader = new(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+        public static UnlitShader m_shader = new(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
 
 		public readonly DynamicArray<VertexPositionColorTexture> TriangleVertices = [];
 

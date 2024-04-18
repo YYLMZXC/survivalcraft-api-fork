@@ -1,6 +1,8 @@
+using System;
+
 namespace NVorbis
 {
-	public interface IVorbisStreamStatus
+    public interface IVorbisStreamStatus
 	{
 		int EffectiveBitRate
 		{

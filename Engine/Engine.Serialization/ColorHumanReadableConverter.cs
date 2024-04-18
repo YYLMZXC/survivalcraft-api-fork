@@ -1,7 +1,9 @@
+using System;
+
 namespace Engine.Serialization
 {
 	[HumanReadableConverter(typeof(Color))]
-	public class ColorHumanReadableConverter : IHumanReadableConverter
+    public class ColorHumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

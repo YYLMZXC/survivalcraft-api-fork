@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Engine.Media
 {
 	public class ModelMeshData
