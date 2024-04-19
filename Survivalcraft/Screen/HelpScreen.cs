@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text.Json;
 using System.Xml.Linq;
 
 namespace Game
@@ -40,22 +38,20 @@ namespace Game
 					ShowTopic(helpTopic2);
 				}
 			};
-			var kvs = LanguageControl.KeyWords["Help"] as SimpleJson.JsonObject;
-			foreach (var item in kvs)
+            foreach (JsonProperty item in LanguageControl.jsonDocument.RootElement.GetProperty("Help").EnumerateObject())
 			{
-				SimpleJson.JsonObject item3 = item.Value as SimpleJson.JsonObject;
-				if (item3.ContainsKey("DisabledPlatforms"))
+				JsonElement item3 = item.Value;
+				if (item3.TryGetProperty("DisabledPlatforms", out JsonElement displa))
 				{
-					item3.TryGetValue("DisabledPlatforms", out object displa);
-					if (((string)displa).Split(new string[] { "," }, StringSplitOptions.None).FirstOrDefault((string s) => s.Trim().ToLower() == VersionsManager.Platform.ToString().ToLower()) == null) continue;
+					if ((displa.GetString()).Split(new string[] { "," }, StringSplitOptions.None).FirstOrDefault((string s) => s.Trim().ToLower() == VersionsManager.Platform.ToString().ToLower()) == null) continue;
 				}
-				item3.TryGetValue("Title", out object Title);
-				item3.TryGetValue("Name", out object Name);
-				item3.TryGetValue("value", out object value);
-				string attributeValue = Name as string;
-				string attributeValue2 = Title as string;
+				item3.TryGetProperty("Title", out JsonElement Title);
+				item3.TryGetProperty("Name", out JsonElement Name);
+				item3.TryGetProperty("value", out JsonElement value);
+				string attributeValue = Name.ValueKind == JsonValueKind.String ? Name.GetString() : string.Empty;
+				string attributeValue2 = Title.ValueKind == JsonValueKind.String ? Title.GetString() : string.Empty;
 				string text = string.Empty;
-				string[] array = ((string)value).Split(new string[] { "\n" }, StringSplitOptions.None);
+				string[] array = value.GetString().Split(new string[] { "\n" }, StringSplitOptions.None);
 				foreach (string text2 in array)
 				{
 					text = text + text2.Trim() + " ";

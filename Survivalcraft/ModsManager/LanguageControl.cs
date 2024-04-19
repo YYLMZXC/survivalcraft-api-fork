@@ -1,12 +1,9 @@
-﻿using SimpleJson;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Text.Json;
 namespace Game
 {
 	public static class LanguageControl
 	{
-		public static JsonObject KeyWords = [];
+		public static JsonDocument jsonDocument = null;
 		public static string Ok = default;
 		public static string Cancel = default;
 		public static string None = default;
@@ -51,7 +48,7 @@ namespace Game
 			Exists = default;
 			Success = default;
 			Delete = default;
-			KeyWords.Clear();
+            jsonDocument = null;
 			ModsManager.SetConfig("Language", languageType);
 		}
 		public static void loadJson(Stream stream)
@@ -59,10 +56,9 @@ namespace Game
 			string txt = new StreamReader(stream).ReadToEnd();
 			if (txt.Length > 0)
 			{//加载原版语言包
-				var obj = SimpleJson.SimpleJson.DeserializeObject(txt);
-				loadJsonLogic(KeyWords, obj);
-			}
-			if (Ok == default) Ok = Get("Usual", "ok");
+                jsonDocument = JsonDocument.Parse(txt);
+            }
+			/*if (Ok == default) Ok = Get("Usual", "ok");
 			if (Cancel == default) Cancel = Get("Usual", "cancel");
 			if (None == default) None = Get("Usual", "none");
 			if (Nothing == default) Nothing = Get("Usual", "nothing");
@@ -80,61 +76,10 @@ namespace Game
 			if (No == default) No = Get("Usual", "no");
 			if (Unavailable == default) Unavailable = Get("Usual", "Unavailable");
 			if (Exists == default) Exists = Get("Usual", "exist");
-			if (Success == default) Success = Get("Usual", "success");
+			if (Success == default) Success = Get("Usual", "success");*/
 			if (Delete == default) Success = Get("Usual", "delete");
 		}
 
-		public static void loadJsonLogic(JsonObject node, object obj)
-		{
-			if (obj is JsonObject)
-			{
-				JsonObject jsonobj = obj as JsonObject;
-				foreach (var item in jsonobj)
-				{
-					if (item.Value is string)
-					{
-						if (node.ContainsKey(item.Key))
-						{
-							node[item.Key] = item.Value;
-						}
-						else node.Add(item.Key, item.Value);
-					}
-					else
-					{
-						if (node.ContainsKey(item.Key))
-						{
-							loadJsonLogic(node[item.Key] as JsonObject, item.Value);
-						}
-						else node.Add(item.Key, item.Value);
-					}
-				}
-			}
-			else if (obj is JsonArray)
-			{
-				JsonArray jsonArray = obj as JsonArray;
-				for (int i = 0; i < jsonArray.Count; i++)
-				{
-					if (jsonArray[i] is string)
-					{
-						if (node.ContainsKey(i.ToString()))
-						{
-							node[i.ToString()] = jsonArray[i];
-						}
-						else node.Add(i.ToString(), jsonArray[i]);
-					}
-					else
-					{
-						JsonObject keys = [];
-						if (node.ContainsKey(i.ToString()))
-						{
-							node[i.ToString()] = keys;
-						}
-						else node.Add(i.ToString(), jsonArray[i]);
-						loadJsonLogic(keys, jsonArray[i]);
-					}
-				}
-			}
-		}
 		public static string LName()
 		{
 			return ModsManager.Configs["Language"];
@@ -151,10 +96,48 @@ namespace Game
 		{
 			return Get(out bool r, key);
 		}
-		public static string Get(out bool r, params string[] key)
+		public static string Get(out bool r, params string[] keys)
 		{//获得键值
 			r = false;
-			JsonObject obj = KeyWords;
+			JsonElement nowElement = jsonDocument.RootElement;
+			bool flag = false;
+            foreach (string key in keys)
+			{
+				if(key.Length == 0)
+				{
+					break;
+				}
+				if(nowElement.ValueKind == JsonValueKind.Object)
+				{
+                    if (nowElement.TryGetProperty(key, out nowElement))
+					{
+						flag = true;
+                    }
+					else
+                    {
+						break;
+                    }
+                }else if(nowElement.ValueKind == JsonValueKind.Array && int.TryParse(key, out int num) && num < nowElement.GetArrayLength())
+				{
+					nowElement = nowElement[num];
+                    flag = true;
+
+                }
+				else
+				{
+					break;
+				}
+			}
+			switch (nowElement.ValueKind)
+			{
+				case JsonValueKind.String:
+					r = true;
+					return nowElement.GetString();
+				case JsonValueKind.Number:
+					r = true;
+					return nowElement.GetDecimal().ToString();
+			}
+			/*JsonObject obj = KeyWords;
 			JsonArray arr = null;
 			for (int i = 0; i < key.Length; i++)
 			{
@@ -208,10 +191,8 @@ namespace Game
 				{
 					return key[i];
 				}
-			}
-			string str = "";
-			foreach (string s in key) str += s + ":";
-			return str;
+			}*/
+			return flag? keys.Last() : String.Join(':', keys);
 		}
 		public static string GetBlock(string blockName, string prop)
 		{
@@ -223,6 +204,11 @@ namespace Game
 		}
 		public static bool TryGetBlock(string blockName, string prop, out string result)
 		{
+			if(blockName.Length == 0)
+			{
+				result = string.Empty;
+				return false;
+			}
 			string[] nm = blockName.Split(new char[] { ':' }, StringSplitOptions.None);
 			result = Get(out bool r, "Blocks", nm.Length < 2 ? (blockName + ":0") : blockName, prop);
 			if (!r) result = Get(out r, "Blocks", nm[0] + ":0", prop);

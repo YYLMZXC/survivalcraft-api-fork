@@ -1,8 +1,4 @@
-using Engine;
 using Engine.Serialization;
-using SimpleJson;
-using System;
-using System.Linq;
 using TemplatesDatabase;
 namespace Game
 {
@@ -39,15 +35,8 @@ namespace Game
 		public WorldPalette()
 		{
 			Colors = DefaultColors.ToArray();
-			JsonObject obj = LanguageControl.KeyWords[GetType().Name] as JsonObject;
-			JsonArray jsonArray = obj["Colors"] as JsonArray;
-			Names = new string[jsonArray.Count];
-			int i = 0;
-			foreach (var iyt in jsonArray)
-			{
-				Names[i++] = iyt.ToString();
-			}
-		}
+            Names = LanguageControl.jsonDocument.RootElement.GetProperty(GetType().Name).GetProperty("Colors").EnumerateArray().Select(x => x.ToString()).ToArray();
+        }
 
 		public WorldPalette(ValuesDictionary valuesDictionary)
 		{
