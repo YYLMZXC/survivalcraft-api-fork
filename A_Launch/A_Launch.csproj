@@ -61,6 +61,9 @@
     </AndroidAsset>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Lib.Harmony" Version="2.3.3" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Survivalcraft_android\A_Survivalcraft.csproj" />
   </ItemGroup>
 </Project>
