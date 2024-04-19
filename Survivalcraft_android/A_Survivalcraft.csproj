@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Jint" Version="3.1.0" />
+    <PackageReference Include="Lib.Harmony" Version="2.3.3" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Resource.designer.cs" />
