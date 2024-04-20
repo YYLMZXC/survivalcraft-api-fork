@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Xml.Linq;
 
 namespace Game
@@ -38,27 +39,31 @@ namespace Game
 					ShowTopic(helpTopic2);
 				}
 			};
-            foreach (JsonProperty item in LanguageControl.jsonDocument.RootElement.GetProperty("Help").EnumerateObject())
+            foreach (var item in LanguageControl.jsonNode["Help"].AsObject())
 			{
-				JsonElement item3 = item.Value;
-				if (item3.TryGetProperty("DisabledPlatforms", out JsonElement displa))
+				JsonNode item3 = item.Value;
+				JsonNode displa = item3["DisabledPlatforms"];
+                if (displa != null && displa.GetValueKind() == JsonValueKind.String)
 				{
-					if ((displa.GetString()).Split(new string[] { "," }, StringSplitOptions.None).FirstOrDefault((string s) => s.Trim().ToLower() == VersionsManager.Platform.ToString().ToLower()) == null) continue;
+					if ((displa.GetValue<string>()).Split(new string[] { "," }, StringSplitOptions.None).FirstOrDefault((string s) => s.Trim().ToLower() == VersionsManager.Platform.ToString().ToLower()) == null) continue;
 				}
-				item3.TryGetProperty("Title", out JsonElement Title);
-				item3.TryGetProperty("Name", out JsonElement Name);
-				item3.TryGetProperty("value", out JsonElement value);
-				string attributeValue = Name.ValueKind == JsonValueKind.String ? Name.GetString() : string.Empty;
-				string attributeValue2 = Title.ValueKind == JsonValueKind.String ? Title.GetString() : string.Empty;
+				JsonNode Title = item3["Title"];
+                JsonNode Name = item3["Name"];
+				JsonNode value = item3["value"];
+                string attributeValue = Name != null && Name.GetValueKind() == JsonValueKind.String ? Name.GetValue<string>() : string.Empty;
+				string attributeValue2 = Title != null && Title.GetValueKind() == JsonValueKind.String ? Title.GetValue<string>() : string.Empty;
 				string text = string.Empty;
-				string[] array = value.GetString().Split(new string[] { "\n" }, StringSplitOptions.None);
-				foreach (string text2 in array)
+				if (value != null)
 				{
-					text = text + text2.Trim() + " ";
+					string[] array = value.GetValue<string>().Split(new string[] { "\n" }, StringSplitOptions.None);
+					foreach (string text2 in array)
+					{
+						text = text + text2.Trim() + " ";
+					}
+					text = text.Replace("\r", "");
+					text = text.Replace("’", "'");
+					text = text.Replace("\\n", "\n");
 				}
-				text = text.Replace("\r", "");
-				text = text.Replace("’", "'");
-				text = text.Replace("\\n", "\n");
 				var helpTopic = new HelpTopic
 				{
 					Name = attributeValue,

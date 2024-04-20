@@ -1,10 +1,11 @@
 ﻿using System.Text.Json;
 using System.IO;
+using System.Text.Json.Nodes;
 namespace Game
 {
 	public static class LanguageControl
 	{
-		public static JsonDocument jsonDocument = null;
+		public static JsonNode jsonNode = null;
 		public static string Ok = default;
 		public static string Cancel = default;
 		public static string None = default;
@@ -49,7 +50,7 @@ namespace Game
 			Exists = default;
 			Success = default;
 			Delete = default;
-            jsonDocument = null;
+            jsonNode = null;
 			ModsManager.SetConfig("Language", languageType);
 		}
 		public static void loadJson(Stream stream)
@@ -57,7 +58,15 @@ namespace Game
 			string txt = new StreamReader(stream).ReadToEnd();
 			if (txt.Length > 0)
 			{//加载原版语言包
-                jsonDocument = JsonDocument.Parse(txt);
+				JsonNode newJsonNode = JsonNode.Parse(txt);
+                if (jsonNode == null)
+				{
+					jsonNode = newJsonNode;
+				}
+				else
+				{
+                    MergeJsonNode(jsonNode, newJsonNode);
+                }
             }
 			if (Ok == default) Ok = Get("Usual", "ok");
 			if (Cancel == default) Cancel = Get("Usual", "cancel");
@@ -80,7 +89,65 @@ namespace Game
 			if (Success == default) Success = Get("Usual", "success");
 			if (Delete == default) Success = Get("Usual", "delete");
 		}
+		public static void MergeJsonNode(JsonNode oldNode, JsonNode newNode)
+		{
+			if (oldNode == null || newNode == null)
+			{
+				return;
+			}
+			switch (newNode.GetValueKind())
+			{
+				case JsonValueKind.Object:
+					{
+						foreach (var newChild in newNode.AsObject())
+						{
+							JsonNode oldChild = oldNode[newChild.Key];
+							if (oldChild == null)
+							{
+								oldNode.AsObject().Add(newChild.Key, newChild.Value.DeepClone());
+							}
+							else
+							{
+								MergeJsonNode(oldChild, newChild.Value);
+							}
+						}
 
+						break;
+					}
+				case JsonValueKind.Array:
+					{
+						if (oldNode.GetValueKind() == JsonValueKind.Array)
+						{
+							JsonArray oldArray = oldNode.AsArray();
+							JsonArray newArray = newNode.AsArray();
+							if (newArray.Count >= oldArray.Count)
+							{
+								oldNode.ReplaceWith(newNode.DeepClone());
+							}
+							else
+							{
+								for (int i = 0; i < newArray.Count; i++)
+								{
+									oldNode[i] = newArray[i];
+								}
+							}
+						}
+						else
+						{
+							oldNode.ReplaceWith(newNode.DeepClone());
+						}
+						break;
+					}
+				case JsonValueKind.String:
+				case JsonValueKind.Number:
+				case JsonValueKind.True:
+				case JsonValueKind.False:
+					{
+                        oldNode.ReplaceWith(newNode.DeepClone());
+						break;
+                    }
+			}
+        }
 		public static string LName()
 		{
 			return ModsManager.Configs["Language"];
@@ -100,7 +167,7 @@ namespace Game
 		public static string Get(out bool r, params string[] keys)
 		{//获得键值
 			r = false;
-			JsonElement nowElement = jsonDocument.RootElement;
+			JsonNode nowNode = jsonNode;
 			bool flag = false;
             foreach (string key in keys)
 			{
@@ -108,91 +175,48 @@ namespace Game
 				{
 					break;
 				}
-				if(nowElement.ValueKind == JsonValueKind.Object)
+				if(nowNode.GetValueKind() == JsonValueKind.Object)
 				{
-                    if (nowElement.TryGetProperty(key, out nowElement))
+                    nowNode = nowNode[key];
+                    if (nowNode == null)
 					{
-						flag = true;
+                        break;
                     }
 					else
                     {
-						break;
+						flag = true;
                     }
-                }else if(nowElement.ValueKind == JsonValueKind.Array && int.TryParse(key, out int num) && num < nowElement.GetArrayLength())
+                }
+				else if(nowNode.GetValueKind() == JsonValueKind.Array && int.TryParse(key, out int num) && num >= 0)
 				{
-					nowElement = nowElement[num];
-                    flag = true;
-
+					JsonArray array = nowNode.AsArray();
+					if(num < array.Count)
+					{
+                        nowNode = array[num];
+                        flag = true;
+                    }
+					else
+					{
+						break;
+					}
                 }
 				else
 				{
 					break;
 				}
 			}
-			switch (nowElement.ValueKind)
+			if (nowNode != null)
 			{
-				case JsonValueKind.String:
-					r = true;
-					return nowElement.GetString();
-				case JsonValueKind.Number:
-					r = true;
-					return nowElement.GetDecimal().ToString();
-			}
-			/*JsonObject obj = KeyWords;
-			JsonArray arr = null;
-			for (int i = 0; i < key.Length; i++)
-			{
-				bool flag = false;
-				if (arr != null)
+				switch (nowNode.GetValueKind())
 				{
-					int.TryParse(key[i], out int p);
-					object obj2 = arr[p];
-					if (obj2 is JsonObject jo)
-					{
-						obj = jo;
-						arr = null;
-						flag = true;
-					}
-					else if (obj2 is JsonArray ja)
-					{
-						obj = null;
-						arr = ja;
-						flag = true;
-					}
-					else
-					{
+					case JsonValueKind.String:
 						r = true;
-						return obj2.ToString();
-					}
+						return nowNode.GetValue<string>();
+					case JsonValueKind.Number:
+						r = true;
+						return nowNode.GetValue<decimal>().ToString();
 				}
-				else
-				{
-					if (obj.TryGetValue(key[i], out object obj2))
-					{
-						if (obj2 is JsonObject jo)
-						{
-							obj = jo;
-							arr = null;
-							flag = true;
-						}
-						else if (obj2 is JsonArray ja)
-						{
-							obj = null;
-							arr = ja;
-							flag = true;
-						}
-						else
-						{
-							r = true;
-							return obj2.ToString();
-						}
-					}
-				}
-				if (!flag)
-				{
-					return key[i];
-				}
-			}*/
+			}
 			return flag? keys.Last() : String.Join(':', keys);
 		}
 		public static string GetBlock(string blockName, string prop)

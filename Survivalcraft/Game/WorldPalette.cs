@@ -35,7 +35,7 @@ namespace Game
 		public WorldPalette()
 		{
 			Colors = DefaultColors.ToArray();
-            Names = LanguageControl.jsonDocument.RootElement.GetProperty(GetType().Name).GetProperty("Colors").EnumerateArray().Select(x => x.ToString()).ToArray();
+            Names = LanguageControl.jsonNode[GetType().Name]["Colors"].AsArray().Select(x => x.ToString()).ToArray();
         }
 
 		public WorldPalette(ValuesDictionary valuesDictionary)

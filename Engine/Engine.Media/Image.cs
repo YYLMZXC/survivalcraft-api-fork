@@ -46,7 +46,6 @@ namespace Engine.Media
                 if(m_pixels == null || m_shouldUpdatePixelsCache)
                 {
                     m_pixels = new Color[Width * Height];
-                    int i = 0;
                     ProcessPixelRows(
                         accessor => {
                             Span<Color> pixelsSpan = m_pixels.AsSpan();
