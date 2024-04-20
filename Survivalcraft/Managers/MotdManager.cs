@@ -1,9 +1,6 @@
 using Engine;
-using SimpleJson;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Text.Json;
 using System.Xml.Linq;
 using XmlUtilities;
 
@@ -61,7 +58,7 @@ namespace Game
 
 		public static Message m_message;
 
-		public static SimpleJson.JsonObject UpdateResult = null;
+		public static JsonDocument UpdateResult = null;
 
 		public static bool m_isAdmin;
 
@@ -98,7 +95,7 @@ namespace Game
 			string url = string.Format(SettingsManager.MotdUpdateCheckUrl, VersionsManager.SerializationVersion, VersionsManager.Platform, ModsManager.APIVersion, LanguageControl.LName());
 			WebManager.Get(url, null, null, new CancellableProgress(), data =>
 			{
-				UpdateResult = SimpleJson.SimpleJson.DeserializeObject<SimpleJson.JsonObject>(System.Text.Encoding.UTF8.GetString(data));
+				UpdateResult = JsonDocument.Parse(data);
 			}, ex =>
 			{
 				Log.Error("Failed processing Update check. Reason: " + ex.Message);
@@ -377,9 +374,10 @@ namespace Game
 					SaveBulletin(newDownloadedData, busyDialog.Progress, delegate (byte[] data)
 					{
 						DialogsManager.HideDialog(busyDialog);
-						var result = (JsonObject)WebManager.JsonFromBytes(data);
-						string msg = result[0].ToString() == "200" ? "公告已更新,建议重启游戏检查效果" : result[1].ToString();
-						if (result[0].ToString() == "200")
+						JsonElement result = JsonDocument.Parse(data).RootElement;
+						bool success = result[0].GetInt32() == 200;
+                        string msg = success ? "公告已更新,建议重启游戏检查效果" : result[1].GetString();
+						if (success)
 						{
 							SettingsManager.MotdLastDownloadedData = newDownloadedData;
 						}

@@ -137,7 +137,7 @@ namespace Game
 			}
 			GetFile("modinfo.json", (stream) =>
 			{
-				modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
+				modInfo = ModsManager.DeserializeJson(ModsManager.StreamToString(stream));
 			});
 			if (modInfo == null) return;
 			GetFile("icon.png", (stream) =>

@@ -2,6 +2,7 @@ using Engine;
 using Engine.Input;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Game
 {
@@ -38,17 +39,16 @@ namespace Game
 		{
 			if (!Noticed && MotdManager.UpdateResult != null)
 			{
-				SimpleJson.JsonObject jsonObj = MotdManager.UpdateResult;
-				string update = jsonObj["update"].ToString();
-				if (update == "1")
+				JsonElement jsonDocument = MotdManager.UpdateResult.RootElement;
+				if (jsonDocument.GetProperty("update").GetString() == "1")
 				{
 					try
 					{
-						DialogsManager.ShowDialog(ScreensManager.m_screens["MainMenu"], new MessageDialog(jsonObj["title"].ToString(), jsonObj["content"].ToString(), jsonObj["btn"].ToString(), LanguageControl.Cancel, btn =>
+						DialogsManager.ShowDialog(ScreensManager.m_screens["MainMenu"], new MessageDialog(jsonDocument.GetProperty("title").GetString(), jsonDocument.GetProperty("content").GetString(), jsonDocument.GetProperty("btn").GetString(), LanguageControl.Cancel, btn =>
 						{
 							if (btn == MessageDialogButton.Button1)
 							{
-								WebBrowserManager.LaunchBrowser(jsonObj["url"].ToString());
+								WebBrowserManager.LaunchBrowser(jsonDocument.GetProperty("url").GetString());
 							}
 						}));
 					}

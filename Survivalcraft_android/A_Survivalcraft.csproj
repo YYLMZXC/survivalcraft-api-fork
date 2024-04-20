@@ -2381,24 +2381,6 @@
     <Compile Include="..\Survivalcraft\Screen\WorldOptionsScreen.cs">
       <Link>Screen\WorldOptionsScreen.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\SimpleJson.Reflection\ReflectionUtils.cs">
-      <Link>SimpleJson.Reflection\ReflectionUtils.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\SimpleJson\IJsonSerializerStrategy.cs">
-      <Link>SimpleJson\IJsonSerializerStrategy.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\SimpleJson\JsonArray.cs">
-      <Link>SimpleJson\JsonArray.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\SimpleJson\JsonObject.cs">
-      <Link>SimpleJson\JsonObject.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\SimpleJson\PocoJsonSerializerStrategy.cs">
-      <Link>SimpleJson\PocoJsonSerializerStrategy.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\SimpleJson\SimpleJson.cs">
-      <Link>SimpleJson\SimpleJson.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemAdjustableDelayGateBlockBehavior.cs">
       <Link>Subsystem\SubsystemAdjustableDelayGateBlockBehavior.cs</Link>
     </Compile>

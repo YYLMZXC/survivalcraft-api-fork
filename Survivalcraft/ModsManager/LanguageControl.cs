@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.IO;
 namespace Game
 {
 	public static class LanguageControl
@@ -58,7 +59,7 @@ namespace Game
 			{//加载原版语言包
                 jsonDocument = JsonDocument.Parse(txt);
             }
-			/*if (Ok == default) Ok = Get("Usual", "ok");
+			if (Ok == default) Ok = Get("Usual", "ok");
 			if (Cancel == default) Cancel = Get("Usual", "cancel");
 			if (None == default) None = Get("Usual", "none");
 			if (Nothing == default) Nothing = Get("Usual", "nothing");
@@ -76,7 +77,7 @@ namespace Game
 			if (No == default) No = Get("Usual", "no");
 			if (Unavailable == default) Unavailable = Get("Usual", "Unavailable");
 			if (Exists == default) Exists = Get("Usual", "exist");
-			if (Success == default) Success = Get("Usual", "success");*/
+			if (Success == default) Success = Get("Usual", "success");
 			if (Delete == default) Success = Get("Usual", "delete");
 		}
 

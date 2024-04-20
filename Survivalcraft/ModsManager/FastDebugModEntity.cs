@@ -23,7 +23,7 @@ namespace Game
 			ReadDirResouces(ModsManager.ModsPath, "");
 			if (!GetFile("modinfo.json", (stream) =>
 			{
-				modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(stream));
+				modInfo = ModsManager.DeserializeJson(ModsManager.StreamToString(stream));
 				modInfo.Name = $"[Debug]{modInfo.Name}";
 			}))
 			{

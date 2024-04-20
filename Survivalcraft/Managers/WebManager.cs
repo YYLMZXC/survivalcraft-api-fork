@@ -211,16 +211,6 @@ namespace Game
 			return UrlParametersFromString(Encoding.UTF8.GetString(bytes, 0, bytes.Length));
 		}
 
-		public static object JsonFromString(string s)
-		{
-			return SimpleJson.SimpleJson.DeserializeObject(s);
-		}
-
-		public static object JsonFromBytes(byte[] bytes)
-		{
-			return JsonFromString(Encoding.UTF8.GetString(bytes, 0, bytes.Length));
-		}
-
 		public static void PutOrPost(bool isPost, string address, Dictionary<string, string> parameters, Dictionary<string, string> headers, Stream data, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
 			byte[] responseData = default;

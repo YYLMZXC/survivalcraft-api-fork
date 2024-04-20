@@ -1,10 +1,11 @@
 ﻿using Engine;
-using SimpleJson;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Game
 {
@@ -51,7 +52,7 @@ namespace Game
 				{
 					return "未登录";
 				}
-				return "登陆";
+				return "登录";
 			}
 		}
 
@@ -81,7 +82,7 @@ namespace Game
 			{
 				if (m_loginProcessData != null)
 				{
-					throw new InvalidOperationException("登陆已经在进程中");
+					throw new InvalidOperationException("登录已经在进程中");
 				}
 				if (!WebManager.IsInternetConnectionAvailable())
 				{
@@ -134,13 +135,12 @@ namespace Game
 					{ "include_deleted", false },
 					{ "include_has_explicit_shared_members", false }
 				};
-				var data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
+				var data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToJsonString()));
 				WebManager.Post(m_redirectUri + "/com/files/list_folder", null, dictionary, data, progress, delegate (byte[] result)
 				{
 					try
 					{
-						var jsonObject2 = (JsonObject)WebManager.JsonFromBytes(result);
-						success(JsonObjectToEntry(jsonObject2));
+						success(JsonElementToEntry(JsonDocument.Parse(result).RootElement));
 					}
 					catch (Exception obj2)
 					{
@@ -169,7 +169,7 @@ namespace Game
 				var dictionary = new Dictionary<string, string>
 				{
 					{ "Authorization", "Bearer " + SettingsManager.ScpboxAccessToken },
-					{ "Dropbox-API-Arg", jsonObject.ToString() }
+					{ "Dropbox-API-Arg", jsonObject.ToJsonString() }
 				};
 				WebManager.Get(m_redirectUri + "/com/files/download", null, dictionary, progress, delegate (byte[] result)
 				{
@@ -201,7 +201,7 @@ namespace Game
 				{
 					{ "Authorization", "Bearer " + SettingsManager.ScpboxAccessToken },
 					{ "Content-Type", "application/octet-stream" },
-					{ "Dropbox-API-Arg", jsonObject.ToString() }
+					{ "Dropbox-API-Arg", jsonObject.ToJsonString() }
 				};
 				WebManager.Post(m_redirectUri + "/com/files/upload", null, dictionary, stream, progress, delegate
 				{
@@ -232,14 +232,13 @@ namespace Game
 					{ "path", NormalizePath(path) },
 					{ "short_url", false }
 				};
-				var data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToString()));
+				var data = new MemoryStream(Encoding.UTF8.GetBytes(jsonObject.ToJsonString()));
 				WebManager.Post(m_redirectUri + "/com/sharing/create_shared_link", null, dictionary, data, progress, delegate (byte[] result)
 				{
 					try
 					{
-						var jsonObject2 = (JsonObject)WebManager.JsonFromBytes(result);
-						success(JsonObjectToLinkAddress(jsonObject2));
-					}
+                        success(JsonElementToLinkAddress(JsonDocument.Parse(result).RootElement));
+                    }
 					catch (Exception obj2)
 					{
 						failure(obj2);
@@ -263,18 +262,17 @@ namespace Game
 				login.succ = delegate (byte[] a)
 				{
 					var streamReader = new StreamReader(new MemoryStream(a));
-					var json = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(streamReader.ReadToEnd());
-					int code = int.Parse(json["code"].ToString());
-					string msg = json["msg"].ToString();
-					if (code == 200)
+					JsonElement json = JsonDocument.Parse(streamReader.ReadToEnd()).RootElement;
+					if (json.GetProperty("code").GetInt32() == 200)
 					{
-						var data = (JsonObject)json["data"];
-						SettingsManager.ScpboxAccessToken = data["accessToken"].ToString();
+						JsonElement data = json.GetProperty("data");
+						SettingsManager.ScpboxAccessToken = data.GetProperty("accessToken").GetString();
 						SettingsManager.ScpboxUserInfo = string.Empty;
-						SettingsManager.ScpboxUserInfo += "昵称：" + data["nickName"].ToString();
-						SettingsManager.ScpboxUserInfo += "\n账号：" + data["user"].ToString();
-						SettingsManager.ScpboxUserInfo += "\n登录时间：" + data["loginTime"].ToString();
-						DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Ok, "登录成功:" + data["nickName"].ToString(), LanguageControl.Ok, null, delegate
+						string nickName = data.GetProperty("nickName").GetString();
+						SettingsManager.ScpboxUserInfo += "昵称：" + nickName;
+						SettingsManager.ScpboxUserInfo += "\n账号：" + data.GetProperty("user").GetString();
+						SettingsManager.ScpboxUserInfo += "\n登录时间：" + TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(data.GetProperty("loginTime").GetInt64()), TimeZoneInfo.Local).ToString();
+						DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Ok, "登录成功:" + nickName, LanguageControl.Ok, null, delegate
 						{
 							m_loginProcessData = null;
 							DialogsManager.HideAllDialogs();
@@ -282,8 +280,8 @@ namespace Game
 					}
 					else
 					{
-						login.tip.Text = msg;
-						DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Ok, "登录失败:" + msg, LanguageControl.Ok, null, delegate
+						login.tip.Text = json.GetProperty("msg").GetString();
+						DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Ok, "登录失败:" + login.tip.Text, LanguageControl.Ok, null, delegate
 						{
 							m_loginProcessData = null;
 							DialogsManager.HideAllDialogs();
@@ -412,38 +410,37 @@ namespace Game
 			}
 		}
 
-		public static ExternalContentEntry JsonObjectToEntry(JsonObject jsonObject)
-		{
-			var externalContentEntry = new ExternalContentEntry();
-			if (jsonObject.ContainsKey("entries"))
-			{
-				foreach (JsonObject item in (JsonArray)jsonObject["entries"])
-				{
-					var externalContentEntry2 = new ExternalContentEntry();
-					externalContentEntry2.Path = item["path_display"].ToString();
-					externalContentEntry2.Type = (item[".tag"].ToString() == "folder") ? ExternalContentType.Directory : ExternalContentManager.ExtensionToType(Storage.GetExtension(externalContentEntry2.Path));
-					if (externalContentEntry2.Type != ExternalContentType.Directory)
-					{
-						externalContentEntry2.Time = item.ContainsKey("server_modified") ? DateTime.Parse(item["server_modified"].ToString(), CultureInfo.InvariantCulture) : new DateTime(2000, 1, 1);
-						externalContentEntry2.Size = item.ContainsKey("size") ? ((long)item["size"]) : 0;
-					}
-					externalContentEntry.ChildEntries.Add(externalContentEntry2);
-				}
-				return externalContentEntry;
-			}
-			return externalContentEntry;
-		}
+        public static ExternalContentEntry JsonElementToEntry(JsonElement jsonElement)
+        {
+            ExternalContentEntry externalContentEntry = new();
+            if (jsonElement.TryGetProperty("entries", out JsonElement entries))
+            {
+                foreach (JsonProperty item in entries.EnumerateObject())
+                {
+                    ExternalContentEntry externalContentEntry2 = new();
+                    externalContentEntry2.Path = item.Value.GetProperty("path_display").GetString();
+                    externalContentEntry2.Type = (item.Value.GetProperty(".tag").GetString() == "folder") ? ExternalContentType.Directory : ExternalContentManager.ExtensionToType(Storage.GetExtension(externalContentEntry2.Path));
+                    if (externalContentEntry2.Type != ExternalContentType.Directory)
+                    {
+                        externalContentEntry2.Time = item.Value.TryGetProperty("server_modified", out JsonElement server_modified) ? DateTime.Parse(server_modified.GetString(), CultureInfo.InvariantCulture) : new DateTime(2000, 1, 1);
+                        externalContentEntry2.Size = item.Value.TryGetProperty("size", out JsonElement size) ? size.GetInt64() : 0;
+                    }
+                    externalContentEntry.ChildEntries.Add(externalContentEntry2);
+                }
+            }
+            return externalContentEntry;
+        }
         //获取分享连接
-        public static string JsonObjectToLinkAddress(JsonObject jsonObject)
-		{
-			if (jsonObject.ContainsKey("url"))
-			{
-				return jsonObject["url"].ToString();
-			}
-			throw new InvalidOperationException("没有分享链接信息");
-		}
+        public static string JsonElementToLinkAddress(JsonElement jsonElement)
+        {
+            if (jsonElement.TryGetProperty("url", out JsonElement url))
+            {
+                return url.GetString().Replace("www.dropbox.", "dl.dropbox.").Replace("?dl=0", "") + "?dl=1";
+            }
+            throw new InvalidOperationException("Share information not found.");
+        }
 
-		public static string NormalizePath(string path)
+        public static string NormalizePath(string path)
 		{
 			if (path == "/")
 			{

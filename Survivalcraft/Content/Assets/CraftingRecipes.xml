@@ -202,21 +202,6 @@
     </Recipe>
   </Plants>
   <WoodenTools>
-    <Recipe Result="" ResultCount="1" RequiredHeatLevel="0" a="stick" b="planks" Description="[0]" Message="[0]">
-      "b"
-      "a"
-      "a"
-    </Recipe>
-    <Recipe Result="" ResultCount="1" RequiredHeatLevel="0" a="stick" b="planks" Description="[0]" Message="[0]">
-      "bbb"
-      " a"
-      " a"
-    </Recipe>
-    <Recipe Result="" ResultCount="1" RequiredHeatLevel="0" a="stick" b="planks" Description="[0]" Message="[0]">
-      "bb"
-      "ba"
-      " a"
-    </Recipe>
     <Recipe Result="WoodenRakeBlock" ResultCount="1" RequiredHeatLevel="0" a="stick" b="planks" Description="[0]">
       "b b"
       " a"
@@ -252,11 +237,6 @@
 	  <Recipe Result="StoneAxeBlock" ResultCount="1" RequiredHeatLevel="0" a="stick" b="stonechunk" Description="[0]">
 		  "bb"
 		  "ba"
-		  " a"
-	  </Recipe>
-	  <Recipe Result="" ResultCount="1" RequiredHeatLevel="0" a="stick" b="cobblestone" Description="[0]" Message="[1]">
-		  "b b"
-		  " a"
 		  " a"
 	  </Recipe>
   </StoneTools>

@@ -1,9 +1,5 @@
 using Engine;
-using SimpleJson;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json;
 using System.Xml.Linq;
 
 namespace Game
@@ -269,8 +265,8 @@ namespace Game
 							{
 								DialogsManager.HideDialog(busyDialog);
 								m_listPanel.RemoveItem(communityContentEntry);
-								var result = (JsonObject)WebManager.JsonFromBytes(data);
-								string msg = result[0].ToString() == "200" ? LanguageControl.Get(GetType().Name, 27) + communityContentEntry.Name : result[1].ToString();
+                                JsonElement result = JsonDocument.Parse(data).RootElement;
+                                string msg = result[0].GetInt32() == 200 ? LanguageControl.Get(GetType().Name, 27) + communityContentEntry.Name : result[1].GetString();
 								DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 20), msg, LanguageControl.Ok, null, null));
 							}, delegate (Exception e)
 							{
@@ -303,8 +299,8 @@ namespace Game
 									DialogsManager.HideDialog(busyDialog);
 									m_order = Order.ByBoutique;
 									PopulateList(null, true);
-									var result = (JsonObject)WebManager.JsonFromBytes(data);
-									string msg = result[0].ToString() == "200" ? LanguageControl.Get(GetType().Name, 19) + communityContentEntry.Name : result[1].ToString();
+                                    JsonElement result = JsonDocument.Parse(data).RootElement;
+                                    string msg = result[0].GetInt32() == 200 ? LanguageControl.Get(GetType().Name, 19) + communityContentEntry.Name : result[1].GetString();
 									DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 20), msg, LanguageControl.Ok, null, null));
 								}, delegate (Exception e)
 								{
@@ -326,8 +322,8 @@ namespace Game
 								{
 									DialogsManager.HideDialog(busyDialog);
 									PopulateList(null, true);
-									var result = (JsonObject)WebManager.JsonFromBytes(data);
-									string msg = result[0].ToString() == "200" ? LanguageControl.Get(GetType().Name, 22) + communityContentEntry.Name : result[1].ToString();
+                                    JsonElement result = JsonDocument.Parse(data).RootElement;
+                                    string msg = result[0].GetInt32() == 200 ? LanguageControl.Get(GetType().Name, 22) + communityContentEntry.Name : result[1].GetString();
 									DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 20), msg, LanguageControl.Ok, null, null));
 								}, delegate (Exception e)
 								{
@@ -356,8 +352,8 @@ namespace Game
 					{
 						PopulateList(null, true);
 					}
-					var result = (JsonObject)WebManager.JsonFromBytes(data);
-					string msg = result[0].ToString() == "200" ? sucessMsg + communityContentEntry.Name : result[1].ToString();
+                    JsonElement result = JsonDocument.Parse(data).RootElement;
+                    string msg = result[0].GetInt32() == 200 ? sucessMsg + communityContentEntry.Name : result[1].GetString();
 					DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 20), msg, LanguageControl.Ok, null, null));
 				}, delegate (Exception e)
 				{
@@ -478,7 +474,7 @@ namespace Game
 								{
 									try
 									{
-										var texture = Engine.Graphics.Texture2D.Load(Engine.Media.Image.Load(new System.IO.MemoryStream(data), Engine.Media.ImageFileFormat.Png));
+										var texture = Engine.Graphics.Texture2D.Load(Image.Load(new System.IO.MemoryStream(data)));
 										item2.Icon = texture;
 										if (item2.IconInstance != null) item2.IconInstance.Subtexture = new Subtexture(texture, Vector2.Zero, Vector2.One);
 									}
