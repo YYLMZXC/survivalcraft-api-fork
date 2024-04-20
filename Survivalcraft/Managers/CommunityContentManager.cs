@@ -1,12 +1,9 @@
 using Engine;
-using SimpleJson;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 using System.Xml.Linq;
 using XmlUtilities;
 using static ManageUserScreen;
@@ -586,8 +583,16 @@ namespace Game
 			};
 			WebManager.Post("https://m.schub.top/com/api/zh/isadmin", null, header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] data)
 			{
-				var result = (JsonObject)WebManager.JsonFromBytes(data);
-				success(result[2].ToString() == "Y");
+				int i = 0;
+                foreach(JsonProperty property in JsonDocument.Parse(data).RootElement.EnumerateObject())
+				{
+					if (i == 2)
+					{
+                        success(property.Value.GetString() == "Y");
+						break;
+                    }
+					i++;
+				}
 			}, delegate (Exception error)
 			{
 				failure(error);

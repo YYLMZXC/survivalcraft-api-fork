@@ -233,7 +233,7 @@ namespace Game
 				stream2.Close();
 				vertexBuffer.SetData(objMesh.Vertices.Array, 0, objMesh.Vertices.Count);
 				vertexBuffer.Tag = vs;
-				IndexBuffer indexBuffer = new(IndexFormat.SixteenBits, objMesh.Indices.Count);
+				IndexBuffer indexBuffer = new(IndexFormat.ThirtyTwoBits, objMesh.Indices.Count);
 				indexBuffer.SetData(objMesh.Indices.Array, 0, objMesh.Indices.Count);
 				indexBuffer.Tag = ins;
 				ModelMeshPart modelMeshPart = mesh.NewMeshPart(vertexBuffer, indexBuffer, 0, objMesh.Indices.Count, objMesh.CalculateBoundingBox());

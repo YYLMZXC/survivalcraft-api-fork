@@ -1,9 +1,7 @@
 using Engine;
 using Engine.Graphics;
 using Game;
-using SimpleJson;
-using System;
-using System.Collections.Generic;
+using System.Text.Json;
 using System.Xml.Linq;
 
 
@@ -242,8 +240,8 @@ public class ManageUserScreen : Screen
 							{
 								DialogsManager.HideDialog(busyDialog);
 								UpdateList(null);
-								var result = (JsonObject)WebManager.JsonFromBytes(data);
-								string msg = result[0].ToString() == "200" ? "成功锁定：" + item.Name : result[1].ToString();
+                                JsonElement result = JsonDocument.Parse(data).RootElement;
+                                string msg = result[0].GetInt32() == 200 ? "成功锁定：" + item.Name : result[1].GetString();
 								DialogsManager.ShowDialog(null, new MessageDialog("操作成功", msg, LanguageControl.Ok, null, null));
 							}, delegate (Exception e)
 							{
@@ -266,8 +264,8 @@ public class ManageUserScreen : Screen
 						{
 							DialogsManager.HideDialog(busyDialog);
 							UpdateList(null);
-							var result = (JsonObject)WebManager.JsonFromBytes(data);
-							string msg = result[0].ToString() == "200" ? "成功解锁：" + item.Name : result[1].ToString();
+							JsonElement result = JsonDocument.Parse(data).RootElement;
+                            string msg = result[0].GetInt32() == 200 ? "成功解锁：" + item.Name : result[1].GetString();
 							DialogsManager.ShowDialog(null, new MessageDialog("操作成功", msg, LanguageControl.Ok, null, null));
 						}, delegate (Exception e)
 						{
@@ -290,8 +288,8 @@ public class ManageUserScreen : Screen
 					CommunityContentManager.ResetPassword(item.Id, busyDialog.Progress, delegate (byte[] data)
 					{
 						DialogsManager.HideDialog(busyDialog);
-						var result = (JsonObject)WebManager.JsonFromBytes(data);
-						string msg = result[0].ToString() == "200" ? "成功重置密码，密码为123456" : result[1].ToString();
+						JsonElement result = JsonDocument.Parse(data).RootElement;
+                        string msg = result[0].GetInt32() == 200 ? "成功重置密码，密码为123456" : result[1].GetString();
 						DialogsManager.ShowDialog(null, new MessageDialog("操作成功", msg, LanguageControl.Ok, null, null));
 					}, delegate (Exception e)
 					{

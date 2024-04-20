@@ -2,7 +2,6 @@
 
 using Engine;
 using Game;
-using SimpleJson;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,6 +12,7 @@ using Engine.Media;
 using Engine.Graphics;
 using System.IO.Compression;
 using System.IO;
+using System.Text.Json;
 
 
 public static class ModsManager
@@ -200,67 +200,49 @@ public static class ModsManager
 		return ContentManager.Get<T>(filepath, suffix);
 	}
 
-	public static T DeserializeJson<T>(string text) where T : class
+	public static ModInfo DeserializeJson(string json)
 	{
-		var obj = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(text, typeof(JsonObject));
-		Type outType = typeof(T);
-		var outObj = Activator.CreateInstance(outType) as T;
-		foreach (var c in obj)
+        ModInfo modInfo = new ModInfo();
+		JsonElement jsonElement = JsonDocument.Parse(json).RootElement;
+		if(jsonElement.TryGetProperty("Name", out JsonElement name))
 		{
-			FieldInfo field = outType.GetField(c.Key, BindingFlags.Public | BindingFlags.Instance);
-			if (field == null) continue;
-			if (c.Value is JsonArray jsonArray)
-			{
-				Type[] types = field.FieldType.GetGenericArguments();
-				var list1 = Activator.CreateInstance(typeof(List<>).MakeGenericType(types));
-				foreach (var item in jsonArray)
-				{
-					Type type = list1.GetType();
-					MethodInfo methodInfo = type.GetMethod("Add");
-					if (methodInfo != null && types.Length == 1)
-					{
-						string tn = types[0].Name.ToLower();
-						switch (tn)
-						{
-							case "int32":
-								int.TryParse(item.ToString(), out int r);
-								methodInfo.Invoke(list1, new object[] { r });
-								break;
-							case "int64":
-								long.TryParse(item.ToString(), out long r1);
-								methodInfo.Invoke(list1, new object[] { r1 });
-								break;
-							case "single":
-								float.TryParse(item.ToString(), out float r2);
-								methodInfo.Invoke(list1, new object[] { r2 });
-								break;
-							case "double":
-								double.TryParse(item.ToString(), out double r3);
-								methodInfo.Invoke(list1, new object[] { r3 });
-								break;
-							case "bool":
-								bool.TryParse(item.ToString(), out bool r4);
-								methodInfo.Invoke(list1, new object[] { r4 });
-								break;
-							default:
-								methodInfo.Invoke(list1, new object[] { item });
-								break;
-						}
-					}
-				}
-				if (list1 != null)
-				{
-					field.SetValue(outObj, list1);
-				}
-			}
-			else
-			{
-				field.SetValue(outObj, c.Value);
-			}
-		}
-		return outObj;
-	}
-	public static void SaveModSettings(XElement xElement)
+			modInfo.Name = name.GetString();
+        }
+        if (jsonElement.TryGetProperty("Version", out JsonElement version) && version.ValueKind == JsonValueKind.String)
+        {
+            modInfo.Version = version.GetString();
+        }
+        if (jsonElement.TryGetProperty("ApiVersion", out JsonElement apiVersion) && apiVersion.ValueKind == JsonValueKind.String)
+        {
+            modInfo.ApiVersion = apiVersion.GetString();
+        }
+        if (jsonElement.TryGetProperty("Description", out JsonElement description) && description.ValueKind == JsonValueKind.String)
+        {
+            modInfo.Description = description.GetString();
+        }
+        if (jsonElement.TryGetProperty("ScVersion", out JsonElement scVersion) && scVersion.ValueKind == JsonValueKind.String)
+        {
+            modInfo.ScVersion = scVersion.GetString();
+        }
+        if (jsonElement.TryGetProperty("Link", out JsonElement link) && link.ValueKind == JsonValueKind.String)
+        {
+            modInfo.Link = link.GetString();
+        }
+        if (jsonElement.TryGetProperty("Author", out JsonElement author) && author.ValueKind == JsonValueKind.String)
+        {
+            modInfo.Author = author.GetString();
+        }
+        if (jsonElement.TryGetProperty("PackageName", out JsonElement packageName) && packageName.ValueKind == JsonValueKind.String)
+        {
+            modInfo.PackageName = packageName.GetString();
+        }
+        if (jsonElement.TryGetProperty("Dependencies", out JsonElement dependencies) && dependencies.ValueKind == JsonValueKind.Array)
+        {
+            modInfo.Dependencies = dependencies.EnumerateArray().Where(dependency=> dependency.ValueKind == JsonValueKind.String).Select(dependency => dependency.GetString()).ToList();
+        }
+        return modInfo;
+    }
+    public static void SaveModSettings(XElement xElement)
 	{
 		foreach (ModEntity modEntity in ModList)
 		{

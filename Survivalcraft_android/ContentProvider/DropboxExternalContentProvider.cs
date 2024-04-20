@@ -1,10 +1,11 @@
 using Engine;
-using SimpleJson;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Game
 {
@@ -132,14 +133,13 @@ namespace Game
 					{ "include_deleted", false },
 					{ "include_has_explicit_shared_members", false }
 				};
-				MemoryStream data = new(Encoding.UTF8.GetBytes(jsonObject.ToString()));
+				MemoryStream data = new(Encoding.UTF8.GetBytes(jsonObject.ToJsonString()));
 				WebManager.Post("https://api.dropboxapi.com/2/files/list_folder", null, dictionary, data, progress, delegate (byte[] result)
 				{
 					try
 					{
-						JsonObject jsonObject2 = (JsonObject)WebManager.JsonFromBytes(result);
-						success(JsonObjectToEntry(jsonObject2));
-					}
+                        success(JsonDocumentToEntry(JsonDocument.Parse(result).RootElement));
+                    }
 					catch (Exception obj2)
 					{
 						failure(obj2);
@@ -167,7 +167,7 @@ namespace Game
 				Dictionary<string, string> dictionary = new()
 				{
 					{ "Authorization", "Bearer " + SettingsManager.DropboxAccessToken },
-					{ "Dropbox-API-Arg", jsonObject.ToString() }
+					{ "Dropbox-API-Arg", jsonObject.ToJsonString() }
 				};
 				WebManager.Get("https://content.dropboxapi.com/2/files/download", null, dictionary, progress, delegate (byte[] result)
 				{
@@ -199,7 +199,7 @@ namespace Game
 				{
 					{ "Authorization", "Bearer " + SettingsManager.DropboxAccessToken },
 					{ "Content-Type", "application/octet-stream" },
-					{ "Dropbox-API-Arg", jsonObject.ToString() }
+					{ "Dropbox-API-Arg", jsonObject.ToJsonString() }
 				};
 				WebManager.Post("https://content.dropboxapi.com/2/files/upload", null, dictionary, stream, progress, delegate
 				{
@@ -230,13 +230,12 @@ namespace Game
 					{ "path", NormalizePath(path) },
 					{ "short_url", false }
 				};
-				MemoryStream data = new(Encoding.UTF8.GetBytes(jsonObject.ToString()));
+				MemoryStream data = new(Encoding.UTF8.GetBytes(jsonObject.ToJsonString()));
 				WebManager.Post("https://api.dropboxapi.com/2/sharing/create_shared_link", null, dictionary, data, progress, delegate (byte[] result)
 				{
 					try
 					{
-						JsonObject jsonObject2 = (JsonObject)WebManager.JsonFromBytes(result);
-						success(JsonObjectToLinkAddress(jsonObject2));
+						success(JsonElementToLinkAddress(JsonDocument.Parse(result).RootElement));
 					}
 					catch (Exception obj2)
 					{
@@ -304,7 +303,7 @@ namespace Game
 								}
 							}, null, new MemoryStream(), loginProcessData.Progress, delegate (byte[] result)
 							{
-								SettingsManager.DropboxAccessToken = ((IDictionary<string, object>)WebManager.JsonFromBytes(result))["access_token"].ToString();
+								SettingsManager.DropboxAccessToken = JsonDocument.Parse(result).RootElement.GetProperty("access_token").GetString();
 								loginProcessData.Succeed(this);
 							}, delegate (Exception error)
 							{
@@ -373,38 +372,37 @@ namespace Game
 			}
 		}
 
-		internal static ExternalContentEntry JsonObjectToEntry(JsonObject jsonObject)
-		{
-			ExternalContentEntry externalContentEntry = new();
-			if (jsonObject.ContainsKey("entries"))
-			{
-				foreach (JsonObject item in (JsonArray)jsonObject["entries"])
-				{
-					ExternalContentEntry externalContentEntry2 = new();
-					externalContentEntry2.Path = item["path_display"].ToString();
-					externalContentEntry2.Type = (item[".tag"].ToString() == "folder") ? ExternalContentType.Directory : ExternalContentManager.ExtensionToType(Storage.GetExtension(externalContentEntry2.Path));
-					if (externalContentEntry2.Type != ExternalContentType.Directory)
-					{
-						externalContentEntry2.Time = item.ContainsKey("server_modified") ? DateTime.Parse(item["server_modified"].ToString(), CultureInfo.InvariantCulture) : new DateTime(2000, 1, 1);
-						externalContentEntry2.Size = item.ContainsKey("size") ? ((long)item["size"]) : 0;
-					}
-					externalContentEntry.ChildEntries.Add(externalContentEntry2);
-				}
-				return externalContentEntry;
-			}
-			return externalContentEntry;
-		}
+        public static ExternalContentEntry JsonDocumentToEntry(JsonElement jsonElement)
+        {
+            ExternalContentEntry externalContentEntry = new();
+            if (jsonElement.TryGetProperty("entries", out JsonElement entries))
+            {
+                foreach (JsonProperty item in entries.EnumerateObject())
+                {
+                    ExternalContentEntry externalContentEntry2 = new();
+                    externalContentEntry2.Path = item.Value.GetProperty("path_display").GetString();
+                    externalContentEntry2.Type = (item.Value.GetProperty(".tag").GetString() == "folder") ? ExternalContentType.Directory : ExternalContentManager.ExtensionToType(Storage.GetExtension(externalContentEntry2.Path));
+                    if (externalContentEntry2.Type != ExternalContentType.Directory)
+                    {
+                        externalContentEntry2.Time = item.Value.TryGetProperty("server_modified", out JsonElement server_modified) ? DateTime.Parse(server_modified.GetString(), CultureInfo.InvariantCulture) : new DateTime(2000, 1, 1);
+                        externalContentEntry2.Size = item.Value.TryGetProperty("size", out JsonElement size) ? size.GetInt64() : 0;
+                    }
+                    externalContentEntry.ChildEntries.Add(externalContentEntry2);
+                }
+            }
+            return externalContentEntry;
+        }
 
-		internal static string JsonObjectToLinkAddress(JsonObject jsonObject)
-		{
-			if (jsonObject.ContainsKey("url"))
+        public static string JsonElementToLinkAddress(JsonElement jsonElement)
+        {
+			if(jsonElement.TryGetProperty("url", out JsonElement url))
 			{
-				return jsonObject["url"].ToString().Replace("www.dropbox.", "dl.dropbox.").Replace("?dl=0", "") + "?dl=1";
-			}
-			throw new InvalidOperationException("Share information not found.");
-		}
+                return url.GetString().Replace("www.dropbox.", "dl.dropbox.").Replace("?dl=0", "") + "?dl=1";
+            }
+            throw new InvalidOperationException("Share information not found.");
+        }
 
-		public static string NormalizePath(string path)
+        public static string NormalizePath(string path)
 		{
 			if (path == "/")
 			{

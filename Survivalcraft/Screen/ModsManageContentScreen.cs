@@ -852,7 +852,7 @@ public class ModsManageContentScreen : Screen
 									MemoryStream memoryStream = new();
 									zipArchive.ExtractFile(zipArchiveEntry, memoryStream);
 									memoryStream.Position = 0L;
-									modInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(memoryStream));
+									modInfo = ModsManager.DeserializeJson(ModsManager.StreamToString(memoryStream));
 									memoryStream.Dispose();
 									break;
 								}
@@ -963,7 +963,7 @@ public class ModsManageContentScreen : Screen
 					MemoryStream memoryStream = new();
 					zipArchive.ExtractFile(zipArchiveEntry, memoryStream);
 					memoryStream.Position = 0L;
-					modItem.ModInfo = ModsManager.DeserializeJson<ModInfo>(ModsManager.StreamToString(memoryStream));
+					modItem.ModInfo = ModsManager.DeserializeJson(ModsManager.StreamToString(memoryStream));
 					memoryStream.Dispose();
 				}
 			}

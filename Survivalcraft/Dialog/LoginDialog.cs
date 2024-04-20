@@ -12,7 +12,7 @@ namespace Game
 		public StackPanelWidget MainView;
 		public BevelledButtonWidget btna, btnb, btnc;
 		public TextBoxWidget txa, txb;
-		public BusyDialog busyDialog = new("提示", "登陆中");
+		public BusyDialog busyDialog = new("提示", "登录中");
 		public LabelWidget tip = new() { HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Near, Margin = new Vector2(1f, 1f) };
 		public Action cancel;
 		public LoginDialog()
@@ -48,7 +48,7 @@ namespace Game
 		public Widget makeButton()
 		{
 			var stack = new StackPanelWidget() { Direction = LayoutDirection.Horizontal };
-			var bevelledButtonWidget1 = new BevelledButtonWidget() { Size = new Vector2(160, 60), Margin = new Vector2(4f, 0), Text = "登陆" };
+			var bevelledButtonWidget1 = new BevelledButtonWidget() { Size = new Vector2(160, 60), Margin = new Vector2(4f, 0), Text = "登录" };
 			var bevelledButtonWidget2 = new BevelledButtonWidget() { Size = new Vector2(160, 60), Margin = new Vector2(4f, 0), Text = "注册" };
 			var bevelledButtonWidget3 = new BevelledButtonWidget() { Size = new Vector2(160, 60), Margin = new Vector2(4f, 0), Text = "取消" };
 			stack.Children.Add(bevelledButtonWidget1);

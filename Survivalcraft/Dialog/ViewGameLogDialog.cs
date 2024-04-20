@@ -1,10 +1,8 @@
 using Engine;
 using Engine.Media;
-using SimpleJson;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using System.Text.Json.Nodes;
 namespace Game
 {
 	public class ViewGameLogDialog : Dialog
@@ -96,7 +94,7 @@ namespace Game
 					jsonObject.Add("path", "/GameLog/" + DateTime.Now.Ticks + ".log");
 					dictionary.Add("Authorization", "Bearer " + SettingsManager.ScpboxAccessToken);
 					dictionary.Add("Content-Type", "application/octet-stream");
-					dictionary.Add("Dropbox-API-Arg", jsonObject.ToString());
+					dictionary.Add("Dropbox-API-Arg", jsonObject.ToJsonString());
 					var memoryStream = new MemoryStream();
 					GameLogSink.m_stream.Seek(0, SeekOrigin.Begin);
 					GameLogSink.m_stream.CopyTo(memoryStream);

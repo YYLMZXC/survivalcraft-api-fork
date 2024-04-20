@@ -179,7 +179,7 @@ namespace Engine.Graphics
 				ModelBuffersData modelBuffersData = modelData.Buffers[i];
 				array[i] = new VertexBuffer(modelBuffersData.VertexDeclaration, modelBuffersData.Vertices.Length / modelBuffersData.VertexDeclaration.VertexStride);
 				array[i].SetData(modelBuffersData.Vertices, 0, modelBuffersData.Vertices.Length);
-				array2[i] = new IndexBuffer(IndexFormat.SixteenBits, modelBuffersData.Indices.Length / 2);
+				array2[i] = new IndexBuffer(IndexFormat.ThirtyTwoBits, modelBuffersData.Indices.Length / 2);
 				array2[i].SetData(modelBuffersData.Indices, 0, modelBuffersData.Indices.Length);
 				if (keepSourceVertexDataInTags)
 				{
