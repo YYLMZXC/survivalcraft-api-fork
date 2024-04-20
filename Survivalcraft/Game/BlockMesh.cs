@@ -333,11 +333,11 @@ namespace Game
 				throw new InvalidOperationException("Wrong vertex format for a block mesh.");
 			}
 			InternalVertex[] vertexData = GetVertexData<InternalVertex>(vertexBuffer);
-			ushort[] indexData = GetIndexData<ushort>(indexBuffer);
-			var dictionary = new Dictionary<ushort, int>();
+			int[] indexData = GetIndexData<int>(indexBuffer);
+			var dictionary = new Dictionary<int, int>();
 			for (int i = meshPart.StartIndex; i < meshPart.StartIndex + meshPart.IndicesCount; i++)
 			{
-				ushort num = indexData[i];
+				int num = indexData[i];
 				if (!dictionary.ContainsKey(num))
 				{
 					dictionary.Add(num, Vertices.Count);

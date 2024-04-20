@@ -679,24 +679,27 @@ namespace Engine.Media
         public static void IndexVertices(int vertexStride, byte[] vertices, out byte[] resultVertices, out byte[] resultIndices)
 		{
 			int num = vertices.Length / vertexStride;
-			var dictionary = new Dictionary<Vertex, ushort>();
-			resultIndices = new byte[2 * num];
+			var dictionary = new Dictionary<Vertex, int>();
+			resultIndices = new byte[4 * num];
 			for (int i = 0; i < num; i++)
 			{
 				var key = new Vertex(vertices, i * vertexStride, vertexStride);
-				if (!dictionary.TryGetValue(key, out ushort value))
+				if (!dictionary.TryGetValue(key, out int value))
 				{
-					value = (ushort)dictionary.Count;
+					value = dictionary.Count;
 					dictionary.Add(key, value);
 				}
-				resultIndices[i * 2] = (byte)value;
-				resultIndices[(i * 2) + 1] = (byte)(value >> 8);
-			}
+				int index = i * 4;
+				resultIndices[index++] = (byte)value;
+				resultIndices[index++] = (byte)(value >> 8);
+                resultIndices[index++] = (byte)(value >> 16);
+                resultIndices[index] = (byte)(value >> 24);
+            }
 			resultVertices = new byte[dictionary.Count * vertexStride];
-			foreach (KeyValuePair<Vertex, ushort> item in dictionary)
+			foreach (KeyValuePair<Vertex, int> item in dictionary)
 			{
 				Vertex key2 = item.Key;
-				ushort value2 = item.Value;
+				int value2 = item.Value;
 				Array.Copy(key2.Data, key2.Start, resultVertices, value2 * vertexStride, key2.Count);
 			}
 		}
