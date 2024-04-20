@@ -48,15 +48,6 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="path\**" />
-    <EmbeddedResource Remove="path\**" />
-    <None Remove="path\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="运行库\oalinst.exe" />
     <None Update="init.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -81,6 +72,15 @@
 		<EmbeddedResource Include="Content.zip">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="openal32.dll" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="openal32.dll" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
 	</ItemGroup>
 	<PropertyGroup>
     <PreBuildEvent>set p=$(SolutionDir)

@@ -22,11 +22,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest", "ConsoleTest\
 		{8DF9DBBC-F471-406E-A247-B07935723E07} = {8DF9DBBC-F471-406E-A247-B07935723E07}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "远程库", "远程库", "{5FB287E4-C356-4E3F-9B1F-54796D26D02C}"
-	ProjectSection(SolutionItems) = preProject
-		..\Users\ROG\Downloads\OpenAL_2.0.7.exe = ..\Users\ROG\Downloads\OpenAL_2.0.7.exe
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine", "Engine\Engine.csproj", "{0F3ABA55-EDCA-4613-9651-8B3D11808D22}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NAudio.Flac", "Engine\reference\NAudio.Flac\NAudio.Flac\NAudio.Flac.csproj", "{1BD0FA41-17B8-494C-BD88-5BF5835F6983}"
