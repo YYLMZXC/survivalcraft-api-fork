@@ -52,7 +52,7 @@
 	<PackageReference Include="NLayer.NAudioSupport" Version="1.4.0" /><!--MP3 support-->
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Condition="'$(TargetFramework)' == 'net8.0-windows'" Include="OpenTK" Version="2.0.0" />
+	  <PackageReference Condition="'$(TargetFramework)' == 'net8.0-windows'" Include="OpenTK" Version="3.0.0-pre" />
     <Reference Include="OpenTK-1.0.2moded" Condition="'$(TargetFramework)' == 'net8.0-android'">
       <HintPath>reference\OpenTK-1.0.2moded.dll</HintPath>
       <Private>True</Private>
