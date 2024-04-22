@@ -30,7 +30,7 @@ namespace Engine
             : this(997 * m_counter++)
 #endif
         {
-#if android
+#if ANDROID
             Reset_A();
 #endif
         }
@@ -71,7 +71,7 @@ namespace Engine
         {
             return (float)Int() / 2.147484E+09f < probability;
         }
-#if android
+#if ANDROID
         public uint UInt()
         {
             uint s = (uint)m_seed;
@@ -183,7 +183,7 @@ namespace Engine
             return Engine.Vector3.Normalize(Vector3()) * Float(minLength, maxLength);
         }
 
-#if android
+#if ANDROID
         public static uint RotateLeft(uint x, int k)
         {
             return (x << k) | (x >> (32 - k));

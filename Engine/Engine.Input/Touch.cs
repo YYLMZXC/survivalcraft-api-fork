@@ -1,4 +1,4 @@
-#if android
+#if ANDROID
 
 using Android.Views;
 
@@ -29,7 +29,7 @@ namespace Engine.Input
 		{
 		}
 
-#if android
+#if ANDROID
 
 		internal static void HandleTouchEvent(MotionEvent e)
 		{

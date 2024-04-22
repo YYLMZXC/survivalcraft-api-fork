@@ -163,7 +163,7 @@ namespace Engine
 			return new Vector2(MathUtils.Max(v1.X, v2.X), MathUtils.Max(v1.Y, v2.Y));
 		}
 
-#if android
+#if ANDROID
 
 		public static float MinElement(Vector2 v)
 		{

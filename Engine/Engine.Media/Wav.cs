@@ -49,7 +49,7 @@ namespace Engine.Media
 					throw new NotSupportedException("Underlying stream cannot be seeked.");
 				}
 			}
-#if android
+#if ANDROID
 			public WavStreamingSource(Stream stream, bool leaveOpen = false)
 			{
 				MemoryStream memoryStream = new();
@@ -96,7 +96,7 @@ namespace Engine.Media
 				m_position += num / 2 / ChannelsCount;
 				return num;
 			}
-#if android
+#if ANDROID
 			public override StreamingSource Duplicate()
 			{
 				MemoryStream memoryStream = new();

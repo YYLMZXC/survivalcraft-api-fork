@@ -124,7 +124,7 @@ namespace Engine.Serialization
 									AddSerializeData(value);
 								}
 							}
-#if android
+#if ANDROID
 							else if (type.GetTypeInfo().BaseType != null && IsTypeSerializable(type.GetTypeInfo().BaseType))
 							{
 								value = GetSerializeData(type.GetTypeInfo().BaseType, allowEmptySerializer: true).Clone();

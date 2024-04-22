@@ -7,7 +7,7 @@ namespace Engine.Graphics
 		private TextureAddressMode m_addressModeU;
 
 		private TextureAddressMode m_addressModeV;
-#if android
+#if ANDROID
 		private int m_maxAnisotropy = 1;
 #else
         private int m_maxAnisotropy;

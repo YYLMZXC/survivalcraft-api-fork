@@ -434,7 +434,7 @@ namespace Engine.Input
                     return (Key)(-1);
             }
         }
-#if android
+#if ANDROID
         public static Key TranslateKey(Keycode keyCode)
         {
             switch (keyCode)

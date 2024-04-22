@@ -1,4 +1,4 @@
-#if android
+#if ANDROID
 using Android.OS;
 #else
 using System.Reflection;
@@ -24,7 +24,7 @@ namespace Engine
         {
             get
             {
-#if android
+#if ANDROID
                 try
                 {
                     StatFs statFs = new(Android.OS.Environment.DataDirectory.Path);
@@ -78,7 +78,7 @@ namespace Engine
             {
                 throw new ArgumentException("openFileMode");
             }
-#if android
+#if ANDROID
             bool isApp;
             string path2 = ProcessPath(path, openFileMode != OpenFileMode.Read, failIfApp: false, out isApp);
             if (isApp)
@@ -148,7 +148,7 @@ namespace Engine
         public static IEnumerable<string> ListDirectoryNames(string path)
         {
             return from s in Directory.EnumerateDirectories(ProcessPath(path, writeAccess: false, failIfApp: m_isAndroidPlatform))
-#if android
+#if ANDROID
                    select Path.GetFileName(s) into s
                    where s != ".__override__"
                    select s;
@@ -267,7 +267,7 @@ namespace Engine
             return CombinePaths(GetDirectoryName(path), GetFileNameWithoutExtension(path)) + extension;
         }
 
-#if android
+#if ANDROID
         public static string ProcessPath(string path, bool writeAccess, bool failIfApp)
         {
             bool isApp;

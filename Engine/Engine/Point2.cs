@@ -28,7 +28,7 @@ namespace Engine
 			Y = y;
 		}
 
-#if android
+#if ANDROID
 
 		public Point2(Vector2 v)
 		{

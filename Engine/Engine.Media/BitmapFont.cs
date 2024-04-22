@@ -89,7 +89,7 @@ namespace Engine.Media
 			{
 				if (m_debugFont == null)
 				{
-#if android
+#if ANDROID
 					using (Stream stream = EngineActivity.m_activity.Assets.Open("Debugfont.png"))
 					{
 						using (Stream stream2 = EngineActivity.m_activity.Assets.Open("Debugfont.lst"))

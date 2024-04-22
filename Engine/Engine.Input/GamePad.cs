@@ -1,6 +1,6 @@
 using OpenTK.Input;
 using System;
-#if android
+#if ANDROID
 
 using Android.Views;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace Engine.Input
 
             public double[] ButtonsRepeat = new double[14];
         }
-#if android
+#if ANDROID
         public static Dictionary<int, int> m_deviceToIndex = [];
         public static List<int> m_toRemove = [];
 #endif
@@ -47,7 +47,7 @@ namespace Engine.Input
         }
         internal static void BeforeFrame()
         {
-#if android
+#if ANDROID
             if (Time.PeriodicEvent(2.0, 0.0))
             {
                 m_toRemove.Clear();
@@ -131,7 +131,7 @@ namespace Engine.Input
             }
         }
 #endif
-#if android
+#if ANDROID
         public static int TranslateDeviceId(int deviceId)
         {
             if (m_deviceToIndex.TryGetValue(deviceId, out int value))

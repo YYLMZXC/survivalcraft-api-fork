@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-#if android
+#if ANDROID
 
 using Android.App;
 using static Android.App.ActivityManager;
@@ -81,7 +81,7 @@ namespace Engine
 			}
 		}
 
-#if android
+#if ANDROID
 
 		public static long GetTotalAvailableMemory()
 		{

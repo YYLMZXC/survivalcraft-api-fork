@@ -74,7 +74,7 @@ namespace Engine.Graphics
 		}
 
 		public UnlitShader(bool useVertexColor, bool useTexture, bool useAlphaThreshold)
-#if android
+#if ANDROID
 			: base(new StreamReader(Storage.OpenFile("app:Unlit.vsh", OpenFileMode.Read)).ReadToEnd(), new StreamReader(Storage.OpenFile("app:Unlit.psh", OpenFileMode.Read)).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))
 #else
 			: base(new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.vsh")).ReadToEnd(), new StreamReader(typeof(Shader).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Unlit.psh")).ReadToEnd(), PrepareShaderMacros(useVertexColor, useTexture, useAlphaThreshold))

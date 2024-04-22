@@ -149,7 +149,7 @@ namespace Engine
 			return new Vector4(MathUtils.Max(v1.X, v2.X), MathUtils.Max(v1.Y, v2.Y), MathUtils.Max(v1.Z, v2.Z), MathUtils.Max(v1.W, v2.W));
 		}
 
-#if android
+#if ANDROID
 
 		public static float MinElement(Vector4 v)
 		{

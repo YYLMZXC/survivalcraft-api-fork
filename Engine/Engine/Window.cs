@@ -1,7 +1,6 @@
-#if android
+#if ANDROID
 using Android.Content;
 using Android.OS;
-using System.Threading.Tasks;
 #else
 using OpenTK;
 using OpenTK.Graphics;
@@ -12,8 +11,6 @@ using System.Reflection;
 using Engine.Audio;
 using Engine.Graphics;
 using Engine.Input;
-using System;
-
 
 namespace Engine
 {
@@ -27,7 +24,7 @@ namespace Engine
         }
 
         private static State m_state;
-#if android
+#if ANDROID
         public static bool m_contextLost;
 
         internal static bool m_focusRegained;
@@ -507,7 +504,7 @@ namespace Engine
 
         private static void ResizeHandler(object sender, EventArgs args)
         {
-#if android
+#if ANDROID
             if (m_state != 0)
             {
                 Display.Resize();
@@ -518,7 +515,7 @@ namespace Engine
 			Resized?.Invoke();
 #endif
 		}
-#if android
+#if ANDROID
         public static void ContextSetHandler(object sender, EventArgs args)
         {
             if (m_contextLost)

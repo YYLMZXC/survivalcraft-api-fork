@@ -108,7 +108,7 @@ namespace Engine.Media
 				return Stream(stream, format);
 			}
 		}
-#if android
+#if ANDROID
 		public static StreamingSource Stream(Stream stream)
 		{
 			SoundFileFormat format = DetermineFileFormat(stream);
