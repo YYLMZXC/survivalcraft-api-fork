@@ -469,7 +469,7 @@ namespace Game
 			BlocksTextureFileName = string.Empty;
 			LookControlMode = LookControlMode.EntireScreen;
 			FlipVerticalAxis = false;
-#if android
+#if ANDROID
 			UIScale = 0.9f;
 			AutoJump = true;
 #endif

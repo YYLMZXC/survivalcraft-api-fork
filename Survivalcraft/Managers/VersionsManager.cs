@@ -11,7 +11,7 @@ namespace Game;
 public static class VersionsManager
 {
 	public static List<VersionConverter> m_versionConverters;
-#if android
+#if ANDROID
 	public static Platform Platform => Platform.Android;
 #endif
 #if desktop

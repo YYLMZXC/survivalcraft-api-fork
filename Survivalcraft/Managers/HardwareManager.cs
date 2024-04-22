@@ -4,7 +4,7 @@
 	{
 		public void Vibrate(long ms)
 		{
-#if android
+#if ANDROID
 			Engine.Window.Activity.Vibrate(ms);
 #endif
 		}

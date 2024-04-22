@@ -202,7 +202,7 @@ namespace Game
 		{
 			if (HasFocus)
 			{
-#if android
+#if ANDROID
 				if (base.Input.LastChar.HasValue && !base.Input.IsKeyDown(Key.Control) && !char.IsControl(base.Input.LastChar.Value))
 				{
 					EnterText(new string(base.Input.LastChar.Value, 1));

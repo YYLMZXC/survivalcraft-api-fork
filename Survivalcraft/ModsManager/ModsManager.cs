@@ -40,7 +40,7 @@ public static class ModsManager
 	public const bool IsAndroid = false;
 
 #endif
-#if android
+#if ANDROID
 	public static string ExtPath = EngineActivity.BasePath,
 						 ScreenCapturePath = ExtPath + "/ScreenCapture",
 						 UserDataPath = "config:/UserId.dat",

@@ -31,7 +31,7 @@ namespace Game
 #if desktop
 				new DiskExternalContentProvider(),
 #endif
-#if android
+#if ANDROID
 				new AndroidSdCardExternalContentProvider(),
 #endif
 				new SPMBoxExternalContentProvider(),

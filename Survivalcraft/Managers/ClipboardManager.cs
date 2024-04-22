@@ -5,7 +5,7 @@ namespace Game
 {
 	public static class ClipboardManager
 	{
-#if android
+#if ANDROID
 		internal static Android.Content.ClipboardManager m_clipboardManager {get;} =
  (Android.Content.ClipboardManager)Engine.Window.Activity.GetSystemService("clipboard");
 		public static string ClipboardString

@@ -119,7 +119,7 @@ namespace Game
 
 		public static void Initialize()
 		{
-#if android
+#if ANDROID
 			Window.Activity.Paused += delegate
 			{
 				StopMusic();

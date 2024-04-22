@@ -17,7 +17,7 @@ namespace Game
 #if desktop
 				System.Diagnostics.Process.Start(url);
 #endif
-#if android
+#if ANDROID
 				Engine.Window.Activity.OpenLink(url);
 #endif
 			}
