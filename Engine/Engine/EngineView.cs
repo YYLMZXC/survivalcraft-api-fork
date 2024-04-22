@@ -8,7 +8,6 @@ using Engine.Input;
 using OpenTK.Graphics;
 using OpenTK.Graphics.ES30;
 using OpenTK.Platform.Android;
-using System;
 
 namespace Engine
 {

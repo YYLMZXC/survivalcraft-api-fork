@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0-windows;net8.0-android</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName></AssemblyName>
     <RootNamespace>Engine</RootNamespace>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <IsTrimmable>True</IsTrimmable>
@@ -46,6 +45,7 @@
     <ProjectReference Include="reference\NAudio.Flac\NAudio.Flac\NAudio.Flac.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="NVorbis" Version="0.10.5" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.0-preview.3.24172.9" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
 	<PackageReference Include="NAudio.Core" Version="2.2.1" /><!--An powerful and popular audio libaury-->

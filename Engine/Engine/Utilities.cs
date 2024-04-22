@@ -81,51 +81,9 @@ namespace Engine
 			}
 		}
 
-#if ANDROID
-
-		public static long GetTotalAvailableMemory()
+		public static int GetTotalAvailableMemory()
 		{
-			//IL_000f: Unknown result type (might be due to invalid IL or missing references)
-			//IL_0014: Unknown result type (might be due to invalid IL or missing references)
-			//IL_001a: Expected O, but got Unknown
-			ActivityManager val = (ActivityManager)Window.Activity.GetSystemService("activity");
-			MemoryInfo val2 = (MemoryInfo)(object)new MemoryInfo();
-			val.GetMemoryInfo(val2);
-			return val2.TotalMem;
+			return 0;
 		}
-
-#else
-		[DllImport("kernel32.dll")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		static extern bool GlobalMemoryStatusEx(ref MEMORYINFO mi);
-		//Define the information structure of memory
-		[StructLayout(LayoutKind.Sequential)]
-        public struct MEMORYINFO
-		{
-			public uint dwLength; //Current structure size
-			public uint dwMemoryLoad; //Current memory utilization
-			public ulong ullTotalPhys; //Total physical memory size
-			public ulong ullAvailPhys; //Available physical memory size
-			public ulong ullTotalPageFile; //Total Exchange File Size
-			public ulong ullAvailPageFile; //Total Exchange File Size
-			public ulong ullTotalVirtual; //Total virtual memory size
-			public ulong ullAvailVirtual; //Available virtual memory size
-			public ulong ullAvailExtendedVirtual; //Keep this value always zero
-		}
-        public static MEMORYINFO GetMemoryStatus()
-		{
-			MEMORYINFO memoryInfo = new();
-			memoryInfo.dwLength = (uint)Marshal.SizeOf(memoryInfo);
-			GlobalMemoryStatusEx(ref memoryInfo);
-			return memoryInfo;
-		}
-		public static double GetMemoryAvailable()
-		{
-			var memoryStatus = GetMemoryStatus();
-			var memoryAvailable = (long)memoryStatus.ullAvailPhys;
-			return memoryAvailable;
-		}
-		public static int GetTotalAvailableMemory() => (int)GetMemoryAvailable();
-#endif
 	}
 }

@@ -10,34 +10,14 @@ namespace Game
 			get;
 		}
 
-		public abstract bool IsChecked
-		{
-			get;
-			set;
-		}
+		public abstract bool IsChecked { get; set; }
 
-		public abstract bool IsAutoCheckingEnabled
-		{
-			get;
-			set;
-		}
+		public abstract bool IsAutoCheckingEnabled { get; set; }
 
-		public abstract string Text
-		{
-			get;
-			set;
-		}
+		public abstract string Text { get; set; }
 
-		public abstract BitmapFont Font
-		{
-			get;
-			set;
-		}
+		public abstract BitmapFont Font { get; set; }
 
-		public abstract Color Color
-		{
-			get;
-			set;
-		}
+		public abstract Color Color { get; set; }
 	}
 }

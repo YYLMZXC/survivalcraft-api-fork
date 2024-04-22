@@ -1,15 +1,12 @@
 ﻿using Engine;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace Game
 {
-	public class SPMBoxExternalContentProvider : IExternalContentProvider, IDisposable
+	public class SchubExternalContentProvider : IExternalContentProvider, IDisposable
 	{
 		public class LoginProcessData
 		{
@@ -21,13 +18,13 @@ namespace Game
 
 			public CancellableProgress Progress;
 
-			public void Succeed(SPMBoxExternalContentProvider provider)
+			public void Succeed(SchubExternalContentProvider provider)
 			{
 				provider.m_loginProcessData = null;
 				Success?.Invoke();
 			}
 
-			public void Fail(SPMBoxExternalContentProvider provider, Exception error)
+			public void Fail(SchubExternalContentProvider provider, Exception error)
 			{
 				provider.m_loginProcessData = null;
 				Failure?.Invoke(error);
@@ -64,7 +61,7 @@ namespace Game
 
 		public bool IsLoggedIn => !string.IsNullOrEmpty(SettingsManager.ScpboxAccessToken);
 
-		public SPMBoxExternalContentProvider()
+		public SchubExternalContentProvider()
 		{
 			Program.HandleUri += HandleUri;
 			Window.Activated += WindowActivated;
@@ -381,7 +378,7 @@ namespace Game
 				{
 					if (!(uri != null) || string.IsNullOrEmpty(uri.Fragment))
 					{
-						throw new Exception("不能接收来自SPMBox的身份验证信息");
+						throw new Exception("不能接收来自Schub的身份验证信息");
 					}
 					Dictionary<string, string> dictionary = WebManager.UrlParametersFromString(uri.Fragment.TrimStart('#'));
 					if (!dictionary.ContainsKey("access_token"))
@@ -390,7 +387,7 @@ namespace Game
 						{
 							throw new Exception(dictionary["error"]);
 						}
-						throw new Exception("不能接收来自SPMBox的身份验证信息");
+						throw new Exception("不能接收来自Schub的身份验证信息");
 					}
 					SettingsManager.ScpboxAccessToken = dictionary["access_token"];
 					loginProcessData.Succeed(this);
@@ -406,7 +403,7 @@ namespace Game
 		{
 			if (!IsLoggedIn)
 			{
-				throw new InvalidOperationException("这个应用未登录到SPMBox中国社区");
+				throw new InvalidOperationException("这个应用未登录到Schub中国社区");
 			}
 		}
 

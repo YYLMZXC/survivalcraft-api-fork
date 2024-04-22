@@ -28,16 +28,6 @@ namespace Engine
 			Y = y;
 		}
 
-#if ANDROID
-
-		public Point2(Vector2 v)
-		{
-			X = (int)v.X;
-			Y = (int)v.Y;
-		}
-
-#endif
-
 		public static implicit operator Point2((int X, int Y) v)
 		{
 			return new Point2(v.X, v.Y);

@@ -231,16 +231,6 @@ namespace Engine
 			return new Vector3(MathUtils.Max(v1.X, v2.X), MathUtils.Max(v1.Y, v2.Y), MathUtils.Max(v1.Z, v2.Z));
 		}
 
-		public static float MinElement(Vector3 v)
-		{
-			return MathUtils.Min(v.X, v.Y, v.Z);
-		}
-
-		public static float MaxElement(Vector3 v)
-		{
-			return MathUtils.Max(v.X, v.Y, v.Z);
-		}
-
 		public static Vector3 Clamp(Vector3 v, float min, float max)
 		{
 			return new Vector3(MathUtils.Clamp(v.X, min, max), MathUtils.Clamp(v.Y, min, max), MathUtils.Clamp(v.Z, min, max));
