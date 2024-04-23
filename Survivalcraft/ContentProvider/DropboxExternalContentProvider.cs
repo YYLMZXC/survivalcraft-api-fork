@@ -359,9 +359,9 @@ namespace Game
 					loginProcessData.Succeed(this);
 					goto end_IL_0038;
 #if ANDROID
-				goto IL_00a5;
+				IL_00a5:
 #else
-				goto IL_00ae;
+				IL_00ae:
 #endif
 					throw new Exception("Could not retrieve Dropbox access token.");
 				end_IL_0038:;
