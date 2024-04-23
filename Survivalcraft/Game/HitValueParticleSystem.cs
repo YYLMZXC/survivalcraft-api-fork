@@ -34,7 +34,7 @@ namespace Game
 		public override bool Simulate(float dt)
 		{
 			dt = MathUtils.Clamp(dt, 0f, 0.1f);
-			float num = MathUtils.Pow(0.1f, dt);
+			float num = MathF.Pow(0.1f, dt);
 			bool flag = false;
 			for (int i = 0; i < Particles.Length; i++)
 			{
@@ -79,7 +79,7 @@ namespace Game
 					float num4 = num2 * num3;
 					if (num4 > 0f)
 					{
-						float s = 0.006f * MathUtils.Sqrt(num);
+						float s = 0.006f * MathF.Sqrt(num);
 						Color color = particle.Color * num4;
 						m_batch.QueueText(particle.Text, particle.Position, vector * s, v * s, color, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.Zero);
 					}

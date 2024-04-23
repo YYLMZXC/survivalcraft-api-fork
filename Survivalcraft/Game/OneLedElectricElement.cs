@@ -58,7 +58,7 @@ namespace Game
 			}
 			if (m_voltage != voltage)
 			{
-				int num = (int)MathUtils.Round(m_voltage * 15f);
+				int num = (int)MathF.Round(m_voltage * 15f);
 				m_glowPoint.Color = num >= 8 ? LedBlock.LedColors[MathUtils.Clamp(num - 8, 0, 7)] : Color.Transparent;
 			}
 			return false;

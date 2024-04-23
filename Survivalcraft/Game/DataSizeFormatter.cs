@@ -26,8 +26,8 @@ namespace Game
 
 		public static string PrepareFormatString(float value, string unit)
 		{
-			int num = (int)(MathUtils.Log10(value) + 1f);
-			return "{0:F" + MathUtils.Max(3 - num, 0).ToString() + "}" + unit;
+			int num = (int)(MathF.Log10(value) + 1f);
+			return "{0:F" + Math.Max(3 - num, 0).ToString() + "}" + unit;
 		}
 	}
 }

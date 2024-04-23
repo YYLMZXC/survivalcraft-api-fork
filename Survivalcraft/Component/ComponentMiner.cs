@@ -588,7 +588,7 @@ namespace Game
 			if (isMeleeAttack && attacker != null)
 			{
 				float num5 = (attackPower >= 2f) ? 1.25f : 1f;
-				float num6 = MathUtils.Pow(attacker.ComponentBody.Mass / target.Mass, 0.5f);
+				float num6 = MathF.Pow(attacker.ComponentBody.Mass / target.Mass, 0.5f);
 				float x2 = num5 * num6;
 				num4 = 5.5f * MathUtils.Saturate(x2);
 				x = 0.25f * MathUtils.Saturate(x2);

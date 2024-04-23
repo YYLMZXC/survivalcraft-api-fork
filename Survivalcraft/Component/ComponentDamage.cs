@@ -71,7 +71,7 @@ namespace Game
 				m_subsystemAudio.PlayRandomSound(DamageSoundName, 1f, 0f, m_componentBody.Position, 4f, autoDelay: true);
 				Project.RemoveEntity(Entity, disposeEntity: true);
 			}
-			float num = MathUtils.Abs(m_componentBody.CollisionVelocityChange.Y);
+			float num = MathF.Abs(m_componentBody.CollisionVelocityChange.Y);
 			if (num > m_fallResilience)
 			{
 				float amount = MathUtils.Sqr(MathUtils.Max(num - m_fallResilience, 0f)) / 15f;

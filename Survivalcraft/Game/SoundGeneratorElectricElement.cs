@@ -96,19 +96,19 @@ namespace Game
 					{
 						if (connectorDirection.Value == ElectricConnectorDirection.In || connectorDirection.Value == ElectricConnectorDirection.Bottom)
 						{
-							num4 = (int)MathUtils.Round(15f * connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
+							num4 = (int)MathF.Round(15f * connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
 						}
 						else if (connectorDirection.Value == ElectricConnectorDirection.Left)
 						{
-							num = (int)MathUtils.Round(15f * connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
+							num = (int)MathF.Round(15f * connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
 						}
 						else if (connectorDirection.Value == ElectricConnectorDirection.Right)
 						{
-							num3 = (int)MathUtils.Round(15f * connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
+							num3 = (int)MathF.Round(15f * connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
 						}
 						else if (connectorDirection.Value == ElectricConnectorDirection.Top)
 						{
-							num2 = (int)MathUtils.Round(15f * connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
+							num2 = (int)MathF.Round(15f * connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace));
 						}
 					}
 				}
@@ -129,11 +129,11 @@ namespace Game
 				}
 				else if (!string.IsNullOrEmpty(text))
 				{
-					float num6 = 130.8125f * MathUtils.Pow(1.05946314f, num + (12 * num3));
+					float num6 = 130.8125f * MathF.Pow(1.05946314f, num + (12 * num3));
 					int num7 = 0;
 					for (int i = 4; i <= m_maxOctaves[num4]; i++)
 					{
-						float num8 = num6 / (523.25f * MathUtils.Pow(2f, i - 5));
+						float num8 = num6 / (523.25f * MathF.Pow(2f, i - 5));
 						if (num7 == 0 || (num8 >= 0.5f && num8 < num5))
 						{
 							num7 = i;
@@ -147,7 +147,7 @@ namespace Game
 					CellFace cellFace = CellFaces[0];
 					var position = new Vector3(cellFace.X, cellFace.Y, cellFace.Z);
 					float volume = num2 / 15f;
-					float pitch = MathUtils.Clamp(MathUtils.Log(num5) / MathUtils.Log(2f), -1f, 1f);
+					float pitch = MathUtils.Clamp(MathF.Log(num5) / MathF.Log(2f), -1f, 1f);
 					float minDistance = 0.5f + (5f * num2 / 15f);
 					SubsystemElectricity.SubsystemAudio.PlaySound(text2, volume, pitch, position, minDistance, autoDelay: true);
 					float loudness = (num2 < 8) ? 0.25f : 0.5f;

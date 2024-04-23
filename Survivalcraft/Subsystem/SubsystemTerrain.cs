@@ -194,37 +194,37 @@ namespace Game
 					int face = 0;
 					Vector3 vector = start - new Vector3(num2, num3, num4) + (num23.Value * ray.Direction);
 					float num26 = float.MaxValue;
-					float num27 = MathUtils.Abs(vector.X - boundingBox.Min.X);
+					float num27 = MathF.Abs(vector.X - boundingBox.Min.X);
 					if (num27 < num26)
 					{
 						num26 = num27;
 						face = 3;
 					}
-					num27 = MathUtils.Abs(vector.X - boundingBox.Max.X);
+					num27 = MathF.Abs(vector.X - boundingBox.Max.X);
 					if (num27 < num26)
 					{
 						num26 = num27;
 						face = 1;
 					}
-					num27 = MathUtils.Abs(vector.Y - boundingBox.Min.Y);
+					num27 = MathF.Abs(vector.Y - boundingBox.Min.Y);
 					if (num27 < num26)
 					{
 						num26 = num27;
 						face = 5;
 					}
-					num27 = MathUtils.Abs(vector.Y - boundingBox.Max.Y);
+					num27 = MathF.Abs(vector.Y - boundingBox.Max.Y);
 					if (num27 < num26)
 					{
 						num26 = num27;
 						face = 4;
 					}
-					num27 = MathUtils.Abs(vector.Z - boundingBox.Min.Z);
+					num27 = MathF.Abs(vector.Z - boundingBox.Min.Z);
 					if (num27 < num26)
 					{
 						num26 = num27;
 						face = 2;
 					}
-					num27 = MathUtils.Abs(vector.Z - boundingBox.Max.Z);
+					num27 = MathF.Abs(vector.Z - boundingBox.Max.Z);
 					if (num27 < num26)
 					{
 						num26 = num27;

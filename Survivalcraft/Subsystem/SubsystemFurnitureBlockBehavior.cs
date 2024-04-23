@@ -197,7 +197,7 @@ namespace Game
 						{
 							point2.Z = key.Z;
 						}
-						if (MathUtils.Abs(point.X - point2.X) >= FurnitureDesign.MaxResolution || MathUtils.Abs(point.Y - point2.Y) >= FurnitureDesign.MaxResolution || MathUtils.Abs(point.Z - point2.Z) >= FurnitureDesign.MaxResolution)
+						if (MathF.Abs(point.X - point2.X) >= FurnitureDesign.MaxResolution || MathF.Abs(point.Y - point2.Y) >= FurnitureDesign.MaxResolution || MathF.Abs(point.Z - point2.Z) >= FurnitureDesign.MaxResolution)
 						{
 							componentMiner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 2), Color.White, blinking: true, playNotificationSound: false);
 							return;

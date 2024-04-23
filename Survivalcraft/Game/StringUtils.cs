@@ -186,9 +186,9 @@ namespace Game
 				stringBuilder.Append("NumberTooLarge");
 				return;
 			}
-			float num2 = MathUtils.Pow(10f, Math.Abs(precision));
+			float num2 = MathF.Pow(10f, Math.Abs(precision));
 			ulong num3 = (ulong)MathUtils.Floor(num);
-			ulong num4 = (ulong)MathUtils.Round((num - MathUtils.Floor(num)) * num2);
+			ulong num4 = (ulong)MathF.Round((num - MathUtils.Floor(num)) * num2);
 			if ((float)(double)num4 >= num2)
 			{
 				num3++;

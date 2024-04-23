@@ -63,7 +63,7 @@ namespace Game
 			white *= num4;
 			white.A = 255;
 			dt = MathUtils.Clamp(dt, 0f, 0.1f);
-			float num5 = MathUtils.Pow(0.03f, dt);
+			float num5 = MathF.Pow(0.03f, dt);
 			m_duration += dt;
 			if (m_duration > 3.5f)
 			{

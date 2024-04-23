@@ -28,7 +28,7 @@ namespace Game
 				}
 			}
 			int intensity = m_intensity;
-			m_intensity = MathUtils.Clamp((int)MathUtils.Round((num2 - 0.5f) * 30f), 0, 15);
+			m_intensity = MathUtils.Clamp((int)MathF.Round((num2 - 0.5f) * 30f), 0, 15);
 			if (m_intensity != intensity)
 			{
 				m_lastChangeCircuitStep = SubsystemElectricity.CircuitStep;

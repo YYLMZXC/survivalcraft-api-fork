@@ -147,7 +147,7 @@ namespace Game
 					if (m_subsystemTime.GameTime >= m_lastStuckCheckTime + num3 || !m_lastStuckCheckPosition.HasValue)
 					{
 						m_lastStuckCheckTime = m_subsystemTime.GameTime;
-						if (MathUtils.Abs(x) > MathUtils.DegToRad(20f) || !m_lastStuckCheckPosition.HasValue || Vector3.Dot(position - m_lastStuckCheckPosition.Value, Vector3.Normalize(vector)) > 0.2f)
+						if (MathF.Abs(x) > MathUtils.DegToRad(20f) || !m_lastStuckCheckPosition.HasValue || Vector3.Dot(position - m_lastStuckCheckPosition.Value, Vector3.Normalize(vector)) > 0.2f)
 						{
 							m_lastStuckCheckPosition = position;
 							m_stuckCount = 0;
@@ -181,7 +181,7 @@ namespace Game
 							m_turnOrder = new Vector2(MathUtils.Clamp(x, -1f, 1f), 0f);
 							if (num2 > 1f)
 							{
-								m_walkOrder = new Vector2(0f, MathUtils.Lerp(Speed, 0f, MathUtils.Saturate((MathUtils.Abs(x) - 0.33f) / 0.66f)));
+								m_walkOrder = new Vector2(0f, MathUtils.Lerp(Speed, 0f, MathUtils.Saturate((MathF.Abs(x) - 0.33f) / 0.66f)));
 								if (Speed >= 1f && m_componentCreature.ComponentLocomotion.InAirWalkFactor >= 1f && num > 1f && m_random.Float(0f, 1f) < 0.05f)
 								{
 									m_jumpOrder = 1f;
@@ -189,8 +189,8 @@ namespace Game
 							}
 							else
 							{
-								float x2 = Speed * MathUtils.Min(1f * MathUtils.Sqrt(num2), 1f);
-								m_walkOrder = new Vector2(0f, MathUtils.Lerp(x2, 0f, MathUtils.Saturate(2f * MathUtils.Abs(x))));
+								float x2 = Speed * MathUtils.Min(1f * MathF.Sqrt(num2), 1f);
+								m_walkOrder = new Vector2(0f, MathUtils.Lerp(x2, 0f, MathUtils.Saturate(2f * MathF.Abs(x))));
 							}
 						}
 						else
@@ -315,7 +315,7 @@ namespace Game
 			float num = float.MaxValue;
 			foreach (ComponentBody nearbyBody in m_nearbyBodies)
 			{
-				if (nearbyBody != m_componentCreature.ComponentBody && !(MathUtils.Abs(nearbyBody.Position.Y - m_componentCreature.ComponentBody.Position.Y) > 1.1f) && Vector2.Dot(nearbyBody.Position.XZ - position.XZ, direction) > 0f)
+				if (nearbyBody != m_componentCreature.ComponentBody && !(MathF.Abs(nearbyBody.Position.Y - m_componentCreature.ComponentBody.Position.Y) > 1.1f) && Vector2.Dot(nearbyBody.Position.XZ - position.XZ, direction) > 0f)
 				{
 					float num2 = Vector2.DistanceSquared(nearbyBody.Position.XZ, position.XZ);
 					if (num2 < num)

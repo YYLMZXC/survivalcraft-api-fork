@@ -32,7 +32,7 @@ namespace Game
 				{
 					return Vector2.Distance(p, s.Start);
 				}
-				return MathUtils.Abs(Vector2.Cross(p - s.Start, v)) / MathUtils.Sqrt(num2);
+				return MathF.Abs(Vector2.Cross(p - s.Start, v)) / MathF.Sqrt(num2);
 			}
 			if (!(num > 0f))
 			{
@@ -76,7 +76,7 @@ namespace Game
 				{
 					return s.Start;
 				}
-				float num3 = MathUtils.Sqrt(v2.LengthSquared() - MathUtils.Sqr(MathUtils.Abs(Vector2.Cross(p - s.Start, v)) / num2));
+				float num3 = MathF.Sqrt(v2.LengthSquared() - MathUtils.Sqr(MathF.Abs(Vector2.Cross(p - s.Start, v)) / num2));
 				return Vector2.Lerp(s.Start, s.End, num3 / num2);
 			}
 			if (!(num > 0f))

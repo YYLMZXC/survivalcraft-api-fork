@@ -10,7 +10,7 @@ namespace Game
 			set;
 		}
 
-		public static float ApproximateScreenInches => MathUtils.Sqrt((Window.ScreenSize.X * Window.ScreenSize.X) + (Window.ScreenSize.Y * Window.ScreenSize.Y)) / ApproximateScreenDpi;
+		public static float ApproximateScreenInches => MathF.Sqrt((Window.ScreenSize.X * Window.ScreenSize.X) + (Window.ScreenSize.Y * Window.ScreenSize.Y)) / ApproximateScreenDpi;
 
 		static ScreenResolutionManager()
 		{

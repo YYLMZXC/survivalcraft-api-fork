@@ -203,7 +203,7 @@ namespace Game
 				{
 					num4 = MathUtils.Ceiling(num4);
 				}
-				float s = (m_flashCount > 0f) ? (1f - MathUtils.Abs(MathUtils.Sin(m_flashCount * (float)Math.PI))) : 1f;
+				float s = (m_flashCount > 0f) ? (1f - MathF.Abs(MathF.Sin(m_flashCount * (float)Math.PI))) : 1f;
 				Color c = LitBarColor;
 				if (LitBarColor2 != Color.Transparent && BarsCount > 1)
 				{

@@ -164,7 +164,7 @@ public class ModsManageContentScreen : Screen
 				}
 				else
 				{
-					details = string.Format(LanguageControl.Get(fName, 3), modItem.ModInfo.Version, modItem.ModInfo.Author, MathUtils.Round(modItem.ExternalContentEntry.Size / 1000));
+					details = string.Format(LanguageControl.Get(fName, 3), modItem.ModInfo.Version, modItem.ModInfo.Author, MathF.Round(modItem.ExternalContentEntry.Size / 1000));
 				}
 			}
 			containerWidget.Children.Find<LabelWidget>("ExternalContentItem.Text").Text = modItem.Name;

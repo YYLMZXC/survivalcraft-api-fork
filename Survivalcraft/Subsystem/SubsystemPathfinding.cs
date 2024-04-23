@@ -71,8 +71,8 @@ namespace Game
 
 			public float Heuristic(Vector3 p1, Vector3 p2)
 			{
-				float num = MathUtils.Abs(p1.X - p2.X);
-				float num2 = MathUtils.Abs(p1.Z - p2.Z);
+				float num = MathF.Abs(p1.X - p2.X);
+				float num2 = MathF.Abs(p1.Z - p2.Z);
 				if (num > num2)
 				{
 					return (1.41f * num2) + (1f * (num - num2));

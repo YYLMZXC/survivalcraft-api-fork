@@ -67,7 +67,7 @@ namespace Game
 						for (int j = 0; j < num5; j++)
 						{
 							float x2 = ((float)Math.PI * 2f * j / num5) + num4;
-							var v2 = new Vector3(MathUtils.Sin(x2) + (0.1f * m_random.Float(-1f, 1f)), 0f, MathUtils.Cos(x2) + (0.1f * m_random.Float(-1f, 1f)));
+							var v2 = new Vector3(MathF.Sin(x2) + (0.1f * m_random.Float(-1f, 1f)), 0f, MathF.Cos(x2) + (0.1f * m_random.Float(-1f, 1f)));
 							Particle obj2 = Particles[m_nextParticle++];
 							obj2.IsActive = true;
 							obj2.Position = position;
@@ -88,11 +88,11 @@ namespace Game
 						for (int m = 0; m <= num11; m++)
 						{
 							float num12 = m / (float)num11;
-							int num13 = (int)MathUtils.Round(num12 * 2f * num11);
+							int num13 = (int)MathF.Round(num12 * 2f * num11);
 							for (int n = 0; n < num13; n++)
 							{
 								float x5 = ((float)Math.PI * 2f * n / num13) + num10;
-								var v4 = new Vector3((num12 * MathUtils.Sin(x5)) + (0.1f * m_random.Float(-1f, 1f)), 0f, (num12 * MathUtils.Cos(x5)) + (0.1f * m_random.Float(-1f, 1f)));
+								var v4 = new Vector3((num12 * MathF.Sin(x5)) + (0.1f * m_random.Float(-1f, 1f)), 0f, (num12 * MathF.Cos(x5)) + (0.1f * m_random.Float(-1f, 1f)));
 								Particle obj4 = Particles[m_nextParticle++];
 								obj4.IsActive = true;
 								obj4.Position = position;
@@ -115,14 +115,14 @@ namespace Game
 						for (int num16 = 0; num16 <= num15; num16++)
 						{
 							float x6 = (float)Math.PI * num16 / num15;
-							v5.Y = MathUtils.Cos(x6);
-							float num17 = MathUtils.Sin(x6);
-							int num18 = (int)MathUtils.Round(num17 * 2f * num15);
+							v5.Y = MathF.Cos(x6);
+							float num17 = MathF.Sin(x6);
+							int num18 = (int)MathF.Round(num17 * 2f * num15);
 							for (int num19 = 0; num19 < num18; num19++)
 							{
 								float x7 = ((float)Math.PI * 2f * num19 / num18) + num14;
-								v5.X = num17 * MathUtils.Sin(x7);
-								v5.Z = num17 * MathUtils.Cos(x7);
+								v5.X = num17 * MathF.Sin(x7);
+								v5.Z = num17 * MathF.Cos(x7);
 								Particle obj5 = Particles[m_nextParticle++];
 								obj5.IsActive = true;
 								obj5.Position = position;
@@ -146,14 +146,14 @@ namespace Game
 						for (int k = 0; k <= num7; k++)
 						{
 							float x3 = (float)Math.PI * k / num7;
-							float num8 = MathUtils.Sin(x3);
-							int num9 = (int)MathUtils.Round(num8 * ((shape == FireworksBlock.Shape.ShortTrails) ? 3 : 2) * num7);
+							float num8 = MathF.Sin(x3);
+							int num9 = (int)MathF.Round(num8 * ((shape == FireworksBlock.Shape.ShortTrails) ? 3 : 2) * num7);
 							for (int l = 0; l < num9; l++)
 							{
 								float x4 = ((float)Math.PI * 2f * l / num9) + num6;
-								v3.X = (num8 * MathUtils.Sin(x4)) + (0.3f * m_random.Float(-1f, 1f));
-								v3.Y = MathUtils.Cos(x3) + (0.3f * m_random.Float(-1f, 1f));
-								v3.Z = (num8 * MathUtils.Cos(x4)) + (0.3f * m_random.Float(-1f, 1f));
+								v3.X = (num8 * MathF.Sin(x4)) + (0.3f * m_random.Float(-1f, 1f));
+								v3.Y = MathF.Cos(x3) + (0.3f * m_random.Float(-1f, 1f));
+								v3.Z = (num8 * MathF.Cos(x4)) + (0.3f * m_random.Float(-1f, 1f));
 								Particle obj3 = Particles[m_nextParticle++];
 								obj3.IsActive = true;
 								obj3.Position = position;
@@ -176,7 +176,7 @@ namespace Game
 						for (int i = 0; i < num3; i++)
 						{
 							float x = ((float)Math.PI * 2f * i / num3) + num2;
-							var v = new Vector3(MathUtils.Sin(x) + (0.1f * m_random.Float(-1f, 1f)), 0f, MathUtils.Cos(x) + (0.1f * m_random.Float(-1f, 1f)));
+							var v = new Vector3(MathF.Sin(x) + (0.1f * m_random.Float(-1f, 1f)), 0f, MathF.Cos(x) + (0.1f * m_random.Float(-1f, 1f)));
 							Particle obj = Particles[m_nextParticle++];
 							obj.IsActive = true;
 							obj.Position = position;
@@ -197,8 +197,8 @@ namespace Game
 		public override bool Simulate(float dt)
 		{
 			dt = MathUtils.Clamp(dt, 0f, 0.1f);
-			float num = MathUtils.Pow(0.01f, dt);
-			float num2 = MathUtils.Pow(0.1f, dt);
+			float num = MathF.Pow(0.01f, dt);
+			float num2 = MathF.Pow(0.1f, dt);
 			bool flag = false;
 			for (int i = 0; i < Particles.Length; i++)
 			{

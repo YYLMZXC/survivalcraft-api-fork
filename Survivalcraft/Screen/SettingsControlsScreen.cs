@@ -135,21 +135,21 @@ namespace Game
 			m_autoJumpButton.Text = SettingsManager.AutoJump ? LanguageControl.On : LanguageControl.Off;
 			m_horizontalCreativeFlightButton.Text = SettingsManager.HorizontalCreativeFlight ? LanguageControl.On : LanguageControl.Off;
 			m_moveSensitivitySlider.Value = SettingsManager.MoveSensitivity;
-			m_moveSensitivitySlider.Text = MathUtils.Round(SettingsManager.MoveSensitivity * 10f).ToString();
+			m_moveSensitivitySlider.Text = MathF.Round(SettingsManager.MoveSensitivity * 10f).ToString();
 			m_lookSensitivitySlider.Value = SettingsManager.LookSensitivity;
-			m_lookSensitivitySlider.Text = MathUtils.Round(SettingsManager.LookSensitivity * 10f).ToString();
+			m_lookSensitivitySlider.Text = MathF.Round(SettingsManager.LookSensitivity * 10f).ToString();
 			m_gamepadCursorSpeedSlider.Value = SettingsManager.GamepadCursorSpeed;
 			m_gamepadCursorSpeedSlider.Text = $"{SettingsManager.GamepadCursorSpeed:0.0}x";
 			m_gamepadDeadZoneSlider.Value = SettingsManager.GamepadDeadZone;
 			m_gamepadDeadZoneSlider.Text = $"{SettingsManager.GamepadDeadZone * 100f:0}%";
 			m_creativeDigTimeSlider.Value = SettingsManager.CreativeDigTime;
-			m_creativeDigTimeSlider.Text = $"{MathUtils.Round(1000f * SettingsManager.CreativeDigTime)}ms";
+			m_creativeDigTimeSlider.Text = $"{MathF.Round(1000f * SettingsManager.CreativeDigTime)}ms";
 			m_creativeReachSlider.Value = SettingsManager.CreativeReach;
 			m_creativeReachSlider.Text = string.Format(LanguageControl.Get(GetType().Name, 0), $"{SettingsManager.CreativeReach:0.0} ");
 			m_holdDurationSlider.Value = SettingsManager.MinimumHoldDuration;
-			m_holdDurationSlider.Text = $"{MathUtils.Round(1000f * SettingsManager.MinimumHoldDuration)}ms";
+			m_holdDurationSlider.Text = $"{MathF.Round(1000f * SettingsManager.MinimumHoldDuration)}ms";
 			m_dragDistanceSlider.Value = SettingsManager.MinimumDragDistance;
-			m_dragDistanceSlider.Text = $"{MathUtils.Round(SettingsManager.MinimumDragDistance)} " + LanguageControl.Get(GetType().Name, 1);
+			m_dragDistanceSlider.Text = $"{MathF.Round(SettingsManager.MinimumDragDistance)} " + LanguageControl.Get(GetType().Name, 1);
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
 			{
 				ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);

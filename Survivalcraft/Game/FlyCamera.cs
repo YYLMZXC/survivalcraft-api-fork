@@ -63,9 +63,9 @@ namespace Game
 			zero += num2 * vector.Z * direction;
 			m_rollSpeed = MathUtils.Lerp(m_rollSpeed, -1.5f * vector2.X, 3f * dt);
 			m_rollAngle += m_rollSpeed * dt;
-			m_rollAngle *= MathUtils.Pow(0.33f, dt);
+			m_rollAngle *= MathF.Pow(0.33f, dt);
 			m_pitchSpeed = MathUtils.Lerp(m_pitchSpeed, -0.2f * vector2.Y, 3f * dt);
-			m_pitchSpeed *= MathUtils.Pow(0.33f, dt);
+			m_pitchSpeed *= MathF.Pow(0.33f, dt);
 			m_velocity += 1.5f * (zero - m_velocity) * dt;
 			m_position += m_velocity * dt;
 			m_direction = Vector3.Transform(m_direction, Matrix.CreateFromAxisAngle(unitY, 0.05f * m_rollAngle));

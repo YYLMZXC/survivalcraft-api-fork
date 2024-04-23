@@ -77,12 +77,12 @@ namespace Game
 				float num = UniformFloat(0f, 1f);
 				if (num < 0.5)
 				{
-					float num2 = MathUtils.Sqrt(-2f * MathUtils.Log(num));
+					float num2 = MathF.Sqrt(-2f * MathF.Log(num));
 					float num3 = 0.322232425f + (num2 * (1f + (num2 * (0.3422421f + (num2 * (0.0204231218f + (num2 * 4.536422E-05f)))))));
 					float num4 = 0.09934846f + (num2 * (0.588581562f + (num2 * (0.5311035f + (num2 * (0.103537753f + (num2 * 0.00385607f)))))));
 					return mean + (stddev * ((num3 / num4) - num2));
 				}
-				float num5 = MathUtils.Sqrt(-2f * MathUtils.Log(1f - num));
+				float num5 = MathF.Sqrt(-2f * MathF.Log(1f - num));
 				float num6 = 0.322232425f + (num5 * (1f + (num5 * (0.3422421f + (num5 * (0.0204231218f + (num5 * 4.536422E-05f)))))));
 				float num7 = 0.09934846f + (num5 * (0.588581562f + (num5 * (0.5311035f + (num5 * (0.103537753f + (num5 * 0.00385607f)))))));
 				return mean - (stddev * ((num6 / num7) - num5));
@@ -98,7 +98,7 @@ namespace Game
 					num = v.LengthSquared();
 				}
 				while (circular && num > 1f);
-				return v * (length / MathUtils.Sqrt(num));
+				return v * (length / MathF.Sqrt(num));
 			}
 
 			public Vector2 UniformVector2(float minLength, float maxLength, bool circular = false)
@@ -111,7 +111,7 @@ namespace Game
 					num = v.LengthSquared();
 				}
 				while (circular && num > 1f);
-				return v * (UniformFloat(minLength, maxLength) / MathUtils.Sqrt(num));
+				return v * (UniformFloat(minLength, maxLength) / MathF.Sqrt(num));
 			}
 
 			public Vector3 Vector3(float length, bool spherical = false)
@@ -124,7 +124,7 @@ namespace Game
 					num = v.LengthSquared();
 				}
 				while (spherical && num > 1f);
-				return v * (length / MathUtils.Sqrt(num));
+				return v * (length / MathF.Sqrt(num));
 			}
 
 			public Vector3 UniformVector3(float minLength, float maxLength, bool spherical = false)
@@ -137,7 +137,7 @@ namespace Game
 					num = v.LengthSquared();
 				}
 				while (spherical && num > 1f);
-				return v * (UniformFloat(minLength, maxLength) / MathUtils.Sqrt(num));
+				return v * (UniformFloat(minLength, maxLength) / MathF.Sqrt(num));
 			}
 		}
 
@@ -314,12 +314,12 @@ namespace Game
 				float num = UniformFloat(0f, 1f);
 				if (num < 0.5)
 				{
-					float num2 = MathUtils.Sqrt(-2f * MathUtils.Log(num));
+					float num2 = MathF.Sqrt(-2f * MathF.Log(num));
 					float num3 = 0.322232425f + (num2 * (1f + (num2 * (0.3422421f + (num2 * (0.0204231218f + (num2 * 4.536422E-05f)))))));
 					float num4 = 0.09934846f + (num2 * (0.588581562f + (num2 * (0.5311035f + (num2 * (0.103537753f + (num2 * 0.00385607f)))))));
 					return mean + (stddev * ((num3 / num4) - num2));
 				}
-				float num5 = MathUtils.Sqrt(-2f * MathUtils.Log(1f - num));
+				float num5 = MathF.Sqrt(-2f * MathF.Log(1f - num));
 				float num6 = 0.322232425f + (num5 * (1f + (num5 * (0.3422421f + (num5 * (0.0204231218f + (num5 * 4.536422E-05f)))))));
 				float num7 = 0.09934846f + (num5 * (0.588581562f + (num5 * (0.5311035f + (num5 * (0.103537753f + (num5 * 0.00385607f)))))));
 				return mean - (stddev * ((num6 / num7) - num5));
@@ -794,15 +794,15 @@ namespace Game
 
 		public float CalculateMountainRangeFactor(float x, float z)
 		{
-			return 1f - MathUtils.Abs((2f * SimplexNoise.OctavedNoise(x + m_mountainsOffset.X, z + m_mountainsOffset.Y, TGMountainsPeriod / TGBiomeScaling, 3, 1.91f, 0.75f)) - 1f);
+			return 1f - MathF.Abs((2f * SimplexNoise.OctavedNoise(x + m_mountainsOffset.X, z + m_mountainsOffset.Y, TGMountainsPeriod / TGBiomeScaling, 3, 1.91f, 0.75f)) - 1f);
 		}
 
 		public float CalculateHeight(float x, float z)
 		{
 			float num = TGOceanSlope + (TGOceanSlopeVariation * MathUtils.PowSign((2f * SimplexNoise.OctavedNoise(x + m_mountainsOffset.X, z + m_mountainsOffset.Y, 0.01f, 1, 2f, 0.5f)) - 1f, 0.5f));
 			float num2 = CalculateOceanShoreDistance(x, z);
-			float num3 = MathUtils.Saturate(1f - (0.05f * MathUtils.Abs(num2)));
-			float num4 = MathUtils.Saturate(MathUtils.Sin(TGIslandsFrequency * num2));
+			float num3 = MathUtils.Saturate(1f - (0.05f * MathF.Abs(num2)));
+			float num4 = MathUtils.Saturate(MathF.Sin(TGIslandsFrequency * num2));
 			float num5 = MathUtils.Saturate(MathUtils.Saturate((0f - num) * num2) - (0.85f * num4));
 			float num6 = MathUtils.Saturate(MathUtils.Saturate(0.05f * (0f - num2 - 10f)) - num4);
 			float num7 = CalculateMountainRangeFactor(x, z);
@@ -814,7 +814,7 @@ namespace Game
 			float num11 = (1.5f * SimplexNoise.OctavedNoise(x, z, 0.004f, 4, 1.98f, 0.9f)) - 0.5f;
 			float num12 = MathUtils.Lerp(60f, 30f, MathUtils.Saturate((1f * num9) + (0.5f * num8) + MathUtils.Saturate(1f - (num2 / 30f))));
 			float x2 = MathUtils.Lerp(-2f, -4f, MathUtils.Saturate(num9 + (0.5f * num8)));
-			float num13 = MathUtils.Saturate(1.5f - (num12 * MathUtils.Abs((2f * SimplexNoise.OctavedNoise(x + m_riversOffset.X, z + m_riversOffset.Y, 0.001f, 4, 2f, 0.5f)) - 1f)));
+			float num13 = MathUtils.Saturate(1.5f - (num12 * MathF.Abs((2f * SimplexNoise.OctavedNoise(x + m_riversOffset.X, z + m_riversOffset.Y, 0.001f, 4, 2f, 0.5f)) - 1f)));
 			float num14 = (-50f * num5) + TGHeightBias;
 			float num15 = MathUtils.Lerp(0f, 8f, f);
 			float num16 = MathUtils.Lerp(0f, -6f, f2);
@@ -987,7 +987,7 @@ namespace Game
 								float f = num35 - (0.01f * humidityFast);
 								float num36 = MathUtils.Lerp(100f, 0f, f);
 								float num37 = MathUtils.Lerp(300f, 30f, f);
-								bool flag = (temperatureFast > 8 && humidityFast < 8 && num35 < 0.95f) || (MathUtils.Abs(x4) < 12f && num35 < 0.9f);
+								bool flag = (temperatureFast > 8 && humidityFast < 8 && num35 < 0.95f) || (MathF.Abs(x4) < 12f && num35 < 0.9f);
 								int num38 = TerrainChunk.CalculateCellIndex(x3, 0, z3);
 								for (int num39 = 0; num39 < 8; num39++)
 								{
@@ -1237,9 +1237,9 @@ namespace Game
 						for (int num14 = 0; num14 < num13; num14++)
 						{
 							Vector2 vector = random.Vector2(7f);
-							int num15 = 8 + (int)MathUtils.Round(vector.X);
+							int num15 = 8 + (int)MathF.Round(vector.X);
 							int num16 = 0;
-							int num17 = 8 + (int)MathUtils.Round(vector.Y);
+							int num17 = 8 + (int)MathF.Round(vector.Y);
 							m_waterPocketBrushes[random.UniformInt(0, m_waterPocketBrushes.Count - 1)].PaintFast(chunk, num10 + num15, num11 + num16, num12 + num17);
 						}
 					}
@@ -1252,9 +1252,9 @@ namespace Game
 						for (int num22 = 0; num22 < num21; num22++)
 						{
 							Vector2 vector2 = random.Vector2(7f);
-							int num23 = 8 + (int)MathUtils.Round(vector2.X);
+							int num23 = 8 + (int)MathF.Round(vector2.X);
 							int num24 = random.UniformInt(0, 1);
-							int num25 = 8 + (int)MathUtils.Round(vector2.Y);
+							int num25 = 8 + (int)MathF.Round(vector2.Y);
 							m_magmaPocketBrushes[random.UniformInt(0, m_magmaPocketBrushes.Count - 1)].PaintFast(chunk, num18 + num23, num19 + num24, num20 + num25);
 						}
 					}
@@ -1353,7 +1353,7 @@ namespace Game
 						}
 						if (random.Bool(0.33f))
 						{
-							cavePoint.BrushType = (int)(MathUtils.Pow(random.UniformFloat(0f, 0.999f), 7f) * m_caveBrushesByType.Count);
+							cavePoint.BrushType = (int)(MathF.Pow(random.UniformFloat(0f, 0.999f), 7f) * m_caveBrushesByType.Count);
 						}
 						if (random.Bool(0.06f) && list.Count < 12 && cavePoint.StepsTaken > 20 && cavePoint.Position.Y < 58f)
 						{
@@ -1361,11 +1361,11 @@ namespace Game
 							{
 								Position = cavePoint.Position,
 								Direction = Vector3.Normalize(random.UniformVector3(1f, 1f) * new Vector3(1f, 0.33f, 1f)),
-								BrushType = (int)(MathUtils.Pow(random.UniformFloat(0f, 0.999f), 7f) * m_caveBrushesByType.Count),
+								BrushType = (int)(MathF.Pow(random.UniformFloat(0f, 0.999f), 7f) * m_caveBrushesByType.Count),
 								Length = random.UniformInt(40, 180)
 							});
 						}
-						if (cavePoint.StepsTaken >= cavePoint.Length || MathUtils.Abs(num9) > 34f || MathUtils.Abs(num10) > 34f || cavePoint.Position.Y < 5f || cavePoint.Position.Y > 246f)
+						if (cavePoint.StepsTaken >= cavePoint.Length || MathF.Abs(num9) > 34f || MathF.Abs(num10) > 34f || cavePoint.Position.Y < 5f || cavePoint.Position.Y > 246f)
 						{
 							num8++;
 						}

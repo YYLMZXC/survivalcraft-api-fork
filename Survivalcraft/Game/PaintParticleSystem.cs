@@ -62,8 +62,8 @@ namespace Game
 		public override bool Simulate(float dt)
 		{
 			dt = MathUtils.Clamp(dt, 0f, 0.1f);
-			float num = MathUtils.Pow(0.2f, dt);
-			float num2 = MathUtils.Pow(1E-07f, dt);
+			float num = MathF.Pow(0.2f, dt);
+			float num2 = MathF.Pow(1E-07f, dt);
 			bool flag = false;
 			for (int i = 0; i < Particles.Length; i++)
 			{

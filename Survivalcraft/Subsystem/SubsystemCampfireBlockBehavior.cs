@@ -57,7 +57,7 @@ namespace Game
 					float x = m_subsystemAmbientSounds.SubsystemAudio.CalculateListenerDistanceSquared(new Vector3(key2.X, key2.Y, key2.Z));
 					num = MathUtils.Min(num, x);
 				}
-				m_fireSoundVolume = m_subsystemAmbientSounds.SubsystemAudio.CalculateVolume(MathUtils.Sqrt(num), 2f);
+				m_fireSoundVolume = m_subsystemAmbientSounds.SubsystemAudio.CalculateVolume(MathF.Sqrt(num), 2f);
 			}
 			m_subsystemAmbientSounds.FireSoundVolume = MathUtils.Max(m_subsystemAmbientSounds.FireSoundVolume, m_fireSoundVolume);
 		}

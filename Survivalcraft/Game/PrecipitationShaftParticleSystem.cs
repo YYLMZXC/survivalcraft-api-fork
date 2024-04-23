@@ -95,7 +95,7 @@ namespace Game
 
 		public override bool Simulate(float dt)
 		{
-			if (m_subsystemWeather.SubsystemTime.GameTime - m_lastUpdateTime > 1.0 || MathUtils.Abs(m_lastSkylightIntensity - m_subsystemWeather.SubsystemSky.SkyLightIntensity) > 0.1f)
+			if (m_subsystemWeather.SubsystemTime.GameTime - m_lastUpdateTime > 1.0 || MathF.Abs(m_lastSkylightIntensity - m_subsystemWeather.SubsystemSky.SkyLightIntensity) > 0.1f)
 			{
 				m_lastUpdateTime = m_subsystemWeather.SubsystemTime.GameTime;
 				m_lastSkylightIntensity = m_subsystemWeather.SubsystemSky.SkyLightIntensity;

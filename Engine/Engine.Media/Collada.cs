@@ -626,7 +626,7 @@ namespace Engine.Media
 							float num11 = array2[offset2 + (stride2 * num10)];
 							float num12 = array2[offset2 + (stride2 * num10) + 1];
 							float num13 = array2[offset2 + (stride2 * num10) + 2];
-							float num14 = 1f / MathUtils.Sqrt((num11 * num11) + (num12 * num12) + (num13 * num13));
+							float num14 = 1f / MathF.Sqrt((num11 * num11) + (num12 * num12) + (num13 * num13));
 							binaryWriter.Write(num14 * num11);
 							binaryWriter.Write(num14 * num12);
 							binaryWriter.Write(num14 * num13);

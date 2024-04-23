@@ -212,8 +212,8 @@ namespace Game
 					Vector3 v2 = (vector * new Vector3(0f, 1f, 0f)) - (m_vrQuadPosition * new Vector3(0f, 1f, 0f));
 					float num2 = v.Length();
 					float num3 = v2.Length();
-					m_vrQuadPosition += v * MathUtils.Min(0.75f * MathUtils.Pow(MathUtils.Max(num2 - (0.15f * num), 0f), 0.33f) * Time.FrameDuration, 1f);
-					m_vrQuadPosition += v2 * MathUtils.Min(1.5f * MathUtils.Pow(MathUtils.Max(num3 - (0.05f * num), 0f), 0.33f) * Time.FrameDuration, 1f);
+					m_vrQuadPosition += v * MathUtils.Min(0.75f * MathF.Pow(MathUtils.Max(num2 - (0.15f * num), 0f), 0.33f) * Time.FrameDuration, 1f);
+					m_vrQuadPosition += v2 * MathUtils.Min(1.5f * MathF.Pow(MathUtils.Max(num3 - (0.05f * num), 0f), 0.33f) * Time.FrameDuration, 1f);
 				}
 				var vector2 = new Vector2(m_uiRenderTarget.Width / (float)m_uiRenderTarget.Height, 1f);
 				vector2 /= MathUtils.Max(vector2.X, vector2.Y);
@@ -238,7 +238,7 @@ namespace Game
 			Random.Seed(0);
 			for (int i = 0; i < 1500; i++)
 			{
-				float f = MathUtils.Pow(Random.Float(0f, 1f), 6f);
+				float f = MathF.Pow(Random.Float(0f, 1f), 6f);
 				Color rGB = (MathUtils.Lerp(0.05f, 0.4f, f) * Color.White).RGB;
 				int num = 6;
 				Vector3 vector = Random.Vector3(500f);
@@ -253,7 +253,7 @@ namespace Game
 				{
 					float num2 = 1f;
 					float num3 = 1f;
-					Vector3 vector3 = new Vector3((j - 0.5f) * num2, 0f, (k - 0.5f) * num2) + new Vector3(MathUtils.Round(hmdMatrix.Translation.X), 0f, MathUtils.Round(hmdMatrix.Translation.Z));
+					Vector3 vector3 = new Vector3((j - 0.5f) * num2, 0f, (k - 0.5f) * num2) + new Vector3(MathF.Round(hmdMatrix.Translation.X), 0f, MathF.Round(hmdMatrix.Translation.Z));
 					float num4 = Vector3.Distance(vector3, hmdMatrix.Translation);
 					float num5 = MathUtils.Lerp(1f, 0f, MathUtils.Saturate(num4 / 7f));
 					if (num5 > 0f)

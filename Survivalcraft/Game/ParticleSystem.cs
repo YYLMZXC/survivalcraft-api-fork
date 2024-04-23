@@ -86,7 +86,7 @@ namespace Game
 					Vector3 p4;
 					if (rotation != 0f)
 					{
-						Vector3 v = (m_front[billboardingMode].X * m_front[billboardingMode].X > m_front[billboardingMode].Z * m_front[billboardingMode].Z) ? new Vector3(0f, MathUtils.Cos(rotation), MathUtils.Sin(rotation)) : new Vector3(MathUtils.Sin(rotation), MathUtils.Cos(rotation), 0f);
+						Vector3 v = (m_front[billboardingMode].X * m_front[billboardingMode].X > m_front[billboardingMode].Z * m_front[billboardingMode].Z) ? new Vector3(0f, MathF.Cos(rotation), MathF.Sin(rotation)) : new Vector3(MathF.Sin(rotation), MathF.Cos(rotation), 0f);
 						var vector = Vector3.Normalize(Vector3.Cross(m_front[(uint)particle.BillboardingMode], v));
 						v = Vector3.Normalize(Vector3.Cross(m_front[(uint)particle.BillboardingMode], vector));
 						vector *= size.Y;

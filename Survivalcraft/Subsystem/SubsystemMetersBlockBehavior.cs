@@ -162,7 +162,7 @@ namespace Game
 				float heat = GetHeat(cellValueFast);
 				if (heat > 0f)
 				{
-					int num15 = MathUtils.Abs(num8) + MathUtils.Abs(num9) + MathUtils.Abs(num10);
+					int num15 = Math.Abs(num8) + Math.Abs(num9) + Math.Abs(num10);
 					int num16 = (num15 <= 0) ? 1 : ((4 * num15 * num15) + 2);
 					float num17 = 1f / num16;
 					num5 += num17 * 36f * heat;
@@ -170,7 +170,7 @@ namespace Game
 				}
 				else if (block.IsHeatBlocker(cellValueFast))
 				{
-					int num18 = MathUtils.Abs(num8) + MathUtils.Abs(num9) + MathUtils.Abs(num10);
+					int num18 = Math.Abs(num8) + Math.Abs(num9) + Math.Abs(num10);
 					int num19 = (num18 <= 0) ? 1 : ((4 * num18 * num18) + 2);
 					float num20 = 1f / num19;
 					float num21 = terrain.SeasonTemperature;
@@ -181,7 +181,7 @@ namespace Game
 				}
 				else if (y >= chunkAtCell.GetTopHeightFast(x2, z2))
 				{
-					int num24 = MathUtils.Abs(num8) + MathUtils.Abs(num9) + MathUtils.Abs(num10);
+					int num24 = Math.Abs(num8) + Math.Abs(num9) + Math.Abs(num10);
 					int num25 = (num24 <= 0) ? 1 : ((4 * num24 * num24) + 2);
 					float num26 = 1f / num25;
 					PrecipitationShaftInfo precipitationShaftInfo = m_subsystemWeather.GetPrecipitationShaftInfo(x, z);
@@ -271,13 +271,13 @@ namespace Game
 			}
 			if (num4 > 0f)
 			{
-				float num38 = 4f * MathUtils.Pow(num4, 0.25f);
+				float num38 = 4f * MathF.Pow(num4, 0.25f);
 				num34 += num3 / num4 * num38;
 				num35 += num38;
 			}
 			if (num6 > 0f)
 			{
-				float num39 = 1.5f * MathUtils.Pow(num6, 0.25f);
+				float num39 = 1.5f * MathF.Pow(num6, 0.25f);
 				num34 += num5 / num6 * num39;
 				num35 += num39;
 			}
@@ -305,7 +305,7 @@ namespace Game
 			}
 			int num = m_thermometersByPoint[key];
 			CalculateTemperature(x, y, z, 0f, 0f, out float temperature, out float _);
-			int num2 = MathUtils.Clamp((int)MathUtils.Round(temperature), 0, 15);
+			int num2 = MathUtils.Clamp((int)MathF.Round(temperature), 0, 15);
 			if (num2 == num)
 			{
 				return;

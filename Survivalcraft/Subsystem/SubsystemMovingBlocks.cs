@@ -287,11 +287,11 @@ namespace Game
 				movingBlockSet.Speed += movingBlockSet.Acceleration * m_subsystemTime.GameTimeDelta;
 				if (movingBlockSet.Drag != 0f)
 				{
-					movingBlockSet.Speed *= MathUtils.Pow(1f - movingBlockSet.Drag, m_subsystemTime.GameTimeDelta);
+					movingBlockSet.Speed *= MathF.Pow(1f - movingBlockSet.Drag, m_subsystemTime.GameTimeDelta);
 				}
 				float x = Vector3.Distance(movingBlockSet.StartPosition, movingBlockSet.Position);
 				float num = Vector3.Distance(movingBlockSet.TargetPosition, movingBlockSet.Position);
-				float num2 = (movingBlockSet.Smoothness.X > 0f) ? MathUtils.Saturate((MathUtils.Sqrt(x) + 0.05f) / movingBlockSet.Smoothness.X) : 1f;
+				float num2 = (movingBlockSet.Smoothness.X > 0f) ? MathUtils.Saturate((MathF.Sqrt(x) + 0.05f) / movingBlockSet.Smoothness.X) : 1f;
 				float num3 = (movingBlockSet.Smoothness.Y > 0f) ? MathUtils.Saturate((num + 0.05f) / movingBlockSet.Smoothness.Y) : 1f;
 				float num4 = num2 * num3;
 				bool flag = false;

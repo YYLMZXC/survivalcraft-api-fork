@@ -79,7 +79,7 @@ namespace Game
 			set
 			{
 				m_value = m_granularity > 0f
-					? MathUtils.Round(MathUtils.Clamp(value, MinValue, MaxValue) / m_granularity) * m_granularity
+					? MathF.Round(MathUtils.Clamp(value, MinValue, MaxValue) / m_granularity) * m_granularity
 					: MathUtils.Clamp(value, MinValue, MaxValue);
 			}
 		}

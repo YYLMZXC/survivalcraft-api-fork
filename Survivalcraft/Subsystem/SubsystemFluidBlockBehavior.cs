@@ -160,8 +160,8 @@ namespace Game
 					int num8 = (num4 == num) ? FluidBlock.GetLevel(Terrain.ExtractData(cellValue4)) : level;
 					int num9 = (num5 == num) ? FluidBlock.GetLevel(Terrain.ExtractData(cellValue5)) : level;
 					Vector2 vector = default;
-					vector.X = MathUtils.Sign(level - num6) - MathUtils.Sign(level - num7);
-					vector.Y = MathUtils.Sign(level - num8) - MathUtils.Sign(level - num9);
+					vector.X = Math.Sign(level - num6) - Math.Sign(level - num7);
+					vector.Y = Math.Sign(level - num8) - Math.Sign(level - num9);
 					Vector2 v = vector;
 					if (v.LengthSquared() > 1f)
 					{
@@ -387,7 +387,7 @@ namespace Game
 			{
 				return null;
 			}
-			return MathUtils.Sqrt(num);
+			return MathF.Sqrt(num);
 		}
 
 		public void Set(int x, int y, int z, int value)

@@ -1,20 +1,14 @@
-using System;
-
 namespace Engine
 {
 	public static class MathUtils
 	{
-		public const float PI = (float)Math.PI;
+		public const float PI = MathF.PI;
 
-		public const float E = (float)Math.E;
+		public const float E = MathF.E;
 
 		public static int Min(int x1, int x2)
 		{
-			if (x1 >= x2)
-			{
-				return x2;
-			}
-			return x1;
+			return Math.Min(x1, x2);
 		}
 
 		public static int Min(int x1, int x2, int x3)
@@ -29,11 +23,7 @@ namespace Engine
 
 		public static int Max(int x1, int x2)
 		{
-			if (x1 <= x2)
-			{
-				return x2;
-			}
-			return x1;
+			return Math.Max(x1, x2);
 		}
 
 		public static int Max(int x1, int x2, int x3)
@@ -48,20 +38,7 @@ namespace Engine
 
 		public static int Clamp(int x, int min, int max)
 		{
-			if (x >= min)
-			{
-				if (x <= max)
-				{
-					return x;
-				}
-				return max;
-			}
-			return min;
-		}
-
-		public static int Sign(int x)
-		{
-			return Math.Sign(x);
+			return Math.Clamp(x, min, max);
 		}
 
 		public static int Abs(int x)
@@ -95,11 +72,6 @@ namespace Engine
 			return x;
 		}
 
-		public static int Hash(int key)
-		{
-			return (int)Hash((uint)key);
-		}
-
 		public static uint Hash(uint key)
 		{
 			key ^= key >> 16;
@@ -112,11 +84,7 @@ namespace Engine
 
 		public static long Min(long x1, long x2)
 		{
-			if (x1 >= x2)
-			{
-				return x2;
-			}
-			return x1;
+			return Math.Min(x1, x2);
 		}
 
 		public static long Min(long x1, long x2, long x3)
@@ -131,11 +99,7 @@ namespace Engine
 
 		public static long Max(long x1, long x2)
 		{
-			if (x1 <= x2)
-			{
-				return x2;
-			}
-			return x1;
+			return Math.Max(x1, x2);
 		}
 
 		public static long Max(long x1, long x2, long x3)
@@ -146,29 +110,6 @@ namespace Engine
 		public static long Max(long x1, long x2, long x3, long x4)
 		{
 			return Max(Max(Max(x1, x2), x3), x4);
-		}
-
-		public static long Clamp(long x, long min, long max)
-		{
-			if (x >= min)
-			{
-				if (x <= max)
-				{
-					return x;
-				}
-				return max;
-			}
-			return min;
-		}
-
-		public static long Sign(long x)
-		{
-			return Math.Sign(x);
-		}
-
-		public static long Abs(long x)
-		{
-			return Math.Abs(x);
 		}
 
 		public static long Sqr(long x)
@@ -200,11 +141,7 @@ namespace Engine
 
 		public static float Min(float x1, float x2)
 		{
-			if (!(x1 < x2))
-			{
-				return x2;
-			}
-			return x1;
+			return MathF.Min(x1, x2);
 		}
 
 		public static float Min(float x1, float x2, float x3)
@@ -219,11 +156,7 @@ namespace Engine
 
 		public static float Max(float x1, float x2)
 		{
-			if (!(x1 > x2))
-			{
-				return x2;
-			}
-			return x1;
+			return MathF.Max(x1, x2);
 		}
 
 		public static float Max(float x1, float x2, float x3)
@@ -238,15 +171,7 @@ namespace Engine
 
 		public static float Clamp(float x, float min, float max)
 		{
-			if (!(x < min))
-			{
-				if (!(x > max))
-				{
-					return x;
-				}
-				return max;
-			}
-			return min;
+			return Math.Clamp(x, min, max);
 		}
 
 		public static float Saturate(float x)
@@ -264,27 +189,27 @@ namespace Engine
 
 		public static float Sign(float x)
 		{
-			return Math.Sign(x);
+			return MathF.Sign(x);
 		}
 
 		public static float Abs(float x)
 		{
-			return Math.Abs(x);
+			return MathF.Abs(x);
 		}
 
 		public static float Floor(float x)
 		{
-			return (float)Math.Floor(x);
+			return MathF.Floor(x);
 		}
 
 		public static float Ceiling(float x)
 		{
-			return (float)Math.Ceiling(x);
+			return MathF.Ceiling(x);
 		}
 
 		public static float Round(float x)
 		{
-			return (float)Math.Round(x);
+			return MathF.Round(x);
 		}
 
 		public static float Remainder(float x, float y)
@@ -296,70 +221,13 @@ namespace Engine
 		{
 			return x * x;
 		}
-
-		public static float Sqrt(float x)
-		{
-			return (float)Math.Sqrt(x);
-		}
-
-		public static float Sin(float x)
-		{
-			return (float)Math.Sin(x);
-		}
-
-		public static float Cos(float x)
-		{
-			return (float)Math.Cos(x);
-		}
-
-		public static float Tan(float x)
-		{
-			return (float)Math.Tan(x);
-		}
-
-		public static float Asin(float x)
-		{
-			return (float)Math.Asin(x);
-		}
-
-		public static float Acos(float x)
-		{
-			return (float)Math.Acos(x);
-		}
-
-		public static float Atan(float x)
-		{
-			return (float)Math.Atan(x);
-		}
-
 		public static float Atan2(float y, float x)
 		{
-			return (float)Math.Atan2(y, x);
+			return MathF.Atan2(y, x);
 		}
-
-		public static float Exp(float n)
-		{
-			return (float)Math.Exp(n);
-		}
-
-		public static float Log(float x)
-		{
-			return (float)Math.Log(x);
-		}
-
-		public static float Log10(float x)
-		{
-			return (float)Math.Log10(x);
-		}
-
-		public static float Pow(float x, float n)
-		{
-			return (float)Math.Pow(x, n);
-		}
-
 		public static float PowSign(float x, float n)
 		{
-			return Sign(x) * Pow(Abs(x), n);
+			return Sign(x) * MathF.Pow(MathF.Abs(x), n);
 		}
 
 		public static float Lerp(float x1, float x2, float f)
@@ -404,8 +272,8 @@ namespace Engine
 			{
 				return 1f;
 			}
-			float num = Exp(steepness);
-			float num2 = Exp(2f * steepness * x);
+			float num = MathF.Exp(steepness);
+			float num2 = MathF.Exp(2f * steepness * x);
 			return num * (num2 - 1f) / ((num - 1f) * (num2 + num));
 		}
 
@@ -421,53 +289,12 @@ namespace Engine
 
 		public static double Min(double x1, double x2)
 		{
-			if (!(x1 < x2))
-			{
-				return x2;
-			}
-			return x1;
-		}
-
-		public static double Min(double x1, double x2, double x3)
-		{
-			return Min(Min(x1, x2), x3);
-		}
-
-		public static double Min(double x1, double x2, double x3, double x4)
-		{
-			return Min(Min(Min(x1, x2), x3), x4);
+			return Math.Min(x1, x2);
 		}
 
 		public static double Max(double x1, double x2)
 		{
-			if (!(x1 > x2))
-			{
-				return x2;
-			}
-			return x1;
-		}
-
-		public static double Max(double x1, double x2, double x3)
-		{
-			return Max(Max(x1, x2), x3);
-		}
-
-		public static double Max(double x1, double x2, double x3, double x4)
-		{
-			return Max(Max(Max(x1, x2), x3), x4);
-		}
-
-		public static double Clamp(double x, double min, double max)
-		{
-			if (!(x < min))
-			{
-				if (!(x > max))
-				{
-					return x;
-				}
-				return max;
-			}
-			return min;
+			return Math.Max(x1, x2);
 		}
 
 		public static double Saturate(double x)
@@ -483,24 +310,9 @@ namespace Engine
 			return 0.0;
 		}
 
-		public static double Sign(double x)
-		{
-			return Math.Sign(x);
-		}
-
-		public static double Abs(double x)
-		{
-			return Math.Abs(x);
-		}
-
 		public static double Floor(double x)
 		{
 			return Math.Floor(x);
-		}
-
-		public static double Ceiling(double x)
-		{
-			return Math.Ceiling(x);
 		}
 
 		public static double Round(double x)
@@ -513,74 +325,9 @@ namespace Engine
 			return x - (Floor(x / y) * y);
 		}
 
-		public static double Sqr(double x)
-		{
-			return x * x;
-		}
-
-		public static double Sqrt(double x)
-		{
-			return Math.Sqrt(x);
-		}
-
-		public static double Sin(double x)
-		{
-			return Math.Sin(x);
-		}
-
-		public static double Cos(double x)
-		{
-			return Math.Cos(x);
-		}
-
-		public static double Tan(double x)
-		{
-			return Math.Tan(x);
-		}
-
-		public static double Asin(double x)
-		{
-			return Math.Asin(x);
-		}
-
-		public static double Acos(double x)
-		{
-			return Math.Acos(x);
-		}
-
-		public static double Atan(double x)
-		{
-			return Math.Atan(x);
-		}
-
-		public static double Atan2(double y, double x)
-		{
-			return Math.Atan2(y, x);
-		}
-
-		public static double Exp(double n)
-		{
-			return Math.Exp(n);
-		}
-
-		public static double Log(double x)
-		{
-			return Math.Log(x);
-		}
-
-		public static double Log10(double x)
-		{
-			return Math.Log10(x);
-		}
-
-		public static double Pow(double x, double n)
-		{
-			return Math.Pow(x, n);
-		}
-
 		public static double PowSign(double x, double n)
 		{
-			return Sign(x) * Pow(Abs(x), n);
+			return Math.Sign(x) * Math.Pow(Math.Abs(x), n);
 		}
 
 		public static double Lerp(double x1, double x2, double f)
@@ -590,10 +337,10 @@ namespace Engine
 
 		public static double SmoothStep(double min, double max, double x)
 		{
-			x = Clamp((x - min) / (max - min), 0.0, 1.0);
+			x = Math.Clamp((x - min) / (max - min), 0.0, 1.0);
 			return x * x * (3.0 - (2.0 * x));
 		}
-
+		
 		public static double CatmullRom(double v1, double v2, double v3, double v4, double f)
 		{
 			double num = f * f;

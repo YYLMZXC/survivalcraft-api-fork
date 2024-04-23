@@ -129,7 +129,7 @@ namespace Game
 					m_saveCompleted.WaitOne();
 				}
 				double realTime2 = Time.RealTime;
-				Log.Verbose($"Saved project, {MathUtils.Round((realTime2 - realTime) * 1000.0)}ms");
+				Log.Verbose($"Saved project, {Math.Round((realTime2 - realTime) * 1000.0)}ms");
 			}
 		}
 

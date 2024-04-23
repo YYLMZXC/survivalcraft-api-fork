@@ -28,9 +28,9 @@ namespace Game
 				SettingsManager.MusicVolume = m_musicVolumeSlider.Value;
 			}
 			m_soundsVolumeSlider.Value = SettingsManager.SoundsVolume;
-			m_soundsVolumeSlider.Text = MathUtils.Round(SettingsManager.SoundsVolume * 10f).ToString();
+			m_soundsVolumeSlider.Text = MathF.Round(SettingsManager.SoundsVolume * 10f).ToString();
 			m_musicVolumeSlider.Value = SettingsManager.MusicVolume;
-			m_musicVolumeSlider.Text = MathUtils.Round(SettingsManager.MusicVolume * 10f).ToString();
+			m_musicVolumeSlider.Text = MathF.Round(SettingsManager.MusicVolume * 10f).ToString();
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
 			{
 				ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);

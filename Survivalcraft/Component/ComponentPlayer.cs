@@ -195,7 +195,7 @@ namespace Game
 					componentSteedBehavior.SpeedOrder = -1;
 					m_speedOrderBlocked = true;
 				}
-				else if (MathUtils.Abs(playerInput.Move.Z) <= 0.25f)
+				else if (MathF.Abs(playerInput.Move.Z) <= 0.25f)
 				{
 					m_speedOrderBlocked = false;
 				}

@@ -65,19 +65,19 @@ namespace Game
 						if (num4 > num2 && num4 <= num)
 						{
 							float num5 = Vector2.Angle(v2 - v, -Vector2.UnitY);
-							if (MathUtils.Abs(MathUtils.NormalizeAngle(num5 - 0f)) < num3)
+							if (MathF.Abs(MathUtils.NormalizeAngle(num5 - 0f)) < num3)
 							{
 								m_direction = m_jumpTouchId.HasValue ? new Vector3(0f, 1f, 0f) : new Vector3(0f, 0f, 1f);
 							}
-							else if (MathUtils.Abs(MathUtils.NormalizeAngle(num5 - ((float)Math.PI / 2f))) < num3)
+							else if (MathF.Abs(MathUtils.NormalizeAngle(num5 - ((float)Math.PI / 2f))) < num3)
 							{
 								m_direction = new Vector3(-1f, 0f, 0f);
 							}
-							else if (MathUtils.Abs(MathUtils.NormalizeAngle(num5 - (float)Math.PI)) < num3)
+							else if (MathF.Abs(MathUtils.NormalizeAngle(num5 - (float)Math.PI)) < num3)
 							{
 								m_direction = m_jumpTouchId.HasValue ? new Vector3(0f, -1f, 0f) : new Vector3(0f, 0f, -1f);
 							}
-							else if (MathUtils.Abs(MathUtils.NormalizeAngle(num5 - 4.712389f)) < num3)
+							else if (MathF.Abs(MathUtils.NormalizeAngle(num5 - 4.712389f)) < num3)
 							{
 								m_direction = new Vector3(1f, 0f, 0f);
 							}

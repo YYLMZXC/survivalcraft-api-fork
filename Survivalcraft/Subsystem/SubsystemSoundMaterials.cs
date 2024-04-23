@@ -51,7 +51,7 @@ namespace Game
 						string value2 = m_footstepSoundsValuesDictionary.GetValue<string>("Squishy", null);
 						if (!string.IsNullOrEmpty(value2))
 						{
-							float volume = 0.7f * loudnessMultiplier * MathUtils.Pow(componentPlayer.ComponentVitalStats.Wetness, 4f);
+							float volume = 0.7f * loudnessMultiplier * MathF.Pow(componentPlayer.ComponentVitalStats.Wetness, 4f);
 							m_subsystemAudio.PlayRandomSound(value2, volume, pitch, componentCreature.ComponentBody.Position, 2f * loudnessMultiplier, autoDelay: true);
 						}
 					}

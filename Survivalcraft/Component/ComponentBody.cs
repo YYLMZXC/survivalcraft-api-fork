@@ -411,7 +411,7 @@ namespace Game
 				m_velocity.Y -= 10f * dt;
 				if (ImmersionFactor > 0f)
 				{
-					float num = ImmersionFactor * (1f + (0.03f * MathUtils.Sin((float)MathUtils.Remainder(2.0 * m_subsystemTime.GameTime, 6.2831854820251465))));
+					float num = ImmersionFactor * (1f + (0.03f * MathF.Sin((float)MathUtils.Remainder(2.0 * m_subsystemTime.GameTime, 6.2831854820251465))));
 					m_velocity.Y += 10f * (1f / Density * num) * dt;
 				}
 			}
@@ -444,7 +444,7 @@ namespace Game
 					}
 					if (WaterSwayAngle > 0f)
 					{
-						base.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitX, WaterSwayAngle * (float)MathUtils.Sin((double)(200f / Mass) * m_subsystemTime.GameTime));
+						base.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitX, WaterSwayAngle * (float)Math.Sin((double)(200f / Mass) * m_subsystemTime.GameTime));
 					}
 				}
 			}
@@ -512,7 +512,7 @@ namespace Game
 			{
 				int cellValue = m_subsystemTerrain.Terrain.GetCellValue(x, y, z);
 				ImmersionDepth = MathUtils.Max(surfaceHeight.Value - position.Y, 0f);
-				ImmersionFactor = MathUtils.Saturate(MathUtils.Pow(ImmersionDepth / StanceBoxSize.Y, 0.7f));
+				ImmersionFactor = MathUtils.Saturate(MathF.Pow(ImmersionDepth / StanceBoxSize.Y, 0.7f));
 				ImmersionFluidBlock = BlocksManager.FluidBlocks[Terrain.ExtractContents(cellValue)];
 			}
 			else
@@ -702,7 +702,7 @@ namespace Game
 			BoundingBox box = new(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f) + vector, position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f) - vector);
 			CollisionBox pushingCollisionBox2;
 			float num2 = CalculatePushBack(box, axis, m_bodiesCollisionBoxes, out pushingCollisionBox2);
-			if (MathUtils.Abs(num) > MathUtils.Abs(num2))
+			if (MathF.Abs(num) > MathF.Abs(num2))
 			{
 				if (num == 0f)
 				{
@@ -1044,7 +1044,7 @@ namespace Game
 			for (int i = 0; i < collisionBoxes.Count; i++)
 			{
 				float num2 = CalculateBoxBoxOverlap(ref box, ref collisionBoxes.Array[i].Box, axis);
-				if (MathUtils.Abs(num2) > MathUtils.Abs(num))
+				if (MathF.Abs(num2) > MathF.Abs(num))
 				{
 					num = num2;
 					pushingCollisionBox = collisionBoxes.Array[i];
@@ -1060,7 +1060,7 @@ namespace Game
 			for (int i = 0; i < collisionBoxes.Count; i++)
 			{
 				float num2 = (!BlocksManager.Blocks[Terrain.ExtractContents(collisionBoxes.Array[i].BlockValue)].NoSmoothRise) ? CalculateBoxBoxOverlap(ref smoothRiseBox, ref collisionBoxes.Array[i].Box, axis) : CalculateBoxBoxOverlap(ref normalBox, ref collisionBoxes.Array[i].Box, axis);
-				if (MathUtils.Abs(num2) > MathUtils.Abs(num))
+				if (MathF.Abs(num2) > MathF.Abs(num))
 				{
 					num = num2;
 					pushingCollisionBox = collisionBoxes.Array[i];

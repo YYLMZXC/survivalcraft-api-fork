@@ -269,7 +269,7 @@ namespace Game
 
 		public static void SendPlayTime(string address, string userId, double time, CancellableProgress progress, Action success, Action<Exception> failure)
 		{
-			Feedback(address, "PlayTime", MathUtils.Round(time).ToString(CultureInfo.InvariantCulture), null, 0L, userId, progress, success, failure);
+			Feedback(address, "PlayTime", Math.Round(time).ToString(CultureInfo.InvariantCulture), null, 0L, userId, progress, success, failure);
 		}
 
 		public static void VerifyLinkContent(string address, string name, ExternalContentType type, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)

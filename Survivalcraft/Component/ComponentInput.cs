@@ -263,7 +263,7 @@ namespace Game
 				zero += -Vector3.UnitY * (input.IsPadButtonDown(GamePadButton.RightShoulder) ? 1 : 0);
 				m_playerInput.Move += zero;
 				m_playerInput.SneakMove += zero;
-				m_playerInput.Look += 0.75f * padStickPosition2 * MathUtils.Pow(padStickPosition2.LengthSquared(), 0.25f);
+				m_playerInput.Look += 0.75f * padStickPosition2 * MathF.Pow(padStickPosition2.LengthSquared(), 0.25f);
 				m_playerInput.Jump |= input.IsPadButtonDownOnce(GamePadButton.A);
 				m_playerInput.Dig = (padTriggerPosition2 >= 0.5f) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Dig;
 				m_playerInput.Hit = (padTriggerPosition2 >= 0.5f && m_lastRightTrigger < 0.5f) ? new Ray3?(new Ray3(viewPosition, viewDirection)) : m_playerInput.Hit;
@@ -299,8 +299,8 @@ namespace Game
 
 		public virtual void UpdateInputFromWidgets(WidgetInput input)
 		{
-			float num = MathUtils.Pow(1.25f, 10f * (SettingsManager.MoveSensitivity - 0.5f));
-			float num2 = MathUtils.Pow(1.25f, 10f * (SettingsManager.LookSensitivity - 0.5f));
+			float num = MathF.Pow(1.25f, 10f * (SettingsManager.MoveSensitivity - 0.5f));
+			float num2 = MathF.Pow(1.25f, 10f * (SettingsManager.LookSensitivity - 0.5f));
 			float num3 = MathUtils.Clamp(m_subsystemTime.GameTimeDelta, 0f, 0.1f);
 			ViewWidget viewWidget = m_componentPlayer.ViewWidget;
 			m_componentGui.MoveWidget.Radius = 30f / num * m_componentGui.MoveWidget.GlobalScale;
@@ -351,7 +351,7 @@ namespace Game
 					if (SettingsManager.LookControlMode == LookControlMode.EntireScreen || SettingsManager.LookControlMode == LookControlMode.SplitTouch)
 					{
 						var v2 = Vector2.TransformNormal(value.Move, m_componentGui.ViewWidget.InvertedGlobalTransform);
-						Vector2 vector = num2 / num3 * new Vector2(0.0006f, -0.0006f) * v2 * MathUtils.Pow(v2.LengthSquared(), 0.125f);
+						Vector2 vector = num2 / num3 * new Vector2(0.0006f, -0.0006f) * v2 * MathF.Pow(v2.LengthSquared(), 0.125f);
 						m_playerInput.Look += vector;
 					}
 					if (m_isViewHoldStarted)
@@ -385,7 +385,7 @@ namespace Game
 				else if (value2.InputType == TouchInputType.Move || value2.InputType == TouchInputType.Hold)
 				{
 					var v3 = Vector2.TransformNormal(value2.Move, m_componentGui.ViewWidget.InvertedGlobalTransform);
-					Vector2 vector2 = num / num3 * new Vector2(0.003f, -0.003f) * v3 * MathUtils.Pow(v3.LengthSquared(), 0.175f);
+					Vector2 vector2 = num / num3 * new Vector2(0.003f, -0.003f) * v3 * MathF.Pow(v3.LengthSquared(), 0.175f);
 					m_playerInput.SneakMove.X += vector2.X;
 					m_playerInput.SneakMove.Z += vector2.Y;
 					var vector3 = Vector2.TransformNormal(value2.TotalMoveLimited, m_componentGui.ViewWidget.InvertedGlobalTransform);
@@ -414,7 +414,7 @@ namespace Game
 				else if (value3.InputType == TouchInputType.Move)
 				{
 					var v4 = Vector2.TransformNormal(value3.Move, m_componentGui.ViewWidget.InvertedGlobalTransform);
-					Vector2 vector4 = num2 / num3 * new Vector2(0.0006f, -0.0006f) * v4 * MathUtils.Pow(v4.LengthSquared(), 0.125f);
+					Vector2 vector4 = num2 / num3 * new Vector2(0.0006f, -0.0006f) * v4 * MathF.Pow(v4.LengthSquared(), 0.125f);
 					m_playerInput.Look += vector4;
 				}
 			}
@@ -422,7 +422,7 @@ namespace Game
 
 		public static float ProcessInputValue(float value, float deadZone, float saturationZone)
 		{
-			return MathUtils.Sign(value) * MathUtils.Clamp((MathUtils.Abs(value) - deadZone) / (saturationZone - deadZone), 0f, 1f);
+			return MathUtils.Sign(value) * MathUtils.Clamp((MathF.Abs(value) - deadZone) / (saturationZone - deadZone), 0f, 1f);
 		}
 	}
 }

@@ -221,14 +221,14 @@ namespace Game
 				Vector3 forward = m_componentCreature.ComponentBody.Matrix.Forward;
 				Vector3 v2 = LookAtOrder.Value - m_componentCreature.ComponentCreatureModel.EyePosition;
 				float x = Vector2.Angle(new Vector2(forward.X, forward.Z), new Vector2(v2.X, v2.Z));
-				float y = MathUtils.Asin(0.99f * Vector3.Normalize(v2).Y);
+				float y = MathF.Asin(0.99f * Vector3.Normalize(v2).Y);
 				m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(x, y) - m_componentCreature.ComponentLocomotion.LookAngles;
 			}
 			if (HeadShakeOrder > 0f)
 			{
 				HeadShakeOrder = MathUtils.Max(HeadShakeOrder - dt, 0f);
 				float num = 1f * MathUtils.Saturate(4f * HeadShakeOrder);
-				m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(num * (float)MathUtils.Sin((16.0 * m_subsystemTime.GameTime) + (0.01f * GetHashCode())), 0f) - m_componentCreature.ComponentLocomotion.LookAngles;
+				m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(num * (float)Math.Sin((16.0 * m_subsystemTime.GameTime) + (0.01f * GetHashCode())), 0f) - m_componentCreature.ComponentLocomotion.LookAngles;
 			}
 			if (m_componentCreature.ComponentHealth.Health == 0f)
 			{

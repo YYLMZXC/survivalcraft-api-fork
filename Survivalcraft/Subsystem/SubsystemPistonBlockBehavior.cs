@@ -450,9 +450,9 @@ namespace Game
 				m_subsystemMovingBlocks.RemoveMovingBlockSet(movingBlockSet);
 				foreach (MovingBlock block in movingBlockSet.Blocks)
 				{
-					int x = Terrain.ToCell(MathUtils.Round(movingBlockSet.Position.X)) + block.Offset.X;
-					int y = Terrain.ToCell(MathUtils.Round(movingBlockSet.Position.Y)) + block.Offset.Y;
-					int z = Terrain.ToCell(MathUtils.Round(movingBlockSet.Position.Z)) + block.Offset.Z;
+					int x = Terrain.ToCell(MathF.Round(movingBlockSet.Position.X)) + block.Offset.X;
+					int y = Terrain.ToCell(MathF.Round(movingBlockSet.Position.Y)) + block.Offset.Y;
+					int z = Terrain.ToCell(MathF.Round(movingBlockSet.Position.Z)) + block.Offset.Z;
 					if (!(new Point3(x, y, z) == position))
 					{
 						int num2 = Terrain.ExtractContents(block.Value);

@@ -33,7 +33,7 @@ namespace Game
 								height = MathUtils.Min(Window.ScreenSize.X, Window.ScreenSize.Y);
 								float num2 = num / (float)height;
 								num = MathUtils.Min(num, 2048);
-								height = (int)MathUtils.Round(num / num2);
+								height = (int)MathF.Round(num / num2);
 								break;
 							}
 						case ScreenshotSize.FullHD:

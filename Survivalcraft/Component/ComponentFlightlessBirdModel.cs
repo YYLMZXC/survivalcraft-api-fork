@@ -42,7 +42,7 @@ namespace Game
 		{
 			float footstepsPhase = m_footstepsPhase;
 			float num = m_componentCreature.ComponentLocomotion.SlipSpeed ?? Vector3.Dot(m_componentCreature.ComponentBody.Velocity, m_componentCreature.ComponentBody.Matrix.Forward);
-			if (MathUtils.Abs(num) > 0.2f)
+			if (MathF.Abs(num) > 0.2f)
 			{
 				MovementAnimationPhase += num * dt * m_walkAnimationSpeed;
 				m_footstepsPhase += 1.25f * m_walkAnimationSpeed * num * dt;
@@ -53,7 +53,7 @@ namespace Game
 				m_footstepsPhase = 0f;
 			}
 			float num2 = 0f;
-			num2 = (0f - m_walkBobHeight) * MathUtils.Sqr(MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase));
+			num2 = (0f - m_walkBobHeight) * MathUtils.Sqr(MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase));
 			float num3 = MathUtils.Min(12f * m_subsystemTime.GameTimeDelta, 1f);
 			Bob += num3 * (num2 - Bob);
 			float num4 = MathUtils.Floor(m_footstepsPhase);
@@ -118,15 +118,15 @@ namespace Game
 				if (MovementAnimationPhase != 0f && (m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.ImmersionFactor > 0f))
 				{
 					float num4 = (Vector3.Dot(m_componentCreature.ComponentBody.Velocity, m_componentCreature.ComponentBody.Matrix.Forward) > 0.75f * m_componentCreature.ComponentLocomotion.WalkSpeed) ? (1.5f * m_walkLegsAngle) : m_walkLegsAngle;
-					float num5 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0f));
-					float num6 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.5f));
+					float num5 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0f));
+					float num6 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.5f));
 					num = (num4 * num5) + m_kickPhase;
 					num2 = num4 * num6;
-					num3 = MathUtils.DegToRad(5f) * MathUtils.Sin((float)Math.PI * 4f * MovementAnimationPhase);
+					num3 = MathUtils.DegToRad(5f) * MathF.Sin((float)Math.PI * 4f * MovementAnimationPhase);
 				}
 				if (m_kickFactor != 0f)
 				{
-					float x = MathUtils.DegToRad(60f) * MathUtils.Sin((float)Math.PI * MathUtils.Sigmoid(m_kickPhase, 5f));
+					float x = MathUtils.DegToRad(60f) * MathF.Sin((float)Math.PI * MathUtils.Sigmoid(m_kickPhase, 5f));
 					num = MathUtils.Lerp(num, x, m_kickFactor);
 				}
 				float num7 = MathUtils.Min(12f * m_subsystemTime.GameTimeDelta, 1f);

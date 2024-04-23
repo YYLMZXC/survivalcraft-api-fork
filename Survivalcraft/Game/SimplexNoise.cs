@@ -845,7 +845,7 @@ namespace Game
 			{
 				return num / num2;
 			}
-			return 1f - MathUtils.Abs((2f * num / num2) - 1f);
+			return 1f - MathF.Abs((2f * num / num2) - 1f);
 		}
 
 		public static float OctavedNoise(float x, float y, float frequency, int octaves, float frequencyStep, float amplitudeStep, bool ridged = false)
@@ -864,7 +864,7 @@ namespace Game
 			{
 				return num / num2;
 			}
-			return 1f - MathUtils.Abs((2f * num / num2) - 1f);
+			return 1f - MathF.Abs((2f * num / num2) - 1f);
 		}
 
 		public static float OctavedNoise(float x, float y, float z, float frequency, int octaves, float frequencyStep, float amplitudeStep, bool ridged = false)
@@ -883,7 +883,7 @@ namespace Game
 			{
 				return num / num2;
 			}
-			return 1f - MathUtils.Abs((2f * num / num2) - 1f);
+			return 1f - MathF.Abs((2f * num / num2) - 1f);
 		}
 	}
 }

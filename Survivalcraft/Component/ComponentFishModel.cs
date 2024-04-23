@@ -139,22 +139,22 @@ namespace Game
 				float num5;
 				if (m_hasVerticalTail)
 				{
-					num2 = MathUtils.DegToRad(25f) * MathUtils.Clamp((0.5f * MathUtils.Sin((float)Math.PI * 2f * num)) - m_tailTurn.X, -1f, 1f);
-					num3 = MathUtils.DegToRad(30f) * MathUtils.Clamp((0.5f * MathUtils.Sin(2f * ((float)Math.PI * MathUtils.Max(num - 0.25f, 0f)))) - m_tailTurn.X, -1f, 1f);
-					num4 = MathUtils.DegToRad(25f) * MathUtils.Clamp((0.5f * MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase)) - m_tailTurn.Y, -1f, 1f);
-					num5 = MathUtils.DegToRad(30f) * MathUtils.Clamp((0.5f * MathUtils.Sin((float)Math.PI * 2f * MathUtils.Max(MovementAnimationPhase - 0.25f, 0f))) - m_tailTurn.Y, -1f, 1f);
+					num2 = MathUtils.DegToRad(25f) * MathUtils.Clamp((0.5f * MathF.Sin((float)Math.PI * 2f * num)) - m_tailTurn.X, -1f, 1f);
+					num3 = MathUtils.DegToRad(30f) * MathUtils.Clamp((0.5f * MathF.Sin(2f * ((float)Math.PI * MathUtils.Max(num - 0.25f, 0f)))) - m_tailTurn.X, -1f, 1f);
+					num4 = MathUtils.DegToRad(25f) * MathUtils.Clamp((0.5f * MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase)) - m_tailTurn.Y, -1f, 1f);
+					num5 = MathUtils.DegToRad(30f) * MathUtils.Clamp((0.5f * MathF.Sin((float)Math.PI * 2f * MathUtils.Max(MovementAnimationPhase - 0.25f, 0f))) - m_tailTurn.Y, -1f, 1f);
 				}
 				else
 				{
-					num2 = MathUtils.DegToRad(25f) * MathUtils.Clamp((0.5f * MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + num))) - m_tailTurn.X, -1f, 1f);
-					num3 = MathUtils.DegToRad(30f) * MathUtils.Clamp((0.5f * MathUtils.Sin(2f * ((float)Math.PI * MathUtils.Max(MovementAnimationPhase + num - 0.25f, 0f)))) - m_tailTurn.X, -1f, 1f);
+					num2 = MathUtils.DegToRad(25f) * MathUtils.Clamp((0.5f * MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + num))) - m_tailTurn.X, -1f, 1f);
+					num3 = MathUtils.DegToRad(30f) * MathUtils.Clamp((0.5f * MathF.Sin(2f * ((float)Math.PI * MathUtils.Max(MovementAnimationPhase + num - 0.25f, 0f)))) - m_tailTurn.X, -1f, 1f);
 					num4 = MathUtils.DegToRad(25f) * MathUtils.Clamp(0f - m_tailTurn.Y, -1f, 1f);
 					num5 = MathUtils.DegToRad(30f) * MathUtils.Clamp(0f - m_tailTurn.Y, -1f, 1f);
 				}
 				float radians = 0f;
 				if (m_bitingPhase > 0f)
 				{
-					radians = (0f - MathUtils.DegToRad(30f)) * MathUtils.Sin((float)Math.PI * m_bitingPhase);
+					radians = (0f - MathUtils.DegToRad(30f)) * MathF.Sin((float)Math.PI * m_bitingPhase);
 				}
 				Matrix value = Matrix.CreateFromYawPitchRoll(vector.X, 0f, 0f) * Matrix.CreateTranslation(m_componentCreature.ComponentBody.Position + new Vector3(0f, 0f - m_digInDepth, 0f));
 				SetBoneTransform(m_bodyBone.Index, value);

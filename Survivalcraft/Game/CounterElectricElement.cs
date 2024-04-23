@@ -20,7 +20,7 @@ namespace Game
 			float? num = subsystemElectricity.ReadPersistentVoltage(cellFace.Point);
 			if (num.HasValue)
 			{
-				m_counter = (int)MathUtils.Round(MathUtils.Abs(num.Value) * 15f);
+				m_counter = (int)MathF.Round(MathF.Abs(num.Value) * 15f);
 				m_overflow = num.Value < 0f;
 			}
 		}

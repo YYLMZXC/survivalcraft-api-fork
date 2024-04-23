@@ -63,7 +63,7 @@ namespace Game
 			}
 			float num = MathUtils.Clamp(50f / m_size, 10f, 40f);
 			m_toGenerate += num * dt;
-			float num2 = MathUtils.Pow(0.1f, dt);
+			float num2 = MathF.Pow(0.1f, dt);
 			bool flag = false;
 			for (int i = 0; i < Particles.Length; i++)
 			{

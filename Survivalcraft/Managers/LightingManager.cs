@@ -91,7 +91,7 @@ namespace Game
 			float x = MathUtils.Lerp(0f, 0.1f, brightness);
 			for (int i = 0; i < 16; i++)
 			{
-				LightIntensityByLightValue[i] = MathUtils.Saturate(MathUtils.Lerp(x, 1f, MathUtils.Pow(i / 15f, 1.25f)));
+				LightIntensityByLightValue[i] = MathUtils.Saturate(MathUtils.Lerp(x, 1f, MathF.Pow(i / 15f, 1.25f)));
 			}
 			for (int j = 0; j < 6; j++)
 			{

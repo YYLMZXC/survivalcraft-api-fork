@@ -130,7 +130,7 @@ namespace Engine
                 DisplayDevice @default = DisplayDevice.Default;
                 if (Configuration.RunningOnMacOS)
                 {
-                    return new Point2((int)MathUtils.Round((float)@default.Width * m_dpiScale), (int)MathUtils.Round((float)@default.Height * m_dpiScale));
+                    return new Point2((int)MathF.Round((float)@default.Width * m_dpiScale), (int)MathF.Round((float)@default.Height * m_dpiScale));
                 }
                 return new Point2(@default.Width, @default.Height);
             }
@@ -325,7 +325,7 @@ namespace Engine
             m_gameWindow.ClientSize = new Size(width, height);
             if (Configuration.RunningOnMacOS)
             {
-                Point2 point = new((int)MathUtils.Round((float)ScreenSize.X / m_dpiScale), (int)MathUtils.Round((float)ScreenSize.Y / m_dpiScale));
+                Point2 point = new((int)MathF.Round((float)ScreenSize.X / m_dpiScale), (int)MathF.Round((float)ScreenSize.Y / m_dpiScale));
                 m_gameWindow.Location = new Point(MathUtils.Max((point.X - m_gameWindow.Size.Width) / 2, 0), MathUtils.Max((point.Y - m_gameWindow.Size.Height) / 2, 0));
             }
             else

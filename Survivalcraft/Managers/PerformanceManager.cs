@@ -108,10 +108,10 @@ namespace Game
 				if (m_frameCount > 0)
 				{
 					m_longTermAverageFrameTime = (float)(m_totalFrameTime / m_frameCount);
-					float num = (int)MathUtils.Round(MathUtils.Round(m_totalFrameTime / m_frameCount / 0.004999999888241291) * 0.004999999888241291 * 1000.0);
-					float num2 = (int)MathUtils.Round(MathUtils.Round(m_totalCpuFrameTime / m_frameCount / 0.004999999888241291) * 0.004999999888241291 * 1000.0);
+					float num = (int)Math.Round(Math.Round(m_totalFrameTime / m_frameCount / 0.004999999888241291) * 0.004999999888241291 * 1000.0);
+					float num2 = (int)Math.Round(Math.Round(m_totalCpuFrameTime / m_frameCount / 0.004999999888241291) * 0.004999999888241291 * 1000.0);
 
-					Log.Information($"PerformanceManager Measurement: frames={m_frameCount.ToString()}, avgFrameTime={num.ToString()}ms, avgFrameCpuTime={num2.ToString()}ms");
+					Log.Information($"PerformanceManager Measurement: frames={m_frameCount}, avgFrameTime={num}ms, avgFrameCpuTime={num2}ms");
 				}
 			}, delegate
 			{
@@ -137,7 +137,7 @@ namespace Game
 
 		public static void Draw()
 		{
-			var scale = new Vector2(MathUtils.Round(MathUtils.Clamp(ScreensManager.RootWidget.GlobalScale, 1.0f, 4.0f)));
+			var scale = new Vector2(MathF.Round(MathUtils.Clamp(ScreensManager.RootWidget.GlobalScale, 1.0f, 4.0f)));
 			Viewport viewport = Display.Viewport;
 			if (SettingsManager.DisplayFpsCounter)
 			{

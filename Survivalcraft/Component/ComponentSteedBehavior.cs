@@ -203,7 +203,7 @@ namespace Game
 			if (m_subsystemTime.PeriodicGameTimeEvent(0.25, 0.0))
 			{
 				float num = new Vector2(m_componentCreature.ComponentBody.CollisionVelocityChange.X, m_componentCreature.ComponentBody.CollisionVelocityChange.Z).Length();
-				if (m_speedLevel == 0 || num < 0.1f || m_componentCreature.ComponentBody.Velocity.Length() > MathUtils.Abs(0.5f * m_speed * m_componentCreature.ComponentLocomotion.WalkSpeed))
+				if (m_speedLevel == 0 || num < 0.1f || m_componentCreature.ComponentBody.Velocity.Length() > MathF.Abs(0.5f * m_speed * m_componentCreature.ComponentLocomotion.WalkSpeed))
 				{
 					m_lastNotBlockedTime = m_subsystemTime.GameTime;
 				}
@@ -216,7 +216,7 @@ namespace Game
 			m_turnSpeed += 2f * m_subsystemTime.GameTimeDelta * (MathUtils.Clamp(TurnOrder, -0.5f, 0.5f) - m_turnSpeed);
 			m_componentCreature.ComponentLocomotion.TurnOrder = new Vector2(m_turnSpeed, 0f);
 			m_componentCreature.ComponentLocomotion.WalkOrder = new Vector2(0f, m_speed);
-			if (MathUtils.Abs(m_speed) > 0.01f || MathUtils.Abs(m_turnSpeed) > 0.01f)
+			if (MathF.Abs(m_speed) > 0.01f || MathF.Abs(m_turnSpeed) > 0.01f)
 			{
 				m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(2f * m_turnSpeed, 0f) - m_componentCreature.ComponentLocomotion.LookAngles;
 			}

@@ -342,10 +342,10 @@ namespace Game
             if (!m_imageExtrusionsCache.TryGetValue(imageExtrusionKey, out var value))
 			{
 				value = new BlockMesh();
-				int num = (int)MathUtils.Round(m_slotTexCoords[slot].X * (float)image.Width);
-				int num2 = (int)MathUtils.Round(m_slotTexCoords[slot].Y * (float)image.Height);
-				int num3 = (int)MathUtils.Round(m_slotTexCoords[slot].Z * (float)image.Width);
-				int num4 = (int)MathUtils.Round(m_slotTexCoords[slot].W * (float)image.Height);
+				int num = (int)MathF.Round(m_slotTexCoords[slot].X * (float)image.Width);
+				int num2 = (int)MathF.Round(m_slotTexCoords[slot].Y * (float)image.Height);
+				int num3 = (int)MathF.Round(m_slotTexCoords[slot].Z * (float)image.Width);
+				int num4 = (int)MathF.Round(m_slotTexCoords[slot].W * (float)image.Height);
 				int num5 = MathUtils.Max(num3 - num, num4 - num2);
 				value.AppendImageExtrusion(image, new Rectangle(num, num2, num3 - num, num4 - num2), new Vector3(1f / (float)num5, 1f / (float)num5, 0.0833333358f), Color.White, 0);
 				m_imageExtrusionsCache.Add(imageExtrusionKey, value);

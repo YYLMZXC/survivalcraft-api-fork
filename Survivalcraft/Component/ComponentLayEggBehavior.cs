@@ -114,7 +114,7 @@ namespace Game
 					m_layTime += m_dt;
 					if (m_componentCreature.ComponentBody.StandingOnValue.HasValue)
 					{
-						m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(0f, (0.25f * (float)MathUtils.Sin(20.0 * m_subsystemTime.GameTime)) + (m_layTime / 3f)) - m_componentCreature.ComponentLocomotion.LookAngles;
+						m_componentCreature.ComponentLocomotion.LookOrder = new Vector2(0f, (0.25f * (float)Math.Sin(20.0 * m_subsystemTime.GameTime)) + (m_layTime / 3f)) - m_componentCreature.ComponentLocomotion.LookAngles;
 						if (m_layTime >= 3f)
 						{
 							m_importanceLevel = 0f;

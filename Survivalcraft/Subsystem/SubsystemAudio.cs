@@ -70,7 +70,7 @@ namespace Game
 
 		public float CalculateListenerDistance(Vector3 p)
 		{
-			return MathUtils.Sqrt(CalculateListenerDistanceSquared(p));
+			return MathF.Sqrt(CalculateListenerDistanceSquared(p));
 		}
 
 		public void Mute()

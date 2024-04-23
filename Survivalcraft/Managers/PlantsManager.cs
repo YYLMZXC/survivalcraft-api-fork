@@ -409,15 +409,15 @@ namespace Game
 				int z = 0;
 				float s = branchesLengthByHeight(num);
 				Vector3 vector = Vector3.Normalize(new Vector3(random.Float(-1f, 1f), random.Float(0f, 0.33f), random.Float(-1f, 1f))) * s;
-				int x2 = (int)MathUtils.Round(vector.X);
-				int y = num + (int)MathUtils.Round(vector.Y);
-				int z2 = (int)MathUtils.Round(vector.Z);
+				int x2 = (int)MathF.Round(vector.X);
+				int y = num + (int)MathF.Round(vector.Y);
+				int z2 = (int)MathF.Round(vector.Z);
 				int cutFace = 0;
-				if (MathUtils.Abs(vector.X) == MathUtils.Max(MathUtils.Abs(vector.X), MathUtils.Abs(vector.Y), MathUtils.Abs(vector.Z)))
+				if (MathF.Abs(vector.X) == MathUtils.Max(MathF.Abs(vector.X), MathF.Abs(vector.Y), MathF.Abs(vector.Z)))
 				{
 					cutFace = 1;
 				}
-				else if (MathUtils.Abs(vector.Y) == MathUtils.Max(MathUtils.Abs(vector.X), MathUtils.Abs(vector.Y), MathUtils.Abs(vector.Z)))
+				else if (MathF.Abs(vector.Y) == MathUtils.Max(MathF.Abs(vector.X), MathF.Abs(vector.Y), MathF.Abs(vector.Z)))
 				{
 					cutFace = 4;
 				}
@@ -475,7 +475,7 @@ namespace Game
 					{
 						for (int l = item2.Z - num4; l <= item2.Z + num4; l++)
 						{
-							int num5 = MathUtils.Abs(j - item2.X) + MathUtils.Abs(k - item2.Y) + MathUtils.Abs(l - item2.Z);
+							int num5 = Math.Abs(j - item2.X) + Math.Abs(k - item2.Y) + Math.Abs(l - item2.Z);
 							float num6 = ((new Vector3(j, k, l) - new Vector3(item2)) * new Vector3(1f, 1.7f, 1f)).Length();
 							if (num6 <= num3 && (num3 - num6 > 1f || num5 <= 2 || random.Bool(0.7f)) && !terrainBrush.GetValue(j, k, l).HasValue)
 							{

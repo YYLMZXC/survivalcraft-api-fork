@@ -112,10 +112,10 @@ namespace Game
 		{
 			if (cmyk.W <= 1f)
 			{
-				int num = (int)MathUtils.Round(MathUtils.Saturate(cmyk.X));
-				int num2 = (int)MathUtils.Round(MathUtils.Saturate(cmyk.Y));
-				int num3 = (int)MathUtils.Round(MathUtils.Saturate(cmyk.Z));
-				int num4 = (int)MathUtils.Round(MathUtils.Saturate(cmyk.W));
+				int num = (int)MathF.Round(MathUtils.Saturate(cmyk.X));
+				int num2 = (int)MathF.Round(MathUtils.Saturate(cmyk.Y));
+				int num3 = (int)MathF.Round(MathUtils.Saturate(cmyk.Z));
+				int num4 = (int)MathF.Round(MathUtils.Saturate(cmyk.W));
 				return num | (num2 << 1) | (num3 << 2) | (num4 << 3);
 			}
 			return 15;

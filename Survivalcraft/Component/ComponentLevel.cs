@@ -73,7 +73,7 @@ namespace Game
 			}
 			for (int i = 0; i < count; i++)
 			{
-				float num = 0.012f / MathUtils.Pow(1.08f, MathUtils.Floor(m_componentPlayer.PlayerData.Level - 1f));
+				float num = 0.012f / MathF.Pow(1.08f, MathUtils.Floor(m_componentPlayer.PlayerData.Level - 1f));
 				if (MathUtils.Floor(m_componentPlayer.PlayerData.Level + num) > MathUtils.Floor(m_componentPlayer.PlayerData.Level))
 				{
 					Time.QueueTimeDelayedExecution(Time.FrameStartTime + 0.5 + 0.0, delegate

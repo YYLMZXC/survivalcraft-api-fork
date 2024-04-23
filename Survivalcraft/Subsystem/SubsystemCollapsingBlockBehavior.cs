@@ -61,7 +61,7 @@ namespace Game
 		{
 			if (movingBlockSet.Id == "CollapsingBlock")
 			{
-				Point3 p = Terrain.ToCell(MathUtils.Round(movingBlockSet.Position.X), MathUtils.Round(movingBlockSet.Position.Y), MathUtils.Round(movingBlockSet.Position.Z));
+				Point3 p = Terrain.ToCell(MathF.Round(movingBlockSet.Position.X), MathF.Round(movingBlockSet.Position.Y), MathF.Round(movingBlockSet.Position.Z));
 				foreach (MovingBlock block in movingBlockSet.Blocks)
 				{
 					Point3 point = p + block.Offset;

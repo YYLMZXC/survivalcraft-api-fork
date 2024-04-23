@@ -60,7 +60,7 @@ namespace Game
 		public override bool Simulate(float dt)
 		{
 			dt = MathUtils.Clamp(dt, 0f, 0.1f);
-			float num = MathUtils.Pow(0.1f, dt);
+			float num = MathF.Pow(0.1f, dt);
 			m_time += dt;
 			bool flag = false;
 			for (int i = 0; i < Particles.Length; i++)
@@ -103,7 +103,7 @@ namespace Game
 					{
 						particle.Velocity.Y = 0f;
 						float num3 = Vector2.Distance(new Vector2(particle.Position.X, particle.Position.Z), new Vector2(m_position.X, m_position.Z));
-						float num4 = 0.02f * MathUtils.Sin((2f * num3) + (10f * m_time));
+						float num4 = 0.02f * MathF.Sin((2f * num3) + (10f * m_time));
 						particle.Position.Y = MathUtils.Floor(particle.Position.Y) + levelHeight + num4;
 						particle.TimeToLive -= 1f * dt;
 						particle.Size -= new Vector2(0.04f * dt);

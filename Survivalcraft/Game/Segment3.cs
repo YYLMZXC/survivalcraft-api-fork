@@ -32,7 +32,7 @@ namespace Game
 				{
 					return Vector3.Distance(p, s.Start);
 				}
-				return MathUtils.Sqrt(Vector3.Cross(p - s.Start, v).LengthSquared() / num2);
+				return MathF.Sqrt(Vector3.Cross(p - s.Start, v).LengthSquared() / num2);
 			}
 			if (!(num > 0f))
 			{
@@ -54,8 +54,8 @@ namespace Game
 				{
 					return s.Start;
 				}
-				float num3 = MathUtils.Sqrt(v2.LengthSquared() - (Vector3.Cross(p - s.Start, v).LengthSquared() / num2));
-				return Vector3.Lerp(s.Start, s.End, num3 / MathUtils.Sqrt(num2));
+				float num3 = MathF.Sqrt(v2.LengthSquared() - (Vector3.Cross(p - s.Start, v).LengthSquared() / num2));
+				return Vector3.Lerp(s.Start, s.End, num3 / MathF.Sqrt(num2));
 			}
 			if (!(num > 0f))
 			{

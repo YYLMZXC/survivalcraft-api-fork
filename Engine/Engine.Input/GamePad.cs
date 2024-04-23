@@ -377,7 +377,7 @@ namespace Engine.Input
 
         public static float ApplyDeadZone(float value, float deadZone)
         {
-            return MathUtils.Sign(value) * MathUtils.Max(MathUtils.Abs(value) - deadZone, 0f) / (1f - deadZone);
+            return MathUtils.Sign(value) * MathUtils.Max(MathF.Abs(value) - deadZone, 0f) / (1f - deadZone);
         }
     }
 }

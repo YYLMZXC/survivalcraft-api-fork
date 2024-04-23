@@ -122,7 +122,7 @@ namespace Game
 			{
 				m_lastDrag = null;
 				m_rotation = MathUtils.NormalizeAngle(m_rotation);
-				if (MathUtils.Abs(m_rotation) > 0.01f)
+				if (MathF.Abs(m_rotation) > 0.01f)
 				{
 					m_rotation *= MathUtils.PowSign(0.1f, Time.FrameDuration);
 				}

@@ -152,7 +152,7 @@ namespace Engine
 			float num4 = num2 + (num3 * num3) - num;
 			if (!(num4 < 0f))
 			{
-				return num3 - MathUtils.Sqrt(num4);
+				return num3 - MathF.Sqrt(num4);
 			}
 			return null;
 		}

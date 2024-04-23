@@ -87,7 +87,7 @@ namespace Game
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{
 			base.Load(valuesDictionary, idToEntityMap);
-			m_craftingGridSize = (int)MathUtils.Sqrt(SlotsCount - 2);
+			m_craftingGridSize = (int)MathF.Sqrt(SlotsCount - 2);
 			UpdateCraftingResult();
 		}
 

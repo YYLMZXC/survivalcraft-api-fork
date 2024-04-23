@@ -32,7 +32,7 @@ namespace Game
 
 		public static float ToEnginePitch(float pitch)
 		{
-			return MathUtils.Pow(2f, pitch);
+			return MathF.Pow(2f, pitch);
 		}
 	}
 }

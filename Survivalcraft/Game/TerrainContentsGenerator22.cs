@@ -425,8 +425,8 @@ namespace Game
 		{
 			float num = TGOceanSlope + (TGOceanSlopeVariation * MathUtils.PowSign((2f * SimplexNoise.OctavedNoise(x + m_mountainsOffset.X, z + m_mountainsOffset.Y, 0.01f, 1, 2f, 0.5f)) - 1f, 0.5f));
 			float num2 = CalculateOceanShoreDistance(x, z);
-			float num3 = MathUtils.Saturate(2f - (0.05f * MathUtils.Abs(num2)));
-			float num4 = MathUtils.Saturate(MathUtils.Sin(TGIslandsFrequency * num2));
+			float num3 = MathUtils.Saturate(2f - (0.05f * MathF.Abs(num2)));
+			float num4 = MathUtils.Saturate(MathF.Sin(TGIslandsFrequency * num2));
 			float num5 = MathUtils.Saturate(MathUtils.Saturate((0f - num) * num2) - (0.85f * num4));
 			float num6 = MathUtils.Saturate(MathUtils.Saturate(0.05f * (0f - num2 - 10f)) - num4);
 			float v = CalculateMountainRangeFactor(x, z);
@@ -439,7 +439,7 @@ namespace Game
 			float num10 = (1.5f * SimplexNoise.OctavedNoise(x, z, TGMountainsDetailFreq, TGMountainsDetailOctaves, 1.98f, amplitudeStep)) - 0.5f;
 			float num11 = MathUtils.Lerp(60f, 30f, MathUtils.Saturate((1f * num8) + (0.5f * num7) + MathUtils.Saturate(1f - (num2 / 30f))));
 			float x2 = MathUtils.Lerp(-2f, -4f, MathUtils.Saturate(num8 + (0.5f * num7)));
-			float num12 = MathUtils.Saturate(1.5f - (num11 * MathUtils.Abs((2f * SimplexNoise.OctavedNoise(x + m_riversOffset.X, z + m_riversOffset.Y, 0.001f, 4, 2f, 0.5f)) - 1f)));
+			float num12 = MathUtils.Saturate(1.5f - (num11 * MathF.Abs((2f * SimplexNoise.OctavedNoise(x + m_riversOffset.X, z + m_riversOffset.Y, 0.001f, 4, 2f, 0.5f)) - 1f)));
 			float num13 = (-50f * num5) + TGHeightBias;
 			float num14 = MathUtils.Lerp(0f, 8f, f);
 			float num15 = MathUtils.Lerp(0f, -6f, f2);
@@ -490,7 +490,7 @@ namespace Game
 			float num6 = MathUtils.Max(num4, MathUtils.Max(x2, x3, x4, x5));
 			float num7 = num6 - num5;
 			float num8 = 0f;
-			if (MathUtils.Max(MathUtils.Abs(x), MathUtils.Abs(z)) > 400)
+			if (MathUtils.Max(MathF.Abs(x), MathF.Abs(z)) > 400)
 			{
 				num8 -= 0.25f;
 			}
@@ -689,7 +689,7 @@ namespace Game
 								float f = num33 - (0.01f * humidityFast);
 								float num34 = MathUtils.Lerp(100f, 0f, f);
 								float num35 = MathUtils.Lerp(300f, 30f, f);
-								bool flag = (temperatureFast > 8 && humidityFast < 8 && num33 < 0.97f) || (MathUtils.Abs(x4) < 16f && num33 < 0.97f);
+								bool flag = (temperatureFast > 8 && humidityFast < 8 && num33 < 0.97f) || (MathF.Abs(x4) < 16f && num33 < 0.97f);
 								int num36 = TerrainChunk.CalculateCellIndex(x3, 0, z3);
 								for (int num37 = 0; num37 < 8; num37++)
 								{
@@ -948,9 +948,9 @@ namespace Game
 						for (int num14 = 0; num14 < num13; num14++)
 						{
 							Vector2 vector = random.Vector2(7f);
-							int num15 = 8 + (int)MathUtils.Round(vector.X);
+							int num15 = 8 + (int)MathF.Round(vector.X);
 							int num16 = 0;
-							int num17 = 8 + (int)MathUtils.Round(vector.Y);
+							int num17 = 8 + (int)MathF.Round(vector.Y);
 							m_waterPocketBrushes[random.Int(0, m_waterPocketBrushes.Count - 1)].PaintFast(chunk, num10 + num15, num11 + num16, num12 + num17);
 						}
 					}
@@ -963,9 +963,9 @@ namespace Game
 						for (int num22 = 0; num22 < num21; num22++)
 						{
 							Vector2 vector2 = random.Vector2(7f);
-							int num23 = 8 + (int)MathUtils.Round(vector2.X);
+							int num23 = 8 + (int)MathF.Round(vector2.X);
 							int num24 = random.Int(0, 1);
-							int num25 = 8 + (int)MathUtils.Round(vector2.Y);
+							int num25 = 8 + (int)MathF.Round(vector2.Y);
 							m_magmaPocketBrushes[random.Int(0, m_magmaPocketBrushes.Count - 1)].PaintFast(chunk, num18 + num23, num19 + num24, num20 + num25);
 						}
 					}
@@ -1064,7 +1064,7 @@ namespace Game
 						}
 						if (random.Bool(0.33f))
 						{
-							cavePoint.BrushType = (int)(MathUtils.Pow(random.Float(0f, 0.999f), 7f) * m_caveBrushesByType.Count);
+							cavePoint.BrushType = (int)(MathF.Pow(random.Float(0f, 0.999f), 7f) * m_caveBrushesByType.Count);
 						}
 						if (random.Bool(0.06f) && list.Count < 12 && cavePoint.StepsTaken > 20 && cavePoint.Position.Y < 58f)
 						{
@@ -1072,11 +1072,11 @@ namespace Game
 							{
 								Position = cavePoint.Position,
 								Direction = Vector3.Normalize(random.Vector3(1f, 1f) * new Vector3(1f, 0.33f, 1f)),
-								BrushType = (int)(MathUtils.Pow(random.Float(0f, 0.999f), 7f) * m_caveBrushesByType.Count),
+								BrushType = (int)(MathF.Pow(random.Float(0f, 0.999f), 7f) * m_caveBrushesByType.Count),
 								Length = random.Int(40, 180)
 							});
 						}
-						if (cavePoint.StepsTaken >= cavePoint.Length || MathUtils.Abs(num9) > 34f || MathUtils.Abs(num10) > 34f || cavePoint.Position.Y < 5f || cavePoint.Position.Y > 246f)
+						if (cavePoint.StepsTaken >= cavePoint.Length || MathF.Abs(num9) > 34f || MathF.Abs(num10) > 34f || cavePoint.Position.Y < 5f || cavePoint.Position.Y > 246f)
 						{
 							num8++;
 						}

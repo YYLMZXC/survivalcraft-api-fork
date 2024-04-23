@@ -48,7 +48,7 @@ namespace Game
 		public override bool Simulate()
 		{
 			double day = m_subsystemTimeOfDay.Day;
-			int num = (int)((((MathUtils.Ceiling(day * 4096.0) + 0.5) / 4096.0) - day) * m_subsystemTimeOfDay.DayDuration / 0.0099999997764825821);
+			int num = (int)((((Math.Ceiling(day * 4096.0) + 0.5) / 4096.0) - day) * m_subsystemTimeOfDay.DayDuration / 0.0099999997764825821);
 			int circuitStep = MathUtils.Max(SubsystemElectricity.FrameStartCircuitStep + num, SubsystemElectricity.CircuitStep + 1);
 			SubsystemElectricity.QueueElectricElementForSimulation(this, circuitStep);
 			int clockValue = GetClockValue();

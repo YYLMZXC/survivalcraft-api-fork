@@ -142,7 +142,7 @@ namespace Game
 			}
 			else
 			{
-				float x = MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase);
+				float x = MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase);
 				num3 = m_walkBobHeight * MathUtils.Sqr(x);
 				float num4 = 0f;
 				if (m_componentCreature.ComponentLocomotion.LastWalkOrder.HasValue && m_componentCreature.ComponentLocomotion.LastWalkOrder != Vector2.Zero)
@@ -233,7 +233,7 @@ namespace Game
 			if (m_lieDownFactorModel == 0f)
 			{
 				ComponentMount componentMount = (m_componentRider != null) ? m_componentRider.Mount : null;
-				float num = MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase);
+				float num = MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase);
 				position.Y += Bob;
 				vector.X += m_headingOffset;
 				float num2 = (float)MathUtils.Remainder((0.75 * m_subsystemGameInfo.TotalElapsedGameTime) + (GetHashCode() & 0xFFFF), 10000.0);
@@ -290,10 +290,10 @@ namespace Game
 				float num9 = 0f;
 				if (m_componentMiner != null)
 				{
-					float num10 = MathUtils.Sin(MathUtils.Sqrt(m_componentMiner.PokingPhase) * (float)Math.PI);
+					float num10 = MathF.Sin(MathF.Sqrt(m_componentMiner.PokingPhase) * (float)Math.PI);
 					num9 = (m_componentMiner.ActiveBlockValue == 0) ? (1f * num10) : (0.3f + (1f * num10));
 				}
-				float num11 = (m_punchPhase != 0f) ? ((0f - MathUtils.DegToRad(90f)) * MathUtils.Sin((float)Math.PI * 2f * MathUtils.Sigmoid(m_punchPhase, 4f))) : 0f;
+				float num11 = (m_punchPhase != 0f) ? ((0f - MathUtils.DegToRad(90f)) * MathF.Sin((float)Math.PI * 2f * MathUtils.Sigmoid(m_punchPhase, 4f))) : 0f;
 				float num12 = ((m_punchCounter & 1) == 0) ? num11 : 0f;
 				float num13 = ((m_punchCounter & 1) != 0) ? num11 : 0f;
 				float num14 = 0f;
@@ -302,8 +302,8 @@ namespace Game
 				float num17 = 0f;
 				if (m_rowLeft || m_rowRight)
 				{
-					float num18 = 0.6f * (float)MathUtils.Sin(6.91150426864624 * m_subsystemTime.GameTime);
-					float num19 = 0.2f + (0.2f * (float)MathUtils.Cos(6.91150426864624 * (m_subsystemTime.GameTime + 0.5)));
+					float num18 = 0.6f * (float)Math.Sin(6.91150426864624 * m_subsystemTime.GameTime);
+					float num19 = 0.2f + (0.2f * (float)Math.Cos(6.91150426864624 * (m_subsystemTime.GameTime + 0.5)));
 					if (m_rowLeft)
 					{
 						num14 = num18;

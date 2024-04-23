@@ -48,7 +48,7 @@ namespace Game
 					if (connectorDirection.HasValue && connectorDirection.Value == ElectricConnectorDirection.In)
 					{
 						float outputVoltage = connection.NeighborElectricElement.GetOutputVoltage(connection.NeighborConnectorFace);
-						m_bits = (int)MathUtils.Round(outputVoltage * 15f);
+						m_bits = (int)MathF.Round(outputVoltage * 15f);
 					}
 				}
 			}

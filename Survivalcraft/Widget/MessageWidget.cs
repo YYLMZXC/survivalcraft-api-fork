@@ -46,7 +46,7 @@ namespace Game
 					num = MathUtils.Saturate(1f * (float)(m_messageStartTime + m_duration - realTime));
 					if (realTime - m_messageStartTime < 0.417)
 					{
-						num *= MathUtils.Lerp(0.25f, 1f, 0.5f * (1f - MathUtils.Cos((float)Math.PI * 12f * (float)(realTime - m_messageStartTime))));
+						num *= MathUtils.Lerp(0.25f, 1f, 0.5f * (1f - MathF.Cos((float)Math.PI * 12f * (float)(realTime - m_messageStartTime))));
 					}
 				}
 				else

@@ -51,7 +51,7 @@ namespace Game
 			if (m_visible)
 			{
 				m_toGenerate += 20f * dt;
-				float num = MathUtils.Pow(0.02f, dt);
+				float num = MathF.Pow(0.02f, dt);
 				for (int i = 0; i < Particles.Length; i++)
 				{
 					Particle particle = Particles[i];

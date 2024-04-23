@@ -142,7 +142,7 @@ namespace Engine
 		{
 			float num = MathUtils.Max(r.Min.X - p.X, 0f, p.X - r.Max.X);
 			float num2 = MathUtils.Max(r.Min.Y - p.Y, 0f, p.Y - r.Max.Y);
-			return MathUtils.Sqrt((num * num) + (num2 * num2));
+			return MathF.Sqrt((num * num) + (num2 * num2));
 		}
 
 		public static bool operator ==(BoundingRectangle a, BoundingRectangle b)

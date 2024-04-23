@@ -135,7 +135,7 @@ namespace Game
 			Color color2 = m_waterOrder ? new Color(b2, b2, b2, b2) : new Color(b, b, b, b);
 			float num7 = MathUtils.Floor((float)MathUtils.Remainder(1.75 * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
 			float num8 = 0f - num7 + 1f;
-			float num9 = MathUtils.Floor((float)MathUtils.Remainder(1.75f / MathUtils.Sqrt(2f) * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
+			float num9 = MathUtils.Floor((float)MathUtils.Remainder(1.75f / MathF.Sqrt(2f) * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
 			float num10 = 0f - num9 + 1f;
 			var tc = new Vector2(0f, 0f);
 			var tc2 = new Vector2(1f, 1f);
@@ -202,7 +202,7 @@ namespace Game
 			Color color2 = m_magmaOrder ? new Color(b2, b2, b2, b2) : new Color(b, b, b, b);
 			float num7 = MathUtils.Floor((float)MathUtils.Remainder(0.40000000596046448 * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
 			float num8 = 0f - num7 + 1f;
-			float num9 = MathUtils.Floor((float)MathUtils.Remainder(0.4f / MathUtils.Sqrt(2f) * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
+			float num9 = MathUtils.Floor((float)MathUtils.Remainder(0.4f / MathF.Sqrt(2f) * m_subsystemTime.GameTime, 1.0) * 16f) / 16f;
 			float num10 = 0f - num9 + 1f;
 			var tc = new Vector2(0f, 0f);
 			var tc2 = new Vector2(1f, 1f);

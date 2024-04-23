@@ -103,7 +103,7 @@ namespace Game
 									{
 										Vector3 vector = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + (componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.3f) - (componentMiner.ComponentCreature.ComponentBody.Matrix.Up * 0.2f);
 										var vector2 = Vector3.Normalize(vector + (aim.Direction * 10f) - vector);
-										float num4 = MathUtils.Lerp(0f, 28f, MathUtils.Pow(draw / 15f, 0.75f));
+										float num4 = MathUtils.Lerp(0f, 28f, MathF.Pow(draw / 15f, 0.75f));
 										if (componentMiner.ComponentPlayer != null)
 										{
 											num4 *= (0.5f * (componentMiner.ComponentPlayer.ComponentLevel.StrengthFactor - 1f)) + 1f;

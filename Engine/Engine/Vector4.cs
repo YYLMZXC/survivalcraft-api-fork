@@ -91,7 +91,7 @@ namespace Engine
 
 		public static float Distance(Vector4 v1, Vector4 v2)
 		{
-			return MathUtils.Sqrt(DistanceSquared(v1, v2));
+			return MathF.Sqrt(DistanceSquared(v1, v2));
 		}
 
 		public static float DistanceSquared(Vector4 v1, Vector4 v2)
@@ -106,7 +106,7 @@ namespace Engine
 
 		public float Length()
 		{
-			return MathUtils.Sqrt(LengthSquared());
+			return MathF.Sqrt(LengthSquared());
 		}
 
 		public float LengthSquared()
@@ -126,7 +126,7 @@ namespace Engine
 
 		public static Vector4 Round(Vector4 v)
 		{
-			return new Vector4(MathUtils.Round(v.X), MathUtils.Round(v.Y), MathUtils.Round(v.Z), MathUtils.Round(v.W));
+			return new Vector4(MathF.Round(v.X), MathF.Round(v.Y), MathF.Round(v.Z), MathF.Round(v.W));
 		}
 
 		public static Vector4 Min(Vector4 v, float f)
@@ -184,7 +184,7 @@ namespace Engine
 			float num = v.LengthSquared();
 			if (num > maxLength * maxLength)
 			{
-				return v * (maxLength / MathUtils.Sqrt(num));
+				return v * (maxLength / MathF.Sqrt(num));
 			}
 			return v;
 		}

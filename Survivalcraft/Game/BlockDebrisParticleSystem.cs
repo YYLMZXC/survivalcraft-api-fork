@@ -47,7 +47,7 @@ namespace Game
 			float num4 = LightingManager.LightIntensityByLightValue[x];
 			color *= num4;
 			color.A = 255;
-			float num5 = MathUtils.Sqrt(strength);
+			float num5 = MathF.Sqrt(strength);
 			for (int i = 0; i < Particles.Length; i++)
 			{
 				Particle obj = Particles[i];
@@ -65,7 +65,7 @@ namespace Game
 		public override bool Simulate(float dt)
 		{
 			dt = MathUtils.Clamp(dt, 0f, 0.1f);
-			float num = MathUtils.Pow(0.1f, dt);
+			float num = MathF.Pow(0.1f, dt);
 			bool flag = false;
 			for (int i = 0; i < Particles.Length; i++)
 			{

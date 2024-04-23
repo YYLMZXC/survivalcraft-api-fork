@@ -472,7 +472,7 @@ namespace Game
 					for (int k = 0; k < m_resolution; k++)
 					{
 						Vector3 vector = RotatePoint(new Vector3(k, j, i) - new Vector3((m_resolution / 2f) - 0.5f), axis, steps) + new Vector3((m_resolution / 2f) - 0.5f);
-						var point = new Point3((int)MathUtils.Round(vector.X), (int)MathUtils.Round(vector.Y), (int)MathUtils.Round(vector.Z));
+						var point = new Point3((int)MathF.Round(vector.X), (int)MathF.Round(vector.Y), (int)MathF.Round(vector.Z));
 						if (point.X >= 0 && point.X < m_resolution && point.Y >= 0 && point.Y < m_resolution && point.Z >= 0 && point.Z < m_resolution)
 						{
 							array[point.X + (point.Y * m_resolution) + (point.Z * m_resolution * m_resolution)] = m_values[k + (j * m_resolution) + (i * m_resolution * m_resolution)];
@@ -493,7 +493,7 @@ namespace Game
 					for (int k = 0; k < m_resolution; k++)
 					{
 						Vector3 vector = MirrorPoint(new Vector3(k, j, i) - new Vector3((m_resolution / 2f) - 0.5f), axis) + new Vector3((m_resolution / 2f) - 0.5f);
-						var point = new Point3((int)MathUtils.Round(vector.X), (int)MathUtils.Round(vector.Y), (int)MathUtils.Round(vector.Z));
+						var point = new Point3((int)MathF.Round(vector.X), (int)MathF.Round(vector.Y), (int)MathF.Round(vector.Z));
 						if (point.X >= 0 && point.X < m_resolution && point.Y >= 0 && point.Y < m_resolution && point.Z >= 0 && point.Z < m_resolution)
 						{
 							array[point.X + (point.Y * m_resolution) + (point.Z * m_resolution * m_resolution)] = m_values[k + (j * m_resolution) + (i * m_resolution * m_resolution)];
@@ -736,7 +736,7 @@ namespace Game
 			}
 			num2 /= Resolution * Resolution;
 			float num3 = 1.5f;
-			m_shadowStrengthFactor = (int)MathUtils.Clamp(MathUtils.Round(num2 * 3f * num3), 0f, 3f);
+			m_shadowStrengthFactor = (int)MathUtils.Clamp(MathF.Round(num2 * 3f * num3), 0f, 3f);
 		}
 
 		public void CreateGeometry()
@@ -1071,9 +1071,9 @@ namespace Game
 							BoundingBox boundingBox2 = list[l];
 							Vector3 vector = boundingBox2.Size();
 							Vector3 vector2 = boundingBox2.Center() - boundingBox.Center();
-							vector2.X = MathUtils.Max(MathUtils.Abs(vector2.X) - (vector.X / 2f), 0f);
-							vector2.Y = MathUtils.Max(MathUtils.Abs(vector2.Y) - (vector.Y / 2f), 0f);
-							vector2.Z = MathUtils.Max(MathUtils.Abs(vector2.Z) - (vector.Z / 2f), 0f);
+							vector2.X = MathUtils.Max(MathF.Abs(vector2.X) - (vector.X / 2f), 0f);
+							vector2.Y = MathUtils.Max(MathF.Abs(vector2.Y) - (vector.Y / 2f), 0f);
+							vector2.Z = MathUtils.Max(MathF.Abs(vector2.Z) - (vector.Z / 2f), 0f);
 							if (vector2.Length() < 0.15f)
 							{
 								num2 = l;

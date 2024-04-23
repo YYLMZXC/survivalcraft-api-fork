@@ -45,7 +45,7 @@ namespace Game
 					{
 						for (int j = -1; j <= 1; j++)
 						{
-							if (MathUtils.Abs(i) + MathUtils.Abs(j) <= 1 && SubsystemTerrain.Terrain.GetCellContents(trapValue.Key.X + i, trapValue.Key.Y, trapValue.Key.Z + j) == 87)
+							if (MathF.Abs(i) + MathF.Abs(j) <= 1 && SubsystemTerrain.Terrain.GetCellContents(trapValue.Key.X + i, trapValue.Key.Y, trapValue.Key.Z + j) == 87)
 							{
 								SubsystemTerrain.DestroyCell(0, trapValue.Key.X + i, trapValue.Key.Y, trapValue.Key.Z + j, 0, noDrop: false, noParticleSystem: false);
 							}

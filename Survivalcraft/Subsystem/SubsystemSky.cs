@@ -336,7 +336,7 @@ namespace Game
 					m_viewFogRange.Y = VisibilityRange * num7;
 					//在正常情况下（空气中）视图雾
 					m_viewFogColor = CalculateSkyColor(new Vector3(camera.ViewDirection.X, 0f, camera.ViewDirection.Z), m_subsystemTimeOfDay.TimeOfDay, m_subsystemWeather.GlobalPrecipitationIntensity, seasonalTemperature);
-					VisibilityRangeYMultiplier = MathUtils.Lerp(VisibilityRange / num4, VisibilityRange / num5, MathUtils.Pow(m_subsystemWeather.GlobalPrecipitationIntensity, 4f));
+					VisibilityRangeYMultiplier = MathUtils.Lerp(VisibilityRange / num4, VisibilityRange / num5, MathF.Pow(m_subsystemWeather.GlobalPrecipitationIntensity, 4f));
 					m_viewIsSkyVisible = true;
 				}
 				if (!FogEnabled)
@@ -459,7 +459,7 @@ namespace Game
 			float globalPrecipitationIntensity = m_subsystemWeather.GlobalPrecipitationIntensity;
 			float timeOfDay = m_subsystemTimeOfDay.TimeOfDay;
 			int seasonalTemperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z);
-			if (!value.LastUpdateTimeOfDay.HasValue || MathUtils.Abs(timeOfDay - value.LastUpdateTimeOfDay.Value) > 0.001f || !value.LastUpdatePrecipitationIntensity.HasValue || MathUtils.Abs(globalPrecipitationIntensity - value.LastUpdatePrecipitationIntensity.Value) > 0.02f || ((globalPrecipitationIntensity == 0f || globalPrecipitationIntensity == 1f) && value.LastUpdatePrecipitationIntensity.Value != globalPrecipitationIntensity) || m_lightningStrikeBrightness != value.LastUpdateLightningStrikeBrightness || !value.LastUpdateTemperature.HasValue || seasonalTemperature != value.LastUpdateTemperature)
+			if (!value.LastUpdateTimeOfDay.HasValue || MathF.Abs(timeOfDay - value.LastUpdateTimeOfDay.Value) > 0.001f || !value.LastUpdatePrecipitationIntensity.HasValue || MathF.Abs(globalPrecipitationIntensity - value.LastUpdatePrecipitationIntensity.Value) > 0.02f || ((globalPrecipitationIntensity == 0f || globalPrecipitationIntensity == 1f) && value.LastUpdatePrecipitationIntensity.Value != globalPrecipitationIntensity) || m_lightningStrikeBrightness != value.LastUpdateLightningStrikeBrightness || !value.LastUpdateTemperature.HasValue || seasonalTemperature != value.LastUpdateTemperature)
 			{
 				value.LastUpdateTimeOfDay = timeOfDay;
 				value.LastUpdatePrecipitationIntensity = globalPrecipitationIntensity;
@@ -568,7 +568,7 @@ namespace Game
 					num2 -= num4;
 				}
 			}
-			float num9 = MathUtils.Lerp(0.3f, 0.75f, (0.5f * (float)MathUtils.Sin(MathUtils.Remainder(1.0 * m_subsystemTime.GameTime, 6.2831854820251465))) + 0.5f);
+			float num9 = MathUtils.Lerp(0.3f, 0.75f, (0.5f * (float)Math.Sin(MathUtils.Remainder(1.0 * m_subsystemTime.GameTime, 6.2831854820251465))) + 0.5f);
 			m_lightningStrikeBrightness -= m_subsystemTime.GameTimeDelta / num9;
 			if (m_lightningStrikeBrightness <= 0f)
 			{
@@ -606,9 +606,9 @@ namespace Game
 				{
 					int num2 = j - 3;
 					int num3 = i - 3;
-					int num4 = MathUtils.Max(MathUtils.Abs(num2), MathUtils.Abs(num3));
+					int num4 = MathUtils.Max(Math.Abs(num2), Math.Abs(num3));
 					float num5 = m_cloudsLayerRadii[num4];
-					float num6 = (num4 > 0) ? (num5 / MathUtils.Sqrt((num2 * num2) + (num3 * num3))) : 0f;
+					float num6 = (num4 > 0) ? (num5 / MathF.Sqrt((num2 * num2) + (num3 * num3))) : 0f;
 					float num7 = (float)num2 * num6;
 					float num8 = (float)num3 * num6;
 					float y = MathUtils.Lerp(600f, 60f, num5 * num5);
@@ -651,8 +651,8 @@ namespace Game
 			if (color.A > 0)
 			{
 				Vector3 vector = default(Vector3);
-				vector.X = 0f - MathUtils.Sin(angle);
-				vector.Y = 0f - MathUtils.Cos(angle);
+				vector.X = 0f - MathF.Sin(angle);
+				vector.Y = 0f - MathF.Cos(angle);
 				vector.Z = 0f;
 				Vector3 vector2 = vector;
 				Vector3 unitZ = Vector3.UnitZ;
@@ -671,11 +671,11 @@ namespace Game
 			SkyLightIntensity = CalculateLightIntensity(m_subsystemTimeOfDay.TimeOfDay);
 			if (MoonPhase == 4)
 			{
-				SkyLightValue = m_lightValuesMoonless[(int)MathUtils.Round(MathUtils.Lerp(0f, 5f, SkyLightIntensity))];
+				SkyLightValue = m_lightValuesMoonless[(int)MathF.Round(MathUtils.Lerp(0f, 5f, SkyLightIntensity))];
 			}
 			else
 			{
-				SkyLightValue = m_lightValuesNormal[(int)MathUtils.Round(MathUtils.Lerp(0f, 5f, SkyLightIntensity))];
+				SkyLightValue = m_lightValuesNormal[(int)MathF.Round(MathUtils.Lerp(0f, 5f, SkyLightIntensity))];
 			}
 		}
 
@@ -736,10 +736,10 @@ namespace Game
 				{
 					int num = j + (i * 10);
 					float x2 = (float)Math.PI * 2f * (float)j / 10f;
-					float num2 = 1800f * MathUtils.Cos(x);
-					skyDome.Vertices[num].Position.X = num2 * MathUtils.Sin(x2);
-					skyDome.Vertices[num].Position.Z = num2 * MathUtils.Cos(x2);
-					skyDome.Vertices[num].Position.Y = (1800f * MathUtils.Sin(x)) - ((i == 0) ? 450f : 0f);
+					float num2 = 1800f * MathF.Cos(x);
+					skyDome.Vertices[num].Position.X = num2 * MathF.Sin(x2);
+					skyDome.Vertices[num].Position.Z = num2 * MathF.Cos(x2);
+					skyDome.Vertices[num].Position.Y = (1800f * MathF.Sin(x)) - ((i == 0) ? 450f : 0f);
 					skyDome.Vertices[num].Color = CalculateSkyColor(skyDome.Vertices[num].Position, timeOfDay, precipitationIntensity, temperature);
 				}
 			}
@@ -838,12 +838,12 @@ namespace Game
 
 		public static float CalculateDawnGlowIntensity(float timeOfDay)
 		{
-			return MathUtils.Max(1f - (MathUtils.Abs(timeOfDay - 0.25f) / (71f / (226f * (float)Math.PI)) * 2f), 0f);
+			return MathUtils.Max(1f - (MathF.Abs(timeOfDay - 0.25f) / (71f / (226f * (float)Math.PI)) * 2f), 0f);
 		}
 
 		public static float CalculateDuskGlowIntensity(float timeOfDay)
 		{
-			return MathUtils.Max(1f - (MathUtils.Abs(timeOfDay - 0.75f) / 0.100000024f * 2f), 0f);
+			return MathUtils.Max(1f - (MathF.Abs(timeOfDay - 0.75f) / 0.100000024f * 2f), 0f);
 		}
 	}
 }

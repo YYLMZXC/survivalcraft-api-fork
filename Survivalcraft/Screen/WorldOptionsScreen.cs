@@ -385,7 +385,7 @@ namespace Game
 			int num = 0;
 			for (int i = 0; i < list.Count; i++)
 			{
-				if (MathUtils.Abs(list[i] - v) < MathUtils.Abs(list[num] - v))
+				if (MathF.Abs(list[i] - v) < MathF.Abs(list[num] - v))
 				{
 					num = i;
 				}

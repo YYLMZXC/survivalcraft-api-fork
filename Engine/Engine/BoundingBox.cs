@@ -28,12 +28,12 @@ namespace Engine
 			Max = new Vector3(float.MinValue);
 			foreach (Vector3 point in points)
 			{
-				Min.X = MathUtils.Min(Min.X, point.X);
-				Min.Y = MathUtils.Min(Min.Y, point.Y);
-				Min.Z = MathUtils.Min(Min.Z, point.Z);
-				Max.X = MathUtils.Max(Max.X, point.X);
-				Max.Y = MathUtils.Max(Max.Y, point.Y);
-				Max.Z = MathUtils.Max(Max.Z, point.Z);
+				Min.X = MathF.Min(Min.X, point.X);
+				Min.Y = MathF.Min(Min.Y, point.Y);
+				Min.Z = MathF.Min(Min.Z, point.Z);
+				Max.X = MathF.Max(Max.X, point.X);
+				Max.Y = MathF.Max(Max.Y, point.Y);
+				Max.Z = MathF.Max(Max.Z, point.Z);
 			}
 			if (Min.X == float.MaxValue)
 			{
@@ -176,7 +176,7 @@ namespace Engine
 			float num = MathUtils.Max(b.Min.X - p.X, 0f, p.X - b.Max.X);
 			float num2 = MathUtils.Max(b.Min.Y - p.Y, 0f, p.Y - b.Max.Y);
 			float num3 = MathUtils.Max(b.Min.Z - p.Z, 0f, p.Z - b.Max.Z);
-			return MathUtils.Sqrt((num * num) + (num2 * num2) + (num3 * num3));
+			return MathF.Sqrt((num * num) + (num2 * num2) + (num3 * num3));
 		}
 
 		public static BoundingBox Transform(BoundingBox b, Matrix m)

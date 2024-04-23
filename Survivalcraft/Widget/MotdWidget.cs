@@ -94,7 +94,7 @@ namespace Game
 				}
 				float num2 = (float)(realTime - m_lastLineChangeTime);
 				float num3 = (float)(m_lastLineChangeTime + m_lines[m_currentLineIndex].Time - 0.33000001311302185 - realTime);
-				SetWidgetPosition(position: new Vector2((!(num2 < num3)) ? (ActualSize.X * (1f - MathUtils.PowSign(MathUtils.Sin(MathUtils.Saturate(1.5f * num3) * (float)Math.PI / 2f), 0.33f))) : (ActualSize.X * (MathUtils.PowSign(MathUtils.Sin(MathUtils.Saturate(1.5f * num2) * (float)Math.PI / 2f), 0.33f) - 1f)), 0f), widget: m_containerWidget);
+				SetWidgetPosition(position: new Vector2((!(num2 < num3)) ? (ActualSize.X * (1f - MathUtils.PowSign(MathF.Sin(MathUtils.Saturate(1.5f * num3) * (float)Math.PI / 2f), 0.33f))) : (ActualSize.X * (MathUtils.PowSign(MathF.Sin(MathUtils.Saturate(1.5f * num2) * (float)Math.PI / 2f), 0.33f) - 1f)), 0f), widget: m_containerWidget);
 				m_containerWidget.Size = ActualSize;
 			}
 			else

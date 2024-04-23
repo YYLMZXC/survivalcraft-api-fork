@@ -87,7 +87,7 @@ namespace Game
 				MovementAnimationPhase += num * dt * m_walkAnimationSpeed;
 				m_footstepsPhase += 1.25f * m_walkAnimationSpeed * num * dt;
 			}
-			else if (MathUtils.Abs(num) > 0.2f)
+			else if (MathF.Abs(num) > 0.2f)
 			{
 				m_gait = Gait.Walk;
 				MovementAnimationPhase += num * dt * m_walkAnimationSpeed;
@@ -102,15 +102,15 @@ namespace Game
 			float num2 = 0f;
 			if (m_gait == Gait.Canter)
 			{
-				num2 = (0f - m_walkBobHeight) * 1.5f * MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase);
+				num2 = (0f - m_walkBobHeight) * 1.5f * MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase);
 			}
 			else if (m_gait == Gait.Trot)
 			{
-				num2 = m_walkBobHeight * 1.5f * MathUtils.Sqr(MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase));
+				num2 = m_walkBobHeight * 1.5f * MathUtils.Sqr(MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase));
 			}
 			else if (m_gait == Gait.Walk)
 			{
-				num2 = (0f - m_walkBobHeight) * MathUtils.Sqr(MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase));
+				num2 = (0f - m_walkBobHeight) * MathUtils.Sqr(MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase));
 			}
 			float num3 = MathUtils.Min(12f * m_subsystemTime.GameTimeDelta, 1f);
 			Bob += num3 * (num2 - Bob);
@@ -194,39 +194,39 @@ namespace Game
 				{
 					if (m_gait == Gait.Canter)
 					{
-						float num6 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0f));
-						float num7 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.25f));
-						float num8 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.15f));
-						float num9 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.4f));
+						float num6 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0f));
+						float num7 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.25f));
+						float num8 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.15f));
+						float num9 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.4f));
 						num = m_walkFrontLegsAngle * m_canterLegsAngleFactor * num6;
 						num2 = m_walkFrontLegsAngle * m_canterLegsAngleFactor * num7;
 						num3 = m_walkHindLegsAngle * m_canterLegsAngleFactor * num8;
 						num4 = m_walkHindLegsAngle * m_canterLegsAngleFactor * num9;
-						num5 = MathUtils.DegToRad(8f) * MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase);
+						num5 = MathUtils.DegToRad(8f) * MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase);
 					}
 					else if (m_gait == Gait.Trot)
 					{
-						float num10 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0f));
-						float num11 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.5f));
-						float num12 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.5f));
-						float num13 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0f));
+						float num10 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0f));
+						float num11 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.5f));
+						float num12 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.5f));
+						float num13 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0f));
 						num = m_walkFrontLegsAngle * num10;
 						num2 = m_walkFrontLegsAngle * num11;
 						num3 = m_walkHindLegsAngle * num12;
 						num4 = m_walkHindLegsAngle * num13;
-						num5 = MathUtils.DegToRad(3f) * MathUtils.Sin((float)Math.PI * 4f * MovementAnimationPhase);
+						num5 = MathUtils.DegToRad(3f) * MathF.Sin((float)Math.PI * 4f * MovementAnimationPhase);
 					}
 					else
 					{
-						float num14 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0f));
-						float num15 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.5f));
-						float num16 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.25f));
-						float num17 = MathUtils.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.75f));
+						float num14 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0f));
+						float num15 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.5f));
+						float num16 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.25f));
+						float num17 = MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + 0.75f));
 						num = m_walkFrontLegsAngle * num14;
 						num2 = m_walkFrontLegsAngle * num15;
 						num3 = m_walkHindLegsAngle * num16;
 						num4 = m_walkHindLegsAngle * num17;
-						num5 = MathUtils.DegToRad(3f) * MathUtils.Sin((float)Math.PI * 4f * MovementAnimationPhase);
+						num5 = MathUtils.DegToRad(3f) * MathF.Sin((float)Math.PI * 4f * MovementAnimationPhase);
 					}
 				}
 				float num18 = MathUtils.Min(12f * m_subsystemTime.GameTimeDelta, 1f);
@@ -251,13 +251,13 @@ namespace Game
 					vector2 = Vector2.Lerp(v2: new Vector2(0f, y), v1: vector2, f: m_feedFactor);
 					if (m_moveLegWhenFeeding)
 					{
-						float x = MathUtils.DegToRad(20f) + (MathUtils.PowSign(SimplexNoise.OctavedNoise((float)m_subsystemTime.GameTime, 1f, 1, 1f, 1f) - 0.5f, 0.33f) / 0.5f * MathUtils.DegToRad(25f) * (float)MathUtils.Sin(17.0 * m_subsystemTime.GameTime));
+						float x = MathUtils.DegToRad(20f) + (MathUtils.PowSign(SimplexNoise.OctavedNoise((float)m_subsystemTime.GameTime, 1f, 1, 1f, 1f) - 0.5f, 0.33f) / 0.5f * MathUtils.DegToRad(25f) * (float)Math.Sin(17.0 * m_subsystemTime.GameTime));
 						num2 = MathUtils.Lerp(num2, x, m_feedFactor);
 					}
 				}
 				if (m_buttFactor != 0f)
 				{
-					float y2 = (0f - MathUtils.DegToRad(40f)) * MathUtils.Sin((float)Math.PI * 2f * MathUtils.Sigmoid(m_buttPhase, 4f));
+					float y2 = (0f - MathUtils.DegToRad(40f)) * MathF.Sin((float)Math.PI * 2f * MathUtils.Sigmoid(m_buttPhase, 4f));
 					vector2 = Vector2.Lerp(v2: new Vector2(0f, y2), v1: vector2, f: m_buttFactor);
 				}
 				SetBoneTransform(m_bodyBone.Index, Matrix.CreateRotationY(vector.X) * Matrix.CreateTranslation(position.X, position.Y + Bob, position.Z));

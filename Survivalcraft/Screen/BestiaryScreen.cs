@@ -136,7 +136,7 @@ namespace Game
 			modelWidget.Model.CopyAbsoluteBoneTransformsTo(absoluteTransforms);
 			BoundingBox boundingBox = modelWidget.Model.CalculateAbsoluteBoundingBox(absoluteTransforms);
 			float x = MathUtils.Max(boundingBox.Size().X, 1.4f * boundingBox.Size().Y, boundingBox.Size().Z);
-			modelWidget.ViewPosition = new Vector3(boundingBox.Center().X, 1.5f, boundingBox.Center().Z) + (2.6f * MathUtils.Pow(x, 0.75f) * offset);
+			modelWidget.ViewPosition = new Vector3(boundingBox.Center().X, 1.5f, boundingBox.Center().Z) + (2.6f * MathF.Pow(x, 0.75f) * offset);
 			modelWidget.ViewTarget = boundingBox.Center();
 			modelWidget.ViewFov = 0.3f;
 			modelWidget.AutoRotationVector = autoRotate ? new Vector3(0f, MathUtils.Clamp(1.7f / boundingBox.Size().Length(), 0.25f, 1.4f), 0f) : Vector3.Zero;

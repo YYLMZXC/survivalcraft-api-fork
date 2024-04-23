@@ -82,13 +82,13 @@ namespace Engine
 
 		public static Vector2 CreateFromAngle(float angle)
 		{
-			float y = MathUtils.Cos(angle);
-			return new Vector2(0f - MathUtils.Sin(angle), y);
+			float y = MathF.Cos(angle);
+			return new Vector2(0f - MathF.Sin(angle), y);
 		}
 
 		public static float Distance(Vector2 v1, Vector2 v2)
 		{
-			return MathUtils.Sqrt(DistanceSquared(v1, v2));
+			return MathF.Sqrt(DistanceSquared(v1, v2));
 		}
 
 		public static float DistanceSquared(Vector2 v1, Vector2 v2)
@@ -113,14 +113,14 @@ namespace Engine
 
 		public static Vector2 Rotate(Vector2 v, float angle)
 		{
-			float num = MathUtils.Cos(angle);
-			float num2 = MathUtils.Sin(angle);
+			float num = MathF.Cos(angle);
+			float num2 = MathF.Sin(angle);
 			return new Vector2((num * v.X) + (num2 * v.Y), ((0f - num2) * v.X) + (num * v.Y));
 		}
 
 		public float Length()
 		{
-			return MathUtils.Sqrt((X * X) + (Y * Y));
+			return MathF.Sqrt((X * X) + (Y * Y));
 		}
 
 		public float LengthSquared()
@@ -140,7 +140,7 @@ namespace Engine
 
 		public static Vector2 Round(Vector2 v)
 		{
-			return new Vector2(MathUtils.Round(v.X), MathUtils.Round(v.Y));
+			return new Vector2(MathF.Round(v.X), MathF.Round(v.Y));
 		}
 
 		public static Vector2 Min(Vector2 v, float f)
@@ -198,7 +198,7 @@ namespace Engine
 			float num = v.LengthSquared();
 			if (num > maxLength * maxLength)
 			{
-				return v * (maxLength / MathUtils.Sqrt(num));
+				return v * (maxLength / MathF.Sqrt(num));
 			}
 			return v;
 		}

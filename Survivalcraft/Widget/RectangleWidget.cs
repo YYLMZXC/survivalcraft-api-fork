@@ -205,7 +205,7 @@ namespace Game
 				FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(1, depthStencilState);
 				var vector = Vector2.Normalize(GlobalTransform.Right.XY);
 				Vector2 v5 = -Vector2.Normalize(GlobalTransform.Up.XY);
-				int num = (int)MathUtils.Max(MathUtils.Round(OutlineThickness * GlobalTransform.Right.Length()), 1f);
+				int num = (int)MathUtils.Max(MathF.Round(OutlineThickness * GlobalTransform.Right.Length()), 1f);
 				for (int i = 0; i < num; i++)
 				{
 					flatBatch2D.QueueLine(result, result2, Depth, color2);

@@ -263,7 +263,7 @@ namespace Game
 			Vector3 vector = new Vector3(x1, y1, z1) + new Vector3(0.5f);
 			Vector3 vector2 = new Vector3(x2, y2, z2) + new Vector3(0.5f);
 			Vector3 vector3 = 0.33f * Vector3.Normalize(vector2 - vector);
-			int num = (int)MathUtils.Round(3f * Vector3.Distance(vector, vector2));
+			int num = (int)MathF.Round(3f * Vector3.Distance(vector, vector2));
 			Vector3 vector4 = vector;
 			for (int i = 0; i < num; i++)
 			{

@@ -344,9 +344,9 @@ namespace Game
 			bool flag = ModalPanelWidget != null && (m_modalPanelAnimationData == null || m_modalPanelAnimationData.NewWidget != null);
 			float num2 = (!(m_componentPlayer.ComponentInput.IsControlledByTouch | flag)) ? 1 : 0;
 			float x = num2 - m_sidePanelsFactor;
-			if (MathUtils.Abs(x) > 0.01f)
+			if (MathF.Abs(x) > 0.01f)
 			{
-				m_sidePanelsFactor += MathUtils.Clamp(12f * MathUtils.PowSign(x, 0.75f) * num, 0f - MathUtils.Abs(x), MathUtils.Abs(x));
+				m_sidePanelsFactor += MathUtils.Clamp(12f * MathUtils.PowSign(x, 0.75f) * num, 0f - MathF.Abs(x), MathF.Abs(x));
 			}
 			else
 			{
@@ -362,8 +362,8 @@ namespace Game
 			if (m_modalPanelAnimationData.Factor < 1f)
 			{
 				float factor = m_modalPanelAnimationData.Factor;
-				float num = 0.5f + (0.5f * MathUtils.Pow(1f - factor, 0.1f));
-				float num2 = 0.5f + (0.5f * MathUtils.Pow(factor, 0.1f));
+				float num = 0.5f + (0.5f * MathF.Pow(1f - factor, 0.1f));
+				float num2 = 0.5f + (0.5f * MathF.Pow(factor, 0.1f));
 				float s = 1f - factor;
 				float s2 = factor;
 				if (m_modalPanelAnimationData.OldWidget != null)

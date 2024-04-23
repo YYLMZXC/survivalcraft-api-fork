@@ -203,9 +203,9 @@ namespace Engine
 			float num = (!(M11 * M12 * M13 * M14 < 0f)) ? 1 : (-1);
 			float num2 = (!(M21 * M22 * M23 * M24 < 0f)) ? 1 : (-1);
 			float num3 = (!(M31 * M32 * M33 * M34 < 0f)) ? 1 : (-1);
-			scale.X = num * MathUtils.Sqrt((M11 * M11) + (M12 * M12) + (M13 * M13));
-			scale.Y = num2 * MathUtils.Sqrt((M21 * M21) + (M22 * M22) + (M23 * M23));
-			scale.Z = num3 * MathUtils.Sqrt((M31 * M31) + (M32 * M32) + (M33 * M33));
+			scale.X = num * MathF.Sqrt((M11 * M11) + (M12 * M12) + (M13 * M13));
+			scale.Y = num2 * MathF.Sqrt((M21 * M21) + (M22 * M22) + (M23 * M23));
+			scale.Z = num3 * MathF.Sqrt((M31 * M31) + (M32 * M32) + (M33 * M33));
 			if (scale.X == 0f || scale.Y == 0f || scale.Z == 0f)
 			{
 				rotation = Quaternion.Identity;
@@ -220,8 +220,8 @@ namespace Engine
 			float x = axis.X;
 			float y = axis.Y;
 			float z = axis.Z;
-			float num = MathUtils.Sin(angle);
-			float num2 = MathUtils.Cos(angle);
+			float num = MathF.Sin(angle);
+			float num2 = MathF.Cos(angle);
 			float num3 = x * x;
 			float num4 = y * y;
 			float num5 = z * z;
@@ -337,8 +337,8 @@ namespace Engine
 
 		public static Matrix CreatePerspectiveFieldOfView(float fieldOfViewY, float aspectRatio, float nearPlane, float farPlane)
 		{
-			float num = 1f / MathUtils.Tan(fieldOfViewY * 0.5f);
-			Matrix result = default(Matrix);
+			float num = 1f / MathF.Tan(fieldOfViewY * 0.5f);
+			Matrix result = default;
 			result.M11 = num / aspectRatio;
 			result.M12 = result.M13 = result.M14 = 0f;
 			result.M22 = num;
@@ -370,8 +370,8 @@ namespace Engine
 		public static Matrix CreateRotationX(float radians)
 		{
 			Matrix identity = Identity;
-			float num = MathUtils.Cos(radians);
-			float num2 = MathUtils.Sin(radians);
+			float num = MathF.Cos(radians);
+			float num2 = MathF.Sin(radians);
 			identity.M22 = num;
 			identity.M23 = num2;
 			identity.M32 = 0f - num2;
@@ -382,8 +382,8 @@ namespace Engine
 		public static Matrix CreateRotationY(float radians)
 		{
 			Matrix identity = Identity;
-			float num = MathUtils.Cos(radians);
-			float num2 = MathUtils.Sin(radians);
+			float num = MathF.Cos(radians);
+			float num2 = MathF.Sin(radians);
 			identity.M11 = num;
 			identity.M13 = 0f - num2;
 			identity.M31 = num2;
@@ -394,8 +394,8 @@ namespace Engine
 		public static Matrix CreateRotationZ(float radians)
 		{
 			Matrix identity = Identity;
-			float num = MathUtils.Cos(radians);
-			float num2 = MathUtils.Sin(radians);
+			float num = MathF.Cos(radians);
+			float num2 = MathF.Sin(radians);
 			identity.M11 = num;
 			identity.M12 = num2;
 			identity.M21 = 0f - num2;

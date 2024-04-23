@@ -171,7 +171,7 @@ namespace Game
 					float num = m_walkOrder.Value.LengthSquared();
 					if (num > 1f)
 					{
-						m_walkOrder = m_walkOrder.Value / MathUtils.Sqrt(num);
+						m_walkOrder = m_walkOrder.Value / MathF.Sqrt(num);
 					}
 				}
 			}
@@ -191,7 +191,7 @@ namespace Game
 					float num = m_flyOrder.Value.LengthSquared();
 					if (num > 1f)
 					{
-						m_flyOrder = m_flyOrder.Value / MathUtils.Sqrt(num);
+						m_flyOrder = m_flyOrder.Value / MathF.Sqrt(num);
 					}
 				}
 			}
@@ -211,7 +211,7 @@ namespace Game
 					float num = m_swimOrder.Value.LengthSquared();
 					if (num > 1f)
 					{
-						m_swimOrder = m_swimOrder.Value / MathUtils.Sqrt(num);
+						m_swimOrder = m_swimOrder.Value / MathF.Sqrt(num);
 					}
 				}
 			}
@@ -503,9 +503,9 @@ namespace Game
 				else
 				{
 					Vector2 value = WalkOrder.Value;
-					if (m_walkSpeedWhenTurning > 0f && MathUtils.Abs(TurnOrder.X) > 0.02f)
+					if (m_walkSpeedWhenTurning > 0f && MathF.Abs(TurnOrder.X) > 0.02f)
 					{
-						value.Y = MathUtils.Max(value.Y, MathUtils.Lerp(0f, m_walkSpeedWhenTurning, MathUtils.Saturate(2f * MathUtils.Abs(TurnOrder.X))));
+						value.Y = MathUtils.Max(value.Y, MathUtils.Lerp(0f, m_walkSpeedWhenTurning, MathUtils.Saturate(2f * MathF.Abs(TurnOrder.X))));
 					}
 					float num2 = WalkSpeed;
 					if (m_componentCreature.ComponentBody.ImmersionFactor > 0.2f)
@@ -603,7 +603,7 @@ namespace Game
 					m_swimBurstRemaining -= dt;
 				}
 				velocity += MathUtils.Saturate(num5 * AccelerationFactor * dt) * (v6 - velocity);
-				m_componentCreature.ComponentBody.IsGravityEnabled = MathUtils.Abs(value4.Y) <= 0.07f;
+				m_componentCreature.ComponentBody.IsGravityEnabled = MathF.Abs(value4.Y) <= 0.07f;
 				m_componentCreature.ComponentBody.IsWaterDragEnabled = false;
 				m_componentCreature.ComponentBody.IsGroundDragEnabled = false;
 				m_swimming = true;
@@ -620,7 +620,7 @@ namespace Game
 				m_componentCreature.ComponentCreatureSounds.PlayFootstepSound(2f);
 				m_subsystemNoise.MakeNoise(m_componentCreature.ComponentBody, 0.25f, 10f);
 			}
-			if (MathUtils.Abs(m_componentCreature.ComponentBody.CollisionVelocityChange.Y) > 3f)
+			if (MathF.Abs(m_componentCreature.ComponentBody.CollisionVelocityChange.Y) > 3f)
 			{
 				m_componentCreature.ComponentCreatureSounds.PlayFootstepSound(2f);
 				m_subsystemNoise.MakeNoise(m_componentCreature.ComponentBody, 0.25f, 10f);
