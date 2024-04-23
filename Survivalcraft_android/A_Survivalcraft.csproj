@@ -26,6 +26,11 @@
 	<Compile Include="..\Survivalcraft\Block\AdjustableDelayGateBlock.cs">
       <Link>Block\AdjustableDelayGateBlock.cs</Link>
     </Compile>
+	<Compile Include="..\Survivalcraft\ContentProvider\IExternalContentProvider.cs" Link="ContentProvider\IExternalContentProvider.cs" />
+	<Compile Include="..\Survivalcraft\ContentProvider\TransferShExternalContentProvider.cs" Link="ContentProvider\TransferShExternalContentProvider.cs" />
+	<Compile Include="..\Survivalcraft\Managers\ClipboardManager.cs" Link="Managers\ClipboardManager.cs" />
+	<Compile Include="..\Survivalcraft\Managers\ScreenCaptureManager.cs" Link="Managers\ScreenCaptureManager.cs" />
+	<Compile Include="..\Survivalcraft\Screen\ExternalContentScreen.cs" Link="Screen\ExternalContentScreen.cs" />
     <Compile Include="..\Survivalcraft\Screen\LoadingFailedScreen.cs">
       <Link>Screen\LoadingFailedScreen.cs</Link>
     </Compile>
@@ -1165,9 +1170,6 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Component\ComponentWalkAroundBehavior.cs">
       <Link>Component\ComponentWalkAroundBehavior.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\ContentProvider\SPMBoxExternalContentProvider.cs">
-      <Link>ContentProvider\SPMBoxExternalContentProvider.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Dialog\BuildFurnitureDialog.cs">
       <Link>Dialog\BuildFurnitureDialog.cs</Link>

@@ -73,11 +73,10 @@ namespace Game
 
 		public static void Get(string address, Dictionary<string, string> parameters, Dictionary<string, string> headers, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
-			MemoryStream targetStream = default(MemoryStream);
-			Exception e = default(Exception);
+			MemoryStream targetStream = default;
+			Exception e = default;
 			Task.Run(async delegate
 			{
-				_ = 3;
 				try
 				{
 					progress = progress ?? new CancellableProgress();

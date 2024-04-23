@@ -6,6 +6,10 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
+#if ANDROID
+using Android.Net;
+using System.Text.Json;
+#endif
 using System.Threading.Tasks;
 
 namespace Game
@@ -56,14 +60,19 @@ namespace Game
 				throw new OperationCanceledException("Operation cancelled.");
 			}
 		}
-
+#if !ANDROID
 		[DllImport("wininet.dll")]
 		public extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
+#endif
 		public static bool IsInternetConnectionAvailable()
 		{
 			try
 			{
+#if ANDROID
+				return ((ConnectivityManager)Window.Activity.GetSystemService("connectivity")).ActiveNetworkInfo?.IsConnected ?? false;
+#else
 				return InternetGetConnectedState(out int Desc, 0);
+#endif
 			}
 			catch (Exception e)
 			{
