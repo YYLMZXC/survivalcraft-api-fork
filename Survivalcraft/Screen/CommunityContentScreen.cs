@@ -67,7 +67,7 @@ namespace Game
 
 		public Dictionary<string, IEnumerable<object>> m_itemsCache = [];
 
-		public SPMBoxExternalContentProvider m_provider;
+		public SchubExternalContentProvider m_provider;
 
 		public CommunityContentScreen()
 		{
@@ -133,9 +133,9 @@ namespace Game
 		{
 			foreach (var provider in ExternalContentManager.m_providers)
 			{
-				if (provider is SPMBoxExternalContentProvider)
+				if (provider is SchubExternalContentProvider)
 				{
-					m_provider = (SPMBoxExternalContentProvider)provider;
+					m_provider = (SchubExternalContentProvider)provider;
 					break;
 				}
 			}
@@ -243,7 +243,7 @@ namespace Game
 				DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(GetType().Name, "Filter"), list, 60f, (object item) => GetFilterDisplayName(item), delegate (object item)
 				{
 					m_filter = item;
-					m_isOwn = GetFilterDisplayName(item) == "Ö»¿´×Ô¼º";
+					m_isOwn = GetFilterDisplayName(item) == "åªçœ‹è‡ªå·±";
 					PopulateList(null, true);
 				}));
 			}
@@ -361,11 +361,11 @@ namespace Game
 					DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, e.Message, LanguageControl.Ok, null, null));
 				});
 			}
-			m_action3Button.Text = "Éê¾«";
+			m_action3Button.Text = "ç”³ç²¾";
 			if (m_action3Button.IsClicked)
 			{
-				string msg = "Èç¹ûÄã¾õµÃÄãµÄ×÷Æ·×ã¹»ÓÅĞã£¬\n¿ÉÒÔÉêÇë¼ÓÈë¾«Æ·Çø£¬ÈÃ¸ü¶àÈË¿´µ½¡£\n¼Ó¾«×÷Æ·½«»áÊÇÉçÇøÈÏÖ¤µÄ×÷Æ·£¬ÊÇÓĞ»ú»áÉÏÓÎÏ·¹«¸æÍÆ¹ãµÄ¡£\n\n¾ßÌåÉê¾«·½Ê½\nÇë¼Ó[SCÖĞÎÄÉçÇø´æµµ½»Á÷Èº(745540296)]ÁË½â¡£\nÍ¬Ê±£¬Èç¹ûÄã¶ÔÄ³¸ö×÷Æ·ÓĞÒìÒé£¬\nÒ²¿É¼ÓÈº¾Ù±¨£¬±¾Èº»áÊÜÀí×÷Æ·¹éÊôÎÊÌâ£¬ÊØ»¤Íæ¼ÒµÄÀÍ¶¯³É¹û£¡\n";
-				DialogsManager.ShowDialog(null, new MessageDialog("×÷Æ·ÈçºÎÉê¾«£¿", msg, LanguageControl.Ok, null, null));
+				string msg = "å¦‚æœä½ è§‰å¾—ä½ çš„ä½œå“è¶³å¤Ÿä¼˜ç§€ï¼Œ\nå¯ä»¥ç”³è¯·åŠ å…¥ç²¾å“åŒºï¼Œè®©æ›´å¤šäººçœ‹åˆ°ã€‚\nåŠ ç²¾ä½œå“å°†ä¼šæ˜¯ç¤¾åŒºè®¤è¯çš„ä½œå“ï¼Œæ˜¯æœ‰æœºä¼šä¸Šæ¸¸æˆå…¬å‘Šæ¨å¹¿çš„ã€‚\n\nå…·ä½“ç”³ç²¾æ–¹å¼\nè¯·åŠ [SCä¸­æ–‡ç¤¾åŒºå­˜æ¡£äº¤æµç¾¤(745540296)]äº†è§£ã€‚\nåŒæ—¶ï¼Œå¦‚æœä½ å¯¹æŸä¸ªä½œå“æœ‰å¼‚è®®ï¼Œ\nä¹Ÿå¯åŠ ç¾¤ä¸¾æŠ¥ï¼Œæœ¬ç¾¤ä¼šå—ç†ä½œå“å½’å±é—®é¢˜ï¼Œå®ˆæŠ¤ç©å®¶çš„åŠ³åŠ¨æˆæœï¼\n";
+				DialogsManager.ShowDialog(null, new MessageDialog("ä½œå“å¦‚ä½•ç”³ç²¾ï¼Ÿ", msg, LanguageControl.Ok, null, null));
 			}
 			if (m_searchTypeButton.IsClicked)
 			{
@@ -387,8 +387,8 @@ namespace Game
 				//DialogsManager.ShowDialog(null, new MoreCommunityLinkDialog());
 				if (m_provider.IsLoggedIn)
 				{
-					string info = string.IsNullOrEmpty(SettingsManager.ScpboxUserInfo) ? "ÔİÎŞÓÃ»§ĞÅÏ¢" : SettingsManager.ScpboxUserInfo;
-					DialogsManager.ShowDialog(null, new MessageDialog("ÕËºÅÒÑµÇÂ¼,ÊÇ·ñµÇ³ö?", info, LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
+					string info = string.IsNullOrEmpty(SettingsManager.ScpboxUserInfo) ? "æš‚æ— ç”¨æˆ·ä¿¡æ¯" : SettingsManager.ScpboxUserInfo;
+					DialogsManager.ShowDialog(null, new MessageDialog("è´¦å·å·²ç™»å½•,æ˜¯å¦ç™»å‡º?", info, LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
 					{
 						if (button == MessageDialogButton.Button1)
 						{
@@ -561,13 +561,13 @@ namespace Game
 			switch (order)
 			{
 				case Order.ByRank:
-					return m_isCNLanguageType ? "ÆÀ·Ö×î¸ß" : "ByRank";
+					return m_isCNLanguageType ? "è¯„åˆ†æœ€é«˜" : "ByRank";
 				case Order.ByTime:
-					return m_isCNLanguageType ? "×îĞÂ·¢²¼" : "ByTime";
+					return m_isCNLanguageType ? "æœ€æ–°å‘å¸ƒ" : "ByTime";
 				case Order.ByBoutique:
-					return m_isCNLanguageType ? "¾«Æ·ÍÆ¼ö" : "ByBoutique";
+					return m_isCNLanguageType ? "ç²¾å“æ¨è" : "ByBoutique";
 				case Order.ByHide:
-					return m_isCNLanguageType ? "ÉĞÎ´·¢²¼" : "ByHide";
+					return m_isCNLanguageType ? "å°šæœªå‘å¸ƒ" : "ByHide";
 				default:
 					throw new InvalidOperationException(LanguageControl.Get(typeof(CommunityContentScreen).Name, 13));
 			}
@@ -577,9 +577,9 @@ namespace Game
 		{
 			switch (searchType)
 			{
-				case SearchType.ByName: return m_isCNLanguageType ? "×ÊÔ´Ãû" : "Name";
-				case SearchType.ByAuthor: return m_isCNLanguageType ? "ÓÃ»§Ãû" : "User";
-				case SearchType.ByUserId: return m_isCNLanguageType ? "ÓÃ»§ID" : "UID";
+				case SearchType.ByName: return m_isCNLanguageType ? "èµ„æºå" : "Name";
+				case SearchType.ByAuthor: return m_isCNLanguageType ? "ç”¨æˆ·å" : "User";
+				case SearchType.ByUserId: return m_isCNLanguageType ? "ç”¨æˆ·ID" : "UID";
 				default: return "null";
 			}
 		}
