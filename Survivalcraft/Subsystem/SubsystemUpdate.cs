@@ -135,5 +135,9 @@ namespace Game
 				RemoveUpdateable(item);
 			}
 		}
+
+	}
+	public class SubsystemPostprocessor : Subsystem
+	{
 	}
 }
