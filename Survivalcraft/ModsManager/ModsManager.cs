@@ -18,7 +18,7 @@ using System.Text.Json;
 public static class ModsManager
 {
 	public const string modSuffix = ".scmod";
-	public const string APIVersion = "1.62D";
+	public const string APIVersion = "1.63";
 	public const string SCVersion = "2.3.10.4";
 	//1为api1.33 2为api1.40
 	public const int Apiv = 10;
