@@ -336,7 +336,11 @@ namespace Game
 				{
 					if (!(uri != null) || string.IsNullOrEmpty(uri.Fragment))
 					{
+#if ANDROID
+						goto IL_00a5;
+#else
 						goto IL_00ae;
+#endif
 					}
 					Dictionary<string, string> dictionary = WebManager.UrlParametersFromString(uri.Fragment.TrimStart('#'));
 					if (!dictionary.ContainsKey("access_token"))
@@ -345,12 +349,20 @@ namespace Game
 						{
 							throw new Exception(dictionary["error"]);
 						}
+#if ANDROID
+						goto IL_00a5;
+#else
 						goto IL_00ae;
+#endif
 					}
 					SettingsManager.DropboxAccessToken = dictionary["access_token"];
 					loginProcessData.Succeed(this);
 					goto end_IL_0038;
+#if ANDROID
+				IL_00a5:
+#else
 				IL_00ae:
+#endif
 					throw new Exception("Could not retrieve Dropbox access token.");
 				end_IL_0038:;
 				}

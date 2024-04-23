@@ -1,3 +1,8 @@
+#if ANDROID
+using Android.Content;
+using Android.Graphics;
+using Java.Nio;
+#endif
 using Engine;
 using Engine.Graphics;
 using Engine.Media;
@@ -46,7 +51,7 @@ namespace Game
 							break;
 					}
 					DateTime now = DateTime.Now;
-					Capture(num, height, $"Survivalcraft {now.Year:D4}-{now.Month:D2}-{now.Day:D2} {now.Hour:D2}-{now.Minute:D2}-{now.Second:D2}.jpg");
+					Capture(num, height, $"Survivalcraft {now.Year:D4}-{now.Month:D2}-{now.Day:D2} {now.Hour:D2}-{now.Minute:D2}-{now.Second:D2}.png");
 					m_successHandler?.Invoke();
 					GC.Collect();
 				}
@@ -116,12 +121,24 @@ namespace Game
 						}
 						SettingsManager.ResolutionMode = resolutionMode;
 					}
+#if !ANDROID
 					if (!Storage.DirectoryExists(ScreenshotDir))
 						Storage.CreateDirectory(ScreenshotDir);
 					using (Stream stream = Storage.OpenFile(Storage.CombinePaths(ScreenshotDir, filename), OpenFileMode.CreateOrOpen))
 					{
 						Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), stream, ImageFileFormat.Jpg, saveAlpha: false);
 					}
+#else
+					string path = Storage.CombinePaths(ModsManager.ScreenCapturePath, filename);
+					if (!Storage.DirectoryExists(ModsManager.ScreenCapturePath)) Storage.CreateDirectory(ModsManager.ScreenCapturePath);
+					using (Stream stream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
+					{
+                        Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), stream, ImageFileFormat.Png, saveAlpha: false);
+                    }
+					Intent intent = new("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+					intent.SetData(Android.Net.Uri.FromFile(new Java.IO.File(Storage.GetSystemPath(path))));
+					Window.Activity.SendBroadcast(intent);
+#endif
 				}
 				ModsManager.HookAction("OnCapture", loader => { loader.OnCapture(); return false; });
 			}
