@@ -27,6 +27,7 @@
       <Link>Block\AdjustableDelayGateBlock.cs</Link>
     </Compile>
 	<Compile Include="..\Survivalcraft\ContentProvider\IExternalContentProvider.cs" Link="ContentProvider\IExternalContentProvider.cs" />
+	<Compile Include="..\Survivalcraft\ContentProvider\SchubExternalContentProvider.cs" Link="ContentProvider\SchubExternalContentProvider.cs" />
 	<Compile Include="..\Survivalcraft\ContentProvider\TransferShExternalContentProvider.cs" Link="ContentProvider\TransferShExternalContentProvider.cs" />
 	<Compile Include="..\Survivalcraft\Managers\ClipboardManager.cs" Link="Managers\ClipboardManager.cs" />
 	<Compile Include="..\Survivalcraft\Managers\ScreenCaptureManager.cs" Link="Managers\ScreenCaptureManager.cs" />

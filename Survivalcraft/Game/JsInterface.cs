@@ -7,6 +7,7 @@ using Jint.Native;
 using Jint.Native.Function;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using JsEngine = Jint.Engine;
 
@@ -68,7 +69,18 @@ namespace Game
 				});
 				cfg.DebugMode(true);
 			});
-			string initCode = Storage.ReadAllText("app:init.js");
+			string initCode = null;
+			try
+			{
+				initCode = Storage.ReadAllText("app:init.js");
+			}
+			catch
+			{
+				Log.Warning("Init.js未加载");
+				//Assembly assembly = Assembly.GetExecutingAssembly();
+				//Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("init.js");
+				//initCode = new StreamReader(manifestResourceStream).ReadToEnd();
+			}
 			Execute(initCode);
 		}
 		public static void RegisterEvent()

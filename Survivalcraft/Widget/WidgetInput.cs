@@ -47,7 +47,7 @@ namespace Game
 
 		public bool m_padDragInProgress;
 
-		public bool m_isPadCursorVisible = true;
+		public bool m_isPadCursorVisible = false;
 
 		public Vector2? m_vrDownPoint;
 
