@@ -25,7 +25,7 @@
     <DefineConstants>desktop</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
-    <DefineConstants>android</DefineConstants>
+	  <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="reference\NAudio.Flac\**" />
@@ -52,7 +52,7 @@
 	<PackageReference Include="NLayer.NAudioSupport" Version="1.4.0" /><!--MP3 support-->
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Condition="'$(TargetFramework)' == 'net8.0-windows'" Include="OpenTK" Version="3.0.0-pre" />
+	  <PackageReference Condition="'$(TargetFramework)' == 'net8.0-windows'" Include="OpenTK" Version="3.3.3" />
     <Reference Include="OpenTK-1.0.2moded" Condition="'$(TargetFramework)' == 'net8.0-android'">
       <HintPath>reference\OpenTK-1.0.2moded.dll</HintPath>
       <Private>True</Private>
