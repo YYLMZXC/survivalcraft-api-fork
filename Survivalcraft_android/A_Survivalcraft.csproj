@@ -2893,5 +2893,6 @@
     <RootNamespace>Game</RootNamespace>
     <Version>2.3.10.4</Version>
     <AssemblyName>Survivalcraft</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 </Project>

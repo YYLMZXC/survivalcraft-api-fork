@@ -4,8 +4,6 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
-using Engine;
-using Game;
 using Environment = Android.OS.Environment;
 using Permission = Android.Content.PM.Permission;
 namespace SC4Android

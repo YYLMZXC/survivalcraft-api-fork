@@ -64,4 +64,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Survivalcraft_android\A_Survivalcraft.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Using Include="Engine" />
+    <Using Include="Game" />
+  </ItemGroup>
 </Project>
