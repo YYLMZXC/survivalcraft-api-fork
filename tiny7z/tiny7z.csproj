@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;DEBUG;DISABLE_TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <DefineConstants>TRACE;DISABLE_TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="LICENSE" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Doc\Understanding7z.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Doc\7zFormat.txt" />
+    <Content Include="Doc\Methods.txt" />
+    <Content Include="ToDo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Common\Converter\DataConverter.cs" />
+    <Compile Remove="Compression\LZMA\Implementation\Core.cs" />
+    <Compile Remove="Compression\PPMd\PpmdDecoderStream.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+  </ItemGroup>
+</Project>

@@ -17,6 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
+    <ProjectReference Include="..\tiny7z\tiny7z.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Jint" Version="3.1.0" />

@@ -1,24 +1,19 @@
-﻿using System;
-using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 using System.Reflection;
-using System.Collections.Generic;
-
 using Engine;
 using Game.IContentReader;
-using System.Linq.Expressions;
+using Tiny7z.Archive;
 
 namespace Game
 {
-	public class SurvivalCraftModEntity : ModEntity
-	{
+    public class SurvivalCraftModEntity : ModEntity
+    {
 
-		public SurvivalCraftModEntity()
-		{
+        public SurvivalCraftModEntity()
+        {
 			var readers = new List<IContentReader.IContentReader>();
-			readers.AddRange(new IContentReader.IContentReader[]
-			{
+			readers.AddRange(
+			[
 				new AssemblyReader(),
 				new BitmapFontReader(),
 				new DaeModelReader(),
@@ -35,34 +30,34 @@ namespace Game
 				new SubtextureReader(),
 				new Texture2DReader(),
 				new XmlReader()
-			});
-			for (int i = 0; i < readers.Count; i++)
-			{
-				ContentManager.ReaderList.Add(readers[i].Type, readers[i]);
-			}
+			]);
+            for (int i = 0; i < readers.Count; i++)
+            {
+                ContentManager.ReaderList.Add(readers[i].Type, readers[i]);
+            }
 			MemoryStream memoryStream = new();
-			string ContentPath = "app:/Content.zip";
+			string ContentPath = "app:/Content.7z";
 			try//检测外置资源是否存在，如果不存在就使用内置资源
 			{
 				Storage.OpenFile(ContentPath, OpenFileMode.Read).CopyTo(memoryStream);
 			}
 			catch (Exception ex) {
 				Assembly assembly = Assembly.GetExecutingAssembly();
-				assembly.GetManifestResourceStream("Game.Content.zip").CopyTo(memoryStream);
+				assembly.GetManifestResourceStream("Game.Content.7z").CopyTo(memoryStream);
 			}
-			memoryStream.Position = 0L;
-			ModArchive = ZipArchive.Open(memoryStream, false);
-			InitResources();
-			LabelWidget.BitmapFont = ContentManager.Get<Engine.Media.BitmapFont>("Fonts/Pericles");
-			LoadingScreen.Info("加载资源:" + modInfo?.Name);
-		}
-		public override void LoadBlocksData()
-		{
-			LoadingScreen.Info("加载方块数据:" + modInfo?.Name);
-			BlocksManager.LoadBlocksData(ContentManager.Get<string>("BlocksData"));
-			ContentManager.Dispose("BlocksData");
-		}
-		public override Assembly[] GetAssemblies()
+            memoryStream.Position = 0L;
+            ModArchive = new SevenZipArchive(memoryStream, FileAccess.Read);
+            InitResources();
+            LabelWidget.BitmapFont = ContentManager.Get<Engine.Media.BitmapFont>("Fonts/Pericles");
+            LoadingScreen.Info("加载资源:" + modInfo?.Name);
+        }
+        public override void LoadBlocksData()
+        {
+            LoadingScreen.Info("加载方块数据:" + modInfo?.Name);
+            BlocksManager.LoadBlocksData(ContentManager.Get<string>("BlocksData"));
+            ContentManager.Dispose("BlocksData");
+        }
+ 		public override Assembly[] GetAssemblies()
 		{
 			return [typeof(BlocksManager).Assembly];
 		}
@@ -97,49 +92,49 @@ namespace Game
 			}
 		}
 		public override void LoadXdb(ref XElement xElement)
-		{
-			LoadingScreen.Info("加载数据库:" + modInfo?.Name);
-			xElement = ContentManager.Get<XElement>("Database");
-			ContentManager.Dispose("Database");
-		}
-		public override void LoadCr(ref XElement xElement)
-		{
-			LoadingScreen.Info("加载合成谱:" + modInfo?.Name);
-			xElement = ContentManager.Get<XElement>("CraftingRecipes");
-			ContentManager.Dispose("CraftingRecipes");
-		}
-		public override void LoadClo(ClothingBlock block, ref XElement xElement)
-		{
-			LoadingScreen.Info("加载衣物数据:" + modInfo?.Name);
-			xElement = ContentManager.Get<XElement>("Clothes");
-			ContentManager.Dispose("Clothes");
-		}
-		public override void SaveSettings(XElement xElement)
-		{
+        {
+            LoadingScreen.Info("加载数据库:" + modInfo?.Name);
+            xElement = ContentManager.Get<XElement>("Database");
+            ContentManager.Dispose("Database");
+        }
+        public override void LoadCr(ref XElement xElement)
+        {
+            LoadingScreen.Info("加载合成谱:" + modInfo?.Name);
+            xElement = ContentManager.Get<XElement>("CraftingRecipes");
+            ContentManager.Dispose("CraftingRecipes");
+        }
+        public override void LoadClo(ClothingBlock block, ref XElement xElement)
+        {
+            LoadingScreen.Info("加载衣物数据:" + modInfo?.Name);
+            xElement = ContentManager.Get<XElement>("Clothes");
+            ContentManager.Dispose("Clothes");
+        }
+        public override void SaveSettings(XElement xElement)
+        {
 
 
-		}
-		public override void LoadSettings(XElement xElement)
-		{
+        }
+        public override void LoadSettings(XElement xElement)
+        {
 
 
 
-		}
-		public override void OnBlocksInitalized()
-		{
-			BlocksManager.AddCategory("Terrain");
-			BlocksManager.AddCategory("Plants");
-			BlocksManager.AddCategory("Construction");
-			BlocksManager.AddCategory("Items");
-			BlocksManager.AddCategory("Tools");
-			BlocksManager.AddCategory("Weapons");
-			BlocksManager.AddCategory("Clothes");
-			BlocksManager.AddCategory("Electrics");
-			BlocksManager.AddCategory("Food");
-			BlocksManager.AddCategory("Spawner Eggs");
-			BlocksManager.AddCategory("Painted");
-			BlocksManager.AddCategory("Dyed");
-			BlocksManager.AddCategory("Fireworks");
-		}
-	}
+        }
+        public override void OnBlocksInitalized()
+        {
+            BlocksManager.AddCategory("Terrain");
+            BlocksManager.AddCategory("Plants");
+            BlocksManager.AddCategory("Construction");
+            BlocksManager.AddCategory("Items");
+            BlocksManager.AddCategory("Tools");
+            BlocksManager.AddCategory("Weapons");
+            BlocksManager.AddCategory("Clothes");
+            BlocksManager.AddCategory("Electrics");
+            BlocksManager.AddCategory("Food");
+            BlocksManager.AddCategory("Spawner Eggs");
+            BlocksManager.AddCategory("Painted");
+            BlocksManager.AddCategory("Dyed");
+            BlocksManager.AddCategory("Fireworks");
+        }
+    }
 }

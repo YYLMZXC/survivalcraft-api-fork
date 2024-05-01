@@ -400,11 +400,18 @@ public static class ModsManager
 			{
 				try
 				{
-					if (ms == modSuffix || ms == ".SCNEXT")
+					if (ms == modSuffix || ms == ".SCNEXT7Z")
 					{
 						Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
-						var modEntity = new ModEntity(ks, Game.ZipArchive.Open(keepOpenStream, true));
-                        if (modEntity.modInfo == null)
+						if(ms == modSuffix)
+						{
+							//var modEntity = new ModEntity(ks, Game.ZipArchive.Open(keepOpenStream, true));
+						}
+						else
+						{
+							var modEntity = new ModEntity(ks, new Tiny7z.Archive.SevenZipArchive(keepOpenStream, FileAccess.Read));
+						}
+						if (modEntity.modInfo == null)
                         {
                             LoadingScreen.Warning($"[{modEntity.ModFilePath}]缺少ModInfo文件，忽略加载");
 							continue;
