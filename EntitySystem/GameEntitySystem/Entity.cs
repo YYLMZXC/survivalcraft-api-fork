@@ -1,9 +1,6 @@
 using Engine;
 using Engine.Serialization;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using TemplatesDatabase;
 
@@ -42,7 +39,7 @@ namespace GameEntitySystem
 
 			private int m_index;
 
-			private T m_current;
+			private T? m_current;
 
 			public T Current => m_current;
 
@@ -63,8 +60,7 @@ namespace GameEntitySystem
 			{
 				while (m_index < m_entity.m_components.Count)
 				{
-					T val = m_entity.m_components[m_index++] as T;
-					if (val != null)
+					if (m_entity.m_components[m_index++] is T val)
 					{
 						m_current = val;
 						return true;
@@ -130,8 +126,7 @@ namespace GameEntitySystem
 					{
 						throw ex.InnerException;
 					}
-					Component component = obj as Component;
-					if (component == null)
+					if (obj is not Component component)
 					{
 						throw new InvalidOperationException($"Type \"{value2}\" cannot be used as a component because it does not inherit from Component class.");
 					}
@@ -163,17 +158,17 @@ namespace GameEntitySystem
 			return null;
 		}
 
-		public T FindComponent<T>() where T : class
+		public T? FindComponent<T>() where T : class
 		{
 			return FindComponent(typeof(T), null, throwOnError: false) as T;
 		}
 
-		public T FindComponent<T>(bool throwOnError) where T : class
+		public T? FindComponent<T>(bool throwOnError) where T : class
 		{
 			return FindComponent(typeof(T), null, throwOnError) as T;
 		}
 
-		public T FindComponent<T>(string name, bool throwOnError) where T : class
+		public T? FindComponent<T>(string name, bool throwOnError) where T : class
 		{
 			return FindComponent(typeof(T), name, throwOnError) as T;
 		}
@@ -193,11 +188,11 @@ namespace GameEntitySystem
 
 		internal List<Entity> InternalGetOwnedEntities()
 		{
-			List<Entity> list = null;
+			List<Entity>? list = null;
 			foreach (Component component in m_components)
 			{
 				IEnumerable<Entity> ownedEntities = component.GetOwnedEntities();
-				list = (list != null) ? list : [];
+				list ??= ([]);
 				list.AddRange(ownedEntities);
 			}
 			return list;

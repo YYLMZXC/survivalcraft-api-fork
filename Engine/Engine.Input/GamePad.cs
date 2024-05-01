@@ -130,8 +130,7 @@ namespace Engine.Input
                 m_states[num].Buttons[13] = axisValue2 > 0.5f;
             }
         }
-#endif
-#if ANDROID
+
         public static int TranslateDeviceId(int deviceId)
         {
             if (m_deviceToIndex.TryGetValue(deviceId, out int value))
@@ -377,7 +376,7 @@ namespace Engine.Input
 
         public static float ApplyDeadZone(float value, float deadZone)
         {
-            return MathUtils.Sign(value) * MathUtils.Max(MathUtils.Abs(value) - deadZone, 0f) / (1f - deadZone);
+            return MathF.Sign(value) * MathF.Max(MathF.Abs(value) - deadZone, 0f) / (1f - deadZone);
         }
     }
 }

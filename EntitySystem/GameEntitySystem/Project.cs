@@ -97,7 +97,7 @@ namespace GameEntitySystem
 
 		}
 
-		public Subsystem FindSubsystem(Type type, string name, bool throwOnError)
+		public Subsystem FindSubsystem(Type type, string? name, bool throwOnError)
 		{
 			foreach (Subsystem subsystem in m_subsystems)
 			{
@@ -117,17 +117,17 @@ namespace GameEntitySystem
 			return null;
 		}
 
-		public T FindSubsystem<T>() where T : class
+		public T? FindSubsystem<T>() where T : class
 		{
 			return FindSubsystem(typeof(T), null, throwOnError: false) as T;
 		}
 
-		public T FindSubsystem<T>(bool throwOnError) where T : class
+		public T? FindSubsystem<T>(bool throwOnError) where T : class
 		{
 			return FindSubsystem(typeof(T), null, throwOnError) as T;
 		}
 
-		public T FindSubsystem<T>(string name, bool throwOnError) where T : class
+		public T? FindSubsystem<T>(string name, bool throwOnError) where T : class
 		{
 			return FindSubsystem(typeof(T), name, throwOnError) as T;
 		}
