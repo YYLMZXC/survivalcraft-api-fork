@@ -326,8 +326,15 @@ namespace Game
 					vector = Vector2.Zero;
 					vector2 = new Vector2(Window.Size);
 				}
-				value.X = MathUtils.Clamp(value.X, vector.X, vector2.X - 1f);
-				value.Y = MathUtils.Clamp(value.Y, vector.Y, vector2.Y - 1f);
+				if(vector2.X!=0 && vector2.Y!=0)
+				{
+					value.X = Math.Clamp(value.X, vector.X, vector2.X - 1f);
+					value.Y = Math.Clamp(value.Y, vector.Y, vector2.Y - 1f);
+				}
+				else
+				{
+					value = (0, 0);
+				}
 				m_padCursorPosition = value;
 			}
 		}
