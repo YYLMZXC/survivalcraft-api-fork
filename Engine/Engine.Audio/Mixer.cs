@@ -2,6 +2,8 @@ using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace Engine.Audio
 {
@@ -31,15 +33,49 @@ namespace Engine.Audio
 		}
 		internal static void Initialize()
 		{
+			
 #if desktop
-			//string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
-			//string fullPath = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-			//string path = Environment.Is64BitProcess ? "OpenAL" : "OpenAL86";
-			//string str = Path.Combine(fullPath,  path);
-			//Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
+			//零次准备，系统安装了openal
+			//一次准备，让opentk加载openal32.dll
+			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
+			string fullPath = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+			string str = Path.Combine(fullPath);
+			Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
+			//二次准备，检测外置文件并主动加载
+			new AudioContext();
+			string ALPath = "app:/openal32.dll";
+			if (Storage.FileExists(ALPath) && CheckALError())//检测外置资源是否存在，如果不存在就使用内置资源
+			{
+				Assembly dllAssembly = Assembly.LoadFile(ALPath);
+			}
+			else
+			{
+				// 提取嵌入的DLL到临时文件夹
+				string tempPath = Path.GetTempFileName();
+				File.Delete(tempPath); // 删除临时文件，确保路径可用
+				Directory.CreateDirectory(tempPath);
+				string dllName = "openal32.dll"; // DLL资源名称
+				string tempDllPath = Path.Combine(tempPath, dllName);
+
+				using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(dllName))
+				using (FileStream fileStream = new(tempDllPath, FileMode.Create))
+				{
+					stream.CopyTo(fileStream);
+				}
+
+				// 加载DLL并调用其中的方法
+				Assembly dllAssembly = Assembly.LoadFile(tempDllPath);
+				// ... 使用反射调用DLL中的方法 ...
+
+				// 清理临时文件
+				Directory.Delete(tempPath, true);
+			}
+#else
+			new AudioContext();
+			CheckALError();
 #endif
-            new AudioContext();
-            CheckALError();
+
+
 		}
 		internal static void Dispose()
 		{

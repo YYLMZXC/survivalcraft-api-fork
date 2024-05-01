@@ -150,42 +150,26 @@ namespace Engine.Input
 
         public static GamePadButton TranslateKey(Keycode keyCode)
         {
-            switch (keyCode)
-            {
-                case Keycode.ButtonA:
-                    return GamePadButton.A;
-                case Keycode.ButtonB:
-                    return GamePadButton.B;
-                case Keycode.ButtonX:
-                    return GamePadButton.X;
-                case Keycode.ButtonY:
-                    return GamePadButton.Y;
-                case Keycode.Back:
-                    return GamePadButton.Back;
-                case Keycode.ButtonL1:
-                    return GamePadButton.LeftShoulder;
-                case Keycode.ButtonR1:
-                    return GamePadButton.RightShoulder;
-                case Keycode.ButtonThumbl:
-                    return GamePadButton.LeftThumb;
-                case Keycode.ButtonThumbr:
-                    return GamePadButton.RightThumb;
-                case Keycode.DpadLeft:
-                    return GamePadButton.DPadLeft;
-                case Keycode.DpadRight:
-                    return GamePadButton.DPadRight;
-                case Keycode.DpadUp:
-                    return GamePadButton.DPadUp;
-                case Keycode.DpadDown:
-                    return GamePadButton.DPadDown;
-                case Keycode.ButtonSelect:
-                    return GamePadButton.Back;
-                case Keycode.ButtonStart:
-                    return GamePadButton.Start;
-                default:
-                    return (GamePadButton)(-1);
-            }
-        }
+			return keyCode switch
+			{
+				Keycode.ButtonA => GamePadButton.A,
+				Keycode.ButtonB => GamePadButton.B,
+				Keycode.ButtonX => GamePadButton.X,
+				Keycode.ButtonY => GamePadButton.Y,
+				Keycode.Back => GamePadButton.Back,
+				Keycode.ButtonL1 => GamePadButton.LeftShoulder,
+				Keycode.ButtonR1 => GamePadButton.RightShoulder,
+				Keycode.ButtonThumbl => GamePadButton.LeftThumb,
+				Keycode.ButtonThumbr => GamePadButton.RightThumb,
+				Keycode.DpadLeft => GamePadButton.DPadLeft,
+				Keycode.DpadRight => GamePadButton.DPadRight,
+				Keycode.DpadUp => GamePadButton.DPadUp,
+				Keycode.DpadDown => GamePadButton.DPadDown,
+				Keycode.ButtonSelect => GamePadButton.Back,
+				Keycode.ButtonStart => GamePadButton.Start,
+				_ => (GamePadButton)(-1),
+			};
+		}
 
         public static void Connect(int deviceId, int index)
         {
