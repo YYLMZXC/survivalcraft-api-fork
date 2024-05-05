@@ -42,14 +42,14 @@ namespace Game
 			}
 			MemoryStream memoryStream = new();
 			string ContentPath = "app:/Content.zip";
-			if(Storage.FileExists(ContentPath))//检测外置资源是否存在，如果不存在就使用内置资源
-			{
-				Storage.OpenFile(ContentPath, OpenFileMode.Read).CopyTo(memoryStream);
-			}
-			else
+			if(!Storage.FileExists(ContentPath))//检测外置资源是否存在，如果不存在就使用内置资源
 			{
 				Assembly assembly = Assembly.GetExecutingAssembly();
 				assembly.GetManifestResourceStream("Game.Content.zip").CopyTo(memoryStream);
+			}
+			else
+			{
+				Storage.OpenFile(ContentPath, OpenFileMode.Read).CopyTo(memoryStream);
 			}
 			memoryStream.Position = 0L;
 			ModArchive = ZipArchive.Open(memoryStream, false);

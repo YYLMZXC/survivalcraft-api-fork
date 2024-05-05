@@ -4,12 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 namespace Game
 {
-    public static class Program
+	public static class Program
     {
-        public static double m_frameBeginTime;
+		public static string fullPath = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+		public static double m_frameBeginTime;
 
         public static double m_cpuEndTime;
 
@@ -58,8 +60,6 @@ namespace Game
                     SystemLanguage = "en-US";
                 }
             }
-
-
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
@@ -74,12 +74,23 @@ namespace Game
                 ExceptionManager.ReportExceptionToUser("Unhandled exception.", e.Exception);
                 e.IsHandled = true;
             };
+            JS检查();
             JsInterface.Initiate();
-            Window.Run(0, 0, WindowMode.Resizable,
-                "生存战争2.3插件版_" + ModsManager.APIVersion);
+            Window.Run(0, 0, WindowMode.Resizable,"生存战争2.3插件版_" + ModsManager.APIVersion);
         }
+	public static void JS检查()
+	{
+		string path = Path.Combine(fullPath, "init.js");
+		if (!File.Exists(path))
+		{
+			using (FileStream destination = new FileStream(path, FileMode.Create))
+			{
+				Assembly.GetExecutingAssembly().GetManifestResourceStream("Game.init.js").CopyTo(destination);
+			}
+		}
+	}
 
-        public static void HandleUriHandler(Uri uri)
+		public static void HandleUriHandler(Uri uri)
         {
             m_urisToHandle.Add(uri);
         }
