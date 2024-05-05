@@ -40,24 +40,28 @@ namespace Engine.Audio
 			//一次准备，让opentk加载openal32.dll
 			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
 			string fullPath = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-			Environment.SetEnvironmentVariable("PATH", fullPath + ";" + environmentVariable, EnvironmentVariableTarget.Process);
+			string str = Path.Combine(fullPath);
+			Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
 			//二次准备，检测外置文件并主动加载
 			string dllName = "openal32.dll"; // DLL资源名称
 			string ALPath = Path.Combine(fullPath,dllName);
 			new AudioContext();
-			if (CheckALError())
+			if (Storage.FileExists(ALPath) && CheckALError())//检测外置资源是否存在，如果不存在就使用内置资源
 			{
-				if (!File.Exists(ALPath))//检测外置资源是否存在，如果不存在就使用内置资源
-				{
-					using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(dllName))
-					using (FileStream fileStream = new(ALPath, FileMode.Create))
-					{
-						stream.CopyTo(fileStream);
-					}
-				}
 				Assembly dllAssembly = Assembly.LoadFile(ALPath);
-				new AudioContext();
 			}
+			else
+			{
+				using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(dllName))
+				using (FileStream fileStream = new(ALPath, FileMode.Create))
+				{
+					stream.CopyTo(fileStream);
+				}
+				// 加载DLL并调用其中的方法
+				Assembly dllAssembly = Assembly.LoadFile(ALPath);
+				// ... 使用反射调用DLL中的方法 ...
+			}
+			new AudioContext();
 #else
 			new AudioContext();
 			CheckALError();
