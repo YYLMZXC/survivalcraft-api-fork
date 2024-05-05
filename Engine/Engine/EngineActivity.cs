@@ -19,9 +19,8 @@ namespace Engine
 
         public event Action<Intent> NewIntent;
 
-        public static string BasePath = "";
-
-        public static string ConfigPath = "";
+        public const string ExtPath = "";
+        public const string DocPath = "config:";
 
         public EngineActivity()
         {

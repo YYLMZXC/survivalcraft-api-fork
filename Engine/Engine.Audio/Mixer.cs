@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Engine.Audio
 {
@@ -33,7 +34,7 @@ namespace Engine.Audio
 		}
 		internal static void Initialize()
 		{
-			
+
 #if desktop
 			//零次准备，系统安装了openal
 			//一次准备，让opentk加载openal32.dll
@@ -42,34 +43,25 @@ namespace Engine.Audio
 			string str = Path.Combine(fullPath);
 			Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
 			//二次准备，检测外置文件并主动加载
+			string dllName = "openal32.dll"; // DLL资源名称
+			string ALPath = Path.Combine(fullPath,dllName);
 			new AudioContext();
-			string ALPath = "app:/openal32.dll";
 			if (Storage.FileExists(ALPath) && CheckALError())//检测外置资源是否存在，如果不存在就使用内置资源
 			{
 				Assembly dllAssembly = Assembly.LoadFile(ALPath);
 			}
 			else
 			{
-				// 提取嵌入的DLL到临时文件夹
-				string tempPath = Path.GetTempFileName();
-				File.Delete(tempPath); // 删除临时文件，确保路径可用
-				Directory.CreateDirectory(tempPath);
-				string dllName = "openal32.dll"; // DLL资源名称
-				string tempDllPath = Path.Combine(tempPath, dllName);
-
 				using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(dllName))
-				using (FileStream fileStream = new(tempDllPath, FileMode.Create))
+				using (FileStream fileStream = new(ALPath, FileMode.Create))
 				{
 					stream.CopyTo(fileStream);
 				}
-
 				// 加载DLL并调用其中的方法
-				Assembly dllAssembly = Assembly.LoadFile(tempDllPath);
+				Assembly dllAssembly = Assembly.LoadFile(ALPath);
 				// ... 使用反射调用DLL中的方法 ...
-
-				// 清理临时文件
-				Directory.Delete(tempPath, true);
 			}
+			new AudioContext();
 #else
 			new AudioContext();
 			CheckALError();

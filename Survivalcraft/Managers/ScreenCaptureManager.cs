@@ -126,14 +126,14 @@ namespace Game
 						Storage.CreateDirectory(ScreenshotDir);
 					using (Stream stream = Storage.OpenFile(Storage.CombinePaths(ScreenshotDir, filename), OpenFileMode.CreateOrOpen))
 					{
-						Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), stream, ImageFileFormat.Jpg, saveAlpha: false);
+						Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), stream, ImageFileFormat.WebP, saveAlpha: false);
 					}
 #else
 					string path = Storage.CombinePaths(ModsManager.ScreenCapturePath, filename);
 					if (!Storage.DirectoryExists(ModsManager.ScreenCapturePath)) Storage.CreateDirectory(ModsManager.ScreenCapturePath);
 					using (Stream stream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
 					{
-                        Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), stream, ImageFileFormat.Png, saveAlpha: false);
+                        Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), stream, ImageFileFormat.WebP, saveAlpha: false);
                     }
 					Intent intent = new("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
 					intent.SetData(Android.Net.Uri.FromFile(new Java.IO.File(Storage.GetSystemPath(path))));

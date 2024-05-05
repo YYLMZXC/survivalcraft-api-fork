@@ -18,44 +18,42 @@ using System.Text.Json;
 public static class ModsManager
 {
 	public const string modSuffix = ".scmod";
-	public const string APIVersion = "1.63";
+#if DEBUG
+	public const string APIVersion = "1.6x-Debug";
+#else
+	public const string APIVersion = "1.63S";
+#endif
 	public const string SCVersion = "2.3.10.4";
 	//1为api1.33 2为api1.40
 	public const int Apiv = 10;
 
-#if desktop
+#if WINDOWS
 	public const string
 		ExtPath = "app:",//ExternelPath
-		DocPath = "/doc",//DocumentPath
-		UserDataPath = ExtPath + DocPath + "/UserId.dat",
-		CharacterSkinsDirectoryName = ExtPath + DocPath + "/CharacterSkins",
-		FurniturePacksDirectoryName = ExtPath + DocPath + "/FurniturePacks",
-		BlockTexturesDirectoryName = ExtPath + DocPath + "/TexturePacks",
-		WorldsDirectoryName = ExtPath + "/Worlds",
-		CommunityContentCachePath = ExtPath + DocPath + "/CommunityContentCache.xml",
-		ModsSetPath = ExtPath + "/ModSettings.xml",
-		SettingPath = ExtPath + "/Settings.xml",
-		ModCachePath = ExtPath + "/Mods/Cache",
-		LogPath = ExtPath + "/Bugs";
+		DocPath = "app:/doc",//DocumentPath
+		WorldsDirectoryName = ExtPath + "/Worlds";
 	public const bool IsAndroid = false;
 
 #endif
 #if ANDROID
-	public static string ExtPath = EngineActivity.BasePath,
+	public const string 
+		ExtPath = EngineActivity.ExtPath,
+		DocPath = EngineActivity.DocPath,
 						 ScreenCapturePath = ExtPath + "/ScreenCapture",
-						 UserDataPath = "config:/UserId.dat",
-						 FurniturePacksDirectoryName = "config:/FurniturePacks",
-						 CharacterSkinsDirectoryName = "config:/CharacterSkins",
-						 BlockTexturesDirectoryName = "config:/TexturePacks",
-						 WorldsDirectoryName = "config:/Worlds",
-						 CommunityContentCachePath = "config:/CommunityContentCache.xml",
-						 ModsSetPath = "config:/ModSettings.xml",
-						 SettingPath = "config:/Settings.xml",
-						 ModCachePath = ExtPath + "/ModsCache",
-						 LogPath = ExtPath + "/Bugs";
+						 WorldsDirectoryName = DocPath+"/Worlds";
 	public const bool IsAndroid = true;
 
 #endif
+	public const string
+		UserDataPath = DocPath + "/UserId.dat",
+		CharacterSkinsDirectoryName = DocPath + "/CharacterSkins",
+		FurniturePacksDirectoryName = DocPath + "/FurniturePacks",
+		BlockTexturesDirectoryName = DocPath + "/TexturePacks",
+		CommunityContentCachePath = DocPath + "/CommunityContentCache.xml",
+		ModsSetPath = DocPath + "/ModSettings.xml",
+		SettingPath = DocPath + "/Settings.xml",
+		ModCachePath = ExtPath + "/Mods/Cache",
+		LogPath = ExtPath + "/Bugs";
 	public static string ModsPath = ExtPath + "/Mods";//移动端mods数据文件夹
 	internal static ModEntity SurvivalCraftModEntity;
 	internal static bool ConfigLoaded = false;
