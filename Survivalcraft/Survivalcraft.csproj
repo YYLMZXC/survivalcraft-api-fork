@@ -48,9 +48,6 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <None Update="init.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Content Include="Content\icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -72,11 +69,9 @@
 		<EmbeddedResource Include="Content.zip">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
-	</ItemGroup>
-	<ItemGroup>
-	  <None Remove="openal32.dll" />
-	</ItemGroup>
-	<ItemGroup>
+	  <EmbeddedResource Include="init.js">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
 	  <EmbeddedResource Include="openal32.dll">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
