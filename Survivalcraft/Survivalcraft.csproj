@@ -17,7 +17,7 @@
     <ApplicationVersion>2.3.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperEnabled>False</BootstrapperEnabled>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <UseWindowsForms>False</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
@@ -48,9 +48,6 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <None Update="init.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Content Include="Content\icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -73,18 +70,16 @@
 		<EmbeddedResource Include="Content.zip">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
-	</ItemGroup>
-	<ItemGroup>
-	  <None Remove="openal32.dll" />
-	</ItemGroup>
-	<ItemGroup>
-	  <EmbeddedResource Include="openal32.dll" />
-	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
+	  <EmbeddedResource Include="init.js">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	  <EmbeddedResource Include="openal32.dll">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
 	  <Using Include="System.IO" />
+	  <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
 	</ItemGroup>
 	<PropertyGroup>
     <PreBuildEvent>set p=$(SolutionDir)
@@ -97,7 +92,6 @@ cd "$(SolutionDir)Survivalcraft\Content"
     <NeutralLanguage>zh-CN</NeutralLanguage>
     <Title>BaseOFsc</Title>
     <PackageIcon>icon.png</PackageIcon>
-    <UseWPF>False</UseWPF>
   </PropertyGroup>
   <ProjectExtensions />
 </Project>

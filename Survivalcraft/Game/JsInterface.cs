@@ -42,6 +42,20 @@ namespace Game
 			}
 			return Project.FindSubsystem(t, null, false);
 		}
+
+		public static bool JS检查()
+		{
+			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == "" ? AppContext.BaseDirectory : Assembly.GetExecutingAssembly().Location);//路径备选方案
+			string path = Path.Combine(fullPath, "init.js");
+			if (!File.Exists(path))
+			{
+				using (FileStream destination = new FileStream(path, FileMode.Create))
+				{
+					Assembly.GetExecutingAssembly().GetManifestResourceStream("Game.init.js").CopyTo(destination);
+				}
+			}
+			return File.Exists(path);
+		}
 		public static void Initiate()
 		{
 			engine = new JsEngine(delegate (Jint.Options cfg)
@@ -70,18 +84,22 @@ namespace Game
 				cfg.DebugMode(true);
 			});
 			string initCode = null;
-			try
+			if (JS检查())
 			{
-				initCode = Storage.ReadAllText("app:init.js");
+				try
+				{
+					initCode = Storage.ReadAllText("app:init.js");
+				}
+				catch
+				{
+					Log.Warning("Init.js未加载");
+				}
+				Execute(initCode);
 			}
-			catch
+			else
 			{
-				Log.Warning("Init.js未加载");
-				//Assembly assembly = Assembly.GetExecutingAssembly();
-				//Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("init.js");
-				//initCode = new StreamReader(manifestResourceStream).ReadToEnd();
+				Log.Warning("Init.js不存在");
 			}
-			Execute(initCode);
 		}
 		public static void RegisterEvent()
 		{

@@ -32,14 +32,34 @@ namespace Engine.Audio
 		internal static void Initialize()
 		{
 #if desktop
-			//string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
-			//string fullPath = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-			//string path = Environment.Is64BitProcess ? "OpenAL" : "OpenAL86";
-			//string str = Path.Combine(fullPath,  path);
-			//Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
+			//零次准备，系统安装了openal
+			//一次准备，让opentk加载openal32.dll
+			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
+			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? AppContext.BaseDirectory: Assembly.GetExecutingAssembly().Location);//路径备选方案
+			Environment.SetEnvironmentVariable("PATH", fullPath + ";" + environmentVariable, EnvironmentVariableTarget.Process);
+			//二次准备，检测外置文件并主动加载
+			new AudioContext();
+			if(CheckALError())
+			{
+				string dllName = "openal32.dll"; // DLL资源名称
+				string ALPath = Path.Combine(fullPath, dllName);
+				if (!File.Exists(ALPath))//检测外置dll是否存在，如果不存在就释放
+				{
+					using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(dllName))
+					using (FileStream fileStream = new(ALPath, FileMode.Create))
+					{
+						stream.CopyTo(fileStream);
+					}
+				}
+				Assembly dllAssembly = Assembly.LoadFile(ALPath);
+				new AudioContext();
+			}
+#else
+			new AudioContext();
+			CheckALError();
 #endif
-            new AudioContext();
-            CheckALError();
+
+
 		}
 		internal static void Dispose()
 		{
