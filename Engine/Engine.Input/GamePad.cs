@@ -6,12 +6,9 @@ using Android.Views;
 using System.Collections.Generic;
 using System.Linq;
 #endif
-namespace Engine.Input
-{
-    public static class GamePad
-    {
-        private class State
-        {
+namespace Engine.Input {
+    public static class GamePad {
+        private class State {
             public bool IsConnected;
 
             public Vector2[] Sticks = new Vector2[2];
@@ -39,14 +36,11 @@ namespace Engine.Input
             new(),
             new()
         };
-        internal static void Initialize()
-        {
+        internal static void Initialize() {
         }
-        internal static void Dispose()
-        {
+        internal static void Dispose() {
         }
-        internal static void BeforeFrame()
-        {
+        internal static void BeforeFrame() {
 #if ANDROID
             if (Time.PeriodicEvent(2.0, 0.0))
             {
@@ -186,14 +180,12 @@ namespace Engine.Input
             }
         }
 #else
-            for (int i = 0; i < 4; i++)
-            {
+            for (int i = 0; i < 4; i++) {
                 GamePadState state = OpenTK.Input.GamePad.GetState(i);
-                if (state.IsConnected)
-                {
+                string name = OpenTK.Input.GamePad.GetName(i);
+                if (state.IsConnected && !name.Contains("Unmapped")) {
                     m_states[i].IsConnected = true;
-                    if (Window.IsActive)
-                    {
+                    if (Window.IsActive) {
                         m_states[i].Sticks[0] = new Vector2(state.ThumbSticks.Left.X, state.ThumbSticks.Left.Y);
                         m_states[i].Sticks[1] = new Vector2(state.ThumbSticks.Right.X, state.ThumbSticks.Right.Y);
                         m_states[i].Triggers[0] = state.Triggers.Left;
@@ -214,37 +206,29 @@ namespace Engine.Input
                         m_states[i].Buttons[13] = state.DPad.Down == ButtonState.Pressed;
                     }
                 }
-                else
-                {
+                else {
                     m_states[i].IsConnected = false;
                 }
             }
         }
 #endif
 
-        public static bool IsConnected(int gamePadIndex)
-        {
-            if (gamePadIndex < 0 || gamePadIndex >= m_states.Length)
-            {
+        public static bool IsConnected(int gamePadIndex) {
+            if (gamePadIndex < 0 || gamePadIndex >= m_states.Length) {
                 throw new ArgumentOutOfRangeException("gamePadIndex");
             }
             return m_states[gamePadIndex].IsConnected;
         }
 
-        public static Vector2 GetStickPosition(int gamePadIndex, GamePadStick stick, float deadZone = 0f)
-        {
-            if (deadZone < 0f || deadZone >= 1f)
-            {
+        public static Vector2 GetStickPosition(int gamePadIndex, GamePadStick stick, float deadZone = 0f) {
+            if (deadZone < 0f || deadZone >= 1f) {
                 throw new ArgumentOutOfRangeException("deadZone");
             }
-            if (IsConnected(gamePadIndex))
-            {
+            if (IsConnected(gamePadIndex)) {
                 Vector2 result = m_states[gamePadIndex].Sticks[(int)stick];
-                if (deadZone > 0f)
-                {
+                if (deadZone > 0f) {
                     float num = result.Length();
-                    if (num > 0f)
-                    {
+                    if (num > 0f) {
                         float num2 = ApplyDeadZone(num, deadZone);
                         result *= num2 / num;
                     }
@@ -254,34 +238,26 @@ namespace Engine.Input
             return Vector2.Zero;
         }
 
-        public static float GetTriggerPosition(int gamePadIndex, GamePadTrigger trigger, float deadZone = 0f)
-        {
-            if (deadZone < 0f || deadZone >= 1f)
-            {
+        public static float GetTriggerPosition(int gamePadIndex, GamePadTrigger trigger, float deadZone = 0f) {
+            if (deadZone < 0f || deadZone >= 1f) {
                 throw new ArgumentOutOfRangeException("deadZone");
             }
-            if (IsConnected(gamePadIndex))
-            {
+            if (IsConnected(gamePadIndex)) {
                 return ApplyDeadZone(m_states[gamePadIndex].Triggers[(int)trigger], deadZone);
             }
             return 0f;
         }
 
-        public static bool IsButtonDown(int gamePadIndex, GamePadButton button)
-        {
-            if (IsConnected(gamePadIndex))
-            {
+        public static bool IsButtonDown(int gamePadIndex, GamePadButton button) {
+            if (IsConnected(gamePadIndex)) {
                 return m_states[gamePadIndex].Buttons[(int)button];
             }
             return false;
         }
 
-        public static bool IsButtonDownOnce(int gamePadIndex, GamePadButton button)
-        {
-            if (IsConnected(gamePadIndex))
-            {
-                if (m_states[gamePadIndex].Buttons[(int)button])
-                {
+        public static bool IsButtonDownOnce(int gamePadIndex, GamePadButton button) {
+            if (IsConnected(gamePadIndex)) {
+                if (m_states[gamePadIndex].Buttons[(int)button]) {
                     return !m_states[gamePadIndex].LastButtons[(int)button];
                 }
                 return false;
@@ -289,17 +265,13 @@ namespace Engine.Input
             return false;
         }
 
-        public static bool IsButtonDownRepeat(int gamePadIndex, GamePadButton button)
-        {
-            if (IsConnected(gamePadIndex))
-            {
-                if (m_states[gamePadIndex].Buttons[(int)button] && !m_states[gamePadIndex].LastButtons[(int)button])
-                {
+        public static bool IsButtonDownRepeat(int gamePadIndex, GamePadButton button) {
+            if (IsConnected(gamePadIndex)) {
+                if (m_states[gamePadIndex].Buttons[(int)button] && !m_states[gamePadIndex].LastButtons[(int)button]) {
                     return true;
                 }
                 double num = m_states[gamePadIndex].ButtonsRepeat[(int)button];
-                if (num != 0.0)
-                {
+                if (num != 0.0) {
                     return Time.FrameStartTime >= num;
                 }
                 return false;
@@ -307,50 +279,37 @@ namespace Engine.Input
             return false;
         }
 
-        public static void Clear()
-        {
-            for (int i = 0; i < m_states.Length; i++)
-            {
-                for (int j = 0; j < m_states[i].Sticks.Length; j++)
-                {
+        public static void Clear() {
+            for (int i = 0; i < m_states.Length; i++) {
+                for (int j = 0; j < m_states[i].Sticks.Length; j++) {
                     m_states[i].Sticks[j] = Vector2.Zero;
                 }
-                for (int k = 0; k < m_states[i].Triggers.Length; k++)
-                {
+                for (int k = 0; k < m_states[i].Triggers.Length; k++) {
                     m_states[i].Triggers[k] = 0f;
                 }
-                for (int l = 0; l < m_states[i].Buttons.Length; l++)
-                {
+                for (int l = 0; l < m_states[i].Buttons.Length; l++) {
                     m_states[i].Buttons[l] = false;
                     m_states[i].ButtonsRepeat[l] = 0.0;
                 }
             }
         }
 
-        internal static void AfterFrame()
-        {
-            for (int i = 0; i < m_states.Length; i++)
-            {
-                if (Keyboard.BackButtonQuitsApp && IsButtonDownOnce(i, GamePadButton.Back))
-                {
+        internal static void AfterFrame() {
+            for (int i = 0; i < m_states.Length; i++) {
+                if (Keyboard.BackButtonQuitsApp && IsButtonDownOnce(i, GamePadButton.Back)) {
                     Window.Close();
                 }
                 State state = m_states[i];
-                for (int j = 0; j < state.Buttons.Length; j++)
-                {
-                    if (state.Buttons[j])
-                    {
-                        if (!state.LastButtons[j])
-                        {
+                for (int j = 0; j < state.Buttons.Length; j++) {
+                    if (state.Buttons[j]) {
+                        if (!state.LastButtons[j]) {
                             state.ButtonsRepeat[j] = Time.FrameStartTime + m_buttonFirstRepeatTime;
                         }
-                        else if (Time.FrameStartTime >= state.ButtonsRepeat[j])
-                        {
+                        else if (Time.FrameStartTime >= state.ButtonsRepeat[j]) {
                             state.ButtonsRepeat[j] = MathUtils.Max(Time.FrameStartTime, state.ButtonsRepeat[j] + m_buttonNextRepeatTime);
                         }
                     }
-                    else
-                    {
+                    else {
                         state.ButtonsRepeat[j] = 0.0;
                     }
                     state.LastButtons[j] = state.Buttons[j];
