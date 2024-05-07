@@ -2117,14 +2117,8 @@
     <Compile Include="..\Survivalcraft\IContentReader\ImageReader.cs">
       <Link>IContentReader\ImageReader.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\IContentReader\JsonArrayReader.cs">
-      <Link>IContentReader\JsonArrayReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\IContentReader\JsonModelReader.cs">
-      <Link>IContentReader\JsonModelReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\IContentReader\JsonObjectReader.cs">
-      <Link>IContentReader\JsonObjectReader.cs</Link>
+    <Compile Include="..\Survivalcraft\IContentReader\JsonReader.cs">
+      <Link>IContentReader\JsonReader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\IContentReader\MtllibStructReader.cs">
       <Link>IContentReader\MtllibStructReader.cs</Link>
@@ -2605,9 +2599,6 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemPollableBlockBehavior.cs">
       <Link>Subsystem\SubsystemPollableBlockBehavior.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Subsystem\SubsystemPostprocessor.cs">
-      <Link>Subsystem\SubsystemPostprocessor.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemProjectiles.cs">
       <Link>Subsystem\SubsystemProjectiles.cs</Link>
