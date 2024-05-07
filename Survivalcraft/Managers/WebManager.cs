@@ -1,16 +1,12 @@
 using Engine;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
 #if ANDROID
 using Android.Net;
 using System.Text.Json;
 #endif
-using System.Threading.Tasks;
+using Uri = System.Uri;
 
 namespace Game
 {
@@ -94,13 +90,9 @@ namespace Game
 					{
 						throw new InvalidOperationException("Internet connection is unavailable.");
 					}
-					using (var client = new HttpClient())
+					using (HttpClient client = new())
 					{
-						Uri requestUri = (parameters != null && parameters.Count > 0) ? new Uri(string.Format("{0}?{1}", new object[2]
-						{
-							address,
-							UrlParametersToString(parameters)
-						})) : new Uri(address);
+						Uri requestUri = (parameters != null && parameters.Count > 0) ? new System.Uri($"{address}?{UrlParametersToString(parameters)}") : new Uri(address);
 						client.DefaultRequestHeaders.Referrer = new Uri(address);
 						if (headers != null)
 						{
@@ -109,10 +101,15 @@ namespace Game
 								client.DefaultRequestHeaders.Add(header.Key, header.Value);
 							}
 						}
+						ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 						HttpResponseMessage responseMessage = await client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, progress.CancellationToken);
 						await VerifyResponse(responseMessage);
 						long? contentLength = responseMessage.Content.Headers.ContentLength;
+#if !ANDROID
 						progress.Total = contentLength ?? 0;
+#else
+						progress.Total = contentLength.GetValueOrDefault();
+#endif
 						using (Stream responseStream = await responseMessage.Content.ReadAsStreamAsync())
 						{
 							targetStream = new MemoryStream();
@@ -132,10 +129,13 @@ namespace Game
 									}
 								}
 								while (num > 0);
-								Dispatcher.Dispatch(delegate
+								if (success != null)
 								{
-									success(targetStream.ToArray());
-								});
+									Dispatcher.Dispatch(delegate
+									{
+										success(targetStream.ToArray());
+									});
+								}
 							}
 							finally
 							{
@@ -151,10 +151,13 @@ namespace Game
 				{
 					e = ex;
 					Log.Error(ExceptionManager.MakeFullErrorMessage(e));
-					Dispatcher.Dispatch(delegate
+					if (failure != null)
 					{
-						failure(e);
-					});
+						Dispatcher.Dispatch(delegate
+						{
+							failure(e);
+						});
+					}
 				}
 			});
 		}
@@ -245,34 +248,42 @@ namespace Game
 								}
 							}
 						}
-						Uri uri = (parameters != null && parameters.Count > 0) ? new Uri(string.Format("{0}?{1}", new object[2]
-						{
-							address,
-							UrlParametersToString(parameters)
-						})) : new Uri(address);
-						var content = new ProgressHttpContent(data, progress);
+						Uri requestUri = (parameters != null && parameters.Count > 0) ? new Uri($"{address}?{UrlParametersToString(parameters)}") : new Uri(address);
+#if !ANDROID
+						var httpContent = new ProgressHttpContent(data, progress);
+#else
+						HttpContent httpContent = (progress != null) ? ((HttpContent)new ProgressHttpContent(data, progress)) : ((HttpContent)new StreamContent(data));
+#endif
 						foreach (KeyValuePair<string, string> item in dictionary)
 						{
-							content.Headers.Add(item.Key, item.Value);
+							httpContent.Headers.Add(item.Key, item.Value);
 						}
-						HttpResponseMessage responseMessage = (!isPost) ? (await client.PutAsync(uri, content, progress.CancellationToken)) : (await client.PostAsync(uri, content, progress.CancellationToken));
+#if !ANDROID
+						HttpResponseMessage responseMessage = isPost ? (await client.PostAsync(requestUri, httpContent, progress.CancellationToken)) : (await client.PutAsync(requestUri, httpContent, progress.CancellationToken));
+#else
+						HttpResponseMessage responseMessage = isPost ? ((progress == null) ? (await client.PostAsync(requestUri, httpContent)) : (await client.PostAsync(requestUri, httpContent, progress.CancellationToken))) : ((progress == null) ? (await client.PutAsync(requestUri, httpContent)) : (await client.PutAsync(requestUri, httpContent, progress.CancellationToken)));
+#endif
 						await VerifyResponse(responseMessage);
-						_ = responseData;
 						responseData = await responseMessage.Content.ReadAsByteArrayAsync();
-						Dispatcher.Dispatch(delegate
+						if (success != null)
+						{
+							Dispatcher.Dispatch(delegate
 						{
 							success(responseData);
 						});
+						}
 					}
 				}
-				catch (Exception ex)
+				catch (Exception e)
 				{
-					e = ex;
 					Log.Error(ExceptionManager.MakeFullErrorMessage(e));
-					Dispatcher.Dispatch(delegate
+					if (failure != null)
 					{
-						failure(e);
-					});
+						Dispatcher.Dispatch(delegate
+						{
+							failure(e);
+						});
+					}
 				}
 			});
 		}
@@ -289,12 +300,7 @@ namespace Game
 				catch
 				{
 				}
-				throw new InvalidOperationException(string.Format("{0} ({1})\n{2}", new object[3]
-				{
-					message.StatusCode.ToString(),
-					(int)message.StatusCode,
-					responseText
-				}));
+				throw new InvalidOperationException($"{message.StatusCode} ({(int)message.StatusCode})\n{responseText}");
 			}
 		}
 	}
