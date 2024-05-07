@@ -1,5 +1,8 @@
 using Engine;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -336,11 +339,7 @@ namespace Game
 				{
 					if (!(uri != null) || string.IsNullOrEmpty(uri.Fragment))
 					{
-#if ANDROID
-						goto IL_00a5;
-#else
-						goto IL_00ae;
-#endif
+						goto 标签;
 					}
 					Dictionary<string, string> dictionary = WebManager.UrlParametersFromString(uri.Fragment.TrimStart('#'));
 					if (!dictionary.ContainsKey("access_token"))
@@ -349,20 +348,12 @@ namespace Game
 						{
 							throw new Exception(dictionary["error"]);
 						}
-#if ANDROID
-						goto IL_00a5;
-#else
-						goto IL_00ae;
-#endif
+						goto 标签;
 					}
 					SettingsManager.DropboxAccessToken = dictionary["access_token"];
 					loginProcessData.Succeed(this);
 					goto end_IL_0038;
-#if ANDROID
-				IL_00a5:
-#else
-				IL_00ae:
-#endif
+				标签:
 					throw new Exception("Could not retrieve Dropbox access token.");
 				end_IL_0038:;
 				}

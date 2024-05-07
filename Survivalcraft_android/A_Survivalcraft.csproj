@@ -19,13 +19,15 @@
     <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Jint" Version="3.1.0" />
+    <PackageReference Include="Jint" Version="3.1.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Resource.designer.cs" />
 	<Compile Include="..\Survivalcraft\Block\AdjustableDelayGateBlock.cs">
       <Link>Block\AdjustableDelayGateBlock.cs</Link>
     </Compile>
+	<Compile Include="..\Survivalcraft\ContentProvider\AndroidSdCardExternalContentProvider.cs" Link="ContentProvider\AndroidSdCardExternalContentProvider.cs" />
+	<Compile Include="..\Survivalcraft\ContentProvider\DropboxExternalContentProvider.cs" Link="ContentProvider\DropboxExternalContentProvider.cs" />
 	<Compile Include="..\Survivalcraft\ContentProvider\IExternalContentProvider.cs" Link="ContentProvider\IExternalContentProvider.cs" />
 	<Compile Include="..\Survivalcraft\ContentProvider\SchubExternalContentProvider.cs" Link="ContentProvider\SchubExternalContentProvider.cs" />
 	<Compile Include="..\Survivalcraft\ContentProvider\TransferShExternalContentProvider.cs" Link="ContentProvider\TransferShExternalContentProvider.cs" />
