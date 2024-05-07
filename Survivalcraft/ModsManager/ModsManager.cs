@@ -8,12 +8,7 @@ using System.Text;
 using System.Xml.Linq;
 using Engine.Serialization;
 using XmlUtilities;
-using Engine.Media;
-using Engine.Graphics;
-using System.IO.Compression;
-using System.IO;
 using System.Text.Json;
-
 
 public static class ModsManager
 {
@@ -25,7 +20,7 @@ public static class ModsManager
 #endif
 	public const string SCVersion = "2.3.10.4";
 	//1为api1.33 2为api1.40
-	public const int Apiv = 10;
+	public const int Apiv = 0x10;
 
 #if WINDOWS
 	public const string
@@ -234,11 +229,15 @@ public static class ModsManager
         {
             modInfo.PackageName = packageName.GetString();
         }
-        if (jsonElement.TryGetProperty("Dependencies", out JsonElement dependencies) && dependencies.ValueKind == JsonValueKind.Array)
+		if (jsonElement.TryGetProperty("Email", out JsonElement Email) && Email.ValueKind == JsonValueKind.String)
+		{
+			modInfo.Email = packageName.GetString();
+		}
+		if (jsonElement.TryGetProperty("Dependencies", out JsonElement dependencies) && dependencies.ValueKind == JsonValueKind.Array)
         {
             modInfo.Dependencies = dependencies.EnumerateArray().Where(dependency=> dependency.ValueKind == JsonValueKind.String).Select(dependency => dependency.GetString()).ToList();
         }
-        return modInfo;
+		return modInfo;
     }
     public static void SaveModSettings(XElement xElement)
 	{

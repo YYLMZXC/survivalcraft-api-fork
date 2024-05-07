@@ -11,7 +11,8 @@ namespace Game
 					  ScVersion,
 					  Link,
 					  Author,
-					  PackageName;
+					  PackageName,
+					  Email;
 		public List<string> Dependencies = [];
 		public override int GetHashCode() => (PackageName + ApiVersion + Version).GetHashCode();
 		public override bool Equals(object obj) => obj is ModInfo && obj.GetHashCode() == GetHashCode();
