@@ -1,8 +1,7 @@
+#if ANDROID
 using Engine;
 using Game;
-using System;
 using System.IO;
-using System.Threading;
 
 public class AndroidSdCardExternalContentProvider : IExternalContentProvider, IDisposable
 {
@@ -56,10 +55,9 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 			}
 			catch (Exception ex)
 			{
-				e = ex;
 				Dispatcher.Dispatch(delegate
 				{
-					failure(e);
+					failure(ex);
 				});
 			}
 		});
@@ -83,10 +81,9 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 			}
 			catch (Exception ex)
 			{
-				e = ex;
 				Dispatcher.Dispatch(delegate
 				{
-					failure(e);
+					failure(ex);
 				});
 			}
 		});
@@ -116,10 +113,9 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 			}
 			catch (Exception ex)
 			{
-				e = ex;
 				Dispatcher.Dispatch(delegate
 				{
-					failure(e);
+					failure(ex);
 				});
 			}
 		});
@@ -188,3 +184,4 @@ public class AndroidSdCardExternalContentProvider : IExternalContentProvider, ID
 		if (!Storage.DirectoryExists(m_rootDirectory)) { Storage.CreateDirectory(m_rootDirectory); }
 	}
 }
+#endif
