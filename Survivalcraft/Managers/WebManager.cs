@@ -1,10 +1,13 @@
 using Engine;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Text;
 #if ANDROID
 using Android.Net;
 using System.Text.Json;
+#else
+using System.IO;
+using System.Net.Http;
+using System.Runtime.InteropServices;
 #endif
 using Uri = System.Uri;
 

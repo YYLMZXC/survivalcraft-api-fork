@@ -53,6 +53,7 @@
   <ItemGroup>
     <PackageReference Include="Jint" Version="3.1.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0-preview.3.24172.9" />
+    <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Game\DeviceManager.cs" />
@@ -79,6 +80,9 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Using Include="System.IO" />
+	</ItemGroup>
 	<PropertyGroup>
     <PreBuildEvent>set p=$(SolutionDir)
 cd "$(SolutionDir)Survivalcraft\Content"
@@ -90,7 +94,7 @@ cd "$(SolutionDir)Survivalcraft\Content"
     <NeutralLanguage>zh-CN</NeutralLanguage>
     <Title>BaseOFsc</Title>
     <PackageIcon>icon.png</PackageIcon>
-    <UseWPF>True</UseWPF>
+    <UseWPF>False</UseWPF>
   </PropertyGroup>
   <ProjectExtensions />
 </Project>
