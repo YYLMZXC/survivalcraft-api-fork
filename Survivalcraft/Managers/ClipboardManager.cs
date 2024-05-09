@@ -1,7 +1,7 @@
 #if WINDOWS
 //using Windows.ApplicationModel.DataTransfer;.
-using System.Windows;
-using System.Windows.Data;
+//using System.Windows;
+//using System.Windows.Data;
 #endif
 namespace Game
 {
@@ -26,11 +26,11 @@ namespace Game
 		{
 			get
 			{
-				//DataPackageView dataPackageView = Clipboard.GetContent();
-				//return dataPackageView.ToString();
+				//return Clipboard.GetContent().ToString();
 				//return string.Empty;
 				//return System.Windows.Forms.Clipboard.GetText();
-				return Clipboard.GetText();
+				//return Clipboard.GetText();
+				return TextCopy.ClipboardService.GetText();
 			}
 			set
 			{
@@ -38,7 +38,8 @@ namespace Game
 				//DataPackage dataPackage = new();
 				//dataPackage.SetText(value);
 				//Clipboard.SetContent(dataPackage);
-				Clipboard.SetText(value);
+				//Clipboard.SetText(value);
+				TextCopy.ClipboardService.SetText(value);
 			}
 		}
 #endif
