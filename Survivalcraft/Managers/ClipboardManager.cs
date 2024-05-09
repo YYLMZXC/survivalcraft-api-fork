@@ -1,5 +1,7 @@
 #if WINDOWS
-//using Windows.ApplicationModel.DataTransfer;
+//using Windows.ApplicationModel.DataTransfer;.
+using System.Windows;
+using System.Windows.Data;
 #endif
 namespace Game
 {
@@ -26,8 +28,9 @@ namespace Game
 			{
 				//DataPackageView dataPackageView = Clipboard.GetContent();
 				//return dataPackageView.ToString();
-				return string.Empty;
+				//return string.Empty;
 				//return System.Windows.Forms.Clipboard.GetText();
+				return Clipboard.GetText();
 			}
 			set
 			{
@@ -35,6 +38,7 @@ namespace Game
 				//DataPackage dataPackage = new();
 				//dataPackage.SetText(value);
 				//Clipboard.SetContent(dataPackage);
+				Clipboard.SetText(value);
 			}
 		}
 #endif

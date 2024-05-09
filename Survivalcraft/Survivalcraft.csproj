@@ -93,6 +93,7 @@ cd "$(SolutionDir)Survivalcraft\Content"
     <NeutralLanguage>zh-CN</NeutralLanguage>
     <Title>BaseOFsc</Title>
     <PackageIcon>icon.png</PackageIcon>
+    <UseWPF>True</UseWPF>
   </PropertyGroup>
   <ProjectExtensions />
 </Project>
