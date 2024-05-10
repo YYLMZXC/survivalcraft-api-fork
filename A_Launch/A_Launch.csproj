@@ -31,26 +31,24 @@
 	<AndroidAsset Include="Assets\apppath.txt">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Lit.psh">
+	<AndroidAsset Include="..\Engine\Resources\Lit.psh" Link="Assets\Lit.psh">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Lit.vsh">
+	<AndroidAsset Include="..\Engine\Resources\Lit.vsh" Link="Assets\Lit.vsh">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Unlit.psh">
+	<AndroidAsset Include="..\Engine\Resources\UnLit.psh" Link="Assets\Unlit.psh">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Unlit.vsh">
+	<AndroidAsset Include="..\Engine\Resources\UnLit.vsh" Link="Assets\Unlit.vsh">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Debugfont.png">
+	<AndroidAsset Include="..\Engine\Resources\Debugfont.png" Link="Assets\Debugfont.png">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Debugfont.lst">
+	<AndroidAsset Include="..\Engine\Resources\Debugfont.lst" Link="Assets\Debugfont.lst">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Update="Assets\Content.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
@@ -60,8 +58,8 @@
     <AndroidAsset Include="..\Survivalcraft\init.js">
       <Link>Assets\init.js</Link>
     </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Survivalcraft_android\A_Survivalcraft.csproj" />
+    <Using Include="Engine" />
+    <Using Include="Game" />
   </ItemGroup>
 </Project>

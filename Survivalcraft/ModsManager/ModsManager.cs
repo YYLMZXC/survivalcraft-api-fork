@@ -8,54 +8,46 @@ using System.Text;
 using System.Xml.Linq;
 using Engine.Serialization;
 using XmlUtilities;
-using Engine.Media;
+using System.Text.Json;
+#if DEBUG
 using Engine.Graphics;
 using System.IO.Compression;
-using System.IO;
-using System.Text.Json;
-
-
+#endif
 public static class ModsManager
 {
 	public const string modSuffix = ".scmod";
 	public const string APIVersion = "1.70A";
 	public const string SCVersion = "2.3.10.4";
 	//1为api1.33 2为api1.40
-	public const int Apiv = 10;
+	public const int Apiv = 0x11;
 
-#if desktop
+#if WINDOWS
 	public const string
 		ExtPath = "app:",//ExternelPath
-		DocPath = "/doc",//DocumentPath
-		UserDataPath = ExtPath + DocPath + "/UserId.dat",
-		CharacterSkinsDirectoryName = ExtPath + DocPath + "/CharacterSkins",
-		FurniturePacksDirectoryName = ExtPath + DocPath + "/FurniturePacks",
-		BlockTexturesDirectoryName = ExtPath + DocPath + "/TexturePacks",
-		WorldsDirectoryName = ExtPath + "/Worlds",
-		CommunityContentCachePath = ExtPath + DocPath + "/CommunityContentCache.xml",
-		ModsSetPath = ExtPath + "/ModSettings.xml",
-		SettingPath = ExtPath + "/Settings.xml",
-		ModCachePath = ExtPath + "/Mods/Cache",
-		LogPath = ExtPath + "/Bugs";
+		DocPath = "app:/doc",//DocumentPath
+		WorldsDirectoryName = ExtPath + "/Worlds";
 	public const bool IsAndroid = false;
 
 #endif
 #if ANDROID
-	public static string ExtPath = EngineActivity.BasePath,
+	public const string 
+		ExtPath = EngineActivity.ExtPath,
+		DocPath = EngineActivity.DocPath,
 						 ScreenCapturePath = ExtPath + "/ScreenCapture",
-						 UserDataPath = "config:/UserId.dat",
-						 FurniturePacksDirectoryName = "config:/FurniturePacks",
-						 CharacterSkinsDirectoryName = "config:/CharacterSkins",
-						 BlockTexturesDirectoryName = "config:/TexturePacks",
-						 WorldsDirectoryName = "config:/Worlds",
-						 CommunityContentCachePath = "config:/CommunityContentCache.xml",
-						 ModsSetPath = "config:/ModSettings.xml",
-						 SettingPath = "config:/Settings.xml",
-						 ModCachePath = ExtPath + "/ModsCache",
-						 LogPath = ExtPath + "/Bugs";
+						 WorldsDirectoryName = DocPath+"/Worlds";
 	public const bool IsAndroid = true;
 
 #endif
+	public const string
+		UserDataPath = DocPath + "/UserId.dat",
+		CharacterSkinsDirectoryName = DocPath + "/CharacterSkins",
+		FurniturePacksDirectoryName = DocPath + "/FurniturePacks",
+		BlockTexturesDirectoryName = DocPath + "/TexturePacks",
+		CommunityContentCachePath = DocPath + "/CommunityContentCache.xml",
+		ModsSetPath = DocPath + "/ModSettings.xml",
+		SettingPath = DocPath + "/Settings.xml",
+		ModCachePath = ExtPath + "/Mods/Cache",
+		LogPath = ExtPath + "/Bugs";
 	public static string ModsPath = ExtPath + "/Mods";//移动端mods数据文件夹
 	internal static ModEntity SurvivalCraftModEntity;
 	internal static bool ConfigLoaded = false;
@@ -236,7 +228,11 @@ public static class ModsManager
         {
             modInfo.PackageName = packageName.GetString();
         }
-        if (jsonElement.TryGetProperty("Dependencies", out JsonElement dependencies) && dependencies.ValueKind == JsonValueKind.Array)
+		if (jsonElement.TryGetProperty("Email", out JsonElement Email) && Email.ValueKind == JsonValueKind.String)
+		{
+			modInfo.Email = packageName.GetString();
+		}
+		if (jsonElement.TryGetProperty("Dependencies", out JsonElement dependencies) && dependencies.ValueKind == JsonValueKind.Array)
         {
             modInfo.Dependencies = dependencies.EnumerateArray().Where(dependency=> dependency.ValueKind == JsonValueKind.String).Select(dependency => dependency.GetString()).ToList();
         }
@@ -724,7 +720,7 @@ public static class ModsManager
     {
         try
         {
-            Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), Storage.CombinePaths("app:", name + ".png"), ImageFileFormat.Png, true);
+            Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), Storage.CombinePaths("app:", name + ".png"), Engine.Media.ImageFileFormat.Png, true);
         }
         catch (Exception e)
         {
