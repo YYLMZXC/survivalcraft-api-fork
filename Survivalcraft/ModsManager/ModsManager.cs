@@ -9,7 +9,10 @@ using System.Xml.Linq;
 using Engine.Serialization;
 using XmlUtilities;
 using System.Text.Json;
-
+#if DEBUG
+using Engine.Graphics;
+using System.IO.Compression;
+#endif
 public static class ModsManager
 {
 	public const string modSuffix = ".scmod";
@@ -721,7 +724,7 @@ public static class ModsManager
     {
         try
         {
-            Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), Storage.CombinePaths("app:", name + ".png"), ImageFileFormat.Png, true);
+            Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), Storage.CombinePaths("app:", name + ".png"), Engine.Media.ImageFileFormat.Png, true);
         }
         catch (Exception e)
         {
