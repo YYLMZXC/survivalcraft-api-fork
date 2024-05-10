@@ -305,7 +305,7 @@ namespace Game
 			float x = Font.MeasureText(text, new Vector2(FontScale), FontSpacing).X;
 			if (WordWrap)
 			{
-				int num3 = (int)MathUtils.Min(MathUtils.Floor(availableHeight / CalculateLineHeight()), MaxLines);
+				int num3 = (int)MathUtils.Min(MathF.Floor(availableHeight / CalculateLineHeight()), MaxLines);
 				for (int i = 0; i < array.Length; i++)
 				{
 					string text2 = array[i].TrimEnd();

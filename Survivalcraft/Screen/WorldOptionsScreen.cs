@@ -200,15 +200,15 @@ namespace Game
 			}
 			if (m_islandSizeEW.IsSliding && !m_isExistingWorld)
 			{
-				m_worldSettings.IslandSize.X = m_islandSizes[MathUtils.Clamp((int)m_islandSizeEW.Value, 0, m_islandSizes.Length - 1)];
+				m_worldSettings.IslandSize.X = m_islandSizes[Math.Clamp((int)m_islandSizeEW.Value, 0, m_islandSizes.Length - 1)];
 			}
 			if (m_islandSizeNS.IsSliding && !m_isExistingWorld)
 			{
-				m_worldSettings.IslandSize.Y = m_islandSizes[MathUtils.Clamp((int)m_islandSizeNS.Value, 0, m_islandSizes.Length - 1)];
+				m_worldSettings.IslandSize.Y = m_islandSizes[Math.Clamp((int)m_islandSizeNS.Value, 0, m_islandSizes.Length - 1)];
 			}
 			if (m_flatTerrainLevelSlider.IsSliding && !m_isExistingWorld)
 			{
-				m_worldSettings.TerrainLevel = MathUtils.Clamp((int)m_flatTerrainLevelSlider.Value / (int)m_flatTerrainLevelSlider.Granularity * (int)m_flatTerrainLevelSlider.Granularity, 2, 252);
+				m_worldSettings.TerrainLevel = Math.Clamp((int)m_flatTerrainLevelSlider.Value / (int)m_flatTerrainLevelSlider.Granularity * (int)m_flatTerrainLevelSlider.Granularity, 2, 252);
 				m_descriptionLabel.Text = StringsManager.GetString("FlatTerrainLevel.Description");
 			}
 			if (m_flatTerrainShoreRoughnessSlider.IsSliding && !m_isExistingWorld)
@@ -274,7 +274,7 @@ namespace Game
 			}
 			if (m_biomeSizeSlider.IsSliding && !m_isExistingWorld)
 			{
-				m_worldSettings.BiomeSize = m_biomeSizes[MathUtils.Clamp((int)m_biomeSizeSlider.Value, 0, m_biomeSizes.Length - 1)];
+				m_worldSettings.BiomeSize = m_biomeSizes[Math.Clamp((int)m_biomeSizeSlider.Value, 0, m_biomeSizes.Length - 1)];
 				m_descriptionLabel.Text = StringsManager.GetString("BiomeSize.Description");
 			}
 			if (m_blocksTextureButton.IsClicked)

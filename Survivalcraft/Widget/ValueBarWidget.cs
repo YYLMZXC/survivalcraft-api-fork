@@ -44,7 +44,7 @@ namespace Game
 			}
 			set
 			{
-				m_barsCount = MathUtils.Clamp(value, 1, 1000);
+				m_barsCount = Math.Clamp(value, 1, 1000);
 			}
 		}
 
@@ -198,10 +198,10 @@ namespace Game
 				bool flag = i % 2 == 0;
 				float num3 = 0.5f * i;
 				float num4 = 0f;
-				num4 = (!FlipDirection) ? MathUtils.Clamp((Value - (num3 / BarsCount)) * BarsCount, 0f, 1f) : MathUtils.Clamp((Value - ((BarsCount - num3 - 1f) / BarsCount)) * BarsCount, 0f, 1f);
+				num4 = (!FlipDirection) ? Math.Clamp((Value - (num3 / BarsCount)) * BarsCount, 0f, 1f) : Math.Clamp((Value - ((BarsCount - num3 - 1f) / BarsCount)) * BarsCount, 0f, 1f);
 				if (!BarBlending)
 				{
-					num4 = MathUtils.Ceiling(num4);
+					num4 = MathF.Ceiling(num4);
 				}
 				float s = (m_flashCount > 0f) ? (1f - MathF.Abs(MathF.Sin(m_flashCount * (float)Math.PI))) : 1f;
 				Color c = LitBarColor;

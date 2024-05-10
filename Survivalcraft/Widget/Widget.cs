@@ -45,10 +45,10 @@ namespace Game
 				if (widget.ClampToBounds && flag)
 				{
 					scissorRectangle2 = scissorRectangle;
-					int num = (int)MathUtils.Floor(widget.GlobalBounds.Min.X - 0.5f);
-					int num2 = (int)MathUtils.Floor(widget.GlobalBounds.Min.Y - 0.5f);
-					int num3 = (int)MathUtils.Ceiling(widget.GlobalBounds.Max.X - 0.5f);
-					int num4 = (int)MathUtils.Ceiling(widget.GlobalBounds.Max.Y - 0.5f);
+					int num = (int)MathF.Floor(widget.GlobalBounds.Min.X - 0.5f);
+					int num2 = (int)MathF.Floor(widget.GlobalBounds.Min.Y - 0.5f);
+					int num3 = (int)MathF.Ceiling(widget.GlobalBounds.Max.X - 0.5f);
+					int num4 = (int)MathF.Ceiling(widget.GlobalBounds.Max.Y - 0.5f);
 					scissorRectangle = Rectangle.Intersection(new Rectangle(num, num2, num3 - num, num4 - num2), scissorRectangle2.Value);
 					DrawItem drawItemFromCache = GetDrawItemFromCache();
 					drawItemFromCache.ScissorRectangle = scissorRectangle;

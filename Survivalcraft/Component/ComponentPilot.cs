@@ -165,20 +165,20 @@ namespace Game
 						Vector3 value2 = Speed * Vector3.Normalize(v2 - position);
 						value2.Y = MathUtils.Max(value2.Y, -0.5f);
 						m_flyOrder = value2;
-						m_turnOrder = new Vector2(MathUtils.Clamp(x, -1f, 1f), 0f);
+						m_turnOrder = new Vector2(Math.Clamp(x, -1f, 1f), 0f);
 					}
 					else if (m_componentCreature.ComponentLocomotion.SwimSpeed > 0f && m_componentCreature.ComponentBody.ImmersionFactor > 0.5f)
 					{
 						Vector3 value3 = Speed * Vector3.Normalize(v - position);
-						value3.Y = MathUtils.Clamp(value3.Y, -0.5f, 0.5f);
+						value3.Y = Math.Clamp(value3.Y, -0.5f, 0.5f);
 						m_swimOrder = value3;
-						m_turnOrder = new Vector2(MathUtils.Clamp(x, -1f, 1f), 0f);
+						m_turnOrder = new Vector2(Math.Clamp(x, -1f, 1f), 0f);
 					}
 					else if (m_componentCreature.ComponentLocomotion.WalkSpeed > 0f)
 					{
 						if (IsTerrainSafeToGo(position, vector))
 						{
-							m_turnOrder = new Vector2(MathUtils.Clamp(x, -1f, 1f), 0f);
+							m_turnOrder = new Vector2(Math.Clamp(x, -1f, 1f), 0f);
 							if (num2 > 1f)
 							{
 								m_walkOrder = new Vector2(0f, MathUtils.Lerp(Speed, 0f, MathUtils.Saturate((MathF.Abs(x) - 0.33f) / 0.66f)));

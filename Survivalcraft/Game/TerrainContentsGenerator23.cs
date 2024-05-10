@@ -49,10 +49,10 @@ namespace Game
 
 			public float Sample(float x, float y)
 			{
-				int num = (int)MathUtils.Floor(x);
-				int num2 = (int)MathUtils.Floor(y);
-				int num3 = (int)MathUtils.Ceiling(x);
-				int num4 = (int)MathUtils.Ceiling(y);
+				int num = (int)MathF.Floor(x);
+				int num2 = (int)MathF.Floor(y);
+				int num3 = (int)MathF.Ceiling(x);
+				int num4 = (int)MathF.Ceiling(y);
 				float f = x - (float)num;
 				float f2 = y - (float)num2;
 				float x2 = m_data[num + (num2 * m_sizeX)];
@@ -117,12 +117,12 @@ namespace Game
 
 			public float Sample(float x, float y, float z)
 			{
-				int num = (int)MathUtils.Floor(x);
-				int num2 = (int)MathUtils.Ceiling(x);
-				int num3 = (int)MathUtils.Floor(y);
-				int num4 = (int)MathUtils.Ceiling(y);
-				int num5 = (int)MathUtils.Floor(z);
-				int num6 = (int)MathUtils.Ceiling(z);
+				int num = (int)MathF.Floor(x);
+				int num2 = (int)MathF.Ceiling(x);
+				int num3 = (int)MathF.Floor(y);
+				int num4 = (int)MathF.Ceiling(y);
+				int num5 = (int)MathF.Floor(z);
+				int num6 = (int)MathF.Ceiling(z);
 				float f = x - (float)num;
 				float f2 = y - (float)num3;
 				float f3 = z - (float)num5;
@@ -298,8 +298,8 @@ namespace Game
 			m_mountainsOffset = new Vector2(random.Float(-3000f, 3000f), random.Float(-3000f, 3000f));
 			m_riversOffset = new Vector2(random.Float(-3000f, 3000f), random.Float(-3000f, 3000f));
 			TGBiomeScaling = ((m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.Island) ? 1f : 1.75f) * m_worldSettings.BiomeSize;
-			TGShoreFluctuations = MathUtils.Clamp(2f * num, 0f, 150f);
-			TGShoreFluctuationsScaling = MathUtils.Clamp(0.04f * num, 0.5f, 3f);
+			TGShoreFluctuations = Math.Clamp(2f * num, 0f, 150f);
+			TGShoreFluctuationsScaling = Math.Clamp(0.04f * num, 0.5f, 3f);
 			TGOceanSlope = 0.006f;
 			TGOceanSlopeVariation = 0.004f;
 			TGIslandsFrequency = 0.01f;
@@ -450,17 +450,17 @@ namespace Game
 			float f3 = TGRiversStrength * num12;
 			float num18 = num13 + num14 + num15 + num17 + num16;
 			float num19 = MathUtils.Min(MathUtils.Lerp(num18, x2, f3), num18);
-			return MathUtils.Clamp(64f + num19, 10f, 251f);
+			return Math.Clamp(64f + num19, 10f, 251f);
 		}
 
 		public int CalculateTemperature(float x, float z)
 		{
-			return MathUtils.Clamp((int)(MathUtils.Saturate((3f * SimplexNoise.OctavedNoise(x + m_temperatureOffset.X, z + m_temperatureOffset.Y, 0.0015f / TGBiomeScaling, 5, 2f, 0.6f)) - 1.1f + (m_worldSettings.TemperatureOffset / 16f)) * 16f), 0, 15);
+			return Math.Clamp((int)(MathUtils.Saturate((3f * SimplexNoise.OctavedNoise(x + m_temperatureOffset.X, z + m_temperatureOffset.Y, 0.0015f / TGBiomeScaling, 5, 2f, 0.6f)) - 1.1f + (m_worldSettings.TemperatureOffset / 16f)) * 16f), 0, 15);
 		}
 
 		public int CalculateHumidity(float x, float z)
 		{
-			return MathUtils.Clamp((int)(MathUtils.Saturate((3f * SimplexNoise.OctavedNoise(x + m_humidityOffset.X, z + m_humidityOffset.Y, 0.0012f / TGBiomeScaling, 5, 2f, 0.6f)) - 0.9f + (m_worldSettings.HumidityOffset / 16f)) * 16f), 0, 15);
+			return Math.Clamp((int)(MathUtils.Saturate((3f * SimplexNoise.OctavedNoise(x + m_humidityOffset.X, z + m_humidityOffset.Y, 0.0012f / TGBiomeScaling, 5, 2f, 0.6f)) - 0.9f + (m_worldSettings.HumidityOffset / 16f)) * 16f), 0, 15);
 		}
 
 		public static float Squish(float v, float zero, float one)
@@ -759,7 +759,7 @@ namespace Game
 							int num10;
 							if (num7 == 62)
 							{
-								num10 = (int)MathUtils.Clamp(1f * (float)-temperature, 1f, 7f);
+								num10 = (int)Math.Clamp(1f * (float)-temperature, 1f, 7f);
 							}
 							else
 							{
@@ -1694,7 +1694,7 @@ namespace Game
 				for (int j = 0; j < 100; j++)
 				{
 					int num5 = num2 + random.Int(-3, 3);
-					int num6 = MathUtils.Clamp(num4 + random.Int(-12, 1), 1, 255);
+					int num6 = Math.Clamp(num4 + random.Int(-12, 1), 1, 255);
 					int num7 = num3 + random.Int(-3, 3);
 					switch (Terrain.ExtractContents(chunk.GetCellValueFast(num5, num6, num7)))
 					{
@@ -2040,7 +2040,7 @@ namespace Game
 			}
 			if (num >= 190 && num <= 255 && point.X >= 1 && point.X < 15 && point.Y >= 1 && point.Y < 15)
 			{
-				int data = MathUtils.Clamp((int)(4f * MathUtils.LinearStep(190f, 256f, num)), 0, 3);
+				int data = Math.Clamp((int)(4f * MathUtils.LinearStep(190f, 256f, num)), 0, 3);
 				chunk.SetCellValueFast(point.X, num, point.Y, Terrain.MakeBlockValue(258, 0, data));
 			}
 		}
@@ -2165,7 +2165,7 @@ namespace Game
 					Vector3 zero = Vector3.Zero;
 					for (int k = 0; k < num2; k++)
 					{
-						terrainBrush.AddBox((int)MathUtils.Floor(zero.X), (int)MathUtils.Floor(zero.Y), (int)MathUtils.Floor(zero.Z), 1, 1, 1, 16);
+						terrainBrush.AddBox((int)MathF.Floor(zero.X), (int)MathF.Floor(zero.Y), (int)MathF.Floor(zero.Z), 1, 1, 1, 16);
 						zero += vector;
 					}
 				}
@@ -2187,7 +2187,7 @@ namespace Game
 					Vector3 zero2 = Vector3.Zero;
 					for (int n = 0; n < num4; n++)
 					{
-						terrainBrush2.AddBox((int)MathUtils.Floor(zero2.X), (int)MathUtils.Floor(zero2.Y), (int)MathUtils.Floor(zero2.Z), 1, 1, 1, 39);
+						terrainBrush2.AddBox((int)MathF.Floor(zero2.X), (int)MathF.Floor(zero2.Y), (int)MathF.Floor(zero2.Z), 1, 1, 1, 39);
 						zero2 += vector2;
 					}
 				}
@@ -2205,7 +2205,7 @@ namespace Game
 					Vector3 zero3 = Vector3.Zero;
 					for (int num9 = 0; num9 < num8; num9++)
 					{
-						terrainBrush3.AddBox((int)MathUtils.Floor(zero3.X), (int)MathUtils.Floor(zero3.Y), (int)MathUtils.Floor(zero3.Z), 1, 1, 1, 41);
+						terrainBrush3.AddBox((int)MathF.Floor(zero3.X), (int)MathF.Floor(zero3.Y), (int)MathF.Floor(zero3.Z), 1, 1, 1, 41);
 						zero3 += vector3;
 					}
 				}
@@ -2223,7 +2223,7 @@ namespace Game
 					Vector3 zero4 = Vector3.Zero;
 					for (int num14 = 0; num14 < num13; num14++)
 					{
-						terrainBrush4.AddBox((int)MathUtils.Floor(zero4.X), (int)MathUtils.Floor(zero4.Y), (int)MathUtils.Floor(zero4.Z), 1, 1, 1, 100);
+						terrainBrush4.AddBox((int)MathF.Floor(zero4.X), (int)MathF.Floor(zero4.Y), (int)MathF.Floor(zero4.Z), 1, 1, 1, 100);
 						zero4 += vector4;
 					}
 				}
@@ -2241,7 +2241,7 @@ namespace Game
 					Vector3 zero5 = Vector3.Zero;
 					for (int num19 = 0; num19 < num18; num19++)
 					{
-						terrainBrush5.AddBox((int)MathUtils.Floor(zero5.X), (int)MathUtils.Floor(zero5.Y), (int)MathUtils.Floor(zero5.Z), 1, 1, 1, 101);
+						terrainBrush5.AddBox((int)MathF.Floor(zero5.X), (int)MathF.Floor(zero5.Y), (int)MathF.Floor(zero5.Z), 1, 1, 1, 101);
 						zero5 += vector5;
 					}
 				}
@@ -2259,7 +2259,7 @@ namespace Game
 					Vector3 zero6 = Vector3.Zero;
 					for (int num24 = 0; num24 < num23; num24++)
 					{
-						terrainBrush6.AddBox((int)MathUtils.Floor(zero6.X), (int)MathUtils.Floor(zero6.Y), (int)MathUtils.Floor(zero6.Z), 1, 1, 1, 112);
+						terrainBrush6.AddBox((int)MathF.Floor(zero6.X), (int)MathF.Floor(zero6.Y), (int)MathF.Floor(zero6.Z), 1, 1, 1, 112);
 						zero6 += vector6;
 					}
 				}
@@ -2277,7 +2277,7 @@ namespace Game
 					Vector3 zero7 = Vector3.Zero;
 					for (int num29 = 0; num29 < num28; num29++)
 					{
-						terrainBrush7.AddBox((int)MathUtils.Floor(zero7.X), (int)MathUtils.Floor(zero7.Y), (int)MathUtils.Floor(zero7.Z), 1, 1, 1, 148);
+						terrainBrush7.AddBox((int)MathF.Floor(zero7.X), (int)MathF.Floor(zero7.Y), (int)MathF.Floor(zero7.Z), 1, 1, 1, 148);
 						zero7 += vector7;
 					}
 				}
@@ -2295,7 +2295,7 @@ namespace Game
 					Vector3 zero8 = Vector3.Zero;
 					for (int num34 = 0; num34 < num33; num34++)
 					{
-						terrainBrush8.AddBox((int)MathUtils.Floor(zero8.X), (int)MathUtils.Floor(zero8.Y), (int)MathUtils.Floor(zero8.Z), 1, 1, 1, 2);
+						terrainBrush8.AddBox((int)MathF.Floor(zero8.X), (int)MathF.Floor(zero8.Y), (int)MathF.Floor(zero8.Z), 1, 1, 1, 2);
 						zero8 += vector8;
 					}
 				}
@@ -2313,7 +2313,7 @@ namespace Game
 					Vector3 zero9 = Vector3.Zero;
 					for (int num39 = 0; num39 < num38; num39++)
 					{
-						terrainBrush9.AddBox((int)MathUtils.Floor(zero9.X), (int)MathUtils.Floor(zero9.Y), (int)MathUtils.Floor(zero9.Z), 1, 1, 1, 6);
+						terrainBrush9.AddBox((int)MathF.Floor(zero9.X), (int)MathF.Floor(zero9.Y), (int)MathF.Floor(zero9.Z), 1, 1, 1, 6);
 						zero9 += vector9;
 					}
 				}
@@ -2331,7 +2331,7 @@ namespace Game
 					Vector3 zero10 = Vector3.Zero;
 					for (int num44 = 0; num44 < num43; num44++)
 					{
-						terrainBrush10.AddBox((int)MathUtils.Floor(zero10.X), (int)MathUtils.Floor(zero10.Y), (int)MathUtils.Floor(zero10.Z), 1, 1, 1, 66);
+						terrainBrush10.AddBox((int)MathF.Floor(zero10.X), (int)MathF.Floor(zero10.Y), (int)MathF.Floor(zero10.Z), 1, 1, 1, 66);
 						zero10 += vector10;
 					}
 				}
@@ -2349,7 +2349,7 @@ namespace Game
 					Vector3 zero11 = Vector3.Zero;
 					for (int num49 = 0; num49 < num48; num49++)
 					{
-						terrainBrush11.AddBox((int)MathUtils.Floor(zero11.X), (int)MathUtils.Floor(zero11.Y), (int)MathUtils.Floor(zero11.Z), 1, 1, 1, 72);
+						terrainBrush11.AddBox((int)MathF.Floor(zero11.X), (int)MathF.Floor(zero11.Y), (int)MathF.Floor(zero11.Z), 1, 1, 1, 72);
 						zero11 += vector11;
 					}
 				}
@@ -2367,7 +2367,7 @@ namespace Game
 					Vector3 zero12 = Vector3.Zero;
 					for (int num54 = 0; num54 < num53; num54++)
 					{
-						terrainBrush12.AddBox((int)MathUtils.Floor(zero12.X), (int)MathUtils.Floor(zero12.Y), (int)MathUtils.Floor(zero12.Z), 1, 1, 1, 7);
+						terrainBrush12.AddBox((int)MathF.Floor(zero12.X), (int)MathF.Floor(zero12.Y), (int)MathF.Floor(zero12.Z), 1, 1, 1, 7);
 						zero12 += vector12;
 					}
 				}
@@ -2385,7 +2385,7 @@ namespace Game
 					Vector3 zero13 = Vector3.Zero;
 					for (int num59 = 0; num59 < num58; num59++)
 					{
-						terrainBrush13.AddBox((int)MathUtils.Floor(zero13.X), (int)MathUtils.Floor(zero13.Y), (int)MathUtils.Floor(zero13.Z), 1, 1, 1, 67);
+						terrainBrush13.AddBox((int)MathF.Floor(zero13.X), (int)MathF.Floor(zero13.Y), (int)MathF.Floor(zero13.Z), 1, 1, 1, 67);
 						zero13 += vector13;
 					}
 				}
@@ -2403,7 +2403,7 @@ namespace Game
 					Vector3 zero14 = Vector3.Zero;
 					for (int num64 = 0; num64 < num63; num64++)
 					{
-						terrainBrush14.AddBox((int)MathUtils.Floor(zero14.X), (int)MathUtils.Floor(zero14.Y), (int)MathUtils.Floor(zero14.Z), 1, 1, 1, 3);
+						terrainBrush14.AddBox((int)MathF.Floor(zero14.X), (int)MathF.Floor(zero14.Y), (int)MathF.Floor(zero14.Z), 1, 1, 1, 3);
 						zero14 += vector14;
 					}
 				}
@@ -2424,8 +2424,8 @@ namespace Game
 					float num71 = vector15.Length();
 					int num72 = random.Int(3, 4);
 					int sizeY = 1 + (int)MathUtils.Lerp(MathUtils.Max(num66 / 3, 2.5f) * num68, 0f, num71 / (float)num66) + random.Int(0, 1);
-					terrainBrush15.AddBox((int)MathUtils.Floor(vector15.X), 0, (int)MathUtils.Floor(vector15.Y), num72, sizeY, num72, 0);
-					terrainBrush15.AddBox((int)MathUtils.Floor(vector15.X), -num67, (int)MathUtils.Floor(vector15.Y), num72, num67, num72, 18);
+					terrainBrush15.AddBox((int)MathF.Floor(vector15.X), 0, (int)MathF.Floor(vector15.Y), num72, sizeY, num72, 0);
+					terrainBrush15.AddBox((int)MathF.Floor(vector15.X), -num67, (int)MathF.Floor(vector15.Y), num72, num67, num72, 18);
 				}
 				terrainBrush15.Compile();
 				m_waterPocketBrushes.Add(terrainBrush15);
@@ -2445,8 +2445,8 @@ namespace Game
 					int num80 = random.Int(3, 4);
 					int sizeY2 = 1 + (int)MathUtils.Lerp(MathUtils.Max(num74 / 3, 2.5f) * num76, 0f, num79 / (float)num74) + random.Int(0, 1);
 					int num81 = 1 + (int)MathUtils.Lerp(num75, 0f, num79 / (float)num74) + random.Int(0, 1);
-					terrainBrush16.AddBox((int)MathUtils.Floor(vector16.X), 0, (int)MathUtils.Floor(vector16.Y), num80, sizeY2, num80, 0);
-					terrainBrush16.AddBox((int)MathUtils.Floor(vector16.X), -num81, (int)MathUtils.Floor(vector16.Y), num80, num81, num80, 92);
+					terrainBrush16.AddBox((int)MathF.Floor(vector16.X), 0, (int)MathF.Floor(vector16.Y), num80, sizeY2, num80, 0);
+					terrainBrush16.AddBox((int)MathF.Floor(vector16.X), -num81, (int)MathF.Floor(vector16.Y), num80, num81, num80, 92);
 				}
 				terrainBrush16.Compile();
 				m_magmaPocketBrushes.Add(terrainBrush16);
@@ -2468,7 +2468,7 @@ namespace Game
 						Vector3 zero15 = Vector3.Zero;
 						for (int num88 = 0; num88 < num87; num88++)
 						{
-							terrainBrush17.AddBox((int)MathUtils.Floor(zero15.X) - (num86 / 2), (int)MathUtils.Floor(zero15.Y) - (num86 / 2), (int)MathUtils.Floor(zero15.Z) - (num86 / 2), num86, num86, num86, 0);
+							terrainBrush17.AddBox((int)MathF.Floor(zero15.X) - (num86 / 2), (int)MathF.Floor(zero15.Y) - (num86 / 2), (int)MathF.Floor(zero15.Z) - (num86 / 2), num86, num86, num86, 0);
 							zero15 += vector17;
 						}
 					}

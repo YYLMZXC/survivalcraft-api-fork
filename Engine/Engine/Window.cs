@@ -109,7 +109,7 @@ namespace Engine
             set
             {
                 VerifyWindowOpened();
-                m_presentationInterval = MathUtils.Clamp(value, 1, 4);
+                m_presentationInterval = Math.Clamp(value, 1, 4);
             }
         }
 #else
@@ -255,7 +255,7 @@ namespace Engine
             set
             {
                 VerifyWindowOpened();
-                value = MathUtils.Clamp(value, 0, 4);
+                value = Math.Clamp(value, 0, 4);
                 if (value != PresentationInterval)
                 {
                     m_gameWindow.Context.SwapInterval = value;

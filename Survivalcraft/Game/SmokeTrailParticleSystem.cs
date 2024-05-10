@@ -61,7 +61,7 @@ namespace Game
 			{
 				IsStopped = true;
 			}
-			float num = MathUtils.Clamp(50f / m_size, 10f, 40f);
+			float num = Math.Clamp(50f / m_size, 10f, 40f);
 			m_toGenerate += num * dt;
 			float num2 = MathF.Pow(0.1f, dt);
 			bool flag = false;

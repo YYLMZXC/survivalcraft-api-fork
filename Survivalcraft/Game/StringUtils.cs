@@ -187,8 +187,8 @@ namespace Game
 				return;
 			}
 			float num2 = MathF.Pow(10f, Math.Abs(precision));
-			ulong num3 = (ulong)MathUtils.Floor(num);
-			ulong num4 = (ulong)MathF.Round((num - MathUtils.Floor(num)) * num2);
+			ulong num3 = (ulong)MathF.Floor(num);
+			ulong num4 = (ulong)MathF.Round((num - MathF.Floor(num)) * num2);
 			if ((float)(double)num4 >= num2)
 			{
 				num3++;

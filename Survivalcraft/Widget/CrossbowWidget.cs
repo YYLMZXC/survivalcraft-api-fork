@@ -119,7 +119,7 @@ namespace Game
 
 		public static int PositionToDraw(float position)
 		{
-			return (int)MathUtils.Clamp(MathF.Round((position - 85f) / 5.4f), 0f, 15f);
+			return (int)Math.Clamp(MathF.Round((position - 85f) / 5.4f), 0f, 15f);
 		}
 	}
 }

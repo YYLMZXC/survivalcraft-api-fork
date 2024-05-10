@@ -22,7 +22,7 @@ namespace Game
 
 		public static int SetShadowStrength(int data, int shadowStrength)
 		{
-			shadowStrength = MathUtils.Clamp(shadowStrength, -128, 128);
+			shadowStrength = Math.Clamp(shadowStrength, -128, 128);
 			return shadowStrength + 128;
 		}
 	}

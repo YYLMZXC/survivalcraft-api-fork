@@ -16,7 +16,7 @@ namespace Game
 		{
 			// TODO: fix screen dpi
 			ApproximateScreenDpi = 0.5f * ((Window.ScreenSize.X / Window.Size.X) + (Window.ScreenSize.Y / Window.Size.Y));
-			ApproximateScreenDpi = MathUtils.Clamp(ApproximateScreenDpi, 96f, 800f);
+			ApproximateScreenDpi = Math.Clamp(ApproximateScreenDpi, 96f, 800f);
 		}
 	}
 }

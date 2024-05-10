@@ -64,7 +64,7 @@ namespace Game
 				{
 					int num = --m_componentCreativeInventory.PageIndex;
 				}
-				m_componentCreativeInventory.PageIndex = (m_pagesCount > 0) ? MathUtils.Clamp(m_componentCreativeInventory.PageIndex, 0, m_pagesCount - 1) : 0;
+				m_componentCreativeInventory.PageIndex = (m_pagesCount > 0) ? Math.Clamp(m_componentCreativeInventory.PageIndex, 0, m_pagesCount - 1) : 0;
 			}
 			if (m_componentCreativeInventory.CategoryIndex != m_assignedCategoryIndex)
 			{

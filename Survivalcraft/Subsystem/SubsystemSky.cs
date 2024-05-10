@@ -276,7 +276,7 @@ namespace Game
 
 		public void Update(float dt)
 		{
-			MoonPhase = (((int)MathUtils.Floor(m_subsystemTimeOfDay.Day - 0.5 + 5.0) % 8) + 8) % 8;
+			MoonPhase = (((int)Math.Floor(m_subsystemTimeOfDay.Day - 0.5 + 5.0) % 8) + 8) % 8;
 			UpdateLightAndViewParameters();
 		}
 

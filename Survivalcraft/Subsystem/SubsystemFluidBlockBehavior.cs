@@ -338,8 +338,8 @@ namespace Game
 			Terrain terrain = SubsystemTerrain.Terrain;
 			int num2 = Terrain.ToCell(p.X) - radius;
 			int num3 = Terrain.ToCell(p.X) + radius;
-			int num4 = MathUtils.Clamp(Terrain.ToCell(p.Y) - radius, 0, 254);
-			int num5 = MathUtils.Clamp(Terrain.ToCell(p.Y) + radius, 0, 254);
+			int num4 = Math.Clamp(Terrain.ToCell(p.Y) - radius, 0, 254);
+			int num5 = Math.Clamp(Terrain.ToCell(p.Y) + radius, 0, 254);
 			int num6 = Terrain.ToCell(p.Z) - radius;
 			int num7 = Terrain.ToCell(p.Z) + radius;
 			for (int i = num6; i <= num7; i++)

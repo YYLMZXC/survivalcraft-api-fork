@@ -155,7 +155,7 @@ namespace Engine
 
 		public Color(int r, int g, int b, int a)
 		{
-			this = new Color((byte)MathUtils.Clamp(r, 0, 255), (byte)MathUtils.Clamp(g, 0, 255), (byte)MathUtils.Clamp(b, 0, 255), (byte)MathUtils.Clamp(a, 0, 255));
+			this = new Color((byte)Math.Clamp(r, 0, 255), (byte)Math.Clamp(g, 0, 255), (byte)Math.Clamp(b, 0, 255), (byte)Math.Clamp(a, 0, 255));
 		}
 
 		public Color(int r, int g, int b)
@@ -181,7 +181,7 @@ namespace Engine
 
 		public Color(Color rgb, int a)
 		{
-			this = new Color(rgb, (byte)MathUtils.Clamp(a, 0, 255));
+			this = new Color(rgb, (byte)Math.Clamp(a, 0, 255));
 		}
 
 		public Color(Color rgb, float a)
@@ -265,7 +265,7 @@ namespace Engine
 
 		public static Color MultiplyColorOnly(Color c, float s)
 		{
-			return new Color((byte)MathUtils.Clamp((float)(int)c.R * s, 0f, 255f), (byte)MathUtils.Clamp((float)(int)c.G * s, 0f, 255f), (byte)MathUtils.Clamp((float)(int)c.B * s, 0f, 255f), c.A);
+			return new Color((byte)Math.Clamp((float)(int)c.R * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.G * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.B * s, 0f, 255f), c.A);
 		}
 
 		public static Vector3 RgbToHsv(Vector3 rgb)
@@ -299,7 +299,7 @@ namespace Engine
 				return new Vector3(hsv.Z);
 			}
 			hsv.X /= 60f;
-			int num = (int)MathUtils.Floor(hsv.X);
+			int num = (int)MathF.Floor(hsv.X);
 			float num2 = hsv.X - (float)num;
 			float num3 = hsv.Z * (1f - hsv.Y);
 			float num4 = hsv.Z * (1f - (hsv.Y * num2));
@@ -355,28 +355,28 @@ namespace Engine
 
 		public static Color operator *(Color c, float s)
 		{
-			return new Color((byte)MathUtils.Clamp((float)(int)c.R * s, 0f, 255f), (byte)MathUtils.Clamp((float)(int)c.G * s, 0f, 255f), (byte)MathUtils.Clamp((float)(int)c.B * s, 0f, 255f), (byte)MathUtils.Clamp((float)(int)c.A * s, 0f, 255f));
+			return new Color((byte)Math.Clamp((float)(int)c.R * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.G * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.B * s, 0f, 255f), (byte)Math.Clamp(c.A * s, 0f, 255f));
 		}
 
 		public static Color operator *(float s, Color c)
 		{
-			return new Color((byte)MathUtils.Clamp((float)(int)c.R * s, 0f, 255f), (byte)MathUtils.Clamp((float)(int)c.G * s, 0f, 255f), (byte)MathUtils.Clamp((float)(int)c.B * s, 0f, 255f), (byte)MathUtils.Clamp((float)(int)c.A * s, 0f, 255f));
+			return new Color((byte)Math.Clamp((float)(int)c.R * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.G * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.B * s, 0f, 255f), (byte)Math.Clamp(c.A * s, 0f, 255f));
 		}
 
 		public static Color operator /(Color c, float s)
 		{
 			float num = 1f / s;
-			return new Color((byte)MathUtils.Clamp((float)(int)c.R * num, 0f, 255f), (byte)MathUtils.Clamp((float)(int)c.G * num, 0f, 255f), (byte)MathUtils.Clamp((float)(int)c.B * num, 0f, 255f), (byte)MathUtils.Clamp((float)(int)c.A * num, 0f, 255f));
+			return new Color((byte)Math.Clamp((float)(int)c.R * num, 0f, 255f), (byte)Math.Clamp((float)(int)c.G * num, 0f, 255f), (byte)Math.Clamp((float)(int)c.B * num, 0f, 255f), (byte)Math.Clamp(c.A * num, 0f, 255f));
 		}
 
 		public static Color operator +(Color c1, Color c2)
 		{
-			return new Color((byte)MathUtils.Min(c1.R + c2.R, 255), (byte)MathUtils.Min(c1.G + c2.G, 255), (byte)MathUtils.Min(c1.B + c2.B, 255), (byte)MathUtils.Min(c1.A + c2.A, 255));
+			return new Color((byte)Math.Min(c1.R + c2.R, 255), (byte)Math.Min(c1.G + c2.G, 255), (byte)Math.Min(c1.B + c2.B, 255), (byte)Math.Min(c1.A + c2.A, 255));
 		}
 
 		public static Color operator -(Color c1, Color c2)
 		{
-			return new Color((byte)MathUtils.Max(c1.R - c2.R, 0), (byte)MathUtils.Max(c1.G - c2.G, 0), (byte)MathUtils.Max(c1.B - c2.B, 0), (byte)MathUtils.Max(c1.A - c2.A, 0));
+			return new Color((byte)Math.Max(c1.R - c2.R, 0), (byte)Math.Max(c1.G - c2.G, 0), (byte)Math.Max(c1.B - c2.B, 0), (byte)Math.Max(c1.A - c2.A, 0));
 		}
 
 		public static Color operator *(Color c1, Color c2)

@@ -217,27 +217,27 @@ namespace Game
 
 		public static int ToCell(float x)
 		{
-			return (int)MathUtils.Floor(x);
+			return (int)MathF.Floor(x);
 		}
 
 		public static Point2 ToCell(float x, float y)
 		{
-			return new Point2((int)MathUtils.Floor(x), (int)MathUtils.Floor(y));
+			return new Point2((int)MathF.Floor(x), (int)MathF.Floor(y));
 		}
 
 		public static Point2 ToCell(Vector2 p)
 		{
-			return new Point2((int)MathUtils.Floor(p.X), (int)MathUtils.Floor(p.Y));
+			return new Point2((int)MathF.Floor(p.X), (int)MathF.Floor(p.Y));
 		}
 
 		public static Point3 ToCell(float x, float y, float z)
 		{
-			return new Point3((int)MathUtils.Floor(x), (int)MathUtils.Floor(y), (int)MathUtils.Floor(z));
+			return new Point3((int)MathF.Floor(x), (int)MathF.Floor(y), (int)MathF.Floor(z));
 		}
 
 		public static Point3 ToCell(Vector3 p)
 		{
-			return new Point3((int)MathUtils.Floor(p.X), (int)MathUtils.Floor(p.Y), (int)MathUtils.Floor(p.Z));
+			return new Point3((int)MathF.Floor(p.X), (int)MathF.Floor(p.Y), (int)MathF.Floor(p.Z));
 		}
 
 		public bool IsCellValid(int x, int y, int z)

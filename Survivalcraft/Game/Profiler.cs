@@ -80,7 +80,7 @@ namespace Game
 			{
 				long num = Stopwatch.GetTimestamp() - m_startTicks;
 				m_metric.TotalTicks += num;
-				m_metric.MaxTicks = MathUtils.Max(m_metric.MaxTicks, num);
+				m_metric.MaxTicks = Math.Max(m_metric.MaxTicks, num);
 				m_metric.HitCount++;
 				m_metric = null;
 				return;

@@ -139,10 +139,10 @@ namespace Game
 			modelWidget.ViewPosition = new Vector3(boundingBox.Center().X, 1.5f, boundingBox.Center().Z) + (2.6f * MathF.Pow(x, 0.75f) * offset);
 			modelWidget.ViewTarget = boundingBox.Center();
 			modelWidget.ViewFov = 0.3f;
-			modelWidget.AutoRotationVector = autoRotate ? new Vector3(0f, MathUtils.Clamp(1.7f / boundingBox.Size().Length(), 0.25f, 1.4f), 0f) : Vector3.Zero;
+			modelWidget.AutoRotationVector = autoRotate ? new Vector3(0f, Math.Clamp(1.7f / boundingBox.Size().Length(), 0.25f, 1.4f), 0f) : Vector3.Zero;
 			if (autoAspect)
 			{
-				float num = MathUtils.Clamp(boundingBox.Size().XZ.Length() / boundingBox.Size().Y, 1f, 1.5f);
+				float num = Math.Clamp(boundingBox.Size().XZ.Length() / boundingBox.Size().Y, 1f, 1.5f);
 				modelWidget.Size = new Vector2(modelWidget.Size.Y * num, modelWidget.Size.Y);
 			}
 		}

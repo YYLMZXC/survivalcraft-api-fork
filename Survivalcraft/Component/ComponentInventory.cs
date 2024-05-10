@@ -20,7 +20,7 @@ namespace Game
 			}
 			set
 			{
-				m_activeSlotIndex = MathUtils.Clamp(value, 0, VisibleSlotsCount - 1);
+				m_activeSlotIndex = Math.Clamp(value, 0, VisibleSlotsCount - 1);
 			}
 		}
 
@@ -32,7 +32,7 @@ namespace Game
 			}
 			set
 			{
-				value = MathUtils.Clamp(value, 0, 10);
+				value = Math.Clamp(value, 0, 10);
 				if (value == m_visibleSlotsCount)
 				{
 					return;

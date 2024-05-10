@@ -61,7 +61,7 @@ namespace Game
 
 		public override bool Simulate(float dt)
 		{
-			dt = MathUtils.Clamp(dt, 0f, 0.1f);
+			dt = Math.Clamp(dt, 0f, 0.1f);
 			float num = MathF.Pow(0.2f, dt);
 			float num2 = MathF.Pow(1E-07f, dt);
 			bool flag = false;

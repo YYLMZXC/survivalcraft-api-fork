@@ -468,7 +468,7 @@ namespace Game
 			foreach (Point3 item2 in list)
 			{
 				float num3 = random.Float(0.3f * size, 0.45f * size);
-				int num4 = (int)MathUtils.Ceiling(num3);
+				int num4 = (int)MathF.Ceiling(num3);
 				for (int j = item2.X - num4; j <= item2.X + num4; j++)
 				{
 					for (int k = item2.Y - num4; k <= item2.Y + num4; k++)

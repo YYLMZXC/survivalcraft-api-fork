@@ -159,13 +159,13 @@ namespace Game
 			int num8 = (x < x2) ? 1 : ((x > x2) ? (-1) : 0);
 			int num9 = (y < y2) ? 1 : ((y > y2) ? (-1) : 0);
 			int num10 = (z < z2) ? 1 : ((z > z2) ? (-1) : 0);
-			float num11 = MathUtils.Floor(x);
+			float num11 = MathF.Floor(x);
 			float num12 = num11 + 1f;
 			float num13 = ((x > x2) ? (x - num11) : (num12 - x)) / Math.Abs(x2 - x);
-			float num14 = MathUtils.Floor(y);
+			float num14 = MathF.Floor(y);
 			float num15 = num14 + 1f;
 			float num16 = ((y > y2) ? (y - num14) : (num15 - y)) / Math.Abs(y2 - y);
-			float num17 = MathUtils.Floor(z);
+			float num17 = MathF.Floor(z);
 			float num18 = num17 + 1f;
 			float num19 = ((z > z2) ? (z - num17) : (num18 - z)) / Math.Abs(z2 - z);
 			float num20 = 1f / Math.Abs(x2 - x);

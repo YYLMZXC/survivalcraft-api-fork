@@ -113,7 +113,7 @@ namespace Game
 			{
 				int num = ++ComponentFurnitureInventory.PageIndex;
 			}
-			ComponentFurnitureInventory.PageIndex = (m_pagesCount > 0) ? MathUtils.Clamp(ComponentFurnitureInventory.PageIndex, 0, m_pagesCount - 1) : 0;
+			ComponentFurnitureInventory.PageIndex = (m_pagesCount > 0) ? Math.Clamp(ComponentFurnitureInventory.PageIndex, 0, m_pagesCount - 1) : 0;
 			if (m_addButton.IsClicked)
 			{
 				var list = new List<Tuple<string, Action>>

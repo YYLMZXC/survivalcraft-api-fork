@@ -36,7 +36,7 @@ namespace Engine.Media
 				if (CanSeek)
 				{
 					m_position = value;
-					m_stream.Position = MathUtils.Max(m_position, m_end);
+					m_stream.Position = Math.Max(m_position, m_end);
 					return;
 				}
 				throw new NotSupportedException();

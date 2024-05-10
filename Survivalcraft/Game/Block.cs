@@ -214,7 +214,7 @@ namespace Game
 		}
 		public virtual Texture2D GetDiggingCrackingTexture(ComponentMiner miner, float digProgress, int value, Texture2D[] defaultCrackTextures)
 		{
-			int num2 = MathUtils.Clamp((int)(digProgress * 8f), 0, 7);
+			int num2 = Math.Clamp((int)(digProgress * 8f), 0, 7);
 			return defaultCrackTextures[num2];
 		}
 		public virtual bool GetIsDiggingTransparent(int value)
@@ -516,7 +516,7 @@ namespace Game
 		{
 			int num = Terrain.ExtractData(value);
 			num &= 0xF;
-			num |= MathUtils.Clamp(damage, 0, 4095) << 4;
+			num |= Math.Clamp(damage, 0, 4095) << 4;
 			return Terrain.ReplaceData(value, num);
 		}
 

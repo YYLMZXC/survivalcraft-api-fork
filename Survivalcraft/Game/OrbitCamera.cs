@@ -35,8 +35,8 @@ namespace Game
 			Vector3 cameraSneakMove = componentInput.PlayerInput.CameraSneakMove;
 			Vector2 cameraLook = componentInput.PlayerInput.CameraLook;
 			m_angles.X = MathUtils.NormalizeAngle(m_angles.X + (4f * cameraLook.X * dt) + (0.5f * cameraSneakMove.X * dt));
-			m_angles.Y = MathUtils.Clamp(MathUtils.NormalizeAngle(m_angles.Y + (4f * cameraLook.Y * dt)), MathUtils.DegToRad(-20f), MathUtils.DegToRad(70f));
-			m_distance = MathUtils.Clamp(m_distance - (10f * cameraSneakMove.Z * dt), 2f, 16f);
+			m_angles.Y = Math.Clamp(MathUtils.NormalizeAngle(m_angles.Y + (4f * cameraLook.Y * dt)), MathUtils.DegToRad(-20f), MathUtils.DegToRad(70f));
+			m_distance = Math.Clamp(m_distance - (10f * cameraSneakMove.Z * dt), 2f, 16f);
 			var v = Vector3.Transform(new Vector3(m_distance, 0f, 0f), Matrix.CreateFromYawPitchRoll(m_angles.X, 0f, m_angles.Y));
 			Vector3 vector = GameWidget.Target.ComponentBody.BoundingBox.Center();
 			Vector3 vector2 = vector + v;

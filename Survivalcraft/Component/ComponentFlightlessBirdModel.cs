@@ -56,7 +56,7 @@ namespace Game
 			num2 = (0f - m_walkBobHeight) * MathUtils.Sqr(MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase));
 			float num3 = MathUtils.Min(12f * m_subsystemTime.GameTimeDelta, 1f);
 			Bob += num3 * (num2 - Bob);
-			float num4 = MathUtils.Floor(m_footstepsPhase);
+			float num4 = MathF.Floor(m_footstepsPhase);
 			if (m_footstepsPhase > num4 && footstepsPhase <= num4)
 			{
 				m_componentCreature.ComponentCreatureSounds.PlayFootstepSound(1f);
@@ -140,8 +140,8 @@ namespace Game
 					float y = 0f - MathUtils.DegToRad(35f + (55f * SimplexNoise.OctavedNoise((float)m_subsystemTime.GameTime, 3f, 2, 2f, 0.75f)));
 					vector2 = Vector2.Lerp(v2: new Vector2(0f, y), v1: vector2, f: m_feedFactor);
 				}
-				vector2.X = MathUtils.Clamp(vector2.X, 0f - MathUtils.DegToRad(90f), MathUtils.DegToRad(90f));
-				vector2.Y = MathUtils.Clamp(vector2.Y, 0f - MathUtils.DegToRad(90f), MathUtils.DegToRad(50f));
+				vector2.X = Math.Clamp(vector2.X, 0f - MathUtils.DegToRad(90f), MathUtils.DegToRad(90f));
+				vector2.Y = Math.Clamp(vector2.Y, 0f - MathUtils.DegToRad(90f), MathUtils.DegToRad(50f));
 				Vector2 vector3 = Vector2.Zero;
 				if (m_neckBone != null)
 				{

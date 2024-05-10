@@ -116,12 +116,12 @@ namespace Engine
 
 		public static Vector4 Floor(Vector4 v)
 		{
-			return new Vector4(MathUtils.Floor(v.X), MathUtils.Floor(v.Y), MathUtils.Floor(v.Z), MathUtils.Floor(v.W));
+			return new Vector4(MathF.Floor(v.X), MathF.Floor(v.Y), MathF.Floor(v.Z), MathF.Floor(v.W));
 		}
 
 		public static Vector4 Ceiling(Vector4 v)
 		{
-			return new Vector4(MathUtils.Ceiling(v.X), MathUtils.Ceiling(v.Y), MathUtils.Ceiling(v.Z), MathUtils.Ceiling(v.W));
+			return new Vector4(MathF.Ceiling(v.X), MathF.Ceiling(v.Y), MathF.Ceiling(v.Z), MathF.Ceiling(v.W));
 		}
 
 		public static Vector4 Round(Vector4 v)
@@ -151,7 +151,7 @@ namespace Engine
 
 		public static Vector4 Clamp(Vector4 v, float min, float max)
 		{
-			return new Vector4(MathUtils.Clamp(v.X, min, max), MathUtils.Clamp(v.Y, min, max), MathUtils.Clamp(v.Z, min, max), MathUtils.Clamp(v.W, min, max));
+			return new Vector4(Math.Clamp(v.X, min, max), Math.Clamp(v.Y, min, max), Math.Clamp(v.Z, min, max), Math.Clamp(v.W, min, max));
 		}
 
 		public static Vector4 Saturate(Vector4 v)

@@ -109,12 +109,12 @@ namespace Game
 				Vector3 max = new(Position.X + (float)Box.Right, Position.Y + (float)Box.Bottom, Position.Z + (float)Box.Far);
 				if (extendToFillCells)
 				{
-					min.X = MathUtils.Floor(min.X);
-					min.Y = MathUtils.Floor(min.Y);
-					min.Z = MathUtils.Floor(min.Z);
-					max.X = MathUtils.Ceiling(max.X);
-					max.Y = MathUtils.Ceiling(max.Y);
-					max.Z = MathUtils.Ceiling(max.Z);
+					min.X = MathF.Floor(min.X);
+					min.Y = MathF.Floor(min.Y);
+					min.Z = MathF.Floor(min.Z);
+					max.X = MathF.Ceiling(max.X);
+					max.Y = MathF.Ceiling(max.Y);
+					max.Z = MathF.Ceiling(max.Z);
 				}
 				return new BoundingBox(min, max);
 			}
@@ -316,27 +316,27 @@ namespace Game
 				{
 					if (vector.X < 0f)
 					{
-						movingBlockSet.Position.X = MathUtils.Ceiling(movingBlockSet.Position.X);
+						movingBlockSet.Position.X = MathF.Ceiling(movingBlockSet.Position.X);
 					}
 					else if (vector.X > 0f)
 					{
-						movingBlockSet.Position.X = MathUtils.Floor(movingBlockSet.Position.X);
+						movingBlockSet.Position.X = MathF.Floor(movingBlockSet.Position.X);
 					}
 					if (vector.Y < 0f)
 					{
-						movingBlockSet.Position.Y = MathUtils.Ceiling(movingBlockSet.Position.Y);
+						movingBlockSet.Position.Y = MathF.Ceiling(movingBlockSet.Position.Y);
 					}
 					else if (vector.Y > 0f)
 					{
-						movingBlockSet.Position.Y = MathUtils.Floor(movingBlockSet.Position.Y);
+						movingBlockSet.Position.Y = MathF.Floor(movingBlockSet.Position.Y);
 					}
 					if (vector.Z < 0f)
 					{
-						movingBlockSet.Position.Z = MathUtils.Ceiling(movingBlockSet.Position.Z);
+						movingBlockSet.Position.Z = MathF.Ceiling(movingBlockSet.Position.Z);
 					}
 					else if (vector.Z > 0f)
 					{
-						movingBlockSet.Position.Z = MathUtils.Floor(movingBlockSet.Position.Z);
+						movingBlockSet.Position.Z = MathF.Floor(movingBlockSet.Position.Z);
 					}
 				}
 				if (movingBlockSet.Stop || flag)
@@ -377,7 +377,7 @@ namespace Game
 			if (m_vertices.Count > 0)
 			{
 				Vector3 viewPosition = camera.ViewPosition;
-				Vector3 vector = new(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+				Vector3 vector = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
 				Matrix value = Matrix.CreateTranslation(vector - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 				Display.BlendState = BlendState.AlphaBlend;
 				Display.DepthStencilState = DepthStencilState.Default;
@@ -511,13 +511,13 @@ namespace Game
 		public void TerrainCollision(MovingBlockSet movingBlockSet)
 		{
 			Point3 point = default(Point3);
-			point.X = (int)MathUtils.Floor((float)movingBlockSet.Box.Left + movingBlockSet.Position.X);
-			point.Y = (int)MathUtils.Floor((float)movingBlockSet.Box.Top + movingBlockSet.Position.Y);
-			point.Z = (int)MathUtils.Floor((float)movingBlockSet.Box.Near + movingBlockSet.Position.Z);
+			point.X = (int)MathF.Floor((float)movingBlockSet.Box.Left + movingBlockSet.Position.X);
+			point.Y = (int)MathF.Floor((float)movingBlockSet.Box.Top + movingBlockSet.Position.Y);
+			point.Z = (int)MathF.Floor((float)movingBlockSet.Box.Near + movingBlockSet.Position.Z);
 			Point3 point2 = default(Point3);
-			point2.X = (int)MathUtils.Ceiling((float)movingBlockSet.Box.Right + movingBlockSet.Position.X);
-			point2.Y = (int)MathUtils.Ceiling((float)movingBlockSet.Box.Bottom + movingBlockSet.Position.Y);
-			point2.Z = (int)MathUtils.Ceiling((float)movingBlockSet.Box.Far + movingBlockSet.Position.Z);
+			point2.X = (int)MathF.Ceiling((float)movingBlockSet.Box.Right + movingBlockSet.Position.X);
+			point2.Y = (int)MathF.Ceiling((float)movingBlockSet.Box.Bottom + movingBlockSet.Position.Y);
+			point2.Z = (int)MathF.Ceiling((float)movingBlockSet.Box.Far + movingBlockSet.Position.Z);
 			for (int i = point.X; i < point2.X; i++)
 			{
 				for (int j = point.Z; j < point2.Z; j++)
@@ -536,9 +536,9 @@ namespace Game
 		public void GenerateGeometry(MovingBlockSet movingBlockSet)
 		{
 			Point3 point = default(Point3);
-			point.X = (movingBlockSet.CurrentVelocity.X > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.X)) : (point.X = (int)MathUtils.Ceiling(movingBlockSet.Position.X));
-			point.Y = (movingBlockSet.CurrentVelocity.Y > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.Y)) : (point.Y = (int)MathUtils.Ceiling(movingBlockSet.Position.Y));
-			point.Z = (movingBlockSet.CurrentVelocity.Z > 0f) ? ((int)MathUtils.Floor(movingBlockSet.Position.Z)) : (point.Z = (int)MathUtils.Ceiling(movingBlockSet.Position.Z));
+			point.X = (movingBlockSet.CurrentVelocity.X > 0f) ? ((int)MathF.Floor(movingBlockSet.Position.X)) : (point.X = (int)MathF.Ceiling(movingBlockSet.Position.X));
+			point.Y = (movingBlockSet.CurrentVelocity.Y > 0f) ? ((int)MathF.Floor(movingBlockSet.Position.Y)) : (point.Y = (int)MathF.Ceiling(movingBlockSet.Position.Y));
+			point.Z = (movingBlockSet.CurrentVelocity.Z > 0f) ? ((int)MathF.Floor(movingBlockSet.Position.Z)) : (point.Z = (int)MathF.Ceiling(movingBlockSet.Position.Z));
 			if (!(point != movingBlockSet.GeometryGenerationPosition))
 			{
 				return;

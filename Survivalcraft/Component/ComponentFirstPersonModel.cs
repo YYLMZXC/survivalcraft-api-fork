@@ -200,8 +200,8 @@ namespace Game
 			if (m_lastYpr.HasValue)
 			{
 				Vector3 vector2 = vector - m_lastYpr.Value;
-				m_lagAngles.X = MathUtils.Clamp(m_lagAngles.X - (0.08f * MathUtils.NormalizeAngle(vector2.X)), -0.1f, 0.1f);
-				m_lagAngles.Y = MathUtils.Clamp(m_lagAngles.Y - (0.08f * MathUtils.NormalizeAngle(vector2.Y)), -0.1f, 0.1f);
+				m_lagAngles.X = Math.Clamp(m_lagAngles.X - (0.08f * MathUtils.NormalizeAngle(vector2.X)), -0.1f, 0.1f);
+				m_lagAngles.Y = Math.Clamp(m_lagAngles.Y - (0.08f * MathUtils.NormalizeAngle(vector2.Y)), -0.1f, 0.1f);
 			}
 			m_lastYpr = vector;
 			int activeBlockValue = m_componentMiner.ActiveBlockValue;

@@ -116,7 +116,7 @@ namespace Game
 			Bob += num3 * (num2 - Bob);
 			if (m_gait == Gait.Canter && m_useCanterSound)
 			{
-				float num4 = MathUtils.Floor(m_footstepsPhase);
+				float num4 = MathF.Floor(m_footstepsPhase);
 				if (m_footstepsPhase > num4 && footstepsPhase <= num4)
 				{
 					string footstepSoundMaterialName = m_subsystemSoundMaterials.GetFootstepSoundMaterialName(m_componentCreature);
@@ -128,7 +128,7 @@ namespace Game
 			}
 			else
 			{
-				float num5 = MathUtils.Floor(m_footstepsPhase);
+				float num5 = MathF.Floor(m_footstepsPhase);
 				if (m_footstepsPhase > num5 && footstepsPhase <= num5)
 				{
 					m_componentCreature.ComponentCreatureSounds.PlayFootstepSound(1f);
@@ -237,8 +237,8 @@ namespace Game
 				m_headAngleY += num18 * (num5 - m_headAngleY);
 				Vector2 vector2 = m_componentCreature.ComponentLocomotion.LookAngles;
 				vector2.Y += m_headAngleY;
-				vector2.X = MathUtils.Clamp(vector2.X, 0f - MathUtils.DegToRad(65f), MathUtils.DegToRad(65f));
-				vector2.Y = MathUtils.Clamp(vector2.Y, 0f - MathUtils.DegToRad(55f), MathUtils.DegToRad(55f));
+				vector2.X = Math.Clamp(vector2.X, 0f - MathUtils.DegToRad(65f), MathUtils.DegToRad(65f));
+				vector2.Y = Math.Clamp(vector2.Y, 0f - MathUtils.DegToRad(55f), MathUtils.DegToRad(55f));
 				Vector2 vector3 = Vector2.Zero;
 				if (m_neckBone != null)
 				{

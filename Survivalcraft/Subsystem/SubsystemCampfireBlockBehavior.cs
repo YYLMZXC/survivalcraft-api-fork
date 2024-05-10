@@ -197,7 +197,7 @@ namespace Game
 			int num = Terrain.ExtractData(cellValue);
 			if (num > 0)
 			{
-				int num2 = MathUtils.Clamp(num + steps, 0, 15);
+				int num2 = Math.Clamp(num + steps, 0, 15);
 				if (num2 != num)
 				{
 					int value = Terrain.ReplaceData(cellValue, num2);

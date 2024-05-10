@@ -148,7 +148,7 @@ namespace Engine.Input
                     }
                     else if (Time.FrameStartTime >= m_keysDownRepeatArray[j])
                     {
-                        m_keysDownRepeatArray[j] = MathUtils.Max(Time.FrameStartTime, m_keysDownRepeatArray[j] + m_keyNextRepeatTime);
+                        m_keysDownRepeatArray[j] = Math.Max(Time.FrameStartTime, m_keysDownRepeatArray[j] + m_keyNextRepeatTime);
                     }
                 }
                 else

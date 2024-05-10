@@ -208,7 +208,7 @@ namespace Game
 							{
 								componentPlayer.PlayerStats.AirCreatureKills++;
 							}
-							int num = (int)MathUtils.Ceiling(m_componentCreature.ComponentHealth.AttackResilience / 12f);
+							int num = (int)MathF.Ceiling(m_componentCreature.ComponentHealth.AttackResilience / 12f);
 							for (int i = 0; i < num; i++)
 							{
 								Vector2 vector = m_random.Vector2(2.5f, 3.5f);
@@ -321,7 +321,7 @@ namespace Game
 			{
 				m_componentCreature.ComponentCreatureSounds.PlayPainSound();
 				m_redScreenFactor += -4f * HealthChange;
-				m_componentPlayer?.ComponentGui.HealthBarWidget.Flash(MathUtils.Clamp((int)((0f - HealthChange) * 30f), 0, 10));
+				m_componentPlayer?.ComponentGui.HealthBarWidget.Flash(Math.Clamp((int)((0f - HealthChange) * 30f), 0, 10));
 			}
 			if (m_componentPlayer != null)
 			{

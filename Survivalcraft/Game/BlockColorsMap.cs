@@ -45,7 +45,7 @@ namespace Game
 
 		public Color Lookup(int temperature, int humidity)
 		{
-			int num = MathUtils.Clamp(temperature, 0, 15) + (16 * MathUtils.Clamp(humidity, 0, 15));
+			int num = Math.Clamp(temperature, 0, 15) + (16 * Math.Clamp(humidity, 0, 15));
 			return m_map[num];
 		}
 

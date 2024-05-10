@@ -260,7 +260,7 @@ namespace Engine.Media
 
 		public float CalculateCharacterPosition(string text, int characterIndex, Vector2 scale, Vector2 spacing)
 		{
-			characterIndex = MathUtils.Clamp(characterIndex, 0, text.Length);
+			characterIndex = Math.Clamp(characterIndex, 0, text.Length);
 			return MeasureText(text, 0, characterIndex, scale, spacing).X;
 		}
 
@@ -434,10 +434,10 @@ namespace Engine.Media
 				{
 					if (image.GetPixelFast(i, j).A != 0)
 					{
-						num = MathUtils.Min(num, i);
-						num2 = MathUtils.Min(num2, j);
-						num3 = MathUtils.Max(num3, i);
-						num4 = MathUtils.Max(num4, j);
+						num = Math.Min(num, i);
+						num2 = Math.Min(num2, j);
+						num3 = Math.Max(num3, i);
+						num4 = Math.Max(num4, j);
 					}
 				}
 			}

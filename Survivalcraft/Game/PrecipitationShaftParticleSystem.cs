@@ -196,7 +196,7 @@ namespace Game
 							m_toCreate -= 1f;
 						}
 					}
-					m_toCreate -= MathUtils.Floor(m_toCreate);
+					m_toCreate -= MathF.Floor(m_toCreate);
 				}
 				else
 				{

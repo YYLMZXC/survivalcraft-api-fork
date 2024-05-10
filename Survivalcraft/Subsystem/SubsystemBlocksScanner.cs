@@ -33,7 +33,7 @@ namespace Game
 		{
 			Terrain terrain = m_subsystemTerrain.Terrain;
 			m_pollCount += terrain.AllocatedChunks.Length * 16 * 16 * dt / 60f;
-			m_pollCount = MathUtils.Clamp(m_pollCount, 0f, 200f);
+			m_pollCount = Math.Clamp(m_pollCount, 0f, 200f);
 			TerrainChunk nextChunk = terrain.GetNextChunk(m_pollChunkCoordinates.X, m_pollChunkCoordinates.Y);
 			if (nextChunk == null)
 			{

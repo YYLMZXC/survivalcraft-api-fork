@@ -60,7 +60,7 @@ namespace Game
 		{
 			if (m_isActive)
 			{
-				dt = MathUtils.Clamp(dt, 0f, 0.1f);
+				dt = Math.Clamp(dt, 0f, 0.1f);
 				bool flag = false;
 				for (int i = 0; i < Particles.Length; i++)
 				{

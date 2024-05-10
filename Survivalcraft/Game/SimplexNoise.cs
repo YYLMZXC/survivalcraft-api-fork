@@ -615,8 +615,8 @@ namespace Game
 
 		public static float Noise(float x)
 		{
-			int num = (int)MathUtils.Floor(x);
-			int x2 = (int)MathUtils.Ceiling(x);
+			int num = (int)MathF.Floor(x);
+			int x2 = (int)MathF.Ceiling(x);
 			float num2 = x - num;
 			float num3 = Hash(num);
 			float num4 = Hash(x2);
@@ -626,8 +626,8 @@ namespace Game
 		public static float Noise(float x, float y)
 		{
 			float num = (x + y) * 0.366025418f;
-			int num2 = (int)MathUtils.Floor(x + num);
-			int num3 = (int)MathUtils.Floor(y + num);
+			int num2 = (int)MathF.Floor(x + num);
+			int num3 = (int)MathF.Floor(y + num);
 			float num4 = (num2 + num3) * 0.211324871f;
 			float num5 = num2 - num4;
 			float num6 = num3 - num4;
@@ -693,9 +693,9 @@ namespace Game
 		public static float Noise(float x, float y, float z)
 		{
 			float num = (x + y + z) * 0.333333343f;
-			int num2 = (int)MathUtils.Floor(x + num);
-			int num3 = (int)MathUtils.Floor(y + num);
-			int num4 = (int)MathUtils.Floor(z + num);
+			int num2 = (int)MathF.Floor(x + num);
+			int num3 = (int)MathF.Floor(y + num);
+			int num4 = (int)MathF.Floor(z + num);
 			float num5 = (num2 + num3 + num4) * (355f / (678f * (float)Math.PI));
 			float num6 = num2 - num5;
 			float num7 = num3 - num5;

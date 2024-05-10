@@ -119,8 +119,8 @@ namespace Engine.Input
 			{
 				m_states[num].Sticks[0] = new Vector2(e.GetAxisValue(Axis.X), 0f - e.GetAxisValue(Axis.Y));
 				m_states[num].Sticks[1] = new Vector2(e.GetAxisValue(Axis.Z), 0f - e.GetAxisValue(Axis.Rz));
-				m_states[num].Triggers[0] = MathUtils.Max(e.GetAxisValue(Axis.Ltrigger), e.GetAxisValue(Axis.Brake));
-				m_states[num].Triggers[1] = MathUtils.Max(e.GetAxisValue(Axis.Rtrigger), e.GetAxisValue(Axis.Gas));
+				m_states[num].Triggers[0] = MathF.Max(e.GetAxisValue(Axis.Ltrigger), e.GetAxisValue(Axis.Brake));
+				m_states[num].Triggers[1] = MathF.Max(e.GetAxisValue(Axis.Rtrigger), e.GetAxisValue(Axis.Gas));
 				float axisValue = e.GetAxisValue(Axis.HatX);
 				float axisValue2 = e.GetAxisValue(Axis.HatY);
 				m_states[num].Buttons[10] = axisValue < -0.5f;
@@ -147,30 +147,27 @@ namespace Engine.Input
 			return -1;
 		}
 
-		public static GamePadButton TranslateKey(Keycode keyCode)
-		{
-			return keyCode switch
-			{
-				Keycode.ButtonA => GamePadButton.A,
-				Keycode.ButtonB => GamePadButton.B,
-				Keycode.ButtonX => GamePadButton.X,
-				Keycode.ButtonY => GamePadButton.Y,
-				Keycode.Back => GamePadButton.Back,
-				Keycode.ButtonL1 => GamePadButton.LeftShoulder,
-				Keycode.ButtonR1 => GamePadButton.RightShoulder,
-				Keycode.ButtonThumbl => GamePadButton.LeftThumb,
-				Keycode.ButtonThumbr => GamePadButton.RightThumb,
-				Keycode.DpadLeft => GamePadButton.DPadLeft,
-				Keycode.DpadRight => GamePadButton.DPadRight,
-				Keycode.DpadUp => GamePadButton.DPadUp,
-				Keycode.DpadDown => GamePadButton.DPadDown,
-				Keycode.ButtonSelect => GamePadButton.Back,
-				Keycode.ButtonStart => GamePadButton.Start,
-				_ => (GamePadButton)(-1),
-			};
-		}
+        public static GamePadButton TranslateKey(Keycode keyCode) => keyCode switch
+        {
+            Keycode.ButtonA => GamePadButton.A,
+            Keycode.ButtonB => GamePadButton.B,
+            Keycode.ButtonX => GamePadButton.X,
+            Keycode.ButtonY => GamePadButton.Y,
+            Keycode.Back => GamePadButton.Back,
+            Keycode.ButtonL1 => GamePadButton.LeftShoulder,
+            Keycode.ButtonR1 => GamePadButton.RightShoulder,
+            Keycode.ButtonThumbl => GamePadButton.LeftThumb,
+            Keycode.ButtonThumbr => GamePadButton.RightThumb,
+            Keycode.DpadLeft => GamePadButton.DPadLeft,
+            Keycode.DpadRight => GamePadButton.DPadRight,
+            Keycode.DpadUp => GamePadButton.DPadUp,
+            Keycode.DpadDown => GamePadButton.DPadDown,
+            Keycode.ButtonSelect => GamePadButton.Back,
+            Keycode.ButtonStart => GamePadButton.Start,
+            _ => (GamePadButton)(-1),
+        };
 
-		public static void Connect(int deviceId, int index)
+        public static void Connect(int deviceId, int index)
 		{
 			m_deviceToIndex.Add(deviceId, index);
 			m_states[index].IsConnected = true;
@@ -354,7 +351,7 @@ namespace Engine.Input
                         }
                         else if (Time.FrameStartTime >= state.ButtonsRepeat[j])
                         {
-                            state.ButtonsRepeat[j] = MathUtils.Max(Time.FrameStartTime, state.ButtonsRepeat[j] + m_buttonNextRepeatTime);
+                            state.ButtonsRepeat[j] = Math.Max(Time.FrameStartTime, state.ButtonsRepeat[j] + m_buttonNextRepeatTime);
                         }
                     }
                     else

@@ -116,7 +116,7 @@ namespace Game
 			}
 			set
 			{
-				value = MathUtils.Clamp(value, 0f, 1f);
+				value = Math.Clamp(value, 0f, 1f);
 				if (value != m_brightness)
 				{
 					m_brightness = value;

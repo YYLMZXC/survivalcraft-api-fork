@@ -116,7 +116,7 @@ namespace Game
 			}
 			if (flag)
 			{
-				float num2 = 0.5f * MathUtils.Floor(2f * MovementAnimationPhase);
+				float num2 = 0.5f * MathF.Floor(2f * MovementAnimationPhase);
 				if (MovementAnimationPhase != num2)
 				{
 					MovementAnimationPhase = MovementAnimationPhase - num2 > 0.25f
@@ -183,11 +183,11 @@ namespace Game
 			}
 			m_rowLeft = RowLeftOrder;
 			m_rowRight = RowRightOrder;
-			if ((m_rowLeft || m_rowRight) && componentMount != null && componentMount.ComponentBody.ImmersionFactor > 0f && MathUtils.Floor(1.1000000238418579 * m_subsystemTime.GameTime) != MathUtils.Floor(1.1000000238418579 * (m_subsystemTime.GameTime - m_subsystemTime.GameTimeDelta)))
+			if ((m_rowLeft || m_rowRight) && componentMount != null && componentMount.ComponentBody.ImmersionFactor > 0f && Math.Floor(1.1000000238418579 * m_subsystemTime.GameTime) != Math.Floor(1.1000000238418579 * (m_subsystemTime.GameTime - m_subsystemTime.GameTimeDelta)))
 			{
 				m_subsystemAudio.PlayRandomSound("Audio/Rowing", m_random.Float(0.4f, 0.6f), m_random.Float(-0.3f, 0.2f), m_componentCreature.ComponentBody.Position, 3f, autoDelay: true);
 			}
-			float num6 = MathUtils.Floor(m_footstepsPhase);
+			float num6 = MathF.Floor(m_footstepsPhase);
 			if (m_footstepsPhase > num6 && footstepsPhase <= num6)
 			{
 				if (m_componentCreature.ComponentBody.CrouchFactor < 1f)
@@ -237,8 +237,8 @@ namespace Game
 				position.Y += Bob;
 				vector.X += m_headingOffset;
 				float num2 = (float)MathUtils.Remainder((0.75 * m_subsystemGameInfo.TotalElapsedGameTime) + (GetHashCode() & 0xFFFF), 10000.0);
-				float x = MathUtils.Clamp(MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.Noise((1.02f * num2) - 100f)) + m_componentCreature.ComponentLocomotion.LookAngles.X + (1f * m_componentCreature.ComponentLocomotion.LastTurnOrder.X) + m_headingOffset, 0f - MathUtils.DegToRad(80f), MathUtils.DegToRad(80f));
-				float y = MathUtils.Clamp(MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.Noise((0.96f * num2) - 200f)) + m_componentCreature.ComponentLocomotion.LookAngles.Y, 0f - MathUtils.DegToRad(45f), MathUtils.DegToRad(45f));
+				float x = Math.Clamp(MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.Noise((1.02f * num2) - 100f)) + m_componentCreature.ComponentLocomotion.LookAngles.X + (1f * m_componentCreature.ComponentLocomotion.LastTurnOrder.X) + m_headingOffset, 0f - MathUtils.DegToRad(80f), MathUtils.DegToRad(80f));
+				float y = Math.Clamp(MathUtils.Lerp(-0.3f, 0.3f, SimplexNoise.Noise((0.96f * num2) - 200f)) + m_componentCreature.ComponentLocomotion.LookAngles.Y, 0f - MathUtils.DegToRad(45f), MathUtils.DegToRad(45f));
 				float num3 = 0f;
 				float y2 = 0f;
 				float x2 = 0f;

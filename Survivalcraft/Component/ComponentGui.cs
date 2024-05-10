@@ -346,7 +346,7 @@ namespace Game
 			float x = num2 - m_sidePanelsFactor;
 			if (MathF.Abs(x) > 0.01f)
 			{
-				m_sidePanelsFactor += MathUtils.Clamp(12f * MathUtils.PowSign(x, 0.75f) * num, 0f - MathF.Abs(x), MathF.Abs(x));
+				m_sidePanelsFactor += Math.Clamp(12f * MathUtils.PowSign(x, 0.75f) * num, 0f - MathF.Abs(x), MathF.Abs(x));
 			}
 			else
 			{
@@ -421,7 +421,7 @@ namespace Game
 				labelWidget2.Text = m_message.SmallText;
 				labelWidget.IsVisible = !string.IsNullOrEmpty(m_message.LargeText);
 				labelWidget2.IsVisible = !string.IsNullOrEmpty(m_message.SmallText);
-				float num = (float)MathUtils.Min(MathUtils.Saturate(2.0 * (realTime - m_message.StartTime)), MathUtils.Saturate(2.0 * (m_message.StartTime + m_message.Duration - realTime)));
+				float num = (float)Math.Min(MathUtils.Saturate(2.0 * (realTime - m_message.StartTime)), MathUtils.Saturate(2.0 * (m_message.StartTime + m_message.Duration - realTime)));
 				labelWidget.Color = new Color(num, num, num, num);
 				labelWidget2.Color = new Color(num, num, num, num);
 				if (Time.RealTime > m_message.StartTime + m_message.Duration)

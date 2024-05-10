@@ -138,7 +138,7 @@ namespace Game
 		{
 			int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
 			Vector3 viewPosition = camera.ViewPosition;
-			Vector3 v = new(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+			Vector3 v = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			Display.BlendState = BlendState.Opaque;
 			Display.DepthStencilState = DepthStencilState.Default;
@@ -185,7 +185,7 @@ namespace Game
 		{
 			int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
 			Vector3 viewPosition = camera.ViewPosition;
-			Vector3 v = new(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+			Vector3 v = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			Display.BlendState = BlendState.Opaque;
 			Display.DepthStencilState = DepthStencilState.Default;
@@ -213,7 +213,7 @@ namespace Game
 		{
 			int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
 			Vector3 viewPosition = camera.ViewPosition;
-			Vector3 v = new(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+			Vector3 v = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			Display.BlendState = BlendState.AlphaBlend;
 			Display.DepthStencilState = DepthStencilState.Default;

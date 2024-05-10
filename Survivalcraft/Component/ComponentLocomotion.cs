@@ -145,8 +145,8 @@ namespace Game
 			}
 			set
 			{
-				value.X = MathUtils.Clamp(value.X, 0f - MathUtils.DegToRad(140f), MathUtils.DegToRad(140f));
-				value.Y = MathUtils.Clamp(value.Y, 0f - MathUtils.DegToRad(82f), MathUtils.DegToRad(82f));
+				value.X = Math.Clamp(value.X, 0f - MathUtils.DegToRad(140f), MathUtils.DegToRad(140f));
+				value.Y = Math.Clamp(value.Y, 0f - MathUtils.DegToRad(82f), MathUtils.DegToRad(82f));
 				m_lookAngles = value;
 			}
 		}
@@ -365,9 +365,9 @@ namespace Game
 							m_flying = false;
 						}
 					}
-					playerStats.DeepestDive = MathUtils.Max(playerStats.DeepestDive, m_componentCreature.ComponentBody.ImmersionDepth);
-					playerStats.LowestAltitude = MathUtils.Min(playerStats.LowestAltitude, position.Y);
-					playerStats.HighestAltitude = MathUtils.Max(playerStats.HighestAltitude, position.Y);
+					playerStats.DeepestDive = Math.Max(playerStats.DeepestDive, m_componentCreature.ComponentBody.ImmersionDepth);
+					playerStats.LowestAltitude = Math.Min(playerStats.LowestAltitude, position.Y);
+					playerStats.HighestAltitude = Math.Max(playerStats.HighestAltitude, position.Y);
 					playerStats.EasiestModeUsed = (GameMode)MathUtils.Min((int)m_subsystemGameInfo.WorldSettings.GameMode, (int)playerStats.EasiestModeUsed);
 				}
 				m_lastPosition = position;
@@ -389,7 +389,7 @@ namespace Game
 					}
 				}
 				Quaternion rotation = m_componentCreature.ComponentBody.Rotation;
-				float num2 = MathUtils.Atan2((2f * rotation.Y * rotation.W) - (2f * rotation.X * rotation.Z), 1f - (2f * rotation.Y * rotation.Y) - (2f * rotation.Z * rotation.Z));
+				float num2 = MathF.Atan2((2f * rotation.Y * rotation.W) - (2f * rotation.X * rotation.Z), 1f - (2f * rotation.Y * rotation.Y) - (2f * rotation.Z * rotation.Z));
 				num2 += (0f - TurnSpeed) * TurnOrder.X * dt;
 				if (VrLookOrder.HasValue)
 				{
@@ -641,8 +641,8 @@ namespace Game
 				{
 					Vector2 value2 = WalkOrder.Value;
 					float num2 = LadderSpeed * value2.Y;
-					velocity.X = 5f * (MathUtils.Floor(position.X) + 0.5f - position.X);
-					velocity.Z = 5f * (MathUtils.Floor(position.Z) + 0.5f - position.Z);
+					velocity.X = 5f * (MathF.Floor(position.X) + 0.5f - position.X);
+					velocity.Z = 5f * (MathF.Floor(position.Z) + 0.5f - position.Z);
 					velocity.Y += MathUtils.Saturate(20f * dt) * (num2 - velocity.Y);
 					m_climbing = true;
 				}

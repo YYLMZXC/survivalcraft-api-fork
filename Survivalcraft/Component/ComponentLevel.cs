@@ -73,8 +73,8 @@ namespace Game
 			}
 			for (int i = 0; i < count; i++)
 			{
-				float num = 0.012f / MathF.Pow(1.08f, MathUtils.Floor(m_componentPlayer.PlayerData.Level - 1f));
-				if (MathUtils.Floor(m_componentPlayer.PlayerData.Level + num) > MathUtils.Floor(m_componentPlayer.PlayerData.Level))
+				float num = 0.012f / MathF.Pow(1.08f, MathF.Floor(m_componentPlayer.PlayerData.Level - 1f));
+				if (MathF.Floor(m_componentPlayer.PlayerData.Level + num) > MathF.Floor(m_componentPlayer.PlayerData.Level))
 				{
 					Time.QueueTimeDelayedExecution(Time.FrameStartTime + 0.5 + 0.0, delegate
 					{
@@ -124,14 +124,14 @@ namespace Game
 				factors.Add(item);
 			}
 			float level = m_componentPlayer.PlayerData.Level;
-			float num3 = 1f + (0.05f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f));
+			float num3 = 1f + (0.05f * MathF.Floor(Math.Clamp(level, 1f, 21f) - 1f));
 			float num4 = num2 * num3;
 			if (factors != null)
 			{
 				item = new Factor
 				{
 					Value = num3,
-					Description = string.Format(LanguageControl.Get(fName, 2), MathUtils.Floor(level).ToString())
+					Description = string.Format(LanguageControl.Get(fName, 2), MathF.Floor(level).ToString())
 				};
 				factors.Add(item);
 			}
@@ -220,14 +220,14 @@ namespace Game
 				factors.Add(item);
 			}
 			float level = m_componentPlayer.PlayerData.Level;
-			float num3 = 1f + (0.05f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f));
+			float num3 = 1f + (0.05f * MathF.Floor(Math.Clamp(level, 1f, 21f) - 1f));
 			float num4 = num2 * num3;
 			if (factors != null)
 			{
 				item = new Factor
 				{
 					Value = num3,
-					Description = string.Format(LanguageControl.Get(fName, 2), MathUtils.Floor(level).ToString())
+					Description = string.Format(LanguageControl.Get(fName, 2), MathF.Floor(level).ToString())
 				};
 				factors.Add(item);
 			}
@@ -295,14 +295,14 @@ namespace Game
 				factors.Add(item);
 			}
 			float level = m_componentPlayer.PlayerData.Level;
-			float num3 = 1f + (0.02f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f));
+			float num3 = 1f + (0.02f * MathF.Floor(Math.Clamp(level, 1f, 21f) - 1f));
 			num *= num3;
 			if (factors != null)
 			{
 				item = new Factor
 				{
 					Value = num3,
-					Description = string.Format(LanguageControl.Get(fName, 2), MathUtils.Floor(level).ToString())
+					Description = string.Format(LanguageControl.Get(fName, 2), MathF.Floor(level).ToString())
 				};
 				factors.Add(item);
 			}
@@ -398,14 +398,14 @@ namespace Game
 				factors.Add(item);
 			}
 			float level = m_componentPlayer.PlayerData.Level;
-			float num3 = 1f - (0.01f * MathUtils.Floor(MathUtils.Clamp(level, 1f, 21f) - 1f));
+			float num3 = 1f - (0.01f * MathF.Floor(Math.Clamp(level, 1f, 21f) - 1f));
 			float num4 = num2 * num3;
 			if (factors != null)
 			{
 				item = new Factor
 				{
 					Value = num3,
-					Description = string.Format(LanguageControl.Get(fName, 2), MathUtils.Floor(level).ToString())
+					Description = string.Format(LanguageControl.Get(fName, 2), MathF.Floor(level).ToString())
 				};
 				factors.Add(item);
 			}
@@ -441,10 +441,10 @@ namespace Game
 			{
 				AddExperience(1, playSound: false);
 			}
-			if (!m_lastLevelTextValue.HasValue || m_lastLevelTextValue.Value != MathUtils.Floor(m_componentPlayer.PlayerData.Level))
+			if (!m_lastLevelTextValue.HasValue || m_lastLevelTextValue.Value != MathF.Floor(m_componentPlayer.PlayerData.Level))
 			{
-				m_componentPlayer.ComponentGui.LevelLabelWidget.Text = string.Format(LanguageControl.Get(fName, 2), MathUtils.Floor(m_componentPlayer.PlayerData.Level).ToString());
-				m_lastLevelTextValue = MathUtils.Floor(m_componentPlayer.PlayerData.Level);
+				m_componentPlayer.ComponentGui.LevelLabelWidget.Text = string.Format(LanguageControl.Get(fName, 2), MathF.Floor(m_componentPlayer.PlayerData.Level).ToString());
+				m_lastLevelTextValue = MathF.Floor(m_componentPlayer.PlayerData.Level);
 			}
 			m_componentPlayer.PlayerStats.HighestLevel = MathUtils.Max(m_componentPlayer.PlayerStats.HighestLevel, m_componentPlayer.PlayerData.Level);
 			StrengthFactor = CalculateStrengthFactor(null);

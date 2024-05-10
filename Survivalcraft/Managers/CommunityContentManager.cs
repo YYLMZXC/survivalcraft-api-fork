@@ -258,7 +258,7 @@ namespace Game
 
 		public static void Rate(string address, string userId, int rating, CancellableProgress progress, Action success, Action<Exception> failure)
 		{
-			rating = MathUtils.Clamp(rating, 1, 5);
+			rating = Math.Clamp(rating, 1, 5);
 			Feedback(address, "Rating", rating.ToString(CultureInfo.InvariantCulture), null, 0L, userId, progress, success, failure);
 		}
 

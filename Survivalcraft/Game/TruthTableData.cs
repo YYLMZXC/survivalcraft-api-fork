@@ -62,7 +62,7 @@ namespace Game
 			var stringBuilder = new StringBuilder();
 			for (int i = 0; i < Data.Length; i++)
 			{
-				int index = MathUtils.Clamp(Data[i], 0, 15);
+				int index = Math.Clamp((int)Data[i], 0, 15);
 				stringBuilder.Append(m_hexChars[index]);
 			}
 			return stringBuilder.ToString().TrimEnd('0');

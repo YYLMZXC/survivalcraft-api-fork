@@ -98,7 +98,7 @@ namespace Game
 					playerData.ComponentPlayer.ComponentGui.DisplayLargeMessage(LanguageControl.Get(PlayerData.fName, 6), string.Format(LanguageControl.Get(PlayerData.fName, 9), arg), 30f, 1.5f);
 				}
 			}
-			playerData.Level = MathUtils.Max(MathUtils.Floor(playerData.Level / 2f), 1f);
+			playerData.Level = MathUtils.Max(MathF.Floor(playerData.Level / 2f), 1f);
 			JsInterface.handlersDictionary["OnPlayerDead"].ForEach(function =>
 			{
 				JsInterface.Invoke(function, playerData);

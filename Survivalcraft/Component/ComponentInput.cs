@@ -167,7 +167,7 @@ namespace Game
 				vector += -Vector3.UnitX * (input.IsKeyDown(Key.A) ? 1 : 0);
 				vector += Vector3.UnitY * (input.IsKeyDown(Key.Space) ? 1 : 0);
 				vector += -Vector3.UnitY * (input.IsKeyDown(Key.Shift) ? 1 : 0);
-				m_playerInput.Look += new Vector2(MathUtils.Clamp(zero.X, -15f, 15f), MathUtils.Clamp(zero.Y, -15f, 15f));
+				m_playerInput.Look += new Vector2(Math.Clamp(zero.X, -15f, 15f), Math.Clamp(zero.Y, -15f, 15f));
 				m_playerInput.Move += vector;
 				m_playerInput.SneakMove += vector;
 				m_playerInput.Jump |= input.IsKeyDownOnce(Key.Space);
@@ -301,7 +301,7 @@ namespace Game
 		{
 			float num = MathF.Pow(1.25f, 10f * (SettingsManager.MoveSensitivity - 0.5f));
 			float num2 = MathF.Pow(1.25f, 10f * (SettingsManager.LookSensitivity - 0.5f));
-			float num3 = MathUtils.Clamp(m_subsystemTime.GameTimeDelta, 0f, 0.1f);
+			float num3 = Math.Clamp(m_subsystemTime.GameTimeDelta, 0f, 0.1f);
 			ViewWidget viewWidget = m_componentPlayer.ViewWidget;
 			m_componentGui.MoveWidget.Radius = 30f / num * m_componentGui.MoveWidget.GlobalScale;
 			if (m_componentGui.ModalPanelWidget != null || !(m_subsystemTime.GameTimeFactor > 0f) || !(num3 > 0f))
@@ -422,7 +422,7 @@ namespace Game
 
 		public static float ProcessInputValue(float value, float deadZone, float saturationZone)
 		{
-			return MathUtils.Sign(value) * MathUtils.Clamp((MathF.Abs(value) - deadZone) / (saturationZone - deadZone), 0f, 1f);
+			return MathF.Sign(value) * Math.Clamp((MathF.Abs(value) - deadZone) / (saturationZone - deadZone), 0f, 1f);
 		}
 	}
 }

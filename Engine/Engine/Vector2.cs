@@ -130,12 +130,12 @@ namespace Engine
 
 		public static Vector2 Floor(Vector2 v)
 		{
-			return new Vector2(MathUtils.Floor(v.X), MathUtils.Floor(v.Y));
+			return new Vector2(MathF.Floor(v.X), MathF.Floor(v.Y));
 		}
 
 		public static Vector2 Ceiling(Vector2 v)
 		{
-			return new Vector2(MathUtils.Ceiling(v.X), MathUtils.Ceiling(v.Y));
+			return new Vector2(MathF.Ceiling(v.X), MathF.Ceiling(v.Y));
 		}
 
 		public static Vector2 Round(Vector2 v)
@@ -165,7 +165,7 @@ namespace Engine
 
 		public static Vector2 Clamp(Vector2 v, float min, float max)
 		{
-			return new Vector2(MathUtils.Clamp(v.X, min, max), MathUtils.Clamp(v.Y, min, max));
+			return new Vector2(Math.Clamp(v.X, min, max), Math.Clamp(v.Y, min, max));
 		}
 
 		public static Vector2 Saturate(Vector2 v)
@@ -205,8 +205,8 @@ namespace Engine
 
 		public static float Angle(Vector2 v1, Vector2 v2)
 		{
-			float num = MathUtils.Atan2(v1.Y, v1.X);
-			float num2 = MathUtils.Atan2(v2.Y, v2.X) - num;
+			float num = MathF.Atan2(v1.Y, v1.X);
+			float num2 = MathF.Atan2(v2.Y, v2.X) - num;
 			if (num2 > (float)Math.PI)
 			{
 				num2 -= (float)Math.PI * 2f;

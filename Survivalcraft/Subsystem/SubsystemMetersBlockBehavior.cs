@@ -97,7 +97,7 @@ namespace Game
 		{
 			if (m_thermometersToSimulateIndex < m_thermometersToSimulate.Count)
 			{
-				double period = MathUtils.Max(5.0 / m_thermometersToSimulate.Count, 1.0);
+				double period = Math.Max(5.0 / m_thermometersToSimulate.Count, 1.0);
 				if (m_subsystemTime.PeriodicGameTimeEvent(period, 0.0))
 				{
 					Point3 point = m_thermometersToSimulate.Array[m_thermometersToSimulateIndex];
@@ -305,7 +305,7 @@ namespace Game
 			}
 			int num = m_thermometersByPoint[key];
 			CalculateTemperature(x, y, z, 0f, 0f, out float temperature, out float _);
-			int num2 = MathUtils.Clamp((int)MathF.Round(temperature), 0, 15);
+			int num2 = Math.Clamp((int)MathF.Round(temperature), 0, 15);
 			if (num2 == num)
 			{
 				return;

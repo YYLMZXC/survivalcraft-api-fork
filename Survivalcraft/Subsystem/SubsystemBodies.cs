@@ -21,10 +21,10 @@ namespace Game
 
 		public void FindBodiesAroundPoint(Vector2 point, float radius, DynamicArray<ComponentBody> result)
 		{
-			int num = (int)MathUtils.Floor((point.X - radius) / 8f);
-			int num2 = (int)MathUtils.Floor((point.Y - radius) / 8f);
-			int num3 = (int)MathUtils.Floor((point.X + radius) / 8f);
-			int num4 = (int)MathUtils.Floor((point.Y + radius) / 8f);
+			int num = (int)MathF.Floor((point.X - radius) / 8f);
+			int num2 = (int)MathF.Floor((point.Y - radius) / 8f);
+			int num3 = (int)MathF.Floor((point.X + radius) / 8f);
+			int num4 = (int)MathF.Floor((point.Y + radius) / 8f);
 			for (int i = num; i <= num3; i++)
 			{
 				for (int j = num2; j <= num4; j++)
@@ -42,8 +42,8 @@ namespace Game
 
 		public void FindBodiesInArea(Vector2 corner1, Vector2 corner2, DynamicArray<ComponentBody> result)
 		{
-			var point = new Point2((int)MathUtils.Floor(corner1.X / 8f), (int)MathUtils.Floor(corner1.Y / 8f));
-			var point2 = new Point2((int)MathUtils.Floor(corner2.X / 8f), (int)MathUtils.Floor(corner2.Y / 8f));
+			var point = new Point2((int)MathF.Floor(corner1.X / 8f), (int)MathF.Floor(corner1.Y / 8f));
+			var point2 = new Point2((int)MathF.Floor(corner2.X / 8f), (int)MathF.Floor(corner2.Y / 8f));
 			int num = MathUtils.Min(point.X, point2.X) - 1;
 			int num2 = MathUtils.Min(point.Y, point2.Y) - 1;
 			int num3 = MathUtils.Max(point.X, point2.X) + 1;
@@ -130,7 +130,7 @@ namespace Game
 		public void AddBody(ComponentBody componentBody)
 		{
 			Vector3 position = componentBody.Position;
-			var point = new Point2((int)MathUtils.Floor(position.X / 8f), (int)MathUtils.Floor(position.Z / 8f));
+			var point = new Point2((int)MathF.Floor(position.X / 8f), (int)MathF.Floor(position.Z / 8f));
 			m_areaByComponentBody.Add(componentBody, point);
 			if (!m_componentBodiesByArea.TryGetValue(point, out DynamicArray<ComponentBody> value))
 			{
@@ -152,7 +152,7 @@ namespace Game
 		public void UpdateBody(ComponentBody componentBody)
 		{
 			Vector3 position = componentBody.Position;
-			var point = new Point2((int)MathUtils.Floor(position.X / 8f), (int)MathUtils.Floor(position.Z / 8f));
+			var point = new Point2((int)MathF.Floor(position.X / 8f), (int)MathF.Floor(position.Z / 8f));
 			Point2 point2 = m_areaByComponentBody[componentBody];
 			if (point != point2)
 			{

@@ -54,7 +54,7 @@ namespace Engine
 		public static bool PeriodicEvent(double period, double offset)
 		{
 			double num = FrameStartTime - offset;
-			double num2 = MathUtils.Floor(num / period) * period;
+			double num2 = Math.Floor(num / period) * period;
 			if (num >= num2)
 			{
 				return num - (double)FrameDuration < num2;

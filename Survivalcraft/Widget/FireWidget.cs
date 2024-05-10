@@ -36,7 +36,7 @@ namespace Game
 
 		public override void Update()
 		{
-			float dt = MathUtils.Clamp(Time.FrameDuration, 0f, 0.1f);
+			float dt = Math.Clamp(Time.FrameDuration, 0f, 0.1f);
 			m_fireRenderer.Origin = new Vector2(0f, ActualSize.Y);
 			m_fireRenderer.CutoffPosition = float.NegativeInfinity;
 			m_fireRenderer.ParticleSize = 32f;

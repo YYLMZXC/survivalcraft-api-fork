@@ -99,7 +99,7 @@ namespace Game
 			string value2 = (playerData.LastSpawnTime >= 0.0) ? (((subsystemGameInfo.TotalElapsedGameTime - playerData.LastSpawnTime) / subsystemTimeOfDay.DayDuration).ToString("N1") + LanguageControl.Get(fName, 23)) : LanguageControl.Get(fName, 24);
 			AddStat(stackPanelWidget, LanguageControl.Get(fName, 25), value2);
 			AddStat(stackPanelWidget, LanguageControl.Get(fName, 26), MathUtils.Max(playerData.SpawnsCount - 1, 0).ToString("N0") + LanguageControl.Get(fName, 27));
-			AddStat(stackPanelWidget, LanguageControl.Get(fName, 28), string.Format(LanguageControl.Get(fName, 29), ((int)MathUtils.Floor(playerStats.HighestLevel)).ToString("N0")));
+			AddStat(stackPanelWidget, LanguageControl.Get(fName, 28), string.Format(LanguageControl.Get(fName, 29), ((int)MathF.Floor(playerStats.HighestLevel)).ToString("N0")));
 			if (componentPlayer != null)
 			{
 				Vector3 position = componentPlayer.ComponentBody.Position;
@@ -203,7 +203,7 @@ namespace Game
 					{
 						float num2 = (float)MathUtils.Remainder(deathRecord.Day, 1.0);
 						string arg = (!(num2 < 0.2f) && !(num2 >= 0.8f)) ? ((!(num2 >= 0.7f)) ? ((!(num2 >= 0.5f)) ? LanguageControl.Get(fName, 76) : LanguageControl.Get(fName, 77)) : LanguageControl.Get(fName, 78)) : LanguageControl.Get(fName, 79);
-						AddStat(stackPanelWidget, string.Format(LanguageControl.Get(fName, 80), MathUtils.Floor(deathRecord.Day) + 1.0, arg), "", deathRecord.Cause);
+						AddStat(stackPanelWidget, string.Format(LanguageControl.Get(fName, 80), Math.Floor(deathRecord.Day) + 1.0, arg), "", deathRecord.Cause);
 					}
 				}
 			}

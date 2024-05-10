@@ -71,7 +71,7 @@ namespace Engine.Audio
 			base.Pan = pan;
 			base.IsLooped = isLooped;
 			base.DisposeOnStop = disposeOnStop;
-			m_bufferDuration = MathUtils.Clamp(bufferDuration, 0.01f, 10f);
+			m_bufferDuration = Math.Clamp(bufferDuration, 0.01f, 10f);
 			m_task = Task.Run(delegate
 			{
 				try
@@ -127,7 +127,7 @@ namespace Engine.Audio
 		{
 			int[] array = new int[3];
 			var list = new List<int>();
-			int millisecondsTimeout = MathUtils.Clamp((int)(0.5f * m_bufferDuration / (float)array.Length * 1000f), 1, 100);
+			int millisecondsTimeout = Math.Clamp((int)(0.5f * m_bufferDuration / (float)array.Length * 1000f), 1, 100);
 			byte[] array2 = new byte[2 * base.ChannelsCount * (int)((float)base.SamplingFrequency * m_bufferDuration / (float)array.Length)];
 			for (int i = 0; i < array.Length; i++)
 			{

@@ -200,7 +200,7 @@ namespace Game
 			{
 				if (ComponentPlayer != null)
 				{
-					UpdateSpawnDialog(string.Format(LanguageControl.Get(fName, 4), Name, MathUtils.Floor(Level)), null, 0f, resetProgress: true);
+					UpdateSpawnDialog(string.Format(LanguageControl.Get(fName, 4), Name, MathF.Floor(Level)), null, 0f, resetProgress: true);
 					m_stateMachine.TransitionTo("WaitForTerrain");
 				}
 				else
@@ -247,11 +247,11 @@ namespace Game
 				}
 				if (m_spawnMode == SpawnMode.Respawn)
 				{
-					UpdateSpawnDialog(string.Format(LanguageControl.Get(fName, 2), Name, MathUtils.Floor(Level)), LanguageControl.Get(fName, 3), 0f, resetProgress: true);
+					UpdateSpawnDialog(string.Format(LanguageControl.Get(fName, 2), Name, MathF.Floor(Level)), LanguageControl.Get(fName, 3), 0f, resetProgress: true);
 				}
 				else
 				{
-					UpdateSpawnDialog(string.Format(LanguageControl.Get(fName, 4), Name, MathUtils.Floor(Level)), null, 0f, resetProgress: true);
+					UpdateSpawnDialog(string.Format(LanguageControl.Get(fName, 4), Name, MathF.Floor(Level)), null, 0f, resetProgress: true);
 				}
 				m_subsystemTerrain.TerrainUpdater.SetUpdateLocation(PlayerIndex, SpawnPosition.XZ, 0f, 64f);
 				m_terrainWaitStartTime = Time.FrameStartTime;

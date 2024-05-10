@@ -252,7 +252,7 @@ namespace Game
 							}
 						}
 						int value = Terrain.MakeBlockValue(227, 0, FurnitureBlock.SetDesignIndex(0, design.Index, design.ShadowStrengthFactor, design.IsLightEmitter));
-						int num3 = MathUtils.Clamp(design.Resolution, 4, 8);
+						int num3 = Math.Clamp(design.Resolution, 4, 8);
 						Matrix matrix = componentMiner.ComponentCreature.ComponentBody.Matrix;
 						Vector3 position = matrix.Translation + (1f * matrix.Forward) + (1f * Vector3.UnitY);
 						m_subsystemPickables.AddPickable(value, num3, position, null, null);
@@ -364,7 +364,7 @@ namespace Game
 			if (num >= 0)
 			{
 				m_furnitureSets.RemoveAt(num);
-				m_furnitureSets.Insert(MathUtils.Clamp(num + move, 0, m_furnitureSets.Count), furnitureSet);
+				m_furnitureSets.Insert(Math.Clamp(num + move, 0, m_furnitureSets.Count), furnitureSet);
 			}
 		}
 
@@ -693,7 +693,7 @@ namespace Game
 				{
 					BoundingBox boundingBox = array[i];
 					float num = (boundingBox.Size().X + boundingBox.Size().Y + boundingBox.Size().Z) / 3f;
-					float size = MathUtils.Clamp(1.5f * num, 0.1f, 1f);
+					float size = Math.Clamp(1.5f * num, 0.1f, 1f);
 					var fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + boundingBox.Center(), size, 24f);
 					m_subsystemParticles.AddParticleSystem(fireParticleSystem);
 					list.Add(fireParticleSystem);

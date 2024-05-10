@@ -300,7 +300,7 @@ namespace Game
 			int pullCount = PistonBlock.GetPullCount(data);
 			int speed = PistonBlock.GetSpeed(data);
 			Point3 point = CellFace.FaceToPoint3(face);
-			length = MathUtils.Clamp(length, 0, maxExtension + 1);
+			length = Math.Clamp(length, 0, maxExtension + 1);
 			int num = 0;
 			m_movingBlocks.Clear();
 			Point3 offset = point;

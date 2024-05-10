@@ -100,7 +100,7 @@ namespace Game
 			}
 			if (m_visibilityRangeSlider.IsSliding)
 			{
-				SettingsManager.VisibilityRange = m_visibilityRanges[MathUtils.Clamp((int)m_visibilityRangeSlider.Value, 0, m_visibilityRanges.Count - 1)];
+				SettingsManager.VisibilityRange = m_visibilityRanges[Math.Clamp((int)m_visibilityRangeSlider.Value, 0, m_visibilityRanges.Count - 1)];
 			}
 			if (m_viewAnglesButton.IsClicked)
 			{
@@ -122,7 +122,7 @@ namespace Game
 			}
 			if (m_framerateLimitSlider.IsSliding)
 			{
-				SettingsManager.PresentationInterval = m_presentationIntervals[MathUtils.Clamp((int)m_framerateLimitSlider.Value, 0, m_presentationIntervals.Count - 1)];
+				SettingsManager.PresentationInterval = m_presentationIntervals[Math.Clamp((int)m_framerateLimitSlider.Value, 0, m_presentationIntervals.Count - 1)];
 				Window.PresentationInterval = SettingsManager.PresentationInterval;
 			}
 			if (m_displayFpsCounterButton.IsClicked)

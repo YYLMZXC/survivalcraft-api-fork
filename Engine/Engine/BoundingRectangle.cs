@@ -108,8 +108,8 @@ namespace Engine
 
 		public bool Intersection(BoundingCircle circle)
 		{
-			float num = circle.Center.X - MathUtils.Clamp(circle.Center.X, Min.X, Max.X);
-			float num2 = circle.Center.Y - MathUtils.Clamp(circle.Center.Y, Min.Y, Max.Y);
+			float num = circle.Center.X - Math.Clamp(circle.Center.X, Min.X, Max.X);
+			float num2 = circle.Center.Y - Math.Clamp(circle.Center.Y, Min.Y, Max.Y);
 			return (num * num) + (num2 * num2) <= circle.Radius * circle.Radius;
 		}
 

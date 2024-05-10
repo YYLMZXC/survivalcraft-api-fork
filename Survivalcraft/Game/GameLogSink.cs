@@ -47,7 +47,7 @@ namespace Game
 			{
 				try
 				{
-					m_stream.Position = MathUtils.Max(m_stream.Position - bytesCount, 0L);
+					m_stream.Position = Math.Max(m_stream.Position - bytesCount, 0L);
 					return new StreamReader(m_stream).ReadToEnd();
 				}
 				finally
@@ -67,7 +67,7 @@ namespace Game
 			{
 				try
 				{
-					m_stream.Position = MathUtils.Max(m_stream.Position - bytesCount, 0L);
+					m_stream.Position = Math.Max(m_stream.Position - bytesCount, 0L);
 					var streamReader = new StreamReader(m_stream);
 					var list = new List<string>();
 					while (true)

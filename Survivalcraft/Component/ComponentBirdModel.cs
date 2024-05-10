@@ -49,7 +49,7 @@ namespace Game
 			}
 			else
 			{
-				float num2 = MathUtils.Floor(MovementAnimationPhase);
+				float num2 = MathF.Floor(MovementAnimationPhase);
 				if (MovementAnimationPhase != num2)
 				{
 					MovementAnimationPhase = MovementAnimationPhase - num2 > 0.5f
@@ -145,7 +145,7 @@ namespace Game
 				num4 += m_componentCreature.ComponentLocomotion.LookAngles.Y;
 				SetBoneTransform(m_bodyBone.Index, Matrix.CreateFromYawPitchRoll(vector.X, 0f, 0f) * Matrix.CreateTranslation(m_componentCreature.ComponentBody.Position + new Vector3(0f, Bob, 0f)));
 				SetBoneTransform(m_neckBone.Index, Matrix.CreateFromYawPitchRoll(yaw2, num4, 0f));
-				SetBoneTransform(m_headBone.Index, Matrix.CreateFromYawPitchRoll(yaw, num5 + MathUtils.Clamp(vector.Y, -(float)Math.PI / 4f, (float)Math.PI / 4f), vector.Z));
+				SetBoneTransform(m_headBone.Index, Matrix.CreateFromYawPitchRoll(yaw, num5 + Math.Clamp(vector.Y, -(float)Math.PI / 4f, (float)Math.PI / 4f), vector.Z));
 				if (m_hasWings)
 				{
 					SetBoneTransform(m_wing1Bone.Index, Matrix.CreateRotationY(num));

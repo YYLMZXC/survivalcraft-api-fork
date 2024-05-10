@@ -241,7 +241,7 @@ namespace Game
 				}
 				m_precipitationEndTime = m_precipitationStartTime + (60f * m_random.Float(3f, 6f));
 			}
-			float num = (float)MathUtils.Max(0.0, MathUtils.Min(m_subsystemGameInfo.TotalElapsedGameTime - m_precipitationStartTime, m_precipitationEndTime - m_subsystemGameInfo.TotalElapsedGameTime));
+			float num = (float)Math.Max(0.0, Math.Min(m_subsystemGameInfo.TotalElapsedGameTime - m_precipitationStartTime, m_precipitationEndTime - m_subsystemGameInfo.TotalElapsedGameTime));
 			GlobalPrecipitationIntensity = m_subsystemGameInfo.WorldSettings.AreWeatherEffectsEnabled ? MathUtils.Saturate(num * 0.04f) : 0f;
 			if (GlobalPrecipitationIntensity == 1f && SubsystemTime.PeriodicGameTimeEvent(1.0, 0.0))
 			{

@@ -32,8 +32,8 @@ namespace Game
 			m_shoreRoughnessAmplitude.X = MathF.Pow(m_worldSettings.ShoreRoughness, 2f) * (m_islandSize.HasValue ? MathUtils.Min(4f * m_islandSize.Value.X, 400f) : 400f);
 			m_shoreRoughnessAmplitude.Y = MathF.Pow(m_worldSettings.ShoreRoughness, 2f) * (m_islandSize.HasValue ? MathUtils.Min(4f * m_islandSize.Value.Y, 400f) : 400f);
 			m_shoreRoughnessFrequency = MathUtils.Lerp(0.5f, 1f, m_worldSettings.ShoreRoughness) * new Vector2(1f) / m_shoreRoughnessAmplitude;
-			m_shoreRoughnessOctaves.X = (int)MathUtils.Clamp((MathF.Log(1f / m_shoreRoughnessFrequency.X) / MathF.Log(2f)) - 1f, 1f, 7f);
-			m_shoreRoughnessOctaves.Y = (int)MathUtils.Clamp((MathF.Log(1f / m_shoreRoughnessFrequency.Y) / MathF.Log(2f)) - 1f, 1f, 7f);
+			m_shoreRoughnessOctaves.X = (int)Math.Clamp((MathF.Log(1f / m_shoreRoughnessFrequency.X) / MathF.Log(2f)) - 1f, 1f, 7f);
+			m_shoreRoughnessOctaves.Y = (int)Math.Clamp((MathF.Log(1f / m_shoreRoughnessFrequency.Y) / MathF.Log(2f)) - 1f, 1f, 7f);
 			var random = new Random(subsystemGameInfo.WorldSeed);
 			m_shoreRoughnessOffset[0] = random.Float(-2000f, 2000f);
 			m_shoreRoughnessOffset[1] = random.Float(-2000f, 2000f);
@@ -149,12 +149,12 @@ namespace Game
 
 		public int CalculateTemperature(float x, float z)
 		{
-			return MathUtils.Clamp(12 + (int)m_worldSettings.TemperatureOffset, 0, 15);
+			return Math.Clamp(12 + (int)m_worldSettings.TemperatureOffset, 0, 15);
 		}
 
 		public int CalculateHumidity(float x, float z)
 		{
-			return MathUtils.Clamp(12 + (int)m_worldSettings.HumidityOffset, 0, 15);
+			return Math.Clamp(12 + (int)m_worldSettings.HumidityOffset, 0, 15);
 		}
 
 		public float CalculateMountainRangeFactor(float x, float z)

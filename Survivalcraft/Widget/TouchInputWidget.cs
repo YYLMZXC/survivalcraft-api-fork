@@ -82,11 +82,11 @@ namespace Game
 						value.TotalMoveLimited = touchLocation.Position - m_touchOriginLimited;
 						if (MathF.Abs(value.TotalMoveLimited.X) > m_radius)
 						{
-							m_touchOriginLimited.X = touchLocation.Position.X - (MathUtils.Sign(value.TotalMoveLimited.X) * m_radius);
+							m_touchOriginLimited.X = touchLocation.Position.X - (MathF.Sign(value.TotalMoveLimited.X) * m_radius);
 						}
 						if (MathF.Abs(value.TotalMoveLimited.Y) > m_radius)
 						{
-							m_touchOriginLimited.Y = touchLocation.Position.Y - (MathUtils.Sign(value.TotalMoveLimited.Y) * m_radius);
+							m_touchOriginLimited.Y = touchLocation.Position.Y - (MathF.Sign(value.TotalMoveLimited.Y) * m_radius);
 						}
 						m_touchInput = value;
 						m_touchLastPosition = touchLocation.Position;

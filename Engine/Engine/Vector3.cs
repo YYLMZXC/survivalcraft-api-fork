@@ -198,12 +198,12 @@ namespace Engine
 
 		public static Vector3 Floor(Vector3 v)
 		{
-			return new Vector3(MathUtils.Floor(v.X), MathUtils.Floor(v.Y), MathUtils.Floor(v.Z));
+			return new Vector3(MathF.Floor(v.X), MathF.Floor(v.Y), MathF.Floor(v.Z));
 		}
 
 		public static Vector3 Ceiling(Vector3 v)
 		{
-			return new Vector3(MathUtils.Ceiling(v.X), MathUtils.Ceiling(v.Y), MathUtils.Ceiling(v.Z));
+			return new Vector3(MathF.Ceiling(v.X), MathF.Ceiling(v.Y), MathF.Ceiling(v.Z));
 		}
 
 		public static Vector3 Round(Vector3 v)
@@ -233,7 +233,7 @@ namespace Engine
 
 		public static Vector3 Clamp(Vector3 v, float min, float max)
 		{
-			return new Vector3(MathUtils.Clamp(v.X, min, max), MathUtils.Clamp(v.Y, min, max), MathUtils.Clamp(v.Z, min, max));
+			return new Vector3(Math.Clamp(v.X, min, max), Math.Clamp(v.Y, min, max), Math.Clamp(v.Z, min, max));
 		}
 
 		public static Vector3 Saturate(Vector3 v)

@@ -270,7 +270,7 @@ namespace Game
 			{
 				Display.Clear(Color.Black, 1f, 0);
 			}
-			float num = 850f / MathUtils.Clamp(SettingsManager.UIScale, 0.5f, 1.2f) * DebugUiScale;
+			float num = 850f / Math.Clamp(SettingsManager.UIScale, 0.5f, 1.2f) * DebugUiScale;
 			Vector2 vector = new(Display.Viewport.Width, Display.Viewport.Height);
 			float num2 = vector.X / num;
 			Vector2 availableSize = new(num, num / vector.X * vector.Y);

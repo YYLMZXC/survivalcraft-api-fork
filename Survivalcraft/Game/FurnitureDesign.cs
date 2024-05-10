@@ -736,7 +736,7 @@ namespace Game
 			}
 			num2 /= Resolution * Resolution;
 			float num3 = 1.5f;
-			m_shadowStrengthFactor = (int)MathUtils.Clamp(MathF.Round(num2 * 3f * num3), 0f, 3f);
+			m_shadowStrengthFactor = (int)Math.Clamp(MathF.Round(num2 * 3f * num3), 0f, 3f);
 		}
 
 		public void CreateGeometry()

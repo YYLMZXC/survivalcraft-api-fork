@@ -147,7 +147,7 @@ namespace Game
 					CellFace cellFace = CellFaces[0];
 					var position = new Vector3(cellFace.X, cellFace.Y, cellFace.Z);
 					float volume = num2 / 15f;
-					float pitch = MathUtils.Clamp(MathF.Log(num5) / MathF.Log(2f), -1f, 1f);
+					float pitch = Math.Clamp(MathF.Log(num5) / MathF.Log(2f), -1f, 1f);
 					float minDistance = 0.5f + (5f * num2 / 15f);
 					SubsystemElectricity.SubsystemAudio.PlaySound(text2, volume, pitch, position, minDistance, autoDelay: true);
 					float loudness = (num2 < 8) ? 0.25f : 0.5f;

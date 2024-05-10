@@ -91,7 +91,7 @@ namespace Engine.Media
 				{
 					throw new InvalidOperationException("Cannot read partial samples.");
 				}
-				count = (int)MathUtils.Min(count, m_bytesCount - (m_position * 2 * ChannelsCount));
+				count = (int)Math.Min(count, m_bytesCount - (m_position * 2 * ChannelsCount));
 				int num = m_stream.Read(buffer, offset, count);
 				m_position += num / 2 / ChannelsCount;
 				return num;

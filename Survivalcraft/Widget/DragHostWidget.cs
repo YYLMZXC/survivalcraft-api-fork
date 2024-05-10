@@ -87,8 +87,8 @@ namespace Game
 			if (Input.Drag.HasValue)
 			{
 				m_dragPosition = Input.Drag.Value;
-				m_dragPosition.X = MathUtils.Clamp(m_dragPosition.X, GlobalBounds.Min.X, GlobalBounds.Max.X - 1f);
-				m_dragPosition.Y = MathUtils.Clamp(m_dragPosition.Y, GlobalBounds.Min.Y, GlobalBounds.Max.Y - 1f);
+				m_dragPosition.X = Math.Clamp(m_dragPosition.X, GlobalBounds.Min.X, GlobalBounds.Max.X - 1f);
+				m_dragPosition.Y = Math.Clamp(m_dragPosition.Y, GlobalBounds.Min.Y, GlobalBounds.Max.Y - 1f);
 			}
 		}
 	}

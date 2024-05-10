@@ -117,13 +117,13 @@ namespace Game
 			}
 			for (int j = 0; j < num; j++)
 			{
-				int index = MathUtils.Clamp(Data.Array[j], 0, 15);
+				int index = Math.Clamp((int)Data.Array[j], 0, 15);
 				stringBuilder.Append(m_hexChars[index]);
 			}
 			if (saveLastOutput)
 			{
 				stringBuilder.Append(';');
-				stringBuilder.Append(m_hexChars[MathUtils.Clamp(LastOutput, 0, 15)]);
+				stringBuilder.Append(m_hexChars[Math.Clamp((int)LastOutput, 0, 15)]);
 			}
 			return stringBuilder.ToString();
 		}

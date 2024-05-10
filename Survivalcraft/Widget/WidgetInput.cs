@@ -249,7 +249,7 @@ namespace Game
 						vector = Vector2.Zero;
 						vector2 = new Vector2(Window.Size);
 					}
-					m_softMouseCursorPosition = new Vector2(MathUtils.Clamp(value.Value.X, vector.X, vector2.X - 1f), MathUtils.Clamp(value.Value.Y, vector.Y, vector2.Y - 1f));
+					m_softMouseCursorPosition = new Vector2(Math.Clamp(value.Value.X, vector.X, vector2.X - 1f), Math.Clamp(value.Value.Y, vector.Y, vector2.Y - 1f));
 				}
 				else
 				{
