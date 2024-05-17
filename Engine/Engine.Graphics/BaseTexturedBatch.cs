@@ -28,7 +28,7 @@ namespace Engine.Graphics
 			set;
 		}
 
-		internal BaseTexturedBatch()
+        public BaseTexturedBatch()
 		{
 		}
 

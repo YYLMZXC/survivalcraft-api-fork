@@ -22,7 +22,7 @@ namespace Engine.Graphics
 			set;
 		}
 
-		internal BaseFontBatch()
+        public BaseFontBatch()
 		{
 		}
 

@@ -6,7 +6,7 @@ namespace Engine.Graphics
 {
 	public  class IndexBuffer : GraphicsResource
 	{
-		internal int m_buffer;
+        public int m_buffer;
 
 		public string DebugName
 		{

@@ -16,7 +16,7 @@ namespace Engine.Graphics
 
 		public LinkedList<T3> m_fontBatches = new();
 
-		internal BasePrimitivesRenderer()
+        public BasePrimitivesRenderer()
 		{
 		}
 

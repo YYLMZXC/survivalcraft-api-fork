@@ -12,7 +12,7 @@ namespace Engine.Graphics
 
 		public readonly DynamicArray<int> TriangleIndices = [];
 
-		internal BaseFlatBatch()
+		public BaseFlatBatch()
 		{
 		}
 

@@ -46,7 +46,7 @@ namespace Engine.Graphics
 
 		public ReadOnlyList<ModelBone> ChildBones => new(m_childBones);
 
-		internal ModelBone()
+        public ModelBone()
 		{
 		}
 	}

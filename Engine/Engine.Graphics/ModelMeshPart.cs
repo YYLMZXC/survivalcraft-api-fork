@@ -44,7 +44,7 @@ namespace Engine.Graphics
 			}
 		}
 
-		internal ModelMeshPart()
+        public ModelMeshPart()
 		{
 		}
 
