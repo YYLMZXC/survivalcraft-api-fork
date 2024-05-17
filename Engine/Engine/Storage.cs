@@ -138,6 +138,10 @@ namespace Engine
         {
             Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: m_isAndroidPlatform));
         }
+        public static void DeleteDirectory(string path, bool recursive)
+        {
+            Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: m_isAndroidPlatform), recursive);
+        }
 
         public static IEnumerable<string> ListFileNames(string path)
         {
