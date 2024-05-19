@@ -2,6 +2,7 @@ using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Engine.Audio
 {
@@ -51,7 +52,7 @@ namespace Engine.Audio
 						stream.CopyTo(fileStream);
 					}
 				}
-				Assembly dllAssembly = Assembly.LoadFile(ALPath);
+				//Assembly dllAssembly = Assembly.LoadFile(ALPath);
 				new AudioContext();
 			}
 #else

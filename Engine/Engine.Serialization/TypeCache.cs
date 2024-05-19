@@ -31,7 +31,7 @@ namespace Engine.Serialization
 				}
 			}
 		}
-		/*
+		
 		static TypeCache()
 		{
 			m_typesByName = [];
@@ -77,7 +77,7 @@ namespace Engine.Serialization
 				}
 			};
 		}
-		*/
+		
 		public static bool IsKnownSystemAssembly(Assembly assembly)
 		{
 			string text = assembly.FullName.ToLower();
@@ -158,12 +158,12 @@ namespace Engine.Serialization
 			}
 			return shortTypeName;
 		}
-		/*
+		
 		private static void AddShortTypeName(string shortTypeName, string longTypeName)
 		{
 			m_shortToLong.Add(shortTypeName, longTypeName);
 			m_longToShort.Add(longTypeName, shortTypeName);
 		}
-		*/
+		
 	}
 }
