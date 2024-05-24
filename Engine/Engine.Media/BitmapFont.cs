@@ -1,10 +1,10 @@
-using Engine.Graphics;
-using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Engine.Graphics;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Engine.Media
 {
@@ -179,14 +179,10 @@ namespace Engine.Media
 
 		public Glyph GetGlyph(char code)
 		{
-			if (code >= m_glyphsByCode.Length)
-			{
-				return FallbackGlyph;
-			}
-			return m_glyphsByCode[code];
-		}
+            return code >= m_glyphsByCode.Length ? FallbackGlyph : m_glyphsByCode[code];
+        }
 
-		public Vector2 MeasureText(string text, Vector2 scale, Vector2 spacing)
+        public Vector2 MeasureText(string text, Vector2 scale, Vector2 spacing)
 		{
 			return MeasureText(text, 0, text.Length, scale, spacing);
 		}
@@ -336,9 +332,9 @@ namespace Engine.Media
 				Vector2 offset2;
 				if (list2[j].Width > 0 && list2[j].Height > 0)
 				{
-					texCoord = new Vector2(((float)list2[j].Left - 0.5f) / (float)image.Width, ((float)list2[j].Top - 0.5f) / (float)image.Height);
-					texCoord2 = new Vector2(((float)list2[j].Right + 0.5f) / (float)image.Width, ((float)list2[j].Bottom + 0.5f) / (float)image.Height);
-					offset2 = new Vector2((float)(list2[j].Left - list[j].Left - num) - 0.5f, (float)(list2[j].Top - list[j].Top - num2) - 0.5f);
+					texCoord = new Vector2((list2[j].Left - 0.5f) / image.Width, (list2[j].Top - 0.5f) / image.Height);
+					texCoord2 = new Vector2((list2[j].Right + 0.5f) / image.Width, (list2[j].Bottom + 0.5f) / image.Height);
+					offset2 = new Vector2(list2[j].Left - list[j].Left - num - 0.5f, list2[j].Top - list[j].Top - num2 - 0.5f);
 				}
 				else
 				{
@@ -441,11 +437,9 @@ namespace Engine.Media
 					}
 				}
 			}
-			if (num == int.MaxValue)
-			{
-				return new Rectangle(rectangle.Left, rectangle.Top, 0, 0);
-			}
-			return new Rectangle(num, num2, num3 - num + 1, num4 - num2 + 1);
-		}
-	}
+            return num == int.MaxValue
+                ? new Rectangle(rectangle.Left, rectangle.Top, 0, 0)
+                : new Rectangle(num, num2, num3 - num + 1, num4 - num2 + 1);
+        }
+    }
 }

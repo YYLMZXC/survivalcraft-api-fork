@@ -25,13 +25,9 @@ namespace Engine.Media
 		{
 			get
 			{
-				if (CanSeek)
-				{
-					return m_position;
-				}
-				throw new NotSupportedException();
-			}
-			set
+                return CanSeek ? m_position : throw new NotSupportedException();
+            }
+            set
 			{
 				if (CanSeek)
 				{

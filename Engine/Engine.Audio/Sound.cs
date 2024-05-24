@@ -1,6 +1,6 @@
+using System;
 using Engine.Media;
 using OpenTK.Audio.OpenAL;
-using System;
 
 namespace Engine.Audio
 {

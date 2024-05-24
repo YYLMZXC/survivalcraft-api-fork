@@ -48,14 +48,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is BoundingBox))
-			{
-				return false;
-			}
-			return Equals((BoundingBox)obj);
-		}
+            return obj is BoundingBox box && Equals(box);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return Min.GetHashCode() + Max.GetHashCode();
 		}
@@ -67,14 +63,10 @@ namespace Engine
 
 		public bool Equals(BoundingBox other)
 		{
-			if (Min == other.Min)
-			{
-				return Max == other.Max;
-			}
-			return false;
-		}
+            return Min == other.Min && Max == other.Max;
+        }
 
-		public Vector3 Center()
+        public Vector3 Center()
 		{
 			return new Vector3(0.5f * (Min.X + Max.X), 0.5f * (Min.Y + Max.Y), 0.5f * (Min.Z + Max.Z));
 		}
@@ -92,23 +84,15 @@ namespace Engine
 
 		public bool Contains(Vector3 p)
 		{
-			if (p.X >= Min.X && p.X <= Max.X && p.Y >= Min.Y && p.Y <= Max.Y && p.Z >= Min.Z)
-			{
-				return p.Z <= Max.Z;
-			}
-			return false;
-		}
+            return p.X >= Min.X && p.X <= Max.X && p.Y >= Min.Y && p.Y <= Max.Y && p.Z >= Min.Z && p.Z <= Max.Z;
+        }
 
-		public bool Intersection(BoundingBox box)
+        public bool Intersection(BoundingBox box)
 		{
-			if (box.Max.X >= Min.X && box.Min.X <= Max.X && box.Max.Y >= Min.Y && box.Min.Y <= Max.Y && box.Max.Z >= Min.Z)
-			{
-				return box.Min.Z <= Max.Z;
-			}
-			return false;
-		}
+            return box.Max.X >= Min.X && box.Min.X <= Max.X && box.Max.Y >= Min.Y && box.Min.Y <= Max.Y && box.Max.Z >= Min.Z&& box.Min.Z <= Max.Z;
+        }
 
-		public bool Intersection(BoundingSphere sphere)
+        public bool Intersection(BoundingSphere sphere)
 		{
 			if (sphere.Center.X - Min.X > sphere.Radius && sphere.Center.Y - Min.Y > sphere.Radius && sphere.Center.Z - Min.Z > sphere.Radius && Max.X - sphere.Center.X > sphere.Radius && Max.Y - sphere.Center.Y > sphere.Radius && Max.Z - sphere.Center.Z > sphere.Radius)
 			{
@@ -139,25 +123,17 @@ namespace Engine
 			{
 				num += (sphere.Center.Z - Max.Z) * (sphere.Center.Z - Max.Z);
 			}
-			if (num <= sphere.Radius * sphere.Radius)
-			{
-				return true;
-			}
-			return false;
-		}
+            return num <= sphere.Radius * sphere.Radius;
+        }
 
-		public static BoundingBox Intersection(BoundingBox b1, BoundingBox b2)
+        public static BoundingBox Intersection(BoundingBox b1, BoundingBox b2)
 		{
 			Vector3 min = Vector3.Max(b1.Min, b2.Min);
 			Vector3 max = Vector3.Min(b1.Max, b2.Max);
-			if (!(max.X > min.X) || !(max.Y > min.Y) || !(max.Z > min.Z))
-			{
-				return default(BoundingBox);
-			}
-			return new BoundingBox(min, max);
-		}
+            return !(max.X > min.X) || !(max.Y > min.Y) || !(max.Z > min.Z) ? default(BoundingBox) : new BoundingBox(min, max);
+        }
 
-		public static BoundingBox Union(BoundingBox b1, BoundingBox b2)
+        public static BoundingBox Union(BoundingBox b1, BoundingBox b2)
 		{
 			Vector3 min = Vector3.Min(b1.Min, b2.Min);
 			Vector3 max = Vector3.Max(b1.Max, b2.Max);
@@ -187,9 +163,9 @@ namespace Engine
 
 		public static void Transform(ref BoundingBox b, ref Matrix m, out BoundingBox result)
 		{
-			Vector3[] sourceArray = new Vector3[8]
-			{
-				new(b.Min.X, b.Min.Y, b.Min.Z),
+			Vector3[] sourceArray =
+            [
+                new(b.Min.X, b.Min.Y, b.Min.Z),
 				new(b.Max.X, b.Min.Y, b.Min.Z),
 				new(b.Min.X, b.Max.Y, b.Min.Z),
 				new(b.Max.X, b.Max.Y, b.Min.Z),
@@ -197,7 +173,7 @@ namespace Engine
 				new(b.Max.X, b.Min.Y, b.Max.Z),
 				new(b.Min.X, b.Max.Y, b.Max.Z),
 				new(b.Max.X, b.Max.Y, b.Max.Z)
-			};
+			];
 			Vector3[] array = new Vector3[8];
 			Vector3.Transform(sourceArray, 0, ref m, array, 0, 8);
 			result = new BoundingBox(array);

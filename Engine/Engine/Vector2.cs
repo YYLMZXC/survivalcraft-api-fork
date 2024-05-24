@@ -54,14 +54,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Vector2))
-			{
-				return false;
-			}
-			return Equals((Vector2)obj);
-		}
+            return obj is Vector2 && Equals((Vector2)obj);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return X.GetHashCode() + Y.GetHashCode();
 		}
@@ -73,14 +69,10 @@ namespace Engine
 
 		public bool Equals(Vector2 other)
 		{
-			if (X == other.X)
-			{
-				return Y == other.Y;
-			}
-			return false;
-		}
+            return X == other.X && Y == other.Y;
+        }
 
-		public static Vector2 CreateFromAngle(float angle)
+        public static Vector2 CreateFromAngle(float angle)
 		{
 			float y = MathF.Cos(angle);
 			return new Vector2(0f - MathF.Sin(angle), y);
@@ -186,24 +178,16 @@ namespace Engine
 		public static Vector2 Normalize(Vector2 v)
 		{
 			float num = v.Length();
-			if (!(num > 0f))
-			{
-				return UnitX;
-			}
-			return v / num;
-		}
+            return !(num > 0f) ? UnitX : v / num;
+        }
 
-		public static Vector2 LimitLength(Vector2 v, float maxLength)
+        public static Vector2 LimitLength(Vector2 v, float maxLength)
 		{
 			float num = v.LengthSquared();
-			if (num > maxLength * maxLength)
-			{
-				return v * (maxLength / MathF.Sqrt(num));
-			}
-			return v;
-		}
+            return num > maxLength * maxLength ? v * (maxLength / MathF.Sqrt(num)) : v;
+        }
 
-		public static float Angle(Vector2 v1, Vector2 v2)
+        public static float Angle(Vector2 v1, Vector2 v2)
 		{
 			float num = MathF.Atan2(v1.Y, v1.X);
 			float num2 = MathF.Atan2(v2.Y, v2.X) - num;

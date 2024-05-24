@@ -45,7 +45,7 @@ namespace Engine.Graphics
 				{
 					case '\n':
 						num++;
-						v4 = vector3 + ((float)num * (base.Font.GlyphHeight + spacing.Y) * v2);
+						v4 = vector3 + (num * (base.Font.GlyphHeight + spacing.Y) * v2);
 						continue;
 					case '\r':
 						continue;

@@ -67,14 +67,10 @@ namespace Engine.Media
 		{
 			ArgumentNullException.ThrowIfNull(stream);
             string formatName = SixLabors.ImageSharp.Image.DetectFormat(stream).Name;
-            if (formatName != "PNG")
-            {
-                throw new FormatException($"Image format({formatName}) is not Png");
-            }
-			return Image.Load(stream);
-		}
+            return formatName != "PNG" ? throw new FormatException($"Image format({formatName}) is not Png") : Image.Load(stream);
+        }
 
-		public static void Save(Image image, Stream stream, Format format, PngCompressionLevel compressionLevel = PngCompressionLevel.DefaultCompression, bool sync = false)
+        public static void Save(Image image, Stream stream, Format format, PngCompressionLevel compressionLevel = PngCompressionLevel.DefaultCompression, bool sync = false)
 		{
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentNullException.ThrowIfNull(stream);

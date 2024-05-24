@@ -147,13 +147,11 @@ namespace Engine.Serialization
 						}
 					}
 				}
-				if (!allowEmptySerializer && value.Read == null)
-				{
-					throw new InvalidOperationException($"ISerializer suitable for type \"{type.FullName}\" not found in any loaded assembly.");
-				}
-				return value;
-			}
-		}
+                return !allowEmptySerializer && value.Read == null
+                    ?                    throw new InvalidOperationException($"ISerializer suitable for type \"{type.FullName}\" not found in any loaded assembly.")
+                    : value;
+            }
+        }
 
 		private static void ScanAssembliesForSerializers()
 		{
@@ -231,23 +229,18 @@ namespace Engine.Serialization
 		private static SerializeData CreateSerializeDataForSerializableHelper<T>() where T : ISerializable
 		{
 			SerializeData serializeData = CreateEmptySerializeData(typeof(T));
-			if (typeof(T).GetTypeInfo().IsValueType)
-			{
-				serializeData.Read = delegate (InputArchive archive, ref object value)
-				{
-					T val = (T)value;
-					val.Serialize(archive);
-					value = val;
-				};
-			}
-			else
-			{
-				serializeData.Read = delegate (InputArchive archive, ref object value)
-				{
-					((T)value).Serialize(archive);
-				};
-			}
-			serializeData.Write = delegate (OutputArchive archive, object value)
+			serializeData.Read = typeof(T).GetTypeInfo().IsValueType
+                ? delegate (InputArchive archive, ref object value)
+                {
+                    T val = (T)value;
+                    val.Serialize(archive);
+                    value = val;
+                }
+            : delegate (InputArchive archive, ref object value)
+                {
+                    ((T)value).Serialize(archive);
+                };
+            serializeData.Write = delegate (OutputArchive archive, object value)
 			{
 				((T)value).Serialize(archive);
 			};

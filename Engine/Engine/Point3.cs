@@ -53,23 +53,15 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Point3))
-			{
-				return false;
-			}
-			return Equals((Point3)obj);
-		}
+            return obj is Point3 && Equals((Point3)obj);
+        }
 
-		public bool Equals(Point3 other)
+        public bool Equals(Point3 other)
 		{
-			if (other.X == X && other.Y == Y)
-			{
-				return other.Z == Z;
-			}
-			return false;
-		}
+            return other.X == X && other.Y == Y && other.Z == Z;
+        }
 
-		public override string ToString()
+        public override string ToString()
 		{
 			return $"{X},{Y},{Z}";
 		}

@@ -124,17 +124,13 @@ namespace Engine.Serialization
 						m_humanReadableConvertersByType.Add(type, value);
 					}
 				}
-				if (value != null)
-				{
-					return value;
-				}
-				if (throwIfNotFound)
-				{
-					throw new InvalidOperationException($"IHumanReadableConverter for type \"{type.FullName}\" not found in any loaded assembly.");
-				}
-				return null;
-			}
-		}
+                return value != null
+                    ? value
+                    : throwIfNotFound
+                    ?                    throw new InvalidOperationException($"IHumanReadableConverter for type \"{type.FullName}\" not found in any loaded assembly.")
+                    : null;
+            }
+        }
 
 		private static void ScanAssembliesForConverters()
 		{

@@ -1,8 +1,8 @@
-using Engine.Media;
-using OpenTK.Audio.OpenAL;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using Engine.Media;
+using OpenTK.Audio.OpenAL;
 
 namespace Engine.Audio
 {

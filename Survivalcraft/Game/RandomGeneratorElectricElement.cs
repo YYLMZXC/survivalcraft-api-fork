@@ -14,7 +14,7 @@ namespace Game
 			: base(subsystemElectricity, cellFace)
 		{
 			float? num = SubsystemElectricity.ReadPersistentVoltage(CellFaces[0].Point);
-			m_voltage = num.HasValue ? num.Value : GetRandomVoltage();
+			m_voltage = num ?? GetRandomVoltage();
 		}
 
 		public override float GetOutputVoltage(int face)

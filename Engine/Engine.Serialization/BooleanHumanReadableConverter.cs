@@ -7,24 +7,14 @@ namespace Engine.Serialization
 	{
 		public string ConvertToString(object value)
 		{
-			if (!(bool)value)
-			{
-				return "False";
-			}
-			return "True";
-		}
+            return !(bool)value ? "False" : "True";
+        }
 
-		public object ConvertFromString(Type type, string data)
+        public object ConvertFromString(Type type, string data)
 		{
-			if (string.Equals(data, "True", StringComparison.OrdinalIgnoreCase))
-			{
-				return true;
-			}
-			if (string.Equals(data, "False", StringComparison.OrdinalIgnoreCase))
-			{
-				return false;
-			}
-			throw new Exception();
-		}
-	}
+            return string.Equals(data, "True", StringComparison.OrdinalIgnoreCase)
+                ? true
+                : string.Equals(data, "False", StringComparison.OrdinalIgnoreCase) ? (object)false : throw new Exception();
+        }
+    }
 }

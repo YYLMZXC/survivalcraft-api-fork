@@ -47,15 +47,8 @@ namespace Engine.Serialization
 
 		public override void Serialize(string name, ref int value)
 		{
-			if (Use7BitInts)
-			{
-				value = m_reader.Read7BitEncodedInt();
-			}
-			else
-			{
-				value = m_reader.ReadInt32();
-			}
-		}
+			value = Use7BitInts ? m_reader.Read7BitEncodedInt() : m_reader.ReadInt32();
+        }
 
 		public override void Serialize(string name, ref uint value)
 		{

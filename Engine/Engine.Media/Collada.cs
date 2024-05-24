@@ -1,4 +1,3 @@
-using Engine.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using Engine.Graphics;
 
 namespace Engine.Media
 {
@@ -51,14 +51,10 @@ namespace Engine.Media
 
 			public override bool Equals(object obj)
 			{
-				if (!(obj is Color))
-				{
-					return false;
-				}
-				return Equals((Color)obj);
-			}
+                return obj is Color && Equals((Color)obj);
+            }
 
-			public override int GetHashCode()
+            public override int GetHashCode()
 			{
 				return m_hashCode;
 			}

@@ -52,7 +52,7 @@ namespace Engine.Graphics
 			Vector2 p = Vector2.Zero;
 			for (int i = 0; i <= sides; i++)
 			{
-				float x = MathUtils.Lerp(startAngle, endAngle, (float)i / (float)sides);
+				float x = MathUtils.Lerp(startAngle, endAngle, i / (float)sides);
 				Vector2 vector = center + (radius * new Vector2(MathF.Sin(x), 0f - MathF.Cos(x)));
 				if (i > 0)
 				{
@@ -67,7 +67,7 @@ namespace Engine.Graphics
 			Vector2 p = Vector2.Zero;
 			for (int i = 0; i <= sides; i++)
 			{
-				float x = MathUtils.Lerp(startAngle, endAngle, (float)i / (float)sides);
+				float x = MathUtils.Lerp(startAngle, endAngle, i / (float)sides);
 				Vector2 vector = center + (radius * new Vector2(MathF.Sin(x), 0f - MathF.Cos(x)));
 				if (i > 0)
 				{
@@ -83,7 +83,7 @@ namespace Engine.Graphics
 			Vector2 p2 = Vector2.Zero;
 			for (int i = 0; i <= sides; i++)
 			{
-				float x = MathUtils.Lerp(startAngle, endAngle, (float)i / (float)sides);
+				float x = MathUtils.Lerp(startAngle, endAngle, i / (float)sides);
 				var v = new Vector2(MathF.Sin(x), 0f - MathF.Cos(x));
 				Vector2 vector = center + (outerRadius * v);
 				Vector2 vector2 = center + (innerRadius * v);

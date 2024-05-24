@@ -1,7 +1,7 @@
+using System.Runtime.InteropServices;
 using Engine.Media;
 using OpenTK.Graphics.ES30;
 using SixLabors.ImageSharp.PixelFormats;
-using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {

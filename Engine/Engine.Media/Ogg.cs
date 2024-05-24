@@ -1,6 +1,6 @@
-using NVorbis;
 using System;
 using System.IO;
+using NVorbis;
 
 namespace Engine.Media
 {
@@ -106,14 +106,10 @@ namespace Engine.Media
 			int num3 = stream.ReadByte();
 			int num4 = stream.ReadByte();
 			stream.Position = position;
-			if (num == 79 && num2 == 103 && num3 == 103)
-			{
-				return num4 == 83;
-			}
-			return false;
-		}
+            return num == 79 && num2 == 103 && num3 == 103 && num4 == 83;
+        }
 
-		public static StreamingSource Stream(Stream stream, bool leaveOpen = false)
+        public static StreamingSource Stream(Stream stream, bool leaveOpen = false)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
 			return new OggStreamingSource(stream, leaveOpen);

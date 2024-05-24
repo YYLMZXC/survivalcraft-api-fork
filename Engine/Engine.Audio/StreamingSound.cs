@@ -1,9 +1,9 @@
-using Engine.Media;
-using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Engine.Media;
+using OpenTK.Audio.OpenAL;
 
 namespace Engine.Audio
 {
@@ -127,8 +127,8 @@ namespace Engine.Audio
 		{
 			int[] array = new int[3];
 			var list = new List<int>();
-			int millisecondsTimeout = Math.Clamp((int)(0.5f * m_bufferDuration / (float)array.Length * 1000f), 1, 100);
-			byte[] array2 = new byte[2 * base.ChannelsCount * (int)((float)base.SamplingFrequency * m_bufferDuration / (float)array.Length)];
+			int millisecondsTimeout = Math.Clamp((int)(0.5f * m_bufferDuration / array.Length * 1000f), 1, 100);
+			byte[] array2 = new byte[2 * base.ChannelsCount * (int)(SamplingFrequency * m_bufferDuration / array.Length)];
 			for (int i = 0; i < array.Length; i++)
 			{
 				int num = AL.GenBuffer();

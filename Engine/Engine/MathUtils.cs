@@ -261,9 +261,7 @@
         [Obsolete("Use Math.Clamp instead", true)]
         public static int Clamp(int x, int min, int max)
         {
-            if (x < min)
-                return min;
-            return x <= max ? x : max;
+            return x < min ? min : x <= max ? x : max;
         }
 
         [Obsolete("Use Math.Sign instead", true)]
@@ -275,13 +273,11 @@
         [Obsolete("Use Math.Clamp instead", true)]
         public static long Clamp(long x, long min, long max)
         {
-            if (x < min)
-                return min;
-            return x <= max ? x : max;
+            return x < min ? min : x <= max ? x : max;
         }
 
         [Obsolete("Use Math.Sign instead", true)]
-        public static long Sign(long x) => (long)Math.Sign(x);
+        public static long Sign(long x) => Math.Sign(x);
 
         [Obsolete("Use Math.Abs instead", true)]
         public static long Abs(long x) => Math.Abs(x);
@@ -328,13 +324,11 @@
         [Obsolete("Use Math.Clamp instead", true)]
         public static double Clamp(double x, double min, double max)
         {
-            if (x < min)
-                return min;
-            return x <= max ? x : max;
+            return x < min ? min : x <= max ? x : max;
         }
 
         [Obsolete("Use Math.Sign instead", true)]
-        public static double Sign(double x) => (double)Math.Sign(x);
+        public static double Sign(double x) => Math.Sign(x);
 
         [Obsolete("Use Math.Abs instead", true)]
         public static double Abs(double x) => Math.Abs(x);

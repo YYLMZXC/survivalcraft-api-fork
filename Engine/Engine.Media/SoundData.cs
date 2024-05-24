@@ -52,18 +52,14 @@ namespace Engine.Media
 			{
 				return SoundFileFormat.Wav;
 			}
-			if (extension.Equals(".ogg", StringComparison.OrdinalIgnoreCase))
-			{
-				return SoundFileFormat.Ogg;
-            }
-            if (extension.Equals(".mp3", StringComparison.OrdinalIgnoreCase))
-            {
-                return SoundFileFormat.Mp3;
-            }
-            throw new InvalidOperationException("Unsupported sound file format.");
-		}
+            return extension.Equals(".ogg", StringComparison.OrdinalIgnoreCase)
+                ? SoundFileFormat.Ogg
+                : extension.Equals(".mp3", StringComparison.OrdinalIgnoreCase)
+                ? SoundFileFormat.Mp3
+                : throw new InvalidOperationException("Unsupported sound file format.");
+        }
 
-		public static SoundFileFormat DetermineFileFormat(Stream stream)
+        public static SoundFileFormat DetermineFileFormat(Stream stream)
 		{
             if (Flac.IsFlacStream(stream))
             {
@@ -73,18 +69,12 @@ namespace Engine.Media
 			{
 				return SoundFileFormat.Wav;
 			}
-			if (Ogg.IsOggStream(stream))
-			{
-				return SoundFileFormat.Ogg;
-            }
-            if (Mp3.IsFlacStream(stream))
-            {
-                return SoundFileFormat.Mp3;
-            }
-            throw new InvalidOperationException("Unsupported sound file format.");
-		}
+            return Ogg.IsOggStream(stream)
+                ? SoundFileFormat.Ogg
+                : Mp3.IsFlacStream(stream) ? SoundFileFormat.Mp3 : throw new InvalidOperationException("Unsupported sound file format.");
+        }
 
-		public static StreamingSource Stream(Stream stream, SoundFileFormat format)
+        public static StreamingSource Stream(Stream stream, SoundFileFormat format)
 		{
 			switch (format)
 			{

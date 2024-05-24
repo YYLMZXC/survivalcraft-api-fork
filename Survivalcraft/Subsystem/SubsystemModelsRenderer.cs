@@ -242,11 +242,11 @@ namespace Game
 			foreach (ModelData modelsDatum in modelsData)
 			{
 				ComponentModel componentModel = modelsDatum.ComponentModel;
-				Vector3 v = componentModel.DiffuseColor.HasValue ? componentModel.DiffuseColor.Value : Vector3.One;
-				float num = componentModel.Opacity.HasValue ? componentModel.Opacity.Value : 1f;
+				Vector3 v = componentModel.DiffuseColor ?? Vector3.One;
+				float num = componentModel.Opacity ?? 1f;
 				modelShader.InstancesCount = componentModel.AbsoluteBoneTransformsForCamera.Length;
 				modelShader.MaterialColor = new Vector4(v * num, num);
-				modelShader.EmissionColor = componentModel.EmissionColor.HasValue ? componentModel.EmissionColor.Value : Vector4.Zero;
+				modelShader.EmissionColor = componentModel.EmissionColor ?? Vector4.Zero;
 				modelShader.AmbientLightColor = new Vector3(LightingManager.LightAmbient * modelsDatum.Light);
 				modelShader.DiffuseLightColor1 = new Vector3(modelsDatum.Light);
 				modelShader.DiffuseLightColor2 = new Vector3(modelsDatum.Light);

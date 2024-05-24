@@ -1,7 +1,7 @@
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Jpeg;
 using System;
 using System.IO;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace Engine.Media
 {
@@ -17,14 +17,10 @@ namespace Engine.Media
 		{
 			ArgumentNullException.ThrowIfNull(stream);
             string formatName = SixLabors.ImageSharp.Image.DetectFormat(stream).Name;
-            if (formatName != "JPEG")
-            {
-                throw new FormatException($"Image format({formatName}) is not Jpeg");
-            }
-            return Image.Load(stream);
-		}
+            return formatName != "JPEG" ? throw new FormatException($"Image format({formatName}) is not Jpeg") : Image.Load(stream);
+        }
 
-		public static void Save(Image image, Stream stream, int quality, bool sync = false)
+        public static void Save(Image image, Stream stream, int quality, bool sync = false)
 		{
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentNullException.ThrowIfNull(stream);

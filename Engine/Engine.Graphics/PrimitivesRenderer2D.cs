@@ -7,8 +7,8 @@ namespace Engine.Graphics
 		public static Matrix ViewportMatrix()
 		{
 			Viewport viewport = Display.Viewport;
-			float num = 1f / (float)viewport.Width;
-			float num2 = 1f / (float)viewport.Height;
+			float num = 1f / viewport.Width;
+			float num2 = 1f / viewport.Height;
 			return new Matrix(2f * num, 0f, 0f, 0f, 0f, -2f * num2, 0f, 0f, 0f, 0f, 1f, 0f, -1f, 1f, 0f, 1f);
 		}
 

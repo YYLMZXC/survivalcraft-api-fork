@@ -16,14 +16,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Ray3))
-			{
-				return false;
-			}
-			return Equals((Ray3)obj);
-		}
+            return obj is Ray3 && Equals((Ray3)obj);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return Position.GetHashCode() + Direction.GetHashCode();
 		}
@@ -35,14 +31,10 @@ namespace Engine
 
 		public bool Equals(Ray3 other)
 		{
-			if (Position == other.Position)
-			{
-				return Direction == other.Direction;
-			}
-			return false;
-		}
+            return Position == other.Position && Direction == other.Direction;
+        }
 
-		public float? Intersection(BoundingBox box)
+        public float? Intersection(BoundingBox box)
 		{
 			if (Position.X >= box.Min.X && Position.X <= box.Max.X && Position.Y >= box.Min.Y && Position.Y <= box.Max.Y && Position.Z >= box.Min.Z && Position.Z <= box.Max.Z)
 			{
@@ -94,13 +86,9 @@ namespace Engine
 					return null;
 				}
 				num = Position.Y + (vector.X * Direction.Y);
-				if (num < box.Min.Y || num > box.Max.Y)
-				{
-					return null;
-				}
-				return vector.X;
-			}
-			if (vector.Y > vector.X && vector.Y > vector.Z)
+                return num < box.Min.Y || num > box.Max.Y ? null : vector.X;
+            }
+            if (vector.Y > vector.X && vector.Y > vector.Z)
 			{
 				if (vector.Y < 0f)
 				{
@@ -112,13 +100,9 @@ namespace Engine
 					return null;
 				}
 				num2 = Position.X + (vector.Y * Direction.X);
-				if (num2 < box.Min.X || num2 > box.Max.X)
-				{
-					return null;
-				}
-				return vector.Y;
-			}
-			if (vector.Z < 0f)
+                return num2 < box.Min.X || num2 > box.Max.X ? null : vector.Y;
+            }
+            if (vector.Z < 0f)
 			{
 				return null;
 			}
@@ -128,14 +112,10 @@ namespace Engine
 				return null;
 			}
 			num3 = Position.Y + (vector.Z * Direction.Y);
-			if (num3 < box.Min.Y || num3 > box.Max.Y)
-			{
-				return null;
-			}
-			return vector.Z;
-		}
+            return num3 < box.Min.Y || num3 > box.Max.Y ? null : vector.Z;
+        }
 
-		public float? Intersection(BoundingSphere sphere)
+        public float? Intersection(BoundingSphere sphere)
 		{
 			Vector3 v = sphere.Center - Position;
 			float num = v.LengthSquared();
@@ -150,24 +130,16 @@ namespace Engine
 				return null;
 			}
 			float num4 = num2 + (num3 * num3) - num;
-			if (!(num4 < 0f))
-			{
-				return num3 - MathF.Sqrt(num4);
-			}
-			return null;
-		}
+            return !(num4 < 0f) ? num3 - MathF.Sqrt(num4) : null;
+        }
 
-		public float? Intersection(Plane plane)
+        public float? Intersection(Plane plane)
 		{
 			float num = Vector3.Dot(Direction, plane.Normal);
-			if (num == 0f)
-			{
-				return null;
-			}
-			return (0f - (Vector3.Dot(Position, plane.Normal) + plane.D)) / num;
-		}
+            return num == 0f ? null : (0f - (Vector3.Dot(Position, plane.Normal) + plane.D)) / num;
+        }
 
-		public static bool operator ==(Ray3 a, Ray3 b)
+        public static bool operator ==(Ray3 a, Ray3 b)
 		{
 			return a.Equals(b);
 		}

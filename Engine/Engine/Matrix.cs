@@ -152,14 +152,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Matrix))
-			{
-				return false;
-			}
-			return Equals((Matrix)obj);
-		}
+            return obj is Matrix && Equals((Matrix)obj);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return M11.GetHashCode() + M12.GetHashCode() + M13.GetHashCode() + M14.GetHashCode() + M21.GetHashCode() + M22.GetHashCode() + M23.GetHashCode() + M24.GetHashCode() + M31.GetHashCode() + M32.GetHashCode() + M33.GetHashCode() + M34.GetHashCode() + M41.GetHashCode() + M42.GetHashCode() + M43.GetHashCode() + M44.GetHashCode();
 		}
@@ -171,14 +167,11 @@ namespace Engine
 
 		public bool Equals(Matrix other)
 		{
-			if (M11 == other.M11 && M22 == other.M22 && M33 == other.M33 && M44 == other.M44 && M12 == other.M12 && M13 == other.M13 && M14 == other.M14 && M21 == other.M21 && M23 == other.M23 && M24 == other.M24 && M31 == other.M31 && M32 == other.M32 && M34 == other.M34 && M41 == other.M41 && M42 == other.M42)
-			{
-				return M43 == other.M43;
-			}
-			return false;
-		}
+            return M11 == other.M11 && M22 == other.M22 && M33 == other.M33 && M44 == other.M44 && M12 == other.M12 && M13 == other.M13 && M14 == other.M14 && M21 == other.M21 && M23 == other.M23 && M24 == other.M24 && M31 == other.M31 && M32 == other.M32 && M34 == other.M34 && M41 == other.M41 && M42 == other.M42
+&& M43 == other.M43;
+        }
 
-		public float Determinant()
+        public float Determinant()
 		{
 			float num = (M33 * M44) - (M34 * M43);
 			float num2 = (M32 * M44) - (M34 * M42);

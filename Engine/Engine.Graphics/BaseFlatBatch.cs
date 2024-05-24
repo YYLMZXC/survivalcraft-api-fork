@@ -18,14 +18,10 @@ namespace Engine.Graphics
 
 		public override bool IsEmpty()
 		{
-			if (LineIndices.Count == 0)
-			{
-				return TriangleIndices.Count == 0;
-			}
-			return false;
-		}
+            return LineIndices.Count == 0 && TriangleIndices.Count == 0;
+        }
 
-		public override void Clear()
+        public override void Clear()
 		{
 			LineVertices.Clear();
 			LineIndices.Clear();

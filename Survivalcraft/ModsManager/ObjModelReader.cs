@@ -199,7 +199,7 @@ namespace Game
 
 		public static void AppendMesh(Model model, ModelBone rootBone, string texturepath, ObjMesh objMesh)
 		{
-			ModelBone modelBone = model.NewBone(objMesh.MeshName, objMesh.MeshMatrix.HasValue ? objMesh.MeshMatrix.Value : Matrix.Identity, rootBone);
+			ModelBone modelBone = model.NewBone(objMesh.MeshName, objMesh.MeshMatrix ?? Matrix.Identity, rootBone);
 			if (objMesh.Vertices.Count > 0)
 			{
 				ModelMesh mesh = model.NewMesh(objMesh.MeshName, modelBone, objMesh.CalculateBoundingBox());

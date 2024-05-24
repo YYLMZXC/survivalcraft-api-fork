@@ -229,11 +229,9 @@ namespace Engine.Input
 
         public static bool IsConnected(int gamePadIndex)
         {
-            if (gamePadIndex < 0 || gamePadIndex >= m_states.Length)
-            {
-                throw new ArgumentOutOfRangeException("gamePadIndex");
-            }
-            return m_states[gamePadIndex].IsConnected;
+            return gamePadIndex < 0 || gamePadIndex >= m_states.Length
+                ? throw new ArgumentOutOfRangeException("gamePadIndex")
+                : m_states[gamePadIndex].IsConnected;
         }
 
         public static Vector2 GetStickPosition(int gamePadIndex, GamePadStick stick, float deadZone = 0f)
@@ -261,37 +259,20 @@ namespace Engine.Input
 
         public static float GetTriggerPosition(int gamePadIndex, GamePadTrigger trigger, float deadZone = 0f)
         {
-            if (deadZone < 0f || deadZone >= 1f)
-            {
-                throw new ArgumentOutOfRangeException("deadZone");
-            }
-            if (IsConnected(gamePadIndex))
-            {
-                return ApplyDeadZone(m_states[gamePadIndex].Triggers[(int)trigger], deadZone);
-            }
-            return 0f;
+            return deadZone < 0f || deadZone >= 1f
+                ? throw new ArgumentOutOfRangeException("deadZone")
+                : IsConnected(gamePadIndex) ? ApplyDeadZone(m_states[gamePadIndex].Triggers[(int)trigger], deadZone) : 0f;
         }
 
         public static bool IsButtonDown(int gamePadIndex, GamePadButton button)
         {
-            if (IsConnected(gamePadIndex))
-            {
-                return m_states[gamePadIndex].Buttons[(int)button];
-            }
-            return false;
+            return IsConnected(gamePadIndex) && m_states[gamePadIndex].Buttons[(int)button];
         }
 
         public static bool IsButtonDownOnce(int gamePadIndex, GamePadButton button)
         {
-            if (IsConnected(gamePadIndex))
-            {
-                if (m_states[gamePadIndex].Buttons[(int)button])
-                {
-                    return !m_states[gamePadIndex].LastButtons[(int)button];
-                }
-                return false;
-            }
-            return false;
+            return IsConnected(gamePadIndex)
+&& m_states[gamePadIndex].Buttons[(int)button] && !m_states[gamePadIndex].LastButtons[(int)button];
         }
 
         public static bool IsButtonDownRepeat(int gamePadIndex, GamePadButton button)
@@ -303,11 +284,7 @@ namespace Engine.Input
                     return true;
                 }
                 double num = m_states[gamePadIndex].ButtonsRepeat[(int)button];
-                if (num != 0.0)
-                {
-                    return Time.FrameStartTime >= num;
-                }
-                return false;
+                return num != 0.0 && Time.FrameStartTime >= num;
             }
             return false;
         }

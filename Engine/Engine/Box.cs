@@ -69,23 +69,16 @@ namespace Engine
 
 		public bool Equals(Box other)
 		{
-			if (Left == other.Left && Top == other.Top && Near == other.Near && Width == other.Width && Height == other.Height)
-			{
-				return Depth == other.Depth;
-			}
-			return false;
-		}
+            return Left == other.Left && Top == other.Top && Near == other.Near && Width == other.Width && Height == other.Height
+&& Depth == other.Depth;
+        }
 
-		public override bool Equals(object obj)
+        public override bool Equals(object obj)
 		{
-			if (!(obj is Box))
-			{
-				return false;
-			}
-			return Equals((Box)obj);
-		}
+            return obj is Box box && Equals(box);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return Left + Top + Near + Width + Height + Depth;
 		}
@@ -97,14 +90,10 @@ namespace Engine
 
 		public bool Contains(Point3 p)
 		{
-			if (p.X >= Left && p.X < Left + Width && p.Y >= Top && p.Y < Top + Height && p.Z >= Near)
-			{
-				return p.Z < Near + Depth;
-			}
-			return false;
-		}
+            return p.X >= Left && p.X < Left + Width && p.Y >= Top && p.Y < Top + Height && p.Z >= Near && p.Z < Near + Depth;
+        }
 
-		public static Box Intersection(Box b1, Box b2)
+        public static Box Intersection(Box b1, Box b2)
 		{
 			int num = Math.Max(b1.Left, b2.Left);
 			int num2 = Math.Max(b1.Top, b2.Top);
@@ -112,14 +101,10 @@ namespace Engine
 			int num4 = Math.Min(b1.Left + b1.Width, b2.Left + b2.Width);
 			int num5 = Math.Min(b1.Top + b1.Height, b2.Top + b2.Height);
 			int num6 = Math.Min(b1.Near + b1.Depth, b2.Near + b2.Depth);
-			if (num4 <= num || num5 <= num2 || num6 <= num3)
-			{
-				return Empty;
-			}
-			return new Box(num, num2, num3, num4 - num, num5 - num2, num6 - num3);
-		}
+            return num4 <= num || num5 <= num2 || num6 <= num3 ? Empty : new Box(num, num2, num3, num4 - num, num5 - num2, num6 - num3);
+        }
 
-		public static Box Union(Box b1, Box b2)
+        public static Box Union(Box b1, Box b2)
 		{
 			int num = Math.Min(b1.Left, b2.Left);
 			int num2 = Math.Min(b1.Top, b2.Top);

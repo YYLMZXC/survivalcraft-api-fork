@@ -1,6 +1,6 @@
-using OpenTK.Input;
 using System;
 using System.Drawing;
+using OpenTK.Input;
 
 namespace Engine.Input
 {

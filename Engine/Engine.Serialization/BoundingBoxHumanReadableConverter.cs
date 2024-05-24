@@ -14,11 +14,7 @@ namespace Engine.Serialization
 		public object ConvertFromString(Type type, string data)
 		{
 			float[] array = HumanReadableConverter.ValuesListFromString<float>(',', data);
-			if (array.Length == 6)
-			{
-				return new BoundingBox(array[0], array[1], array[2], array[3], array[4], array[5]);
-			}
-			throw new Exception();
-		}
-	}
+            return array.Length == 6 ? (object)new BoundingBox(array[0], array[1], array[2], array[3], array[4], array[5]) : throw new Exception();
+        }
+    }
 }

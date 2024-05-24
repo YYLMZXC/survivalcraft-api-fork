@@ -46,14 +46,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is BoundingRectangle))
-			{
-				return false;
-			}
-			return Equals((BoundingRectangle)obj);
-		}
+            return obj is BoundingRectangle rectangle && Equals(rectangle);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return Min.GetHashCode() + Max.GetHashCode();
 		}
@@ -65,14 +61,10 @@ namespace Engine
 
 		public bool Equals(BoundingRectangle other)
 		{
-			if (Min == other.Min)
-			{
-				return Max == other.Max;
-			}
-			return false;
-		}
+            return Min == other.Min && Max == other.Max;
+        }
 
-		public Vector2 Center()
+        public Vector2 Center()
 		{
 			return new Vector2(0.5f * (Min.X + Max.X), 0.5f * (Min.Y + Max.Y));
 		}
@@ -90,23 +82,15 @@ namespace Engine
 
 		public bool Contains(Vector2 p)
 		{
-			if (p.X >= Min.X && p.X <= Max.X && p.Y >= Min.Y)
-			{
-				return p.Y <= Max.Y;
-			}
-			return false;
-		}
+            return p.X >= Min.X && p.X <= Max.X && p.Y >= Min.Y && p.Y <= Max.Y;
+        }
 
-		public bool Intersection(BoundingRectangle r)
+        public bool Intersection(BoundingRectangle r)
 		{
-			if (r.Max.X >= Min.X && r.Min.X <= Max.X && r.Max.Y >= Min.Y)
-			{
-				return r.Min.Y <= Max.Y;
-			}
-			return false;
-		}
+            return r.Max.X >= Min.X && r.Min.X <= Max.X && r.Max.Y >= Min.Y && r.Min.Y <= Max.Y;
+        }
 
-		public bool Intersection(BoundingCircle circle)
+        public bool Intersection(BoundingCircle circle)
 		{
 			float num = circle.Center.X - Math.Clamp(circle.Center.X, Min.X, Max.X);
 			float num2 = circle.Center.Y - Math.Clamp(circle.Center.Y, Min.Y, Max.Y);
@@ -117,14 +101,10 @@ namespace Engine
 		{
 			Vector2 min = Vector2.Max(r1.Min, r2.Min);
 			Vector2 max = Vector2.Min(r1.Max, r2.Max);
-			if (!(max.X > min.X) || !(max.Y > min.Y))
-			{
-				return default(BoundingRectangle);
-			}
-			return new BoundingRectangle(min, max);
-		}
+            return !(max.X > min.X) || !(max.Y > min.Y) ? default : new BoundingRectangle(min, max);
+        }
 
-		public static BoundingRectangle Union(BoundingRectangle r1, BoundingRectangle r2)
+        public static BoundingRectangle Union(BoundingRectangle r1, BoundingRectangle r2)
 		{
 			Vector2 min = Vector2.Min(r1.Min, r2.Min);
 			Vector2 max = Vector2.Max(r1.Max, r2.Max);

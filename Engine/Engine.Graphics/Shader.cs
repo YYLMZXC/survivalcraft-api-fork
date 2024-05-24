@@ -1,8 +1,8 @@
-﻿using OpenTK.Graphics.ES30;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
+using OpenTK.Graphics.ES30;
 
 namespace Engine.Graphics
 {
@@ -51,19 +51,12 @@ namespace Engine.Graphics
 
 		public ShaderParameter GetParameter(string name, bool allowNull = false)
 		{
-			if (m_parametersByName.TryGetValue(name, out ShaderParameter value))
-			{
-				return value;
-			}
-			else if (allowNull)
-			{
-				return new ShaderParameter("null", ShaderParameterType.Null);
-			}
-			else
-			{
-				throw new InvalidOperationException($"Parameter \"{name}\" not found.");
-			}
-		}
+            return m_parametersByName.TryGetValue(name, out ShaderParameter value)
+                ? value
+                : allowNull
+                    ? new ShaderParameter("null", ShaderParameterType.Null)
+                    : throw new InvalidOperationException($"Parameter \"{name}\" not found.");
+        }
 
 		public override int GetGpuMemoryUsage()
 		{

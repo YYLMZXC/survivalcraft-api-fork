@@ -231,14 +231,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Color))
-			{
-				return false;
-			}
-			return Equals((Color)obj);
-		}
+            return obj is Color && Equals((Color)obj);
+        }
 
-		public override string ToString()
+        public override string ToString()
 		{
 			return $"{R},{G},{B},{A}";
 		}
@@ -250,12 +246,12 @@ namespace Engine
 
 		public static Color Lerp(Color c1, Color c2, float f)
 		{
-			return new Color((int)MathUtils.Lerp((int)c1.R, (int)c2.R, f), (int)MathUtils.Lerp((int)c1.G, (int)c2.G, f), (int)MathUtils.Lerp((int)c1.B, (int)c2.B, f), (int)MathUtils.Lerp((int)c1.A, (int)c2.A, f));
+			return new Color((int)MathUtils.Lerp(c1.R, c2.R, f), (int)MathUtils.Lerp(c1.G, c2.G, f), (int)MathUtils.Lerp(c1.B, c2.B, f), (int)MathUtils.Lerp(c1.A, c2.A, f));
 		}
 
 		public static Color PremultiplyAlpha(Color c)
 		{
-			return new Color((byte)((float)(c.R * c.A) / 255f), (byte)((float)(c.G * c.A) / 255f), (byte)((float)(c.B * c.A) / 255f), c.A);
+			return new Color((byte)(c.R * c.A / 255f), (byte)(c.G * c.A / 255f), (byte)(c.B * c.A / 255f), c.A);
 		}
 
 		public static Vector4 PremultiplyAlpha(Vector4 c)
@@ -265,7 +261,7 @@ namespace Engine
 
 		public static Color MultiplyColorOnly(Color c, float s)
 		{
-			return new Color((byte)Math.Clamp((float)(int)c.R * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.G * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.B * s, 0f, 255f), c.A);
+			return new Color((byte)Math.Clamp(c.R * s, 0f, 255f), (byte)Math.Clamp(c.G * s, 0f, 255f), (byte)Math.Clamp(c.B * s, 0f, 255f), c.A);
 		}
 
 		public static Vector3 RgbToHsv(Vector3 rgb)
@@ -300,7 +296,7 @@ namespace Engine
 			}
 			hsv.X /= 60f;
 			int num = (int)MathF.Floor(hsv.X);
-			float num2 = hsv.X - (float)num;
+			float num2 = hsv.X - num;
 			float num3 = hsv.Z * (1f - hsv.Y);
 			float num4 = hsv.Z * (1f - (hsv.Y * num2));
 			float num5 = hsv.Z * (1f - (hsv.Y * (1f - num2)));
@@ -355,18 +351,18 @@ namespace Engine
 
 		public static Color operator *(Color c, float s)
 		{
-			return new Color((byte)Math.Clamp((float)(int)c.R * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.G * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.B * s, 0f, 255f), (byte)Math.Clamp(c.A * s, 0f, 255f));
+			return new Color((byte)Math.Clamp(c.R * s, 0f, 255f), (byte)Math.Clamp(c.G * s, 0f, 255f), (byte)Math.Clamp(c.B * s, 0f, 255f), (byte)Math.Clamp(c.A * s, 0f, 255f));
 		}
 
 		public static Color operator *(float s, Color c)
 		{
-			return new Color((byte)Math.Clamp((float)(int)c.R * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.G * s, 0f, 255f), (byte)Math.Clamp((float)(int)c.B * s, 0f, 255f), (byte)Math.Clamp(c.A * s, 0f, 255f));
+			return new Color((byte)Math.Clamp(c.R * s, 0f, 255f), (byte)Math.Clamp(c.G * s, 0f, 255f), (byte)Math.Clamp(c.B * s, 0f, 255f), (byte)Math.Clamp(c.A * s, 0f, 255f));
 		}
 
 		public static Color operator /(Color c, float s)
 		{
 			float num = 1f / s;
-			return new Color((byte)Math.Clamp((float)(int)c.R * num, 0f, 255f), (byte)Math.Clamp((float)(int)c.G * num, 0f, 255f), (byte)Math.Clamp((float)(int)c.B * num, 0f, 255f), (byte)Math.Clamp(c.A * num, 0f, 255f));
+			return new Color((byte)Math.Clamp(c.R * num, 0f, 255f), (byte)Math.Clamp(c.G * num, 0f, 255f), (byte)Math.Clamp(c.B * num, 0f, 255f), (byte)Math.Clamp(c.A * num, 0f, 255f));
 		}
 
 		public static Color operator +(Color c1, Color c2)

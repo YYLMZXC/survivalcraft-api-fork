@@ -82,15 +82,15 @@ namespace Game
 					CraftingRecipesManager.DecodeIngredient(item, out string craftingId, out int? data);
 					if (craftingId == BlocksManager.Blocks[208].CraftingId)
 					{
-						num3 = Terrain.MakeBlockValue(208, 0, data.HasValue ? data.Value : 0);
+						num3 = Terrain.MakeBlockValue(208, 0, data ?? 0);
 					}
 					else if (craftingId == BlocksManager.Blocks[129].CraftingId)
 					{
-						num = Terrain.MakeBlockValue(129, 0, data.HasValue ? data.Value : 0);
+						num = Terrain.MakeBlockValue(129, 0, data ?? 0);
 					}
 					else if (craftingId == BlocksManager.Blocks[128].CraftingId)
 					{
-						num2 = Terrain.MakeBlockValue(128, 0, data.HasValue ? data.Value : 0);
+						num2 = Terrain.MakeBlockValue(128, 0, data ?? 0);
 					}
 				}
 				if (num != 0 && num3 != 0)

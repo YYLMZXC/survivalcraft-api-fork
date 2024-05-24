@@ -69,7 +69,7 @@ namespace Engine
         */
 		public bool Bool(float probability)
         {
-            return (float)Int() / 2.147484E+09f < probability;
+            return Int() / 2.147484E+09f < probability;
         }
 #if ANDROID
         public uint UInt()
@@ -93,17 +93,17 @@ namespace Engine
 
         public int Int(int bound)
         {
-            return (int)((long)Int() * (long)bound / 2147483648L);
+            return (int)(Int() * (long)bound / 2147483648L);
         }
 
         public int Int(int min, int max)
         {
-            return (int)(min + ((long)Int() * (long)(max - min + 1) / 2147483648L));
+            return (int)(min + (Int() * (long)(max - min + 1) / 2147483648L));
         }
 
         public float Float()
         {
-            return (float)Int() / 2.147484E+09f;
+            return Int() / 2.147484E+09f;
         }
 
         public float Float(float min, float max)

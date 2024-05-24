@@ -138,7 +138,7 @@ namespace Game
 				y2 = m_shoreRoughnessAmplitude.Y * SimplexNoise.OctavedNoise(x + m_shoreRoughnessOffset[3], m_shoreRoughnessFrequency.Y, (int)m_shoreRoughnessOctaves.Y, 2f, 0.6f);
 			}
 			Vector2 vector = m_oceanCorner + new Vector2(x2, y);
-			Vector2 vector2 = m_oceanCorner + (m_islandSize.HasValue ? m_islandSize.Value : new Vector2(3.40282347E+38f)) + new Vector2(x3, y2);
+			Vector2 vector2 = m_oceanCorner + (m_islandSize ?? new Vector2(3.40282347E+38f)) + new Vector2(x3, y2);
 			return MathUtils.Min(x - vector.X, vector2.X - x, z - vector.Y, vector2.Y - z);
 		}
 

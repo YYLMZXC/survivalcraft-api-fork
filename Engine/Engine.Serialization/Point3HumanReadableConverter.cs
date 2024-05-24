@@ -14,11 +14,7 @@ namespace Engine.Serialization
 		public object ConvertFromString(Type type, string data)
 		{
 			int[] array = HumanReadableConverter.ValuesListFromString<int>(',', data);
-			if (array.Length == 3)
-			{
-				return new Point3(array[0], array[1], array[2]);
-			}
-			throw new Exception();
-		}
-	}
+            return array.Length == 3 ? (object)new Point3(array[0], array[1], array[2]) : throw new Exception();
+        }
+    }
 }

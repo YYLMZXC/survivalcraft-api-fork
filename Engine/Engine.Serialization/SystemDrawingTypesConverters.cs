@@ -11,14 +11,12 @@ namespace Engine.Serialization
 			public string ConvertToString(object value)
 			{
 				var color = (System.Drawing.Color)value;
-				if (color.A != byte.MaxValue)
-				{
-					return HumanReadableConverter.ValuesListToString<byte>(',', color.A, color.R, color.G, color.B);
-				}
-				return HumanReadableConverter.ValuesListToString<byte>(',', color.R, color.G, color.B);
-			}
+                return color.A != byte.MaxValue
+                    ? HumanReadableConverter.ValuesListToString<byte>(',', color.A, color.R, color.G, color.B)
+                    : HumanReadableConverter.ValuesListToString<byte>(',', color.R, color.G, color.B);
+            }
 
-			public object ConvertFromString(Type type, string data)
+            public object ConvertFromString(Type type, string data)
 			{
 				data = data.Trim();
 				if (data.Length > 0)
@@ -53,13 +51,11 @@ namespace Engine.Serialization
 			public object ConvertFromString(Type type, string data)
 			{
 				int[] array = HumanReadableConverter.ValuesListFromString<int>(',', data);
-				if (array.Length == 2)
-				{
-					return new Point(array[0], array[1]);
-				}
-				throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
-			}
-		}
+                return array.Length == 2
+                    ? (object)new Point(array[0], array[1])
+                    :             throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
+            }
+        }
 
 		[HumanReadableConverter(typeof(PointF))]
         public class PointFStringConverter : IHumanReadableConverter
@@ -73,13 +69,11 @@ namespace Engine.Serialization
 			public object ConvertFromString(Type type, string data)
 			{
 				float[] array = HumanReadableConverter.ValuesListFromString<float>(',', data);
-				if (array.Length == 2)
-				{
-					return new PointF(array[0], array[1]);
-				}
-				throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
-			}
-		}
+                return array.Length == 2
+                    ? (object)new PointF(array[0], array[1])
+                    :                throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
+            }
+        }
 
 		[HumanReadableConverter(typeof(Size))]
         public class SizeStringConverter : IHumanReadableConverter
@@ -93,13 +87,11 @@ namespace Engine.Serialization
 			public object ConvertFromString(Type type, string data)
 			{
 				int[] array = HumanReadableConverter.ValuesListFromString<int>(',', data);
-				if (array.Length == 2)
-				{
-					return new Size(array[0], array[1]);
-				}
-				throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
-			}
-		}
+                return array.Length == 2
+                    ? (object)new Size(array[0], array[1])
+                    :              throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
+            }
+        }
 
 		[HumanReadableConverter(typeof(SizeF))]
         public class SizeFStringConverter : IHumanReadableConverter
@@ -113,13 +105,11 @@ namespace Engine.Serialization
 			public object ConvertFromString(Type type, string data)
 			{
 				float[] array = HumanReadableConverter.ValuesListFromString<float>(',', data);
-				if (array.Length == 2)
-				{
-					return new SizeF(array[0], array[1]);
-				}
-				throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
-			}
-		}
+                return array.Length == 2
+                    ? (object)new SizeF(array[0], array[1])
+                    :             throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
+            }
+        }
 
 		[HumanReadableConverter(typeof(System.Drawing.Rectangle))]
         public class RectangleStringConverter : IHumanReadableConverter
@@ -133,13 +123,11 @@ namespace Engine.Serialization
 			public object ConvertFromString(Type type, string data)
 			{
 				int[] array = HumanReadableConverter.ValuesListFromString<int>(',', data);
-				if (array.Length == 4)
-				{
-					return new System.Drawing.Rectangle(array[0], array[1], array[2], array[3]);
-				}
-				throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
-			}
-		}
+                return array.Length == 4
+                    ? (object)new System.Drawing.Rectangle(array[0], array[1], array[2], array[3])
+                    :              throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
+            }
+        }
 
 		[HumanReadableConverter(typeof(RectangleF))]
         public class RectangleFStringConverter : IHumanReadableConverter
@@ -153,12 +141,10 @@ namespace Engine.Serialization
 			public object ConvertFromString(Type type, string data)
 			{
 				float[] array = HumanReadableConverter.ValuesListFromString<float>(',', data);
-				if (array.Length == 4)
-				{
-					return new RectangleF(array[0], array[1], array[2], array[3]);
-				}
-				throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
-			}
-		}
+                return array.Length == 4
+                    ? (object)new RectangleF(array[0], array[1], array[2], array[3])
+                    :                throw new InvalidOperationException($"Cannot convert string \"{data}\" to a value of type {type.FullName}.");
+            }
+        }
 	}
 }

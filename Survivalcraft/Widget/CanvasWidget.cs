@@ -61,7 +61,7 @@ namespace Game
 				if (child.IsVisible)
 				{
 					Vector2? widgetPosition = GetWidgetPosition(child);
-					Vector2 v = widgetPosition.HasValue ? widgetPosition.Value : Vector2.Zero;
+					Vector2 v = widgetPosition ?? Vector2.Zero;
 					child.Measure(Vector2.Max(parentAvailableSize - v - (2f * child.Margin), Vector2.Zero));
 					Vector2 vector = default;
 					vector.X = MathUtils.Max(desiredSize.X, v.X + child.ParentDesiredSize.X + (2f * child.Margin.X));

@@ -50,10 +50,10 @@ namespace Engine
 
 		public Vector4(Color c)
 		{
-			X = (float)(int)c.R / 255f;
-			Y = (float)(int)c.G / 255f;
-			Z = (float)(int)c.B / 255f;
-			W = (float)(int)c.A / 255f;
+			X = c.R / 255f;
+			Y = c.G / 255f;
+			Z = c.B / 255f;
+			W = c.A / 255f;
 		}
 
 		public static implicit operator Vector4((float X, float Y, float Z, float W) v)
@@ -63,14 +63,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Vector4))
-			{
-				return false;
-			}
-			return Equals((Vector4)obj);
-		}
+            return obj is Vector4 && Equals((Vector4)obj);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return X.GetHashCode() + Y.GetHashCode() + Z.GetHashCode() + W.GetHashCode();
 		}
@@ -82,14 +78,10 @@ namespace Engine
 
 		public bool Equals(Vector4 other)
 		{
-			if (X == other.X && Y == other.Y && Z == other.Z)
-			{
-				return W == other.W;
-			}
-			return false;
-		}
+            return X == other.X && Y == other.Y && Z == other.Z && W == other.W;
+        }
 
-		public static float Distance(Vector4 v1, Vector4 v2)
+        public static float Distance(Vector4 v1, Vector4 v2)
 		{
 			return MathF.Sqrt(DistanceSquared(v1, v2));
 		}
@@ -172,24 +164,16 @@ namespace Engine
 		public static Vector4 Normalize(Vector4 v)
 		{
 			float num = v.Length();
-			if (!(num > 0f))
-			{
-				return UnitX;
-			}
-			return v / num;
-		}
+            return !(num > 0f) ? UnitX : v / num;
+        }
 
-		public static Vector4 LimitLength(Vector4 v, float maxLength)
+        public static Vector4 LimitLength(Vector4 v, float maxLength)
 		{
 			float num = v.LengthSquared();
-			if (num > maxLength * maxLength)
-			{
-				return v * (maxLength / MathF.Sqrt(num));
-			}
-			return v;
-		}
+            return num > maxLength * maxLength ? v * (maxLength / MathF.Sqrt(num)) : v;
+        }
 
-		public static Vector4 Transform(Vector4 v, Matrix m)
+        public static Vector4 Transform(Vector4 v, Matrix m)
 		{
 			return new Vector4((v.X * m.M11) + (v.Y * m.M21) + (v.Z * m.M31) + m.M41, (v.X * m.M12) + (v.Y * m.M22) + (v.Z * m.M32) + m.M42, (v.X * m.M13) + (v.Y * m.M23) + (v.Z * m.M33) + m.M43, (v.X * m.M14) + (v.Y * m.M24) + (v.Z * m.M34) + m.M44);
 		}

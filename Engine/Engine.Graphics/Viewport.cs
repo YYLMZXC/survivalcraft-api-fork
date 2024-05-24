@@ -18,7 +18,7 @@ namespace Engine.Graphics
 
 		public Rectangle Rectangle => new(X, Y, Width, Height);
 
-		public float AspectRatio => (float)Width / (float)Height;
+		public float AspectRatio => Width / (float)Height;
 
 		public Viewport(int x, int y, int width, int height, float minDepth = 0f, float maxDepth = 1f)
 		{
@@ -32,23 +32,16 @@ namespace Engine.Graphics
 
 		public bool Equals(Viewport other)
 		{
-			if (X == other.X && Y == other.Y && Width == other.Width && Height == other.Height && MinDepth == other.MinDepth)
-			{
-				return MaxDepth == other.MaxDepth;
-			}
-			return false;
-		}
+            return X == other.X && Y == other.Y && Width == other.Width && Height == other.Height && MinDepth == other.MinDepth
+&& MaxDepth == other.MaxDepth;
+        }
 
-		public override bool Equals(object obj)
+        public override bool Equals(object obj)
 		{
-			if (!(obj is Viewport))
-			{
-				return false;
-			}
-			return Equals(this);
-		}
+            return obj is Viewport && Equals(this);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return X.GetHashCode() + Y.GetHashCode() + Width.GetHashCode() + Height.GetHashCode() + MinDepth.GetHashCode() + MaxDepth.GetHashCode();
 		}
@@ -62,8 +55,8 @@ namespace Engine.Graphics
 		{
 			var result = Vector3.Transform(source, worldViewProjection);
 			result /= (source.X * worldViewProjection.M14) + (source.Y * worldViewProjection.M24) + (source.Z * worldViewProjection.M34) + worldViewProjection.M44;
-			result.X = ((result.X + 1f) * 0.5f * (float)Width) + (float)X;
-			result.Y = ((0f - result.Y + 1f) * 0.5f * (float)Height) + (float)Y;
+			result.X = ((result.X + 1f) * 0.5f * Width) + X;
+			result.Y = ((0f - result.Y + 1f) * 0.5f * Height) + Y;
 			result.Z = (result.Z * (MaxDepth - MinDepth)) + MinDepth;
 			return result;
 		}
@@ -76,8 +69,8 @@ namespace Engine.Graphics
 		public Vector3 Unproject(Vector3 source, Matrix worldViewProjection)
 		{
 			var m = Matrix.Invert(worldViewProjection);
-			source.X = ((source.X - (float)X) / (float)Width * 2f) - 1f;
-			source.Y = 0f - (((source.Y - (float)Y) / (float)Height * 2f) - 1f);
+			source.X = ((source.X - X) / Width * 2f) - 1f;
+			source.Y = 0f - (((source.Y - Y) / Height * 2f) - 1f);
 			source.Z = (source.Z - MinDepth) / (MaxDepth - MinDepth);
 			return Vector3.Transform(source, m) / ((source.X * m.M14) + (source.Y * m.M24) + (source.Z * m.M34) + m.M44);
 		}

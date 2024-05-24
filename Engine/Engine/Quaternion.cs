@@ -37,14 +37,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Quaternion))
-			{
-				return false;
-			}
-			return Equals((Quaternion)obj);
-		}
+            return obj is Quaternion && Equals((Quaternion)obj);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return X.GetHashCode() + Y.GetHashCode() + Z.GetHashCode() + W.GetHashCode();
 		}
@@ -56,14 +52,10 @@ namespace Engine
 
 		public bool Equals(Quaternion other)
 		{
-			if (X == other.X && Y == other.Y && Z == other.Z)
-			{
-				return W == other.W;
-			}
-			return false;
-		}
+            return X == other.X && Y == other.Y && Z == other.Z && W == other.W;
+        }
 
-		public static Quaternion Conjugate(Quaternion q)
+        public static Quaternion Conjugate(Quaternion q)
 		{
 			return new Quaternion(0f - q.X, 0f - q.Y, 0f - q.Z, q.W);
 		}
@@ -225,14 +217,10 @@ namespace Engine
 		public static Quaternion Normalize(Quaternion q)
 		{
 			float num = q.Length();
-			if (num == 0f)
-			{
-				return Identity;
-			}
-			return q / num;
-		}
+            return num == 0f ? Identity : q / num;
+        }
 
-		public Matrix ToMatrix()
+        public Matrix ToMatrix()
 		{
 			float num = X * X;
 			float num2 = Y * Y;
