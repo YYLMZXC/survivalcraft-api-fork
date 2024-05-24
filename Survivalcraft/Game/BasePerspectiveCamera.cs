@@ -239,7 +239,7 @@ namespace Game
 				num2 = 0.9f;
 			}
 			float num3 = wh.X / wh.Y;//视野长宽比
-			float num4 = MathUtils.Min(num * num3, num);//根据长宽比获取值，最大90f
+			float num4 = MathF.Min(num * num3, num);//根据长宽比获取值，最大90f
 			float num5 = num4 * num3;
 			if (num5 < 90f)
 			{

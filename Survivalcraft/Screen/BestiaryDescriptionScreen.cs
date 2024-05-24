@@ -59,12 +59,12 @@ namespace Game
 			m_rightButtonWidget.IsEnabled = m_index < m_infoList.Count - 1;
 			if (m_leftButtonWidget.IsClicked || Input.Left)
 			{
-				m_index = MathUtils.Max(m_index - 1, 0);
+				m_index = Math.Max(m_index - 1, 0);
 				UpdateCreatureProperties();
 			}
 			if (m_rightButtonWidget.IsClicked || Input.Right)
 			{
-				m_index = MathUtils.Min(m_index + 1, m_infoList.Count - 1);
+				m_index = Math.Min(m_index + 1, m_infoList.Count - 1);
 				UpdateCreatureProperties();
 			}
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)

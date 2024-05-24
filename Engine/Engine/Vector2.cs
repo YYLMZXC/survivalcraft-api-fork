@@ -137,22 +137,22 @@ namespace Engine
 
 		public static Vector2 Min(Vector2 v, float f)
 		{
-			return new Vector2(MathUtils.Min(v.X, f), MathUtils.Min(v.Y, f));
+			return new Vector2(MathF.Min(v.X, f), MathF.Min(v.Y, f));
 		}
 
 		public static Vector2 Min(Vector2 v1, Vector2 v2)
 		{
-			return new Vector2(MathUtils.Min(v1.X, v2.X), MathUtils.Min(v1.Y, v2.Y));
+			return new Vector2(MathF.Min(v1.X, v2.X), MathF.Min(v1.Y, v2.Y));
 		}
 
 		public static Vector2 Max(Vector2 v, float f)
 		{
-			return new Vector2(MathUtils.Max(v.X, f), MathUtils.Max(v.Y, f));
+			return new Vector2(MathF.Max(v.X, f), MathF.Max(v.Y, f));
 		}
 
 		public static Vector2 Max(Vector2 v1, Vector2 v2)
 		{
-			return new Vector2(MathUtils.Max(v1.X, v2.X), MathUtils.Max(v1.Y, v2.Y));
+			return new Vector2(MathF.Max(v1.X, v2.X), MathF.Max(v1.Y, v2.Y));
 		}
 
 		public static Vector2 Clamp(Vector2 v, float min, float max)

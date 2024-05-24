@@ -53,8 +53,8 @@ namespace Game
 				int num2 = (int)MathF.Floor(y);
 				int num3 = (int)MathF.Ceiling(x);
 				int num4 = (int)MathF.Ceiling(y);
-				float f = x - (float)num;
-				float f2 = y - (float)num2;
+				float f = x - num;
+				float f2 = y - num2;
 				float x2 = m_data[num + (num2 * m_sizeX)];
 				float x3 = m_data[num3 + (num2 * m_sizeX)];
 				float x4 = m_data[num + (num4 * m_sizeX)];
@@ -123,9 +123,9 @@ namespace Game
 				int num4 = (int)MathF.Ceiling(y);
 				int num5 = (int)MathF.Floor(z);
 				int num6 = (int)MathF.Ceiling(z);
-				float f = x - (float)num;
-				float f2 = y - (float)num3;
-				float f3 = z - (float)num5;
+				float f = x - num;
+				float f2 = y - num3;
+				float f3 = z - num5;
 				float x2 = m_data[num + (num3 * m_sizeX) + (num5 * m_sizeX * m_sizeY)];
 				float x3 = m_data[num2 + (num3 * m_sizeX) + (num5 * m_sizeX * m_sizeY)];
 				float x4 = m_data[num + (num4 * m_sizeX) + (num5 * m_sizeX * m_sizeY)];

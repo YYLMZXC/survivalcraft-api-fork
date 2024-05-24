@@ -156,8 +156,8 @@ namespace Game
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
-				float num = MathUtils.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
-				float num2 = MathUtils.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
+				float num = MathF.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
+				float num2 = MathF.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
 				parameter.SetValue(new Vector2(num2, 1f / (num - num2)));
 				int num3 = 16;
 				if (viewPosition.Z > terrainChunk.BoundingBox.Min.Z)
@@ -201,8 +201,8 @@ namespace Game
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
-				float num = MathUtils.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
-				float num2 = MathUtils.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
+				float num = MathF.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
+				float num2 = MathF.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
 				parameter.SetValue(new Vector2(num2, 1f / (num - num2)));
 				int subsetsMask = 32;
 				DrawTerrainChunkGeometrySubsets(AlphatestedShader, terrainChunk, subsetsMask);
@@ -229,8 +229,8 @@ namespace Game
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
-				float num = MathUtils.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
-				float num2 = MathUtils.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
+				float num = MathF.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
+				float num2 = MathF.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
 				parameter.SetValue(new Vector2(num2, 1f / (num - num2)));
 				int subsetsMask = 64;
 				DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk, subsetsMask);
@@ -397,7 +397,7 @@ namespace Game
 			float x2 = Vector2.Distance(viewPosition.XZ, v2);
 			float x3 = Vector2.Distance(viewPosition.XZ, v3);
 			float x4 = Vector2.Distance(viewPosition.XZ, v4);
-			chunk.FogEnds[camera.GameWidget.GameWidgetIndex] = MathUtils.Max(MathUtils.Min(x, x2, x3, x4), 0.001f);
+			chunk.FogEnds[camera.GameWidget.GameWidgetIndex] = MathF.Max(MathF.Min(x, x2, x3, x4), 0.001f);
 		}
 
 		public void RunChunkFadeIn(Camera camera, TerrainChunk chunk)
