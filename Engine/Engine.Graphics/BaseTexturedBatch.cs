@@ -76,7 +76,7 @@ namespace Engine.Graphics
 			int num2 = TriangleIndices.Count;
 			while (num2 > 0)
 			{
-				int num3 = MathF.Min(num2, 196605);
+				int num3 = Math.Min(num2, 196605);
 				Display.DrawUserIndexed(PrimitiveType.TriangleList, shader, VertexPositionColorTexture.VertexDeclaration, TriangleVertices.Array, 0, TriangleVertices.Count, TriangleIndices.Array, num, num3);
 				num += num3;
 				num2 -= num3;

@@ -206,11 +206,11 @@ namespace Engine.Graphics
 			{
 				string versioncode = shaderCode.Split(new char[] { '\n' })[0];
 				string versionnum = versioncode.Split(new char[] { ' ' })[1];
-#if ANDROID
+
                 if (int.Parse(versionnum) >= 300 || versioncode.EndsWith("es"))
                     str += $"#version {versionnum} es" + Environment.NewLine;
                 else
-#endif
+
 				str += $"#version {versionnum}" + Environment.NewLine;
 				shaderCode = "//" + shaderCode;
 			}

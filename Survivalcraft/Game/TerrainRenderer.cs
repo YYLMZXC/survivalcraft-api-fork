@@ -397,7 +397,7 @@ namespace Game
 			float x2 = Vector2.Distance(viewPosition.XZ, v2);
 			float x3 = Vector2.Distance(viewPosition.XZ, v3);
 			float x4 = Vector2.Distance(viewPosition.XZ, v4);
-			chunk.FogEnds[camera.GameWidget.GameWidgetIndex] = MathF.Max(MathF.Min(x, x2, x3, x4), 0.001f);
+			chunk.FogEnds[camera.GameWidget.GameWidgetIndex] = MathF.Max(Math.Min(Math.Min(Math.Min(x, x2), x3), x4), 0.001f);
 		}
 
 		public void RunChunkFadeIn(Camera camera, TerrainChunk chunk)
