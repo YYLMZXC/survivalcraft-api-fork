@@ -380,5 +380,8 @@
 
         [Obsolete("Use Math.Pow instead", true)]
         public static double Pow(double x, double n) => Math.Pow(x, n);
+
+        [Obsolete("Use MathF.Floor instead", true)]
+        public static float Floor(float x) => MathF.Floor(x);
     }
 }
