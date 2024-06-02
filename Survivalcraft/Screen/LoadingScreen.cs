@@ -62,7 +62,7 @@ namespace Game
 			Canvas.AddChildren(Background);
 			Canvas.AddChildren(LogList);
 			AddChildren(Canvas);
-			Info("Initilizing Mods Manager. Api Version: " + ModsManager.APIVersion);
+			Info("Initializing Mods Manager. Api Version: " + ModsManager.ApiVersionString);
 		}
 		public void ContentLoaded()
 		{

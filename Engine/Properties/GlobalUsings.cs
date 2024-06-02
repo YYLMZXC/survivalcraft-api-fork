@@ -1,5 +1,4 @@
 ﻿global using Color = Engine.Color;
-global using Screen = Game.Screen;
 global using Image = Engine.Media.Image;
 global using Rectangle = Engine.Rectangle;
 

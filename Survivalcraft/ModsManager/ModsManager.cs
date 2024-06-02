@@ -15,42 +15,51 @@ using System.IO.Compression;
 #endif
 public static class ModsManager
 {
-	public const string modSuffix = ".scmod";
-	public const string APIVersion = "1.70A";
-	public const string SCVersion = "2.3.10.4";
+	public static string ModSuffix = ".scmod";
+	public static string ApiVersionString = "1.70A";
+	public static string GameVersion = "2.3.10.4";
 	//1为api1.33 2为api1.40
-	public const int Apiv = 0x11;
+	
+	
+	public enum ApiVersionEnum
+	{
+		Version133 = 1,
+		Version140 = 2,
+		Version170 = 17
+	}
+
+	public const ApiVersionEnum ApiVersion = ApiVersionEnum.Version170; 
 
 #if WINDOWS
-	public const string
-		ExtPath = "app:",//ExternelPath
-		DocPath = "app:/doc",//DocumentPath
-		WorldsDirectoryName = ExtPath + "/Worlds";
+	public static string ExternalPath => "app:";
+	public static string DocPath = "app:/doc";
 	public const bool IsAndroid = false;
-
+	public static string WorldsDirectoryName = DocPath+"/Worlds";
 #endif
 #if ANDROID
-	public const string 
-		ExtPath = EngineActivity.ExtPath,
-		DocPath = EngineActivity.DocPath,
-						 ScreenCapturePath = ExtPath + "/ScreenCapture",
-						 WorldsDirectoryName = DocPath+"/Worlds";
-	public const bool IsAndroid = true;
-
+	public static string ExternalPath { get; } = EngineActivity.BasePath;
+	public static string DocPath => EngineActivity.BasePath;
+	public static string WorldsDirectoryName = ExternalPath + "/Worlds";
+	
 #endif
-	public const string
-		UserDataPath = DocPath + "/UserId.dat",
-		CharacterSkinsDirectoryName = DocPath + "/CharacterSkins",
-		FurniturePacksDirectoryName = DocPath + "/FurniturePacks",
-		BlockTexturesDirectoryName = DocPath + "/TexturePacks",
-		CommunityContentCachePath = DocPath + "/CommunityContentCache.xml",
-		ModsSetPath = DocPath + "/ModSettings.xml",
-		SettingPath = DocPath + "/Settings.xml",
-		ModCachePath = ExtPath + "/Mods/Cache",
-		LogPath = ExtPath + "/Bugs";
-	public static string ModsPath = ExtPath + "/Mods";//移动端mods数据文件夹
+
+
+	public static string ScreenCapturePath { get; } = ExternalPath + "/ScreenCapture";
+
+	public static string UserDataPath { get; } = DocPath + "/UserId.dat";
+	public static string CharacterSkinsDirectoryName { get; } = DocPath + "/CharacterSkins";
+	public static string FurniturePacksDirectoryName { get; } = DocPath + "/FurniturePacks";
+
+	public static string BlockTexturesDirectoryName { get; } = DocPath + "/TexturePacks";
+	public static string CommunityContentCachePath { get; } = DocPath + "/CommunityContentCache.xml";
+	public static string ModsSetPath { get; } = DocPath + "/ModSettings.xml";
+	public static string SettingPath { get; } = DocPath + "/Settings.xml";
+	public static string ModCachePath { get; } = ExternalPath + "/Mods/Cache";
+	public static string LogPath { get; } = ExternalPath + "/Bugs";
+	public static string ModsPath { get; } = ExternalPath + "/Mods";
+	
 	internal static ModEntity SurvivalCraftModEntity;
-	internal static bool ConfigLoaded = false;
+	internal static bool ConfigLoaded;
 
 	public class ModSettings
 	{
@@ -281,12 +290,12 @@ public static class ModsManager
 	public static string ImportMod(string name, Stream stream)
 	{
 		if (!Storage.DirectoryExists(ModCachePath)) Storage.CreateDirectory(ModCachePath);
-		string realName = name + modSuffix;
+		string realName = name + ModSuffix;
 		string path = Storage.CombinePaths(ModCachePath, realName);
 		int num = 1;
 		while (Storage.FileExists(path))
 		{
-			realName = name + "(" + num + ")"+modSuffix;
+			realName = name + "(" + num + ")"+ModSuffix;
 			path = Storage.CombinePaths(ModCachePath, realName);
 			num++;
 		}
@@ -338,7 +347,7 @@ public static class ModsManager
 				ToRemove.Add(modEntity1);
 				continue;
 			}
-			//float.TryParse(modInfo.ApiVersion, out float curr);
+			//float.TryParse(modInfo.ApiVersionString, out float curr);
 			//if (curr < api)
 			//{//api版本检测
 			//    ToDisable.Add(modInfo);
@@ -396,7 +405,7 @@ public static class ModsManager
 			{
 				try
 				{
-					if (ms == modSuffix || ms == ".SCNEXT")
+					if (ms == ModSuffix || ms == ".SCNEXT")
 					{
 						Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
 						var modEntity = new ModEntity(ks, Game.ZipArchive.Open(keepOpenStream, true));

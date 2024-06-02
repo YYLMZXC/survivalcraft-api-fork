@@ -295,21 +295,23 @@ namespace GameEntitySystem
 		{
 			if (m_entities != null)
 			{
-				foreach (Entity key in m_entities.Keys)
+				foreach (Entity entity in m_entities.Keys)
 				{
-					key.Dispose();
+					entity.DisposeInternal();
 				}
 			}
 			if (m_subsystems != null)
 			{
 				foreach (Subsystem subsystem in m_subsystems)
 				{
-					subsystem.Dispose();
+					subsystem.DisposeInternal();
 				}
 			}
 			OnProjectLoad = null;
 			EntityRemoved = null;
 			EntityAdded = null;
+			
+			GC.SuppressFinalize(this);
 		}
 
 		public void FireEntityAddedEvents(Entity entity)

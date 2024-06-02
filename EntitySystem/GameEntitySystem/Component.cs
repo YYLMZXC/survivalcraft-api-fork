@@ -43,7 +43,13 @@ namespace GameEntitySystem
 		public virtual void Dispose()
 		{
 		}
-
+		
+		internal void DisposeInternal()
+		{
+			GC.SuppressFinalize(this);
+			Dispose();
+		}
+		
 		public void Initialize(Entity entity, ValuesDictionary valuesDictionary)
 		{
 			if (valuesDictionary.DatabaseObject.Type != entity.Project.GameDatabase.MemberComponentTemplateType)

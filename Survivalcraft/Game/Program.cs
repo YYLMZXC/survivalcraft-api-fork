@@ -76,7 +76,7 @@ namespace Game
             };
             JsInterface.Initiate();
             Window.Run(0, 0, WindowMode.Resizable,
-                "生存战争2.3插件版_" + ModsManager.APIVersion);
+                "生存战争2.3插件版_" + ModsManager.ApiVersionString);
         }
 
         public static void HandleUriHandler(Uri uri)

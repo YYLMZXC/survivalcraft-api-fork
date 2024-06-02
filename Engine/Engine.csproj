@@ -59,9 +59,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EditorConfigFiles Remove="D:\CS Project\SCEngine\survivalcraft-api\Engine\.editorconfig" />
+    <EditorConfigFiles Remove=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="D:\CS Project\SCEngine\survivalcraft-api\Engine\.editorconfig" />
+    <None Include=".editorconfig" />
   </ItemGroup>
 </Project>

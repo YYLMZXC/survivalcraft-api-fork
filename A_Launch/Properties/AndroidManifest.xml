@@ -1,10 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="17001" android:versionName="API1.70A" package="com.candy.survivalcraftAPI1_7">
-	<application android:label="[API1.7]生存战争2.3插件版" android:theme="@style/MainTheme" android:requestLegacyExternalStorage="true" android:icon="@mipmap/icon" android:usesCleartextTraffic="true"></application>
+	<application android:label="@string/ApiTitle" android:theme="@style/MainTheme"
+				 android:requestLegacyExternalStorage="true" android:icon="@mipmap/icon"
+				 android:usesCleartextTraffic="true"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
-	​<meta-data android:name="android.notch_support" android:value="true" /><!--by把红色赋予黑海，适配异形屏--></manifest>
+	<meta-data android:name="android.notch_support" android:value="true" /><!--by把红色赋予黑海，适配异形屏--></manifest>

@@ -271,7 +271,7 @@ namespace Game {
                                             throw new InvalidOperationException(LanguageControl.Get(fName, 12));
                                         }
                                         busyDialog.LargeMessage = LanguageControl.Get(fName, 13);
-                                        sourcePath = Storage.CombinePaths(ModsManager.ExtPath, "WorldUpload.tmp");
+                                        sourcePath = Storage.CombinePaths(ModsManager.ExternalPath, "WorldUpload.tmp");
                                         needsDelete = true;
                                         string name2 = WorldsManager.GetWorldInfo(name).WorldSettings.Name;
                                         path = $"{name2}.scworld";

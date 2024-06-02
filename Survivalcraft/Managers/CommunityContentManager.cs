@@ -76,7 +76,7 @@ namespace Game
 			dictionary.Add("SortOrder", sortOrder ?? string.Empty);
 			dictionary.Add("Platform", VersionsManager.Platform.ToString());
 			dictionary.Add("Version", VersionsManager.Version);
-			dictionary.Add("Apiv", ModsManager.Apiv.ToString());
+			dictionary.Add("Apiv", ModsManager.ApiVersion.ToString());
 			dictionary.Add("key", keySearch);
 			dictionary.Add("SearchType", searchType);
 			WebManager.Post(m_scResDirAddress, null, Header, WebManager.UrlParametersToStream(dictionary), progress, delegate (byte[] result)
@@ -367,7 +367,7 @@ namespace Game
 				{
 					//if (result != null)
 					//{
-					//    using (FileStream fileStream = new FileStream(Storage.GetSystemPath(ModsManager.ModCachePath) + "/123²âÊÔ.txt", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+					//    using (FileStream fileStream = new FileStream(Storage.GetSystemPath(ModsManager.ModCachePath) + "/123ï¿½ï¿½ï¿½ï¿½.txt", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
 					//    {
 					//        fileStream.Write(result, 0, result.Length);
 					//        fileStream.Flush();

@@ -187,10 +187,16 @@ namespace GameEntitySystem
 		{
 			foreach (Component component in m_components)
 			{
-				component.Dispose();
+				component.DisposeInternal();
 			}
 		}
-
+		
+		internal void DisposeInternal()
+		{
+			GC.SuppressFinalize(this);
+			Dispose();
+		}
+		
 		internal List<Entity> InternalGetOwnedEntities()
 		{
 			List<Entity> list = null;
