@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Runtime.InteropServices;
+using Engine.Input;
+
 namespace Game
 {
     public static class Program
@@ -129,7 +131,7 @@ namespace Game
             LastFrameTime = (float)(Time.RealTime - m_frameBeginTime);
             LastCpuFrameTime = (float)(m_cpuEndTime - m_frameBeginTime);
             m_frameBeginTime = Time.RealTime;
-            if (Engine.Input.Keyboard.IsKeyDown(Engine.Input.Key.F11))
+            if (Keyboard.IsKeyDown(Key.F11))
             {
                 SettingsManager.WindowMode = SettingsManager.WindowMode == WindowMode.Fullscreen
                     ? WindowMode.Resizable

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Engine
 {
@@ -114,7 +115,7 @@ namespace Engine
 			Write(LogType.Error, (message != null) ? message.ToString() : "null");
 		}
 
-		public static void Error(string message)
+		public static void Error(string message, [CallerMemberName] string memberName = null)
 		{
 			Write(LogType.Error, message);
 			Window.Title = Window.Title + " #" + message;

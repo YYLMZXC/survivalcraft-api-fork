@@ -1,273 +1,331 @@
+using System.Xml.Linq;
+using Engine;
 using Engine.Graphics;
 using Engine.Input;
 using GameEntitySystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
 using TemplatesDatabase;
 
-namespace Game
+namespace Game;
+public class PlayerScreen : Screen
 {
-	public class PlayerScreen : Screen
-	{
-		public enum Mode
-		{
-			Initial,
-			Add,
-			Edit
-		}
+    public enum Mode
+    {
+        Initial,
+        Add,
+        Edit
+    }
 
-		public PlayerData m_playerData;
+    private class InputDeviceWidget : LabelWidget
+    {
+        public WidgetInputDevice Device;
 
-		public Mode m_mode;
+        public InputDeviceWidget()
+        {
+            HorizontalAlignment = WidgetAlignment.Center;
+            VerticalAlignment = WidgetAlignment.Center;
+        }
 
-		public CharacterSkinsCache m_characterSkinsCache;
+        public override void Update()
+        {
+            Text = GetDeviceDisplayName(Device);
+        }
+    }
 
-		public bool m_nameWasInvalid;
+    private PlayerData m_playerData;
 
-		public PlayerModelWidget m_playerModel;
+    private Mode m_mode;
 
-		public ButtonWidget m_playerClassButton;
+    private CharacterSkinsCache m_characterSkinsCache;
 
-		public TextBoxWidget m_nameTextBox;
+    private bool m_nameWasInvalid;
 
-		public LabelWidget m_characterSkinLabel;
+    private PlayerModelWidget m_playerModel;
 
-		public ButtonWidget m_characterSkinButton;
+    private ButtonWidget m_playerClassButton;
 
-		public LabelWidget m_controlsLabel;
+    private TextBoxWidget m_nameTextBox;
 
-		public ButtonWidget m_controlsButton;
+    private LabelWidget m_characterSkinLabel;
 
-		public LabelWidget m_descriptionLabel;
+    private ButtonWidget m_characterSkinButton;
 
-		public ButtonWidget m_addButton;
+    private LabelWidget m_controlsLabel;
 
-		public ButtonWidget m_addAnotherButton;
+    private ButtonWidget m_controlsButton;
 
-		public ButtonWidget m_deleteButton;
+    private LabelWidget m_descriptionLabel;
 
-		public ButtonWidget m_playButton;
+    private ButtonWidget m_addButton;
 
-		public WidgetInputDevice[] m_inputDevices = new WidgetInputDevice[5]
-		{
-			WidgetInputDevice.None,
-			WidgetInputDevice.GamePad1,
-			WidgetInputDevice.GamePad2,
-			WidgetInputDevice.GamePad3,
-			WidgetInputDevice.GamePad4
-		};
+    private ButtonWidget m_addAnotherButton;
 
-		public PlayerScreen()
-		{
-			XElement node = ContentManager.Get<XElement>("Screens/PlayerScreen");
-			LoadContents(this, node);
-			m_playerModel = Children.Find<PlayerModelWidget>("Model");
-			m_playerClassButton = Children.Find<ButtonWidget>("PlayerClassButton");
-			m_nameTextBox = Children.Find<TextBoxWidget>("Name");
-			m_characterSkinLabel = Children.Find<LabelWidget>("CharacterSkinLabel");
-			m_characterSkinButton = Children.Find<ButtonWidget>("CharacterSkinButton");
-			m_controlsLabel = Children.Find<LabelWidget>("ControlsLabel");
-			m_controlsButton = Children.Find<ButtonWidget>("ControlsButton");
-			m_descriptionLabel = Children.Find<LabelWidget>("DescriptionLabel");
-			m_addButton = Children.Find<ButtonWidget>("AddButton");
-			m_addAnotherButton = Children.Find<ButtonWidget>("AddAnotherButton");
-			m_deleteButton = Children.Find<ButtonWidget>("DeleteButton");
-			m_playButton = Children.Find<ButtonWidget>("PlayButton");
-			m_characterSkinsCache = new CharacterSkinsCache();
-			m_playerModel.CharacterSkinsCache = m_characterSkinsCache;
-			m_nameTextBox.FocusLost += delegate
-			{
-				if (VerifyName())
-				{
-					m_playerData.Name = m_nameTextBox.Text.Trim();
-				}
-				else
-				{
-					m_nameWasInvalid = true;
-				}
-			};
-		}
+    private ButtonWidget m_deleteButton;
 
-		public override void Enter(object[] parameters)
-		{
-			m_mode = (Mode)parameters[0];
-			m_playerData = m_mode == Mode.Edit ? (PlayerData)parameters[1] : new PlayerData((Project)parameters[1]);
-			if (m_mode == Mode.Initial)
-			{
-				m_playerClassButton.IsEnabled = true;
-				m_addButton.IsVisible = false;
-				m_deleteButton.IsVisible = false;
-				m_playButton.IsVisible = true;
-				m_addAnotherButton.IsVisible = m_playerData.SubsystemPlayers.PlayersData.Count < 3;
-			}
-			else if (m_mode == Mode.Add)
-			{
-				m_playerClassButton.IsEnabled = true;
-				m_addButton.IsVisible = true;
-				m_deleteButton.IsVisible = false;
-				m_playButton.IsVisible = false;
-				m_addAnotherButton.IsVisible = false;
-			}
-			else if (m_mode == Mode.Edit)
-			{
-				m_playerClassButton.IsEnabled = false;
-				m_addButton.IsVisible = false;
-				m_deleteButton.IsVisible = m_playerData.SubsystemPlayers.PlayersData.Count > 1;
-				m_playButton.IsVisible = false;
-				m_addAnotherButton.IsVisible = false;
-			}
-		}
+    private ButtonWidget m_playButton;
 
-		public override void Leave()
-		{
-			m_characterSkinsCache.Clear();
-			m_playerData = null;
-		}
+    private static WidgetInputDevice[] m_allInputDevices = new WidgetInputDevice[6]
+    {
+        WidgetInputDevice.None,
+        WidgetInputDevice.Keyboard | WidgetInputDevice.Mouse,
+        WidgetInputDevice.GamePad1,
+        WidgetInputDevice.GamePad2,
+        WidgetInputDevice.GamePad3,
+        WidgetInputDevice.GamePad4
+    };
 
-		public override void Update()
-		{
-			m_characterSkinsCache.GetTexture(m_playerData.CharacterSkinName);
-			m_playerModel.PlayerClass = m_playerData.PlayerClass;
-			m_playerModel.CharacterSkinName = m_playerData.CharacterSkinName;
-			m_playerClassButton.Text = LanguageControl.Get(GetType().Name, m_playerData.PlayerClass.ToString());
-			if (!m_nameTextBox.HasFocus)
-			{
-				m_nameTextBox.Text = m_playerData.Name;
-			}
-			m_characterSkinLabel.Text = CharacterSkinsManager.GetDisplayName(m_playerData.CharacterSkinName);
-			m_controlsLabel.Text = GetDeviceDisplayName(m_inputDevices.Where((WidgetInputDevice id) => (id & m_playerData.InputDevice) != 0).FirstOrDefault());
-			ValuesDictionary valuesDictionary = DatabaseManager.FindValuesDictionaryForComponent(DatabaseManager.FindEntityValuesDictionary(m_playerData.GetEntityTemplateName(), throwIfNotFound: true), typeof(ComponentCreature));
-			string dy = valuesDictionary.GetValue<string>("Description");
-			if (dy.StartsWith("[") && dy.EndsWith("]"))
-			{
-				string[] lp = dy.Substring(1, dy.Length - 2).Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-				dy = LanguageControl.GetDatabase("Description", lp[1]);
-			}
-			m_descriptionLabel.Text = dy;
-			if (m_playerClassButton.IsClicked)
-			{
-				m_playerData.PlayerClass = (m_playerData.PlayerClass == PlayerClass.Male) ? PlayerClass.Female : PlayerClass.Male;
-				m_playerData.RandomizeCharacterSkin();
-				if (m_playerData.IsDefaultName)
-				{
-					m_playerData.ResetName();
-				}
-			}
-			if (m_characterSkinButton.IsClicked)
-			{
-				CharacterSkinsManager.UpdateCharacterSkinsList();
-				IEnumerable<string> items = CharacterSkinsManager.CharacterSkinsNames.Where((string n) => CharacterSkinsManager.GetPlayerClass(n) == m_playerData.PlayerClass || !CharacterSkinsManager.GetPlayerClass(n).HasValue);
-				var dialog = new ListSelectionDialog(LanguageControl.Get(GetType().Name, 1), items, 64f, delegate (object item)
-				 {
-					 XElement node = ContentManager.Get<XElement>("Widgets/CharacterSkinItem");
-					 var obj = (ContainerWidget)LoadWidget(this, node, null);
-					 Texture2D texture = m_characterSkinsCache.GetTexture((string)item);
-					 obj.Children.Find<LabelWidget>("CharacterSkinItem.Text").Text = CharacterSkinsManager.GetDisplayName((string)item);
-					 obj.Children.Find<LabelWidget>("CharacterSkinItem.Details").Text = $"{texture.Width}x{texture.Height}";
-					 PlayerModelWidget playerModelWidget = obj.Children.Find<PlayerModelWidget>("CharacterSkinItem.Model");
-					 playerModelWidget.PlayerClass = m_playerData.PlayerClass;
-					 playerModelWidget.CharacterSkinTexture = texture;
-					 return obj;
-				 }, delegate (object item)
-				 {
-					 m_playerData.CharacterSkinName = (string)item;
-					 if (m_playerData.IsDefaultName)
-					 {
-						 m_playerData.ResetName();
-					 }
-				 });
-				DialogsManager.ShowDialog(null, dialog);
-			}
-			if (m_controlsButton.IsClicked)
-			{
-				DialogsManager.ShowDialog(null, new ListSelectionDialog(LanguageControl.Get(GetType().Name, 2), m_inputDevices, 56f, (object d) => GetDeviceDisplayName((WidgetInputDevice)d), delegate (object d)
-				 {
-					 var widgetInputDevice = (WidgetInputDevice)d;
-					 m_playerData.InputDevice = widgetInputDevice;
-					 foreach (PlayerData playersDatum in m_playerData.SubsystemPlayers.PlayersData)
-					 {
-						 if (playersDatum != m_playerData && (playersDatum.InputDevice & widgetInputDevice) != 0)
-						 {
-							 playersDatum.InputDevice &= ~widgetInputDevice;
-						 }
-					 }
-				 }));
-			}
-			if (m_addButton.IsClicked && VerifyName())
-			{
-				m_playerData.SubsystemPlayers.AddPlayerData(m_playerData);
-				ScreensManager.SwitchScreen("Players", m_playerData.SubsystemPlayers);
-			}
-			if (m_deleteButton.IsClicked)
-			{
-				DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, LanguageControl.Get(GetType().Name, 3), LanguageControl.Ok, LanguageControl.Cancel, delegate (MessageDialogButton b)
-				   {
-					   if (b == MessageDialogButton.Button1)
-					   {
-						   m_playerData.SubsystemPlayers.RemovePlayerData(m_playerData);
-						   ScreensManager.SwitchScreen("Players", m_playerData.SubsystemPlayers);
-					   }
-				   }));
-			}
-			if (m_playButton.IsClicked && VerifyName())
-			{
-				m_playerData.SubsystemPlayers.AddPlayerData(m_playerData);
-				ScreensManager.SwitchScreen("Game");
-			}
-			if (m_addAnotherButton.IsClicked && VerifyName())
-			{
-				m_playerData.SubsystemPlayers.AddPlayerData(m_playerData);
-				ScreensManager.SwitchScreen("Player", Mode.Initial, m_playerData.SubsystemPlayers.Project);
-			}
-			if ((Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked) && VerifyName())
-			{
-				if (m_mode == Mode.Initial)
-				{
-					GameManager.SaveProject(waitForCompletion: true, showErrorDialog: true);
-					GameManager.DisposeProject();
-					ScreensManager.SwitchScreen("MainMenu");
-				}
-				else if (m_mode == Mode.Add || m_mode == Mode.Edit)
-				{
-					ScreensManager.SwitchScreen("Players", m_playerData.SubsystemPlayers);
-				}
-			}
-			m_nameWasInvalid = false;
-		}
+    public static ReadOnlyList<WidgetInputDevice> AllInputDevices => new(m_allInputDevices);
 
-		public static string GetDeviceDisplayName(WidgetInputDevice device)
-		{
-			switch (device)
-			{
-				case WidgetInputDevice.Keyboard | WidgetInputDevice.Mouse:
-					return LanguageControl.Get(typeof(PlayerScreen).Name, 4);
-				case WidgetInputDevice.GamePad1:
-					return LanguageControl.Get(typeof(PlayerScreen).Name, 5) + (GamePad.IsConnected(0) ? "" : LanguageControl.Get(typeof(PlayerScreen).Name, 9));
-				case WidgetInputDevice.GamePad2:
-					return LanguageControl.Get(typeof(PlayerScreen).Name, 6) + (GamePad.IsConnected(1) ? "" : LanguageControl.Get(typeof(PlayerScreen).Name, 9));
-				case WidgetInputDevice.GamePad3:
-					return LanguageControl.Get(typeof(PlayerScreen).Name, 7) + (GamePad.IsConnected(2) ? "" : LanguageControl.Get(typeof(PlayerScreen).Name, 9));
-				case WidgetInputDevice.GamePad4:
-					return LanguageControl.Get(typeof(PlayerScreen).Name, 8) + (GamePad.IsConnected(3) ? "" : LanguageControl.Get(typeof(PlayerScreen).Name, 9));
-				default:
-					return LanguageControl.Get(typeof(PlayerScreen).Name, 10);
-			}
-		}
+    public PlayerScreen()
+    {
+        XElement node = ContentManager.Get<XElement>("Screens/PlayerScreen");
+        LoadContents(this, node);
+        m_playerModel = Children.Find<PlayerModelWidget>("Model");
+        m_playerClassButton = Children.Find<ButtonWidget>("PlayerClassButton");
+        m_nameTextBox = Children.Find<TextBoxWidget>("Name");
+        m_characterSkinLabel = Children.Find<LabelWidget>("CharacterSkinLabel");
+        m_characterSkinButton = Children.Find<ButtonWidget>("CharacterSkinButton");
+        m_controlsLabel = Children.Find<LabelWidget>("ControlsLabel");
+        m_controlsButton = Children.Find<ButtonWidget>("ControlsButton");
+        m_descriptionLabel = Children.Find<LabelWidget>("DescriptionLabel");
+        m_addButton = Children.Find<ButtonWidget>("AddButton");
+        m_addAnotherButton = Children.Find<ButtonWidget>("AddAnotherButton");
+        m_deleteButton = Children.Find<ButtonWidget>("DeleteButton");
+        m_playButton = Children.Find<ButtonWidget>("PlayButton");
+        m_characterSkinsCache = new CharacterSkinsCache();
+        m_playerModel.CharacterSkinsCache = m_characterSkinsCache;
+        m_nameTextBox.FocusLost += delegate
+        {
+            if (VerifyName())
+            {
+                m_playerData.Name = m_nameTextBox.Text.Trim();
+            }
+            else
+            {
+                m_nameWasInvalid = true;
+            }
+        };
+    }
 
-		public bool VerifyName()
-		{
-			if (m_nameWasInvalid)
-			{
-				return false;
-			}
-			if (PlayerData.VerifyName(m_nameTextBox.Text.Trim()))
-			{
-				return true;
-			}
-			DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Error, LanguageControl.Get(GetType().Name, 12), LanguageControl.Ok, null, null));
-			return false;
-		}
-	}
+    public override void Enter(object[] parameters)
+    {
+        m_mode = (Mode)parameters[0];
+        if (m_mode == Mode.Edit)
+        {
+            m_playerData = (PlayerData)parameters[1];
+        }
+        else
+        {
+            m_playerData = new PlayerData((Project)parameters[1]);
+        }
+
+        if (m_mode == Mode.Initial)
+        {
+            m_playerClassButton.IsEnabled = true;
+            m_addButton.IsVisible = false;
+            m_deleteButton.IsVisible = false;
+            m_playButton.IsVisible = true;
+            m_addAnotherButton.IsVisible = m_playerData.SubsystemPlayers.PlayersData.Count < 3;
+        }
+        else if (m_mode == Mode.Add)
+        {
+            m_playerClassButton.IsEnabled = true;
+            m_addButton.IsVisible = true;
+            m_deleteButton.IsVisible = false;
+            m_playButton.IsVisible = false;
+            m_addAnotherButton.IsVisible = false;
+        }
+        else if (m_mode == Mode.Edit)
+        {
+            m_playerClassButton.IsEnabled = false;
+            m_addButton.IsVisible = false;
+            m_deleteButton.IsVisible = m_playerData.SubsystemPlayers.PlayersData.Count > 1;
+            m_playButton.IsVisible = false;
+            m_addAnotherButton.IsVisible = false;
+        }
+    }
+
+    public override void Leave()
+    {
+        m_characterSkinsCache.Clear();
+        m_playerData = null;
+    }
+
+    public override void Update()
+    {
+        m_characterSkinsCache.GetTexture(m_playerData.CharacterSkinName);
+        m_playerModel.PlayerClass = m_playerData.PlayerClass;
+        m_playerModel.CharacterSkinName = m_playerData.CharacterSkinName;
+        m_playerClassButton.Text = m_playerData.PlayerClass.ToString();
+        if (!m_nameTextBox.HasFocus)
+        {
+            m_nameTextBox.Text = m_playerData.Name;
+        }
+
+        m_characterSkinLabel.Text = CharacterSkinsManager.GetDisplayName(m_playerData.CharacterSkinName);
+        m_controlsLabel.Text = GetDeviceDisplayName(m_allInputDevices.FirstOrDefault(id => (id & m_playerData.InputDevice) != 0));
+        ValuesDictionary valuesDictionary = DatabaseManager.FindValuesDictionaryForComponent(
+            DatabaseManager.FindEntityValuesDictionary(m_playerData.GetEntityTemplateName(), throwIfNotFound: true),
+            typeof(ComponentCreature));
+        string description = valuesDictionary.GetValue<string>("Description");
+        if (description.StartsWith("[") && description.EndsWith("]"))
+        {
+            string[] lp = description.Substring(1, description.Length - 2)
+                .Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+            description = LanguageControl.GetDatabase("Description", lp[1]);
+        }
+
+        m_descriptionLabel.Text = description;
+        if (m_playerClassButton.IsClicked)
+        {
+            m_playerData.PlayerClass =
+                ((m_playerData.PlayerClass == PlayerClass.Male) ? PlayerClass.Female : PlayerClass.Male);
+            m_playerData.RandomizeCharacterSkin();
+            if (m_playerData.IsDefaultName)
+            {
+                m_playerData.ResetName();
+            }
+        }
+
+        if (m_characterSkinButton.IsClicked)
+        {
+            CharacterSkinsManager.UpdateCharacterSkinsList();
+            IEnumerable<string> items = CharacterSkinsManager.CharacterSkinsNames.Where(n =>
+                CharacterSkinsManager.GetPlayerClass(n) == m_playerData.PlayerClass ||
+                !CharacterSkinsManager.GetPlayerClass(n).HasValue);
+            ListSelectionDialog dialog = new ListSelectionDialog("Select Character Skin", items, 64f,
+                delegate(object item)
+                {
+                    XElement node = ContentManager.Get<XElement>("Widgets/CharacterSkinItem");
+                    ContainerWidget containerWidget = (ContainerWidget)Widget.LoadWidget(this, node, null);
+                    Texture2D texture = m_characterSkinsCache.GetTexture((string)item);
+                    containerWidget.Children.Find<LabelWidget>("CharacterSkinItem.Text").Text =
+                        CharacterSkinsManager.GetDisplayName((string)item);
+                    containerWidget.Children.Find<LabelWidget>("CharacterSkinItem.Details").Text =
+                        string.Format("{0}x{1}", new object[2] { texture.Width, texture.Height });
+                    PlayerModelWidget playerModelWidget =
+                        containerWidget.Children.Find<PlayerModelWidget>("CharacterSkinItem.Model");
+                    playerModelWidget.PlayerClass = m_playerData.PlayerClass;
+                    playerModelWidget.CharacterSkinTexture = texture;
+                    return containerWidget;
+                }, delegate(object item)
+                {
+                    m_playerData.CharacterSkinName = (string)item;
+                    if (m_playerData.IsDefaultName)
+                    {
+                        m_playerData.ResetName();
+                    }
+                });
+            DialogsManager.ShowDialog(null, dialog);
+        }
+
+        if (m_controlsButton.IsClicked)
+        {
+            DialogsManager.ShowDialog(null, new ListSelectionDialog("Select Input Device", m_allInputDevices, 56f,
+                d => new InputDeviceWidget
+                {
+                    Device = (WidgetInputDevice)d
+                }, delegate(object d)
+                {
+                    WidgetInputDevice widgetInputDevice = (WidgetInputDevice)d;
+                    m_playerData.InputDevice = widgetInputDevice;
+                    foreach (PlayerData playersDatum in m_playerData.SubsystemPlayers.PlayersData)
+                    {
+                        if (playersDatum != m_playerData && (playersDatum.InputDevice & widgetInputDevice) != 0)
+                        {
+                            playersDatum.InputDevice &= ~widgetInputDevice;
+                        }
+                    }
+                }));
+        }
+
+        if (m_addButton.IsClicked && VerifyName())
+        {
+            m_playerData.SubsystemPlayers.AddPlayerData(m_playerData);
+            ScreensManager.SwitchScreen("Players", m_playerData.SubsystemPlayers);
+        }
+
+        if (m_deleteButton.IsClicked)
+        {
+            DialogsManager.ShowDialog(null, new MessageDialog("Warning",
+                "The player will be irrecoverably removed from the world. All items in inventory and stats will be lost.",
+                "OK", "Cancel", delegate(MessageDialogButton b)
+                {
+                    if (b == MessageDialogButton.Button1)
+                    {
+                        m_playerData.SubsystemPlayers.RemovePlayerData(m_playerData);
+                        ScreensManager.SwitchScreen("Players", m_playerData.SubsystemPlayers);
+                    }
+                }));
+        }
+
+        if (m_playButton.IsClicked && VerifyName())
+        {
+            m_playerData.SubsystemPlayers.AddPlayerData(m_playerData);
+            ScreensManager.SwitchScreen("Game");
+        }
+
+        if (m_addAnotherButton.IsClicked && VerifyName())
+        {
+            m_playerData.SubsystemPlayers.AddPlayerData(m_playerData);
+            ScreensManager.SwitchScreen("Player", Mode.Initial, m_playerData.SubsystemPlayers.Project);
+        }
+
+        if ((Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked) && VerifyName())
+        {
+            if (m_mode == Mode.Initial)
+            {
+                GameManager.SaveProject(waitForCompletion: true, showErrorDialog: true);
+                GameManager.DisposeProject();
+                ScreensManager.SwitchScreen("MainMenu");
+            }
+            else if (m_mode == Mode.Add || m_mode == Mode.Edit)
+            {
+                ScreensManager.SwitchScreen("Players", m_playerData.SubsystemPlayers);
+            }
+        }
+
+        m_nameWasInvalid = false;
+    }
+
+    public static string GetDeviceDisplayName(WidgetInputDevice device)
+    {
+        switch (device)
+        {
+            case WidgetInputDevice.Keyboard | WidgetInputDevice.Mouse:
+                return LanguageControl.Get(nameof(PlayerScreen), 4);
+            case WidgetInputDevice.GamePad1:
+                return LanguageControl.Get(nameof(PlayerScreen), 5) +
+                       (GamePad.IsConnected(0) ? "" : LanguageControl.Get(nameof(PlayerScreen), 9));
+            case WidgetInputDevice.GamePad2:
+                return LanguageControl.Get(nameof(PlayerScreen), 6) +
+                       (GamePad.IsConnected(1) ? "" : LanguageControl.Get(nameof(PlayerScreen), 9));
+            case WidgetInputDevice.GamePad3:
+                return LanguageControl.Get(nameof(PlayerScreen), 7) +
+                       (GamePad.IsConnected(2) ? "" : LanguageControl.Get(nameof(PlayerScreen), 9));
+            case WidgetInputDevice.GamePad4:
+                return LanguageControl.Get(nameof(PlayerScreen), 8) +
+                       (GamePad.IsConnected(3) ? "" : LanguageControl.Get(nameof(PlayerScreen), 9));
+            default:
+                return LanguageControl.Get(nameof(PlayerScreen), 10);
+        }
+    }
+
+    private bool VerifyName()
+    {
+        if (m_nameWasInvalid)
+        {
+            return false;
+        }
+
+        if (PlayerData.VerifyName(m_nameTextBox.Text.Trim()))
+        {
+            return true;
+        }
+
+        DialogsManager.ShowDialog(null,
+            new MessageDialog("Error",
+                "Invalid player name. Only letters, digits and spaces allowed. Not too short, not too long either.",
+                "OK", null, null));
+        return false;
+    }
 }

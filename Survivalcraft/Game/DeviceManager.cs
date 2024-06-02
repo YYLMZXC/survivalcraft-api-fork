@@ -1,4 +1,6 @@
+/*
 using Android.OS;
+
 
 namespace Game
 {
@@ -9,3 +11,4 @@ namespace Game
 		public static string OperatingSystemVersion => Build.VERSION.Release;
 	}
 }
+*/
