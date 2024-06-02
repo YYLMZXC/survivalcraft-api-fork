@@ -3,7 +3,7 @@
     <TargetFramework>net8.0-android</TargetFramework>
 	<PlatformTarget>AnyCPU</PlatformTarget>
     <AndroidApplication>True</AndroidApplication>
-    <RootNamespace>SCNEXT</RootNamespace>
+    <RootNamespace>Game</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationId>com.candy.SurvivalcraftAPI16</ApplicationId>
@@ -26,6 +26,10 @@
 	<EnableLLVM>true</EnableLLVM>
 	<RunAOTCompilation>False</RunAOTCompilation>
 	<SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugType>full</DebugType>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">
@@ -54,9 +58,6 @@
     </AndroidAsset>
     <AndroidAsset Include="..\Survivalcraft\Content.zip">
       <Link>Assets\Content.zip</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Survivalcraft\init.js">
-      <Link>Assets\init.js</Link>
     </AndroidAsset>
     <ProjectReference Include="..\Survivalcraft_android\A_Survivalcraft.csproj" />
     <Using Include="Engine" />

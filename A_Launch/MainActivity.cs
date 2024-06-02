@@ -1,4 +1,5 @@
-﻿using Android;
+﻿using System.Diagnostics;
+using Android;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
@@ -59,6 +60,8 @@ namespace SC4Android
 		protected override void OnCreate(Bundle? savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
+			
+			Console.WriteLine("pos1");
 			m_thread = new(() =>
 			{
 				var counter = 0;
@@ -75,6 +78,7 @@ namespace SC4Android
 					if (counter >= 150)
 					{
 						Toast.MakeText(this, "申请外部权限失败！正在退出……", ToastLength.Short);
+						System.Environment.Exit(1);
 					}
 				}
 				Program.EntryPoint();
@@ -85,7 +89,7 @@ namespace SC4Android
 			
 			CheckAndRequestPermission(out var granted);
 			RunRequired = granted;
-			
+			Program.EntryPoint();
 		}
 
 		private static bool RunRequired { get; set; }

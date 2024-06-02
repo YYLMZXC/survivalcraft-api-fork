@@ -10,6 +10,8 @@
 	<DefineConstants>DEBUG;android</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AndroidKeyStore>false</AndroidKeyStore>
+    <DebugType>full</DebugType>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 	<DefineConstants>TRACE;android</DefineConstants>
@@ -22,6 +24,7 @@
     <PackageReference Include="Jint" Version="3.1.1" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\Survivalcraft\init.js"/>
     <Compile Remove="Resources\Resource.designer.cs" />
 	<Compile Include="..\Survivalcraft\Block\AdjustableDelayGateBlock.cs">
       <Link>Block\AdjustableDelayGateBlock.cs</Link>

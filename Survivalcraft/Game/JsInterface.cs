@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using JsEngine = Jint.Engine;
 
 namespace Game
@@ -45,6 +46,10 @@ namespace Game
 
 		public static bool JS检查()
 		{
+			if (ModsManager.IsAndroid)
+			{
+				return true;
+			}
 			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == "" ? AppContext.BaseDirectory : Assembly.GetExecutingAssembly().Location);//路径备选方案
 			string path = Path.Combine(fullPath, "init.js");
 			if (!File.Exists(path))
@@ -83,18 +88,28 @@ namespace Game
 				});
 				cfg.DebugMode(true);
 			});
-			string initCode = null;
+			string codeString = null;
 			if (JS检查())
 			{
+				
 				try
 				{
-					initCode = Storage.ReadAllText("app:init.js");
+					if (ModsManager.IsAndroid)
+					{
+						var file = ModsManager.StreamToBytes(
+							typeof(JsInterface).Assembly.GetManifestResourceStream("Game.init.js"));
+						codeString = Encoding.UTF8.GetString(file);
+					}
+					else
+					{
+						codeString = Storage.ReadAllText("app:init.js");
+					}
 				}
 				catch
 				{
 					Log.Warning("Init.js未加载");
 				}
-				Execute(initCode);
+				Execute(codeString);
 			}
 			else
 			{

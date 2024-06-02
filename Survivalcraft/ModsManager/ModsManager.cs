@@ -33,7 +33,6 @@ public static class ModsManager
 #if WINDOWS
 	public static string ExternalPath => "app:";
 	public static string DocPath = "app:/doc";
-	public const bool IsAndroid = false;
 	public static string WorldsDirectoryName = DocPath+"/Worlds";
 #endif
 #if ANDROID
@@ -57,6 +56,7 @@ public static class ModsManager
 	public static string ModCachePath { get; } = ExternalPath + "/Mods/Cache";
 	public static string LogPath { get; } = ExternalPath + "/Bugs";
 	public static string ModsPath { get; } = ExternalPath + "/Mods";
+	public static bool IsAndroid => VersionsManager.Platform == Platform.Android;
 	
 	internal static ModEntity SurvivalCraftModEntity;
 	internal static bool ConfigLoaded;
