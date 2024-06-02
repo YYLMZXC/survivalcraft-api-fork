@@ -115,7 +115,7 @@ namespace Engine
 			Write(LogType.Error, (message != null) ? message.ToString() : "null");
 		}
 
-		public static void Error(string message, [CallerMemberName] string memberName = null)
+		public static void Error(string message)
 		{
 			Write(LogType.Error, message);
 			Window.Title = Window.Title + " #" + message;
