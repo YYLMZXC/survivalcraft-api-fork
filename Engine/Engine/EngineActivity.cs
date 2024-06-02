@@ -19,9 +19,8 @@ namespace Engine
 
         public event Action<Intent> NewIntent;
 
-        public static string BasePath = "";
-
-        public static string ConfigPath = "";
+        public static string BasePath = "android:Survivalcraft2.3";
+        public static string ConfigPath = "android:Survivalcraft2.3";
 
         public EngineActivity()
         {
@@ -46,7 +45,7 @@ namespace Engine
 
             Intent intent = new();
 
-            intent.SetAction("android.intent.action.VIEW");
+            intent.SetAction(Intent.ActionView);
 
             Android.Net.Uri content_url = Android.Net.Uri.Parse(link);
 

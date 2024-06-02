@@ -23,7 +23,6 @@ namespace SC4Android
 		{
 			arePermissionsGranted = true;
 			
-			/*
 			if(GraterThanAndroid11)
 			{
 				//当版本大于安卓11时
@@ -35,7 +34,6 @@ namespace SC4Android
 
 				return;
 			}
-			*/
 			
 			if(GraterThanAndroid6)
 			{
@@ -56,12 +54,11 @@ namespace SC4Android
 			}
 		}
 
-		private Thread m_thread;
+		private Thread m_thread = null!;
 		protected override void OnCreate(Bundle? savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			
-			Console.WriteLine("pos1");
 			m_thread = new(() =>
 			{
 				var counter = 0;
@@ -77,11 +74,11 @@ namespace SC4Android
 					// 15 秒后仍未成功申请
 					if (counter >= 150)
 					{
-						Toast.MakeText(this, "申请外部权限失败！正在退出……", ToastLength.Short);
+						RunOnUiThread(() => Toast.MakeText(this, "申请外部权限失败！正在退出……", ToastLength.Short)!.Show());
 						System.Environment.Exit(1);
 					}
 				}
-				Program.EntryPoint();
+				RunOnUiThread(Program.EntryPoint);
 			});
 			
 			GC.KeepAlive(m_thread);
@@ -89,13 +86,16 @@ namespace SC4Android
 			
 			CheckAndRequestPermission(out var granted);
 			RunRequired = granted;
-			Program.EntryPoint();
 		}
 
 		private static bool RunRequired { get; set; }
 		public override void OnRequestPermissionsResult(int requestCode,string[] permissions,[GeneratedEnum] Permission[] grantResults)
 		{
-			if (GraterThanAndroid6)
+			if (GraterThanAndroid11)
+			{
+				RunRequired = Environment.IsExternalStorageManager;
+			}
+			else if (GraterThanAndroid6)
 			{
 				bool allGranted = 
 					grantResults.All(x => x == Permission.Granted);
@@ -105,12 +105,6 @@ namespace SC4Android
 					RunRequired = true;
 				}
 			}
-			/*
-			else if (GraterThanAndroid11)
-			{
-				RunRequired = Environment.IsExternalStorageManager;
-			}
-			*/
 		}
 	}
 }
