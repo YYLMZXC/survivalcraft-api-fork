@@ -15,7 +15,7 @@ public class PlayerScreen : Screen
         Edit
     }
 
-    private class InputDeviceWidget : LabelWidget
+    public class InputDeviceWidget : LabelWidget
     {
         public WidgetInputDevice Device;
 
@@ -31,39 +31,39 @@ public class PlayerScreen : Screen
         }
     }
 
-    private PlayerData m_playerData;
+    public PlayerData m_playerData;
 
-    private Mode m_mode;
+    public Mode m_mode;
 
-    private CharacterSkinsCache m_characterSkinsCache;
+    public CharacterSkinsCache m_characterSkinsCache;
 
-    private bool m_nameWasInvalid;
+    public bool m_nameWasInvalid;
 
-    private PlayerModelWidget m_playerModel;
+    public PlayerModelWidget m_playerModel;
 
-    private ButtonWidget m_playerClassButton;
+    public ButtonWidget m_playerClassButton;
 
-    private TextBoxWidget m_nameTextBox;
+    public TextBoxWidget m_nameTextBox;
 
-    private LabelWidget m_characterSkinLabel;
+    public LabelWidget m_characterSkinLabel;
 
-    private ButtonWidget m_characterSkinButton;
+    public ButtonWidget m_characterSkinButton;
 
-    private LabelWidget m_controlsLabel;
+    public LabelWidget m_controlsLabel;
 
-    private ButtonWidget m_controlsButton;
+    public ButtonWidget m_controlsButton;
 
-    private LabelWidget m_descriptionLabel;
+    public LabelWidget m_descriptionLabel;
 
-    private ButtonWidget m_addButton;
+    public ButtonWidget m_addButton;
 
-    private ButtonWidget m_addAnotherButton;
+    public ButtonWidget m_addAnotherButton;
 
-    private ButtonWidget m_deleteButton;
+    public ButtonWidget m_deleteButton;
 
-    private ButtonWidget m_playButton;
+    public ButtonWidget m_playButton;
 
-    private static WidgetInputDevice[] m_allInputDevices = new WidgetInputDevice[6]
+    public static WidgetInputDevice[] m_allInputDevices = new WidgetInputDevice[6]
     {
         WidgetInputDevice.None,
         WidgetInputDevice.Keyboard | WidgetInputDevice.Mouse,
@@ -310,7 +310,7 @@ public class PlayerScreen : Screen
         }
     }
 
-    private bool VerifyName()
+    public bool VerifyName()
     {
         if (m_nameWasInvalid)
         {

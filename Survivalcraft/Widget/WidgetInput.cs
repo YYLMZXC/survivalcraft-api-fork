@@ -7,55 +7,55 @@ namespace Game;
 
 public class WidgetInput
 {
-	private bool m_isCleared;
+	public bool m_isCleared;
 
-	internal Widget m_widget;
+    public Widget m_widget;
 
-	private Vector2 m_softMouseCursorPosition;
+    public Vector2 m_softMouseCursorPosition;
 
-	private Vector2? m_mouseDownPoint;
+    public Vector2? m_mouseDownPoint;
 
-	private MouseButton m_mouseDownButton;
+    public MouseButton m_mouseDownButton;
 
-	private double m_mouseDragTime;
+    public double m_mouseDragTime;
 
-	private bool m_mouseDragInProgress;
+    public bool m_mouseDragInProgress;
 
-	private bool m_mouseHoldInProgress;
+    public bool m_mouseHoldInProgress;
 
-	private bool m_isMouseCursorVisible = true;
+    public bool m_isMouseCursorVisible = true;
 
-	private bool m_useSoftMouseCursor;
+    public bool m_useSoftMouseCursor;
 
-	private int? m_touchId;
+    public int? m_touchId;
 
-	private bool m_touchCleared;
+    public bool m_touchCleared;
 
-	private Vector2 m_touchStartPoint;
+    public Vector2 m_touchStartPoint;
 
-	private double m_touchStartTime;
+    public double m_touchStartTime;
 
-	private bool m_touchDragInProgress;
+    public bool m_touchDragInProgress;
 
-	private bool m_touchHoldInProgress;
+    public bool m_touchHoldInProgress;
 
-	private Vector2 m_padCursorPosition;
+    public Vector2 m_padCursorPosition;
 
-	private Vector2? m_padDownPoint;
+    public Vector2? m_padDownPoint;
 
-	private double m_padDragTime;
+    public double m_padDragTime;
 
-	private bool m_padDragInProgress;
+    public bool m_padDragInProgress;
 
-	private bool m_isPadCursorVisible = true;
+    public bool m_isPadCursorVisible = true;
 
-	private Vector2? m_vrDownPoint;
+    public Vector2? m_vrDownPoint;
 
-	private double m_vrDragTime;
+    public double m_vrDragTime;
 
-	private bool m_vrDragInProgress;
+    public bool m_vrDragInProgress;
 
-	private bool m_isVrCursorVisible = true;
+    public bool m_isVrCursorVisible = true;
 
 	public bool Any
 	{
@@ -406,14 +406,14 @@ public class WidgetInput
 
 	public bool IsVrCursorVisible => false;
 
-	public Vector2? VrCursorPosition { get; private set; }
+	public Vector2? VrCursorPosition { get; set; }
 
 	public static WidgetInput EmptyInput { get; } = new WidgetInput(WidgetInputDevice.None);
 
 
 	public Widget Widget => m_widget;
 
-	public WidgetInputDevice Devices { get; private set; }
+	public WidgetInputDevice Devices { get; set; }
 
 	public bool IsKeyDown(Key key)
 	{
@@ -676,7 +676,7 @@ public class WidgetInput
 		}
 	}
 
-	private void ClearInput()
+    public void ClearInput()
 	{
 		Any = false;
 		Ok = false;
@@ -697,7 +697,7 @@ public class WidgetInput
 		Scroll = null;
 	}
 
-	private void UpdateInputFromKeyboard()
+    public void UpdateInputFromKeyboard()
 	{
 		if (LastKey.HasValue && LastKey != Key.Escape)
 		{
@@ -727,7 +727,7 @@ public class WidgetInput
 		Back |= Keyboard.IsKeyDownOnce(Key.Back);
 	}
 
-	private void UpdateInputFromMouse()
+    public void UpdateInputFromMouse()
 	{
 		if (IsMouseButtonDownOnce(MouseButton.Left))
 		{
@@ -803,7 +803,7 @@ public class WidgetInput
 		}
 	}
 
-	private void UpdateInputFromGamepads()
+    public void UpdateInputFromGamepads()
 	{
 		if (IsPadButtonDownRepeat(GamePadButton.DPadLeft))
 		{
@@ -900,7 +900,7 @@ public class WidgetInput
 		}
 	}
 
-	private void UpdateInputFromTouch()
+    public void UpdateInputFromTouch()
 	{
 		foreach (TouchLocation touchLocation in TouchLocations)
 		{

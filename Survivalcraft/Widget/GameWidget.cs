@@ -12,19 +12,19 @@ using GameEntitySystem;
 
 public class GameWidget : CanvasWidget
 {
-	private List<Camera> m_cameras = new List<Camera>();
+    public List<Camera> m_cameras = new List<Camera>();
 
-	private Camera m_activeCamera;
+    public Camera m_activeCamera;
 
-	public ViewWidget ViewWidget { get; private set; }
+	public ViewWidget ViewWidget { get; set; }
 
-	public ContainerWidget GuiWidget { get; private set; }
+	public ContainerWidget GuiWidget { get; set; }
 
-	public int GameWidgetIndex { get; private set; }
+	public int GameWidgetIndex { get; set; }
 
-	public SubsystemGameWidgets SubsystemGameWidgets { get; private set; }
+	public SubsystemGameWidgets SubsystemGameWidgets { get; set; }
 
-	public PlayerData PlayerData { get; private set; }
+	public PlayerData PlayerData { get; set; }
 
 	public ReadOnlyList<Camera> Cameras => new ReadOnlyList<Camera>(m_cameras);
 
@@ -119,7 +119,7 @@ public class GameWidget : CanvasWidget
 		}
 	}
 
-	private WidgetInputDevice DetermineInputDevices()
+    public WidgetInputDevice DetermineInputDevices()
 	{
 		bool flag = false;
 		foreach (PlayerData playersDatum in PlayerData.SubsystemPlayers.PlayersData)
