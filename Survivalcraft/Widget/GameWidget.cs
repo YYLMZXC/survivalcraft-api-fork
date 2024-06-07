@@ -1,10 +1,3 @@
-
-
-// Survivalcraft, Version=2.3.41.0, Culture=neutral, PublicKeyToken=null
-// Game.GameWidget
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Linq;
 using Engine;
 using Game;
@@ -64,6 +57,7 @@ public class GameWidget : CanvasWidget
 		m_cameras.Add(new DeathCamera(this));
 		m_cameras.Add(new IntroCamera(this));
 		m_cameras.Add(new TppCamera(this));
+		m_cameras.Add(new DebugCamera(this));
 		m_cameras.Add(new OrbitCamera(this));
 		m_cameras.Add(new FixedCamera(this));
 		m_cameras.Add(new LoadingCamera(this));
@@ -161,5 +155,12 @@ public class GameWidget : CanvasWidget
 		return (PlayerData.InputDevice & ~widgetInputDevice3) | WidgetInputDevice.Touch;
 	}
 
-	private bool IsCameraAllowed(Camera _) => false;
+	public bool IsCameraAllowed(Camera camera)
+	{
+		if (camera is LoadingCamera)
+		{
+			return false;
+		}
+		return true;
+	}
 }
