@@ -295,9 +295,15 @@ namespace Game
 							}
 							terrainGeometrySubset.Vertices = tmpList;
 						}
-						if (num2 + terrainGeometrySubset.Vertices.Count > 65535 && i > num)
+						int newVerticesCount;
+						try {
+                            newVerticesCount = checked(num2 + terrainGeometrySubset.Vertices.Count);
+						}
+						catch(Exception)
 						{
-							break;
+							if(i > num) {
+                                break;
+                            }
 						}
 						num2 += terrainGeometrySubset.Vertices.Count;
 						num3 += terrainGeometrySubset.Indices.Count;
