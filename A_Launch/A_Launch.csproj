@@ -25,7 +25,6 @@
 	<LinkAll>true</LinkAll>
 	<EnableLLVM>true</EnableLLVM>
 	<RunAOTCompilation>False</RunAOTCompilation>
-	<SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugType>full</DebugType>

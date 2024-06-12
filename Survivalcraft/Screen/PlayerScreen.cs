@@ -246,14 +246,14 @@ public class PlayerScreen : Screen
 
         if (m_deleteButton.IsClicked)
         {
-            DialogsManager.ShowDialog(null, new MessageDialog("Warning",
-                "The player will be irrecoverably removed from the world. All items in inventory and stats will be lost.",
-                "OK", "Cancel", delegate(MessageDialogButton b)
+            DialogsManager.ShowDialog(null,new MessageDialog(LanguageControl.Warning,
+                LanguageControl.Get(GetType().Name,"3"),
+                LanguageControl.Ok,LanguageControl.Cancel,delegate (MessageDialogButton b)
                 {
-                    if (b == MessageDialogButton.Button1)
+                    if(b == MessageDialogButton.Button1)
                     {
                         m_playerData.SubsystemPlayers.RemovePlayerData(m_playerData);
-                        ScreensManager.SwitchScreen("Players", m_playerData.SubsystemPlayers);
+                        ScreensManager.SwitchScreen("Players",m_playerData.SubsystemPlayers);
                     }
                 }));
         }
