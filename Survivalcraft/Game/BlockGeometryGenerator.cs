@@ -101,7 +101,7 @@ namespace Game
 			vertex.Color = color;
 		}
 
-		public void GenerateCrossfaceVertices(Block block, int value, int x, int y, int z, Color color, int textureSlot, TerrainGeometrySubset subset)
+		public virtual void GenerateCrossfaceVertices(Block block, int value, int x, int y, int z, Color color, int textureSlot, TerrainGeometrySubset subset)
 		{
 			DynamicArray<TerrainVertex> vertices = subset.Vertices;
 			var indices = subset.Indices;
@@ -167,7 +167,7 @@ namespace Game
 			indices.Array[count2 + 23] = count + 6;
 		}
 
-		public void GenerateCubeVertices(Block block, int value, int x, int y, int z, Color color, TerrainGeometrySubset[] subsetsByFace)
+        public virtual void GenerateCubeVertices(Block block, int value, int x, int y, int z, Color color, TerrainGeometrySubset[] subsetsByFace)
 		{
 			int blockIndex = block.BlockIndex;
 			TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
@@ -304,9 +304,8 @@ namespace Game
 			}
 		}
 
-		public void GenerateCubeVertices(Block block, int value, int x, int y, int z, float height11, float height21, float height22, float height12, Color sideColor, Color topColor11, Color topColor21, Color topColor22, Color topColor12, int overrideTopTextureSlot, TerrainGeometrySubset[] subsetsByFace)
+        public virtual void GenerateCubeVertices(Block block, int value, int x, int y, int z, float height11, float height21, float height22, float height12, Color sideColor, Color topColor11, Color topColor21, Color topColor22, Color topColor12, int overrideTopTextureSlot, TerrainGeometrySubset[] subsetsByFace)
 		{
-			int blockIndex = block.BlockIndex;
 			TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
 			TerrainChunk chunkAtCell2 = Terrain.GetChunkAtCell(x, z + 1);
 			TerrainChunk chunkAtCell3 = Terrain.GetChunkAtCell(x + 1, z);
@@ -441,9 +440,8 @@ namespace Game
 			}
 		}
 
-		public void GenerateCubeVertices(Block block, int value, int x, int y, int z, int rotationX, int rotationY, int rotationZ, Color color, TerrainGeometrySubset[] subsetsByFace)
+        public virtual void GenerateCubeVertices(Block block, int value, int x, int y, int z, int rotationX, int rotationY, int rotationZ, Color color, TerrainGeometrySubset[] subsetsByFace)
 		{
-			int blockIndex = block.BlockIndex;
 			TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
 			TerrainChunk chunkAtCell2 = Terrain.GetChunkAtCell(x, z + 1);
 			TerrainChunk chunkAtCell3 = Terrain.GetChunkAtCell(x + 1, z);
@@ -578,7 +576,7 @@ namespace Game
 			}
 		}
 
-		public void GenerateMeshVertices(Block block, int x, int y, int z, BlockMesh blockMesh, Color color, Matrix? matrix, TerrainGeometrySubset subset)
+        public virtual void GenerateMeshVertices(Block block, int x, int y, int z, BlockMesh blockMesh, Color color, Matrix? matrix, TerrainGeometrySubset subset)
 		{
 			DynamicArray<TerrainVertex> vertices = subset.Vertices;
 			var indices = subset.Indices;
@@ -634,7 +632,7 @@ namespace Game
 			}
 		}
 
-		public void GenerateShadedMeshVertices(Block block, int x, int y, int z, BlockMesh blockMesh, Color color, Matrix? matrix, int[] facesMap, TerrainGeometrySubset subset)
+        public virtual void GenerateShadedMeshVertices(Block block, int x, int y, int z, BlockMesh blockMesh, Color color, Matrix? matrix, int[] facesMap, TerrainGeometrySubset subset)
 		{
 			CalculateCornerLights(x, y, z);
 			DynamicArray<TerrainVertex> vertices = subset.Vertices;
@@ -690,7 +688,7 @@ namespace Game
 			}
 		}
 
-		public void GenerateWireVertices(int value, int x, int y, int z, int mountingFace, float centerBoxSize, Vector2 centerOffset, TerrainGeometrySubset subset)
+        public virtual void GenerateWireVertices(int value, int x, int y, int z, int mountingFace, float centerBoxSize, Vector2 centerOffset, TerrainGeometrySubset subset)
 		{
 			if (SubsystemElectricity == null)
 			{
@@ -876,7 +874,7 @@ namespace Game
 			return MathUtils.Max(light - MathUtils.Max(shadow / 7, 0), 0);
 		}
 
-		public int CalculateVertexLightFace0(int x, int y, int z)
+        public virtual int CalculateVertexLightFace0(int x, int y, int z)
 		{
 			int light = 0;
 			int shadow = 0;
@@ -895,7 +893,7 @@ namespace Game
 			return CombineLightAndShadow(light, shadow);
 		}
 
-		public int CalculateVertexLightFace1(int x, int y, int z)
+        public virtual int CalculateVertexLightFace1(int x, int y, int z)
 		{
 			int light = 0;
 			int shadow = 0;
@@ -914,7 +912,7 @@ namespace Game
 			return CombineLightAndShadow(light, shadow);
 		}
 
-		public int CalculateVertexLightFace2(int x, int y, int z)
+        public virtual int CalculateVertexLightFace2(int x, int y, int z)
 		{
 			int light = 0;
 			int shadow = 0;
@@ -933,7 +931,7 @@ namespace Game
 			return CombineLightAndShadow(light, shadow);
 		}
 
-		public int CalculateVertexLightFace3(int x, int y, int z)
+        public virtual int CalculateVertexLightFace3(int x, int y, int z)
 		{
 			int light = 0;
 			int shadow = 0;
@@ -952,7 +950,7 @@ namespace Game
 			return CombineLightAndShadow(light, shadow);
 		}
 
-		public int CalculateVertexLightFace4(int x, int y, int z)
+        public virtual int CalculateVertexLightFace4(int x, int y, int z)
 		{
 			int light = 0;
 			int shadow = 0;
@@ -963,7 +961,7 @@ namespace Game
 			return CombineLightAndShadow(light, shadow);
 		}
 
-		public int CalculateVertexLightFace5(int x, int y, int z)
+        public virtual int CalculateVertexLightFace5(int x, int y, int z)
 		{
 			int light = 0;
 			int shadow = 0;
@@ -974,42 +972,42 @@ namespace Game
 			return CombineLightAndShadow(light, shadow);
 		}
 
-		public void SetupCubeVertexFace0(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
+        public virtual void SetupCubeVertexFace0(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
 		{
 			float y2 = (float)y + height - 1f;
 			int light = CalculateVertexLightFace0(x, y, z);
 			SetupCornerVertex(x, y2, z, color, light, 0, textureSlot, textureSlotCount, corner, ref vertex);
 		}
 
-		public void SetupCubeVertexFace1(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
+        public virtual void SetupCubeVertexFace1(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
 		{
 			float y2 = (float)y + height - 1f;
 			int light = CalculateVertexLightFace1(x, y, z);
 			SetupCornerVertex(x, y2, z, color, light, 1, textureSlot, textureSlotCount, corner, ref vertex);
 		}
 
-		public void SetupCubeVertexFace2(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
+        public virtual void SetupCubeVertexFace2(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
 		{
 			float y2 = (float)y + height - 1f;
 			int light = CalculateVertexLightFace2(x, y, z);
 			SetupCornerVertex(x, y2, z, color, light, 2, textureSlot, textureSlotCount, corner, ref vertex);
 		}
 
-		public void SetupCubeVertexFace3(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
+        public virtual void SetupCubeVertexFace3(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
 		{
 			float y2 = (float)y + height - 1f;
 			int light = CalculateVertexLightFace3(x, y, z);
 			SetupCornerVertex(x, y2, z, color, light, 3, textureSlot, textureSlotCount, corner, ref vertex);
 		}
 
-		public void SetupCubeVertexFace4(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
+        public virtual void SetupCubeVertexFace4(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
 		{
 			float y2 = (float)y + height - 1f;
 			int light = CalculateVertexLightFace4(x, y, z);
 			SetupCornerVertex(x, y2, z, color, light, 4, textureSlot, textureSlotCount, corner, ref vertex);
 		}
 
-		public void SetupCubeVertexFace5(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
+        public virtual void SetupCubeVertexFace5(int x, int y, int z, float height, int corner, int textureSlot, int textureSlotCount, Color color, ref TerrainVertex vertex)
 		{
 			float y2 = (float)y + height - 1f;
 			int light = CalculateVertexLightFace5(x, y, z);
@@ -1026,7 +1024,7 @@ namespace Game
 			return result;
 		}
 
-		public void CalculateCornerLights(int x, int y, int z)
+        public virtual void CalculateCornerLights(int x, int y, int z)
 		{
 			if (!(m_cornerLightsPosition == new Point3(x, y, z)))
 			{
@@ -1082,7 +1080,7 @@ namespace Game
 			}
 		}
 
-		public float InterpolateCornerLights(int face, Vector3 position)
+        public virtual float InterpolateCornerLights(int face, Vector3 position)
 		{
 			float x = position.X;
 			float y = position.Y;
