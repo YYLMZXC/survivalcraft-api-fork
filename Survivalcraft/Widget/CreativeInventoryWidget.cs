@@ -109,6 +109,17 @@ namespace Game
 
 		public override void Update()
 		{
+			if(Input.Scroll.HasValue)
+			{
+				Widget widget = HitTestGlobal(Input.Scroll.Value.XY);
+				if(widget != null)
+				{
+					if(widget.IsChildWidgetOf(m_categoryButton))
+					{
+						m_componentCreativeInventory.CategoryIndex -= (int)Input.Scroll.Value.Z;
+					}
+				}
+			}
 			if (m_categoryLeftButton.IsClicked || Input.Left)
 			{
 				int num = --m_componentCreativeInventory.CategoryIndex;
