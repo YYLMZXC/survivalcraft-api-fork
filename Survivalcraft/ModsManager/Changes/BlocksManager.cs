@@ -317,15 +317,9 @@ namespace Game
 			Block block = Blocks[num];
 			try
 			{
-				Image image;
-				if (environmentData.SubsystemTerrain != null)
-				{
-					image = (Image)environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture.Tag;
-				}
-				else
-				{
-					image = (Image)BlocksTexturesManager.DefaultBlocksTexture.Tag;
-				}
+				Image image = environmentData.SubsystemTerrain != null
+					? (Image)environmentData.SubsystemTerrain.SubsystemAnimatedTextures.AnimatedBlocksTexture.Tag
+					: (Image)BlocksTexturesManager.DefaultBlocksTexture.Tag;
 				BlockMesh imageExtrusionBlockMesh = GetImageExtrusionBlockMesh(image, block.GetFaceTextureSlot(-1, value));
 				DrawMeshBlock(primitivesRenderer, imageExtrusionBlockMesh, color, 1.7f * size, ref matrix, environmentData);
 			}

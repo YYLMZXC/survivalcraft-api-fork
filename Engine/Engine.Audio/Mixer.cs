@@ -8,9 +8,9 @@ namespace Engine.Audio
 	{
 		private static float m_masterVolume = 1f;
 
-        public static readonly List<Sound> m_soundsToStop = [];
+		public static readonly List<Sound> m_soundsToStop = [];
 
-        public static HashSet<Sound> m_soundsToStopPoll = [];
+		public static HashSet<Sound> m_soundsToStopPoll = [];
 
 		public static float MasterVolume
 		{
@@ -31,12 +31,11 @@ namespace Engine.Audio
 		internal static void Initialize()
 		{
 #if desktop
-			//零次准备，系统安装了openal
-			//一次准备，让opentk加载openal32.dll
+			//直接加载
 			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
 			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? AppContext.BaseDirectory: Assembly.GetExecutingAssembly().Location);//路径备选方案
 			Environment.SetEnvironmentVariable("PATH", fullPath + ";" + environmentVariable, EnvironmentVariableTarget.Process);
-			//二次准备，检测外置文件并主动加载
+			//释放文件
 			new AudioContext();
 			if(CheckALError())
 			{
@@ -98,7 +97,7 @@ namespace Engine.Audio
 			//}
 		}*/
 			public static bool CheckALError()//注意返回值为是否出错
-        {
+		{
 			try
 			{
 				ALError error = AL.GetError();
