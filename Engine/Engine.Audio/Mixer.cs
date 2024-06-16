@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
@@ -99,17 +97,17 @@ namespace Engine.Audio
 			//	throw new InvalidOperationException(AL.GetErrorString(error));
 			//}
 		}*/
-			public static bool CheckALError()
-		{
+			public static bool CheckALError()//注意返回值为是否出错
+        {
 			try
 			{
 				ALError error = AL.GetError();
-				if (error != 0)
+				if (error != ALError.NoError)
 				{
 					Log.Error("OPENAL出错!");
-					Log.Error(AL.GetError());
+					Log.Error(error);
 					//throw new InvalidOperationException(AL.GetErrorString(error));
-					return true;//返回是否出错
+					return true;
 				}
 				else
 				{
@@ -118,7 +116,7 @@ namespace Engine.Audio
 			}
 			catch (Exception e)
 			{
-				Log.Error("OPENAL疑似未安装!");
+				Log.Error("OPENAL无法调用");
 				Log.Error (e);
 				return true;
 			}

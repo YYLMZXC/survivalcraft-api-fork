@@ -61,10 +61,6 @@ namespace Engine.Media
 				{
 					throw new InvalidOperationException("Invalid range.");
                 }
-                if (count % (2 * ChannelsCount) != 0)
-                {
-                    throw new InvalidOperationException("Cannot read partial samples.");
-                }
                 int num = m_reader.Read(buffer, offset, (int)Math.Min(count, BytesCount - Position));
                 m_position += num / 2 / ChannelsCount;
                 return num;

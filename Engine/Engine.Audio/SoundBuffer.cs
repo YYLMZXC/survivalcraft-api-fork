@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Runtime.InteropServices;
 using Engine.Media;
 using OpenTK.Audio.OpenAL;
@@ -84,7 +82,7 @@ namespace Engine.Audio
 		{
 			if (UseCount != 0)
 			{
-				throw new InvalidOperationException("Cannot dispose SoundBuffer which is in use.");
+                throw new InvalidOperationException("无法处置正在使用的SoundBuffer");
 			}
 			InternalDispose();
 		}
@@ -122,11 +120,11 @@ namespace Engine.Audio
 			}
 			if (channelsCount < 1 || channelsCount > 2)
 			{
-				throw new ArgumentOutOfRangeException("channelsCount");
+				throw new ArgumentOutOfRangeException(nameof(channelsCount));
 			}
-			if (samplingFrequency < 8000 || samplingFrequency > 48000)
+			if (samplingFrequency < 8000 || samplingFrequency > 192000)
 			{
-				throw new ArgumentOutOfRangeException("samplingFrequency");
+				throw new ArgumentOutOfRangeException(nameof(samplingFrequency));
 			}
 			ChannelsCount = channelsCount;
 			SamplingFrequency = samplingFrequency;
