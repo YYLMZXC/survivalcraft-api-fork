@@ -153,7 +153,7 @@ namespace Engine.Audio
 							if (num2 > 0)
 							{
 								int num3 = list[^1];
-								AL.BufferData(num3, (base.ChannelsCount == 1) ? ALFormat.MonoFloat32Ext : ALFormat.MonoFloat32Ext, array2, num2, base.SamplingFrequency);
+								AL.BufferData(num3, (base.ChannelsCount == 1) ? ALFormat.Mono16 : ALFormat.Stereo16, array2, num2, base.SamplingFrequency);
 								Mixer.CheckALError();
 								AL.SourceQueueBuffer(m_source, num3);
 								Mixer.CheckALError();
