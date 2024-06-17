@@ -31,7 +31,7 @@ namespace Engine.Serialization
 				}
 			}
 		}
-
+		
 		static TypeCache()
 		{
 			m_typesByName = [];
@@ -77,7 +77,7 @@ namespace Engine.Serialization
 				}
 			};
 		}
-
+		
 		public static bool IsKnownSystemAssembly(Assembly assembly)
 		{
 			string text = assembly.FullName.ToLower();
@@ -97,18 +97,10 @@ namespace Engine.Serialization
 			{
 				return true;
 			}
-			if (text.Contains("opentk"))
-			{
-				return true;
-			}
-			if (text.Contains("sharpdx"))
-			{
-				return true;
-			}
-			return false;
-		}
+            return text.Contains("opentk") || text.Contains("sharpdx");
+        }
 
-		public static Type FindType(string typeName, bool skipSystemAssemblies, bool throwIfNotFound)
+        public static Type FindType(string typeName, bool skipSystemAssemblies, bool throwIfNotFound)
 		{
 			lock (m_typesByName)
 			{
@@ -129,13 +121,9 @@ namespace Engine.Serialization
 					}
 					if (value == null)
 					{
-						if (throwIfNotFound)
-						{
-							throw new InvalidOperationException($"Type \"{longTypeName}\" not found in any loaded assembly.");
-						}
-						return null;
-					}
-					m_typesByName.Add(typeName, value);
+                        return throwIfNotFound ? throw new InvalidOperationException($"Type \"{longTypeName}\" not found in any loaded assembly.") : null;
+                    }
+                    m_typesByName.Add(typeName, value);
 				}
 				return value;
 			}
@@ -143,26 +131,19 @@ namespace Engine.Serialization
 
 		public static string GetShortTypeName(string longTypeName)
 		{
-			if (m_longToShort.TryGetValue(longTypeName, out string value))
-			{
-				return value;
-			}
-			return longTypeName;
-		}
+            return m_longToShort.TryGetValue(longTypeName, out string value) ? value : longTypeName;
+        }
 
-		public static string GetLongTypeName(string shortTypeName)
+        public static string GetLongTypeName(string shortTypeName)
 		{
-			if (m_shortToLong.TryGetValue(shortTypeName, out string value))
-			{
-				return value;
-			}
-			return shortTypeName;
-		}
+            return m_shortToLong.TryGetValue(shortTypeName, out string value) ? value : shortTypeName;
+        }
 
-		private static void AddShortTypeName(string shortTypeName, string longTypeName)
+        private static void AddShortTypeName(string shortTypeName, string longTypeName)
 		{
 			m_shortToLong.Add(shortTypeName, longTypeName);
 			m_longToShort.Add(longTypeName, shortTypeName);
 		}
+		
 	}
 }

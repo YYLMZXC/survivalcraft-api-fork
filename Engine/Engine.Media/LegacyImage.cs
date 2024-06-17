@@ -45,18 +45,12 @@ namespace Engine.Media
 
 		public Color GetPixel(int x, int y)
 		{
-			if (x < 0 || x >= Width)
-			{
-				throw new ArgumentOutOfRangeException(nameof(x));
-			}
-			if (y < 0 || y >= Height)
-			{
-				throw new ArgumentOutOfRangeException(nameof(y));
-			}
-			return Pixels[x + (y * Width)];
-		}
+            return x < 0 || x >= Width
+                ?                throw new ArgumentOutOfRangeException(nameof(x))
+                : y < 0 || y >= Height ? throw new ArgumentOutOfRangeException(nameof(y)) : Pixels[x + (y * Width)];
+        }
 
-		public void SetPixel(int x, int y, Color color)
+        public void SetPixel(int x, int y, Color color)
 		{
 			if (x < 0 || x >= Width)
 			{

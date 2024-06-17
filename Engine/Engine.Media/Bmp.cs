@@ -1,8 +1,8 @@
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Bmp;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Bmp;
 
 namespace Engine.Media
 {
@@ -83,25 +83,19 @@ namespace Engine.Media
             BmpInfo result = default;
 			result.Width = info.Width;
 			result.Height = info.Height;
-			if(!ImageSharpBitsPerPixel2EngineBmpFormat.TryGetValue(info.Metadata.GetBmpMetadata().BitsPerPixel, out result.Format))
-			{
-                throw new InvalidOperationException("Unsupported BMP pixel format.");
-            }
-			return result;
-		}
+            return !ImageSharpBitsPerPixel2EngineBmpFormat.TryGetValue(info.Metadata.GetBmpMetadata().BitsPerPixel, out result.Format)
+                ? throw new InvalidOperationException("Unsupported BMP pixel format.")
+                : result;
+        }
 
-		public static Image Load(Stream stream)
+        public static Image Load(Stream stream)
         {
             ArgumentNullException.ThrowIfNull(stream);
             string formatName = SixLabors.ImageSharp.Image.DetectFormat(stream).Name;
-            if (formatName != "BMP")
-            {
-                throw new FormatException($"Image format({formatName}) is not BMP");
-            }
-            return Image.Load(stream);
+            return formatName != "BMP" ? throw new FormatException($"Image format({formatName}) is not BMP") : Image.Load(stream);
         }
 
-		public static void Save(Image image, Stream stream, Format format, bool sync = false)
+        public static void Save(Image image, Stream stream, Format format, bool sync = false)
 		{
             ArgumentNullException.ThrowIfNull(image);
             ArgumentNullException.ThrowIfNull(stream);
@@ -133,18 +127,12 @@ namespace Engine.Media
 				throw new InvalidOperationException("Invalid BMP header.");
 			}
 			BitmapHeader result = Utilities.ArrayToStructure<BitmapHeader>(array);
-			if (result.Type1 != 66 || result.Type2 != 77)
-			{
-				throw new InvalidOperationException("Invalid BMP header.");
-			}
-			if (result.Compression != 0)
-			{
-				throw new InvalidOperationException("Unsupported BMP compression.");
-			}
-			return result;
-		}
+            return result.Type1 != 66 || result.Type2 != 77
+                ?               throw new InvalidOperationException("Invalid BMP header.")
+                : result.Compression != 0 ? throw new InvalidOperationException("Unsupported BMP compression.") : result;
+        }
 
-		public static readonly Dictionary<Format, BmpBitsPerPixel> EngineBmpFormat2ImageSharpBitsPerPixel = new()
+        public static readonly Dictionary<Format, BmpBitsPerPixel> EngineBmpFormat2ImageSharpBitsPerPixel = new()
 		{
 			{ Format.RGBA8, BmpBitsPerPixel.Pixel32 },
 			{ Format.RGB8, BmpBitsPerPixel.Pixel24 },

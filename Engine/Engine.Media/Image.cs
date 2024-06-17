@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Bmp;
@@ -10,7 +11,6 @@ using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.Formats.Tiff;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.PixelFormats;
-using System.Runtime.InteropServices;
 
 namespace Engine.Media
 {
@@ -106,15 +106,9 @@ namespace Engine.Media
 
         public Color GetPixel(int x, int y)
         {
-            if (x < 0 || x >= Width)
-            {
-                throw new ArgumentOutOfRangeException(nameof(x));
-            }
-            if (y < 0 || y >= Height)
-            {
-                throw new ArgumentOutOfRangeException(nameof(y));
-            }
-            return new Color(m_trueImage[x,y].PackedValue);
+            return x < 0 || x >= Width
+                ? throw new ArgumentOutOfRangeException(nameof(x))
+                : y < 0 || y >= Height ? throw new ArgumentOutOfRangeException(nameof(y)) : new Color(m_trueImage[x,y].PackedValue);
         }
 
         public Rgba32 SetPixelFast(int x, int y, Rgba32 color) => m_trueImage[x, y] = color;

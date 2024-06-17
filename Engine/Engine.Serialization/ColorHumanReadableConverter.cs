@@ -8,25 +8,23 @@ namespace Engine.Serialization
 		public string ConvertToString(object value)
 		{
 			var color = (Color)value;
-			if (color.A != byte.MaxValue)
-			{
-				return HumanReadableConverter.ValuesListToString(',', new int[4]
-				{
-					color.R,
-					color.G,
-					color.B,
-					color.A
-				});
-			}
-			return HumanReadableConverter.ValuesListToString(',', new int[3]
-			{
-				color.R,
-				color.G,
-				color.B
-			});
-		}
+            return color.A != byte.MaxValue
+                ? HumanReadableConverter.ValuesListToString(',', new int[4]
+                {
+                    color.R,
+                    color.G,
+                    color.B,
+                    color.A
+                })
+                : HumanReadableConverter.ValuesListToString(',', new int[3]
+            {
+                color.R,
+                color.G,
+                color.B
+            });
+        }
 
-		public object ConvertFromString(Type type, string data)
+        public object ConvertFromString(Type type, string data)
 		{
 			if (data[0] == '#')
 			{
@@ -48,32 +46,18 @@ namespace Engine.Serialization
 				throw new Exception();
 			}
 			int[] array = HumanReadableConverter.ValuesListFromString<int>(',', data);
-			if (array.Length == 3)
-			{
-				return new Color(array[0], array[1], array[2]);
-			}
-			if (array.Length == 4)
-			{
-				return new Color(array[0], array[1], array[2], array[3]);
-			}
-			throw new Exception();
-		}
+            return array.Length == 3
+                ? new Color(array[0], array[1], array[2])
+                : array.Length == 4 ? (object)new Color(array[0], array[1], array[2], array[3]) : throw new Exception();
+        }
 
-		private static int HexToDecimal(char digit)
+        private static int HexToDecimal(char digit)
 		{
 			if (digit >= '0' && digit <= '9')
 			{
 				return digit - 48;
 			}
-			if (digit >= 'A' && digit <= 'F')
-			{
-				return digit - 65 + 10;
-			}
-			if (digit >= 'a' && digit <= 'f')
-			{
-				return digit - 97 + 10;
-			}
-			throw new Exception();
-		}
-	}
+            return digit >= 'A' && digit <= 'F' ? digit - 65 + 10 : digit >= 'a' && digit <= 'f' ? digit - 97 + 10 : throw new Exception();
+        }
+    }
 }

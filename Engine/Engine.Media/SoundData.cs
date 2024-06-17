@@ -61,9 +61,9 @@ namespace Engine.Media
                 return SoundFileFormat.Mp3;
             }
             throw new InvalidOperationException("Unsupported sound file format.");
-		}
+        }
 
-		public static SoundFileFormat DetermineFileFormat(Stream stream)
+        public static SoundFileFormat DetermineFileFormat(Stream stream)
 		{
             if (Flac.IsFlacStream(stream))
             {
@@ -82,9 +82,9 @@ namespace Engine.Media
                 return SoundFileFormat.Mp3;
             }
             throw new InvalidOperationException("Unsupported sound file format.");
-		}
+        }
 
-		public static StreamingSource Stream(Stream stream, SoundFileFormat format)
+        public static StreamingSource Stream(Stream stream, SoundFileFormat format)
 		{
 			switch (format)
 			{

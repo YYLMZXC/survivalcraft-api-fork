@@ -61,11 +61,7 @@ namespace Engine.Media
 				{
 					throw new InvalidOperationException("Invalid range.");
                 }
-                if (count % (2 * ChannelsCount) != 0)
-                {
-                    throw new InvalidOperationException("Cannot read partial samples.");
-                }
-                int num = m_reader.Read(buffer, offset, (int)MathUtils.Min(count, BytesCount - Position));
+                int num = m_reader.Read(buffer, offset, (int)Math.Min(count, BytesCount - Position));
                 m_position += num / 2 / ChannelsCount;
                 return num;
             }
@@ -93,12 +89,12 @@ namespace Engine.Media
             var beginSync = new byte[4];
             int read = stream.Read(beginSync, 0, beginSync.Length);
             stream.Position = position;
-            if (read < beginSync.Length)
-                throw new EndOfStreamException("Can not read \"fLaC\" sync.");
-			return beginSync[0] == 0x66 && beginSync[1] == 0x4C && beginSync[2] == 0x61 && beginSync[3] == 0x43;
-		}
+            return read < beginSync.Length
+                ? throw new EndOfStreamException("Can not read \"fLaC\" sync.")
+                : beginSync[0] == 0x66 && beginSync[1] == 0x4C && beginSync[2] == 0x61 && beginSync[3] == 0x43;
+        }
 
-		public static StreamingSource Stream(Stream stream)
+        public static StreamingSource Stream(Stream stream)
 		{
 			ArgumentNullException.ThrowIfNull(stream);
 			return new FlacStreamingSource(stream);

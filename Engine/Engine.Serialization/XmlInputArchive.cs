@@ -242,15 +242,8 @@ namespace Engine.Serialization
 			if (xAttribute2 != null)
 			{
 				XAttribute xAttribute3 = Node.Attribute("_type");
-				if (xAttribute3 != null)
-				{
-					runtimeType = TypeCache.FindType(xAttribute3.Value, skipSystemAssemblies: false, throwIfNotFound: true);
-				}
-				else
-				{
-					runtimeType = null;
-				}
-				isReference = false;
+				runtimeType = xAttribute3 != null ? TypeCache.FindType(xAttribute3.Value, skipSystemAssemblies: false, throwIfNotFound: true) : null;
+                isReference = false;
 				objectId = int.Parse(xAttribute2.Value);
 				return;
 			}
@@ -278,11 +271,7 @@ namespace Engine.Serialization
 			if (name != null)
 			{
 				XElement xElement = Node.Element(name);
-				if (xElement == null)
-				{
-					throw new InvalidOperationException($"XML element \"{name}\" not found.");
-				}
-				Node = xElement;
+                Node = xElement ?? throw new InvalidOperationException($"XML element \"{name}\" not found.");
 			}
 		}
 

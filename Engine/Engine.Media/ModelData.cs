@@ -14,32 +14,26 @@ namespace Engine.Media
 
 		public static ModelFileFormat DetermineFileFormat(Stream stream)
 		{
-			if (Collada.IsColladaStream(stream))
-			{
-				return ModelFileFormat.Collada;
-			}
-			throw new InvalidOperationException("Unsupported model file format.");
-		}
+            return Collada.IsColladaStream(stream)
+                ? ModelFileFormat.Collada
+                :          throw new InvalidOperationException("Unsupported model file format.");
+        }
 
-		public static ModelFileFormat DetermineFileFormat(string extension)
+        public static ModelFileFormat DetermineFileFormat(string extension)
 		{
-			if (extension.Equals(".dae", StringComparison.OrdinalIgnoreCase))
-			{
-				return ModelFileFormat.Collada;
-			}
-			throw new InvalidOperationException("Unsupported model file format.");
-		}
+            return extension.Equals(".dae", StringComparison.OrdinalIgnoreCase)
+                ? ModelFileFormat.Collada
+                :         throw new InvalidOperationException("Unsupported model file format.");
+        }
 
-		public static ModelData Load(Stream stream, ModelFileFormat format)
+        public static ModelData Load(Stream stream, ModelFileFormat format)
 		{
-			if (format == ModelFileFormat.Collada)
-			{
-				return Collada.Load(stream);
-			}
-			throw new InvalidOperationException("Unsupported model file format.");
-		}
+            return format == ModelFileFormat.Collada
+                ? Collada.Load(stream)
+                :           throw new InvalidOperationException("Unsupported model file format.");
+        }
 
-		public static ModelData Load(string fileName, ModelFileFormat format)
+        public static ModelData Load(string fileName, ModelFileFormat format)
 		{
 			using (Stream stream = Storage.OpenFile(fileName, OpenFileMode.Read))
 			{
