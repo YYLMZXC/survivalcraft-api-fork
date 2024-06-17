@@ -1,7 +1,7 @@
-using OpenTK.Graphics.ES30;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using OpenTK.Graphics.ES30;
 
 namespace Engine.Graphics
 {
@@ -125,8 +125,8 @@ namespace Engine.Graphics
 			m_clearColor = null;
 			m_clearDepth = null;
 			m_clearStencil = null;
-			m_cullFace = (CullFaceMode)(0);
-			m_frontFace = (FrontFaceDirection)(0);
+			m_cullFace = 0;
+			m_frontFace = 0;
 			m_depthFunction = (DepthFunction)(-1);
 			m_colorMask = null;
 			m_depthMask = null;
@@ -1000,7 +1000,7 @@ namespace Engine.Graphics
 		{
 			return blend switch
 			{
-				Blend.Zero => (BlendingFactorSrc)0,
+				Blend.Zero => 0,
 				Blend.One => (BlendingFactorSrc)1,
 				Blend.SourceColor => BlendingFactorSrc.SrcColor,
 				Blend.InverseSourceColor => BlendingFactorSrc.OneMinusSrcColor,
@@ -1020,7 +1020,7 @@ namespace Engine.Graphics
         {
             return blend switch
             {
-                Blend.Zero => (BlendingFactorDest)0,
+                Blend.Zero => 0,
                 Blend.One => (BlendingFactorDest)1,
                 Blend.SourceColor => BlendingFactorDest.SrcColor,
                 Blend.InverseSourceColor => BlendingFactorDest.OneMinusSrcColor,

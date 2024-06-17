@@ -47,12 +47,11 @@
   <ItemGroup>
     <PackageReference Include="NVorbis" Version="0.10.5" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.0-preview.3.24172.9" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
-	<PackageReference Include="NAudio.Core" Version="2.2.1" /><!--An powerful and popular audio libaury-->
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" /><!--An powerful and popular audio libaury-->
 	<PackageReference Include="NLayer.NAudioSupport" Version="1.4.0" /><!--MP3 support-->
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Condition="'$(TargetFramework)' == 'net8.0-windows'" Include="OpenTK" Version="3.0.0-pre" />
+	  <PackageReference Condition="'$(TargetFramework)' == 'net8.0-windows'" Include="OpenTK" Version="3.3.3" />
     <Reference Include="OpenTK-1.0.2moded" Condition="'$(TargetFramework)' == 'net8.0-android'">
       <HintPath>reference\OpenTK-1.0.2moded.dll</HintPath>
       <Private>True</Private>

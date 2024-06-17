@@ -54,23 +54,15 @@ namespace Engine.Graphics
 
 		public override bool Equals(object other)
 		{
-			if (!(other is VertexDeclaration))
-			{
-				return false;
-			}
-			return Equals((VertexDeclaration)other);
-		}
+            return other is VertexDeclaration && Equals((VertexDeclaration)other);
+        }
 
-		public bool Equals(VertexDeclaration other)
+        public bool Equals(VertexDeclaration other)
 		{
-			if ((object)other != null)
-			{
-				return m_elements == other.m_elements;
-			}
-			return false;
-		}
+            return (object)other != null && m_elements == other.m_elements;
+        }
 
-		public static bool operator ==(VertexDeclaration vd1, VertexDeclaration vd2)
+        public static bool operator ==(VertexDeclaration vd1, VertexDeclaration vd2)
 		{
 			return vd1?.Equals(vd2) ?? ((object)vd2 == null);
 		}

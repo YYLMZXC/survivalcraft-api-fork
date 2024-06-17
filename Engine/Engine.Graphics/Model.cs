@@ -1,7 +1,7 @@
-using Engine.Media;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Engine.Media;
 
 namespace Engine.Graphics
 {
@@ -28,14 +28,10 @@ namespace Engine.Graphics
 					return bone;
 				}
 			}
-			if (throwIfNotFound)
-			{
-				throw new InvalidOperationException("ModelBone not found.");
-			}
-			return null;
-		}
+            return throwIfNotFound ? throw new InvalidOperationException("ModelBone not found.") : null;
+        }
 
-		public ModelMesh FindMesh(string name, bool throwIfNotFound = true)
+        public ModelMesh FindMesh(string name, bool throwIfNotFound = true)
 		{
 			foreach (ModelMesh mesh in m_meshes)
 			{
@@ -44,14 +40,10 @@ namespace Engine.Graphics
 					return mesh;
 				}
 			}
-			if (throwIfNotFound)
-			{
-				throw new InvalidOperationException("ModelMesh not found.");
-			}
-			return null;
-		}
+            return throwIfNotFound ? throw new InvalidOperationException("ModelMesh not found.") : null;
+        }
 
-		public ModelBone NewBone(string name, Matrix transform, ModelBone parentBone)
+        public ModelBone NewBone(string name, Matrix transform, ModelBone parentBone)
 		{
 			ArgumentNullException.ThrowIfNull(name);
 			if (parentBone == null && m_bones.Count > 0)
@@ -88,19 +80,17 @@ namespace Engine.Graphics
 		{
 			ArgumentNullException.ThrowIfNull(name);
 			ArgumentNullException.ThrowIfNull(parentBone);
-			if (parentBone.Model != this)
-			{
-				throw new InvalidOperationException("Parent bone must belong to the same model.");
-			}
-			return new ModelMesh
-			{
-				Name = name,
-				ParentBone = parentBone,
-				BoundingBox = boundingBox
-			};
-		}
+            return parentBone.Model != this
+                ?               throw new InvalidOperationException("Parent bone must belong to the same model.")
+                : new ModelMesh
+            {
+                Name = name,
+                ParentBone = parentBone,
+                BoundingBox = boundingBox
+            };
+        }
 
-		public void CopyAbsoluteBoneTransformsTo(Matrix[] absoluteTransforms)
+        public void CopyAbsoluteBoneTransformsTo(Matrix[] absoluteTransforms)
 		{
 			ArgumentNullException.ThrowIfNull(absoluteTransforms);
 			if (absoluteTransforms.Length < m_bones.Count)

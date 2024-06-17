@@ -16,7 +16,7 @@ namespace Engine.Graphics
 			Vector2 vector3;
 			if (angle != 0f)
 			{
-				var vector = new Vector2(MathUtils.Cos(angle), MathUtils.Sin(angle));
+				var vector = new Vector2(MathF.Cos(angle), MathF.Sin(angle));
 				v = vector;
 				v2 = new Vector2(0f - vector.Y, vector.X);
 				Vector2 vector2 = CalculateTextOffset(text, anchor, scale, spacing);
@@ -45,7 +45,7 @@ namespace Engine.Graphics
 				{
 					case '\n':
 						num++;
-						v4 = vector3 + ((float)num * (base.Font.GlyphHeight + spacing.Y) * v2);
+						v4 = vector3 + (num * (base.Font.GlyphHeight + spacing.Y) * v2);
 						continue;
 					case '\r':
 						continue;

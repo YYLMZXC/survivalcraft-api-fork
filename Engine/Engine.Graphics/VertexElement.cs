@@ -77,23 +77,15 @@ namespace Engine.Graphics
 
 		public override bool Equals(object other)
 		{
-			if (!(other is VertexElement))
-			{
-				return false;
-			}
-			return Equals((VertexElement)other);
-		}
+            return other is VertexElement && Equals((VertexElement)other);
+        }
 
-		public bool Equals(VertexElement other)
+        public bool Equals(VertexElement other)
 		{
-			if (other != null && other.Offset == Offset && other.Format == Format)
-			{
-				return other.Semantic == Semantic;
-			}
-			return false;
-		}
+            return other != null && other.Offset == Offset && other.Format == Format && other.Semantic == Semantic;
+        }
 
-		public static bool operator ==(VertexElement ve1, VertexElement ve2)
+        public static bool operator ==(VertexElement ve1, VertexElement ve2)
 		{
 			return ve1?.Equals(ve2) ?? ((object)ve2 == null);
 		}

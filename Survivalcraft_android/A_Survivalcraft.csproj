@@ -10,6 +10,8 @@
 	<DefineConstants>DEBUG;android</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AndroidKeyStore>false</AndroidKeyStore>
+    <DebugType>full</DebugType>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 	<DefineConstants>TRACE;android</DefineConstants>
@@ -19,13 +21,23 @@
     <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Jint" Version="3.1.0" />
+    <PackageReference Include="Jint" Version="3.1.3" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\Survivalcraft\init.js" />
     <Compile Remove="Resources\Resource.designer.cs" />
 	<Compile Include="..\Survivalcraft\Block\AdjustableDelayGateBlock.cs">
       <Link>Block\AdjustableDelayGateBlock.cs</Link>
     </Compile>
+	<Compile Include="..\Survivalcraft\ContentProvider\AndroidSdCardExternalContentProvider.cs" Link="ContentProvider\AndroidSdCardExternalContentProvider.cs" />
+	<Compile Include="..\Survivalcraft\ContentProvider\DropboxExternalContentProvider.cs" Link="ContentProvider\DropboxExternalContentProvider.cs" />
+	<Compile Include="..\Survivalcraft\ContentProvider\IExternalContentProvider.cs" Link="ContentProvider\IExternalContentProvider.cs" />
+	<Compile Include="..\Survivalcraft\ContentProvider\SchubExternalContentProvider.cs" Link="ContentProvider\SchubExternalContentProvider.cs" />
+	<Compile Include="..\Survivalcraft\ContentProvider\TransferShExternalContentProvider.cs" Link="ContentProvider\TransferShExternalContentProvider.cs" />
+	<Compile Include="..\Survivalcraft\Managers\ClipboardManager.cs" Link="Managers\ClipboardManager.cs" />
+	<Compile Include="..\Survivalcraft\Managers\ScreenCaptureManager.cs" Link="Managers\ScreenCaptureManager.cs" />
+	<Compile Include="..\Survivalcraft\Managers\WebManager.cs" Link="Managers\WebManager.cs" />
+	<Compile Include="..\Survivalcraft\Screen\ExternalContentScreen.cs" Link="Screen\ExternalContentScreen.cs" />
     <Compile Include="..\Survivalcraft\Screen\LoadingFailedScreen.cs">
       <Link>Screen\LoadingFailedScreen.cs</Link>
     </Compile>
@@ -1166,9 +1178,6 @@
     <Compile Include="..\Survivalcraft\Component\ComponentWalkAroundBehavior.cs">
       <Link>Component\ComponentWalkAroundBehavior.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\ContentProvider\SPMBoxExternalContentProvider.cs">
-      <Link>ContentProvider\SPMBoxExternalContentProvider.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Dialog\BuildFurnitureDialog.cs">
       <Link>Dialog\BuildFurnitureDialog.cs</Link>
     </Compile>
@@ -2114,14 +2123,8 @@
     <Compile Include="..\Survivalcraft\IContentReader\ImageReader.cs">
       <Link>IContentReader\ImageReader.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\IContentReader\JsonArrayReader.cs">
-      <Link>IContentReader\JsonArrayReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\IContentReader\JsonModelReader.cs">
-      <Link>IContentReader\JsonModelReader.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\IContentReader\JsonObjectReader.cs">
-      <Link>IContentReader\JsonObjectReader.cs</Link>
+    <Compile Include="..\Survivalcraft\IContentReader\JsonReader.cs">
+      <Link>IContentReader\JsonReader.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\IContentReader\MtllibStructReader.cs">
       <Link>IContentReader\MtllibStructReader.cs</Link>
@@ -2602,9 +2605,6 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemPollableBlockBehavior.cs">
       <Link>Subsystem\SubsystemPollableBlockBehavior.cs</Link>
-    </Compile>
-    <Compile Include="..\Survivalcraft\Subsystem\SubsystemPostprocessor.cs">
-      <Link>Subsystem\SubsystemPostprocessor.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemProjectiles.cs">
       <Link>Subsystem\SubsystemProjectiles.cs</Link>

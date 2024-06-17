@@ -9,7 +9,7 @@ namespace Engine.Graphics
 
         public bool m_isDisposed;
 
-		internal GraphicsResource()
+        public GraphicsResource()
 		{
 			m_resources.Add(this);
 		}

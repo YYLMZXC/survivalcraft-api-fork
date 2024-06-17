@@ -1,7 +1,7 @@
+using System.Runtime.InteropServices;
 using Engine.Media;
 using OpenTK.Graphics.ES30;
 using SixLabors.ImageSharp.PixelFormats;
-using System.Runtime.InteropServices;
 
 namespace Engine.Graphics
 {
@@ -190,7 +190,7 @@ namespace Engine.Graphics
 		public static Texture2D Load(LegacyImage image, int mipLevelsCount = 1)
 		{
 			var texture2D = new Texture2D(image.Width, image.Height, mipLevelsCount, ColorFormat.Rgba8888);
-			//因为ImageSharp版Image没写GenerateMipmaps，所以这段注释掉
+			//Mipmap可交由OpenGL完成，所以这段注释掉
 			/*if (mipLevelsCount > 1)
 			{
 				Image[] array = Image.GenerateMipmaps(image, mipLevelsCount).ToArray();
@@ -202,17 +202,26 @@ namespace Engine.Graphics
 			else
 			{*/
 			texture2D.SetData(0, image.Pixels);
-			//}
-			texture2D.Tag = image;
+            if (mipLevelsCount > 1)
+            {
+                GLWrapper.BindTexture(TextureTarget.Texture2D, texture2D.m_texture, forceBind: false);
+                GL.GenerateMipmap(TextureTarget.Texture2D);
+            }
+            //}
+            texture2D.Tag = image;
 			return texture2D;
 		}
 
 		public static Texture2D Load(Image image, int mipLevelsCount = 1)
 		{
-			//因为mipLevelsCount实际上没有使用过，所以ImageSharp版全部去掉了
-			var texture2D = new Texture2D(image.Width, image.Height, 1, ColorFormat.Rgba8888);
+			var texture2D = new Texture2D(image.Width, image.Height, mipLevelsCount, ColorFormat.Rgba8888);
 			texture2D.SetData(image.m_trueImage);
-			texture2D.Tag = image;
+            if(mipLevelsCount > 1)
+            {
+                GLWrapper.BindTexture(TextureTarget.Texture2D, texture2D.m_texture, forceBind: false);
+                GL.GenerateMipmap(TextureTarget.Texture2D);
+            }
+            texture2D.Tag = image;
 			return texture2D;
 		}
 
@@ -223,7 +232,7 @@ namespace Engine.Graphics
 			{
 				Image.PremultiplyAlpha(image);
 			}
-			return Load(image);
+			return Load(image, mipLevelsCount);
 		}
 
 		public static Texture2D Load(string fileName, bool premultiplyAlpha = false, int mipLevelsCount = 1)

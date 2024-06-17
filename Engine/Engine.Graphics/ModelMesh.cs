@@ -35,7 +35,7 @@ namespace Engine.Graphics
 
 		public ReadOnlyList<ModelMeshPart> MeshParts => new(m_meshParts);
 
-		internal ModelMesh()
+        public ModelMesh()
 		{
 		}
 

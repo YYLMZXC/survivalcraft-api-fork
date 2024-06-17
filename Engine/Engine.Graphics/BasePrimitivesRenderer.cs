@@ -1,6 +1,6 @@
-using Engine.Media;
 using System;
 using System.Collections.Generic;
+using Engine.Media;
 
 namespace Engine.Graphics
 {
@@ -16,7 +16,7 @@ namespace Engine.Graphics
 
 		public LinkedList<T3> m_fontBatches = new();
 
-		internal BasePrimitivesRenderer()
+        public BasePrimitivesRenderer()
 		{
 		}
 
@@ -112,12 +112,8 @@ namespace Engine.Graphics
 				m_sortNeeded = false;
 				m_allBatches.Sort(delegate (BaseBatch b1, BaseBatch b2)
 				{
-					if (b1.Layer < b2.Layer)
-					{
-						return -1;
-					}
-					return (b1.Layer > b2.Layer) ? 1 : 0;
-				});
+                    return b1.Layer < b2.Layer ? -1 : (b1.Layer > b2.Layer) ? 1 : 0;
+                });
 			}
 			foreach (BaseBatch allBatch in m_allBatches)
 			{

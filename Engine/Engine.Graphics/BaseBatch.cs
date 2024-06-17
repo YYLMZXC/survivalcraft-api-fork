@@ -26,7 +26,7 @@ namespace Engine.Graphics
 			set;
 		}
 
-		internal BaseBatch()
+        public BaseBatch()
 		{
 		}
 

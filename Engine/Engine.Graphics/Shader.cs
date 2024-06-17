@@ -1,8 +1,8 @@
-﻿using OpenTK.Graphics.ES30;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
+using OpenTK.Graphics.ES30;
 
 namespace Engine.Graphics
 {
@@ -51,19 +51,12 @@ namespace Engine.Graphics
 
 		public ShaderParameter GetParameter(string name, bool allowNull = false)
 		{
-			if (m_parametersByName.TryGetValue(name, out ShaderParameter value))
-			{
-				return value;
-			}
-			else if (allowNull)
-			{
-				return new ShaderParameter("null", ShaderParameterType.Null);
-			}
-			else
-			{
-				throw new InvalidOperationException($"Parameter \"{name}\" not found.");
-			}
-		}
+            return m_parametersByName.TryGetValue(name, out ShaderParameter value)
+                ? value
+                : allowNull
+                    ? new ShaderParameter("null", ShaderParameterType.Null)
+                    : throw new InvalidOperationException($"Parameter \"{name}\" not found.");
+        }
 
 		public override int GetGpuMemoryUsage()
 		{
@@ -213,11 +206,11 @@ namespace Engine.Graphics
 			{
 				string versioncode = shaderCode.Split(new char[] { '\n' })[0];
 				string versionnum = versioncode.Split(new char[] { ' ' })[1];
-#if ANDROID
+
                 if (int.Parse(versionnum) >= 300 || versioncode.EndsWith("es"))
                     str += $"#version {versionnum} es" + Environment.NewLine;
                 else
-#endif
+
 				str += $"#version {versionnum}" + Environment.NewLine;
 				shaderCode = "//" + shaderCode;
 			}
@@ -286,8 +279,12 @@ namespace Engine.Graphics
 			GL.GetProgram(m_program, All.ActiveAttributes, out int params4);
 			for (int i = 0; i < params4; i++)
 			{
+#if ANDROID
 				StringBuilder stringBuilder = new(256);
 				GL.GetActiveAttrib(m_program, i, stringBuilder.Capacity, out int _, out int _, out ActiveAttribType _, stringBuilder);
+#else
+				GL.GetActiveAttrib(m_program, i, 256, out int _, out int _, out ActiveAttribType _,out string stringBuilder);
+#endif
 				int attribLocation = GL.GetAttribLocation(m_program, stringBuilder.ToString());
 				if (!dictionary.TryGetValue(stringBuilder.ToString(), out string value))
 				{
@@ -299,20 +296,33 @@ namespace Engine.Graphics
 					Semantic = value
 				});
 			}
-			GL.GetProgram(m_program, All.ActiveUniforms, out int params5);
+			GL.GetProgram(m_program,All.ActiveUniforms, out int params5);
 			List<ShaderParameter> list = [];
 			Dictionary<string, ShaderParameter> dictionary3 = [];
 			for (int j = 0; j < params5; j++)
 			{
+
+#if ANDROID
 				StringBuilder stringBuilder2 = new(256);
 				GL.GetActiveUniform(m_program, j, stringBuilder2.Capacity, out int _, out int size2, out ActiveUniformType type2, stringBuilder2);
-				int uniformLocation = GL.GetUniformLocation(m_program, stringBuilder2.ToString());
+								int uniformLocation = GL.GetUniformLocation(m_program, stringBuilder2.ToString());
 				ShaderParameterType shaderParameterType = GLWrapper.TranslateActiveUniformType(type2);
 				int num = stringBuilder2.ToString().IndexOf('[');
 				if (num >= 0)
 				{
 					stringBuilder2.Remove(num, stringBuilder2.Length - num);
 				}
+#else
+				GL.GetActiveUniform(m_program, j, 256, out int _, out int size2, out ActiveUniformType type2, out string stringBuilder2);
+				int uniformLocation = GL.GetUniformLocation(m_program, stringBuilder2.ToString());
+				ShaderParameterType shaderParameterType = GLWrapper.TranslateActiveUniformType(type2);
+				int num = stringBuilder2.ToString().IndexOf('[');
+				if (num >= 0)
+				{
+					stringBuilder2 = stringBuilder2.Remove(num, stringBuilder2.Length - num);
+				}
+#endif
+
 				ShaderParameter shaderParameter = new(this, stringBuilder2.ToString(), shaderParameterType, size2);
 				shaderParameter.Location = uniformLocation;
 				dictionary3.Add(shaderParameter.Name, shaderParameter);
