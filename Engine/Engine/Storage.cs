@@ -138,6 +138,10 @@ namespace Engine
         {
             Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: m_isAndroidPlatform));
         }
+        public static void DeleteDirectory(string path, bool recursive)
+        {
+            Directory.Delete(ProcessPath(path, writeAccess: true, failIfApp: m_isAndroidPlatform), recursive);
+        }
 
         public static IEnumerable<string> ListFileNames(string path)
         {
@@ -207,42 +211,26 @@ namespace Engine
         public static string GetExtension(string path)
         {
             int num = path.LastIndexOf('.');
-            if (num >= 0)
-            {
-                return path.Substring(num);
-            }
-            return string.Empty;
+            return num >= 0 ? path.Substring(num) : string.Empty;
         }
 
         public static string GetFileName(string path)
         {
             int num = MathUtils.Max(path.LastIndexOf('/'), path.LastIndexOf("\\"));
-            if (num >= 0)
-            {
-                return path.Substring(num + 1);
-            }
-            return path;
+            return num >= 0 ? path.Substring(num + 1) : path;
         }
 
         public static string GetFileNameWithoutExtension(string path)
         {
             string fileName = GetFileName(path);
             int num = fileName.LastIndexOf('.');
-            if (num >= 0)
-            {
-                return fileName.Substring(0, num);
-            }
-            return fileName;
+            return num >= 0 ? fileName.Substring(0, num) : fileName;
         }
 
         public static string GetDirectoryName(string path)
         {
             int num = path.LastIndexOf('/');
-            if (num >= 0)
-            {
-                return path.Substring(0, num).TrimEnd('/');
-            }
-            return string.Empty;
+            return num >= 0 ? path.Substring(0, num).TrimEnd('/') : string.Empty;
         }
 
         public static string CombinePaths(params string[] paths)
@@ -313,11 +301,9 @@ namespace Engine
 #else
         public static string GetAppDirectory(bool failIfApp)
         {
-            if (failIfApp)
-            {
-                throw new InvalidOperationException("Access denied.");
-            }
-            return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            return failIfApp
+                ? throw new InvalidOperationException("Access denied.")
+                : Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         }
 
         public static string GetDataDirectory(bool writeAccess)
@@ -370,11 +356,7 @@ namespace Engine
                 text = string.Empty;
                 path = path.Substring(7);
             }
-            if (!string.IsNullOrEmpty(text))
-            {
-                return Path.Combine(text, path);
-            }
-            return path;
+            return !string.IsNullOrEmpty(text) ? Path.Combine(text, path) : path;
         }
 #endif
         public static void MoveDirectory(string path, string newPath)

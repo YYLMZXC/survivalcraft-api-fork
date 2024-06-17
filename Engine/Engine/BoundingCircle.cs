@@ -16,28 +16,20 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is BoundingCircle))
-			{
-				return false;
-			}
-			return Equals((BoundingCircle)obj);
-		}
+            return obj is BoundingCircle circle && Equals(circle);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return Center.GetHashCode() + Radius.GetHashCode();
 		}
 
 		public bool Equals(BoundingCircle other)
 		{
-			if (Center == other.Center)
-			{
-				return Radius == other.Radius;
-			}
-			return false;
-		}
+            return Center == other.Center && Radius == other.Radius;
+        }
 
-		public override string ToString()
+        public override string ToString()
 		{
 			return $"{Center},{Radius}";
 		}

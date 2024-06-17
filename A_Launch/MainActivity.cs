@@ -1,82 +1,110 @@
-﻿using Android;
+﻿using System.Diagnostics;
+using Android;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
-using Engine;
-using Game;
 using Environment = Android.OS.Environment;
 using Permission = Android.Content.PM.Permission;
+
+#pragma warning disable CA1416
 namespace SC4Android
 {
-	[Activity(Label = "生存战争2.3插件版", LaunchMode = LaunchMode.SingleTask, Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
-	[IntentFilter(["android.intent.action.VIEW"], DataScheme = "com.candy.survivalcraft", Categories = ["android.intent.category.DEFAULT", "android.intent.category.BROWSABLE"])]
+	[Activity(Label = "生存战争2.3插件版",LaunchMode = LaunchMode.SingleTask,Icon = "@mipmap/icon",Theme = "@style/MainTheme",MainLauncher = true,ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
+	[IntentFilter(["android.intent.action.VIEW"],DataScheme = "com.candy.survivalcraft",Categories = ["android.intent.category.DEFAULT","android.intent.category.BROWSABLE"])]
 
 	public class MainActivity : EngineActivity
 	{
-		private void CheckAndRequestPermission()
+		private static bool GraterThanAndroid11 { get; } = (int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.R;
+		private static bool GraterThanAndroid6 { get; } = (int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.M;
+		
+		private void CheckAndRequestPermission(out bool arePermissionsGranted)
 		{
-			if (((int)Build.VERSION.SdkInt) >= (int)BuildVersionCodes.R)
+			arePermissionsGranted = true;
+			
+			if(GraterThanAndroid11)
 			{
 				//当版本大于安卓11时
-				if (!Environment.IsExternalStorageManager)
+				if(!Environment.IsExternalStorageManager)
 				{
+					arePermissionsGranted = false;
 					StartActivity(new Intent(Settings.ActionManageAllFilesAccessPermission));
 				}
+
+				return;
 			}
-			else if ((int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.M)
+			
+			if(GraterThanAndroid6)
 			{
 				//当版本大于安卓6
 				var readPermissionStatus = CheckSelfPermission(Manifest.Permission.ReadExternalStorage);
-				if (readPermissionStatus != Permission.Granted)
+				if(readPermissionStatus != Permission.Granted)
 				{
-					RequestPermissions([Manifest.Permission.ReadExternalStorage], 0);
+					arePermissionsGranted = false;
+					RequestPermissions([Manifest.Permission.ReadExternalStorage],0);
 				}
 
 				var writePermissionStatus = CheckSelfPermission(Manifest.Permission.WriteExternalStorage);
-				if (writePermissionStatus != Permission.Granted)
+				if(writePermissionStatus != Permission.Granted)
 				{
-					RequestPermissions([Manifest.Permission.WriteExternalStorage], 1);
+					arePermissionsGranted = false;
+					RequestPermissions([Manifest.Permission.WriteExternalStorage],1);
 				}
 			}
 		}
-		protected override void OnCreate(Bundle savedInstanceState)
+
+		private Thread m_thread = null!;
+		protected override void OnCreate(Bundle? savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-			CheckAndRequestPermission();
-			Run();
-		}
-		public void Run()
-		{
-			if (Assets != null)
+			
+			m_thread = new(() =>
 			{
-				string[]? fList = Assets.List("");
-				BasePath = new StreamReader(Assets.Open("apppath.txt")).ReadToEnd();
-				ConfigPath = GetExternalFilesDir("")?.AbsolutePath;
-				if (fList != null)
+				var counter = 0;
+				while (true)
 				{
-					foreach (string dll in fList)
+					Thread.Sleep(100);
+					counter += 1;
+					if (RunRequired)
 					{
-						if (dll.EndsWith(".dll"))
-						{
-							MemoryStream memoryStream = new();
-							Assets.Open(dll).CopyTo(memoryStream);
-							AppDomain.CurrentDomain.Load(memoryStream.ToArray());
-						}
+						break;
+					}
+
+					// 15 秒后仍未成功申请
+					if (counter >= 150)
+					{
+						RunOnUiThread(() => Toast.MakeText(this, "申请外部权限失败！正在退出……", ToastLength.Short)!.Show());
+						System.Environment.Exit(1);
 					}
 				}
-			}
-			Program.EntryPoint();
+				RunOnUiThread(Program.EntryPoint);
+			});
+			
+			GC.KeepAlive(m_thread);
+			m_thread.Start();
+			
+			CheckAndRequestPermission(out var granted);
+			RunRequired = granted;
 		}
-		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+
+		private static bool RunRequired { get; set; }
+		public override void OnRequestPermissionsResult(int requestCode,string[] permissions,[GeneratedEnum] Permission[] grantResults)
 		{
-			bool flag = true;
-			foreach (var g in grantResults)
+			if (GraterThanAndroid11)
 			{
-				if (g != Permission.Granted) { flag = false; break; }
+				RunRequired = Environment.IsExternalStorageManager;
 			}
-			if (flag) Run();
+			else if (GraterThanAndroid6)
+			{
+				bool allGranted = 
+					grantResults.All(x => x == Permission.Granted);
+
+				if (allGranted)
+				{
+					RunRequired = true;
+				}
+			}
 		}
 	}
 }

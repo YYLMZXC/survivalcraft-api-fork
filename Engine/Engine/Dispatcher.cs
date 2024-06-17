@@ -23,13 +23,9 @@ namespace Engine
 		{
 			get
 			{
-				if (!m_mainThreadId.HasValue)
-				{
-					throw new InvalidOperationException("Dispatcher is not initialized.");
-				}
-				return m_mainThreadId.Value;
-			}
-		}
+                return m_mainThreadId ?? throw new InvalidOperationException("Dispatcher is not initialized.") ;
+            }
+        }
 
 		public static void Dispatch(Action action, bool waitUntilCompleted = false)
 		{

@@ -37,14 +37,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Quaternion))
-			{
-				return false;
-			}
-			return Equals((Quaternion)obj);
-		}
+            return obj is Quaternion && Equals((Quaternion)obj);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return X.GetHashCode() + Y.GetHashCode() + Z.GetHashCode() + W.GetHashCode();
 		}
@@ -56,14 +52,10 @@ namespace Engine
 
 		public bool Equals(Quaternion other)
 		{
-			if (X == other.X && Y == other.Y && Z == other.Z)
-			{
-				return W == other.W;
-			}
-			return false;
-		}
+            return X == other.X && Y == other.Y && Z == other.Z && W == other.W;
+        }
 
-		public static Quaternion Conjugate(Quaternion q)
+        public static Quaternion Conjugate(Quaternion q)
 		{
 			return new Quaternion(0f - q.X, 0f - q.Y, 0f - q.Z, q.W);
 		}
@@ -71,8 +63,8 @@ namespace Engine
 		public static Quaternion CreateFromAxisAngle(Vector3 axis, float angle)
 		{
 			float x = angle * 0.5f;
-			float num = MathUtils.Sin(x);
-			float w = MathUtils.Cos(x);
+			float num = MathF.Sin(x);
+			float w = MathF.Cos(x);
 			Quaternion result = default(Quaternion);
 			result.X = axis.X * num;
 			result.Y = axis.Y * num;
@@ -87,7 +79,7 @@ namespace Engine
 			Quaternion result = default(Quaternion);
 			if (num > 0f)
 			{
-				float num2 = MathUtils.Sqrt(num + 1f);
+				float num2 = MathF.Sqrt(num + 1f);
 				result.W = num2 * 0.5f;
 				num2 = 0.5f / num2;
 				result.X = (m.M23 - m.M32) * num2;
@@ -97,7 +89,7 @@ namespace Engine
 			}
 			if (m.M11 >= m.M22 && m.M11 >= m.M33)
 			{
-				float num3 = MathUtils.Sqrt(1f + m.M11 - m.M22 - m.M33);
+				float num3 = MathF.Sqrt(1f + m.M11 - m.M22 - m.M33);
 				float num4 = 0.5f / num3;
 				result.X = 0.5f * num3;
 				result.Y = (m.M12 + m.M21) * num4;
@@ -107,7 +99,7 @@ namespace Engine
 			}
 			if (m.M22 > m.M33)
 			{
-				float num5 = MathUtils.Sqrt(1f + m.M22 - m.M11 - m.M33);
+				float num5 = MathF.Sqrt(1f + m.M22 - m.M11 - m.M33);
 				float num6 = 0.5f / num5;
 				result.X = (m.M21 + m.M12) * num6;
 				result.Y = 0.5f * num5;
@@ -115,7 +107,7 @@ namespace Engine
 				result.W = (m.M31 - m.M13) * num6;
 				return result;
 			}
-			float num7 = MathUtils.Sqrt(1f + m.M33 - m.M11 - m.M22);
+			float num7 = MathF.Sqrt(1f + m.M33 - m.M11 - m.M22);
 			float num8 = 0.5f / num7;
 			result.X = (m.M31 + m.M13) * num8;
 			result.Y = (m.M32 + m.M23) * num8;
@@ -129,12 +121,12 @@ namespace Engine
 			float x = roll * 0.5f;
 			float x2 = pitch * 0.5f;
 			float x3 = yaw * 0.5f;
-			float num = MathUtils.Sin(x);
-			float num2 = MathUtils.Cos(x);
-			float num3 = MathUtils.Sin(x2);
-			float num4 = MathUtils.Cos(x2);
-			float num5 = MathUtils.Sin(x3);
-			float num6 = MathUtils.Cos(x3);
+			float num = MathF.Sin(x);
+			float num2 = MathF.Cos(x);
+			float num3 = MathF.Sin(x2);
+			float num4 = MathF.Cos(x2);
+			float num5 = MathF.Sin(x3);
+			float num6 = MathF.Cos(x3);
 			return new Quaternion((num6 * num3 * num2) + (num5 * num4 * num), (num5 * num4 * num2) - (num6 * num3 * num), (num6 * num4 * num) - (num5 * num3 * num2), (num6 * num4 * num2) + (num5 * num3 * num));
 		}
 
@@ -157,7 +149,7 @@ namespace Engine
 
 		public float Length()
 		{
-			return MathUtils.Sqrt(LengthSquared());
+			return MathF.Sqrt(LengthSquared());
 		}
 
 		public float LengthSquared()
@@ -209,10 +201,10 @@ namespace Engine
 			}
 			else
 			{
-				float num4 = MathUtils.Acos(num);
-				float num5 = 1f / MathUtils.Sin(num4);
-				num2 = MathUtils.Sin((1f - f) * num4) * num5;
-				num3 = flag ? ((0f - MathUtils.Sin(f * num4)) * num5) : (MathUtils.Sin(f * num4) * num5);
+				float num4 = MathF.Acos(num);
+				float num5 = 1f / MathF.Sin(num4);
+				num2 = MathF.Sin((1f - f) * num4) * num5;
+				num3 = flag ? ((0f - MathF.Sin(f * num4)) * num5) : (MathF.Sin(f * num4) * num5);
 			}
 			Quaternion result = default(Quaternion);
 			result.X = (num2 * q1.X) + (num3 * q2.X);
@@ -225,14 +217,10 @@ namespace Engine
 		public static Quaternion Normalize(Quaternion q)
 		{
 			float num = q.Length();
-			if (num == 0f)
-			{
-				return Identity;
-			}
-			return q / num;
-		}
+            return num == 0f ? Identity : q / num;
+        }
 
-		public Matrix ToMatrix()
+        public Matrix ToMatrix()
 		{
 			float num = X * X;
 			float num2 = Y * Y;
@@ -285,9 +273,9 @@ namespace Engine
 			float num2 = (2f * ((X * X) + (Y * Y))) - 1f;
 			float y = 2f * ((X * Y) + (Z * W));
 			float x2 = 1f - (2f * ((X * X) + (Z * Z)));
-			float x3 = MathUtils.Atan2(0f - num, 0f - num2);
-			float y2 = MathUtils.Asin(x);
-			float z = MathUtils.Atan2(y, x2);
+			float x3 = MathF.Atan2(0f - num, 0f - num2);
+			float y2 = MathF.Asin(x);
+			float z = MathF.Atan2(y, x2);
 			return new Vector3(x3, y2, z);
 		}
 

@@ -32,23 +32,15 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Plane))
-			{
-				return false;
-			}
-			return Equals((Plane)obj);
-		}
+            return obj is Plane && Equals((Plane)obj);
+        }
 
-		public bool Equals(Plane other)
+        public bool Equals(Plane other)
 		{
-			if (Normal == other.Normal)
-			{
-				return D == other.D;
-			}
-			return false;
-		}
+            return Normal == other.Normal && D == other.D;
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return Normal.GetHashCode() + D.GetHashCode();
 		}

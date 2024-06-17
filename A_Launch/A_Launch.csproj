@@ -1,24 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-android</TargetFramework>
+	<TargetFramework>net8.0-android</TargetFramework>
 	<PlatformTarget>AnyCPU</PlatformTarget>
-    <AndroidApplication>True</AndroidApplication>
-    <RootNamespace>SCNEXT</RootNamespace>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationId>com.candy.SurvivalcraftAPI16</ApplicationId>
-    <AssemblyName>Launch_android</AssemblyName>
-    <Product>Survivalcraft</Product>
-    <AndroidSigningKeyStore>签名.keystore</AndroidSigningKeyStore>
-    <AndroidPackageFormat>apk</AndroidPackageFormat>
-    <AndroidLinkTool>r8</AndroidLinkTool>
-    <AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
-    <EnableLLVM>True</EnableLLVM>
-    <AndroidKeyStore>True</AndroidKeyStore>
-    <AndroidSigningStorePass>android</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>android</AndroidSigningKeyPass>
-    <Version>2.3.10.4</Version>
+	<AndroidApplication>True</AndroidApplication>
+	<RootNamespace>Game</RootNamespace>
+	<Nullable>enable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<ApplicationId>com.candy.SurvivalcraftAPI16</ApplicationId>
+	<AssemblyName>Launch_android</AssemblyName>
+	<Product>Survivalcraft</Product>
+	<AndroidSigningKeyStore>签名.keystore</AndroidSigningKeyStore>
+	<AndroidPackageFormat>apk</AndroidPackageFormat>
+	<AndroidLinkTool>r8</AndroidLinkTool>
+	<AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
+	<EnableLLVM>True</EnableLLVM>
+	<AndroidKeyStore>True</AndroidKeyStore>
+	<AndroidSigningStorePass>android</AndroidSigningStorePass>
+	<AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
+	<AndroidSigningKeyPass>android</AndroidSigningKeyPass>
+	<Version>2.3.10.4</Version>
 	<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
 	<AndroidLinkMode>None</AndroidLinkMode>
 	<NeutralLanguage>zh-CN</NeutralLanguage>
@@ -26,41 +26,43 @@
 	<EnableLLVM>true</EnableLLVM>
 	<RunAOTCompilation>False</RunAOTCompilation>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+	<DebugType>full</DebugType>
+	<EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+  </PropertyGroup>
   <ItemGroup>
 	<AndroidAsset Include="Assets\apppath.txt">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Lit.psh">
+	<AndroidAsset Include="..\Engine\Resources\Lit.psh" Link="Assets\Lit.psh">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Lit.vsh">
+	<AndroidAsset Include="..\Engine\Resources\Lit.vsh" Link="Assets\Lit.vsh">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Unlit.psh">
+	<AndroidAsset Include="..\Engine\Resources\UnLit.psh" Link="Assets\Unlit.psh">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Unlit.vsh">
+	<AndroidAsset Include="..\Engine\Resources\UnLit.vsh" Link="Assets\Unlit.vsh">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Debugfont.png">
+	<AndroidAsset Include="..\Engine\Resources\Debugfont.png" Link="Assets\Debugfont.png">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-	<AndroidAsset Include="Assets\Debugfont.lst">
+	<AndroidAsset Include="..\Engine\Resources\Debugfont.lst" Link="Assets\Debugfont.lst">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Update="Assets\Content.zip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Survivalcraft\Content.zip">
-      <Link>Assets\Content.zip</Link>
-    </AndroidAsset>
+	<AndroidAsset Update="Assets\Content.zip">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</AndroidAsset>
+	<AndroidAsset Include="..\Survivalcraft\Content.zip">
+	  <Link>Assets\Content.zip</Link>
+	</AndroidAsset>
     <AndroidAsset Include="..\Survivalcraft\init.js">
       <Link>Assets\init.js</Link>
     </AndroidAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Survivalcraft_android\A_Survivalcraft.csproj" />
+	<ProjectReference Include="..\Survivalcraft_android\A_Survivalcraft.csproj" />
+	<Using Include="Engine" />
+	<Using Include="Game" />
   </ItemGroup>
 </Project>

@@ -61,7 +61,7 @@ namespace Engine.Audio
 			}
 			set
 			{
-				value = MathUtils.Clamp(value, 0.5f, 2f);
+				value = Math.Clamp(value, 0.5f, 2f);
 				if (value != m_pitch)
 				{
 					InternalSetPitch(value);
@@ -80,7 +80,7 @@ namespace Engine.Audio
 			{
 				if (ChannelsCount == 1)
 				{
-					value = MathUtils.Clamp(value, -1f, 1f);
+					value = Math.Clamp(value, -1f, 1f);
 					if (value != m_pan)
 					{
 						InternalSetPan(value);

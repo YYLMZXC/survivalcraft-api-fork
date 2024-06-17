@@ -109,7 +109,7 @@ namespace Engine
             set
             {
                 VerifyWindowOpened();
-                m_presentationInterval = MathUtils.Clamp(value, 1, 4);
+                m_presentationInterval = Math.Clamp(value, 1, 4);
             }
         }
 #else
@@ -128,11 +128,9 @@ namespace Engine
             get
             {
                 DisplayDevice @default = DisplayDevice.Default;
-                if (Configuration.RunningOnMacOS)
-                {
-                    return new Point2((int)MathUtils.Round((float)@default.Width * m_dpiScale), (int)MathUtils.Round((float)@default.Height * m_dpiScale));
-                }
-                return new Point2(@default.Width, @default.Height);
+                return Configuration.RunningOnMacOS
+                    ? new Point2((int)MathF.Round(@default.Width * m_dpiScale), (int)MathF.Round(@default.Height * m_dpiScale))
+                    : new Point2(@default.Width, @default.Height);
             }
         }
 
@@ -141,15 +139,9 @@ namespace Engine
             get
             {
                 VerifyWindowOpened();
-                if (m_gameWindow.WindowState == WindowState.Fullscreen)
-                {
-                    return WindowMode.Fullscreen;
-                }
-                if (m_gameWindow.WindowBorder != 0)
-                {
-                    return WindowMode.Fixed;
-                }
-                return WindowMode.Resizable;
+                return m_gameWindow.WindowState == WindowState.Fullscreen
+                    ? WindowMode.Fullscreen
+                    : m_gameWindow.WindowBorder != 0 ? WindowMode.Fixed : WindowMode.Resizable;
             }
             set
             {
@@ -255,7 +247,7 @@ namespace Engine
             set
             {
                 VerifyWindowOpened();
-                value = MathUtils.Clamp(value, 0, 4);
+                value = Math.Clamp(value, 0, 4);
                 if (value != PresentationInterval)
                 {
                     m_gameWindow.Context.SwapInterval = value;
@@ -325,7 +317,7 @@ namespace Engine
             m_gameWindow.ClientSize = new Size(width, height);
             if (Configuration.RunningOnMacOS)
             {
-                Point2 point = new((int)MathUtils.Round((float)ScreenSize.X / m_dpiScale), (int)MathUtils.Round((float)ScreenSize.Y / m_dpiScale));
+                Point2 point = new((int)MathF.Round(ScreenSize.X / m_dpiScale), (int)MathF.Round(ScreenSize.Y / m_dpiScale));
                 m_gameWindow.Location = new Point(MathUtils.Max((point.X - m_gameWindow.Size.Width) / 2, 0), MathUtils.Max((point.Y - m_gameWindow.Size.Height) / 2, 0));
             }
             else

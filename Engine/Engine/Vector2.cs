@@ -54,14 +54,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Vector2))
-			{
-				return false;
-			}
-			return Equals((Vector2)obj);
-		}
+            return obj is Vector2 && Equals((Vector2)obj);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return X.GetHashCode() + Y.GetHashCode();
 		}
@@ -73,22 +69,18 @@ namespace Engine
 
 		public bool Equals(Vector2 other)
 		{
-			if (X == other.X)
-			{
-				return Y == other.Y;
-			}
-			return false;
-		}
+            return X == other.X && Y == other.Y;
+        }
 
-		public static Vector2 CreateFromAngle(float angle)
+        public static Vector2 CreateFromAngle(float angle)
 		{
-			float y = MathUtils.Cos(angle);
-			return new Vector2(0f - MathUtils.Sin(angle), y);
+			float y = MathF.Cos(angle);
+			return new Vector2(0f - MathF.Sin(angle), y);
 		}
 
 		public static float Distance(Vector2 v1, Vector2 v2)
 		{
-			return MathUtils.Sqrt(DistanceSquared(v1, v2));
+			return MathF.Sqrt(DistanceSquared(v1, v2));
 		}
 
 		public static float DistanceSquared(Vector2 v1, Vector2 v2)
@@ -113,14 +105,14 @@ namespace Engine
 
 		public static Vector2 Rotate(Vector2 v, float angle)
 		{
-			float num = MathUtils.Cos(angle);
-			float num2 = MathUtils.Sin(angle);
+			float num = MathF.Cos(angle);
+			float num2 = MathF.Sin(angle);
 			return new Vector2((num * v.X) + (num2 * v.Y), ((0f - num2) * v.X) + (num * v.Y));
 		}
 
 		public float Length()
 		{
-			return MathUtils.Sqrt((X * X) + (Y * Y));
+			return MathF.Sqrt((X * X) + (Y * Y));
 		}
 
 		public float LengthSquared()
@@ -130,42 +122,42 @@ namespace Engine
 
 		public static Vector2 Floor(Vector2 v)
 		{
-			return new Vector2(MathUtils.Floor(v.X), MathUtils.Floor(v.Y));
+			return new Vector2(MathF.Floor(v.X), MathF.Floor(v.Y));
 		}
 
 		public static Vector2 Ceiling(Vector2 v)
 		{
-			return new Vector2(MathUtils.Ceiling(v.X), MathUtils.Ceiling(v.Y));
+			return new Vector2(MathF.Ceiling(v.X), MathF.Ceiling(v.Y));
 		}
 
 		public static Vector2 Round(Vector2 v)
 		{
-			return new Vector2(MathUtils.Round(v.X), MathUtils.Round(v.Y));
+			return new Vector2(MathF.Round(v.X), MathF.Round(v.Y));
 		}
 
 		public static Vector2 Min(Vector2 v, float f)
 		{
-			return new Vector2(MathUtils.Min(v.X, f), MathUtils.Min(v.Y, f));
+			return new Vector2(MathF.Min(v.X, f), MathF.Min(v.Y, f));
 		}
 
 		public static Vector2 Min(Vector2 v1, Vector2 v2)
 		{
-			return new Vector2(MathUtils.Min(v1.X, v2.X), MathUtils.Min(v1.Y, v2.Y));
+			return new Vector2(MathF.Min(v1.X, v2.X), MathF.Min(v1.Y, v2.Y));
 		}
 
 		public static Vector2 Max(Vector2 v, float f)
 		{
-			return new Vector2(MathUtils.Max(v.X, f), MathUtils.Max(v.Y, f));
+			return new Vector2(MathF.Max(v.X, f), MathF.Max(v.Y, f));
 		}
 
 		public static Vector2 Max(Vector2 v1, Vector2 v2)
 		{
-			return new Vector2(MathUtils.Max(v1.X, v2.X), MathUtils.Max(v1.Y, v2.Y));
+			return new Vector2(MathF.Max(v1.X, v2.X), MathF.Max(v1.Y, v2.Y));
 		}
 
 		public static Vector2 Clamp(Vector2 v, float min, float max)
 		{
-			return new Vector2(MathUtils.Clamp(v.X, min, max), MathUtils.Clamp(v.Y, min, max));
+			return new Vector2(Math.Clamp(v.X, min, max), Math.Clamp(v.Y, min, max));
 		}
 
 		public static Vector2 Saturate(Vector2 v)
@@ -186,27 +178,19 @@ namespace Engine
 		public static Vector2 Normalize(Vector2 v)
 		{
 			float num = v.Length();
-			if (!(num > 0f))
-			{
-				return UnitX;
-			}
-			return v / num;
-		}
+            return !(num > 0f) ? UnitX : v / num;
+        }
 
-		public static Vector2 LimitLength(Vector2 v, float maxLength)
+        public static Vector2 LimitLength(Vector2 v, float maxLength)
 		{
 			float num = v.LengthSquared();
-			if (num > maxLength * maxLength)
-			{
-				return v * (maxLength / MathUtils.Sqrt(num));
-			}
-			return v;
-		}
+            return num > maxLength * maxLength ? v * (maxLength / MathF.Sqrt(num)) : v;
+        }
 
-		public static float Angle(Vector2 v1, Vector2 v2)
+        public static float Angle(Vector2 v1, Vector2 v2)
 		{
-			float num = MathUtils.Atan2(v1.Y, v1.X);
-			float num2 = MathUtils.Atan2(v2.Y, v2.X) - num;
+			float num = MathF.Atan2(v1.Y, v1.X);
+			float num2 = MathF.Atan2(v2.Y, v2.X) - num;
 			if (num2 > (float)Math.PI)
 			{
 				num2 -= (float)Math.PI * 2f;

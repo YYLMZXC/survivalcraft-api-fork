@@ -128,9 +128,9 @@ namespace Engine
 
 		public Vector3(Color c)
 		{
-			X = (float)(int)c.R / 255f;
-			Y = (float)(int)c.G / 255f;
-			Z = (float)(int)c.B / 255f;
+			X = c.R / 255f;
+			Y = c.G / 255f;
+			Z = c.B / 255f;
 		}
 
 		public static implicit operator Vector3((float X, float Y, float Z) v)
@@ -140,14 +140,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Vector3))
-			{
-				return false;
-			}
-			return Equals((Vector3)obj);
-		}
+            return obj is Vector3 && Equals((Vector3)obj);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return X.GetHashCode() + Y.GetHashCode() + Z.GetHashCode();
 		}
@@ -159,16 +155,12 @@ namespace Engine
 
 		public bool Equals(Vector3 other)
 		{
-			if (X == other.X && Y == other.Y)
-			{
-				return Z == other.Z;
-			}
-			return false;
-		}
+            return X == other.X && Y == other.Y && Z == other.Z;
+        }
 
-		public static float Distance(Vector3 v1, Vector3 v2)
+        public static float Distance(Vector3 v1, Vector3 v2)
 		{
-			return MathUtils.Sqrt(DistanceSquared(v1, v2));
+			return MathF.Sqrt(DistanceSquared(v1, v2));
 		}
 
 		public static float DistanceSquared(Vector3 v1, Vector3 v2)
@@ -188,7 +180,7 @@ namespace Engine
 
 		public float Length()
 		{
-			return MathUtils.Sqrt(LengthSquared());
+			return MathF.Sqrt(LengthSquared());
 		}
 
 		public float LengthSquared()
@@ -198,42 +190,42 @@ namespace Engine
 
 		public static Vector3 Floor(Vector3 v)
 		{
-			return new Vector3(MathUtils.Floor(v.X), MathUtils.Floor(v.Y), MathUtils.Floor(v.Z));
+			return new Vector3(MathF.Floor(v.X), MathF.Floor(v.Y), MathF.Floor(v.Z));
 		}
 
 		public static Vector3 Ceiling(Vector3 v)
 		{
-			return new Vector3(MathUtils.Ceiling(v.X), MathUtils.Ceiling(v.Y), MathUtils.Ceiling(v.Z));
+			return new Vector3(MathF.Ceiling(v.X), MathF.Ceiling(v.Y), MathF.Ceiling(v.Z));
 		}
 
 		public static Vector3 Round(Vector3 v)
 		{
-			return new Vector3(MathUtils.Round(v.X), MathUtils.Round(v.Y), MathUtils.Round(v.Z));
+			return new Vector3(MathF.Round(v.X), MathF.Round(v.Y), MathF.Round(v.Z));
 		}
 
 		public static Vector3 Min(Vector3 v, float f)
 		{
-			return new Vector3(MathUtils.Min(v.X, f), MathUtils.Min(v.Y, f), MathUtils.Min(v.Z, f));
+			return new Vector3(MathF.Min(v.X, f), MathF.Min(v.Y, f), MathF.Min(v.Z, f));
 		}
 
 		public static Vector3 Min(Vector3 v1, Vector3 v2)
 		{
-			return new Vector3(MathUtils.Min(v1.X, v2.X), MathUtils.Min(v1.Y, v2.Y), MathUtils.Min(v1.Z, v2.Z));
+			return new Vector3(MathF.Min(v1.X, v2.X), MathF.Min(v1.Y, v2.Y), MathF.Min(v1.Z, v2.Z));
 		}
 
 		public static Vector3 Max(Vector3 v, float f)
 		{
-			return new Vector3(MathUtils.Max(v.X, f), MathUtils.Max(v.Y, f), MathUtils.Max(v.Z, f));
+			return new Vector3(MathF.Max(v.X, f), MathF.Max(v.Y, f), MathF.Max(v.Z, f));
 		}
 
 		public static Vector3 Max(Vector3 v1, Vector3 v2)
 		{
-			return new Vector3(MathUtils.Max(v1.X, v2.X), MathUtils.Max(v1.Y, v2.Y), MathUtils.Max(v1.Z, v2.Z));
+			return new Vector3(MathF.Max(v1.X, v2.X), MathF.Max(v1.Y, v2.Y), MathF.Max(v1.Z, v2.Z));
 		}
 
 		public static Vector3 Clamp(Vector3 v, float min, float max)
 		{
-			return new Vector3(MathUtils.Clamp(v.X, min, max), MathUtils.Clamp(v.Y, min, max), MathUtils.Clamp(v.Z, min, max));
+			return new Vector3(Math.Clamp(v.X, min, max), Math.Clamp(v.Y, min, max), Math.Clamp(v.Z, min, max));
 		}
 
 		public static Vector3 Saturate(Vector3 v)
@@ -254,24 +246,16 @@ namespace Engine
 		public static Vector3 Normalize(Vector3 v)
 		{
 			float num = v.Length();
-			if (!(num > 0f))
-			{
-				return UnitX;
-			}
-			return v / num;
-		}
+            return !(num > 0f) ? UnitX : v / num;
+        }
 
-		public static Vector3 LimitLength(Vector3 v, float maxLength)
+        public static Vector3 LimitLength(Vector3 v, float maxLength)
 		{
 			float num = v.LengthSquared();
-			if (num > maxLength * maxLength)
-			{
-				return v * (maxLength / MathUtils.Sqrt(num));
-			}
-			return v;
-		}
+            return num > maxLength * maxLength ? v * (maxLength / MathF.Sqrt(num)) : v;
+        }
 
-		public static Vector3 Transform(Vector3 v, Matrix m)
+        public static Vector3 Transform(Vector3 v, Matrix m)
 		{
 			return new Vector3((v.X * m.M11) + (v.Y * m.M21) + (v.Z * m.M31) + m.M41, (v.X * m.M12) + (v.Y * m.M22) + (v.Z * m.M32) + m.M42, (v.X * m.M13) + (v.Y * m.M23) + (v.Z * m.M33) + m.M43);
 		}

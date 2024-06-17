@@ -59,23 +59,15 @@ namespace Engine
 
 		public bool Equals(Rectangle other)
 		{
-			if (Left == other.Left && Top == other.Top && Width == other.Width)
-			{
-				return Height == other.Height;
-			}
-			return false;
-		}
+            return Left == other.Left && Top == other.Top && Width == other.Width && Height == other.Height;
+        }
 
-		public override bool Equals(object obj)
+        public override bool Equals(object obj)
 		{
-			if (!(obj is Rectangle))
-			{
-				return false;
-			}
-			return Equals((Rectangle)obj);
-		}
+            return obj is Rectangle && Equals((Rectangle)obj);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return Left + Top + Width + Height;
 		}
@@ -87,40 +79,28 @@ namespace Engine
 
 		public bool Contains(Point2 p)
 		{
-			if (p.X >= Left && p.X < Left + Width && p.Y >= Top)
-			{
-				return p.Y < Top + Height;
-			}
-			return false;
-		}
+            return p.X >= Left && p.X < Left + Width && p.Y >= Top && p.Y < Top + Height;
+        }
 
-		public bool Intersection(Rectangle r)
+        public bool Intersection(Rectangle r)
 		{
 			int num = MathUtils.Max(Left, r.Left);
 			int num2 = MathUtils.Max(Top, r.Top);
 			int num3 = MathUtils.Min(Left + Width, r.Left + r.Width);
 			int num4 = MathUtils.Min(Top + Height, r.Top + r.Height);
-			if (num3 > num)
-			{
-				return num4 > num2;
-			}
-			return false;
-		}
+            return num3 > num && num4 > num2;
+        }
 
-		public static Rectangle Intersection(Rectangle r1, Rectangle r2)
+        public static Rectangle Intersection(Rectangle r1, Rectangle r2)
 		{
 			int num = MathUtils.Max(r1.Left, r2.Left);
 			int num2 = MathUtils.Max(r1.Top, r2.Top);
 			int num3 = MathUtils.Min(r1.Left + r1.Width, r2.Left + r2.Width);
 			int num4 = MathUtils.Min(r1.Top + r1.Height, r2.Top + r2.Height);
-			if (num3 <= num || num4 <= num2)
-			{
-				return Empty;
-			}
-			return new Rectangle(num, num2, num3 - num, num4 - num2);
-		}
+            return num3 <= num || num4 <= num2 ? Empty : new Rectangle(num, num2, num3 - num, num4 - num2);
+        }
 
-		public static Rectangle Union(Rectangle r1, Rectangle r2)
+        public static Rectangle Union(Rectangle r1, Rectangle r2)
 		{
 			int num = MathUtils.Min(r1.Left, r2.Left);
 			int num2 = MathUtils.Min(r1.Top, r2.Top);

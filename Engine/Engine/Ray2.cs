@@ -16,14 +16,10 @@ namespace Engine
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Ray2))
-			{
-				return false;
-			}
-			return Equals((Ray2)obj);
-		}
+            return obj is Ray2 && Equals((Ray2)obj);
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return Position.GetHashCode() + Direction.GetHashCode();
 		}
@@ -35,14 +31,10 @@ namespace Engine
 
 		public bool Equals(Ray2 other)
 		{
-			if (Position == other.Position)
-			{
-				return Direction == other.Direction;
-			}
-			return false;
-		}
+            return Position == other.Position && Direction == other.Direction;
+        }
 
-		public static bool operator ==(Ray2 a, Ray2 b)
+        public static bool operator ==(Ray2 a, Ray2 b)
 		{
 			return a.Equals(b);
 		}

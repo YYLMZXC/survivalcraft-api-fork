@@ -1,7 +1,6 @@
+using System.Reflection;
 using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
-using System;
-using System.Collections.Generic;
 
 namespace Engine.Audio
 {
@@ -9,9 +8,9 @@ namespace Engine.Audio
 	{
 		private static float m_masterVolume = 1f;
 
-        public static readonly List<Sound> m_soundsToStop = [];
+		public static readonly List<Sound> m_soundsToStop = [];
 
-        public static HashSet<Sound> m_soundsToStopPoll = [];
+		public static HashSet<Sound> m_soundsToStopPoll = [];
 
 		public static float MasterVolume
 		{
@@ -32,14 +31,33 @@ namespace Engine.Audio
 		internal static void Initialize()
 		{
 #if desktop
-			//string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
-			//string fullPath = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-			//string path = Environment.Is64BitProcess ? "OpenAL" : "OpenAL86";
-			//string str = Path.Combine(fullPath,  path);
-			//Environment.SetEnvironmentVariable("PATH", str + ";" + environmentVariable, EnvironmentVariableTarget.Process);
+			//直接加载
+			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
+			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? AppContext.BaseDirectory: Assembly.GetExecutingAssembly().Location);//路径备选方案
+			Environment.SetEnvironmentVariable("PATH", fullPath + ";" + environmentVariable, EnvironmentVariableTarget.Process);
+			//释放文件
+			new AudioContext();
+			if(CheckALError())
+			{
+				string dllName = "openal32.dll"; // DLL资源名称
+				string ALPath = Path.Combine(fullPath, dllName);
+				if (!File.Exists(ALPath))//检测外置dll是否存在，如果不存在就释放
+				{
+					using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(dllName))
+					using (FileStream fileStream = new(ALPath, FileMode.Create))
+					{
+						stream.CopyTo(fileStream);
+					}
+				}
+				//Assembly dllAssembly = Assembly.LoadFile(ALPath);
+				new AudioContext();
+			}
+#else
+			new AudioContext();
+			CheckALError();
 #endif
-            new AudioContext();
-            CheckALError();
+
+
 		}
 		internal static void Dispose()
 		{
@@ -78,17 +96,17 @@ namespace Engine.Audio
 			//	throw new InvalidOperationException(AL.GetErrorString(error));
 			//}
 		}*/
-			public static bool CheckALError()
+			public static bool CheckALError()//注意返回值为是否出错
 		{
 			try
 			{
 				ALError error = AL.GetError();
-				if (error != 0)
+				if (error != ALError.NoError)
 				{
 					Log.Error("OPENAL出错!");
-					Log.Error(AL.GetError());
+					Log.Error(error);
 					//throw new InvalidOperationException(AL.GetErrorString(error));
-					return true;//返回是否出错
+					return true;
 				}
 				else
 				{
@@ -97,7 +115,7 @@ namespace Engine.Audio
 			}
 			catch (Exception e)
 			{
-				Log.Error("OPENAL疑似未安装!");
+				Log.Error("OPENAL无法调用");
 				Log.Error (e);
 				return true;
 			}

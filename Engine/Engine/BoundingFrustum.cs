@@ -70,28 +70,20 @@ namespace Engine
 		public override bool Equals(object obj)
 		{
 			BoundingFrustum boundingFrustum = obj as BoundingFrustum;
-			if (!(boundingFrustum != null))
-			{
-				return false;
-			}
-			return m_viewProjection == boundingFrustum.m_viewProjection;
-		}
+            return boundingFrustum != null && m_viewProjection == boundingFrustum.m_viewProjection;
+        }
 
-		public override int GetHashCode()
+        public override int GetHashCode()
 		{
 			return m_viewProjection.GetHashCode();
 		}
 
 		public bool Equals(BoundingFrustum other)
 		{
-			if (!(other != null))
-			{
-				return false;
-			}
-			return m_viewProjection == other.m_viewProjection;
-		}
+            return other != null && m_viewProjection == other.m_viewProjection;
+        }
 
-		public override string ToString()
+        public override string ToString()
 		{
 			return m_viewProjection.ToString();
 		}

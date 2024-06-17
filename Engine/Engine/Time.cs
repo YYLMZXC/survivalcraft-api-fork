@@ -25,7 +25,7 @@ namespace Engine
 			private set;
 		}
 
-		public static double RealTime => (double)(Stopwatch.GetTimestamp() - m_applicationStartTicks) / (double)Stopwatch.Frequency;
+		public static double RealTime => (Stopwatch.GetTimestamp() - m_applicationStartTicks) / (double)Stopwatch.Frequency;
 
 		public static double PreviousFrameStartTime
 		{
@@ -54,15 +54,11 @@ namespace Engine
 		public static bool PeriodicEvent(double period, double offset)
 		{
 			double num = FrameStartTime - offset;
-			double num2 = MathUtils.Floor(num / period) * period;
-			if (num >= num2)
-			{
-				return num - (double)FrameDuration < num2;
-			}
-			return false;
-		}
+			double num2 = Math.Floor(num / period) * period;
+            return num >= num2 && num - (double)FrameDuration < num2;
+        }
 
-		public static void QueueTimeDelayedExecution(double time, Action action)
+        public static void QueueTimeDelayedExecution(double time, Action action)
 		{
 			m_delayedExecutionsRequests.Add(new DelayedExecutionRequest
 			{

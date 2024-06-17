@@ -99,13 +99,9 @@ namespace Engine
 		{
 			get
 			{
-				if (index >= m_count)
-				{
-					throw new IndexOutOfRangeException();
-				}
-				return m_array[index];
-			}
-			set
+                return index >= m_count ? throw new IndexOutOfRangeException() : m_array[index];
+            }
+            set
 			{
 				if (index >= m_count)
 				{
