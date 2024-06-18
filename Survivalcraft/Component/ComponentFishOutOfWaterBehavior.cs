@@ -72,7 +72,7 @@ namespace Game
 				if (m_random.Float(0f, 1f) < 2.5f * m_subsystemTime.GameTimeDelta)
 				{
 					m_componentCreature.ComponentLocomotion.JumpOrder = m_random.Float(0.33f, 1f);
-					m_direction = new Vector2(MathUtils.Sign(m_componentFishModel.BendOrder.Value), 0f);
+					m_direction = new Vector2(MathF.Sign(m_componentFishModel.BendOrder.Value), 0f);
 				}
 				if (!m_componentCreature.ComponentBody.StandingOnValue.HasValue)
 				{

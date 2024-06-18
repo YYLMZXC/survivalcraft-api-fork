@@ -208,7 +208,7 @@ namespace Game
 							{
 								componentPlayer.PlayerStats.AirCreatureKills++;
 							}
-							int num = (int)MathUtils.Ceiling(m_componentCreature.ComponentHealth.AttackResilience / 12f);
+							int num = (int)MathF.Ceiling(m_componentCreature.ComponentHealth.AttackResilience / 12f);
 							for (int i = 0; i < num; i++)
 							{
 								Vector2 vector = m_random.Vector2(2.5f, 3.5f);
@@ -265,10 +265,10 @@ namespace Game
 			if (m_componentCreature.ComponentBody.ImmersionFactor > 0f && m_componentCreature.ComponentBody.ImmersionFluidBlock is MagmaBlock)
 			{
 				Injure(2f * m_componentCreature.ComponentBody.ImmersionFactor * dt, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 1));
-				float num2 = 1.1f + (0.1f * (float)MathUtils.Sin(12.0 * m_subsystemTime.GameTime));
+				float num2 = 1.1f + (0.1f * (float)Math.Sin(12.0 * m_subsystemTime.GameTime));
 				m_redScreenFactor = MathUtils.Max(m_redScreenFactor, num2 * 1.5f * m_componentCreature.ComponentBody.ImmersionFactor);
 			}
-			float num3 = MathUtils.Abs(m_componentCreature.ComponentBody.CollisionVelocityChange.Y);
+			float num3 = MathF.Abs(m_componentCreature.ComponentBody.CollisionVelocityChange.Y);
 			if (!m_wasStanding && num3 > FallResilience)
 			{
 				float num4 = MathUtils.Sqr(MathUtils.Max(num3 - FallResilience, 0f)) / 15f;
@@ -311,7 +311,7 @@ namespace Game
 			m_lastHealth = Health;
 			if (m_redScreenFactor > 0.01f)
 			{
-				m_redScreenFactor *= MathUtils.Pow(0.2f, dt);
+				m_redScreenFactor *= MathF.Pow(0.2f, dt);
 			}
 			else
 			{
@@ -321,7 +321,7 @@ namespace Game
 			{
 				m_componentCreature.ComponentCreatureSounds.PlayPainSound();
 				m_redScreenFactor += -4f * HealthChange;
-				m_componentPlayer?.ComponentGui.HealthBarWidget.Flash(MathUtils.Clamp((int)((0f - HealthChange) * 30f), 0, 10));
+				m_componentPlayer?.ComponentGui.HealthBarWidget.Flash(Math.Clamp((int)((0f - HealthChange) * 30f), 0, 10));
 			}
 			if (m_componentPlayer != null)
 			{

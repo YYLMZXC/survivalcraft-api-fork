@@ -102,7 +102,7 @@ namespace Game
 				m_animationTime = 0f;
 				m_isDismounting = true;
 				m_targetPositionOffset = Mount.MountOffset + m_riderOffset + new Vector3(x, Mount.DismountOffset.Y, Mount.DismountOffset.Z);
-				m_targetRotationOffset = Quaternion.CreateFromAxisAngle(Vector3.UnitY, MathUtils.Sign(x) * MathUtils.DegToRad(60f));
+				m_targetRotationOffset = Quaternion.CreateFromAxisAngle(Vector3.UnitY, MathF.Sign(x) * MathUtils.DegToRad(60f));
 			}
 		}
 

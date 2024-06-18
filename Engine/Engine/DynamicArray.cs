@@ -89,7 +89,7 @@ namespace Engine
 			{
 				while (Capacity < value)
 				{
-					Capacity = MathUtils.Max(Capacity * 2, 4);
+					Capacity = Math.Max(Capacity * 2, 4);
 				}
 				m_count = value;
 			}
@@ -151,7 +151,7 @@ namespace Engine
 		{
 			if (m_count >= Capacity)
 			{
-				Capacity = MathUtils.Max(Capacity * 2, 4);
+				Capacity = Math.Max(Capacity * 2, 4);
 			}
 			m_array[m_count] = item;
 			m_count++;
@@ -163,7 +163,7 @@ namespace Engine
 			ICollection collection = items as ICollection;
 			if (collection != null)
 			{
-				Capacity = MathUtils.Max(Capacity, Count + collection.Count);
+				Capacity = Math.Max(Capacity, Count + collection.Count);
 				foreach (T item in items)
 				{
 					m_array[m_count] = item;
@@ -182,7 +182,7 @@ namespace Engine
 		public void AddRange(DynamicArray<T> items)
 		{
 			ArgumentNullException.ThrowIfNull(items);
-			Capacity = MathUtils.Max(Capacity, Count + items.Count);
+			Capacity = Math.Max(Capacity, Count + items.Count);
 			for (int i = 0; i < items.Count; i++)
 			{
 				m_array[m_count] = items.Array[i];
@@ -258,7 +258,7 @@ namespace Engine
 			{
 				if (m_count >= Capacity)
 				{
-					Capacity = MathUtils.Max(Capacity * 2, 4);
+					Capacity = Math.Max(Capacity * 2, 4);
 				}
 				if (index < m_count)
 				{

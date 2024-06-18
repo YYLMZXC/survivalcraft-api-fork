@@ -33,16 +33,7 @@ namespace Game
 			TextureSlotsCount = 3;
 			m_position = position;
 			m_direction = Vector3.Normalize(direction);
-			int num = Terrain.ToCell(position.X);
-			int num2 = Terrain.ToCell(position.Y);
-			int num3 = Terrain.ToCell(position.Z);
-			int x = 0;
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num + 1, num2, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num - 1, num2, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2 + 1, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2 - 1, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 + 1));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 - 1));
+			int x = Managers.illuminationManager.六面光照最大值(terrain,position);
 			float num4 = LightingManager.LightIntensityByLightValue[x];
 			m_color = new Color(num4, num4, num4);
 		}
@@ -51,7 +42,7 @@ namespace Game
 		{
 			m_time += dt;
 			float num = MathUtils.Lerp(150f, 20f, MathUtils.Saturate(2f * m_time / 0.5f));
-			float num2 = MathUtils.Pow(0.01f, dt);
+			float num2 = MathF.Pow(0.01f, dt);
 			float s = MathUtils.Lerp(20f, 0f, MathUtils.Saturate(2f * m_time / 0.5f));
 			var v = new Vector3(2f, 2f, 1f);
 			if (m_time < 0.5f)
@@ -75,7 +66,7 @@ namespace Game
 						particle.Position += particle.Velocity * dt;
 						particle.Velocity *= num2;
 						particle.Velocity += v * dt;
-						particle.TextureSlot = (int)MathUtils.Min(9f * particle.Time / particle.Duration, 8f);
+						particle.TextureSlot = (int)Math.Min(9f * particle.Time / particle.Duration, 8f);
 						particle.Size = new Vector2(0.3f);
 					}
 					else

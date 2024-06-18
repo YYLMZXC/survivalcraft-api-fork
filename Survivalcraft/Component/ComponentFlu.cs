@@ -134,7 +134,7 @@ namespace Game
 				m_coughDuration = MathUtils.Max(m_coughDuration - dt, 0f);
 				m_sneezeDuration = MathUtils.Max(m_sneezeDuration - dt, 0f);
 				float num3 = MathUtils.DegToRad(MathUtils.Lerp(-35f, -65f, SimplexNoise.Noise(4f * (float)MathUtils.Remainder(m_subsystemTime.GameTime, 10000.0))));
-				m_componentPlayer.ComponentLocomotion.LookOrder = new Vector2(m_componentPlayer.ComponentLocomotion.LookOrder.X, MathUtils.Clamp(num3 - m_componentPlayer.ComponentLocomotion.LookAngles.Y, -3f, 3f));
+				m_componentPlayer.ComponentLocomotion.LookOrder = new Vector2(m_componentPlayer.ComponentLocomotion.LookOrder.X, Math.Clamp(num3 - m_componentPlayer.ComponentLocomotion.LookAngles.Y, -3f, 3f));
 				if (m_random.Bool(2f * dt))
 				{
 					m_componentPlayer.ComponentBody.ApplyImpulse(-1.2f * m_componentPlayer.ComponentCreatureModel.EyeRotation.GetForwardVector());

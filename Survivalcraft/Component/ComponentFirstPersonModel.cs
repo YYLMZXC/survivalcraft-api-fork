@@ -82,12 +82,12 @@ namespace Game
 					Matrix identity = Matrix.Identity;
 					if (m_swapAnimationTime > 0f)
 					{
-						float num = MathUtils.Pow(MathUtils.Sin(m_swapAnimationTime * (float)Math.PI), 3f);
+						float num = MathF.Pow(MathF.Sin(m_swapAnimationTime * (float)Math.PI), 3f);
 						identity *= Matrix.CreateTranslation(0f, -0.8f * num, 0.2f * num);
 					}
 					if (m_pokeAnimationTime > 0f)
 					{
-						float num2 = MathUtils.Sin(MathUtils.Sqrt(m_pokeAnimationTime) * (float)Math.PI);
+						float num2 = MathF.Sin(MathF.Sqrt(m_pokeAnimationTime) * (float)Math.PI);
 						if (m_value != 0)
 						{
 							identity *= Matrix.CreateRotationX((0f - MathUtils.DegToRad(90f)) * num2);
@@ -106,18 +106,18 @@ namespace Game
 						{
 							float num3 = (componentCreatureModel.MovementAnimationPhase * (float)Math.PI * 2f) + 0.5f;
 							Vector3 position = default;
-							position.Y = 0.02f * MathUtils.Sin(num3);
-							position.Z = 0.02f * MathUtils.Sin(num3);
-							identity *= Matrix.CreateRotationX(0.05f * MathUtils.Sin(num3 * 1f)) * Matrix.CreateTranslation(position);
+							position.Y = 0.02f * MathF.Sin(num3);
+							position.Z = 0.02f * MathF.Sin(num3);
+							identity *= Matrix.CreateRotationX(0.05f * MathF.Sin(num3 * 1f)) * Matrix.CreateTranslation(position);
 						}
 					}
 					else
 					{
 						float num4 = m_componentPlayer.ComponentCreatureModel.MovementAnimationPhase * (float)Math.PI * 2f;
 						Vector3 position2 = default;
-						position2.X = 0.03f * MathUtils.Sin(num4 * 1f);
-						position2.Y = 0.02f * MathUtils.Sin(num4 * 2f);
-						position2.Z = 0.02f * MathUtils.Sin(num4 * 1f);
+						position2.X = 0.03f * MathF.Sin(num4 * 1f);
+						position2.Y = 0.02f * MathF.Sin(num4 * 2f);
+						position2.Z = 0.02f * MathF.Sin(num4 * 1f);
 						identity *= Matrix.CreateRotationZ(1f * position2.X) * Matrix.CreateTranslation(position2);
 					}
 					Vector3 eyePosition = m_componentPlayer.ComponentCreatureModel.EyePosition;
@@ -196,12 +196,12 @@ namespace Game
 		public void Update(float dt)
 		{
 			Vector3 vector = m_componentPlayer.ComponentCreatureModel.EyeRotation.ToYawPitchRoll();
-			m_lagAngles *= MathUtils.Pow(0.2f, dt);
+			m_lagAngles *= MathF.Pow(0.2f, dt);
 			if (m_lastYpr.HasValue)
 			{
 				Vector3 vector2 = vector - m_lastYpr.Value;
-				m_lagAngles.X = MathUtils.Clamp(m_lagAngles.X - (0.08f * MathUtils.NormalizeAngle(vector2.X)), -0.1f, 0.1f);
-				m_lagAngles.Y = MathUtils.Clamp(m_lagAngles.Y - (0.08f * MathUtils.NormalizeAngle(vector2.Y)), -0.1f, 0.1f);
+				m_lagAngles.X = Math.Clamp(m_lagAngles.X - (0.08f * MathUtils.NormalizeAngle(vector2.X)), -0.1f, 0.1f);
+				m_lagAngles.Y = Math.Clamp(m_lagAngles.Y - (0.08f * MathUtils.NormalizeAngle(vector2.Y)), -0.1f, 0.1f);
 			}
 			m_lastYpr = vector;
 			int activeBlockValue = m_componentMiner.ActiveBlockValue;

@@ -160,8 +160,8 @@ namespace Game
 					int num8 = (num4 == num) ? FluidBlock.GetLevel(Terrain.ExtractData(cellValue4)) : level;
 					int num9 = (num5 == num) ? FluidBlock.GetLevel(Terrain.ExtractData(cellValue5)) : level;
 					Vector2 vector = default;
-					vector.X = MathUtils.Sign(level - num6) - MathUtils.Sign(level - num7);
-					vector.Y = MathUtils.Sign(level - num8) - MathUtils.Sign(level - num9);
+					vector.X = Math.Sign(level - num6) - Math.Sign(level - num7);
+					vector.Y = Math.Sign(level - num8) - Math.Sign(level - num9);
 					Vector2 v = vector;
 					if (v.LengthSquared() > 1f)
 					{
@@ -338,8 +338,8 @@ namespace Game
 			Terrain terrain = SubsystemTerrain.Terrain;
 			int num2 = Terrain.ToCell(p.X) - radius;
 			int num3 = Terrain.ToCell(p.X) + radius;
-			int num4 = MathUtils.Clamp(Terrain.ToCell(p.Y) - radius, 0, 254);
-			int num5 = MathUtils.Clamp(Terrain.ToCell(p.Y) + radius, 0, 254);
+			int num4 = Math.Clamp(Terrain.ToCell(p.Y) - radius, 0, 254);
+			int num5 = Math.Clamp(Terrain.ToCell(p.Y) + radius, 0, 254);
 			int num6 = Terrain.ToCell(p.Z) - radius;
 			int num7 = Terrain.ToCell(p.Z) + radius;
 			for (int i = num6; i <= num7; i++)
@@ -387,7 +387,7 @@ namespace Game
 			{
 				return null;
 			}
-			return MathUtils.Sqrt(num);
+			return MathF.Sqrt(num);
 		}
 
 		public void Set(int x, int y, int z, int value)

@@ -70,7 +70,7 @@ namespace Game
 
 		public float CalculateListenerDistance(Vector3 p)
 		{
-			return MathUtils.Sqrt(CalculateListenerDistanceSquared(p));
+			return MathF.Sqrt(CalculateListenerDistanceSquared(p));
 		}
 
 		public void Mute()
@@ -97,7 +97,7 @@ namespace Game
 		public void PlaySound(string name, float volume, float pitch, float pan, float delay)
 		{
 			double num = m_subsystemTime.GameTime + (double)delay;
-			m_nextSoundTime = MathUtils.Min(m_nextSoundTime, num);
+			m_nextSoundTime = Math.Min(m_nextSoundTime, num);
 			m_queuedSounds.Add(new SoundInfo
 			{
 				Time = num,
@@ -198,7 +198,7 @@ namespace Game
 				}
 				else
 				{
-					m_nextSoundTime = MathUtils.Min(m_nextSoundTime, soundInfo.Time);
+					m_nextSoundTime = Math.Min(m_nextSoundTime, soundInfo.Time);
 					num++;
 				}
 			}

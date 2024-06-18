@@ -43,13 +43,13 @@ namespace Game
 		public override void Update(float dt)
 		{
 			float num = Vector3.Dot(m_componentCreature.ComponentBody.Velocity, m_componentCreature.ComponentBody.Matrix.Forward);
-			if (MathUtils.Abs(num) > 0.1f)
+			if (MathF.Abs(num) > 0.1f)
 			{
 				MovementAnimationPhase += num * dt * m_walkAnimationSpeed;
 			}
 			else
 			{
-				float num2 = MathUtils.Floor(MovementAnimationPhase);
+				float num2 = MathF.Floor(MovementAnimationPhase);
 				if (MovementAnimationPhase != num2)
 				{
 					MovementAnimationPhase = MovementAnimationPhase - num2 > 0.5f
@@ -58,7 +58,7 @@ namespace Game
 				}
 			}
 			float num3 = 0f;
-			num3 = (0f - m_walkBobHeight) * MathUtils.Sqr(MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase));
+			num3 = (0f - m_walkBobHeight) * MathUtils.Sqr(MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase));
 			float num4 = MathUtils.Min(12f * m_subsystemTime.GameTimeDelta, 1f);
 			Bob += num4 * (num3 - Bob);
 			if (m_hasWings)
@@ -74,7 +74,7 @@ namespace Game
 				}
 				else if (FlyPhase != 1f)
 				{
-					FlyPhase = MathUtils.Min(FlyPhase + (m_flyAnimationSpeed * dt), 1f);
+					FlyPhase = MathF.Min(FlyPhase + (m_flyAnimationSpeed * dt), 1f);
 				}
 			}
 			if (FeedOrder)
@@ -111,17 +111,17 @@ namespace Game
 			float num = 0f;
 			if (m_hasWings)
 			{
-				num += 1.2f * MathUtils.Sin((float)Math.PI * 2f * (FlyPhase + 0.75f));
+				num += 1.2f * MathF.Sin((float)Math.PI * 2f * (FlyPhase + 0.75f));
 				if (m_componentCreature.ComponentBody.StandingOnValue.HasValue)
 				{
-					num += 0.3f * MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase);
+					num += 0.3f * MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase);
 				}
 			}
 			float num2;
 			float num3;
 			if (m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.ImmersionFactor > 0f || m_componentCreature.ComponentLocomotion.FlySpeed == 0f)
 			{
-				num2 = 0.6f * MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase);
+				num2 = 0.6f * MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase);
 				num3 = 0f - num2;
 			}
 			else
@@ -137,15 +137,15 @@ namespace Game
 				float num5 = 0f;
 				if (m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.ImmersionFactor > 0f)
 				{
-					num4 = 0.5f * MathUtils.Sin((float)Math.PI * 2f * MovementAnimationPhase / 2f);
+					num4 = 0.5f * MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase / 2f);
 					num5 = 0f - num4;
 				}
-				float num6 = MathUtils.Cos((float)Math.PI * 2f * m_peckPhase);
+				float num6 = MathF.Cos((float)Math.PI * 2f * m_peckPhase);
 				num4 -= 1.25f * (1f - ((num6 >= 0f) ? num6 : (-0.5f * num6)));
 				num4 += m_componentCreature.ComponentLocomotion.LookAngles.Y;
 				SetBoneTransform(m_bodyBone.Index, Matrix.CreateFromYawPitchRoll(vector.X, 0f, 0f) * Matrix.CreateTranslation(m_componentCreature.ComponentBody.Position + new Vector3(0f, Bob, 0f)));
 				SetBoneTransform(m_neckBone.Index, Matrix.CreateFromYawPitchRoll(yaw2, num4, 0f));
-				SetBoneTransform(m_headBone.Index, Matrix.CreateFromYawPitchRoll(yaw, num5 + MathUtils.Clamp(vector.Y, -(float)Math.PI / 4f, (float)Math.PI / 4f), vector.Z));
+				SetBoneTransform(m_headBone.Index, Matrix.CreateFromYawPitchRoll(yaw, num5 + Math.Clamp(vector.Y, -(float)Math.PI / 4f, (float)Math.PI / 4f), vector.Z));
 				if (m_hasWings)
 				{
 					SetBoneTransform(m_wing1Bone.Index, Matrix.CreateRotationY(num));

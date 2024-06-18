@@ -102,7 +102,7 @@ namespace Game
 
 		public virtual float ScoreDestination(Vector3 destination)
 		{
-			float num = 8f - MathUtils.Abs(m_componentCreature.ComponentBody.Position.Y - destination.Y);
+			float num = 8f - MathF.Abs(m_componentCreature.ComponentBody.Position.Y - destination.Y);
 			if (m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(destination.X), Terrain.ToCell(destination.Y) - 1, Terrain.ToCell(destination.Z)) == 18)
 			{
 				num -= 5f;

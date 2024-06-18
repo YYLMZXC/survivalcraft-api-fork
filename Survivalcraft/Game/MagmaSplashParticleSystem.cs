@@ -29,16 +29,7 @@ namespace Game
 			m_position = position;
 			Texture = ContentManager.Get<Texture2D>("Textures/MagmaSplashParticle");
 			TextureSlotsCount = 2;
-			int num = Terrain.ToCell(position.X);
-			int num2 = Terrain.ToCell(position.Y);
-			int num3 = Terrain.ToCell(position.Z);
-			int x = 0;
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num + 1, num2, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num - 1, num2, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2 + 1, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2 - 1, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 + 1));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 - 1));
+			int x = Managers.illuminationManager.六面光照最大值(terrain,position);
 			Color white = Color.White;
 			float num4 = LightingManager.LightIntensityByLightValue[x];
 			white *= num4;

@@ -145,8 +145,8 @@ namespace Game
 			}
 			set
 			{
-				value.X = MathUtils.Clamp(value.X, 0f - MathUtils.DegToRad(140f), MathUtils.DegToRad(140f));
-				value.Y = MathUtils.Clamp(value.Y, 0f - MathUtils.DegToRad(82f), MathUtils.DegToRad(82f));
+				value.X = Math.Clamp(value.X, 0f - MathUtils.DegToRad(140f), MathUtils.DegToRad(140f));
+				value.Y = Math.Clamp(value.Y, 0f - MathUtils.DegToRad(82f), MathUtils.DegToRad(82f));
 				m_lookAngles = value;
 			}
 		}
@@ -171,7 +171,7 @@ namespace Game
 					float num = m_walkOrder.Value.LengthSquared();
 					if (num > 1f)
 					{
-						m_walkOrder = m_walkOrder.Value / MathUtils.Sqrt(num);
+						m_walkOrder = m_walkOrder.Value / MathF.Sqrt(num);
 					}
 				}
 			}
@@ -191,7 +191,7 @@ namespace Game
 					float num = m_flyOrder.Value.LengthSquared();
 					if (num > 1f)
 					{
-						m_flyOrder = m_flyOrder.Value / MathUtils.Sqrt(num);
+						m_flyOrder = m_flyOrder.Value / MathF.Sqrt(num);
 					}
 				}
 			}
@@ -211,7 +211,7 @@ namespace Game
 					float num = m_swimOrder.Value.LengthSquared();
 					if (num > 1f)
 					{
-						m_swimOrder = m_swimOrder.Value / MathUtils.Sqrt(num);
+						m_swimOrder = m_swimOrder.Value / MathF.Sqrt(num);
 					}
 				}
 			}
@@ -365,9 +365,9 @@ namespace Game
 							m_flying = false;
 						}
 					}
-					playerStats.DeepestDive = MathUtils.Max(playerStats.DeepestDive, m_componentCreature.ComponentBody.ImmersionDepth);
-					playerStats.LowestAltitude = MathUtils.Min(playerStats.LowestAltitude, position.Y);
-					playerStats.HighestAltitude = MathUtils.Max(playerStats.HighestAltitude, position.Y);
+					playerStats.DeepestDive = Math.Max(playerStats.DeepestDive, m_componentCreature.ComponentBody.ImmersionDepth);
+					playerStats.LowestAltitude = Math.Min(playerStats.LowestAltitude, position.Y);
+					playerStats.HighestAltitude = Math.Max(playerStats.HighestAltitude, position.Y);
 					playerStats.EasiestModeUsed = (GameMode)MathUtils.Min((int)m_subsystemGameInfo.WorldSettings.GameMode, (int)playerStats.EasiestModeUsed);
 				}
 				m_lastPosition = position;
@@ -389,7 +389,7 @@ namespace Game
 					}
 				}
 				Quaternion rotation = m_componentCreature.ComponentBody.Rotation;
-				float num2 = MathUtils.Atan2((2f * rotation.Y * rotation.W) - (2f * rotation.X * rotation.Z), 1f - (2f * rotation.Y * rotation.Y) - (2f * rotation.Z * rotation.Z));
+				float num2 = MathF.Atan2((2f * rotation.Y * rotation.W) - (2f * rotation.X * rotation.Z), 1f - (2f * rotation.Y * rotation.Y) - (2f * rotation.Z * rotation.Z));
 				num2 += (0f - TurnSpeed) * TurnOrder.X * dt;
 				if (VrLookOrder.HasValue)
 				{
@@ -503,9 +503,9 @@ namespace Game
 				else
 				{
 					Vector2 value = WalkOrder.Value;
-					if (m_walkSpeedWhenTurning > 0f && MathUtils.Abs(TurnOrder.X) > 0.02f)
+					if (m_walkSpeedWhenTurning > 0f && MathF.Abs(TurnOrder.X) > 0.02f)
 					{
-						value.Y = MathUtils.Max(value.Y, MathUtils.Lerp(0f, m_walkSpeedWhenTurning, MathUtils.Saturate(2f * MathUtils.Abs(TurnOrder.X))));
+						value.Y = MathUtils.Max(value.Y, MathUtils.Lerp(0f, m_walkSpeedWhenTurning, MathUtils.Saturate(2f * MathF.Abs(TurnOrder.X))));
 					}
 					float num2 = WalkSpeed;
 					if (m_componentCreature.ComponentBody.ImmersionFactor > 0.2f)
@@ -603,7 +603,7 @@ namespace Game
 					m_swimBurstRemaining -= dt;
 				}
 				velocity += MathUtils.Saturate(num5 * AccelerationFactor * dt) * (v6 - velocity);
-				m_componentCreature.ComponentBody.IsGravityEnabled = MathUtils.Abs(value4.Y) <= 0.07f;
+				m_componentCreature.ComponentBody.IsGravityEnabled = MathF.Abs(value4.Y) <= 0.07f;
 				m_componentCreature.ComponentBody.IsWaterDragEnabled = false;
 				m_componentCreature.ComponentBody.IsGroundDragEnabled = false;
 				m_swimming = true;
@@ -620,7 +620,7 @@ namespace Game
 				m_componentCreature.ComponentCreatureSounds.PlayFootstepSound(2f);
 				m_subsystemNoise.MakeNoise(m_componentCreature.ComponentBody, 0.25f, 10f);
 			}
-			if (MathUtils.Abs(m_componentCreature.ComponentBody.CollisionVelocityChange.Y) > 3f)
+			if (MathF.Abs(m_componentCreature.ComponentBody.CollisionVelocityChange.Y) > 3f)
 			{
 				m_componentCreature.ComponentCreatureSounds.PlayFootstepSound(2f);
 				m_subsystemNoise.MakeNoise(m_componentCreature.ComponentBody, 0.25f, 10f);
@@ -641,8 +641,8 @@ namespace Game
 				{
 					Vector2 value2 = WalkOrder.Value;
 					float num2 = LadderSpeed * value2.Y;
-					velocity.X = 5f * (MathUtils.Floor(position.X) + 0.5f - position.X);
-					velocity.Z = 5f * (MathUtils.Floor(position.Z) + 0.5f - position.Z);
+					velocity.X = 5f * (MathF.Floor(position.X) + 0.5f - position.X);
+					velocity.Z = 5f * (MathF.Floor(position.Z) + 0.5f - position.Z);
 					velocity.Y += MathUtils.Saturate(20f * dt) * (num2 - velocity.Y);
 					m_climbing = true;
 				}

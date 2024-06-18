@@ -61,7 +61,7 @@ namespace Game
 			if (componentMiner.Project.FindSubsystem<SubsystemMagnetBlockBehavior>(throwOnError: true).MagnetsCount < 8)
 			{
 				Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
-				int data = (!(MathUtils.Abs(forward.X) > MathUtils.Abs(forward.Z))) ? 1 : 0;
+				int data = (!(MathF.Abs(forward.X) > MathF.Abs(forward.Z))) ? 1 : 0;
 				result = default;
 				result.CellFace = raycastResult.CellFace;
 				result.Value = Terrain.ReplaceData(value, data);

@@ -107,7 +107,7 @@ namespace Game
 
 		public virtual void SetImportanceLevel(float score)
 		{
-			m_importanceLevel = MathUtils.Lerp(4f, 8f, MathUtils.Sqrt(score));
+			m_importanceLevel = MathUtils.Lerp(4f, 8f, MathF.Sqrt(score));
 		}
 
 		public virtual ComponentCreature FindTarget(out float targetScore)

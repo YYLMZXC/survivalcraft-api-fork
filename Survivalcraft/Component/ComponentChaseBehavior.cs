@@ -375,14 +375,14 @@ namespace Game
 			Vector3 v3 = v2 / num;
 			float num2 = 0.5f * (boundingBox.Max.X - boundingBox.Min.X + boundingBox2.Max.X - boundingBox2.Min.X);
 			float num3 = 0.5f * (boundingBox.Max.Y - boundingBox.Min.Y + boundingBox2.Max.Y - boundingBox2.Min.Y);
-			if (MathUtils.Abs(v2.Y) < num3 * 0.99f)
+			if (MathF.Abs(v2.Y) < num3 * 0.99f)
 			{
 				if (num < num2 + 0.99f && Vector3.Dot(v3, m_componentCreature.ComponentBody.Matrix.Forward) > 0.25f)
 				{
 					return true;
 				}
 			}
-			else if (num < num3 + 0.3f && MathUtils.Abs(Vector3.Dot(v3, Vector3.UnitY)) > 0.8f)
+			else if (num < num3 + 0.3f && MathF.Abs(Vector3.Dot(v3, Vector3.UnitY)) > 0.8f)
 			{
 				return true;
 			}
@@ -407,14 +407,14 @@ namespace Game
 			Vector3 v3 = v2 / num;
 			float num2 = 0.5f * (boundingBox.Max.X - boundingBox.Min.X + boundingBox2.Max.X - boundingBox2.Min.X);
 			float num3 = 0.5f * (boundingBox.Max.Y - boundingBox.Min.Y + boundingBox2.Max.Y - boundingBox2.Min.Y);
-			if (MathUtils.Abs(v2.Y) < num3 * 0.99f)
+			if (MathF.Abs(v2.Y) < num3 * 0.99f)
 			{
 				if (num < num2 + 0.99f && Vector3.Dot(v3, m_componentCreature.ComponentBody.Matrix.Forward) > 0.25f)
 				{
 					return true;
 				}
 			}
-			else if (num < num3 + 0.3f && MathUtils.Abs(Vector3.Dot(v3, Vector3.UnitY)) > 0.8f)
+			else if (num < num3 + 0.3f && MathF.Abs(Vector3.Dot(v3, Vector3.UnitY)) > 0.8f)
 			{
 				return true;
 			}

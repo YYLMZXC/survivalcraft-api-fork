@@ -346,7 +346,7 @@ namespace Game
 								}
 							}
 						}
-						float num5 = projectile.IsInWater ? MathUtils.Pow(0.001f, dt) : MathUtils.Pow(block.GetProjectileDamping(projectile.Value), dt);
+						float num5 = projectile.IsInWater ? MathF.Pow(0.001f, dt) : MathF.Pow(block.GetProjectileDamping(projectile.Value), dt);
 						projectile.Velocity.Y += -10f * dt;
 						projectile.Velocity *= num5;
 						projectile.AngularVelocity *= num5;
@@ -371,7 +371,7 @@ namespace Game
 							if (flag2)
 							{
 								float num6 = new Vector2(projectile.Velocity.X + projectile.Velocity.Z).Length();
-								if (num6 > 6f && num6 > 4f * MathUtils.Abs(projectile.Velocity.Y))
+								if (num6 > 6f && num6 > 4f * MathF.Abs(projectile.Velocity.Y))
 								{
 									projectile.Velocity *= 0.5f;
 									projectile.Velocity.Y *= -1f;

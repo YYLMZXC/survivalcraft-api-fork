@@ -99,7 +99,7 @@ namespace Game
 			if (m_pukeParticleSystem != null)
 			{
 				float num = MathUtils.DegToRad(MathUtils.Lerp(-35f, -60f, SimplexNoise.Noise(2f * (float)MathUtils.Remainder(m_subsystemTime.GameTime, 10000.0))));
-				m_componentPlayer.ComponentLocomotion.LookOrder = new Vector2(m_componentPlayer.ComponentLocomotion.LookOrder.X, MathUtils.Clamp(num - m_componentPlayer.ComponentLocomotion.LookAngles.Y, -2f, 2f));
+				m_componentPlayer.ComponentLocomotion.LookOrder = new Vector2(m_componentPlayer.ComponentLocomotion.LookOrder.X, Math.Clamp(num - m_componentPlayer.ComponentLocomotion.LookAngles.Y, -2f, 2f));
 				Vector3 upVector = m_componentPlayer.ComponentCreatureModel.EyeRotation.GetUpVector();
 				Vector3 forwardVector = m_componentPlayer.ComponentCreatureModel.EyeRotation.GetForwardVector();
 				m_pukeParticleSystem.Position = m_componentPlayer.ComponentCreatureModel.EyePosition - (0.08f * upVector) + (0.3f * forwardVector);

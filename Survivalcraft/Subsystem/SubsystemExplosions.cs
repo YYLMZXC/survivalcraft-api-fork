@@ -250,7 +250,7 @@ namespace Game
 			while (num < m_queuedExplosions.Count)
 			{
 				ExplosionData explosionData = m_queuedExplosions[num];
-				if (MathUtils.Abs(explosionData.X - x) <= 4 && MathUtils.Abs(explosionData.Y - y) <= 4 && MathUtils.Abs(explosionData.Z - z) <= 4)
+				if (MathF.Abs(explosionData.X - x) <= 4 && MathF.Abs(explosionData.Y - y) <= 4 && MathF.Abs(explosionData.Z - z) <= 4)
 				{
 					m_queuedExplosions.RemoveAt(num);
 					//Task.Run(() => SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary));
@@ -266,7 +266,7 @@ namespace Game
 			for (int num1 = 0; num1 < m_queuedExplosions.Count;num1++)
 			{
 				ExplosionData explosionData = m_queuedExplosions[num1];
-				while (!(MathUtils.Abs(explosionData.X - x) <= 4 && MathUtils.Abs(explosionData.Y - y) <= 4 && MathUtils.Abs(explosionData.Z - z) <= 4))
+				while (!(MathF.Abs(explosionData.X - x) <= 4 && MathF.Abs(explosionData.Y - y) <= 4 && MathF.Abs(explosionData.Z - z) <= 4))
 				{
 					m_queuedExplosions.RemoveAt(num1);
 					SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary);
@@ -282,7 +282,7 @@ namespace Game
 			{
 				int num1 = indices[i];
 				ExplosionData explosionData = m_queuedExplosions[num1];
-				if (MathUtils.Abs(explosionData.X - x) <= 4 && MathUtils.Abs(explosionData.Y - y) <= 4 && MathUtils.Abs(explosionData.Z - z) <= 4)
+				if (MathF.Abs(explosionData.X - x) <= 4 && MathF.Abs(explosionData.Y - y) <= 4 && MathF.Abs(explosionData.Z - z) <= 4)
 				{
 					m_queuedExplosions.RemoveAt(num1);
 					SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary);
@@ -293,7 +293,7 @@ namespace Game
 			int index = 0;
 			foreach (var explosionData in m_queuedExplosions)
 			{
-				if (MathUtils.Abs(explosionData.X - x) <= 4 && MathUtils.Abs(explosionData.Y - y) <= 4 && MathUtils.Abs(explosionData.Z - z) <= 4)
+				if (MathF.Abs(explosionData.X - x) <= 4 && MathF.Abs(explosionData.Y - y) <= 4 && MathF.Abs(explosionData.Z - z) <= 4)
 				{
 					m_queuedExplosions.RemoveAt(index);
 					Task.Run(() => SimulateExplosion(explosionData.X, explosionData.Y, explosionData.Z, explosionData.Pressure, explosionData.IsIncendiary));
@@ -332,7 +332,7 @@ namespace Game
 		public void SimulateExplosion(int x, int y, int z, float pressure, bool isIncendiary)
 		{
 			int explosionPointValue = m_subsystemTerrain.Terrain.GetCellValue(x, y, z);
-			float num = MathUtils.Max(0.13f * MathUtils.Pow(pressure, 0.5f), 1f);
+			float num = MathUtils.Max(0.13f * MathF.Pow(pressure, 0.5f), 1f);
 			m_subsystemTerrain.ChangeCell(x, y, z, Terrain.MakeBlockValue(0));
 			var processed = new SparseSpatialArray<bool>(x, y, z, outside: true);
 			var list = new List<ProcessPoint>();
@@ -350,7 +350,7 @@ namespace Game
 				爆炸强度 += list.Count;
 				num3++;
 				float num4 = 5f * MathUtils.Max(num3 - 7, 0);
-				float num5 = pressure / (MathUtils.Pow(爆炸强度, 0.66f) + num4);
+				float num5 = pressure / (MathF.Pow(爆炸强度, 0.66f) + num4);
 				if (num5 >= num)
 				{
 					foreach (ProcessPoint item in list)
@@ -524,7 +524,7 @@ namespace Game
 					num = num3;
 					point = item.Key;
 				}
-				float num4 = 0.001f * MathUtils.Pow(爆炸强度, 0.5f);
+				float num4 = 0.001f * MathF.Pow(爆炸强度, 0.5f);
 				float num5 = MathUtils.Saturate((item.Value / 15f) - num4) * m_random.Float(0.2f, 1f);
 				if (num5 > 0.1f)
 				{
@@ -683,9 +683,9 @@ namespace Game
 					}
 				}
 			}
-			float num6 = MathUtils.Max(MathUtils.Pow(mass, 0.5f), 1f);
-			impulse = 9.259259f * Vector3.Normalize(zero) * MathUtils.Pow(zero.Length(), 0.5f) / num6;
-			damage = 2.59259248f * MathUtils.Pow(num, 0.5f) / num6;
+			float num6 = MathUtils.Max(MathF.Pow(mass, 0.5f), 1f);
+			impulse = 9.259259f * Vector3.Normalize(zero) * MathF.Pow(zero.Length(), 0.5f) / num6;
+			damage = 2.59259248f * MathF.Pow(num, 0.5f) / num6;
 		}
 	}
 }

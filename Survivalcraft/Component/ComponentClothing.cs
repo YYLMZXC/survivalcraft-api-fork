@@ -229,15 +229,15 @@ namespace Game
 				{
 					int value = list[i];
 					Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-					ClothingData clothingData = block.GetClothingData(value); float x = (num2 - (float)BlocksManager.Blocks[203].GetDamage(value)) / num2 * clothingData.Sturdiness;
-					float num3 = MathUtils.Min(attackPower * MathUtils.Saturate(clothingData.ArmorProtection), x);
+					ClothingData clothingData = block.GetClothingData(value); float x = (num2 - BlocksManager.Blocks[203].GetDamage(value)) / num2 * clothingData.Sturdiness;
+					float num3 = MathF.Min(attackPower * MathUtils.Saturate(clothingData.ArmorProtection), x);
 					if (num3 > 0f)
 					{
 						attackPower -= num3;
 						if (m_subsystemGameInfo.WorldSettings.GameMode != 0)
 						{
 							float x2 = (num3 / clothingData.Sturdiness * num2) + 0.001f;
-							int damageCount = (int)(MathUtils.Floor(x2) + (float)(m_random.Bool(MathUtils.Remainder(x2, 1f)) ? 1 : 0));
+							int damageCount = (int)(MathF.Floor(x2) + (m_random.Bool(MathUtils.Remainder(x2, 1f)) ? 1 : 0));
 							list[i] = BlocksManager.DamageItem(value, damageCount);
 						}
 						if (!string.IsNullOrEmpty(clothingData.ImpactSoundsFolder))
@@ -262,7 +262,7 @@ namespace Game
 				SetClothes(slot, list);
 
 			}
-			return MathUtils.Max(attackPower, 0f);
+			return MathF.Max(attackPower, 0f);
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
@@ -394,8 +394,8 @@ namespace Game
 							Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(value2)];
 							ClothingData clothingData2 = block2.GetClothingData(value2);
 							float num2 = (m_componentVitalStats.Wetness > 0f) ? (10f * clothingData2.Sturdiness) : (20f * clothingData2.Sturdiness);
-							double num3 = MathUtils.Floor(m_lastTotalElapsedGameTime.Value / num2);
-							if (MathUtils.Floor(m_subsystemGameInfo.TotalElapsedGameTime / num2) > num3 && m_random.Float(0f, 1f) < 0.75f)
+							double num3 = Math.Floor(m_lastTotalElapsedGameTime.Value / num2);
+							if (Math.Floor(m_subsystemGameInfo.TotalElapsedGameTime / num2) > num3 && m_random.Float(0f, 1f) < 0.75f)
 							{
 								m_clothesList[i] = BlocksManager.DamageItem(value2, 1);
 								flag2 = true;

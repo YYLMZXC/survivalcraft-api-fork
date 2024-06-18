@@ -22,7 +22,7 @@ namespace Game
 		{
 			if (Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)) == 226)
 			{
-				componentBody.Entity.FindComponent<ComponentCreature>()?.ComponentHealth.Injure(0.01f * MathUtils.Abs(velocity), null, ignoreInvulnerability: false, "Spiked by a sea creature");
+				componentBody.Entity.FindComponent<ComponentCreature>()?.ComponentHealth.Injure(0.01f * MathF.Abs(velocity), null, ignoreInvulnerability: false, "Spiked by a sea creature");
 			}
 		}
 

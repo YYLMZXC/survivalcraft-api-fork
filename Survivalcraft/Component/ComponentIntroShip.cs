@@ -34,8 +34,8 @@ namespace Game
 			Matrix matrix = m_componentFrame.Matrix;
 			Vector3 vector = Quaternion.CreateFromRotationMatrix(matrix).ToYawPitchRoll();
 			vector.X = Heading;
-			vector.Y = 0.05f * MathUtils.Sin((float)MathUtils.NormalizeAngle((0.77 * m_subsystemTime.GameTime) + 1.0));
-			vector.Z = 0.12f * MathUtils.Sin((float)MathUtils.NormalizeAngle((1.12 * m_subsystemTime.GameTime) + 2.0));
+			vector.Y = 0.05f * MathF.Sin((float)MathUtils.NormalizeAngle((0.77 * m_subsystemTime.GameTime) + 1.0));
+			vector.Z = 0.12f * MathF.Sin((float)MathUtils.NormalizeAngle((1.12 * m_subsystemTime.GameTime) + 2.0));
 			matrix = Matrix.CreateFromYawPitchRoll(vector.X, vector.Y, vector.Z) * Matrix.CreateTranslation(matrix.Translation);
 			matrix.Translation += s * matrix.Forward * new Vector3(1f, 0f, 1f) * dt;
 			m_componentFrame.Position = matrix.Translation;

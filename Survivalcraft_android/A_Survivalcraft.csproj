@@ -37,6 +37,7 @@
 	<Compile Include="..\Survivalcraft\Managers\ClipboardManager.cs" Link="Managers\ClipboardManager.cs" />
 	<Compile Include="..\Survivalcraft\Managers\ScreenCaptureManager.cs" Link="Managers\ScreenCaptureManager.cs" />
 	<Compile Include="..\Survivalcraft\Managers\WebManager.cs" Link="Managers\WebManager.cs" />
+  <Compile Include="..\Survivalcraft\Managers\illuminationManager.cs" Link="Managers\illuminationManager.cs" />
 	<Compile Include="..\Survivalcraft\Screen\ExternalContentScreen.cs" Link="Screen\ExternalContentScreen.cs" />
     <Compile Include="..\Survivalcraft\Screen\LoadingFailedScreen.cs">
       <Link>Screen\LoadingFailedScreen.cs</Link>

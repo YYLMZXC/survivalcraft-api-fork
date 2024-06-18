@@ -111,7 +111,7 @@ namespace Game
 			}
 			set
 			{
-				m_temperature = MathUtils.Clamp(value, 0f, 24f);
+				m_temperature = Math.Clamp(value, 0f, 24f);
 			}
 		}
 
@@ -153,7 +153,7 @@ namespace Game
 				}
 				Food += num2;
 				m_satiation.TryGetValue(num, out float value2);
-				value2 += MathUtils.Max(num2, 0.5f);
+				value2 += MathF.Max(num2, 0.5f);
 				m_satiation[num] = value2;
 				if (m_componentPlayer.ComponentSickness.IsSick)
 				{
@@ -195,7 +195,7 @@ namespace Game
 
 		public virtual void MakeSleepy(float sleepValue)
 		{
-			Sleep = MathUtils.Min(Sleep, sleepValue);
+			Sleep = MathF.Min(Sleep, sleepValue);
 		}
 
 		public void Update(float dt)
@@ -327,7 +327,7 @@ namespace Game
 				m_satiation.Clear();
 				foreach (KeyValuePair<int, float> satiation in m_satiationList)
 				{
-					float num3 = MathUtils.Max(satiation.Value - 0.000416666677f, 0f);
+					float num3 = MathF.Max(satiation.Value - 0.000416666677f, 0f);
 					if (num3 > 0f)
 					{
 						m_satiation.Add(satiation.Key, num3);
@@ -349,7 +349,7 @@ namespace Game
 			_ = m_componentPlayer.ComponentSickness.IsPuking;
 			if (m_subsystemGameInfo.WorldSettings.GameMode >= GameMode.Survival && m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled)
 			{
-				float num3 = 1f / MathUtils.Max(m_componentPlayer.ComponentLevel.SpeedFactor, 0.75f);
+				float num3 = 1f / MathF.Max(m_componentPlayer.ComponentLevel.SpeedFactor, 0.75f);
 				if (m_componentPlayer.ComponentSickness.IsSick || m_componentPlayer.ComponentFlu.HasFlu)
 				{
 					num3 *= 5f;
@@ -459,7 +459,7 @@ namespace Game
 						float x = (Sleep < 0.0375f) ? m_random.Float(3f, 6f) : m_random.Float(2f, 4f);
 						if (m_random.Float(0f, 1f) < num * gameTimeDelta)
 						{
-							m_sleepBlackoutDuration = MathUtils.Max(m_sleepBlackoutDuration, x);
+							m_sleepBlackoutDuration = MathF.Max(m_sleepBlackoutDuration, x);
 							m_componentPlayer.ComponentCreatureSounds.PlayMoanSound();
 						}
 					}
@@ -481,7 +481,7 @@ namespace Game
 			m_sleepBlackoutFactor = MathUtils.Saturate(m_sleepBlackoutFactor + (2f * gameTimeDelta * (num2 - m_sleepBlackoutFactor)));
 			if (!m_componentPlayer.ComponentSleep.IsSleeping)
 			{
-				m_componentPlayer.ComponentScreenOverlays.BlackoutFactor = MathUtils.Max(m_sleepBlackoutFactor, m_componentPlayer.ComponentScreenOverlays.BlackoutFactor);
+				m_componentPlayer.ComponentScreenOverlays.BlackoutFactor = MathF.Max(m_sleepBlackoutFactor, m_componentPlayer.ComponentScreenOverlays.BlackoutFactor);
 				if (m_sleepBlackoutFactor > 0.01)
 				{
 					m_componentPlayer.ComponentScreenOverlays.FloatingMessage = LanguageControl.Get(fName, 24);
@@ -567,14 +567,14 @@ namespace Game
 				}
 				if (m_subsystemTime.PeriodicGameTimeEvent(8.0, 0.0))
 				{
-					m_temperatureBlackoutDuration = MathUtils.Max(m_temperatureBlackoutDuration, 6f);
+					m_temperatureBlackoutDuration = MathF.Max(m_temperatureBlackoutDuration, 6f);
 					m_componentPlayer.ComponentCreatureSounds.PlayMoanSound();
 				}
 			}
 			else if (Temperature > 20f && m_subsystemTime.PeriodicGameTimeEvent(10.0, 0.0))
 			{
 				m_componentPlayer.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 36), Color.White, blinking: true, playNotificationSound: false);
-				m_temperatureBlackoutDuration = MathUtils.Max(m_temperatureBlackoutDuration, 3f);
+				m_temperatureBlackoutDuration = MathF.Max(m_temperatureBlackoutDuration, 3f);
 				m_componentPlayer.ComponentGui.TemperatureBarWidget.Flash(10);
 				m_componentPlayer.ComponentCreatureSounds.PlayMoanSound();
 			}
@@ -583,7 +583,7 @@ namespace Game
 			m_temperatureBlackoutDuration -= gameTimeDelta;
 			float num4 = MathUtils.Saturate(0.5f * m_temperatureBlackoutDuration);
 			m_temperatureBlackoutFactor = MathUtils.Saturate(m_temperatureBlackoutFactor + (2f * gameTimeDelta * (num4 - m_temperatureBlackoutFactor)));
-			m_componentPlayer.ComponentScreenOverlays.BlackoutFactor = MathUtils.Max(m_temperatureBlackoutFactor, m_componentPlayer.ComponentScreenOverlays.BlackoutFactor);
+			m_componentPlayer.ComponentScreenOverlays.BlackoutFactor = MathF.Max(m_temperatureBlackoutFactor, m_componentPlayer.ComponentScreenOverlays.BlackoutFactor);
 			if (m_temperatureBlackoutFactor > 0.01)
 			{
 				m_componentPlayer.ComponentScreenOverlays.FloatingMessage = LanguageControl.Get(fName, 37);

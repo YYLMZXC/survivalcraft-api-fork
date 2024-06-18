@@ -300,7 +300,7 @@ namespace Game
 			int pullCount = PistonBlock.GetPullCount(data);
 			int speed = PistonBlock.GetSpeed(data);
 			Point3 point = CellFace.FaceToPoint3(face);
-			length = MathUtils.Clamp(length, 0, maxExtension + 1);
+			length = Math.Clamp(length, 0, maxExtension + 1);
 			int num = 0;
 			m_movingBlocks.Clear();
 			Point3 offset = point;
@@ -450,9 +450,9 @@ namespace Game
 				m_subsystemMovingBlocks.RemoveMovingBlockSet(movingBlockSet);
 				foreach (MovingBlock block in movingBlockSet.Blocks)
 				{
-					int x = Terrain.ToCell(MathUtils.Round(movingBlockSet.Position.X)) + block.Offset.X;
-					int y = Terrain.ToCell(MathUtils.Round(movingBlockSet.Position.Y)) + block.Offset.Y;
-					int z = Terrain.ToCell(MathUtils.Round(movingBlockSet.Position.Z)) + block.Offset.Z;
+					int x = Terrain.ToCell(MathF.Round(movingBlockSet.Position.X)) + block.Offset.X;
+					int y = Terrain.ToCell(MathF.Round(movingBlockSet.Position.Y)) + block.Offset.Y;
+					int z = Terrain.ToCell(MathF.Round(movingBlockSet.Position.Z)) + block.Offset.Z;
 					if (!(new Point3(x, y, z) == position))
 					{
 						int num2 = Terrain.ExtractContents(block.Value);

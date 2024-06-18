@@ -129,7 +129,7 @@ namespace Game
 					matrix.Up = Vector3.Normalize(Vector3.Cross(matrix.Right, matrix.Forward));
 					Vector3 vector = matrix.ToYawPitchRoll();
 					Vector2 zero = Vector2.Zero;
-					zero.X -= (2f * vector.X / (float)Math.PI) + (0.05f * MathUtils.Sin(5f * num));
+					zero.X -= (2f * vector.X / (float)Math.PI) + (0.05f * MathF.Sin(5f * num));
 					zero.Y += (2f * vector.Y / (float)Math.PI) + (m_isUnderWater ? (0.75f * num) : (-0.75f * num));
 					Texture2D texture = ContentManager.Get<Texture2D>("Textures/SplashOverlay");
 					DrawTexturedOverlay(camera, texture, new Color(156, 206, 210), num2, num2, zero);
@@ -225,7 +225,7 @@ namespace Game
 			float num = factor;
 			Vector2 v = Vector2.One;
 			float num2 = v.Length();
-			var point = new Point2((int)MathUtils.Round(12f * viewportSize.X / viewportSize.Y), (int)MathUtils.Round(12f));
+			var point = new Point2((int)MathF.Round(12f * viewportSize.X / viewportSize.Y), (int)MathF.Round(12f));
 			if (m_iceVertices == null || m_cellsCount != point)
 			{
 				m_cellsCount = point;
@@ -295,8 +295,8 @@ namespace Game
 		{
 			BitmapFont font = LabelWidget.BitmapFont;
 			Vector2 position = camera.ViewportSize / 2f;
-			position.X += 0.07f * camera.ViewportSize.X * (float)MathUtils.Sin(1.7300000190734863 * Time.FrameStartTime);
-			position.Y += 0.07f * camera.ViewportSize.Y * (float)MathUtils.Cos(1.1200000047683716 * Time.FrameStartTime);
+			position.X += 0.07f * camera.ViewportSize.X * (float)Math.Sin(1.7300000190734863 * Time.FrameStartTime);
+			position.Y += 0.07f * camera.ViewportSize.Y * (float)Math.Cos(1.1200000047683716 * Time.FrameStartTime);
 			FontBatch2D fontBatch2D = m_primitivesRenderer2D.FontBatch(font, 1, DepthStencilState.None, null, BlendState.AlphaBlend);
 			int count = fontBatch2D.TriangleVertices.Count;
 			fontBatch2D.QueueText(message, position, 0f, Color.White * factor, TextAnchor.HorizontalCenter | TextAnchor.VerticalCenter, Vector2.One * camera.GameWidget.GlobalScale, Vector2.Zero);

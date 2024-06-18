@@ -1110,7 +1110,7 @@ namespace Game
 			for (int i = 0; i < 10; i++)
 			{
 				int x = Terrain.ToCell(camera.ViewPosition.X) + (m_random.Sign() * m_random.Int(20, 40));
-				int y = MathUtils.Clamp(Terrain.ToCell(camera.ViewPosition.Y) + m_random.Int(-30, 30), 2, 254);
+				int y = Math.Clamp(Terrain.ToCell(camera.ViewPosition.Y) + m_random.Int(-30, 30), 2, 254);
 				int z = Terrain.ToCell(camera.ViewPosition.Z) + (m_random.Sign() * m_random.Int(20, 40));
 				Point3? result = ProcessSpawnPoint(new Point3(x, y, z), spawnLocationType);
 				if (result.HasValue)
@@ -1124,7 +1124,7 @@ namespace Game
 		public virtual Point3? ProcessSpawnPoint(Point3 spawnPoint, SpawnLocationType spawnLocationType)
 		{
 			int x = spawnPoint.X;
-			int num = MathUtils.Clamp(spawnPoint.Y, 1, 254);
+			int num = Math.Clamp(spawnPoint.Y, 1, 254);
 			int z = spawnPoint.Z;
 			TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(x, z);
 			if (chunkAtCell != null && chunkAtCell.State > TerrainChunkState.InvalidPropagatedLight)

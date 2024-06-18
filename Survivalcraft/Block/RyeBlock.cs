@@ -132,7 +132,7 @@ namespace Game
 
 		public static int SetSize(int data, int size)
 		{
-			size = MathUtils.Clamp(size, 0, 7);
+			size = Math.Clamp(size, 0, 7);
 			return (data & -8) | (size & 7);
 		}
 

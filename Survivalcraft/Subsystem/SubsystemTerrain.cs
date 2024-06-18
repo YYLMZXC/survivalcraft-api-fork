@@ -159,13 +159,13 @@ namespace Game
 			int num8 = (x < x2) ? 1 : ((x > x2) ? (-1) : 0);
 			int num9 = (y < y2) ? 1 : ((y > y2) ? (-1) : 0);
 			int num10 = (z < z2) ? 1 : ((z > z2) ? (-1) : 0);
-			float num11 = MathUtils.Floor(x);
+			float num11 = MathF.Floor(x);
 			float num12 = num11 + 1f;
 			float num13 = ((x > x2) ? (x - num11) : (num12 - x)) / Math.Abs(x2 - x);
-			float num14 = MathUtils.Floor(y);
+			float num14 = MathF.Floor(y);
 			float num15 = num14 + 1f;
 			float num16 = ((y > y2) ? (y - num14) : (num15 - y)) / Math.Abs(y2 - y);
-			float num17 = MathUtils.Floor(z);
+			float num17 = MathF.Floor(z);
 			float num18 = num17 + 1f;
 			float num19 = ((z > z2) ? (z - num17) : (num18 - z)) / Math.Abs(z2 - z);
 			float num20 = 1f / Math.Abs(x2 - x);
@@ -194,37 +194,37 @@ namespace Game
 					int face = 0;
 					Vector3 vector = start - new Vector3(num2, num3, num4) + (num23.Value * ray.Direction);
 					float num26 = float.MaxValue;
-					float num27 = MathUtils.Abs(vector.X - boundingBox.Min.X);
+					float num27 = MathF.Abs(vector.X - boundingBox.Min.X);
 					if (num27 < num26)
 					{
 						num26 = num27;
 						face = 3;
 					}
-					num27 = MathUtils.Abs(vector.X - boundingBox.Max.X);
+					num27 = MathF.Abs(vector.X - boundingBox.Max.X);
 					if (num27 < num26)
 					{
 						num26 = num27;
 						face = 1;
 					}
-					num27 = MathUtils.Abs(vector.Y - boundingBox.Min.Y);
+					num27 = MathF.Abs(vector.Y - boundingBox.Min.Y);
 					if (num27 < num26)
 					{
 						num26 = num27;
 						face = 5;
 					}
-					num27 = MathUtils.Abs(vector.Y - boundingBox.Max.Y);
+					num27 = MathF.Abs(vector.Y - boundingBox.Max.Y);
 					if (num27 < num26)
 					{
 						num26 = num27;
 						face = 4;
 					}
-					num27 = MathUtils.Abs(vector.Z - boundingBox.Min.Z);
+					num27 = MathF.Abs(vector.Z - boundingBox.Min.Z);
 					if (num27 < num26)
 					{
 						num26 = num27;
 						face = 2;
 					}
-					num27 = MathUtils.Abs(vector.Z - boundingBox.Max.Z);
+					num27 = MathF.Abs(vector.Z - boundingBox.Max.Z);
 					if (num27 < num26)
 					{
 						num26 = num27;

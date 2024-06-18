@@ -26,7 +26,7 @@ namespace Game
 			for (int i = 0; i < 8; i++)
 			{
 				float num = MathUtils.Lerp(0.2f, 1f, i / 7f);
-				float num2 = MathUtils.Min(0.3f * num, 0.7f * (1f - num));
+				float num2 = MathF.Min(0.3f * num, 0.7f * (1f - num));
 				Color color;
 				if (m_isRotten)
 				{

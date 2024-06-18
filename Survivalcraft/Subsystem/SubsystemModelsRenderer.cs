@@ -242,11 +242,11 @@ namespace Game
 			foreach (ModelData modelsDatum in modelsData)
 			{
 				ComponentModel componentModel = modelsDatum.ComponentModel;
-				Vector3 v = componentModel.DiffuseColor.HasValue ? componentModel.DiffuseColor.Value : Vector3.One;
-				float num = componentModel.Opacity.HasValue ? componentModel.Opacity.Value : 1f;
+				Vector3 v = componentModel.DiffuseColor ?? Vector3.One;
+				float num = componentModel.Opacity ?? 1f;
 				modelShader.InstancesCount = componentModel.AbsoluteBoneTransformsForCamera.Length;
 				modelShader.MaterialColor = new Vector4(v * num, num);
-				modelShader.EmissionColor = componentModel.EmissionColor.HasValue ? componentModel.EmissionColor.Value : Vector4.Zero;
+				modelShader.EmissionColor = componentModel.EmissionColor ?? Vector4.Zero;
 				modelShader.AmbientLightColor = new Vector3(LightingManager.LightAmbient * modelsDatum.Light);
 				modelShader.DiffuseLightColor1 = new Vector3(modelsDatum.Light);
 				modelShader.DiffuseLightColor2 = new Vector3(modelsDatum.Light);
@@ -305,8 +305,8 @@ namespace Game
 			float s = MathUtils.Lerp(90f, 160f, f);
 			Vector3 vector = new()
 			{
-				X = 0f - MathUtils.Sin(x),
-				Y = 0f - MathUtils.Cos(x),
+				X = 0f - MathF.Sin(x),
+				Y = 0f - MathF.Cos(x),
 				Z = 0f
 			};
 			Vector3 unitZ = Vector3.UnitZ;
@@ -327,7 +327,7 @@ namespace Game
 			{
 				return;
 			}
-			float num2 = MathUtils.Sqrt(num);
+			float num2 = MathF.Sqrt(num);
 			float num3 = MathUtils.Saturate(4f * (1f - (num2 / 32f)));
 			float num4 = shadowDiameter / 2f;  //“ı”∞÷±æ∂/2
 			int num5 = Terrain.ToCell(shadowPosition.X - num4);

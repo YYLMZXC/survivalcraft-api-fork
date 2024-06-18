@@ -61,7 +61,7 @@ namespace Game
 		{
 			int num = Terrain.ExtractData(value);
 			num &= -65281;
-			num |= MathUtils.Clamp(damage, 0, 255) << 8;
+			num |= Math.Clamp(damage, 0, 255) << 8;
 			return Terrain.ReplaceData(value, num);
 		}
 

@@ -122,7 +122,7 @@ namespace Game
 					}
 					else
 					{
-						matrix.Translation = position + new Vector3(0f, 0.04f * MathUtils.Sin(3f * num4), 0f);
+						matrix.Translation = position + new Vector3(0f, 0.04f * MathF.Sin(3f * num4), 0f);
 						block.DrawBlock(m_primitivesRenderer, pickable.Value, Color.White, 0.3f, ref matrix, m_drawBlockEnvironmentData);
 					}
 				}
@@ -133,8 +133,8 @@ namespace Game
 		public void Update(float dt)
 		{
 			double totalElapsedGameTime = m_subsystemGameInfo.TotalElapsedGameTime;
-			float num = MathUtils.Pow(0.5f, dt);
-			float num2 = MathUtils.Pow(0.001f, dt);
+			float num = MathF.Pow(0.5f, dt);
+			float num2 = MathF.Pow(0.001f, dt);
 			m_tmpPlayers.Clear();
 			foreach (ComponentPlayer componentPlayer in m_subsystemPlayers.ComponentPlayers)
 			{
@@ -198,7 +198,7 @@ namespace Game
 											}
 											else if (!pickable.StuckMatrix.HasValue)
 											{
-												pickable.FlyToPosition = v + (0.1f * MathUtils.Sqrt(num6) * componentBody.Velocity);
+												pickable.FlyToPosition = v + (0.1f * MathF.Sqrt(num6) * componentBody.Velocity);
 											}
 										}
 									}
@@ -210,7 +210,7 @@ namespace Game
 								float num7 = v2.LengthSquared();
 								if (num7 >= 0.25f)
 								{
-									pickable.Velocity = 6f * v2 / MathUtils.Sqrt(num7);
+									pickable.Velocity = 6f * v2 / MathF.Sqrt(num7);
 								}
 								else
 								{
@@ -276,12 +276,12 @@ namespace Game
 											bool flag2 = vector2.HasValue && vector2.Value != Vector2.Zero;
 											if (plane.Normal.X != 0f)
 											{
-												float num16 = (flag2 || MathUtils.Sqrt(MathUtils.Sqr(pickable.Velocity.Y) + MathUtils.Sqr(pickable.Velocity.Z)) > 10f) ? 0.95f : 0.25f;
+												float num16 = (flag2 || MathF.Sqrt(MathUtils.Sqr(pickable.Velocity.Y) + MathUtils.Sqr(pickable.Velocity.Z)) > 10f) ? 0.95f : 0.25f;
 												pickable.Velocity *= new Vector3(0f - num16, num16, num16);
 											}
 											if (plane.Normal.Y != 0f)
 											{
-												float num17 = (flag2 || MathUtils.Sqrt(MathUtils.Sqr(pickable.Velocity.X) + MathUtils.Sqr(pickable.Velocity.Z)) > 10f) ? 0.95f : 0.25f;
+												float num17 = (flag2 || MathF.Sqrt(MathUtils.Sqr(pickable.Velocity.X) + MathUtils.Sqr(pickable.Velocity.Z)) > 10f) ? 0.95f : 0.25f;
 												pickable.Velocity *= new Vector3(num17, 0f - num17, num17);
 												if (flag2)
 												{
@@ -290,7 +290,7 @@ namespace Game
 											}
 											if (plane.Normal.Z != 0f)
 											{
-												float num18 = (flag2 || MathUtils.Sqrt(MathUtils.Sqr(pickable.Velocity.X) + MathUtils.Sqr(pickable.Velocity.Y)) > 10f) ? 0.95f : 0.25f;
+												float num18 = (flag2 || MathF.Sqrt(MathUtils.Sqr(pickable.Velocity.X) + MathUtils.Sqr(pickable.Velocity.Y)) > 10f) ? 0.95f : 0.25f;
 												pickable.Velocity *= new Vector3(num18, num18, 0f - num18);
 											}
 											vector = position;

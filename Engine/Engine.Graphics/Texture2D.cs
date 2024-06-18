@@ -93,8 +93,8 @@ namespace Engine.Graphics
 			var gCHandle = GCHandle.Alloc(source, GCHandleType.Pinned);
 			try
 			{
-				int width = MathUtils.Max(Width >> mipLevel, 1);
-				int height = MathUtils.Max(Height >> mipLevel, 1);
+				int width = Math.Max(Width >> mipLevel, 1);
+				int height = Math.Max(Height >> mipLevel, 1);
 				IntPtr pixels = gCHandle.AddrOfPinnedObject() + (sourceStartIndex * Utilities.SizeOf<T>());
 				GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
 #if ANDROID
@@ -156,8 +156,8 @@ namespace Engine.Graphics
 			GLWrapper.BindTexture(TextureTarget.Texture2D, m_texture, forceBind: false);
 			for (int i = 0; i < MipLevelsCount; i++)
 			{
-				int width = MathUtils.Max(Width >> i, 1);
-				int height = MathUtils.Max(Height >> i, 1);
+				int width = Math.Max(Width >> i, 1);
+				int height = Math.Max(Height >> i, 1);
 #if ANDROID
 				GL.TexImage2D(TextureTarget.Texture2D, i, (PixelInternalFormat)m_pixelFormat, width, height, 0, m_pixelFormat, m_pixelType, IntPtr.Zero);
 #else
@@ -180,8 +180,8 @@ namespace Engine.Graphics
 			int num = 0;
 			for (int i = 0; i < MipLevelsCount; i++)
 			{
-				int num2 = MathUtils.Max(Width >> i, 1);
-				int num3 = MathUtils.Max(Height >> i, 1);
+				int num2 = Math.Max(Width >> i, 1);
+				int num3 = Math.Max(Height >> i, 1);
 				num += ColorFormat.GetSize() * num2 * num3;
 			}
 			return num;
@@ -263,11 +263,11 @@ namespace Engine.Graphics
 			if (mipLevelsCount > 1)
 			{
 				int num = 0;
-				for (int num2 = MathUtils.Max(width, height); num2 >= 1; num2 /= 2)
+				for (int num2 = Math.Max(width, height); num2 >= 1; num2 /= 2)
 				{
 					num++;
 				}
-				MipLevelsCount = MathUtils.Min(num, mipLevelsCount);
+				MipLevelsCount = Math.Min(num, mipLevelsCount);
 			}
 			else
 			{
@@ -280,8 +280,8 @@ namespace Engine.Graphics
 			VerifyNotDisposed();
 			int num = Utilities.SizeOf<T>();
 			int size = ColorFormat.GetSize();
-			int num2 = MathUtils.Max(Width >> mipLevel, 1);
-			int num3 = MathUtils.Max(Height >> mipLevel, 1);
+			int num2 = Math.Max(Width >> mipLevel, 1);
+			int num3 = Math	.Max(Height >> mipLevel, 1);
 			int num4 = size * num2 * num3;
 			ArgumentNullException.ThrowIfNull(source);
 						if (mipLevel < 0 || mipLevel >= MipLevelsCount)

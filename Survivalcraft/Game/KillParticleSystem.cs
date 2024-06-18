@@ -18,16 +18,7 @@ namespace Game
 			: base(20)
 		{
 			Texture = ContentManager.Get<Texture2D>("Textures/KillParticle");
-			int num = Terrain.ToCell(position.X);
-			int num2 = Terrain.ToCell(position.Y);
-			int num3 = Terrain.ToCell(position.Z);
-			int x = 0;
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num + 1, num2, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num - 1, num2, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2 + 1, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2 - 1, num3));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 + 1));
-			x = MathUtils.Max(x, terrain.Terrain.GetCellLight(num, num2, num3 - 1));
+			int x = Managers.illuminationManager.六面光照最大值(terrain,position);
 			TextureSlotsCount = 2;
 			Color white = Color.White;
 			float num4 = LightingManager.LightIntensityByLightValue[x];
@@ -49,8 +40,8 @@ namespace Game
 
 		public override bool Simulate(float dt)
 		{
-			dt = MathUtils.Clamp(dt, 0f, 0.1f);
-			float num = MathUtils.Pow(0.1f, dt);
+			dt = Math.Clamp(dt, 0f, 0.1f);
+			float num = MathF.Pow(0.1f, dt);
 			bool flag = false;
 			for (int i = 0; i < Particles.Length; i++)
 			{

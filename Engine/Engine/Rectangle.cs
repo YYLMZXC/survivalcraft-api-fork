@@ -84,28 +84,28 @@ namespace Engine
 
         public bool Intersection(Rectangle r)
 		{
-			int num = MathUtils.Max(Left, r.Left);
-			int num2 = MathUtils.Max(Top, r.Top);
-			int num3 = MathUtils.Min(Left + Width, r.Left + r.Width);
-			int num4 = MathUtils.Min(Top + Height, r.Top + r.Height);
+			int num = Math.Max(Left, r.Left);
+			int num2 = Math.Max(Top, r.Top);
+			int num3 = Math.Min(Left + Width, r.Left + r.Width);
+			int num4 = Math.Min(Top + Height, r.Top + r.Height);
             return num3 > num && num4 > num2;
         }
 
         public static Rectangle Intersection(Rectangle r1, Rectangle r2)
 		{
-			int num = MathUtils.Max(r1.Left, r2.Left);
-			int num2 = MathUtils.Max(r1.Top, r2.Top);
-			int num3 = MathUtils.Min(r1.Left + r1.Width, r2.Left + r2.Width);
-			int num4 = MathUtils.Min(r1.Top + r1.Height, r2.Top + r2.Height);
+			int num = Math.Max(r1.Left, r2.Left);
+			int num2 = Math.Max(r1.Top, r2.Top);
+			int num3 = Math.Min(r1.Left + r1.Width, r2.Left + r2.Width);
+			int num4 = Math.Min(r1.Top + r1.Height, r2.Top + r2.Height);
             return num3 <= num || num4 <= num2 ? Empty : new Rectangle(num, num2, num3 - num, num4 - num2);
         }
 
         public static Rectangle Union(Rectangle r1, Rectangle r2)
 		{
-			int num = MathUtils.Min(r1.Left, r2.Left);
-			int num2 = MathUtils.Min(r1.Top, r2.Top);
-			int num3 = MathUtils.Max(r1.Left + r1.Width, r2.Left + r2.Width);
-			int num4 = MathUtils.Max(r1.Top + r1.Height, r2.Top + r2.Height);
+			int num = Math.Min(r1.Left, r2.Left);
+			int num2 = Math.Min(r1.Top, r2.Top);
+			int num3 = Math.Max(r1.Left + r1.Width, r2.Left + r2.Width);
+			int num4 = Math.Max(r1.Top + r1.Height, r2.Top + r2.Height);
 			return new Rectangle(num, num2, num3 - num, num4 - num2);
 		}
 

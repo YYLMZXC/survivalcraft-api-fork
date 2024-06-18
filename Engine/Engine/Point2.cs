@@ -55,22 +55,22 @@ namespace Engine
 
 		public static Point2 Min(Point2 p, int v)
 		{
-			return new Point2(MathUtils.Min(p.X, v), MathUtils.Min(p.Y, v));
+			return new Point2(Math.Min(p.X, v), Math.Min(p.Y, v));
 		}
 
 		public static Point2 Min(Point2 p1, Point2 p2)
 		{
-			return new Point2(MathUtils.Min(p1.X, p2.X), MathUtils.Min(p1.Y, p2.Y));
+			return new Point2(Math.Min(p1.X, p2.X), Math.Min(p1.Y, p2.Y));
 		}
 
 		public static Point2 Max(Point2 p, int v)
 		{
-			return new Point2(MathUtils.Max(p.X, v), MathUtils.Max(p.Y, v));
+			return new Point2(Math.Max(p.X, v), Math.Max(p.Y, v));
 		}
 
 		public static Point2 Max(Point2 p1, Point2 p2)
 		{
-			return new Point2(MathUtils.Max(p1.X, p2.X), MathUtils.Max(p1.Y, p2.Y));
+			return new Point2(Math.Max(p1.X, p2.X), Math.Max(p1.Y, p2.Y));
 		}
 
 		public static bool operator ==(Point2 p1, Point2 p2)

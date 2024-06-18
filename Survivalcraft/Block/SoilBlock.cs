@@ -50,7 +50,7 @@ namespace Game
 
 		public static int SetNitrogen(int data, int nitrogen)
 		{
-			nitrogen = MathUtils.Clamp(nitrogen, 0, 3);
+			nitrogen = Math.Clamp(nitrogen, 0, 3);
 			return (data & -7) | ((nitrogen & 3) << 1);
 		}
 

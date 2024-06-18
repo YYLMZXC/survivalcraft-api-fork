@@ -192,7 +192,7 @@ namespace Game
 
 		public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)
 		{
-			valuesDictionary.SetValue("SleepStartTime", m_sleepStartTime.HasValue ? m_sleepStartTime.Value : 0.0);
+			valuesDictionary.SetValue("SleepStartTime", m_sleepStartTime ?? 0.0);
 			valuesDictionary.SetValue("AllowManualWakeUp", m_allowManualWakeUp);
 		}
 	}

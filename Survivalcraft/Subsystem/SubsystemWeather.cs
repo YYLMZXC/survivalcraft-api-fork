@@ -150,7 +150,7 @@ namespace Game
 
 		public static int GetTemperatureAdjustmentAtHeight(int y)
 		{
-			return (int)MathUtils.Round((y > 64) ? (-0.0008f * MathUtils.Sqr(y - 64)) : (0.1f * (64 - y)));
+			return (int)MathF.Round((y > 64) ? (-0.0008f * MathUtils.Sqr(y - 64)) : (0.1f * (64 - y)));
 		}
 
 		public static bool IsPlaceFrozen(int temperature, int y)
@@ -241,7 +241,7 @@ namespace Game
 				}
 				m_precipitationEndTime = m_precipitationStartTime + (60f * m_random.Float(3f, 6f));
 			}
-			float num = (float)MathUtils.Max(0.0, MathUtils.Min(m_subsystemGameInfo.TotalElapsedGameTime - m_precipitationStartTime, m_precipitationEndTime - m_subsystemGameInfo.TotalElapsedGameTime));
+			float num = (float)Math.Max(0.0, Math.Min(m_subsystemGameInfo.TotalElapsedGameTime - m_precipitationStartTime, m_precipitationEndTime - m_subsystemGameInfo.TotalElapsedGameTime));
 			GlobalPrecipitationIntensity = m_subsystemGameInfo.WorldSettings.AreWeatherEffectsEnabled ? MathUtils.Saturate(num * 0.04f) : 0f;
 			if (GlobalPrecipitationIntensity == 1f && SubsystemTime.PeriodicGameTimeEvent(1.0, 0.0))
 			{
@@ -300,7 +300,7 @@ namespace Game
 									float num10 = vector2.X - listenerPosition.X;
 									float num11 = 8f * (vector2.Y - listenerPosition.Y);
 									float num12 = vector2.Z - listenerPosition.Z;
-									float distance = MathUtils.Sqrt((num10 * num10) + (num11 * num11) + (num12 * num12));
+									float distance = MathF.Sqrt((num10 * num10) + (num11 * num11) + (num12 * num12));
 									num5 += m_subsystemAudio.CalculateVolume(distance, 1.5f) * precipitationShaftInfo.Intensity;
 								}
 							}
@@ -345,7 +345,7 @@ namespace Game
 			{
 				for (int j = -5; j <= 5; j++)
 				{
-					float distance = MathUtils.Sqrt((i * i) + (j * j));
+					float distance = MathF.Sqrt((i * i) + (j * j));
 					m_rainVolumeFactor += m_subsystemAudio.CalculateVolume(distance, 1.5f);
 				}
 			}

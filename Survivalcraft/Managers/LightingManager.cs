@@ -31,18 +31,18 @@ namespace Game
 
 		public static float CalculateLighting(Vector3 normal)
 		{
-			return LightAmbient + MathUtils.Max(Vector3.Dot(normal, DirectionToLight1), 0f) + MathUtils.Max(Vector3.Dot(normal, DirectionToLight2), 0f);
+			return LightAmbient + Math.Max(Vector3.Dot(normal, DirectionToLight1), 0f) + Math.Max(Vector3.Dot(normal, DirectionToLight2), 0f);
 		}
 
 		public static float? CalculateSmoothLight(SubsystemTerrain subsystemTerrain, Vector3 p)
 		{
 			p -= new Vector3(0.5f);
-			int num = (int)MathUtils.Floor(p.X);
-			int num2 = (int)MathUtils.Floor(p.Y);
-			int num3 = (int)MathUtils.Floor(p.Z);
-			int x = (int)MathUtils.Ceiling(p.X);
-			int num4 = (int)MathUtils.Ceiling(p.Y);
-			int z = (int)MathUtils.Ceiling(p.Z);
+			int num = (int)Math.Floor(p.X);
+			int num2 = (int)Math.Floor(p.Y);
+			int num3 = (int)Math.Floor(p.Z);
+			int x = (int)Math.Ceiling(p.X);
+			int num4 = (int)Math.Ceiling(p.Y);
+			int z = (int)Math.Ceiling(p.Z);
 			Terrain terrain = subsystemTerrain.Terrain;
 			if (num2 >= 0 && num4 <= 255)
 			{
@@ -70,8 +70,8 @@ namespace Game
 					float x14 = MathUtils.Lerp(x10, x12, f2);
 					float x15 = MathUtils.Lerp(x11, x13, f2);
 					float num5 = MathUtils.Lerp(x14, x15, f3);
-					int num6 = (int)MathUtils.Floor(num5);
-					int num7 = (int)MathUtils.Ceiling(num5);
+					int num6 = (int)Math.Floor(num5);
+					int num7 = (int)Math.Ceiling(num5);
 					float f4 = num5 - num6;
 					ModsManager.HookAction("CalculateSmoothLight", l => { l.CalculateSmoothLight(subsystemTerrain, p, ref f4); return false; });
 					return MathUtils.Lerp(LightIntensityByLightValue[num6], LightIntensityByLightValue[num7], f4);
@@ -91,7 +91,7 @@ namespace Game
 			float x = MathUtils.Lerp(0f, 0.1f, brightness);
 			for (int i = 0; i < 16; i++)
 			{
-				LightIntensityByLightValue[i] = MathUtils.Saturate(MathUtils.Lerp(x, 1f, MathUtils.Pow(i / 15f, 1.25f)));
+				LightIntensityByLightValue[i] = MathUtils.Saturate(MathUtils.Lerp(x, 1f, MathF.Pow(i / 15f, 1.25f)));
 			}
 			for (int j = 0; j < 6; j++)
 			{

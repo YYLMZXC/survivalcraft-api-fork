@@ -98,7 +98,7 @@ namespace Game
 				float height4 = CalculateFluidVertexHeight(num2, levelHeight, h3, num4);
 				float x2 = ZeroSubst(num3, levelHeight) - ZeroSubst(num2, levelHeight);
 				float x3 = ZeroSubst(num4, levelHeight) - ZeroSubst(num, levelHeight);
-				int overrideTopTextureSlot = DefaultTextureSlot - (int)MathUtils.Sign(x2) - (16 * (int)MathUtils.Sign(x3));
+				int overrideTopTextureSlot = DefaultTextureSlot - MathF.Sign(x2) - (16 * Math.Sign(x3));
 				generator.GenerateCubeVertices(this, value, x, y, z, height, height2, height3, height4, sideColor, topColor, topColor, topColor, topColor, overrideTopTextureSlot, subset);
 			}
 			else

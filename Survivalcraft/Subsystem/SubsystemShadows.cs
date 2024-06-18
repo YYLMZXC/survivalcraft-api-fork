@@ -31,7 +31,7 @@ namespace Game
 			{
 				return;
 			}
-			float num2 = MathUtils.Sqrt(num);
+			float num2 = MathF.Sqrt(num);
 			float num3 = MathUtils.Saturate(4f * (1f - (num2 / 32f)));
 			float num4 = shadowDiameter / 2f;
 			int num5 = Terrain.ToCell(shadowPosition.X - num4);

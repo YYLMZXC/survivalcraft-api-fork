@@ -88,9 +88,9 @@ namespace Game
 		{
 			int data = Terrain.ExtractData(value);
 			Vector3 forward = Matrix.CreateFromQuaternion(componentMiner.ComponentCreature.ComponentCreatureModel.EyeRotation).Forward;
-			float num = MathUtils.Abs(Vector3.Dot(forward, Vector3.UnitX));
+			float num = MathF.Abs(Vector3.Dot(forward, Vector3.UnitX));
 			BlockPlacementData result;
-			if (MathUtils.Abs(Vector3.Dot(forward, Vector3.UnitZ)) > num)
+			if (MathF.Abs(Vector3.Dot(forward, Vector3.UnitZ)) > num)
 			{
 				result = default;
 				result.Value = Terrain.MakeBlockValue(189, 0, SetRotation(data, 0));

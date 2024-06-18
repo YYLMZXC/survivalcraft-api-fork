@@ -45,7 +45,7 @@ namespace Game
 			}
 			set
 			{
-				m_gameTimeFactor = MathUtils.Clamp(value, 0f, 256f);
+				m_gameTimeFactor = Math.Clamp(value, 0f, 256f);
 			}
 		}
 
@@ -130,7 +130,7 @@ namespace Game
 		public bool PeriodicGameTimeEvent(double period, double offset)
 		{
 			double num = GameTime - offset;
-			double num2 = MathUtils.Floor(num / period) * period;
+			double num2 = Math.Floor(num / period) * period;
 			if (num >= num2)
 			{
 				return num - GameTimeDelta < num2;

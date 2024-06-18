@@ -50,7 +50,7 @@ namespace Game
 
 		public override void OnCollide(CellFace cellFace, float velocity, ComponentBody componentBody)
 		{
-			componentBody.Entity.FindComponent<ComponentCreature>()?.ComponentHealth.Injure(0.01f * MathUtils.Abs(velocity), null, ignoreInvulnerability: false, "Spiked by cactus");
+			componentBody.Entity.FindComponent<ComponentCreature>()?.ComponentHealth.Injure(0.01f * MathF.Abs(velocity), null, ignoreInvulnerability: false, "Spiked by cactus");
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary)

@@ -85,7 +85,7 @@ namespace Game
 					}
 					m_sortedUpdateables.Sort(Comparer.Instance);
 				}
-				float dt = MathUtils.Clamp(m_subsystemTime.GameTimeDelta, 0f, 0.1f);
+				float dt = Math.Clamp(m_subsystemTime.GameTimeDelta, 0f, 0.1f);
 				foreach (IUpdateable sortedUpdateable in m_sortedUpdateables)
 				{
 					try
@@ -135,5 +135,9 @@ namespace Game
 				RemoveUpdateable(item);
 			}
 		}
+
+	}
+	public class SubsystemPostprocessor : Subsystem
+	{
 	}
 }

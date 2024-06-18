@@ -142,7 +142,7 @@ namespace Game
 			}
 			num -= 0.25f * num2;
 			float num3 = Vector2.Distance(playerPosition, new Vector2(x, z));
-			num -= MathUtils.Abs(num3 - 20f);
+			num -= MathF.Abs(num3 - 20f);
 			int num4 = 0;
 			TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(x, z);
 			if (chunkAtCell != null && chunkAtCell.State >= TerrainChunkState.InvalidLight)

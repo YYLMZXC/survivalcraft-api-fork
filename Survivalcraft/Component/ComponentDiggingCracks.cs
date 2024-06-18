@@ -67,7 +67,7 @@ namespace Game
 				TerrainRenderer.CompileDrawSubsets(DrawItem, Buffers, block.SetDiggingCrackingTextureTransform);
 			}
 			Vector3 viewPosition = camera.ViewPosition;
-			Vector3 v = new(MathUtils.Floor(viewPosition.X), 0f, MathUtils.Floor(viewPosition.Z));
+			Vector3 v = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			float x = m_subsystemSky.ViewFogRange.X;
 			float y = m_subsystemSky.ViewFogRange.Y;

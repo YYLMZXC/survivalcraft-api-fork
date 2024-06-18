@@ -361,9 +361,9 @@ namespace Game
 						if (i != 0 || j != 0 || k != 0)
 						{
 							float num = (j < 0) ? 1.5f : 2.5f;
-							if (MathUtils.Sqrt((i * i) + (j * j) + (k * k)) <= num)
+							if (MathF.Sqrt((i * i) + (j * j) + (k * k)) <= num)
 							{
-								float num2 = MathUtils.Sqrt((i * i) + (k * k));
+								float num2 = MathF.Sqrt((i * i) + (k * k));
 								float num3 = (j > 0) ? (0.5f * j) : -j;
 								m_expansionProbabilities[new Point3(i, j, k)] = 0.02f / (num2 + num3);
 							}
