@@ -266,7 +266,7 @@
 							</ParameterSet>
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Health" Guid="52f3fc29-0b2c-4ea8-a9a4-180d1baf83ee">
-							<Parameter Name="AttackResilience" Guid="222b0c92-b59e-4fd7-a774-29df81e827d1" Value="25" Type="float" />
+							<Parameter Name="AttackResilience" Guid="222b0c92-b59e-4fd7-a774-29df81e827d1" Value="20" Type="float" />
 							<Parameter Name="FireResilience" Guid="d6b385a9-9543-410a-95bb-2da1bceebf5a" Value="15" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Body" Guid="642267f3-3576-4687-9f07-0ecc8b96a15e">
@@ -1014,7 +1014,7 @@
 					<EntityTemplate Name="Leopard" Guid="368d6525-a6df-4232-9c78-6737aa52dcab" InheritanceParent="e4275171-a39f-413f-8888-4c472868364d">
 						<MemberComponentTemplate Name="Health" Guid="14dd26b9-d9f9-40ec-9e2b-2c8a738ec3e5">
 							<Parameter Name="FireResilience" Guid="1118f19b-2b8b-405a-bcb1-1a798ea6c54c" Value="15" Type="float" />
-							<Parameter Name="AttackResilience" Guid="7fb8a106-59b7-4630-b616-ab9f921bf451" Value="30" Type="float" />
+							<Parameter Name="AttackResilience" Guid="7fb8a106-59b7-4630-b616-ab9f921bf451" Value="25" Type="float" />
 							<Parameter Name="FallResilience" Guid="a4b1f700-a7b7-49ec-864c-50338318b72d" Value="10" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="FindPlayerBehavior" Guid="18038f24-27a5-467e-8268-36cc83b092a6" InheritanceParent="44c9a961-258c-4eb3-81d1-d3ae249ae031" />
@@ -1821,7 +1821,7 @@
 							</ParameterSet>
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Health" Guid="7d3a3086-95c6-40e5-a3ca-2bb1a70a33f3">
-							<Parameter Name="AttackResilience" Guid="880fa353-3fae-4f3b-86fa-f48709fd25b3" Value="60" Type="float" />
+							<Parameter Name="AttackResilience" Guid="880fa353-3fae-4f3b-86fa-f48709fd25b3" Value="70" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Body" Guid="7decf2b6-e8d1-4144-8c81-f68881da9304">
 							<Parameter Name="Density" Guid="12e72219-6799-4dfd-ab74-e2695e1af87d" Value="0.9" Type="float" />
@@ -2324,7 +2324,7 @@
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="OnFire" Guid="186367a2-e357-444f-806c-82b20da7d1d9" />
 						<MemberComponentTemplate Name="Health" Guid="3f536006-c5d7-47e3-8eef-04fa02c6eba7">
-							<Parameter Name="AttackResilience" Guid="d876342a-0a60-4ef4-8430-b715cde41a12" Value="30" Type="float" />
+							<Parameter Name="AttackResilience" Guid="d876342a-0a60-4ef4-8430-b715cde41a12" Value="25" Type="float" />
 							<Parameter Name="FireResilience" Guid="f886a039-6ca0-43c7-9295-b79a2718323e" Value="15" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="RunAwayBehavior" Guid="47744a97-c8d7-4389-adfb-b59e14f87362" InheritanceParent="b138cc15-930c-4805-8cfc-b91bfa7f767a" />
@@ -2726,7 +2726,7 @@
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Health" Guid="d337003f-ae19-47b9-b031-5ba66c2bb0b7">
 							<Parameter Name="FireResilience" Guid="0b2f0fd2-b368-4065-a537-bbe141c51172" Value="15" Type="float" />
-							<Parameter Name="AttackResilience" Guid="9c518940-b941-4f5b-a284-6c53cd50cdfb" Value="30" Type="float" />
+							<Parameter Name="AttackResilience" Guid="9c518940-b941-4f5b-a284-6c53cd50cdfb" Value="15" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="OnFire" Guid="d73978b1-f856-41bc-82bd-8f32a8801ed7" />
 						<MemberComponentTemplate Name="WalkAroundBehavior" Guid="de183181-266a-4973-bee4-d7fbec697875" InheritanceParent="aebb86ce-4ee6-4ca0-850d-cd60051e1d71" />
@@ -2998,7 +2998,7 @@
 							<Parameter Name="AutoFeed" Guid="6771df10-3bd4-4b11-a971-acf9b89b7bef" Value="False" Type="bool" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Health" Guid="90aa6b27-c2e7-4eb7-ae4c-9ac662c4e476">
-							<Parameter Name="AttackResilience" Guid="2663b4fb-444f-4c4b-993c-ab7d30c8c76d" Value="35" Type="float" />
+							<Parameter Name="AttackResilience" Guid="2663b4fb-444f-4c4b-993c-ab7d30c8c76d" Value="30" Type="float" />
 							<Parameter Name="FireResilience" Guid="3f0d786a-f191-43b6-8395-7e81893c62d6" Value="15" Type="float" />
 							<Parameter Name="FallResilience" Guid="7a94cc30-186f-48c5-8a54-09c27c105754" Value="10" Type="float" />
 						</MemberComponentTemplate>
