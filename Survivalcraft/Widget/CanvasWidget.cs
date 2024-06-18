@@ -61,11 +61,11 @@ namespace Game
 				if (child.IsVisible)
 				{
 					Vector2? widgetPosition = GetWidgetPosition(child);
-					Vector2 v = widgetPosition.HasValue ? widgetPosition.Value : Vector2.Zero;
+					Vector2 v = widgetPosition ?? Vector2.Zero;
 					child.Measure(Vector2.Max(parentAvailableSize - v - (2f * child.Margin), Vector2.Zero));
 					Vector2 vector = default;
-					vector.X = MathUtils.Max(desiredSize.X, v.X + child.ParentDesiredSize.X + (2f * child.Margin.X));
-					vector.Y = MathUtils.Max(desiredSize.Y, v.Y + child.ParentDesiredSize.Y + (2f * child.Margin.Y));
+					vector.X = Math.Max(desiredSize.X, v.X + child.ParentDesiredSize.X + (2f * child.Margin.X));
+					vector.Y = Math.Max(desiredSize.Y, v.Y + child.ParentDesiredSize.Y + (2f * child.Margin.Y));
 					desiredSize = vector;
 				}
 			}
@@ -92,10 +92,10 @@ namespace Game
 						Vector2 zero = Vector2.Zero;
 						zero.X = !float.IsPositiveInfinity(child.ParentDesiredSize.X)
 							? child.ParentDesiredSize.X
-							: MathUtils.Max(ActualSize.X - widgetPosition.Value.X, 0f);
+							: Math.Max(ActualSize.X - widgetPosition.Value.X, 0f);
 						zero.Y = !float.IsPositiveInfinity(child.ParentDesiredSize.Y)
 							? child.ParentDesiredSize.Y
-							: MathUtils.Max(ActualSize.Y - widgetPosition.Value.Y, 0f);
+							: Math.Max(ActualSize.Y - widgetPosition.Value.Y, 0f);
 						child.Arrange(widgetPosition.Value, zero);
 					}
 					else

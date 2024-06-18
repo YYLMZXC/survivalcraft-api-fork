@@ -1,6 +1,6 @@
-using OpenTK.Input;
 using System;
 using System.Drawing;
+using OpenTK.Input;
 
 namespace Engine.Input
 {
@@ -167,12 +167,20 @@ namespace Engine.Input
 			if (!IsMouseVisible)//处于三维模式
 			{
 				MousePosition = null;
-				if (Engine.Window.IsActive)//by把红色赋予黑海 1003705691
-					Mouse.SetMousePosition(Window.Size.X / 2, Window.Size.Y / 2);//鼠标自动归位
-			}
-		}
+#if WINDOWS
+                if (Window.m_gameWindow.Focused)
+                {
+                    Window.m_gameWindow.CursorGrabbed = true;
+                }
+            }
+            else
+            {
+                Window.m_gameWindow.CursorGrabbed = false;
+#endif
+            }
+        }
 
-		public static void ProcessMouseDown(MouseButton mouseButton, Point2 position)
+        public static void ProcessMouseDown(MouseButton mouseButton, Point2 position)
 		{
 			if (Window.IsActive && !Keyboard.IsKeyboardVisible)
 			{

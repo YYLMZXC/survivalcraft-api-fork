@@ -35,7 +35,7 @@ namespace Game
 			}
 			set
 			{
-				m_rating = MathUtils.Clamp(value, 0f, 5f);
+				m_rating = Math.Clamp(value, 0f, 5f);
 			}
 		}
 
@@ -52,7 +52,7 @@ namespace Game
 			if (Input.Press.HasValue && HitTestGlobal(Input.Press.Value) == this)
 			{
 				Vector2 vector = ScreenToWidget(Input.Press.Value);
-				Rating = (int)MathUtils.Floor((5f * vector.X / ActualSize.X) + 1f);
+				Rating = (int)MathF.Floor((5f * vector.X / ActualSize.X) + 1f);
 			}
 		}
 

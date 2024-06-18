@@ -47,7 +47,7 @@ namespace Game
 
 		public float CalculateDistanceFromNearestView(Vector3 p)
 		{
-			return MathUtils.Sqrt(CalculateSquaredDistanceFromNearestView(p));
+			return MathF.Sqrt(CalculateSquaredDistanceFromNearestView(p));
 		}
 
 		public void Update(float dt)

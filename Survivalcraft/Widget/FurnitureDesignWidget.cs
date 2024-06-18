@@ -191,7 +191,7 @@ namespace Game
 			{
 				m_dragStartPoint = null;
 				Rotate(m_rotationSpeed * Time.FrameDuration);
-				m_rotationSpeed *= MathUtils.Pow(0.1f, Time.FrameDuration);
+				m_rotationSpeed *= MathF.Pow(0.1f, Time.FrameDuration);
 			}
 		}
 
@@ -206,10 +206,10 @@ namespace Game
 			float num = MathUtils.DegToRad(1f);
 			var axis = Vector3.Normalize(Vector3.Cross(m_direction, Vector3.UnitY));
 			m_direction = Vector3.TransformNormal(m_direction, Matrix.CreateRotationY(angles.Y));
-			float num2 = MathUtils.Acos(Vector3.Dot(m_direction, Vector3.UnitY));
-			float num3 = MathUtils.Acos(Vector3.Dot(m_direction, -Vector3.UnitY));
-			angles.X = MathUtils.Min(angles.X, num2 - num);
-			angles.X = MathUtils.Max(angles.X, 0f - (num3 - num));
+			float num2 = MathF.Acos(Vector3.Dot(m_direction, Vector3.UnitY));
+			float num3 = MathF.Acos(Vector3.Dot(m_direction, -Vector3.UnitY));
+			angles.X = MathF.Min(angles.X, num2 - num);
+			angles.X = MathF.Max(angles.X, 0f - (num3 - num));
 			m_direction = Vector3.TransformNormal(m_direction, Matrix.CreateFromAxisAngle(axis, angles.X));
 			m_direction = Vector3.Normalize(m_direction);
 		}

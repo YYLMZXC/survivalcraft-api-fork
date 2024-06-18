@@ -1,5 +1,4 @@
-using OpenTK.Input;
-using System;
+﻿using OpenTK.Input;
 #if ANDROID
 
 using Android.Views;
@@ -25,8 +24,8 @@ namespace Engine.Input
             public double[] ButtonsRepeat = new double[14];
         }
 #if ANDROID
-        public static Dictionary<int, int> m_deviceToIndex = [];
-        public static List<int> m_toRemove = [];
+		public static Dictionary<int, int> m_deviceToIndex = [];
+		public static List<int> m_toRemove = [];
 #endif
         public static double m_buttonFirstRepeatTime = 0.2;
 
@@ -48,211 +47,198 @@ namespace Engine.Input
         internal static void BeforeFrame()
         {
 #if ANDROID
-            if (Time.PeriodicEvent(2.0, 0.0))
-            {
-                m_toRemove.Clear();
-                foreach (int key in m_deviceToIndex.Keys)
-                {
-                    if (InputDevice.GetDevice(key) == null)
-                    {
-                        m_toRemove.Add(key);
-                    }
-                }
-                foreach (int item in m_toRemove)
-                {
-                    Disconnect(item);
-                }
-            }
-        }
+			if (Time.PeriodicEvent(2.0, 0.0))
+			{
+				m_toRemove.Clear();
+				foreach (int key in m_deviceToIndex.Keys)
+				{
+					if (InputDevice.GetDevice(key) == null)
+					{
+						m_toRemove.Add(key);
+					}
+				}
+				foreach (int item in m_toRemove)
+				{
+					Disconnect(item);
+				}
+			}
+		}
 
-        internal static void HandleKeyDown(int deviceId, Keycode keyCode)
-        {
-            int num = TranslateDeviceId(deviceId);
-            if (num < 0)
-            {
-                return;
-            }
-            GamePadButton gamePadButton = TranslateKey(keyCode);
-            if (gamePadButton >= GamePadButton.A)
-            {
-                m_states[num].Buttons[(int)gamePadButton] = true;
-                return;
-            }
-            switch (keyCode)
-            {
-                case Keycode.ButtonL2:
-                    m_states[num].Triggers[0] = 1f;
-                    break;
-                case Keycode.ButtonR2:
-                    m_states[num].Triggers[1] = 1f;
-                    break;
-            }
-        }
+		internal static void HandleKeyDown(int deviceId, Keycode keyCode)
+		{
+			int num = TranslateDeviceId(deviceId);
+			if (num < 0)
+			{
+				return;
+			}
+			GamePadButton gamePadButton = TranslateKey(keyCode);
+			if (gamePadButton >= GamePadButton.A)
+			{
+				m_states[num].Buttons[(int)gamePadButton] = true;
+				return;
+			}
+			switch (keyCode)
+			{
+				case Keycode.ButtonL2:
+					m_states[num].Triggers[0] = 1f;
+					break;
+				case Keycode.ButtonR2:
+					m_states[num].Triggers[1] = 1f;
+					break;
+			}
+		}
 
-        internal static void HandleKeyUp(int deviceId, Keycode keyCode)
-        {
-            int num = TranslateDeviceId(deviceId);
-            if (num < 0)
-            {
-                return;
-            }
-            GamePadButton gamePadButton = TranslateKey(keyCode);
-            if (gamePadButton >= GamePadButton.A)
-            {
-                m_states[num].Buttons[(int)gamePadButton] = false;
-                return;
-            }
-            switch (keyCode)
-            {
-                case Keycode.ButtonL2:
-                    m_states[num].Triggers[0] = 0f;
-                    break;
-                case Keycode.ButtonR2:
-                    m_states[num].Triggers[1] = 0f;
-                    break;
-            }
-        }
+		internal static void HandleKeyUp(int deviceId, Keycode keyCode)
+		{
+			int num = TranslateDeviceId(deviceId);
+			if (num < 0)
+			{
+				return;
+			}
+			GamePadButton gamePadButton = TranslateKey(keyCode);
+			if (gamePadButton >= GamePadButton.A)
+			{
+				m_states[num].Buttons[(int)gamePadButton] = false;
+				return;
+			}
+			switch (keyCode)
+			{
+				case Keycode.ButtonL2:
+					m_states[num].Triggers[0] = 0f;
+					break;
+				case Keycode.ButtonR2:
+					m_states[num].Triggers[1] = 0f;
+					break;
+			}
+		}
 
-        internal static void HandleMotionEvent(MotionEvent e)
-        {
-            int num = TranslateDeviceId(e.DeviceId);
-            if (num >= 0)
-            {
-                m_states[num].Sticks[0] = new Vector2(e.GetAxisValue(Axis.X), 0f - e.GetAxisValue(Axis.Y));
-                m_states[num].Sticks[1] = new Vector2(e.GetAxisValue(Axis.Z), 0f - e.GetAxisValue(Axis.Rz));
-                m_states[num].Triggers[0] = MathUtils.Max(e.GetAxisValue(Axis.Ltrigger), e.GetAxisValue(Axis.Brake));
-                m_states[num].Triggers[1] = MathUtils.Max(e.GetAxisValue(Axis.Rtrigger), e.GetAxisValue(Axis.Gas));
-                float axisValue = e.GetAxisValue(Axis.HatX);
-                float axisValue2 = e.GetAxisValue(Axis.HatY);
-                m_states[num].Buttons[10] = axisValue < -0.5f;
-                m_states[num].Buttons[12] = axisValue > 0.5f;
-                m_states[num].Buttons[11] = axisValue2 < -0.5f;
-                m_states[num].Buttons[13] = axisValue2 > 0.5f;
-            }
-        }
-#endif
-#if ANDROID
-        public static int TranslateDeviceId(int deviceId)
-        {
-            if (m_deviceToIndex.TryGetValue(deviceId, out int value))
-            {
-                return value;
-            }
-            for (int i = 0; i < 4; i++)
-            {
-                if (!m_deviceToIndex.Values.Contains(i))
-                {
-                    Connect(deviceId, i);
-                    return i;
-                }
-            }
-            return -1;
-        }
+		internal static void HandleMotionEvent(MotionEvent e)
+		{
+			int num = TranslateDeviceId(e.DeviceId);
+			if (num >= 0)
+			{
+				m_states[num].Sticks[0] = new Vector2(e.GetAxisValue(Axis.X), 0f - e.GetAxisValue(Axis.Y));
+				m_states[num].Sticks[1] = new Vector2(e.GetAxisValue(Axis.Z), 0f - e.GetAxisValue(Axis.Rz));
+				m_states[num].Triggers[0] = MathF.Max(e.GetAxisValue(Axis.Ltrigger), e.GetAxisValue(Axis.Brake));
+				m_states[num].Triggers[1] = MathF.Max(e.GetAxisValue(Axis.Rtrigger), e.GetAxisValue(Axis.Gas));
+				float axisValue = e.GetAxisValue(Axis.HatX);
+				float axisValue2 = e.GetAxisValue(Axis.HatY);
+				m_states[num].Buttons[10] = axisValue < -0.5f;
+				m_states[num].Buttons[12] = axisValue > 0.5f;
+				m_states[num].Buttons[11] = axisValue2 < -0.5f;
+				m_states[num].Buttons[13] = axisValue2 > 0.5f;
+			}
+		}
 
-        public static GamePadButton TranslateKey(Keycode keyCode)
+		public static int TranslateDeviceId(int deviceId)
+		{
+			if (m_deviceToIndex.TryGetValue(deviceId, out int value))
+			{
+				return value;
+			}
+			for (int i = 0; i < 4; i++)
+			{
+				if (!m_deviceToIndex.Values.Contains(i))
+				{
+					Connect(deviceId, i);
+					return i;
+				}
+			}
+			return -1;
+		}
+
+        public static GamePadButton TranslateKey(Keycode keyCode) => keyCode switch
         {
-            switch (keyCode)
-            {
-                case Keycode.ButtonA:
-                    return GamePadButton.A;
-                case Keycode.ButtonB:
-                    return GamePadButton.B;
-                case Keycode.ButtonX:
-                    return GamePadButton.X;
-                case Keycode.ButtonY:
-                    return GamePadButton.Y;
-                case Keycode.Back:
-                    return GamePadButton.Back;
-                case Keycode.ButtonL1:
-                    return GamePadButton.LeftShoulder;
-                case Keycode.ButtonR1:
-                    return GamePadButton.RightShoulder;
-                case Keycode.ButtonThumbl:
-                    return GamePadButton.LeftThumb;
-                case Keycode.ButtonThumbr:
-                    return GamePadButton.RightThumb;
-                case Keycode.DpadLeft:
-                    return GamePadButton.DPadLeft;
-                case Keycode.DpadRight:
-                    return GamePadButton.DPadRight;
-                case Keycode.DpadUp:
-                    return GamePadButton.DPadUp;
-                case Keycode.DpadDown:
-                    return GamePadButton.DPadDown;
-                case Keycode.ButtonSelect:
-                    return GamePadButton.Back;
-                case Keycode.ButtonStart:
-                    return GamePadButton.Start;
-                default:
-                    return (GamePadButton)(-1);
-            }
-        }
+            Keycode.ButtonA => GamePadButton.A,
+            Keycode.ButtonB => GamePadButton.B,
+            Keycode.ButtonX => GamePadButton.X,
+            Keycode.ButtonY => GamePadButton.Y,
+            Keycode.Back => GamePadButton.Back,
+            Keycode.ButtonL1 => GamePadButton.LeftShoulder,
+            Keycode.ButtonR1 => GamePadButton.RightShoulder,
+            Keycode.ButtonThumbl => GamePadButton.LeftThumb,
+            Keycode.ButtonThumbr => GamePadButton.RightThumb,
+            Keycode.DpadLeft => GamePadButton.DPadLeft,
+            Keycode.DpadRight => GamePadButton.DPadRight,
+            Keycode.DpadUp => GamePadButton.DPadUp,
+            Keycode.DpadDown => GamePadButton.DPadDown,
+            Keycode.ButtonSelect => GamePadButton.Back,
+            Keycode.ButtonStart => GamePadButton.Start,
+            _ => (GamePadButton)(-1),
+        };
 
         public static void Connect(int deviceId, int index)
-        {
-            m_deviceToIndex.Add(deviceId, index);
-            m_states[index].IsConnected = true;
-        }
+		{
+			m_deviceToIndex.Add(deviceId, index);
+			m_states[index].IsConnected = true;
+		}
 
-        public static void Disconnect(int deviceId)
-        {
-            if (m_deviceToIndex.TryGetValue(deviceId, out int value))
-            {
-                m_deviceToIndex.Remove(deviceId);
-                m_states[value].IsConnected = false;
-            }
-        }
+		public static void Disconnect(int deviceId)
+		{
+			if (m_deviceToIndex.TryGetValue(deviceId, out int value))
+			{
+				m_deviceToIndex.Remove(deviceId);
+				m_states[value].IsConnected = false;
+			}
+		}
 #else
-            for (int i = 0; i < 4; i++)
+            int padIndex = 0;
+            int usablePadNum = 0;
+            while (usablePadNum < 4)
             {
-                GamePadState state = OpenTK.Input.GamePad.GetState(i);
-                if (state.IsConnected)
+                GamePadState state = OpenTK.Input.GamePad.GetState(padIndex);
+                string name = OpenTK.Input.GamePad.GetName(padIndex);
+                if (!name.Contains("Unmapped"))
                 {
-                    m_states[i].IsConnected = true;
-                    if (Window.IsActive)
+                    if (state.IsConnected)
                     {
-                        m_states[i].Sticks[0] = new Vector2(state.ThumbSticks.Left.X, state.ThumbSticks.Left.Y);
-                        m_states[i].Sticks[1] = new Vector2(state.ThumbSticks.Right.X, state.ThumbSticks.Right.Y);
-                        m_states[i].Triggers[0] = state.Triggers.Left;
-                        m_states[i].Triggers[1] = state.Triggers.Right;
-                        m_states[i].Buttons[0] = state.Buttons.A == ButtonState.Pressed;
-                        m_states[i].Buttons[1] = state.Buttons.B == ButtonState.Pressed;
-                        m_states[i].Buttons[2] = state.Buttons.X == ButtonState.Pressed;
-                        m_states[i].Buttons[3] = state.Buttons.Y == ButtonState.Pressed;
-                        m_states[i].Buttons[4] = state.Buttons.Back == ButtonState.Pressed;
-                        m_states[i].Buttons[5] = state.Buttons.Start == ButtonState.Pressed;
-                        m_states[i].Buttons[6] = state.Buttons.LeftStick == ButtonState.Pressed;
-                        m_states[i].Buttons[7] = state.Buttons.RightStick == ButtonState.Pressed;
-                        m_states[i].Buttons[8] = state.Buttons.LeftShoulder == ButtonState.Pressed;
-                        m_states[i].Buttons[9] = state.Buttons.RightShoulder == ButtonState.Pressed;
-                        m_states[i].Buttons[10] = state.DPad.Left == ButtonState.Pressed;
-                        m_states[i].Buttons[12] = state.DPad.Right == ButtonState.Pressed;
-                        m_states[i].Buttons[11] = state.DPad.Up == ButtonState.Pressed;
-                        m_states[i].Buttons[13] = state.DPad.Down == ButtonState.Pressed;
+                        m_states[usablePadNum].IsConnected = true;
+                        if (Window.IsActive)
+                        {
+                            m_states[usablePadNum].Sticks[0] = new Vector2(state.ThumbSticks.Left.X, state.ThumbSticks.Left.Y);
+                            m_states[usablePadNum].Sticks[1] = new Vector2(state.ThumbSticks.Right.X, state.ThumbSticks.Right.Y);
+                            m_states[usablePadNum].Triggers[0] = state.Triggers.Left;
+                            m_states[usablePadNum].Triggers[1] = state.Triggers.Right;
+                            m_states[usablePadNum].Buttons[0] = state.Buttons.A == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[1] = state.Buttons.B == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[2] = state.Buttons.X == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[3] = state.Buttons.Y == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[4] = state.Buttons.Back == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[5] = state.Buttons.Start == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[6] = state.Buttons.LeftStick == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[7] = state.Buttons.RightStick == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[8] = state.Buttons.LeftShoulder == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[9] = state.Buttons.RightShoulder == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[10] = state.DPad.Left == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[12] = state.DPad.Right == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[11] = state.DPad.Up == ButtonState.Pressed;
+                            m_states[usablePadNum].Buttons[13] = state.DPad.Down == ButtonState.Pressed;
+                        }
                     }
+                    else
+                    {
+                        m_states[usablePadNum].IsConnected = false;
+                    }
+                    usablePadNum++;
                 }
-                else
-                {
-                    m_states[i].IsConnected = false;
-                }
+
+                padIndex++;
             }
         }
 #endif
 
         public static bool IsConnected(int gamePadIndex)
         {
-            if (gamePadIndex < 0 || gamePadIndex >= m_states.Length)
-            {
-                throw new ArgumentOutOfRangeException("gamePadIndex");
-            }
-            return m_states[gamePadIndex].IsConnected;
+            return gamePadIndex < 0 || gamePadIndex >= m_states.Length
+                ? throw new ArgumentOutOfRangeException(nameof(gamePadIndex))
+                : m_states[gamePadIndex].IsConnected;
         }
 
         public static Vector2 GetStickPosition(int gamePadIndex, GamePadStick stick, float deadZone = 0f)
         {
             if (deadZone < 0f || deadZone >= 1f)
             {
-                throw new ArgumentOutOfRangeException("deadZone");
+                throw new ArgumentOutOfRangeException(nameof(deadZone));
             }
             if (IsConnected(gamePadIndex))
             {
@@ -273,37 +259,20 @@ namespace Engine.Input
 
         public static float GetTriggerPosition(int gamePadIndex, GamePadTrigger trigger, float deadZone = 0f)
         {
-            if (deadZone < 0f || deadZone >= 1f)
-            {
-                throw new ArgumentOutOfRangeException("deadZone");
-            }
-            if (IsConnected(gamePadIndex))
-            {
-                return ApplyDeadZone(m_states[gamePadIndex].Triggers[(int)trigger], deadZone);
-            }
-            return 0f;
+            return deadZone < 0f || deadZone >= 1f
+                ? throw new ArgumentOutOfRangeException("deadZone")
+                : IsConnected(gamePadIndex) ? ApplyDeadZone(m_states[gamePadIndex].Triggers[(int)trigger], deadZone) : 0f;
         }
 
         public static bool IsButtonDown(int gamePadIndex, GamePadButton button)
         {
-            if (IsConnected(gamePadIndex))
-            {
-                return m_states[gamePadIndex].Buttons[(int)button];
-            }
-            return false;
+            return IsConnected(gamePadIndex) && m_states[gamePadIndex].Buttons[(int)button];
         }
 
         public static bool IsButtonDownOnce(int gamePadIndex, GamePadButton button)
         {
-            if (IsConnected(gamePadIndex))
-            {
-                if (m_states[gamePadIndex].Buttons[(int)button])
-                {
-                    return !m_states[gamePadIndex].LastButtons[(int)button];
-                }
-                return false;
-            }
-            return false;
+            return IsConnected(gamePadIndex)
+&& m_states[gamePadIndex].Buttons[(int)button] && !m_states[gamePadIndex].LastButtons[(int)button];
         }
 
         public static bool IsButtonDownRepeat(int gamePadIndex, GamePadButton button)
@@ -315,11 +284,7 @@ namespace Engine.Input
                     return true;
                 }
                 double num = m_states[gamePadIndex].ButtonsRepeat[(int)button];
-                if (num != 0.0)
-                {
-                    return Time.FrameStartTime >= num;
-                }
-                return false;
+                return num != 0.0 && Time.FrameStartTime >= num;
             }
             return false;
         }
@@ -363,7 +328,7 @@ namespace Engine.Input
                         }
                         else if (Time.FrameStartTime >= state.ButtonsRepeat[j])
                         {
-                            state.ButtonsRepeat[j] = MathUtils.Max(Time.FrameStartTime, state.ButtonsRepeat[j] + m_buttonNextRepeatTime);
+                            state.ButtonsRepeat[j] = Math.Max(Time.FrameStartTime, state.ButtonsRepeat[j] + m_buttonNextRepeatTime);
                         }
                     }
                     else
@@ -377,7 +342,7 @@ namespace Engine.Input
 
         public static float ApplyDeadZone(float value, float deadZone)
         {
-            return MathUtils.Sign(value) * MathUtils.Max(MathUtils.Abs(value) - deadZone, 0f) / (1f - deadZone);
+            return MathF.Sign(value) * MathF.Max(MathF.Abs(value) - deadZone, 0f) / (1f - deadZone);
         }
     }
 }

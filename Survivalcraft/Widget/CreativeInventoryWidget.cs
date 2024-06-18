@@ -109,6 +109,17 @@ namespace Game
 
 		public override void Update()
 		{
+			if(Input.Scroll.HasValue)
+			{
+				Widget widget = HitTestGlobal(Input.Scroll.Value.XY);
+				if(widget != null)
+				{
+					if(widget.IsChildWidgetOf(m_categoryButton))
+					{
+						m_componentCreativeInventory.CategoryIndex -= (int)Input.Scroll.Value.Z;
+					}
+				}
+			}
 			if (m_categoryLeftButton.IsClicked || Input.Left)
 			{
 				int num = --m_componentCreativeInventory.CategoryIndex;
@@ -137,7 +148,7 @@ namespace Game
 					}));
 				}
 			}
-			m_componentCreativeInventory.CategoryIndex = MathUtils.Clamp(m_componentCreativeInventory.CategoryIndex, 0, m_categories.Count - 1);
+			m_componentCreativeInventory.CategoryIndex = Math.Clamp(m_componentCreativeInventory.CategoryIndex, 0, m_categories.Count - 1);
 			m_categoryButton.Text = LanguageControl.Get("BlocksManager", m_categories[m_componentCreativeInventory.CategoryIndex].Name);
 			m_categoryLeftButton.IsEnabled = m_componentCreativeInventory.CategoryIndex > 0;
 			m_categoryRightButton.IsEnabled = m_componentCreativeInventory.CategoryIndex < m_categories.Count - 1;

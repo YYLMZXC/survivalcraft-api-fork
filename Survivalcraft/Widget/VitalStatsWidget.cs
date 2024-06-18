@@ -99,11 +99,11 @@ namespace Game
 			string languageType = ModsManager.Configs.ContainsKey("Language") ? ModsManager.Configs["Language"] : "zh-CN";
 			if (languageType == "zh-CN")
 			{
-				m_titleLabel.Text = $"{m_componentPlayer.PlayerData.Name}, 等级 {MathUtils.Floor(m_componentPlayer.PlayerData.Level)}  " + ((m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Male) ? "男性" : "女性");
+				m_titleLabel.Text = $"{m_componentPlayer.PlayerData.Name}, 等级 {MathF.Floor(m_componentPlayer.PlayerData.Level)}  " + ((m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Male) ? "男性" : "女性");
 			}
 			else
 			{
-				m_titleLabel.Text = $"{m_componentPlayer.PlayerData.Name}, Level {MathUtils.Floor(m_componentPlayer.PlayerData.Level)}  {m_componentPlayer.PlayerData.PlayerClass.ToString()}";
+				m_titleLabel.Text = $"{m_componentPlayer.PlayerData.Name}, Level {MathF.Floor(m_componentPlayer.PlayerData.Level)}  {m_componentPlayer.PlayerData.PlayerClass.ToString()}";
 			}
 			m_healthValueBar.Value = m_componentPlayer.ComponentHealth.Health;
 			m_staminaValueBar.Value = m_componentPlayer.ComponentVitalStats.Stamina;
@@ -111,7 +111,7 @@ namespace Game
 			m_sleepValueBar.Value = m_componentPlayer.ComponentVitalStats.Sleep;
 			m_temperatureValueBar.Value = m_componentPlayer.ComponentVitalStats.Temperature / 24f;
 			m_wetnessValueBar.Value = m_componentPlayer.ComponentVitalStats.Wetness;
-			m_experienceValueBar.Value = m_componentPlayer.PlayerData.Level - MathUtils.Floor(m_componentPlayer.PlayerData.Level);
+			m_experienceValueBar.Value = m_componentPlayer.PlayerData.Level - MathF.Floor(m_componentPlayer.PlayerData.Level);
 			m_strengthLabel.Text = string.Format(CultureInfo.InvariantCulture, "x {0:0.00}", m_componentPlayer.ComponentLevel.StrengthFactor);
 			m_resilienceLabel.Text = string.Format(CultureInfo.InvariantCulture, "x {0:0.00}", m_componentPlayer.ComponentLevel.ResilienceFactor);
 			m_speedLabel.Text = string.Format(CultureInfo.InvariantCulture, "x {0:0.00}", m_componentPlayer.ComponentLevel.SpeedFactor);

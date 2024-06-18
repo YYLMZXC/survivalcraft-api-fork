@@ -121,7 +121,7 @@ namespace Game
 						ScrollPosition += 0f - vector2.Y;
 						num2 = vector2.Y / Time.FrameDuration;
 					}
-					float num3 = (MathUtils.Abs(num2) < MathUtils.Abs(m_dragSpeed)) ? 20f : 16f;
+					float num3 = (MathF.Abs(num2) < MathF.Abs(m_dragSpeed)) ? 20f : 16f;
 					m_dragSpeed += MathUtils.Saturate(num3 * Time.FrameDuration) * (num2 - m_dragSpeed);
 					m_scrollBarAlpha = 4f;
 					m_lastDragPosition = vector;
@@ -136,8 +136,8 @@ namespace Game
 			}
 			if (ScrollSpeed != 0f)
 			{
-				ScrollSpeed *= MathUtils.Pow(0.33f, Time.FrameDuration);
-				if (MathUtils.Abs(ScrollSpeed) < 40f)
+				ScrollSpeed *= MathF.Pow(0.33f, Time.FrameDuration);
+				if (MathF.Abs(ScrollSpeed) < 40f)
 				{
 					ScrollSpeed = 0f;
 				}

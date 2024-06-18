@@ -48,7 +48,7 @@ namespace Game
 				{
 					m_minValue = value;
 					MaxValue = MathUtils.Max(MinValue, MaxValue);
-					Value = MathUtils.Clamp(Value, MinValue, MaxValue);
+					Value = Math.Clamp(Value, MinValue, MaxValue);
 				}
 			}
 		}
@@ -65,7 +65,7 @@ namespace Game
 				{
 					m_maxValue = value;
 					MinValue = MathUtils.Min(MinValue, MaxValue);
-					Value = MathUtils.Clamp(Value, MinValue, MaxValue);
+					Value = Math.Clamp(Value, MinValue, MaxValue);
 				}
 			}
 		}
@@ -79,8 +79,8 @@ namespace Game
 			set
 			{
 				m_value = m_granularity > 0f
-					? MathUtils.Round(MathUtils.Clamp(value, MinValue, MaxValue) / m_granularity) * m_granularity
-					: MathUtils.Clamp(value, MinValue, MaxValue);
+					? MathF.Round(Math.Clamp(value, MinValue, MaxValue) / m_granularity) * m_granularity
+					: Math.Clamp(value, MinValue, MaxValue);
 			}
 		}
 

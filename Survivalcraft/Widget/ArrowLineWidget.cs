@@ -147,10 +147,10 @@ namespace Game
 					var v2 = Vector2.Perpendicular(vector4);
 					var v3 = Vector2.Perpendicular(vector3);
 					float num = (float)Math.PI - Vector2.Angle(vector4, vector3);
-					float s = 0.5f * Width / MathUtils.Tan(num / 2f);
+					float s = 0.5f * Width / MathF.Tan(num / 2f);
 					Vector2 v4 = (0.5f * v2 * Width) - (vector4 * s);
 					float num2 = (float)Math.PI - Vector2.Angle(vector3, v);
-					float s2 = 0.5f * Width / MathUtils.Tan(num2 / 2f);
+					float s2 = 0.5f * Width / MathF.Tan(num2 / 2f);
 					Vector2 v5 = (0.5f * v3 * Width) - (vector3 * s2);
 					m_vertices.Add(vector + v4);
 					m_vertices.Add(vector - v4);

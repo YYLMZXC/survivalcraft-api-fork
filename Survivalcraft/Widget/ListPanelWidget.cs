@@ -302,8 +302,8 @@ namespace Game
 			{
 				return;
 			}
-			int x = (int)MathUtils.Floor(ScrollPosition / ItemSize);
-			int x2 = (int)MathUtils.Floor((ScrollPosition + size) / ItemSize);
+			int x = (int)MathF.Floor(ScrollPosition / ItemSize);
+			int x2 = (int)MathF.Floor((ScrollPosition + size) / ItemSize);
 			m_firstVisibleIndex = MathUtils.Max(x, 0);
 			m_lastVisibleIndex = MathUtils.Min(x2, m_items.Count - 1);
 			for (int i = m_firstVisibleIndex; i <= m_lastVisibleIndex; i++)

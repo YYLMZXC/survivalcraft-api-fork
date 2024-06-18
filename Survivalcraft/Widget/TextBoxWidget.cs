@@ -170,7 +170,7 @@ namespace Game
 			}
 			set
 			{
-				m_caretPosition = MathUtils.Clamp(value, 0, Text.Length);
+				m_caretPosition = Math.Clamp(value, 0, Text.Length);
 				m_focusStartTime = Time.RealTime;
 			}
 		}

@@ -62,15 +62,7 @@ namespace Engine.Input
         public static bool IsKeyDownRepeat(Key key)
         {
             double num = m_keysDownRepeatArray[(int)key];
-            if (!(num < 0.0))
-            {
-                if (num != 0.0)
-                {
-                    return Time.FrameStartTime >= num;
-                }
-                return false;
-            }
-            return true;
+            return num < 0.0 || num != 0.0 && Time.FrameStartTime >= num;
         }
 
         public static void ShowKeyboard(string title, string description, string defaultText, bool passwordMode, Action<string> enter, Action cancel)
@@ -148,7 +140,7 @@ namespace Engine.Input
                     }
                     else if (Time.FrameStartTime >= m_keysDownRepeatArray[j])
                     {
-                        m_keysDownRepeatArray[j] = MathUtils.Max(Time.FrameStartTime, m_keysDownRepeatArray[j] + m_keyNextRepeatTime);
+                        m_keysDownRepeatArray[j] = Math.Max(Time.FrameStartTime, m_keysDownRepeatArray[j] + m_keyNextRepeatTime);
                     }
                 }
                 else

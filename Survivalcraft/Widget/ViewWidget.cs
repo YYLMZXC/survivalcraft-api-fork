@@ -92,8 +92,8 @@ namespace Game
 			float num3 = GlobalTransform.Up.Length();
 			var vector = new Vector2(ActualSize.X * num2, ActualSize.Y * num3);
 			Point2 point = default;
-			point.X = (int)MathUtils.Round(vector.X * num);
-			point.Y = (int)MathUtils.Round(vector.Y * num);
+			point.X = (int)MathF.Round(vector.X * num);
+			point.Y = (int)MathF.Round(vector.Y * num);
 			Point2 point2 = point;
 			if ((num < 1f || GlobalColorTransform != Color.White) && point2.X > 0 && point2.Y > 0)
 			{

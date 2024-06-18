@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net8.0-windows;net8.0-android</TargetFrameworks>
+	 <NoWarn>$(NoWarn);CA1416</NoWarn>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Engine</RootNamespace>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -23,9 +24,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
     <DefineConstants>desktop</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
-    <DefineConstants>android</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="reference\NAudio.Flac\**" />

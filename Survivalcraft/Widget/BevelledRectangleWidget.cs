@@ -131,7 +131,7 @@ namespace Game
 
 		public static void QueueBevelledRectangle(TexturedBatch2D texturedBatch, FlatBatch2D flatBatch, Vector2 c1, Vector2 c2, float depth, float bevelSize, Color color, Color bevelColor, Color shadowColor, float ambientLight, float directionalLight, float textureScale)
 		{
-			float num = MathUtils.Abs(bevelSize);
+			float num = MathF.Abs(bevelSize);
 			Vector2 vector = c1;
 			Vector2 vector2 = c1 + new Vector2(num);
 			Vector2 vector3 = c2 - new Vector2(num);
