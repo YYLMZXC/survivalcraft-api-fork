@@ -35,7 +35,7 @@ namespace Game
 
 		public ReadOnlyList<FurnitureSet> FurnitureSets => new(m_furnitureSets);
 
-		public FurnitureDesign GetDesign(int index)
+        public FurnitureDesign GetDesign(int index)
 		{
 			if (index < 0 || index >= m_furnitureDesigns.Length)
 			{
@@ -171,9 +171,15 @@ namespace Game
 						componentMiner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 1), Color.White, blinking: true, playNotificationSound: false);
 						return;
 					}
-					if (IsValueAllowed(cellValue))
+                    TerrainChunk chunkAtCell = SubsystemTerrain.Terrain.GetChunkAtCell(key.X, key.Z);
+                    if (IsValueAllowed(cellValue))
 					{
-						if (key.X < point.X)
+						if(chunkAtCell == null || chunkAtCell.State <= TerrainChunkState.InvalidContents4 || (!chunkAtCell.IsLoaded && chunkAtCell.ModificationCounter == 0))
+                        {
+                            componentMiner.ComponentPlayer?.ComponentGui.DisplaySmallMessage("你不应当使用野外的方块创建家具", Color.White, blinking: true, playNotificationSound: false);
+                            return;
+                        }
+                        if (key.X < point.X)
 						{
 							point.X = key.X;
 						}
@@ -452,7 +458,7 @@ namespace Game
 			{
 				RemoveParticleSystems(item.X, item.Y, item.Z);
 			}
-		}
+        }
 
 		public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner)
 		{
