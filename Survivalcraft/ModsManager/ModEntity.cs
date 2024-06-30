@@ -292,6 +292,7 @@ namespace Game
 				string name = modInfo.Dependencies[k];
 				string dn = "";
 				var dnversion = new Version();
+				bool noNeedToCheckVersion = false;
 				if (name.Contains(":"))
 				{
 					string[] tmpa = name.Split(new char[] { ':' });
@@ -299,13 +300,15 @@ namespace Game
 					{
 						dn = tmpa[0];
 						dnversion = new Version(tmpa[1]);
+						noNeedToCheckVersion = false;
 					}
 				}
 				else
 				{
 					dn = name;
+					noNeedToCheckVersion = true;
 				}
-				ModEntity entity = ModsManager.ModListAll.Find(px => px.modInfo.PackageName == dn && new Version(px.modInfo.Version) == dnversion);
+				ModEntity entity = ModsManager.ModListAll.Find(px => px.modInfo.PackageName == dn && (noNeedToCheckVersion || new Version(px.modInfo.Version) == dnversion));
 				if (entity != null)
 				{
 					//依赖项最先被加载
