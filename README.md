@@ -1,6 +1,6 @@
 # SurvivalCraft-API
 
-#### 介绍
+## 介绍
 
 生存战争插件版源码，项目重构版
 
@@ -17,6 +17,31 @@ API的兄弟们， 让喀秋莎火箭——模组无序加载机制, 米格15战
 夺得天机真造化，一往无前写华章！！
 愿各位模组开发者踏上SCAPI的台阶，向着高处前进！！！
 
-#### 安装教程
+## 下载
 
-找到release，下载最新版，windows用7zip解压到文件夹运行
+进入 [发行版](https://gitee.com/THPRC/survivalcraft-api/releases/latest)
+* Android系统下载后缀为`.apk`的安装包，安装后即可运行
+* Windows系统下载后缀为`.7z`的压缩包，推荐使用 [7-Zip](https://www.7-zip.org/download.html) 进行解压，运行解压后的`.exe`文件
+
+> Windows系统请勿直接运行压缩包中的文件，务必解压后运行
+
+## 构建说明
+
+1. 首先使用 Git 克隆此仓库
+```bat
+git clone https://gitee.com/THPRC/survivalcraft-api.git
+```
+> 还没有Git？[官网下载](https://git-scm.com/downloads)
+
+2. 进入此仓库
+```bat
+cd survivalcraft-api
+```
+
+3. 更新子模块
+```bat
+git submodule update --init
+```
+
+4. 使用[Visual Studio](https://visualstudio.microsoft.com/)打开`survivalcraft-api`目录中的`SurvivalCraft.sln`，点击`生成`-`生成解决方案`，如果报错未安装相应功能，请按提示完成安装
+> 不想安装Android负载？在`解决方案资源管理器`-`解决方案'SurvivalCraft'`-`安卓端`右键，点击`卸载解决方案文件夹中的项目`
