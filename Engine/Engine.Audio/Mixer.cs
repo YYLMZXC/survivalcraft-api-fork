@@ -31,12 +31,13 @@ namespace Engine.Audio
 		internal static void Initialize()
 		{
 #if desktop
-			//直接加载
-			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
-			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? AppContext.BaseDirectory: Assembly.GetExecutingAssembly().Location);//路径备选方案
+            //直接加载
+            string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
+		    string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? AppContext.BaseDirectory: Assembly.GetExecutingAssembly().Location);//路径备选方案
 			Environment.SetEnvironmentVariable("PATH", fullPath + ";" + environmentVariable, EnvironmentVariableTarget.Process);
-			//释放文件
-			new AudioContext();
+            Log.Error(fullPath + ";" + environmentVariable);
+            //释放文件
+            new AudioContext();
 			if(CheckALError())
 			{
 				string dllName = "openal32.dll"; // DLL资源名称
