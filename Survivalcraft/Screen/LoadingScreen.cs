@@ -297,7 +297,6 @@ namespace Game
 				MotdManager.Initialize();
 				VersionsManager.Initialize();
 				WorldsManager.Initialize();
-				ScreensManager.SwitchScreen("MainMenu");
 			});
 			AddLoadAction(delegate
 			{
