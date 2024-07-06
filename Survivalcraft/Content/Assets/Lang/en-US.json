@@ -3271,7 +3271,8 @@
         "3": "Low",
         "4": "High"
       }
-    },
+    }
+  },
     "WorldPalette": {
       "Colors": [
         "White",
@@ -3451,5 +3452,4 @@
         "47": "A tiny bird which lives in temperate areas. Sometimes lays very small but edible eggs. Not edible."
       }
     }
-  }
 }
