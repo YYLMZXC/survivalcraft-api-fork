@@ -51,7 +51,6 @@ namespace Game
 				Assembly assembly = Assembly.GetExecutingAssembly();
 				assembly.GetManifestResourceStream("Game.Content.zip").CopyTo(memoryStream);
 			}
-			memoryStream.Position = 0L;
 			if(memoryStream == null)
 			{
 				throw new Exception("无法加载资源文件");

@@ -54,6 +54,13 @@ namespace Engine
 
         public static bool FileExists(string path)
         {
+#if ANDROID
+            string path2 = ProcessPath(path, false, false, out bool isApp);
+            if (isApp)
+            {
+                return EngineActivity.m_activity.ApplicationContext.Assets.List(Storage.GetDirectoryName(path2))?.Contains(Storage.GetFileName(path2)) ?? false;
+            }
+#endif
             return File.Exists(ProcessPath(path, writeAccess: false, failIfApp: m_isAndroidPlatform));
         }
 
