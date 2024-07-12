@@ -1,4 +1,5 @@
-﻿using Engine.Media;
+﻿using Engine;
+using Engine.Media;
 
 namespace Game.IContentReader
 {
@@ -9,7 +10,7 @@ namespace Game.IContentReader
 		public override object Get(ContentInfo[] contents)
 		{
 			if (contents.Length != 2) throw new System.Exception("not matches content count");
-			return BitmapFont.Initialize(contents[1].Duplicate(), contents[0].Duplicate());
+			return BitmapFont.Initialize(contents[1].Duplicate(), contents[0].Duplicate(), new Vector2(0f, -3f));
 		}
 	}
 }

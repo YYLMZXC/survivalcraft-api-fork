@@ -117,7 +117,7 @@ namespace Engine.Media
 		/// </summary>
 		/// <param name="texture">图片文件的输入流</param>
 		/// <param name="glyphs">位图数据的输入流</param>
-		public static BitmapFont Initialize(Stream TextureStream, Stream GlyphsStream)
+		public static BitmapFont Initialize(Stream TextureStream, Stream GlyphsStream, Vector2? customGlyphOffset = null)
 		{
 			try
 			{
@@ -144,6 +144,10 @@ namespace Engine.Media
 					Vector2 texCoord = new(float.Parse(arr[1]), float.Parse(arr[2]));
 					Vector2 texCoord2 = new(float.Parse(arr[3]), float.Parse(arr[4]));
 					Vector2 offset = new(float.Parse(arr[5]), float.Parse(arr[6]));
+                    if (customGlyphOffset.HasValue)
+                    {
+                        offset += customGlyphOffset.Value;
+                    }
 					float width = float.Parse(arr[7]);
 					array[i] = new Glyph(code, texCoord, texCoord2, offset, width);
 				}

@@ -138,7 +138,10 @@ namespace Game
 			//    UpdateVersion();
 			//}
 			//}
-			if (CanDownloadMotd)
+#if DEBUG
+			CanDownloadMotd = false;
+#endif
+            if (CanDownloadMotd)
 			{
 				DownloadMotd();
 				CommunityContentManager.IsAdmin(new CancellableProgress(), delegate (bool isAdmin)

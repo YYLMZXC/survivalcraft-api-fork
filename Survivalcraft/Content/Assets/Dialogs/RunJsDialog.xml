@@ -8,7 +8,7 @@
 				<LabelWidget Text="[RunJsDialog:4]" Color="255, 255, 255" HorizontalAlignment="Center" Margin="4, 0" />
                 <CanvasWidget Margin="10, 0">
                     <RectangleWidget Size="Infinity, 45" FillColor="0, 0, 0, 0" OutlineColor="64, 64, 64, 64"/>
-					<TextBoxWidget Name="RunJsDialog.Input"  Color="255, 255, 255" Margin="4, 0" VerticalAlignment="Near" HorizontalAlignment="Stretch" MaximumLength="100000" />
+					<TextBoxWidget Name="RunJsDialog.Input"  Color="255, 255, 255" Margin="4, 0" VerticalAlignment="Center" HorizontalAlignment="Stretch" MaximumLength="100000" />
                 </CanvasWidget>
 			</StackPanelWidget>
 			<CanvasWidget Size="0, 10" />

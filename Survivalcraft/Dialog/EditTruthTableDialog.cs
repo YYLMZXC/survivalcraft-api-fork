@@ -25,7 +25,9 @@ namespace Game
 
 		public TruthTableData m_tmpTruthTableData;
 
-		public bool m_ignoreTextChanges;
+		public byte[] m_lastTmpTruthTableDataData = new byte[16];
+
+        public bool m_ignoreTextChanges;
 
 		public EditTruthTableDialog(TruthTableData truthTableData, Action<bool> handler)
 		{
@@ -44,7 +46,8 @@ namespace Game
 			m_handler = handler;
 			m_truthTableData = truthTableData;
 			m_tmpTruthTableData = (TruthTableData)m_truthTableData.Copy();
-			m_linearPanel.IsVisible = false;
+            m_lastTmpTruthTableDataData = (byte[])m_tmpTruthTableData.Data.Clone();
+            m_linearPanel.IsVisible = false;
 			m_linearTextBox.TextChanged += delegate
 			{
 				if (!m_ignoreTextChanges)
@@ -60,7 +63,11 @@ namespace Game
 			m_ignoreTextChanges = true;
 			try
 			{
-				m_linearTextBox.Text = m_tmpTruthTableData.SaveBinaryString();
+				if (!m_tmpTruthTableData.Data.SequenceEqual(m_lastTmpTruthTableDataData))
+				{
+                    m_lastTmpTruthTableDataData = (byte[])m_tmpTruthTableData.Data.Clone();
+                    m_linearTextBox.Text = m_tmpTruthTableData.SaveBinaryString();
+				}
 			}
 			finally
 			{
