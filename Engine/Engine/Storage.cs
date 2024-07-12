@@ -217,8 +217,9 @@ namespace Engine
 
         public static string GetExtension(string path)
         {
-            int num = path.LastIndexOf('.');
-            return num >= 0 ? path.Substring(num) : string.Empty;
+            int lastIndexOfPoint = path.LastIndexOf('.');
+            int lastIndexOfSlash = Math.Max(path.LastIndexOf('/'), path.LastIndexOf('\\'));
+            return (lastIndexOfPoint >= 0 && (lastIndexOfSlash == -1 || lastIndexOfSlash < lastIndexOfPoint)) ? path.Substring(lastIndexOfPoint) : string.Empty;
         }
 
         public static string GetFileName(string path)
