@@ -6,7 +6,7 @@
 	<RootNamespace>Game</RootNamespace>
 	<Nullable>enable</Nullable>
 	<ImplicitUsings>enable</ImplicitUsings>
-	<ApplicationId>com.candy.SurvivalcraftAPI16</ApplicationId>
+	<ApplicationId>com.candy.SurvivalcraftAPI1_7</ApplicationId>
 	<AssemblyName>Launch_android</AssemblyName>
 	<Product>Survivalcraft</Product>
 	<AndroidSigningKeyStore>签名.keystore</AndroidSigningKeyStore>
@@ -23,7 +23,6 @@
 	<AndroidLinkMode>None</AndroidLinkMode>
 	<NeutralLanguage>zh-CN</NeutralLanguage>
 	<LinkAll>true</LinkAll>
-	<EnableLLVM>true</EnableLLVM>
 	<RunAOTCompilation>False</RunAOTCompilation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
