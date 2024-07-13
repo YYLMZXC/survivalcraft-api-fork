@@ -21,10 +21,10 @@
     <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Jint" Version="3.1.1" />
+    <PackageReference Include="Jint" Version="3.1.4" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Survivalcraft\init.js"/>
+    <EmbeddedResource Include="..\Survivalcraft\init.js" />
     <Compile Remove="Resources\Resource.designer.cs" />
 	<Compile Include="..\Survivalcraft\Block\AdjustableDelayGateBlock.cs">
       <Link>Block\AdjustableDelayGateBlock.cs</Link>
