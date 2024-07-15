@@ -1,5 +1,6 @@
 using Engine;
 using System;
+using System.Diagnostics;
 
 namespace Game
 {
@@ -15,7 +16,7 @@ namespace Game
 			try
 			{
 #if desktop
-				System.Diagnostics.Process.Start(url);
+				System.Diagnostics.Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
 #endif
 #if ANDROID
 				Engine.Window.Activity.OpenLink(url);
