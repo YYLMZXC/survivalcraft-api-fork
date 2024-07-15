@@ -2889,6 +2889,11 @@
       <Link>Widget\WidgetsList.cs</Link>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK-1.0.2moded">
+      <HintPath>..\Engine\reference\OpenTK-1.0.2moded.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <PropertyGroup />
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>

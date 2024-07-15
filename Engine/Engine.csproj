@@ -29,11 +29,6 @@
 	  <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="reference\NAudio.Flac\**" />
-    <EmbeddedResource Remove="reference\NAudio.Flac\**" />
-    <None Remove="reference\NAudio.Flac\**" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\Lit.psh" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
     <EmbeddedResource Include="Resources\Lit.vsh" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
     <EmbeddedResource Include="Resources\Unlit.psh" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
@@ -43,7 +38,7 @@
     <EmbeddedResource Include="Resources\icon.ico" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="reference\NAudio.Flac\NAudio.Flac\NAudio.Flac.csproj" />
+    <ProjectReference Include="..\external\NAudio.Flac\NAudio.Flac\NAudio.Flac.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NVorbis" Version="0.10.5" />

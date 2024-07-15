@@ -76,6 +76,7 @@ namespace Game
 
 		public static void SwitchScreen(Screen screen, params object[] parameters)
 		{
+			TextBoxWidget.CloseInputMethod();
 			if (m_animationData != null)
 			{
 				EndAnimation();

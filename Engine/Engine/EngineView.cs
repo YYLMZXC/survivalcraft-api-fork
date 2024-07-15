@@ -3,7 +3,9 @@ using Android.Content;
 using Android.Media;
 using Android.OS;
 using Android.Runtime;
+using Android.Text;
 using Android.Views;
+using Android.Views.InputMethods;
 using Engine.Input;
 using OpenTK.Graphics;
 using OpenTK.Graphics.ES30;
@@ -153,6 +155,21 @@ namespace Engine
             Input.Touch.HandleTouchEvent(e);
             return true;
         }
+        
+        // TODO: 待完成。
+        /*
+        public override IInputConnection OnCreateInputConnection(EditorInfo outAttrs)
+        {
+            outAttrs.ImeOptions = ImeFlags.NoExtractUi;
+            outAttrs.InputType = InputTypes.Null;
+            return new EngineInputConnection(this, true);
+        }
+        
+        public override bool OnCheckIsTextEditor()
+        {
+            return true;
+        }
+        */
     }
 }
 #endif

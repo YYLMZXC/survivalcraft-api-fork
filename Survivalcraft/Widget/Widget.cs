@@ -25,6 +25,10 @@ namespace Game
 
 			public readonly PrimitivesRenderer2D CursorPrimitivesRenderer2D = new();
 
+			/// <summary>
+			/// 绘制 rootWidget 及其子 Widget。
+			/// </summary>
+			/// <param name="rootWidget"></param>
 			public void DrawWidgetsHierarchy(Widget rootWidget)
 			{
 				m_drawItems.Clear();
@@ -34,59 +38,81 @@ namespace Game
 				ReturnDrawItemsToCache();
 			}
 
+			/// <summary>
+			/// 根据 Widget 的层级关系 以及 Widget 的各项绘制有关的属性生成 DrawItem。
+			/// </summary>
+			/// <param name="widget">DrawItem 所属的 Widget。</param>
+			/// <param name="scissorRectangle">Widget 父级的 ScissorRectangle。</param>
 			public void CollateDrawItems(Widget widget, Rectangle scissorRectangle)
 			{
 				if (!widget.IsVisible || !widget.IsDrawEnabled)
 				{
+					// 当 Widget 不可见或 Widget 绘制被禁用时。
 					return;
 				}
-				bool flag = widget.GlobalBounds.Intersection(new BoundingRectangle(scissorRectangle.Left, scissorRectangle.Top, scissorRectangle.Right, scissorRectangle.Bottom));
-				Rectangle? scissorRectangle2 = null;
-				if (widget.ClampToBounds && flag)
+				
+				bool isWidgetInBound = widget.GlobalBounds.Intersection(new BoundingRectangle(scissorRectangle.Left, scissorRectangle.Top, scissorRectangle.Right, scissorRectangle.Bottom));
+				Rectangle? widgetScissorRectangle = null;
+				if (widget.ClampToBounds && isWidgetInBound)
 				{
-					scissorRectangle2 = scissorRectangle;
-					int num = (int)MathF.Floor(widget.GlobalBounds.Min.X - 0.5f);
-					int num2 = (int)MathF.Floor(widget.GlobalBounds.Min.Y - 0.5f);
-					int num3 = (int)MathF.Ceiling(widget.GlobalBounds.Max.X - 0.5f);
-					int num4 = (int)MathF.Ceiling(widget.GlobalBounds.Max.Y - 0.5f);
-					scissorRectangle = Rectangle.Intersection(new Rectangle(num, num2, num3 - num, num4 - num2), scissorRectangle2.Value);
-					DrawItem drawItemFromCache = GetDrawItemFromCache();
-					drawItemFromCache.ScissorRectangle = scissorRectangle;
-					m_drawItems.Add(drawItemFromCache);
+					// 如果 Widget 需要将自身绘制的区域限制在 Widget 的 Bounds 内，
+					// 则生成一个用于设置 ScissorRectangle 的 DrawItem
+					widgetScissorRectangle = scissorRectangle;
+					int left = (int)MathF.Floor(widget.GlobalBounds.Min.X - 0.5f);
+					int top = (int)MathF.Floor(widget.GlobalBounds.Min.Y - 0.5f);
+					int right = (int)MathF.Ceiling(widget.GlobalBounds.Max.X - 0.5f);
+					int bottom = (int)MathF.Ceiling(widget.GlobalBounds.Max.Y - 0.5f);
+					
+					scissorRectangle = Rectangle.Intersection(new Rectangle(left, top, right - left, bottom - top), widgetScissorRectangle.Value);
+					
+					DrawItem drawItem = GetDrawItemFromCache();
+					drawItem.ScissorRectangle = scissorRectangle;
+					m_drawItems.Add(drawItem);
 				}
-				if (widget.IsDrawRequired && flag)
+				
+				if (widget.IsDrawRequired && isWidgetInBound)
 				{
-					DrawItem drawItemFromCache2 = GetDrawItemFromCache();
-					drawItemFromCache2.Widget = widget;
-					m_drawItems.Add(drawItemFromCache2);
+					// 如果 Widget 需要绘制，则生成一个用于绘制的 DrawItem。
+					DrawItem drawItem = GetDrawItemFromCache();
+					drawItem.Widget = widget;
+					m_drawItems.Add(drawItem);
 				}
-				if (flag || !widget.ClampToBounds)
+				
+				if (isWidgetInBound || !widget.ClampToBounds)
 				{
-					var containerWidget = widget as ContainerWidget;
-					if (containerWidget != null)
+					if (widget is ContainerWidget containerWidget)
 					{
+						// 生成子 Widget 的 DrawItem。
 						foreach (Widget child in containerWidget.Children)
 						{
 							CollateDrawItems(child, scissorRectangle);
 						}
 					}
 				}
-				if (widget.IsOverdrawRequired && flag)
+				
+				if (widget.IsOverdrawRequired && isWidgetInBound)
 				{
-					DrawItem drawItemFromCache3 = GetDrawItemFromCache();
-					drawItemFromCache3.Widget = widget;
-					drawItemFromCache3.IsOverdraw = true;
-					m_drawItems.Add(drawItemFromCache3);
+					// 如果 Widget 需要 Overdraw，则生成一个用于 Overdraw 的 DrawItem。
+					DrawItem drawItem = GetDrawItemFromCache();
+					drawItem.Widget = widget;
+					drawItem.IsOverdraw = true;
+					m_drawItems.Add(drawItem);
 				}
-				if (scissorRectangle2.HasValue)
+				
+				if (widgetScissorRectangle.HasValue)
 				{
-					DrawItem drawItemFromCache4 = GetDrawItemFromCache();
-					drawItemFromCache4.ScissorRectangle = scissorRectangle2;
-					m_drawItems.Add(drawItemFromCache4);
+					// 如果 Widget 需要将自身绘制区域限制在 Widget 的 Bounds 内，则生成一个用于设置 ScissorRectangle 的 DrawItem。
+					DrawItem drawItem = GetDrawItemFromCache();
+					drawItem.ScissorRectangle = widgetScissorRectangle;
+					m_drawItems.Add(drawItem);
 				}
+				
 				widget.WidgetsHierarchyInput?.Draw(this);
 			}
 
+			/// <summary>
+			/// 指定 DrawItem 的 Layer（层级）。
+			/// </summary>
 			public void AssignDrawItemsLayers()
 			{
 				for (int i = 0; i < m_drawItems.Count; i++)
@@ -106,38 +132,69 @@ namespace Game
 					}
 				}
 				m_drawItems.Sort();
+				
+				ModsManager.HookAction("OnDrawItemAssigned", loader =>
+				{
+					loader.OnDrawItemAssigned(this);
+					return false;
+				});
 			}
 
+			/// <summary>
+			/// </summary>
 			public void RenderDrawItems()
 			{
 				Rectangle scissorRectangle = Display.ScissorRectangle;
-				int num = 0;
+				int currentLayer = 0;
 				foreach (DrawItem drawItem in m_drawItems)
 				{
 					if (LayersLimit >= 0 && drawItem.Layer > LayersLimit)
 					{
 						break;
 					}
-					if (drawItem.Layer != num)
+					
+					if (drawItem.Layer != currentLayer)
 					{
-						num = drawItem.Layer;
+						currentLayer = drawItem.Layer;
 						PrimitivesRenderer3D.Flush(Matrix.Identity);
 						PrimitivesRenderer2D.Flush();
 					}
+					
 					if (drawItem.Widget != null)
 					{
-						if (drawItem.IsOverdraw)
+						Action afterWidgetDraw = null;
+						bool skip = false;
+						ModsManager.HookAction("BeforeWidgetDrawItemRender", loader =>
 						{
-							drawItem.Widget.Overdraw(this);
-						}
-						else
+							loader.BeforeWidgetDrawItemRender(drawItem, out bool skipVanillaDraw, 
+								out Action afterDrawAction, ref scissorRectangle, this);
+							
+							if (afterDrawAction != null)
+							{
+								afterWidgetDraw += afterDrawAction;
+							}
+
+							skip |= skipVanillaDraw;
+							return false;
+						});
+
+						if (!skip)
 						{
-							drawItem.Widget.Draw(this);
+							if (drawItem.IsOverdraw)
+							{
+								drawItem.Widget.Overdraw(this);
+							}
+							else
+							{
+								drawItem.Widget.Draw(this);
+							}
 						}
+						afterWidgetDraw?.Invoke();
 					}
 					else
 					{
-						Display.ScissorRectangle = Rectangle.Intersection(scissorRectangle, drawItem.ScissorRectangle.Value);
+						Display.ScissorRectangle =
+							Rectangle.Intersection(scissorRectangle, drawItem.ScissorRectangle!.Value);
 					}
 				}
 				PrimitivesRenderer3D.Flush(Matrix.Identity);
@@ -146,6 +203,10 @@ namespace Game
 				CursorPrimitivesRenderer2D.Flush();
 			}
 
+			/// <summary>
+			/// 从缓存中获取一个 <see cref="DrawItem"/> 实例，用于减少实例创建次数以缓解 GC 压力。
+			/// </summary>
+			/// <returns>搜索到的实例</returns>
 			public DrawItem GetDrawItemFromCache()
 			{
 				if (m_drawItemsCache.Count > 0)
@@ -157,6 +218,9 @@ namespace Game
 				return new DrawItem();
 			}
 
+			/// <summary>
+			/// 对 <see cref="DrawItem"/> 进行复用，并存储到缓存列表内。
+			/// </summary>
 			public void ReturnDrawItemsToCache()
 			{
 				foreach (DrawItem drawItem in m_drawItems)
@@ -174,14 +238,30 @@ namespace Game
 
 		public Action Update1;
 
-		public class DrawItem : IComparable<DrawItem>
+		/// <summary>
+		/// 绘制任务，有多种类型，绘制任务会按照 <see cref="Layer"/> 进行排序。
+		/// </summary>
+		public sealed class DrawItem : IComparable<DrawItem>
 		{
+			/// <summary>
+			/// 绘制任务所在的层级，值越小，绘制越靠前，绘制靠前的绘制任务会被靠后的覆盖。
+			/// </summary>
 			public int Layer;
 
+			/// <summary>
+			/// 是否为 Overdraw 任务，绘制任务被定义为需要绘制 Widget 时，该值决定了 <see cref="Widget.Draw"/> 或 <see cref="Widget.Overdraw"/> 的调用
+			/// （当 <see cref="IsOverdraw"/> 为 true 时则调用 <see cref="Widget.Overdraw"/>，否则调用 <see cref="Widget.Draw"/>）。
+			/// </summary>
 			public bool IsOverdraw;
 
+			/// <summary>
+			/// 绘制任务所属的 Widget
+			/// </summary>
 			public Widget Widget;
 
+			/// <summary>
+			/// 绘制任务所绑定的 ScissorRectangle，可为空。
+			/// </summary>
 			public Rectangle? ScissorRectangle;
 
 			public int CompareTo(DrawItem other)

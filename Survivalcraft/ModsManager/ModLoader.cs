@@ -609,6 +609,32 @@ namespace Game
 		{
 
 		}
+
+		/// <summary>
+		/// 在 DrawItem 被绘制前。
+		/// </summary>
+		/// <param name="drawItem">被绘制的 DrawItem。</param>
+		/// <param name="skipVanillaDraw">是否跳过原版绘制代码。</param>
+		/// <param name="afterWidgetDraw">原版绘制完成后的回调。</param>
+		/// <param name="scissorRectangle">绘制时的 ScissorRectangle。</param>
+		/// <param name="drawContext">绘制上下文。</param>
+		public virtual void BeforeWidgetDrawItemRender(Widget.DrawItem drawItem, out bool skipVanillaDraw, 
+		                                     out Action? afterWidgetDraw, ref Rectangle scissorRectangle,
+		                                     Widget.DrawContext drawContext)
+		{
+			skipVanillaDraw = false;
+			afterWidgetDraw = null;
+		}
+
+		/// <summary>
+		/// 在 DrawItem 排序后。
+		/// </summary>
+		/// <param name="drawContext">绘制上下文。</param>
+		public virtual void OnDrawItemAssigned(Widget.DrawContext drawContext)
+		{
+			
+		}
+		
 		/// <summary>
 		/// 当ModalPanelWidget被设置时执行
 		/// </summary>
@@ -618,6 +644,7 @@ namespace Game
 		{
 
 		}
+		
 		/// <summary>
 		/// 生成地形顶点时使用
 		/// </summary>
@@ -644,6 +671,13 @@ namespace Game
 		public virtual void CalculateSmoothLight(SubsystemTerrain subsystemTerrain, Vector3 p, ref float num)
 		{
 
+		}
+
+		/// <summary>
+		/// 当窗口模式改变时执行。
+		/// </summary>
+		public virtual void WindowModeChanged(WindowMode mode)
+		{
 		}
 	}
 }

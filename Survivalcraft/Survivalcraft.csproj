@@ -75,6 +75,7 @@
         </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\external\ImeSharp\ImeSharp\ImeSharp.csproj" />
         <Using Include="System.IO"/>
         <ProjectReference Include="..\EntitySystem\EntitySystem.csproj"/>
     </ItemGroup>

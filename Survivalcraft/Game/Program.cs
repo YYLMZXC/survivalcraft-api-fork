@@ -1,11 +1,14 @@
+using System.Diagnostics;
 using Engine;
 using Engine.Graphics;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Runtime.InteropServices;
 using Engine.Input;
+
+#if desktop
+using ImeSharp;
+#endif
 
 namespace Game
 {
@@ -27,8 +30,15 @@ namespace Game
 
 #if desktop
 		private static void Main(string[] args)
-		{
-			EntryPoint();
+        {
+            // Process.Start("C:\\Windows\\System32\\msg.exe",  "/server:127.0.0.1 * \"此版本为预览版 不建议长期使用");
+            Window.Created += () =>
+            {
+                InputMethod.Initialize(Process.GetCurrentProcess().MainWindowHandle, true);
+                InputMethod.Enabled = false;
+            };
+            EntryPoint();
+           
             //RootCommand rootCommand =
             //[
             //    new Option<string>(["-m", "--mod-import"], ""),
@@ -67,6 +77,9 @@ namespace Game
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
             Log.RemoveAllLogSinks();
             Log.AddLogSink(new GameLogSink());
+#if DEBUG
+            Log.AddLogSink(new ConsoleLogSink());
+#endif
             Window.HandleUri += HandleUriHandler;
             Window.Deactivated += DeactivatedHandler;
             Window.Frame += FrameHandler;
@@ -128,6 +141,11 @@ namespace Game
 
         public static void Run()
         {
+#if android
+            // TODO: 待完成。
+            // EngineInputConnection.Implement = new SurvivalcraftInputConnection();
+#endif
+            
             LastFrameTime = (float)(Time.RealTime - m_frameBeginTime);
             LastCpuFrameTime = (float)(m_cpuEndTime - m_frameBeginTime);
             m_frameBeginTime = Time.RealTime;
