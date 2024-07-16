@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Engine;
 using Engine.Graphics;
 using Engine.Input;
@@ -1278,7 +1279,27 @@ public class TextBoxWidget : Widget
     /// </para>
     /// </summary>
     public Color CandidateTextColor { get; set; } = Color.White;
+    
+    /// <summary>
+    /// <para>
+    /// 如果为 true 则每帧都会由 <see cref="MeasureOverride"/> 自动确定 <see cref="Size"/> 的值。
+    /// </para>
+    /// <para>
+    /// If true, the size will be set by <see cref="MeasureOverride"/> every frame.
+    /// </para>
+    /// </summary>
+    public bool AutoSize { get; set; }= true;
 
+    /// <summary>
+    /// <para>
+    /// <see cref="Size"/> 的后台字段。
+    /// </para>
+    /// <para>
+    /// The backend field of <see cref="Size"/>.
+    /// </para>
+    /// </summary>
+    public Vector2 m_sizeValue;
+    
     /// <summary>
     /// <para>
     /// 输入框大小（不一定是输入框的真实大小，真实大小请见 <see cref="Widget.ActualSize"/>）。
@@ -1287,8 +1308,16 @@ public class TextBoxWidget : Widget
     /// Text box size (may not be the actual size of the text box, the actual size is <see cref="Widget.ActualSize"/>)
     /// </para>
     /// </summary>
-    public Vector2 Size { get; set; }
-
+    public Vector2 Size
+    {
+        get => m_sizeValue;
+        set
+        {
+            m_sizeValue = value;
+            AutoSize = false;
+        }
+    }
+    
     /// <summary>
     /// <para>
     /// 字体间距。
@@ -1309,6 +1338,16 @@ public class TextBoxWidget : Widget
     /// </summary>
     public float FontScale { get; set; } = 1;
 
+    /// <summary>
+    /// <para>
+    /// 如果为 true，则字体使用线性过滤。
+    /// </para>
+    /// <para>
+    /// If true, font will use linear texture filtering.
+    /// </para>
+    /// </summary>
+    public bool TextureLinearFilter { get; set; } = true;
+    
     /// <summary>
     /// <para>
     /// 候选窗位置偏移量，
@@ -1514,7 +1553,9 @@ public class TextBoxWidget : Widget
         var backgroundFlatBatch = dc.PrimitivesRenderer2D.FlatBatch(layer: 0);
         var outlineFlatBatch = dc.PrimitivesRenderer2D.FlatBatch(layer: 1);
         var foregroundFlatBatch = dc.PrimitivesRenderer2D.FlatBatch(layer: 2);
-        var fontBatch = dc.PrimitivesRenderer2D.FontBatch(Font, layer: 3);
+
+        var fontBatch = dc.PrimitivesRenderer2D.FontBatch(Font, layer: 3,
+            samplerState: TextureLinearFilter ? SamplerState.LinearClamp : SamplerState.PointClamp);
 
         var candidateWindowCorner1 = new Vector2(FullTextCaretPosition, ActualSize.Y);
         candidateWindowCorner1 += CandidateListOffset;
@@ -1717,6 +1758,21 @@ public class TextBoxWidget : Widget
         IsDrawRequired = true;
         IsOverdrawRequired = true;
         ClampToBounds = true;
+
+        if (!AutoSize)
+        {
+            return;
+        }
+        
+        if (Text.Length == 0)
+        { 
+            DesiredSize = Font.MeasureText(" ", new Vector2(FontScale), FontSpacing);
+        }
+        else
+        {
+            DesiredSize = Font.MeasureText(Text, new Vector2(FontScale), FontSpacing);
+        }
+
         base.MeasureOverride(parentAvailableSize);
     }
 
