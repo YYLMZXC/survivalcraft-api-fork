@@ -8,7 +8,7 @@ namespace Game
 	{
 
 		public TextBoxWidget m_InputBox;
-		public TextBoxWidget m_OutputBox;
+		public LabelWidget m_OutputBox;
 
 		public LabelWidget m_timeCostedLabel;
 
@@ -20,7 +20,7 @@ namespace Game
 			XElement node = ContentManager.Get<XElement>("Dialogs/RunJsDialog");
 			LoadContents(this, node);
 			m_InputBox = Children.Find<TextBoxWidget>("RunJsDialog.Input");
-			m_OutputBox = Children.Find<TextBoxWidget>("RunJsDialog.Output");
+			m_OutputBox = Children.Find<LabelWidget>("RunJsDialog.Output");
 			m_timeCostedLabel = Children.Find<LabelWidget>("RunJsDialog.TimeCosted");
 			m_runButtonWidget = Children.Find<ButtonWidget>("RunJsDialog.RunButton");
 			m_closeButtonWidget = Children.Find<ButtonWidget>("RunJsDialog.CloseButton");
