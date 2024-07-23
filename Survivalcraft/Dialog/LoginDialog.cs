@@ -23,16 +23,22 @@ namespace Game {
             MainView = stackPanelWidget;
             MainView.Children.Add(tip);
             MainView.Children.Add(makeTextBox("账号:"));
-            MainView.Children.Add(makeTextBox("密码:"));
+            MainView.Children.Add(makeTextBox("密码:", true));
             MainView.Children.Add(makeButton());
 
         }
-        public Widget makeTextBox(string title) {
+        public Widget makeTextBox(string title, bool passwordMode = false) {
             var canvasWidget = new CanvasWidget() { Margin = new Vector2(10, 0) };
             var rectangleWidget = new RectangleWidget() { FillColor = Color.Black, OutlineColor = Color.White, Size = new Vector2(float.PositiveInfinity, 80) };
             var stack = new StackPanelWidget() { Direction = LayoutDirection.Horizontal };
             var label = new LabelWidget() { HorizontalAlignment = WidgetAlignment.Near, VerticalAlignment = WidgetAlignment.Near, Text = title, Margin = new Vector2(1f, 1f) };
-            var textBox = new TextBoxWidget() { VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Stretch, Color = new Color(255, 255, 255), Margin = new Vector2(4f, 0f), Size = new Vector2(float.PositiveInfinity, 80) };
+            var textBox = new TextBoxWidget()
+            {
+                PasswordMode = passwordMode,
+                VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Stretch,
+                Color = new Color(255, 255, 255), Margin = new Vector2(4f, 0f),
+                Size = new Vector2(float.PositiveInfinity, 80)
+            };
             if (title == "账号:") txa = textBox;
             if (title == "密码:") txb = textBox;
             stack.Children.Add(label);

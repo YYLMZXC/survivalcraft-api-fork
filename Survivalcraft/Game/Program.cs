@@ -3,6 +3,7 @@ using Engine;
 using Engine.Graphics;
 using System.Globalization;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Engine.Input;
 
@@ -38,7 +39,18 @@ namespace Game
                 InputMethod.Enabled = false;
             };
             EntryPoint();
-           
+
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
+            {
+                var name = sender?.ToString();
+                if (name is null)
+                {
+                    return null;
+                }
+
+                var location = new FileInfo(typeof(Program).Assembly.Location).Directory!.FullName;
+                return Assembly.LoadFrom(Path.Combine(location, name));
+            };
             //RootCommand rootCommand =
             //[
             //    new Option<string>(["-m", "--mod-import"], ""),

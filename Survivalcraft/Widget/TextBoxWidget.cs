@@ -754,7 +754,11 @@ public class TextBoxWidget : Widget
                         break;
                     }
 
-                    FocusedTextBox.EnterText(ClipboardManager.ClipboardString);
+                    var text = ClipboardManager.ClipboardString;
+                    if (text != null)
+                    {
+                        FocusedTextBox.EnterText(text);
+                    }
                     break;
                 }
                 case (char)24:
@@ -768,6 +772,12 @@ public class TextBoxWidget : Widget
                     ClipboardManager.ClipboardString = FocusedTextBox.SelectionString;
                     FocusedTextBox.DeleteSelection();
                     break;
+                }
+                case (char)27:
+                {
+                    // Escape
+                    break;
+                    // TextBoxWidget 的 Esc 处理不依赖此输入，所以直接跳过。
                 }
                 default:
                 {
@@ -822,7 +832,15 @@ public class TextBoxWidget : Widget
     /// </para>
     /// </summary>
     public bool DragStartedInsideTextBox { get; set; }
-
+    
+    public override void UpdateCeases()
+    {
+        if (HasFocus)
+        {
+            CloseInputMethod();
+        }
+    }
+        
     public override void Update()
     {
         if (Input.Scroll.HasValue)
@@ -849,7 +867,7 @@ public class TextBoxWidget : Widget
                 {
                     HasFocus = true;
                     ShowInputMethod();
-                    Caret = CalculateClickedCharacterIndex(Font, Text,
+                    Caret = CalculateClickedCharacterIndex(Font, PasswordMode ? new string('*', Text.Length) : Text,
                         InteractionToWidget(Input.Drag.Value + new Vector2(Scroll * GlobalTransform.M11, 0)));
                     SelectionLength = 0;
                     DragStartedInsideTextBox = true;
@@ -864,7 +882,7 @@ public class TextBoxWidget : Widget
             else if (Time.RealTime - DragStartTime > 0 && DragStartedInsideTextBox)
             {
                 // 拖拽正在进行时：
-                var caret2 = CalculateClickedCharacterIndex(Font, Text,
+                var caret2 = CalculateClickedCharacterIndex(Font, PasswordMode ? new string('*', Text.Length) : Text,
                     InteractionToWidget(Input.Drag.Value + new Vector2(Scroll * GlobalTransform.M11, 0)));
                 if (SelectionStarted)
                 {
@@ -899,9 +917,8 @@ public class TextBoxWidget : Widget
                 FocusStartTime = Time.RealTime;
                 ShowInputMethod();
                 HasFocus = true;
-                Caret = CalculateClickedCharacterIndex(Font, Text,
+                Caret = CalculateClickedCharacterIndex(Font, PasswordMode ? new string('*', Text.Length) : Text,
                     InteractionToWidget(Input.Click.Value.Start + new Vector2(Scroll * GlobalTransform.M11, 0)));
-                Log.Information(Scroll);
                 OnFocus?.Invoke(this);
             }
             else if (FocusedTextBox == this)
@@ -913,11 +930,6 @@ public class TextBoxWidget : Widget
             }
 
             SelectionLength = 0;
-        }
-
-        if (Math.Clamp(Caret, 0, Text.Length) != Caret)
-        {
-            Log.Information("Caret is out of range, resetting to 0.");
         }
 
         // 处理光标移动。
@@ -934,6 +946,22 @@ public class TextBoxWidget : Widget
             if (Keyboard.IsKeyDownRepeat(Key.RightArrow))
             {
                 Caret = Math.Min(Text.Length, Caret + 1);
+                SelectionLength = 0;
+                SelectionStarted = false;
+                FocusStartTime = Time.RealTime;
+            }
+
+            if (Keyboard.IsKeyDownOnce(Key.Home))
+            {
+                Caret = 0;
+                SelectionLength = 0;
+                SelectionStarted = false;
+                FocusStartTime = Time.RealTime;
+            }
+
+            if (Keyboard.IsKeyDownOnce(Key.End))
+            {
+                Caret = Text.Length;
                 SelectionLength = 0;
                 SelectionStarted = false;
                 FocusStartTime = Time.RealTime;
@@ -969,7 +997,7 @@ public class TextBoxWidget : Widget
 
         // 处理键盘输入。
         // 如果输入法已开启，就跳过。
-        if (!InputMethodEnabled)
+        if (!InputMethodEnabled && HasFocus)
         {
             // 处理 BackSpace 键。
 #if desktop
@@ -1028,7 +1056,11 @@ public class TextBoxWidget : Widget
 
             if (Keyboard.IsKeyDown(Key.Control) && Keyboard.IsKeyDownOnce(Key.V))
             {
-                EnterText(ClipboardManager.ClipboardString);
+                var text = ClipboardManager.ClipboardString;
+                if (text != null)
+                {
+                    EnterText(ClipboardManager.ClipboardString);
+                }
             }
         }
 
@@ -1173,10 +1205,11 @@ public class TextBoxWidget : Widget
 
     /// <summary>
     /// <para>
-    /// 文本长度限制
+    /// 文本长度限制，设置此属性时会截断超过长度的文本，不可小于 0，若需要设置为无限，请使用 <see cref="int.MaxValue"/>。
     /// </para>
     /// <para>
-    /// Maximum length of text
+    /// Maximum length of text, the text will be cut when it is longer than this value, the value cannot be less than 0,
+    /// to set it to infinite, please use <see cref="int.MaxValue"/>.
     /// </para>
     /// </summary>
     public int MaximumLength
@@ -1211,7 +1244,7 @@ public class TextBoxWidget : Widget
     /// Password mode, all text but composition text ill be drawn as "*".
     /// </para>
     /// </summary>
-    public bool PasswordMode { get; set; } = false;
+    public bool PasswordMode { get; set; }
 
     /// <summary>
     /// <para>
