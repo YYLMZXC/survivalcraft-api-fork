@@ -19,6 +19,8 @@ namespace Engine
 
         public event Action<Intent> NewIntent;
 
+        public event Func<KeyEvent, bool> OnDispatchKeyEvent;
+        
         public static string BasePath = "android:Survivalcraft2.3";
         public static string ConfigPath = "android:Survivalcraft2.3";
 
@@ -87,6 +89,23 @@ namespace Engine
                 Thread.Sleep(250);
                 System.Environment.Exit(0);
             }
+        }
+
+        public override bool DispatchKeyEvent(KeyEvent e)
+        {
+            bool handled = false;
+            var invocationList = OnDispatchKeyEvent?.GetInvocationList();
+            if (invocationList == null)
+            {
+                return base.DispatchKeyEvent(e);
+            }
+
+            foreach (var invocation in invocationList)
+            {
+                handled |= (bool)invocation.DynamicInvoke([e])!;
+            }
+
+            return handled || base.DispatchKeyEvent(e);
         }
     }
 }
