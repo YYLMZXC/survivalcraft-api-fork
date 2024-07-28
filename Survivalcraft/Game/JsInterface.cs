@@ -1,13 +1,10 @@
-﻿using Engine;
+﻿using Acornima.Ast;
+using Engine;
 using Engine.Input;
-using Esprima.Ast;
 using GameEntitySystem;
 using Jint;
 using Jint.Native;
 using Jint.Native.Function;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Text;
 using JsEngine = Jint.Engine;
