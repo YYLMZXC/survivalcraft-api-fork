@@ -1578,7 +1578,7 @@ public class TextBoxWidget : Widget
 
     public override void Overdraw(DrawContext dc)
     {
-        if (CandidatesPageSize is 0 || !ShowCandidatesWindow)
+        if (CandidatesPageSize is 0 || !ShowCandidatesWindow || !HasFocus)
         {
             return;
         }
