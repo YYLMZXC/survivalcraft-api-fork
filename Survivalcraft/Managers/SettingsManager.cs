@@ -28,7 +28,7 @@ namespace Game
 
 		public static bool AllowInitialIntro { get; set; }
 
-		public static bool 使用内置路径;
+		public static bool 浣跨敤鍐呯疆璺緞;
 
 		public static float SoundsVolume
 		{
@@ -173,6 +173,12 @@ namespace Game
 					Window.WindowMode = value;
 					m_windowMode = value;
 				}
+				
+				ModsManager.HookAction("WindowModeChanged", loader =>
+				{
+					loader.WindowModeChanged(value);
+					return false;
+				});
 			}
 		}
 
@@ -430,6 +436,11 @@ namespace Game
 			set
 			{
 				Window.WindowMode = value ? WindowMode.Fullscreen : WindowMode.Resizable;
+				ModsManager.HookAction("WindowModeChanged", loader =>
+				{
+					loader.WindowModeChanged(WindowMode);
+					return false;
+				});
 			}
 		}
 
