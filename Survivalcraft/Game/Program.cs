@@ -38,8 +38,6 @@ namespace Game
                 InputMethod.Initialize(Process.GetCurrentProcess().MainWindowHandle, true);
                 InputMethod.Enabled = false;
             };
-            EntryPoint();
-
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
             {
                 var name = sender?.ToString();
@@ -51,6 +49,8 @@ namespace Game
                 var location = new FileInfo(typeof(Program).Assembly.Location).Directory!.FullName;
                 return Assembly.LoadFrom(Path.Combine(location, name));
             };
+            EntryPoint();
+
             //RootCommand rootCommand =
             //[
             //    new Option<string>(["-m", "--mod-import"], ""),

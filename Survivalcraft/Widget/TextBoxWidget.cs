@@ -951,7 +951,7 @@ public class TextBoxWidget : Widget
                 FocusStartTime = Time.RealTime;
             }
 
-            if (Keyboard.IsKeyDownOnce(Key.Home))
+            if (Keyboard.IsKeyDownOnce(Key.Home) || Keyboard.IsKeyDownOnce(Key.UpArrow))
             {
                 Caret = 0;
                 SelectionLength = 0;
@@ -959,7 +959,7 @@ public class TextBoxWidget : Widget
                 FocusStartTime = Time.RealTime;
             }
 
-            if (Keyboard.IsKeyDownOnce(Key.End))
+            if (Keyboard.IsKeyDownOnce(Key.End) || Keyboard.IsKeyDownOnce(Key.DownArrow))
             {
                 Caret = Text.Length;
                 SelectionLength = 0;
