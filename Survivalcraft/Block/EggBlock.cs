@@ -47,7 +47,7 @@ namespace Game
 											where o.EffectiveInheritanceRoot.Guid == eggParameterSetGuid
 											select o)
 			{
-				int nestedValue = item.GetNestedValue<int>("EggTypeIndex");
+				int nestedValue = item.GetNestedValue<int>("EggTypeIndex") & 0xFFF;
 
 				if (nestedValue >= 0)
 				{

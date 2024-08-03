@@ -32,7 +32,8 @@ namespace Game
 			if (item.Name.LocalName == "ClothingData")
 			{
 				int.TryParse(item.Attribute("Index").Value, out int ClothIndex);
-				string newDescription = item.Attribute("Description")?.Value;
+				ClothIndex &= 0x3FF;
+                string newDescription = item.Attribute("Description")?.Value;
 				string newDisplayName = item.Attribute("DisplayName")?.Value;
 				if (newDescription != null && newDescription.StartsWith("[") && newDescription.EndsWith("]") && LanguageControl.TryGetBlock(string.Format("{0}:{1}", GetType().Name, ClothIndex), "Description", out var d))
 				{
@@ -279,14 +280,16 @@ namespace Game
 			return null;
 		}
 
+		//分成了1~4、17~18位储存
 		public static int GetClothingIndex(int data)
 		{
-			return data & 0xFF;
+			return (data & 0xFF) | ((data >> 8) & 0x300);
 		}
 
 		public static int SetClothingIndex(int data, int clothingIndex)
 		{
-			return (data & -256) | (clothingIndex & 0xFF);
+			clothingIndex &= 0x3FF;
+            return (data & -196864) | (clothingIndex & 0xFF) | ((clothingIndex & 0x300) << 8);
 		}
 
 		public static int GetClothingColor(int data)
