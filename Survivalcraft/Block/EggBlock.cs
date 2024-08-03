@@ -36,8 +36,8 @@ namespace Game
 		}
 		public new static string fName = "EggBlock";
 		public const int Index = 118;
-		public DynamicArray<EggType> m_eggTypes = [];
-		public ReadOnlyList<EggType> EggTypes => new(m_eggTypes);
+		public Dictionary<int, EggType> m_eggTypes = [];
+		public ReadOnlyList<EggType> EggTypes => new(m_eggTypes.Values.ToList());
 		public override void Initialize()
 		{
 			m_eggTypes.Clear();
@@ -57,7 +57,6 @@ namespace Game
 						string[] lp = value.Substring(1, value.Length - 2).Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
 						value = LanguageControl.GetDatabase("DisplayName", lp[1]);
 					}
-					if (nestedValue >= m_eggTypes.Count) m_eggTypes.Count = nestedValue + 1;
 
 					m_eggTypes[nestedValue] = new EggType()
 					{
@@ -76,7 +75,7 @@ namespace Game
 			}
 			Model model = ContentManager.Get<Model>("Models/Egg");
 			Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Egg").ParentBone);
-			foreach (EggType eggType in m_eggTypes)
+			foreach (EggType eggType in m_eggTypes.Values)
 			{
 				if (eggType == null) continue;
 				eggType.BlockMesh = new BlockMesh();
@@ -168,7 +167,7 @@ namespace Game
 
 		public override IEnumerable<int> GetCreativeValues()
 		{
-			foreach (EggType eggType in m_eggTypes)
+			foreach (EggType eggType in m_eggTypes.Values)
 			{
 				if (eggType == null) continue;
 				if (eggType.ShowEgg)
@@ -232,7 +231,7 @@ namespace Game
 
 		public EggType GetEggTypeByCreatureTemplateName(string templateName)
 		{
-			return m_eggTypes.FirstOrDefault((EggType e) => e.TemplateName == templateName);
+			return m_eggTypes.FirstOrDefault(pair => pair.Value.TemplateName == templateName).Value;
 		}
 
 		public static bool GetIsCooked(int data)

@@ -11,7 +11,7 @@ namespace Game
 	{
 		public const int Index = 203;
 
-		public DynamicArray<ClothingData> m_clothingData = [];
+		public Dictionary<int, ClothingData> m_clothingData = [];
 
 		public BlockMesh m_innerMesh;
 
@@ -62,7 +62,6 @@ namespace Game
 					ImpactSoundsFolder = XmlUtils.GetAttributeValue<string>(item, "ImpactSoundsFolder"),
 					Description = newDescription
 				};
-				if (ClothIndex >= m_clothingData.Count) m_clothingData.Count = ClothIndex + 1;
 				m_clothingData[ClothIndex] = clothingData;
 			}
 			num++;
@@ -175,21 +174,20 @@ namespace Game
 		}
 		public override IEnumerable<int> GetCreativeValues()
 		{
-			IEnumerable<ClothingData> enumerable = m_clothingData.OrderBy((ClothingData cd) => cd.DisplayIndex);
-			foreach (ClothingData clothingData in enumerable)
+            foreach (ClothingData clothingData in m_clothingData.Values.ToList().OrderBy((ClothingData cd) => cd.DisplayIndex))
 			{
-				if (clothingData == null) continue;
-				int colorsCount = (!clothingData.CanBeDyed) ? 1 : 16;
-				int color = 0;
-				while (color < colorsCount)
-				{
-					int data = SetClothingColor(SetClothingIndex(0, clothingData.Index), color);
-					yield return Terrain.MakeBlockValue(203, 0, data);
-					int num = color + 1;
-					color = num;
-				}
-			}
-		}
+                if (clothingData == null) continue;
+                int colorsCount = (!clothingData.CanBeDyed) ? 1 : 16;
+                int color = 0;
+                while (color < colorsCount)
+                {
+                    int data = SetClothingColor(SetClothingIndex(0, clothingData.Index), color);
+                    yield return Terrain.MakeBlockValue(203, 0, data);
+                    int num = color + 1;
+                    color = num;
+                }
+            }
+        }
 
 		public override CraftingRecipe GetAdHocCraftingRecipe(SubsystemTerrain terrain, string[] ingredients, float heatLevel, float playerLevel)
 		{
