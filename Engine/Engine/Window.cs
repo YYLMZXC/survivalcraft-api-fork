@@ -280,7 +280,7 @@ namespace Engine
         static Window()
         {
             m_dpiScale = 1f;
-            Toolkit.Init();
+            Toolkit.Init(new ToolkitOptions() { EnableHighResolution = true, Backend = PlatformBackend.PreferNative});
         }
 
         public static void Run(int width = 0, int height = 0, WindowMode windowMode = WindowMode.Fixed, string title = "")
