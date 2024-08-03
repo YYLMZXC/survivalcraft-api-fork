@@ -44,18 +44,7 @@ namespace Engine
         }
         public void OpenLink(string link)
         {
-
-            Intent intent = new();
-
-            intent.SetAction(Intent.ActionView);
-
-            Android.Net.Uri content_url = Android.Net.Uri.Parse(link);
-
-            intent.SetData(content_url);
-
-            intent.SetClassName("com.android.browser", "com.android.browser.BrowserActivity");
-
-            StartActivity(intent);
+            StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse(link)));
         }
 
 
