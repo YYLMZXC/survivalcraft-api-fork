@@ -47,17 +47,17 @@ namespace Game
 											where o.EffectiveInheritanceRoot.Guid == eggParameterSetGuid
 											select o)
 			{
-				int nestedValue = item.GetNestedValue<int>("EggTypeIndex") & 0xFFF;
+				int nestedValue = item.GetNestedValue<int>("EggTypeIndex");
 
 				if (nestedValue >= 0)
 				{
-					string value = item.GetNestedValue<string>("DisplayName");
+					nestedValue &= 0xFFF;
+                    string value = item.GetNestedValue<string>("DisplayName");
 					if (value.StartsWith("[") && value.EndsWith("]"))
 					{
 						string[] lp = value.Substring(1, value.Length - 2).Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
 						value = LanguageControl.GetDatabase("DisplayName", lp[1]);
 					}
-
 					m_eggTypes[nestedValue] = new EggType()
 					{
 						EggTypeIndex = nestedValue,
