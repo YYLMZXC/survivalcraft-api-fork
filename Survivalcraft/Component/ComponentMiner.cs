@@ -225,7 +225,7 @@ namespace Game
 					if (num3 > 0 && num3 < 255 && (m_canJumpToPlace || IsBlockPlacingAllowed(ComponentCreature.ComponentBody) || m_subsystemGameInfo.WorldSettings.GameMode <= GameMode.Survival))
 					{
 						bool flag = false;
-						if (block.IsCollidable)
+						if (block.IsCollidable_(value))
 						{
 							BoundingBox boundingBox = ComponentCreature.ComponentBody.BoundingBox;
 							boundingBox.Min += new Vector3(0.2f);
@@ -319,9 +319,9 @@ namespace Game
 				Poke(forceRestart: false);
 				return;
 			}
-			float num = 0f;//ÉËº¦
-			float num2 = 1f;//Íæ¼ÒÃüÖĞÂÊ
-			float num3 = 1f;//ÉúÎïÃüÖĞÂÊ
+			float num = 0f;//ä¼¤å®³
+			float num2 = 1f;//ç©å®¶å‘½ä¸­ç‡
+			float num3 = 1f;//ç”Ÿç‰©å‘½ä¸­ç‡
 			if (ActiveBlockValue != 0)
 			{
 				num = block.GetMeleePower(ActiveBlockValue) * AttackPower * m_random.Float(0.8f, 1.2f);
