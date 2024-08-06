@@ -11,7 +11,7 @@ namespace Game
 
 		public bool ConstantSpawn;
 
-		public ValuesDictionary Data;
+		public string Data;
 
 	}
 }

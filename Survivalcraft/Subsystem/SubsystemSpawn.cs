@@ -3,6 +3,8 @@ using Engine.Serialization;
 using GameEntitySystem;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
 using TemplatesDatabase;
 
 namespace Game
@@ -91,28 +93,14 @@ namespace Game
 				spawnChunk.Point = HumanReadableConverter.ConvertFromString<Point2>(item.Key);
 				spawnChunk.IsSpawned = valuesDictionary2.GetValue<bool>("IsSpawned");
 				spawnChunk.LastVisitedTime = valuesDictionary2.GetValue<double>("LastVisitedTime");
-				ValuesDictionary data = [];
 				object obj = valuesDictionary2.GetValue("SpawnsData", new object());
-				if (obj is string)
+				if (obj is string str)
 				{
-					string[] oldData = ((string)obj).Split(new char[] { ';' });
-					int i = 0;
-					foreach (var oldItem in oldData)
-					{
-						if (!string.IsNullOrEmpty(oldItem))
-						{
-							ValuesDictionary va = [];
-							string[] parmas = oldItem.Split(new char[] { ',' });
-							data.SetValue(i++.ToString(), va);
-							va.SetValue("n", parmas[0]);
-							va.SetValue("p", new Vector3(float.Parse(parmas[1]), float.Parse(parmas[2]), float.Parse(parmas[3])));
-							va.SetValue("c", bool.Parse(parmas[4]));
-							va.SetValue("d", new ValuesDictionary());
-						}
-					}
+					LoadSpawnsData(str, spawnChunk.SpawnsData);
 				}
-				else if (obj is ValuesDictionary) data = (ValuesDictionary)obj;
-				LoadSpawnsData(data, spawnChunk.SpawnsData);
+				else if (obj is ValuesDictionary data) {
+                    LoadSpawnsData(data, spawnChunk.SpawnsData);
+                }
 				m_chunks[spawnChunk.Point] = spawnChunk;
 			}
 		}
@@ -129,10 +117,15 @@ namespace Game
 					valuesDictionary2.SetValue(HumanReadableConverter.ConvertToString(value2.Point), valuesDictionary3);
 					valuesDictionary3.SetValue("IsSpawned", value2.IsSpawned);
 					valuesDictionary3.SetValue("LastVisitedTime", value2.LastVisitedTime.Value);
-					ValuesDictionary v = [];
+					/*ValuesDictionary v = [];
 					SaveSpawnsData(v, value2.SpawnsData);
-					valuesDictionary3.SetValue("SpawnsData", v);
-				}
+					valuesDictionary3.SetValue("SpawnsData", v);*/
+                    string text = this.SaveSpawnsData(value2.SpawnsData);
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        valuesDictionary3.SetValue<string>("SpawnsData", text);
+                    }
+                }
 			}
 		}
 
@@ -283,7 +276,7 @@ namespace Game
 					TemplateName = item.Entity.ValuesDictionary.DatabaseObject.Name,
 					Position = item.ComponentFrame.Position,
 					ConstantSpawn = item.ComponentCreature?.ConstantSpawn ?? false,
-					Data = []
+					Data = string.Empty
 				};
 				ModsManager.HookAction("OnSaveSpawnData", (ModLoader loader) => { loader.OnSaveSpawnData(item, data); return true; });
 				GetOrCreateSpawnChunk(point).SpawnsData.Add(data);
@@ -313,8 +306,8 @@ namespace Game
 				return null;
 			}
 		}
-
-		public virtual void LoadSpawnsData(ValuesDictionary loadData, List<SpawnEntityData> creaturesData)
+        [Obsolete]
+        public virtual void LoadSpawnsData(ValuesDictionary loadData, List<SpawnEntityData> creaturesData)
 		{
 			foreach (ValuesDictionary item in loadData.Values)
 			{
@@ -322,11 +315,42 @@ namespace Game
 				data.ConstantSpawn = item.GetValue<bool>("c");
 				data.Position = item.GetValue<Vector3>("p");
 				data.TemplateName = item.GetValue<string>("n");
-				data.Data = item.GetValue<ValuesDictionary>("d");
+				data.Data = item.GetValue<string>("d");
 				creaturesData.Add(data);
 			}
-		}
-
+        }
+        public virtual void LoadSpawnsData(string data, List<SpawnEntityData> creaturesData)
+        {
+            string[] array = data.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < array.Length; i++)
+            {
+                string[] array2 = array[i].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (array2.Length < 4)
+                {
+                    throw new InvalidOperationException("Invalid spawn data string.");
+                }
+                SpawnEntityData spawnEntityData = new SpawnEntityData
+                {
+                    TemplateName = array2[0],
+                    Position = new Vector3
+                    {
+                        X = float.Parse(array2[1], CultureInfo.InvariantCulture),
+                        Y = float.Parse(array2[2], CultureInfo.InvariantCulture),
+                        Z = float.Parse(array2[3], CultureInfo.InvariantCulture)
+                    }
+                };
+                if (array2.Length >= 5)
+                {
+                    spawnEntityData.ConstantSpawn = bool.Parse(array2[4]);
+                }
+                if (array2.Length >= 6)
+                {
+                    spawnEntityData.Data = array2[5];
+                }
+                creaturesData.Add(spawnEntityData);
+            }
+        }
+        [Obsolete]
 		public virtual void SaveSpawnsData(ValuesDictionary saveData, List<SpawnEntityData> spawnsData)
 		{
 			int i = 0;
@@ -340,5 +364,28 @@ namespace Game
 				saveData.SetValue($"{i++}", v2);
 			}
 		}
-	}
+        public virtual string SaveSpawnsData(List<SpawnEntityData> spawnsData)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (SpawnEntityData spawnEntityData in spawnsData)
+            {
+                stringBuilder.Append(spawnEntityData.TemplateName);
+                stringBuilder.Append(',');
+                stringBuilder.Append((MathF.Round(spawnEntityData.Position.X * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
+                stringBuilder.Append(',');
+                stringBuilder.Append((MathF.Round(spawnEntityData.Position.Y * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
+                stringBuilder.Append(',');
+                stringBuilder.Append((MathF.Round(spawnEntityData.Position.Z * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
+                stringBuilder.Append(',');
+                stringBuilder.Append(spawnEntityData.ConstantSpawn.ToString());
+				if(spawnEntityData.Data.Length > 0)
+				{
+                    stringBuilder.Append(',');
+                    stringBuilder.Append(spawnEntityData.Data);
+                }
+                stringBuilder.Append(';');
+            }
+            return stringBuilder.ToString();
+        }
+    }
 }
