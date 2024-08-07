@@ -315,8 +315,16 @@ namespace Game
 				data.ConstantSpawn = item.GetValue<bool>("c");
 				data.Position = item.GetValue<Vector3>("p");
 				data.TemplateName = item.GetValue<string>("n");
-				data.Data = item.GetValue<string>("d");
-				creaturesData.Add(data);
+                object obj = item.GetValue("d", new object());
+                if (obj is string str)
+                {
+					data.Data = str;
+				}
+				else
+				{
+					data.Data = string.Empty;
+				}
+                creaturesData.Add(data);
 			}
         }
         public virtual void LoadSpawnsData(string data, List<SpawnEntityData> creaturesData)
