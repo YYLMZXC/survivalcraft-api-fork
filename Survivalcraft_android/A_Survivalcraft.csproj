@@ -1298,6 +1298,9 @@
     <Compile Include="..\Survivalcraft\Game\AndGateElectricElement.cs">
       <Link>Game\AndGateElectricElement.cs</Link>
     </Compile>
+	  <Compile Include="..\Survivalcraft\Game\ArrayCache.cs">
+		  <Link>Game\ArrayCache.cs</Link>
+	  </Compile>
     <Compile Include="..\Survivalcraft\Game\AStar.cs">
       <Link>Game\AStar.cs</Link>
     </Compile>
@@ -1889,6 +1892,9 @@
     <Compile Include="..\Survivalcraft\Game\TerrainChunkGeometry.cs">
       <Link>Game\TerrainChunkGeometry.cs</Link>
     </Compile>
+	  <Compile Include="..\Survivalcraft\Game\TerrainChunkSliceGeometry.cs">
+		  <Link>Game\TerrainChunkSliceGeometry.cs</Link>
+	  </Compile>
     <Compile Include="..\Survivalcraft\Game\TerrainChunkState.cs">
       <Link>Game\TerrainChunkState.cs</Link>
     </Compile>
@@ -1910,6 +1916,9 @@
     <Compile Include="..\Survivalcraft\Game\TerrainGeometry.cs">
       <Link>Game\TerrainGeometry.cs</Link>
     </Compile>
+	  <Compile Include="..\Survivalcraft\Game\TerrainGeometryDynamicArray.cs">
+		  <Link>Game\TerrainGeometryDynamicArray.cs</Link>
+	  </Compile>
     <Compile Include="..\Survivalcraft\Game\TerrainGeometrySubset.cs">
       <Link>Game\TerrainGeometrySubset.cs</Link>
     </Compile>

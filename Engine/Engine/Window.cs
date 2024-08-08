@@ -275,6 +275,8 @@ namespace Engine
         public static event Action<UnhandledExceptionInfo> UnhandledException;
 
         public static event Action<Uri> HandleUri;
+
+        public static event Action LowMemory;
 #if desktop
 
         static Window()

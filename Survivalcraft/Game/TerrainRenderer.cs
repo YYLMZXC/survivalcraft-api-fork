@@ -57,7 +57,7 @@ namespace Game
 				{
 					if (terrainChunk.Geometry != null)
 					{
-						foreach (TerrainChunkGeometry.Buffer buffer in terrainChunk.Buffers)
+						foreach (TerrainChunkGeometry.Buffer buffer in terrainChunk.Geometry.Buffers)
 						{
 							num += buffer.VertexBuffer?.GetGpuMemoryUsage() ?? 0;
 							num += buffer.IndexBuffer?.GetGpuMemoryUsage() ?? 0;
@@ -100,8 +100,7 @@ namespace Game
 						}
 					}
 				}
-				terrainChunk.DrawDistanceSquared = Vector2.DistanceSquared(xZ, terrainChunk.Center);
-				if (terrainChunk.DrawDistanceSquared <= num)
+				if (terrainChunk.Geometry.Buffers.Count > 0 && (double)Vector2.DistanceSquared(xZ, terrainChunk.Center) <= (double)num)
 				{
 					if (viewFrustum.Intersection(terrainChunk.BoundingBox))
 					{
@@ -137,7 +136,7 @@ namespace Game
 		public void DrawOpaque(Camera camera)
 		{
 			int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
-			Vector3 viewPosition = camera.ViewPosition;
+			Vector3 viewPosition = camera.InvertedViewMatrix.Translation;
 			Vector3 v = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			Display.BlendState = BlendState.Opaque;
@@ -146,7 +145,8 @@ namespace Game
 			OpaqueShader.GetParameter("u_origin", true).SetValue(v.XZ);
 			OpaqueShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
 			OpaqueShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
-			OpaqueShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+            OpaqueShader.GetParameter("u_texture").SetValue(this.m_subsystemAnimatedTextures.AnimatedBlocksTexture);
+            OpaqueShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
 			OpaqueShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			OpaqueShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 			ShaderParameter parameter = OpaqueShader.GetParameter("u_fogStartInvLength", true);
@@ -176,7 +176,7 @@ namespace Game
 				{
 					num3 |= 8;
 				}
-				DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk, num3);
+				DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk.Geometry, num3);
 				ChunksDrawn++;
 			}
 		}
@@ -184,7 +184,7 @@ namespace Game
 		public void DrawAlphaTested(Camera camera)
 		{
 			int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
-			Vector3 viewPosition = camera.ViewPosition;
+			Vector3 viewPosition = camera.InvertedViewMatrix.Translation;
 			Vector3 v = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			Display.BlendState = BlendState.Opaque;
@@ -193,6 +193,7 @@ namespace Game
 			AlphatestedShader.GetParameter("u_origin", true).SetValue(v.XZ);
 			AlphatestedShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
 			AlphatestedShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
+            AlphatestedShader.GetParameter("u_texture").SetValue(this.m_subsystemAnimatedTextures.AnimatedBlocksTexture);
 			AlphatestedShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
 			AlphatestedShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			AlphatestedShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
@@ -205,14 +206,14 @@ namespace Game
 				float num2 = MathF.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
 				parameter.SetValue(new Vector2(num2, 1f / (num - num2)));
 				int subsetsMask = 32;
-				DrawTerrainChunkGeometrySubsets(AlphatestedShader, terrainChunk, subsetsMask);
+				DrawTerrainChunkGeometrySubsets(AlphatestedShader, terrainChunk.Geometry, subsetsMask);
 			}
 		}
 
 		public void DrawTransparent(Camera camera)
 		{
 			int gameWidgetIndex = camera.GameWidget.GameWidgetIndex;
-			Vector3 viewPosition = camera.ViewPosition;
+			Vector3 viewPosition = camera.InvertedViewMatrix.Translation;
 			Vector3 v = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
 			Display.BlendState = BlendState.AlphaBlend;
@@ -221,7 +222,8 @@ namespace Game
 			TransparentShader.GetParameter("u_origin", true).SetValue(v.XZ);
 			TransparentShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
 			TransparentShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
-			TransparentShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+            TransparentShader.GetParameter("u_texture").SetValue(this.m_subsystemAnimatedTextures.AnimatedBlocksTexture);
+            TransparentShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
 			TransparentShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			TransparentShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 			ShaderParameter parameter = TransparentShader.GetParameter("u_fogStartInvLength", true);
@@ -233,7 +235,7 @@ namespace Game
 				float num2 = MathF.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
 				parameter.SetValue(new Vector2(num2, 1f / (num - num2)));
 				int subsetsMask = 64;
-				DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk, subsetsMask);
+				DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk.Geometry, subsetsMask);
 			}
 		}
 
@@ -248,111 +250,71 @@ namespace Game
 			TerrainChunk[] allocatedChunks = m_subsystemTerrain.Terrain.AllocatedChunks;
 			foreach (TerrainChunk terrainChunk in allocatedChunks)
 			{
-				DisposeTerrainChunkGeometryVertexIndexBuffers(terrainChunk);
-			}
-		}
-
-		public void DisposeTerrainChunkGeometryVertexIndexBuffers(TerrainChunk chunk)
-		{
-			foreach (TerrainChunkGeometry.Buffer buffer in chunk.Buffers)
-			{
-				buffer.Dispose();
-			}
-			chunk.Buffers.Clear();
-			chunk.InvalidateSliceContentsHashes();
+                terrainChunk.Geometry.DisposeVertexIndexBuffers();
+            }
 		}
 
 		public void SetupTerrainChunkGeometryVertexIndexBuffers(TerrainChunk chunk)
 		{
-			DisposeTerrainChunkGeometryVertexIndexBuffers(chunk);
-			CompileDrawSubsets(chunk.Draws, chunk.Buffers);
-			chunk.CopySliceContentsHashes();
-		}
+            TerrainChunkGeometry geometry = chunk.Geometry;
+            geometry.DisposeVertexIndexBuffers();
+            int num1;
+            for (int index1 = 0; index1 < 112; index1 = num1)
+            {
+                int verticesCount = 0;
+                int indicesCount = 0;
+                for (num1 = index1; num1 < 112; ++num1)
+                {
+                    int index2 = num1 / 16;
+                    int index3 = num1 % 16;
+                    TerrainGeometrySubset subset = geometry.Slices[index3].Subsets[index2];
+                    if (num1 <= index1)
+                    {
+                        verticesCount += subset.Vertices.Count;
+                        indicesCount += subset.Indices.Count;
+                    }
+                    else
+                        break;
+                }
+                //if (verticesCount > (int)ushort.MaxValue)
+                //    Log.Warning("Max vertices count exceeded around ({0},{1},{2}), geometry will be corrupted ({3}/{4} vertices).", (object)chunk.Origin.X, (object)(num1 % 16 * 16), (object)chunk.Origin.Y, (object)verticesCount, (object)(int)ushort.MaxValue);
+                if (verticesCount > 0 && indicesCount > 0)
+                {
+                    TerrainChunkGeometry.Buffer buffer = new TerrainChunkGeometry.Buffer();
+                    geometry.Buffers.Add(buffer);
+                    buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, verticesCount);
+                    buffer.IndexBuffer = new IndexBuffer(IndexFormat.ThirtyTwoBits, indicesCount);
+                    int num2 = 0;
+                    int targetStartIndex = 0;
+                    for (int index4 = index1; index4 < num1; ++index4)
+                    {
+                        int index5 = index4 / 16;
+                        int index6 = index4 % 16;
+                        TerrainGeometrySubset subset = geometry.Slices[index6].Subsets[index5];
+                        if (index6 == 0 || index4 == index1)
+                            buffer.SubsetIndexBufferStarts[index5] = targetStartIndex;
+                        if (subset.Indices.Count > 0)
+                        {
+                            TerrainRenderer.m_tmpIndices.Count = subset.Indices.Count;
+                            TerrainRenderer.ShiftIndices(subset.Indices.Array, TerrainRenderer.m_tmpIndices.Array, num2, subset.Indices.Count);
+                            buffer.IndexBuffer.SetData<int>(TerrainRenderer.m_tmpIndices.Array, 0, TerrainRenderer.m_tmpIndices.Count, targetStartIndex);
+                            targetStartIndex += TerrainRenderer.m_tmpIndices.Count;
+                        }
+                        if (subset.Vertices.Count > 0)
+                        {
+                            buffer.VertexBuffer.SetData<TerrainVertex>(subset.Vertices.Array, 0, subset.Vertices.Count, num2);
+                            num2 += subset.Vertices.Count;
+                        }
+                        if (index6 == 15 || index4 == num1 - 1)
+                            buffer.SubsetIndexBufferEnds[index5] = targetStartIndex;
+                    }
+                }
+            }
+        }
 
-		public static void CompileDrawSubsets(Dictionary<Texture2D, TerrainGeometry[]> list, DynamicArray<TerrainChunkGeometry.Buffer> buffers, Func<TerrainVertex, TerrainVertex> vertexTransform = null)
+        public void DrawTerrainChunkGeometrySubsets(Shader shader, TerrainChunkGeometry geometry, int subsetsMask)
 		{
-			foreach (var item in list)
-			{
-				var geometry = item.Value;
-				int num = 0;
-				while (num < 112)
-				{
-					int num2 = 0;
-					int num3 = 0;
-					int i;
-					for (i = num; i < 112; i++)
-					{
-						int num4 = i / 16;
-						int num5 = i % 16;
-						TerrainGeometrySubset terrainGeometrySubset = geometry[num5].Subsets[num4];
-						if (vertexTransform != null)
-						{
-							var tmpList = new DynamicArray<TerrainVertex>();
-							for (int p = 0; p < terrainGeometrySubset.Vertices.Count; p++)
-							{
-								var vertex = vertexTransform(terrainGeometrySubset.Vertices[p]);
-								tmpList.Add(vertex);
-							}
-							terrainGeometrySubset.Vertices = tmpList;
-						}
-						int newVerticesCount;
-						try {
-                            newVerticesCount = checked(num2 + terrainGeometrySubset.Vertices.Count);
-						}
-						catch(Exception)
-						{
-							if(i > num) {
-                                break;
-                            }
-						}
-						num2 += terrainGeometrySubset.Vertices.Count;
-						num3 += terrainGeometrySubset.Indices.Count;
-					}
-					if (num2 > 0 && num3 > 0)
-					{
-						TerrainChunkGeometry.Buffer buffer = new();
-						buffer.Texture = item.Key;
-						buffers.Add(buffer);
-						buffer.VertexBuffer = new VertexBuffer(TerrainVertex.VertexDeclaration, num2);
-						buffer.IndexBuffer = new IndexBuffer(IndexFormat.ThirtyTwoBits, num3);
-						int num6 = 0;
-						int num7 = 0;
-						for (int j = num; j < i; j++)
-						{
-							int num8 = j / 16;
-							int num9 = j % 16;
-							TerrainGeometrySubset terrainGeometrySubset2 = geometry[num9].Subsets[num8];
-							if (num9 == 0 || j == num)
-							{
-								buffer.SubsetIndexBufferStarts[num8] = num7;
-							}
-							if (terrainGeometrySubset2.Indices.Count > 0)
-							{
-								m_tmpIndices.Count = terrainGeometrySubset2.Indices.Count;
-								ShiftIndices(terrainGeometrySubset2.Indices.Array, m_tmpIndices.Array, num6, terrainGeometrySubset2.Indices.Count);
-								buffer.IndexBuffer.SetData(m_tmpIndices.Array, 0, m_tmpIndices.Count, num7);
-								num7 += m_tmpIndices.Count;
-							}
-							if (terrainGeometrySubset2.Vertices.Count > 0)
-							{
-								buffer.VertexBuffer.SetData(terrainGeometrySubset2.Vertices.Array, 0, terrainGeometrySubset2.Vertices.Count, num6);
-								num6 += terrainGeometrySubset2.Vertices.Count;
-							}
-							if (num9 == 15 || j == i - 1)
-							{
-								buffer.SubsetIndexBufferEnds[num8] = num7;
-							}
-						}
-					}
-					num = i;
-				}
-			}
-		}
-
-
-		public void DrawTerrainChunkGeometrySubsets(Shader shader, TerrainChunk chunk, int subsetsMask, bool ApplyTexture = true)
-		{
-			foreach (TerrainChunkGeometry.Buffer buffer in chunk.Buffers)
+			foreach (TerrainChunkGeometry.Buffer buffer in geometry.Buffers)
 			{
 				int num = 2147483647;
 				int num2 = 0;
@@ -373,7 +335,6 @@ namespace Game
 					{
 						if (num2 > num)
 						{
-							if (ApplyTexture) shader.GetParameter("u_texture", true).SetValue(buffer.Texture);
 							Display.DrawIndexed(PrimitiveType.TriangleList, shader, buffer.VertexBuffer, buffer.IndexBuffer, num, num2 - num);
 							ChunkTrianglesDrawn += (num2 - num) / 3;
 							ChunkDrawCalls++;
@@ -381,14 +342,6 @@ namespace Game
 						num = 2147483647;
 					}
 				}
-			}
-		}
-
-		public void DrawTerrainChunkGeometrySubsets(Shader shader, TerrainChunkGeometry geometry, int subsetsMask, bool ApplyTexture = true)
-		{
-			if (geometry != null && geometry.TerrainChunk != null)
-			{
-				DrawTerrainChunkGeometrySubsets(shader, geometry.TerrainChunk, subsetsMask, ApplyTexture);
 			}
 		}
 

@@ -51,21 +51,11 @@ namespace Game
 
 		public TerrainChunkState? UpgradedState;
 
-		public float DrawDistanceSquared;
-
-		public int LightPropagationMask;
-
 		public int ModificationCounter;
 
 		public float[] FogEnds = new float[4];
 
-		public int[] SliceContentsHashes = new int[16];
-
-		public int[] GeneratedSliceContentsHashes = new int[16];
-
 		public bool AreBehaviorsNotified;
-
-		public object lockobj = new();
 
 		public bool IsLoaded;
 
@@ -73,13 +63,13 @@ namespace Game
 
 		public TerrainChunkGeometry Geometry = new();
 
-		public int[] Cells = new int[65536];
+		public int[] Cells;
 
-		public int[] Shafts = new int[256];
+		public int[] Shafts;
 
-		public Dictionary<Texture2D, TerrainGeometry[]> Draws = [];
+        public static ArrayCache<int> m_cellsCache = new ArrayCache<int>((IEnumerable<int>)new int[1] { 65536 }, 0.66f, 60f, 0.33f, 5f);
 
-		public DynamicArray<TerrainChunkGeometry.Buffer> Buffers = [];
+        public static ArrayCache<int> m_shaftsCache = new ArrayCache<int>((IEnumerable<int>)new int[1] { 256 }, 0.66f, 60f, 0.33f, 5f);
 
 		public DynamicArray<BrushPaint> m_brushPaints = [];
 
@@ -90,27 +80,19 @@ namespace Game
 			Origin = new Point2(x * 16, z * 16);
 			BoundingBox = new BoundingBox(new Vector3(Origin.X, 0f, Origin.Y), new Vector3(Origin.X + 16, 256f, Origin.Y + 16));
 			Center = new Vector2((float)Origin.X + 8f, (float)Origin.Y + 8f);
-			Geometry.TerrainChunk = this;
-		}
-		public void InvalidateSliceContentsHashes()
-		{
-			for (int i = 0; i < GeneratedSliceContentsHashes.Length; i++)
-			{
-				GeneratedSliceContentsHashes[i] = 0;
-			}
-		}
-		public void CopySliceContentsHashes()
-		{
-			for (int i = 0; i < GeneratedSliceContentsHashes.Length; i++)
-			{
-				GeneratedSliceContentsHashes[i] = SliceContentsHashes[i];
-			}
-		}
+            Cells = TerrainChunk.m_cellsCache.Rent(65536, true);
+            Shafts = TerrainChunk.m_shaftsCache.Rent(256, true);
+        }
 
 		public void Dispose()
 		{
-			for (int i = 0; i < Buffers.Count; i++) { Buffers[i].Dispose(); }
-		}
+            if (this.Geometry == null)
+                throw new InvalidOperationException();
+            this.Geometry.Dispose();
+            this.Geometry = (TerrainChunkGeometry)null;
+            TerrainChunk.m_cellsCache.Return(this.Cells);
+            TerrainChunk.m_shaftsCache.Return(this.Shafts);
+        }
 
 		public static bool IsCellValid(int x, int y, int z)
 		{

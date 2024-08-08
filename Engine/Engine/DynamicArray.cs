@@ -65,16 +65,19 @@ namespace Engine
 				}
 				if (value > 0)
 				{
-					T[] array = new T[value];
-					if (m_array != null)
+                    T[] array = this.Allocate(value);
+                    if (m_array != null)
 					{
 						System.Array.Copy(m_array, 0, array, 0, m_count);
-					}
+                        Free(this.m_array);
+                    }
 					m_array = array;
+                    return;
 				}
-				else
-				{
-					m_array = m_emptyArray;
+                if (this.m_array != DynamicArray<T>.m_emptyArray)
+                {
+                    Free(this.m_array);
+                    m_array = m_emptyArray;
 				}
 			}
 		}
@@ -160,7 +163,18 @@ namespace Engine
 		public void AddRange(IEnumerable<T> items)
 		{
 			ArgumentNullException.ThrowIfNull(items);
-			ICollection collection = items as ICollection;
+            IList<T> list = items as IList<T>;
+            if (list != null)
+            {
+                this.Capacity = MathUtils.Max(this.Capacity, this.Count + list.Count);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    this.m_array[this.m_count] = list[i];
+                    this.m_count++;
+                }
+                return;
+            }
+            ICollection collection = items as ICollection;
 			if (collection != null)
 			{
 				Capacity = MathUtils.Max(Capacity, Count + collection.Count);
@@ -183,12 +197,9 @@ namespace Engine
 		{
 			ArgumentNullException.ThrowIfNull(items);
 			Capacity = MathUtils.Max(Capacity, Count + items.Count);
-			for (int i = 0; i < items.Count; i++)
-			{
-				m_array[m_count] = items.Array[i];
-				m_count++;
-			}
-		}
+            System.Array.Copy(items.Array, 0, this.m_array, this.Count, items.Count);
+            this.Count += items.Count;
+        }
 
 		public bool Remove(T item)
 		{
@@ -209,8 +220,9 @@ namespace Engine
 				if (index < m_count)
 				{
 					System.Array.Copy(m_array, index + 1, m_array, index, m_count - index);
-				}
-				return;
+                }
+                this.m_array[this.m_count] = default(T);
+                return;
 			}
 			throw new IndexOutOfRangeException();
 		}
@@ -220,7 +232,8 @@ namespace Engine
 			if (m_count > 0)
 			{
 				m_count--;
-				return;
+                this.m_array[this.m_count] = default(T);
+                return;
 			}
 			throw new IndexOutOfRangeException();
 		}
@@ -246,13 +259,37 @@ namespace Engine
 				{
 					m_array[i++] = m_array[j++];
 				}
-			}
-			int result = m_count - i;
+            }
+            System.Array.Clear(this.m_array, i, this.m_count - i);
+            int result = m_count - i;
 			m_count = i;
 			return result;
 		}
+        public void RemoveRange(int index, int count)
+        {
+            if (index < 0 || count < 0 || this.m_count - index < count)
+            {
+                throw new IndexOutOfRangeException();
+            }
+            if (count > 0)
+            {
+                this.m_count -= count;
+                if (index < this.m_count)
+                {
+                    System.Array.Copy(this.m_array, index + count, this.m_array, index, this.m_count - index);
+                }
+                System.Array.Clear(this.m_array, this.m_count, count);
+            }
+        }
 
-		public void Insert(int index, T item)
+        public void RemoveRange(IEnumerable<T> items)
+        {
+            foreach (T t in items)
+            {
+                this.Remove(t);
+            }
+        }
+        public void Insert(int index, T item)
 		{
 			if (index <= m_count)
 			{
@@ -332,5 +369,14 @@ namespace Engine
 		{
 			System.Array.Copy(m_array, 0, array, arrayIndex, m_count);
 		}
-	}
+        protected virtual T[] Allocate(int capacity)
+        {
+            return new T[capacity];
+        }
+
+        // Token: 0x06000578 RID: 1400 RVA: 0x0000412B File Offset: 0x0000232B
+        protected virtual void Free(T[] array)
+        {
+        }
+    }
 }
