@@ -316,7 +316,7 @@ namespace Game
 				data.Position = item.GetValue<Vector3>("p");
 				data.TemplateName = item.GetValue<string>("n");
                 object obj = item.GetValue("d", new object());
-                if (obj is string str)
+                if (obj is string str && str != null)
                 {
 					data.Data = str;
 				}
@@ -354,6 +354,11 @@ namespace Game
                 if (array2.Length >= 6)
                 {
                     spawnEntityData.Data = array2[5];
+				}
+				else
+				{
+                    spawnEntityData.Data = string.Empty;
+
                 }
                 creaturesData.Add(spawnEntityData);
             }
@@ -386,7 +391,7 @@ namespace Game
                 stringBuilder.Append((MathF.Round(spawnEntityData.Position.Z * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
                 stringBuilder.Append(',');
                 stringBuilder.Append(spawnEntityData.ConstantSpawn.ToString());
-				if(spawnEntityData.Data.Length > 0)
+				if(spawnEntityData.Data?.Length > 0)
 				{
                     stringBuilder.Append(',');
                     stringBuilder.Append(spawnEntityData.Data);
