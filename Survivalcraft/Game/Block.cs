@@ -558,7 +558,7 @@ namespace Game
 		{
 			int dur = GetDurability(value);
 			int dag = GetDamage(value);
-			if (Durability > 0)
+			if (dur > 0)
 			{
 				return (dur - dag) / (float)dur;
 			}

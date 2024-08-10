@@ -645,5 +645,11 @@ namespace Game
 		{
 
 		}
+
+		public virtual int DamageItem(Block block, int oldValue, int damageCount, out bool skipVanilla)
+		{
+			skipVanilla = false;
+			return 0;
+		}
 	}
 }
