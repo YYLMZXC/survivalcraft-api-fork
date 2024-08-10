@@ -290,6 +290,7 @@ namespace Game
 			if (m_componentPlayer != null)
 			{
 				m_blockIconWidget.DrawBlockEnvironmentData.InWorldMatrix = m_componentPlayer.ComponentBody.Matrix;
+				m_blockIconWidget.DrawBlockEnvironmentData.owner = m_componentPlayer.Entity;
 			}
 			if (m_focus && !input.Press.HasValue)
 			{
