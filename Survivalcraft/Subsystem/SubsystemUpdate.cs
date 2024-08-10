@@ -44,7 +44,7 @@ namespace Game
 			set;
 		}
 
-		public void Update()
+		public virtual void Update()
 		{
 			for (int i = 0; i < UpdatesPerFrame; i++)
 			{
