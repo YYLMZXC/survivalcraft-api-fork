@@ -42,7 +42,6 @@ namespace Game
 			Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
 			if (m_geometry == null || cellValue != m_value || point != m_point)
             {
-                Utilities.Dispose<ComponentDiggingCracks.Geometry>(ref m_geometry);
                 m_geometry = new ComponentDiggingCracks.Geometry();
 				block.GenerateTerrainVertices(m_subsystemTerrain.BlockGeometryGenerator, m_geometry, cellValue, point.X, point.Y, point.Z);
 				m_point = point;

@@ -1,11 +1,10 @@
-using Engine;
 using Engine.Graphics;
 using System.Collections.Generic;
 
 namespace Game
 {
-	public class TerrainGeometry : IDisposable
-    {
+	public class TerrainGeometry
+	{
 		public TerrainGeometrySubset SubsetOpaque;
 
 		public TerrainGeometrySubset SubsetAlphaTest;
@@ -18,23 +17,71 @@ namespace Game
 
 		public TerrainGeometrySubset[] TransparentSubsetsByFace;
 
-        public void Dispose()
-        {
-            Utilities.Dispose<TerrainGeometrySubset>(ref this.SubsetOpaque);
-            Utilities.Dispose<TerrainGeometrySubset>(ref this.SubsetAlphaTest);
-            Utilities.Dispose<TerrainGeometrySubset>(ref this.SubsetTransparent);
-            for (int i = 0; i < this.OpaqueSubsetsByFace.Length; i++)
-            {
-                Utilities.Dispose<TerrainGeometrySubset>(ref this.OpaqueSubsetsByFace[i]);
-            }
-            for (int j = 0; j < this.AlphaTestSubsetsByFace.Length; j++)
-            {
-                Utilities.Dispose<TerrainGeometrySubset>(ref this.AlphaTestSubsetsByFace[j]);
-            }
-            for (int k = 0; k < this.TransparentSubsetsByFace.Length; k++)
-            {
-                Utilities.Dispose<TerrainGeometrySubset>(ref this.TransparentSubsetsByFace[k]);
-            }
-        }
-    }
+		public TerrainGeometrySubset[] Subsets;
+
+		public TerrainChunk terrainChunk;
+		
+		public Dictionary<Texture2D, TerrainGeometry[]> Draws = null;
+
+		public int slice;
+
+		public TerrainGeometry(Dictionary<Texture2D, TerrainGeometry[]> Draws, int slice = 0) { InitSubsets(); this.Draws = Draws; this.slice = slice; }
+
+		public TerrainGeometry()
+		{
+			InitSubsets();
+		}
+
+		public void InitSubsets()
+		{
+			Subsets = new TerrainGeometrySubset[7];
+			for (int i = 0; i < 7; i++) { Subsets[i] = new TerrainGeometrySubset(); }
+			SubsetOpaque = Subsets[4];
+			SubsetAlphaTest = Subsets[5];
+			SubsetTransparent = Subsets[6];
+			OpaqueSubsetsByFace = new TerrainGeometrySubset[6]
+			{
+					Subsets[0],
+					Subsets[1],
+					Subsets[2],
+					Subsets[3],
+					Subsets[4],
+					Subsets[4]
+			};
+			AlphaTestSubsetsByFace = new TerrainGeometrySubset[6]
+			{
+					Subsets[5],
+					Subsets[5],
+					Subsets[5],
+					Subsets[5],
+					Subsets[5],
+					Subsets[5]
+			};
+			TransparentSubsetsByFace = new TerrainGeometrySubset[6]
+			{
+					Subsets[6],
+					Subsets[6],
+					Subsets[6],
+					Subsets[6],
+					Subsets[6],
+					Subsets[6]
+			};
+		}
+
+		public TerrainGeometry GetGeometry(Texture2D texture)
+		{
+			if (terrainChunk.Draws.TryGetValue(texture, out var geometries)) return geometries[slice];
+			if (Draws.TryGetValue(texture, out geometries)) return geometries[slice];
+			else
+			{
+				var list = new TerrainGeometry[16];
+				for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(); t.slice = i; t.terrainChunk = terrainChunk; list[i] = t; }
+				terrainChunk.Draws.Add(texture, list);
+				for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(Draws, i); list[i] = t; }
+				Draws.Add(texture, list);
+				return list[slice];
+			}
+		}
+	}
 }
+

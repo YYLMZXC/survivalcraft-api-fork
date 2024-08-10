@@ -72,6 +72,14 @@ namespace Game
         public static ArrayCache<int> m_shaftsCache = new ArrayCache<int>((IEnumerable<int>)new int[1] { 256 }, 0.66f, 60f, 0.33f, 5f);
 
 		public DynamicArray<BrushPaint> m_brushPaints = [];
+		
+		public Dictionary<Texture2D, TerrainGeometry[]> Draws = new Dictionary<Texture2D, TerrainGeometry[]>();
+
+		public DynamicArray<TerrainChunkGeometry.Buffer> Buffers = new DynamicArray<TerrainChunkGeometry.Buffer>();
+
+		public int[] SliceContentsHashes = new int[16];
+
+		public int[] GeneratedSliceContentsHashes = new int[16];
 
 		public TerrainChunk(Terrain terrain, int x, int z)
 		{
@@ -84,12 +92,33 @@ namespace Game
             Shafts = TerrainChunk.m_shaftsCache.Rent(256, true);
         }
 
+		public void DisposeVertexIndexBuffers()
+		{
+			foreach (var b in Buffers)
+			{
+				b.IndexBuffer.Dispose();
+				b.VertexBuffer.Dispose();
+			}
+		}
+
+		public void InvalidateSliceContentsHashes()
+		{
+			for (int i = 0; i < GeneratedSliceContentsHashes.Length; i++)
+			{
+				GeneratedSliceContentsHashes[i] = 0;
+			}
+		}
+		public void CopySliceContentsHashes() {
+			for (int i = 0; i < GeneratedSliceContentsHashes.Length; i++)
+			{
+				GeneratedSliceContentsHashes[i] = SliceContentsHashes[i];
+			}
+		}
 		public void Dispose()
 		{
             if (this.Geometry == null)
                 throw new InvalidOperationException();
-            this.Geometry.Dispose();
-            this.Geometry = (TerrainChunkGeometry)null;
+            this.Geometry = null;
             TerrainChunk.m_cellsCache.Return(this.Cells);
             TerrainChunk.m_shaftsCache.Return(this.Shafts);
         }

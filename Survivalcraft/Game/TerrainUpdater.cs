@@ -441,7 +441,7 @@ namespace Game
 						chunkAtCoords.State = state;
 						if (forceGeometryRegeneration)
 						{
-							chunkAtCoords.Geometry.InvalidateSlicesGeometryHashes();
+							chunkAtCoords.InvalidateSliceContentsHashes();
                         }
 					}
 					chunkAtCoords.WasDowngraded = true;
@@ -459,7 +459,7 @@ namespace Game
 					terrainChunk.State = state;
 					if (forceGeometryRegeneration)
 					{
-						terrainChunk.Geometry.InvalidateSlicesGeometryHashes();
+						terrainChunk.InvalidateSliceContentsHashes();
 					}
 				}
 				terrainChunk.WasDowngraded = true;
@@ -1264,6 +1264,12 @@ namespace Game
         public void GenerateChunkVertices(TerrainChunk chunk, int stage)
 		{
             this.m_subsystemTerrain.BlockGeometryGenerator.ResetCache();
+            if (!chunk.Draws.TryGetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture, out var terrainGeometry))
+            {
+	            terrainGeometry = new TerrainGeometry[16];
+	            for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(chunk.Draws, i); terrainGeometry[i] = t; }
+	            chunk.Draws.Add(m_subsystemAnimatedTextures.AnimatedBlocksTexture, terrainGeometry);
+            }
             TerrainChunk chunkAtCoords1 = this.m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y - 1);
             TerrainChunk chunkAtCoords2 = this.m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y - 1);
             TerrainChunk chunkAtCoords3 = this.m_terrain.GetChunkAtCoords(chunk.Coords.X + 1, chunk.Coords.Y - 1);
@@ -1288,19 +1294,24 @@ namespace Game
             {
                 if (index % 2 == stage)
                 {
-                    TerrainChunkSliceGeometry slice = chunk.Geometry.Slices[index];
-                    if (slice.GeometryHash != 0 && slice.GeometryHash == slice.ContentsHash)
-                    {
-                        ++this.m_statistics.SkippedSlices;
-                    }
+	                chunk.SliceContentsHashes[index] = CalculateChunkSliceContentsHash(chunk, index);
+	                int generateHash = chunk.GeneratedSliceContentsHashes[index];
+	                if (generateHash != 0 && generateHash == chunk.SliceContentsHashes[index])
+	                {
+		                m_statistics.SkippedSlices++;
+	                }
                     else
                     {
                         ++this.m_statistics.GeneratedSlices;
-                        slice.GeometryHash = 0;
-                        foreach (TerrainGeometrySubset subset in slice.Subsets)
+                        chunk.SliceContentsHashes[index] = 0;
+                        foreach (var c in chunk.Draws)
                         {
-                            subset.Vertices.Count = 0;
-                            subset.Indices.Count = 0;
+	                        var subsets = c.Value[index].Subsets;
+	                        for (int p = 0; p < subsets.Length; p++)
+	                        {
+		                        subsets[p].Vertices.Clear(); 
+		                        subsets[p].Indices.Clear();
+	                        }
                         }
                         for (int x1 = num1; x1 < num3; ++x1)
                         {
@@ -1329,13 +1340,12 @@ namespace Game
                                             int cellValueFast = chunk.GetCellValueFast(cellIndex + y);
                                             int contents = Terrain.ExtractContents(cellValueFast);
                                             if (contents != 0)
-                                                BlocksManager.Blocks[contents].GenerateTerrainVertices(this.m_subsystemTerrain.BlockGeometryGenerator, (TerrainGeometry)chunk.Geometry.Slices[index], cellValueFast, x2, y, z2);
+                                                BlocksManager.Blocks[contents].GenerateTerrainVertices(this.m_subsystemTerrain.BlockGeometryGenerator, terrainGeometry[index], cellValueFast, x2, y, z2);
                                         }
                                         break;
                                 }
                             }
                         }
-                        slice.GeometryHash = slice.ContentsHash;
                     }
                 }
             }
@@ -1351,7 +1361,7 @@ namespace Game
             TerrainChunkGeometry geometry = chunk.Geometry;
             for (int i = 0; i < 16; i++)
             {
-                geometry.Slices[i].ContentsHash = num;
+                chunk.SliceContentsHashes[i] = num;
             }
             int num2 = chunk.Origin.X - 1;
             int num3 = chunk.Origin.X + 16 + 1;
@@ -1398,7 +1408,7 @@ namespace Game
                             }
                             num19 += num20;
                             num19 *= 31;
-                            geometry.Slices[l].ContentsHash += num19;
+                            chunk.SliceContentsHashes[l] += num19;
                         }
                     }
                 }
