@@ -148,6 +148,7 @@ namespace Game
 						m_drawBlockEnvironmentData.Light = m_itemLight;
 						m_drawBlockEnvironmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
 						m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(num5);
+						m_drawBlockEnvironmentData.owner = m_entity;
 						block.DrawBlock(m_primitivesRenderer, m_value, Color.White, block.GetFirstPersonScale(m_value), ref matrix, m_drawBlockEnvironmentData);
 						m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
 					}

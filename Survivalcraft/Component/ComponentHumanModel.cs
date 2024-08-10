@@ -391,6 +391,7 @@ namespace Game
 				m_drawBlockEnvironmentData.Light = m_subsystemTerrain.Terrain.GetCellLight(x, y, z);
 				m_drawBlockEnvironmentData.BillboardDirection = -Vector3.UnitZ;
 				m_drawBlockEnvironmentData.SubsystemTerrain = m_subsystemTerrain;
+				m_drawBlockEnvironmentData.owner = m_entity;
 				Matrix matrix2 = matrix * camera.ViewMatrix;
 				block.DrawBlock(m_subsystemModelsRenderer.PrimitivesRenderer, m_componentMiner.ActiveBlockValue, Color.White, block.GetInHandScale(m_componentMiner.ActiveBlockValue), ref matrix2, m_drawBlockEnvironmentData);
 			}
