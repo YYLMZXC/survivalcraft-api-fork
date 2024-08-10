@@ -4,23 +4,23 @@ namespace Game
 {
 	public class TerrainGeometrySubset : IDisposable
     {
-		public TerrainGeometryDynamicArray<TerrainVertex> Vertices = [];
+		public DynamicArray<TerrainVertex> Vertices = [];
 
-		public TerrainGeometryDynamicArray<int> Indices = [];
+		public DynamicArray<int> Indices = [];
 
 		public TerrainGeometrySubset()
 		{
 		}
 
-		public TerrainGeometrySubset(TerrainGeometryDynamicArray<TerrainVertex> vertices, TerrainGeometryDynamicArray<int> indices)
+		public TerrainGeometrySubset(DynamicArray<TerrainVertex> vertices, DynamicArray<int> indices)
 		{
 			Vertices = vertices;
 			Indices = indices;
 		}
         public void Dispose()
         {
-            Utilities.Dispose<TerrainGeometryDynamicArray<TerrainVertex>>(ref this.Vertices);
-            Utilities.Dispose<TerrainGeometryDynamicArray<int>>(ref this.Indices);
+	        Vertices.Clear();
+	        Indices.Clear();
         }
     }
 }

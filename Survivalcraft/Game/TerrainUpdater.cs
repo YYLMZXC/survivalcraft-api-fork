@@ -602,8 +602,9 @@ namespace Game
 						}
 					}
 				}
-				catch (Exception)
+				catch (Exception e)
 				{
+					Log.Error(e.Message);
 				}
 				finally
 				{
@@ -1299,51 +1300,50 @@ namespace Game
 	                if (generateHash != 0 && generateHash == chunk.SliceContentsHashes[index])
 	                {
 		                m_statistics.SkippedSlices++;
-	                }
-                    else
+		                continue;
+	                } 
+	                ++this.m_statistics.GeneratedSlices;
+                    foreach (var c in chunk.Draws)
                     {
-                        ++this.m_statistics.GeneratedSlices;
-                        chunk.SliceContentsHashes[index] = 0;
-                        foreach (var c in chunk.Draws)
+                        var subsets = c.Value[index].Subsets;
+                        for (int p = 0; p < subsets.Length; p++)
                         {
-	                        var subsets = c.Value[index].Subsets;
-	                        for (int p = 0; p < subsets.Length; p++)
-	                        {
-		                        subsets[p].Vertices.Clear(); 
-		                        subsets[p].Indices.Clear();
-	                        }
+	                        subsets[p].Vertices.Clear(); 
+	                        subsets[p].Indices.Clear();
                         }
-                        for (int x1 = num1; x1 < num3; ++x1)
+                    }
+                    for (int x1 = num1; x1 < num3; ++x1)
+                    {
+                        for (int z1 = num2; z1 < num4; ++z1)
                         {
-                            for (int z1 = num2; z1 < num4; ++z1)
+                            switch (x1)
                             {
-                                switch (x1)
-                                {
-                                    case 0:
-                                        if (z1 == 0 && chunkAtCoords1 == null || z1 == 15 && chunkAtCoords6 == null)
-                                            break;
-                                        goto default;
-                                    case 15:
-                                        if (z1 == 0 && chunkAtCoords3 == null || z1 == 15 && chunkAtCoords8 == null)
-                                            break;
-                                        goto default;
-                                    default:
-                                        int x2 = x1 + chunk.Origin.X;
-                                        int z2 = z1 + chunk.Origin.Y;
-                                        int x2_1 = MathUtils.Min(chunk.GetBottomHeightFast(x1, z1) - 1, MathUtils.Min(this.m_terrain.GetBottomHeight(x2 - 1, z2), this.m_terrain.GetBottomHeight(x2 + 1, z2), this.m_terrain.GetBottomHeight(x2, z2 - 1), this.m_terrain.GetBottomHeight(x2, z2 + 1)));
-                                        int x2_2 = chunk.GetTopHeightFast(x1, z1) + 1;
-                                        int num5 = MathUtils.Max(16 * index, x2_1, 1);
-                                        int num6 = MathUtils.Min(16 * (index + 1), x2_2, (int)byte.MaxValue);
-                                        int cellIndex = TerrainChunk.CalculateCellIndex(x1, 0, z1);
-                                        for (int y = num5; y < num6; ++y)
-                                        {
-                                            int cellValueFast = chunk.GetCellValueFast(cellIndex + y);
-                                            int contents = Terrain.ExtractContents(cellValueFast);
-                                            if (contents != 0)
-                                                BlocksManager.Blocks[contents].GenerateTerrainVertices(this.m_subsystemTerrain.BlockGeometryGenerator, terrainGeometry[index], cellValueFast, x2, y, z2);
-                                        }
+                                case 0:
+                                    if (z1 == 0 && chunkAtCoords1 == null || z1 == 15 && chunkAtCoords6 == null)
                                         break;
-                                }
+                                    goto default;
+                                case 15:
+                                    if (z1 == 0 && chunkAtCoords3 == null || z1 == 15 && chunkAtCoords8 == null)
+                                        break;
+                                    goto default;
+                                default:
+                                    int x2 = x1 + chunk.Origin.X;
+                                    int z2 = z1 + chunk.Origin.Y;
+                                    int x2_1 = MathUtils.Min(chunk.GetBottomHeightFast(x1, z1) - 1, MathUtils.Min(this.m_terrain.GetBottomHeight(x2 - 1, z2), this.m_terrain.GetBottomHeight(x2 + 1, z2), this.m_terrain.GetBottomHeight(x2, z2 - 1), this.m_terrain.GetBottomHeight(x2, z2 + 1)));
+                                    int x2_2 = chunk.GetTopHeightFast(x1, z1) + 1;
+                                    int num5 = MathUtils.Max(16 * index, x2_1, 1);
+                                    int num6 = MathUtils.Min(16 * (index + 1), x2_2, (int)byte.MaxValue);
+                                    int cellIndex = TerrainChunk.CalculateCellIndex(x1, 0, z1);
+                                    for (int y = num5; y < num6; ++y)
+                                    {
+                                        int cellValueFast = chunk.GetCellValueFast(cellIndex + y);
+                                        int contents = Terrain.ExtractContents(cellValueFast);
+                                        if (contents != 0)
+                                        {
+	                                        BlocksManager.Blocks[contents].GenerateTerrainVertices(this.m_subsystemTerrain.BlockGeometryGenerator, terrainGeometry[index], cellValueFast, x2, y, z2);
+                                        }
+                                    }
+                                    break;
                             }
                         }
                     }
