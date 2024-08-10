@@ -679,5 +679,11 @@ namespace Game
 		public virtual void WindowModeChanged(WindowMode mode)
 		{
 		}
+
+		public virtual int DamageItem(Block block, int oldValue, int damageCount, out bool skipVanilla)
+		{
+			skipVanilla = false;
+			return 0;
+		}
 	}
 }

@@ -424,10 +424,19 @@ namespace Game
 		{
 			int num = Terrain.ExtractContents(value);
 			Block block = Blocks[num];
-			if (block.Durability >= 0)
+			int result = 0;
+			bool skipVanilla = false;
+            ModsManager.HookAction("DamageItem", modLoader =>
+            {
+                result = modLoader.DamageItem(block, value, damageCount, out skipVanilla);
+				return false;
+            });
+			if (skipVanilla) return result;
+            int durability = block.GetDurability(value);
+			if (durability >= 0)
 			{
 				int num2 = block.GetDamage(value) + damageCount;
-				if (num2 <= block.Durability)
+				if (num2 <= durability)
 				{
 					return block.SetDamage(value, num2);
 				}
