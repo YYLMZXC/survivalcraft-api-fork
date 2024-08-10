@@ -46,6 +46,8 @@ namespace Game
 
 		public ComponentPlayer m_componentPlayer;
 
+		public Entity m_entity;
+
 		public bool HideBlockIcon
 		{
 			get;
@@ -273,7 +275,8 @@ namespace Game
 			m_slotIndex = slotIndex;
 			m_subsystemTerrain = inventory?.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
 			m_componentPlayer = inventory is Component ? ((Component)inventory).Entity.FindComponent<ComponentPlayer>() : null;
-			m_blockIconWidget.DrawBlockEnvironmentData.SubsystemTerrain = m_subsystemTerrain;
+			m_entity = inventory is Component ? ((Component)inventory).Entity : null;
+            m_blockIconWidget.DrawBlockEnvironmentData.SubsystemTerrain = m_subsystemTerrain;
 		}
 
 		public override void Update()
@@ -290,9 +293,9 @@ namespace Game
 			if (m_componentPlayer != null)
 			{
 				m_blockIconWidget.DrawBlockEnvironmentData.InWorldMatrix = m_componentPlayer.ComponentBody.Matrix;
-				m_blockIconWidget.DrawBlockEnvironmentData.owner = m_componentPlayer.Entity;
-			}
-			if (m_focus && !input.Press.HasValue)
+            }
+            m_blockIconWidget.DrawBlockEnvironmentData.owner = m_entity;
+            if (m_focus && !input.Press.HasValue)
 			{
 				m_focus = false;
 			}
