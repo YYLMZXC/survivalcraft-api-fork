@@ -651,5 +651,14 @@ namespace Game
 			skipVanilla = false;
 			return 0;
 		}
+
+		public virtual void OnProjectileUpdate(Projectile projectile, SubsystemProjectiles subsystemProjectiles, float dt, out bool skipVanilla)
+		{
+			skipVanilla = false;
+		}
+
+		public virtual void OnPickableUpdate(Pickable pickable, SubsystemPickables subsystemPickables, float dt, out bool skipVanilla) {
+			skipVanilla = false; 
+		}
 	}
 }

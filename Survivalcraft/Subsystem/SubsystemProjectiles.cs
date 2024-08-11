@@ -192,7 +192,15 @@ namespace Game
 			double totalElapsedGameTime = m_subsystemGameInfo.TotalElapsedGameTime;
 			foreach (Projectile projectile in m_projectiles)
 			{
-				if (projectile.ToRemove)
+				bool skipVanilla_ = false;
+                ModsManager.HookAction("OnProjectileUpdate", loader =>
+                {
+					loader.OnProjectileUpdate(projectile, this, dt, out bool skipVanilla);
+                    skipVanilla_ |= skipVanilla;
+                    return false;
+                });
+                if (skipVanilla_) continue;
+                if (projectile.ToRemove)
 				{
 					m_projectilesToRemove.Add(projectile);
 				}

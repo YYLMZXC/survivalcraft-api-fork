@@ -145,7 +145,15 @@ namespace Game
 			}
 			foreach (Pickable pickable in m_pickables)
 			{
-				if (pickable.ToRemove)
+                bool skipVanilla_ = false;
+                ModsManager.HookAction("OnPickableUpdate", loader =>
+                {
+                    loader.OnPickableUpdate(pickable, this, dt, out bool skipVanilla);
+                    skipVanilla_ |= skipVanilla;
+                    return false;
+                });
+                if (skipVanilla_) continue;
+                if (pickable.ToRemove)
 				{
 					m_pickablesToRemove.Add(pickable);
 				}
