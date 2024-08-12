@@ -167,7 +167,8 @@ namespace Game
 
 		public override IEnumerable<int> GetCreativeValues()
 		{
-			foreach (EggType eggType in m_eggTypes.Values)
+			EggType[] eggs = m_eggTypes.OrderBy(pair => pair.Key).Select(pair => pair.Value).ToArray();
+            foreach (EggType eggType in eggs)
 			{
 				if (eggType == null) continue;
 				if (eggType.ShowEgg)
