@@ -195,7 +195,7 @@ public static class ModsManager
         }
     }
 #endif
-	public static T GetInPakOrStorageFile<T>(string filepath, string suffix = ".txt") where T : class
+	public static T GetInPakOrStorageFile<T>(string filepath, string suffix = "txt") where T : class
 	{
 		//string storagePath = Storage.CombinePaths(ExternelPath, filepath + prefix);
 		return ContentManager.Get<T>(filepath, suffix);

@@ -12,7 +12,7 @@ namespace Game
 			string shaderText = string.Empty;
 			string[] parameters = fname.Split('.');
 			if (parameters.Length > 1)
-				shaderText = ModsManager.GetInPakOrStorageFile<string>(parameters[0], "." + parameters[1]);
+				shaderText = ModsManager.GetInPakOrStorageFile<string>(parameters[0], parameters[1]);
 			return shaderText;
 		}
 
