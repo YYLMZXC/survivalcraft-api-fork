@@ -85,7 +85,7 @@ namespace Game
 			lock (syncObj)
 			{
 				object obj = null;
-				string key = suffix == null ? name : name + "." + suffix;
+				string key = suffix == null ? name : name + (suffix.StartsWith('.') ? suffix : ('.' + suffix));
 				if (type == typeof(Subtexture))
 				{
 					return TextureAtlasManager.GetSubtexture(name);

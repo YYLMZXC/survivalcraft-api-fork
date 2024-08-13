@@ -21,7 +21,7 @@ namespace Game
 
 		public int Light;
 
-		public Entity owner;	//在绘制的时候，可以读取该方块的拥有者。在渲染InventorySlotWidget, ComponentFirstPersonModel, ComponentHumanModel中用到
+		public Entity Owner;	//在绘制的时候，可以读取该方块的拥有者。在渲染InventorySlotWidget, ComponentFirstPersonModel, ComponentHumanModel中用到
 
 		public DrawBlockEnvironmentData()
 		{

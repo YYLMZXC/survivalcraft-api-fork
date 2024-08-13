@@ -294,7 +294,7 @@ namespace Game
 			{
 				m_blockIconWidget.DrawBlockEnvironmentData.InWorldMatrix = m_componentPlayer.ComponentBody.Matrix;
             }
-            m_blockIconWidget.DrawBlockEnvironmentData.owner = m_entity;
+            m_blockIconWidget.DrawBlockEnvironmentData.Owner = m_entity;
             if (m_focus && !input.Press.HasValue)
 			{
 				m_focus = false;
