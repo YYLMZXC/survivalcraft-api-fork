@@ -48,15 +48,15 @@
         <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     </PropertyGroup>
     <ItemGroup>
-        <Content Include="Content\icon.ico"/>
+        <Content Include="Content\icon.ico" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Jint" Version="4.0.0" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0-preview.6.24327.7" />
+        <PackageReference Include="Jint" Version="4.0.1" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0-preview.7.24405.7" />
         <PackageReference Include="TextCopy" Version="6.2.1" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs"/>
+        <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs" />
         <EmbeddedResource Include="init.js">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
@@ -76,8 +76,8 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\external\ImeSharp\ImeSharp\ImeSharp.csproj" />
-        <Using Include="System.IO"/>
-        <ProjectReference Include="..\EntitySystem\EntitySystem.csproj"/>
+        <Using Include="System.IO" />
+        <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
     </ItemGroup>
     <PropertyGroup>
         <PreBuildEvent>set p=$(SolutionDir)
@@ -92,5 +92,5 @@
         <Title>BaseOFsc</Title>
         <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
-    <ProjectExtensions/>
+    <ProjectExtensions />
 </Project>

@@ -28,6 +28,7 @@ namespace Game
         public static float LastCpuFrameTime { get; set; }
 
         public static event Action<Uri> HandleUri;
+        public static string Title = "生存战争2.3插件版_";
 
 #if desktop
 		private static void Main(string[] args)
@@ -91,6 +92,7 @@ namespace Game
             Log.AddLogSink(new GameLogSink());
 #if DEBUG
             Log.AddLogSink(new ConsoleLogSink());
+            Title = "[DEBUG]" + Title;
 #endif
             Window.HandleUri += HandleUriHandler;
             Window.Deactivated += DeactivatedHandler;
@@ -103,7 +105,7 @@ namespace Game
             };
             JsInterface.Initiate();
             Window.Run(0, 0, WindowMode.Resizable,
-                "生存战争2.3插件版_" + ModsManager.ApiVersionString);
+                 Title+ ModsManager.ApiVersionString);
         }
 
         public static void HandleUriHandler(Uri uri)
