@@ -450,16 +450,17 @@ namespace Game
 		public static void Initialize()
 		{
 			DisplayLog = false;
-			VisibilityRange = 128;
+
 			m_resolutionMode = ResolutionMode.High;
+			VisibilityRange = 128;
 			ViewAngleMode = ViewAngleMode.Normal;
-			SkyRenderingMode = SkyRenderingMode.Full;
 			TerrainMipmapsEnabled = false;
+			SkyRenderingMode = SkyRenderingMode.Full;
 			ObjectsShadowsEnabled = true;
+			PresentationInterval = 1;
 			m_soundsVolume = 1.0f;
 			m_musicVolume = 0.2f;
 			m_brightness = 0.8f;
-			PresentationInterval = 1;
 			ShowGuiInScreenshots = false;
 			ShowLogoInScreenshots = true;
 			ScreenshotSize = ScreenshotSize.ScreenSize;
@@ -481,9 +482,9 @@ namespace Game
 			LookSensitivity = 0.5f;
 			GamepadDeadZone = 0.16f;
 			GamepadCursorSpeed = 1f;
-			CreativeDigTime = 0.2f;
+			CreativeDigTime = 0.1f;
 			CreativeReach = 7.5f;
-			MinimumHoldDuration = 0.5f;
+			MinimumHoldDuration = 0.15f;
 			MinimumDragDistance = 10f;
 			HorizontalCreativeFlight = false;
 			DropboxAccessToken = string.Empty;
@@ -506,8 +507,7 @@ namespace Game
 			ScpboxUserInfo = string.Empty;
 			HorizontalCreativeFlight = true;
 			LoadSettings();
-			VersionsManager.CompareVersions(LastLaunchedVersion, "1.29");
-			_ = 0;
+			//VersionsManager.CompareVersions(LastLaunchedVersion, "1.29");
 			if (VersionsManager.CompareVersions(LastLaunchedVersion, "2.1") < 0)
 			{
 				MinimumDragDistance = 10f;
