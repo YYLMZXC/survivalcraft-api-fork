@@ -109,17 +109,16 @@ namespace Game
 					}
 					else
 					{
-						p = name + suffix;
-						if (Resources.TryGetValue(p, out ContentInfo contentInfo))
+						if (Resources.TryGetValue(key, out ContentInfo contentInfo))
 						{
 							contents.Add(contentInfo);
 						}
 					}
 					if (contents.Count == 0)
-					{//û���ҵ���Ӧ��Դ
+					{//没有找到对应资源
 						if (throwOnNotFound)
 						{
-							throw new Exception("Not Found Res [" + name + "][" + type.FullName + "]");
+							throw new Exception("Not Found Res [" + key + "][" + type.FullName + "]");
 						}
 						else
 						{
@@ -149,7 +148,7 @@ namespace Game
 			}
 		}
 		/// <summary>
-		/// ������Ҫ�����ļ���׺������ȡ����+��ȡ�ĺ�׺
+		/// 可能需要带上文件后缀，即获取名字+获取的后缀
 		/// </summary>
 		/// <param name="name"></param>
 		public static void Dispose(string name)

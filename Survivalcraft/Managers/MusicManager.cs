@@ -140,10 +140,7 @@ namespace Game
 					StopMusic();
 					m_fadeStartTime = Time.FrameStartTime + 2.0;
 					float volume = (m_fadeSound != null) ? 0f : Volume;
-					StreamingSource streamingSource = ContentManager.Get<StreamingSource>(name, ".flac", false);
-                    if (streamingSource == null) streamingSource = ContentManager.Get<StreamingSource>(name, ".wav", false);
-                    if (streamingSource == null) streamingSource = ContentManager.Get<StreamingSource>(name, ".ogg", false);
-                    if (streamingSource == null) streamingSource = ContentManager.Get<StreamingSource>(name, ".mp3", true);
+                    StreamingSource streamingSource = ContentManager.Get<StreamingSource>(name);
 					streamingSource = streamingSource.Duplicate();
 					streamingSource.Position = (long)(MathUtils.Saturate(startPercentage) * (streamingSource.BytesCount / streamingSource.ChannelsCount / 2)) / 16 * 16;
                     m_sound = new StreamingSound(streamingSource, volume, 1f, 0f, isLooped: false, disposeOnStop: true, 1f);
