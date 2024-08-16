@@ -5,6 +5,7 @@
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <Configurations>Debug;Release</Configurations>
+	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 	<DefineConstants>DEBUG;android</DefineConstants>
@@ -2897,6 +2898,9 @@
     <Compile Include="..\Survivalcraft\Widget\WidgetsList.cs">
       <Link>Widget\WidgetsList.cs</Link>
     </Compile>
+	  <Compile Include="..\Survivalcraft\IPostprocessExplosions.cs">
+		  <Link>IPostprocessExplosions.cs</Link>
+	  </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenTK-1.0.2moded">
