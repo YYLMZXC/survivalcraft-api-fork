@@ -403,8 +403,8 @@ namespace Game
 
 		public static int ExtractSunlightHeight(int value)
 		{
-			return (value & -16777216) >> 24;
-		}
+			return value >>> 24;
+        }
 
 		public static int ExtractHumidity(int value)
 		{
@@ -443,7 +443,7 @@ namespace Game
 
 		public static int ReplaceSunlightHeight(int value, int sunlightHeight)
 		{
-			return value ^ ((value ^ (sunlightHeight << 24)) & -16777216);
+			return (value & 16777215) | (sunlightHeight << 24);
 		}
 
 		public static int ReplaceHumidity(int value, int humidity)
