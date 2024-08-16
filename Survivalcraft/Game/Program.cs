@@ -42,14 +42,8 @@ namespace Game
             EntryPoint();
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
             {
-                var name = sender?.ToString();
-                if (name is null)
-                {
-                    return null;
-                }
-
                 var location = new FileInfo(typeof(Program).Assembly.Location).Directory!.FullName;
-                return Assembly.LoadFrom(Path.Combine(location, name));
+                return Assembly.LoadFrom(Path.Combine(location, e.Name));
             };
 
             //RootCommand rootCommand =
