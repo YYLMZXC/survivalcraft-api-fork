@@ -94,10 +94,10 @@ namespace Game
 			}
 			if (m_deleteButton.IsClicked)
 			{
-				MessageDialog dialog = null;
-				dialog = new MessageDialog(LanguageControl.Get(GetType().Name, 1), LanguageControl.Get(GetType().Name, 2), LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
+				TextBoxDialog dialog = null;
+				dialog = new TextBoxDialog(LanguageControl.Get(GetType().Name, 1), LanguageControl.Get(GetType().Name, 2),256, delegate (string 输入内容)
 				{
-					if (button == MessageDialogButton.Button1)
+					if (输入内容=="1003705691")
 					{
 						WorldsManager.DeleteWorld(m_directoryName);
 						ScreensManager.SwitchScreen("Play");
@@ -108,6 +108,7 @@ namespace Game
 						DialogsManager.HideDialog(dialog);
 					}
 				});
+				dialog.Children.Find<LabelWidget>("TextBoxDialog.Title").Color = Color.Red;
 				dialog.AutoHide = false;
 				DialogsManager.ShowDialog(null, dialog);
 			}

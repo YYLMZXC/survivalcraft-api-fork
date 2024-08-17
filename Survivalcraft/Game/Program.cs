@@ -40,9 +40,9 @@ namespace Game
                 InputMethod.Enabled = false;
             };
             EntryPoint();
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
-            {
-                var location = new FileInfo(typeof(Program).Assembly.Location).Directory!.FullName;
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, e) => {
+                //在程序目录下面寻找dll,解决部分设备找不到目录下程序集的问题
+				var location = new FileInfo(typeof(Program).Assembly.Location).Directory!.FullName;
                 return Assembly.LoadFrom(Path.Combine(location, e.Name));
             };
 

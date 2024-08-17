@@ -36,6 +36,8 @@ namespace Game
 			m_largeLabelWidget.Text = largeMessage ?? string.Empty;
 			m_smallLabelWidget.IsVisible = !string.IsNullOrEmpty(smallMessage);
 			m_smallLabelWidget.Text = smallMessage ?? string.Empty;
+			//if (largeMessage == LanguageControl.Get("ModifyWorldScreen",1))
+			//m_smallLabelWidget.Color = Color.Red;
 			m_button1Widget.IsVisible = !string.IsNullOrEmpty(button1Text);
 			m_button1Widget.Text = button1Text ?? string.Empty;
 			m_button2Widget.IsVisible = !string.IsNullOrEmpty(button2Text);
