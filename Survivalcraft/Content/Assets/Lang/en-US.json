@@ -816,8 +816,8 @@
     "12": "Invalid player name. Only letters, digits and spaces allowed. Not too short, not too long either."
   },
   "ModifyWorldScreen": {
-    "1": "Are you sure?",
-    "2": "The world will be irrecoverably deleted.",
+    "1": "Are you sure? The world will be irrecoverably deleted!",
+    "2": "Delete this text and enter 1003705691 to continue.",
     "3": "Abandon changes?",
     "4": "You changed some of the world properties, but they were not applied yet."
   },
