@@ -843,15 +843,17 @@ public class TextBoxWidget : Widget
         
     public override void Update()
     {
-        if (Input.Scroll.HasValue)
-        {
-            var scroll = Input.Scroll.Value.X * Input.Scroll.Value.Z / 92;
-            Scroll += scroll;
-            Scroll = Math.Clamp(Scroll, -Font.MeasureText(FullText, new Vector2(FontScale), FontSpacing).X,
-                Font.MeasureText(FullText, new Vector2(FontScale), FontSpacing).X);
-        }
+		if(Input.Scroll.HasValue &&
+					Input.MousePosition.HasValue &&
+					HitTestGlobal(Input.MousePosition.Value) == this)
+		{
+			var scroll = Input.Scroll.Value.X * Input.Scroll.Value.Z / 92;
+			Scroll += scroll;
+			Scroll = Math.Clamp(Scroll,-Font.MeasureText(FullText,new Vector2(FontScale),FontSpacing).X,
+				Font.MeasureText(FullText,new Vector2(FontScale),FontSpacing).X);
+		}
 
-        if (Input.Hold.HasValue && HitTestGlobal(Input.Hold.Value) == this &&
+		if (Input.Hold.HasValue && HitTestGlobal(Input.Hold.Value) == this &&
             Input.HoldTime > SettingsManager.MinimumHoldDuration)
         {
             SelectionStarted = true;

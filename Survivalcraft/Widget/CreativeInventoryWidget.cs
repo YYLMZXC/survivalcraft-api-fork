@@ -112,13 +112,8 @@ namespace Game
 			if(Input.Scroll.HasValue)
 			{
 				Widget widget = HitTestGlobal(Input.Scroll.Value.XY);
-				if(widget != null)
-				{
-					if(widget.IsChildWidgetOf(m_categoryButton))
-					{
+				if((widget != null)&&widget.IsChildWidgetOf(m_categoryButton))
 						m_componentCreativeInventory.CategoryIndex -= (int)Input.Scroll.Value.Z;
-					}
-				}
 			}
 			if (m_categoryLeftButton.IsClicked || Input.Left)
 			{
