@@ -190,24 +190,23 @@ namespace Engine.Graphics
 		public static Texture2D Load(LegacyImage image, int mipLevelsCount = 1)
 		{
 			var texture2D = new Texture2D(image.Width, image.Height, mipLevelsCount, ColorFormat.Rgba8888);
-			//Mipmap可交由OpenGL完成，所以这段注释掉
-			/*if (mipLevelsCount > 1)
+			if (mipLevelsCount > 1)
 			{
-				Image[] array = Image.GenerateMipmaps(image, mipLevelsCount).ToArray();
+                LegacyImage[] array = LegacyImage.GenerateMipmaps(image, mipLevelsCount).ToArray();
 				for (int i = 0; i < array.Length; i++)
 				{
 					texture2D.SetData(i, array[i].Pixels);
 				}
 			}
 			else
-			{*/
-			texture2D.SetData(0, image.Pixels);
-            if (mipLevelsCount > 1)
-            {
-                GLWrapper.BindTexture(TextureTarget.Texture2D, texture2D.m_texture, forceBind: false);
-                GL.GenerateMipmap(TextureTarget.Texture2D);
+			{
+			    texture2D.SetData(0, image.Pixels);
+                if (mipLevelsCount > 1)
+                {
+                    GLWrapper.BindTexture(TextureTarget.Texture2D, texture2D.m_texture, forceBind: false);
+                    GL.GenerateMipmap(TextureTarget.Texture2D);
+                }
             }
-            //}
             texture2D.Tag = image;
 			return texture2D;
 		}
@@ -225,7 +224,20 @@ namespace Engine.Graphics
 			return texture2D;
 		}
 
-		public static Texture2D Load(Stream stream, bool premultiplyAlpha = false, int mipLevelsCount = 1)
+        public static Texture2D Load(SixLabors.ImageSharp.Image<Rgba32> image, int mipLevelsCount = 1)
+        {
+            var texture2D = new Texture2D(image.Width, image.Height, mipLevelsCount, ColorFormat.Rgba8888);
+            texture2D.SetData(image);
+            if (mipLevelsCount > 1)
+            {
+                GLWrapper.BindTexture(TextureTarget.Texture2D, texture2D.m_texture, forceBind: false);
+                GL.GenerateMipmap(TextureTarget.Texture2D);
+            }
+            texture2D.Tag = new Image(image);
+            return texture2D;
+        }
+
+        public static Texture2D Load(Stream stream, bool premultiplyAlpha = false, int mipLevelsCount = 1)
 		{
 			var image = Image.Load(stream);
 			if (premultiplyAlpha)
