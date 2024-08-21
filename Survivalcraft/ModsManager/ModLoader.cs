@@ -685,5 +685,28 @@ namespace Game
 			skip = false;
 			return null;
 		}
-	}
+
+        /// <summary>
+        /// 在添加移动方块时触发
+        /// </summary>
+        /// <param name="movingBlockSet"></param>
+		/// <param name="subsystemMovingBlocks"></param>
+		/// <param name="testCollision">对应原方法的TestCollision部分</param>
+		/// <param name="doNotAdd">取消添加移动方块</param>
+        public void OnMovingBlockSetAdded(ref SubsystemMovingBlocks.MovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks, ref bool testCollision, out bool doNotAdd)
+		{
+			doNotAdd = false;
+		}
+
+		public void OnMovingBlockSetRemoved(IMovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks)
+		{
+
+		}
+
+		public void OnMovingBlockSetUpdate(IMovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks, bool skippedByOtherMods, out bool skipVanilla)
+		{
+			skipVanilla = false;
+		}
+
+    }
 }
