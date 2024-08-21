@@ -630,7 +630,7 @@ namespace Game
 			return IsCollidable_(value);
 		}
 
-		public float? Raycast(Ray3 ray, SubsystemTerrain subsystemTerrain, int value, bool useInteractionBoxes, out int nearestBoxIndex, out BoundingBox nearestBox)
+		public virtual float? Raycast(Ray3 ray, SubsystemTerrain subsystemTerrain, int value, bool useInteractionBoxes, out int nearestBoxIndex, out BoundingBox nearestBox)
 		{
 			float? result = null;
 			nearestBoxIndex = 0;
@@ -648,5 +648,15 @@ namespace Game
 			nearestBox = array[nearestBoxIndex];
 			return result;
 		}
-	}
+		public virtual bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value)
+		{
+			return !IsFaceTransparent(subsystemTerrain, 4, value);
+		}
+
+		public virtual bool IsCollapseDestructibleBlock(int value)
+		{
+            return true;
+        }
+
+    }
 }

@@ -204,5 +204,10 @@ namespace Game
 			}
 			return data | 0x10;
 		}
-	}
+
+        public override bool IsCollapseDestructibleBlock(int value)
+        {
+			return false;
+        }
+    }
 }

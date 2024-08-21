@@ -104,5 +104,11 @@ namespace Game
 		{
 			return face != 5;
 		}
-	}
+
+		public override bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value)
+		{
+			return true;
+		}
+
+    }
 }
