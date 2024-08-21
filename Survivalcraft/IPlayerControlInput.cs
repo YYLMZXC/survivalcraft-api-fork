@@ -13,12 +13,7 @@ namespace Game
             skipVanilla = false;
         }
 
-        public void OnPlayerInputAim(ComponentPlayer componentPlayer, ref bool playerOperated, ref float timeIntervalAim, bool skippedByOtherMods, out bool skipVanilla)
-        {
-            skipVanilla = false;
-        }
-
-        public void OnPlayerStopInputAim(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)
+        public void UpdatePlayerInputAim(ComponentPlayer componentPlayer, bool aiming, ref bool playerOperated, ref float timeIntervalAim, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
         }
@@ -29,14 +24,9 @@ namespace Game
             skipVanilla = false;
         }
 
-        public void OnPlayerInputDig(ComponentPlayer componentPlayer, ref bool playerOperated, ref double timeIntervalDig, bool skippedByOtherMods, out bool skipVanilla)
+        public void UpdatePlayerInputDig(ComponentPlayer componentPlayer, bool digging, ref bool playerOperated, ref double timeIntervalDig, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false; 
-        }
-
-        public void OnPlayerStopInputDig(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)
-        {
-            skipVanilla = false;
         }
 
         public void OnPlayerInputDrop(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)

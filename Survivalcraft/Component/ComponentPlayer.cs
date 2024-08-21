@@ -308,7 +308,7 @@ namespace Game
 				bool skipVanilla_h = false;
                 foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
                 {
-					playerControlInput.OnPlayerInputAim(this, ref flag, ref timeIntervalAim, skipVanilla_h, out bool skip);
+					playerControlInput.UpdatePlayerInputAim(this, true, ref flag, ref timeIntervalAim, skipVanilla_h, out bool skip);
 					skipVanilla_h |= skip;
                 }
                 if (!skipVanilla_h && block.IsAimable_(ComponentMiner.ActiveBlockValue) && m_subsystemTime.GameTime - m_lastActionTime > timeIntervalAim)
@@ -354,7 +354,7 @@ namespace Game
                 bool skipVanilla_h = false;
                 foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
                 {
-					playerControlInput.OnPlayerStopInputAim(this, skipVanilla_h, out bool skip);
+                    playerControlInput.UpdatePlayerInputAim(this, false, ref flag, ref timeIntervalAim, skipVanilla_h, out bool skip);
                     skipVanilla_h |= skip;
                 }
                 if (!skipVanilla_h && m_aim.HasValue)
@@ -390,13 +390,13 @@ namespace Game
                 }
             }
 
-			if (playerInput.Dig.HasValue)
+            double timeIntervalDig = 0.33000001311302185;
+            if (playerInput.Dig.HasValue)
 			{
                 bool skipVanilla_ = false;
-                double timeIntervalDig = 0.33000001311302185;
                 foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
                 {
-                    playerControlInput.OnPlayerInputDig(this, ref flag, ref timeIntervalDig, skipVanilla_, out bool skip);
+                    playerControlInput.UpdatePlayerInputDig(this, true, ref flag, ref timeIntervalDig, skipVanilla_, out bool skip);
                     skipVanilla_ |= skip;
                 }
                 if (!skipVanilla_ && !flag && !m_isDigBlocked && m_subsystemTime.GameTime - m_lastActionTime > timeIntervalDig)
@@ -415,7 +415,7 @@ namespace Game
                 bool skipVanilla_ = false;
                 foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
                 {
-					playerControlInput.OnPlayerStopInputDig(this, skipVanilla_, out bool skip);
+					playerControlInput.UpdatePlayerInputDig(this, false, ref flag, ref timeIntervalDig, skipVanilla_, out bool skip);
                     skipVanilla_ |= skip;
                 }
             }
