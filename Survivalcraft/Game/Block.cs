@@ -677,7 +677,7 @@ namespace Game
 			return IsCollidable_(value);
 		}
 
-		public virtual bool IsPlantableBlock(int value, int plantValue)
+		public virtual bool IsSuitableForPlants(int value, int plantValue)
 		{
 			int plantContents = Terrain.ExtractContents(plantValue);
 			if (value > 0 && (plantContents == 131 || plantContents == 132 || plantContents == 244)) return true;

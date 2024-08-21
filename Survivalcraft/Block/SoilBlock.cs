@@ -109,7 +109,7 @@ namespace Game
 		{
 			return true;
 		}
-        public override bool IsPlantableBlock(int value, int plantValue)
+        public override bool IsSuitableForPlants(int value, int plantValue)
         {
             int plantContent = Terrain.ExtractContents(plantValue);
             Block plantBlock = BlocksManager.Blocks[plantContent];

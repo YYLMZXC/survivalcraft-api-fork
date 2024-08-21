@@ -4,7 +4,7 @@ namespace Game
 	{
 		public const int Index = 2;
 
-        public override bool IsPlantableBlock(int value, int plantValue)
+        public override bool IsSuitableForPlants(int value, int plantValue)
         {
             return true;
         }

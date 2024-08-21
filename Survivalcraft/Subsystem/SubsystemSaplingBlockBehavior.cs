@@ -151,7 +151,7 @@ namespace Game
 				int saplingValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
                 int cellContents = Terrain.ExtractContents(cellValue);
 				Block cellBlock = BlocksManager.Blocks[cellContents];
-				if (cellBlock.IsPlantableBlock(cellValue, saplingValue))
+				if (cellBlock.IsSuitableForPlants(cellValue, saplingValue))
 				{
 					if (SubsystemTerrain.Terrain.GetCellLight(x, y + 1, z) >= 9)
 					{

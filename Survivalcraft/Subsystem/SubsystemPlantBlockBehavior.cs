@@ -45,7 +45,7 @@ namespace Game
 			int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
 			int soilContents = Terrain.ExtractContents(cellValue);
 			Block soilBlock = BlocksManager.Blocks[soilContents];
-			if(!soilBlock.IsPlantableBlock(cellValue, plantValue))
+			if(!soilBlock.IsSuitableForPlants(cellValue, plantValue))
 			{
                 SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
             }
