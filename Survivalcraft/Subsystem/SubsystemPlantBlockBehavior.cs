@@ -40,34 +40,15 @@ namespace Game
 
 		public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
 		{
-			int num = Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(x, y, z));
+			int plantValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+            int plantContents = Terrain.ExtractContents(plantValue);
 			int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
-			int num2 = Terrain.ExtractContents(cellValue);
-			switch (num)
+			int soilContents = Terrain.ExtractContents(cellValue);
+			Block soilBlock = BlocksManager.Blocks[soilContents];
+			if(!soilBlock.IsPlantableBlock(cellValue, plantValue))
 			{
-				case 131:
-				case 244:
-					if (num2 != 8 && num2 != 2 && num2 != 168)
-					{
-						SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
-					}
-					break;
-				case 132:
-					{
-						Block block = BlocksManager.Blocks[num2];
-						if (block.IsFaceTransparent(SubsystemTerrain, 4, cellValue) && !(block is FenceBlock))
-						{
-							SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
-						}
-						break;
-					}
-				default:
-					if (num2 != 8 && num2 != 2 && num2 != 7 && num2 != 168)
-					{
-						SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
-					}
-					break;
-			}
+                SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
+            }
 		}
 
 		public override void OnPoll(int value, int x, int y, int z, int pollPass)

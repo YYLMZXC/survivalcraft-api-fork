@@ -43,5 +43,10 @@ namespace Game
 		{
 			return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, Color.White, 2);
 		}
-	}
+
+        public override bool IsPlantableBlock(int value, int plantValue)
+        {
+			return true;
+        }
+    }
 }
