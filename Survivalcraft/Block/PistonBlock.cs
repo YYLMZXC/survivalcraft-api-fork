@@ -216,5 +216,12 @@ namespace Game
 		{
 			return (data & -12289) | ((speed & 3) << 12);
 		}
-	}
+
+        public override bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd)
+        {
+			int data = Terrain.ExtractData(value);
+			isEnd = false;
+			return !GetIsExtended(data);
+        }
+    }
 }

@@ -29,5 +29,11 @@ namespace Game
 		{
 			BlocksManager.DrawMeshBlock(primitivesRenderer, m_standaloneBlockMesh, color, size, ref matrix, environmentData);
 		}
-	}
+
+        public override bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd)
+        {
+			isEnd = false;
+			return false;
+        }
+    }
 }

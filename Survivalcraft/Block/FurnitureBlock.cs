@@ -609,5 +609,10 @@ namespace Game
 		{
 			return ((data >> 14) & 1) != 0;
 		}
-	}
+        public override bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd)
+        {
+            isEnd = false;
+            return true;
+        }
+    }
 }

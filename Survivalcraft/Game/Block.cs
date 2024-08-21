@@ -658,5 +658,23 @@ namespace Game
             return true;
         }
 
+		public virtual bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd)
+		{
+			isEnd = false;
+            if (IsNonDuplicable_(value))
+            {
+                return false;
+            }
+            if (IsCollidable_(value))
+            {
+                return true;
+            }
+            return false;
+        }
+
+		public virtual bool IsBlockingPiston(int value)
+		{
+			return IsCollidable_(value);
+		}
     }
 }

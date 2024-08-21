@@ -521,75 +521,15 @@ namespace Game
 
 		public static bool IsBlockMovable(int value, int pistonFace, int y, out bool isEnd)
 		{
-			isEnd = false;
 			int num = Terrain.ExtractContents(value);
 			int data = Terrain.ExtractData(value);
-			switch (num)
-			{
-				case 27:
-				case 45:
-				case 64:
-				case 65:
-				case 216:
-					return false;
-				case 227:
-					return true;
-				case 237:
-					return !PistonBlock.GetIsExtended(data);
-				case 238:
-					return false;
-				case 131:
-				case 132:
-				case 244:
-					return false;
-				case 127:
-					return false;
-				case 126:
-					return false;
-				case 1:
-					return y > 1;
-				default:
-					{
-						Block block = BlocksManager.Blocks[num];
-						if (block is BottomSuckerBlock)
-						{
-							return false;
-						}
-						if (block is MountedElectricElementBlock)
-						{
-							isEnd = true;
-							return ((MountedElectricElementBlock)block).GetFace(value) == pistonFace;
-						}
-						if (block is DoorBlock || block is TrapdoorBlock)
-						{
-							return false;
-						}
-						if (block is LadderBlock)
-						{
-							isEnd = true;
-							return pistonFace == LadderBlock.GetFace(data);
-						}
-						if (block is AttachedSignBlock)
-						{
-							isEnd = true;
-							return pistonFace == AttachedSignBlock.GetFace(data);
-						}
-						if (block.IsNonDuplicable_(value))
-						{
-							return false;
-						}
-						if (block.IsCollidable_(value))
-						{
-							return true;
-						}
-						return false;
-					}
-			}
+			Block block = BlocksManager.Blocks[num];
+			return block.IsMovableByPiston(value, pistonFace, y, out isEnd);
 		}
 
 		public static bool IsBlockBlocking(int value)
 		{
-			return BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value);
+			return BlocksManager.Blocks[Terrain.ExtractContents(value)].IsBlockingPiston(value);
 		}
 	}
 }
