@@ -683,5 +683,11 @@ namespace Game
 			if (value > 0 && (plantContents == 131 || plantContents == 132 || plantContents == 244)) return true;
 			return false;
 		}
+
+		public virtual bool IsFaceSuitableForElectricElements(SubsystemTerrain subsystemTerrain, CellFace cellFace, int value)
+        {
+			if(!IsCollidable_(value) || IsTransparent_(value)) return false;
+			return true;
+        }
     }
 }
