@@ -33,6 +33,10 @@ namespace Game
 
 		public Random m_random = new();
 
+		public bool m_regenerateLifeEnabled = true;//生命再生
+
+		public bool m_canBeHarmedBySpaceDamage = true;//y轴过高或者过低造成的伤害
+
 		public string CauseOfDeath
 		{
 			get;
@@ -229,7 +233,7 @@ namespace Game
 			FallResilience = m_fallResilience * FallResilienceFactor;
 			FireResilienceFactor = m_fireResilience * FireResilienceFactor;
 			Vector3 position = m_componentCreature.ComponentBody.Position;
-			if (Health > 0f && Health < 1f)
+			if (m_regenerateLifeEnabled && Health > 0f && Health < 1f)
 			{
 				float num = 0f;
 				if (m_componentPlayer != null)
@@ -279,7 +283,7 @@ namespace Game
 				Injure(num4, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 2));
 			}
 			m_wasStanding = m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.StandingOnBody != null;
-			if ((position.Y < 0f || position.Y > 296f) && m_subsystemTime.PeriodicGameTimeEvent(2.0, 0.0))
+			if (m_canBeHarmedBySpaceDamage && (position.Y < 0f || position.Y > 296f) && m_subsystemTime.PeriodicGameTimeEvent(2.0, 0.0))
 			{
 				Injure(0.1f, null, ignoreInvulnerability: true, LanguageControl.Get(GetType().Name, 3));
 				m_componentPlayer?.ComponentGui.DisplaySmallMessage(LanguageControl.Get(GetType().Name, 4), Color.White, blinking: true, playNotificationSound: false);
