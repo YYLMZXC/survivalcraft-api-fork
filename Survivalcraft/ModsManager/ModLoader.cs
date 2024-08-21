@@ -660,5 +660,17 @@ namespace Game
 		public virtual void OnPickableUpdate(Pickable pickable, SubsystemPickables subsystemPickables, float dt, out bool skipVanilla) {
 			skipVanilla = false; 
 		}
+
+        /// <summary>
+        /// 计算动物在Raycast下的表现。输出null表示这个body不计入Raycast结果；输出一个具体的数值表示Raycast计算出来的距离。
+        /// </summary>
+        /// <param name="componentBody"></param>
+        /// <param name="ray">动物位置</param>
+        /// <param name="skip">原版计算出来的强度</param>
+        public virtual float? BodyCountInRaycast(ComponentBody componentBody, Ray3 ray, out bool skip)
+		{
+			skip = false;
+			return null;
+		}
 	}
 }
