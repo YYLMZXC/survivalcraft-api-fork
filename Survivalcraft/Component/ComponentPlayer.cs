@@ -36,6 +36,18 @@ namespace Game
 
 		public bool m_allowAddLookOrder = true;
 
+		public double? m_aimStartTime;
+
+		public double AimDuration
+		{
+			get
+			{
+				if (m_aimStartTime.HasValue)
+					return m_subsystemTime.GameTime - m_aimStartTime.Value;
+				return -1;
+			}
+		}
+
 		public PlayerData PlayerData
 		{
 			get;
@@ -321,10 +333,12 @@ namespace Game
                         if (vector.X >= size.X * 0.02f && vector.X < size.X * 0.98f && vector.Y >= size.Y * 0.02f && vector.Y < size.Y * 0.98f)
                         {
                             m_aim = value;
+							if (!m_aimStartTime.HasValue) m_aimStartTime = m_subsystemTime.GameTime;
                             if (ComponentMiner.Aim(value, AimState.InProgress))
                             {
                                 ComponentMiner.Aim(m_aim.Value, AimState.Cancelled);
                                 m_aim = null;
+								m_aimStartTime = null;
                                 m_isAimBlocked = true;
                             }
                             else if (!m_aimHintIssued && Time.PeriodicEvent(1.0, 0.0))
@@ -343,6 +357,7 @@ namespace Game
                         {
                             ComponentMiner.Aim(m_aim.Value, AimState.Cancelled);
                             m_aim = null;
+							m_aimStartTime = null;
                             m_isAimBlocked = true;
                         }
                     }
@@ -361,6 +376,7 @@ namespace Game
                 {
                     ComponentMiner.Aim(m_aim.Value, AimState.Completed);
                     m_aim = null;
+					m_aimStartTime = null;
                     m_lastActionTime = m_subsystemTime.GameTime;
                 }
             }
