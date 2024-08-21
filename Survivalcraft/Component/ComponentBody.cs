@@ -343,9 +343,17 @@ namespace Game
 			}
 		}
 
-		public void Update(float dt)
+		public virtual void Update(float dt)
 		{
-			CollisionVelocityChange = Vector3.Zero;
+            bool skipVanilla_ = false;
+            ModsManager.HookAction("UpdateComponentBody", loader =>
+            {
+				loader.UpdateComponentBody(this, dt, skipVanilla_, out bool skipVanilla);
+                skipVanilla_ |= skipVanilla;
+                return false;
+            });
+            if (skipVanilla_) return;
+            CollisionVelocityChange = Vector3.Zero;
 			Velocity += m_totalImpulse;
 			m_totalImpulse = Vector3.Zero;
 			if (m_parentBody != null || m_velocity.LengthSquared() > 9.99999944E-11f || m_directMove != Vector3.Zero || m_targetCrouchFactor != m_crouchFactor)

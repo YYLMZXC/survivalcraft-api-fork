@@ -662,6 +662,19 @@ namespace Game
 		}
 
         /// <summary>
+        /// 执行动物的Update操作。为防止多次覆盖更新，当多个mod试图执行的时候，只有一个mod能够执行，其他mod会返回Exception。
+        /// </summary>
+        /// <param name="componentBody"></param>
+        /// <param name="dt">动物位置</param>
+        /// <param name="skipVanilla">跳过原版的更新操作</param>
+		/// <param name="skippedByOtherMods">前面的mod已经执行了带skip操作的Update</param>
+        public virtual void UpdateComponentBody(ComponentBody componentBody, float dt, bool skippedByOtherMods, out bool skipVanilla)
+		{
+			skipVanilla = false;
+			return;
+		}
+
+        /// <summary>
         /// 计算动物在Raycast下的表现。输出null表示这个body不计入Raycast结果；输出一个具体的数值表示Raycast计算出来的距离。
         /// </summary>
         /// <param name="componentBody"></param>
