@@ -77,7 +77,12 @@ namespace Game
 			{
 				pickable.Velocity = new Vector3(m_random.Float(-0.5f, 0.5f), m_random.Float(1f, 1.2f), m_random.Float(-0.5f, 0.5f));
 			}
-			m_pickables.Add(pickable);
+            ModsManager.HookAction("OnPickableAdded", loader =>
+            {
+                loader.OnPickableAdded(this, ref pickable, null);
+                return false;
+            });
+            m_pickables.Add(pickable);
 			PickableAdded?.Invoke(pickable);
 			return pickable;
 		}
@@ -396,7 +401,12 @@ namespace Game
 				{
 					pickable.StuckMatrix = item.GetValue<Matrix>("StuckMatrix");
 				}
-				m_pickables.Add(pickable);
+                ModsManager.HookAction("OnPickableAdded", loader =>
+                {
+                    loader.OnPickableAdded(this, ref pickable, item);
+                    return false;
+                });
+                m_pickables.Add(pickable);
 			}
 		}
 

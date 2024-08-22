@@ -3,6 +3,7 @@ using Engine.Graphics;
 using GameEntitySystem;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using TemplatesDatabase;
 
 namespace Game
 {
@@ -693,20 +694,37 @@ namespace Game
 		/// <param name="subsystemMovingBlocks"></param>
 		/// <param name="testCollision">对应原方法的TestCollision部分</param>
 		/// <param name="doNotAdd">取消添加移动方块</param>
-        public void OnMovingBlockSetAdded(ref SubsystemMovingBlocks.MovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks, ref bool testCollision, out bool doNotAdd)
+        public virtual void OnMovingBlockSetAdded(ref SubsystemMovingBlocks.MovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks, ref bool testCollision, out bool doNotAdd)
 		{
 			doNotAdd = false;
 		}
 
-		public void OnMovingBlockSetRemoved(IMovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks)
+		public virtual void OnMovingBlockSetRemoved(IMovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks)
 		{
 
 		}
 
-		public void OnMovingBlockSetUpdate(IMovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks, bool skippedByOtherMods, out bool skipVanilla)
+		public virtual void OnMovingBlockSetUpdate(IMovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks, bool skippedByOtherMods, out bool skipVanilla)
 		{
 			skipVanilla = false;
 		}
 
+		public virtual void OnProjectileAdded(SubsystemProjectiles subsystemProjectiles, ref Projectile projectile, ValuesDictionary loadValuesDictionary)
+		{
+
+		}
+
+		public virtual void OnPickableAdded(SubsystemPickables subsystemPickables, ref Pickable pickable, ValuesDictionary loadValuesDictionary)
+		{
+
+		}
+		public virtual void SaveProjectile(SubsystemProjectiles subsystemProjectiles, Projectile projectile, ref ValuesDictionary valuesDictionary)
+		{
+			throw new NotImplementedException();
+		}
+		public virtual void SavePickable(SubsystemPickables subsystemPickables, Pickable pickable, ref ValuesDictionary valuesDictionary)
+		{
+			throw new NotImplementedException();
+		}
     }
 }

@@ -78,7 +78,14 @@ namespace Game
 			projectile.IsInWater = IsWater(position);
 			projectile.Owner = owner;
 			projectile.ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable;
-			m_projectiles.Add(projectile);
+
+            ModsManager.HookAction("OnProjectileAdded", loader =>
+            {
+                loader.OnProjectileAdded(this, ref projectile, null);
+                return false;
+            });
+
+            m_projectiles.Add(projectile);
 			ProjectileAdded?.Invoke(projectile);
 			if (owner != null && owner.PlayerStats != null)
 			{
@@ -452,7 +459,12 @@ namespace Game
 				projectile.Velocity = item.GetValue<Vector3>("Velocity");
 				projectile.CreationTime = item.GetValue<double>("CreationTime");
 				projectile.ProjectileStoppedAction = item.GetValue("ProjectileStoppedAction", projectile.ProjectileStoppedAction);
-				m_projectiles.Add(projectile);
+                ModsManager.HookAction("OnProjectileAdded", loader =>
+                {
+                    loader.OnProjectileAdded(this, ref projectile, item);
+                    return false;
+                });
+                m_projectiles.Add(projectile);
 			}
 		}
 
