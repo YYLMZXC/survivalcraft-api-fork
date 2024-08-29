@@ -95,9 +95,9 @@ namespace Game
 			if (m_deleteButton.IsClicked)
 			{
 				TextBoxDialog dialog = null;
-				dialog = new TextBoxDialog(LanguageControl.Get(GetType().Name, 1), LanguageControl.Get(GetType().Name, 2),256, delegate (string 输入内容)
+				dialog = new TextBoxDialog(LanguageControl.Get(GetType().Name, 1), string.Empty, 3, delegate (string content)
 				{
-					if (输入内容=="1003705691")
+					if (content?.ToLower() == "yes")
 					{
 						WorldsManager.DeleteWorld(m_directoryName);
 						ScreensManager.SwitchScreen("Play");
