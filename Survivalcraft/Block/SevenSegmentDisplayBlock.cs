@@ -47,8 +47,8 @@ namespace Game
 					RemainsCount = 1,
 					RemainsValue = Terrain.MakeBlockValue(90),
 					RequiredHeatLevel = 0f,
-					Description = "用铜玻璃和颜料来制作7段显示器"
-				};
+					Description = LanguageControl.Get(GetType().Name, 1)
+                };
 				craftingRecipe.Ingredients[0] = "glass";
 				craftingRecipe.Ingredients[2] = "glass";
 				craftingRecipe.Ingredients[4] = "paintbucket:" + color.ToString(CultureInfo.InvariantCulture);
@@ -76,10 +76,8 @@ namespace Game
 		{
 			int data = Terrain.ExtractData(value);
 			int color = GetColor(data);
-			return LanguageControl.Get("LedBlock", color) + LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName");
-			//return LanguageControl.GetWorldPalette(color) + LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName");
-			//修复颜色问题
-		}
+            return string.Format(LanguageControl.Get("LedBlock", "Format"), LanguageControl.Get("LedBlock", color), LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName"));
+        }
 
 		public override IEnumerable<int> GetCreativeValues()
 		{

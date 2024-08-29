@@ -15,13 +15,6 @@ namespace Game
 
 		public const int Index = 214;
 
-		public static string[] m_displayNames = new string[3]
-		{
-			"Ç¹µ¯",
-			"Ç¦µ¯",
-			"Ç¦µ¯Çò"
-		};
-
 		public static float[] m_sizes = new float[3]
 		{
 			1f,
@@ -87,11 +80,11 @@ namespace Game
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
 		{
 			int bulletType = (int)GetBulletType(Terrain.ExtractData(value));
-			if (bulletType < 0 || bulletType >= m_displayNames.Length)
+			if (bulletType < 0 || bulletType >= Enum.GetValues(typeof(BulletType)).Length)
 			{
 				return string.Empty;
 			}
-			return m_displayNames[bulletType];
+			return LanguageControl.Get(GetType().Name, bulletType);
 		}
 
 		public override int GetFaceTextureSlot(int face, int value)

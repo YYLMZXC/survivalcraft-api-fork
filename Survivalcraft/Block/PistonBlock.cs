@@ -114,16 +114,8 @@ namespace Game
 
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
 		{
-			switch (GetMode(Terrain.ExtractData(value)))
-			{
-				case PistonMode.Pulling:
-					return "粘性活塞";
-				case PistonMode.StrictPulling:
-					return "严格粘性活塞";
-				default:
-					return "活塞";
-			}
-		}
+			return LanguageControl.Get(GetType().Name, (int)GetMode(Terrain.ExtractData(value)));
+        }
 
 		public override BlockPlacementData GetPlacementValue(SubsystemTerrain subsystemTerrain, ComponentMiner componentMiner, int value, TerrainRaycastResult raycastResult)
 		{

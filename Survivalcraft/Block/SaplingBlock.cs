@@ -6,25 +6,6 @@ namespace Game
 	{
 		public const int Index = 119;
 
-		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
-		{
-			switch (Terrain.ExtractData(value))
-			{
-				case 0:
-					return "ÏðÊ÷Ê÷Ãç";
-				case 1:
-					return "°×èëÊ÷Ãç";
-				case 2:
-					return "ÔÆÉ¼Ê÷Ãç";
-				case 3:
-					return "¸ßÔÆÉ¼Ê÷Ãç";
-				case 4:
-					return "ºÏ½ð»¶Ê÷Ó×Ãç";
-				default:
-					return "Ê÷Ãç";
-			}
-		}
-
 		public override int GetFaceTextureSlot(int face, int value)
 		{
 			switch (Terrain.ExtractData(value))

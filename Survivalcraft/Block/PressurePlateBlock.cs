@@ -15,12 +15,6 @@ namespace Game
 
 		public BoundingBox[][] m_collisionBoxesByData = new BoundingBox[16][];
 
-		public string[] m_displayNamesByMaterial = new string[2]
-		{
-			"木质压力板",
-			"石质压力板"
-		};
-
 		public int[] m_creativeValuesByMaterial = new int[2]
 		{
 			Terrain.MakeBlockValue(144, 0, 0),
@@ -71,7 +65,7 @@ namespace Game
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
 		{
 			int material = GetMaterial(Terrain.ExtractData(value));
-			return m_displayNamesByMaterial[material];
+			return LanguageControl.Get(GetType().Name, material);
 		}
 
 		public override IEnumerable<int> GetCreativeValues()

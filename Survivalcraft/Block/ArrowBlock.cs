@@ -115,19 +115,6 @@ namespace Game
 			15
 		};
 
-		public static string[] m_displayNames = new string[9]
-		{
-			"Ä¾¼ı",
-			"Ê¯¼ı",
-			"Ìú¼ı",
-			"×êÊ¯¼ı",
-			"»ğ¼ı",
-			"Ìúåó¼ı",
-			"×êÊ¯åó¼ı",
-			"±¬Õ¨åó¼ı",
-			"Í­åó¼ı"
-		};
-
 		public static float[] m_offsets = new float[9]
 		{
 			-0.5f,
@@ -267,11 +254,11 @@ namespace Game
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
 		{
 			int arrowType = (int)GetArrowType(Terrain.ExtractData(value));
-			if (arrowType < 0 || arrowType >= m_displayNames.Length)
+			if (arrowType < 0 || arrowType >= Enum.GetValues(typeof(ArrowType)).Length)
 			{
 				return string.Empty;
 			}
-			return m_displayNames[arrowType];
+			return LanguageControl.Get(GetType().Name, arrowType);
 		}
 
 		public static ArrowType GetArrowType(int data)
