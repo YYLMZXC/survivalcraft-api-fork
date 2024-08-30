@@ -372,6 +372,7 @@
 						<MemberComponentTemplate Name="Body" Guid="a5705516-97ee-494e-9bc3-398c0d0e2710" InheritanceParent="8edd1986-0dcc-424f-893a-491c089b821e">
 							<Parameter Name="Mass" Guid="0a90a767-194c-404d-aa83-ba4c5b61925b" Value="70" Type="float" />
 							<Parameter Name="WaterTurnSpeed" Guid="1a8eae56-d890-41bc-b20c-7088f91245b6" Value="0.02" Type="float" />
+							<Parameter Name="CanCrouch" Guid="5a44f459-7a72-4028-95ed-002007cc21a3" Value="True" Type="bool" />
 							<Parameter Name="BoxSize" Guid="a5cf237c-5d21-4b5a-90da-d973717cc8b8" Value="0.5,1.77,0.5" Type="Vector3" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Sickness" Guid="b28c31da-30b0-4d1d-b47c-732786bc7fb1" InheritanceParent="a753aca6-3dcb-4667-a655-70f4bfd875f6" />
@@ -708,7 +709,7 @@
 							<Parameter Name="TextureSlot" Guid="36027e39-a83f-4b3e-b8a2-6e7a1f100bc0" Value="163" Type="int" />
 							<Parameter Name="Color" Guid="480fe1d2-2474-4fa9-a984-9a999d61b1c9" Value="255,255,255" Type="Color" />
 							<Parameter Name="SwapUV" Guid="50ca59e4-ca0e-4231-bb11-765c8cb639eb" Value="True" Type="bool" />
-							<Parameter Name="EggTypeIndex" Guid="792d2283-e6e6-4718-90da-7deb650d949b" Value="18" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="792d2283-e6e6-4718-90da-7deb650d949b" Value="19" Type="int" />
 						</ParameterSet>
 					</EntityTemplate>
 					<EntityTemplate Name="Bear_Brown" Guid="0f54d16e-a877-48ac-aedc-9c0d0e1be36d" InheritanceParent="437e6af3-ea9f-4f3c-8b96-d81de6223831">
@@ -725,7 +726,7 @@
 							<Parameter Name="SwapUV" Guid="2b20fa0c-b577-409d-a3c5-cfa8ea57b199" Value="True" Type="bool" />
 							<Parameter Name="DisplayName" Guid="6e3f4e7b-cf7d-4f03-a735-9127df85e674" Value="[DisplayName:5]" Type="string" />
 							<Parameter Name="TextureSlot" Guid="90812f4e-6cbf-4667-9a9b-dd210e8518e8" Value="163" Type="int" />
-							<Parameter Name="EggTypeIndex" Guid="9676f9e3-1ca6-4c38-b6df-1639e214a9f8" Value="12" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="9676f9e3-1ca6-4c38-b6df-1639e214a9f8" Value="13" Type="int" />
 						</ParameterSet>
 					</EntityTemplate>
 					<EntityTemplate Name="Horse_Chestnut" Guid="11387979-378c-402f-aff7-31549765f65f" InheritanceParent="8907cec4-3a39-4d81-953b-82287de4c871">
@@ -737,7 +738,7 @@
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="64147288-5470-46d6-ad51-19d2ccce0178">
 							<Parameter Name="TextureSlot" Guid="6a8209c0-17a6-4944-8362-fed2c0d5ff58" Value="163" Type="int" />
-							<Parameter Name="EggTypeIndex" Guid="6eed107c-609b-4605-b43b-ea98b9346eff" Value="16" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="6eed107c-609b-4605-b43b-ea98b9346eff" Value="17" Type="int" />
 							<Parameter Name="DisplayName" Guid="89cb8fc4-5c88-4aac-962e-29bbd6f973fd" Value="[DisplayName:7]" Type="string" />
 							<Parameter Name="SwapUV" Guid="8d1db208-d3b2-4162-9d54-f9adc80cc082" Value="True" Type="bool" />
 							<Parameter Name="Color" Guid="f1964223-07f1-46be-a2a0-2fec06b5359b" Value="160,112,32" Type="Color" />
@@ -783,7 +784,7 @@
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="5a02924b-d14b-4187-a1e7-34a99db368d5">
 							<Parameter Name="Color" Guid="1d3e69a2-3d01-47e6-ba61-ee159620758d" Value="120,120,80" Type="Color" />
-							<Parameter Name="EggTypeIndex" Guid="3edb6cc9-5d0c-4216-bcda-92f7360dd5af" Value="37" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="3edb6cc9-5d0c-4216-bcda-92f7360dd5af" Value="39" Type="int" />
 							<Parameter Name="TextureSlot" Guid="46301b9f-6f7c-4b73-a3b8-17df4ee73ed9" Value="163" Type="int" />
 							<Parameter Name="DisplayName" Guid="b609ebb4-574a-4a5b-b01b-d3a79411e068" Value="[DisplayName:9]" Type="string" />
 							<Parameter Name="SwapUV" Guid="b71840d9-fe0a-4f67-b207-6c3807b2c9bd" Value="True" Type="bool" />
@@ -806,7 +807,7 @@
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="90c0886c-9c73-4c63-8918-f3f5c9ac1626">
 							<Parameter Name="Color" Guid="265be12f-c002-48cf-9f84-6d8c0a3301ff" Value="96,96,96" Type="Color" />
-							<Parameter Name="EggTypeIndex" Guid="3c72c3db-a09e-4757-acf0-d5d9b26188dd" Value="7" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="3c72c3db-a09e-4757-acf0-d5d9b26188dd" Value="8" Type="int" />
 							<Parameter Name="TextureSlot" Guid="3e49f301-1d25-42bf-991d-e0b5cc6cf4f7" Value="163" Type="int" />
 							<Parameter Name="DisplayName" Guid="a648d912-8a9d-4384-99d3-4833847a334b" Value="[DisplayName:11]" Type="string" />
 							<Parameter Name="SwapUV" Guid="faeb0261-b70c-4ead-af9a-4ff3b168f1e5" Value="True" Type="bool" />
@@ -906,7 +907,7 @@
 						<ParameterSet Name="CreatureEggData" Guid="8c6c6cc6-6e75-4388-b609-989a9a386901">
 							<Parameter Name="TextureSlot" Guid="26a95c79-0442-48b6-892c-b4a32a1aaf9a" Value="163" Type="int" />
 							<Parameter Name="DisplayName" Guid="46e46be3-7dc7-444b-a759-0cba250a8215" Value="[DisplayName:13]" Type="string" />
-							<Parameter Name="EggTypeIndex" Guid="61647c7e-0795-4a57-93bf-ef08234822f7" Value="47" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="61647c7e-0795-4a57-93bf-ef08234822f7" Value="49" Type="int" />
 							<Parameter Name="ShowEgg" Guid="726d9832-faa0-449b-a273-63d8dc5a4bb0" Value="False" Type="bool" />
 							<Parameter Name="SwapUV" Guid="9fe854fb-ea0a-4f70-9cb9-d9647e4d74fa" Value="True" Type="bool" />
 							<Parameter Name="Color" Guid="bf39719b-1bf7-4f10-a865-073c4b65a4d5" Value="96,96,96" Type="Color" />
@@ -967,7 +968,7 @@
 						<ParameterSet Name="CreatureEggData" Guid="2d0457bd-4ffb-4bdb-8176-f46c45a71345">
 							<Parameter Name="NutritionalValue" Guid="12866e5d-1297-419e-9ea5-8664182e896c" Value="0.4" Type="float" />
 							<Parameter Name="Color" Guid="401a191f-00e8-42f7-bf4c-9d95ca642cfb" Value="160,160,170" Type="Color" />
-							<Parameter Name="EggTypeIndex" Guid="49db6073-350a-4d70-af52-f9e19fd1bc2a" Value="33" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="49db6073-350a-4d70-af52-f9e19fd1bc2a" Value="35" Type="int" />
 							<Parameter Name="DisplayName" Guid="550604f6-4c9a-4f93-b762-4817d3538843" Value="[DisplayName:15]" Type="string" />
 							<Parameter Name="SwapUV" Guid="5f8f64c2-0723-4040-8ebd-ed66627621fb" Value="True" Type="bool" />
 							<Parameter Name="TextureSlot" Guid="871097e9-5b32-448e-a264-5f69218500dd" Value="147" Type="int" />
@@ -1007,7 +1008,7 @@
 							<Parameter Name="TextureSlot" Guid="142be20a-2fdf-4598-930b-b512f137cf2b" Value="163" Type="int" />
 							<Parameter Name="DisplayName" Guid="496b131d-f7aa-4b35-89fe-8c8c8804cc59" Value="[DisplayName:17]" Type="string" />
 							<Parameter Name="Color" Guid="c839965e-5c38-4614-80eb-66c129e47de5" Value="192,160,80" Type="Color" />
-							<Parameter Name="EggTypeIndex" Guid="e45256a0-46c4-4691-a7e4-c8a8f5b4405e" Value="17" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="e45256a0-46c4-4691-a7e4-c8a8f5b4405e" Value="18" Type="int" />
 							<Parameter Name="SwapUV" Guid="effab111-276b-405a-a0b2-723a9c5a71da" Value="True" Type="bool" />
 						</ParameterSet>
 					</EntityTemplate>
@@ -1089,7 +1090,7 @@
 							<Parameter Name="DisplayName" Guid="8a0b54b8-d96c-40b9-8758-cc1d6ed546dc" Value="[DisplayName:19]" Type="string" />
 							<Parameter Name="Color" Guid="bd1f8e7a-b558-4e2a-a5df-623dd501d229" Value="224,170,110" Type="Color" />
 							<Parameter Name="TextureSlot" Guid="bfe296af-3a66-46df-ba83-becb97b70158" Value="163" Type="int" />
-							<Parameter Name="EggTypeIndex" Guid="eaa43b9b-a743-4484-ae27-937575532b07" Value="27" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="eaa43b9b-a743-4484-ae27-937575532b07" Value="28" Type="int" />
 						</ParameterSet>
 					</EntityTemplate>
 					<EntityTemplate Name="Gnu" Guid="370d9585-5d51-42b0-8ced-ff5f7a91e3f8" InheritanceParent="e4275171-a39f-413f-8888-4c472868364d">
@@ -1164,7 +1165,7 @@
 						<ParameterSet Name="CreatureEggData" Guid="b5ebd5c1-c2af-4fd0-86d0-1a10cfd21d58">
 							<Parameter Name="DisplayName" Guid="30313035-97dc-4493-9d55-7762277f4765" Value="[DisplayName:21]" Type="string" />
 							<Parameter Name="SwapUV" Guid="6f0b7689-af7d-4a42-8ff4-85542cca8a18" Value="False" Type="bool" />
-							<Parameter Name="EggTypeIndex" Guid="7aa463c4-2124-4252-99fc-a069a848b1a3" Value="35" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="7aa463c4-2124-4252-99fc-a069a848b1a3" Value="37" Type="int" />
 							<Parameter Name="Color" Guid="9e5dd164-ed4a-4748-a719-ecd22021e6aa" Value="142,109,87" Type="Color" />
 							<Parameter Name="TextureSlot" Guid="bf26de22-c049-42f9-bb55-ca0a5de8e3c3" Value="163" Type="int" />
 						</ParameterSet>
@@ -1187,7 +1188,7 @@
 							<Parameter Name="HerdName" Guid="1df493df-6689-41c2-81a5-64d02e091c59" Value="GrayWolf" Type="string" />
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="1a12d4e9-b971-4b64-be45-11ab485b819f">
-							<Parameter Name="EggTypeIndex" Guid="02a62f20-26f1-41c0-b77c-9891f9feae8c" Value="10" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="02a62f20-26f1-41c0-b77c-9891f9feae8c" Value="11" Type="int" />
 							<Parameter Name="Color" Guid="15a8448b-f57a-48c5-94e9-9d31f7cc2331" Value="123,123,123" Type="Color" />
 							<Parameter Name="DisplayName" Guid="3b3b99cd-ee01-4e4a-b4ef-bc64d6045595" Value="[DisplayName:23]" Type="string" />
 							<Parameter Name="TextureSlot" Guid="98db7435-29ba-4b31-8060-8abe5657ead7" Value="163" Type="int" />
@@ -1280,7 +1281,7 @@
 							<Parameter Name="DayChaseRange" Guid="efdf0d42-89da-4b55-ba33-9ea31eb375bb" Value="16" Type="float" />
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="ad1c5f54-b4aa-463b-873e-308aae7cf337">
-							<Parameter Name="EggTypeIndex" Guid="333e2990-e318-42d1-8983-573b2b29fb7c" Value="22" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="333e2990-e318-42d1-8983-573b2b29fb7c" Value="23" Type="int" />
 							<Parameter Name="TextureSlot" Guid="73c79ee2-189f-4b43-abb6-74be446eeef6" Value="163" Type="int" />
 							<Parameter Name="SwapUV" Guid="817861dd-ce5a-4b4d-a9d8-80ba66e19cd1" Value="False" Type="bool" />
 							<Parameter Name="Color" Guid="83f9f59c-cf9d-4613-ab5a-ade1e0e90ad3" Value="80,80,80" Type="Color" />
@@ -1352,7 +1353,7 @@
 							<Parameter Name="TextureSlot" Guid="2350924c-504e-4341-a50b-38471647fbd3" Value="163" Type="int" />
 							<Parameter Name="SwapUV" Guid="41150bc6-71cf-45c4-9bf4-5515f8337f11" Value="False" Type="bool" />
 							<Parameter Name="Color" Guid="6335e616-d264-47b8-8496-91b4b6355dd1" Value="122,109,90" Type="Color" />
-							<Parameter Name="EggTypeIndex" Guid="d06ff3bf-bba4-479e-98a8-16f7aa2f2d7e" Value="28" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="d06ff3bf-bba4-479e-98a8-16f7aa2f2d7e" Value="29" Type="int" />
 							<Parameter Name="DisplayName" Guid="d98415d2-5573-41eb-9660-5afd9e17233d" Value="[DisplayName:27]" Type="string" />
 						</ParameterSet>
 					</EntityTemplate>
@@ -1404,7 +1405,7 @@
 							<Parameter Name="BoxSize" Guid="d88792b9-6ab7-416e-91fe-e7aac15a9364" Value="0.8,0.3,0.8" Type="Vector3" />
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="17752ac9-6843-4c4b-aa85-d3e55e8d2ce5">
-							<Parameter Name="EggTypeIndex" Guid="3ef4303b-21c9-4a0c-8b87-241798089e49" Value="41" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="3ef4303b-21c9-4a0c-8b87-241798089e49" Value="43" Type="int" />
 							<Parameter Name="Color" Guid="3fb6a1c8-2aeb-4eea-83f0-5affc386126f" Value="100,120,235" Type="Color" />
 							<Parameter Name="SwapUV" Guid="9c82e477-242f-4d1e-b0ac-cb41aa547acb" Value="True" Type="bool" />
 							<Parameter Name="DisplayName" Guid="b39a7e13-1528-4150-80c9-56c4dac14b5c" Value="[DisplayName:29]" Type="string" />
@@ -1537,7 +1538,7 @@
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="d206d97d-a436-4f3e-b5cc-c8c1f8c0a42c">
 							<Parameter Name="Color" Guid="120411e0-81c2-48d3-abd2-87c23ef3fdde" Value="250,217,169" Type="Color" />
-							<Parameter Name="EggTypeIndex" Guid="402a94f1-3f18-416b-983e-67e90c2f7513" Value="19" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="402a94f1-3f18-416b-983e-67e90c2f7513" Value="20" Type="int" />
 							<Parameter Name="TextureSlot" Guid="6b1b8225-f61d-417a-a90b-694b2ec28f70" Value="163" Type="int" />
 							<Parameter Name="SwapUV" Guid="b0353f8c-84d9-4d6b-984e-ddc09fcfa25a" Value="False" Type="bool" />
 							<Parameter Name="DisplayName" Guid="f11188d9-2a7a-4027-9140-a8807867e3ba" Value="[DisplayName:33]" Type="string" />
@@ -1619,7 +1620,7 @@
 							<Parameter Name="Color" Guid="b7fb588d-1d05-46c6-8081-1eda05332250" Value="160,0,0" Type="Color" />
 							<Parameter Name="SwapUV" Guid="d50bb299-55b2-4be4-b6dc-98bf64b0f257" Value="False" Type="bool" />
 							<Parameter Name="DisplayName" Guid="d81b2dba-5636-4fe8-9f03-b57cb8793e2e" Value="[DisplayName:35]" Type="string" />
-							<Parameter Name="EggTypeIndex" Guid="ea09b989-8c3c-4163-91c4-81ab61737db0" Value="36" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="ea09b989-8c3c-4163-91c4-81ab61737db0" Value="38" Type="int" />
 						</ParameterSet>
 					</EntityTemplate>
 					<EntityTemplate Name="Tiger_White" Guid="6effc493-b96a-4168-8855-9f3dd2f1af85" InheritanceParent="9c11dd66-6496-48c8-bb78-7ac8652df1ff">
@@ -1637,7 +1638,60 @@
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="fda00c63-3dd2-4b84-a023-0c41c124cb2d">
 							<Parameter Name="ShowEgg" Guid="181b3b17-d552-4aee-b89e-880554f2b13e" Value="False" Type="bool" />
-							<Parameter Name="EggTypeIndex" Guid="d59d6e1b-c3aa-4090-9ce9-3f538f32b04d" Value="24" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="d59d6e1b-c3aa-4090-9ce9-3f538f32b04d" Value="25" Type="int" />
+						</ParameterSet>
+					</EntityTemplate>
+					<EntityTemplate Name="Sparrow" Guid="724fa0ab-366d-4917-9202-251f914ebc32" InheritanceParent="0cb14482-b936-410e-9317-66d385d7d2fd">
+						<MemberComponentTemplate Name="Loot" Guid="1b309975-b9b7-4715-ac51-ba14941e2bab">
+							<ParameterSet Name="LootOnFire" Guid="a61cdff7-3bb9-4700-a179-0997e1d5197e">
+								<Parameter Name="1" Guid="8421ef2b-89fa-41d8-b0f6-5f5c30eacff7" Value="RottenBirdBlock;0;1" Type="string" />
+							</ParameterSet>
+							<ParameterSet Name="Loot" Guid="e8b154f9-4831-45e4-8ea5-921d1cfb9cb4">
+								<Parameter Name="2" Guid="55fed4d2-f19f-4e1d-9035-a6fce145e1d2" Value="FeatherBlock;1;1" Type="string" />
+								<Parameter Name="1" Guid="609343ef-9d96-4ae6-aa1f-7066d0446fc8" Value="RottenBirdBlock;0;1" Type="string" />
+							</ParameterSet>
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="Health" Guid="49c79f0f-ff48-4320-a624-cb833ab38383">
+							<Parameter Name="AttackResilience" Guid="4a0cdca0-ee59-4cbb-a372-4eaf071d5150" Value="1.5" Type="float" />
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="CreatureSounds" Guid="5205686a-48de-4ef0-9f28-6451f1b6a654">
+							<Parameter Name="PainSound" Guid="325c434e-5bc6-4ed2-a098-f6e2a708b182" Value="Audio/Creatures/Sparrow" Type="string" />
+							<Parameter Name="IdleSoundMinDistance" Guid="6896b8cc-937a-432b-939d-12dc89a5ecb5" Value="3.5" Type="float" />
+							<Parameter Name="IdleSound" Guid="98b35b45-d9f2-4d7c-9d5f-0292e6a4763b" Value="Audio/Creatures/Sparrow" Type="string" />
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="OnFire" Guid="696d5314-9668-4aa5-b297-c66cfe690296" />
+						<MemberComponentTemplate Name="Locomotion" Guid="6b5b82f7-f548-4c56-b6ca-8a3f7d3bde2d">
+							<Parameter Name="TurnSpeed" Guid="abe0357b-3a6f-47e0-a046-4a2a2865e09f" Value="12" Type="float" />
+							<Parameter Name="WalkSpeed" Guid="ad508769-57b2-4807-9174-b488a8ce06fa" Value="2" Type="float" />
+							<Parameter Name="FlySpeed" Guid="c051b716-213c-4cb9-b959-37a34f235aa3" Value="4" Type="float" />
+							<Parameter Name="AccelerationFactor" Guid="c66772d8-7556-47a9-bfdb-41c6e3ded936" Value="1.2" Type="float" />
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="BirdModel" Guid="6f6e3ed5-72fa-4e43-bcc4-36b4b8e53c47">
+							<Parameter Name="WalkAnimationSpeed" Guid="3d85cbe8-6dd6-460f-9439-ed998e9120d8" Value="2.5" Type="float" />
+							<Parameter Name="FlyAnimationSpeed" Guid="5ab98af3-0d40-4847-afdf-81ddc9ce58d2" Value="5" Type="float" />
+							<Parameter Name="PeckAnimationSpeed" Guid="5f2f009f-b116-4ca1-a94f-cd68f3f5f024" Value="4" Type="float" />
+							<Parameter Name="TextureOverride" Guid="93ccd3b2-1227-47a7-a738-668b8e58d82f" Value="Textures/Creatures/Sparrow" Type="string" />
+							<Parameter Name="ModelName" Guid="d06c32ec-ab90-4142-9742-f9198b85d97d" Value="Models/Sparrow" Type="string" />
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="Creature" Guid="85df988b-62cf-46ef-b989-156432ccca59">
+							<Parameter Name="Description" Guid="254c67a2-c2fe-4cfd-b9c1-1363bdbcc13a" Value="[Description:47]" Type="string" />
+							<Parameter Name="DisplayName" Guid="afceaf21-885f-4be9-8965-ec294eed3fa6" Value="[DisplayName:102]" Type="string" />
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="HerdBehavior" Guid="a92160c2-0254-43b3-a54a-e918a2e99b3c" InheritanceParent="dfe7218e-ce14-4bde-8dac-f919c38e9efe">
+							<Parameter Name="HerdName" Guid="75cb63d8-ae92-42ed-aced-b0a2282eafa5" Value="Sparrow" Type="string" />
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="Body" Guid="e18025b3-40cb-4f25-9918-5ecd42893e08">
+							<Parameter Name="Mass" Guid="9f766c54-ee2a-4aea-bfdf-e4fedcf59d91" Value="0.7" Type="float" />
+							<Parameter Name="MaxSmoothRiseHeight" Guid="b02c95d5-4324-401a-8afa-95ecb12598c0" Value="0" Type="float" />
+							<Parameter Name="Density" Guid="bb8b3c97-c07c-4fd5-aabd-3ddc7812614b" Value="0.6" Type="float" />
+							<Parameter Name="BoxSize" Guid="d391f8a8-f2af-417a-b0ab-19639e0a6ac1" Value="0.3,0.3,0.3" Type="Vector3" />
+						</MemberComponentTemplate>
+						<ParameterSet Name="CreatureEggData" Guid="127564ab-336e-42d6-b16b-db5e6129221f">
+							<Parameter Name="EggTypeIndex" Guid="06b4ea91-a153-49ed-a7d4-6bfdb9ac16a6" Value="4" Type="int" />
+							<Parameter Name="Scale" Guid="1eaada81-0253-49c2-a035-590967c76acb" Value="0.9" Type="float" />
+							<Parameter Name="NutritionalValue" Guid="7380fb4d-7203-463c-9e2d-bdfbc1f7bc36" Value="0.05" Type="float" />
+							<Parameter Name="DisplayName" Guid="7fbb4825-c0aa-491c-9f49-a72b15f0dbab" Value="[DisplayName:103]" Type="string" />
+							<Parameter Name="Color" Guid="c3a04f35-0048-4497-980e-181d84ad72d2" Value="200,190,170" Type="Color" />
 						</ParameterSet>
 					</EntityTemplate>
 					<EntityTemplate Name="Alpaca_Shorn" Guid="7312aae3-382e-48a0-9cc2-a2bba6cec846" InheritanceParent="8e62c6e4-a544-4c09-a3fb-59fd37d5b998">
@@ -1661,7 +1715,7 @@
 							<Parameter Name="DisplayName" Guid="4b8ee215-2572-4b0d-940b-d98cb9f526bc" Value="[DisplayName:37]" Type="string" />
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="3646b636-c3d4-408e-9fa3-36facf471e5e">
-							<Parameter Name="EggTypeIndex" Guid="08049363-3327-426c-8706-6a2c067b5780" Value="5" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="08049363-3327-426c-8706-6a2c067b5780" Value="6" Type="int" />
 							<Parameter Name="TextureSlot" Guid="363f9163-5f93-4bf7-95f5-8ac3a5771a90" Value="163" Type="int" />
 							<Parameter Name="DisplayName" Guid="7422371b-832b-4cd0-92ed-7ad8391f24ed" Value="[DisplayName:38]" Type="string" />
 							<Parameter Name="Color" Guid="79d2d1a5-8d4a-4ca0-a060-d397dc99ca72" Value="130,83,41" Type="Color" />
@@ -1725,7 +1779,7 @@
 							<Parameter Name="Color" Guid="1f761722-68bf-47cf-b64d-8507b2e618eb" Value="96,96,96" Type="Color" />
 							<Parameter Name="SwapUV" Guid="57fbd093-4baf-438c-9ebb-978020252ac8" Value="True" Type="bool" />
 							<Parameter Name="TextureSlot" Guid="62b55e51-98dd-4b21-b5c7-f783d7cdf406" Value="163" Type="int" />
-							<Parameter Name="EggTypeIndex" Guid="c00f9bc1-327e-427a-8f2d-2cdb90f544f4" Value="46" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="c00f9bc1-327e-427a-8f2d-2cdb90f544f4" Value="48" Type="int" />
 							<Parameter Name="DisplayName" Guid="c02dad6d-bcf1-4a25-8146-8d286219c0a5" Value="[DisplayName:40]" Type="string" />
 							<Parameter Name="ShowEgg" Guid="e07c6721-2ea7-43e9-a5c3-85f2a55f117d" Value="False" Type="bool" />
 						</ParameterSet>
@@ -1758,7 +1812,6 @@
 						<MemberComponentTemplate Name="OnFire" Guid="52cc3eab-5135-4955-8adb-f0ce22dbdec5" />
 						<MemberComponentTemplate Name="HerdBehavior" Guid="55460b84-12b4-45e4-9d89-598c7891288c" InheritanceParent="dfe7218e-ce14-4bde-8dac-f919c38e9efe">
 							<Parameter Name="HerdName" Guid="1523db96-eedb-4df1-ad47-c3a4b02ff256" Value="Duck" Type="string" />
-							<Parameter Name="HerdingRange" Guid="981a9fe3-63e4-4852-a18d-4a8ddb91703e" Value="16" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Loot" Guid="dcf6a403-1d10-40d0-84a5-bc23c78b32b6">
 							<ParameterSet Name="LootOnFire" Guid="18333c3e-5ee2-4a5a-abc2-6479ac9be607">
@@ -1849,7 +1902,7 @@
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="7846d59a-eeea-4c6b-bf26-1c781a62fd34">
 							<Parameter Name="SwapUV" Guid="021fbd97-4682-4256-a97c-60127c178b98" Value="False" Type="bool" />
-							<Parameter Name="EggTypeIndex" Guid="1e074543-f285-4e66-9c99-7b4bc7683019" Value="20" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="1e074543-f285-4e66-9c99-7b4bc7683019" Value="21" Type="int" />
 							<Parameter Name="DisplayName" Guid="27316133-d599-4b0a-b4e7-b0172d648313" Value="[DisplayName:44]" Type="string" />
 							<Parameter Name="TextureSlot" Guid="37791f52-c1ee-421a-a582-c0d3bbdf6d07" Value="163" Type="int" />
 							<Parameter Name="Color" Guid="605bbbaa-cefc-44d2-87a3-43936e5a7bcc" Value="206,145,84" Type="Color" />
@@ -1885,7 +1938,7 @@
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="33e01fbc-14ff-4ae8-ad64-b9439656c9e5">
 							<Parameter Name="SwapUV" Guid="450670d3-3a02-4704-ac6c-19d7700bb76e" Value="True" Type="bool" />
-							<Parameter Name="EggTypeIndex" Guid="70f8ba3a-a273-47d5-aac9-6346e3fc2f71" Value="42" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="70f8ba3a-a273-47d5-aac9-6346e3fc2f71" Value="44" Type="int" />
 							<Parameter Name="Color" Guid="82c3c708-7aae-4fd6-936a-f792bb782171" Value="115,144,123" Type="Color" />
 							<Parameter Name="TextureSlot" Guid="b0f41fe6-1a87-4191-a75c-649cfaffe95f" Value="163" Type="int" />
 							<Parameter Name="DisplayName" Guid="dd93a813-f37d-4f79-9585-1ae73888f869" Value="[DisplayName:46]" Type="string" />
@@ -1924,7 +1977,7 @@
 						<ParameterSet Name="CreatureEggData" Guid="3120a791-8a80-42f1-b835-7798591dba5e">
 							<Parameter Name="Color" Guid="44e6d44c-5bee-49c6-a208-b031acc2a6cc" Value="115,144,144" Type="Color" />
 							<Parameter Name="DisplayName" Guid="78869776-6351-4399-bd10-f1ba138f8223" Value="[DisplayName:48]" Type="string" />
-							<Parameter Name="EggTypeIndex" Guid="90dbf1f6-dfba-41bc-9ba2-8787ca2f082c" Value="43" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="90dbf1f6-dfba-41bc-9ba2-8787ca2f082c" Value="45" Type="int" />
 							<Parameter Name="TextureSlot" Guid="b73c6490-f150-42df-bb60-67aa4025dabd" Value="163" Type="int" />
 							<Parameter Name="SwapUV" Guid="df503963-8849-4a46-a6eb-818e10e5fb1d" Value="True" Type="bool" />
 						</ParameterSet>
@@ -1937,7 +1990,7 @@
 							<Parameter Name="DisplayName" Guid="f8041141-afd0-4eb0-8bf9-55500953c6aa" Value="[DisplayName:49]" Type="string" />
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="ec2c28f4-b50b-461e-a6d6-63716f5c8ce0">
-							<Parameter Name="EggTypeIndex" Guid="4323414d-75d1-448d-a088-f61695cae468" Value="14" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="4323414d-75d1-448d-a088-f61695cae468" Value="15" Type="int" />
 							<Parameter Name="SwapUV" Guid="5d40081a-e754-4f21-bb2d-fac97b7be299" Value="True" Type="bool" />
 							<Parameter Name="Color" Guid="b7b1d886-f628-4983-989d-579848007627" Value="64,64,64" Type="Color" />
 							<Parameter Name="TextureSlot" Guid="e5e3c838-fd2c-4c89-a59e-61d99daa2bb7" Value="163" Type="int" />
@@ -1957,7 +2010,7 @@
 							<Parameter Name="TextureSlot" Guid="79771809-d0ef-4bbe-8a55-0ac86ee2b227" Value="163" Type="int" />
 							<Parameter Name="DisplayName" Guid="82a34287-3fe5-441b-a48b-8d863eac3d04" Value="[DisplayName:52]" Type="string" />
 							<Parameter Name="Color" Guid="97d9b409-406b-4b12-b84e-c84fb775dd67" Value="32,32,32" Type="Color" />
-							<Parameter Name="EggTypeIndex" Guid="ce3b5828-aa7a-4fae-a1b9-6347624302f9" Value="11" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="ce3b5828-aa7a-4fae-a1b9-6347624302f9" Value="12" Type="int" />
 							<Parameter Name="SwapUV" Guid="f37ce119-64d5-41ac-8dc2-cbdc2a44cbb1" Value="True" Type="bool" />
 						</ParameterSet>
 					</EntityTemplate>
@@ -2033,7 +2086,7 @@
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="58df160b-42f1-4be0-be23-14f18f57ef22">
 							<Parameter Name="Color" Guid="0532865b-ff05-41a0-a889-ea7af8a7ae9f" Value="224,138,39" Type="Color" />
-							<Parameter Name="EggTypeIndex" Guid="40410b86-86cb-4fbe-8483-1e71becdf8ee" Value="25" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="40410b86-86cb-4fbe-8483-1e71becdf8ee" Value="26" Type="int" />
 							<Parameter Name="DisplayName" Guid="4b4e6800-729c-4352-9eb8-8516b3fe700e" Value="[DisplayName:54]" Type="string" />
 							<Parameter Name="SwapUV" Guid="7d464535-911e-4f4c-a08a-9b423efeb030" Value="False" Type="bool" />
 							<Parameter Name="TextureSlot" Guid="a855426c-a90a-4368-8528-1ac43125ea1c" Value="163" Type="int" />
@@ -2112,7 +2165,7 @@
 						<ParameterSet Name="CreatureEggData" Guid="c940adbd-caeb-42fe-8820-37b1d06c8eb7">
 							<Parameter Name="SwapUV" Guid="10fec41f-7259-4f7e-af29-87b4c02da9b5" Value="False" Type="bool" />
 							<Parameter Name="TextureSlot" Guid="5b80556d-d0fa-432e-bac2-c24b56a7b553" Value="163" Type="int" />
-							<Parameter Name="EggTypeIndex" Guid="67fc4091-850d-4dc5-a3ed-5eb2cc10aec6" Value="23" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="67fc4091-850d-4dc5-a3ed-5eb2cc10aec6" Value="24" Type="int" />
 							<Parameter Name="DisplayName" Guid="9061378b-0bc2-47a2-97c8-728466f92836" Value="[DisplayName:56]" Type="string" />
 							<Parameter Name="Color" Guid="dcb15275-50f3-4240-8300-fd53fc25959e" Value="224,112,29" Type="Color" />
 						</ParameterSet>
@@ -2216,7 +2269,7 @@
 							<Parameter Name="Color" Guid="636f2bc3-1e4f-4071-a1fa-667506326c9d" Value="181,141,135" Type="Color" />
 							<Parameter Name="SwapUV" Guid="9bec18d4-269b-40e5-978a-2205164a5d42" Value="False" Type="bool" />
 							<Parameter Name="TextureSlot" Guid="a4ef002e-950d-4a18-88c3-274aafa42310" Value="163" Type="int" />
-							<Parameter Name="EggTypeIndex" Guid="a9a0cfbe-91fb-43bc-9e7c-382ab6bba8e4" Value="31" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="a9a0cfbe-91fb-43bc-9e7c-382ab6bba8e4" Value="32" Type="int" />
 						</ParameterSet>
 					</EntityTemplate>
 					<EntityTemplate Name="Cow_Brown" Guid="a122813a-4898-4926-bb3b-75af391262ed" InheritanceParent="1d117619-4104-4e47-b1a4-431854f94a24">
@@ -2238,7 +2291,7 @@
 							<Parameter Name="DisplayName" Guid="4c5df065-bba6-4f76-8a91-f949cb4cdd0d" Value="[DisplayName:60]" Type="string" />
 							<Parameter Name="TextureSlot" Guid="90270f4a-871a-483a-81dc-00089e505f85" Value="163" Type="int" />
 							<Parameter Name="Color" Guid="a00a40de-2e85-49fe-a4ad-1129ebec12ed" Value="130,83,41" Type="Color" />
-							<Parameter Name="EggTypeIndex" Guid="e0348aa1-b683-46bc-bbc6-9399465f6843" Value="8" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="e0348aa1-b683-46bc-bbc6-9399465f6843" Value="9" Type="int" />
 							<Parameter Name="SwapUV" Guid="fa11bb3c-4657-42ac-abec-cf17677c97be" Value="True" Type="bool" />
 						</ParameterSet>
 					</EntityTemplate>
@@ -2254,7 +2307,7 @@
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="ba53a6e3-e873-4020-8a1b-ca5db91c1ef0">
 							<Parameter Name="TextureSlot" Guid="04d5b40d-b0fe-4993-9242-a218528ac658" Value="163" Type="int" />
-							<Parameter Name="EggTypeIndex" Guid="993d4579-61ec-4937-a29b-c3010ae0d606" Value="4" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="993d4579-61ec-4937-a29b-c3010ae0d606" Value="5" Type="int" />
 							<Parameter Name="DisplayName" Guid="cecd3b45-11d2-463d-a055-0ce7c1fa7b77" Value="[DisplayName:62]" Type="string" />
 							<Parameter Name="Color" Guid="e5e51140-aa83-4b68-90ad-f8fe50edc4e0" Value="96,96,96" Type="Color" />
 						</ParameterSet>
@@ -2312,7 +2365,7 @@
 						<ParameterSet Name="CreatureEggData" Guid="94bdc2f5-613a-49bb-bf93-1f597ea6ca58">
 							<Parameter Name="TextureSlot" Guid="079c1362-d6e2-4f58-bcfa-d7bfac58b849" Value="163" Type="int" />
 							<Parameter Name="SwapUV" Guid="4710096e-3cc3-4074-b8f6-9c580f811cfa" Value="True" Type="bool" />
-							<Parameter Name="EggTypeIndex" Guid="9666d538-addb-4874-b0a9-6f8979fbcf97" Value="45" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="9666d538-addb-4874-b0a9-6f8979fbcf97" Value="47" Type="int" />
 							<Parameter Name="Color" Guid="d04d00e4-8689-42ba-a04a-7b7dd46ea8af" Value="210,227,235" Type="Color" />
 							<Parameter Name="DisplayName" Guid="f51c0e1e-6e85-43e9-a464-45c4416718d4" Value="[DisplayName:64]" Type="string" />
 						</ParameterSet>
@@ -2388,7 +2441,7 @@
 							<Parameter Name="Color" Guid="35563b7b-6cff-480a-9eb4-0781377caf39" Value="91,72,81" Type="Color" />
 							<Parameter Name="TextureSlot" Guid="39318289-bb90-479d-8556-c0644751888d" Value="163" Type="int" />
 							<Parameter Name="DisplayName" Guid="75f402de-ed50-40a5-a1c8-97008afbe37f" Value="[DisplayName:66]" Type="string" />
-							<Parameter Name="EggTypeIndex" Guid="88cd9196-db41-44a8-b6f9-813976b3e959" Value="3" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="88cd9196-db41-44a8-b6f9-813976b3e959" Value="33" Type="int" />
 						</ParameterSet>
 					</EntityTemplate>
 					<EntityTemplate Name="Horse_Palomino_Saddled" Guid="b2326e8f-cdc0-406c-bc14-f3e96be3c376" InheritanceParent="35c74e15-469a-4520-99ca-bf1cbcc33046">
@@ -2441,7 +2494,7 @@
 							<Parameter Name="TextureSlot" Guid="90877fa0-e63a-4139-bf3e-1b888ef1327a" Value="163" Type="int" />
 							<Parameter Name="Color" Guid="c22bc095-4589-4720-9fb5-2234119a1e57" Value="223,223,215" Type="Color" />
 							<Parameter Name="DisplayName" Guid="c5a3da8e-e3e5-416a-a897-bc95204dc673" Value="[DisplayName:68]" Type="string" />
-							<Parameter Name="EggTypeIndex" Guid="e41e3744-1600-4cbb-a0b8-d45c7d3fe1e5" Value="13" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="e41e3744-1600-4cbb-a0b8-d45c7d3fe1e5" Value="14" Type="int" />
 						</ParameterSet>
 					</EntityTemplate>
 					<EntityTemplate Name="Horse_White_Saddled" Guid="ba79c837-ba1d-4b21-af32-5e1f0a332206" InheritanceParent="01a02915-1fbc-45dc-801e-7bd15c75b9b9">
@@ -2473,7 +2526,7 @@
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="e79c4285-d239-4a05-a221-88680aee2a41">
 							<Parameter Name="DisplayName" Guid="3296f107-2357-4936-b877-1e680b440260" Value="[DisplayName:70]" Type="string" />
-							<Parameter Name="EggTypeIndex" Guid="81780b3e-c985-4dae-8a91-19fbae927a28" Value="15" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="81780b3e-c985-4dae-8a91-19fbae927a28" Value="16" Type="int" />
 							<Parameter Name="Color" Guid="af96d88e-562e-4101-a4e0-57dd8b7cb248" Value="128,64,0" Type="Color" />
 							<Parameter Name="TextureSlot" Guid="f7ef19a8-c88e-4a27-9305-0e7bb0f4de8f" Value="163" Type="int" />
 							<Parameter Name="SwapUV" Guid="ffe5a57a-9fbb-4a91-8119-91b834e4b6eb" Value="True" Type="bool" />
@@ -2495,7 +2548,7 @@
 							<Parameter Name="AttackPower" Guid="938cc1c7-e02a-4d5c-9b89-64f14a9ef3f9" Value="7" Type="float" />
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="f000bbc5-2498-4c7e-ad91-6b3b8f18da35">
-							<Parameter Name="EggTypeIndex" Guid="3e1dbf91-6187-4ff2-a174-e1b5a7432455" Value="39" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="3e1dbf91-6187-4ff2-a174-e1b5a7432455" Value="41" Type="int" />
 							<Parameter Name="DisplayName" Guid="63c45947-b987-4a3d-bec6-fc089f4f81e0" Value="[DisplayName:72]" Type="string" />
 							<Parameter Name="Color" Guid="80dd926e-9639-41d2-8794-ae24de1b3144" Value="231,220,99" Type="Color" />
 							<Parameter Name="TextureSlot" Guid="8ee021e3-a76b-4d5f-a1dc-3fd0aa700be7" Value="163" Type="int" />
@@ -2571,7 +2624,7 @@
 							<Parameter Name="Color" Guid="0f8296dd-8654-4a8f-b263-30ac07f21ec0" Value="100,75,60" Type="Color" />
 							<Parameter Name="TextureSlot" Guid="78bceeac-0460-4916-88d3-55c269e4ae38" Value="163" Type="int" />
 							<Parameter Name="SwapUV" Guid="b898be5e-ce55-4a87-afc6-ed538bf71826" Value="False" Type="bool" />
-							<Parameter Name="EggTypeIndex" Guid="e07888df-3357-4353-a1d4-b7b6e915b7ad" Value="29" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="e07888df-3357-4353-a1d4-b7b6e915b7ad" Value="30" Type="int" />
 							<Parameter Name="DisplayName" Guid="e2cf778f-9a86-4e2d-8d6b-02ecdc3d6a64" Value="[DisplayName:74]" Type="string" />
 						</ParameterSet>
 					</EntityTemplate>
@@ -2591,7 +2644,7 @@
 							<Parameter Name="Description" Guid="a1970c89-21d4-46b0-b175-1b28d99db5fe" Value="[Description:32]" Type="string" />
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="3d3d88d4-5243-4bab-bb11-d0a8ebfa1fe3">
-							<Parameter Name="EggTypeIndex" Guid="351592e2-e462-4fc0-8fa2-50a0d222586c" Value="40" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="351592e2-e462-4fc0-8fa2-50a0d222586c" Value="42" Type="int" />
 							<Parameter Name="TextureSlot" Guid="4d5c66fe-8783-4efa-be3f-40251feb8430" Value="163" Type="int" />
 							<Parameter Name="SwapUV" Guid="734ee27d-228e-4285-8f65-8c7fa688cc48" Value="True" Type="bool" />
 							<Parameter Name="DisplayName" Guid="78f2d36f-f497-4234-8e9c-01cbd34a458c" Value="[DisplayName:76]" Type="string" />
@@ -2610,11 +2663,9 @@
 							<Parameter Name="Description" Guid="dcc62aba-0ab4-4dd9-b05b-9be94c5fc766" Value="[Description:33]" Type="string" />
 							<Parameter Name="DisplayName" Guid="f9a0e474-c330-4b99-8bbe-ef18ef1d347d" Value="[DisplayName:77]" Type="string" />
 						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="Health" Guid="fd68970a-2add-454d-bca3-3a86720d0164">
-							<Parameter Name="AttackResilience" Guid="00fdeb00-ac56-4fa1-8b9f-75bcd912d71b" Value="20" Type="float" />
-						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="Health" Guid="fd68970a-2add-454d-bca3-3a86720d0164" />
 						<ParameterSet Name="CreatureEggData" Guid="0986b607-f571-43c0-b4eb-4c2c6d950774">
-							<Parameter Name="EggTypeIndex" Guid="8cf12c1f-6695-45af-9a8a-7c37e8491eba" Value="9" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="8cf12c1f-6695-45af-9a8a-7c37e8491eba" Value="10" Type="int" />
 							<Parameter Name="Color" Guid="95a06449-4bb1-4b9d-9b0f-83b58a12b9bb" Value="199,165,94" Type="Color" />
 							<Parameter Name="TextureSlot" Guid="dbe47aee-b363-46bf-9be2-69a65ca11327" Value="163" Type="int" />
 							<Parameter Name="DisplayName" Guid="dd61c1ec-203c-4f5d-8d02-4a4f69f28444" Value="[DisplayName:78]" Type="string" />
@@ -2660,10 +2711,62 @@
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="bbde01b9-6454-4483-8a79-231afea4c3fb">
 							<Parameter Name="Color" Guid="584dad0e-ea98-4937-bd16-bde1049e690d" Value="130,140,170" Type="Color" />
-							<Parameter Name="EggTypeIndex" Guid="81536664-43db-48a5-bf3f-9de302ab1dc4" Value="38" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="81536664-43db-48a5-bf3f-9de302ab1dc4" Value="40" Type="int" />
 							<Parameter Name="TextureSlot" Guid="90d68a7e-cdd0-42f9-918b-df4a2e42a499" Value="163" Type="int" />
 							<Parameter Name="SwapUV" Guid="dffb0ae3-16a2-4331-a577-99d8f022f4f0" Value="True" Type="bool" />
 							<Parameter Name="DisplayName" Guid="e47c43e7-e6e3-43c6-a72d-e16bbcc18d25" Value="[DisplayName:80]" Type="string" />
+						</ParameterSet>
+					</EntityTemplate>
+					<EntityTemplate Name="Pigeon" Guid="d36b94f4-8549-4d74-8471-9f1fcc2e55aa" InheritanceParent="0cb14482-b936-410e-9317-66d385d7d2fd">
+						<MemberComponentTemplate Name="CreatureSounds" Guid="0331fa8a-8207-414b-b066-de74ee38f6da">
+							<Parameter Name="IdleSound" Guid="07415c9f-59f2-4ea1-a6c8-a07a81512323" Value="Audio/Creatures/Pigeon" Type="string" />
+							<Parameter Name="IdleSoundMinDistance" Guid="66077d12-7d17-45b5-8042-290918868e92" Value="3.5" Type="float" />
+							<Parameter Name="RareIdleSound" Guid="89d5f812-afb8-4431-a49c-e3a5db2b35cf" Value="Audio/Creatures/PigeonRare" Type="string" />
+							<Parameter Name="RareIdleSoundMinDistance" Guid="ee7949ff-8328-4686-862b-ed22c9c8a744" Value="10" Type="float" />
+							<Parameter Name="PainSound" Guid="ef1830a9-9ab4-4a7e-82cd-ef9d55823f2a" Value="Audio/Creatures/PigeonPain" Type="string" />
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="Creature" Guid="13cc626b-306d-4dbb-9c0b-b7f542418277">
+							<Parameter Name="DisplayName" Guid="7d2e12bc-b7e3-4d5c-b35a-983a8893df27" Value="[DisplayName:100]" Type="string" />
+							<Parameter Name="Description" Guid="dad637dc-38cf-4fd5-8ac7-238c6b6cb92a" Value="[Description:46]" Type="string" />
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="Loot" Guid="13f3f266-1803-458f-baec-92d1859c5f1d">
+							<ParameterSet Name="Loot" Guid="2b1f9494-7465-48cc-994c-26da3e9d74eb">
+								<Parameter Name="1" Guid="1a40bbc2-57dd-40ce-a073-a3245df408dc" Value="RottenBirdBlock;0;1" Type="string" />
+								<Parameter Name="2" Guid="84b4bee5-4b98-4732-9689-b5b3fdc99303" Value="FeatherBlock;1;1" Type="string" />
+							</ParameterSet>
+							<ParameterSet Name="LootOnFire" Guid="c8a41fa7-50d9-4148-b784-3fa6c4204455">
+								<Parameter Name="1" Guid="301716df-918e-4cb5-8eb7-83df52120655" Value="RottenBirdBlock;0;1" Type="string" />
+							</ParameterSet>
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="BirdModel" Guid="7002803b-28c5-4f62-bed5-e8d2e3d7e7bd">
+							<Parameter Name="TextureOverride" Guid="04b5fca6-8ea3-42c0-884f-90d01c1c3562" Value="Textures/Creatures/Pigeon" Type="string" />
+							<Parameter Name="ModelName" Guid="2e202f49-f26b-4fa0-9a48-81016e8e3c0f" Value="Models/Pigeon" Type="string" />
+							<Parameter Name="WalkAnimationSpeed" Guid="6bc5bf6f-c4fb-4aa2-835e-8295678c8748" Value="2" Type="float" />
+							<Parameter Name="PeckAnimationSpeed" Guid="791e2835-2425-40ad-b98e-63969d3de5f8" Value="3" Type="float" />
+							<Parameter Name="FlyAnimationSpeed" Guid="aed7c6c7-c66e-4a30-987c-1f5822cb7743" Value="4" Type="float" />
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="OnFire" Guid="87c2378b-48aa-4f68-83de-c6af7b01e0d9" />
+						<MemberComponentTemplate Name="Locomotion" Guid="a35905ac-45f1-4c6a-8182-99603e6cf959">
+							<Parameter Name="WalkSpeed" Guid="1852efd7-c1e2-4358-ba48-001ee8154b1b" Value="2" Type="float" />
+							<Parameter Name="FlySpeed" Guid="2ffba13c-5230-495b-b21a-0370c29d1637" Value="5" Type="float" />
+							<Parameter Name="TurnSpeed" Guid="af5b0e59-6b1a-499a-9134-a31755d5ace0" Value="10" Type="float" />
+							<Parameter Name="AccelerationFactor" Guid="cd7ce79e-8787-4764-a980-9a5d7e0f6244" Value="1.1" Type="float" />
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="Health" Guid="cc54f085-2be7-40b8-8464-2bfd62ef1b63">
+							<Parameter Name="AttackResilience" Guid="ddfc36b0-f625-4ef3-b071-e394aa6225c6" Value="2" Type="float" />
+						</MemberComponentTemplate>
+						<MemberComponentTemplate Name="Body" Guid="f726bff3-8cd9-4148-9d1f-fd2d33b8e739">
+							<Parameter Name="Density" Guid="333dcac7-68d0-43a8-9304-d053c921e171" Value="0.6" Type="float" />
+							<Parameter Name="MaxSmoothRiseHeight" Guid="aecee046-7774-4496-8cf8-01653cb8681b" Value="0" Type="float" />
+							<Parameter Name="Mass" Guid="f061b507-def7-4ba3-8593-e0ed3d664c18" Value="1" Type="float" />
+							<Parameter Name="BoxSize" Guid="f90a7b2f-b1e7-4258-b772-293a213933d1" Value="0.4,0.4,0.4" Type="Vector3" />
+						</MemberComponentTemplate>
+						<ParameterSet Name="CreatureEggData" Guid="d60f31bf-1731-429b-84f6-87969f268b2f">
+							<Parameter Name="Scale" Guid="2b622964-84bd-42a8-af1d-61715eb40317" Value="1.2" Type="float" />
+							<Parameter Name="EggTypeIndex" Guid="4ccf2516-d49d-45e9-b45f-522d1ac2f8e6" Value="3" Type="int" />
+							<Parameter Name="DisplayName" Guid="b757f944-cfb9-403a-8eb5-400024564201" Value="[DisplayName:101]" Type="string" />
+							<Parameter Name="Color" Guid="c34f5b10-6983-4495-af6c-696852d3dda5" Value="220,220,220" Type="Color" />
+							<Parameter Name="NutritionalValue" Guid="f54919f3-e166-4373-94b4-2438a4d2e709" Value="0.1" Type="float" />
 						</ParameterSet>
 					</EntityTemplate>
 					<EntityTemplate Name="Hyena" Guid="da9a1c74-142c-4b2c-b61f-5c86def9f658" InheritanceParent="e4275171-a39f-413f-8888-4c472868364d">
@@ -2748,7 +2851,7 @@
 							<Parameter Name="TextureSlot" Guid="23399930-6b05-4dc2-82d5-281a7b5aba7c" Value="163" Type="int" />
 							<Parameter Name="SwapUV" Guid="4aa42d51-127b-47d6-9f2f-35e20ed8f64f" Value="False" Type="bool" />
 							<Parameter Name="DisplayName" Guid="7b53fc2e-1065-4b8c-b809-6fba16834d51" Value="[DisplayName:82]" Type="string" />
-							<Parameter Name="EggTypeIndex" Guid="d2a2998d-e560-4172-8129-9211172b98da" Value="34" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="d2a2998d-e560-4172-8129-9211172b98da" Value="36" Type="int" />
 						</ParameterSet>
 					</EntityTemplate>
 					<EntityTemplate Name="Seagull" Guid="dd2f737c-30f8-4762-8de3-9ab48559c3ae" InheritanceParent="0cb14482-b936-410e-9317-66d385d7d2fd">
@@ -2828,7 +2931,7 @@
 							</ParameterSet>
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="e1058002-a34d-4f19-b419-303267e13018">
-							<Parameter Name="EggTypeIndex" Guid="5e0c68eb-c6fb-4a9f-9416-5f328d1eeb3e" Value="6" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="5e0c68eb-c6fb-4a9f-9416-5f328d1eeb3e" Value="7" Type="int" />
 							<Parameter Name="ShowEgg" Guid="dd79f256-3acd-497c-bc5c-da6b8a51f436" Value="False" Type="bool" />
 						</ParameterSet>
 					</EntityTemplate>
@@ -2867,7 +2970,7 @@
 							<Parameter Name="AttackResilience" Guid="c514ff74-36e7-41ed-bcf5-63f947a92324" Value="240" Type="float" />
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="a3ef76f7-ef54-4e08-aeff-33ea90da5fd2">
-							<Parameter Name="EggTypeIndex" Guid="087ae04f-f688-4bbc-aa42-5709cbe7cde9" Value="44" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="087ae04f-f688-4bbc-aa42-5709cbe7cde9" Value="46" Type="int" />
 							<Parameter Name="TextureSlot" Guid="1849c0ac-bfee-4398-bba0-c330bf3e705a" Value="163" Type="int" />
 							<Parameter Name="DisplayName" Guid="69addde5-b2f6-4225-9b79-6482c36368bf" Value="[DisplayName:88]" Type="string" />
 							<Parameter Name="SwapUV" Guid="bc53fafe-9d00-46f8-9419-c8b6517f042b" Value="True" Type="bool" />
@@ -2939,12 +3042,13 @@
 							</ParameterSet>
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="HerdBehavior" Guid="e25731b4-b609-46cd-887d-745852be1430" InheritanceParent="dfe7218e-ce14-4bde-8dac-f919c38e9efe">
+							<Parameter Name="AutoNearbyCreaturesHelp" Guid="9529587b-7fe9-421b-bb16-ab900436521f" Value="True" Type="bool" />
 							<Parameter Name="HerdingRange" Guid="a43382d9-a6db-45eb-8f6a-1f77ddd8f28e" Value="40" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="AvoidPlayerBehavior" Guid="f4c1ec60-def8-45df-a9a2-718574dc283f" InheritanceParent="3942e891-6b50-467c-8da5-a15bc63e59e0" />
 						<ParameterSet Name="CreatureEggData" Guid="cac94661-7074-4335-9020-d391a9bb00bf">
 							<Parameter Name="TextureSlot" Guid="1ed4cfc3-0f0c-4cc6-97c7-e49e75062471" Value="163" Type="int" />
-							<Parameter Name="EggTypeIndex" Guid="45348673-e657-44f9-bc72-c9c6d3b8c367" Value="30" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="45348673-e657-44f9-bc72-c9c6d3b8c367" Value="31" Type="int" />
 							<Parameter Name="SwapUV" Guid="627b6fa0-fc8d-421c-8ca6-19c0a47c884a" Value="False" Type="bool" />
 							<Parameter Name="DisplayName" Guid="add24196-991e-4a8b-baf4-a7285765a41f" Value="[DisplayName:90]" Type="string" />
 							<Parameter Name="Color" Guid="eeb86078-a35f-48f6-8c01-46654d4296d5" Value="80,55,40" Type="Color" />
@@ -3029,7 +3133,7 @@
 							<Parameter Name="Color" Guid="0aa6f1ae-a1b8-4e97-b2a8-d6f71d0b53dc" Value="48,48,48" Type="Color" />
 							<Parameter Name="TextureSlot" Guid="683f240b-b95b-45a3-9632-682f8072b658" Value="163" Type="int" />
 							<Parameter Name="DisplayName" Guid="bc7ab96b-a4af-4eb3-a937-59bc341b474b" Value="[DisplayName:92]" Type="string" />
-							<Parameter Name="EggTypeIndex" Guid="c95bf022-c698-4503-898a-8e8813a5cd19" Value="26" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="c95bf022-c698-4503-898a-8e8813a5cd19" Value="27" Type="int" />
 						</ParameterSet>
 					</EntityTemplate>
 					<EntityTemplate Name="Zebra" Guid="f3c6487d-6f75-4ea0-a31c-fb95285fd453" InheritanceParent="e4275171-a39f-413f-8888-4c472868364d">
@@ -3095,7 +3199,7 @@
 						<ParameterSet Name="CreatureEggData" Guid="7aacf849-de3c-4f4e-94ea-248064386042">
 							<Parameter Name="SwapUV" Guid="2707a585-8221-4dc6-a208-e83e4fbafc2f" Value="False" Type="bool" />
 							<Parameter Name="DisplayName" Guid="73d98d93-767b-4c6f-8031-7c1718eb93f4" Value="[DisplayName:94]" Type="string" />
-							<Parameter Name="EggTypeIndex" Guid="85f5bc3f-efd3-4fad-a6f7-5f58ef62df13" Value="21" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="85f5bc3f-efd3-4fad-a6f7-5f58ef62df13" Value="22" Type="int" />
 							<Parameter Name="TextureSlot" Guid="bf7ca042-8989-453c-a481-14c60fef76b7" Value="163" Type="int" />
 							<Parameter Name="Color" Guid="f0af559a-7199-48bf-bdff-dba6d0edba92" Value="255,255,255" Type="Color" />
 						</ParameterSet>
@@ -3164,115 +3268,10 @@
 							<Parameter Name="NutritionalValue" Guid="3d221b5b-6b1a-4cda-ad05-9e32d3a54a0b" Value="0.4" Type="float" />
 							<Parameter Name="DisplayName" Guid="5bec00d7-17e2-4dd3-98c0-0b38a5cd5c94" Value="[DisplayName:96]" Type="string" />
 							<Parameter Name="SwapUV" Guid="64616d7a-7be1-4858-ab9d-eb2f161f97f3" Value="True" Type="bool" />
-							<Parameter Name="EggTypeIndex" Guid="83916ad1-e010-4e82-9523-1d309340e437" Value="32" Type="int" />
+							<Parameter Name="EggTypeIndex" Guid="83916ad1-e010-4e82-9523-1d309340e437" Value="34" Type="int" />
 							<Parameter Name="TextureSlot" Guid="9b6ddf09-049f-413e-a1e1-4a32fb6d412a" Value="147" Type="int" />
 							<Parameter Name="Scale" Guid="c92e0511-eb12-4b10-98fd-1b91f71f0d98" Value="2" Type="float" />
 							<Parameter Name="Color" Guid="e5e48263-c051-4ba8-997e-6dd51a95f964" Value="190,160,190" Type="Color" />
-						</ParameterSet>
-					</EntityTemplate>
-					<EntityTemplate Name="Pigeon" Guid="d36b94f4-8549-4d74-8471-9f1fcc2e55aa" InheritanceParent="0cb14482-b936-410e-9317-66d385d7d2fd">
-						<MemberComponentTemplate Name="CreatureSounds" Guid="0331fa8a-8207-414b-b066-de74ee38f6da">
-							<Parameter Name="IdleSound" Guid="07415c9f-59f2-4ea1-a6c8-a07a81512323" Value="Audio/Creatures/Pigeon" Type="string" />
-							<Parameter Name="IdleSoundMinDistance" Guid="66077d12-7d17-45b5-8042-290918868e92" Value="3.5" Type="float" />
-							<Parameter Name="RareIdleSound" Guid="89d5f812-afb8-4431-a49c-e3a5db2b35cf" Value="Audio/Creatures/PigeonRare" Type="string" />
-							<Parameter Name="RareIdleSoundMinDistance" Guid="ee7949ff-8328-4686-862b-ed22c9c8a744" Value="10" Type="float" />
-							<Parameter Name="PainSound" Guid="ef1830a9-9ab4-4a7e-82cd-ef9d55823f2a" Value="Audio/Creatures/PigeonPain" Type="string" />
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="Creature" Guid="13cc626b-306d-4dbb-9c0b-b7f542418277">
-							<Parameter Name="DisplayName" Guid="7d2e12bc-b7e3-4d5c-b35a-983a8893df27" Value="[DisplayName:100]" Type="string" />
-							<Parameter Name="Description" Guid="dad637dc-38cf-4fd5-8ac7-238c6b6cb92a" Value="[Description:46]" Type="string" />
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="Loot" Guid="13f3f266-1803-458f-baec-92d1859c5f1d">
-							<ParameterSet Name="Loot" Guid="2b1f9494-7465-48cc-994c-26da3e9d74eb">
-								<Parameter Name="1" Guid="1a40bbc2-57dd-40ce-a073-a3245df408dc" Value="RottenBirdBlock;0;1" Type="string" />
-								<Parameter Name="2" Guid="84b4bee5-4b98-4732-9689-b5b3fdc99303" Value="FeatherBlock;1;1" Type="string" />
-							</ParameterSet>
-							<ParameterSet Name="LootOnFire" Guid="c8a41fa7-50d9-4148-b784-3fa6c4204455">
-								<Parameter Name="1" Guid="301716df-918e-4cb5-8eb7-83df52120655" Value="RottenBirdBlock;0;1" Type="string" />
-							</ParameterSet>
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="BirdModel" Guid="7002803b-28c5-4f62-bed5-e8d2e3d7e7bd">
-							<Parameter Name="TextureOverride" Guid="04b5fca6-8ea3-42c0-884f-90d01c1c3562" Value="Textures/Creatures/Pigeon" Type="string" />
-							<Parameter Name="ModelName" Guid="2e202f49-f26b-4fa0-9a48-81016e8e3c0f" Value="Models/Pigeon" Type="string" />
-							<Parameter Name="WalkAnimationSpeed" Guid="6bc5bf6f-c4fb-4aa2-835e-8295678c8748" Value="2" Type="float" />
-							<Parameter Name="PeckAnimationSpeed" Guid="791e2835-2425-40ad-b98e-63969d3de5f8" Value="3" Type="float" />
-							<Parameter Name="FlyAnimationSpeed" Guid="aed7c6c7-c66e-4a30-987c-1f5822cb7743" Value="4" Type="float" />
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="OnFire" Guid="87c2378b-48aa-4f68-83de-c6af7b01e0d9" />
-						<MemberComponentTemplate Name="Locomotion" Guid="a35905ac-45f1-4c6a-8182-99603e6cf959">
-							<Parameter Name="WalkSpeed" Guid="1852efd7-c1e2-4358-ba48-001ee8154b1b" Value="2" Type="float" />
-							<Parameter Name="FlySpeed" Guid="2ffba13c-5230-495b-b21a-0370c29d1637" Value="5" Type="float" />
-							<Parameter Name="TurnSpeed" Guid="af5b0e59-6b1a-499a-9134-a31755d5ace0" Value="10" Type="float" />
-							<Parameter Name="AccelerationFactor" Guid="cd7ce79e-8787-4764-a980-9a5d7e0f6244" Value="1.1" Type="float" />
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="Health" Guid="cc54f085-2be7-40b8-8464-2bfd62ef1b63">
-							<Parameter Name="AttackResilience" Guid="ddfc36b0-f625-4ef3-b071-e394aa6225c6" Value="2" Type="float" />
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="Body" Guid="f726bff3-8cd9-4148-9d1f-fd2d33b8e739">
-							<Parameter Name="Density" Guid="333dcac7-68d0-43a8-9304-d053c921e171" Value="0.6" Type="float" />
-							<Parameter Name="MaxSmoothRiseHeight" Guid="aecee046-7774-4496-8cf8-01653cb8681b" Value="0" Type="float" />
-							<Parameter Name="Mass" Guid="f061b507-def7-4ba3-8593-e0ed3d664c18" Value="1" Type="float" />
-							<Parameter Name="BoxSize" Guid="f90a7b2f-b1e7-4258-b772-293a213933d1" Value="0.4,0.4,0.4" Type="Vector3" />
-						</MemberComponentTemplate>
-						<ParameterSet Name="CreatureEggData" Guid="d60f31bf-1731-429b-84f6-87969f268b2f">
-							<Parameter Name="Scale" Guid="2b622964-84bd-42a8-af1d-61715eb40317" Value="1.2" Type="float" />
-							<Parameter Name="EggTypeIndex" Guid="4ccf2516-d49d-45e9-b45f-522d1ac2f8e6" Value="48" Type="int" />
-							<Parameter Name="DisplayName" Guid="b757f944-cfb9-403a-8eb5-400024564201" Value="[DisplayName:101]" Type="string" />
-							<Parameter Name="Color" Guid="c34f5b10-6983-4495-af6c-696852d3dda5" Value="220,220,220" Type="Color" />
-							<Parameter Name="NutritionalValue" Guid="f54919f3-e166-4373-94b4-2438a4d2e709" Value="0.1" Type="float" />
-						</ParameterSet>
-					</EntityTemplate>
-					<EntityTemplate Name="Sparrow" Guid="724fa0ab-366d-4917-9202-251f914ebc32" InheritanceParent="0cb14482-b936-410e-9317-66d385d7d2fd">
-						<MemberComponentTemplate Name="Loot" Guid="1b309975-b9b7-4715-ac51-ba14941e2bab">
-							<ParameterSet Name="LootOnFire" Guid="a61cdff7-3bb9-4700-a179-0997e1d5197e">
-								<Parameter Name="1" Guid="8421ef2b-89fa-41d8-b0f6-5f5c30eacff7" Value="RottenBirdBlock;0;1" Type="string" />
-							</ParameterSet>
-							<ParameterSet Name="Loot" Guid="e8b154f9-4831-45e4-8ea5-921d1cfb9cb4">
-								<Parameter Name="2" Guid="55fed4d2-f19f-4e1d-9035-a6fce145e1d2" Value="FeatherBlock;1;1" Type="string" />
-								<Parameter Name="1" Guid="609343ef-9d96-4ae6-aa1f-7066d0446fc8" Value="RottenBirdBlock;0;1" Type="string" />
-							</ParameterSet>
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="Health" Guid="49c79f0f-ff48-4320-a624-cb833ab38383">
-							<Parameter Name="AttackResilience" Guid="4a0cdca0-ee59-4cbb-a372-4eaf071d5150" Value="1.5" Type="float" />
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="CreatureSounds" Guid="5205686a-48de-4ef0-9f28-6451f1b6a654">
-							<Parameter Name="PainSound" Guid="325c434e-5bc6-4ed2-a098-f6e2a708b182" Value="Audio/Creatures/Sparrow" Type="string" />
-							<Parameter Name="IdleSoundMinDistance" Guid="6896b8cc-937a-432b-939d-12dc89a5ecb5" Value="3.5" Type="float" />
-							<Parameter Name="IdleSound" Guid="98b35b45-d9f2-4d7c-9d5f-0292e6a4763b" Value="Audio/Creatures/Sparrow" Type="string" />
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="OnFire" Guid="696d5314-9668-4aa5-b297-c66cfe690296" />
-						<MemberComponentTemplate Name="Locomotion" Guid="6b5b82f7-f548-4c56-b6ca-8a3f7d3bde2d">
-							<Parameter Name="TurnSpeed" Guid="abe0357b-3a6f-47e0-a046-4a2a2865e09f" Value="12" Type="float" />
-							<Parameter Name="WalkSpeed" Guid="ad508769-57b2-4807-9174-b488a8ce06fa" Value="2" Type="float" />
-							<Parameter Name="FlySpeed" Guid="c051b716-213c-4cb9-b959-37a34f235aa3" Value="4" Type="float" />
-							<Parameter Name="AccelerationFactor" Guid="c66772d8-7556-47a9-bfdb-41c6e3ded936" Value="1.2" Type="float" />
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="BirdModel" Guid="6f6e3ed5-72fa-4e43-bcc4-36b4b8e53c47">
-							<Parameter Name="WalkAnimationSpeed" Guid="3d85cbe8-6dd6-460f-9439-ed998e9120d8" Value="2.5" Type="float" />
-							<Parameter Name="FlyAnimationSpeed" Guid="5ab98af3-0d40-4847-afdf-81ddc9ce58d2" Value="5" Type="float" />
-							<Parameter Name="PeckAnimationSpeed" Guid="5f2f009f-b116-4ca1-a94f-cd68f3f5f024" Value="4" Type="float" />
-							<Parameter Name="TextureOverride" Guid="93ccd3b2-1227-47a7-a738-668b8e58d82f" Value="Textures/Creatures/Sparrow" Type="string" />
-							<Parameter Name="ModelName" Guid="d06c32ec-ab90-4142-9742-f9198b85d97d" Value="Models/Sparrow" Type="string" />
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="Creature" Guid="85df988b-62cf-46ef-b989-156432ccca59">
-							<Parameter Name="Description" Guid="254c67a2-c2fe-4cfd-b9c1-1363bdbcc13a" Value="[Description:47]" Type="string" />
-							<Parameter Name="DisplayName" Guid="afceaf21-885f-4be9-8965-ec294eed3fa6" Value="[DisplayName:102]" Type="string" />
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="HerdBehavior" Guid="a92160c2-0254-43b3-a54a-e918a2e99b3c" InheritanceParent="dfe7218e-ce14-4bde-8dac-f919c38e9efe">
-							<Parameter Name="HerdName" Guid="75cb63d8-ae92-42ed-aced-b0a2282eafa5" Value="Sparrow" Type="string" />
-						</MemberComponentTemplate>
-						<MemberComponentTemplate Name="Body" Guid="e18025b3-40cb-4f25-9918-5ecd42893e08">
-							<Parameter Name="Mass" Guid="9f766c54-ee2a-4aea-bfdf-e4fedcf59d91" Value="0.7" Type="float" />
-							<Parameter Name="MaxSmoothRiseHeight" Guid="b02c95d5-4324-401a-8afa-95ecb12598c0" Value="0" Type="float" />
-							<Parameter Name="Density" Guid="bb8b3c97-c07c-4fd5-aabd-3ddc7812614b" Value="0.6" Type="float" />
-							<Parameter Name="BoxSize" Guid="d391f8a8-f2af-417a-b0ab-19639e0a6ac1" Value="0.3,0.3,0.3" Type="Vector3" />
-						</MemberComponentTemplate>
-						<ParameterSet Name="CreatureEggData" Guid="127564ab-336e-42d6-b16b-db5e6129221f">
-							<Parameter Name="EggTypeIndex" Guid="06b4ea91-a153-49ed-a7d4-6bfdb9ac16a6" Value="49" Type="int" />
-							<Parameter Name="Scale" Guid="1eaada81-0253-49c2-a035-590967c76acb" Value="0.9" Type="float" />
-							<Parameter Name="NutritionalValue" Guid="7380fb4d-7203-463c-9e2d-bdfbc1f7bc36" Value="0.05" Type="float" />
-							<Parameter Name="DisplayName" Guid="7fbb4825-c0aa-491c-9f49-a72b15f0dbab" Value="[DisplayName:103]" Type="string" />
-							<Parameter Name="Color" Guid="c3a04f35-0048-4497-980e-181d84ad72d2" Value="200,190,170" Type="Color" />
 						</ParameterSet>
 					</EntityTemplate>
 				</Folder>
@@ -3404,9 +3403,6 @@
 				<SubsystemTemplate Name="ButtonBlockBehavior" Guid="0302cf98-4263-466a-8d01-985fa3d9b002" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 					<Parameter Name="Class" Guid="4407e30b-89ee-40c7-b1d2-eb100c2b8ac4" Value="Game.SubsystemButtonBlockBehavior" Type="string" />
 				</SubsystemTemplate>
-				<SubsystemTemplate Name="SwitchBlockBehavior" Guid="8717b547-e3eb-4465-946a-e4fb0b2fedb4" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
-					<Parameter Name="Class" Guid="4e3b2bf3-e8b9-4317-b52a-26ce3070d2e3" Value="Game.SubsystemSwitchBlockBehavior" Type="string" />
-				</SubsystemTemplate>
 				<SubsystemTemplate Name="SignBlockBehavior" Guid="039ea51e-c41d-4c93-99ae-a9b5a491c7aa" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 					<ParameterSet Name="Texts" Description="Contains sign texts" Guid="bdafca01-cf4e-414d-854e-aaaa8a138d0e" />
 					<Parameter Name="Class" Guid="e62ca7a9-a354-48ee-a504-e7d112d859b9" Value="Game.SubsystemSignBlockBehavior" Type="string" />
@@ -3510,6 +3506,9 @@
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="MetersBlockBehavior" Guid="85bef796-4594-4476-bf21-02eca977f35f" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 					<Parameter Name="Class" Guid="1efae454-fb77-4262-a9f3-3b685d773ba0" Value="Game.SubsystemMetersBlockBehavior" Type="string" />
+				</SubsystemTemplate>
+				<SubsystemTemplate Name="SwitchBlockBehavior" Guid="8717b547-e3eb-4465-946a-e4fb0b2fedb4" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+					<Parameter Name="Class" Guid="4e3b2bf3-e8b9-4317-b52a-26ce3070d2e3" Value="Game.SubsystemSwitchBlockBehavior" Type="string" />
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="ChestBlockBehavior" Guid="8723c7b1-fe0c-4003-b41b-db3f4d46ac03" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 					<Parameter Name="Class" Guid="fffc87b1-8fdf-4b13-8c37-9590cbb19928" Value="Game.SubsystemChestBlockBehavior" Type="string" />
@@ -3756,7 +3755,7 @@
 				<SubsystemTemplate Name="AmbientSounds" Description="Plays ambient audio" Guid="45d23322-efe4-4c7a-8e89-05d270ecf5ba" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 					<Parameter Name="Class" Guid="c579d8b3-ccef-4309-9e1f-27e039e8f1aa" Value="Game.SubsystemAmbientSounds" Type="string" />
 				</SubsystemTemplate>
-				<SubsystemTemplate Name="SoundMaterials" Description="Plays audio and manages audio congestion" Guid="5f06f071-e061-4554-a0ee-851c7cfb84dd" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+				<SubsystemTemplate Name="SoundMaterials" Description="Plays sounds based on material" Guid="5f06f071-e061-4554-a0ee-851c7cfb84dd" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 					<ParameterSet Name="FootstepSounds" Description="Sound folders to play when creature is walking on different surface types" Guid="4215c3ba-ec1c-469d-9c46-43d12da35b42">
 						<Parameter Name="MetalLadder" Guid="10ad6326-5b2f-4e4f-80e7-22ef914c992a" Value="Audio/Footsteps/MetalLadder" Type="string" />
 						<Parameter Name="WoodenLadder" Guid="58b0507d-f6f4-420f-a8fb-60ec0723bdd4" Value="Audio/Footsteps/WoodenLadder" Type="string" />
@@ -3867,7 +3866,7 @@
 					<Parameter Name="IsEnabled" Description="Whether summoning is enabled" Guid="4349e48f-10b2-481a-ab5e-e67445a66ec3" Value="False" Type="bool" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="LayEggBehavior" Description="Behavior that makes a bird lay an egg nearby" Guid="9c8f236d-7a27-4cf4-b223-47a87cad977d" InheritanceParent="6cc7245f-56f2-4a77-a3db-5f628b6369b3">
-					<Parameter Name="LayFrequency" Description="Approximate frequency of laying eggs, in 1/s" Guid="5951f75e-f006-4b6b-8cc5-fec6036d3574" Value="0.005" Type="float" />
+					<Parameter Name="LayFrequency" Description="Approximate frequency of laying eggs, in 1/s" Guid="5951f75e-f006-4b6b-8cc5-fec6036d3574" Value="0.004" Type="float" />
 					<Parameter Name="Class" Guid="6b7aeb21-5c9f-429a-b805-d7fc757baafa" Value="Game.ComponentLayEggBehavior" Type="string" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="WalkAroundBehavior" Description="Behavior that walks a creature randomly" Guid="aebb86ce-4ee6-4ca0-850d-cd60051e1d71" InheritanceParent="6cc7245f-56f2-4a77-a3db-5f628b6369b3">
@@ -3969,7 +3968,7 @@
 				<ComponentTemplate Name="Boat" Description="Takes player inputs and controls a creature with them" Guid="472b36f3-6ee6-442a-900f-b4caba94be39" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
 					<Parameter Name="Class" Guid="547229b2-7adc-4d13-8889-d94503c52184" Value="Game.ComponentBoat" Type="string" />
 				</ComponentTemplate>
-				<ComponentTemplate Name="CraftingTable" Description="A crafting table" Guid="48fdc8bb-8ca8-4d0f-af8d-25bfe9b56a19" InheritanceParent="81a44c6a-c30a-4f53-8d64-0c30aabab8f9">
+				<ComponentTemplate Name="CraftingTable" Description="A workbench" Guid="48fdc8bb-8ca8-4d0f-af8d-25bfe9b56a19" InheritanceParent="81a44c6a-c30a-4f53-8d64-0c30aabab8f9">
 					<Parameter Name="Class" Guid="566663a5-0480-45c8-9266-18c8060a236c" Value="Game.ComponentCraftingTable" Type="string" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="Creature" Description="Has references to other components that make up the creature entity" Guid="4c6556e2-af4a-42ae-9543-4f27f9df6f39" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
@@ -3993,15 +3992,18 @@
 					<Parameter Name="IdleSoundMinDistance" Description="Mindistance of idle sound" Guid="2ac96afc-6f46-4883-b4e9-e77e715f2d85" Value="2.5" Type="float" />
 					<Parameter Name="MoanSound" Description="Sound folder to play when creature is moaning, or empty if none" Guid="39f8e70c-2327-4c7f-8824-dad6ee932d0b" Value="" Type="string" />
 					<Parameter Name="CoughSound" Description="Sound folder to play when creature is coughing, or empty if none" Guid="3f9f4ec4-8762-47f9-9acf-2584a6c0a806" Value="" Type="string" />
+					<Parameter Name="RareIdleSoundMinDistance" Description="Mindistance of rare idle sound" Guid="3fe9ecc3-4680-43f0-b2a7-999c6ab46fcf" Value="2.5" Type="float" />
 					<Parameter Name="PukeSoundMinDistance" Description="Mindistance of puke sound" Guid="40f7509a-7f59-4156-b478-21e76fc9d12b" Value="4" Type="float" />
 					<Parameter Name="SneezeSound" Description="Sound folder to play when creature is sneezing, or empty if none" Guid="4e347007-7a6f-408e-9483-dab58d8fe8dd" Value="" Type="string" />
 					<Parameter Name="Class" Guid="638c61dd-3536-4c3a-bdd0-d1bc9a4f4777" Value="Game.ComponentCreatureSounds" Type="string" />
 					<Parameter Name="MoanSoundMinDistance" Description="Mindistance of moan sound" Guid="6a3f0a30-d829-49c3-a6ad-4d652d44e8ab" Value="4" Type="float" />
 					<Parameter Name="SneezeSoundMinDistance" Description="Mindistance of sneezing sound" Guid="7a4c4fd0-8fed-4164-8b86-4b9741e227a6" Value="4" Type="float" />
+					<Parameter Name="RareIdleSound" Description="Sound folder to play to emit rare idle sound of creature, or empty if none" Guid="a4be10fb-5aaf-44c5-b173-31a9b40d0efd" Value="" Type="string" />
 					<Parameter Name="CoughSoundMinDistance" Description="Mindistance of coughing sound" Guid="ba0bf4e3-45d9-44e6-bbd5-fff869d83242" Value="4" Type="float" />
 					<Parameter Name="IdleSound" Description="Sound folder to play to emit idle sound of creature, or empty if none" Guid="d42b8629-119b-43f3-9a51-0db39c3136ae" Value="" Type="string" />
 					<Parameter Name="AttackSound" Description="Sound folder to play when creature is attacking, or empty if none" Guid="dab4845e-4b8a-45d7-83ca-19a618365d51" Value="" Type="string" />
 					<Parameter Name="AttackSoundMinDistance" Description="Mindistance of attack sound" Guid="ec1757af-211b-4935-9039-600f5cbbe5a3" Value="4" Type="float" />
+					<Parameter Name="RareIdleSoundProbability" Description="Probability to emit rare idle sound instead of normal idle" Guid="ec6120a1-519d-4c0c-a46e-a2bbcbbf6974" Value="0.1" Type="float" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="Spawn" Description="Handles spawning and despawning of the creature entity" Guid="65268743-4076-4ee3-aefe-f02a54d16b36" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
 					<Parameter Name="AutoDespawn" Description="Whether entity should be automatically despawned" Guid="20547a7b-0a5a-4227-960f-f39dc56f6d1e" Value="True" Type="bool" />
@@ -4047,6 +4049,7 @@
 					<Parameter Name="Class" Guid="9dc356e5-7dc8-45f6-8779-827ddee9966c" Value="Game.ComponentMiner" Type="string" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="Body" Description="Physical body, handles collisions, gravity, drag, buoyancy, attaching" Guid="8edd1986-0dcc-424f-893a-491c089b821e" InheritanceParent="d981b2a9-4bf4-4b0d-ae4f-a088b3e19e8c">
+					<Parameter Name="CanCrouch" Description="Whether a body can crouch reducing its collision box height" Guid="1908dbe1-4b18-49ad-a4ec-cc3cb698eff2" Value="False" Type="bool" />
 					<Parameter Name="Mass" Description="Mass of body, in kg, used for collisions" Guid="2f640b28-1d73-4add-9f2c-f73d869666f4" Value="10" Type="float" />
 					<Parameter Name="MaxSmoothRiseHeight" Description="Maximum height of smooth rise" Guid="475b054f-35cb-4ce5-902a-97507c6fbdf5" Value="0.51" Type="float" />
 					<Parameter Name="WaterTurnSpeed" Description="How much a body is turning due to current when immersed in water, in approx radians/s" Guid="4bfce00f-b9c6-4420-afa9-9664a094be44" Value="0.05" Type="float" />
@@ -4256,9 +4259,6 @@
 		</Folder>
 		<Folder Name="Abstract" Guid="c6ba6a30-5042-4d3d-9bea-199cd4acc3fa">
 			<ProjectTemplate Name="Project" Guid="85023bf8-1c90-4dd1-9442-e6c13691d078">
-				<MemberSubsystemTemplate Name="BlocksManager" Guid="a6e38fe2-d626-74cc-a4bc-6691556e63f0" InheritanceParent="0d8a840a-b29e-e22c-f884-33970a877afc" />
-				<MemberSubsystemTemplate Name="ButtonBlockBehavior" Guid="206c4ebd-d7f4-4da1-8d03-a8c8b9302a29" InheritanceParent="0302cf98-4263-466a-8d01-985fa3d9b002" />
-				<MemberSubsystemTemplate Name="SwitchBlockBehavior" Guid="8a33158d-1fcd-4432-91f6-97772d51445d" InheritanceParent="8717b547-e3eb-4465-946a-e4fb0b2fedb4" />
 				<MemberSubsystemTemplate Name="FenceBlockBehavior" Guid="00f400d3-adc4-41e1-b3ff-ee46631571b5" InheritanceParent="b9a7f98e-b2fd-4902-9e37-d2c0a73909c4" />
 				<MemberSubsystemTemplate Name="PlayerStats" Guid="0d9c91b0-9f70-4754-b2dd-2667600eee95" InheritanceParent="c829cb1d-879e-47c4-8597-1507cdac7629" />
 				<MemberSubsystemTemplate Name="BombBlockBehavior" Guid="11630912-4eed-4b8f-931c-683a6d03855f" InheritanceParent="e8d530fa-cb89-46e8-8722-43c539dde579" />
@@ -4268,6 +4268,7 @@
 				<MemberSubsystemTemplate Name="TruthTableCircuitBlockBehavior" Guid="1a251c4f-0276-411b-b78a-cbc1b053b566" InheritanceParent="0758eaf6-7242-44c6-958c-5d35471b0ac8" />
 				<MemberSubsystemTemplate Name="SaddleBlockBehavior" Guid="1ca8b755-b1b4-4738-8b6d-e213a3120ac7" InheritanceParent="bbc85044-ea2e-400f-80c9-0ee35df9e3ee" />
 				<MemberSubsystemTemplate Name="Spawn" Guid="1e3da1bc-96f7-4bad-ae5f-21d84f5e981c" InheritanceParent="6bae095b-8129-446e-8a8a-9e2184b442e0" />
+				<MemberSubsystemTemplate Name="ButtonBlockBehavior" Guid="206c4ebd-d7f4-4da1-8d03-a8c8b9302a29" InheritanceParent="0302cf98-4263-466a-8d01-985fa3d9b002" />
 				<MemberSubsystemTemplate Name="BowBlockBehavior" Guid="2752d79c-2bc6-41b8-973d-db7f7654a132" InheritanceParent="bc4c17b6-cd36-43f4-b33e-50b4fba7a7fa" />
 				<MemberSubsystemTemplate Name="SoundMaterials" Guid="27c4fec7-b316-4b9a-8568-ee5974955736" InheritanceParent="5f06f071-e061-4554-a0ee-851c7cfb84dd" />
 				<MemberSubsystemTemplate Name="StairsBlockBehavior" Guid="2a494695-003b-435d-807f-4e9594dc14ac" InheritanceParent="d4b14f01-d52c-403a-8afa-e04c1a9b32be" />
@@ -4315,6 +4316,7 @@
 				<MemberSubsystemTemplate Name="Explosions" Guid="831663af-e4ae-4acf-9917-842727c3a74c" InheritanceParent="f2149216-75c1-4a5d-b385-0038d60ba9fe" />
 				<MemberSubsystemTemplate Name="CactusBlockBehavior" Guid="87ca89c1-f95e-4a3c-85f2-2d99de0220f0" InheritanceParent="3858a400-2708-4e12-bccf-0495889fff79" />
 				<MemberSubsystemTemplate Name="SignBlockBehavior" Guid="897fdf9a-574e-434f-aae3-89bf53a00fd7" InheritanceParent="039ea51e-c41d-4c93-99ae-a9b5a491c7aa" />
+				<MemberSubsystemTemplate Name="SwitchBlockBehavior" Guid="8a33158d-1fcd-4432-91f6-97772d51445d" InheritanceParent="8717b547-e3eb-4465-946a-e4fb0b2fedb4" />
 				<MemberSubsystemTemplate Name="GraveBlockBehavior" Guid="8c3f5107-195a-4af1-83f1-cbfb4de5a76a" InheritanceParent="4d1886bf-8d73-4f73-8f25-3187c066c9d3" />
 				<MemberSubsystemTemplate Name="SpikesBehavior" Guid="91a3d2eb-1fa3-4d48-bc97-66a01f7c1d49" InheritanceParent="85671085-6307-4836-b6d8-b307b25c1449" />
 				<MemberSubsystemTemplate Name="Projectiles" Guid="92b52942-9839-4bf3-9763-1730c6e8453f" InheritanceParent="ce0db76f-3990-43be-b3ec-3a71bbe1d4e1" />
@@ -4394,6 +4396,9 @@
 		<GridViewPreset Name="Creature Sounds">
 			<Parameter Guid="d42b8629-119b-43f3-9a51-0db39c3136ae" />
 			<Parameter Guid="2ac96afc-6f46-4883-b4e9-e77e715f2d85" />
+			<Parameter Guid="a4be10fb-5aaf-44c5-b173-31a9b40d0efd" />
+			<Parameter Guid="3fe9ecc3-4680-43f0-b2a7-999c6ab46fcf" />
+			<Parameter Guid="ec6120a1-519d-4c0c-a46e-a2bbcbbf6974" />
 			<Parameter Guid="1cb7d7ad-d9d9-49ff-a33a-2deec64ddae3" />
 			<Parameter Guid="24b51a16-84a4-4dde-b7c6-4028ca883074" />
 			<Parameter Guid="dab4845e-4b8a-45d7-83ca-19a618365d51" />
@@ -4448,6 +4453,7 @@
 			<Parameter Guid="739cec60-7d40-429a-a36f-2e8d7f7ace47" />
 			<Parameter Guid="4bfce00f-b9c6-4420-afa9-9664a094be44" />
 			<Parameter Guid="8cd981be-a456-44a2-a3d5-4f9657713159" />
+			<Parameter Guid="1908dbe1-4b18-49ad-a4ec-cc3cb698eff2" />
 		</GridViewPreset>
 		<GridViewPreset Name="Subsystems Dependencies">
 			<Parameter Guid="d89cc06f-973a-423f-af9f-dc590c8d13a5" />
