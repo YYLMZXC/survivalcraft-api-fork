@@ -7,6 +7,7 @@ namespace Game
 		public CobblestoneBlock()
 			: base(69)
 		{
+			CanBeBuiltIntoFurniture = true;
 		}
 	}
 }

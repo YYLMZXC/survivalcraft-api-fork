@@ -11,6 +11,7 @@ namespace Game
 		public MagmaBlock()
 			: base(MaxLevel)
 		{
+			CanBeBuiltIntoFurniture = true;
 		}
 
 		public override bool IsFaceTransparent(SubsystemTerrain subsystemTerrain, int face, int value)

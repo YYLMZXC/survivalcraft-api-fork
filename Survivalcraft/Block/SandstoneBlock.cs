@@ -7,6 +7,7 @@ namespace Game
 		public SandstoneBlock()
 			: base(64)
 		{
+			CanBeBuiltIntoFurniture = true;
 		}
 	}
 }

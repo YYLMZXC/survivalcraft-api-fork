@@ -4,6 +4,11 @@ namespace Game
 	{
 		public const int Index = 15;
 
+		public GlassBlock()
+		{
+			CanBeBuiltIntoFurniture = true;
+		}
+
 		public override bool ShouldGenerateFace(SubsystemTerrain subsystemTerrain, int face, int value, int neighborValue)
 		{
 			if (Terrain.ExtractContents(neighborValue) == Index) return false;

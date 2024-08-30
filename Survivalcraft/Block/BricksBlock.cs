@@ -7,6 +7,7 @@ namespace Game
 		public BricksBlock()
 			: base(39)
 		{
+			CanBeBuiltIntoFurniture = true;
 		}
 	}
 }

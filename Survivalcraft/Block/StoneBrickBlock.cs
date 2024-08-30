@@ -7,6 +7,7 @@ namespace Game
 		public StoneBrickBlock()
 			: base(50)
 		{
+			CanBeBuiltIntoFurniture = true;
 		}
 	}
 }

@@ -616,53 +616,9 @@ namespace Game
 
 		public static bool IsValueAllowed(int value)
 		{
-			switch (Terrain.ExtractContents(value))
-			{
-				case 21:
-					return true;
-				case 3:
-					return true;
-				case 67:
-					return true;
-				case 7:
-					return true;
-				case 72:
-					return true;
-				case 5:
-					return true;
-				case 26:
-					return true;
-				case 4:
-					return true;
-				case 68:
-					return true;
-				case 73:
-					return true;
-				case 150:
-					return true;
-				case 71:
-					return true;
-				case 126:
-					return true;
-				case 47:
-					return true;
-				case 46:
-					return true;
-				case 15:
-					return true;
-				case 208:
-					return true;
-				case 31:
-					return true;
-				case 17:
-					return true;
-				case 18:
-					return true;
-				case 92:
-					return true;
-				default:
-					return false;
-			}
+			int contents = Terrain.ExtractContents(value);
+			Block block = BlocksManager.Blocks[contents];
+			return block.CanBlockBeBuiltIntoFurniture(value);
 		}
 
 		public static bool IsValueDisallowed(int value)

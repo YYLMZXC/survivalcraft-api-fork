@@ -29,6 +29,8 @@ namespace Game
 
 		public bool StaticBlockIndex = false;
 
+		public bool CanBeBuiltIntoFurniture = false;
+
 		public virtual Vector3 GetFirstPersonOffset(int value)
 		{
 			return FirstPersonOffset;
@@ -695,6 +697,11 @@ namespace Game
 		public virtual bool ShouldBeAddedToProject(SubsystemBlocksManager subsystemBlocksManager)
 		{
 			return true;
+		}
+
+		public virtual bool CanBlockBeBuiltIntoFurniture(int value)
+		{
+			return CanBeBuiltIntoFurniture;
 		}
     }
 }

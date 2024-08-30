@@ -7,6 +7,7 @@ namespace Game
 		public ClayBlock()
 			: base(15)
 		{
+			CanBeBuiltIntoFurniture = true;
 		}
 	}
 }

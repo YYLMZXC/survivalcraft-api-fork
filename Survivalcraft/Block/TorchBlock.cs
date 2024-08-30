@@ -14,6 +14,10 @@ namespace Game
 
 		public BoundingBox[][] m_collisionBoxes = new BoundingBox[5][];
 
+		public TorchBlock()
+		{
+			CanBeBuiltIntoFurniture = true;
+		}
 		public override void Initialize()
 		{
 			for (int i = 0; i < m_blockMeshesByVariant.Length; i++)

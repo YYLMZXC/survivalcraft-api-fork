@@ -7,6 +7,7 @@ namespace Game
 		public GraniteBlock()
 			: base(24)
 		{
+			CanBeBuiltIntoFurniture = true;
 		}
 	}
 }

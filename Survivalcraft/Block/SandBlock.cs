@@ -3,6 +3,10 @@ namespace Game
 	public class SandBlock : CubeBlock
 	{
 		public const int Index = 7;
+
+        public SandBlock() {
+            CanBeBuiltIntoFurniture = true;
+        }
         public override bool IsSuitableForPlants(int value, int plantValue)
         {
             int plantContent = Terrain.ExtractContents(plantValue);

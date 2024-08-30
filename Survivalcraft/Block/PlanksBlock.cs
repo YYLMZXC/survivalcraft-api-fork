@@ -7,6 +7,7 @@ namespace Game
 		public PlanksBlock()
 			: base(23)
 		{
+			CanBeBuiltIntoFurniture = true;
 		}
-	}
+    }
 }

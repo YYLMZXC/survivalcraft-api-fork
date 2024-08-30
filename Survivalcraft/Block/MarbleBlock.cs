@@ -7,6 +7,7 @@ namespace Game
 		public MarbleBlock()
 			: base(51)
 		{
+			CanBeBuiltIntoFurniture = true;
 		}
 	}
 }

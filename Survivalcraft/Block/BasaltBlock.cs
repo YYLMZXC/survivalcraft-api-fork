@@ -7,6 +7,7 @@ namespace Game
 		public BasaltBlock()
 			: base(40)
 		{
+			CanBeBuiltIntoFurniture = true;
 		}
 	}
 }
