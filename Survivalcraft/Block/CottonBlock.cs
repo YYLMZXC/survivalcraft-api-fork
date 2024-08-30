@@ -19,9 +19,9 @@ namespace Game
 		{
 			if (!GetIsWild(Terrain.ExtractData(value)))
 			{
-				return "ÃÞ»¨";
+				return LanguageControl.Get(GetType().Name, 0);
 			}
-			return "Ò°ÉúÃÞ»¨";
+			return LanguageControl.Get(GetType().Name, 1);
 		}
 
 		public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)

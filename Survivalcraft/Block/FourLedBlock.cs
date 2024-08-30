@@ -77,7 +77,7 @@ namespace Game
 		{
 			int data = Terrain.ExtractData(value);
 			int color = GetColor(data);
-			return LanguageControl.Get("LedBlock", color) + LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName");
+            return string.Format(LanguageControl.Get("LedBlock", "Format"), LanguageControl.Get("LedBlock", color), LanguageControl.GetBlock(string.Format("{0}:{1}", GetType().Name, data.ToString()), "DisplayName"));
 		}
 
 		public override IEnumerable<int> GetCreativeValues()

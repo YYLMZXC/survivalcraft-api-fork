@@ -81,7 +81,7 @@ namespace Game
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
 		{
 			int color = GetColor(Terrain.ExtractData(value));
-			return SubsystemPalette.GetName(subsystemTerrain, color, "—’¡œÕ∞");
+			return SubsystemPalette.GetName(subsystemTerrain, color, LanguageControl.GetBlock(GetType().Name, "DisplayName"));
 		}
 
 		public override int GetDamageDestructionValue(int value)

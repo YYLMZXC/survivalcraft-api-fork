@@ -147,20 +147,21 @@ namespace Game
 
 		public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
 		{
+			string str = "BasePumpkinBlock";
 			int size = GetSize(Terrain.ExtractData(value));
 			if (m_isRotten)
 			{
 				if (size >= 7)
 				{
-					return "腐烂的南瓜";
+					return string.Format(LanguageControl.Get(str, "2"), LanguageControl.Get(str, "4"));
 				}
-				return "腐烂未成熟的南瓜";
-			}
+				return string.Format(LanguageControl.Get(str, "3"), LanguageControl.Get(str, "4"), LanguageControl.Get(str, "5"));
+            }
 			if (size >= 7)
 			{
-				return "南瓜";
+				return LanguageControl.Get(str, "1");
 			}
-			return "未成熟的南瓜";
+			return string.Format(LanguageControl.Get(str, "2"), LanguageControl.Get(str, "5"));
 		}
 
 		public override IEnumerable<int> GetCreativeValues()
