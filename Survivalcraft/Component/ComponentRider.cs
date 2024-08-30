@@ -152,12 +152,7 @@ namespace Game
 				{
 					StartDismounting();
 				}
-				Vector3 positionOffset = mount.MountOffset + m_riderOffset;
-				if (ComponentCreature.ComponentBody.IsSneaking)
-				{
-					positionOffset += new Vector3(0f, 0.5f, 0.1f);
-				}
-				ComponentCreature.ComponentBody.ParentBodyPositionOffset = positionOffset;
+				ComponentCreature.ComponentBody.ParentBodyPositionOffset = mount.MountOffset + m_riderOffset;
 				ComponentCreature.ComponentBody.ParentBodyRotationOffset = Quaternion.Identity;
 			}
 		}
