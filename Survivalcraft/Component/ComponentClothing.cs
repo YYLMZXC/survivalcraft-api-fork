@@ -223,13 +223,14 @@ namespace Game
 			{
 				float num = m_random.Float(0f, 1f);
 				ClothingSlot slot = (num < 0.1f) ? ClothingSlot.Feet : ((num < 0.3f) ? ClothingSlot.Legs : ((num < 0.9f) ? ClothingSlot.Torso : ClothingSlot.Head));
-				float num2 = ((ClothingBlock)BlocksManager.Blocks[203]).Durability + 1;
 				List<int> list = new(GetClothes(slot));
 				for (int i = 0; i < list.Count; i++)
 				{
 					int value = list[i];
 					Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-					ClothingData clothingData = block.GetClothingData(value); float x = (num2 - BlocksManager.Blocks[203].GetDamage(value)) / num2 * clothingData.Sturdiness;
+					float num2 = block.GetDurability(value) + 1;
+					ClothingData clothingData = block.GetClothingData(value);
+					float x = (num2 - block.GetDamage(value)) / num2 * clothingData.Sturdiness;
 					float num3 = MathF.Min(attackPower * MathUtils.Saturate(clothingData.ArmorProtection), x);
 					if (num3 > 0f)
 					{
@@ -249,7 +250,8 @@ namespace Game
 				int num4 = 0;
 				while (num4 < list.Count)
 				{
-					if (Terrain.ExtractContents(list[num4]) != 203)
+					Block block = BlocksManager.Blocks[Terrain.ExtractContents(list[num4])];
+					if (!block.CanWear(list[num4]))
 					{
 						list.RemoveAt(num4);
 						m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + (m_componentBody.StanceBoxSize / 2f), 1f, 1f, Color.White, 0));
@@ -404,7 +406,8 @@ namespace Game
 						int num4 = 0;
 						while (num4 < m_clothesList.Count)
 						{
-							if (Terrain.ExtractContents(m_clothesList[num4]) != 203)
+							Block block = BlocksManager.Blocks[Terrain.ExtractContents(m_clothesList[num4])];
+							if (!block.CanWear(m_clothesList[num4]))
 							{
 								m_clothesList.RemoveAt(num4);
 								m_subsystemParticles.AddParticleSystem(new BlockDebrisParticleSystem(m_subsystemTerrain, m_componentBody.Position + (m_componentBody.StanceBoxSize / 2f), 1f, 1f, Color.White, 0));
@@ -452,7 +455,7 @@ namespace Game
 			{
 				return 1;
 			}
-			if (block is ClothingBlock && CanWearClothing(value))
+			if (block.CanWear(value) && CanWearClothing(value))
 			{
 				return 1;
 			}
