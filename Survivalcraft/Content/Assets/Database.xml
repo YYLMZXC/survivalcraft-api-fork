@@ -3398,6 +3398,9 @@
 		</Folder>
 		<Folder Name="Subsystems" Guid="75acb50b-fb75-4c85-af38-a0fb51a9eb90">
 			<Folder Name="BlockBehaviors" Guid="00c97f0f-731e-481c-9909-eae9cc5ee940">
+				<SubsystemTemplate Name="BlocksManager" Guid="0d8a840a-b29e-e22c-f884-33970a877afc" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+					<Parameter Name="Class" Guid="46dcfceb-86d7-b4d4-0fb8-8abbf3db0f06" Value="Game.SubsystemBlocksManager" Type="string" />
+				</SubsystemTemplate>
 				<SubsystemTemplate Name="ButtonBlockBehavior" Guid="0302cf98-4263-466a-8d01-985fa3d9b002" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 					<Parameter Name="Class" Guid="4407e30b-89ee-40c7-b1d2-eb100c2b8ac4" Value="Game.SubsystemButtonBlockBehavior" Type="string" />
 				</SubsystemTemplate>
@@ -4253,6 +4256,7 @@
 		</Folder>
 		<Folder Name="Abstract" Guid="c6ba6a30-5042-4d3d-9bea-199cd4acc3fa">
 			<ProjectTemplate Name="Project" Guid="85023bf8-1c90-4dd1-9442-e6c13691d078">
+				<MemberSubsystemTemplate Name="BlocksManager" Guid="a6e38fe2-d626-74cc-a4bc-6691556e63f0" InheritanceParent="0d8a840a-b29e-e22c-f884-33970a877afc" />
 				<MemberSubsystemTemplate Name="ButtonBlockBehavior" Guid="206c4ebd-d7f4-4da1-8d03-a8c8b9302a29" InheritanceParent="0302cf98-4263-466a-8d01-985fa3d9b002" />
 				<MemberSubsystemTemplate Name="SwitchBlockBehavior" Guid="8a33158d-1fcd-4432-91f6-97772d51445d" InheritanceParent="8717b547-e3eb-4465-946a-e4fb0b2fedb4" />
 				<MemberSubsystemTemplate Name="FenceBlockBehavior" Guid="00f400d3-adc4-41e1-b3ff-ee46631571b5" InheritanceParent="b9a7f98e-b2fd-4902-9e37-d2c0a73909c4" />

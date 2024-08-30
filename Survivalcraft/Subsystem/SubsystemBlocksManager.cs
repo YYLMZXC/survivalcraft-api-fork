@@ -2,6 +2,7 @@
 using Engine;
 using GameEntitySystem;
 using TemplatesDatabase;
+using static Game.BlocksManager;
 
 namespace Game
 {
@@ -18,21 +19,49 @@ namespace Game
          * PostProcess进行后处理
          */
 
+        //BlocksManager存储的是类名Name，SubsystemBlockManager存储的是全名FullName
         public Dictionary<string, int> DynamicBlockNameToIndex = new Dictionary<string, int>();
+
+        public ValuesDictionary m_savedValuesDictionary;
         public override void Load(ValuesDictionary valuesDictionary)
         {
-            BlocksManager.InitializeBlocks(this);
-            BlocksManager.PostProcessBlocksLoad();
+            DynamicBlockNameToIndex.Clear();
+            m_savedValuesDictionary = valuesDictionary;
+            InitializeBlocks(this);
+            PostProcessBlocksLoad();
         }
 
         public void CallAllocate()
         {
-
+            //int tick1 = Environment.TickCount;
+            for (int i = SurvivalCraftBlockCount + 1; i < 1024; i++)
+            {
+                string fullName = m_savedValuesDictionary.GetValue<string>(i.ToString(), String.Empty);
+                if(!String.IsNullOrEmpty(fullName)) DynamicBlockNameToIndex[fullName] = i;
+                /*
+                if (!String.IsNullOrEmpty(fullName))
+                {
+                    foreach(var blockAllocateData in BlocksAllocateData)
+                    {
+                        if(blockAllocateData.Block.GetType().FullName == fullName)
+                        {
+                            DynamicBlockNameToIndex[blockAllocateData.Block.GetType().FullName] = i;
+                            Log.Information("加载方块：" + fullName + ", Index = " + i);
+                            break;
+                        }
+                    }
+                }*/
+            }
+            //int tick2 = Environment.TickCount;
+            //Engine.Log.Information("加载项目方块系统耗时" + (tick2 - tick1).ToString() + "ms");
         }
 
         public override void Save(ValuesDictionary valuesDictionary)
         {
-            base.Save(valuesDictionary);
+            foreach (var item in DynamicBlockNameToIndex)
+            {
+                valuesDictionary.SetValue(item.Value.ToString(), item.Key);
+            }
         }
     }
 }

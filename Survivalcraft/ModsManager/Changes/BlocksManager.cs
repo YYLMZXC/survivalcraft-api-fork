@@ -84,12 +84,12 @@ namespace Game
 		{
             Block block = allocateData.Block;
             m_blocks[Index] = block;
-            BlockNameToIndex[block.GetType().FullName] = Index;
+            BlockNameToIndex[block.GetType().Name] = Index;
             if (block is FluidBlock fluidBlock)
             {
                 m_fluidBlocks[Index] = fluidBlock;
             }
-			Engine.Log.Information("分配方块信息：Name = " + allocateData.Block.GetType().Name + ", Index = " + Index + ", 原始Index = " + allocateData.Block.BlockIndex);
+			//Engine.Log.Information("分配方块信息：Name = " + allocateData.Block.GetType().Name + ", Index = " + Index + ", 原始Index = " + allocateData.Block.BlockIndex);
 			allocateData.Block.BlockIndex = Index;
             allocateData.Allocated = true;
 			allocateData.Index = Index;
@@ -122,17 +122,10 @@ namespace Game
         }
 
 		//目前这个方法性能还比较差，不适合每帧都访问一次
-		public static int GetBlockIndex(string BlockName, bool fullName = false)
+		public static int GetBlockIndex(string BlockName)
 		{
-			foreach(var blockallocateData in BlocksAllocateData)
-			{
-				string nameInside = blockallocateData.Block.GetType().Name;
-				if (fullName) nameInside = blockallocateData.Block.GetType().FullName;
-				if(nameInside == BlockName && blockallocateData.Allocated)
-				{
-					return blockallocateData.Index;
-				}
-            }
+			bool valueGotten = BlockNameToIndex.TryGetValue(BlockName, out int index);
+			if(valueGotten) return index;
 			return -1;
 		}
 		public static void InitializeBlocks(SubsystemBlocksManager subsystemBlocksManager)
@@ -177,10 +170,13 @@ namespace Game
                 for (int i = 0; i < BlocksAllocateData.Count; i++)
                 {
                     BlockAllocateData allocateData = BlocksAllocateData[i];
-					bool containsKey = subsystemBlocksManager.DynamicBlockNameToIndex.TryGetValue(allocateData.Block.GetType().FullName, out int blockValue);
-                    if (containsKey)
-                    {
-                        AllocateBlock(allocateData, blockValue);
+					if (!allocateData.Allocated)
+					{
+                        bool containsKey = subsystemBlocksManager.DynamicBlockNameToIndex.TryGetValue(allocateData.Block.GetType().FullName, out int blockValue);
+                        if (containsKey)
+                        {
+                            AllocateBlock(allocateData, blockValue);
+                        }
                     }
                 }
             }
