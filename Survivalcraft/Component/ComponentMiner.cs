@@ -401,17 +401,21 @@ namespace Game
 			return false;
 		}
 
-		public object Raycast(Ray3 ray, RaycastMode mode, bool raycastTerrain = true, bool raycastBodies = true, bool raycastMovingBlocks = true)
+		public virtual object Raycast(Ray3 ray, RaycastMode mode, bool raycastTerrain = true, bool raycastBodies = true, bool raycastMovingBlocks = true, float? Reach = null)
 		{
 			float reach = (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative) ? SettingsManager.CreativeReach : 5f;
+			if(Reach.HasValue) reach = Reach.Value;
 			Vector3 creaturePosition = ComponentCreature.ComponentCreatureModel.EyePosition;
 			Vector3 start = ray.Position;
 			var direction = Vector3.Normalize(ray.Direction);
 			Vector3 end = ray.Position + (direction * 15f);
 			Point3 startCell = Terrain.ToCell(start);
-			BodyRaycastResult? bodyRaycastResult = m_subsystemBodies.Raycast(start, end, 0.35f, (ComponentBody body, float distance) => Vector3.DistanceSquared(start + (distance * direction), creaturePosition) <= reach * reach && body.Entity != Entity && !body.IsChildOfBody(ComponentCreature.ComponentBody) && !ComponentCreature.ComponentBody.IsChildOfBody(body) && Vector3.Dot(Vector3.Normalize(body.BoundingBox.Center() - start), direction) > 0.7f);
-			MovingBlocksRaycastResult? movingBlocksRaycastResult = m_subsystemMovingBlocks.Raycast(start, end, extendToFillCells: true);
-			TerrainRaycastResult? terrainRaycastResult = m_subsystemTerrain.Raycast(start, end, useInteractionBoxes: true, skipAirBlocks: true, delegate (int value, float distance)
+			BodyRaycastResult? bodyRaycastResult = null;
+			if(raycastBodies) bodyRaycastResult = m_subsystemBodies.Raycast(start, end, 0.35f, (ComponentBody body, float distance) => Vector3.DistanceSquared(start + (distance * direction), creaturePosition) <= reach * reach && body.Entity != Entity && !body.IsChildOfBody(ComponentCreature.ComponentBody) && !ComponentCreature.ComponentBody.IsChildOfBody(body) && Vector3.Dot(Vector3.Normalize(body.BoundingBox.Center() - start), direction) > 0.7f);
+			MovingBlocksRaycastResult? movingBlocksRaycastResult = null;
+			if(raycastMovingBlocks) movingBlocksRaycastResult = m_subsystemMovingBlocks.Raycast(start, end, extendToFillCells: true);
+			TerrainRaycastResult? terrainRaycastResult = null;
+			if(raycastTerrain) terrainRaycastResult = m_subsystemTerrain.Raycast(start, end, useInteractionBoxes: true, skipAirBlocks: true, delegate (int value, float distance)
 			{
 				if (Vector3.DistanceSquared(start + (distance * direction), creaturePosition) <= reach * reach)
 				{
@@ -439,7 +443,12 @@ namespace Game
 				}
 				return false;
 			});
-			float num = bodyRaycastResult.HasValue ? bodyRaycastResult.Value.Distance : float.PositiveInfinity;
+
+            if (!raycastBodies) bodyRaycastResult = null;
+            if (!raycastTerrain) terrainRaycastResult = null;
+            if (!raycastMovingBlocks) movingBlocksRaycastResult = null;
+
+            float num = bodyRaycastResult.HasValue ? bodyRaycastResult.Value.Distance : float.PositiveInfinity;
 			float num2 = movingBlocksRaycastResult.HasValue ? movingBlocksRaycastResult.Value.Distance : float.PositiveInfinity;
 			float num3 = terrainRaycastResult.HasValue ? terrainRaycastResult.Value.Distance : float.PositiveInfinity;
 			if (num < num2 && num < num3)

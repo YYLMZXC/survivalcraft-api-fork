@@ -78,6 +78,10 @@ namespace Game
 
 		public bool TerrainCollidable = true;
 
+		public bool BodyCollidable = true;
+
+		public bool FluidCollidable = true;
+
 		public Vector3 StanceBoxSize => new(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
 
 		public Vector3 BoxSize { get; set; }
@@ -339,9 +343,17 @@ namespace Game
 			}
 		}
 
-		public void Update(float dt)
+		public virtual void Update(float dt)
 		{
-			CollisionVelocityChange = Vector3.Zero;
+            bool skipVanilla_ = false;
+            ModsManager.HookAction("UpdateComponentBody", loader =>
+            {
+				loader.UpdateComponentBody(this, dt, skipVanilla_, out bool skipVanilla);
+                skipVanilla_ |= skipVanilla;
+                return false;
+            });
+            if (skipVanilla_) return;
+            CollisionVelocityChange = Vector3.Zero;
 			Velocity += m_totalImpulse;
 			m_totalImpulse = Vector3.Zero;
 			if (m_parentBody != null || m_velocity.LengthSquared() > 9.99999944E-11f || m_directMove != Vector3.Zero || m_targetCrouchFactor != m_crouchFactor)
@@ -375,9 +387,9 @@ namespace Game
 				return;
 			}
 			m_bodiesCollisionBoxes.Clear();
-			FindBodiesCollisionBoxes(position, m_bodiesCollisionBoxes);
+			if(BodyCollidable) FindBodiesCollisionBoxes(position, m_bodiesCollisionBoxes);
 			m_movingBlocksCollisionBoxes.Clear();
-			FindMovingBlocksCollisionBoxes(position, m_movingBlocksCollisionBoxes);
+			if(TerrainCollidable) FindMovingBlocksCollisionBoxes(position, m_movingBlocksCollisionBoxes);
 			if (!MoveToFreeSpace(0.56f))
 			{
 				m_crouchFactor = CanCrouch ? 1f : 0f;
@@ -409,7 +421,7 @@ namespace Game
 			if (IsGravityEnabled)
 			{
 				m_velocity.Y -= 10f * dt;
-				if (ImmersionFactor > 0f)
+				if (ImmersionFactor > 0f && FluidCollidable)
 				{
 					float num = ImmersionFactor * (1f + (0.03f * MathF.Sin((float)MathUtils.Remainder(2.0 * m_subsystemTime.GameTime, 6.2831854820251465))));
 					m_velocity.Y += 10f * (1f / Density * num) * dt;
@@ -420,7 +432,7 @@ namespace Game
 			m_velocity.X *= 1f - num2;
 			m_velocity.Y *= 1f - num3;
 			m_velocity.Z *= 1f - num2;
-			if (IsWaterDragEnabled && ImmersionFactor > 0f && ImmersionFluidBlock != null)
+			if (IsWaterDragEnabled && ImmersionFactor > 0f && ImmersionFluidBlock != null && FluidCollidable)
 			{
 				Vector2? vector = m_subsystemFluidBlockBehavior.CalculateFlowSpeed(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
 				Vector3 vector2 = vector.HasValue ? new Vector3(vector.Value.X, 0f, vector.Value.Y) : Vector3.Zero;
@@ -781,6 +793,7 @@ namespace Game
 			for (int i = 0; i < m_componentBodies.Count; i++)
 			{
 				ComponentBody componentBody = m_componentBodies.Array[i];
+				if(!componentBody.BodyCollidable) continue;
 				if (componentBody != this && componentBody != m_parentBody && componentBody.m_parentBody != this)
 				{
 					result.Add(new CollisionBox
@@ -829,6 +842,7 @@ namespace Game
 
 		public void FindTerrainCollisionBoxes(BoundingBox box, DynamicArray<CollisionBox> result)
 		{
+			if (!TerrainCollidable) return;
 			Point3 point = Terrain.ToCell(box.Min);
 			Point3 point2 = Terrain.ToCell(box.Max);
 			point.Y = MathUtils.Max(point.Y, 0);

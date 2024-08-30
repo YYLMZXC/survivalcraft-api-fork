@@ -12,5 +12,12 @@ namespace Game
 		{
 			return int.MaxValue;
 		}
-	}
+
+        public override bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd)
+        {
+            isEnd = true;
+			Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
+            return ((MountedElectricElementBlock)block).GetFace(value) == pistonFace;
+        }
+    }
 }

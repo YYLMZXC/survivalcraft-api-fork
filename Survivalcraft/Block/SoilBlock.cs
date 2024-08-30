@@ -104,5 +104,21 @@ namespace Game
 		{
 			return face != 5;
 		}
-	}
+
+		public override bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value)
+		{
+			return true;
+		}
+        public override bool IsSuitableForPlants(int value, int plantValue)
+        {
+            int plantContent = Terrain.ExtractContents(plantValue);
+            Block plantBlock = BlocksManager.Blocks[plantContent];
+            if (plantBlock is SaplingBlock)
+            {
+                return false;
+            }
+            return true;
+        }
+
+    }
 }

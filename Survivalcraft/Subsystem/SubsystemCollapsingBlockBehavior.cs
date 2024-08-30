@@ -118,48 +118,15 @@ namespace Game
 		public bool IsCollapseSupportBlock(int value)
 		{
 			int num = Terrain.ExtractContents(value);
-			if (num != 0)
-			{
-				int data = Terrain.ExtractData(value);
-				Block block = BlocksManager.Blocks[num];
-				if (block is TrapdoorBlock)
-				{
-					if (TrapdoorBlock.GetUpsideDown(data))
-					{
-						return !TrapdoorBlock.GetOpen(data);
-					}
-					return false;
-				}
-				if (block.BlockIndex == 238)
-				{
-					return true;
-				}
-				if (block.IsFaceTransparent(SubsystemTerrain, 4, value))
-				{
-					return block is SoilBlock;
-				}
-				return true;
-			}
-			return false;
+            Block block = BlocksManager.Blocks[num];
+			return block.IsCollapseSupportBlock(SubsystemTerrain, value);
 		}
 
 		public static bool IsCollapseDestructibleBlock(int value)
 		{
 			int num = Terrain.ExtractContents(value);
 			Block block = BlocksManager.Blocks[num];
-			if (block is TrapdoorBlock)
-			{
-				int data = Terrain.ExtractData(value);
-				if (TrapdoorBlock.GetUpsideDown(data) && TrapdoorBlock.GetOpen(data))
-				{
-					return false;
-				}
-			}
-			else if (block is FluidBlock)
-			{
-				return false;
-			}
-			return true;
+			return block.IsCollapseDestructibleBlock(value);
 		}
 	}
 }

@@ -558,7 +558,7 @@ namespace Game
 				foreach (var component in components)
 				{
 					bool skipVanilla = false;
-					component.OnExplosion(this, impulse, damage, out skipVanilla);
+					component.OnExplosion(this, ref impulse, ref damage, out skipVanilla);
 					skipVanilla_ |= skipVanilla;
 				}
 				if(!skipVanilla_)
@@ -583,7 +583,7 @@ namespace Game
                 IPostprocessExplosions pickablePostprocessExplosions = pickable as IPostprocessExplosions;
 				if(pickablePostprocessExplosions != null)
 				{
-					pickablePostprocessExplosions.OnExplosion(this, impulse2, damage2, out skipVanilla_);
+					pickablePostprocessExplosions.OnExplosion(this, ref impulse2, ref damage2, out skipVanilla_);
 				}
 				if(!skipVanilla_)
 				{
@@ -621,7 +621,7 @@ namespace Game
                     IPostprocessExplosions projectilePostprocessExplosions = projectile2 as IPostprocessExplosions;
                     if (projectilePostprocessExplosions != null)
                     {
-                        projectilePostprocessExplosions.OnExplosion(this, impulse3, damage3, out skipVanilla_);
+                        projectilePostprocessExplosions.OnExplosion(this, ref impulse3, ref damage3, out skipVanilla_);
                     }
                     if(!skipVanilla_) projectile2.Velocity += (impulse3 + new Vector3(0f, 0.1f * impulse3.Length(), 0f)) * m_random.Float(0.75f, 1f);
 				}

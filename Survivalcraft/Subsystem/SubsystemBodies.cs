@@ -78,18 +78,29 @@ namespace Game
 			for (int i = 0; i < m_componentBodies.Count; i++)
 			{
 				ComponentBody componentBody = m_componentBodies.Array[i];
-				float? num2;
-				if (inflateAmount > 0f)
+				float? num2 = null;
+                bool skipVanilla_ = false;
+                ModsManager.HookAction("BodyCountInRaycast", loader =>
 				{
-					BoundingBox boundingBox = componentBody.BoundingBox;
-					boundingBox.Min -= new Vector3(inflateAmount);
-					boundingBox.Max += new Vector3(inflateAmount);
-					num2 = ray.Intersection(boundingBox);
-				}
-				else
+					num2 = loader.BodyCountInRaycast(componentBody, ray, out bool skip);
+                    skipVanilla_ |= skip;
+                    return false;
+                });
+                if (!skipVanilla_)
 				{
-					num2 = ray.Intersection(componentBody.BoundingBox);
-				}
+                    if (inflateAmount > 0f)
+                    {
+                        BoundingBox boundingBox = componentBody.BoundingBox;
+                        boundingBox.Min -= new Vector3(inflateAmount);
+                        boundingBox.Max += new Vector3(inflateAmount);
+                        num2 = ray.Intersection(boundingBox);
+                    }
+                    else
+                    {
+                        num2 = ray.Intersection(componentBody.BoundingBox);
+                    }
+                }
+				
 				if (num2.HasValue && num2.Value <= num && num2.Value < value.Distance && action(componentBody, num2.Value))
 				{
 					value.Distance = num2.Value;

@@ -3,6 +3,7 @@ using Engine.Graphics;
 using GameEntitySystem;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using TemplatesDatabase;
 
 namespace Game
 {
@@ -685,5 +686,85 @@ namespace Game
 			skipVanilla = false;
 			return 0;
 		}
-	}
+
+		public virtual int DamageItem(Block block, int oldValue, int damageCount, out bool skipVanilla)
+		{
+			skipVanilla = false;
+			return 0;
+		}
+
+		public virtual void OnProjectileUpdate(Projectile projectile, SubsystemProjectiles subsystemProjectiles, float dt, out bool skipVanilla)
+		{
+			skipVanilla = false;
+		}
+
+		public virtual void OnPickableUpdate(Pickable pickable, SubsystemPickables subsystemPickables, float dt, out bool skipVanilla) {
+			skipVanilla = false; 
+		}
+
+        /// <summary>
+        /// 执行动物的Update操作。为防止多次覆盖更新，当多个mod试图执行的时候，只有一个mod能够执行，其他mod会返回Exception。
+        /// </summary>
+        /// <param name="componentBody"></param>
+        /// <param name="dt">动物位置</param>
+        /// <param name="skipVanilla">跳过原版的更新操作</param>
+		/// <param name="skippedByOtherMods">前面的mod已经执行了带skip操作的Update</param>
+        public virtual void UpdateComponentBody(ComponentBody componentBody, float dt, bool skippedByOtherMods, out bool skipVanilla)
+		{
+			skipVanilla = false;
+			return;
+		}
+
+        /// <summary>
+        /// 计算动物在Raycast下的表现。输出null表示这个body不计入Raycast结果；输出一个具体的数值表示Raycast计算出来的距离。
+        /// </summary>
+        /// <param name="componentBody"></param>
+        /// <param name="ray">动物位置</param>
+        /// <param name="skip">原版计算出来的强度</param>
+        public virtual float? BodyCountInRaycast(ComponentBody componentBody, Ray3 ray, out bool skip)
+		{
+			skip = false;
+			return null;
+		}
+
+        /// <summary>
+        /// 在添加移动方块时触发
+        /// </summary>
+        /// <param name="movingBlockSet"></param>
+		/// <param name="subsystemMovingBlocks"></param>
+		/// <param name="testCollision">对应原方法的TestCollision部分</param>
+		/// <param name="doNotAdd">取消添加移动方块</param>
+        public virtual void OnMovingBlockSetAdded(ref SubsystemMovingBlocks.MovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks, ref bool testCollision, out bool doNotAdd)
+		{
+			doNotAdd = false;
+		}
+
+		public virtual void OnMovingBlockSetRemoved(IMovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks)
+		{
+
+		}
+
+		public virtual void OnMovingBlockSetUpdate(IMovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks, bool skippedByOtherMods, out bool skipVanilla)
+		{
+			skipVanilla = false;
+		}
+
+		public virtual void OnProjectileAdded(SubsystemProjectiles subsystemProjectiles, ref Projectile projectile, ValuesDictionary loadValuesDictionary)
+		{
+
+		}
+
+		public virtual void OnPickableAdded(SubsystemPickables subsystemPickables, ref Pickable pickable, ValuesDictionary loadValuesDictionary)
+		{
+
+		}
+		public virtual void SaveProjectile(SubsystemProjectiles subsystemProjectiles, Projectile projectile, ref ValuesDictionary valuesDictionary)
+		{
+			throw new NotImplementedException();
+		}
+		public virtual void SavePickable(SubsystemPickables subsystemPickables, Pickable pickable, ref ValuesDictionary valuesDictionary)
+		{
+			throw new NotImplementedException();
+		}
+    }
 }

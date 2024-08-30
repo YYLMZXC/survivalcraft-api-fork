@@ -9,6 +9,6 @@ namespace Game
 {
     public interface IPostprocessExplosions
     {
-        public void OnExplosion(SubsystemExplosions subsystemExplosions, Vector3 impulse, float damage, out bool skipVanilla);
+        public void OnExplosion(SubsystemExplosions subsystemExplosions, ref Vector3 impulse, ref float damage, out bool skipVanilla);
     }
 }

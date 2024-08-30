@@ -119,6 +119,7 @@ namespace Game
 				{
 					foreach (ComponentLoot.Loot item in bestiaryCreatureInfo.Loot)
 					{
+						if (item.MaxCount == 0 || item.Probability == 0) continue;
 						string text = (item.MinCount >= item.MaxCount) ? $"{item.MinCount}" : string.Format(LanguageControl.Get(GetType().Name, "range"), item.MinCount, item.MaxCount);
 						if (item.Probability < 1f)
 						{

@@ -166,5 +166,30 @@ namespace Game
 			}
 			return 5;
 		}
-	}
+
+        public override bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value)
+        {
+            int data = Terrain.ExtractData(value);
+            if (GetUpsideDown(data))
+            {
+                return !GetOpen(data);
+            }
+            return false;
+        }
+
+        public override bool IsCollapseDestructibleBlock(int value)
+        {
+            int data = Terrain.ExtractData(value);
+            if (GetUpsideDown(data) && GetOpen(data))
+            {
+                return false;
+            }
+			return true;
+        }
+        public override bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd)
+        {
+            isEnd = false;
+            return false;
+        }
+    }
 }

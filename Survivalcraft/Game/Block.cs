@@ -630,7 +630,7 @@ namespace Game
 			return IsCollidable_(value);
 		}
 
-		public float? Raycast(Ray3 ray, SubsystemTerrain subsystemTerrain, int value, bool useInteractionBoxes, out int nearestBoxIndex, out BoundingBox nearestBox)
+		public virtual float? Raycast(Ray3 ray, SubsystemTerrain subsystemTerrain, int value, bool useInteractionBoxes, out int nearestBoxIndex, out BoundingBox nearestBox)
 		{
 			float? result = null;
 			nearestBoxIndex = 0;
@@ -648,5 +648,46 @@ namespace Game
 			nearestBox = array[nearestBoxIndex];
 			return result;
 		}
-	}
+		public virtual bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value)
+		{
+			return !IsFaceTransparent(subsystemTerrain, 4, value);
+		}
+
+		public virtual bool IsCollapseDestructibleBlock(int value)
+		{
+            return true;
+        }
+
+		public virtual bool IsMovableByPiston(int value, int pistonFace, int y, out bool isEnd)
+		{
+			isEnd = false;
+            if (IsNonDuplicable_(value))
+            {
+                return false;
+            }
+            if (IsCollidable_(value))
+            {
+                return true;
+            }
+            return false;
+        }
+
+		public virtual bool IsBlockingPiston(int value)
+		{
+			return IsCollidable_(value);
+		}
+
+		public virtual bool IsSuitableForPlants(int value, int plantValue)
+		{
+			int plantContents = Terrain.ExtractContents(plantValue);
+			if (value > 0 && (plantContents == 131 || plantContents == 132 || plantContents == 244)) return true;
+			return false;
+		}
+
+		public virtual bool IsFaceSuitableForElectricElements(SubsystemTerrain subsystemTerrain, CellFace cellFace, int value)
+        {
+			if(!IsCollidable_(value) || IsTransparent_(value)) return false;
+			return true;
+        }
+    }
 }

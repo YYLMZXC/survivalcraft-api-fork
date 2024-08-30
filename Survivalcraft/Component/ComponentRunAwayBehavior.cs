@@ -32,6 +32,8 @@ namespace Game
 
 		public Vector3? m_lastNoiseSourcePosition;
 
+		public float m_lowHealthThreshold = 0.33f;
+
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
 		public override float ImportanceLevel => m_importanceLevel;
@@ -85,7 +87,7 @@ namespace Game
 				}
 				if (m_componentCreature.ComponentHealth.HealthChange < 0f || (m_attacker != null && Vector3.DistanceSquared(m_attacker.Position, m_componentCreature.ComponentBody.Position) < 36f))
 				{
-					m_importanceLevel = MathUtils.Max(m_importanceLevel, (m_componentCreature.ComponentHealth.Health < 0.33f) ? 300 : 100);
+					m_importanceLevel = MathUtils.Max(m_importanceLevel, (m_componentCreature.ComponentHealth.Health < m_lowHealthThreshold) ? 300 : 100);
 				}
 				else if (m_heardNoise)
 				{

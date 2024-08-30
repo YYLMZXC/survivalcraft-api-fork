@@ -196,6 +196,14 @@ namespace Game
 				Blocks = blocks.ToList()
 			};
 			movingBlockSet.UpdateBox();
+			bool canAdd = true;
+            ModsManager.HookAction("OnMovingBlockSetAdded", loader =>
+            {
+				loader.OnMovingBlockSetAdded(ref movingBlockSet, this, ref testCollision, out bool doNotAdd);
+				canAdd &= (!doNotAdd);
+                return false;
+            });
+			if (!canAdd) return null;
 			if (testCollision)
 			{
 				MovingBlocksCollision(movingBlockSet);
@@ -218,7 +226,12 @@ namespace Game
 			if (m_movingBlockSets.Remove(movingBlockSet2))
 			{
 				m_removing.Add(movingBlockSet2);
-				movingBlockSet2.RemainCounter = 4;
+				ModsManager.HookAction("OnMovingBlockSetRemoved", loader =>
+				{
+					loader.OnMovingBlockSetRemoved(movingBlockSet2, this);
+					return false;
+				});
+                movingBlockSet2.RemainCounter = 4;
 			}
 		}
 
@@ -279,7 +292,15 @@ namespace Game
 			m_canGenerateGeometry = true;
 			foreach (MovingBlockSet movingBlockSet in m_movingBlockSets)
 			{
-				TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(Terrain.ToCell(movingBlockSet.Position.X), Terrain.ToCell(movingBlockSet.Position.Z));
+                bool pass = false;
+                ModsManager.HookAction("OnMovingBlockSetUpdate", loader =>
+                {
+                    loader.OnMovingBlockSetUpdate(movingBlockSet, this, pass, out bool skipVanilla);
+                    pass |= skipVanilla;
+                    return false;
+                });
+				if (pass) continue;
+                TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(Terrain.ToCell(movingBlockSet.Position.X), Terrain.ToCell(movingBlockSet.Position.Z));
 				if (chunkAtCell == null || chunkAtCell.State <= TerrainChunkState.InvalidContents4)
 				{
 					continue;

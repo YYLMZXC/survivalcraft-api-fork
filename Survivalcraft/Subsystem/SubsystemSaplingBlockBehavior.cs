@@ -147,8 +147,11 @@ namespace Game
 			TerrainChunk chunkAtCell4 = SubsystemTerrain.Terrain.GetChunkAtCell(x + 6, z + 6);
 			if (chunkAtCell != null && chunkAtCell.State == TerrainChunkState.Valid && chunkAtCell2 != null && chunkAtCell2.State == TerrainChunkState.Valid && chunkAtCell3 != null && chunkAtCell3.State == TerrainChunkState.Valid && chunkAtCell4 != null && chunkAtCell4.State == TerrainChunkState.Valid)
 			{
-				int cellContents = SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
-				if (cellContents == 2 || cellContents == 8)
+				int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
+				int saplingValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
+                int cellContents = Terrain.ExtractContents(cellValue);
+				Block cellBlock = BlocksManager.Blocks[cellContents];
+				if (cellBlock.IsSuitableForPlants(cellValue, saplingValue))
 				{
 					if (SubsystemTerrain.Terrain.GetCellLight(x, y + 1, z) >= 9)
 					{
