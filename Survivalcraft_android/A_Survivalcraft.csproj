@@ -35,6 +35,7 @@
 	<Compile Include="..\Survivalcraft\ContentProvider\IExternalContentProvider.cs" Link="ContentProvider\IExternalContentProvider.cs" />
 	<Compile Include="..\Survivalcraft\ContentProvider\SchubExternalContentProvider.cs" Link="ContentProvider\SchubExternalContentProvider.cs" />
 	<Compile Include="..\Survivalcraft\ContentProvider\TransferShExternalContentProvider.cs" Link="ContentProvider\TransferShExternalContentProvider.cs" />
+	<Compile Include="..\Survivalcraft\Game\BlockAllocateData.cs" Link="BlockAllocateData.cs" />
 	<Compile Include="..\Survivalcraft\IPlayerControlInput.cs" Link="IPlayerControlInput.cs" />
 	<Compile Include="..\Survivalcraft\IPlayerControlMovement.cs" Link="IPlayerControlMovement.cs" />
 	<Compile Include="..\Survivalcraft\IPostprocessExplosions.cs" Link="IPostprocessExplosions.cs" />
@@ -2424,6 +2425,7 @@
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemBlockEntities.cs">
       <Link>Subsystem\SubsystemBlockEntities.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Subsystem\SubsystemBlocksManager.cs" Link="SubsystemBlocksManager.cs" />
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemBlocksScanner.cs">
       <Link>Subsystem\SubsystemBlocksScanner.cs</Link>
     </Compile>

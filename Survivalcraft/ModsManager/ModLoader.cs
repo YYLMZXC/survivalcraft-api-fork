@@ -687,12 +687,6 @@ namespace Game
 			return 0;
 		}
 
-		public virtual int DamageItem(Block block, int oldValue, int damageCount, out bool skipVanilla)
-		{
-			skipVanilla = false;
-			return 0;
-		}
-
 		public virtual void OnProjectileUpdate(Projectile projectile, SubsystemProjectiles subsystemProjectiles, float dt, out bool skipVanilla)
 		{
 			skipVanilla = false;

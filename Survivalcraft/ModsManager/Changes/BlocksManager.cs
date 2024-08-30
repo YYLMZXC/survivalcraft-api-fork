@@ -1,5 +1,6 @@
 using Engine;
 using Engine.Graphics;
+using GameEntitySystem;
 using Engine.Media;
 using Engine.Serialization;
 using System;
@@ -52,53 +53,171 @@ namespace Game
 
 		public static Block[] Blocks => m_blocks;
 
+		public static List<BlockAllocateData> BlocksAllocateData = new List<BlockAllocateData>();
 		public static FluidBlock[] FluidBlocks => m_fluidBlocks;
 
-		public static ReadOnlyList<string> Categories => new(m_categories);
+		//将ModBlock和BlockIndex联系起来的表格。
+        public static Dictionary<string, int> BlockNameToIndex = new Dictionary<string, int>();
+        public static ReadOnlyList<string> Categories => new(m_categories);
+
+		public const int SurvivalCraftBlockCount = 258;
 
 		public static bool DrawImageExtrusionEnabled = true;
+        public class BlockAllocateDataComparer : IComparer<BlockAllocateData>
+        {
+            public static BlockAllocateDataComparer Instance = new();
 
-		public static void Initialize()
+            public int Compare(BlockAllocateData u1, BlockAllocateData u2)
+            {
+                //首先比对是否已分配，未分配的排前面
+                int blockAllocate = (u1.Allocated ? 1 : 0) - (u2.Allocated ? 1 : 0);
+                if (blockAllocate != 0) return blockAllocate;
+                //然后比对mod信息
+                int modEntitySub = u1.ModEntity.GetHashCode() - u2.ModEntity.GetHashCode();
+                if (modEntitySub != 0) return modEntitySub;
+                //mod相同，则比对BlockIndex
+                return u1.Block.BlockIndex - u2.Block.BlockIndex;
+            }
+        }
+
+		public static void AllocateBlock(BlockAllocateData allocateData, int Index)
 		{
-			for (int i = 0; i < m_blocks.Length; i++)
-			{
-				m_blocks[i] = null;
-			}
-			m_categories.Clear();
-			m_categories.Add("Terrain");
-			m_categories.Add("Plants");
-			m_categories.Add("Construction");
-			m_categories.Add("Items");
-			m_categories.Add("Tools");
-			m_categories.Add("Weapons");
-			m_categories.Add("Clothes");
-			m_categories.Add("Electrics");
-			m_categories.Add("Food");
-			m_categories.Add("Spawner Eggs");
-			m_categories.Add("Painted");
-			m_categories.Add("Dyed");
-			m_categories.Add("Fireworks");
+            Block block = allocateData.Block;
+            m_blocks[Index] = block;
+            BlockNameToIndex[block.GetType().FullName] = Index;
+            if (block is FluidBlock fluidBlock)
+            {
+                m_fluidBlocks[Index] = fluidBlock;
+            }
+			Engine.Log.Information("分配方块信息：Name = " + allocateData.Block.GetType().Name + ", Index = " + Index + ", 原始Index = " + allocateData.Block.BlockIndex);
+			allocateData.Block.BlockIndex = Index;
+            allocateData.Allocated = true;
+			allocateData.Index = Index;
+        }
+
+        public static void Initialize()
+		{
+			InitializeCategories();
 			CalculateSlotTexCoordTables();
-			int num = 0;
-			foreach (ModEntity entity in ModsManager.ModList)
+			InitializeBlocks(null);
+			PostProcessBlocksLoad();
+		}
+
+		public static void InitializeCategories()
+		{
+            m_categories.Clear();
+            m_categories.Add("Terrain");
+            m_categories.Add("Plants");
+            m_categories.Add("Construction");
+            m_categories.Add("Items");
+            m_categories.Add("Tools");
+            m_categories.Add("Weapons");
+            m_categories.Add("Clothes");
+            m_categories.Add("Electrics");
+            m_categories.Add("Food");
+            m_categories.Add("Spawner Eggs");
+            m_categories.Add("Painted");
+            m_categories.Add("Dyed");
+            m_categories.Add("Fireworks");
+        }
+
+		//目前这个方法性能还比较差，不适合每帧都访问一次
+		public static int GetBlockIndex(string BlockName, bool fullName = false)
+		{
+			foreach(var blockallocateData in BlocksAllocateData)
+			{
+				string nameInside = blockallocateData.Block.GetType().Name;
+				if (fullName) nameInside = blockallocateData.Block.GetType().FullName;
+				if(nameInside == BlockName && blockallocateData.Allocated)
+				{
+					return blockallocateData.Index;
+				}
+            }
+			return -1;
+		}
+		public static void InitializeBlocks(SubsystemBlocksManager subsystemBlocksManager)
+        {
+            for (int i = 0; i < m_blocks.Length; i++)
+            {
+                m_blocks[i] = null;
+            }
+            BlocksAllocateData.Clear();
+            foreach (ModEntity entity in ModsManager.ModList)
 			{
 				for (int i = 0; i < entity.Blocks.Count; i++)
 				{
 					Block block = entity.Blocks[i];
-					m_blocks[block.BlockIndex] = block;
-					if (block is FluidBlock fluidBlock)
+					if (block.ShouldBeAddedToProject(subsystemBlocksManager))
+						BlocksAllocateData.Add(new BlockAllocateData
+						{
+							Block = block,
+							Index = 0,
+							Allocated = false,
+							StaticBlockIndex = (block.StaticBlockIndex || entity == ModsManager.SurvivalCraftModEntity || block.BlockIndex <= SurvivalCraftBlockCount),
+							ModEntity = entity
+						});
+				}
+            }
+            //分配静态ID方块
+            for (int i = 0; i < BlocksAllocateData.Count; i++)
+            {
+                BlockAllocateData allocateData = BlocksAllocateData[i];
+				if (allocateData.StaticBlockIndex)
+				{
+					AllocateBlock(allocateData, allocateData.Block.BlockIndex);
+                }
+            }
+			//进行排序
+			BlocksAllocateData.Sort(BlockAllocateDataComparer.Instance);
+			//调用SubsystemBlocksManager，加载Project对于<动态Mod方块-方块ID>的匹配信息。TODO未完成。
+            if (subsystemBlocksManager != null)
+			{
+				subsystemBlocksManager.CallAllocate();
+                //分配在SubsystemBlocksManager声明的动态方块
+                for (int i = 0; i < BlocksAllocateData.Count; i++)
+                {
+                    BlockAllocateData allocateData = BlocksAllocateData[i];
+					bool containsKey = subsystemBlocksManager.DynamicBlockNameToIndex.TryGetValue(allocateData.Block.GetType().FullName, out int blockValue);
+                    if (containsKey)
+                    {
+                        AllocateBlock(allocateData, blockValue);
+                    }
+                }
+            }
+            //分配剩余动态ID方块
+            int num = 0;
+			int allocateDataIndex = 0;
+			for(num = SurvivalCraftBlockCount + 1; allocateDataIndex < BlocksAllocateData.Count && num < 1024; num++)
+			{
+				if (num == 1024) throw new Exception("Too many blocks! Please reduce the mods count.");
+				if (m_blocks[num] == null)
+				{
+					try
 					{
-						m_fluidBlocks[block.BlockIndex] = fluidBlock;
+                        while (BlocksAllocateData[allocateDataIndex].Allocated && allocateDataIndex < BlocksAllocateData.Count) allocateDataIndex++;
+						if (allocateDataIndex == BlocksAllocateData.Count) break;
+						AllocateBlock(BlocksAllocateData[allocateDataIndex], num);
+						if(subsystemBlocksManager != null)
+						{
+							subsystemBlocksManager.DynamicBlockNameToIndex[m_blocks[num].GetType().FullName] = num;
+						}
+                    }
+					catch
+					{
 					}
 				}
 			}
-			for (num = 0; num < m_blocks.Length; num++)
-			{
-				if (m_blocks[num] == null)
-				{
-					m_blocks[num] = Blocks[0];
-				}
-			}
+            //对未分配方块进行空置操作
+            for (num = 0; num < m_blocks.Length; num++)
+            {
+                if (m_blocks[num] == null)
+                {
+                    m_blocks[num] = Blocks[0];
+                }
+            }
+        }
+		public static void PostProcessBlocksLoad()
+		{
 			foreach (ModEntity modEntity in ModsManager.ModList)
 			{
 				modEntity.LoadBlocksData();

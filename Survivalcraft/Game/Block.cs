@@ -27,6 +27,8 @@ namespace Game
 
 		public Vector3 FirstPersonOffset = Vector3.Zero;
 
+		public bool StaticBlockIndex = false;
+
 		public virtual Vector3 GetFirstPersonOffset(int value)
 		{
 			return FirstPersonOffset;
@@ -689,5 +691,10 @@ namespace Game
 			if(!IsCollidable_(value) || IsTransparent_(value)) return false;
 			return true;
         }
+
+		public virtual bool ShouldBeAddedToProject(SubsystemBlocksManager subsystemBlocksManager)
+		{
+			return true;
+		}
     }
 }
