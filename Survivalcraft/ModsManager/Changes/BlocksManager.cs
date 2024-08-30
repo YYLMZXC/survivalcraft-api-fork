@@ -183,7 +183,7 @@ namespace Game
             //∑÷≈‰ £”‡∂ØÃ¨ID∑ΩøÈ
             int num = 0;
 			int allocateDataIndex = 0;
-			for(num = SurvivalCraftBlockCount + 1; allocateDataIndex < BlocksAllocateData.Count && num < 1024; num++)
+			for(num = SurvivalCraftBlockCount + 1; allocateDataIndex < BlocksAllocateData.Count; num++)
 			{
 				if (num == 1024) throw new Exception("Too many blocks! Please reduce the mods count.");
 				if (m_blocks[num] == null)
