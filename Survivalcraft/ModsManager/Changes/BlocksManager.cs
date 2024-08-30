@@ -60,7 +60,7 @@ namespace Game
         public static Dictionary<string, int> BlockNameToIndex = new Dictionary<string, int>();
         public static ReadOnlyList<string> Categories => new(m_categories);
 
-		public const int SurvivalCraftBlockCount = 258;
+		public const int SurvivalCraftBlockCount = 300;
 
 		public static bool DrawImageExtrusionEnabled = true;
         public class BlockAllocateDataComparer : IComparer<BlockAllocateData>
