@@ -60,7 +60,7 @@ namespace Game
         public static Dictionary<string, int> BlockNameToIndex = new Dictionary<string, int>();
         public static ReadOnlyList<string> Categories => new(m_categories);
 
-		public const int SurvivalCraftBlockCount = 258;
+		public const int SurvivalCraftBlockCount = 300;
 
 		public static bool DrawImageExtrusionEnabled = true;
         public class BlockAllocateDataComparer : IComparer<BlockAllocateData>
@@ -162,7 +162,7 @@ namespace Game
             }
 			//进行排序
 			BlocksAllocateData.Sort(BlockAllocateDataComparer.Instance);
-			//调用SubsystemBlocksManager，加载Project对于<动态Mod方块-方块ID>的匹配信息。TODO未完成。
+			//调用SubsystemBlocksManager，加载Project对于<动态Mod方块-方块ID>的匹配信息。
             if (subsystemBlocksManager != null)
 			{
 				subsystemBlocksManager.CallAllocate();
