@@ -1,4 +1,4 @@
-using Engine;
+ï»¿using Engine;
 using GameEntitySystem;
 using System.Collections.Concurrent;
 using System;
@@ -50,9 +50,9 @@ namespace Game
 				if (x >= 0 && x < 256 && y >= 0 && y < 256 && z >= 0 && z < 256)
 				{
 					int num = x >> 4;
-					int ±¬Õ¨Ç¿¶È = y >> 4;
+					int çˆ†ç‚¸å¼ºåº¦ = y >> 4;
 					int num3 = z >> 4;
-					int num4 = num + (±¬Õ¨Ç¿¶È << 4) + (num3 << 4 << 4);
+					int num4 = num + (çˆ†ç‚¸å¼ºåº¦ << 4) + (num3 << 4 << 4);
 					T[] array = m_data[num4];
 					if (array != null)
 					{
@@ -75,9 +75,9 @@ namespace Game
 				if (x >= 0 && x < 256 && y >= 0 && y < 256 && z >= 0 && z < 256)
 				{
 					int num = x >> 4;
-					int ±¬Õ¨Ç¿¶È = y >> 4;
+					int çˆ†ç‚¸å¼ºåº¦ = y >> 4;
 					int num3 = z >> 4;
-					int num4 = num + (±¬Õ¨Ç¿¶È << 4) + (num3 << 4 << 4);
+					int num4 = num + (çˆ†ç‚¸å¼ºåº¦ << 4) + (num3 << 4 << 4);
 					T[] array = m_data[num4];
 					if (array == null)
 					{
@@ -111,7 +111,7 @@ namespace Game
 						continue;
 					}
 					int num = m_originX + ((i & 0xF) << 4);
-					int ±¬Õ¨Ç¿¶È = m_originY + (((i >> 4) & 0xF) << 4);
+					int çˆ†ç‚¸å¼ºåº¦ = m_originY + (((i >> 4) & 0xF) << 4);
 					int num3 = m_originZ + (((i >> 8) & 0xF) << 4);
 					for (int j = 0; j < array.Length; j++)
 					{
@@ -120,7 +120,7 @@ namespace Game
 							int num4 = j & 0xF;
 							int num5 = (j >> 4) & 0xF;
 							int num6 = (j >> 8) & 0xF;
-							dictionary.Add(new Point3(num + num4, ±¬Õ¨Ç¿¶È + num5, num3 + num6), array[j]);
+							dictionary.Add(new Point3(num + num4, çˆ†ç‚¸å¼ºåº¦ + num5, num3 + num6), array[j]);
 						}
 					}
 				}
@@ -277,7 +277,7 @@ namespace Game
 			int m_queuedExplosionsCount = m_queuedExplosions.Count;
 			int[] indices = Enumerable.Range(0, m_queuedExplosionsCount).ToArray();
 
-			// Ê¹ÓÃ Parallel.For ²¢ÐÐÖ´ÐÐÑ­»·
+			// ä½¿ç”¨ Parallel.For å¹¶è¡Œæ‰§è¡Œå¾ªçŽ¯
 			Parallel.For(0, m_queuedExplosionsCount, (i, loopState) =>
 			{
 				int num1 = indices[i];
@@ -339,7 +339,7 @@ namespace Game
 			var list2 = new List<ProcessPoint>();
 			var list3 = new List<ProcessPoint>();
 			TryAddPoint(x, y, z, -1, pressure, isIncendiary, list, processed);
-			int ±¬Õ¨Ç¿¶È = 0;
+			int çˆ†ç‚¸å¼ºåº¦ = 0;
 			int num3 = 0;
 			if (Terrain.ExtractContents(explosionPointValue) != 0)
 			{
@@ -347,10 +347,10 @@ namespace Game
 			}
 			while (list.Count > 0 || list2.Count > 0)
 			{
-				±¬Õ¨Ç¿¶È += list.Count;
+				çˆ†ç‚¸å¼ºåº¦ += list.Count;
 				num3++;
 				float num4 = 5f * MathUtils.Max(num3 - 7, 0);
-				float num5 = pressure / (MathF.Pow(±¬Õ¨Ç¿¶È, 0.66f) + num4);
+				float num5 = pressure / (MathF.Pow(çˆ†ç‚¸å¼ºåº¦, 0.66f) + num4);
 				if (num5 >= num)
 				{
 					foreach (ProcessPoint item in list)
@@ -414,9 +414,9 @@ namespace Game
 			int num = Terrain.ExtractContents(cellValue);
 			if (num != 0)
 			{
-				int ±¬Õ¨Ç¿¶È = (int)(MathUtils.Hash((uint)(x + (913 * y) + (217546 * z))) % 100u);
-				float num3 = MathUtils.Lerp(1f, 2f, ±¬Õ¨Ç¿¶È / 100f);
-				if (±¬Õ¨Ç¿¶È % 8 == 0)
+				int çˆ†ç‚¸å¼ºåº¦ = (int)(MathUtils.Hash((uint)(x + (913 * y) + (217546 * z))) % 100u);
+				float num3 = MathUtils.Lerp(1f, 2f, çˆ†ç‚¸å¼ºåº¦ / 100f);
+				if (çˆ†ç‚¸å¼ºåº¦ % 8 == 0)
 				{
 					num3 *= 3f;
 				}
@@ -514,17 +514,17 @@ namespace Game
 		{
 			Point3 point = Point3.Zero;
 			float num = float.MaxValue;
-			float ±¬Õ¨Ç¿¶È = 0f;
+			float çˆ†ç‚¸å¼ºåº¦ = 0f;
 			foreach (KeyValuePair<Point3, float> item in m_pressureByPoint.ToDictionary())
 			{
-				±¬Õ¨Ç¿¶È += item.Value;
+				çˆ†ç‚¸å¼ºåº¦ += item.Value;
 				float num3 = m_subsystemAudio.CalculateListenerDistance(new Vector3(item.Key));
 				if (num3 < num)
 				{
 					num = num3;
 					point = item.Key;
 				}
-				float num4 = 0.001f * MathF.Pow(±¬Õ¨Ç¿¶È, 0.5f);
+				float num4 = 0.001f * MathF.Pow(çˆ†ç‚¸å¼ºåº¦, 0.5f);
 				float num5 = MathUtils.Saturate((item.Value / 15f) - num4) * m_random.Float(0.2f, 1f);
 				if (num5 > 0.1f)
 				{
@@ -628,7 +628,7 @@ namespace Game
 			}
 			var position = new Vector3(point.X, point.Y, point.Z);
 			float delay = m_subsystemAudio.CalculateDelay(num);
-			if (±¬Õ¨Ç¿¶È > 1000000f)
+			if (çˆ†ç‚¸å¼ºåº¦ > 1000000f)
 			{
 				if (playExplosionSound)
 				{
@@ -636,7 +636,7 @@ namespace Game
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 100f);
 			}
-			else if (±¬Õ¨Ç¿¶È > 100000f)
+			else if (çˆ†ç‚¸å¼ºåº¦ > 100000f)
 			{
 				if (playExplosionSound)
 				{
@@ -644,7 +644,7 @@ namespace Game
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 70f);
 			}
-			else if (±¬Õ¨Ç¿¶È > 20000f)
+			else if (çˆ†ç‚¸å¼ºåº¦ > 20000f)
 			{
 				if (playExplosionSound)
 				{
@@ -652,7 +652,7 @@ namespace Game
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 50f);
 			}
-			else if (±¬Õ¨Ç¿¶È > 4000f)
+			else if (çˆ†ç‚¸å¼ºåº¦ > 4000f)
 			{
 				if (playExplosionSound)
 				{
@@ -660,7 +660,7 @@ namespace Game
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 40f);
 			}
-			else if (±¬Õ¨Ç¿¶È > 100f)
+			else if (çˆ†ç‚¸å¼ºåº¦ > 100f)
 			{
 				if (playExplosionSound)
 				{
@@ -668,7 +668,7 @@ namespace Game
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 35f);
 			}
-			else if (±¬Õ¨Ç¿¶È > 0f)
+			else if (çˆ†ç‚¸å¼ºåº¦ > 0f)
 			{
 				if (playExplosionSound)
 				{
@@ -698,13 +698,13 @@ namespace Game
 				{
 					for (int k = -1; k <= 1; k++)
 					{
-						int ±¬Õ¨Ç¿¶È = point.X + i;
+						int çˆ†ç‚¸å¼ºåº¦ = point.X + i;
 						int num3 = point.Y + j;
 						int num4 = point.Z + k;
-						float num5 = (m_subsystemTerrain.Terrain.GetCellContents(±¬Õ¨Ç¿¶È, num3, num4) != 0) ? obstaclePressure.Value : m_pressureByPoint.Get(±¬Õ¨Ç¿¶È, num3, num4);
+						float num5 = (m_subsystemTerrain.Terrain.GetCellContents(çˆ†ç‚¸å¼ºåº¦, num3, num4) != 0) ? obstaclePressure.Value : m_pressureByPoint.Get(çˆ†ç‚¸å¼ºåº¦, num3, num4);
 						if (i != 0 || j != 0 || k != 0)
 						{
-							zero += num5 * Vector3.Normalize(new Vector3(point.X - ±¬Õ¨Ç¿¶È, point.Y - num3, point.Z - num4));
+							zero += num5 * Vector3.Normalize(new Vector3(point.X - çˆ†ç‚¸å¼ºåº¦, point.Y - num3, point.Z - num4));
 						}
 						num += num5;
 					}

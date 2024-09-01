@@ -1,4 +1,4 @@
-using System.Xml.Linq;
+ï»¿using System.Xml.Linq;
 
 namespace Game
 {
@@ -20,7 +20,7 @@ namespace Game
 
 		public LabelWidget m_descriptionLabel;
 
-		public ButtonWidget m_Ê¹ÓÃÄÚÖÃÂ·¾¶;
+		public ButtonWidget m_ä½¿ç”¨å†…ç½®è·¯å¾„;
 
 		public SettingsCompatibilityScreen()
 		{
@@ -34,7 +34,7 @@ namespace Game
 			m_viewGameLogButton = Children.Find<ButtonWidget>("ViewGameLogButton");
 			m_resetDefaultsButton = Children.Find<ButtonWidget>("ResetDefaultsButton");
 			m_descriptionLabel = Children.Find<LabelWidget>("Description");
-			m_Ê¹ÓÃÄÚÖÃÂ·¾¶ = Children.Find<ButtonWidget>("Ê¹ÓÃÄÚÖÃÂ·¾¶");
+			m_ä½¿ç”¨å†…ç½®è·¯å¾„ = Children.Find<ButtonWidget>("ä½¿ç”¨å†…ç½®è·¯å¾„");
 		}
 
 		public override void Enter(object[] parameters)
@@ -72,15 +72,15 @@ namespace Game
 				SettingsManager.MultithreadedTerrainUpdate = true;
 				SettingsManager.UseReducedZRange = false;
 			}
-			if (m_Ê¹ÓÃÄÚÖÃÂ·¾¶.IsClicked)
+			if (m_ä½¿ç”¨å†…ç½®è·¯å¾„.IsClicked)
 			{
-				SettingsManager.Ê¹ÓÃÄÚÖÃÂ·¾¶ = !SettingsManager.Ê¹ÓÃÄÚÖÃÂ·¾¶;
+				SettingsManager.ä½¿ç”¨å†…ç½®è·¯å¾„ = !SettingsManager.ä½¿ç”¨å†…ç½®è·¯å¾„;
 
 			}
-			m_singlethreadedTerrainUpdateButton.Text = "ÒÑÆúÓÃ";
+			m_singlethreadedTerrainUpdateButton.Text = "å·²å¼ƒç”¨";
 			m_useAudioTrackCachingButton.Text = SettingsManager.EnableAndroidAudioTrackCaching ? LanguageControl.On : LanguageControl.Off;
 			m_useReducedZRangeButton.Text = SettingsManager.UseReducedZRange ? LanguageControl.On : LanguageControl.Off;
-			m_Ê¹ÓÃÄÚÖÃÂ·¾¶.Text = SettingsManager.Ê¹ÓÃÄÚÖÃÂ·¾¶ ? LanguageControl.On : LanguageControl.Off;
+			m_ä½¿ç”¨å†…ç½®è·¯å¾„.Text = SettingsManager.ä½¿ç”¨å†…ç½®è·¯å¾„ ? LanguageControl.On : LanguageControl.Off;
 
 			m_resetDefaultsButton.IsEnabled = !SettingsManager.MultithreadedTerrainUpdate || SettingsManager.UseReducedZRange;
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
