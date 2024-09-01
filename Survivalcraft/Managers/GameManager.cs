@@ -102,7 +102,8 @@ namespace Game
 						});
 						projectData.Save(xElement);
 						XmlUtils.SetAttributeValue(xElement, "Version", VersionsManager.SerializationVersion);
-						Storage.CreateDirectory(subsystemGameInfo.DirectoryName);
+                        XmlUtils.SetAttributeValue(xElement, "APIVersion", ModsManager.ApiVersionString);
+                        Storage.CreateDirectory(subsystemGameInfo.DirectoryName);
 						using (Stream stream = Storage.OpenFile(projectFileName, OpenFileMode.Create))
 						{
 							XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);

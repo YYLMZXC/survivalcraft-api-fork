@@ -13,6 +13,8 @@ namespace Game
 
 		public string SerializationVersion = string.Empty;
 
+		public string APIVersion = string.Empty;
+
 		public WorldSettings WorldSettings = new();
 
 		public List<PlayerInfo> PlayerInfos = [];

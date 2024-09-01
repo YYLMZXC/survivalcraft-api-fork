@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Serialization;
 using System;
 using System.Collections.Generic;
@@ -217,6 +217,7 @@ namespace Game
 						{
 							XElement xElement = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: true);
 							worldInfo.SerializationVersion = XmlUtils.GetAttributeValue(xElement, "Version", "1.0");
+							worldInfo.APIVersion = XmlUtils.GetAttributeValue(xElement, "APIVersion", String.Empty);
 							VersionsManager.UpgradeProjectXml(xElement);
 							XElement gameInfoNode = GetGameInfoNode(xElement);
 							var valuesDictionary = new ValuesDictionary();
@@ -289,9 +290,10 @@ namespace Game
 			XmlUtils.SetAttributeValue(xElement, "Guid", databaseObject.Guid);
 			XmlUtils.SetAttributeValue(xElement, "Name", "GameProject");
 			XmlUtils.SetAttributeValue(xElement, "Version", VersionsManager.SerializationVersion);
-			var xElement2 = new XElement("Subsystems");
+            XmlUtils.SetAttributeValue(xElement, "APIVersion", ModsManager.ApiVersionString);
+            var xElement2 = new XElement("Subsystems");
 			xElement.Add(xElement2);
-			var xElement3 = new XElement("Values");
+            var xElement3 = new XElement("Values");
 			XmlUtils.SetAttributeValue(xElement3, "Name", "GameInfo");
 			valuesDictionary.Save(xElement3);
 			xElement2.Add(xElement3);
