@@ -1,4 +1,4 @@
-using Engine;
+ï»¿using Engine;
 using Engine.Graphics;
 using GameEntitySystem;
 using Engine.Media;
@@ -56,7 +56,7 @@ namespace Game
 		public static List<BlockAllocateData> BlocksAllocateData = new List<BlockAllocateData>();
 		public static FluidBlock[] FluidBlocks => m_fluidBlocks;
 
-		//½«ModBlockºÍBlockIndexÁªÏµÆğÀ´µÄ±í¸ñ¡£
+		//å°†ModBlockå’ŒBlockIndexè”ç³»èµ·æ¥çš„è¡¨æ ¼ã€‚
         public static Dictionary<string, int> BlockNameToIndex = new Dictionary<string, int>();
         public static ReadOnlyList<string> Categories => new(m_categories);
 
@@ -69,13 +69,13 @@ namespace Game
 
             public int Compare(BlockAllocateData u1, BlockAllocateData u2)
             {
-                //Ê×ÏÈ±È¶ÔÊÇ·ñÒÑ·ÖÅä£¬Î´·ÖÅäµÄÅÅÇ°Ãæ
+                //é¦–å…ˆæ¯”å¯¹æ˜¯å¦å·²åˆ†é…ï¼Œæœªåˆ†é…çš„æ’å‰é¢
                 int blockAllocate = (u1.Allocated ? 1 : 0) - (u2.Allocated ? 1 : 0);
                 if (blockAllocate != 0) return blockAllocate;
-                //È»ºó±È¶ÔmodĞÅÏ¢
+                //ç„¶åæ¯”å¯¹modä¿¡æ¯
                 int modEntitySub = u1.ModEntity.GetHashCode() - u2.ModEntity.GetHashCode();
                 if (modEntitySub != 0) return modEntitySub;
-                //modÏàÍ¬£¬Ôò±È¶ÔBlockIndex
+                //modç›¸åŒï¼Œåˆ™æ¯”å¯¹BlockIndex
                 return u1.Block.BlockIndex - u2.Block.BlockIndex;
             }
         }
@@ -89,7 +89,7 @@ namespace Game
             {
                 m_fluidBlocks[Index] = fluidBlock;
             }
-			//Engine.Log.Information("·ÖÅä·½¿éĞÅÏ¢£ºName = " + allocateData.Block.GetType().Name + ", Index = " + Index + ", Ô­Ê¼Index = " + allocateData.Block.BlockIndex);
+			//Engine.Log.Information("åˆ†é…æ–¹å—ä¿¡æ¯ï¼šName = " + allocateData.Block.GetType().Name + ", Index = " + Index + ", åŸå§‹Index = " + allocateData.Block.BlockIndex);
 			allocateData.Block.BlockIndex = Index;
             allocateData.Allocated = true;
 			allocateData.Index = Index;
@@ -121,7 +121,7 @@ namespace Game
             m_categories.Add("Fireworks");
         }
 
-		//Ä¿Ç°Õâ¸ö·½·¨ĞÔÄÜ»¹±È½Ï²î£¬²»ÊÊºÏÃ¿Ö¡¶¼·ÃÎÊÒ»´Î
+		//ç›®å‰è¿™ä¸ªæ–¹æ³•æ€§èƒ½è¿˜æ¯”è¾ƒå·®ï¼Œä¸é€‚åˆæ¯å¸§éƒ½è®¿é—®ä¸€æ¬¡
 		public static int GetBlockIndex(string BlockName)
 		{
 			bool valueGotten = BlockNameToIndex.TryGetValue(BlockName, out int index);
@@ -151,7 +151,7 @@ namespace Game
 						});
 				}
             }
-            //·ÖÅä¾²Ì¬ID·½¿é
+            //åˆ†é…é™æ€IDæ–¹å—
             for (int i = 0; i < BlocksAllocateData.Count; i++)
             {
                 BlockAllocateData allocateData = BlocksAllocateData[i];
@@ -160,13 +160,13 @@ namespace Game
 					AllocateBlock(allocateData, allocateData.Block.BlockIndex);
                 }
             }
-			//½øĞĞÅÅĞò
+			//è¿›è¡Œæ’åº
 			BlocksAllocateData.Sort(BlockAllocateDataComparer.Instance);
-			//µ÷ÓÃSubsystemBlocksManager£¬¼ÓÔØProject¶ÔÓÚ<¶¯Ì¬Mod·½¿é-·½¿éID>µÄÆ¥ÅäĞÅÏ¢¡£
+			//è°ƒç”¨SubsystemBlocksManagerï¼ŒåŠ è½½Projectå¯¹äº<åŠ¨æ€Modæ–¹å—-æ–¹å—ID>çš„åŒ¹é…ä¿¡æ¯ã€‚
             if (subsystemBlocksManager != null)
 			{
 				subsystemBlocksManager.CallAllocate();
-                //·ÖÅäÔÚSubsystemBlocksManagerÉùÃ÷µÄ¶¯Ì¬·½¿é
+                //åˆ†é…åœ¨SubsystemBlocksManagerå£°æ˜çš„åŠ¨æ€æ–¹å—
                 for (int i = 0; i < BlocksAllocateData.Count; i++)
                 {
                     BlockAllocateData allocateData = BlocksAllocateData[i];
@@ -180,7 +180,7 @@ namespace Game
                     }
                 }
             }
-            //·ÖÅäÊ£Óà¶¯Ì¬ID·½¿é
+            //åˆ†é…å‰©ä½™åŠ¨æ€IDæ–¹å—
             int num = 0;
 			int allocateDataIndex = 0;
 			for(num = SurvivalCraftBlockCount + 1; allocateDataIndex < BlocksAllocateData.Count; num++)
@@ -203,7 +203,7 @@ namespace Game
 					}
 				}
 			}
-            //¶ÔÎ´·ÖÅä·½¿é½øĞĞ¿ÕÖÃ²Ù×÷
+            //å¯¹æœªåˆ†é…æ–¹å—è¿›è¡Œç©ºç½®æ“ä½œ
             for (num = 0; num < m_blocks.Length; num++)
             {
                 if (m_blocks[num] == null)

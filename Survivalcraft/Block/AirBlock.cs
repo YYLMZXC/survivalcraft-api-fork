@@ -1,4 +1,4 @@
-using Engine;
+ï»¿using Engine;
 using Engine.Graphics;
 
 namespace Game
@@ -21,7 +21,7 @@ namespace Game
         {
 			int content = Terrain.ExtractContents(value);
             if(content == 0) return base.GetDisplayName(subsystemTerrain, value);
-			return ("Î´Öª·½¿é" + value);
+			return ("æœªçŸ¥æ–¹å—" + value);
         }
     }
 }
