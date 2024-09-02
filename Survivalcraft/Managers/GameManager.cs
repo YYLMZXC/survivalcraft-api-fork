@@ -34,7 +34,8 @@ namespace Game
 			DisposeProject();
 			WorldsManager.RepairWorldIfNeeded(worldInfo.DirectoryName);
 			VersionsManager.UpgradeWorld(worldInfo.DirectoryName);
-			using (Stream stream = Storage.OpenFile(Storage.CombinePaths(worldInfo.DirectoryName, "Project.xml"), OpenFileMode.Read))
+            BlocksManager.LoadBlocksStaticly = string.IsNullOrEmpty(worldInfo.APIVersion);
+            using (Stream stream = Storage.OpenFile(Storage.CombinePaths(worldInfo.DirectoryName, "Project.xml"), OpenFileMode.Read))
 			{
 				var valuesDictionary = new ValuesDictionary();
 				var valuesDictionary2 = new ValuesDictionary();

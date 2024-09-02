@@ -56,26 +56,30 @@ namespace Game
 		public static List<BlockAllocateData> BlocksAllocateData = new List<BlockAllocateData>();
 		public static FluidBlock[] FluidBlocks => m_fluidBlocks;
 
-		//将ModBlock和BlockIndex联系起来的表格。
+		//��ModBlock��BlockIndex��ϵ�����ı��
         public static Dictionary<string, int> BlockNameToIndex = new Dictionary<string, int>();
         public static ReadOnlyList<string> Categories => new(m_categories);
+
+		public static int[] m_originalBlockIndex = new int[1024]; 
 
 		public const int SurvivalCraftBlockCount = 299;
 
 		public static bool DrawImageExtrusionEnabled = true;
+
+		public static bool LoadBlocksStaticly = false;
         public class BlockAllocateDataComparer : IComparer<BlockAllocateData>
         {
             public static BlockAllocateDataComparer Instance = new();
 
             public int Compare(BlockAllocateData u1, BlockAllocateData u2)
             {
-                //首先比对是否已分配，未分配的排前面
+                //���ȱȶ��Ƿ��ѷ��䣬δ�������ǰ��
                 int blockAllocate = (u1.Allocated ? 1 : 0) - (u2.Allocated ? 1 : 0);
                 if (blockAllocate != 0) return blockAllocate;
-                //然后比对mod信息
+                //Ȼ��ȶ�mod��Ϣ
                 int modEntitySub = u1.ModEntity.GetHashCode() - u2.ModEntity.GetHashCode();
                 if (modEntitySub != 0) return modEntitySub;
-                //mod相同，则比对BlockIndex
+                //mod��ͬ����ȶ�BlockIndex
                 return u1.Block.BlockIndex - u2.Block.BlockIndex;
             }
         }
@@ -89,7 +93,9 @@ namespace Game
             {
                 m_fluidBlocks[Index] = fluidBlock;
             }
-			//Engine.Log.Information("分配方块信息：Name = " + allocateData.Block.GetType().Name + ", Index = " + Index + ", 原始Index = " + allocateData.Block.BlockIndex);
+			//Engine.Log.Information("���䷽����Ϣ��Name = " + allocateData.Block.GetType().Name + ", Index = " + Index + ", ԭʼIndex = " + allocateData.Block.BlockIndex);
+			if (m_originalBlockIndex[Index] == 0)
+				m_originalBlockIndex[Index] = allocateData.Block.BlockIndex;
 			allocateData.Block.BlockIndex = Index;
             allocateData.Allocated = true;
 			allocateData.Index = Index;
@@ -121,7 +127,7 @@ namespace Game
             m_categories.Add("Fireworks");
         }
 
-		//目前这个方法性能还比较差，不适合每帧都访问一次
+		//Ŀǰ����������ܻ��Ƚϲ���ʺ�ÿ֡������һ��
 		public static int GetBlockIndex(string BlockName)
 		{
 			bool valueGotten = BlockNameToIndex.TryGetValue(BlockName, out int index);
@@ -151,22 +157,43 @@ namespace Game
 						});
 				}
             }
-            //分配静态ID方块
+			//���侲̬ID����
+            if (LoadBlocksStaticly)
+				Engine.Log.Information("[BlocksManager]���ؾɰ汾�浵�ķ���ID�б�");
             for (int i = 0; i < BlocksAllocateData.Count; i++)
             {
-                BlockAllocateData allocateData = BlocksAllocateData[i];
-				if (allocateData.StaticBlockIndex)
+				try
 				{
-					AllocateBlock(allocateData, allocateData.Block.BlockIndex);
-                }
+					BlockAllocateData allocateData = BlocksAllocateData[i];
+					int originalIndex;
+					originalIndex = m_originalBlockIndex[allocateData.Block.BlockIndex];
+					if (originalIndex == 0) originalIndex = allocateData.Block.BlockIndex;
+                    //Log.Information("���ط���" + originalIndex);
+					if (allocateData.StaticBlockIndex)
+					{
+						AllocateBlock(allocateData, originalIndex);
+					}
+					else if (LoadBlocksStaticly)
+					{
+						AllocateBlock(allocateData, originalIndex);
+						if (subsystemBlocksManager != null)
+						{
+							subsystemBlocksManager.DynamicBlockNameToIndex[m_blocks[allocateData.Block.BlockIndex].GetType().FullName] = originalIndex;
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					Engine.Log.Error(ex);
+				}
             }
-			//进行排序
+			//��������
 			BlocksAllocateData.Sort(BlockAllocateDataComparer.Instance);
-			//调用SubsystemBlocksManager，加载Project对于<动态Mod方块-方块ID>的匹配信息。
+			//����SubsystemBlocksManager������Project����<��̬Mod����-����ID>��ƥ����Ϣ��
             if (subsystemBlocksManager != null)
 			{
 				subsystemBlocksManager.CallAllocate();
-                //分配在SubsystemBlocksManager声明的动态方块
+                //������SubsystemBlocksManager�����Ķ�̬����
                 for (int i = 0; i < BlocksAllocateData.Count; i++)
                 {
                     BlockAllocateData allocateData = BlocksAllocateData[i];
@@ -180,7 +207,7 @@ namespace Game
                     }
                 }
             }
-            //分配剩余动态ID方块
+            //����ʣ�ද̬ID����
             int num = 0;
 			int allocateDataIndex = 0;
 			for(num = SurvivalCraftBlockCount + 1; allocateDataIndex < BlocksAllocateData.Count; num++)
@@ -203,7 +230,7 @@ namespace Game
 					}
 				}
 			}
-            //对未分配方块进行空置操作
+            //��δ���䷽����п��ò���
             for (num = 0; num < m_blocks.Length; num++)
             {
                 if (m_blocks[num] == null)
@@ -587,7 +614,7 @@ namespace Game
 				Block block = m_blocks.FirstOrDefault((Block v) => v.GetType().Name == typeName);
 				if (block == null)
 				{
-					throw new InvalidOperationException(string.Format(LanguageControl.Get("BlocksManager", 3), typeName));
+					Engine.Log.Warning(string.Format(LanguageControl.Get("BlocksManager", 3), typeName));
 				}
 				dictionary.Add(block, value: true);
 				var dictionary2 = new Dictionary<string, FieldInfo>();

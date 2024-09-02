@@ -31,7 +31,7 @@ namespace Game
             PostProcessBlocksLoad();
         }
 
-        public void CallAllocate()
+        public virtual void CallAllocate()
         {
             //int tick1 = Environment.TickCount;
             for (int i = SurvivalCraftBlockCount + 1; i < 1024; i++)
