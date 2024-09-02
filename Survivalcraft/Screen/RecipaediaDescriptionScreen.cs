@@ -123,22 +123,22 @@ namespace Game
 				dictionary.Add("Projectile Power", block.GetProjectilePower(value).ToString());
 				flag = true;
 			}
-			if (block.ShovelPower > 1f)
+			if (block.GetShovelPower(value) > 1f)
 			{
 				dictionary.Add("Shoveling", block.GetShovelPower(value).ToString());
 				flag = true;
 			}
-			if (block.HackPower > 1f)
+			if (block.GetHackPower(value) > 1f)
 			{
 				dictionary.Add("Hacking", block.GetHackPower(value).ToString());
 				flag = true;
 			}
-			if (block.QuarryPower > 1f)
+			if (block.GetQuarryPower(value) > 1f)
 			{
 				dictionary.Add("Quarrying", block.GetQuarryPower(value).ToString());
 				flag = true;
 			}
-			if (flag && block.Durability > 0)
+			if (flag && block.GetDurability(value) > 0)
 			{
 				dictionary.Add("Durability", block.GetDurability(value).ToString());
 			}
