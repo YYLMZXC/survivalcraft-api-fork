@@ -152,7 +152,7 @@ namespace Game
 			ModsManager.HookAction("OnMinerDig", modLoader =>
 			{
 				modLoader.OnMinerDig(this, raycastResult, ref m_digProgress, out bool flag2);
-				flag |= flag2;
+					flag |= flag2;
 				return false;
 			});
 			if (flag || (m_lastPokingPhase <= 0.5f && PokingPhase > 0.5f))
@@ -160,17 +160,26 @@ namespace Game
 				if (m_digProgress >= 1f)
 				{
 					DigCellFace = null;
-					if (flag)
+                    if (flag)
+                    {
+                        Poke(forceRestart: true);
+                    }
+                    BlockPlacementData digValue = block.GetDigValue(m_subsystemTerrain, this, cellValue, activeBlockValue, raycastResult);
+                    m_subsystemTerrain.DestroyCell(block2.ToolLevel, digValue.CellFace.X, digValue.CellFace.Y, digValue.CellFace.Z, digValue.Value, noDrop: false, noParticleSystem: false);
+					int durabilityReduction = 1;
+					int playerDataAdd = 1;
+					bool mute_ = false;
+                    ModsManager.HookAction("OnBlockDug", modLoader =>
 					{
-						Poke(forceRestart: true);
-					}
-					BlockPlacementData digValue = block.GetDigValue(m_subsystemTerrain, this, cellValue, activeBlockValue, raycastResult);
-					m_subsystemTerrain.DestroyCell(block2.ToolLevel, digValue.CellFace.X, digValue.CellFace.Y, digValue.CellFace.Z, digValue.Value, noDrop: false, noParticleSystem: false);
-					m_subsystemSoundMaterials.PlayImpactSound(cellValue, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f);
-					DamageActiveTool(1);
+						modLoader.OnBlockDug(this, digValue, ref durabilityReduction, out bool mute, ref playerDataAdd);
+						mute_ |= mute;
+						return false;
+					});
+					if(!mute_) m_subsystemSoundMaterials.PlayImpactSound(cellValue, new Vector3(cellFace.X, cellFace.Y, cellFace.Z), 2f);
+					DamageActiveTool(durabilityReduction);
 					if (ComponentCreature.PlayerStats != null)
 					{
-						ComponentCreature.PlayerStats.BlocksDug++;
+						ComponentCreature.PlayerStats.BlocksDug += playerDataAdd;
 					}
 					result = true;
 				}

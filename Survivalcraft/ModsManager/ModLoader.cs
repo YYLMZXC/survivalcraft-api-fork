@@ -760,5 +760,11 @@ namespace Game
 		{
 			throw new NotImplementedException();
 		}
+
+		//在方块被挖掘完毕时执行
+		public virtual void OnBlockDug(ComponentMiner componentMiner, BlockPlacementData digValue, ref int DurabilityReduction, out bool mute, ref int PlayerDataDugAdd)
+		{
+			mute = false;
+		}
     }
 }
