@@ -40,6 +40,8 @@ namespace Game
 
 		public List<IUpdateable> m_sortedUpdateables = [];
 
+		public bool UpdateTimeDebug = false;
+
 		public int UpdateablesCount => m_updateables.Count;
 
 		public int UpdatesPerFrame
@@ -56,19 +58,29 @@ namespace Game
 				bool flag = false;
 				foreach (KeyValuePair<IUpdateable, bool> item in m_toAddOrRemove)
 				{
-					if (item.Value)
+					bool skipVanilla = false;
+					ModsManager.HookAction("OnIUpdateableAddOrRemove", loader =>
 					{
-						m_updateables.Add(item.Key, new UpdateableInfo
-						{
-							UpdateOrder = item.Key.UpdateOrder
-						});
-						flag = true;
-					}
-					else
+						loader.OnIUpdateableAddOrRemove(this, item.Key, item.Value, skipVanilla, out bool skip);
+						skipVanilla |= skip;
+						return false;
+					});
+					if (!skipVanilla)
 					{
-						m_updateables.Remove(item.Key);
-						flag = true;
-					}
+                        if (item.Value)
+                        {
+                            m_updateables.Add(item.Key, new UpdateableInfo
+                            {
+                                UpdateOrder = item.Key.UpdateOrder
+                            });
+                            flag = true;
+                        }
+                        else
+                        {
+                            m_updateables.Remove(item.Key);
+                            flag = true;
+                        }
+                    }
 				}
 				m_toAddOrRemove.Clear();
 				foreach (KeyValuePair<IUpdateable, UpdateableInfo> updateable in m_updateables)
@@ -89,12 +101,15 @@ namespace Game
 					}
 					m_sortedUpdateables.Sort(Comparer.Instance);
 				}
-				float dt = Math.Clamp(m_subsystemTime.GameTimeDelta, 0f, 0.1f);
+				float dt = m_subsystemTime.GameTimeDelta;
 				foreach (IUpdateable sortedUpdateable in m_sortedUpdateables)
 				{
 					try
 					{
-						sortedUpdateable.Update(dt);
+						lock (sortedUpdateable)
+						{
+                            sortedUpdateable.Update(dt);
+                        }
 					}
 					catch (Exception)
 					{
@@ -124,7 +139,16 @@ namespace Game
 			UpdatesPerFrame = 1;
 		}
 
-		public override void OnEntityAdded(Entity entity)
+        public override void Save(ValuesDictionary valuesDictionary)
+        {
+            if(UpdateTimeDebug)
+			{
+				Engine.Log.Information("======SubsystemUpdate组件性能分析======");
+                Engine.Log.Information("======SubsystemUpdate组件性能分析======");
+            }
+        }
+
+        public override void OnEntityAdded(Entity entity)
 		{
 			foreach (IUpdateable item in entity.FindComponents<IUpdateable>())
 			{

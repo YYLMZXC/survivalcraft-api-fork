@@ -771,5 +771,14 @@ namespace Game
 		{
 
 		}
+
+		public virtual void OnIUpdateableAddOrRemove(SubsystemUpdate subsystemUpdate, IUpdateable updateable, bool ToAdd1OrRemove0, bool skippedByOtherMods, out bool skip)
+		{
+			skip = false;
+		}
+        public virtual void OnIDrawableAdded(SubsystemDrawing subsystemDrawing, IDrawable drawable, bool skippedByOtherMods, out bool skip)
+        {
+            skip = false;
+        }
     }
 }

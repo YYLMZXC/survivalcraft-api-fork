@@ -55,15 +55,25 @@ namespace Game
 			}
 		}
 
-		public override void OnEntityAdded(Entity entity)
-		{
-			foreach (IDrawable item in entity.FindComponents<IDrawable>())
-			{
-				AddDrawable(item);
-			}
-		}
+        public override void OnEntityAdded(Entity entity)
+        {
+            foreach (IDrawable item in entity.FindComponents<IDrawable>())
+            {
+                bool skipVanilla = false;
+                ModsManager.HookAction("OnIDrawableAdded", loader =>
+                {
+                    loader.OnIDrawableAdded(this, item, skipVanilla, out bool skip);
+                    skipVanilla |= skip;
+                    return false;
+                });
+                if (!skipVanilla)
+                {
+                    AddDrawable(item);
+                }
+            }
+        }
 
-		public override void OnEntityRemoved(Entity entity)
+        public override void OnEntityRemoved(Entity entity)
 		{
 			foreach (IDrawable item in entity.FindComponents<IDrawable>())
 			{
