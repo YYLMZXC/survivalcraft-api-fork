@@ -40,6 +40,10 @@ namespace Game
 
 		public List<IUpdateable> m_sortedUpdateables = [];
 
+		public Dictionary<Type, int> m_updateTicksCount = new Dictionary<Type, int>();
+
+		public Dictionary<Type, int> m_updateTimesCount = new Dictionary<Type, int>();
+
 		public bool UpdateTimeDebug = false;
 
 		public int UpdateablesCount => m_updateables.Count;
@@ -104,15 +108,25 @@ namespace Game
 				float dt = m_subsystemTime.GameTimeDelta;
 				foreach (IUpdateable sortedUpdateable in m_sortedUpdateables)
 				{
-					try
+                    Type type = sortedUpdateable.GetType();
+					int tick1 = Environment.TickCount;
+                    try
 					{
 						lock (sortedUpdateable)
 						{
-                            sortedUpdateable.Update(dt);
-                        }
+							sortedUpdateable.Update(dt);
+						}
 					}
 					catch (Exception)
 					{
+					}
+					finally
+					{
+						int tick2 = Environment.TickCount;
+						bool updateTicksHasValue = m_updateTicksCount.TryGetValue(type, out int updateTicksCount);
+						m_updateTicksCount[type] = (updateTicksHasValue ? updateTicksCount : 0) + (tick2 - tick1);
+						bool updateTimesHasValue = m_updateTimesCount.TryGetValue(type, out int updateTimesCount);
+                        m_updateTimesCount[type] = (updateTimesHasValue ? updateTimesCount : 0) + 1;
 					}
 				}
 				ModsManager.HookAction("SubsystemUpdate", loader => { loader.SubsystemUpdate(dt); return false; });
@@ -143,8 +157,27 @@ namespace Game
         {
             if(UpdateTimeDebug)
 			{
-				Engine.Log.Information("======SubsystemUpdate组件性能分析======");
-                Engine.Log.Information("======SubsystemUpdate组件性能分析======");
+				Engine.Log.Information("======SubsystemUpdate性能分析======");
+				var list = m_updateTicksCount.Keys.ToList();
+				int maxLength = 0;
+				for (int i = 0; i < list.Count; i++)
+				{
+					int lengthStr = list[i].FullName.Length;
+					if(maxLength < lengthStr) maxLength = lengthStr;
+				}
+				for (int i = 0; i < list.Count; i++)
+				{
+					var item = list[i];
+					string updateName = String.Format("{0, -" + (maxLength + 5).ToString() + "}", item.FullName);
+					bool updateTimeExists = m_updateTimesCount.TryGetValue(item, out int updateTime);
+					bool updateTickExists = m_updateTicksCount.TryGetValue(item, out int updateTick);
+                    string updateTimeInfo = "TimesOfUpdate: " + String.Format("{0, -8}", updateTimeExists ? updateTime : "Error");
+					string updateTimeInfo2 = "TimeOfUpdate: " + String.Format("{0, -10}", (updateTickExists ? updateTick : "Error") + "ms");
+                    Engine.Log.Information(updateName + updateTimeInfo + updateTimeInfo2);
+				}
+                Engine.Log.Information("======SubsystemUpdate性能分析======");
+				m_updateTicksCount.Clear();
+				m_updateTimesCount.Clear();
             }
         }
 
