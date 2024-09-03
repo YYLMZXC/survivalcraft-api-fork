@@ -135,6 +135,12 @@ namespace Game
             if (valueGotten) return index;
             return -1;
         }
+        public static Block GetBlock(string BlockName)
+        {
+            int blockIndex = GetBlockIndex(BlockName);
+            if(blockIndex >= 0 && blockIndex < 1024) return m_blocks[blockIndex];
+            return null;
+        }
         public static void InitializeBlocks(SubsystemBlocksManager subsystemBlocksManager)
         {
             for (int i = 0; i < m_blocks.Length; i++)
@@ -688,7 +694,7 @@ namespace Game
             return slotTexCoords;
         }
 
-        public static Block GetBlock(string ModSpace, string TypeFullName)
+        public static Block GetBlockInMod(string ModSpace, string TypeFullName)
         {
             if (ModsManager.GetModEntity(ModSpace, out ModEntity modEntity))
             {

@@ -7,9 +7,12 @@ namespace Game
 {
 	public abstract class SubsystemBlockBehavior : Subsystem
 	{
-		public abstract int[] HandledBlocks
+		public virtual int[] HandledBlocks
 		{
-			get;
+			get
+			{
+				return new int[0];
+			}
 		}
 
 		public SubsystemTerrain SubsystemTerrain
