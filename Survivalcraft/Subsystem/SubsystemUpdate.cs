@@ -30,7 +30,11 @@ namespace Game
 
 		public SubsystemTime m_subsystemTime;
 
-		public Dictionary<IUpdateable, UpdateableInfo> m_updateables = [];
+		public float DefaultFixedTimeStep => m_subsystemTime.DefaultFixedTimeStep;
+
+		public int DefaultFixedUpdateStep => m_subsystemTime.DefaultFixedUpdateStep;
+
+        public Dictionary<IUpdateable, UpdateableInfo> m_updateables = [];
 
 		public Dictionary<IUpdateable, bool> m_toAddOrRemove = [];
 

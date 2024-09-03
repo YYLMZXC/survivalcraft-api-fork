@@ -766,5 +766,10 @@ namespace Game
 		{
 			mute = false;
 		}
+
+		public virtual void ChangeGameTimeDelta(SubsystemTime subsystemTime, ref float dt)
+		{
+
+		}
     }
 }

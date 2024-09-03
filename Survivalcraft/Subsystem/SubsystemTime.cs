@@ -15,9 +15,17 @@ namespace Game
 			public Action Action;
 		}
 
-		public const float MaxGameTimeDelta = 0.1f;
+		public float MaxGameTimeDelta = 0.1f;
 
-		public double m_gameTime;
+		public float MaxFixedGameTimeDelta = 0.1f;
+
+        public float DefaultFixedTimeStep = 0.05f;
+
+		public int DefaultFixedUpdateStep = 20;
+
+		public float GameMenuDialogTimeFactor = 0f;
+
+        public double m_gameTime;
 
 		public float m_gameTimeDelta;
 
@@ -52,15 +60,20 @@ namespace Game
 		public float? FixedTimeStep
 		{
 			get;
-			set;
+			private set;
 		}
 
-		public void NextFrame()
+		public virtual void NextFrame()
 		{
 			m_prevGameTimeDelta = m_gameTimeDelta;
 			m_gameTimeDelta = !FixedTimeStep.HasValue
-				? MathUtils.Min(Time.FrameDuration * m_gameTimeFactor, 0.1f)
-				: MathUtils.Min(FixedTimeStep.Value * m_gameTimeFactor, 0.1f);
+				? MathUtils.Min(Time.FrameDuration * m_gameTimeFactor, MaxGameTimeDelta)
+				: MathUtils.Min(FixedTimeStep.Value * m_gameTimeFactor, MaxFixedGameTimeDelta);
+			ModsManager.HookAction("ChangeGameTimeDelta", loader =>
+			{
+				loader.ChangeGameTimeDelta(this, ref m_gameTimeDelta);
+				return false;
+			});
 			m_gameTime += m_gameTimeDelta;
 			int num = 0;
 			while (num < m_delayedExecutionsRequests.Count)
@@ -76,23 +89,23 @@ namespace Game
 					num++;
 				}
 			}
-			int num2 = 0;
-			int num3 = 0;
+			int numSleepingPlayers = 0;
+			int numDeadPlayers = 0;
 			foreach (ComponentPlayer componentPlayer in m_subsystemPlayers.ComponentPlayers)
 			{
 				if (componentPlayer.ComponentHealth.Health == 0f)
 				{
-					num3++;
+					numDeadPlayers++;
 				}
 				else if (componentPlayer.ComponentSleep.SleepFactor == 1f)
 				{
-					num2++;
+					numSleepingPlayers++;
 				}
 			}
-			if (num2 + num3 == m_subsystemPlayers.ComponentPlayers.Count && num2 >= 1)
+			if (numSleepingPlayers + numDeadPlayers == m_subsystemPlayers.ComponentPlayers.Count && numSleepingPlayers >= 1)
 			{
-				FixedTimeStep = 0.05f;
-				m_subsystemUpdate.UpdatesPerFrame = 20;
+				FixedTimeStep = DefaultFixedTimeStep;
+				m_subsystemUpdate.UpdatesPerFrame = DefaultFixedUpdateStep;
 			}
 			else
 			{
@@ -110,9 +123,9 @@ namespace Game
 			}
 			if (flag)
 			{
-				GameTimeFactor = 0f;
+				GameTimeFactor = GameMenuDialogTimeFactor;
 			}
-			else if (GameTimeFactor == 0f)
+			else if (GameTimeFactor == GameMenuDialogTimeFactor)
 			{
 				GameTimeFactor = 1f;
 			}
