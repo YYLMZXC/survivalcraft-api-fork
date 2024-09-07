@@ -2903,9 +2903,6 @@
     <Compile Include="..\Survivalcraft\Widget\WidgetsList.cs">
       <Link>Widget\WidgetsList.cs</Link>
     </Compile>
-	  <Compile Include="..\Survivalcraft\IPostprocessExplosions.cs">
-		  <Link>IPostprocessExplosions.cs</Link>
-	  </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenTK-1.0.2moded">
