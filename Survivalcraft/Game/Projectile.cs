@@ -15,6 +15,8 @@ namespace Game
 
 		public ComponentCreature Owner;
 
+		public GameEntitySystem.Entity OwnerEntity;
+
 		public ProjectileStoppedAction ProjectileStoppedAction;
 
 		public ITrailParticleSystem TrailParticleSystem;

@@ -77,6 +77,7 @@ namespace Game
 			projectile.CreationTime = m_subsystemGameInfo.TotalElapsedGameTime;
 			projectile.IsInWater = IsWater(position);
 			projectile.Owner = owner;
+			projectile.OwnerEntity = owner?.Entity;
 			projectile.ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable;
 
             ModsManager.HookAction("OnProjectileAdded", loader =>
@@ -252,7 +253,7 @@ namespace Game
 						{
 							if (projectile.Velocity.Length() > 10f)
 							{
-								ComponentMiner.AttackBody(bodyRaycastResult.Value.ComponentBody, projectile.Owner, bodyRaycastResult.Value.HitPoint(), Vector3.Normalize(projectile.Velocity), block.GetProjectilePower(projectile.Value), isMeleeAttack: false);
+								ComponentMiner.AttackBody(bodyRaycastResult.Value.ComponentBody, projectile.OwnerEntity, bodyRaycastResult.Value.HitPoint(), Vector3.Normalize(projectile.Velocity), block.GetProjectilePower(projectile.Value), isMeleeAttack: false);
 								if (projectile.Owner != null && projectile.Owner.PlayerStats != null)
 								{
 									projectile.Owner.PlayerStats.RangedHits++;

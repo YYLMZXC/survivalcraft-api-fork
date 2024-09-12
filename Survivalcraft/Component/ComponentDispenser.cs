@@ -68,8 +68,12 @@ namespace Game
 				return;
 			}
 			float s2 = m_random.Float(39f, 41f);
-			if (m_subsystemProjectiles.FireProjectile(value, position, s2 * (vector + m_random.Vector3(0.025f) + new Vector3(0f, 0.05f, 0f)), Vector3.Zero, null) != null)
+			Projectile projectile = m_subsystemProjectiles.FireProjectile(value, position, s2 * (vector + m_random.Vector3(0.025f) + new Vector3(0f, 0.05f, 0f)), Vector3.Zero, null);
+
+            if (projectile != null)
 			{
+				projectile.Creator = this;
+				projectile.OwnerEntity = Entity;
 				m_subsystemAudio.PlaySound("Audio/DispenserShoot", 1f, 0f, new Vector3(position.X, position.Y, position.Z), 4f, autoDelay: true);
 			}
 			else
