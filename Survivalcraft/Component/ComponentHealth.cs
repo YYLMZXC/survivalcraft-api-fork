@@ -161,7 +161,7 @@ namespace Game
 
         public void Injure(float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause)
         {
-            InjureEntity(amount, attacker.Entity, ignoreInvulnerability, cause);
+            InjureEntity(amount, attacker?.Entity, ignoreInvulnerability, cause);
         }
         
         public virtual void InjureEntity(float amount, Entity attacker, bool ignoreInvulnerability, string cause)

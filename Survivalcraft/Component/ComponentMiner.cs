@@ -580,7 +580,7 @@ namespace Game
                         target.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).PlayRandomSound("Audio/Impacts/Body", 1f, s_random.Float(-0.3f, 0.3f), target.Position, 4f, autoDelay: false);
                         float num2 = (health - componentHealth.Health) * componentHealth.AttackResilience;
 						//TODO: 显示粒子效果的攻击，不需要一定是玩家攻击
-                        if ((attackerComponentPlayer != null || true) && num2 > 0f)
+                        if ((attackerComponentPlayer != null || false) && num2 > 0f)
                         {
                             string text2 = (0f - num2).ToString("0", CultureInfo.InvariantCulture);
 							Vector3 hitValueParticleVelocity = Vector3.Zero;
@@ -594,12 +594,9 @@ namespace Game
                             target.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
                         }
 
-                        if (componentHealth != null && num > 0)
-                        {
-                            if (attackerCreature != null) componentHealth.Attacked?.Invoke(attackerCreature);
-                            componentHealth.AttackedByEntity?.Invoke(attacker);
-                        }
                     }
+                    if (attackerCreature != null) componentHealth.Attacked?.Invoke(attackerCreature);
+                    componentHealth.AttackedByEntity?.Invoke(attacker);
                 }
                 ComponentDamage componentDamage = target.Entity.FindComponent<ComponentDamage>();
                 if (componentDamage != null)

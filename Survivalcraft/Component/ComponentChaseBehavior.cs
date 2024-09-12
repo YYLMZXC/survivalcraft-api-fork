@@ -161,7 +161,7 @@ namespace Game
 				}
 			};
 
-			m_componentCreature.ComponentHealth.Attacked += delegate (ComponentCreature attacker)
+			m_componentCreature.ComponentHealth.Injured += delegate (ComponentCreature attacker)
 			{
 				if (m_random.Float(0f, 1f) < m_chaseWhenAttackedProbability)
 				{
