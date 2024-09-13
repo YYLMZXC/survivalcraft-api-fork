@@ -41,49 +41,49 @@ namespace Game
 
         public bool m_canBeHarmedBySpaceDamage = true;//y轴过高或者过低造成的伤害
 
-        public string CauseOfDeath
+        public virtual string CauseOfDeath
         {
             get;
             set;
         }
 
-        public bool IsInvulnerable
+        public virtual bool IsInvulnerable
         {
             get;
             set;
         }
 
-        public float Health
+        public virtual float Health
         {
             get;
             set;
         }
 
-        public float HealthChange
+        public virtual float HealthChange
         {
             get;
             set;
         }
 
-        public BreathingMode BreathingMode
+        public virtual BreathingMode BreathingMode
         {
             get;
             set;
         }
 
-        public float Air
+        public virtual float Air
         {
             get;
             set;
         }
 
-        public float AirCapacity
+        public virtual float AirCapacity
         {
             get;
             set;
         }
 
-        public bool CanStrand
+        public virtual bool CanStrand
         {
             get;
             set;
@@ -95,7 +95,7 @@ namespace Game
         /// <summary>
         /// 生命值
         /// </summary>
-        public float AttackResilience
+        public virtual float AttackResilience
         {
             get;
             set;
@@ -103,25 +103,25 @@ namespace Game
         /// <summary>
         /// 掉落抗性
         /// </summary>
-        public float FallResilience
+        public virtual float FallResilience
         {
             get;
             set;
         }
 
-        public float FireResilience
+        public virtual float FireResilience
         {
             get;
             set;
         }
 
-        public double? DeathTime
+        public virtual double? DeathTime
         {
             get;
             set;
         }
 
-        public float CorpseDuration
+        public virtual float CorpseDuration
         {
             get;
             set;
@@ -130,19 +130,19 @@ namespace Game
         /// <summary>
         /// 生命值加成系数
         /// </summary>
-        public float AttackResilienceFactor { get; set; }
+        public virtual float AttackResilienceFactor { get; set; }
         /// <summary>
         /// 掉落抗性加成系数
         /// </summary>
-        public float FallResilienceFactor { get; set; }
+        public virtual float FallResilienceFactor { get; set; }
         /// <summary>
         /// 火焰伤害抗性系数
         /// </summary>
-        public float FireResilienceFactor { get; set; }
+        public virtual float FireResilienceFactor { get; set; }
         /// <summary>
         /// 生命恢复速度系数
         /// </summary>
-        public float HealFactor { get; set; }
+        public virtual float HealFactor { get; set; }
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -159,7 +159,7 @@ namespace Game
             }
         }
 
-        public void Injure(float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause)
+        public virtual void Injure(float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause)
         {
             InjureEntity(amount, attacker?.Entity, ignoreInvulnerability, cause);
         }
