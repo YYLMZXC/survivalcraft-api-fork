@@ -95,13 +95,13 @@ namespace GameEntitySystem
 
 		public bool IsAddedToProject => m_isAddedToProject;
 
-		public ReadOnlyList<Component> Components => new(m_components);
+		public List<Component> Components => m_components;
 
 		public event EventHandler EntityAdded;
 
 		public event EventHandler EntityRemoved;
 
-		internal Entity(Project project, ValuesDictionary valuesDictionary)
+		public Entity(Project project, ValuesDictionary valuesDictionary)
 		{
 			if (valuesDictionary.DatabaseObject.Type != project.GameDatabase.EntityTemplateType)
 			{
@@ -176,6 +176,18 @@ namespace GameEntitySystem
 		public T FindComponent<T>(string name, bool throwOnError) where T : class
 		{
 			return FindComponent(typeof(T), name, throwOnError) as T;
+		}
+
+		public void RemoveComponent(Component component)
+		{
+			m_components.Remove(component);
+		}
+
+		public void ReplaceComponent(Component oldComponent, Component newComponent)
+		{
+			newComponent.InheritFromComponent(oldComponent);
+			RemoveComponent(oldComponent);
+			m_components.Add(newComponent);
 		}
 
 		public FilteredComponentsEnumerable<T> FindComponents<T>() where T : class

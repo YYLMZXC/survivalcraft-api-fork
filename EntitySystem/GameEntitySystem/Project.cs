@@ -22,7 +22,7 @@ namespace GameEntitySystem
 
 		public DatabaseObject ProjectTemplate => m_projectTemplate;
 
-		public ReadOnlyList<Subsystem> Subsystems => new(m_subsystems);
+		public List<Subsystem> Subsystems => m_subsystems;
 
 		public Dictionary<Entity, bool>.KeyCollection Entities => m_entities.Keys;
 

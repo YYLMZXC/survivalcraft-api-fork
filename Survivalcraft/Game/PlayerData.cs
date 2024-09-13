@@ -297,7 +297,16 @@ namespace Game
 					{
 						if (ComponentPlayer == null)
 						{
-							SpawnPlayer(SpawnPosition, m_spawnMode);
+							try
+                            {
+                                SpawnPlayer(SpawnPosition, m_spawnMode);
+                            }
+							catch (Exception ex)
+							{
+								Log.Error(ex);
+                                ScreensManager.SwitchScreen(ScreensManager.FindScreen<PlayScreen>("Play"));
+                                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 5), ExceptionManager.MakeFullErrorMessage(ex), LanguageControl.Ok, null, null));
+                            }
 						}
 						m_stateMachine.TransitionTo("Playing");
 					}
