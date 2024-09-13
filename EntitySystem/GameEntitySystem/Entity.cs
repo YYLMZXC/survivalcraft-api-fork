@@ -184,10 +184,12 @@ namespace GameEntitySystem
 		}
 
 		public void ReplaceComponent(Component oldComponent, Component newComponent)
-		{
-			newComponent.InheritFromComponent(oldComponent);
-			RemoveComponent(oldComponent);
-			m_components.Add(newComponent);
+        {
+			if(newComponent.GetType().GetTypeInfo().IsAssignableFrom(oldComponent.GetType().GetTypeInfo()))
+			{
+                newComponent.InheritFromComponent(oldComponent);
+				oldComponent = newComponent;
+            }
 		}
 
 		public FilteredComponentsEnumerable<T> FindComponents<T>() where T : class
