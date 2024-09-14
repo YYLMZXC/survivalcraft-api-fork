@@ -631,6 +631,7 @@ namespace Game
                 if (block == null)
                 {
                     Engine.Log.Warning(string.Format(LanguageControl.Get("BlocksManager", 3), typeName));
+                    continue;
                 }
                 dictionary.Add(block, value: true);
                 var dictionary2 = new Dictionary<string, FieldInfo>();
