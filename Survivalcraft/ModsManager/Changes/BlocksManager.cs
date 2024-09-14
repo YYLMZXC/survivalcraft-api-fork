@@ -146,9 +146,11 @@ namespace Game
             if(blockIndex >= 0 && blockIndex < 1024) return m_blocks[blockIndex];
             return null;
         }
-        public static Block GetBlock<T>() where T : class
+        public static T GetBlock<T>() where T : class
         {
-            return GetBlock(typeof(T).Name);
+            Block block = GetBlock(typeof(T).Name);
+            if(block == null) return null;
+            return block as T;
         }
         public static void InitializeBlocks(SubsystemBlocksManager subsystemBlocksManager)
         {
