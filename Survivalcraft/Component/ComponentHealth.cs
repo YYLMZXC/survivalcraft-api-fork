@@ -422,7 +422,7 @@ namespace Game
             HealFactor = 1f;
             DeathTime = (value >= 0.0) ? new double?(value) : null;
             CauseOfDeath = valuesDictionary.GetValue<string>("CauseOfDeath");
-            ExperienceOrbBlockIndex = BlocksManager.GetBlockIndex("ExperienceBlock");
+            ExperienceOrbBlockIndex = BlocksManager.GetBlockIndex<ExperienceBlock>();
             if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && Entity.FindComponent<ComponentPlayer>() != null)
             {
                 IsInvulnerable = true;

@@ -135,11 +135,20 @@ namespace Game
             if (valueGotten) return index;
             return -1;
         }
+
+        public static int GetBlockIndex<T>() where T : class
+        {
+            return GetBlockIndex(typeof(T).Name);
+        }
         public static Block GetBlock(string BlockName)
         {
             int blockIndex = GetBlockIndex(BlockName);
             if(blockIndex >= 0 && blockIndex < 1024) return m_blocks[blockIndex];
             return null;
+        }
+        public static Block GetBlock<T>() where T : class
+        {
+            return GetBlock(typeof(T).Name);
         }
         public static void InitializeBlocks(SubsystemBlocksManager subsystemBlocksManager)
         {
