@@ -36,24 +36,32 @@ namespace Game
 		}
 		public static void LoadData(XElement item)
 		{
-			if (ModsManager.HasAttribute(item, (name) => { return name == "Result"; }, out XAttribute xAttribute) == false)
-			{
-				foreach (XElement xElement in item.Elements())
+            try
+            {
+                if (ModsManager.HasAttribute(item, (name) => { return name == "Result"; }, out XAttribute xAttribute) == false)
 				{
-					LoadData(xElement);
+					foreach (XElement xElement in item.Elements())
+					{
+						LoadData(xElement);
+					}
+					return;
 				}
-				return;
+			
+				bool flag = false;
+				ModsManager.HookAction("OnCraftingRecipeDecode", modLoader =>
+				{
+					modLoader.OnCraftingRecipeDecode(m_recipes, item, out flag);
+					return flag;
+				});
+				if (flag == false)
+				{
+					CraftingRecipe craftingRecipe = DecodeElementToCraftingRecipe(item);
+					m_recipes.Add(craftingRecipe);
+				}
 			}
-			bool flag = false;
-			ModsManager.HookAction("OnCraftingRecipeDecode", modLoader =>
+			catch (Exception e)
 			{
-				modLoader.OnCraftingRecipeDecode(m_recipes, item, out flag);
-				return flag;
-			});
-			if (flag == false)
-			{
-				CraftingRecipe craftingRecipe = DecodeElementToCraftingRecipe(item);
-				m_recipes.Add(craftingRecipe);
+				Log.Error(e);
 			}
 		}
 
