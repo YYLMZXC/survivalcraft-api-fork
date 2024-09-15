@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +9,7 @@ namespace Game {
         public static List<IExternalContentProvider> m_providers;
         public static string fName = "ExternalContentManager";
 
+        //在游戏进入主菜单之前，如果openFilePath为一个文件（存档、模组）路径，那么在进入游戏后，会进行对文件的安装操作
         public static string openFilePath = string.Empty;
         public static IExternalContentProvider DefaultProvider {
             get {
