@@ -97,7 +97,7 @@ namespace Game
 				TextBoxDialog dialog = null;
 				dialog = new TextBoxDialog(LanguageControl.Get(GetType().Name, 1), string.Empty, 3, delegate (string content)
 				{
-					if (content?.ToLower() == "yes")
+					if (content?.ToLower() == "yes" || !SettingsManager.DeleteWorldNeedToText)
 					{
 						WorldsManager.DeleteWorld(m_directoryName);
 						ScreensManager.SwitchScreen("Play");

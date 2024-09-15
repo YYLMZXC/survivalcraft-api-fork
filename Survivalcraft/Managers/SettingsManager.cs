@@ -27,6 +27,7 @@ namespace Game
 		public static bool UsePrimaryMemoryBank { get; set; }
 
 		public static bool AllowInitialIntro { get; set; }
+		public static bool DeleteWorldNeedToText { get; set; }
 
 		public static bool 使用内置路径;
 
@@ -478,6 +479,7 @@ namespace Game
 			MoveControlMode = MoveControlMode.Buttons;
 			HideMoveLookPads = false;
 			AllowInitialIntro = true;
+			DeleteWorldNeedToText = true;
 			BlocksTextureFileName = string.Empty;
 			LookControlMode = LookControlMode.EntireScreen;
 			FlipVerticalAxis = false;

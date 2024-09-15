@@ -2793,7 +2793,8 @@
       "Show logo in screenshots:",
       "Screenshot resolution:",
       "Community Content:",
-      "Show loading log:"
+      "Show loading log:",
+      "Input \"yes\" to delete world:"
     ],
     "TrialEndedScreen": {
       "1": "The day has ended",

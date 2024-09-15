@@ -27,6 +27,8 @@ namespace Game
 
 		public ButtonWidget m_communityContentModeButton;
 
+		public ButtonWidget m_deleteWorldNeedToTextButton;
+
 		public static string fName = "SettingsUiScreen";
 
 		public SettingsUiScreen()
@@ -44,7 +46,8 @@ namespace Game
 			m_showLogoInScreenshotsButton = Children.Find<ButtonWidget>("ShowLogoInScreenshotsButton");
 			m_screenshotSizeButton = Children.Find<ButtonWidget>("ScreenshotSizeButton");
 			m_communityContentModeButton = Children.Find<ButtonWidget>("CommunityContentModeButton");
-		}
+            m_deleteWorldNeedToTextButton = Children.Find<ButtonWidget>("DeleteWorldNeedToTextButton");
+        }
 
 		public override void Enter(object[] parameters)
 		{
@@ -112,6 +115,10 @@ namespace Game
 			{
 				SettingsManager.ScreenshotSize = (ScreenshotSize)((int)(SettingsManager.ScreenshotSize + 1) % EnumUtils.GetEnumValues(typeof(ScreenshotSize)).Count);
 			}
+			if (m_deleteWorldNeedToTextButton.IsClicked)
+			{
+				SettingsManager.DeleteWorldNeedToText = !SettingsManager.DeleteWorldNeedToText;
+			}
 			if (m_communityContentModeButton.IsClicked)
 			{
 				SettingsManager.CommunityContentMode = (CommunityContentMode)((int)(SettingsManager.CommunityContentMode + 1) % EnumUtils.GetEnumValues(typeof(CommunityContentMode)).Count);
@@ -124,6 +131,7 @@ namespace Game
 			m_showGuiInScreenshotsButton.Text = SettingsManager.ShowGuiInScreenshots ? LanguageControl.Yes : LanguageControl.No;
 			m_showLogoInScreenshotsButton.Text = SettingsManager.ShowLogoInScreenshots ? LanguageControl.Yes : LanguageControl.No;
 			m_screenshotSizeButton.Text = LanguageControl.Get("ScreenshotSize", SettingsManager.ScreenshotSize.ToString());
+			m_deleteWorldNeedToTextButton.Text = SettingsManager.DeleteWorldNeedToText ? LanguageControl.Yes : LanguageControl.No;
 			m_communityContentModeButton.Text = LanguageControl.Get("CommunityContentMode", SettingsManager.CommunityContentMode.ToString());
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
 			{
