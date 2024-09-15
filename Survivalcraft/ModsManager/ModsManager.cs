@@ -290,7 +290,8 @@ public static class ModsManager
 	public static string ImportMod(string name, Stream stream)
 	{
 		if (!Storage.DirectoryExists(ModCachePath)) Storage.CreateDirectory(ModCachePath);
-		string realName = name + ModSuffix;
+		string realName = name;
+		if(!realName.EndsWith(ModSuffix)) realName = realName + ModSuffix;
 		string path = Storage.CombinePaths(ModCachePath, realName);
 		int num = 1;
 		while (Storage.FileExists(path))
