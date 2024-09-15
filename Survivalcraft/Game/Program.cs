@@ -33,22 +33,13 @@ namespace Game
 #if desktop
 		private static void Main(string[] args)
 		{
-			/*
-			if(args != null)
+			
+			if(args != null && args.Length > 0)
 			{
 				//拖动到exe的文件解析
-				string 打开文件路径 = args[0];
-				string 打开文件扩展名 = System.IO.Path.GetExtension(打开文件路径);
-				string 文件名 = System.IO.Path.GetFileName(打开文件路径);
-				switch(打开文件扩展名)
-				{
-					case ".scmod":
-					Log.Information("");
-					File.Copy(打开文件路径,Path.Combine(ModsManager.ModsPath,文件名));
-					break;
-				}
+				ExternalContentManager.openFilePath = args[0];
 			}
-			*/
+			
 			
 			// Process.Start("C:\\Windows\\System32\\msg.exe",  "/server:127.0.0.1 * \"此版本为预览版 不建议长期使用");
 			Window.Created += () =>

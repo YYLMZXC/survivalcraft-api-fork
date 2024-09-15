@@ -101,6 +101,10 @@ namespace Game
 					Window.Close();
 				}
 			}
+			if (!String.IsNullOrEmpty(ExternalContentManager.openFilePath))
+			{
+				ScreensManager.SwitchScreen("ExternalContent");
+			}
 		}
 	}
 }

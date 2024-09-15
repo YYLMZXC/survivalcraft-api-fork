@@ -8,6 +8,8 @@ namespace Game {
     public static class ExternalContentManager {
         public static List<IExternalContentProvider> m_providers;
         public static string fName = "ExternalContentManager";
+
+        public static string openFilePath = string.Empty;
         public static IExternalContentProvider DefaultProvider {
             get {
                 if (Providers.Count <= 0) {

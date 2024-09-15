@@ -182,7 +182,31 @@ namespace Game
 					});
 				}
 			}
-			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+            if (!String.IsNullOrEmpty(ExternalContentManager.openFilePath))
+			{
+				try
+				{
+					ExternalContentEntry externalContentEntry1 = new ExternalContentEntry();
+					externalContentEntry1.Type = ExternalContentManager.ExtensionToType(System.IO.Path.GetExtension(ExternalContentManager.openFilePath));
+					externalContentEntry1.Path = ExternalContentManager.openFilePath;
+					externalContentEntry1.Size = new FileInfo(ExternalContentManager.openFilePath).Length;
+					externalContentEntry1.Time = new FileInfo(ExternalContentManager.openFilePath).CreationTime;
+					if (ExternalContentManager.IsEntryTypeDownloadSupported(externalContentEntry1.Type))
+					{
+						DownloadEntry(externalContentEntry1);
+					}
+					else
+					{
+						Engine.Log.Error("Unsopported file type!");
+					}
+				}
+				catch (Exception e)
+				{
+					Engine.Log.Error("Open File" + ExternalContentManager.openFilePath + "Failed! " + e);
+				}
+				ExternalContentManager.openFilePath = string.Empty;
+            }
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
 			{
 				ScreensManager.SwitchScreen("Content");
 			}
