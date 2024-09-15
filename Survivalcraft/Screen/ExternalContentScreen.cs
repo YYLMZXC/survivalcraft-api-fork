@@ -197,12 +197,20 @@ namespace Game
 					}
 					else
 					{
-						Engine.Log.Error("Unsopported file type!");
+                        DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 13), LanguageControl.Get(GetType().Name, 14) + ExternalContentManager.openFilePath, LanguageControl.Yes, null, delegate (MessageDialogButton button)
+                        {
+
+                        }));
+                        Engine.Log.Error("Unsopported file type!");
 					}
 				}
 				catch (Exception e)
 				{
-					Engine.Log.Error("Open File" + ExternalContentManager.openFilePath + "Failed! " + e);
+                    DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 13), e.ToString(), LanguageControl.Yes, null, delegate (MessageDialogButton button)
+                    {
+
+                    }));
+                    Engine.Log.Error("Open File" + ExternalContentManager.openFilePath + "Failed! " + e);
 				}
 				ExternalContentManager.openFilePath = string.Empty;
             }

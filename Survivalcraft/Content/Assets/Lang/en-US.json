@@ -308,7 +308,9 @@
     "9": "Retrieving Directory",
     "10": "Downloading",
     "11": " | (downloaded)",
-    "12": "Importing"
+    "12": "Importing",
+    "13": "Failed to open file",
+    "14": "File type is not supported: "
   },
   "FourLedBlock": {
     "1": "Make colored 4-LEDs from copper, glass and paint"
