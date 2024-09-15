@@ -94,22 +94,44 @@ namespace Game
 			}
 			if (m_deleteButton.IsClicked)
 			{
-				TextBoxDialog dialog = null;
-				dialog = new TextBoxDialog(LanguageControl.Get(GetType().Name, 1), string.Empty, 3, delegate (string content)
+				Dialog dialog = null;
+				if(SettingsManager.DeleteWorldNeedToText)
 				{
-					if (content?.ToLower() == "yes" || !SettingsManager.DeleteWorldNeedToText)
-					{
-						WorldsManager.DeleteWorld(m_directoryName);
-						ScreensManager.SwitchScreen("Play");
-						DialogsManager.HideDialog(dialog);
-					}
-					else
-					{
-						DialogsManager.HideDialog(dialog);
-					}
-				});
-				dialog.Children.Find<LabelWidget>("TextBoxDialog.Title").Color = Color.Red;
-				dialog.AutoHide = false;
+					TextBoxDialog textBoxDialog;
+					textBoxDialog = new TextBoxDialog(LanguageControl.Get(GetType().Name, 1) + LanguageControl.Get(GetType().Name, 5), string.Empty, 3, delegate (string content)
+                    {
+                        if (content?.ToLower() == "yes")
+                        {
+                            WorldsManager.DeleteWorld(m_directoryName);
+                            ScreensManager.SwitchScreen("Play");
+                            DialogsManager.HideDialog(dialog);
+                        }
+                        else
+                        {
+                            DialogsManager.HideDialog(dialog);
+                        }
+                    });
+                    dialog = textBoxDialog;
+                    textBoxDialog.Children.Find<LabelWidget>("TextBoxDialog.Title").Color = Color.Red;
+                    textBoxDialog.AutoHide = false;
+                }
+				else
+				{
+                    dialog = new MessageDialog(LanguageControl.Get(GetType().Name, 1), LanguageControl.Get(GetType().Name, 2), LanguageControl.Yes, LanguageControl.No, delegate (MessageDialogButton button)
+                    {
+                        if (button == MessageDialogButton.Button1)
+                        {
+                            WorldsManager.DeleteWorld(m_directoryName);
+                            ScreensManager.SwitchScreen("Play");
+                            DialogsManager.HideDialog(dialog);
+                        }
+                        else
+                        {
+                            DialogsManager.HideDialog(dialog);
+                        }
+                    });
+                }
+
 				DialogsManager.ShowDialog(null, dialog);
 			}
 			if (m_uploadButton.IsClicked && flag2 && !flag)
