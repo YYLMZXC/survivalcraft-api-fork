@@ -76,9 +76,9 @@ public class ModsManageContentScreen : Screen
 
 	public string m_lastPath;
 
-	public string m_uninstallPath = "app:/ModsCache";
+	public string m_uninstallPath = ModsManager.ModCachePath;
 
-	public string m_installPath = "app:/Mods";
+	public string m_installPath = ModsManager.ModsPath;
 
 	public bool m_updatable;
 

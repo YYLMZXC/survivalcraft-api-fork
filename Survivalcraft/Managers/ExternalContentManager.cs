@@ -64,6 +64,9 @@ namespace Game {
                 case ExternalContentType.FurniturePack:
                     yield return ".scfpack";
                     break;
+                case ExternalContentType.Mod:
+                    yield return ".scmod";
+                    break;
             }
         }
 
