@@ -53,7 +53,7 @@ public static class ModsManager
 	public static string CommunityContentCachePath { get; } = DocPath + "/CommunityContentCache.xml";
 	public static string ModsSetPath { get; } = DocPath + "/ModSettings.xml";
 	public static string SettingPath { get; } = DocPath + "/Settings.xml";
-	public static string ModCachePath { get; } = ExternalPath + "/Mods/Cache";
+	public static string ModCachePath { get; } = ExternalPath + "/ModsCache";
 	public static string LogPath { get; } = ExternalPath + "/Bugs";
 	public static string ModsPath { get; } = ExternalPath + "/Mods";
 	public static bool IsAndroid => VersionsManager.Platform == Platform.Android;
@@ -428,6 +428,7 @@ public static class ModsManager
 		}
 		foreach (string dir in Storage.ListDirectoryNames(path))
 		{
+			if(dir != ModCachePath)
 			GetScmods(Storage.CombinePaths(path, dir));
 		}
 	}
