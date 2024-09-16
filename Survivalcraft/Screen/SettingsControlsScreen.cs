@@ -63,7 +63,7 @@ namespace Game
 			m_holdDurationSlider = Children.Find<SliderWidget>("HoldDurationSlider");
 			m_dragDistanceSlider = Children.Find<SliderWidget>("DragDistanceSlider");
 			m_MemoryBankStyle = Children.Find<ButtonWidget>("MemoryBankStyle");
-			m_horizontalCreativeFlightPanel.IsVisible = false;
+			m_horizontalCreativeFlightPanel.IsVisible = true;
 		}
 
 		public override void Update()
