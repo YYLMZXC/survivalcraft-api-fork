@@ -9,14 +9,23 @@ namespace Game
 
 		public SubsystemParticles m_subsystemParticles;
 
-		public Random m_random = new();
+		public Random m_random = new(); 
+		
+		public static string fName = "SubsystemBucketBlockBehavior";
 
-		public override int[] HandledBlocks => new int[9]
+		public int m_emptyBucketBlockIndex;
+		public int m_waterBucketBlockIndex;
+		public int m_magmaBucketBlockIndex;
+		public int m_milkBucketBlockIndex;
+		public int m_waterBlockIndex;
+		public int m_magmaBlockIndex;
+
+        public override int[] HandledBlocks => new int[9]
 		{
-			90,
-			91,
-			93,
-			110,
+			BlocksManager.GetBlockIndex<EmptyBucketBlock>(),
+			BlocksManager.GetBlockIndex<WaterBucketBlock>(),
+			BlocksManager.GetBlockIndex<MagmaBucketBlock>(),
+			BlocksManager.GetBlockIndex<MilkBucketBlock>(),
 			245,
 			251,
 			252,
@@ -29,7 +38,7 @@ namespace Game
 			IInventory inventory = componentMiner.Inventory;
 			int activeBlockValue = componentMiner.ActiveBlockValue;
 			int num = Terrain.ExtractContents(activeBlockValue);
-			if (num == 90)
+			if (num == m_emptyBucketBlockIndex)
 			{
 				object obj = componentMiner.Raycast(ray, RaycastMode.Gathering);
 				if (obj is TerrainRaycastResult)
@@ -39,73 +48,73 @@ namespace Game
 					int num2 = Terrain.ExtractContents(cellValue);
 					int data = Terrain.ExtractData(cellValue);
 					Block block = BlocksManager.Blocks[num2];
+					int newBucketValue = -1;
 					if (block is WaterBlock && FluidBlock.GetLevel(data) == 0)
 					{
-						int value = Terrain.ReplaceContents(activeBlockValue, 91);
-						inventory.RemoveSlotItems(inventory.ActiveSlotIndex, inventory.GetSlotCount(inventory.ActiveSlotIndex));
-						if (inventory.GetSlotCount(inventory.ActiveSlotIndex) == 0)
-						{
-							inventory.AddSlotItems(inventory.ActiveSlotIndex, value, 1);
-						}
-						SubsystemTerrain.DestroyCell(0, cellFace.X, cellFace.Y, cellFace.Z, 0, noDrop: false, noParticleSystem: false);
-						return true;
+                        newBucketValue = Terrain.ReplaceContents(activeBlockValue, m_waterBucketBlockIndex);
 					}
 					if (block is MagmaBlock && FluidBlock.GetLevel(data) == 0)
 					{
-						int value2 = Terrain.ReplaceContents(activeBlockValue, 93);
-						inventory.RemoveSlotItems(inventory.ActiveSlotIndex, inventory.GetSlotCount(inventory.ActiveSlotIndex));
-						if (inventory.GetSlotCount(inventory.ActiveSlotIndex) == 0)
-						{
-							inventory.AddSlotItems(inventory.ActiveSlotIndex, value2, 1);
-						}
-						SubsystemTerrain.DestroyCell(0, cellFace.X, cellFace.Y, cellFace.Z, 0, noDrop: false, noParticleSystem: false);
-						return true;
+						newBucketValue = Terrain.ReplaceContents(activeBlockValue, m_magmaBucketBlockIndex);
 					}
-				}
+					if (newBucketValue <= 0) return false;
+                    inventory.RemoveSlotItems(inventory.ActiveSlotIndex, 1);
+					int acquireSlot = ComponentInventoryBase.FindAcquireSlotForItem(inventory, newBucketValue);
+                    if (acquireSlot >= 0)
+                    {
+                        inventory.AddSlotItems(acquireSlot, newBucketValue, 1);
+                        SubsystemTerrain.DestroyCell(0, cellFace.X, cellFace.Y, cellFace.Z, 0, noDrop: false, noParticleSystem: false);
+                        return true;
+                    }
+                    else
+                    {
+                        inventory.AddSlotItems(inventory.ActiveSlotIndex, activeBlockValue, 1);
+						componentMiner?.ComponentPlayer?.ComponentGui?.DisplaySmallMessage(LanguageControl.Get(fName, 1), Color.White, true, true);
+                    }
+                }
 				else if (obj is BodyRaycastResult)
 				{
 					ComponentUdder componentUdder = ((BodyRaycastResult)obj).ComponentBody.Entity.FindComponent<ComponentUdder>();
-					if (componentUdder != null && componentUdder.Milk(componentMiner))
+                    int newBucketValue = Terrain.ReplaceContents(activeBlockValue, m_milkBucketBlockIndex);
+                    inventory.RemoveSlotItems(inventory.ActiveSlotIndex, 1);
+                    int acquireSlot = ComponentInventoryBase.FindAcquireSlotForItem(inventory, newBucketValue);
+					bool success = false;
+					if(acquireSlot < 0)
 					{
-						int value3 = Terrain.ReplaceContents(activeBlockValue, 110);
-						inventory.RemoveSlotItems(inventory.ActiveSlotIndex, inventory.GetSlotCount(inventory.ActiveSlotIndex));
-						if (inventory.GetSlotCount(inventory.ActiveSlotIndex) == 0)
-						{
-							inventory.AddSlotItems(inventory.ActiveSlotIndex, value3, 1);
-						}
-						m_subsystemAudio.PlaySound("Audio/Milked", 1f, 0f, ray.Position, 2f, autoDelay: true);
-					}
-					return true;
+                        componentMiner?.ComponentPlayer?.ComponentGui?.DisplaySmallMessage(LanguageControl.Get(fName, 2), Color.White, true, true);
+                    }
+					if (acquireSlot >= 0 && componentUdder != null && componentUdder.Milk(componentMiner))
+					{
+                        inventory.AddSlotItems(acquireSlot, newBucketValue, 1);
+                        m_subsystemAudio.PlaySound("Audio/Milked", 1f, 0f, ray.Position, 2f, autoDelay: true);
+						return true;
+                    }
+					if(!success)
+					{
+                        inventory.AddSlotItems(inventory.ActiveSlotIndex, activeBlockValue, 1);
+						return false;
+                    }
 				}
 			}
-			if (num == 91)
+			if (num == m_waterBucketBlockIndex || num == m_magmaBucketBlockIndex)
 			{
+				int fluidValue = (num == m_waterBucketBlockIndex) ? m_waterBlockIndex : m_magmaBlockIndex;
 				TerrainRaycastResult? terrainRaycastResult = componentMiner.Raycast<TerrainRaycastResult>(ray, RaycastMode.Interaction);
-				if (terrainRaycastResult.HasValue && componentMiner.Place(terrainRaycastResult.Value, Terrain.MakeBlockValue(18)))
+				if (terrainRaycastResult.HasValue)
 				{
 					inventory.RemoveSlotItems(inventory.ActiveSlotIndex, 1);
-					if (inventory.GetSlotCount(inventory.ActiveSlotIndex) == 0)
+					int newBucketValue = Terrain.ReplaceContents(activeBlockValue, m_emptyBucketBlockIndex);
+                    int acquireSlot = ComponentInventoryBase.FindAcquireSlotForItem(inventory, newBucketValue);
+					if(acquireSlot >= 0 && componentMiner.Place(terrainRaycastResult.Value, Terrain.MakeBlockValue(fluidValue)))
 					{
-						int value4 = Terrain.ReplaceContents(activeBlockValue, 90);
-						inventory.AddSlotItems(inventory.ActiveSlotIndex, value4, 1);
-					}
-					return true;
-				}
-			}
-			if (num == 93)
-			{
-				TerrainRaycastResult? terrainRaycastResult2 = componentMiner.Raycast<TerrainRaycastResult>(ray, RaycastMode.Interaction);
-				if (terrainRaycastResult2.HasValue)
-				{
-					if (componentMiner.Place(terrainRaycastResult2.Value, Terrain.MakeBlockValue(92)))
+						inventory.AddSlotItems(acquireSlot, newBucketValue, 1);
+                    }
+					else
 					{
-						inventory.RemoveSlotItems(inventory.ActiveSlotIndex, 1);
-						if (inventory.GetSlotCount(inventory.ActiveSlotIndex) == 0)
-						{
-							int value5 = Terrain.ReplaceContents(activeBlockValue, 90);
-							inventory.AddSlotItems(inventory.ActiveSlotIndex, value5, 1);
-						}
-					}
+                        inventory.AddSlotItems(inventory.ActiveSlotIndex, activeBlockValue, 1);
+                        componentMiner?.ComponentPlayer?.ComponentGui?.DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, true, true);
+                        return false;
+                    }
 					return true;
 				}
 			}
@@ -152,6 +161,12 @@ namespace Game
 			base.Load(valuesDictionary);
 			m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
 			m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+			m_waterBlockIndex = BlocksManager.GetBlockIndex<WaterBlock>();
+			m_magmaBlockIndex = BlocksManager.GetBlockIndex<MagmaBlock>();
+			m_waterBucketBlockIndex = BlocksManager.GetBlockIndex<WaterBucketBlock>();
+			m_emptyBucketBlockIndex = BlocksManager.GetBlockIndex<EmptyBucketBlock>();
+			m_magmaBucketBlockIndex = BlocksManager.GetBlockIndex<MagmaBucketBlock>();
+			m_milkBucketBlockIndex = BlocksManager.GetBlockIndex<MilkBucketBlock>();
 		}
 	}
 }
