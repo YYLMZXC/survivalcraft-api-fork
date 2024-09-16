@@ -158,6 +158,11 @@
     "0": "Load gunpowder first",
     "1": "No bullet, blind shot fired"
   },
+  "SubsystemBucketBlockBehavior": {
+    "1": "Empty inventory space for fluid bucket is needed",
+    "2": "Empty inventory space for milk bucket is needed",
+    "3": "Empty inventory space for empty bucket is needed"
+  },
   "BowWidget": {
     "0": "Load arrow",
     "1": "Ready to fire"
