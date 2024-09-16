@@ -578,22 +578,10 @@ namespace Game
                     if (num > 0f)
                     {
                         target.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).PlayRandomSound("Audio/Impacts/Body", 1f, s_random.Float(-0.3f, 0.3f), target.Position, 4f, autoDelay: false);
+						
+                        //显示粒子效果的攻击，不需要一定是玩家攻击
                         float num2 = (health - componentHealth.Health) * componentHealth.AttackResilience;
-						//TODO: 显示粒子效果的攻击，不需要一定是玩家攻击
-                        if ((attackerComponentPlayer != null || false) && num2 > 0f)
-                        {
-                            string text2 = (0f - num2).ToString("0", CultureInfo.InvariantCulture);
-							Vector3 hitValueParticleVelocity = Vector3.Zero;
-							if(attackerBody != null) hitValueParticleVelocity = attackerBody.Velocity;
-                            HitValueParticleSystem particleSystem = new(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + hitValueParticleVelocity, Color.White, text2);
-                            ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
-                            {
-                                modLoader.SetHitValueParticleSystem(particleSystem, true);
-                                return false;
-                            });
-                            target.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
-                        }
-
+						AddHitValueParticleSystem(num2, attacker, target.Entity, hitPoint, hitDirection);
                     }
                     if (attackerCreature != null) componentHealth.Attacked?.Invoke(attackerCreature);
                     componentHealth.AttackedByEntity?.Invoke(attacker);
@@ -602,7 +590,10 @@ namespace Game
                 if (componentDamage != null)
                 {
                     float num3 = attackPower / componentDamage.AttackResilience;
+					float hitPoints = componentDamage.Hitpoints;
                     componentDamage.Damage(num3);
+					float damage = (hitPoints - componentDamage.Hitpoints) * componentDamage.AttackResilience;
+					AddHitValueParticleSystem(damage, attacker, target.Entity, hitPoint, hitDirection);
                     if (num3 > 0f)
                     {
                         target.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).PlayRandomSound(componentDamage.DamageSoundName, 1f, s_random.Float(-0.3f, 0.3f), target.Position, 4f, autoDelay: false);
@@ -642,6 +633,24 @@ namespace Game
                         componentLocomotion.StunTime += x;
                 }
             }
+        }
+
+		public static void AddHitValueParticleSystem(float damage, Entity attacker, Entity attacked, Vector3 hitPoint, Vector3 hitDirection)
+		{
+			ComponentBody attackerBody = attacker.FindComponent<ComponentBody>();
+			ComponentPlayer attackerComponentPlayer = attacker.FindComponent<ComponentPlayer>();
+			ComponentHealth attackedComponentHealth = attacked.FindComponent<ComponentHealth>();
+            string text2 = (0f - damage).ToString("0", CultureInfo.InvariantCulture);
+            Vector3 hitValueParticleVelocity = Vector3.Zero;
+            if (attackerBody != null) hitValueParticleVelocity = attackerBody.Velocity;
+            Color color = (attackerComponentPlayer != null && damage > 0f && attackedComponentHealth != null) ? Color.White : Color.Transparent;
+            HitValueParticleSystem particleSystem = new(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + hitValueParticleVelocity, color, text2);
+            ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
+            {
+                modLoader.SetHitValueParticleSystem(particleSystem, true);
+                return false;
+            });
+            attacker.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
         }
 
         public void Update(float dt)
