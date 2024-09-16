@@ -243,10 +243,11 @@ namespace Game
 		}
 
 		public virtual int RemoveSlotItems(int slotIndex, int count)
-		{
-			if (slotIndex >= 0 && slotIndex < OpenSlotsCount)
+        {
+            int num = Terrain.ExtractContents(m_slots[slotIndex]);
+            int maxStacking = BlocksManager.Blocks[num].GetMaxStacking(m_slots[slotIndex]);
+            if (slotIndex >= 0 && slotIndex < OpenSlotsCount)
 			{
-				int num = Terrain.ExtractContents(m_slots[slotIndex]);
 				if (BlocksManager.Blocks[num].IsNonDuplicable_(m_slots[slotIndex]))
 				{
 					m_slots[slotIndex] = 0;
@@ -258,7 +259,9 @@ namespace Game
 					return 1;
 				}
 			}
-			return 1;
+			if (SettingsManager.DragMaxStackingInCreativeMode)
+				return MathUtils.Min(maxStacking, count);
+			else return 1;
 		}
 
 		public virtual void DropAllItems(Vector3 position)

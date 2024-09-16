@@ -29,6 +29,8 @@ namespace Game
 		public static bool AllowInitialIntro { get; set; }
 		public static bool DeleteWorldNeedToText { get; set; }
 
+		public static bool DragMaxStackingInCreativeMode { get; set; }
+
 		public static bool 使用内置路径;
 
 		public static float SoundsVolume
@@ -519,6 +521,7 @@ namespace Game
 			BulletinTime = string.Empty;
 			ScpboxUserInfo = string.Empty;
 			HorizontalCreativeFlight = true;
+			DragMaxStackingInCreativeMode = true;
 			LoadSettings();
 			//VersionsManager.CompareVersions(LastLaunchedVersion, "1.29");
 			if (VersionsManager.CompareVersions(LastLaunchedVersion, "2.1") < 0)
