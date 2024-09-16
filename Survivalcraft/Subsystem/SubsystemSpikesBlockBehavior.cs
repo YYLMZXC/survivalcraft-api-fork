@@ -19,7 +19,7 @@ namespace Game
 
 		public override int[] HandledBlocks => new int[1]
 		{
-			86
+			BlocksManager.GetBlockIndex<SpikedPlankBlock>()
 		};
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
@@ -72,7 +72,7 @@ namespace Game
 				if (m_subsystemTime.GameTime - value > 1.0)
 				{
 					m_lastInjuryTimes[componentCreature] = m_subsystemTime.GameTime;
-					componentCreature.ComponentHealth.Injure(0.1f, null, ignoreInvulnerability: false, "Spiked by a trap");
+					componentCreature.ComponentHealth.OnSpiked(this, 0.1f, cellFace, velocity, componentBody, "Spiked by a trap");
 				}
 			}
 		}

@@ -1,4 +1,5 @@
 using Engine;
+using TemplatesDatabase;
 
 namespace Game
 {
@@ -6,7 +7,13 @@ namespace Game
 	{
 		public override int[] HandledBlocks => new int[0];
 
-		public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
+		public int m_seaUrchinBlockValue;
+        public override void Load(ValuesDictionary valuesDictionary)
+        {
+            base.Load(valuesDictionary);
+			m_seaUrchinBlockValue = BlocksManager.GetBlockIndex<SeaUrchinBlock>();
+        }
+        public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
 		{
 			base.OnNeighborBlockChanged(x, y, z, neighborX, neighborY, neighborZ);
 			int face = BottomSuckerBlock.GetFace(Terrain.ExtractData(SubsystemTerrain.Terrain.GetCellValue(x, y, z)));
@@ -20,9 +27,12 @@ namespace Game
 
 		public override void OnCollide(CellFace cellFace, float velocity, ComponentBody componentBody)
 		{
-			if (Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)) == 226)
+			if (Terrain.ExtractContents(SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z)) == m_seaUrchinBlockValue)
 			{
-				componentBody.Entity.FindComponent<ComponentCreature>()?.ComponentHealth.Injure(0.01f * MathF.Abs(velocity), null, ignoreInvulnerability: false, "Spiked by a sea creature");
+				ComponentHealth componentHealth = componentBody.Entity.FindComponent<ComponentHealth>();
+				if (componentHealth != null) {
+					componentHealth.OnSpiked(this, 0.01f * MathF.Abs(velocity), cellFace, velocity, componentBody, "Spiked by a sea creature");
+                }
 			}
 		}
 

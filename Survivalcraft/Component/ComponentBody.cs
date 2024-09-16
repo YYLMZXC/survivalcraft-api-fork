@@ -401,7 +401,7 @@ namespace Game
 					{
 						if (m_crushInjureTime >= 1f)
 						{
-							componentHealth.Injure(0.15f, null, ignoreInvulnerability: true, "Crushed");
+							componentHealth.Injure(0.15f * componentHealth.CrushDamageFactor, null, ignoreInvulnerability: true, "Crushed");
 							m_crushInjureTime = 0f;
 						}
 						componentHealth.m_redScreenFactor = 1f;

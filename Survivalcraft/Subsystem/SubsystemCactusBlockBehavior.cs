@@ -14,9 +14,12 @@ namespace Game
 
 		public Random m_random = new();
 
+		public int m_sandBlockIndex;
+
+		public int m_cactusBlockIndex;
 		public override int[] HandledBlocks => new int[1]
 		{
-			127
+			BlocksManager.GetBlockIndex<CactusBlock>()
 		};
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
@@ -24,7 +27,7 @@ namespace Game
 		public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
 		{
 			int cellContents = SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
-			if (cellContents != 7 && cellContents != 127)
+			if (cellContents != m_sandBlockIndex && cellContents != m_cactusBlockIndex)
 			{
 				SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
 			}
@@ -41,22 +44,28 @@ namespace Game
 			{
 				int cellContents = SubsystemTerrain.Terrain.GetCellContents(x, y - 1, z);
 				int cellContents2 = SubsystemTerrain.Terrain.GetCellContents(x, y - 2, z);
-				if ((cellContents != 127 || cellContents2 != 127) && m_random.Float(0f, 1f) < 0.25f)
+				if ((cellContents != m_cactusBlockIndex || cellContents2 != m_cactusBlockIndex) && m_random.Float(0f, 1f) < 0.25f)
 				{
-					m_toUpdate[new Point3(x, y + 1, z)] = Terrain.MakeBlockValue(127, 0, 0);
+					m_toUpdate[new Point3(x, y + 1, z)] = Terrain.MakeBlockValue(m_cactusBlockIndex, 0, 0);
 				}
 			}
 		}
 
 		public override void OnCollide(CellFace cellFace, float velocity, ComponentBody componentBody)
 		{
-			componentBody.Entity.FindComponent<ComponentCreature>()?.ComponentHealth.Injure(0.01f * MathF.Abs(velocity), null, ignoreInvulnerability: false, "Spiked by cactus");
+            ComponentHealth componentHealth = componentBody.Entity.FindComponent<ComponentHealth>();
+            if (componentHealth != null)
+            {
+				componentHealth.OnSpiked(this, 0.01f * MathF.Abs(velocity), cellFace, velocity, componentBody, "Spiked by cactus");
+            }
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary)
 		{
 			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
 			m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+			m_sandBlockIndex = BlocksManager.GetBlockIndex<SandBlock>();
+			m_cactusBlockIndex = BlocksManager.GetBlockIndex<CactusBlock>();
 			base.Load(valuesDictionary);
 		}
 
