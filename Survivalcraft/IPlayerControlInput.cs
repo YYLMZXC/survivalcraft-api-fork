@@ -8,9 +8,9 @@ namespace Game
 {
     public interface IPlayerControlInput
     {
-        public void OnPlayerInputInteract(ComponentPlayer componentPlayer, ref bool playerOperated, ref double timeIntervalLastActionTime, bool skippedByOtherMods, out bool skipVanilla)
+        public void OnPlayerInputInteract(ComponentPlayer componentPlayer, ref bool playerOperated, ref double timeIntervalLastActionTime, ref int priorityUse, ref int priorityInteract, ref int priorityPlace)
         {
-            skipVanilla = false;
+
         }
 
         public void UpdatePlayerInputAim(ComponentPlayer componentPlayer, bool aiming, ref bool playerOperated, ref float timeIntervalAim, bool skippedByOtherMods, out bool skipVanilla)
