@@ -2758,7 +2758,8 @@
       "Minimum Hold Duration:",
       "Minimum Drag Distance:",
       "Introduction:",
-      "MemoryBank Style:"
+      "MemoryBank Style:",
+      "Creative Mode Drag Max Stack Of Blocks:"
     ],
     "SettingsGraphicsScreen": {
       "1": "Adjust Graphics Settings",

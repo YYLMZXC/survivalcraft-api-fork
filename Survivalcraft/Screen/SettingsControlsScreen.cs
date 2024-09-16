@@ -21,6 +21,8 @@ namespace Game
 
 		public ButtonWidget m_horizontalCreativeFlightButton;
 
+		public ButtonWidget m_creativeDragMaxStackingButton;
+
 		public ContainerWidget m_horizontalCreativeFlightPanel;
 
 		public SliderWidget m_moveSensitivitySlider;
@@ -51,6 +53,7 @@ namespace Game
 			m_autoJumpButton = Children.Find<ButtonWidget>("AutoJump");
 			m_horizontalCreativeFlightButton = Children.Find<ButtonWidget>("HorizontalCreativeFlight");
 			m_horizontalCreativeFlightPanel = Children.Find<ContainerWidget>("HorizontalCreativeFlightPanel");
+			m_creativeDragMaxStackingButton = Children.Find<ButtonWidget>("CreativeDragMaxStacking");
 			m_moveSensitivitySlider = Children.Find<SliderWidget>("MoveSensitivitySlider");
 			m_lookSensitivitySlider = Children.Find<SliderWidget>("LookSensitivitySlider");
 			m_gamepadCursorSpeedSlider = Children.Find<SliderWidget>("GamepadCursorSpeedSlider");
@@ -89,7 +92,11 @@ namespace Game
 			{
 				SettingsManager.HorizontalCreativeFlight = !SettingsManager.HorizontalCreativeFlight;
 			}
-			if (m_moveSensitivitySlider.IsSliding)
+            if (m_creativeDragMaxStackingButton.IsClicked)
+            {
+                SettingsManager.CreativeDragMaxStacking = !SettingsManager.CreativeDragMaxStacking;
+            }
+            if (m_moveSensitivitySlider.IsSliding)
 			{
 				SettingsManager.MoveSensitivity = m_moveSensitivitySlider.Value;
 			}
@@ -134,6 +141,7 @@ namespace Game
 			m_AllowInitialIntro.Text = SettingsManager.AllowInitialIntro ? LanguageControl.On : LanguageControl.Off;
 			m_autoJumpButton.Text = SettingsManager.AutoJump ? LanguageControl.On : LanguageControl.Off;
 			m_horizontalCreativeFlightButton.Text = SettingsManager.HorizontalCreativeFlight ? LanguageControl.On : LanguageControl.Off;
+			m_creativeDragMaxStackingButton.Text = SettingsManager.CreativeDragMaxStacking ? LanguageControl.On : LanguageControl.Off;
 			m_moveSensitivitySlider.Value = SettingsManager.MoveSensitivity;
 			m_moveSensitivitySlider.Text = MathF.Round(SettingsManager.MoveSensitivity * 10f).ToString();
 			m_lookSensitivitySlider.Value = SettingsManager.LookSensitivity;

@@ -259,7 +259,7 @@ namespace Game
 					return 1;
 				}
 			}
-			if (SettingsManager.DragMaxStackingInCreativeMode)
+			if (SettingsManager.CreativeDragMaxStacking)
 				return MathUtils.Min(maxStacking, count);
 			else return 1;
 		}
