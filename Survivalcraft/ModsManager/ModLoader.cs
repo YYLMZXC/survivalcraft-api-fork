@@ -791,7 +791,14 @@ namespace Game
             throw new NotImplementedException();
         }
 
-        //在方块被挖掘完毕时执行
+        /// <summary>
+        /// 在方块被挖掘完毕时执行
+        /// </summary>
+        /// <param name="componentMiner"></param>
+        /// <param name="digValue"></param>
+        /// <param name="DurabilityReduction">挖掘方块所消耗工具的耐久</param>
+        /// <param name="mute">挖掘方块是否取消播放音效</param>
+        /// <param name="PlayerDataDugAdd">是否增加玩家的挖掘方块计数</param>
         public virtual void OnBlockDug(ComponentMiner componentMiner, BlockPlacementData digValue, ref int DurabilityReduction, out bool mute, ref int PlayerDataDugAdd)
         {
             mute = false;
@@ -810,7 +817,14 @@ namespace Game
         {
             skip = false;
         }
-
+        /// <summary>
+        /// 在创建家具时执行
+        /// </summary>
+        /// <param name="furnitureDesign"></param>
+        /// <param name="designedFromExistingFurniture">是否从已有家具方块创建，通常用于mod禁止家具复制</param>
+        /// <param name="pickableCount">产生的掉落物数量</param>
+        /// <param name="destroyDesignBlocks">是否移除搭建的建筑原型</param>
+        /// <param name="toolDamageCount">家具锤消耗的耐久量，如果家具锤剩余耐久不足以支持消耗量，则玩家无法创建家具并弹出提示</param>
         public virtual void OnFurnitureDesigned(FurnitureDesign furnitureDesign, bool designedFromExistingFurniture, ref int pickableCount, ref bool destroyDesignBlocks, ref int toolDamageCount)
         {
         }
