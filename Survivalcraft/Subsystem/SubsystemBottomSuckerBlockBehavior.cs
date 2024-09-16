@@ -36,7 +36,7 @@ namespace Game
 			}
 		}
 
-		public bool IsSupport(int value, int face)
+		public virtual bool IsSupport(int value, int face)
 		{
 			Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
 			if (block.IsCollidable_(value))
