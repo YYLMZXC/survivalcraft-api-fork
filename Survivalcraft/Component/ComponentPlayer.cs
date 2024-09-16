@@ -160,6 +160,41 @@ namespace Game
 			}
 		}
 
+		public virtual void DealWithPlayerInteract(int priorityUse, int priorityPlace, int priorityInteract,
+			PlayerInput playerInput, TerrainRaycastResult? terrainRaycastResult, out bool flag)
+		{
+			bool dealed = false;
+			for(int t = 0; t < 3 && !dealed; t++)
+			{
+                int maxPriority = -1;
+                if (maxPriority < priorityUse) maxPriority = priorityUse;
+                if (maxPriority < priorityPlace) maxPriority = priorityPlace;
+                if (maxPriority < priorityInteract) maxPriority = priorityInteract;
+				if (maxPriority <= 0) break;
+                if (maxPriority == priorityUse && !dealed){
+					dealed = ComponentMiner.Use(playerInput.Interact.Value);
+					priorityUse = -2;
+				}
+				if (maxPriority == priorityInteract && !dealed)
+				{
+					dealed = ComponentMiner.Interact(terrainRaycastResult.Value);
+					priorityInteract = -2;
+                }
+				if(maxPriority == priorityPlace && !dealed)
+				{
+					dealed = ComponentMiner.Place(terrainRaycastResult.Value);
+					priorityPlace = -2;
+                }
+			}
+			if (dealed)
+			{
+                m_subsystemTerrain.TerrainUpdater.RequestSynchronousUpdate();
+                flag = true;
+                m_isAimBlocked = true;
+				return;
+            }
+			flag = false;
+		}
 		public void Update(float dt)
 		{
 			PlayerInput playerInput = ComponentInput.PlayerInput;
@@ -283,34 +318,18 @@ namespace Game
 				}
                 if (!skipvanilla_h && !flag && m_subsystemTime.GameTime - m_lastActionTime > timeIntervalLastActionTime)
                 {
-                    if (!ComponentMiner.Use(playerInput.Interact.Value))
+                    TerrainRaycastResult? terrainRaycastResult = ComponentMiner.Raycast<TerrainRaycastResult>(playerInput.Interact.Value, RaycastMode.Interaction);
+					int priorityUse = block.GetPriorityUse(ComponentMiner.ActiveBlockValue, ComponentMiner);
+					int priorityPlace = 0; 
+					int priorityInteract = 0;
+                    if (terrainRaycastResult.HasValue)
                     {
-                        TerrainRaycastResult? terrainRaycastResult = ComponentMiner.Raycast<TerrainRaycastResult>(playerInput.Interact.Value, RaycastMode.Interaction);
-                        if (terrainRaycastResult.HasValue)
-                        {
-                            if (!ComponentMiner.Interact(terrainRaycastResult.Value))
-                            {
-                                if (ComponentMiner.Place(terrainRaycastResult.Value))
-                                {
-                                    m_subsystemTerrain.TerrainUpdater.RequestSynchronousUpdate();
-                                    flag = true;
-                                    m_isAimBlocked = true;
-                                }
-                            }
-                            else
-                            {
-                                m_subsystemTerrain.TerrainUpdater.RequestSynchronousUpdate();
-                                flag = true;
-                                m_isAimBlocked = true;
-                            }
-                        }
+                        int raycastValue = terrainRaycastResult.Value.Value;
+                        priorityPlace = block.GetPriorityPlace(ComponentMiner.ActiveBlockValue, ComponentMiner);
+						priorityInteract = BlocksManager.Blocks[Terrain.ExtractContents(raycastValue)].GetPriorityInteract(raycastValue, ComponentMiner);
                     }
-                    else
-                    {
-                        m_subsystemTerrain.TerrainUpdater.RequestSynchronousUpdate();
-                        flag = true;
-                        m_isAimBlocked = true;
-                    }
+					//处理三者的关系，优先级最高的优先执行
+                    DealWithPlayerInteract(priorityUse, priorityPlace, priorityInteract, playerInput, terrainRaycastResult, out flag);
                 }
             }
 				

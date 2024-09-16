@@ -185,6 +185,10 @@ namespace Game
 
 		public float DefaultSicknessProbability;
 
+		public int PriorityUse = 3000;
+		public int PriorityInteract = 2000;
+		public int PriorityPlace = 1000;
+
 		public static string fName = "Block";
 
 		public Random Random = new();
@@ -702,6 +706,24 @@ namespace Game
 		public virtual bool CanBlockBeBuiltIntoFurniture(int value)
 		{
 			return CanBeBuiltIntoFurniture;
+		}
+
+		public virtual int GetPriorityUse(int value, ComponentMiner componentMiner)
+		{
+			return PriorityUse;
+		}
+		public virtual int GetPriorityInteract(int value, ComponentMiner componentMiner)
+		{
+			if(componentMiner.m_subsystemTerrain != null && IsInteractive(componentMiner.m_subsystemTerrain, value))
+			{
+                return PriorityInteract;
+            }
+			return 0;
+		}
+		public virtual int GetPriorityPlace(int value, ComponentMiner componentMiner)
+		{
+			if (!IsPlaceable_(value)) return 0;
+			return PriorityPlace;
 		}
     }
 }
