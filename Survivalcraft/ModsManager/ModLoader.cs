@@ -810,5 +810,9 @@ namespace Game
         {
             skip = false;
         }
+
+        public virtual void OnFurnitureDesigned(FurnitureDesign furnitureDesign, bool designedFromExistingFurniture, ref int pickableCount, ref bool destroyDesignBlocks, ref int toolDamageCount)
+        {
+        }
     }
 }

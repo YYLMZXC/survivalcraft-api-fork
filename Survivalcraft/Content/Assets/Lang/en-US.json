@@ -114,7 +114,9 @@
     "0": "Unsuitable block found",
     "1": "Unsuitable block found",
     "2": "Furniture design is too large",
-    "3": "Too many different furniture designs"
+    "3": "Too many different furniture designs",
+    "4": "Blocks in the wild are not permitted to build furniture",
+    "5": "The durability of hammer is not enough to build furniture"
   },
   "ExternalContentManager": {
     "1": "Name empty.",

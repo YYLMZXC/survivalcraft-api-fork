@@ -140,7 +140,8 @@ namespace Game
 			Point3 point2 = start.Point;
 			int startValue = SubsystemTerrain.Terrain.GetCellValue(start.Point.X, start.Point.Y, start.Point.Z);
 			int num = Terrain.ExtractContents(startValue);
-			if (BlocksManager.Blocks[num] is FurnitureBlock)
+			bool designedFromExistingFurniture = false;
+            if (BlocksManager.Blocks[num] is FurnitureBlock)
 			{
 				int designIndex = FurnitureBlock.GetDesignIndex(Terrain.ExtractData(startValue));
 				furnitureDesign = GetDesign(designIndex);
@@ -152,6 +153,7 @@ namespace Game
 				design = furnitureDesign.Clone();
 				design.LinkedDesign = null;
 				design.InteractionMode = FurnitureInteractionMode.None;
+				designedFromExistingFurniture = true;
 				valuesDictionary.Add(start.Point, startValue);
 			}
 			else
@@ -176,7 +178,7 @@ namespace Game
 					{
 						if(chunkAtCell == null || chunkAtCell.State <= TerrainChunkState.InvalidContents4 || (!chunkAtCell.IsLoaded && chunkAtCell.ModificationCounter == 0))
                         {
-                            componentMiner.ComponentPlayer?.ComponentGui.DisplaySmallMessage("你不应当使用野外的方块创建家具", Color.White, blinking: true, playNotificationSound: false);
+                            componentMiner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 4), Color.White, blinking: true, playNotificationSound: false);
                             return;
                         }
                         if (key.X < point.X)
@@ -250,31 +252,48 @@ namespace Game
 					}
 					else
 					{
-						if (m_subsystemGameInfo.WorldSettings.GameMode != 0)
-						{
-							foreach (KeyValuePair<Point3, int> item2 in valuesDictionary)
-							{
-								SubsystemTerrain.DestroyCell(0, item2.Key.X, item2.Key.Y, item2.Key.Z, 0, noDrop: true, noParticleSystem: true);
-							}
-						}
+						bool destroyDesignBlocks = (m_subsystemGameInfo.WorldSettings.GameMode != 0);
 						int value = Terrain.MakeBlockValue(227, 0, FurnitureBlock.SetDesignIndex(0, design.Index, design.ShadowStrengthFactor, design.IsLightEmitter));
-						int num3 = Math.Clamp(design.Resolution, 4, 8);
-						Matrix matrix = componentMiner.ComponentCreature.ComponentBody.Matrix;
-						Vector3 position = matrix.Translation + (1f * matrix.Forward) + (1f * Vector3.UnitY);
-						m_subsystemPickables.AddPickable(value, num3, position, null, null);
-						componentMiner.DamageActiveTool(1);
-						componentMiner.Poke(forceRestart: false);
-						for (int i = 0; i < 3; i++)
+                        int num3 = Math.Clamp(design.Resolution, 4, 8);
+                        Matrix matrix = componentMiner.ComponentCreature.ComponentBody.Matrix;
+                        Vector3 position = matrix.Translation + (1f * matrix.Forward) + (1f * Vector3.UnitY);
+						int toolDamageCount = 1;
+                        ModsManager.HookAction("OnFurnitureDesigned", modLoader =>
+                        {
+							modLoader.OnFurnitureDesigned(design, designedFromExistingFurniture, ref num3, ref destroyDesignBlocks, ref toolDamageCount);
+							return false;
+						});
+
+						Block block = BlocksManager.Blocks[Terrain.ExtractContents(componentMiner.ActiveBlockValue)];
+						int durabilityRemains = block.GetDurability(componentMiner.ActiveBlockValue) - block.GetDamage(componentMiner.ActiveBlockValue) + 1;
+						if(durabilityRemains < toolDamageCount)
 						{
-							Time.QueueTimeDelayedExecution(Time.FrameStartTime + (i * 0.25f), delegate
-							{
-								m_subsystemSoundMaterials.PlayImpactSound(startValue, new Vector3(start.Point), 1f);
-							});
-						}
-						if (componentMiner.ComponentCreature.PlayerStats != null)
+                            componentMiner.ComponentPlayer?.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 5), Color.White, blinking: true, playNotificationSound: false);
+                        }
+						else
 						{
-							componentMiner.ComponentCreature.PlayerStats.FurnitureItemsMade += num3;
-						}
+                            componentMiner.DamageActiveTool(toolDamageCount);
+                            if (destroyDesignBlocks)
+                            {
+                                foreach (KeyValuePair<Point3, int> item2 in valuesDictionary)
+                                {
+                                    SubsystemTerrain.DestroyCell(0, item2.Key.X, item2.Key.Y, item2.Key.Z, 0, noDrop: true, noParticleSystem: true);
+                                }
+                            }
+                            m_subsystemPickables.AddPickable(value, num3, position, null, null);
+                            componentMiner.Poke(forceRestart: false);
+                            for (int i = 0; i < 3; i++)
+                            {
+                                Time.QueueTimeDelayedExecution(Time.FrameStartTime + (i * 0.25f), delegate
+                                {
+                                    m_subsystemSoundMaterials.PlayImpactSound(startValue, new Vector3(start.Point), 1f);
+                                });
+                            }
+                            if (componentMiner.ComponentCreature.PlayerStats != null)
+                            {
+                                componentMiner.ComponentCreature.PlayerStats.FurnitureItemsMade += num3;
+                            }
+                        }
 					}
 				}
 			});
