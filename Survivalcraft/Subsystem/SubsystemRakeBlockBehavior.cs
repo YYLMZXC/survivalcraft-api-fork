@@ -23,10 +23,11 @@ namespace Game
 		{
 			TerrainRaycastResult? terrainRaycastResult = componentMiner.Raycast<TerrainRaycastResult>(ray, RaycastMode.Interaction);
 			if (terrainRaycastResult.HasValue)
-			{
-				if (terrainRaycastResult.Value.CellFace.Face == 4)
-				{
-					int cellValue = m_subsystemTerrain.Terrain.GetCellValue(terrainRaycastResult.Value.CellFace.X, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z);
+            {
+                bool raked = false;
+                if (terrainRaycastResult.Value.CellFace.Face == 4)
+                {
+                    int cellValue = m_subsystemTerrain.Terrain.GetCellValue(terrainRaycastResult.Value.CellFace.X, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z);
 					int num = Terrain.ExtractContents(cellValue);
 					Block block = BlocksManager.Blocks[num];
 					switch (num)
@@ -38,6 +39,7 @@ namespace Game
 								m_subsystemAudio.PlayRandomSound("Audio/Impacts/Dirt", 0.5f, 0f, new Vector3(terrainRaycastResult.Value.CellFace.X, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z), 3f, autoDelay: true);
 								var position2 = new Vector3(terrainRaycastResult.Value.CellFace.X + 0.5f, terrainRaycastResult.Value.CellFace.Y + 1.25f, terrainRaycastResult.Value.CellFace.Z + 0.5f);
 								m_subsystemParticles.AddParticleSystem(block.CreateDebrisParticleSystem(m_subsystemTerrain, position2, cellValue, 0.5f));
+								raked = true;
 								break;
 							}
 						case 8:
@@ -47,12 +49,13 @@ namespace Game
 								m_subsystemAudio.PlayRandomSound("Audio/Impacts/Plant", 0.5f, 0f, new Vector3(terrainRaycastResult.Value.CellFace.X, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z), 3f, autoDelay: true);
 								var position = new Vector3(terrainRaycastResult.Value.CellFace.X + 0.5f, terrainRaycastResult.Value.CellFace.Y + 1.2f, terrainRaycastResult.Value.CellFace.Z + 0.5f);
 								m_subsystemParticles.AddParticleSystem(block.CreateDebrisParticleSystem(m_subsystemTerrain, position, cellValue, 0.75f));
+								raked = true;
 								break;
 							}
 					}
 				}
-				componentMiner.DamageActiveTool(1);
-				return true;
+				if(raked) componentMiner.DamageActiveTool(1);
+				return raked;
 			}
 			return false;
 		}
