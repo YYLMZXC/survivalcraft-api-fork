@@ -404,19 +404,24 @@ namespace Game
 			{
 				bool skipVanilla_ = false;
 				double timeIntervalHit = 0.33000001311302185;
+				float meleeAttackRange = 2f;
                 foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
                 {
-                    playerControlInput.OnPlayerInputHit(this, ref flag, ref timeIntervalHit, skipVanilla_, out bool skip);
+                    playerControlInput.OnPlayerInputHit(this, ref flag, ref timeIntervalHit, ref meleeAttackRange, skipVanilla_, out bool skip);
                     skipVanilla_ |= skip;
                 }
-                if (!skipVanilla_ && !flag && m_subsystemTime.GameTime - m_lastActionTime > timeIntervalHit)
+                if (!skipVanilla_ && !flag && m_subsystemTime.GameTime - m_lastActionTime > timeIntervalHit && block.GetMeleeHitProbability(ComponentMiner.ActiveBlockValue) > 0 && meleeAttackRange > 0)
                 {
-                    BodyRaycastResult? bodyRaycastResult = ComponentMiner.Raycast<BodyRaycastResult>(playerInput.Hit.Value, RaycastMode.Interaction);
+					BodyRaycastResult? bodyRaycastResult;
+					if(meleeAttackRange <= 5f)
+						bodyRaycastResult = ComponentMiner.Raycast<BodyRaycastResult>(playerInput.Hit.Value, RaycastMode.Interaction);
+					else
+						bodyRaycastResult = ComponentMiner.Raycast<BodyRaycastResult>(playerInput.Hit.Value, RaycastMode.Interaction, true, true, true, meleeAttackRange);
                     if (bodyRaycastResult.HasValue)
                     {
                         flag = true;
                         m_isDigBlocked = true;
-                        if (Vector3.Distance(bodyRaycastResult.Value.HitPoint(), ComponentCreatureModel.EyePosition) <= 2f)
+                        if (Vector3.Distance(bodyRaycastResult.Value.HitPoint(), ComponentCreatureModel.EyePosition) <= meleeAttackRange)
                         {
                             ComponentMiner.Hit(bodyRaycastResult.Value.ComponentBody, bodyRaycastResult.Value.HitPoint(), playerInput.Hit.Value.Direction);
                         }

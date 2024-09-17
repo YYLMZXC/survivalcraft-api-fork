@@ -19,7 +19,7 @@ namespace Game
         }
 
         //在玩家执行“攻击”动作时执行，比如恒泰左键放箭，工业左键点击船
-        public void OnPlayerInputHit(ComponentPlayer componentPlayer, ref bool playerOperated, ref double timeIntervalHit, bool skippedByOtherMods, out bool skipVanilla)
+        public void OnPlayerInputHit(ComponentPlayer componentPlayer, ref bool playerOperated, ref double timeIntervalHit, ref float meleeAttackRange, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
         }

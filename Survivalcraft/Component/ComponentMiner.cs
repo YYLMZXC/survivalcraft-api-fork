@@ -475,9 +475,9 @@ namespace Game
 			return new Ray3(start, direction);
 		}
 
-		public T? Raycast<T>(Ray3 ray, RaycastMode mode, bool raycastTerrain = true, bool raycastBodies = true, bool raycastMovingBlocks = true) where T : struct
+		public T? Raycast<T>(Ray3 ray, RaycastMode mode, bool raycastTerrain = true, bool raycastBodies = true, bool raycastMovingBlocks = true, float? reach = null) where T : struct
 		{
-			object obj = Raycast(ray, mode, raycastTerrain, raycastBodies, raycastMovingBlocks);
+			object obj = Raycast(ray, mode, raycastTerrain, raycastBodies, raycastMovingBlocks, reach);
 			if (!(obj is T))
 			{
 				return null;
