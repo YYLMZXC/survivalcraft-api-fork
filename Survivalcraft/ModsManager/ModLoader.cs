@@ -849,5 +849,20 @@ namespace Game
         {
 
         }
+
+
+        /// <summary>
+        /// 当移动物品时执行。从sourceInventory的第sourceSlotIndex个格子，移动count个物品，到targetInventory的第targetSlotIndex个格子
+        /// </summary>
+        /// <param name="inventorySlotWidget"></param>
+        /// <param name="count">留给后面模组和原版处理物品的数量</param>
+        public virtual void HandleMoveInventoryItem(InventorySlotWidget inventorySlotWidget, IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex, ref int count)
+        {
+        }
+
+        //未实现
+        public virtual void HandleInventoryDragDrop(InventorySlotWidget inventorySlotWidget, IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex)
+        {
+        }
     }
 }

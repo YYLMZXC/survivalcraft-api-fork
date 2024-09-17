@@ -543,7 +543,12 @@ namespace Game
 		}
 
 		public virtual bool HandleMoveItem(IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex, int count)
-		{
+		{	
+			ModsManager.HookAction("HandleMoveInventoryItem", loader =>
+			{
+				loader.HandleMoveInventoryItem(this, sourceInventory, sourceSlotIndex, targetInventory, targetSlotIndex, ref count);
+				return false;
+			});
 			int slotValue = sourceInventory.GetSlotValue(sourceSlotIndex);
 			int slotValue2 = targetInventory.GetSlotValue(targetSlotIndex);
 			int slotCount = sourceInventory.GetSlotCount(sourceSlotIndex);
