@@ -862,9 +862,13 @@ namespace Game
             moved = false;
         }
 
-        //未实现
-        public virtual void HandleInventoryDragDrop(InventorySlotWidget inventorySlotWidget, IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex)
+        public virtual void HandleInventoryDragProcess(InventorySlotWidget inventorySlotWidget, IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex, ref int ProcessCapacity)
         {
+        }
+
+        public virtual void HandleInventoryDragMove(InventorySlotWidget inventorySlotWidget, IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex, bool skippedByOtherMods, out bool skip)
+        {
+            skip = false;
         }
 
         public virtual int GetInventorySlotCapacity(int slotIndex, int value)

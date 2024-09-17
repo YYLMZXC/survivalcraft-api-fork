@@ -1,6 +1,7 @@
 ﻿using Engine;
 using Engine.Graphics;
 using GameEntitySystem;
+using Jint.Native;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -582,6 +583,10 @@ namespace Game
 			}
 			bool flag = false;
 			//先进行Process操作
+			ModsManager.HookAction("HandleInventoryDragProcess", loader => {
+				loader.HandleInventoryDragProcess(this, sourceInventory, sourceSlotIndex, targetInventory, targetSlotIndex, ref targetSlotProcessCapacity);
+				return false;
+			});
 			if (targetSlotProcessCapacity > 0)
 			{
 				int processCount = sourceInventory.RemoveSlotItems(sourceSlotIndex, MathUtils.Min(dragCount, targetSlotProcessCapacity));
@@ -596,28 +601,34 @@ namespace Game
 			}
 			else if (!ProcessingOnly)
 			{
-				//移动物品
-				if ((targetSlotCount == 0 || sourceSlotValue == targetSlotValue) && targetSlotCount < targetSlotCapacity)
+				bool movedByMods = false;
+				ModsManager.HookAction("HandleInventoryDragMove", loader =>
 				{
-                    int num2 = MathUtils.Min(targetSlotCapacity - targetSlotCount, dragCount);
-                    if (num2 > 0)
-					{
-						int count2 = sourceInventory.RemoveSlotItems(sourceSlotIndex, num2);
-						targetInventory.AddSlotItems(targetSlotIndex, sourceSlotValue, count2);
-						flag = true;
-					}
-				}
-				//交换两个物品栏之间的物品
-				else if (targetInventory.GetSlotCapacity(targetSlotIndex, targetSlotValue) >= dragCount
-					&& sourceInventory.GetSlotCapacity(sourceSlotIndex, targetSlotValue) >= targetSlotCount
-					&& sourceInventory.GetSlotCount(sourceSlotIndex) == dragCount)
+					loader.HandleInventoryDragMove(this, sourceInventory, sourceSlotIndex, targetInventory, targetSlotIndex, movedByMods, out bool skip);
+					movedByMods |= skip;
+					return false;
+				});
+				if (!movedByMods)
 				{
-					int count3 = targetInventory.RemoveSlotItems(targetSlotIndex, targetSlotCount);
-					int count4 = sourceInventory.RemoveSlotItems(sourceSlotIndex, dragCount);
-					targetInventory.AddSlotItems(targetSlotIndex, sourceSlotValue, count4);
-					sourceInventory.AddSlotItems(sourceSlotIndex, targetSlotValue, count3);
-					flag = true;
-				}
+                    //移动物品
+                    if ((targetSlotCount == 0 || sourceSlotValue == targetSlotValue) && targetSlotCount < targetSlotCapacity)
+                    {
+                        int num2 = MathUtils.Min(targetSlotCapacity - targetSlotCount, dragCount);
+                        bool handleMove = HandleMoveItem(sourceInventory, sourceSlotIndex, targetInventory, targetSlotIndex, num2);
+                        if (handleMove) flag = true;
+                    }
+                    //交换两个物品栏之间的物品
+                    else if (targetInventory.GetSlotCapacity(targetSlotIndex, targetSlotValue) >= dragCount
+                        && sourceInventory.GetSlotCapacity(sourceSlotIndex, targetSlotValue) >= targetSlotCount
+                        && sourceInventory.GetSlotCount(sourceSlotIndex) == dragCount)
+                    {
+                        int count3 = targetInventory.RemoveSlotItems(targetSlotIndex, targetSlotCount);
+                        int count4 = sourceInventory.RemoveSlotItems(sourceSlotIndex, dragCount);
+                        targetInventory.AddSlotItems(targetSlotIndex, sourceSlotValue, count4);
+                        sourceInventory.AddSlotItems(sourceSlotIndex, targetSlotValue, count3);
+                        flag = true;
+                    }
+                }
 			}
 
 			if (flag)
