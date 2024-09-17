@@ -856,13 +856,24 @@ namespace Game
         /// </summary>
         /// <param name="inventorySlotWidget"></param>
         /// <param name="count">留给后面模组和原版处理物品的数量</param>
-        public virtual void HandleMoveInventoryItem(InventorySlotWidget inventorySlotWidget, IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex, ref int count)
+        /// <param name="moved">是否完成移动操作，注意这个不影响跳过原版处理</param>
+        public virtual void HandleMoveInventoryItem(InventorySlotWidget inventorySlotWidget, IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex, ref int count, out bool moved)
         {
+            moved = false;
         }
 
         //未实现
         public virtual void HandleInventoryDragDrop(InventorySlotWidget inventorySlotWidget, IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex)
         {
+        }
+
+        public virtual int GetInventorySlotCapacity(int slotIndex, int value)
+        {
+            return -1073741824;
+        }
+        public virtual int GetInventorySlotProcessCapacity(int slotIndex, int value)
+        {
+            return -1073741824;
         }
     }
 }

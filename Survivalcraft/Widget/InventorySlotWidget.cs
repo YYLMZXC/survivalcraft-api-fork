@@ -543,13 +543,15 @@ namespace Game
 		}
 
 		public virtual bool HandleMoveItem(IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex, int count)
-		{	
-			ModsManager.HookAction("HandleMoveInventoryItem", loader =>
-			{
-				loader.HandleMoveInventoryItem(this, sourceInventory, sourceSlotIndex, targetInventory, targetSlotIndex, ref count);
-				return false;
-			});
-			int slotValue = sourceInventory.GetSlotValue(sourceSlotIndex);
+		{
+            bool moved_ = false;
+            ModsManager.HookAction("HandleMoveInventoryItem", loader =>
+            {
+                loader.HandleMoveInventoryItem(this, sourceInventory, sourceSlotIndex, targetInventory, targetSlotIndex, ref count, out bool moved);
+                moved_ |= moved;
+                return false;
+            });
+            int slotValue = sourceInventory.GetSlotValue(sourceSlotIndex);
 			int slotValue2 = targetInventory.GetSlotValue(targetSlotIndex);
 			int slotCount = sourceInventory.GetSlotCount(sourceSlotIndex);
 			int slotCount2 = targetInventory.GetSlotCount(targetSlotIndex);
@@ -563,51 +565,61 @@ namespace Game
 					return true;
 				}
 			}
-			return false;
+			return moved_;
 		}
 
 		public virtual bool HandleDragDrop(IInventory sourceInventory, int sourceSlotIndex, DragMode dragMode, IInventory targetInventory, int targetSlotIndex)
 		{
-			int slotValue = sourceInventory.GetSlotValue(sourceSlotIndex);
-			int slotValue2 = targetInventory.GetSlotValue(targetSlotIndex);
-			int num = sourceInventory.GetSlotCount(sourceSlotIndex);
-			int slotCount = targetInventory.GetSlotCount(targetSlotIndex);
-			int slotCapacity = targetInventory.GetSlotCapacity(targetSlotIndex, slotValue);
-			int slotProcessCapacity = targetInventory.GetSlotProcessCapacity(targetSlotIndex, slotValue);
+			int sourceSlotValue = sourceInventory.GetSlotValue(sourceSlotIndex);
+			int targetSlotValue = targetInventory.GetSlotValue(targetSlotIndex);
+			int dragCount = sourceInventory.GetSlotCount(sourceSlotIndex);
+			int targetSlotCount = targetInventory.GetSlotCount(targetSlotIndex);
+			int targetSlotCapacity = targetInventory.GetSlotCapacity(targetSlotIndex, sourceSlotValue);
+			int targetSlotProcessCapacity = targetInventory.GetSlotProcessCapacity(targetSlotIndex, sourceSlotValue);
 			if (dragMode == DragMode.SingleItem)
 			{
-				num = MathUtils.Min(num, 1);
+				dragCount = MathUtils.Min(dragCount, 1);
 			}
 			bool flag = false;
-			if (slotProcessCapacity > 0)
+			//先进行Process操作
+			if (targetSlotProcessCapacity > 0)
 			{
-				int processCount = sourceInventory.RemoveSlotItems(sourceSlotIndex, MathUtils.Min(num, slotProcessCapacity));
-				targetInventory.ProcessSlotItems(targetSlotIndex, slotValue, num, processCount, out int processedValue, out int processedCount);
+				int processCount = sourceInventory.RemoveSlotItems(sourceSlotIndex, MathUtils.Min(dragCount, targetSlotProcessCapacity));
+				targetInventory.ProcessSlotItems(targetSlotIndex, sourceSlotValue, dragCount, processCount, out int processedValue, out int processedCount);
 				if (processedValue != 0 && processedCount != 0)
 				{
+					//TODO:ProcessItem允许突破格子物品上限限制
 					int count = MathUtils.Min(sourceInventory.GetSlotCapacity(sourceSlotIndex, processedValue), processedCount);
 					sourceInventory.AddSlotItems(sourceSlotIndex, processedValue, count);
-				}
+                }
 				flag = true;
 			}
-			else if (!ProcessingOnly && (slotCount == 0 || slotValue == slotValue2) && slotCount < slotCapacity)
+			else if (!ProcessingOnly)
 			{
-				int num2 = MathUtils.Min(slotCapacity - slotCount, num);
-				if (num2 > 0)
+				//移动物品
+				if ((targetSlotCount == 0 || sourceSlotValue == targetSlotValue) && targetSlotCount < targetSlotCapacity)
 				{
-					int count2 = sourceInventory.RemoveSlotItems(sourceSlotIndex, num2);
-					targetInventory.AddSlotItems(targetSlotIndex, slotValue, count2);
+                    int num2 = MathUtils.Min(targetSlotCapacity - targetSlotCount, dragCount);
+                    if (num2 > 0)
+					{
+						int count2 = sourceInventory.RemoveSlotItems(sourceSlotIndex, num2);
+						targetInventory.AddSlotItems(targetSlotIndex, sourceSlotValue, count2);
+						flag = true;
+					}
+				}
+				//交换两个物品栏之间的物品
+				else if (targetInventory.GetSlotCapacity(targetSlotIndex, targetSlotValue) >= dragCount
+					&& sourceInventory.GetSlotCapacity(sourceSlotIndex, targetSlotValue) >= targetSlotCount
+					&& sourceInventory.GetSlotCount(sourceSlotIndex) == dragCount)
+				{
+					int count3 = targetInventory.RemoveSlotItems(targetSlotIndex, targetSlotCount);
+					int count4 = sourceInventory.RemoveSlotItems(sourceSlotIndex, dragCount);
+					targetInventory.AddSlotItems(targetSlotIndex, sourceSlotValue, count4);
+					sourceInventory.AddSlotItems(sourceSlotIndex, targetSlotValue, count3);
 					flag = true;
 				}
 			}
-			else if (!ProcessingOnly && targetInventory.GetSlotCapacity(targetSlotIndex, slotValue) >= num && sourceInventory.GetSlotCapacity(sourceSlotIndex, slotValue2) >= slotCount && sourceInventory.GetSlotCount(sourceSlotIndex) == num)
-			{
-				int count3 = targetInventory.RemoveSlotItems(targetSlotIndex, slotCount);
-				int count4 = sourceInventory.RemoveSlotItems(sourceSlotIndex, num);
-				targetInventory.AddSlotItems(targetSlotIndex, slotValue, count4);
-				sourceInventory.AddSlotItems(sourceSlotIndex, slotValue2, count3);
-				flag = true;
-			}
+
 			if (flag)
 			{
 				AudioManager.PlaySound("Audio/UI/ItemMoved", 1f, 0f, 0f);
