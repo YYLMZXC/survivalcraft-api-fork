@@ -243,7 +243,7 @@ namespace Game
 			return 0;
 		}
 
-		public void DropAllItems(Vector3 position)
+		public virtual void DropAllItems(Vector3 position)
 		{
 			for (int i = 0; i < SlotsCount; i++)
 			{

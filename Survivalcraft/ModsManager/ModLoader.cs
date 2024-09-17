@@ -828,5 +828,26 @@ namespace Game
         public virtual void OnFurnitureDesigned(FurnitureDesign furnitureDesign, bool designedFromExistingFurniture, ref int pickableCount, ref bool destroyDesignBlocks, ref int toolDamageCount)
         {
         }
+
+
+        /// <summary>
+        /// 在创建InventorySlotWidget时执行，可以增加元素
+        /// </summary>
+        /// <param name="inventorySlotWidget"></param>
+        /// <param name="childrenWidgetsToAdd">创建InventorySlotWidget时，返回增加的子Widget</param>
+        public virtual void OnInventorySlotWidgetDefined(InventorySlotWidget inventorySlotWidget, out List<Widget> childrenWidgetsToAdd)
+        {
+            childrenWidgetsToAdd = null;
+        }
+
+        /// <summary>
+        /// 绘制物品格子的耐久条、食物条等元素
+        /// </summary>
+        /// <param name="inventorySlotWidget"></param>
+        /// <param name="parentAvailableSize">其父widget的大小</param>
+        public virtual void InventorySlotWidgetMeasureOverride(InventorySlotWidget inventorySlotWidget, Vector2 parentAvailableSize)
+        {
+
+        }
     }
 }

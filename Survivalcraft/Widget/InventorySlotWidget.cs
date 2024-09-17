@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Graphics;
 using GameEntitySystem;
 using System.Linq;
@@ -161,45 +161,41 @@ namespace Game
 		public InventorySlotWidget()
 		{
 			Size = new Vector2(72f, 72f);
-			WidgetsList children = Children;
-			var array = new Widget[7];
-			var obj = new BevelledRectangleWidget
+			var list = new List<Widget>();
+			//不知道做什么的
+			m_rectangleWidget = new BevelledRectangleWidget
 			{
 				BevelSize = -2f,
 				DirectionalLight = 0.15f,
 				CenterColor = Color.Transparent
 			};
-			BevelledRectangleWidget bevelledRectangleWidget = obj;
-			m_rectangleWidget = obj;
-			array[0] = bevelledRectangleWidget;
-			var obj2 = new RectangleWidget
+			list.Add(m_rectangleWidget);
+			//不知道做什么的
+			m_highlightWidget = new RectangleWidget
 			{
 				FillColor = Color.Transparent,
 				OutlineColor = Color.Transparent
 			};
-			RectangleWidget rectangleWidget = obj2;
-			m_highlightWidget = obj2;
-			array[1] = rectangleWidget;
-			var obj3 = new BlockIconWidget
+			list.Add(m_highlightWidget);
+			//方块图标
+			m_blockIconWidget = new BlockIconWidget
 			{
 				HorizontalAlignment = WidgetAlignment.Center,
 				VerticalAlignment = WidgetAlignment.Center,
 				Margin = new Vector2(2f, 2f)
 			};
-			BlockIconWidget blockIconWidget = obj3;
-			m_blockIconWidget = obj3;
-			array[2] = blockIconWidget;
-			var obj4 = new LabelWidget
+			list.Add(m_blockIconWidget);
+			//方块数量标志
+			m_countWidget = new LabelWidget
 			{
 				FontScale = 1f,
 				HorizontalAlignment = WidgetAlignment.Far,
 				VerticalAlignment = WidgetAlignment.Far,
 				Margin = new Vector2(6f, 2f)
 			};
-			LabelWidget labelWidget = obj4;
-			m_countWidget = obj4;
-			array[3] = labelWidget;
-			var obj5 = new ValueBarWidget
+			list.Add(m_countWidget);
+			//耐久条
+			m_healthBarWidget = new ValueBarWidget
 			{
 				LayoutDirection = LayoutDirection.Vertical,
 				HorizontalAlignment = WidgetAlignment.Near,
@@ -212,50 +208,45 @@ namespace Game
 				BarSubtexture = ContentManager.Get<Subtexture>("Textures/Atlas/ProgressBar"),
 				Margin = new Vector2(4f, 4f)
 			};
-			ValueBarWidget valueBarWidget = obj5;
-			m_healthBarWidget = obj5;
-			array[4] = valueBarWidget;
-			var obj6 = new StackPanelWidget
+			list.Add(m_healthBarWidget);
+			//右上角显示物品的编辑、交互、腐烂信息的面板
+			var stackPanelWidget = new StackPanelWidget
 			{
 				Direction = LayoutDirection.Horizontal,
 				HorizontalAlignment = WidgetAlignment.Far,
 				Margin = new Vector2(3f, 3f)
 			};
-			WidgetsList children2 = obj6.Children;
-			var obj7 = new RectangleWidget
+            //标记可交互方块的手标记
+            m_interactiveOverlayWidget = new RectangleWidget
 			{
 				Subtexture = ContentManager.Get<Subtexture>("Textures/Atlas/InteractiveItemOverlay"),
 				Size = new Vector2(13f, 14f),
 				FillColor = new Color(160, 160, 160),
 				OutlineColor = Color.Transparent
 			};
-			rectangleWidget = obj7;
-			m_interactiveOverlayWidget = obj7;
-			children2.Add(rectangleWidget);
-			WidgetsList children3 = obj6.Children;
-			var obj8 = new RectangleWidget
+			stackPanelWidget.Children.Add(m_interactiveOverlayWidget);
+            //标记可编辑方块的编辑标记
+            m_editOverlayWidget = new RectangleWidget
 			{
 				Subtexture = ContentManager.Get<Subtexture>("Textures/Atlas/EditItemOverlay"),
 				Size = new Vector2(12f, 14f),
 				FillColor = new Color(160, 160, 160),
 				OutlineColor = Color.Transparent
 			};
-			rectangleWidget = obj8;
-			m_editOverlayWidget = obj8;
-			children3.Add(rectangleWidget);
-			WidgetsList children4 = obj6.Children;
-			var obj9 = new RectangleWidget
+            stackPanelWidget.Children.Add(m_editOverlayWidget);
+            //标记可腐烂方块的食物标记
+            m_foodOverlayWidget = new RectangleWidget
 			{
 				Subtexture = ContentManager.Get<Subtexture>("Textures/Atlas/FoodItemOverlay"),
 				Size = new Vector2(11f, 14f),
 				FillColor = new Color(160, 160, 160),
 				OutlineColor = Color.Transparent
 			};
-			rectangleWidget = obj9;
-			m_foodOverlayWidget = obj9;
-			children4.Add(rectangleWidget);
-			array[5] = obj6;
-			var obj10 = new LabelWidget
+			stackPanelWidget.Children.Add(m_foodOverlayWidget);
+			//完成stackPanelWidget的操作
+			list.Add(stackPanelWidget);
+            //红框Split标记
+            m_splitLabelWidget = new LabelWidget
 			{
 				Text = "Split",
 				Color = new Color(255, 64, 0),
@@ -263,10 +254,19 @@ namespace Game
 				VerticalAlignment = WidgetAlignment.Near,
 				Margin = new Vector2(2f, 0f)
 			};
-			labelWidget = obj10;
-			m_splitLabelWidget = obj10;
-			array[6] = labelWidget;
-			children.Add(array);
+			list.Add(m_splitLabelWidget);
+			//为mod提供的标记
+			ModsManager.HookAction("OnInventorySlotWidgetDefined", loader =>
+			{
+				loader.OnInventorySlotWidgetDefined(this, out List<Widget> childrenWidgetsToAdd);
+				if(childrenWidgetsToAdd != null)
+				{
+					list.AddRange(childrenWidgetsToAdd);
+				}
+				return false;
+			});
+			//最后将Array放到Childred中
+			Children.Add(list.ToArray());
 		}
 
 		public virtual void AssignInventorySlot(IInventory inventory, int slotIndex)
@@ -479,6 +479,11 @@ namespace Game
 			}
 			IsDrawRequired = m_inventoryDragData != null;
 			base.MeasureOverride(parentAvailableSize);
+			ModsManager.HookAction("InventorySlotWidgetMeasureOverride", loader =>
+			{
+				loader.InventorySlotWidgetMeasureOverride(this, parentAvailableSize);
+				return false;
+			});
 		}
 
 		public override void Draw(DrawContext dc)
