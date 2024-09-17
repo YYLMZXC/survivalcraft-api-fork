@@ -341,7 +341,7 @@ namespace Game
 							{
 								if (projectile.ProjectileStoppedAction == ProjectileStoppedAction.TurnIntoPickable)
 								{
-									int num4 = BlocksManager.DamageItem(projectile.Value, 1);
+									int num4 = BlocksManager.DamageItem(projectile.Value, 1, projectile.OwnerEntity);
 									if (num4 != 0)
 									{
 										if (vector2.HasValue)

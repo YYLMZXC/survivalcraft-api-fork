@@ -500,7 +500,7 @@ namespace Game
 			{
 				return;
 			}
-			int num = BlocksManager.DamageItem(ActiveBlockValue, damageCount);
+			int num = BlocksManager.DamageItem(ActiveBlockValue, damageCount, Entity);
 			if (num != 0)
 			{
 				int slotCount = Inventory.GetSlotCount(Inventory.ActiveSlotIndex);

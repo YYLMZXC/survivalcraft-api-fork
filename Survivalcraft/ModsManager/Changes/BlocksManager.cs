@@ -580,7 +580,7 @@ namespace Game
             }
         }
 
-        public static int DamageItem(int value, int damageCount)
+        public static int DamageItem(int value, int damageCount, Entity owner = null)
         {
             int num = Terrain.ExtractContents(value);
             Block block = Blocks[num];
@@ -588,7 +588,7 @@ namespace Game
             bool skipVanilla = false;
             ModsManager.HookAction("DamageItem", modLoader =>
             {
-                result = modLoader.DamageItem(block, value, damageCount, out skipVanilla);
+                result = modLoader.DamageItem(block, value, damageCount, owner, out skipVanilla);
                 return false;
             });
             if (skipVanilla) return result;

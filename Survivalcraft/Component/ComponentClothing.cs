@@ -239,7 +239,7 @@ namespace Game
 						{
 							float x2 = (num3 / clothingData.Sturdiness * num2) + 0.001f;
 							int damageCount = (int)(MathF.Floor(x2) + (m_random.Bool(MathUtils.Remainder(x2, 1f)) ? 1 : 0));
-							list[i] = BlocksManager.DamageItem(value, damageCount);
+							list[i] = BlocksManager.DamageItem(value, damageCount, Entity);
 						}
 						if (!string.IsNullOrEmpty(clothingData.ImpactSoundsFolder))
 						{
@@ -399,7 +399,7 @@ namespace Game
 							double num3 = Math.Floor(m_lastTotalElapsedGameTime.Value / num2);
 							if (Math.Floor(m_subsystemGameInfo.TotalElapsedGameTime / num2) > num3 && m_random.Float(0f, 1f) < 0.75f)
 							{
-								m_clothesList[i] = BlocksManager.DamageItem(value2, 1);
+								m_clothesList[i] = BlocksManager.DamageItem(value2, 1, Entity);
 								flag2 = true;
 							}
 						}
