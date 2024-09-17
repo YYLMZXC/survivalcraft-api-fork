@@ -48,49 +48,49 @@ namespace Game
 
 		public Entity m_entity;
 
-		public bool HideBlockIcon
+		public virtual bool HideBlockIcon
 		{
 			get;
 			set;
 		}
 
-		public bool HideEditOverlay
+        public virtual bool HideEditOverlay
 		{
 			get;
 			set;
 		}
 
-		public bool HideInteractiveOverlay
+		public virtual bool HideInteractiveOverlay
 		{
 			get;
 			set;
 		}
 
-		public bool HideFoodOverlay
+		public virtual bool HideFoodOverlay
 		{
 			get;
 			set;
 		}
 
-		public bool HideHighlightRectangle
+		public virtual bool HideHighlightRectangle
 		{
 			get;
 			set;
 		}
 
-		public bool HideHealthBar
+		public virtual bool HideHealthBar
 		{
 			get;
 			set;
 		}
 
-		public bool ProcessingOnly
+		public virtual bool ProcessingOnly
 		{
 			get;
 			set;
 		}
 
-		public Color CenterColor
+		public virtual Color CenterColor
 		{
 			get
 			{
@@ -102,7 +102,7 @@ namespace Game
 			}
 		}
 
-		public Color BevelColor
+		public virtual Color BevelColor
 		{
 			get
 			{
@@ -114,7 +114,7 @@ namespace Game
 			}
 		}
 
-		public Matrix? CustomViewMatrix
+		public virtual Matrix? CustomViewMatrix
 		{
 			get
 			{
@@ -126,7 +126,7 @@ namespace Game
 			}
 		}
 
-		public GameWidget GameWidget
+		public virtual GameWidget GameWidget
 		{
 			get
 			{
@@ -146,7 +146,7 @@ namespace Game
 			}
 		}
 
-		public DragHostWidget DragHostWidget
+		public virtual DragHostWidget DragHostWidget
 		{
 			get
 			{
@@ -269,7 +269,7 @@ namespace Game
 			children.Add(array);
 		}
 
-		public void AssignInventorySlot(IInventory inventory, int slotIndex)
+		public virtual void AssignInventorySlot(IInventory inventory, int slotIndex)
 		{
 			m_inventory = inventory;
 			m_slotIndex = slotIndex;
@@ -505,7 +505,7 @@ namespace Game
 			m_inventoryDragData = data as InventoryDragData;
 		}
 
-		public void DragDrop(Widget dragWidget, object data)
+		public virtual void DragDrop(Widget dragWidget, object data)
 		{
 			var inventoryDragData = data as InventoryDragData;
 			if (m_inventory != null && inventoryDragData != null)
@@ -514,7 +514,7 @@ namespace Game
 			}
 		}
 
-		public ComponentPlayer GetViewPlayer()
+		public virtual ComponentPlayer GetViewPlayer()
 		{
 			if (GameWidget == null)
 			{
@@ -523,7 +523,7 @@ namespace Game
 			return GameWidget.PlayerData.ComponentPlayer;
 		}
 
-		public bool IsSplitMode()
+		public virtual bool IsSplitMode()
 		{
 			ComponentPlayer viewPlayer = GetViewPlayer();
 			if (viewPlayer != null)
@@ -537,7 +537,7 @@ namespace Game
 			return false;
 		}
 
-		public bool HandleMoveItem(IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex, int count)
+		public virtual bool HandleMoveItem(IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex, int count)
 		{
 			int slotValue = sourceInventory.GetSlotValue(sourceSlotIndex);
 			int slotValue2 = targetInventory.GetSlotValue(targetSlotIndex);
@@ -556,7 +556,7 @@ namespace Game
 			return false;
 		}
 
-		public bool HandleDragDrop(IInventory sourceInventory, int sourceSlotIndex, DragMode dragMode, IInventory targetInventory, int targetSlotIndex)
+		public virtual bool HandleDragDrop(IInventory sourceInventory, int sourceSlotIndex, DragMode dragMode, IInventory targetInventory, int targetSlotIndex)
 		{
 			int slotValue = sourceInventory.GetSlotValue(sourceSlotIndex);
 			int slotValue2 = targetInventory.GetSlotValue(targetSlotIndex);
