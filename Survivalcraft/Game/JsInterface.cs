@@ -16,32 +16,8 @@ namespace Game
 		public static JsEngine engine;
 		public static SurvivalCraftModLoader loader;
 		public static Dictionary<string, List<Function>> handlersDictionary;
-		private static Project Project
-		{
-			get
-			{
-				return GameManager.Project;
-			}
-		}
-		public static Project getProject()
-		{
-			return Project;
-		}
-		public static Subsystem findSubsystem(string name)
-		{
-			if (Project == null)
-			{
-				return null;
-			}
-			Type t = Type.GetType("Game.Subsystem" + name + ",Survivalcraft");
-			if (t == null)
-			{
-				return null;
-			}
-			return Project.FindSubsystem(t, null, false);
-		}
 
-		public static bool JS检查()
+		public static bool CheckInitJsExists()
 		{
 			if (ModsManager.IsAndroid)
 			{
@@ -60,33 +36,22 @@ namespace Game
 		}
 		public static void Initiate()
 		{
-			engine = new JsEngine(delegate (Jint.Options cfg)
+			engine = new JsEngine(delegate (Options cfg)
 			{
 				cfg.AllowClr();
-				cfg.AllowClr(new Assembly[]
-				{
-					IntrospectionExtensions.GetTypeInfo(typeof(Program)).Assembly
-				});
-				cfg.AllowClr(new Assembly[]
-				{
-					IntrospectionExtensions.GetTypeInfo(typeof(Matrix)).Assembly
-				});
-				cfg.AllowClr(new Assembly[]
-				{
-					IntrospectionExtensions.GetTypeInfo(typeof(Program)).Assembly
-				});
-				cfg.AllowClr(new Assembly[]
-				{
-					IntrospectionExtensions.GetTypeInfo(typeof(Project)).Assembly
-				});
-				cfg.AllowClr(new Assembly[]
-				{
-					IntrospectionExtensions.GetTypeInfo(typeof(JsInterface)).Assembly
-				});
-				cfg.DebugMode(true);
+				cfg.AllowClr(
+					typeof(Program).GetTypeInfo().Assembly//Game Namespace
+				);
+				cfg.AllowClr(
+					typeof(Matrix).GetTypeInfo().Assembly//Engine Namespace
+				);
+				cfg.AllowClr(
+					typeof(Project).GetTypeInfo().Assembly//GameEntitySystem Namespace
+				);
+				cfg.DebugMode();
 			});
 			string codeString = null;
-			if (JS检查())
+			if (CheckInitJsExists())
 			{
 				
 				try
@@ -115,22 +80,36 @@ namespace Game
 		}
 		public static void RegisterEvent()
 		{
-			Function keyDown = engine.GetValue("keyDown").AsFunctionInstance();
-			Keyboard.KeyDown += delegate (Key key)
+			List<Function> keyDownHandlers = GetHandlers("keyDownHandlers");
+			if (keyDownHandlers != null && keyDownHandlers.Count > 0)
 			{
-				Invoke(keyDown, key.ToString());
-			};
-			Function keyUp = engine.GetValue("keyUp").AsFunctionInstance();
-			Keyboard.KeyUp += delegate (Key key)
+				Keyboard.KeyDown += delegate (Key key)
+				{
+					string keyString = key.ToString();
+					keyDownHandlers.ForEach(function =>
+					{
+						Invoke(function, keyString);
+					});
+				};
+			}
+			List<Function> keyUpHandlers = GetHandlers("keyUpHandlers");
+			if (keyUpHandlers != null && keyUpHandlers.Count > 0)
 			{
-				Invoke(keyUp, key.ToString());
-			};
-			List<Function> array = GetHandlers("frameHandlers");
-			if (array != null && array.Count > 0)
+				Keyboard.KeyUp += delegate (Key key)
+				{
+					string keyString = key.ToString();
+					keyUpHandlers.ForEach(function =>
+					{
+						Invoke(function, keyString);
+					});
+				};
+			}
+			List<Function> frameHandlers = GetHandlers("frameHandlers");
+			if (frameHandlers != null && frameHandlers.Count > 0)
 			{
 				Window.Frame += delegate ()
 				{
-					array.ForEach(function =>
+					frameHandlers.ForEach(function =>
 					{
 						Invoke(function);
 					});

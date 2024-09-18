@@ -3,16 +3,32 @@
 //导入命名空间
 var Game = importNamespace("Game");
 var Engine = importNamespace("Engine");
-var GameEnitySystem = importNamespace("GameEnitySystem");
+var GameEntitySystem = importNamespace("GameEntitySystem");
 
-//JsInterface的接口
-var findSubsystem = Game.JsInterface.findSubsystem;//根据名字寻找特定Subsystem，名字不带Subsystem
-var Project = Game.JsInterface.getProject();
+//预定义方法
+function getProject() {
+    return Game.GameManager.Project;
+}
+function findSubsystem(name) {//根据名字寻找特定Subsystem，名字不带Subsystem
+    let type = Game["Subsystem" + name];
+    let project = getProject();
+    if (!type || !project) {
+        return null;
+    }
+    return project.FindSubsystem(type, null, false);
+}
 
-//以下是会被调用的接口，均可覆写
-function keyDown(key) {}//键盘按键按下时执行，传入的参数是字符串
-function keyUp(key) {}//键盘按键弹起时执行，传入的参数是字符串
+//键盘事件
+var keyDownHandlers = new Array();//每次键盘按键被按下时执行
+/*keyDownHandlers.push((key)=>{//参数是字符串
+    Engine.Log.Information("Key Down :" + key);
+});*/
+var keyUpHandlers = new Array();//每次键盘按键弹起时执行
+/*keyUpHandlers.push((key)=>{//参数是字符串
+    Engine.Log.Information("Key Up: " + key);
+});*/
 
+//以下是ModLoader
 var frameHandlers = new Array();//窗口每次刷新都会执行
 /*frameHandlers.push(()=>{//无参数，无返回值
     let a = findSubsystem("Players");
