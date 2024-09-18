@@ -29,6 +29,7 @@ namespace Game
 				UpdateCraftingResult(m_recipeRefindNeeded);
 			}
 			m_recipeUpdateNeeded = false;
+			m_recipeRefindNeeded = false;
 		}
 
 		public override int GetSlotCapacity(int slotIndex, int value)
