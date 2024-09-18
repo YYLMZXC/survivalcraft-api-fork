@@ -678,6 +678,7 @@ public static class ModsManager
 	//修饰就是用的internal，不提供其他模组的调用权限
 	internal static void InitModifiedElement()
     {
+		if (ModList.Count <= 3) return; 
         ModifiedElement["7347a83f-2d46-4fdf-bce2-52677de0b568"] = "Game.ComponentBody";
         ModifiedElement["4e14ce27-fdef-46ca-8ea0-26af43c215e5"] = "Game.ComponentHealth";
 		ModifiedElement["7ecfafc4-4603-424c-87dd-1df59e7ef413"] = "Game.ComponentPlayer";
@@ -712,22 +713,26 @@ public static class ModsManager
 							{
 								collisionsToHandle++;
 								AllowContinue = false;
-                                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, 
-									"Database value \"" + attribute1.Value + "\" is modified from \"" + ModifiedElement[attribute1.Value] + "\" to \"" + attribute.Value +  "\", other mods may not run correctly."
-									, LanguageControl.Ok, LanguageControl.Disable, (vt) =>
+								string warningString = "Database value \"" + attribute1.Value + "\" will be modified from \"" + ModifiedElement[attribute1.Value] + "\" to \"" + attribute.Value + "\".";
+								string warningString2 = "\n" + "Other Mods May Not Run Correctly.";
+                                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, warningString + warningString2, LanguageControl.Ok, LanguageControl.Disable, (vt) =>
 								{
-									if (vt == MessageDialogButton.Button1)
+                                    if (vt == MessageDialogButton.Button1 || vt == MessageDialogButton.Button2)
 									{
-										collisionsToHandle--;
-										if(collisionsToHandle == 0) AllowContinue = true; 
-										xElement.SetAttributeValue(px[0], attribute.Value);
-                                        ModifiedElement[attribute1.Value] = attribute.Value;
-                                    }
-									if (vt == MessageDialogButton.Button2)
-                                    {
                                         collisionsToHandle--;
                                         if (collisionsToHandle == 0) AllowContinue = true;
+										Log.Warning(warningString);
                                     }
+                                    if (vt == MessageDialogButton.Button1)
+									{
+										xElement.SetAttributeValue(px[0], attribute.Value);
+                                        ModifiedElement[attribute1.Value] = attribute.Value;
+										Log.Warning("Change enabled");
+                                    }
+									else
+									{
+										Log.Warning("change Disabled");
+									}
 								}));
                             }
 							else
