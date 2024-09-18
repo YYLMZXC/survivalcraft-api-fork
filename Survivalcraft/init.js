@@ -15,7 +15,7 @@ function findSubsystem(name) {//根据名字寻找特定Subsystem，名字不带
     if (!type || !project) {
         return null;
     }
-    return project.FindSubsystem(type, null, false);
+    return System.Convert.ChangeType(project.FindSubsystem(type, null, false), type);
 }
 
 //键盘事件

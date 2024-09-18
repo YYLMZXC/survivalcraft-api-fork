@@ -1,5 +1,4 @@
-using Engine;
-using System;
+using System.Diagnostics;
 using System.Xml.Linq;
 
 namespace Game
@@ -7,29 +6,31 @@ namespace Game
 	public class RunJsDialog : Dialog
 	{
 
-		public TextBoxWidget m_InputBox;
-		public LabelWidget m_OutputBox;
+		public readonly TextBoxWidget m_inputBox;
+		public readonly LabelWidget m_outputBox;
 
-		public LabelWidget m_timeCostedLabel;
+		public readonly LabelWidget m_timeCostedLabel;
 
-		public ButtonWidget m_runButtonWidget;
-		public ButtonWidget m_closeButtonWidget;
+		public readonly ButtonWidget m_runButton;
+		public readonly ButtonWidget m_closeButton;
+		public readonly ButtonWidget m_serverButton;
 
 		public RunJsDialog()
 		{
 			XElement node = ContentManager.Get<XElement>("Dialogs/RunJsDialog");
 			LoadContents(this, node);
-			m_InputBox = Children.Find<TextBoxWidget>("RunJsDialog.Input");
-			m_OutputBox = Children.Find<LabelWidget>("RunJsDialog.Output");
+			m_inputBox = Children.Find<TextBoxWidget>("RunJsDialog.Input");
+			m_outputBox = Children.Find<LabelWidget>("RunJsDialog.Output");
 			m_timeCostedLabel = Children.Find<LabelWidget>("RunJsDialog.TimeCosted");
-			m_runButtonWidget = Children.Find<ButtonWidget>("RunJsDialog.RunButton");
-			m_closeButtonWidget = Children.Find<ButtonWidget>("RunJsDialog.CloseButton");
-			m_InputBox.HasFocus = true;
-			m_InputBox.Enter += delegate
+			m_runButton = Children.Find<ButtonWidget>("RunJsDialog.RunButton");
+			m_closeButton = Children.Find<ButtonWidget>("RunJsDialog.CloseButton");
+			m_serverButton = Children.Find<ButtonWidget>("RunJsDialog.ServerButton");
+			m_inputBox.HasFocus = true;
+			m_inputBox.Enter += delegate
 			{
 				Dismiss(true);
 			};
-			m_InputBox.Escape += delegate
+			m_inputBox.Escape += delegate
 			{
 				Dismiss(false);
 			};
@@ -45,13 +46,16 @@ namespace Game
 			{
 				Dismiss(true);
 			}
-			else if (m_runButtonWidget.IsClicked)
+			else if (m_runButton.IsClicked)
 			{
 				Dismiss(true);
 			}
-			else if (m_closeButtonWidget.IsClicked)
+			else if (m_closeButton.IsClicked)
 			{
 				Dismiss(false);
+			}
+			else if (m_serverButton.IsClicked) {
+				DialogsManager.ShowDialog(ParentWidget, new RemoteControlDialog());
 			}
 		}
 
@@ -59,10 +63,11 @@ namespace Game
 		{
 			if (flag)
 			{
-				DateTime now = DateTime.Now;
-				string result = JsInterface.Evaluate(m_InputBox.Text);
-				TimeSpan timeCosted = DateTime.Now - now;
-				m_OutputBox.Text = result;
+				Stopwatch stopwatch = Stopwatch.StartNew();
+				string result = JsInterface.Evaluate(m_inputBox.Text);
+				stopwatch.Stop();
+				TimeSpan timeCosted = stopwatch.Elapsed;
+				m_outputBox.Text = result;
 				m_timeCostedLabel.Text = $"{Math.Floor(timeCosted.TotalSeconds)}s {timeCosted.Milliseconds}ms";
 			}
 			else

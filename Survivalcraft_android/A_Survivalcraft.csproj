@@ -1270,6 +1270,9 @@
     <Compile Include="..\Survivalcraft\Dialog\RunJsDialog.cs">
       <Link>Dialog\RunJsDialog.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Dialog\RemoteControlDialog.cs">
+      <Link>Dialog\RemoteControlDialog.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Dialog\SelectExternalContentProviderDialog.cs">
       <Link>Dialog\SelectExternalContentProviderDialog.cs</Link>
     </Compile>

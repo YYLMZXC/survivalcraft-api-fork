@@ -235,7 +235,7 @@ namespace Game
                 {
                     try
                     {
-                        while (BlocksAllocateData[allocateDataIndex].Allocated && allocateDataIndex < BlocksAllocateData.Count) allocateDataIndex++;
+                        while (allocateDataIndex < BlocksAllocateData.Count && BlocksAllocateData[allocateDataIndex].Allocated) allocateDataIndex++;
                         if (allocateDataIndex == BlocksAllocateData.Count) break;
                         AllocateBlock(BlocksAllocateData[allocateDataIndex], num);
                         if (subsystemBlocksManager != null)

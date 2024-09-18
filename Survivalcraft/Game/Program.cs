@@ -105,7 +105,6 @@ namespace Game
 				ExceptionManager.ReportExceptionToUser("Unhandled exception.", e.Exception);
 				e.IsHandled = true;
 			};
-			JsInterface.Initiate();
 			Window.Run(0, 0, WindowMode.Resizable,
 				 Title+ ModsManager.ApiVersionString);
 		}
@@ -143,6 +142,7 @@ namespace Game
 			try
 			{
 				SettingsManager.Initialize();
+				JsInterface.Initiate();
 				VersionsManager.Initialize();
 				ExternalContentManager.Initialize();
 				MusicManager.Initialize();
@@ -187,6 +187,7 @@ namespace Game
 					MusicManager.Update();
 					ScreensManager.Update();
 					DialogsManager.Update();
+					JsInterface.Update();
 				}
 				else
 				{

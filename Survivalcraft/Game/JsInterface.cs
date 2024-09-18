@@ -1,4 +1,6 @@
-﻿using Acornima.Ast;
+﻿using System.Diagnostics;
+using System.Net;
+using Acornima.Ast;
 using Engine;
 using Engine.Input;
 using GameEntitySystem;
@@ -16,6 +18,15 @@ namespace Game
 		public static JsEngine engine;
 		public static SurvivalCraftModLoader loader;
 		public static Dictionary<string, List<Function>> handlersDictionary;
+
+		public static HttpListener httpListener;
+		public static int httpPort;
+		public static string httpPassword;
+		public static object httpLock = new object();
+		public static bool httpLocked;
+		public static bool httpScriptPrepared;
+		public static Prepared<Script> httpScript;
+		public static string httpResponse;
 
 		public static bool CheckInitJsExists()
 		{
@@ -72,6 +83,24 @@ namespace Game
 					Log.Warning("Init.js未加载");
 				}
 				Execute(codeString);
+				httpListener = new HttpListener();
+				if (ModsManager.Configs.TryGetValue("RemoteControlPort", out string portString) && int.TryParse(portString, out int port)) {
+					SetHttpPort(port);
+				}
+				else {
+					SetHttpPort((DateTime.Now.Millisecond * 32749 + 8191) % 9000 + 999, true);
+				}
+				if (ModsManager.Configs.TryGetValue("RemoteControlPassword", out string password)) {
+					httpPassword = password;
+				}
+				else {
+					httpPassword = ((DateTime.Now.Millisecond * 49999 + 3067) % 9000 + 999).ToString();
+					ModsManager.SetConfig("RemoteControlPassword", httpPassword);
+				}
+				if (ModsManager.Configs.TryGetValue("RemoteControlEnabled", out string enable)
+					&& bool.Parse(enable)) {
+					Task.Run(StartHttpListener);
+				}
 			}
 			else
 			{
@@ -107,8 +136,7 @@ namespace Game
 			List<Function> frameHandlers = GetHandlers("frameHandlers");
 			if (frameHandlers != null && frameHandlers.Count > 0)
 			{
-				Window.Frame += delegate ()
-				{
+				Window.Frame += delegate {
 					frameHandlers.ForEach(function =>
 					{
 						Invoke(function);
@@ -116,7 +144,6 @@ namespace Game
 				};
 			}
 			handlersDictionary = [];
-			List<ModLoader> mods = ModsManager.ModLoaders;
 			loader = (SurvivalCraftModLoader)ModsManager.ModLoaders.Find((item) => item is SurvivalCraftModLoader);
 			GetAndRegisterHandlers("OnMinerDig");
 			GetAndRegisterHandlers("OnMinerPlace");
@@ -138,7 +165,7 @@ namespace Game
 				Log.Error(ex);
 			}
 		}
-		public static void Execute(in Prepared<Script> script)
+		public static void Execute(Prepared<Script> script)
 		{
 			try
 			{
@@ -154,6 +181,19 @@ namespace Game
 			try
 			{
 				return engine.Evaluate(str).ToString();
+			}
+			catch (Exception ex)
+			{
+				string errors = ex.ToString();
+				Log.Error(errors);
+				return errors;
+			}
+		}
+		public static string Evaluate(Prepared<Script> script)
+		{
+			try
+			{
+				return engine.Evaluate(script).ToString();
 			}
 			catch (Exception ex)
 			{
@@ -222,7 +262,93 @@ namespace Game
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex);
+				Log.Error(ex);
+			}
+		}
+
+		public static void SetHttpPort(int port, bool updateConfig = false) {
+			httpPort = port;
+			httpListener.Prefixes.Clear();
+			httpListener.Prefixes.Add($"http://{IPAddress.Loopback}:{port}/");
+			httpListener.Prefixes.Add($"http://localhost:{port}/");
+			if (updateConfig) {
+				ModsManager.SetConfig("RemoteControlPort", port.ToString());
+			}
+		}
+		public static async Task StartHttpListener() {
+			try {
+				httpListener.Start();
+			}
+			catch (Exception e) {
+				Log.Error("Remote control server starts failed: " + e);
+			}
+			while (httpListener.IsListening) {
+				var context = await httpListener.GetContextAsync();
+				Task.Run(() => HandleHttpRequest(context));
+			}
+		}
+		public static void StopHttpListener() {
+			//确实能关掉，但有报错，原因不明
+			httpListener.Stop();
+		}
+
+		public static void Update() {
+			if (httpLocked & httpScriptPrepared) {
+				Stopwatch stopwatch = Stopwatch.StartNew();
+				string output = Evaluate(httpScript);
+				stopwatch.Stop();
+				TimeSpan timeCosted = stopwatch.Elapsed;
+				httpResponse = $"{{\"output\":\"{output}\",\"timeCosted\":\"{Math.Floor(timeCosted.TotalSeconds)}s {timeCosted.Milliseconds}ms\"}}";
+			}
+		}
+
+		public static async void HandleHttpRequest(HttpListenerContext context) {
+			try {
+				string responseString;
+				if (httpLocked) {
+					responseString = "There is already a script running.";
+				}
+				else if (context.Request.HttpMethod == "POST") {
+					if (httpPassword.Length == 0
+						|| (context.Request.Headers.Get("password")?.Equals(httpPassword) ?? false)) {
+						lock (httpLock) {
+							httpLocked = true;
+							httpScriptPrepared = false;
+							httpResponse = string.Empty;
+							using (Stream bodyStream = context.Request.InputStream) {
+								using (StreamReader reader = new(bodyStream, context.Request.ContentEncoding)) {
+									string requestBody = reader.ReadToEnd();
+									if (requestBody.Length > 0) {
+										httpScript = JsEngine.PrepareScript(requestBody);
+										httpScriptPrepared = true;
+										while(httpResponse.Length == 0){}
+										responseString = (string)httpResponse.Clone();
+									}
+									else {
+										responseString = "Empty request body";
+									}
+								}
+							}
+							httpLocked = false;
+						}
+					}
+					else {
+						responseString = "Invalid password";
+					}
+				}
+				else {
+					responseString = $"Survivalcraft Version {VersionsManager.Version}, API Version {ModsManager.ApiVersionString}";
+				}
+				HttpListenerResponse response = context.Response;
+				byte[] buffer = Encoding.UTF8.GetBytes(responseString);
+				response.ContentLength64 = buffer.Length;
+				Stream output = response.OutputStream;
+				await output.WriteAsync(buffer);
+				output.Close();
+			}
+			catch (Exception e) {
+				context.Response.Close();
+				Log.Error(e);
 			}
 		}
 	}
