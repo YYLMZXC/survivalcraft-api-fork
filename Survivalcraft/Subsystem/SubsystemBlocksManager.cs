@@ -29,6 +29,7 @@ namespace Game
             m_savedValuesDictionary = valuesDictionary;
             InitializeBlocks(this);
             PostProcessBlocksLoad();
+            CraftingRecipesManager.Initialize();
         }
 
         public virtual void CallAllocate()
