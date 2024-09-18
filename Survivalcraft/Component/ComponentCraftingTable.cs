@@ -5,17 +5,31 @@ using TemplatesDatabase;
 
 namespace Game
 {
-	public class ComponentCraftingTable : ComponentInventoryBase
+	public class ComponentCraftingTable : ComponentInventoryBase, IUpdateable
 	{
 		public int m_craftingGridSize;
 
 		public string[] m_matchedIngredients = new string[9];
 
 		public CraftingRecipe m_matchedRecipe;
-
 		public int RemainsSlotIndex => SlotsCount - 1;
 
+		public UpdateOrder UpdateOrder => UpdateOrder.Default;
+
+		public bool m_recipeUpdateNeeded = false;
+
+		public bool m_recipeRefindNeeded = false;
 		public int ResultSlotIndex => SlotsCount - 2;
+
+
+		public virtual void Update(float dt)
+		{
+			if (m_recipeUpdateNeeded)
+			{
+				UpdateCraftingResult(m_recipeRefindNeeded);
+			}
+			m_recipeUpdateNeeded = false;
+		}
 
 		public override int GetSlotCapacity(int slotIndex, int value)
 		{
@@ -28,13 +42,20 @@ namespace Game
 
 		public override void AddSlotItems(int slotIndex, int value, int count)
 		{
+			int oldCount = GetSlotCount(slotIndex);
 			base.AddSlotItems(slotIndex, value, count);
-			UpdateCraftingResult();
+			if (oldCount == 0) m_recipeRefindNeeded = true;
+			m_recipeUpdateNeeded = true;
 		}
 
 		public override int RemoveSlotItems(int slotIndex, int count)
 		{
 			int num = 0;
+			int[] originalCount = new int[SlotsCount - 2];
+			for(int i = 0; i < originalCount.Length; i++)
+			{
+				originalCount[i] = GetSlotCount(i);
+			}
 			if (slotIndex == ResultSlotIndex)
 			{
 				if (m_matchedRecipe != null)
@@ -80,7 +101,12 @@ namespace Game
 			{
 				num = base.RemoveSlotItems(slotIndex, count);
 			}
-			UpdateCraftingResult();
+			m_recipeUpdateNeeded = true;
+			for(int i = 0; i < originalCount.Length; i++)
+			{
+				if (originalCount[i] > 0 && GetSlotCount(i) == 0)
+					m_recipeRefindNeeded = true;
+			}
 			return num;
 		}
 
@@ -88,10 +114,10 @@ namespace Game
 		{
 			base.Load(valuesDictionary, idToEntityMap);
 			m_craftingGridSize = (int)MathF.Sqrt(SlotsCount - 2);
-			UpdateCraftingResult();
+			UpdateCraftingResult(true);
 		}
 
-		public virtual void UpdateCraftingResult()
+		public virtual void UpdateCraftingResult(bool recipeRefindNeeded)
 		{
 			int num = int.MaxValue;
 			for (int i = 0; i < m_craftingGridSize; i++)
@@ -118,7 +144,10 @@ namespace Game
 			}
 			ComponentPlayer componentPlayer = FindInteractingPlayer();
 			float playerLevel = componentPlayer?.PlayerData.Level ?? 1f;
-			CraftingRecipe craftingRecipe = CraftingRecipesManager.FindMatchingRecipe(Project.FindSubsystem<SubsystemTerrain>(throwOnError: true), m_matchedIngredients, 0f, playerLevel);
+				CraftingRecipe craftingRecipe;
+			if (recipeRefindNeeded)
+				craftingRecipe = CraftingRecipesManager.FindMatchingRecipe(Project.FindSubsystem<SubsystemTerrain>(throwOnError: true), m_matchedIngredients, 0f, playerLevel);
+			else craftingRecipe = m_matchedRecipe;
 			if (craftingRecipe != null && craftingRecipe.ResultValue != 0)
 			{
 				m_matchedRecipe = craftingRecipe;
