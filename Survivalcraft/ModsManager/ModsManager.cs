@@ -18,6 +18,7 @@ public static class ModsManager
 	public static string ModSuffix = ".scmod";
 	public static string ApiVersionString = "1.72A";
 	public static string GameVersion = "2.3.10.4";
+	public static string fName = "ModsManager";
 	//1为api1.33 2为api1.40
 	
 	
@@ -670,6 +671,27 @@ public static class ModsManager
 		}
 	}
 
+	public static Dictionary<string, string> ModifiedElement = new Dictionary<string, string>();
+
+	private static int collisionsToHandle = 0;
+	//对于关键（绑定了API1.7新的ModLoader接口的）组件，对修改行为进行检查报错
+	//修饰就是用的internal，不提供其他模组的调用权限
+	internal static void InitModifiedElement()
+    {
+        ModifiedElement["7347a83f-2d46-4fdf-bce2-52677de0b568"] = "Game.ComponentBody";
+        ModifiedElement["4e14ce27-fdef-46ca-8ea0-26af43c215e5"] = "Game.ComponentHealth";
+		ModifiedElement["7ecfafc4-4603-424c-87dd-1df59e7ef413"] = "Game.ComponentPlayer";
+        ModifiedElement["9dc356e5-7dc8-45f6-8779-827ddee9966c"] = "Game.ComponentMiner";
+        ModifiedElement["6f538db3-f1fe-4e91-8ef5-627c0b1a74ba"] = "Game.ComponentRunAwayBehavior";
+        ModifiedElement["1c95cd40-26be-44cf-938a-157b318ff086"] = "Game.SubsystemPlantBlockBehavior";
+        ModifiedElement["937999c9-9570-4cbd-8390-23f1e4609cdd"] = "Game.SubsystemPistonBlockBehavior";
+        ModifiedElement["96e79f99-a082-4190-9ab6-835dc49ebbdd"] = "Game.SubsystemExplosions";
+        ModifiedElement["dafb8e14-11b9-44b7-a208-424b770aeaa9"] = "Game.SubsystemProjectiles";
+        ModifiedElement["32d392de-69c1-4d04-9e0b-5c7463201892"] = "Game.SubsystemPickables";
+        ModifiedElement["54a4f6d5-98dd-4dc3-bf6d-04dfd972c6b7"] = "Game.SubsystemTime";
+
+    }
+
 	public static void CombineDataBase(XElement DataBaseXml, Stream Xdb)
 	{
 		XElement MergeXml = XmlUtils.LoadXmlFromStream(Xdb, Encoding.UTF8, true);
@@ -686,7 +708,33 @@ public static class ModsManager
 						string[] px = attribute.Name.ToString().Split(new string[] { "new-" }, StringSplitOptions.RemoveEmptyEntries);
 						if (px.Length == 1)
 						{
-							xElement.SetAttributeValue(px[0], attribute.Value);
+							if (ModifiedElement.ContainsKey(attribute1.Value) && ModifiedElement[attribute1.Value] != attribute.Value)
+							{
+								collisionsToHandle++;
+								AllowContinue = false;
+                                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Warning, 
+									"Database value \"" + attribute1.Value + "\" is modified from \"" + ModifiedElement[attribute1.Value] + "\" to \"" + attribute.Value +  "\", other mods may not run correctly."
+									, LanguageControl.Ok, LanguageControl.Disable, (vt) =>
+								{
+									if (vt == MessageDialogButton.Button1)
+									{
+										collisionsToHandle--;
+										if(collisionsToHandle == 0) AllowContinue = true; 
+										xElement.SetAttributeValue(px[0], attribute.Value);
+                                        ModifiedElement[attribute1.Value] = attribute.Value;
+                                    }
+									if (vt == MessageDialogButton.Button2)
+                                    {
+                                        collisionsToHandle--;
+                                        if (collisionsToHandle == 0) AllowContinue = true;
+                                    }
+								}));
+                            }
+							else
+							{
+                                xElement.SetAttributeValue(px[0], attribute.Value);
+                                ModifiedElement[attribute1.Value] = attribute.Value;
+                            }
 						}
 					}
 				}

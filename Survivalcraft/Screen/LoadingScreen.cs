@@ -255,8 +255,9 @@ namespace Game
 			AddLoadAction(delegate
 			{ //初始化Database
 				try
-				{
-					DatabaseManager.Initialize();
+                {
+                    ModsManager.InitModifiedElement();
+                    DatabaseManager.Initialize();
 					ModsManager.ModListAllDo((modEntity) => { modEntity.LoadXdb(ref DatabaseManager.DatabaseNode); });
 				}
 				catch (Exception e)
