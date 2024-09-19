@@ -30,7 +30,7 @@ namespace Game
 				//return string.Empty;
 				//return System.Windows.Forms.Clipboard.GetText();
 				//return Clipboard.GetText();
-				return TextCopy.ClipboardService.GetText();
+				return TextCopy.ClipboardService.GetText()??"";
 			}
 			set
 			{
@@ -39,7 +39,7 @@ namespace Game
 				//dataPackage.SetText(value);
 				//Clipboard.SetContent(dataPackage);
 				//Clipboard.SetText(value);
-				TextCopy.ClipboardService.SetText(value);
+				TextCopy.ClipboardService.SetText(value??"");
 			}
 		}
 #endif
