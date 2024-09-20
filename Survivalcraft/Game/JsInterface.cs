@@ -9,6 +9,7 @@ using Jint.Native;
 using Jint.Native.Function;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using JsEngine = Jint.Engine;
 
 namespace Game
@@ -26,7 +27,7 @@ namespace Game
 		public static bool httpLocked;
 		public static bool httpScriptPrepared;
 		public static Prepared<Script> httpScript;
-		public static string httpResponse;
+		public static HttpResponse httpResponse = null;
 
 		public static bool CheckInitJsExists()
 		{
@@ -289,16 +290,22 @@ namespace Game
 		}
 		public static void StopHttpListener() {
 			//确实能关掉，但有报错，原因不明
-			httpListener.Stop();
+			try {
+				httpListener.Stop();
+			}
+			catch(Exception _){}
 		}
 
 		public static void Update() {
 			if (httpLocked & httpScriptPrepared) {
 				Stopwatch stopwatch = Stopwatch.StartNew();
-				string output = Evaluate(httpScript);
+				string result = Evaluate(httpScript);
 				stopwatch.Stop();
-				TimeSpan timeCosted = stopwatch.Elapsed;
-				httpResponse = $"{{\"output\":\"{output}\",\"timeCosted\":\"{Math.Floor(timeCosted.TotalSeconds)}s {timeCosted.Milliseconds}ms\"}}";
+				httpResponse = new HttpResponse() {
+					success = !result.StartsWith("Jint.Runtime.JavaScriptException"),
+					result = result,
+					timeCosted = stopwatch.Elapsed
+				};
 			}
 		}
 
@@ -306,7 +313,7 @@ namespace Game
 			try {
 				string responseString;
 				if (httpLocked) {
-					responseString = "There is already a script running.";
+					responseString = ErrorJsonResponse(LanguageControl.Get("JsInterface", "1"));
 				}
 				else if (context.Request.HttpMethod == "POST") {
 					if (httpPassword.Length == 0
@@ -314,18 +321,18 @@ namespace Game
 						lock (httpLock) {
 							httpLocked = true;
 							httpScriptPrepared = false;
-							httpResponse = string.Empty;
+							httpResponse = null;
 							using (Stream bodyStream = context.Request.InputStream) {
 								using (StreamReader reader = new(bodyStream, context.Request.ContentEncoding)) {
 									string requestBody = reader.ReadToEnd();
 									if (requestBody.Length > 0) {
 										httpScript = JsEngine.PrepareScript(requestBody);
 										httpScriptPrepared = true;
-										while(httpResponse.Length == 0){}
-										responseString = (string)httpResponse.Clone();
+										while(httpResponse == null){}
+										responseString = JsonSerializer.Serialize(httpResponse);
 									}
 									else {
-										responseString = "Empty request body";
+										responseString = ErrorJsonResponse(LanguageControl.Get("JsInterface", "2"));
 									}
 								}
 							}
@@ -333,13 +340,14 @@ namespace Game
 						}
 					}
 					else {
-						responseString = "Invalid password";
+						responseString = ErrorJsonResponse(LanguageControl.Get("JsInterface", "3"));
 					}
 				}
 				else {
-					responseString = $"Survivalcraft Version {VersionsManager.Version}, API Version {ModsManager.ApiVersionString}";
+					responseString = ErrorJsonResponse(LanguageControl.Get("JsInterface", "4"));
 				}
 				HttpListenerResponse response = context.Response;
+				response.ContentType = "application/json";
 				byte[] buffer = Encoding.UTF8.GetBytes(responseString);
 				response.ContentLength64 = buffer.Length;
 				Stream output = response.OutputStream;
@@ -350,6 +358,19 @@ namespace Game
 				context.Response.Close();
 				Log.Error(e);
 			}
+		}
+
+		public static string ErrorJsonResponse(string error) {
+			return JsonSerializer.Serialize(new HttpResponse() {
+				success = false,
+				result = error,
+				timeCosted = TimeSpan.Zero
+			});
+		}
+		public class HttpResponse {
+			public bool success { get; set; }
+			public string result { get; set; }
+			public TimeSpan timeCosted { get; set; }
 		}
 	}
 }

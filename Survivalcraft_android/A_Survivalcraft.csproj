@@ -1207,8 +1207,8 @@
     <Compile Include="..\Survivalcraft\Dialog\EditColorDialog.cs">
       <Link>Dialog\EditColorDialog.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Dialog\EditMemeryBankDialogAPI.cs">
-      <Link>Dialog\EditMemeryBankDialogAPI.cs</Link>
+    <Compile Include="..\Survivalcraft\Dialog\EditMemoryBankDialogAPI.cs">
+      <Link>Dialog\EditMemoryBankDialogAPI.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Dialog\EditMemoryBankDialog.cs">
       <Link>Dialog\EditMemoryBankDialog.cs</Link>
