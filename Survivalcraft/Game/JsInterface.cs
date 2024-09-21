@@ -23,11 +23,10 @@ namespace Game
 		public static HttpListener httpListener;
 		public static int httpPort;
 		public static string httpPassword;
-		public static object httpLock = new object();
-		public static bool httpLocked;
+		public static bool httpProcessing;
 		public static bool httpScriptPrepared;
 		public static Prepared<Script> httpScript;
-		public static HttpResponse httpResponse = null;
+		public static TaskCompletionSource<HttpResponse> httpResponse = new TaskCompletionSource<HttpResponse>();
 
 		public static bool CheckInitJsExists()
 		{
@@ -297,31 +296,30 @@ namespace Game
 		}
 
 		public static void Update() {
-			if (httpLocked & httpScriptPrepared) {
+			if (httpProcessing & httpScriptPrepared) {
 				Stopwatch stopwatch = Stopwatch.StartNew();
 				string result = Evaluate(httpScript);
 				stopwatch.Stop();
-				httpResponse = new HttpResponse() {
+				httpResponse.SetResult(new HttpResponse() {
 					success = !result.StartsWith("Jint.Runtime.JavaScriptException"),
 					result = result,
 					timeCosted = stopwatch.Elapsed
-				};
+				});
 			}
 		}
 
 		public static async void HandleHttpRequest(HttpListenerContext context) {
 			try {
 				string responseString;
-				if (httpLocked) {
+				if (httpProcessing) {
 					responseString = ErrorJsonResponse(LanguageControl.Get("JsInterface", "1"));
 				}
 				else if (context.Request.HttpMethod == "POST") {
 					if (httpPassword.Length == 0
 						|| (context.Request.Headers.Get("password")?.Equals(httpPassword) ?? false)) {
-						lock (httpLock) {
-							httpLocked = true;
+							httpProcessing = true;
 							httpScriptPrepared = false;
-							httpResponse = null;
+							httpResponse = new TaskCompletionSource<HttpResponse>();
 							try {
 								using (Stream bodyStream = context.Request.InputStream) {
 									using (StreamReader reader = new(bodyStream, context.Request.ContentEncoding)) {
@@ -329,8 +327,7 @@ namespace Game
 										if (requestBody.Length > 0) {
 											httpScript = JsEngine.PrepareScript(requestBody);
 											httpScriptPrepared = true;
-											while (httpResponse == null) { }
-											responseString = JsonSerializer.Serialize(httpResponse);
+											responseString = JsonSerializer.Serialize(await httpResponse.Task);
 										}
 										else {
 											responseString = ErrorJsonResponse(LanguageControl.Get("JsInterface", "2"));
@@ -341,8 +338,8 @@ namespace Game
 							catch (Exception e) {
 								responseString = ErrorJsonResponse(e.ToString());
 							}
-							httpLocked = false;
-						}
+							httpProcessing = false;
+
 					}
 					else {
 						responseString = ErrorJsonResponse(LanguageControl.Get("JsInterface", "3"));
