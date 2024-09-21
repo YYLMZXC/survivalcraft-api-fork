@@ -322,19 +322,24 @@ namespace Game
 							httpLocked = true;
 							httpScriptPrepared = false;
 							httpResponse = null;
-							using (Stream bodyStream = context.Request.InputStream) {
-								using (StreamReader reader = new(bodyStream, context.Request.ContentEncoding)) {
-									string requestBody = reader.ReadToEnd();
-									if (requestBody.Length > 0) {
-										httpScript = JsEngine.PrepareScript(requestBody);
-										httpScriptPrepared = true;
-										while(httpResponse == null){}
-										responseString = JsonSerializer.Serialize(httpResponse);
-									}
-									else {
-										responseString = ErrorJsonResponse(LanguageControl.Get("JsInterface", "2"));
+							try {
+								using (Stream bodyStream = context.Request.InputStream) {
+									using (StreamReader reader = new(bodyStream, context.Request.ContentEncoding)) {
+										string requestBody = reader.ReadToEnd();
+										if (requestBody.Length > 0) {
+											httpScript = JsEngine.PrepareScript(requestBody);
+											httpScriptPrepared = true;
+											while (httpResponse == null) { }
+											responseString = JsonSerializer.Serialize(httpResponse);
+										}
+										else {
+											responseString = ErrorJsonResponse(LanguageControl.Get("JsInterface", "2"));
+										}
 									}
 								}
+							}
+							catch (Exception e) {
+								responseString = ErrorJsonResponse(e.ToString());
 							}
 							httpLocked = false;
 						}
