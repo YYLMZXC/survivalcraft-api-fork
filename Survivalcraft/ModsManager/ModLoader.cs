@@ -716,14 +716,21 @@ namespace Game
             return 0;
         }
 
-        public virtual void OnProjectileUpdate(Projectile projectile, SubsystemProjectiles subsystemProjectiles, float dt, out bool skipVanilla)
+        public virtual void OnProjectileUpdate(Projectile projectile, SubsystemProjectiles subsystemProjectiles, float dt, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
         }
 
-        public virtual void OnPickableUpdate(Pickable pickable, SubsystemPickables subsystemPickables, float dt, out bool skipVanilla)
+        public virtual void OnPickableUpdate(Pickable pickable, SubsystemPickables subsystemPickables, float dt, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
+        }
+        public virtual void OnProjectileDraw(Projectile projectile, SubsystemProjectiles subsystemProjectiles, Camera camera, int drawOrder, ref bool shouldDrawBlock, ref float drawBlockSize, ref Color drawBlockColor)
+        {
+        }
+
+        public virtual void OnPickableDraw(Pickable pickable, SubsystemPickables subsystemPickables, Camera camera, int drawOrder, ref bool shouldDrawBlock, ref float drawBlockSize, ref Color drawBlockColor)
+        {
         }
 
         /// <summary>

@@ -189,7 +189,16 @@ namespace Game
 					{
 						matrix = Matrix.CreateTranslation(projectile.Position);
 					}
-					block.DrawBlock(m_primitivesRenderer, projectile.Value, Color.White, 0.3f, ref matrix, m_drawBlockEnvironmentData);
+					bool shouldDrawBlock = true;
+					float drawBlockSize = 0.3f;
+					Color drawBlockColor = Color.White;
+                    ModsManager.HookAction("OnProjectileDraw", loader =>
+                    {
+                        loader.OnProjectileDraw(projectile, this, camera, drawOrder, ref shouldDrawBlock, ref drawBlockSize, ref drawBlockColor);
+                        return false;
+                    });
+                    if(shouldDrawBlock)
+						block.DrawBlock(m_primitivesRenderer, projectile.Value, drawBlockColor, drawBlockSize, ref matrix, m_drawBlockEnvironmentData);
 				}
 			}
 			m_primitivesRenderer.Flush(camera.ViewProjectionMatrix);
@@ -203,7 +212,7 @@ namespace Game
 				bool skipVanilla_ = false;
                 ModsManager.HookAction("OnProjectileUpdate", loader =>
                 {
-					loader.OnProjectileUpdate(projectile, this, dt, out bool skipVanilla);
+					loader.OnProjectileUpdate(projectile, this, dt, skipVanilla_, out bool skipVanilla);
                     skipVanilla_ |= skipVanilla;
                     return false;
                 });

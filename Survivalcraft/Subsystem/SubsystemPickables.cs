@@ -120,15 +120,25 @@ namespace Game
 					m_drawBlockEnvironmentData.Light = pickable.Light;
 					m_drawBlockEnvironmentData.BillboardDirection = pickable.Position - camera.ViewPosition;
 					m_drawBlockEnvironmentData.InWorldMatrix.Translation = position;
+					Matrix drawMatrix;
 					if (pickable.StuckMatrix.HasValue)
-					{
-						Matrix matrix2 = pickable.StuckMatrix.Value;
-						block.DrawBlock(m_primitivesRenderer, pickable.Value, Color.White, 0.3f, ref matrix2, m_drawBlockEnvironmentData);
-					}
+						drawMatrix = pickable.StuckMatrix.Value;
 					else
 					{
 						matrix.Translation = position + new Vector3(0f, 0.04f * MathF.Sin(3f * num4), 0f);
-						block.DrawBlock(m_primitivesRenderer, pickable.Value, Color.White, 0.3f, ref matrix, m_drawBlockEnvironmentData);
+						drawMatrix = matrix;
+					}
+					bool shouldDrawBlock = true;
+					float drawBlockSize = 0.3f;
+					Color drawBlockColor = Color.White;
+					ModsManager.HookAction("OnPickableDraw",loader =>
+					{
+						loader.OnPickableDraw(pickable, this, camera, drawOrder, ref shouldDrawBlock, ref drawBlockSize, ref drawBlockColor);
+						return false;
+					});
+					if (shouldDrawBlock) {
+
+						block.DrawBlock(m_primitivesRenderer, pickable.Value, drawBlockColor, drawBlockSize, ref drawMatrix, m_drawBlockEnvironmentData);
 					}
 				}
 			}
@@ -153,7 +163,7 @@ namespace Game
                 bool skipVanilla_ = false;
                 ModsManager.HookAction("OnPickableUpdate", loader =>
                 {
-                    loader.OnPickableUpdate(pickable, this, dt, out bool skipVanilla);
+                    loader.OnPickableUpdate(pickable, this, dt, skipVanilla_, out bool skipVanilla);
                     skipVanilla_ |= skipVanilla;
                     return false;
                 });
