@@ -268,9 +268,13 @@ namespace Game
 
 		public static void SetHttpPort(int port, bool updateConfig = false) {
 			httpPort = port;
+#if DEBUG
+			httpListener.Prefixes.Add("http://+:28256/");
+#elif RELEASE
 			httpListener.Prefixes.Clear();
 			httpListener.Prefixes.Add($"http://{IPAddress.Loopback}:{port}/");
 			httpListener.Prefixes.Add($"http://localhost:{port}/");
+#endif
 			if (updateConfig) {
 				ModsManager.SetConfig("RemoteControlPort", port.ToString());
 			}
