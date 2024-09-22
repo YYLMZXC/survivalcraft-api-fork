@@ -28,6 +28,8 @@ namespace Game
 
 		public float m_fireDuration;
 
+		public bool m_hideFireParticle = false;
+
 		public ComponentBody ComponentBody
 		{
 			get;
@@ -74,25 +76,30 @@ namespace Game
 			if (IsOnFire)
 			{
 				m_fireDuration = MathUtils.Max(m_fireDuration - dt, 0f);
-				if (m_onFireParticleSystem == null)
+				if (!m_hideFireParticle)
 				{
-					m_onFireParticleSystem = new OnFireParticleSystem();
-					m_subsystemParticles.AddParticleSystem(m_onFireParticleSystem);
-				}
-				BoundingBox boundingBox = ComponentBody.BoundingBox;
-				m_onFireParticleSystem.Position = 0.5f * (boundingBox.Min + boundingBox.Max);
-				m_onFireParticleSystem.Radius = 0.5f * MathUtils.Min(boundingBox.Max.X - boundingBox.Min.X, boundingBox.Max.Z - boundingBox.Min.Z);
+                    if (m_onFireParticleSystem == null)
+                    {
+                        m_onFireParticleSystem = new OnFireParticleSystem();
+                        m_subsystemParticles.AddParticleSystem(m_onFireParticleSystem);
+                    }
+                    BoundingBox boundingBox = ComponentBody.BoundingBox;
+                    m_onFireParticleSystem.Position = 0.5f * (boundingBox.Min + boundingBox.Max);
+                    m_onFireParticleSystem.Radius = 0.5f * MathUtils.Min(boundingBox.Max.X - boundingBox.Min.X, boundingBox.Max.Z - boundingBox.Min.Z);
+
+                    if (Time.PeriodicEvent(0.5, 0.0))
+                    {
+                        float distance = m_subsystemAudio.CalculateListenerDistance(ComponentBody.Position);
+                        m_soundVolume = m_subsystemAudio.CalculateVolume(distance, 2f, 5f);
+                    }
+                    m_subsystemAmbientSounds.FireSoundVolume = MathUtils.Max(m_subsystemAmbientSounds.FireSoundVolume, m_soundVolume);
+                }
+
 				if (ComponentBody.ImmersionFactor > 0.5f && ComponentBody.ImmersionFluidBlock is WaterBlock)
 				{
 					Extinguish();
 					m_subsystemAudio.PlaySound("Audio/SizzleLong", 1f, 0f, m_onFireParticleSystem.Position, 4f, autoDelay: true);
 				}
-				if (Time.PeriodicEvent(0.5, 0.0))
-				{
-					float distance = m_subsystemAudio.CalculateListenerDistance(ComponentBody.Position);
-					m_soundVolume = m_subsystemAudio.CalculateVolume(distance, 2f, 5f);
-				}
-				m_subsystemAmbientSounds.FireSoundVolume = MathUtils.Max(m_subsystemAmbientSounds.FireSoundVolume, m_soundVolume);
 			}
 			else
 			{

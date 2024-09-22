@@ -32,5 +32,12 @@ namespace Game
 		{
 			return true;
 		}
-	}
+
+        public override bool ShouldAvoid(int value, ComponentPilot componentPilot)
+        {
+			ComponentHealth componentHealth = componentPilot.m_componentCreature.ComponentHealth;
+			if (componentHealth.MagmaDamageFactor == 0) return false;
+            return base.ShouldAvoid(value, componentPilot);
+        }
+    }
 }

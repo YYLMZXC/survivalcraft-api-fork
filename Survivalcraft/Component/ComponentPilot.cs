@@ -42,6 +42,10 @@ namespace Game
 
 		public static bool DrawPilotDestination;
 
+		public int m_maxFallHeight = 5;
+
+		public int m_maxFallHeightRisk = 7;
+
 		public Vector3? Destination
 		{
 			get;
@@ -257,22 +261,32 @@ namespace Game
 			m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
 		}
 
+		public virtual bool ShouldAvoidBlock(Block block, int cellValue)
+		{
+			return block.ShouldAvoid(cellValue, this);
+		}
+
 		public virtual bool IsTerrainSafeToGo(Vector3 position, Vector3 direction)
 		{
+			//vector是自己判断移动后的位置
 			Vector3 vector = position + new Vector3(0f, 0.1f, 0f) + ((direction.LengthSquared() < 1.2f) ? new Vector3(direction.X, 0f, direction.Z) : (1.2f * Vector3.Normalize(new Vector3(direction.X, 0f, direction.Z))));
-			for (int i = -1; i <= 1; i++)
+            Vector3 vector2 = position + new Vector3(0f, 0.1f, 0f) + ((direction.LengthSquared() < 1f) ? new Vector3(direction.X, 0f, direction.Z) : (1f * Vector3.Normalize(new Vector3(direction.X, 0f, direction.Z))));
+            for (int i = -1; i <= 1; i++)
 			{
 				for (int j = -1; j <= 1; j++)
 				{
+					//只有向前的向量才被计入
 					if (!(Vector3.Dot(direction, new Vector3(i, 0f, j)) > 0f))
 					{
 						continue;
 					}
+					//检查器位置的方块、下面一格的方块、下面两格的方块。
+					//碰到危险方块则返回不是安全方向；碰到非危险的可碰撞方块则是安全方向
 					for (int num = 0; num >= -2; num--)
 					{
 						int cellValue = m_subsystemTerrain.Terrain.GetCellValue(Terrain.ToCell(vector.X) + i, Terrain.ToCell(vector.Y) + num, Terrain.ToCell(vector.Z) + j);
 						Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
-						if (block.ShouldAvoid(cellValue))
+						if (ShouldAvoidBlock(block, cellValue))
 						{
 							return false;
 						}
@@ -283,20 +297,20 @@ namespace Game
 					}
 				}
 			}
-			Vector3 vector2 = position + new Vector3(0f, 0.1f, 0f) + ((direction.LengthSquared() < 1f) ? new Vector3(direction.X, 0f, direction.Z) : (1f * Vector3.Normalize(new Vector3(direction.X, 0f, direction.Z))));
-			bool flag = true;
-			int num2 = TakeRisks ? 7 : 5;
-			for (int num3 = 0; num3 >= -num2; num3--)
+			bool isBlockBeneathDangerous = true;
+			//num2是计算的摔落高度
+			int num2 = TakeRisks ? m_maxFallHeightRisk : m_maxFallHeight;
+			for (int num3 = 0; num3 >= -num2 && vector2.Y + num3 >= 0; num3--)
 			{
 				int cellValue2 = m_subsystemTerrain.Terrain.GetCellValue(Terrain.ToCell(vector2.X), Terrain.ToCell(vector2.Y) + num3, Terrain.ToCell(vector2.Z));
 				Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
-				if ((block2.IsCollidable_(cellValue2) || block2.BlockIndex == 18) && !block2.ShouldAvoid(cellValue2))
+				if ((block2.IsCollidable_(cellValue2) || block2 is FluidBlock) && !ShouldAvoidBlock(block2, cellValue2))
 				{
-					flag = false;
+					isBlockBeneathDangerous = false;
 					break;
 				}
 			}
-			if (flag)
+			if (isBlockBeneathDangerous)
 			{
 				return false;
 			}

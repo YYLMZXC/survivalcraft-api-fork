@@ -627,6 +627,10 @@ namespace Game
 		{
 			return false;
 		}
+		public virtual bool ShouldAvoid(int value, ComponentPilot componentPilot)
+		{
+			return ShouldAvoid(value);
+		}
 
 		public virtual bool IsSwapAnimationNeeded(int oldValue, int newValue)
 		{
