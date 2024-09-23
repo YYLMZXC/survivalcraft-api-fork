@@ -155,12 +155,7 @@ namespace Game
 
         public static T GetBlock<T>(bool throwIfNotFound = false) where T : Block
         {
-            Block block = GetBlock(typeof(T).Name);
-            if (block == null)
-            {
-                if (throwIfNotFound) throw new KeyNotFoundException("Not Found Block: " + typeof(T).Name);
-                return null; //方块列表中没有名为"T"的方块，则返回null
-            }
+            Block block = GetBlock(typeof(T).Name, throwIfNotFound);
             T blockT = block as T;
             if (blockT == null && throwIfNotFound)
             {
