@@ -58,6 +58,8 @@ namespace Game
 
         //将ModBlock和BlockIndex联系起来的表格。
         public static Dictionary<string, int> BlockNameToIndex = new Dictionary<string, int>();
+        public static Dictionary<Type, int> BlockTypeToIndex = new Dictionary<Type, int>();
+
         public static ReadOnlyList<string> Categories => new(m_categories);
 
         public static int[] m_originalBlockIndex = new int[1024];
@@ -89,6 +91,7 @@ namespace Game
             Block block = allocateData.Block;
             m_blocks[Index] = block;
             BlockNameToIndex[block.GetType().Name] = Index;
+            BlockTypeToIndex[block.GetType()] = Index;
             if (block is FluidBlock fluidBlock)
             {
                 m_fluidBlocks[Index] = fluidBlock;
@@ -136,21 +139,16 @@ namespace Game
             return -1;
         }
 
-        public static int GetBlockIndex<T>() where T : class
-        {
-            return GetBlockIndex(typeof(T).Name);
-        }
+        public static int GetBlockIndex<T>(bool throwIfNotFound = false) where T : class => BlockTypeToIndex.GetValueOrDefault(typeof(T), throwIfNotFound ? throw new KeyNotFoundException("Not Found" + typeof(T).Name) : -1);
         public static Block GetBlock(string BlockName)
         {
             int blockIndex = GetBlockIndex(BlockName);
             if(blockIndex >= 0 && blockIndex < 1024) return m_blocks[blockIndex];
             return null;
         }
-        public static T GetBlock<T>() where T : class
-        {
-            Block block = GetBlock(typeof(T).Name);
-            if(block == null) return null;
-            return block as T;
+        public static T GetBlock<T>(bool throwIfNotFound = false) where T : class {
+            int blockIndex = GetBlockIndex<T>(throwIfNotFound);
+            return blockIndex is >= 0 and < 1024 ? m_blocks[blockIndex] as T : null;
         }
         public static void InitializeBlocks(SubsystemBlocksManager subsystemBlocksManager)
         {
