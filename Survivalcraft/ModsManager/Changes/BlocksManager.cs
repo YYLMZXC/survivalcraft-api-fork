@@ -163,7 +163,7 @@ namespace Game
             T blockT = block as T;
             if (blockT == null && throwIfNotFound)
             {
-                throw new InvalidCastException("Block " + typeof(T).FullName + " is modified into " + block.GetType().FullName + " thus not capable for type.");
+                throw new InvalidCastException("Block <" + typeof(T).AssemblyQualifiedName  + "> is modified into <" + block.GetType().AssemblyQualifiedName  + "> thus not capable for type.");
             }
             return blockT; //方块列表中有名为"T"的方块，但无法转化为T也返回null
         }
