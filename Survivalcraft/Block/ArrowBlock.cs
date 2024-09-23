@@ -245,7 +245,7 @@ namespace Game
 			int i = 0;
 			while (i < m_order.Length)
 			{
-				yield return Terrain.MakeBlockValue(192, 0, SetArrowType(0, (ArrowType)m_order[i]));
+				yield return Terrain.MakeBlockValue(BlockIndex, 0, SetArrowType(0, (ArrowType)m_order[i]));
 				int num = i + 1;
 				i = num;
 			}

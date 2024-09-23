@@ -17,6 +17,9 @@ namespace Game
 
 		public Dictionary<ComponentMiner, double> m_aimStartTimes = [];
 
+		int m_bowBlockIndex;
+		int m_arrowBlockIndex;
+
 		public ArrowBlock.ArrowType[] m_supportedArrowTypes = new ArrowBlock.ArrowType[6]
 		{
 			ArrowBlock.ArrowType.WoodenArrow,
@@ -47,7 +50,7 @@ namespace Game
 					int slotCount = inventory.GetSlotCount(activeSlotIndex);
 					int num = Terrain.ExtractContents(slotValue);
 					int data = Terrain.ExtractData(slotValue);
-					if (num == 191 && slotCount > 0)
+					if (slotCount > 0)
 					{
 						if (!m_aimStartTimes.TryGetValue(componentMiner, out double value))
 						{
@@ -117,7 +120,7 @@ namespace Game
 										{
 											vector3 = new Vector3(0.01f, 0.01f, 0.01f);
 										}
-										int value2 = Terrain.MakeBlockValue(192, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
+										int value2 = Terrain.MakeBlockValue(m_arrowBlockIndex, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
 										var vector4 = Vector3.Normalize(Vector3.Cross(vector2, Vector3.UnitY));
 										var v2 = Vector3.Normalize(Vector3.Cross(vector2, vector4));
 										Vector3 v3 = (m_random.Float(0f - vector3.X, vector3.X) * vector4) + (m_random.Float(0f - vector3.Y, vector3.Y) * v2) + (m_random.Float(0f - vector3.Z, vector3.Z) * vector2);
@@ -158,7 +161,7 @@ namespace Game
 		{
 			int num = Terrain.ExtractContents(value);
 			ArrowBlock.ArrowType arrowType = ArrowBlock.GetArrowType(Terrain.ExtractData(value));
-			if (num == 192 && m_supportedArrowTypes.Contains(arrowType))
+			if (num == m_arrowBlockIndex && m_supportedArrowTypes.Contains(arrowType))
 			{
 				if (!BowBlock.GetArrowType(Terrain.ExtractData(inventory.GetSlotValue(slotIndex))).HasValue)
 				{
@@ -178,7 +181,7 @@ namespace Game
 				processedValue = 0;
 				processedCount = 0;
 				inventory.RemoveSlotItems(slotIndex, 1);
-				inventory.AddSlotItems(slotIndex, Terrain.MakeBlockValue(191, 0, BowBlock.SetArrowType(data, arrowType)), 1);
+				inventory.AddSlotItems(slotIndex, Terrain.MakeBlockValue(m_bowBlockIndex, 0, BowBlock.SetArrowType(data, arrowType)), 1);
 			}
 			else
 			{
@@ -192,6 +195,8 @@ namespace Game
 			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
 			m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
 			m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+			m_bowBlockIndex = BlocksManager.GetBlockIndex<BowBlock>();
+			m_arrowBlockIndex = BlocksManager.GetBlockIndex<ArrowBlock>();
 			base.Load(valuesDictionary);
 		}
 	}

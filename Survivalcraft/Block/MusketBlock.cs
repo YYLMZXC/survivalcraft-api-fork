@@ -51,7 +51,7 @@ namespace Game
 
 		public override bool IsSwapAnimationNeeded(int oldValue, int newValue)
 		{
-			if (Terrain.ExtractContents(oldValue) != 212)
+			if (Terrain.ExtractContents(oldValue) != BlockIndex)
 			{
 				return true;
 			}

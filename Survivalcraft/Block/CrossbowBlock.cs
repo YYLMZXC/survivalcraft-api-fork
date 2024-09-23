@@ -10,6 +10,7 @@ namespace Game
 
 		public BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[16];
 
+		Block arrowBlock;
 		public override void Initialize()
 		{
 			Model model = ContentManager.Get<Model>("Models/Crossbows");
@@ -33,6 +34,7 @@ namespace Game
 				m_standaloneBlockMeshes[i].AppendBlockMesh(blockMesh);
 				m_standaloneBlockMeshes[i].BlendBlockMesh(blockMesh2, factor);
 			}
+			arrowBlock = BlocksManager.GetBlockCoarse<ArrowBlock>();
 			base.Initialize();
 		}
 
@@ -49,8 +51,8 @@ namespace Game
 			if (arrowType.HasValue)
 			{
 				Matrix matrix2 = Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0.2f * size, -0.09f * size) * matrix;
-				int value2 = Terrain.MakeBlockValue(192, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
-				BlocksManager.Blocks[192].DrawBlock(primitivesRenderer, value2, color, size, ref matrix2, environmentData);
+				int value2 = Terrain.MakeBlockValue(arrowBlock.BlockIndex, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
+				arrowBlock.DrawBlock(primitivesRenderer, value2, color, size, ref matrix2, environmentData);
 			}
 		}
 
@@ -72,7 +74,7 @@ namespace Game
 			int num = Terrain.ExtractContents(oldValue);
 			int data = Terrain.ExtractData(oldValue);
 			int data2 = Terrain.ExtractData(newValue);
-			if (num == 200 && GetArrowType(data) == GetArrowType(data2))
+			if (num == BlockIndex && GetArrowType(data) == GetArrowType(data2))
 			{
 				return false;
 			}

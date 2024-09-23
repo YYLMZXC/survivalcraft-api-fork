@@ -73,7 +73,7 @@ namespace Game
 		{
 			foreach (int enumValue in EnumUtils.GetEnumValues(typeof(BulletType)))
 			{
-				yield return Terrain.MakeBlockValue(214, 0, SetBulletType(0, (BulletType)enumValue));
+				yield return Terrain.MakeBlockValue(BlockIndex, 0, SetBulletType(0, (BulletType)enumValue));
 			}
 		}
 

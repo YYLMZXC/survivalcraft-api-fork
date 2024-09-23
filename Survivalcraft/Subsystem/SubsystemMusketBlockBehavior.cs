@@ -22,6 +22,9 @@ namespace Game
 
 		public Dictionary<ComponentMiner, double> m_aimStartTimes = [];
 
+		public int m_BulletBlockIndex;
+
+		public int m_MusketBlockIndex;
 		public override int[] HandledBlocks => new int[0];
 
 		public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
@@ -44,7 +47,7 @@ namespace Game
 					int data = Terrain.ExtractData(slotValue);
 					int num2 = slotValue;
 					int num3 = 0;
-					if (num == 212 && slotCount > 0)
+					if (num == m_MusketBlockIndex && slotCount > 0)
 					{
 						if (!m_aimStartTimes.TryGetValue(componentMiner, out double value))
 						{
@@ -119,21 +122,21 @@ namespace Game
 												flag = true;
 												if (bulletType == BulletBlock.BulletType.Buckshot)
 												{
-													value2 = Terrain.MakeBlockValue(214, 0, BulletBlock.SetBulletType(0, BulletBlock.BulletType.BuckshotBall));
+													value2 = Terrain.MakeBlockValue(m_BulletBlockIndex, 0, BulletBlock.SetBulletType(0, BulletBlock.BulletType.BuckshotBall));
 													num6 = 8;
 													vector = new Vector3(0.04f, 0.04f, 0.25f);
 													s = 80f;
 												}
 												else if (bulletType == BulletBlock.BulletType.BuckshotBall)
 												{
-													value2 = Terrain.MakeBlockValue(214, 0, BulletBlock.SetBulletType(0, BulletBlock.BulletType.BuckshotBall));
+													value2 = Terrain.MakeBlockValue(m_BulletBlockIndex, 0, BulletBlock.SetBulletType(0, BulletBlock.BulletType.BuckshotBall));
 													num6 = 1;
 													vector = new Vector3(0.06f, 0.06f, 0f);
 													s = 60f;
 												}
 												else if (bulletType.HasValue)
 												{
-													value2 = Terrain.MakeBlockValue(214, 0, BulletBlock.SetBulletType(0, bulletType.Value));
+													value2 = Terrain.MakeBlockValue(m_BulletBlockIndex, 0, BulletBlock.SetBulletType(0, bulletType.Value));
 													num6 = 1;
 													s = 120f;
 												}
@@ -205,7 +208,7 @@ namespace Game
 			{
 				return 1;
 			}
-			if (loadState == MusketBlock.LoadState.Wad && num == 214)
+			if (loadState == MusketBlock.LoadState.Wad && num == m_BulletBlockIndex)
 			{
 				return 1;
 			}
@@ -242,7 +245,7 @@ namespace Game
 				processedValue = 0;
 				processedCount = 0;
 				inventory.RemoveSlotItems(slotIndex, 1);
-				inventory.AddSlotItems(slotIndex, Terrain.MakeBlockValue(212, 0, MusketBlock.SetBulletType(MusketBlock.SetLoadState(data, loadState), bulletType)), 1);
+				inventory.AddSlotItems(slotIndex, Terrain.MakeBlockValue(m_MusketBlockIndex, 0, MusketBlock.SetBulletType(MusketBlock.SetLoadState(data, loadState), bulletType)), 1);
 			}
 		}
 
@@ -254,6 +257,8 @@ namespace Game
 			m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
 			m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
 			m_subsystemNoise = Project.FindSubsystem<SubsystemNoise>(throwOnError: true);
+			m_BulletBlockIndex = BlocksManager.GetBlockIndex<BulletBlock>();
+			m_MusketBlockIndex = BlocksManager.GetBlockIndex<MusketBlock>();
 			base.Load(valuesDictionary);
 		}
 	}

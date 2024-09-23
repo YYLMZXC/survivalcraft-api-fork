@@ -10,6 +10,8 @@ namespace Game
 
 		public BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[16];
 
+		public Block m_arrowBlock;
+
 		public override void Initialize()
 		{
 			Model model = ContentManager.Get<Model>("Models/Bows");
@@ -30,6 +32,7 @@ namespace Game
 				m_standaloneBlockMeshes[i].AppendBlockMesh(blockMesh);
 				m_standaloneBlockMeshes[i].BlendBlockMesh(blockMesh2, factor);
 			}
+			m_arrowBlock = BlocksManager.GetBlockCoarse<ArrowBlock>();
 			base.Initialize();
 		}
 
@@ -47,8 +50,8 @@ namespace Game
 			{
 				float num = MathUtils.Lerp(0.14f, 0.68f, draw / 15f);
 				Matrix matrix2 = Matrix.CreateRotationX(-(float)Math.PI / 2f) * Matrix.CreateTranslation(0f, 0.4f * size, (-1f + (2f * num)) * size) * matrix;
-				int value2 = Terrain.MakeBlockValue(192, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
-				BlocksManager.Blocks[192].DrawBlock(primitivesRenderer, value2, color, size, ref matrix2, environmentData);
+				int value2 = Terrain.MakeBlockValue(m_arrowBlock.BlockIndex, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
+				m_arrowBlock.DrawBlock(primitivesRenderer, value2, color, size, ref matrix2, environmentData);
 			}
 		}
 
@@ -70,7 +73,7 @@ namespace Game
 			int num = Terrain.ExtractContents(oldValue);
 			int data = Terrain.ExtractData(oldValue);
 			int data2 = Terrain.ExtractData(newValue);
-			if (num == 191 && GetArrowType(data) == GetArrowType(data2))
+			if (num == BlockIndex && GetArrowType(data) == GetArrowType(data2))
 			{
 				return false;
 			}

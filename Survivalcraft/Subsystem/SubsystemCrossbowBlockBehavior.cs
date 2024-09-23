@@ -25,6 +25,9 @@ namespace Game
 			ArrowBlock.ArrowType.ExplosiveBolt
 		};
 
+		public int m_CrossbowBlockIndex;
+
+		public int m_ArrowBlockIndex;
 		public override int[] HandledBlocks => new int[0];
 
 		public override bool OnEditInventoryItem(IInventory inventory, int slotIndex, ComponentPlayer componentPlayer)
@@ -45,7 +48,7 @@ namespace Game
 					int slotCount = inventory.GetSlotCount(activeSlotIndex);
 					int num = Terrain.ExtractContents(slotValue);
 					int data = Terrain.ExtractData(slotValue);
-					if (num == 200 && slotCount > 0)
+					if (slotCount > 0)
 					{
 						int draw = CrossbowBlock.GetDraw(data);
 						if (!m_aimStartTimes.TryGetValue(componentMiner, out double value))
@@ -101,7 +104,7 @@ namespace Game
 									{
 										Vector3 vector = componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition + (componentMiner.ComponentCreature.ComponentBody.Matrix.Right * 0.3f) - (componentMiner.ComponentCreature.ComponentBody.Matrix.Up * 0.2f);
 										var v2 = Vector3.Normalize(vector + (aim.Direction * 10f) - vector);
-										int value2 = Terrain.MakeBlockValue(192, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
+										int value2 = Terrain.MakeBlockValue(m_ArrowBlockIndex, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
 										float s = 38f;
 										if (m_subsystemProjectiles.FireProjectile(value2, vector, s * v2, Vector3.Zero, componentMiner.ComponentCreature) != null)
 										{
@@ -131,7 +134,7 @@ namespace Game
 		{
 			int num = Terrain.ExtractContents(value);
 			ArrowBlock.ArrowType arrowType = ArrowBlock.GetArrowType(Terrain.ExtractData(value));
-			if (num == 192 && m_supportedArrowTypes.Contains(arrowType))
+			if (num == m_ArrowBlockIndex && m_supportedArrowTypes.Contains(arrowType))
 			{
 				int data = Terrain.ExtractData(inventory.GetSlotValue(slotIndex));
 				ArrowBlock.ArrowType? arrowType2 = CrossbowBlock.GetArrowType(data);
@@ -154,7 +157,7 @@ namespace Game
 				processedValue = 0;
 				processedCount = 0;
 				inventory.RemoveSlotItems(slotIndex, 1);
-				inventory.AddSlotItems(slotIndex, Terrain.MakeBlockValue(200, 0, CrossbowBlock.SetArrowType(data, arrowType)), 1);
+				inventory.AddSlotItems(slotIndex, Terrain.MakeBlockValue(m_CrossbowBlockIndex, 0, CrossbowBlock.SetArrowType(data, arrowType)), 1);
 			}
 			else
 			{
@@ -168,6 +171,8 @@ namespace Game
 			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
 			m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
 			m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+			m_CrossbowBlockIndex = BlocksManager.GetBlockIndex<CrossbowBlock>();
+			m_ArrowBlockIndex = BlocksManager.GetBlockIndex<ArrowBlock>();
 			base.Load(valuesDictionary);
 		}
 	}

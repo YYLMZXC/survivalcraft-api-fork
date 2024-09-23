@@ -153,6 +153,10 @@ namespace Game
             return null;
         }
 
+        public static Block GetBlockCoarse<T>(bool throwIfNotFound = false) where T : Block
+        {
+            return GetBlock(typeof(T).Name, throwIfNotFound);
+        }
         public static T GetBlock<T>(bool throwIfNotFound = false) where T : Block
         {
             Block block = GetBlock(typeof(T).Name, throwIfNotFound);
