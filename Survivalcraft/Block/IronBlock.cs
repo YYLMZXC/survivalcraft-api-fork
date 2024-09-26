@@ -2,7 +2,7 @@ namespace Game
 {
 	public class IronBlock : CubeBlock
 	{
-		public const int Index = 46;
+		public static int Index = 46;
 
 		public IronBlock() : base() {
 			CanBeBuiltIntoFurniture = true;

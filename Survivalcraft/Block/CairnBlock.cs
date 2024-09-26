@@ -7,7 +7,7 @@ namespace Game
 {
 	public class CairnBlock : Block
 	{
-		public const int Index = 258;
+		public static int Index = 258;
 
         public BlockMesh m_mesh = new();
 

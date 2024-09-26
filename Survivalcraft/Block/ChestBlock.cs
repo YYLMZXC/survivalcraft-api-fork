@@ -4,7 +4,7 @@ namespace Game
 {
 	public class ChestBlock : CubeBlock
 	{
-		public const int Index = 45;
+		public static int Index = 45;
 
 		public override int GetFaceTextureSlot(int face, int value)
 		{

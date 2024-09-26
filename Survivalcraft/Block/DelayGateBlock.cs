@@ -2,7 +2,7 @@ namespace Game
 {
 	public class DelayGateBlock : RotateableMountedElectricElementBlock
 	{
-		public const int Index = 145;
+		public static int Index = 145;
 
 		public DelayGateBlock()
 			: base("Models/Gates", "DelayGate", 0.375f)

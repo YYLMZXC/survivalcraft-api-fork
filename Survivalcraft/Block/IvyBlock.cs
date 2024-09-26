@@ -5,7 +5,7 @@ namespace Game
 {
 	public class IvyBlock : Block
 	{
-		public const int Index = 197;
+		public static int Index = 197;
 
 		public BoundingBox[][] m_boundingBoxes = new BoundingBox[4][]
 		{

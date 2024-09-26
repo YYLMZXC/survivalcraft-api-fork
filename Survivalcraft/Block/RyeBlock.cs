@@ -6,7 +6,7 @@ namespace Game
 {
 	public class RyeBlock : CrossBlock
 	{
-		public const int Index = 174;
+		public static int Index = 174;
 
 		public override IEnumerable<int> GetCreativeValues()
 		{

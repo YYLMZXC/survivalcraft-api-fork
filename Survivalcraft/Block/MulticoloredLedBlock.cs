@@ -7,7 +7,7 @@ namespace Game
 {
 	public class MulticoloredLedBlock : MountedElectricElementBlock
 	{
-		public const int Index = 254;
+		public static int Index = 254;
 
 		public BlockMesh m_standaloneBlockMesh;
 

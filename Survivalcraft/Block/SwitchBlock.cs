@@ -6,7 +6,7 @@ namespace Game
 {
 	public class SwitchBlock : MountedElectricElementBlock
 	{
-		public const int Index = 141;
+		public static int Index = 141;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

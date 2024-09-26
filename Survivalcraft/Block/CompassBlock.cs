@@ -5,7 +5,7 @@ namespace Game
 {
 	public class CompassBlock : Block
 	{
-		public const int Index = 117;
+		public static int Index = 117;
 
 		public BlockMesh m_caseMesh = new();
 

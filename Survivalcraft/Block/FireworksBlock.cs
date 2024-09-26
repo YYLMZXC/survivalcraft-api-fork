@@ -19,7 +19,7 @@ namespace Game
 			FlatTrails
 		}
 
-		public const int Index = 215;
+		public static int Index = 215;
 
 		public BlockMesh[] m_headBlockMeshes = new BlockMesh[64];
 

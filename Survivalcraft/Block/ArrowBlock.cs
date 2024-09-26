@@ -20,7 +20,7 @@ namespace Game
 			CopperArrow
 		}
 
-		public const int Index = 192;
+		public static int Index = 192;
 
 		public List<BlockMesh> m_standaloneBlockMeshes = [];
 

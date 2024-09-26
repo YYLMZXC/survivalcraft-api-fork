@@ -6,7 +6,7 @@ namespace Game
 {
 	public class SoilBlock : CubeBlock
 	{
-		public const int Index = 168;
+		public static int Index = 168;
 
 		public new static string fName = "SoilBlock";
 

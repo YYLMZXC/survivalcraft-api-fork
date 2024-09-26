@@ -5,7 +5,7 @@ namespace Game
 {
 	public class ShadowBlock : Block
 	{
-		public const int Index = 257;
+		public static int Index = 257;
 
 		public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{

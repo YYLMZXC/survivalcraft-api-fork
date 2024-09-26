@@ -6,7 +6,7 @@ namespace Game
 {
 	public class FurnaceBlock : Block
 	{
-		public const int Index = 64;
+		public static int Index = 64;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

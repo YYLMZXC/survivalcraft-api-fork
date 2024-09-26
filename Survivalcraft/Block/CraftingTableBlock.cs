@@ -5,7 +5,7 @@ namespace Game
 {
 	public class CraftingTableBlock : Block
 	{
-		public const int Index = 27;
+		public static int Index = 27;
 
 		public BlockMesh m_blockMesh = new();
 

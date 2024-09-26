@@ -4,7 +4,7 @@ namespace Game
 {
 	public class MagmaBlock : FluidBlock
 	{
-		public const int Index = 92;
+		public static int Index = 92;
 
 		public new static int MaxLevel = 4;
 

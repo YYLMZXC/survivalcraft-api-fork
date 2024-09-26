@@ -8,7 +8,7 @@ namespace Game
 {
 	public class LedBlock : MountedElectricElementBlock
 	{
-		public const int Index = 152;
+		public static int Index = 152;
 
 		public static readonly Color[] LedColors = new Color[8]
 		{
