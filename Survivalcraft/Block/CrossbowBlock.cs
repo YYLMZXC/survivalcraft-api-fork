@@ -34,7 +34,7 @@ namespace Game
 				m_standaloneBlockMeshes[i].AppendBlockMesh(blockMesh);
 				m_standaloneBlockMeshes[i].BlendBlockMesh(blockMesh2, factor);
 			}
-			arrowBlock = BlocksManager.GetBlockCoarse<ArrowBlock>();
+			arrowBlock = BlocksManager.GetBlockGeneral<ArrowBlock>();
 			base.Initialize();
 		}
 

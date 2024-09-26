@@ -148,47 +148,81 @@ namespace Game
             m_categories.Add("Fireworks");
         }
 
+        /// <summary>
+        /// 通过方块名称来获取方块的Index
+        /// </summary>
+        /// <param name="BlockName">方块名称</param>
+        /// <param name="throwIfNotFound">在方块未查找到时是否抛出异常</param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
         public static int GetBlockIndex(string BlockName, bool throwIfNotFound = false)
         {
             bool valueGotten = BlockNameToIndex.TryGetValue(BlockName, out int index);
             if (valueGotten) return index;
-            if (throwIfNotFound) throw new KeyNotFoundException("Not Found Block: " + BlockName);
+            if (throwIfNotFound) throw new KeyNotFoundException("Block with name <" + BlockName + "> is not found.");
             return -1;
         }
 
-        //按字符串查找，只要方块名称相同就可以
-        public static int GetBlockIndex<T>(bool throwIfNotFound = false) where T : Block
+        /// <summary>
+        /// 获取方块的Index
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="throwIfNotFound">在方块没有查找到时是否抛出异常</param>
+        /// <param name="mustBeInSameType">方块是否要求必须要和目标类型完全一致</param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public static int GetBlockIndex<T>(bool throwIfNotFound = false, bool mustBeInSameType = false) where T : Block
         {
+            int blockIndexByType = BlockTypeToIndex.GetValueOrDefault(typeof(T), -1);
+            if(blockIndexByType >= 0 && blockIndexByType < 1024) return blockIndexByType;
+            if (mustBeInSameType)
+            {
+                if (throwIfNotFound) throw new KeyNotFoundException("Block with type <" + typeof(T).AssemblyQualifiedName + "> is not found.");
+                return -1;
+            }
             return GetBlockIndex(typeof(T).Name, throwIfNotFound);
         }
-        //按类型查找，要求方块不能被修改为模组方块
-        public static int GetBlockIndexInCompletelySameType<T>(bool throwIfNotFound = false) where T : class => BlockTypeToIndex.GetValueOrDefault(typeof(T), throwIfNotFound ? throw new KeyNotFoundException("Not Found Block: " + typeof(T).Name) : -1);
+
+        /// <summary>
+        /// 获取一个方块的通用Block类，具有较好的模组兼容稳定性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="throwIfNotFound"></param>
+        /// <returns></returns>
+        public static Block GetBlockGeneral<T>(bool throwIfNotFound = false) where T : Block
+        {
+            int blockIndex = GetBlockIndex<T>(throwIfNotFound);
+            if(blockIndex >= 0 && blockIndex < 1024) return Blocks[blockIndex];
+            return null;
+        }
+
         public static Block GetBlock(string BlockName, bool throwIfNotFound = false)
         {
             int blockIndex = GetBlockIndex(BlockName, throwIfNotFound);
             if(blockIndex >= 0 && blockIndex < 1024) return m_blocks[blockIndex];
             return null;
         }
-
-        public static Block GetBlockCoarse<T>(bool throwIfNotFound = false) where T : Block
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="throwIfNotFound">在方块没有查找到时是否抛出异常</param>
+        /// <param name="mustBeInSameType">方块是否要求必须要和目标类型完全一致</param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException">没有找到对应的方块</exception>
+        /// <exception cref="InvalidCastException">有名称相同的方块，但类型不相容</exception>
+        public static T GetBlock<T>(bool throwIfNotFound = false, bool mustBeInSameType = false) where T : Block
         {
-            return GetBlock(typeof(T).Name, throwIfNotFound);
-        }
-        public static T GetBlock<T>(bool throwIfNotFound = false) where T : Block
-        {
-            Block block = GetBlock(typeof(T).Name, throwIfNotFound);
-            T blockT = block as T;
+            int blockIndex = GetBlockIndex<T>(throwIfNotFound, mustBeInSameType);
+            if (blockIndex < 0) return null;
+            T blockT = Blocks[blockIndex] as T;
             if (blockT == null && throwIfNotFound)
             {
-                throw new InvalidCastException("Block <" + typeof(T).AssemblyQualifiedName  + "> is modified into <" + block.GetType().AssemblyQualifiedName  + "> thus not capable for type.");
+                throw new InvalidCastException("Block <" + typeof(T).AssemblyQualifiedName  + "> is modified into <" + Blocks[blockIndex].GetType().AssemblyQualifiedName  + "> thus not capable for type.");
             }
             return blockT; //方块列表中有名为"T"的方块，但无法转化为T也返回null
         }
 
-        public static T GetBlockInCompletelySameType<T>(bool throwIfNotFound = false) where T : class {
-            int blockIndex = GetBlockIndexInCompletelySameType<T>(throwIfNotFound);
-            return blockIndex is >= 0 and < 1024 ? m_blocks[blockIndex] as T : null;
-        }
         public static void InitializeBlocks(SubsystemBlocksManager subsystemBlocksManager)
         {
             for (int i = 0; i < m_blocks.Length; i++)
