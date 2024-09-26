@@ -173,7 +173,7 @@ namespace Game
                     ModsManager.HookAction("OnBlockDug", modLoader =>
 					{
 						bool mute = false;
-						modLoader.OnBlockDug(this, digValue, ref durabilityReduction, ref mute, ref playerDataAdd);
+						modLoader.OnBlockDug(this, digValue, cellValue, ref durabilityReduction, ref mute, ref playerDataAdd);
 						mute_ |= mute;
 						return false;
 					});

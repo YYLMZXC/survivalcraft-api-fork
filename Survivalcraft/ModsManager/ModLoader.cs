@@ -806,7 +806,7 @@ namespace Game
         /// <param name="DurabilityReduction">挖掘方块所消耗工具的耐久</param>
         /// <param name="mute">挖掘方块是否取消播放音效</param>
         /// <param name="PlayerDataDugAdd">是否增加玩家的挖掘方块计数</param>
-        public virtual void OnBlockDug(ComponentMiner componentMiner, BlockPlacementData digValue, ref int DurabilityReduction, ref bool mute, ref int PlayerDataDugAdd)
+        public virtual void OnBlockDug(ComponentMiner componentMiner, BlockPlacementData digValue, int cellValue, ref int DurabilityReduction, ref bool mute, ref int PlayerDataDugAdd)
         {
             mute = false;
         }
