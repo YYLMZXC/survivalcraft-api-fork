@@ -258,19 +258,19 @@ namespace Game
 			for (int i = 0; i < blockTypes.Count; i++)
 			{
 				Type type = blockTypes[i];
-				FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
-				if (fieldInfo == null || fieldInfo.FieldType != typeof(int))
+                var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
+                FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
+				if (fieldInfo != null && fieldInfo.FieldType == typeof(int))
 				{
-					LoadingScreen.Warning($"Block type \"{type.FullName}\" does not have static field Index of type int.");
+					int staticIndex = (int)fieldInfo.GetValue(null);
+					block.BlockIndex = staticIndex;
 				}
 				else
 				{
-					int staticIndex = (int)fieldInfo.GetValue(null);
-					var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
-					block.BlockIndex = staticIndex;
-					Blocks.Add(block);
-				}
-			}
+					block.BlockIndex = -1;
+                }
+                Blocks.Add(block);
+            }
 		}
 		public virtual void LoadJs()
 		{

@@ -82,7 +82,10 @@ namespace Game
                 int modEntitySub = u1.ModEntity.GetHashCode() - u2.ModEntity.GetHashCode();
                 if (modEntitySub != 0) return modEntitySub;
                 //mod相同，则比对BlockIndex
-                return u1.Block.BlockIndex - u2.Block.BlockIndex;
+                int blockIndexSub = u1.Block.BlockIndex - u2.Block.BlockIndex;
+                if (blockIndexSub != 0) return blockIndexSub;
+                //方块的Index相同（均未分配），则按方块名顺序分配
+                return string.Compare(u1.Block.GetType().Name, u2.Block.GetType().Name);
             }
         }
 
@@ -103,6 +106,20 @@ namespace Game
             allocateData.Block.BlockIndex = Index;
             allocateData.Allocated = true;
             allocateData.Index = Index;
+            //修改方块的Index静态字段值
+            FieldInfo fieldInfo = block.GetType().GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
+            if (fieldInfo != null && fieldInfo.FieldType == typeof(int) && !fieldInfo.IsLiteral)
+            {
+                try
+                {
+                    fieldInfo.SetValue(null, block.BlockIndex); // 对于静态字段，第一个参数为null
+                    //Log.Information("设置方块" + block.GetType().Name + ".Index为" + block.BlockIndex);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Failed to edit Index of <" + block.GetType().AssemblyQualifiedName + ">! " + ex);
+                }
+            }
         }
 
         public static void Initialize()
@@ -206,12 +223,11 @@ namespace Game
                     int originalIndex;
                     originalIndex = m_originalBlockIndex[allocateData.Block.BlockIndex];
                     if (originalIndex == 0) originalIndex = allocateData.Block.BlockIndex;
-                    //Log.Information("���ط���" + originalIndex);
                     if (allocateData.StaticBlockIndex)
                     {
                         AllocateBlock(allocateData, originalIndex);
                     }
-                    else if (LoadBlocksStaticly)
+                    else if (LoadBlocksStaticly && originalIndex >= 0)//负ID方块不进行分配
                     {
                         AllocateBlock(allocateData, originalIndex);
                         if (subsystemBlocksManager != null)
