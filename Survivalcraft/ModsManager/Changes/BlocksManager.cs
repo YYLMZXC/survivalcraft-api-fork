@@ -369,6 +369,7 @@ namespace Game
             }
         }
 
+        [Obsolete("Use BlocksManager.GetBlock() instead.")]
         public static Block FindBlockByTypeName(string typeName, bool throwIfNotFound)
         {
             Block block = Blocks.FirstOrDefault((Block b) => b.GetType().Name == typeName);
@@ -776,6 +777,7 @@ namespace Game
             return slotTexCoords;
         }
 
+        [Obsolete("Use BlocksManager.GetBlock() instead.")]
         public static Block GetBlockInMod(string ModSpace, string TypeFullName)
         {
             if (ModsManager.GetModEntity(ModSpace, out ModEntity modEntity))

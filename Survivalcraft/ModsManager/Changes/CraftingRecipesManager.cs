@@ -194,8 +194,8 @@ namespace Game
 			if (!string.IsNullOrEmpty(result))
 			{
 				string[] array = result.Split(new char[] { ':' }, StringSplitOptions.None);
-				Block block = BlocksManager.FindBlockByTypeName(array[0], throwIfNotFound: true);
-				return Terrain.MakeBlockValue(block.BlockIndex, 0, data: (array.Length == 2) ? int.Parse(array[1], CultureInfo.InvariantCulture) : 0);
+				int blockIndex = BlocksManager.GetBlockIndex(array[0], throwIfNotFound: true);
+				return Terrain.MakeBlockValue(blockIndex, 0, data: (array.Length == 2) ? int.Parse(array[1], CultureInfo.InvariantCulture) : 0);
 			}
 			return 0;
 		}
