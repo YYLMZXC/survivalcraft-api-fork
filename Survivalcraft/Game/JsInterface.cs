@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using JsEngine = Jint.Engine;
+using System;
 
 namespace Game
 {
@@ -349,7 +350,15 @@ namespace Game
 						responseString = ErrorJsonResponse(LanguageControl.Get("JsInterface", "3"));
 					}
 				}
-				else {
+				else if(context.Request.HttpMethod == "ELEVATE")
+				{
+#if WINDOWS
+					Hyper_Threading.SetPriority_Process(true);
+#endif
+					responseString = "Sucess";
+				}
+				else
+					{
 					responseString = ErrorJsonResponse(LanguageControl.Get("JsInterface", "4"));
 				}
 				HttpListenerResponse response = context.Response;

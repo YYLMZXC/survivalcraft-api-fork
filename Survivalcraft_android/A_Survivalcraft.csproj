@@ -22,7 +22,7 @@
     <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Jint" Version="4.0.2" />
+    <PackageReference Include="Jint" Version="4.0.3" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Survivalcraft\init.js" />
