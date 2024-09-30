@@ -15,25 +15,34 @@ namespace Game
 
 		public void AddDrawable(IDrawable drawable)
 		{
-			m_drawables.Add(drawable, value: true);
+			lock (m_drawables)
+			{
+                m_drawables.Add(drawable, value: true);
+            }
 		}
 
 		public void RemoveDrawable(IDrawable drawable)
 		{
-			m_drawables.Remove(drawable);
+			lock (m_drawables)
+            {
+                m_drawables.Remove(drawable);
+            }
 		}
 
 		public void Draw(Camera camera)
 		{
 			m_sortedDrawables.Clear();
-			foreach (IDrawable key2 in m_drawables.Keys)
+			lock (m_drawables)
 			{
-				int[] drawOrders = key2.DrawOrders;
-				foreach (int key in drawOrders)
-				{
-					m_sortedDrawables.Add(key, key2);
-				}
-			}
+                foreach (IDrawable key2 in m_drawables.Keys)
+                {
+                    int[] drawOrders = key2.DrawOrders;
+                    foreach (int key in drawOrders)
+                    {
+                        m_sortedDrawables.Add(key, key2);
+                    }
+                }
+            }
 			for (int j = 0; j < m_sortedDrawables.Count; j++)
 			{
 				try

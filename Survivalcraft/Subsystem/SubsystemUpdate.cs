@@ -60,33 +60,37 @@ namespace Game
 			{
 				m_subsystemTime.NextFrame();
 				bool flag = false;
-				foreach (KeyValuePair<IUpdateable, bool> item in m_toAddOrRemove)
+				lock (m_toAddOrRemove)
 				{
-					bool skipVanilla = false;
-					ModsManager.HookAction("OnIUpdateableAddOrRemove", loader =>
-					{
-						loader.OnIUpdateableAddOrRemove(this, item.Key, item.Value, skipVanilla, out bool skip);
-						skipVanilla |= skip;
-						return false;
-					});
-					if (!skipVanilla)
-					{
-                        if (item.Value)
+                    foreach (KeyValuePair<IUpdateable, bool> item in m_toAddOrRemove)
+                    {
+                        bool skipVanilla = false;
+                        ModsManager.HookAction("OnIUpdateableAddOrRemove", loader =>
                         {
-                            m_updateables.Add(item.Key, new UpdateableInfo
+                            loader.OnIUpdateableAddOrRemove(this, item.Key, item.Value, skipVanilla, out bool skip);
+                            skipVanilla |= skip;
+                            return false;
+                        });
+                        if (!skipVanilla)
+                        {
+                            if (item.Value)
                             {
-                                UpdateOrder = item.Key.UpdateOrder
-                            });
-                            flag = true;
-                        }
-                        else
-                        {
-                            m_updateables.Remove(item.Key);
-                            flag = true;
+                                m_updateables.Add(item.Key, new UpdateableInfo
+                                {
+                                    UpdateOrder = item.Key.UpdateOrder
+                                });
+                                flag = true;
+                            }
+                            else
+                            {
+                                m_updateables.Remove(item.Key);
+                                flag = true;
+                            }
                         }
                     }
-				}
-				m_toAddOrRemove.Clear();
+                    m_toAddOrRemove.Clear();
+                }
+				
 				foreach (KeyValuePair<IUpdateable, UpdateableInfo> updateable in m_updateables)
 				{
 					UpdateOrder updateOrder = updateable.Key.UpdateOrder;
@@ -106,8 +110,9 @@ namespace Game
 					m_sortedUpdateables.Sort(Comparer.Instance);
 				}
 				float dt = m_subsystemTime.GameTimeDelta;
-				foreach (IUpdateable sortedUpdateable in m_sortedUpdateables)
+				for(int j = 0; j < m_sortedUpdateables.Count; j++)
 				{
+					var sortedUpdateable = m_sortedUpdateables[j];
                     Type type = sortedUpdateable.GetType();
 					int tick1 = Environment.TickCount;
                     try
@@ -135,12 +140,18 @@ namespace Game
 
 		public void AddUpdateable(IUpdateable updateable)
 		{
-			m_toAddOrRemove[updateable] = true;
+			lock(m_toAddOrRemove)
+			{
+                m_toAddOrRemove[updateable] = true;
+            }
 		}
 
 		public void RemoveUpdateable(IUpdateable updateable)
 		{
-			m_toAddOrRemove[updateable] = false;
+			lock(m_toAddOrRemove)
+			{
+                m_toAddOrRemove[updateable] = false;
+            }
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary)

@@ -196,8 +196,12 @@ namespace Game
 			}
 			catch (Exception e)
 			{
-				ModsManager.AddException(e);
+				//ModsManager.AddException(e);
+				Log.Error(e);
 				ScreensManager.SwitchScreen("MainMenu");
+				Dialog dialog = new MessageDialog("世界运行出错", "请联系模组作者，并提供游戏日志解决" + "\n" + e.Message, LanguageControl.Ok, null, null);
+				DialogsManager.ShowDialog(null, dialog);
+				GameManager.DisposeProject();
 			}
 
 			m_cpuEndTime = Time.RealTime;

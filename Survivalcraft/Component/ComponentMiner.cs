@@ -639,7 +639,7 @@ namespace Game
 
 		public static void AddHitValueParticleSystem(float damage, Entity attacker, Entity attacked, Vector3 hitPoint, Vector3 hitDirection)
 		{
-			ComponentBody attackerBody = attacker.FindComponent<ComponentBody>();
+			ComponentBody attackerBody = attacker?.FindComponent<ComponentBody>();
 			ComponentPlayer attackerComponentPlayer = attacker.FindComponent<ComponentPlayer>();
 			ComponentHealth attackedComponentHealth = attacked.FindComponent<ComponentHealth>();
             string text2 = (0f - damage).ToString("0", CultureInfo.InvariantCulture);
