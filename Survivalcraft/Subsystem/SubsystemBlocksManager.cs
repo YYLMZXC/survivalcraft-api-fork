@@ -19,7 +19,7 @@ namespace Game
          * PostProcess进行后处理
          */
 
-        //BlocksManager存储的是类名Name，SubsystemBlockManager存储的是全名FullName
+        //BlocksManager存储的是类名Name，SubsystemBlockManager存储的也是类名
         public Dictionary<string, int> DynamicBlockNameToIndex = new Dictionary<string, int>();
 
         public ValuesDictionary m_savedValuesDictionary;
@@ -37,8 +37,8 @@ namespace Game
             //int tick1 = Environment.TickCount;
             for (int i = SurvivalCraftBlockCount + 1; i < 1024; i++)
             {
-                string fullName = m_savedValuesDictionary.GetValue<string>(i.ToString(), String.Empty);
-                if(!String.IsNullOrEmpty(fullName)) DynamicBlockNameToIndex[fullName] = i;
+                string blockName = m_savedValuesDictionary.GetValue<string>(i.ToString(), String.Empty);
+                if(!String.IsNullOrEmpty(blockName)) DynamicBlockNameToIndex[blockName] = i;
                 /*
                 if (!String.IsNullOrEmpty(fullName))
                 {

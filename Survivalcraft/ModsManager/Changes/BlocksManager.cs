@@ -266,7 +266,7 @@ namespace Game
                         AllocateBlock(allocateData, originalIndex);
                         if (subsystemBlocksManager != null)
                         {
-                            subsystemBlocksManager.DynamicBlockNameToIndex[m_blocks[allocateData.Block.BlockIndex].GetType().FullName] = originalIndex;
+                            subsystemBlocksManager.DynamicBlockNameToIndex[m_blocks[allocateData.Block.BlockIndex].GetType().Name] = originalIndex;
                         }
                     }
                 }
@@ -287,7 +287,7 @@ namespace Game
                     BlockAllocateData allocateData = BlocksAllocateData[i];
                     if (!allocateData.Allocated)
                     {
-                        bool containsKey = subsystemBlocksManager.DynamicBlockNameToIndex.TryGetValue(allocateData.Block.GetType().FullName, out int blockValue);
+                        bool containsKey = subsystemBlocksManager.DynamicBlockNameToIndex.TryGetValue(allocateData.Block.GetType().Name, out int blockValue);
                         if (containsKey)
                         {
                             AllocateBlock(allocateData, blockValue);
@@ -310,7 +310,7 @@ namespace Game
                         AllocateBlock(BlocksAllocateData[allocateDataIndex], num);
                         if (subsystemBlocksManager != null)
                         {
-                            subsystemBlocksManager.DynamicBlockNameToIndex[m_blocks[num].GetType().FullName] = num;
+                            subsystemBlocksManager.DynamicBlockNameToIndex[m_blocks[num].GetType().Name] = num;
                         }
                     }
                     catch
@@ -342,7 +342,7 @@ namespace Game
                 }
                 catch (Exception e)
                 {
-                    LoadingScreen.Warning("Loading Block " + block.GetType().FullName + " error." + e.Message);
+                    LoadingScreen.Warning("Loading Block " + block.GetType().Name + " error." + e.Message);
                 }
                 foreach (int value in block.GetCreativeValues())
                 {
