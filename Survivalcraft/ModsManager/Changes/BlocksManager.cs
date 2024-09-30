@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Game
 {
@@ -236,14 +235,26 @@ namespace Game
                 {
                     Block block = entity.Blocks[i];
                     if (block.ShouldBeAddedToProject(subsystemBlocksManager))
+                    {
+                        bool staticBlockIndexBefore = false;
+                        //对重名方块进行移除。复杂度n^2，如果严重影响性能可以考虑使用字典。
+                        BlockAllocateData blockAllocateDataToRemove = BlocksAllocateData.FirstOrDefault((BlockAllocateData b) => (b.Block.GetType().Name == block.GetType().Name));
+                        if (blockAllocateDataToRemove != null)
+                        {
+                            BlocksAllocateData.Remove(blockAllocateDataToRemove);
+                            staticBlockIndexBefore = blockAllocateDataToRemove.StaticBlockIndex;
+                            Log.Information("Block覆盖：" + blockAllocateDataToRemove.Block.GetType().AssemblyQualifiedName + " => " + block.GetType().AssemblyQualifiedName);
+                        }
                         BlocksAllocateData.Add(new BlockAllocateData
                         {
                             Block = block,
                             Index = 0,
                             Allocated = false,
-                            StaticBlockIndex = (block.StaticBlockIndex || entity == ModsManager.SurvivalCraftModEntity || block.BlockIndex <= SurvivalCraftBlockCount),
+                            StaticBlockIndex = (block.StaticBlockIndex || entity == ModsManager.SurvivalCraftModEntity || staticBlockIndexBefore),
                             ModEntity = entity
                         });
+                    }
+                        
                 }
             }
             //分配静态ID方块
