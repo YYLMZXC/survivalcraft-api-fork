@@ -2,7 +2,7 @@ namespace Game
 {
 	public class SRLatchBlock : RotateableMountedElectricElementBlock
 	{
-		public static int Index = 146;
+		public const int Index = 146;
 
 		public SRLatchBlock()
 			: base("Models/Gates", "SRLatch", 0.375f)

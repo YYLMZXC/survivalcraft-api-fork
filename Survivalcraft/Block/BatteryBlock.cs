@@ -6,7 +6,7 @@ namespace Game
 {
 	public class BatteryBlock : Block, IElectricElementBlock
 	{
-		public static int Index = 138;
+		public const int Index = 138;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

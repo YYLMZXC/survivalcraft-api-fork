@@ -5,7 +5,7 @@ namespace Game
 {
 	public class TargetBlock : MountedElectricElementBlock
 	{
-		public static int Index = 199;
+		public const int Index = 199;
 
 		public BoundingBox[][] m_boundingBoxes = new BoundingBox[4][]
 		{

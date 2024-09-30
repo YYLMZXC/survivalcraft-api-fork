@@ -10,7 +10,7 @@ namespace Game
 			Shoot
 		}
 
-		public static int Index = 216;
+		public const int Index = 216;
 
 		public override int GetFaceTextureSlot(int face, int value)
 		{

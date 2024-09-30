@@ -5,7 +5,7 @@ namespace Game
 {
 	public class ExperienceBlock : Block
 	{
-		public static int Index = 248;
+		public const int Index = 248;
 
 		public Texture2D m_texture;
 

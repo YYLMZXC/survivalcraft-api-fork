@@ -2,7 +2,7 @@ namespace Game
 {
 	public class LargeIncendiaryKegBlock : GunpowderKegBlock
 	{
-		public static int Index = 236;
+		public const int Index = 236;
 
 		public LargeIncendiaryKegBlock()
 			: base("Models/LargeGunpowderKeg", isIncendiary: true)

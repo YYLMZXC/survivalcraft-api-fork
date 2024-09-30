@@ -5,7 +5,7 @@ namespace Game
 {
 	public class AirBlock : Block
 	{
-		public static int Index = 0;
+		public const int Index = 0;
 
 		public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{

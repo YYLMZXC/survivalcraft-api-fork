@@ -2,7 +2,7 @@ namespace Game
 {
 	public class MemoryBankBlock : RotateableMountedElectricElementBlock
 	{
-		public static int Index = 186;
+		public const int Index = 186;
 
 		public MemoryBankBlock()
 			: base("Models/Gates", "MemoryBank", 0.875f)

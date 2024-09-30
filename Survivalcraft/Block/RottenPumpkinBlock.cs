@@ -2,7 +2,7 @@ namespace Game
 {
 	public class RottenPumpkinBlock : BasePumpkinBlock
 	{
-		public static int Index = 244;
+		public const int Index = 244;
 
 		public RottenPumpkinBlock()
 			: base(isRotten: true)

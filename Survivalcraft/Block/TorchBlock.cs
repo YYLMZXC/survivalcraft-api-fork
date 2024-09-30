@@ -6,7 +6,7 @@ namespace Game
 {
 	public class TorchBlock : Block
 	{
-		public static int Index = 31;
+		public const int Index = 31;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

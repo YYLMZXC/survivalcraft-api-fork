@@ -2,7 +2,7 @@ namespace Game
 {
 	public class WickerLampBlock : AlphaTestCubeBlock
 	{
-		public static int Index = 17;
+		public const int Index = 17;
 
 		public WickerLampBlock() {
 			CanBeBuiltIntoFurniture = true;

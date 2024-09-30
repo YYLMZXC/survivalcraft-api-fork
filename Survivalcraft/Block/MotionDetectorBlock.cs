@@ -6,7 +6,7 @@ namespace Game
 {
 	public class MotionDetectorBlock : MountedElectricElementBlock
 	{
-		public static int Index = 179;
+		public const int Index = 179;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

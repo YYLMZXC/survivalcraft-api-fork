@@ -5,7 +5,7 @@ namespace Game
 {
 	public class PaintStripperBucketBlock : BucketBlock
 	{
-		public static int Index = 128;
+		public const int Index = 128;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

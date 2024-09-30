@@ -5,7 +5,7 @@ namespace Game
 {
 	public class StickBlock : Block
 	{
-		public static int Index = 23;
+		public const int Index = 23;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

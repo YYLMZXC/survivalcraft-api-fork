@@ -6,7 +6,7 @@ namespace Game
 {
 	public class PhotodiodeBlock : MountedElectricElementBlock
 	{
-		public static int Index = 151;
+		public const int Index = 151;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

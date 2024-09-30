@@ -6,7 +6,7 @@ namespace Game
 {
 	public class JackOLanternBlock : Block
 	{
-		public static int Index = 132;
+		public const int Index = 132;
 
 		public BlockMesh[] m_blockMeshesByData = new BlockMesh[4];
 

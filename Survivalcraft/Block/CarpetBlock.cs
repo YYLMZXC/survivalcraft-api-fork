@@ -7,7 +7,7 @@ namespace Game
 {
 	public class CarpetBlock : CubeBlock
 	{
-		public static int Index = 208;
+		public const int Index = 208;
 
 		public BoundingBox[] m_collisionBoxes = new BoundingBox[1]
 		{

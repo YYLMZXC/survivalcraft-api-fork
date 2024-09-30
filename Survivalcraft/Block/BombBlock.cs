@@ -5,7 +5,7 @@ namespace Game
 {
 	public class BombBlock : Block
 	{
-		public static int Index = 201;
+		public const int Index = 201;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

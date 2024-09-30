@@ -5,7 +5,7 @@ namespace Game
 {
 	public class SnowBlock : CubeBlock
 	{
-		public static int Index = 61;
+		public const int Index = 61;
 
 		public BoundingBox[] m_collisionBoxes = new BoundingBox[1]
 		{

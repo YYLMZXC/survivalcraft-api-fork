@@ -8,7 +8,7 @@ namespace Game
 {
 	public class FourLedBlock : MountedElectricElementBlock
 	{
-		public static int Index = 182;
+		public const int Index = 182;
 
 		public BlockMesh m_standaloneBlockMesh;
 

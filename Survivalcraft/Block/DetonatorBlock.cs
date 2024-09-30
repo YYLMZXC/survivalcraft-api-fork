@@ -6,7 +6,7 @@ namespace Game
 {
 	public class DetonatorBlock : MountedElectricElementBlock
 	{
-		public static int Index = 147;
+		public const int Index = 147;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

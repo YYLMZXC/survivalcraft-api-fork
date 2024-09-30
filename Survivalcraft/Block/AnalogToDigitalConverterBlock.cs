@@ -2,7 +2,7 @@ namespace Game
 {
 	public class AnalogToDigitalConverterBlock : RotateableMountedElectricElementBlock
 	{
-		public static int Index = 181;
+		public const int Index = 181;
 
 		public AnalogToDigitalConverterBlock()
 			: base("Models/Gates", "AnalogToDigitalConverter", 0.375f)

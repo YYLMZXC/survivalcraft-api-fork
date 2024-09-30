@@ -6,7 +6,7 @@ namespace Game
 {
 	public class MagnetBlock : Block
 	{
-		public static int Index = 167;
+		public const int Index = 167;
 
 		public BlockMesh[] m_meshesByData = new BlockMesh[2];
 

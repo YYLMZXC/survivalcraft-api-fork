@@ -2,6 +2,6 @@ namespace Game
 {
 	public class StringBlock : FlatBlock
 	{
-		public static int Index = 198;
+		public const int Index = 198;
 	}
 }

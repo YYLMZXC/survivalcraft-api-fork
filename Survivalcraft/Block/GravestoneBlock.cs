@@ -8,7 +8,7 @@ namespace Game
 {
 	public class GravestoneBlock : Block
 	{
-		public static int Index = 189;
+		public const int Index = 189;
 
 		public BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[16];
 

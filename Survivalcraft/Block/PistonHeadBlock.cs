@@ -6,7 +6,7 @@ namespace Game
 {
 	public class PistonHeadBlock : Block
 	{
-		public static int Index = 238;
+		public const int Index = 238;
 
 		public BlockMesh[] m_blockMeshesByData = new BlockMesh[48];
 

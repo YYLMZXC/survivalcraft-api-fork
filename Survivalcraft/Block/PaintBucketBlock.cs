@@ -7,7 +7,7 @@ namespace Game
 {
 	public class PaintBucketBlock : BucketBlock
 	{
-		public static int Index = 129;
+		public const int Index = 129;
 
 		public BlockMesh m_standaloneBucketBlockMesh = new();
 

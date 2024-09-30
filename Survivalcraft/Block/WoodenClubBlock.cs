@@ -5,7 +5,7 @@ namespace Game
 {
 	public class WoodenClubBlock : Block
 	{
-		public static int Index = 122;
+		public const int Index = 122;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

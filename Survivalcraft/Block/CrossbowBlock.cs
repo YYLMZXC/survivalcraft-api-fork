@@ -6,7 +6,7 @@ namespace Game
 {
 	public class CrossbowBlock : Block
 	{
-		public static int Index = 200;
+		public const int Index = 200;
 
 		public BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[16];
 

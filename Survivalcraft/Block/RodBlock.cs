@@ -5,7 +5,7 @@ namespace Game
 {
 	public class RodBlock : Block
 	{
-		public static int Index = 195;
+		public const int Index = 195;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

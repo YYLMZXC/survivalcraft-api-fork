@@ -2,6 +2,6 @@ namespace Game
 {
 	public class WindowBlock : AlphaTestCubeBlock
 	{
-		public static int Index = 60;
+		public const int Index = 60;
 	}
 }

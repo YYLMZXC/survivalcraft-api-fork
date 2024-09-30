@@ -2,7 +2,7 @@ namespace Game
 {
 	public class TruthTableCircuitBlock : RotateableMountedElectricElementBlock
 	{
-		public static int Index = 188;
+		public const int Index = 188;
 
 		public TruthTableCircuitBlock()
 			: base("Models/Gates", "TruthTableCircuit", 0.5f)

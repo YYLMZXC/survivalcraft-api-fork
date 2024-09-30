@@ -2,7 +2,7 @@ namespace Game
 {
 	public class XorGateBlock : RotateableMountedElectricElementBlock
 	{
-		public static int Index = 156;
+		public const int Index = 156;
 
 		public XorGateBlock()
 			: base("Models/Gates", "XorGate", 0.375f)

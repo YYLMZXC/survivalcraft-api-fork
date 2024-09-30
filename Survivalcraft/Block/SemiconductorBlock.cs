@@ -2,6 +2,6 @@ namespace Game
 {
 	public class SemiconductorBlock : CubeBlock
 	{
-		public static int Index = 231;
+		public const int Index = 231;
 	}
 }

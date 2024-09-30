@@ -5,7 +5,7 @@ namespace Game
 {
 	public class GrassTrapBlock : Block
 	{
-		public static int Index = 87;
+		public const int Index = 87;
 
 		public BlockMesh m_blockMesh = new();
 

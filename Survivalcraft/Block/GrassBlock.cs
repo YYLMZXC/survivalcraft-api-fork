@@ -5,7 +5,7 @@ namespace Game
 {
 	public class GrassBlock : CubeBlock
 	{
-		public static int Index = 8;
+		public const int Index = 8;
 
 		public override int GetFaceTextureSlot(int face, int value)
 		{

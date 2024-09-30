@@ -18,7 +18,7 @@ namespace Game
 			Pumpkin
 		}
 
-		public static int Index = 173;
+		public const int Index = 173;
 
 		public override IEnumerable<int> GetCreativeValues()
 		{

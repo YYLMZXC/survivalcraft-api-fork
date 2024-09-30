@@ -2,6 +2,6 @@ namespace Game
 {
 	public class LimestoneBlock : CubeBlock
 	{
-		public static int Index = 66;
+		public const int Index = 66;
 	}
 }

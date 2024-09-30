@@ -5,7 +5,7 @@ namespace Game
 {
 	public class CactusBlock : Block
 	{
-		public static int Index = 127;
+		public const int Index = 127;
 
 		public BlockMesh m_blockMesh = new();
 

@@ -5,7 +5,7 @@ namespace Game
 {
 	public class DiamondChunkBlock : Block
 	{
-		public static int Index = 111;
+		public const int Index = 111;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

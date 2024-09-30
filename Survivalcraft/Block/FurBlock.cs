@@ -5,7 +5,7 @@ namespace Game
 {
 	public class FurBlock : Block
 	{
-		public static int Index = 207;
+		public const int Index = 207;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

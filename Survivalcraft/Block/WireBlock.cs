@@ -6,7 +6,7 @@ namespace Game
 {
 	public class WireBlock : Block, IElectricWireElementBlock, IElectricElementBlock, IPaintableBlock
 	{
-		public static int Index = 133;
+		public const int Index = 133;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

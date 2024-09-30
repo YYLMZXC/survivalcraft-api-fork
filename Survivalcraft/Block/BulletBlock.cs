@@ -13,7 +13,7 @@ namespace Game
 			BuckshotBall
 		}
 
-		public static int Index = 214;
+		public const int Index = 214;
 
 		public static float[] m_sizes = new float[3]
 		{

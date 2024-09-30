@@ -5,7 +5,7 @@ namespace Game
 {
 	public class WaterBucketBlock : BucketBlock
 	{
-		public static int Index = 91;
+		public const int Index = 91;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

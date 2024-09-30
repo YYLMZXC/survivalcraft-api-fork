@@ -6,7 +6,7 @@ namespace Game
 {
 	public class BowBlock : Block
 	{
-		public static int Index = 191;
+		public const int Index = 191;
 
 		public BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[16];
 

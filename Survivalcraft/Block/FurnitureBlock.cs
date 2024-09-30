@@ -8,7 +8,7 @@ namespace Game
 {
 	public class FurnitureBlock : Block, IPaintableBlock, IElectricElementBlock
 	{
-		public static int Index = 227;
+		public const int Index = 227;
 
 		public Matrix[] m_matrices = new Matrix[4];
 

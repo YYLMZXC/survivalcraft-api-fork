@@ -4,7 +4,7 @@ namespace Game
 {
 	public class PumpkinBlock : BasePumpkinBlock
 	{
-		public static int Index = 131;
+		public const int Index = 131;
 
 		public PumpkinBlock()
 			: base(isRotten: false)

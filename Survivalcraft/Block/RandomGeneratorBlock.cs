@@ -2,7 +2,7 @@ namespace Game
 {
 	public class RandomGeneratorBlock : RotateableMountedElectricElementBlock
 	{
-		public static int Index = 157;
+		public const int Index = 157;
 
 		public RandomGeneratorBlock()
 			: base("Models/Gates", "RandomGenerator", 0.375f)

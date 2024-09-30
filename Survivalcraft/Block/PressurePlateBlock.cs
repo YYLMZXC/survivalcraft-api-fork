@@ -7,7 +7,7 @@ namespace Game
 {
 	public class PressurePlateBlock : MountedElectricElementBlock
 	{
-		public static int Index = 144;
+		public const int Index = 144;
 
 		public BlockMesh[] m_standaloneBlockMeshesByMaterial = new BlockMesh[2];
 

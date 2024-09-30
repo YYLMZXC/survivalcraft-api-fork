@@ -7,7 +7,7 @@ namespace Game
 {
 	public class PistonBlock : Block, IElectricElementBlock
 	{
-		public static int Index = 237;
+		public const int Index = 237;
 
 		public BlockMesh[] m_standaloneBlockMeshes = new BlockMesh[4];
 

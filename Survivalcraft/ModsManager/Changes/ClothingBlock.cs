@@ -9,7 +9,7 @@ namespace Game
 {
 	public class ClothingBlock : Block
 	{
-		public static int Index = 203;
+		public const int Index = 203;
 
 		public Dictionary<int, ClothingData> m_clothingData = [];
 
