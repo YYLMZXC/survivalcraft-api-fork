@@ -340,6 +340,11 @@ namespace Game
 
         }
 
+        public virtual void ChangeVisualEffectOnInjury(ComponentHealth componentHealth, float lastHealth, ref float redScreenFactor, ref bool playPainSound, ref int healthBarFlashCount)
+        {
+
+        }
+
         /// <summary>
         /// 更改天空颜色
         /// </summary>
