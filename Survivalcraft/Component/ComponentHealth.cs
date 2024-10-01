@@ -43,9 +43,11 @@ namespace Game
         public virtual float AirLackDamageFactor { get; set; }//ÄçË®ÉËº¦ÏµÊý
         public virtual float MagmaDamageFactor { get; set; }//ÈÛÑÒÉËº¦ÏµÊý
         public virtual float CrushDamageFactor { get; set; }//¼·Ñ¹ÉËº¦ÏµÊý
+        public virtual float SpikeDamageFactor { get; set; }//¼â´ÌÉËº¦ÏµÊý
 
         public virtual void OnSpiked(SubsystemBlockBehavior spikeBlockBehavior, float damage , CellFace cellFace, float velocity, ComponentBody componentBody, string causeOfDeath)
         {
+            damage *= SpikeDamageFactor;
             ModsManager.HookAction("OnCreatureSpiked", loader =>
             {
                 loader.OnCreatureSpiked(this, spikeBlockBehavior, cellFace, velocity, ref damage, ref causeOfDeath);
@@ -473,11 +475,12 @@ namespace Game
             AttackResilienceFactor = 1f;
             FallResilienceFactor = 1f;
             FireResilienceFactor = 1f;
-            HealFactor = 1f;
-            VoidDamageFactor = 1f;
-            AirLackDamageFactor = 1f;
-            MagmaDamageFactor = 1f;
-            CrushDamageFactor = 1f;
+            HealFactor = valuesDictionary.GetValue<float>("HealFactor");
+            VoidDamageFactor = valuesDictionary.GetValue<float>("VoidDamageFactor");
+            AirLackDamageFactor = valuesDictionary.GetValue<float>("AirLackDamageFactor");
+            MagmaDamageFactor = valuesDictionary.GetValue<float>("MagmaDamageFactor");
+            CrushDamageFactor = valuesDictionary.GetValue<float>("CrushDamageFactor");
+            SpikeDamageFactor = valuesDictionary.GetValue<float>("SpikeDamageFactor");
             StackExperienceOnKill = true;
             DeathTime = (value >= 0.0) ? new double?(value) : null;
             CauseOfDeath = valuesDictionary.GetValue<string>("CauseOfDeath");

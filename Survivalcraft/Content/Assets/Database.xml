@@ -4134,6 +4134,12 @@
 					<Parameter Name="FireResilience" Description="Resilience of creature to fire. Injury per second = 1 / resilience" Guid="d6e105a0-8950-4550-81ea-5726afca17e9" Value="20" Type="float" />
 					<Parameter Name="CauseOfDeath" Description="Cause of death of creature" Guid="d80ab9ad-9782-49ff-9ee6-b1ad2ee7323c" Value="" Type="string" />
 					<Parameter Name="AirCapacity" Description="Time a creature can last on a single breath, in seconds" Guid="ef78e617-f31e-4940-9590-09837d0036dc" Value="10" Type="float" />
+					<Parameter Name="HealFactor" Description="The speed of the heal for a creature" Guid="400b6f37-bb76-79d7-cd2a-28a5bbdebc8e" Value="1" Type="float" />
+					<Parameter Name="VoidDamageFactor" Description="controls the damage taken when the creature position is too high or too low" Guid="59028bf3-0003-41c1-2c02-f3196294fe40" Value="1" Type="float" />
+					<Parameter Name="AirLackDamageFactor" Description="controls the damage taken when the creature cannot breathe" Guid="e76def38-d79c-0760-58cc-76a408f03508" Value="1" Type="float" />
+					<Parameter Name="MagmaDamageFactor" Description="controls the damage taken when the creature is in magma" Guid="09385792-004e-7f5f-b989-3952e449dfba" Value="1" Type="float" />
+					<Parameter Name="CrushDamageFactor" Description="controls the damage taken when the creature is crushed" Guid="cacf3868-e0df-c47f-462d-a647731ffa32" Value="1" Type="float" />
+					<Parameter Name="SpikeDamageFactor" Description="controls the damage taken when the creature is getting spiked by spikes, cactus and sea urchin" Guid="bc9fa077-d6c1-9101-91d1-b0c88fc481c8" Value="1" Type="float" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="Frame" Description="Contains position and rotation Quaternion to orient entity in the world" Guid="d981b2a9-4bf4-4b0d-ae4f-a088b3e19e8c" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
 					<Parameter Name="Class" Guid="1173344e-f6df-49fa-845a-545c27a66435" Value="Game.ComponentFrame" Type="string" />
