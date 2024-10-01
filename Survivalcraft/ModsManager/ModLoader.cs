@@ -345,6 +345,11 @@ namespace Game
 
         }
 
+        public virtual void OnCreatureSpiked(ComponentHealth componentHealth, SubsystemBlockBehavior spikeBlockBehavior, CellFace cellFace, float velocity, ref float damage, ref string causeOfDeath)
+        {
+
+        }
+
         /// <summary>
         /// 更改天空颜色
         /// </summary>
