@@ -321,7 +321,7 @@ namespace Game
             {
                 UpdateTrailParticleSystem(dt);
             }
-            if (isProjectileInFluid)
+            if (isProjectileInFluid && !IsInFluid)
             {
                 if(DampingInFluid <= 0.001f)
                 {

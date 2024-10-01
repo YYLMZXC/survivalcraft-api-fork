@@ -227,7 +227,9 @@ namespace Game
 		public EggType GetEggType(int data)
 		{
 			int index = (data >> 4) & 0xFFF;
-			return m_eggTypes[index];
+			bool found = m_eggTypes.TryGetValue(index, out var eggType);
+			if(found) return eggType;
+			return m_eggTypes[0];
 		}
 
 		public EggType GetEggTypeByCreatureTemplateName(string templateName)

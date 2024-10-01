@@ -154,7 +154,6 @@ namespace Game
                     if (!IsFireProof)
                     {
                         ToRemove = true;
-                        SplashGenerated = true;
                         SubsystemPickables.m_subsystemExplosions.TryExplodeBlock(Terrain.ToCell(Position.X), Terrain.ToCell(Position.Y), Terrain.ToCell(Position.Z), Value);
                     }
                 }

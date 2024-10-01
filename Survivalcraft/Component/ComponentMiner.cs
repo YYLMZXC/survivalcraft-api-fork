@@ -640,8 +640,8 @@ namespace Game
 		public static void AddHitValueParticleSystem(float damage, Entity attacker, Entity attacked, Vector3 hitPoint, Vector3 hitDirection)
 		{
 			ComponentBody attackerBody = attacker?.FindComponent<ComponentBody>();
-			ComponentPlayer attackerComponentPlayer = attacker.FindComponent<ComponentPlayer>();
-			ComponentHealth attackedComponentHealth = attacked.FindComponent<ComponentHealth>();
+			ComponentPlayer attackerComponentPlayer = attacker?.FindComponent<ComponentPlayer>();
+			ComponentHealth attackedComponentHealth = attacked?.FindComponent<ComponentHealth>();
             string text2 = (0f - damage).ToString("0", CultureInfo.InvariantCulture);
             Vector3 hitValueParticleVelocity = Vector3.Zero;
             if (attackerBody != null) hitValueParticleVelocity = attackerBody.Velocity;
@@ -652,7 +652,7 @@ namespace Game
                 modLoader.SetHitValueParticleSystem(particleSystem, true);
                 return false;
             });
-            attacker.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
+            attacked?.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
         }
 
         public void Update(float dt)
