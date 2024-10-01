@@ -87,6 +87,7 @@ namespace GameEntitySystem
 			{
 				try
 				{
+					Log.Error("Loading World Failed!\n" + e);
 					Dispose();
 				}
 				catch (Exception e2)
