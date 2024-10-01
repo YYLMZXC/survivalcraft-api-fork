@@ -726,10 +726,6 @@ namespace Game
             skipVanilla = false;
         }
 
-        public virtual void OnPickableUpdate(Pickable pickable, SubsystemPickables subsystemPickables, float dt, bool skippedByOtherMods, out bool skipVanilla)
-        {
-            skipVanilla = false;
-        }
         public virtual void OnProjectileDraw(Projectile projectile, SubsystemProjectiles subsystemProjectiles, Camera camera, int drawOrder, ref bool shouldDrawBlock, ref float drawBlockSize, ref Color drawBlockColor)
         {
         }

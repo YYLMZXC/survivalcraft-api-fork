@@ -11,5 +11,249 @@ namespace Game
 		public Matrix? StuckMatrix;
 
 		public bool SplashGenerated = true;
+
+		public float? MaxTimeExist;
+
+		protected double m_timeWaitToAutoPick = 0.5;
+
+		protected float m_distanceToPick = 1f;
+
+		protected float m_distanceToFlyToTarget = 1.75f;
+		public virtual double TimeWaitToAutoPick => m_timeWaitToAutoPick;
+		public virtual float DistanceToPick => m_distanceToPick;
+		public virtual float DistanceToFlyToTarget => m_distanceToFlyToTarget;
+
+		public ComponentBody FlyToBody;
+
+        public SubsystemPickables SubsystemPickables;
+
+        public SubsystemTerrain SubsystemTerrain;
+        public virtual void Update(float dt)
+        {
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(Value)];
+            int pickablesRemain = SubsystemPickables.m_pickables.Count - SubsystemPickables.m_pickablesToRemove.Count;
+            float maxTimeExist = MaxTimeExist ?? MathUtils.Lerp(300f, 90f, MathUtils.Saturate(pickablesRemain / 60f));
+            double timeExisted = SubsystemPickables.m_subsystemGameInfo.TotalElapsedGameTime - CreationTime;
+            if (timeExisted > maxTimeExist)
+            {
+                ToRemove = true;
+            }
+            else
+            {
+                TerrainChunk chunkAtCell = SubsystemTerrain.Terrain.GetChunkAtCell(Terrain.ToCell(Position.X), Terrain.ToCell(Position.Z));
+                if (chunkAtCell != null && chunkAtCell.State > TerrainChunkState.InvalidContents4)
+                {
+                    Vector3 positionAtdt = Position + Velocity * dt;
+                    if (!FlyToPosition.HasValue && timeExisted > TimeWaitToAutoPick)
+                    {
+                        UpdateWaitingForPick(dt);
+                    }
+                    if (FlyToPosition.HasValue)
+                    {
+                        UpdateMovementWithTarget(FlyToBody, dt);
+                    }
+                    else
+                    {
+                        UpdateMovement(dt, ref positionAtdt);
+                    }
+                    Position = positionAtdt;
+                }
+            }
+        }
+        public virtual void UpdateWaitingForPick(float dt)
+        {
+            foreach (ComponentPlayer tmpPlayer in SubsystemPickables.m_tmpPlayers)
+            {
+                ComponentBody componentBody = tmpPlayer.ComponentBody;
+                Vector3 v = componentBody.Position + new Vector3(0f, 0.75f, 0f);
+                float distanceToTargetSquare = (v - Position).LengthSquared();
+                if (distanceToTargetSquare < DistanceToFlyToTarget * DistanceToFlyToTarget)
+                {
+                    //普遍的特殊处理
+                    SubsystemBlockBehavior[] blockBehaviors = SubsystemPickables.m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(Value));
+                    for (int i = 0; i < blockBehaviors.Length; i++)
+                    {
+                        if (ToRemove) break;
+                         blockBehaviors[i].OnPickableGetNearToPlayer(this, componentBody, v - Position);
+                    }
+                    //对一般物品的处理
+                    IInventory inventory = tmpPlayer.ComponentMiner.Inventory;
+                    if (!ToRemove && ComponentInventoryBase.FindAcquireSlotForItem(inventory, Value) >= 0)
+                    {
+                        if (distanceToTargetSquare < DistanceToPick * DistanceToPick)
+                        {
+                            Count = ComponentInventoryBase.AcquireItems(inventory, Value, Count);
+                            if (Count == 0)
+                            {
+                                ToRemove = true;
+                                SubsystemPickables.m_subsystemAudio.PlaySound("Audio/PickableCollected", 0.7f, -0.4f, Position, 2f, autoDelay: false);
+                            }
+                        }
+                        else if (!StuckMatrix.HasValue)
+                        {
+                            FlyToPosition = v + (0.1f * MathF.Sqrt(distanceToTargetSquare) * componentBody.Velocity);
+                            FlyToBody = tmpPlayer.ComponentBody;
+                        }
+                    }
+                }
+            }
+        }
+		public virtual void UpdateMovement(float dt, ref Vector3 positionAtdt)
+        {
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(Value)];
+            Vector2? vector2 = SubsystemPickables.m_subsystemFluidBlockBehavior.CalculateFlowSpeed(Terrain.ToCell(Position.X), Terrain.ToCell(Position.Y + 0.1f), Terrain.ToCell(Position.Z), out FluidBlock surfaceBlock, out float? surfaceHeight);
+            if (!StuckMatrix.HasValue)
+            {
+                TerrainRaycastResult? terrainRaycastResult = SubsystemTerrain.Raycast(Position, positionAtdt, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
+                if (terrainRaycastResult.HasValue)
+                {
+                    int cellValue = SubsystemTerrain.Terrain.GetCellValue(terrainRaycastResult.Value.CellFace.X, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z);
+                    SubsystemBlockBehavior[] blockBehaviors = SubsystemPickables.m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
+                    for (int i = 0; i < blockBehaviors.Length; i++)
+                    {
+                        blockBehaviors[i].OnHitByProjectile(terrainRaycastResult.Value.CellFace, this);
+                    }
+                    if (SubsystemTerrain.Raycast(Position, Position, useInteractionBoxes: false, skipAirBlocks: true, (int value2, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value2)].IsCollidable_(value2)).HasValue)
+                    {
+                        int num8 = Terrain.ToCell(Position.X);
+                        int num9 = Terrain.ToCell(Position.Y);
+                        int num10 = Terrain.ToCell(Position.Z);
+                        int num11 = 0;
+                        int num12 = 0;
+                        int num13 = 0;
+                        int? num14 = null;
+                        for (int j = -3; j <= 3; j++)
+                        {
+                            for (int k = -3; k <= 3; k++)
+                            {
+                                for (int l = -3; l <= 3; l++)
+                                {
+                                    int value = SubsystemTerrain.Terrain.GetCellContents(j + num8, k + num9, l + num10);
+                                    if (!BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value))
+                                    {
+                                        int num15 = (j * j) + (k * k) + (l * l);
+                                        if (!num14.HasValue || num15 < num14.Value)
+                                        {
+                                            num11 = j + num8;
+                                            num12 = k + num9;
+                                            num13 = l + num10;
+                                            num14 = num15;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (num14.HasValue)
+                        {
+                            FlyToPosition = new Vector3(num11, num12, num13) + new Vector3(0.5f);
+                        }
+                        else
+                        {
+                            ToRemove = true;
+                        }
+                    }
+                    else
+                    {
+                        Plane plane = terrainRaycastResult.Value.CellFace.CalculatePlane();
+                        bool flag2 = vector2.HasValue && vector2.Value != Vector2.Zero;
+                        if (plane.Normal.X != 0f)
+                        {
+                            float num16 = (flag2 || MathF.Sqrt(MathUtils.Sqr(Velocity.Y) + MathUtils.Sqr(Velocity.Z)) > 10f) ? 0.95f : 0.25f;
+                            Velocity *= new Vector3(0f - num16, num16, num16);
+                        }
+                        if (plane.Normal.Y != 0f)
+                        {
+                            float num17 = (flag2 || MathF.Sqrt(MathUtils.Sqr(Velocity.X) + MathUtils.Sqr(Velocity.Z)) > 10f) ? 0.95f : 0.25f;
+                            Velocity *= new Vector3(num17, 0f - num17, num17);
+                            if (flag2)
+                            {
+                                Velocity.Y += 0.1f * plane.Normal.Y;
+                            }
+                        }
+                        if (plane.Normal.Z != 0f)
+                        {
+                            float num18 = (flag2 || MathF.Sqrt(MathUtils.Sqr(Velocity.X) + MathUtils.Sqr(Velocity.Y)) > 10f) ? 0.95f : 0.25f;
+                            Velocity *= new Vector3(num18, num18, 0f - num18);
+                        }
+                        positionAtdt = Position;
+                    }
+                }
+            }
+            else
+            {
+                Vector3 vector3 = StuckMatrix.Value.Translation + (StuckMatrix.Value.Up * block.ProjectileTipOffset);
+                if (!SubsystemTerrain.Raycast(vector3, vector3, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value)).HasValue)
+                {
+                    Position = StuckMatrix.Value.Translation;
+                    Velocity = Vector3.Zero;
+                    StuckMatrix = null;
+                }
+            }
+            if (surfaceBlock is FluidBlock && !SplashGenerated)
+            {
+                if(surfaceBlock is MagmaBlock)
+                {
+                    SubsystemPickables.m_subsystemParticles.AddParticleSystem(new MagmaSplashParticleSystem(SubsystemTerrain, Position, large: false));
+                    SubsystemPickables.m_subsystemAudio.PlayRandomSound("Audio/Sizzles", 1f, SubsystemPickables.m_random.Float(-0.2f, 0.2f), Position, 3f, autoDelay: true);
+                    if (!IsFireProof)
+                    {
+                        ToRemove = true;
+                        SplashGenerated = true;
+                        SubsystemPickables.m_subsystemExplosions.TryExplodeBlock(Terrain.ToCell(Position.X), Terrain.ToCell(Position.Y), Terrain.ToCell(Position.Z), Value);
+                    }
+                }
+                else
+                {
+                    SubsystemPickables.m_subsystemParticles.AddParticleSystem(new WaterSplashParticleSystem(SubsystemTerrain, Position, large: false));
+                    SubsystemPickables.m_subsystemAudio.PlayRandomSound("Audio/Splashes", 1f, SubsystemPickables.m_random.Float(-0.2f, 0.2f), Position, 6f, autoDelay: true);
+                }
+                SplashGenerated = true;
+            }
+            else if (surfaceBlock == null)
+            {
+                SplashGenerated = false;
+            }
+            //对于火焰的处理
+            if (!IsFireProof && SubsystemPickables.m_subsystemTime.PeriodicGameTimeEvent(1.0, GetHashCode() % 100 / 100.0) && (SubsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(Position.X), Terrain.ToCell(Position.Y + 0.1f), Terrain.ToCell(Position.Z)) == 104 || SubsystemPickables.m_subsystemFireBlockBehavior.IsCellOnFire(Terrain.ToCell(Position.X), Terrain.ToCell(Position.Y + 0.1f), Terrain.ToCell(Position.Z))))
+            {
+                SubsystemPickables.m_subsystemAudio.PlayRandomSound("Audio/Sizzles", 1f, SubsystemPickables.m_random.Float(-0.2f, 0.2f), Position, 3f, autoDelay: true);
+                ToRemove = true;
+                SubsystemPickables.m_subsystemExplosions.TryExplodeBlock(Terrain.ToCell(Position.X), Terrain.ToCell(Position.Y), Terrain.ToCell(Position.Z), Value);
+            }
+            //掉落物在卡住的时候的更新
+            if (!StuckMatrix.HasValue)
+            {
+                if (vector2.HasValue && surfaceHeight.HasValue)
+                {
+                    float num19 = surfaceHeight.Value - Position.Y;
+                    float num20 = MathUtils.Saturate(3f * num19);
+                    Velocity.X += 4f * dt * (vector2.Value.X - Velocity.X);
+                    Velocity.Y -= 10f * dt;
+                    Velocity.Y += 10f * (1f / block.GetDensity(Value) * num20) * dt;
+                    Velocity.Z += 4f * dt * (vector2.Value.Y - Velocity.Z);
+                    Velocity.Y *= MathF.Pow(0.001f, dt);
+                }
+                else
+                {
+                    Velocity.Y -= 10f * dt;
+                    Velocity *= MathF.Pow(0.5f, dt);
+                }
+            }
+        }
+        public virtual void UpdateMovementWithTarget(ComponentBody targetBody, float dt)
+		{
+			if (!FlyToPosition.HasValue) return;
+            Vector3 v2 = FlyToPosition.Value - Position;
+            float num7 = v2.LengthSquared();
+            if (num7 >= 0.25f)
+            {
+                Velocity = 6f * v2 / MathF.Sqrt(num7);
+            }
+            else
+            {
+                FlyToPosition = null;
+				FlyToBody = null;
+            }
+        }
 	}
 }

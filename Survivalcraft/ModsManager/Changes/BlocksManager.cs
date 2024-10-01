@@ -243,7 +243,7 @@ namespace Game
                         {
                             BlocksAllocateData.Remove(blockAllocateDataToRemove);
                             staticBlockIndexBefore = blockAllocateDataToRemove.StaticBlockIndex;
-                            Log.Information("Block覆盖：" + blockAllocateDataToRemove.Block.GetType().AssemblyQualifiedName + " => " + block.GetType().AssemblyQualifiedName);
+                            //Log.Information("Block覆盖：" + blockAllocateDataToRemove.Block.GetType().AssemblyQualifiedName + " => " + block.GetType().AssemblyQualifiedName);
                         }
                         BlocksAllocateData.Add(new BlockAllocateData
                         {

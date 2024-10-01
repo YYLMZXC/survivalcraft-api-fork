@@ -118,5 +118,9 @@ namespace Game
 		{
 			SubsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
 		}
+
+		public virtual void OnPickableGetNearToPlayer(Pickable pickable, ComponentBody target, Vector3 distanceToTarget)
+		{
+		}
 	}
 }

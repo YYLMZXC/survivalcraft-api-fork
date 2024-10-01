@@ -17,5 +17,7 @@ namespace Game
 		public bool ToRemove;
 
 		public IInventory Creator;//指明该弹射物，掉落物是从哪一个IInventory生成的。目前这里没有完善。可以实现发射器攻击会让mod生物试图毁坏发射器等操作。
+
+		public bool IsFireProof;//该弹射物和掉落物防火，不会被火焰或熔岩烧毁
 	}
 }
