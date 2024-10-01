@@ -143,7 +143,7 @@ namespace Game
             {
                 bodyRaycastResult.ComponentBody.Entity.FindComponent<ComponentOnFire>()?.SetOnFire(Owner, m_random.Float(6f, 8f));
             }
-            positionAtdt = Position;
+            if(!ignoreBody) positionAtdt = Position;
             Velocity = velocityAfterAttack;
             AngularVelocity = angularVelocityAfterAttack;
         }

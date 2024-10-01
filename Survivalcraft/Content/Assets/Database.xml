@@ -399,6 +399,7 @@
 						<MemberComponentTemplate Name="Sleep" Guid="e7b98f0e-317f-4589-8033-ca605f92ee15" InheritanceParent="188816b9-23bd-4fb2-9a3b-ac78540b5e6b" />
 						<MemberComponentTemplate Name="Input" Guid="f5e5a7c3-b04e-4d95-8db4-2e7574adc4b9" InheritanceParent="74f93359-4e79-43ab-8cce-ff85a3ddedb3" />
 						<MemberComponentTemplate Name="BlockHighlight" Guid="f985c94e-37f3-4491-9887-d3c4162f48ac" InheritanceParent="3a86f5a6-1d85-4f4c-8c3b-de5bdcbd1505" />
+						<MemberComponentTemplate Name="PickableGathererPlayer" Guid="24696c7b-d41f-07c2-b997-29e03d88d973" InheritanceParent="fa2bb746-b851-8b94-c3f5-bf09ead351a6" />
 					</EntityTemplate>
 					<EntityTemplate Name="FlightlessBird" Guid="548cf071-2593-45c2-b1c5-623b7c473612" InheritanceParent="3f077159-f492-419b-859a-bb051de6339f">
 						<MemberComponentTemplate Name="StareBehavior" Guid="01664144-a8e3-4b08-9f2b-6c037a7a8ee7" InheritanceParent="e4fdbb74-183f-4075-9d92-c67f58d700b9" />
@@ -4174,6 +4175,9 @@
 				<ComponentTemplate Name="Dispenser" Description="A dispenser that dispenses items" Guid="fa15e6eb-9078-4abf-873f-4a8da609e287" InheritanceParent="81a44c6a-c30a-4f53-8d64-0c30aabab8f9">
 					<Parameter Name="SlotsCount" Guid="8bc760a1-06f0-4313-9162-480eaee2be4c" Value="8" Type="int" />
 					<Parameter Name="Class" Guid="b2e68ecd-49fc-4c05-b784-424da13f8550" Value="Game.ComponentDispenser" Type="string" />
+				</ComponentTemplate>
+				<ComponentTemplate Name="PickableGathererPlayer" Description="Component that controls player to get pickables" Guid="fa2bb746-b851-8b94-c3f5-bf09ead351a6" InheritanceParent="81a44c6a-c30a-4f53-8d64-0c30aabab8f9">
+					<Parameter Name="Class" Guid="dcb1a27b-64ab-dcc7-3a34-8e8097873d23" Value="Game.ComponentPickableGathererPlayer" Type="string" />
 				</ComponentTemplate>
 			</Folder>
 			<Folder Name="Rendering" Guid="dec469ce-9b77-465f-a2a8-36d2640424db">

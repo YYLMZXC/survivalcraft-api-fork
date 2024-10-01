@@ -21,7 +21,7 @@ namespace Game
 		public virtual float DistanceToPick => m_distanceToPick;
 		public virtual float DistanceToFlyToTarget => m_distanceToFlyToTarget;
 
-		public ComponentBody FlyToBody;
+		public ComponentPickableGatherer FlyToGatherer;
 
         public SubsystemPickables SubsystemPickables;
 
@@ -42,57 +42,15 @@ namespace Game
                 if (chunkAtCell != null && chunkAtCell.State > TerrainChunkState.InvalidContents4)
                 {
                     Vector3 positionAtdt = Position + Velocity * dt;
-                    if (!FlyToPosition.HasValue && timeExisted > TimeWaitToAutoPick)
-                    {
-                        UpdateWaitingForPick(dt);
-                    }
                     if (FlyToPosition.HasValue)
                     {
-                        UpdateMovementWithTarget(FlyToBody, dt);
+                        UpdateMovementWithTarget(FlyToGatherer, dt);
                     }
                     else
                     {
                         UpdateMovement(dt, ref positionAtdt);
                     }
                     Position = positionAtdt;
-                }
-            }
-        }
-        public virtual void UpdateWaitingForPick(float dt)
-        {
-            foreach (ComponentPlayer tmpPlayer in SubsystemPickables.m_tmpPlayers)
-            {
-                ComponentBody componentBody = tmpPlayer.ComponentBody;
-                Vector3 v = componentBody.Position + new Vector3(0f, 0.75f, 0f);
-                float distanceToTargetSquare = (v - Position).LengthSquared();
-                if (distanceToTargetSquare < DistanceToFlyToTarget * DistanceToFlyToTarget)
-                {
-                    //普遍的特殊处理
-                    SubsystemBlockBehavior[] blockBehaviors = SubsystemPickables.m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(Value));
-                    for (int i = 0; i < blockBehaviors.Length; i++)
-                    {
-                        if (ToRemove) break;
-                         blockBehaviors[i].OnPickableGetNearToPlayer(this, componentBody, v - Position);
-                    }
-                    //对一般物品的处理
-                    IInventory inventory = tmpPlayer.ComponentMiner.Inventory;
-                    if (!ToRemove && ComponentInventoryBase.FindAcquireSlotForItem(inventory, Value) >= 0)
-                    {
-                        if (distanceToTargetSquare < DistanceToPick * DistanceToPick)
-                        {
-                            Count = ComponentInventoryBase.AcquireItems(inventory, Value, Count);
-                            if (Count == 0)
-                            {
-                                ToRemove = true;
-                                SubsystemPickables.m_subsystemAudio.PlaySound("Audio/PickableCollected", 0.7f, -0.4f, Position, 2f, autoDelay: false);
-                            }
-                        }
-                        else if (!StuckMatrix.HasValue)
-                        {
-                            FlyToPosition = v + (0.1f * MathF.Sqrt(distanceToTargetSquare) * componentBody.Velocity);
-                            FlyToBody = tmpPlayer.ComponentBody;
-                        }
-                    }
                 }
             }
         }
@@ -239,7 +197,7 @@ namespace Game
                 }
             }
         }
-        public virtual void UpdateMovementWithTarget(ComponentBody targetBody, float dt)
+        public virtual void UpdateMovementWithTarget(ComponentPickableGatherer targetGatherer, float dt)
 		{
 			if (!FlyToPosition.HasValue) return;
             Vector3 v2 = FlyToPosition.Value - Position;
@@ -251,7 +209,7 @@ namespace Game
             else
             {
                 FlyToPosition = null;
-				FlyToBody = null;
+				FlyToGatherer = null;
             }
         }
 	}

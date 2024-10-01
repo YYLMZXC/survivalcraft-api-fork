@@ -31,6 +31,7 @@ namespace Game
 
 		public SubsystemFluidBlockBehavior m_subsystemFluidBlockBehavior;
 
+		[Obsolete("该字段已弃用，掉落物被玩家的拾取逻辑被转移到ComponentPickableGathererPlayer中")]
 		public List<ComponentPlayer> m_tmpPlayers = [];
 
 		public List<Pickable> m_pickables = [];
@@ -82,7 +83,10 @@ namespace Game
                 loader.OnPickableAdded(this, ref pickable, null);
                 return false;
             });
-            m_pickables.Add(pickable);
+			lock (m_pickables)
+			{
+                m_pickables.Add(pickable);
+            }
 			PickableAdded?.Invoke(pickable);
 			return pickable;
 		}
@@ -147,30 +151,29 @@ namespace Game
 
 		public void Update(float dt)
 		{
-			m_tmpPlayers.Clear();
-			foreach (ComponentPlayer componentPlayer in m_subsystemPlayers.ComponentPlayers)
-			{
-				if (componentPlayer.ComponentHealth.Health > 0f)
+			for(int i = 0; i < m_pickables.Count; i++)
+			{ 
+				Pickable pickable = m_pickables[i];
+				lock (pickable)
 				{
-					m_tmpPlayers.Add(componentPlayer);
-				}
-			}
-			foreach (Pickable pickable in m_pickables)
-			{
-                if (pickable.ToRemove)
-				{
-					m_pickablesToRemove.Add(pickable);
-				}
-				else
-				{
-					pickable.SubsystemTerrain = m_subsystemTerrain;
-					pickable.SubsystemPickables = this;
-					pickable.Update(dt);
-				}
+                    if (pickable.ToRemove)
+                    {
+                        m_pickablesToRemove.Add(pickable);
+                    }
+                    else
+                    {
+                        pickable.SubsystemTerrain = m_subsystemTerrain;
+                        pickable.SubsystemPickables = this;
+                        pickable.Update(dt);
+                    }
+                }
 			}
 			foreach (Pickable item in m_pickablesToRemove)
 			{
-				m_pickables.Remove(item);
+				lock (m_pickables)
+				{
+                    m_pickables.Remove(item);
+                }
 				PickableRemoved?.Invoke(item);
 			}
 			m_pickablesToRemove.Clear();
@@ -206,7 +209,10 @@ namespace Game
                     loader.OnPickableAdded(this, ref pickable, item);
                     return false;
                 });
-                m_pickables.Add(pickable);
+				lock (m_pickables)
+				{
+                    m_pickables.Add(pickable);
+                }
 			}
 		}
 
