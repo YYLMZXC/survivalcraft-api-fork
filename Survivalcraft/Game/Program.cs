@@ -199,7 +199,7 @@ namespace Game
 				//ModsManager.AddException(e);
 				Log.Error(e);
 				ScreensManager.SwitchScreen("MainMenu");
-				Dialog dialog = new MessageDialog("世界运行出错", "请联系模组作者，并提供游戏日志解决" + "\n" + e.Message, LanguageControl.Ok, null, null);
+				Dialog dialog = new MessageDialog(LanguageControl.Get("MainMenuScreen", 11), LanguageControl.Get("MainMenuScreen", 12) + "\n" + e.Message, LanguageControl.Ok, null, null);
 				DialogsManager.ShowDialog(null, dialog);
 				GameManager.DisposeProject();
 			}
