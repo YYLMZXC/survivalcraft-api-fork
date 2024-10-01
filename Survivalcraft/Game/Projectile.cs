@@ -12,7 +12,17 @@ namespace Game
         public bool IsInFluid;
 
         [Obsolete("Use IsInFluid instead.")]
-		public bool IsInWater => IsInFluid;
+		public bool IsInWater
+        {
+            get
+            {
+                return IsInFluid;
+            }
+            set
+            {
+                IsInFluid = value;
+            }
+        }
 
 		public double LastNoiseTime;
 

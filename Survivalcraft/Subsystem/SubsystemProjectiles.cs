@@ -303,6 +303,21 @@ namespace Game
             int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
             return BlocksManager.Blocks[cellContents] is FluidBlock;
         }
+		[Obsolete("SubsystemProjectiles不再提供射弹更新，请转移到Projectile.Update()中")]
+        public virtual bool IsMagma(Vector3 position)
+        {
+            int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
+            return BlocksManager.Blocks[cellContents] is MagmaBlock;
+        }
+		[Obsolete("SubsystemProjectiles不再提供射弹更新，请转移到Projectile.Update()中")]
+        public virtual void MakeProjectileNoise(Projectile projectile)
+        {
+            if (m_subsystemTime.GameTime - projectile.LastNoiseTime > 0.5)
+            {
+                m_subsystemNoise.MakeNoise(projectile.Position, 0.25f, 6f);
+                projectile.LastNoiseTime = m_subsystemTime.GameTime;
+            }
+        }
 
         public static void CalculateVelocityAlignMatrix(Block projectileBlock, Vector3 position, Vector3 velocity, out Matrix matrix)
 		{
