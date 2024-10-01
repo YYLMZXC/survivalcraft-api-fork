@@ -1183,6 +1183,12 @@
     <Compile Include="..\Survivalcraft\Component\ComponentWalkAroundBehavior.cs">
       <Link>Component\ComponentWalkAroundBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentPickableGathererPlayer.cs">
+      <Link>Component\ComponentPickableGathererPlayer.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Component\ComponentPickableGatherer.cs">
+      <Link>Component\ComponentPickableGatherer.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Dialog\BuildFurnitureDialog.cs">
       <Link>Dialog\BuildFurnitureDialog.cs</Link>
     </Compile>
@@ -2710,6 +2716,9 @@
     </Compile>
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemWoodBlockBehavior.cs">
       <Link>Subsystem\SubsystemWoodBlockBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Subsystem\SubsystemExperienceBlockBehavior.cs">
+      <Link>Subsystem\SubsystemExperienceBlockBehavior.cs</Link>
     </Compile>
     <Compile Include="..\Survivalcraft\Widget\ArrowLineWidget.cs">
       <Link>Widget\ArrowLineWidget.cs</Link>
