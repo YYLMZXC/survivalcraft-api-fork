@@ -145,7 +145,6 @@ namespace Game
 			OpaqueShader.GetParameter("u_origin", true).SetValue(v.XZ);
 			OpaqueShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
 			OpaqueShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
-            OpaqueShader.GetParameter("u_texture").SetValue(this.m_subsystemAnimatedTextures.AnimatedBlocksTexture);
             OpaqueShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
 			OpaqueShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			OpaqueShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
@@ -193,7 +192,6 @@ namespace Game
 			AlphatestedShader.GetParameter("u_origin", true).SetValue(v.XZ);
 			AlphatestedShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
 			AlphatestedShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
-            AlphatestedShader.GetParameter("u_texture").SetValue(this.m_subsystemAnimatedTextures.AnimatedBlocksTexture);
 			AlphatestedShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
 			AlphatestedShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			AlphatestedShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
@@ -222,7 +220,6 @@ namespace Game
 			TransparentShader.GetParameter("u_origin", true).SetValue(v.XZ);
 			TransparentShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
 			TransparentShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
-            TransparentShader.GetParameter("u_texture").SetValue(this.m_subsystemAnimatedTextures.AnimatedBlocksTexture);
             TransparentShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
 			TransparentShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 			TransparentShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));

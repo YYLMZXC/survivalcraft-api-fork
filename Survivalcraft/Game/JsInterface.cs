@@ -50,16 +50,7 @@ namespace Game
 		{
 			engine = new JsEngine(delegate (Options cfg)
 			{
-				cfg.AllowClr();
-				cfg.AllowClr(
-					typeof(Program).GetTypeInfo().Assembly//Game Namespace
-				);
-				cfg.AllowClr(
-					typeof(Matrix).GetTypeInfo().Assembly//Engine Namespace
-				);
-				cfg.AllowClr(
-					typeof(Project).GetTypeInfo().Assembly//GameEntitySystem Namespace
-				);
+				cfg.AllowClr(AppDomain.CurrentDomain.GetAssemblies());
 				cfg.DebugMode();
 			});
 			string codeString = null;

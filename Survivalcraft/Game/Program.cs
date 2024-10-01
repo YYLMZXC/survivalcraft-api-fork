@@ -142,7 +142,6 @@ namespace Game
 			try
 			{
 				SettingsManager.Initialize();
-				JsInterface.Initiate();
 				VersionsManager.Initialize();
 				ExternalContentManager.Initialize();
 				MusicManager.Initialize();
