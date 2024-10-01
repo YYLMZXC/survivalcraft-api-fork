@@ -82,6 +82,8 @@ namespace Game
 
 		public bool FluidCollidable = true;
 
+		public bool IsRaycastTransparent = false;//不可选中
+
 		public Vector3 StanceBoxSize => new(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
 
 		public Vector3 BoxSize { get; set; }

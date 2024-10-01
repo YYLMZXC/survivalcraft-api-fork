@@ -12,8 +12,6 @@ namespace Game
 
 		public bool SplashGenerated = true;
 
-		public float? MaxTimeExist;
-
 		protected double m_timeWaitToAutoPick = 0.5;
 
 		protected float m_distanceToPick = 1f;
@@ -223,6 +221,7 @@ namespace Game
             //掉落物在卡住的时候的更新
             if (!StuckMatrix.HasValue)
             {
+                //TODO:这里的数值改为变量表示
                 if (vector2.HasValue && surfaceHeight.HasValue)
                 {
                     float num19 = surfaceHeight.Value - Position.Y;

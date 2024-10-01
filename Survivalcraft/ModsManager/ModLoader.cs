@@ -720,10 +720,14 @@ namespace Game
             skipVanilla = false;
             return 0;
         }
-
-        public virtual void OnProjectileUpdate(Projectile projectile, SubsystemProjectiles subsystemProjectiles, float dt, bool skippedByOtherMods, out bool skipVanilla)
+        public virtual void OnProjectileHitTerrain(Projectile projectile, TerrainRaycastResult terrainRaycastResult, ref bool triggerBlocksBehavior, ref bool destroyCell, ref float impactSoundLoudness, ref bool projectileGetStuck, ref Vector3 velocityAfterHit, ref Vector3 angularVelocityAfterHit)
         {
-            skipVanilla = false;
+
+        }
+
+        public virtual void OnProjectileHitBody(Projectile projectile, BodyRaycastResult bodyRaycastResult, ref float attackPower, ref Vector3 velocityAfterAttack, ref Vector3 angularVelocityAfterAttack, ref bool ignoreBody)
+        {
+
         }
 
         public virtual void OnProjectileDraw(Projectile projectile, SubsystemProjectiles subsystemProjectiles, Camera camera, int drawOrder, ref bool shouldDrawBlock, ref float drawBlockSize, ref Color drawBlockColor)
