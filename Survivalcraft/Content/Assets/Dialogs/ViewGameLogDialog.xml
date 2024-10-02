@@ -1,10 +1,14 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 
+	<CanvasWidget Size="780, 120" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Near">
+		<LabelWidget Name="HeadText" Text="" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0,10"/>
+		<LabelWidget Name="AdviceText" Color="128,128,128,255" Text="" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0,40"/>
+	</CanvasWidget>
+
 	<CanvasWidget Size="780, 440" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+
 		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 255" OutlineThickness="2" />
-
 		<StackPanelWidget Direction="Vertical" >
-
 			<CanvasWidget>
 				<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 255" OutlineThickness="2" />
 				<ListPanelWidget Name="ViewGameLogDialog.ListPanel" ItemSize="16" Direction="Vertical" Margin="3, 3" />

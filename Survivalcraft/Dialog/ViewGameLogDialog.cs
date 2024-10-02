@@ -13,6 +13,14 @@ namespace Game {
 
         public static string fName = "ViewGameLogDialog";
 
+        public LabelWidget m_headText, m_adviceText;
+
+        public void SetErrorHead()
+        {
+            m_headText.Text = LanguageControl.Get(fName, 9);
+            m_adviceText.Text = LanguageControl.Get(fName, 10);
+        }
+
         public ViewGameLogDialog() {
             XElement node = ContentManager.Get<XElement>("Dialogs/ViewGameLogDialog");
             LoadContents(this, node);
@@ -23,6 +31,8 @@ namespace Game {
             m_filterButton.Style = ContentManager.Get<XElement>("Styles/ButtonStyle_160x60");
             m_closeButton = Children.Find<ButtonWidget>("ViewGameLogDialog.Close");
             m_uploadButton = Children.Find<ButtonWidget>("ViewGameLogDialog.Upload");
+            m_headText = Children.Find<LabelWidget>("HeadText");
+            m_adviceText = Children.Find<LabelWidget>("AdviceText");
             m_listPanel.ItemClicked += delegate (object item) {
                 if (m_listPanel.SelectedItem == item) {
                     DialogsManager.ShowDialog(ParentWidget, new MessageDialog("Log Item", item.ToString(), LanguageControl.Ok, null, null));

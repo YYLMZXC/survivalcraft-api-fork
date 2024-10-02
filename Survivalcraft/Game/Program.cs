@@ -198,7 +198,9 @@ namespace Game
 				//ModsManager.AddException(e);
 				Log.Error(e);
 				ScreensManager.SwitchScreen("MainMenu");
-				Dialog dialog = new MessageDialog(LanguageControl.Get("MainMenuScreen", 11), LanguageControl.Get("MainMenuScreen", 12) + "\n" + e.Message, LanguageControl.Ok, null, null);
+                //Dialog dialog = new MessageDialog(LanguageControl.Get("MainMenuScreen", 11), LanguageControl.Get("MainMenuScreen", 12) + "\n" + e.Message, LanguageControl.Ok, null, null);
+                ViewGameLogDialog dialog = new ViewGameLogDialog();
+				dialog.SetErrorHead();
 				DialogsManager.ShowDialog(null, dialog);
 				GameManager.DisposeProject();
 			}
