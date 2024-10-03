@@ -261,16 +261,20 @@
     "1": "Table",
     "2": "Linear"
   },
-  "ViewGameLogDialog": [
-    "Clear",
-    "Error",
-    "Please log in and submit the log",
-    "OK",
-    "Cancel",
-    "Uploading log",
-    "Upload succeeded",
-    "Upload failed"
-  ],
+  "ViewGameLogDialog": {
+    "1": "Clear",
+    "2": "Error",
+    "3": "Please log in and submit the log",
+    "4": "OK",
+    "5": "Cancel",
+    "6": "Uploading log",
+    "7": "Upload succeeded",
+    "8": "Upload failed",
+    "9": "World Running Error",
+    "10": "Contact mod developers with Log file to Solve the problem.",
+    "11": "Error loading world",
+    "12": "Error Spawning Player"
+  },
   "FurnitureDesignWidget": [ "Front", "Side" ],
   "FurnitureSetItemWidget": [ "Uncategorized", "{0} design(s)" ],
   "FurnitureInventoryPanel": {
@@ -3271,9 +3275,7 @@
       "1": "Clear",
       "2": "Copy",
       "3": "Close",
-      "4": "Upload",
-      "9": "World Running Error",
-      "10": "Contact mod administrators and Provide log file to Solve the problem."
+      "4": "Upload"
     },
     "RunJsDialog": {
       "1": "Run",

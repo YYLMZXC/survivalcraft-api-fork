@@ -303,9 +303,13 @@ namespace Game
                             }
 							catch (Exception ex)
 							{
+								Log.Error("Spawning Player Error!");
 								Log.Error(ex);
                                 ScreensManager.SwitchScreen(ScreensManager.FindScreen<PlayScreen>("Play"));
-                                DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 5), ExceptionManager.MakeFullErrorMessage(ex), LanguageControl.Ok, null, null));
+                                ViewGameLogDialog dialog = new ViewGameLogDialog();
+								dialog.SetErrorHead(12, 10);
+                                DialogsManager.ShowDialog(null, dialog);
+								GameManager.DisposeProject();
                             }
 						}
 						m_stateMachine.TransitionTo("Playing");

@@ -15,10 +15,10 @@ namespace Game {
 
         public LabelWidget m_headText, m_adviceText;
 
-        public void SetErrorHead()
+        public void SetErrorHead(int headLangIndex, int adviceLangIndex)
         {
-            m_headText.Text = LanguageControl.Get(fName, 9);
-            m_adviceText.Text = LanguageControl.Get(fName, 10);
+            m_headText.Text = LanguageControl.Get(fName, headLangIndex);
+            m_adviceText.Text = LanguageControl.Get(fName, adviceLangIndex);
         }
 
         public ViewGameLogDialog() {
