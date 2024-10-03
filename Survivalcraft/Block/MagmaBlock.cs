@@ -36,7 +36,7 @@ namespace Game
         public override bool ShouldAvoid(int value, ComponentPilot componentPilot)
         {
 			ComponentHealth componentHealth = componentPilot.m_componentCreature.ComponentHealth;
-			if (componentHealth.MagmaDamageFactor == 0) return false;
+			if (componentHealth.MagmaResilience == float.PositiveInfinity) return false;
             return base.ShouldAvoid(value, componentPilot);
         }
     }

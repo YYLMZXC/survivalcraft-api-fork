@@ -56,7 +56,7 @@ namespace Game
             ComponentHealth componentHealth = componentBody.Entity.FindComponent<ComponentHealth>();
             if (componentHealth != null)
             {
-				componentHealth.OnSpiked(this, 0.01f * MathF.Abs(velocity), cellFace, velocity, componentBody, "Spiked by cactus");
+				componentHealth.OnSpiked(this, 0.1f / componentHealth.SpikeResilience * MathF.Abs(velocity), cellFace, velocity, componentBody, "Spiked by cactus");
             }
 		}
 

@@ -553,27 +553,7 @@ namespace Game
 			foreach (ComponentBody body in m_subsystemBodies.Bodies)
 			{
 				CalculateImpulseAndDamage(body, null, out Vector3 impulse, out float damage);
-				var components = body.Entity.FindComponents<IPostprocessExplosions>();
-				bool skipVanilla_ = false;
-				foreach (var component in components)
-				{
-					bool skipVanilla = false;
-					component.OnExplosion(this, ref impulse, ref damage, out skipVanilla);
-					skipVanilla_ |= skipVanilla;
-				}
-				if(!skipVanilla_)
-				{
-                    impulse *= m_random.Float(0.5f, 1.5f);
-                    damage *= m_random.Float(0.5f, 1.5f);
-                    body.ApplyImpulse(impulse);
-                    body.Entity.FindComponent<ComponentHealth>()?.Injure(damage, null, ignoreInvulnerability: false, "Blasted by explosion");
-                    body.Entity.FindComponent<ComponentDamage>()?.Damage(damage);
-                    ComponentOnFire componentOnFire = body.Entity.FindComponent<ComponentOnFire>();
-                    if (componentOnFire != null && m_random.Float(0f, 1f) < MathUtils.Min(damage - 0.1f, 0.5f))
-                    {
-                        componentOnFire.SetOnFire(null, m_random.Float(6f, 8f));
-                    }
-                }
+                body.UnderExplosion(impulse, damage);
 			}
 			foreach (Pickable pickable in m_subsystemPickables.Pickables)
 			{

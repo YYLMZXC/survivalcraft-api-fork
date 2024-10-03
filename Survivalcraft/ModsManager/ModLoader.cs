@@ -298,6 +298,11 @@ namespace Game
         public virtual void OnDespawned(Entity entity, ComponentSpawn componentSpawn)
         {
         }
+        
+        public virtual void OnComponentBodyExploded(ComponentBody componentBody, ref float ExplosionDamage, ref Vector3 Impulse, ref bool SetOnFire, ref float Fluctuation)
+        {
+
+        }
 
         /// <summary>
         /// 死亡前瞬间执行，Skip为true则跳过死亡后执行掉落等的代码

@@ -38,6 +38,8 @@ namespace Game
 
 		public Random m_random = new();
 
+		public ComponentHealth m_componentHealth;
+
 		public DynamicArray<CollisionBox> m_collisionBoxes = [];
 
 		public DynamicArray<ComponentBody> m_componentBodies = [];
@@ -288,7 +290,36 @@ namespace Game
 			return true;
 		}
 
-		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
+        public virtual void UnderExplosion(Vector3 impulse, float damage)
+		{
+			bool setOnFire = true;
+			float fluctuation = 0.5f;
+			float explosionResilience = m_componentHealth?.ExplosionResilience ?? 1f;
+			damage /= explosionResilience;
+			impulse /= explosionResilience;
+			ModsManager.HookAction("OnComponentBodyExploded", loader =>
+			{
+				loader.OnComponentBodyExploded(this, ref damage, ref impulse, ref setOnFire, ref fluctuation);
+				return false;
+			});
+            impulse *= m_random.Float(1f - fluctuation, 1f + fluctuation);
+            damage *= m_random.Float(1f - fluctuation, 1f + fluctuation);
+            ApplyImpulse(impulse);
+			if(damage > 0f)
+			{
+                Entity.FindComponent<ComponentHealth>()?.Injure(damage, null, ignoreInvulnerability: false, "Blasted by explosion");
+                Entity.FindComponent<ComponentDamage>()?.Damage(damage);
+            }
+			if (setOnFire)
+			{
+                ComponentOnFire componentOnFire = Entity.FindComponent<ComponentOnFire>();
+                if (componentOnFire != null && m_random.Float(0f, 1f) < MathUtils.Min(damage - 0.1f, 0.5f))
+                {
+                    componentOnFire.SetOnFire(null, m_random.Float(6f, 8f));
+                }
+            }
+        }
+        public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{
 			base.Load(valuesDictionary, idToEntityMap);
 			m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
@@ -299,6 +330,7 @@ namespace Game
 			m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
 			m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
 			m_subsystemFluidBlockBehavior = base.Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
+			m_componentHealth = Entity.FindComponent<ComponentHealth>();
 			CanCrouch = Entity.FindComponent<ComponentPlayer>() != null;
 			BoxSize = valuesDictionary.GetValue<Vector3>("BoxSize");
 			Mass = valuesDictionary.GetValue<float>("Mass");
@@ -403,7 +435,7 @@ namespace Game
 					{
 						if (m_crushInjureTime >= 1f)
 						{
-							componentHealth.Injure(0.15f * componentHealth.CrushDamageFactor, null, ignoreInvulnerability: true, "Crushed");
+							componentHealth.Injure(1f / componentHealth.CrushResilience, null, ignoreInvulnerability: true, "Crushed");
 							m_crushInjureTime = 0f;
 						}
 						componentHealth.m_redScreenFactor = 1f;

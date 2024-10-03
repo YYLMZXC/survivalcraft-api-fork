@@ -40,14 +40,14 @@ namespace Game
         public bool m_regenerateLifeEnabled = true;//…˙√¸‘Ÿ…˙
 
         public virtual float VoidDamageFactor { get; set; }//y÷·π˝∏ﬂªÚ’ﬂπ˝µÕ‘Ï≥…µƒ…À∫¶œµ ˝
-        public virtual float AirLackDamageFactor { get; set; }//ƒÁÀÆ…À∫¶œµ ˝
-        public virtual float MagmaDamageFactor { get; set; }//»€—“…À∫¶œµ ˝
-        public virtual float CrushDamageFactor { get; set; }//º∑—π…À∫¶œµ ˝
-        public virtual float SpikeDamageFactor { get; set; }//º‚¥Ã…À∫¶œµ ˝
+        public virtual float AirLackResilience { get; set; }//ƒÁÀÆ…À∫¶øπ–‘
+        public virtual float MagmaResilience { get; set; }//»€—“…À∫¶øπ–‘
+        public virtual float CrushResilience { get; set; }//º∑—π…À∫¶øπ–‘
+        public virtual float SpikeResilience { get; set; }//º‚¥Ã…À∫¶øπ–‘
+        public virtual float ExplosionResilience { get; set; }//±¨’®…À∫¶øπ–‘
 
         public virtual void OnSpiked(SubsystemBlockBehavior spikeBlockBehavior, float damage , CellFace cellFace, float velocity, ComponentBody componentBody, string causeOfDeath)
         {
-            damage *= SpikeDamageFactor;
             ModsManager.HookAction("OnCreatureSpiked", loader =>
             {
                 loader.OnCreatureSpiked(this, spikeBlockBehavior, cellFace, velocity, ref damage, ref causeOfDeath);
@@ -342,9 +342,9 @@ namespace Game
             //»€—“…À∫¶
             if (m_componentCreature.ComponentBody.ImmersionFactor > 0f && m_componentCreature.ComponentBody.ImmersionFluidBlock is MagmaBlock)
             {
-                Injure(2f * m_componentCreature.ComponentBody.ImmersionFactor * MagmaDamageFactor * dt, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 1));
+                Injure(1f / MagmaResilience * m_componentCreature.ComponentBody.ImmersionFactor * dt, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 1));
                 float num2 = 1.1f + (0.1f * (float)Math.Sin(12.0 * m_subsystemTime.GameTime));
-                m_redScreenFactor = MathUtils.Max(m_redScreenFactor, num2 * 1.5f * m_componentCreature.ComponentBody.ImmersionFactor * MagmaDamageFactor);
+                m_redScreenFactor = MathUtils.Max(m_redScreenFactor, num2 * 0.75f * m_componentCreature.ComponentBody.ImmersionFactor / MagmaResilience);
             }
             //µ¯¬‰…À∫¶
             float fallDamage = CalculateFallDamage();
@@ -360,12 +360,11 @@ namespace Game
             bool num5 = m_subsystemTime.PeriodicGameTimeEvent(1.0, 0.0);
             if (num5 && Air == 0f)
             {
-                float num6 = 0.12f;
+                float num6 = AirLackResilience;
                 if (m_componentPlayer != null)
                 {
                     num6 /= m_componentPlayer.ComponentLevel.ResilienceFactor;
                 }
-                num6 *= AirLackDamageFactor;
                 Injure(num6, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 7));
             }
             //ª—Ê…À∫¶
@@ -381,7 +380,7 @@ namespace Game
             //”„¿‡∏È«≥…À∫¶
             if (num5 && CanStrand && m_componentCreature.ComponentBody.ImmersionFactor < 0.25f && (m_componentCreature.ComponentBody.StandingOnValue != 0 || m_componentCreature.ComponentBody.StandingOnBody != null))
             {
-                Injure(0.05f * AirLackDamageFactor, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 6));
+                Injure(1f / AirLackResilience, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 6));
             }
             //…À∫¶Ω·À„
             HealthChange = Health - m_lastHealth;
@@ -477,10 +476,11 @@ namespace Game
             FireResilienceFactor = 1f;
             HealFactor = valuesDictionary.GetValue<float>("HealFactor");
             VoidDamageFactor = valuesDictionary.GetValue<float>("VoidDamageFactor");
-            AirLackDamageFactor = valuesDictionary.GetValue<float>("AirLackDamageFactor");
-            MagmaDamageFactor = valuesDictionary.GetValue<float>("MagmaDamageFactor");
-            CrushDamageFactor = valuesDictionary.GetValue<float>("CrushDamageFactor");
-            SpikeDamageFactor = valuesDictionary.GetValue<float>("SpikeDamageFactor");
+            AirLackResilience = valuesDictionary.GetValue<float>("AirLackResilience");
+            MagmaResilience = valuesDictionary.GetValue<float>("MagmaResilience");
+            CrushResilience = valuesDictionary.GetValue<float>("CrushResilience");
+            SpikeResilience = valuesDictionary.GetValue<float>("SpikeResilience");
+            ExplosionResilience = valuesDictionary.GetValue<float>("ExplosionResilience");
             StackExperienceOnKill = true;
             DeathTime = (value >= 0.0) ? new double?(value) : null;
             CauseOfDeath = valuesDictionary.GetValue<string>("CauseOfDeath");

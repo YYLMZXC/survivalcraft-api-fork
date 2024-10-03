@@ -72,7 +72,7 @@ namespace Game
 				if (m_subsystemTime.GameTime - value > 1.0)
 				{
 					m_lastInjuryTimes[componentCreature] = m_subsystemTime.GameTime;
-					componentCreature.ComponentHealth.OnSpiked(this, 0.1f, cellFace, velocity, componentBody, "Spiked by a trap");
+					componentCreature.ComponentHealth.OnSpiked(this, 1f / componentCreature.ComponentHealth.SpikeResilience, cellFace, velocity, componentBody, "Spiked by a trap");
 				}
 			}
 		}
