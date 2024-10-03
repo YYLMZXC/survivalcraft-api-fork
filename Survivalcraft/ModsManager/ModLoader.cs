@@ -118,6 +118,10 @@ namespace Game
         {
             return false;
         }
+        public virtual void SetClothes(ComponentClothing componentClothing, ClothingSlot slot, IEnumerable<int> clothes)
+        {
+
+        }
 
         /// <summary>
         /// 动物吃掉落物时执行

@@ -208,7 +208,12 @@ namespace Game
 					LeastInsulatedSlot = ClothingSlot.Feet;
 				}
 			}
-		}
+            ModsManager.HookAction("SetClothes", loader =>
+            {
+                loader.SetClothes(this, slot, clothes);
+                return false;
+            });
+        }
 
 		public float ApplyArmorProtection(float attackPower)
 		{
