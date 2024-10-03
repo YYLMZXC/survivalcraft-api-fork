@@ -76,6 +76,11 @@ namespace Game
             SpeedFactor = CalculateSpeedFactor(null);
             HungerFactor = CalculateHungerFactor(null);
             ResilienceFactor = CalculateResilienceFactor(null);
+            ModsManager.HookAction("OnFactorsUpdate", Loader =>
+            {
+                Loader.OnFactorsUpdate(this, dt);
+                return false;
+            });
         }
     }
 }

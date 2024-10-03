@@ -192,10 +192,18 @@ namespace Game
         }
 
         /// <summary>
-        /// 等级更新时执行
+        /// 等级组件更新时执行
         /// </summary>
         /// <param name="level"></param>
         public virtual void OnLevelUpdate(ComponentLevel level)
+        {
+        }
+
+        /// <summary>
+        /// 因素控制力量、抗性、速度、饥饿速率组件更新时执行
+        /// </summary>
+        /// <param name="level"></param>
+        public virtual void OnFactorsUpdate(ComponentFactors componentFactors, float dt)
         {
         }
 
