@@ -35,8 +35,6 @@ namespace Game
 
 		public ComponentLocomotion m_componentLocomotion;
 
-		public ComponentFactors m_componentFactors;
-
 		public ComponentPlayer m_componentPlayer;
 
 		public Texture2D m_skinTexture;
@@ -209,65 +207,10 @@ namespace Game
 				{
 					LeastInsulatedSlot = ClothingSlot.Feet;
 				}
-				UpdateClothingFactor();
 			}
-			ModsManager.HookAction("SetClothes", loader =>
-			{
-				loader.SetClothes(this, slot, clothes);
-				return false;
-			});
 		}
-        public virtual void UpdateClothingFactor()
-        {
-			if (m_componentFactors.FactorSets.Count == 0) m_componentFactors.LoadFactorSets();
-            for (int i = 0; i < m_componentFactors.FactorSets.Count; i++)
-            {
-                FactorSet factorSet = m_componentFactors.FactorSets[i];
-                for (int j = 0; j < factorSet.Factors.Count; j++)
-                {
-                    if (factorSet.Factors[j] is ClothingFactor)
-                        factorSet.RemoveFactor(factorSet.Factors[j]);
-                }
-            }
-            foreach (int clothe in GetClothes(ClothingSlot.Head))
-            {
-                AddClothingFactor(clothe);
-            }
-            foreach (int clothe in GetClothes(ClothingSlot.Torso))
-            {
-                AddClothingFactor(clothe);
-            }
-            foreach (int clothe in GetClothes(ClothingSlot.Legs))
-            {
-                AddClothingFactor(clothe);
-            }
-            foreach (int clothe in GetClothes(ClothingSlot.Feet))
-            {
-                AddClothingFactor(clothe);
-            }
-        }
-        public virtual void AddClothingFactor(int clothingValue)
-        {
-            Block block = BlocksManager.Blocks[Terrain.ExtractContents(clothingValue)];
-            ClothingData clothingData = block.GetClothingData(clothingValue);
-            if (clothingData == null) return;
-            if (clothingData.MovementSpeedFactor != 1f)
-            {
-				m_componentFactors.m_speedFactorSet.AddFactor(new ClothingFactor("Clothing-" + clothingData.DisplayName)
-				{
-					CalculateOrder = 300,
-					GetDescription = delegate {
-						return clothingData.DisplayName;
-					},
-					GetValue = delegate
-					{
-						return clothingData.MovementSpeedFactor;
-					}
-				});
-            }
-        }
 
-        public float ApplyArmorProtection(float attackPower)
+		public float ApplyArmorProtection(float attackPower)
 		{
 			bool Applied = false;
 			ModsManager.HookAction("ApplyArmorProtection", modLoader =>
