@@ -6,7 +6,7 @@ using TemplatesDatabase;
 
 namespace Game
 {
-	public class ComponentLevel : Component, IUpdateable
+	public class ComponentLevel : ComponentFactors, IUpdateable
 	{
 		public struct Factor
 		{
@@ -15,19 +15,9 @@ namespace Game
 			public float Value;
 		}
 
-		public Random m_random = new();
-
 		public static string fName = "ComponentLevel";
 
-		public List<Factor> m_factors = [];
-
 		public float? m_lastLevelTextValue;
-
-		public SubsystemGameInfo m_subsystemGameInfo;
-
-		public SubsystemAudio m_subsystemAudio;
-
-		public SubsystemTime m_subsystemTime;
 
 		public ComponentPlayer m_componentPlayer;
 
@@ -38,32 +28,6 @@ namespace Game
 		public const float FemaleSpeedFactor = 1.03f;
 
 		public const float FemaleHungerFactor = 0.7f;
-
-		public float StrengthFactor
-		{
-			get;
-			set;
-		}
-
-		public float ResilienceFactor
-		{
-			get;
-			set;
-		}
-
-		public float SpeedFactor
-		{
-			get;
-			set;
-		}
-
-		public float HungerFactor
-		{
-			get;
-			set;
-		}
-
-		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
 		public virtual void AddExperience(int count, bool playSound)
 		{
@@ -109,7 +73,7 @@ namespace Game
 			}
 		}
 
-		public virtual float CalculateStrengthFactor(ICollection<Factor> factors)
+		public override float CalculateStrengthFactor(ICollection<Factor> factors)
 		{
 			float num = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.8f : 1f;
 			float num2 = 1f * num;
@@ -205,7 +169,7 @@ namespace Game
 			return result;
 		}
 
-		public virtual float CalculateResilienceFactor(ICollection<Factor> factors)
+		public override float CalculateResilienceFactor(ICollection<Factor> factors)
 		{
 			float num = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.8f : 1f;
 			float num2 = 1f * num;
@@ -279,7 +243,7 @@ namespace Game
 			return result;
 		}
 
-		public virtual float CalculateSpeedFactor(ICollection<Factor> factors)
+		public override float CalculateSpeedFactor(ICollection<Factor> factors)
 		{
 			float num = 1f;
 			float num2 = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 1.03f : 1f;
@@ -383,7 +347,7 @@ namespace Game
 			return num;
 		}
 
-		public virtual float CalculateHungerFactor(ICollection<Factor> factors)
+		public override float CalculateHungerFactor(ICollection<Factor> factors)
 		{
 			float num = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.7f : 1f;
 			float num2 = 1f * num;
@@ -435,7 +399,7 @@ namespace Game
 			return result;
 		}
 
-		public virtual void Update(float dt)
+		public override void Update(float dt)
 		{
 			if (m_subsystemTime.PeriodicGameTimeEvent(180.0, 179.0))
 			{
@@ -447,10 +411,7 @@ namespace Game
 				m_lastLevelTextValue = MathF.Floor(m_componentPlayer.PlayerData.Level);
 			}
 			m_componentPlayer.PlayerStats.HighestLevel = MathUtils.Max(m_componentPlayer.PlayerStats.HighestLevel, m_componentPlayer.PlayerData.Level);
-			StrengthFactor = CalculateStrengthFactor(null);
-			SpeedFactor = CalculateSpeedFactor(null);
-			HungerFactor = CalculateHungerFactor(null);
-			ResilienceFactor = CalculateResilienceFactor(null);
+			base.Update(dt);
 			ModsManager.HookAction("OnLevelUpdate", modLoader =>
 			{
 				modLoader.OnLevelUpdate(this);
@@ -460,14 +421,8 @@ namespace Game
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{
-			m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
-			m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
+			base.Load(valuesDictionary, idToEntityMap);
 			m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
-			StrengthFactor = 1f;
-			SpeedFactor = 1f;
-			HungerFactor = 1f;
-			ResilienceFactor = 1f;
 		}
 
 		public static void AddClothingFactor(int clothingValue, ref float clothingFactor, ICollection<Factor> factors)
