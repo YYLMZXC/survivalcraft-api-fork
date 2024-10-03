@@ -298,6 +298,11 @@ namespace Game
         public virtual void OnDespawned(Entity entity, ComponentSpawn componentSpawn)
         {
         }
+
+        public virtual void CalculateExplosionPower(SubsystemExplosions subsystemExplosions, ref float explosionPower)
+        {
+
+        }
         
         public virtual void OnComponentBodyExploded(ComponentBody componentBody, ref float ExplosionDamage, ref Vector3 Impulse, ref bool SetOnFire, ref float Fluctuation)
         {

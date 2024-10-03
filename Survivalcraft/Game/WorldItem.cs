@@ -21,5 +21,8 @@ namespace Game
 		public bool IsFireProof = false;//该弹射物和掉落物防火，不会被火焰或熔岩烧毁
 
         public float? MaxTimeExist;
+
+        public float ExplosionMass = 20f;
+		public virtual void UnderExplosion(Vector3 impulse, float damage) { }
     }
 }

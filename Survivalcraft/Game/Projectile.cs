@@ -388,5 +388,9 @@ namespace Game
                 LastNoiseTime = SubsystemProjectiles.m_subsystemTime.GameTime;
             }
         }
+        public override void UnderExplosion(Vector3 impulse, float damage)
+        {
+            Velocity += (impulse + new Vector3(0f, 0.1f * impulse.Length(), 0f)) * m_random.Float(0.75f, 1f);
+        }
     }
 }

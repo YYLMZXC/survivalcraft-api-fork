@@ -17,6 +17,8 @@ namespace Game
 		protected float m_distanceToPick = 1f;
 
 		protected float m_distanceToFlyToTarget = 1.75f;
+
+        private Random m_random = new Random();
 		public virtual double TimeWaitToAutoPick => m_timeWaitToAutoPick;
 		public virtual float DistanceToPick => m_distanceToPick;
 		public virtual float DistanceToFlyToTarget => m_distanceToFlyToTarget;
@@ -26,6 +28,8 @@ namespace Game
         public SubsystemPickables SubsystemPickables;
 
         public SubsystemTerrain SubsystemTerrain;
+
+        public SubsystemExplosions SubsystemExplosions;
         public virtual void Update(float dt)
         {
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(Value)];
@@ -211,5 +215,32 @@ namespace Game
 				FlyToGatherer = null;
             }
         }
-	}
+        public override void UnderExplosion(Vector3 impulse, float damage)
+        {
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(Value)];
+            if (damage / block.GetExplosionResilience(Value) > 0.1f)
+            {
+                SubsystemExplosions.TryExplodeBlock(Terrain.ToCell(Position.X), Terrain.ToCell(Position.Y), Terrain.ToCell(Position.Z), Value);
+                ToRemove = true;
+            }
+            else
+            {
+                Vector3 vector = (impulse + new Vector3(0f, 0.1f * impulse.Length(), 0f)) * m_random.Float(0.75f, 1f);
+                if (vector.Length() > 10f)
+                {
+                    Projectile projectile = SubsystemExplosions.m_subsystemProjectiles.AddProjectile(Value, Position, Velocity + vector, m_random.Vector3(0f, 20f), null);
+                    if (m_random.Float(0f, 1f) < 0.33f)
+                    {
+                        SubsystemExplosions.m_subsystemProjectiles.AddTrail(projectile, Vector3.Zero, new SmokeTrailParticleSystem(15, m_random.Float(0.75f, 1.5f), m_random.Float(1f, 6f), Color.White));
+                    }
+                    ToRemove = true;
+                }
+                else
+                {
+                    Velocity += vector;
+                }
+            }
+        }
+
+    }
 }

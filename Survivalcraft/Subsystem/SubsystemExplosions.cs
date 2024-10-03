@@ -531,6 +531,11 @@ namespace Game
 					m_explosionParticleSystem.SetExplosionCell(item.Key, num5);
 				}
 			}
+			ModsManager.HookAction("CalculateExplosionPower", loader =>
+			{
+				loader.CalculateExplosionPower(this, ref 爆炸强度);
+				return false;
+			});
 			foreach (KeyValuePair<Point3, SurroundingPressurePoint> item2 in m_surroundingPressureByPoint.ToDictionary())
 			{
 				int cellValue = m_subsystemTerrain.Terrain.GetCellValue(item2.Key.X, item2.Key.Y, item2.Key.Z);
@@ -558,52 +563,17 @@ namespace Game
 			foreach (Pickable pickable in m_subsystemPickables.Pickables)
 			{
 				Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(pickable.Value)];
-				CalculateImpulseAndDamage(pickable.Position + new Vector3(0f, 0.5f, 0f), 20f, null, out Vector3 impulse2, out float damage2);
-				bool skipVanilla_ = false;
-                IPostprocessExplosions pickablePostprocessExplosions = pickable as IPostprocessExplosions;
-				if(pickablePostprocessExplosions != null)
-				{
-					pickablePostprocessExplosions.OnExplosion(this, ref impulse2, ref damage2, out skipVanilla_);
-				}
-				if(!skipVanilla_)
-				{
-                    if (damage2 / block2.GetExplosionResilience(pickable.Value) > 0.1f)
-                    {
-                        TryExplodeBlock(Terrain.ToCell(pickable.Position.X), Terrain.ToCell(pickable.Position.Y), Terrain.ToCell(pickable.Position.Z), pickable.Value);
-                        pickable.ToRemove = true;
-                    }
-                    else
-                    {
-                        Vector3 vector = (impulse2 + new Vector3(0f, 0.1f * impulse2.Length(), 0f)) * m_random.Float(0.75f, 1f);
-                        if (vector.Length() > 10f)
-                        {
-                            Projectile projectile = m_subsystemProjectiles.AddProjectile(pickable.Value, pickable.Position, pickable.Velocity + vector, m_random.Vector3(0f, 20f), null);
-                            if (m_random.Float(0f, 1f) < 0.33f)
-                            {
-                                m_subsystemProjectiles.AddTrail(projectile, Vector3.Zero, new SmokeTrailParticleSystem(15, m_random.Float(0.75f, 1.5f), m_random.Float(1f, 6f), Color.White));
-                            }
-                            pickable.ToRemove = true;
-                        }
-                        else
-                        {
-                            pickable.Velocity += vector;
-                        }
-                    }
-                }
+				CalculateImpulseAndDamage(pickable.Position + new Vector3(0f, 0.5f, 0f), pickable.ExplosionMass, null, out Vector3 impulse2, out float damage2);
+				pickable.SubsystemExplosions = this;
+				pickable.UnderExplosion(impulse2, damage2);
                 
 			}
 			foreach (Projectile projectile2 in m_subsystemProjectiles.Projectiles)
 			{
 				if (!m_generatedProjectiles.ContainsKey(projectile2))
 				{ 
-                    CalculateImpulseAndDamage(projectile2.Position + new Vector3(0f, 0.5f, 0f), 20f, null, out Vector3 impulse3, out float damage3);
-                    bool skipVanilla_ = false;
-                    IPostprocessExplosions projectilePostprocessExplosions = projectile2 as IPostprocessExplosions;
-                    if (projectilePostprocessExplosions != null)
-                    {
-                        projectilePostprocessExplosions.OnExplosion(this, ref impulse3, ref damage3, out skipVanilla_);
-                    }
-                    if(!skipVanilla_) projectile2.Velocity += (impulse3 + new Vector3(0f, 0.1f * impulse3.Length(), 0f)) * m_random.Float(0.75f, 1f);
+                    CalculateImpulseAndDamage(projectile2.Position + new Vector3(0f, 0.5f, 0f), projectile2.ExplosionMass, null, out Vector3 impulse3, out float damage3);
+					projectile2.UnderExplosion(impulse3, damage3);
 				}
 			}
 			var position = new Vector3(point.X, point.Y, point.Z);
