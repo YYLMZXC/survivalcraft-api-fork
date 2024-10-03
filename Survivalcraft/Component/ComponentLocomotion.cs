@@ -21,6 +21,8 @@ namespace Game
 
 		public ComponentLevel m_componentLevel;
 
+		public ComponentFactors m_componentFactors;
+
 		public ComponentClothing m_componentClothing;
 
 		public ComponentMount m_componentMount;
@@ -447,6 +449,7 @@ namespace Game
 			m_componentClothing = Entity.FindComponent<ComponentClothing>();
 			m_componentMount = Entity.FindComponent<ComponentMount>();
 			m_componentRider = Entity.FindComponent<ComponentRider>();
+			m_componentFactors = Entity.FindComponent<ComponentFactors>();
 			IsCreativeFlyEnabled = valuesDictionary.GetValue<bool>("IsCreativeFlyEnabled");
 			AccelerationFactor = valuesDictionary.GetValue<float>("AccelerationFactor");
 			WalkSpeed = valuesDictionary.GetValue<float>("WalkSpeed");
@@ -516,9 +519,9 @@ namespace Game
 					{
 						num2 *= 0.6f;
 					}
-					if (m_componentLevel != null)
+					if (m_componentFactors != null)
 					{
-						num2 *= m_componentLevel.SpeedFactor;
+						num2 *= m_componentFactors.SpeedFactor;
 					}
 					if (m_componentMount != null)
 					{
@@ -560,9 +563,9 @@ namespace Game
 					velocity.X += num4 * (vector2.X - velocity.X);
 					velocity.Z += num4 * (vector2.Z - velocity.Z);
 					Vector3 vector3 = (value.X * right) + (value.Y * vector);
-					if (m_componentLevel != null)
+					if (m_componentFactors != null)
 					{
-						vector3 *= m_componentLevel.SpeedFactor;
+						vector3 *= m_componentFactors.SpeedFactor;
 					}
 					velocity.Y += 10f * AccelerationFactor * vector3.Y * m_componentCreature.ComponentBody.ImmersionFactor * dt;
 					m_componentCreature.ComponentBody.IsGroundDragEnabled = false;
@@ -611,9 +614,9 @@ namespace Game
 			if (JumpOrder > 0f && (m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.ImmersionFactor > 0.5f) && !m_componentCreature.ComponentBody.IsSneaking)
 			{
 				float num6 = JumpSpeed;
-				if (m_componentLevel != null)
+				if (m_componentFactors != null)
 				{
-					num6 *= (0.25f * (m_componentLevel.SpeedFactor - 1f)) + 1f;
+					num6 *= (0.25f * (m_componentFactors.SpeedFactor - 1f)) + 1f;
 				}
 				velocity.Y = MathUtils.Min(velocity.Y + (MathUtils.Saturate(JumpOrder) * num6), num6);
 				m_jumping = true;

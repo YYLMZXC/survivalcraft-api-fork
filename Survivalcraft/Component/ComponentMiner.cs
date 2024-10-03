@@ -536,10 +536,10 @@ namespace Game
                 {
                     attackPower = componentClothing.ApplyArmorProtection(attackPower);
                 }
-                ComponentLevel componentLevel = target.Entity.FindComponent<ComponentLevel>();
-                if (componentLevel != null)
+                ComponentFactors componentFactors = target.Entity.FindComponent<ComponentFactors>();
+                if (componentFactors != null)
                 {
-                    attackPower /= componentLevel.ResilienceFactor;
+                    attackPower /= componentFactors.ResilienceFactor;
                 }
                 if (componentHealth != null)
                 {
