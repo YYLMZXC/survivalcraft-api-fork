@@ -1084,9 +1084,6 @@
     <Compile Include="..\Survivalcraft\Component\ComponentLayEggBehavior.cs">
       <Link>Component\ComponentLayEggBehavior.cs</Link>
     </Compile>
-	<Compile Include="..\Survivalcraft\Component\ComponentFactors.cs">
-		<Link>Component\ComponentFactors.cs</Link>
-	</Compile>
     <Compile Include="..\Survivalcraft\Component\ComponentLevel.cs">
       <Link>Component\ComponentLevel.cs</Link>
     </Compile>

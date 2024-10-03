@@ -6,11 +6,30 @@ using TemplatesDatabase;
 
 namespace Game
 {
-	public class ComponentLevel : ComponentFactors, IUpdateable
+	public class ComponentLevel : Component, IUpdateable
 	{
-        public static string fName = "ComponentLevel";
+		public struct Factor
+		{
+			public string Description;
 
-        public ComponentPlayer m_componentPlayer;
+			public float Value;
+		}
+
+		public Random m_random = new();
+
+		public static string fName = "ComponentLevel";
+
+		public List<Factor> m_factors = [];
+
+		public float? m_lastLevelTextValue;
+
+		public SubsystemGameInfo m_subsystemGameInfo;
+
+		public SubsystemAudio m_subsystemAudio;
+
+		public SubsystemTime m_subsystemTime;
+
+		public ComponentPlayer m_componentPlayer;
 
 		public const float FemaleStrengthFactor = 0.8f;
 
@@ -20,9 +39,32 @@ namespace Game
 
 		public const float FemaleHungerFactor = 0.7f;
 
-        public float? m_lastLevelTextValue;
+		public float StrengthFactor
+		{
+			get;
+			set;
+		}
 
-		public int MaxLevel = 21;
+		public float ResilienceFactor
+		{
+			get;
+			set;
+		}
+
+		public float SpeedFactor
+		{
+			get;
+			set;
+		}
+
+		public float HungerFactor
+		{
+			get;
+			set;
+		}
+
+		public UpdateOrder UpdateOrder => UpdateOrder.Default;
+
 		public virtual void AddExperience(int count, bool playSound)
 		{
 			if (playSound)
@@ -66,306 +108,334 @@ namespace Game
 				m_componentPlayer.PlayerData.Level += num;
 			}
 		}
-		private void LoadStrengthFactor()
+
+		public virtual float CalculateStrengthFactor(ICollection<Factor> factors)
 		{
-			m_strengthFactorSet.AddFactor(new Factor("PlayerClass")
-            {
-                GetDescription = delegate {
-                    return m_componentPlayer.PlayerData.PlayerClass.ToString();
-                },
-                GetValue = delegate
-                {
-                    return (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.8f : 1f;
-                }
-            });
-			m_strengthFactorSet.AddFactor(new Factor("Level")
+			float num = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.8f : 1f;
+			float num2 = 1f * num;
+			Factor item;
+			if (factors != null)
 			{
-				GetDescription = delegate {
-					return string.Format(LanguageControl.Get(fName, 2), MathF.Floor(m_componentPlayer.PlayerData.Level).ToString());
-				},
-				GetValue = delegate
+				item = new Factor
 				{
-					return 1f + (0.05f * MathF.Floor(Math.Clamp(m_componentPlayer.PlayerData.Level, 1f, MaxLevel) - 1f));
-				}
-			});
-            m_strengthFactorSet.AddFactor(new Factor("Stamina")
-            {
-				GetDescription = delegate
-				{
-                    float stamina = m_componentPlayer.ComponentVitalStats.Stamina;
-                    return string.Format(LanguageControl.Get(fName, 3), $"{stamina * 100f:0}");
-                },
-                GetValue = delegate
-                {
-                    float stamina = m_componentPlayer.ComponentVitalStats.Stamina;
-                    return MathUtils.Lerp(0.5f, 1f, MathUtils.Saturate(4f * stamina)) * MathUtils.Lerp(0.9f, 1f, MathUtils.Saturate(stamina));
-                }
-            });
-			m_strengthFactorSet.AddFactor(new Factor("Sickness")
+					Value = num,
+					Description = m_componentPlayer.PlayerData.PlayerClass.ToString()
+				};
+				factors.Add(item);
+			}
+			float level = m_componentPlayer.PlayerData.Level;
+			float num3 = 1f + (0.05f * MathF.Floor(Math.Clamp(level, 1f, 21f) - 1f));
+			float num4 = num2 * num3;
+			if (factors != null)
 			{
-				GetDescription = delegate
+				item = new Factor
 				{
-					return m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5);
-                },
-				GetValue = delegate
+					Value = num3,
+					Description = string.Format(LanguageControl.Get(fName, 2), MathF.Floor(level).ToString())
+				};
+				factors.Add(item);
+			}
+			float stamina = m_componentPlayer.ComponentVitalStats.Stamina;
+			float num5 = MathUtils.Lerp(0.5f, 1f, MathUtils.Saturate(4f * stamina)) * MathUtils.Lerp(0.9f, 1f, MathUtils.Saturate(stamina));
+			float num6 = num4 * num5;
+			if (factors != null)
+			{
+				item = new Factor
 				{
-					return m_componentPlayer.ComponentSickness.IsSick ? 0.75f : 1f;
-				}
-            });
-            m_strengthFactorSet.AddFactor(new Factor("Puking")
-            {
-                GetDescription = delegate
-                {
-					return m_componentPlayer.ComponentSickness.IsPuking ? LanguageControl.Get(fName, 6) : LanguageControl.Get(fName, 7);
-                },
-                GetValue = delegate
-                {
-                    return (!m_componentPlayer.ComponentSickness.IsPuking) ? 1 : 0;
-                }
-            });
-            m_strengthFactorSet.AddFactor(new Factor("Flu")
-            {
-                GetDescription = delegate
-                {
-					return m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9);
-                },
-                GetValue = delegate
-                {
-                    return m_componentPlayer.ComponentFlu.HasFlu ? 0.75f : 1f;
-                }
-            });
-            m_strengthFactorSet.AddFactor(new Factor("Coughing")
-            {
-                GetDescription = delegate
-                {
-					return m_componentPlayer.ComponentFlu.IsCoughing ? LanguageControl.Get(fName, 10) : LanguageControl.Get(fName, 11);
-                },
-                GetValue = delegate
-                {
-                    return (!m_componentPlayer.ComponentFlu.IsCoughing) ? 1 : 0;
-                }
-            });
-            m_strengthFactorSet.AddFactor(new Factor("GameMode")
-            {
-                GetDescription = delegate
-                {
-					return string.Format(LanguageControl.Get(fName, 12), m_subsystemGameInfo.WorldSettings.GameMode.ToString());
-                },
-                GetValue = delegate
-                {
-                    return (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless) ? 1.25f : 1f;
-                }
-            });
-        }//自己写一个，或者用factorSet.Remove()，别老是覆盖
-		private void LoadResilienceFactor()
-		{
-            m_resilienceFactorSet.AddFactor(new Factor("PlayerClass")
-            {
-                GetDescription = delegate {
-                    return m_componentPlayer.PlayerData.PlayerClass.ToString();
-                },
-                GetValue = delegate
-                {
-                    return (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.8f : 1f;
-                }
-            });
-            m_resilienceFactorSet.AddFactor(new Factor("Level")
-            {
-                GetDescription = delegate {
-                    return string.Format(LanguageControl.Get(fName, 2), MathF.Floor(m_componentPlayer.PlayerData.Level).ToString());
-                },
-                GetValue = delegate
-                {
-                    float level = m_componentPlayer.PlayerData.Level;
-                    return 1f + (0.05f * MathF.Floor(Math.Clamp(level, 1f, MaxLevel) - 1f));
-                }
-            });
-            m_resilienceFactorSet.AddFactor(new Factor("Sickness")
-            {
-                GetDescription = delegate {
-					return m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5);
-                },
-                GetValue = delegate
-                {
-                    return m_componentPlayer.ComponentSickness.IsSick ? 0.75f : 1f;
-                }
-            });
-            m_resilienceFactorSet.AddFactor(new Factor("Flu")
-            {
-                GetDescription = delegate {
-					return m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9);
-                },
-                GetValue = delegate
-                {
-                    return m_componentPlayer.ComponentFlu.HasFlu ? 0.75f : 1f;
-                }
-            });
-            m_resilienceFactorSet.AddFactor(new Factor("GameMode")
-            {
-                GetDescription = delegate {
-                    return string.Format(LanguageControl.Get(fName, 12), m_subsystemGameInfo.WorldSettings.GameMode.ToString());
-                },
-                GetValue = delegate
-                {
-					switch (m_subsystemGameInfo.WorldSettings.GameMode)
-					{
-						case GameMode.Creative: return float.PositiveInfinity;
-						case GameMode.Harmless: return 1.5f;
-						case GameMode.Survival: return 1.25f;
-						default: return 1f;
-                    }
-                }
-            });
-            
+					Value = num5,
+					Description = string.Format(LanguageControl.Get(fName, 3), $"{stamina * 100f:0}")
+				};
+				factors.Add(item);
+			}
+			float num7 = m_componentPlayer.ComponentSickness.IsSick ? 0.75f : 1f;
+			float num8 = num6 * num7;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num7,
+					Description = m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5)
+				};
+				factors.Add(item);
+			}
+			float num9 = (!m_componentPlayer.ComponentSickness.IsPuking) ? 1 : 0;
+			float num10 = num8 * num9;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num9,
+					Description = m_componentPlayer.ComponentSickness.IsPuking ? LanguageControl.Get(fName, 6) : LanguageControl.Get(fName, 7)
+				};
+				factors.Add(item);
+			}
+			float num11 = m_componentPlayer.ComponentFlu.HasFlu ? 0.75f : 1f;
+			float num12 = num10 * num11;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num11,
+					Description = m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9)
+				};
+				factors.Add(item);
+			}
+			float num13 = (!m_componentPlayer.ComponentFlu.IsCoughing) ? 1 : 0;
+			float num14 = num12 * num13;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num13,
+					Description = m_componentPlayer.ComponentFlu.IsCoughing ? LanguageControl.Get(fName, 10) : LanguageControl.Get(fName, 11)
+				};
+				factors.Add(item);
+			}
+			float num15 = (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless) ? 1.25f : 1f;
+			float result = num14 * num15;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num15,
+					Description = string.Format(LanguageControl.Get(fName, 12), m_subsystemGameInfo.WorldSettings.GameMode.ToString())
+				};
+				factors.Add(item);
+			}
+			return result;
 		}
-		private void LoadSpeedFactor()
+
+		public virtual float CalculateResilienceFactor(ICollection<Factor> factors)
 		{
-            m_speedFactorSet.AddFactor(new Factor("PlayerClass")
-            {
-                GetDescription = delegate {
-                    return m_componentPlayer.PlayerData.PlayerClass.ToString();
-                },
-                GetValue = delegate
-                {
-                    return (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 1.03f : 1f;
-                }
-            });
-            m_speedFactorSet.AddFactor(new Factor("Level")
-            {
-                GetDescription = delegate {
-					return string.Format(LanguageControl.Get(fName, 2), MathF.Floor(m_componentPlayer.PlayerData.Level).ToString());
-                },
-                GetValue = delegate
-                {
-                    return 1f + (0.02f * MathF.Floor(Math.Clamp(m_componentPlayer.PlayerData.Level, 1f, MaxLevel) - 1f));
-                }
-            });
-            m_speedFactorSet.AddFactor(new Factor("Stamina")
-            {
-                GetDescription = delegate {
-                    float stamina = m_componentPlayer.ComponentVitalStats.Stamina;
-					return string.Format(LanguageControl.Get(fName, 3), $"{stamina * 100f:0}");
-                },
-                GetValue = delegate
-                {
-					float stamina = m_componentPlayer.ComponentVitalStats.Stamina;
-                    return MathUtils.Lerp(0.5f, 1f, MathUtils.Saturate(4f * stamina)) * MathUtils.Lerp(0.9f, 1f, MathUtils.Saturate(stamina));
-                }
-            });
-            m_speedFactorSet.AddFactor(new Factor("Sickness")
-            {
-                GetDescription = delegate {
-                    return m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5);
-                },
-                GetValue = delegate
-                {
-                    return m_componentPlayer.ComponentSickness.IsSick ? 0.75f : 1f;
-                }
-            });
-            m_speedFactorSet.AddFactor(new Factor("Puking")
-            {
-                GetDescription = delegate
-                {
-                    return m_componentPlayer.ComponentSickness.IsPuking ? LanguageControl.Get(fName, 6) : LanguageControl.Get(fName, 7);
-                },
-                GetValue = delegate
-                {
-                    return (!m_componentPlayer.ComponentSickness.IsPuking) ? 1 : 0;
-                }
-            });
-            m_speedFactorSet.AddFactor(new Factor("Flu")
-            {
-                GetDescription = delegate
-                {
-                    return m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9);
-                },
-                GetValue = delegate
-                {
-                    return m_componentPlayer.ComponentFlu.HasFlu ? 0.75f : 1f;
-                }
-            });
-            m_speedFactorSet.AddFactor(new Factor("Coughing")
-            {
-                GetDescription = delegate
-                {
-                    return m_componentPlayer.ComponentFlu.IsCoughing ? LanguageControl.Get(fName, 10) : LanguageControl.Get(fName, 11);
-                },
-                GetValue = delegate
-                {
-                    return (!m_componentPlayer.ComponentFlu.IsCoughing) ? 1 : 0;
-                }
-            });
+			float num = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.8f : 1f;
+			float num2 = 1f * num;
+			Factor item;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num,
+					Description = m_componentPlayer.PlayerData.PlayerClass.ToString()
+				};
+				factors.Add(item);
+			}
+			float level = m_componentPlayer.PlayerData.Level;
+			float num3 = 1f + (0.05f * MathF.Floor(Math.Clamp(level, 1f, 21f) - 1f));
+			float num4 = num2 * num3;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num3,
+					Description = string.Format(LanguageControl.Get(fName, 2), MathF.Floor(level).ToString())
+				};
+				factors.Add(item);
+			}
+			float num5 = m_componentPlayer.ComponentSickness.IsSick ? 0.75f : 1f;
+			float num6 = num4 * num5;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num5,
+					Description = m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5)
+				};
+				factors.Add(item);
+			}
+			float num7 = m_componentPlayer.ComponentFlu.HasFlu ? 0.75f : 1f;
+			float num8 = num6 * num7;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num7,
+					Description = m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9)
+				};
+				factors.Add(item);
+			}
+			float num9 = 1f;
+			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless)
+			{
+				num9 = 1.5f;
+			}
+			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Survival)
+			{
+				num9 = 1.25f;
+			}
+			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative)
+			{
+				num9 = float.PositiveInfinity;
+			}
+			float result = num8 * num9;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num9,
+					Description = string.Format(LanguageControl.Get(fName, 12), m_subsystemGameInfo.WorldSettings.GameMode.ToString())
+				};
+				factors.Add(item);
+			}
+			return result;
 		}
-		private void LoadHungerFactor()
+
+		public virtual float CalculateSpeedFactor(ICollection<Factor> factors)
 		{
-            m_hungerFactorSet.AddFactor(new Factor("PlayerClass")
-            {
-                GetDescription = delegate {
-                    return m_componentPlayer.PlayerData.PlayerClass.ToString();
-                },
-                GetValue = delegate
-                {
-                    return (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.7f : 1f;
-                }
-            });
-            m_hungerFactorSet.AddFactor(new Factor("Level")
-            {
-                GetDescription = delegate {
-                    return string.Format(LanguageControl.Get(fName, 2), MathF.Floor(m_componentPlayer.PlayerData.Level).ToString());
-                },
-                GetValue = delegate
-                {
-                    return 1f - (0.01f * MathF.Floor(Math.Clamp(m_componentPlayer.PlayerData.Level, 1f, MaxLevel) - 1f));
-                }
-            });
-            m_hungerFactorSet.AddFactor(new Factor("GameMode")
-            {
-                GetDescription = delegate {
-                    return string.Format(LanguageControl.Get(fName, 12), m_subsystemGameInfo.WorldSettings.GameMode.ToString());
-                },
-                GetValue = delegate
-                {
-                    switch (m_subsystemGameInfo.WorldSettings.GameMode)
-                    {
-                        case GameMode.Creative: return 0f;
-                        case GameMode.Harmless: return 0.66f;
-                        case GameMode.Survival: return 0.75f;
-                        default: return 1f;
-                    }
-                }
-            });
-        }
-        
+			float num = 1f;
+			float num2 = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 1.03f : 1f;
+			num *= num2;
+			Factor item;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num2,
+					Description = m_componentPlayer.PlayerData.PlayerClass.ToString()
+				};
+				factors.Add(item);
+			}
+			float level = m_componentPlayer.PlayerData.Level;
+			float num3 = 1f + (0.02f * MathF.Floor(Math.Clamp(level, 1f, 21f) - 1f));
+			num *= num3;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num3,
+					Description = string.Format(LanguageControl.Get(fName, 2), MathF.Floor(level).ToString())
+				};
+				factors.Add(item);
+			}
+			float clothingFactor = 1f;
+			foreach (int clothe in m_componentPlayer.ComponentClothing.GetClothes(ClothingSlot.Head))
+			{
+				AddClothingFactor(clothe, ref clothingFactor, factors);
+			}
+			foreach (int clothe2 in m_componentPlayer.ComponentClothing.GetClothes(ClothingSlot.Torso))
+			{
+				AddClothingFactor(clothe2, ref clothingFactor, factors);
+			}
+			foreach (int clothe3 in m_componentPlayer.ComponentClothing.GetClothes(ClothingSlot.Legs))
+			{
+				AddClothingFactor(clothe3, ref clothingFactor, factors);
+			}
+			foreach (int clothe4 in m_componentPlayer.ComponentClothing.GetClothes(ClothingSlot.Feet))
+			{
+				AddClothingFactor(clothe4, ref clothingFactor, factors);
+			}
+			num *= clothingFactor;
+			float stamina = m_componentPlayer.ComponentVitalStats.Stamina;
+			float num4 = MathUtils.Lerp(0.5f, 1f, MathUtils.Saturate(4f * stamina)) * MathUtils.Lerp(0.9f, 1f, MathUtils.Saturate(stamina));
+			num *= num4;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num4,
+					Description = string.Format(LanguageControl.Get(fName, 3), $"{stamina * 100f:0}")
+				};
+				factors.Add(item);
+			}
+			float num5 = m_componentPlayer.ComponentSickness.IsSick ? 0.75f : 1f;
+			num *= num5;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num5,
+					Description = m_componentPlayer.ComponentSickness.IsSick ? LanguageControl.Get(fName, 4) : LanguageControl.Get(fName, 5)
+				};
+				factors.Add(item);
+			}
+			float num6 = (!m_componentPlayer.ComponentSickness.IsPuking) ? 1 : 0;
+			num *= num6;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num6,
+					Description = m_componentPlayer.ComponentSickness.IsPuking ? LanguageControl.Get(fName, 6) : LanguageControl.Get(fName, 7)
+				};
+				factors.Add(item);
+			}
+			float num7 = m_componentPlayer.ComponentFlu.HasFlu ? 0.75f : 1f;
+			num *= num7;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num7,
+					Description = m_componentPlayer.ComponentFlu.HasFlu ? LanguageControl.Get(fName, 8) : LanguageControl.Get(fName, 9)
+				};
+				factors.Add(item);
+			}
+			float num8 = (!m_componentPlayer.ComponentFlu.IsCoughing) ? 1 : 0;
+			num *= num8;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num8,
+					Description = m_componentPlayer.ComponentFlu.IsCoughing ? LanguageControl.Get(fName, 10) : LanguageControl.Get(fName, 11)
+				};
+				factors.Add(item);
+			}
+			return num;
+		}
 
-        public virtual void LoadClothingFactor()
-        {
-            ClothingBlock clothingBlock = BlocksManager.GetBlock<ClothingBlock>();
-            if (clothingBlock == null) return;
-        }
+		public virtual float CalculateHungerFactor(ICollection<Factor> factors)
+		{
+			float num = (m_componentPlayer.PlayerData.PlayerClass == PlayerClass.Female) ? 0.7f : 1f;
+			float num2 = 1f * num;
+			Factor item;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num,
+					Description = m_componentPlayer.PlayerData.PlayerClass.ToString()
+				};
+				factors.Add(item);
+			}
+			float level = m_componentPlayer.PlayerData.Level;
+			float num3 = 1f - (0.01f * MathF.Floor(Math.Clamp(level, 1f, 21f) - 1f));
+			float num4 = num2 * num3;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num3,
+					Description = string.Format(LanguageControl.Get(fName, 2), MathF.Floor(level).ToString())
+				};
+				factors.Add(item);
+			}
+			float num5 = 1f;
+			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless)
+			{
+				num5 = 0.66f;
+			}
+			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Survival)
+			{
+				num5 = 0.75f;
+			}
+			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative)
+			{
+				num5 = 0f;
+			}
+			float result = num4 * num5;
+			if (factors != null)
+			{
+				item = new Factor
+				{
+					Value = num5,
+					Description = string.Format(LanguageControl.Get(fName, 12), m_subsystemGameInfo.WorldSettings.GameMode.ToString())
+				};
+				factors.Add(item);
+			}
+			return result;
+		}
 
-        /*public static void OnClothingMounted(int value, ComponentClothing componentClothing)
-        {
-            ComponentFactors componentFactors = componentClothing.Entity.FindComponent<ComponentFactors>();
-            ClothingBlock clothingBlock = BlocksManager.GetBlock<ClothingBlock>();
-            if(componentFactors == null || clothingBlock == null) return;
-            ClothingData clothingData = clothingBlock.GetClothingData(value);
-            if (clothingData == null) return;
-            ClothingFactor clothingFactor = componentFactors.m_speedFactorSet.GetFactor<ClothingFactor>("Clothing-" + clothingData.DisplayName);
-            if (clothingFactor != null) clothingFactor = new ClothingFactor("Clothing-" + clothingData.DisplayName)
-            {
-                GetDescription = delegate {
-                    return clothingData.DisplayName;
-                },
-                GetValue = delegate
-                {
-                    return clothingData.MovementSpeedFactor;
-                }
-            };
-            componentFactors.m_speedFactorSet.AddFactor(clothingFactor);
-        }*/
-
-        
-        public override void Update(float dt)
+		public virtual void Update(float dt)
 		{
 			if (m_subsystemTime.PeriodicGameTimeEvent(180.0, 179.0))
 			{
@@ -377,7 +447,10 @@ namespace Game
 				m_lastLevelTextValue = MathF.Floor(m_componentPlayer.PlayerData.Level);
 			}
 			m_componentPlayer.PlayerStats.HighestLevel = MathUtils.Max(m_componentPlayer.PlayerStats.HighestLevel, m_componentPlayer.PlayerData.Level);
-            //UpdateClothingFactor();
+			StrengthFactor = CalculateStrengthFactor(null);
+			SpeedFactor = CalculateSpeedFactor(null);
+			HungerFactor = CalculateHungerFactor(null);
+			ResilienceFactor = CalculateResilienceFactor(null);
 			ModsManager.HookAction("OnLevelUpdate", modLoader =>
 			{
 				modLoader.OnLevelUpdate(this);
@@ -387,12 +460,29 @@ namespace Game
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{
-			base.Load(valuesDictionary, idToEntityMap);
+			m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+			m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
 			m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
-            LoadStrengthFactor();
-            LoadHungerFactor();
-            LoadSpeedFactor();
-            LoadResilienceFactor();
+			StrengthFactor = 1f;
+			SpeedFactor = 1f;
+			HungerFactor = 1f;
+			ResilienceFactor = 1f;
+		}
+
+		public static void AddClothingFactor(int clothingValue, ref float clothingFactor, ICollection<Factor> factors)
+		{
+			Block block = BlocksManager.Blocks[Terrain.ExtractContents(clothingValue)];
+			ClothingData clothingData = block.GetClothingData(clothingValue);
+			if (clothingData.MovementSpeedFactor != 1f)
+			{
+				clothingFactor *= clothingData.MovementSpeedFactor;
+				factors?.Add(new Factor
+				{
+					Value = clothingData.MovementSpeedFactor,
+					Description = clothingData.DisplayName
+				});
+			}
 		}
 	}
 }

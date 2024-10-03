@@ -4086,9 +4086,6 @@
 					<Parameter Name="SicknessDuration" Description="Remaining duration of sickness, in seconds" Guid="0ee19469-0ec6-44dd-9dab-3e66849621ef" Value="0" Type="float" />
 					<Parameter Name="Class" Guid="2ecdc324-1a9e-444f-941d-f313447c00a5" Value="Game.ComponentSickness" Type="string" />
 				</ComponentTemplate>
-				<ComponentTemplate Name="Level" Description="Handles creature level and performance factors" Guid="c2473662-5d67-4116-9d77-1d12fdb2935a" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
-					<Parameter Name="Class" Guid="a346c456-5087-48c4-835a-5829b3f35c68" Value="Game.ComponentLevel" Type="string" />
-				</ComponentTemplate>
 				<ComponentTemplate Name="Clothing" Description="Handles clothes and skin of player" Guid="b7d5ba34-de1b-4f62-a24c-314e4e1b25ca" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
 					<ParameterSet Name="Clothes" Description="Contains clothes worn by creature" Guid="1478d9a5-62e0-4810-820f-104230d9fb67">
 						<Parameter Name="Legs" Description="List of legs clothes" Guid="510a8ca1-1075-4369-81c6-24dc2a39a74f" Value="" Type="string" />
@@ -4101,6 +4098,9 @@
 				<ComponentTemplate Name="Name" Description="Stores a name" Guid="be9d5f51-94da-4d6f-b14d-fb96061584da" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
 					<Parameter Name="Class" Guid="224c3372-9bd3-4339-90ed-c4d8b3510cb5" Value="Game.ComponentName" Type="string" />
 					<Parameter Name="Name" Guid="62b2d180-3a3a-4df0-ba71-041e7e53bee9" Value="" Type="string" />
+				</ComponentTemplate>
+				<ComponentTemplate Name="Level" Description="Handles creature level and performance factors" Guid="c2473662-5d67-4116-9d77-1d12fdb2935a" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
+					<Parameter Name="Class" Guid="a346c456-5087-48c4-835a-5829b3f35c68" Value="Game.ComponentLevel" Type="string" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="FurnitureInventory" Description="Furniture inventory" Guid="c4b4f7d0-8439-4cb8-b316-cdd4342ee2ed" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
 					<Parameter Name="FurnitureSet" Description="Selected furniture set" Guid="95451ce8-eb15-4568-b42e-1c766fc48b7d" Value="" Type="string" />

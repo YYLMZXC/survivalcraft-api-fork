@@ -282,7 +282,6 @@ namespace Game
 			m_componentVitalStats = Entity.FindComponent<ComponentVitalStats>(throwOnError: true);
 			m_componentLocomotion = Entity.FindComponent<ComponentLocomotion>(throwOnError: true);
 			m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
-			m_componentFactors = Entity.FindComponent<ComponentFactors>(throwOnError: true);
 			SteedMovementSpeedFactor = 1f;
 			Insulation = 0f;
 			LeastInsulatedSlot = ClothingSlot.Feet;
