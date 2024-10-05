@@ -3271,12 +3271,12 @@
       "1": "OK",
       "2": "Cancel"
     },
-    "ViewGameLogDialog": {
-      "1": "Clear",
-      "2": "Copy",
-      "3": "Close",
-      "4": "Upload"
-    },
+    "ViewGameLogDialog": [
+      "Clear",
+      "Copy",
+      "Close",
+      "Upload"
+    ],
     "RunJsDialog": {
       "1": "Run",
       "2": "Close",
