@@ -918,5 +918,39 @@ namespace Game
         {
             return -1073741824;
         }
+        public virtual void OnPlayerControlSteed(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)
+        {
+            skipVanilla = false;
+        }
+        public virtual void OnPlayerControlBoat(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)
+        {
+            skipVanilla = false;
+        }
+
+        public virtual void OnPlayerControlWalk(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)
+        {
+            skipVanilla = false;
+        }
+        public virtual void OnPlayerInputInteract(ComponentPlayer componentPlayer, ref bool playerOperated, ref double timeIntervalLastActionTime, ref int priorityUse, ref int priorityInteract, ref int priorityPlace)
+        {
+
+        }
+        public virtual void UpdatePlayerInputAim(ComponentPlayer componentPlayer, bool aiming, ref bool playerOperated, ref float timeIntervalAim, bool skippedByOtherMods, out bool skipVanilla)
+        {
+            skipVanilla = false;
+        }
+        //在玩家执行“攻击”动作时执行，比如恒泰左键放箭，工业左键点击船
+        public virtual void OnPlayerInputHit(ComponentPlayer componentPlayer, ref bool playerOperated, ref double timeIntervalHit, ref float meleeAttackRange, bool skippedByOtherMods, out bool skipVanilla)
+        {
+            skipVanilla = false;
+        }
+        public virtual void UpdatePlayerInputDig(ComponentPlayer componentPlayer, bool digging, ref bool playerOperated, ref double timeIntervalDig, bool skippedByOtherMods, out bool skipVanilla)
+        {
+            skipVanilla = false;
+        }
+        public virtual void OnPlayerInputDrop(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)
+        {
+            skipVanilla = false;
+        }
     }
 }

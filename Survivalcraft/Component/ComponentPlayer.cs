@@ -213,8 +213,6 @@ namespace Game
 			ComponentSteedBehavior componentSteedBehavior = null;
 			ComponentBoat componentBoat = null;
 			ComponentMount mount = ComponentRider.Mount;
-            var playerControlMovementComponents = Entity.FindComponents<IPlayerControlMovement>();
-			var playerControlInputComponents = Entity.FindComponents<IPlayerControlInput>();
             if (mount != null)
 			{
 				componentSteedBehavior = mount.Entity.FindComponent<ComponentSteedBehavior>();
@@ -223,11 +221,12 @@ namespace Game
 			if (componentSteedBehavior != null)
 			{
 				bool skipVanilla_h = false;
-				foreach(IPlayerControlMovement playerControlMovement in playerControlMovementComponents)
-				{ 
-					playerControlMovement.OnPlayerControlSteed(this, skipVanilla_h, out bool skipVanilla);
-					skipVanilla_h |= skipVanilla;
-				}
+				ModsManager.HookAction("OnPlayerControlSteed", loader =>
+				{
+					loader.OnPlayerControlSteed(this, skipVanilla_h, out bool skipVanilla);
+                    skipVanilla_h |= skipVanilla;
+                    return false;
+				});
 				if (!skipVanilla_h)
 				{
                     if (playerInput.Move.Z > 0.5f && !m_speedOrderBlocked)
@@ -268,11 +267,12 @@ namespace Game
 			else if (componentBoat != null)
 			{
                 bool skipVanilla_h = false;
-                foreach (IPlayerControlMovement playerControlMovement in playerControlMovementComponents)
-                {
-                    playerControlMovement.OnPlayerControlBoat(this, skipVanilla_h, out bool skipVanilla);
-                    skipVanilla_h |= skipVanilla;
-                }
+				ModsManager.HookAction("OnPlayerControlBoat", loader =>
+				{
+					loader.OnPlayerControlBoat(this, skipVanilla_h, out bool skipVanilla);
+					skipVanilla_h |= skipVanilla;
+					return false;
+                });
                 if (!skipVanilla_h)
                 {
                     componentBoat.TurnOrder = playerInput.Move.X;
@@ -285,12 +285,13 @@ namespace Game
 			else
 			{
                 bool skipVanilla_h = false;
-                foreach (IPlayerControlMovement playerControlMovement in playerControlMovementComponents)
+                ModsManager.HookAction("OnPlayerControlWalk", loader =>
                 {
-                    playerControlMovement.OnPlayerControlWalk(this, skipVanilla_h, out bool skipVanilla);
+                    loader.OnPlayerControlWalk(this, skipVanilla_h, out bool skipVanilla);
                     skipVanilla_h |= skipVanilla;
-                }
-				if (!skipVanilla_h)
+                    return false;
+                });
+                if (!skipVanilla_h)
 				{
                     ComponentLocomotion.WalkOrder = ComponentBody.IsSneaking ? (0.66f * new Vector2(playerInput.SneakMove.X, playerInput.SneakMove.Z)) : new Vector2(playerInput.Move.X, playerInput.Move.Z);
                     ComponentLocomotion.FlyOrder = new Vector3(0f, playerInput.Move.Y, 0f);
@@ -320,15 +321,16 @@ namespace Game
                     priorityPlace = block.GetPriorityPlace(ComponentMiner.ActiveBlockValue, ComponentMiner);
                     priorityInteract = BlocksManager.Blocks[Terrain.ExtractContents(raycastValue)].GetPriorityInteract(raycastValue, ComponentMiner);
                 }
-
-				foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
-				{
-					playerControlInput.OnPlayerInputInteract(this, ref flag, ref timeIntervalLastActionTime, ref priorityUse, ref priorityInteract, ref priorityPlace);
-				}
+                ModsManager.HookAction("OnPlayerInputInteract", loader =>
+                {
+					loader.OnPlayerInputInteract(this, ref flag, ref timeIntervalLastActionTime, ref priorityUse, ref priorityInteract, ref priorityPlace);
+                    return false;
+                });
 				if (!flag && m_subsystemTime.GameTime - m_lastActionTime > timeIntervalLastActionTime)
 				{
                     //处理三者的关系，优先级最高的优先执行
                     DealWithPlayerInteract(priorityUse, priorityPlace, priorityInteract, playerInput, terrainRaycastResult, out flag);
+					m_lastActionTime = timeIntervalLastActionTime;
                 }
             }
 				
@@ -336,11 +338,12 @@ namespace Game
 			if (playerInput.Aim.HasValue)
 			{
 				bool skipVanilla_h = false;
-                foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
+                ModsManager.HookAction("UpdatePlayerInputAim", loader =>
                 {
-					playerControlInput.UpdatePlayerInputAim(this, true, ref flag, ref timeIntervalAim, skipVanilla_h, out bool skip);
-					skipVanilla_h |= skip;
-                }
+                    loader.UpdatePlayerInputAim(this, true, ref flag, ref timeIntervalAim, skipVanilla_h, out bool skip);
+                    skipVanilla_h |= skip;
+                    return false;
+                });
                 if (!skipVanilla_h && block.IsAimable_(ComponentMiner.ActiveBlockValue) && m_subsystemTime.GameTime - m_lastActionTime > timeIntervalAim)
                 {
                     if (!m_isAimBlocked)
@@ -385,11 +388,12 @@ namespace Game
             {
                 m_isAimBlocked = false;
                 bool skipVanilla_h = false;
-                foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
+                ModsManager.HookAction("UpdatePlayerInputAim", loader =>
                 {
-                    playerControlInput.UpdatePlayerInputAim(this, false, ref flag, ref timeIntervalAim, skipVanilla_h, out bool skip);
+                    loader.UpdatePlayerInputAim(this, false, ref flag, ref timeIntervalAim, skipVanilla_h, out bool skip);
                     skipVanilla_h |= skip;
-                }
+                    return false;
+                });
                 if (!skipVanilla_h && m_aim.HasValue)
                 {
                     ComponentMiner.Aim(m_aim.Value, AimState.Completed);
@@ -405,13 +409,15 @@ namespace Game
 				bool skipVanilla_ = false;
 				double timeIntervalHit = 0.33000001311302185;
 				float meleeAttackRange = 2f;
-                foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
+                ModsManager.HookAction("OnPlayerInputHit", loader =>
                 {
-                    playerControlInput.OnPlayerInputHit(this, ref flag, ref timeIntervalHit, ref meleeAttackRange, skipVanilla_, out bool skip);
+                    loader.OnPlayerInputHit(this, ref flag, ref timeIntervalHit, ref meleeAttackRange, skipVanilla_, out bool skip);
                     skipVanilla_ |= skip;
-                }
+                    return false;
+                });
                 if (!skipVanilla_ && !flag && m_subsystemTime.GameTime - m_lastActionTime > timeIntervalHit && block.GetMeleeHitProbability(ComponentMiner.ActiveBlockValue) > 0 && meleeAttackRange > 0)
                 {
+					m_lastActionTime = m_subsystemTime.GameTime;
 					BodyRaycastResult? bodyRaycastResult;
 					if(meleeAttackRange <= 5f)
 						bodyRaycastResult = ComponentMiner.Raycast<BodyRaycastResult>(playerInput.Hit.Value, RaycastMode.Interaction);
@@ -433,11 +439,12 @@ namespace Game
             if (playerInput.Dig.HasValue)
 			{
                 bool skipVanilla_ = false;
-                foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
+                ModsManager.HookAction("UpdatePlayerInputDig", loader =>
                 {
-                    playerControlInput.UpdatePlayerInputDig(this, true, ref flag, ref timeIntervalDig, skipVanilla_, out bool skip);
+                    loader.UpdatePlayerInputDig(this, true, ref flag, ref timeIntervalDig, skipVanilla_, out bool skip);
                     skipVanilla_ |= skip;
-                }
+                    return false;
+                });
                 if (!skipVanilla_ && !flag && !m_isDigBlocked && m_subsystemTime.GameTime - m_lastActionTime > timeIntervalDig)
                 {
                     TerrainRaycastResult? terrainRaycastResult2 = ComponentMiner.Raycast<TerrainRaycastResult>(playerInput.Dig.Value, RaycastMode.Digging);
@@ -452,21 +459,23 @@ namespace Game
 			{
 				m_isDigBlocked = false;
                 bool skipVanilla_ = false;
-                foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
+                ModsManager.HookAction("UpdatePlayerInputDig", loader =>
                 {
-					playerControlInput.UpdatePlayerInputDig(this, false, ref flag, ref timeIntervalDig, skipVanilla_, out bool skip);
+                    loader.UpdatePlayerInputDig(this, false, ref flag, ref timeIntervalDig, skipVanilla_, out bool skip);
                     skipVanilla_ |= skip;
-                }
+                    return false;
+                });
             }
 			if (playerInput.Drop && ComponentMiner.Inventory != null)
 			{
                 bool skipVanilla_ = false;
-                foreach (IPlayerControlInput playerControlInput in playerControlInputComponents)
+                ModsManager.HookAction("UpdatePlayerInputDig", loader =>
                 {
-					playerControlInput.OnPlayerInputDrop(this, skipVanilla_, out bool skip);
+                    loader.OnPlayerInputDrop(this, skipVanilla_, out bool skip);
                     skipVanilla_ |= skip;
-                }
-				if (!skipVanilla_)
+                    return false;
+                });
+                if (!skipVanilla_)
 				{
                     IInventory inventory = ComponentMiner.Inventory;
                     int slotValue = inventory.GetSlotValue(inventory.ActiveSlotIndex);
