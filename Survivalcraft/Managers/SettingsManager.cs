@@ -459,12 +459,18 @@ namespace Game
 			set;
 		}
 
+		public static bool DragHalfInSplit
+		{
+			get;
+			set;
+		}
+
 		public static event Action<string> SettingChanged;
 
 		public static void Initialize()
 		{
 			DisplayLog = false;
-
+			DragHalfInSplit = true;
 			m_resolutionMode = ResolutionMode.High;
 			VisibilityRange = 128;
 			ViewAngleMode = ViewAngleMode.Normal;

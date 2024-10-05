@@ -371,7 +371,7 @@ namespace Game
 				DragMode dragMode = input.DragMode;
 				if (viewPlayer.ComponentInput.SplitSourceInventory == m_inventory && viewPlayer.ComponentInput.SplitSourceSlotIndex == m_slotIndex)
 				{
-					dragMode = DragMode.SingleItem;
+					dragMode = SettingsManager.DragHalfInSplit ? DragMode.HalfItems : DragMode.SingleItem;
 				}
 				int num3 = (dragMode != 0) ? 1 : slotCount;
 				SubsystemTerrain subsystemTerrain = m_inventory.Project.FindSubsystem<SubsystemTerrain>();
@@ -580,6 +580,11 @@ namespace Game
 			if (dragMode == DragMode.SingleItem)
 			{
 				dragCount = MathUtils.Min(dragCount, 1);
+			}
+			else if (dragMode == DragMode.HalfItems)
+            {
+                if (dragCount == 1) dragCount = 1;
+                else dragCount = MathUtils.Min(dragCount, dragCount / 2);
 			}
 			bool flag = false;
 			//先进行Process操作
