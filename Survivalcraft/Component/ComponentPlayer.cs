@@ -417,7 +417,6 @@ namespace Game
                 });
                 if (!skipVanilla_ && !flag && m_subsystemTime.GameTime - m_lastActionTime > timeIntervalHit && block.GetMeleeHitProbability(ComponentMiner.ActiveBlockValue) > 0 && meleeAttackRange > 0)
                 {
-					m_lastActionTime = m_subsystemTime.GameTime;
 					BodyRaycastResult? bodyRaycastResult;
 					if(meleeAttackRange <= 5f)
 						bodyRaycastResult = ComponentMiner.Raycast<BodyRaycastResult>(playerInput.Hit.Value, RaycastMode.Interaction);
