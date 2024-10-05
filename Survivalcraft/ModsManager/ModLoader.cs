@@ -952,5 +952,9 @@ namespace Game
         {
             skipVanilla = false;
         }
+        public virtual void OnLightningStrike(SubsystemSky subsystemSky, ref Vector3 targetPosition, ref bool strike, ref float explosionPressure, ref bool setBodyOnFire)
+        {
+
+        }
     }
 }

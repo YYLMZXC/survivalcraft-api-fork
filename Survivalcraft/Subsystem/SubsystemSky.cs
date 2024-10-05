@@ -222,12 +222,20 @@ namespace Game
 		public static bool DrawGalaxyEnabled = true;
 
 		public void MakeLightningStrike(Vector3 targetPosition)
-		{
-			if (m_lightningStrikePosition.HasValue || !(m_subsystemTime.GameTime - m_lastLightningStrikeTime > 1.0))
+        {
+            float explosionPressure = (m_random.Float(0f, 1f) < 0.2f) ? 39 : 19;
+			bool strike = (m_subsystemTime.GameTime - m_lastLightningStrikeTime > 1.0);
+            bool setBodyOnFire = true;
+            ModsManager.HookAction("OnLightningStrike", loader =>
+			{
+				loader.OnLightningStrike(this, ref targetPosition, ref strike, ref explosionPressure, ref setBodyOnFire);
+				return false;
+			});
+			if (m_lightningStrikePosition.HasValue || !strike)
 			{
 				return;
-			}
-			m_lastLightningStrikeTime = m_subsystemTime.GameTime;
+            }
+            m_lastLightningStrikeTime = m_subsystemTime.GameTime;
 			m_lightningStrikePosition = targetPosition;
 			m_lightningStrikeBrightness = 1f;
 			float num = float.MaxValue;
@@ -257,7 +265,7 @@ namespace Game
 			for (int i = 0; i < dynamicArray.Count; i++)
 			{
 				ComponentBody componentBody = dynamicArray.Array[i];
-				if (componentBody.Position.Y > targetPosition.Y - 1.5f && Vector2.Distance(new Vector2(componentBody.Position.X, componentBody.Position.Z), new Vector2(targetPosition.X, targetPosition.Z)) < 4f)
+				if (setBodyOnFire && componentBody.Position.Y > targetPosition.Y - 1.5f && Vector2.Distance(new Vector2(componentBody.Position.X, componentBody.Position.Z), new Vector2(targetPosition.X, targetPosition.Z)) < 4f)
 				{
 					componentBody.Entity.FindComponent<ComponentOnFire>()?.SetOnFire(null, m_random.Float(12f, 15f));
 				}
@@ -270,8 +278,7 @@ namespace Game
 			int x = Terrain.ToCell(targetPosition.X);
 			int num3 = Terrain.ToCell(targetPosition.Y);
 			int z = Terrain.ToCell(targetPosition.Z);
-			float pressure = (m_random.Float(0f, 1f) < 0.2f) ? 39 : 19;
-			base.Project.FindSubsystem<SubsystemExplosions>(throwOnError: true).AddExplosion(x, num3 + 1, z, pressure, isIncendiary: false, noExplosionSound: true);
+			base.Project.FindSubsystem<SubsystemExplosions>()?.AddExplosion(x, num3 + 1, z, explosionPressure, isIncendiary: false, noExplosionSound: true);
 		}
 
 		public void Update(float dt)
