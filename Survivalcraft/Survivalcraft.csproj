@@ -65,6 +65,9 @@
         <None Update="Content.zip">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Update="openal32.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
         <EmbeddedResource Include="Content.zip">
