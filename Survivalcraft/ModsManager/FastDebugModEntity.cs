@@ -16,7 +16,8 @@ namespace Game
 		{
 			modInfo = new ModInfo() { Name = "[Debug]", PackageName = "debug" };
 			InitResources();
-		}
+            modInfo.LoadOrder = int.MinValue + 1;
+        }
 
 		public override void InitResources()
 		{

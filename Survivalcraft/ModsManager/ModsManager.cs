@@ -246,6 +246,11 @@ public static class ModsManager
         {
             modInfo.Dependencies = dependencies.EnumerateArray().Where(dependency=> dependency.ValueKind == JsonValueKind.String).Select(dependency => dependency.GetString()).ToList();
         }
+        if (jsonElement.TryGetProperty("LoadOrder", out JsonElement loadOrder) && loadOrder.ValueKind == JsonValueKind.Number)
+        {
+			modInfo.LoadOrder = loadOrder.GetInt32();
+			//Log.Information("获取模组的Order：" + modInfo.LoadOrder);
+        }
         return modInfo;
     }
     public static void SaveModSettings(XElement xElement)
@@ -334,6 +339,7 @@ public static class ModsManager
 		ModListAll.Add(SurvivalCraftModEntity);
 		ModListAll.Add(FastDebug);
 		GetScmods(ModsPath);
+		ModListAll.Sort((x, y) => x.modInfo.LoadOrder.CompareTo(y.modInfo.LoadOrder));
 		List<ModInfo> ToDisable = [.. DisabledMods];
 		DisabledMods.Clear();
 		//float api = float.Parse(APIVersion);

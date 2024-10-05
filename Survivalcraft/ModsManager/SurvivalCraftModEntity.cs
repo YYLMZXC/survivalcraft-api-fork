@@ -60,6 +60,7 @@ namespace Game
 			InitResources();
 			LabelWidget.BitmapFont = ContentManager.Get<Engine.Media.BitmapFont>("Fonts/Pericles");
 			LoadingScreen.Info("加载资源:" + modInfo?.Name);
+			modInfo.LoadOrder = int.MinValue;
 		}
 		public override void LoadBlocksData()
 		{
