@@ -39,7 +39,7 @@ namespace Game
 
 		public float m_lastPokingPhase;
 
-		public virtual double HitInterval {  get; set; }
+		public virtual double HitInterval { get; set; }
 		public ComponentCreature ComponentCreature
 		{
 			get;
@@ -689,7 +689,7 @@ namespace Game
 				? Entity.FindComponent<ComponentCreativeInventory>()
 				: (IInventory)Entity.FindComponent<ComponentInventory>();
 			AttackPower = valuesDictionary.GetValue<float>("AttackPower");
-			HitInterval = 0.66;
+			HitInterval = valuesDictionary.GetValue<float>("HitInterval");
 		}
 		public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)
 		{

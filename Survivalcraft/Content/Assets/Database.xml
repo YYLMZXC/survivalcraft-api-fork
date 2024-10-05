@@ -3817,6 +3817,7 @@
 				</ComponentTemplate>
 				<ComponentTemplate Name="SwimAwayBehavior" Description="Behavior that makes a fish swim away from attacker or danger" Guid="2e0632aa-8235-4adc-80fa-37d497ca8449" InheritanceParent="6cc7245f-56f2-4a77-a3db-5f628b6369b3">
 					<Parameter Name="Class" Guid="07eedb10-9a38-47ad-8aae-af3553bfab3c" Value="Game.ComponentSwimAwayBehavior" Type="string" />
+					<Parameter Name="LowHealthToEscape" Description="Escape when its health is lower than the value" Guid="faafd2e5-c92b-86dd-ea9e-1686d55cd9df" Value="0.33" Type="float" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="ChaseBehavior" Description="Behavior that makes a creature chase the intruder" Guid="31894441-d90a-4549-9264-db9dbe20e234" InheritanceParent="6cc7245f-56f2-4a77-a3db-5f628b6369b3">
 					<Parameter Name="Class" Guid="0bb9a8b6-796f-4aa7-bb73-543259efe513" Value="Game.ComponentChaseBehavior" Type="string" />
@@ -3878,6 +3879,7 @@
 				</ComponentTemplate>
 				<ComponentTemplate Name="RunAwayBehavior" Description="Behavior that makes a creature run away from attacker or danger" Guid="b138cc15-930c-4805-8cfc-b91bfa7f767a" InheritanceParent="6cc7245f-56f2-4a77-a3db-5f628b6369b3">
 					<Parameter Name="Class" Guid="6f538db3-f1fe-4e91-8ef5-627c0b1a74ba" Value="Game.ComponentRunAwayBehavior" Type="string" />
+					<Parameter Name="LowHealthToEscape" Description="Escape when its health is lower than the value" Guid="79c85243-9b3b-aca9-28fb-1a9fce27518c" Value="0.33" Type="float" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="DigInMudBehavior" Description="Behavior that digs in a fish in mud" Guid="b5d86d17-aa62-403c-b004-87d764980dee" InheritanceParent="6cc7245f-56f2-4a77-a3db-5f628b6369b3">
 					<Parameter Name="DigInBlockName" Description="Name of block where the creature can dig in, or empty to not dig in" Guid="8a3155e0-9d50-4fd0-ad0b-b423fc128b8a" Value="" Type="string" />
@@ -4051,6 +4053,7 @@
 				<ComponentTemplate Name="Miner" Description="Handles digging, placement, interaction and hitting" Guid="8acca888-ba39-464f-bcf5-6ae15e448c62" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
 					<Parameter Name="AttackPower" Description="Attack power when using no weapon" Guid="674e7380-0763-49f6-a5f1-5791055a1966" Value="1" Type="float" />
 					<Parameter Name="Class" Guid="9dc356e5-7dc8-45f6-8779-827ddee9966c" Value="Game.ComponentMiner" Type="string" />
+					<Parameter Name="HitInterval" Description="Attack interval" Guid="af6b9802-f394-de7a-324d-a623f4f2c6c6" Value="0.66" Type="float" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="Body" Description="Physical body, handles collisions, gravity, drag, buoyancy, attaching" Guid="8edd1986-0dcc-424f-893a-491c089b821e" InheritanceParent="d981b2a9-4bf4-4b0d-ae4f-a088b3e19e8c">
 					<Parameter Name="CanCrouch" Description="Whether a body can crouch reducing its collision box height" Guid="1908dbe1-4b18-49ad-a4ec-cc3cb698eff2" Value="False" Type="bool" />

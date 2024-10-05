@@ -31,8 +31,7 @@ namespace Game
 		public bool m_heardNoise;
 
 		public Vector3? m_lastNoiseSourcePosition;
-
-		public float m_lowHealthThreshold = 0.33f;
+		public float LowHealthToEscape { get; set; }
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -67,7 +66,8 @@ namespace Game
 			m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
 			m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
 			m_componentHerdBehavior = Entity.FindComponent<ComponentHerdBehavior>();
-			m_componentCreature.ComponentHealth.Injured += delegate (ComponentCreature attacker)
+            LowHealthToEscape = valuesDictionary.GetValue<float>("LowHealthToEscape");
+            m_componentCreature.ComponentHealth.Injured += delegate (ComponentCreature attacker)
 			{
 				RunAwayFrom(attacker.ComponentBody);
 			};
@@ -87,7 +87,7 @@ namespace Game
 				}
 				if (m_componentCreature.ComponentHealth.HealthChange < 0f || (m_attacker != null && Vector3.DistanceSquared(m_attacker.Position, m_componentCreature.ComponentBody.Position) < 36f))
 				{
-					m_importanceLevel = MathUtils.Max(m_importanceLevel, (m_componentCreature.ComponentHealth.Health < m_lowHealthThreshold) ? 300 : 100);
+					m_importanceLevel = MathUtils.Max(m_importanceLevel, (m_componentCreature.ComponentHealth.Health < LowHealthToEscape) ? 300 : 100);
 				}
 				else if (m_heardNoise)
 				{

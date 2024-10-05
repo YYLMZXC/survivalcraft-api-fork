@@ -25,8 +25,9 @@ namespace Game
 		public ComponentFrame m_attacker;
 
 		public float m_timeToForgetAttacker;
+        public float LowHealthToEscape { get; set; }
 
-		public UpdateOrder UpdateOrder => UpdateOrder.Default;
+        public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
 		public override float ImportanceLevel => m_importanceLevel;
 
@@ -48,7 +49,8 @@ namespace Game
 			m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
 			m_componentPathfinding = Entity.FindComponent<ComponentPathfinding>(throwOnError: true);
 			m_componentHerdBehavior = Entity.FindComponent<ComponentHerdBehavior>();
-			m_componentCreature.ComponentHealth.Injured += delegate (ComponentCreature attacker)
+            LowHealthToEscape = valuesDictionary.GetValue<float>("LowHealthToEscape");
+            m_componentCreature.ComponentHealth.Injured += delegate (ComponentCreature attacker)
 			{
 				SwimAwayFrom(attacker.ComponentBody);
 			};
@@ -68,7 +70,7 @@ namespace Game
 				}
 				if (m_componentCreature.ComponentHealth.HealthChange < 0f)
 				{
-					m_importanceLevel = (m_componentCreature.ComponentHealth.Health < 0.33f) ? 300 : 100;
+					m_importanceLevel = (m_componentCreature.ComponentHealth.Health < LowHealthToEscape) ? 300 : 100;
 				}
 				else if (m_attacker != null && Vector3.DistanceSquared(m_attacker.Position, m_componentCreature.ComponentBody.Position) < 25f)
 				{
