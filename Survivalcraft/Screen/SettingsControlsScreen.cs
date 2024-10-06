@@ -23,6 +23,8 @@ namespace Game
 
 		public ButtonWidget m_creativeDragMaxStackingButton;
 
+		public ButtonWidget m_splitDragHalfButton;
+
 		public ContainerWidget m_horizontalCreativeFlightPanel;
 
 		public SliderWidget m_moveSensitivitySlider;
@@ -54,6 +56,7 @@ namespace Game
 			m_horizontalCreativeFlightButton = Children.Find<ButtonWidget>("HorizontalCreativeFlight");
 			m_horizontalCreativeFlightPanel = Children.Find<ContainerWidget>("HorizontalCreativeFlightPanel");
 			m_creativeDragMaxStackingButton = Children.Find<ButtonWidget>("CreativeDragMaxStacking");
+			m_splitDragHalfButton = Children.Find<ButtonWidget>("SplitDragHalf");
 			m_moveSensitivitySlider = Children.Find<SliderWidget>("MoveSensitivitySlider");
 			m_lookSensitivitySlider = Children.Find<SliderWidget>("LookSensitivitySlider");
 			m_gamepadCursorSpeedSlider = Children.Find<SliderWidget>("GamepadCursorSpeedSlider");
@@ -96,6 +99,10 @@ namespace Game
             {
                 SettingsManager.CreativeDragMaxStacking = !SettingsManager.CreativeDragMaxStacking;
             }
+			if(m_splitDragHalfButton.IsClicked)
+			{
+				SettingsManager.DragHalfInSplit = !SettingsManager.DragHalfInSplit;
+			}
             if (m_moveSensitivitySlider.IsSliding)
 			{
 				SettingsManager.MoveSensitivity = m_moveSensitivitySlider.Value;
@@ -142,6 +149,7 @@ namespace Game
 			m_autoJumpButton.Text = SettingsManager.AutoJump ? LanguageControl.On : LanguageControl.Off;
 			m_horizontalCreativeFlightButton.Text = SettingsManager.HorizontalCreativeFlight ? LanguageControl.On : LanguageControl.Off;
 			m_creativeDragMaxStackingButton.Text = SettingsManager.CreativeDragMaxStacking ? LanguageControl.On : LanguageControl.Off;
+			m_splitDragHalfButton.Text = SettingsManager.DragHalfInSplit ? LanguageControl.On : LanguageControl.Off;
 			m_moveSensitivitySlider.Value = SettingsManager.MoveSensitivity;
 			m_moveSensitivitySlider.Text = MathF.Round(SettingsManager.MoveSensitivity * 10f).ToString();
 			m_lookSensitivitySlider.Value = SettingsManager.LookSensitivity;

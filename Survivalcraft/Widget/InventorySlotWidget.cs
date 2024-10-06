@@ -374,6 +374,7 @@ namespace Game
 					dragMode = SettingsManager.DragHalfInSplit ? DragMode.HalfItems : DragMode.SingleItem;
 				}
 				int num3 = (dragMode != 0) ? 1 : slotCount;
+				if (dragMode == DragMode.HalfItems) num3 = (slotCount + 1) / 2;
 				SubsystemTerrain subsystemTerrain = m_inventory.Project.FindSubsystem<SubsystemTerrain>();
 				var containerWidget = (ContainerWidget)LoadWidget(null, ContentManager.Get<XElement>("Widgets/InventoryDragWidget"), null);
 				containerWidget.Children.Find<BlockIconWidget>("InventoryDragWidget.Icon").Value = Terrain.ReplaceLight(slotValue, 15);
@@ -402,7 +403,13 @@ namespace Game
 				int num = m_inventory.GetSlotCount(m_slotIndex);
 				if (!flag && m_dragMode.HasValue)
 				{
-					num = (m_dragMode.Value != 0) ? MathUtils.Max(num - 1, 0) : 0;
+					num = m_dragMode.Value switch
+					{
+						DragMode.AllItems => 0,
+						DragMode.SingleItem => num - 1,
+						DragMode.HalfItems => num - (num + 1) / 2,
+						_ => 0
+					};
 				}
 				m_rectangleWidget.IsVisible = true;
 				if (num > 0)
@@ -583,8 +590,7 @@ namespace Game
 			}
 			else if (dragMode == DragMode.HalfItems)
             {
-                if (dragCount == 1) dragCount = 1;
-                else dragCount = MathUtils.Min(dragCount, dragCount / 2);
+                dragCount = (dragCount + 1) / 2;
 			}
 			bool flag = false;
 			//先进行Process操作

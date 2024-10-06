@@ -2776,7 +2776,8 @@
       "Minimum Drag Distance:",
       "Introduction:",
       "MemoryBank Style:",
-      "Creative Mode Drag Max Stack Of Blocks:"
+      "Creative Mode Drag Max Stack Of Blocks:",
+      "Drag Half Stack Of Blocks In Split:"
     ],
     "SettingsGraphicsScreen": {
       "1": "Adjust Graphics Settings",
