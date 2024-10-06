@@ -956,5 +956,10 @@ namespace Game
         {
 
         }
+
+        public virtual void OnTerrainBrushesCreated()
+        {
+
+        }
     }
 }

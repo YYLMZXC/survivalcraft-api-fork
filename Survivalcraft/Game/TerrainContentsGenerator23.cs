@@ -2476,6 +2476,11 @@ namespace Game
 					m_caveBrushesByType[num82].Add(terrainBrush17);
 				}
 			}
+			ModsManager.HookAction("OnTerrainBrushesCreated", loader =>
+			{
+				loader.OnTerrainBrushesCreated();
+				return false;
+            });
 		}
 	}
 }
