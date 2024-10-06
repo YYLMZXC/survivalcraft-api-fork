@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0-windows;net8.0-android</TargetFrameworks>
+    <TargetFrameworks>net8.0;net8.0-windows;net8.0-android</TargetFrameworks>
 	 <NoWarn>$(NoWarn);CA1416</NoWarn>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Engine</RootNamespace>
@@ -13,6 +13,12 @@
 	<WarningLevel>2</WarningLevel>
 	<AssemblyName>Engine</AssemblyName>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<PackageId>SurvivalcraftAPI.Engine</PackageId>
+	<Title>SurvivalcraftAPI.Engine</Title><!--For NuGet Package-->
+	<Version>1.7.2</Version><!--For NuGet Package-->
+	<PackageProjectUrl>https://gitee.com/THPRC/survivalcraft-api</PackageProjectUrl>
+	<RepositoryUrl>https://gitee.com/THPRC/survivalcraft-api</RepositoryUrl>
+	<RepositoryType>Git</RepositoryType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>DEBUG</DefineConstants>
@@ -21,9 +27,6 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugType>none</DebugType>
     <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
-    <DefineConstants>desktop</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
 	  <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
@@ -38,16 +41,14 @@
     <EmbeddedResource Include="Resources\icon.ico" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\external\NAudio.Flac\NAudio.Flac\NAudio.Flac.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="NVorbis" Version="0.10.5" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.0-rc.1.24451.1" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" /><!--An powerful and popular audio libaury-->
 	<PackageReference Include="NLayer.NAudioSupport" Version="1.4.0" /><!--MP3 support-->
+	<PackageReference Include="NAudio.Flac.Unknown.Mod" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Condition="'$(TargetFramework)' == 'net8.0-windows'" Include="OpenTK" Version="3.3.3" />
+	<PackageReference Condition="'$(TargetFramework)' != 'net8.0-android'" Include="OpenTK" Version="3.3.3" />
     <Reference Include="OpenTK-1.0.2moded" Condition="'$(TargetFramework)' == 'net8.0-android'">
       <HintPath>reference\OpenTK-1.0.2moded.dll</HintPath>
       <Private>True</Private>

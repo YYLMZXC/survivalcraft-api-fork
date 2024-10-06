@@ -277,7 +277,7 @@ namespace Engine
         public static event Action<Uri> HandleUri;
 
         public static event Action LowMemory;
-#if desktop
+#if !ANDROID
 
         static Window()
         {
@@ -314,7 +314,9 @@ namespace Engine
             width = (width == 0) ? (ScreenSize.X * 4 / 5) : width;
             height = (height == 0) ? (ScreenSize.Y * 4 / 5) : height;
             m_gameWindow = new GameWindow(width, height, mode, title, GameWindowFlags.Default, DisplayDevice.Default, 2, 0, GraphicsContextFlags.Default);
+#if WINDOWS
             m_gameWindow.Icon = new Icon(typeof(Window).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.icon.ico"), new Size(32, 32));
+#endif
             m_dpiScale = m_gameWindow.ClientSize.Width / 400f;
             m_gameWindow.ClientSize = new Size(width, height);
             if (Configuration.RunningOnMacOS)
@@ -525,7 +527,7 @@ namespace Engine
             Display.HandleDeviceLost();
         }
 #endif
-#if desktop
+#if !ANDROID
         private static void RenderFrameHandler(object sender, EventArgs args)
         {
             BeforeFrameAll();

@@ -32,7 +32,7 @@ namespace Game
 #if ANDROID
 		public bool IsControlledByTouch { get; set; } = true;
 #endif
-#if desktop
+#if !ANDROID
 		public bool IsControlledByTouch { get; set; }
 #endif
 

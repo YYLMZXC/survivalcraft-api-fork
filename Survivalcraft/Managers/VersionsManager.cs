@@ -13,8 +13,7 @@ public static class VersionsManager
 	public static List<VersionConverter> m_versionConverters;
 #if ANDROID
 	public static Platform Platform => Platform.Android;
-#endif
-#if desktop
+#else
 	public static Platform Platform => Platform.Desktop;
 #endif
 	public static BuildConfiguration BuildConfiguration => BuildConfiguration.Release;

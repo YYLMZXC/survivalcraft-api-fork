@@ -5,9 +5,9 @@ using Engine.Input;
 using Engine.Media;
 using Window = Engine.Window;
 
-#if desktop
+#if WINDOWS
 using ImeSharp;
-#elif android
+#elif ANDROID
 using Android.Views;
 using Android.Content;
 using Android.Views.InputMethods;
@@ -676,7 +676,7 @@ public class TextBoxWidget : Widget
 
     static TextBoxWidget()
     {
-#if desktop
+#if WINDOWS
         InputMethod.TextCompositionCallback += (text, pos) =>
         {
             if (FocusedTextBox is null)
@@ -975,7 +975,7 @@ public class TextBoxWidget : Widget
             Escape?.Invoke(this);
         }
 
-#if desktop
+#if !ANDROID
         // 处理 Delete 键。
         if (HasFocus && Caret != Text.Length && Keyboard.IsKeyDownRepeat(Key.Delete))
         {
@@ -1002,7 +1002,7 @@ public class TextBoxWidget : Widget
         if (!InputMethodEnabled && HasFocus)
         {
             // 处理 BackSpace 键。
-#if desktop
+#if !ANDROID
             if (Caret != 0 && Keyboard.IsKeyDownRepeat(Key.BackSpace))
 #elif android
             if(Caret != 0 && Keyboard.IsKeyDownRepeat(Key.Delete))
@@ -1124,7 +1124,7 @@ public class TextBoxWidget : Widget
     /// </summary>
     public static void ShowInputMethod()
     {
-#if desktop
+#if !ANDROID
         InputMethodEnabled = true;
 #elif android
         var manager = (InputMethodManager)Window.Activity.GetSystemService(Context.InputMethodService);
@@ -1134,7 +1134,7 @@ public class TextBoxWidget : Widget
 
     public static void CloseInputMethod()
     {
-#if desktop
+#if !ANDROID
         InputMethodEnabled = false;
 #elif android
         var manager = (InputMethodManager)Window.Activity.GetSystemService(Context.InputMethodService);
@@ -1443,7 +1443,7 @@ public class TextBoxWidget : Widget
 
     private static void SetCursorPosition(TextBoxWidget widget)
     {
-#if desktop
+#if WINDOWS
         var windowPosition = widget.WidgetToScreen(new Vector2(widget.FullTextCaretPosition, 0));
         windowPosition.X -= widget.Scroll * widget.GlobalTransform.M11;
         InputMethod.SetTextInputRect((int)windowPosition.X, (int)(windowPosition.Y + widget.Font.LineHeight * widget.GlobalTransform.M11), 0, 0);
@@ -1460,7 +1460,7 @@ public class TextBoxWidget : Widget
     /// </summary>
     public static bool InputMethodEnabled
     {
-#if desktop
+#if WINDOWS
         get => InputMethod.Enabled;
         set => InputMethod.Enabled = value;
 #else
@@ -1480,7 +1480,7 @@ public class TextBoxWidget : Widget
     /// </para>
     /// </summary>
     public static string[] CandidatesList =>
-#if desktop
+#if WINDOWS
         InputMethod.CandidateList.Select(x => x.ToString()).ToArray();
 #else
         Array.Empty<string>();
@@ -1495,7 +1495,7 @@ public class TextBoxWidget : Widget
     /// </para>
     /// </summary>
     public static int CandidatesSelection =>
-#if desktop
+#if WINDOWS
         InputMethod.CandidateSelection;
 #else
         -1;
@@ -1510,7 +1510,7 @@ public class TextBoxWidget : Widget
     /// </para>
     /// </summary>
     public static int CandidatesPageSize =>
-#if desktop
+#if WINDOWS
         InputMethod.CandidatePageSize;
 #else
         0;

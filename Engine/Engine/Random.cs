@@ -26,7 +26,7 @@ namespace Engine
         }
 
         public Random()
-#if desktop
+#if !ANDROID
             : this(997 * m_counter++)
 #endif
         {
@@ -37,7 +37,7 @@ namespace Engine
 
         public Random(int seed)
         {
-#if desktop
+#if !ANDROID
             Reset_D(seed);
 #else
             Reset_A(seed);
@@ -83,7 +83,7 @@ namespace Engine
 #endif
         public int Int()
         {
-#if desktop
+#if !ANDROID
             m_seed = ((m_seed * 25214903917L) + 11) & 0xFFFFFFFFFFFF;
             return (int)(m_seed >> 17);
 #else

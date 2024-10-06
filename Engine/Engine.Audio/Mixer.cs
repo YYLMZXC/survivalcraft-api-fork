@@ -30,18 +30,18 @@ namespace Engine.Audio
 		}
 		internal static void Initialize()
 		{
-#if desktop
-			//Ö±½Ó¼ÓÔØ
+#if !ANDROID
+			//Ö±ï¿½Ó¼ï¿½ï¿½ï¿½
 			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
-			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? AppContext.BaseDirectory: Assembly.GetExecutingAssembly().Location);//Â·¾¶±¸Ñ¡·½°¸
+			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? AppContext.BaseDirectory: Assembly.GetExecutingAssembly().Location);//Â·ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½
 			Environment.SetEnvironmentVariable("PATH", fullPath + ";" + environmentVariable, EnvironmentVariableTarget.Process);
-			//ÊÍ·ÅÎÄ¼þ
+			//ï¿½Í·ï¿½ï¿½Ä¼ï¿½
 			new AudioContext();
 			if(CheckALError())
 			{
-				string dllName = "openal32.dll"; // DLL×ÊÔ´Ãû³Æ
+				string dllName = "openal32.dll"; // DLLï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½
 				string ALPath = Path.Combine(fullPath, dllName);
-				if (!File.Exists(ALPath))//¼ì²âÍâÖÃdllÊÇ·ñ´æÔÚ£¬Èç¹û²»´æÔÚ¾ÍÊÍ·Å
+				if (!File.Exists(ALPath))//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½dllï¿½Ç·ï¿½ï¿½ï¿½Ú£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½Í·ï¿½
 				{
 					using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(dllName))
 					using (FileStream fileStream = new(ALPath, FileMode.Create))
@@ -96,14 +96,14 @@ namespace Engine.Audio
 			//	throw new InvalidOperationException(AL.GetErrorString(error));
 			//}
 		}*/
-			public static bool CheckALError()//×¢Òâ·µ»ØÖµÎªÊÇ·ñ³ö´í
+			public static bool CheckALError()//×¢ï¿½â·µï¿½ï¿½ÖµÎªï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 		{
 			try
 			{
 				ALError error = AL.GetError();
 				if (error != ALError.NoError)
 				{
-					Log.Error("OPENAL³ö´í!");
+					Log.Error("OPENALï¿½ï¿½ï¿½ï¿½!");
 					Log.Error(error);
 					//throw new InvalidOperationException(AL.GetErrorString(error));
 					return true;
@@ -115,7 +115,7 @@ namespace Engine.Audio
 			}
 			catch (Exception e)
 			{
-				Log.Error("OPENALÎÞ·¨µ÷ÓÃ");
+				Log.Error("OPENALï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½");
 				Log.Error (e);
 				return true;
 			}

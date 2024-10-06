@@ -25,7 +25,7 @@ namespace Game {
         public static void Initialize() {
             m_providers =
             [
-#if desktop
+#if !ANDROID
 				new DiskExternalContentProvider(),
 #endif
 #if ANDROID

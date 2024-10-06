@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿#if WINDOWS
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,3 +83,4 @@ namespace Game.Managers
         }
     }
 }
+#endif

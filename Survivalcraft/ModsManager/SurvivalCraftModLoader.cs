@@ -258,7 +258,7 @@ namespace Game
         {
             TextBoxWidget.ShowCandidatesWindow = SettingsManager.FullScreenMode;
             
-            #if desktop
+            #if WINDOWS
             ImeSharp.InputMethod.ShowOSImeWindow = !SettingsManager.FullScreenMode;
             #endif
         }

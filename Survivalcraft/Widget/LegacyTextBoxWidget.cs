@@ -106,7 +106,7 @@ namespace Game
 					m_hasFocus = value;
 					if (value)
 					{
-#if desktop
+#if !ANDROID
 						if (m_hasFocus && Text == string.Empty)
 						{
 							//清空之前的输入

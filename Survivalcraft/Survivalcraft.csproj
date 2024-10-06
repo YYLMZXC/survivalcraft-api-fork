@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <TargetFrameworks>net8.0;net8.0-windows</TargetFrameworks>
         <OutputType>WinExe</OutputType>
         <RootNamespace>Game</RootNamespace>
         <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -20,19 +20,25 @@
         <BootstrapperEnabled>False</BootstrapperEnabled>
         <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
         <UseWindowsForms>False</UseWindowsForms>
-        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+        <ImportWindowsDesktopTargets Condition="'$(TargetFramework)' == 'net8.0-windows'">true</ImportWindowsDesktopTargets>
         <Configurations>Debug;Release</Configurations>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <PackageId>SurvivalcraftAPI.Survivalcraft</PackageId>
+        <Title>SurvivalcraftAPI.Survivalcraft</Title><!--For NuGet Package-->
+        <Version>1.7.2</Version><!--For NuGet Package-->
+        <PackageProjectUrl>https://gitee.com/THPRC/survivalcraft-api</PackageProjectUrl>
+        <RepositoryUrl>https://gitee.com/THPRC/survivalcraft-api</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DefineConstants>DEBUG;desktop</DefineConstants>
+        <DefineConstants>DEBUG</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
         <Optimize>True</Optimize>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugType>none</DebugType>
-        <DefineConstants>TRACE;desktop</DefineConstants>
+        <DefineConstants>TRACE</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     </PropertyGroup>
@@ -52,8 +58,9 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Jint" Version="4.0.3" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0-rc.1.24431.7" />
-        <PackageReference Include="TextCopy" Version="6.2.1" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0-rc.1.24431.7" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
+        <PackageReference Include="TextCopy" Version="6.2.1" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
+        <PackageReference Include="NAudio.Flac.Unknown.Mod" Version="1.0.3" PrivateAssets="all" />
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs" />
@@ -78,22 +85,18 @@
         </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\external\ImeSharp\ImeSharp\ImeSharp.csproj" />
+        <ProjectReference Include="..\external\ImeSharp\ImeSharp\ImeSharp.csproj" Condition="'$(TargetFramework)' == 'net8.0-windows'"/>
         <Using Include="System.IO" />
         <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
     </ItemGroup>
     <PropertyGroup>
-        <PreBuildEvent>set p=$(SolutionDir)
-            cd "$(SolutionDir)Survivalcraft\Content"
-            "$(SolutionDir)7za.exe" a -tzip -mx=9 ..\Content.zip
-        </PreBuildEvent>
         <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
         <AssemblyVersion>2.3.10.4</AssemblyVersion>
         <FileVersion>2.3.10.4</FileVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <NeutralLanguage>zh-CN</NeutralLanguage>
-        <Title>BaseOFsc</Title>
-        <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
-    <ProjectExtensions />
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(TargetFramework)' != 'net8.0'">
+        <Exec Command="&quot;$(ProjectDir)7za.exe&quot; a -tzip -mx=9 -r &quot;$(ProjectDir)Content.zip&quot; &quot;$(ProjectDir)Content\*&quot;" />
+    </Target>
 </Project>

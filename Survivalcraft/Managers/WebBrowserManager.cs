@@ -15,11 +15,10 @@ namespace Game
 			}
 			try
 			{
-#if desktop
-				System.Diagnostics.Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
-#endif
 #if ANDROID
 				Engine.Window.Activity.OpenLink(url);
+#else
+				System.Diagnostics.Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
 #endif
 			}
 			catch (Exception ex)

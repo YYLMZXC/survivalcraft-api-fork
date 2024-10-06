@@ -31,7 +31,7 @@ public static class ModsManager
 
 	public const ApiVersionEnum ApiVersion = ApiVersionEnum.Version170; 
 
-#if WINDOWS
+#if !ANDROID
 	public static string ExternalPath => "app:";
 	public static string DocPath = "app:/doc";
 	public static string WorldsDirectoryName = DocPath+"/Worlds";

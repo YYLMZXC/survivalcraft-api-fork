@@ -1,8 +1,3 @@
-#if WINDOWS
-//using Windows.ApplicationModel.DataTransfer;.
-//using System.Windows;
-//using System.Windows.Data;
-#endif
 namespace Game
 {
 	public static class ClipboardManager
@@ -21,26 +16,23 @@ namespace Game
 				m_clipboardManager.Text = value;
 			}
 		}
-#else
+#elif WINDOWS
 		public static string ClipboardString
 		{
 			get
 			{
-				//return Clipboard.GetContent().ToString();
-				//return string.Empty;
-				//return System.Windows.Forms.Clipboard.GetText();
-				//return Clipboard.GetText();
 				return TextCopy.ClipboardService.GetText()??"";
 			}
 			set
 			{
-				//System.Windows.Forms.Clipboard.SetText(value);
-				//DataPackage dataPackage = new();
-				//dataPackage.SetText(value);
-				//Clipboard.SetContent(dataPackage);
-				//Clipboard.SetText(value);
 				TextCopy.ClipboardService.SetText(value??"");
 			}
+		}
+#else
+		public static string ClipboardString
+		{
+			get => "";
+			set {}
 		}
 #endif
 	}

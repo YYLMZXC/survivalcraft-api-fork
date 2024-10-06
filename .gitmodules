@@ -1,6 +1,3 @@
-[submodule "external/NAudio.Flac"]
-	path = external/NAudio.Flac
-	url = https://github.com/XiaofengdiZhu/NAudio.Flac
 [submodule "external/ImeSharp"]
 	path = external/ImeSharp
 	url = https://github.com/IampointZy/ImeSharp

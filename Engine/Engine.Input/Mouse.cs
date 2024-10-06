@@ -6,7 +6,7 @@ namespace Engine.Input
 {
 	public static class Mouse
 	{
-#if desktop
+#if !ANDROID
 		private static Point2? m_lastMousePosition;
 
 		private static int? m_lastMouseWheelValue;
@@ -47,7 +47,7 @@ namespace Engine.Input
 
 		public static void SetMousePosition(int x, int y)
 		{
-#if desktop
+#if !ANDROID
 			Point point = Window.m_gameWindow.PointToScreen(new Point(x, y));
 			OpenTK.Input.Mouse.SetPosition(point.X, point.Y);
 #endif
@@ -55,7 +55,7 @@ namespace Engine.Input
 
 		internal static void Initialize()
 		{
-#if desktop
+#if !ANDROID
 			Window.m_gameWindow.MouseDown += MouseDownHandler;
 			Window.m_gameWindow.MouseUp += MouseUpHandler;
 			Window.m_gameWindow.MouseMove += MouseMoveHandler;
@@ -68,7 +68,7 @@ namespace Engine.Input
 
 		internal static void BeforeFrame()
 		{
-#if desktop
+#if !ANDROID
 			if (Window.IsActive)
 			{
 				Window.m_gameWindow.CursorVisible = IsMouseVisible;
@@ -92,7 +92,7 @@ namespace Engine.Input
 #endif
 		}
 
-#if desktop
+#if !ANDROID
 		private static void MouseDownHandler(object sender, MouseButtonEventArgs e)
 		{
 			MouseButton mouseButton = TranslateMouseButton(e.Button);
@@ -164,10 +164,10 @@ namespace Engine.Input
 			{
 				m_mouseButtonsDownOnceArray[i] = false;
 			}
-			if (!IsMouseVisible)//处于三维模式
+			if (!IsMouseVisible)//锟斤拷锟斤拷锟斤拷维模式
 			{
 				MousePosition = null;
-#if WINDOWS
+#if !ANDROID
                 if (Window.m_gameWindow.Focused)
                 {
                     Window.m_gameWindow.CursorGrabbed = true;

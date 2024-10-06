@@ -343,7 +343,7 @@ namespace Game
 				}
 				else if(context.Request.HttpMethod == "ELEVATE")
 				{
-#if WINDOWS
+#if !ANDROID
 					Hyper_Threading.SetPriority_Process(true);
 #endif
 					responseString = "Sucess";

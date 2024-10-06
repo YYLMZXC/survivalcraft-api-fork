@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-windows;net8.0-android</TargetFrameworks>
+		<TargetFrameworks>net8.0;net8.0-windows;net8.0-android</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
@@ -8,6 +8,12 @@
 		<OutputType>Library</OutputType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Configurations>Debug;Release</Configurations>
+		<PackageId>SurvivalcraftAPI.EntitySystem</PackageId>
+		<Title>SurvivalcraftAPI.EntitySystem</Title><!--For NuGet Package-->
+		<Version>1.7.2</Version><!--For NuGet Package-->
+		<PackageProjectUrl>https://gitee.com/THPRC/survivalcraft-api</PackageProjectUrl>
+		<RepositoryUrl>https://gitee.com/THPRC/survivalcraft-api</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Engine\Engine.csproj" />

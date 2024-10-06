@@ -194,7 +194,7 @@ namespace Engine.Input
 
         internal static void Initialize()
         {
-#if desktop
+#if !ANDROID
             Window.m_gameWindow.KeyDown += KeyDownHandler;
             Window.m_gameWindow.KeyUp += KeyUpHandler;
             Window.m_gameWindow.KeyPress += KeyPressHandler;
@@ -204,7 +204,7 @@ namespace Engine.Input
         internal static void Dispose()
         {
         }
-#if desktop
+#if !ANDROID
         private static void ShowKeyboardInternal(string title, string description, string defaultText, bool passwordMode, Action<string> enter, Action cancel)
         {
             cancel();

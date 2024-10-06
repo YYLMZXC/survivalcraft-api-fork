@@ -13,7 +13,7 @@ namespace Engine
 {
     public static class Storage
     {
-#if desktop
+#if !ANDROID
 		const bool m_isAndroidPlatform = false;
 		private static bool m_dataDirectoryCreated;
         private static object m_dataDirectoryCreationLock = new();

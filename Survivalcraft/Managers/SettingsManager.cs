@@ -495,7 +495,7 @@ namespace Game
 			UIScale = 0.9f;
 			AutoJump = true;
 #endif
-#if desktop
+#if !ANDROID
 			UIScale = 0.8f;
 			AutoJump = false;
 #endif

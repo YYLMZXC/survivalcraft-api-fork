@@ -36,7 +36,7 @@ namespace Game
 
 		public static void MigrateDataFromIsolatedStorageWithDialog()
 		{
-#if desktop
+#if !ANDROID
 			try
 			{
 				if (Storage.DirectoryExists("app:/.config/.isolated-storage"))

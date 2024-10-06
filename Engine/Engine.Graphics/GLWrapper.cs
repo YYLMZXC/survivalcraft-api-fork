@@ -723,7 +723,7 @@ namespace Engine.Graphics
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TranslateTextureFilterModeMag(samplerState.FilterMode));
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TranslateTextureAddressMode(samplerState.AddressModeU));
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TranslateTextureAddressMode(samplerState.AddressModeV));
-#if desktop
+#if !ANDROID
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinLod, samplerState.MinLod);
 							GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLod, samplerState.MaxLod);
 #endif
@@ -1039,7 +1039,7 @@ namespace Engine.Graphics
 
         public static RenderbufferInternalFormat TranslateDepthFormat(DepthFormat depthFormat)
 		{
-#if desktop
+#if !ANDROID
 			return depthFormat switch
 			{
 				DepthFormat.Depth16 => RenderbufferInternalFormat.DepthComponent16,
