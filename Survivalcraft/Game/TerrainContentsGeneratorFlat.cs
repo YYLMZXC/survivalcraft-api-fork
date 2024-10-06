@@ -75,7 +75,7 @@ namespace Game
 						int value = Terrain.MakeBlockValue(0);
 						if (flag)
 						{
-							if (k < 2)
+							if (k < 2 && m_worldSettings.TerrainLevel > 0)
 							{
 								value = Terrain.MakeBlockValue(1);
 							}
@@ -92,7 +92,7 @@ namespace Game
 								value = Terrain.MakeBlockValue(m_worldSettings.TerrainOceanBlockIndex);
 							}
 						}
-						else if (k < 2)
+						else if (k < 2 && m_worldSettings.TerrainLevel > 0)
 						{
 							value = Terrain.MakeBlockValue(1);
 						}

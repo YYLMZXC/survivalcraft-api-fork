@@ -961,5 +961,10 @@ namespace Game
         {
 
         }
+
+        public virtual void FindCoarseSpawnPostion(ref Vector3 spawnPosition)
+        {
+
+        }
     }
 }

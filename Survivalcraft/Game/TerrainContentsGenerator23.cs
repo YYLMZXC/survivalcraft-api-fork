@@ -258,6 +258,8 @@ namespace Game
 
 		public bool TGCavesAndPockets;
 
+		public int MaxBedrockHeight = 4;
+
 		public int OceanLevel => 64 + m_worldSettings.SeaLevelOffset;
 
 		static TerrainContentsGenerator23()
@@ -360,8 +362,14 @@ namespace Game
 					}
 				}
 			}
-			return new Vector3(vector.X, CalculateHeight(vector.X, vector.Y), vector.Y);
-		}
+			Vector3 ans = new Vector3(vector.X, CalculateHeight(vector.X, vector.Y), vector.Y);
+            ModsManager.HookAction("FindCoarseSpawnPosition", loader =>
+            {
+                loader.FindCoarseSpawnPostion(ref ans);
+                return false;
+            });
+			return ans;
+        }
 
 		public void GenerateChunkContentsPass1(TerrainChunk chunk)
 		{
@@ -1305,7 +1313,7 @@ namespace Game
 				{
 					int num = i + chunk.Origin.X;
 					int num2 = j + chunk.Origin.Y;
-					float num3 = 2 + (int)(4f * SimplexNoise.OctavedNoise(num, num2, 0.1f, 1, 1f, 1f));
+					float num3 = 2 + (int)((float)MaxBedrockHeight * SimplexNoise.OctavedNoise(num, num2, 0.1f, 1, 1f, 1f));
 					for (int k = 0; (float)k < num3; k++)
 					{
 						chunk.SetCellValueFast(i, k, j, value);
