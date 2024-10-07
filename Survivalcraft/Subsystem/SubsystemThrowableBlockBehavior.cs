@@ -56,7 +56,7 @@ namespace Game
 							float num2 = block.GetProjectileSpeed(slotValue);
 							if (componentMiner.ComponentPlayer != null)
 							{
-								num2 *= (0.5f * (componentMiner.ComponentPlayer.ComponentLevel.StrengthFactor - 1f)) + 1f;
+								num2 *= (0.5f * ((componentMiner?.ComponentFactors?.StrengthFactor ?? 1f) - 1f)) + 1f;
 							}
 							if (m_subsystemProjectiles.FireProjectile(slotValue, vector, v * num2, m_random.Vector3(5f, 10f), componentMiner.ComponentCreature) != null)
 							{

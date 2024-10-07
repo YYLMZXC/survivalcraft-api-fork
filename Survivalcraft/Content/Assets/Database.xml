@@ -603,6 +603,7 @@
 						<MemberComponentTemplate Name="Locomotion" Guid="b58b7742-cbee-4338-b9ec-5635f75b0072" InheritanceParent="f800ca88-e13e-455d-8def-849c99c615fa" />
 						<MemberComponentTemplate Name="Health" Guid="c633da41-b5c4-42a7-a857-850107c3d348" InheritanceParent="d7a50718-e128-4d0e-bac1-16f789d50ddd" />
 						<MemberComponentTemplate Name="OnFire" Guid="d314318c-9d00-42b9-b23e-f2e1a70d5375" InheritanceParent="93590d78-63b9-4cd6-bc41-e66864cbb050" />
+						<MemberComponentTemplate Name="Factors" Guid="bbe0bf82-a472-2876-7a66-fad1d6d70467" InheritanceParent="78b4c0b4-8bea-d601-b589-812d7c982e5f" />
 					</EntityTemplate>
 					<EntityTemplate Name="Cetacean" Guid="c68b9c49-aeb4-4fe2-ba8f-c166b3d19158" InheritanceParent="3f077159-f492-419b-859a-bb051de6339f">
 						<MemberComponentTemplate Name="SwimAwayBehavior" Guid="19c9eac7-786f-4dec-b506-8dd5878f4afc" InheritanceParent="2e0632aa-8235-4adc-80fa-37d497ca8449" />
@@ -4102,7 +4103,10 @@
 					<Parameter Name="Class" Guid="224c3372-9bd3-4339-90ed-c4d8b3510cb5" Value="Game.ComponentName" Type="string" />
 					<Parameter Name="Name" Guid="62b2d180-3a3a-4df0-ba71-041e7e53bee9" Value="" Type="string" />
 				</ComponentTemplate>
-				<ComponentTemplate Name="Level" Description="Handles creature level and performance factors" Guid="c2473662-5d67-4116-9d77-1d12fdb2935a" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
+				<ComponentTemplate Name="Factors" Description="Handles creature performance factors" Guid="78b4c0b4-8bea-d601-b589-812d7c982e5f" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
+					<Parameter Name="Class" Guid="f6b020bb-8994-6ae6-289b-a842e3eb9ca5" Value="Game.ComponentFactors" Type="string" />
+				</ComponentTemplate>
+				<ComponentTemplate Name="Level" Description="Handles player level and performance factors" Guid="c2473662-5d67-4116-9d77-1d12fdb2935a" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
 					<Parameter Name="Class" Guid="a346c456-5087-48c4-835a-5829b3f35c68" Value="Game.ComponentLevel" Type="string" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="FurnitureInventory" Description="Furniture inventory" Guid="c4b4f7d0-8439-4cb8-b316-cdd4342ee2ed" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">

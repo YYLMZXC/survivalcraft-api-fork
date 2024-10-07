@@ -52,6 +52,8 @@ namespace Game
 			set;
 		}
 
+		public ComponentFactors ComponentFactors { get; set; }
+
 		public IInventory Inventory
 		{
 			get;
@@ -74,6 +76,14 @@ namespace Game
 		{
 			get;
 			set;
+		}
+
+		public float StrengthFactor
+		{
+			get
+			{
+				return ComponentFactors?.StrengthFactor ?? 1;
+			}
 		}
 
 		public float PokingPhase
@@ -355,13 +365,13 @@ namespace Game
 			{
 				m_subsystemAudio.PlaySound("Audio/Swoosh", 1f, m_random.Float(-0.2f, 0.2f), componentBody.Position, 3f, autoDelay: false);
 				flag = m_random.Bool(num2);
-				num *= ComponentPlayer.ComponentLevel.StrengthFactor;
 			}
 			else
 			{
 				flag = m_random.Bool(num3);
-			}
-			if (flag)
+            }
+            num *= StrengthFactor;
+            if (flag)
 			{
 				AttackBody(componentBody, Entity, hitPoint, hitDirection, num, isMeleeAttack: true);
 				DamageActiveTool(1);
@@ -685,6 +695,7 @@ namespace Game
 			m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
 			ComponentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
 			ComponentPlayer = Entity.FindComponent<ComponentPlayer>();
+			ComponentFactors = Entity.FindComponent<ComponentFactors>(throwOnError: true);
 			Inventory = m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && ComponentPlayer != null
 				? Entity.FindComponent<ComponentCreativeInventory>()
 				: (IInventory)Entity.FindComponent<ComponentInventory>();
@@ -750,7 +761,7 @@ namespace Game
 				{
 					num = HackPower;
 				}
-				num *= ComponentPlayer.ComponentLevel.StrengthFactor;
+				num *= StrengthFactor;
 				if (!(num > 0f))
 				{
 					return float.PositiveInfinity;
@@ -770,10 +781,7 @@ namespace Game
 			{
 				num2 = HackPower;
 			}
-			if (ComponentPlayer != null)
-			{
-				num2 *= ComponentPlayer.ComponentLevel.StrengthFactor;
-			}
+			num2 *= StrengthFactor;
 			if (!(num2 > 0f))
 			{
 				return float.PositiveInfinity;

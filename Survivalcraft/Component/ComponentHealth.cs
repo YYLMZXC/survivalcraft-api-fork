@@ -25,6 +25,8 @@ namespace Game
 
         public ComponentOnFire m_componentOnFire;
 
+        public ComponentFactors m_componentFactors;
+
         //public Block ExperienceOrbBlock;
 
         public int ExperienceOrbBlockIndex = 8;
@@ -62,10 +64,7 @@ namespace Game
             if (!m_wasStanding && velocityChange > FallResilience)
             {
                 float num4 = MathUtils.Sqr(MathUtils.Max(velocityChange - FallResilience, 0f)) / 15f;
-                if (m_componentPlayer != null)
-                {
-                    num4 /= m_componentPlayer.ComponentLevel.ResilienceFactor;
-                }
+                num4 /= m_componentFactors?.ResilienceFactor ?? 1;
                 return num4;
             }
             return 0f;
@@ -361,20 +360,14 @@ namespace Game
             if (num5 && Air == 0f)
             {
                 float num6 = AirLackResilience;
-                if (m_componentPlayer != null)
-                {
-                    num6 /= m_componentPlayer.ComponentLevel.ResilienceFactor;
-                }
+                num6 /= m_componentFactors?.ResilienceFactor ?? 1;
                 Injure(num6, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 7));
             }
             //ª—Ê…À∫¶
             if (num5 && (m_componentOnFire.IsOnFire || m_componentOnFire.TouchesFire))
             {
                 float num7 = 1f / FireResilience;
-                if (m_componentPlayer != null)
-                {
-                    num7 /= m_componentPlayer.ComponentLevel.ResilienceFactor;
-                }
+                num7 /= m_componentFactors?.ResilienceFactor ?? 1;
                 Injure(num7, m_componentOnFire.Attacker, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 5));
             }
             //”„¿‡∏È«≥…À∫¶
@@ -458,6 +451,7 @@ namespace Game
             m_componentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
             m_componentPlayer = Entity.FindComponent<ComponentPlayer>();
             m_componentOnFire = Entity.FindComponent<ComponentOnFire>(throwOnError: true);
+            m_componentFactors = Entity.FindComponent<ComponentFactors>(throwOnError: true);
             AttackResilience = valuesDictionary.GetValue<float>("AttackResilience");
             FallResilience = valuesDictionary.GetValue<float>("FallResilience");
             FireResilience = valuesDictionary.GetValue<float>("FireResilience");
