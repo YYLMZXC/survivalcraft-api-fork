@@ -3,7 +3,6 @@ using System.Net;
 using Acornima.Ast;
 using Engine;
 using Engine.Input;
-using GameEntitySystem;
 using Jint;
 using Jint.Native;
 using Jint.Native.Function;
@@ -12,6 +11,7 @@ using System.Text;
 using System.Text.Json;
 using JsEngine = Jint.Engine;
 using System;
+using System.IO;
 
 namespace Game
 {
@@ -27,26 +27,28 @@ namespace Game
 		public static bool httpProcessing;
 		public static bool httpScriptPrepared;
 		public static Prepared<Script> httpScript;
-		public static TaskCompletionSource<HttpResponse> httpResponse = new TaskCompletionSource<HttpResponse>();
+		public static TaskCompletionSource<HttpResponse> httpResponse = new();
 
-		public static bool CheckInitJsExists()
+		public static bool CheckInitJsFileRelease()
+		//改前:是安卓或者文件释放成功或外置 init.js存在返回真(不明确)
+		//改后:本身有外置 init.js 或成功释放则返回真(最终有没有外置)
 		{
 			if (ModsManager.IsAndroid)
 			{
-				return true;
+				return false;
 			}
 			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == "" ? AppContext.BaseDirectory : Assembly.GetExecutingAssembly().Location);//路径备选方案
 			string path = Path.Combine(fullPath, "init.js");
 			if (!File.Exists(path))
 			{
-				using (FileStream destination = new FileStream(path, FileMode.Create))
-				{
-					Assembly.GetExecutingAssembly().GetManifestResourceStream("Game.init.js").CopyTo(destination);
-				}
+				using FileStream destination = new(path,FileMode.Create);
+				Assembly.GetExecutingAssembly().GetManifestResourceStream("Game.init.js").CopyTo(destination);
 			}
 			return File.Exists(path);
 		}
 		public static void Initiate()
+			//修改前:先检查是否有外置 init.js 是安卓就直接加载内置,否则释放文件,释放成功就加载外置,否则报错
+			//修改后:先检查是安卓就加载内置,否则释放并检查外部有 init.js 文件则加载外置否则加载内置(如果外置出现问题可以直接加载内置)
 		{
 			engine = new JsEngine(delegate (Options cfg)
 			{
@@ -54,49 +56,46 @@ namespace Game
 				cfg.DebugMode();
 			});
 			string codeString = null;
-			if (CheckInitJsExists())
+			try
 			{
-				
-				try
+				if(CheckInitJsFileRelease())
 				{
-					if (ModsManager.IsAndroid)
-					{
-						var file = ModsManager.StreamToBytes(
-							typeof(JsInterface).Assembly.GetManifestResourceStream("Game.init.js"));
-						codeString = Encoding.UTF8.GetString(file);
-					}
-					else
-					{
-						codeString = Storage.ReadAllText("app:init.js");
-					}
+					codeString = Storage.ReadAllText("app:init.js");
 				}
-				catch
+				else
 				{
-					Log.Warning("Init.js未加载");
+					using StreamReader reader = new(typeof(JsInterface).Assembly.GetManifestResourceStream("Game.init.js"),Encoding.UTF8);
+					codeString = reader.ReadToEnd();
 				}
-				Execute(codeString);
-				httpListener = new HttpListener();
-				if (ModsManager.Configs.TryGetValue("RemoteControlPort", out string portString) && int.TryParse(portString, out int port)) {
-					SetHttpPort(port);
-				}
-				else {
-					SetHttpPort((DateTime.Now.Millisecond * 32749 + 8191) % 9000 + 999, true);
-				}
-				if (ModsManager.Configs.TryGetValue("RemoteControlPassword", out string password)) {
-					httpPassword = password;
-				}
-				else {
-					httpPassword = ((DateTime.Now.Millisecond * 49999 + 3067) % 9000 + 999).ToString();
-					ModsManager.SetConfig("RemoteControlPassword", httpPassword);
-				}
-				if (ModsManager.Configs.TryGetValue("RemoteControlEnabled", out string enable)
-					&& bool.Parse(enable)) {
-					Task.Run(StartHttpListener);
-				}
+			}
+			catch
+			{
+				Log.Warning("Init.js加载失败");
+			}
+
+			Execute(codeString);
+			httpListener = new HttpListener();
+			if(ModsManager.Configs.TryGetValue("RemoteControlPort",out string portString) && int.TryParse(portString,out int port))
+			{
+				SetHttpPort(port);
 			}
 			else
 			{
-				Log.Warning("Init.js不存在");
+				SetHttpPort((DateTime.Now.Millisecond * 32749 + 8191) % 9000 + 999,true);
+			}
+			if(ModsManager.Configs.TryGetValue("RemoteControlPassword",out string password))
+			{
+				httpPassword = password;
+			}
+			else
+			{
+				httpPassword = ((DateTime.Now.Millisecond * 49999 + 3067) % 9000 + 999).ToString();
+				ModsManager.SetConfig("RemoteControlPassword",httpPassword);
+			}
+			if(ModsManager.Configs.TryGetValue("RemoteControlEnabled",out string enable)
+				&& bool.Parse(enable))
+			{
+				Task.Run(StartHttpListener);
 			}
 		}
 		public static void RegisterEvent()
