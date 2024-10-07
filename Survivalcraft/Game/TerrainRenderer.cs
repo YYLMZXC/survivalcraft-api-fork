@@ -302,9 +302,6 @@ namespace Game
 							catch(Exception)
 							{
 								break;
-								if(i > num) {
-									break;
-								}
 							}
 						}
 						num2 += terrainGeometrySubset.Vertices.Count;
