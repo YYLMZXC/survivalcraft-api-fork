@@ -286,14 +286,19 @@ namespace Game
 			valuesDictionary.SetValue("Projectiles", valuesDictionary2);
 			int num = 0;
 			foreach (Projectile projectile in m_projectiles)
-			{
-				var valuesDictionary3 = new ValuesDictionary();
+            {
+                var valuesDictionary3 = new ValuesDictionary();
+                valuesDictionary3.SetValue("Value", projectile.Value);
+                valuesDictionary3.SetValue("Position", projectile.Position);
+                valuesDictionary3.SetValue("Velocity", projectile.Velocity);
+                valuesDictionary3.SetValue("CreationTime", projectile.CreationTime);
+                valuesDictionary3.SetValue("ProjectileStoppedAction", projectile.ProjectileStoppedAction);
+                ModsManager.HookAction("SaveProjectile", loader =>
+				{
+					loader.SaveProjectile(this, projectile, ref valuesDictionary3);
+					return false;
+				});
 				valuesDictionary2.SetValue(num.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
-				valuesDictionary3.SetValue("Value", projectile.Value);
-				valuesDictionary3.SetValue("Position", projectile.Position);
-				valuesDictionary3.SetValue("Velocity", projectile.Velocity);
-				valuesDictionary3.SetValue("CreationTime", projectile.CreationTime);
-				valuesDictionary3.SetValue("ProjectileStoppedAction", projectile.ProjectileStoppedAction);
 				num++;
 			}
 		}

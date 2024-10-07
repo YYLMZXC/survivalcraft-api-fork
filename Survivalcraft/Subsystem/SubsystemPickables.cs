@@ -224,7 +224,6 @@ namespace Game
 			foreach (Pickable pickable in m_pickables)
 			{
 				var valuesDictionary3 = new ValuesDictionary();
-				valuesDictionary2.SetValue(num.ToString(), valuesDictionary3);
 				valuesDictionary3.SetValue("Value", pickable.Value);
 				valuesDictionary3.SetValue("Count", pickable.Count);
 				valuesDictionary3.SetValue("Position", pickable.Position);
@@ -234,7 +233,13 @@ namespace Game
 				{
 					valuesDictionary3.SetValue("StuckMatrix", pickable.StuckMatrix.Value);
 				}
-				num++;
+				ModsManager.HookAction("SavePickable", loader =>
+				{
+					loader.SavePickable(this, pickable, ref valuesDictionary3);
+					return false;
+				});
+                valuesDictionary2.SetValue(num.ToString(), valuesDictionary3);
+                num++;
 			}
 		}
 	}

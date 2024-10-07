@@ -931,6 +931,15 @@ namespace Game
         {
             skipVanilla = false;
         }
+        /// <summary>
+        /// 当玩家输入交互逻辑时执行的操作
+        /// </summary>
+        /// <param name="componentPlayer"></param>
+        /// <param name="playerOperated">为true则停止之后的挖掘、攻击等操作</param>
+        /// <param name="timeIntervalLastActionTime">距离上一次触发该操作距离的时长</param>
+        /// <param name="priorityUse">控制使用优先级</param>
+        /// <param name="priorityInteract">控制交互优先级</param>
+        /// <param name="priorityPlace">控制放置优先级</param>
         public virtual void OnPlayerInputInteract(ComponentPlayer componentPlayer, ref bool playerOperated, ref double timeIntervalLastActionTime, ref int priorityUse, ref int priorityInteract, ref int priorityPlace)
         {
 
