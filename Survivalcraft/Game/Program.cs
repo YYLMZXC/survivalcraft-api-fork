@@ -30,7 +30,7 @@ namespace Game
 		public static event Action<Uri> HandleUri;
 		public static string Title = "生存战争2.3插件版_";
 
-#if !ANDROID
+#if WINDOWS
 		private static void Main(string[] args)
 		{
 			

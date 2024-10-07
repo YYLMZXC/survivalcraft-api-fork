@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>net8.0;net8.0-windows</TargetFrameworks>
-        <OutputType>WinExe</OutputType>
+        <OutputType Condition="'$(TargetFramework)' == 'net8.0-windows'">WinExe</OutputType>
+		<OutputType Condition="'$(TargetFramework)' == 'net8.0'">library</OutputType>
         <RootNamespace>Game</RootNamespace>
         <IsWebBootstrapper>false</IsWebBootstrapper>
         <PublishUrl>publish\</PublishUrl>
@@ -43,7 +44,7 @@
         <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     </PropertyGroup>
     <PropertyGroup>
-        <StartupObject>Game.Program</StartupObject>
+        <StartupObject Condition="'$(TargetFramework)' == 'net8.0-windows'">Game.Program</StartupObject>
         <ManifestCertificateThumbprint>7727A446B0580C16A300D429D1BE0ABCE78B88E4</ManifestCertificateThumbprint>
         <ManifestKeyFile>Survivalcraft_TemporaryKey.pfx</ManifestKeyFile>
         <GenerateManifests>false</GenerateManifests>
