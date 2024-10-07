@@ -23,6 +23,8 @@ namespace Game
 		public virtual float DistanceToPick => m_distanceToPick;
 		public virtual float DistanceToFlyToTarget => m_distanceToFlyToTarget;
 
+        public bool IsExplosionProof = false;
+
 		public ComponentPickableGatherer FlyToGatherer;
 
         public SubsystemPickables SubsystemPickables;
@@ -217,6 +219,7 @@ namespace Game
         }
         public override void UnderExplosion(Vector3 impulse, float damage)
         {
+            if (IsExplosionProof) return;
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(Value)];
             if (damage / block.GetExplosionResilience(Value) > 0.1f)
             {
