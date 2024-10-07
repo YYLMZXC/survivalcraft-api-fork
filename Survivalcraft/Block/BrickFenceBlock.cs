@@ -13,7 +13,7 @@ namespace Game
 
 		public override bool ShouldConnectTo(int value)
 		{
-			if (BlocksManager.Blocks[Terrain.ExtractContents(value)].IsTransparent_(value))
+			if (BlocksManager.Blocks[Terrain.ExtractContents(value)].IsNonAttachable(value))
 			{
 				return base.ShouldConnectTo(value);
 			}

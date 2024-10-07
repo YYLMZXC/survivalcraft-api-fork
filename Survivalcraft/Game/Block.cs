@@ -696,9 +696,13 @@ namespace Game
 			return false;
 		}
 
+		public virtual bool IsNonAttachable(int value)
+		{
+			return IsTransparent_(value);
+		}
 		public virtual bool IsFaceSuitableForElectricElements(SubsystemTerrain subsystemTerrain, CellFace cellFace, int value)
         {
-			if(!IsCollidable_(value) || IsTransparent_(value)) return false;
+			if(!IsCollidable_(value) || IsNonAttachable(value)) return false;
 			return true;
         }
 

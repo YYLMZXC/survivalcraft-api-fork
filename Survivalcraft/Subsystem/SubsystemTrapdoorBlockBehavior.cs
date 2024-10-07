@@ -74,20 +74,20 @@ namespace Game
 				bool flag = false;
 				Point3 point = CellFace.FaceToPoint3(rotation);
 				int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y, z - point.Z);
-				flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)].IsTransparent_(cellValue2);
+				flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)].IsNonAttachable(cellValue2);
 				if (upsideDown)
 				{
 					int cellValue3 = SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
-					flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue3)].IsTransparent_(cellValue3);
+					flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue3)].IsNonAttachable(cellValue3);
 					int cellValue4 = SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y + 1, z - point.Z);
-					flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue4)].IsTransparent_(cellValue4);
+					flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue4)].IsNonAttachable(cellValue4);
 				}
 				else
 				{
 					int cellValue5 = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
-					flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue5)].IsTransparent_(cellValue5);
+					flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue5)].IsNonAttachable(cellValue5);
 					int cellValue6 = SubsystemTerrain.Terrain.GetCellValue(x - point.X, y - point.Y - 1, z - point.Z);
-					flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue6)].IsTransparent_(cellValue6);
+					flag |= !BlocksManager.Blocks[Terrain.ExtractContents(cellValue6)].IsNonAttachable(cellValue6);
 				}
 				if (!flag)
 				{

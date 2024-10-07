@@ -107,19 +107,19 @@ namespace Game
 			{
 				case 0:
 					int cellValue = subsystemTerrain.Terrain.GetCellValue(num6 - 1, y, num7);
-					rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue);
+					rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsNonAttachable(cellValue);
 					break;
 				case 1:
 					cellValue = subsystemTerrain.Terrain.GetCellValue(num6, y, num7 + 1);
-					rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue);
+					rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsNonAttachable(cellValue);
 					break;
 				case 2:
 					cellValue = subsystemTerrain.Terrain.GetCellValue(num6 + 1, y, num7);
-					rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue);
+					rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsNonAttachable(cellValue);
 					break;
 				case 3:
 					cellValue = subsystemTerrain.Terrain.GetCellValue(num6, y, num7 - 1);
-					rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue);
+					rightHanded = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsNonAttachable(cellValue);
 					break;
 			}
 			int data = SetRightHanded(SetOpen(SetRotation(0, num5), open: false), rightHanded);

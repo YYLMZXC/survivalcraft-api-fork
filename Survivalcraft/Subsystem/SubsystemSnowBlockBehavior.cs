@@ -19,7 +19,7 @@ namespace Game
 		{
 			int num = Terrain.ExtractContents(value);
 			Block block = BlocksManager.Blocks[num];
-			if (block.IsTransparent_(value))
+			if (block.IsNonAttachable(value))
 			{
 				return block is LeavesBlock;
 			}

@@ -19,7 +19,7 @@ namespace Game
 		{
 			int cellValue = SubsystemElectricity.SubsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y - 1, cellFace.Z);
 			Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue)];
-			if (!block.IsCollidable_(cellValue) || block.IsTransparent_(cellValue))
+			if (!block.IsCollidable_(cellValue) || block.IsNonAttachable(cellValue))
 			{
 				SubsystemElectricity.SubsystemTerrain.DestroyCell(0, cellFace.X, cellFace.Y, cellFace.Z, 0, noDrop: false, noParticleSystem: false);
 			}

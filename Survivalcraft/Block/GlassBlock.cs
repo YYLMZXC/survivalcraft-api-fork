@@ -14,5 +14,10 @@ namespace Game
 			if (Terrain.ExtractContents(neighborValue) == BlockIndex) return false;
 			return base.ShouldGenerateFace(subsystemTerrain, face, value, neighborValue);
 		}
-	}
+
+        public override bool IsNonAttachable(int value)
+        {
+			return false;
+        }
+    }
 }

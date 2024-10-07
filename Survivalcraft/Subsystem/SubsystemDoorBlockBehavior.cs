@@ -70,7 +70,7 @@ namespace Game
 		{
 			int cellValue = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
 			int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x, y + 1, z);
-			if (!BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsTransparent_(cellValue) && Terrain.ExtractContents(cellValue2) == 0)
+			if (!BlocksManager.Blocks[Terrain.ExtractContents(cellValue)].IsNonAttachable(cellValue) && Terrain.ExtractContents(cellValue2) == 0)
 			{
 				SubsystemTerrain.ChangeCell(x, y + 1, z, value);
 			}
@@ -114,7 +114,7 @@ namespace Game
 			if (DoorBlock.IsBottomPart(SubsystemTerrain.Terrain, x, y, z))
 			{
 				int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(x, y - 1, z);
-				if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)].IsTransparent_(cellValue2))
+				if (BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)].IsNonAttachable(cellValue2))
 				{
 					SubsystemTerrain.DestroyCell(0, x, y, z, 0, noDrop: false, noParticleSystem: false);
 				}
