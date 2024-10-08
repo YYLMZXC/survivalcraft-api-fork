@@ -73,6 +73,15 @@ namespace Game
 
 		public float m_autoChaseSuppressionTime;
 
+		public float ImportanceLevelNonPersistent = 200f;
+
+		public float ImportanceLevelPersistent = 200f;
+
+		public float MaxAttackRange = 1.75f;
+
+		public bool AllowAttackingStandingOnBody = true;
+
+		public bool JumpWhenTargetStanding = true;
 		public ComponentCreature Target => m_target;
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
@@ -86,7 +95,7 @@ namespace Game
 			m_range = maxRange;
 			m_chaseTime = maxChaseTime;
 			m_isPersistent = isPersistent;
-			m_importanceLevel = 200f;
+			m_importanceLevel = isPersistent ? ImportanceLevelPersistent : ImportanceLevelNonPersistent;
 		}
 
 		public void Update(float dt)
@@ -104,11 +113,27 @@ namespace Game
 				{
 					ComponentBody hitBody = GetHitBody(m_target.ComponentBody, out Vector3 hitPoint);
 					if (hitBody != null)
+                    {
+						float chaseTimeBefore = m_chaseTime;
+                        float x = m_isPersistent ? m_random.Float(8f, 10f) : 2f;
+                        m_chaseTime = MathUtils.Max(m_chaseTime, x);
+						bool bodyToHit = true;
+						bool playAttackSound = true;
+                        ModsManager.HookAction("OnChaseBehaviorAttacked", loader =>
+						{
+							loader.OnChaseBehaviorAttacked(this, chaseTimeBefore, ref m_chaseTime, ref bodyToHit, ref playAttackSound);
+							return false;
+						});
+						if(bodyToHit) m_componentMiner.Hit(hitBody, hitPoint, m_componentCreature.ComponentBody.Matrix.Forward);
+						if(playAttackSound) m_componentCreature.ComponentCreatureSounds.PlayAttackSound();
+					}
+					else
 					{
-						float x = m_isPersistent ? m_random.Float(8f, 10f) : 2f;
-						m_chaseTime = MathUtils.Max(m_chaseTime, x);
-						m_componentMiner.Hit(hitBody, hitPoint, m_componentCreature.ComponentBody.Matrix.Forward);
-						m_componentCreature.ComponentCreatureSounds.PlayAttackSound();
+						ModsManager.HookAction("OnChaseBehaviorAttackFailed", loader =>
+						{
+							loader.OnChaseBehaviorAttackFailed(this, ref m_chaseTime);
+							return false;
+						});
 					}
 				}
 			}
@@ -155,7 +180,7 @@ namespace Game
 						}
 					}
 				}
-				if (m_target != null && body == m_target.ComponentBody && body.StandingOnBody == m_componentCreature.ComponentBody)
+				if (m_target != null && JumpWhenTargetStanding && body == m_target.ComponentBody && body.StandingOnBody == m_componentCreature.ComponentBody)
 				{
 					m_componentCreature.ComponentLocomotion.JumpOrder = 1f;
 				}
@@ -390,7 +415,7 @@ namespace Game
 			{
 				return true;
 			}
-			if (target.StandingOnBody != null && target.StandingOnBody.Position.Y < target.Position.Y && IsTargetInAttackRange(target.StandingOnBody))
+			if (AllowAttackingStandingOnBody && target.StandingOnBody != null && target.StandingOnBody.Position.Y < target.Position.Y && IsTargetInAttackRange(target.StandingOnBody))
 			{
 				return true;
 			}
@@ -427,7 +452,12 @@ namespace Game
 			Vector3 v = target.BoundingBox.Center();
 			var ray = new Ray3(vector, Vector3.Normalize(v - vector));
 			BodyRaycastResult? bodyRaycastResult = m_componentMiner.Raycast<BodyRaycastResult>(ray, RaycastMode.Interaction);
-			if (bodyRaycastResult.HasValue && bodyRaycastResult.Value.Distance < 1.75f && (bodyRaycastResult.Value.ComponentBody == target || bodyRaycastResult.Value.ComponentBody.IsChildOfBody(target) || target.IsChildOfBody(bodyRaycastResult.Value.ComponentBody) || target.StandingOnBody == bodyRaycastResult.Value.ComponentBody))
+			if (bodyRaycastResult.HasValue && 
+				bodyRaycastResult.Value.Distance < MaxAttackRange && 
+				(bodyRaycastResult.Value.ComponentBody == target || 
+				bodyRaycastResult.Value.ComponentBody.IsChildOfBody(target) || 
+				target.IsChildOfBody(bodyRaycastResult.Value.ComponentBody) || 
+				(target.StandingOnBody == bodyRaycastResult.Value.ComponentBody && AllowAttackingStandingOnBody)))
 			{
 				hitPoint = bodyRaycastResult.Value.HitPoint();
 				return bodyRaycastResult.Value.ComponentBody;

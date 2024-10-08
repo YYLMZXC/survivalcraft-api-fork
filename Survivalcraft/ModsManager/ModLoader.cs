@@ -975,5 +975,15 @@ namespace Game
         {
 
         }
+
+        public virtual void OnChaseBehaviorAttacked(ComponentChaseBehavior componentChaseBehavior, float chaseTimeBefore, ref float chaseTime, ref bool hitBody, ref bool playAttackSound)
+        {
+
+        }
+
+        public virtual void OnChaseBehaviorAttackFailed(ComponentChaseBehavior componentChaseBehavior, ref float chaseTime)
+        {
+
+        }
     }
 }
