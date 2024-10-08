@@ -65,9 +65,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs" />
-        <EmbeddedResource Include="init.js">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
+
     </ItemGroup>
     <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
         <None Update="Content.zip">
@@ -76,6 +74,9 @@
         <None Update="openal32.dll">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+		<EmbeddedResource Include="init.js">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</EmbeddedResource>
     </ItemGroup>
     <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
         <EmbeddedResource Include="Content.zip">
@@ -84,9 +85,12 @@
         <EmbeddedResource Include="openal32.dll">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
+		<EmbeddedResource Include="init.js">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\external\ImeSharp\ImeSharp\ImeSharp.csproj" Condition="'$(TargetFramework)' == 'net8.0-windows'"/>
+        <ProjectReference Include="..\external\ImeSharp\ImeSharp\ImeSharp.csproj" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
         <Using Include="System.IO" />
         <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
     </ItemGroup>

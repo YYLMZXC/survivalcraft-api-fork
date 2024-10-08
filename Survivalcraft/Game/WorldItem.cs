@@ -16,9 +16,9 @@ namespace Game
 
 		public bool ToRemove;
 
-		public IInventory Creator;//Ö¸Ã÷¸Ãµ¯ÉäÎï£¬µôÂäÎïÊÇ´ÓÄÄÒ»¸öIInventoryÉú³ÉµÄ¡£Ä¿Ç°ÕâÀïÃ»ÓÐÍêÉÆ¡£¿ÉÒÔÊµÏÖ·¢ÉäÆ÷¹¥»÷»áÈÃmodÉúÎïÊÔÍ¼»Ù»µ·¢ÉäÆ÷µÈ²Ù×÷¡£
+		public IInventory Creator;//æŒ‡æ˜Žè¯¥å¼¹å°„ç‰©ï¼ŒæŽ‰è½ç‰©æ˜¯ä»Žå“ªä¸€ä¸ªIInventoryç”Ÿæˆçš„ã€‚ç›®å‰è¿™é‡Œæ²¡æœ‰å®Œå–„ã€‚å¯ä»¥å®žçŽ°å‘å°„å™¨æ”»å‡»ä¼šè®©modç”Ÿç‰©è¯•å›¾æ¯åå‘å°„å™¨ç­‰æ“ä½œã€‚
 
-		public bool IsFireProof = false;//¸Ãµ¯ÉäÎïºÍµôÂäÎï·À»ð£¬²»»á±»»ðÑæ»òÈÛÑÒÉÕ»Ù
+		public bool IsFireProof = false;//è¯¥å¼¹å°„ç‰©å’ŒæŽ‰è½ç‰©é˜²ç«ï¼Œä¸ä¼šè¢«ç«ç„°æˆ–ç†”å²©çƒ§æ¯
 
         public float? MaxTimeExist;
 

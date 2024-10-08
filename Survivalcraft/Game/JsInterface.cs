@@ -39,11 +39,13 @@ namespace Game
 			}
 			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == "" ? AppContext.BaseDirectory : Assembly.GetExecutingAssembly().Location);//路径备选方案
 			string path = Path.Combine(fullPath, "init.js");
+#if !RELEASE
 			if (!File.Exists(path))
 			{
 				using FileStream destination = new(path,FileMode.Create);
 				Assembly.GetExecutingAssembly().GetManifestResourceStream("Game.init.js").CopyTo(destination);
 			}
+#endif
 			return File.Exists(path);
 		}
 		public static void Initiate()
