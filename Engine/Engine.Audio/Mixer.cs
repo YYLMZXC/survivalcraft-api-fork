@@ -31,17 +31,17 @@ namespace Engine.Audio
 		internal static void Initialize()
 		{
 #if !ANDROID
-			//ֱ�Ӽ���
+			//直接加载
 			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
-			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? AppContext.BaseDirectory: Assembly.GetExecutingAssembly().Location);//·����ѡ����
+			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? AppContext.BaseDirectory: Assembly.GetExecutingAssembly().Location);//路径备选方案
 			Environment.SetEnvironmentVariable("PATH", fullPath + ";" + environmentVariable, EnvironmentVariableTarget.Process);
-			//�ͷ��ļ�
+			//释放文件
 			new AudioContext();
 			if(CheckALError())
 			{
-				string dllName = "openal32.dll"; // DLL��Դ����
+				string dllName = "openal32.dll"; // DLL资源名称
 				string ALPath = Path.Combine(fullPath, dllName);
-				if (!File.Exists(ALPath))//�������dll�Ƿ���ڣ���������ھ��ͷ�
+				if (!File.Exists(ALPath))//检测外置dll是否存在，如果不存在就释放
 				{
 					using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(dllName))
 					using (FileStream fileStream = new(ALPath, FileMode.Create))
@@ -96,16 +96,14 @@ namespace Engine.Audio
 			//	throw new InvalidOperationException(AL.GetErrorString(error));
 			//}
 		}*/
-			public static bool CheckALError()//ע�ⷵ��ֵΪ�Ƿ����
+			public static bool CheckALError()//注意返回值为是否出错
 		{
 			try
 			{
 				ALError error = AL.GetError();
 				if (error != ALError.NoError)
 				{
-					Log.Error("OPENAL����!");
-					Log.Error(error);
-					//throw new InvalidOperationException(AL.GetErrorString(error));
+					Log.Error("OPENAL Error:" + error.ToString());
 					return true;
 				}
 				else
@@ -115,7 +113,7 @@ namespace Engine.Audio
 			}
 			catch (Exception e)
 			{
-				Log.Error("OPENAL�޷�����");
+				Log.Error("OPENAL无法调用");
 				Log.Error (e);
 				return true;
 			}
