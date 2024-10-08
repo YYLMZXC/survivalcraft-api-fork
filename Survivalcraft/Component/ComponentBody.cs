@@ -86,35 +86,35 @@ namespace Game
 
 		public bool IsRaycastTransparent = false;//不可选中
 
-		public Vector3 StanceBoxSize => new(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
+		public virtual Vector3 StanceBoxSize => new(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
 
-		public Vector3 BoxSize { get; set; }
+		public virtual Vector3 BoxSize { get; set; }
 
-		public float Mass { get; set; }
+		public virtual float Mass { get; set; }
 
-		public float Density { get; set; }
+		public virtual float Density { get; set; }
 
-		public Vector2 AirDrag { get; set; }
+		public virtual Vector2 AirDrag { get; set; }
 
-		public Vector2 WaterDrag { get; set; }
+		public virtual Vector2 WaterDrag { get; set; }
 
-		public float WaterSwayAngle { get; set; }
+		public virtual float WaterSwayAngle { get; set; }
 
-		public float WaterTurnSpeed { get; set; }
+		public virtual float WaterTurnSpeed { get; set; }
 
-		public float ImmersionDepth { get; set; }
+		public virtual float ImmersionDepth { get; set; }
 
-		public float ImmersionFactor { get; set; }
+		public virtual float ImmersionFactor { get; set; }
 
-		public FluidBlock ImmersionFluidBlock { get; set; }
+		public virtual FluidBlock ImmersionFluidBlock { get; set; }
 
-		public int? StandingOnValue { get; set; }
+		public virtual int? StandingOnValue { get; set; }
 
-		public ComponentBody StandingOnBody { get; set; }
+		public virtual ComponentBody StandingOnBody { get; set; }
 
-		public Vector3 StandingOnVelocity { get; set; }
+		public virtual Vector3 StandingOnVelocity { get; set; }
 
-		public bool IsSneaking
+		public virtual bool IsSneaking
 		{
 			get
 			{
@@ -126,7 +126,7 @@ namespace Game
 			}
 		}
 
-		public Vector3 Velocity
+		public virtual Vector3 Velocity
 		{
 			get
 			{
@@ -145,7 +145,7 @@ namespace Game
 			}
 		}
 
-		public float TargetCrouchFactor
+		public virtual float TargetCrouchFactor
 		{
 			get
 			{
@@ -161,7 +161,7 @@ namespace Game
 			}
 		}
 
-		public float CrouchFactor
+		public virtual float CrouchFactor
 		{
 			get
 			{
@@ -178,19 +178,19 @@ namespace Game
 			}
 		}
 
-		public bool IsGravityEnabled { get; set; }
+		public virtual  bool IsGravityEnabled { get; set; }
 
-		public bool IsGroundDragEnabled { get; set; }
+		public virtual bool IsGroundDragEnabled { get; set; }
 
-		public bool IsWaterDragEnabled { get; set; }
+		public virtual bool IsWaterDragEnabled { get; set; }
 
-		public bool IsSmoothRiseEnabled { get; set; }
+		public virtual bool IsSmoothRiseEnabled { get; set; }
 
-		public float MaxSmoothRiseHeight { get; set; }
+		public virtual float MaxSmoothRiseHeight { get; set; }
 
-		public Vector3 CollisionVelocityChange { get; set; }
+		public virtual Vector3 CollisionVelocityChange { get; set; }
 
-		public BoundingBox BoundingBox
+		public virtual BoundingBox BoundingBox
 		{
 			get
 			{
@@ -200,9 +200,9 @@ namespace Game
 			}
 		}
 
-		public ReadOnlyList<ComponentBody> ChildBodies => new(m_childBodies);
+		public virtual ReadOnlyList<ComponentBody> ChildBodies => new(m_childBodies);
 
-		public ComponentBody ParentBody
+		public virtual ComponentBody ParentBody
 		{
 			get
 			{
@@ -225,11 +225,11 @@ namespace Game
 			}
 		}
 
-		public Vector3 ParentBodyPositionOffset { get; set; }
+		public virtual  Vector3 ParentBodyPositionOffset { get; set; }
 
-		public Quaternion ParentBodyRotationOffset { get; set; }
+		public virtual Quaternion ParentBodyRotationOffset { get; set; }
 
-		public UpdateOrder UpdateOrder
+		public virtual UpdateOrder UpdateOrder
 		{
 			get
 			{
@@ -247,7 +247,7 @@ namespace Game
 
 		public virtual Action<ComponentBody> CollidedWithBody { get; set; }
 
-		public Action<IMovingBlockSet> CollidedWithMovingBlock { get; set; }
+		public virtual Action<IMovingBlockSet> CollidedWithMovingBlock { get; set; }
 
 		static ComponentBody()
 		{
@@ -267,17 +267,17 @@ namespace Game
 			m_freeSpaceOffsets = list.ToArray();
 		}
 
-		public void ApplyImpulse(Vector3 impulse)
+		public virtual void ApplyImpulse(Vector3 impulse)
 		{
 			m_totalImpulse += impulse;
 		}
 
-		public void ApplyDirectMove(Vector3 directMove)
+		public virtual void ApplyDirectMove(Vector3 directMove)
 		{
 			m_directMove += directMove;
 		}
 
-		public bool IsChildOfBody(ComponentBody componentBody)
+		public virtual bool IsChildOfBody(ComponentBody componentBody)
 		{
 			if (ParentBody != componentBody)
 			{
@@ -546,7 +546,7 @@ namespace Game
 			}
 		}
 
-		public void UpdateImmersionData()
+		public virtual void UpdateImmersionData()
 		{
 			Vector3 position = Position;
 			int x = Terrain.ToCell(position.X);
@@ -569,7 +569,7 @@ namespace Game
 			}
 		}
 
-		public bool MoveToFreeSpace(float maxMoveDistance)
+		public virtual bool MoveToFreeSpace(float maxMoveDistance)
 		{
 			Vector3 stanceBoxSize = StanceBoxSize;
 			Vector3 position = Position;
@@ -672,7 +672,7 @@ namespace Game
 			return false;
 		}
 
-		public void MoveWithCollision(float dt, Vector3 move)
+		public virtual void MoveWithCollision(float dt, Vector3 move)
 		{
 			Vector3 position = Position;
 			bool isSmoothRising = IsSmoothRiseEnabled && MaxSmoothRiseHeight > 0f && HandleSmoothRise(ref move, position, dt);
@@ -682,7 +682,7 @@ namespace Game
 			Position = position;
 		}
 
-		public bool HandleSmoothRise(ref Vector3 move, Vector3 position, float dt)
+		public virtual bool HandleSmoothRise(ref Vector3 move, Vector3 position, float dt)
 		{
 			Vector3 stanceBoxSize = StanceBoxSize;
 			BoundingBox box = new(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f), position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f));
@@ -706,7 +706,7 @@ namespace Game
 			return false;
 		}
 
-		public void HandleAxisCollision(int axis, float move, ref Vector3 position, bool isSmoothRising)
+		public virtual void HandleAxisCollision(int axis, float move, ref Vector3 position, bool isSmoothRising)
 		{
 			Vector3 stanceBoxSize = StanceBoxSize;
 			m_collisionBoxes.Clear();
@@ -820,7 +820,7 @@ namespace Game
 			}
 		}
 
-		public void FindBodiesCollisionBoxes(Vector3 position, DynamicArray<CollisionBox> result)
+		public virtual void FindBodiesCollisionBoxes(Vector3 position, DynamicArray<CollisionBox> result)
 		{
 			m_componentBodies.Clear();
 			m_subsystemBodies.FindBodiesAroundPoint(new Vector2(position.X, position.Z), 4f, m_componentBodies);
@@ -839,7 +839,7 @@ namespace Game
 			}
 		}
 
-		public void FindMovingBlocksCollisionBoxes(Vector3 position, DynamicArray<CollisionBox> result)
+		public virtual void FindMovingBlocksCollisionBoxes(Vector3 position, DynamicArray<CollisionBox> result)
 		{
 			Vector3 stanceBoxSize = StanceBoxSize;
 			BoundingBox boundingBox = new(position - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f), position + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f));
@@ -874,7 +874,7 @@ namespace Game
 			}
 		}
 
-		public void FindTerrainCollisionBoxes(BoundingBox box, DynamicArray<CollisionBox> result)
+		public virtual void FindTerrainCollisionBoxes(BoundingBox box, DynamicArray<CollisionBox> result)
 		{
 			if (!TerrainCollidable) return;
 			Point3 point = Terrain.ToCell(box.Min);
@@ -924,7 +924,7 @@ namespace Game
 			}
 		}
 
-		public void FindCrouchCollisionBoxes(Vector3 position, Vector2 overhang, DynamicArray<CollisionBox> result)
+		public virtual void FindCrouchCollisionBoxes(Vector3 position, Vector2 overhang, DynamicArray<CollisionBox> result)
 		{
 			int num = Terrain.ToCell(position.X);
 			int num2 = Terrain.ToCell(position.Y);
@@ -1073,7 +1073,7 @@ namespace Game
 			}
 		}
 
-		public bool IsColliding(BoundingBox box, DynamicArray<CollisionBox> collisionBoxes)
+		public virtual bool IsColliding(BoundingBox box, DynamicArray<CollisionBox> collisionBoxes)
 		{
 			for (int i = 0; i < collisionBoxes.Count; i++)
 			{
@@ -1085,7 +1085,7 @@ namespace Game
 			return false;
 		}
 
-		public float CalculatePushBack(BoundingBox box, int axis, DynamicArray<CollisionBox> collisionBoxes, out CollisionBox pushingCollisionBox)
+		public virtual float CalculatePushBack(BoundingBox box, int axis, DynamicArray<CollisionBox> collisionBoxes, out CollisionBox pushingCollisionBox)
 		{
 			pushingCollisionBox = default(CollisionBox);
 			float num = 0f;
@@ -1101,7 +1101,7 @@ namespace Game
 			return num;
 		}
 
-		public float CalculateSmoothRisePushBack(BoundingBox normalBox, BoundingBox smoothRiseBox, int axis, DynamicArray<CollisionBox> collisionBoxes, out CollisionBox pushingCollisionBox)
+		public virtual float CalculateSmoothRisePushBack(BoundingBox normalBox, BoundingBox smoothRiseBox, int axis, DynamicArray<CollisionBox> collisionBoxes, out CollisionBox pushingCollisionBox)
 		{
 			pushingCollisionBox = default(CollisionBox);
 			float num = 0f;
@@ -1178,7 +1178,7 @@ namespace Game
 			result2 = ((cr * m1 * (v1 - v2)) + (m1 * v1) + (m2 * v2)) * num;
 		}
 
-		public bool MoveToFreeSpace()
+		public virtual bool MoveToFreeSpace()
 		{
 			Vector3 boxSize = BoxSize;
 			Vector3 position = Position;
@@ -1278,7 +1278,7 @@ namespace Game
 			return false;
 		}
 
-		public void FindSneakCollisionBoxes(Vector3 position, Vector2 overhang, DynamicArray<CollisionBox> result)
+		public virtual void FindSneakCollisionBoxes(Vector3 position, Vector2 overhang, DynamicArray<CollisionBox> result)
 		{
 			int num = Terrain.ToCell(position.X);
 			int num2 = Terrain.ToCell(position.Y);
