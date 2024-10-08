@@ -39,13 +39,13 @@ namespace Game
 			}
 			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == "" ? AppContext.BaseDirectory : Assembly.GetExecutingAssembly().Location);//路径备选方案
 			string path = Path.Combine(fullPath, "init.js");
-#if !RELEASE
+/*
 			if (!File.Exists(path))
 			{
 				using FileStream destination = new(path,FileMode.Create);
 				Assembly.GetExecutingAssembly().GetManifestResourceStream("Game.init.js").CopyTo(destination);
 			}
-#endif
+*/
 			return File.Exists(path);
 		}
 		public static void Initiate()
@@ -83,7 +83,7 @@ namespace Game
 			}
 			else
 			{
-				SetHttpPort((DateTime.Now.Millisecond * 32749 + 8191) % 9000 + 999,true);
+				SetHttpPort((DateTime.Now.Millisecond * 32749 + 8191) % 9000 + 1024,true);
 			}
 			if(ModsManager.Configs.TryGetValue("RemoteControlPassword",out string password))
 			{
