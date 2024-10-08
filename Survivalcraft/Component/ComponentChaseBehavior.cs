@@ -82,7 +82,31 @@ namespace Game
 		public bool AllowAttackingStandingOnBody = true;
 
 		public bool JumpWhenTargetStanding = true;
-		public ComponentCreature Target => m_target;
+
+		public bool AttacksPlayer = true;
+
+		public bool AttacksNonPlayerCreature = true;
+
+		public float ChaseRangeOnTouch = 7f;
+
+		public float ChaseTimeOnTouch = 7f;
+
+		public float? ChaseRangeOnAttacked = null;
+
+		public float? ChaseTimeOnAttacked = null;
+
+		public bool? ChasePersistentOnAttacked = null;
+
+		public float MinHealthToAttackActively = 0.4f;
+
+		public bool Suppressed = false;
+
+		public bool PlayIdleSoundWhenStartToChase = true;
+
+		public bool PlayAngrySoundWhenChasing = true;
+		public float TargetInRangeTimeToChase = 3f;
+
+        public ComponentCreature Target => m_target;
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -90,6 +114,7 @@ namespace Game
 
 		public virtual void Attack(ComponentCreature componentCreature, float maxRange, float maxChaseTime, bool isPersistent)
 		{
+			if (Suppressed) return;
 			m_target = componentCreature;
 			m_nextUpdateTime = 0.0;
 			m_range = maxRange;
@@ -98,8 +123,24 @@ namespace Game
 			m_importanceLevel = isPersistent ? ImportanceLevelPersistent : ImportanceLevelNonPersistent;
 		}
 
+		public virtual void StopAttack()
+		{
+            m_stateMachine.TransitionTo("LookingForTarget");
+			IsActive = false;
+			m_target = null;
+			m_nextUpdateTime = 0.0;
+			m_range = 0;
+			m_chaseTime = 0;
+			m_isPersistent = false;
+			m_importanceLevel = 0;
+        }
+
 		public void Update(float dt)
 		{
+			if (Suppressed)
+			{
+				StopAttack();
+			}
 			m_autoChaseSuppressionTime -= dt;
 			if (IsActive && m_target != null)
 			{
@@ -174,9 +215,10 @@ namespace Game
 					{
 						bool flag2 = m_subsystemPlayers.IsPlayer(body.Entity);
 						bool flag3 = (componentCreature2.Category & m_autoChaseMask) != 0;
-						if ((flag2 && m_subsystemGameInfo.WorldSettings.GameMode > GameMode.Harmless) || (!flag2 && flag3))
+						if ((AttacksPlayer && flag2 && m_subsystemGameInfo.WorldSettings.GameMode > GameMode.Harmless) || 
+						(AttacksNonPlayerCreature && !flag2 && flag3))
 						{
-							Attack(componentCreature2, 7f, 7f, isPersistent: false);
+							Attack(componentCreature2, ChaseRangeOnTouch, ChaseTimeOnTouch, isPersistent: false);
 						}
 					}
 				}
@@ -190,15 +232,26 @@ namespace Game
 			{
 				if (m_random.Float(0f, 1f) < m_chaseWhenAttackedProbability)
 				{
+					float chaseRange = 0f;
+					float chaseTime = 0f;
+					bool chasePersistent = false;
 					if (m_chaseWhenAttackedProbability >= 1f)
 					{
-						Attack(attacker, 30f, 60f, isPersistent: true);
+						chaseRange = 30f;
+						chaseTime = 60f;
+						chasePersistent = true;
 					}
 					else
 					{
-						Attack(attacker, 7f, 7f, isPersistent: false);
-					}
-				}
+						chaseRange = 7f;
+						chaseTime = 7f;
+						chasePersistent = false;
+                    }
+					chaseRange = ChaseRangeOnAttacked ?? chaseRange;
+					chaseTime = ChaseTimeOnAttacked ?? chaseTime;
+					chasePersistent = ChasePersistentOnAttacked ?? chasePersistent;
+                    Attack(attacker, chaseRange, chaseTime, isPersistent: chasePersistent);
+                }
 			};
 			m_stateMachine.AddState("LookingForTarget", delegate
 			{
@@ -210,7 +263,7 @@ namespace Game
 				{
 					m_stateMachine.TransitionTo("Chasing");
 				}
-				else if (m_autoChaseSuppressionTime <= 0f && (m_target == null || ScoreTarget(m_target) <= 0f) && m_componentCreature.ComponentHealth.Health > 0.4f)
+				else if (!Suppressed && m_autoChaseSuppressionTime <= 0f && (m_target == null || ScoreTarget(m_target) <= 0f) && m_componentCreature.ComponentHealth.Health > MinHealthToAttackActively)
 				{
 					m_range = (m_subsystemSky.SkyLightIntensity < 0.2f) ? m_nightChaseRange : m_dayChaseRange;
 					ComponentCreature componentCreature = FindTarget();
@@ -222,7 +275,7 @@ namespace Game
 					{
 						m_targetInRangeTime = 0f;
 					}
-					if (m_targetInRangeTime > 3f)
+					if (m_targetInRangeTime > TargetInRangeTimeToChase)
 					{
 						bool flag = m_subsystemSky.SkyLightIntensity >= 0.1f;
 						float maxRange = flag ? (m_dayChaseRange + 6f) : (m_nightChaseRange + 6f);
@@ -251,7 +304,7 @@ namespace Game
 			m_stateMachine.AddState("Chasing", delegate
 			{
 				m_subsystemNoise.MakeNoise(m_componentCreature.ComponentBody, 0.25f, 6f);
-				m_componentCreature.ComponentCreatureSounds.PlayIdleSound(skipIfRecentlyPlayed: false);
+				if(PlayIdleSoundWhenStartToChase) m_componentCreature.ComponentCreatureSounds.PlayIdleSound(skipIfRecentlyPlayed: false);
 				m_nextUpdateTime = 0.0;
 			}, delegate
 			{
@@ -318,7 +371,7 @@ namespace Game
 						float num = Vector3.Distance(v, vector);
 						float num2 = (num < 4f) ? 0.2f : 0f;
 						m_componentPathfinding.SetDestination(vector + (num2 * num * m_target.ComponentBody.Velocity), 1f, 1.5f, maxPathfindingPositions, useRandomMovements: true, ignoreHeightDifference: false, raycastDestination: true, m_target.ComponentBody);
-						if (m_random.Float(0f, 1f) < 0.33f * m_dt)
+						if (PlayAngrySoundWhenChasing && m_random.Float(0f, 1f) < 0.33f * m_dt)
 						{
 							m_componentCreature.ComponentCreatureSounds.PlayAttackSound();
 						}
