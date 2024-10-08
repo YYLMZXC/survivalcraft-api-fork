@@ -74,7 +74,7 @@ namespace Game
 
 		public const float SleepThresholdSpeed = 1E-05f;
 
-		public const float MaxSpeed = 25f;
+		public float MaxSpeed = 25f;
 
 		public bool CanCrouch = false;
 
@@ -134,9 +134,9 @@ namespace Game
 			}
 			set
 			{
-				if (value.LengthSquared() > 625f)
+				if (value.LengthSquared() > MaxSpeed * MaxSpeed)
 				{
-					m_velocity = 25f * Vector3.Normalize(value);
+					m_velocity = MaxSpeed * Vector3.Normalize(value);
 				}
 				else
 				{
