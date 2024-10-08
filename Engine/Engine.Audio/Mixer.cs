@@ -1,6 +1,7 @@
-using System.Reflection;
+﻿using System.Reflection;
 using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Engine.Audio
 {
@@ -31,34 +32,34 @@ namespace Engine.Audio
 		internal static void Initialize()
 		{
 #if !ANDROID
-			//直接加载
-			string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
+            //直接加载
+            string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
 			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? AppContext.BaseDirectory: Assembly.GetExecutingAssembly().Location);//路径备选方案
 			Environment.SetEnvironmentVariable("PATH", fullPath + ";" + environmentVariable, EnvironmentVariableTarget.Process);
 			//释放文件
-			new AudioContext();
-			if(CheckALError())
-			{
 				string dllName = "openal32.dll"; // DLL资源名称
 				string ALPath = Path.Combine(fullPath, dllName);
 				if (!File.Exists(ALPath))//检测外置dll是否存在，如果不存在就释放
 				{
-					using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(dllName))
-					using (FileStream fileStream = new(ALPath, FileMode.Create))
-					{
-						stream.CopyTo(fileStream);
-					}
-				}
+                    try
+                    {
+                        using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(dllName);
+                        using FileStream fileStream = new(ALPath, FileMode.Create);
+                        stream.CopyTo(fileStream);
+                    }
+                    catch(Exception ex)
+                    {
+                        Log.Error(ex);
+                    }
+
+                }
 				//Assembly dllAssembly = Assembly.LoadFile(ALPath);
-				new AudioContext();
-			}
-#else
-			new AudioContext();
-			CheckALError();
 #endif
+            new AudioContext();
+            CheckALError();
+        }
 
-
-		}
+		
 		internal static void Dispose()
 		{
 		}
@@ -103,18 +104,18 @@ namespace Engine.Audio
 				ALError error = AL.GetError();
 				if (error != ALError.NoError)
 				{
-					Log.Error("OPENAL Error:" + error.ToString());
+					Log.Error("OPENAL出错! " + error.ToString());
+					//throw new InvalidOperationException(AL.GetErrorString(error));
 					return true;
 				}
 				else
 				{
-					return false;
-				}
-			}
+                    return false;
+                }
+            }
 			catch (Exception e)
 			{
-				Log.Error("OPENAL无法调用");
-				Log.Error (e);
+				Log.Error("OPENAL无法调用 " + e.ToString());
 				return true;
 			}
 		}
