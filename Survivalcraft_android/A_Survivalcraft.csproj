@@ -23,7 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Jint" Version="4.0.3" />
-    <PackageReference Include="NAudio.Flac.Unknown.Mod" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="NAudio.Flac.Unknown.Mod" Version="1.0.3" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Survivalcraft\init.js" />
@@ -2928,7 +2928,7 @@
     <TargetFramework>net8.0-android</TargetFramework>
     <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
     <RootNamespace>Game</RootNamespace>
-    <Version>2.3.10.4</Version>
+    <ApplicationVersion>2.3.0.0</ApplicationVersion>
     <FileVersion>2.3.10.4</FileVersion>
     <AssemblyVersion>2.3.10.4</AssemblyVersion>
     <AssemblyName>Survivalcraft</AssemblyName>
