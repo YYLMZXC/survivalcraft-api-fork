@@ -693,8 +693,6 @@ public static class ModsManager
         ModifiedElement["6f538db3-f1fe-4e91-8ef5-627c0b1a74ba"] = "Game.ComponentRunAwayBehavior";
 		ModifiedElement["8b3d07dc-6498-4691-9686-cf4edabb8f3f"] = "Game.ComponentGui";
         ModifiedElement["e2636c38-f179-4aa1-b087-ed6920d66e8e"] = "Game.SubsystemTerrain";
-        ModifiedElement["1c95cd40-26be-44cf-938a-157b318ff086"] = "Game.SubsystemPlantBlockBehavior";
-        ModifiedElement["937999c9-9570-4cbd-8390-23f1e4609cdd"] = "Game.SubsystemPistonBlockBehavior";
         ModifiedElement["96e79f99-a082-4190-9ab6-835dc49ebbdd"] = "Game.SubsystemExplosions";
         ModifiedElement["dafb8e14-11b9-44b7-a208-424b770aeaa9"] = "Game.SubsystemProjectiles";
         ModifiedElement["32d392de-69c1-4d04-9e0b-5c7463201892"] = "Game.SubsystemPickables";

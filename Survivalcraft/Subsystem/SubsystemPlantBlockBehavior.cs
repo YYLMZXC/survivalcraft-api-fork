@@ -38,7 +38,7 @@ namespace Game
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-		public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
+		public sealed override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
 		{
 			int plantValue = SubsystemTerrain.Terrain.GetCellValue(x, y, z);
             int plantContents = Terrain.ExtractContents(plantValue);
