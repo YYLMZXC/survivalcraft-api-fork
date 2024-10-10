@@ -347,6 +347,11 @@ namespace Game
             }
             //µ¯¬‰…À∫¶
             float fallDamage = CalculateFallDamage();
+            ModsManager.HookAction("CalculateFallDamage", loader =>
+            {
+                loader.CalculateFallDamage(this, ref fallDamage);
+                return false;
+            });
             if(fallDamage > 0f) Injure(fallDamage, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 2));
             m_wasStanding = m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.StandingOnBody != null;
             //–Èø’…À∫¶

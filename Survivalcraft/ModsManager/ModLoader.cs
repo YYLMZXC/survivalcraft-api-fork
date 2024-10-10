@@ -985,5 +985,8 @@ namespace Game
         {
 
         }
+        public virtual void CalculateFallDamage(ComponentHealth componentHealth, ref float damage)
+        {
+        }
     }
 }
