@@ -57,14 +57,33 @@ namespace Game
 		public virtual Action<Pickable> PickableRemoved { get; set; }
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-		public Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
+		public Pickable AddPickable(Pickable pickable)
+        {
+            pickable.CreationTime = m_subsystemGameInfo.TotalElapsedGameTime;
+            ModsManager.HookAction("OnPickableAdded", loader =>
+            {
+                loader.OnPickableAdded(this, ref pickable, null);
+                return false;
+            });
+            lock (m_pickables)
+            {
+                m_pickables.Add(pickable);
+            }
+            PickableAdded?.Invoke(pickable);
+            return pickable;
+        }
+        public Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
 		{
-			var pickable = new Pickable();
+			return AddPickable<Pickable>(value, count, position, velocity, stuckMatrix);
+		}
+
+        public T AddPickable<T>(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix) where T : Pickable, new()
+		{
+			var pickable = new T();
 			pickable.Value = value;
 			pickable.Count = count;
 			pickable.Position = position;
 			pickable.StuckMatrix = stuckMatrix;
-			pickable.CreationTime = m_subsystemGameInfo.TotalElapsedGameTime;
 			if (velocity.HasValue)
 			{
 				pickable.Velocity = velocity.Value;
@@ -78,17 +97,8 @@ namespace Game
 			{
 				pickable.Velocity = new Vector3(m_random.Float(-0.5f, 0.5f), m_random.Float(1f, 1.2f), m_random.Float(-0.5f, 0.5f));
 			}
-            ModsManager.HookAction("OnPickableAdded", loader =>
-            {
-                loader.OnPickableAdded(this, ref pickable, null);
-                return false;
-            });
-			lock (m_pickables)
-			{
-                m_pickables.Add(pickable);
-            }
-			PickableAdded?.Invoke(pickable);
-			return pickable;
+            Pickable pickable2 = AddPickable(pickable);
+			return pickable2 as T;
 		}
 
 		public void Draw(Camera camera, int drawOrder)
