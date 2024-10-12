@@ -988,5 +988,15 @@ namespace Game
         public virtual void CalculateFallDamage(ComponentHealth componentHealth, ref float damage)
         {
         }
+
+        public virtual void OnLocomotionStopped(ComponentLocomotion componentLocomotion, ref bool fallsOnDeathOrStun)
+        {
+
+        }
+
+        public virtual void OnComponentLocomotionLoaded(ComponentLocomotion componentLocomotion, ref float mobWalkSpeedFactor, ref float mobFlySpeedFactor, ref float mobSwimSpeedFactor, ref bool disableCreativeFlyInSurvivalMode)
+        {
+
+        }
     }
 }

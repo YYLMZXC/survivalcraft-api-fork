@@ -61,7 +61,7 @@ namespace Game
         public virtual float CalculateFallDamage()
         {
             float velocityChange = MathF.Abs(m_componentCreature.ComponentBody.CollisionVelocityChange.Y);
-            if (!m_wasStanding && velocityChange > FallResilience)
+            if (!m_wasStanding && velocityChange > FallResilience && !m_componentCreature.ComponentLocomotion.IsCreativeFlyEnabled)
             {
                 float num4 = MathUtils.Sqr(MathUtils.Max(velocityChange - FallResilience, 0f)) / 15f;
                 num4 /= m_componentFactors?.ResilienceFactor ?? 1;

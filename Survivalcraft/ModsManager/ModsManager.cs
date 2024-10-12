@@ -139,7 +139,7 @@ public static class ModsManager
 	/// </summary>
 	/// <param name="HookName"></param>
 	/// <param name="action"></param>
-	public static void HookAction(string HookName, Func<ModLoader, bool> action)
+	public static void HookAction(string HookName, Func<ModLoader, bool> action)//按先加载→后加载模组（先主题模组后辅助模组的顺序）执行
 	{
 		if (ModHooks.TryGetValue(HookName, out ModHook modHook))
 		{
@@ -149,6 +149,16 @@ public static class ModsManager
 			}
 		}
 	}
+	public static void HookActionReverse(string HookName, Func<ModLoader, bool> action)//按后加载→先加载模组（先辅助模组后主题模组的顺序）执行
+	{
+        if (ModHooks.TryGetValue(HookName, out ModHook modHook))
+        {
+            foreach (ModLoader modLoader in modHook.Loaders.Keys.Reverse())
+            {
+                if (action.Invoke(modLoader)) break;
+            }
+        }
+    }
 
 	/// <summary>
 	/// 注册Hook

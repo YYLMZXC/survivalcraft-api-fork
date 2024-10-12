@@ -313,15 +313,18 @@ namespace Game
 			set;
 		}
 
+		public bool AllowShoesWarning = true;
+
 		public UpdateOrder UpdateOrder => UpdateOrder.Locomotion;
 
 		public void Update(float dt)
 		{
 			SlipSpeed = null;
-			if (m_subsystemGameInfo.WorldSettings.GameMode != 0)
+			/* 禁用创造模式飞行的操作只在开始的时候执行一次
+			 * if (m_subsystemGameInfo.WorldSettings.GameMode != 0)
 			{
 				IsCreativeFlyEnabled = false;
-			}
+			}*/
 			StunTime = MathUtils.Max(StunTime - dt, 0f);
 			if (m_componentCreature.ComponentHealth.Health > 0f && StunTime <= 0f)
 			{
@@ -420,7 +423,13 @@ namespace Game
 			}
 			else
 			{
-				if (m_componentCreature.ComponentBody.TerrainCollidable && EnableGravityOnDeathOrStun)
+				bool fallsOnDeathOrStun = m_componentCreature.ComponentBody.TerrainCollidable && EnableGravityOnDeathOrStun;
+				ModsManager.HookActionReverse("OnLocomotionStopped", loader =>
+				{
+					loader.OnLocomotionStopped(this, ref fallsOnDeathOrStun);
+					return false;
+				});
+				if (fallsOnDeathOrStun)
 				{
                     m_componentCreature.ComponentBody.IsGravityEnabled = true;
                     m_componentCreature.ComponentBody.IsGroundDragEnabled = true;
@@ -470,11 +479,21 @@ namespace Game
 			m_minFrictionFactor = valuesDictionary.GetValue<float>("MinFrictionFactor");
 			m_lookAutoLevelX = valuesDictionary.GetValue<bool>("LookAutoLevelX");
 			m_lookAutoLevelY = valuesDictionary.GetValue<bool>("LookAutoLevelY");
-			if (Entity.FindComponent<ComponentPlayer>() == null)
+			float mobWalkSpeedFactor = m_random.Float(0.85f, 1f);
+			float mobFlySpeedFactor = m_random.Float(0.85f, 1f);
+			float mobSwimSpeedFactor = m_random.Float(0.85f, 1f);
+			bool disableCreativeFlyInSurvivalMode = true;
+            ModsManager.HookAction("OnComponentLocomotionLoaded", loader =>
 			{
-				WalkSpeed *= m_random.Float(0.85f, 1f);
-				FlySpeed *= m_random.Float(0.85f, 1f);
-				SwimSpeed *= m_random.Float(0.85f, 1f);
+				loader.OnComponentLocomotionLoaded(this, ref mobWalkSpeedFactor, ref mobFlySpeedFactor, ref mobSwimSpeedFactor, ref disableCreativeFlyInSurvivalMode);
+				return false;
+			});
+            if (m_subsystemGameInfo.WorldSettings.GameMode != GameMode.Creative && disableCreativeFlyInSurvivalMode) IsCreativeFlyEnabled = false;
+            if (Entity.FindComponent<ComponentPlayer>() == null)
+			{
+				WalkSpeed *= mobWalkSpeedFactor;
+				FlySpeed *= mobFlySpeedFactor;
+				SwimSpeed *= mobSwimSpeedFactor;
 			}
 		}
 
@@ -574,7 +593,7 @@ namespace Game
 					}
 					velocity.Y += 10f * AccelerationFactor * vector3.Y * m_componentCreature.ComponentBody.ImmersionFactor * dt;
 					m_componentCreature.ComponentBody.IsGroundDragEnabled = false;
-					if (m_componentPlayer != null && Time.PeriodicEvent(10.0, 0.0) && (m_shoesWarningTime == 0.0 || Time.FrameStartTime - m_shoesWarningTime > 300.0) && m_componentCreature.ComponentBody.StandingOnValue.HasValue && m_componentCreature.ComponentBody.ImmersionFactor < 0.1f)
+					if (m_componentPlayer != null && AllowShoesWarning && Time.PeriodicEvent(10.0, 0.0) && (m_shoesWarningTime == 0.0 || Time.FrameStartTime - m_shoesWarningTime > 300.0) && m_componentCreature.ComponentBody.StandingOnValue.HasValue && m_componentCreature.ComponentBody.ImmersionFactor < 0.1f)
 					{
 						bool flag = false;
 						int value2 = m_componentPlayer.ComponentClothing.GetClothes(ClothingSlot.Feet).LastOrDefault();
