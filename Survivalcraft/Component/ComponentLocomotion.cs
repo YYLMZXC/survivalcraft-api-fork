@@ -139,6 +139,8 @@ namespace Game
 			set;
 		}
 
+		public bool EnableGravityOnDeathOrStun = true;
+
 		public Vector2 LookAngles
 		{
 			get
@@ -418,9 +420,12 @@ namespace Game
 			}
 			else
 			{
-				m_componentCreature.ComponentBody.IsGravityEnabled = true;
-				m_componentCreature.ComponentBody.IsGroundDragEnabled = true;
-				m_componentCreature.ComponentBody.IsWaterDragEnabled = true;
+				if (m_componentCreature.ComponentBody.TerrainCollidable && EnableGravityOnDeathOrStun)
+				{
+                    m_componentCreature.ComponentBody.IsGravityEnabled = true;
+                    m_componentCreature.ComponentBody.IsGroundDragEnabled = true;
+                    m_componentCreature.ComponentBody.IsWaterDragEnabled = true;
+                }
 			}
 			LastWalkOrder = WalkOrder;
 			LastFlyOrder = FlyOrder;
