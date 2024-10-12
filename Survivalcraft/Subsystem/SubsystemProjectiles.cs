@@ -65,22 +65,10 @@ namespace Game
 		public virtual Action<Projectile> ProjectileRemoved { get; set; }
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
-
-		public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
-		{
-			var projectile = new Projectile();
-			Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-            projectile.Value = value;
-			projectile.Position = position;
-			projectile.Velocity = velocity;
-			projectile.Rotation = Vector3.Zero;
-			projectile.AngularVelocity = angularVelocity;
-			projectile.CreationTime = m_subsystemGameInfo.TotalElapsedGameTime;
-			projectile.IsInFluid = IsWater(position);
-			projectile.Owner = owner;
-			projectile.OwnerEntity = owner?.Entity;
-			projectile.Damping = block.GetProjectileDamping(value);
-            projectile.ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable;
+        public virtual Projectile AddProjectile(Projectile projectile)
+        {
+            projectile.CreationTime = m_subsystemGameInfo.TotalElapsedGameTime;
+            projectile.IsInFluid = IsWater(projectile.Position);
 
             ModsManager.HookAction("OnProjectileAdded", loader =>
             {
@@ -88,19 +76,46 @@ namespace Game
                 return false;
             });
 
-			lock (m_projectiles)
-			{
+            lock (m_projectiles)
+            {
                 m_projectiles.Add(projectile);
             }
-			ProjectileAdded?.Invoke(projectile);
-			if (owner != null && owner.PlayerStats != null)
-			{
-				owner.PlayerStats.RangedAttacks++;
-			}
-			return projectile;
+
+            if (projectile.Owner != null && projectile.Owner.PlayerStats != null)
+            {
+                projectile.Owner.PlayerStats.RangedAttacks++;
+            }
+            ProjectileAdded?.Invoke(projectile);
+            return projectile;
+        }
+        public virtual Projectile AddProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
+		{
+			return AddProjectile<Projectile>(value, position, velocity, angularVelocity, owner);
 		}
 
-		public virtual Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
+		public virtual T AddProjectile<T>(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner) where T : Projectile, new()
+		{
+            var projectile = new T();
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
+            projectile.Value = value;
+            projectile.Position = position;
+            projectile.Velocity = velocity;
+            projectile.Rotation = Vector3.Zero;
+            projectile.AngularVelocity = angularVelocity;
+            projectile.Owner = owner;
+            projectile.OwnerEntity = owner?.Entity;
+            projectile.Damping = block.GetProjectileDamping(value);
+            projectile.ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable;
+            Projectile projectile2 = AddProjectile(projectile);
+            return projectile2 as T;
+        }
+
+        public virtual Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
+		{
+			return FireProjectile<Projectile>(value, position, velocity, angularVelocity, owner);
+		}
+
+        public virtual T FireProjectile<T>(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner) where T : Projectile, new()
 		{
 			int num = Terrain.ExtractContents(value);
 			Block block = BlocksManager.Blocks[num];
@@ -125,7 +140,7 @@ namespace Game
 			Vector3 end = vector + (v * block.ProjectileTipOffset);
 			if (!m_subsystemTerrain.Raycast(position, end, useInteractionBoxes: false, skipAirBlocks: true, (int testValue, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(testValue)].IsCollidable_(testValue)).HasValue)
 			{
-				Projectile projectile = AddProjectile(value, vector, velocity, angularVelocity, owner);
+				T projectile = AddProjectile<T>(value, vector, velocity, angularVelocity, owner);
 				SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(value));
 				for (int i = 0; i < blockBehaviors.Length; i++)
 				{
