@@ -1,9 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net8.0-windows</TargetFrameworks>
+        <TargetFrameworks>net8.0;net8.0-windows;net8.0-android</TargetFrameworks>
         <OutputType Condition="'$(TargetFramework)' == 'net8.0-windows'">WinExe</OutputType>
 		<OutputType Condition="'$(TargetFramework)' == 'net8.0'">library</OutputType>
-        <RootNamespace>Game</RootNamespace>
+		<OutputType Condition="'$(TargetFramework)' == 'net8.0-android'">library</OutputType>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net8.0-android'">23.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net8.0-windows'">7.0</SupportedOSPlatformVersion>
+		<RootNamespace>Game</RootNamespace>
         <IsWebBootstrapper>false</IsWebBootstrapper>
         <PublishUrl>publish\</PublishUrl>
         <Install>true</Install>
@@ -31,6 +34,14 @@
         <RepositoryUrl>https://gitee.com/THPRC/survivalcraft-api</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
     </PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' And '$(TargetFramework)' == 'net8.0-android' ">
+		<AndroidKeyStore>false</AndroidKeyStore>
+		<DebugType>full</DebugType>
+		<EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+		<AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+		<AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+		<AndroidUseAapt2>true</AndroidUseAapt2>
+	</PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DefineConstants>DEBUG</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -56,16 +67,15 @@
     </PropertyGroup>
     <ItemGroup>
         <Content Include="Content\icon.ico" />
-    </ItemGroup>
-    <ItemGroup>
+		<Reference Include="OpenTK-1.0.2moded" Condition="'$(TargetFramework)' == 'net8.0-android'">
+			<HintPath>..\Engine\reference\OpenTK-1.0.2moded.dll</HintPath>
+		</Reference>
+		<Compile Remove="Resources\Resource.designer.cs" Condition="'$(TargetFramework)' == 'net8.0-android'" />
         <PackageReference Include="Jint" Version="4.0.3" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0-rc.1.24431.7" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0-rc.2.24473.5" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
         <PackageReference Include="TextCopy" Version="6.2.1" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
         <PackageReference Include="NAudio.Flac.Unknown.Mod" Version="1.0.3" PrivateAssets="all" />
-    </ItemGroup>
-    <ItemGroup>
         <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs" />
-
     </ItemGroup>
     <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
         <None Update="Content.zip">
@@ -95,13 +105,12 @@
         <ProjectReference Include="..\EntitySystem\EntitySystem.csproj" />
     </ItemGroup>
     <PropertyGroup>
-        <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
         <AssemblyVersion>2.3.10.4</AssemblyVersion>
         <FileVersion>2.3.10.4</FileVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <NeutralLanguage>zh-CN</NeutralLanguage>
     </PropertyGroup>
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(TargetFramework)' != 'net8.0'">
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(TargetFramework)' == 'net8.0-windows'">
         <Exec Command="&quot;$(ProjectDir)7za.exe&quot; a -tzip -mx=9 -r &quot;$(ProjectDir)Content.zip&quot; &quot;$(ProjectDir)Content\*&quot;" />
     </Target>
 </Project>

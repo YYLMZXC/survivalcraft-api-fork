@@ -16,7 +16,7 @@ using System.IO.Compression;
 public static class ModsManager
 {
 	public static string ModSuffix = ".scmod";
-	public static string ApiVersionString = "1.72A";
+	public static string ApiVersionString = "1.72";
 	public static string GameVersion = "2.3.10.4";
 	public static string fName = "ModsManager";
 	//1为api1.33 2为api1.40

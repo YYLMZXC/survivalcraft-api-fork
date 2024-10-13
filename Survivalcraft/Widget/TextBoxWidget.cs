@@ -786,7 +786,7 @@ public class TextBoxWidget : Widget
                 }
             }
         };
-#elif android
+#elif ANDROID
         Window.Activity.OnDispatchKeyEvent += keyEvent =>
         {
             if (FocusedTextBox == null)
@@ -1002,11 +1002,8 @@ public class TextBoxWidget : Widget
         if (!InputMethodEnabled && HasFocus)
         {
             // 处理 BackSpace 键。
-#if !ANDROID
-            if (Caret != 0 && Keyboard.IsKeyDownRepeat(Key.BackSpace))
-#elif android
-            if(Caret != 0 && Keyboard.IsKeyDownRepeat(Key.Delete))
-#endif
+
+            if(Caret != 0 && (Keyboard.IsKeyDownRepeat(Key.Delete)||Keyboard.IsKeyDownRepeat(Key.BackSpace)))
             {
                 if (Keyboard.IsKeyDown(Key.Control))
                 {
@@ -1126,7 +1123,7 @@ public class TextBoxWidget : Widget
     {
 #if !ANDROID
         InputMethodEnabled = true;
-#elif android
+#elif ANDROID
         var manager = (InputMethodManager)Window.Activity.GetSystemService(Context.InputMethodService);
         manager.ShowSoftInput(Window.View, ShowFlags.Forced);
 #endif
@@ -1136,7 +1133,7 @@ public class TextBoxWidget : Widget
     {
 #if !ANDROID
         InputMethodEnabled = false;
-#elif android
+#elif ANDROID
         var manager = (InputMethodManager)Window.Activity.GetSystemService(Context.InputMethodService);
         manager.HideSoftInputFromWindow(Window.Activity.Window!.DecorView.WindowToken, HideSoftInputFlags.None);
 #endif

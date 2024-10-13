@@ -158,7 +158,7 @@ namespace Game
 
 		public static void Run()
 		{
-#if android
+#if ANDROID
 			// TODO: 待完成。
 			// EngineInputConnection.Implement = new SurvivalcraftInputConnection();
 #endif
