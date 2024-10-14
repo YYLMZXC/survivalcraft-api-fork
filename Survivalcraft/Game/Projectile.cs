@@ -62,6 +62,20 @@ namespace Game
 
         public bool BodyCollidable = true;
 
+        public float? m_attackPower = null;
+
+        public float AttackPower
+        {
+            get
+            {
+                return m_attackPower ?? BlocksManager.Blocks[Terrain.ExtractContents(Value)].GetProjectilePower(Value);
+            }
+            set
+            {
+                m_attackPower = value;
+            }
+        }
+
         public List<ComponentBody> BodiesToIgnore = new List<ComponentBody>();//弹射物飞行的时候会忽略List中的ComponentBody
         protected SubsystemPickables m_subsystemPickables => SubsystemProjectiles?.m_subsystemPickables;
         protected SubsystemParticles m_subsystemParticles => SubsystemProjectiles?.m_subsystemParticles;
@@ -127,7 +141,7 @@ namespace Game
         public virtual void HitBody(BodyRaycastResult bodyRaycastResult, ref Vector3 positionAtdt)
         {
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(Value)];
-            float attackPower = (Velocity.Length() > 10f) ? block.GetProjectilePower(Value) : 0;
+            float attackPower = (Velocity.Length() > 10f) ? AttackPower : 0;
             Vector3 velocityAfterAttack = Velocity * 0.05f + m_random.Vector3(0.33f * Velocity.Length());
             Vector3 angularVelocityAfterAttack = AngularVelocity * 0.05f;
             bool ignoreBody = false;
