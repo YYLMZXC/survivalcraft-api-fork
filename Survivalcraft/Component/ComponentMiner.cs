@@ -356,15 +356,12 @@ namespace Game
 			bool flag;
 			int durabilityReduction = 1;
 
-			ModsManager.HookAction("OnMinerHit", modLoader =>
+			Attackment attackment = new MeleeAttackment(componentBody, Entity, hitPoint, hitDirection, num);
+
+            ModsManager.HookAction("OnMinerHit", modLoader =>
 			{
 				modLoader.OnMinerHit(this, componentBody, hitPoint, hitDirection, ref num, ref num2, ref num3, out bool Hitted);
 				return Hitted;
-			});
-			ModsManager.HookAction("OnMinerHit2", loader =>
-			{
-				loader.OnMinerHit2(this, componentBody, hitPoint, hitDirection, ref durabilityReduction);
-				return false;
 			});
 
 			if (ComponentPlayer != null)
@@ -378,8 +375,13 @@ namespace Game
             }
             num *= StrengthFactor;
             if (flag)
-			{
-				AttackBody(new MeleeAttackment(componentBody, Entity, hitPoint, hitDirection, num));
+            {
+                ModsManager.HookAction("OnMinerHit2", loader =>
+                {
+                    loader.OnMinerHit2(this, componentBody, hitPoint, hitDirection, ref durabilityReduction, ref attackment);
+                    return false;
+                });
+                AttackBody(attackment);
 				DamageActiveTool(durabilityReduction);
 			}
 			else if (ComponentCreature is ComponentPlayer)

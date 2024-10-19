@@ -159,7 +159,6 @@ namespace Game
             {
                 BodiesToIgnore.Add(bodyRaycastResult.ComponentBody);
             }
-            //¹ÒModLoader½Ó¿Ú
             if (attackPower > 0f)
             {
                 ComponentMiner.AttackBody(attackment);

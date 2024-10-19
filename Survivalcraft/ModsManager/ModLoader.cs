@@ -51,7 +51,7 @@ namespace Game
             Hitted = false;
         }
 
-        public virtual void OnMinerHit2(ComponentMiner componentMiner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection, ref int durabilityReduction)
+        public virtual void OnMinerHit2(ComponentMiner componentMiner, ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection, ref int durabilityReduction, ref Attackment attackment)
         {
 
         }
