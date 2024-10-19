@@ -126,7 +126,11 @@ namespace Game
         }
         public virtual void OnProjectileFlyOutOfLoadedChunks()
         {
-            //¹ÒModLoader
+            ModsManager.HookAction("OnProjectileFlyOutOfLoadedChunks", loader =>
+            {
+                loader.OnProjectileFlyOutOfLoadedChunks(this);
+                return false;
+            });
         }
         public virtual bool ProcessOnHitAsProjectileBlockBehavior(CellFace? cellFace, ComponentBody componentBody, float dt)
         {

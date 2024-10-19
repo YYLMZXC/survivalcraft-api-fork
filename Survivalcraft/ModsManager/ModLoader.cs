@@ -766,6 +766,11 @@ namespace Game
         {
         }
 
+        public virtual void OnProjectileFlyOutOfLoadedChunks(Projectile projectile)
+        {
+
+        }
+
         public virtual void OnPickableDraw(Pickable pickable, SubsystemPickables subsystemPickables, Camera camera, int drawOrder, ref bool shouldDrawBlock, ref float drawBlockSize, ref Color drawBlockColor)
         {
         }
