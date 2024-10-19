@@ -354,9 +354,6 @@ namespace Game
 				num2 = 0.66f;
 			}
 			bool flag;
-			int durabilityReduction = 1;
-
-			Attackment attackment = new MeleeAttackment(componentBody, Entity, hitPoint, hitDirection, num);
 
             ModsManager.HookAction("OnMinerHit", modLoader =>
 			{
@@ -376,6 +373,8 @@ namespace Game
             num *= StrengthFactor;
             if (flag)
             {
+                int durabilityReduction = 1;
+                Attackment attackment = new MeleeAttackment(componentBody, Entity, hitPoint, hitDirection, num);
                 ModsManager.HookAction("OnMinerHit2", loader =>
                 {
                     loader.OnMinerHit2(this, componentBody, hitPoint, hitDirection, ref durabilityReduction, ref attackment);
