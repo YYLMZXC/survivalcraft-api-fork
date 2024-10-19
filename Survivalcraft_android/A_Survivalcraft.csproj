@@ -2133,6 +2133,15 @@
     <Compile Include="..\Survivalcraft\Game\ZipArchiveEntry.cs">
       <Link>Game\ZipArchiveEntry.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\Attackment.cs">
+      <Link>Game\Attackment.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Game\MeleeAttackment.cs">
+      <Link>Game\MeleeAttackment.cs</Link>
+    </Compile>
+    <Compile Include="..\Survivalcraft\Game\ProjectileAttackment.cs">
+      <Link>Game\ProjectileAttackment.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\IContentReader\BitmapFontReader.cs">
       <Link>IContentReader\BitmapFontReader.cs</Link>
     </Compile>
