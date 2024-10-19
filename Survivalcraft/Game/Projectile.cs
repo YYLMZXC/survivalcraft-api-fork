@@ -145,9 +145,10 @@ namespace Game
             Vector3 velocityAfterAttack = Velocity * 0.05f + m_random.Vector3(0.33f * Velocity.Length());
             Vector3 angularVelocityAfterAttack = AngularVelocity * 0.05f;
             bool ignoreBody = false;
+            Attackment attackment = new ProjectileAttackment(bodyRaycastResult.ComponentBody.Entity, OwnerEntity, bodyRaycastResult.HitPoint(), Vector3.Normalize(Velocity), attackPower);
             ModsManager.HookAction("OnProjectileHitBody", loader =>
             {
-                loader.OnProjectileHitBody(this, bodyRaycastResult, ref attackPower, ref velocityAfterAttack, ref angularVelocityAfterAttack, ref ignoreBody);
+                loader.OnProjectileHitBody(this, bodyRaycastResult, ref attackment, ref velocityAfterAttack, ref angularVelocityAfterAttack, ref ignoreBody);
                 return false;
             });
             if (ignoreBody)
@@ -157,9 +158,7 @@ namespace Game
             //¹ÒModLoader½Ó¿Ú
             if (attackPower > 0f)
             {
-                ComponentMiner.AttackBody(
-                    new ProjectileAttackment(bodyRaycastResult.ComponentBody.Entity, OwnerEntity, bodyRaycastResult.HitPoint(), Vector3.Normalize(Velocity), attackPower)
-                    );
+                ComponentMiner.AttackBody(attackment);
                 if (Owner != null && Owner.PlayerStats != null)
                 {
                     Owner.PlayerStats.RangedHits++;

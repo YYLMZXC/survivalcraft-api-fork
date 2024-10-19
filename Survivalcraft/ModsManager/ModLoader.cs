@@ -757,7 +757,7 @@ namespace Game
 
         }
 
-        public virtual void OnProjectileHitBody(Projectile projectile, BodyRaycastResult bodyRaycastResult, ref float attackPower, ref Vector3 velocityAfterAttack, ref Vector3 angularVelocityAfterAttack, ref bool ignoreBody)
+        public virtual void OnProjectileHitBody(Projectile projectile, BodyRaycastResult bodyRaycastResult, ref Attackment attackment, ref Vector3 velocityAfterAttack, ref Vector3 angularVelocityAfterAttack, ref bool ignoreBody)
         {
 
         }
