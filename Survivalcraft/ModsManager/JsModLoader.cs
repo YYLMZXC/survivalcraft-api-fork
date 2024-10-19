@@ -36,7 +36,7 @@ namespace Game
         public override void OnPlayerDead(PlayerData playerData)
         {
         }
-        public override bool AttackBody(ComponentBody target, Entity attacker, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, bool isMeleeAttack)
+        public override bool AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, bool isMeleeAttack)
         {
             return false;
         }

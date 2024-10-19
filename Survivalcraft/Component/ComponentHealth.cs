@@ -40,7 +40,6 @@ namespace Game
         public Random m_random = new();
 
         public bool m_regenerateLifeEnabled = true;//生命再生
-
         public virtual float VoidDamageFactor { get; set; }//y轴过高或者过低造成的伤害系数
         public virtual float AirLackResilience { get; set; }//溺水伤害抗性
         public virtual float MagmaResilience { get; set; }//熔岩伤害抗性
@@ -184,9 +183,12 @@ namespace Game
 
         public virtual void Heal(float amount)
         {
-            if (amount > 0f && Health < 1f)
+            lock (this)
             {
-                Health = MathUtils.Min(Health + (amount * HealFactor), 1f);
+                if (amount > 0f && Health < 1f)
+                {
+                    Health = MathUtils.Min(Health + (amount * HealFactor), 1f);
+                }
             }
         }
 
@@ -197,251 +199,257 @@ namespace Game
         
         public virtual void InjureEntity(float amount, Entity attacker, bool ignoreInvulnerability, string cause)
         {
-            ModsManager.HookAction("CalculateCreatureInjuryAmount", loader =>
+            lock (this)
             {
-                loader.CalculateCreatureInjuryAmount(this, ref amount, ref attacker, ref ignoreInvulnerability, ref cause);
-                return false;
-            });
-            if (!(amount > 0f) || (!ignoreInvulnerability && IsInvulnerable))
-            {
-                return;
-            }
-            if (Health > 0f)
-            {
-                if (m_componentCreature.PlayerStats != null)
+                ModsManager.HookAction("CalculateCreatureInjuryAmount", loader =>
                 {
-                    if (attacker != null)
-                    {
-                        m_componentCreature.PlayerStats.HitsReceived++;
-                    }
-                    m_componentCreature.PlayerStats.TotalHealthLost += MathUtils.Min(amount, Health);
+                    loader.CalculateCreatureInjuryAmount(this, ref amount, ref attacker, ref ignoreInvulnerability, ref cause);
+                    return false;
+                });
+                if (!(amount > 0f) || (!ignoreInvulnerability && IsInvulnerable))
+                {
+                    return;
                 }
-                Health = MathUtils.Max(Health - amount, 0f);
-                if (Health <= 0f)
+                if (Health > 0f)
                 {
-                    ModsManager.HookAction("OnCreatureDying", loader =>
+                    if (m_componentCreature.PlayerStats != null)
                     {
-                        loader.OnCreatureDying(this, attacker, ignoreInvulnerability, cause);
-                        return false;
-                    });
-                }
-                if (Health <= 0f)
-                {
-                    int experienceOrbDropCount = (int)MathF.Ceiling(m_componentCreature.ComponentHealth.AttackResilience / 12f);
-                    bool calculateInKill = true;
-                    ModsManager.HookAction("OnCreatureDied", loader =>
-                    {
-                        loader.OnCreatureDied(this, attacker, ignoreInvulnerability, ref experienceOrbDropCount, ref calculateInKill, cause);
-                        return false;
-                    });
-                    CauseOfDeath = cause;
-                    if (m_componentCreature.PlayerStats != null && calculateInKill)
-                    {
-                        m_componentCreature.PlayerStats.AddDeathRecord(new PlayerStats.DeathRecord
+                        if (attacker != null)
                         {
-                            Day = m_subsystemTimeOfDay.Day,
-                            Location = m_componentCreature.ComponentBody.Position,
-                            Cause = cause
+                            m_componentCreature.PlayerStats.HitsReceived++;
+                        }
+                        m_componentCreature.PlayerStats.TotalHealthLost += MathUtils.Min(amount, Health);
+                    }
+                    Health = MathUtils.Max(Health - amount, 0f);
+                    if (Health <= 0f)
+                    {
+                        ModsManager.HookAction("OnCreatureDying", loader =>
+                        {
+                            loader.OnCreatureDying(this, attacker, ignoreInvulnerability, cause);
+                            return false;
                         });
                     }
-                    if (attacker != null)
+                    if (Health <= 0f)
                     {
-                        ComponentPlayer componentPlayer = attacker.FindComponent<ComponentPlayer>();
-                        if (componentPlayer != null)
+                        int experienceOrbDropCount = (int)MathF.Ceiling(m_componentCreature.ComponentHealth.AttackResilience / 12f);
+                        bool calculateInKill = true;
+                        ModsManager.HookAction("OnCreatureDied", loader =>
                         {
-                            if (calculateInKill)
+                            loader.OnCreatureDied(this, attacker, ignoreInvulnerability, ref experienceOrbDropCount, ref calculateInKill, cause);
+                            return false;
+                        });
+                        CauseOfDeath = cause;
+                        if (m_componentCreature.PlayerStats != null && calculateInKill)
+                        {
+                            m_componentCreature.PlayerStats.AddDeathRecord(new PlayerStats.DeathRecord
                             {
-                                if (m_componentPlayer != null)
+                                Day = m_subsystemTimeOfDay.Day,
+                                Location = m_componentCreature.ComponentBody.Position,
+                                Cause = cause
+                            });
+                        }
+                        if (attacker != null)
+                        {
+                            ComponentPlayer componentPlayer = attacker.FindComponent<ComponentPlayer>();
+                            if (componentPlayer != null)
+                            {
+                                if (calculateInKill)
                                 {
-                                    componentPlayer.PlayerStats.PlayerKills++;
+                                    if (m_componentPlayer != null)
+                                    {
+                                        componentPlayer.PlayerStats.PlayerKills++;
+                                    }
+                                    else if (m_componentCreature.Category == CreatureCategory.LandPredator || m_componentCreature.Category == CreatureCategory.LandOther)
+                                    {
+                                        componentPlayer.PlayerStats.LandCreatureKills++;
+                                    }
+                                    else if (m_componentCreature.Category == CreatureCategory.WaterPredator || m_componentCreature.Category == CreatureCategory.WaterOther)
+                                    {
+                                        componentPlayer.PlayerStats.WaterCreatureKills++;
+                                    }
+                                    else
+                                    {
+                                        componentPlayer.PlayerStats.AirCreatureKills++;
+                                    }
                                 }
-                                else if (m_componentCreature.Category == CreatureCategory.LandPredator || m_componentCreature.Category == CreatureCategory.LandOther)
+
+                                if (StackExperienceOnKill)
                                 {
-                                    componentPlayer.PlayerStats.LandCreatureKills++;
-                                }
-                                else if (m_componentCreature.Category == CreatureCategory.WaterPredator || m_componentCreature.Category == CreatureCategory.WaterOther)
-                                {
-                                    componentPlayer.PlayerStats.WaterCreatureKills++;
+                                    for (int i = 0; i < Math.Min(100, experienceOrbDropCount); i++) //调整经验球的掉落逻辑，多于100个时则成组掉落防止卡顿
+                                    {
+                                        Vector2 vector = m_random.Vector2(2.5f, 3.5f);
+                                        int dropInWave = experienceOrbDropCount / 100;
+                                        if (i < experienceOrbDropCount % 100) dropInWave++;
+                                        m_subsystemPickables.AddPickable(ExperienceOrbBlockIndex, dropInWave, m_componentCreature.ComponentBody.Position, new Vector3(vector.X, 6f, vector.Y), null);
+                                    }
                                 }
                                 else
                                 {
-                                    componentPlayer.PlayerStats.AirCreatureKills++;
-                                }
-                            }
-
-                            if (StackExperienceOnKill)
-                            {
-                                for (int i = 0; i < Math.Min(100, experienceOrbDropCount); i++) //调整经验球的掉落逻辑，多于100个时则成组掉落防止卡顿
-                                {
-                                    Vector2 vector = m_random.Vector2(2.5f, 3.5f);
-                                    int dropInWave = experienceOrbDropCount / 100;
-                                    if (i < experienceOrbDropCount % 100) dropInWave++;
-                                    m_subsystemPickables.AddPickable(ExperienceOrbBlockIndex, dropInWave, m_componentCreature.ComponentBody.Position, new Vector3(vector.X, 6f, vector.Y), null);
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < experienceOrbDropCount; i++)
-                                {
-                                    Vector2 vector = m_random.Vector2(2.5f, 3.5f);
-                                    m_subsystemPickables.AddPickable(ExperienceOrbBlockIndex, 1, m_componentCreature.ComponentBody.Position, new Vector3(vector.X, 6f, vector.Y), null);
+                                    for (int i = 0; i < experienceOrbDropCount; i++)
+                                    {
+                                        Vector2 vector = m_random.Vector2(2.5f, 3.5f);
+                                        m_subsystemPickables.AddPickable(ExperienceOrbBlockIndex, 1, m_componentCreature.ComponentBody.Position, new Vector3(vector.X, 6f, vector.Y), null);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            ComponentCreature attackerCreature = attacker?.FindComponent<ComponentCreature>();
-            if(attackerCreature != null) Injured?.Invoke(attackerCreature);
-            InjuredByEntity?.Invoke(attacker);
+                ComponentCreature attackerCreature = attacker?.FindComponent<ComponentCreature>();
+                if (attackerCreature != null) Injured?.Invoke(attackerCreature);
+                InjuredByEntity?.Invoke(attacker);
+            }
         }
 
         public void Update(float dt)
         {
-            //更新属性加成
-            AttackResilience = m_attackResilience * AttackResilienceFactor;
-            FallResilience = m_fallResilience * FallResilienceFactor;
-            FireResilienceFactor = m_fireResilience * FireResilienceFactor;
-            Vector3 position = m_componentCreature.ComponentBody.Position;
-            if (m_regenerateLifeEnabled && Health > 0f && Health < 1f)
+            lock (this)
             {
-                float num = 0f;
-                if (m_componentPlayer != null)
+                //更新属性加成
+                AttackResilience = m_attackResilience * AttackResilienceFactor;
+                FallResilience = m_fallResilience * FallResilienceFactor;
+                FireResilienceFactor = m_fireResilience * FireResilienceFactor;
+                Vector3 position = m_componentCreature.ComponentBody.Position;
+                if (m_regenerateLifeEnabled && Health > 0f && Health < 1f)
                 {
-                    if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless)
+                    float num = 0f;
+                    if (m_componentPlayer != null)
                     {
-                        num = 0.0166666675f;
+                        if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless)
+                        {
+                            num = 0.0166666675f;
+                        }
+                        else if (m_componentPlayer.ComponentSleep.SleepFactor == 1f && m_componentPlayer.ComponentVitalStats.Food > 0f)
+                        {
+                            num = 0.00166666671f;
+                        }
+                        else if (m_componentPlayer.ComponentVitalStats.Food > 0.5f)
+                        {
+                            num = 0.00111111114f;
+                        }
                     }
-                    else if (m_componentPlayer.ComponentSleep.SleepFactor == 1f && m_componentPlayer.ComponentVitalStats.Food > 0f)
-                    {
-                        num = 0.00166666671f;
-                    }
-                    else if (m_componentPlayer.ComponentVitalStats.Food > 0.5f)
+                    else
                     {
                         num = 0.00111111114f;
                     }
+                    Heal(m_subsystemGameInfo.TotalElapsedGameTimeDelta * num);
+                }
+                //溺水空气值
+                if (BreathingMode == BreathingMode.Air)
+                {
+                    int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(m_componentCreature.ComponentCreatureModel.EyePosition.Y), Terrain.ToCell(position.Z));
+                    Air = BlocksManager.Blocks[cellContents] is FluidBlock || position.Y > 259f ? MathUtils.Saturate(Air - (dt / AirCapacity)) : 1f;
+                }
+                else if (BreathingMode == BreathingMode.Water)
+                {
+                    Air = m_componentCreature.ComponentBody.ImmersionFactor > 0.25f ? 1f : MathUtils.Saturate(Air - (dt / AirCapacity));
+                }
+                //熔岩伤害
+                if (m_componentCreature.ComponentBody.ImmersionFactor > 0f && m_componentCreature.ComponentBody.ImmersionFluidBlock is MagmaBlock)
+                {
+                    Injure(1f / MagmaResilience * m_componentCreature.ComponentBody.ImmersionFactor * dt, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 1));
+                    float num2 = 1.1f + (0.1f * (float)Math.Sin(12.0 * m_subsystemTime.GameTime));
+                    m_redScreenFactor = MathUtils.Max(m_redScreenFactor, num2 * 0.75f * m_componentCreature.ComponentBody.ImmersionFactor / MagmaResilience);
+                }
+                //跌落伤害
+                float fallDamage = CalculateFallDamage();
+                ModsManager.HookAction("CalculateFallDamage", loader =>
+                {
+                    loader.CalculateFallDamage(this, ref fallDamage);
+                    return false;
+                });
+                if (fallDamage > 0f) Injure(fallDamage, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 2));
+                m_wasStanding = m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.StandingOnBody != null;
+                //虚空伤害
+                if (VoidDamageFactor > 0f && (position.Y < 0f || position.Y > 296f) && m_subsystemTime.PeriodicGameTimeEvent(2.0, 0.0))
+                {
+                    Injure(VoidDamageFactor * 0.1f, null, ignoreInvulnerability: true, LanguageControl.Get(GetType().Name, 3));
+                    m_componentPlayer?.ComponentGui.DisplaySmallMessage(LanguageControl.Get(GetType().Name, 4), Color.White, blinking: true, playNotificationSound: false);
+                }
+                //溺水伤害
+                bool num5 = m_subsystemTime.PeriodicGameTimeEvent(1.0, 0.0);
+                if (num5 && Air == 0f)
+                {
+                    float num6 = AirLackResilience;
+                    num6 /= m_componentFactors?.ResilienceFactor ?? 1;
+                    Injure(num6, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 7));
+                }
+                //火焰伤害
+                if (num5 && (m_componentOnFire.IsOnFire || m_componentOnFire.TouchesFire))
+                {
+                    float num7 = 1f / FireResilience;
+                    num7 /= m_componentFactors?.ResilienceFactor ?? 1;
+                    Injure(num7, m_componentOnFire.Attacker, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 5));
+                }
+                //鱼类搁浅伤害
+                if (num5 && CanStrand && m_componentCreature.ComponentBody.ImmersionFactor < 0.25f && (m_componentCreature.ComponentBody.StandingOnValue != 0 || m_componentCreature.ComponentBody.StandingOnBody != null))
+                {
+                    Injure(1f / AirLackResilience, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 6));
+                }
+                //伤害结算
+                HealthChange = Health - m_lastHealth;
+                m_lastHealth = Health;
+                float redScreenFactorCalculated = m_redScreenFactor;
+                bool playPainSound = true;
+                int healthBarFlashCount = Math.Clamp((int)((0f - HealthChange) * 30f), 0, 10);
+                if (redScreenFactorCalculated > 0.01f)
+                {
+                    redScreenFactorCalculated *= MathF.Pow(0.2f, dt);
                 }
                 else
                 {
-                    num = 0.00111111114f;
+                    redScreenFactorCalculated = 0f;
                 }
-                Heal(m_subsystemGameInfo.TotalElapsedGameTimeDelta * num);
-            }
-            //溺水空气值
-            if (BreathingMode == BreathingMode.Air)
-            {
-                int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(m_componentCreature.ComponentCreatureModel.EyePosition.Y), Terrain.ToCell(position.Z));
-                Air = BlocksManager.Blocks[cellContents] is FluidBlock || position.Y > 259f ? MathUtils.Saturate(Air - (dt / AirCapacity)) : 1f;
-            }
-            else if (BreathingMode == BreathingMode.Water)
-            {
-                Air = m_componentCreature.ComponentBody.ImmersionFactor > 0.25f ? 1f : MathUtils.Saturate(Air - (dt / AirCapacity));
-            }
-            //熔岩伤害
-            if (m_componentCreature.ComponentBody.ImmersionFactor > 0f && m_componentCreature.ComponentBody.ImmersionFluidBlock is MagmaBlock)
-            {
-                Injure(1f / MagmaResilience * m_componentCreature.ComponentBody.ImmersionFactor * dt, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 1));
-                float num2 = 1.1f + (0.1f * (float)Math.Sin(12.0 * m_subsystemTime.GameTime));
-                m_redScreenFactor = MathUtils.Max(m_redScreenFactor, num2 * 0.75f * m_componentCreature.ComponentBody.ImmersionFactor / MagmaResilience);
-            }
-            //跌落伤害
-            float fallDamage = CalculateFallDamage();
-            ModsManager.HookAction("CalculateFallDamage", loader =>
-            {
-                loader.CalculateFallDamage(this, ref fallDamage);
-                return false;
-            });
-            if(fallDamage > 0f) Injure(fallDamage, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 2));
-            m_wasStanding = m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.StandingOnBody != null;
-            //虚空伤害
-            if (VoidDamageFactor > 0f && (position.Y < 0f || position.Y > 296f) && m_subsystemTime.PeriodicGameTimeEvent(2.0, 0.0))
-            {
-                Injure(VoidDamageFactor * 0.1f, null, ignoreInvulnerability: true, LanguageControl.Get(GetType().Name, 3));
-                m_componentPlayer?.ComponentGui.DisplaySmallMessage(LanguageControl.Get(GetType().Name, 4), Color.White, blinking: true, playNotificationSound: false);
-            }
-            //溺水伤害
-            bool num5 = m_subsystemTime.PeriodicGameTimeEvent(1.0, 0.0);
-            if (num5 && Air == 0f)
-            {
-                float num6 = AirLackResilience;
-                num6 /= m_componentFactors?.ResilienceFactor ?? 1;
-                Injure(num6, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 7));
-            }
-            //火焰伤害
-            if (num5 && (m_componentOnFire.IsOnFire || m_componentOnFire.TouchesFire))
-            {
-                float num7 = 1f / FireResilience;
-                num7 /= m_componentFactors?.ResilienceFactor ?? 1;
-                Injure(num7, m_componentOnFire.Attacker, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 5));
-            }
-            //鱼类搁浅伤害
-            if (num5 && CanStrand && m_componentCreature.ComponentBody.ImmersionFactor < 0.25f && (m_componentCreature.ComponentBody.StandingOnValue != 0 || m_componentCreature.ComponentBody.StandingOnBody != null))
-            {
-                Injure(1f / AirLackResilience, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 6));
-            }
-            //伤害结算
-            HealthChange = Health - m_lastHealth;
-            m_lastHealth = Health;
-            float redScreenFactorCalculated = m_redScreenFactor;
-            bool playPainSound = true;
-            int healthBarFlashCount = Math.Clamp((int)((0f - HealthChange) * 30f), 0, 10);
-            if (redScreenFactorCalculated > 0.01f)
-            {
-                redScreenFactorCalculated *= MathF.Pow(0.2f, dt);
-            }
-            else
-            {
-                redScreenFactorCalculated = 0f;
-            }
-            if (HealthChange < 0f)
-            {
-                redScreenFactorCalculated += -4f * HealthChange;
-            }
-            ModsManager.HookAction("ChangeVisualEffectOnInjury", loader =>
-            {
-                loader.ChangeVisualEffectOnInjury(this, m_lastHealth, ref redScreenFactorCalculated, ref playPainSound, ref healthBarFlashCount);
-                return false;
-            });
-            if (HealthChange < 0f)
-            {
-                if(playPainSound) m_componentCreature.ComponentCreatureSounds.PlayPainSound();
-                m_componentPlayer?.ComponentGui.HealthBarWidget.Flash(healthBarFlashCount);
-            }
-            m_redScreenFactor = redScreenFactorCalculated;
-            if (m_componentPlayer != null)
-            {
-                m_componentPlayer.ComponentScreenOverlays.RedoutFactor = MathUtils.Max(m_componentPlayer.ComponentScreenOverlays.RedoutFactor, m_redScreenFactor);
-            }
-            if (m_componentPlayer != null)
-            {
-                m_componentPlayer.ComponentGui.HealthBarWidget.Value = Health;
-            }
-            if (Health == 0f && HealthChange < 0f)
-            {
-                bool pass = false;
-                ModsManager.HookAction("DeadBeforeDrops", loader =>
+                if (HealthChange < 0f)
                 {
-                    loader.DeadBeforeDrops(this, out bool Skip);
-                    pass |= Skip;
+                    redScreenFactorCalculated += -4f * HealthChange;
+                }
+                ModsManager.HookAction("ChangeVisualEffectOnInjury", loader =>
+                {
+                    loader.ChangeVisualEffectOnInjury(this, m_lastHealth, ref redScreenFactorCalculated, ref playPainSound, ref healthBarFlashCount);
                     return false;
                 });
-                if (!pass)
+                if (HealthChange < 0f)
                 {
-                    Vector3 position2 = m_componentCreature.ComponentBody.Position + new Vector3(0f, m_componentCreature.ComponentBody.StanceBoxSize.Y / 2f, 0f);
-                    float x = m_componentCreature.ComponentBody.StanceBoxSize.X;
-                    m_subsystemParticles.AddParticleSystem(new KillParticleSystem(m_subsystemTerrain, position2, x));
-                    Vector3 position3 = (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max) / 2f;
-                    foreach (IInventory item in Entity.FindComponents<IInventory>())
-                    {
-                        item.DropAllItems(position3);
-                    }
-                    DeathTime = m_subsystemGameInfo.TotalElapsedGameTime;
+                    if (playPainSound) m_componentCreature.ComponentCreatureSounds.PlayPainSound();
+                    m_componentPlayer?.ComponentGui.HealthBarWidget.Flash(healthBarFlashCount);
                 }
-            }
-            if (Health <= 0f && CorpseDuration > 0f && m_subsystemGameInfo.TotalElapsedGameTime - DeathTime > CorpseDuration)
-            {
-                m_componentCreature.ComponentSpawn.Despawn();
+                m_redScreenFactor = redScreenFactorCalculated;
+                if (m_componentPlayer != null)
+                {
+                    m_componentPlayer.ComponentScreenOverlays.RedoutFactor = MathUtils.Max(m_componentPlayer.ComponentScreenOverlays.RedoutFactor, m_redScreenFactor);
+                }
+                if (m_componentPlayer != null)
+                {
+                    m_componentPlayer.ComponentGui.HealthBarWidget.Value = Health;
+                }
+                if (Health == 0f && HealthChange < 0f)
+                {
+                    bool pass = false;
+                    ModsManager.HookAction("DeadBeforeDrops", loader =>
+                    {
+                        loader.DeadBeforeDrops(this, out bool Skip);
+                        pass |= Skip;
+                        return false;
+                    });
+                    if (!pass)
+                    {
+                        Vector3 position2 = m_componentCreature.ComponentBody.Position + new Vector3(0f, m_componentCreature.ComponentBody.StanceBoxSize.Y / 2f, 0f);
+                        float x = m_componentCreature.ComponentBody.StanceBoxSize.X;
+                        m_subsystemParticles.AddParticleSystem(new KillParticleSystem(m_subsystemTerrain, position2, x));
+                        Vector3 position3 = (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max) / 2f;
+                        foreach (IInventory item in Entity.FindComponents<IInventory>())
+                        {
+                            item.DropAllItems(position3);
+                        }
+                        DeathTime = m_subsystemGameInfo.TotalElapsedGameTime;
+                    }
+                }
+                if (Health <= 0f && CorpseDuration > 0f && m_subsystemGameInfo.TotalElapsedGameTime - DeathTime > CorpseDuration)
+                {
+                    m_componentCreature.ComponentSpawn.Despawn();
+                }
             }
         }
 

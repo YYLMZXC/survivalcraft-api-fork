@@ -100,7 +100,7 @@ namespace Game
         /// <param name="impulseFactor">击退效果</param>
         /// <param name="stunTimeFactor">眩晕时间</param>
         /// <param name="recalculate">是否重写眩晕？</param>
-        public virtual void AttackPowerParameter(ComponentBody target, Entity attacker, Vector3 hitPoint, Vector3 hitDirection, ref float impulseFactor, ref float stunTimeFactor, ref bool recalculate)
+        public virtual void AttackPowerParameter(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, ref float impulseFactor, ref float stunTimeFactor, ref bool recalculate)
         {
         }
         /// <summary>
@@ -157,7 +157,7 @@ namespace Game
         /// <param name="attackPower"></param>
         /// <param name="isMeleeAttack"></param>
         /// <returns>false移交到下一个Mod处理,true不移交</returns>
-        public virtual bool AttackBody(ComponentBody target, Entity attacker, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, bool isMeleeAttack)
+        public virtual bool AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, bool isMeleeAttack)
         {
             return false;
         }

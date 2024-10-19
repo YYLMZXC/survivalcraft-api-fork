@@ -1,0 +1,205 @@
+﻿using Engine;
+using GameEntitySystem;
+using System.Globalization;
+
+namespace Game
+{
+    public class Attackment
+    {
+        public Entity Target;
+        public Entity Attacker;
+        protected Random m_random = new Random();
+        public Attackment(Entity target, Entity attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower)
+        {
+            Target = target;
+            Attacker = attacker;
+            HitPoint = hitPoint;
+            HitDirection = hitDirection;
+            AttackPower = attackPower;
+            ComponentCreature attackerCreature = attacker.FindComponent<ComponentCreature>();
+            if (attackerCreature != null)
+            {
+                string str = attackerCreature.KillVerbs[m_random.Int(0, attackerCreature.KillVerbs.Count - 1)];
+                string attackerName = attackerCreature.DisplayName;
+                CauseOfDeath = string.Format(LanguageControl.Get("ComponentMiner", 4), attackerName, LanguageControl.Get("ComponentMiner", str));
+            }
+            else
+            {
+                CauseOfDeath = LanguageControl.Get("ComponentMiner", m_random.Int(0, 5) + 5);
+            }
+            ComponentDamage componentDamage = Target.FindComponent<ComponentDamage>();
+            if (componentDamage != null) AttackSoundName = componentDamage.DamageSoundName;
+            AttackSoundPitch = m_random.Float(-0.3f, 0.3f);
+        }
+        public Attackment(ComponentBody target, Entity attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower)
+            : this(target.Entity, attacker, hitPoint, hitDirection, attackPower) 
+        {
+            
+        }
+        public virtual ComponentBody TargetBody
+        {
+            get
+            {
+                return Target.FindComponent<ComponentBody>();
+            }
+            set
+            {
+                Target = value.Entity;
+            }
+        }
+        public Vector3 HitPoint;
+        public Vector3 HitDirection;
+        public float AttackPower;
+        public float? StunTimeSet;
+        public float StunTimeAdd = 0.2f;
+        public float ImpulseFactor = 2f;
+        public string CauseOfDeath = String.Empty;
+        public bool EnableArmorProtection = true;
+        public bool EnableResilienceFactor = true;
+        public string AttackSoundName = "Audio/Impacts/Body";
+        public float AttackSoundVolume = 1f;
+        public float AttackSoundPitch = 0f;
+        public virtual float CalculateInjuryAmount()
+        {
+            if (AttackPower <= 0f) return AttackPower;
+            float attackPower = AttackPower;
+            if (EnableArmorProtection)
+            {
+                ComponentClothing componentClothing = Target.FindComponent<ComponentClothing>();
+                if (componentClothing != null)
+                {
+                    attackPower = componentClothing.ApplyArmorProtection(attackPower);
+                }
+            }
+            if (EnableResilienceFactor)
+            {
+                ComponentFactors componentFactors = Target.FindComponent<ComponentFactors>();
+                if (componentFactors != null)
+                {
+                    attackPower /= componentFactors.ResilienceFactor;
+                }
+            }
+            ComponentHealth componentHealth = Target.FindComponent<ComponentHealth>();
+            if (componentHealth != null) return attackPower / componentHealth.AttackResilience;
+            ComponentDamage componentDamage = Target.FindComponent<ComponentDamage>();
+            if (componentDamage != null) return attackPower / componentDamage.AttackResilience;
+            return -1f;
+        }
+
+        public virtual void AddHitValueParticleSystem(float damage)
+        {
+            ComponentBody attackerBody = Attacker?.FindComponent<ComponentBody>();
+            ComponentPlayer attackerComponentPlayer = Attacker?.FindComponent<ComponentPlayer>();
+            ComponentHealth attackedComponentHealth = Target?.FindComponent<ComponentHealth>();
+            string text2 = (0f - damage).ToString("0", CultureInfo.InvariantCulture);
+            Vector3 hitValueParticleVelocity = Vector3.Zero;
+            if (attackerBody != null) hitValueParticleVelocity = attackerBody.Velocity;
+            Color color = (attackerComponentPlayer != null && damage > 0f && attackedComponentHealth != null) ? Color.White : Color.Transparent;
+            HitValueParticleSystem particleSystem = new(HitPoint + (0.75f * HitDirection), (1f * HitDirection) + hitValueParticleVelocity, color, text2);
+            ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
+            {
+                modLoader.SetHitValueParticleSystem(particleSystem, true);
+                return false;
+            });
+            Target.Project.FindSubsystem<SubsystemParticles>()?.AddParticleSystem(particleSystem);
+        }
+        public virtual void ProcessAttackmentToCreature()
+        {
+            ComponentHealth componentHealth = Target.FindComponent<ComponentHealth>();
+            ComponentBody componentBody = Target.FindComponent<ComponentBody>();
+            ComponentCreature attackerCreature = Attacker?.FindComponent<ComponentCreature>();
+            if (componentHealth == null || componentBody == null) return;
+            float injuryAmount = CalculateInjuryAmount();
+            float healthBeforeAttack = componentHealth.Health;
+            componentHealth.InjureEntity(injuryAmount, Attacker, ignoreInvulnerability: false, CauseOfDeath);
+            if (injuryAmount > 0f)
+            {
+                Target.Project.FindSubsystem<SubsystemAudio>()?.PlayRandomSound(AttackSoundName, AttackSoundVolume, AttackSoundPitch, componentBody.Position, 4f, autoDelay: false);
+                //显示粒子效果的攻击，不需要一定是玩家攻击
+                float num2 = (healthBeforeAttack - componentHealth.Health) * componentHealth.AttackResilience;
+                AddHitValueParticleSystem(num2);
+            }
+            if (attackerCreature != null) componentHealth.Attacked?.Invoke(attackerCreature);
+            componentHealth.AttackedByEntity?.Invoke(Attacker);
+        }
+        public virtual void ProcessAttackmentToNonCreature()
+        {
+            ComponentDamage componentDamage = Target.FindComponent<ComponentDamage>();
+            ComponentBody componentBody = Target.FindComponent<ComponentBody>();
+            ComponentCreature attackerCreature = Attacker?.FindComponent<ComponentCreature>();
+            if(componentDamage == null || componentBody == null) return;
+            float injuryAmount = CalculateInjuryAmount();
+            float hitPointsBeforeAttack = componentDamage.Hitpoints;
+            componentDamage.Damage(injuryAmount);
+            float damage = (hitPointsBeforeAttack - componentDamage.Hitpoints) * componentDamage.AttackResilience;
+            AddHitValueParticleSystem(damage);
+            if (injuryAmount > 0f)
+            {
+                Target.Project.FindSubsystem<SubsystemAudio>()?.PlayRandomSound(AttackSoundName, AttackSoundVolume, AttackSoundPitch, componentBody.Position, 4f, autoDelay: false);
+            }
+        }
+
+        public virtual bool DisableFriendlyFire()
+        {
+            if (Attacker?.FindComponent<ComponentPlayer>() != null && Target?.FindComponent<ComponentPlayer>() != null
+                && !Target.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true).WorldSettings.IsFriendlyFireEnabled)
+            {
+                Attacker?.FindComponent<ComponentGui>()?.DisplaySmallMessage(LanguageControl.Get("ComponentMiner", 3), Color.White, blinking: true, playNotificationSound: true);
+                return true;
+            }
+            return false;
+        }
+
+        public virtual void ImpulseTarget()
+        {
+            if (ImpulseFactor <= 0f) return;
+            Target.FindComponent<ComponentBody>().ApplyImpulse(ImpulseFactor * Vector3.Normalize(HitDirection + m_random.Vector3(0.1f) + (0.2f * Vector3.UnitY)));
+        }
+
+        public virtual void StunTarget()
+        {
+            if (ImpulseFactor <= 0f) return;
+            ComponentLocomotion componentLocomotion = Target.FindComponent<ComponentLocomotion>();
+            if (componentLocomotion != null)
+            {
+                componentLocomotion.StunTime = StunTimeSet ?? componentLocomotion.StunTime + StunTimeAdd;
+            }
+        }
+        public virtual void ProcessAttackment()
+        {
+            if (DisableFriendlyFire()) return;
+            ModsManager.HookAction("AttackBody", modloader => {
+                return modloader.AttackBody(Target.FindComponent<ComponentBody>(), Attacker.FindComponent<ComponentCreature>(), HitPoint, HitDirection, ref AttackPower, this is MeleeAttackment); 
+            });
+            if (AttackPower > 0f)
+            {
+                ComponentHealth componentHealth = Target.FindComponent<ComponentHealth>();
+                if (componentHealth != null)
+                {
+                    lock (componentHealth)
+                    {
+                        ProcessAttackmentToCreature();
+                    }
+                }
+                ComponentDamage componentDamage = Target.FindComponent<ComponentDamage>();
+                if (componentDamage != null)
+                {
+                    lock (componentDamage)
+                    {
+                        ProcessAttackmentToNonCreature();
+                    }
+                }
+            }
+            ModsManager.HookAction("AttackPowerParameter", modloader =>
+            {
+                bool reclalculate = false;
+                float stunTimeSet = StunTimeSet ?? -1f;
+                modloader.AttackPowerParameter(Target.FindComponent<ComponentBody>(), Attacker.FindComponent<ComponentCreature>(), HitPoint, HitDirection, ref ImpulseFactor, ref stunTimeSet, ref reclalculate);
+                if(stunTimeSet >= 0f) StunTimeSet = stunTimeSet;
+                return false;
+            });
+            ImpulseTarget();
+            StunTarget();
+        }
+    }
+}

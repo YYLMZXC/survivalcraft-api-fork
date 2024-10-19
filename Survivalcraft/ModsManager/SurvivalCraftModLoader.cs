@@ -177,7 +177,7 @@ namespace Game
             return 7;
         }
 
-        public override bool AttackBody(ComponentBody target, Entity attacker, Vector3 hitPoint,
+        public override bool AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint,
                                         Vector3 hitDirection, ref float attackPower, bool isMeleeAttack)
         {
             float attackPower1 = attackPower;

@@ -373,7 +373,7 @@ namespace Game
             num *= StrengthFactor;
             if (flag)
 			{
-				AttackBody(componentBody, Entity, hitPoint, hitDirection, num, isMeleeAttack: true);
+				AttackBody(new MeleeAttackment(componentBody, Entity, hitPoint, hitDirection, num));
 				DamageActiveTool(1);
 			}
 			else if (ComponentCreature is ComponentPlayer)
@@ -527,124 +527,14 @@ namespace Game
 			}
 		}
 
-        public static void AttackBody(ComponentBody target, Entity attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack)
+		public static void AttackBody(Attackment attackment)
+		{
+			attackment.ProcessAttackment();
+		}
+        public static void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack)
         {
-            ComponentHealth componentHealth = target.Entity.FindComponent<ComponentHealth>();
-			ComponentPlayer attackerComponentPlayer = attacker?.FindComponent<ComponentPlayer>();
-			ComponentCreature attackerCreature = attacker?.FindComponent<ComponentCreature>();
-			ComponentBody attackerBody = attacker?.FindComponent<ComponentBody>();
-            if (attacker != null && attackerComponentPlayer != null && target.Entity.FindComponent<ComponentPlayer>() != null && !target.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true).WorldSettings.IsFriendlyFireEnabled)
-            {
-                attacker.FindComponent<ComponentGui>(throwOnError: true).DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: true, playNotificationSound: true);
-                return;
-            }
-            ModsManager.HookAction("AttackBody", modloader => { return modloader.AttackBody(target, attacker, hitPoint, hitDirection, ref attackPower, isMeleeAttack); });
-            if (attackPower > 0f)
-            {
-                ComponentClothing componentClothing = target.Entity.FindComponent<ComponentClothing>();
-                if (componentClothing != null)
-                {
-                    attackPower = componentClothing.ApplyArmorProtection(attackPower);
-                }
-                ComponentFactors componentFactors = target.Entity.FindComponent<ComponentFactors>();
-                if (componentFactors != null)
-                {
-                    attackPower /= componentFactors.ResilienceFactor;
-                }
-                if (componentHealth != null)
-                {
-                    float num = attackPower / componentHealth.AttackResilience;
-                    string cause;
-                    if (attackerCreature != null)
-                    {
-                        string str = attackerCreature.KillVerbs[s_random.Int(0, attackerCreature.KillVerbs.Count - 1)];
-                        string attackerName = attackerCreature.DisplayName;
-                        cause = string.Format(LanguageControl.Get(fName, 4), attackerName, LanguageControl.Get(fName, str));
-                    }
-                    else
-                    {
-                        switch (s_random.Int(0, 5))
-                        {
-                            case 0:
-                                cause = LanguageControl.Get(fName, 5);
-                                break;
-                            case 1:
-                                cause = LanguageControl.Get(fName, 6);
-                                break;
-                            case 2:
-                                cause = LanguageControl.Get(fName, 7);
-                                break;
-                            case 3:
-                                cause = LanguageControl.Get(fName, 8);
-                                break;
-                            case 4:
-                                cause = LanguageControl.Get(fName, 9);
-                                break;
-                            default:
-                                cause = LanguageControl.Get(fName, 10);
-                                break;
-                        }
-                    }
-                    float health = componentHealth.Health;
-                    componentHealth.InjureEntity(num, attacker, ignoreInvulnerability: false, cause);
-                    if (num > 0f)
-                    {
-                        target.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).PlayRandomSound("Audio/Impacts/Body", 1f, s_random.Float(-0.3f, 0.3f), target.Position, 4f, autoDelay: false);
-						
-                        //显示粒子效果的攻击，不需要一定是玩家攻击
-                        float num2 = (health - componentHealth.Health) * componentHealth.AttackResilience;
-						AddHitValueParticleSystem(num2, attacker, target.Entity, hitPoint, hitDirection);
-                    }
-                    if (attackerCreature != null) componentHealth.Attacked?.Invoke(attackerCreature);
-                    componentHealth.AttackedByEntity?.Invoke(attacker);
-                }
-                ComponentDamage componentDamage = target.Entity.FindComponent<ComponentDamage>();
-                if (componentDamage != null)
-                {
-                    float num3 = attackPower / componentDamage.AttackResilience;
-					float hitPoints = componentDamage.Hitpoints;
-                    componentDamage.Damage(num3);
-					float damage = (hitPoints - componentDamage.Hitpoints) * componentDamage.AttackResilience;
-					AddHitValueParticleSystem(damage, attacker, target.Entity, hitPoint, hitDirection);
-                    if (num3 > 0f)
-                    {
-                        target.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).PlayRandomSound(componentDamage.DamageSoundName, 1f, s_random.Float(-0.3f, 0.3f), target.Position, 4f, autoDelay: false);
-                    }
-                }
-            }
-            float num4 = 0f;
-            float x = 0f;
-            bool recalculate = false;
-            if (isMeleeAttack && attackerBody != null)
-            {
-                float num5 = (attackPower >= 2f) ? 1.25f : 1f;
-                float num6 = MathF.Pow(attackerBody.Mass / target.Mass, 0.5f);
-                float x2 = num5 * num6;
-                num4 = 5.5f * MathUtils.Saturate(x2);
-                x = 0.25f * MathUtils.Saturate(x2);
-            }
-            else if (attackPower > 0f)
-            {
-                num4 = 2f;
-                x = 0.2f;
-            }
-            ModsManager.HookAction("AttackPowerParameter", modloader =>
-            {
-                modloader.AttackPowerParameter(target, attacker, hitPoint, hitDirection, ref num4, ref x, ref recalculate);
-                return false;
-            });
-            if (num4 > 0f)
-            {
-                target.ApplyImpulse(num4 * Vector3.Normalize(hitDirection + s_random.Vector3(0.1f) + (0.2f * Vector3.UnitY)));
-                ComponentLocomotion componentLocomotion = target.Entity.FindComponent<ComponentLocomotion>();
-                if (componentLocomotion != null)
-                {
-                    if (!recalculate)
-                        componentLocomotion.StunTime = MathUtils.Max(componentLocomotion.StunTime, x);
-                    else
-                        componentLocomotion.StunTime += x;
-                }
-            }
+			if (isMeleeAttack) AttackBody(new MeleeAttackment(target.Entity, attacker.Entity, hitPoint, hitDirection, attackPower));
+			else AttackBody(new ProjectileAttackment(target.Entity, attacker.Entity, hitPoint, hitDirection, attackPower));
         }
 
 		public static void AddHitValueParticleSystem(float damage, Entity attacker, Entity attacked, Vector3 hitPoint, Vector3 hitDirection)

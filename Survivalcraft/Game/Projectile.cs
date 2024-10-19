@@ -157,7 +157,9 @@ namespace Game
             //¹ÒModLoader½Ó¿Ú
             if (attackPower > 0f)
             {
-                ComponentMiner.AttackBody(bodyRaycastResult.ComponentBody, OwnerEntity, bodyRaycastResult.HitPoint(), Vector3.Normalize(Velocity), attackPower, isMeleeAttack: false);
+                ComponentMiner.AttackBody(
+                    new ProjectileAttackment(bodyRaycastResult.ComponentBody.Entity, OwnerEntity, bodyRaycastResult.HitPoint(), Vector3.Normalize(Velocity), attackPower)
+                    );
                 if (Owner != null && Owner.PlayerStats != null)
                 {
                     Owner.PlayerStats.RangedHits++;
