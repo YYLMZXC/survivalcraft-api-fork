@@ -536,7 +536,14 @@ namespace Game
 
 		public static void AttackBody(Attackment attackment)
 		{
-			attackment.ProcessAttackment();
+			try
+			{
+				attackment.ProcessAttackment();
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+			}
 		}
         public static void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack)
         {

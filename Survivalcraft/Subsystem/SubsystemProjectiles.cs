@@ -239,9 +239,17 @@ namespace Game
                         }
                         else
                         {
-                            projectile.SubsystemProjectiles = this;
-                            projectile.SubsystemTerrain = m_subsystemTerrain;
-                            projectile.Update(dt);
+							try
+							{
+
+								projectile.SubsystemProjectiles = this;
+								projectile.SubsystemTerrain = m_subsystemTerrain;
+								projectile.Update(dt);
+							}
+							catch (Exception ex)
+							{
+								projectile.ToRemove = true;
+							}
                         }
                     }
                 }

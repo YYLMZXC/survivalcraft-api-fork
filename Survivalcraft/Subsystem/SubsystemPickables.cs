@@ -172,9 +172,16 @@ namespace Game
                     }
                     else
                     {
-                        pickable.SubsystemTerrain = m_subsystemTerrain;
-                        pickable.SubsystemPickables = this;
-                        pickable.Update(dt);
+						try
+						{
+							pickable.SubsystemTerrain = m_subsystemTerrain;
+							pickable.SubsystemPickables = this;
+							pickable.Update(dt);
+						}
+						catch (Exception e)
+						{
+							pickable.ToRemove = true;
+						}
                     }
                 }
 			}
