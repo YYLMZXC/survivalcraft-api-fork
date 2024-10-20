@@ -542,7 +542,7 @@ namespace Game
 			}
 			catch (Exception e)
 			{
-				Log.Error(e);
+				Log.Error("Attack execute error: " + e);
 			}
 		}
         public static void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack)

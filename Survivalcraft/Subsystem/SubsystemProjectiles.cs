@@ -248,6 +248,7 @@ namespace Game
 							}
 							catch (Exception ex)
 							{
+								Log.Error("Projectile update error: " + ex);
 								projectile.ToRemove = true;
 							}
                         }

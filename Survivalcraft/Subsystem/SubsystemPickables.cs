@@ -180,6 +180,7 @@ namespace Game
 						}
 						catch (Exception e)
 						{
+							Log.Error("Pickable update error: " + e);
 							pickable.ToRemove = true;
 						}
                     }
