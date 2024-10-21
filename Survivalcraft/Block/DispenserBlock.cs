@@ -58,7 +58,7 @@ namespace Game
 				direction = 5;
 			}
 			BlockPlacementData result = default;
-			result.Value = Terrain.MakeBlockValue(216, 0, SetDirection(0, direction));
+			result.Value = Terrain.MakeBlockValue(216, 0, SetAcceptsDrops(SetMode(SetDirection(0, direction), Mode.Shoot), true));
 			result.CellFace = raycastResult.CellFace;
 			return result;
 		}

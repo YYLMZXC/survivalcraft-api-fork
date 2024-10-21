@@ -1008,5 +1008,17 @@ namespace Game
         {
 
         }
+        public virtual void OnDispenserDispense(ComponentDispenser componentDispenser, ref Pickable pickable)
+        {
+
+        }
+        public virtual void OnDispenserShoot(ComponentDispenser componentDispenser, ref Projectile projectile)
+        {
+
+        }
+        public virtual void DispenserChooseItemToDispense(ComponentDispenser componentDispenser, ref int slot, ref int value, out bool chosen)
+        {
+            chosen = false;
+        }
     }
 }

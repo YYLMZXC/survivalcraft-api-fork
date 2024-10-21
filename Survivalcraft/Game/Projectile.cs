@@ -1,5 +1,6 @@
 using Engine;
 using System;
+using GameEntitySystem;
 
 namespace Game
 {
@@ -82,6 +83,23 @@ namespace Game
         protected SubsystemAudio m_subsystemAudio => SubsystemProjectiles?.m_subsystemAudio;
         protected Random m_random => SubsystemProjectiles?.m_random;
 
+        public virtual void Initialize(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, Entity owner)
+        {
+            Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
+            Value = value;
+            Position = position;
+            Velocity = velocity;
+            Rotation = Vector3.Zero;
+            AngularVelocity = angularVelocity;
+            Owner = owner?.FindComponent<ComponentCreature>();
+            OwnerEntity = owner;
+            Damping = block.GetProjectileDamping(value);
+            ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable;
+        }
+        public virtual void Initialize(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
+        {
+            Initialize(value, position, velocity, angularVelocity, owner?.Entity);
+        }
         public virtual void Raycast(float dt, out BodyRaycastResult? bodyRaycastResult, out TerrainRaycastResult? terrainRaycastResult)
         {
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(Value)];

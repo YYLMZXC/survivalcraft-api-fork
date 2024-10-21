@@ -92,20 +92,20 @@ namespace Game
 		{
 			return AddProjectile<Projectile>(value, position, velocity, angularVelocity, owner);
 		}
-
-		public virtual T AddProjectile<T>(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner) where T : Projectile, new()
+        public virtual Projectile CreateProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
+        {
+			return CreateProjectile<Projectile>(value, position, velocity, angularVelocity, owner);
+        }
+        public virtual T CreateProjectile<T>(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner) where T : Projectile, new()
 		{
             var projectile = new T();
-            Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-            projectile.Value = value;
-            projectile.Position = position;
-            projectile.Velocity = velocity;
-            projectile.Rotation = Vector3.Zero;
-            projectile.AngularVelocity = angularVelocity;
-            projectile.Owner = owner;
-            projectile.OwnerEntity = owner?.Entity;
-            projectile.Damping = block.GetProjectileDamping(value);
-            projectile.ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable;
+			projectile.Initialize(value, position, velocity, angularVelocity, owner);
+			return projectile;
+        }
+
+        public virtual T AddProjectile<T>(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner) where T : Projectile, new()
+		{
+			T projectile = CreateProjectile<T>(value, position, velocity, angularVelocity, owner);
             Projectile projectile2 = AddProjectile(projectile);
             return projectile2 as T;
         }
@@ -113,45 +113,58 @@ namespace Game
         public virtual Projectile FireProjectile(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner)
 		{
 			return FireProjectile<Projectile>(value, position, velocity, angularVelocity, owner);
-		}
+        }
 
+		public virtual bool CanFireProjectile(int value, Vector3 position, Vector3 velocity, ComponentCreature owner, out Vector3 firePosition)
+		{
+            int num = Terrain.ExtractContents(value);
+            Block block = BlocksManager.Blocks[num];
+            var v = Vector3.Normalize(velocity);
+            firePosition = position;
+            if (owner != null)
+            {
+                var ray = new Ray3(position + (v * 5f), -v);
+                BoundingBox boundingBox = owner.ComponentBody.BoundingBox;
+                boundingBox.Min -= new Vector3(0.4f);
+                boundingBox.Max += new Vector3(0.4f);
+                float? num2 = ray.Intersection(boundingBox);
+                if (num2.HasValue)
+                {
+                    if (num2.Value == 0f)
+                    {
+						firePosition = Vector3.Zero;
+                        return false;
+                    }
+                    firePosition = position + (v * (5f - num2.Value + 0.1f));
+                }
+            }
+            Vector3 end = firePosition + (v * block.ProjectileTipOffset);
+			return !m_subsystemTerrain.Raycast(position, end, useInteractionBoxes: false, skipAirBlocks: true, (int testValue, float distance) =>
+			BlocksManager.Blocks[Terrain.ExtractContents(testValue)].IsCollidable_(testValue)).HasValue;
+        }
         public virtual T FireProjectile<T>(int value, Vector3 position, Vector3 velocity, Vector3 angularVelocity, ComponentCreature owner) where T : Projectile, new()
 		{
-			int num = Terrain.ExtractContents(value);
-			Block block = BlocksManager.Blocks[num];
-			var v = Vector3.Normalize(velocity);
-			Vector3 vector = position;
-			if (owner != null)
+			if (CanFireProjectile(value, position, velocity, owner, out Vector3 firePosition))
 			{
-				var ray = new Ray3(position + (v * 5f), -v);
-				BoundingBox boundingBox = owner.ComponentBody.BoundingBox;
-				boundingBox.Min -= new Vector3(0.4f);
-				boundingBox.Max += new Vector3(0.4f);
-				float? num2 = ray.Intersection(boundingBox);
-				if (num2.HasValue)
-				{
-					if (num2.Value == 0f)
-					{
-						return null;
-					}
-					vector = position + (v * (5f - num2.Value + 0.1f));
-				}
-			}
-			Vector3 end = vector + (v * block.ProjectileTipOffset);
-			if (!m_subsystemTerrain.Raycast(position, end, useInteractionBoxes: false, skipAirBlocks: true, (int testValue, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(testValue)].IsCollidable_(testValue)).HasValue)
-			{
-				T projectile = AddProjectile<T>(value, vector, velocity, angularVelocity, owner);
-				SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(value));
-				for (int i = 0; i < blockBehaviors.Length; i++)
-				{
-					blockBehaviors[i].OnFiredAsProjectile(projectile);
-				}
-				return projectile;
+				T projectile = CreateProjectile<T>(value, firePosition, velocity, angularVelocity, owner);
+				return FireProjectileFast<T>(projectile);
 			}
 			return null;
 		}
 
-		public virtual void AddTrail(Projectile projectile, Vector3 offset, ITrailParticleSystem particleSystem)
+        public virtual T FireProjectileFast<T>(T projectile) where T : Projectile, new()
+		{
+            AddProjectile(projectile);
+            SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(projectile.Value));
+            for (int i = 0; i < blockBehaviors.Length; i++)
+            {
+                blockBehaviors[i].OnFiredAsProjectile(projectile);
+            }
+            return projectile;
+        }
+
+
+        public virtual void AddTrail(Projectile projectile, Vector3 offset, ITrailParticleSystem particleSystem)
 		{
 			RemoveTrail(projectile);
 			projectile.TrailParticleSystem = particleSystem;

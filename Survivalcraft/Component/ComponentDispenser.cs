@@ -30,7 +30,7 @@ namespace Game
 				{
 					slotValue = GetSlotValue(num);
 					int slotCount = GetSlotCount(num);
-					if (slotValue != 0 && slotCount > 0)
+					if (slotValue != 0 && slotCount > 0 && BlocksManager.Blocks[Terrain.ExtractContents(slotValue)].CanBeFiredByDispenser(slotValue))
 					{
 						break;
 					}
@@ -39,11 +39,19 @@ namespace Game
 				}
 				return;
 			}
-			int num2 = RemoveSlotItems(num, 1);
-			for (int i = 0; i < num2; i++)
+			ModsManager.HookAction("DispenserChooseItemToDispense", loader =>
 			{
-				DispenseItem(coordinates, direction, slotValue, mode);
-			}
+				loader.DispenserChooseItemToDispense(this, ref num, ref slotValue, out bool chosen);
+				return chosen;
+			});
+			if(num >= 0)
+			{
+                int num2 = RemoveSlotItems(num, 1);
+                for (int i = 0; i < num2; i++)
+                {
+                    DispenseItem(coordinates, direction, slotValue, mode);
+                }
+            }
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
@@ -60,21 +68,45 @@ namespace Game
 		{
 			Vector3 vector = CellFace.FaceToVector3(face);
 			Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + (0.6f * vector);
+			//投掷物品
 			if (mode == DispenserBlock.Mode.Dispense)
 			{
 				float s = 1.8f;
-				m_subsystemPickables.AddPickable(value, 1, position, s * (vector + m_random.Vector3(0.2f)), null);
-				m_subsystemAudio.PlaySound("Audio/DispenserDispense", 1f, 0f, new Vector3(position.X, position.Y, position.Z), 3f, autoDelay: true);
+				Pickable pickable = m_subsystemPickables.CreatePickable(value, 1, position, s * (vector + m_random.Vector3(0.2f)), null);
+                ModsManager.HookAction("OnDispenserDispensePickable", loader =>
+				{
+					loader.OnDispenserDispense(this, ref pickable);
+					return false;
+                });
+				if (pickable != null) {
+					m_subsystemPickables.AddPickable(pickable);
+					m_subsystemAudio.PlaySound("Audio/DispenserDispense", 1f, 0f, new Vector3(position.X, position.Y, position.Z), 3f, autoDelay: true);
+					return;
+				}
 				return;
 			}
+			//发射物品
 			float s2 = m_random.Float(39f, 41f);
-			Projectile projectile = m_subsystemProjectiles.FireProjectile(value, position, s2 * (vector + m_random.Vector3(0.025f) + new Vector3(0f, 0.05f, 0f)), Vector3.Zero, null);
-
-            if (projectile != null)
-			{
-				projectile.Creator = this;
+            if (m_subsystemProjectiles.CanFireProjectile(value, position, vector, null, out Vector3 position2))
+            {
+                Projectile projectile = m_subsystemProjectiles.CreateProjectile(value, position2, s2 * (vector + m_random.Vector3(0.025f) + new Vector3(0f, 0.05f, 0f)), Vector3.Zero, null);
+                projectile.Creator = this;
 				projectile.OwnerEntity = Entity;
-				m_subsystemAudio.PlaySound("Audio/DispenserShoot", 1f, 0f, new Vector3(position.X, position.Y, position.Z), 4f, autoDelay: true);
+                ModsManager.HookAction("OnDispenserShoot", loader =>
+                {
+					loader.OnDispenserShoot(this, ref projectile);
+                    return false;
+                });
+				if (projectile != null)
+                {
+                    m_subsystemProjectiles.FireProjectileFast<Projectile>(projectile);
+                    m_subsystemAudio.PlaySound("Audio/DispenserShoot", 1f, 0f, new Vector3(position.X, position.Y, position.Z), 4f, autoDelay: true);
+					return;
+                }
+				else
+				{
+					return;
+				}
 			}
 			else
 			{

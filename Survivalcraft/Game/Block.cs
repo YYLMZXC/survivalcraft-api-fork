@@ -733,5 +733,9 @@ namespace Game
 			if (!IsPlaceable_(value)) return 0;
 			return PriorityPlace;
 		}
+		public virtual bool CanBeFiredByDispenser(int value)
+		{
+			return true;
+		}
     }
 }

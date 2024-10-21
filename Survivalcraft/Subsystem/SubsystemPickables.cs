@@ -57,7 +57,7 @@ namespace Game
 		public virtual Action<Pickable> PickableRemoved { get; set; }
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-		public Pickable AddPickable(Pickable pickable)
+		public virtual Pickable AddPickable(Pickable pickable)
         {
             pickable.CreationTime = m_subsystemGameInfo.TotalElapsedGameTime;
             ModsManager.HookAction("OnPickableAdded", loader =>
@@ -72,31 +72,24 @@ namespace Game
             PickableAdded?.Invoke(pickable);
             return pickable;
         }
-        public Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
+        public virtual Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
 		{
 			return AddPickable<Pickable>(value, count, position, velocity, stuckMatrix);
 		}
-
-        public T AddPickable<T>(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix) where T : Pickable, new()
+		public virtual Pickable CreatePickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
 		{
-			var pickable = new T();
-			pickable.Value = value;
-			pickable.Count = count;
-			pickable.Position = position;
-			pickable.StuckMatrix = stuckMatrix;
-			if (velocity.HasValue)
-			{
-				pickable.Velocity = velocity.Value;
-			}
-			else if (Terrain.ExtractContents(value) == 248)
-			{
-				Vector2 vector = m_random.Vector2(1.5f, 2f);
-				pickable.Velocity = new Vector3(vector.X, 3f, vector.Y);
-			}
-			else
-			{
-				pickable.Velocity = new Vector3(m_random.Float(-0.5f, 0.5f), m_random.Float(1f, 1.2f), m_random.Float(-0.5f, 0.5f));
-			}
+			return CreatePickable<Pickable>(value, count, position, velocity, stuckMatrix);
+		}
+        public virtual T CreatePickable<T>(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix) where T : Pickable, new()
+		{
+            var pickable = new T();
+            pickable.Initialize(value, count, position, velocity, stuckMatrix);
+			return pickable;
+        }
+
+        public virtual T AddPickable<T>(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix) where T : Pickable, new()
+		{
+			T pickable = CreatePickable<T>(value, count, position, velocity, stuckMatrix);
             Pickable pickable2 = AddPickable(pickable);
 			return pickable2 as T;
 		}

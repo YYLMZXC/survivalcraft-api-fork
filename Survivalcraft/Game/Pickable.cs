@@ -32,6 +32,26 @@ namespace Game
         public SubsystemTerrain SubsystemTerrain;
 
         public SubsystemExplosions SubsystemExplosions;
+        public virtual void Initialize(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
+        {
+            Value = value;
+            Count = count;
+            Position = position;
+            StuckMatrix = stuckMatrix;
+            if (velocity.HasValue)
+            {
+                Velocity = velocity.Value;
+            }
+            else if (Terrain.ExtractContents(value) == 248)
+            {
+                Vector2 vector = m_random.Vector2(1.5f, 2f);
+                Velocity = new Vector3(vector.X, 3f, vector.Y);
+            }
+            else
+            {
+                Velocity = new Vector3(m_random.Float(-0.5f, 0.5f), m_random.Float(1f, 1.2f), m_random.Float(-0.5f, 0.5f));
+            }
+        }
         public virtual void Update(float dt)
         {
             Block block = BlocksManager.Blocks[Terrain.ExtractContents(Value)];
