@@ -265,19 +265,22 @@ namespace Game
                 try
                 {
                     BlockAllocateData allocateData = BlocksAllocateData[i];
-                    int originalIndex;
-                    originalIndex = m_originalBlockIndex[allocateData.Block.BlockIndex];
-                    if (originalIndex == 0) originalIndex = allocateData.Block.BlockIndex;
-                    if (allocateData.StaticBlockIndex)
+                    if(allocateData.Block.BlockIndex >= 0)
                     {
-                        AllocateBlock(allocateData, originalIndex);
-                    }
-                    else if (LoadBlocksStaticly && originalIndex >= 0)//负ID方块不进行分配
-                    {
-                        AllocateBlock(allocateData, originalIndex);
-                        if (subsystemBlocksManager != null)
+                        int originalIndex;
+                        originalIndex = m_originalBlockIndex[allocateData.Block.BlockIndex];
+                        if (originalIndex == 0) originalIndex = allocateData.Block.BlockIndex;
+                        if (allocateData.StaticBlockIndex)
                         {
-                            subsystemBlocksManager.DynamicBlockNameToIndex[m_blocks[allocateData.Block.BlockIndex].GetType().Name] = originalIndex;
+                            AllocateBlock(allocateData, originalIndex);
+                        }
+                        else if (LoadBlocksStaticly && originalIndex >= 0)//负ID方块不进行分配
+                        {
+                            AllocateBlock(allocateData, originalIndex);
+                            if (subsystemBlocksManager != null)
+                            {
+                                subsystemBlocksManager.DynamicBlockNameToIndex[m_blocks[allocateData.Block.BlockIndex].GetType().Name] = originalIndex;
+                            }
                         }
                     }
                 }
