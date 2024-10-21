@@ -707,6 +707,7 @@ public static class ModsManager
         ModifiedElement["dafb8e14-11b9-44b7-a208-424b770aeaa9"] = "Game.SubsystemProjectiles";
         ModifiedElement["32d392de-69c1-4d04-9e0b-5c7463201892"] = "Game.SubsystemPickables";
         ModifiedElement["54a4f6d5-98dd-4dc3-bf6d-04dfd972c6b7"] = "Game.SubsystemTime";
+		ModifiedElement["b2e68ecd-49fc-4c05-b784-424da13f8550"] = "Game.ComponentDispenser";
 
     }
 
