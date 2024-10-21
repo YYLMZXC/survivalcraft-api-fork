@@ -1012,7 +1012,7 @@ namespace Game
         {
 
         }
-        public virtual void OnDispenserShoot(ComponentDispenser componentDispenser, ref Projectile projectile, ref bool dispensePickableOnFailure)
+        public virtual void OnDispenserShoot(ComponentDispenser componentDispenser, ref Projectile projectile)
         {
 
         }

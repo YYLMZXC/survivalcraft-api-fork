@@ -87,7 +87,6 @@ namespace Game
 			}
 			//·¢ÉäÎïÆ·
 			float s2 = m_random.Float(39f, 41f);
-			bool dispensePickableOnFailure = true;
             if (m_subsystemProjectiles.CanFireProjectile(value, position, vector, null, out Vector3 position2))
             {
                 Projectile projectile = m_subsystemProjectiles.CreateProjectile(value, position2, s2 * (vector + m_random.Vector3(0.025f) + new Vector3(0f, 0.05f, 0f)), Vector3.Zero, null);
@@ -95,7 +94,7 @@ namespace Game
 				projectile.OwnerEntity = Entity;
                 ModsManager.HookAction("OnDispenserShoot", loader =>
                 {
-					loader.OnDispenserShoot(this, ref projectile, ref dispensePickableOnFailure);
+					loader.OnDispenserShoot(this, ref projectile);
                     return false;
                 });
 				if (projectile != null)
@@ -109,7 +108,7 @@ namespace Game
 					return;
 				}
 			}
-			else if(dispensePickableOnFailure)
+			else
 			{
 				DispenseItem(point, face, value, DispenserBlock.Mode.Dispense);
 			}
