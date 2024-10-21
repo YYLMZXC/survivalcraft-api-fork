@@ -147,12 +147,13 @@ namespace Game
 			if (CanFireProjectile(value, position, velocity, owner, out Vector3 firePosition))
 			{
 				T projectile = CreateProjectile<T>(value, firePosition, velocity, angularVelocity, owner);
-				return FireProjectileFast<T>(projectile);
+				FireProjectileFast(projectile);
+				return projectile;
 			}
 			return null;
 		}
 
-        public virtual T FireProjectileFast<T>(T projectile) where T : Projectile, new()
+        public virtual void FireProjectileFast(Projectile projectile)
 		{
             AddProjectile(projectile);
             SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(projectile.Value));
@@ -160,7 +161,6 @@ namespace Game
             {
                 blockBehaviors[i].OnFiredAsProjectile(projectile);
             }
-            return projectile;
         }
 
 

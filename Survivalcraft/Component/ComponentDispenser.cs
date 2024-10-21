@@ -99,7 +99,7 @@ namespace Game
                 });
 				if (projectile != null)
                 {
-                    m_subsystemProjectiles.FireProjectileFast<Projectile>(projectile);
+                    m_subsystemProjectiles.FireProjectileFast(projectile);
                     m_subsystemAudio.PlaySound("Audio/DispenserShoot", 1f, 0f, new Vector3(position.X, position.Y, position.Z), 4f, autoDelay: true);
 					return;
                 }
