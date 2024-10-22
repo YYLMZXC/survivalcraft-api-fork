@@ -23,8 +23,9 @@ namespace Game
         public Dictionary<string, int> DynamicBlockNameToIndex = new Dictionary<string, int>();
 
         public ValuesDictionary m_savedValuesDictionary;
-        public override void Load(ValuesDictionary valuesDictionary)
+        public override void Initialize(Project project, ValuesDictionary valuesDictionary)
         {
+            base.Initialize(project, valuesDictionary);
             DynamicBlockNameToIndex.Clear();
             m_savedValuesDictionary = valuesDictionary;
             InitializeBlocks(this);

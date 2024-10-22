@@ -39,7 +39,7 @@ namespace GameEntitySystem
 			Dispose();
 		}
 		
-		public void Initialize(Project project, ValuesDictionary valuesDictionary)
+		public virtual void Initialize(Project project, ValuesDictionary valuesDictionary)
 		{
 			if (valuesDictionary.DatabaseObject.Type != project.GameDatabase.MemberSubsystemTemplateType)
 			{

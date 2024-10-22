@@ -129,6 +129,13 @@ namespace Game
             PostProcessBlocksLoad();
         }
 
+        public static void ResetBlocks()
+        {
+            for (int i = 0; i < m_blocks.Length; i++)
+            {
+                m_blocks[i] = Activator.CreateInstance(m_blocks[i].GetType()) as Block;
+            }
+        }
         public static void InitializeCategories()
         {
             m_categories.Clear();
@@ -386,6 +393,7 @@ namespace Game
         }
         public static void PostProcessBlocksLoad()
         {
+            //ResetBlocks();
             foreach (ModEntity modEntity in ModsManager.ModList)
             {
                 modEntity.LoadBlocksData();

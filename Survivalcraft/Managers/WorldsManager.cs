@@ -400,7 +400,19 @@ namespace Game
 			throw new InvalidOperationException("GameInfo node not found in project.");
 		}
 
-		public static XElement GetPlayersNode(XElement projectNode)
+        public static XElement GetSubsystemNode(XElement projectNode, string subsystemName)
+        {
+            XElement xElement = (from n in projectNode.Element("Subsystems").Elements("Values")
+                                 where XmlUtils.GetAttributeValue(n, "Name", string.Empty) == subsystemName
+                                 select n).FirstOrDefault();
+            if (xElement != null)
+            {
+                return xElement;
+            }
+            throw new InvalidOperationException(subsystemName + " node not found in project.");
+        }
+
+        public static XElement GetPlayersNode(XElement projectNode)
 		{
 			XElement xElement = (from n in projectNode.Element("Subsystems").Elements("Values")
 								 where XmlUtils.GetAttributeValue(n, "Name", string.Empty) == "Players"
