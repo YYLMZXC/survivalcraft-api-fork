@@ -96,7 +96,7 @@
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="openal32.dll">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
 		<EmbeddedResource Update="wrap_oal.dll"><!--仅模仿上面写法，实际无效-->
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
