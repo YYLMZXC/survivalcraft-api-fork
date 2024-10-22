@@ -28,6 +28,11 @@ namespace Game
 				SetupBestiaryModelWidget(bestiaryCreatureInfo2, modelWidget, (m_creaturesList.Items.IndexOf(item) % 2 == 0) ? new Vector3(-1f, 0f, -1f) : new Vector3(1f, 0f, -1f), autoRotate: false, autoAspect: false);
 				obj.Children.Find<LabelWidget>("BestiaryItem.Text").Text = bestiaryCreatureInfo2.DisplayName;
 				obj.Children.Find<LabelWidget>("BestiaryItem.Details").Text = bestiaryCreatureInfo2.Description;
+				ModsManager.HookAction("LoadCreatureInfoInBestiaryScreen", loader =>
+				{
+					loader.LoadCreatureInfoInBestiaryScreen(this, obj, bestiaryCreatureInfo2, bestiaryCreatureInfo2.EntityValuesDictionary);
+					return false;
+				});
 				return obj;
 			};
 			m_creaturesList.ItemClicked += delegate (object item)

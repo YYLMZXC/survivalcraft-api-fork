@@ -1038,5 +1038,9 @@ namespace Game
         {
 
         }
+        public virtual void LoadCreatureInfoInBestiaryScreen(BestiaryScreen bestiaryScreen, ContainerWidget creatureInfoWidget, BestiaryCreatureInfo bestiaryCreatureInfo, ValuesDictionary entityValuesDictionary)
+        {
+
+        }
     }
 }
