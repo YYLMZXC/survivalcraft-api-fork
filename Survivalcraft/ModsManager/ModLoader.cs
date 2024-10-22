@@ -1029,5 +1029,9 @@ namespace Game
         {
 
         }
+        public virtual void EditRecipeScreenWidget(RecipaediaRecipesScreen screen)
+        {
+
+        }
     }
 }

@@ -19,6 +19,8 @@ namespace Game
 
 		public List<CraftingRecipe> m_craftingRecipes = [];
 
+		public int RecipesCount;
+
 		public RecipaediaRecipesScreen()
 		{
 			XElement node = ContentManager.Get<XElement>("Screens/RecipaediaRecipesScreen");
@@ -34,38 +36,52 @@ namespace Game
 			int value = (int)parameters[0];
 			m_craftingRecipes.Clear();
 			m_craftingRecipes.AddRange(CraftingRecipesManager.Recipes.Where((CraftingRecipe r) => r.ResultValue == value && r.ResultValue != 0));
+			RecipesCount = m_craftingRecipes.Count;
 			m_recipeIndex = 0;
 		}
 
 		public override void Update()
 		{
-			if (m_recipeIndex < m_craftingRecipes.Count)
+			if (m_recipeIndex < RecipesCount)
 			{
-				CraftingRecipe craftingRecipe = m_craftingRecipes[m_recipeIndex];
-				if (craftingRecipe.RequiredHeatLevel == 0f)
+				if (m_recipeIndex < m_craftingRecipes.Count)
 				{
-					m_craftingRecipeWidget.Recipe = craftingRecipe;
-					m_craftingRecipeWidget.NameSuffix = string.Format(LanguageControl.GetContentWidgets(GetType().Name, 1), m_recipeIndex + 1);
-					m_craftingRecipeWidget.IsVisible = true;
-					m_smeltingRecipeWidget.IsVisible = false;
-				}
+                    CraftingRecipe craftingRecipe = m_craftingRecipes[m_recipeIndex];
+                    if (craftingRecipe.RequiredHeatLevel == 0f)
+                    {
+                        m_craftingRecipeWidget.Recipe = craftingRecipe;
+                        m_craftingRecipeWidget.NameSuffix = string.Format(LanguageControl.GetContentWidgets(GetType().Name, 1), m_recipeIndex + 1);
+                        m_craftingRecipeWidget.IsVisible = true;
+                        m_smeltingRecipeWidget.IsVisible = false;
+                    }
+                    else
+                    {
+                        m_smeltingRecipeWidget.Recipe = craftingRecipe;
+                        m_smeltingRecipeWidget.NameSuffix = string.Format(LanguageControl.GetContentWidgets(GetType().Name, 1), m_recipeIndex + 1);
+                        m_smeltingRecipeWidget.IsVisible = true;
+                        m_craftingRecipeWidget.IsVisible = false;
+                    }
+                }
 				else
 				{
-					m_smeltingRecipeWidget.Recipe = craftingRecipe;
-					m_smeltingRecipeWidget.NameSuffix = string.Format(LanguageControl.GetContentWidgets(GetType().Name, 1), m_recipeIndex + 1);
-					m_smeltingRecipeWidget.IsVisible = true;
 					m_craftingRecipeWidget.IsVisible = false;
+					m_smeltingRecipeWidget.IsVisible = false;
 				}
+				ModsManager.HookAction("EditRecipeScreenWidget", loader =>
+				{
+					loader.EditRecipeScreenWidget(this);
+					return false;
+				});
 			}
 			m_prevRecipeButton.IsEnabled = m_recipeIndex > 0;
-			m_nextRecipeButton.IsEnabled = m_recipeIndex < m_craftingRecipes.Count - 1;
+			m_nextRecipeButton.IsEnabled = m_recipeIndex < RecipesCount - 1;
 			if (m_prevRecipeButton.IsClicked)
 			{
 				m_recipeIndex = MathUtils.Max(m_recipeIndex - 1, 0);
 			}
 			if (m_nextRecipeButton.IsClicked)
 			{
-				m_recipeIndex = MathUtils.Min(m_recipeIndex + 1, m_craftingRecipes.Count - 1);
+				m_recipeIndex = MathUtils.Min(m_recipeIndex + 1, RecipesCount - 1);
 			}
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
 			{
