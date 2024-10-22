@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using TemplatesDatabase;
 
 namespace Game
 {
 	public class BestiaryCreatureInfo
 	{
 		public int Order;
+
+		public ValuesDictionary EntityValuesDictionary;
 
 		public string DisplayName;
 

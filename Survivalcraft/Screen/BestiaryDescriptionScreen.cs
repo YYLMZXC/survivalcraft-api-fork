@@ -158,7 +158,12 @@ namespace Game
 						Text = LanguageControl.Nothing
 					});
 				}
-			}
+                ModsManager.HookAction("UpdateCreaturePropertiesInBestiaryDescriptionScreen", loader =>
+                {
+					loader.UpdateCreaturePropertiesInBestiaryDescriptionScreen(this, bestiaryCreatureInfo, bestiaryCreatureInfo.EntityValuesDictionary);
+                    return false;
+                });
+            }
 		}
 	}
 }

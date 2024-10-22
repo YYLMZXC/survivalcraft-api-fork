@@ -1033,5 +1033,10 @@ namespace Game
         {
 
         }
+
+        public virtual void UpdateCreaturePropertiesInBestiaryDescriptionScreen(BestiaryDescriptionScreen bestiaryDescriptionScreen, BestiaryCreatureInfo bestiaryCreatureInfo, ValuesDictionary entityValuesDictionary)
+        {
+
+        }
     }
 }

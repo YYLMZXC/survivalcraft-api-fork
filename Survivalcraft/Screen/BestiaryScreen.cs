@@ -78,6 +78,7 @@ namespace Game
 							}
 							var bestiaryCreatureInfo = new BestiaryCreatureInfo
 							{
+								EntityValuesDictionary = entitiesValuesDictionary,
 								Order = order,
 								DisplayName = value,
 								Description = dy,
