@@ -77,24 +77,30 @@
         <PackageReference Include="NAudio.Flac.Unknown.Mod" Version="1.0.3" PrivateAssets="all" />
         <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs" />
     </ItemGroup>
-    <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ItemGroup Condition="'$(Configuration)' == 'Debug' And '$(TargetFramework)' == 'net8.0-windows'">
         <None Update="Content.zip">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="openal32.dll">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+		<None Update="wrap_oal.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<EmbeddedResource Include="init.js">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</EmbeddedResource>
     </ItemGroup>
-    <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(TargetFramework)' == 'net8.0-windows'">
         <EmbeddedResource Include="Content.zip">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="openal32.dll">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
+		<EmbeddedResource Update="wrap_oal.dll"><!--仅模仿上面写法，实际无效-->
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
 		<EmbeddedResource Include="init.js">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
