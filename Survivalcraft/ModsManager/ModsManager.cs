@@ -57,8 +57,9 @@ public static class ModsManager
 	public static string ModCachePath { get; } = ExternalPath + "/ModsCache";
 	public static string LogPath { get; } = ExternalPath + "/Bugs";
 	public static string ModsPath { get; } = ExternalPath + "/Mods";
-	public static bool IsAndroid => VersionsManager.Platform == Platform.Android;
-	
+	public static bool IsAndroid => OperatingSystem.IsAndroid();
+	//public static bool IsAndroid => VersionsManager.Platform == Platform.Android;
+
 	internal static ModEntity SurvivalCraftModEntity;
 	internal static bool ConfigLoaded;
 

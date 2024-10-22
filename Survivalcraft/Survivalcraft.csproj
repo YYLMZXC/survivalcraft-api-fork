@@ -1,11 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>net8.0;net8.0-windows;net8.0-android</TargetFrameworks>
-        <OutputType Condition="'$(TargetFramework)' == 'net8.0-windows'">WinExe</OutputType>
 		<OutputType Condition="'$(TargetFramework)' == 'net8.0'">library</OutputType>
-		<OutputType Condition="'$(TargetFramework)' == 'net8.0-android'">library</OutputType>
-		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net8.0-android'">23.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net8.0-windows'">7.0</SupportedOSPlatformVersion>
+		
 		<RootNamespace>Game</RootNamespace>
         <IsWebBootstrapper>false</IsWebBootstrapper>
         <PublishUrl>publish\</PublishUrl>
@@ -24,7 +21,6 @@
         <BootstrapperEnabled>False</BootstrapperEnabled>
         <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
         <UseWindowsForms>False</UseWindowsForms>
-        <ImportWindowsDesktopTargets Condition="'$(TargetFramework)' == 'net8.0-windows'">true</ImportWindowsDesktopTargets>
         <Configurations>Debug;Release</Configurations>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <PackageId>SurvivalcraftAPI.Survivalcraft</PackageId>
@@ -33,6 +29,8 @@
         <PackageProjectUrl>https://gitee.com/THPRC/survivalcraft-api</PackageProjectUrl>
         <RepositoryUrl>https://gitee.com/THPRC/survivalcraft-api</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     </PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' And '$(TargetFramework)' == 'net8.0-android' ">
 		<AndroidKeyStore>false</AndroidKeyStore>
@@ -44,16 +42,24 @@
 	</PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DefineConstants>DEBUG</DefineConstants>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
         <Optimize>True</Optimize>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugType>none</DebugType>
         <DefineConstants>TRACE</DefineConstants>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+
     </PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+		<OutputType>WinExe</OutputType>
+		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+		<IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+		<OutputType>library</OutputType>
+		<SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
+	</PropertyGroup>
     <PropertyGroup>
         <StartupObject Condition="'$(TargetFramework)' == 'net8.0-windows'">Game.Program</StartupObject>
         <ManifestCertificateThumbprint>7727A446B0580C16A300D429D1BE0ABCE78B88E4</ManifestCertificateThumbprint>
