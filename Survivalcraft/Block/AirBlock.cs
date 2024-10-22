@@ -17,6 +17,11 @@ namespace Game
 		{
 		}
 
+        public override IEnumerable<int> GetCreativeValues()
+        {
+            yield break;
+        }
+
         public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
         {
 			int content = Terrain.ExtractContents(value);

@@ -134,6 +134,7 @@ namespace Game
             for (int i = 0; i < m_blocks.Length; i++)
             {
                 m_blocks[i] = Activator.CreateInstance(m_blocks[i].GetType()) as Block;
+                if (!(m_blocks[i] is AirBlock)) m_blocks[i].BlockIndex = i;
             }
         }
         public static void InitializeCategories()
@@ -393,7 +394,7 @@ namespace Game
         }
         public static void PostProcessBlocksLoad()
         {
-            //ResetBlocks();
+            ResetBlocks();
             foreach (ModEntity modEntity in ModsManager.ModList)
             {
                 modEntity.LoadBlocksData();
