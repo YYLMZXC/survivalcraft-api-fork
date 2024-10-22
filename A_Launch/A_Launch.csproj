@@ -24,6 +24,9 @@
 	<NeutralLanguage>zh-CN</NeutralLanguage>
 	<LinkAll>true</LinkAll>
 	<RunAOTCompilation>False</RunAOTCompilation>
+	<AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+	<PublishTrimmed>false</PublishTrimmed>
+	<TrimMode>partial</TrimMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 	<DebugType>full</DebugType>
