@@ -313,7 +313,7 @@ namespace Engine
             GraphicsMode mode = new(new OpenTK.Graphics.ColorFormat(24), 16, 0, 0, OpenTK.Graphics.ColorFormat.Empty, 2);
             width = (width == 0) ? (ScreenSize.X * 4 / 5) : width;
             height = (height == 0) ? (ScreenSize.Y * 4 / 5) : height;
-            m_gameWindow = new GameWindow(width, height, mode, title, GameWindowFlags.Default, DisplayDevice.Default, 4, 6, GraphicsContextFlags.Default,null,false);
+            m_gameWindow = new GameWindow(width, height, mode, title, GameWindowFlags.Default, DisplayDevice.Default, 2, 0, GraphicsContextFlags.Default);
 #if WINDOWS
             m_gameWindow.Icon = new Icon(typeof(Window).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.icon.ico"), new Size(32, 32));
 #endif
@@ -330,15 +330,14 @@ namespace Engine
             }
             WindowMode = windowMode;
             m_gameWindow.Load += LoadHandler;
-            GL.GetInteger(GetPName.RedBits, out int data0);
-            GL.GetInteger(GetPName.GreenBits, out int data1);
-            GL.GetInteger(GetPName.BlueBits, out int data2);
-            GL.GetInteger(GetPName.AlphaBits, out int data3);
-            GL.GetInteger(GetPName.DepthBits, out int data4);
-            GL.GetInteger(GetPName.StencilBits, out int data5);
-            GL.GetInteger(GetPName.MajorVersion, out int data6);
-            GL.GetInteger(GetPName.MinorVersion, out int data7);
-            Log.Information("OpenGL{6}.{7} framebuffer created, R={0} G={1} B={2} A={3}, D={4} S={5}", data0, data1, data2, data3, data4, data5,data6,data7);
+            GL.GetInteger(GetPName.RedBits, out int data);
+            GL.GetInteger(GetPName.RedBits, out data);
+            GL.GetInteger(GetPName.GreenBits, out int data2);
+            GL.GetInteger(GetPName.BlueBits, out int data3);
+            GL.GetInteger(GetPName.AlphaBits, out int data4);
+            GL.GetInteger(GetPName.DepthBits, out int data5);
+            GL.GetInteger(GetPName.StencilBits, out int data6);
+            Log.Information("OpenGL framebuffer created, R={0} G={1} B={2} A={3}, D={4} S={5}", data, data2, data3, data4, data5, data6);
             m_gameWindow.Run();
         }
 
