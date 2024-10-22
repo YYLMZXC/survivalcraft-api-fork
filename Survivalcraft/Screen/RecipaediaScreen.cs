@@ -67,7 +67,7 @@ namespace Game
 				{
 					int value = (int)item;
                     Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
-                    ScreensManager.AddScreen("RecipaediaDescription", block.GetBlockDescriptionScreen(value));
+                    ScreensManager.m_screens["RecipaediaDescription"] = block.GetBlockDescriptionScreen(value);
 					ScreensManager.SwitchScreen("RecipaediaDescription", item, m_blocksList.Items.Cast<int>().ToList());
 				}
 			};
