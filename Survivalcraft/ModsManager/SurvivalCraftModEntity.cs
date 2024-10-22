@@ -94,10 +94,10 @@ namespace Game
 					}
 					else
 					{
-						var index = (int)fieldInfo.GetValue(null);
+						/*var index = (int)fieldInfo.GetValue(null);
 						var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
-						block.BlockIndex = index;
-						Blocks.Add(block);
+						block.BlockIndex = index;*/
+						BlockTypes.Add(type);
 					}
 				}
 			}

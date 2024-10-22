@@ -165,23 +165,34 @@ namespace Game
         /// <summary>
         /// 获取方块的Index
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">方块类型</typeparam>
         /// <param name="throwIfNotFound">在方块没有查找到时是否抛出异常</param>
         /// <param name="mustBeInSameType">方块是否要求必须要和目标类型完全一致</param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
-        public static int GetBlockIndex<T>(bool throwIfNotFound = false, bool mustBeInSameType = false) where T : Block
+        public static int GetBlockIndex<T>(bool throwIfNotFound = false, bool mustBeInSameType = false) where T : Block {
+            return GetBlockIndex(typeof(T), throwIfNotFound, mustBeInSameType);
+        }
+
+        /// <summary>
+        /// 获取方块的Index
+        /// </summary>
+        /// <param name="blockType">方块类型</param>
+        /// <param name="throwIfNotFound">在方块没有查找到时是否抛出异常</param>
+        /// <param name="mustBeInSameType">方块是否要求必须要和目标类型完全一致</param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public static int GetBlockIndex(Type blockType, bool throwIfNotFound = false, bool mustBeInSameType = false)
         {
-            int blockIndexByType = BlockTypeToIndex.GetValueOrDefault(typeof(T), -1);
+            int blockIndexByType = BlockTypeToIndex.GetValueOrDefault(blockType, -1);
             if(blockIndexByType >= 0 && blockIndexByType < 1024) return blockIndexByType;
             if (mustBeInSameType)
             {
-                if (throwIfNotFound) throw new KeyNotFoundException("Block with type <" + typeof(T).AssemblyQualifiedName + "> is not found.");
+                if (throwIfNotFound) throw new KeyNotFoundException("Block with type <" + blockType.AssemblyQualifiedName + "> is not found.");
                 return -1;
             }
-            return GetBlockIndex(typeof(T).Name, throwIfNotFound);
+            return GetBlockIndex(blockType.Name, throwIfNotFound);
         }
-
         /// <summary>
         /// 获取一个方块的通用Block类，具有较好的模组兼容稳定性
         /// </summary>
@@ -221,6 +232,23 @@ namespace Game
             }
             return blockT; //方块列表中有名为"T"的方块，但无法转化为T也返回null
         }
+        /// <param name="blockType">方块类型</param>
+        /// <param name="throwIfNotFound">在方块没有查找到时是否抛出异常</param>
+        /// <param name="mustBeInSameType">方块是否要求必须要和目标类型完全一致</param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException">没有找到对应的方块</exception>
+        /// <exception cref="InvalidCastException">有名称相同的方块，但类型不相容</exception>
+        public static Block GetBlock(Type blockType, bool throwIfNotFound = false, bool mustBeInSameType = false)
+        {
+            int blockIndex = GetBlockIndex(blockType, throwIfNotFound, mustBeInSameType);
+            if (blockIndex < 0) return null;
+            Block block = Blocks[blockIndex];
+            if (throwIfNotFound && block.GetType() == blockType)
+            {
+                throw new InvalidCastException("Block <" + blockType.AssemblyQualifiedName  + "> is modified into <" + block.GetType().AssemblyQualifiedName  + "> thus not capable for type.");
+            }
+            return block;
+        }
 
         public static void InitializeBlocks(SubsystemBlocksManager subsystemBlocksManager)
         {
@@ -231,9 +259,24 @@ namespace Game
             BlocksAllocateData.Clear();
             foreach (ModEntity entity in ModsManager.ModList)
             {
-                for (int i = 0; i < entity.Blocks.Count; i++)
+                for (int i = 0; i < entity.BlockTypes.Count; i++)
                 {
-                    Block block = entity.Blocks[i];
+                    Type type = entity.BlockTypes[i];
+                    Block block = (Block)Activator.CreateInstance(type);
+                    if (block == null)
+                    {
+                        continue;
+                    }
+                    FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
+                    if (fieldInfo != null && fieldInfo.FieldType == typeof(int))
+                    {
+                        int staticIndex = (int)fieldInfo.GetValue(null)!;
+                        block.BlockIndex = staticIndex;
+                    }
+                    else
+                    {
+                        block.BlockIndex = -1;
+                    }
                     if (block.ShouldBeAddedToProject(subsystemBlocksManager))
                     {
                         bool staticBlockIndexBefore = false;
@@ -794,9 +837,9 @@ namespace Game
         [Obsolete("Use BlocksManager.GetBlock() instead.")]
         public static Block GetBlockInMod(string ModSpace, string TypeFullName)
         {
-            if (ModsManager.GetModEntity(ModSpace, out ModEntity modEntity))
-            {
-                Block block = modEntity.Blocks.Find(p => p.GetType().Name == TypeFullName);
+            if (ModsManager.GetModEntity(ModSpace, out ModEntity modEntity)) {
+                Type type = modEntity.BlockTypes.Find(p => p.Name == TypeFullName);
+                Block block = GetBlock(type, false, true);
                 if (block != null)
                 {
                     return block;

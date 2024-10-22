@@ -17,7 +17,7 @@ namespace Game
 		public Texture2D Icon;
 		public ZipArchive ModArchive;
 		public Dictionary<string, ZipArchiveEntry> ModFiles = [];
-		public List<Block> Blocks = [];
+		public List<Type> BlockTypes = [];
 		public string ModFilePath;
 		public bool IsDependencyChecked;
 		public ModLoader Loader { get { return ModLoader_; } set { ModLoader_ = value; } }
@@ -255,9 +255,9 @@ namespace Game
 					blockTypes.Add(type);
 				}
 			}
-			for (int i = 0; i < blockTypes.Count; i++)
+			/*for (int i = 0; i < blocks.Count; i++)
 			{
-				Type type = blockTypes[i];
+				Type type = blocks[i];
                 var block = (Block)Activator.CreateInstance(type.GetTypeInfo().AsType());
                 FieldInfo fieldInfo = type.GetRuntimeFields().FirstOrDefault(p => p.Name == "Index" && p.IsPublic && p.IsStatic);
 				if (fieldInfo != null && fieldInfo.FieldType == typeof(int))
@@ -269,8 +269,9 @@ namespace Game
 				{
 					block.BlockIndex = -1;
                 }
-                Blocks.Add(block);
-            }
+                Blocks.Add(type);
+            }*/
+			BlockTypes.AddRange(blockTypes);
 		}
 		public virtual void LoadJs()
 		{
