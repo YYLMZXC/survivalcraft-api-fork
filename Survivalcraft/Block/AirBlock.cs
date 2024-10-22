@@ -10,12 +10,12 @@ namespace Game
 		public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{
             if(Terrain.ExtractContents(value) != 0) 
-				BlocksManager.DrawFlatOrImageExtrusionBlock(primitivesRenderer, 193, size, ref matrix, null, color, isEmissive: false, environmentData);
+				BlocksManager.DrawFlatOrImageExtrusionBlock(primitivesRenderer, 111, size, ref matrix, null, color, isEmissive: false, environmentData);
         }
 
 		public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
 		{
-            generator.GenerateCubeVertices(this, value, x, y, z, Color.Magenta, geometry.OpaqueSubsetsByFace);
+            generator.GenerateCubeVertices(this, 111, x, y, z, Color.Magenta, geometry.OpaqueSubsetsByFace);
         }
 
         public override IEnumerable<int> GetCreativeValues()
