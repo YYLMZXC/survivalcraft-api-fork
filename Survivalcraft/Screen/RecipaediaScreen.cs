@@ -1,4 +1,5 @@
 using Engine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -64,6 +65,9 @@ namespace Game
 			{
 				if (m_blocksList.SelectedItem == item && item is int)
 				{
+					int value = (int)item;
+                    Block block = BlocksManager.Blocks[Terrain.ExtractContents(value)];
+                    ScreensManager.AddScreen("RecipaediaDescription", block.GetBlockDescriptionScreen(value));
 					ScreensManager.SwitchScreen("RecipaediaDescription", item, m_blocksList.Items.Cast<int>().ToList());
 				}
 			};

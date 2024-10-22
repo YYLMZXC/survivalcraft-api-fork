@@ -51,7 +51,13 @@ namespace Game
 			UpdateBlockProperties();
 		}
 
-		public override void Update()
+        public override void Leave()
+        {
+            base.Leave();
+			ScreensManager.m_screens.Remove("RecipaediaDescription");
+        }
+
+        public override void Update()
 		{
 			m_leftButtonWidget.IsEnabled = m_index > 0;
 			m_rightButtonWidget.IsEnabled = m_index < m_valuesList.Count - 1;
@@ -71,7 +77,7 @@ namespace Game
 			}
 		}
 
-		public Dictionary<string, string> GetBlockProperties(int value)
+		public virtual Dictionary<string, string> GetBlockProperties(int value)
 		{
 			var dictionary = new Dictionary<string, string>();
 			int num = Terrain.ExtractContents(value);
@@ -158,7 +164,7 @@ namespace Game
 			return dictionary;
 		}
 
-		public void UpdateBlockProperties()
+		public virtual void UpdateBlockProperties()
 		{
 			if (m_index >= 0 && m_index < m_valuesList.Count)
 			{
@@ -179,7 +185,9 @@ namespace Game
 					if (num2 < blockProperties.Count - (blockProperties.Count / 2))
 					{
 						LabelWidget propertyNames1Widget = m_propertyNames1Widget;
-						propertyNames1Widget.Text = propertyNames1Widget.Text + LanguageControl.Get(fName, item.Key) + ":\n";
+						String keyText = LanguageControl.Get(fName, item.Key) ?? item.Key;
+						//if (String.IsNullOrEmpty(keyText)) keyText = item.Key;
+                        propertyNames1Widget.Text = propertyNames1Widget.Text + keyText + ":\n";
 						LabelWidget propertyValues1Widget = m_propertyValues1Widget;
 						propertyValues1Widget.Text = propertyValues1Widget.Text + item.Value + "\n";
 					}

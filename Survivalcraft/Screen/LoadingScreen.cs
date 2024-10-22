@@ -347,10 +347,6 @@ namespace Game
 			});
 			AddLoadAction(delegate
 			{
-				AddScreen("RecipaediaDescription", new RecipaediaDescriptionScreen());
-			});
-			AddLoadAction(delegate
-			{
 				AddScreen("Bestiary", new BestiaryScreen());
 			});
 			AddLoadAction(delegate

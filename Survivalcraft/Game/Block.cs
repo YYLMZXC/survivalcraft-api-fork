@@ -737,5 +737,10 @@ namespace Game
 		{
 			return true;
 		}
+
+		public virtual RecipaediaDescriptionScreen GetBlockDescriptionScreen(int value)
+		{
+			return new RecipaediaDescriptionScreen();
+        }
     }
 }
