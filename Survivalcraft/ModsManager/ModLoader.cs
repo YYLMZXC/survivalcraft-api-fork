@@ -1020,5 +1020,10 @@ namespace Game
         {
             chosen = false;
         }
+
+        public virtual void LoadWorldInfoWidget(WorldInfo worldInfo, XElement savedWorldItemNode, ref ContainerWidget worldInfoWidget)
+        {
+
+        }
     }
 }

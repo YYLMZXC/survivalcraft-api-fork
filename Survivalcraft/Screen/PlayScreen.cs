@@ -2,6 +2,7 @@ using Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -23,6 +24,31 @@ namespace Game
 
 		public static string fName = "PlayScreen";
 
+		public Widget WorldInfoWidget(Object item)
+		{
+            var worldInfo = (WorldInfo)item;
+            XElement node2 = ContentManager.Get<XElement>("Widgets/SavedWorldItem");
+            var containerWidget = (ContainerWidget)LoadWidget(this, node2, null);
+            LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("WorldItem.Name");
+            LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("WorldItem.Details");
+            containerWidget.Tag = worldInfo;
+            labelWidget.Text = worldInfo.WorldSettings.Name;
+            labelWidget2.Text = string.Format("{0} | {1:dd MMM yyyy HH:mm} | {2} | {3} | {4}", DataSizeFormatter.Format(worldInfo.Size),
+                worldInfo.LastSaveTime.ToLocalTime(),
+                (worldInfo.PlayerInfos.Count > 1) ? string.Format(LanguageControl.GetContentWidgets(fName, 9), worldInfo.PlayerInfos.Count) : string.Format(LanguageControl.GetContentWidgets(fName, 10), 1),
+                LanguageControl.Get("GameMode", worldInfo.WorldSettings.GameMode.ToString()),
+                LanguageControl.Get("EnvironmentBehaviorMode", worldInfo.WorldSettings.EnvironmentBehaviorMode.ToString()));
+            if (worldInfo.SerializationVersion != VersionsManager.SerializationVersion)
+            {
+                labelWidget2.Text = labelWidget2.Text + " | " + (string.IsNullOrEmpty(worldInfo.SerializationVersion) ? LanguageControl.GetContentWidgets("Usual", "Unknown") : ("(" + worldInfo.SerializationVersion + ")"));
+            }
+			ModsManager.HookAction("LoadWorldInfoWidget", loader =>
+			{
+				loader.LoadWorldInfoWidget(worldInfo, node2, ref containerWidget);
+				return false;
+			});
+            return containerWidget;
+        }
 		public PlayScreen()
 		{
 			XElement node = ContentManager.Get<XElement>("Screens/PlayScreen");
@@ -32,26 +58,7 @@ namespace Game
 			m_newWorldButton = Children.Find<ButtonWidget>("NewWorld");
 			m_propertiesButton = Children.Find<ButtonWidget>("Properties");
 			ListPanelWidget worldsListWidget = m_worldsListWidget;
-			worldsListWidget.ItemWidgetFactory = (Func<object, Widget>)Delegate.Combine(worldsListWidget.ItemWidgetFactory, (Func<object, Widget>)delegate (object item)
-			{
-				var worldInfo = (WorldInfo)item;
-				XElement node2 = ContentManager.Get<XElement>("Widgets/SavedWorldItem");
-				var containerWidget = (ContainerWidget)LoadWidget(this, node2, null);
-				LabelWidget labelWidget = containerWidget.Children.Find<LabelWidget>("WorldItem.Name");
-				LabelWidget labelWidget2 = containerWidget.Children.Find<LabelWidget>("WorldItem.Details");
-				containerWidget.Tag = worldInfo;
-				labelWidget.Text = worldInfo.WorldSettings.Name;
-				labelWidget2.Text = string.Format("{0} | {1:dd MMM yyyy HH:mm} | {2} | {3} | {4}", DataSizeFormatter.Format(worldInfo.Size),
-					worldInfo.LastSaveTime.ToLocalTime(),
-					(worldInfo.PlayerInfos.Count > 1) ? string.Format(LanguageControl.GetContentWidgets(fName, 9), worldInfo.PlayerInfos.Count) : string.Format(LanguageControl.GetContentWidgets(fName, 10), 1),
-					LanguageControl.Get("GameMode", worldInfo.WorldSettings.GameMode.ToString()),
-					LanguageControl.Get("EnvironmentBehaviorMode", worldInfo.WorldSettings.EnvironmentBehaviorMode.ToString()));
-				if (worldInfo.SerializationVersion != VersionsManager.SerializationVersion)
-				{
-					labelWidget2.Text = labelWidget2.Text + " | " + (string.IsNullOrEmpty(worldInfo.SerializationVersion) ? LanguageControl.GetContentWidgets("Usual", "Unknown") : ("(" + worldInfo.SerializationVersion + ")"));
-				}
-				return containerWidget;
-			});
+			worldsListWidget.ItemWidgetFactory = (Func<object, Widget>)Delegate.Combine(worldsListWidget.ItemWidgetFactory, WorldInfoWidget);
 			m_worldsListWidget.ScrollPosition = 0f;
 			m_worldsListWidget.ScrollSpeed = 0f;
 			m_worldsListWidget.ItemClicked += delegate (object item)
