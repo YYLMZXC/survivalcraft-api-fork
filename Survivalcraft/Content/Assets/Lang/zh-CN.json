@@ -669,6 +669,7 @@
 		"Armor Durability": "盔甲耐久度",
 		"Insulation": "绝热性",
 		"Movement Speed": "移动速度",
+		"Dynamic Index": "动态索引",
 		"1": "是(最高{0})",
 		"2": "{0}天"
 	},
