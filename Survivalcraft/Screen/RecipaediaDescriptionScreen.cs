@@ -161,6 +161,11 @@ namespace Game
 				dictionary.Add("Insulation", $"{clothingData.Insulation:0.0} clo");
 				dictionary.Add("Movement Speed", $"{clothingData.MovementSpeedFactor * 100f:0}%");
 			}
+			ModsManager.HookAction("EditBlockDescriptionScreen", loader =>
+			{
+				loader.EditBlockDescriptionScreen(dictionary);
+				return false;
+			});
 			return dictionary;
 		}
 

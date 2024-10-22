@@ -1025,5 +1025,9 @@ namespace Game
         {
 
         }
+        public virtual void EditBlockDescriptionScreen(Dictionary<string, string> blockProperties)
+        {
+
+        }
     }
 }
