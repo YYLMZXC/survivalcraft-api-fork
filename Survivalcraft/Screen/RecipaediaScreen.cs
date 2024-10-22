@@ -118,12 +118,16 @@ namespace Game
 				m_categoryIndex = MathUtils.Min(m_categoryIndex + 1, m_categories.Count - 1);
 			}
 			if (value.HasValue && m_detailsButton.IsClicked)
-			{
-				ScreensManager.SwitchScreen("RecipaediaDescription", value.Value, m_blocksList.Items.Cast<int>().ToList());
+            {
+                Block block = BlocksManager.Blocks[Terrain.ExtractContents(value.Value)];
+                ScreensManager.m_screens["RecipaediaDescription"] = block.GetBlockDescriptionScreen(value.Value);
+                ScreensManager.SwitchScreen("RecipaediaDescription", value.Value, m_blocksList.Items.Cast<int>().ToList());
 			}
 			if (value.HasValue && m_recipesButton.IsClicked)
-			{
-				ScreensManager.SwitchScreen("RecipaediaRecipes", value.Value);
+            {
+                Block block = BlocksManager.Blocks[Terrain.ExtractContents(value.Value)];
+                ScreensManager.m_screens["RecipaediaRecipes"] = block.GetBlockRecipeScreen(value.Value);
+                ScreensManager.SwitchScreen("RecipaediaRecipes", value.Value);
 			}
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
 			{

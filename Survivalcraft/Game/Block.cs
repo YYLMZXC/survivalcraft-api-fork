@@ -742,5 +742,10 @@ namespace Game
 		{
 			return new RecipaediaDescriptionScreen();
         }
+
+		public virtual RecipaediaRecipesScreen GetBlockRecipeScreen(int value)
+		{
+			return new RecipaediaRecipesScreen();
+		}
     }
 }

@@ -51,12 +51,6 @@ namespace Game
 			UpdateBlockProperties();
 		}
 
-        public override void Leave()
-        {
-            base.Leave();
-			ScreensManager.m_screens.Remove("RecipaediaDescription");
-        }
-
         public override void Update()
 		{
 			m_leftButtonWidget.IsEnabled = m_index > 0;
