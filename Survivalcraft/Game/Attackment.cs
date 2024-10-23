@@ -16,7 +16,7 @@ namespace Game
             HitPoint = hitPoint;
             HitDirection = hitDirection;
             AttackPower = attackPower;
-            ComponentCreature attackerCreature = attacker.FindComponent<ComponentCreature>();
+            ComponentCreature attackerCreature = attacker?.FindComponent<ComponentCreature>();
             if (attackerCreature != null)
             {
                 string str = attackerCreature.KillVerbs[m_random.Int(0, attackerCreature.KillVerbs.Count - 1)];
