@@ -672,7 +672,7 @@ namespace Game
 				}
 				return MathUtils.Max(digResilience / num, 0f);
 			}
-			float num2 = 0f;
+			float num2 = 1f;
 			if (digBlockMethod == BlockDigMethod.Shovel)
 			{
 				num2 = ShovelPower;
