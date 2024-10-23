@@ -162,9 +162,19 @@ namespace Game
         /// <param name="attackPower"></param>
         /// <param name="isMeleeAttack"></param>
         /// <returns>false移交到下一个Mod处理,true不移交</returns>
+        [Obsolete("该方法已弃用，请使用ProcessAttackment")]
         public virtual bool AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, bool isMeleeAttack)
         {
             return false;
+        }
+
+        /// <summary>
+        /// 在攻击时执行
+        /// </summary>
+        /// <param name="attackment"></param>
+        public virtual void ProcessAttackment(Attackment attackment)
+        {
+
         }
 
         /// <summary>

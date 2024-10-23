@@ -168,8 +168,10 @@ namespace Game
         public virtual void ProcessAttackment()
         {
             if (DisableFriendlyFire()) return;
-            ModsManager.HookAction("AttackBody", modloader => {
-                return modloader.AttackBody(Target.FindComponent<ComponentBody>(), Attacker.FindComponent<ComponentCreature>(), HitPoint, HitDirection, ref AttackPower, this is MeleeAttackment); 
+            ModsManager.HookAction("ProcessAttackment", loader =>
+            {
+                loader.ProcessAttackment(this);
+                return false;
             });
             if (AttackPower > 0f)
             {
