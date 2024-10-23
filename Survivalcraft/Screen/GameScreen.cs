@@ -16,6 +16,7 @@ namespace Game
 			Window.Deactivated += delegate
 			{
 				GameManager.SaveProject(waitForCompletion: true, showErrorDialog: false);
+				GameManager.DisposeProject();
 			};
 		}
 
