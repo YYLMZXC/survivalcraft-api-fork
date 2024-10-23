@@ -40,6 +40,7 @@ namespace Game
 
 		public void CallNearbyCreaturesHelp(ComponentCreature target, float maxRange, float maxChaseTime, bool isPersistent)
 		{
+			if (target == null) return;
 			Vector3 position = target.ComponentBody.Position;
 			foreach (ComponentCreature creature in m_subsystemCreatureSpawn.Creatures)
 			{
