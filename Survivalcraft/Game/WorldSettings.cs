@@ -55,22 +55,23 @@ namespace Game
 
 		public void ResetOptionsForNonCreativeMode()
 		{
-			if (TerrainGenerationMode == TerrainGenerationMode.FlatContinent)
-			{
-				TerrainGenerationMode = TerrainGenerationMode.Continent;
-			}
-			if (TerrainGenerationMode == TerrainGenerationMode.FlatIsland)
-			{
-				TerrainGenerationMode = TerrainGenerationMode.Island;
-			}
-			EnvironmentBehaviorMode = EnvironmentBehaviorMode.Living;
+			EnvironmentBehaviorMode environmentBehaviorModeBefore = EnvironmentBehaviorMode;
+            EnvironmentBehaviorMode = EnvironmentBehaviorMode.Living;
+
+			TimeOfDayMode timeOfDayModeBefore = TimeOfDayMode;
 			TimeOfDayMode = TimeOfDayMode.Changing;
-			AreWeatherEffectsEnabled = true;
-			IsAdventureRespawnAllowed = true;
+
+			bool areWeatherEffectsEnabledBefore = AreWeatherEffectsEnabled;
+            AreWeatherEffectsEnabled = true;
+
+			bool areSurvivalMechanicsEnabledBefore = AreAdventureSurvivalMechanicsEnabled;
 			AreAdventureSurvivalMechanicsEnabled = true;
-			TerrainLevel = 64;
-			ShoreRoughness = 0.5f;
-			TerrainBlockIndex = 8;
+
+			ModsManager.HookAction("ResetOptionsForNonCreativeMode", loader =>
+			{
+				loader.ResetOptionsForNonCreativeMode(this, environmentBehaviorModeBefore, timeOfDayModeBefore, areWeatherEffectsEnabledBefore, areSurvivalMechanicsEnabledBefore);
+                return false;
+			});
 		}
 
 		public void Load(ValuesDictionary valuesDictionary)

@@ -1331,5 +1331,18 @@ namespace Game
         {
 
         }
+
+        /// <summary>
+        /// 在进行世界设置时，如果不是创造模式，则会修改设定
+        /// </summary>
+        /// <param name="worldSettings">要修改的世界设置</param>
+        /// <param name="environmentBehaviorModeBefore"></param>
+        /// <param name="timeOfDayModeBefore"></param>
+        /// <param name="areWeatherEffectsEnabledBefore"></param>
+        /// <param name="areSurvivalMechanicsEnabledBefore"></param>
+        public virtual void ResetOptionsForNonCreativeMode(WorldSettings worldSettings, EnvironmentBehaviorMode environmentBehaviorModeBefore, TimeOfDayMode timeOfDayModeBefore, bool areWeatherEffectsEnabledBefore, bool areSurvivalMechanicsEnabledBefore)
+        {
+
+        }
     }
 }
