@@ -487,7 +487,7 @@ namespace Game
 			MoveControlMode = MoveControlMode.Buttons;
 			HideMoveLookPads = false;
 			AllowInitialIntro = true;
-			DeleteWorldNeedToText = true;
+			DeleteWorldNeedToText = false;
 			BlocksTextureFileName = string.Empty;
 			LookControlMode = LookControlMode.EntireScreen;
 			FlipVerticalAxis = false;
