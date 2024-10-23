@@ -1240,7 +1240,8 @@ namespace Game
         /// </summary>
         /// <param name="componentDispenser">该发射器的Component</param>
         /// <param name="pickable">要发射的掉落物</param>
-        public virtual void OnDispenserDispense(ComponentDispenser componentDispenser, ref Pickable pickable)
+        /// <param name="RemoveSlotCount">移除发射器物品栏中物品数量</param>
+        public virtual void OnDispenserDispense(ComponentDispenser componentDispenser, ref Pickable pickable, ref int RemoveSlotCount)
         {
 
         }
@@ -1251,7 +1252,8 @@ namespace Game
         /// <param name="componentDispenser">该发射器的Component</param>
         /// <param name="projectile">要发射的弹射物</param>
         /// <param name="canDispensePickable">发射失败时，是否以掉落物的方式发射（即使不发射也会消耗）</param>
-        public virtual void OnDispenserShoot(ComponentDispenser componentDispenser, ref Projectile projectile, ref bool canDispensePickable)
+        /// <param name="RemoveSlotCount">移除发射器物品栏中物品数量</param>
+        public virtual void OnDispenserShoot(ComponentDispenser componentDispenser, ref Projectile projectile, ref bool canDispensePickable, ref int RemoveSlotCount)
         {
 
         }

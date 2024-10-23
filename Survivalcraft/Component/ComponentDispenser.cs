@@ -44,12 +44,18 @@ namespace Game
 				loader.DispenserChooseItemToDispense(this, ref num, ref slotValue, out bool chosen);
 				return chosen;
 			});
-			if(num >= 0)
+			if(num >= 0)//投掷的Slot
 			{
-                int num2 = RemoveSlotItems(num, 1);
-                for (int i = 0; i < num2; i++)
+				int num2 = 1;
+				int itemDispense = 0;
+                for (int i = 0; i < num2 && GetSlotCount(num) > 0; i++)
                 {
-                    DispenseItem(coordinates, direction, slotValue, mode);
+                    itemDispense = DispenseItem(coordinates, direction, slotValue, mode);
+					try
+					{
+                        RemoveSlotItems(num, itemDispense);
+					}
+					catch (Exception e) { }
                 }
             }
 		}
@@ -64,10 +70,11 @@ namespace Game
 			m_componentBlockEntity = Entity.FindComponent<ComponentBlockEntity>(throwOnError: true);
 		}
 
-		public virtual void DispenseItem(Point3 point, int face, int value, DispenserBlock.Mode mode)
+		public virtual int DispenseItem(Point3 point, int face, int value, DispenserBlock.Mode mode)
 		{
 			Vector3 vector = CellFace.FaceToVector3(face);
 			Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + (0.6f * vector);
+			int removeSlotCount = 1;
 			//投掷物品
 			if (mode == DispenserBlock.Mode.Dispense)
 			{
@@ -75,15 +82,15 @@ namespace Game
 				Pickable pickable = m_subsystemPickables.CreatePickable(value, 1, position, s * (vector + m_random.Vector3(0.2f)), null);
                 ModsManager.HookAction("OnDispenserDispensePickable", loader =>
 				{
-					loader.OnDispenserDispense(this, ref pickable);
+					loader.OnDispenserDispense(this, ref pickable, ref removeSlotCount);
 					return false;
                 });
 				if (pickable != null) {
 					m_subsystemPickables.AddPickable(pickable);
 					m_subsystemAudio.PlaySound("Audio/DispenserDispense", 1f, 0f, new Vector3(position.X, position.Y, position.Z), 3f, autoDelay: true);
-					return;
+					return removeSlotCount;
 				}
-				return;
+				return 0;
 			}
 			//发射物品
 			float s2 = m_random.Float(39f, 41f);
@@ -94,26 +101,27 @@ namespace Game
             projectile.OwnerEntity = Entity;
             ModsManager.HookAction("OnDispenserShoot", loader =>
             {
-                loader.OnDispenserShoot(this, ref projectile, ref canDispensePickable);
+                loader.OnDispenserShoot(this, ref projectile, ref canDispensePickable, ref removeSlotCount);
                 return false;
             });
-            if (canFireProjectile)
-            {
+			if (canFireProjectile)
+			{
 				if (projectile != null)
-                {
-                    m_subsystemProjectiles.FireProjectileFast(projectile);
-                    m_subsystemAudio.PlaySound("Audio/DispenserShoot", 1f, 0f, new Vector3(position.X, position.Y, position.Z), 4f, autoDelay: true);
-					return;
-                }
+				{
+					m_subsystemProjectiles.FireProjectileFast(projectile);
+					m_subsystemAudio.PlaySound("Audio/DispenserShoot", 1f, 0f, new Vector3(position.X, position.Y, position.Z), 4f, autoDelay: true);
+					return removeSlotCount;
+				}
 				else
 				{
-					return;
+					return 0;
 				}
 			}
-			else if(canDispensePickable)
+			else if (canDispensePickable)
 			{
-				DispenseItem(point, face, value, DispenserBlock.Mode.Dispense);
+				return DispenseItem(point, face, value, DispenserBlock.Mode.Dispense);
 			}
+			return 0;
 		}
 	}
 }
