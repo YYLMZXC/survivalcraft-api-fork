@@ -94,10 +94,7 @@ namespace Game
             m_blocks[Index] = block;
             BlockNameToIndex[block.GetType().Name] = Index;
             BlockTypeToIndex[block.GetType()] = Index;
-            if (block is FluidBlock fluidBlock)
-            {
-                m_fluidBlocks[Index] = fluidBlock;
-            }
+            
             //Engine.Log.Information("分配方块信息：Name = " + allocateData.Block.GetType().Name + ", Index = " + Index + ", 原始Index = " + allocateData.Block.BlockIndex);
             if (m_originalBlockIndex[Index] == 0)
                 m_originalBlockIndex[Index] = allocateData.Block.BlockIndex;
@@ -135,6 +132,10 @@ namespace Game
             {
                 m_blocks[i] = Activator.CreateInstance(m_blocks[i].GetType()) as Block;
                 if (!(m_blocks[i] is AirBlock)) m_blocks[i].BlockIndex = i;
+                if (m_blocks[i] is FluidBlock fluidBlock)
+                {
+                    m_fluidBlocks[i] = fluidBlock;
+                }
             }
         }
         public static void InitializeCategories()
