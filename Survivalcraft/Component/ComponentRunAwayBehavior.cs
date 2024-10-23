@@ -69,7 +69,7 @@ namespace Game
             LowHealthToEscape = valuesDictionary.GetValue<float>("LowHealthToEscape");
             m_componentCreature.ComponentHealth.Injured += delegate (ComponentCreature attacker)
 			{
-				RunAwayFrom(attacker.ComponentBody);
+				RunAwayFrom(attacker?.ComponentBody);
 			};
 			m_stateMachine.AddState("Inactive", delegate
 			{
