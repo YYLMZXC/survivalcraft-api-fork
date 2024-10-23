@@ -746,31 +746,82 @@ namespace Game
         public virtual void WindowModeChanged(WindowMode mode)
         {
         }
-
+        /// <summary>
+        /// 在执行DamageItem得到方块掉耐久后，得到的新方块值时执行
+        /// </summary>
+        /// <param name="block"></param>
+        /// <param name="oldValue">方块的旧值</param>
+        /// <param name="damageCount">损害的耐久量</param>
+        /// <param name="owner">方块的拥有者</param>
+        /// <param name="skipVanilla">跳过原版执行逻辑</param>
+        /// <returns></returns>
         public virtual int DamageItem(Block block, int oldValue, int damageCount, Entity owner, out bool skipVanilla)
         {
             skipVanilla = false;
             return 0;
         }
+        /// <summary>
+        /// 当射弹击中方块时执行
+        /// </summary>
+        /// <param name="projectile">射弹</param>
+        /// <param name="terrainRaycastResult">地形映射结果</param>
+        /// <param name="triggerBlocksBehavior">是否执行被命中的方块行为</param>
+        /// <param name="destroyCell">是否破坏被击中的方块</param>
+        /// <param name="impactSoundLoudness">发出的声音大小</param>
+        /// <param name="projectileGetStuck">射弹是否会被卡在方块里面</param>
+        /// <param name="velocityAfterHit">在击中方块后，射弹的速度</param>
+        /// <param name="angularVelocityAfterHit">在击中方块后，射弹的角速度</param>
         public virtual void OnProjectileHitTerrain(Projectile projectile, TerrainRaycastResult terrainRaycastResult, ref bool triggerBlocksBehavior, ref bool destroyCell, ref float impactSoundLoudness, ref bool projectileGetStuck, ref Vector3 velocityAfterHit, ref Vector3 angularVelocityAfterHit)
         {
 
         }
-
+        /// <summary>
+        /// 当射弹击中生物、船只等实体时执行
+        /// </summary>
+        /// <param name="projectile">射弹</param>
+        /// <param name="bodyRaycastResult">实体映射结果</param>
+        /// <param name="attackment">该射弹命中实体时，执行的攻击。可以调整attackment的攻击力等数据</param>
+        /// <param name="velocityAfterAttack">在击中方块后，射弹的速度</param>
+        /// <param name="angularVelocityAfterAttack">在击中方块后，射弹的角速度</param>
+        /// <param name="ignoreBody">射弹行进直接穿过该生物。射弹后续的更新会忽略该生物，速度和角速度保持原状。攻击照常执行。</param>
         public virtual void OnProjectileHitBody(Projectile projectile, BodyRaycastResult bodyRaycastResult, ref Attackment attackment, ref Vector3 velocityAfterAttack, ref Vector3 angularVelocityAfterAttack, ref bool ignoreBody)
         {
 
         }
 
+        /// <summary>
+        /// 绘制射弹的时候执行
+        /// </summary>
+        /// <param name="projectile">射弹</param>
+        /// <param name="subsystemProjectiles">该子系统，可以从中获取项目和其他子系统</param>
+        /// <param name="camera"></param>
+        /// <param name="drawOrder"></param>
+        /// <param name="shouldDrawBlock">是否执行原版绘制方块的方法</param>
+        /// <param name="drawBlockSize">绘制方块大小</param>
+        /// <param name="drawBlockColor">绘制方块颜色</param>
         public virtual void OnProjectileDraw(Projectile projectile, SubsystemProjectiles subsystemProjectiles, Camera camera, int drawOrder, ref bool shouldDrawBlock, ref float drawBlockSize, ref Color drawBlockColor)
         {
         }
 
+        /// <summary>
+        /// 射弹离开加载区块的时候执行
+        /// </summary>
+        /// <param name="projectile"></param>
         public virtual void OnProjectileFlyOutOfLoadedChunks(Projectile projectile)
         {
 
         }
 
+        /// <summary>
+        /// 绘制掉落物的时候执行
+        /// </summary>
+        /// <param name="pickable"></param>
+        /// <param name="subsystemPickables"></param>
+        /// <param name="camera"></param>
+        /// <param name="drawOrder"></param>
+        /// <param name="shouldDrawBlock">是否执行原版绘制方块的方法</param>
+        /// <param name="drawBlockSize"></param>
+        /// <param name="drawBlockColor"></param>
         public virtual void OnPickableDraw(Pickable pickable, SubsystemPickables subsystemPickables, Camera camera, int drawOrder, ref bool shouldDrawBlock, ref float drawBlockSize, ref Color drawBlockColor)
         {
         }
@@ -812,29 +863,69 @@ namespace Game
             doNotAdd = false;
         }
 
+        /// <summary>
+        /// 移除移动方块时触发
+        /// </summary>
+        /// <param name="movingBlockSet"></param>
+        /// <param name="subsystemMovingBlocks"></param>
         public virtual void OnMovingBlockSetRemoved(IMovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks)
         {
 
         }
 
+        /// <summary>
+        /// 在移动方块更新时触发
+        /// </summary>
+        /// <param name="movingBlockSet"></param>
+        /// <param name="subsystemMovingBlocks"></param>
+        /// <param name="skippedByOtherMods">是否已被其他模组抢先执行更新</param>
+        /// <param name="skipVanilla">是否跳过原版执行更新（抢先更新）</param>
         public virtual void OnMovingBlockSetUpdate(IMovingBlockSet movingBlockSet, SubsystemMovingBlocks subsystemMovingBlocks, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
         }
 
+        /// <summary>
+        /// 游戏中添加射弹时触发
+        /// </summary>
+        /// <param name="subsystemProjectiles"></param>
+        /// <param name="projectile"></param>
+        /// <param name="loadValuesDictionary">如果是加载世界过程中首次添加，那么会提供该射弹的相关ValuesDictionary；如果是游戏进行过程中添加，则为null</param>
         public virtual void OnProjectileAdded(SubsystemProjectiles subsystemProjectiles, ref Projectile projectile, ValuesDictionary loadValuesDictionary)
         {
 
         }
 
+        /// <summary>
+        /// 游戏中添加掉落物时触发
+        /// </summary>
+        /// <param name="subsystemPickables"></param>
+        /// <param name="pickable"></param>
+        /// <param name="loadValuesDictionary">如果是加载世界过程中首次添加，那么会提供该射弹的相关ValuesDictionary；如果是游戏进行过程中添加，则为null</param>
         public virtual void OnPickableAdded(SubsystemPickables subsystemPickables, ref Pickable pickable, ValuesDictionary loadValuesDictionary)
         {
 
         }
+
+        /// <summary>
+        /// 保存世界时，存储射弹信息
+        /// </summary>
+        /// <param name="subsystemProjectiles"></param>
+        /// <param name="projectile"></param>
+        /// <param name="valuesDictionary">存储射弹信息的ValuesDictionaey</param>
+        /// <exception cref="NotImplementedException"></exception>
         public virtual void SaveProjectile(SubsystemProjectiles subsystemProjectiles, Projectile projectile, ref ValuesDictionary valuesDictionary)
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// 保存世界时，存储掉落物信息
+        /// </summary>
+        /// <param name="subsystemPickables"></param>
+        /// <param name="pickable"></param>
+        /// <param name="valuesDictionary">存储掉落物信息的ValuesDictionary</param>
+        /// <exception cref="NotImplementedException"></exception>
         public virtual void SavePickable(SubsystemPickables subsystemPickables, Pickable pickable, ref ValuesDictionary valuesDictionary)
         {
             throw new NotImplementedException();
@@ -847,21 +938,42 @@ namespace Game
         /// <param name="digValue"></param>
         /// <param name="DurabilityReduction">挖掘方块所消耗工具的耐久</param>
         /// <param name="mute">挖掘方块是否取消播放音效</param>
-        /// <param name="PlayerDataDugAdd">是否增加玩家的挖掘方块计数</param>
+        /// <param name="PlayerDataDugAdd">是否增加玩家统计信息的挖掘方块计数</param>
         public virtual void OnBlockDug(ComponentMiner componentMiner, BlockPlacementData digValue, int cellValue, ref int DurabilityReduction, ref bool mute, ref int PlayerDataDugAdd)
         {
             mute = false;
         }
 
+        /// <summary>
+        /// 改变SubsystemTime的时间推移速度，偏向底层，一般开发者不必了解
+        /// </summary>
+        /// <param name="subsystemTime"></param>
+        /// <param name="dt"></param>
         public virtual void ChangeGameTimeDelta(SubsystemTime subsystemTime, ref float dt)
         {
 
         }
 
+        /// <summary>
+        /// 在IUpdateable添加或删除时执行，用于模组接管IUpdateable的更新行为
+        /// （如恒泰模组将动物放在多线程中进行更新，降低怪物数量多导致的卡顿）
+        /// </summary>
+        /// <param name="subsystemUpdate"></param>
+        /// <param name="updateable"></param>
+        /// <param name="ToAdd1OrRemove0">这个IUpdateable是准备添加的，该变量为1；这个IUpdateable是准备移除的，该变量为0</param>
+        /// <param name="skippedByOtherMods">是否已经被其他模组接管</param>
+        /// <param name="skip">宣布接管，则不会被原版的SubsystemUpdate执行Update()</param>
         public virtual void OnIUpdateableAddOrRemove(SubsystemUpdate subsystemUpdate, IUpdateable updateable, bool ToAdd1OrRemove0, bool skippedByOtherMods, out bool skip)
         {
             skip = false;
         }
+        /// <summary>
+        /// 在IDrawable添加或删除时执行，用于模组接管IDrawable的绘制行为
+        /// </summary>
+        /// <param name="subsystemDrawing"></param>
+        /// <param name="drawable"></param>
+        /// <param name="skippedByOtherMods">是否已经被其他模组接管</param>
+        /// <param name="skip">宣布接管，该IDrawable不会放入SubsystemDrawing.m_drawbles</param>
         public virtual void OnIDrawableAdded(SubsystemDrawing subsystemDrawing, IDrawable drawable, bool skippedByOtherMods, out bool skip)
         {
             skip = false;
@@ -899,7 +1011,6 @@ namespace Game
 
         }
 
-
         /// <summary>
         /// 当移动物品时执行。从sourceInventory的第sourceSlotIndex个格子，移动count个物品，到targetInventory的第targetSlotIndex个格子
         /// </summary>
@@ -911,32 +1022,63 @@ namespace Game
             moved = false;
         }
 
+        /// <summary>
+        /// 在InventorySlotWidget.HandleDragDrop时执行，先执行物品的修改操作
+        /// （比如原版火药拖到枪身上时执行上膛操作）
+        /// </summary>
+        /// <param name="inventorySlotWidget">目标格子的InventorySlotWidget</param>
+        /// <param name="sourceInventory"></param>
+        /// <param name="sourceSlotIndex"></param>
+        /// <param name="targetInventory"></param>
+        /// <param name="targetSlotIndex"></param>
+        /// <param name="ProcessCapacity">目标格子接受物品的数量。设置为不大于0的数相当于跳过原版逻辑</param>
         public virtual void HandleInventoryDragProcess(InventorySlotWidget inventorySlotWidget, IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex, ref int ProcessCapacity)
         {
         }
 
+        /// <summary>
+        /// 在InventorySlotWidget.HandleDragDrop时执行，如果物品没有修改操作，则执行移动物品操作
+        /// </summary>
+        /// <param name="inventorySlotWidget">目标格子的InventorySlotWidget</param>
+        /// <param name="sourceInventory"></param>
+        /// <param name="sourceSlotIndex"></param>
+        /// <param name="targetInventory"></param>
+        /// <param name="targetSlotIndex"></param>
+        /// <param name="skippedByOtherMods">执行逻辑是否已经被其他模组跳过</param>
+        /// <param name="skip">跳过原版的执行逻辑</param>
         public virtual void HandleInventoryDragMove(InventorySlotWidget inventorySlotWidget, IInventory sourceInventory, int sourceSlotIndex, IInventory targetInventory, int targetSlotIndex, bool skippedByOtherMods, out bool skip)
         {
             skip = false;
         }
 
-        public virtual int GetInventorySlotCapacity(int slotIndex, int value)
-        {
-            return -1073741824;
-        }
-        public virtual int GetInventorySlotProcessCapacity(int slotIndex, int value)
-        {
-            return -1073741824;
-        }
+        /// <summary>
+        /// 在玩家骑上坐骑时每帧执行，用于调整玩家骑行动物时的控制逻辑
+        /// </summary>
+        /// <param name="componentPlayer"></param>
+        /// <param name="skippedByOtherMods">是否已经被其他模组跳过逻辑</param>
+        /// <param name="skipVanilla">跳过原版执行操作</param>
         public virtual void OnPlayerControlSteed(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
         }
+
+        /// <summary>
+        /// 在玩家乘坐船时每帧执行，用于调整玩家乘船时的控制逻辑
+        /// </summary>
+        /// <param name="componentPlayer"></param>
+        /// <param name="skippedByOtherMods">是否已经被其他模组跳过逻辑</param>
+        /// <param name="skipVanilla">跳过原版执行操作</param>
         public virtual void OnPlayerControlBoat(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
         }
 
+        /// <summary>
+        /// 当玩家既不在坐骑上，也不在船上时执行，用于控制玩家行走的控制逻辑
+        /// </summary>
+        /// <param name="componentPlayer"></param>
+        /// <param name="skippedByOtherMods">是否已经被其他模组跳过逻辑</param>
+        /// <param name="skipVanilla">跳过原版执行操作</param>
         public virtual void OnPlayerControlWalk(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
@@ -947,97 +1089,232 @@ namespace Game
         /// <param name="componentPlayer"></param>
         /// <param name="playerOperated">为true则停止之后的挖掘、攻击等操作</param>
         /// <param name="timeIntervalLastActionTime">距离上一次触发该操作距离的时长</param>
-        /// <param name="priorityUse">控制使用优先级</param>
-        /// <param name="priorityInteract">控制交互优先级</param>
-        /// <param name="priorityPlace">控制放置优先级</param>
+        /// <param name="priorityUse">控制使用优先级，使用优先级小于等于0则禁止玩家使用手中物品</param>
+        /// <param name="priorityInteract">控制交互优先级，交互优先级小于等于0则禁止玩家交互方块</param>
+        /// <param name="priorityPlace">控制放置优先级，放置优先级小于等于0则禁止玩家放置方块</param>
         public virtual void OnPlayerInputInteract(ComponentPlayer componentPlayer, ref bool playerOperated, ref double timeIntervalLastActionTime, ref int priorityUse, ref int priorityInteract, ref int priorityPlace)
         {
 
         }
+
+        /// <summary>
+        /// 在玩家正在瞄准时执行
+        /// </summary>
+        /// <param name="componentPlayer"></param>
+        /// <param name="aiming">是否正在瞄准</param>
+        /// <param name="playerOperated">为true则停止之后的挖掘、攻击等操作</param>
+        /// <param name="timeIntervalAim">和上一次执行瞄准操作，要求的最小时间间隔</param>
+        /// <param name="skippedByOtherMods">是否已经被其他模组跳过逻辑</param>
+        /// <param name="skipVanilla">跳过原版执行操作（为了模组间兼容性，建议只在手持自己模组方块时这样做）</param>
         public virtual void UpdatePlayerInputAim(ComponentPlayer componentPlayer, bool aiming, ref bool playerOperated, ref float timeIntervalAim, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
         }
-        //在玩家执行“攻击”动作时执行，比如恒泰左键放箭，工业左键点击船
+
+        /// <summary>
+        /// 在玩家执行“攻击”动作时执行，比如恒泰左键放箭，工业左键点击船
+        /// </summary>
+        /// <param name="componentPlayer"></param>
+        /// <param name="playerOperated">为true则停止之后的挖掘操作</param>
+        /// <param name="timeIntervalHit">和上一次输入攻击操作，要求的最小时间间隔，小于该间隔时输入无效。（注意和ComponentMiner.HitInterval作区分）</param>
+        /// <param name="meleeAttackRange">近战攻击距离，小于等于0时表示不进行近战操作（比如手持弓时近战距离改为0，就不会拿着弓拍敌人）</param>
+        /// <param name="skippedByOtherMods">是否已经被其他模组跳过逻辑</param>
+        /// <param name="skipVanilla">跳过原版执行操作（为了模组间兼容性，建议只在手持自己模组方块时这样做）</param>
         public virtual void OnPlayerInputHit(ComponentPlayer componentPlayer, ref bool playerOperated, ref double timeIntervalHit, ref float meleeAttackRange, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
         }
+
+        /// <summary>
+        /// 在玩家执行“挖掘”动作时执行
+        /// </summary>
+        /// <param name="componentPlayer"></param>
+        /// <param name="digging">玩家是否正在挖掘</param>
+        /// <param name="playerOperated">为true则停止之后的创造模式中键选择物品等操作</param>
+        /// <param name="timeIntervalDig">和上一次执行挖掘操作，要求的最小时间间隔。将该值降低可以像恒泰那样极速挖掘</param>
+        /// <param name="skippedByOtherMods">是否已经被其他模组跳过逻辑</param>
+        /// <param name="skipVanilla">跳过原版执行操作（为了模组间兼容性，建议只在手持自己模组方块时这样做）</param>
         public virtual void UpdatePlayerInputDig(ComponentPlayer componentPlayer, bool digging, ref bool playerOperated, ref double timeIntervalDig, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
         }
+
+        /// <summary>
+        /// 在玩家电脑上“按Q释放剑弃”时执行
+        /// </summary>
+        /// <param name="componentPlayer"></param>
+        /// <param name="skippedByOtherMods"></param>
+        /// <param name="skipVanilla"></param>
         public virtual void OnPlayerInputDrop(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)
         {
             skipVanilla = false;
         }
+
+        /// <summary>
+        /// 在闪电劈下时执行
+        /// </summary>
+        /// <param name="subsystemSky"></param>
+        /// <param name="targetPosition">闪电劈下的位置</param>
+        /// <param name="strike">是否能成功执行</param>
+        /// <param name="explosionPressure">闪电的爆炸威力</param>
+        /// <param name="setBodyOnFire">是否点燃目标</param>
         public virtual void OnLightningStrike(SubsystemSky subsystemSky, ref Vector3 targetPosition, ref bool strike, ref float explosionPressure, ref bool setBodyOnFire)
         {
 
         }
 
+        /// <summary>
+        /// 用于调整原版已有矿物、水域、植物等地形地貌的生成，例如减少原版矿物生成量
+        /// </summary>
         public virtual void OnTerrainBrushesCreated()
         {
 
         }
 
+        /// <summary>
+        /// 在创建世界时寻找玩家的初步生成大致位置
+        /// </summary>
+        /// <param name="spawnPosition">玩家初步生成大致位置</param>
         public virtual void FindCoarseSpawnPostion(ref Vector3 spawnPosition)
         {
 
         }
 
+        /// <summary>
+        /// 在动物执行近战攻击命中目标时执行
+        /// </summary>
+        /// <param name="componentChaseBehavior"></param>
+        /// <param name="chaseTimeBefore">在攻击之前的剩余追逐时间</param>
+        /// <param name="chaseTime">在攻击之后的剩余追逐时间</param>
+        /// <param name="hitBody">是否能够攻击</param>
+        /// <param name="playAttackSound">是否发出攻击音效</param>
         public virtual void OnChaseBehaviorAttacked(ComponentChaseBehavior componentChaseBehavior, float chaseTimeBefore, ref float chaseTime, ref bool hitBody, ref bool playAttackSound)
         {
 
         }
 
+        /// <summary>
+        /// 在动物执行近战攻击没有命中目标时执行
+        /// </summary>
+        /// <param name="componentChaseBehavior"></param>
+        /// <param name="chaseTime">在攻击之后的剩余追逐时间</param>
         public virtual void OnChaseBehaviorAttackFailed(ComponentChaseBehavior componentChaseBehavior, ref float chaseTime)
         {
 
         }
+
+        /// <summary>
+        /// 计算动物的坠落伤害
+        /// </summary>
+        /// <param name="componentHealth">生物的ComponentHealth，至于坠落速度等信息则从ComponentHealth出发寻找</param>
+        /// <param name="damage">坠落伤害</param>
         public virtual void CalculateFallDamage(ComponentHealth componentHealth, ref float damage)
         {
         }
 
+        /// <summary>
+        /// 在动物晕眩或死亡时执行移动
+        /// </summary>
+        /// <param name="componentLocomotion"></param>
+        /// <param name="fallsOnDeathOrStun">在晕眩或死亡时是否坠落</param>
         public virtual void OnLocomotionStopped(ComponentLocomotion componentLocomotion, ref bool fallsOnDeathOrStun)
         {
 
         }
 
+        /// <summary>
+        /// 在ComponentLocomotion加载时执行
+        /// </summary>
+        /// <param name="componentLocomotion"></param>
+        /// <param name="mobWalkSpeedFactor">非玩家生物的移速乘数</param>
+        /// <param name="mobFlySpeedFactor">非玩家生物的飞行速度乘数</param>
+        /// <param name="mobSwimSpeedFactor">非玩家生物的游泳速度乘数</param>
+        /// <param name="disableCreativeFlyInSurvivalMode">是否在生存模式中停止创造飞行（通常发生在创造模式切换到生存模式中）</param>
         public virtual void OnComponentLocomotionLoaded(ComponentLocomotion componentLocomotion, ref float mobWalkSpeedFactor, ref float mobFlySpeedFactor, ref float mobSwimSpeedFactor, ref bool disableCreativeFlyInSurvivalMode)
         {
 
         }
+
+        /// <summary>
+        /// 在发射器投掷物品时执行
+        /// </summary>
+        /// <param name="componentDispenser">该发射器的Component</param>
+        /// <param name="pickable">要发射的掉落物</param>
         public virtual void OnDispenserDispense(ComponentDispenser componentDispenser, ref Pickable pickable)
         {
 
         }
-        public virtual void OnDispenserShoot(ComponentDispenser componentDispenser, ref Projectile projectile)
+
+        /// <summary>
+        /// 在发射器弹射物品时执行
+        /// </summary>
+        /// <param name="componentDispenser">该发射器的Component</param>
+        /// <param name="projectile">要发射的弹射物</param>
+        /// <param name="canDispensePickable">发射失败时，是否以掉落物的方式发射（即使不发射也会消耗）</param>
+        public virtual void OnDispenserShoot(ComponentDispenser componentDispenser, ref Projectile projectile, ref bool canDispensePickable)
         {
 
         }
+
+        /// <summary>
+        /// 发射器选择消耗哪一个物品进行发射
+        /// </summary>
+        /// <param name="componentDispenser"></param>
+        /// <param name="slot">选择消耗哪一个格子的物品</param>
+        /// <param name="value">选择发射什么物品</param>
+        /// <param name="chosen">是否已经选择。若已经选择，则会跳过后面模组中执行。为了兼容性，仅推荐发射器在有自己模组方块的时候才执行</param>
         public virtual void DispenserChooseItemToDispense(ComponentDispenser componentDispenser, ref int slot, ref int value, out bool chosen)
         {
             chosen = false;
         }
 
+        /// <summary>
+        /// 在世界选择列表时，调整存档的外观
+        /// </summary>
+        /// <param name="worldInfo">世界信息</param>
+        /// <param name="savedWorldItemNode">存储世界信息的XElement</param>
+        /// <param name="worldInfoWidget">要修改的Widget</param>
         public virtual void LoadWorldInfoWidget(WorldInfo worldInfo, XElement savedWorldItemNode, ref ContainerWidget worldInfoWidget)
         {
 
         }
+
+        /// <summary>
+        /// 在方块介绍页面中，增加或减少方块的属性字段
+        /// </summary>
+        /// <param name="blockProperties"></param>
         public virtual void EditBlockDescriptionScreen(Dictionary<string, string> blockProperties)
         {
 
         }
+
+        /// <summary>
+        /// 在合成表页面时每帧更新时，编辑该页面
+        /// </summary>
+        /// <param name="screen"></param>
         public virtual void EditRecipeScreenWidget(RecipaediaRecipesScreen screen)
         {
 
         }
 
+        /// <summary>
+        /// 在生物图鉴页面每帧更新时，编辑该页面
+        /// </summary>
+        /// <param name="bestiaryDescriptionScreen"></param>
+        /// <param name="bestiaryCreatureInfo">该生物的基础信息</param>
+        /// <param name="entityValuesDictionary">该生物在Database中的ValuesDictionary</param>
         public virtual void UpdateCreaturePropertiesInBestiaryDescriptionScreen(BestiaryDescriptionScreen bestiaryDescriptionScreen, BestiaryCreatureInfo bestiaryCreatureInfo, ValuesDictionary entityValuesDictionary)
         {
 
         }
+
+        /// <summary>
+        /// 在生物图鉴目录列表更新该条目时，编辑该条目
+        /// </summary>
+        /// <param name="bestiaryScreen"></param>
+        /// <param name="creatureInfoWidget">可以更改的生物信息Widget</param>
+        /// <param name="bestiaryCreatureInfo">该生物的基础信息</param>
+        /// <param name="entityValuesDictionary">该生物在Database中的ValuesDictioanry</param>
         public virtual void LoadCreatureInfoInBestiaryScreen(BestiaryScreen bestiaryScreen, ContainerWidget creatureInfoWidget, BestiaryCreatureInfo bestiaryCreatureInfo, ValuesDictionary entityValuesDictionary)
         {
 

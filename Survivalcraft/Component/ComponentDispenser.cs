@@ -87,16 +87,18 @@ namespace Game
 			}
 			//·¢ÉäÎïÆ·
 			float s2 = m_random.Float(39f, 41f);
-            if (m_subsystemProjectiles.CanFireProjectile(value, position, vector, null, out Vector3 position2))
+			bool canFireProjectile = m_subsystemProjectiles.CanFireProjectile(value, position, vector, null, out Vector3 position2);
+			bool canDispensePickable = true;
+            Projectile projectile = m_subsystemProjectiles.CreateProjectile(value, position2, s2 * (vector + m_random.Vector3(0.025f) + new Vector3(0f, 0.05f, 0f)), Vector3.Zero, null);
+            projectile.Creator = this;
+            projectile.OwnerEntity = Entity;
+            ModsManager.HookAction("OnDispenserShoot", loader =>
             {
-                Projectile projectile = m_subsystemProjectiles.CreateProjectile(value, position2, s2 * (vector + m_random.Vector3(0.025f) + new Vector3(0f, 0.05f, 0f)), Vector3.Zero, null);
-                projectile.Creator = this;
-				projectile.OwnerEntity = Entity;
-                ModsManager.HookAction("OnDispenserShoot", loader =>
-                {
-					loader.OnDispenserShoot(this, ref projectile);
-                    return false;
-                });
+                loader.OnDispenserShoot(this, ref projectile, ref canDispensePickable);
+                return false;
+            });
+            if (canFireProjectile)
+            {
 				if (projectile != null)
                 {
                     m_subsystemProjectiles.FireProjectileFast(projectile);
@@ -108,7 +110,7 @@ namespace Game
 					return;
 				}
 			}
-			else
+			else if(canDispensePickable)
 			{
 				DispenseItem(point, face, value, DispenserBlock.Mode.Dispense);
 			}
