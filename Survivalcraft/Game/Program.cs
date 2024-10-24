@@ -140,7 +140,7 @@ namespace Game
 		public static void Initialize()
 		{
 			Log.Information(
-				$"Survivalcraft starting up at {DateTime.Now}, Version={VersionsManager.Version}, BuildConfiguration={VersionsManager.BuildConfiguration}, Platform={VersionsManager.Platform}, Storage.AvailableFreeSpace={Storage.FreeSpace / 1024 / 1024}MB, ApproximateScreenDpi={ScreenResolutionManager.ApproximateScreenDpi:0.0}, ApproxScreenInches={ScreenResolutionManager.ApproximateScreenInches:0.0}, ScreenResolution={Window.Size}, ProcessorsCount={Environment.ProcessorCount}, RAM={Utilities.GetTotalAvailableMemory() / 1024 / 1024}MB, 64bit={Marshal.SizeOf<IntPtr>() == 8}");
+				$"Survivalcraft starting up at {DateTime.Now}, GameVersion={VersionsManager.Version}, BuildConfiguration={VersionsManager.BuildConfiguration}, Platform={VersionsManager.Platform}, Storage.AvailableFreeSpace={Storage.FreeSpace / 1024 / 1024}MB, ApproximateScreenDpi={ScreenResolutionManager.ApproximateScreenDpi:0.0}, ApproxScreenInches={ScreenResolutionManager.ApproximateScreenInches:0.0}, ScreenResolution={Window.Size}, ProcessorsCount={Environment.ProcessorCount}, APIVersion={ModsManager.ApiVersionString}, 64bit={Environment.Is64BitProcess}");
 			try
 			{
 				SettingsManager.Initialize();
@@ -226,8 +226,8 @@ namespace Game
 			catch (Exception e2)
 			{
 				if (GameManager.Project != null) GameManager.DisposeProject();
+				Log.Error(e2);
 				ExceptionManager.ReportExceptionToUser(null, e2);
-				Log.Error("sine:" + e2);
 				ScreensManager.SwitchScreen("MainMenu");
 			}
 		}

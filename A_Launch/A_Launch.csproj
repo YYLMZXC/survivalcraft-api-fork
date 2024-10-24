@@ -60,6 +60,8 @@
 	<AndroidAsset Include="..\Survivalcraft\Content.zip">
 	  <Link>Assets\Content.zip</Link>
 	</AndroidAsset>
+	<PackageReference Include="System.Net.Http" Version="4.3.4" />
+	<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 	<ProjectReference Include="..\Survivalcraft_android\A_Survivalcraft.csproj" />
 	<Using Include="Engine" />
 	<Using Include="Game" />

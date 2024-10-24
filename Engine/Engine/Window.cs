@@ -397,7 +397,8 @@ namespace Engine
             UnsubscribeFromEvents();
             DisposeAll();
             m_gameWindow.Dispose();
-            m_gameWindow = null;
+            //m_gameWindow = null;
+            Environment.Exit(0);
         }
 #else
         public static void Run(int width = 0, int height = 0, WindowMode windowMode = WindowMode.Fullscreen, string title = "")

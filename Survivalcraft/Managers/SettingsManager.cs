@@ -535,7 +535,7 @@ namespace Game
 				MinimumDragDistance = 10f;
 			}
 			if (VersionsManager.CompareVersions(LastLaunchedVersion, "2.2") < 0)
-			{
+			{/*
 				if (Utilities.GetTotalAvailableMemory() < 524288000)
 				{
 					VisibilityRange = MathUtils.Min(64, VisibilityRange);
@@ -543,7 +543,7 @@ namespace Game
 				else if (Utilities.GetTotalAvailableMemory() < 1048576000)
 				{
 					VisibilityRange = MathUtils.Min(112, VisibilityRange);
-				}
+				}*/
 			}
 			Window.Deactivated += delegate
 			{

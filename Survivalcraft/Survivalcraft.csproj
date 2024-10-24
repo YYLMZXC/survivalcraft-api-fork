@@ -79,6 +79,9 @@
 		<Compile Remove="Resources\Resource.designer.cs" Condition="'$(TargetFramework)' == 'net8.0-android'" />
         <PackageReference Include="Jint" Version="4.0.3" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0-rc.2.24473.5" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
+        <PackageReference Include="System.Net.Http" Version="4.3.4" />
+        <PackageReference Include="System.Private.Uri" Version="4.3.2" />
+        <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
         <PackageReference Include="TextCopy" Version="6.2.1" Condition="'$(TargetFramework)' == 'net8.0-windows'" />
         <PackageReference Include="NAudio.Flac.Unknown.Mod" Version="1.0.3" PrivateAssets="all" />
         <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs" />
