@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Engine.Input;
+using OpenTK;
 
 #if WINDOWS
 using ImeSharp;
@@ -29,6 +30,7 @@ namespace Game
 
 		public static event Action<Uri> HandleUri;
 		public static string Title = "生存战争2.3插件版_";
+		private static Timer BackTimer;
 
 #if WINDOWS
 		private static void Main(string[] args)
@@ -63,7 +65,7 @@ namespace Game
 			//];
 		}
 #endif
-		
+
 		[STAThread]
 		public static void EntryPoint()
 		{
@@ -125,7 +127,7 @@ namespace Game
 		{
 			if (Time.FrameIndex < 0)
 			{
-				Display.Clear(Vector4.Zero, 1f);
+				Display.Clear(Engine.Vector4.Zero, 1f);
 			}
 			else if (Time.FrameIndex == 0)
 			{
@@ -133,7 +135,7 @@ namespace Game
 			}
 			else
 			{
-				Run();
+				FrontRun();
 			}
 		}
 
@@ -148,6 +150,8 @@ namespace Game
 				ExternalContentManager.Initialize();
 				MusicManager.Initialize();
 				ScreensManager.Initialize();
+				//使用定时器，相较于taskrun+循环等待结构防止执行时间影响周期时长
+				BackTimer = new Timer(BackRun,null,0,83);
 				Log.Information("Program Initialize Success");
 			}
 			catch (Exception e)
@@ -155,8 +159,13 @@ namespace Game
 				Log.Error(e.Message);
 			}
 		}
+		public static void BackRun(object o)//拖动窗口时不会阻塞的线程
+		{
+			MusicManager.Update();
+			JsInterface.Update();
+		}
 
-		public static void Run()
+		public static void FrontRun()
 		{
 #if ANDROID
 			// TODO: 待完成。
@@ -172,7 +181,6 @@ namespace Game
 					? WindowMode.Resizable
 					: WindowMode.Fullscreen;
 			}
-
 			try
 			{
 				if (ExceptionManager.Error == null)
@@ -181,14 +189,11 @@ namespace Game
 					{
 						HandleUri?.Invoke(obj);
 					}
-
 					m_urisToHandle.Clear();
 					PerformanceManager.Update();
 					MotdManager.Update();
-					MusicManager.Update();
 					ScreensManager.Update();
 					DialogsManager.Update();
-					JsInterface.Update();
 				}
 				else
 				{
@@ -207,7 +212,6 @@ namespace Game
 				DialogsManager.ShowDialog(null, dialog);
 				GameManager.DisposeProject();
 			}
-
 			m_cpuEndTime = Time.RealTime;
 			try
 			{
