@@ -14,4 +14,12 @@ namespace Game
             Attackment = attackment;
         }
     }
+
+    public class FireInjury : Injury
+    {
+        public FireInjury(float amount, ComponentCreature attacker) : base(amount, attacker, false, LanguageControl.Get(typeof(ComponentHealth).Name, 5))
+        {
+
+        }
+    }
 }

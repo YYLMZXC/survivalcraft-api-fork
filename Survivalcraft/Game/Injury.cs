@@ -30,7 +30,7 @@ namespace Game
             }
         }
 
-        public ComponentCreature Attacker
+        public virtual ComponentCreature Attacker
         {
             get
             {
@@ -43,6 +43,7 @@ namespace Game
             }
         }
 
+        public virtual ComponentPlayer AttackerPlayer => Attacker as ComponentPlayer;
         public virtual void AddPlayerStats()
         {
             if (ComponentHealth.m_componentCreature.PlayerStats != null)
@@ -77,8 +78,7 @@ namespace Game
                 Health = MathUtils.Max(Health - Amount, 0f);
             }
             ComponentCreature attacker = Attacker;
-            if (attacker != null) ComponentHealth.Injured?.Invoke(attacker);
-            ComponentHealth.InjuredByEntity?.Invoke(Attackment?.Attacker);
+            ComponentHealth.Injured?.Invoke(this);
         }
     }
 }

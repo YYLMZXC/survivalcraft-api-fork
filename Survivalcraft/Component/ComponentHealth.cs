@@ -176,10 +176,9 @@ namespace Game
 
         public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-        public virtual Action<ComponentCreature> Attacked { get; set; }
-        public virtual Action<ComponentCreature> Injured { get; set; }
-        public virtual Action<Entity> AttackedByEntity { get; set; }
-        public virtual Action<Entity> InjuredByEntity { get; set; }
+        [Obsolete("Use ComponentHealth.Injured instead of attacked.")]
+        public virtual Action<ComponentCreature> Attacked {  get; set; }
+        public virtual Action<Injury> Injured { get; set; }
 
         public virtual void Heal(float amount)
         {
@@ -365,7 +364,7 @@ namespace Game
                 {
                     float num7 = 1f / FireResilience;
                     num7 /= m_componentFactors?.ResilienceFactor ?? 1;
-                    Injure(num7, m_componentOnFire.Attacker, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 5));
+                    Injure(new FireInjury(num7, m_componentOnFire.Attacker));
                 }
                 //”„¿‡∏È«≥…À∫¶
                 if (num5 && CanStrand && m_componentCreature.ComponentBody.ImmersionFactor < 0.25f && (m_componentCreature.ComponentBody.StandingOnValue != 0 || m_componentCreature.ComponentBody.StandingOnBody != null))

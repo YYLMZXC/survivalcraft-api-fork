@@ -248,8 +248,8 @@ namespace Game
 		public virtual Action<ComponentBody> CollidedWithBody { get; set; }
 
 		public virtual Action<IMovingBlockSet> CollidedWithMovingBlock { get; set; }
-
-		static ComponentBody()
+        public virtual Action<Attackment> Attacked { get; set; }
+        static ComponentBody()
 		{
 			List<Vector3> list = [];
 			for (int i = -2; i <= 2; i++)

@@ -119,8 +119,6 @@ namespace Game
                 float num2 = (healthBeforeAttack - componentHealth.Health) * componentHealth.AttackResilience;
                 AddHitValueParticleSystem(num2);
             }
-            if (attackerCreature != null) componentHealth.Attacked?.Invoke(attackerCreature);
-            componentHealth.AttackedByEntity?.Invoke(Attacker);
         }
         public virtual void ProcessAttackmentToNonCreature()
         {
@@ -191,6 +189,8 @@ namespace Game
                         ProcessAttackmentToNonCreature();
                     }
                 }
+                ComponentBody componentBody = Target.FindComponent<ComponentBody>();
+                componentBody?.Attacked?.Invoke(this);
             }
             ModsManager.HookAction("AttackPowerParameter", modloader =>
             {

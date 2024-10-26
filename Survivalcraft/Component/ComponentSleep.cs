@@ -172,7 +172,7 @@ namespace Game
 			m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
 			m_sleepStartTime = valuesDictionary.GetValue<double>("SleepStartTime");
 			m_allowManualWakeUp = valuesDictionary.GetValue<bool>("AllowManualWakeUp");
-			m_componentPlayer.ComponentHealth.Attacked += delegate (ComponentCreature attacker)
+			m_componentPlayer.ComponentBody.Attacked += delegate (Attackment attackment)
 			{
 				if (IsSleeping && m_componentPlayer.ComponentVitalStats.Sleep > 0.25f)
 				{
