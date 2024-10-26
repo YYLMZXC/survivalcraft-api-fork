@@ -111,7 +111,7 @@ namespace Game
             if (componentHealth == null || componentBody == null) return;
             float injuryAmount = CalculateInjuryAmount();
             float healthBeforeAttack = componentHealth.Health;
-            componentHealth.InjureEntity(injuryAmount, Attacker, ignoreInvulnerability: false, CauseOfDeath);
+            componentHealth.Injure(new AttackInjury(injuryAmount, this));
             if (injuryAmount > 0f)
             {
                 Target.Project.FindSubsystem<SubsystemAudio>()?.PlayRandomSound(AttackSoundName, AttackSoundVolume, AttackSoundPitch, componentBody.Position, 4f, autoDelay: false);

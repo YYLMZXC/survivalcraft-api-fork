@@ -352,7 +352,7 @@ namespace Game
         /// <summary>
         /// 计算生物收到伤害的量
         /// </summary>
-        public virtual void CalculateCreatureInjuryAmount(ComponentHealth componentHealth, ref float amount, ref Entity attacker, ref bool ignoreInvulnerability, ref string cause)
+        public virtual void CalculateCreatureInjuryAmount(Injury injury)
         {
 
         }
@@ -363,7 +363,7 @@ namespace Game
 		/// 通常用于各种模组的“不死图腾”机制
         /// </summary>
         /// <param name="componentHealth"></param>
-        public virtual void OnCreatureDying(ComponentHealth componentHealth, Entity attacker, bool ignoreInvulnerability, string cause)
+        public virtual void OnCreatureDying(ComponentHealth componentHealth, Injury injury)
         {
 
         }
@@ -372,7 +372,7 @@ namespace Game
         /// 在动物收到Injure()且生命值低于0时，执行操作。
         /// </summary>
         /// <param name="componentHealth"></param>
-        public virtual void OnCreatureDied(ComponentHealth componentHealth, Entity attacker, bool ignoreInvulnerability, ref int experienceOrbDrop, ref bool CalculateInKill, string cause)
+        public virtual void OnCreatureDied(ComponentHealth componentHealth, Injury injury, ref int experienceOrbDrop, ref bool CalculateInKill)
         {
 
         }

@@ -2147,6 +2147,9 @@
     <Compile Include="..\Survivalcraft\Game\Injury.cs">
       <Link>Game\Injury.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Game\TypedInjury.cs">
+      <Link>Game\TypedInjury.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\IContentReader\BitmapFontReader.cs">
       <Link>IContentReader\BitmapFontReader.cs</Link>
     </Compile>
