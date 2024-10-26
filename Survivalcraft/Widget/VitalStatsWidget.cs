@@ -183,7 +183,7 @@ namespace Game
 			}
 			if (m_chokeButton.IsClicked)
 			{
-				m_componentPlayer.ComponentHealth.Injure(0.1f, null, ignoreInvulnerability: true, LanguageControl.GetContentWidgets(GetType().Name, "Choked"));
+				m_componentPlayer.ComponentHealth.Injure(new SuicideInjury(0.1f));
 			}
 		}
 	}

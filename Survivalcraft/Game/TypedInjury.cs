@@ -58,4 +58,17 @@ namespace Game
             SubsystemTerrain = subsystemTerrain;
         }
     }
+
+    public class VitalStatsInjury : Injury
+    {
+        public VitalStatsInjury(float amount, string cause) : base(amount, null, false, cause)
+        {
+
+        }
+    }
+
+    public class SuicideInjury : Injury
+    {
+        public SuicideInjury(float amount) : base(amount, null, true, LanguageControl.GetContentWidgets(typeof(VitalStatsWidget).Name, "Choked")) { }
+    }
 }
