@@ -49,12 +49,13 @@ namespace Game
 
         public virtual void OnSpiked(SubsystemBlockBehavior spikeBlockBehavior, float damage , CellFace cellFace, float velocity, ComponentBody componentBody, string causeOfDeath)
         {
+            Injury blockInjury = new BlockInjury(damage, cellFace, causeOfDeath, componentBody.m_subsystemTerrain);
             ModsManager.HookAction("OnCreatureSpiked", loader =>
             {
-                loader.OnCreatureSpiked(this, spikeBlockBehavior, cellFace, velocity, ref damage, ref causeOfDeath);
+                loader.OnCreatureSpiked(this, spikeBlockBehavior, cellFace, velocity, ref blockInjury);
                 return false;
             });
-            Injure(damage, null, ignoreInvulnerability: false, causeOfDeath);
+            Injure(blockInjury);
         }
 
         public virtual float CalculateFallDamage()

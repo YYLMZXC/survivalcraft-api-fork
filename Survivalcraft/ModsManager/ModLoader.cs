@@ -319,7 +319,7 @@ namespace Game
 
         }
         
-        public virtual void OnComponentBodyExploded(ComponentBody componentBody, ref float ExplosionDamage, ref Vector3 Impulse, ref bool SetOnFire, ref float Fluctuation)
+        public virtual void OnComponentBodyExploded(ComponentBody componentBody, ref Injury explosionInjury, ref Vector3 Impulse, ref bool SetOnFire, ref float Fluctuation)
         {
 
         }
@@ -382,7 +382,7 @@ namespace Game
 
         }
 
-        public virtual void OnCreatureSpiked(ComponentHealth componentHealth, SubsystemBlockBehavior spikeBlockBehavior, CellFace cellFace, float velocity, ref float damage, ref string causeOfDeath)
+        public virtual void OnCreatureSpiked(ComponentHealth componentHealth, SubsystemBlockBehavior spikeBlockBehavior, CellFace cellFace, float velocity, ref Injury blockInjury)
         {
 
         }

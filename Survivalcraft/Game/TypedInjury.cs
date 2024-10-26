@@ -22,4 +22,40 @@ namespace Game
 
         }
     }
+
+    public class ExplosionInjury : Injury
+    {
+        public ExplosionInjury(float amount) : base(amount, null, false, "Blasted by explosion")
+        {
+
+        }
+    }
+
+    public class BlockInjury : Injury
+    {
+        public CellFace? CellFace;
+
+        protected int m_blockValue;
+
+        public SubsystemTerrain SubsystemTerrain;
+        public int BlockValue
+        {
+            get
+            {
+                if(m_blockValue > 0) return m_blockValue;
+                if (SubsystemTerrain == null || CellFace == null) return -1;
+                return SubsystemTerrain.Terrain.GetCellValue(CellFace.Value.X, CellFace.Value.Y, CellFace.Value.Z);
+            }
+            set
+            {
+                m_blockValue = value;
+            }
+        }
+        public BlockInjury(float amount, CellFace? cellFace, string cause, SubsystemTerrain subsystemTerrain)
+            : base(amount, null, false, cause)
+        {
+            CellFace = cellFace;
+            SubsystemTerrain = subsystemTerrain;
+        }
+    }
 }

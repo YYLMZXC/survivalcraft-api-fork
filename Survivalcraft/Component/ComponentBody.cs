@@ -297,9 +297,10 @@ namespace Game
 			float explosionResilience = m_componentHealth?.ExplosionResilience ?? 1f;
 			damage /= explosionResilience;
 			impulse /= explosionResilience;
+			Injury explosionInjury = new ExplosionInjury(damage);
 			ModsManager.HookAction("OnComponentBodyExploded", loader =>
 			{
-				loader.OnComponentBodyExploded(this, ref damage, ref impulse, ref setOnFire, ref fluctuation);
+				loader.OnComponentBodyExploded(this, ref explosionInjury, ref impulse, ref setOnFire, ref fluctuation);
 				return false;
 			});
             impulse *= m_random.Float(1f - fluctuation, 1f + fluctuation);
@@ -307,8 +308,11 @@ namespace Game
             ApplyImpulse(impulse);
 			if(damage > 0f)
 			{
-                Entity.FindComponent<ComponentHealth>()?.Injure(damage, null, ignoreInvulnerability: false, "Blasted by explosion");
                 Entity.FindComponent<ComponentDamage>()?.Damage(damage);
+            }
+			if (explosionInjury.Amount > 0f)
+			{
+                Entity.FindComponent<ComponentHealth>()?.Injure(explosionInjury);
             }
 			if (setOnFire)
 			{

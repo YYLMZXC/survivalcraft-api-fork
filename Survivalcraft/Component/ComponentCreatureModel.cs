@@ -183,6 +183,7 @@ namespace Game
 			m_componentCreature.ComponentHealth.Injured += delegate (Injury injury)
 			{
 				ComponentCreature attacker = injury.Attacker;
+				if (attacker == null) return;
 				if (DeathPhase == 0f && m_componentCreature.ComponentHealth.Health == 0f)
 				{
 					DeathCauseOffset = attacker.ComponentBody.BoundingBox.Center() - m_componentCreature.ComponentBody.BoundingBox.Center();
