@@ -25,7 +25,7 @@
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <PackageId>SurvivalcraftAPI.Survivalcraft</PackageId>
         <Title>SurvivalcraftAPI.Survivalcraft</Title><!--For NuGet Package-->
-        <Version>1.7.2</Version><!--For NuGet Package-->
+        <Version>1.7.2.1</Version><!--For NuGet Package-->
         <PackageProjectUrl>https://gitee.com/THPRC/survivalcraft-api</PackageProjectUrl>
         <RepositoryUrl>https://gitee.com/THPRC/survivalcraft-api</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
