@@ -161,8 +161,7 @@ namespace Game
 		}
 		public static void BackRun(object o)//拖动窗口时不会阻塞的线程
 		{
-			MusicManager.Update();
-			JsInterface.Update();
+
 		}
 
 		public static void FrontRun()
@@ -192,8 +191,10 @@ namespace Game
 					m_urisToHandle.Clear();
 					PerformanceManager.Update();
 					MotdManager.Update();
+					MusicManager.Update();
 					ScreensManager.Update();
 					DialogsManager.Update();
+					JsInterface.Update();
 				}
 				else
 				{

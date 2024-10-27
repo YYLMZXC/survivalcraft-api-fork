@@ -11,6 +11,11 @@ using System.Reflection;
 using Engine.Audio;
 using Engine.Graphics;
 using Engine.Input;
+//using TKdesktop = OpenTK.Windowing.Desktop;
+//using OpenTK.Windowing.GraphicsLibraryFramework;
+//using OpenTK.Windowing.Common;
+//using WindowState = OpenTK.WindowState;
+//using WindowBorder = OpenTK.WindowBorder;
 
 namespace Engine
 {
@@ -313,6 +318,19 @@ namespace Engine
             GraphicsMode mode = new(new OpenTK.Graphics.ColorFormat(24), 16, 0, 0, OpenTK.Graphics.ColorFormat.Empty, 2);
             width = (width == 0) ? (ScreenSize.X * 4 / 5) : width;
             height = (height == 0) ? (ScreenSize.Y * 4 / 5) : height;
+            /*
+            m_gameWindow=new TKdesktop.GameWindow(new TKdesktop.GameWindowSettings(), new TKdesktop.NativeWindowSettings()
+            {
+                ClientSize = (width, height),
+                Title = title,
+                BlueBits=8,
+                GreenBits=8,
+                RedBits=8,
+                DepthBits=16,
+                StencilBits=0,
+                NumberOfSamples=0,
+                
+            });*/
             m_gameWindow = new GameWindow(width, height, mode, title);
 #if WINDOWS
             m_gameWindow.Icon = new Icon(typeof(Window).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.icon.ico"), new Size(32, 32));

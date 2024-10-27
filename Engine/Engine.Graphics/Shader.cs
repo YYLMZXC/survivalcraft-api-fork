@@ -270,13 +270,13 @@ namespace Engine.Graphics
 			GL.AttachShader(m_program, m_vertexShader);
 			GL.AttachShader(m_program, m_pixelShader);
 			GL.LinkProgram(m_program);
-			GL.GetProgram(m_program, All.LinkStatus, out int params3);
+			GL.GetProgram(m_program, GetProgramParameterName.LinkStatus, out int params3);
             if (params3 != 1)
 			{
 				string programInfoLog = GL.GetProgramInfoLog(m_program);
 				throw new InvalidOperationException($"Error linking program.\n{programInfoLog}");
 			}
-			GL.GetProgram(m_program, All.ActiveAttributes, out int params4);
+			GL.GetProgram(m_program, GetProgramParameterName.ActiveAttributes, out int params4);
 			for (int i = 0; i < params4; i++)
 			{
 				GL.GetActiveAttrib(m_program, i, 256, out int _, out int _, out ActiveAttribType _,out string stringBuilder);
@@ -291,7 +291,7 @@ namespace Engine.Graphics
 					Semantic = value
 				});
 			}
-			GL.GetProgram(m_program,All.ActiveUniforms, out int params5);
+			GL.GetProgram(m_program, GetProgramParameterName.ActiveUniforms, out int params5);
 			List<ShaderParameter> list = [];
 			Dictionary<string, ShaderParameter> dictionary3 = [];
 			for (int j = 0; j < params5; j++)

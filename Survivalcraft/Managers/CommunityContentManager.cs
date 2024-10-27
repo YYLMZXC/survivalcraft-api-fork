@@ -601,10 +601,7 @@ namespace Game
 
 		public static string CalculateContentHashString(byte[] data)
 		{
-			using (var sHA384Managed = new SHA384Managed())
-			{
-				return Convert.ToBase64String(sHA384Managed.ComputeHash(data));
-			}
+			return Convert.ToBase64String(SHA384.HashData(data));
 		}
 
 		public static string MakeFeedbackCacheKey(string address, string feedback, string userId)
