@@ -11,7 +11,7 @@ namespace Game
 	public static class CraftingRecipesManager
 	{
 		public static List<CraftingRecipe> m_recipes = [];
-		public static ReadOnlyList<CraftingRecipe> Recipes => new(m_recipes);
+		public static List<CraftingRecipe> Recipes => m_recipes;
 		public static string fName = "CraftingRecipesManager";
 		public static void Initialize()
 		{
@@ -27,7 +27,13 @@ namespace Game
 			{
 				m_recipes.AddRange(block.GetProceduralCraftingRecipes());
 			}
-			m_recipes.Sort(delegate (CraftingRecipe r1, CraftingRecipe r2)
+			bool sort = true;
+			ModsManager.HookAction("CraftingRecipesManagerInitialize", loader =>
+			{
+				loader.CraftingRecipesManagerInitialize(m_recipes, ref sort);
+				return false;
+			});
+			if(sort) m_recipes.Sort(delegate (CraftingRecipe r1, CraftingRecipe r2)
 			{
 				int y = r1.Ingredients.Count((string s) => !string.IsNullOrEmpty(s));
 				int x = r2.Ingredients.Count((string s) => !string.IsNullOrEmpty(s));

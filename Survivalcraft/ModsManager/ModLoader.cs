@@ -1344,5 +1344,10 @@ namespace Game
         {
 
         }
+
+        public virtual void CraftingRecipesManagerInitialize(List<CraftingRecipe> recipes, ref bool sort)
+        {
+
+        }
     }
 }
