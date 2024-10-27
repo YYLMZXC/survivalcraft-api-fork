@@ -1,5 +1,4 @@
 #if ANDROID
-extern alias A_OpenTK;
 using Android.Content;
 using Android.Media;
 using Android.OS;
@@ -8,9 +7,9 @@ using Android.Text;
 using Android.Views;
 using Android.Views.InputMethods;
 using Engine.Input;
-using A_OpenTK::OpenTK.Graphics;
-using A_OpenTK::OpenTK.Graphics.ES30;
-using A_OpenTK::OpenTK.Platform.Android;
+using OpenTK.Graphics;
+using OpenTK.Graphics.ES30;
+using OpenTK.Platform.Android;
 
 namespace Engine
 {

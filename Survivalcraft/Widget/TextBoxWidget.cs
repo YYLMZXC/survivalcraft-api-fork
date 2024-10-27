@@ -11,6 +11,7 @@ using ImeSharp;
 using Android.Views;
 using Android.Content;
 using Android.Views.InputMethods;
+using OpenTK.Platform.Android;
 #endif
 
 namespace Game;
