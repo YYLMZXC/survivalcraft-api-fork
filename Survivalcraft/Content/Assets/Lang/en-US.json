@@ -622,7 +622,9 @@
     "8": "{0} vsync",
     "9": "Unlimited",
     "10": "Large Visibility Range",
-    "11": "The game may crash randomly if your device does not have enough memory to handle the visibility range you selected."
+    "11": "The game may crash randomly if your device does not have enough memory to handle the visibility range you selected.",
+    "12": "API",
+    "13": "Primary"
   },
   "RecipaediaDescriptionScreen": {
     "Luminosity": "Luminosity",
@@ -2795,7 +2797,9 @@
       "7": "Object Shadows:",
       "8": "Framerate Limit:",
       "9": "Display FPS Counter:",
-      "10": "Display FPS Ribbon:"
+      "10": "Display FPS Ribbon:",
+      "11": "Limit Game Run In Low FPS:",
+      "12": "Time Acceleration Method During Sleep:"
     },
     "SettingsScreen": {
       "1": "Choose Settings Category",

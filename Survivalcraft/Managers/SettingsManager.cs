@@ -465,7 +465,19 @@ namespace Game
 			set;
 		}
 
-		public static event Action<string> SettingChanged;
+		public static float LowFPSToTimeDeceleration
+		{
+			get;
+			set;
+		}
+
+		public static bool UseAPISleepTimeAcceleration
+		{
+			get;
+			set;
+		}
+
+        public static event Action<string> SettingChanged;
 
 		public static void Initialize()
 		{
@@ -528,6 +540,8 @@ namespace Game
 			ScpboxUserInfo = string.Empty;
 			HorizontalCreativeFlight = true;
 			CreativeDragMaxStacking = true;
+			LowFPSToTimeDeceleration = 10;
+			UseAPISleepTimeAcceleration = true;
 			LoadSettings();
 			//VersionsManager.CompareVersions(LastLaunchedVersion, "1.29");
 			if (VersionsManager.CompareVersions(LastLaunchedVersion, "2.1") < 0)

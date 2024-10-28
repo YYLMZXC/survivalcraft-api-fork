@@ -66,7 +66,11 @@ namespace Game
 
 		public ButtonWidget m_displayFpsRibbonButton;
 
-		public int m_enterVisibilityRange;
+		public SliderWidget m_lowFPSToTimeDecelerationSlider;
+
+		public ButtonWidget m_useAPISleepTimeAccelerationButton;
+
+        public int m_enterVisibilityRange;
 		public static string fName = "SettingsPerformanceScreen";
 		public SettingsPerformanceScreen()
 		{
@@ -82,9 +86,14 @@ namespace Game
 			m_framerateLimitSlider = Children.Find<SliderWidget>("FramerateLimitSlider");
 			m_displayFpsCounterButton = Children.Find<ButtonWidget>("DisplayFpsCounterButton");
 			m_displayFpsRibbonButton = Children.Find<ButtonWidget>("DisplayFpsRibbonButton");
+			m_lowFPSToTimeDecelerationSlider = Children.Find<SliderWidget>("LowFPSToTimeDeceleration");
+			m_useAPISleepTimeAccelerationButton = Children.Find<ButtonWidget>("UseAPISleepTimeAccelerationButton");
 			m_visibilityRangeSlider.MinValue = 0f;
 			m_visibilityRangeSlider.MaxValue = m_visibilityRanges.Count - 1;
-		}
+			m_lowFPSToTimeDecelerationSlider.MinValue = 0f;
+			m_lowFPSToTimeDecelerationSlider.MaxValue = 20f;
+            m_lowFPSToTimeDecelerationSlider.Value = SettingsManager.LowFPSToTimeDeceleration;
+        }
 
 		public override void Enter(object[] parameters)
 		{
@@ -133,6 +142,14 @@ namespace Game
 			{
 				SettingsManager.DisplayFpsRibbon = !SettingsManager.DisplayFpsRibbon;
 			}
+			if(m_lowFPSToTimeDecelerationSlider.IsSliding)
+			{
+				SettingsManager.LowFPSToTimeDeceleration = m_lowFPSToTimeDecelerationSlider.Value;
+			}
+			if(m_useAPISleepTimeAccelerationButton.IsClicked)
+			{
+				SettingsManager.UseAPISleepTimeAcceleration = !SettingsManager.UseAPISleepTimeAcceleration;
+			}
 			m_resolutionButton.Text = LanguageControl.Get("ResolutionMode", SettingsManager.ResolutionMode.ToString());
 			m_visibilityRangeSlider.Value = (m_visibilityRanges.IndexOf(SettingsManager.VisibilityRange) >= 0) ? m_visibilityRanges.IndexOf(SettingsManager.VisibilityRange) : 64;
 			m_visibilityRangeSlider.Text = string.Format(LanguageControl.Get(fName, 1), SettingsManager.VisibilityRange);
@@ -178,7 +195,10 @@ namespace Game
 			m_framerateLimitSlider.Text = (SettingsManager.PresentationInterval != 0) ? string.Format(LanguageControl.Get(fName, 8), FPSString[SettingsManager.PresentationInterval - 1]) : LanguageControl.Get(fName, 9);
 			m_displayFpsCounterButton.Text = SettingsManager.DisplayFpsCounter ? LanguageControl.Yes : LanguageControl.No;
 			m_displayFpsRibbonButton.Text = SettingsManager.DisplayFpsRibbon ? LanguageControl.Yes : LanguageControl.No;
-			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
+			m_lowFPSToTimeDecelerationSlider.Text = SettingsManager.LowFPSToTimeDeceleration > 0 ? string.Format(LanguageControl.Get(fName, 8), SettingsManager.LowFPSToTimeDeceleration) : LanguageControl.Get(fName, 9);
+			m_useAPISleepTimeAccelerationButton.Text = SettingsManager.UseAPISleepTimeAcceleration ? LanguageControl.Get(fName, 12) : LanguageControl.Get(fName, 13);
+
+            if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
 			{
 				bool flag = SettingsManager.VisibilityRange > 128;
 				if (SettingsManager.VisibilityRange > m_enterVisibilityRange && flag)

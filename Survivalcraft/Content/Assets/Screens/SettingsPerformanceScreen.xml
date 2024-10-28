@@ -61,6 +61,16 @@
             <BevelledButtonWidget Name="DisplayFpsRibbonButton" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
           </UniformSpacingPanelWidget>
 
+		<UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
+			<LabelWidget Text="[SettingsPerformanceScreen:11]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
+			<SliderWidget Name="LowFPSToTimeDeceleration" Size="Infinity, 60" VerticalAlignment="Center" Margin="20, 0" MinValue="0" MaxValue="2" Granularity="1" />
+		</UniformSpacingPanelWidget>
+			
+		<UniformSpacingPanelWidget Direction="Horizontal">
+			<LabelWidget Text="[SettingsPerformanceScreen:12]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
+			<BevelledButtonWidget Name="UseAPISleepTimeAccelerationButton" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
+		</UniformSpacingPanelWidget>
+
         </StackPanelWidget>
       </ScrollPanelWidget>
     </CanvasWidget>
