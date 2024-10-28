@@ -18,9 +18,11 @@ namespace Game
 
 		public SubsystemTime m_subsystemTime;
 
-		public bool StopFuelWhenNoRecipeIsActive = false;
+		public bool StopFuelWhenNoRecipeIsActive = true;
 
 		public float SmeltSpeed = 0.15f;
+
+		public float SmeltProgressReductionSpeed = float.PositiveInfinity;
 
 		public float FuelTimeEfficiency = 1f;
 
@@ -132,12 +134,12 @@ namespace Game
             }
         }
 
-		public virtual void StopSmelting()
+		public virtual void StopSmelting(bool resetProgress)
 		{
             m_heatLevel = 0f;
 			m_fuelEndTime = 0f;
             m_smeltingRecipe = null;
-            m_smeltingProgress = 0f;
+            if(resetProgress) m_smeltingProgress = 0f;
         }
 
 		public void Update(float dt)
@@ -153,7 +155,7 @@ namespace Game
 					}
 					else
 					{
-                        StopSmelting();
+                        StopSmelting(false);
 						break;
                     }
 				}
@@ -163,8 +165,12 @@ namespace Game
 			if (m_smeltingRecipe == null)
 			{
 				if (StopFuelWhenNoRecipeIsActive)
-					StopSmelting();
+					StopSmelting(true);
 			}
+			if(FireTimeRemaining <= 0)
+			{
+                m_smeltingProgress = MathUtils.Max(m_smeltingProgress - (SmeltProgressReductionSpeed * dt), 0f);
+            }
 			if (m_smeltingRecipe != null && FireTimeRemaining > 0)
 			{
 				m_smeltingProgress = MathUtils.Min(m_smeltingProgress + (SmeltSpeed * dt), 1f);
