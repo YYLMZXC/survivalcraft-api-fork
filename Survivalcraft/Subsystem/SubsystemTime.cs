@@ -15,12 +15,32 @@ namespace Game
 			public Action Action;
 		}
 
-		public float MaxGameTimeDelta = 0.1f;
-
-		public float MaxFixedGameTimeDelta = 0.1f;
+		public float? m_maxGameTimeDelta;
+		public float? m_maxFixedGameTimeDelta;
+		public float MaxGameTimeDelta
+		{
+			get
+			{
+				return m_maxGameTimeDelta ?? (1f / SettingsManager.LowFPSToTimeDeceleration);
+			}
+			set
+			{
+				m_maxGameTimeDelta = value;
+			}
+		}
+		public float MaxFixedGameTimeDelta
+        {
+			get
+			{
+				return m_maxFixedGameTimeDelta ?? (1f / SettingsManager.LowFPSToTimeDeceleration);
+			}
+			set
+			{
+				m_maxFixedGameTimeDelta = value;
+			}
+		}
 
         public float DefaultFixedTimeStep = 0.05f;
-
 		public int DefaultFixedUpdateStep = 20;
 
 		public float GameMenuDialogTimeFactor = 0f;
@@ -32,6 +52,8 @@ namespace Game
 		public float m_prevGameTimeDelta;
 
 		public float m_gameTimeFactor = 1f;
+
+		public float? m_gameTimeFactorSleep = 60f;
 
 		public List<DelayedExecutionRequest> m_delayedExecutionsRequests = [];
 
@@ -63,12 +85,33 @@ namespace Game
 			private set;
 		}
 
+		public virtual float CalculateGameTimeDalta()
+		{
+			if(FixedTimeStep.HasValue) return MathUtils.Min(FixedTimeStep.Value * m_gameTimeFactor, MaxFixedGameTimeDelta);
+			return MathUtils.Min(Time.FrameDuration * m_gameTimeFactor, MaxGameTimeDelta);
+        }
+
+		public virtual bool IsAllPlayerLivingSleeping()
+		{
+            int numSleepingPlayers = 0;
+            int numDeadPlayers = 0;
+            foreach (ComponentPlayer componentPlayer in m_subsystemPlayers.ComponentPlayers)
+            {
+                if (componentPlayer.ComponentHealth.Health == 0f)
+                {
+                    numDeadPlayers++;
+                }
+                else if (componentPlayer.ComponentSleep.SleepFactor == 1f)
+                {
+                    numSleepingPlayers++;
+                }
+            }
+			return numSleepingPlayers + numDeadPlayers == m_subsystemPlayers.ComponentPlayers.Count && numSleepingPlayers >= 1;
+        }
 		public virtual void NextFrame()
 		{
 			m_prevGameTimeDelta = m_gameTimeDelta;
-			m_gameTimeDelta = !FixedTimeStep.HasValue
-				? MathUtils.Min(Time.FrameDuration * m_gameTimeFactor, MaxGameTimeDelta)
-				: MathUtils.Min(FixedTimeStep.Value * m_gameTimeFactor, MaxFixedGameTimeDelta);
+			m_gameTimeDelta = CalculateGameTimeDalta();
 			ModsManager.HookAction("ChangeGameTimeDelta", loader =>
 			{
 				loader.ChangeGameTimeDelta(this, ref m_gameTimeDelta);
@@ -89,28 +132,26 @@ namespace Game
 					num++;
 				}
 			}
-			int numSleepingPlayers = 0;
-			int numDeadPlayers = 0;
-			foreach (ComponentPlayer componentPlayer in m_subsystemPlayers.ComponentPlayers)
+			
+			if (IsAllPlayerLivingSleeping())
 			{
-				if (componentPlayer.ComponentHealth.Health == 0f)
+				if (SettingsManager.UseAPISleepTimeAcceleration)
 				{
-					numDeadPlayers++;
+					if(m_gameTimeFactorSleep != null)
+						m_gameTimeFactor = m_gameTimeFactorSleep.Value;
 				}
-				else if (componentPlayer.ComponentSleep.SleepFactor == 1f)
+				else
 				{
-					numSleepingPlayers++;
-				}
-			}
-			if (numSleepingPlayers + numDeadPlayers == m_subsystemPlayers.ComponentPlayers.Count && numSleepingPlayers >= 1)
-			{
-				FixedTimeStep = DefaultFixedTimeStep;
-				m_subsystemUpdate.UpdatesPerFrame = DefaultFixedUpdateStep;
+                    FixedTimeStep = DefaultFixedTimeStep;
+                    m_subsystemUpdate.UpdatesPerFrame = DefaultFixedUpdateStep;
+                }
 			}
 			else
 			{
 				FixedTimeStep = null;
 				m_subsystemUpdate.UpdatesPerFrame = 1;
+				if(m_gameTimeFactorSleep != null)
+					m_gameTimeFactor = 1f;
 			}
 			bool flag = true;
 			foreach (ComponentPlayer componentPlayer2 in m_subsystemPlayers.ComponentPlayers)
