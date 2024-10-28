@@ -14,11 +14,21 @@ namespace Game
 
 		public ComponentBlockEntity m_componentBlockEntity;
 
+		public SubsystemGameInfo m_subsystemGameInfo;
+
+		public SubsystemTime m_subsystemTime;
+
+		public bool StopFuelWhenNoRecipeIsActive = false;
+
+		public float SmeltSpeed = 0.15f;
+
+		public float FuelTimeEfficiency = 1f;
+
 		public int m_furnaceSize;
 
 		public string[] m_matchedIngredients = new string[9];
 
-		public float m_fireTimeRemaining;
+		public float m_fuelEndTime;
 
 		public float m_heatLevel;
 
@@ -27,18 +37,24 @@ namespace Game
 		public CraftingRecipe m_smeltingRecipe;
 
 		public float m_smeltingProgress;
-
+		private float epsilon => Math.Min(m_subsystemTime.GameTimeDelta, 0.1f);
 		public int RemainsSlotIndex => SlotsCount - 1;
-
 		public int ResultSlotIndex => SlotsCount - 2;
-
 		public int FuelSlotIndex => SlotsCount - 3;
-
 		public float HeatLevel => m_heatLevel;
 
 		public float SmeltingProgress => m_smeltingProgress;
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
+
+		public float FireTimeRemaining
+		{
+			get
+			{
+				float ans = m_fuelEndTime - (float)m_subsystemGameInfo.TotalElapsedGameTime;
+				return ans > -epsilon ? ans + epsilon : 0f;
+			}
+		}
 
 		public override int GetSlotCapacity(int slotIndex, int value)
 		{
@@ -65,74 +81,93 @@ namespace Game
 			return base.RemoveSlotItems(slotIndex, count);
 		}
 
+		public virtual bool UseFuel()
+        {
+            Point3 coordinates = m_componentBlockEntity.Coordinates;
+            Slot slot2 = m_slots[FuelSlotIndex];
+            if (slot2.Count > 0)
+            {
+                int num2 = Terrain.ExtractContents(slot2.Value);
+                Block block = BlocksManager.Blocks[num2];
+                if (block.GetExplosionPressure(slot2.Value) > 0f)
+                {
+                    slot2.Count = 0;
+                    m_subsystemExplosions.TryExplodeBlock(coordinates.X, coordinates.Y, coordinates.Z, slot2.Value);
+                }
+                else if (block.GetFuelHeatLevel(slot2.Value) > 0f)
+                {
+                    slot2.Count--;
+					if (m_heatLevel == 0f) m_fuelEndTime = (float)m_subsystemGameInfo.TotalElapsedGameTime;
+                    m_fuelEndTime = m_fuelEndTime + block.GetFuelFireDuration(slot2.Value) * FuelTimeEfficiency;
+                    m_heatLevel = block.GetFuelHeatLevel(slot2.Value);
+					return true;
+                }
+            }
+			return false;
+        }
+
+		public virtual void UpdateSmeltingRecipe()
+		{
+            m_updateSmeltingRecipe = false;
+            float heatLevel = 0f;
+            if (m_heatLevel > 0f)
+            {
+                heatLevel = m_heatLevel;
+            }
+            else
+            {
+                Slot slot = m_slots[FuelSlotIndex];
+                if (slot.Count > 0)
+                {
+                    int num = Terrain.ExtractContents(slot.Value);
+                    heatLevel = BlocksManager.Blocks[num].GetFuelHeatLevel(slot.Value);
+                }
+            }
+            CraftingRecipe craftingRecipe = FindSmeltingRecipe(heatLevel);
+            if (craftingRecipe != m_smeltingRecipe)
+            {
+                m_smeltingRecipe = (craftingRecipe != null && craftingRecipe.ResultValue != 0) ? craftingRecipe : null;
+                m_smeltingProgress = 0f;
+                if (FireTimeRemaining <= 0) UseFuel();
+            }
+        }
+
+		public virtual void StopSmelting()
+		{
+            m_heatLevel = 0f;
+			m_fuelEndTime = 0f;
+            m_smeltingRecipe = null;
+            m_smeltingProgress = 0f;
+        }
+
 		public void Update(float dt)
 		{
-			Point3 coordinates = m_componentBlockEntity.Coordinates;
 			if (m_heatLevel > 0f)
 			{
-				m_fireTimeRemaining = MathUtils.Max(0f, m_fireTimeRemaining - dt);
-				if (m_fireTimeRemaining == 0f)
+				int fuelAdded = 0;
+				while (m_fuelEndTime + epsilon < (float)m_subsystemGameInfo.TotalElapsedGameTime)
 				{
-					m_heatLevel = 0f;
+					if (UseFuel()){
+						fuelAdded++;
+						if (fuelAdded == 100) break;
+					}
+					else
+					{
+                        StopSmelting();
+						break;
+                    }
 				}
 			}
 			if (m_updateSmeltingRecipe)
-			{
-				m_updateSmeltingRecipe = false;
-				float heatLevel = 0f;
-				if (m_heatLevel > 0f)
-				{
-					heatLevel = m_heatLevel;
-				}
-				else
-				{
-					Slot slot = m_slots[FuelSlotIndex];
-					if (slot.Count > 0)
-					{
-						int num = Terrain.ExtractContents(slot.Value);
-						heatLevel = BlocksManager.Blocks[num].GetFuelHeatLevel(slot.Value);
-					}
-				}
-				CraftingRecipe craftingRecipe = FindSmeltingRecipe(heatLevel);
-				if (craftingRecipe != m_smeltingRecipe)
-				{
-					m_smeltingRecipe = (craftingRecipe != null && craftingRecipe.ResultValue != 0) ? craftingRecipe : null;
-					m_smeltingProgress = 0f;
-				}
-			}
+				UpdateSmeltingRecipe();
 			if (m_smeltingRecipe == null)
 			{
-				m_heatLevel = 0f;
-				m_fireTimeRemaining = 0f;
+				if (StopFuelWhenNoRecipeIsActive)
+					StopSmelting();
 			}
-			if (m_smeltingRecipe != null && m_fireTimeRemaining <= 0f)
+			if (m_smeltingRecipe != null && FireTimeRemaining > 0)
 			{
-				Slot slot2 = m_slots[FuelSlotIndex];
-				if (slot2.Count > 0)
-				{
-					int num2 = Terrain.ExtractContents(slot2.Value);
-					Block block = BlocksManager.Blocks[num2];
-					if (block.GetExplosionPressure(slot2.Value) > 0f)
-					{
-						slot2.Count = 0;
-						m_subsystemExplosions.TryExplodeBlock(coordinates.X, coordinates.Y, coordinates.Z, slot2.Value);
-					}
-					else if (block.GetFuelHeatLevel(slot2.Value) > 0f)
-					{
-						slot2.Count--;
-						m_fireTimeRemaining = block.GetFuelFireDuration(slot2.Value);
-						m_heatLevel = block.GetFuelHeatLevel(slot2.Value);
-					}
-				}
-			}
-			if (m_fireTimeRemaining <= 0f)
-			{
-				m_smeltingRecipe = null;
-				m_smeltingProgress = 0f;
-			}
-			if (m_smeltingRecipe != null)
-			{
-				m_smeltingProgress = MathUtils.Min(m_smeltingProgress + (0.15f * dt), 1f);
+				m_smeltingProgress = MathUtils.Min(m_smeltingProgress + (SmeltSpeed * dt), 1f);
 				if (m_smeltingProgress >= 1f)
 				{
 					for (int i = 0; i < m_furnaceSize; i++)
@@ -153,8 +188,9 @@ namespace Game
 					m_smeltingProgress = 0f;
 					m_updateSmeltingRecipe = true;
 				}
-			}
-			TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(coordinates.X, coordinates.Z);
+            }
+            Point3 coordinates = m_componentBlockEntity.Coordinates;
+            TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(coordinates.X, coordinates.Z);
 			if (chunkAtCell != null && chunkAtCell.State == TerrainChunkState.Valid)
 			{
 				int cellValue = m_subsystemTerrain.Terrain.GetCellValue(coordinates.X, coordinates.Y, coordinates.Z);
@@ -169,11 +205,14 @@ namespace Game
 			m_subsystemExplosions = Project.FindSubsystem<SubsystemExplosions>(throwOnError: true);
 			m_componentBlockEntity = Entity.FindComponent<ComponentBlockEntity>(throwOnError: true);
 			m_furnaceSize = SlotsCount - 3;
+			m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
 			if (m_furnaceSize < 1 || m_furnaceSize > 3)
 			{
 				throw new InvalidOperationException("Invalid furnace size.");
 			}
-			m_fireTimeRemaining = valuesDictionary.GetValue<float>("FireTimeRemaining");
+			float fireTimeRemaining = valuesDictionary.GetValue<float>("FireTimeRemaining");
+			m_fuelEndTime = (float)m_subsystemGameInfo.TotalElapsedGameTime + fireTimeRemaining;
 			m_heatLevel = valuesDictionary.GetValue<float>("HeatLevel");
 			m_updateSmeltingRecipe = true;
 		}
@@ -181,7 +220,9 @@ namespace Game
 		public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)
 		{
 			base.Save(valuesDictionary, entityToIdMap);
-			valuesDictionary.SetValue("FireTimeRemaining", m_fireTimeRemaining);
+			float fireTimeRemaining = m_fuelEndTime - (float)m_subsystemGameInfo.TotalElapsedGameTime;
+			if(fireTimeRemaining < 0) fireTimeRemaining = 0 ;
+            valuesDictionary.SetValue("FireTimeRemaining", fireTimeRemaining);
 			valuesDictionary.SetValue("HeatLevel", m_heatLevel);
 		}
 
