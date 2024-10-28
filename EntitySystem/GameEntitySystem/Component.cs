@@ -55,7 +55,7 @@ namespace GameEntitySystem
 			Dispose();
 		}
 		
-		public void Initialize(Entity entity, ValuesDictionary valuesDictionary)
+		public virtual void Initialize(Entity entity, ValuesDictionary valuesDictionary)
 		{
 			if (valuesDictionary.DatabaseObject.Type != entity.Project.GameDatabase.MemberComponentTemplateType)
 			{
