@@ -64,8 +64,10 @@ namespace Game
 					text = text.Replace("’", "'");
 					text = text.Replace("\\n", "\n");
 				}
-				var helpTopic = new HelpTopic
+				bool floatParseSucceed = float.TryParse(item.Key, out float index);
+                var helpTopic = new HelpTopic
 				{
+					Index = floatParseSucceed ? index : 0f,
 					Name = attributeValue,
 					Title = attributeValue2,
 					Text = text
@@ -74,8 +76,15 @@ namespace Game
 				{
 					m_topics.Add(helpTopic.Name, helpTopic);
 				}
-				m_topicsList.AddItem(helpTopic);
+				m_topicsList.m_items.Add(helpTopic);
 			}
+			m_topicsList.m_items.Sort((x, y) => {
+				var x_topic = x as HelpTopic;
+				var y_topic = y as HelpTopic;
+				if(x == null || y == null) return 0;
+				return x_topic.Index.CompareTo(y_topic.Index);
+			}
+			);
 		}
 
 		public override void Enter(object[] parameters)
