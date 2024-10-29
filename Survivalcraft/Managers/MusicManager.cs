@@ -8,8 +8,10 @@ namespace Game
 	{
 		public enum Mix
 		{
-			None,
-			Menu
+			None,//没有正在播放的音乐，停止音乐
+			Menu,//主菜单音乐
+			InGame,//游戏游玩时的音乐，由模组自定义(API1.72新增)
+			Other//其他，由模组自己来定义(API1.72新增)
 		}
 
 		public const float m_fadeSpeed = 0.33f;
@@ -27,6 +29,8 @@ namespace Game
 		public static double m_nextSongTime;
 
 		public static Random m_random = new();
+
+		public static float? m_volume = null;
 
 		public static Mix CurrentMix
 		{
@@ -56,8 +60,46 @@ namespace Game
 			}
 		}
 
-		public static float Volume => SettingsManager.MusicVolume * 0.6f;
+		public static float Volume => m_volume ?? SettingsManager.MusicVolume * 0.6f;
 
+		public static void ChangeMenuMusic()
+		{
+            float startPercentage = IsPlaying ? m_random.Float(0f, 0.75f) : 0f;
+            string ContentMusicPath = string.Empty;
+            ModsManager.HookAction("MenuPlayMusic", (ModLoader loader) =>
+            {
+                loader.MenuPlayMusic(out ContentMusicPath);
+                return false;
+            });
+            if (!string.IsNullOrEmpty(ContentMusicPath))
+            {
+                PlayMusic(ContentMusicPath, startPercentage);
+                m_nextSongTime = Time.FrameStartTime + m_random.Float(40f, 60f);
+                return;
+            }
+            switch (m_random.Int(0, 5))
+            {
+                case 0:
+                    PlayMusic("Music/NativeAmericanFluteSpirit", startPercentage);
+                    break;
+                case 1:
+                    PlayMusic("Music/AloneForever", startPercentage);
+                    break;
+                case 2:
+                    PlayMusic("Music/NativeAmerican", startPercentage);
+                    break;
+                case 3:
+                    PlayMusic("Music/NativeAmericanHeart", startPercentage);
+                    break;
+                case 4:
+                    PlayMusic("Music/NativeAmericanPeaceFlute", startPercentage);
+                    break;
+                case 5:
+                    PlayMusic("Music/NativeIndianChant", startPercentage);
+                    break;
+            }
+            m_nextSongTime = Time.FrameStartTime + m_random.Float(40f, 60f);
+        }
 		public static void Update()
 		{
 			if (m_fadeSound != null)
@@ -79,41 +121,19 @@ namespace Game
 			}
 			else if (m_currentMix == Mix.Menu && (Time.FrameStartTime >= m_nextSongTime || !IsPlaying))
 			{
-				float startPercentage = IsPlaying ? m_random.Float(0f, 0.75f) : 0f;
-				string ContentMusicPath = string.Empty;
-				ModsManager.HookAction("MenuPlayMusic", (ModLoader loader) =>
+				ChangeMenuMusic();
+			}
+			else if(m_currentMix == Mix.InGame)
+			{
+				ModsManager.HookAction("PlayInGameMusic", loader =>
 				{
-					loader.MenuPlayMusic(out ContentMusicPath);
+					loader.PlayInGameMusic();
 					return false;
 				});
-				if (!string.IsNullOrEmpty(ContentMusicPath))
-				{
-					PlayMusic(ContentMusicPath, startPercentage);
-					m_nextSongTime = Time.FrameStartTime + m_random.Float(40f, 60f);
-					return;
-				}
-				switch (m_random.Int(0, 5))
-				{
-					case 0:
-						PlayMusic("Music/NativeAmericanFluteSpirit", startPercentage);
-						break;
-					case 1:
-						PlayMusic("Music/AloneForever", startPercentage);
-						break;
-					case 2:
-						PlayMusic("Music/NativeAmerican", startPercentage);
-						break;
-					case 3:
-						PlayMusic("Music/NativeAmericanHeart", startPercentage);
-						break;
-					case 4:
-						PlayMusic("Music/NativeAmericanPeaceFlute", startPercentage);
-						break;
-					case 5:
-						PlayMusic("Music/NativeIndianChant", startPercentage);
-						break;
-				}
-                m_nextSongTime = Time.FrameStartTime + m_random.Float(40f, 60f);
+			}
+			else if(m_currentMix == Mix.Other)
+			{
+
 			}
 		}
 

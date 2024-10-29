@@ -29,7 +29,8 @@ namespace Game
 			{
 				GameManager.Project.FindSubsystem<SubsystemAudio>(throwOnError: true).Unmute();
 			}
-			MusicManager.CurrentMix = MusicManager.Mix.None;
+			MusicManager.StopMusic();
+			MusicManager.CurrentMix = MusicManager.Mix.InGame;
 		}
 
 		public override void Leave()
