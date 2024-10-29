@@ -261,9 +261,9 @@ namespace Game
 		public int MaxBedrockHeight = 4;
 
 		public int OceanLevel => 64 + m_worldSettings.SeaLevelOffset;
-
-		List<ChunkGenerationStep> ChunkGenerationStep3 = new List<ChunkGenerationStep>();
-
+        List<ChunkGenerationStep> ChunkGenerationStep1 = new List<ChunkGenerationStep>();
+        List<ChunkGenerationStep> ChunkGenerationStep2 = new List<ChunkGenerationStep>();
+        List<ChunkGenerationStep> ChunkGenerationStep3 = new List<ChunkGenerationStep>();
 		List<ChunkGenerationStep> ChunkGenerationStep4 = new List<ChunkGenerationStep>();
 		static TerrainContentsGenerator23()
 		{
@@ -332,7 +332,13 @@ namespace Game
 			TGWater = true;
 			TGExtras = true;
 			TGCavesAndPockets = true;
-			//Step 3
+			//Step 1
+			ChunkGenerationStep1.Add(new ChunkGenerationStep(1000, (chunk) => GenerateSurfaceParameters(chunk, 0, 0, 16, 8)));
+			ChunkGenerationStep1.Add(new ChunkGenerationStep(2000, (chunk) => GenerateTerrain(chunk, 0, 0, 16, 8)));
+            //Step 2
+            ChunkGenerationStep2.Add(new ChunkGenerationStep(1000, (chunk) => GenerateSurfaceParameters(chunk, 0, 8, 16, 16)));
+            ChunkGenerationStep2.Add(new ChunkGenerationStep(2000, (chunk) => GenerateTerrain(chunk, 0, 8, 16, 16)));
+            //Step 3
             ChunkGenerationStep3.Add(new ChunkGenerationStep(100, GenerateCaves));
             ChunkGenerationStep3.Add(new ChunkGenerationStep(200, GeneratePockets));
             ChunkGenerationStep3.Add(new ChunkGenerationStep(300, GenerateMinerals));
@@ -359,7 +365,9 @@ namespace Game
 				loader.TerrainContentsGenerator23Initialize(this, subsystemTerrain);
 				return false;
 			});
-			ChunkGenerationStep3.Sort((a, b) => (a.GenerateOrder.CompareTo(b.GenerateOrder)));
+            ChunkGenerationStep1.Sort((a, b) => (a.GenerateOrder.CompareTo(b.GenerateOrder)));
+            ChunkGenerationStep2.Sort((a, b) => (a.GenerateOrder.CompareTo(b.GenerateOrder)));
+            ChunkGenerationStep3.Sort((a, b) => (a.GenerateOrder.CompareTo(b.GenerateOrder)));
 			ChunkGenerationStep4.Sort((a, b) => (a.GenerateOrder.CompareTo(b.GenerateOrder)));
 		}
 
@@ -405,15 +413,19 @@ namespace Game
 
 		public void GenerateChunkContentsPass1(TerrainChunk chunk)
 		{
-			GenerateSurfaceParameters(chunk, 0, 0, 16, 8);
-			GenerateTerrain(chunk, 0, 0, 16, 8);
-		}
+            foreach (ChunkGenerationStep step in ChunkGenerationStep1)
+            {
+                if (step.ShouldGenerate) step.GenerateAction(chunk);
+            }
+        }
 
 		public void GenerateChunkContentsPass2(TerrainChunk chunk)
 		{
-			GenerateSurfaceParameters(chunk, 0, 8, 16, 16);
-			GenerateTerrain(chunk, 0, 8, 16, 16);
-		}
+            foreach (ChunkGenerationStep step in ChunkGenerationStep2)
+            {
+                if (step.ShouldGenerate) step.GenerateAction(chunk);
+            }
+        }
 
 		public void GenerateChunkContentsPass3(TerrainChunk chunk)
 		{
