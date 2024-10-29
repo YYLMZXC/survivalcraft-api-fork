@@ -105,6 +105,7 @@ namespace Game
         /// <param name="impulseFactor">击退效果</param>
         /// <param name="stunTimeFactor">眩晕时间</param>
         /// <param name="recalculate">是否重写眩晕？</param>
+        [Obsolete("该方法已过时，请使用ProcessAttackment修改Attackment的击退和击晕属性")]
         public virtual void AttackPowerParameter(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, ref float impulseFactor, ref float stunTimeFactor, ref bool recalculate)
         {
         }
@@ -162,7 +163,7 @@ namespace Game
         /// <param name="attackPower"></param>
         /// <param name="isMeleeAttack"></param>
         /// <returns>false移交到下一个Mod处理,true不移交</returns>
-        [Obsolete("该方法已弃用，请使用ProcessAttackment")]
+        [Obsolete("该方法已弃用，请使用ProcessAttackment", true)]
         public virtual bool AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, bool isMeleeAttack)
         {
             return false;
@@ -343,7 +344,7 @@ namespace Game
         /// <summary>
         /// 重定义生物受伤方法，Skip为true则不执行原Injure代码
         /// </summary>
-        [Obsolete("该方法已被弃用，请使用CalculateCreatureInjuryAmount, OnCreatureDying, OnCreatureDied代替")]
+        [Obsolete("该方法已被弃用，请使用CalculateCreatureInjuryAmount, OnCreatureDying, OnCreatureDied代替", true)]
         public virtual void OnCreatureInjure(ComponentHealth componentHealth, float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause, out bool Skip)
         {
             Skip = false;
