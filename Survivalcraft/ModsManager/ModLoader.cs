@@ -1362,5 +1362,10 @@ namespace Game
         {
 
         }
+
+        public virtual void TerrainContentsGenerator23Initialize(ITerrainContentsGenerator terrainContentsGenerator, SubsystemTerrain subsystemTerrain)
+        {
+
+        }
     }
 }
