@@ -87,8 +87,8 @@ namespace Game
 
 		public virtual float CalculateGameTimeDalta()
 		{
-			if(FixedTimeStep.HasValue) return MathUtils.Min(FixedTimeStep.Value * m_gameTimeFactor, MaxFixedGameTimeDelta);
-			return MathUtils.Min(Time.FrameDuration * m_gameTimeFactor, MaxGameTimeDelta);
+			if(FixedTimeStep.HasValue) return MathUtils.Min(FixedTimeStep.Value, MaxFixedGameTimeDelta) * m_gameTimeFactor;
+			return MathUtils.Min(Time.FrameDuration, MaxGameTimeDelta) * m_gameTimeFactor;
         }
 
 		public virtual bool IsAllPlayerLivingSleeping()

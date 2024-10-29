@@ -541,7 +541,7 @@ namespace Game
 			HorizontalCreativeFlight = true;
 			CreativeDragMaxStacking = true;
 			LowFPSToTimeDeceleration = 10;
-			UseAPISleepTimeAcceleration = true;
+			UseAPISleepTimeAcceleration = false;
 			LoadSettings();
 			//VersionsManager.CompareVersions(LastLaunchedVersion, "1.29");
 			if (VersionsManager.CompareVersions(LastLaunchedVersion, "2.1") < 0)
