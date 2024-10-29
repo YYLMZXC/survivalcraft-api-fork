@@ -60,7 +60,18 @@ namespace Game
 			}
 		}
 
-		public static float Volume => m_volume ?? SettingsManager.MusicVolume * 0.6f;
+		public static float Volume
+		{
+			get
+			{
+				if (m_volume.HasValue) return m_volume.Value;
+				return SettingsManager.MusicVolume * 0.6f;
+			}
+			set
+			{
+				m_volume = value;
+			}
+		}
 
 		public static void ChangeMenuMusic()
 		{
