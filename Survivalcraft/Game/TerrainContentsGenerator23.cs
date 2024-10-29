@@ -261,10 +261,10 @@ namespace Game
 		public int MaxBedrockHeight = 4;
 
 		public int OceanLevel => 64 + m_worldSettings.SeaLevelOffset;
-        List<ChunkGenerationStep> ChunkGenerationStep1 = new List<ChunkGenerationStep>();
-        List<ChunkGenerationStep> ChunkGenerationStep2 = new List<ChunkGenerationStep>();
-        List<ChunkGenerationStep> ChunkGenerationStep3 = new List<ChunkGenerationStep>();
-		List<ChunkGenerationStep> ChunkGenerationStep4 = new List<ChunkGenerationStep>();
+        public List<ChunkGenerationStep> ChunkGenerationStep1 = new List<ChunkGenerationStep>();
+        public List<ChunkGenerationStep> ChunkGenerationStep2 = new List<ChunkGenerationStep>();
+        public List<ChunkGenerationStep> ChunkGenerationStep3 = new List<ChunkGenerationStep>();
+		public List<ChunkGenerationStep> ChunkGenerationStep4 = new List<ChunkGenerationStep>();
 		static TerrainContentsGenerator23()
 		{
 			m_coalBrushes = [];
