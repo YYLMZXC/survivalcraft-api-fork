@@ -196,7 +196,7 @@ namespace Game
             {
                 bool reclalculate = false;
                 float stunTimeSet = StunTimeSet ?? -1f;
-                modloader.AttackPowerParameter(Target.FindComponent<ComponentBody>(), Attacker.FindComponent<ComponentCreature>(), HitPoint, HitDirection, ref ImpulseFactor, ref stunTimeSet, ref reclalculate);
+                modloader.AttackPowerParameter(Target.FindComponent<ComponentBody>(), Attacker?.FindComponent<ComponentCreature>(), HitPoint, HitDirection, ref ImpulseFactor, ref stunTimeSet, ref reclalculate);
                 if(stunTimeSet >= 0f) StunTimeSet = stunTimeSet;
                 return false;
             });
