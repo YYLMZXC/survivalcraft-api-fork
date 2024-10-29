@@ -81,69 +81,90 @@ namespace Game
 
 		public void Draw(Camera camera, int drawOrder)
 		{
+			//准备模型
 			if (drawOrder == m_drawOrders[0])
 			{
-				ModelsDrawn = 0;
-				List<ModelData>[] modelsToDraw = m_modelsToDraw;
-				for (int i = 0; i < modelsToDraw.Length; i++)
+				bool skipped = false;
+				ModsManager.HookAction("PrepareModels", loader =>
 				{
-					modelsToDraw[i].Clear();
-				}
-				m_modelsToPrepare.Clear();
-				foreach (ModelData value in m_componentModels.Values)
+					loader.PrepareModels(this, camera, skipped, out bool skip);
+					skipped |= skip;
+					return false;
+				});
+				if (!skipped)
 				{
-					if (value.ComponentModel.Model != null)
-					{
-						value.ComponentModel.CalculateIsVisible(camera);
-						if (value.ComponentModel.IsVisibleForCamera)
-						{
-							m_modelsToPrepare.Add(value);
-						}
-					}
-				}
-				m_modelsToPrepare.Sort();
-				foreach (ModelData item in m_modelsToPrepare)
-				{
-					PrepareModel(item, camera);
-					m_modelsToDraw[(int)item.ComponentModel.RenderingMode].Add(item);
-				}
+                    ModelsDrawn = 0;
+                    List<ModelData>[] modelsToDraw = m_modelsToDraw;
+                    for (int i = 0; i < modelsToDraw.Length; i++)
+                    {
+                        modelsToDraw[i].Clear();
+                    }
+                    m_modelsToPrepare.Clear();
+                    foreach (ModelData value in m_componentModels.Values)
+                    {
+                        if (value.ComponentModel.Model != null)
+                        {
+                            value.ComponentModel.CalculateIsVisible(camera);
+                            if (value.ComponentModel.IsVisibleForCamera)
+                            {
+                                m_modelsToPrepare.Add(value);
+                            }
+                        }
+                    }
+                    m_modelsToPrepare.Sort();
+                    foreach (ModelData item in m_modelsToPrepare)
+                    {
+                        PrepareModel(item, camera);
+                        m_modelsToDraw[(int)item.ComponentModel.RenderingMode].Add(item);
+                    }
+                }
 			}
 			if (!DisableDrawingModels)
 			{
-				m_sunLightDirection = 1.25f * Vector3.TransformNormal(SunVector(m_subsystemSky), camera.ViewMatrix);
-				if (drawOrder == m_drawOrders[1])
+				bool skipped = false;
+				ModsManager.HookAction("RenderModels", loader =>
 				{
-					Display.DepthStencilState = DepthStencilState.Default;
-					Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-					Display.BlendState = BlendState.Opaque;
-					DrawModels(camera, m_modelsToDraw[0], null);
-					Display.RasterizerState = RasterizerState.CullNoneScissor;
-					DrawModels(camera, m_modelsToDraw[1], 0f);
-					Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-					m_primitivesRenderer.Flush(camera.ProjectionMatrix, clearAfterFlush: true, 0);
-				}
-				else if (drawOrder == m_drawOrders[2])
+					loader.RenderModels(this, camera, drawOrder, skipped, out bool skip);
+					skipped |= skip;
+					return false;
+				});
+				if (!skipped)
 				{
-					Display.DepthStencilState = DepthStencilState.Default;
-					Display.RasterizerState = RasterizerState.CullNoneScissor;
-					Display.BlendState = BlendState.AlphaBlend;
-					DrawModels(camera, m_modelsToDraw[2], null);
-				}
-				else if (drawOrder == m_drawOrders[3])
-				{
-					Display.DepthStencilState = DepthStencilState.Default;
-					Display.RasterizerState = RasterizerState.CullNoneScissor;
-					Display.BlendState = BlendState.AlphaBlend;
-					DrawModels(camera, m_modelsToDraw[3], null);
-					if (ShaderOpaque != null && ShaderAlphaTested != null)
-					{
-						m_primitivesRenderer.Flush(camera.ProjectionMatrix, true, int.MaxValue);
-					}
-					else
-					{
-						m_primitivesRenderer.Flush(camera.ProjectionMatrix);
-					}
-				}
+                    m_sunLightDirection = 1.25f * Vector3.TransformNormal(SunVector(m_subsystemSky), camera.ViewMatrix);
+                    if (drawOrder == m_drawOrders[1])//绘制类型为AlphaThreshold的Model
+                    {
+                        Display.DepthStencilState = DepthStencilState.Default;
+                        Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
+                        Display.BlendState = BlendState.Opaque;
+                        DrawModels(camera, m_modelsToDraw[0], null);
+                        Display.RasterizerState = RasterizerState.CullNoneScissor;
+                        DrawModels(camera, m_modelsToDraw[1], 0f);
+                        Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
+                        m_primitivesRenderer.Flush(camera.ProjectionMatrix, clearAfterFlush: true, 0);
+                    }
+                    else if (drawOrder == m_drawOrders[2])//绘制TransparentBeforeWater的Model
+                    {
+                        Display.DepthStencilState = DepthStencilState.Default;
+                        Display.RasterizerState = RasterizerState.CullNoneScissor;
+                        Display.BlendState = BlendState.AlphaBlend;
+                        DrawModels(camera, m_modelsToDraw[2], null);
+                    }
+                    else if (drawOrder == m_drawOrders[3])//绘制TransparentAfterWater的Model
+                    {
+                        Display.DepthStencilState = DepthStencilState.Default;
+                        Display.RasterizerState = RasterizerState.CullNoneScissor;
+                        Display.BlendState = BlendState.AlphaBlend;
+                        DrawModels(camera, m_modelsToDraw[3], null);
+                        if (ShaderOpaque != null && ShaderAlphaTested != null)
+                        {
+                            m_primitivesRenderer.Flush(camera.ProjectionMatrix, true, int.MaxValue);
+                        }
+                        else
+                        {
+                            m_primitivesRenderer.Flush(camera.ProjectionMatrix);
+                        }
+                    }
+                }
 			}
 			else
 			{

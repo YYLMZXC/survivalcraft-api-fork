@@ -1367,5 +1367,15 @@ namespace Game
         {
 
         }
+
+        public virtual void PrepareModels(SubsystemModelsRenderer subsystemModelsRenderer, Camera camera, bool skippedByOtherMods, out bool skip)
+        {
+            skip = false;
+        }
+
+        public virtual void RenderModels(SubsystemModelsRenderer subsystemModelsRenderer, Camera camera, int drawOrder, bool skippedByOtherMods, out bool skip)
+        {
+            skip = false;
+        }
     }
 }
