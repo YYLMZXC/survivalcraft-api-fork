@@ -548,7 +548,7 @@ namespace Game
         public static void AttackBody(ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, float attackPower, bool isMeleeAttack)
         {
 			if (isMeleeAttack) AttackBody(new MeleeAttackment(target?.Entity, attacker?.Entity, hitPoint, hitDirection, attackPower));
-			else AttackBody(new ProjectileAttackment(target?.Entity, attacker?.Entity, hitPoint, hitDirection, attackPower));
+			else AttackBody(new ProjectileAttackment(target?.Entity, attacker?.Entity, hitPoint, hitDirection, attackPower, null));
         }
 
 		public static void AddHitValueParticleSystem(float damage, Entity attacker, Entity attacked, Vector3 hitPoint, Vector3 hitDirection)

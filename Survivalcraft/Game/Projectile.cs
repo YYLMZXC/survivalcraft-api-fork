@@ -167,7 +167,7 @@ namespace Game
             Vector3 velocityAfterAttack = Velocity * 0.05f + m_random.Vector3(0.33f * Velocity.Length());
             Vector3 angularVelocityAfterAttack = AngularVelocity * 0.05f;
             bool ignoreBody = false;
-            Attackment attackment = new ProjectileAttackment(bodyRaycastResult.ComponentBody.Entity, OwnerEntity, bodyRaycastResult.HitPoint(), Vector3.Normalize(Velocity), attackPower);
+            Attackment attackment = new ProjectileAttackment(bodyRaycastResult.ComponentBody.Entity, OwnerEntity, bodyRaycastResult.HitPoint(), Vector3.Normalize(Velocity), attackPower, this);
             ModsManager.HookAction("OnProjectileHitBody", loader =>
             {
                 loader.OnProjectileHitBody(this, bodyRaycastResult, ref attackment, ref velocityAfterAttack, ref angularVelocityAfterAttack, ref ignoreBody);
