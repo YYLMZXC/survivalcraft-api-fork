@@ -2,7 +2,6 @@ using Engine;
 using Engine.Input;
 using GameEntitySystem;
 using TemplatesDatabase;
-
 namespace Game
 {
 	public class ComponentInput : Component, IUpdateable
@@ -26,9 +25,6 @@ namespace Game
 		public Vector2 m_vrSmoothLook;
 
 		public PlayerInput PlayerInput => m_playerInput;
-
-
-
 #if ANDROID
 		public bool IsControlledByTouch { get; set; } = true;
 #endif
@@ -162,8 +158,9 @@ namespace Game
 					}
 					try
 					{
-						Mouse.SetMousePosition(1, 1);
-					}catch { }
+						Mouse.SetMousePosition(Window.Size.X / 2,Window.Size.Y / 2);
+					}
+					catch { }
 				}
 				Vector3 vector = default(Vector3) + (Vector3.UnitX * (input.IsKeyDown(Key.D) ? 1 : 0));
 				vector += -Vector3.UnitZ * (input.IsKeyDown(Key.S) ? 1 : 0);

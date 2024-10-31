@@ -53,7 +53,7 @@ namespace Engine.Input
 #endif
 		}
 
-		internal static void Initialize()
+        internal static void Initialize()
 		{
 #if !ANDROID
 			Window.m_gameWindow.MouseDown += MouseDownHandler;
@@ -164,7 +164,7 @@ namespace Engine.Input
 			{
 				m_mouseButtonsDownOnceArray[i] = false;
 			}
-			if (!IsMouseVisible)//������άģʽ
+			if (!IsMouseVisible)
 			{
 				MousePosition = null;
 #if !ANDROID
