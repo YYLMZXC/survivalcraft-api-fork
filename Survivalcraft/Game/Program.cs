@@ -29,6 +29,8 @@ namespace Game
 
 		public static event Action<Uri> HandleUri;
 		public static string Title = "生存战争2.3插件版_";
+		private static Timer JamTimer = new(JamChecker,null,0,8266);
+		private static int JamCounter = 0;
 
 #if WINDOWS
 		private static void Main(string[] args)
@@ -63,7 +65,7 @@ namespace Game
 			//];
 		}
 #endif
-		
+
 		[STAThread]
 		public static void EntryPoint()
 		{
@@ -155,6 +157,19 @@ namespace Game
 				Log.Error(e.Message);
 			}
 		}
+		public static void JamChecker(object o)
+		{
+			if(JamCounter >= 5)
+			{
+				Window.Close();
+				Thread.Sleep(500);
+				Environment.Exit(0); // 正常关闭程序
+			}
+			else
+			{
+				JamCounter += 1;
+			}
+		}
 
 		public static void Run()
 		{
@@ -162,6 +177,7 @@ namespace Game
 			// TODO: 待完成。
 			// EngineInputConnection.Implement = new SurvivalcraftInputConnection();
 #endif
+			JamCounter = 0;
 			
 			LastFrameTime = (float)(Time.RealTime - m_frameBeginTime);
 			LastCpuFrameTime = (float)(m_cpuEndTime - m_frameBeginTime);
