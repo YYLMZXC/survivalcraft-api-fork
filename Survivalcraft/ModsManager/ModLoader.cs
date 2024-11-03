@@ -116,10 +116,10 @@ namespace Game
         /// <param name="block"></param>
         /// <param name="value"></param>
         /// <param name="count"></param>
-        /// <param name="processCount"></param>
-        /// <param name="processedValue"></param>
-        /// <param name="processedCount"></param>
-        /// <returns>true 不移交 false 移交到下一个mod处理</returns>
+        // <param name="processCount"></param>
+        // <param name="processedValue"></param>
+        // <param name="processedCount"></param>
+        /// <returns>如果为 true：不移交到下一个 mod 处理</returns>
         public virtual bool ClothingProcessSlotItems(ComponentPlayer componentPlayer, Block block, int slotIndex, int value, int count)
         {
             return false;
@@ -218,7 +218,7 @@ namespace Game
         /// <summary>
         /// 因素控制力量、抗性、速度、饥饿速率组件更新时执行
         /// </summary>
-        /// <param name="level"></param>
+        /// <param name="componentFactors"></param>
         public virtual void OnFactorsUpdate(ComponentFactors componentFactors, float dt)
         {
         }
@@ -244,7 +244,7 @@ namespace Game
         /// <summary>
         /// 更新输入时执行
         /// </summary>
-        /// <param name="componentGui"></param>
+        /// <param name="componentInput"></param>
         public virtual void UpdateInput(ComponentInput componentInput, WidgetInput widgetInput)
         {
         }
@@ -483,9 +483,9 @@ namespace Game
         }
 
         /// <summary>
-        /// 加载指定区块,如有区块数变动返回true，否则返回false
+        /// 加载指定区块,如有区块数变动返回 true，否则返回 false
         /// </summary>
-        /// <param name="chunk"></param>
+        // <param name="chunk"></param>
         public virtual bool ToAllocateChunks(TerrainUpdater terrainUpdater, TerrainUpdater.UpdateLocation[] locations)
         {
             return false;
@@ -538,9 +538,9 @@ namespace Game
 
         /// <summary>
         /// 加载任务结束时执行
-        /// 在BlocksMAnager初始化之后
+        /// 在BlocksManager初始化之后
         /// </summary>
-        /// <param name="loadingActions"></param>
+        /// <param name="actions"></param>
         public virtual void OnLoadingFinished(List<System.Action> actions)
         {
         }
@@ -697,7 +697,7 @@ namespace Game
         /// <param name="scissorRectangle">绘制时的 ScissorRectangle。</param>
         /// <param name="drawContext">绘制上下文。</param>
         public virtual void BeforeWidgetDrawItemRender(Widget.DrawItem drawItem, out bool skipVanillaDraw,
-                                             out Action? afterWidgetDraw, ref Rectangle scissorRectangle,
+                                             out Action afterWidgetDraw, ref Rectangle scissorRectangle,
                                              Widget.DrawContext drawContext)
         {
             skipVanillaDraw = false;

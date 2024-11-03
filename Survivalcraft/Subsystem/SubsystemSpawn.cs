@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using TemplatesDatabase;
+using System.Linq;
 
 namespace Game
 {
@@ -309,24 +310,18 @@ namespace Game
         [Obsolete]
         public virtual void LoadSpawnsData(ValuesDictionary loadData, List<SpawnEntityData> creaturesData)
 		{
-			foreach (ValuesDictionary item in loadData.Values)
+			foreach(var (item, data) in from ValuesDictionary item in loadData.Values
+										let data = new SpawnEntityData()
+										select (item, data))
 			{
-				var data = new SpawnEntityData();
 				data.ConstantSpawn = item.GetValue<bool>("c");
 				data.Position = item.GetValue<Vector3>("p");
 				data.TemplateName = item.GetValue<string>("n");
-                object obj = item.GetValue("d", new object());
-                if (obj is string str && str != null)
-                {
-					data.Data = str;
-				}
-				else
-				{
-					data.Data = string.Empty;
-				}
-                creaturesData.Add(data);
+				object obj = item.GetValue("d",new object());
+				data.Data = obj is string str && str != null ? str : string.Empty;
+				creaturesData.Add(data);
 			}
-        }
+		}
         public virtual void LoadSpawnsData(string data, List<SpawnEntityData> creaturesData)
         {
             string[] array = data.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
