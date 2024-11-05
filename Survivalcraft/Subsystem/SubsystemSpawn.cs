@@ -36,6 +36,8 @@ namespace Game
 
 		public Dictionary<ComponentSpawn, bool> m_spawns = [];
 
+		public Dictionary<int, SpawnEntityData> m_spawnEntityDatas = new Dictionary<int, SpawnEntityData>();
+
 		public const float MaxChunkAge = 76800f;
 
 		public const float VisitedRadius = 8f;
@@ -282,6 +284,7 @@ namespace Game
 				};
 				ModsManager.HookAction("OnSaveSpawnData", (ModLoader loader) => { loader.OnSaveSpawnData(item, data); return true; });
 				GetOrCreateSpawnChunk(point).SpawnsData.Add(data);
+				m_spawnEntityDatas[data.EntityId] = data;
 				item.Despawn();
 			}
 		}
@@ -360,6 +363,7 @@ namespace Game
 					spawnEntityData.EntityId = int.Parse(array2[6]);
 				}
                 creaturesData.Add(spawnEntityData);
+				m_spawnEntityDatas[spawnEntityData.EntityId] = spawnEntityData;
             }
         }
         [Obsolete]
