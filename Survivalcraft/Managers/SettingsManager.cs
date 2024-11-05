@@ -481,91 +481,78 @@ namespace Game
 
 		public static void Initialize()
 		{
-			DisplayLog = false;
-			DragHalfInSplit = true;
-			m_resolutionMode = ResolutionMode.High;
-			VisibilityRange = 128;
-			ViewAngleMode = ViewAngleMode.Normal;
-			TerrainMipmapsEnabled = false;
-			SkyRenderingMode = SkyRenderingMode.Full;
-			ObjectsShadowsEnabled = true;
-			PresentationInterval = 1;
-			m_soundsVolume = 1.0f;
-			m_musicVolume = 0.2f;
-			m_brightness = 0.8f;
-			ShowGuiInScreenshots = false;
-			ShowLogoInScreenshots = true;
-			ScreenshotSize = ScreenshotSize.ScreenSize;
-			MoveControlMode = MoveControlMode.Buttons;
-			HideMoveLookPads = false;
-			AllowInitialIntro = true;
-			DeleteWorldNeedToText = false;
-			BlocksTextureFileName = string.Empty;
-			LookControlMode = LookControlMode.EntireScreen;
-			FlipVerticalAxis = false;
+			if(!LoadSettings())
+			{
+				DisplayLog = false;
+				DragHalfInSplit = true;
+				m_resolutionMode = ResolutionMode.High;
+				VisibilityRange = 128;
+				ViewAngleMode = ViewAngleMode.Normal;
+				TerrainMipmapsEnabled = false;
+				SkyRenderingMode = SkyRenderingMode.Full;
+				ObjectsShadowsEnabled = true;
+				PresentationInterval = 1;
+				m_soundsVolume = 1.0f;
+				m_musicVolume = 0.2f;
+				m_brightness = 0.8f;
+				ShowGuiInScreenshots = false;
+				ShowLogoInScreenshots = true;
+				ScreenshotSize = ScreenshotSize.ScreenSize;
+				MoveControlMode = MoveControlMode.Buttons;
+				HideMoveLookPads = false;
+				AllowInitialIntro = true;
+				DeleteWorldNeedToText = false;
+				BlocksTextureFileName = string.Empty;
+				LookControlMode = LookControlMode.EntireScreen;
+				FlipVerticalAxis = false;
 #if ANDROID
 			UIScale = 0.9f;
 			AutoJump = true;
+#else
+				UIScale = 0.75f;
+				AutoJump = false;
 #endif
-#if !ANDROID
-			UIScale = 0.8f;
-			AutoJump = false;
-#endif
-			MoveSensitivity = 0.5f;
-			LookSensitivity = 0.5f;
-			GamepadDeadZone = 0.16f;
-			GamepadCursorSpeed = 1f;
-			CreativeDigTime = 0.1f;
-			CreativeReach = 7.5f;
-			MinimumHoldDuration = 0.15f;
-			MinimumDragDistance = 10f;
-			HorizontalCreativeFlight = false;
-			DropboxAccessToken = string.Empty;
-			ScpboxAccessToken = string.Empty;
-			MotdUpdateUrl = "https://m.schub.top/com/motd?v={0}&l={1}";
-			MotdUpdateCheckUrl = "https://m.schub.top/com/motd?v={0}&cmd=version_check&platform={1}&apiv={2}&l={3}";
-			MotdUpdatePeriodHours = 12.0;
-			MotdLastUpdateTime = DateTime.MinValue;
-			MotdLastDownloadedData = string.Empty;
-			UserId = string.Empty;
-			LastLaunchedVersion = string.Empty;
-			CommunityContentMode = CommunityContentMode.Normal;
-			MultithreadedTerrainUpdate = true;
-			NewYearCelebrationLastYear = 2035;
-			ScreenLayout1 = ScreenLayout.Single;
-			ScreenLayout2 = (Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.DoubleVertical : ScreenLayout.DoubleHorizontal;
-			ScreenLayout3 = (Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.TripleVertical : ScreenLayout.TripleHorizontal;
-			ScreenLayout4 = ScreenLayout.Quadruple;
-			BulletinTime = string.Empty;
-			ScpboxUserInfo = string.Empty;
-			HorizontalCreativeFlight = true;
-			CreativeDragMaxStacking = true;
-			LowFPSToTimeDeceleration = 10;
-			UseAPISleepTimeAcceleration = false;
-			LoadSettings();
-			//VersionsManager.CompareVersions(LastLaunchedVersion, "1.29");
-			if (VersionsManager.CompareVersions(LastLaunchedVersion, "2.1") < 0)
-			{
+				MoveSensitivity = 0.5f;
+				LookSensitivity = 0.5f;
+				GamepadDeadZone = 0.16f;
+				GamepadCursorSpeed = 1f;
+				CreativeDigTime = 0.1f;
+				CreativeReach = 7.5f;
+				MinimumHoldDuration = 0.15f;
 				MinimumDragDistance = 10f;
-			}
-			if (VersionsManager.CompareVersions(LastLaunchedVersion, "2.2") < 0)
-			{/*
-				if (Utilities.GetTotalAvailableMemory() < 524288000)
-				{
-					VisibilityRange = MathUtils.Min(64, VisibilityRange);
-				}
-				else if (Utilities.GetTotalAvailableMemory() < 1048576000)
-				{
-					VisibilityRange = MathUtils.Min(112, VisibilityRange);
-				}*/
+				HorizontalCreativeFlight = false;
+				DropboxAccessToken = string.Empty;
+				ScpboxAccessToken = string.Empty;
+				MotdUpdateUrl = "https://m.schub.top/com/motd?v={0}&l={1}";
+				MotdUpdateCheckUrl = "https://m.schub.top/com/motd?v={0}&cmd=version_check&platform={1}&apiv={2}&l={3}";
+				MotdUpdatePeriodHours = 12.0;
+				MotdLastUpdateTime = DateTime.MinValue;
+				MotdLastDownloadedData = string.Empty;
+				UserId = string.Empty;
+				LastLaunchedVersion = string.Empty;
+				CommunityContentMode = CommunityContentMode.Normal;
+				MultithreadedTerrainUpdate = true;
+				NewYearCelebrationLastYear = 2035;
+				ScreenLayout1 = ScreenLayout.Single;
+				ScreenLayout2 = (Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.DoubleVertical : ScreenLayout.DoubleHorizontal;
+				ScreenLayout3 = (Window.ScreenSize.X / (float)Window.ScreenSize.Y > 1.33333337f) ? ScreenLayout.TripleVertical : ScreenLayout.TripleHorizontal;
+				ScreenLayout4 = ScreenLayout.Quadruple;
+				BulletinTime = string.Empty;
+				ScpboxUserInfo = string.Empty;
+				HorizontalCreativeFlight = true;
+				CreativeDragMaxStacking = true;
+				LowFPSToTimeDeceleration = 10;
+				UseAPISleepTimeAcceleration = false;
 			}
 			Window.Deactivated += delegate
 			{
 				SaveSettings();
 			};
 		}
-
-		public static void LoadSettings()
+		/// <summary>
+		/// 文件存在则读取并返回真否则返回假
+		/// </summary>
+		public static bool LoadSettings()
 		{
 			try
 			{
@@ -588,7 +575,7 @@ namespace Game
 									PropertyInfo propertyInfo = (from pi in typeof(SettingsManager).GetRuntimeProperties()
 																 where pi.Name == name && pi.GetMethod.IsStatic && pi.GetMethod.IsPublic && pi.SetMethod.IsPublic
 																 select pi).FirstOrDefault();
-									if ((object)propertyInfo != null)
+									if (propertyInfo is not null)
 									{
 										object value = HumanReadableConverter.ConvertFromString(propertyInfo.PropertyType, attributeValue);
 										propertyInfo.SetValue(null, value, null);
@@ -618,11 +605,17 @@ namespace Game
 
 					}
 					Log.Information("Loaded settings.");
+					return true;
+				}
+				else
+				{
+					return false;
 				}
 			}
 			catch (Exception e)
 			{
 				ExceptionManager.ReportExceptionToUser("Loading settings failed.", e);
+				return false;
 			}
 		}
 

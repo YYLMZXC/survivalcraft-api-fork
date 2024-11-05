@@ -17,11 +17,10 @@ namespace Game
 			Error,
 			Advice
 		}
-		private class LogItem
+		private class LogItem(LoadingScreen.LogType type,string log)
 		{
-			public LogType LogType;
-			public string Message;
-			public LogItem(LogType type, string log) { LogType = type; Message = log; }
+			public LogType LogType = type;
+			public string Message = log;
 		}
 		private List<Action> LoadingActoins = [];
 		private List<Action> ModLoadingActoins = [];
@@ -47,14 +46,14 @@ namespace Game
 		}
 		public static Color GetColor(LogType type)
 		{
-			switch (type)
+			return type switch
 			{
-				case LogType.Advice: return Color.Cyan;
-				case LogType.Error: return Color.Red;
-				case LogType.Warning: return Color.Yellow;
-				case LogType.Info: return Color.White;
-				default: return Color.White;
-			}
+				LogType.Advice => Color.Cyan,
+				LogType.Error => Color.Red,
+				LogType.Warning => Color.Yellow,
+				LogType.Info => Color.White,
+				_ => Color.White,
+			};
 		}
 		public LoadingScreen()
 		{
@@ -148,9 +147,9 @@ namespace Game
 					if (!LanguageControl.LanguageTypes.Contains(px)) LanguageControl.LanguageTypes.Add(px);
 				}
 				//<<<结束
-				if (ModsManager.Configs.ContainsKey("Language") && LanguageControl.LanguageTypes.Contains(ModsManager.Configs["Language"]))
+				if (ModsManager.Configs.TryGetValue("Language",out string value) && LanguageControl.LanguageTypes.Contains(value))
 				{
-					LanguageControl.Initialize(ModsManager.Configs["Language"]);
+					LanguageControl.Initialize(value);
 				}
 				else
 				{
@@ -297,7 +296,6 @@ namespace Game
 				FurniturePacksManager.Initialize();
 				LightingManager.Initialize();
 				MotdManager.Initialize();
-				VersionsManager.Initialize();
 				WorldsManager.Initialize();
 			});
 			AddLoadAction(delegate

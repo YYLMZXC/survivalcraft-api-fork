@@ -43,7 +43,7 @@ namespace Engine
 				}
 			}
 #if ANDROID
-            System.Console.WriteLine("SCAPI1.6["+ type.ToString() +"]" + message);
+            System.Console.WriteLine("SCAPI["+ type.ToString() +"]" + message);
 #endif
 		}
 

@@ -31,7 +31,7 @@ namespace Game
 		public static string Title = "生存战争2.3插件版_";
 		private static Timer JamTimer = new(JamChecker,null,0,8266);
 		private static int JamCounter = 0;
-
+		
 #if WINDOWS
 		private static void Main(string[] args)
 		{
@@ -69,28 +69,13 @@ namespace Game
 		[STAThread]
 		public static void EntryPoint()
 		{
-			try
-			{
-				SystemLanguage = CultureInfo.CurrentUICulture.Name;
-			}
-			catch
-			{
-			}
-
+			SystemLanguage = CultureInfo.CurrentUICulture.Name;
 			if (string.IsNullOrEmpty(SystemLanguage))
 			{
 				Log.Debug(RegionInfo.CurrentRegion.DisplayName);
-				if (RegionInfo.CurrentRegion.DisplayName != "United States")
-				{
-					SystemLanguage = "zh-CN";
-				}
-				else
-				{
-					SystemLanguage = "en-US";
-				}
+				SystemLanguage = RegionInfo.CurrentRegion.DisplayName != "United States" ? "zh-CN" : "en-US";
 			}
-
-
+			VersionsManager.Initialize();
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
@@ -146,7 +131,6 @@ namespace Game
 			try
 			{
 				SettingsManager.Initialize();
-				VersionsManager.Initialize();
 				ExternalContentManager.Initialize();
 				MusicManager.Initialize();
 				ScreensManager.Initialize();
