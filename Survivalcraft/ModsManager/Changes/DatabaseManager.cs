@@ -73,7 +73,19 @@ namespace Game
 			return null;
 		}
 
-		public static Entity CreateEntity(Project project, string entityTemplateName, bool throwIfNotFound)
+		public static Entity CreateEntity(Project project, SpawnEntityData spawnEntityData, bool throwIfNotFound)
+		{
+			Entity entity = CreateEntity(project, spawnEntityData.TemplateName, throwIfNotFound);
+			if(entity != null)
+			{
+				if (spawnEntityData.EntityId > 0) entity.Id = spawnEntityData.EntityId;
+				else entity.Id = 0;
+			}
+			return entity;
+		}
+
+
+        public static Entity CreateEntity(Project project, string entityTemplateName, bool throwIfNotFound)
 		{
 			ValuesDictionary valuesDictionary = FindEntityValuesDictionary(entityTemplateName, throwIfNotFound);
 			if (valuesDictionary == null)

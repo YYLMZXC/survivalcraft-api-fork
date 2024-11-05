@@ -13,5 +13,7 @@ namespace Game
 
 		public string Data;
 
+		public int EntityId;
+
 	}
 }

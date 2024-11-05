@@ -35,9 +35,11 @@ namespace GameEntitySystem
 			}
 		}
 
-		public void Save(XElement entitiesNode)
-		{
-			foreach (EntityData entitiesDatum in EntitiesData)
+		public void Save(XElement entitiesNode, int nextEntityID)
+        {
+            XmlUtils.SetAttributeValue(entitiesNode, "NextID", nextEntityID);
+			Log.Information("Save NextEntityID: " + nextEntityID);
+            foreach (EntityData entitiesDatum in EntitiesData)
 			{
 				XElement entityNode = XmlUtils.AddElement(entitiesNode, "Entity");
 				entitiesDatum.Save(entityNode);

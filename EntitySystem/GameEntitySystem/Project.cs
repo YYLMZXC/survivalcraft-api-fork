@@ -34,7 +34,9 @@ namespace GameEntitySystem
 
 		public ProjectData m_projectData;
 
-		public Project(GameDatabase gameDatabase, ProjectData projectData)
+        public int NextEntityID = 1;
+
+        public Project(GameDatabase gameDatabase, ProjectData projectData)
 		{
 			try
 			{
@@ -80,6 +82,7 @@ namespace GameEntitySystem
 				if (projectData.EntityDataList != null)
 				{
 					List<Entity> entities = LoadEntities(projectData.EntityDataList);
+					NextEntityID = projectData.NextEntityID;
 					AddEntities(entities);
 				}
 			}
@@ -180,6 +183,11 @@ namespace GameEntitySystem
 			if (!entity.IsAddedToProject)
 			{
 				m_entities.Add(entity, value: true);
+				if(entity.Id == 0)
+				{
+					entity.Id = NextEntityID;
+					NextEntityID++;
+				}
 				entity.m_isAddedToProject = true;
 				FireEntityAddedEvents(entity);
 			}
@@ -228,7 +236,7 @@ namespace GameEntitySystem
 			{
 				try
 				{
-					Entity entity = new(this, entitiesDatum.ValuesDictionary);
+					Entity entity = new(this, entitiesDatum.ValuesDictionary, entitiesDatum.Id);
 					list.Add(entity);
 					if (entitiesDatum.Id != 0)
 					{
@@ -262,10 +270,10 @@ namespace GameEntitySystem
 			}
 			EntityDataList entityDataList = new();
 			entityDataList.EntitiesData = new List<EntityData>(dictionary.Keys.Count);
-			foreach (Entity key2 in dictionary.Keys)
+			foreach (Entity key2 in entities)
 			{
 				EntityData entityData = new();
-				entityData.Id = entityToIdMap.FindId(key2);
+				entityData.Id = key2.Id;
 				entityData.ValuesDictionary = [];
 				entityData.ValuesDictionary.DatabaseObject = key2.ValuesDictionary.DatabaseObject;
 				key2.InternalSaveEntity(entityData.ValuesDictionary, entityToIdMap);
@@ -288,6 +296,7 @@ namespace GameEntitySystem
 					projectData.ValuesDictionary.SetValue(subsystem.ValuesDictionary.DatabaseObject.Name, valuesDictionary);
 				}
 			}
+			projectData.NextEntityID = NextEntityID;
 			projectData.EntityDataList = SaveEntities(Entities);
 			return projectData;
 		}

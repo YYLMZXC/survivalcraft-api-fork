@@ -277,7 +277,8 @@ namespace Game
 					TemplateName = item.Entity.ValuesDictionary.DatabaseObject.Name,
 					Position = item.ComponentFrame.Position,
 					ConstantSpawn = item.ComponentCreature?.ConstantSpawn ?? false,
-					Data = string.Empty
+					Data = string.Empty,
+					EntityId = item.Entity.Id
 				};
 				ModsManager.HookAction("OnSaveSpawnData", (ModLoader loader) => { loader.OnSaveSpawnData(item, data); return true; });
 				GetOrCreateSpawnChunk(point).SpawnsData.Add(data);
@@ -289,7 +290,7 @@ namespace Game
 		{
 			try
 			{
-				Entity entity = DatabaseManager.CreateEntity(Project, data.TemplateName, throwIfNotFound: true);
+				Entity entity = DatabaseManager.CreateEntity(Project, data, throwIfNotFound: true);
 				ModsManager.HookAction("OnReadSpawnData", (ModLoader loader) => { loader.OnReadSpawnData(entity, data); return true; });
 				entity.FindComponent<ComponentBody>(throwOnError: true).Position = data.Position;
 				entity.FindComponent<ComponentBody>(throwOnError: true).Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, m_random.Float(0f, (float)Math.PI * 2f));
@@ -327,7 +328,7 @@ namespace Game
             string[] array = data.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < array.Length; i++)
             {
-                string[] array2 = array[i].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] array2 = array[i].Split(new char[] { ',' });
                 if (array2.Length < 4)
                 {
                     throw new InvalidOperationException("Invalid spawn data string.");
@@ -353,8 +354,11 @@ namespace Game
 				else
 				{
                     spawnEntityData.Data = string.Empty;
-
                 }
+				if(array2.Length >= 7)
+				{
+					spawnEntityData.EntityId = int.Parse(array2[6]);
+				}
                 creaturesData.Add(spawnEntityData);
             }
         }
@@ -386,11 +390,13 @@ namespace Game
                 stringBuilder.Append((MathF.Round(spawnEntityData.Position.Z * 10f) / 10f).ToString(CultureInfo.InvariantCulture));
                 stringBuilder.Append(',');
                 stringBuilder.Append(spawnEntityData.ConstantSpawn.ToString());
-				if(spawnEntityData.Data?.Length > 0)
+                stringBuilder.Append(',');
+                if (spawnEntityData.Data?.Length > 0)
 				{
-                    stringBuilder.Append(',');
                     stringBuilder.Append(spawnEntityData.Data);
                 }
+                stringBuilder.Append(',');
+                stringBuilder.Append(spawnEntityData.EntityId.ToString());
                 stringBuilder.Append(';');
             }
             return stringBuilder.ToString();

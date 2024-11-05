@@ -101,6 +101,13 @@ namespace GameEntitySystem
 
 		public event EventHandler EntityRemoved;
 
+		public int Id;
+
+		public Entity(Project project, ValuesDictionary valuesDictionary, int id) : this(project, valuesDictionary)
+		{
+			Id = id;
+		}
+
 		public Entity(Project project, ValuesDictionary valuesDictionary)
 		{
 			if (valuesDictionary.DatabaseObject.Type != project.GameDatabase.EntityTemplateType)

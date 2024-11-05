@@ -1,3 +1,4 @@
+using Engine;
 using System;
 using System.Xml.Linq;
 using TemplatesDatabase;
@@ -11,6 +12,7 @@ namespace GameEntitySystem
 
 		public EntityDataList EntityDataList;
 
+		public int NextEntityID = 1;
 		public ProjectData()
 		{
 		}
@@ -55,9 +57,11 @@ namespace GameEntitySystem
 			}
 			XElement xElement2 = XmlUtils.FindChildElement(projectNode, "Entities", throwIfNotFound: false);
 			if (xElement2 != null)
-			{
-				EntityDataList = new EntityDataList(gameDatabase, xElement2, ignoreInvalidEntities);
-			}
+            {
+                NextEntityID = XmlUtils.GetAttributeValue<int>(xElement2, "NextID", 1000001);
+				Log.Information("Load NextEntityID: " + NextEntityID);
+                EntityDataList = new EntityDataList(gameDatabase, xElement2, ignoreInvalidEntities);
+            }
 		}
 
 		public void Save(XElement projectNode)
@@ -69,7 +73,7 @@ namespace GameEntitySystem
 			if (EntityDataList != null)
 			{
 				XElement entitiesNode = XmlUtils.AddElement(projectNode, "Entities");
-				EntityDataList.Save(entitiesNode);
+				EntityDataList.Save(entitiesNode, NextEntityID);
 			}
 		}
 	}
