@@ -262,11 +262,13 @@ namespace GameEntitySystem
 		public void LoadEntities(EntityDataList entityDataList, List<Entity> entityList)
 		{
             int num = 0;
+			if(entityDataList?.EntitiesData != null)
             foreach (EntityData entitiesDatum2 in entityDataList.EntitiesData)
             {
                 entityList[num].InternalLoadEntity(entitiesDatum2.ValuesDictionary, null);
                 num++;
             }
+			if(Entities != null)
 			foreach(Entity entity in Entities)
 			{
 				FireEntityAddedEvents(entity);

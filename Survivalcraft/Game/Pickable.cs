@@ -1,4 +1,6 @@
 using Engine;
+using GameEntitySystem;
+using TemplatesDatabase;
 
 namespace Game
 {
@@ -32,12 +34,15 @@ namespace Game
         public SubsystemTerrain SubsystemTerrain;
 
         public SubsystemExplosions SubsystemExplosions;
-        public virtual void Initialize(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
+
+        public Entity OwnerEntity;
+        public virtual void Initialize(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix, Entity owner)
         {
             Value = value;
             Count = count;
             Position = position;
             StuckMatrix = stuckMatrix;
+            OwnerEntity = owner;
             if (velocity.HasValue)
             {
                 Velocity = velocity.Value;
@@ -264,6 +269,21 @@ namespace Game
                 }
             }
         }
-
+        public virtual void Save(ValuesDictionary valuesDictionary)
+        {
+            valuesDictionary.SetValue("Value", Value);
+            valuesDictionary.SetValue("Count", Count);
+            valuesDictionary.SetValue("Position", Position);
+            valuesDictionary.SetValue("Velocity", Velocity);
+            valuesDictionary.SetValue("CreationTime", CreationTime);
+            if (StuckMatrix.HasValue)
+            {
+                valuesDictionary.SetValue("StuckMatrix", StuckMatrix.Value);
+            }
+            if (OwnerEntity != null && OwnerEntity.Id != 0)
+            {
+                valuesDictionary.SetValue("OwnerID", OwnerEntity.Id);
+            }
+        }
     }
 }

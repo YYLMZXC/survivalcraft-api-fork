@@ -468,7 +468,7 @@ namespace Game
 			if (playerInput.Drop && ComponentMiner.Inventory != null)
 			{
                 bool skipVanilla_ = false;
-                ModsManager.HookAction("UpdatePlayerInputDig", loader =>
+                ModsManager.HookAction("UpdatePlayerInputDrop", loader =>
                 {
                     loader.OnPlayerInputDrop(this, skipVanilla_, out bool skip);
                     skipVanilla_ |= skip;
@@ -483,7 +483,7 @@ namespace Game
                     {
                         Vector3 position = ComponentBody.Position + new Vector3(0f, ComponentBody.StanceBoxSize.Y * 0.66f, 0f) + (0.25f * ComponentBody.Matrix.Forward);
                         Vector3 value2 = 8f * Matrix.CreateFromQuaternion(ComponentCreatureModel.EyeRotation).Forward;
-                        m_subsystemPickables.AddPickable(slotValue, num3, position, value2, null);
+                        m_subsystemPickables.AddPickable(slotValue, num3, position, value2, null, Entity);
                     }
                 }
 			}

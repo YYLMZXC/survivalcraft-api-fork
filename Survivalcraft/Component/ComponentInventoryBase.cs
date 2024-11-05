@@ -104,7 +104,10 @@ namespace Game
 				int num = inventory.RemoveSlotItems(slotIndex, slotCount);
 				if (num > 0)
 				{
-					inventory.Project.FindSubsystem<SubsystemPickables>(throwOnError: true).AddPickable(slotValue, num, position, velocity, null);
+					Entity entity = null;
+					Component component = inventory as Component;
+					if (component != null) entity = component.Entity;
+					inventory.Project.FindSubsystem<SubsystemPickables>(throwOnError: true).AddPickable(slotValue, num, position, velocity, null, entity);
 				}
 			}
 		}

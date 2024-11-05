@@ -60,7 +60,7 @@ namespace Game
 						for (int i = 0; i < num2; i++)
 						{
 							Vector3 position = (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max) / 2f;
-							m_subsystemPickables.AddPickable(item.Value, 1, position, null, null);
+							m_subsystemPickables.AddPickable(item.Value, 1, position, null, null, Entity);
 						}
 					}
 				}

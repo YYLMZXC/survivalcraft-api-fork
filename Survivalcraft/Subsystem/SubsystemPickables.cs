@@ -74,22 +74,26 @@ namespace Game
         }
         public virtual Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
 		{
-			return AddPickable<Pickable>(value, count, position, velocity, stuckMatrix);
-		}
-		public virtual Pickable CreatePickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix)
+			return AddPickable(value, count, position, velocity, stuckMatrix, null);
+        }
+        public virtual Pickable AddPickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix, Entity owner)
+        {
+            return AddPickable<Pickable>(value, count, position, velocity, stuckMatrix, owner);
+        }
+        public virtual Pickable CreatePickable(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix, Entity owner)
 		{
-			return CreatePickable<Pickable>(value, count, position, velocity, stuckMatrix);
+			return CreatePickable<Pickable>(value, count, position, velocity, stuckMatrix, owner);
 		}
-        public virtual T CreatePickable<T>(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix) where T : Pickable, new()
+        public virtual T CreatePickable<T>(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix, Entity owner) where T : Pickable, new()
 		{
             var pickable = new T();
-            pickable.Initialize(value, count, position, velocity, stuckMatrix);
+            pickable.Initialize(value, count, position, velocity, stuckMatrix, owner);
 			return pickable;
         }
 
-        public virtual T AddPickable<T>(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix) where T : Pickable, new()
+        public virtual T AddPickable<T>(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix, Entity owner) where T : Pickable, new()
 		{
-			T pickable = CreatePickable<T>(value, count, position, velocity, stuckMatrix);
+			T pickable = CreatePickable<T>(value, count, position, velocity, stuckMatrix, owner);
             Pickable pickable2 = AddPickable(pickable);
 			return pickable2 as T;
 		}
@@ -215,6 +219,11 @@ namespace Game
 				{
 					pickable.StuckMatrix = item.GetValue<Matrix>("StuckMatrix");
 				}
+                int ownerEntityID = item.GetValue("OwnerID", 0);
+                if (ownerEntityID != 0)
+                {
+                    pickable.OwnerEntity = Project.FindEntity(ownerEntityID);
+                }
                 ModsManager.HookAction("OnPickableAdded", loader =>
                 {
                     loader.OnPickableAdded(this, ref pickable, item);
@@ -235,15 +244,7 @@ namespace Game
 			foreach (Pickable pickable in m_pickables)
 			{
 				var valuesDictionary3 = new ValuesDictionary();
-				valuesDictionary3.SetValue("Value", pickable.Value);
-				valuesDictionary3.SetValue("Count", pickable.Count);
-				valuesDictionary3.SetValue("Position", pickable.Position);
-				valuesDictionary3.SetValue("Velocity", pickable.Velocity);
-				valuesDictionary3.SetValue("CreationTime", pickable.CreationTime);
-				if (pickable.StuckMatrix.HasValue)
-				{
-					valuesDictionary3.SetValue("StuckMatrix", pickable.StuckMatrix.Value);
-				}
+				pickable.Save(valuesDictionary3);
 				ModsManager.HookAction("SavePickable", loader =>
 				{
 					loader.SavePickable(this, pickable, ref valuesDictionary3);

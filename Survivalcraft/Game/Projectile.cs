@@ -344,11 +344,11 @@ namespace Game
                             if (pickableStuckMatrix.HasValue)
                             {
                                 SubsystemProjectiles.CalculateVelocityAlignMatrix(block, pickableStuckMatrix.Value, Velocity, out Matrix matrix);
-                                m_subsystemPickables.AddPickable(damagedBlockValue, 1, Position, Vector3.Zero, matrix);
+                                m_subsystemPickables.AddPickable(damagedBlockValue, 1, Position, Vector3.Zero, matrix, OwnerEntity);
                             }
                             else
                             {
-                                m_subsystemPickables.AddPickable(damagedBlockValue, 1, position, Vector3.Zero, null);
+                                m_subsystemPickables.AddPickable(damagedBlockValue, 1, position, Vector3.Zero, null, OwnerEntity);
                             }
                         }
                         else

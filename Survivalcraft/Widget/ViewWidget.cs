@@ -80,7 +80,7 @@ namespace Game
 				{
 					Vector2 vector = dragWidget.WidgetToScreen(dragWidget.ActualSize / 2f);
 					Vector3 value = Vector3.Normalize(GameWidget.ActiveCamera.ScreenToWorld(new Vector3(vector.X, vector.Y, 1f), Matrix.Identity) - GameWidget.ActiveCamera.ViewPosition) * 12f;
-					subsystemPickables.AddPickable(slotValue, num, GameWidget.ActiveCamera.ViewPosition, value, null);
+					subsystemPickables.AddPickable(slotValue, num, GameWidget.ActiveCamera.ViewPosition, value, null, componentPlayer.Entity);
 				}
 			}
 		}

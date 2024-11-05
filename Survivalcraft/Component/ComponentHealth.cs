@@ -273,7 +273,7 @@ namespace Game
                             Vector2 vector = m_random.Vector2(2.5f, 3.5f);
                             int dropInWave = experienceOrbDropCount / 100;
                             if (i < experienceOrbDropCount % 100) dropInWave++;
-                            m_subsystemPickables.AddPickable(ExperienceOrbBlockIndex, dropInWave, m_componentCreature.ComponentBody.Position, new Vector3(vector.X, 6f, vector.Y), null);
+                            m_subsystemPickables.AddPickable(ExperienceOrbBlockIndex, dropInWave, m_componentCreature.ComponentBody.Position, new Vector3(vector.X, 6f, vector.Y), null, Entity);
                         }
                     }
                     else
@@ -281,7 +281,7 @@ namespace Game
                         for (int i = 0; i < experienceOrbDropCount; i++)
                         {
                             Vector2 vector = m_random.Vector2(2.5f, 3.5f);
-                            m_subsystemPickables.AddPickable(ExperienceOrbBlockIndex, 1, m_componentCreature.ComponentBody.Position, new Vector3(vector.X, 6f, vector.Y), null);
+                            m_subsystemPickables.AddPickable(ExperienceOrbBlockIndex, 1, m_componentCreature.ComponentBody.Position, new Vector3(vector.X, 6f, vector.Y), null, Entity);
                         }
                     }
                 }

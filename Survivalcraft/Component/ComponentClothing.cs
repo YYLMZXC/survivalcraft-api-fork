@@ -371,7 +371,7 @@ namespace Game
 						{
 
 							m_componentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), clothingData.PlayerLevelRequired, clothingData.DisplayName), Color.White, blinking: true, playNotificationSound: true);
-							m_subsystemPickables.AddPickable(value, 1, m_componentBody.Position, null, null);
+							m_subsystemPickables.AddPickable(value, 1, m_componentBody.Position, null, null, Entity);
 							m_clothesList.RemoveAt(num);
 							flag = true;
 						}
@@ -543,7 +543,7 @@ namespace Game
 					int slotValue = GetSlotValue(i);
 					int count = RemoveSlotItems(i, slotCount);
 					Vector3 value = random.Float(5f, 10f) * Vector3.Normalize(new Vector3(random.Float(-1f, 1f), random.Float(1f, 2f), random.Float(-1f, 1f)));
-					subsystemPickables.AddPickable(slotValue, count, position, value, null);
+					subsystemPickables.AddPickable(slotValue, count, position, value, null, Entity);
 				}
 			}
 		}
