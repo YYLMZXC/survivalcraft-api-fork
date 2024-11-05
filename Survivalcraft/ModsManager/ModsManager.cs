@@ -19,16 +19,13 @@ public static class ModsManager
 	public static string ApiVersionString = "1.72";
 	public static string GameVersion = "2.3.10.4";
 	public static string fName = "ModsManager";
-	//1为api1.33 2为api1.40
-	
-	
-	public enum ApiVersionEnum
+	[Obsolete("使用ApiVersionString")]
+	public enum ApiVersionEnum//不准确，弃用
 	{
-		Version133 = 1,
-		Version140 = 2,
-		Version170 = 17
+		Version15x = 3,
+		Version170 = 17,
 	}
-
+	[Obsolete("使用ApiVersionString")]
 	public const ApiVersionEnum ApiVersion = ApiVersionEnum.Version170; 
 
 #if !ANDROID
@@ -68,15 +65,11 @@ public static class ModsManager
 		public string languageType = string.Empty;
 	}
 
-	public class ModHook
+	public class ModHook(string name)
 	{
-		public string HookName;
+		public string HookName = name;
 		public Dictionary<ModLoader, bool> Loaders = [];
 		public Dictionary<ModLoader, string> DisableReason = [];
-		public ModHook(string name)
-		{
-			HookName = name;
-		}
 
 		public void Add(ModLoader modLoader)
 		{
@@ -185,28 +178,6 @@ public static class ModsManager
 		}
 	}
 
-#if DEBUG
-    public static void StreamCompress(Stream input, MemoryStream data)
-    {
-        byte[] dat = data.ToArray();
-        using (var stream = new GZipStream(input, CompressionMode.Compress))
-        {
-            stream.Write(dat, 0, dat.Length);
-        }
-    }
-
-    public static Stream StreamDecompress(Stream input)
-    {
-        var outStream = new MemoryStream();
-        using (var zipStream = new GZipStream(input, CompressionMode.Decompress))
-        {
-            zipStream.CopyTo(outStream);
-            zipStream.Close();
-            outStream.Seek(0, SeekOrigin.Begin);
-            return outStream;
-        }
-    }
-#endif
 	public static T GetInPakOrStorageFile<T>(string filepath, string suffix = "txt") where T : class
 	{
 		//string storagePath = Storage.CombinePaths(ExternelPath, filepath + prefix);
@@ -215,7 +186,7 @@ public static class ModsManager
 
 	public static ModInfo DeserializeJson(string json)
 	{
-        ModInfo modInfo = new ModInfo();
+        ModInfo modInfo = new();
 		JsonElement jsonElement = JsonDocument.Parse(json).RootElement;
 		if(jsonElement.TryGetProperty("Name", out JsonElement name))
 		{
@@ -414,7 +385,7 @@ public static class ModsManager
 	/// <summary>
 	/// 获取所有文件
 	/// </summary>
-	/// <param name="path"></param>
+	/// <param name="path">文件路径</param>
 	public static void GetScmods(string path)
 	{
 		foreach (string item in Storage.ListFileNames(path))
@@ -470,48 +441,7 @@ public static class ModsManager
 		return bytes;
 	}
 
-#if DEBUG
-    /// <summary>
-    /// 将 byte[] 转成 Stream
-    /// </summary>
-    public static Stream BytesToStream(byte[] bytes)
-    {
-        Stream stream = new MemoryStream(bytes);
-        return stream;
-    }
-    /// <summary>
-    /// 将 Stream 写入文件
-    /// </summary>
-    public static void StreamToFile(Stream stream, string fileName)
-    {
-        // 把 Stream 转换成 byte[]
-        byte[] bytes = new byte[stream.Length];
-        stream.Seek(0, SeekOrigin.Begin);
-        stream.Read(bytes, 0, bytes.Length);
-        // 设置当前流的位置为流的开始
-        // 把 byte[] 写入文件
-        var fs = new FileStream(fileName, FileMode.Create);
-        var bw = new BinaryWriter(fs);
-        bw.Write(bytes);
-        bw.Close();
-        fs.Close();
-    }
-    /// <summary>
-    /// 从文件读取 Stream
-    /// </summary>
-    public static Stream FileToStream(string fileName)
-    {
-        // 打开文件
-        var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-        // 读取文件的 byte[]
-        byte[] bytes = new byte[fileStream.Length];
-        fileStream.Read(bytes, 0, bytes.Length);
-        fileStream.Close();
-        // 把 byte[] 转换成 Stream
-        Stream stream = new MemoryStream(bytes);
-        return stream;
-    }
-#endif
+
 
 	public static string GetMd5(string input)
 	{
@@ -766,9 +696,63 @@ public static class ModsManager
 			Modify(DataObjects, element);
 		}
 	}
-
 #if DEBUG
-    public enum SourceType{
+	/// <summary>
+	/// 将 byte[] 转成 Stream
+	/// </summary>
+	public static Stream BytesToStream(byte[] bytes)
+	{
+		return new MemoryStream(bytes);
+	}
+	/// <summary>
+	/// 将 Stream 写入文件
+	/// </summary>
+	public static void StreamToFile(Stream stream,string fileName)
+	{
+		// 把 Stream 转换成 byte[]
+		byte[] bytes = new byte[stream.Length];
+		stream.Seek(0,SeekOrigin.Begin);
+		stream.Read(bytes,0,bytes.Length);
+		// 设置当前流的位置为流的开始
+		// 把 byte[] 写入文件
+		var fs = new FileStream(fileName,FileMode.Create);
+		var bw = new BinaryWriter(fs);
+		bw.Write(bytes);
+		bw.Close();
+		fs.Close();
+	}
+	/// <summary>
+	/// 从文件读取 Stream
+	/// </summary>
+	public static Stream FileToStream(string fileName)
+	{
+		// 打开文件
+		var fileStream = new FileStream(fileName,FileMode.Open,FileAccess.Read,FileShare.Read);
+		// 读取文件的 byte[]
+		byte[] bytes = new byte[fileStream.Length];
+		fileStream.Read(bytes,0,bytes.Length);
+		fileStream.Close();
+		// 把 byte[] 转换成 Stream
+		Stream stream = new MemoryStream(bytes);
+		return stream;
+	}
+	public static void StreamCompress(Stream input,MemoryStream data)
+	{
+		byte[] dat = data.ToArray();
+		using var stream = new GZipStream(input,CompressionMode.Compress);
+		stream.Write(dat,0,dat.Length);
+	}
+
+	public static Stream StreamDecompress(Stream input)
+	{
+		var outStream = new MemoryStream();
+		using var zipStream = new GZipStream(input,CompressionMode.Decompress);
+		zipStream.CopyTo(outStream);
+		zipStream.Close();
+		outStream.Seek(0,SeekOrigin.Begin);
+		return outStream;
+	}
+	public enum SourceType{
         positions,
         normals,
         map,
@@ -803,7 +787,7 @@ public static class ModsManager
     {
         try
         {
-            Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), Storage.CombinePaths("app:", name + ".png"), Engine.Media.ImageFileFormat.Png, true);
+            Image.Save(renderTarget2D.GetData(new Rectangle(0, 0, renderTarget2D.Width, renderTarget2D.Height)), Storage.CombinePaths("app:", name + ".webp"), Engine.Media.ImageFileFormat.WebP, true);
         }
         catch (Exception e)
         {

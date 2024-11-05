@@ -21,8 +21,8 @@ namespace Engine
 
         public event Func<KeyEvent, bool> OnDispatchKeyEvent;
         
-        public static string BasePath = "android:Survivalcraft2.3";
-        public static string ConfigPath = "android:Survivalcraft2.3";
+        public static string BasePath = "android:Survivalcraft2.3_API1.7";
+        public static string ConfigPath = "android:Survivalcraft2.3_API1.7";
 
         public EngineActivity()
         {
@@ -40,7 +40,7 @@ namespace Engine
         public void Vibrate(long ms)
         {
             Vibrator vibrator = (Vibrator)GetSystemService("vibrator");
-            vibrator.Vibrate(VibrationEffect.CreateOneShot(1000, VibrationEffect.DefaultAmplitude));
+            vibrator.Vibrate(VibrationEffect.CreateOneShot(ms, VibrationEffect.DefaultAmplitude));
         }
         public void OpenLink(string link)
         {
