@@ -78,7 +78,7 @@ namespace Game
 			Entity entity = CreateEntity(project, spawnEntityData.TemplateName, throwIfNotFound);
 			if(entity != null)
 			{
-				if (spawnEntityData.EntityId > 0) entity.Id = spawnEntityData.EntityId;
+				if (spawnEntityData.EntityId != 0) entity.Id = spawnEntityData.EntityId;
 				else entity.Id = 0;
 			}
 			return entity;

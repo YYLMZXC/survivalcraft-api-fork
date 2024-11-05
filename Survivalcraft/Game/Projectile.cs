@@ -1,6 +1,8 @@
 using Engine;
 using System;
 using GameEntitySystem;
+using TemplatesDatabase;
+using System.Globalization;
 
 namespace Game
 {
@@ -27,9 +29,19 @@ namespace Game
 
 		public double LastNoiseTime;
 
-		public ComponentCreature Owner;
+		public ComponentCreature Owner
+        {
+            get
+            {
+                return OwnerEntity?.FindComponent<ComponentCreature>();
+            }
+            set
+            {
+                OwnerEntity = value.Entity;
+            }
+        }
 
-		public GameEntitySystem.Entity OwnerEntity;
+		public Entity OwnerEntity;
 
 		public ProjectileStoppedAction ProjectileStoppedAction;
 
@@ -64,7 +76,24 @@ namespace Game
         public bool BodyCollidable = true;
 
         public float? m_attackPower = null;
-
+        
+        public virtual void Save(SubsystemProjectiles subsystemProjectiles, ValuesDictionary valuesDictionary)
+        {
+            valuesDictionary.SetValue("Value", Value);
+            valuesDictionary.SetValue("Position", Position);
+            valuesDictionary.SetValue("Velocity", Velocity);
+            valuesDictionary.SetValue("CreationTime", CreationTime);
+            valuesDictionary.SetValue("ProjectileStoppedAction", ProjectileStoppedAction);
+            if (OwnerEntity != null && OwnerEntity.Id != 0)
+            {
+                valuesDictionary.SetValue("OwnerID", OwnerEntity.Id);
+            }
+            ModsManager.HookAction("SaveProjectile", loader =>
+            {
+                loader.SaveProjectile(subsystemProjectiles, this, ref valuesDictionary);
+                return false;
+            });
+        }
         public float AttackPower
         {
             get
@@ -91,7 +120,6 @@ namespace Game
             Velocity = velocity;
             Rotation = Vector3.Zero;
             AngularVelocity = angularVelocity;
-            Owner = owner?.FindComponent<ComponentCreature>();
             OwnerEntity = owner;
             Damping = block.GetProjectileDamping(value);
             ProjectileStoppedAction = ProjectileStoppedAction.TurnIntoPickable;

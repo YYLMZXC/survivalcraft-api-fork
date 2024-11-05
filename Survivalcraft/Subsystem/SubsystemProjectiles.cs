@@ -308,6 +308,11 @@ namespace Game
 				projectile.Velocity = item.GetValue<Vector3>("Velocity");
 				projectile.CreationTime = item.GetValue<double>("CreationTime");
 				projectile.ProjectileStoppedAction = item.GetValue("ProjectileStoppedAction", projectile.ProjectileStoppedAction);
+				int ownerEntityID = item.GetValue("OwnerID", 0);
+				if(ownerEntityID != 0)
+				{
+					projectile.OwnerEntity = Project.FindEntity(ownerEntityID);
+				}
                 ModsManager.HookAction("OnProjectileAdded", loader =>
                 {
                     loader.OnProjectileAdded(this, ref projectile, item);
@@ -323,21 +328,19 @@ namespace Game
 			valuesDictionary.SetValue("Projectiles", valuesDictionary2);
 			int num = 0;
 			foreach (Projectile projectile in m_projectiles)
-            {
-                var valuesDictionary3 = new ValuesDictionary();
-                valuesDictionary3.SetValue("Value", projectile.Value);
-                valuesDictionary3.SetValue("Position", projectile.Position);
-                valuesDictionary3.SetValue("Velocity", projectile.Velocity);
-                valuesDictionary3.SetValue("CreationTime", projectile.CreationTime);
-                valuesDictionary3.SetValue("ProjectileStoppedAction", projectile.ProjectileStoppedAction);
-                ModsManager.HookAction("SaveProjectile", loader =>
+			{
+				try
 				{
-					loader.SaveProjectile(this, projectile, ref valuesDictionary3);
-					return false;
-				});
-				valuesDictionary2.SetValue(num.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
-				num++;
-			}
+                    var valuesDictionary3 = new ValuesDictionary();
+                    projectile.Save(this, valuesDictionary3);
+                    valuesDictionary2.SetValue(num.ToString(CultureInfo.InvariantCulture), valuesDictionary3);
+                    num++;
+				}
+				catch (Exception ex) 
+				{
+					Log.Error("Projectile Save Error: " + ex);
+				}
+            }
 		}
 
         public virtual bool IsWater(Vector3 position)

@@ -36,6 +36,8 @@ namespace GameEntitySystem
 
         public int NextEntityID = 1;
 
+		public bool PostponeFireEntityAddedEvents = true;
+
         public Project(GameDatabase gameDatabase, ProjectData projectData)
 		{
 			try
@@ -74,17 +76,19 @@ namespace GameEntitySystem
 					}
 				}
 				Dictionary<Subsystem, bool> loadedSubsystems = [];
-				foreach (Subsystem value3 in dictionary.Values)
+				List<Entity> entities = new List<Entity> ();
+                if (projectData.EntityDataList != null)
+                {
+                    entities = InitializeEntities(projectData.EntityDataList);
+                    NextEntityID = projectData.NextEntityID;
+                    AddEntities(entities);
+                }
+                foreach (Subsystem value3 in dictionary.Values)
 				{
 					LoadSubsystem(value3, dictionary, loadedSubsystems, 0);
 				}
+				LoadEntities(projectData.EntityDataList, entities);
 				OnProjectLoad?.Invoke(this);
-				if (projectData.EntityDataList != null)
-				{
-					List<Entity> entities = LoadEntities(projectData.EntityDataList);
-					NextEntityID = projectData.NextEntityID;
-					AddEntities(entities);
-				}
 			}
 			catch (Exception e)
 			{
@@ -159,6 +163,10 @@ namespace GameEntitySystem
 			}
 		}
 
+		public Entity FindEntity(int EntityID)
+		{
+			return Entities.FirstOrDefault(entity => entity.Id == EntityID, null);
+		}
 		public Entity CreateEntity(ValuesDictionary valuesDictionary)
 		{
 			try
@@ -189,7 +197,7 @@ namespace GameEntitySystem
 					NextEntityID++;
 				}
 				entity.m_isAddedToProject = true;
-				FireEntityAddedEvents(entity);
+				if(!PostponeFireEntityAddedEvents) FireEntityAddedEvents(entity);
 			}
 		}
 
@@ -227,7 +235,7 @@ namespace GameEntitySystem
 			}
 		}
 
-		public List<Entity> LoadEntities(EntityDataList entityDataList)
+		public List<Entity> InitializeEntities(EntityDataList entityDataList)
 		{
 			List<Entity> list = new(entityDataList.EntitiesData.Count);
 			Dictionary<int, Entity> dictionary = [];
@@ -248,14 +256,23 @@ namespace GameEntitySystem
 					throw new Exception($"Error creating entity from template \"{entitiesDatum.ValuesDictionary.DatabaseObject.Name}\".", innerException);
 				}
 			}
-			int num = 0;
-			foreach (EntityData entitiesDatum2 in entityDataList.EntitiesData)
-			{
-				list[num].InternalLoadEntity(entitiesDatum2.ValuesDictionary, idToEntityMap);
-				num++;
-			}
 			return list;
 		}
+
+		public void LoadEntities(EntityDataList entityDataList, List<Entity> entityList)
+		{
+            int num = 0;
+            foreach (EntityData entitiesDatum2 in entityDataList.EntitiesData)
+            {
+                entityList[num].InternalLoadEntity(entitiesDatum2.ValuesDictionary, null);
+                num++;
+            }
+			foreach(Entity entity in Entities)
+			{
+				FireEntityAddedEvents(entity);
+            }
+			PostponeFireEntityAddedEvents = false;
+        }
 
 		public EntityDataList SaveEntities(IEnumerable<Entity> entities)
 		{
