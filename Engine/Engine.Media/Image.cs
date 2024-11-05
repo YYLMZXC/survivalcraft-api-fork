@@ -168,7 +168,7 @@ namespace Engine.Media
             {
                 case ImageFileFormat.Bmp:
                     {
-                        BmpEncoder encoder = new BmpEncoder() { BitsPerPixel = saveAlpha ? BmpBitsPerPixel.Pixel32 : BmpBitsPerPixel.Pixel24};
+                        BmpEncoder encoder = new() { BitsPerPixel = saveAlpha ? BmpBitsPerPixel.Pixel32 : BmpBitsPerPixel.Pixel24};
                         if (sync)
                         {
                             image.m_trueImage.SaveAsBmp(stream, encoder);
@@ -181,7 +181,7 @@ namespace Engine.Media
                     }
                 case ImageFileFormat.Png:
                     {
-                        PngEncoder encoder = new PngEncoder() { ColorType = saveAlpha ? PngColorType.RgbWithAlpha : PngColorType.Rgb, TransparentColorMode = PngTransparentColorMode.Clear };
+                        PngEncoder encoder = new() { ColorType = saveAlpha ? PngColorType.RgbWithAlpha : PngColorType.Rgb, TransparentColorMode = PngTransparentColorMode.Clear };
                         if (sync)
                         {
                             image.m_trueImage.SaveAsPng(stream, encoder);

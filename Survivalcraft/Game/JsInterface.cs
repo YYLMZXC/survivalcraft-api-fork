@@ -289,7 +289,7 @@ namespace Game
 			try {
 				httpListener.Stop();
 			}
-			catch(Exception _){}
+			catch{}
 		}
 
 		public static void Update() {

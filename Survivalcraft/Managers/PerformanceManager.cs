@@ -137,16 +137,16 @@ namespace Game
 
 		public static void Draw()
 		{
-			var scale = new Vector2(MathF.Round(Math.Clamp(ScreensManager.RootWidget.GlobalScale, 1.0f, 4.0f)));
+			var scale = new Vector2(MathF.Round(Math.Clamp(ScreensManager.RootWidget.GlobalScale, 1.0f, 2.0f)));
 			Viewport viewport = Display.Viewport;
 			if (SettingsManager.DisplayFpsCounter)
 			{
 				if (Time.PeriodicEvent(1.0, 0.0) && ScreensManager.CurrentScreen != null)
 				{
-					string wname = ScreensManager.RootWidget.Input.MousePosition.HasValue ? ScreensManager.RootWidget.HitTestGlobal(ScreensManager.RootWidget.Input.MousePosition.Value)?.GetType().Name : string.Empty;
 					m_statsString = $"CPUMEM {TotalMemoryUsed / 1024f / 1024f:0}MB, GPUMEM {TotalGpuMemoryUsed / 1024f / 1024f:0}MB, CPU {AverageCpuFrameTime / AverageFrameTime * 100f:0}%, FPS {1f / AverageFrameTime:0.0}";
 #if DEBUG
-                    m_statsString += "\n Screen:[" + ScreensManager.CurrentScreen.GetType().Name + "]  [" + wname + "]";
+					string wname = ScreensManager.RootWidget.Input.MousePosition.HasValue ? ScreensManager.RootWidget.HitTestGlobal(ScreensManager.RootWidget.Input.MousePosition.Value)?.GetType().Name : string.Empty;
+					m_statsString += "\n Screen:[" + ScreensManager.CurrentScreen.GetType().Name + "]  [" + wname + "]";
 #endif
 				}
 				FontBatch2D fontBatch2D = m_primitivesRenderer.FontBatch(BitmapFont.DebugFont, 0, null, null, null, SamplerState.PointClamp);

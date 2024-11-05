@@ -51,7 +51,7 @@ public static class ModsManager
 	public static string CommunityContentCachePath { get; } = DocPath + "/CommunityContentCache.xml";
 	public static string ModsSetPath { get; } = DocPath + "/ModSettings.xml";
 	public static string SettingPath { get; } = DocPath + "/Settings.xml";
-	public static string ModCachePath { get; } = ExternalPath + "/ModsCache";
+	public static string ModDisPath { get; } = ExternalPath + "/ModsDisabled";
 	public static string LogPath { get; } = ExternalPath + "/Bugs";
 	public static string ModsPath { get; } = ExternalPath + "/Mods";
 	public static bool IsAndroid => OperatingSystem.IsAndroid();
@@ -277,15 +277,15 @@ public static class ModsManager
 
 	public static string ImportMod(string name, Stream stream)
 	{
-		if (!Storage.DirectoryExists(ModCachePath)) Storage.CreateDirectory(ModCachePath);
+		if (!Storage.DirectoryExists(ModDisPath)) Storage.CreateDirectory(ModDisPath);
 		string realName = name;
 		if(!realName.EndsWith(ModSuffix)) realName = realName + ModSuffix;
-		string path = Storage.CombinePaths(ModCachePath, realName);
+		string path = Storage.CombinePaths(ModDisPath, realName);
 		int num = 1;
 		while (Storage.FileExists(path))
 		{
 			realName = name + "(" + num + ")"+ModSuffix;
-			path = Storage.CombinePaths(ModCachePath, realName);
+			path = Storage.CombinePaths(ModDisPath, realName);
 			num++;
 		}
 		using (Stream fileStream = Storage.OpenFile(path, OpenFileMode.CreateOrOpen))
@@ -392,33 +392,31 @@ public static class ModsManager
 		{
 			string ms = Storage.GetExtension(item);
 			string ks = Storage.CombinePaths(path, item);
-			using (Stream stream = Storage.OpenFile(ks, OpenFileMode.Read))
+			using Stream stream = Storage.OpenFile(ks,OpenFileMode.Read);
+			try
 			{
-				try
+				if(ms == ModSuffix || ms == ".SCNEXT")
 				{
-					if (ms == ModSuffix || ms == ".SCNEXT")
+					Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
+					var modEntity = new ModEntity(ks,Game.ZipArchive.Open(keepOpenStream,true));
+					if(modEntity.modInfo == null)
 					{
-						Stream keepOpenStream = ModsManageContentScreen.GetDecipherStream(stream);
-						var modEntity = new ModEntity(ks, Game.ZipArchive.Open(keepOpenStream, true));
-                        if (modEntity.modInfo == null)
-                        {
-                            LoadingScreen.Warning($"[{modEntity.ModFilePath}]缺少ModInfo文件，忽略加载");
-							continue;
-                        }
-                        if (string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
-						ModListAll.Add(modEntity);
+						LoadingScreen.Warning($"[{modEntity.ModFilePath}]缺少ModInfo文件，忽略加载");
+						continue;
 					}
+					if(string.IsNullOrEmpty(modEntity.modInfo.PackageName)) continue;
+					ModListAll.Add(modEntity);
 				}
-				catch (Exception e)
-				{
-					AddException(e);
-					stream.Close();
-				}
+			}
+			catch(Exception e)
+			{
+				AddException(e);
+				stream.Close();
 			}
 		}
 		foreach (string dir in Storage.ListDirectoryNames(path))
 		{
-			if(dir != ModCachePath)
+			if(dir != ModDisPath)
 			GetScmods(Storage.CombinePaths(path, dir));
 		}
 	}
@@ -520,7 +518,7 @@ public static class ModsManager
 				{
 					if (FindElement(xElement, (ele) => { return element.Attribute("Index").Value == xAttribute.Value; }, out XElement element1))
 					{
-						string[] px = attribute.Name.ToString().Split(new string[] { "new-" }, StringSplitOptions.RemoveEmptyEntries);
+						string[] px = attribute.Name.ToString().Split(["new-"], StringSplitOptions.RemoveEmptyEntries);
 						if (px.Length == 1)
 						{
 							element1.SetAttributeValue(px[0], attribute.Value);
@@ -556,7 +554,7 @@ public static class ModsManager
 			{
 				if (HasAttribute(element, (name) => { return name.StartsWith("new-"); }, out XAttribute attribute))
 				{
-					string[] px = attribute.Name.ToString().Split(new string[] { "new-" }, StringSplitOptions.RemoveEmptyEntries);
+					string[] px = attribute.Name.ToString().Split(["new-"], StringSplitOptions.RemoveEmptyEntries);
 					string editName = "";
 					if (px.Length == 1)
 					{
@@ -606,7 +604,7 @@ public static class ModsManager
 
 	public static void Modify(XElement source, XElement change)
 	{
-		if (FindElement(source, (item) => { if (item.Name.LocalName == change.Name.LocalName && item.Attribute("Guid") != null && change.Attribute("Guid") != null && item.Attribute("Guid").Value == change.Attribute("Guid").Value) return true; return false; }, out XElement xElement1))
+		if (FindElement(source, (item) => { return item.Name.LocalName == change.Name.LocalName && item.Attribute("Guid") != null && change.Attribute("Guid") != null && item.Attribute("Guid").Value == change.Attribute("Guid").Value; }, out XElement xElement1))
 		{
 			foreach (XElement xElement in change.Elements())
 			{
@@ -655,7 +653,7 @@ public static class ModsManager
 				{
 					if (FindElementByGuid(DataObjects, attribute1.Value, out XElement xElement))
 					{
-						string[] px = attribute.Name.ToString().Split(new string[] { "new-" }, StringSplitOptions.RemoveEmptyEntries);
+						string[] px = attribute.Name.ToString().Split(["new-"], StringSplitOptions.RemoveEmptyEntries);
 						if (px.Length == 1)
 						{
 							if (ModifiedElement.ContainsKey(attribute1.Value) && ModifiedElement[attribute1.Value] != attribute.Value)

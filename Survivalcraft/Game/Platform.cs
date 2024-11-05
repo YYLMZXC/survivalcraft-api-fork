@@ -2,10 +2,9 @@ namespace Game
 {
 	public enum Platform
 	{
-		Desktop,
+		Windows,
 		Android,
 		Ios,
-		Windows81,
-		WindowsPhone81
+		Linux
 	}
 }
