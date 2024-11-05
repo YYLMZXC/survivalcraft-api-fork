@@ -176,18 +176,12 @@ namespace Game
                 ComponentHealth componentHealth = Target.FindComponent<ComponentHealth>();
                 if (componentHealth != null)
                 {
-                    lock (componentHealth)
-                    {
-                        ProcessAttackmentToCreature();
-                    }
+                    ProcessAttackmentToCreature();
                 }
                 ComponentDamage componentDamage = Target.FindComponent<ComponentDamage>();
                 if (componentDamage != null)
                 {
-                    lock (componentDamage)
-                    {
-                        ProcessAttackmentToNonCreature();
-                    }
+                    ProcessAttackmentToNonCreature();
                 }
                 ComponentBody componentBody = Target.FindComponent<ComponentBody>();
                 componentBody?.Attacked?.Invoke(this);
