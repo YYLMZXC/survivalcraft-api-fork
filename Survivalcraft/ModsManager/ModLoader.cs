@@ -1085,6 +1085,17 @@ namespace Game
         }
 
         /// <summary>
+        /// 在玩家乘坐船、动物以外的物体时每帧执行，用于控制玩家骑模组坐骑的控制魔力
+        /// </summary>
+        /// <param name="componentPlayer"></param>
+        /// <param name="skippedByOtherMods">是否已经被其他模组跳过逻辑</param>
+        /// <param name="skipVanilla">跳过其他模组执行操作</param>
+        public virtual void OnPlayerControlOtherMount(ComponentPlayer componentPlayer, bool skippedByOtherMods, out bool skipVanilla)
+        {
+            skipVanilla = false;
+        }
+
+        /// <summary>
         /// 当玩家既不在坐骑上，也不在船上时执行，用于控制玩家行走的控制逻辑
         /// </summary>
         /// <param name="componentPlayer"></param>

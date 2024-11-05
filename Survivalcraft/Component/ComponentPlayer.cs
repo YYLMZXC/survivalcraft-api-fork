@@ -217,71 +217,81 @@ namespace Game
 			{
 				componentSteedBehavior = mount.Entity.FindComponent<ComponentSteedBehavior>();
 				componentBoat = mount.Entity.FindComponent<ComponentBoat>();
-			}
-			if (componentSteedBehavior != null)
-			{
-				bool skipVanilla_h = false;
-				ModsManager.HookAction("OnPlayerControlSteed", loader =>
-				{
-					loader.OnPlayerControlSteed(this, skipVanilla_h, out bool skipVanilla);
-                    skipVanilla_h |= skipVanilla;
-                    return false;
-				});
-				if (!skipVanilla_h)
-				{
-                    if (playerInput.Move.Z > 0.5f && !m_speedOrderBlocked)
-                    {
-                        if (PlayerData.PlayerClass == PlayerClass.Male)
-                        {
-                            m_subsystemAudio.PlayRandomSound("Audio/Creatures/MaleYellFast", 0.75f, 0f, ComponentBody.Position, 2f, autoDelay: false);
-                        }
-                        else
-                        {
-                            m_subsystemAudio.PlayRandomSound("Audio/Creatures/FemaleYellFast", 0.75f, 0f, ComponentBody.Position, 2f, autoDelay: false);
-                        }
-                        componentSteedBehavior.SpeedOrder = 1;
-                        m_speedOrderBlocked = true;
-                    }
-                    else if (playerInput.Move.Z < -0.5f && !m_speedOrderBlocked)
-                    {
-                        if (PlayerData.PlayerClass == PlayerClass.Male)
-                        {
-                            m_subsystemAudio.PlayRandomSound("Audio/Creatures/MaleYellSlow", 0.75f, 0f, ComponentBody.Position, 2f, autoDelay: false);
-                        }
-                        else
-                        {
-                            m_subsystemAudio.PlayRandomSound("Audio/Creatures/FemaleYellSlow", 0.75f, 0f, ComponentBody.Position, 2f, autoDelay: false);
-                        }
-                        componentSteedBehavior.SpeedOrder = -1;
-                        m_speedOrderBlocked = true;
-                    }
-                    else if (MathF.Abs(playerInput.Move.Z) <= 0.25f)
-                    {
-                        m_speedOrderBlocked = false;
-                    }
-                    componentSteedBehavior.TurnOrder = playerInput.Move.X;
-                    componentSteedBehavior.JumpOrder = playerInput.Jump ? 1 : 0;
-                    ComponentLocomotion.LookOrder = new Vector2(playerInput.Look.X, 0f);
-                }
-			}
-			else if (componentBoat != null)
-			{
-                bool skipVanilla_h = false;
-				ModsManager.HookAction("OnPlayerControlBoat", loader =>
-				{
-					loader.OnPlayerControlBoat(this, skipVanilla_h, out bool skipVanilla);
-					skipVanilla_h |= skipVanilla;
-					return false;
-                });
-                if (!skipVanilla_h)
+                if (componentSteedBehavior != null)
                 {
-                    componentBoat.TurnOrder = playerInput.Move.X;
-                    componentBoat.MoveOrder = playerInput.Move.Z;
-                    ComponentLocomotion.LookOrder = new Vector2(playerInput.Look.X, 0f);
-                    ComponentCreatureModel.RowLeftOrder = playerInput.Move.X < -0.2f || playerInput.Move.Z > 0.2f;
-                    ComponentCreatureModel.RowRightOrder = playerInput.Move.X > 0.2f || playerInput.Move.Z > 0.2f;
+                    bool skipVanilla_h = false;
+                    ModsManager.HookAction("OnPlayerControlSteed", loader =>
+                    {
+                        loader.OnPlayerControlSteed(this, skipVanilla_h, out bool skipVanilla);
+                        skipVanilla_h |= skipVanilla;
+                        return false;
+                    });
+                    if (!skipVanilla_h)
+                    {
+                        if (playerInput.Move.Z > 0.5f && !m_speedOrderBlocked)
+                        {
+                            if (PlayerData.PlayerClass == PlayerClass.Male)
+                            {
+                                m_subsystemAudio.PlayRandomSound("Audio/Creatures/MaleYellFast", 0.75f, 0f, ComponentBody.Position, 2f, autoDelay: false);
+                            }
+                            else
+                            {
+                                m_subsystemAudio.PlayRandomSound("Audio/Creatures/FemaleYellFast", 0.75f, 0f, ComponentBody.Position, 2f, autoDelay: false);
+                            }
+                            componentSteedBehavior.SpeedOrder = 1;
+                            m_speedOrderBlocked = true;
+                        }
+                        else if (playerInput.Move.Z < -0.5f && !m_speedOrderBlocked)
+                        {
+                            if (PlayerData.PlayerClass == PlayerClass.Male)
+                            {
+                                m_subsystemAudio.PlayRandomSound("Audio/Creatures/MaleYellSlow", 0.75f, 0f, ComponentBody.Position, 2f, autoDelay: false);
+                            }
+                            else
+                            {
+                                m_subsystemAudio.PlayRandomSound("Audio/Creatures/FemaleYellSlow", 0.75f, 0f, ComponentBody.Position, 2f, autoDelay: false);
+                            }
+                            componentSteedBehavior.SpeedOrder = -1;
+                            m_speedOrderBlocked = true;
+                        }
+                        else if (MathF.Abs(playerInput.Move.Z) <= 0.25f)
+                        {
+                            m_speedOrderBlocked = false;
+                        }
+                        componentSteedBehavior.TurnOrder = playerInput.Move.X;
+                        componentSteedBehavior.JumpOrder = playerInput.Jump ? 1 : 0;
+                        ComponentLocomotion.LookOrder = new Vector2(playerInput.Look.X, 0f);
+                    }
                 }
-			}
+                else if (componentBoat != null)
+                {
+                    bool skipVanilla_h = false;
+                    ModsManager.HookAction("OnPlayerControlBoat", loader =>
+                    {
+                        loader.OnPlayerControlBoat(this, skipVanilla_h, out bool skipVanilla);
+                        skipVanilla_h |= skipVanilla;
+                        return false;
+                    });
+                    if (!skipVanilla_h)
+                    {
+                        componentBoat.TurnOrder = playerInput.Move.X;
+                        componentBoat.MoveOrder = playerInput.Move.Z;
+                        ComponentLocomotion.LookOrder = new Vector2(playerInput.Look.X, 0f);
+                        ComponentCreatureModel.RowLeftOrder = playerInput.Move.X < -0.2f || playerInput.Move.Z > 0.2f;
+                        ComponentCreatureModel.RowRightOrder = playerInput.Move.X > 0.2f || playerInput.Move.Z > 0.2f;
+                    }
+                }
+				else
+				{
+                    bool skipVanilla_h = false;
+                    ModsManager.HookAction("OnPlayerControlOtherMount", loader =>
+                    {
+                        loader.OnPlayerControlOtherMount(this, skipVanilla_h, out bool skipVanilla);
+                        skipVanilla_h |= skipVanilla;
+                        return false;
+                    });
+                }
+            }
 			else
 			{
                 bool skipVanilla_h = false;
