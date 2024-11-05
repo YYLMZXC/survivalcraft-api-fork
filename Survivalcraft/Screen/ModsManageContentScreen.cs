@@ -76,7 +76,7 @@ public class ModsManageContentScreen : Screen
 
 	public string m_lastPath;
 
-	public string m_uninstallPath = ModsManager.ModCachePath;
+	public string m_uninstallPath = ModsManager.ModDisPath;
 
 	public string m_installPath = ModsManager.ModsPath;
 
@@ -644,7 +644,7 @@ public class ModsManageContentScreen : Screen
 			Stream stream = Storage.OpenFile(modItem.ExternalContentEntry.Path, OpenFileMode.ReadWrite);
 			if (stream == null) return;
 			Stream stream2 = GetDecipherStream(stream);
-			FileStream fileStream = new(Storage.GetSystemPath(ModsManager.ModCachePath) + "/Original.scmod", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+			FileStream fileStream = new(Storage.GetSystemPath(ModsManager.ModDisPath) + "/Original.scmod", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 			byte[] buff = new byte[stream2.Length];
 			stream2.Read(buff, 0, buff.Length);
 			fileStream.Write(buff, 0, buff.Length);
@@ -652,7 +652,7 @@ public class ModsManageContentScreen : Screen
 			fileStream.Dispose();
 			stream.Dispose();
 			stream2.Dispose();
-			DialogsManager.ShowDialog(null, new MessageDialog("操作成功", Storage.GetSystemPath(ModsManager.ModCachePath) + "/Original.scmod", LanguageControl.Ok, null, null));
+			DialogsManager.ShowDialog(null, new MessageDialog("操作成功", Storage.GetSystemPath(ModsManager.ModDisPath) + "/Original.scmod", LanguageControl.Ok, null, null));
 		}
 		if (m_upDirectoryButton.IsClicked)
 		{
