@@ -10,7 +10,7 @@
 		<Configurations>Debug;Release</Configurations>
 		<PackageId>SurvivalcraftAPI.EntitySystem</PackageId>
 		<Title>SurvivalcraftAPI.EntitySystem</Title><!--For NuGet Package-->
-		<Version>1.7.2.1</Version><!--For NuGet Package-->
+		<Version>1.7.2.2</Version><!--For NuGet Package-->
 		<PackageProjectUrl>https://gitee.com/THPRC/survivalcraft-api</PackageProjectUrl>
 		<RepositoryUrl>https://gitee.com/THPRC/survivalcraft-api</RepositoryUrl>
 		<RepositoryType>Git</RepositoryType>

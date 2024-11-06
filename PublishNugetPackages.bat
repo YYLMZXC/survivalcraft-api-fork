@@ -1,5 +1,5 @@
-chcp 65001
 @echo off
+chcp 65001
 setlocal enabledelayedexpansion
 
 echo 请输入要发布的版本号:
@@ -14,7 +14,7 @@ for %%p in (%packages%) do (
     set path=%baseDirectory%/SurvivalcraftAPI.%%p.%version%.nupkg
     if exist "!path!" (
         echo 开始上传 !path!
-        curl -F "package=@!path!" https://%token%@push.fury.io/survivalcraftapi/
+        "C:\Windows\System32\curl.exe" -F "package=@!path!" https://%token%@push.fury.io/survivalcraftapi/
     ) else (
         echo 未找到 !path!
     )
