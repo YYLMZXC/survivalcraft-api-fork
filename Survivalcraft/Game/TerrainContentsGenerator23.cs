@@ -405,7 +405,7 @@ namespace Game
 			Vector3 ans = new Vector3(vector.X, CalculateHeight(vector.X, vector.Y), vector.Y);
             ModsManager.HookAction("FindCoarseSpawnPosition", loader =>
             {
-                loader.FindCoarseSpawnPostion(ref ans);
+                loader.FindCoarseSpawnPosition(this, ref ans);
                 return false;
             });
 			return ans;

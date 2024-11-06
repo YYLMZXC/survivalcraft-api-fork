@@ -1197,7 +1197,7 @@ namespace Game
         /// 在创建世界时寻找玩家的初步生成大致位置
         /// </summary>
         /// <param name="spawnPosition">玩家初步生成大致位置</param>
-        public virtual void FindCoarseSpawnPostion(ref Vector3 spawnPosition)
+        public virtual void FindCoarseSpawnPosition(ITerrainContentsGenerator terrainContentsGenerator, ref Vector3 spawnPosition)
         {
 
         }

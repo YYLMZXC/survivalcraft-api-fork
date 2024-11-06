@@ -373,6 +373,7 @@ namespace Game
                     Injure(1f / AirLackResilience, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 6));
                 }
                 //ÉËº¦½áËã
+                float lastHealth = m_lastHealth;
                 HealthChange = Health - m_lastHealth;
                 m_lastHealth = Health;
                 float redScreenFactorCalculated = m_redScreenFactor;
@@ -392,7 +393,7 @@ namespace Game
                 }
                 ModsManager.HookAction("ChangeVisualEffectOnInjury", loader =>
                 {
-                    loader.ChangeVisualEffectOnInjury(this, m_lastHealth, ref redScreenFactorCalculated, ref playPainSound, ref healthBarFlashCount);
+                    loader.ChangeVisualEffectOnInjury(this, lastHealth, ref redScreenFactorCalculated, ref playPainSound, ref healthBarFlashCount);
                     return false;
                 });
                 if (HealthChange < 0f)
