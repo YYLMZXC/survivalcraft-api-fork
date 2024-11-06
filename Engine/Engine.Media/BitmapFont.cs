@@ -115,8 +115,8 @@ namespace Engine.Media
 		/// <summary>
 		/// 纹理图
 		/// </summary>
-		/// <param name="texture">图片文件的输入流</param>
-		/// <param name="glyphs">位图数据的输入流</param>
+		/// <param name="TextureStream">图片文件的输入流</param>
+		/// <param name="GlyphsStream">位图数据的输入流</param>
 		public static BitmapFont Initialize(Stream TextureStream, Stream GlyphsStream, Vector2? customGlyphOffset = null)
 		{
 			try
@@ -129,7 +129,7 @@ namespace Engine.Media
 				for (int i = 0; i < num; i++)
 				{
 					string line = streamReader.ReadLine();
-					string[] arr = line.Split(new char[] { (char)0x20, (char)0x09 }, StringSplitOptions.None);
+					string[] arr = line.Split([(char)0x20, (char)0x09], StringSplitOptions.None);
 					if (arr.Length == 9)
 					{
 						string[] tmp = new string[8];

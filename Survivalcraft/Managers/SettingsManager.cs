@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Xml.Linq;
 using XmlUtilities;
 namespace Game
@@ -637,11 +638,11 @@ namespace Game
 					}
 					catch (Exception ex)
 					{
-						Log.Warning(string.Format("Setting \"{0}\" could not be saved. Reason: {1}", new object[2]
-						{
+						Log.Warning(string.Format("Setting \"{0}\" could not be saved. Reason: {1}",
+						[
 							item.Name,
 							ex.Message
-						}));
+						]));
 					}
 				}
 				var xElement1 = new XElement("DisableMods");
@@ -661,11 +662,11 @@ namespace Game
 				ModsManager.SaveModSettings(xElement2);
 				using (Stream stream = Storage.OpenFile(ModsManager.SettingPath, OpenFileMode.Create))
 				{
-					XmlUtils.SaveXmlToStream(xElement, stream, null, throwOnError: true);
+					XmlUtils.SaveXmlToStream(xElement, stream,Encoding.UTF8, throwOnError: true);
 				}
 				using (Stream stream = Storage.OpenFile(ModsManager.ModsSetPath, OpenFileMode.Create))
 				{
-					XmlUtils.SaveXmlToStream(xElement2, stream, null, throwOnError: true);
+					XmlUtils.SaveXmlToStream(xElement2,stream,Encoding.UTF8,throwOnError: true);
 				}
 				Log.Information("Saved settings");
 			}

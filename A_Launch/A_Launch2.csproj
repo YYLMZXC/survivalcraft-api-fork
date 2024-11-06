@@ -21,8 +21,8 @@
 	  <AndroidSigningStorePass>android</AndroidSigningStorePass>
   
 	<LinkAll>true</LinkAll>
-	<PublishTrimmed>true</PublishTrimmed>
-	<TrimMode>link</TrimMode>
+	<PublishTrimmed>False</PublishTrimmed>
+	<TrimMode>partial</TrimMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 	  <DebugType>full</DebugType>

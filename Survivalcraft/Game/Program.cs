@@ -147,7 +147,8 @@ namespace Game
 			{
 				Window.Close();
 				Thread.Sleep(500);
-				Environment.Exit(0); // 正常关闭程序
+				ModsManager.Reboot();//重新启动
+				//Environment.Exit(0); // 正常关闭程序
 			}
 			else
 			{

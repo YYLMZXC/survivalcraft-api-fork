@@ -73,18 +73,15 @@ namespace Game
 				ty = ty_;
 			}
 		}
-		public class ObjMesh
+		public class ObjMesh(string meshname)
 		{
 			public int ElementIndex;
 			public DynamicArray<ObjVertex> Vertices = [];
 			public DynamicArray<int> Indices = [];
 			public string TexturePath = "Textures/NoneTexture";//默认位置
-			public string MeshName;
+			public string MeshName = meshname;
 			public Matrix? MeshMatrix;
-			public ObjMesh(string meshname)
-			{
-				MeshName = meshname;
-			}
+
 			public BoundingBox CalculateBoundingBox()
 			{
 				List<Vector3> vectors = [];
