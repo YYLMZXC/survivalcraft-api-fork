@@ -1,27 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<TargetFramework>net9.0-android</TargetFramework>
-	 <PlatformTarget>AnyCPU</PlatformTarget>
-	  <AndroidApplication>True</AndroidApplication>
-	  <ApplicationId>com.candy.SurvivalcraftAPI1_7</ApplicationId>
-	  <AssemblyName>SCLaunch_android</AssemblyName>
-	  <RootNamespace>Game</RootNamespace>
-	  <Nullable>enable</Nullable>
-	  <ImplicitUsings>enable</ImplicitUsings>
+	<PlatformTarget>AnyCPU</PlatformTarget>
+	<AndroidApplication>True</AndroidApplication>
+	<ApplicationId>com.candy.SurvivalcraftAPI1_7</ApplicationId>
+	<AssemblyName>Launch_android</AssemblyName>
+	<RootNamespace>Game</RootNamespace>
+	<Nullable>enable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>
 	<Product>Survivalcraft</Product>
-	  <Version>2.3.10.4</Version>
-	  <AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
-	  <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
-	  <NeutralLanguage>zh-CN</NeutralLanguage>
-
+	<Version>2.3.10.4</Version>
+	<AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
+	<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
+	<NeutralLanguage>zh-CN</NeutralLanguage>
+	  <!--签名-->
 	  <AndroidKeyStore>True</AndroidKeyStore>
 	  <AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
 	  <AndroidSigningKeyPass>android</AndroidSigningKeyPass>
 	  <AndroidSigningKeyStore>签名.keystore</AndroidSigningKeyStore>
 	  <AndroidSigningStorePass>android</AndroidSigningStorePass>
-  
+	  <!--优化-->
 	<LinkAll>true</LinkAll>
-	<PublishTrimmed>False</PublishTrimmed>
+	<PublishTrimmed>False</PublishTrimmed><!--切记不要修改，如果修改会导致运行时不完整-->
 	<TrimMode>partial</TrimMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -29,13 +29,13 @@
 	  <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
 <PropertyGroup>
+	<!--安卓优化-->
 	  <AndroidDexTool>d8</AndroidDexTool>
 	  <AndroidEnableSGenConcurrent>false</AndroidEnableSGenConcurrent>
 	  <AndroidLinkMode>None</AndroidLinkMode>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidLintEnabled>false</AndroidLintEnabled>
 	  <AndroidPackageFormat>apk</AndroidPackageFormat>
-	  <AndroidSdkBuildToolsVersion>35.0.0</AndroidSdkBuildToolsVersion>
 	  <AndroidStripILAfterAOT>true</AndroidStripILAfterAOT>
 	  <AndroidUseInterpreter>false</AndroidUseInterpreter>
 	  <EnableLLVM>True</EnableLLVM>

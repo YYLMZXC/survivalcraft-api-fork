@@ -3,35 +3,44 @@
 	<TargetFramework>net8.0-android</TargetFramework>
 	<PlatformTarget>AnyCPU</PlatformTarget>
 	<AndroidApplication>True</AndroidApplication>
+	<ApplicationId>com.candy.SurvivalcraftAPI1_7</ApplicationId>
+	<AssemblyName>Launch_android</AssemblyName>
 	<RootNamespace>Game</RootNamespace>
 	<Nullable>enable</Nullable>
 	<ImplicitUsings>enable</ImplicitUsings>
-	<ApplicationId>com.candy.SurvivalcraftAPI1_7</ApplicationId>
-	<AssemblyName>Launch_android</AssemblyName>
 	<Product>Survivalcraft</Product>
-	<AndroidSigningKeyStore>签名.keystore</AndroidSigningKeyStore>
-	<AndroidPackageFormat>apk</AndroidPackageFormat>
-	<AndroidLinkTool>r8</AndroidLinkTool>
+	<Version>2.3.10.4</Version>
 	<AndroidStoreUncompressedFileExtensions>.dll</AndroidStoreUncompressedFileExtensions>
-	<EnableLLVM>True</EnableLLVM>
+	<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
+	<NeutralLanguage>zh-CN</NeutralLanguage>
+	<!--签名-->
 	<AndroidKeyStore>True</AndroidKeyStore>
-	<AndroidSigningStorePass>android</AndroidSigningStorePass>
 	<AndroidSigningKeyAlias>androiddebugkey</AndroidSigningKeyAlias>
 	<AndroidSigningKeyPass>android</AndroidSigningKeyPass>
-	<Version>2.3.10.4</Version>
-	<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
-	<AndroidLinkMode>None</AndroidLinkMode>
-	<NeutralLanguage>zh-CN</NeutralLanguage>
-	<LinkAll>true</LinkAll>
-	<RunAOTCompilation>False</RunAOTCompilation>
-	<AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
-	<PublishTrimmed>false</PublishTrimmed>
-	<TrimMode>partial</TrimMode>
+	<AndroidSigningKeyStore>签名.keystore</AndroidSigningKeyStore>
+	<AndroidSigningStorePass>android</AndroidSigningStorePass>
+	<!--优化-->
+	  <LinkAll>true</LinkAll>
+	  <PublishTrimmed>False</PublishTrimmed><!--切记不要修改，如果修改会导致运行时不完整-->
+	  <TrimMode>partial</TrimMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-	<DebugType>full</DebugType>
-	<EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+	  <DebugType>full</DebugType>
+	  <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
+  <PropertyGroup>
+	  <!--安卓优化-->
+	  <AndroidDexTool>d8</AndroidDexTool>
+	  <AndroidEnableSGenConcurrent>false</AndroidEnableSGenConcurrent>
+	  <AndroidLinkMode>None</AndroidLinkMode>
+	  <AndroidLinkTool>r8</AndroidLinkTool>
+	  <AndroidLintEnabled>false</AndroidLintEnabled>
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	  <AndroidStripILAfterAOT>true</AndroidStripILAfterAOT>
+	  <AndroidUseInterpreter>false</AndroidUseInterpreter>
+	  <EnableLLVM>True</EnableLLVM>
+	  <RunAOTCompilation>False</RunAOTCompilation>
+	</PropertyGroup>
   <ItemGroup>
 	<AndroidAsset Include="..\Engine\Resources\Lit.psh" Link="Assets\Lit.psh">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
