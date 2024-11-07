@@ -28,6 +28,9 @@ namespace Game
 
 		public IList<int> m_valuesList;
 		public static string fName = "RecipaediaDescriptionScreen";
+
+		public static RecipaediaDescriptionScreen Default => new RecipaediaDescriptionScreen();
+
 		public RecipaediaDescriptionScreen()
 		{
 			XElement node = ContentManager.Get<XElement>("Screens/RecipaediaDescriptionScreen");

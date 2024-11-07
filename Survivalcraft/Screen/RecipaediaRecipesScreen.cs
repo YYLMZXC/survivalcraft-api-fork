@@ -21,6 +21,8 @@ namespace Game
 
 		public int RecipesCount;
 
+		public static RecipaediaRecipesScreen Default => new RecipaediaRecipesScreen();
+
 		public RecipaediaRecipesScreen()
 		{
 			XElement node = ContentManager.Get<XElement>("Screens/RecipaediaRecipesScreen");

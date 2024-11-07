@@ -740,12 +740,12 @@ namespace Game
 
 		public virtual RecipaediaDescriptionScreen GetBlockDescriptionScreen(int value)
 		{
-			return new RecipaediaDescriptionScreen();
+			return RecipaediaDescriptionScreen.Default;
         }
 
 		public virtual RecipaediaRecipesScreen GetBlockRecipeScreen(int value)
 		{
-			return new RecipaediaRecipesScreen();
+			return RecipaediaRecipesScreen.Default;
 		}
     }
 }
