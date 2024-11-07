@@ -86,6 +86,7 @@ namespace Game
 
 		public bool IsRaycastTransparent = false;//不可选中
 
+		public float? RedScreenFactorInCrush = 1f;
 		public virtual Vector3 StanceBoxSize => new(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
 
 		public virtual Vector3 BoxSize { get; set; }
@@ -442,7 +443,8 @@ namespace Game
 							componentHealth.Injure(1f / componentHealth.CrushResilience, null, ignoreInvulnerability: true, "Crushed");
 							m_crushInjureTime = 0f;
 						}
-						componentHealth.m_redScreenFactor = 1f;
+						if(RedScreenFactorInCrush != null)
+							componentHealth.m_redScreenFactor = RedScreenFactorInCrush.Value;
 						m_crushInjureTime += dt;
 					}
 					else
