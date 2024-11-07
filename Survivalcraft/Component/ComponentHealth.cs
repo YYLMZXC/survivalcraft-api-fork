@@ -356,7 +356,7 @@ namespace Game
                 bool num5 = m_subsystemTime.PeriodicGameTimeEvent(1.0, 0.0);
                 if (num5 && Air == 0f)
                 {
-                    float num6 = AirLackResilience;
+                    float num6 = 1f / AirLackResilience;
                     num6 /= m_componentFactors?.ResilienceFactor ?? 1;
                     Injure(num6, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 7));
                 }
