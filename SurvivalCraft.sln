@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "公共项目", "公共项目", "{B616DEEE-DF47-4BC3-BAA9-D223D221B6EB}"
 	ProjectSection(SolutionItems) = preProject
 		开发注意事项.md = 开发注意事项.md
+		项目开发规范.txt = 项目开发规范.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "电脑端", "电脑端", "{528DAACD-0030-4435-B208-CEB0771F1E63}"
