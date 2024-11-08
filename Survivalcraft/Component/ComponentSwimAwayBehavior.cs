@@ -53,7 +53,7 @@ namespace Game
             m_componentCreature.ComponentHealth.Injured += delegate (Injury injury)
 			{
                 ComponentCreature attacker = injury.Attacker;
-                SwimAwayFrom(attacker.ComponentBody);
+                SwimAwayFrom(attacker?.ComponentBody);
 			};
 			m_stateMachine.AddState("Inactive", delegate
 			{

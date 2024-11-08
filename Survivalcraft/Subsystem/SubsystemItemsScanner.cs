@@ -93,9 +93,10 @@ namespace Game
 			if (itemData.Container is IInventory)
 			{
 				var obj = (IInventory)itemData.Container;
+				int slotCapacity = obj.GetSlotCapacity(itemData.IndexInContainer,newValue);
+				if(slotCapacity < itemData.Count) return false;
 				obj.RemoveSlotItems(itemData.IndexInContainer, itemData.Count);
-				int slotCapacity = obj.GetSlotCapacity(itemData.IndexInContainer, newValue);
-				obj.AddSlotItems(itemData.IndexInContainer, newValue, MathUtils.Min(itemData.Count, slotCapacity));
+				obj.AddSlotItems(itemData.IndexInContainer, newValue, itemData.Count);
 				return true;
 			}
 			if (itemData.Container is WorldItem)
