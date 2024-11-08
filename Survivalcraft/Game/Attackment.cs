@@ -59,8 +59,11 @@ namespace Game
         public string AttackSoundName = "Audio/Impacts/Body";
         public float AttackSoundVolume = 1f;
         public float AttackSoundPitch = 0f;
+
+		public float? m_injuryAmount = null;
         public virtual float CalculateInjuryAmount()
         {
+			if(m_injuryAmount != null) return m_injuryAmount.Value;
             if (AttackPower <= 0f) return AttackPower;
             float attackPower = AttackPower;
             if (EnableArmorProtection)
@@ -127,6 +130,7 @@ namespace Game
             ComponentCreature attackerCreature = Attacker?.FindComponent<ComponentCreature>();
             if(componentDamage == null || componentBody == null) return;
             float injuryAmount = CalculateInjuryAmount();
+			m_injuryAmount = injuryAmount;
             float hitPointsBeforeAttack = componentDamage.Hitpoints;
             componentDamage.Damage(injuryAmount);
             float damage = (hitPointsBeforeAttack - componentDamage.Hitpoints) * componentDamage.AttackResilience;
