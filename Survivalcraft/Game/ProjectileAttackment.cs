@@ -10,15 +10,16 @@ namespace Game
             : base(target, attacker, hitPoint, hitDirection, attackPower)
 		{
 			Projectile = projectile;
-			if(CalculateInjuryAmount() == 0f && AttackPower > 0f)
-			{
-				ImpulseFactor = 2f;
-				StunTimeAdd = 0.2f;
-			}
-			else
+			float injuryAmount = CalculateInjuryAmount();
+			if(injuryAmount == 0f && AttackPower > 0f)
 			{
 				ImpulseFactor = 0f;
 				StunTimeAdd = 0f;
+			}
+			else
+			{
+				ImpulseFactor = 2f;
+				StunTimeAdd = 0.2f;
 			}
         }
 
