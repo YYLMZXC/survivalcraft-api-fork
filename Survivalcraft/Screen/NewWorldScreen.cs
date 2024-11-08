@@ -67,7 +67,7 @@ namespace Game
 		{
 			if (m_gameModeButton.IsClicked)
 			{
-				DialogsManager.ShowDialog(null, new SelectGameModeDialog(string.Empty, allowAdventure: false, delegate (GameMode gameMode)
+				DialogsManager.ShowDialog(null,new SelectGameModeDialog(string.Empty,allowAdventure: false, allowCruel: true, delegate (GameMode gameMode)
 				{
 					m_worldSettings.GameMode = gameMode;
 				}));

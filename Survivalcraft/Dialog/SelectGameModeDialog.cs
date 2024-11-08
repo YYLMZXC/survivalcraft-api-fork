@@ -7,8 +7,8 @@ namespace Game
 {
 	public class SelectGameModeDialog : ListSelectionDialog
 	{
-		public SelectGameModeDialog(string title, bool allowAdventure, Action<GameMode> selectionHandler)
-			: base(title, GetAllowedGameModes(allowAdventure), 140f, delegate (object item)
+		public SelectGameModeDialog(string title, bool allowAdventure, bool allowCruel, Action<GameMode> selectionHandler)
+			: base(title, GetAllowedGameModes(allowAdventure, allowCruel), 140f, delegate (object item)
 			{
 				GameMode gameMode = (GameMode)item;
 				XElement node = ContentManager.Get<XElement>("Widgets/SelectGameModeItem");
@@ -24,28 +24,14 @@ namespace Game
 			base.ContentSize = new Vector2(750f, 420f);
 		}
 
-        public static IEnumerable<GameMode> GetAllowedGameModes(bool allowAdventure)
+		public static IEnumerable<GameMode> GetAllowedGameModes(bool allowAdventure, bool allowCruel)
 		{
-			if (!allowAdventure)
-			{
-				return new GameMode[5]
-				{
-					GameMode.Creative,
-					GameMode.Survival,
-					GameMode.Challenging,
-					GameMode.Harmless,
-					GameMode.Cruel
-				};
-			}
-			return new GameMode[6]
-			{
-				GameMode.Creative,
-				GameMode.Survival,
-				GameMode.Challenging,
-				GameMode.Harmless,
-				GameMode.Cruel,
-				GameMode.Adventure
-			};
+			yield return GameMode.Creative;
+			yield return GameMode.Survival;
+			yield return GameMode.Challenging;
+			yield return GameMode.Harmless;
+			if(allowAdventure) yield return GameMode.Adventure;
+			if(allowCruel) yield return GameMode.Cruel;
 		}
 	}
 }
