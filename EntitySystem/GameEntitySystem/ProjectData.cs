@@ -59,7 +59,7 @@ namespace GameEntitySystem
 			if (xElement2 != null)
             {
                 NextEntityID = XmlUtils.GetAttributeValue<int>(xElement2, "NextID", 1000001);
-				Log.Information("Load NextEntityID: " + NextEntityID);
+				//Log.Information("Load NextEntityID: " + NextEntityID);
                 EntityDataList = new EntityDataList(gameDatabase, xElement2, ignoreInvalidEntities);
             }
 		}
