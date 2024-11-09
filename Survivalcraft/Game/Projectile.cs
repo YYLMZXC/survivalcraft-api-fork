@@ -37,7 +37,7 @@ namespace Game
             }
             set
             {
-                OwnerEntity = value.Entity;
+                OwnerEntity = value?.Entity;
             }
         }
 
@@ -69,7 +69,7 @@ namespace Game
 
         public bool StopTrailParticleInFluid = true;
 
-        public int DamageToPickable = 1;//µ¯ÉäÎï½áËãÊ±µôµÄÄÍ¾Ã
+        public int DamageToPickable = 1;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Í¾ï¿½
 
         public bool TerrainCollidable = true;
 
@@ -106,7 +106,7 @@ namespace Game
             }
         }
 
-        public List<ComponentBody> BodiesToIgnore = new List<ComponentBody>();//µ¯ÉäÎï·ÉÐÐµÄÊ±ºò»áºöÂÔListÖÐµÄComponentBody
+        public List<ComponentBody> BodiesToIgnore = new List<ComponentBody>();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Listï¿½Ðµï¿½ComponentBody
         protected SubsystemPickables m_subsystemPickables => SubsystemProjectiles?.m_subsystemPickables;
         protected SubsystemParticles m_subsystemParticles => SubsystemProjectiles?.m_subsystemParticles;
         protected SubsystemAudio m_subsystemAudio => SubsystemProjectiles?.m_subsystemAudio;
@@ -253,7 +253,7 @@ namespace Game
                 loader.OnProjectileHitTerrain(this, terrainRaycastResult, ref triggerBlocksBehavior, ref destroyCell, ref impactSoundLoudness, ref projectileGetStuck, ref velocityAfterHit, ref angularVelocityAfterHit);
                 return false;
             });
-            //ÒÔÉÏÎªModLoader½Ó¿ÚºÍref±äÁ¿
+            //ï¿½ï¿½ï¿½ï¿½ÎªModLoaderï¿½Ó¿Úºï¿½refï¿½ï¿½ï¿½ï¿½
             if (triggerBlocksBehavior)
             {
                 SubsystemBlockBehavior[] blockBehaviors2 = SubsystemProjectiles.m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
@@ -308,25 +308,25 @@ namespace Game
             Raycast(dt, out BodyRaycastResult? bodyRaycastResult, out TerrainRaycastResult? terrainRaycastResult);
             CellFace? nullableCellFace = terrainRaycastResult.HasValue ? new CellFace?(terrainRaycastResult.Value.CellFace) : null;
             ComponentBody componentBody = bodyRaycastResult.HasValue ? bodyRaycastResult.Value.ComponentBody : null;
-            //ÕâÀïÔö¼Ó£ººöÂÔÄÄÐ©Body¡¢ÊÇ·ñºöÂÔµØÐÎ
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð©Bodyï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ôµï¿½ï¿½ï¿½
             bool disintegrate = block.DisintegratesOnHit;
-            //Ö´ÐÐ¸÷·½¿éµÄOnHitAsProjectile¡£
+            //Ö´ï¿½Ð¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½OnHitAsProjectileï¿½ï¿½
             if (terrainRaycastResult.HasValue || bodyRaycastResult.HasValue)
             {
                 disintegrate |= ProcessOnHitAsProjectileBlockBehavior(nullableCellFace, componentBody, dt);
             }
-            //Èç¹ûµ¯ÉäÎïÃüÖÐÁËBody£¬½øÐÐ¹¥»÷£¬²¢¸Ä±äËÙ¶È¡£
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Bodyï¿½ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½Ù¶È¡ï¿½
             if (bodyRaycastResult.HasValue && (!terrainRaycastResult.HasValue || bodyRaycastResult.Value.Distance < terrainRaycastResult.Value.Distance))
             {
                 HitBody(bodyRaycastResult.Value, ref positionAtdt);
             }
-            //Èç¹ûµ¯ÉäÎïÃüÖÐÁËµØÐÎ£¬½øÐÐ´¦Àí¡£ÆÆ»µ·½¿é¡¢µãÈ¼·½¿é¡¢×²µ½µØÐÎµÄÒÆ¶¯Ð§¹û¡£
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½Î£ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ»ï¿½ï¿½ï¿½ï¿½é¡¢ï¿½ï¿½È¼ï¿½ï¿½ï¿½é¡¢×²ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½Æ¶ï¿½Ð§ï¿½ï¿½ï¿½ï¿½
             else if (terrainRaycastResult.HasValue)
             {
                 CellFace cellFace = nullableCellFace.Value;
                 HitTerrain(terrainRaycastResult.Value, cellFace, ref positionAtdt, ref pickableStuckMatrix);
             }
-            //µ¯ÉäÎï×ª»¯ÎªµôÂäÎï
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if (terrainRaycastResult.HasValue || bodyRaycastResult.HasValue)
             {
                 if (disintegrate)
