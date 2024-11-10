@@ -26,7 +26,7 @@ namespace Game
 
 		public Engine.Graphics.Texture2D Icon;
 
-		public RectangleWidget IconInstance = null;
+		public TreeViewNode LinkedNode = null;
 
 		public int Index;
 	}

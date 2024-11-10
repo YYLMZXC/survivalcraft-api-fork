@@ -74,8 +74,11 @@ namespace Game
 
 				//切换选中的节点
 				if (m_selectedNode != null) m_selectedNode.Selected = false;
-				clickedNode.Selected = true;
-				m_selectedNode = clickedNode;
+				if(clickedNode.Selectable)
+				{
+					clickedNode.Selected = true;
+					m_selectedNode = clickedNode;
+				}
 
 				OnNodeClicked?.Invoke(clickedNode);
 			};
@@ -115,46 +118,37 @@ namespace Game
 		public void AddRoot(TreeViewNode node)
 		{
 			m_nodes.Add(node);
+			node.ParentTree = this;
 			m_widgetsDirty = true;
 		}
 
 		public void RemoveRoot(TreeViewNode node)
 		{
 			m_nodes.Remove(node);
+			node.ParentTree = null;
+			m_widgetsDirty = true;
+		}
+
+		public void RemoveAtTag(object tag)
+		{
+			TreeViewNode node = m_nodes.First(x => x.Tag == tag);
+			node.ParentTree = null;
+			m_nodes.Remove(node);
+			m_widgetsDirty = true;
+		}
+
+		public void Clear()
+		{
+			Nodes.ForEach(x => x.ParentTree = null);
+			Nodes.Clear();
 			m_widgetsDirty = true;
 		}
 
 		#endregion
-
-		#region Debug
-
 		public TreeViewWidget()
 		{
-			TreeViewNode treeViewNode = new("Root1","AAA");
-			TreeViewNode treeViewNode2 = new("Root1->1","AAB");
-			TreeViewNode treeViewNode3 = new("Root1->2","AAC");
-			treeViewNode.AddChild(treeViewNode2);
-			treeViewNode.AddChild(treeViewNode3);
-
-			TreeViewNode treeViewNode4 = new("Root2","AAA");
-			TreeViewNode treeViewNode5 = new("Root2->1","AAB");
-			TreeViewNode treeViewNode6 = new("Root2->2","AAC");
-			TreeViewNode treeViewNode7 = new("Root2->2->1","AAC");
-			TreeViewNode treeViewNode8 = new("Root2->2->2","AAC");
-			TreeViewNode treeViewNode9 = new("Root2->2->3","AAC");
-			treeViewNode4.AddChild(treeViewNode5);
-			treeViewNode4.AddChild(treeViewNode6);
-			treeViewNode6.AddChild(treeViewNode7);
-			treeViewNode6.AddChild(treeViewNode8);
-			treeViewNode6.AddChild(treeViewNode9);
-
-			Nodes.Add(treeViewNode);
-			Nodes.Add(treeViewNode4);
-
 			m_widgetsDirty = true;
 		}
-
-		#endregion
 	}
 
 	public class TreeViewNode
@@ -162,6 +156,8 @@ namespace Game
 		#region 字段
 		private List<TreeViewNode> m_nodes;
 		private bool m_expanded;
+		private bool m_selected;
+		private bool m_selectable;
 		#endregion
 
 		#region 属性
@@ -238,8 +234,26 @@ namespace Game
 
 		public bool Selected
 		{
+			get => m_selectable && m_selected;
+			set => m_selected = m_selectable && value;
+		}
+
+		public TreeViewNodeContentItem LinkedWidget
+		{
 			get;
 			set;
+		}
+
+		public Action OnClicked
+		{
+			get;
+			set;
+		}
+
+		public bool Selectable
+		{
+			get => m_selectable;
+			set => m_selectable = value;
 		}
 		#endregion
 
@@ -254,6 +268,7 @@ namespace Game
 			SubTextColor = subTextColor;
 			SelectedColor = selectedColor;
 			Icon = icon;
+			m_selectable = true;
 		}
 		public TreeViewNode()
 		{
@@ -289,6 +304,7 @@ namespace Game
 		public void AddChild(TreeViewNode child)
 		{
 			m_nodes.Add(child);
+			child.ParentTree = ParentTree;
 		}
 
 		public void RemoveChild(TreeViewNode child)
@@ -299,6 +315,7 @@ namespace Game
 		public void AddChildren(List<TreeViewNode> children)
 		{
 			m_nodes.AddRange(children);
+			children.ForEach(x => x.ParentTree = ParentTree);
 		}
 		#endregion
 	}
@@ -324,6 +341,7 @@ namespace Game
 		{
 			m_node = node;
 			OnClicked = viewNode => { };
+			node.LinkedWidget = this;
 			XElement node2 = ContentManager.Get<XElement>("Widgets/TreeViewNodeContentItem");
 			LoadContents(this, node2);
 			Children.Find<LabelWidget>("TreeViewNodeContentItem.Text").Text = node.Text;
@@ -333,8 +351,6 @@ namespace Game
 			m_selectedHighLight = Children.Find<RectangleWidget>("TreeViewNodeContentItem.SelectedHighLight");
 			m_selectedHighLight.FillColor = m_node.SelectedColor;
 			m_icon = Children.Find<RectangleWidget>("TreeViewNodeContentItem.Icon");
-			if (node.Icon != null) m_icon.Subtexture = new Subtexture(node.Icon,Vector2.Zero, Vector2.One);
-			m_icon.IsVisible = node.Icon != null;
 			m_expandIcon = Children.Find<RectangleWidget>("TreeViewNodeContentItem.ExpandIcon");
 			m_expandIcon.FillColor = node.Nodes.Count > 0 ? new Color(128, 128, 128, 128) : Color.Transparent;
 
@@ -354,7 +370,10 @@ namespace Game
 			{
 				m_node.Expanded = !m_node.Expanded;
 				OnClicked(m_node);
+				m_node.OnClicked?.Invoke();
 			}
+			m_icon.IsVisible = m_node.Icon != null;
+			if (m_node.Icon != null) m_icon.Subtexture = new Subtexture(m_node.Icon,Vector2.Zero, Vector2.One);
 			m_selectedHighLight.IsVisible = m_node.Selected;
 			m_expandIcon.Subtexture = m_node.Expanded ? m_expandIconTexture : m_unexpandIconTexture;
 		}

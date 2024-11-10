@@ -21,9 +21,7 @@ namespace Game
 			ByUserId
 		}
 
-		public ListPanelWidget m_listPanel;
-
-		public LinkWidget m_moreLink;
+		public TreeViewWidget m_treePanel;
 
 		public LabelWidget m_orderLabel;
 
@@ -73,7 +71,7 @@ namespace Game
 		{
 			XElement node = ContentManager.Get<XElement>("Screens/CommunityContentScreen");
 			LoadContents(this, node);
-			m_listPanel = Children.Find<ListPanelWidget>("List");
+			m_treePanel = Children.Find<TreeViewWidget>("Tree");
 			m_orderLabel = Children.Find<LabelWidget>("Order");
 			m_changeOrderButton = Children.Find<ButtonWidget>("ChangeOrder");
 			m_filterLabel = Children.Find<LabelWidget>("Filter");
@@ -88,7 +86,8 @@ namespace Game
 			m_searchKey = Children.Find<ButtonWidget>("Search");
 			m_searchTypeButton = Children.Find<ButtonWidget>("SearchType");
 			m_searchType = SearchType.ByName;
-			m_listPanel.ItemWidgetFactory = delegate (object item)
+			/*
+			m_treePanel.ItemWidgetFactory = delegate (object item)
 			{
 				var communityContentEntry = item as CommunityContentEntry;
 				if (communityContentEntry != null)
@@ -120,13 +119,14 @@ namespace Game
 				m_moreLink.Tag = item as string;
 				return containerWidget;
 			};
-			m_listPanel.SelectionChanged += delegate
+			m_treePanel.SelectionChanged += delegate
 			{
-				if (m_listPanel.SelectedItem != null && !(m_listPanel.SelectedItem is CommunityContentEntry))
+				if (m_treePanel.SelectedItem != null && !(m_treePanel.SelectedItem is CommunityContentEntry))
 				{
-					m_listPanel.SelectedItem = null;
+					m_treePanel.SelectedItem = null;
 				}
 			};
+			*/
 		}
 
 		public override void Enter(object[] parameters)
@@ -173,7 +173,7 @@ namespace Game
 				m_action2Button.IsVisible = false;
 				m_action3Button.IsVisible = false;
 			}
-			var communityContentEntry = m_listPanel.SelectedItem as CommunityContentEntry;
+			var communityContentEntry = m_treePanel.SelectedNode?.Tag as CommunityContentEntry;
 			m_downloadButton.IsEnabled = communityContentEntry != null;
 			if (communityContentEntry != null)
 			{
@@ -264,7 +264,7 @@ namespace Game
 							CommunityContentManager.DeleteFile(communityContentEntry.Index, busyDialog.Progress, delegate (byte[] data)
 							{
 								DialogsManager.HideDialog(busyDialog);
-								m_listPanel.RemoveItem(communityContentEntry);
+								m_treePanel.RemoveAtTag(communityContentEntry);
                                 JsonElement result = JsonDocument.Parse(data).RootElement;
                                 string msg = result[0].GetInt32() == 200 ? LanguageControl.Get(GetType().Name, 27) + communityContentEntry.Name : result[1].GetString();
 								DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(GetType().Name, 20), msg, LanguageControl.Ok, null, null));
@@ -346,7 +346,7 @@ namespace Game
 					DialogsManager.HideDialog(busyDialog);
 					if (!m_isOwn)
 					{
-						m_listPanel.RemoveItem(communityContentEntry);
+						m_treePanel.RemoveAtTag(communityContentEntry);
 					}
 					else
 					{
@@ -403,10 +403,6 @@ namespace Game
 					});
 				}
 			}
-			if (m_moreLink != null && m_moreLink.IsClicked)
-			{
-				PopulateList((string)m_moreLink.Tag);
-			}
 			if (Input.Back || Children.Find<BevelledButtonWidget>("TopBar.Back").IsClicked)
 			{
 				ScreensManager.SwitchScreen("Content");
@@ -433,23 +429,22 @@ namespace Game
 			string text3 = (m_filter is ExternalContentType) ? LanguageControl.Get(GetType().Name, m_filter.ToString()) : string.Empty;
 			string text4 = m_order.ToString();
 			string cacheKey = text2 + "\n" + text3 + "\n" + text4 + "\n" + text + "\n" + m_inputKey.Text;
-			m_moreLink = null;
 			if (string.IsNullOrEmpty(cursor) && !force)
 			{
-				m_listPanel.ClearItems();
-				m_listPanel.ScrollPosition = 0f;
+				m_treePanel.Clear();
+				m_treePanel.ScrollPosition = 0f;
 				if (m_contentExpiryTime != 0.0 && Time.RealTime < m_contentExpiryTime && m_itemsCache.TryGetValue(cacheKey, out IEnumerable<object> value))
 				{
-					foreach (object item in value)
+					foreach (object item in value)//添加
 					{
-						m_listPanel.AddItem(item);
+						if (item is TreeViewNode treeViewNode) m_treePanel.AddRoot(treeViewNode);
 					}
 					return;
 				}
 			}
 			if (force)
 			{
-				m_listPanel.ClearItems();
+				m_treePanel.Clear();
 			}
 			var busyDialog = new CancellableBusyDialog(LanguageControl.Get(GetType().Name, 2), autoHideOnCancel: false);
 			DialogsManager.ShowDialog(null, busyDialog);
@@ -457,13 +452,13 @@ namespace Game
 			{
 				DialogsManager.HideDialog(busyDialog);
 				m_contentExpiryTime = Time.RealTime + 300.0;
-				while (m_listPanel.Items.Count > 0 && !(m_listPanel.Items[^1] is CommunityContentEntry))
+				while (m_treePanel.Nodes.Count > 0 && !(m_treePanel.Nodes[^1].Tag is CommunityContentEntry))
 				{
-					m_listPanel.RemoveItemAt(m_listPanel.Items.Count - 1);
+					m_treePanel.Nodes.RemoveAt(m_treePanel.Nodes.Count - 1);
 				}
 				foreach (CommunityContentEntry item2 in list)
 				{
-					m_listPanel.AddItem(item2);
+					m_treePanel.AddRoot(ContentToNode(item2));
 					if (item2.Icon == null && !string.IsNullOrEmpty(item2.IconSrc))
 					{
 						WebManager.Get(item2.IconSrc, null, null, new CancellableProgress(), delegate (byte[] data)
@@ -476,7 +471,7 @@ namespace Game
 									{
 										var texture = Engine.Graphics.Texture2D.Load(Image.Load(new System.IO.MemoryStream(data)));
 										item2.Icon = texture;
-										if (item2.IconInstance != null) item2.IconInstance.Subtexture = new Subtexture(texture, Vector2.Zero, Vector2.One);
+										if (item2.LinkedNode != null) item2.LinkedNode.Icon = texture;
 									}
 									catch (Exception)
 									{
@@ -486,13 +481,17 @@ namespace Game
 							});
 						}, delegate (Exception e) { });
 					}
-					else if (item2.IconInstance != null) item2.IconInstance.Subtexture = new Subtexture(item2.Icon, Vector2.Zero, Vector2.One);
+					else if (item2.LinkedNode  != null) item2.LinkedNode.Icon = item2.Icon;
 				}
 				if (list.Count > 0 && !string.IsNullOrEmpty(nextCursor))
 				{
-					m_listPanel.AddItem(nextCursor);
+					//加载更多节点
+					TreeViewNode loadMoreNode = new("加载更多",new Color(64,192,64),string.Empty,Color.Transparent);
+					loadMoreNode.Selectable = false;
+					loadMoreNode.OnClicked = () => PopulateList(nextCursor);
+					m_treePanel.AddRoot(loadMoreNode);
 				}
-				m_itemsCache[cacheKey] = new List<object>(m_listPanel.Items);
+				m_itemsCache[cacheKey] = new List<object>(m_treePanel.Nodes);
 			}, delegate (Exception error)
 			{
 				DialogsManager.HideDialog(busyDialog);
@@ -545,15 +544,15 @@ namespace Game
 			{
 				if (!string.IsNullOrEmpty((string)filter))
 				{
-					return LanguageControl.Get(typeof(CommunityContentScreen).Name, 8);
+					return LanguageControl.Get(nameof(CommunityContentScreen), 8);
 				}
-				return LanguageControl.Get(typeof(CommunityContentScreen).Name, 9);
+				return LanguageControl.Get(nameof(CommunityContentScreen), 9);
 			}
 			if (filter is ExternalContentType)
 			{
 				return ExternalContentManager.GetEntryTypeDescription((ExternalContentType)filter);
 			}
-			throw new InvalidOperationException(LanguageControl.Get(typeof(CommunityContentScreen).Name, 10));
+			throw new InvalidOperationException(LanguageControl.Get(nameof(CommunityContentScreen), 10));
 		}
 
 		public string GetOrderDisplayName(Order order)
@@ -569,7 +568,7 @@ namespace Game
 				case Order.ByHide:
 					return m_isCNLanguageType ? "尚未发布" : "ByHide";
 				default:
-					throw new InvalidOperationException(LanguageControl.Get(typeof(CommunityContentScreen).Name, 13));
+					throw new InvalidOperationException(LanguageControl.Get(nameof(CommunityContentScreen), 13));
 			}
 		}
 
@@ -582,6 +581,15 @@ namespace Game
 				case SearchType.ByUserId: return m_isCNLanguageType ? "用户ID" : "UID";
 				default: return "null";
 			}
+		}
+
+		public TreeViewNode ContentToNode(CommunityContentEntry contentEntry)
+		{
+			string title = contentEntry.Name;
+			string desc = $"{ExternalContentManager.GetEntryTypeDescription(contentEntry.Type)} {DataSizeFormatter.Format(contentEntry.Size)} {contentEntry.ExtraText}";
+			TreeViewNode node = new (title, Color.White, desc, new Color(128, 128, 128),contentEntry.Icon) { Tag = contentEntry };
+			contentEntry.LinkedNode = node;
+			return node;
 		}
 	}
 }
