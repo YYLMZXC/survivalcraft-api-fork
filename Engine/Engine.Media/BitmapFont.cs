@@ -129,7 +129,7 @@ namespace Engine.Media
 				for (int i = 0; i < num; i++)
 				{
 					string line = streamReader.ReadLine();
-					string[] arr = line.Split([(char)0x20, (char)0x09], StringSplitOptions.None);
+					string[] arr = line.Split(new[] { (char)0x20, (char)0x09 }, StringSplitOptions.None);
 					if (arr.Length == 9)
 					{
 						string[] tmp = new string[8];
