@@ -8,10 +8,10 @@ namespace Game
 	{
 		public enum Mix
 		{
-			None,//Ã»ÓÐÕýÔÚ²¥·ÅµÄÒôÀÖ£¬Í£Ö¹ÒôÀÖ
-			Menu,//Ö÷²Ëµ¥ÒôÀÖ
-			InGame,//ÓÎÏ·ÓÎÍæÊ±µÄÒôÀÖ£¬ÓÉÄ£×é×Ô¶¨Òå(API1.72ÐÂÔö)
-			Other//ÆäËû£¬ÓÉÄ£×é×Ô¼ºÀ´¶¨Òå(API1.72ÐÂÔö)
+			None,//æ²¡æœ‰æ­£åœ¨æ’­æ”¾çš„éŸ³ä¹ï¼Œåœæ­¢éŸ³ä¹
+			Menu,//ä¸»èœå•éŸ³ä¹
+			InGame,//æ¸¸æˆæ¸¸çŽ©æ—¶çš„éŸ³ä¹ï¼Œç”±æ¨¡ç»„è‡ªå®šä¹‰(API1.72æ–°å¢ž)
+			Other//å…¶ä»–ï¼Œç”±æ¨¡ç»„è‡ªå·±æ¥å®šä¹‰(API1.72æ–°å¢ž)
 		}
 
 		public const float m_fadeSpeed = 0.33f;

@@ -1,4 +1,4 @@
-using Engine;
+ï»¿using Engine;
 using GameEntitySystem;
 using TemplatesDatabase;
 
@@ -199,17 +199,17 @@ namespace Game
             {
                 SplashGenerated = false;
             }
-            //¶ÔÓÚ»ğÑæµÄ´¦Àí
+            //å¯¹äºç«ç„°çš„å¤„ç†
             if (!IsFireProof && SubsystemPickables.m_subsystemTime.PeriodicGameTimeEvent(1.0, GetHashCode() % 100 / 100.0) && (SubsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(Position.X), Terrain.ToCell(Position.Y + 0.1f), Terrain.ToCell(Position.Z)) == 104 || SubsystemPickables.m_subsystemFireBlockBehavior.IsCellOnFire(Terrain.ToCell(Position.X), Terrain.ToCell(Position.Y + 0.1f), Terrain.ToCell(Position.Z))))
             {
                 SubsystemPickables.m_subsystemAudio.PlayRandomSound("Audio/Sizzles", 1f, SubsystemPickables.m_random.Float(-0.2f, 0.2f), Position, 3f, autoDelay: true);
                 ToRemove = true;
                 SubsystemPickables.m_subsystemExplosions.TryExplodeBlock(Terrain.ToCell(Position.X), Terrain.ToCell(Position.Y), Terrain.ToCell(Position.Z), Value);
             }
-            //µôÂäÎïÔÚ¿¨×¡µÄÊ±ºòµÄ¸üĞÂ
+            //æ‰è½ç‰©åœ¨å¡ä½çš„æ—¶å€™çš„æ›´æ–°
             if (!StuckMatrix.HasValue)
             {
-                //TODO:ÕâÀïµÄÊıÖµ¸ÄÎª±äÁ¿±íÊ¾
+                //TODO:è¿™é‡Œçš„æ•°å€¼æ”¹ä¸ºå˜é‡è¡¨ç¤º
                 if (vector2.HasValue && surfaceHeight.HasValue)
                 {
                     float num19 = surfaceHeight.Value - Position.Y;

@@ -5,84 +5,14 @@ namespace Game
 {
 	public static class SimplexNoise
 	{
-		public static int[][] m_grad3 = new int[12][]
-		{
-			new int[3]
-			{
-				1,
-				1,
-				0
-			},
-			new int[3]
-			{
-				-1,
-				1,
-				0
-			},
-			new int[3]
-			{
-				1,
-				-1,
-				0
-			},
-			new int[3]
-			{
-				-1,
-				-1,
-				0
-			},
-			new int[3]
-			{
-				1,
-				0,
-				1
-			},
-			new int[3]
-			{
-				-1,
-				0,
-				1
-			},
-			new int[3]
-			{
-				1,
-				0,
-				-1
-			},
-			new int[3]
-			{
-				-1,
-				0,
-				-1
-			},
-			new int[3]
-			{
-				0,
-				1,
-				1
-			},
-			new int[3]
-			{
-				0,
-				-1,
-				1
-			},
-			new int[3]
-			{
-				0,
-				1,
-				-1
-			},
-			new int[3]
-			{
-				0,
-				-1,
-				-1
-			}
-		};
+		public static int[][] m_grad3 =
+		[[1,1,0],[-1,1,0],[1,-1,0],
+		[-1,-1,0],[1,0,1],[-1,0,1],
+		[1,0,-1],[-1,0,-1],[0,1,1],
+		[0,-1,1],[0,1,-1],[0,-1,-1]];
 
-		public static int[] m_permutations = new int[512]
-		{
+		public static int[] m_permutations =
+		[
 			151,
 			160,
 			137,
@@ -595,7 +525,7 @@ namespace Game
 			61,
 			156,
 			180
-		};
+		];
 
 		public static float Dot(int[] g, float x, float y)
 		{
@@ -841,11 +771,7 @@ namespace Game
 				frequency *= frequencyStep;
 				num3 *= amplitudeStep;
 			}
-			if (!ridged)
-			{
-				return num / num2;
-			}
-			return 1f - MathF.Abs((2f * num / num2) - 1f);
+			return !ridged ? num / num2 : 1f - MathF.Abs((2f * num / num2) - 1f);
 		}
 
 		public static float OctavedNoise(float x, float y, float frequency, int octaves, float frequencyStep, float amplitudeStep, bool ridged = false)
@@ -860,11 +786,7 @@ namespace Game
 				frequency *= frequencyStep;
 				num3 *= amplitudeStep;
 			}
-			if (!ridged)
-			{
-				return num / num2;
-			}
-			return 1f - MathF.Abs((2f * num / num2) - 1f);
+			return !ridged ? num / num2 : 1f - MathF.Abs((2f * num / num2) - 1f);
 		}
 
 		public static float OctavedNoise(float x, float y, float z, float frequency, int octaves, float frequencyStep, float amplitudeStep, bool ridged = false)
@@ -879,11 +801,7 @@ namespace Game
 				frequency *= frequencyStep;
 				num3 *= amplitudeStep;
 			}
-			if (!ridged)
-			{
-				return num / num2;
-			}
-			return 1f - MathF.Abs((2f * num / num2) - 1f);
+			return !ridged ? num / num2 : 1f - MathF.Abs((2f * num / num2) - 1f);
 		}
 	}
 }

@@ -69,7 +69,7 @@ namespace Game
 
         public bool StopTrailParticleInFluid = true;
 
-        public int DamageToPickable = 1;//���������ʱ�����;�
+        public int DamageToPickable = 1;//弹射物结算时掉的耐久
 
         public bool TerrainCollidable = true;
 
@@ -106,7 +106,7 @@ namespace Game
             }
         }
 
-        public List<ComponentBody> BodiesToIgnore = new List<ComponentBody>();//��������е�ʱ������List�е�ComponentBody
+        public List<ComponentBody> BodiesToIgnore = new List<ComponentBody>();//弹射物飞行的时候会忽略List中的ComponentBody
         protected SubsystemPickables m_subsystemPickables => SubsystemProjectiles?.m_subsystemPickables;
         protected SubsystemParticles m_subsystemParticles => SubsystemProjectiles?.m_subsystemParticles;
         protected SubsystemAudio m_subsystemAudio => SubsystemProjectiles?.m_subsystemAudio;
@@ -253,7 +253,7 @@ namespace Game
                 loader.OnProjectileHitTerrain(this, terrainRaycastResult, ref triggerBlocksBehavior, ref destroyCell, ref impactSoundLoudness, ref projectileGetStuck, ref velocityAfterHit, ref angularVelocityAfterHit);
                 return false;
             });
-            //����ΪModLoader�ӿں�ref����
+            //以上为ModLoader接口和ref变量
             if (triggerBlocksBehavior)
             {
                 SubsystemBlockBehavior[] blockBehaviors2 = SubsystemProjectiles.m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
@@ -308,25 +308,25 @@ namespace Game
             Raycast(dt, out BodyRaycastResult? bodyRaycastResult, out TerrainRaycastResult? terrainRaycastResult);
             CellFace? nullableCellFace = terrainRaycastResult.HasValue ? new CellFace?(terrainRaycastResult.Value.CellFace) : null;
             ComponentBody componentBody = bodyRaycastResult.HasValue ? bodyRaycastResult.Value.ComponentBody : null;
-            //�������ӣ�������ЩBody���Ƿ���Ե���
+            //这里增加：忽略哪些Body、是否忽略地形
             bool disintegrate = block.DisintegratesOnHit;
-            //ִ�и������OnHitAsProjectile��
+            //执行各方块的OnHitAsProjectile。
             if (terrainRaycastResult.HasValue || bodyRaycastResult.HasValue)
             {
                 disintegrate |= ProcessOnHitAsProjectileBlockBehavior(nullableCellFace, componentBody, dt);
             }
-            //���������������Body�����й��������ı��ٶȡ�
+            //如果弹射物命中了Body，进行攻击，并改变速度。
             if (bodyRaycastResult.HasValue && (!terrainRaycastResult.HasValue || bodyRaycastResult.Value.Distance < terrainRaycastResult.Value.Distance))
             {
                 HitBody(bodyRaycastResult.Value, ref positionAtdt);
             }
-            //��������������˵��Σ����д������ƻ����顢��ȼ���顢ײ�����ε��ƶ�Ч����
+            //如果弹射物命中了地形，进行处理。破坏方块、点燃方块、撞到地形的移动效果。
             else if (terrainRaycastResult.HasValue)
             {
                 CellFace cellFace = nullableCellFace.Value;
                 HitTerrain(terrainRaycastResult.Value, cellFace, ref positionAtdt, ref pickableStuckMatrix);
             }
-            //������ת��Ϊ������
+            //弹射物转化为掉落物
             if (terrainRaycastResult.HasValue || bodyRaycastResult.HasValue)
             {
                 if (disintegrate)
