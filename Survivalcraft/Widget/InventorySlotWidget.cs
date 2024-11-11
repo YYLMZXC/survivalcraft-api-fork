@@ -629,7 +629,7 @@ namespace Game
                         if (handleMove) flag = true;
                     }
                     //交换两个物品栏之间的物品
-                    else if (targetInventory.GetSlotCapacity(targetSlotIndex, targetSlotValue) >= dragCount
+                    else if (targetInventory.GetSlotCapacity(targetSlotIndex, sourceSlotValue) >= dragCount
                         && sourceInventory.GetSlotCapacity(sourceSlotIndex, targetSlotValue) >= targetSlotCount
                         && sourceInventory.GetSlotCount(sourceSlotIndex) == dragCount)
                     {
