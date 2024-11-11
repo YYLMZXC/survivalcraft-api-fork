@@ -75,7 +75,11 @@ namespace Game
 				Log.Debug(RegionInfo.CurrentRegion.DisplayName);
 				SystemLanguage = RegionInfo.CurrentRegion.DisplayName != "United States" ? "zh-CN" : "en-US";
 			}
+			//预加载
 			VersionsManager.Initialize();
+			Window.HandleUri += HandleUriHandler;
+			Window.Deactivated += DeactivatedHandler;
+			Window.Frame += FrameHandler;
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
@@ -85,9 +89,6 @@ namespace Game
 			Log.AddLogSink(new ConsoleLogSink());
 			Title = "[DEBUG]" + Title;
 #endif
-			Window.HandleUri += HandleUriHandler;
-			Window.Deactivated += DeactivatedHandler;
-			Window.Frame += FrameHandler;
 			Display.DeviceReset += ContentManager.Display_DeviceReset;
 			Window.UnhandledException += delegate(UnhandledExceptionInfo e)
 			{

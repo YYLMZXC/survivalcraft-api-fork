@@ -3,6 +3,7 @@ using Engine.Audio;
 using GameEntitySystem;
 using System.Collections.Generic;
 using TemplatesDatabase;
+using Vector3 = Engine.Vector3;
 
 namespace Game
 {
@@ -30,6 +31,12 @@ namespace Game
 			public float Pitch;
 
 			public float Pan;
+
+			public OpenTK.Vector3 direction=OpenTK.Vector3.Zero;
+
+			public SoundInfo()
+			{
+			}
 		}
 
 		public SubsystemTime m_subsystemTime;
@@ -107,14 +114,28 @@ namespace Game
 				Pan = pan
 			});
 		}
+		public void PlaySound(string name,float volume,float pitch,float pan,float delay,OpenTK.Vector3 direction)
+		{
+			double num = m_subsystemTime.GameTime + (double)delay;
+			m_nextSoundTime = Math.Min(m_nextSoundTime,num);
+			m_queuedSounds.Add(new SoundInfo
+			{
+				Time = num,
+				Name = name,
+				Volume = volume,
+				Pitch = pitch,
+				Pan = pan,
+				direction=direction
+			});
+		}
 
-		public void PlaySound(string name, float volume, float pitch, Vector3 position, float minDistance, float delay)
+		public virtual void PlaySound(string name, float volume, float pitch, Vector3 position, float minDistance, float delay)
 		{
 			float num = CalculateVolume(CalculateListenerDistance(position), minDistance);
 			PlaySound(name, volume * num, pitch, 0f, delay);
 		}
 
-		public void PlaySound(string name, float volume, float pitch, Vector3 position, float minDistance, bool autoDelay)
+		public virtual void PlaySound(string name, float volume, float pitch, Vector3 position, float minDistance, bool autoDelay)
 		{
 			float num = CalculateVolume(CalculateListenerDistance(position), minDistance);
 			PlaySound(name, volume * num, pitch, 0f, autoDelay ? CalculateDelay(position) : 0f);
@@ -169,7 +190,7 @@ namespace Game
 
 		public float CalculateDelay(float distance)
 		{
-			return MathUtils.Min(distance / 100f, 5f);
+			return Math.Min(distance / 100f, 5f);
 		}
 
 		public void Update(float dt)
@@ -192,7 +213,7 @@ namespace Game
 				{
 					if (m_subsystemTime.GameTimeFactor == 1f && !m_subsystemTime.FixedTimeStep.HasValue && soundInfo.Volume * SettingsManager.SoundsVolume > AudioManager.MinAudibleVolume && UpdateCongestion(soundInfo.Name, soundInfo.Volume))
 					{
-						AudioManager.PlaySound(soundInfo.Name, soundInfo.Volume, soundInfo.Pitch, soundInfo.Pan);
+						AudioManager.PlaySound(soundInfo.Name, soundInfo.Volume, soundInfo.Pitch, soundInfo.Pan,soundInfo.direction);
 					}
 					m_queuedSounds.RemoveAt(num);
 				}

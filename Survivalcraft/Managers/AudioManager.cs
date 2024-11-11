@@ -1,3 +1,4 @@
+using Acornima.Ast;
 using Engine;
 using Engine.Audio;
 using System;
@@ -6,8 +7,11 @@ namespace Game
 	public static class AudioManager
 	{
 		public static float MinAudibleVolume => 0.05f * SettingsManager.SoundsVolume;
-
-		public static void PlaySound(string name, float volume, float pitch, float pan)
+		public static void PlaySound(string name,float volume,float pitch,float pan)
+		{
+			PlaySound(name,volume,pitch,pan,OpenTK.Vector3.Zero);
+		}
+		public static void PlaySound(string name, float volume, float pitch, float pan,OpenTK.Vector3 vector)
 		{
 			if (SettingsManager.SoundsVolume > 0f)
 			{
@@ -18,7 +22,7 @@ namespace Game
 					{
                         SoundBuffer soundBuffer = ContentManager.Get<SoundBuffer>(name);
                         Sound sound = new(soundBuffer, num, ToEnginePitch(pitch), pan, isLooped: false, disposeOnStop: true);
-						sound.Play();
+						sound.Play(vector);
 					}
 					catch (Exception)
 					{

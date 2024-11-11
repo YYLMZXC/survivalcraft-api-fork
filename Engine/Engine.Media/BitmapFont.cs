@@ -90,25 +90,14 @@ namespace Engine.Media
 				if (m_debugFont == null)
 				{
 #if ANDROID
-					using (Stream stream = EngineActivity.m_activity.Assets.Open("Debugfont.png"))
-					{
-						using (Stream stream2 = EngineActivity.m_activity.Assets.Open("Debugfont.lst"))
-						{
-							m_debugFont = Initialize(stream, stream2);
-						}
-
-					}
+                    using Stream stream = EngineActivity.m_activity.Assets.Open("Debugfont.png");
+                    using Stream stream2 = EngineActivity.m_activity.Assets.Open("Debugfont.lst");
 #else
-					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png"))
-					{
-						using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst"))
-						{
-							m_debugFont = Initialize(stream, stream2);
-						}
-
-					}
+                    using Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png");
+                    using Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst");
 #endif
-				}
+                    m_debugFont = Initialize(stream, stream2);
+                }
 				return m_debugFont;
 			}
 		}
@@ -288,15 +277,10 @@ namespace Engine.Media
 			{
 				if (m_debugFont != null)
 				{
-					using (Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png"))
-					{
-						using (Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst"))
-						{
-							m_debugFont = Initialize(stream, stream2);
-						}
-
-					}
-				}
+                    using Stream stream = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.png");
+                    using Stream stream2 = typeof(BitmapFont).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.Debugfont.lst");
+                    m_debugFont = Initialize(stream, stream2);
+                }
 			};
 		}
 
@@ -419,8 +403,8 @@ namespace Engine.Media
 				}
 				num = y + 1;
 				y = num;
-			}
 		}
+			}
 
         public static Rectangle CropGlyph(Image image, Rectangle rectangle)
 		{

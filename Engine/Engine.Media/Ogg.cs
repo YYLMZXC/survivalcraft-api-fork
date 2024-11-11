@@ -22,11 +22,11 @@ namespace Engine.Media
 			{
 				get
 				{
-					return m_reader.DecodedPosition;
+					return m_reader.SamplePosition;
 				}
 				set
 				{
-					m_reader.DecodedPosition = value;
+					m_reader.SamplePosition = value;
 				}
 			}
 			public override long BytesCount => m_reader.TotalSamples * 2;
@@ -54,7 +54,7 @@ namespace Engine.Media
 				int num = 0;
 				while (count >= 2)
 				{
-					int count2 = MathUtils.Min(count / 2, m_samples.Length);
+					int count2 = Math.Min(count / 2, m_samples.Length);
 					int num2 = m_reader.ReadSamples(m_samples, 0, count2);
 					if (num2 == 0)
 					{

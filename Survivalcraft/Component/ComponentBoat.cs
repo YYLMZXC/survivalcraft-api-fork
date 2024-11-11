@@ -42,7 +42,7 @@ namespace Game
 		{
 			if (amount > 0f)
 			{
-				Health = MathUtils.Max(Health - amount, 0f);
+				Health = Math.Max(Health - amount, 0f);
 			}
 		}
 

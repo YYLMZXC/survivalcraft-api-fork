@@ -20,7 +20,7 @@ namespace Game
 			if (GetFace(value) == face)
 			{
 				ElectricConnectorDirection? connectorDirection = SubsystemElectricity.GetConnectorDirection(GetFace(value), GetRotation(data), connectorFace);
-				if (connectorDirection == ElectricConnectorDirection.Bottom || connectorDirection == ElectricConnectorDirection.Top || connectorDirection == ElectricConnectorDirection.Right || connectorDirection == ElectricConnectorDirection.Left || connectorDirection == ElectricConnectorDirection.In)
+				if (connectorDirection is ElectricConnectorDirection.Bottom or ElectricConnectorDirection.Top or ElectricConnectorDirection.Right or ElectricConnectorDirection.Left or ElectricConnectorDirection.In)
 				{
 					return ElectricConnectorType.Input;
 				}

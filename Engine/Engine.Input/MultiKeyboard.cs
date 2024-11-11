@@ -22,13 +22,13 @@ public static class MultiKeyboard
 
 	private const double KeyNextRepeatTime = 0.033;
 
-	private static KeyboardData[] _KeyboardData = new KeyboardData[4]
-	{
-		new KeyboardData(),
-		new KeyboardData(),
-		new KeyboardData(),
-		new KeyboardData()
-	};
+	private static KeyboardData[] _KeyboardData =
+    [
+        new(),
+		new(),
+		new(),
+		new()
+	];
 
 	public static bool BackButtonQuitsApp { get; set; }
 
@@ -56,18 +56,10 @@ public static class MultiKeyboard
 	public static bool IsKeyDownRepeat(int keyboardIndex, Key key)
 	{
 		double num = _KeyboardData[keyboardIndex].KeysDownRepeatArray[(int)key];
-		if (!(num < 0.0))
-		{
-			if (num != 0.0)
-			{
-				return Time.FrameStartTime >= num;
-			}
-			return false;
-		}
-		return true;
-	}
+        return num < 0.0 || (num != 0.0 && Time.FrameStartTime >= num);
+    }
 
-	public static Key? LastKey(int keyboardIndex)
+    public static Key? LastKey(int keyboardIndex)
 	{
 		return _KeyboardData[keyboardIndex].LastKey;
 	}

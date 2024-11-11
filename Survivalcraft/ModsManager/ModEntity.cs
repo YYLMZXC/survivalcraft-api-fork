@@ -1,13 +1,7 @@
 using Engine;
 using Engine.Graphics;
-
-using System;
-using System.IO;
-using System.Text;
-using System.Linq;
 using System.Xml.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 
 namespace Game
 {
@@ -46,11 +40,10 @@ namespace Game
 		/// <summary>
 		/// 获取指定后缀文件列表，带.
 		/// </summary>
-		/// <param name="extension"></param>
+		/// <param name="extension">文件扩展名</param>
 		/// <param name="action">参数1文件名参数，2打开的文件流</param>
 		public virtual void GetFiles(string extension, Action<string, Stream> action)
 		{
-			var files = new List<Stream>();
 			//将每个zip里面的文件读进内存中
 			foreach (ZipArchiveEntry zipArchiveEntry in ModArchive.ReadCentralDir())
 			{
@@ -74,6 +67,18 @@ namespace Game
 				}
 			}
 		}
+		/// <param name="extension">文件扩展名</param>
+		/// <param name="action">参数1文件名参数，2打开的文件流</param>
+		/// <return>列表是否为空</return>
+		public virtual bool GetFilesAndExist(string extension,Action<string,Stream> action)
+		{
+			if(ModArchive.ReadCentralDir().Count != 0)
+			{
+				GetFiles(extension,action);
+				return false;
+			}
+			else { return true; }
+		}
 		/// <summary>
 		/// 获取指定文件
 		/// </summary>
@@ -84,21 +89,21 @@ namespace Game
 		{
 			if (ModFiles.TryGetValue(filename, out ZipArchiveEntry entry))
 			{
-				using (MemoryStream ms = new())
+				using MemoryStream ms = new();
+				ModArchive.ExtractFile(entry,ms);
+				ms.Position = 0L;
+				try
 				{
-					ModArchive.ExtractFile(entry, ms);
-					ms.Position = 0L;
-					try
-					{
-						stream?.Invoke(ms);
-					}
-					catch (Exception e)
-					{
-						LoadingScreen.Error($"[{modInfo.Name}]获取文件[{filename}]失败：" + e.Message);
-					}
+					stream?.Invoke(ms);
 				}
+				catch(Exception e)
+				{
+					LoadingScreen.Error($"[{modInfo.Name}]获取文件[{filename}]失败：" + e.Message);
+				}
+				return false;
 			}
-			return false;
+			else return true;
+			
 		}
 		public virtual bool GetAssetsFile(string filename, Action<Stream> stream)
 		{
@@ -317,8 +322,7 @@ namespace Game
 				}
 				else
 				{
-					var e = new Exception($"[{modInfo.Name}]缺少依赖项{name}");
-					throw e;
+					throw new Exception($"[{modInfo.Name}]缺少依赖项{name}");
 				}
 			}
 			IsDependencyChecked = true;
@@ -343,7 +347,7 @@ namespace Game
 		/// <summary>
 		/// BlocksManager初始化完毕
 		/// </summary>
-		/// <param name="categories"></param>
+		// <param name="categories"></param>
 		public virtual void OnBlocksInitalized()
 		{
 			Loader?.BlocksInitalized();

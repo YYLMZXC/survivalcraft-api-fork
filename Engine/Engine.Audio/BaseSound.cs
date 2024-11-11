@@ -133,12 +133,22 @@ namespace Engine.Audio
 				if (State == SoundState.Stopped || State == SoundState.Paused)
 				{
 					State = SoundState.Playing;
-					InternalPlay();
+					InternalPlay(OpenTK.Vector3.Zero);
 				}
 			}
 		}
-
-		public void Pause()
+        public void Play(OpenTK.Vector3 direction)
+        {
+            lock (m_stateSync)
+            {
+                if (State == SoundState.Stopped || State == SoundState.Paused)
+                {
+                    State = SoundState.Playing;
+                    InternalPlay(direction);
+                }
+            }
+        }
+        public void Pause()
 		{
 			lock (m_stateSync)
 			{
@@ -212,8 +222,7 @@ namespace Engine.Audio
 			}
 		}
 
-		internal abstract void InternalPlay();
-
+        internal abstract void InternalPlay(OpenTK.Vector3 direction);
 		internal abstract void InternalPause();
 
 		internal abstract void InternalStop();

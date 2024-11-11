@@ -40,27 +40,16 @@ namespace Engine.Media
             PngInfo result = default;
 			result.Width = info.Width;
 			result.Height = info.Height;
-			switch (info.Metadata.GetPngMetadata().ColorType)
-			{
-				case SixLabors.ImageSharp.Formats.Png.PngColorType.RgbWithAlpha:
-                    result.Format = Format.RGBA8;
-					break;
-				case SixLabors.ImageSharp.Formats.Png.PngColorType.Rgb:
-                    result.Format = Format.RGB8;
-					break;
-				case SixLabors.ImageSharp.Formats.Png.PngColorType.GrayscaleWithAlpha:
-                    result.Format = Format.LA8;
-					break;
-				case SixLabors.ImageSharp.Formats.Png.PngColorType.Grayscale:
-					result.Format = Format.L8;
-					break;
-				case SixLabors.ImageSharp.Formats.Png.PngColorType.Palette:
-					result.Format = Format.Indexed;
-					break;
-				default:
-                    throw new InvalidOperationException("Unsupported PNG pixel format.");
-            }
-			return result;
+            result.Format = info.Metadata.GetPngMetadata().ColorType switch
+            {
+                SixLabors.ImageSharp.Formats.Png.PngColorType.RgbWithAlpha => Format.RGBA8,
+                SixLabors.ImageSharp.Formats.Png.PngColorType.Rgb => Format.RGB8,
+                SixLabors.ImageSharp.Formats.Png.PngColorType.GrayscaleWithAlpha => Format.LA8,
+                SixLabors.ImageSharp.Formats.Png.PngColorType.Grayscale => Format.L8,
+                SixLabors.ImageSharp.Formats.Png.PngColorType.Palette => Format.Indexed,
+                _ => throw new InvalidOperationException("Unsupported PNG pixel format."),
+            };
+            return result;
 		}
 
 		public static Image Load(Stream stream)

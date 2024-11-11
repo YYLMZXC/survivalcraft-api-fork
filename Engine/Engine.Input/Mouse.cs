@@ -118,18 +118,16 @@ namespace Engine.Input
 
 		public static MouseButton TranslateMouseButton(OpenTK.Input.MouseButton mouseButton)
 		{
-			switch (mouseButton)
-			{
-				case OpenTK.Input.MouseButton.Left:
-					return MouseButton.Left;
-				case OpenTK.Input.MouseButton.Right:
-					return MouseButton.Right;
-				case OpenTK.Input.MouseButton.Middle:
-					return MouseButton.Middle;
-				default:
-					return (MouseButton)(-1);
-			}
-		}
+            return mouseButton switch
+            {
+                OpenTK.Input.MouseButton.Left => MouseButton.Left,
+                OpenTK.Input.MouseButton.Right => MouseButton.Right,
+                OpenTK.Input.MouseButton.Middle => MouseButton.Middle,
+                OpenTK.Input.MouseButton.Button1=>MouseButton.Ext1,
+                OpenTK.Input.MouseButton.Button2 => MouseButton.Ext2,
+                _ => (MouseButton)(-1),
+            };
+        }
 #endif
 
 		static Mouse()

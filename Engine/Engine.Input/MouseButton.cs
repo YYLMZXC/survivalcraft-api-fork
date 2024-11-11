@@ -4,6 +4,8 @@ namespace Engine.Input
 	{
 		Left,
 		Right,
-		Middle
+		Middle,
+        Ext1,
+        Ext2
 	}
 }

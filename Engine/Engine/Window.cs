@@ -318,18 +318,18 @@ namespace Engine
             m_gameWindow.Icon = new Icon(typeof(Window).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.icon.ico"), new Size(32, 32));
 #endif
             m_dpiScale = m_gameWindow.ClientSize.Width / 400f;
-            m_gameWindow.ClientSize = new Size(width, height);
             if (Configuration.RunningOnMacOS)
             {
                 Point2 point = new((int)MathF.Round(ScreenSize.X / m_dpiScale), (int)MathF.Round(ScreenSize.Y / m_dpiScale));
-                m_gameWindow.Location = new Point(MathUtils.Max((point.X - m_gameWindow.Size.Width) / 2, 0), MathUtils.Max((point.Y - m_gameWindow.Size.Height) / 2, 0));
+                m_gameWindow.Location = new Point(Math.Max((point.X - m_gameWindow.Size.Width) / 2, 0), Math.Max((point.Y - m_gameWindow.Size.Height) / 2, 0));
             }
             else
             {
-                m_gameWindow.Location = new Point(MathUtils.Max((ScreenSize.X - m_gameWindow.Size.Width) / 2, 0), MathUtils.Max((ScreenSize.Y - m_gameWindow.Size.Height) / 2, 0));
+                m_gameWindow.Location = new Point(Math.Max((ScreenSize.X - m_gameWindow.Size.Width) / 2, 0), Math.Max((ScreenSize.Y - m_gameWindow.Size.Height) / 2, 0));
             }
             WindowMode = windowMode;
             m_gameWindow.Load += LoadHandler;
+            m_gameWindow.Run();
             GL.GetInteger(GetPName.RedBits, out int data0);
             GL.GetInteger(GetPName.GreenBits, out int data1);
             GL.GetInteger(GetPName.BlueBits, out int data2);
@@ -339,7 +339,6 @@ namespace Engine
             GL.GetInteger(GetPName.MajorVersion, out int data6);
             GL.GetInteger(GetPName.MinorVersion, out int data7);
             Log.Information("OpenGL{6}.{7} framebuffer created, R={0} G={1} B={2} A={3}, D={4} S={5}", data0, data1, data2, data3, data4, data5,data6,data7);
-            m_gameWindow.Run();
         }
 
         public static void Close()

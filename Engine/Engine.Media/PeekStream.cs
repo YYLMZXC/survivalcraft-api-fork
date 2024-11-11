@@ -46,11 +46,8 @@ namespace Engine.Media
 			{
 				throw new ArgumentException("Stream is not readable.");
 			}
-			if (peekSize < 0)
-			{
-				throw new ArgumentOutOfRangeException(nameof(peekSize));
-			}
-			m_stream = stream;
+            ArgumentOutOfRangeException.ThrowIfNegative(peekSize);
+            m_stream = stream;
 			m_buffer = new byte[peekSize];
 			m_end = stream.Read(m_buffer, 0, peekSize);
 		}

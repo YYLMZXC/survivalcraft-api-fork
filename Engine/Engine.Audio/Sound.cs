@@ -58,9 +58,13 @@ namespace Engine.Audio
 			base.DisposeOnStop = disposeOnStop;
 			Mixer.m_soundsToStopPoll.Add(this);
 		}
-
-		internal override void InternalPlay()
+        /// <summary>
+        /// 在指定位置播放音频
+        /// </summary>
+        /// <param name="direction">相对于玩家的相对位置</param>
+		internal override void InternalPlay(OpenTK.Vector3 direction)
 		{
+            AL.Source(m_source, ALSource3f.Position, ref direction);
 			AL.Source(m_source, ALSourceb.Looping, m_isLooped);
 			AL.SourcePlay(m_source);
 			//Mixer.CheckALError();
@@ -83,5 +87,5 @@ namespace Engine.Audio
 			base.InternalDispose();
 			Mixer.m_soundsToStopPoll.Remove(this);
 		}
-	}
+    }
 }

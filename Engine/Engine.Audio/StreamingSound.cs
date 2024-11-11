@@ -81,13 +81,13 @@ namespace Engine.Audio
 			});
 		}
 
-		internal override void InternalPlay()
-		{
-			AL.SourcePlay(m_source);
-			Mixer.CheckALError();
-		}
-
-		internal override void InternalPause()
+        internal override void InternalPlay(OpenTK.Vector3 direction)
+        {
+            AL.Source(m_source, ALSource3f.Position,ref direction);
+            AL.SourcePlay(m_source);
+            Mixer.CheckALError();
+        }
+        internal override void InternalPause()
 		{
 			AL.SourcePause(m_source);
 			Mixer.CheckALError();
@@ -192,5 +192,5 @@ namespace Engine.Audio
 				}
 			}
 		}
-	}
+    }
 }

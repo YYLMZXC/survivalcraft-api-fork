@@ -79,18 +79,18 @@ namespace Game
 			Canvas.AddChildren(LogList);
 			AddChildren(Canvas);
 		}
-
+		//日志已经附带状态，不需要添加状态字符串
 		public static void Error(string mesg)
 		{
-			Add(LogType.Error, "[Error]" + mesg);
+			Add(LogType.Error,mesg);
 		}
 		public static void Info(string mesg)
 		{
-			Add(LogType.Info, "[Info]" + mesg);
+			Add(LogType.Info,mesg);
 		}
 		public static void Warning(string mesg)
 		{
-			Add(LogType.Warning, "[Warning]" + mesg);
+			Add(LogType.Warning,mesg);
 		}
 		public static void Advice(string mesg)
 		{
