@@ -130,7 +130,7 @@ namespace Game
             {
                 m_smeltingRecipe = (craftingRecipe != null && craftingRecipe.ResultValue != 0) ? craftingRecipe : null;
                 m_smeltingProgress = 0f;
-                if (FireTimeRemaining <= 0) UseFuel();
+                if (FireTimeRemaining <= 0 && m_smeltingRecipe != null) UseFuel();
             }
         }
 
@@ -149,7 +149,7 @@ namespace Game
 				int fuelAdded = 0;
 				while (m_fuelEndTime + epsilon < (float)m_subsystemGameInfo.TotalElapsedGameTime)
 				{
-					if (UseFuel()){
+					if (m_smeltingRecipe != null && UseFuel()){
 						fuelAdded++;
 						if (fuelAdded == 100) break;
 					}
