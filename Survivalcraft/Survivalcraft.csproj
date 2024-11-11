@@ -2,7 +2,7 @@
     <PropertyGroup>
         <TargetFrameworks>net8.0;net8.0-windows;net8.0-android</TargetFrameworks>
 		<OutputType Condition="'$(TargetFramework)' == 'net8.0'">library</OutputType>
-		<NoWarn>1701;1702;CA1416</NoWarn>
+		<NoWarn>1701;1702;CA1416;1591;1572;1573;1587</NoWarn>
 		<RootNamespace>Game</RootNamespace>
         <IsWebBootstrapper>false</IsWebBootstrapper>
         <PublishUrl>publish\</PublishUrl>
