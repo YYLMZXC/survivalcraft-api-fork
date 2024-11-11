@@ -129,10 +129,15 @@ namespace Game
             }
 
             playerData.Level = MathUtils.Max(MathF.Floor(playerData.Level / 2f), 1f);
-            JsInterface.handlersDictionary["OnPlayerDead"].ForEach(function =>
-            {
-                JsInterface.Invoke(function, playerData);
-            });
+			try
+			{
+				JsInterface.handlersDictionary["OnPlayerDead"].ForEach(function => {
+					JsInterface.Invoke(function,playerData);
+				});
+			}
+			catch(Exception ex)
+			{
+			}
         }
 
         public override void OnModelRendererDrawExtra(SubsystemModelsRenderer modelsRenderer,

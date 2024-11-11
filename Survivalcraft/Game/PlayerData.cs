@@ -66,6 +66,12 @@ namespace Game
 			set;
 		}
 
+		public Entity LastDeadPlayer
+		{
+			get;
+			set;
+		}
+
 		public GameWidget GameWidget
 		{
 			get
@@ -181,6 +187,16 @@ namespace Game
 			}
 		}
 
+		public double m_initialSpawnWaitTime = 0;
+		public double m_respawnWaitTime = 2.0;
+		public bool IsTimeReadyToSpawn
+		{
+			get
+			{
+				if(m_spawnMode == SpawnMode.Respawn) return (Time.FrameStartTime - m_terrainWaitStartTime > m_respawnWaitTime);
+				return (Time.FrameStartTime - m_terrainWaitStartTime > m_initialSpawnWaitTime);
+			}
+		}
 		public PlayerData(Project project)
 		{
 			m_project = project;
@@ -293,7 +309,7 @@ namespace Game
 				{
 					float updateProgress = m_subsystemTerrain.TerrainUpdater.GetUpdateProgress(PlayerIndex, MathUtils.Min(m_subsystemSky.VisibilityRange, 64f), 0f);
 					UpdateSpawnDialog(null, null, 0.5f + (0.5f * updateProgress), resetProgress: false);
-					if ((updateProgress >= 1f && Time.FrameStartTime - m_terrainWaitStartTime > 2.0) || Time.FrameStartTime - m_terrainWaitStartTime >= 15.0)
+					if ((updateProgress >= 1f && IsTimeReadyToSpawn) || Time.FrameStartTime - m_terrainWaitStartTime >= 15.0)
 					{
 						if (ComponentPlayer == null)
 						{
@@ -359,7 +375,8 @@ namespace Game
 					}
 					else
 					{
-						m_project.RemoveEntity(ComponentPlayer.Entity, disposeEntity: true);
+						LastDeadPlayer = ComponentPlayer.Entity;
+						ComponentPlayer = null;
 					}
 				}
 			}, null);
@@ -449,11 +466,6 @@ namespace Game
 
 		public void OnEntityRemoved(Entity entity)
 		{
-			if (ComponentPlayer != null && entity == ComponentPlayer.Entity)
-			{
-				ComponentPlayer = null;
-				m_playerDeathTime = null;
-			}
 		}
 
 		public Vector3 FindIntroSpawnPosition(Vector2 desiredSpawnPosition)
@@ -615,6 +627,8 @@ namespace Game
 
 		public void SpawnPlayer(Vector3 position, SpawnMode spawnMode)
 		{
+			if(LastDeadPlayer != null) m_project.RemoveEntity(LastDeadPlayer,false);
+			m_playerDeathTime = null;
 			ComponentMount componentMount = null;
 			if (spawnMode != SpawnMode.Respawn && CheckIsPointInWater(Terrain.ToCell(position)))
 			{
@@ -754,6 +768,7 @@ namespace Game
 			{
 				return modLoader.OnPlayerSpawned(spawnMode, entity2.FindComponent<ComponentPlayer>(), position);
 			});
+			LastDeadPlayer = null;
 		}
 
 		public string GetEntityTemplateName()
