@@ -162,7 +162,7 @@ namespace Game
 			get;
 			set;
 		}
-
+		public bool ReduceLevelUponDeath = true;
 		public string CharacterSkinName
 		{
 			get;
@@ -352,6 +352,8 @@ namespace Game
 			}, null);
 			m_stateMachine.AddState("PlayerDead", delegate
 			{
+				if(ReduceLevelUponDeath && m_spawnMode == SpawnMode.Respawn)
+					Level = MathUtils.Max(MathF.Floor(Level / 2f),1f);
 				ModsManager.HookAction("OnPlayerDead", modLoader =>
 				{
 					modLoader.OnPlayerDead(this);

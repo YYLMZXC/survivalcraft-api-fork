@@ -128,7 +128,6 @@ namespace Game
                 }
             }
 
-            playerData.Level = MathUtils.Max(MathF.Floor(playerData.Level / 2f), 1f);
 			try
 			{
 				JsInterface.handlersDictionary["OnPlayerDead"].ForEach(function => {
