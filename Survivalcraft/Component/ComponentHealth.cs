@@ -411,25 +411,25 @@ namespace Game
                     m_componentPlayer.ComponentGui.HealthBarWidget.Value = Health;
                 }
                 if (Health == 0f && HealthChange < 0f)
-                {
-                    bool pass = false;
-                    ModsManager.HookAction("DeadBeforeDrops", loader =>
+				{
+					DeathTime = m_subsystemGameInfo.TotalElapsedGameTime;
+					Vector3 position2 = m_componentCreature.ComponentBody.Position + new Vector3(0f,m_componentCreature.ComponentBody.StanceBoxSize.Y / 2f,0f);
+					float x = m_componentCreature.ComponentBody.StanceBoxSize.X;
+					KillParticleSystem killParticleSystem = new KillParticleSystem(m_subsystemTerrain,position2,x);
+					bool dropAllItems = true;
+					ModsManager.HookAction("DeadBeforeDrops", loader =>
                     {
-                        loader.DeadBeforeDrops(this, out bool Skip);
-                        pass |= Skip;
+                        loader.DeadBeforeDrops(this, ref killParticleSystem, ref dropAllItems);
                         return false;
                     });
-                    if (!pass)
+					if(killParticleSystem != null) m_subsystemParticles.AddParticleSystem(killParticleSystem);
+					if (dropAllItems)
                     {
-                        Vector3 position2 = m_componentCreature.ComponentBody.Position + new Vector3(0f, m_componentCreature.ComponentBody.StanceBoxSize.Y / 2f, 0f);
-                        float x = m_componentCreature.ComponentBody.StanceBoxSize.X;
-                        m_subsystemParticles.AddParticleSystem(new KillParticleSystem(m_subsystemTerrain, position2, x));
                         Vector3 position3 = (m_componentCreature.ComponentBody.BoundingBox.Min + m_componentCreature.ComponentBody.BoundingBox.Max) / 2f;
                         foreach (IInventory item in Entity.FindComponents<IInventory>())
                         {
                             item.DropAllItems(position3);
                         }
-                        DeathTime = m_subsystemGameInfo.TotalElapsedGameTime;
                     }
                 }
                 if (Health <= 0f && CorpseDuration > 0f && m_subsystemGameInfo.TotalElapsedGameTime - DeathTime > CorpseDuration)

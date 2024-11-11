@@ -326,11 +326,10 @@ namespace Game
         }
 
         /// <summary>
-        /// 死亡前瞬间执行，Skip为true则跳过死亡后执行掉落等的代码
+        /// 死亡前瞬间执行
         /// </summary>
-        public virtual void DeadBeforeDrops(ComponentHealth componentHealth, out bool Skip)
+        public virtual void DeadBeforeDrops(ComponentHealth componentHealth, ref KillParticleSystem killParticleSystem, ref bool dropAllItems)
         {
-            Skip = false;
         }
 
         /// <summary>
