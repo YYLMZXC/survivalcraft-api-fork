@@ -388,7 +388,7 @@ namespace Game
 				HitValueParticleSystem particleSystem = new(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + ComponentCreature.ComponentBody.Velocity, Color.White, LanguageControl.Get(fName, 2));
 				ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
 				{
-					modLoader.SetHitValueParticleSystem(particleSystem, false);
+					modLoader.SetHitValueParticleSystem(particleSystem, null);
 					return false;
 				});
 				Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);
@@ -551,6 +551,7 @@ namespace Game
 			else AttackBody(new ProjectileAttackment(target?.Entity, attacker?.Entity, hitPoint, hitDirection, attackPower, null));
         }
 
+		[Obsolete("Use AddHitValueParticleSystem() in Attackment instead.", true)]
 		public static void AddHitValueParticleSystem(float damage, Entity attacker, Entity attacked, Vector3 hitPoint, Vector3 hitDirection)
 		{
 			ComponentBody attackerBody = attacker?.FindComponent<ComponentBody>();
@@ -563,7 +564,7 @@ namespace Game
             HitValueParticleSystem particleSystem = new(hitPoint + (0.75f * hitDirection), (1f * hitDirection) + hitValueParticleVelocity, color, text2);
             ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
             {
-                modLoader.SetHitValueParticleSystem(particleSystem, true);
+                modLoader.SetHitValueParticleSystem(particleSystem, null);
                 return false;
             });
             attacked?.Project.FindSubsystem<SubsystemParticles>(throwOnError: true).AddParticleSystem(particleSystem);

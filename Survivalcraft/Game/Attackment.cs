@@ -103,7 +103,7 @@ namespace Game
             HitValueParticleSystem particleSystem = new(HitPoint + (0.75f * HitDirection), (1f * HitDirection) + hitValueParticleVelocity, color, text2);
             ModsManager.HookAction("SetHitValueParticleSystem", modLoader =>
             {
-                modLoader.SetHitValueParticleSystem(particleSystem, true);
+                modLoader.SetHitValueParticleSystem(particleSystem, this);
                 return false;
             });
             Target.Project.FindSubsystem<SubsystemParticles>()?.AddParticleSystem(particleSystem);
