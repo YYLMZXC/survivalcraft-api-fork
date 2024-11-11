@@ -452,13 +452,21 @@ namespace Game
 			{
 				DialogsManager.HideDialog(busyDialog);
 				m_contentExpiryTime = Time.RealTime + 300.0;
-				while (m_treePanel.Nodes.Count > 0 && !(m_treePanel.Nodes[^1].Tag is CommunityContentEntry))
+				while (m_treePanel.Nodes.Count > 0 && m_treePanel.Nodes[^1].Tag is "Load More")//移除原先添加的"加载更多"节点
 				{
 					m_treePanel.Nodes.RemoveAt(m_treePanel.Nodes.Count - 1);
 				}
 				foreach (CommunityContentEntry item2 in list)
 				{
-					m_treePanel.AddRoot(ContentToNode(item2));
+					var rootNode = m_treePanel.Nodes.FirstOrDefault(x => x.Tag is int id && id == item2.ModID);
+					if(rootNode == null)
+					{
+						rootNode = CreateRootNode(item2.ModID);
+						m_treePanel.AddRoot(rootNode);
+					}
+					rootNode.AddChild(ContentToNode(item2));
+					m_treePanel.m_widgetsDirty = true;
+
 					if (item2.Icon == null && !string.IsNullOrEmpty(item2.IconSrc))
 					{
 						WebManager.Get(item2.IconSrc, null, null, new CancellableProgress(), delegate (byte[] data)
@@ -488,6 +496,7 @@ namespace Game
 					//加载更多节点
 					TreeViewNode loadMoreNode = new("加载更多",new Color(64,192,64),string.Empty,Color.Transparent);
 					loadMoreNode.Selectable = false;
+					loadMoreNode.Tag = "Load More";
 					loadMoreNode.OnClicked = () => PopulateList(nextCursor);
 					m_treePanel.AddRoot(loadMoreNode);
 				}
@@ -589,6 +598,12 @@ namespace Game
 			string desc = $"{ExternalContentManager.GetEntryTypeDescription(contentEntry.Type)} {DataSizeFormatter.Format(contentEntry.Size)} {contentEntry.ExtraText}";
 			TreeViewNode node = new (title, Color.White, desc, new Color(128, 128, 128),contentEntry.Icon) { Tag = contentEntry };
 			contentEntry.LinkedNode = node;
+			return node;
+		}
+
+		public TreeViewNode CreateRootNode(int modID)
+		{
+			TreeViewNode node = new ($"合集 ID:{modID}", Color.White, "测试", new Color(128, 128, 128)) { Tag = modID };
 			return node;
 		}
 	}
