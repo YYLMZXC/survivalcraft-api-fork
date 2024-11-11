@@ -318,6 +318,7 @@ namespace Engine
             m_gameWindow.Icon = new Icon(typeof(Window).GetTypeInfo().Assembly.GetManifestResourceStream("Engine.Resources.icon.ico"), new Size(32, 32));
 #endif
             m_dpiScale = m_gameWindow.ClientSize.Width / 400f;
+            m_gameWindow.ClientSize = new Size(width, height);
             if (Configuration.RunningOnMacOS)
             {
                 Point2 point = new((int)MathF.Round(ScreenSize.X / m_dpiScale), (int)MathF.Round(ScreenSize.Y / m_dpiScale));
