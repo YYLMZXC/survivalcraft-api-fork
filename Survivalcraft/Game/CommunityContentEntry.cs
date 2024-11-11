@@ -28,6 +28,8 @@ namespace Game
 
 		public TreeViewNode LinkedNode = null;
 
+		public int ModID;
+
 		public int Index;
 	}
 }

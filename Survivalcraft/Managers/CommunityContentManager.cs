@@ -103,6 +103,7 @@ namespace Game
 								ExtraText = XmlUtils.GetAttributeValue(item, "ExtraText", string.Empty),
 								RatingsAverage = XmlUtils.GetAttributeValue(item, "RatingsAverage", 0f),
 								IconSrc = XmlUtils.GetAttributeValue(item, "Icon", ""),
+								ModID = XmlUtils.GetAttributeValue<int>(item, "ModId"),
 								Index = XmlUtils.GetAttributeValue<int>(item, "Id")
 							});
 						}
