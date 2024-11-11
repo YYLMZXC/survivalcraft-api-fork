@@ -2,7 +2,7 @@ namespace Game
 {
 	public class SoundGeneratorBlock : RotateableMountedElectricElementBlock
 	{
-		public const int Index = 183;
+		public static int Index = 183;
 
 		public SoundGeneratorBlock()
 			: base("Models/Gates", "SoundGenerator", 0.5f)

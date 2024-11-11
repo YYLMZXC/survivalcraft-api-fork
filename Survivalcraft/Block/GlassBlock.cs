@@ -2,7 +2,7 @@ namespace Game
 {
 	public class GlassBlock : AlphaTestCubeBlock
 	{
-		public const int Index = 15;
+		public static int Index = 15;
 
 		public GlassBlock()
 		{

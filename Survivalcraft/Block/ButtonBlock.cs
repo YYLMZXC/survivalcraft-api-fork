@@ -6,7 +6,7 @@ namespace Game
 {
 	public class ButtonBlock : MountedElectricElementBlock
 	{
-		public const int Index = 142;
+		public static int Index = 142;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

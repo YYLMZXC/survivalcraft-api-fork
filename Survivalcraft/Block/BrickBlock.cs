@@ -5,7 +5,7 @@ namespace Game
 {
 	public class BrickBlock : Block
 	{
-		public const int Index = 74;
+		public static int Index = 74;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

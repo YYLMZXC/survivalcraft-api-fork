@@ -5,7 +5,7 @@ namespace Game
 {
 	public class IncendiaryBombBlock : Block
 	{
-		public const int Index = 228;
+		public static int Index = 228;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

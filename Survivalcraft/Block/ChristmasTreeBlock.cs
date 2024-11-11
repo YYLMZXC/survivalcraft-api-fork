@@ -5,7 +5,7 @@ namespace Game
 {
 	public class ChristmasTreeBlock : Block, IElectricElementBlock
 	{
-		public const int Index = 63;
+		public static int Index = 63;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

@@ -2,6 +2,6 @@ namespace Game
 {
 	public class FeatherBlock : FlatBlock
 	{
-		public const int Index = 196;
+		public static int Index = 196;
 	}
 }

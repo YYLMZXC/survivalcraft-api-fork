@@ -4,7 +4,7 @@ namespace Game
 {
 	public class WaterBlock : FluidBlock
 	{
-		public const int Index = 18;
+		public static int Index = 18;
 
 		public new static int MaxLevel = 7;
 

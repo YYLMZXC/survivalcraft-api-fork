@@ -5,7 +5,7 @@ namespace Game
 {
 	public class LeatherBlock : Block
 	{
-		public const int Index = 159;
+		public static int Index = 159;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

@@ -2,7 +2,7 @@ namespace Game
 {
 	public class OrGateBlock : RotateableMountedElectricElementBlock
 	{
-		public const int Index = 143;
+		public static int Index = 143;
 
 		public OrGateBlock()
 			: base("Models/Gates", "OrGate", 0.375f)

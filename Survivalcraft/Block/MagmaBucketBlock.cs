@@ -5,7 +5,7 @@ namespace Game
 {
 	public class MagmaBucketBlock : BucketBlock
 	{
-		public const int Index = 93;
+		public static int Index = 93;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

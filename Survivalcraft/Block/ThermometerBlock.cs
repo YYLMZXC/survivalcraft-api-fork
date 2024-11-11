@@ -7,7 +7,7 @@ namespace Game
 {
 	public class ThermometerBlock : Block, IElectricElementBlock
 	{
-		public const int Index = 120;
+		public static int Index = 120;
 
 		public BlockMesh m_caseMesh = new();
 

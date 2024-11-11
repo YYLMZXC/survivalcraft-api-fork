@@ -4,7 +4,7 @@ namespace Game
 {
 	public class SaplingBlock : CrossBlock
 	{
-		public const int Index = 119;
+		public static int Index = 119;
 
 		public override int GetFaceTextureSlot(int face, int value)
 		{

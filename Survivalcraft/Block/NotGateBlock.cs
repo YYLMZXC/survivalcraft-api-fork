@@ -2,7 +2,7 @@ namespace Game
 {
 	public class NotGateBlock : RotateableMountedElectricElementBlock
 	{
-		public const int Index = 140;
+		public static int Index = 140;
 
 		public NotGateBlock()
 			: base("Models/Gates", "NotGate", 0.375f)

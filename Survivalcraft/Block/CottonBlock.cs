@@ -6,7 +6,7 @@ namespace Game
 {
 	public class CottonBlock : CrossBlock
 	{
-		public const int Index = 204;
+		public static int Index = 204;
 
 		public override IEnumerable<int> GetCreativeValues()
 		{

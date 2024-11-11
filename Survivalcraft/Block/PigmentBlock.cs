@@ -5,7 +5,7 @@ namespace Game
 {
 	public class PigmentBlock : FlatBlock
 	{
-		public const int Index = 130;
+		public static int Index = 130;
 
 		public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{

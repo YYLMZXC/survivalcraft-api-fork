@@ -7,7 +7,7 @@ namespace Game
 {
 	public class LightbulbBlock : MountedElectricElementBlock, IPaintableBlock
 	{
-		public const int Index = 139;
+		public static int Index = 139;
 
 		public BlockMesh m_standaloneBulbBlockMesh = new();
 

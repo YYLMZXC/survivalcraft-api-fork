@@ -2,7 +2,7 @@ namespace Game
 {
 	public class CounterBlock : RotateableMountedElectricElementBlock
 	{
-		public const int Index = 184;
+		public static int Index = 184;
 
 		public CounterBlock()
 			: base("Models/Gates", "Counter", 0.5f)

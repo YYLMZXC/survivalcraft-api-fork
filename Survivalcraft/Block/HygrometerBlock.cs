@@ -6,7 +6,7 @@ namespace Game
 {
 	public class HygrometerBlock : Block, IElectricElementBlock
 	{
-		public const int Index = 121;
+		public static int Index = 121;
 
 		public BlockMesh m_caseMesh = new();
 

@@ -5,7 +5,7 @@ namespace Game
 {
 	public class StoneAxeBlock : Block
 	{
-		public const int Index = 29;
+		public static int Index = 29;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

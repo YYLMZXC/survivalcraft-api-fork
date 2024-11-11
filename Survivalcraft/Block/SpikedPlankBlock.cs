@@ -6,7 +6,7 @@ namespace Game
 {
 	public class SpikedPlankBlock : MountedElectricElementBlock
 	{
-		public const int Index = 86;
+		public static int Index = 86;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

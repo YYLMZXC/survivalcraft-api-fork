@@ -4,7 +4,7 @@ namespace Game
 {
 	public class BrickFenceBlock : FenceBlock
 	{
-		public const int Index = 164;
+		public static int Index = 164;
 
 		public BrickFenceBlock()
 			: base("Models/StoneFence", doubleSidedPlanks: false, useAlphaTest: false, 39, new Color(212, 212, 212), Color.White)

@@ -2,7 +2,7 @@ namespace Game
 {
 	public class NandGateBlock : RotateableMountedElectricElementBlock
 	{
-		public const int Index = 134;
+		public static int Index = 134;
 
 		public NandGateBlock()
 			: base("Models/Gates", "NandGate", 0.5f)

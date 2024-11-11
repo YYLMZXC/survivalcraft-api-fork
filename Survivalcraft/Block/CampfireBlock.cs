@@ -6,7 +6,7 @@ namespace Game
 {
 	public class CampfireBlock : Block
 	{
-		public const int Index = 209;
+		public static int Index = 209;
 
 		public BlockMesh[] m_meshesByData = new BlockMesh[16];
 

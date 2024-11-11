@@ -7,7 +7,7 @@ namespace Game
 {
 	public class PumpkinSoupBucketBlock : BucketBlock
 	{
-		public const int Index = 251;
+		public static int Index = 251;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

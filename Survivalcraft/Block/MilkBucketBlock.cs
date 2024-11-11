@@ -5,7 +5,7 @@ namespace Game
 {
 	public class MilkBucketBlock : BucketBlock
 	{
-		public const int Index = 110;
+		public static int Index = 110;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

@@ -5,7 +5,7 @@ namespace Game
 {
 	public class WhistleBlock : Block
 	{
-		public const int Index = 160;
+		public static int Index = 160;
 
 		public BlockMesh m_standaloneBlockMesh = new();
 

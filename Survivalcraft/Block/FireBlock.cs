@@ -5,7 +5,7 @@ namespace Game
 {
 	public class FireBlock : Block
 	{
-		public const int Index = 104;
+		public static int Index = 104;
 
 		public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
 		{

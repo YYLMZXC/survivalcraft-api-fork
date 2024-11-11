@@ -4,7 +4,7 @@ namespace Game
 {
 	public class LargeDryBushBlock : CrossBlock
 	{
-		public const int Index = 99;
+		public static int Index = 99;
 
 		public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)
 		{

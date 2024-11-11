@@ -2,7 +2,7 @@ namespace Game
 {
 	public class RealTimeClockBlock : RotateableMountedElectricElementBlock
 	{
-		public const int Index = 187;
+		public static int Index = 187;
 
 		public RealTimeClockBlock()
 			: base("Models/Gates", "RealTimeClock", 0.5f)

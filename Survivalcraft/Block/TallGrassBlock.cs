@@ -6,7 +6,7 @@ namespace Game
 {
 	public class TallGrassBlock : CrossBlock
 	{
-		public const int Index = 19;
+		public static int Index = 19;
 
 		public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)
 		{

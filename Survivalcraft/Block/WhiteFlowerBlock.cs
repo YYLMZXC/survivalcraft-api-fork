@@ -2,6 +2,6 @@ namespace Game
 {
 	public class WhiteFlowerBlock : FlowerBlock
 	{
-		public const int Index = 25;
+		public static int Index = 25;
 	}
 }
