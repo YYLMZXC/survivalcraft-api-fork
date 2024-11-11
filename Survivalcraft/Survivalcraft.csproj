@@ -124,6 +124,7 @@
         <FileVersion>2.3.10.4</FileVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <NeutralLanguage>zh-CN</NeutralLanguage>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(TargetFramework)' == 'net8.0-windows'">
         <Exec Command="&quot;$(ProjectDir)7za.exe&quot; a -tzip -mx=9 -r &quot;$(ProjectDir)Content.zip&quot; &quot;$(ProjectDir)Content\*&quot;" />

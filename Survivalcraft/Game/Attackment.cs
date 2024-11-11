@@ -60,6 +60,8 @@ namespace Game
         public float AttackSoundVolume = 1f;
         public float AttackSoundPitch = 0f;
 
+		public bool AllowImpulseAndStunWhenDamageIsZero = true;
+
 		public float? m_injuryAmount = null;
         public virtual float CalculateInjuryAmount()
         {
@@ -106,13 +108,13 @@ namespace Game
             });
             Target.Project.FindSubsystem<SubsystemParticles>()?.AddParticleSystem(particleSystem);
         }
-        public virtual void ProcessAttackmentToCreature()
+        public virtual void ProcessAttackmentToCreature(out float injuryAmount)
         {
             ComponentHealth componentHealth = Target.FindComponent<ComponentHealth>();
             ComponentBody componentBody = Target.FindComponent<ComponentBody>();
             ComponentCreature attackerCreature = Attacker?.FindComponent<ComponentCreature>();
-            if (componentHealth == null || componentBody == null) return;
-            float injuryAmount = CalculateInjuryAmount();
+			if(componentHealth == null || componentBody == null) { injuryAmount = 0f; return; }
+            injuryAmount = CalculateInjuryAmount();
             float healthBeforeAttack = componentHealth.Health;
             componentHealth.Injure(new AttackInjury(injuryAmount, this));
             if (injuryAmount > 0f)
@@ -123,13 +125,13 @@ namespace Game
                 AddHitValueParticleSystem(num2);
             }
         }
-        public virtual void ProcessAttackmentToNonCreature()
+        public virtual void ProcessAttackmentToNonCreature(out float injuryAmount)
         {
             ComponentDamage componentDamage = Target.FindComponent<ComponentDamage>();
             ComponentBody componentBody = Target.FindComponent<ComponentBody>();
             ComponentCreature attackerCreature = Attacker?.FindComponent<ComponentCreature>();
-            if(componentDamage == null || componentBody == null) return;
-            float injuryAmount = CalculateInjuryAmount();
+			if(componentDamage == null || componentBody == null) { injuryAmount = 0f; return; }
+            injuryAmount = CalculateInjuryAmount();
 			m_injuryAmount = injuryAmount;
             float hitPointsBeforeAttack = componentDamage.Hitpoints;
             componentDamage.Damage(injuryAmount);
@@ -175,17 +177,18 @@ namespace Game
                 loader.ProcessAttackment(this);
                 return false;
             });
+			float injuryAmount = 0f;
             if (AttackPower > 0f)
             {
                 ComponentHealth componentHealth = Target.FindComponent<ComponentHealth>();
                 if (componentHealth != null)
                 {
-                    ProcessAttackmentToCreature();
+                    ProcessAttackmentToCreature(out injuryAmount);
                 }
                 ComponentDamage componentDamage = Target.FindComponent<ComponentDamage>();
                 if (componentDamage != null)
                 {
-                    ProcessAttackmentToNonCreature();
+                    ProcessAttackmentToNonCreature(out injuryAmount);
                 }
                 ComponentBody componentBody = Target.FindComponent<ComponentBody>();
                 componentBody?.Attacked?.Invoke(this);
@@ -198,8 +201,11 @@ namespace Game
                 if(stunTimeSet >= 0f) StunTimeSet = stunTimeSet;
                 return false;
             });
-            ImpulseTarget();
-            StunTarget();
+			if(AllowImpulseAndStunWhenDamageIsZero || injuryAmount > 0f)
+			{
+				ImpulseTarget();
+				StunTarget();
+			}
         }
     }
 }
