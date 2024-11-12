@@ -305,17 +305,19 @@ namespace Game
 		{
 			m_nodes.Add(child);
 			child.ParentTree = ParentTree;
+			child.ParentNode = this;
 		}
 
 		public void RemoveChild(TreeViewNode child)
 		{
+			child.ParentTree = null;
+			child.ParentNode = null;
 			m_nodes.Remove(child);
 		}
 
 		public void AddChildren(List<TreeViewNode> children)
 		{
-			m_nodes.AddRange(children);
-			children.ForEach(x => x.ParentTree = ParentTree);
+			children.ForEach(AddChild);
 		}
 		#endregion
 	}

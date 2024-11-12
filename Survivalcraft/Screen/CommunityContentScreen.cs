@@ -458,10 +458,10 @@ namespace Game
 				}
 				foreach (CommunityContentEntry item2 in list)
 				{
-					var rootNode = m_treePanel.Nodes.FirstOrDefault(x => x.Tag is int id && id == item2.ModID);
+					var rootNode = m_treePanel.Nodes.FirstOrDefault(x => x.Tag is int id && id == item2.CollectionID);
 					if(rootNode == null)
 					{
-						rootNode = CreateRootNode(item2.ModID);
+						rootNode = CreateCollectionNode(item2);
 						m_treePanel.AddRoot(rootNode);
 					}
 					rootNode.AddChild(ContentToNode(item2));
@@ -479,7 +479,16 @@ namespace Game
 									{
 										var texture = Engine.Graphics.Texture2D.Load(Image.Load(new System.IO.MemoryStream(data)));
 										item2.Icon = texture;
-										if (item2.LinkedNode != null) item2.LinkedNode.Icon = texture;
+										if(item2.LinkedNode != null)
+										{
+											//item2.LinkedNode.Icon = texture; //资源节点的图标
+											if(item2.LinkedNode.ParentNode is {
+													Tag: int
+												}) //合集节点的图标
+											{
+												item2.LinkedNode.ParentNode.Icon = texture;
+											}
+										}
 									}
 									catch (Exception)
 									{
@@ -601,9 +610,9 @@ namespace Game
 			return node;
 		}
 
-		public TreeViewNode CreateRootNode(int modID)
+		public TreeViewNode CreateCollectionNode(CommunityContentEntry contentEntry)
 		{
-			TreeViewNode node = new ($"合集 ID:{modID}", Color.White, "测试", new Color(128, 128, 128)) { Tag = modID };
+			TreeViewNode node = new (contentEntry.CollectionName, Color.White, contentEntry.CollectionDetails, new Color(128, 128, 128)) { Tag = contentEntry.CollectionID };
 			return node;
 		}
 	}

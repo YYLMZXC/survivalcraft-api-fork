@@ -83,7 +83,8 @@ namespace Game
 			{
 				try
 				{
-					XElement xElement = XmlUtils.LoadXmlFromString(Encoding.UTF8.GetString(result, 0, result.Length), throwOnError: true);
+					string data = Encoding.UTF8.GetString(result,0,result.Length);
+					XElement xElement = XmlUtils.LoadXmlFromString(data, throwOnError: true);
 					string attributeValue = XmlUtils.GetAttributeValue<string>(xElement, "NextCursor");
 					var list = new List<CommunityContentEntry>();
 					foreach (XElement item in xElement.Elements())
@@ -103,7 +104,9 @@ namespace Game
 								ExtraText = XmlUtils.GetAttributeValue(item, "ExtraText", string.Empty),
 								RatingsAverage = XmlUtils.GetAttributeValue(item, "RatingsAverage", 0f),
 								IconSrc = XmlUtils.GetAttributeValue(item, "Icon", ""),
-								ModID = XmlUtils.GetAttributeValue<int>(item, "ModId"),
+								CollectionID = XmlUtils.GetAttributeValue<int>(item, "CollectionID"),
+								CollectionName = XmlUtils.GetAttributeValue<string>(item, "CollectionName"),
+								CollectionDetails = XmlUtils.GetAttributeValue<string>(item, "CollectionDetails"),
 								Index = XmlUtils.GetAttributeValue<int>(item, "Id")
 							});
 						}
