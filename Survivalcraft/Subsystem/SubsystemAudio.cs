@@ -32,7 +32,7 @@ namespace Game
 
 			public float Pan;
 
-			public OpenTK.Vector3 direction=OpenTK.Vector3.Zero;
+			public System.Numerics.Vector3 direction=System.Numerics.Vector3.Zero;
 
 			public SoundInfo()
 			{
@@ -114,7 +114,7 @@ namespace Game
 				Pan = pan
 			});
 		}
-		public void PlaySound(string name,float volume,float pitch,float pan,float delay,OpenTK.Vector3 direction)
+		public void PlaySound(string name,float volume,float pitch,float pan,float delay,System.Numerics.Vector3 direction)
 		{
 			double num = m_subsystemTime.GameTime + (double)delay;
 			m_nextSoundTime = Math.Min(m_nextSoundTime,num);
