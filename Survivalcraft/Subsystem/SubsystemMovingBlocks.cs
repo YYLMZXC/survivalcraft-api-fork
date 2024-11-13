@@ -60,8 +60,8 @@ namespace Game
 			object IMovingBlockSet.Tag => Tag;
 
 			Vector3 IMovingBlockSet.CurrentVelocity => CurrentVelocity;
-
-			ReadOnlyList<MovingBlock> IMovingBlockSet.Blocks => new(Blocks);
+			bool IMovingBlockSet.Stopped => Stop;
+			List<MovingBlock> IMovingBlockSet.Blocks => Blocks;
 
 			public MovingBlockSet()
 			{
@@ -170,7 +170,7 @@ namespace Game
 
 		public static int[] m_drawOrders = new int[1] { 10 };
 
-		public IReadOnlyList<IMovingBlockSet> MovingBlockSets => m_movingBlockSets;
+		public List<IMovingBlockSet> MovingBlockSets => new(m_movingBlockSets);
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -195,6 +195,10 @@ namespace Game
 				Tag = tag,
 				Blocks = blocks.ToList()
 			};
+			for(int i = 0; i < movingBlockSet.Blocks.Count; i++)
+			{
+				movingBlockSet.Blocks[i].MovingBlockSet = movingBlockSet;
+			}
 			movingBlockSet.UpdateBox();
 			bool canAdd = true;
             ModsManager.HookAction("OnMovingBlockSetAdded", loader =>
@@ -439,7 +443,7 @@ namespace Game
 				string[] array = value9.GetValue<string>("Blocks").Split(new char[1] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 				foreach (string obj2 in array)
 				{
-					MovingBlock item = default(MovingBlock);
+					MovingBlock item = new MovingBlock();
 					string[] array2 = obj2.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 					item.Value = HumanReadableConverter.ConvertFromString<int>(array2[0]);
 					item.Offset.X = HumanReadableConverter.ConvertFromString<int>(array2[1]);
@@ -678,6 +682,12 @@ namespace Game
 				return b1.Min.Z < b2.Max.Z;
 			}
 			return false;
+		}
+		public virtual void AddTerrainBlock(int x, int y, int z, int value, MovingBlock movingBlock)
+		{
+			if(movingBlock == null) throw new NullReferenceException("Moving Block Set cannot be null when stop block movement!");
+			movingBlock?.MovingBlockSet?.Stop();
+			m_subsystemTerrain.ChangeCell(x,y,z,value,true,movingBlock);
 		}
 	}
 }

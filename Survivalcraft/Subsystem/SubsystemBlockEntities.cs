@@ -8,9 +8,15 @@ namespace Game
 	{
 		public Dictionary<Point3, ComponentBlockEntity> m_blockEntities = [];
 
+		public Dictionary<MovingBlock,ComponentBlockEntity> m_movingBlockEntities = [];
 		public ComponentBlockEntity GetBlockEntity(int x, int y, int z)
 		{
 			m_blockEntities.TryGetValue(new Point3(x, y, z), out ComponentBlockEntity value);
+			return value;
+		}
+		public ComponentBlockEntity GetBlockEntity(MovingBlock movingBlock)
+		{
+			m_movingBlockEntities.TryGetValue(movingBlock, out ComponentBlockEntity value);
 			return value;
 		}
 
@@ -19,7 +25,8 @@ namespace Game
 			ComponentBlockEntity componentBlockEntity = entity.FindComponent<ComponentBlockEntity>();
 			if (componentBlockEntity != null)
 			{
-				m_blockEntities.Add(componentBlockEntity.Coordinates, componentBlockEntity);
+				if(componentBlockEntity.Coordinates.Y >= 0) m_blockEntities.Add(componentBlockEntity.Coordinates, componentBlockEntity);
+				if(componentBlockEntity.MovingBlock != null) m_movingBlockEntities[componentBlockEntity.MovingBlock] = componentBlockEntity;
 			}
 		}
 
@@ -29,6 +36,7 @@ namespace Game
 			if (componentBlockEntity != null)
 			{
 				m_blockEntities.Remove(componentBlockEntity.Coordinates);
+				if(componentBlockEntity.MovingBlock != null) m_movingBlockEntities.Remove(componentBlockEntity.MovingBlock);
 			}
 		}
 	}

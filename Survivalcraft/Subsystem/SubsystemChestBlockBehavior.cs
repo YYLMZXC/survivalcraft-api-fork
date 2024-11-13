@@ -24,6 +24,7 @@ namespace Game
 
 		public override void OnBlockAdded(int value, int oldValue, int x, int y, int z)
 		{
+			Log.Information("Chest Block Added.");
 			DatabaseObject databaseObject = Project.GameDatabase.Database.FindDatabaseObject("Chest", Project.GameDatabase.EntityTemplateType, throwIfNotFound: true);
 			var valuesDictionary = new ValuesDictionary();
 			valuesDictionary.PopulateFromDatabaseObject(databaseObject);
@@ -34,6 +35,7 @@ namespace Game
 
 		public override void OnBlockRemoved(int value, int newValue, int x, int y, int z)
 		{
+			Log.Information("Chest Block Removed.");
 			ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(x, y, z);
 			if (blockEntity != null)
 			{
@@ -43,6 +45,32 @@ namespace Game
 					item.DropAllItems(position);
 				}
 				Project.RemoveEntity(blockEntity.Entity, disposeEntity: true);
+			}
+		}
+
+		public override void OnBlockStartMoving(int value,int newValue,int x,int y,int z,MovingBlock movingBlock)
+		{
+			Log.Information("Chest Block Start Moving");
+			ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(x,y,z);
+			if(blockEntity != null)
+			{
+				m_subsystemBlockEntities.m_blockEntities.Remove(blockEntity.Coordinates);
+				m_subsystemBlockEntities.m_movingBlockEntities[movingBlock] = blockEntity;
+				blockEntity.MovingBlock = movingBlock;
+				blockEntity.Coordinates = new Point3(0,-99999,0);
+			}
+		}
+
+		public override void OnBlockStopMoving(int value,int oldValue,int x,int y,int z,MovingBlock movingBlock)
+		{
+			Log.Information("Chest Block Stop Moving");
+			ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(movingBlock);
+			if(blockEntity != null)
+			{
+				m_subsystemBlockEntities.m_movingBlockEntities.Remove(movingBlock);
+				m_subsystemBlockEntities.m_blockEntities[new Point3(x, y, z)] = blockEntity;
+				blockEntity.MovingBlock = null;
+				blockEntity.Coordinates = new Point3(x,y,z);
 			}
 		}
 
