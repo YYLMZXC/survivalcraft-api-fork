@@ -49,6 +49,11 @@ namespace Game
 					child.Measure(new Vector2(MathUtils.Max(parentAvailableSize.X - (2f * child.Margin.X), 0f), ItemSize));
 				}
 			}
+		}
+
+		public override void Draw(DrawContext dc)
+		{
+			base.Draw(dc);
 			if(m_widgetsDirty)
 			{
 				m_widgetsDirty = false;
