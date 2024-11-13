@@ -270,15 +270,24 @@ namespace Game
 			FindMovingBlocks(boundingBox, extendToFillCells, m_result);
 			float num = float.MaxValue;
 			MovingBlockSet movingBlockSet = null;
-			foreach (MovingBlockSet item in m_result)
+			try
 			{
-				BoundingBox box = item.BoundingBox(extendToFillCells);
-				float? num2 = ray.Intersection(box);
-				if (num2.HasValue && num2.Value < num)
+				foreach(var item in m_result.Array)
 				{
-					num = num2.Value;
-					movingBlockSet = item;
+					MovingBlockSet item1 = item as MovingBlockSet;
+					if(item1 == null) continue;
+					BoundingBox box = item.BoundingBox(extendToFillCells);
+					float? num2 = ray.Intersection(box);
+					if(num2.HasValue && num2.Value < num)
+					{
+						num = num2.Value;
+						movingBlockSet = item1;
+					}
 				}
+			}
+			catch(Exception e)
+			{
+				Log.Error("Moving Blocks raycast error" + e);
 			}
 			if (movingBlockSet != null)
 			{
