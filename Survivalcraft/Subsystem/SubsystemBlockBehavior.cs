@@ -67,6 +67,10 @@ namespace Game
 		{
 			return false;
 		}
+		public virtual bool OnInteract(MovingBlocksRaycastResult movingBlocksRaycastResult, ComponentMiner componentMiner)
+		{
+			return false;
+		}
 
 		public virtual bool OnAim(Ray3 aim, ComponentMiner componentMiner, AimState state)
 		{

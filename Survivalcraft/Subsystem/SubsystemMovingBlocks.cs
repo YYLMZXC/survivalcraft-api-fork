@@ -282,10 +282,31 @@ namespace Game
 			}
 			if (movingBlockSet != null)
 			{
+				float distance = float.MaxValue;
+				MovingBlock rightMovingBlock = null;
+				int rightCollisionBoxIndex = -1;
+				BoundingBox? rightNearestBox = null;
+				foreach(MovingBlock movingBlock in movingBlockSet.Blocks)
+				{
+					int blockValue = movingBlock.Value;
+					Block block = BlocksManager.Blocks[Terrain.ExtractContents(blockValue)];
+					Ray3 equalRay = new Ray3(ray.Position - movingBlockSet.Position - new Vector3(movingBlock.Offset.X, movingBlock.Offset.Y, movingBlock.Offset.Z), ray.Direction);
+					float? dist = block.Raycast(equalRay, m_subsystemTerrain, blockValue, true, out int collisionBoxIndex, out BoundingBox nearestBox);
+					if(dist.HasValue && dist.Value < distance)
+					{
+						distance = dist.Value;
+						rightMovingBlock = movingBlock;
+						rightCollisionBoxIndex = collisionBoxIndex;
+						rightNearestBox = nearestBox;
+					}
+				}
 				MovingBlocksRaycastResult value = default(MovingBlocksRaycastResult);
 				value.Ray = ray;
-				value.Distance = num;
+				value.Distance = (distance == float.MaxValue ? num : distance);
 				value.MovingBlockSet = movingBlockSet;
+				value.MovingBlock = rightMovingBlock;
+				value.CollisionBoxIndex = rightCollisionBoxIndex;
+				value.BlockBoundingBox = rightNearestBox;
 				return value;
 			}
 			return null;

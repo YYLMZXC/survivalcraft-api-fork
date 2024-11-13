@@ -77,11 +77,22 @@ namespace Game
 		public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner)
 		{
 			ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(raycastResult.CellFace.X, raycastResult.CellFace.Y, raycastResult.CellFace.Z);
-			if (blockEntity != null && componentMiner.ComponentPlayer != null)
+			return InteractBlockEntity(blockEntity, componentMiner);
+		}
+
+		public override bool OnInteract(MovingBlocksRaycastResult movingBlocksRaycastResult,ComponentMiner componentMiner)
+		{
+			ComponentBlockEntity componentBlockEntity = m_subsystemBlockEntities.GetBlockEntity(movingBlocksRaycastResult.MovingBlock);
+			return InteractBlockEntity(componentBlockEntity, componentMiner);
+		}
+
+		public bool InteractBlockEntity(ComponentBlockEntity blockEntity, ComponentMiner componentMiner)
+		{
+			if(blockEntity != null && componentMiner.ComponentPlayer != null)
 			{
 				ComponentChest componentChest = blockEntity.Entity.FindComponent<ComponentChest>(throwOnError: true);
-				componentMiner.ComponentPlayer.ComponentGui.ModalPanelWidget = new ChestWidget(componentMiner.Inventory, componentChest);
-				AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
+				componentMiner.ComponentPlayer.ComponentGui.ModalPanelWidget = new ChestWidget(componentMiner.Inventory,componentChest);
+				AudioManager.PlaySound("Audio/UI/ButtonClick",1f,0f,0f);
 				return true;
 			}
 			return false;

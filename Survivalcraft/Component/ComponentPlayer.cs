@@ -1,6 +1,7 @@
 using Engine;
 using GameEntitySystem;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using TemplatesDatabase;
 
@@ -161,7 +162,7 @@ namespace Game
 		}
 
 		public virtual void DealWithPlayerInteract(int priorityUse, int priorityPlace, int priorityInteract,
-			PlayerInput playerInput, TerrainRaycastResult? terrainRaycastResult, out bool flag)
+			PlayerInput playerInput, TerrainRaycastResult? terrainRaycastResult, MovingBlocksRaycastResult? movingBlocksRaycastResult, out bool flag)
 		{
 			bool dealed = false;
 			for(int t = 0; t < 3 && !dealed; t++)
@@ -177,9 +178,15 @@ namespace Game
 				}
 				if (maxPriority == priorityInteract && !dealed)
 				{
-					dealed = ComponentMiner.Interact(terrainRaycastResult.Value);
+					if(movingBlocksRaycastResult.HasValue)
+					{
+						dealed = ComponentMiner.Interact(movingBlocksRaycastResult.Value);
+					}
+					else if(terrainRaycastResult.HasValue){
+						dealed = ComponentMiner.Interact(terrainRaycastResult.Value);
+					}
 					priorityInteract = -2;
-                }
+				}
 				if(maxPriority == priorityPlace && !dealed)
 				{
 					dealed = ComponentMiner.Place(terrainRaycastResult.Value);
@@ -322,10 +329,19 @@ namespace Game
 			{
 				double timeIntervalLastActionTime = 0.33;
                 TerrainRaycastResult? terrainRaycastResult = ComponentMiner.Raycast<TerrainRaycastResult>(playerInput.Interact.Value, RaycastMode.Interaction);
-                int priorityUse = block.GetPriorityUse(ComponentMiner.ActiveBlockValue, ComponentMiner);
+                MovingBlocksRaycastResult? movingBlocksRaycastResult = ComponentMiner.Raycast<MovingBlocksRaycastResult>(playerInput.Interact.Value,RaycastMode.Interaction);
+				int priorityUse = block.GetPriorityUse(ComponentMiner.ActiveBlockValue, ComponentMiner);
                 int priorityPlace = 0;
                 int priorityInteract = 0;
-                if (terrainRaycastResult.HasValue)
+				if(movingBlocksRaycastResult.HasValue)
+				{
+					int raycastValue = movingBlocksRaycastResult.Value.MovingBlock?.Value ?? 0;
+					if(raycastValue != 0)
+					{
+						priorityInteract = BlocksManager.Blocks[Terrain.ExtractContents(raycastValue)].GetPriorityInteract(raycastValue,ComponentMiner);
+					}
+				}
+                else if (terrainRaycastResult.HasValue)
                 {
                     int raycastValue = terrainRaycastResult.Value.Value;
                     priorityPlace = block.GetPriorityPlace(ComponentMiner.ActiveBlockValue, ComponentMiner);
@@ -339,7 +355,7 @@ namespace Game
 				if (!flag && m_subsystemTime.GameTime - m_lastActionTime > timeIntervalLastActionTime)
 				{
                     //处理三者的关系，优先级最高的优先执行
-                    DealWithPlayerInteract(priorityUse, priorityPlace, priorityInteract, playerInput, terrainRaycastResult, out flag);
+                    DealWithPlayerInteract(priorityUse, priorityPlace, priorityInteract, playerInput, terrainRaycastResult, movingBlocksRaycastResult, out flag);
 					m_lastActionTime = timeIntervalLastActionTime;
                 }
             }
