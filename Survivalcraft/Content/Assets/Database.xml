@@ -3409,6 +3409,9 @@
 					<ParameterSet Name="Texts" Description="Contains sign texts" Guid="bdafca01-cf4e-414d-854e-aaaa8a138d0e" />
 					<Parameter Name="Class" Guid="e62ca7a9-a354-48ee-a504-e7d112d859b9" Value="Game.SubsystemSignBlockBehavior" Type="string" />
 				</SubsystemTemplate>
+				<SubsystemTemplate Name="EntityBlockBehavior" Guid="3adb82ac-b42c-485d-b393-4b017aba88d0" InheritanceParent="f84d81fb-ee41-4908-b935-abce190ed017">
+					<Parameter Name="Class" Guid="706b9f2b-9721-89a1-105c-844d067c1030" Value="Game.SubsystemEntityBlockBehavior" Type="string" />
+				</SubsystemTemplate>
 				<SubsystemTemplate Name="FertilizerBlockBehavior" Guid="05b0eac6-51df-4e52-b9e7-4495020a1b66" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 					<Parameter Name="Class" Guid="f517920e-528f-4fae-9ae7-370e448d4c7d" Value="Game.SubsystemFertilizerBlockBehavior" Type="string" />
 				</SubsystemTemplate>
@@ -4283,6 +4286,7 @@
 				<MemberSubsystemTemplate Name="BlocksManager" Guid="a6e38fe2-d626-74cc-a4bc-6691556e63f0" InheritanceParent="0d8a840a-b29e-e22c-f884-33970a877afc" />
 				<MemberSubsystemTemplate Name="FenceBlockBehavior" Guid="00f400d3-adc4-41e1-b3ff-ee46631571b5" InheritanceParent="b9a7f98e-b2fd-4902-9e37-d2c0a73909c4" />
 				<MemberSubsystemTemplate Name="PlayerStats" Guid="0d9c91b0-9f70-4754-b2dd-2667600eee95" InheritanceParent="c829cb1d-879e-47c4-8597-1507cdac7629" />
+				<MemberSubsystemTemplate Name="EntityBlockBehavior" Guid="192396e5-213a-ac2c-5393-12943c2350ff" InheritanceParent="3adb82ac-b42c-485d-b393-4b017aba88d0" />
 				<MemberSubsystemTemplate Name="BombBlockBehavior" Guid="11630912-4eed-4b8f-931c-683a6d03855f" InheritanceParent="e8d530fa-cb89-46e8-8722-43c539dde579" />
 				<MemberSubsystemTemplate Name="Postprocessor" Guid="12ea3147-b243-44c7-b3b3-29e76f72810c" InheritanceParent="7da47c66-2c8d-4b54-90ac-c270b42c333f" />
 				<MemberSubsystemTemplate Name="RakeBlockBehavior" Guid="14c832ee-b501-4f78-8246-c6cac079c3cc" InheritanceParent="349f7e10-7478-4ae9-ae17-278866421f39" />

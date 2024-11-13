@@ -18,8 +18,7 @@ namespace Game
 
 		public virtual void Dispense()
 		{
-			Point3 coordinates = m_componentBlockEntity.Coordinates;
-			int data = Terrain.ExtractData(m_subsystemTerrain.Terrain.GetCellValue(coordinates.X, coordinates.Y, coordinates.Z));
+			int data = Terrain.ExtractData(m_componentBlockEntity.BlockValue);
 			int direction = DispenserBlock.GetDirection(data);
 			DispenserBlock.Mode mode = DispenserBlock.GetMode(data);
 			int num = 0;
@@ -50,7 +49,7 @@ namespace Game
 				int itemDispense = 0;
                 for (int i = 0; i < num2 && GetSlotCount(num) > 0; i++)
                 {
-                    itemDispense = DispenseItem(coordinates, direction, slotValue, mode);
+                    itemDispense = DispenseItem(m_componentBlockEntity.Position, direction, slotValue, mode);
 					try
 					{
                         RemoveSlotItems(num, itemDispense);
@@ -70,7 +69,7 @@ namespace Game
 			m_componentBlockEntity = Entity.FindComponent<ComponentBlockEntity>(throwOnError: true);
 		}
 
-		public virtual int DispenseItem(Point3 point, int face, int value, DispenserBlock.Mode mode)
+		public virtual int DispenseItem(Vector3 point, int face, int value, DispenserBlock.Mode mode)
 		{
 			Vector3 vector = CellFace.FaceToVector3(face);
 			Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + (0.6f * vector);

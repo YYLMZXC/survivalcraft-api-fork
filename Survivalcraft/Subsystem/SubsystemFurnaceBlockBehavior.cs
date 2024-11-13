@@ -5,7 +5,7 @@ using TemplatesDatabase;
 
 namespace Game
 {
-	public class SubsystemFurnaceBlockBehavior : SubsystemBlockBehavior
+	public class SubsystemFurnaceBlockBehavior : SubsystemEntityBlockBehavior
 	{
 		public SubsystemParticles m_subsystemParticles;
 
@@ -21,12 +21,7 @@ namespace Game
 		{
 			if (Terrain.ExtractContents(oldValue) != 64 && Terrain.ExtractContents(oldValue) != 65)
 			{
-				DatabaseObject databaseObject = SubsystemTerrain.Project.GameDatabase.Database.FindDatabaseObject("Furnace", SubsystemTerrain.Project.GameDatabase.EntityTemplateType, throwIfNotFound: true);
-				var valuesDictionary = new ValuesDictionary();
-				valuesDictionary.PopulateFromDatabaseObject(databaseObject);
-				valuesDictionary.GetValue<ValuesDictionary>("BlockEntity").SetValue("Coordinates", new Point3(x, y, z));
-				Entity entity = SubsystemTerrain.Project.CreateEntity(valuesDictionary);
-				SubsystemTerrain.Project.AddEntity(entity);
+				base.OnBlockAdded(value, oldValue, x, y, z);
 			}
 			if (Terrain.ExtractContents(value) == 65)
 			{
@@ -36,19 +31,7 @@ namespace Game
 
 		public override void OnBlockRemoved(int value, int newValue, int x, int y, int z)
 		{
-			if (Terrain.ExtractContents(newValue) != 64 && Terrain.ExtractContents(newValue) != 65)
-			{
-				ComponentBlockEntity blockEntity = SubsystemTerrain.Project.FindSubsystem<SubsystemBlockEntities>(throwOnError: true).GetBlockEntity(x, y, z);
-				if (blockEntity != null)
-				{
-					Vector3 position = new Vector3(x, y, z) + new Vector3(0.5f);
-					foreach (IInventory item in blockEntity.Entity.FindComponents<IInventory>())
-					{
-						item.DropAllItems(position);
-					}
-					SubsystemTerrain.Project.RemoveEntity(blockEntity.Entity, disposeEntity: true);
-				}
-			}
+			base.OnBlockRemoved(value, newValue, x, y, z);
 			if (Terrain.ExtractContents(value) == 65)
 			{
 				RemoveFire(x, y, z);
@@ -79,28 +62,23 @@ namespace Game
 			}
 		}
 
-		public override bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner)
+		public override bool InteractBlockEntity(ComponentBlockEntity blockEntity,ComponentMiner componentMiner)
 		{
-			ComponentBlockEntity blockEntity = SubsystemTerrain.Project.FindSubsystem<SubsystemBlockEntities>(throwOnError: true).GetBlockEntity(raycastResult.CellFace.X, raycastResult.CellFace.Y, raycastResult.CellFace.Z);
-			if (blockEntity != null && componentMiner.ComponentPlayer != null)
+			if(blockEntity != null && componentMiner.ComponentPlayer != null)
 			{
 				ComponentFurnace componentFurnace = blockEntity.Entity.FindComponent<ComponentFurnace>(throwOnError: true);
-				componentMiner.ComponentPlayer.ComponentGui.ModalPanelWidget = new FurnaceWidget(componentMiner.Inventory, componentFurnace);
-				AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
+				componentMiner.ComponentPlayer.ComponentGui.ModalPanelWidget = new FurnaceWidget(componentMiner.Inventory,componentFurnace);
+				AudioManager.PlaySound("Audio/UI/ButtonClick",1f,0f,0f);
 				return true;
 			}
 			return false;
-		}
-
-		public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
-		{
-			base.OnNeighborBlockChanged(x, y, z, neighborX, neighborY, neighborZ);
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary)
 		{
 			base.Load(valuesDictionary);
 			m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+			m_databaseObject = Project.GameDatabase.Database.FindDatabaseObject("Furnace",Project.GameDatabase.EntityTemplateType,throwIfNotFound: true);
 		}
 
 		public void AddFire(int value, int x, int y, int z)

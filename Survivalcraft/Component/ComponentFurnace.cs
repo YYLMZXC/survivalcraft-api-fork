@@ -194,14 +194,9 @@ namespace Game
 					m_smeltingProgress = 0f;
 					m_updateSmeltingRecipe = true;
 				}
-            }
-            Point3 coordinates = m_componentBlockEntity.Coordinates;
-            TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(coordinates.X, coordinates.Z);
-			if (chunkAtCell != null && chunkAtCell.State == TerrainChunkState.Valid)
-			{
-				int cellValue = m_subsystemTerrain.Terrain.GetCellValue(coordinates.X, coordinates.Y, coordinates.Z);
-				m_subsystemTerrain.ChangeCell(coordinates.X, coordinates.Y, coordinates.Z, Terrain.ReplaceContents(cellValue, (m_heatLevel > 0f) ? 65 : 64));
-			}
+        }
+			int cellValue = m_componentBlockEntity.BlockValue;
+			m_componentBlockEntity.BlockValue = Terrain.ReplaceContents(cellValue, (m_heatLevel > 0f) ? 65 : 64);
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)

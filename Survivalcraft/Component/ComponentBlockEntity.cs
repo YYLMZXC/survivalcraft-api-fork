@@ -8,7 +8,48 @@ namespace Game
 	public class ComponentBlockEntity : Component
 	{
 		SubsystemMovingBlocks m_subsystemMovingBlocks;
+
+		SubsystemTerrain m_subsystemTerrain;
 		public MovingBlock MovingBlock { get; set; }
+
+		public int BlockValue
+		{
+			get
+			{
+				if(MovingBlock != null) return MovingBlock.Value;
+				TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(Coordinates.X,Coordinates.Z);
+				if(chunkAtCell != null && chunkAtCell.State == TerrainChunkState.Valid)
+				{
+					return m_subsystemTerrain.Terrain.GetCellValue(Coordinates.X,Coordinates.Y,Coordinates.Z);
+				}
+				return 0;
+			}
+			set
+			{
+				if(MovingBlock != null)
+				{
+					MovingBlock.Value = value;
+					return;
+				}
+				TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(Coordinates.X, Coordinates.Z);
+				if(chunkAtCell != null && chunkAtCell.State == TerrainChunkState.Valid)
+				{
+					m_subsystemTerrain.ChangeCell(Coordinates.X,Coordinates.Y,Coordinates.Z,value);
+				}
+			}
+		}
+
+		public Vector3 Position
+		{
+			get
+			{
+				if(MovingBlock != null)
+				{
+					return MovingBlock.MovingBlockSet.Position + new Vector3(MovingBlock.Offset);
+				}
+				return new Vector3(Coordinates);
+			}
+		}
 		public Point3 Coordinates
 		{
 			get;
@@ -18,6 +59,7 @@ namespace Game
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{
 			m_subsystemMovingBlocks = Project.FindSubsystem<SubsystemMovingBlocks>(true);
+			m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
 			Coordinates = valuesDictionary.GetValue<Point3>("Coordinates");
 			object movingBlocksTag = valuesDictionary.GetValue<object>("MovingBlocksTag", null);
 			if(movingBlocksTag != null)

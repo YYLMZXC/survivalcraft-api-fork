@@ -2682,6 +2682,9 @@
     <Compile Include="..\Survivalcraft\Subsystem\SubsystemExperienceBlockBehavior.cs">
       <Link>Subsystem\SubsystemExperienceBlockBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\Survivalcraft\Subsystem\SubsystemEntityBlockBehavior.cs">
+      <Link>Subsystem\SubsystemEntityBlockBehavior.cs</Link>
+    </Compile>
     <Compile Include="..\Survivalcraft\Widget\ArrowLineWidget.cs">
       <Link>Widget\ArrowLineWidget.cs</Link>
     </Compile>
