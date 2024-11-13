@@ -9,9 +9,9 @@ namespace Game
 		public static float MinAudibleVolume => 0.05f * SettingsManager.SoundsVolume;
 		public static void PlaySound(string name,float volume,float pitch,float pan)
 		{
-			PlaySound(name,volume,pitch,pan,System.Numerics.Vector3.Zero);
+			PlaySound(name,volume,pitch,pan,Vector3.Zero);
 		}
-		public static void PlaySound(string name, float volume, float pitch, float pan,System.Numerics.Vector3 vector)
+		public static void PlaySound(string name, float volume, float pitch, float pan,Vector3 vector)
 		{
 			if (SettingsManager.SoundsVolume > 0f)
 			{
