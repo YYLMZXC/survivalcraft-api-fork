@@ -262,7 +262,7 @@ namespace Game
 			return null;
 		}
 
-		public MovingBlocksRaycastResult? Raycast(Vector3 start, Vector3 end, bool extendToFillCells)
+		public MovingBlocksRaycastResult? Raycast(Vector3 start, Vector3 end, bool extendToFillCells, Func<int,float,bool> action = null)
 		{
 			Ray3 ray = new(start, Vector3.Normalize(end - start));
 			BoundingBox boundingBox = new(Vector3.Min(start, end), Vector3.Max(start, end));
@@ -292,7 +292,7 @@ namespace Game
 					Block block = BlocksManager.Blocks[Terrain.ExtractContents(blockValue)];
 					Ray3 equalRay = new Ray3(ray.Position - movingBlockSet.Position - new Vector3(movingBlock.Offset.X, movingBlock.Offset.Y, movingBlock.Offset.Z), ray.Direction);
 					float? dist = block.Raycast(equalRay, m_subsystemTerrain, blockValue, true, out int collisionBoxIndex, out BoundingBox nearestBox);
-					if(dist.HasValue && dist.Value < distance)
+					if(dist.HasValue && dist.Value < distance && (action == null || action(blockValue, dist.Value)))
 					{
 						distance = dist.Value;
 						rightMovingBlock = movingBlock;

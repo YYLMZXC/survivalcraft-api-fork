@@ -29,6 +29,28 @@ namespace Game
 			return false;
 		}
 
+		public virtual void GatherPickable(ComponentBlockEntity blockEntity, WorldItem worldItem)
+		{
+			if(blockEntity != null)
+			{
+				ComponentChest inventory = blockEntity.Entity.FindComponent<ComponentChest>(throwOnError: true);
+				var pickable = worldItem as Pickable;
+				int num = pickable?.Count ?? 1;
+				int num2 = ComponentInventoryBase.AcquireItems(inventory,worldItem.Value,num);
+				if(num2 < num)
+				{
+					m_subsystemAudio.PlaySound("Audio/PickableCollected",1f,0f,worldItem.Position,3f,autoDelay: true);
+				}
+				if(num2 <= 0)
+				{
+					worldItem.ToRemove = true;
+				}
+				else if(pickable != null)
+				{
+					pickable.Count = num2;
+				}
+			}
+		}
 		public override void OnHitByProjectile(CellFace cellFace, WorldItem worldItem)
 		{
 			if (worldItem.ToRemove)
@@ -36,25 +58,17 @@ namespace Game
 				return;
 			}
 			ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(cellFace.X, cellFace.Y, cellFace.Z);
-			if (blockEntity != null)
+			GatherPickable(blockEntity, worldItem);
+		}
+
+		public override void OnHitByProjectile(MovingBlock movingBlock,WorldItem worldItem)
+		{
+			if(worldItem.ToRemove)
 			{
-				ComponentChest inventory = blockEntity.Entity.FindComponent<ComponentChest>(throwOnError: true);
-				var pickable = worldItem as Pickable;
-				int num = pickable?.Count ?? 1;
-				int num2 = ComponentInventoryBase.AcquireItems(inventory, worldItem.Value, num);
-				if (num2 < num)
-				{
-					m_subsystemAudio.PlaySound("Audio/PickableCollected", 1f, 0f, worldItem.Position, 3f, autoDelay: true);
-				}
-				if (num2 <= 0)
-				{
-					worldItem.ToRemove = true;
-				}
-				else if (pickable != null)
-				{
-					pickable.Count = num2;
-				}
+				return;
 			}
+			ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(movingBlock);
+			GatherPickable(blockEntity,worldItem);
 		}
 	}
 }

@@ -115,6 +115,9 @@ namespace Game
 		public virtual void OnHitByProjectile(CellFace cellFace, WorldItem worldItem)
 		{
 		}
+		public virtual void OnHitByProjectile(MovingBlock movingBlock,WorldItem worldItem)
+		{
+		}
 
 		public virtual int GetProcessInventoryItemCapacity(IInventory inventory, int slotIndex, int value)
 		{

@@ -36,7 +36,16 @@ namespace Game
         public SubsystemExplosions SubsystemExplosions;
 
         public Entity OwnerEntity;
-        public virtual void Initialize(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix, Entity owner)
+
+		protected SubsystemMovingBlocks m_subsystemMovingBlocks;
+
+		public SubsystemMovingBlocks SubsystemMovingBlocks
+		{
+			get { if(m_subsystemMovingBlocks == null) m_subsystemMovingBlocks = SubsystemTerrain.Project.FindSubsystem<SubsystemMovingBlocks>();
+						return m_subsystemMovingBlocks; }
+		}
+
+		public virtual void Initialize(int value, int count, Vector3 position, Vector3? velocity, Matrix? stuckMatrix, Entity owner)
         {
             Value = value;
             Count = count;
@@ -92,14 +101,31 @@ namespace Game
             if (!StuckMatrix.HasValue)
             {
                 TerrainRaycastResult? terrainRaycastResult = SubsystemTerrain.Raycast(Position, positionAtdt, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
-                if (terrainRaycastResult.HasValue)
+				MovingBlocksRaycastResult? movingBlocksRaycastResult = SubsystemMovingBlocks.Raycast(Position, positionAtdt, true);
+
+				bool isMovingRaycastDominant = false;
+
+				int cellValue = 0;
+				if(movingBlocksRaycastResult.HasValue && movingBlocksRaycastResult.Value.MovingBlock != null && (!terrainRaycastResult.HasValue || terrainRaycastResult.Value.Distance >= movingBlocksRaycastResult.Value.Distance))
+				{
+					isMovingRaycastDominant = true;
+					cellValue = movingBlocksRaycastResult.Value.MovingBlock.Value;
+				}
+				else if(terrainRaycastResult.HasValue && (!movingBlocksRaycastResult.HasValue || terrainRaycastResult.Value.Distance < movingBlocksRaycastResult.Value.Distance))
+				{
+					isMovingRaycastDominant = false;
+					cellValue = SubsystemTerrain.Terrain.GetCellValue(terrainRaycastResult.Value.CellFace.X,terrainRaycastResult.Value.CellFace.Y,terrainRaycastResult.Value.CellFace.Z);
+				}
+				
+				SubsystemBlockBehavior[] blockBehaviors = SubsystemPickables.m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
+				for(int i = 0; i < blockBehaviors.Length; i++)
+				{
+					if(movingBlocksRaycastResult.HasValue) blockBehaviors[i].OnHitByProjectile(movingBlocksRaycastResult.Value.MovingBlock,this); 
+					else if(terrainRaycastResult.HasValue) blockBehaviors[i].OnHitByProjectile(terrainRaycastResult.Value.CellFace,this);
+				}
+
+				if (terrainRaycastResult.HasValue)
                 {
-                    int cellValue = SubsystemTerrain.Terrain.GetCellValue(terrainRaycastResult.Value.CellFace.X, terrainRaycastResult.Value.CellFace.Y, terrainRaycastResult.Value.CellFace.Z);
-                    SubsystemBlockBehavior[] blockBehaviors = SubsystemPickables.m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValue));
-                    for (int i = 0; i < blockBehaviors.Length; i++)
-                    {
-                        blockBehaviors[i].OnHitByProjectile(terrainRaycastResult.Value.CellFace, this);
-                    }
                     if (SubsystemTerrain.Raycast(Position, Position, useInteractionBoxes: false, skipAirBlocks: true, (int value2, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value2)].IsCollidable_(value2)).HasValue)
                     {
                         int num8 = Terrain.ToCell(Position.X);
