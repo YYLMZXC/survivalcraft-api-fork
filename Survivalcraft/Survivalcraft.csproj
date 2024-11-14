@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net8.0-windows;net8.0-android</TargetFrameworks>
+        <TargetFrameworks>net8.0;net8.0-windows</TargetFrameworks>
 		<OutputType Condition="'$(TargetFramework)' == 'net8.0'">library</OutputType>
 		<NoWarn>1701;1702;CA1416;1591;1572;1573;1587</NoWarn>
 		<RootNamespace>Game</RootNamespace>
