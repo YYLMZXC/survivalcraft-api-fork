@@ -6,6 +6,7 @@ namespace Game
 
         public SandBlock() {
             CanBeBuiltIntoFurniture = true;
+			IsCollapsable = true;
         }
         public override bool IsSuitableForPlants(int value, int plantValue)
         {

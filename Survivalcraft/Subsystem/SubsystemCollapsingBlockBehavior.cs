@@ -15,14 +15,6 @@ namespace Game
 
 		public SubsystemMovingBlocks m_subsystemMovingBlocks;
 
-		public static int[] m_handledBlocks = new int[2]
-		{
-			7,
-			6
-		};
-
-		public override int[] HandledBlocks => m_handledBlocks;
-
 		public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
 		{
 			if (m_subsystemGameInfo.WorldSettings.EnvironmentBehaviorMode == EnvironmentBehaviorMode.Living)
@@ -90,7 +82,8 @@ namespace Game
 			for (int i = p.Y; i < 256; i++)
 			{
 				int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(p.X, i, p.Z);
-				if (!IsCollapsibleBlock(cellValue2))
+				Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
+				if (!block.GetIsCollapsable(cellValue2))
 				{
 					break;
 				}
@@ -112,11 +105,6 @@ namespace Game
 					}
 				}
 			}
-		}
-
-		public static bool IsCollapsibleBlock(int value)
-		{
-			return m_handledBlocks.Contains(Terrain.ExtractContents(value));
 		}
 
 		public bool IsCollapseSupportBlock(int value)
