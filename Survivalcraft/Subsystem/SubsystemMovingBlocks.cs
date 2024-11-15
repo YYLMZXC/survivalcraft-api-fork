@@ -715,9 +715,16 @@ namespace Game
 		}
 		public virtual void AddTerrainBlock(int x, int y, int z, int value, MovingBlock movingBlock)
 		{
-			if(movingBlock == null) throw new NullReferenceException("Moving Block Set cannot be null when stop block movement!");
-			movingBlock?.MovingBlockSet?.Stop();
-			m_subsystemTerrain.ChangeCell(x,y,z,value,true,movingBlock);
+			try
+			{
+				if(movingBlock == null) throw new NullReferenceException("Moving Block Set cannot be null when stop block movement!");
+				movingBlock?.MovingBlockSet?.Stop();
+				m_subsystemTerrain.ChangeCell(x,y,z,value,true,movingBlock);
+			}
+			catch(Exception ex)
+			{
+				Log.Error("Add terrain block when moving blocks stop error: " + ex);
+			}
 		}
 	}
 }

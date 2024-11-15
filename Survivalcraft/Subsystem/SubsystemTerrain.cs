@@ -306,7 +306,14 @@ namespace Game
 				TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords,1,TerrainChunkState.InvalidLight,forceGeometryRegeneration: false);
 			}
 			m_modifiedCells[new Point3(x,y,z)] = true;
-			ChangeCellToBehavior(x,y,z,cellValueFast,value, movingBlock);
+			try
+			{
+				ChangeCellToBehavior(x,y,z,cellValueFast,value,movingBlock);
+			}
+			catch(Exception e)
+			{
+				Log.Error("Block behavior on terrain change execute error: " + e);
+			}
 		}
 		public void ChangeCellToBehavior(int x,int y,int z,int oldValue, int newValue, MovingBlock movingBlock)
 		{
