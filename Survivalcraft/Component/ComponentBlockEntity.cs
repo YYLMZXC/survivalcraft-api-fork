@@ -95,11 +95,11 @@ namespace Game
 			object movingBlocksTag = valuesDictionary.GetValue<object>("MovingBlocksTag", null);
 			if(movingBlocksTag != null)
 			{
-				IMovingBlockSet movingBlockSet = m_subsystemMovingBlocks.MovingBlockSets.FirstOrDefault(set => set.Tag.ToString() == movingBlocksTag.ToString());
+				IMovingBlockSet movingBlockSet = m_subsystemMovingBlocks.MovingBlockSets.FirstOrDefault(set => set.Tag.ToString() == movingBlocksTag.ToString(), null);
 				if(movingBlockSet != null)
 				{
 					Point3 point = valuesDictionary.GetValue<Point3>("MovingBlockOffset");
-					MovingBlock movingBlock = movingBlockSet.Blocks.FirstOrDefault(block => block.Offset == point);
+					MovingBlock movingBlock = movingBlockSet.Blocks.FirstOrDefault(block => block.Offset == point, null);
 					if(movingBlock != null)
 					{
 						MovingBlock = movingBlock;

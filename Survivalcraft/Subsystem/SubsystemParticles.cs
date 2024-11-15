@@ -29,7 +29,7 @@ namespace Game
 
 		public int[] DrawOrders => m_drawOrders;
 
-		public void AddParticleSystem(ParticleSystemBase particleSystem)
+		public void AddParticleSystem(ParticleSystemBase particleSystem, bool throwOnAlreadyAdded = false)
 		{
 			if (particleSystem.SubsystemParticles == null)
 			{
@@ -38,10 +38,10 @@ namespace Game
 				particleSystem.OnAdded();
 				return;
 			}
-			throw new InvalidOperationException("Particle system is already added.");
+			if(throwOnAlreadyAdded) throw new InvalidOperationException("Particle system is already added.");
 		}
 
-		public void RemoveParticleSystem(ParticleSystemBase particleSystem)
+		public void RemoveParticleSystem(ParticleSystemBase particleSystem, bool throwOnNotFound = false)
 		{
 			if (particleSystem.SubsystemParticles == this)
 			{
@@ -50,7 +50,7 @@ namespace Game
 				particleSystem.SubsystemParticles = null;
 				return;
 			}
-			throw new InvalidOperationException("Particle system is not added.");
+			if(throwOnNotFound) throw new InvalidOperationException("Particle system is not added.");
 		}
 
 		public bool ContainsParticleSystem(ParticleSystemBase particleSystem)

@@ -25,8 +25,8 @@ namespace Game
 			ComponentBlockEntity componentBlockEntity = entity.FindComponent<ComponentBlockEntity>();
 			if (componentBlockEntity != null)
 			{
-				if(componentBlockEntity.Coordinates.Y >= 0) m_blockEntities.Add(componentBlockEntity.Coordinates, componentBlockEntity);
-				if(componentBlockEntity.MovingBlock != null) m_movingBlockEntities[componentBlockEntity.MovingBlock] = componentBlockEntity;
+				if(componentBlockEntity.MovingBlock != null && !componentBlockEntity.MovingBlock.MovingBlockSet.Stopped) m_movingBlockEntities[componentBlockEntity.MovingBlock] = componentBlockEntity;
+				else if(componentBlockEntity.Coordinates.Y >= 0) m_blockEntities[componentBlockEntity.Coordinates] = componentBlockEntity;
 			}
 		}
 
