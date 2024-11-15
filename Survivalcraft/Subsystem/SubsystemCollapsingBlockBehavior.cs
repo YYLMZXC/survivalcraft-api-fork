@@ -66,7 +66,6 @@ namespace Game
 				{
 					Point3 point = p + block.Offset;
 					m_subsystemMovingBlocks.AddTerrainBlock(point.X,point.Y,point.Z,block.Value, block);
-					//SubsystemTerrain.DestroyCell(0, point.X, point.Y, point.Z, block.Value, noDrop: false, noParticleSystem: false);//这里是移动方块还原的代码
 				}
 				m_subsystemMovingBlocks.RemoveMovingBlockSet(movingBlockSet);
 				if (movingBlockSet.Blocks.Count > 0)
@@ -101,13 +100,16 @@ namespace Game
 					Offset = new Point3(0, i - p.Y, 0)
 				});
 			}
-			IMovingBlockSet movingBlockSet = m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(p),new Vector3(p.X,-list.Count - 1,p.Z),0f,10f,0.7f,new Vector2(0f),list,"CollapsingBlock",null,testCollision: true);
-			if (list.Count != 0 && movingBlockSet != null)
+			if(list.Count != 0)
 			{
-				foreach (MovingBlock item in list)
+				IMovingBlockSet movingBlockSet = m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(p),new Vector3(p.X,-list.Count - 1,p.Z),0f,10f,0.7f,new Vector2(0f),list,"CollapsingBlock",null,testCollision: true);
+				if(movingBlockSet != null)
 				{
-					Point3 point = p + item.Offset;
-					SubsystemTerrain.ChangeCell(point.X, point.Y, point.Z, 0, true, item);
+					foreach(MovingBlock item in list)
+					{
+						Point3 point = p + item.Offset;
+						SubsystemTerrain.ChangeCell(point.X,point.Y,point.Z,0,true,item);
+					}
 				}
 			}
 		}
