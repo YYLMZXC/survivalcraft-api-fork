@@ -31,33 +31,15 @@ namespace Game
 			}
 			return false;
 		}
-
-		public override void OnHitByProjectile(CellFace cellFace, WorldItem worldItem)
+		public override void OnHitByProjectile(CellFace cellFace,WorldItem worldItem)
 		{
-			if (worldItem.ToRemove)
-			{
-				return;
-			}
-			ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(cellFace.X, cellFace.Y, cellFace.Z);
-			if (blockEntity != null && DispenserBlock.GetAcceptsDrops(Terrain.ExtractData(m_subsystemTerrain.Terrain.GetCellValue(cellFace.X, cellFace.Y, cellFace.Z))))
-			{
-				ComponentDispenser inventory = blockEntity.Entity.FindComponent<ComponentDispenser>(throwOnError: true);
-				var pickable = worldItem as Pickable;
-				int num = pickable?.Count ?? 1;
-				int num2 = ComponentInventoryBase.AcquireItems(inventory, worldItem.Value, num);
-				if (num2 < num)
-				{
-					m_subsystemAudio.PlaySound("Audio/PickableCollected", 1f, 0f, worldItem.Position, 3f, autoDelay: true);
-				}
-				if (num2 <= 0)
-				{
-					worldItem.ToRemove = true;
-				}
-				else if (pickable != null)
-				{
-					pickable.Count = num2;
-				}
-			}
+			bool acceptDrops = DispenserBlock.GetAcceptsDrops(Terrain.ExtractData(m_subsystemTerrain.Terrain.GetCellValue(cellFace.X,cellFace.Y,cellFace.Z)));
+			if(acceptDrops) base.OnHitByProjectile(cellFace, worldItem);
+		}
+		public override void OnHitByProjectile(MovingBlock movingBlock,WorldItem worldItem)
+		{
+			bool acceptDrops = DispenserBlock.GetAcceptsDrops(Terrain.ExtractData(movingBlock.Value));
+			if(acceptDrops) base.OnHitByProjectile(movingBlock,worldItem);
 		}
 	}
 }

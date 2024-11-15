@@ -67,6 +67,7 @@ namespace Game
 			m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
 			m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
 			m_componentBlockEntity = Entity.FindComponent<ComponentBlockEntity>(throwOnError: true);
+			m_componentBlockEntity.m_inventoryToGatherPickable = this;
 		}
 
 		public virtual int DispenseItem(Vector3 point, int face, int value, DispenserBlock.Mode mode)

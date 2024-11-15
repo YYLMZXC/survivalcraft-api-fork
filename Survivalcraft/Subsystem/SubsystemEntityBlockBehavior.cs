@@ -84,5 +84,23 @@ namespace Game
 				blockEntity.Coordinates = new Point3(x,y,z);
 			}
 		}
+		public override void OnHitByProjectile(CellFace cellFace,WorldItem worldItem)
+		{
+			if(worldItem.ToRemove)
+			{
+				return;
+			}
+			ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(cellFace.X,cellFace.Y,cellFace.Z);
+			blockEntity.GatherPickable(worldItem);
+		}
+		public override void OnHitByProjectile(MovingBlock movingBlock,WorldItem worldItem)
+		{
+			if(worldItem.ToRemove)
+			{
+				return;
+			}
+			ComponentBlockEntity blockEntity = m_subsystemBlockEntities.GetBlockEntity(movingBlock);
+			blockEntity.GatherPickable(worldItem);
+		}
 	}
 }

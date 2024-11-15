@@ -1,16 +1,19 @@
 using Engine;
 using GameEntitySystem;
 using TemplatesDatabase;
-using static Game.SubsystemMovingBlocks;
 
 namespace Game
 {
 	public class ComponentBlockEntity : Component
 	{
-		SubsystemMovingBlocks m_subsystemMovingBlocks;
+		public SubsystemMovingBlocks m_subsystemMovingBlocks;
 
-		SubsystemTerrain m_subsystemTerrain;
+		public SubsystemTerrain m_subsystemTerrain;
+
+		public SubsystemAudio m_subsystemAudio;
 		public MovingBlock MovingBlock { get; set; }
+
+		public IInventory m_inventoryToGatherPickable;
 
 		public int m_blockValue;
 		public int BlockValue
@@ -63,11 +66,31 @@ namespace Game
 			get;
 			set;
 		}
+		public virtual void GatherPickable(WorldItem worldItem)
+		{
+			if(m_inventoryToGatherPickable == null) return;
+			var pickable = worldItem as Pickable;
+			int num = pickable?.Count ?? 1;
+			int num2 = ComponentInventoryBase.AcquireItems(m_inventoryToGatherPickable, worldItem.Value, num);
+			if(num2 < num)
+			{
+				m_subsystemAudio.PlaySound("Audio/PickableCollected",1f,0f,worldItem.Position,3f,autoDelay: true);
+			}
+			if(num2 <= 0)
+			{
+				worldItem.ToRemove = true;
+			}
+			else if(pickable != null)
+			{
+				pickable.Count = num2;
+			}
+		}
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{
 			m_subsystemMovingBlocks = Project.FindSubsystem<SubsystemMovingBlocks>(true);
 			m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(true);
+			m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(true);
 			Coordinates = valuesDictionary.GetValue<Point3>("Coordinates");
 			object movingBlocksTag = valuesDictionary.GetValue<object>("MovingBlocksTag", null);
 			if(movingBlocksTag != null)
