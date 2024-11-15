@@ -101,7 +101,7 @@ namespace Game
             if (!StuckMatrix.HasValue)
             {
                 TerrainRaycastResult? terrainRaycastResult = SubsystemTerrain.Raycast(Position, positionAtdt, useInteractionBoxes: false, skipAirBlocks: true, (int value, float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
-				MovingBlocksRaycastResult? movingBlocksRaycastResult = SubsystemMovingBlocks.Raycast(Position, positionAtdt, true,(int value,float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
+				MovingBlocksRaycastResult? movingBlocksRaycastResult = SubsystemMovingBlocks.Raycast(Position + new Vector3(0f, 0.25f, 0f), positionAtdt + new Vector3(0f, 0.25f, 0f), true,(int value,float distance) => BlocksManager.Blocks[Terrain.ExtractContents(value)].IsCollidable_(value));
 
 				bool isMovingRaycastDominant = false;
 
