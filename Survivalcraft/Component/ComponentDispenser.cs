@@ -1,4 +1,4 @@
-using Engine;
+锘縰sing Engine;
 using GameEntitySystem;
 using TemplatesDatabase;
 
@@ -43,7 +43,7 @@ namespace Game
 				loader.DispenserChooseItemToDispense(this, ref num, ref slotValue, out bool chosen);
 				return chosen;
 			});
-			if(num >= 0)//投掷的Slot
+			if(num >= 0)//鎶曟幏鐨凷lot
 			{
 				int num2 = 1;
 				int itemDispense = 0;
@@ -54,7 +54,7 @@ namespace Game
 					{
                         RemoveSlotItems(num, itemDispense);
 					}
-					catch (Exception e) { }
+					catch (Exception e) { Log.Error(e.Message); }
                 }
             }
 		}
@@ -75,7 +75,7 @@ namespace Game
 			Vector3 vector = CellFace.FaceToVector3(face);
 			Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + (0.6f * vector);
 			int removeSlotCount = 1;
-			//投掷物品
+			//鎶曟幏鐗╁搧
 			if (mode == DispenserBlock.Mode.Dispense)
 			{
 				float s = 1.8f;
@@ -92,7 +92,7 @@ namespace Game
 				}
 				return 0;
 			}
-			//发射物品
+			//鍙戝皠鐗╁搧
 			float s2 = m_random.Float(39f, 41f);
 			bool canFireProjectile = m_subsystemProjectiles.CanFireProjectile(value, position, vector, null, out Vector3 position2);
 			bool canDispensePickable = true;

@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Serialization;
 using GameEntitySystem;
 using System;
@@ -102,8 +102,10 @@ namespace Game
 					LoadSpawnsData(str, spawnChunk.SpawnsData);
 				}
 				else if (obj is ValuesDictionary data) {
-                    LoadSpawnsData(data, spawnChunk.SpawnsData);
-                }
+#pragma warning disable CS0612 // 类型或成员已过时
+					LoadSpawnsData(data, spawnChunk.SpawnsData);
+#pragma warning restore CS0612 // 类型或成员已过时
+				}
 				m_chunks[spawnChunk.Point] = spawnChunk;
 			}
 		}

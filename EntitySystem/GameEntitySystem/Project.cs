@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Serialization;
 using System;
 using System.Collections.Generic;
@@ -99,6 +99,7 @@ namespace GameEntitySystem
 				}
 				catch (Exception e2)
 				{
+					Log.Error(e2.Message);
 				}
 				throw;
 			}

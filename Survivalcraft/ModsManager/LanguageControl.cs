@@ -221,11 +221,7 @@ namespace Game
 		}
 		public static string GetBlock(string blockName, string prop)
 		{
-			if (TryGetBlock(blockName, prop, out var result))
-			{
-				return result;
-			}
-			return result;
+			return TryGetBlock(blockName, prop, out var result) ? result : result;
 		}
 		public static bool TryGetBlock(string blockName, string prop, out string result)
 		{

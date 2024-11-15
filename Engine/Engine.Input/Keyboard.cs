@@ -1,4 +1,4 @@
-#if ANDROID
+﻿#if ANDROID
 using Android.App;
 using Android.Views;
 using Android.Widget;
@@ -23,7 +23,7 @@ namespace Engine.Input
 
         private static Key? m_lastKey;
 
-        public static string? LastString;
+        public static string LastString;
 
         private static char? m_lastChar;
 
