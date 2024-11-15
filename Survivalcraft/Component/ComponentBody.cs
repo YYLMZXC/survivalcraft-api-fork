@@ -36,6 +36,8 @@ namespace Game
 
 		public SubsystemFluidBlockBehavior m_subsystemFluidBlockBehavior;
 
+		public SubsystemPlayers m_subsystemPlayers;
+
 		public Random m_random = new();
 
 		public ComponentHealth m_componentHealth;
@@ -87,6 +89,8 @@ namespace Game
 		public bool IsRaycastTransparent = false;//不可选中
 
 		public float? RedScreenFactorInCrush = 1f;
+
+		public static bool ResetVelocityOnProjectLoad = true;
 		public virtual Vector3 StanceBoxSize => new(BoxSize.X, ((CrouchFactor >= 1f) ? 0.5f : 1f) * BoxSize.Y, BoxSize.Z);
 
 		public virtual Vector3 BoxSize { get; set; }
@@ -114,6 +118,8 @@ namespace Game
 		public virtual ComponentBody StandingOnBody { get; set; }
 
 		public virtual Vector3 StandingOnVelocity { get; set; }
+
+		public virtual bool IsCrushing{get;set;}
 
 		public virtual bool IsSneaking
 		{
@@ -245,7 +251,6 @@ namespace Game
 		public bool m_isSneaking; //�����ʹ�ô����ԣ������IsSneaking
 
 		public float m_crushInjureTime;
-
 		public virtual Action<ComponentBody> CollidedWithBody { get; set; }
 
 		public virtual Action<IMovingBlockSet> CollidedWithMovingBlock { get; set; }
@@ -335,6 +340,7 @@ namespace Game
 			m_subsystemParticles = base.Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
 			m_subsystemBlockBehaviors = base.Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
 			m_subsystemFluidBlockBehavior = base.Project.FindSubsystem<SubsystemFluidBlockBehavior>(throwOnError: true);
+			m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
 			m_componentHealth = Entity.FindComponent<ComponentHealth>();
 			CanCrouch = Entity.FindComponent<ComponentPlayer>() != null;
 			BoxSize = valuesDictionary.GetValue<Vector3>("BoxSize");
@@ -345,6 +351,7 @@ namespace Game
 			WaterSwayAngle = valuesDictionary.GetValue<float>("WaterSwayAngle");
 			WaterTurnSpeed = valuesDictionary.GetValue<float>("WaterTurnSpeed");
 			Velocity = valuesDictionary.GetValue<Vector3>("Velocity");
+			if(ResetVelocityOnProjectLoad) Velocity = Vector3.Zero;
 			MaxSmoothRiseHeight = valuesDictionary.GetValue<float>("MaxSmoothRiseHeight");
 			ParentBody = valuesDictionary.GetValue<EntityReference>("ParentBody").GetComponent<ComponentBody>(base.Entity, idToEntityMap, throwIfNotFound: false);
 			ParentBodyPositionOffset = valuesDictionary.GetValue<Vector3>("ParentBodyPositionOffset");
@@ -422,13 +429,14 @@ namespace Game
 			TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(Terrain.ToCell(position.X), Terrain.ToCell(position.Z));
 			if (chunkAtCell == null || chunkAtCell.State <= TerrainChunkState.InvalidContents4)
 			{
-				Velocity = Vector3.Zero;
+				if(m_subsystemPlayers.PlayerStartedPlaying) Velocity = Vector3.Zero;
 				return;
 			}
 			m_bodiesCollisionBoxes.Clear();
 			if(BodyCollidable) FindBodiesCollisionBoxes(position, m_bodiesCollisionBoxes);
 			m_movingBlocksCollisionBoxes.Clear();
 			if(TerrainCollidable) FindMovingBlocksCollisionBoxes(position, m_movingBlocksCollisionBoxes);
+			IsCrushing = false;
 			if (!MoveToFreeSpace(0.56f))
 			{
 				m_crouchFactor = CanCrouch ? 1f : 0f;
@@ -446,6 +454,7 @@ namespace Game
 						if(RedScreenFactorInCrush != null)
 							componentHealth.m_redScreenFactor = RedScreenFactorInCrush.Value;
 						m_crushInjureTime += dt;
+						IsCrushing = true;
 					}
 					else
 					{

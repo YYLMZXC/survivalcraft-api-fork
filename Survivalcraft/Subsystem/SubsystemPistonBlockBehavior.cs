@@ -23,6 +23,8 @@ namespace Game
 
 		public SubsystemMovingBlocks m_subsystemMovingBlocks;
 
+		public SubsystemPlayers m_subsystemPlayers;
+
 		public bool m_allowPistonHeadRemove;
 
 		public Dictionary<Point3, QueuedAction> m_actions = [];
@@ -170,6 +172,7 @@ namespace Game
 			m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
 			m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
 			m_subsystemMovingBlocks = Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true);
+			m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
 			m_subsystemMovingBlocks.Stopped += MovingBlocksStopped;
 			m_subsystemMovingBlocks.CollidedWithTerrain += MovingBlocksCollidedWithTerrain;
 		}
@@ -207,7 +210,7 @@ namespace Game
 						for (int j = -1; j <= 1; j++)
 						{
 							TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(key2.X + (i * 16), key2.Z + (j * 16));
-							if (chunkAtCell == null || chunkAtCell.State <= TerrainChunkState.InvalidContents4)
+							if (chunkAtCell == null || chunkAtCell.State <= TerrainChunkState.InvalidContents4 && m_subsystemPlayers.PlayerStartedPlaying)
 							{
 								flag = false;
 							}

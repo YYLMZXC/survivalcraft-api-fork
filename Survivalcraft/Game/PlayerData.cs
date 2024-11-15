@@ -316,6 +316,7 @@ namespace Game
 							try
                             {
                                 SpawnPlayer(SpawnPosition, m_spawnMode);
+								SubsystemPlayers.PlayerStartedPlaying = true;
                             }
 							catch (Exception ex)
 							{
