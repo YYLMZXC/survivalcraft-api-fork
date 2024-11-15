@@ -31,7 +31,10 @@ namespace Game
 
 		public override void OnBlockRemoved(int value, int newValue, int x, int y, int z)
 		{
-			base.OnBlockRemoved(value, newValue, x, y, z);
+			if(Terrain.ExtractContents(newValue) != 64 && Terrain.ExtractContents(newValue) != 65)
+			{
+				base.OnBlockRemoved(value,newValue,x,y,z);
+			}
 			if (Terrain.ExtractContents(value) == 65)
 			{
 				RemoveFire(x, y, z);
