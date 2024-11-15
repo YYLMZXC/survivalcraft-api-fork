@@ -12,20 +12,28 @@ namespace Game
 		SubsystemTerrain m_subsystemTerrain;
 		public MovingBlock MovingBlock { get; set; }
 
+		public int m_blockValue;
 		public int BlockValue
 		{
 			get
 			{
-				if(MovingBlock != null) return MovingBlock.Value;
+				if(MovingBlock != null)
+				{
+					m_blockValue = MovingBlock.Value;
+					return m_blockValue;
+				}
 				TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(Coordinates.X,Coordinates.Z);
 				if(chunkAtCell != null && chunkAtCell.State == TerrainChunkState.Valid)
 				{
-					return m_subsystemTerrain.Terrain.GetCellValue(Coordinates.X,Coordinates.Y,Coordinates.Z);
+					int value = m_subsystemTerrain.Terrain.GetCellValue(Coordinates.X,Coordinates.Y,Coordinates.Z);
+					if(value != 0) m_blockValue = value;
+					return m_blockValue;
 				}
-				return 0;
+				return m_blockValue;
 			}
 			set
 			{
+				m_blockValue = value;
 				if(MovingBlock != null)
 				{
 					MovingBlock.Value = value;
