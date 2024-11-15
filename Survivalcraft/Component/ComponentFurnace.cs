@@ -18,6 +18,10 @@ namespace Game
 
 		public SubsystemTime m_subsystemTime;
 
+		public FireParticleSystem m_fireParticleSystem;
+
+		public SubsystemParticles m_subsystemParticles;
+
 		public bool StopFuelWhenNoRecipeIsActive = true;
 
 		public float SmeltSpeed = 0.15f;
@@ -194,9 +198,27 @@ namespace Game
 					m_smeltingProgress = 0f;
 					m_updateSmeltingRecipe = true;
 				}
-        }
+			}
+
 			int cellValue = m_componentBlockEntity.BlockValue;
-			m_componentBlockEntity.BlockValue = Terrain.ReplaceContents(cellValue, (m_heatLevel > 0f) ? 65 : 64);
+			if(m_heatLevel > 0f)
+			{
+				m_fireParticleSystem.m_position = m_componentBlockEntity.Position + new Vector3(0.5f,0.2f,0.5f);
+				if(Terrain.ExtractContents(cellValue) == 64)
+					m_subsystemParticles.AddParticleSystem(m_fireParticleSystem);
+				m_componentBlockEntity.BlockValue = Terrain.ReplaceContents(cellValue,65);
+			}
+			else
+			{
+				if(Terrain.ExtractContents(cellValue) == 65)
+					m_subsystemParticles.RemoveParticleSystem(m_fireParticleSystem);
+				m_componentBlockEntity.BlockValue = Terrain.ReplaceContents(cellValue,64);
+			}
+		}
+
+		public override void OnEntityRemoved()
+		{
+			m_subsystemParticles.RemoveParticleSystem(m_fireParticleSystem);
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
@@ -208,6 +230,8 @@ namespace Game
 			m_furnaceSize = SlotsCount - 3;
 			m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
 			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+			m_subsystemParticles = Project.FindSubsystem<SubsystemParticles>(throwOnError: true);
+			m_fireParticleSystem = new FireParticleSystem(m_componentBlockEntity.Position + new Vector3(0.5f,0.2f,0.5f), 0.15f, 16f);
 			if (m_furnaceSize < 1 || m_furnaceSize > 3)
 			{
 				throw new InvalidOperationException("Invalid furnace size.");
@@ -216,6 +240,8 @@ namespace Game
 			m_fuelEndTime = (float)m_subsystemGameInfo.TotalElapsedGameTime + fireTimeRemaining;
 			m_heatLevel = valuesDictionary.GetValue<float>("HeatLevel");
 			m_updateSmeltingRecipe = true;
+			if(m_heatLevel > 0f)
+				m_subsystemParticles.AddParticleSystem(m_fireParticleSystem);
 		}
 
 		public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)

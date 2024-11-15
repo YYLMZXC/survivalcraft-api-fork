@@ -86,6 +86,7 @@ namespace Game
 
 		public void AddFire(int value, int x, int y, int z)
 		{
+			return;
 			var v = new Vector3(0.5f, 0.2f, 0.5f);
 			float size = 0.15f;
 			var fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + v, size, 16f);
@@ -95,6 +96,7 @@ namespace Game
 
 		public void RemoveFire(int x, int y, int z)
 		{
+			return;
 			var key = new Point3(x, y, z);
 			FireParticleSystem particleSystem = m_particleSystemsByCell[key];
 			m_subsystemParticles.RemoveParticleSystem(particleSystem);
