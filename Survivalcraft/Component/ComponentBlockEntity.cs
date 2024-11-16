@@ -16,7 +16,7 @@ namespace Game
 		public IInventory m_inventoryToGatherPickable;
 
 		public int m_blockValue;
-		public int BlockValue
+		public virtual int BlockValue
 		{
 			get
 			{
@@ -50,7 +50,7 @@ namespace Game
 			}
 		}
 
-		public Vector3 Position
+		public virtual Vector3 Position
 		{
 			get
 			{
