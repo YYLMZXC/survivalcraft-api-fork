@@ -70,7 +70,6 @@ namespace Game
 				m_subsystemBlockEntities.m_blockEntities.Remove(blockEntity.Coordinates);
 				m_subsystemBlockEntities.m_movingBlockEntities[movingBlock] = blockEntity;
 				blockEntity.MovingBlock = movingBlock;
-				blockEntity.Coordinates = new Point3(0,-99999,0);
 			}
 		}
 		public override void OnBlockStopMoving(int value,int oldValue,int x,int y,int z,MovingBlock movingBlock)

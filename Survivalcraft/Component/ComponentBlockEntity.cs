@@ -20,7 +20,7 @@ namespace Game
 		{
 			get
 			{
-				if(MovingBlock != null)
+				if(!MovingBlock.IsNullOrStopped(MovingBlock))
 				{
 					m_blockValue = MovingBlock.Value;
 					return m_blockValue;
@@ -37,7 +37,7 @@ namespace Game
 			set
 			{
 				m_blockValue = value;
-				if(MovingBlock != null)
+				if(!MovingBlock.IsNullOrStopped(MovingBlock))
 				{
 					MovingBlock.Value = value;
 					return;
@@ -54,7 +54,7 @@ namespace Game
 		{
 			get
 			{
-				if(MovingBlock != null)
+				if(!MovingBlock.IsNullOrStopped(MovingBlock))
 				{
 					return MovingBlock.MovingBlockSet.Position + new Vector3(MovingBlock.Offset);
 				}
@@ -100,20 +100,20 @@ namespace Game
 				{
 					Point3 point = valuesDictionary.GetValue<Point3>("MovingBlockOffset");
 					MovingBlock movingBlock = movingBlockSet.Blocks.FirstOrDefault(block => block.Offset == point, null);
-					if(movingBlock != null)
+					if(!MovingBlock.IsNullOrStopped(movingBlock))
 					{
 						MovingBlock = movingBlock;
 					}
-					else Log.Error("Required moving block offset " + point.ToString() + " is not found in MovingBlockSet " + movingBlocksTag.ToString() + "fot BlockEntity " + Entity.Id + ": " + Entity.ValuesDictionary.DatabaseObject.Name);
+					else throw new Exception("Required moving block offset " + point.ToString() + " is not found in MovingBlockSet " + movingBlocksTag.ToString() + "fot BlockEntity " + Entity.Id + ": " + Entity.ValuesDictionary.DatabaseObject.Name);
 				}
-				else Log.Error("Required moving block set " + movingBlocksTag.ToString() + " is not found in BlockEntity " + Entity.Id + ": " + Entity.ValuesDictionary.DatabaseObject.Name);
+				else throw new Exception("Required moving block set " + movingBlocksTag.ToString() + " is not found in BlockEntity " + Entity.Id + ": " + Entity.ValuesDictionary.DatabaseObject.Name);
 			}
 		}
 
 		public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)
 		{
 			valuesDictionary.SetValue("Coordinates", Coordinates);
-			if(MovingBlock != null) {
+			if(!MovingBlock.IsNullOrStopped(MovingBlock)) {
 				valuesDictionary.SetValue("MovingBlocksTag",MovingBlock.MovingBlockSet.Tag);
 				valuesDictionary.SetValue("MovingBlockOffset", MovingBlock.Offset);
 			}
