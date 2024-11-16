@@ -36,9 +36,11 @@ namespace Engine.Audio
             string environmentVariable = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
 			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? AppContext.BaseDirectory: Assembly.GetExecutingAssembly().Location);//路径备选方案
 			Environment.SetEnvironmentVariable("PATH", fullPath + ";" + environmentVariable, EnvironmentVariableTarget.Process);
-			//释放文件
+			//释放文件(有问题，停用)
+            /*
 				string dllName = "openal32.dll"; // DLL资源名称
 				string ALPath = Path.Combine(fullPath, dllName);
+            
 				if (!File.Exists(ALPath))//检测外置dll是否存在，如果不存在就释放
 				{
                     try
@@ -54,6 +56,7 @@ namespace Engine.Audio
 
                 }
 				//Assembly dllAssembly = Assembly.LoadFile(ALPath);
+            */
 #endif
             new AudioContext();
             CheckALError();

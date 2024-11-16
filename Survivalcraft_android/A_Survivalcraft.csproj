@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
+	  <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -44,6 +45,7 @@
 	<Compile Include="..\Survivalcraft\Managers\ScreenCaptureManager.cs" Link="Managers\ScreenCaptureManager.cs" />
 	<Compile Include="..\Survivalcraft\Managers\WebManager.cs" Link="Managers\WebManager.cs" />
 	<Compile Include="..\Survivalcraft\Screen\ExternalContentScreen.cs" Link="Screen\ExternalContentScreen.cs" />
+	  <Compile Include="..\Survivalcraft\Widget\TreeViewWidget.cs"/>
     <Compile Include="..\Survivalcraft\Screen\LoadingFailedScreen.cs">
       <Link>Screen\LoadingFailedScreen.cs</Link>
     </Compile>
