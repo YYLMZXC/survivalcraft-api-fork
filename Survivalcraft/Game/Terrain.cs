@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -198,11 +198,7 @@ namespace Game
 
 		public static int ComparePoints(Point2 c1, Point2 c2)
 		{
-			if (c1.Y == c2.Y)
-			{
-				return c1.X - c2.X;
-			}
-			return c1.Y - c2.Y;
+			return c1.Y == c2.Y ? c1.X - c2.X : c1.Y - c2.Y;
 		}
 
 		public static Point2 ToChunk(Vector2 p)
@@ -242,38 +238,22 @@ namespace Game
 
 		public bool IsCellValid(int x, int y, int z)
 		{
-			if (y >= 0)
-			{
-				return y < 256;
-			}
-			return false;
+			return y >= 0 && y < 256;
 		}
 
 		public int GetCellValue(int x, int y, int z)
 		{
-			if (!IsCellValid(x, y, z))
-			{
-				return 0;
-			}
-			return GetCellValueFast(x, y, z);
+			return !IsCellValid(x, y, z) ? 0 : GetCellValueFast(x, y, z);
 		}
 
 		public int GetCellContents(int x, int y, int z)
 		{
-			if (!IsCellValid(x, y, z))
-			{
-				return 0;
-			}
-			return GetCellContentsFast(x, y, z);
+			return !IsCellValid(x, y, z) ? 0 : GetCellContentsFast(x, y, z);
 		}
 
 		public int GetCellLight(int x, int y, int z)
 		{
-			if (!IsCellValid(x, y, z))
-			{
-				return 0;
-			}
-			return GetCellLightFast(x, y, z);
+			return !IsCellValid(x, y, z) ? 0 : GetCellLightFast(x, y, z);
 		}
 
 		public int GetCellValueFast(int x, int y, int z)

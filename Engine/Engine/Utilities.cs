@@ -1,25 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-
-#if ANDROID
-
-using Android.App;
-using static Android.App.ActivityManager;
-#endif
-
+﻿using System.Runtime.InteropServices;
 namespace Engine
 {
 	public static class Utilities
 	{
 		public static void Swap<T>(ref T a, ref T b)
 		{
-			T val = a;
-			a = b;
-			b = val;
-		}
+            (b, a) = (a, b);
+        }
 
-		public static int SizeOf<T>()
+        public static int SizeOf<T>()
 		{
 			return Marshal.SizeOf(typeof(T));
 		}
@@ -62,7 +51,7 @@ namespace Engine
 			if (disposable != null)
 			{
 				disposable.Dispose();
-				disposable = default(T);
+				disposable = default;
 			}
 		}
 
@@ -79,11 +68,6 @@ namespace Engine
 					disposableCollection.Clear();
 				}
 			}
-		}
-
-		public static int GetTotalAvailableMemory()
-		{
-			return 0;
 		}
 	}
 }
