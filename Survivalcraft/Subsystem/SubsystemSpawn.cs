@@ -309,7 +309,7 @@ namespace Game
 			}
 			catch (Exception ex)
 			{
-				Log.Error($"Unable to spawn entity with template \"{data.TemplateName}\". Reason: {ex.Message}");
+				Log.Error($"Unable to spawn entity with template \"{data.TemplateName}\". Reason: {ex.ToString()}");
 				return null;
 			}
 		}

@@ -54,7 +54,7 @@ namespace Game
 					{
                         RemoveSlotItems(num, itemDispense);
 					}
-					catch (Exception e) { Log.Error(e.Message); }
+					catch (Exception e) { Log.Error(e.ToString()); }
                 }
             }
 		}

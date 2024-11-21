@@ -1388,5 +1388,18 @@ namespace Game
         {
             skip = false;
         }
-    }
+
+		/// <summary>
+		/// 在更新玩家死亡界面时执行
+		/// </summary>
+		/// <param name="playerData">具体死者</param>
+		/// <param name="disableVanillaTapToRespawnAction">是否阻止原版点击任意键就执行复活等下一步的操作</param>
+		/// <param name="respawn">是否复活</param>
+
+		public virtual void UpdateDeathCameraWidget(PlayerData playerData, ref bool disableVanillaTapToRespawnAction, ref bool respawn)
+		{
+
+		}
+
+	}
 }

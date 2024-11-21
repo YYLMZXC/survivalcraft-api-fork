@@ -368,7 +368,7 @@ public static class ModsManager
 			}
 			catch (Exception e)
 			{
-				Log.Error($"加载程序集{args.Name}失败:{e.Message}");
+				Log.Error($"加载程序集{args.Name}失败:{e.ToString()}");
 				Log.Debug(e);
 				throw;
 			}
