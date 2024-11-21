@@ -236,11 +236,6 @@ namespace Game
 			{
 				DeathPhase = MathUtils.Min(DeathPhase + (3f * dt), 1f);
 			}
-			if (m_componentCreature.ComponentHealth.HealthChange < 0f)
-			{
-				m_injuryColorFactor = 1f;
-			}
-			m_injuryColorFactor = MathUtils.Saturate(m_injuryColorFactor - (3f * dt));
 			m_eyePosition = null;
 			m_eyeRotation = null;
 			LookRandomOrder = false;

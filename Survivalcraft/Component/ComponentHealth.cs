@@ -377,6 +377,7 @@ namespace Game
                 HealthChange = Health - m_lastHealth;
                 m_lastHealth = Health;
                 float redScreenFactorCalculated = m_redScreenFactor;
+				float creatureModelRedFactorCalculated = MathUtils.Saturate(m_componentCreature.ComponentCreatureModel.m_injuryColorFactor - (3f * dt)); ;
                 bool playPainSound = true;
                 int healthBarFlashCount = Math.Clamp((int)((0f - HealthChange) * 30f), 0, 10);
                 if (redScreenFactorCalculated > 0.01f)
@@ -390,10 +391,11 @@ namespace Game
                 if (HealthChange < 0f)
                 {
                     redScreenFactorCalculated += -4f * HealthChange;
+					creatureModelRedFactorCalculated = 1f;
                 }
                 ModsManager.HookAction("ChangeVisualEffectOnInjury", loader =>
                 {
-                    loader.ChangeVisualEffectOnInjury(this, lastHealth, ref redScreenFactorCalculated, ref playPainSound, ref healthBarFlashCount);
+                    loader.ChangeVisualEffectOnInjury(this, lastHealth, ref redScreenFactorCalculated, ref playPainSound, ref healthBarFlashCount, ref creatureModelRedFactorCalculated);
                     return false;
                 });
                 if (HealthChange < 0f)
@@ -402,7 +404,8 @@ namespace Game
                     m_componentPlayer?.ComponentGui.HealthBarWidget.Flash(healthBarFlashCount);
                 }
                 m_redScreenFactor = redScreenFactorCalculated;
-                if (m_componentPlayer != null)
+				m_componentCreature.ComponentCreatureModel.m_injuryColorFactor = creatureModelRedFactorCalculated;
+				if (m_componentPlayer != null)
                 {
                     m_componentPlayer.ComponentScreenOverlays.RedoutFactor = MathUtils.Max(m_componentPlayer.ComponentScreenOverlays.RedoutFactor, m_redScreenFactor);
                 }

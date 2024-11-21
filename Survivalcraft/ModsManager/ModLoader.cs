@@ -377,7 +377,16 @@ namespace Game
 
         }
 
-        public virtual void ChangeVisualEffectOnInjury(ComponentHealth componentHealth, float lastHealth, ref float redScreenFactor, ref bool playPainSound, ref int healthBarFlashCount)
+		/// <summary>
+		/// 每帧更新的时候，调整血量带来的视觉效果
+		/// </summary>
+		/// <param name="componentHealth"></param>
+		/// <param name="lastHealth">在扣血之前的生命值</param>
+		/// <param name="redScreenFactor">玩家的红屏效果</param>
+		/// <param name="playPainSound">是否播放受伤音效</param>
+		/// <param name="healthBarFlashCount">玩家血条闪烁次数</param>
+		/// <param name="creatureModelRedFactor">生物模型变红，为0时不变红，为1时完全红色</param>
+        public virtual void ChangeVisualEffectOnInjury(ComponentHealth componentHealth, float lastHealth, ref float redScreenFactor, ref bool playPainSound, ref int healthBarFlashCount, ref float creatureModelRedFactor)
         {
 
         }
