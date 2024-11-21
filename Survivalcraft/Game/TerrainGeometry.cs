@@ -19,21 +19,31 @@ namespace Game
 
         public TerrainGeometrySubset[] Subsets;
 
-        public Dictionary<Texture2D, TerrainGeometry[]> Draws = null;
+        public Dictionary<Texture2D, TerrainGeometry> Draws = null;
 
-        public int slice;
-
-        public TerrainGeometry(Dictionary<Texture2D, TerrainGeometry[]> Draws, int slice = 0) { InitSubsets(); this.Draws = Draws; this.slice = slice; }
-
+        public Texture2D DefaultTexture;
+        
+        [Obsolete("此方法将弃用")]
         public TerrainGeometry()
         {
             InitSubsets();
+        }
+        public TerrainGeometry(Texture2D texture2D)
+        {
+	        InitSubsets();
+	        DefaultTexture = texture2D;
+	        //添加到默认纹理区
+	        Draws = new();
+	        Draws.Add(DefaultTexture,this);
         }
 
         public void InitSubsets()
         {
             Subsets = new TerrainGeometrySubset[7];
-            for (int i = 0; i < 7; i++) { Subsets[i] = new TerrainGeometrySubset(); }
+            for(int i = 0; i < 7; i++)
+            {
+	            Subsets[i] = new TerrainGeometrySubset();
+            }
             SubsetOpaque = Subsets[4];
             SubsetAlphaTest = Subsets[5];
             SubsetTransparent = Subsets[6];
@@ -68,15 +78,30 @@ namespace Game
 
         public TerrainGeometry GetGeometry(Texture2D texture)
         {
-            if (Draws == null) Draws = new Dictionary<Texture2D, TerrainGeometry[]>();
-            if (Draws.TryGetValue(texture, out var geometries)) return geometries[slice];
+            if (Draws == null) Draws = new ();
+            if (Draws.TryGetValue(texture, out var geometries)) return geometries;
             else
             {
-                var list = new TerrainGeometry[16];
-                for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(Draws, i); list[i] = t; }
-                Draws.Add(texture, list);
-                return list[slice];
+                var geometry = new TerrainGeometry();
+                Draws.Add(texture, geometry);
+                return geometry;
             }
+        }
+
+        public void ClearGeometry()
+        {
+	        foreach(var subset in Subsets)
+	        {
+		        subset.Indices.Clear();
+		        subset.Vertices.Clear();
+	        }
+	        if(Draws==null) return;
+	        foreach(var drawItem in Draws)
+	        {
+		        if(drawItem.Value!=this) drawItem.Value.ClearGeometry();   
+	        }
+	        Draws.Clear();
+	        if(DefaultTexture!=null)Draws.Add(DefaultTexture,this);
         }
     }
 }

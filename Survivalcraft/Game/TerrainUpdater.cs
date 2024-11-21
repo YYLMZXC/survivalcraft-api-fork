@@ -1265,12 +1265,6 @@ namespace Game
         public void GenerateChunkVertices(TerrainChunk chunk, int stage)
 		{
             this.m_subsystemTerrain.BlockGeometryGenerator.ResetCache();
-            if (!chunk.Draws.TryGetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture, out var terrainGeometry))
-            {
-	            terrainGeometry = new TerrainGeometry[16];
-	            for (int i = 0; i < 16; i++) { var t = new TerrainGeometry(chunk.Draws, i); terrainGeometry[i] = t; }
-	            chunk.Draws.Add(m_subsystemAnimatedTextures.AnimatedBlocksTexture, terrainGeometry);
-            }
             TerrainChunk chunkAtCoords1 = this.m_terrain.GetChunkAtCoords(chunk.Coords.X - 1, chunk.Coords.Y - 1);
             TerrainChunk chunkAtCoords2 = this.m_terrain.GetChunkAtCoords(chunk.Coords.X, chunk.Coords.Y - 1);
             TerrainChunk chunkAtCoords3 = this.m_terrain.GetChunkAtCoords(chunk.Coords.X + 1, chunk.Coords.Y - 1);
@@ -1303,16 +1297,16 @@ namespace Game
 		                continue;
 	                } 
 	                ++this.m_statistics.GeneratedSlices;
-                    foreach (var c in chunk.Draws)
-                    {
-                        var subsets = c.Value[index].Subsets;
-                        for (int p = 0; p < subsets.Length; p++)
-                        {
-	                        subsets[p].Vertices.Clear(); 
-	                        subsets[p].Indices.Clear();
-                        }
-                    }
-                    for (int x1 = num1; x1 < num3; ++x1)
+	                var geometry = chunk.ChunkSliceGeometries[index];
+	                if(geometry == null)
+	                {
+		                geometry = new(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
+		                chunk.ChunkSliceGeometries[index] = geometry;
+	                }
+
+	                geometry.ClearGeometry();
+
+	                for (int x1 = num1; x1 < num3; ++x1)
                     {
                         for (int z1 = num2; z1 < num4; ++z1)
                         {
@@ -1340,7 +1334,7 @@ namespace Game
                                         int contents = Terrain.ExtractContents(cellValueFast);
                                         if (contents != 0)
                                         {
-	                                        BlocksManager.Blocks[contents].GenerateTerrainVertices(this.m_subsystemTerrain.BlockGeometryGenerator, terrainGeometry[index], cellValueFast, x2, y, z2);
+	                                        BlocksManager.Blocks[contents].GenerateTerrainVertices(this.m_subsystemTerrain.BlockGeometryGenerator, geometry, cellValueFast, x2, y, z2);
                                         }
                                     }
                                     break;

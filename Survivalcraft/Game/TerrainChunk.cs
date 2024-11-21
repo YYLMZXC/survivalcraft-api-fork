@@ -73,7 +73,7 @@ namespace Game
 
 		public DynamicArray<BrushPaint> m_brushPaints = [];
 		
-		public Dictionary<Texture2D, TerrainGeometry[]> Draws = new Dictionary<Texture2D, TerrainGeometry[]>();
+		public TerrainGeometry[] ChunkSliceGeometries = new TerrainGeometry[16];
 
 		public DynamicArray<TerrainChunkGeometry.Buffer> Buffers = new DynamicArray<TerrainChunkGeometry.Buffer>();
 

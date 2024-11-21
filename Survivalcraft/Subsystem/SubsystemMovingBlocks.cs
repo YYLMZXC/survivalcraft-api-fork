@@ -43,12 +43,6 @@ namespace Game
 
 			public Vector3 CurrentVelocity;
 
-			public TerrainGeometry Geometry;
-
-			public DynamicArray<TerrainVertex> Vertices;
-
-			public DynamicArray<int> Indices;
-
 			public Vector3 GeometryOffset;
 
 			public Point3 GeometryGenerationPosition = new(int.MaxValue);
@@ -65,23 +59,10 @@ namespace Game
 
 			public MovingBlockSet()
 			{
-				TerrainGeometrySubset terrainGeometrySubset = new();
-				Vertices = terrainGeometrySubset.Vertices;
-				Indices = terrainGeometrySubset.Indices;
-				Geometry = new TerrainGeometry();
-				Geometry.SubsetOpaque = terrainGeometrySubset;
-				Geometry.SubsetAlphaTest = terrainGeometrySubset;
-				Geometry.SubsetTransparent = terrainGeometrySubset;
-				Geometry.OpaqueSubsetsByFace = new TerrainGeometrySubset[6] { terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset };
-				Geometry.AlphaTestSubsetsByFace = new TerrainGeometrySubset[6] { terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset };
-				Geometry.TransparentSubsetsByFace = new TerrainGeometrySubset[6] { terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset, terrainGeometrySubset };
 			}
 
 			public void Dispose()
 			{
-				Geometry = default;
-				Vertices = null;
-				Indices = null;
 			}
 
 			public void UpdateBox()
@@ -153,20 +134,19 @@ namespace Game
 		public List<MovingBlockSet> m_stopped = [];
 
 		public List<MovingBlockSet> m_removing = [];
-
-		public DynamicArray<TerrainVertex> m_vertices = [];
-
-		public DynamicArray<int> m_indices = [];
-
+		
+		public TerrainGeometry MovingBlockGeometry;
+		
+		public DynamicArray<TerrainChunkGeometry.Buffer> Buffers;
+		
 		public DynamicArray<IMovingBlockSet> m_result = [];
-
+		public static DynamicArray<int> m_tmpIndices = [];
+		public static DynamicArray<TerrainVertex> m_vertexList = [];
 		public Shader m_shader;
 
 		public BlockGeometryGenerator m_blockGeometryGenerator;
 
 		public bool m_canGenerateGeometry;
-
-		public static bool DebugDrawMovingBlocks = false;
 
 		public static int[] m_drawOrders = new int[1] { 10 };
 
@@ -374,8 +354,11 @@ namespace Game
 
 		public void Draw(Camera camera, int drawOrder)
 		{
-			m_vertices.Count = 0;
-			m_indices.Count = 0;
+			foreach (TerrainChunkGeometry.Buffer buffer in Buffers)
+			{
+				buffer.Dispose();
+			}
+			Buffers.Clear();
 			foreach (MovingBlockSet movingBlockSet2 in m_movingBlockSets)
 			{
 				DrawMovingBlockSet(camera, movingBlockSet2);
@@ -395,8 +378,9 @@ namespace Game
 					movingBlockSet.Dispose();
 				}
 			}
-			if (m_vertices.Count > 0)
+			for(int i = 0; i < Buffers.Count; i++)
 			{
+				var buffer = Buffers[i];
 				Vector3 viewPosition = camera.ViewPosition;
 				Vector3 vector = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
 				Matrix value = Matrix.CreateTranslation(vector - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
@@ -406,15 +390,11 @@ namespace Game
 				m_shader.GetParameter("u_origin").SetValue(vector.XZ);
 				m_shader.GetParameter("u_viewProjectionMatrix").SetValue(value);
 				m_shader.GetParameter("u_viewPosition").SetValue(camera.ViewPosition);
-				m_shader.GetParameter("u_texture").SetValue(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
+				m_shader.GetParameter("u_texture").SetValue(buffer.Texture);
 				m_shader.GetParameter("u_samplerState").SetValue(SamplerState.PointClamp);
 				m_shader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
 				m_shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(m_subsystemSky.ViewFogRange.X, 1f / (m_subsystemSky.ViewFogRange.Y - m_subsystemSky.ViewFogRange.X)));
-				Display.DrawUserIndexed(PrimitiveType.TriangleList, m_shader, TerrainVertex.VertexDeclaration, m_vertices.Array, 0, m_vertices.Count, m_indices.Array, 0, m_indices.Count);
-			}
-			if (DebugDrawMovingBlocks)
-			{
-				DebugDraw();
+				Display.DrawIndexed(PrimitiveType.TriangleList, m_shader,buffer.VertexBuffer,  buffer.IndexBuffer, 0,buffer.IndexBuffer.IndicesCount);
 			}
 		}
 
@@ -425,6 +405,8 @@ namespace Game
 			m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
 			m_subsystemAnimatedTextures = base.Project.FindSubsystem<SubsystemAnimatedTextures>(throwOnError: true);
 			m_shader = ContentManager.Get<Shader>("Shaders/AlphaTested");
+			MovingBlockGeometry = new TerrainGeometry(m_subsystemAnimatedTextures.AnimatedBlocksTexture);
+			Buffers = new DynamicArray<TerrainChunkGeometry.Buffer>();
 			foreach (ValuesDictionary value9 in valuesDictionary.GetValue<ValuesDictionary>("MovingBlockSets").Values)
 			{
 				Vector3 value = value9.GetValue<Vector3>("Position");
@@ -508,10 +490,6 @@ namespace Game
 			{
 				item.Dispose();
 			}
-		}
-
-		public void DebugDraw()
-		{
 		}
 
 		public void MovingBlocksCollision(MovingBlockSet movingBlockSet)
@@ -621,8 +599,7 @@ namespace Game
 				}
 			}
 			m_blockGeometryGenerator.ResetCache();
-			movingBlockSet.Vertices.Count = 0;
-			movingBlockSet.Indices.Count = 0;
+			MovingBlockGeometry.ClearGeometry();
 			for (int n = 1; n < point2.X + 1; n++)
 			{
 				for (int num4 = 1; num4 < point2.Y + 1; num4++)
@@ -635,7 +612,7 @@ namespace Game
 							int num6 = Terrain.ExtractContents(cellValueFast);
 							if (num6 != 0)
 							{
-								BlocksManager.Blocks[num6].GenerateTerrainVertices(m_blockGeometryGenerator, movingBlockSet.Geometry, cellValueFast, n, num4 + num, num5);
+								BlocksManager.Blocks[num6].GenerateTerrainVertices(m_blockGeometryGenerator, MovingBlockGeometry, cellValueFast, n, num4 + num, num5);
 							}
 						}
 					}
@@ -647,27 +624,16 @@ namespace Game
 
 		public void DrawMovingBlockSet(Camera camera, MovingBlockSet movingBlockSet)
 		{
-			if (m_vertices.Count <= 20000 && camera.ViewFrustum.Intersection(movingBlockSet.BoundingBox(extendToFillCells: false)))
+			if (camera.ViewFrustum.Intersection(movingBlockSet.BoundingBox(extendToFillCells: false)))
 			{
 				GenerateGeometry(movingBlockSet);
-				int count = m_vertices.Count;
-				int[] array = movingBlockSet.Indices.Array;
-				int count2 = movingBlockSet.Indices.Count;
 				Vector3 vector = movingBlockSet.Position + movingBlockSet.GeometryOffset;
-				TerrainVertex[] array2 = movingBlockSet.Vertices.Array;
-				int count3 = movingBlockSet.Vertices.Count;
-				for (int i = 0; i < count3; i++)
-				{
-					TerrainVertex item = array2[i];
+				TerrainRenderer.CompileDrawSubsets(new TerrainGeometry[1]{MovingBlockGeometry},Buffers,item => {
 					item.X += vector.X;
 					item.Y += vector.Y;
 					item.Z += vector.Z;
-					m_vertices.Add(item);
-				}
-				for (int j = 0; j < count2; j++)
-				{
-					m_indices.Add(array[j] + count);
-				}
+					return item;
+				});
 			}
 		}
 
