@@ -111,7 +111,7 @@ namespace Game
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Terrain;
 
-		public void ProcessModifiedCells()
+		public virtual void ProcessModifiedCells()
 		{
 			m_modifiedList.Clear();
 			foreach (Point3 key in m_modifiedCells.Keys)
@@ -135,7 +135,7 @@ namespace Game
 			}
 		}
 
-		public TerrainRaycastResult? Raycast(Vector3 start, Vector3 end, bool useInteractionBoxes, bool skipAirBlocks, Func<int, float, bool> action)
+		public virtual TerrainRaycastResult? Raycast(Vector3 start, Vector3 end, bool useInteractionBoxes, bool skipAirBlocks, Func<int, float, bool> action)
 		{
 			float num = Vector3.Distance(start, end);
 			if (num > 1000f)
@@ -275,7 +275,7 @@ namespace Game
 			return null;
 		}
 
-		public void ChangeCell(int x,int y,int z,int value,bool updateModificationCounter = true, MovingBlock movingBlock = null)
+		public virtual void ChangeCell(int x,int y,int z,int value,bool updateModificationCounter = true, MovingBlock movingBlock = null)
 		{
 			bool pass = false;
 			ModsManager.HookAction("TerrainChangeCell",loader => {
@@ -315,7 +315,7 @@ namespace Game
 				Log.Error("Block behavior on terrain change execute error: " + e);
 			}
 		}
-		public void ChangeCellToBehavior(int x,int y,int z,int oldValue, int newValue, MovingBlock movingBlock)
+		public virtual void ChangeCellToBehavior(int x,int y,int z,int oldValue, int newValue, MovingBlock movingBlock)
 		{
 			int num = Terrain.ExtractContents(oldValue);
 			int num2 = Terrain.ExtractContents(newValue);
@@ -359,7 +359,7 @@ namespace Game
 			}
 		}
 
-		public void DestroyCell(int toolLevel, int x, int y, int z, int newValue, bool noDrop, bool noParticleSystem)
+		public virtual void DestroyCell(int toolLevel, int x, int y, int z, int newValue, bool noDrop, bool noParticleSystem)
 		{
 			int cellValue = Terrain.GetCellValue(x, y, z);
 			int num = Terrain.ExtractContents(cellValue);
@@ -397,7 +397,7 @@ namespace Game
 			ChangeCell(x, y, z, newValue);
 		}
 
-		public void Draw(Camera camera, int drawOrder)
+		public virtual void Draw(Camera camera, int drawOrder)
 		{
 			if (TerrainRenderingEnabled)
 			{
@@ -415,7 +415,7 @@ namespace Game
 			}
 		}
 
-		public void Update(float dt)
+		public virtual void Update(float dt)
 		{
 			TerrainUpdater.Update();
 			ProcessModifiedCells();
