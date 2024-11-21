@@ -50,13 +50,11 @@ var OnPlayerSpawnedHandlers = new Array();//玩家出生时执行
 var OnPlayerDeadHandlers = new Array();//玩家死亡时执行
 /*OnPlayerDeadHandlers.push((playerData) => {//PlayerData playerData，无返回值
 });*/
-var AttackBodyHandlers = new Array();//当Miner执行攻击方法时执行，任一返回true后不执行原攻击操作
-/*AttackBodyHandlers.push((target, attacker, hitPoint, hitDirection, attackPower1, isMeleeAttack) => {//ComponentBody target, ComponentCreature attacker, Vector3 hitPoint, Vector3 hitDirection, ref float attackPower, bool isMeleeAttack
-    return false;
+var ProcessAttackmentHandlers = new Array();//在攻击时执行
+/*ProcessAttackmentHandlers.push((attackment) => {//Attackment attackment，无返回值
 });*/
-var OnCreatureInjureHandlers = new Array();//当生物受伤时执行，任一返回true后不执行原受伤操作
-/*OnCreatureInjureHandlers.push((componentHealth, amount, attacker, ignoreInvulnerability, cause) => {//ComponentHealth componentHealth, float amount, ComponentCreature attacker, bool ignoreInvulnerability, string cause
-    return false;
+var CalculateCreatureInjuryAmountHandlers = new Array();//计算生物收到伤害的量
+/*CalculateCreatureInjuryAmountHandlers.push((injury) => {//Injury injury，无返回值
 });*/
 var OnProjectLoadedHandlers = new Array();//当Project被加载时执行
 /*OnProjectLoadedHandlers.push((project) => {//Project project，无返回值

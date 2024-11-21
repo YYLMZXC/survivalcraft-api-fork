@@ -18,7 +18,7 @@ namespace Game
 	public class JsInterface
 	{
 		public static JsEngine engine;
-		public static SurvivalCraftModLoader loader;
+		public static JsModLoader loader;
 		public static Dictionary<string, List<Function>> handlersDictionary;
 
 		public static HttpListener httpListener;
@@ -137,13 +137,13 @@ namespace Game
 				};
 			}
 			handlersDictionary = [];
-			loader = (SurvivalCraftModLoader)ModsManager.ModLoaders.Find((item) => item is SurvivalCraftModLoader);
+			loader = (JsModLoader)ModsManager.ModLoaders.Find((item) => item is JsModLoader);
 			GetAndRegisterHandlers("OnMinerDig");
 			GetAndRegisterHandlers("OnMinerPlace");
 			GetAndRegisterHandlers("OnPlayerSpawned");
 			GetAndRegisterHandlers("OnPlayerDead");
-			GetAndRegisterHandlers("AttackBody");
-			GetAndRegisterHandlers("OnCreatureInjure");
+			GetAndRegisterHandlers("ProcessAttackment");
+			GetAndRegisterHandlers("CalculateCreatureInjuryAmount");
 			GetAndRegisterHandlers("OnProjectLoaded");
 			GetAndRegisterHandlers("OnProjectDisposed");
 		}
