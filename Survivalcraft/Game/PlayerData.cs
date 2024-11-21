@@ -316,6 +316,7 @@ namespace Game
 							try
                             {
                                 SpawnPlayer(SpawnPosition, m_spawnMode);
+								SubsystemPlayers.PlayerStartedPlaying = true;
                             }
 							catch (Exception ex)
 							{
@@ -364,8 +365,15 @@ namespace Game
 				if (ComponentPlayer == null)
 				{
 					m_stateMachine.TransitionTo("PrepareSpawn");
+					return;
 				}
-				else if (Time.RealTime - m_playerDeathTime.Value > 1.5 && !DialogsManager.HasDialogs(ComponentPlayer.GuiWidget) && ComponentPlayer.GameWidget.Input.Any)
+				bool respawn = false;
+				bool disableVanillaTapToRespawnAction = false;
+				ModsManager.HookAction("UpdateDeathCameraWidget",loader => {
+					loader.UpdateDeathCameraWidget(this, ref disableVanillaTapToRespawnAction, ref respawn);
+					return false;
+				});
+				if (!disableVanillaTapToRespawnAction && Time.RealTime - m_playerDeathTime.Value > 1.5 && !DialogsManager.HasDialogs(ComponentPlayer.GuiWidget) && ComponentPlayer.GameWidget.Input.Any)
 				{
 					if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Cruel)
 					{
@@ -377,9 +385,13 @@ namespace Game
 					}
 					else
 					{
-						LastDeadPlayer = ComponentPlayer.Entity;
-						ComponentPlayer = null;
+						respawn = true;
 					}
+				}
+				if(respawn)
+				{
+					LastDeadPlayer = ComponentPlayer.Entity;
+					ComponentPlayer = null;
 				}
 			}, null);
 			m_stateMachine.TransitionTo("FirstUpdate");

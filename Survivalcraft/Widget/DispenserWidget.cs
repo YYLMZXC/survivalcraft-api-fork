@@ -59,25 +59,25 @@ namespace Game
 
 		public override void Update()
 		{
-			int value = m_subsystemTerrain.Terrain.GetCellValue(m_componentBlockEntity.Coordinates.X, m_componentBlockEntity.Coordinates.Y, m_componentBlockEntity.Coordinates.Z);
+			int value = m_componentBlockEntity.BlockValue;
 			int data = Terrain.ExtractData(value);
 			if (m_dispenseButton.IsClicked)
 			{
 				data = DispenserBlock.SetMode(data, DispenserBlock.Mode.Dispense);
 				value = Terrain.ReplaceData(value, data);
-				m_subsystemTerrain.ChangeCell(m_componentBlockEntity.Coordinates.X, m_componentBlockEntity.Coordinates.Y, m_componentBlockEntity.Coordinates.Z, value);
+				m_componentBlockEntity.BlockValue = value;
 			}
 			if (m_shootButton.IsClicked)
 			{
 				data = DispenserBlock.SetMode(data, DispenserBlock.Mode.Shoot);
 				value = Terrain.ReplaceData(value, data);
-				m_subsystemTerrain.ChangeCell(m_componentBlockEntity.Coordinates.X, m_componentBlockEntity.Coordinates.Y, m_componentBlockEntity.Coordinates.Z, value);
+				m_componentBlockEntity.BlockValue = value;
 			}
 			if (m_acceptsDropsBox.IsClicked)
 			{
 				data = DispenserBlock.SetAcceptsDrops(data, !DispenserBlock.GetAcceptsDrops(data));
 				value = Terrain.ReplaceData(value, data);
-				m_subsystemTerrain.ChangeCell(m_componentBlockEntity.Coordinates.X, m_componentBlockEntity.Coordinates.Y, m_componentBlockEntity.Coordinates.Z, value);
+				m_componentBlockEntity.BlockValue = value;
 			}
 			DispenserBlock.Mode mode = DispenserBlock.GetMode(data);
 			m_dispenseButton.IsChecked = mode == DispenserBlock.Mode.Dispense;

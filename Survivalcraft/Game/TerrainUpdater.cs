@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -302,11 +302,7 @@ namespace Game
 						}
 					}
 				}
-				if (num2 <= 0)
-				{
-					return 1f;
-				}
-				return (float)num / (float)(num2 + num);
+				return num2 <= 0 ? 1f : (float)num / (float)(num2 + num);
 			}
 			return 0f;
 		}
@@ -604,7 +600,7 @@ namespace Game
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.Message);
+					Log.Error(e.ToString());
 				}
 				finally
 				{

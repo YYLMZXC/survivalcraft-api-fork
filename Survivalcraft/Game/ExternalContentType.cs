@@ -1,4 +1,4 @@
-namespace Game
+﻿namespace Game
 {
 	public enum ExternalContentType
 	{
@@ -8,6 +8,7 @@ namespace Game
 		BlocksTexture,
 		CharacterSkin,
 		FurniturePack,
-		Mod
+		Mod,
+		ModList
 	}
 }

@@ -91,6 +91,16 @@ namespace Game
 			m_subsystemElectricity.OnElectricElementBlockModified(x, y, z);
 		}
 
+		public override void OnBlockStartMoving(int value,int newValue,int x,int y,int z,MovingBlock movingBlock)
+		{
+			m_subsystemElectricity.m_pointsToUpdate[new Engine.Point3(x,y,z)] = true;
+		}
+
+		public override void OnBlockStopMoving(int value,int oldValue,int x,int y,int z,MovingBlock movingBlock)
+		{
+			m_subsystemElectricity.m_pointsToUpdate[new Engine.Point3(x,y,z)] = true;
+		}
+
 		public override void OnChunkDiscarding(TerrainChunk chunk)
 		{
 			m_subsystemElectricity.OnChunkDiscarding(chunk);

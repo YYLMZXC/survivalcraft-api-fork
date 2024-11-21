@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Graphics;
 using GameEntitySystem;
 using System;
@@ -87,7 +87,7 @@ namespace Game
 			}
 			else if (m_peckPhase != 0f)
 			{
-				m_peckPhase = MathUtils.Remainder(MathUtils.Min(m_peckPhase + (m_peckAnimationSpeed * dt), 1f), 1f);
+				m_peckPhase = MathUtils.Remainder(Math.Min(m_peckPhase + (m_peckAnimationSpeed * dt), 1f), 1f);
 			}
 			FeedOrder = false;
 			base.Update(dt);

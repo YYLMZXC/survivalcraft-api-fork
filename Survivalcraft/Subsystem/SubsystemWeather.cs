@@ -61,31 +61,31 @@ namespace Game
 			set;
 		}
 
-		public RainSplashParticleSystem RainSplashParticleSystem
+		public virtual RainSplashParticleSystem RainSplashParticleSystem
 		{
 			get;
 			set;
 		}
 
-		public SnowSplashParticleSystem SnowSplashParticleSystem
+		public virtual SnowSplashParticleSystem SnowSplashParticleSystem
 		{
 			get;
 			set;
 		}
 
-		public Color RainColor
+		public virtual Color RainColor
 		{
 			get;
 			set;
 		}
 
-		public Color SnowColor
+		public virtual Color SnowColor
 		{
 			get;
 			set;
 		}
 
-		public float GlobalPrecipitationIntensity
+		public virtual float GlobalPrecipitationIntensity
 		{
 			get;
 			set;
@@ -95,7 +95,11 @@ namespace Game
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
-		public PrecipitationShaftInfo GetPrecipitationShaftInfo(int x, int z)
+		public static Func<int, int> GetTemperatureAdjustmentAtHeight = (int y) => (int)MathF.Round((y > 64) ? (-0.0008f * MathUtils.Sqr(y - 64)) : (0.1f * (64 - y)));
+		public static Func<int, int, bool> IsPlaceFrozen = (int temperature, int y) => temperature + GetTemperatureAdjustmentAtHeight(y) <= 0;
+		public static Func<int, int, bool> ShaftHasSnowOnIce = (int x, int z) => MathUtils.Hash((uint)((x & 0xFFFF) | (z << 16))) > 429496729;
+
+		public virtual PrecipitationShaftInfo GetPrecipitationShaftInfo(int x, int z)
 		{
 			int shaftValue = SubsystemTerrain.Terrain.GetShaftValue(x, z);
 			int seasonalTemperature = SubsystemTerrain.Terrain.GetSeasonalTemperature(shaftValue);
@@ -125,7 +129,7 @@ namespace Game
 			return result;
 		}
 
-		public void ManualLightingStrike(Vector3 position, Vector3 direction)
+		public virtual void ManualLightingStrike(Vector3 position, Vector3 direction)
 		{
 			int num = Terrain.ToCell(position.X + (direction.X * 32f));
 			int num2 = Terrain.ToCell(position.Z + (direction.Z * 32f));
@@ -148,22 +152,7 @@ namespace Game
 			}
 		}
 
-		public static int GetTemperatureAdjustmentAtHeight(int y)
-		{
-			return (int)MathF.Round((y > 64) ? (-0.0008f * MathUtils.Sqr(y - 64)) : (0.1f * (64 - y)));
-		}
-
-		public static bool IsPlaceFrozen(int temperature, int y)
-		{
-			return temperature + GetTemperatureAdjustmentAtHeight(y) <= 0;
-		}
-
-		public static bool ShaftHasSnowOnIce(int x, int z)
-		{
-			return MathUtils.Hash((uint)((x & 0xFFFF) | (z << 16))) > 429496729;
-		}
-
-		public void Draw(Camera camera, int drawOrder)
+		public virtual void Draw(Camera camera, int drawOrder)
 		{
 			int num = (SettingsManager.VisibilityRange > 128) ? 9 : ((SettingsManager.VisibilityRange <= 64) ? 7 : 8);
 			int num2 = num * num;
@@ -217,7 +206,7 @@ namespace Game
 			}
 		}
 
-		public void Update(float dt)
+		public virtual void Update(float dt)
 		{
 			if (m_subsystemGameInfo.TotalElapsedGameTime > m_precipitationEndTime)
 			{
@@ -365,7 +354,7 @@ namespace Game
 			valuesDictionary.SetValue("LightningIntensity", m_lightningIntensity);
 		}
 
-		public Dictionary<Point2, PrecipitationShaftParticleSystem> GetActiveShafts(GameWidget gameWidget)
+		public virtual Dictionary<Point2, PrecipitationShaftParticleSystem> GetActiveShafts(GameWidget gameWidget)
 		{
 			if (!m_activeShafts.TryGetValue(gameWidget, out Dictionary<Point2, PrecipitationShaftParticleSystem> value))
 			{
@@ -375,7 +364,7 @@ namespace Game
 			return value;
 		}
 
-		public void FreezeThawAndDepositSnow(TerrainChunk chunk)
+		public virtual void FreezeThawAndDepositSnow(TerrainChunk chunk)
 		{
 			Terrain terrain = SubsystemTerrain.Terrain;
 			for (int i = 0; i < 16; i++)

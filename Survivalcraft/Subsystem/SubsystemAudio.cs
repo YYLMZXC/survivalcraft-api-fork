@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Audio;
 using GameEntitySystem;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace Game
 
 			public float Pan;
 
-			public OpenTK.Vector3 direction=OpenTK.Vector3.Zero;
+			public Vector3 direction = Vector3.Zero;
 
 			public SoundInfo()
 			{
@@ -114,7 +114,7 @@ namespace Game
 				Pan = pan
 			});
 		}
-		public void PlaySound(string name,float volume,float pitch,float pan,float delay,OpenTK.Vector3 direction)
+		public void PlaySound(string name,float volume,float pitch,float pan,float delay, Vector3 direction)
 		{
 			double num = m_subsystemTime.GameTime + (double)delay;
 			m_nextSoundTime = Math.Min(m_nextSoundTime,num);
@@ -155,13 +155,13 @@ namespace Game
 			}
 		}
 
-		public void PlayRandomSound(string directory, float volume, float pitch, Vector3 position, float minDistance, float delay)
+		public virtual void PlayRandomSound(string directory, float volume, float pitch, Vector3 position, float minDistance, float delay)
 		{
 			float num = CalculateVolume(CalculateListenerDistance(position), minDistance);
 			PlayRandomSound(directory, volume * num, pitch, 0f, delay);
 		}
 
-		public void PlayRandomSound(string directory, float volume, float pitch, Vector3 position, float minDistance, bool autoDelay)
+		public virtual void PlayRandomSound(string directory, float volume, float pitch, Vector3 position, float minDistance, bool autoDelay)
 		{
 			float num = CalculateVolume(CalculateListenerDistance(position), minDistance);
 			PlayRandomSound(directory, volume * num, pitch, 0f, autoDelay ? CalculateDelay(position) : 0f);
@@ -176,11 +176,7 @@ namespace Game
 
 		public float CalculateVolume(float distance, float minDistance, float rolloffFactor = 2f)
 		{
-			if (distance > minDistance)
-			{
-				return minDistance / (minDistance + MathUtils.Max(rolloffFactor * (distance - minDistance), 0f));
-			}
-			return 1f;
+			return distance > minDistance ? minDistance / (minDistance + Math.Max(rolloffFactor * (distance - minDistance), 0f)) : 1f;
 		}
 
 		public float CalculateDelay(Vector3 position)
@@ -250,7 +246,7 @@ namespace Game
 			double lastUpdateTime = value.LastUpdateTime;
 			double lastPlayedTime = value.LastPlayedTime;
 			float num = (lastUpdateTime > 0.0) ? ((float)(realTime - lastUpdateTime)) : 0f;
-			value.Value = MathUtils.Max(value.Value - (10f * num), 0f);
+			value.Value = Math.Max(value.Value - (10f * num), 0f);
 			value.LastUpdateTime = realTime;
 			if (value.Value <= 6f && (lastPlayedTime == 0.0 || volume > value.LastPlayedVolume || realTime - lastPlayedTime >= 0.0))
 			{

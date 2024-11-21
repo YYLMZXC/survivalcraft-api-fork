@@ -31,6 +31,7 @@ namespace Game
 
 		public bool CanBeBuiltIntoFurniture = false;
 
+		public bool IsCollapsable = false;
 		public virtual Vector3 GetFirstPersonOffset(int value)
 		{
 			return FirstPersonOffset;
@@ -659,6 +660,11 @@ namespace Game
 			}
 			nearestBox = array[nearestBoxIndex];
 			return result;
+		}
+
+		public virtual bool GetIsCollapsable(int value)
+		{
+			return IsCollapsable;
 		}
 		public virtual bool IsCollapseSupportBlock(SubsystemTerrain subsystemTerrain, int value)
 		{

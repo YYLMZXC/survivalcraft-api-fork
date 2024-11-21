@@ -1,4 +1,4 @@
-// Game.ModsManager
+﻿// Game.ModsManager
 
 using Engine;
 using Game;
@@ -178,10 +178,10 @@ public static class ModsManager
 		}
 	}
 
-	public static T GetInPakOrStorageFile<T>(string filepath, string suffix = "txt") where T : class
+	public static T GetInPakOrStorageFile<T>(string filePath, string suffix = "txt") where T : class
 	{
 		//string storagePath = Storage.CombinePaths(ExternelPath, filepath + prefix);
-		return ContentManager.Get<T>(filepath, suffix);
+		return ContentManager.Get<T>(filePath, suffix);
 	}
 
 	public static ModInfo DeserializeJson(string json)
@@ -368,7 +368,7 @@ public static class ModsManager
 			}
 			catch (Exception e)
 			{
-				Log.Error($"加载程序集{args.Name}失败:{e.Message}");
+				Log.Error($"加载程序集{args.Name}失败:{e.ToString()}");
 				Log.Debug(e);
 				throw;
 			}

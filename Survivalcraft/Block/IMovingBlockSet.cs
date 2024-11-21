@@ -24,10 +24,12 @@ namespace Game
 			get;
 		}
 
-		ReadOnlyList<MovingBlock> Blocks
+		List<MovingBlock> Blocks
 		{
 			get;
 		}
+
+		public bool Stopped {  get; }
 
 		BoundingBox BoundingBox(bool extendToFillCells);
 

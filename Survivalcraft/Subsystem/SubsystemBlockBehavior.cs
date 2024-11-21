@@ -45,6 +45,14 @@ namespace Game
 		public virtual void OnBlockModified(int value, int oldValue, int x, int y, int z)
 		{
 		}
+		public virtual void OnBlockStartMoving(int value, int newValue, int x, int y, int z, MovingBlock movingBlock)
+		{
+
+		}
+		public virtual void OnBlockStopMoving(int value, int oldValue, int x, int y, int z, MovingBlock movingBlock)
+		{
+
+		}
 
 		public virtual void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
 		{
@@ -56,6 +64,10 @@ namespace Game
 		}
 
 		public virtual bool OnInteract(TerrainRaycastResult raycastResult, ComponentMiner componentMiner)
+		{
+			return false;
+		}
+		public virtual bool OnInteract(MovingBlocksRaycastResult movingBlocksRaycastResult, ComponentMiner componentMiner)
 		{
 			return false;
 		}
@@ -101,6 +113,9 @@ namespace Game
 		}
 
 		public virtual void OnHitByProjectile(CellFace cellFace, WorldItem worldItem)
+		{
+		}
+		public virtual void OnHitByProjectile(MovingBlock movingBlock,WorldItem worldItem)
 		{
 		}
 

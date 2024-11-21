@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using Engine.Media;
 using OpenTK.Audio.OpenAL;
 
@@ -15,8 +15,8 @@ namespace Engine.Audio
 			base.Dispose();
 			if (m_soundBuffer != null)
 			{
-				int num = --m_soundBuffer.UseCount;
-				m_soundBuffer = null;
+                m_soundBuffer.UseCount-=1;
+                m_soundBuffer = null;
 			}
 		}
 
@@ -24,8 +24,8 @@ namespace Engine.Audio
 		{
 			ArgumentNullException.ThrowIfNull(soundBuffer);
 			m_soundBuffer = soundBuffer;
-			int num = ++m_soundBuffer.UseCount;
-		}
+            m_soundBuffer.UseCount+=1;
+        }
 
 		public Sound(SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
 		{
@@ -59,9 +59,9 @@ namespace Engine.Audio
 			Mixer.m_soundsToStopPoll.Add(this);
 		}
         /// <summary>
-        /// ÔÚÖ¸¶¨Î»ÖÃ²¥·ÅÒôÆµ
+        /// åœ¨æŒ‡å®šä½ç½®æ’­æ”¾éŸ³é¢‘
         /// </summary>
-        /// <param name="direction">Ïà¶ÔÓÚÍæ¼ÒµÄÏà¶ÔÎ»ÖÃ</param>
+        /// <param name="direction">ç›¸å¯¹äºç©å®¶çš„ç›¸å¯¹ä½ç½®</param>
 		internal override void InternalPlay(OpenTK.Vector3 direction)
 		{
             AL.Source(m_source, ALSource3f.Position, ref direction);

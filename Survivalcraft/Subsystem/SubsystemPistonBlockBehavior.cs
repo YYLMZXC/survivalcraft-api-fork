@@ -23,6 +23,8 @@ namespace Game
 
 		public SubsystemMovingBlocks m_subsystemMovingBlocks;
 
+		public SubsystemPlayers m_subsystemPlayers;
+
 		public bool m_allowPistonHeadRemove;
 
 		public Dictionary<Point3, QueuedAction> m_actions = [];
@@ -170,6 +172,7 @@ namespace Game
 			m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
 			m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
 			m_subsystemMovingBlocks = Project.FindSubsystem<SubsystemMovingBlocks>(throwOnError: true);
+			m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
 			m_subsystemMovingBlocks.Stopped += MovingBlocksStopped;
 			m_subsystemMovingBlocks.CollidedWithTerrain += MovingBlocksCollidedWithTerrain;
 		}
@@ -207,7 +210,7 @@ namespace Game
 						for (int j = -1; j <= 1; j++)
 						{
 							TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(key2.X + (i * 16), key2.Z + (j * 16));
-							if (chunkAtCell == null || chunkAtCell.State <= TerrainChunkState.InvalidContents4)
+							if (chunkAtCell == null || chunkAtCell.State <= TerrainChunkState.InvalidContents4 && m_subsystemPlayers.PlayerStartedPlaying)
 							{
 								flag = false;
 							}
@@ -359,7 +362,8 @@ namespace Game
 				{
 					GetSpeedAndSmoothness(speed, out float speed2, out Vector2 smoothness);
 					Point3 p = position + ((length - num) * point);
-					if (m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(position) + (0.01f * new Vector3(point)), new Vector3(p), speed2, 0f, 0f, smoothness, m_movingBlocks, "Piston", position, testCollision: true) != null)
+					IMovingBlockSet movingBlockSet = m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(position) + (0.01f * new Vector3(point)),new Vector3(p),speed2,0f,0f,smoothness,m_movingBlocks,"Piston",position,testCollision: true);
+					if (movingBlockSet != null)
 					{
 						m_allowPistonHeadRemove = true;
 						try
@@ -368,7 +372,7 @@ namespace Game
 							{
 								if (movingBlock.Offset != Point3.Zero)
 								{
-									m_subsystemTerrain.ChangeCell(position.X + movingBlock.Offset.X, position.Y + movingBlock.Offset.Y, position.Z + movingBlock.Offset.Z, 0);
+									m_subsystemTerrain.ChangeCell(position.X + movingBlock.Offset.X, position.Y + movingBlock.Offset.Y, position.Z + movingBlock.Offset.Z, 0, true, movingBlock);
 								}
 							}
 						}
@@ -416,14 +420,15 @@ namespace Game
 				GetSpeedAndSmoothness(speed, out float speed3, out Vector2 smoothness2);
 				float s = (length == 0) ? 0.01f : 0f;
 				Vector3 targetPosition = new Vector3(position) + ((length - num) * new Vector3(point)) + (s * new Vector3(point));
-				if (m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(position), targetPosition, speed3, 0f, 0f, smoothness2, m_movingBlocks, "Piston", position, testCollision: true) != null)
+				IMovingBlockSet movingBlockSet = m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(position),targetPosition,speed3,0f,0f,smoothness2,m_movingBlocks,"Piston",position,testCollision: true);
+				if (movingBlockSet != null)
 				{
 					m_allowPistonHeadRemove = true;
 					try
 					{
 						foreach (MovingBlock movingBlock2 in m_movingBlocks)
 						{
-							m_subsystemTerrain.ChangeCell(position.X + movingBlock2.Offset.X, position.Y + movingBlock2.Offset.Y, position.Z + movingBlock2.Offset.Z, 0);
+							m_subsystemTerrain.ChangeCell(position.X + movingBlock2.Offset.X, position.Y + movingBlock2.Offset.Y, position.Z + movingBlock2.Offset.Z, 0, false, movingBlock2);
 						}
 					}
 					finally
@@ -458,7 +463,7 @@ namespace Game
 						int num2 = Terrain.ExtractContents(block.Value);
 						if (flag || num2 != 238)
 						{
-							m_subsystemTerrain.DestroyCell(0, x, y, z, block.Value, noDrop: false, noParticleSystem: false);
+							m_subsystemMovingBlocks.AddTerrainBlock(x,y,z,block.Value,block);
 							if (num2 == 238)
 							{
 								isExtended = true;

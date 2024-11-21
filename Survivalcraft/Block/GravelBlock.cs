@@ -6,6 +6,10 @@ namespace Game
 	{
 		public static int Index = 6;
 
+		public GravelBlock() {
+			IsCollapsable = true;
+		}
+
 		public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)
 		{
 			showDebris = true;

@@ -1084,7 +1084,7 @@ namespace Game
 			}
 			catch (Exception ex)
 			{
-				Log.Error($"Unable to spawn creature with template \"{templateName}\". Reason: {ex.Message}");
+				Log.Error($"Unable to spawn creature with template \"{templateName}\". Reason: {ex.ToString()}");
 				return null;
 			}
 		}

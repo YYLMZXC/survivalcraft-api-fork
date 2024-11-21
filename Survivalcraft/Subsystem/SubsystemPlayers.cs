@@ -21,6 +21,8 @@ namespace Game
 
 		public static int MaxPlayers = 4;
 
+		public bool PlayerStartedPlaying = false;
+
 		public ReadOnlyList<PlayerData> PlayersData => new(m_playersData);
 
 		public ReadOnlyList<ComponentPlayer> ComponentPlayers => new(m_componentPlayers);

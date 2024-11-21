@@ -28,7 +28,11 @@ namespace Game
 
 		public TreeViewNode LinkedNode = null;
 
-		public int ModID;
+		public int CollectionID;
+
+		public string CollectionName;
+
+		public string CollectionDetails;
 
 		public int Index;
 	}

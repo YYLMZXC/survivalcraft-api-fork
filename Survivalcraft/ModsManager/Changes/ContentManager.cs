@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Graphics;
 using Engine.Media;
 using System;
@@ -116,16 +116,9 @@ namespace Game
 					}
 					if (contents.Count == 0)
 					{//没有找到对应资源
-						if (throwOnNotFound)
-						{
-							throw new Exception("Not Found Res [" + key + "][" + type.FullName + "]");
-						}
-						else
-						{
-							return null;
-						}
+						return throwOnNotFound ? throw new Exception("Not Found Res [" + key + "][" + type.FullName + "]") : null;
 					}
-					obj = reader.Get(contents.ToArray());
+					obj = reader.Get([.. contents]);
 				}
 				if (cacheList == null) { cacheList = []; Caches.Add(key, cacheList); }
 				cacheList.Add(obj);

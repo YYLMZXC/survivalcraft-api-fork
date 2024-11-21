@@ -97,12 +97,12 @@ namespace Game
 			{
 				dictionary.Add("Max Storage Time", string.Format(LanguageControl.Get(fName, 2), $"{2 * block.GetRotPeriod(value) * 60f / 1200f:0.0}"));
 			}
-			if (block.DigMethod != 0)
+			if (block.GetBlockDigMethod(value) != 0)
 			{
 				dictionary.Add("Digging Method", LanguageControl.Get("DigMethod", block.GetBlockDigMethod(value).ToString()));
 				dictionary.Add("Digging Resilience", block.GetDigResilience(value).ToString());
 			}
-			if (block.ExplosionResilience > 0f)
+			if (block.GetExplosionResilience(value) > 0f)
 			{
 				dictionary.Add("Explosion Resilience", block.GetExplosionResilience(value).ToString());
 			}

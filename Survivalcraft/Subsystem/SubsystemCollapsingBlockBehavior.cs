@@ -15,14 +15,6 @@ namespace Game
 
 		public SubsystemMovingBlocks m_subsystemMovingBlocks;
 
-		public static int[] m_handledBlocks = new int[2]
-		{
-			7,
-			6
-		};
-
-		public override int[] HandledBlocks => m_handledBlocks;
-
 		public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
 		{
 			if (m_subsystemGameInfo.WorldSettings.EnvironmentBehaviorMode == EnvironmentBehaviorMode.Living)
@@ -65,7 +57,7 @@ namespace Game
 				foreach (MovingBlock block in movingBlockSet.Blocks)
 				{
 					Point3 point = p + block.Offset;
-					SubsystemTerrain.DestroyCell(0, point.X, point.Y, point.Z, block.Value, noDrop: false, noParticleSystem: false);
+					m_subsystemMovingBlocks.AddTerrainBlock(point.X,point.Y,point.Z,block.Value, block);
 				}
 				m_subsystemMovingBlocks.RemoveMovingBlockSet(movingBlockSet);
 				if (movingBlockSet.Blocks.Count > 0)
@@ -90,7 +82,8 @@ namespace Game
 			for (int i = p.Y; i < 256; i++)
 			{
 				int cellValue2 = SubsystemTerrain.Terrain.GetCellValue(p.X, i, p.Z);
-				if (!IsCollapsibleBlock(cellValue2))
+				Block block = BlocksManager.Blocks[Terrain.ExtractContents(cellValue2)];
+				if (!block.GetIsCollapsable(cellValue2))
 				{
 					break;
 				}
@@ -100,19 +93,18 @@ namespace Game
 					Offset = new Point3(0, i - p.Y, 0)
 				});
 			}
-			if (list.Count != 0 && m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(p), new Vector3(p.X, -list.Count - 1, p.Z), 0f, 10f, 0.7f, new Vector2(0f), list, "CollapsingBlock", null, testCollision: true) != null)
+			if(list.Count != 0)
 			{
-				foreach (MovingBlock item in list)
+				IMovingBlockSet movingBlockSet = m_subsystemMovingBlocks.AddMovingBlockSet(new Vector3(p),new Vector3(p.X,-list.Count - 1,p.Z),0f,10f,0.7f,new Vector2(0f),list,"CollapsingBlock",null,testCollision: true);
+				if(movingBlockSet != null)
 				{
-					Point3 point = p + item.Offset;
-					SubsystemTerrain.ChangeCell(point.X, point.Y, point.Z, 0);
+					foreach(MovingBlock item in list)
+					{
+						Point3 point = p + item.Offset;
+						SubsystemTerrain.ChangeCell(point.X,point.Y,point.Z,0,true,item);
+					}
 				}
 			}
-		}
-
-		public static bool IsCollapsibleBlock(int value)
-		{
-			return m_handledBlocks.Contains(Terrain.ExtractContents(value));
 		}
 
 		public bool IsCollapseSupportBlock(int value)

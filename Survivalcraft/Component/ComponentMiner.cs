@@ -325,6 +325,24 @@ namespace Game
 			}
 			return false;
 		}
+		public bool Interact(MovingBlocksRaycastResult raycastResult)
+		{
+			if(raycastResult.MovingBlock == null) return false;
+			SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(raycastResult.MovingBlock.Value));
+			for(int i = 0; i < blockBehaviors.Length; i++)
+			{
+				if(blockBehaviors[i].OnInteract(raycastResult,this))
+				{
+					if(ComponentCreature.PlayerStats != null)
+					{
+						ComponentCreature.PlayerStats.BlocksInteracted++;
+					}
+					Poke(forceRestart: false);
+					return true;
+				}
+			}
+			return false;
+		}
 
 		public void Hit(ComponentBody componentBody, Vector3 hitPoint, Vector3 hitDirection)
 		{

@@ -409,7 +409,7 @@ namespace Game
                 }
                 catch (Exception e)
                 {
-                    LoadingScreen.Warning("Loading Block " + block.GetType().Name + " error." + e.Message);
+                    LoadingScreen.Warning("Loading Block " + block.GetType().Name + " error." + e.ToString());
                 }
                 foreach (int value in block.GetCreativeValues())
                 {

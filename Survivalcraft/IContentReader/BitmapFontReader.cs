@@ -9,8 +9,9 @@ namespace Game.IContentReader
 		public override string[] DefaultSuffix => ["lst", "webp", "png"];
 		public override object Get(ContentInfo[] contents)
 		{
-			if (contents.Length != 2) throw new System.Exception("not matches content count");
-			return BitmapFont.Initialize(contents[1].Duplicate(), contents[0].Duplicate(), new Vector2(0f, -3f));
+			return contents.Length != 2
+				? throw new System.Exception("not matches content count")
+				: (object)BitmapFont.Initialize(contents[1].Duplicate(), contents[0].Duplicate(), new Vector2(0f, -3f));
 		}
 	}
 }

@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -22,31 +22,18 @@ namespace Game
 		}
 
 		public TreeViewWidget m_treePanel;
-
 		public LabelWidget m_orderLabel;
-
 		public ButtonWidget m_changeOrderButton;
-
 		public LabelWidget m_filterLabel;
-
 		public ButtonWidget m_changeFilterButton;
-
 		public ButtonWidget m_downloadButton;
-
 		public ButtonWidget m_actionButton;
-
 		public ButtonWidget m_action2Button;
-
 		public ButtonWidget m_action3Button;
-
 		public ButtonWidget m_moreOptionsButton;
-
 		public ButtonWidget m_searchKey;
-
 		public ButtonWidget m_searchTypeButton;
-
 		public TextBoxWidget m_inputKey;
-
 		public LabelWidget m_placeHolder;
 
 		public object m_filter;
@@ -58,9 +45,7 @@ namespace Game
 		public double m_contentExpiryTime;
 
 		public bool m_isOwn;
-
 		public bool m_isAdmin;
-
 		public bool m_isCNLanguageType;
 
 		public Dictionary<string, IEnumerable<object>> m_itemsCache = [];
@@ -150,7 +135,7 @@ namespace Game
 			m_order = Order.ByRank;
 			m_inputKey.Text = string.Empty;
 			m_isOwn = false;
-			string languageType = (!ModsManager.Configs.ContainsKey("Language")) ? "zh-CN" : ModsManager.Configs["Language"];
+			string languageType = (!ModsManager.Configs.TryGetValue("Language",out string value)) ? "zh-CN" : value;
 			m_isCNLanguageType = languageType == "zh-CN";
 			CommunityContentManager.IsAdmin(new CancellableProgress(), delegate (bool isAdmin)
 			{
@@ -178,14 +163,9 @@ namespace Game
 			if (communityContentEntry != null)
 			{
 				m_actionButton.IsEnabled = m_isAdmin || m_isOwn;
-				if (m_order == Order.ByHide || m_isOwn)
-				{
-					m_actionButton.Text = LanguageControl.Get(GetType().Name, 23);
-				}
-				else
-				{
-					m_actionButton.Text = (communityContentEntry.Boutique == 0) ? LanguageControl.Get(GetType().Name, 15) : LanguageControl.Get(GetType().Name, 16);
-				}
+				m_actionButton.Text = m_order == Order.ByHide || m_isOwn
+					? LanguageControl.Get(GetType().Name, 23)
+					: (communityContentEntry.Boutique == 0) ? LanguageControl.Get(GetType().Name, 15) : LanguageControl.Get(GetType().Name, 16);
 				m_action2Button.IsEnabled = (m_filter.ToString() != "Mod") && (m_isAdmin || m_isOwn);
 			}
 			else
@@ -452,16 +432,16 @@ namespace Game
 			{
 				DialogsManager.HideDialog(busyDialog);
 				m_contentExpiryTime = Time.RealTime + 300.0;
-				while (m_treePanel.Nodes.Count > 0 && m_treePanel.Nodes[^1].Tag is "Load More")//移除原先添加的"加载更多"节点
+				while (m_treePanel.Nodes.Count > 0 && m_treePanel.Nodes[^1].Tag is "加载")//移除原先添加的"加载更多"节点
 				{
 					m_treePanel.Nodes.RemoveAt(m_treePanel.Nodes.Count - 1);
 				}
 				foreach (CommunityContentEntry item2 in list)
 				{
-					var rootNode = m_treePanel.Nodes.FirstOrDefault(x => x.Tag is int id && id == item2.ModID);
+					var rootNode = m_treePanel.Nodes.FirstOrDefault(x => x.Tag is int id && id == item2.CollectionID);
 					if(rootNode == null)
 					{
-						rootNode = CreateRootNode(item2.ModID);
+						rootNode = CreateCollectionNode(item2);
 						m_treePanel.AddRoot(rootNode);
 					}
 					rootNode.AddChild(ContentToNode(item2));
@@ -479,7 +459,16 @@ namespace Game
 									{
 										var texture = Engine.Graphics.Texture2D.Load(Image.Load(new System.IO.MemoryStream(data)));
 										item2.Icon = texture;
-										if (item2.LinkedNode != null) item2.LinkedNode.Icon = texture;
+										if(item2.LinkedNode != null)
+										{
+											//item2.LinkedNode.Icon = texture; //资源节点的图标
+											if(item2.LinkedNode.ParentNode is {
+													Tag: int
+												}) //合集节点的图标
+											{
+												item2.LinkedNode.ParentNode.Icon = texture;
+											}
+										}
 									}
 									catch (Exception)
 									{
@@ -549,47 +538,36 @@ namespace Game
 
 		public string GetFilterDisplayName(object filter)
 		{
-			if (filter is string)
-			{
-				if (!string.IsNullOrEmpty((string)filter))
-				{
-					return LanguageControl.Get(nameof(CommunityContentScreen), 8);
-				}
-				return LanguageControl.Get(nameof(CommunityContentScreen), 9);
-			}
-			if (filter is ExternalContentType)
-			{
-				return ExternalContentManager.GetEntryTypeDescription((ExternalContentType)filter);
-			}
-			throw new InvalidOperationException(LanguageControl.Get(nameof(CommunityContentScreen), 10));
+			return filter is string
+				? !string.IsNullOrEmpty((string)filter)
+					? LanguageControl.Get(nameof(CommunityContentScreen), 8)
+					: LanguageControl.Get(nameof(CommunityContentScreen), 9)
+				: filter is ExternalContentType
+				? ExternalContentManager.GetEntryTypeDescription((ExternalContentType)filter)
+				:            throw new InvalidOperationException(LanguageControl.Get(nameof(CommunityContentScreen), 10));
 		}
 
 		public string GetOrderDisplayName(Order order)
 		{
-			switch (order)
+			return order switch
 			{
-				case Order.ByRank:
-					return m_isCNLanguageType ? "评分最高" : "ByRank";
-				case Order.ByTime:
-					return m_isCNLanguageType ? "最新发布" : "ByTime";
-				case Order.ByBoutique:
-					return m_isCNLanguageType ? "精品推荐" : "ByBoutique";
-				case Order.ByHide:
-					return m_isCNLanguageType ? "尚未发布" : "ByHide";
-				default:
-					throw new InvalidOperationException(LanguageControl.Get(nameof(CommunityContentScreen), 13));
-			}
+				Order.ByRank => m_isCNLanguageType ? "评分最高" : "ByRank",
+				Order.ByTime => m_isCNLanguageType ? "最新发布" : "ByTime",
+				Order.ByBoutique => m_isCNLanguageType ? "精品推荐" : "ByBoutique",
+				Order.ByHide => m_isCNLanguageType ? "尚未发布" : "ByHide",
+				_ => throw new InvalidOperationException(LanguageControl.Get(nameof(CommunityContentScreen),13)),
+			};
 		}
 
 		public string GetSearchTypeDisplayName(SearchType searchType)
 		{
-			switch (searchType)
+			return searchType switch
 			{
-				case SearchType.ByName: return m_isCNLanguageType ? "资源名" : "Name";
-				case SearchType.ByAuthor: return m_isCNLanguageType ? "用户名" : "User";
-				case SearchType.ByUserId: return m_isCNLanguageType ? "用户ID" : "UID";
-				default: return "null";
-			}
+				SearchType.ByName => m_isCNLanguageType ? "资源名" : "Name",
+				SearchType.ByAuthor => m_isCNLanguageType ? "用户名" : "User",
+				SearchType.ByUserId => m_isCNLanguageType ? "用户ID" : "UID",
+				_ => "null",
+			};
 		}
 
 		public TreeViewNode ContentToNode(CommunityContentEntry contentEntry)
@@ -601,9 +579,9 @@ namespace Game
 			return node;
 		}
 
-		public TreeViewNode CreateRootNode(int modID)
+		public TreeViewNode CreateCollectionNode(CommunityContentEntry contentEntry)
 		{
-			TreeViewNode node = new ($"合集 ID:{modID}", Color.White, "测试", new Color(128, 128, 128)) { Tag = modID };
+			TreeViewNode node = new (contentEntry.CollectionName, Color.White, contentEntry.CollectionDetails, new Color(128, 128, 128)) { Tag = contentEntry.CollectionID };
 			return node;
 		}
 	}

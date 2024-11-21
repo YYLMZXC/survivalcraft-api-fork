@@ -89,14 +89,6 @@ namespace Game
 			craftingRecipe.RequiredPlayerLevel = XmlUtils.GetAttributeValue(item, "RequiredPlayerLevel", 1f);
 			craftingRecipe.Description = desc;
 			craftingRecipe.Message = XmlUtils.GetAttributeValue<string>(item, "Message", null);
-			if (craftingRecipe.ResultCount > BlocksManager.Blocks[Terrain.ExtractContents(craftingRecipe.ResultValue)].GetMaxStacking(craftingRecipe.ResultValue))
-			{
-				throw new InvalidOperationException($"In recipe for \"{attributeValue}\" ResultCount is larger than max stacking of result block.");
-			}
-			if (craftingRecipe.RemainsValue != 0 && craftingRecipe.RemainsCount > BlocksManager.Blocks[Terrain.ExtractContents(craftingRecipe.RemainsValue)].GetMaxStacking(craftingRecipe.RemainsValue))
-			{
-				throw new InvalidOperationException($"In Recipe for \"{attributeValue2}\" RemainsCount is larger than max stacking of remains block.");
-			}
 			var dictionary = new Dictionary<char, string>();
 			foreach (XAttribute item2 in from a in item.Attributes()
 										 where a.Name.LocalName.Length == 1 && char.IsLower(a.Name.LocalName[0])

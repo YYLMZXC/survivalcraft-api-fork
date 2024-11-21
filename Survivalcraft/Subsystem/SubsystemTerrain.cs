@@ -111,7 +111,7 @@ namespace Game
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Terrain;
 
-		public void ProcessModifiedCells()
+		public virtual void ProcessModifiedCells()
 		{
 			m_modifiedList.Clear();
 			foreach (Point3 key in m_modifiedCells.Keys)
@@ -135,7 +135,7 @@ namespace Game
 			}
 		}
 
-		public TerrainRaycastResult? Raycast(Vector3 start, Vector3 end, bool useInteractionBoxes, bool skipAirBlocks, Func<int, float, bool> action)
+		public virtual TerrainRaycastResult? Raycast(Vector3 start, Vector3 end, bool useInteractionBoxes, bool skipAirBlocks, Func<int, float, bool> action)
 		{
 			float num = Vector3.Distance(start, end);
 			if (num > 1000f)
@@ -275,64 +275,91 @@ namespace Game
 			return null;
 		}
 
-		public void ChangeCell(int x, int y, int z, int value, bool updateModificationCounter = true)
+		public virtual void ChangeCell(int x,int y,int z,int value,bool updateModificationCounter = true, MovingBlock movingBlock = null)
 		{
 			bool pass = false;
-			ModsManager.HookAction("TerrainChangeCell", loader =>
-			{
-				loader.TerrainChangeCell(this, x, y, z, value, out bool Skip);
+			ModsManager.HookAction("TerrainChangeCell",loader => {
+				loader.TerrainChangeCell(this,x,y,z,value,out bool Skip);
 				pass |= Skip;
 				return false;
 			});
-			if (pass) return;
-			if (!Terrain.IsCellValid(x, y, z))
+			if(pass) return;
+			if(!Terrain.IsCellValid(x,y,z))
 			{
 				return;
 			}
-			int cellValueFast = Terrain.GetCellValueFast(x, y, z);
-			value = Terrain.ReplaceLight(value, 0);
-			cellValueFast = Terrain.ReplaceLight(cellValueFast, 0);
-			if (value == cellValueFast)
+			int cellValueFast = Terrain.GetCellValueFast(x,y,z);
+			value = Terrain.ReplaceLight(value,0);
+			cellValueFast = Terrain.ReplaceLight(cellValueFast,0);
+			if(value == cellValueFast)
 			{
 				return;
 			}
-			Terrain.SetCellValueFast(x, y, z, value);
-			TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x, z);
-			if (chunkAtCell != null)
+			Terrain.SetCellValueFast(x,y,z,value);
+			TerrainChunk chunkAtCell = Terrain.GetChunkAtCell(x,z);
+			if(chunkAtCell != null)
 			{
-				if (updateModificationCounter)
+				if(updateModificationCounter)
 				{
 					chunkAtCell.ModificationCounter++;
 				}
-				TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords, 1, TerrainChunkState.InvalidLight, forceGeometryRegeneration: false);
+				TerrainUpdater.DowngradeChunkNeighborhoodState(chunkAtCell.Coords,1,TerrainChunkState.InvalidLight,forceGeometryRegeneration: false);
 			}
-			m_modifiedCells[new Point3(x, y, z)] = true;
-			int num = Terrain.ExtractContents(cellValueFast);
-			int num2 = Terrain.ExtractContents(value);
+			m_modifiedCells[new Point3(x,y,z)] = true;
+			try
+			{
+				ChangeCellToBehavior(x,y,z,cellValueFast,value,movingBlock);
+			}
+			catch(Exception e)
+			{
+				Log.Error("Block behavior on terrain change execute error: " + e);
+			}
+		}
+		public virtual void ChangeCellToBehavior(int x,int y,int z,int oldValue, int newValue, MovingBlock movingBlock)
+		{
+			int num = Terrain.ExtractContents(oldValue);
+			int num2 = Terrain.ExtractContents(newValue);
+			SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(oldValue));
+			SubsystemBlockBehavior[] blockBehaviors2 = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(newValue));
+			if(movingBlock?.MovingBlockSet != null)
+			{
+				if(movingBlock.MovingBlockSet.Stopped)
+				{
+					for(int j = 0; j < blockBehaviors2.Length; j++)
+					{
+						blockBehaviors2[j].OnBlockStopMoving(newValue,oldValue,x,y,z,movingBlock);
+					}
+				}
+				else
+				{
+					for(int j = 0; j < blockBehaviors.Length; j++)
+					{
+						blockBehaviors[j].OnBlockStartMoving(oldValue,newValue,x,y,z,movingBlock);
+					}
+				}
+				return;
+			}
 			if (num2 != num)
 			{
-				SubsystemBlockBehavior[] blockBehaviors = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(cellValueFast));
 				for (int i = 0; i < blockBehaviors.Length; i++)
 				{
-					blockBehaviors[i].OnBlockRemoved(cellValueFast, value, x, y, z);
+					blockBehaviors[i].OnBlockRemoved(oldValue, newValue, x, y, z);
 				}
-				SubsystemBlockBehavior[] blockBehaviors2 = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(value));
 				for (int j = 0; j < blockBehaviors2.Length; j++)
 				{
-					blockBehaviors2[j].OnBlockAdded(value, cellValueFast, x, y, z);
+					blockBehaviors2[j].OnBlockAdded(newValue, oldValue, x, y, z);
 				}
 			}
 			else
 			{
-				SubsystemBlockBehavior[] blockBehaviors3 = m_subsystemBlockBehaviors.GetBlockBehaviors(Terrain.ExtractContents(value));
-				for (int k = 0; k < blockBehaviors3.Length; k++)
+				for (int k = 0; k < blockBehaviors2.Length; k++)
 				{
-					blockBehaviors3[k].OnBlockModified(value, cellValueFast, x, y, z);
+					blockBehaviors2[k].OnBlockModified(newValue, oldValue, x, y, z);
 				}
 			}
 		}
 
-		public void DestroyCell(int toolLevel, int x, int y, int z, int newValue, bool noDrop, bool noParticleSystem)
+		public virtual void DestroyCell(int toolLevel, int x, int y, int z, int newValue, bool noDrop, bool noParticleSystem)
 		{
 			int cellValue = Terrain.GetCellValue(x, y, z);
 			int num = Terrain.ExtractContents(cellValue);
@@ -370,7 +397,7 @@ namespace Game
 			ChangeCell(x, y, z, newValue);
 		}
 
-		public void Draw(Camera camera, int drawOrder)
+		public virtual void Draw(Camera camera, int drawOrder)
 		{
 			if (TerrainRenderingEnabled)
 			{
@@ -388,7 +415,7 @@ namespace Game
 			}
 		}
 
-		public void Update(float dt)
+		public virtual void Update(float dt)
 		{
 			TerrainUpdater.Update();
 			ProcessModifiedCells();

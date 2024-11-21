@@ -1,4 +1,4 @@
-using Engine;
+锘縰sing Engine;
 using GameEntitySystem;
 using TemplatesDatabase;
 
@@ -18,8 +18,7 @@ namespace Game
 
 		public virtual void Dispense()
 		{
-			Point3 coordinates = m_componentBlockEntity.Coordinates;
-			int data = Terrain.ExtractData(m_subsystemTerrain.Terrain.GetCellValue(coordinates.X, coordinates.Y, coordinates.Z));
+			int data = Terrain.ExtractData(m_componentBlockEntity.BlockValue);
 			int direction = DispenserBlock.GetDirection(data);
 			DispenserBlock.Mode mode = DispenserBlock.GetMode(data);
 			int num = 0;
@@ -44,18 +43,18 @@ namespace Game
 				loader.DispenserChooseItemToDispense(this, ref num, ref slotValue, out bool chosen);
 				return chosen;
 			});
-			if(num >= 0)//投掷的Slot
+			if(num >= 0)//鎶曟幏鐨凷lot
 			{
 				int num2 = 1;
 				int itemDispense = 0;
                 for (int i = 0; i < num2 && GetSlotCount(num) > 0; i++)
                 {
-                    itemDispense = DispenseItem(coordinates, direction, slotValue, mode);
+                    itemDispense = DispenseItem(m_componentBlockEntity.Position, direction, slotValue, mode);
 					try
 					{
                         RemoveSlotItems(num, itemDispense);
 					}
-					catch (Exception e) { }
+					catch (Exception e) { Log.Error(e.ToString()); }
                 }
             }
 		}
@@ -68,14 +67,15 @@ namespace Game
 			m_subsystemPickables = Project.FindSubsystem<SubsystemPickables>(throwOnError: true);
 			m_subsystemProjectiles = Project.FindSubsystem<SubsystemProjectiles>(throwOnError: true);
 			m_componentBlockEntity = Entity.FindComponent<ComponentBlockEntity>(throwOnError: true);
+			m_componentBlockEntity.m_inventoryToGatherPickable = this;
 		}
 
-		public virtual int DispenseItem(Point3 point, int face, int value, DispenserBlock.Mode mode)
+		public virtual int DispenseItem(Vector3 point, int face, int value, DispenserBlock.Mode mode)
 		{
 			Vector3 vector = CellFace.FaceToVector3(face);
 			Vector3 position = new Vector3(point.X + 0.5f, point.Y + 0.5f, point.Z + 0.5f) + (0.6f * vector);
 			int removeSlotCount = 1;
-			//投掷物品
+			//鎶曟幏鐗╁搧
 			if (mode == DispenserBlock.Mode.Dispense)
 			{
 				float s = 1.8f;
@@ -92,7 +92,7 @@ namespace Game
 				}
 				return 0;
 			}
-			//发射物品
+			//鍙戝皠鐗╁搧
 			float s2 = m_random.Float(39f, 41f);
 			bool canFireProjectile = m_subsystemProjectiles.CanFireProjectile(value, position, vector, null, out Vector3 position2);
 			bool canDispensePickable = true;

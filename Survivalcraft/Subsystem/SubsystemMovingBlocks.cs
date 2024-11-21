@@ -54,8 +54,8 @@ namespace Game
 			object IMovingBlockSet.Tag => Tag;
 
 			Vector3 IMovingBlockSet.CurrentVelocity => CurrentVelocity;
-
-			ReadOnlyList<MovingBlock> IMovingBlockSet.Blocks => new(Blocks);
+			bool IMovingBlockSet.Stopped => Stop;
+			List<MovingBlock> IMovingBlockSet.Blocks => Blocks;
 
 			public MovingBlockSet()
 			{
@@ -150,7 +150,7 @@ namespace Game
 
 		public static int[] m_drawOrders = new int[1] { 10 };
 
-		public IReadOnlyList<IMovingBlockSet> MovingBlockSets => m_movingBlockSets;
+		public List<IMovingBlockSet> MovingBlockSets => new(m_movingBlockSets);
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
@@ -175,6 +175,10 @@ namespace Game
 				Tag = tag,
 				Blocks = blocks.ToList()
 			};
+			for(int i = 0; i < movingBlockSet.Blocks.Count; i++)
+			{
+				movingBlockSet.Blocks[i].MovingBlockSet = movingBlockSet;
+			}
 			movingBlockSet.UpdateBox();
 			bool canAdd = true;
             ModsManager.HookAction("OnMovingBlockSetAdded", loader =>
@@ -238,7 +242,7 @@ namespace Game
 			return null;
 		}
 
-		public MovingBlocksRaycastResult? Raycast(Vector3 start, Vector3 end, bool extendToFillCells)
+		public MovingBlocksRaycastResult? Raycast(Vector3 start, Vector3 end, bool extendToFillCells, Func<int,float,bool> action = null)
 		{
 			Ray3 ray = new(start, Vector3.Normalize(end - start));
 			BoundingBox boundingBox = new(Vector3.Min(start, end), Vector3.Max(start, end));
@@ -246,22 +250,52 @@ namespace Game
 			FindMovingBlocks(boundingBox, extendToFillCells, m_result);
 			float num = float.MaxValue;
 			MovingBlockSet movingBlockSet = null;
-			foreach (MovingBlockSet item in m_result)
+			try
 			{
-				BoundingBox box = item.BoundingBox(extendToFillCells);
-				float? num2 = ray.Intersection(box);
-				if (num2.HasValue && num2.Value < num)
+				foreach(var item in m_result.Array)
 				{
-					num = num2.Value;
-					movingBlockSet = item;
+					MovingBlockSet item1 = item as MovingBlockSet;
+					if(item1 == null || item1.Stop) continue;
+					BoundingBox box = item.BoundingBox(extendToFillCells);
+					float? num2 = ray.Intersection(box);
+					if(num2.HasValue && num2.Value < num)
+					{
+						num = num2.Value;
+						movingBlockSet = item1;
+					}
 				}
+			}
+			catch(Exception e)
+			{
+				Log.Error("Moving Blocks raycast error" + e);
 			}
 			if (movingBlockSet != null)
 			{
+				float distance = float.MaxValue;
+				MovingBlock rightMovingBlock = null;
+				int rightCollisionBoxIndex = -1;
+				BoundingBox? rightNearestBox = null;
+				foreach(MovingBlock movingBlock in movingBlockSet.Blocks)
+				{
+					int blockValue = movingBlock.Value;
+					Block block = BlocksManager.Blocks[Terrain.ExtractContents(blockValue)];
+					Ray3 equalRay = new Ray3(ray.Position - movingBlockSet.Position - new Vector3(movingBlock.Offset.X, movingBlock.Offset.Y, movingBlock.Offset.Z), ray.Direction);
+					float? dist = block.Raycast(equalRay, m_subsystemTerrain, blockValue, true, out int collisionBoxIndex, out BoundingBox nearestBox);
+					if(dist.HasValue && dist.Value < distance && (action == null || action(blockValue, dist.Value)))
+					{
+						distance = dist.Value;
+						rightMovingBlock = movingBlock;
+						rightCollisionBoxIndex = collisionBoxIndex;
+						rightNearestBox = nearestBox;
+					}
+				}
 				MovingBlocksRaycastResult value = default(MovingBlocksRaycastResult);
 				value.Ray = ray;
-				value.Distance = num;
+				value.Distance = (distance == float.MaxValue ? num : distance);
 				value.MovingBlockSet = movingBlockSet;
+				value.MovingBlock = rightMovingBlock;
+				value.CollisionBoxIndex = rightCollisionBoxIndex;
+				value.BlockBoundingBox = rightNearestBox;
 				return value;
 			}
 			return null;
@@ -421,7 +455,7 @@ namespace Game
 				string[] array = value9.GetValue<string>("Blocks").Split(new char[1] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 				foreach (string obj2 in array)
 				{
-					MovingBlock item = default(MovingBlock);
+					MovingBlock item = new MovingBlock();
 					string[] array2 = obj2.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 					item.Value = HumanReadableConverter.ConvertFromString<int>(array2[0]);
 					item.Offset.X = HumanReadableConverter.ConvertFromString<int>(array2[1]);
@@ -644,6 +678,19 @@ namespace Game
 				return b1.Min.Z < b2.Max.Z;
 			}
 			return false;
+		}
+		public virtual void AddTerrainBlock(int x, int y, int z, int value, MovingBlock movingBlock)
+		{
+			try
+			{
+				if(movingBlock == null) throw new NullReferenceException("Moving Block Set cannot be null when stop block movement!");
+				movingBlock?.MovingBlockSet?.Stop();
+				m_subsystemTerrain.ChangeCell(x,y,z,value,true,movingBlock);
+			}
+			catch(Exception ex)
+			{
+				Log.Error("Add terrain block when moving blocks stop error: " + ex);
+			}
 		}
 	}
 }

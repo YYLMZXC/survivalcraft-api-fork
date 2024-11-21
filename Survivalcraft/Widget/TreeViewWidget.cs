@@ -49,6 +49,11 @@ namespace Game
 					child.Measure(new Vector2(MathUtils.Max(parentAvailableSize.X - (2f * child.Margin.X), 0f), ItemSize));
 				}
 			}
+		}
+
+		public override void Draw(DrawContext dc)
+		{
+			base.Draw(dc);
 			if(m_widgetsDirty)
 			{
 				m_widgetsDirty = false;
@@ -305,17 +310,19 @@ namespace Game
 		{
 			m_nodes.Add(child);
 			child.ParentTree = ParentTree;
+			child.ParentNode = this;
 		}
 
 		public void RemoveChild(TreeViewNode child)
 		{
+			child.ParentTree = null;
+			child.ParentNode = null;
 			m_nodes.Remove(child);
 		}
 
 		public void AddChildren(List<TreeViewNode> children)
 		{
-			m_nodes.AddRange(children);
-			children.ForEach(x => x.ParentTree = ParentTree);
+			children.ForEach(AddChild);
 		}
 		#endregion
 	}

@@ -1,4 +1,4 @@
-<CanvasWidget xmlns="runtime-namespace:Game">
+﻿<CanvasWidget xmlns="runtime-namespace:Game">
 
 	<CanvasWidget Size="780, 120" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Near">
 		<LabelWidget Name="HeadText" Text="" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0,10"/>
@@ -16,19 +16,18 @@
 
 			<CanvasWidget Size="0, 10" />
 			<CanvasWidget Size="-1, 48">
-				<ScrollPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
 					<StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center">
-						<BevelledButtonWidget Name="ViewGameLogDialog.Clear" Style="{Styles/ButtonStyle_160x60}" VerticalAlignment="Center" Text="[ViewGameLogDialog:0]"/>
-						<CanvasWidget Size="40, 0" />
-						<BevelledButtonWidget Name="ViewGameLogDialog.Copy" Style="{Styles/ButtonStyle_160x60}" VerticalAlignment="Center" Text="[ViewGameLogDialog:1]"/>
-						<CanvasWidget Size="40, 0" />
-						<BevelledButtonWidget Name="ViewGameLogDialog.Filter" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center"/>
-						<CanvasWidget Size="40, 0" />
-						<BevelledButtonWidget Name="ViewGameLogDialog.Close" Style="{Styles/ButtonStyle_160x60}" VerticalAlignment="Center" Text="[ViewGameLogDialog:2]"/>
-						<CanvasWidget Size="40, 0" />
-						<BevelledButtonWidget Name="ViewGameLogDialog.Upload" Style="{Styles/ButtonStyle_160x60}" VerticalAlignment="Center" Text="[ViewGameLogDialog:3]"/>
+						<CanvasWidget Size="60, 0" />
+						<BevelledButtonWidget Name="ViewGameLogDialog.Clear" Style="{Styles/ButtonStyle_115x60}" VerticalAlignment="Center" Text="[ViewGameLogDialog:0]"/>
+						<CanvasWidget Size="5, 0" />
+						<BevelledButtonWidget Name="ViewGameLogDialog.Copy" Style="{Styles/ButtonStyle_115x60}" VerticalAlignment="Center" Text="[ViewGameLogDialog:1]"/>
+						<CanvasWidget Size="5, 0" />
+						<BevelledButtonWidget Name="ViewGameLogDialog.Filter" Style="{Styles/ButtonStyle_160x60}" VerticalAlignment="Center"/>
+						<CanvasWidget Size="5, 0" />
+						<BevelledButtonWidget Name="ViewGameLogDialog.Close" Style="{Styles/ButtonStyle_115x60}" VerticalAlignment="Center" Text="[ViewGameLogDialog:2]"/>
+						<CanvasWidget Size="5, 0" />
+						<BevelledButtonWidget Name="ViewGameLogDialog.Upload" Style="{Styles/ButtonStyle_115x60}" VerticalAlignment="Center" Text="[ViewGameLogDialog:3]"/>
 					</StackPanelWidget>
-				</ScrollPanelWidget>
 			</CanvasWidget>
 			<CanvasWidget Size="0, 10" />
 		</StackPanelWidget>
