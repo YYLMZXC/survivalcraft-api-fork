@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,30 +10,20 @@ namespace Engine.Media
 {
 	public class BitmapFont : IDisposable
 	{
-		public class Glyph
-		{
-			public readonly char Code;
+		public class Glyph(char code, Vector2 texCoord1, Vector2 texCoord2, Vector2 offset, float width)
+        {
+			public readonly char Code = code;
 
-			public readonly bool IsBlank;
+			public readonly bool IsBlank = texCoord1 == texCoord2;
 
-			public readonly Vector2 TexCoord1;
+			public readonly Vector2 TexCoord1 = texCoord1;
 
-			public readonly Vector2 TexCoord2;
+			public readonly Vector2 TexCoord2 = texCoord2;
 
-			public readonly Vector2 Offset;
+			public readonly Vector2 Offset = offset;
 
-			public readonly float Width;
-
-			public Glyph(char code, Vector2 texCoord1, Vector2 texCoord2, Vector2 offset, float width)
-			{
-				Code = code;
-				IsBlank = texCoord1 == texCoord2;
-				TexCoord1 = texCoord1;
-				TexCoord2 = texCoord2;
-				Offset = offset;
-				Width = width;
-			}
-		}
+			public readonly float Width = width;
+        }
 
         public static BitmapFont m_debugFont;
 
@@ -102,10 +92,10 @@ namespace Engine.Media
 			}
 		}
 		/// <summary>
-		/// ÎÆÀíÍ¼
+		/// çº¹ç†å›¾
 		/// </summary>
-		/// <param name="TextureStream">Í¼Æ¬ÎÄ¼şµÄÊäÈëÁ÷</param>
-		/// <param name="GlyphsStream">Î»Í¼Êı¾İµÄÊäÈëÁ÷</param>
+		/// <param name="TextureStream">å›¾ç‰‡æ–‡ä»¶çš„è¾“å…¥æµ</param>
+		/// <param name="GlyphsStream">ä½å›¾æ•°æ®çš„è¾“å…¥æµ</param>
 		public static BitmapFont Initialize(Stream TextureStream, Stream GlyphsStream, Vector2? customGlyphOffset = null)
 		{
 			try
@@ -332,7 +322,7 @@ namespace Engine.Media
 				}
 				offset2 += offset;
 				float width = list[j].Width - num - num3;
-				num6 = MathUtils.Max(num6, list[j].Height - num2 - num4);
+				num6 = Math.Max(num6, list[j].Height - num2 - num4);
 				list3.Add(new Glyph((char)num5, texCoord, texCoord2, offset2, width));
 				num5++;
 			}

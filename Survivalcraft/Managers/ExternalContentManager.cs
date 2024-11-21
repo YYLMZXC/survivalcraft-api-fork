@@ -68,74 +68,58 @@ namespace Game {
                 case ExternalContentType.Mod:
                     yield return ".scmod";
                     break;
+				case ExternalContentType.ModList:
+				yield return ".scmodList";
+				break;
             }
         }
 
         public static Subtexture GetEntryTypeIcon(ExternalContentType type) {
-            switch (type) {
-                case ExternalContentType.Directory:
-                    return ContentManager.Get<Subtexture>("Textures/Atlas/FolderIcon");
-                case ExternalContentType.World:
-                    return ContentManager.Get<Subtexture>("Textures/Atlas/WorldIcon");
-                case ExternalContentType.BlocksTexture:
-                    return ContentManager.Get<Subtexture>("Textures/Atlas/TexturePackIcon");
-                case ExternalContentType.CharacterSkin:
-                    return ContentManager.Get<Subtexture>("Textures/Atlas/CharacterSkinIcon");
-                case ExternalContentType.FurniturePack:
-                    return ContentManager.Get<Subtexture>("Textures/Atlas/FurnitureIcon");
-                default:
-                    return ContentManager.Get<Subtexture>("Textures/Atlas/QuestionMarkIcon");
-            }
-        }
+			return type switch
+			{
+				ExternalContentType.Directory => ContentManager.Get<Subtexture>("Textures/Atlas/FolderIcon"),
+				ExternalContentType.World => ContentManager.Get<Subtexture>("Textures/Atlas/WorldIcon"),
+				ExternalContentType.BlocksTexture => ContentManager.Get<Subtexture>("Textures/Atlas/TexturePackIcon"),
+				ExternalContentType.CharacterSkin => ContentManager.Get<Subtexture>("Textures/Atlas/CharacterSkinIcon"),
+				ExternalContentType.FurniturePack => ContentManager.Get<Subtexture>("Textures/Atlas/FurnitureIcon"),
+				_ => ContentManager.Get<Subtexture>("Textures/Atlas/QuestionMarkIcon"),
+			};
+		}
 
         public static string GetEntryTypeDescription(ExternalContentType type) {
-            switch (type) {
-                case ExternalContentType.Directory:
-                    return LanguageControl.Get(fName, "Directory");
-                case ExternalContentType.World:
-                    return LanguageControl.Get(fName, "World");
-                case ExternalContentType.BlocksTexture:
-                    return LanguageControl.Get(fName, "Blocks Texture");
-                case ExternalContentType.CharacterSkin:
-                    return LanguageControl.Get(fName, "Character Skin");
-                case ExternalContentType.FurniturePack:
-                    return LanguageControl.Get(fName, "Furniture Pack");
-                case ExternalContentType.Mod:
-                    return LanguageControl.Get(fName, "Mod");
-                default:
-                    return string.Empty;
-            }
-        }
+			return type switch
+			{
+				ExternalContentType.Directory => LanguageControl.Get(fName,"Directory"),
+				ExternalContentType.World => LanguageControl.Get(fName,"World"),
+				ExternalContentType.BlocksTexture => LanguageControl.Get(fName,"Blocks Texture"),
+				ExternalContentType.CharacterSkin => LanguageControl.Get(fName,"Character Skin"),
+				ExternalContentType.FurniturePack => LanguageControl.Get(fName,"Furniture Pack"),
+				ExternalContentType.Mod => LanguageControl.Get(fName,"Mod"),
+				_ => string.Empty,
+			};
+		}
 
         public static bool IsEntryTypeDownloadSupported(ExternalContentType type) {
-            switch (type) {
-                case ExternalContentType.World:
-                    return true;
-                case ExternalContentType.BlocksTexture:
-                    return true;
-                case ExternalContentType.CharacterSkin:
-                    return true;
-                case ExternalContentType.FurniturePack:
-                    return true;
-                case ExternalContentType.Mod:
-                    return true;
-                default:
-                    return false;
-            }
-        }
+			return type switch
+			{
+				ExternalContentType.World => true,
+				ExternalContentType.BlocksTexture => true,
+				ExternalContentType.CharacterSkin => true,
+				ExternalContentType.FurniturePack => true,
+				ExternalContentType.Mod => true,
+				_ => false,
+			};
+		}
 
         public static bool DoesEntryTypeRequireName(ExternalContentType type) {
-            switch (type) {
-                case ExternalContentType.BlocksTexture:
-                    return true;
-                case ExternalContentType.CharacterSkin:
-                    return true;
-                case ExternalContentType.FurniturePack:
-                    return true;
-                default:
-                    return false;
-            }
-        }
+			return type switch
+			{
+				ExternalContentType.BlocksTexture => true,
+				ExternalContentType.CharacterSkin => true,
+				ExternalContentType.FurniturePack => true,
+				_ => false,
+			};
+		}
 
         public static Exception VerifyExternalContentName(string name) {
             if (string.IsNullOrEmpty(name)) {

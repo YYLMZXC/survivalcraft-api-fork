@@ -47,9 +47,9 @@ namespace Game
 		}
 		public static float ObjConvertFloat(object obj)
 		{
-			if (obj is double) return (float)(double)obj;
+			if (obj is double v) return (float)v;
 			//else if (obj is int) return (float)(int)obj;
-			else if (obj is long) return (long)obj;
+			else if (obj is long v1) return v1;
 			throw new Exception("错误的数据转换，不能将" + obj.GetType().Name + "转换为float");
 		}
 		public static JsonModel Load(Stream stream)

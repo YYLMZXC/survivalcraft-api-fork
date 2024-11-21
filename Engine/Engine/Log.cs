@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -126,7 +126,17 @@ namespace Engine
 			Write(LogType.Error, string.Format(format, parameters));
 		}
 
-		public static void AddLogSink(ILogSink logSink)
+        public static void Warning(Exception e)
+        {
+            Write(LogType.Warning,e.Message+"↓");
+            Write(LogType.Warning,e.ToString());
+        }
+        public static void Error(Exception e)
+        {
+            Write(LogType.Error, e.Message + "↓");
+            Write(LogType.Error, e.ToString());
+        }
+        public static void AddLogSink(ILogSink logSink)
 		{
 			lock (m_lock)
 			{
