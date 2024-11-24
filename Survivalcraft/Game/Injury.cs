@@ -63,7 +63,7 @@ namespace Game
         public virtual void Process()
         {
             if (ComponentHealth == null) return;
-            ModsManager.HookAction("CalculateCreatureInjuryAmount", loader =>
+			ModsManager.HookAction("CalculateCreatureInjuryAmount", loader =>
             {
                 loader.CalculateCreatureInjuryAmount(this);
                 return false;
@@ -71,14 +71,13 @@ namespace Game
             if (!(Amount > 0f) || (!IgnoreInvulnerability && ComponentHealth.IsInvulnerable))
             {
                 return;
-            }
-            if(ComponentHealth.Health > 0f)
+			}
+			ComponentHealth.Injured?.Invoke(this);
+			if(ComponentHealth.Health > 0f)
             {
                 AddPlayerStats();
                 Health = MathUtils.Max(Health - Amount, 0f);
             }
-            ComponentCreature attacker = Attacker;
-            ComponentHealth.Injured?.Invoke(this);
         }
     }
 }

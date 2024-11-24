@@ -179,8 +179,10 @@ namespace Game
             });
 			float injuryAmount = 0f;
             if (AttackPower > 0f)
-            {
-                ComponentHealth componentHealth = Target.FindComponent<ComponentHealth>();
+			{
+				ComponentBody componentBody = Target.FindComponent<ComponentBody>();
+				componentBody?.Attacked?.Invoke(this);
+				ComponentHealth componentHealth = Target.FindComponent<ComponentHealth>();
                 if (componentHealth != null)
                 {
                     ProcessAttackmentToCreature(out injuryAmount);
@@ -190,8 +192,6 @@ namespace Game
                 {
                     ProcessAttackmentToNonCreature(out injuryAmount);
                 }
-                ComponentBody componentBody = Target.FindComponent<ComponentBody>();
-                componentBody?.Attacked?.Invoke(this);
             }
             ModsManager.HookAction("AttackPowerParameter", modloader =>
             {
