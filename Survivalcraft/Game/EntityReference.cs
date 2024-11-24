@@ -60,7 +60,7 @@ namespace Game
 			else if (m_referenceType == ReferenceType.ByEntityId)
 			{
 				int id = int.Parse(m_entityReference, CultureInfo.InvariantCulture);
-				entity = idToEntityMap.FindEntity(id);
+				entity = localEntity.Project.FindEntity(id);
 			}
 			else
 			{
@@ -112,19 +112,17 @@ namespace Game
 			return result;
 		}
 
-		public static EntityReference FromId(Component component, EntityToIdMap entityToIdMap)
+		public static EntityReference FromId(Component component)
 		{
-			int num = entityToIdMap.FindId(component?.Entity);
-			EntityReference result = default;
-			result.m_referenceType = ReferenceType.ByEntityId;
-			result.m_entityReference = num.ToString(CultureInfo.InvariantCulture);
+			if(component?.Entity == null) return default;
+			EntityReference result = FromId(component.Entity);
 			result.m_componentReference = (component != null) ? component.ValuesDictionary.DatabaseObject.Name : string.Empty;
 			return result;
 		}
 
-		public static EntityReference FromId(Entity entity, EntityToIdMap entityToIdMap)
+		public static EntityReference FromId(Entity entity)
 		{
-			int num = entityToIdMap.FindId(entity);
+			int num = entity.Id;
 			EntityReference result = default;
 			result.m_referenceType = ReferenceType.ByEntityId;
 			result.m_entityReference = num.ToString(CultureInfo.InvariantCulture);

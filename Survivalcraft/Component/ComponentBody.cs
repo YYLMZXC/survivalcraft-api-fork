@@ -370,7 +370,7 @@ namespace Game
 			{
 				valuesDictionary.SetValue("Velocity", Velocity);
 			}
-			EntityReference value = EntityReference.FromId(ParentBody, entityToIdMap);
+			EntityReference value = EntityReference.FromId(ParentBody);
 			if (!value.IsNullOrEmpty())
 			{
 				valuesDictionary.SetValue("ParentBody", value);
