@@ -11,6 +11,7 @@ namespace GameEntitySystem
 			m_map = map;
 		}
 
+		[Obsolete("Use Project.FindEntity instead.", true)]
 		public Entity FindEntity(int id)
 		{
 			if (m_map.TryGetValue(id, out Entity value))
@@ -20,6 +21,7 @@ namespace GameEntitySystem
 			return null;
 		}
 
+		[Obsolete("Use Project.FindEntity()?.FindComponent() instead.",true)]
 		public T FindComponent<T>(int id, string name) where T : Component
 		{
 			Entity entity = FindEntity(id);

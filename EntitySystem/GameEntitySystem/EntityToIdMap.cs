@@ -11,6 +11,7 @@ namespace GameEntitySystem
 			m_map = map;
 		}
 
+		[Obsolete("Use Entity.Id instead.", true)]
 		public int FindId(Entity entity)
 		{
 			if (entity != null && m_map.TryGetValue(entity, out int value))
@@ -20,6 +21,7 @@ namespace GameEntitySystem
 			return 0;
 		}
 
+		[Obsolete("Use Component.Entity.Id instead.", true)]
 		public int FindId(Component component)
 		{
 			if (component == null)
