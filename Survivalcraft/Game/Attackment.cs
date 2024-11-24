@@ -4,6 +4,11 @@ using System.Globalization;
 
 namespace Game
 {
+	/// <summary>
+	/// The spell "Attackment" is wrong,
+	/// But it is not recommended to change it because many mods rely on this class.
+	/// Change of its name will make a lot of mods unavailable.
+	/// </summary>
     public class Attackment
     {
         public Entity Target;
