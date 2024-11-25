@@ -1,4 +1,4 @@
-#if ANDROID
+﻿#if ANDROID
 using Android.OS;
 #else
 using System.Reflection;
@@ -119,13 +119,9 @@ namespace Engine
 
         public static void CopyFile(string sourcePath, string destinationPath)
         {
-            using (Stream stream = OpenFile(sourcePath, OpenFileMode.Read))
-            {
-                using (Stream destination = OpenFile(destinationPath, OpenFileMode.Create))
-                {
-                    stream.CopyTo(destination);
-                }
-            }
+            using Stream stream = OpenFile(sourcePath, OpenFileMode.Read);
+            using Stream destination = OpenFile(destinationPath, OpenFileMode.Create);
+            stream.CopyTo(destination);
         }
 
         public static void MoveFile(string sourcePath, string destinationPath)
@@ -175,10 +171,8 @@ namespace Engine
 
         public static string ReadAllText(string path, Encoding encoding)
         {
-            using (StreamReader streamReader = new(OpenFile(path, OpenFileMode.Read), encoding))
-            {
-                return streamReader.ReadToEnd();
-            }
+            using StreamReader streamReader = new(OpenFile(path, OpenFileMode.Read), encoding);
+            return streamReader.ReadToEnd();
         }
 
         public static void WriteAllText(string path, string text)
@@ -188,26 +182,20 @@ namespace Engine
 
         public static void WriteAllText(string path, string text, Encoding encoding)
         {
-            using (StreamWriter streamWriter = new(OpenFile(path, OpenFileMode.Create), encoding))
-            {
-                streamWriter.Write(text);
-            }
+            using StreamWriter streamWriter = new(OpenFile(path, OpenFileMode.Create), encoding);
+            streamWriter.Write(text);
         }
 
         public static byte[] ReadAllBytes(string path)
         {
-            using (BinaryReader binaryReader = new(OpenFile(path, OpenFileMode.Read)))
-            {
-                return binaryReader.ReadBytes((int)binaryReader.BaseStream.Length);
-            }
+            using BinaryReader binaryReader = new(OpenFile(path, OpenFileMode.Read));
+            return binaryReader.ReadBytes((int)binaryReader.BaseStream.Length);
         }
 
         public static void WriteAllBytes(string path, byte[] bytes)
         {
-            using (BinaryWriter binaryWriter = new(OpenFile(path, OpenFileMode.Create)))
-            {
-                binaryWriter.Write(bytes);
-            }
+            using BinaryWriter binaryWriter = new(OpenFile(path, OpenFileMode.Create));
+            binaryWriter.Write(bytes);
         }
 
         public static string GetSystemPath(string path)
@@ -224,7 +212,7 @@ namespace Engine
 
         public static string GetFileName(string path)
         {
-            int num = MathUtils.Max(path.LastIndexOf('/'), path.LastIndexOf("\\"));
+            int num = Math.Max(path.LastIndexOf('/'), path.LastIndexOf("\\"));
             return num >= 0 ? path.Substring(num + 1) : path;
         }
 

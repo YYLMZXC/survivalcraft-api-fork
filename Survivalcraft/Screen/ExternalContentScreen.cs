@@ -252,11 +252,9 @@ namespace Game
 					m_directoryList.ClearItems();
 					list.Sort(delegate (ExternalContentEntry e1, ExternalContentEntry e2)
 					{
-						if (e1.Type == ExternalContentType.Directory && e2.Type != ExternalContentType.Directory)
-						{
-							return -1;
-						}
-						return (e1.Type != ExternalContentType.Directory && e2.Type == ExternalContentType.Directory) ? 1 : string.Compare(e1.Path, e2.Path);
+						return e1.Type == ExternalContentType.Directory && e2.Type != ExternalContentType.Directory
+							? -1
+							: (e1.Type != ExternalContentType.Directory && e2.Type == ExternalContentType.Directory) ? 1 : string.Compare(e1.Path, e2.Path);
 					});
 					foreach (ExternalContentEntry item in list)
 					{

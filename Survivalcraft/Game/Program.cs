@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Engine;
 using Engine.Graphics;
 using System.Globalization;
@@ -35,11 +35,22 @@ namespace Game
 #if WINDOWS
 		private static void Main(string[] args)
 		{
-			
+
+
 			if(args != null && args.Length > 0)
 			{
 				//拖动到exe的文件解析
-				ExternalContentManager.openFilePath = args[0];
+				if(Path.GetExtension(args[0])== ".scmodList")
+				{
+					ModListManager.AnalysisModList(args[0]);
+				}
+				else
+				{
+					ExternalContentManager.openFilePath = args[0];
+					//var externalContentScreen=new ExternalContentScreen();
+					//sexternalContentScreen.Update();
+				}
+
 			}
 			
 			

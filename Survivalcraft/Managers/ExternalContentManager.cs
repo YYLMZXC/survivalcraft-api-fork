@@ -13,12 +13,9 @@ namespace Game {
         public static string openFilePath = string.Empty;
         public static IExternalContentProvider DefaultProvider {
             get {
-                if (Providers.Count <= 0) {
-                    return null;
-                }
-                return Providers[0];
-            }
-        }
+				return Providers.Count <= 0 ? null : Providers[0];
+			}
+		}
 
         public static ReadOnlyList<IExternalContentProvider> Providers => new(m_providers);
 

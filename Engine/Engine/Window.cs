@@ -1,4 +1,4 @@
-#if ANDROID
+﻿#if ANDROID
 using Android.Content;
 using Android.OS;
 #else
@@ -298,10 +298,7 @@ namespace Engine
             AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs args)
             {
                 Exception ex = args.ExceptionObject as Exception;
-                if (ex == null)
-                {
-                    ex = new Exception($"Unknown exception. Additional information: {args.ExceptionObject}");
-                }
+                ex ??= new Exception($"Unknown exception. Additional information: {args.ExceptionObject}");
                 UnhandledExceptionInfo unhandledExceptionInfo = new(ex);
                 UnhandledException?.Invoke(unhandledExceptionInfo);
                 if (!unhandledExceptionInfo.IsHandled)

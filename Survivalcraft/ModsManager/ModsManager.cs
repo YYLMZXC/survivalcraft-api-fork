@@ -37,9 +37,8 @@ public static class ModsManager
 	public static string ExternalPath { get; } = EngineActivity.BasePath;
 	public static string DocPath => EngineActivity.BasePath;
 	public static string WorldsDirectoryName = ExternalPath + "/Worlds";
-	
 #endif
-
+	public static string ProcessModListPath = DocPath + "/ProcessModLists";
 
 	public static string ScreenCapturePath { get; } = ExternalPath + "/ScreenCapture";
 
