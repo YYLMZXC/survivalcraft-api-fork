@@ -36,10 +36,11 @@ namespace Game
 		}
 		/// <summary>
 		///解析整合包文件 
+		///可以用整合包的模组路径代替全局模组路径
 		/// </summary>
 		/// <param name="filePath">整合包的路径</param>
-		/// <returns>解析结果</returns>
-		public static bool AnalysisModList(string filePath)
+		/// <returns>整合包的模组路径</returns>
+		public static string AnalysisModList(string filePath)
 		{
 			var model = Toml.ToModel(File.ReadAllText(filePath));
 			AggregationPackageInfo packageInfo = new()
@@ -52,17 +53,18 @@ namespace Game
 				Description = (string)((TomlTable)model["packageinfo"]!)["Description"]
 			};
 			if(((TomlTable)model["requisite"]).Count!=0){
-				Storage.CreateDirectory(ModsManager.ProcessModListPath+'/'+packageInfo.PackageName);
+				String 整合包模组路径 = ModsManager.ProcessModListPath + '/' + packageInfo.PackageName;
+				Storage.CreateDirectory(整合包模组路径);
 				foreach(var item in ((TomlTable)model["requisite"]!))
 				{
 					Log.Information(item.Key);
 					Log.Information(item.Value);
 				}
-				return true;
+				return 整合包模组路径;
 			}
 			else
 			{
-				return false;
+				return ModsManager.ModsPath;
 			}
 		}
 	}

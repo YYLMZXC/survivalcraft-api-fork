@@ -42,7 +42,7 @@ namespace Game
 				//拖动到exe的文件解析
 				if(Path.GetExtension(args[0])== ".scmodList")
 				{
-					ModListManager.AnalysisModList(args[0]);
+					ModsManager.ModsPath=ModListManager.AnalysisModList(args[0]);
 				}
 				else
 				{

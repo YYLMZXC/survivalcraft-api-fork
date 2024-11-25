@@ -38,7 +38,7 @@ public static class ModsManager
 	public static string DocPath => EngineActivity.BasePath;
 	public static string WorldsDirectoryName = ExternalPath + "/Worlds";
 #endif
-	public static string ProcessModListPath = DocPath + "/ProcessModLists";
+	public static string ProcessModListPath = ExternalPath + "/ProcessModLists";
 
 	public static string ScreenCapturePath { get; } = ExternalPath + "/ScreenCapture";
 
@@ -52,7 +52,7 @@ public static class ModsManager
 	public static string SettingPath { get; } = DocPath + "/Settings.xml";
 	public static string ModDisPath { get; } = ExternalPath + "/ModsDisabled";
 	public static string LogPath { get; } = ExternalPath + "/Bugs";
-	public static string ModsPath { get; } = ExternalPath + "/Mods";
+	public static string ModsPath  = ExternalPath + "/Mods";
 	public static bool IsAndroid => OperatingSystem.IsAndroid();
 	//public static bool IsAndroid => VersionsManager.Platform == Platform.Android;
 
@@ -276,7 +276,8 @@ public static class ModsManager
 
 	public static string ImportMod(string name, Stream stream)
 	{
-		if (!Storage.DirectoryExists(ModDisPath)) Storage.CreateDirectory(ModDisPath);
+		if(!Storage.DirectoryExists(ModDisPath)) Storage.CreateDirectory(ModDisPath);
+		if(!Storage.DirectoryExists(ProcessModListPath)) Storage.CreateDirectory(ProcessModListPath);
 		string realName = name;
 		if(!realName.EndsWith(ModSuffix)) realName = realName + ModSuffix;
 		string path = Storage.CombinePaths(ModDisPath, realName);
