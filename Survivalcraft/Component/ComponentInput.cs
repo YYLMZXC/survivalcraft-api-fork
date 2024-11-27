@@ -156,11 +156,12 @@ namespace Game
 					{
 						IsControlledByTouch = false;
 					}
-					try
+#if WINDOWS
+					if (!Mouse.IsMouseVisible && Window.m_gameWindow.Focused)
 					{
-						Mouse.SetMousePosition(Window.Size.X / 2,Window.Size.Y / 2);
+						Window.m_gameWindow.CursorGrabbed = true;
 					}
-					catch { }
+#endif
 				}
 				Vector3 vector = default(Vector3) + (Vector3.UnitX * (input.IsKeyDown(Key.D) ? 1 : 0));
 				vector += -Vector3.UnitZ * (input.IsKeyDown(Key.S) ? 1 : 0);
