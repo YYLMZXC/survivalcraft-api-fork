@@ -17,8 +17,6 @@ namespace Game
 
 		public int m_nextPlayerIndex;
 
-		public bool[] m_playerExist;
-
 		public static int MaxPlayers = 4;
 
 		public bool PlayerStartedPlaying = false;
@@ -78,15 +76,7 @@ namespace Game
 				throw new InvalidOperationException("Player already added.");
 			}
 			m_playersData.Add(playerData);
-			for (int i = 0; i < m_playerExist.Length; i++)
-			{
-				if (!m_playerExist[i])
-				{
-					m_nextPlayerIndex = i;
-				}
-			}
-			playerData.PlayerIndex = m_nextPlayerIndex;
-			m_playerExist[playerData.PlayerIndex] = true;
+			playerData.PlayerIndex = ++m_nextPlayerIndex;
 			PlayerAdded?.Invoke(playerData);
 		}
 
@@ -101,7 +91,6 @@ namespace Game
 			{
 				Project.RemoveEntity(playerData.ComponentPlayer.Entity, disposeEntity: true);
 			}
-			m_playerExist[playerData.PlayerIndex] = false;
 			PlayerRemoved?.Invoke(playerData);
 			playerData.Dispose();
 		}
@@ -131,13 +120,11 @@ namespace Game
 			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
 			m_nextPlayerIndex = valuesDictionary.GetValue<int>("NextPlayerIndex");
 			GlobalSpawnPosition = valuesDictionary.GetValue<Vector3>("GlobalSpawnPosition");
-			m_playerExist = new bool[4];
 			foreach (KeyValuePair<string, object> item in valuesDictionary.GetValue<ValuesDictionary>("Players"))
 			{
 				var playerData = new PlayerData(Project);
 				playerData.Load((ValuesDictionary)item.Value);
 				playerData.PlayerIndex = int.Parse(item.Key, CultureInfo.InvariantCulture);
-				m_playerExist[playerData.PlayerIndex] = true;
 				m_playersData.Add(playerData);
 			}
 		}
