@@ -1,4 +1,4 @@
-using Engine;
+ï»¿using Engine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -38,11 +38,7 @@ namespace Game
 
 			public int Sign()
 			{
-				if (Int() % 2 != 0)
-				{
-					return 1;
-				}
-				return -1;
+				return Int() % 2 != 0 ? 1 : -1;
 			}
 
 			public bool Bool()
@@ -2089,9 +2085,9 @@ namespace Game
 						}
 					}
 					break;
-#pragma warning disable CS0162 // ¼ì²âµ½ÎŞ·¨·ÃÎÊµÄ´úÂë
+#pragma warning disable CS0162 // æ£€æµ‹åˆ°æ— æ³•è®¿é—®çš„ä»£ç 
 					continue;
-#pragma warning restore CS0162 // ¼ì²âµ½ÎŞ·¨·ÃÎÊµÄ´úÂë
+#pragma warning restore CS0162 // æ£€æµ‹åˆ°æ— æ³•è®¿é—®çš„ä»£ç 
 				end_IL_019b:
 					break;
 				}

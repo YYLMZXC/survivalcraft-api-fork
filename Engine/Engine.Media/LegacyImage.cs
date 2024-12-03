@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -30,14 +30,8 @@ namespace Engine.Media
 
         public LegacyImage(int width, int height)
 		{
-			if (width < 0)
-			{
-				throw new ArgumentOutOfRangeException(nameof(width));
-			}
-			if (height < 0)
-			{
-				throw new ArgumentOutOfRangeException(nameof(height));
-			}
+            ArgumentOutOfRangeException.ThrowIfNegative(width);
+            ArgumentOutOfRangeException.ThrowIfNegative(height);
 			Width = width;
 			Height = height;
 			Pixels = new Color[width * height];

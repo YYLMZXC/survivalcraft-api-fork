@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -69,11 +69,7 @@ namespace Game
 				ReadOnly = true,
 				KeepStreamOpen = keepStreamOpen
 			};
-			if (zipArchive.ReadFileInfo())
-			{
-				return zipArchive;
-			}
-			throw new InvalidDataException();
+			return zipArchive.ReadFileInfo() ? zipArchive : throw new InvalidDataException();
 		}
 
 		public void AddStream(string filenameInZip, Stream source)
@@ -132,8 +128,8 @@ namespace Game
 		}
         public static bool IsUTF8Bytes(byte[] data, int start, int count)
 		{
-			int charByteCounter = 1; //¼ÆËãµ±Ç°Õı·ÖÎöµÄ×Ö·ûÓ¦»¹ÓĞµÄ×Ö½ÚÊı 
-			byte curByte; //µ±Ç°·ÖÎöµÄ×Ö½Ú. 
+			int charByteCounter = 1; //è®¡ç®—å½“å‰æ­£åˆ†æçš„å­—ç¬¦åº”è¿˜æœ‰çš„å­—èŠ‚æ•° 
+			byte curByte; //å½“å‰åˆ†æçš„å­—èŠ‚. 
 			int end = start + count;
 			for (int i = start; i < end; i++)
 			{
@@ -163,7 +159,7 @@ namespace Game
 			}
 			if (charByteCounter > 1)
 			{
-				throw new Exception("·ÇÔ¤ÆÚµÄbyte¸ñÊ½");
+				throw new Exception("éé¢„æœŸçš„byteæ ¼å¼");
 			}
 			return true;
 		}

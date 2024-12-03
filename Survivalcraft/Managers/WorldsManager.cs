@@ -433,57 +433,42 @@ namespace Game
 			}
 			var list = new List<string>();
 			RecursiveEnumerateDirectory(directoryName, list, null, filter);
-			using (var zipArchive = ZipArchive.Create(targetStream, keepStreamOpen: true))
+			using var zipArchive = ZipArchive.Create(targetStream,keepStreamOpen: true);
+			foreach(string item in list)
 			{
-				foreach (string item in list)
+				using Stream source = Storage.OpenFile(item,OpenFileMode.Read);
+				string fileName = Storage.GetFileName(item);
+				fileName = fileName.StartsWith("Region") ? Storage.CombinePaths("Regions",fileName) : item.Replace($"{directoryName}/","");
+				zipArchive.AddStream(fileName,source);
+			}
+			if(embedExternalContent)
+			{
+				if(!BlocksTexturesManager.IsBuiltIn(worldInfo.WorldSettings.BlocksTextureName))
 				{
-					using (Stream source = Storage.OpenFile(item, OpenFileMode.Read))
+					try
 					{
-						string fileName = Storage.GetFileName(item);
-						if (fileName.StartsWith("Region"))
-						{
-							fileName = Storage.CombinePaths("Regions", fileName);
-						}
-						else
-						{
-							fileName = item.Replace($"{directoryName}/", "");
-						}
-						zipArchive.AddStream(fileName, source);
+						using Stream source2 = Storage.OpenFile(BlocksTexturesManager.GetFileName(worldInfo.WorldSettings.BlocksTextureName),OpenFileMode.Read);
+						string filenameInZip = Storage.CombinePaths("EmbeddedContent",Storage.GetFileNameWithoutExtension(worldInfo.WorldSettings.BlocksTextureName) + ".scbtex");
+						zipArchive.AddStream(filenameInZip,source2);
+					}
+					catch(Exception ex)
+					{
+						Log.Warning($"Failed to embed blocks texture \"{worldInfo.WorldSettings.BlocksTextureName}\". Reason: {ex.Message}");
 					}
 				}
-				if (embedExternalContent)
+				foreach(PlayerInfo playerInfo in worldInfo.PlayerInfos)
 				{
-					if (!BlocksTexturesManager.IsBuiltIn(worldInfo.WorldSettings.BlocksTextureName))
+					if(!CharacterSkinsManager.IsBuiltIn(playerInfo.CharacterSkinName))
 					{
 						try
 						{
-							using (Stream source2 = Storage.OpenFile(BlocksTexturesManager.GetFileName(worldInfo.WorldSettings.BlocksTextureName), OpenFileMode.Read))
-							{
-								string filenameInZip = Storage.CombinePaths("EmbeddedContent", Storage.GetFileNameWithoutExtension(worldInfo.WorldSettings.BlocksTextureName) + ".scbtex");
-								zipArchive.AddStream(filenameInZip, source2);
-							}
+							using Stream source3 = Storage.OpenFile(CharacterSkinsManager.GetFileName(playerInfo.CharacterSkinName),OpenFileMode.Read);
+							string filenameInZip2 = Storage.CombinePaths("EmbeddedContent",Storage.GetFileNameWithoutExtension(playerInfo.CharacterSkinName) + ".scskin");
+							zipArchive.AddStream(filenameInZip2,source3);
 						}
-						catch (Exception ex)
+						catch(Exception ex2)
 						{
-							Log.Warning($"Failed to embed blocks texture \"{worldInfo.WorldSettings.BlocksTextureName}\". Reason: {ex.Message}");
-						}
-					}
-					foreach (PlayerInfo playerInfo in worldInfo.PlayerInfos)
-					{
-						if (!CharacterSkinsManager.IsBuiltIn(playerInfo.CharacterSkinName))
-						{
-							try
-							{
-								using (Stream source3 = Storage.OpenFile(CharacterSkinsManager.GetFileName(playerInfo.CharacterSkinName), OpenFileMode.Read))
-								{
-									string filenameInZip2 = Storage.CombinePaths("EmbeddedContent", Storage.GetFileNameWithoutExtension(playerInfo.CharacterSkinName) + ".scskin");
-									zipArchive.AddStream(filenameInZip2, source3);
-								}
-							}
-							catch (Exception ex2)
-							{
-								Log.Warning($"Failed to embed character skin \"{playerInfo.CharacterSkinName}\". Reason: {ex2.Message}");
-							}
+							Log.Warning($"Failed to embed character skin \"{playerInfo.CharacterSkinName}\". Reason: {ex2.Message}");
 						}
 					}
 				}
@@ -496,55 +481,51 @@ namespace Game
 			{
 				throw new InvalidOperationException($"Cannot import world into \"{directoryName}\" because this directory does not exist.");
 			}
-			using (var zipArchive = ZipArchive.Open(sourceStream, keepStreamOpen: true))
+			using var zipArchive = ZipArchive.Open(sourceStream,keepStreamOpen: true);
+			foreach(ZipArchiveEntry item in zipArchive.ReadCentralDir())
 			{
-				foreach (ZipArchiveEntry item in zipArchive.ReadCentralDir())
+				string text = item.FilenameInZip.Replace('\\','/');
+				string extension = Storage.GetExtension(text);
+				if(text.StartsWith("EmbeddedContent"))
 				{
-					string text = item.FilenameInZip.Replace('\\', '/');
-					string extension = Storage.GetExtension(text);
-					if (text.StartsWith("EmbeddedContent"))
+					try
 					{
-						try
+						if(importEmbeddedExternalContent)
 						{
-							if (importEmbeddedExternalContent)
-							{
-								var memoryStream = new MemoryStream();
-								zipArchive.ExtractFile(item, memoryStream);
-								memoryStream.Position = 0L;
-								ExternalContentType type = ExternalContentManager.ExtensionToType(extension);
-								ExternalContentManager.ImportExternalContentSync(memoryStream, type, Storage.GetFileNameWithoutExtension(text));
-							}
+							var memoryStream = new MemoryStream();
+							zipArchive.ExtractFile(item,memoryStream);
+							memoryStream.Position = 0L;
+							ExternalContentType type = ExternalContentManager.ExtensionToType(extension);
+							ExternalContentManager.ImportExternalContentSync(memoryStream,type,Storage.GetFileNameWithoutExtension(text));
 						}
-						catch (Exception ex)
+					}
+					catch(Exception ex)
+					{
+						Log.Warning($"Failed to import embedded content \"{text}\". Reason: {ex.Message}");
+					}
+				}
+				else
+				{
+					string fileName = Storage.GetFileName(text);
+					if(fileName.StartsWith("Region"))
+					{
+						if(!Storage.DirectoryExists(Storage.CombinePaths(directoryName,"Regions")))
 						{
-							Log.Warning($"Failed to import embedded content \"{text}\". Reason: {ex.Message}");
+							Storage.CreateDirectory(Storage.CombinePaths(directoryName,"Regions"));
 						}
+						fileName = Storage.CombinePaths("Regions",fileName);
 					}
 					else
 					{
-						string fileName = Storage.GetFileName(text);
-						if (fileName.StartsWith("Region"))
+						string directory = Path.GetDirectoryName(Storage.CombinePaths(directoryName,text));
+						if(!Storage.DirectoryExists(directory))
 						{
-							if (!Storage.DirectoryExists(Storage.CombinePaths(directoryName, "Regions")))
-							{
-								Storage.CreateDirectory(Storage.CombinePaths(directoryName, "Regions"));
-							}
-							fileName = Storage.CombinePaths("Regions", fileName);
+							Storage.CreateDirectory(directory);
 						}
-						else
-						{
-							string directory = Path.GetDirectoryName(Storage.CombinePaths(directoryName, text));
-							if (!Storage.DirectoryExists(directory))
-							{
-								Storage.CreateDirectory(directory);
-							}
-							fileName = text;
-						}
-						using (Stream stream = Storage.OpenFile(Storage.CombinePaths(directoryName, fileName), OpenFileMode.Create))
-						{
-							zipArchive.ExtractFile(item, stream);
-						}
+						fileName = text;
 					}
+					using Stream stream = Storage.OpenFile(Storage.CombinePaths(directoryName,fileName),OpenFileMode.Create);
+					zipArchive.ExtractFile(item,stream);
 				}
 			}
 		}
@@ -575,11 +556,9 @@ namespace Game
 			{
 				if (Storage.FileExists(fileName))
 				{
-					using (Stream stream = Storage.OpenFile(fileName, OpenFileMode.Read))
-					{
-						XElement xElement = XmlUtils.LoadXmlFromStream(stream, null, throwOnError: false);
-						return xElement != null && xElement.Name == rootNodeName;
-					}
+					using Stream stream = Storage.OpenFile(fileName,OpenFileMode.Read);
+					XElement xElement = XmlUtils.LoadXmlFromStream(stream,null,throwOnError: false);
+					return xElement != null && xElement.Name == rootNodeName;
 				}
 				return false;
 			}

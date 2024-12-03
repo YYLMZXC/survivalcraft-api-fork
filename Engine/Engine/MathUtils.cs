@@ -2,9 +2,9 @@
 {
     public static class MathUtils
     {
-        public const float PI = MathF.PI;
+        const float PI = MathF.PI;
 
-        public const float E = MathF.E;
+        const float E = MathF.E;
 
         public static int Min(int x1, int x2)
         {
