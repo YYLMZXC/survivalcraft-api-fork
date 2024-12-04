@@ -1070,6 +1070,66 @@ public class ModsManageContentScreen : Screen
 		return keepOpenStream;
 	}
 
+	public static bool StrengtheningMod(string path)
+	{
+		Stream stream = Storage.OpenFile(path,OpenFileMode.Read);
+		byte[] buff = new byte[stream.Length];
+		stream.Read(buff,0,buff.Length);
+		byte[] hc = Encoding.UTF8.GetBytes(HeadingCode);
+		bool decipher = true;
+		for(int i = 0; i < hc.Length; i++)
+		{
+			if(hc[i] != buff[i])
+			{
+				decipher = false;
+				break;
+			}
+		}
+		byte[] hc2 = Encoding.UTF8.GetBytes(HeadingCode2);
+		bool decipher2 = true;
+		for(int i = 0; i < hc2.Length; i++)
+		{
+			if(hc2[i] != buff[i])
+			{
+				decipher2 = false;
+				break;
+			}
+		}
+		if(decipher || decipher2) return false;
+		byte[] buff2 = new byte[buff.Length + hc2.Length];
+		int k = 0;
+		int l = hc2.Length;
+		for(int i = 0; i < hc2.Length; i++)
+		{
+			buff2[i] = hc2[i];
+		}
+		for(int i = 0; i < buff.Length; i++)
+		{
+			if(i % 2 == 0)
+			{
+				buff2[k + l] = buff[i];
+				k++;
+			}
+		}
+		k = 0;
+		l = hc2.Length + ((buff.Length + 1) / 2);
+		for(int i = 0; i < buff.Length; i++)
+		{
+			if(i % 2 != 0)
+			{
+				buff2[k + l] = buff[i];
+				k++;
+			}
+		}
+		string newPath = string.Format("{0}({1}).scmod",path.Substring(0,path.LastIndexOf('.')),LanguageControl.Get(fName,63));
+		FileStream fileStream = new(Storage.GetSystemPath(newPath),FileMode.Create,FileAccess.ReadWrite,FileShare.ReadWrite);
+		fileStream.Write(buff2,0,buff2.Length);
+		fileStream.Flush();
+		stream.Dispose();
+		fileStream.Dispose();
+		return true;
+	}
+
 	public void UpdateModFromCommunity(ModInfo modInfo)
 	{
 		//从社区拉取MOD并更新
