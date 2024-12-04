@@ -357,10 +357,12 @@ public class ModsManageContentScreen : Screen
 		m_upDirectoryButton.IsVisible = m_filter != StateFilter.InstallState;
 		if (m_filter != StateFilter.InstallState)
 		{
+			m_actionButton2.IsVisible = true;
 			m_actionButton2.Text = (m_path == m_uninstallPath) ? LanguageControl.Get(fName, 16) : LanguageControl.Get(fName, 17);
 		}
 		else
 		{
+			m_actionButton2.IsVisible = false;
 			m_actionButton2.Text = LanguageControl.Get(fName, 63);
 		}
 		ModItem modItem = null;
@@ -372,7 +374,7 @@ public class ModsManageContentScreen : Screen
 		{
 			m_actionButton.Text = (m_filter == StateFilter.InstallState) ? LanguageControl.Get(fName, 18) : LanguageControl.Get(fName, 19);
 			m_actionButton.IsEnabled = !(modItem.ModInfo == null && m_filter != StateFilter.InstallState);
-			m_actionButton2.IsEnabled = !(modItem.ModInfo == null && m_filter == StateFilter.InstallState);
+			m_actionButton2.IsEnabled = false;
 		}
 		else if (modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Directory)
 		{
@@ -515,31 +517,6 @@ public class ModsManageContentScreen : Screen
 		{
 			if (m_filter == StateFilter.InstallState)
 			{
-				if (modItem != null && modItem.ExternalContentEntry.Type == ExternalContentType.Mod)
-				{
-					DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 64), LanguageControl.Get(fName, 65), LanguageControl.Get(fName, 63), LanguageControl.Cancel, delegate (MessageDialogButton result)
-					{
-						if (result == MessageDialogButton.Button1)
-						{
-							try
-							{
-								if (StrengtheningMod(modItem.ExternalContentEntry.Path))
-								{
-									Storage.DeleteFile(modItem.ExternalContentEntry.Path);
-									UpdateListWithBusyDialog();
-								}
-								else
-								{
-									DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 66), LanguageControl.Ok, null, null));
-								}
-							}
-							catch (Exception e)
-							{
-								DialogsManager.ShowDialog(null, new MessageDialog(LanguageControl.Get(fName, 4), LanguageControl.Get(fName, 67) + e, LanguageControl.Ok, null, null));
-							}
-						}
-					}));
-				}
 			}
 			else
 			{
@@ -1093,65 +1070,6 @@ public class ModsManageContentScreen : Screen
 		return keepOpenStream;
 	}
 
-	public static bool StrengtheningMod(string path)
-	{
-		Stream stream = Storage.OpenFile(path, OpenFileMode.Read);
-		byte[] buff = new byte[stream.Length];
-		stream.Read(buff, 0, buff.Length);
-		byte[] hc = Encoding.UTF8.GetBytes(HeadingCode);
-		bool decipher = true;
-		for (int i = 0; i < hc.Length; i++)
-		{
-			if (hc[i] != buff[i])
-			{
-				decipher = false;
-				break;
-			}
-		}
-		byte[] hc2 = Encoding.UTF8.GetBytes(HeadingCode2);
-		bool decipher2 = true;
-		for (int i = 0; i < hc2.Length; i++)
-		{
-			if (hc2[i] != buff[i])
-			{
-				decipher2 = false;
-				break;
-			}
-		}
-		if (decipher || decipher2) return false;
-		byte[] buff2 = new byte[buff.Length + hc2.Length];
-		int k = 0;
-		int l = hc2.Length;
-		for (int i = 0; i < hc2.Length; i++)
-		{
-			buff2[i] = hc2[i];
-		}
-		for (int i = 0; i < buff.Length; i++)
-		{
-			if (i % 2 == 0)
-			{
-				buff2[k + l] = buff[i];
-				k++;
-			}
-		}
-		k = 0;
-		l = hc2.Length + ((buff.Length + 1) / 2);
-		for (int i = 0; i < buff.Length; i++)
-		{
-			if (i % 2 != 0)
-			{
-				buff2[k + l] = buff[i];
-				k++;
-			}
-		}
-		string newPath = string.Format("{0}({1}).scmod", path.Substring(0, path.LastIndexOf('.')), LanguageControl.Get(fName, 63));
-		FileStream fileStream = new(Storage.GetSystemPath(newPath), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-		fileStream.Write(buff2, 0, buff2.Length);
-		fileStream.Flush();
-		stream.Dispose();
-		fileStream.Dispose();
-		return true;
-	}
 	public void UpdateModFromCommunity(ModInfo modInfo)
 	{
 		//从社区拉取MOD并更新
