@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 namespace Game
@@ -66,12 +66,13 @@ namespace Game
 			}
 			if (m_languageButton.IsClicked)
 			{
-				if (LanguageControl.LanguageTypes.Count > 2)
+				DialogsManager.ShowDialog(null,new ListSelectionDialog(null,LanguageControl.LanguageTypes,70f,(object item) => (string)item,delegate (object item)
 				{
-					DialogsManager.ShowDialog(null, new ListSelectionDialog(null, LanguageControl.LanguageTypes, 70f, (object item) => (string)item, delegate (object item)
-					{
-						ChangeLanguage((string)item);
-					}));
+					ChangeLanguage((string)item);
+				}));
+				/*if (LanguageControl.LanguageTypes.Count > 2)
+				{
+
 				}
 				else
 				{
@@ -84,7 +85,7 @@ namespace Game
 							ChangeLanguage(LanguageControl.LanguageTypes[next]);
 						}
 					}));
-				}
+				}*/
 			}
 			if (m_displayLogButton.IsClicked)
 			{

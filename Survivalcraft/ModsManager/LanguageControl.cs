@@ -26,7 +26,10 @@ namespace Game
 		public static string Exists = default;
 		public static string Success = default;
 		public static string Delete = default;
-		public static List<string> LanguageTypes = [];
+		/// <summary>
+		/// 语言标识符、与标识符对应的本地化名称
+		/// </summary>
+		public static Dictionary<string,string> LanguageTypes = [];
 
 		public static void Initialize(string languageType)
 		{
@@ -148,10 +151,17 @@ namespace Game
                     }
 			}
         }
+		/// <returns>当前语言的标识符</returns>
 		public static string LName()
 		{
 			return ModsManager.Configs["Language"];
 		}
+		/// <summary>
+		/// 获取在当前语言类名键对应的字符串
+		/// </summary>
+		/// <param name="className">类名</param>
+		/// <param name="key">键</param>
+		/// <returns>本地化字符串</returns>
 		public static string Get(string className, int key)
 		{//获得键值
 			return Get(className, key.ToString());

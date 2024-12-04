@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Serialization;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,12 @@ public static class VersionsManager
 #else
 	public static Platform Platform => Platform.Linux;
 #endif
+	/// <summary>
+	/// Win32NT:Windows
+	/// Unix:Linux
+	/// </summary>
+	public static PlatformID PlatformID = Environment.OSVersion.Platform;
+	public static string PlatformTag = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
 	public static BuildConfiguration BuildConfiguration => BuildConfiguration.Release;
 
 	public static string Version
@@ -40,8 +46,8 @@ public static class VersionsManager
 
 	static VersionsManager()
 	{
-		m_versionConverters = [];
-		var assemblyName = new AssemblyName(typeof(VersionsManager).GetTypeInfo().Assembly.FullName);
+		m_versionConverters = [];//List
+		var assemblyName = Assembly.GetExecutingAssembly().GetName();
 		Version = $"{assemblyName.Version.Major}.{assemblyName.Version.Minor}.{assemblyName.Version.Build}.{assemblyName.Version.Revision}";
 		SerializationVersion = $"{assemblyName.Version.Major}.{assemblyName.Version.Minor}";
 		Assembly[] array = [.. TypeCache.LoadedAssemblies];

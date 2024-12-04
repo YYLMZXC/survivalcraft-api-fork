@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Input;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -16,6 +16,8 @@ namespace Game
 		public StackPanelWidget m_bulletinStackPanel;
 
 		public LabelWidget m_copyrightLabel;
+
+		public ButtonWidget m_language_switchButton;
 
 		public MainMenuScreen()
 		{
