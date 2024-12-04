@@ -38,13 +38,16 @@ namespace Game
 			stream.Close();
 		}
 		/// <summary>
-		/// 获取指定后缀文件列表，带.
+		/// 获取模组的文件时调用。
 		/// </summary>
 		/// <param name="extension">文件扩展名</param>
 		/// <param name="action">参数1文件名参数，2打开的文件流</param>
 		public virtual void GetFiles(string extension, Action<string, Stream> action)
 		{
 			//将每个zip里面的文件读进内存中
+			bool skip = false;
+			Loader?.GetModFiles(extension, action,out skip);
+			if(skip) return;
 			foreach (ZipArchiveEntry zipArchiveEntry in ModArchive.ReadCentralDir())
 			{
 				if (Storage.GetExtension(zipArchiveEntry.FilenameInZip) == extension)
@@ -87,6 +90,10 @@ namespace Game
 		/// <returns></returns>
 		public virtual bool GetFile(string filename, Action<Stream> stream)
 		{
+			bool skip = false;
+			bool loaderReturns = false;
+			Loader?.GetModFile(filename, stream, out skip, out loaderReturns);
+			if(skip) return loaderReturns;
 			if (ModFiles.TryGetValue(filename, out ZipArchiveEntry entry))
 			{
 				using MemoryStream ms = new();

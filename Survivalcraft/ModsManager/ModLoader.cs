@@ -18,6 +18,32 @@ namespace Game
         {
         }
 
+		/// <summary>
+		/// 在加载本模组的资源时触发。
+		/// 注意：模组的dll只能由原版逻辑加载
+		/// </summary>
+		/// <param name="extension">准备调用的文件的扩展名</param>
+		/// <param name="action">执行的操作</param>
+		/// <param name="skip">跳过SC本体对模组获取文件的执行。由于该方法只会在调用你的模组的资源时触发，所以不必担心兼容性问题。</param>
+		public virtual void GetModFiles(string extension, Action<string,Stream> action, out bool skip)
+		{
+			skip = false;
+		}
+
+		/// <summary>
+		/// 在系统读取本模组的文件时触发
+		/// 注意：modinfo文件、mod图标只能由原版逻辑加载。如果需要修改调整，请自己在模组中重新写一遍加载逻辑
+		/// </summary>
+		/// <param name="filename">获取模组文件的名称或前缀</param>
+		/// <param name="stream">文件流</param>
+		/// <param name="skip">跳过SC本体对模组获取文件的执行。由于该方法只会在调用你的模组的资源时触发，所以不必担心兼容性问题。</param>
+		/// <param name="fileFound">在skip过后，返回是否得到文件</param>
+		public virtual void GetModFile(string filename, Action<Stream> stream, out bool skip, out bool fileFound)
+		{
+			skip = false;
+			fileFound = false;
+		}
+
         /// <summary>
         /// Mod被卸载时执行
         /// </summary>
