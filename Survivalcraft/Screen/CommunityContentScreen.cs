@@ -432,7 +432,7 @@ namespace Game
 			{
 				DialogsManager.HideDialog(busyDialog);
 				m_contentExpiryTime = Time.RealTime + 300.0;
-				while (m_treePanel.Nodes.Count > 0 && m_treePanel.Nodes[^1].Tag is "加载")//移除原先添加的"加载更多"节点
+				while (m_treePanel.Nodes.Count > 0 && m_treePanel.Nodes[^1].Tag is "Load More")//移除原先添加的"加载更多"节点
 				{
 					m_treePanel.Nodes.RemoveAt(m_treePanel.Nodes.Count - 1);
 				}
