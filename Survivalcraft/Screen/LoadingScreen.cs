@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Graphics;
 using System;
 using System.Linq;
@@ -206,16 +206,16 @@ namespace Game
 				foreach(ContentInfo contentInfo in axa)
 				{
 					string px = System.IO.Path.GetFileNameWithoutExtension(contentInfo.Filename);
-					if(!LanguageControl.LanguageTypes.Contains(px)) LanguageControl.LanguageTypes.Add(px);
+					if(!LanguageControl.LanguageTypes.ContainsKey(px)) LanguageControl.LanguageTypes.Add(px,"");//第二个参数应为本地化名称
 				}
 				//<<<结束
-				if(ModsManager.Configs.TryGetValue("Language",out string value) && LanguageControl.LanguageTypes.Contains(value))
+				if(ModsManager.Configs.TryGetValue("Language",out string value) && LanguageControl.LanguageTypes.ContainsKey(value))
 				{
 					LanguageControl.Initialize(value);
 				}
 				else
 				{
-					if(LanguageControl.LanguageTypes.Contains(Program.SystemLanguage))
+					if(LanguageControl.LanguageTypes.ContainsKey(Program.SystemLanguage))
 					{
 						LanguageControl.Initialize(Program.SystemLanguage);
 					}
