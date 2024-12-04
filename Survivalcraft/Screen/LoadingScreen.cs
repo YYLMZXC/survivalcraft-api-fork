@@ -136,35 +136,6 @@ namespace Game
 				}
 				foreach (var item in ModsManager.ModListAll) item.IsDependencyChecked = false;
 			});
-			AddLoadAction(delegate
-			{ //初始化所有ModEntity的语言包
-			  //>>>初始化语言列表
-				ReadOnlyList<ContentInfo> axa = ContentManager.List("Lang");
-				LanguageControl.LanguageTypes.Clear();
-				foreach (ContentInfo contentInfo in axa)
-				{
-					string px = System.IO.Path.GetFileNameWithoutExtension(contentInfo.Filename);
-					if (!LanguageControl.LanguageTypes.Contains(px)) LanguageControl.LanguageTypes.Add(px);
-				}
-				//<<<结束
-				if (ModsManager.Configs.TryGetValue("Language",out string value) && LanguageControl.LanguageTypes.Contains(value))
-				{
-					LanguageControl.Initialize(value);
-				}
-				else
-				{
-					if (LanguageControl.LanguageTypes.Contains(Program.SystemLanguage))
-					{
-						LanguageControl.Initialize(Program.SystemLanguage);
-					}
-					else
-					{
-						// 如果不支持系統語言，英語是最佳選擇
-						LanguageControl.Initialize("en-US");
-					}
-				}
-				ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLauguage(); });
-			});
 			AddLoadAction(() =>
 			{
 			    Dictionary<string, Assembly[]> assemblies = [];
@@ -226,6 +197,35 @@ namespace Game
 
 				}
 				//处理程序集
+			});
+			AddLoadAction(delegate
+			{ //初始化所有ModEntity的语言包
+			  //>>>初始化语言列表
+				ReadOnlyList<ContentInfo> axa = ContentManager.List("Lang");
+				LanguageControl.LanguageTypes.Clear();
+				foreach(ContentInfo contentInfo in axa)
+				{
+					string px = System.IO.Path.GetFileNameWithoutExtension(contentInfo.Filename);
+					if(!LanguageControl.LanguageTypes.Contains(px)) LanguageControl.LanguageTypes.Add(px);
+				}
+				//<<<结束
+				if(ModsManager.Configs.TryGetValue("Language",out string value) && LanguageControl.LanguageTypes.Contains(value))
+				{
+					LanguageControl.Initialize(value);
+				}
+				else
+				{
+					if(LanguageControl.LanguageTypes.Contains(Program.SystemLanguage))
+					{
+						LanguageControl.Initialize(Program.SystemLanguage);
+					}
+					else
+					{
+						// 如果不支持系統語言，英語是最佳選擇
+						LanguageControl.Initialize("en-US");
+					}
+				}
+				ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLauguage(); });
 			});
 			AddLoadAction(delegate
 			{ //读取所有的ModEntity的JavaScript
