@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using System.IO;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -92,7 +92,7 @@ namespace Game
 
 		public static void UpdateVersion()
 		{
-			string url = string.Format(SettingsManager.MotdUpdateCheckUrl, VersionsManager.SerializationVersion, VersionsManager.Platform, ModsManager.ApiVersionString, LanguageControl.LName());
+			string url = string.Format(SettingsManager.MotdUpdateCheckUrl, VersionsManager.SerializationVersion, VersionsManager.PlatformString, ModsManager.ApiVersionString, LanguageControl.LName());
 			WebManager.Get(url, null, null, new CancellableProgress(), data =>
 			{
 				UpdateResult = JsonDocument.Parse(data);

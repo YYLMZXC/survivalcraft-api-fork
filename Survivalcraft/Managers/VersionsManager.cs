@@ -11,13 +11,16 @@ namespace Game;
 public static class VersionsManager
 {
 	public static List<VersionConverter> m_versionConverters;
-#if ANDROID
-	public static Platform Platform => Platform.Android;
-#elif WINDOWS
-	public static Platform Platform => Platform.Windows;
-#else
-	public static Platform Platform => Platform.Linux;
-#endif
+	public static string PlatformString
+	{
+		get
+		{
+			if(OperatingSystem.IsWindows()) return "Windows";
+			else if(OperatingSystem.IsAndroid()) return "Android";
+			else if(OperatingSystem.IsLinux()) return "Linux";
+			else return "Other";
+		}
+	}
 	/// <summary>
 	/// Win32NT:Windows
 	/// Unix:Linux

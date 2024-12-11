@@ -1736,9 +1736,6 @@
     <Compile Include="..\Survivalcraft\Game\PistonMode.cs">
       <Link>Game\PistonMode.cs</Link>
     </Compile>
-    <Compile Include="..\Survivalcraft\Game\Platform.cs">
-      <Link>Game\Platform.cs</Link>
-    </Compile>
     <Compile Include="..\Survivalcraft\Game\PlayerClass.cs">
       <Link>Game\PlayerClass.cs</Link>
     </Compile>

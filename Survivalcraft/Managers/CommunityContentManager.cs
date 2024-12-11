@@ -73,7 +73,7 @@ namespace Game
 			dictionary.Add("Type", typeFilter ?? string.Empty);
 			dictionary.Add("Moderation", moderationFilter ?? string.Empty);
 			dictionary.Add("SortOrder", sortOrder ?? string.Empty);
-			dictionary.Add("Platform", VersionsManager.Platform.ToString());
+			dictionary.Add("Platform", VersionsManager.PlatformString);
 			dictionary.Add("Version", VersionsManager.Version);
 			dictionary.Add("APIVersion", ModsManager.ApiVersionString);
 			dictionary.Add("key", keySearch);
@@ -215,7 +215,7 @@ namespace Game
 						},
 						{
 							"Platform",
-							VersionsManager.Platform.ToString()
+							VersionsManager.PlatformString
 						},
 						{
 							"Version",
@@ -245,7 +245,7 @@ namespace Game
 				{ "Action", "delete" },
 				{ "UserId", userId },
 				{ "Url", address },
-				{ "Platform", VersionsManager.Platform.ToString() },
+				{ "Platform", VersionsManager.PlatformString},
 				{ "Version", VersionsManager.Version }
 			};
 			WebManager.Post(m_scResDirAddress, null, null, WebManager.UrlParametersToStream(dictionary), progress, delegate
@@ -319,7 +319,7 @@ namespace Game
 			{
 				dictionary.Add("Size", size.ToString(CultureInfo.InvariantCulture));
 			}
-			dictionary.Add("Platform", VersionsManager.Platform.ToString());
+			dictionary.Add("Platform", VersionsManager.PlatformString);
 			dictionary.Add("Version", VersionsManager.Version);
 			WebManager.Post(m_scResDirAddress, null, null, WebManager.UrlParametersToStream(dictionary), progress, delegate
 			{

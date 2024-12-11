@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Graphics;
 using Engine.Input;
 using Engine.Serialization;
@@ -875,7 +875,7 @@ namespace Game
 			string attributeValue2 = XmlUtils.GetAttributeValue<string>(node, "_ExcludePlatforms", null);
 			if (attributeValue != null && attributeValue2 == null)
 			{
-				if (attributeValue.Split(' ').Contains(VersionsManager.Platform.ToString()))
+				if (attributeValue.Split(' ').Contains(VersionsManager.PlatformString))
 				{
 					return true;
 				}
@@ -886,7 +886,7 @@ namespace Game
 				{
 					return true;
 				}
-				if (!attributeValue2.Split(' ').Contains(VersionsManager.Platform.ToString()))
+				if (!attributeValue2.Split(' ').Contains(VersionsManager.PlatformString))
 				{
 					return true;
 				}

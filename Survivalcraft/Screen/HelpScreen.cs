@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Xml.Linq;
 
@@ -45,7 +45,7 @@ namespace Game
 				JsonNode displa = item3["DisabledPlatforms"];
                 if (displa != null && displa.GetValueKind() == JsonValueKind.String)
 				{
-					if ((displa.GetValue<string>()).Split(new string[] { "," }, StringSplitOptions.None).FirstOrDefault((string s) => s.Trim().ToLower() == VersionsManager.Platform.ToString().ToLower()) == null) continue;
+					if ((displa.GetValue<string>()).Split(new string[] { "," }, StringSplitOptions.None).FirstOrDefault((string s) => s.Trim().Equals(VersionsManager.PlatformString,StringComparison.CurrentCultureIgnoreCase)) == null) continue;
 				}
 				JsonNode Title = item3["Title"];
                 JsonNode Name = item3["Name"];
