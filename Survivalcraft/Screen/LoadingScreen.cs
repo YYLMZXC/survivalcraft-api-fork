@@ -201,12 +201,11 @@ namespace Game
 			AddLoadAction(delegate
 			{ //初始化所有ModEntity的语言包
 			  //>>>初始化语言列表
-				ReadOnlyList<ContentInfo> axa = ContentManager.List("Lang");
 				LanguageControl.LanguageTypes.Clear();
-				foreach(ContentInfo contentInfo in axa)
+				foreach(ContentInfo contentInfo in ContentManager.List("Lang"))
 				{
 					string px = System.IO.Path.GetFileNameWithoutExtension(contentInfo.Filename);
-					if(!LanguageControl.LanguageTypes.ContainsKey(px)) LanguageControl.LanguageTypes.Add(px,"");//第二个参数应为本地化名称
+					LanguageControl.LanguageTypes.TryAdd(px,"");//第二个参数应为本地化名称
 				}
 				//<<<结束
 				if(ModsManager.Configs.TryGetValue("Language",out string value) && LanguageControl.LanguageTypes.ContainsKey(value))
@@ -221,7 +220,7 @@ namespace Game
 					}
 					else
 					{
-						// 如果不支持系統語言，英語是最佳選擇
+						//如果不支持系统语言，英语是最佳选择
 						LanguageControl.Initialize("en-US");
 					}
 				}

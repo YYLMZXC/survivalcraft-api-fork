@@ -1,4 +1,5 @@
 ﻿using Engine;
+using Engine.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +27,7 @@ namespace Game
 
 		public EditMemoryBankDialogAPI(MemoryBankData memoryBankData, Action onCancel)
 		{
+			//Keyboard.CharacterEntered += ChangeNumber;
 			memory = memoryBankData;
 			Data.Clear();
 			Data.AddRange(memory.Data);
@@ -40,18 +42,14 @@ namespace Game
 			stackPanel.Children.Add(labelWidget);
 			stackPanel.Children.Add(stackPanelWidget);
 			stackPanelWidget.Children.Add(initData());
-			stackPanelWidget.Children.Add(initButton());
+			stackPanelWidget.Children.Add(InitButton());
 			MainView = stackPanel;
 			this.onCancel = onCancel;
 			lastvalue = memory.Read(0);
 		}
 		public byte Read(int address)
 		{
-			if (address >= 0 && address < Data.Count)
-			{
-				return Data.Array[address];
-			}
-			return 0;
+			return address >= 0 && address < Data.Count ? Data.Array[address] : (byte)0;
 		}
 
 		public void Write(int address, byte data)
@@ -62,22 +60,19 @@ namespace Game
 			}
 			else if (address >= 0 && address < 256 && data != 0)
 			{
-				Data.Count = MathUtils.Max(Data.Count, address + 1);
+				Data.Count = Math.Max(Data.Count, address + 1);
 				Data.Array[address] = data;
 			}
 		}
 		public void LoadString(string data)
 		{
-			string[] array = data.Split(new char[1]
-			{
-				';'
-			}, StringSplitOptions.RemoveEmptyEntries);
+			string[] array = data.Split(';', StringSplitOptions.RemoveEmptyEntries);
 			if (array.Length >= 1)
 			{
 				string text = array[0];
 				text = text.TrimEnd('0');
 				Data.Clear();
-				for (int i = 0; i < MathUtils.Min(text.Length, 256); i++)
+				for (int i = 0; i < Math.Min(text.Length, 256); i++)
 				{
 					int num = MemoryBankData.m_hexChars.IndexOf(char.ToUpperInvariant(text[i]));
 					if (num < 0)
@@ -167,15 +162,28 @@ namespace Game
 
 		public Widget makeFuncButton(string txt, Action func)
 		{
-			var clickText = new ClickTextWidget(new Vector2(40), txt, func, true);
-			clickText.BorderColor = Color.White;
-			clickText.Margin = new Vector2(2);
+			var clickText = new ClickTextWidget(new Vector2(40),txt,func,true)
+			{
+				BorderColor = Color.White,
+				Margin = new Vector2(2)
+			};
 			clickText.labelWidget.FontScale = txt.Length > 1 ? 0.7f : 1f;
 			clickText.labelWidget.Color = Color.White;
 			return clickText;
 		}
-
-		public Widget initButton()
+		private void ChangeNumber(char pp)
+		{
+				AudioManager.PlaySound("Audio/UI/ButtonClick",1f,0f,0f);
+				Write(clickpos,(byte)pp);//写入数据
+				lastvalue = pp;
+				clickpos += 1;//自动加1
+				if(clickpos > 255)
+				{
+					clickpos = 0;
+				}
+				isclick = true;
+		}
+		private StackPanelWidget InitButton()
 		{
 			var stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10, 10) };
 			for (int i = 0; i < 6; i++)
@@ -195,7 +203,7 @@ namespace Game
 								Write(clickpos, (byte)pp);//写入数据
 								lastvalue = pp;
 								clickpos += 1;//自动加1
-								if (clickpos >= 255)
+								if (clickpos > 255)
 								{
 									clickpos = 0;
 								}
@@ -292,7 +300,7 @@ namespace Game
 				LoadString(textBoxWidget.Text);
 				isclick = true;
 			}, memory.SaveString(false)));
-			stack.Children.Add(makeButton(LanguageControl.GetContentWidgets(GetType().Name, 4), delegate ()
+			stack.Children.Add(MakeButton(LanguageControl.GetContentWidgets(GetType().Name, 4), delegate ()
 			{
 				for (int i = 0; i < Data.Count; i++)
 				{
@@ -302,7 +310,7 @@ namespace Game
 				AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
 				DialogsManager.HideDialog(this);
 			}));
-			stack.Children.Add(makeButton(LanguageControl.GetContentWidgets(GetType().Name, 5), delegate ()
+			stack.Children.Add(MakeButton(LanguageControl.GetContentWidgets(GetType().Name, 5), delegate ()
 			{
 				AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
 				DialogsManager.HideDialog(this);
@@ -326,11 +334,13 @@ namespace Game
 			return canvasWidget;
 		}
 
-		public Widget makeButton(string txt, Action tas)
+		private static Widget MakeButton(string txt, Action tas)
 		{
-			var clickTextWidget = new ClickTextWidget(new Vector2(120, 30), txt, tas);
-			clickTextWidget.BorderColor = Color.White;
-			clickTextWidget.Margin = new Vector2(0, 3);
+			var clickTextWidget = new ClickTextWidget(new Vector2(120,30),txt,tas)
+			{
+				BorderColor = Color.White,
+				Margin = new Vector2(0,3)
+			};
 			clickTextWidget.labelWidget.FontScale = 0.7f;
 			clickTextWidget.labelWidget.Color = Color.Green;
 			return clickTextWidget;

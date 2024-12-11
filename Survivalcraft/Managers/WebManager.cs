@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using System.Net;
 using System.Text;
 using System.Net.Http;
@@ -104,7 +104,7 @@ namespace Game
 								client.DefaultRequestHeaders.Add(header.Key, header.Value);
 							}
 						}
-						ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+						ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
 						HttpResponseMessage responseMessage = await client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, progress.CancellationToken);
 						await VerifyResponse(responseMessage);
 						long? contentLength = responseMessage.Content.Headers.ContentLength;
@@ -113,52 +113,49 @@ namespace Game
 #else
 						progress.Total = contentLength.GetValueOrDefault();
 #endif
-						using (Stream responseStream = await responseMessage.Content.ReadAsStreamAsync())
+						using Stream responseStream = await responseMessage.Content.ReadAsStreamAsync();
+						targetStream = new MemoryStream();
+						try
 						{
-							targetStream = new MemoryStream();
-							try
+							long written = 0L;
+							byte[] buffer = new byte[1024];
+							int num;
+							do
 							{
-								long written = 0L;
-								byte[] buffer = new byte[1024];
-								int num;
-								do
+								num = await responseStream.ReadAsync(buffer,progress.CancellationToken);
+								if(num > 0)
 								{
-									num = await responseStream.ReadAsync(buffer, 0, buffer.Length, progress.CancellationToken);
-									if (num > 0)
-									{
-										targetStream.Write(buffer, 0, num);
-										written += num;
-										progress.Completed = written;
-									}
-								}
-								while (num > 0);
-								if (success != null)
-								{
-									Dispatcher.Dispatch(delegate
-									{
-										success(targetStream.ToArray());
-									});
+									targetStream.Write(buffer,0,num);
+									written += num;
+									progress.Completed = written;
 								}
 							}
-							finally
+							while(num > 0);
+							if(success != null)
 							{
-								if (targetStream != null)
+								Dispatcher.Dispatch(delegate
 								{
-									((IDisposable)targetStream).Dispose();
-								}
+									success(targetStream.ToArray());
+								});
+							}
+						}
+						finally
+						{
+							if(targetStream != null)
+							{
+								((IDisposable)targetStream).Dispose();
 							}
 						}
 					}
 				}
 				catch (Exception ex)
 				{
-					e = ex;
 					Log.Error(ExceptionManager.MakeFullErrorMessage(e));
 					if (failure != null)
 					{
 						Dispatcher.Dispatch(delegate
 						{
-							failure(e);
+							failure(ex);
 						});
 					}
 				}
@@ -206,10 +203,7 @@ namespace Game
 		public static Dictionary<string, string> UrlParametersFromString(string s)
 		{
 			var dictionary = new Dictionary<string, string>();
-			string[] array = s.Split(new char[1]
-			{
-				'&'
-			}, StringSplitOptions.RemoveEmptyEntries);
+			string[] array = s.Split('&', StringSplitOptions.RemoveEmptyEntries);
 			for (int i = 0; i < array.Length; i++)
 			{
 				string[] array2 = Uri.UnescapeDataString(array[i]).Split('=');
@@ -229,7 +223,6 @@ namespace Game
 		public static void PutOrPost(bool isPost, string address, Dictionary<string, string> parameters, Dictionary<string, string> headers, Stream data, CancellableProgress progress, Action<byte[]> success, Action<Exception> failure)
 		{
 			byte[] responseData = default;
-			Exception e = default;
 			Task.Run(async delegate
 			{
 				try
@@ -238,43 +231,41 @@ namespace Game
 					{
 						throw new InvalidOperationException("Internet connection is unavailable.");
 					}
-					using (var client = new HttpClient())
+					using var client = new HttpClient();
+					var dictionary = new Dictionary<string,string>();
+					if(headers != null)
 					{
-						var dictionary = new Dictionary<string, string>();
-						if (headers != null)
+						foreach(KeyValuePair<string,string> header in headers)
 						{
-							foreach (KeyValuePair<string, string> header in headers)
+							if(!client.DefaultRequestHeaders.TryAddWithoutValidation(header.Key,header.Value))
 							{
-								if (!client.DefaultRequestHeaders.TryAddWithoutValidation(header.Key, header.Value))
-								{
-									dictionary.Add(header.Key, header.Value);
-								}
+								dictionary.Add(header.Key,header.Value);
 							}
 						}
-						Uri requestUri = (parameters != null && parameters.Count > 0) ? new Uri($"{address}?{UrlParametersToString(parameters)}") : new Uri(address);
+					}
+					Uri requestUri = (parameters != null && parameters.Count > 0) ? new Uri($"{address}?{UrlParametersToString(parameters)}") : new Uri(address);
 #if !ANDROID
 						var httpContent = new ProgressHttpContent(data, progress);
 #else
-						HttpContent httpContent = (progress != null) ? ((HttpContent)new ProgressHttpContent(data, progress)) : ((HttpContent)new StreamContent(data));
+					HttpContent httpContent = (progress != null) ? ((HttpContent)new ProgressHttpContent(data,progress)) : ((HttpContent)new StreamContent(data));
 #endif
-						foreach (KeyValuePair<string, string> item in dictionary)
-						{
-							httpContent.Headers.Add(item.Key, item.Value);
-						}
+					foreach(KeyValuePair<string,string> item in dictionary)
+					{
+						httpContent.Headers.Add(item.Key,item.Value);
+					}
 #if !ANDROID
 						HttpResponseMessage responseMessage = isPost ? (await client.PostAsync(requestUri, httpContent, progress.CancellationToken)) : (await client.PutAsync(requestUri, httpContent, progress.CancellationToken));
 #else
-						HttpResponseMessage responseMessage = isPost ? ((progress == null) ? (await client.PostAsync(requestUri, httpContent)) : (await client.PostAsync(requestUri, httpContent, progress.CancellationToken))) : ((progress == null) ? (await client.PutAsync(requestUri, httpContent)) : (await client.PutAsync(requestUri, httpContent, progress.CancellationToken)));
+					HttpResponseMessage responseMessage = isPost ? ((progress == null) ? (await client.PostAsync(requestUri,httpContent)) : (await client.PostAsync(requestUri,httpContent,progress.CancellationToken))) : ((progress == null) ? (await client.PutAsync(requestUri,httpContent)) : (await client.PutAsync(requestUri,httpContent,progress.CancellationToken)));
 #endif
-						await VerifyResponse(responseMessage);
-						responseData = await responseMessage.Content.ReadAsByteArrayAsync();
-						if (success != null)
-						{
-							Dispatcher.Dispatch(delegate
-						{
-							success(responseData);
-						});
-						}
+					await VerifyResponse(responseMessage);
+					responseData = await responseMessage.Content.ReadAsByteArrayAsync();
+					if(success != null)
+					{
+						Dispatcher.Dispatch(delegate
+					{
+						success(responseData);
+					});
 					}
 				}
 				catch (Exception e)
