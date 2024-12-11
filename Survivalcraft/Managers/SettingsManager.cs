@@ -185,7 +185,7 @@ namespace Game
 				});
 			}
 		}
-
+		#region 简单设置项
 		public static GuiSize GuiSize
 		{
 			get;
@@ -430,7 +430,7 @@ namespace Game
 			get;
 			set;
 		}
-
+		#endregion
 		public static bool FullScreenMode
 		{
 			get
