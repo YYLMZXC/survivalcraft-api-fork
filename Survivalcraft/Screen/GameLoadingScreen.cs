@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Xml.Linq;
 
 namespace Game
@@ -52,7 +52,7 @@ namespace Game
 			catch (Exception e)
 			{
 				ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
-                ViewGameLogDialog dialog = new ViewGameLogDialog();
+                ViewGameLogDialog dialog = new();
                 dialog.SetErrorHead(11, 10);
                 DialogsManager.ShowDialog(null, dialog);
             }
