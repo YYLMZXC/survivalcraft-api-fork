@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Serialization;
 using System;
 using System.IO;
@@ -32,7 +32,7 @@ namespace Game
 
 		public static bool CreativeDragMaxStacking { get; set; }
 
-		public static bool 使用内置路径;
+		public static float Touchoffset { get; set; }
 
 		public static float SoundsVolume
 		{

@@ -1,3 +1,4 @@
+﻿using Acornima.Ast;
 using Engine;
 using System.Xml.Linq;
 
@@ -34,7 +35,7 @@ namespace Game
 		public SliderWidget m_gamepadCursorSpeedSlider;
 
 		public SliderWidget m_gamepadDeadZoneSlider;
-
+		public SliderWidget m_TouchoffsetSlider;
 		public SliderWidget m_creativeDigTimeSlider;
 
 		public SliderWidget m_creativeReachSlider;
@@ -42,6 +43,7 @@ namespace Game
 		public SliderWidget m_holdDurationSlider;
 
 		public SliderWidget m_dragDistanceSlider;
+		
 
 		public SettingsControlsScreen()
 		{
@@ -66,6 +68,28 @@ namespace Game
 			m_holdDurationSlider = Children.Find<SliderWidget>("HoldDurationSlider");
 			m_dragDistanceSlider = Children.Find<SliderWidget>("DragDistanceSlider");
 			m_MemoryBankStyle = Children.Find<ButtonWidget>("MemoryBankStyle");
+			var M_TouchoffsetUniformSpacingPanelWidget = new UniformSpacingPanelWidget { 
+				Direction = LayoutDirection.Horizontal,Margin = (0, 3) };
+			var M_TouchoffsetLabel = new LabelWidget()
+			{
+				Text = "触摸屏手柄偏移",//LanguageControl.Get("SettingsControlsScreen",20),
+				HorizontalAlignment = WidgetAlignment.Far,
+				VerticalAlignment = WidgetAlignment.Center,
+				Margin = (20, 0)
+			};
+			m_TouchoffsetSlider = new SliderWidget()
+			{
+				Name= "TouchoffsetSlider",
+				Size=(-255,60),
+				VerticalAlignment=WidgetAlignment.Center,
+				Margin=(20,1024) ,
+				MinValue=0.1f ,
+				MaxValue=1.0f ,
+				Granularity=0.1f
+			};
+			M_TouchoffsetUniformSpacingPanelWidget.AddChildren(M_TouchoffsetLabel);
+			M_TouchoffsetUniformSpacingPanelWidget.AddChildren(m_TouchoffsetSlider);
+			Children.Find<ScrollPanelWidget>().AddChildren(M_TouchoffsetUniformSpacingPanelWidget);
 			m_horizontalCreativeFlightPanel.IsVisible = true;
 		}
 
@@ -138,6 +162,10 @@ namespace Game
 			if (m_MemoryBankStyle.IsClicked)
 			{
 				SettingsManager.UsePrimaryMemoryBank = !SettingsManager.UsePrimaryMemoryBank;
+			}
+			if(m_TouchoffsetSlider.IsSliding)
+			{
+				SettingsManager.Touchoffset = m_TouchoffsetSlider.Value;
 			}
 			if (m_AllowInitialIntro.IsClicked) SettingsManager.AllowInitialIntro = !SettingsManager.AllowInitialIntro;
 			m_moveControlModeButton.Text = LanguageControl.Get("MoveControlMode", SettingsManager.MoveControlMode.ToString());
