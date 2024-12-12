@@ -225,7 +225,7 @@ namespace Game
 			if (string.IsNullOrEmpty(path))
 			{
 #if ANDROID
-				path = Storage.GetSystemPath("android:SurvivalCraft2.3/files");
+				path = Storage.GetSystemPath(RunPath.AndroidFilePath+"/files");
 #else
 				path = DiskExternalContentProvider.LocalPath;
 #endif

@@ -107,7 +107,7 @@ public class ModsManageContentScreen : Screen
 		"android:/BaiduNetdisk",
 		"android:/UCDownloads",
 		"android:/baidu/searchbox/downloads",
-		"android:/SurvivalCraft2.3/Mods"
+		"android:/SurvivalCraft2.3/Mods"//特意保留用于搜索旧文件夹模组
 	};
 
 	public ModsManageContentScreen()
@@ -115,8 +115,8 @@ public class ModsManageContentScreen : Screen
 		m_androidSystem = Environment.CurrentDirectory == "/";
 		if (m_androidSystem)
 		{
-			m_uninstallPath = m_uninstallPath.Replace("app:", "android:/SurvivalCraft2.3");
-			m_installPath = m_installPath.Replace("app:", "android:/SurvivalCraft2.3");
+			m_uninstallPath = m_uninstallPath.Replace("app:",RunPath.AndroidFilePath);
+			m_installPath = m_installPath.Replace("app:",RunPath.AndroidFilePath);
 			m_androidDataPathEnterEnabled = true;
 			try
 			{

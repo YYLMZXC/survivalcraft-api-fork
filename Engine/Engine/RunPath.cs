@@ -9,6 +9,9 @@ namespace Engine
 {
     public class RunPath
     {
+        #region//按照游戏格式的路径
+        public static string AndroidFilePath = "android:Survivalcraft2.3_API1.7";
+        #endregion
         /// <summary>
         ///获取实际运行路径 
         /// </summary>

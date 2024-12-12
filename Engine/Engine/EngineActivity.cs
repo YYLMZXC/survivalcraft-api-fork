@@ -1,4 +1,4 @@
-#if ANDROID
+﻿#if ANDROID
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
@@ -21,8 +21,8 @@ namespace Engine
 
         public event Func<KeyEvent, bool> OnDispatchKeyEvent;
         
-        public static string BasePath = "android:Survivalcraft2.3_API1.7";
-        public static string ConfigPath = "android:Survivalcraft2.3_API1.7";
+        public static string BasePath = RunPath.AndroidFilePath;
+        public static string ConfigPath = RunPath.AndroidFilePath;
 
         public EngineActivity()
         {
