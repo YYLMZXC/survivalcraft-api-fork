@@ -133,12 +133,12 @@ public class ModsManageContentScreen : Screen
 		m_modsContentList = Children.Find<ListPanelWidget>("ModsContentList");
 		m_topBarLabel = Children.Find<LabelWidget>("TopBar.Label");
 		m_modsContentLabel = Children.Find<LabelWidget>("ModsContentLabel");
-		m_actionButton = Children.Find<ButtonWidget>("ActionButton");
-		m_actionButton2 = Children.Find<ButtonWidget>("ActionButton2");
-		m_actionButton3 = Children.Find<ButtonWidget>("ActionButton3");
-		m_uninstallFilterButton = Children.Find<ButtonWidget>("UninstallFilter");
-		m_installFilterButton = Children.Find<ButtonWidget>("InstallFilter");
-		m_upDirectoryButton = Children.Find<ButtonWidget>("UpDirectory");
+		m_actionButton = Children.Find<BevelledButtonWidget>("ActionButton");
+		m_actionButton2 = Children.Find<BevelledButtonWidget>("ActionButton2");
+		m_actionButton3 = Children.Find<BevelledButtonWidget>("ActionButton3");
+		m_uninstallFilterButton = Children.Find<BevelledButtonWidget>("UninstallFilter");
+		m_installFilterButton = Children.Find<BevelledButtonWidget>("InstallFilter");
+		m_upDirectoryButton = Children.Find<BevelledButtonWidget>("UpDirectory");
 		m_topBarLabel.Text = LanguageControl.Get(fName, 1);
 		m_uninstallFilterButton.Text = LanguageControl.Get(fName, 44);
 		m_installFilterButton.Text = LanguageControl.Get(fName, 45);
@@ -668,7 +668,8 @@ public class ModsManageContentScreen : Screen
 			}
 			else
 			{
-				ScreensManager.SwitchScreen("Content");
+				//ScreensManager.SwitchScreen("Content");
+				ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
 			}
 		}
 	}

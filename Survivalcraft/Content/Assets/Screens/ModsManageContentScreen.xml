@@ -1,4 +1,4 @@
-<Screen xmlns="runtime-namespace:Game">
+﻿<Screen xmlns="runtime-namespace:Game">
 
 	<PanoramaWidget />
 
@@ -22,7 +22,7 @@
 				<CanvasWidget Size="10, 0"/>
 				<BevelledButtonWidget Name="ActionButton" Style="{Styles/ButtonStyle_160x60}" Text="" Margin="10, 0"/>
 				<BevelledButtonWidget Name="ActionButton2" Style="{Styles/ButtonStyle_160x60}" Text="" Margin="10, 0"/>
-        <BevelledButtonWidget Name="ActionButton3" Style="{Styles/ButtonStyle_160x60}" Text="" Margin="10, 0"/>
+				<BevelledButtonWidget Name="ActionButton3" Style="{Styles/ButtonStyle_160x60}" Text="" Margin="10, 0"/>
 				<CanvasWidget Size="Infinity, 0" />
 				<StackPanelWidget Margin="10, 0">
 					<BevelledButtonWidget Name="UninstallFilter" Text="Uninstall" Size="120, 60" VerticalAlignment="Center" Margin="-10, 0"/>

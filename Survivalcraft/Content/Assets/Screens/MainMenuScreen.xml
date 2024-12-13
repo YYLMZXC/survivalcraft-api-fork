@@ -1,4 +1,4 @@
-<Screen xmlns="runtime-namespace:Game">
+﻿<Screen xmlns="runtime-namespace:Game">
 
 	<PanoramaWidget />
 
@@ -25,7 +25,7 @@
 			</StackPanelWidget>
 			<StackPanelWidget HorizontalAlignment="Center">
 				<BevelledButtonWidget Name="Settings" Style="{Styles/ButtonStyle_310x60}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="[MainMenuScreen:4]" />
-				<BevelledButtonWidget Name="Help" Style="{Styles/ButtonStyle_310x60}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="[MainMenuScreen:5]" />
+				<BevelledButtonWidget Name="Manage" Style="{Styles/ButtonStyle_310x60}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="[MainMenuScreen:5]" />
 			</StackPanelWidget>
 			<BevelledButtonWidget Name="Buy" Style="{Styles/ButtonStyle_310x60}" HorizontalAlignment="Center" VerticalAlignment="Center" Text="[MainMenuScreen:6]" IsVisible="false" />
 		</StackPanelWidget>
@@ -50,5 +50,5 @@
 	</StackPanelWidget>
 
 	<BitmapButtonWidget Name="LanguageSwitchButton" Size="36, 36" NormalSubtexture="{Textures/Gui/Earth}" ClickedSubtexture="{Textures/Gui/Earth}" Margin="24, 24" IsAutoCheckingEnabled="false" VerticalAlignment="Far" HorizontalAlignment="Near"/>
-
+	<BitmapButtonWidget Name="Help" Size="36, 36" NormalSubtexture="{Textures/Atlas/HelpButton}" ClickedSubtexture="{Textures/Atlas/HelpButton}" Margin="24, 24" IsAutoCheckingEnabled="false" VerticalAlignment="Far" HorizontalAlignment="Far"/>
 </Screen>

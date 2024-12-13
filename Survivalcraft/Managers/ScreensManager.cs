@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Graphics;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +51,9 @@ namespace Game
 			get;
 			set;
 		}
-
+		/// <summary>
+		/// 上一个Screen
+		/// </summary>
 		public static Screen PreviousScreen
 		{
 			get;

@@ -1,4 +1,4 @@
-using System;
+锘縰sing System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
@@ -24,7 +24,7 @@ namespace Game
 			m_externalContentButton = Children.Find<ButtonWidget>("External");
 			m_communityContentButton = Children.Find<ButtonWidget>("Community");
 			m_linkButton = Children.Find<ButtonWidget>("Link");
-			m_manageButton = Children.Find<ButtonWidget>("Manage");
+			m_manageButton = Children.Find<BevelledButtonWidget>("Manage");
 		}
 
 		public override void Enter(object[] parameters)
@@ -37,7 +37,30 @@ namespace Game
 			{
 			});
 		}
-
+		public void OpenManageSelectDialog()
+		{
+			List<string> list = [LanguageControl.Get(fName,1),LanguageControl.Get(fName,2)];
+			if(m_isAdmin)
+			{
+				list = [LanguageControl.Get(fName,1),LanguageControl.Get(fName,2),"鐢ㄦ埛绠＄悊"];
+			}
+			DialogsManager.ShowDialog(null,new ListSelectionDialog(null,list,70f,(object item) => (string)item,delegate (object item)
+			{
+				string selectionResult = (string)item;
+				if(selectionResult == LanguageControl.Get(fName,1))
+				{
+					ScreensManager.SwitchScreen("ModsManageContent");
+				}
+				else if(selectionResult == LanguageControl.Get(fName,2))
+				{
+					ScreensManager.SwitchScreen("ManageContent");
+				}
+				else
+				{
+					ScreensManager.SwitchScreen("ManageUser");
+				}
+			}));
+		}
 		public override void Update()
 		{
 			m_communityContentButton.IsEnabled = SettingsManager.CommunityContentMode != CommunityContentMode.Disabled;
@@ -55,27 +78,7 @@ namespace Game
 			}
 			if (m_manageButton.IsClicked)
 			{
-				List<string> list = [LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2)];
-				if (m_isAdmin)
-				{
-					list = [LanguageControl.Get(fName, 1), LanguageControl.Get(fName, 2), "用户管理"];
-				}
-				DialogsManager.ShowDialog(null, new ListSelectionDialog(null, list, 70f, (object item) => (string)item, delegate (object item)
-				{
-					string selectionResult = (string)item;
-					if (selectionResult == LanguageControl.Get(fName, 1))
-					{
-						ScreensManager.SwitchScreen("ModsManageContent");
-					}
-					else if (selectionResult == LanguageControl.Get(fName, 2))
-					{
-						ScreensManager.SwitchScreen("ManageContent");
-					}
-					else
-					{
-						ScreensManager.SwitchScreen("ManageUser");
-					}
-				}));
+				OpenManageSelectDialog();
 			}
 			if (Input.Back || Input.Cancel || Children.Find<ButtonWidget>("TopBar.Back").IsClicked)
 			{

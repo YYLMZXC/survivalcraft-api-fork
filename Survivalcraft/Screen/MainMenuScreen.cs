@@ -89,6 +89,12 @@ namespace Game
 			{
 				MarketplaceManager.ShowMarketplace();
 			}
+			if(Children.Find<BevelledButtonWidget>("Manage").IsClicked)
+			{
+				ScreensManager.m_screens.TryGetValue("Content",out Screen screen);
+				ContentScreen contentScreen = screen as ContentScreen;
+				contentScreen.OpenManageSelectDialog();
+			}
 			if (m_showBulletinButton.IsClicked)
 			{
 				if (MotdManager.m_bulletin != null && MotdManager.m_bulletin.Title.ToLower() != "null")
