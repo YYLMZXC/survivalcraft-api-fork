@@ -140,7 +140,7 @@ namespace Game
 			}
 		}
 
-		public static void ChangeLanguage(string languageType)
+		public void ChangeLanguage(string languageType)
 		{
 			LanguageControl.Initialize(languageType);
 			foreach (var c in ModsManager.ModList)

@@ -1,8 +1,7 @@
-﻿namespace Game
+namespace Game
 {
 	public class ClickableWidget : Widget
 	{
-		public event Action ClickAction;
 		public string SoundName
 		{
 			get;
@@ -64,7 +63,6 @@
 			if (input.Click.HasValue && HitTestGlobal(input.Click.Value.Start) == this && HitTestGlobal(input.Click.Value.End) == this)
 			{
 				IsClicked = true;
-				//ClickAction.Invoke();
 				if (IsAutoCheckingEnabled)
 				{
 					IsChecked = !IsChecked;

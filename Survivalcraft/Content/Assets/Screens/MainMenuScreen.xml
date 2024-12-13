@@ -1,7 +1,9 @@
-﻿<Screen xmlns="runtime-namespace:Game">
+<Screen xmlns="runtime-namespace:Game">
+
 	<PanoramaWidget />
-	<BitmapButtonWidget Name="LanguageButton" HorizontalAlignment="Near" VerticalAlignment="Near" Size="64, 64" NormalSubtexture="{Textures/Gui/Earth}"/>
+
 	<StackPanelWidget Direction="Vertical">
+
 		<CanvasWidget Size="0, Infinity" />
 
 		<StackPanelWidget Direction="Vertical" HorizontalAlignment="Center">

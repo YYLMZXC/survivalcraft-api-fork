@@ -41,7 +41,7 @@ namespace Game
 			canvasWidget.Children.Add(stackPanel);
 			stackPanel.Children.Add(labelWidget);
 			stackPanel.Children.Add(stackPanelWidget);
-			stackPanelWidget.Children.Add(InitData());
+			stackPanelWidget.Children.Add(initData());
 			stackPanelWidget.Children.Add(InitButton());
 			MainView = stackPanel;
 			this.onCancel = onCancel;
@@ -116,7 +116,7 @@ namespace Game
 			return stringBuilder.ToString();
 		}
 
-		public Widget InitData()
+		public Widget initData()
 		{
 			var stack = new StackPanelWidget() { Direction = LayoutDirection.Vertical, VerticalAlignment = WidgetAlignment.Center, HorizontalAlignment = WidgetAlignment.Far, Margin = new Vector2(10, 0) };
 			for (int i = 0; i < 17; i++)
@@ -160,7 +160,7 @@ namespace Game
 			return stack;
 		}
 
-		private static ClickTextWidget MakeFuncButton(string txt, Action func)
+		public Widget makeFuncButton(string txt, Action func)
 		{
 			var clickText = new ClickTextWidget(new Vector2(40),txt,func,true)
 			{
@@ -195,7 +195,7 @@ namespace Game
 					if (cc < 15)
 					{
 						int pp = cc + 1;
-						stackPanelWidget.Children.Add(.MakeFuncButton(string.Format("{0}", MemoryBankData.m_hexChars[pp]), delegate ()
+						stackPanelWidget.Children.Add(makeFuncButton(string.Format("{0}", MemoryBankData.m_hexChars[pp]), delegate ()
 						{
 							AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
 							if (!isSetPos)
@@ -226,7 +226,7 @@ namespace Game
 					}
 					else if (cc == 15)
 					{
-						stackPanelWidget.Children.Add(MakeFuncButton(string.Format("{0}", MemoryBankData.m_hexChars[0]), delegate ()
+						stackPanelWidget.Children.Add(makeFuncButton(string.Format("{0}", MemoryBankData.m_hexChars[0]), delegate ()
 						{
 							AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
 							if (!isSetPos)
@@ -258,7 +258,7 @@ namespace Game
 					}
 					else if (cc == 16)
 					{
-						stackPanelWidget.Children.Add(MakeFuncButton(LanguageControl.GetContentWidgets(GetType().Name, 1), delegate ()
+						stackPanelWidget.Children.Add(makeFuncButton(LanguageControl.GetContentWidgets(GetType().Name, 1), delegate ()
 						{
 							AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
 							for (int ai = 0; ai < Data.Count; ai++)
@@ -272,7 +272,7 @@ namespace Game
 					}
 					else if (cc == 17)
 					{
-						stackPanelWidget.Children.Add(MakeFuncButton(LanguageControl.GetContentWidgets(GetType().Name, 2), delegate ()
+						stackPanelWidget.Children.Add(makeFuncButton(LanguageControl.GetContentWidgets(GetType().Name, 2), delegate ()
 						{
 							AudioManager.PlaySound("Audio/UI/ButtonClick", 1f, 0f, 0f);
 							var tmp = new DynamicArray<byte>();
@@ -295,7 +295,7 @@ namespace Game
 			}
 			var labelWidget = new LabelWidget() { FontScale = 0.8f, Text = LanguageControl.GetContentWidgets(GetType().Name, 3), HorizontalAlignment = WidgetAlignment.Center, Margin = new Vector2(0f, 10f), Color = Color.DarkGray };
 			stack.Children.Add(labelWidget);
-			stack.Children.Add(MakeTextBox(delegate (TextBoxWidget textBoxWidget)
+			stack.Children.Add(makeTextBox(delegate (TextBoxWidget textBoxWidget)
 			{
 				LoadString(textBoxWidget.Text);
 				isclick = true;
@@ -319,7 +319,7 @@ namespace Game
 			return stack;
 		}
 
-		private static CanvasWidget MakeTextBox(Action<TextBoxWidget> ac, string text = "")
+		public Widget makeTextBox(Action<TextBoxWidget> ac, string text = "")
 		{
 			var canvasWidget = new CanvasWidget() { HorizontalAlignment = WidgetAlignment.Center };
 			var rectangleWidget = new RectangleWidget() { FillColor = Color.Black, OutlineColor = Color.White, Size = new Vector2(120, 30) };
@@ -334,7 +334,7 @@ namespace Game
 			return canvasWidget;
 		}
 
-		private static ClickTextWidget MakeButton(string txt, Action tas)
+		private static Widget MakeButton(string txt, Action tas)
 		{
 			var clickTextWidget = new ClickTextWidget(new Vector2(120,30),txt,tas)
 			{
