@@ -182,14 +182,14 @@ namespace Game
 					{
 						throw new InvalidOperationException(LanguageControl.Get(fName, 1));
 					}
-					string text = value;
+					/*string text = value;
 					foreach (char c in text)
 					{
 						if (c > '\u007f' || (!char.IsLetterOrDigit(c) && c != ' '))
 						{
 							throw new InvalidOperationException(LanguageControl.Get(fName, 1));
 						}
-					}
+					}*/
 					if (value.Length > 20)
 					{
 						value = value.Substring(0, 20);
