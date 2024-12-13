@@ -17,7 +17,7 @@ namespace Game
 
 		public LabelWidget m_copyrightLabel;
 
-		public ButtonWidget m_language_switchButton;
+		public BitmapButtonWidget m_language_switchButton;
 
 		public MainMenuScreen()
 		{
@@ -26,6 +26,8 @@ namespace Game
 			m_showBulletinButton = Children.Find<ButtonWidget>("BulletinButton");
 			m_bulletinStackPanel = Children.Find<StackPanelWidget>("BulletinStackPanel");
 			m_copyrightLabel = Children.Find<LabelWidget>("CopyrightLabel");
+			m_language_switchButton = Children.Find<BitmapButtonWidget>("LanguageButton");
+			m_language_switchButton.m_clickableWidget.ClickAction += OnLanguageButtonClick;
 			string languageType = ModsManager.Configs.GetValueOrDefault("Language", "zh-CN");
 			m_bulletinStackPanel.IsVisible = languageType == "zh-CN";
 			m_copyrightLabel.IsVisible = languageType != "zh-CN";
@@ -47,7 +49,13 @@ namespace Game
 		{
 			Keyboard.BackButtonQuitsApp = false;
 		}
-
+		public static void OnLanguageButtonClick()
+		{
+			DialogsManager.ShowDialog(null,new ListSelectionDialog(null,LanguageControl.LanguageTypes,70f,(object item) => (string)item,delegate (object item)
+			{
+				SettingsUiScreen.ChangeLanguage((string)item);
+			}));
+		}
 		public override void Update()
 		{
 			Keyboard.BackButtonQuitsApp = !MarketplaceManager.IsTrialMode;
