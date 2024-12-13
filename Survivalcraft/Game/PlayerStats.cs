@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,10 +25,7 @@ namespace Game
 
 			public void Load(string s)
 			{
-				string[] array = s.Split(new char[1]
-				{
-					','
-				}, StringSplitOptions.RemoveEmptyEntries);
+				string[] array = s.Split(',', StringSplitOptions.RemoveEmptyEntries);
 				if (array.Length != 5)
 				{
 					throw new InvalidOperationException("Invalid death record.");
@@ -198,10 +195,7 @@ namespace Game
 			}
 			if (!string.IsNullOrEmpty(DeathRecordsString))
 			{
-				string[] array = DeathRecordsString.Split(new char[1]
-				{
-					';'
-				}, StringSplitOptions.RemoveEmptyEntries);
+				string[] array = DeathRecordsString.Split(';', StringSplitOptions.RemoveEmptyEntries);
 				foreach (string s in array)
 				{
 					DeathRecord item = default;
