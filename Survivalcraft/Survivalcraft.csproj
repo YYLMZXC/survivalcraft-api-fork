@@ -51,6 +51,7 @@
     </PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
 		<OutputType>WinExe</OutputType>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
 		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
@@ -87,17 +88,18 @@
         <PackageReference Include="NAudio.Flac.Unknown.Mod" Version="1.0.3" PrivateAssets="all" />
         <PackageReference Include="Tomlyn" Version="0.17.0" />
         <Compile Remove="SimpleJson\SimpleJson.Reflection\ReflectionUtils.cs" />
+		<None Update="openal32.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="wrap_oal.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Debug' And '$(TargetFramework)' == 'net8.0-windows'">
         <None Update="Content.zip">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="openal32.dll">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-		<None Update="wrap_oal.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
+
 		<EmbeddedResource Include="init.js">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</EmbeddedResource>
@@ -109,12 +111,6 @@
         <EmbeddedResource Include="Content.zip">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
-        <EmbeddedResource Include="openal32.dll">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-		<EmbeddedResource Update="wrap_oal.dll"><!--仅模仿上面写法，实际无效-->
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</EmbeddedResource>
 		<EmbeddedResource Include="init.js">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>

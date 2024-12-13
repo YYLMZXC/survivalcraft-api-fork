@@ -35,27 +35,6 @@ namespace Engine.Audio
             //直接加载
 			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? RunPath.GetEntryPath(): RunPath.GetExecutablePath());//路径备选方案
 			Environment.SetEnvironmentVariable("PATH", fullPath + ";" + RunPath.GetEnvironmentPath(), EnvironmentVariableTarget.Process);
-			//释放文件(有问题，停用)
-            /*
-				string dllName = "openal32.dll"; // DLL资源名称
-				string ALPath = Path.Combine(fullPath, dllName);
-            
-				if (!File.Exists(ALPath))//检测外置dll是否存在，如果不存在就释放
-				{
-                    try
-                    {
-                        using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(dllName);
-                        using FileStream fileStream = new(ALPath, FileMode.Create);
-                        stream.CopyTo(fileStream);
-                    }
-                    catch(Exception ex)
-                    {
-                        Log.Error(ex);
-                    }
-
-                }
-				//Assembly dllAssembly = Assembly.LoadFile(ALPath);
-            */
 #endif
             new AudioContext();
             CheckALError();
