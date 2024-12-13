@@ -66,9 +66,9 @@ namespace Game
 			}
 			if (m_languageButton.IsClicked)
 			{
-				DialogsManager.ShowDialog(null,new ListSelectionDialog(null,LanguageControl.LanguageTypes,70f,(object item) => (string)item,delegate (object item)
+				DialogsManager.ShowDialog(null,new ListSelectionDialog(null,LanguageControl.LanguageTypes,70f,(object item) => ((KeyValuePair<string, string>)item).Value,delegate (object item)
 				{
-					ChangeLanguage((string)item);
+					LanguageControl.ChangeLanguage(((KeyValuePair<string, string>)item).Key);
 				}));
 				/*if (LanguageControl.LanguageTypes.Count > 2)
 				{
@@ -138,28 +138,6 @@ namespace Game
 			{
 				ScreensManager.SwitchScreen(ScreensManager.PreviousScreen);
 			}
-		}
-
-		public void ChangeLanguage(string languageType)
-		{
-			LanguageControl.Initialize(languageType);
-			foreach (var c in ModsManager.ModList)
-			{
-				c.LoadLauguage();
-			}
-			Dictionary<string, object> objs = [];
-			foreach (var c in ScreensManager.m_screens)
-			{
-				Type type = c.Value.GetType();
-				object obj = Activator.CreateInstance(type);
-				objs.Add(c.Key, obj);
-			}
-			foreach (var c in objs)
-			{
-				ScreensManager.m_screens[c.Key] = c.Value as Screen;
-			}
-			CraftingRecipesManager.Initialize();
-			ScreensManager.SwitchScreen("MainMenu");
 		}
 	}
 }

@@ -101,6 +101,9 @@
 		<EmbeddedResource Include="init.js">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</EmbeddedResource>
+		<None Update="Content\Assets\Textures\Gui\Earth.webp">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(TargetFramework)' == 'net8.0-windows'">
         <EmbeddedResource Include="Content.zip">

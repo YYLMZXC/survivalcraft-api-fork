@@ -17,7 +17,7 @@ namespace Game
 
 		public LabelWidget m_copyrightLabel;
 
-		public ButtonWidget m_language_switchButton;
+		public ButtonWidget m_languageSwitchButton;
 
 		public MainMenuScreen()
 		{
@@ -26,6 +26,7 @@ namespace Game
 			m_showBulletinButton = Children.Find<ButtonWidget>("BulletinButton");
 			m_bulletinStackPanel = Children.Find<StackPanelWidget>("BulletinStackPanel");
 			m_copyrightLabel = Children.Find<LabelWidget>("CopyrightLabel");
+			m_languageSwitchButton = Children.Find<ButtonWidget>("LanguageSwitchButton");
 			string languageType = ModsManager.Configs.GetValueOrDefault("Language", "zh-CN");
 			m_bulletinStackPanel.IsVisible = languageType == "zh-CN";
 			m_copyrightLabel.IsVisible = languageType != "zh-CN";
@@ -61,6 +62,13 @@ namespace Game
 			RectangleWidget rectangleWidget = Children.Find<RectangleWidget>("Logo");
 			float num = 1f + (0.02f * MathF.Sin(1.5f * (float)MathUtils.Remainder(Time.FrameStartTime, 10000.0)));
 			rectangleWidget.RenderTransform = Matrix.CreateTranslation((0f - rectangleWidget.ActualSize.X) / 2f, (0f - rectangleWidget.ActualSize.Y) / 2f, 0f) * Matrix.CreateScale(num, num, 1f) * Matrix.CreateTranslation(rectangleWidget.ActualSize.X / 2f, rectangleWidget.ActualSize.Y / 2f, 0f);
+			if (m_languageSwitchButton.IsClicked)
+			{
+				DialogsManager.ShowDialog(null,new ListSelectionDialog(null,LanguageControl.LanguageTypes,70f,(object item) => ((KeyValuePair<string, string>)item).Value,delegate (object item)
+				{
+					LanguageControl.ChangeLanguage(((KeyValuePair<string, string>)item).Key);
+				}));
+			}
 			if (Children.Find<ButtonWidget>("Play").IsClicked)
 			{
 				ScreensManager.SwitchScreen("Play");

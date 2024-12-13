@@ -204,8 +204,8 @@ namespace Game
 				LanguageControl.LanguageTypes.Clear();
 				foreach(ContentInfo contentInfo in ContentManager.List("Lang"))
 				{
-					string px = System.IO.Path.GetFileNameWithoutExtension(contentInfo.Filename);
-					LanguageControl.LanguageTypes.TryAdd(px,"");//第二个参数应为本地化名称
+					string px = Path.GetFileNameWithoutExtension(contentInfo.Filename);
+					LanguageControl.LanguageTypes.TryAdd(px, px);//第二个参数应为本地化名称
 				}
 				//<<<结束
 				if(ModsManager.Configs.TryGetValue("Language",out string value) && LanguageControl.LanguageTypes.ContainsKey(value))

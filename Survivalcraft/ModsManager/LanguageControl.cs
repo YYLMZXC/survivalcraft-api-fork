@@ -56,7 +56,7 @@ namespace Game
             jsonNode = null;
 			ModsManager.SetConfig("Language", languageType);
 		}
-		public static void loadJson(Stream stream)
+		public static void loadJson(Stream stream, string id)
 		{
 			string txt = new StreamReader(stream).ReadToEnd();
 			if (txt.Length > 0)
@@ -71,6 +71,7 @@ namespace Game
                     MergeJsonNode(jsonNode, newJsonNode);
                 }
             }
+			LanguageTypes[id] = Get("Language","Name");
 			if (Ok == default) Ok = Get("Usual", "ok");
 			if (Cancel == default) Cancel = Get("Usual", "cancel");
 			if (None == default) None = Get("Usual", "none");
@@ -260,6 +261,28 @@ namespace Game
 		public static string GetFireworks(string name, string prop)
 		{
 			return Get("FireworksBlock", name, prop);
+		}
+
+		public static void ChangeLanguage(string languageType)
+		{
+			Initialize(languageType);
+			foreach (var c in ModsManager.ModList)
+			{
+				c.LoadLauguage();
+			}
+			Dictionary<string, object> objs = [];
+			foreach (var c in ScreensManager.m_screens)
+			{
+				Type type = c.Value.GetType();
+				object obj = Activator.CreateInstance(type);
+				objs.Add(c.Key, obj);
+			}
+			foreach (var c in objs)
+			{
+				ScreensManager.m_screens[c.Key] = c.Value as Screen;
+			}
+			CraftingRecipesManager.Initialize();
+			ScreensManager.SwitchScreen("MainMenu");
 		}
 	}
 }

@@ -49,4 +49,6 @@
 
 	</StackPanelWidget>
 
+	<BitmapButtonWidget Name="LanguageSwitchButton" Size="36, 36" NormalSubtexture="{Textures/Gui/Earth}" ClickedSubtexture="{Textures/Gui/Earth}" Margin="24, 24" IsAutoCheckingEnabled="false" VerticalAlignment="Far" HorizontalAlignment="Near"/>
+
 </Screen>

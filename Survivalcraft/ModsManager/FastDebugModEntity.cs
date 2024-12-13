@@ -100,7 +100,7 @@ namespace Game
 					string fpn = Storage.CombinePaths(path, c);
 					if (c == fn && Storage.FileExists(fpn))
 					{
-						LanguageControl.loadJson(Storage.OpenFile(fpn, OpenFileMode.Read));
+						LanguageControl.loadJson(Storage.OpenFile(fpn, OpenFileMode.Read), ModsManager.Configs["Language"]);
 					}
 				}
 			}
