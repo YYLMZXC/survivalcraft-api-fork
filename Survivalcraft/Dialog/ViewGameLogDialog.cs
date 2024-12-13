@@ -1,4 +1,4 @@
-using Engine;
+﻿using Engine;
 using Engine.Media;
 using System.IO;
 using System.Xml.Linq;
@@ -35,7 +35,12 @@ namespace Game {
             m_adviceText = Children.Find<LabelWidget>("AdviceText");
             m_listPanel.ItemClicked += delegate (object item) {
                 if (m_listPanel.SelectedItem == item) {
-                    DialogsManager.ShowDialog(ParentWidget, new MessageDialog("Log Item", item.ToString(), LanguageControl.Ok, null, null));
+                    DialogsManager.ShowDialog(ParentWidget, new MessageDialog("Log Item", item.ToString(), LanguageControl.Ok, LanguageControl.Get(GetType().Name,13), (button)=>{
+						if(button == MessageDialogButton.Button2)
+						{
+							ClipboardManager.ClipboardString = item.ToString();
+						}
+					}));
                 }
             };
             PopulateList();
@@ -50,13 +55,8 @@ namespace Game {
             if (m_copyButton.IsClicked) ClipboardManager.ClipboardString = GameLogSink.GetRecentLog(131072);
 
             if (m_filterButton.IsClicked) {
-                if (m_filter < LogType.Warning) {
-                    m_filter = LogType.Warning;
-                }
-                else {
-                    m_filter = m_filter < LogType.Error ? LogType.Error : LogType.Debug;
-                }
-                PopulateList();
+                m_filter = m_filter < LogType.Warning ? LogType.Warning : m_filter < LogType.Error ? LogType.Error : LogType.Debug;
+				PopulateList();
             }
             if (Input.Cancel || m_closeButton.IsClicked) {
                 DialogsManager.HideDialog(this);

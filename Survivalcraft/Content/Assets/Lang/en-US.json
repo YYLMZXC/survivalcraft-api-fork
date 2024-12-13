@@ -273,7 +273,8 @@
     "9": "World Running Error",
     "10": "Contact mod developers with Log file to Solve the problem.",
     "11": "Error loading world",
-    "12": "Error Spawning Player"
+    "12": "Error Spawning Player",
+    "13": "Copy This log"
   },
   "FurnitureDesignWidget": [ "Front", "Side" ],
   "FurnitureSetItemWidget": [ "Uncategorized", "{0} design(s)" ],
