@@ -122,7 +122,7 @@ namespace Game
 		public virtual void LoadLauguage()
 		{
 			LoadingScreen.Info($"[{modInfo.Name}]加载Lang语言目录");
-			GetAssetsFile($"Lang/{ModsManager.Configs["Language"]}.json", (stream) => { LanguageControl.loadJson(stream, ModsManager.Configs["Language"]); });
+			GetAssetsFile($"Lang/{ModsManager.Configs["Language"]}.json", (stream) => { LanguageControl.loadJson(stream); });
 		}
 		/// <summary>
 		/// Mod初始化

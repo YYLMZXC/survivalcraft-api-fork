@@ -56,7 +56,7 @@ namespace Game
             jsonNode = null;
 			ModsManager.SetConfig("Language", languageType);
 		}
-		public static void loadJson(Stream stream, string id)
+		public static void loadJson(Stream stream)
 		{
 			string txt = new StreamReader(stream).ReadToEnd();
 			if (txt.Length > 0)
@@ -71,7 +71,6 @@ namespace Game
                     MergeJsonNode(jsonNode, newJsonNode);
                 }
             }
-			LanguageTypes[id] = Get("Language","Name");
 			if (Ok == default) Ok = Get("Usual", "ok");
 			if (Cancel == default) Cancel = Get("Usual", "cancel");
 			if (None == default) None = Get("Usual", "none");

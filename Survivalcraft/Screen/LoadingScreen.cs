@@ -3,6 +3,7 @@ using Engine.Graphics;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using System.Xml.Linq;
 
@@ -205,7 +206,8 @@ namespace Game
 				foreach(ContentInfo contentInfo in ContentManager.List("Lang"))
 				{
 					string px = Path.GetFileNameWithoutExtension(contentInfo.Filename);
-					LanguageControl.LanguageTypes.TryAdd(px, px);//第二个参数应为本地化名称
+					CultureInfo cultureInfo = new (px,false);
+					LanguageControl.LanguageTypes.TryAdd(px, cultureInfo.NativeName);//第二个参数应为本地化名称
 				}
 				//<<<结束
 				if(ModsManager.Configs.TryGetValue("Language",out string value) && LanguageControl.LanguageTypes.ContainsKey(value))
