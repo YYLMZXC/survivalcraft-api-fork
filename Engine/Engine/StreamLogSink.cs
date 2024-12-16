@@ -23,29 +23,19 @@ namespace Engine
 		{
 			if (logType >= MinimumLogType)
 			{
-				string str;
-				switch (logType)
-				{
-					case LogType.Debug:
-						str = "DEBUG: ";
-						break;
-					case LogType.Verbose:
-						str = "INFO: ";
-						break;
-					case LogType.Information:
-						str = "INFO: ";
-						break;
-					case LogType.Warning:
-						str = "WARNING: ";
-						break;
-					case LogType.Error:
-						str = "ERROR: ";
-						break;
-					default:
-						str = string.Empty;
-						break;
-				}
-				m_writer.WriteLine(DateTime.Now.ToString("HH:mm:ss.fff") + " " + str + message);
+                string str = logType switch
+                {
+                    LogType.Debug => "DEBUG: ",
+                    LogType.Verbose => "INFO: ",
+                    LogType.Information => "INFO: ",
+                    LogType.Warning => "WARNING: ",
+                    LogType.Error => "ERROR: ",
+                    _ => string.Empty
+                };
+                m_writer.Write(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+                m_writer.Write(" ");
+                m_writer.Write(str);
+                m_writer.WriteLine(message);
 				m_writer.Flush();
 			}
 		}

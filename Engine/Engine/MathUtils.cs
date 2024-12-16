@@ -63,10 +63,21 @@
             key ^= key >> 16;
             key *= 2146121005;
             key ^= key >> 15;
-            key = (uint)((int)key * -2073254261);
+            key *= 2221713035u;
             key ^= key >> 16;
             return key;
         }
+
+        public static uint HashInverse(uint key)
+        {
+            key ^= key >> 16;
+            key *= 1124208931;
+            key ^= (key >> 15) ^ (key >> 30);
+            key *= 493478565;
+            key ^= key >> 16;
+            return key;
+        }
+
         public static long Sqr(long x)
         {
             return x * x;
@@ -143,10 +154,24 @@
             return x1 + ((x2 - x1) * f);
         }
 
-        public static float SmoothStep(float min, float max, float x)
+        public static float SmoothStep(float f)
         {
-            x = Math.Clamp((x - min) / (max - min), 0f, 1f);
-            return x * x * (3f - (2f * x));
+            return f * f * (3f - 2f * f);
+        }
+
+        public static float SmoothStep(float zero, float one, float f)
+        {
+            return SmoothStep(LinearStep(zero, one, f));
+        }
+
+        public static float SmootherStep(float f)
+        {
+            return f * f * f * (f * (6f * f - 15f) + 10f);
+        }
+
+        public static float SmootherStep(float zero, float one, float f)
+        {
+            return SmootherStep(LinearStep(zero, one, f));
         }
 
         public static float CatmullRom(float v1, float v2, float v3, float v4, float f)
@@ -215,10 +240,39 @@
             return x1 + ((x2 - x1) * f);
         }
 
-        public static double SmoothStep(double min, double max, double x)
+        public static double LinearStep(double zero, double one, double f)
         {
-            x = Math.Clamp((x - min) / (max - min), 0.0, 1.0);
-            return x * x * (3.0 - (2.0 * x));
+            return Saturate((f - zero) / (one - zero));
+        }
+
+        public static double SmoothStep(double f)
+        {
+            return f * f * (3.0 - 2.0 * f);
+        }
+
+        public static double SmoothStep(double zero, double one, double f)
+        {
+            return SmoothStep(LinearStep(zero, one, f));
+        }
+
+        public static double SmootherStep(double f)
+        {
+            return f * f * f * (f * (6.0 * f - 15.0) + 10.0);
+        }
+
+        public static double SmootherStep(double zero, double one, double f)
+        {
+            return SmootherStep(LinearStep(zero, one, f));
+        }
+
+        public static double CircleStep(double f)
+        {
+            return Math.Sqrt(2.0 * f - f * f);
+        }
+
+        public static double CircleStep(double zero, double one, double f)
+        {
+            return CircleStep(LinearStep(zero, one, f));
         }
 
         public static double CatmullRom(double v1, double v2, double v3, double v4, double f)

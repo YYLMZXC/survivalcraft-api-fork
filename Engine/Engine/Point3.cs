@@ -66,6 +66,16 @@ namespace Engine
 			return $"{X},{Y},{Z}";
 		}
 
+        public static int Dot(Point3 p1, Point3 p2)
+        {
+            return p1.X * p2.X + p1.Y * p2.Y + p1.Z * p2.Z;
+        }
+
+        public static Point3 Cross(Point3 p1, Point3 p2)
+        {
+            return new Point3(p1.Y * p2.Z - p1.Z * p2.Y, p1.Z * p2.X - p1.X * p2.Z, p1.X * p2.Y - p1.Y * p2.X);
+        }
+
 		public static Point3 Min(Point3 p, int v)
 		{
 			return new Point3(MathUtils.Min(p.X, v), MathUtils.Min(p.Y, v), MathUtils.Min(p.Z, v));
@@ -85,6 +95,16 @@ namespace Engine
 		{
 			return new Point3(MathUtils.Max(p1.X, p2.X), MathUtils.Max(p1.Y, p2.Y), MathUtils.Max(p1.Z, p2.Z));
 		}
+
+        public static int MinElement(Point3 p)
+        {
+            return MathUtils.Min(p.X, p.Y, p.Z);
+        }
+
+        public static int MaxElement(Point3 p)
+        {
+            return MathUtils.Max(p.X, p.Y, p.Z);
+        }
 
 		public static bool operator ==(Point3 p1, Point3 p2)
 		{

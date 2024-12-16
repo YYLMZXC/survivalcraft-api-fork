@@ -8,6 +8,10 @@ namespace Engine
 
 		private Plane[] m_planes = new Plane[6];
 
+        private Vector3[] m_corners = new Vector3[8];
+
+        private bool m_cornersValid;
+
 		public Plane Near => m_planes[0];
 
 		public Plane Far => m_planes[1];
@@ -59,8 +63,33 @@ namespace Engine
 					m_planes[i].Normal /= num;
 					m_planes[i].D /= num;
 				}
+                m_cornersValid = false;
 			}
 		}
+
+        public ReadOnlyList<Vector3> Corners
+        {
+            get
+            {
+                if (!m_cornersValid)
+                {
+                    m_cornersValid = true;
+                    Ray3 ray = ComputeIntersectionLine(m_planes[0], m_planes[2]);
+                    m_corners[0] = ComputeIntersection(m_planes[4], ray);
+                    m_corners[3] = ComputeIntersection(m_planes[5], ray);
+                    ray = ComputeIntersectionLine(m_planes[3], m_planes[0]);
+                    m_corners[1] = ComputeIntersection(m_planes[4], ray);
+                    m_corners[2] = ComputeIntersection(m_planes[5], ray);
+                    ray = ComputeIntersectionLine(m_planes[2], m_planes[1]);
+                    m_corners[4] = ComputeIntersection(m_planes[4], ray);
+                    m_corners[7] = ComputeIntersection(m_planes[5], ray);
+                    ray = ComputeIntersectionLine(m_planes[1], m_planes[3]);
+                    m_corners[5] = ComputeIntersection(m_planes[4], ray);
+                    m_corners[6] = ComputeIntersection(m_planes[5], ray);
+                }
+                return new ReadOnlyList<Vector3>(m_corners);
+            }
+        }
 
 		public BoundingFrustum(Matrix viewProjection)
 		{
@@ -86,24 +115,6 @@ namespace Engine
         public override string ToString()
 		{
 			return m_viewProjection.ToString();
-		}
-
-		public Vector3[] FindCorners()
-		{
-			Vector3[] array = new Vector3[8];
-			Ray3 ray = ComputeIntersectionLine(m_planes[0], m_planes[2]);
-			array[0] = ComputeIntersection(m_planes[4], ray);
-			array[3] = ComputeIntersection(m_planes[5], ray);
-			ray = ComputeIntersectionLine(m_planes[3], m_planes[0]);
-			array[1] = ComputeIntersection(m_planes[4], ray);
-			array[2] = ComputeIntersection(m_planes[5], ray);
-			ray = ComputeIntersectionLine(m_planes[2], m_planes[1]);
-			array[4] = ComputeIntersection(m_planes[4], ray);
-			array[7] = ComputeIntersection(m_planes[5], ray);
-			ray = ComputeIntersectionLine(m_planes[1], m_planes[3]);
-			array[5] = ComputeIntersection(m_planes[4], ray);
-			array[6] = ComputeIntersection(m_planes[5], ray);
-			return array;
 		}
 
 		public bool Intersection(Vector3 point)

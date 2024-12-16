@@ -39,6 +39,25 @@ namespace Engine
 			}
 		}
 
+        private struct Comparer : IComparer<T>
+        {
+            public Comparison<T> Comparison;
+
+            public Comparer(Comparison<T> comparison)
+            {
+                if (comparison == null)
+                {
+                    throw new ArgumentNullException("comparison");
+                }
+                Comparison = comparison;
+            }
+
+            int IComparer<T>.Compare(T x, T y)
+            {
+                return Comparison(x, y);
+            }
+        }
+
 		private const int MinCapacity = 4;
 
 		private T[] m_array = m_emptyArray;
@@ -55,29 +74,13 @@ namespace Engine
 			}
 			set
 			{
-				if (value < m_count)
-				{
-					throw new InvalidOperationException("Capacity cannot be made smaller than number of elements.");
-				}
-				if (value == Capacity)
-				{
-					return;
-				}
-				if (value > 0)
-				{
-                    T[] array = this.Allocate(value);
-                    if (m_array != null)
-					{
-						System.Array.Copy(m_array, 0, array, 0, m_count);
-                        Free(this.m_array);
-                    }
-					m_array = array;
-                    return;
-				}
-                if (this.m_array != DynamicArray<T>.m_emptyArray)
+                if (value != Capacity)
                 {
-                    Free(this.m_array);
-                    m_array = m_emptyArray;
+                    if (value < m_count)
+                    {
+                        throw new InvalidOperationException("Capacity cannot be made smaller than number of elements.");
+                    }
+                    Reallocate(value);
 				}
 			}
 		}
@@ -90,10 +93,14 @@ namespace Engine
 			}
 			set
 			{
-				while (Capacity < value)
-				{
-					Capacity = MathUtils.Max(Capacity * 2, 4);
-				}
+                if (value > Capacity)
+                {
+                    Reallocate(value);
+                }
+                else if (value < 0)
+                {
+                    throw new InvalidOperationException("Count cannot be negative.");
+                }
 				m_count = value;
 			}
 		}
@@ -127,15 +134,25 @@ namespace Engine
 			Capacity = capacity;
 		}
 
-		public DynamicArray(IEnumerable<T> items)
-		{
-			ArgumentNullException.ThrowIfNull(items);
-			Capacity = items.Count();
-			foreach (T item in items)
-			{
-				Add(item);
-			}
-		}
+        public DynamicArray(IEnumerable<T> items)
+        {
+            AddRange(items);
+        }
+
+        public DynamicArray(IReadOnlyCollection<T> items)
+        {
+            AddRange(items);
+        }
+
+        public DynamicArray(IReadOnlyList<T> items)
+        {
+            AddRange(items);
+        }
+
+        public DynamicArray(DynamicArray<T> items)
+        {
+            AddRange(items);
+        }
 
 		public int IndexOf(T item)
 		{
@@ -152,53 +169,99 @@ namespace Engine
 
 		public void Add(T item)
 		{
-			if (m_count >= Capacity)
-			{
-				Capacity = MathUtils.Max(Capacity * 2, 4);
-			}
+            EnsureCapacityForOne();
 			m_array[m_count] = item;
 			m_count++;
 		}
 
-		public void AddRange(IEnumerable<T> items)
-		{
-			ArgumentNullException.ThrowIfNull(items);
-            IList<T> list = items as IList<T>;
-            if (list != null)
+        public void AddRange(IEnumerable<T> items)
+        {
+            if (items is DynamicArray<T> items2)
             {
-                this.Capacity = MathUtils.Max(this.Capacity, this.Count + list.Count);
-                for (int i = 0; i < list.Count; i++)
-                {
-                    this.m_array[this.m_count] = list[i];
-                    this.m_count++;
-                }
+                AddRangeTyped(items2);
                 return;
             }
-            ICollection collection = items as ICollection;
-			if (collection != null)
-			{
-				Capacity = MathUtils.Max(Capacity, Count + collection.Count);
-				foreach (T item in items)
-				{
-					m_array[m_count] = item;
-					m_count++;
-				}
-			}
-			else
-			{
-				foreach (T item2 in items)
-				{
-					Add(item2);
-				}
-			}
-		}
+            if (items is IReadOnlyList<T> items3)
+            {
+                AddRangeTyped(items3);
+                return;
+            }
+            if (items is IList<T> items4)
+            {
+                AddRangeTyped(items4);
+                return;
+            }
+            if (items is IReadOnlyCollection<T> items5)
+            {
+                AddRangeTyped(items5);
+                return;
+            }
+            if (items == null)
+            {
+                throw new ArgumentNullException("items");
+            }
+            AddRangeTyped(items);
+        }
+
+        public void AddRange(IReadOnlyCollection<T> items)
+        {
+            if (items is DynamicArray<T> items2)
+            {
+                AddRangeTyped(items2);
+                return;
+            }
+            if (items is IReadOnlyList<T> items3)
+            {
+                AddRangeTyped(items3);
+                return;
+            }
+            if (items is IList<T> items4)
+            {
+                AddRangeTyped(items4);
+                return;
+            }
+            if (items == null)
+            {
+                throw new ArgumentNullException("items");
+            }
+            AddRangeTyped(items);
+        }
+
+        public void AddRange(IList<T> items)
+        {
+            if (items is DynamicArray<T> items2)
+            {
+                AddRangeTyped(items2);
+                return;
+            }
+            if (items == null)
+            {
+                throw new ArgumentNullException("items");
+            }
+            AddRangeTyped(items);
+        }
+
+        public void AddRange(IReadOnlyList<T> items)
+        {
+            if (items is DynamicArray<T> items2)
+            {
+                AddRangeTyped(items2);
+                return;
+            }
+            if (items == null)
+            {
+                throw new ArgumentNullException("items");
+            }
+            AddRangeTyped(items);
+        }
 
 		public void AddRange(DynamicArray<T> items)
 		{
-			ArgumentNullException.ThrowIfNull(items);
-			Capacity = MathUtils.Max(Capacity, Count + items.Count);
-            System.Array.Copy(items.Array, 0, this.m_array, this.Count, items.Count);
-            this.Count += items.Count;
+            if (items == null)
+            {
+                throw new ArgumentNullException("items");
+            }
+            AddRangeTyped(items);
         }
 
 		public bool Remove(T item)
@@ -293,10 +356,7 @@ namespace Engine
 		{
 			if (index <= m_count)
 			{
-				if (m_count >= Capacity)
-				{
-					Capacity = MathUtils.Max(Capacity * 2, 4);
-				}
+                EnsureCapacityForOne();
 				if (index < m_count)
 				{
 					System.Array.Copy(m_array, index, m_array, index + 1, m_count - index);
@@ -327,15 +387,33 @@ namespace Engine
 			}
 		}
 
-		public List<T> ToList()
-		{
-			List<T> list = new(Count);
-			for (int i = 0; i < Count; i++)
-			{
-				list.Add(Array[i]);
-			}
-			return list;
-		}
+        public void Sort()
+        {
+            System.Array.Sort(m_array, 0, m_count);
+        }
+
+        public void Sort(Comparison<T> comparison)
+        {
+            System.Array.Sort(m_array, 0, m_count, new Comparer(comparison));
+        }
+
+        public void Sort(int index, int count)
+        {
+            if (index < 0 || count < 0 || index + count > m_count)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            System.Array.Sort(m_array, index, count);
+        }
+
+        public void Sort(int index, int count, Comparison<T> comparison)
+        {
+            if (index < 0 || count < 0 || index + count > m_count)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            System.Array.Sort(m_array, index, count, new Comparer(comparison));
+        }
 
 		public Enumerator GetEnumerator()
 		{
@@ -377,6 +455,91 @@ namespace Engine
         // Token: 0x06000578 RID: 1400 RVA: 0x0000412B File Offset: 0x0000232B
         protected virtual void Free(T[] array)
         {
+        }
+
+        private void Reallocate(int capacity)
+        {
+            if (capacity > 0)
+            {
+                ReallocateNonZero(capacity);
+            }
+            else if (m_array != m_emptyArray)
+            {
+                Free(m_array);
+                m_array = m_emptyArray;
+            }
+        }
+
+        private void ReallocateNonZero(int capacity)
+        {
+            T[] array = Allocate(capacity);
+            if (m_array != m_emptyArray)
+            {
+                System.Array.Copy(m_array, 0, array, 0, m_count);
+                Free(m_array);
+            }
+            m_array = array;
+        }
+
+        private void EnsureCapacityForOne()
+        {
+            if (Capacity <= m_count)
+            {
+                ReallocateNonZero(MathUtils.Max(Capacity * 2, 4));
+            }
+        }
+
+        private void EnsureCapacityExact(int capacity)
+        {
+            if (capacity > Capacity)
+            {
+                ReallocateNonZero(capacity);
+            }
+        }
+
+        private void AddRangeTyped(IEnumerable<T> items)
+        {
+            foreach (T item in items)
+            {
+                Add(item);
+            }
+        }
+
+        private void AddRangeTyped(IReadOnlyCollection<T> items)
+        {
+            EnsureCapacityExact(Count + items.Count);
+            foreach (T item in items)
+            {
+                m_array[m_count] = item;
+                m_count++;
+            }
+        }
+
+        private void AddRangeTyped(IReadOnlyList<T> items)
+        {
+            EnsureCapacityExact(Count + items.Count);
+            for (int i = 0; i < items.Count; i++)
+            {
+                m_array[m_count] = items[i];
+                m_count++;
+            }
+        }
+
+        private void AddRangeTyped(IList<T> items)
+        {
+            EnsureCapacityExact(Count + items.Count);
+            for (int i = 0; i < items.Count; i++)
+            {
+                m_array[m_count] = items[i];
+                m_count++;
+            }
+        }
+
+        private void AddRangeTyped(DynamicArray<T> items)
+        {
+            EnsureCapacityExact(Count + items.Count);
+            System.Array.Copy(items.Array, 0, m_array, Count, items.Count);
+            m_count += items.Count;
         }
     }
 }

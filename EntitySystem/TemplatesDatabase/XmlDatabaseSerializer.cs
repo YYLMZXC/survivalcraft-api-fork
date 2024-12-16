@@ -1,3 +1,4 @@
+using Engine;
 using Engine.Serialization;
 using System;
 using System.Collections.Generic;
@@ -70,7 +71,15 @@ namespace TemplatesDatabase
 			}
 			foreach (XElement item3 in XmlUtils.FindChildElement(node, "Assemblies", throwIfNotFound: true).Elements())
 			{
-				Assembly.Load(new AssemblyName(XmlUtils.GetAttributeValue<string>(item3, "Name")));
+				string attributeValue13 = XmlUtils.GetAttributeValue<string>(item3, "Name");
+				try
+				{
+					Assembly.Load(new AssemblyName(attributeValue13));
+				}
+				catch (Exception ex)
+				{
+					Log.Warning(string.Format("Error loading assembly {0}. {1}", new object[2] { attributeValue13, ex }));
+				}
 			}
 			XElement node2 = XmlUtils.FindChildElement(node, "DatabaseObjects", throwIfNotFound: true);
 			Database database = new(new DatabaseObject(guid: XmlUtils.GetAttributeValue<Guid>(node2, "RootGuid"), databaseObjectType: dictionary["Root"], name: "Root", value: null), dictionary.Values);

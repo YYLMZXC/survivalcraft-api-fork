@@ -139,6 +139,23 @@ namespace Engine
             return num == 0f ? null : (0f - (Vector3.Dot(Position, plane.Normal) + plane.D)) / num;
         }
 
+        public Vector3 Sample(float distance)
+        {
+            return Position + Direction * distance;
+        }
+
+        public static Ray3 Transform(Ray3 r, Matrix m)
+        {
+            Transform(ref r, ref m, out var result);
+            return result;
+        }
+
+        public static void Transform(ref Ray3 r, ref Matrix m, out Ray3 result)
+        {
+            Vector3.Transform(ref r.Position, ref m, out result.Position);
+            Vector3.TransformNormal(ref r.Direction, ref m, out result.Direction);
+        }
+
         public static bool operator ==(Ray3 a, Ray3 b)
 		{
 			return a.Equals(b);

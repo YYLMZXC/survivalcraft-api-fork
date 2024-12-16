@@ -9,6 +9,21 @@ namespace Engine
 
 		public Vector3 Max;
 
+        public IEnumerable<Vector3> Corners
+        {
+            get
+            {
+                yield return new Vector3(Min.X, Min.Y, Min.Z);
+                yield return new Vector3(Max.X, Min.Y, Min.Z);
+                yield return new Vector3(Min.X, Max.Y, Min.Z);
+                yield return new Vector3(Max.X, Max.Y, Min.Z);
+                yield return new Vector3(Min.X, Min.Y, Max.Z);
+                yield return new Vector3(Max.X, Min.Y, Max.Z);
+                yield return new Vector3(Min.X, Max.Y, Max.Z);
+                yield return new Vector3(Max.X, Max.Y, Max.Z);
+            }
+        }
+
 		public BoundingBox(float x1, float y1, float z1, float x2, float y2, float z2)
 		{
 			Min = new Vector3(x1, y1, z1);
@@ -24,8 +39,8 @@ namespace Engine
 		public BoundingBox(IEnumerable<Vector3> points)
 		{
 			ArgumentNullException.ThrowIfNull(points);
-			Min = new Vector3(float.MaxValue);
-			Max = new Vector3(float.MinValue);
+			Min = new Vector3(float.PositiveInfinity);
+			Max = new Vector3(float.NegativeInfinity);
 			foreach (Vector3 point in points)
 			{
 				Min.X = MathF.Min(Min.X, point.X);
@@ -35,7 +50,7 @@ namespace Engine
 				Max.Y = MathF.Max(Max.Y, point.Y);
 				Max.Z = MathF.Max(Max.Z, point.Z);
 			}
-			if (Min.X == float.MaxValue)
+			if (Min.X == float.PositiveInfinity)
 			{
 				throw new ArgumentException("points");
 			}

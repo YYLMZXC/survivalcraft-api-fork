@@ -9,6 +9,17 @@ namespace Engine
 
 		public Vector2 Max;
 
+        public IEnumerable<Vector2> Corners
+        {
+            get
+            {
+                yield return new Vector2(Min.X, Min.Y);
+                yield return new Vector2(Max.X, Min.Y);
+                yield return new Vector2(Min.X, Max.Y);
+                yield return new Vector2(Max.X, Max.Y);
+            }
+        }
+
 		public BoundingRectangle(float x1, float y1, float x2, float y2)
 		{
 			Min = new Vector2(x1, y1);
@@ -24,8 +35,8 @@ namespace Engine
 		public BoundingRectangle(IEnumerable<Vector2> points)
 		{
 			ArgumentNullException.ThrowIfNull(points);
-			Min = new Vector2(float.MaxValue);
-			Max = new Vector2(float.MinValue);
+			Min = new Vector2(float.PositiveInfinity);
+			Max = new Vector2(float.NegativeInfinity);
 			foreach (Vector2 point in points)
 			{
 				Min.X = MathUtils.Min(Min.X, point.X);
@@ -33,7 +44,7 @@ namespace Engine
 				Max.X = MathUtils.Max(Max.X, point.X);
 				Max.Y = MathUtils.Max(Max.Y, point.Y);
 			}
-			if (Min.X == float.MaxValue)
+			if (Min.X == float.PositiveInfinity)
 			{
 				throw new ArgumentException("points");
 			}

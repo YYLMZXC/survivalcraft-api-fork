@@ -27,6 +27,34 @@ namespace Engine
             }
         }
 
+        public static void ExecuteActionsOnCurrentThread()
+        {
+            m_currentActionInfos.Clear();
+            lock (m_actionInfos)
+            {
+                m_currentActionInfos.AddRange(m_actionInfos);
+                m_actionInfos.Clear();
+            }
+            foreach (ActionInfo currentActionInfo in m_currentActionInfos)
+            {
+                try
+                {
+                    currentActionInfo.Action();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Dispatched action failed. Reason: {0}", ex);
+                }
+                finally
+                {
+                    if (currentActionInfo.Event != null)
+                    {
+                        currentActionInfo.Event.Set();
+                    }
+                }
+            }
+        }
+
 		public static void Dispatch(Action action, bool waitUntilCompleted = false)
 		{
 			if (!m_mainThreadId.HasValue)
@@ -70,36 +98,9 @@ namespace Engine
 			m_mainThreadId = Environment.CurrentManagedThreadId;
 		}
 
-		internal static void Dispose()
-		{
-		}
-
 		internal static void BeforeFrame()
 		{
-			m_currentActionInfos.Clear();
-			lock (m_actionInfos)
-			{
-				m_currentActionInfos.AddRange(m_actionInfos);
-				m_actionInfos.Clear();
-			}
-			foreach (ActionInfo currentActionInfo in m_currentActionInfos)
-			{
-				try
-				{
-					currentActionInfo.Action();
-				}
-				catch (Exception ex)
-				{
-					Log.Error("Dispatched action failed. Reason: {0}", ex);
-				}
-				finally
-				{
-					if (currentActionInfo.Event != null)
-					{
-						currentActionInfo.Event.Set();
-					}
-				}
-			}
+            ExecuteActionsOnCurrentThread();
 		}
 
 		internal static void AfterFrame()

@@ -325,41 +325,47 @@ namespace Engine
 			return result;
 		}
 
-		public static Matrix CreateRotationX(float radians)
-		{
-			Matrix identity = Identity;
-			float num = MathF.Cos(radians);
-			float num2 = MathF.Sin(radians);
-			identity.M22 = num;
-			identity.M23 = num2;
-			identity.M32 = 0f - num2;
-			identity.M33 = num;
-			return identity;
-		}
+        public static Matrix CreateRotationX(float radians)
+        {
+            float num = MathF.Cos(radians);
+            float num2 = MathF.Sin(radians);
+            return new Matrix(1f, 0f, 0f, 0f, 0f, num, num2, 0f, 0f, 0f - num2, num, 0f, 0f, 0f, 0f, 1f);
+        }
 
-		public static Matrix CreateRotationY(float radians)
-		{
-			Matrix identity = Identity;
-			float num = MathF.Cos(radians);
-			float num2 = MathF.Sin(radians);
-			identity.M11 = num;
-			identity.M13 = 0f - num2;
-			identity.M31 = num2;
-			identity.M33 = num;
-			return identity;
-		}
+        public static Matrix CreateRotationX(float radians, Vector3 center)
+        {
+            float num = MathF.Cos(radians);
+            float num2 = MathF.Sin(radians);
+            return new Matrix(1f, 0f, 0f, 0f, 0f, num, num2, 0f, 0f, 0f - num2, num, 0f, 0f, num2 * center.Z - num * center.Y + center.Y, (0f - num) * center.Z - num2 * center.Y + center.Z, 1f);
+        }
 
-		public static Matrix CreateRotationZ(float radians)
-		{
-			Matrix identity = Identity;
-			float num = MathF.Cos(radians);
-			float num2 = MathF.Sin(radians);
-			identity.M11 = num;
-			identity.M12 = num2;
-			identity.M21 = 0f - num2;
-			identity.M22 = num;
-			return identity;
-		}
+        public static Matrix CreateRotationY(float radians)
+        {
+            float num = MathF.Cos(radians);
+            float num2 = MathF.Sin(radians);
+            return new Matrix(num, 0f, 0f - num2, 0f, 0f, 1f, 0f, 0f, num2, 0f, num, 0f, 0f, 0f, 0f, 1f);
+        }
+
+        public static Matrix CreateRotationY(float radians, Vector3 center)
+        {
+            float num = MathF.Cos(radians);
+            float num2 = MathF.Sin(radians);
+            return new Matrix(num, 0f, 0f - num2, 0f, 0f, 1f, 0f, 0f, num2, 0f, num, 0f, (0f - num2) * center.Z - num * center.X + center.X, 0f, (0f - num) * center.Z + num2 * center.X + center.Z, 1f);
+        }
+
+        public static Matrix CreateRotationZ(float radians)
+        {
+            float num = MathF.Cos(radians);
+            float num2 = MathF.Sin(radians);
+            return new Matrix(num, num2, 0f, 0f, 0f - num2, num, 0f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+        }
+
+        public static Matrix CreateRotationZ(float radians, Vector3 center)
+        {
+            float num = MathF.Cos(radians);
+            float num2 = MathF.Sin(radians);
+            return new Matrix(num, num2, 0f, 0f, 0f - num2, num, 0f, 0f, 0f, 0f, 1f, 0f, num2 * center.Y - num * center.X + center.X, (0f - num) * center.Y - num2 * center.X + center.Y, 0f, 1f);
+        }
 
 		public static Matrix CreateScale(float scale)
 		{

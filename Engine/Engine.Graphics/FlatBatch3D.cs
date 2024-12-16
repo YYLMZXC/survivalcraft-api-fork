@@ -93,7 +93,7 @@ namespace Engine.Graphics
 
 		public void QueueBoundingFrustum(BoundingFrustum boundingFrustum, Color color)
 		{
-			Vector3[] array = boundingFrustum.FindCorners();
+            ReadOnlyList<Vector3> array = boundingFrustum.Corners;
 			QueueLine(array[0], array[1], color);
 			QueueLine(array[1], array[2], color);
 			QueueLine(array[2], array[3], color);

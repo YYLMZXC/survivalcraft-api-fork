@@ -633,7 +633,6 @@ namespace Engine
 
         private static void DisposeAll()
         {
-            Dispatcher.Dispose();
             Display.Dispose();
             Keyboard.Dispose();
             Mouse.Dispose();

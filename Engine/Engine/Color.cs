@@ -6,7 +6,7 @@ namespace Engine
 	{
 		public uint PackedValue;
 
-		public static Color Transparent = new(0, 0, 0, 0);
+		public static Color Transparent = default;
 
 		public static Color Black = new(0, 0, 0, 255);
 
@@ -249,6 +249,11 @@ namespace Engine
 			return new Color((int)MathUtils.Lerp(c1.R, c2.R, f), (int)MathUtils.Lerp(c1.G, c2.G, f), (int)MathUtils.Lerp(c1.B, c2.B, f), (int)MathUtils.Lerp(c1.A, c2.A, f));
 		}
 
+        public static Color LerpNotSaturated(Color c1, Color c2, float f)
+        {
+            return new Color((byte)MathUtils.Lerp((int)c1.R, (int)c2.R, f), (byte)MathUtils.Lerp((int)c1.G, (int)c2.G, f), (byte)MathUtils.Lerp((int)c1.B, (int)c2.B, f), (byte)MathUtils.Lerp((int)c1.A, (int)c2.A, f));
+        }
+
 		public static Color PremultiplyAlpha(Color c)
 		{
 			return new Color((byte)(c.R * c.A / 255f), (byte)(c.G * c.A / 255f), (byte)(c.B * c.A / 255f), c.A);
@@ -259,10 +264,40 @@ namespace Engine
 			return new Vector4(c.X * c.W, c.Y * c.W, c.Z * c.W, c.W);
 		}
 
+        public static Color MultiplyAlphaOnly(Color c, float s)
+        {
+            return new Color(c.R, c.G, c.B, (byte)Math.Clamp((float)(int)c.A * s, 0f, 255f));
+        }
+
+        public static Color MultiplyAlphaOnlyNotSaturated(Color c, float s)
+        {
+            return new Color(c.R, c.G, c.B, (byte)((float)(int)c.A * s));
+        }
+
 		public static Color MultiplyColorOnly(Color c, float s)
 		{
 			return new Color((byte)Math.Clamp(c.R * s, 0f, 255f), (byte)Math.Clamp(c.G * s, 0f, 255f), (byte)Math.Clamp(c.B * s, 0f, 255f), c.A);
 		}
+
+        public static Color MultiplyColorOnlyNotSaturated(Color c, float s)
+        {
+            return new Color((byte)((float)(int)c.R * s), (byte)((float)(int)c.G * s), (byte)((float)(int)c.B * s), c.A);
+        }
+
+        public static Color MultiplyColorOnlyNotSaturated(Color c, Vector3 s)
+        {
+            return new Color((byte)((float)(int)c.R * s.X), (byte)((float)(int)c.G * s.Y), (byte)((float)(int)c.B * s.Z), c.A);
+        }
+
+        public static Color MultiplyNotSaturated(Color c, float s)
+        {
+            return new Color((byte)((float)(int)c.R * s), (byte)((float)(int)c.G * s), (byte)((float)(int)c.B * s), (byte)((float)(int)c.A * s));
+        }
+
+        public static Color MultiplyNotSaturated(Color c, Vector4 s)
+        {
+            return new Color((byte)((float)(int)c.R * s.X), (byte)((float)(int)c.G * s.Y), (byte)((float)(int)c.B * s.Z), (byte)((float)(int)c.A * s.W));
+        }
 
 		public static Vector3 RgbToHsv(Vector3 rgb)
 		{
