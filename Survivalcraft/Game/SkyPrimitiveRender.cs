@@ -64,7 +64,7 @@ namespace Game
 						ShaderAlphaTest.Transforms.World[0] = matrix;
 						ShaderAlphaTest.AlphaThreshold = 0f;
 						ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(ShaderAlphaTest, Camera); return true; });
-						baseTexturedBatch.FlushWithCurrentStateAndShader(ShaderAlphaTest, clearAfterFlush);
+						baseTexturedBatch.FlushWithDeviceState(ShaderAlphaTest, clearAfterFlush);
 					}
 					else
 					{
@@ -72,12 +72,12 @@ namespace Game
 						Shader.SamplerState = baseTexturedBatch.SamplerState;
 						Shader.Transforms.World[0] = matrix;
 						ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(Shader, Camera); return true; });
-						baseTexturedBatch.FlushWithCurrentStateAndShader(Shader, clearAfterFlush);
+						baseTexturedBatch.FlushWithDeviceState(Shader, clearAfterFlush);
 					}
 				}
 				else
 				{
-					baseBatch.Flush(matrix, clearAfterFlush: true);
+					baseBatch.Flush(matrix, Vector4.One, clearAfterFlush: true);
 				}
 			}
 		}

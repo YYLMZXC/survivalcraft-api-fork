@@ -13,6 +13,10 @@ namespace Engine.Audio
 
 		public static HashSet<Sound> m_soundsToStopPoll = [];
 
+        public static AudioContext m_audioContext;
+
+        public static bool m_isInitialized;
+
 		public static float MasterVolume
 		{
 			get
@@ -36,13 +40,18 @@ namespace Engine.Audio
 			string fullPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location == ""? RunPath.GetEntryPath(): RunPath.GetExecutablePath());//路径备选方案
 			Environment.SetEnvironmentVariable("PATH", fullPath + ";" + RunPath.GetEnvironmentPath(), EnvironmentVariableTarget.Process);
 #endif
-            new AudioContext();
-            CheckALError();
+            m_audioContext = new AudioContext();
+            if (!CheckALError())
+            {
+                m_isInitialized = true;
+            }
         }
 
 		
 		internal static void Dispose()
 		{
+            m_isInitialized = false;
+            m_audioContext?.Dispose();
 		}
 
 		internal static void BeforeFrame()
@@ -67,7 +76,10 @@ namespace Engine.Audio
 
 		internal static void InternalSetMasterVolume(float volume)
 		{
-			AL.Listener(ALListenerf.Gain, volume);
+            if (m_isInitialized)
+            {
+                AL.Listener(ALListenerf.Gain, volume);
+            }
 		}
 		/*
 		internal static void CheckALError()

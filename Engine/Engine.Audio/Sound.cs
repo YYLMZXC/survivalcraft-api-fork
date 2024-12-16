@@ -30,9 +30,12 @@ namespace Engine.Audio
 		public Sound(SoundBuffer soundBuffer, float volume = 1f, float pitch = 1f, float pan = 0f, bool isLooped = false, bool disposeOnStop = false)
 		{
 			ArgumentNullException.ThrowIfNull(soundBuffer);
-			AL.Source(m_source, ALSourcei.Buffer, soundBuffer.m_buffer);
-			Mixer.CheckALError();
-			Initialize(soundBuffer);
+            if (Mixer.m_isInitialized)
+            {
+                AL.Source(m_source, ALSourcei.Buffer, soundBuffer.m_buffer);
+                Mixer.CheckALError();
+            }
+            Initialize(soundBuffer);
 			base.ChannelsCount = soundBuffer.ChannelsCount;
 			base.SamplingFrequency = soundBuffer.SamplingFrequency;
 			base.Volume = volume;
@@ -64,23 +67,32 @@ namespace Engine.Audio
         /// <param name="direction">相对于玩家的相对位置</param>
 		internal override void InternalPlay(OpenTK.Vector3 direction)
 		{
-            AL.Source(m_source, ALSource3f.Position, ref direction);
-			AL.Source(m_source, ALSourceb.Looping, m_isLooped);
-			AL.SourcePlay(m_source);
-			//Mixer.CheckALError();
+            if (m_source != 0)
+            {
+                AL.Source(m_source, ALSource3f.Position, ref direction);
+                AL.Source(m_source, ALSourceb.Looping, m_isLooped);
+                AL.SourcePlay(m_source);
+            }
+            //Mixer.CheckALError();
 		}
 
 		internal override void InternalPause()
 		{
-			AL.SourcePause(m_source);
-			Mixer.CheckALError();
-		}
+            if (m_source != 0)
+            {
+                AL.SourcePause(m_source);
+                Mixer.CheckALError();
+            }
+        }
 
 		internal override void InternalStop()
 		{
-			AL.SourceRewind(m_source);
-			Mixer.CheckALError();
-		}
+            if (m_source != 0)
+            {
+                AL.SourceRewind(m_source);
+                Mixer.CheckALError();
+            }
+        }
 
 		internal override void InternalDispose()
 		{

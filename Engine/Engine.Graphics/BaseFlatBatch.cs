@@ -2,7 +2,7 @@ namespace Engine.Graphics
 {
 	public abstract class BaseFlatBatch : BaseBatch
 	{
-        public static UnlitShader Shader = new(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
+        public static UnlitShader m_shader = new(useVertexColor: true, useTexture: false, useAdditiveColor: false, useAlphaThreshold: false);
 
 		public readonly DynamicArray<VertexPositionColor> LineVertices = [];
 
@@ -29,24 +29,30 @@ namespace Engine.Graphics
 			TriangleIndices.Clear();
 		}
 
-		public override void Flush(Matrix matrix, bool clearAfterFlush = true)
-		{
-			Display.DepthStencilState = base.DepthStencilState;
-			Display.RasterizerState = base.RasterizerState;
-			Display.BlendState = base.BlendState;
-			FlushWithCurrentState(matrix, clearAfterFlush);
-		}
+        public void Flush(Matrix matrix, bool clearAfterFlush = true)
+        {
+            Flush(matrix, Vector4.One, clearAfterFlush);
+        }
 
-		public void FlushWithCurrentState(Matrix matrix, bool clearAfterFlush = true)
-		{
-			if (!IsEmpty())
-			{
-				Shader.Transforms.World[0] = matrix;
-				FlushWithCurrentStateAndShader(Shader, clearAfterFlush);
-			}
-		}
+        public override void Flush(Matrix matrix, Vector4 color, bool clearAfterFlush = true)
+        {
+            Display.DepthStencilState = base.DepthStencilState;
+            Display.RasterizerState = base.RasterizerState;
+            Display.BlendState = base.BlendState;
+            FlushWithDeviceState(matrix, color, clearAfterFlush);
+        }
 
-		public void FlushWithCurrentStateAndShader(Shader shader, bool clearAfterFlush = true)
+        public void FlushWithDeviceState(Matrix matrix, Vector4 color, bool clearAfterFlush = true)
+        {
+            if (!IsEmpty())
+            {
+                m_shader.Transforms.World[0] = matrix;
+                m_shader.Color = color;
+                FlushWithDeviceState(m_shader, clearAfterFlush);
+            }
+        }
+
+		public void FlushWithDeviceState(Shader shader, bool clearAfterFlush = true)
 		{
 			if (TriangleIndices.Count > 0)
 			{
@@ -77,5 +83,57 @@ namespace Engine.Graphics
 				Clear();
 			}
 		}
+
+        public void TransformLines(Matrix matrix, int start = 0, int end = -1)
+        {
+            VertexPositionColor[] array = LineVertices.Array;
+            if (end < 0)
+            {
+                end = LineVertices.Count;
+            }
+            for (int i = start; i < end; i++)
+            {
+                Vector3.Transform(ref array[i].Position, ref matrix, out array[i].Position);
+            }
+        }
+
+        public void TransformLinesColors(Color color, int start = 0, int end = -1)
+        {
+            VertexPositionColor[] array = LineVertices.Array;
+            if (end < 0)
+            {
+                end = LineVertices.Count;
+            }
+            for (int i = start; i < end; i++)
+            {
+                array[i].Color *= color;
+            }
+        }
+
+        public void TransformTriangles(Matrix matrix, int start = 0, int end = -1)
+        {
+            VertexPositionColor[] array = TriangleVertices.Array;
+            if (end < 0)
+            {
+                end = TriangleVertices.Count;
+            }
+            for (int i = start; i < end; i++)
+            {
+                Vector3.Transform(ref array[i].Position, ref matrix, out array[i].Position);
+            }
+        }
+
+        public void TransformTrianglesColors(Color color, int start = 0, int end = -1)
+        {
+            VertexPositionColor[] array = TriangleVertices.Array;
+            if (end < 0)
+            {
+                end = TriangleVertices.Count;
+            }
+            for (int i = start; i < end; i++)
+            {
+                array[i].Color *= color;
+            }
+        }
 	}
 }

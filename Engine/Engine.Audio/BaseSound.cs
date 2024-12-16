@@ -10,7 +10,7 @@ namespace Engine.Audio
 
 		private float m_pan;
 
-		internal object m_stateSync = new();
+		internal object m_lock = new();
 
 		internal bool m_isLooped;
 
@@ -47,8 +47,8 @@ namespace Engine.Audio
 				value = MathUtils.Saturate(value);
 				if (value != m_volume)
 				{
-					InternalSetVolume(value);
 					m_volume = value;
+					InternalSetVolume(value);
 				}
 			}
 		}
@@ -64,8 +64,8 @@ namespace Engine.Audio
 				value = Math.Clamp(value, 0.5f, 2f);
 				if (value != m_pitch)
 				{
-					InternalSetPitch(value);
 					m_pitch = value;
+					InternalSetPitch(value);
 				}
 			}
 		}
@@ -83,8 +83,8 @@ namespace Engine.Audio
 					value = Math.Clamp(value, -1f, 1f);
 					if (value != m_pan)
 					{
-						InternalSetPan(value);
 						m_pan = value;
+						InternalSetPan(value);
 					}
 				}
 			}
@@ -98,7 +98,7 @@ namespace Engine.Audio
 			}
 			set
 			{
-				lock (m_stateSync)
+				lock (m_lock)
 				{
 					if (State == SoundState.Stopped)
 					{
@@ -116,7 +116,7 @@ namespace Engine.Audio
 			}
 			set
 			{
-				lock (m_stateSync)
+				lock (m_lock)
 				{
 					if (State == SoundState.Stopped)
 					{
@@ -128,7 +128,7 @@ namespace Engine.Audio
 
 		public void Play()
 		{
-			lock (m_stateSync)
+			lock (m_lock)
 			{
 				if (State == SoundState.Stopped || State == SoundState.Paused)
 				{
@@ -139,7 +139,7 @@ namespace Engine.Audio
 		}
         public void Play(OpenTK.Vector3 direction)
         {
-            lock (m_stateSync)
+            lock (m_lock)
             {
                 if (State == SoundState.Stopped || State == SoundState.Paused)
                 {
@@ -150,7 +150,7 @@ namespace Engine.Audio
         }
         public void Pause()
 		{
-			lock (m_stateSync)
+			lock (m_lock)
 			{
 				if (State == SoundState.Playing)
 				{
@@ -166,7 +166,7 @@ namespace Engine.Audio
 			{
 				Dispose();
 			}
-			lock (m_stateSync)
+			lock (m_lock)
 			{
 				if (State == SoundState.Playing || State == SoundState.Paused)
 				{

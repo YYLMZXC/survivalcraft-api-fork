@@ -68,6 +68,10 @@ namespace Engine.Audio
 			base.IsLooped = isLooped;
 			base.DisposeOnStop = disposeOnStop;
 			m_bufferDuration = Math.Clamp(bufferDuration, 0.01f, 10f);
+            if (m_source == 0)
+            {
+                return;
+            }
 			m_task = Task.Run(delegate
 			{
 				try
@@ -83,23 +87,32 @@ namespace Engine.Audio
 
         internal override void InternalPlay(OpenTK.Vector3 direction)
         {
-            AL.Source(m_source, ALSource3f.Position,ref direction);
-            AL.SourcePlay(m_source);
-            Mixer.CheckALError();
+            if (m_source != 0)
+            {
+                AL.Source(m_source, ALSource3f.Position, ref direction);
+                AL.SourcePlay(m_source);
+                Mixer.CheckALError();
+            }
         }
         internal override void InternalPause()
 		{
-			AL.SourcePause(m_source);
-			Mixer.CheckALError();
-		}
+            if (m_source != 0)
+            {
+                AL.SourcePause(m_source);
+                Mixer.CheckALError();
+            }
+        }
 
 		internal override void InternalStop()
 		{
-			AL.SourceStop(m_source);
-			Mixer.CheckALError();
-			StreamingSource.Position = 0L;
-			m_noMoreData = false;
-		}
+            if (m_source != 0)
+            {
+                AL.SourceStop(m_source);
+                Mixer.CheckALError();
+                StreamingSource.Position = 0L;
+                m_noMoreData = false;
+            }
+        }
 
 		internal override void InternalDispose()
 		{
@@ -134,7 +147,7 @@ namespace Engine.Audio
 			}
 			do
 			{
-				lock (m_stateSync)
+				lock (m_lock)
 				{
 					if (!m_noMoreData)
 					{

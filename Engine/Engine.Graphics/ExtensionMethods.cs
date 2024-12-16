@@ -57,21 +57,19 @@ namespace Engine.Graphics
 		}
 
 		public static int GetSize(this ColorFormat format)
-		{
-			switch (format)
-			{
-				case ColorFormat.Rgba8888:
-					return 4;
-				case ColorFormat.Rgb565:
-					return 2;
-				case ColorFormat.Rgba5551:
-					return 2;
-				case ColorFormat.R8:
-					return 1;
-				default:
-					throw new InvalidOperationException("Unsupported ColorFormat.");
-			}
-		}
+        {
+            return format switch
+            {
+                ColorFormat.Rgba8888 => 4,
+                ColorFormat.Rgb565 => 2,
+                ColorFormat.Rgba5551 => 2,
+                ColorFormat.R8 => 1,
+                ColorFormat.R32f => 4,
+                ColorFormat.RG32f => 8,
+                ColorFormat.RGBA32f => 16,
+                _ => throw new InvalidOperationException("Unsupported ColorFormat.")
+            };
+        }
 
 		public static int GetSize(this DepthFormat format)
 		{

@@ -240,7 +240,6 @@ namespace Engine.Graphics
 
         internal static void VerifyParametersDrawUser<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount) where T : struct
         {
-            shader.VerifyNotDisposed();
             int num = Utilities.SizeOf<T>();
             ArgumentNullException.ThrowIfNull(shader);
             ArgumentNullException.ThrowIfNull(vertexDeclaration);
@@ -253,11 +252,11 @@ namespace Engine.Graphics
             {
                 throw new ArgumentException("Vertices range is out of bounds.");
             }
+            shader.VerifyNotDisposed();
         }
 
         internal static void VerifyParametersDrawUserIndexed<T>(PrimitiveType primitiveType, Shader shader, VertexDeclaration vertexDeclaration, T[] vertexData, int startVertex, int verticesCount, int[] indexData, int startIndex, int indicesCount) where T : struct
         {
-            shader.VerifyNotDisposed();
             int num = Utilities.SizeOf<T>();
             ArgumentNullException.ThrowIfNull(shader);
             ArgumentNullException.ThrowIfNull(vertexDeclaration);
@@ -275,11 +274,11 @@ namespace Engine.Graphics
             {
                 throw new ArgumentException("Indices range is out of bounds.");
             }
+            shader.VerifyNotDisposed();
         }
 
         internal static void VerifyParametersDraw(PrimitiveType primitiveType, Shader shader, VertexBuffer vertexBuffer, int startVertex, int verticesCount)
         {
-            shader.VerifyNotDisposed();
             vertexBuffer.VerifyNotDisposed();
             ArgumentNullException.ThrowIfNull(shader);
             ArgumentNullException.ThrowIfNull(vertexBuffer);
@@ -287,13 +286,11 @@ namespace Engine.Graphics
             {
                 throw new ArgumentException("Vertices range is out of bounds.");
             }
+            shader.VerifyNotDisposed();
         }
 
         internal static void VerifyParametersDrawIndexed(PrimitiveType primitiveType, Shader shader, VertexBuffer vertexBuffer, IndexBuffer indexBuffer, int startIndex, int indicesCount)
         {
-            shader.VerifyNotDisposed();
-            vertexBuffer.VerifyNotDisposed();
-            indexBuffer.VerifyNotDisposed();
             ArgumentNullException.ThrowIfNull(shader);
             ArgumentNullException.ThrowIfNull(vertexBuffer);
             ArgumentNullException.ThrowIfNull(indexBuffer);
@@ -301,6 +298,9 @@ namespace Engine.Graphics
             {
                 throw new ArgumentException("Indices range is out of bounds.");
             }
+            shader.VerifyNotDisposed();
+            vertexBuffer.VerifyNotDisposed();
+            indexBuffer.VerifyNotDisposed();
         }
 
         internal static void HandleDeviceLost()

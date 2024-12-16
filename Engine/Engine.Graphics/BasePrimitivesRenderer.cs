@@ -16,6 +16,12 @@ namespace Engine.Graphics
 
 		public LinkedList<T3> m_fontBatches = new();
 
+        public IEnumerable<T1> FlatBatches => m_flatBatches;
+
+        public IEnumerable<T2> TexturedBatches => m_texturedBatches;
+
+        public IEnumerable<T3> FontBatches => m_fontBatches;
+
         public BasePrimitivesRenderer()
 		{
 		}
@@ -104,8 +110,12 @@ namespace Engine.Graphics
 			m_allBatches.Add(val);
 			return val;
 		}
+        public void Flush(Matrix matrix, bool clearAfterFlush = true, int maxLayer = int.MaxValue)
+        {
+            Flush(matrix, Vector4.One, clearAfterFlush, maxLayer);
+        }
 
-		public void Flush(Matrix matrix, bool clearAfterFlush = true, int maxLayer = int.MaxValue)
+		public void Flush(Matrix matrix, Vector4 color, bool clearAfterFlush = true, int maxLayer = int.MaxValue)
 		{
 			if (m_sortNeeded)
 			{
@@ -123,7 +133,7 @@ namespace Engine.Graphics
 				}
 				if (!allBatch.IsEmpty())
 				{
-					allBatch.Flush(matrix, clearAfterFlush);
+					allBatch.Flush(matrix, color, clearAfterFlush);
 				}
 			}
 		}

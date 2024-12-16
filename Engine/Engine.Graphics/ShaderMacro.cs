@@ -38,5 +38,24 @@ namespace Engine.Graphics
 			Name = name;
 			Value = value;
 		}
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ShaderMacro)
+            {
+                ShaderMacro shaderMacro = (ShaderMacro)obj;
+                if (shaderMacro.Name == Name)
+                {
+                    return shaderMacro.Value == Value;
+                }
+                return false;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode() + Value.GetHashCode();
+        }
 	}
 }

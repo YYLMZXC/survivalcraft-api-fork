@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net8.0-windows;net8.0-android</TargetFrameworks>
+		<TargetFrameworks>net9.0;net9.0-windows;net9.0-android35.0</TargetFrameworks>
 		<NoWarn>$(NoWarn);1591;1573</NoWarn>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>

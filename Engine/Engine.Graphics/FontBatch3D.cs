@@ -4,6 +4,15 @@ namespace Engine.Graphics
 {
 	public class FontBatch3D : BaseFontBatch
 	{
+        public FontBatch3D()
+        {
+            base.Font = BitmapFont.DebugFont;
+            base.DepthStencilState = DepthStencilState.Default;
+            base.RasterizerState = RasterizerState.CullNoneScissor;
+            base.BlendState = BlendState.AlphaBlend;
+            base.SamplerState = SamplerState.LinearClamp;
+        }
+
 		public void QueueText(string text, Vector3 position, Vector3 right, Vector3 down, Color color, TextAnchor anchor = TextAnchor.Default)
 		{
 			QueueText(text, position, right, down, color, anchor, Vector2.Zero);
@@ -12,23 +21,29 @@ namespace Engine.Graphics
 		public void QueueText(string text, Vector3 position, Vector3 right, Vector3 down, Color color, TextAnchor anchor, Vector2 spacing)
 		{
 			var scale = new Vector2(right.Length(), down.Length());
-			Vector2 vector = CalculateTextOffset(text, anchor, scale, spacing);
+			Vector2 vector = CalculateTextOffset(text, 0, text.Length, anchor, scale, spacing);
 			Vector3 vector2 = position + (vector.X * Vector3.Normalize(right)) + (vector.Y * Vector3.Normalize(down));
 			Vector3 v = vector2;
 			right *= base.Font.Scale;
 			down *= base.Font.Scale;
 			int num = 0;
-			foreach (char c in text)
-			{
-				switch (c)
-				{
-					case '\n':
-						num++;
-						v = vector2 + (num * (base.Font.GlyphHeight + base.Font.Spacing.Y + spacing.Y) * down);
-						continue;
-					case '\r':
-						continue;
-				}
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+                if (c == '\u00a0')
+                {
+                    c = ' ';
+                }
+                switch (c)
+                {
+                    case '\n':
+                        num++;
+                        v = vector2 + (float)num * (base.Font.GlyphHeight + base.Font.Spacing.Y + spacing.Y) * down;
+                        continue;
+                    case '\r':
+                    case '\u200b':
+                        continue;
+                }
 				BitmapFont.Glyph glyph = base.Font.GetGlyph(c);
 				if (!glyph.IsBlank)
 				{
@@ -54,20 +69,8 @@ namespace Engine.Graphics
 					TriangleIndices.Array[count2 + 4] = count + 3;
 					TriangleIndices.Array[count2 + 5] = count;
 				}
-				v += right * (glyph.Width + base.Font.Spacing.X + spacing.X);
-			}
-		}
-
-		public void TransformTriangles(Matrix matrix, int start = 0, int end = -1)
-		{
-			VertexPositionColorTexture[] array = TriangleVertices.Array;
-			if (end < 0)
-			{
-				end = TriangleVertices.Count;
-			}
-			for (int i = start; i < end; i++)
-			{
-				Vector3.Transform(ref array[i].Position, ref matrix, out array[i].Position);
+                float num2 = ((i < text.Length - 1) ? base.Font.GetKerning(c, text[i + 1]) : 0f);
+				v += right * (glyph.Width - num2 + base.Font.Spacing.X + spacing.X);
 			}
 		}
 	}

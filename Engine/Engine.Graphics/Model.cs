@@ -111,6 +111,30 @@ namespace Engine.Graphics
 			}
 		}
 
+        public void CopyAbsoluteBoneTransformsTo(Matrix[] absoluteTransforms, Matrix matrix)
+        {
+            if (absoluteTransforms == null)
+            {
+                throw new ArgumentNullException("transforms");
+            }
+            if (absoluteTransforms.Length < m_bones.Count)
+            {
+                throw new ArgumentOutOfRangeException("transforms");
+            }
+            for (int i = 0; i < m_bones.Count; i++)
+            {
+                ModelBone modelBone = m_bones[i];
+                if (modelBone.ParentBone == null)
+                {
+                    Matrix.MultiplyRestricted(ref modelBone.m_transform, ref matrix, out absoluteTransforms[i]);
+                }
+                else
+                {
+                    Matrix.MultiplyRestricted(ref modelBone.m_transform, ref absoluteTransforms[modelBone.ParentBone.Index], out absoluteTransforms[i]);
+                }
+            }
+        }
+
 		public BoundingBox CalculateAbsoluteBoundingBox(Matrix[] absoluteTransforms)
 		{
 			ArgumentNullException.ThrowIfNull(absoluteTransforms);

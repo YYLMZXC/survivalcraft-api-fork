@@ -2,9 +2,9 @@ namespace Engine.Graphics
 {
 	public abstract class BaseTexturedBatch : BaseBatch
 	{
-        public static UnlitShader Shader = new(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+        public static UnlitShader m_shader = new(useVertexColor: true, useTexture: true, useAdditiveColor: false, useAlphaThreshold: false);
 
-        public static UnlitShader ShaderAlphaTest = new(useVertexColor: true, useTexture: true, useAlphaThreshold: true);
+        public static UnlitShader m_shaderAlphaTest = new(useVertexColor: true, useTexture: true, useAdditiveColor: false, useAlphaThreshold: true);
 
 		public readonly DynamicArray<VertexPositionColorTexture> TriangleVertices = [];
 
@@ -43,34 +43,41 @@ namespace Engine.Graphics
 			TriangleIndices.Clear();
 		}
 
-		public override void Flush(Matrix matrix, bool clearAfterFlush = true)
+        public void Flush(Matrix matrix, bool clearAfterFlush = true)
+        {
+            Flush(matrix, Vector4.One, clearAfterFlush);
+        }
+
+		public override void Flush(Matrix matrix, Vector4 color, bool clearAfterFlush = true)
 		{
 			Display.DepthStencilState = base.DepthStencilState;
 			Display.RasterizerState = base.RasterizerState;
 			Display.BlendState = base.BlendState;
-			FlushWithCurrentState(UseAlphaTest, Texture, SamplerState, matrix, clearAfterFlush);
+            FlushWithDeviceState(UseAlphaTest, Texture, SamplerState, matrix, color, clearAfterFlush);
 		}
 
-		public void FlushWithCurrentState(bool useAlphaTest, Texture2D texture, SamplerState samplerState, Matrix matrix, bool clearAfterFlush = true)
+		public void FlushWithDeviceState(bool useAlphaTest, Texture2D texture, SamplerState samplerState, Matrix matrix, Vector4 color, bool clearAfterFlush = true)
 		{
 			if (useAlphaTest)
 			{
-				ShaderAlphaTest.Texture = texture;
-				ShaderAlphaTest.SamplerState = samplerState;
-				ShaderAlphaTest.Transforms.World[0] = matrix;
-				ShaderAlphaTest.AlphaThreshold = 0f;
-				FlushWithCurrentStateAndShader(ShaderAlphaTest, clearAfterFlush);
+				m_shaderAlphaTest.Texture = texture;
+				m_shaderAlphaTest.SamplerState = samplerState;
+				m_shaderAlphaTest.Transforms.World[0] = matrix;
+                m_shaderAlphaTest.Color = color;
+				m_shaderAlphaTest.AlphaThreshold = 0f;
+                FlushWithDeviceState(m_shaderAlphaTest, clearAfterFlush);
 			}
 			else
 			{
-				Shader.Texture = texture;
-				Shader.SamplerState = samplerState;
-				Shader.Transforms.World[0] = matrix;
-				FlushWithCurrentStateAndShader(Shader, clearAfterFlush);
+				m_shader.Texture = texture;
+				m_shader.SamplerState = samplerState;
+				m_shader.Transforms.World[0] = matrix;
+                m_shader.Color = color;
+                FlushWithDeviceState(m_shader, clearAfterFlush);
 			}
 		}
 
-		public void FlushWithCurrentStateAndShader(Shader shader, bool clearAfterFlush = true)
+		public void FlushWithDeviceState(Shader shader, bool clearAfterFlush = true)
 		{
 			int num = 0;
 			int num2 = TriangleIndices.Count;
@@ -86,5 +93,31 @@ namespace Engine.Graphics
 				Clear();
 			}
 		}
+
+        public void TransformTriangles(Matrix matrix, int start = 0, int end = -1)
+        {
+            VertexPositionColorTexture[] array = TriangleVertices.Array;
+            if (end < 0)
+            {
+                end = TriangleVertices.Count;
+            }
+            for (int i = start; i < end; i++)
+            {
+                Vector3.Transform(ref array[i].Position, ref matrix, out array[i].Position);
+            }
+        }
+
+        public void TransformTrianglesColors(Color color, int start = 0, int end = -1)
+        {
+            VertexPositionColorTexture[] array = TriangleVertices.Array;
+            if (end < 0)
+            {
+                end = TriangleVertices.Count;
+            }
+            for (int i = start; i < end; i++)
+            {
+                array[i].Color *= color;
+            }
+        }
 	}
 }

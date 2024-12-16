@@ -34,6 +34,6 @@ namespace Engine.Graphics
 
 		public abstract void Clear();
 
-		public abstract void Flush(Matrix matrix, bool clearAfterFlush = true);
+		public abstract void Flush(Matrix matrix, Vector4 color, bool clearAfterFlush = true);
 	}
 }

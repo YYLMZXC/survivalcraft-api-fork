@@ -42,10 +42,6 @@ namespace Game
 
 		public PrimitivesRenderer3D m_primitivesRenderer = new();
 
-		public static UnlitShader UnlitShader = new(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: false);
-
-		public static UnlitShader UnlitShaderAlphaTest = new(ShaderCodeManager.GetFast("Shaders/Unlit.vsh"), ShaderCodeManager.GetFast("Shaders/Unlit.psh"), useVertexColor: true, useTexture: true, useAlphaThreshold: true);
-
 		public static LitShader LitShader = new(ShaderCodeManager.GetFast("Shaders/Lit.vsh"), ShaderCodeManager.GetFast("Shaders/Lit.psh"), 2, useEmissionColor: false, useVertexColor: false, useTexture: true, useFog: false, useAlphaThreshold: false);
 
 		public static int[] m_drawOrders = new int[1]

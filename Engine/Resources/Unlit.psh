@@ -4,6 +4,9 @@
 Texture2D u_texture;
 SamplerState u_samplerState;
 #endif
+#ifdef USE_ADDITIVECOLOR
+uniform vec4 u_additiveColor;
+#endif
 #ifdef USE_ALPHATHRESHOLD
 float u_alphaThreshold;
 #endif
@@ -23,6 +26,10 @@ void main(
 #ifdef USE_TEXTURE
 	result *= u_texture.Sample(u_samplerState, v_texcoord);
 #endif
+
+	#ifdef USE_ADDITIVECOLOR
+	result += u_additiveColor;
+	#endif
 
 	// Alpha threshold
 #ifdef USE_ALPHATHRESHOLD

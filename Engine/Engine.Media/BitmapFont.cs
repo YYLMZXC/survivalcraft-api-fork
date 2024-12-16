@@ -10,6 +10,35 @@ namespace Engine.Media
 {
 	public class BitmapFont : IDisposable
 	{
+        public class Counter
+        {
+            private short[] m_counts = new short[32];
+
+            public int MaxUsedIndex { get; private set; } = -1;
+
+            public void Increment(int i)
+            {
+                while (i >= m_counts.Length)
+                {
+                    short[] counts = m_counts;
+                    m_counts = new short[m_counts.Length * 2];
+                    Array.Copy(counts, m_counts, MaxUsedIndex + 1);
+                }
+                m_counts[i]++;
+                MaxUsedIndex = MathUtils.Max(i, MaxUsedIndex);
+            }
+
+            public int Get(int i)
+            {
+                return m_counts[i];
+            }
+
+            public void Clear()
+            {
+                Array.Clear(m_counts, 0, MaxUsedIndex + 1);
+                MaxUsedIndex = -1;
+            }
+        }
 		public class Glyph(char code, Vector2 texCoord1, Vector2 texCoord2, Vector2 offset, float width)
         {
 			public readonly char Code = code;
@@ -25,11 +54,24 @@ namespace Engine.Media
 			public readonly float Width = width;
         }
 
+        public class KerningSettings
+        {
+            public int Limit = 5;
+
+            public int Tolerance = 1;
+
+            public int BulkingRadius = 1;
+
+            public float BulkingGradient = 1f;
+        }
+
         public static BitmapFont m_debugFont;
 
         public Glyph[] m_glyphsByCode;
 
 		public Image m_image;
+
+        public Dictionary<int, short> m_kerningPairs;
 
 		public Texture2D Texture
 		{
@@ -165,45 +207,57 @@ namespace Engine.Media
             return code >= m_glyphsByCode.Length ? FallbackGlyph : m_glyphsByCode[code];
         }
 
+        public float GetKerning(char code, char followingCode)
+        {
+            short value = 0;
+            if (m_kerningPairs != null)
+            {
+                m_kerningPairs.TryGetValue((int)(((uint)code << 16) | followingCode), out value);
+            }
+            return value;
+        }
+
         public Vector2 MeasureText(string text, Vector2 scale, Vector2 spacing)
 		{
 			return MeasureText(text, 0, text.Length, scale, spacing);
 		}
 
-		public Vector2 MeasureText(string text, int start, int length, Vector2 scale, Vector2 spacing)
+		public Vector2 MeasureText(string text, int start, int count, Vector2 scale, Vector2 spacing)
 		{
 			scale *= Scale;
 			spacing += Spacing;
-			Vector2 vector = new(0f, (GlyphHeight + spacing.Y) * scale.Y);
-			Vector2 result = vector;
-			for (int i = start; i < start + length; i++)
+            float num = GlyphHeight + spacing.Y;
+            Vector2 vector = new Vector2(0f, num);
+			Vector2 vector2 = vector;
+            int i = start;
+			for (int num2 = start + count; i < num2; i++)
 			{
 				char c = text[i];
-				switch (c)
-				{
-					case '\n':
-						vector.X = 0f;
-						vector.Y += (GlyphHeight + spacing.Y) * scale.Y;
-						if (vector.Y > result.Y)
-						{
-							result.Y = vector.Y;
-						}
-						break;
-					default:
-						{
-							Glyph glyph = GetGlyph(c);
-							vector.X += (glyph.Width + spacing.X) * scale.X;
-							if (vector.X > result.X)
-							{
-								result.X = vector.X;
-							}
-							break;
-						}
-					case '\r':
-						break;
-				}
-			}
-			return result;
+                if (c == '\n')
+                {
+                    vector.X = 0f;
+                    vector.Y += num;
+                    if (vector.Y > vector2.Y)
+                    {
+                        vector2.Y = vector.Y;
+                    }
+                }
+                else if (c != '\r' && c != '\u200b')
+                {
+                    if (c == '\u00a0')
+                    {
+                        c = ' ';
+                    }
+                    Glyph glyph = GetGlyph(c);
+                    float num3 = ((i < text.Length - 1) ? GetKerning(c, text[i + 1]) : 0f);
+                    vector.X += glyph.Width - num3 + spacing.X;
+                    if (vector.X > vector2.X)
+                    {
+                        vector2.X = vector.X;
+                    }
+                }
+            }
+            return vector2 * scale;
 		}
 
 		public int FitText(float width, string text, float scale, float spacing)
@@ -219,20 +273,24 @@ namespace Engine.Media
 			for (int i = start; i < start + length; i++)
 			{
 				char c = text[i];
-				switch (c)
-				{
-					case '\n':
-						num = 0f;
-						continue;
-					case '\r':
-						continue;
-				}
-				Glyph glyph = GetGlyph(c);
-				num += (glyph.Width + spacing) * scale;
-				if (num > width)
-				{
-					return i - start;
-				}
+                if (c == '\n')
+                {
+                    num = 0f;
+                }
+                else if (c != '\r' && c != '\u200b')
+                {
+                    if (c == '\u00a0')
+                    {
+                        c = ' ';
+                    }
+                    Glyph glyph = GetGlyph(c);
+                    float num2 = ((i < text.Length - 1) ? GetKerning(c, text[i + 1]) : 0f);
+                    num += (glyph.Width - num2 + spacing) * scale;
+                    if (num > width)
+                    {
+                        return i - start;
+                    }
+                }
 			}
 			return length;
 		}
@@ -243,21 +301,21 @@ namespace Engine.Media
 			return MeasureText(text, 0, characterIndex, scale, spacing).X;
 		}
 
-		public static BitmapFont Load(Image image, char firstCode, char fallbackCode, Vector2 spacing, float scale, Vector2 offset, int mipLevelsCount = 1, bool premultiplyAlpha = true)
+		public static BitmapFont Load(Image image, char firstCode, char fallbackCode, Vector2 spacing, float scale, Vector2 offset, KerningSettings kerningSettings = null, int mipLevelsCount = 1, bool premultiplyAlpha = true)
 		{
-			return InternalLoad(image, firstCode, fallbackCode, spacing, scale, offset, mipLevelsCount, premultiplyAlpha, createTexture: true);
+			return InternalLoad(image, firstCode, fallbackCode, spacing, scale, offset, kerningSettings, mipLevelsCount, premultiplyAlpha, createTexture: true);
 		}
 
-		public static BitmapFont Load(Stream stream, char firstCode, char fallbackCode, Vector2 spacing, float scale, Vector2 offset, int mipLevelsCount = 1, bool premultiplyAlpha = true)
+		public static BitmapFont Load(Stream stream, char firstCode, char fallbackCode, Vector2 spacing, float scale, Vector2 offset, KerningSettings kerningSettings = null, int mipLevelsCount = 1, bool premultiplyAlpha = true)
 		{
-			return Load(Image.Load(stream), firstCode, fallbackCode, spacing, scale, offset, mipLevelsCount, premultiplyAlpha);
+			return Load(Image.Load(stream), firstCode, fallbackCode, spacing, scale, offset, kerningSettings, mipLevelsCount, premultiplyAlpha);
 		}
 
-		public static BitmapFont Load(string fileName, char firstCode, char fallbackCode, Vector2 spacing, float scale, Vector2 offset, int mipLevelsCount = 1, bool premultiplyAlpha = true)
+		public static BitmapFont Load(string fileName, char firstCode, char fallbackCode, Vector2 spacing, float scale, Vector2 offset, KerningSettings kerningSettings = null, int mipLevelsCount = 1, bool premultiplyAlpha = true)
 		{
 			using (Stream stream = Storage.OpenFile(fileName, OpenFileMode.Read))
 			{
-				return Load(stream, firstCode, fallbackCode, spacing, scale, offset, mipLevelsCount, premultiplyAlpha);
+				return Load(stream, firstCode, fallbackCode, spacing, scale, offset, kerningSettings, mipLevelsCount, premultiplyAlpha);
 			}
 		}
 
@@ -278,7 +336,7 @@ namespace Engine.Media
 		{
 		}
 
-		internal static BitmapFont InternalLoad(Image image, char firstCode, char fallbackCode, Vector2 spacing, float scale, Vector2 offset, int mipLevelsCount, bool premultiplyAlpha, bool createTexture)
+		internal static BitmapFont InternalLoad(Image image, char firstCode, char fallbackCode, Vector2 spacing, float scale, Vector2 offset, KerningSettings kerningSettings, int mipLevelsCount, bool premultiplyAlpha, bool createTexture)
 		{
 			List<Rectangle> list = new(FindGlyphs(image));
 			List<Rectangle> list2 = new(list.Select((Rectangle r) => CropGlyph(image, r)));
@@ -344,6 +402,55 @@ namespace Engine.Media
 			Image image3 = createTexture ? null : image2;
 			BitmapFont bitmapFont = new();
 			bitmapFont.Initialize(texture, image3, list3, fallbackCode, num6, spacing, scale);
+            if (kerningSettings != null)
+            {
+                int[][] array = new int[list.Count][];
+                int[][] array2 = new int[list.Count][];
+                for (int l = 0; l < list.Count; l++)
+                {
+                    CalculateKerningDepths(image, list2[l], out array[l], out array2[l]);
+                    array[l] = ApplyKerningBulking(array[l], kerningSettings.BulkingRadius, kerningSettings.BulkingGradient);
+                    array2[l] = ApplyKerningBulking(array2[l], kerningSettings.BulkingRadius, kerningSettings.BulkingGradient);
+                }
+                Counter counter = new Counter();
+                for (int m = 0; m < list.Count; m++)
+                {
+                    for (int n = 0; n < list.Count; n++)
+                    {
+                        int num7 = list2[m].Top - list[m].Top;
+                        int x = list2[m].Bottom - list[m].Top;
+                        int num8 = list2[n].Top - list[n].Top;
+                        int x2 = list2[n].Bottom - list[n].Top;
+                        int num9 = MathUtils.Max(num7, num8);
+                        int num10 = MathUtils.Min(x, x2);
+                        counter.Clear();
+                        for (int num11 = num9; num11 < num10; num11++)
+                        {
+                            int num12 = num11 - num7;
+                            int num13 = num11 - num8;
+                            int num14 = array2[m][num12];
+                            int num15 = array[n][num13];
+                            counter.Increment(num15 + num14);
+                        }
+                        int num16 = Math.Min(kerningSettings.Limit - 1, counter.MaxUsedIndex);
+                        int tolerance = kerningSettings.Tolerance;
+                        int num17 = 0;
+                        int num18;
+                        for (num18 = 0; num18 <= num16; num18++)
+                        {
+                            num17 += counter.Get(num18);
+                            if (num17 > tolerance)
+                            {
+                                break;
+                            }
+                        }
+                        if (num18 != 0)
+                        {
+                            bitmapFont.SetKerning((char)(m + firstCode), (char)(n + firstCode), num18);
+                        }
+                    }
+                }
+            }
 			return bitmapFont;
 		}
 
@@ -396,7 +503,62 @@ namespace Engine.Media
 		}
 			}
 
-        public static Rectangle CropGlyph(Image image, Rectangle rectangle)
+            public static int[] ApplyKerningBulking(int[] depths, int radius, float gradient)
+            {
+                int[] array = new int[depths.Length];
+                for (int i = 0; i < depths.Length; i++)
+                {
+                    array[i] = depths[i];
+                    int num = MathUtils.Max(i - radius, 0);
+                    int num2 = MathUtils.Min(i + radius, depths.Length - 1);
+                    for (int j = num; j <= num2; j++)
+                    {
+                        int num3 = Math.Abs(j - i);
+                        int x = depths[j] + (int)Math.Round(gradient * (float)num3);
+                        array[i] = MathUtils.Min(array[i], x);
+                    }
+                }
+                return array;
+            }
+
+            public static void CalculateKerningDepths(Image image, Rectangle rectangle, out int[] leftDepths, out int[] rightDepths)
+            {
+                leftDepths = new int[rectangle.Height];
+                rightDepths = new int[rectangle.Height];
+                for (int i = rectangle.Top; i < rectangle.Bottom; i++)
+                {
+                    int num = i - rectangle.Top;
+                    leftDepths[num] = rectangle.Width;
+                    rightDepths[num] = rectangle.Width;
+                    for (int j = rectangle.Left; j < rectangle.Right; j++)
+                    {
+                        if (image.GetPixel(j, i).A != 0)
+                        {
+                            leftDepths[num] = MathUtils.Min(leftDepths[num], j - rectangle.Left);
+                            rightDepths[num] = MathUtils.Min(rightDepths[num], rectangle.Right - j - 1);
+                        }
+                    }
+                }
+            }
+
+            public BitmapFont Clone(float scale, Vector2 spacing)
+            {
+                return new BitmapFont
+                {
+                    m_glyphsByCode = m_glyphsByCode,
+                    m_kerningPairs = m_kerningPairs,
+                    m_image = m_image,
+                    Texture = Texture,
+                    GlyphHeight = GlyphHeight,
+                    LineHeight = LineHeight,
+                    Spacing = spacing,
+                    Scale = scale,
+                    FallbackGlyph = FallbackGlyph,
+                    MaxGlyphCode = MaxGlyphCode
+                };
+            }
+
+            public static Rectangle CropGlyph(Image image, Rectangle rectangle)
 		{
 			int num = int.MaxValue;
 			int num2 = int.MaxValue;
@@ -418,6 +580,15 @@ namespace Engine.Media
             return num == int.MaxValue
                 ? new Rectangle(rectangle.Left, rectangle.Top, 0, 0)
                 : new Rectangle(num, num2, num3 - num + 1, num4 - num2 + 1);
+        }
+
+        public void SetKerning(char code, char followingCode, float kerning)
+        {
+            if (m_kerningPairs == null)
+            {
+                m_kerningPairs = new Dictionary<int, short>();
+            }
+            m_kerningPairs[(int)(((uint)code << 16) | followingCode)] = (short)kerning;
         }
     }
 }

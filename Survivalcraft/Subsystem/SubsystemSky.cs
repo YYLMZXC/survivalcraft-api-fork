@@ -90,9 +90,9 @@ namespace Game
 
 		public Texture2D[] m_moonTextures = new Texture2D[8];
 
-		public static UnlitShader m_shaderFlat = new(useVertexColor: true, useTexture: false, useAlphaThreshold: false);
+		public static UnlitShader m_shaderFlat = new(useVertexColor: true, useTexture: false, useAdditiveColor: true, useAlphaThreshold: false);
 
-		public static UnlitShader m_shaderTextured = new(useVertexColor: true, useTexture: true, useAlphaThreshold: false);
+		public static UnlitShader m_shaderTextured = new(useVertexColor: true, useTexture: true, useAdditiveColor: false, useAlphaThreshold: false);
 
 		public VertexDeclaration m_skyVertexDeclaration = new(new VertexElement(0, VertexElementFormat.Vector3, VertexElementSemantic.Position), new VertexElement(12, VertexElementFormat.NormalizedByte4, VertexElementSemantic.Color));
 

@@ -5,6 +5,60 @@ namespace Engine.Graphics
 {
 	public  class FlatBatch2D : BaseFlatBatch
 	{
+        public FlatBatch2D()
+        {
+            base.DepthStencilState = DepthStencilState.None;
+            base.RasterizerState = RasterizerState.CullNoneScissor;
+            base.BlendState = BlendState.AlphaBlend;
+        }
+        public void QueueBatchTriangles(FlatBatch2D batch, Matrix? matrix = null, Color? color = null)
+        {
+            int count = TriangleVertices.Count;
+            TriangleVertices.AddRange(batch.TriangleVertices);
+            int count2 = TriangleIndices.Count;
+            int count3 = batch.TriangleIndices.Count;
+            TriangleIndices.Count += count3;
+            for (int i = 0; i < count3; i++)
+            {
+                TriangleIndices[i + count2] = (ushort)(batch.TriangleIndices[i] + count);
+            }
+            if (matrix.HasValue && matrix != Matrix.Identity)
+            {
+                TransformTriangles(matrix.Value, count);
+            }
+            if (color.HasValue && color != Color.White)
+            {
+                TransformTrianglesColors(color.Value, count);
+            }
+        }
+
+        public void QueueBatchLines(FlatBatch2D batch, Matrix? matrix = null, Color? color = null)
+        {
+            int count = LineVertices.Count;
+            LineVertices.AddRange(batch.LineVertices);
+            int count2 = LineIndices.Count;
+            int count3 = batch.LineIndices.Count;
+            LineIndices.Count += count3;
+            for (int i = 0; i < count3; i++)
+            {
+                LineIndices[i + count2] = (ushort)(batch.LineIndices[i] + count);
+            }
+            if (matrix.HasValue && matrix != Matrix.Identity)
+            {
+                TransformLines(matrix.Value, count);
+            }
+            if (color.HasValue && color != Color.White)
+            {
+                TransformLinesColors(color.Value, count);
+            }
+        }
+
+        public void QueueBatch(FlatBatch2D batch, Matrix? matrix = null, Color? color = null)
+        {
+            QueueBatchLines(batch, matrix, color);
+            QueueBatchTriangles(batch, matrix, color);
+        }
+
 		public void QueueLine(Vector2 p1, Vector2 p2, float depth, Color color)
 		{
 			int count = LineVertices.Count;
