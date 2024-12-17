@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Engine.Serialization
@@ -13,12 +14,22 @@ namespace Engine.Serialization
 			private set;
 		}
 
-		public XmlInputArchive(XElement node, int version = 0)
-			: base(version)
+		public XmlInputArchive(XElement node, int version = 0, object context = null)
+			: base(version, context)
 		{
 			ArgumentNullException.ThrowIfNull(node);
 			Node = node;
 		}
+
+        public void Reset(XElement node, int version = 0, object context = null)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+            Node = node;
+            Reset(version, context);
+        }
 
 		public override void Serialize(string name, ref sbyte value)
 		{
@@ -154,25 +165,28 @@ namespace Engine.Serialization
 			}
 		}
 
-		public override void Serialize(string name, Type type, ref object value)
-		{
-			ReadObject(name, Archive.GetSerializeData(type, allowEmptySerializer: true), ref value);
-		}
-
 		public override void SerializeCollection<T>(string name, ICollection<T> collection)
 		{
 			EnterNode(name);
 			SerializeData serializeData = Archive.GetSerializeData(typeof(T), allowEmptySerializer: true);
-			using (IEnumerator<XElement> enumerator = Node.Elements().GetEnumerator())
+			using (IEnumerator<T> enumerator = ((collection.Count > 0) ? collection.GetEnumerator() : null))
 			{
-				while (enumerator.MoveNext())
-				{
-					XElement xElement = Node = enumerator.Current;
-					object value = null;
-					ReadObject(null, serializeData, ref value);
-					collection.Add((T)value);
-					Node = Node.Parent;
-				}
+                foreach (XElement item in Node.Elements())
+                {
+                    Node = item;
+                    if (enumerator != null && enumerator.MoveNext())
+                    {
+                        T value = enumerator.Current;
+                        ReadObject(null, serializeData, ref value, allowOverwriteOfExistingObject: false);
+                    }
+                    else
+                    {
+                        T value2 = default(T);
+                        ReadObject(null, serializeData, ref value2, allowOverwriteOfExistingObject: true);
+                        collection.Add(value2);
+                    }
+                    Node = Node.Parent;
+                }
 			}
 			LeaveNode(name);
 		}
@@ -189,17 +203,18 @@ namespace Engine.Serialization
 					while (enumerator.MoveNext())
 					{
 						XElement xElement = Node = enumerator.Current;
-						object localName = xElement.Name.LocalName;
-						object value = null;
-						if (dictionary.TryGetValue((K)localName, out V value2))
+                        string localName = XmlConvert.DecodeName(xElement.Name.LocalName);
+                        K key = (K)HumanReadableConverter.ConvertFromString(typeof(K), localName);
+                        V value = default(V);
+						if (dictionary.TryGetValue(key, out V value2))
 						{
 							value = value2;
-							ReadObject(null, serializeData2, ref value);
+							ReadObject(null, serializeData2, ref value, false);
 						}
 						else
 						{
-							ReadObject(null, serializeData2, ref value);
-							dictionary.Add((K)localName, (V)value);
+							ReadObject(null, serializeData2, ref value, true);
+							dictionary.Add(key, (V)value);
 						}
 						Node = Node.Parent;
 					}
@@ -212,14 +227,15 @@ namespace Engine.Serialization
 					while (enumerator.MoveNext())
 					{
 						XElement xElement2 = Node = enumerator.Current;
-						object value3 = null;
-						object value4 = null;
-						ReadObject("k", serializeData, ref value3);
+                        K value3 = default(K);
+                        V value4 = default(V);
+						ReadObject("k", serializeData, ref value3, true);
 						if (dictionary.TryGetValue((K)value3, out V value5))
 						{
 							value4 = value5;
+                            ReadObject("v", serializeData2, ref value4, allowOverwriteOfExistingObject: false);
 						}
-						ReadObject("v", serializeData2, ref value4);
+						ReadObject("v", serializeData2, ref value4, true);
 						dictionary.Add((K)value3, (V)value4);
 						Node = Node.Parent;
 					}
@@ -228,7 +244,7 @@ namespace Engine.Serialization
 			LeaveNode(name);
 		}
 
-        public override void ReadObjectInfo(out int objectId, out bool isReference, out Type runtimeType)
+        public override void ReadObjectInfo(out int? objectId, out bool isReference, out Type runtimeType)
 		{
 			XAttribute xAttribute = Node.Attribute("_ref");
 			if (xAttribute != null)
@@ -239,18 +255,20 @@ namespace Engine.Serialization
 				return;
 			}
 			XAttribute xAttribute2 = Node.Attribute("_def");
+            objectId = ((xAttribute2 != null) ? new int?(int.Parse(xAttribute2.Value)) : null);
+            XAttribute xAttribute3 = Node.Attribute("_type");
 			if (xAttribute2 != null)
 			{
-				XAttribute xAttribute3 = Node.Attribute("_type");
-				runtimeType = xAttribute3 != null ? TypeCache.FindType(xAttribute3.Value, skipSystemAssemblies: false, throwIfNotFound: true) : null;
-                isReference = false;
-				objectId = int.Parse(xAttribute2.Value);
-				return;
+				runtimeType = TypeCache.FindType(xAttribute3.Value, skipSystemAssemblies: false, throwIfNotFound: true);
 			}
-			throw new InvalidOperationException("Required XML _ref/_def attribute not found.");
+            else
+            {
+                runtimeType = null;
+            }
+            isReference = false;
 		}
 
-		private void ReadObject(string name, SerializeData staticSerializeData, ref object value)
+		private void ReadObject(string name, SerializeData staticSerializeData, ref object value, bool allowOverwriteOfExistingObject)
 		{
 			if (staticSerializeData.IsHumanReadableSupported)
 			{
@@ -261,10 +279,17 @@ namespace Engine.Serialization
 			else
 			{
 				EnterNode(name);
-				base.ReadObject(staticSerializeData, ref value);
+				base.ReadObject(name, staticSerializeData, ref value, allowOverwriteOfExistingObject);
 				LeaveNode(name);
 			}
 		}
+
+        protected override void ReadObject<T>(string name, SerializeData staticSerializeData, ref T value, bool allowOverwriteOfExistingObject)
+        {
+            object value2 = value;
+            ReadObject(name, staticSerializeData, ref value2, allowOverwriteOfExistingObject);
+            value = (T)value2;
+        }
 
 		private void EnterNode(string name)
 		{

@@ -104,8 +104,9 @@ namespace Engine.Media
 			}
 			if (count > 0)
 			{
-				num += m_stream.Read(buffer, offset, count);
-				m_position += num;
+                int num3 = m_stream.Read(buffer, offset, count);
+                num += num3;
+                m_position += num3;
 			}
 			return num;
 		}

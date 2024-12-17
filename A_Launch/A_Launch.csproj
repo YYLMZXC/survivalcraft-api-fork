@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	<TargetFramework>net8.0-android</TargetFramework>
+	<TargetFramework>net9.0-android</TargetFramework>
 	<PlatformTarget>AnyCPU</PlatformTarget>
 	<AndroidApplication>True</AndroidApplication>
 	<ApplicationId>com.candy.SurvivalcraftAPI1_7</ApplicationId>

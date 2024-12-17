@@ -13,7 +13,13 @@ namespace Engine.Input
 #endif
 		private static bool[] m_mouseButtonsDownArray;
 
+        private static int[] m_mouseButtonsDownFrameArray;
+
+        private static bool[] m_mouseButtonsDelayedUpArray;
+
 		private static bool[] m_mouseButtonsDownOnceArray;
+
+        private static bool[] m_mouseButtonsUpOnceArray;
 
 		public static Point2 MouseMovement
 		{
@@ -133,7 +139,10 @@ namespace Engine.Input
 		static Mouse()
 		{
 			m_mouseButtonsDownArray = new bool[Enum.GetValues(typeof(MouseButton)).Length];
+            m_mouseButtonsDownFrameArray = new int[Enum.GetValues(typeof(MouseButton)).Length];
+            m_mouseButtonsDelayedUpArray = new bool[Enum.GetValues(typeof(MouseButton)).Length];
 			m_mouseButtonsDownOnceArray = new bool[Enum.GetValues(typeof(MouseButton)).Length];
+            m_mouseButtonsUpOnceArray = new bool[Enum.GetValues(typeof(MouseButton)).Length];
 			IsMouseVisible = true;
 		}
 
@@ -147,20 +156,38 @@ namespace Engine.Input
 			return m_mouseButtonsDownOnceArray[(int)mouseButton];
 		}
 
+        public static bool IsMouseButtonUpOnce(MouseButton mouseButton)
+        {
+            return m_mouseButtonsUpOnceArray[(int)mouseButton];
+        }
+
 		public static void Clear()
 		{
 			for (int i = 0; i < m_mouseButtonsDownArray.Length; i++)
 			{
 				m_mouseButtonsDownArray[i] = false;
+                m_mouseButtonsDownFrameArray[i] = 0;
+                m_mouseButtonsDelayedUpArray[i] = false;
 				m_mouseButtonsDownOnceArray[i] = false;
+                m_mouseButtonsUpOnceArray[i] = false;
 			}
 		}
 
 		internal static void AfterFrame()
 		{
-			for (int i = 0; i < m_mouseButtonsDownOnceArray.Length; i++)
+			for (int i = 0; i < m_mouseButtonsDownArray.Length; i++)
 			{
 				m_mouseButtonsDownOnceArray[i] = false;
+                if (m_mouseButtonsDelayedUpArray[i])
+                {
+                    m_mouseButtonsDelayedUpArray[i] = false;
+                    m_mouseButtonsDownArray[i] = false;
+                    m_mouseButtonsUpOnceArray[i] = true;
+                }
+                else
+                {
+                    m_mouseButtonsUpOnceArray[i] = false;
+                }
 			}
 			if (!IsMouseVisible)
 			{
@@ -182,7 +209,12 @@ namespace Engine.Input
 		{
 			if (Window.IsActive && !Keyboard.IsKeyboardVisible)
 			{
+                if (!MousePosition.HasValue)
+                {
+                    ProcessMouseMove(position);
+                }
 				m_mouseButtonsDownArray[(int)mouseButton] = true;
+                m_mouseButtonsDownFrameArray[(int)mouseButton] = Time.FrameIndex;
 				m_mouseButtonsDownOnceArray[(int)mouseButton] = true;
 				if (IsMouseVisible && Mouse.MouseDown != null)
 				{
@@ -199,7 +231,19 @@ namespace Engine.Input
 		{
 			if (Window.IsActive && !Keyboard.IsKeyboardVisible)
 			{
-				m_mouseButtonsDownArray[(int)mouseButton] = false;
+                if (!MousePosition.HasValue)
+                {
+                    ProcessMouseMove(position);
+                }
+                if (m_mouseButtonsDownArray[(int)mouseButton] && Time.FrameIndex == m_mouseButtonsDownFrameArray[(int)mouseButton])
+                {
+                    m_mouseButtonsDelayedUpArray[(int)mouseButton] = true;
+                }
+                else
+                {
+                    m_mouseButtonsDownArray[(int)mouseButton] = false;
+                    m_mouseButtonsUpOnceArray[(int)mouseButton] = true;
+                }
 				if (IsMouseVisible && Mouse.MouseUp != null)
 				{
 					Mouse.MouseUp(new MouseButtonEvent

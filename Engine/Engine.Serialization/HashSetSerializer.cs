@@ -12,7 +12,7 @@ namespace Engine.Serialization
 
 		public void Serialize(OutputArchive archive, HashSet<T> value)
 		{
-			archive.SerializeCollection(null, "e", value);
+			archive.SerializeCollection(null, null, value);
 		}
 	}
 }

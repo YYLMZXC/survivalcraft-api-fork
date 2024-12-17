@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Engine.Serialization
@@ -13,17 +14,27 @@ namespace Engine.Serialization
 			private set;
 		}
 
-		public XmlOutputArchive(string rootNodeName, int version = 0)
-			: this(new XElement(rootNodeName), version)
+		public XmlOutputArchive(string rootNodeName, int version = 0, object context = null)
+			: this(new XElement(rootNodeName), version, context)
 		{
 		}
 
-		public XmlOutputArchive(XElement node, int version = 0)
-			: base(version)
+		public XmlOutputArchive(XElement node, int version = 0, object context = null)
+			: base(version, context)
 		{
 			ArgumentNullException.ThrowIfNull(node);
 			Node = node;
 		}
+
+        public void Reset(XElement node, int version = 0, object context = null)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+            Node = node;
+            Reset(version, context);
+        }
 
 		public override void Serialize(string name, sbyte value)
 		{
@@ -111,64 +122,70 @@ namespace Engine.Serialization
 			Serialize(name, Convert.ToBase64String(value));
 		}
 
-		public override void Serialize(string name, Type type, object value)
+		public override void SerializeCollection<T>(string name, Func<T, string> itemNameFunc, IEnumerable<T> collection)
 		{
-			WriteObject(name, Archive.GetSerializeData(type, allowEmptySerializer: true), value);
-		}
-
-		public override void SerializeCollection<T>(string name, string itemName, IEnumerable<T> collection)
-		{
-			EnterNode(name);
+			EnterNode(name, false);
 			SerializeData serializeData = Archive.GetSerializeData(typeof(T), allowEmptySerializer: true);
+            IEnumerator<XElement> enumerator = Node.Elements().GetEnumerator();
 			foreach (T item in collection)
 			{
-				EnterNode(itemName);
-				WriteObject(null, serializeData, item);
-				LeaveNode(itemName);
+                string name2 = ((itemNameFunc != null) ? itemNameFunc(item) : "Item");
+                if (enumerator != null && enumerator.MoveNext())
+                {
+                    EnterNode(enumerator.Current);
+                    WriteObject(null, serializeData, item);
+                    LeaveNode();
+                }
+                else
+                {
+                    EnterNode(name2, true);
+                    WriteObject(null, serializeData, item);
+                    LeaveNode(name2);
+                    enumerator = null;
+                }
 			}
 			LeaveNode(name);
 		}
 
 		public override void SerializeDictionary<K, V>(string name, IDictionary<K, V> dictionary)
 		{
-			EnterNode(name);
-			if (typeof(K) == typeof(string))
-			{
-				SerializeData serializeData = Archive.GetSerializeData(typeof(V), allowEmptySerializer: true);
-				foreach (KeyValuePair<K, V> item in dictionary)
-				{
-					string name2 = item.Key as string;
-					EnterNode(name2);
-					WriteObject(null, serializeData, item.Value);
-					LeaveNode(name2);
-				}
-			}
-			else
-			{
-				SerializeData serializeData2 = Archive.GetSerializeData(typeof(K), allowEmptySerializer: true);
-				SerializeData serializeData3 = Archive.GetSerializeData(typeof(V), allowEmptySerializer: true);
-				foreach (KeyValuePair<K, V> item2 in dictionary)
-				{
-					EnterNode("e");
-					WriteObject("k", serializeData2, item2.Key);
-					WriteObject("v", serializeData3, item2.Value);
-					LeaveNode("e");
-				}
-			}
+			EnterNode(name, false);
+            SerializeData serializeData = Archive.GetSerializeData(typeof(K), true);
+            SerializeData serializeData2 = Archive.GetSerializeData(typeof(V), true);
+            if (serializeData.IsHumanReadableSupported)
+            {
+                foreach (KeyValuePair<K, V> item in dictionary)
+                {
+                    string name2 = XmlConvert.EncodeLocalName(HumanReadableConverter.ConvertToString(item.Key));
+                    EnterNode(name2, true);
+                    WriteObject(null, serializeData2, item.Value);
+                    LeaveNode(name2);
+                }
+            }
+            else
+            {
+                foreach (KeyValuePair<K, V> item2 in dictionary)
+                {
+                    EnterNode("e", true);
+                    WriteObject("k", serializeData, item2.Key);
+                    WriteObject("v", serializeData2, item2.Value);
+                    LeaveNode("e");
+                }
+            }
 			LeaveNode(name);
 		}
 
-        public override void WriteObjectInfo(int objectId, bool isReference, Type runtimeType)
+        public override void WriteObjectInfo(int? objectId, bool isReference, Type runtimeType)
 		{
 			if (isReference)
 			{
-				Node.SetAttributeValue("_ref", objectId.ToString(CultureInfo.InvariantCulture));
+				Node.SetAttributeValue("_ref", objectId.Value.ToString(CultureInfo.InvariantCulture));
 				return;
 			}
-			Node.SetAttributeValue("_def", objectId.ToString(CultureInfo.InvariantCulture));
+			Node.SetAttributeValue("_def", objectId.Value.ToString(CultureInfo.InvariantCulture));
 			if (runtimeType != null)
 			{
-				Node.SetAttributeValue("_type", runtimeType.FullName);
+				Node.SetAttributeValue("_type", TypeCache.GetShortTypeName(runtimeType.FullName));
 			}
 		}
 
@@ -179,20 +196,41 @@ namespace Engine.Serialization
 				Serialize(name, (value != null) ? HumanReadableConverter.ConvertToString(value) : string.Empty);
 				return;
 			}
-			EnterNode(name);
-			base.WriteObject(staticSerializeData, value);
+			EnterNode(name, false);
+			base.WriteObject(name, staticSerializeData, value);
 			LeaveNode(name);
 		}
 
-		private void EnterNode(string name)
+        private void EnterNode(XElement node)
+        {
+            Node = node;
+        }
+
+		private void EnterNode(string name, bool createNewNode)
 		{
 			if (name != null)
 			{
-				var xElement = new XElement(name);
-				Node.Add(xElement);
-				Node = xElement;
-			}
+                if (createNewNode)
+                {
+                    var xElement = new XElement(name);
+                    Node.Add(xElement);
+                    Node = xElement;
+                    return;
+                }
+                XElement xElement2 = Node.Element(name);
+                if (xElement2 == null)
+                {
+                    xElement2 = new XElement(name);
+                    Node.Add(xElement2);
+                }
+                Node = xElement2;
+            }
 		}
+
+        private void LeaveNode()
+        {
+            Node = Node.Parent;
+        }
 
 		private void LeaveNode(string name)
 		{
@@ -201,5 +239,38 @@ namespace Engine.Serialization
 				Node = Node.Parent;
 			}
 		}
+
+        public static void RemoveUnusedDefs(XElement node)
+        {
+            HashSet<int> set = new HashSet<int>();
+            FindUsedDefs(node, set);
+            RemoveUnusedDefs(node, set);
+        }
+
+        private static void RemoveUnusedDefs(XElement node, HashSet<int> set)
+        {
+            foreach (XElement item in node.Elements())
+            {
+                RemoveUnusedDefs(item, set);
+            }
+            XAttribute xAttribute = node.Attribute("_def");
+            if (xAttribute != null && !set.Contains(int.Parse(xAttribute.Value)))
+            {
+                xAttribute.Remove();
+            }
+        }
+
+        private static void FindUsedDefs(XElement node, HashSet<int> set)
+        {
+            foreach (XElement item in node.Elements())
+            {
+                FindUsedDefs(item, set);
+            }
+            XAttribute xAttribute = node.Attribute("_ref");
+            if (xAttribute != null)
+            {
+                set.Add(int.Parse(xAttribute.Value));
+            }
+        }
 	}
 }

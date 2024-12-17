@@ -7,10 +7,21 @@ namespace Engine.Serialization
 	{
 		private Dictionary<int, object> m_objectById = [];
 
-		protected InputArchive(int version)
-			: base(version)
+        private DynamicArray<object> m_stack = new DynamicArray<object>();
+
+        public ReadOnlyList<object> Stack => new ReadOnlyList<object>(m_stack);
+
+        protected InputArchive(int version, object context)
+        : base(version, context)
 		{
 		}
+
+        protected new void Reset(int version, object context)
+        {
+            base.Reset(version, context);
+            m_objectById.Clear();
+            m_stack.Clear();
+        }
 
 		public abstract void Serialize(string name, ref sbyte value);
 
@@ -42,11 +53,14 @@ namespace Engine.Serialization
 
 		public abstract void Serialize(string name, int length, ref byte[] value);
 
-		public abstract void Serialize(string name, Type type, ref object value);
-
 		public abstract void SerializeCollection<T>(string name, ICollection<T> collection);
 
 		public abstract void SerializeDictionary<K, V>(string name, IDictionary<K, V> dictionary);
+
+        public void Serialize(string name, Type type, ref object value)
+        {
+            ReadObject(name, Archive.GetSerializeData(type, allowEmptySerializer: true), ref value, allowOverwriteOfExistingObject: true);
+        }
 
 		public void Serialize(string name, Type type, object value)
 		{
@@ -54,41 +68,31 @@ namespace Engine.Serialization
 			{
 				throw new InvalidOperationException("Value cannot be null");
 			}
-			Serialize(name, type, ref value);
+            ReadObject(name, Archive.GetSerializeData(type, allowEmptySerializer: true), ref value, allowOverwriteOfExistingObject: false);
 		}
 
 		public void Serialize<T>(string name, T value) where T : class
 		{
-			object value2 = value;
-			Serialize(name, typeof(T), ref value2);
+            ReadObject(name, Archive.GetSerializeData(typeof(T), allowEmptySerializer: true), ref value, allowOverwriteOfExistingObject: false);
 		}
 
 		public void Serialize<T>(string name, ref T value)
 		{
-			object value2 = value;
-			Serialize(name, typeof(T), ref value2);
-			value = (T)value2;
+            ReadObject(name, Archive.GetSerializeData(typeof(T), allowEmptySerializer: true), ref value, allowOverwriteOfExistingObject: true);
 		}
 
 		public void Serialize<T>(string name, Action<T> setter)
 		{
 			var value = default(T);
-			Serialize(name, ref value);
+            ReadObject(name, Archive.GetSerializeData(typeof(T), allowEmptySerializer: true), ref value, allowOverwriteOfExistingObject: true);
 			setter(value);
 		}
 
 		public T Serialize<T>(string name)
 		{
 			var value = default(T);
-			Serialize(name, ref value);
+            ReadObject(name, Archive.GetSerializeData(typeof(T), allowEmptySerializer: true), ref value, allowOverwriteOfExistingObject: true);
 			return value;
-		}
-
-		public void Serialize(string name, Type type, Action<object> setter)
-		{
-			object value = null;
-			Serialize(name, type, ref value);
-			setter(value);
 		}
 
 		public object Serialize(string name, Type type)
@@ -105,6 +109,16 @@ namespace Engine.Serialization
 			return list;
 		}
 
+        public void SerializeCollection<T>(string name, Action<T> adder)
+        {
+            List<T> list = new List<T>();
+            SerializeCollection(name, list);
+            foreach (T item in list)
+            {
+                adder(item);
+            }
+        }
+
 		public Dictionary<K, V> SerializeDictionary<K, V>(string name)
 		{
 			var dictionary = new Dictionary<K, V>();
@@ -112,37 +126,68 @@ namespace Engine.Serialization
 			return dictionary;
 		}
 
-        public abstract void ReadObjectInfo(out int objectId, out bool isReference, out Type runtimeType);
+        public T FindParentObject<T>(bool throwIfNotFound = true) where T : class
+        {
+            for (int num = m_stack.Count - 1; num >= 0; num--)
+            {
+                if (m_stack[num] is T result)
+                {
+                    return result;
+                }
+            }
+            if (throwIfNotFound)
+            {
+                throw new InvalidOperationException($"Required parent object of type {typeof(T).FullName} not found on serialization stack.");
+            }
+            return null;
+        }
 
-		protected virtual void ReadObject(SerializeData staticSerializeData, ref object value)
-		{
-			if (!staticSerializeData.UseObjectInfo || !base.UseObjectInfos)
-			{
-				ReadObjectWithoutObjectInfo(staticSerializeData, ref value);
-			}
-			else
-			{
-				ReadObjectWithObjectInfo(staticSerializeData, ref value);
-			}
-		}
+        public abstract void ReadObjectInfo(out int? objectId, out bool isReference, out Type runtimeType);
+
+        protected virtual void ReadObject(string name, SerializeData staticSerializeData, ref object value, bool allowOverwriteOfExistingObject)
+        {
+            if (!staticSerializeData.UseObjectInfo || !base.UseObjectInfos)
+            {
+                ReadObjectWithoutObjectInfo(staticSerializeData, ref value);
+            }
+            else
+            {
+                ReadObjectWithObjectInfo(staticSerializeData, ref value, allowOverwriteOfExistingObject);
+            }
+        }
+
+		protected virtual void ReadObject<T>(string name, SerializeData staticSerializeData, ref T value, bool allowOverwriteOfExistingObject)
+        {
+            if (staticSerializeData.IsValueType)
+            {
+                staticSerializeData.VerifySerializable();
+                ((SerializeData<T>)staticSerializeData).ReadGeneric(this, ref value);
+            }
+            else
+            {
+                object value2 = value;
+                ReadObject(name, staticSerializeData, ref value2, allowOverwriteOfExistingObject);
+                value = (T)value2;
+            }
+        }
 
 		private void ReadObjectWithoutObjectInfo(SerializeData staticSerializeData, ref object value)
 		{
 			Type type = (value != null) ? value.GetType() : null;
 			SerializeData serializeData = (!(type == null) && !(staticSerializeData.Type == type)) ? Archive.GetSerializeData(type, allowEmptySerializer: false) : staticSerializeData;
-			if (serializeData.AutoConstructObject && value == null)
+			if (serializeData.AutoConstruct == AutoConstructMode.Yes && value == null)
 			{
 				value = Activator.CreateInstance(serializeData.Type, nonPublic: true);
 			}
 			serializeData.Read(this, ref value);
 		}
 
-		private void ReadObjectWithObjectInfo(SerializeData staticSerializeData, ref object value)
+		private void ReadObjectWithObjectInfo(SerializeData staticSerializeData, ref object value, bool allowOverwriteOfExistingObject)
 		{
-			ReadObjectInfo(out int objectId, out bool isReference, out Type runtimeType);
+			ReadObjectInfo(out int? objectId, out bool isReference, out Type runtimeType);
 			if (objectId == 0)
 			{
-				if (value != null)
+				if (!allowOverwriteOfExistingObject && value != null)
 				{
 					throw new InvalidOperationException("Serializing null reference into an existing object.");
 				}
@@ -150,11 +195,11 @@ namespace Engine.Serialization
 			}
 			if (isReference)
 			{
-				if (value != null)
+				if (!allowOverwriteOfExistingObject && value != null)
 				{
 					throw new InvalidOperationException("Serializing a reference into an existing object.");
 				}
-				value = m_objectById[objectId];
+				value = m_objectById[objectId.Value];
 				return;
 			}
 			Type type = (value != null) ? value.GetType() : null;
@@ -171,12 +216,18 @@ namespace Engine.Serialization
 				}
 				serializeData = Archive.GetSerializeData(type, allowEmptySerializer: false);
 			}
-			if (serializeData.AutoConstructObject && value == null)
+			if (serializeData.AutoConstruct == AutoConstructMode.Yes && value == null)
 			{
-				value = Activator.CreateInstance(serializeData.Type, nonPublic: true);
+				value = serializeData.CreateInstance();
 			}
+            serializeData.VerifySerializable();
+            m_stack.Add(value);
 			serializeData.Read(this, ref value);
-			m_objectById.Add(objectId, value);
+            m_stack.RemoveAtEnd();
+            if (objectId.HasValue)
+            {
+                m_objectById.Add(objectId.Value, value);
+            }
 		}
 	}
 }

@@ -9,7 +9,7 @@ namespace Engine.Serialization
 	{
 		private int m_nextTypeId;
 
-		private Dictionary<Type, int> m_typeIds = [];
+        private Dictionary<string, int> m_stringIds = new Dictionary<string, int>();
 
 		private EngineBinaryWriter m_writer;
 
@@ -17,11 +17,18 @@ namespace Engine.Serialization
 
 		public Stream Stream => m_writer.BaseStream;
 
-		public BinaryOutputArchive(Stream stream, int version = 0)
-			: base(version)
+		public BinaryOutputArchive(Stream stream, int version = 0, object context = null)
+			: base(version, context)
 		{
 			m_writer = new EngineBinaryWriter(stream);
 		}
+
+        public void Reset(Stream stream, int version = 0, object context = null)
+        {
+            m_writer = new EngineBinaryWriter(stream);
+            m_stringIds.Clear();
+            Reset(version, context);
+        }
 
 		public void Dispose()
 		{
@@ -97,7 +104,22 @@ namespace Engine.Serialization
 
 		public override void Serialize(string name, string value)
 		{
-			m_writer.Write(value ?? string.Empty);
+            int value2;
+            if (value == null)
+            {
+                m_writer.Write7BitEncodedInt(0);
+            }
+            else if (!m_stringIds.TryGetValue(value, out value2))
+            {
+                value2 = m_stringIds.Count + 1;
+                m_stringIds.Add(value, value2);
+                m_writer.Write7BitEncodedInt(value2);
+                m_writer.Write(value);
+            }
+            else
+            {
+                m_writer.Write7BitEncodedInt(value2);
+            }
 		}
 
 		public override void Serialize(string name, byte[] value)
@@ -115,18 +137,22 @@ namespace Engine.Serialization
 			m_writer.Write(value, 0, length);
 		}
 
-		public override void Serialize(string name, Type type, object value)
-		{
-			WriteObject(Archive.GetSerializeData(type, allowEmptySerializer: true), value);
-		}
-
-		public override void SerializeCollection<T>(string name, string itemName, IEnumerable<T> collection)
+		public override void SerializeCollection<T>(string name, Func<T, string> itemNameFunc, IEnumerable<T> collection)
 		{
 			SerializeData serializeData = Archive.GetSerializeData(typeof(T), allowEmptySerializer: true);
+            if (collection is IList<T> { Count: var count } list)
+            {
+                Serialize(null, count);
+                for (int i = 0; i < count; i++)
+                {
+                    WriteObject(null, serializeData, list[i]);
+                }
+                return;
+            }
 			Serialize(null, collection.Count());
 			foreach (T item in collection)
 			{
-				WriteObject(serializeData, item);
+				WriteObject(null, serializeData, item);
 			}
 		}
 
@@ -137,12 +163,12 @@ namespace Engine.Serialization
 			Serialize(null, dictionary.Count());
 			foreach (KeyValuePair<K, V> item in dictionary)
 			{
-				WriteObject(serializeData, item.Key);
-				WriteObject(serializeData2, item.Value);
+				WriteObject(null, serializeData, item.Key);
+				WriteObject(null, serializeData2, item.Value);
 			}
 		}
 
-        public override void WriteObjectInfo(int objectId, bool isReference, Type runtimeType)
+        public override void WriteObjectInfo(int? objectId, bool isReference, Type runtimeType)
 		{
 			if (isReference)
 			{
@@ -150,21 +176,23 @@ namespace Engine.Serialization
 			}
 			else if (runtimeType != null)
 			{
-				if (m_typeIds.TryGetValue(runtimeType, out int value))
-				{
-					Serialize(null, 3 | (objectId << 3));
-					Serialize(null, value);
-					return;
-				}
-				value = m_nextTypeId++;
-				Serialize(null, 7 | (objectId << 3));
-				Serialize(null, value);
+                if (objectId.HasValue)
+                {
+                    Serialize(null, 7 | (objectId.Value << 4));
+                }
+                else
+                {
+                    Serialize(null, 5);
+                }
 				Serialize(null, runtimeType.FullName);
-				m_typeIds.Add(runtimeType, value);
 			}
+            else if (objectId.HasValue)
+            {
+                Serialize(null, 3 | (objectId.Value << 4));
+            }
 			else
 			{
-				Serialize(null, 1 | (objectId << 3));
+				Serialize(null, 1);
 			}
 		}
 	}

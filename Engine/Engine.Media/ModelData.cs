@@ -55,5 +55,21 @@ namespace Engine.Media
 				return Load(stream);
 			}
 		}
+
+        public static void Save(ModelData modelData, Stream stream, ModelFileFormat format)
+        {
+            if (format == ModelFileFormat.Collada)
+            {
+                Collada.Save(modelData, stream);
+                return;
+            }
+            throw new InvalidOperationException("Unsupported model file format.");
+        }
+
+        public static void Save(ModelData modelData, string fileName, ModelFileFormat format)
+        {
+            using Stream stream = Storage.OpenFile(fileName, OpenFileMode.Create);
+            Save(modelData, stream, format);
+        }
 	}
 }

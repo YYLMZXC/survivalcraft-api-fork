@@ -18,9 +18,9 @@ public static class MultiKeyboard
 		public char? LastChar;
 	}
 
-	private const double KeyFirstRepeatTime = 0.2;
+	private const double KeyFirstRepeatTime = 0.3;
 
-	private const double KeyNextRepeatTime = 0.033;
+	private const double KeyNextRepeatTime = 0.04;
 
 	private static KeyboardData[] _KeyboardData =
     [

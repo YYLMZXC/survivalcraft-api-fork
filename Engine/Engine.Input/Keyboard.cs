@@ -11,9 +11,9 @@ namespace Engine.Input
 {
     public static class Keyboard
     {
-        public static double m_keyFirstRepeatTime = 0.2;
+        public static double m_keyFirstRepeatTime = 0.3;
 
-        public static double m_keyNextRepeatTime = 0.033;
+        public static double m_keyNextRepeatTime = 0.04;
 
         private static bool[] m_keysDownArray = new bool[Enum.GetValues(typeof(Key)).Length];
 

@@ -9,10 +9,17 @@ namespace Engine.Serialization
 
 		private Dictionary<object, int> m_idByObject = [];
 
-		protected OutputArchive(int version)
-			: base(version)
+		protected OutputArchive(int version, object context)
+			: base(version, context)
 		{
 		}
+
+        protected new void Reset(int version, object context)
+        {
+            base.Reset(version, context);
+            m_idByObject.Clear();
+            m_nextObjectId = 1;
+        }
 
 		public abstract void Serialize(string name, sbyte value);
 
@@ -44,9 +51,17 @@ namespace Engine.Serialization
 
 		public abstract void Serialize(string name, int length, byte[] value);
 
-		public abstract void Serialize(string name, Type type, object value);
+        public void Serialize(string name, Type type, object value)
+        {
+            WriteObject(name, Archive.GetSerializeData(type, allowEmptySerializer: true), value);
+        }
 
-		public abstract void SerializeCollection<T>(string name, string itemName, IEnumerable<T> collection);
+		public abstract void SerializeCollection<T>(string name, Func<T, string> itemNameFunc, IEnumerable<T> collection);
+
+        public void SerializeCollection<T>(string name, IEnumerable<T> collection)
+        {
+            SerializeCollection(name, null, collection);
+        }
 
 		public abstract void SerializeDictionary<K, V>(string name, IDictionary<K, V> dictionary);
 
@@ -55,12 +70,13 @@ namespace Engine.Serialization
 			Serialize(name, typeof(T), value);
 		}
 
-        public abstract void WriteObjectInfo(int objectId, bool isReference, Type runtimeType);
+        public abstract void WriteObjectInfo(int? objectId, bool isReference, Type runtimeType);
 
-		protected virtual void WriteObject(SerializeData staticSerializeData, object value)
+		protected virtual void WriteObject(string name, SerializeData staticSerializeData, object value)
 		{
 			if (!staticSerializeData.UseObjectInfo || !base.UseObjectInfos)
 			{
+                staticSerializeData.VerifySerializable();
 				staticSerializeData.Write(this, value);
 				return;
 			}
@@ -74,20 +90,40 @@ namespace Engine.Serialization
 				WriteObjectInfo(value2, isReference: true, null);
 				return;
 			}
-			value2 = m_nextObjectId++;
-			m_idByObject.Add(value, value2);
 			Type type = value.GetType();
+            int? objectId;
 			if (type == staticSerializeData.Type)
 			{
+                objectId = (staticSerializeData.UseObjectInfo ? new int?(m_nextObjectId++) : null);
 				WriteObjectInfo(value2, isReference: false, null);
+                staticSerializeData.VerifySerializable();
 				staticSerializeData.Write(this, value);
 			}
 			else
 			{
 				SerializeData serializeData = Archive.GetSerializeData(type, allowEmptySerializer: false);
+                objectId = (serializeData.UseObjectInfo ? new int?(m_nextObjectId++) : null);
 				WriteObjectInfo(value2, isReference: false, type);
+                staticSerializeData.VerifySerializable();
 				serializeData.Write(this, value);
 			}
+            if (objectId.HasValue)
+            {
+                m_idByObject.Add(value, objectId.Value);
+            }
 		}
+
+        protected virtual void WriteObject<T>(string name, SerializeData staticSerializeData, T value)
+        {
+            if (staticSerializeData.IsValueType)
+            {
+                staticSerializeData.VerifySerializable();
+                ((SerializeData<T>)staticSerializeData).WriteGeneric(this, value);
+            }
+            else
+            {
+                WriteObject(name, staticSerializeData, (object)value);
+            }
+        }
 	}
 }
