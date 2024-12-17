@@ -97,7 +97,7 @@ namespace Game
 			}
 			if (m_showBulletinButton.IsClicked)
 			{
-				if (MotdManager.m_bulletin != null && MotdManager.m_bulletin.Title.ToLower() != "null")
+				if (MotdManager.m_bulletin != null && !MotdManager.m_bulletin.Title.Equals("null",StringComparison.CurrentCultureIgnoreCase))
 				{
 					MotdManager.ShowBulletin();
 				}

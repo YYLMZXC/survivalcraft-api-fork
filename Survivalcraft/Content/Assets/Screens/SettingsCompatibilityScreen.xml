@@ -1,4 +1,4 @@
-<Screen xmlns="runtime-namespace:Game">
+﻿<Screen xmlns="runtime-namespace:Game">
 
   <PanoramaWidget />
 
@@ -20,7 +20,7 @@
         <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
         <ScrollPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3, 3">
           <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-
+<!--
             <UniformSpacingPanelWidget Direction="Horizontal">
               <LabelWidget Text="[SettingsCompatibilityScreen:3]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
               <BevelledButtonWidget Name="SinglethreadedTerrainUpdateButton" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
@@ -40,7 +40,7 @@
 				  <LabelWidget Text="使用内置路径"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
 				  <BevelledButtonWidget Name="使用内置路径" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
 			  </UniformSpacingPanelWidget>
-
+-->
 			<CanvasWidget Size="0, 20" />
 
             <UniformSpacingPanelWidget Direction="Horizontal">
