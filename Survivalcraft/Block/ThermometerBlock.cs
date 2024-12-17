@@ -99,7 +99,7 @@ namespace Game
 			if (num < m_matricesByData.Length)
 			{
 				int num2 = (generator.SubsystemMetersBlockBehavior != null) ? generator.SubsystemMetersBlockBehavior.GetThermometerReading(x, y, z) : 8;
-				float y2 = MathUtils.Lerp(1f, 4f, num2 / 15f);
+				float y2 = MathUtils.Lerp(1.02f,3.91f,MathUtils.Saturate((float)num2 / 20f));
 				Matrix matrix = m_matricesByData[num];
 				Matrix value2 = Matrix.CreateTranslation(0f, 0f - m_fluidBottomPosition, 0f) * Matrix.CreateScale(1f, y2, 1f) * Matrix.CreateTranslation(0f, m_fluidBottomPosition, 0f) * matrix;
 				generator.GenerateMeshVertices(this, x, y, z, m_caseMesh, Color.White, matrix, geometry.SubsetOpaque);
@@ -110,27 +110,14 @@ namespace Game
 
 		public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{
-			float num = 8f;
-			if (environmentData != null && environmentData.SubsystemTerrain != null)
-			{
-				Vector3 translation = environmentData.InWorldMatrix.Translation;
-				int num2 = Terrain.ToCell(translation.X);
-				int num3 = Terrain.ToCell(translation.Z);
-				float f = translation.X - num2;
-				float f2 = translation.Z - num3;
-				float x = environmentData.SubsystemTerrain.Terrain.GetSeasonalTemperature(num2, num3);
-				float x2 = environmentData.SubsystemTerrain.Terrain.GetSeasonalTemperature(num2, num3 + 1);
-				float x3 = environmentData.SubsystemTerrain.Terrain.GetSeasonalTemperature(num2 + 1, num3);
-				float x4 = environmentData.SubsystemTerrain.Terrain.GetSeasonalTemperature(num2 + 1, num3 + 1);
-				float x5 = MathUtils.Lerp(x, x2, f2);
-				float x6 = MathUtils.Lerp(x3, x4, f2);
-				num = MathUtils.Lerp(x5, x6, f);
-			}
-			float y = MathUtils.Lerp(1f, 4f, num / 15f);
 			Matrix matrix2 = Matrix.CreateScale(3f * size) * Matrix.CreateTranslation(0f, -0.15f, 0f) * matrix;
-			Matrix matrix3 = Matrix.CreateTranslation(0f, 0f - m_fluidBottomPosition, 0f) * Matrix.CreateScale(1f, y, 1f) * Matrix.CreateTranslation(0f, m_fluidBottomPosition, 0f) * matrix2;
 			BlocksManager.DrawMeshBlock(primitivesRenderer, m_caseMesh, color, 1f, ref matrix2, environmentData);
-			BlocksManager.DrawMeshBlock(primitivesRenderer, m_fluidMesh, color, 1f, ref matrix3, environmentData);
+			if (environmentData.EnvironmentTemperature.HasValue)
+			{
+				float y = MathUtils.Lerp(1.02f, 3.91f, MathUtils.Saturate(environmentData.EnvironmentTemperature.Value / 20f));
+				Matrix matrix3 = Matrix.CreateTranslation(0f, 0f - m_fluidBottomPosition, 0f) * Matrix.CreateScale(1f, y, 1f) * Matrix.CreateTranslation(0f, m_fluidBottomPosition, 0f) * matrix2;
+				BlocksManager.DrawMeshBlock(primitivesRenderer, m_fluidMesh, color, 1f, ref matrix3, environmentData);
+			}
 		}
 	}
 }

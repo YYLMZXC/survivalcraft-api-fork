@@ -6,11 +6,11 @@ namespace Game
 	{
 		public override int GetFaceTextureSlot(int face, int value)
 		{
-			if (!GetIsSmall(Terrain.ExtractData(value)))
+			if (GetIsSmall(Terrain.ExtractData(value)))
 			{
-				return base.GetFaceTextureSlot(face, value);
+				return 11;
 			}
-			return 11;
+			return base.GetFaceTextureSlot(face, value);
 		}
 
 		public override void GetDropValues(SubsystemTerrain subsystemTerrain, int oldValue, int newValue, int toolLevel, List<BlockDropValue> dropValues, out bool showDebris)

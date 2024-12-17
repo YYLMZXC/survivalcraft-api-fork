@@ -85,20 +85,16 @@ namespace Game
 				Name = LanguageControl.Get(fName, 2),
 				Panel = creativeInventoryPanel
 			});
-			for (int i = 0; i < m_categories.Count; i++)
+			foreach(Category category in m_categories)
 			{
-				if (m_categories[i].Name == "Electrics")
+				category.Color = category.Name switch
 				{
-					m_categories[i].Color = new Color(128, 140, 255);
-				}
-				if (m_categories[i].Name == "Plants")
-				{
-					m_categories[i].Color = new Color(64, 160, 64);
-				}
-				if (m_categories[i].Name == "Weapons")
-				{
-					m_categories[i].Color = new Color(255, 128, 112);
-				}
+					"Minerals" => new Color(128,128,128),
+					"Electrics" => new Color(128,140,255),
+					"Plants" => new Color(64,160,64),
+					"Weapons" => new Color(255,128,112),
+					_ => category.Color
+				};
 			}
 		}
 

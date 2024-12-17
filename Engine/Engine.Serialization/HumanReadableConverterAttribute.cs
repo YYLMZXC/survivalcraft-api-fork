@@ -5,11 +5,11 @@ namespace Engine.Serialization
 	[AttributeUsage(AttributeTargets.Class)]
 	public class HumanReadableConverterAttribute : Attribute
 	{
-		public Type Type;
+        public Type[] Types;
 
-		public HumanReadableConverterAttribute(Type type)
-		{
-			Type = type;
-		}
+        public HumanReadableConverterAttribute(params Type[] types)
+        {
+            Types = types.ToArray();
+        }
 	}
 }

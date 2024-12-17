@@ -141,10 +141,17 @@ namespace Engine.Serialization
 					foreach (TypeInfo definedType in item.DefinedTypes)
 					{
 						HumanReadableConverterAttribute customAttribute = definedType.GetCustomAttribute<HumanReadableConverterAttribute>();
-						if (customAttribute != null && !m_humanReadableConvertersByType.ContainsKey(customAttribute.Type))
+						if (customAttribute != null)
 						{
-							IHumanReadableConverter value = (IHumanReadableConverter)Activator.CreateInstance(definedType.AsType());
-							m_humanReadableConvertersByType.Add(customAttribute.Type, value);
+                            Type[] types = customAttribute.Types;
+                            foreach (Type key in types)
+                            {
+                                if (!m_humanReadableConvertersByType.ContainsKey(key))
+                                {
+                                    IHumanReadableConverter value = (IHumanReadableConverter)Activator.CreateInstance(definedType.AsType());
+                                    m_humanReadableConvertersByType.Add(key, value);
+                                }
+                            }
 						}
 					}
 					m_scannedAssemblies.Add(item);

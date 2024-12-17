@@ -275,9 +275,7 @@ namespace Game
 			m_inventory = inventory;
 			m_slotIndex = slotIndex;
 			m_subsystemTerrain = inventory?.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
-			m_componentPlayer = inventory is Component ? ((Component)inventory).Entity.FindComponent<ComponentPlayer>() : null;
-			m_entity = inventory is Component ? ((Component)inventory).Entity : null;
-            m_blockIconWidget.DrawBlockEnvironmentData.SubsystemTerrain = m_subsystemTerrain;
+			UpdateEnvironmentData(m_blockIconWidget.DrawBlockEnvironmentData);
 		}
 
 		public override void Update()
@@ -291,10 +289,7 @@ namespace Game
 			int slotValue = m_inventory.GetSlotValue(m_slotIndex);
 			int num = Terrain.ExtractContents(slotValue);
 			Block block = BlocksManager.Blocks[num];
-			if (m_componentPlayer != null)
-			{
-				m_blockIconWidget.DrawBlockEnvironmentData.InWorldMatrix = m_componentPlayer.ComponentBody.Matrix;
-            }
+			UpdateEnvironmentData(m_blockIconWidget.DrawBlockEnvironmentData);
             m_blockIconWidget.DrawBlockEnvironmentData.Owner = m_entity;
             if (m_focus && !input.Press.HasValue)
 			{
@@ -375,13 +370,12 @@ namespace Game
 				}
 				int num3 = (dragMode != 0) ? 1 : slotCount;
 				if (dragMode == DragMode.HalfItems) num3 = (slotCount + 1) / 2;
-				SubsystemTerrain subsystemTerrain = m_inventory.Project.FindSubsystem<SubsystemTerrain>();
 				var containerWidget = (ContainerWidget)LoadWidget(null, ContentManager.Get<XElement>("Widgets/InventoryDragWidget"), null);
 				containerWidget.Children.Find<BlockIconWidget>("InventoryDragWidget.Icon").Value = Terrain.ReplaceLight(slotValue, 15);
-				containerWidget.Children.Find<BlockIconWidget>("InventoryDragWidget.Icon").DrawBlockEnvironmentData.SubsystemTerrain = subsystemTerrain;
-				containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Name").Text = block.GetDisplayName(subsystemTerrain, slotValue);
+				containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Name").Text = block.GetDisplayName(m_subsystemTerrain, slotValue);
 				containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Count").Text = num3.ToString();
 				containerWidget.Children.Find<LabelWidget>("InventoryDragWidget.Count").IsVisible = !(m_inventory is ComponentCreativeInventory) && !(m_inventory is ComponentFurnitureInventory);
+				UpdateEnvironmentData(containerWidget.Children.Find<BlockIconWidget>("InventoryDragWidget.Icon").DrawBlockEnvironmentData);
 				DragHostWidget.BeginDrag(containerWidget, new InventoryDragData
 				{
 					Inventory = m_inventory,
@@ -524,6 +518,40 @@ namespace Game
 			if (m_inventory != null && inventoryDragData != null)
 			{
 				HandleDragDrop(inventoryDragData.Inventory, inventoryDragData.SlotIndex, inventoryDragData.DragMode, m_inventory, m_slotIndex);
+			}
+		}
+
+		private void UpdateEnvironmentData(DrawBlockEnvironmentData environmentData)
+		{
+			environmentData.SubsystemTerrain = m_subsystemTerrain;
+			if (!(m_inventory is Component))
+			{
+				return;
+			}
+			Component component = (Component)m_inventory;
+			ComponentFrame componentFrame = component.Entity.FindComponent<ComponentFrame>();
+			if (componentFrame != null)
+			{
+				Point3 point = Terrain.ToCell(componentFrame.Position);
+				environmentData.InWorldMatrix = componentFrame.Matrix;
+				environmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(point.X, point.Z);
+				environmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(point.X, point.Z);
+			}
+			else
+			{
+				ComponentBlockEntity componentBlockEntity = component.Entity.FindComponent<ComponentBlockEntity>();
+				if (componentBlockEntity != null)
+				{
+					Point3 coordinates = componentBlockEntity.Coordinates;
+					environmentData.InWorldMatrix = Matrix.Identity;
+					environmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(coordinates.X, coordinates.Z);
+					environmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(coordinates.X, coordinates.Z);
+				}
+			}
+			ComponentVitalStats componentVitalStats = component.Entity.FindComponent<ComponentVitalStats>();
+			if (componentVitalStats != null)
+			{
+				environmentData.EnvironmentTemperature = componentVitalStats.EnvironmentTemperature;
 			}
 		}
 

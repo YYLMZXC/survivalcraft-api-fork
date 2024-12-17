@@ -188,12 +188,12 @@ namespace Game
 			}
 		}
 
-		public int? GetPaintColor(int value)
+		public virtual int? GetPaintColor(int value)
 		{
 			return GetColor(Terrain.ExtractData(value));
 		}
 
-		public int Paint(SubsystemTerrain terrain, int value, int? color)
+		public virtual int Paint(SubsystemTerrain terrain, int value, int? color)
 		{
 			int data = Terrain.ExtractData(value);
 			return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(data, color));

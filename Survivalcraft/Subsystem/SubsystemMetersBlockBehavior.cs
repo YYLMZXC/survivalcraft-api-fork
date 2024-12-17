@@ -50,23 +50,22 @@ namespace Game
 
 		public override void OnBlockAdded(int value, int oldValue, int x, int y, int z)
 		{
-			AddMeter(value, x, y, z);
+			AddRemoveMeter(value, x, y, z);
 		}
 
 		public override void OnBlockRemoved(int value, int oldValue, int x, int y, int z)
 		{
-			RemoveMeter(oldValue, x, y, z);
+			AddRemoveMeter(oldValue, x, y, z);
 		}
 
 		public override void OnBlockModified(int value, int oldValue, int x, int y, int z)
 		{
-			RemoveMeter(oldValue, x, y, z);
-			AddMeter(value, x, y, z);
+			AddRemoveMeter(value, x, y, z);
 		}
 
 		public override void OnBlockGenerated(int value, int x, int y, int z, bool isLoaded)
 		{
-			AddMeter(value, x, y, z);
+			AddRemoveMeter(value, x, y, z);
 		}
 
 		public override void OnChunkDiscarding(TerrainChunk chunk)
@@ -81,7 +80,7 @@ namespace Game
 			}
 			foreach (Point3 item in list)
 			{
-				m_thermometersByPoint.Remove(item);
+				AddRemoveMeter(0, item.X, item.Y, item.Z);
 			}
 		}
 
@@ -97,7 +96,7 @@ namespace Game
 		{
 			if (m_thermometersToSimulateIndex < m_thermometersToSimulate.Count)
 			{
-				double period = Math.Max(5.0 / m_thermometersToSimulate.Count, 1.0);
+				double period = Math.Max(4 / m_thermometersToSimulate.Count, 0.5);
 				if (m_subsystemTime.PeriodicGameTimeEvent(period, 0.0))
 				{
 					Point3 point = m_thermometersToSimulate.Array[m_thermometersToSimulateIndex];
@@ -109,7 +108,7 @@ namespace Game
 			{
 				m_thermometersToSimulateIndex = 0;
 				m_thermometersToSimulate.Clear();
-				m_thermometersToSimulate.AddRange(m_thermometersByPoint.Keys);
+				m_thermometersToSimulate.AddRange((IEnumerable<Point3>)m_thermometersByPoint.Keys);
 			}
 		}
 
@@ -119,13 +118,11 @@ namespace Game
 			return value;
 		}
 
-		public void CalculateTemperature(int x, int y, int z, float meterTemperature, float meterInsulation, out float temperature, out float temperatureFlux)
+		public void CalculateTemperature(int x, int y, int z, float meterTemperature, float meterInsulation, out float targetTemperature, out float targetTemperatureFlux, out float environmentTemperature)
 		{
 			m_toVisit.Clear();
-			for (int i = 0; i < m_visited.Length; i++)
-			{
-				m_visited[i] = 0;
-			}
+			Array.Clear(m_visited);
+			Terrain terrain = base.SubsystemTerrain.Terrain;
 			float num = 0f;
 			float num2 = 0f;
 			float num3 = 0f;
@@ -133,9 +130,9 @@ namespace Game
 			float num5 = 0f;
 			float num6 = 0f;
 			m_toVisit.Add(133152);
-			for (int j = 0; j < m_toVisit.Count; j++)
+			for (int i = 0; i < m_toVisit.Count; i++)
 			{
-				int num7 = m_toVisit.Array[j];
+				int num7 = m_toVisit.Array[i];
 				if ((m_visited[num7 / 32] & (1 << num7)) != 0)
 				{
 					continue;
@@ -147,7 +144,6 @@ namespace Game
 				int num11 = num8 + x;
 				int num12 = num9 + y;
 				int num13 = num10 + z;
-				Terrain terrain = SubsystemTerrain.Terrain;
 				TerrainChunk chunkAtCell = terrain.GetChunkAtCell(num11, num13);
 				if (chunkAtCell == null || num12 < 0 || num12 >= 256)
 				{
@@ -175,7 +171,19 @@ namespace Game
 					float num20 = 1f / num19;
 					float num21 = terrain.SeasonTemperature;
 					float num22 = SubsystemWeather.GetTemperatureAdjustmentAtHeight(y2);
-					float num23 = (block is WaterBlock) ? (MathUtils.Max(chunkAtCell.GetTemperatureFast(x2, z2) + num21 - 6f, 0f) + num22) : ((!(block is IceBlock)) ? (chunkAtCell.GetTemperatureFast(x2, z2) + num21 + num22) : (0f + num21 + num22));
+					float num23;
+					if (!(block is WaterBlock))
+					{
+						num23 = ((!(block is IceBlock)) ? (MathUtils.Max((float)chunkAtCell.GetTemperatureFast(x2, z2) + num21, 0f) + num22) : (MathUtils.Max(0f + num21, 0f) + num22));
+					}
+					else
+					{
+						num23 = MathUtils.Max((float)chunkAtCell.GetTemperatureFast(x2, z2) + num21, 0f) + num22 - 4f;
+						if (num18 == 0)
+						{
+							num20 *= 2f;
+						}
+					}
 					num += num20 * num23;
 					num2 += num20;
 				}
@@ -189,7 +197,7 @@ namespace Game
 					float num28 = (y >= precipitationShaftInfo.YLimit) ? MathUtils.Lerp(0f, -2f, precipitationShaftInfo.Intensity) : 0f;
 					float num29 = MathUtils.Lerp(-6f, 0f, m_subsystemSky.SkyLightIntensity);
 					float num30 = SubsystemWeather.GetTemperatureAdjustmentAtHeight(y2);
-					num3 += num26 * (chunkAtCell.GetTemperatureFast(x2, z2) + num27 + num28 + num29 + num30);
+					num3 += num26 * MathUtils.Max((float)chunkAtCell.GetTemperatureFast(x2, z2) + num27, 0f) + num28 + num29 + num30;
 					num4 += num26;
 				}
 				else if (m_toVisit.Count < 4090)
@@ -221,29 +229,29 @@ namespace Game
 				}
 			}
 			float num31 = 0f;
-			for (int k = -7; k <= 7; k++)
+			for (int j = -7; j <= 7; j++)
 			{
-				for (int l = -7; l <= 7; l++)
+				for (int k = -7; k <= 7; k++)
 				{
-					TerrainChunk chunkAtCell2 = SubsystemTerrain.Terrain.GetChunkAtCell(x + k, z + l);
-					if (chunkAtCell2 == null || chunkAtCell2.State < TerrainChunkState.InvalidVertices1)
+					TerrainChunk chunkAtCell2 = SubsystemTerrain.Terrain.GetChunkAtCell(x + j, z + k);
+					if (chunkAtCell2 == null || chunkAtCell2.State < TerrainChunkState.InvalidLight)
 					{
 						continue;
 					}
-					for (int m = -7; m <= 7; m++)
+					for (int l = -7; l <= 7; l++)
 					{
-						int num32 = (k * k) + (m * m) + (l * l);
+						int num32 = (j * j) + (l * l) + (k * k);
 						if (num32 > 49 || num32 <= 0)
 						{
 							continue;
 						}
-						int x3 = (x + k) & 0xF;
-						int num33 = y + m;
-						int z3 = (z + l) & 0xF;
+						int x3 = (x + j) & 0xF;
+						int num33 = y + l;
+						int z3 = (z + k) & 0xF;
 						if (num33 >= 0 && num33 < 256)
 						{
 							float heat2 = GetHeat(chunkAtCell2.GetCellValueFast(x3, num33, z3));
-							if (heat2 > 0f && !SubsystemTerrain.Raycast(new Vector3(x, y, z) + new Vector3(0.5f, 0.75f, 0.5f), new Vector3(x + k, y + m, z + l) + new Vector3(0.5f, 0.75f, 0.5f), useInteractionBoxes: false, skipAirBlocks: true, delegate (int raycastValue, float d)
+							if (heat2 > 0f && !SubsystemTerrain.Raycast(new Vector3(x, y, z) + new Vector3(0.5f, 0.75f, 0.5f), new Vector3(x + j, y + l, z + k) + new Vector3(0.5f, 0.75f, 0.5f), useInteractionBoxes: false, skipAirBlocks: true, delegate (int raycastValue, float d)
 							{
 								Block block2 = BlocksManager.Blocks[Terrain.ExtractContents(raycastValue)];
 								return block2.IsCollidable_(raycastValue) && !block2.IsTransparent_(raycastValue);
@@ -281,13 +289,14 @@ namespace Game
 				num34 += num5 / num6 * num39;
 				num35 += num39;
 			}
+			environmentTemperature = ((num35 > 0f) ? (num34 / num35) : meterTemperature);
 			if (meterInsulation > 0f)
 			{
 				num34 += meterTemperature * meterInsulation;
 				num35 += meterInsulation;
 			}
-			temperature = (num35 > 0f) ? (num34 / num35) : meterTemperature;
-			temperatureFlux = num35 - meterInsulation;
+			targetTemperature = (num35 > 0f) ? (num34 / num35) : meterTemperature;
+			targetTemperatureFlux = 0.01f + 0.004f * MathUtils.Max(num35 - meterInsulation, 0f);
 		}
 
 		public static float GetHeat(int value)
@@ -304,8 +313,8 @@ namespace Game
 				return;
 			}
 			int num = m_thermometersByPoint[key];
-			CalculateTemperature(x, y, z, 0f, 0f, out float temperature, out float _);
-			int num2 = Math.Clamp((int)MathF.Round(temperature), 0, 15);
+			CalculateTemperature(x, y, z, 0f, 0f, out var _, out var _, out var environmentTemperature);
+			int num2 = Math.Clamp((int)MathF.Round(environmentTemperature), 0, 15);
 			if (num2 == num)
 			{
 				return;
@@ -321,18 +330,17 @@ namespace Game
 			}
 		}
 
-		public void AddMeter(int value, int x, int y, int z)
+		public void AddRemoveMeter(int value, int x, int y, int z)
 		{
 			if (Terrain.ExtractContents(value) == 120)
 			{
 				m_thermometersByPoint.Add(new Point3(x, y, z), 0);
 				SimulateThermometer(x, y, z, invalidateTerrainOnChange: false);
 			}
-		}
-
-		public void RemoveMeter(int value, int x, int y, int z)
-		{
-			m_thermometersByPoint.Remove(new Point3(x, y, z));
+			else
+			{
+				m_thermometersByPoint.Remove(new Point3(x, y, z));
+			}
 		}
 	}
 }

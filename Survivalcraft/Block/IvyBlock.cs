@@ -58,7 +58,7 @@ namespace Game
 			int num = Terrain.ExtractLight(value);
 			int face = GetFace(data);
 			float s = LightingManager.LightIntensityByLightValueAndFace[num + (16 * CellFace.OppositeFace(face))];
-			Color color = BlockColorsMap.IvyColorsMap.Lookup(generator.Terrain, x, y, z) * s;
+			Color color = BlockColorsMap.Ivy.Lookup(generator.Terrain, x, y, z) * s;
 			color.A = byte.MaxValue;
 			switch (face)
 			{
@@ -143,13 +143,13 @@ namespace Game
 
 		public override void DrawBlock(PrimitivesRenderer3D primitivesRenderer, int value, Color color, float size, ref Matrix matrix, DrawBlockEnvironmentData environmentData)
 		{
-			color *= BlockColorsMap.IvyColorsMap.Lookup(environmentData.Temperature, environmentData.Humidity);
+			color *= BlockColorsMap.Ivy.Lookup(environmentData.Temperature, environmentData.Humidity);
 			BlocksManager.DrawFlatOrImageExtrusionBlock(primitivesRenderer, value, size, ref matrix, null, color, isEmissive: false, environmentData);
 		}
 
 		public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength)
 		{
-			Color color = BlockColorsMap.IvyColorsMap.Lookup(subsystemTerrain.Terrain, Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
+			Color color = BlockColorsMap.Ivy.Lookup(subsystemTerrain.Terrain, Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
 			return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, color, DefaultTextureSlot);
 		}
 

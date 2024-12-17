@@ -150,6 +150,18 @@ namespace Game
 			}
 		}
 
+		public Color TextColor
+		{
+			get
+			{
+				return m_labelWidget.Color;
+			}
+			set
+			{
+				m_labelWidget.Color = value;
+			}
+		}
+
 		public bool SlidingCompleted { get; private set; }
 
 		public SliderWidget()

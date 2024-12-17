@@ -178,7 +178,7 @@ namespace Game
 
 		public override void Draw(DrawContext dc)
 		{
-			Color color = new Color((byte)128, (byte)128, (byte)128) * GlobalColorTransform * MathUtils.Saturate(m_scrollBarAlpha);
+			Color color = new Color((byte)80, (byte)80, (byte)80) * GlobalColorTransform * MathUtils.Saturate(m_scrollBarAlpha);
 			if (color.A > 0 && m_scrollAreaLength > 0f)
 			{
 				FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(0, DepthStencilState.None);

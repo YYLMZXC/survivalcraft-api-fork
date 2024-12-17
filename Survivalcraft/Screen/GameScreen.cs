@@ -49,7 +49,7 @@ namespace Game
 			if (GameManager.Project != null)
 			{
 				double realTime = Time.RealTime;
-				if (realTime - m_lastAutosaveTime > 120.0)
+				if (realTime - m_lastAutosaveTime > 300.0)
 				{
 					m_lastAutosaveTime = realTime;
 					GameManager.SaveProject(waitForCompletion: false, showErrorDialog: true);

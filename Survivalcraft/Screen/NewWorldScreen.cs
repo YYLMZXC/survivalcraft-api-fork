@@ -94,7 +94,7 @@ namespace Game
 			{
 				if (m_worldSettings.GameMode != 0)
 				{
-					m_worldSettings.ResetOptionsForNonCreativeMode();
+					m_worldSettings.ResetOptionsForNonCreativeMode(null);
 				}
 				WorldInfo worldInfo = WorldsManager.CreateWorld(m_worldSettings);
 				ScreensManager.SwitchScreen("GameLoading", worldInfo, null);

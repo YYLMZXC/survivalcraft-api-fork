@@ -314,7 +314,7 @@ namespace Game
 				{
 					int seasonalHumidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
 					int temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
-					Color c = BlockColorsMap.WaterColorsMap.Lookup(temperature, seasonalHumidity);
+					Color c = BlockColorsMap.Water.Lookup(temperature, seasonalHumidity);
 					float num = MathUtils.Lerp(1f, 0.5f, (float)seasonalHumidity / 15f);
 					float num2 = MathUtils.Lerp(1f, 0.2f, MathUtils.Saturate(0.075f * (ViewUnderWaterDepth - 2f)));
 					float num3 = MathUtils.Lerp(0.33f, 1f, SkyLightIntensity);

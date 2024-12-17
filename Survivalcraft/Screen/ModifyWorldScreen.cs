@@ -28,7 +28,9 @@ namespace Game
 
 		public WorldSettings m_worldSettings;
 
-		public ValuesDictionary m_currentWorldSettingsData = [];
+		private WorldSettings m_originalWorldSettings;
+
+		public ValuesDictionary m_worldSettingsData = [];
 
 		public ValuesDictionary m_originalWorldSettingsData = [];
 
@@ -62,6 +64,8 @@ namespace Game
 				m_worldSettings = (WorldSettings)parameters[1];
 				m_originalWorldSettingsData.Clear();
 				m_worldSettings.Save(m_originalWorldSettingsData, liveModifiableParametersOnly: true);
+				m_originalWorldSettings = new WorldSettings();
+				m_originalWorldSettings.Load(m_originalWorldSettingsData);
 				m_changingGameModeAllowed = m_worldSettings.GameMode != GameMode.Cruel;
 			}
 		}
@@ -75,9 +79,9 @@ namespace Game
 					m_worldSettings.GameMode = gameMode;
 				}));
 			}
-			m_currentWorldSettingsData.Clear();
-			m_worldSettings.Save(m_currentWorldSettingsData, liveModifiableParametersOnly: true);
-			bool flag = !CompareValueDictionaries(m_originalWorldSettingsData, m_currentWorldSettingsData);
+			m_worldSettingsData.Clear();
+			m_worldSettings.Save(m_worldSettingsData, liveModifiableParametersOnly: true);
+			bool flag = !CompareValueDictionaries(m_originalWorldSettingsData, m_worldSettingsData);
 			bool flag2 = WorldsManager.ValidateWorldName(m_worldSettings.Name);
 			m_nameTextBox.Text = m_worldSettings.Name;
 			m_seedLabel.Text = m_worldSettings.Seed;
@@ -142,7 +146,7 @@ namespace Game
 			{
 				if (m_worldSettings.GameMode != 0 && m_worldSettings.GameMode != GameMode.Adventure)
 				{
-					m_worldSettings.ResetOptionsForNonCreativeMode();
+					m_worldSettings.ResetOptionsForNonCreativeMode(null);
 				}
 				WorldsManager.ChangeWorld(m_directoryName, m_worldSettings);
 				ScreensManager.SwitchScreen("Play");

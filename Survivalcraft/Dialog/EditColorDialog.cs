@@ -1,6 +1,7 @@
 using Engine;
 using Engine.Serialization;
 using System;
+using System.Xml.Linq;
 
 namespace Game
 {
@@ -34,11 +35,9 @@ namespace Game
 				VerticalAlignment = WidgetAlignment.Center,
 				Children =
 				{
-					new RectangleWidget
+					new BevelledRectangleWidget
 					{
-						FillColor = new Color(0, 0, 0, 255),
-						OutlineColor = new Color(128, 128, 128, 128),
-						OutlineThickness = 2f
+						Style = ContentManager.Get<XElement>("Styles/DialogArea")
 					}
 				}
 			};

@@ -17,6 +17,12 @@ namespace Game
 
 		public TimeOfDayMode TimeOfDayMode;
 
+		public bool AreSeasonsChanging = true;
+
+		public float YearDays = 24f;
+
+		public float TimeOfYear = SubsystemSeasons.MidSummer;
+
 		public StartingPositionMode StartingPositionMode;
 
 		public bool AreWeatherEffectsEnabled = true;
@@ -53,8 +59,16 @@ namespace Game
 
 		public WorldPalette Palette = new();
 
-		public void ResetOptionsForNonCreativeMode()
+		public void ResetOptionsForNonCreativeMode(WorldSettings originalWorldSettings)
 		{
+			if (TerrainGenerationMode == TerrainGenerationMode.FlatContinent)
+			{
+				TerrainGenerationMode = TerrainGenerationMode.Continent;
+			}
+			if (TerrainGenerationMode == TerrainGenerationMode.FlatIsland)
+			{
+				TerrainGenerationMode = TerrainGenerationMode.Island;
+			}
 			EnvironmentBehaviorMode environmentBehaviorModeBefore = EnvironmentBehaviorMode;
             EnvironmentBehaviorMode = EnvironmentBehaviorMode.Living;
 
@@ -66,6 +80,17 @@ namespace Game
 
 			bool areSurvivalMechanicsEnabledBefore = AreAdventureSurvivalMechanicsEnabled;
 			AreAdventureSurvivalMechanicsEnabled = true;
+
+			IsAdventureRespawnAllowed = true;
+			TerrainLevel = 64;
+			ShoreRoughness = 0.5f;
+			TerrainBlockIndex = 8;
+			if (originalWorldSettings != null)
+			{
+				AreSeasonsChanging = originalWorldSettings.AreSeasonsChanging;
+				YearDays = originalWorldSettings.YearDays;
+				TimeOfYear = originalWorldSettings.TimeOfYear;
+			}
 
 			ModsManager.HookAction("ResetOptionsForNonCreativeMode", loader =>
 			{
@@ -82,6 +107,9 @@ namespace Game
 			GameMode = valuesDictionary.GetValue("GameMode", GameMode.Challenging);
 			EnvironmentBehaviorMode = valuesDictionary.GetValue("EnvironmentBehaviorMode", EnvironmentBehaviorMode.Living);
 			TimeOfDayMode = valuesDictionary.GetValue("TimeOfDayMode", TimeOfDayMode.Changing);
+			AreSeasonsChanging = valuesDictionary.GetValue("AreSeasonsChanging", defaultValue: true);
+			YearDays = valuesDictionary.GetValue("YearDays", 24f);
+			TimeOfYear = valuesDictionary.GetValue("TimeOfYear", SubsystemSeasons.MidSummer);
 			StartingPositionMode = valuesDictionary.GetValue("StartingPositionMode", StartingPositionMode.Easy);
 			AreWeatherEffectsEnabled = valuesDictionary.GetValue("AreWeatherEffectsEnabled", defaultValue: true);
 			IsAdventureRespawnAllowed = valuesDictionary.GetValue("IsAdventureRespawnAllowed", defaultValue: true);
@@ -109,6 +137,9 @@ namespace Game
 			valuesDictionary.SetValue("GameMode", GameMode);
 			valuesDictionary.SetValue("EnvironmentBehaviorMode", EnvironmentBehaviorMode);
 			valuesDictionary.SetValue("TimeOfDayMode", TimeOfDayMode);
+			valuesDictionary.SetValue("AreSeasonsChanging", AreSeasonsChanging);
+			valuesDictionary.SetValue("YearDays", YearDays);
+			valuesDictionary.SetValue("TimeOfYear", TimeOfYear);
 			valuesDictionary.SetValue("AreWeatherEffectsEnabled", AreWeatherEffectsEnabled);
 			valuesDictionary.SetValue("IsAdventureRespawnAllowed", IsAdventureRespawnAllowed);
 			valuesDictionary.SetValue("AreAdventureSurvivalMechanicsEnabled", AreAdventureSurvivalMechanicsEnabled);

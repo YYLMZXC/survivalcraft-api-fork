@@ -23,7 +23,7 @@ namespace Game
 			Matrix boneAbsoluteTransform = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("StandTrunk").ParentBone);
 			Matrix boneAbsoluteTransform2 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Leaves").ParentBone);
 			Matrix boneAbsoluteTransform3 = BlockMesh.GetBoneAbsoluteTransform(model.FindMesh("Decorations").ParentBone);
-			Color color = BlockColorsMap.SpruceLeavesColorsMap.Lookup(4, 15);
+			Color color = BlockColorsMap.SpruceLeaves.Lookup(4, 15);
 			m_leavesBlockMesh.AppendModelMeshPart(model.FindMesh("Leaves").MeshParts[0], boneAbsoluteTransform2 * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: false, flipWindingOrder: false, doubleSided: true, flipNormals: false, Color.White);
 			m_standTrunkBlockMesh.AppendModelMeshPart(model.FindMesh("StandTrunk").MeshParts[0], boneAbsoluteTransform * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
 			m_decorationsBlockMesh.AppendModelMeshPart(model.FindMesh("Decorations").MeshParts[0], boneAbsoluteTransform3 * Matrix.CreateTranslation(0.5f, 0f, 0.5f), makeEmissive: false, flipWindingOrder: false, doubleSided: false, flipNormals: false, Color.White);
@@ -36,7 +36,7 @@ namespace Game
 
 		public override void GenerateTerrainVertices(BlockGeometryGenerator generator, TerrainGeometry geometry, int value, int x, int y, int z)
 		{
-			Color color = BlockColorsMap.SpruceLeavesColorsMap.Lookup(generator.Terrain, x, y, z);
+			Color color = BlockColorsMap.SpruceLeaves.Lookup(generator.Terrain, x, y, z);
 			if (GetLightState(Terrain.ExtractData(value)))
 			{
 				generator.GenerateMeshVertices(this, x, y, z, m_standTrunkBlockMesh, Color.White, null, geometry.SubsetOpaque);
@@ -59,7 +59,7 @@ namespace Game
 
 		public override BlockDebrisParticleSystem CreateDebrisParticleSystem(SubsystemTerrain subsystemTerrain, Vector3 position, int value, float strength)
 		{
-			Color color = BlockColorsMap.SpruceLeavesColorsMap.Lookup(subsystemTerrain.Terrain, Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
+			Color color = BlockColorsMap.SpruceLeaves.Lookup(subsystemTerrain.Terrain, Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
 			return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, color, DefaultTextureSlot);
 		}
 

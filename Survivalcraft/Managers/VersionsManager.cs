@@ -50,19 +50,16 @@ public static class VersionsManager
 	static VersionsManager()
 	{
 		m_versionConverters = [];//List
-		var assemblyName = Assembly.GetExecutingAssembly().GetName();
+		Assembly assembly = typeof(VersionsManager).GetTypeInfo().Assembly;
+		AssemblyName assemblyName = new AssemblyName(assembly.FullName);
 		Version = $"{assemblyName.Version.Major}.{assemblyName.Version.Minor}.{assemblyName.Version.Build}.{assemblyName.Version.Revision}";
 		SerializationVersion = $"{assemblyName.Version.Major}.{assemblyName.Version.Minor}";
-		Assembly[] array = [.. TypeCache.LoadedAssemblies];
-		for (int i = 0; i < array.Length; i++)
+		foreach(TypeInfo definedType in assembly.DefinedTypes)
 		{
-			foreach (TypeInfo definedType in array[i].DefinedTypes)
+			if (!definedType.IsAbstract && !definedType.IsInterface && typeof(VersionConverter).GetTypeInfo().IsAssignableFrom(definedType))
 			{
-				if (!definedType.IsAbstract && !definedType.IsInterface && typeof(VersionConverter).GetTypeInfo().IsAssignableFrom(definedType))
-				{
-					var item = (VersionConverter)Activator.CreateInstance(definedType.AsType());
-					m_versionConverters.Add(item);
-				}
+				var item = (VersionConverter)Activator.CreateInstance(definedType.AsType());
+				m_versionConverters.Add(item);
 			}
 		}
 	}

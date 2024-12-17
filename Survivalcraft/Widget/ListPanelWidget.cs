@@ -148,6 +148,12 @@ namespace Game
 			m_widgetsDirty = true;
 		}
 
+		public void AddItems(IEnumerable<object> items)
+		{
+			m_items.AddRange(items);
+			m_widgetsDirty = true;
+		}
+
 		public void RemoveItem(object item)
 		{
 			int num = m_items.IndexOf(item);

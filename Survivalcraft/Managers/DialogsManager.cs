@@ -5,13 +5,17 @@ namespace Game
 {
 	public static class DialogsManager
 	{
+		public class CoverWidget : RectangleWidget
+		{
+		}
+
 		public class AnimationData
 		{
 			public float Factor;
 
 			public int Direction;
 
-			public RectangleWidget CoverRectangle = new()
+			public CoverWidget CoverWidget = new()
 			{
 				OutlineColor = Color.Transparent,
 				FillColor = new Color(0, 0, 0, 192),
@@ -60,7 +64,7 @@ namespace Game
 						Direction = 1
 					};
 					m_animationData[dialog] = animationData;
-					parentWidget.Children.Add(animationData.CoverRectangle);
+					parentWidget.Children.Add(animationData.CoverWidget);
 					if (dialog.ParentWidget != null)
 					{
 						dialog.ParentWidget.Children.Remove(dialog);
@@ -120,7 +124,7 @@ namespace Game
 				AnimationData animationData = m_animationData[item];
 				m_animationData.Remove(item);
 				item.ParentWidget.Children.Remove(item);
-				animationData.CoverRectangle.ParentWidget.Children.Remove(animationData.CoverRectangle);
+				animationData.CoverWidget.ParentWidget.Children.Remove(animationData.CoverWidget);
 			}
 			m_toRemove.Clear();
 		}
@@ -133,13 +137,13 @@ namespace Game
 				float num = 0.75f + (0.25f * MathF.Pow(animationData.Factor, 0.25f));
 				dialog.RenderTransform = Matrix.CreateTranslation((0f - dialog.ActualSize.X) / 2f, (0f - dialog.ActualSize.Y) / 2f, 0f) * Matrix.CreateScale(num, num, 1f) * Matrix.CreateTranslation(dialog.ActualSize.X / 2f, dialog.ActualSize.Y / 2f, 0f);
 				dialog.ColorTransform = Color.White * factor;
-				animationData.CoverRectangle.ColorTransform = Color.White * factor;
+				animationData.CoverWidget.ColorTransform = Color.White * factor;
 			}
 			else
 			{
 				dialog.RenderTransform = Matrix.Identity;
 				dialog.ColorTransform = Color.White;
-				animationData.CoverRectangle.ColorTransform = Color.White;
+				animationData.CoverWidget.ColorTransform = Color.White;
 			}
 		}
 	}

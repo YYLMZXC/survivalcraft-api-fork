@@ -443,7 +443,9 @@
     "92": "More Actions",
     "93": "Male",
     "94": "Female",
-    "95": "Run Javascript"
+    "95": "Run Javascript",
+    "96": "Length Of Year",
+    "97": "Season"
   },
   "BlocksManager": {
     "1": "Block with type {0} not found.",
@@ -2265,6 +2267,10 @@
     "SaplingBlock:4": {
       "DisplayName": "Mimosa Sapling",
       "CRDescription:0": "Cut saplings from mimosa leaves"
+    },
+    "SaplingBlock:5": {
+      "DisplayName": "Poplar Sapling",
+      "CRDescription:0": "Cut saplings from poplar leaves"
     },
     "SeedsBlock:1": {
       "DisplayName": "Red Flower Seeds",

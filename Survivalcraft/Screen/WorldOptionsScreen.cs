@@ -14,6 +14,8 @@ namespace Game
 
 		public Widget m_continentTerrainPanel;
 
+		private Widget m_yearDaysPanel;
+
 		public Widget m_islandTerrainPanel;
 
 		public SliderWidget m_islandSizeEW;
@@ -55,6 +57,14 @@ namespace Game
 		public ButtonWidget m_supernaturalCreaturesButton;
 
 		public ButtonWidget m_friendlyFireButton;
+
+		private Widget m_seasonsPanel;
+
+		private CheckboxWidget m_areSeasonsChangingCheckBox;
+
+		private SliderWidget m_yearDaysSlider;
+
+		private SliderWidget m_timeOfYearSlider;
 
 		public Widget m_creativeModePanel;
 
@@ -113,13 +123,17 @@ namespace Game
 			4f
 		};
 
+		private static float[] m_yearDays = new float[9] { 8f, 12f, 16f, 20f, 24f, 32f, 48f, 64f, 96f };
+
 		public WorldOptionsScreen()
 		{
 			XElement node = ContentManager.Get<XElement>("Screens/WorldOptionsScreen");
 			LoadContents(this, node);
 			m_creativeModePanel = Children.Find<Widget>("CreativeModePanel");
+			m_seasonsPanel = Children.Find<Widget>("SeasonsPanel");
 			m_newWorldOnlyPanel = Children.Find<Widget>("NewWorldOnlyPanel");
 			m_continentTerrainPanel = Children.Find<Widget>("ContinentTerrainPanel");
+			m_yearDaysPanel = Children.Find<Widget>("YearDaysPanel");
 			m_islandTerrainPanel = Children.Find<Widget>("IslandTerrainPanel");
 			m_islandSizeNS = Children.Find<SliderWidget>("IslandSizeNS");
 			m_islandSizeEW = Children.Find<SliderWidget>("IslandSizeEW");
@@ -137,6 +151,9 @@ namespace Game
 			m_friendlyFireButton = Children.Find<ButtonWidget>("FriendlyFire");
 			m_environmentBehaviorButton = Children.Find<ButtonWidget>("EnvironmentBehavior");
 			m_timeOfDayButton = Children.Find<ButtonWidget>("TimeOfDay");
+			m_areSeasonsChangingCheckBox = Children.Find<CheckboxWidget>("AreSeasonsChanging");
+			m_yearDaysSlider = Children.Find<SliderWidget>("YearDays");
+			m_timeOfYearSlider = Children.Find<SliderWidget>("TimeOfYear");
 			m_weatherEffectsButton = Children.Find<ButtonWidget>("WeatherEffects");
 			m_adventureRespawnButton = Children.Find<ButtonWidget>("AdventureRespawn");
 			m_adventureSurvivalMechanicsButton = Children.Find<ButtonWidget>("AdventureSurvivalMechanics");
@@ -157,6 +174,9 @@ namespace Game
 			m_biomeSizeSlider.MinValue = 0f;
 			m_biomeSizeSlider.MaxValue = m_biomeSizes.Length - 1;
 			m_biomeSizeSlider.Granularity = 1f;
+			m_yearDaysSlider.MinValue = 0f;
+			m_yearDaysSlider.MaxValue = m_yearDays.Length - 1;
+			m_yearDaysSlider.Granularity = 1f;
 		}
 
 		public static string FormatOffset(float value)
@@ -318,9 +338,26 @@ namespace Game
 			}
 			if (m_timeOfDayButton.IsClicked)
 			{
-				IList<int> enumValues3 = EnumUtils.GetEnumValues(typeof(TimeOfDayMode));
-				m_worldSettings.TimeOfDayMode = (TimeOfDayMode)((enumValues3.IndexOf((int)m_worldSettings.TimeOfDayMode) + 1) % enumValues3.Count);
-				m_descriptionLabel.Text = StringsManager.GetString("TimeOfDayMode." + m_worldSettings.TimeOfDayMode.ToString() + ".Description");
+				DialogsManager.ShowDialog(null, new ListSelectionDialog("Time Of Day:", EnumUtils.GetEnumValues(typeof(TimeOfDayMode)), 56f, (object e) => ((TimeOfDayMode)e/*cast due to .constrained prefix*/).ToString(), delegate(object e)
+				{
+					m_worldSettings.TimeOfDayMode = (TimeOfDayMode)e;
+					m_descriptionLabel.Text = StringsManager.GetString(string.Concat("TimeOfDayMode.", (TimeOfDayMode)e, ".Description"));
+				}));
+			}
+			if (m_areSeasonsChangingCheckBox.IsClicked)
+			{
+				m_worldSettings.AreSeasonsChanging = !m_worldSettings.AreSeasonsChanging;
+				m_descriptionLabel.Text = StringsManager.GetString($"AreSeasonsChanging.{m_worldSettings.AreSeasonsChanging}");
+			}
+			if (m_yearDaysSlider.IsSliding)
+			{
+				m_worldSettings.YearDays = m_yearDays[Math.Clamp((int)m_yearDaysSlider.Value, 0, m_yearDays.Length - 1)];
+				m_descriptionLabel.Text = StringsManager.GetString("YearDays.Description");
+			}
+			if (m_timeOfYearSlider.IsSliding)
+			{
+				m_worldSettings.TimeOfYear = Math.Clamp(m_timeOfYearSlider.Value, 0f, 0.999f);
+				m_descriptionLabel.Text = StringsManager.GetString("TimeOfYear.Description");
 			}
 			if (m_weatherEffectsButton.IsClicked)
 			{
@@ -339,9 +376,11 @@ namespace Game
 			}
 			m_creativeModePanel.IsVisible = m_worldSettings.GameMode == GameMode.Creative;
 			m_newWorldOnlyPanel.IsVisible = !m_isExistingWorld;
+			m_seasonsPanel.IsVisible = m_worldSettings.GameMode == GameMode.Creative || !m_isExistingWorld;
 			m_continentTerrainPanel.IsVisible = m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.Continent || m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatContinent;
 			m_islandTerrainPanel.IsVisible = m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.Island || m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatIsland;
 			m_flatTerrainPanel.IsVisible = m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatContinent || m_worldSettings.TerrainGenerationMode == TerrainGenerationMode.FlatIsland;
+			m_yearDaysPanel.IsVisible = m_worldSettings.AreSeasonsChanging;
 			m_terrainGenerationButton.Text = StringsManager.GetString("TerrainGenerationMode." + m_worldSettings.TerrainGenerationMode.ToString() + ".Name");
 			m_islandSizeEW.Value = FindNearestIndex(m_islandSizes, m_worldSettings.IslandSize.X);
 			m_islandSizeEW.Text = m_worldSettings.IslandSize.X.ToString();
@@ -369,6 +408,12 @@ namespace Game
 			m_biomeSizeSlider.Text = m_worldSettings.BiomeSize.ToString() + "x";
 			m_environmentBehaviorButton.Text = LanguageControl.Get("EnvironmentBehaviorMode", m_worldSettings.EnvironmentBehaviorMode.ToString());
 			m_timeOfDayButton.Text = LanguageControl.Get("TimeOfDayMode", m_worldSettings.TimeOfDayMode.ToString());
+			m_areSeasonsChangingCheckBox.IsChecked = m_worldSettings.AreSeasonsChanging;
+			m_yearDaysSlider.Value = FindNearestIndex(m_yearDays, m_worldSettings.YearDays);
+			m_yearDaysSlider.Text = $"{m_worldSettings.YearDays} days";
+			m_timeOfYearSlider.Value = m_worldSettings.TimeOfYear;
+			m_timeOfYearSlider.Text = $"{SubsystemSeasons.GetTimeOfYearName(m_worldSettings.TimeOfYear)}";
+			m_timeOfYearSlider.TextColor = SubsystemSeasons.GetTimeOfYearColor(m_worldSettings.TimeOfYear);
 			m_weatherEffectsButton.Text = m_worldSettings.AreWeatherEffectsEnabled ? LanguageControl.Enable : LanguageControl.Disable;
 			m_adventureRespawnButton.Text = m_worldSettings.IsAdventureRespawnAllowed ? LanguageControl.Allowed : LanguageControl.NAllowed;
 			m_adventureSurvivalMechanicsButton.Text = m_worldSettings.AreAdventureSurvivalMechanicsEnabled ? LanguageControl.Enable : LanguageControl.Disable;

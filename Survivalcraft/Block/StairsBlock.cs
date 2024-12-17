@@ -355,12 +355,12 @@ namespace Game
 			return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, Color.White, base.GetFaceTextureSlot(0, value));
 		}
 
-		public int? GetPaintColor(int value)
+		public virtual int? GetPaintColor(int value)
 		{
 			return GetColor(Terrain.ExtractData(value));
 		}
 
-		public int Paint(SubsystemTerrain terrain, int value, int? color)
+		public virtual int Paint(SubsystemTerrain terrain, int value, int? color)
 		{
 			return Terrain.MakeBlockValue(BlockIndex, 0, SetColor(Terrain.ExtractData(value), color));
 		}

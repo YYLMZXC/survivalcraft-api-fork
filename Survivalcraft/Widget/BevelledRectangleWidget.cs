@@ -9,10 +9,78 @@ namespace Game
 
 		public bool m_textureLinearFilter;
 
+		private float m_roundingRadius;
+
+		private int m_roundingCount;
+
+		private float m_bevelSize;
+
+		private float m_ambientLight;
+
+		private float m_directionalLight;
+
+		private Color m_centerColor;
+
+		private Color m_bevelColor;
+
+		private Color m_shadowColor;
+
+		private float m_shadowSize;
+
+		private FlatBatch2D m_flatBatch;
+
+		private TexturedBatch2D m_texturedBatch;
+
+		private BevelledShapeRenderer.Point[] m_points = new BevelledShapeRenderer.Point[4];
+
+		private FlatBatch2D m_cachedShadowBatch = new FlatBatch2D();
+
+		private FlatBatch2D m_cachedFlatBatch = new FlatBatch2D();
+
+		private TexturedBatch2D m_cachedTexturedBatch = new TexturedBatch2D();
+
+		private bool m_cachedBatchesValid;
+
+		private float m_cachedPixelsPerUnit;
+
+		private Vector2 m_cachedTextureScale;
+
 		public Vector2 Size
 		{
 			get;
 			set;
+		}
+
+		public float RoundingRadius
+		{
+			get
+			{
+				return m_roundingRadius;
+			}
+			set
+			{
+				if (value != m_roundingRadius)
+				{
+					m_roundingRadius = value;
+					m_cachedBatchesValid = false;
+				}
+			}
+		}
+
+		public int RoundingCount
+		{
+			get
+			{
+				return m_roundingCount;
+			}
+			set
+			{
+				if (value != m_roundingCount)
+				{
+					m_roundingCount = value;
+					m_cachedBatchesValid = false;
+				}
+			}
 		}
 
 		public float BevelSize
@@ -23,14 +91,34 @@ namespace Game
 
 		public float DirectionalLight
 		{
-			get;
-			set;
+			get
+			{
+				return m_directionalLight;
+			}
+			set
+			{
+				if (value != m_directionalLight)
+				{
+					m_directionalLight = value;
+					m_cachedBatchesValid = false;
+				}
+			}
 		}
 
 		public float AmbientLight
 		{
-			get;
-			set;
+			get
+			{
+				return m_ambientLight;
+			}
+			set
+			{
+				if (value != m_ambientLight)
+				{
+					m_ambientLight = value;
+					m_cachedBatchesValid = false;
+				}
+			}
 		}
 
 		public Texture2D Texture
@@ -71,62 +159,243 @@ namespace Game
 
 		public Color CenterColor
 		{
-			get;
-			set;
+			get
+			{
+				return m_centerColor;
+			}
+			set
+			{
+				if (value != m_centerColor)
+				{
+					m_centerColor = value;
+					m_cachedBatchesValid = false;
+				}
+			}
 		}
 
 		public Color BevelColor
 		{
-			get;
-			set;
+			get
+			{
+				return m_bevelColor;
+			}
+			set
+			{
+				if (value != m_bevelColor)
+				{
+					m_bevelColor = value;
+					m_cachedBatchesValid = false;
+				}
+			}
 		}
 
 		public Color ShadowColor
 		{
-			get;
-			set;
+			get
+			{
+				return m_shadowColor;
+			}
+			set
+			{
+				if (value != m_shadowColor)
+				{
+					m_shadowColor = value;
+					m_cachedBatchesValid = false;
+				}
+			}
 		}
+
+		public float ShadowSize
+		{
+			get
+			{
+				return m_shadowSize;
+			}
+			set
+			{
+				if (value != m_shadowSize)
+				{
+					m_shadowSize = value;
+					m_cachedBatchesValid = false;
+				}
+			}
+		}
+
+		public Vector2 TextureOffset => Vector2.Zero;
 
 		public BevelledRectangleWidget()
 		{
 			Size = new Vector2(float.PositiveInfinity);
+			TextureLinearFilter = false;
+			TextureScale = 1f;
+			RoundingRadius = 6f;
+			RoundingCount = 3;
 			BevelSize = 2f;
 			AmbientLight = 0.6f;
 			DirectionalLight = 0.4f;
-			TextureScale = 1f;
-			TextureLinearFilter = false;
 			CenterColor = new Color(181, 172, 154);
 			BevelColor = new Color(181, 172, 154);
-			ShadowColor = new Color(0, 0, 0, 80);
+			ShadowColor = new Color(0, 0, 0, 32);
+			ShadowSize = 2f;
 			IsHitTestVisible = false;
 		}
 
 		public override void Draw(DrawContext dc)
 		{
-			if (Texture != null)
+			Color centerColor = CenterColor * new Vector4(0.6f,0.6f,0.6f,1f);
+			Color bevelColor = BevelColor;
+			Color shadowColor = ShadowColor;
+			bool flag = shadowColor != Color.Transparent && BevelSize > 0f;
+			float globalScale = base.GlobalScale;
+			if(globalScale != m_cachedPixelsPerUnit)
 			{
-				SamplerState samplerState = TextureLinearFilter ? SamplerState.LinearWrap : SamplerState.PointWrap;
-				FlatBatch2D flatBatch2D = dc.PrimitivesRenderer2D.FlatBatch(0, DepthStencilState.None);
-				TexturedBatch2D texturedBatch2D = dc.PrimitivesRenderer2D.TexturedBatch(Texture, useAlphaTest: false, 0, DepthStencilState.None, null, null, samplerState);
-				int count = flatBatch2D.TriangleVertices.Count;
-				int count2 = texturedBatch2D.TriangleVertices.Count;
-				QueueBevelledRectangle(texturedBatch2D, flatBatch2D, Vector2.Zero, ActualSize, 0f, BevelSize, CenterColor * GlobalColorTransform, BevelColor * GlobalColorTransform, ShadowColor * GlobalColorTransform, AmbientLight, DirectionalLight, TextureScale);
-				flatBatch2D.TransformTriangles(GlobalTransform, count);
-				texturedBatch2D.TransformTriangles(GlobalTransform, count2);
+				m_cachedPixelsPerUnit = globalScale;
+				m_cachedBatchesValid = false;
 			}
-			else
+			Vector2 vector = new Vector2(TextureScale) / base.RootWidget.GlobalScale;
+			if(vector != m_cachedTextureScale)
 			{
-				FlatBatch2D flatBatch2D2 = dc.PrimitivesRenderer2D.FlatBatch(0, DepthStencilState.None);
-				int count3 = flatBatch2D2.TriangleVertices.Count;
-				QueueBevelledRectangle(null, flatBatch2D2, Vector2.Zero, ActualSize, 0f, BevelSize, CenterColor * GlobalColorTransform, BevelColor * GlobalColorTransform, ShadowColor * GlobalColorTransform, AmbientLight, DirectionalLight, 0f);
-				flatBatch2D2.TransformTriangles(GlobalTransform, count3);
+				m_cachedTextureScale = vector;
+				m_cachedBatchesValid = false;
 			}
+			float antialiasSize = 1f / globalScale;
+			if(Texture != null)
+			{
+				if(!m_cachedBatchesValid)
+				{
+					bool flatShading = m_points.Any((BevelledShapeRenderer.Point p) => p.RoundingCount == 0);
+					m_cachedShadowBatch.Clear();
+					m_cachedTexturedBatch.Clear();
+					m_cachedTexturedBatch.Texture = Texture;
+					if(flag)
+					{
+						BevelledShapeRenderer.QueueShapeShadow(
+							m_cachedShadowBatch,
+							m_points,
+							globalScale,
+							ShadowSize,
+							shadowColor
+						);
+					}
+					BevelledShapeRenderer.QueueShape(
+						m_cachedTexturedBatch,
+						m_points,
+						vector,
+						TextureOffset,
+						globalScale,
+						antialiasSize,
+						BevelSize,
+						flatShading,
+						centerColor,
+						bevelColor,
+						DirectionalLight,
+						AmbientLight
+					);
+					m_cachedBatchesValid = true;
+				}
+				if(flag)
+				{
+					if(m_flatBatch == null)
+					{
+						m_flatBatch = dc.PrimitivesRenderer2D.FlatBatch(0,DepthStencilState.None);
+					}
+					m_flatBatch.QueueBatch(m_cachedShadowBatch,Matrix.CreateTranslation(ShadowSize,ShadowSize,0f) * base.GlobalTransform,base.GlobalColorTransform);
+				}
+				if(m_texturedBatch == null)
+				{
+					m_texturedBatch = dc.PrimitivesRenderer2D.TexturedBatch(
+						Texture,
+						useAlphaTest: false,
+						1,
+						null,
+						null,
+						null,
+						TextureLinearFilter ? SamplerState.LinearWrap : SamplerState.PointWrap
+					);
+				}
+				m_texturedBatch.QueueBatch(m_cachedTexturedBatch,base.GlobalTransform,base.GlobalColorTransform);
+				return;
+			}
+			if(!m_cachedBatchesValid)
+			{
+				bool flatShading2 = m_points.Any((BevelledShapeRenderer.Point p) => p.RoundingCount == 0);
+				m_cachedShadowBatch.Clear();
+				m_cachedFlatBatch.Clear();
+				if(flag)
+				{
+					BevelledShapeRenderer.QueueShapeShadow(
+						m_cachedShadowBatch,
+						m_points,
+						globalScale,
+						ShadowSize,
+						shadowColor
+					);
+				}
+				BevelledShapeRenderer.QueueShape(
+					m_cachedFlatBatch,
+					m_points,
+					globalScale,
+					antialiasSize,
+					BevelSize,
+					flatShading2,
+					centerColor,
+					bevelColor,
+					DirectionalLight,
+					AmbientLight
+				);
+				m_cachedBatchesValid = true;
+			}
+			if(m_flatBatch == null)
+			{
+				m_flatBatch = dc.PrimitivesRenderer2D.FlatBatch(0,DepthStencilState.None);
+			}
+			if(flag)
+			{
+				m_flatBatch.QueueBatch(m_cachedShadowBatch,Matrix.CreateTranslation(ShadowSize,ShadowSize,0f) * base.GlobalTransform,base.GlobalColorTransform);
+			}
+			m_flatBatch.QueueBatch(m_cachedFlatBatch,base.GlobalTransform,base.GlobalColorTransform);
 		}
 
 		public override void MeasureOverride(Vector2 parentAvailableSize)
 		{
 			IsDrawRequired = BevelColor.A != 0 || CenterColor.A != 0;
 			DesiredSize = Size;
+		}
+
+		public override void ArrangeOverride()
+		{
+			Vector2 vector = new Vector2(0f, 0f);
+			Vector2 vector2 = new Vector2(base.ActualSize.X, 0f);
+			Vector2 vector3 = new Vector2(base.ActualSize.X, base.ActualSize.Y);
+			Vector2 vector4 = new Vector2(0f, base.ActualSize.Y);
+			if (vector != m_points[0].Position || vector2 != m_points[1].Position || vector3 != m_points[2].Position || vector4 != m_points[3].Position)
+			{
+				m_points[0] = new BevelledShapeRenderer.Point
+				{
+					Position = vector,
+					RoundingRadius = RoundingRadius,
+					RoundingCount = RoundingCount
+				};
+				m_points[1] = new BevelledShapeRenderer.Point
+				{
+					Position = vector2,
+					RoundingRadius = RoundingRadius,
+					RoundingCount = RoundingCount
+				};
+				m_points[2] = new BevelledShapeRenderer.Point
+				{
+					Position = vector3,
+					RoundingRadius = RoundingRadius,
+					RoundingCount = RoundingCount
+				};
+				m_points[3] = new BevelledShapeRenderer.Point
+				{
+					Position = vector4,
+					RoundingRadius = RoundingRadius,
+					RoundingCount = RoundingCount
+				};
+				m_cachedBatchesValid = false;
+			}
 		}
 
 		public static void QueueBevelledRectangle(TexturedBatch2D texturedBatch, FlatBatch2D flatBatch, Vector2 c1, Vector2 c2, float depth, float bevelSize, Color color, Color bevelColor, Color shadowColor, float ambientLight, float directionalLight, float textureScale)

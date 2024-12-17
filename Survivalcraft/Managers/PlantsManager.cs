@@ -16,21 +16,23 @@ namespace Game
 		static PlantsManager()
 		{
 			m_treeBrushesByType = new List<TerrainBrush>[EnumUtils.GetEnumValues(typeof(TreeType)).Max() + 1];
-			m_treeTrunksByType = new int[5]
+			m_treeTrunksByType = new int[6]
 			{
 				9,
 				10,
 				11,
 				11,
-				255
+				255,
+				262
 			};
-			m_treeLeavesByType = new int[5]
+			m_treeLeavesByType = new int[6]
 			{
-				12,
-				13,
+				Terrain.MakeBlockValue(12, 0, DeciduousLeavesBlock.SetSeason(0, Season.Spring)),
+				Terrain.MakeBlockValue(13, 0, DeciduousLeavesBlock.SetSeason(0, Season.Spring)),
 				14,
 				225,
-				256
+				Terrain.MakeBlockValue(256, 0, DeciduousLeavesBlock.SetSeason(0, Season.Spring)),
+				Terrain.MakeBlockValue(263, 0, DeciduousLeavesBlock.SetSeason(0, Season.Spring))
 			};
 			var random = new Random(33);
 			m_treeBrushesByType[0] = [];
@@ -38,26 +40,11 @@ namespace Game
 			{
 				int[] array = new int[16]
 				{
-					5,
-					6,
-					7,
-					7,
-					8,
-					8,
-					9,
-					9,
-					9,
-					10,
-					10,
-					11,
-					12,
-					13,
-					14,
-					16
+					5, 6, 7, 8, 9, 10, 11, 11, 12, 12, 13, 13, 14, 15, 16, 18
 				};
 				int height4 = array[i];
-				int branchesCount = (int)MathUtils.Lerp(10f, 20f, i / 16f);
-				TerrainBrush item = CreateTreeBrush(random, GetTreeTrunkValue(TreeType.Oak), GetTreeLeavesValue(TreeType.Oak), height4, branchesCount, delegate (int y)
+				int branchesCount = (int)MathUtils.Lerp(10f, 22f, i / 16f);
+				TerrainBrush item = CreateTreeBrush(random, GetTreeTrunkValue(TreeType.Oak), GetTreeLeavesValue(TreeType.Oak), height4, branchesCount, 3, delegate (int y, int round)
 				{
 					float num7 = 0.4f;
 					if (y < 0.2f * height4)
@@ -85,26 +72,11 @@ namespace Game
 			{
 				int[] array2 = new int[16]
 				{
-					4,
-					5,
-					6,
-					6,
-					7,
-					7,
-					7,
-					8,
-					8,
-					8,
-					9,
-					9,
-					9,
-					10,
-					10,
-					11
+					4, 5, 6, 7, 7, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 12
 				};
 				int height3 = array2[j];
 				int branchesCount2 = (int)MathUtils.Lerp(0f, 20f, j / 16f);
-				TerrainBrush item2 = CreateTreeBrush(random, GetTreeTrunkValue(TreeType.Birch), GetTreeLeavesValue(TreeType.Birch), height3, branchesCount2, delegate (int y)
+				TerrainBrush item2 = CreateTreeBrush(random, GetTreeTrunkValue(TreeType.Birch), GetTreeLeavesValue(TreeType.Birch), height3, branchesCount2, 3, delegate (int y, int round)
 				{
 					float num5 = 0.66f;
 					if (y < (height3 / 2) - 1)
@@ -143,7 +115,7 @@ namespace Game
 				};
 				int height2 = array3[k];
 				int branchesCount3 = height2 * 3;
-				TerrainBrush item3 = CreateTreeBrush(random, GetTreeTrunkValue(TreeType.Spruce), GetTreeLeavesValue(TreeType.Spruce), height2, branchesCount3, delegate (int y)
+				TerrainBrush item3 = CreateTreeBrush(random, GetTreeTrunkValue(TreeType.Spruce), GetTreeLeavesValue(TreeType.Spruce), height2, branchesCount3, 3, delegate (int y, int round)
 				{
 					float num4 = MathUtils.Lerp(1.4f, 0.3f, y / (float)height2);
 					if (y < 3)
@@ -170,29 +142,12 @@ namespace Game
 			{
 				int[] array4 = new int[18]
 				{
-					20,
-					21,
-					22,
-					23,
-					24,
-					24,
-					25,
-					25,
-					26,
-					26,
-					27,
-					27,
-					28,
-					28,
-					29,
-					29,
-					30,
-					30
+					20, 21, 22, 23, 24, 24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 30, 31, 32
 				};
 				int height = array4[l];
 				int branchesCount4 = height * 3;
 				float startHeight = (0.3f + (l % 4 * 0.05f)) * height;
-				TerrainBrush item4 = CreateTreeBrush(random, GetTreeTrunkValue(TreeType.TallSpruce), GetTreeLeavesValue(TreeType.TallSpruce), height, branchesCount4, delegate (int y)
+				TerrainBrush item4 = CreateTreeBrush(random, GetTreeTrunkValue(TreeType.TallSpruce), GetTreeLeavesValue(TreeType.TallSpruce), height, branchesCount4, 3, delegate (int y, int round)
 				{
 					float num2 = MathUtils.Saturate(y / (float)height);
 					float num3 = MathUtils.Lerp(1.5f, 0f, MathUtils.Saturate((num2 - 0.6f) / 0.4f));
@@ -220,6 +175,35 @@ namespace Game
 			for (int m = 0; m < 16; m++)
 			{
 				m_treeBrushesByType[4].Add(CreateMimosaBrush(random, MathUtils.Lerp(6f, 9f, m / 15f)));
+			}
+			m_treeBrushesByType[5] = new List<TerrainBrush>();
+			for (int n = 0; n < 16; n++)
+			{
+				int[] array5 = new int[17]
+				{
+					10, 11, 11, 12, 12, 13, 13, 13, 14, 14,
+					14, 15, 15, 16, 16, 17, 17
+				};
+				int height5 = array5[n];
+				int branchesCount5 = height5 * 3;
+				TerrainBrush item5 = CreateTreeBrush(random, GetTreeTrunkValue(TreeType.Poplar), GetTreeLeavesValue(TreeType.Poplar), height5, branchesCount5, 2, delegate(int y, int round)
+				{
+					int num8 = ((height5 < 14) ? 1 : 2);
+					if (y < num8)
+					{
+						return 0f;
+					}
+					if (round == 0)
+					{
+						return 1f;
+					}
+					if (y == num8)
+					{
+						return 0f;
+					}
+					return (y == num8 + 1) ? 0.5f : MathUtils.LinearStep(height5 - 1, num8 + 2, y);
+				}, (int y) => 0f);
+				m_treeBrushesByType[5].Add(item5);
 			}
 		}
 
@@ -308,7 +292,8 @@ namespace Game
 			float num3 = random.Float() * CalculateTreeProbability(TreeType.Spruce, temperature, humidity, y);
 			float num4 = random.Float() * CalculateTreeProbability(TreeType.TallSpruce, temperature, humidity, y);
 			float num5 = random.Float() * CalculateTreeProbability(TreeType.Mimosa, temperature, humidity, y);
-			float num6 = MathUtils.Max(MathUtils.Max(num, num2, num3, num4), num5);
+			float num7 = random.Float() * CalculateTreeProbability(TreeType.Poplar, temperature, humidity, y);
+			float num6 = MathUtils.Max(MathUtils.Max(num, num2, num3, num4), num5, num7);
 			if (num6 > 0f)
 			{
 				if (num6 == num)
@@ -331,6 +316,10 @@ namespace Game
 				{
 					result = TreeType.Mimosa;
 				}
+				if (num6 == num7)
+				{
+					result = TreeType.Poplar;
+				}
 			}
 			if (result.HasValue && random.Bool(densityMultiplier * CalculateTreeDensity(result.Value, temperature, humidity, y)))
 			{
@@ -352,7 +341,9 @@ namespace Game
 				case TreeType.TallSpruce:
 					return RangeProbability(humidity, 4f, 15f, 15f, 15f);
 				case TreeType.Mimosa:
-					return 0.03f;
+					return 0.04f;
+				case TreeType.Poplar:
+					return RangeProbability(temperature, 4f, 8f, 10f, 15f) * RangeProbability(humidity, 3f, 15f, 15f, 15f) * RangeProbability(y, 0f, 0f, 85f, 92f);
 				default:
 					return 0f;
 			}
@@ -365,13 +356,15 @@ namespace Game
 				case TreeType.Oak:
 					return RangeProbability(temperature, 4f, 10f, 15f, 15f) * RangeProbability(humidity, 6f, 8f, 15f, 15f) * RangeProbability(y, 0f, 0f, 82f, 87f);
 				case TreeType.Birch:
-					return RangeProbability(temperature, 5f, 9f, 9f, 14f) * RangeProbability(humidity, 3f, 15f, 15f, 15f) * RangeProbability(y, 0f, 0f, 82f, 87f);
+					return RangeProbability(temperature, 5f, 9f, 10f, 15f) * RangeProbability(humidity, 3f, 15f, 15f, 15f) * RangeProbability(y, 0f, 0f, 82f, 87f);
 				case TreeType.Spruce:
 					return RangeProbability(temperature, 0f, 0f, 6f, 10f) * RangeProbability(humidity, 3f, 10f, 11f, 12f);
 				case TreeType.TallSpruce:
 					return 0.25f * RangeProbability(temperature, 0f, 0f, 6f, 10f) * RangeProbability(humidity, 9f, 11f, 15f, 15f) * RangeProbability(y, 0f, 0f, 95f, 100f);
 				case TreeType.Mimosa:
 					return RangeProbability(temperature, 2f, 4f, 12f, 14f) * RangeProbability(humidity, 0f, 0f, 4f, 6f);
+				case TreeType.Poplar:
+					return RangeProbability(temperature, 4f, 8f, 10f, 15f) * RangeProbability(humidity, 3f, 15f, 15f, 15f) * RangeProbability(y, 0f, 0f, 85f, 92f);
 				default:
 					return 0f;
 			}
@@ -398,7 +391,7 @@ namespace Game
 			return 0f;
 		}
 
-		public static TerrainBrush CreateTreeBrush(Random random, int woodIndex, int leavesIndex, int height, int branchesCount, Func<int, float> leavesProbabilityByHeight, Func<int, float> branchesLengthByHeight)
+		public static TerrainBrush CreateTreeBrush(Random random, int woodIndex, int leavesIndex, int height, int branchesCount, int leavesRounds, Func<int, int, float> leavesProbability, Func<int, float> branchesLength)
 		{
 			var terrainBrush = new TerrainBrush();
 			terrainBrush.AddRay(0, -1, 0, 0, height, 0, 1, 1, 1, woodIndex);
@@ -407,7 +400,7 @@ namespace Game
 				int x = 0;
 				int num = random.Int(0, height);
 				int z = 0;
-				float s = branchesLengthByHeight(num);
+				float s = branchesLength(num);
 				Vector3 vector = Vector3.Normalize(new Vector3(random.Float(-1f, 1f), random.Float(0f, 0.33f), random.Float(-1f, 1f))) * s;
 				int x2 = (int)MathF.Round(vector.X);
 				int y = num + (int)MathF.Round(vector.Y);
@@ -423,7 +416,7 @@ namespace Game
 				}
 				terrainBrush.AddRay(x, num, z, x2, y, z2, 1, 1, 1, (Func<int?, int?>)((int? v) => v.HasValue ? null : new int?(Terrain.MakeBlockValue(woodIndex, 0, WoodBlock.SetCutFace(0, cutFace)))));
 			}
-			for (int j = 0; j < 3; j++)
+			for (int j = 0; j < leavesRounds; j++)
 			{
 				terrainBrush.CalculateBounds(out Point3 min, out Point3 max);
 				for (int k = min.X - 1; k <= max.X + 1; k++)
@@ -432,7 +425,7 @@ namespace Game
 					{
 						for (int m = 1; m <= max.Y + 1; m++)
 						{
-							float num2 = leavesProbabilityByHeight(m);
+							float num2 = leavesProbability(m, j);
 							if (random.Float(0f, 1f) < num2 && !terrainBrush.GetValue(k, m, l).HasValue && (terrainBrush.CountNonDiagonalNeighbors(k, m, l, leavesIndex) != 0 || terrainBrush.CountNonDiagonalNeighbors(k, m, l, (Func<int?, int>)((int? v) => (v.HasValue && Terrain.ExtractContents(v.Value) == woodIndex) ? 1 : 0)) != 0))
 							{
 								terrainBrush.AddCell(k, m, l, 0);

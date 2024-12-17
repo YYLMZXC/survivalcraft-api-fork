@@ -8,6 +8,10 @@ namespace Game
 
 		public Vector3 Position;
 
+		public Vector3 Right;
+
+		public Vector3 Up;
+
 		public Vector2 Size;
 
 		public float Rotation;

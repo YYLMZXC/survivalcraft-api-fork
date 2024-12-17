@@ -117,6 +117,7 @@ namespace Game
 						Keyboard.ShowKeyboard(Title, Description, Text, passwordMode: false, delegate (string text)
 						{
 							Text = text;
+							HasFocus = false;
 						}, null);
 					}
 					else

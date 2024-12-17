@@ -131,6 +131,10 @@ namespace Game
 
 		public static CraftingRecipe FindMatchingRecipe(SubsystemTerrain terrain, string[] ingredients, float heatLevel, float playerLevel)
 		{
+			if (ingredients.All((string s) => string.IsNullOrEmpty(s)))
+			{
+				return null;
+			}
 			CraftingRecipe craftingRecipe = null;
 			Block[] blocks = BlocksManager.Blocks;
 			for (int i = 0; i < blocks.Length; i++)
@@ -228,11 +232,11 @@ namespace Game
 			string[] array = new string[9];
 			for (int i = 0; i < 2; i++)
 			{
-				for (int j = -3; j <= 3; j++)
+				bool flip = ((i != 0) ? true : false);
+				for (int j = -4; j <= 2; j++)
 				{
-					for (int k = -3; k <= 3; k++)
+					for (int k = -4; k <= 2; k++)
 					{
-						bool flip = i != 0;
 						if (!TransformRecipe(array, requiredIngredients, k, j, flip))
 						{
 							continue;

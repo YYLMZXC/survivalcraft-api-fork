@@ -52,8 +52,6 @@ namespace Game
 
 		public LabelWidget m_visibilityRangeWarningLabel;
 
-		public ButtonWidget m_viewAnglesButton;
-
 		public ButtonWidget m_terrainMipmapsButton;
 
 		public ButtonWidget m_skyRenderingModeButton;
@@ -79,7 +77,6 @@ namespace Game
 			m_resolutionButton = Children.Find<ButtonWidget>("ResolutionButton");
 			m_visibilityRangeSlider = Children.Find<SliderWidget>("VisibilityRangeSlider");
 			m_visibilityRangeWarningLabel = Children.Find<LabelWidget>("VisibilityRangeWarningLabel");
-			m_viewAnglesButton = Children.Find<ButtonWidget>("ViewAnglesButton");
 			m_terrainMipmapsButton = Children.Find<ButtonWidget>("TerrainMipmapsButton");
 			m_skyRenderingModeButton = Children.Find<ButtonWidget>("SkyRenderingModeButton");
 			m_objectShadowsButton = Children.Find<ButtonWidget>("ObjectShadowsButton");
@@ -110,11 +107,6 @@ namespace Game
 			if (m_visibilityRangeSlider.IsSliding)
 			{
 				SettingsManager.VisibilityRange = m_visibilityRanges[Math.Clamp((int)m_visibilityRangeSlider.Value, 0, m_visibilityRanges.Count - 1)];
-			}
-			if (m_viewAnglesButton.IsClicked)
-			{
-				IList<int> enumValues2 = EnumUtils.GetEnumValues(typeof(ViewAngleMode));
-				SettingsManager.ViewAngleMode = (ViewAngleMode)((enumValues2.IndexOf((int)SettingsManager.ViewAngleMode) + 1) % enumValues2.Count);
 			}
 			if (m_terrainMipmapsButton.IsClicked)
 			{
@@ -187,7 +179,6 @@ namespace Game
 				m_visibilityRangeWarningLabel.IsVisible = true;
 				m_visibilityRangeWarningLabel.Text = LanguageControl.Get(fName, 7);
 			}
-			m_viewAnglesButton.Text = LanguageControl.Get("ViewAngleMode", SettingsManager.ViewAngleMode.ToString());
 			m_terrainMipmapsButton.Text = SettingsManager.TerrainMipmapsEnabled ? LanguageControl.Enable : LanguageControl.Disable;
 			m_skyRenderingModeButton.Text = LanguageControl.Get("SkyRenderingMode", SettingsManager.SkyRenderingMode.ToString());
 			m_objectShadowsButton.Text = SettingsManager.ObjectsShadowsEnabled ? LanguageControl.Enable : LanguageControl.Disable;

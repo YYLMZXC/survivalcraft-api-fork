@@ -23,6 +23,8 @@ namespace Game
 
 		public Entity Owner;	//在绘制的时候，可以读取该方块的拥有者。在渲染InventorySlotWidget, ComponentFirstPersonModel, ComponentHumanModel中用到
 
+		public float? EnvironmentTemperature;
+
 		public DrawBlockEnvironmentData()
 		{
 			InWorldMatrix = Matrix.Identity;

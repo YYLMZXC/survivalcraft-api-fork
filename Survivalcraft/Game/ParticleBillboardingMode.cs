@@ -4,6 +4,7 @@ namespace Game
 	{
 		Camera,
 		Vertical,
-		Horizontal
+		Horizontal,
+		None
 	}
 }

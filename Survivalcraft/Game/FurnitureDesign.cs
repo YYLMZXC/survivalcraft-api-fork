@@ -868,7 +868,7 @@ namespace Game
 								}
 								else if (block is WaterBlock)
 								{
-									color = BlockColorsMap.WaterColorsMap.Lookup(12, 12);
+									color = BlockColorsMap.Water.Lookup(12, 12);
 									num14 = 189;
 								}
 								else if (block is CarpetBlock)

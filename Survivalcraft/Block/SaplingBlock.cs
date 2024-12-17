@@ -8,21 +8,16 @@ namespace Game
 
 		public override int GetFaceTextureSlot(int face, int value)
 		{
-			switch (Terrain.ExtractData(value))
+			return Terrain.ExtractData(value) switch
 			{
-				case 0:
-					return 56;
-				case 1:
-					return 72;
-				case 2:
-					return 73;
-				case 3:
-					return 73;
-				case 4:
-					return 72;
-				default:
-					return 56;
-			}
+				0 => 56,
+				1 => 72,
+				2 => 73,
+				3 => 73,
+				4 => 72,
+				5 => 110,
+				_ => 56
+			};
 		}
 
 		public override IEnumerable<int> GetCreativeValues()
@@ -32,6 +27,7 @@ namespace Game
 			yield return Terrain.MakeBlockValue(119, 0, 2);
 			yield return Terrain.MakeBlockValue(119, 0, 3);
 			yield return Terrain.MakeBlockValue(119, 0, 4);
+			yield return Terrain.MakeBlockValue(119, 0, 5);
 		}
 	}
 }

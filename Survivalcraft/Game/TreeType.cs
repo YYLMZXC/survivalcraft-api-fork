@@ -6,6 +6,7 @@ namespace Game
 		Birch,
 		Spruce,
 		TallSpruce,
-		Mimosa
+		Mimosa,
+		Poplar
 	}
 }

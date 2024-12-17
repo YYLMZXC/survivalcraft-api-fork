@@ -143,7 +143,7 @@ namespace Game
 			{
 				if (Time.PeriodicEvent(1.0, 0.0) && ScreensManager.CurrentScreen != null)
 				{
-					m_statsString = $"CPUMEM {TotalMemoryUsed / 1024f / 1024f:0}MB, GPUMEM {TotalGpuMemoryUsed / 1024f / 1024f:0}MB, CPU {AverageCpuFrameTime / AverageFrameTime * 100f:0}%, FPS {1f / AverageFrameTime:0.0}";
+					m_statsString = $"CPUMEM {TotalMemoryUsed / 1024f / 1024f:0}MB, GPUMEM {TotalGpuMemoryUsed / 1024f / 1024f:0}MB, CPU {AverageCpuFrameTime / AverageFrameTime * 100f:0}%, {1f / AverageFrameTime:0.0} FPS";
 #if DEBUG
 					string wname = ScreensManager.RootWidget.Input.MousePosition.HasValue ? ScreensManager.RootWidget.HitTestGlobal(ScreensManager.RootWidget.Input.MousePosition.Value)?.GetType().Name : string.Empty;
 					m_statsString += "\n Screen:[" + ScreensManager.CurrentScreen.GetType().Name + "]  [" + wname + "]";

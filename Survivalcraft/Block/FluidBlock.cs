@@ -147,14 +147,14 @@ namespace Game
 			return DefaultTextureSlot + 16;
 		}
 
-		public override bool ShouldGenerateFace(SubsystemTerrain subsystemTerrain, int face, int value, int neighborValue)
+		public override bool ShouldGenerateFace(SubsystemTerrain subsystemTerrain, int face, int value, int neighborValue, int x, int y, int z)
 		{
 			int contents = Terrain.ExtractContents(neighborValue);
 			if (IsTheSameFluid(contents))
 			{
 				return false;
 			}
-			return base.ShouldGenerateFace(subsystemTerrain, face, value, neighborValue);
+			return base.ShouldGenerateFace(subsystemTerrain, face, value, neighborValue, x, y, z);
 		}
 
 		public float CalculateNeighborHeight(int value)

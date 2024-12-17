@@ -1,4 +1,6 @@
 using Engine;
+using Engine.Graphics;
+using Engine.Media;
 using System;
 using System.Linq;
 using System.Xml.Linq;
@@ -7,63 +9,103 @@ namespace Game
 {
 	public class MessageWidget : CanvasWidget
 	{
-		public LabelWidget m_labelWidget;
+		public class Message
+		{
+			public LabelWidget LabelWidget;
 
-		public string m_message;
+			public double StartTime;
 
-		public double m_messageStartTime;
+			public float Duration;
 
-		public float m_duration;
+			public Color Color;
 
-		public Color m_color;
+			public bool Blinking;
 
-		public bool m_blinking;
+			public Message(string text, Color color, bool blinking)
+			{
+				LabelWidget = new LabelWidget
+				{
+					Text = text,
+					Font = ContentManager.Get<BitmapFont>("Fonts/Pericles24"),
+					HorizontalAlignment = WidgetAlignment.Center,
+					TextAnchor = TextAnchor.Center,
+					DropShadow = true,
+					WordWrap = true
+				};
+				StartTime = Time.FrameStartTime;
+				Duration = (blinking ? 6f : (4f + MathUtils.Min(1f * (float)text.Count((char c) => c == '\n'), 4f)));
+				Color = color;
+				Blinking = blinking;
+			}
+
+			public void Update()
+			{
+				float num;
+				if (Blinking)
+				{
+					num = MathUtils.Saturate(1f * (float)(StartTime + (double)Duration - Time.FrameStartTime));
+					if (Time.FrameStartTime - StartTime < 0.417)
+					{
+						num *= MathUtils.Lerp(0.25f, 1f, 0.5f * (1f - MathF.Cos((float)Math.PI * 12f * (float)(Time.FrameStartTime - StartTime))));
+					}
+				}
+				else
+				{
+					num = MathUtils.Saturate(MathUtils.Min(3f * (float)(Time.FrameStartTime - StartTime), 1f * (float)(StartTime + (double)Duration - Time.FrameStartTime)));
+				}
+				LabelWidget.Color = Color * num;
+			}
+		}
+
+		public const int MaxMessages = 3;
+
+		public DynamicArray<Message> m_messages = new DynamicArray<Message>();
 
 		public MessageWidget()
 		{
 			XElement node = ContentManager.Get<XElement>("Widgets/MessageWidget");
 			LoadContents(this, node);
-			m_labelWidget = Children.Find<LabelWidget>("Label");
 		}
 
 		public void DisplayMessage(string text, Color color, bool blinking)
 		{
-			m_message = text;
-			m_messageStartTime = Time.RealTime;
-			m_duration = blinking ? 6f : (4f + MathUtils.Min(1f * m_message.Count((char c) => c == '\n'), 4f));
-			m_color = color;
-			m_blinking = blinking;
+			if (!string.IsNullOrEmpty(text))
+			{
+				AddMessage(new Message(text, color, blinking));
+				RemoveOldMessages();
+			}
 		}
 
 		public override void Update()
 		{
-			double realTime = Time.RealTime;
-			if (!string.IsNullOrEmpty(m_message))
+			for (int num = m_messages.Count - 1; num >= 0; num--)
 			{
-				float num;
-				if (m_blinking)
-				{
-					num = MathUtils.Saturate(1f * (float)(m_messageStartTime + m_duration - realTime));
-					if (realTime - m_messageStartTime < 0.417)
-					{
-						num *= MathUtils.Lerp(0.25f, 1f, 0.5f * (1f - MathF.Cos((float)Math.PI * 12f * (float)(realTime - m_messageStartTime))));
-					}
-				}
-				else
-				{
-					num = MathUtils.Saturate(MathUtils.Min(3f * (float)(realTime - m_messageStartTime), 1f * (float)(m_messageStartTime + m_duration - realTime)));
-				}
-				m_labelWidget.Color = m_color * num;
-				m_labelWidget.IsVisible = true;
-				m_labelWidget.Text = m_message;
-				if (realTime - m_messageStartTime > m_duration)
-				{
-					m_message = null;
-				}
+				m_messages[num].Update();
 			}
-			else
+			RemoveOldMessages();
+		}
+		public void AddMessage(Message message)
+		{
+			m_messages.Add(message);
+			Children.Add(message.LabelWidget);
+		}
+
+		public void RemoveMessage(Message message)
+		{
+			m_messages.Remove(message);
+			Children.Remove(message.LabelWidget);
+		}
+
+		public void RemoveOldMessages()
+		{
+			for (int num = m_messages.Count - 1; num >= 0; num--)
 			{
-				m_labelWidget.IsVisible = false;
+				Message message = m_messages[num];
+				int num2 = m_messages.Count - num - 1;
+				if (Time.FrameStartTime >= message.StartTime + (double)message.Duration || num2 >= 3 || (num2 > 0 && !message.Blinking))
+				{
+					RemoveMessage(message);
+				}
 			}
 		}
 	}

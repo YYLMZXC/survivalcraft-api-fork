@@ -39,7 +39,7 @@ namespace Game
 			{
 				GameManager.DisposeProject();
 				WorldsManager.RestoreWorldFromSnapshot(m_worldInfo.DirectoryName, m_worldSnapshotName);
-				m_stateMachine.TransitionTo("Loading");
+				m_stateMachine.TransitionTo("Upgrading");
 			}, null);
 		}
 

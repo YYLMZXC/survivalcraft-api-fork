@@ -74,6 +74,12 @@ namespace Game
 			AddStat(stackPanelWidget, LanguageControl.Get(fName, 11), WorldOptionsScreen.FormatOffset(subsystemGameInfo.WorldSettings.TemperatureOffset));
 			AddStat(stackPanelWidget, LanguageControl.Get(fName, 12), WorldOptionsScreen.FormatOffset(subsystemGameInfo.WorldSettings.HumidityOffset));
 			AddStat(stackPanelWidget, LanguageControl.Get(fName, 13), subsystemGameInfo.WorldSettings.BiomeSize.ToString() + "x");
+			if (subsystemGameInfo.WorldSettings.AreSeasonsChanging)
+			{
+				AddStat(stackPanelWidget, LanguageControl.Get(fName, 96), subsystemGameInfo.WorldSettings.YearDays + " days");
+			}
+			string value0 = (subsystemGameInfo.WorldSettings.AreSeasonsChanging ? "" : "(fixed season)");
+			AddStat(stackPanelWidget, LanguageControl.Get(fName, 97), SubsystemSeasons.GetTimeOfYearName(subsystemGameInfo.WorldSettings.TimeOfYear), value0, SubsystemSeasons.GetTimeOfYearColor(subsystemGameInfo.WorldSettings.TimeOfYear));
 			int num = 0;
 			for (int i = 0; i < FurnitureDesign.maxDesign; i++)
 			{
@@ -201,9 +207,7 @@ namespace Game
 					});
 					foreach (PlayerStats.DeathRecord deathRecord in playerStats.DeathRecords)
 					{
-						float num2 = (float)MathUtils.Remainder(deathRecord.Day, 1.0);
-						string arg = (!(num2 < 0.2f) && !(num2 >= 0.8f)) ? ((!(num2 >= 0.7f)) ? ((!(num2 >= 0.5f)) ? LanguageControl.Get(fName, 76) : LanguageControl.Get(fName, 77)) : LanguageControl.Get(fName, 78)) : LanguageControl.Get(fName, 79);
-						AddStat(stackPanelWidget, string.Format(LanguageControl.Get(fName, 80), Math.Floor(deathRecord.Day) + 1.0, arg), "", deathRecord.Cause);
+						AddStat(stackPanelWidget, $"Day {Math.Floor(deathRecord.Day) + 1.0:0}", "", deathRecord.Cause);
 					}
 				}
 			}
@@ -326,8 +330,12 @@ namespace Game
 
 		public void AddStat(ContainerWidget containerWidget, string title, string value1, string value2 = "")
 		{
+			AddStat(containerWidget, title, value1, value2, Color.White);
+		}
+
+		public void AddStat(ContainerWidget containerWidget, string title, string value1, string value2, Color color)
+		{
 			BitmapFont font = LabelWidget.BitmapFont;
-			Color white = Color.White;
 			Color gray = Color.Gray;
 			containerWidget.Children.Add(new UniformSpacingPanelWidget
 			{
@@ -353,7 +361,7 @@ namespace Game
 							{
 								Text = value1,
 								Font = font,
-								Color = white,
+								Color = color,
 								Margin = new Vector2(5f, 1f)
 							},
 							new LabelWidget

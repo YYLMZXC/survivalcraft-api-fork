@@ -59,11 +59,15 @@ namespace Game
 
 		public float m_environmentTemperature;
 
-		public float m_environmentTemperatureFlux;
+		private float m_targetTemperature;
+
+		public float m_targetTemperatureFlux;
 
 		public float m_temperatureBlackoutFactor;
 
 		public float m_temperatureBlackoutDuration;
+
+		public float EnvironmentTemperature => m_environmentTemperature;
 
 		public static string fName = "ComponentVitalStats";
 
@@ -234,7 +238,8 @@ namespace Game
 			m_lastSleep = Sleep;
 			m_lastTemperature = Temperature;
 			m_lastWetness = Wetness;
-			m_environmentTemperature = Temperature;
+			m_targetTemperature = Temperature;
+			m_environmentTemperature = 8f;
 			m_componentPlayer.ComponentBody.Attacked += delegate (Attackment attackment) { m_lastAttackedTime = m_subsystemTime.GameTime; };
 			foreach (KeyValuePair<string, object> item in valuesDictionary.GetValue<ValuesDictionary>("Satiation"))
 			{
@@ -515,18 +520,17 @@ namespace Game
 					arg = LanguageControl.Get(fName, 44);
 					break;
 			}
-			if (m_subsystemTime.PeriodicGameTimeEvent(2.0, 2.0 * GetHashCode() % 1000.0 / 1000.0))
+			if (m_subsystemTime.PeriodicGameTimeEvent(1.0, 1.0 * ((double)(GetHashCode() % 1000) / 1000.0)))
 			{
 				int x = Terrain.ToCell(m_componentPlayer.ComponentBody.Position.X);
 				int y = Terrain.ToCell(m_componentPlayer.ComponentBody.Position.Y + 0.1f);
 				int z = Terrain.ToCell(m_componentPlayer.ComponentBody.Position.Z);
-				m_subsystemMetersBlockBehavior.CalculateTemperature(x, y, z, 12f, num, out m_environmentTemperature, out m_environmentTemperatureFlux);
+				m_subsystemMetersBlockBehavior.CalculateTemperature(x, y, z, 12f, num, out m_targetTemperature, out m_targetTemperatureFlux, out m_environmentTemperature);
 			}
 			if (m_subsystemGameInfo.WorldSettings.GameMode != 0 && m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled)
 			{
-				float num2 = m_environmentTemperature - Temperature;
-				float num3 = 0.01f + (0.005f * m_environmentTemperatureFlux);
-				Temperature += MathUtils.Saturate(num3 * gameTimeDelta) * num2;
+				float num2 = m_targetTemperature - Temperature;
+				Temperature += MathUtils.Saturate(m_targetTemperatureFlux * gameTimeDelta) * num2;
 			}
 			else
 			{
@@ -554,7 +558,7 @@ namespace Game
 			}
 			else if (Temperature < 8f && ((m_lastTemperature >= 8f) | flag))
 			{
-				m_componentPlayer.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 33), Color.White, blinking: true, playNotificationSound: false);
+				m_componentPlayer.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 33), Color.White, blinking: false, playNotificationSound: false);
 				m_componentPlayer.ComponentGui.TemperatureBarWidget.Flash(10);
 			}
 			if (Temperature >= 24f)
@@ -581,31 +585,31 @@ namespace Game
 			m_lastTemperature = Temperature;
 			m_componentPlayer.ComponentScreenOverlays.IceFactor = MathUtils.Saturate(1f - (Temperature / 6f));
 			m_temperatureBlackoutDuration -= gameTimeDelta;
-			float num4 = MathUtils.Saturate(0.5f * m_temperatureBlackoutDuration);
-			m_temperatureBlackoutFactor = MathUtils.Saturate(m_temperatureBlackoutFactor + (2f * gameTimeDelta * (num4 - m_temperatureBlackoutFactor)));
+			float num3 = MathUtils.Saturate(0.5f * m_temperatureBlackoutDuration);
+			m_temperatureBlackoutFactor = MathUtils.Saturate(m_temperatureBlackoutFactor + (2f * gameTimeDelta * (num3 - m_temperatureBlackoutFactor)));
 			m_componentPlayer.ComponentScreenOverlays.BlackoutFactor = MathF.Max(m_temperatureBlackoutFactor, m_componentPlayer.ComponentScreenOverlays.BlackoutFactor);
 			if (m_temperatureBlackoutFactor > 0.01)
 			{
 				m_componentPlayer.ComponentScreenOverlays.FloatingMessage = LanguageControl.Get(fName, 37);
 				m_componentPlayer.ComponentScreenOverlays.FloatingMessageFactor = MathUtils.Saturate(10f * (m_temperatureBlackoutFactor - 0.9f));
 			}
-			if (m_environmentTemperature > 22f)
+			if (m_targetTemperature > 22f)
 			{
 				m_componentPlayer.ComponentGui.TemperatureBarWidget.BarSubtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Temperature6");
 			}
-			else if (m_environmentTemperature > 18f)
+			else if (m_targetTemperature > 18f)
 			{
 				m_componentPlayer.ComponentGui.TemperatureBarWidget.BarSubtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Temperature5");
 			}
-			else if (m_environmentTemperature > 14f)
+			else if (m_targetTemperature > 14f)
 			{
 				m_componentPlayer.ComponentGui.TemperatureBarWidget.BarSubtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Temperature4");
 			}
-			else if (m_environmentTemperature > 10f)
+			else if (m_targetTemperature > 10f)
 			{
 				m_componentPlayer.ComponentGui.TemperatureBarWidget.BarSubtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Temperature3");
 			}
-			else if (m_environmentTemperature > 6f)
+			else if (m_targetTemperature > 6f)
 			{
 				m_componentPlayer.ComponentGui.TemperatureBarWidget.BarSubtexture = ContentManager.Get<Subtexture>("Textures/Atlas/Temperature2");
 			}
@@ -634,48 +638,51 @@ namespace Game
 				Wetness += 0.05f * precipitationShaftInfo.Intensity * gameTimeDelta;
 			}
 			float num3 = 180f;
-			if (m_environmentTemperature > 8f)
+			if (m_targetTemperature > 8f)
 			{
 				num3 = 120f;
 			}
-			if (m_environmentTemperature > 16f)
+			if (m_targetTemperature > 16f)
 			{
 				num3 = 60f;
 			}
-			if (m_environmentTemperature > 24f)
+			if (m_targetTemperature > 24f)
 			{
 				num3 = 30f;
 			}
 			Wetness -= gameTimeDelta / num3;
-			if (Wetness > 0.8f && m_lastWetness <= 0.8f)
+			if (m_subsystemGameInfo.WorldSettings.GameMode != 0 && m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled)
 			{
-				Time.QueueTimeDelayedExecution(Time.FrameStartTime + 2.0, delegate
+				if (Wetness > 0.8f && m_lastWetness <= 0.8f)
 				{
-					if (Wetness > 0.8f)
+					Time.QueueTimeDelayedExecution(Time.FrameStartTime + 2.0, delegate
 					{
-						m_componentPlayer.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 38), Color.White, blinking: true, playNotificationSound: true);
-					}
-				});
-			}
-			else if (Wetness > 0.2f && m_lastWetness <= 0.2f)
-			{
-				Time.QueueTimeDelayedExecution(Time.FrameStartTime + 2.0, delegate
+						if (Wetness > 0.8f)
+						{
+							m_componentPlayer.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 38), Color.White, blinking: true, playNotificationSound: true);
+						}
+					});
+				}
+				else if (Wetness > 0.2f && m_lastWetness <= 0.2f)
 				{
-					if (Wetness > 0.2f && Wetness <= 0.8f && Wetness > m_lastWetness)
+					Time.QueueTimeDelayedExecution(Time.FrameStartTime + 2.0, delegate
 					{
-						m_componentPlayer.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 39), Color.White, blinking: true, playNotificationSound: true);
-					}
-				});
-			}
-			else if (Wetness <= 0f && m_lastWetness > 0f)
-			{
-				Time.QueueTimeDelayedExecution(Time.FrameStartTime + 2.0, delegate
+						if (Wetness > 0.2f && Wetness <= 0.8f && Wetness > m_lastWetness)
+						{
+							m_componentPlayer.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 39), Color.White, blinking: true, playNotificationSound: true);
+						}
+					});
+				}
+				else if (Wetness <= 0f && m_lastWetness > 0f)
 				{
-					if (Wetness <= 0f)
+					Time.QueueTimeDelayedExecution(Time.FrameStartTime + 2.0, delegate
 					{
-						m_componentPlayer.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 40), Color.White, blinking: true, playNotificationSound: true);
-					}
-				});
+						if (Wetness <= 0f)
+						{
+							m_componentPlayer.ComponentGui.DisplaySmallMessage(LanguageControl.Get(fName, 40), Color.White, blinking: true, playNotificationSound: true);
+						}
+					});
+				}
 			}
 			m_lastWetness = Wetness;
 		}

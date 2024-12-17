@@ -78,7 +78,7 @@ namespace Game
 		{
 			if (GetIsWild(Terrain.ExtractData(value)))
 			{
-				color *= BlockColorsMap.GrassColorsMap.Lookup(environmentData.Temperature, environmentData.Humidity);
+				color *= BlockColorsMap.Grass.Lookup(environmentData.Temperature, environmentData.Humidity);
 				BlocksManager.DrawFlatOrImageExtrusionBlock(primitivesRenderer, value, size, ref matrix, null, color, isEmissive: false, environmentData);
 			}
 			else
@@ -91,7 +91,7 @@ namespace Game
 		{
 			if (GetIsWild(Terrain.ExtractData(value)))
 			{
-				Color color = BlockColorsMap.GrassColorsMap.Lookup(generator.Terrain, x, y, z);
+				Color color = BlockColorsMap.Grass.Lookup(generator.Terrain, x, y, z);
 				generator.GenerateCrossfaceVertices(this, value, x, y, z, color, GetFaceTextureSlot(0, value), geometry.SubsetAlphaTest);
 			}
 			else
@@ -110,7 +110,7 @@ namespace Game
 		{
 			if (GetIsWild(Terrain.ExtractData(value)))
 			{
-				Color color = BlockColorsMap.GrassColorsMap.Lookup(subsystemTerrain.Terrain, Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
+				Color color = BlockColorsMap.Grass.Lookup(subsystemTerrain.Terrain, Terrain.ToCell(position.X), Terrain.ToCell(position.Y), Terrain.ToCell(position.Z));
 				return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, color, GetFaceTextureSlot(4, value));
 			}
 			return new BlockDebrisParticleSystem(subsystemTerrain, position, strength, DestructionDebrisScale, Color.White, GetFaceTextureSlot(4, value));

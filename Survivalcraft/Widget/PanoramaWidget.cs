@@ -26,7 +26,7 @@ namespace Game
 			float num = (float)MathUtils.Remainder(Time.FrameStartTime + m_timeOffset, 10000.0);
 			float x = (2f * SimplexNoise.OctavedNoise(num, 0.02f, 4, 2f, 0.5f)) - 1f;
 			float y = (2f * SimplexNoise.OctavedNoise(num + 100f, 0.02f, 4, 2f, 0.5f)) - 1f;
-			m_position += 0.03f * new Vector2(x, y) * MathUtils.Min(Time.FrameDuration, 0.1f);
+			m_position += 0.06f * new Vector2(x, y) * MathUtils.Min(Time.FrameDuration, 0.1f);
 			m_position.X = MathUtils.Remainder(m_position.X, 1f);
 			m_position.Y = MathUtils.Remainder(m_position.Y, 1f);
 			float f = (0.5f * MathUtils.PowSign(MathF.Sin((0.21f * num) + 2f), 2f)) + 0.5f;

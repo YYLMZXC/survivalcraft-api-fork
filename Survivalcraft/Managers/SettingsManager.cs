@@ -88,7 +88,7 @@ namespace Game
 			}
 		}
 
-		public static ViewAngleMode ViewAngleMode
+		public static float ViewAngle
 		{
 			get;
 			set;
@@ -365,18 +365,6 @@ namespace Game
 			set;
 		}
 
-		public static bool EnableAndroidAudioTrackCaching
-		{
-			get;
-			set;
-		}
-
-		public static bool UseReducedZRange
-		{
-			get;
-			set;
-		}
-
 		public static int IsolatedStorageMigrationCounter
 		{
 			get;
@@ -488,8 +476,8 @@ namespace Game
 				DragHalfInSplit = true;
 				m_resolutionMode = ResolutionMode.High;
 				VisibilityRange = 128;
-				ViewAngleMode = ViewAngleMode.Normal;
-				TerrainMipmapsEnabled = false;
+				ViewAngle = 1f;
+				TerrainMipmapsEnabled = true;
 				SkyRenderingMode = SkyRenderingMode.Full;
 				ObjectsShadowsEnabled = true;
 				PresentationInterval = 1;
@@ -544,6 +532,10 @@ namespace Game
 				CreativeDragMaxStacking = true;
 				LowFPSToTimeDeceleration = 10;
 				UseAPISleepTimeAcceleration = false;
+			}
+			if (VersionsManager.CompareVersions(LastLaunchedVersion, "2.4") < 0)
+			{
+				TerrainMipmapsEnabled = true;
 			}
 			Window.Deactivated += delegate
 			{

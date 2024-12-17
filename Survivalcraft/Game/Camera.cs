@@ -11,6 +11,8 @@ namespace Game
 			set;
 		}
 
+		public VrEye? Eye { get; set; }
+
 		public abstract Vector3 ViewPosition
 		{
 			get;

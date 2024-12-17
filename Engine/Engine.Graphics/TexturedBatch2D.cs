@@ -2,6 +2,32 @@ namespace Engine.Graphics
 {
 	public  class TexturedBatch2D : BaseTexturedBatch
 	{
+        public TexturedBatch2D()
+        {
+            base.DepthStencilState = DepthStencilState.None;
+            base.RasterizerState = RasterizerState.CullNoneScissor;
+            base.BlendState = BlendState.AlphaBlend;
+            base.SamplerState = SamplerState.LinearClamp;
+        }
+
+        public void QueueBatch(TexturedBatch2D batch, Matrix? matrix = null, Color? color = null)
+        {
+            int count = TriangleVertices.Count;
+            TriangleVertices.AddRange(batch.TriangleVertices);
+            for (int i = 0; i < batch.TriangleIndices.Count; i++)
+            {
+                TriangleIndices.Add((ushort)(batch.TriangleIndices[i] + count));
+            }
+            if (matrix.HasValue && matrix != Matrix.Identity)
+            {
+                TransformTriangles(matrix.Value, count);
+            }
+            if (color.HasValue && color != Color.White)
+            {
+                TransformTrianglesColors(color.Value, count);
+            }
+        }
+
 		public void QueueTriangle(Vector2 p1, Vector2 p2, Vector2 p3, float depth, Vector2 texCoord1, Vector2 texCoord2, Vector2 texCoord3, Color color)
 		{
 			int count = TriangleVertices.Count;
@@ -82,22 +108,6 @@ namespace Engine.Graphics
 			TriangleIndices.Array[count2 + 3] = count + 2;
 			TriangleIndices.Array[count2 + 4] = count + 3;
 			TriangleIndices.Array[count2 + 5] = count;
-		}
-
-		public void TransformTriangles(Matrix matrix, int start = 0, int end = -1)
-		{
-			VertexPositionColorTexture[] array = TriangleVertices.Array;
-			if (end < 0)
-			{
-				end = TriangleVertices.Count;
-			}
-			for (int i = start; i < end; i++)
-			{
-				Vector2 v = array[i].Position.XY;
-				Vector2.Transform(ref v, ref matrix, out v);
-				array[i].Position.X = v.X;
-				array[i].Position.Y = v.Y;
-			}
 		}
 
 		public void Flush(bool clearAfterFlush = true)

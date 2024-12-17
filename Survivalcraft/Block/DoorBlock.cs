@@ -139,11 +139,6 @@ namespace Game
 			return null;
 		}
 
-		public override bool ShouldAvoid(int value)
-		{
-			return !GetOpen(Terrain.ExtractData(value));
-		}
-
 		public override bool IsHeatBlocker(int value)
 		{
 			return !GetOpen(Terrain.ExtractData(value));

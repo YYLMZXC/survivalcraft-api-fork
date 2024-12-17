@@ -88,6 +88,8 @@ namespace Game
 
 		public bool IsTransparent;
 
+		public bool GenerateFacesForSameNeighbors;
+
 		public int DefaultShadowStrength;
 
 		public int LightAttenuation;
@@ -325,6 +327,10 @@ namespace Game
 		{
 			return IsTransparent;
 		}
+		public virtual bool GenerateFacesForSameNeighbors_(int value)
+		{
+			return GenerateFacesForSameNeighbors;
+		}
 		public virtual bool IsFluidBlocker_(int value)
 		{
 			return IsFluidBlocker;
@@ -421,7 +427,7 @@ namespace Game
 			return IsTransparent;
 		}
 
-		public virtual bool ShouldGenerateFace(SubsystemTerrain subsystemTerrain, int face, int value, int neighborValue)
+		public virtual bool ShouldGenerateFace(SubsystemTerrain subsystemTerrain, int face, int value, int neighborValue, int x, int y, int z)
 		{
 			int num = Terrain.ExtractContents(neighborValue);
 			return BlocksManager.Blocks[num].IsFaceTransparent(subsystemTerrain, CellFace.OppositeFace(face), neighborValue);
