@@ -105,7 +105,11 @@ namespace Game
 
 		public void DrawRayHighlight(Camera camera)
 		{
-			Ray3 ray = default;
+			if (!camera.Eye.HasValue)
+			{
+				return;
+			}
+			Ray3 ray;
 			float num;
 			if (m_highlightRaycastResult is TerrainRaycastResult)
 			{
@@ -143,11 +147,12 @@ namespace Game
 
 		public void DrawReticleHighlight(Camera camera)
 		{
-
+			// TODO: 加上？
 		}
 
 		public void DrawFillHighlight(Camera camera)
 		{
+			// TODO: 加上？
 		}
 
 		public void DrawOutlineHighlight(Camera camera)
@@ -160,7 +165,9 @@ namespace Game
 			{
 				CellFace value = m_componentPlayer.ComponentMiner.DigCellFace.Value;
 				BoundingBox cellFaceBoundingBox = GetCellFaceBoundingBox(value.Point);
-				DrawBoundingBoxFace(m_primitivesRenderer3D.FlatBatch(0, DepthStencilState.None), value.Face, cellFaceBoundingBox.Min, cellFaceBoundingBox.Max, Color.Black);
+				float num = m_subsystemSky.CalculateFog(camera.ViewPosition, cellFaceBoundingBox.Center());
+				Color color = Color.MultiplyNotSaturated(Color.Black, 1f - num);
+				DrawBoundingBoxFace(m_primitivesRenderer3D.FlatBatch(0, DepthStencilState.None), value.Face, cellFaceBoundingBox.Min, cellFaceBoundingBox.Max, color);
 			}
 			else
 			{
@@ -168,12 +175,16 @@ namespace Game
 				{
 					CellFace cellFace = ((TerrainRaycastResult)m_highlightRaycastResult).CellFace;
 					BoundingBox cellFaceBoundingBox2 = GetCellFaceBoundingBox(cellFace.Point);
-					DrawBoundingBoxFace(m_primitivesRenderer3D.FlatBatch(0, DepthStencilState.None), cellFace.Face, cellFaceBoundingBox2.Min, cellFaceBoundingBox2.Max, Color.Black);
+					float num2 = m_subsystemSky.CalculateFog(camera.ViewPosition, cellFaceBoundingBox2.Center());
+					Color color2 = Color.MultiplyNotSaturated(Color.Black, 1f - num2);
+					DrawBoundingBoxFace(m_primitivesRenderer3D.FlatBatch(0, DepthStencilState.None), cellFace.Face, cellFaceBoundingBox2.Min, cellFaceBoundingBox2.Max, color2);
 				}
 				if (NearbyEditableCell.HasValue)
 				{
 					BoundingBox cellFaceBoundingBox3 = GetCellFaceBoundingBox(NearbyEditableCell.Value);
-					m_primitivesRenderer3D.FlatBatch(0, DepthStencilState.None).QueueBoundingBox(cellFaceBoundingBox3, Color.Black);
+					float num3 = m_subsystemSky.CalculateFog(camera.ViewPosition, cellFaceBoundingBox3.Center());
+					Color color3 = Color.MultiplyNotSaturated(Color.Black, 1f - num3);
+					m_primitivesRenderer3D.FlatBatch(0, DepthStencilState.None).QueueBoundingBox(cellFaceBoundingBox3, color3);
 				}
 			}
 			m_primitivesRenderer3D.Flush(camera.ViewProjectionMatrix);

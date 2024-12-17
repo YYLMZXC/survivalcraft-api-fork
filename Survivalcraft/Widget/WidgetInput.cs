@@ -724,7 +724,10 @@ public class WidgetInput
 		{
 			Down = true;
 		}
-		Back |= Keyboard.IsKeyDownOnce(Key.Back);
+		if (IsKeyDownOnce(Key.Back))
+		{
+			Back = true;
+		}
 	}
 
     public void UpdateInputFromMouse()

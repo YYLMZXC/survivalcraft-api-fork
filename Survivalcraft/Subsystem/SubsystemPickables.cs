@@ -107,41 +107,49 @@ namespace Game
 			foreach (Pickable pickable in m_pickables)
 			{
 				Vector3 position = pickable.Position;
-				float num2 = Vector3.Dot(camera.ViewDirection, position - camera.ViewPosition);
-				if (num2 > -0.5f && num2 < num)
+				Vector3 v = position - camera.ViewPosition;
+				float num2 = Vector3.Dot(camera.ViewDirection, v);
+				if (num2 < -0.5f || num2 > num)
 				{
-					int num3 = Terrain.ExtractContents(pickable.Value);
-					Block block = BlocksManager.Blocks[num3];
-					float num4 = (float)(totalElapsedGameTime - pickable.CreationTime);
+					continue;
+				}
+				float num3 = v.Length();
+				if (!(num3 > num))
+				{
+					int num4 = Terrain.ExtractContents(pickable.Value);
+					Block block = BlocksManager.Blocks[num4];
+					float num5 = (float)(totalElapsedGameTime - pickable.CreationTime);
 					if (!pickable.StuckMatrix.HasValue)
 					{
-						position.Y += 0.25f * MathUtils.Saturate(3f * num4);
+						position.Y += 0.25f * MathUtils.Saturate(3f * num5);
 					}
 					int x = Terrain.ToCell(position.X);
-					int num5 = Terrain.ToCell(position.Y);
+					int num6 = Terrain.ToCell(position.Y);
 					int z = Terrain.ToCell(position.Z);
 					TerrainChunk chunkAtCell = m_subsystemTerrain.Terrain.GetChunkAtCell(x, z);
-					if (chunkAtCell != null && chunkAtCell.State >= TerrainChunkState.InvalidVertices1 && num5 >= 0 && num5 < 255)
+					if (chunkAtCell != null && chunkAtCell.State >= TerrainChunkState.InvalidVertices1 && num6 >= 0 && num6 < 255)
 					{
 						m_drawBlockEnvironmentData.Humidity = m_subsystemTerrain.Terrain.GetSeasonalHumidity(x, z);
-						m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(num5);
-						float f = MathUtils.Max(position.Y - num5 - 0.75f, 0f) / 0.25f;
-						int num6 = pickable.Light = (int)MathUtils.Lerp(m_subsystemTerrain.Terrain.GetCellLightFast(x, num5, z), m_subsystemTerrain.Terrain.GetCellLightFast(x, num5 + 1, z), f);
+						m_drawBlockEnvironmentData.Temperature = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(num6);
+						float f = MathUtils.Max(position.Y - num6 - 0.75f, 0f) / 0.25f;
+						pickable.Light = (int)MathUtils.Lerp(m_subsystemTerrain.Terrain.GetCellLightFast(x, num6, z), m_subsystemTerrain.Terrain.GetCellLightFast(x, num6 + 1, z), f);
 					}
 					m_drawBlockEnvironmentData.Light = pickable.Light;
 					m_drawBlockEnvironmentData.BillboardDirection = pickable.Position - camera.ViewPosition;
 					m_drawBlockEnvironmentData.InWorldMatrix.Translation = position;
+					float num7 = 1f - m_subsystemSky.CalculateFog(camera.ViewPosition, pickable.Position);
+					num7 *= MathUtils.Saturate(0.25f * (num - num3));
 					Matrix drawMatrix;
 					if (pickable.StuckMatrix.HasValue)
 						drawMatrix = pickable.StuckMatrix.Value;
 					else
 					{
-						matrix.Translation = position + new Vector3(0f, 0.04f * MathF.Sin(3f * num4), 0f);
+						matrix.Translation = position + new Vector3(0f, 0.04f * MathF.Sin(3f * num5), 0f);
 						drawMatrix = matrix;
 					}
 					bool shouldDrawBlock = true;
 					float drawBlockSize = 0.3f;
-					Color drawBlockColor = Color.White;
+					Color drawBlockColor = Color.MultiplyNotSaturated(Color.White, num7);
 					ModsManager.HookAction("OnPickableDraw",loader =>
 					{
 						loader.OnPickableDraw(pickable, this, camera, drawOrder, ref shouldDrawBlock, ref drawBlockSize, ref drawBlockColor);

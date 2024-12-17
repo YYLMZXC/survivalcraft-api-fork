@@ -29,8 +29,7 @@ namespace Game {
 				new AndroidSdCardExternalContentProvider(),
 #endif
 				new SchubExternalContentProvider(),
-                new DropboxExternalContentProvider(),
-                new TransferShExternalContentProvider()
+                new DropboxExternalContentProvider()
             ];
         }
 

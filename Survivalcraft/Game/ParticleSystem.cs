@@ -79,31 +79,51 @@ namespace Game
 					Vector2 size = particle.Size;
 					float rotation = particle.Rotation;
 					int textureSlot = particle.TextureSlot;
-					int billboardingMode = (int)particle.BillboardingMode;
 					Vector3 p;
 					Vector3 p2;
 					Vector3 p3;
 					Vector3 p4;
-					if (rotation != 0f)
+					if (particle.BillboardingMode == ParticleBillboardingMode.None)
 					{
-						Vector3 v = (m_front[billboardingMode].X * m_front[billboardingMode].X > m_front[billboardingMode].Z * m_front[billboardingMode].Z) ? new Vector3(0f, MathF.Cos(rotation), MathF.Sin(rotation)) : new Vector3(MathF.Sin(rotation), MathF.Cos(rotation), 0f);
-						var vector = Vector3.Normalize(Vector3.Cross(m_front[(uint)particle.BillboardingMode], v));
-						v = Vector3.Normalize(Vector3.Cross(m_front[(uint)particle.BillboardingMode], vector));
-						vector *= size.Y;
-						v *= size.X;
-						p = position + (-vector - v);
-						p2 = position + (vector - v);
-						p3 = position + (vector + v);
-						p4 = position + (-vector + v);
+						p = position + (-particle.Right - particle.Up);
+						p2 = position + (particle.Right - particle.Up);
+						p3 = position + (particle.Right + particle.Up);
+						p4 = position + (-particle.Right + particle.Up);
+					}
+					else if (particle.BillboardingMode == ParticleBillboardingMode.Horizontal && rotation != 0f)
+					{
+						Vector3 vector = new Vector3(MathF.Cos(rotation), 0f, MathF.Sin(rotation));
+						Vector3 vector2 = new Vector3(vector.Z, 0f, 0f - vector.X);
+						vector2 *= size.Y;
+						vector *= size.X;
+						p = position + (-vector2 - vector);
+						p2 = position + (vector2 - vector);
+						p3 = position + (vector2 + vector);
+						p4 = position + (-vector2 + vector);
+					}
+					else if (rotation != 0f)
+					{
+						Vector3 v = m_front[(uint)particle.BillboardingMode];
+						Vector3 v2 = ((v.X * v.X > v.Z * v.Z) ? new Vector3(0f, MathF.Cos(rotation), MathF.Sin(rotation)) : new Vector3(MathF.Sin(rotation), MathF.Cos(rotation), 0f));
+						Vector3 vector3 = Vector3.Normalize(Vector3.Cross(v, v2));
+						v2 = Vector3.Normalize(Vector3.Cross(v, vector3));
+						vector3 *= size.Y;
+						v2 *= size.X;
+						p = position + (-vector3 - v2);
+						p2 = position + (vector3 - v2);
+						p3 = position + (vector3 + v2);
+						p4 = position + (-vector3 + v2);
 					}
 					else
 					{
-						Vector3 vector2 = m_right[billboardingMode] * size.X;
-						Vector3 v2 = m_up[billboardingMode] * size.Y;
-						p = position + (-vector2 - v2);
-						p2 = position + (vector2 - v2);
-						p3 = position + (vector2 + v2);
-						p4 = position + (-vector2 + v2);
+						Vector3 vector4 = m_right[(uint)particle.BillboardingMode];
+						Vector3 vector5 = m_up[(uint)particle.BillboardingMode];
+						Vector3 vector6 = vector4 * size.X;
+						Vector3 vector7 = vector5 * size.Y;
+						p = position + (-vector6 - vector7);
+						p2 = position + (vector6 - vector7);
+						p3 = position + (vector6 + vector7);
+						p4 = position + (-vector6 + vector7);
 					}
 					TexturedBatch3D obj = particle.UseAdditiveBlending ? AdditiveBatch : AlphaBlendedBatch;
 					var v3 = new Vector2(textureSlot % TextureSlotsCount, textureSlot / TextureSlotsCount);

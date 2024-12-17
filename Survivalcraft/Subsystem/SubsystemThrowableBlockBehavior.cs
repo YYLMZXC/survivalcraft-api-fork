@@ -58,7 +58,8 @@ namespace Game
 							{
 								num2 *= (0.5f * ((componentMiner?.ComponentFactors?.StrengthFactor ?? 1f) - 1f)) + 1f;
 							}
-							if (m_subsystemProjectiles.FireProjectile(slotValue, vector, v * num2, m_random.Vector3(5f, 10f), componentMiner.ComponentCreature) != null)
+							Vector3 velocity = componentMiner.ComponentCreature.ComponentBody.Velocity + v * num2;
+							if (m_subsystemProjectiles.FireProjectile(slotValue, vector, velocity, m_random.Vector3(5f, 10f), componentMiner.ComponentCreature) != null)
 							{
 								componentMiner.Inventory.RemoveSlotItems(activeSlotIndex, 1);
 								m_subsystemAudio.PlaySound("Audio/Throw", m_random.Float(0.2f, 0.3f), m_random.Float(-0.2f, 0.2f), aim.Position, 2f, autoDelay: true);

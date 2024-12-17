@@ -4,13 +4,13 @@ using TemplatesDatabase;
 
 namespace Game
 {
-	public class SubsystemCactusBlockBehavior : SubsystemPollableBlockBehavior, IUpdateable
+	public class SubsystemCactusBlockBehavior : SubsystemPollableBlockBehavior
 	{
 		public SubsystemTime m_subsystemTime;
 
-		public SubsystemGameInfo m_subsystemGameInfo;
+		public SubsystemCellChangeQueue m_subsystemCellChangeQueue;
 
-		public Dictionary<Point3, int> m_toUpdate = [];
+		public SubsystemGameInfo m_subsystemGameInfo;
 
 		public Random m_random = new();
 
@@ -21,8 +21,6 @@ namespace Game
 		{
 			BlocksManager.GetBlockIndex<CactusBlock>()
 		};
-
-		public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
 		public override void OnNeighborBlockChanged(int x, int y, int z, int neighborX, int neighborY, int neighborZ)
 		{
@@ -46,7 +44,7 @@ namespace Game
 				int cellContents2 = SubsystemTerrain.Terrain.GetCellContents(x, y - 2, z);
 				if ((cellContents != m_cactusBlockIndex || cellContents2 != m_cactusBlockIndex) && m_random.Float(0f, 1f) < 0.25f)
 				{
-					m_toUpdate[new Point3(x, y + 1, z)] = Terrain.MakeBlockValue(m_cactusBlockIndex, 0, 0);
+					m_subsystemCellChangeQueue.QueueCellChange(x, y + 1, z, Terrain.MakeBlockValue(m_cactusBlockIndex, 0, 0));
 				}
 			}
 		}
@@ -63,25 +61,11 @@ namespace Game
 		public override void Load(ValuesDictionary valuesDictionary)
 		{
 			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+			m_subsystemCellChangeQueue = base.Project.FindSubsystem<SubsystemCellChangeQueue>(throwOnError: true);
 			m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
 			m_sandBlockIndex = BlocksManager.GetBlockIndex<SandBlock>();
 			m_cactusBlockIndex = BlocksManager.GetBlockIndex<CactusBlock>();
 			base.Load(valuesDictionary);
-		}
-
-		public void Update(float dt)
-		{
-			if (m_subsystemTime.PeriodicGameTimeEvent(60.0, 0.0))
-			{
-				foreach (KeyValuePair<Point3, int> item in m_toUpdate)
-				{
-					if (SubsystemTerrain.Terrain.GetCellContents(item.Key.X, item.Key.Y, item.Key.Z) == 0)
-					{
-						SubsystemTerrain.ChangeCell(item.Key.X, item.Key.Y, item.Key.Z, item.Value);
-					}
-				}
-				m_toUpdate.Clear();
-			}
 		}
 	}
 }

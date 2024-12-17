@@ -130,7 +130,6 @@ namespace Game
 				});
 				if (!skipped)
 				{
-                    m_sunLightDirection = 1.25f * Vector3.TransformNormal(SunVector(m_subsystemSky), camera.ViewMatrix);
                     if (drawOrder == m_drawOrders[1])//绘制类型为AlphaThreshold的Model
                     {
                         Display.DepthStencilState = DepthStencilState.Default;
@@ -248,7 +247,8 @@ namespace Game
 			modelShader.LightDirection1 = -Vector3.TransformNormal(LightingManager.DirectionToLight1, camera.ViewMatrix);
 			modelShader.LightDirection2 = -Vector3.TransformNormal(LightingManager.DirectionToLight2, camera.ViewMatrix);
 			modelShader.FogColor = new Vector3(m_subsystemSky.ViewFogColor);
-			modelShader.FogStartInvLength = new Vector2(m_subsystemSky.ViewFogRange.X, 1f / (m_subsystemSky.ViewFogRange.Y - m_subsystemSky.ViewFogRange.X));
+			modelShader.FogBottomTopDensity = new Vector3(m_subsystemSky.ViewFogBottom - camera.ViewPosition.Y, m_subsystemSky.ViewFogTop - camera.ViewPosition.Y, m_subsystemSky.ViewFogDensity);
+			modelShader.HazeStartDensity = new Vector2(m_subsystemSky.ViewHazeStart, m_subsystemSky.ViewHazeDensity);
 			modelShader.FogYMultiplier = m_subsystemSky.VisibilityRangeYMultiplier;
 			modelShader.WorldUp = Vector3.TransformNormal(Vector3.UnitY, camera.ViewMatrix);
 			modelShader.Transforms.View = Matrix.Identity;
@@ -291,7 +291,7 @@ namespace Game
 			{
 				if (modelData.ComponentBody != null && modelData.ComponentModel.CastsShadow)
 				{
-					Vector3 shadowPosition = modelData.ComponentBody.Position + new Vector3(0f, 0.1f, 0f);
+					Vector3 shadowPosition = modelData.ComponentBody.Position + new Vector3(0f, 0.02f, 0f);
 					BoundingBox boundingBox = modelData.ComponentBody.BoundingBox;
 					float shadowDiameter = 2.25f * (boundingBox.Max.X - boundingBox.Min.X);
 					m_subsystemShadows.QueueShadow(camera, shadowPosition, shadowDiameter, modelData.ComponentModel.Opacity ?? 1f);
@@ -314,26 +314,6 @@ namespace Game
 				p = (!boneTransform.HasValue) ? Vector3.Zero : (boneTransform.Value.Translation + new Vector3(0f, 0.9f, 0f));
 			}
 			return LightingManager.CalculateSmoothLight(m_subsystemTerrain, p);
-		}
-
-		//太阳向量
-		public Vector3 SunVector(SubsystemSky subsystemSky)
-		{
-			float timeOfDay = subsystemSky.m_subsystemTimeOfDay.TimeOfDay;
-			float num = 2f * timeOfDay * (float)Math.PI;
-			float x = num + (float)Math.PI;
-			float f = MathUtils.Max(SubsystemSky.CalculateDawnGlowIntensity(timeOfDay), SubsystemSky.CalculateDuskGlowIntensity(timeOfDay));
-			float s = MathUtils.Lerp(90f, 160f, f);
-			Vector3 vector = new()
-			{
-				X = 0f - MathF.Sin(x),
-				Y = 0f - MathF.Cos(x),
-				Z = 0f
-			};
-			Vector3 unitZ = Vector3.UnitZ;
-			Vector3 v = Vector3.Cross(unitZ, vector);
-			Vector3 v2 = (vector * 900f) - (s * unitZ) - (num * v);
-			return Vector3.Normalize(v2);
 		}
 
 		//阴影绘制

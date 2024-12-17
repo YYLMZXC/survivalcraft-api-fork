@@ -14,9 +14,9 @@ public class SubsystemCellChangeQueue : Subsystem, IUpdateable
 		public int Value;
 	}
 
-	private SubsystemTime m_subsystemTime;
+	public SubsystemTime m_subsystemTime;
 
-	private SubsystemTerrain m_subsystemTerrain;
+	public SubsystemTerrain m_subsystemTerrain;
 
 	private Dictionary<Point3, CellChange> m_toChange = new Dictionary<Point3, CellChange>();
 

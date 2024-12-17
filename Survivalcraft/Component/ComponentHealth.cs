@@ -39,13 +39,13 @@ namespace Game
 
         public Random m_random = new();
 
-        public bool m_regenerateLifeEnabled = true;//ÉúÃüÔÙÉú
-        public virtual float VoidDamageFactor { get; set; }//yÖá¹ý¸ß»òÕß¹ýµÍÔì³ÉµÄÉËº¦ÏµÊý
-        public virtual float AirLackResilience { get; set; }//ÄçË®ÉËº¦¿¹ÐÔ
-        public virtual float MagmaResilience { get; set; }//ÈÛÑÒÉËº¦¿¹ÐÔ
-        public virtual float CrushResilience { get; set; }//¼·Ñ¹ÉËº¦¿¹ÐÔ
-        public virtual float SpikeResilience { get; set; }//¼â´ÌÉËº¦¿¹ÐÔ
-        public virtual float ExplosionResilience { get; set; }//±¬Õ¨ÉËº¦¿¹ÐÔ
+        public bool m_regenerateLifeEnabled = true;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        public virtual float VoidDamageFactor { get; set; }//yï¿½ï¿½ï¿½ï¿½ß»ï¿½ï¿½ß¹ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½ï¿½Ëºï¿½Ïµï¿½ï¿½
+        public virtual float AirLackResilience { get; set; }//ï¿½ï¿½Ë®ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½
+        public virtual float MagmaResilience { get; set; }//ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½
+        public virtual float CrushResilience { get; set; }//ï¿½ï¿½Ñ¹ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½
+        public virtual float SpikeResilience { get; set; }//ï¿½ï¿½ï¿½ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½
+        public virtual float ExplosionResilience { get; set; }//ï¿½ï¿½Õ¨ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½
 
         public virtual void OnSpiked(SubsystemBlockBehavior spikeBlockBehavior, float damage , CellFace cellFace, float velocity, ComponentBody componentBody, string causeOfDeath)
         {
@@ -124,7 +124,7 @@ namespace Game
         public float m_fireResilience;
 
         /// <summary>
-        /// ÉúÃüÖµ
+        /// ï¿½ï¿½ï¿½ï¿½Öµ
         /// </summary>
         public virtual float AttackResilience
         {
@@ -132,7 +132,7 @@ namespace Game
             set;
         }
         /// <summary>
-        /// µôÂä¿¹ÐÔ
+        /// ï¿½ï¿½ï¿½ä¿¹ï¿½ï¿½
         /// </summary>
         public virtual float FallResilience
         {
@@ -159,19 +159,19 @@ namespace Game
         }
 
         /// <summary>
-        /// ÉúÃüÖµ¼Ó³ÉÏµÊý
+        /// ï¿½ï¿½ï¿½ï¿½Öµï¿½Ó³ï¿½Ïµï¿½ï¿½
         /// </summary>
         public virtual float AttackResilienceFactor { get; set; }
         /// <summary>
-        /// µôÂä¿¹ÐÔ¼Ó³ÉÏµÊý
+        /// ï¿½ï¿½ï¿½ä¿¹ï¿½Ô¼Ó³ï¿½Ïµï¿½ï¿½
         /// </summary>
         public virtual float FallResilienceFactor { get; set; }
         /// <summary>
-        /// »ðÑæÉËº¦¿¹ÐÔÏµÊý
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½
         /// </summary>
         public virtual float FireResilienceFactor { get; set; }
         /// <summary>
-        /// ÉúÃü»Ö¸´ËÙ¶ÈÏµÊý
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Ù¶ï¿½Ïµï¿½ï¿½
         /// </summary>
         public virtual float HealFactor { get; set; }
 
@@ -187,7 +187,7 @@ namespace Game
             {
                 if (amount > 0f && Health < 1f)
                 {
-                    Health = MathUtils.Min(Health + (amount * HealFactor), 1f);
+                    Health = MathUtils.Saturate(Health + (amount * HealFactor));
                 }
             }
         }
@@ -268,7 +268,7 @@ namespace Game
 
                     if (StackExperienceOnKill)
                     {
-                        for (int i = 0; i < Math.Min(100, experienceOrbDropCount); i++) //µ÷Õû¾­ÑéÇòµÄµôÂäÂß¼­£¬¶àÓÚ100¸öÊ±Ôò³É×éµôÂä·ÀÖ¹¿¨¶Ù
+                        for (int i = 0; i < Math.Min(100, experienceOrbDropCount); i++) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½100ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
                         {
                             Vector2 vector = m_random.Vector2(2.5f, 3.5f);
                             int dropInWave = experienceOrbDropCount / 100;
@@ -291,7 +291,7 @@ namespace Game
         {
             lock (this)
             {
-                //¸üÐÂÊôÐÔ¼Ó³É
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼Ó³ï¿½
                 AttackResilience = m_attackResilience * AttackResilienceFactor;
                 FallResilience = m_fallResilience * FallResilienceFactor;
                 FireResilienceFactor = m_fireResilience * FireResilienceFactor;
@@ -320,7 +320,7 @@ namespace Game
                     }
                     Heal(m_subsystemGameInfo.TotalElapsedGameTimeDelta * num);
                 }
-                //ÄçË®¿ÕÆøÖµ
+                //ï¿½ï¿½Ë®ï¿½ï¿½ï¿½ï¿½Öµ
                 if (BreathingMode == BreathingMode.Air)
                 {
                     int cellContents = m_subsystemTerrain.Terrain.GetCellContents(Terrain.ToCell(position.X), Terrain.ToCell(m_componentCreature.ComponentCreatureModel.EyePosition.Y), Terrain.ToCell(position.Z));
@@ -328,16 +328,16 @@ namespace Game
                 }
                 else if (BreathingMode == BreathingMode.Water)
                 {
-                    Air = m_componentCreature.ComponentBody.ImmersionFactor > 0.25f ? 1f : MathUtils.Saturate(Air - (dt / AirCapacity));
+                    Air = (m_componentCreature.ComponentBody.ImmersionFactor > 0.25f || m_componentCreature.ComponentBody.IsEmbeddedInIce) ? 1f : MathUtils.Saturate(Air - (dt / AirCapacity));
                 }
-                //ÈÛÑÒÉËº¦
+                //ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½
                 if (m_componentCreature.ComponentBody.ImmersionFactor > 0f && m_componentCreature.ComponentBody.ImmersionFluidBlock is MagmaBlock)
                 {
                     Injure(1f / MagmaResilience * m_componentCreature.ComponentBody.ImmersionFactor * dt, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 1));
                     float num2 = 1.1f + (0.1f * (float)Math.Sin(12.0 * m_subsystemTime.GameTime));
                     m_redScreenFactor = MathUtils.Max(m_redScreenFactor, num2 * 0.75f * m_componentCreature.ComponentBody.ImmersionFactor / MagmaResilience);
                 }
-                //µøÂäÉËº¦
+                //ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½
                 float fallDamage = CalculateFallDamage();
                 ModsManager.HookAction("CalculateFallDamage", loader =>
                 {
@@ -346,13 +346,13 @@ namespace Game
                 });
                 if (fallDamage > 0f) Injure(fallDamage, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 2));
                 m_wasStanding = m_componentCreature.ComponentBody.StandingOnValue.HasValue || m_componentCreature.ComponentBody.StandingOnBody != null;
-                //Ðé¿ÕÉËº¦
+                //ï¿½ï¿½ï¿½ï¿½Ëºï¿½
                 if (VoidDamageFactor > 0f && (position.Y < 0f || position.Y > 296f) && m_subsystemTime.PeriodicGameTimeEvent(2.0, 0.0))
                 {
                     Injure(VoidDamageFactor * 0.1f, null, ignoreInvulnerability: true, LanguageControl.Get(GetType().Name, 3));
                     m_componentPlayer?.ComponentGui.DisplaySmallMessage(LanguageControl.Get(GetType().Name, 4), Color.White, blinking: true, playNotificationSound: false);
                 }
-                //ÄçË®ÉËº¦
+                //ï¿½ï¿½Ë®ï¿½Ëºï¿½
                 bool num5 = m_subsystemTime.PeriodicGameTimeEvent(1.0, 0.0);
                 if (num5 && Air == 0f)
                 {
@@ -360,19 +360,19 @@ namespace Game
                     num6 /= m_componentFactors?.ResilienceFactor ?? 1;
                     Injure(num6, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 7));
                 }
-                //»ðÑæÉËº¦
+                //ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½
                 if (num5 && (m_componentOnFire.IsOnFire || m_componentOnFire.TouchesFire))
                 {
                     float num7 = 1f / FireResilience;
                     num7 /= m_componentFactors?.ResilienceFactor ?? 1;
                     Injure(new FireInjury(num7, m_componentOnFire.Attacker));
                 }
-                //ÓãÀà¸éÇ³ÉËº¦
+                //ï¿½ï¿½ï¿½ï¿½ï¿½Ç³ï¿½Ëºï¿½
                 if (num5 && CanStrand && m_componentCreature.ComponentBody.ImmersionFactor < 0.25f && (m_componentCreature.ComponentBody.StandingOnValue != 0 || m_componentCreature.ComponentBody.StandingOnBody != null))
                 {
                     Injure(1f / AirLackResilience, null, ignoreInvulnerability: false, LanguageControl.Get(GetType().Name, 6));
                 }
-                //ÉËº¦½áËã
+                //ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½
                 float lastHealth = m_lastHealth;
                 HealthChange = Health - m_lastHealth;
                 m_lastHealth = Health;

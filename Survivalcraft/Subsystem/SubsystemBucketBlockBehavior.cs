@@ -143,10 +143,13 @@ namespace Game
 								int? num4 = (num == 128) ? null : new int?(PaintBucketBlock.GetColor(Terrain.ExtractData(activeBlockValue)));
 								Color color = num4.HasValue ? SubsystemPalette.GetColor(SubsystemTerrain, num4) : new Color(128, 128, 128, 128);
 								int value6 = ((IPaintableBlock)block2).Paint(SubsystemTerrain, cellValue2, num4);
-								SubsystemTerrain.ChangeCell(cellFace2.X, cellFace2.Y, cellFace2.Z, value6);
-								componentMiner.DamageActiveTool(1);
-								m_subsystemAudio.PlayRandomSound("Audio/Paint", 0.4f, m_random.Float(-0.1f, 0.1f), componentMiner.ComponentCreature.ComponentBody.Position, 2f, autoDelay: true);
-								m_subsystemParticles.AddParticleSystem(new PaintParticleSystem(SubsystemTerrain, position, normal, color));
+								if(value6 != cellValue2)
+								{
+									SubsystemTerrain.ChangeCell(cellFace2.X, cellFace2.Y, cellFace2.Z, value6);
+									componentMiner.DamageActiveTool(1);
+									m_subsystemAudio.PlayRandomSound("Audio/Paint", 0.4f, m_random.Float(-0.1f, 0.1f), componentMiner.ComponentCreature.ComponentBody.Position, 2f, autoDelay: true);
+									m_subsystemParticles.AddParticleSystem(new PaintParticleSystem(SubsystemTerrain, position, normal, color));
+								}
 							}
 							return true;
 						}

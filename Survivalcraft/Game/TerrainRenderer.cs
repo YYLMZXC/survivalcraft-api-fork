@@ -13,11 +13,11 @@ namespace Game
 
 		public SubsystemAnimatedTextures m_subsystemAnimatedTextures;
 
-		public static Shader OpaqueShader;
+		public static Shader m_opaqueShader;
 
-		public static Shader AlphatestedShader;
+		public static Shader m_alphaTestedShader;
 
-		public static Shader TransparentShader;
+		public static Shader m_transparentShader;
 
 		public SamplerState m_samplerState = new()
 		{
@@ -74,9 +74,9 @@ namespace Game
 			m_subsystemTerrain = subsystemTerrain;
 			m_subsystemSky = subsystemTerrain.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
 			m_subsystemAnimatedTextures = subsystemTerrain.SubsystemAnimatedTextures;
-			if (OpaqueShader == null) OpaqueShader = new Shader(ShaderCodeManager.GetFast("Shaders/Opaque.vsh"), ShaderCodeManager.GetFast("Shaders/Opaque.psh"), new ShaderMacro[] { new("Opaque") });
-			if (AlphatestedShader == null) AlphatestedShader = new Shader(ShaderCodeManager.GetFast("Shaders/AlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/AlphaTested.psh"), new ShaderMacro[] { new("ALPHATESTED") });
-			if (TransparentShader == null) TransparentShader = new Shader(ShaderCodeManager.GetFast("Shaders/Transparent.vsh"), ShaderCodeManager.GetFast("Shaders/Transparent.psh"), new ShaderMacro[] { new("Transparent") });
+			if (m_opaqueShader == null) m_opaqueShader = new Shader(ShaderCodeManager.GetFast("Shaders/Opaque.vsh"), ShaderCodeManager.GetFast("Shaders/Opaque.psh"), new ShaderMacro[] { new("Opaque") });
+			if (m_alphaTestedShader == null) m_alphaTestedShader = new Shader(ShaderCodeManager.GetFast("Shaders/AlphaTested.vsh"), ShaderCodeManager.GetFast("Shaders/AlphaTested.psh"), new ShaderMacro[] { new("ALPHATESTED") });
+			if (m_transparentShader == null) m_transparentShader = new Shader(ShaderCodeManager.GetFast("Shaders/Transparent.vsh"), ShaderCodeManager.GetFast("Shaders/Transparent.psh"), new ShaderMacro[] { new("Transparent") });
 			Display.DeviceReset += Display_DeviceReset;
 		}
 
@@ -111,7 +111,7 @@ namespace Game
 					{
 						continue;
 					}
-					float num2 = terrainChunk.FogEnds[gameWidgetIndex];
+					float num2 = terrainChunk.HazeEnds[gameWidgetIndex];
 					if (num2 != 3.40282347E+38f)
 					{
 						if (num2 == 0f)
@@ -126,7 +126,7 @@ namespace Game
 				}
 				else
 				{
-					terrainChunk.FogEnds[gameWidgetIndex] = 0f;
+					terrainChunk.HazeEnds[gameWidgetIndex] = 0f;
 				}
 			}
 			ChunksDrawn = 0;
@@ -143,21 +143,22 @@ namespace Game
 			Display.BlendState = BlendState.Opaque;
 			Display.DepthStencilState = DepthStencilState.Default;
 			Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-			OpaqueShader.GetParameter("u_origin", true).SetValue(v.XZ);
-			OpaqueShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
-			OpaqueShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
-            OpaqueShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
-			OpaqueShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
-			OpaqueShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-			ShaderParameter parameter = OpaqueShader.GetParameter("u_fogStartInvLength", true);
-			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(OpaqueShader, camera); return true; });
+			m_opaqueShader.GetParameter("u_origin", true).SetValue(v.XZ);
+			m_opaqueShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
+			m_opaqueShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
+            m_opaqueShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+			m_opaqueShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
+			m_opaqueShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+			m_opaqueShader.GetParameter("u_fogBottomTopDensity").SetValue(new Vector3(m_subsystemSky.ViewFogBottom, m_subsystemSky.ViewFogTop, m_subsystemSky.ViewFogDensity));
+			ShaderParameter parameter = m_opaqueShader.GetParameter("u_hazeStartDensity");
+			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(m_opaqueShader, camera); return true; });
 			Point2 point = Terrain.ToChunk(camera.ViewPosition.XZ);
 			var chunk = m_subsystemTerrain.Terrain.GetChunkAtCoords(point.X, point.Y);
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
-				float num = MathF.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
-				float num2 = MathF.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
+				float num = MathUtils.Min(terrainChunk.HazeEnds[gameWidgetIndex], m_subsystemSky.ViewHazeStart + 1f / m_subsystemSky.ViewHazeDensity);
+				float num2 = MathUtils.Min(m_subsystemSky.ViewHazeStart, num - 1f);
 				parameter.SetValue(new Vector2(num2, 1f / (num - num2)));
 				int num3 = 16;
 				if (viewPosition.Z > terrainChunk.BoundingBox.Min.Z)
@@ -176,7 +177,7 @@ namespace Game
 				{
 					num3 |= 8;
 				}
-				DrawTerrainChunkGeometrySubsets(OpaqueShader, terrainChunk, num3);
+				DrawTerrainChunkGeometrySubsets(m_opaqueShader, terrainChunk, num3);
 				ChunksDrawn++;
 			}
 		}
@@ -190,22 +191,24 @@ namespace Game
 			Display.BlendState = BlendState.Opaque;
 			Display.DepthStencilState = DepthStencilState.Default;
 			Display.RasterizerState = RasterizerState.CullCounterClockwiseScissor;
-			AlphatestedShader.GetParameter("u_origin", true).SetValue(v.XZ);
-			AlphatestedShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
-			AlphatestedShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
-			AlphatestedShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
-			AlphatestedShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
-			AlphatestedShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-			ShaderParameter parameter = AlphatestedShader.GetParameter("u_fogStartInvLength", true);
-			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(AlphatestedShader, camera); return true; });
+			m_alphaTestedShader.GetParameter("u_origin", true).SetValue(v.XZ);
+			m_alphaTestedShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
+			m_alphaTestedShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
+			m_alphaTestedShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+			m_alphaTestedShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
+			m_alphaTestedShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+			m_alphaTestedShader.GetParameter("u_fogBottomTopDensity").SetValue(new Vector3(m_subsystemSky.ViewFogBottom, m_subsystemSky.ViewFogTop, m_subsystemSky.ViewFogDensity));
+			m_alphaTestedShader.GetParameter("u_alphaThreshold").SetValue(0.5f);
+			ShaderParameter parameter = m_alphaTestedShader.GetParameter("u_hazeStartDensity");
+			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(m_alphaTestedShader, camera); return true; });
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
-				float num = MathF.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
-				float num2 = MathF.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
+				float num = MathUtils.Min(terrainChunk.HazeEnds[gameWidgetIndex], m_subsystemSky.ViewHazeStart + 1f / m_subsystemSky.ViewHazeDensity);
+				float num2 = MathUtils.Min(m_subsystemSky.ViewHazeStart, num - 1f);
 				parameter.SetValue(new Vector2(num2, 1f / (num - num2)));
 				int subsetsMask = 32;
-				DrawTerrainChunkGeometrySubsets(AlphatestedShader, terrainChunk, subsetsMask);
+				DrawTerrainChunkGeometrySubsets(m_alphaTestedShader, terrainChunk, subsetsMask);
 			}
 		}
 
@@ -218,22 +221,23 @@ namespace Game
 			Display.BlendState = BlendState.AlphaBlend;
 			Display.DepthStencilState = DepthStencilState.Default;
 			Display.RasterizerState = (m_subsystemSky.ViewUnderWaterDepth > 0f) ? RasterizerState.CullClockwiseScissor : RasterizerState.CullCounterClockwiseScissor;
-			TransparentShader.GetParameter("u_origin", true).SetValue(v.XZ);
-			TransparentShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
-			TransparentShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
-            TransparentShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
-			TransparentShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
-			TransparentShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-			ShaderParameter parameter = TransparentShader.GetParameter("u_fogStartInvLength", true);
-			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(TransparentShader, camera); return true; });
+			m_transparentShader.GetParameter("u_origin", true).SetValue(v.XZ);
+			m_transparentShader.GetParameter("u_viewProjectionMatrix", true).SetValue(value);
+			m_transparentShader.GetParameter("u_viewPosition", true).SetValue(viewPosition);
+            m_transparentShader.GetParameter("u_samplerState", true).SetValue(SettingsManager.TerrainMipmapsEnabled ? m_samplerStateMips : m_samplerState);
+			m_transparentShader.GetParameter("u_fogYMultiplier", true).SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
+			m_transparentShader.GetParameter("u_fogColor", true).SetValue(new Vector3(m_subsystemSky.ViewFogColor));
+			m_transparentShader.GetParameter("u_fogBottomTopDensity").SetValue(new Vector3(m_subsystemSky.ViewFogBottom, m_subsystemSky.ViewFogTop, m_subsystemSky.ViewFogDensity));
+			ShaderParameter parameter = m_transparentShader.GetParameter("u_hazeStartDensity");
+			ModsManager.HookAction("SetShaderParameter", (modLoader) => { modLoader.SetShaderParameter(m_transparentShader, camera); return true; });
 			for (int i = 0; i < m_chunksToDraw.Count; i++)
 			{
 				TerrainChunk terrainChunk = m_chunksToDraw[i];
-				float num = MathF.Min(terrainChunk.FogEnds[gameWidgetIndex], m_subsystemSky.ViewFogRange.Y);
-				float num2 = MathF.Min(m_subsystemSky.ViewFogRange.X, num - 1f);
+				float num = MathUtils.Min(terrainChunk.HazeEnds[gameWidgetIndex], m_subsystemSky.ViewHazeStart + 1f / m_subsystemSky.ViewHazeDensity);
+				float num2 = MathUtils.Min(m_subsystemSky.ViewHazeStart, num - 1f);
 				parameter.SetValue(new Vector2(num2, 1f / (num - num2)));
 				int subsetsMask = 64;
-				DrawTerrainChunkGeometrySubsets(TransparentShader, terrainChunk, subsetsMask);
+				DrawTerrainChunkGeometrySubsets(m_transparentShader, terrainChunk, subsetsMask);
 			}
 		}
 
@@ -433,15 +437,15 @@ namespace Game
 			float x2 = Vector2.Distance(viewPosition.XZ, v2);
 			float x3 = Vector2.Distance(viewPosition.XZ, v3);
 			float x4 = Vector2.Distance(viewPosition.XZ, v4);
-			chunk.FogEnds[camera.GameWidget.GameWidgetIndex] = MathF.Max(Math.Min(Math.Min(Math.Min(x, x2), x3), x4), 0.001f);
+			chunk.HazeEnds[camera.GameWidget.GameWidgetIndex] = MathF.Max(Math.Min(Math.Min(Math.Min(x, x2), x3), x4), 0.001f);
 		}
 
 		public void RunChunkFadeIn(Camera camera, TerrainChunk chunk)
 		{
-			chunk.FogEnds[camera.GameWidget.GameWidgetIndex] += 32f * Time.FrameDuration;
-			if (chunk.FogEnds[camera.GameWidget.GameWidgetIndex] >= m_subsystemSky.ViewFogRange.Y)
+			chunk.HazeEnds[camera.GameWidget.GameWidgetIndex] += 32f * Time.FrameDuration;
+			if (chunk.HazeEnds[camera.GameWidget.GameWidgetIndex] >= m_subsystemSky.VisibilityRange)
 			{
-				chunk.FogEnds[camera.GameWidget.GameWidgetIndex] = 3.40282347E+38f;
+				chunk.HazeEnds[camera.GameWidget.GameWidgetIndex] = 3.40282347E+38f;
 			}
 		}
 

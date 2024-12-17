@@ -166,7 +166,7 @@ namespace Game
 			base.Update(dt);
 		}
 
-		public override void Animate()
+		public override void AnimateCreature()
 		{
 			bool flag = false;
 			bool skip = false;
@@ -178,7 +178,6 @@ namespace Game
 			});
 			if (flag)
 			{
-				base.Animate();
 				return;
 			}
 			Vector3 position = m_componentCreature.ComponentBody.Position;
@@ -287,7 +286,6 @@ namespace Game
 				SetBoneTransform(m_leg3Bone.Index, Matrix.CreateRotationX(m_legAngle3 * num19));
 				SetBoneTransform(m_leg4Bone.Index, Matrix.CreateRotationX(m_legAngle4 * num19));
 			}
-			base.Animate();
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)

@@ -363,7 +363,7 @@ namespace Game
 						int maxPathfindingPositions = 0;
 						if (m_isPersistent)
 						{
-							maxPathfindingPositions = m_subsystemTime.FixedTimeStep.HasValue ? 1500 : 500;
+							maxPathfindingPositions = m_subsystemTime.FixedTimeStep.HasValue ? 2000 : 500;
 						}
 						BoundingBox boundingBox = m_componentCreature.ComponentBody.BoundingBox;
 						BoundingBox boundingBox2 = m_target.ComponentBody.BoundingBox;

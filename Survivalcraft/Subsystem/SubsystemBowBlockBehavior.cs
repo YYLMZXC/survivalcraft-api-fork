@@ -124,7 +124,8 @@ namespace Game
 										var vector4 = Vector3.Normalize(Vector3.Cross(vector2, Vector3.UnitY));
 										var v2 = Vector3.Normalize(Vector3.Cross(vector2, vector4));
 										Vector3 v3 = (m_random.Float(0f - vector3.X, vector3.X) * vector4) + (m_random.Float(0f - vector3.Y, vector3.Y) * v2) + (m_random.Float(0f - vector3.Z, vector3.Z) * vector2);
-										if (m_subsystemProjectiles.FireProjectile(value2, vector, (vector2 + v3) * num4, Vector3.Zero, componentMiner.ComponentCreature) != null)
+										Vector3 velocity = componentMiner.ComponentCreature.ComponentBody.Velocity + (vector2 + v3) * num4;
+										if (m_subsystemProjectiles.FireProjectile(value2, vector, velocity, Vector3.Zero, componentMiner.ComponentCreature) != null)
 										{
 											data = BowBlock.SetArrowType(data, null);
 											m_subsystemAudio.PlaySound("Audio/Bow", 1f, m_random.Float(-0.1f, 0.1f), vector, 3f, autoDelay: true);

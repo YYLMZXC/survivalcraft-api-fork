@@ -135,17 +135,22 @@ namespace Game
 			}
 		}
 
-		public TerrainChunk GetNextChunk(int chunkX, int chunkZ)
+		public TerrainChunk LoopChunks(int startChunkX, int startChunkZ, bool skipStartChunk, out bool hasLooped)
 		{
-			TerrainChunk terrainChunk = GetChunkAtCoords(chunkX, chunkZ);
-			if (terrainChunk != null)
+			hasLooped = false;
+			TerrainChunk terrainChunk = null;
+			if (!skipStartChunk)
 			{
-				return terrainChunk;
+				terrainChunk = GetChunkAtCoords(startChunkX, startChunkZ);
+				if (terrainChunk != null)
+				{
+					return terrainChunk;
+				}
 			}
 			TerrainChunk[] allocatedChunks = AllocatedChunks;
 			for (int i = 0; i < allocatedChunks.Length; i++)
 			{
-				if (ComparePoints(allocatedChunks[i].Coords, new Point2(chunkX, chunkZ)) >= 0 && (terrainChunk == null || ComparePoints(allocatedChunks[i].Coords, terrainChunk.Coords) < 0))
+				if (ComparePoints(allocatedChunks[i].Coords, new Point2(startChunkX, startChunkZ)) > 0 && (terrainChunk == null || ComparePoints(allocatedChunks[i].Coords, terrainChunk.Coords) < 0))
 				{
 					terrainChunk = allocatedChunks[i];
 				}
@@ -157,10 +162,17 @@ namespace Game
 					if (terrainChunk == null || ComparePoints(allocatedChunks[j].Coords, terrainChunk.Coords) < 0)
 					{
 						terrainChunk = allocatedChunks[j];
+						hasLooped = true;
 					}
 				}
 			}
 			return terrainChunk;
+		}
+
+		public TerrainChunk LoopChunks(int startChunkX, int startChunkZ, bool skipStartChunk)
+		{
+			bool hasLooped;
+			return LoopChunks(startChunkX, startChunkZ, skipStartChunk, out hasLooped);
 		}
 
 		public TerrainChunk GetChunkAtCoords(int chunkX, int chunkZ)
@@ -198,7 +210,15 @@ namespace Game
 
 		public static int ComparePoints(Point2 c1, Point2 c2)
 		{
-			return c1.Y == c2.Y ? c1.X - c2.X : c1.Y - c2.Y;
+			if (c1.Y != c2.Y)
+			{
+				return c1.Y <= c2.Y ? -1 : 1;
+			}
+			if (c1.X != c2.X)
+			{
+				return c1.X <= c2.X ? -1 : 1;
+			}
+			return 0;
 		}
 
 		public static Point2 ToChunk(Vector2 p)
@@ -438,22 +458,22 @@ namespace Game
 
 		public int GetSeasonalTemperature(int x, int z)
 		{
-			return GetTemperature(x, z) + SeasonTemperature;
+			return MathUtils.Max(GetTemperature(x, z) + SeasonTemperature, 0);
 		}
 
 		public int GetSeasonalTemperature(int shaftValue)
 		{
-			return ExtractTemperature(shaftValue) + SeasonTemperature;
+			return MathUtils.Max(ExtractTemperature(shaftValue) + SeasonTemperature, 0);
 		}
 
 		public int GetSeasonalHumidity(int x, int z)
 		{
-			return GetHumidity(x, z) + SeasonHumidity;
+			return MathUtils.Max(GetHumidity(x, z) + SeasonHumidity, 0);
 		}
 
 		public int GetSeasonalHumidity(int shaftValue)
 		{
-			return ExtractHumidity(shaftValue) + SeasonHumidity;
+			return MathUtils.Max(ExtractHumidity(shaftValue) + SeasonHumidity, 0);
 		}
 	}
 }

@@ -53,7 +53,7 @@ namespace Game
 
 		public int ModificationCounter;
 
-		public float[] FogEnds = new float[4];
+		public float[] HazeEnds = new float[4];
 
 		public bool AreBehaviorsNotified;
 

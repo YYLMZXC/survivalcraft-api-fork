@@ -5,10 +5,10 @@ using Engine.Serialization;
 
 namespace Game;
 
-internal struct FloatCurve
+public struct FloatCurve
 {
 	[HumanReadableConverter(new Type[] { typeof(FloatCurve) })]
-	private class HumanReadableConverter : IHumanReadableConverter
+	public class HumanReadableConverter : IHumanReadableConverter
 	{
 		public string ConvertToString(object value)
 		{

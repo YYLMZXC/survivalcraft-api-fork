@@ -186,7 +186,7 @@ namespace Game
 
 		public float CalculateDelay(float distance)
 		{
-			return Math.Min(distance / 100f, 5f);
+			return Math.Min(distance / 120f, 3f);
 		}
 
 		public void Update(float dt)

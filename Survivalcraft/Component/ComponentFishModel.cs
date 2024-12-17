@@ -114,7 +114,7 @@ namespace Game
 			base.Update(dt);
 		}
 
-		public override void Animate()
+		public override void AnimateCreature()
 		{
 			bool flag = false;
 			bool skip = false;
@@ -126,76 +126,78 @@ namespace Game
 			});
 			if (flag)
 			{
-				base.Animate();
 				return;
 			}
 			Vector3 vector = m_componentCreature.ComponentBody.Rotation.ToYawPitchRoll();
-			if (m_componentCreature.ComponentHealth.Health > 0f)
+			if (m_componentCreature.ComponentHealth.Health == 0f)
 			{
-				float num = m_digInTailPhase + m_tailWagPhase;
-				float num2;
-				float num3;
-				float num4;
-				float num5;
-				if (m_hasVerticalTail)
-				{
-					num2 = MathUtils.DegToRad(25f) * Math.Clamp((0.5f * MathF.Sin((float)Math.PI * 2f * num)) - m_tailTurn.X, -1f, 1f);
-					num3 = MathUtils.DegToRad(30f) * Math.Clamp((0.5f * MathF.Sin(2f * ((float)Math.PI * MathUtils.Max(num - 0.25f, 0f)))) - m_tailTurn.X, -1f, 1f);
-					num4 = MathUtils.DegToRad(25f) * Math.Clamp((0.5f * MathF.Sin((float)Math.PI * 2f * MovementAnimationPhase)) - m_tailTurn.Y, -1f, 1f);
-					num5 = MathUtils.DegToRad(30f) * Math.Clamp((0.5f * MathF.Sin((float)Math.PI * 2f * MathUtils.Max(MovementAnimationPhase - 0.25f, 0f))) - m_tailTurn.Y, -1f, 1f);
-				}
-				else
-				{
-					num2 = MathUtils.DegToRad(25f) * Math.Clamp((0.5f * MathF.Sin((float)Math.PI * 2f * (MovementAnimationPhase + num))) - m_tailTurn.X, -1f, 1f);
-					num3 = MathUtils.DegToRad(30f) * Math.Clamp((0.5f * MathF.Sin(2f * ((float)Math.PI * MathUtils.Max(MovementAnimationPhase + num - 0.25f, 0f)))) - m_tailTurn.X, -1f, 1f);
-					num4 = MathUtils.DegToRad(25f) * Math.Clamp(0f - m_tailTurn.Y, -1f, 1f);
-					num5 = MathUtils.DegToRad(30f) * Math.Clamp(0f - m_tailTurn.Y, -1f, 1f);
-				}
-				float radians = 0f;
-				if (m_bitingPhase > 0f)
-				{
-					radians = (0f - MathUtils.DegToRad(30f)) * MathF.Sin((float)Math.PI * m_bitingPhase);
-				}
-				Matrix value = Matrix.CreateFromYawPitchRoll(vector.X, 0f, 0f) * Matrix.CreateTranslation(m_componentCreature.ComponentBody.Position + new Vector3(0f, 0f - m_digInDepth, 0f));
-				SetBoneTransform(m_bodyBone.Index, value);
-				Matrix identity = Matrix.Identity;
-				if (num2 != 0f)
-				{
-					identity *= Matrix.CreateRotationZ(num2);
-				}
-				if (num4 != 0f)
-				{
-					identity *= Matrix.CreateRotationX(num4);
-				}
-				Matrix identity2 = Matrix.Identity;
-				if (num3 != 0f)
-				{
-					identity2 *= Matrix.CreateRotationZ(num3);
-				}
-				if (num5 != 0f)
-				{
-					identity2 *= Matrix.CreateRotationX(num5);
-				}
-				SetBoneTransform(m_tail1Bone.Index, identity);
-				SetBoneTransform(m_tail2Bone.Index, identity2);
-				if (m_jawBone != null)
-				{
-					SetBoneTransform(m_jawBone.Index, Matrix.CreateRotationX(radians));
-				}
-			}
-			else
-			{
-				float num6 = m_componentCreature.ComponentBody.BoundingBox.Max.Y - m_componentCreature.ComponentBody.BoundingBox.Min.Y;
-				Vector3 position = m_componentCreature.ComponentBody.Position + (1f * num6 * DeathPhase * Vector3.UnitY);
-				SetBoneTransform(m_bodyBone.Index, Matrix.CreateFromYawPitchRoll(vector.X, 0f, (float)Math.PI * DeathPhase) * Matrix.CreateTranslation(position));
+				float num = m_componentCreature.ComponentBody.BoundingBox.Max.Y - m_componentCreature.ComponentBody.BoundingBox.Min.Y;
+				Vector3 position = m_componentCreature.ComponentBody.Position + 1f * num * base.DeathPhase * Vector3.UnitY;
+				SetBoneTransform(m_bodyBone.Index, Matrix.CreateFromYawPitchRoll(vector.X, 0f, MathF.PI * base.DeathPhase) * Matrix.CreateTranslation(position));
 				SetBoneTransform(m_tail1Bone.Index, Matrix.Identity);
 				SetBoneTransform(m_tail2Bone.Index, Matrix.Identity);
 				if (m_jawBone != null)
 				{
 					SetBoneTransform(m_jawBone.Index, Matrix.Identity);
 				}
+				return;
 			}
-			base.Animate();
+			if (m_componentCreature.ComponentBody.IsEmbeddedInIce)
+			{
+				Matrix value = Matrix.CreateFromYawPitchRoll(vector.X, 0f, 0f) * Matrix.CreateTranslation(m_componentCreature.ComponentBody.Position + new Vector3(0f, 0f - m_digInDepth, 0f));
+				SetBoneTransform(m_bodyBone.Index, value);
+				return;
+			}
+			float num2 = m_digInTailPhase + m_tailWagPhase;
+			float num3;
+			float num4;
+			float num5;
+			float num6;
+			if (m_hasVerticalTail)
+			{
+				num3 = MathUtils.DegToRad(25f) * Math.Clamp((0.5f * MathF.Sin(MathF.PI * 2f * num2)) - m_tailTurn.X, -1f, 1f);
+				num4 = MathUtils.DegToRad(30f) * Math.Clamp((0.5f * MathF.Sin(2f * (MathF.PI * MathUtils.Max(num2 - 0.25f, 0f)))) - m_tailTurn.X, -1f, 1f);
+				num5 = MathUtils.DegToRad(25f) * Math.Clamp((0.5f * MathF.Sin(MathF.PI * 2f * MovementAnimationPhase)) - m_tailTurn.Y, -1f, 1f);
+				num6 = MathUtils.DegToRad(30f) * Math.Clamp((0.5f * MathF.Sin(MathF.PI * 2f * MathUtils.Max(MovementAnimationPhase - 0.25f, 0f))) - m_tailTurn.Y, -1f, 1f);
+			}
+			else
+			{
+				num3 = MathUtils.DegToRad(25f) * Math.Clamp((0.5f * MathF.Sin(MathF.PI * 2f * (MovementAnimationPhase + num2))) - m_tailTurn.X, -1f, 1f);
+				num4 = MathUtils.DegToRad(30f) * Math.Clamp((0.5f * MathF.Sin(2f * (MathF.PI * MathUtils.Max(MovementAnimationPhase + num2 - 0.25f, 0f)))) - m_tailTurn.X, -1f, 1f);
+				num5 = MathUtils.DegToRad(25f) * Math.Clamp(0f - m_tailTurn.Y, -1f, 1f);
+				num6 = MathUtils.DegToRad(30f) * Math.Clamp(0f - m_tailTurn.Y, -1f, 1f);
+			}
+			float radians = 0f;
+			if (m_bitingPhase > 0f)
+			{
+				radians = (0f - MathUtils.DegToRad(30f)) * MathF.Sin(MathF.PI * m_bitingPhase);
+			}
+			Matrix value2 = Matrix.CreateFromYawPitchRoll(vector.X, 0f, 0f) * Matrix.CreateTranslation(m_componentCreature.ComponentBody.Position + new Vector3(0f, 0f - m_digInDepth, 0f));
+			SetBoneTransform(m_bodyBone.Index, value2);
+			Matrix identity = Matrix.Identity;
+			if (num3 != 0f)
+			{
+				identity *= Matrix.CreateRotationZ(num3);
+			}
+			if (num5 != 0f)
+			{
+				identity *= Matrix.CreateRotationX(num5);
+			}
+			Matrix identity2 = Matrix.Identity;
+			if (num4 != 0f)
+			{
+				identity2 *= Matrix.CreateRotationZ(num4);
+			}
+			if (num6 != 0f)
+			{
+				identity2 *= Matrix.CreateRotationX(num6);
+			}
+			SetBoneTransform(m_tail1Bone.Index, identity);
+			SetBoneTransform(m_tail2Bone.Index, identity2);
+			if (m_jawBone != null)
+			{
+				SetBoneTransform(m_jawBone.Index, Matrix.CreateRotationX(radians));
+			}
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)

@@ -8,7 +8,7 @@ namespace Game;
 
 public class SubsystemSeasons : Subsystem, IUpdateable
 {
-	private SubsystemGameInfo m_subsystemGameInfo;
+	public SubsystemGameInfo m_subsystemGameInfo;
 
 	private static Image m_seasonsGradient;
 

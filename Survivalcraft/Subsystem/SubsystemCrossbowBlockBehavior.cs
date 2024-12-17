@@ -106,7 +106,8 @@ namespace Game
 										var v2 = Vector3.Normalize(vector + (aim.Direction * 10f) - vector);
 										int value2 = Terrain.MakeBlockValue(m_ArrowBlockIndex, 0, ArrowBlock.SetArrowType(0, arrowType.Value));
 										float s = 38f;
-										if (m_subsystemProjectiles.FireProjectile(value2, vector, s * v2, Vector3.Zero, componentMiner.ComponentCreature) != null)
+										Vector3 velocity = componentMiner.ComponentCreature.ComponentBody.Velocity + s * v2;
+										if (m_subsystemProjectiles.FireProjectile(value2, vector, velocity, Vector3.Zero, componentMiner.ComponentCreature) != null)
 										{
 											data = CrossbowBlock.SetArrowType(data, null);
 											m_subsystemAudio.PlaySound("Audio/Bow", 1f, m_random.Float(-0.1f, 0.1f), componentMiner.ComponentCreature.ComponentCreatureModel.EyePosition, 3f, 0.05f);

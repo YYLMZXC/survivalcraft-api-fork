@@ -64,8 +64,6 @@ namespace Game
 			Vector3 v = new(MathF.Floor(viewPosition.X), 0f, MathF.Floor(viewPosition.Z));
 			Matrix value = Matrix.CreateTranslation(v - viewPosition) * camera.ViewMatrix.OrientationMatrix * camera.ProjectionMatrix;
             DynamicArray<int> indices = m_geometry.SubsetOpaque.Indices;
-            float x = m_subsystemSky.ViewFogRange.X;
-			float y = m_subsystemSky.ViewFogRange.Y;
 			//根据外置材质生成破坏纹理
 			try
 			{
@@ -78,7 +76,9 @@ namespace Game
 				m_shader.GetParameter("u_samplerState").SetValue(SamplerState.PointWrap);
                 m_shader.GetParameter("u_fogYMultiplier").SetValue(this.m_subsystemSky.VisibilityRangeYMultiplier);
                 m_shader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-				m_shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(x, 1f / (y - x)));
+				m_shader.GetParameter("u_fogBottomTopDensity").SetValue(new Vector3(m_subsystemSky.ViewFogBottom, m_subsystemSky.ViewFogTop, m_subsystemSky.ViewFogDensity));
+				m_shader.GetParameter("u_hazeStartDensity").SetValue(new Vector2(m_subsystemSky.ViewHazeStart, m_subsystemSky.ViewHazeDensity));
+				m_shader.GetParameter("u_alphaThreshold").SetValue(0.5f);
 				m_shader.GetParameter("u_texture").SetValue(block.GetDiggingCrackingTexture(m_componentMiner, m_componentMiner.m_digProgress, cellValue, m_textures));
                 Display.DrawUserIndexed<ComponentDiggingCracks.CracksVertex>(PrimitiveType.TriangleList, m_shader, ComponentDiggingCracks.CracksVertex.VertexDeclaration, m_vertices.Array, 0, m_vertices.Count, indices.Array, 0, indices.Count);
             }

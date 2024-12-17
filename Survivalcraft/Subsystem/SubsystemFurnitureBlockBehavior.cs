@@ -675,7 +675,7 @@ namespace Game
 					BoundingBox boundingBox = array[i];
 					float num = (boundingBox.Size().X + boundingBox.Size().Y + boundingBox.Size().Z) / 3f;
 					float size = Math.Clamp(1.5f * num, 0.1f, 1f);
-					var fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + boundingBox.Center(), size, 24f);
+					var fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + boundingBox.Center(), size, 32f);
 					m_subsystemParticles.AddParticleSystem(fireParticleSystem);
 					list.Add(fireParticleSystem);
 				}

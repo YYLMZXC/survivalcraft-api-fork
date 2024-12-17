@@ -4,30 +4,35 @@ namespace Game
 {
 	public static class DataSizeFormatter
 	{
-		public static string Format(long bytes)
+		public static string Format(long bytes, int significantDigits = 3)
 		{
 			if (bytes < 1024)
 			{
-				return $"{bytes}B";
+				return string.Format("1KB");
 			}
 			if (bytes < 1048576)
 			{
 				float num = bytes / 1024f;
-				return string.Format(PrepareFormatString(num, "kB"), num);
+				return string.Format(PrepareFormatString(num, "KB", 0), num);
 			}
 			if (bytes < 1073741824)
 			{
 				float num2 = bytes / 1024f / 1024f;
-				return string.Format(PrepareFormatString(num2, "MB"), num2);
+				return string.Format(PrepareFormatString(num2, "MB", significantDigits), num2);
 			}
 			float num3 = bytes / 1024f / 1024f / 1024f;
-			return string.Format(PrepareFormatString(num3, "GB"), num3);
+			return string.Format(PrepareFormatString(num3, "GB", significantDigits), num3);
 		}
 
-		public static string PrepareFormatString(float value, string unit)
+		public static string PrepareFormatString(float value, string unit, int significantDigits)
 		{
 			int num = (int)(MathF.Log10(value) + 1f);
-			return "{0:F" + Math.Max(3 - num, 0).ToString() + "}" + unit;
+			int num2 = MathUtils.Max(significantDigits - num, 0);
+			if (num2 > 0)
+			{
+				return "{0:0." + new string('#', num2) + "}" + unit;
+			}
+			return "{0:0}" + unit;
 		}
 	}
 }

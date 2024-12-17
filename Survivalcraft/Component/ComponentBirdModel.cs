@@ -93,7 +93,7 @@ namespace Game
 			base.Update(dt);
 		}
 
-		public override void Animate()
+		public override void AnimateCreature()
 		{
 			bool flag = false;
 			bool skip = false;
@@ -105,7 +105,6 @@ namespace Game
 			});
 			if (flag)
 			{
-				base.Animate();
 				return;
 			}
 			float num = 0f;
@@ -170,7 +169,6 @@ namespace Game
 				SetBoneTransform(m_leg1Bone.Index, Matrix.CreateRotationX(num2 * num7));
 				SetBoneTransform(m_leg2Bone.Index, Matrix.CreateRotationX(num3 * num7));
 			}
-			base.Animate();
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)

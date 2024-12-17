@@ -126,7 +126,7 @@ namespace Game
 					size = 0.2f;
 					break;
 			}
-			var fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + v, size, 24f);
+			var fireParticleSystem = new FireParticleSystem(new Vector3(x, y, z) + v, size, 32f);
 			m_subsystemParticles.AddParticleSystem(fireParticleSystem);
 			m_particleSystemsByCell[new Point3(x, y, z)] = fireParticleSystem;
 		}

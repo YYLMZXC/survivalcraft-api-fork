@@ -34,7 +34,9 @@ namespace Game
 
 		public ShaderParameter m_fogColorParameter;
 
-		public ShaderParameter m_fogStartInvLengthParameter;
+		private ShaderParameter m_fogBottomTopDensityParameter;
+
+		private ShaderParameter m_hazeStartDensityParameter;
 
 		public ShaderParameter m_fogYMultiplierParameter;
 
@@ -132,11 +134,19 @@ namespace Game
 			}
 		}
 
-		public Vector2 FogStartInvLength
+		public Vector3 FogBottomTopDensity
 		{
 			set
 			{
-				m_fogStartInvLengthParameter.SetValue(value);
+				m_fogBottomTopDensityParameter.SetValue(value);
+			}
+		}
+
+		public Vector2 HazeStartDensity
+		{
+			set
+			{
+				m_hazeStartDensityParameter.SetValue(value);
 			}
 		}
 
@@ -201,7 +211,8 @@ namespace Game
 			m_diffuseLightColor2Parameter = GetParameter("u_diffuseLightColor2");
 			m_directionToLight2Parameter = GetParameter("u_directionToLight2");
 			m_fogColorParameter = GetParameter("u_fogColor");
-			m_fogStartInvLengthParameter = GetParameter("u_fogStartInvLength");
+			m_fogBottomTopDensityParameter = GetParameter("u_fogBottomTopDensity");
+			m_hazeStartDensityParameter = GetParameter("u_hazeStartDensity");
 			m_fogYMultiplierParameter = GetParameter("u_fogYMultiplier");
 			m_worldUpParameter = GetParameter("u_worldUp");
 		}

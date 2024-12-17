@@ -32,6 +32,18 @@ namespace Game
 		public bool IsControlledByTouch { get; set; }
 #endif
 
+		public bool IsControlledByVr
+		{
+			get
+			{
+				if (VrManager.IsVrStarted)
+				{
+					return (m_componentPlayer.GameWidget.Input.Devices & WidgetInputDevice.VrControllers) != 0;
+				}
+				return false;
+			}
+		}
+
 		public bool AllowHandleInput { get; set; } = true;
 
 		public IInventory SplitSourceInventory
@@ -92,6 +104,8 @@ namespace Game
 					CameraSneakMove = m_playerInput.CameraSneakMove,
 					CameraLook = m_playerInput.CameraLook,
 					TimeOfDay = m_playerInput.TimeOfDay,
+					Precipitation = m_playerInput.Precipitation,
+					Fog = m_playerInput.Fog,
 					TakeScreenshot = m_playerInput.TakeScreenshot,
 					KeyboardHelp = m_playerInput.KeyboardHelp
 				};
@@ -191,6 +205,8 @@ namespace Game
 				m_playerInput.SwitchCameraMode |= input.IsKeyDownOnce(Key.V);
 				m_playerInput.TimeOfDay |= input.IsKeyDownOnce(Key.T);
 				m_playerInput.Lighting |= input.IsKeyDownOnce(Key.L);
+				m_playerInput.Precipitation |= input.IsKeyDownOnce(Key.K);
+				m_playerInput.Fog |= input.IsKeyDownOnce(Key.J);
 				m_playerInput.Drop |= input.IsKeyDownOnce(Key.Q);
 				m_playerInput.EditItem |= input.IsKeyDownOnce(Key.G);
 				m_playerInput.KeyboardHelp |= input.IsKeyDownOnce(Key.H);

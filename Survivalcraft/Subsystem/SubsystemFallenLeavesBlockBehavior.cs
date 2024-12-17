@@ -4,9 +4,9 @@ namespace Game;
 
 public class SubsystemFallenLeavesBlockBehavior : SubsystemPollableBlockBehavior
 {
-	private SubsystemTerrain m_subsystemTerrain;
+	public SubsystemTerrain m_subsystemTerrain;
 
-	private SubsystemSeasons m_subsystemSeasons;
+	public SubsystemSeasons m_subsystemSeasons;
 
 	private Random m_random = new Random();
 

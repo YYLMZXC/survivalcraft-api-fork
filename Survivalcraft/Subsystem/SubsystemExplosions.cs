@@ -224,6 +224,7 @@ namespace Game
 					IsIncendiary = isIncendiary,
 					NoExplosionSound = noExplosionSound
 				});
+				ApplyBodiesShaking(new Vector3((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f), pressure);
 			}
 		}
 
@@ -510,21 +511,33 @@ namespace Game
 			processed.Set(x, y, z, value: true);
 		}
 
+		public virtual void ApplyBodiesShaking(Vector3 center, float pressure)
+		{
+			foreach (ComponentBody body in m_subsystemBodies.Bodies)
+			{
+				float num = Vector3.Distance(body.Position, center);
+				float num2 = 5f * MathF.Sqrt(pressure);
+				float num3 = 1f * MathF.Sqrt(pressure);
+				float strength = num2 / (num / num3 + 1f);
+				body.ApplyShaking(strength);
+			}
+		}
+
 		public virtual void PostprocessExplosions(bool playExplosionSound)
 		{
 			Point3 point = Point3.Zero;
 			float num = float.MaxValue;
-			float 爆炸强度 = 0f;
+			float pressure = 0f;
 			foreach (KeyValuePair<Point3, float> item in m_pressureByPoint.ToDictionary())
 			{
-				爆炸强度 += item.Value;
+				pressure += item.Value;
 				float num3 = m_subsystemAudio.CalculateListenerDistance(new Vector3(item.Key));
 				if (num3 < num)
 				{
 					num = num3;
 					point = item.Key;
 				}
-				float num4 = 0.001f * MathF.Pow(爆炸强度, 0.5f);
+				float num4 = 0.001f * MathF.Pow(pressure, 0.5f);
 				float num5 = MathUtils.Saturate((item.Value / 15f) - num4) * m_random.Float(0.2f, 1f);
 				if (num5 > 0.1f)
 				{
@@ -533,7 +546,7 @@ namespace Game
 			}
 			ModsManager.HookAction("CalculateExplosionPower", loader =>
 			{
-				loader.CalculateExplosionPower(this, ref 爆炸强度);
+				loader.CalculateExplosionPower(this, ref pressure);
 				return false;
 			});
 			foreach (KeyValuePair<Point3, SurroundingPressurePoint> item2 in m_surroundingPressureByPoint.ToDictionary())
@@ -578,51 +591,59 @@ namespace Game
 			}
 			var position = new Vector3(point.X, point.Y, point.Z);
 			float delay = m_subsystemAudio.CalculateDelay(num);
-			if (爆炸强度 > 1000000f)
+			if (pressure > 2000000f)
 			{
 				if (playExplosionSound)
 				{
-					m_subsystemAudio.PlaySound("Audio/ExplosionEnormous", 1f, m_random.Float(-0.1f, 0.1f), position, 40f, delay);
+					m_subsystemAudio.PlaySound("Audio/Explosion7", 1f, m_random.Float(-0.1f, 0.1f), position, 53f, delay);
+				}
+				m_subsystemNoise.MakeNoise(position, 1f, 130f);
+			}
+			else if (pressure > 400000f)
+			{
+				if (playExplosionSound)
+				{
+					m_subsystemAudio.PlaySound("Audio/Explosion6", 1f, m_random.Float(-0.1f, 0.1f), position, 45f, delay);
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 100f);
 			}
-			else if (爆炸强度 > 100000f)
+			else if (pressure > 80000f)
 			{
 				if (playExplosionSound)
 				{
-					m_subsystemAudio.PlaySound("Audio/ExplosionHuge", 1f, m_random.Float(-0.2f, 0.2f), position, 30f, delay);
+					m_subsystemAudio.PlaySound("Audio/Explosion5", 1f, m_random.Float(-0.1f, 0.1f), position, 38f, delay);
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 70f);
 			}
-			else if (爆炸强度 > 20000f)
+			else if (pressure > 16000f)
 			{
 				if (playExplosionSound)
 				{
-					m_subsystemAudio.PlaySound("Audio/ExplosionLarge", 1f, m_random.Float(-0.2f, 0.2f), position, 26f, delay);
+					m_subsystemAudio.PlaySound("Audio/Explosion4", 1f, m_random.Float(-0.1f, 0.1f), position, 32f, delay);
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 50f);
 			}
-			else if (爆炸强度 > 4000f)
+			else if (pressure > 3500f)
 			{
 				if (playExplosionSound)
 				{
-					m_subsystemAudio.PlaySound("Audio/ExplosionMedium", 1f, m_random.Float(-0.2f, 0.2f), position, 24f, delay);
+					m_subsystemAudio.PlaySound("Audio/Explosion3", 1f, m_random.Float(-0.1f, 0.1f), position, 27f, delay);
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 40f);
 			}
-			else if (爆炸强度 > 100f)
+			else if (pressure > 80f)
 			{
 				if (playExplosionSound)
 				{
-					m_subsystemAudio.PlaySound("Audio/ExplosionSmall", 1f, m_random.Float(-0.2f, 0.2f), position, 22f, delay);
+					m_subsystemAudio.PlaySound("Audio/Explosion2", 1f, m_random.Float(-0.1f, 0.1f), position, 23f, delay);
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 35f);
 			}
-			else if (爆炸强度 > 0f)
+			else if (pressure > 0f)
 			{
 				if (playExplosionSound)
 				{
-					m_subsystemAudio.PlaySound("Audio/ExplosionTiny", 1f, m_random.Float(-0.2f, 0.2f), position, 20f, delay);
+					m_subsystemAudio.PlaySound("Audio/Explosion1", 1f, m_random.Float(-0.1f, 0.1f), position, 20f, delay);
 				}
 				m_subsystemNoise.MakeNoise(position, 1f, 30f);
 			}
@@ -648,21 +669,21 @@ namespace Game
 				{
 					for (int k = -1; k <= 1; k++)
 					{
-						int 爆炸强度 = point.X + i;
+						int pressure = point.X + i;
 						int num3 = point.Y + j;
 						int num4 = point.Z + k;
-						float num5 = (m_subsystemTerrain.Terrain.GetCellContents(爆炸强度, num3, num4) != 0) ? obstaclePressure.Value : m_pressureByPoint.Get(爆炸强度, num3, num4);
+						float num5 = (m_subsystemTerrain.Terrain.GetCellContents(pressure, num3, num4) != 0) ? obstaclePressure.Value : m_pressureByPoint.Get(pressure, num3, num4);
 						if (i != 0 || j != 0 || k != 0)
 						{
-							zero += num5 * Vector3.Normalize(new Vector3(point.X - 爆炸强度, point.Y - num3, point.Z - num4));
+							zero += num5 * Vector3.Normalize(new Vector3(point.X - pressure, point.Y - num3, point.Z - num4));
 						}
 						num += num5;
 					}
 				}
 			}
 			float num6 = MathUtils.Max(MathF.Pow(mass, 0.5f), 1f);
-			impulse = 9.259259f * Vector3.Normalize(zero) * MathF.Pow(zero.Length(), 0.5f) / num6;
-			damage = 2.59259248f * MathF.Pow(num, 0.5f) / num6;
+			impulse = 5.5555553f * Vector3.Normalize(zero) * MathF.Sqrt(zero.Length()) / num6;
+			damage = 2.59259248f * MathF.Sqrt(num) / num6;
 		}
 	}
 }

@@ -37,6 +37,10 @@ namespace Game
 
 		public SubsystemTerrain m_subsystemTerrain;
 
+		public SubsystemSky m_subsystemSky;
+
+		public SubsystemWeather m_subsystemWeather;
+
 		public SubsystemBlockBehaviors m_subsystemBlockBehaviors;
 
 		public ComponentPlayer m_componentPlayer;
@@ -81,6 +85,10 @@ namespace Game
 
 		public ButtonWidget m_lightningButtonWidget;
 
+		private ButtonWidget m_precipitationButtonWidget;
+
+		private ButtonWidget m_fogButtonWidget;
+
 		public ButtonWidget m_photoButtonWidget;
 
 		public ButtonWidget m_helpButtonWidget;
@@ -91,7 +99,7 @@ namespace Game
 
 		public ButtonWidget m_creativeFlyButtonWidget;
 
-		public ButtonWidget m_sneakButtonWidget;
+		public ButtonWidget m_crouchButtonWidget;
 
 		public ButtonWidget m_mountButtonWidget;
 
@@ -264,6 +272,8 @@ namespace Game
 			m_subsystemAudio = Project.FindSubsystem<SubsystemAudio>(throwOnError: true);
 			m_subsystemTimeOfDay = Project.FindSubsystem<SubsystemTimeOfDay>(throwOnError: true);
 			m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+			m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+			m_subsystemWeather = base.Project.FindSubsystem<SubsystemWeather>(throwOnError: true);
 			m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
 			m_componentPlayer = Entity.FindComponent<ComponentPlayer>(throwOnError: true);
 			ContainerWidget guiWidget = m_componentPlayer.GuiWidget;
@@ -275,10 +285,12 @@ namespace Game
 			m_helpButtonWidget = guiWidget.Children.Find<ButtonWidget>("HelpButton");
 			m_photoButtonWidget = guiWidget.Children.Find<ButtonWidget>("PhotoButton");
 			m_lightningButtonWidget = guiWidget.Children.Find<ButtonWidget>("LightningButton");
+			m_precipitationButtonWidget = guiWidget.Children.Find<ButtonWidget>("PrecipitationButton");
+			m_fogButtonWidget = guiWidget.Children.Find<ButtonWidget>("FogButton");
 			m_timeOfDayButtonWidget = guiWidget.Children.Find<ButtonWidget>("TimeOfDayButton");
 			m_cameraButtonWidget = guiWidget.Children.Find<ButtonWidget>("CameraButton");
 			m_creativeFlyButtonWidget = guiWidget.Children.Find<ButtonWidget>("CreativeFlyButton");
-			m_sneakButtonWidget = guiWidget.Children.Find<ButtonWidget>("SneakButton");
+			m_crouchButtonWidget = guiWidget.Children.Find<ButtonWidget>("CrouchButton");
 			m_mountButtonWidget = guiWidget.Children.Find<ButtonWidget>("MountButton");
 			m_editItemButton = guiWidget.Children.Find<ButtonWidget>("EditItemButton");
 			MoveWidget = guiWidget.Children.Find<TouchInputWidget>("Move");
@@ -452,6 +464,8 @@ namespace Game
 			m_creativeFlyButtonWidget.IsVisible = gameMode == GameMode.Creative;
 			m_timeOfDayButtonWidget.IsVisible = gameMode == GameMode.Creative;
 			m_lightningButtonWidget.IsVisible = gameMode == GameMode.Creative;
+			m_precipitationButtonWidget.IsVisible = gameMode == GameMode.Creative && worldSettings.AreWeatherEffectsEnabled;
+			m_fogButtonWidget.IsVisible = gameMode == GameMode.Creative && worldSettings.AreWeatherEffectsEnabled;
 			m_moveButtonsContainerWidget.IsVisible = SettingsManager.MoveControlMode == MoveControlMode.Buttons;
 			m_movePadContainerWidget.IsVisible = SettingsManager.MoveControlMode == MoveControlMode.Pad;
 			if (SettingsManager.LeftHandedLayout)
@@ -468,19 +482,21 @@ namespace Game
 				m_moveRectangleWidget.FlipHorizontal = false;
 				m_lookRectangleWidget.FlipHorizontal = true;
 			}
-			m_sneakButtonWidget.IsChecked = m_componentPlayer.ComponentBody.TargetCrouchFactor > 0f;
+			m_precipitationButtonWidget.IsChecked = m_subsystemWeather.IsPrecipitationStarted;
+			m_fogButtonWidget.IsChecked = m_subsystemWeather.IsFogStarted;
+			m_crouchButtonWidget.IsChecked = m_componentPlayer.ComponentBody.TargetCrouchFactor > 0f;
 			m_creativeFlyButtonWidget.IsChecked = m_componentPlayer.ComponentLocomotion.IsCreativeFlyEnabled;
 			m_inventoryButtonWidget.IsChecked = IsInventoryVisible();
 			m_clothingButtonWidget.IsChecked = IsClothingVisible();
 			if (IsActiveSlotEditable() || m_componentPlayer.ComponentBlockHighlight.NearbyEditableCell.HasValue)
 			{
-				m_sneakButtonWidget.IsVisible = false;
+				m_crouchButtonWidget.IsVisible = false;
 				m_mountButtonWidget.IsVisible = false;
 				m_editItemButton.IsVisible = true;
 			}
 			else if (componentRider != null && componentRider.Mount != null)
 			{
-				m_sneakButtonWidget.IsVisible = false;
+				m_crouchButtonWidget.IsVisible = false;
 				m_mountButtonWidget.IsChecked = true;
 				m_mountButtonWidget.IsVisible = true;
 				m_editItemButton.IsVisible = false;
@@ -493,13 +509,13 @@ namespace Game
 					m_lastMountableCreatureSearchTime = Time.FrameStartTime;
 					if (componentRider.FindNearestMount() != null)
 					{
-						m_sneakButtonWidget.IsVisible = false;
+						m_crouchButtonWidget.IsVisible = false;
 						m_mountButtonWidget.IsVisible = true;
 						m_editItemButton.IsVisible = false;
 					}
 					else
 					{
-						m_sneakButtonWidget.IsVisible = true;
+						m_crouchButtonWidget.IsVisible = true;
 						m_mountButtonWidget.IsVisible = false;
 						m_editItemButton.IsVisible = false;
 					}
@@ -602,20 +618,20 @@ namespace Game
 
 				}
 			}
-			if (m_sneakButtonWidget.IsClicked || playerInput.ToggleSneak)
+			if (m_crouchButtonWidget.IsClicked || playerInput.ToggleSneak)
 			{
-				float targetCrouchFactor = m_componentPlayer.ComponentBody.TargetCrouchFactor;
-				m_componentPlayer.ComponentBody.TargetCrouchFactor = (targetCrouchFactor == 0f) ? 1 : 0;
-				if (m_componentPlayer.ComponentBody.TargetCrouchFactor != targetCrouchFactor)
+				if (m_componentPlayer.ComponentBody.TargetCrouchFactor == 0f)
 				{
-					if (m_componentPlayer.ComponentBody.TargetCrouchFactor > 0f)
+					if (m_componentPlayer.ComponentBody.StandingOnValue.HasValue)
 					{
-						DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: false, playNotificationSound: false);
-					}
-					else
-					{
+						m_componentPlayer.ComponentBody.TargetCrouchFactor = 1f;
 						DisplaySmallMessage(LanguageControl.Get(fName, 4), Color.White, blinking: false, playNotificationSound: false);
 					}
+				}
+				else
+				{
+					m_componentPlayer.ComponentBody.TargetCrouchFactor = 0f;
+					DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: false, playNotificationSound: false);
 				}
 			}
 			if (componentRider != null && (m_mountButtonWidget.IsClicked || playerInput.ToggleMount))
@@ -709,38 +725,60 @@ namespace Game
 			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && (m_lightningButtonWidget.IsClicked || playerInput.Lighting))
 			{
 				var matrix = Matrix.CreateFromQuaternion(m_componentPlayer.ComponentCreatureModel.EyeRotation);
-				Project.FindSubsystem<SubsystemWeather>(throwOnError: true).ManualLightingStrike(m_componentPlayer.ComponentCreatureModel.EyePosition, matrix.Forward);
+				m_subsystemWeather.ManualLightingStrike(m_componentPlayer.ComponentCreatureModel.EyePosition, matrix.Forward);
+			}
+			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && (m_precipitationButtonWidget.IsClicked || playerInput.Precipitation))
+			{
+				if (m_subsystemWeather.IsPrecipitationStarted)
+				{
+					m_subsystemWeather.ManualPrecipitationEnd();
+					DisplaySmallMessage("Precipitation Off", Color.White, blinking: false, playNotificationSound: false);
+				}
+				else
+				{
+					m_subsystemWeather.ManualPrecipitationStart();
+					DisplaySmallMessage("Precipitation On", Color.White, blinking: false, playNotificationSound: false);
+				}
+			}
+			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && (m_fogButtonWidget.IsClicked || playerInput.Fog))
+			{
+				if (m_subsystemWeather.IsFogStarted)
+				{
+					m_subsystemWeather.ManualFogEnd();
+					DisplaySmallMessage("Fog Off", Color.White, blinking: false, playNotificationSound: false);
+				}
+				else
+				{
+					m_subsystemWeather.ManualFogStart();
+					DisplaySmallMessage("Fog On", Color.White, blinking: false, playNotificationSound: false);
+				}
 			}
 			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && (m_timeOfDayButtonWidget.IsClicked || playerInput.TimeOfDay))
 			{
-				float num2 = MathUtils.Remainder(0.25f, 1f);
-				float num3 = MathUtils.Remainder(0.5f, 1f);
-				float num4 = MathUtils.Remainder(0.75f, 1f);
-				float num5 = MathUtils.Remainder(1f, 1f);
-				float num6 = MathUtils.Remainder(num2 - m_subsystemTimeOfDay.TimeOfDay, 1f);
-				float num7 = MathUtils.Remainder(num3 - m_subsystemTimeOfDay.TimeOfDay, 1f);
-				float num8 = MathUtils.Remainder(num4 - m_subsystemTimeOfDay.TimeOfDay, 1f);
-				float num9 = MathUtils.Remainder(num5 - m_subsystemTimeOfDay.TimeOfDay, 1f);
-				float num10 = MathUtils.Min(num6, num7, num8, num9);
-				if (num6 == num10)
+				float num2 = IntervalUtils.Interval(m_subsystemTimeOfDay.TimeOfDay, m_subsystemTimeOfDay.Middawn);
+				float num3 = IntervalUtils.Interval(m_subsystemTimeOfDay.TimeOfDay, m_subsystemTimeOfDay.Midday);
+				float num4 = IntervalUtils.Interval(m_subsystemTimeOfDay.TimeOfDay, m_subsystemTimeOfDay.Middusk);
+				float num5 = IntervalUtils.Interval(m_subsystemTimeOfDay.TimeOfDay, m_subsystemTimeOfDay.Midnight);
+				float num6 = MathUtils.Min(num2, num3, num4, num5);
+				if (num2 == num6)
 				{
-					m_subsystemTimeOfDay.TimeOfDayOffset += num6;
-					DisplaySmallMessage(LanguageControl.Get(fName, 15), Color.White, blinking: false, playNotificationSound: false);
+					m_subsystemTimeOfDay.TimeOfDayOffset += num2;
+					DisplaySmallMessage("Dawn", Color.White, blinking: false, playNotificationSound: false);
 				}
-				else if (num7 == num10)
+				else if (num3 == num6)
 				{
-					m_subsystemTimeOfDay.TimeOfDayOffset += num7;
-					DisplaySmallMessage(LanguageControl.Get(fName, 16), Color.White, blinking: false, playNotificationSound: false);
+					m_subsystemTimeOfDay.TimeOfDayOffset += num3;
+					DisplaySmallMessage("Noon", Color.White, blinking: false, playNotificationSound: false);
 				}
-				else if (num8 == num10)
+				else if (num4 == num6)
 				{
-					m_subsystemTimeOfDay.TimeOfDayOffset += num8;
-					DisplaySmallMessage(LanguageControl.Get(fName, 17), Color.White, blinking: false, playNotificationSound: false);
+					m_subsystemTimeOfDay.TimeOfDayOffset += num4;
+					DisplaySmallMessage("Dusk", Color.White, blinking: false, playNotificationSound: false);
 				}
-				else if (num9 == num10)
+				else if (num5 == num6)
 				{
-					m_subsystemTimeOfDay.TimeOfDayOffset += num9;
-					DisplaySmallMessage(LanguageControl.Get(fName, 18), Color.White, blinking: false, playNotificationSound: false);
+					m_subsystemTimeOfDay.TimeOfDayOffset += num5;
+					DisplaySmallMessage("Midnight", Color.White, blinking: false, playNotificationSound: false);
 				}
 			}
 			if (ModalPanelWidget != null)

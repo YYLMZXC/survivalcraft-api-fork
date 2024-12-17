@@ -73,12 +73,15 @@ namespace Game
 				if (!CharacterSkinsManager.IsBuiltIn(playersDatum.CharacterSkinName))
 				{
 					downloadedContentAddress = CommunityContentManager.GetDownloadedContentAddress(ExternalContentType.CharacterSkin, playersDatum.CharacterSkinName);
-					yield return new ActiveExternalContentInfo
+					if (!string.IsNullOrEmpty(downloadedContentAddress))
 					{
-						Address = downloadedContentAddress,
-						DisplayName = CharacterSkinsManager.GetDisplayName(playersDatum.CharacterSkinName),
-						Type = ExternalContentType.CharacterSkin
-					};
+						yield return new ActiveExternalContentInfo
+						{
+							Address = downloadedContentAddress,
+							DisplayName = CharacterSkinsManager.GetDisplayName(playersDatum.CharacterSkinName),
+							Type = ExternalContentType.CharacterSkin
+						};
+					}
 				}
 			}
 			SubsystemFurnitureBlockBehavior subsystemFurnitureBlockBehavior = Project.FindSubsystem<SubsystemFurnitureBlockBehavior>(throwOnError: true);
@@ -87,12 +90,15 @@ namespace Game
 				if (furnitureSet.ImportedFrom != null)
 				{
 					downloadedContentAddress = CommunityContentManager.GetDownloadedContentAddress(ExternalContentType.FurniturePack, furnitureSet.ImportedFrom);
-					yield return new ActiveExternalContentInfo
+					if (!string.IsNullOrEmpty(downloadedContentAddress))
 					{
-						Address = downloadedContentAddress,
-						DisplayName = FurniturePacksManager.GetDisplayName(furnitureSet.ImportedFrom),
-						Type = ExternalContentType.FurniturePack
-					};
+						yield return new ActiveExternalContentInfo
+						{
+							Address = downloadedContentAddress,
+							DisplayName = FurniturePacksManager.GetDisplayName(furnitureSet.ImportedFrom),
+							Type = ExternalContentType.FurniturePack
+						};
+					}
 				}
 			}
 		}
@@ -119,6 +125,11 @@ namespace Game
 			TotalElapsedGameTime += dt;
 			TotalElapsedGameTimeDelta = m_lastTotalElapsedGameTime.HasValue ? ((float)(TotalElapsedGameTime - m_lastTotalElapsedGameTime.Value)) : 0f;
 			m_lastTotalElapsedGameTime = TotalElapsedGameTime;
+			if (WorldSettings.AreSeasonsChanging && m_subsystemTime.PeriodicGameTimeEvent(10.0, 5.0))
+			{
+				float num = WorldSettings.YearDays * 1200f;
+				WorldSettings.TimeOfYear = IntervalUtils.Normalize(WorldSettings.TimeOfYear + 10f / num);
+			}
 			if (m_subsystemTime.GameTime >= 600.0 && m_subsystemTime.GameTime - m_subsystemTime.GameTimeDelta < 600.0 && UserManager.ActiveUser != null)
 			{
 				foreach (ActiveExternalContentInfo item in GetActiveExternalContent())

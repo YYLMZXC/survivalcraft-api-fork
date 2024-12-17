@@ -58,7 +58,7 @@ namespace Game
 			base.Load(valuesDictionary);
 			m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
 			string value = valuesDictionary.GetValue<string>("Magnets");
-			m_magnets = new DynamicArray<Vector3>(HumanReadableConverter.ValuesListFromString<Vector3>(';', value));
+			m_magnets = new DynamicArray<Vector3>((IEnumerable<Vector3>)HumanReadableConverter.ValuesListFromString<Vector3>(';', value));
 		}
 
 		public override void Save(ValuesDictionary valuesDictionary)

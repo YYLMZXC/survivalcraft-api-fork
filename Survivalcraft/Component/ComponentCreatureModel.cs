@@ -4,7 +4,7 @@ using TemplatesDatabase;
 
 namespace Game
 {
-	public class ComponentCreatureModel : ComponentModel, IUpdateable
+	public abstract class ComponentCreatureModel : ComponentModel, IUpdateable
 	{
 		public SubsystemTime m_subsystemTime;
 
@@ -155,6 +155,7 @@ namespace Game
 
 		public override void Animate()
 		{
+			AnimateCreature();
 			Opacity = (m_componentCreature.ComponentSpawn.SpawnDuration > 0f) ? ((float)MathUtils.Saturate((m_subsystemGameInfo.TotalElapsedGameTime - m_componentCreature.ComponentSpawn.SpawnTime) / m_componentCreature.ComponentSpawn.SpawnDuration)) : 1f;
 			if (m_componentCreature.ComponentSpawn.DespawnTime.HasValue)
 			{
@@ -172,6 +173,8 @@ namespace Game
 				RenderingMode = ModelRenderingMode.Solid;
 			}
 		}
+
+		public abstract void AnimateCreature();
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{

@@ -426,8 +426,11 @@ namespace Game
 				m_shader.GetParameter("u_viewPosition").SetValue(camera.ViewPosition);
 				m_shader.GetParameter("u_texture").SetValue(buffer.Texture);
 				m_shader.GetParameter("u_samplerState").SetValue(SamplerState.PointClamp);
+				m_shader.GetParameter("u_fogYMultiplier").SetValue(m_subsystemSky.VisibilityRangeYMultiplier);
 				m_shader.GetParameter("u_fogColor").SetValue(new Vector3(m_subsystemSky.ViewFogColor));
-				m_shader.GetParameter("u_fogStartInvLength").SetValue(new Vector2(m_subsystemSky.ViewFogRange.X, 1f / (m_subsystemSky.ViewFogRange.Y - m_subsystemSky.ViewFogRange.X)));
+				m_shader.GetParameter("u_fogBottomTopDensity").SetValue(new Vector3(m_subsystemSky.ViewFogBottom, m_subsystemSky.ViewFogTop, m_subsystemSky.ViewFogDensity));
+				m_shader.GetParameter("u_hazeStartDensity").SetValue(new Vector2(m_subsystemSky.ViewHazeStart, m_subsystemSky.ViewHazeDensity));
+				m_shader.GetParameter("u_alphaThreshold").SetValue(0.5f);
 				Display.DrawIndexed(PrimitiveType.TriangleList, m_shader,buffer.VertexBuffer,  buffer.IndexBuffer, 0,buffer.IndexBuffer.IndicesCount);
 			}
 		}

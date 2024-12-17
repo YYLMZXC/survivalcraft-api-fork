@@ -23,6 +23,8 @@ namespace Game
 
 		public SubsystemBlockBehaviors m_subsystemBlockBehaviors;
 
+		private ComponentHealth m_componentHealth;
+
 		public Random m_random = new();
 
 		public static Random s_random = new();
@@ -38,6 +40,8 @@ namespace Game
 		public int m_lastDigFrameIndex;
 
 		public float m_lastPokingPhase;
+
+		private double m_lastToolHintTime;
 
 		public virtual double HitInterval { get; set; }
 		public ComponentCreature ComponentCreature
@@ -73,6 +77,12 @@ namespace Game
 		}
 
 		public float AttackPower
+		{
+			get;
+			set;
+		}
+
+		public float AutoInteractRate
 		{
 			get;
 			set;
@@ -151,7 +161,7 @@ namespace Game
 			}
 			float num3 = CalculateDigTime(cellValue, activeBlockValue);
 			m_digProgress = (num3 > 0f) ? MathUtils.Saturate((float)(m_subsystemTime.GameTime - m_digStartTime) / num3) : 1f;
-			if (!CanUseTool(activeBlockValue))
+			if (!IsLevelSufficientForTool(activeBlockValue))
 			{
 				m_digProgress = 0f;
 				if (m_subsystemTime.PeriodicGameTimeEvent(5.0, m_digStartTime + 1.0))
@@ -159,19 +169,38 @@ namespace Game
 					ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block2.PlayerLevelRequired, block2.GetDisplayName(m_subsystemTerrain, activeBlockValue)), Color.White, blinking: true, playNotificationSound: true);
 				}
 			}
-			bool flag = ComponentPlayer != null && !ComponentPlayer.ComponentInput.IsControlledByTouch && m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative;
+			bool flag2 = ComponentPlayer != null && !ComponentPlayer.ComponentInput.IsControlledByTouch && m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative;
 			ModsManager.HookAction("OnMinerDig", modLoader =>
 			{
-				modLoader.OnMinerDig(this, raycastResult, ref m_digProgress, out bool flag2);
-					flag |= flag2;
+				modLoader.OnMinerDig(this, raycastResult, ref m_digProgress, out bool flag3);
+					flag2 |= flag3;
 				return false;
 			});
-			if (flag || (m_lastPokingPhase <= 0.5f && PokingPhase > 0.5f))
+			if ((m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Survival || m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless) && ComponentPlayer != null && num3 >= 3f && m_digProgress > 0.5f && (m_lastToolHintTime == 0.0 || Time.FrameStartTime - m_lastToolHintTime > 300.0))
+			{
+				bool flag = num3 == CalculateDigTime(cellValue, 0);
+				int num4 = FindBestInventoryToolForDigging(cellValue);
+				if (num4 == 0)
+				{
+					if (num2 != 23 && flag)
+					{
+						ComponentPlayer.ComponentGui.DisplaySmallMessage("Digging with bare hands is slow, use a stick", Color.White, blinking: true, playNotificationSound: true);
+						m_lastToolHintTime = Time.FrameStartTime;
+					}
+				}
+				else if (CalculateDigTime(cellValue, Terrain.ExtractContents(num4)) < 0.5f * num3 || flag)
+				{
+					string displayName = BlocksManager.Blocks[Terrain.ExtractContents(num4)].GetDisplayName(m_subsystemTerrain, num4);
+					ComponentPlayer.ComponentGui.DisplaySmallMessage($"Use your {displayName} to dig this faster", Color.White, blinking: true, playNotificationSound: true);
+					m_lastToolHintTime = Time.FrameStartTime;
+				}
+			}
+			if (flag2 || (m_lastPokingPhase <= 0.5f && PokingPhase > 0.5f))
 			{
 				if (m_digProgress >= 1f)
 				{
 					DigCellFace = null;
-                    if (flag)
+                    if (flag2)
                     {
                         Poke(forceRestart: true);
                     }
@@ -290,7 +319,7 @@ namespace Game
 		{
 			int num = Terrain.ExtractContents(ActiveBlockValue);
 			Block block = BlocksManager.Blocks[num];
-			if (!CanUseTool(ActiveBlockValue))
+			if (!IsLevelSufficientForTool(ActiveBlockValue))
 			{
 				ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block.PlayerLevelRequired, block.GetDisplayName(m_subsystemTerrain, ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
 				Poke(forceRestart: false);
@@ -352,7 +381,7 @@ namespace Game
 			}
 			m_lastHitTime = m_subsystemTime.GameTime;
 			Block block = BlocksManager.Blocks[Terrain.ExtractContents(ActiveBlockValue)];
-			if (!CanUseTool(ActiveBlockValue))
+			if (!IsLevelSufficientForTool(ActiveBlockValue))
 			{
 				ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block.PlayerLevelRequired, block.GetDisplayName(m_subsystemTerrain, ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
 				Poke(forceRestart: false);
@@ -371,6 +400,7 @@ namespace Game
 				num = AttackPower * m_random.Float(0.8f, 1.2f);
 				num2 = 0.66f;
 			}
+			num2 *= ((componentBody.Velocity.Length() < 0.05f) ? 3f : 1f);
 			bool flag;
 
             ModsManager.HookAction("OnMinerHit", modLoader =>
@@ -429,7 +459,7 @@ namespace Game
 			Block block = BlocksManager.Blocks[num];
 			if (block.IsAimable_(ActiveBlockValue))
 			{
-				if (!CanUseTool(ActiveBlockValue))
+				if (!IsLevelSufficientForTool(ActiveBlockValue))
 				{
 					ComponentPlayer?.ComponentGui.DisplaySmallMessage(string.Format(LanguageControl.Get(fName, 1), block.GetPlayerLevelRequired(ActiveBlockValue), block.GetDisplayName(m_subsystemTerrain, ActiveBlockValue)), Color.White, blinking: true, playNotificationSound: true);
 					Poke(forceRestart: false);
@@ -604,6 +634,21 @@ namespace Game
 			{
 				DigCellFace = null;
 			}
+			if ((m_componentHealth != null && !(m_componentHealth.Health > 0f)) || !(AutoInteractRate > 0f) || !m_random.Bool(AutoInteractRate) || !m_subsystemTime.PeriodicGameTimeEvent(1.0, (float)(GetHashCode() % 100) / 100f))
+			{
+				return;
+			}
+			ComponentCreatureModel componentCreatureModel = ComponentCreature.ComponentCreatureModel;
+			Vector3 eyePosition = componentCreatureModel.EyePosition;
+			Vector3 forwardVector = componentCreatureModel.EyeRotation.GetForwardVector();
+			for (int i = 0; i < 10; i++)
+			{
+				TerrainRaycastResult? terrainRaycastResult = Raycast<TerrainRaycastResult>(new Ray3(eyePosition, forwardVector + m_random.Vector3(0.75f)), RaycastMode.Interaction);
+				if (terrainRaycastResult.HasValue && terrainRaycastResult.Value.Distance < 1.5f && Terrain.ExtractContents(terrainRaycastResult.Value.Value) != 57 && Interact(terrainRaycastResult.Value))
+				{
+					break;
+				}
+			}
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
@@ -618,12 +663,18 @@ namespace Game
 			m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
 			ComponentCreature = Entity.FindComponent<ComponentCreature>(throwOnError: true);
 			ComponentPlayer = Entity.FindComponent<ComponentPlayer>();
+			m_componentHealth = base.Entity.FindComponent<ComponentHealth>();
 			ComponentFactors = Entity.FindComponent<ComponentFactors>(throwOnError: true);
 			Inventory = m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && ComponentPlayer != null
 				? Entity.FindComponent<ComponentCreativeInventory>()
 				: (IInventory)Entity.FindComponent<ComponentInventory>();
 			AttackPower = valuesDictionary.GetValue<float>("AttackPower");
 			HitInterval = valuesDictionary.GetValue<float>("HitInterval");
+			AutoInteractRate = valuesDictionary.GetValue<float>("AutoInteractRate");
+			if (string.CompareOrdinal(m_subsystemGameInfo.WorldSettings.OriginalSerializationVersion, "2.4") < 0 || m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Harmless || m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Survival)
+			{
+				AutoInteractRate = 0f;
+			}
 		}
 		public override void Save(ValuesDictionary valuesDictionary, EntityToIdMap entityToIdMap)
 		{
@@ -712,7 +763,7 @@ namespace Game
 			return MathUtils.Max(digResilience / num2, 0f);
 		}
 
-		public virtual bool CanUseTool(int toolValue)
+		public virtual bool IsLevelSufficientForTool(int toolValue)
 		{
 			if (m_subsystemGameInfo.WorldSettings.GameMode != 0 && m_subsystemGameInfo.WorldSettings.AreAdventureSurvivalMechanicsEnabled)
 			{
@@ -723,6 +774,33 @@ namespace Game
 				}
 			}
 			return true;
+		}
+
+		public virtual int FindBestInventoryToolForDigging(int digValue)
+		{
+			int result = 0;
+			float num = CalculateDigTime(digValue, 0);
+			foreach (IInventory item in base.Entity.FindComponents<IInventory>())
+			{
+				if (item is ComponentCreativeInventory)
+				{
+					continue;
+				}
+				for (int i = 0; i < item.SlotsCount; i++)
+				{
+					int slotValue = item.GetSlotValue(i);
+					if (IsLevelSufficientForTool(slotValue))
+					{
+						float num2 = CalculateDigTime(digValue, Terrain.ExtractContents(slotValue));
+						if (num2 < num)
+						{
+							num = num2;
+							result = slotValue;
+						}
+					}
+				}
+			}
+			return result;
 		}
 	}
 }

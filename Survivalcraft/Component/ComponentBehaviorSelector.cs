@@ -17,7 +17,7 @@ namespace Game
 		public void Update(float dt)
 		{
 			ComponentBehavior componentBehavior = null;
-			if (m_componentCreature.ComponentHealth.Health > 0f)
+			if (m_componentCreature.ComponentHealth.Health > 0f && !m_componentCreature.ComponentBody.IsEmbeddedInIce)
 			{
 				float num = 0f;
 				foreach (ComponentBehavior behavior in m_behaviors)

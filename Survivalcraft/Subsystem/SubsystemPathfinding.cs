@@ -19,6 +19,8 @@ namespace Game
 
 			public Vector3 BoxSize;
 
+			public bool IgnoreDoors;
+
 			public int MaxPositionsToCheck;
 
 			public PathfindingResult PathfindingResult;
@@ -99,7 +101,7 @@ namespace Game
 				{
 					return;
 				}
-				if (block.IsCollidable_(cellValue))
+				if (block.IsCollidable_(cellValue) && (!Request.IgnoreDoors || (!(block is DoorBlock) && !(block is TrapdoorBlock))))
 				{
 					float blockWalkingHeight = GetBlockWalkingHeight(block, cellValue);
 					if (blockWalkingHeight > 0.5f && (block.NoAutoJump || block.NoSmoothRise))
@@ -224,7 +226,7 @@ namespace Game
 
 		public AStar<Vector3> m_astar = new();
 
-		public void QueuePathSearch(Vector3 start, Vector3 end, float minDistance, Vector3 boxSize, int maxPositionsToCheck, PathfindingResult result)
+		public void QueuePathSearch(Vector3 start, Vector3 end, float minDistance, Vector3 boxSize, bool ignoreDoors, int maxPositionsToCheck, PathfindingResult result)
 		{
 			lock (m_requests)
 			{
@@ -238,6 +240,7 @@ namespace Game
 						End = end,
 						MinDistance = minDistance,
 						BoxSize = boxSize,
+						IgnoreDoors = ignoreDoors,
 						MaxPositionsToCheck = maxPositionsToCheck,
 						PathfindingResult = result
 					});

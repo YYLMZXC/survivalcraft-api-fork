@@ -8,6 +8,8 @@ namespace Game
 	{
 		public SubsystemPlayers m_subsystemPlayers;
 
+		public SubsystemSky m_subsystemSky;
+
 		public SubsystemTime m_subsystemTime;
 
 		public SubsystemUpdate m_subsystemUpdate;
@@ -107,7 +109,7 @@ namespace Game
 				m_sleepFactor = MathUtils.Min(m_sleepFactor + (0.33f * Time.FrameDuration), 1f);
 				m_minWetness = MathUtils.Min(m_minWetness, m_componentPlayer.ComponentVitalStats.Wetness);
 				m_componentPlayer.PlayerStats.TimeSlept += m_subsystemGameInfo.TotalElapsedGameTimeDelta;
-				if ((m_componentPlayer.ComponentVitalStats.Sleep >= 1f || m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative) && m_subsystemTimeOfDay.TimeOfDay > 0.3f && m_subsystemTimeOfDay.TimeOfDay < 0.599999964f && m_sleepStartTime.HasValue && m_subsystemGameInfo.TotalElapsedGameTime > m_sleepStartTime + 180.0)
+				if ((m_componentPlayer.ComponentVitalStats.Sleep >= 1f || m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative) && IntervalUtils.IsBetween(m_subsystemTimeOfDay.TimeOfDay, m_subsystemTimeOfDay.DayStart, IntervalUtils.Add(m_subsystemTimeOfDay.DuskStart, -0.1f)) && m_sleepStartTime.HasValue && m_subsystemGameInfo.TotalElapsedGameTime > m_sleepStartTime + 180.0)
 				{
 					WakeUp();
 				}
@@ -164,6 +166,7 @@ namespace Game
 		public override void Load(ValuesDictionary valuesDictionary, IdToEntityMap idToEntityMap)
 		{
 			m_subsystemPlayers = Project.FindSubsystem<SubsystemPlayers>(throwOnError: true);
+			m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
 			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
 			m_subsystemUpdate = Project.FindSubsystem<SubsystemUpdate>(throwOnError: true);
 			m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);

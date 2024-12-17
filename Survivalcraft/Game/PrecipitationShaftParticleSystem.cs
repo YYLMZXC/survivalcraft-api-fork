@@ -79,13 +79,12 @@ namespace Game
 			set;
 		}
 
-		public PrecipitationShaftParticleSystem(GameWidget gameWidget, SubsystemWeather subsystemWeather, Random random, Point2 point, PrecipitationType precipitationType)
+		public PrecipitationShaftParticleSystem(GameWidget gameWidget, SubsystemWeather subsystemWeather, Random random, Point2 point)
 		{
 			m_gameWidget = gameWidget;
 			m_subsystemWeather = subsystemWeather;
 			m_random = random;
 			Point = point;
-			m_precipitationType = precipitationType;
 			for (int i = 0; i < m_particles.Length; i++)
 			{
 				m_particles[i] = new Particle();
@@ -104,6 +103,10 @@ namespace Game
 				m_yLimit = precipitationShaftInfo.YLimit;
 				m_topmostValue = m_subsystemWeather.SubsystemTerrain.Terrain.GetCellValue(Point.X, precipitationShaftInfo.YLimit - 1, Point.Y);
 				m_topmostBelowValue = m_subsystemWeather.SubsystemTerrain.Terrain.GetCellValue(Point.X, precipitationShaftInfo.YLimit - 2, Point.Y);
+				if (precipitationShaftInfo.Type != m_precipitationType)
+				{
+					m_needsInitialize = true;
+				}
 			}
 			Camera activeCamera = m_gameWidget.ActiveCamera;
 			if (!m_isEmpty || (m_intensity > 0f && m_yLimit < activeCamera.ViewPosition.Y + 5f))
@@ -285,6 +288,7 @@ namespace Game
 
 		public void Initialize()
 		{
+			m_precipitationType = m_subsystemWeather.GetPrecipitationShaftInfo(Point.X, Point.Y).Type;
 			m_lastViewY = null;
 			m_toCreate = m_random.Float(0f, 0.9f);
 			m_batch = null;

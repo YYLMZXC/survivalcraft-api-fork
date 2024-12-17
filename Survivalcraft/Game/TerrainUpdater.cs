@@ -70,7 +70,7 @@ namespace Game
 
 			public void Log()
 			{
-				Engine.Log.Information("Terrain Update {0}", m_counter++);
+				Engine.Log.Information("Terrain Update #{0}", m_counter++);
 				if (FindBestChunkCount > 0)
 				{
 					Engine.Log.Information("    FindBestChunk:          {0:0.0}ms ({1}x)", FindBestChunkTime * 1000.0, FindBestChunkCount);
@@ -158,13 +158,21 @@ namespace Game
 			public int Light;
 		}
 
+		public FloatCurve TemperatureCurve = new FloatCurve(new Vector2(0f, 0f), new Vector2(0.125f, 0f), new Vector2(0.25f, 0f), new Vector2(0.375f, -4f), new Vector2(0.5f, -12f), new Vector2(0.625f, -24f), new Vector2(0.75f, -12f), new Vector2(0.875f, -4f), new Vector2(1f, 0f));
+
+		public FloatCurve HumidityCurve = new FloatCurve(new Vector2(0f, 0f), new Vector2(0.25f, 0f), new Vector2(0.5f, 0f), new Vector2(0.75f, 0f), new Vector2(1f, 0f));
+
 		public const int m_lightAttenuationWithDistance = 1;
 
 		public const float m_updateHysteresis = 8f;
 
 		public SubsystemTerrain m_subsystemTerrain;
 
+		public SubsystemGameInfo m_subsystemGameInfo;
+
 		public SubsystemSky m_subsystemSky;
+
+		public SubsystemSeasons m_subsystemSeasons;
 
 		public SubsystemAnimatedTextures m_subsystemAnimatedTextures;
 
@@ -200,16 +208,23 @@ namespace Game
 
 		public Dictionary<int, UpdateLocation?> m_pendingLocations = [];
 
+		public static int ChunkUpdates;
+
 		public static int SlowTerrainUpdate;
 
 		public static bool LogTerrainUpdateStats;
 
 		public AutoResetEvent UpdateEvent => m_updateEvent;
 
+		public event Action<TerrainChunk> ChunkInitialized;
+
 		public TerrainUpdater(SubsystemTerrain subsystemTerrain)
 		{
+			ChunkUpdates = 0;
 			m_subsystemTerrain = subsystemTerrain;
-			m_subsystemSky = m_subsystemTerrain.Project.FindSubsystem<SubsystemSky>(true);
+			m_subsystemGameInfo = m_subsystemTerrain.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+			m_subsystemSky = m_subsystemTerrain.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+			m_subsystemSeasons = m_subsystemTerrain.Project.FindSubsystem<SubsystemSeasons>(throwOnError: true);
 			m_subsystemBlockBehaviors = m_subsystemTerrain.Project.FindSubsystem<SubsystemBlockBehaviors>(true);
 			m_subsystemAnimatedTextures = m_subsystemTerrain.Project.FindSubsystem<SubsystemAnimatedTextures>(true);
 			m_terrain = subsystemTerrain.Terrain;
@@ -313,6 +328,14 @@ namespace Game
 			{
 				m_lastSkylightValue = m_subsystemSky.SkyLightValue;
 				DowngradeAllChunksState(TerrainChunkState.InvalidLight, forceGeometryRegeneration: false);
+			}
+			int num = (int)MathF.Round(TemperatureCurve.Sample(m_subsystemGameInfo.WorldSettings.TimeOfYear));
+			int num2 = (int)MathF.Round(HumidityCurve.Sample(m_subsystemGameInfo.WorldSettings.TimeOfYear));
+			if (num != m_terrain.SeasonTemperature || num2 != m_terrain.SeasonHumidity)
+			{
+				m_terrain.SeasonTemperature = num;
+				m_terrain.SeasonHumidity = num2;
+				DowngradeAllChunksState(TerrainChunkState.InvalidVertices1, forceGeometryRegeneration: false);
 			}
 			if (!SettingsManager.MultithreadedTerrainUpdate)
 			{
@@ -860,6 +883,7 @@ namespace Game
 						chunk.ThreadState = TerrainChunkState.Valid;
 						chunk.WasUpgraded = true;
 						double realTime2 = Time.RealTime;
+						ChunkUpdates++;
 						m_statistics.VerticesCount2++;
 						m_statistics.VerticesTime2 += realTime2 - realTime;
 						break;
@@ -1464,6 +1488,7 @@ namespace Game
 
 		public void NotifyBlockBehaviors(TerrainChunk chunk)
 		{
+			this.ChunkInitialized?.Invoke(chunk);
 			foreach (SubsystemBlockBehavior blockBehavior in m_subsystemBlockBehaviors.BlockBehaviors)
 			{
 				blockBehavior.OnChunkInitialized(chunk);

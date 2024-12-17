@@ -68,9 +68,21 @@ namespace Game
         }
         public virtual void Update(float dt)
         {
-            Block block = BlocksManager.Blocks[Terrain.ExtractContents(Value)];
-            int pickablesRemain = SubsystemPickables.m_pickables.Count - SubsystemPickables.m_pickablesToRemove.Count;
-            float maxTimeExist = MaxTimeExist ?? MathUtils.Lerp(300f, 90f, MathUtils.Saturate(pickablesRemain / 60f));
+            float maxTimeExist;
+            if(MaxTimeExist.HasValue)
+            {
+	            maxTimeExist = MaxTimeExist.Value;
+            }
+            else
+            {
+	            maxTimeExist = (((SubsystemPickables.m_pickables.Count - SubsystemPickables.m_pickablesToRemove.Count) > 80) ? 120 : 900);
+				Block block = BlocksManager.Blocks[Terrain.ExtractContents(Value)];
+	            string category = block.GetCategory(Value);
+	            if (category == "Terrain" || (category == "Plants" && block.GetNutritionalValue(Value) == 0f))
+	            {
+		            maxTimeExist *= 0.5f;
+	            }
+            }
             double timeExisted = SubsystemPickables.m_subsystemGameInfo.TotalElapsedGameTime - CreationTime;
             if (timeExisted > maxTimeExist)
             {

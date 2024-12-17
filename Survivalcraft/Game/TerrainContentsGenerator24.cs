@@ -178,9 +178,9 @@ public class TerrainContentsGenerator24 : ITerrainContentsGenerator
 
 	private static List<List<TerrainBrush>> m_caveBrushesByType;
 
-	private SubsystemTerrain m_subsystemTerrain;
+	public SubsystemTerrain m_subsystemTerrain;
 
-	private SubsystemBottomSuckerBlockBehavior m_subsystemBottomSuckerBlockBehavior;
+	public SubsystemBottomSuckerBlockBehavior m_subsystemBottomSuckerBlockBehavior;
 
 	private WorldSettings m_worldSettings;
 

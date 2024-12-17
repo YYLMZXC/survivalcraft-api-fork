@@ -158,7 +158,8 @@ namespace Game
 											for (int i = 0; i < num6; i++)
 											{
 												Vector3 v3 = (m_random.Float(0f - vector.X, vector.X) * vector4) + (m_random.Float(0f - vector.Y, vector.Y) * v2) + (m_random.Float(0f - vector.Z, vector.Z) * vector3);
-												Projectile projectile = m_subsystemProjectiles.FireProjectile(value2, vector2, s * (vector3 + v3), Vector3.Zero, componentMiner.ComponentCreature);
+												Vector3 velocity = componentMiner.ComponentCreature.ComponentBody.Velocity + s * (vector3 + v3);
+												Projectile projectile = m_subsystemProjectiles.FireProjectile(value2, vector2, velocity, Vector3.Zero, componentMiner.ComponentCreature);
 												if (projectile != null)
 												{
 													projectile.ProjectileStoppedAction = ProjectileStoppedAction.Disappear;

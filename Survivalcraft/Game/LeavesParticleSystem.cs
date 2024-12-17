@@ -27,7 +27,7 @@ public class LeavesParticleSystem : ParticleSystem<LeavesParticleSystem.Particle
 		public float AngleSpeed;
 	}
 
-	private SubsystemTerrain m_subsystemTerrain;
+	public SubsystemTerrain m_subsystemTerrain;
 
 	private Random m_random = new Random();
 

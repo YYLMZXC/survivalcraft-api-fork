@@ -28,7 +28,7 @@ namespace Game
 			"Piano",
 			"PianoLong",
 			"Drums",
-			"",
+			"Bass",
 			"",
 			"",
 			"",
@@ -38,22 +38,7 @@ namespace Game
 
 		public int[] m_maxOctaves = new int[16]
 		{
-			0,
-			5,
-			5,
-			5,
-			5,
-			5,
-			5,
-			6,
-			6,
-			0,
-			0,
-			0,
-			0,
-			0,
-			0,
-			6
+			0, 6, 5, 6, 6, 6, 6, 6, 6, 0, 6, 0, 0, 0, 0, 6
 		};
 
 		public string[] m_drums = new string[10]

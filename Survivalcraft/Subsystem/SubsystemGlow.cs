@@ -46,7 +46,7 @@ namespace Game
 					if (num > 0.01f)
 					{
 						float num2 = vector.Length();
-						if (num2 < m_subsystemSky.ViewFogRange.Y)
+						if (num2 < m_subsystemSky.VisibilityRange)
 						{
 							float num3 = key.Size;
 							if (key.FarDistance > 0f)
@@ -54,11 +54,12 @@ namespace Game
 								num3 += (key.FarSize - key.Size) * MathUtils.Saturate(num2 / key.FarDistance);
 							}
 							Vector3 v = (0f - (0.01f + (0.02f * num))) / num2 * vector;
+							Color color = Color.LerpNotSaturated(key.Color, m_subsystemSky.ViewFogColor, m_subsystemSky.CalculateFog(camera.ViewPosition, key.Position));
 							Vector3 p = key.Position + (num3 * (-key.Right - key.Up)) + v;
 							Vector3 p2 = key.Position + (num3 * (key.Right - key.Up)) + v;
 							Vector3 p3 = key.Position + (num3 * (key.Right + key.Up)) + v;
 							Vector3 p4 = key.Position + (num3 * (-key.Right + key.Up)) + v;
-							m_batchesByType[(int)key.Type].QueueQuad(p, p2, p3, p4, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(0f, 1f), key.Color);
+							m_batchesByType[(int)key.Type].QueueQuad(p, p2, p3, p4, new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(0f, 1f), color);
 						}
 					}
 				}

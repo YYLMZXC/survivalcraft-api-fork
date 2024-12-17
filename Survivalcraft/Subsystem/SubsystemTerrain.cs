@@ -140,7 +140,6 @@ namespace Game
 			float num = Vector3.Distance(start, end);
 			if (num > 1000f)
 			{
-				Log.Warning("Terrain raycast too long, trimming.");
 				end = start + (1000f * Vector3.Normalize(end - start));
 			}
 			var ray = new Ray3(start, Vector3.Normalize(end - start));
@@ -439,19 +438,47 @@ namespace Game
 			TerrainUpdater = new TerrainUpdater(this);
 			TerrainSerializer = new TerrainSerializer23(SubsystemGameInfo.DirectoryName);
 			BlockGeometryGenerator = new BlockGeometryGenerator(Terrain, this, Project.FindSubsystem<SubsystemElectricity>(throwOnError: true), SubsystemFurnitureBlockBehavior, Project.FindSubsystem<SubsystemMetersBlockBehavior>(throwOnError: true), SubsystemPalette);
+			TerrainGenerationMode terrainGenerationMode = SubsystemGameInfo.WorldSettings.TerrainGenerationMode;
 			if (string.CompareOrdinal(SubsystemGameInfo.WorldSettings.OriginalSerializationVersion, "2.1") <= 0)
 			{
-				TerrainGenerationMode terrainGenerationMode = SubsystemGameInfo.WorldSettings.TerrainGenerationMode;
-				TerrainContentsGenerator = terrainGenerationMode == TerrainGenerationMode.FlatContinent || terrainGenerationMode == TerrainGenerationMode.FlatIsland
-					? new TerrainContentsGeneratorFlat(this)
-					: (ITerrainContentsGenerator)new TerrainContentsGenerator21(this);
+				if (terrainGenerationMode == TerrainGenerationMode.FlatContinent || terrainGenerationMode == TerrainGenerationMode.FlatIsland)
+				{
+					TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
+				}
+				else
+				{
+					TerrainContentsGenerator = new TerrainContentsGenerator21(this);
+				}
+			}
+			else if (string.CompareOrdinal(SubsystemGameInfo.WorldSettings.OriginalSerializationVersion, "2.2") == 0)
+			{
+				if (terrainGenerationMode == TerrainGenerationMode.FlatContinent || terrainGenerationMode == TerrainGenerationMode.FlatIsland)
+				{
+					TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
+				}
+				else
+				{
+					TerrainContentsGenerator = new TerrainContentsGenerator22(this);
+				}
+			}
+			else if (string.CompareOrdinal(SubsystemGameInfo.WorldSettings.OriginalSerializationVersion, "2.3") == 0)
+			{
+				if (terrainGenerationMode == TerrainGenerationMode.FlatContinent || terrainGenerationMode == TerrainGenerationMode.FlatIsland)
+				{
+					TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
+				}
+				else
+				{
+					TerrainContentsGenerator = new TerrainContentsGenerator23(this);
+				}
+			}
+			else if (terrainGenerationMode == TerrainGenerationMode.FlatContinent || terrainGenerationMode == TerrainGenerationMode.FlatIsland)
+			{
+				TerrainContentsGenerator = new TerrainContentsGeneratorFlat(this);
 			}
 			else
 			{
-				TerrainGenerationMode terrainGenerationMode2 = SubsystemGameInfo.WorldSettings.TerrainGenerationMode;
-				TerrainContentsGenerator = terrainGenerationMode2 == TerrainGenerationMode.FlatContinent || terrainGenerationMode2 == TerrainGenerationMode.FlatIsland
-					? new TerrainContentsGeneratorFlat(this)
-					: (ITerrainContentsGenerator)new TerrainContentsGenerator23(this);
+				TerrainContentsGenerator = new TerrainContentsGenerator24(this);
 			}
 		}
 

@@ -211,7 +211,7 @@ namespace Game
 			base.Update(dt);
 		}
 
-		public override void Animate()
+		public override void AnimateCreature()
 		{
 			bool flag = false;
 			bool skip = false;
@@ -223,10 +223,8 @@ namespace Game
 			});
 			if (flag)
 			{
-				base.Animate();
 				return;
 			}
-			base.Animate();
 			Vector3 position = m_componentCreature.ComponentBody.Position;
 			Vector3 vector = m_componentCreature.ComponentBody.Rotation.ToYawPitchRoll();
 			if (OnAnimate != null && OnAnimate()) return;

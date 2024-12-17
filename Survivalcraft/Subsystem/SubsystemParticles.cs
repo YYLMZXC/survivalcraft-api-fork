@@ -1,3 +1,4 @@
+using Engine;
 using Engine.Graphics;
 using GameEntitySystem;
 using System;
@@ -26,6 +27,8 @@ namespace Game
 		public List<ParticleSystemBase> m_endedParticleSystems = [];
 
 		public UpdateOrder UpdateOrder => UpdateOrder.Default;
+
+		public SubsystemSky SubsystemSky { get; private set; }
 
 		public int[] DrawOrders => m_drawOrders;
 
@@ -61,6 +64,7 @@ namespace Game
 		public override void Load(ValuesDictionary valuesDictionary)
 		{
 			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
+			SubsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
 		}
 
 		public void Update(float dt)
@@ -89,6 +93,26 @@ namespace Game
 				foreach (ParticleSystemBase key in m_particleSystems.Keys)
 				{
 					key.Draw(camera);
+				}
+				Shader shader = ContentManager.Get<Shader>("Shaders/AlphaTested");
+				shader.GetParameter("u_origin").SetValue(Vector2.Zero);
+				shader.GetParameter("u_viewProjectionMatrix").SetValue(camera.ViewProjectionMatrix);
+				shader.GetParameter("u_viewPosition").SetValue(camera.ViewPosition);
+				shader.GetParameter("u_fogYMultiplier").SetValue(SubsystemSky.VisibilityRangeYMultiplier);
+				shader.GetParameter("u_fogColor").SetValue(new Vector3(SubsystemSky.ViewFogColor));
+				shader.GetParameter("u_hazeStartDensity").SetValue(new Vector2(SubsystemSky.ViewHazeStart, SubsystemSky.ViewHazeDensity));
+				shader.GetParameter("u_fogBottomTopDensity").SetValue(new Vector3(SubsystemSky.ViewFogBottom, SubsystemSky.ViewFogTop, SubsystemSky.ViewFogDensity));
+				shader.GetParameter("u_alphaThreshold").SetValue(0f);
+				ShaderParameter parameter = shader.GetParameter("u_texture");
+				ShaderParameter parameter2 = shader.GetParameter("u_samplerState");
+				foreach (TexturedBatch3D texturedBatch in PrimitivesRenderer.TexturedBatches)
+				{
+					Display.DepthStencilState = texturedBatch.DepthStencilState;
+					Display.RasterizerState = texturedBatch.RasterizerState;
+					Display.BlendState = texturedBatch.BlendState;
+					parameter.SetValue(texturedBatch.Texture);
+					parameter2.SetValue(texturedBatch.SamplerState);
+					texturedBatch.FlushWithDeviceState(shader);
 				}
 				PrimitivesRenderer.Flush(camera.ViewProjectionMatrix);
 			}

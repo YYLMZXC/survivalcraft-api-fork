@@ -783,8 +783,8 @@
   "ComponentGui": {
     "1": "Press H for keyboard controls\n(or see HELP)",
     "2": "Press START/PAUSE for gamepad controls\n(or see HELP)",
-    "3": "Sneak mode on",
-    "4": "Sneak mode off",
+    "3": "Crouching",
+    "4": "Standing up",
     "5": "Mounted",
     "6": "Dismounted",
     "7": "Fly mode on",

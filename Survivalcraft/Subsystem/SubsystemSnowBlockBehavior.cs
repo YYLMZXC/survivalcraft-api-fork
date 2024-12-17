@@ -25,5 +25,11 @@ namespace Game
 			}
 			return true;
 		}
+
+		public static bool CanBeReplacedBySnow(int value)
+		{
+			int num = Terrain.ExtractContents(value);
+			return BlocksManager.Blocks[num] is FallenLeavesBlock;
+		}
 	}
 }

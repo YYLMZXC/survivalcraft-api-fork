@@ -12,19 +12,19 @@ public class SubsystemDeciduousLeavesBlockBehavior : SubsystemPollableBlockBehav
 		public Point3 Position;
 	}
 
-	private SubsystemGameInfo m_subsystemGameInfo;
+	public SubsystemGameInfo m_subsystemGameInfo;
 
-	private SubsystemSeasons m_subsystemSeasons;
+	public SubsystemSeasons m_subsystemSeasons;
 
-	private SubsystemTerrain m_subsystemTerrain;
+	public SubsystemTerrain m_subsystemTerrain;
 
-	private SubsystemTime m_subsystemTime;
+	public SubsystemTime m_subsystemTime;
 
-	private SubsystemGameWidgets m_subsystemGameWidgets;
+	public SubsystemGameWidgets m_subsystemGameWidgets;
 
-	private SubsystemParticles m_subsystemParticles;
+	public SubsystemParticles m_subsystemParticles;
 
-	private SubsystemCellChangeQueue m_subsystemCellChangeQueue;
+	public SubsystemCellChangeQueue m_subsystemCellChangeQueue;
 
 	private Random m_random = new Random();
 

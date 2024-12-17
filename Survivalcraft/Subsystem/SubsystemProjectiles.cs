@@ -224,7 +224,7 @@ namespace Game
 					}
 					bool shouldDrawBlock = true;
 					float drawBlockSize = 0.3f;
-					Color drawBlockColor = Color.White;
+					Color drawBlockColor = Color.MultiplyNotSaturated(Color.White, 1f - m_subsystemSky.CalculateFog(camera.ViewPosition, projectile.Position));
                     ModsManager.HookAction("OnProjectileDraw", loader =>
                     {
                         loader.OnProjectileDraw(projectile, this, camera, drawOrder, ref shouldDrawBlock, ref drawBlockSize, ref drawBlockColor);

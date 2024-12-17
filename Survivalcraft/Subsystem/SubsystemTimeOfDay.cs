@@ -8,9 +8,35 @@ namespace Game
 	{
 		public SubsystemGameInfo m_subsystemGameInfo;
 
+		public SubsystemSeasons m_subsystemSeasons;
+
 		public bool TimeOfDayEnabled = true;
 
 		public float DayDuration { get; set; } = 1200f;
+
+		public float DawnStart { get; private set; }
+
+		public float DayStart { get; private set; }
+
+		public float DuskStart { get; private set; }
+
+		public float NightStart { get; private set; }
+
+		public float DayInterval => IntervalUtils.Interval(DayStart, DuskStart);
+
+		public float DuskInterval => IntervalUtils.Interval(DuskStart, NightStart);
+
+		public float NightInterval => IntervalUtils.Interval(NightStart, DawnStart);
+
+		public float DawnInterval => IntervalUtils.Interval(DawnStart, DayStart);
+
+		public float Midday => IntervalUtils.Midpoint(DayStart, DuskStart);
+
+		public float Middusk => IntervalUtils.Midpoint(DuskStart, NightStart);
+
+		public float Midnight => IntervalUtils.Midpoint(NightStart, DawnStart);
+
+		public float Middawn => IntervalUtils.Midpoint(DawnStart, DayStart);
 
 		public float TimeOfDay
 		{
@@ -24,23 +50,23 @@ namespace Game
 					}
 					if (m_subsystemGameInfo.WorldSettings.TimeOfDayMode == TimeOfDayMode.Day)
 					{
-						return MathUtils.Remainder(0.5f, 1f);
+						return Midday;
 					}
 					if (m_subsystemGameInfo.WorldSettings.TimeOfDayMode == TimeOfDayMode.Night)
 					{
-						return MathUtils.Remainder(1f, 1f);
+						return Midnight;
 					}
 					if (m_subsystemGameInfo.WorldSettings.TimeOfDayMode == TimeOfDayMode.Sunrise)
 					{
-						return MathUtils.Remainder(0.25f, 1f);
+						return Middawn;
 					}
 					if (m_subsystemGameInfo.WorldSettings.TimeOfDayMode == TimeOfDayMode.Sunset)
 					{
-						return MathUtils.Remainder(0.75f, 1f);
+						return Middusk;
 					}
-					return 0.5f;
+					return Midday;
 				}
-				return 0.5f;
+				return Midday;
 			}
 		}
 
@@ -54,23 +80,39 @@ namespace Game
 
 		public double CalculateDay(double totalElapsedGameTime)
 		{
-			return (totalElapsedGameTime + ((TimeOfDayOffset + 0.30000001192092896) * DayDuration)) / DayDuration;
+			return (totalElapsedGameTime + (TimeOfDayOffset + (double)DayStart) * 1200.0) / 1200.0;
 		}
 
 		public float CalculateTimeOfDay(double totalElapsedGameTime)
 		{
-			return (float)MathUtils.Remainder(totalElapsedGameTime + ((TimeOfDayOffset + 0.30000001192092896) * DayDuration), DayDuration) / DayDuration;
+			double num = CalculateDay(totalElapsedGameTime);
+			return (float)(num - Math.Floor(num));
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary)
 		{
 			m_subsystemGameInfo = Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
+			m_subsystemSeasons = base.Project.FindSubsystem<SubsystemSeasons>(throwOnError: true);
 			TimeOfDayOffset = valuesDictionary.GetValue<double>("TimeOfDayOffset");
+			UpdateStarts();
 		}
 
 		public override void Save(ValuesDictionary valuesDictionary)
 		{
 			valuesDictionary.SetValue("TimeOfDayOffset", TimeOfDayOffset);
+		}
+
+		public virtual void UpdateStarts()
+		{
+			float num = IntervalUtils.Midpoint(SubsystemSeasons.SummerStart, SubsystemSeasons.AutumnStart);
+			float num2 = MathUtils.Remainder(m_subsystemGameInfo.WorldSettings.TimeOfYear - num, 1f);
+			float num3 = MathUtils.Lerp(0.2f, 0.4f, 0.5f + 0.5f * MathF.Cos((float)Math.PI * 2f * num2));
+			float num4 = 0.4f;
+			float num5 = (1f - (num3 + num4)) / 2f;
+			DayStart = 0.3f;
+			DawnStart = IntervalUtils.Add(DayStart, 0f - num5);
+			DuskStart = IntervalUtils.Add(DayStart, num3);
+			NightStart = IntervalUtils.Add(DuskStart, num5);
 		}
 	}
 }

@@ -44,6 +44,10 @@ namespace Game
 
 		public bool Lighting;
 
+		public bool Precipitation;
+
+		public bool Fog;
+
 		public bool KeyboardHelp;
 
 		public bool GamepadHelp;

@@ -38,7 +38,7 @@ namespace Game
 				foreach (Point3 key in m_particleSystemsByCell.Keys)
 				{
 					PrecipitationShaftInfo precipitationShaftInfo = m_subsystemWeather.GetPrecipitationShaftInfo(key.X, key.Z);
-					if ((precipitationShaftInfo.Intensity > 0f && key.Y >= precipitationShaftInfo.YLimit - 1) || m_updateIndex % 5 == 0)
+					if ((precipitationShaftInfo.Intensity > 0f && key.Y >= precipitationShaftInfo.YLimit - 1) || m_updateIndex % 6 == 0)
 					{
 						m_toReduce.Add(key);
 					}

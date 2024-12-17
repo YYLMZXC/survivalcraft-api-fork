@@ -807,6 +807,7 @@ namespace Game
 				m_spawnDialog = new SpawnDialog();
 				DialogsManager.ShowDialog(GameWidget.GuiWidget, m_spawnDialog);
 			}
+			m_spawnDialog.TimeOfYear = m_subsystemGameInfo.WorldSettings.TimeOfYear;
 			if (largeMessage != null)
 			{
 				m_spawnDialog.LargeMessage = largeMessage;

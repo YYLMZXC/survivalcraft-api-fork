@@ -60,6 +60,10 @@ namespace Game
 
 		public float m_crouchFactor;
 
+		private int m_embeddedInIceCounter;
+
+		private float m_shakingStrength;
+
 		public float m_targetCrouchFactor;
 
 		public Vector3 m_totalImpulse;
@@ -107,11 +111,15 @@ namespace Game
 
 		public virtual float WaterTurnSpeed { get; set; }
 
+		public bool CanEmbedInIce { get; private set; }
+
 		public virtual float ImmersionDepth { get; set; }
 
 		public virtual float ImmersionFactor { get; set; }
 
 		public virtual FluidBlock ImmersionFluidBlock { get; set; }
+
+		public bool IsEmbeddedInIce => m_embeddedInIceCounter >= 2;
 
 		public virtual int? StandingOnValue { get; set; }
 
@@ -184,6 +192,8 @@ namespace Game
 				m_targetCrouchFactor = value;
 			}
 		}
+
+		public float CrushedTime { get; set; }
 
 		public virtual  bool IsGravityEnabled { get; set; }
 
@@ -283,6 +293,11 @@ namespace Game
 			m_directMove += directMove;
 		}
 
+		public void ApplyShaking(float strength)
+		{
+			m_shakingStrength += strength;
+		}
+
 		public virtual bool IsChildOfBody(ComponentBody componentBody)
 		{
 			if (ParentBody != componentBody)
@@ -350,7 +365,9 @@ namespace Game
 			WaterDrag = valuesDictionary.GetValue<Vector2>("WaterDrag");
 			WaterSwayAngle = valuesDictionary.GetValue<float>("WaterSwayAngle");
 			WaterTurnSpeed = valuesDictionary.GetValue<float>("WaterTurnSpeed");
+			CanEmbedInIce = valuesDictionary.GetValue<bool>("CanEmbedInIce");
 			Velocity = valuesDictionary.GetValue<Vector3>("Velocity");
+			m_embeddedInIceCounter = valuesDictionary.GetValue("EmbeddedInIceCounter", 0);
 			if(ResetVelocityOnProjectLoad) Velocity = Vector3.Zero;
 			MaxSmoothRiseHeight = valuesDictionary.GetValue<float>("MaxSmoothRiseHeight");
 			ParentBody = valuesDictionary.GetValue<EntityReference>("ParentBody").GetComponent<ComponentBody>(base.Entity, idToEntityMap, throwIfNotFound: false);
@@ -370,6 +387,7 @@ namespace Game
 			{
 				valuesDictionary.SetValue("Velocity", Velocity);
 			}
+			valuesDictionary.SetValue("EmbeddedInIceCounter", m_embeddedInIceCounter);
 			EntityReference value = EntityReference.FromId(ParentBody);
 			if (!value.IsNullOrEmpty())
 			{
@@ -400,6 +418,19 @@ namespace Game
             });
             if (skipVanilla_) return;
             CollisionVelocityChange = Vector3.Zero;
+            if (m_shakingStrength > 1f)
+            {
+	            Vector3 vector = default(Vector3);
+	            vector.X = m_shakingStrength * MathF.Sin((float)MathUtils.Remainder(31.0 * m_subsystemTime.GameTime, Math.PI * 2));
+	            vector.Y = 0.4f * m_shakingStrength * MathF.Sin((float)MathUtils.Remainder(23.3 * m_subsystemTime.GameTime, Math.PI * 2));
+	            vector.Z = m_shakingStrength * MathF.Sin((float)MathUtils.Remainder(27.6 * m_subsystemTime.GameTime, Math.PI * 2));
+	            Velocity += vector * dt;
+	            m_shakingStrength *= MathUtils.Saturate(1f - 3.5f * dt);
+            }
+            else
+            {
+	            m_shakingStrength = 0f;
+            }
 			Velocity += m_totalImpulse;
 			m_totalImpulse = Vector3.Zero;
 			if (m_parentBody != null || m_velocity.LengthSquared() > 9.99999944E-11f || m_directMove != Vector3.Zero || m_targetCrouchFactor != m_crouchFactor)
@@ -432,41 +463,30 @@ namespace Game
 				if(m_subsystemPlayers.PlayerStartedPlaying) Velocity = Vector3.Zero;
 				return;
 			}
+			if (CanEmbedInIce)
+			{
+				BoundingBox boundingBox = BoundingBox;
+				m_collisionBoxes.Clear();
+				FindTerrainCollisionBoxes(boundingBox, m_collisionBoxes);
+				if (IsCollidingWithIce(boundingBox, m_collisionBoxes))
+				{
+					m_embeddedInIceCounter++;
+				}
+				else
+				{
+					m_embeddedInIceCounter = 0;
+				}
+				if (IsEmbeddedInIce)
+				{
+					Velocity = Vector3.Zero;
+					return;
+				}
+			}
 			m_bodiesCollisionBoxes.Clear();
 			if(BodyCollidable) FindBodiesCollisionBoxes(position, m_bodiesCollisionBoxes);
 			m_movingBlocksCollisionBoxes.Clear();
 			if(TerrainCollidable) FindMovingBlocksCollisionBoxes(position, m_movingBlocksCollisionBoxes);
-			IsCrushing = false;
-			if (!MoveToFreeSpace(0.56f))
-			{
-				m_crouchFactor = CanCrouch ? 1f : 0f;
-				m_targetCrouchFactor = CanCrouch ? 1f : 0f;
-				if (!MoveToFreeSpace(float.PositiveInfinity))
-				{
-					ComponentHealth componentHealth = base.Entity.FindComponent<ComponentHealth>();
-					if (componentHealth != null)
-					{
-						if (m_crushInjureTime >= 1f)
-						{
-							componentHealth.Injure(1f / componentHealth.CrushResilience, null, ignoreInvulnerability: true, "Crushed");
-							m_crushInjureTime = 0f;
-						}
-						if(RedScreenFactorInCrush != null)
-							componentHealth.m_redScreenFactor = RedScreenFactorInCrush.Value;
-						m_crushInjureTime += dt;
-						IsCrushing = true;
-					}
-					else
-					{
-						base.Project.RemoveEntity(base.Entity, disposeEntity: true);
-					}
-					return;
-				}
-				else
-				{
-					m_crushInjureTime = 1f;
-				}
-			}
+			MoveToFreeSpace(dt);
 			if (IsGravityEnabled)
 			{
 				m_velocity.Y -= 10f * dt;
@@ -584,7 +604,7 @@ namespace Game
 			}
 		}
 
-		public virtual bool MoveToFreeSpace(float maxMoveDistance)
+		/*public virtual bool MoveToFreeSpace(float maxMoveDistance)
 		{
 			Vector3 stanceBoxSize = StanceBoxSize;
 			Vector3 position = Position;
@@ -685,7 +705,156 @@ namespace Game
 				}
 			}
 			return false;
+		}*/
+
+		public void MoveToFreeSpace(float dt)
+		{
+			if (MoveToFreeSpaceHelper(0.5f))
+			{
+				CrushedTime = 0f;
+				return;
+			}
+			if (CrushedTime == 0f)
+			{
+				m_subsystemAudio.PlaySound("Audio/Crushed", 1.5f, m_random.Float(-0.2f, 0.2f), base.Position, 1f, autoDelay: false);
+			}
+			float targetCrouchFactor = TargetCrouchFactor;
+			float crouchFactor = CrouchFactor;
+			if (CanCrouch && (TargetCrouchFactor != 1f || CrouchFactor != 1f))
+			{
+				TargetCrouchFactor = 1f;
+				CrouchFactor = 1f;
+				if (MoveToFreeSpaceHelper(0.5f))
+				{
+					CrushedTime = 0f;
+					return;
+				}
+			}
+			TargetCrouchFactor = targetCrouchFactor;
+			CrouchFactor = crouchFactor;
+			if (MoveToFreeSpaceHelper(1f))
+			{
+				CrushedTime = 0f;
+				return;
+			}
+			if (CanCrouch && (TargetCrouchFactor != 1f || CrouchFactor != 1f))
+			{
+				TargetCrouchFactor = 1f;
+				CrouchFactor = 1f;
+				if (MoveToFreeSpaceHelper(1f))
+				{
+					CrushedTime = 0f;
+					return;
+				}
+			}
+			CrushedTime += dt;
 		}
+
+		public bool MoveToFreeSpaceHelper(float maxMoveFraction)
+		{
+			Vector3 stanceBoxSize = StanceBoxSize;
+			Vector3 position = base.Position;
+			for (int i = 0; i < m_freeSpaceOffsets.Length; i++)
+			{
+				Vector3? vector = null;
+				Vector3 vector2 = position + m_freeSpaceOffsets[i];
+				if (Terrain.ToCell(vector2) != Terrain.ToCell(position))
+				{
+					continue;
+				}
+				BoundingBox box = new BoundingBox(vector2 - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f), vector2 + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f));
+				box.Min += new Vector3(0.01f, MaxSmoothRiseHeight + 0.01f, 0.01f);
+				box.Max -= new Vector3(0.01f);
+				m_collisionBoxes.Clear();
+				FindTerrainCollisionBoxes(box, m_collisionBoxes);
+				m_collisionBoxes.AddRange(m_movingBlocksCollisionBoxes);
+				m_collisionBoxes.AddRange(m_bodiesCollisionBoxes);
+				if (IsColliding(box, m_collisionBoxes))
+				{
+					m_stoppedTime = 0f;
+					CollisionBox pushingCollisionBox;
+					float num = CalculatePushBack(box, 0, m_collisionBoxes, out pushingCollisionBox);
+					CollisionBox pushingCollisionBox2;
+					float num2 = CalculatePushBack(box, 1, m_collisionBoxes, out pushingCollisionBox2);
+					CollisionBox pushingCollisionBox3;
+					float num3 = CalculatePushBack(box, 2, m_collisionBoxes, out pushingCollisionBox3);
+					float num4 = num * num;
+					float num5 = num2 * num2;
+					float num6 = num3 * num3;
+					List<Vector3> list = new List<Vector3>();
+					if (num4 <= num5 && num4 <= num6)
+					{
+						list.Add(vector2 + new Vector3(num, 0f, 0f));
+						if (num5 <= num6)
+						{
+							list.Add(vector2 + new Vector3(0f, num2, 0f));
+							list.Add(vector2 + new Vector3(0f, 0f, num3));
+						}
+						else
+						{
+							list.Add(vector2 + new Vector3(0f, 0f, num3));
+							list.Add(vector2 + new Vector3(0f, num2, 0f));
+						}
+					}
+					else if (num5 <= num4 && num5 <= num6)
+					{
+						list.Add(vector2 + new Vector3(0f, num2, 0f));
+						if (num4 <= num6)
+						{
+							list.Add(vector2 + new Vector3(num, 0f, 0f));
+							list.Add(vector2 + new Vector3(0f, 0f, num3));
+						}
+						else
+						{
+							list.Add(vector2 + new Vector3(0f, 0f, num3));
+							list.Add(vector2 + new Vector3(num, 0f, 0f));
+						}
+					}
+					else
+					{
+						list.Add(vector2 + new Vector3(0f, 0f, num3));
+						if (num4 <= num5)
+						{
+							list.Add(vector2 + new Vector3(num, 0f, 0f));
+							list.Add(vector2 + new Vector3(0f, num2, 0f));
+						}
+						else
+						{
+							list.Add(vector2 + new Vector3(0f, num2, 0f));
+							list.Add(vector2 + new Vector3(num, 0f, 0f));
+						}
+					}
+					foreach (Vector3 item in list)
+					{
+						if (!(MathF.Abs(item.X - position.X) > stanceBoxSize.X * maxMoveFraction) && !(MathF.Abs(item.Y - position.Y) > stanceBoxSize.Y * maxMoveFraction) && !(MathF.Abs(item.Z - position.Z) > stanceBoxSize.Z * maxMoveFraction))
+						{
+							box = new BoundingBox(item - new Vector3(stanceBoxSize.X / 2f, 0f, stanceBoxSize.Z / 2f), item + new Vector3(stanceBoxSize.X / 2f, stanceBoxSize.Y, stanceBoxSize.Z / 2f));
+							box.Min += new Vector3(0.02f, MaxSmoothRiseHeight + 0.02f, 0.02f);
+							box.Max -= new Vector3(0.02f);
+							m_collisionBoxes.Clear();
+							FindTerrainCollisionBoxes(box, m_collisionBoxes);
+							m_collisionBoxes.AddRange(m_movingBlocksCollisionBoxes);
+							m_collisionBoxes.AddRange(m_bodiesCollisionBoxes);
+							if (!IsColliding(box, m_collisionBoxes))
+							{
+								vector = item;
+								break;
+							}
+						}
+					}
+			}
+			else
+			{
+				vector = vector2;
+			}
+			if (vector.HasValue)
+			{
+				base.Position = vector.Value;
+				return true;
+			}
+		}
+		return false;
+	}
 
 		public virtual void MoveWithCollision(float dt, Vector3 move)
 		{
@@ -1093,6 +1262,19 @@ namespace Game
 			for (int i = 0; i < collisionBoxes.Count; i++)
 			{
 				if (box.Intersection(collisionBoxes.Array[i].Box))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public virtual bool IsCollidingWithIce(BoundingBox box, DynamicArray<CollisionBox> collisionBoxes)
+		{
+			for (int i = 0; i < collisionBoxes.Count; i++)
+			{
+				CollisionBox collisionBox = collisionBoxes.Array[i];
+				if (box.Intersection(collisionBox.Box) && Terrain.ExtractContents(collisionBox.BlockValue) == 62)
 				{
 					return true;
 				}

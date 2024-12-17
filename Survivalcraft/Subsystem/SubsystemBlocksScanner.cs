@@ -20,7 +20,9 @@ namespace Game
 
 		public int m_pollPass;
 
-		public float m_pollCount;
+		public float m_pollShaftsCount;
+
+		public SubsystemTime m_subsystemTime;
 
 		public SubsystemTerrain m_subsystemTerrain;
 
@@ -32,18 +34,21 @@ namespace Game
 		public void Update(float dt)
 		{
 			Terrain terrain = m_subsystemTerrain.Terrain;
-			m_pollCount += terrain.AllocatedChunks.Length * 16 * 16 * dt / 60f;
-			m_pollCount = Math.Clamp(m_pollCount, 0f, 200f);
-			TerrainChunk nextChunk = terrain.GetNextChunk(m_pollChunkCoordinates.X, m_pollChunkCoordinates.Y);
-			if (nextChunk == null)
+			m_pollShaftsCount += terrain.AllocatedChunks.Length * 16 * 16 * dt / 60f;
+			if (m_subsystemTime.GameTimeFactor <= 1f)
+			{
+				m_pollShaftsCount = Math.Clamp(m_pollShaftsCount, 0f, 500f);
+			}
+			TerrainChunk terrainChunk = terrain.LoopChunks(m_pollChunkCoordinates.X, m_pollChunkCoordinates.Y, false);
+			if (terrainChunk == null)
 			{
 				return;
 			}
-			while (m_pollCount >= 1f)
+			while (m_pollShaftsCount >= 1f)
 			{
-				if (nextChunk.State <= TerrainChunkState.InvalidContents4)
+				if (terrainChunk.State <= TerrainChunkState.InvalidContents4)
 				{
-					m_pollCount -= 65536f;
+					m_pollShaftsCount -= 26f;
 				}
 				else
 				{
@@ -51,24 +56,24 @@ namespace Game
 					{
 						while (m_pollZ < 16)
 						{
-							if (m_pollCount < 1f)
+							if (m_pollShaftsCount < 1f)
 							{
 								return;
 							}
-							m_pollCount -= 1f;
-							int topHeightFast = nextChunk.GetTopHeightFast(m_pollX, m_pollZ);
+							m_pollShaftsCount -= 1f;
+							int topHeightFast = terrainChunk.GetTopHeightFast(m_pollX, m_pollZ);
 							int num = TerrainChunk.CalculateCellIndex(m_pollX, 0, m_pollZ);
 							int num2 = 0;
 							while (num2 <= topHeightFast)
 							{
-								int cellValueFast = nextChunk.GetCellValueFast(num);
+								int cellValueFast = terrainChunk.GetCellValueFast(num);
 								int num3 = Terrain.ExtractContents(cellValueFast);
 								if (num3 != 0)
 								{
 									SubsystemPollableBlockBehavior[] array = m_pollableBehaviorsByContents[num3];
 									for (int i = 0; i < array.Length; i++)
 									{
-										array[i].OnPoll(cellValueFast, nextChunk.Origin.X + m_pollX, num2, nextChunk.Origin.Y + m_pollZ, m_pollPass);
+										array[i].OnPoll(cellValueFast, terrainChunk.Origin.X + m_pollX, num2, terrainChunk.Origin.Y + m_pollZ, m_pollPass);
 									}
 								}
 								num2++;
@@ -81,22 +86,23 @@ namespace Game
 					}
 					m_pollX = 0;
 				}
-				ScanningChunkCompleted?.Invoke(nextChunk);
-				nextChunk = terrain.GetNextChunk(nextChunk.Coords.X + 1, nextChunk.Coords.Y);
-				if (nextChunk == null)
+				ScanningChunkCompleted?.Invoke(terrainChunk);
+				terrainChunk = terrain.LoopChunks(terrainChunk.Coords.X + 1, terrainChunk.Coords.Y, true, out var hasLooped);
+				if (terrainChunk == null)
 				{
 					break;
 				}
-				if (Terrain.ComparePoints(nextChunk.Coords, m_pollChunkCoordinates) < 0)
+				if (hasLooped)
 				{
 					m_pollPass++;
 				}
-				m_pollChunkCoordinates = nextChunk.Coords;
+				m_pollChunkCoordinates = terrainChunk.Coords;
 			}
 		}
 
 		public override void Load(ValuesDictionary valuesDictionary)
 		{
+			m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
 			m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
 			m_subsystemBlockBehaviors = Project.FindSubsystem<SubsystemBlockBehaviors>(throwOnError: true);
 			m_pollChunkCoordinates = valuesDictionary.GetValue<Point2>("PollChunkCoordinates");

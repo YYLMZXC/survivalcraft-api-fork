@@ -47,6 +47,8 @@ namespace Game
 
 		public SubsystemSky m_subsystemSky;
 
+		public SubsystemSeasons m_subsystemSeasons;
+
 		public SubsystemBodies m_subsystemBodies;
 
 		public SubsystemGameWidgets m_subsystemViews;
@@ -65,17 +67,21 @@ namespace Game
 
 		public static SpawnLocationType[] m_spawnLocations = EnumUtils.GetEnumValues(typeof(SpawnLocationType)).Cast<SpawnLocationType>().ToArray();
 
-		public const int m_totalLimit = 24;
+		public const int m_totalLimit = 32;
 
 		public const int m_areaLimit = 3;
 
 		public const int m_areaRadius = 16;
 
-		public const int m_totalLimitConstant = 18;
+		public const int m_totalLimitConstant = 6;
+
+		public const int m_totalLimitConstantChallenging = 12;
 
 		public const int m_areaLimitConstant = 4;
 
 		public const int m_areaRadiusConstant = 42;
+
+		public const float m_populationReductionConstant = 0.25f;
 
 		public Dictionary<ComponentCreature, bool>.KeyCollection Creatures => m_creatures.Keys;
 
@@ -90,7 +96,7 @@ namespace Game
 					m_newSpawnChunks.RandomShuffle((int max) => m_random.Int(0, max - 1));
 					foreach (SpawnChunk newSpawnChunk in m_newSpawnChunks)
 					{
-						SpawnChunkCreatures(newSpawnChunk, 10, constantSpawn: false);
+						SpawnChunkCreatures(newSpawnChunk, 12, constantSpawn: false);
 					}
 					m_newSpawnChunks.Clear();
 				}
@@ -103,7 +109,8 @@ namespace Game
 					}
 					m_spawnChunks.Clear();
 				}
-				if (m_subsystemTime.PeriodicGameTimeEvent(60.0, 2.0))
+				float num = ((m_subsystemSeasons.Season == Season.Winter) ? 120f : 60f);
+				if (m_subsystemTime.PeriodicGameTimeEvent(num, 2.0))
 				{
 					SpawnRandomCreature();
 				}
@@ -117,6 +124,7 @@ namespace Game
 			m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
 			m_subsystemTime = Project.FindSubsystem<SubsystemTime>(throwOnError: true);
 			m_subsystemSky = Project.FindSubsystem<SubsystemSky>(throwOnError: true);
+			m_subsystemSeasons = base.Project.FindSubsystem<SubsystemSeasons>(throwOnError: true);
 			m_subsystemBodies = Project.FindSubsystem<SubsystemBodies>(throwOnError: true);
 			m_subsystemViews = Project.FindSubsystem<SubsystemGameWidgets>(throwOnError: true);
 			InitializeCreatureTypes();
@@ -158,7 +166,7 @@ namespace Game
 					int temperature38 = m_subsystemTerrain.Terrain.GetTemperature(point.X, point.Z);
 					int num98 = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(point.X, point.Y - 1, point.Z));
 					int topHeight3 = m_subsystemTerrain.Terrain.GetTopHeight(point.X, point.Z);
-					return (humidity26 > 8 && temperature38 > 4 && num97 > 30f && point.Y >= topHeight3 && (BlocksManager.Blocks[num98] is LeavesBlock || num98 == 18 || num98 == 8 || num98 == 2)) ? 2.5f : 0f;
+					return (humidity26 > 8 && temperature38 > 4 && num97 > 40f && point.Y >= topHeight3 && (BlocksManager.Blocks[num98] is LeavesBlock || num98 == 18 || num98 == 8 || num98 == 2)) ? 2.5f : 0f;
 				},
 				SpawnFunction = (CreatureType creatureType, Point3 point) => SpawnCreatures(creatureType, "Duck", point, 1).Count
 			});
@@ -171,7 +179,7 @@ namespace Game
 					int humidity25 = m_subsystemTerrain.Terrain.GetHumidity(point.X, point.Z);
 					int num96 = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(point.X, point.Y - 1, point.Z));
 					int topHeight2 = m_subsystemTerrain.Terrain.GetTopHeight(point.X, point.Z);
-					return ((humidity25 <= 8 || temperature37 <= 4) && num95 > 30f && point.Y >= topHeight2 && (BlocksManager.Blocks[num96] is LeavesBlock || num96 == 62 || num96 == 8 || num96 == 2 || num96 == 7)) ? 2.5f : 0f;
+					return ((humidity25 <= 8 || temperature37 <= 4) && num95 > 40f && point.Y >= topHeight2 && (BlocksManager.Blocks[num96] is LeavesBlock || num96 == 62 || num96 == 8 || num96 == 2 || num96 == 7)) ? 2.5f : 0f;
 				},
 				SpawnFunction = (CreatureType creatureType, Point3 point) => SpawnCreatures(creatureType, "Raven", point, 1).Count
 			});
@@ -955,7 +963,7 @@ namespace Game
 					m_subsystemTerrain.Terrain.GetHumidity(point.X, point.Z);
 					int num94 = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(point.X, point.Y - 1, point.Z));
 					int topHeight = m_subsystemTerrain.Terrain.GetTopHeight(point.X, point.Z);
-					return (temperature37 > 3 && num93 > 20f && point.Y >= topHeight && (BlocksManager.Blocks[num94] is LeavesBlock || num94 == 8 || num94 == 2 || num94 == 7)) ? 2f : 0f;
+					return (temperature37 > 3 && num93 > 20f && point.Y >= topHeight && (BlocksManager.Blocks[num94] is LeavesBlock || num94 == 8 || num94 == 2 || num94 == 7)) ? 1.5f : 0f;
 				},
 				SpawnFunction = delegate (CreatureType creatureType, Point3 point)
 				{
@@ -972,13 +980,13 @@ namespace Game
 
 		public virtual void SpawnRandomCreature()
 		{
-			if (CountCreatures(constantSpawn: false) < 24)
+			if (CountCreatures(constantSpawn: false) < 32)
 			{
 				foreach (GameWidget gameWidget in m_subsystemViews.GameWidgets)
 				{
-					int num = 48;
+					int num = 64;
 					var v = new Vector2(gameWidget.ActiveCamera.ViewPosition.X, gameWidget.ActiveCamera.ViewPosition.Z);
-					if (CountCreaturesInArea(v - new Vector2(60f), v + new Vector2(60f), constantSpawn: false) >= num)
+					if (CountCreaturesInArea(v - new Vector2(68f), v + new Vector2(68f), constantSpawn: false) >= num)
 					{
 						break;
 					}
@@ -993,7 +1001,7 @@ namespace Game
 							break;
 						}
 						IEnumerable<CreatureType> source = m_creatureTypes.Where((CreatureType c) => c.SpawnLocationType == spawnLocationType && c.RandomSpawn);
-						IEnumerable<float> items = source.Select((CreatureType c) => c.SpawnSuitabilityFunction(c, spawnPoint.Value));
+						IEnumerable<float> items = source.Select((CreatureType c) => CalculateSpawnSuitability(c, spawnPoint.Value));
 						int randomWeightedItem = GetRandomWeightedItem(items);
 						if (randomWeightedItem >= 0)
 						{
@@ -1007,7 +1015,7 @@ namespace Game
 
 		public virtual void SpawnChunkCreatures(SpawnChunk chunk, int maxAttempts, bool constantSpawn)
 		{
-			int num = constantSpawn ? 18 : 24;
+			int num = constantSpawn ? ((m_subsystemGameInfo.WorldSettings.GameMode >= GameMode.Challenging) ? 12 : 6) : 32;
 			int num2 = constantSpawn ? 4 : 3;
 			float v = constantSpawn ? 42 : 16;
 			int num3 = CountCreatures(constantSpawn);
@@ -1029,7 +1037,7 @@ namespace Game
 				if (spawnPoint.HasValue)
 				{
 					IEnumerable<CreatureType> source = m_creatureTypes.Where((CreatureType c) => c.SpawnLocationType == spawnLocationType && c.ConstantSpawn == constantSpawn);
-					IEnumerable<float> items = source.Select((CreatureType c) => c.SpawnSuitabilityFunction(c, spawnPoint.Value));
+					IEnumerable<float> items = source.Select((CreatureType c) => CalculateSpawnSuitability(c, spawnPoint.Value));
 					int randomWeightedItem = GetRandomWeightedItem(items);
 					if (randomWeightedItem >= 0)
 					{
@@ -1056,7 +1064,7 @@ namespace Game
 					spawnPoint.Z += m_random.Int(-8, 8);
 				}
 				Point3? point2 = ProcessSpawnPoint(spawnPoint, creatureType.SpawnLocationType);
-				if (point2.HasValue && creatureType.SpawnSuitabilityFunction(creatureType, point2.Value) > 0f)
+				if (point2.HasValue && CalculateSpawnSuitability(creatureType, point2.Value) > 0f)
 				{
 					var position = new Vector3(point2.Value.X + m_random.Float(0.4f, 0.6f), point2.Value.Y + 1.1f, point2.Value.Z + m_random.Float(0.4f, 0.6f));
 					Entity entity = SpawnCreature(templateName, position, creatureType.ConstantSpawn);
@@ -1109,9 +1117,9 @@ namespace Game
 		{
 			for (int i = 0; i < 10; i++)
 			{
-				int x = Terrain.ToCell(camera.ViewPosition.X) + (m_random.Sign() * m_random.Int(20, 40));
+				int x = Terrain.ToCell(camera.ViewPosition.X) + (m_random.Sign() * m_random.Int(24, 48));
 				int y = Math.Clamp(Terrain.ToCell(camera.ViewPosition.Y) + m_random.Int(-30, 30), 2, 254);
-				int z = Terrain.ToCell(camera.ViewPosition.Z) + (m_random.Sign() * m_random.Int(20, 40));
+				int z = Terrain.ToCell(camera.ViewPosition.Z) + (m_random.Sign() * m_random.Int(24, 48));
 				Point3? result = ProcessSpawnPoint(new Point3(x, y, z), spawnLocationType);
 				if (result.HasValue)
 				{
@@ -1214,6 +1222,29 @@ namespace Game
 			}
 		}
 
+		public virtual float CalculateSpawnSuitability(CreatureType creatureType, Point3 spawnPoint)
+		{
+			float num = creatureType.SpawnSuitabilityFunction(creatureType, spawnPoint);
+			if (CountCreatures(creatureType) > 10)
+			{
+				num *= 0.25f;
+			}
+			return num;
+		}
+
+		public virtual int CountCreatures(CreatureType creatureType)
+		{
+			int num = 0;
+			foreach (ComponentBody body in m_subsystemBodies.Bodies)
+			{
+				if (body.Entity.ValuesDictionary.DatabaseObject.Name == creatureType.Name)
+				{
+					num++;
+				}
+			}
+			return num;
+		}
+
 		public virtual int CountCreatures(bool constantSpawn)
 		{
 			int num = 0;
@@ -1291,7 +1322,16 @@ namespace Game
 
 		public virtual SpawnLocationType GetRandomSpawnLocationType()
 		{
-			return m_spawnLocations[m_random.Int(0, m_spawnLocations.Length - 1)];
+			float num = m_random.Float();
+			if (num <= 0.3f)
+			{
+				return SpawnLocationType.Surface;
+			}
+			if (num <= 0.6f)
+			{
+				return SpawnLocationType.Cave;
+			}
+			return SpawnLocationType.Water;
 		}
 	}
 }

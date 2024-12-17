@@ -385,40 +385,43 @@ namespace Game
 				int cellValue = m_subsystemTerrain.Terrain.GetCellValue(x2, y, z);
 				int num = Terrain.ExtractContents(cellValue);
 				Block block = BlocksManager.Blocks[num];
-				if (LadderSpeed > 0f && !LadderValue.HasValue && block is LadderBlock && m_subsystemTime.GameTime >= m_ladderActivationTime && !IsCreativeFlyEnabled && m_componentCreature.ComponentBody.ParentBody == null)
-				{
-					int face = LadderBlock.GetFace(Terrain.ExtractData(cellValue));
-					if ((face == 0 && m_componentCreature.ComponentBody.CollisionVelocityChange.Z > 0f) || (face == 1 && m_componentCreature.ComponentBody.CollisionVelocityChange.X > 0f) || (face == 2 && m_componentCreature.ComponentBody.CollisionVelocityChange.Z < 0f) || (face == 3 && m_componentCreature.ComponentBody.CollisionVelocityChange.X < 0f) || !m_componentCreature.ComponentBody.StandingOnValue.HasValue)
-					{
-						LadderValue = cellValue;
-						m_ladderActivationTime = m_subsystemTime.GameTime + 0.20000000298023224;
-						m_componentCreature.ComponentCreatureSounds.PlayFootstepSound(1f);
-					}
-				}
-				Quaternion rotation = m_componentCreature.ComponentBody.Rotation;
-				float num2 = MathF.Atan2((2f * rotation.Y * rotation.W) - (2f * rotation.X * rotation.Z), 1f - (2f * rotation.Y * rotation.Y) - (2f * rotation.Z * rotation.Z));
-				num2 += (0f - TurnSpeed) * TurnOrder.X * dt;
-				if (VrLookOrder.HasValue)
-				{
-					num2 += VrLookOrder.Value.X;
-				}
-				m_componentCreature.ComponentBody.Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, num2);
 				LookAngles += LookSpeed * LookOrder * dt;
 				if (VrLookOrder.HasValue)
 				{
 					LookAngles = new Vector2(LookAngles.X, VrLookOrder.Value.Y);
 				}
-				if (VrMoveOrder.HasValue)
+				if(!m_componentCreature.ComponentBody.IsEmbeddedInIce)
 				{
-					m_componentCreature.ComponentBody.ApplyDirectMove(VrMoveOrder.Value);
-				}
-				if (LadderValue.HasValue)
-				{
-					LadderMovement(dt, cellValue);
-				}
-				else
-				{
-					NormalMovement(dt);
+					Quaternion rotation = m_componentCreature.ComponentBody.Rotation;
+					float num2 = MathF.Atan2(2f * rotation.Y * rotation.W - 2f * rotation.X * rotation.Z,1f - 2f * rotation.Y * rotation.Y - 2f * rotation.Z * rotation.Z);
+					num2 += (0f - TurnSpeed) * TurnOrder.X * dt;
+					if(VrLookOrder.HasValue)
+					{
+						num2 += VrLookOrder.Value.X;
+					}
+					m_componentCreature.ComponentBody.Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY,num2);
+					if(LadderSpeed > 0f && !LadderValue.HasValue && block is LadderBlock && m_subsystemTime.GameTime >= m_ladderActivationTime && !IsCreativeFlyEnabled && m_componentCreature.ComponentBody.ParentBody == null)
+					{
+						int face = LadderBlock.GetFace(Terrain.ExtractData(cellValue));
+						if((face == 0 && m_componentCreature.ComponentBody.CollisionVelocityChange.Z > 0f) || (face == 1 && m_componentCreature.ComponentBody.CollisionVelocityChange.X > 0f) || (face == 2 && m_componentCreature.ComponentBody.CollisionVelocityChange.Z < 0f) || (face == 3 && m_componentCreature.ComponentBody.CollisionVelocityChange.X < 0f) || !m_componentCreature.ComponentBody.StandingOnValue.HasValue)
+						{
+							LadderValue = cellValue;
+							m_ladderActivationTime = m_subsystemTime.GameTime + 0.20000000298023224;
+							m_componentCreature.ComponentCreatureSounds.PlayFootstepSound(1f);
+						}
+					}
+					if(VrMoveOrder.HasValue)
+					{
+						m_componentCreature.ComponentBody.ApplyDirectMove(VrMoveOrder.Value);
+					}
+					if(LadderValue.HasValue)
+					{
+						LadderMovement(dt,cellValue);
+					}
+					else
+					{
+						NormalMovement(dt);
+					}
 				}
 			}
 			else

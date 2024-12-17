@@ -9,6 +9,8 @@ namespace Game
 	{
 		public SubsystemTerrain m_subsystemTerrain;
 
+		public SubsystemSky m_subsystemSky;
+
 		public PrimitivesRenderer3D m_primitivesRenderer = new();
 
 		public TexturedBatch3D m_batch;
@@ -27,12 +29,13 @@ namespace Game
 				return;
 			}
 			float num = Vector3.DistanceSquared(camera.ViewPosition, shadowPosition);
-			if (!(num <= 1024f))
+			if (!(num <= 2304f))
 			{
 				return;
 			}
 			float num2 = MathF.Sqrt(num);
-			float num3 = MathUtils.Saturate(4f * (1f - (num2 / 32f)));
+			float num3 = MathUtils.Saturate(4f * (1f - (num2 / 48f)));
+			float num0 = 1f - m_subsystemSky.CalculateFog(camera.ViewPosition, shadowPosition);
 			float num4 = shadowDiameter / 2f;
 			int num5 = Terrain.ToCell(shadowPosition.X - num4);
 			int num6 = Terrain.ToCell(shadowPosition.Z - num4);
@@ -67,7 +70,7 @@ namespace Game
 										var p2 = new Vector3(boundingBox.Max.X + i, num13 + num15, boundingBox.Min.Z + j);
 										var p3 = new Vector3(boundingBox.Max.X + i, num13 + num15, boundingBox.Max.Z + j);
 										var p4 = new Vector3(boundingBox.Min.X + i, num13 + num15, boundingBox.Max.Z + j);
-										DrawShadowOverQuad(p, p2, p3, p4, shadowPosition, shadowDiameter, 0.45f * block.GetObjectShadowStrength(cellValueFast) * alpha * num3 * num16);
+										DrawShadowOverQuad(p, p2, p3, p4, shadowPosition, shadowDiameter, 0.45f * block.GetObjectShadowStrength(cellValueFast) * alpha * num3 * num0 * num16);
 									}
 								}
 							}
@@ -90,6 +93,7 @@ namespace Game
 		public override void Load(ValuesDictionary valuesDictionary)
 		{
 			m_subsystemTerrain = Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
+			m_subsystemSky = base.Project.FindSubsystem<SubsystemSky>(throwOnError: true);
 			m_batch = m_primitivesRenderer.TexturedBatch(ContentManager.Get<Texture2D>("Textures/Shadow"), useAlphaTest: false, 0, DepthStencilState.DepthRead, RasterizerState.CullCounterClockwiseScissor, BlendState.AlphaBlend, SamplerState.LinearClamp);
 		}
 
