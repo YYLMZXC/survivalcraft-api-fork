@@ -5,8 +5,8 @@
       <author>Survivalcraft Moder</author>
       <authoring_tool>Engine 0.0.0</authoring_tool>
     </contributor>
-    <created>2022-03-18T07:12:00</created>
-    <modified>2022-03-18T07:12:00</modified>
+    <created>2024-12-17T19:55:00</created>
+    <modified>2024-12-17T19:55:00</modified>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images />
@@ -16,7 +16,7 @@
     <geometry id="IronIngot-mesh" name="IronIngot">
       <mesh>
         <source id="IronIngot-mesh-positions">
-          <float_array id="IronIngot-mesh-positions-array" count="24">-20 -40 0 20 40 0 -20 40 0 20 -40 0 -14.9144764 -29.8289528 20 14.9144764 29.8289528 20 14.9144764 -29.8289528 20 -14.9144764 29.8289528 20</float_array>
+          <float_array id="IronIngot-mesh-positions-array" count="24">-20 -40 0 20 40 0 -20 40 0 20 -40 0 -14.914476 -29.828953 20 14.914476 29.828953 20 14.914476 -29.828953 20 -14.914476 29.828953 20</float_array>
           <technique_common>
             <accessor source="#IronIngot-mesh-positions-array" count="8" stride="3">
               <param name="X" type="float" />
@@ -26,7 +26,7 @@
           </technique_common>
         </source>
         <source id="IronIngot-mesh-normals">
-          <float_array id="IronIngot-mesh-normals-array" count="18">0 0 -1 0 0 1 0 -0.891357 0.453302 0.969159663 0 0.246433914 0 0.891357 0.453302 -0.969159663 0 0.246433914</float_array>
+          <float_array id="IronIngot-mesh-normals-array" count="18">0 0 -1 0 0 1 0 -0.891357 0.453302 0.96915966 0 0.24643391 0 0.891357 0.453302 -0.96915966 0 0.24643391</float_array>
           <technique_common>
             <accessor source="#IronIngot-mesh-normals-array" count="6" stride="3">
               <param name="X" type="float" />
@@ -58,7 +58,7 @@
     <geometry id="CopperIngot-mesh" name="CopperIngot">
       <mesh>
         <source id="CopperIngot-mesh-positions">
-          <float_array id="CopperIngot-mesh-positions-array" count="24">-20 -40 0 20 40 0 -20 40 0 20 -40 0 -14.9144764 -29.8289528 20 14.9144764 29.8289528 20 14.9144764 -29.8289528 20 -14.9144764 29.8289528 20</float_array>
+          <float_array id="CopperIngot-mesh-positions-array" count="24">-20 -40 0 20 40 0 -20 40 0 20 -40 0 -14.914476 -29.828953 20 14.914476 29.828953 20 14.914476 -29.828953 20 -14.914476 29.828953 20</float_array>
           <technique_common>
             <accessor source="#CopperIngot-mesh-positions-array" count="8" stride="3">
               <param name="X" type="float" />
@@ -68,7 +68,7 @@
           </technique_common>
         </source>
         <source id="CopperIngot-mesh-normals">
-          <float_array id="CopperIngot-mesh-normals-array" count="18">0 0 -1 0 0 1 0 -0.891357 0.453302 0.969159663 0 0.246433914 0 0.891357 0.453302 -0.969159663 0 0.246433914</float_array>
+          <float_array id="CopperIngot-mesh-normals-array" count="18">0 0 -1 0 0 1 0 -0.891357 0.453302 0.96915966 0 0.24643391 0 0.891357 0.453302 -0.96915966 0 0.24643391</float_array>
           <technique_common>
             <accessor source="#CopperIngot-mesh-normals-array" count="6" stride="3">
               <param name="X" type="float" />
@@ -101,7 +101,7 @@
   <library_controllers />
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="" name="" type="NODE">
+      <node id="EngineRoot" name="EngineRoot" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <node id="IronIngot" name="IronIngot" type="NODE">
           <matrix sid="transform">0.01 0 0 0 0 0 0.01 0 0 -0.01 0 0 0 0 0 1</matrix>

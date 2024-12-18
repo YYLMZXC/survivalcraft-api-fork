@@ -165,6 +165,27 @@
     <Recipe Result="BrickBlock" ResultCount="1" RequiredHeatLevel="0" a="brickslab" Description="[3]">
       "a"
     </Recipe>
+    <Recipe Result="EmptyBucketBlock" ResultCount="1" RequiredHeatLevel="0" a="waterbucket" Description="[1]">
+      "a"
+    </Recipe>
+    <Recipe Result="EmptyBucketBlock" ResultCount="1" RequiredHeatLevel="0" a="paintstripperbucket" Description="[1]">
+      "a"
+    </Recipe>
+    <Recipe Result="EmptyBucketBlock" ResultCount="1" RequiredHeatLevel="0" a="paintbucket" Description="[1]">
+      "a"
+    </Recipe>
+    <Recipe Result="EmptyBucketBlock" ResultCount="1" RequiredHeatLevel="0" a="milkbucket" Description="[1]">
+      "a"
+    </Recipe>
+    <Recipe Result="EmptyBucketBlock" ResultCount="1" RequiredHeatLevel="0" a="rottenmilkbucket" Description="[1]">
+      "a"
+    </Recipe>
+    <Recipe Result="EmptyBucketBlock" ResultCount="1" RequiredHeatLevel="0" a="pumpkinsoupbucket" Description="[1]">
+      "a"
+    </Recipe>
+    <Recipe Result="EmptyBucketBlock" ResultCount="1" RequiredHeatLevel="0" a="rottenpumpkinsoupbucket" Description="[1]">
+      "a"
+    </Recipe>
   </Dismantling>
   <Plants>
     <Recipe Result="SaplingBlock" ResultCount="1" RequiredHeatLevel="0" a="oakleaves" Description="[0]">
@@ -180,6 +201,9 @@
       "a"
     </Recipe>
     <Recipe Result="SaplingBlock:4" ResultCount="1" RequiredHeatLevel="0" a="mimosaleaves" Description="[0]">
+      "a"
+    </Recipe>
+    <Recipe Result="SaplingBlock:5" ResultCount="1" RequiredHeatLevel="0" a="poplarleaves" Description="[0]">
       "a"
     </Recipe>
     <Recipe Result="SeedsBlock:0" ResultCount="2" RequiredHeatLevel="0" a="tallgrass" Description="[0]">
@@ -552,6 +576,11 @@
       "aa"
       "aaa"
     </Recipe>
+    <Recipe Result="DirtStairsBlock" ResultCount="6" RequiredHeatLevel="0" a="dirt" Description="[0]">
+      "a"
+      "aa"
+      "aaa"
+    </Recipe>
     <Recipe Result="WoodenStairsBlock" ResultCount="6" RequiredHeatLevel="0" a="planks" Description="[0]">
       "a"
       "aa"
@@ -567,28 +596,28 @@
       "aa"
       "aaa"
     </Recipe>
-    <Recipe Result="StoneSlabBlock" ResultCount="4" RequiredHeatLevel="0" a="granite" Description="[0]">
+    <Recipe Result="StoneSlabBlock" ResultCount="6" RequiredHeatLevel="0" a="granite" Description="[0]">
       "aaa"
     </Recipe>
-    <Recipe Result="CobblestoneSlabBlock" ResultCount="4" RequiredHeatLevel="0" a="cobblestone" Description="[0]">
+    <Recipe Result="CobblestoneSlabBlock" ResultCount="6" RequiredHeatLevel="0" a="cobblestone" Description="[0]">
       "aaa"
     </Recipe>
-    <Recipe Result="StoneBrickSlabBlock" ResultCount="4" RequiredHeatLevel="0" a="stonebrickblock" Description="[0]">
+    <Recipe Result="StoneBrickSlabBlock" ResultCount="6" RequiredHeatLevel="0" a="stonebrickblock" Description="[0]">
       "aaa"
     </Recipe>
-    <Recipe Result="BrickSlabBlock" ResultCount="3" RequiredHeatLevel="0" a="brick" Description="[0]">
+    <Recipe Result="BrickSlabBlock" ResultCount="6" RequiredHeatLevel="0" a="brick" Description="[0]">
       "aaa"
     </Recipe>
-    <Recipe Result="SandstoneSlabBlock" ResultCount="4" RequiredHeatLevel="0" a="sandstone" Description="[0]">
+    <Recipe Result="SandstoneSlabBlock" ResultCount="6" RequiredHeatLevel="0" a="sandstone" Description="[0]">
       "aaa"
     </Recipe>
-    <Recipe Result="WoodenSlabBlock" ResultCount="4" RequiredHeatLevel="0" a="planks" Description="[0]">
+    <Recipe Result="WoodenSlabBlock" ResultCount="6" RequiredHeatLevel="0" a="planks" Description="[0]">
       "aaa"
     </Recipe>
-    <Recipe Result="MarbleSlabBlock" ResultCount="4" RequiredHeatLevel="0" a="marble" Description="[0]">
+    <Recipe Result="MarbleSlabBlock" ResultCount="6" RequiredHeatLevel="0" a="marble" Description="[0]">
       "aaa"
     </Recipe>
-    <Recipe Result="BasaltSlabBlock" ResultCount="4" RequiredHeatLevel="0" a="basalt" Description="[0]">
+    <Recipe Result="BasaltSlabBlock" ResultCount="6" RequiredHeatLevel="0" a="basalt" Description="[0]">
       "aaa"
     </Recipe>
     <Recipe Result="WoodenDoorBlock" ResultCount="1" RequiredHeatLevel="0" a="planks" Description="[0]">

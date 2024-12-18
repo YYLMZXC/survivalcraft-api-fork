@@ -5,8 +5,8 @@
       <author>Survivalcraft Moder</author>
       <authoring_tool>Engine 0.0.0</authoring_tool>
     </contributor>
-    <created>2022-03-18T07:12:00</created>
-    <modified>2022-03-18T07:12:00</modified>
+    <created>2024-12-17T19:55:00</created>
+    <modified>2024-12-17T19:55:00</modified>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images />
@@ -26,7 +26,7 @@
           </technique_common>
         </source>
         <source id="Whistle-mesh-normals">
-          <float_array id="Whistle-mesh-normals-array" count="45">0 1 0 -1 0 0 1 0 0 0 0 -1 0 0 1 1 0 -7E-06 0 0.7071068 -0.7071068 0 -0.7071068 -0.7071068 0 -1 0 0 -0.7071068 0.7071068 0 -0.382683754 0.923879445 0 0.9238797 0.382683277 1 6E-06 -1.4E-05 0 -0.38268292 0.923879743 0 0.923879266 0.382684082</float_array>
+          <float_array id="Whistle-mesh-normals-array" count="45">0 1 0 -1 0 0 1 0 0 0 0 -1 0 0 1 1 0 -7E-06 0 0.7071068 -0.7071068 0 -0.7071068 -0.7071068 0 -1 0 -0 -0.7071068 0.7071068 -0 -0.38268375 0.92387944 -0 0.9238797 0.38268328 1 6E-06 -1.4E-05 0 -0.38268292 0.92387974 -0 0.92387927 0.38268408</float_array>
           <technique_common>
             <accessor source="#Whistle-mesh-normals-array" count="15" stride="3">
               <param name="X" type="float" />

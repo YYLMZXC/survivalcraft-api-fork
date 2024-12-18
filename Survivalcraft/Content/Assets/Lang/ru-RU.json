@@ -449,6 +449,7 @@
         "5": "Ошибка доступа к {0}",
         "6": "Ошибка загрузки ссылочного {0}",
         "Terrain": "Рельеф местности",
+        "Minerals": "Minerals",
         "Plants": "Растения",
         "Construction": "Строительство",
         "Items": "Предметы",
@@ -1631,7 +1632,8 @@
         "EmptyBucketBlock:0": {
             "DisplayName": "Ведро",
             "Description": "Используется для переноса жидкостей, приготовления пищи и создания красок",
-            "CRDescription:0": "Создаётся из медных слитков"
+            "CRDescription:0": "Создаётся из медных слитков",
+            "CRDescription:1": "Empty the bucket"
         },
         "WaterBucketBlock:0": {
             "DisplayName": "Ведро воды",
@@ -2314,6 +2316,14 @@
         },
         "PistonBlock:452": {
             "CRDescription:0": "Создаётся из медного слитка и толкающего поршня"
+        },
+        "DirtStairsBlock:0": {
+            "DisplayName": "Dirt Stairs",
+            "CRDescription:0": "Make stairs to be able to climb heights quicker"
+        },
+        "DirtSlabBlock:0": {
+            "DisplayName": "Dirt Slab",
+            "CRDescription:0": "Make slabs for decoration purposes"
         }
     },
     "Help": {
@@ -2758,7 +2768,8 @@
         "SettingsGraphicsScreen": {
             "1": "Графика",
             "2": "Виртуальная реальность",
-            "3": "Яркость"
+            "3": "Яркость",
+            "4": "Угол обзора"
         },
         "SettingsPerformanceScreen": {
             "1": "Производительность",
@@ -2830,7 +2841,10 @@
             "22": "Возрождение в приключении",
             "23": "Механики выживания в приключении",
             "24": "Сверхъестественные существа",
-            "25": "Нападение игроков на игроков"
+            "25": "Нападение игроков на игроков",
+            "26": "Changing Seasons:",
+            "27": "Length Of Year:",
+            "28": "Season:"
         },
         "BestiaryItem": {
             "1": "",

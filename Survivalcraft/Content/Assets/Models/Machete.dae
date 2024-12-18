@@ -5,8 +5,8 @@
       <author>Survivalcraft Moder</author>
       <authoring_tool>Engine 0.0.0</authoring_tool>
     </contributor>
-    <created>2022-03-18T07:12:00</created>
-    <modified>2022-03-18T07:12:00</modified>
+    <created>2024-12-17T19:55:00</created>
+    <modified>2024-12-17T19:55:00</modified>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images />
@@ -16,7 +16,7 @@
     <geometry id="Handle-mesh" name="Handle">
       <mesh>
         <source id="Handle-mesh-positions">
-          <float_array id="Handle-mesh-positions-array" count="36">4.198669 0.505213 0 2.039552 4.244914 21.155941 2.039551 4.244915 2.3E-05 4.198672 0.505212 21.1559563 -2.278689 4.244915 21.1559486 -2.278687 4.244916 2.3E-05 -4.437809 0.505212 21.1559525 -4.437807 0.505213 8E-06 -2.278687 -3.23449 21.1559486 -2.278687 -3.234489 2.3E-05 2.039551 -3.234488 21.1559563 2.039551 -3.234489 2.3E-05</float_array>
+          <float_array id="Handle-mesh-positions-array" count="36">4.198669 0.505213 0 2.039552 4.244914 21.155941 2.039551 4.244915 2.3E-05 4.198672 0.505212 21.155956 -2.278689 4.244915 21.155949 -2.278687 4.244916 2.3E-05 -4.437809 0.505212 21.155952 -4.437807 0.505213 8E-06 -2.278687 -3.23449 21.155949 -2.278687 -3.234489 2.3E-05 2.039551 -3.234488 21.155956 2.039551 -3.234489 2.3E-05</float_array>
           <technique_common>
             <accessor source="#Handle-mesh-positions-array" count="12" stride="3">
               <param name="X" type="float" />
@@ -26,7 +26,7 @@
           </technique_common>
         </source>
         <source id="Handle-mesh-normals">
-          <float_array id="Handle-mesh-normals-array" count="36">1 0 0 0.500000238 0.8660254 0 0.500000954 0.866024852 0 1 -1E-06 0 -0.500000238 0.8660254 0 -1 0 0 -0.499999 -0.866026 0 -0.500000238 -0.8660254 0 0.500000238 -0.8660254 0 0.500000954 -0.866024852 0 -1E-06 0 -1 0 1E-06 1</float_array>
+          <float_array id="Handle-mesh-normals-array" count="36">1 -0 -0 0.50000024 0.8660254 0 0.50000095 0.86602485 0 1 -1E-06 -0 -0.50000024 0.8660254 -0 -1 -0 -0 -0.499999 -0.866026 -0 -0.50000024 -0.8660254 -0 0.50000024 -0.8660254 -0 0.50000095 -0.86602485 -0 -1E-06 -0 -1 -0 1E-06 1</float_array>
           <technique_common>
             <accessor source="#Handle-mesh-normals-array" count="12" stride="3">
               <param name="X" type="float" />
@@ -58,7 +58,7 @@
     <geometry id="Head-mesh" name="Head">
       <mesh>
         <source id="Head-mesh-positions">
-          <float_array id="Head-mesh-positions-array" count="27">-0.305651 3.96881 21.1573334 -1.279268 -3.142554 78.89295 -1.980099 -3.154347 21.1573334 -0.305651 6.813488 94.76195 -0.305651 11.9229832 78.5297546 -0.305651 10.2891645 88.76834 0.667965 -3.142553 78.89295 1.368797 -3.154346 21.1573334 -0.305651 -3.195106 99.88761</float_array>
+          <float_array id="Head-mesh-positions-array" count="27">-0.305651 3.96881 21.157333 -1.279268 -3.142554 78.89295 -1.980099 -3.154347 21.157333 -0.305651 6.813488 94.76195 -0.305651 11.922983 78.529755 -0.305651 10.289165 88.76834 0.667965 -3.142553 78.89295 1.368797 -3.154346 21.157333 -0.305651 -3.195106 99.88761</float_array>
           <technique_common>
             <accessor source="#Head-mesh-positions-array" count="9" stride="3">
               <param name="X" type="float" />
@@ -68,7 +68,7 @@
           </technique_common>
         </source>
         <source id="Head-mesh-normals">
-          <float_array id="Head-mesh-normals-array" count="42">-0.9941306 0.108178064 0.00141600077 -0.9956083 0.09313803 0.009464004 -0.997852 0.059504 0.027399 -0.994130552 0.108177945 0.00141599926 0 -1 0.000204 0 -0.999999464 -0.00112400053 0.9941306 0.108178064 0.00141600077 0.994130552 0.108177945 0.00141599926 0.9956083 0.09313803 0.009464004 0.997852 0.059504 0.027399 -0.998642 0.023748 0.046371 0 -0.9999969 -0.00250299973 0.9996605 0.0118780052 0.0231930111 1 0 0</float_array>
+          <float_array id="Head-mesh-normals-array" count="42">-0.9941306 0.108178064 0.0014160008 -0.9956082 0.093138024 0.009464002 -0.997852 0.059504 0.027399 -0.99413055 0.108177945 0.0014159993 0 -1 0.000204 0 -0.99999946 -0.0011240005 0.9941306 0.108178064 0.0014160008 0.99413055 0.108177945 0.0014159993 0.9956082 0.093138024 0.009464002 0.997852 0.059504 0.027399 -0.998642 0.023748 0.046371 0 -0.9999969 -0.0025029997 0.9996605 0.011878005 0.023193011 1 0 0</float_array>
           <technique_common>
             <accessor source="#Head-mesh-normals-array" count="14" stride="3">
               <param name="X" type="float" />
@@ -101,7 +101,7 @@
   <library_controllers />
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="" name="" type="NODE">
+      <node id="EngineRoot" name="EngineRoot" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <node id="Handle" name="Handle" type="NODE">
           <matrix sid="transform">0.01 0 0 0 0 0 0.01 0 0 -0.01 0 0 0 0 0 1</matrix>

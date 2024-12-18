@@ -5,8 +5,8 @@
       <author>Survivalcraft Moder</author>
       <authoring_tool>Engine 0.0.0</authoring_tool>
     </contributor>
-    <created>2022-03-18T07:12:00</created>
-    <modified>2022-03-18T07:12:00</modified>
+    <created>2024-12-17T19:55:00</created>
+    <modified>2024-12-17T19:55:00</modified>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images />
@@ -16,7 +16,7 @@
     <geometry id="Post-mesh" name="Post">
       <mesh>
         <source id="Post-mesh-positions">
-          <float_array id="Post-mesh-positions-array" count="24">0 -4.419417 0 0 4.419417 0 -4.419417 0 0 4.419417 0 0 0 -4.419417 100 0 4.419417 100 4.419417 0 100 -4.419417 0 100</float_array>
+          <float_array id="Post-mesh-positions-array" count="24">-0 -4.419417 0 0 4.419417 0 -4.419417 0 0 4.419417 -0 0 -0 -4.419417 100 0 4.419417 100 4.419417 -0 100 -4.419417 0 100</float_array>
           <technique_common>
             <accessor source="#Post-mesh-positions-array" count="8" stride="3">
               <param name="X" type="float" />
@@ -36,7 +36,7 @@
           </technique_common>
         </source>
         <source id="Post-mesh-map">
-          <float_array id="Post-mesh-map-array" count="72">0 0.988281 0.007813 0.996094 0 0.996094 0.007813 0.996094 0 0.988281 0.007813 0.988281 0 0.988281 0.007813 0.996094 0.007813 0.988281 0.007813 0.996094 0 0.988281 0 0.996094 0 0.9375 0.007813 1 0.007813 0.9375 0.007813 1 0 0.9375 0 1 0 0.9375 0.007813 1 0.007813 0.9375 0.007813 1 0 0.9375 0 1 0.007813 0.9375 0 1 0 0.9375 0 1 0.007813 0.9375 0.007813 1 0.007813 0.9375 0 1 0 0.9375 0 1 0.007813 0.9375 0.007813 1</float_array>
+          <float_array id="Post-mesh-map-array" count="72">-0 0.988281 0.007813 0.996094 -0 0.996094 0.007813 0.996094 -0 0.988281 0.007813 0.988281 -0 0.988281 0.007813 0.996094 0.007813 0.988281 0.007813 0.996094 -0 0.988281 -0 0.996094 -0 0.9375 0.007813 1 0.007813 0.9375 0.007813 1 -0 0.9375 -0 1 -0 0.9375 0.007813 1 0.007813 0.9375 0.007813 1 -0 0.9375 -0 1 0.007813 0.9375 -0 1 -0 0.9375 -0 1 0.007813 0.9375 0.007813 1 0.007813 0.9375 -0 1 -0 0.9375 -0 1 0.007813 0.9375 0.007813 1</float_array>
           <technique_common>
             <accessor source="#Post-mesh-map-array" count="36" stride="2">
               <param name="S" type="float" />
@@ -58,7 +58,7 @@
     <geometry id="Planks-mesh" name="Planks">
       <mesh>
         <source id="Planks-mesh-positions">
-          <float_array id="Planks-mesh-positions-array" count="12">-0.512805 100 -2E-06 45.0871964 100 -2E-06 -0.512805 0 -2E-06 45.0871964 0 -2E-06</float_array>
+          <float_array id="Planks-mesh-positions-array" count="12">-0.512805 100 -2E-06 45.087196 100 -2E-06 -0.512805 0 -2E-06 45.087196 0 -2E-06</float_array>
           <technique_common>
             <accessor source="#Planks-mesh-positions-array" count="4" stride="3">
               <param name="X" type="float" />
@@ -101,14 +101,14 @@
   <library_controllers />
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="" name="" type="NODE">
+      <node id="EngineRoot" name="EngineRoot" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <node id="Post" name="Post" type="NODE">
           <matrix sid="transform">0.01 0 0 0 0 0 0.01 0 0 -0.01 0 0 0 0 0 1</matrix>
           <instance_geometry url="#Post-mesh" name="Post" />
         </node>
         <node id="Planks" name="Planks" type="NODE">
-          <matrix sid="transform">0.01 0 0 0.04912805 0 0.01 0 0 0 0 0.01 0 0 0 0 1</matrix>
+          <matrix sid="transform">0.01 0 0 0.049128048 0 0.01 0 0 0 0 0.01 0 0 0 0 1</matrix>
           <instance_geometry url="#Planks-mesh" name="Planks" />
         </node>
       </node>

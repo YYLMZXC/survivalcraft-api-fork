@@ -21,7 +21,7 @@
         <StackPanelWidget Direction="Horizontal" HorizontalAlignment="Center" Margin="-40,0">
           <BevelledButtonWidget Name="SearchType" Text="[CommunityContentScreen:10]" Size="100,60" VerticalAlignment="Far"/>
           <CanvasWidget Size="240, 60">
-            <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
+            <BevelledRectangleWidget Style="{Styles/TextBoxArea}" />
             <LabelWidget VerticalAlignment="Center" Name="placeholder" Text="[CommunityContentScreen:9]"  Margin="10,0"/>
             <TextBoxWidget Size="240, 60" Name="key" VerticalAlignment="Center" Margin="10,0"/>
           </CanvasWidget>
@@ -37,7 +37,7 @@
       <CanvasWidget Size="0, 8" />
 
       <CanvasWidget Margin="10, 0">
-        <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
+        <BevelledRectangleWidget Style="{Styles/Area}" />
         <TreeViewWidget Name="Tree" Direction="Vertical"  Margin="3, 3" />
       </CanvasWidget>
 

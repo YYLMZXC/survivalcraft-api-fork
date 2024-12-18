@@ -3,11 +3,14 @@
 Texture2D u_texture;
 SamplerState u_samplerState;
 float3 u_fogColor;
+#ifdef ALPHATESTED
+float u_alphaThreshold;
+#endif
 
 void main(
 	in float4 v_color : COLOR,
 	in float2 v_texcoord: TEXCOORD,
-	in float v_fog : FOG,
+	in float v_fog: FOG,
 	out float4 svTarget: SV_TARGET
 )
 {
@@ -19,12 +22,12 @@ void main(
 	
 	// Alpha threshold
 #ifdef ALPHATESTED
-	if (result.a <= 0.5)
+	if (result.a <= u_alphaThreshold)
 		discard;
 #endif
 
 	// Fog
-	result = lerp(result, float4(u_fogColor, 1), v_fog);
+	result.rgb = lerp(result.rgb, u_fogColor * v_color.a, v_fog);
 	
 	// Return
 	svTarget = result;
@@ -41,6 +44,9 @@ precision mediump float;
 
 uniform sampler2D u_texture;
 uniform vec3 u_fogColor;
+#ifdef ALPHATESTED
+uniform float u_alphaThreshold;
+#endif
 
 varying vec4 v_color;
 varying vec2 v_texcoord;
@@ -56,12 +62,12 @@ void main()
 	
 	// Alpha threshold
 #ifdef ALPHATESTED
-	if (result.a <= 0.5)
+	if (result.a <= u_alphaThreshold)
 		discard;
 #endif
 
 	// Fog
-	result = mix(result, vec4(u_fogColor, 1), v_fog);
+	result.rgb = mix(result.rgb, u_fogColor * v_color.a, v_fog);
 	
 	// Return
 	gl_FragColor = result;

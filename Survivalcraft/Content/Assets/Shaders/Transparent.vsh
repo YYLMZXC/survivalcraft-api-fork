@@ -3,9 +3,24 @@
 float2 u_origin;
 float4x4 u_viewProjectionMatrix;
 float3 u_viewPosition;
-float2 u_fogStartInvLength;
 float u_fogYMultiplier;
-float u_time;
+float3 u_fogBottomTopDensity;
+float2 u_hazeStartDensity;
+
+float fogIntegral(float y)
+{
+	return smoothstep(u_fogBottomTopDensity.x, u_fogBottomTopDensity.y, y) * (u_fogBottomTopDensity.y - u_fogBottomTopDensity.x) + u_fogBottomTopDensity.x;
+}
+
+float calculateFog(float3 position)
+{
+	float3 fogDelta = u_viewPosition - position;
+	fogDelta.y *= u_fogYMultiplier;
+	float fogDistance = length(fogDelta);
+	float fogFactor = (fogIntegral(u_viewPosition.y) - fogIntegral(position.y)) / (u_viewPosition.y - position.y);
+	return saturate(saturate(u_hazeStartDensity.y * (fogDistance - u_hazeStartDensity.x)) + fogFactor * u_fogBottomTopDensity.z * fogDistance);
+}
+
 void main(
 	in float3 a_position: POSITION,
 	in float4 a_color: COLOR,
@@ -24,14 +39,12 @@ void main(
 	float l = length(direction);
 	float incidence = abs(direction.y / l);
 	float topAlpha = saturate(lerp(1.2, 0.5, incidence));
-	float sideAlpha = u_time;
+	float sideAlpha = 0.85;
 	float alpha = lerp(topAlpha, sideAlpha, a_color.w);		// Alpha component of a_color encodes whether this is top (0) or side (1) vertex
 	v_color = float4(a_color.xyz * alpha, alpha);
 	
 	// Fog
-	float3 fogDelta = u_viewPosition - a_position;
-	fogDelta.y *= u_fogYMultiplier;
-	v_fog = saturate((length(fogDelta) - u_fogStartInvLength.x) * u_fogStartInvLength.y);
+	v_fog = calculateFog(a_position);
 	
 	// Position
 	sv_position = mul(float4(a_position.x - u_origin.x, a_position.y, a_position.z - u_origin.y, 1.0), u_viewProjectionMatrix);
@@ -47,8 +60,10 @@ void main(
 uniform vec2 u_origin;
 uniform mat4 u_viewProjectionMatrix;
 uniform vec3 u_viewPosition;
-uniform vec2 u_fogStartInvLength;
 uniform float u_fogYMultiplier;
+uniform vec3 u_fogBottomTopDensity;
+uniform vec2 u_hazeStartDensity;
+
 attribute vec3 a_position;
 attribute vec4 a_color;
 attribute vec2 a_texcoord;
@@ -56,6 +71,20 @@ attribute vec2 a_texcoord;
 varying vec4 v_color;
 varying vec2 v_texcoord;
 varying float v_fog;
+
+float fogIntegral(float y)
+{
+	return smoothstep(u_fogBottomTopDensity.x, u_fogBottomTopDensity.y, y) * (u_fogBottomTopDensity.y - u_fogBottomTopDensity.x) + u_fogBottomTopDensity.x;
+}
+
+float calculateFog(vec3 position)
+{
+	vec3 fogDelta = u_viewPosition - position;
+	fogDelta.y *= u_fogYMultiplier;
+	float fogDistance = length(fogDelta);
+	float fogFactor = (fogIntegral(u_viewPosition.y) - fogIntegral(position.y)) / (u_viewPosition.y - position.y);
+	return clamp(clamp(u_hazeStartDensity.y * (fogDistance - u_hazeStartDensity.x), 0.0, 1.0) + fogFactor * u_fogBottomTopDensity.z * fogDistance, 0.0, 1.0);
+}
 
 void main()
 {
@@ -72,9 +101,7 @@ void main()
 	v_color = vec4(a_color.xyz * alpha, alpha);
 	
 	// Fog
-	vec3 fogDelta = u_viewPosition - a_position;
-	fogDelta.y *= u_fogYMultiplier;
-	v_fog = clamp((length(fogDelta) - u_fogStartInvLength.x) * u_fogStartInvLength.y, 0.0, 1.0);
+	v_fog = calculateFog(a_position);
 	
 	// Position
 	gl_Position = u_viewProjectionMatrix * vec4(a_position.x - u_origin.x, a_position.y, a_position.z - u_origin.y, 1.0);

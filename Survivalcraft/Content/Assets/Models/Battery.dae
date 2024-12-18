@@ -5,8 +5,8 @@
       <author>Survivalcraft Moder</author>
       <authoring_tool>Engine 0.0.0</authoring_tool>
     </contributor>
-    <created>2022-03-18T07:12:00</created>
-    <modified>2022-03-18T07:12:00</modified>
+    <created>2024-12-17T19:55:00</created>
+    <modified>2024-12-17T19:55:00</modified>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images />
@@ -16,7 +16,7 @@
     <geometry id="Battery-mesh" name="Battery">
       <mesh>
         <source id="Battery-mesh-positions">
-          <float_array id="Battery-mesh-positions-array" count="54">0 0 0 37.5 0 0 26.5165043 26.5165043 0 -2E-06 37.5 0 -26.5165043 26.5165043 0 -37.5 -3E-06 0 -26.5165 -26.5165081 0 0 -37.5 0 26.5165 -26.5165081 0 37.5 0 100 26.5165043 26.5165043 100 -2E-06 37.5 100 -26.5165043 26.5165043 100 -37.5 -3E-06 100 -26.5165 -26.5165081 100 0 -37.5 100 26.5165 -26.5165081 100 0 0 100</float_array>
+          <float_array id="Battery-mesh-positions-array" count="54">0 0 0 37.5 0 0 26.516504 26.516504 0 -2E-06 37.5 0 -26.516504 26.516504 0 -37.5 -3E-06 0 -26.5165 -26.516508 0 0 -37.5 0 26.5165 -26.516508 0 37.5 0 100 26.516504 26.516504 100 -2E-06 37.5 100 -26.516504 26.516504 100 -37.5 -3E-06 100 -26.5165 -26.516508 100 0 -37.5 100 26.5165 -26.516508 100 0 0 100</float_array>
           <technique_common>
             <accessor source="#Battery-mesh-positions-array" count="18" stride="3">
               <param name="X" type="float" />
@@ -26,7 +26,7 @@
           </technique_common>
         </source>
         <source id="Battery-mesh-normals">
-          <float_array id="Battery-mesh-normals-array" count="30">0 0 -1 1 0 0 0.7071068 0.7071068 0 0 1 0 -0.7071068 0.7071068 0 -1 0 0 -0.7071068 -0.7071068 0 0 -1 0 0.7071068 -0.7071068 0 0 0 1</float_array>
+          <float_array id="Battery-mesh-normals-array" count="30">0 0 -1 1 -0 0 0.7071068 0.7071068 0 -0 1 0 -0.7071068 0.7071068 0 -1 -0 0 -0.7071068 -0.7071068 0 0 -1 0 0.7071068 -0.7071068 0 0 0 1</float_array>
           <technique_common>
             <accessor source="#Battery-mesh-normals-array" count="10" stride="3">
               <param name="X" type="float" />

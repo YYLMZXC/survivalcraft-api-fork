@@ -1,7 +1,7 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 
   <CanvasWidget Size="600, 420" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-    <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
+    <BevelledRectangleWidget Style="{Styles/DialogArea}" />
 
     <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" Margin="10, 0" IsVisible="true">
 
@@ -19,7 +19,7 @@
                 <LabelWidget Text="[EditSignDialog:2]"  VerticalAlignment="Center" Color="128, 128, 128" />
               </CanvasWidget>
               <CanvasWidget Size="360, 50" VerticalAlignment="Center" >
-                <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" />
+                <BevelledRectangleWidget Style="{Styles/TextBoxArea}" />
                 <TextBoxWidget Name="EditSignDialog.TextBox1" Title="输入行 1" Size="360, 50" Description=""  VerticalAlignment="Center" MaximumLength="16" Margin="10, 0"/>
               </CanvasWidget>
               <BevelledButtonWidget Name="EditSignDialog.ColorButton1" Style="{Styles/ButtonStyle_ColorPicker}" Margin="20, 0" VerticalAlignment="Center" />
@@ -30,7 +30,7 @@
                 <LabelWidget Text="[EditSignDialog:3]"  VerticalAlignment="Center" Color="128, 128, 128" />
               </CanvasWidget>
               <CanvasWidget Size="360, 50" VerticalAlignment="Center">
-                <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" />
+                <BevelledRectangleWidget Style="{Styles/TextBoxArea}" />
                 <TextBoxWidget Name="EditSignDialog.TextBox2" Title="输入行 2" Size="360, 50" Description=""  VerticalAlignment="Center" MaximumLength="16" Margin="10, 0"/>
               </CanvasWidget>
               <BevelledButtonWidget Name="EditSignDialog.ColorButton2" Style="{Styles/ButtonStyle_ColorPicker}" Margin="20, 0" VerticalAlignment="Center" />
@@ -41,7 +41,7 @@
                 <LabelWidget Text="[EditSignDialog:4]"  VerticalAlignment="Center" Color="128, 128, 128" />
               </CanvasWidget>
               <CanvasWidget Size="360, 50" VerticalAlignment="Center">
-                <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" />
+                <BevelledRectangleWidget Style="{Styles/TextBoxArea}" />
                 <TextBoxWidget Name="EditSignDialog.TextBox3" Title="输入行 3" Size="360, 50" Description=""  VerticalAlignment="Center" MaximumLength="16" Margin="10, 0"/>
               </CanvasWidget>
               <BevelledButtonWidget Name="EditSignDialog.ColorButton3" Style="{Styles/ButtonStyle_ColorPicker}" Margin="20, 0" VerticalAlignment="Center" />
@@ -52,7 +52,7 @@
                 <LabelWidget Text="[EditSignDialog:5]"  VerticalAlignment="Center" Color="128, 128, 128" />
               </CanvasWidget>
               <CanvasWidget Size="360, 50" VerticalAlignment="Center">
-                <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" />
+                <BevelledRectangleWidget Style="{Styles/TextBoxArea}" />
                 <TextBoxWidget Name="EditSignDialog.TextBox4" Title="输入行 4" Size="360, 50" Description=""  VerticalAlignment="Center" MaximumLength="16" Margin="10, 0"/>
               </CanvasWidget>
               <BevelledButtonWidget Name="EditSignDialog.ColorButton4" Style="{Styles/ButtonStyle_ColorPicker}" Margin="20, 0" VerticalAlignment="Center" />
@@ -76,7 +76,7 @@
 
             <StackPanelWidget Margin="0, 10">
               <CanvasWidget Size="480, 50" VerticalAlignment="Center" >
-                <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" />
+                <BevelledRectangleWidget Style="{Styles/TextBoxArea}" />
                 <TextBoxWidget Name="EditSignDialog.UrlTextBox" Title="输入Url" Size="480, 50" Description=""  VerticalAlignment="Center" MaximumLength="256" Margin="10, 0"/>
               </CanvasWidget>
             </StackPanelWidget>

@@ -459,7 +459,7 @@ namespace Game
 							{
 								continue;
 							}
-							float num8 = (m_projectilesCount < 40 || block2.IsExplosionTransparent) ? 1f : ((m_projectilesCount < 60) ? 0.5f : ((m_projectilesCount >= 80) ? 0.125f : 0.25f));
+							float num8 = (m_projectilesCount < 40 || block2.ExplosionKeepsPickables) ? 1f : ((m_projectilesCount < 60) ? 0.5f : ((m_projectilesCount >= 80) ? 0.125f : 0.25f));
 							if (!(m_random.Float(0f, 1f) < num8))
 							{
 								continue;
@@ -470,7 +470,7 @@ namespace Game
 								velocity *= m_random.Float(0.5f, 1f);
 								velocity += m_random.Vector3(0.2f * velocity.Length());
 							}
-							float num9 = flag2 ? 0f : (block2.IsExplosionTransparent ? 1f : MathUtils.Lerp(1f, 0f, (float)m_projectilesCount / 25f));
+							float num9 = flag2 ? 0f : (block2.ExplosionKeepsPickables ? 1f : MathUtils.Lerp(1f, 0f, (float)m_projectilesCount / 25f));
 							Projectile projectile = m_subsystemProjectiles.AddProjectile(item.Value, new Vector3((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f), velocity, m_random.Vector3(0f, 20f), null);
 							projectile.ProjectileStoppedAction = (!(m_random.Float(0f, 1f) < num9)) ? ProjectileStoppedAction.Disappear : ProjectileStoppedAction.TurnIntoPickable;
 							if (m_random.Float(0f, 1f) < 0.5f && m_projectilesCount < 35)

@@ -7,7 +7,7 @@
 
 	<CanvasWidget Size="780, 440" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-		<RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 255" OutlineThickness="2" />
+    <BevelledRectangleWidget Style="{Styles/DialogArea}" />    
 		<StackPanelWidget Direction="Vertical" >
 			<CanvasWidget>
 				<RectangleWidget FillColor="0, 0, 0, 0" OutlineColor="128, 128, 128, 255" OutlineThickness="2" />

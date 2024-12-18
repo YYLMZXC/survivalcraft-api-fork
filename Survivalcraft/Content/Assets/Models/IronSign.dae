@@ -5,8 +5,8 @@
       <author>Survivalcraft Moder</author>
       <authoring_tool>Engine 0.0.0</authoring_tool>
     </contributor>
-    <created>2022-03-18T07:12:00</created>
-    <modified>2022-03-18T07:12:00</modified>
+    <created>2024-12-17T19:55:00</created>
+    <modified>2024-12-17T19:55:00</modified>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images />
@@ -36,7 +36,7 @@
           </technique_common>
         </source>
         <source id="Sign-mesh-map">
-          <float_array id="Sign-mesh-map-array" count="72">0.0625 0.976563 0 0.980469 0 0.976563 0 0.980469 0.0625 0.976563 0.0625 0.980469 0.0625 0.976563 0 0.980469 0.0625 0.980469 0 0.980469 0.0625 0.976563 0 0.976563 0 0.976563 0.003906 1 0.003906 0.976563 0.003906 1 0 0.976563 0 1 0 0.976563 0.0625 1 0.0625 0.976563 0.0625 1 0 0.976563 0 1 0 0.976563 0.003906 1 0.003906 0.976563 0.003906 1 0 0.976563 0 1 0 0.976563 0.0625 1 0.0625 0.976563 0.0625 1 0 0.976563 0 1</float_array>
+          <float_array id="Sign-mesh-map-array" count="72">0.0625 0.976563 -0 0.980469 -0 0.976563 -0 0.980469 0.0625 0.976563 0.0625 0.980469 0.0625 0.976563 -0 0.980469 0.0625 0.980469 -0 0.980469 0.0625 0.976563 -0 0.976563 -0 0.976563 0.003906 1 0.003906 0.976563 0.003906 1 -0 0.976563 -0 1 -0 0.976563 0.0625 1 0.0625 0.976563 0.0625 1 -0 0.976563 -0 1 -0 0.976563 0.003906 1 0.003906 0.976563 0.003906 1 -0 0.976563 -0 1 -0 0.976563 0.0625 1 0.0625 0.976563 0.0625 1 -0 0.976563 -0 1</float_array>
           <technique_common>
             <accessor source="#Sign-mesh-map-array" count="36" stride="2">
               <param name="S" type="float" />
@@ -100,7 +100,7 @@
     <geometry id="Surface-mesh" name="Surface">
       <mesh>
         <source id="Surface-mesh-positions">
-          <float_array id="Surface-mesh-positions-array" count="12">-18.8395329 -48 2E-06 18.2443619 48.0000038 -2E-06 -18.8395329 48 2E-06 18.2443619 -47.9999962 -2E-06</float_array>
+          <float_array id="Surface-mesh-positions-array" count="12">-18.839533 -48 2E-06 18.244362 48.000004 -2E-06 -18.839533 48 2E-06 18.244362 -47.999996 -2E-06</float_array>
           <technique_common>
             <accessor source="#Surface-mesh-positions-array" count="4" stride="3">
               <param name="X" type="float" />
@@ -110,7 +110,7 @@
           </technique_common>
         </source>
         <source id="Surface-mesh-normals">
-          <float_array id="Surface-mesh-normals-array" count="3">0 0 -1</float_array>
+          <float_array id="Surface-mesh-normals-array" count="3">-0 0 -1</float_array>
           <technique_common>
             <accessor source="#Surface-mesh-normals-array" count="1" stride="3">
               <param name="X" type="float" />
@@ -143,7 +143,7 @@
   <library_controllers />
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="" name="" type="NODE">
+      <node id="EngineRoot" name="EngineRoot" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <node id="Sign" name="Sign" type="NODE">
           <matrix sid="transform">0 -0.01 0 0 0 0 0.01 0.5625 -0.01 0 0 0 0 0 0 1</matrix>

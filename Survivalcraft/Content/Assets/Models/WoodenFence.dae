@@ -5,8 +5,8 @@
       <author>Survivalcraft Moder</author>
       <authoring_tool>Engine 0.0.0</authoring_tool>
     </contributor>
-    <created>2022-03-18T07:12:00</created>
-    <modified>2022-03-18T07:12:00</modified>
+    <created>2024-12-17T19:55:00</created>
+    <modified>2024-12-17T19:55:00</modified>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images />
@@ -58,7 +58,7 @@
     <geometry id="Planks-mesh" name="Planks">
       <mesh>
         <source id="Planks-mesh-positions">
-          <float_array id="Planks-mesh-positions-array" count="48">6.25 -3.125 69.05765 50 -3.125 69.05765 50 3.125 69.05765 6.25 -3.125 81.55765 6.25 3.125 81.55765 50 3.125 81.55765 50 -3.125 81.55765 6.25 3.125 69.05765 6.25 -3.125 31.5576477 50 -3.125 31.5576477 50 3.125 31.5576477 6.25 -3.125 44.0576477 50 -3.125 44.0576477 6.25 3.125 44.0576477 50 3.125 44.0576477 6.25 3.125 31.5576477</float_array>
+          <float_array id="Planks-mesh-positions-array" count="48">6.25 -3.125 69.05765 50 -3.125 69.05765 50 3.125 69.05765 6.25 -3.125 81.55765 6.25 3.125 81.55765 50 3.125 81.55765 50 -3.125 81.55765 6.25 3.125 69.05765 6.25 -3.125 31.557648 50 -3.125 31.557648 50 3.125 31.557648 6.25 -3.125 44.057648 50 -3.125 44.057648 6.25 3.125 44.057648 50 3.125 44.057648 6.25 3.125 31.557648</float_array>
           <technique_common>
             <accessor source="#Planks-mesh-positions-array" count="16" stride="3">
               <param name="X" type="float" />
@@ -101,7 +101,7 @@
   <library_controllers />
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="" name="" type="NODE">
+      <node id="EngineRoot" name="EngineRoot" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <node id="Post" name="Post" type="NODE">
           <matrix sid="transform">0.01 0 0 0 0 0 0.01 0 0 -0.01 0 0 0 0 0 1</matrix>

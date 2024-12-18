@@ -5,8 +5,8 @@
       <author>Survivalcraft Moder</author>
       <authoring_tool>Engine 0.0.0</authoring_tool>
     </contributor>
-    <created>2022-03-18T07:12:00</created>
-    <modified>2022-03-18T07:12:00</modified>
+    <created>2024-12-17T19:55:00</created>
+    <modified>2024-12-17T19:55:00</modified>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images />
@@ -58,7 +58,7 @@
     <geometry id="StairsOuterCorner-mesh" name="StairsOuterCorner">
       <mesh>
         <source id="StairsOuterCorner-mesh-positions">
-          <float_array id="StairsOuterCorner-mesh-positions-array" count="42">50.0000076 50 0 -50 50 50 -50 50 0 50 50 50 -50 -50 0 49.9999924 -50 0 -50 0 100 -4E-06 8E-06 50 -8E-06 0 100 -50 0 50 -4E-06 -49.9999924 50 8E-06 -50 100 -50 -50 100 50 -50 50</float_array>
+          <float_array id="StairsOuterCorner-mesh-positions-array" count="42">50.000008 50 0 -50 50 50 -50 50 0 50 50 50 -50 -50 0 49.999992 -50 0 -50 0 100 -4E-06 8E-06 50 -8E-06 0 100 -50 0 50 -4E-06 -49.999992 50 8E-06 -50 100 -50 -50 100 50 -50 50</float_array>
           <technique_common>
             <accessor source="#StairsOuterCorner-mesh-positions-array" count="14" stride="3">
               <param name="X" type="float" />
@@ -68,7 +68,7 @@
           </technique_common>
         </source>
         <source id="StairsOuterCorner-mesh-normals">
-          <float_array id="StairsOuterCorner-mesh-normals-array" count="18">0 1 0 0 0 -1 1 0 0 0 0 1 0 -1 0 -1 0 0</float_array>
+          <float_array id="StairsOuterCorner-mesh-normals-array" count="18">0 1 0 0 0 -1 1 0 -0 0 0 1 0 -1 0 -1 0 0</float_array>
           <technique_common>
             <accessor source="#StairsOuterCorner-mesh-normals-array" count="6" stride="3">
               <param name="X" type="float" />
@@ -100,7 +100,7 @@
     <geometry id="StairsInnerCorner-mesh" name="StairsInnerCorner">
       <mesh>
         <source id="StairsInnerCorner-mesh-positions">
-          <float_array id="StairsInnerCorner-mesh-positions-array" count="42">49.9999924 -50 0 50.0000076 50 0 -50 50 0 -50 -50 0 49.9999924 -2E-06 100 -8E-06 0 100 -4E-06 8E-06 50 49.9999962 6E-06 50 -50 -50 100 50.0000076 -50 100 -4E-06 49.9999962 100 0 50.0000038 50 -50 49.9999962 100 50 50 50</float_array>
+          <float_array id="StairsInnerCorner-mesh-positions-array" count="42">49.999992 -50 0 50.000008 50 0 -50 50 0 -50 -50 0 49.999992 -2E-06 100 -8E-06 0 100 -4E-06 8E-06 50 49.999996 6E-06 50 -50 -50 100 50.000008 -50 100 -4E-06 49.999996 100 0 50.000004 50 -50 49.999996 100 50 50 50</float_array>
           <technique_common>
             <accessor source="#StairsInnerCorner-mesh-positions-array" count="14" stride="3">
               <param name="X" type="float" />
@@ -110,7 +110,7 @@
           </technique_common>
         </source>
         <source id="StairsInnerCorner-mesh-normals">
-          <float_array id="StairsInnerCorner-mesh-normals-array" count="18">0 0 -1 0 1 0 0 -1 0 1 0 0 -1 0 0 0 0 1</float_array>
+          <float_array id="StairsInnerCorner-mesh-normals-array" count="18">0 0 -1 0 1 0 0 -1 0 1 -0 0 -1 0 0 0 0 1</float_array>
           <technique_common>
             <accessor source="#StairsInnerCorner-mesh-normals-array" count="6" stride="3">
               <param name="X" type="float" />
@@ -143,7 +143,7 @@
   <library_controllers />
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="" name="" type="NODE">
+      <node id="EngineRoot" name="EngineRoot" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <node id="Stairs" name="Stairs" type="NODE">
           <matrix sid="transform">-0.01 0 0 0 0 0 0.01 0 0 0.01 0 0 0 0 0 1</matrix>

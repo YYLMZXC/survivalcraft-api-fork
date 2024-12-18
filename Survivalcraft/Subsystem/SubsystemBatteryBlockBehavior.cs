@@ -14,7 +14,7 @@ namespace Game
 			int count = inventory.GetSlotCount(slotIndex);
 			int data = Terrain.ExtractData(value);
 			int voltageLevel = BatteryBlock.GetVoltageLevel(data);
-			DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditBatteryDialog(voltageLevel, delegate (int newVoltageLevel)
+			DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditVoltageLevelDialog(voltageLevel, delegate (int newVoltageLevel)
 			{
 				int data2 = BatteryBlock.SetVoltageLevel(data, newVoltageLevel);
 				int num = Terrain.ReplaceData(value, data2);
@@ -31,7 +31,7 @@ namespace Game
 		{
 			int data = Terrain.ExtractData(value);
 			int voltageLevel = BatteryBlock.GetVoltageLevel(data);
-			DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditBatteryDialog(voltageLevel, delegate (int newVoltageLevel)
+			DialogsManager.ShowDialog(componentPlayer.GuiWidget, new EditVoltageLevelDialog(voltageLevel, delegate (int newVoltageLevel)
 			{
 				int num = BatteryBlock.SetVoltageLevel(data, newVoltageLevel);
 				if (num != data)

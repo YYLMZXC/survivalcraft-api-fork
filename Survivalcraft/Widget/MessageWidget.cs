@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace Game
 {
-	public class MessageWidget : CanvasWidget
+	public class MessageWidget : StackPanelWidget
 	{
 		public class Message
 		{

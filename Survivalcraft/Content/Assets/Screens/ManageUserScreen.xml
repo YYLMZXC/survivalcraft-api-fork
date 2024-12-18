@@ -17,7 +17,7 @@
           <CanvasWidget Size="20, 0"/>
           <BevelledButtonWidget Name="SearchType" Text="[CommunityContentScreen:10]" Size="100,60" VerticalAlignment="Far"/>
           <CanvasWidget Size="300, 60">
-            <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
+            <BevelledRectangleWidget Style="{Styles/TextBoxArea}" />
             <LabelWidget VerticalAlignment="Center" Name="placeholder" Text=""  Margin="10,0"/>
             <TextBoxWidget Size="300, 60" Name="SearchKey" VerticalAlignment="Center" Margin="10,0"/>
           </CanvasWidget>

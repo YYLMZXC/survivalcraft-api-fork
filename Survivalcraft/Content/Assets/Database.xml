@@ -308,6 +308,7 @@
 						<MemberComponentTemplate Name="FindPlayerBehavior" Guid="c51a8ed2-e37c-47f6-856f-46856bb0f87f" InheritanceParent="44c9a961-258c-4eb3-81d1-d3ae249ae031" />
 						<MemberComponentTemplate Name="AvoidPlayerBehavior" Guid="d5ea9ab5-c55d-421d-abcb-c20a9e52c096" InheritanceParent="3942e891-6b50-467c-8da5-a15bc63e59e0">
 							<Parameter Name="NightRange" Guid="9fa99023-d083-440e-9036-9a8eff90f18c" Value="0" Type="float" />
+              <Parameter Name="DayRange" Guid="e3dee83e-4932-4fd9-a4b0-b1dd930dab3f" Value="20" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="HerdBehavior" Guid="e642607c-816e-4379-8451-6ca05d062e4e" InheritanceParent="dfe7218e-ce14-4bde-8dac-f919c38e9efe">
 							<Parameter Name="AutoNearbyCreaturesHelp" Guid="37d288bd-d10a-49e4-80fb-0ce67187bd06" Value="True" Type="bool" />
@@ -360,6 +361,9 @@
 							<Parameter Name="AttackResilience" Guid="e88e0e33-2186-4384-98e4-c161a496f14f" Value="10" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="CreatureSounds" Guid="7d4762cc-fbdf-4eb4-b0d3-16e13f0ab656" InheritanceParent="514ed767-c2ba-4572-beae-6e6f285854b9" />
+            <MemberComponentTemplate Name="VrHandsModel" Guid="7f8d6371-1525-43d1-89fd-e2f5d2c0219f" InheritanceParent="f887d193-4c25-41a7-9d3b-ea4acb462e8c">
+              <Parameter Name="VrHandModelName" Guid="0d649798-66fc-489f-a82b-0b5c0063f4e8" Value="Models/VrHand" Type="string" />
+            </MemberComponentTemplate>
 						<MemberComponentTemplate Name="Rider" Guid="81e81ffe-235d-4596-9950-fc341f669ed5" InheritanceParent="894cdf33-9691-4320-a342-3aba1fd1c746">
 							<Parameter Name="RiderOffset" Guid="befe871a-60a0-4e06-aba4-22c0f2c7d232" Value="0,-0.71,0" Type="Vector3" />
 						</MemberComponentTemplate>
@@ -680,6 +684,7 @@
 						<MemberComponentTemplate Name="Body" Guid="4873ee9d-dc5d-4fb0-b83b-c21ff36aef53">
 							<Parameter Name="MaxSmoothRiseHeight" Guid="55c71666-f0b8-458b-8ea3-9c3f5c57653b" Value="0" Type="float" />
 							<Parameter Name="Density" Guid="581ff7dd-085d-4b47-a5da-ce0b282b2c8d" Value="1" Type="float" />
+              <Parameter Name="CanEmbedInIce" Guid="b0e57bcc-b1db-437b-a163-30dc493ea1e8" Value="True" Type="bool" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="StareBehavior" Guid="55ae7653-2b69-4d56-9916-997791fc3750" InheritanceParent="e4fdbb74-183f-4075-9d92-c67f58d700b9">
 							<Parameter Name="StareRange" Guid="73e02773-cf2e-4aff-8297-4e3ba1fa6361" Value="8" Type="float" />
@@ -1160,9 +1165,7 @@
 							<Parameter Name="LookSpeed" Guid="7d3b8dce-0703-43c3-a36f-4bddf20ebb2d" Value="4" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="OnFire" Guid="d1d75f81-3ccf-49dc-bb8b-e81dce0c1451" />
-						<MemberComponentTemplate Name="AvoidPlayerBehavior" Guid="d82a3fa5-055c-4d4e-8772-83beb012204e" InheritanceParent="3942e891-6b50-467c-8da5-a15bc63e59e0">
-							<Parameter Name="DayRange" Guid="781455fb-caf8-4610-9af0-def2ef2947ec" Value="20" Type="float" />
-						</MemberComponentTemplate>
+            <MemberComponentTemplate Name="AvoidPlayerBehavior" Guid="d82a3fa5-055c-4d4e-8772-83beb012204e" InheritanceParent="3942e891-6b50-467c-8da5-a15bc63e59e0" />
 						<MemberComponentTemplate Name="WalkAroundBehavior" Guid="ea876e1b-bdf9-40b1-9ec8-a05093ef77ff" InheritanceParent="aebb86ce-4ee6-4ca0-850d-cd60051e1d71" />
 						<ParameterSet Name="CreatureEggData" Guid="b5ebd5c1-c2af-4fd0-86d0-1a10cfd21d58">
 							<Parameter Name="DisplayName" Guid="30313035-97dc-4493-9d55-7762277f4765" Value="[DisplayName:21]" Type="string" />
@@ -1593,6 +1596,7 @@
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Miner" Guid="d47bf6eb-6d75-4b9f-9e37-5a97dc15d8fd" InheritanceParent="8acca888-ba39-464f-bcf5-6ae15e448c62">
 							<Parameter Name="AttackPower" Guid="cf608320-e57c-46be-9ffd-351aa10a9683" Value="3" Type="float" />
+              <Parameter Name="AutoInteractRate" Guid="d0c0e5cd-a92c-49be-8e39-93e29f43a3ec" Value="0.5" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="ChaseBehavior" Guid="d71acd48-f5d5-4b5e-8baf-9a4a1db39841" InheritanceParent="31894441-d90a-4549-9264-db9dbe20e234">
 							<Parameter Name="ChaseNonPlayerProbability" Guid="0dbdd746-b568-4001-bcda-c07580605ad8" Value="0.25" Type="float" />
@@ -1900,7 +1904,7 @@
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="OnFire" Guid="db056566-972b-427a-8225-ce9086c2be4c" />
 						<MemberComponentTemplate Name="AvoidPlayerBehavior" Guid="e51e81b3-2fa2-40a3-94c9-dec6c74060d3" InheritanceParent="3942e891-6b50-467c-8da5-a15bc63e59e0">
-							<Parameter Name="DayRange" Guid="52b0657e-33b9-49e1-be65-883db016742f" Value="24" Type="float" />
+              <Parameter Name="DayRange" Guid="52b0657e-33b9-49e1-be65-883db016742f" Value="32" Type="float" />
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="7846d59a-eeea-4c6b-bf26-1c781a62fd34">
 							<Parameter Name="SwapUV" Guid="021fbd97-4682-4256-a97c-60127c178b98" Value="False" Type="bool" />
@@ -2773,6 +2777,7 @@
 					</EntityTemplate>
 					<EntityTemplate Name="Hyena" Guid="da9a1c74-142c-4b2c-b61f-5c86def9f658" InheritanceParent="e4275171-a39f-413f-8888-4c472868364d">
 						<MemberComponentTemplate Name="AvoidPlayerBehavior" Guid="0e16f131-badf-4572-8ff2-ed1cb3e5e42b" InheritanceParent="3942e891-6b50-467c-8da5-a15bc63e59e0">
+              <Parameter Name="DayRange" Guid="0fb1841e-006d-4c8c-b7d2-06dbffdfa35d" Value="20" Type="float" />
 							<Parameter Name="NightRange" Guid="4a91f09d-f273-43e3-a56e-ce84d2ed8b5d" Value="0" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="EatPickableBehavior" Guid="1244a8ca-ef22-4292-915e-9f75af22654e">
@@ -3172,7 +3177,7 @@
 							<Parameter Name="AccelerationFactor" Guid="d6018d3f-ebe2-4c5b-a62e-fdab5391f4a9" Value="0.75" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="AvoidPlayerBehavior" Guid="93ff6921-6dd6-4140-96fd-de1564f7206e" InheritanceParent="3942e891-6b50-467c-8da5-a15bc63e59e0">
-							<Parameter Name="DayRange" Guid="cf6370ca-09b2-41c9-8a63-5b13d5f4499a" Value="24" Type="float" />
+              <Parameter Name="DayRange" Guid="cf6370ca-09b2-41c9-8a63-5b13d5f4499a" Value="32" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Creature" Guid="ad2bb3a6-39d8-4c0d-a2b6-8725718519bd">
 							<Parameter Name="DisplayName" Guid="0d637229-cf94-4d66-abca-34d7235f0a1b" Value="[DisplayName:93]" Type="string" />
@@ -3417,6 +3422,9 @@
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="TruthTableCircuitBlockBehavior" Guid="0758eaf6-7242-44c6-958c-5d35471b0ac8" InheritanceParent="aea46453-65b5-463a-9e0b-45f80bc41285">
 					<Parameter Name="Class" Guid="a66d56a3-a8e1-4407-9a77-05ecdcb9766b" Value="Game.SubsystemTruthTableCircuitBlockBehavior" Type="string" />
+        </SubsystemTemplate>
+        <SubsystemTemplate Name="FallenLeavesBlockBehavior" Guid="0a4bc5f7-5c06-4f21-97ff-2a825bcb4f2d" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+          <Parameter Name="Class" Guid="acb9643b-ea94-490e-b69c-2d3d376987a9" Value="Game.SubsystemFallenLeavesBlockBehavior" Type="string" />
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="TorchBlockBehavior" Guid="1815d2e9-776d-40e3-abde-c46d1cc8b301" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 					<Parameter Name="Class" Guid="5fb21b86-aa45-4991-97cf-0f78ce5ccde3" Value="Game.SubsystemTorchBlockBehavior" Type="string" />
@@ -3429,6 +3437,9 @@
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="LadderBlockBehavior" Guid="1b7c2a2b-867b-4a4e-823d-752df647bf29" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 					<Parameter Name="Class" Guid="677d9c73-b3ff-4185-b4a6-4ca22cae8d84" Value="Game.SubsystemLadderBlockBehavior" Type="string" />
+        </SubsystemTemplate>
+        <SubsystemTemplate Name="DeciduousLeavesBlockBehavior" Guid="2090a18e-9015-4102-b5c5-df077eb6953e" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
+          <Parameter Name="Class" Guid="ea363abf-49f7-4106-a487-1726304f8214" Value="Game.SubsystemDeciduousLeavesBlockBehavior" Type="string" />
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="MatchBlockBehavior" Guid="2b55476c-d33b-4012-89f8-dae22283ca67" InheritanceParent="fefb9590-4972-4893-b02a-76063611b745">
 					<Parameter Name="Class" Guid="ec13fb0e-6ef8-405c-8501-3fd127bbbfdb" Value="Game.SubsystemMatchBlockBehavior" Type="string" />
@@ -3630,6 +3641,9 @@
 					<Parameter Name="NextPlayerIndex" Description="Next player index to use when adding a new player" Guid="bf962f77-766c-4d0a-b153-9eb1535606d5" Value="1" Type="int" />
 					<Parameter Name="GlobalSpawnPosition" Description="Global spawn position for all players, or 0,0,0 if not set yet" Guid="f220b69c-8627-41b4-b251-24c8ef83c5f4" Value="0,0,0" Type="Vector3" />
 					<Parameter Name="Dependencies" Guid="fb87c7e2-8011-4272-bfa3-b464a0a23d14" Value="GameInfo, Terrain" Type="string" />
+        </SubsystemTemplate>
+        <SubsystemTemplate Name="CellChangeQueue" Description="Queues cell updates and applies them periodically to avoid continuous chunk updates" Guid="36751293-aade-4618-9412-762e1de60fe2" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+          <Parameter Name="Class" Guid="52623009-18a5-4fa4-9297-48a2600d07a1" Value="Game.SubsystemCellChangeQueue" Type="string" />
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="Pathfinding" Description="Finds paths through terrain" Guid="36854096-5b71-4530-a68d-a8f8ae5422af" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 					<Parameter Name="Class" Guid="897c7368-a123-483c-bb62-88743d3384d9" Value="Game.SubsystemPathfinding" Type="string" />
@@ -3650,6 +3664,8 @@
 					<Parameter Name="WeatherStartTime" Description="Time when weather will end" Guid="74e5495f-682d-4cbf-9303-445f08b76aa6" Value="0" Type="double" />
 					<Parameter Name="WeatherEndTime" Description="Time when weather started or will start" Guid="af82c1dd-09b6-4aed-abfa-57eb773de683" Value="0" Type="double" />
 					<Parameter Name="Class" Guid="b4f7e5b0-df22-47ea-a1eb-df191df54f2e" Value="Game.SubsystemWeather" Type="string" />
+          <Parameter Name="FogStartTime" Description="Time when fog will end" Guid="bbf02b89-dfe3-4c93-8058-05fa040e0ee9" Value="0" Type="double" />
+          <Parameter Name="FogEndTime" Description="Time when fog started or will start" Guid="d23c9d31-e2d6-44a2-828f-23e1cb85df7e" Value="0" Type="double" />
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="Time" Description="Manages non-persistent game time" Guid="73bbc39a-6cf8-470b-b008-fb9aef611caa" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 					<Parameter Name="Class" Guid="54a4f6d5-98dd-4dc3-bf6d-04dfd972c6b7" Value="Game.SubsystemTime" Type="string" />
@@ -3671,9 +3687,10 @@
 					<Parameter Name="Dependencies" Guid="8e2147e2-6a84-45fe-a080-a957776e7c65" Value="BlockBehaviors" Type="string" />
 					<Parameter Name="PollChunkCoordinates" Description="Current polling chunk coordinates" Guid="91ce1768-41fa-4c15-8814-0648f3451f21" Value="0,0" Type="Point2" />
 				</SubsystemTemplate>
-				<SubsystemTemplate Name="TimeOfDay" Description="Calculates time of day" Guid="a41d6893-bc1b-4e4e-b097-c3aebf676d6f" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+        <SubsystemTemplate Name="TimeOfDay" Description="Manages time of day" Guid="a41d6893-bc1b-4e4e-b097-c3aebf676d6f" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 					<Parameter Name="Class" Guid="1e884b27-fc1d-486a-bd0e-518e554b9734" Value="Game.SubsystemTimeOfDay" Type="string" />
 					<Parameter Name="TimeOfDayOffset" Description="Time of day offset, in days" Guid="291dad2b-078a-4510-aba8-e53e64439f80" Value="0" Type="double" />
+          <Parameter Name="Dependencies" Guid="62804e73-f886-4681-923c-ed4bb2fba0eb" Value="Seasons" Type="string" />
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="GameInfo" Description="Holds game information, such as total elapsed time, seed and world name" Guid="af753bf7-a952-4222-8507-4289c3b7670b" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 					<Parameter Name="TerrainGenerationMode" Description="Game mode of the world" Guid="1f272122-3918-49ab-96ed-6cb7df1588df" Value="Continent" Type="Game.TerrainGenerationMode" />
@@ -3699,7 +3716,7 @@
 					<Parameter Name="Class" Guid="ee3b5830-8ad9-4512-9045-e145b1d859bd" Value="Game.SubsystemBodies" Type="string" />
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="Sky" Description="Renders sky and celestial objects" Guid="c5722262-a4f6-42de-afe7-ce272092f2d8" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
-					<Parameter Name="Dependencies" Guid="1ec91ae3-5784-483f-b3d8-7ba3a61fca11" Value="TimeOfDay" Type="string" />
+          <Parameter Name="Dependencies" Guid="1ec91ae3-5784-483f-b3d8-7ba3a61fca11" Value="TimeOfDay, Seasons" Type="string" />
 					<Parameter Name="Class" Guid="3c28d383-dc6e-4d55-8084-5d914abd4d79" Value="Game.SubsystemSky" Type="string" />
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="PlayerStats" Description="Manages player statistics" Guid="c829cb1d-879e-47c4-8597-1507cdac7629" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
@@ -3716,6 +3733,10 @@
 				<SubsystemTemplate Name="Electricity" Description="Manages electric elements and wires" Guid="dbcd53c2-b8b7-44a4-ad54-5e4859ca8c27" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 					<Parameter Name="VoltagesByCell" Description="A list of electric elements voltages, by cell. Semicolon separated." Guid="3134e9c7-aa53-4598-b631-21c182d2a832" Value="" Type="string" />
 					<Parameter Name="Class" Guid="8b87d997-935b-45ee-8997-0c59c141c83e" Value="Game.SubsystemElectricity" Type="string" />
+        </SubsystemTemplate>
+        <SubsystemTemplate Name="Seasons" Description="Manages seasons" Guid="ea787ac6-0207-4bbf-af0f-3e81a30d58c1" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
+          <Parameter Name="Class" Guid="bda673cd-8ab3-45a6-90b0-b540a0f5c4d5" Value="Game.SubsystemSeasons" Type="string" />
+          <Parameter Name="Dependencies" Guid="ed544d03-1b4d-437a-9ac9-e5a734f51cdb" Value="GameInfo" Type="string" />
 				</SubsystemTemplate>
 				<SubsystemTemplate Name="BlockBehaviors" Description="Plays audio and manages audio congestion" Guid="ebfc88a1-2c29-441a-8a08-72f44daf0604" InheritanceParent="a3914c13-7801-46a6-b23a-9e2b36e9defb">
 					<Parameter Name="Class" Guid="4b656a0c-515b-4e6e-91ec-e3d07c2351f9" Value="Game.SubsystemBlockBehaviors" Type="string" />
@@ -3770,6 +3791,7 @@
 						<Parameter Name="Soft" Guid="6c26e558-e21d-4d4a-9e8e-ee23d0d4dcb1" Value="Audio/Footsteps/Soft" Type="string" />
 						<Parameter Name="Snow" Guid="6e09e527-ad8d-439f-baea-a41301be17e6" Value="Audio/Footsteps/Snow" Type="string" />
 						<Parameter Name="Metal" Guid="743273e2-3551-4804-b4d8-4b0dcd67203f" Value="Audio/Footsteps/Metal" Type="string" />
+            <Parameter Name="Leaves" Guid="8c93f413-9343-430c-a975-6d4ffea58ac5" Value="Audio/Footsteps/Plant" Type="string" />
 						<Parameter Name="Wood" Guid="957fa996-d59c-4ed8-a4ea-9899fae0e9fa" Value="Audio/Footsteps/Wood" Type="string" />
 						<Parameter Name="Water" Guid="a45fbe96-1a94-4c77-bcdd-6fc0731a8568" Value="Audio/Footsteps/Water" Type="string" />
 						<Parameter Name="Squishy" Guid="c0714807-e30a-4bfd-84d9-d568ee21cd01" Value="Audio/Footsteps/Squishy" Type="string" />
@@ -3781,6 +3803,7 @@
 					</ParameterSet>
 					<ParameterSet Name="ImpactSounds" Guid="4b685282-ddf5-472b-9499-89398a9afe65">
 						<Parameter Name="Sand" Guid="0e27eeaf-7fd4-485a-93a8-19609c48f029" Value="Audio/Impacts/Dirt" Type="string" />
+            <Parameter Name="Leaves" Guid="0f25fd81-23bd-424e-814e-13fb2e4cc636" Value="Audio/Impacts/Plant" Type="string" />
 						<Parameter Name="Soft" Guid="21c7a45c-9e98-441d-b02f-d6023a4bc169" Value="Audio/Impacts/Soft" Type="string" />
 						<Parameter Name="Plant" Guid="2ef04fca-2d5b-4c15-921f-7f653e6d1c07" Value="Audio/Impacts/Plant" Type="string" />
 						<Parameter Name="Wood" Guid="4f0a0039-08d1-4cb1-8196-5e6856657528" Value="Audio/Impacts/Wood" Type="string" />
@@ -4055,9 +4078,10 @@
 					<Parameter Name="Class" Guid="7ff0c501-812c-4376-94ae-f145de0cfd64" Value="Game.ComponentRider" Type="string" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="Miner" Description="Handles digging, placement, interaction and hitting" Guid="8acca888-ba39-464f-bcf5-6ae15e448c62" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
+          <Parameter Name="AutoInteractRate" Description="How many times per second, on average, miner is automatically interacting with surrounding blocks" Guid="5c13f738-698a-44f9-ac48-3d2e084f750b" Value="0" Type="float" />
 					<Parameter Name="AttackPower" Description="Attack power when using no weapon" Guid="674e7380-0763-49f6-a5f1-5791055a1966" Value="1" Type="float" />
+          <Parameter Name="HitInterval" Description="Attack interval" Guid="af6b9802-f394-de7a-324d-a623f4f2c6c6" Value="0.66" Type="float" />
 					<Parameter Name="Class" Guid="9dc356e5-7dc8-45f6-8779-827ddee9966c" Value="Game.ComponentMiner" Type="string" />
-					<Parameter Name="HitInterval" Description="Attack interval" Guid="af6b9802-f394-de7a-324d-a623f4f2c6c6" Value="0.66" Type="float" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="Body" Description="Physical body, handles collisions, gravity, drag, buoyancy, attaching" Guid="8edd1986-0dcc-424f-893a-491c089b821e" InheritanceParent="d981b2a9-4bf4-4b0d-ae4f-a088b3e19e8c">
 					<Parameter Name="CanCrouch" Description="Whether a body can crouch reducing its collision box height" Guid="1908dbe1-4b18-49ad-a4ec-cc3cb698eff2" Value="False" Type="bool" />
@@ -4068,6 +4092,7 @@
 					<Parameter Name="WaterDrag" Description="Water drag coefficient, in 1/s, separate for horizontal and vertical movement" Guid="6f110dcd-64e4-47a5-9416-f8f243875d41" Value="5,4" Type="Vector2" />
 					<Parameter Name="Class" Guid="7347a83f-2d46-4fdf-bce2-52677de0b568" Value="Game.ComponentBody" Type="string" />
 					<Parameter Name="WaterSwayAngle" Description="How much a body is swaying when immersed in water, in radians" Guid="739cec60-7d40-429a-a36f-2e8d7f7ace47" Value="0.025" Type="float" />
+          <Parameter Name="CanEmbedInIce" Description="Can body get embedded in ice" Guid="7a09bf66-5f99-4732-a861-c8a43ec34307" Value="False" Type="bool" />
 					<Parameter Name="BoxSize" Description="Size of collision box of body" Guid="8cd981be-a456-44a2-a3d5-4f9657713159" Value="1,1,1" Type="Vector3" />
 					<Parameter Name="ParentBodyRotationOffset" Description="Body attachment rotation offset" Guid="8eaf3a25-96a7-45fc-a98b-ae304134d8e6" Value="0,0,0,1" Type="Quaternion" />
 					<Parameter Name="Density" Description="Density, in g/cm^3, used for buoyancy calculations (water density is 1)" Guid="9d2eb8af-b841-4df4-8af8-754c4372c24d" Value="0.8" Type="float" />
@@ -4109,7 +4134,7 @@
 				<ComponentTemplate Name="Factors" Description="Handles creature performance factors" Guid="78b4c0b4-8bea-d601-b589-812d7c982e5f" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
 					<Parameter Name="Class" Guid="f6b020bb-8994-6ae6-289b-a842e3eb9ca5" Value="Game.ComponentFactors" Type="string" />
 				</ComponentTemplate>
-				<ComponentTemplate Name="Level" Description="Handles player level and performance factors" Guid="c2473662-5d67-4116-9d77-1d12fdb2935a" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
+        <ComponentTemplate Name="Level" Description="Handles creature level and performance factors" Guid="c2473662-5d67-4116-9d77-1d12fdb2935a" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
 					<Parameter Name="Class" Guid="a346c456-5087-48c4-835a-5829b3f35c68" Value="Game.ComponentLevel" Type="string" />
 				</ComponentTemplate>
 				<ComponentTemplate Name="FurnitureInventory" Description="Furniture inventory" Guid="c4b4f7d0-8439-4cb8-b316-cdd4342ee2ed" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
@@ -4276,10 +4301,16 @@
 					<Parameter Name="WalkBobHeight" Description="Height of bobbing when creature walks, in meters" Guid="ad1a0716-5ac5-4d32-ac26-204dd99ddbf6" Value="0.025" Type="float" />
 					<Parameter Name="Class" Guid="d79645f5-0b54-4d68-ad53-228665b66dff" Value="Game.ComponentFlightlessBirdModel" Type="string" />
 				</ComponentTemplate>
+        <ComponentTemplate Name="VrHandsModel" Description="Player's first person model (hand and held items)" Guid="f887d193-4c25-41a7-9d3b-ea4acb462e8c" InheritanceParent="b05700ed-7e4e-4679-98f5-b597f421496b">
+          <Parameter Name="VrHandModelName" Description="Name of hand model" Guid="1134396a-490f-4bb2-9f01-9fa8212e25d4" Value="" Type="string" />
+          <Parameter Name="Class" Description="Player's VR hands (and held items)" Guid="8da66911-b474-4492-bb71-ddd23bc12233" Value="Game.ComponentVrHandsModel" Type="string" />
+        </ComponentTemplate>
 			</Folder>
 		</Folder>
 		<Folder Name="Projects" Guid="aec7b5f9-de96-4ef0-8b6c-4a9e3b021ddf">
-			<ProjectTemplate Name="GameProject" Guid="9e9a67f8-79df-4d05-8cfa-61bd8095661e" InheritanceParent="85023bf8-1c90-4dd1-9442-e6c13691d078" />
+      <ProjectTemplate Name="GameProject" Guid="9e9a67f8-79df-4d05-8cfa-61bd8095661e" InheritanceParent="85023bf8-1c90-4dd1-9442-e6c13691d078">
+        <MemberSubsystemTemplate Name="TimeOfDay" Guid="1d4fcb82-7f61-4177-94a0-9f38c57d45d1" />
+      </ProjectTemplate>
 		</Folder>
 		<Folder Name="Abstract" Guid="c6ba6a30-5042-4d3d-9bea-199cd4acc3fa">
 			<ProjectTemplate Name="Project" Guid="85023bf8-1c90-4dd1-9442-e6c13691d078">
@@ -4291,6 +4322,7 @@
 				<MemberSubsystemTemplate Name="Postprocessor" Guid="12ea3147-b243-44c7-b3b3-29e76f72810c" InheritanceParent="7da47c66-2c8d-4b54-90ac-c270b42c333f" />
 				<MemberSubsystemTemplate Name="RakeBlockBehavior" Guid="14c832ee-b501-4f78-8246-c6cac079c3cc" InheritanceParent="349f7e10-7478-4ae9-ae17-278866421f39" />
 				<MemberSubsystemTemplate Name="Players" Guid="194f1d5a-9b95-40aa-8926-f9b373626a5f" InheritanceParent="30b8559d-fc03-42cb-b716-e985aaac96c0" />
+        <MemberSubsystemTemplate Name="FallenLeavesBlockBehavior" Guid="19c9c0b3-2467-4e96-983e-5e34d0305350" InheritanceParent="0a4bc5f7-5c06-4f21-97ff-2a825bcb4f2d" />
 				<MemberSubsystemTemplate Name="TruthTableCircuitBlockBehavior" Guid="1a251c4f-0276-411b-b78a-cbc1b053b566" InheritanceParent="0758eaf6-7242-44c6-958c-5d35471b0ac8" />
 				<MemberSubsystemTemplate Name="SaddleBlockBehavior" Guid="1ca8b755-b1b4-4738-8b6d-e213a3120ac7" InheritanceParent="bbc85044-ea2e-400f-80c9-0ee35df9e3ee" />
 				<MemberSubsystemTemplate Name="Spawn" Guid="1e3da1bc-96f7-4bad-ae5f-21d84f5e981c" InheritanceParent="6bae095b-8129-446e-8a8a-9e2184b442e0" />
@@ -4314,6 +4346,7 @@
 				<MemberSubsystemTemplate Name="Views" Guid="42d8175d-de32-42d0-97b3-8a2cd747528d" InheritanceParent="2e35e78b-680f-4eba-b8a4-fe7c186ae969" />
 				<MemberSubsystemTemplate Name="Pathfinding" Guid="4502e758-8845-4991-8aeb-06e173c3fd46" InheritanceParent="36854096-5b71-4530-a68d-a8f8ae5422af" />
 				<MemberSubsystemTemplate Name="PistonBlockBehavior" Guid="46c16e9b-9153-4e61-b8b1-09b66bcec451" InheritanceParent="9bbd943a-f452-42a1-b96a-7457d06ff34c" />
+        <MemberSubsystemTemplate Name="CellChangeQueue" Guid="47ddbfb6-83b0-4171-bc62-b5b6fd05e025" InheritanceParent="36751293-aade-4618-9412-762e1de60fe2" />
 				<MemberSubsystemTemplate Name="Shadows" Guid="49c1bd92-3a09-47bc-91d1-1867f12fbfce" InheritanceParent="f9bc658e-d0cc-4b74-8a20-b8f1c244de44" />
 				<MemberSubsystemTemplate Name="FireBlockBehavior" Guid="4a534ac6-1ff0-4be9-b819-27c412d0065f" InheritanceParent="1889526b-eecc-47f7-856b-e5a324ecbf9e" />
 				<MemberSubsystemTemplate Name="ExplosivesBlockBehavior" Guid="4bbba319-3aa2-4067-8c3e-fa86b06a17e2" InheritanceParent="ced0bc07-bf58-4116-b4c6-19b1499c6ae7" />
@@ -4341,6 +4374,7 @@
 				<MemberSubsystemTemplate Name="Drawing" Guid="7ef54900-f34d-42e5-92ba-b14ae143d3f1" InheritanceParent="9d9f5cfd-17e8-461b-91aa-78bf6fe0cfde" />
 				<MemberSubsystemTemplate Name="Explosions" Guid="831663af-e4ae-4acf-9917-842727c3a74c" InheritanceParent="f2149216-75c1-4a5d-b385-0038d60ba9fe" />
 				<MemberSubsystemTemplate Name="CactusBlockBehavior" Guid="87ca89c1-f95e-4a3c-85f2-2d99de0220f0" InheritanceParent="3858a400-2708-4e12-bccf-0495889fff79" />
+        <MemberSubsystemTemplate Name="Seasons" Guid="89222d4c-84ff-4f57-adaf-b3fd377f845f" InheritanceParent="ea787ac6-0207-4bbf-af0f-3e81a30d58c1" />
 				<MemberSubsystemTemplate Name="SignBlockBehavior" Guid="897fdf9a-574e-434f-aae3-89bf53a00fd7" InheritanceParent="039ea51e-c41d-4c93-99ae-a9b5a491c7aa" />
 				<MemberSubsystemTemplate Name="SwitchBlockBehavior" Guid="8a33158d-1fcd-4432-91f6-97772d51445d" InheritanceParent="8717b547-e3eb-4465-946a-e4fb0b2fedb4" />
 				<MemberSubsystemTemplate Name="GraveBlockBehavior" Guid="8c3f5107-195a-4af1-83f1-cbfb4de5a76a" InheritanceParent="4d1886bf-8d73-4f73-8f25-3187c066c9d3" />
@@ -4355,6 +4389,7 @@
 				<MemberSubsystemTemplate Name="EggBlockBehavior" Guid="a6e0c0e1-cf67-4075-8ccb-f983c8a68ba3" InheritanceParent="efa35e1b-09b2-4e92-a61e-0ae7dfc5beb1" />
 				<MemberSubsystemTemplate Name="ChestBehavior" Guid="a7a12f9d-951b-4254-8e57-20d7ed33055f" InheritanceParent="8723c7b1-fe0c-4003-b41b-db3f4d46ac03" />
 				<MemberSubsystemTemplate Name="ImpactExplosivesBlockBehavior" Guid="a88f438c-9e81-4914-a741-74545b2dc606" InheritanceParent="e1d4e2b6-3b31-4f67-9272-de4c00c89bcb" />
+        <MemberSubsystemTemplate Name="DeciduousLeavesBlockBehavior" Guid="a91b81c8-ed81-4482-abd4-6ecee79161f4" InheritanceParent="2090a18e-9015-4102-b5c5-df077eb6953e" />
 				<MemberSubsystemTemplate Name="ArrowBlockBehavior" Guid="acbf239e-3b99-41b5-90a7-1401de32e149" InheritanceParent="caa9e7c7-b031-458b-a834-c78efab295c7" />
 				<MemberSubsystemTemplate Name="GameInfo" Guid="adbbb66b-ea04-4399-b20c-6175b2eac060" InheritanceParent="af753bf7-a952-4222-8507-4289c3b7670b" />
 				<MemberSubsystemTemplate Name="BatteryBlockBehavior" Guid="aeaa8df3-39f9-4afe-94c4-2b550fcb3339" InheritanceParent="499ccd8e-0113-4f47-ada1-0e976cad1221" />
@@ -4440,6 +4475,7 @@
 		</GridViewPreset>
 		<GridViewPreset Name="Creature Attack Powers">
 			<Parameter Guid="674e7380-0763-49f6-a5f1-5791055a1966" />
+      <Parameter Guid="5c13f738-698a-44f9-ac48-3d2e084f750b" />
 		</GridViewPreset>
 		<GridViewPreset Name="Creature Milking">
 			<Parameter Guid="23c5b42f-a0cc-4cb8-bb67-fc5b06bbdeae" />
@@ -4481,6 +4517,7 @@
 			<Parameter Guid="4bfce00f-b9c6-4420-afa9-9664a094be44" />
 			<Parameter Guid="8cd981be-a456-44a2-a3d5-4f9657713159" />
 			<Parameter Guid="1908dbe1-4b18-49ad-a4ec-cc3cb698eff2" />
+      <Parameter Guid="7a09bf66-5f99-4732-a861-c8a43ec34307" />
 		</GridViewPreset>
 		<GridViewPreset Name="Subsystems Dependencies">
 			<Parameter Guid="d89cc06f-973a-423f-af9f-dc590c8d13a5" />

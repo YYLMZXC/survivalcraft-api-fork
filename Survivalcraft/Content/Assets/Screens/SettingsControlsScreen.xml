@@ -9,7 +9,7 @@
     </CanvasWidget>
 
     <CanvasWidget Margin="10, 20">
-      <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
+      <BevelledRectangleWidget Style="{Styles/Area}" />
       <ScrollPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3, 3">
         <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
 			<UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">      
@@ -94,7 +94,7 @@
 
           <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
             <LabelWidget Text="[SettingsControlsScreen:13]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
-            <SliderWidget Name="HoldDurationSlider" Size="Infinity, 60" VerticalAlignment="Center" Margin="20, 0" MinValue="0.1" MaxValue="0.6" Granularity="0.05" />
+            <SliderWidget Name="HoldDurationSlider" Size="Infinity, 60" VerticalAlignment="Center" Margin="20, 0" MinValue="0.3" MaxValue="0.7" Granularity="0.05" />
           </UniformSpacingPanelWidget>
 
           <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">

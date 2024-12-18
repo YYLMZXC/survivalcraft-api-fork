@@ -13,7 +13,7 @@
       <UniformSpacingPanelWidget Direction="Horizontal" VerticalAlignment="Center">
         <LabelWidget HorizontalAlignment="Far" VerticalAlignment="Center"  Text="[ModifyWorldScreen:2]" Margin="10, 0"/>
         <CanvasWidget VerticalAlignment="Center" Size="Infinity, 50" Margin="9, 5" >
-          <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
+          <BevelledRectangleWidget Style="{Styles/TextBoxArea}" />
           <TextBoxWidget Name="Name" Title="重命名世界" Size="320, 50" VerticalAlignment="Center"  MaximumLength="14" Margin="10, 0" />
         </CanvasWidget>
       </UniformSpacingPanelWidget>
@@ -21,7 +21,7 @@
       <UniformSpacingPanelWidget Direction="Horizontal" VerticalAlignment="Center">
         <LabelWidget HorizontalAlignment="Far" VerticalAlignment="Center"  Text="[ModifyWorldScreen:3]" Margin="10, 0" />
         <CanvasWidget VerticalAlignment="Center" Size="Infinity, 50" Margin="9, 5">
-          <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
+          <BevelledRectangleWidget Style="{Styles/Area}" />
           <LabelWidget Name="Seed" VerticalAlignment="Center"  Margin="10, 0" Color="128, 128, 128" />
         </CanvasWidget>
       </UniformSpacingPanelWidget>

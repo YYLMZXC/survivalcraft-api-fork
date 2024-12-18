@@ -12,7 +12,7 @@
 
       <CanvasWidget Size="0, 8"/>
 
-      <StackPanelWidget Direction="Horizontal">
+      <StackPanelWidget Direction="Horizontal" Margin="10, 0">
         <CanvasWidget Size="10, 0"/>
         <LabelWidget Name="ProviderName" Text="[ExternalContentScreen:2]"  VerticalAlignment="Center"/>
         <CanvasWidget Size="10, 0"/>
@@ -24,13 +24,13 @@
       <CanvasWidget Size="0, 8"/>
 
       <CanvasWidget Margin="10, 0">
-        <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
-        <ListPanelWidget Name="DirectoryList" Direction="Vertical" Margin="3, 3" ItemSize="70" SelectionColor="10, 70, 0, 90"/>
+        <BevelledRectangleWidget Style="{Styles/Area}" />
+        <ListPanelWidget Name="DirectoryList" Direction="Vertical" Margin="3, 3" ItemSize="48" SelectionColor="10, 70, 0, 90"/>
       </CanvasWidget>
 
       <CanvasWidget Size="0, 8"/>
 
-      <StackPanelWidget Direction="Horizontal">
+      <StackPanelWidget Direction="Horizontal" Margin="10, 0">
         <BevelledButtonWidget Name="UpDirectory" Style="{Styles/ButtonStyle_UpDirectory}"/>
         <CanvasWidget Size="10, 0"/>
         <BevelledButtonWidget Name="Action" Style="{Styles/ButtonStyle_310x60}" Text="[ExternalContentScreen:5]"/>

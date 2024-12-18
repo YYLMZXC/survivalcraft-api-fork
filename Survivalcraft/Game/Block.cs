@@ -178,7 +178,7 @@ namespace Game
 
 		public bool DefaultExplosionIncendiary;
 
-		public bool IsExplosionTransparent;
+		public bool ExplosionKeepsPickables;
 
 		public float DefaultNutritionalValue;
 

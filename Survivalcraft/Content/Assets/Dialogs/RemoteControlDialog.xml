@@ -1,6 +1,6 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
     <CanvasWidget Size="720, 420" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
+        <BevelledRectangleWidget Style="{Styles/DialogArea}" />
         <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="10, 10">
             <LabelWidget Text="[RemoteControlDialog:1]" Color="255, 255, 255" HorizontalAlignment="Center" Margin="0, 5" />
             <CanvasWidget Size="Infinity, 50" Margin="30, 10">

@@ -17,23 +17,13 @@
       <CanvasWidget Size="0, 20" />
 
       <CanvasWidget>
-        <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
+        <BevelledRectangleWidget Style="{Styles/Area}" />
         <ScrollPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3, 3">
           <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
 
             <UniformSpacingPanelWidget Direction="Horizontal">
               <LabelWidget Text="[SettingsCompatibilityScreen:3]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
               <BevelledButtonWidget Name="SinglethreadedTerrainUpdateButton" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
-            </UniformSpacingPanelWidget>
-
-            <UniformSpacingPanelWidget Name="DisableAudioTrackCachingContainer" Direction="Horizontal">
-              <LabelWidget Text="[SettingsCompatibilityScreen:4]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
-              <BevelledButtonWidget Name="UseAudioTrackCachingButton" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
-            </UniformSpacingPanelWidget>
-
-            <UniformSpacingPanelWidget Name="UseReducedZRangeContainer" Direction="Horizontal">
-              <LabelWidget Text="[SettingsCompatibilityScreen:5]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
-              <BevelledButtonWidget Name="UseReducedZRangeButton" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
             </UniformSpacingPanelWidget>
 
 			  <UniformSpacingPanelWidget Name="使用内置路径" Direction="Horizontal">

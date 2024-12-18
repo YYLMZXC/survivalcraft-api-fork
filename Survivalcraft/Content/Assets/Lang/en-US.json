@@ -455,6 +455,7 @@
     "5": "Field \"{0}\" not found or not accessible when loading block data.",
     "6": "Reference block \"{0}\" not found when loading block data.",
     "Terrain": "Terrain",
+    "Minerals": "Minerals",
     "Plants": "Plants",
     "Construction": "Construction",
     "Items": "Items",
@@ -1661,7 +1662,8 @@
     "EmptyBucketBlock:0": {
       "DisplayName": "Bucket",
       "Description": "Bucket is a container made of copper and used to carry fluids, such as water, magma or milk. Bucket can be filled with the fluid at a source block and transported to a different location, where the source block can be placed to start a new body of fluid. You cannot fill the bucket from a non-source block.",
-      "CRDescription:0": "Make a copper tool"
+      "CRDescription:0": "Make a copper tool",
+      "CRDescription:1": "Empty the bucket"
     },
     "WaterBucketBlock:0": {
       "DisplayName": "Water Bucket",
@@ -2360,6 +2362,14 @@
     },
     "PistonBlock:452": {
       "CRDescription:0": "Add copper hooks to piston to make a strict pulling piston"
+    },
+    "DirtStairsBlock:0": {
+      "DisplayName": "Dirt Stairs",
+      "CRDescription:0": "Make stairs to be able to climb heights quicker"
+    },
+    "DirtSlabBlock:0": {
+      "DisplayName": "Dirt Slab",
+      "CRDescription:0": "Make slabs for decoration purposes"
     }
   },
   "Help": {
@@ -2793,7 +2803,8 @@
     "SettingsGraphicsScreen": {
       "1": "Adjust Graphics Settings",
       "2": "Virtual Reality:",
-      "3": "Dark Areas Brightness:"
+      "3": "Dark Areas Brightness:",
+      "4": "Camera View Angle:"
     },
     "SettingsPerformanceScreen": {
       "1": "Adjust Performance Settings",
@@ -2868,7 +2879,10 @@
       "22": "Adventure Respawn:",
       "23": "Adventure Survival Mechanics:",
       "24": "Supernatural Creatures:",
-      "25": "Player-on-Player Attacks:"
+      "25": "Player-on-Player Attacks:",
+      "26": "Changing Seasons:",
+      "27": "Length Of Year:",
+      "28": "Season:"
     },
     "BestiaryItem": {
       "1": "",

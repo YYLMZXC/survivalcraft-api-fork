@@ -14,8 +14,8 @@
 
       <StackPanelWidget Direction="Vertical">
         <CanvasWidget Margin="10, 0">
-          <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
-          <ListPanelWidget Name="WorldsList" Direction="Vertical" HorizontalAlignment="Center" Margin="3, 3" ItemSize="72" SelectionColor="10, 70, 0, 90"/>
+          <BevelledRectangleWidget Style="{Styles/Area}" />
+          <ListPanelWidget Name="WorldsList" Direction="Vertical" HorizontalAlignment="Center" Margin="3, 3" ItemSize="56" SelectionColor="10, 70, 0, 90"/>
         </CanvasWidget>
       </StackPanelWidget>
 

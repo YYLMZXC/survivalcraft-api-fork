@@ -9,7 +9,7 @@
     </CanvasWidget>
 
     <CanvasWidget Margin="10, 20">
-      <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="128, 128, 128, 128" />
+      <BevelledRectangleWidget Style="{Styles/Area}" />
       <ScrollPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3, 3">
         <StackPanelWidget Direction="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" IsHitTestVisible="false">
         
@@ -24,11 +24,6 @@
               <SliderWidget Name="VisibilityRangeSlider" Size="Infinity, 60" Granularity="1" />
               <LabelWidget Name="VisibilityRangeWarningLabel"  TextAnchor="HorizontalCenter" Color="128, 128, 128" HorizontalAlignment="Center" />
             </StackPanelWidget>
-          </UniformSpacingPanelWidget>
-
-          <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
-            <LabelWidget Text="[SettingsPerformanceScreen:4]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
-            <BevelledButtonWidget Name="ViewAnglesButton" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
           </UniformSpacingPanelWidget>
 
           <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
@@ -51,12 +46,12 @@
             <SliderWidget Name="FramerateLimitSlider" Size="Infinity, 60" VerticalAlignment="Center" Margin="20, 0" MinValue="0" MaxValue="2" Granularity="1" />
           </UniformSpacingPanelWidget>
 
-          <UniformSpacingPanelWidget Direction="Horizontal">
+          <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
             <LabelWidget Text="[SettingsPerformanceScreen:9]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
             <BevelledButtonWidget Name="DisplayFpsCounterButton" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
           </UniformSpacingPanelWidget>
 
-          <UniformSpacingPanelWidget Direction="Horizontal">
+          <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
             <LabelWidget Text="[SettingsPerformanceScreen:10]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
             <BevelledButtonWidget Name="DisplayFpsRibbonButton" Style="{Styles/ButtonStyle_310x60}" VerticalAlignment="Center" Margin="20, 0" />
           </UniformSpacingPanelWidget>

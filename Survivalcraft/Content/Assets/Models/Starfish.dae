@@ -5,8 +5,8 @@
       <author>Survivalcraft Moder</author>
       <authoring_tool>Engine 0.0.0</authoring_tool>
     </contributor>
-    <created>2022-03-18T07:12:00</created>
-    <modified>2022-03-18T07:12:00</modified>
+    <created>2024-12-17T19:55:00</created>
+    <modified>2024-12-17T19:55:00</modified>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images />
@@ -16,7 +16,7 @@
     <geometry id="Starfish-mesh" name="Starfish">
       <mesh>
         <source id="Starfish-mesh-positions">
-          <float_array id="Starfish-mesh-positions-array" count="33">-26.23981 5.462423 0 -5.241976 7.254633 0 -0.679016 -0.639422 5.682415 -8.502812 -2.786603 0 0.033269 27.2406254 0 5.31546 7.256306 0 27.3782768 4.923816 0 8.579477 -2.783895 0 16.5470181 -19.923317 0 0.039317 -8.990753 0 -15.8072615 -21.7783279 0</float_array>
+          <float_array id="Starfish-mesh-positions-array" count="33">-26.23981 5.462423 0 -5.241976 7.254633 0 -0.679016 -0.639422 5.682415 -8.502812 -2.786603 0 0.033269 27.240625 0 5.31546 7.256306 0 27.378277 4.923816 0 8.579477 -2.783895 0 16.547018 -19.923317 0 0.039317 -8.990753 0 -15.807261 -21.778328 0</float_array>
           <technique_common>
             <accessor source="#Starfish-mesh-positions-array" count="11" stride="3">
               <param name="X" type="float" />
@@ -26,7 +26,7 @@
           </technique_common>
         </source>
         <source id="Starfish-mesh-normals">
-          <float_array id="Starfish-mesh-normals-array" count="30">-0.04822601 0.5650251 0.8236632 -0.309841961 -0.666218936 0.678343952 0.568652332 0.1503041 0.80872947 -0.64047277 0.169050947 0.7491438 0.272673 -0.665039 0.69525 0.0585149862 0.5534869 0.8307998 -0.361326 -0.545586 0.756161 0.5480051 0.25474906 0.796739161 -0.6126159 0.235618934 0.7544438 0.397494048 -0.492581069 0.7741851</float_array>
+          <float_array id="Starfish-mesh-normals-array" count="30">-0.04822601 0.5650251 0.8236632 -0.30984193 -0.6662188 0.67834383 0.56865233 0.1503041 0.80872947 -0.64047277 0.16905095 0.7491438 0.272673 -0.665039 0.69525 0.058514986 0.5534869 0.8307998 -0.361326 -0.545586 0.756161 0.5480051 0.25474906 0.79673916 -0.6126159 0.23561893 0.7544438 0.39749405 -0.49258107 0.7741851</float_array>
           <technique_common>
             <accessor source="#Starfish-mesh-normals-array" count="10" stride="3">
               <param name="X" type="float" />
@@ -58,7 +58,7 @@
     <geometry id="Bottom-mesh" name="Bottom">
       <mesh>
         <source id="Bottom-mesh-positions">
-          <float_array id="Bottom-mesh-positions-array" count="30">-5.227264 7.23439 0 5.300755 7.236058 0 0.033269 27.2406254 0 8.555676 -2.776166 0 27.3782768 4.923816 0 0.039313 -8.965729 0 16.5470181 -19.923317 0 -8.479014 -2.778866 0 -15.8072615 -21.7783279 0 -26.23981 5.462423 0</float_array>
+          <float_array id="Bottom-mesh-positions-array" count="30">-5.227264 7.23439 0 5.300755 7.236058 0 0.033269 27.240625 0 8.555676 -2.776166 0 27.378277 4.923816 0 0.039313 -8.965729 0 16.547018 -19.923317 0 -8.479014 -2.778866 0 -15.807261 -21.778328 0 -26.23981 5.462423 0</float_array>
           <technique_common>
             <accessor source="#Bottom-mesh-positions-array" count="10" stride="3">
               <param name="X" type="float" />
@@ -101,7 +101,7 @@
   <library_controllers />
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="" name="" type="NODE">
+      <node id="EngineRoot" name="EngineRoot" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <node id="Starfish" name="Starfish" type="NODE">
           <matrix sid="transform">0.01 0 0 0 0 0 0.01 0 0 -0.01 0 0 0 0 0 1</matrix>

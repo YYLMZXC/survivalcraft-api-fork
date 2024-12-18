@@ -5,8 +5,8 @@
       <author>Survivalcraft Moder</author>
       <authoring_tool>Engine 0.0.0</authoring_tool>
     </contributor>
-    <created>2022-03-18T07:12:00</created>
-    <modified>2022-03-18T07:12:00</modified>
+    <created>2024-12-17T19:55:00</created>
+    <modified>2024-12-17T19:55:00</modified>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images />
@@ -16,7 +16,7 @@
     <geometry id="PressurePlate-mesh" name="PressurePlate">
       <mesh>
         <source id="PressurePlate-mesh-positions">
-          <float_array id="PressurePlate-mesh-positions-array" count="24">-38.68429 -38.68429 2.763164 38.68429 38.68429 2.763164 38.68429 -38.68429 2.763164 -38.68429 38.68429 2.763164 -44.2107735 -44.2107735 0 44.2107735 -44.2107735 0 44.2107735 44.2107735 0 -44.2107735 44.2107735 0</float_array>
+          <float_array id="PressurePlate-mesh-positions-array" count="24">-38.68429 -38.68429 2.763164 38.68429 38.68429 2.763164 38.68429 -38.68429 2.763164 -38.68429 38.68429 2.763164 -44.210773 -44.210773 0 44.210773 -44.210773 0 44.210773 44.210773 0 -44.210773 44.210773 0</float_array>
           <technique_common>
             <accessor source="#PressurePlate-mesh-positions-array" count="8" stride="3">
               <param name="X" type="float" />

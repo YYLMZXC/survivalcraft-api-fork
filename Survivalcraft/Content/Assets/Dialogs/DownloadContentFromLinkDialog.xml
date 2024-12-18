@@ -1,7 +1,7 @@
 <CanvasWidget xmlns="runtime-namespace:Game">
 
   <CanvasWidget Size="640, 420" ClampToBounds="true" HorizontalAlignment="Center" VerticalAlignment="Center">
-    <RectangleWidget FillColor="0, 0, 0, 255" OutlineColor="128, 128, 128, 128" OutlineThickness="2" />
+    <BevelledRectangleWidget Style="{Styles/DialogArea}" />
     <StackPanelWidget Direction="Vertical" HorizontalAlignment="Center" VerticalAlignment="Near" Margin="0, 15">
       
       <LabelWidget  Text="[DownloadContentFromLinkDialog:1]" HorizontalAlignment="Center"/>
@@ -20,7 +20,7 @@
         </CanvasWidget>
         <CanvasWidget Size="20, 0" />
         <CanvasWidget Size="Infinity, 45" VerticalAlignment="Center">
-          <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="48, 48, 48, 48" />
+          <BevelledRectangleWidget Style="{Styles/TextBoxArea}" />
           <TextBoxWidget Name="DownloadContentFromLinkDialog.Link"  Size="Infinity, 45" Margin="10, 0" MaximumLength="1024"/>
         </CanvasWidget>
         <CanvasWidget Size="30, 0" />
@@ -32,7 +32,7 @@
         </CanvasWidget>
         <CanvasWidget Size="20, 0" />
         <CanvasWidget Size="Infinity, 45" VerticalAlignment="Center">
-          <RectangleWidget FillColor="0, 0, 0, 192" OutlineColor="48, 48, 48, 48" />
+          <BevelledRectangleWidget Style="{Styles/TextBoxArea}" />
           <TextBoxWidget Name="DownloadContentFromLinkDialog.Name"  Size="Infinity, 45" Margin="10, 0" MaximumLength="50"/>
         </CanvasWidget>
         <CanvasWidget Size="30, 0" />
