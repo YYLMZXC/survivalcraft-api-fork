@@ -1002,9 +1002,9 @@
 <TargetFramework>net9.0-android</TargetFramework>
 <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
 <RootNamespace>Game</RootNamespace>
-<ApplicationVersion>2.3.0.0</ApplicationVersion>
-<FileVersion>2.3.10.4</FileVersion>
-<AssemblyVersion>2.3.0.0</AssemblyVersion>
+<ApplicationVersion>2.4.0.0</ApplicationVersion>
+<FileVersion>2.4.0.0</FileVersion>
+<AssemblyVersion>2.4.0.0</AssemblyVersion>
 <AssemblyName>Survivalcraft</AssemblyName>
 	</PropertyGroup>
 </Project>

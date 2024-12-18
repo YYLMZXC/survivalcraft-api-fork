@@ -8,13 +8,13 @@
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
 	<RootNamespace>Engine</RootNamespace>
-	<Version>2.3.10.4</Version>
+	<Version>2.4.0.0</Version>
 	<WarningLevel>2</WarningLevel>
 	<AssemblyName>Engine</AssemblyName>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<PackageId>SurvivalcraftAPI.Engine</PackageId>
 	<Title>SurvivalcraftAPI.Engine</Title><!--For NuGet Package-->
-	<Version>1.7.2.2</Version><!--For NuGet Package-->
+	<Version>1.8.0.0</Version><!--For NuGet Package-->
 	<PackageProjectUrl>https://gitee.com/THPRC/survivalcraft-api</PackageProjectUrl>
 	<RepositoryUrl>https://gitee.com/THPRC/survivalcraft-api</RepositoryUrl>
 	<RepositoryType>Git</RepositoryType>
