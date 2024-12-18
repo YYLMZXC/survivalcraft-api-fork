@@ -4,15 +4,15 @@ namespace Game
 {
 	public class TerrainGeometrySubset : IDisposable
     {
-		public DynamicArray<TerrainVertex> Vertices = [];
+		public TerrainGeometryDynamicArray<TerrainVertex> Vertices = [];
 
-		public DynamicArray<int> Indices = [];
+		public TerrainGeometryDynamicArray<int> Indices = [];
 
 		public TerrainGeometrySubset()
 		{
 		}
 
-		public TerrainGeometrySubset(DynamicArray<TerrainVertex> vertices, DynamicArray<int> indices)
+		public TerrainGeometrySubset(TerrainGeometryDynamicArray<TerrainVertex> vertices, TerrainGeometryDynamicArray<int> indices)
 		{
 			Vertices = vertices;
 			Indices = indices;

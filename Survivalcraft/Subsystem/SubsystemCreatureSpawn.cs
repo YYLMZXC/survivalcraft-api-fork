@@ -67,7 +67,7 @@ namespace Game
 
 		public static SpawnLocationType[] m_spawnLocations = EnumUtils.GetEnumValues(typeof(SpawnLocationType)).Cast<SpawnLocationType>().ToArray();
 
-		public const int m_totalLimit = 32;
+		public const int m_totalLimit = 26;
 
 		public const int m_areaLimit = 3;
 
@@ -96,7 +96,7 @@ namespace Game
 					m_newSpawnChunks.RandomShuffle((int max) => m_random.Int(0, max - 1));
 					foreach (SpawnChunk newSpawnChunk in m_newSpawnChunks)
 					{
-						SpawnChunkCreatures(newSpawnChunk, 12, constantSpawn: false);
+						SpawnChunkCreatures(newSpawnChunk, 10, constantSpawn: false);
 					}
 					m_newSpawnChunks.Clear();
 				}
@@ -391,7 +391,7 @@ namespace Game
 					int temperature24 = m_subsystemTerrain.Terrain.GetTemperature(point.X, point.Z);
 					int humidity13 = m_subsystemTerrain.Terrain.GetHumidity(point.X, point.Z);
 					int num61 = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(point.X, point.Y - 1, point.Z));
-					return (num60 > 40f && temperature24 > 8 && humidity13 > 7 && point.Y < 75 && (num61 == 8 || num61 == 2 || num61 == 3)) ? 0.04f : 0f;
+					return (num60 > 40f && temperature24 > 8 && humidity13 > 7 && point.Y < 75 && (num61 == 8 || num61 == 2 || num61 == 3)) ? 0.03f : 0f;
 				},
 				SpawnFunction = (CreatureType creatureType, Point3 point) => SpawnCreatures(creatureType, "Rhino", point, 1).Count
 			});
@@ -414,7 +414,7 @@ namespace Game
 					int temperature23 = m_subsystemTerrain.Terrain.GetTemperature(point.X, point.Z);
 					m_subsystemTerrain.Terrain.GetHumidity(point.X, point.Z);
 					int num57 = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(point.X, point.Y - 1, point.Z));
-					return (num56 > 40f && temperature23 < 2 && point.Y < 90 && (num57 == 8 || num57 == 2 || num57 == 3 || num57 == 7 || num57 == 62)) ? 0.025f : 0f;
+					return (num56 > 40f && temperature23 < 2 && point.Y < 90 && (num57 == 8 || num57 == 2 || num57 == 3 || num57 == 7 || num57 == 62)) ? 0.02f : 0f;
 				},
 				SpawnFunction = (CreatureType creatureType, Point3 point) => SpawnCreatures(creatureType, "Tiger_White", point, 1).Count
 			});
@@ -425,7 +425,7 @@ namespace Game
 					float num54 = m_subsystemTerrain.TerrainContentsGenerator.CalculateOceanShoreDistance(point.X, point.Z);
 					int temperature22 = m_subsystemTerrain.Terrain.GetTemperature(point.X, point.Z);
 					int num55 = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(point.X, point.Y - 1, point.Z));
-					return (num54 > 40f && temperature22 > 8 && point.Y < 80 && (num55 == 8 || num55 == 2 || num55 == 3 || num55 == 7)) ? 0.05f : 0f;
+					return (num54 > 40f && temperature22 > 8 && point.Y < 80 && (num55 == 8 || num55 == 2 || num55 == 3 || num55 == 7)) ? 0.04f : 0f;
 				},
 				SpawnFunction = (CreatureType creatureType, Point3 point) => SpawnCreatures(creatureType, "Lion", point, 1).Count
 			});
@@ -437,7 +437,7 @@ namespace Game
 					int temperature21 = m_subsystemTerrain.Terrain.GetTemperature(point.X, point.Z);
 					int humidity11 = m_subsystemTerrain.Terrain.GetHumidity(point.X, point.Z);
 					int num53 = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(point.X, point.Y - 1, point.Z));
-					return (num52 > 40f && humidity11 > 8 && temperature21 > 8 && point.Y < 100 && (num53 == 8 || num53 == 2 || num53 == 3 || num53 == 7 || num53 == 12)) ? 0.04f : 0f;
+					return (num52 > 40f && humidity11 > 8 && temperature21 > 8 && point.Y < 100 && (num53 == 8 || num53 == 2 || num53 == 3 || num53 == 7 || num53 == 12)) ? 0.03f : 0f;
 				},
 				SpawnFunction = (CreatureType creatureType, Point3 point) => SpawnCreatures(creatureType, "Jaguar", point, 1).Count
 			});
@@ -449,7 +449,7 @@ namespace Game
 					int temperature20 = m_subsystemTerrain.Terrain.GetTemperature(point.X, point.Z);
 					m_subsystemTerrain.Terrain.GetHumidity(point.X, point.Z);
 					int num51 = Terrain.ExtractContents(m_subsystemTerrain.Terrain.GetCellValueFast(point.X, point.Y - 1, point.Z));
-					return (num50 > 40f && temperature20 > 8 && point.Y < 120 && (num51 == 8 || num51 == 2 || num51 == 3 || num51 == 7 || num51 == 12)) ? 0.04f : 0f;
+					return (num50 > 40f && temperature20 > 8 && point.Y < 120 && (num51 == 8 || num51 == 2 || num51 == 3 || num51 == 7 || num51 == 12)) ? 0.03f : 0f;
 				},
 				SpawnFunction = (CreatureType creatureType, Point3 point) => SpawnCreatures(creatureType, "Leopard", point, 1).Count
 			});
@@ -980,11 +980,11 @@ namespace Game
 
 		public virtual void SpawnRandomCreature()
 		{
-			if (CountCreatures(constantSpawn: false) < 32)
+			if (CountCreatures(constantSpawn: false) < 26)
 			{
 				foreach (GameWidget gameWidget in m_subsystemViews.GameWidgets)
 				{
-					int num = 64;
+					int num = 52;
 					var v = new Vector2(gameWidget.ActiveCamera.ViewPosition.X, gameWidget.ActiveCamera.ViewPosition.Z);
 					if (CountCreaturesInArea(v - new Vector2(68f), v + new Vector2(68f), constantSpawn: false) >= num)
 					{
@@ -1015,7 +1015,7 @@ namespace Game
 
 		public virtual void SpawnChunkCreatures(SpawnChunk chunk, int maxAttempts, bool constantSpawn)
 		{
-			int num = constantSpawn ? ((m_subsystemGameInfo.WorldSettings.GameMode >= GameMode.Challenging) ? 12 : 6) : 32;
+			int num = constantSpawn ? ((m_subsystemGameInfo.WorldSettings.GameMode >= GameMode.Challenging) ? 12 : 6) : 26;
 			int num2 = constantSpawn ? 4 : 3;
 			float v = constantSpawn ? 42 : 16;
 			int num3 = CountCreatures(constantSpawn);
@@ -1225,7 +1225,7 @@ namespace Game
 		public virtual float CalculateSpawnSuitability(CreatureType creatureType, Point3 spawnPoint)
 		{
 			float num = creatureType.SpawnSuitabilityFunction(creatureType, spawnPoint);
-			if (CountCreatures(creatureType) > 10)
+			if (CountCreatures(creatureType) > 8)
 			{
 				num *= 0.25f;
 			}

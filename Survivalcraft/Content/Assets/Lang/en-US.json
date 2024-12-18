@@ -3218,7 +3218,7 @@
       "12": "P",
       "13": "T",
       "14": "L",
-      "15": "1 to 6",
+      "15": "0 to 9",
       "16": "2xSpace or F",
       "17": "Space\/Shift",
       "18": "Left Mouse Click",
@@ -3254,7 +3254,11 @@
       "48": "scroll, change inventory slot",
       "49": "show game menu",
       "50": "OK",
-      "51": "Help"
+      "51": "Help",
+      "52": "J",
+      "53": "K",
+      "54": "toggle fog (creative)",
+      "55": "toggle rain/snow (creative)"
     },
     "LevelFactorDialog": {
       "1": "Current multipliers:",

@@ -43,7 +43,7 @@ namespace Game
 			int cellContents = m_subsystemTerrain.Terrain.GetCellContents(x, y, z);
 			if (BlocksManager.Blocks[cellContents] is GunpowderKegBlock)
 			{
-				AddExplosive(new Point3(x, y, z), m_random.Float(4f, 5f));
+				AddExplosive(new Point3(x, y, z), m_random.Float(6f, 7f));
 				return true;
 			}
 			if (BlocksManager.Blocks[cellContents] is DetonatorBlock)

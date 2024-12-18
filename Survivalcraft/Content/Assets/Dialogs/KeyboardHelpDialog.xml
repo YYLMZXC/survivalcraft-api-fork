@@ -27,6 +27,8 @@
               <LabelWidget Text="[KeyboardHelpDialog:11]"  HorizontalAlignment="Center" />
               <LabelWidget Text="[KeyboardHelpDialog:12]"  HorizontalAlignment="Center" />
               <LabelWidget Text="[KeyboardHelpDialog:13]"  HorizontalAlignment="Center" />
+              <LabelWidget Text="[KeyboardHelpDialog:52]"  HorizontalAlignment="Center" />
+              <LabelWidget Text="[KeyboardHelpDialog:53]"  HorizontalAlignment="Center" />
               <LabelWidget Text="[KeyboardHelpDialog:14]"  HorizontalAlignment="Center" />
               <LabelWidget Text="[KeyboardHelpDialog:15]"  HorizontalAlignment="Center" />
               <LabelWidget Text="[KeyboardHelpDialog:16]"  HorizontalAlignment="Center" />
@@ -56,6 +58,8 @@
               <LabelWidget Text="[KeyboardHelpDialog:35]"  Color="160, 160, 160" />
               <LabelWidget Text="[KeyboardHelpDialog:36]"  Color="160, 160, 160" />
               <LabelWidget Text="[KeyboardHelpDialog:37]"  Color="160, 160, 160" />
+              <LabelWidget Text="[KeyboardHelpDialog:54]"  Color="160, 160, 160" />
+              <LabelWidget Text="[KeyboardHelpDialog:55]"  Color="160, 160, 160" />
               <LabelWidget Text="[KeyboardHelpDialog:38]"  Color="160, 160, 160" />
               <LabelWidget Text="[KeyboardHelpDialog:39]"  Color="160, 160, 160" />
               <LabelWidget Text="[KeyboardHelpDialog:40]"  Color="160, 160, 160" />

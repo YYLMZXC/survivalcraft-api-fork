@@ -333,7 +333,7 @@ public class TerrainContentsGenerator24 : ITerrainContentsGenerator
 	{
 		Vector2 vector = Vector2.Zero;
 		float num = float.MinValue;
-		for (int i = 0; i < 1500; i += 5)
+		for (int i = 0; i < 1000; i += 5)
 		{
 			for (int j = 0; j <= 10; j += 5)
 			{
@@ -514,8 +514,8 @@ public class TerrainContentsGenerator24 : ITerrainContentsGenerator
 		switch (m_subsystemTerrain.SubsystemGameInfo.WorldSettings.StartingPositionMode)
 		{
 		case StartingPositionMode.Easy:
-			num8 -= DistanceFromRange(num, 10f, 15f);
-			num8 -= DistanceFromRange(num2, 5f, 15f);
+			num8 -= DistanceFromRange(num, 5f, 15f);
+			num8 -= DistanceFromRange(num2, 4f, 15f);
 			num8 -= 2f * DistanceFromRange(num3, 67f, 72f);
 			num8 -= 2f * DistanceFromRange(x7, 0f, 4f);
 			num8 -= 30f * DistanceFromRange(x2, 0f, 0.75f);
@@ -836,10 +836,10 @@ public class TerrainContentsGenerator24 : ITerrainContentsGenerator
 					int z = num2 * 16 + random.Int(0, 15);
 					m_dirtPocketBrushes[random.Int(0, m_dirtPocketBrushes.Count - 1)].PaintFastSelective(chunk, x, y, z, 3);
 				}
-				for (int m = 0; m < 30; m++)
+				for (int m = 0; m < 20; m++)
 				{
 					int x2 = num * 16 + random.Int(0, 15);
-					int y2 = random.Int(20, 160);
+					int y2 = random.Int(20, 120);
 					int z2 = num2 * 16 + random.Int(0, 15);
 					m_gravelPocketBrushes[random.Int(0, m_gravelPocketBrushes.Count - 1)].PaintFastSelective(chunk, x2, y2, z2, 3);
 				}
@@ -857,10 +857,10 @@ public class TerrainContentsGenerator24 : ITerrainContentsGenerator
 					int z4 = num2 * 16 + random.Int(0, 15);
 					m_clayPocketBrushes[random.Int(0, m_clayPocketBrushes.Count - 1)].PaintFastSelective(chunk, x4, y4, z4, 3);
 				}
-				for (int num6 = 0; num6 < 30; num6++)
+				for (int num6 = 0; num6 < 20; num6++)
 				{
 					int x5 = num * 16 + random.Int(0, 15);
-					int y5 = random.Int(20, 160);
+					int y5 = random.Int(20, 120);
 					int z5 = num2 * 16 + random.Int(0, 15);
 					m_sandPocketBrushes[random.Int(0, m_sandPocketBrushes.Count - 1)].PaintFastSelective(chunk, x5, y5, z5, 4);
 				}
@@ -885,10 +885,10 @@ public class TerrainContentsGenerator24 : ITerrainContentsGenerator
 					int z8 = num2 * 16 + random.Int(0, 15);
 					m_granitePocketBrushes[random.Int(0, m_granitePocketBrushes.Count - 1)].PaintFastSelective(chunk, x8, y8, z8, 67);
 				}
-				for (int num10 = 0; num10 < 30; num10++)
+				for (int num10 = 0; num10 < 20; num10++)
 				{
 					int x9 = num * 16 + random.Int(0, 15);
-					int y9 = random.Int(4, 180);
+					int y9 = random.Int(4, 120);
 					int z9 = num2 * 16 + random.Int(0, 15);
 					m_gravelPocketBrushes[random.Int(0, m_gravelPocketBrushes.Count - 1)].PaintFastSelective(chunk, x9, y9, z9, 67);
 				}

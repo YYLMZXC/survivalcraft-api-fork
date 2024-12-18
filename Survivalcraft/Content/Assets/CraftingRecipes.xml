@@ -605,7 +605,7 @@
     <Recipe Result="StoneBrickSlabBlock" ResultCount="6" RequiredHeatLevel="0" a="stonebrickblock" Description="[0]">
       "aaa"
     </Recipe>
-    <Recipe Result="BrickSlabBlock" ResultCount="6" RequiredHeatLevel="0" a="brick" Description="[0]">
+    <Recipe Result="BrickSlabBlock" ResultCount="3" RequiredHeatLevel="0" a="brick" Description="[0]">
       "aaa"
     </Recipe>
     <Recipe Result="SandstoneSlabBlock" ResultCount="6" RequiredHeatLevel="0" a="sandstone" Description="[0]">

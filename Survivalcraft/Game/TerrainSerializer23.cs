@@ -822,26 +822,12 @@ namespace Game
 			{
 				num = WriteRleValueToBuffer(m_compressBuffer, num, num3, num2);
 			}
-			using (MemoryStream memoryStream = new(buffer))
-			{
-				using (DeflateStream deflateStream = new(memoryStream, CompressionLevel.Fastest, leaveOpen: true))
-				{
-					deflateStream.Write(m_compressBuffer, 0, num);
-				}
-				return (int)memoryStream.Position;
-			}
+			return Deflate(m_compressBuffer, 0, num, buffer);
 		}
 
         public void DecompressChunkData(TerrainChunk chunk, byte[] buffer, int size)
 		{
-			using (DeflateStream deflateStream = new(new MemoryStream(buffer, 0, size), CompressionMode.Decompress))
-			{
-				size = deflateStream.Read(m_compressBuffer, 0, m_compressBuffer.Length);
-				if (size == m_compressBuffer.Length)
-				{
-					throw new InvalidOperationException("Deflate buffer overflow.");
-				}
-			}
+			size = UnDeflate(buffer, 0, size, m_compressBuffer);
 			int num = 0;
 			for (int i = 0; i < 16; i++)
 			{
@@ -927,6 +913,29 @@ namespace Game
 				return i + 5;
 			}
 			throw new InvalidOperationException("Count too large.");
+		}
+
+
+		public static int Deflate(byte[] input, int offset, int length, byte[] output)
+		{
+			MemoryStream memoryStream = new MemoryStream(input, offset, length);
+			MemoryStream memoryStream2 = new MemoryStream(output);
+			using (DeflateStream destination = new DeflateStream(memoryStream2, CompressionLevel.Fastest, leaveOpen: true))
+			{
+				memoryStream.CopyTo(destination);
+			}
+			return (int)memoryStream2.Position;
+		}
+
+		public static int UnDeflate(byte[] input, int offset, int length, byte[] output)
+		{
+			MemoryStream stream = new MemoryStream(input, offset, length);
+			MemoryStream memoryStream = new MemoryStream(output);
+			using (DeflateStream deflateStream = new DeflateStream(stream, CompressionMode.Decompress))
+			{
+				deflateStream.CopyTo(memoryStream);
+			}
+			return (int)memoryStream.Position;
 		}
 	}
 }

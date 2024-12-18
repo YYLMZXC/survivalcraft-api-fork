@@ -80,7 +80,7 @@ namespace Game
 		public override void Draw(Camera camera)
 		{
 			float num = Vector3.Dot(m_position - camera.ViewPosition, camera.ViewDirection);
-			if (num > -0.5f && num <= 32f && Vector3.DistanceSquared(m_position, camera.ViewPosition) <= 1024f)
+			if (num > -0.5f && num <= 48f && Vector3.DistanceSquared(m_position, camera.ViewPosition) <= 1024f)
 			{
 				m_visible = true;
 				base.Draw(camera);

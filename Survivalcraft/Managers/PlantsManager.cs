@@ -356,7 +356,7 @@ namespace Game
 				case TreeType.Oak:
 					return RangeProbability(temperature, 4f, 10f, 15f, 15f) * RangeProbability(humidity, 6f, 8f, 15f, 15f) * RangeProbability(y, 0f, 0f, 82f, 87f);
 				case TreeType.Birch:
-					return RangeProbability(temperature, 5f, 9f, 10f, 15f) * RangeProbability(humidity, 3f, 15f, 15f, 15f) * RangeProbability(y, 0f, 0f, 82f, 87f);
+					return RangeProbability(temperature, 5f, 9f, 11f, 15f) * RangeProbability(humidity, 3f, 15f, 15f, 15f) * RangeProbability(y, 0f, 0f, 82f, 87f);
 				case TreeType.Spruce:
 					return RangeProbability(temperature, 0f, 0f, 6f, 10f) * RangeProbability(humidity, 3f, 10f, 11f, 12f);
 				case TreeType.TallSpruce:
@@ -364,7 +364,7 @@ namespace Game
 				case TreeType.Mimosa:
 					return RangeProbability(temperature, 2f, 4f, 12f, 14f) * RangeProbability(humidity, 0f, 0f, 4f, 6f);
 				case TreeType.Poplar:
-					return RangeProbability(temperature, 4f, 8f, 10f, 15f) * RangeProbability(humidity, 3f, 15f, 15f, 15f) * RangeProbability(y, 0f, 0f, 85f, 92f);
+					return RangeProbability(temperature, 4f, 8f, 12f, 15f) * RangeProbability(humidity, 3f, 15f, 15f, 15f) * RangeProbability(y, 0f, 0f, 85f, 92f);
 				default:
 					return 0f;
 			}

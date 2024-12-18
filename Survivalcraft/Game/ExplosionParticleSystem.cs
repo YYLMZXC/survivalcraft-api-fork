@@ -17,12 +17,12 @@ namespace Game
 
 		public Random m_random = new();
 
-		public const float m_duration = 1.5f;
+		public const float m_duration = 2.5f;
 
 		public bool m_isEmpty;
 
 		public ExplosionParticleSystem()
-			: base(1000)
+			: base(2000)
 		{
 			Texture = ContentManager.Get<Texture2D>("Textures/FireParticle");
 			TextureSlotsCount = 3;
@@ -76,7 +76,7 @@ namespace Game
 					if (particle.IsActive)
 					{
 						m_isEmpty = false;
-						particle.Strength -= dt / 1.5f;
+						particle.Strength -= dt / 2.5f;
 						if (particle.Strength > 0f)
 						{
 							particle.TextureSlot = (int)MathUtils.Min(9f * (1f - particle.Strength) * 0.6f, 8f);

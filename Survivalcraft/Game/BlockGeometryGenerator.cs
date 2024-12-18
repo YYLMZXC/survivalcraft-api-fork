@@ -403,24 +403,12 @@ namespace Game
 				SetupCubeVertexFace4(x, y + 1, z + 1, height12, 0, textureSlot, textureSlotCount, topColor12, ref vertices5.Array[count9 + 3]);
 				int count10 = indices5.Count;
 				indices5.Count += 6;
-				if((MathUtils.Hash(x + z * 256) & 1) == 0)
-				{
-					indices5.Array[count10] = count9;
-					indices5.Array[count10 + 1] = count9 + 1;
-					indices5.Array[count10 + 2] = count9 + 2;
-					indices5.Array[count10 + 3] = count9 + 2;
-					indices5.Array[count10 + 4] = count9 + 3;
-					indices5.Array[count10 + 5] = count9;
-				}
-				else
-				{
-					indices5.Array[count10] = count9;
-					indices5.Array[count10 + 1] = count9 + 1;
-					indices5.Array[count10 + 2] = count9 + 3;
-					indices5.Array[count10 + 3] = count9 + 3;
-					indices5.Array[count10 + 4] = count9 + 1;
-					indices5.Array[count10 + 5] = count9 + 2;
-				}
+				indices5.Array[count10] = count9;
+				indices5.Array[count10 + 1] = count9 + 1;
+				indices5.Array[count10 + 2] = count9 + 2;
+				indices5.Array[count10 + 3] = count9 + 2;
+				indices5.Array[count10 + 4] = count9 + 3;
+				indices5.Array[count10 + 5] = count9;
 			}
 			cellValueFast = chunkAtCell.GetCellValueFast(x & 0xF, y - 1, z & 0xF);
 			if (((block.GenerateFacesForSameNeighbors || Terrain.ExtractContents(cellValueFast) != blockIndex) && block.ShouldGenerateFace(SubsystemTerrain, 4, value, cellValueFast, x, y, z)) || height11 < 1f || height12 < 1f || height21 < 1f || height22 < 1f)

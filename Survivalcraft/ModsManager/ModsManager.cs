@@ -16,8 +16,8 @@ using System.IO.Compression;
 public static class ModsManager
 {
 	public static string ModSuffix = ".scmod";
-	public static string ApiVersionString = "1.72";
-	public static string GameVersion = "2.3.10.4";
+	public static string ApiVersionString = "1.80";
+	public static string GameVersion = "2.4.0.0";
 	public static string fName = "ModsManager";
 	[Obsolete("使用ApiVersionString")]
 	public enum ApiVersionEnum//不准确，弃用

@@ -141,7 +141,7 @@
 							<Parameter Name="WalkFrontLegsAngle" Guid="c225b2a9-0f54-411f-a82f-184d24d6558a" Value="0.45" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Health" Guid="951a1477-f95e-48bb-91e8-83393859a27c">
-							<Parameter Name="AttackResilience" Guid="b47eb827-b05f-4c33-a8ba-03b8d22013bd" Value="55" Type="float" />
+							<Parameter Name="AttackResilience" Guid="b47eb827-b05f-4c33-a8ba-03b8d22013bd" Value="60" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="HerdBehavior" Guid="961c3bd2-5ee7-4d85-9f9b-bb4a7df92445" InheritanceParent="dfe7218e-ce14-4bde-8dac-f919c38e9efe">
 							<Parameter Name="AutoNearbyCreaturesHelp" Guid="42ece276-0fad-4c69-8a61-f75066c9e015" Value="True" Type="bool" />
@@ -194,7 +194,7 @@
 					<EntityTemplate Name="Bear" Guid="437e6af3-ea9f-4f3c-8b96-d81de6223831" InheritanceParent="e4275171-a39f-413f-8888-4c472868364d">
 						<MemberComponentTemplate Name="AvoidFireBehavior" Guid="034c6e4a-dd60-4992-8435-007b623087de" InheritanceParent="885b2df5-b47b-4c53-bda0-5c1a0c988a3c" />
 						<MemberComponentTemplate Name="Health" Guid="11b8bf02-f486-4206-adb5-ac180f1b9bd4">
-							<Parameter Name="AttackResilience" Guid="642e5f51-5e3b-48af-a20f-17e50823f087" Value="65" Type="float" />
+							<Parameter Name="AttackResilience" Guid="642e5f51-5e3b-48af-a20f-17e50823f087" Value="70" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Body" Guid="33553f8b-f53e-4b62-bb01-7465e88e1684">
 							<Parameter Name="BoxSize" Guid="588c8680-01fe-42e8-a447-a9233b987d12" Value="0.9,1.2,0.9" Type="Vector3" />
@@ -1022,7 +1022,7 @@
 					<EntityTemplate Name="Leopard" Guid="368d6525-a6df-4232-9c78-6737aa52dcab" InheritanceParent="e4275171-a39f-413f-8888-4c472868364d">
 						<MemberComponentTemplate Name="Health" Guid="14dd26b9-d9f9-40ec-9e2b-2c8a738ec3e5">
 							<Parameter Name="FireResilience" Guid="1118f19b-2b8b-405a-bcb1-1a798ea6c54c" Value="15" Type="float" />
-							<Parameter Name="AttackResilience" Guid="7fb8a106-59b7-4630-b616-ab9f921bf451" Value="25" Type="float" />
+							<Parameter Name="AttackResilience" Guid="7fb8a106-59b7-4630-b616-ab9f921bf451" Value="30" Type="float" />
 							<Parameter Name="FallResilience" Guid="a4b1f700-a7b7-49ec-864c-50338318b72d" Value="10" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="FindPlayerBehavior" Guid="18038f24-27a5-467e-8268-36cc83b092a6" InheritanceParent="44c9a961-258c-4eb3-81d1-d3ae249ae031" />
@@ -1041,7 +1041,7 @@
 						<MemberComponentTemplate Name="ChaseBehavior" Guid="46ced06f-1818-4622-b1cc-8021eed7c257" InheritanceParent="31894441-d90a-4549-9264-db9dbe20e234">
 							<Parameter Name="NightChaseTime" Guid="147cc960-2814-4737-99b3-9b810a661fc3" Value="15" Type="float" />
 							<Parameter Name="DayChaseRange" Guid="48f216f9-3882-49d0-8151-110f3ceee2de" Value="8" Type="float" />
-							<Parameter Name="ChaseNonPlayerProbability" Guid="7d423e92-4a06-4422-a111-150f85f9f2bb" Value="0.2" Type="float" />
+							<Parameter Name="ChaseNonPlayerProbability" Guid="7d423e92-4a06-4422-a111-150f85f9f2bb" Value="0.1" Type="float" />
 							<Parameter Name="NightChaseRange" Guid="ae756d04-f07e-4da4-9136-7af5ce5eeaae" Value="10" Type="float" />
 							<Parameter Name="DayChaseTime" Guid="e78ade39-2411-435b-bc3d-be9a886df994" Value="15" Type="float" />
 						</MemberComponentTemplate>
@@ -1136,7 +1136,7 @@
 							<Parameter Name="WalkFrontLegsAngle" Guid="b54f91d6-1ec3-41ab-98b5-9ceb6c854a52" Value="0.45" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Health" Guid="7b3d6231-46d1-4007-a757-f9b220ac96ab">
-							<Parameter Name="AttackResilience" Guid="f592499c-ed2c-4d2f-905b-6cd38dd9b1f8" Value="35" Type="float" />
+							<Parameter Name="AttackResilience" Guid="f592499c-ed2c-4d2f-905b-6cd38dd9b1f8" Value="40" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="EatPickableBehavior" Guid="93b5584a-1671-46a1-b3a1-f615f03846c7">
 							<ParameterSet Name="FoodFactors" Guid="ae27941f-7534-4d8d-9422-720a64e16404">
@@ -1234,7 +1234,7 @@
 							<Parameter Name="WalkAnimationSpeed" Guid="e87ae1b9-5e00-4a7d-bc5b-28101a5baa71" Value="0.5" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Health" Guid="0ff4fb07-2768-418e-bfac-b5aa6b8788e3">
-							<Parameter Name="AttackResilience" Guid="dc77d282-0e1b-4b5d-9054-7b124b691182" Value="120" Type="float" />
+							<Parameter Name="AttackResilience" Guid="dc77d282-0e1b-4b5d-9054-7b124b691182" Value="150" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Loot" Guid="2b5f9b82-f7b2-4c8f-90f0-181a87e1e8c8">
 							<ParameterSet Name="LootOnFire" Guid="3b098654-2e0f-4713-ac35-feff27933099">
@@ -1348,7 +1348,7 @@
 							<Parameter Name="WalkFrontLegsAngle" Guid="eb65c01d-96ea-49e2-a546-705c6ce9c6e6" Value="0.45" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Health" Guid="e6618ad7-dba7-4cfa-8be2-3a276da5630d">
-							<Parameter Name="AttackResilience" Guid="5f7b57d5-506c-45f2-b3b1-3ad9406d5b81" Value="25" Type="float" />
+							<Parameter Name="AttackResilience" Guid="5f7b57d5-506c-45f2-b3b1-3ad9406d5b81" Value="30" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Miner" Guid="f1bc3181-a847-4ff5-acac-1b1a44d994f6" InheritanceParent="8acca888-ba39-464f-bcf5-6ae15e448c62">
 							<Parameter Name="AttackPower" Guid="dc48cd1f-a251-4de7-856f-46e556d50828" Value="1" Type="float" />
@@ -1599,7 +1599,7 @@
               <Parameter Name="AutoInteractRate" Guid="d0c0e5cd-a92c-49be-8e39-93e29f43a3ec" Value="0.5" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="ChaseBehavior" Guid="d71acd48-f5d5-4b5e-8baf-9a4a1db39841" InheritanceParent="31894441-d90a-4549-9264-db9dbe20e234">
-							<Parameter Name="ChaseNonPlayerProbability" Guid="0dbdd746-b568-4001-bcda-c07580605ad8" Value="0.25" Type="float" />
+							<Parameter Name="ChaseNonPlayerProbability" Guid="0dbdd746-b568-4001-bcda-c07580605ad8" Value="0.253" Type="float" />
 							<Parameter Name="NightChaseRange" Guid="42b0ca10-e48b-4079-b513-966221ecb1ab" Value="20" Type="float" />
 							<Parameter Name="NightChaseTime" Guid="61771540-6229-4f79-b9fd-2a39b50cf046" Value="15" Type="float" />
 						</MemberComponentTemplate>
@@ -1640,7 +1640,7 @@
 							<ParameterSet Name="Loot" Guid="4c8b3db6-4a90-4080-aa68-359852161fac" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="ChaseBehavior" Guid="f9a39b09-f82d-4c78-ab96-215769f9cf71">
-							<Parameter Name="ChaseNonPlayerProbability" Guid="0e890fc3-4de1-48d7-93a0-6fd07e149d6a" Value="0.15" Type="float" />
+							<Parameter Name="ChaseNonPlayerProbability" Guid="0e890fc3-4de1-48d7-93a0-6fd07e149d6a" Value="0.1" Type="float" />
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="fda00c63-3dd2-4b84-a023-0c41c124cb2d">
 							<Parameter Name="ShowEgg" Guid="181b3b17-d552-4aee-b89e-880554f2b13e" Value="False" Type="bool" />
@@ -1880,7 +1880,7 @@
 							</ParameterSet>
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Health" Guid="7d3a3086-95c6-40e5-a3ca-2bb1a70a33f3">
-							<Parameter Name="AttackResilience" Guid="880fa353-3fae-4f3b-86fa-f48709fd25b3" Value="70" Type="float" />
+							<Parameter Name="AttackResilience" Guid="880fa353-3fae-4f3b-86fa-f48709fd25b3" Value="80" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Body" Guid="7decf2b6-e8d1-4144-8c81-f68881da9304">
 							<Parameter Name="Density" Guid="12e72219-6799-4dfd-ab74-e2695e1af87d" Value="0.9" Type="float" />
@@ -2124,7 +2124,7 @@
 						<MemberComponentTemplate Name="FindPlayerBehavior" Guid="33e75692-35e5-4976-9944-2fe4b9e45465" InheritanceParent="44c9a961-258c-4eb3-81d1-d3ae249ae031" />
 						<MemberComponentTemplate Name="AvoidFireBehavior" Guid="7a95336b-4f26-409e-bfb2-eb55a99c9119" InheritanceParent="885b2df5-b47b-4c53-bda0-5c1a0c988a3c" />
 						<MemberComponentTemplate Name="ChaseBehavior" Guid="8e982560-e55f-4b6a-a594-934a1f651de4" InheritanceParent="31894441-d90a-4549-9264-db9dbe20e234">
-							<Parameter Name="ChaseNonPlayerProbability" Guid="2664150b-0c5b-4688-a4c9-26a829bc5393" Value="0.15" Type="float" />
+							<Parameter Name="ChaseNonPlayerProbability" Guid="2664150b-0c5b-4688-a4c9-26a829bc5393" Value="0.1" Type="float" />
 							<Parameter Name="DayChaseTime" Guid="3f74f48e-88cf-4358-96a9-3ae425acef06" Value="15" Type="float" />
 							<Parameter Name="NightChaseTime" Guid="4ecd25c7-6b1f-4eef-954e-e5b9410b0384" Value="15" Type="float" />
 							<Parameter Name="NightChaseRange" Guid="5ddcd242-ab22-4989-ac25-0b4042440619" Value="10" Type="float" />
@@ -2383,7 +2383,7 @@
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="OnFire" Guid="186367a2-e357-444f-806c-82b20da7d1d9" />
 						<MemberComponentTemplate Name="Health" Guid="3f536006-c5d7-47e3-8eef-04fa02c6eba7">
-							<Parameter Name="AttackResilience" Guid="d876342a-0a60-4ef4-8430-b715cde41a12" Value="25" Type="float" />
+							<Parameter Name="AttackResilience" Guid="d876342a-0a60-4ef4-8430-b715cde41a12" Value="30" Type="float" />
 							<Parameter Name="FireResilience" Guid="f886a039-6ca0-43c7-9295-b79a2718323e" Value="15" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="RunAwayBehavior" Guid="47744a97-c8d7-4389-adfb-b59e14f87362" InheritanceParent="b138cc15-930c-4805-8cfc-b91bfa7f767a" />
@@ -2624,7 +2624,7 @@
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="WalkAroundBehavior" Guid="f2ba9d00-5da2-4e24-bd8e-651c62c50674" InheritanceParent="aebb86ce-4ee6-4ca0-850d-cd60051e1d71" />
 						<MemberComponentTemplate Name="Health" Guid="f5a540a7-78d3-4788-9524-7139b6df66ba">
-							<Parameter Name="AttackResilience" Guid="a95ff5cb-4a80-4dcd-a205-6564c76996a0" Value="50" Type="float" />
+							<Parameter Name="AttackResilience" Guid="a95ff5cb-4a80-4dcd-a205-6564c76996a0" Value="60" Type="float" />
 						</MemberComponentTemplate>
 						<ParameterSet Name="CreatureEggData" Guid="ed737716-e9fb-481c-952c-51e64350e46f">
 							<Parameter Name="Color" Guid="0f8296dd-8654-4a8f-b263-30ac07f21ec0" Value="100,75,60" Type="Color" />
@@ -3024,7 +3024,7 @@
 							<Parameter Name="DisplayName" Guid="dffc0149-adc8-4feb-9166-e9ac8f921306" Value="[DisplayName:89]" Type="string" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Health" Guid="82bb8edd-9dd9-426c-9f61-b2d9d7e3ab31">
-							<Parameter Name="AttackResilience" Guid="9757a0c4-ba61-4aa3-915e-17b70f7dd81d" Value="60" Type="float" />
+							<Parameter Name="AttackResilience" Guid="9757a0c4-ba61-4aa3-915e-17b70f7dd81d" Value="75" Type="float" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="CreatureSounds" Guid="957ec4eb-d263-42c6-b8d7-ba1e7cee100d">
 							<Parameter Name="IdleSound" Guid="8147ca5e-410e-4299-ad51-1e63ca60460b" Value="Audio/Creatures/Bison" Type="string" />
@@ -3109,7 +3109,7 @@
 							<Parameter Name="AutoFeed" Guid="6771df10-3bd4-4b11-a971-acf9b89b7bef" Value="False" Type="bool" />
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="Health" Guid="90aa6b27-c2e7-4eb7-ae4c-9ac662c4e476">
-							<Parameter Name="AttackResilience" Guid="2663b4fb-444f-4c4b-993c-ab7d30c8c76d" Value="30" Type="float" />
+							<Parameter Name="AttackResilience" Guid="2663b4fb-444f-4c4b-993c-ab7d30c8c76d" Value="35" Type="float" />
 							<Parameter Name="FireResilience" Guid="3f0d786a-f191-43b6-8395-7e81893c62d6" Value="15" Type="float" />
 							<Parameter Name="FallResilience" Guid="7a94cc30-186f-48c5-8a54-09c27c105754" Value="10" Type="float" />
 						</MemberComponentTemplate>
@@ -3125,7 +3125,7 @@
 							</ParameterSet>
 						</MemberComponentTemplate>
 						<MemberComponentTemplate Name="ChaseBehavior" Guid="c346c26d-6021-49aa-a4a8-8df79e93869f" InheritanceParent="31894441-d90a-4549-9264-db9dbe20e234">
-							<Parameter Name="ChaseNonPlayerProbability" Guid="1407ca9a-8509-4d23-93a8-3651fea57d9f" Value="0.15" Type="float" />
+							<Parameter Name="ChaseNonPlayerProbability" Guid="1407ca9a-8509-4d23-93a8-3651fea57d9f" Value="0.1" Type="float" />
 							<Parameter Name="NightChaseRange" Guid="512249a4-f498-41fb-ad0e-0709dc2ee9e5" Value="10" Type="float" />
 							<Parameter Name="DayChaseRange" Guid="5711472f-0895-41e1-b07a-bdf0233a8be0" Value="8" Type="float" />
 							<Parameter Name="NightChaseTime" Guid="970d8ef2-025e-4263-a409-7fbd211e3d79" Value="15" Type="float" />

@@ -422,7 +422,7 @@ namespace Game
             {
 	            Vector3 vector = default(Vector3);
 	            vector.X = m_shakingStrength * MathF.Sin((float)MathUtils.Remainder(31.0 * m_subsystemTime.GameTime, Math.PI * 2));
-	            vector.Y = 0.4f * m_shakingStrength * MathF.Sin((float)MathUtils.Remainder(23.3 * m_subsystemTime.GameTime, Math.PI * 2));
+	            vector.Y = 0.3f * m_shakingStrength * MathF.Sin((float)MathUtils.Remainder(23.3 * m_subsystemTime.GameTime, Math.PI * 2));
 	            vector.Z = m_shakingStrength * MathF.Sin((float)MathUtils.Remainder(27.6 * m_subsystemTime.GameTime, Math.PI * 2));
 	            Velocity += vector * dt;
 	            m_shakingStrength *= MathUtils.Saturate(1f - 3.5f * dt);

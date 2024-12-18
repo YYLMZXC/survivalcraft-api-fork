@@ -533,10 +533,6 @@ namespace Game
 				LowFPSToTimeDeceleration = 10;
 				UseAPISleepTimeAcceleration = false;
 			}
-			if (VersionsManager.CompareVersions(LastLaunchedVersion, "2.4") < 0)
-			{
-				TerrainMipmapsEnabled = true;
-			}
 			Window.Deactivated += delegate
 			{
 				SaveSettings();

@@ -13,8 +13,6 @@ namespace Game
 
 		public SubsystemGameInfo m_subsystemGameInfo;
 
-		public SubsystemTerrain m_subsystemTerrain;
-
 		public SubsystemSeasons m_subsystemSeasons;
 
 		public Random m_random = new();
@@ -98,7 +96,6 @@ namespace Game
 			m_subsystemTime = base.Project.FindSubsystem<SubsystemTime>(throwOnError: true);
 			m_subsystemCellChangeQueue = base.Project.FindSubsystem<SubsystemCellChangeQueue>(throwOnError: true);
 			m_subsystemGameInfo = base.Project.FindSubsystem<SubsystemGameInfo>(throwOnError: true);
-			m_subsystemTerrain = base.Project.FindSubsystem<SubsystemTerrain>(throwOnError: true);
 			m_subsystemSeasons = base.Project.FindSubsystem<SubsystemSeasons>(throwOnError: true);
 		}
 
@@ -152,8 +149,8 @@ namespace Game
 				int data3 = Terrain.ExtractData(cellValueFast);
 				bool hydration = SoilBlock.GetHydration(data3);
 				int nitrogen = SoilBlock.GetNitrogen(data3);
-				int num = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
-				int num2 = 3;
+				int num = SubsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
+				int num2 = 4;
 				float num3 = 0.8f;
 				if (nitrogen > 0)
 				{
@@ -167,7 +164,7 @@ namespace Game
 				}
 				if (num <= 4)
 				{
-					num3 = 1f;
+					num2 += 4;
 				}
 				if (pollPass % MathUtils.Max(num2, 1) == 0 || !(num3 < 1f))
 				{
@@ -221,8 +218,8 @@ namespace Game
 				int data3 = Terrain.ExtractData(cellValueFast);
 				bool hydration = SoilBlock.GetHydration(data3);
 				int nitrogen = SoilBlock.GetNitrogen(data3);
-				int num = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
-				int num2 = 6;
+				int num = SubsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
+				int num2 = 8;
 				float num3 = 0.8f;
 				if (nitrogen > 0)
 				{
@@ -236,7 +233,7 @@ namespace Game
 				}
 				if (num <= 4)
 				{
-					num3 = 1f;
+					num2 += 8;
 				}
 				if (pollPass % MathUtils.Max(num2, 1) == 0 || !(num3 < 1f))
 				{
@@ -279,7 +276,7 @@ namespace Game
 			int data2 = Terrain.ExtractData(cellValueFast);
 			bool flag = num == 168 && SoilBlock.GetHydration(data2);
 			int num2 = (num == 168) ? SoilBlock.GetNitrogen(data2) : 0;
-			int num3 = m_subsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
+			int num3 = SubsystemTerrain.Terrain.GetSeasonalTemperature(x, z) + SubsystemWeather.GetTemperatureAdjustmentAtHeight(y);
 			int num4 = 4;
 			float num5 = 0.15f;
 			if (num == 168)
@@ -299,7 +296,7 @@ namespace Game
 			}
 			if (num3 <= 8)
 			{
-				num5 = 1f;
+				num4 += 5;
 			}
 			if (pollPass % MathUtils.Max(num4, 1) == 0 || !(num5 < 1f))
 			{

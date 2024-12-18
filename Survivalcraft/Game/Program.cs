@@ -28,7 +28,7 @@ namespace Game
 		public static float LastCpuFrameTime { get; set; }
 
 		public static event Action<Uri> HandleUri;
-		public static string Title = "生存战争2.3插件版_";
+		public static string Title = "生存战争2.4插件版_";
 		private static Timer JamTimer = new(JamChecker,null,0,8266);
 		private static int JamCounter = 0;
 		

@@ -75,13 +75,10 @@ namespace Game
             }
             else
             {
-	            maxTimeExist = (((SubsystemPickables.m_pickables.Count - SubsystemPickables.m_pickablesToRemove.Count) > 80) ? 120 : 900);
 				Block block = BlocksManager.Blocks[Terrain.ExtractContents(Value)];
 	            string category = block.GetCategory(Value);
-	            if (category == "Terrain" || (category == "Plants" && block.GetNutritionalValue(Value) == 0f))
-	            {
-		            maxTimeExist *= 0.5f;
-	            }
+	            int remainPickables = SubsystemPickables.m_pickables.Count - SubsystemPickables.m_pickablesToRemove.Count;
+	            maxTimeExist = ((category == "Terrain") ? ((float)((remainPickables > 80) ? 60 : 120)) : ((category == "Plants" && block.GetNutritionalValue(Value) == 0f) ? ((float)((remainPickables > 80) ? 60 : 120)) : ((!(block is EggBlock)) ? ((float)((remainPickables > 80) ? 120 : 480)) : 240f)));
             }
             double timeExisted = SubsystemPickables.m_subsystemGameInfo.TotalElapsedGameTime - CreationTime;
             if (timeExisted > maxTimeExist)
