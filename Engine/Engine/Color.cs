@@ -400,6 +400,16 @@ namespace Engine
 			return new Color((byte)Math.Clamp(c.R * num, 0f, 255f), (byte)Math.Clamp(c.G * num, 0f, 255f), (byte)Math.Clamp(c.B * num, 0f, 255f), (byte)Math.Clamp(c.A * num, 0f, 255f));
 		}
 
+        public static Color operator *(Color c, Vector4 s)
+        {
+            return new Color((byte)Math.Clamp((float)(int)c.R * s.X, 0f, 255f), (byte)Math.Clamp((float)(int)c.G * s.Y, 0f, 255f), (byte)Math.Clamp((float)(int)c.B * s.Z, 0f, 255f), (byte)Math.Clamp((float)(int)c.A * s.W, 0f, 255f));
+        }
+
+        public static Color operator *(Vector4 s, Color c)
+        {
+            return new Color((byte)Math.Clamp((float)(int)c.R * s.X, 0f, 255f), (byte)Math.Clamp((float)(int)c.G * s.Y, 0f, 255f), (byte)Math.Clamp((float)(int)c.B * s.Z, 0f, 255f), (byte)Math.Clamp((float)(int)c.A * s.W, 0f, 255f));
+        }
+
 		public static Color operator +(Color c1, Color c2)
 		{
 			return new Color((byte)Math.Min(c1.R + c2.R, 255), (byte)Math.Min(c1.G + c2.G, 255), (byte)Math.Min(c1.B + c2.B, 255), (byte)Math.Min(c1.A + c2.A, 255));

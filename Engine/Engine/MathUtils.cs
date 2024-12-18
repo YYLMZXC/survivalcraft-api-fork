@@ -68,6 +68,11 @@
             return key;
         }
 
+        public static int Hash(int key)
+        {
+            return (int)Hash((uint)key);
+        }
+
         public static uint HashInverse(uint key)
         {
             key ^= key >> 16;

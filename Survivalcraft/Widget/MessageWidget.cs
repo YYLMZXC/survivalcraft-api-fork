@@ -26,7 +26,7 @@ namespace Game
 				LabelWidget = new LabelWidget
 				{
 					Text = text,
-					Font = ContentManager.Get<BitmapFont>("Fonts/Pericles24"),
+					Font = ContentManager.Get<BitmapFont>("Fonts/Pericles"),
 					HorizontalAlignment = WidgetAlignment.Center,
 					TextAnchor = TextAnchor.Center,
 					DropShadow = true,

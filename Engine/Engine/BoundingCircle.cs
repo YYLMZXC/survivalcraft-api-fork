@@ -34,6 +34,11 @@ namespace Engine
 			return $"{Center},{Radius}";
 		}
 
+        public bool Contains(Vector2 p)
+        {
+            return Vector2.DistanceSquared(Center, p) <= Radius * Radius;
+        }
+
 		public static bool operator ==(BoundingCircle c1, BoundingCircle c2)
 		{
 			return c1.Equals(c2);

@@ -321,5 +321,10 @@ namespace Engine
 			float num = 1f / d;
 			return new Vector2(v.X * num, v.Y * num);
 		}
+
+        public static Vector2 operator /(float d, Vector2 v)
+        {
+            return new Vector2(d / v.X, d / v.Y);
+        }
 	}
 }
