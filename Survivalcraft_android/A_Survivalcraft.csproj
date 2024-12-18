@@ -37,7 +37,6 @@
 		<Compile Include="..\Survivalcraft\ContentProvider\DropboxExternalContentProvider.cs"/>
 		<Compile Include="..\Survivalcraft\ContentProvider\IExternalContentProvider.cs"/>
 		<Compile Include="..\Survivalcraft\ContentProvider\SchubExternalContentProvider.cs"/>
-		<Compile Include="..\Survivalcraft\ContentProvider\TransferShExternalContentProvider.cs"/>
 		<Compile Include="..\Survivalcraft\Game\BlockAllocateData.cs"/>
 		<Compile Include="..\Survivalcraft\IPostprocessExplosions.cs"/>
 		<Compile Include="..\Survivalcraft\Managers\ClipboardManager.cs"/>
@@ -436,7 +435,6 @@
 		<Compile Include="..\Survivalcraft\Dialog\CancellableBusyDialog.cs"/>
 		<Compile Include="..\Survivalcraft\Dialog\DownloadContentFromLinkDialog.cs"/>
 		<Compile Include="..\Survivalcraft\Dialog\EditAdjustableDelayGateDialog.cs"/>
-		<Compile Include="..\Survivalcraft\Dialog\EditBatteryDialog.cs"/>
 		<Compile Include="..\Survivalcraft\Dialog\EditColorDialog.cs"/>
 		<Compile Include="..\Survivalcraft\Dialog\EditMemoryBankDialogAPI.cs"/>
 		<Compile Include="..\Survivalcraft\Dialog\EditMemoryBankDialog.cs"/>
@@ -711,7 +709,6 @@
 		<Compile Include="..\Survivalcraft\Game\VersionConverter20To21.cs"/>
 		<Compile Include="..\Survivalcraft\Game\VersionConverter21To22.cs"/>
 		<Compile Include="..\Survivalcraft\Game\VersionConverter22To23.cs"/>
-		<Compile Include="..\Survivalcraft\Game\ViewAngleMode.cs"/>
 		<Compile Include="..\Survivalcraft\Game\WaterSplashParticleSystem.cs"/>
 		<Compile Include="..\Survivalcraft\Game\WhalePlumeParticleSystem.cs"/>
 		<Compile Include="..\Survivalcraft\Game\WireDomainElectricElement.cs"/>
@@ -992,6 +989,30 @@
 		<Compile Include="..\Survivalcraft\Widget\WidgetInput.cs"/>
 		<Compile Include="..\Survivalcraft\Widget\WidgetInputDevice.cs"/>
 		<Compile Include="..\Survivalcraft\Widget\WidgetsList.cs"/>
+		<Compile Include="..\Survivalcraft\Game\BevelledShapeRenderer.cs"/>
+		<Compile Include="..\Survivalcraft\Block\DeciduousLeavesBlock.cs"/>
+		<Compile Include="..\Survivalcraft\Block\DirtSlabBlock.cs"/>
+		<Compile Include="..\Survivalcraft\Block\DirtStairsBlock.cs"/>
+		<Compile Include="..\Survivalcraft\Block\EvergreenLeavesBlock.cs"/>
+		<Compile Include="..\Survivalcraft\Block\FallenLeavesBlock.cs"/>
+		<Compile Include="..\Survivalcraft\Game\FloatCurve.cs"/>
+		<Compile Include="..\Survivalcraft\Game\IntervalUtils.cs"/>
+		<Compile Include="..\Survivalcraft\Game\LeavesParticleSystem.cs"/>
+		<Compile Include="..\Survivalcraft\Game\PathRenderer.cs"/>
+		<Compile Include="..\Survivalcraft\Block\PoplarLeavesBlock.cs"/>
+		<Compile Include="..\Survivalcraft\Block\PoplarWoodBlock.cs"/>
+		<Compile Include="..\Survivalcraft\Game\Season.cs"/>
+		<Compile Include="..\Survivalcraft\Subsystem\SubsystemCellChangeQueue.cs"/>
+		<Compile Include="..\Survivalcraft\Subsystem\SubsystemDeciduousLeavesBlockBehavior.cs"/>
+		<Compile Include="..\Survivalcraft\Subsystem\SubsystemFallenLeavesBlockBehavior.cs"/>
+		<Compile Include="..\Survivalcraft\Subsystem\SubsystemSeasons.cs"/>
+		<Compile Include="..\Survivalcraft\Game\TerrainContentsGenerator24.cs"/>
+		<Compile Include="..\Survivalcraft\Game\VersionConverter23To24.cs"/>
+		<Compile Include="..\Survivalcraft\Component\ComponentVrHandsModel.cs"/>
+		<Compile Include="..\Survivalcraft\Game\VrController.cs"/>
+		<Compile Include="..\Survivalcraft\Game\VrControllerButton.cs"/>
+		<Compile Include="..\Survivalcraft\Game\VrEye.cs"/>
+		<Compile Include="..\Survivalcraft\Managers\VrManager.cs"/>
 	</ItemGroup>
 	<ItemGroup>
 <Reference Include="OpenTK-1.0.2moded">
@@ -999,7 +1020,7 @@
 </Reference>
 	</ItemGroup>
 	<PropertyGroup>
-<TargetFramework>net9.0-android</TargetFramework>
+<TargetFramework>net9.0-android35</TargetFramework>
 <SupportedOSPlatformVersion>23.0</SupportedOSPlatformVersion>
 <RootNamespace>Game</RootNamespace>
 <ApplicationVersion>2.4.0.0</ApplicationVersion>
