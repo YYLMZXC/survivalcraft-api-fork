@@ -9,7 +9,8 @@ namespace Game.IContentReader
 		public override string[] DefaultSuffix => new string[] { "vsh", "psh" };
 		public override object Get(ContentInfo[] contents)
 		{
-			return new Shader(new StreamReader(contents[0].Duplicate()).ReadToEnd(), new StreamReader(contents[1].Duplicate()).ReadToEnd(), new ShaderMacro[] { new("empty") });
+			ShaderMacro[] shaderMacros = contents[0].Filename.StartsWith("AlphaTested") ? [new ShaderMacro("ALPHATESTED")] : [];
+			return new Shader(new StreamReader(contents[0].Duplicate()).ReadToEnd(), new StreamReader(contents[1].Duplicate()).ReadToEnd(), shaderMacros);
 		}
 	}
 }

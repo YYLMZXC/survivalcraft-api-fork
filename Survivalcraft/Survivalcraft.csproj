@@ -104,7 +104,7 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</EmbeddedResource>
 		<None Update="Content\Assets\Textures\Gui\Earth.webp">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Release' And '$(TargetFramework)' == 'net9.0-windows'">
