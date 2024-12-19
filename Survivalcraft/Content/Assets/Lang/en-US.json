@@ -800,8 +800,11 @@
     "16": "Noon",
     "17": "Dusk",
     "18": "Midnight",
-    "19": "Debug camera"
-
+    "19": "Debug camera",
+    "20": "Precipitation Off",
+    "21": "Precipitation On",
+    "22": "Fog Off",
+    "23": "Fog On"
   },
   "ComponentFlu": {
     "1": "Get warm, you will get flu!",

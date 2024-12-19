@@ -85,8 +85,18 @@ namespace Game
 
 		public float BevelSize
 		{
-			get;
-			set;
+			get
+			{
+				return m_bevelSize;
+			}
+			set
+			{
+				if (value != m_bevelSize)
+				{
+					m_bevelSize = value;
+					m_cachedBatchesValid = false;
+				}
+			}
 		}
 
 		public float DirectionalLight

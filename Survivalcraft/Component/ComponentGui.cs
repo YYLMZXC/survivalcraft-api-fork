@@ -732,12 +732,12 @@ namespace Game
 				if (m_subsystemWeather.IsPrecipitationStarted)
 				{
 					m_subsystemWeather.ManualPrecipitationEnd();
-					DisplaySmallMessage("Precipitation Off", Color.White, blinking: false, playNotificationSound: false);
+					DisplaySmallMessage(LanguageControl.Get(fName, 20), Color.White, blinking: false, playNotificationSound: false);
 				}
 				else
 				{
 					m_subsystemWeather.ManualPrecipitationStart();
-					DisplaySmallMessage("Precipitation On", Color.White, blinking: false, playNotificationSound: false);
+					DisplaySmallMessage(LanguageControl.Get(fName, 21), Color.White, blinking: false, playNotificationSound: false);
 				}
 			}
 			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && (m_fogButtonWidget.IsClicked || playerInput.Fog))
@@ -745,12 +745,12 @@ namespace Game
 				if (m_subsystemWeather.IsFogStarted)
 				{
 					m_subsystemWeather.ManualFogEnd();
-					DisplaySmallMessage("Fog Off", Color.White, blinking: false, playNotificationSound: false);
+					DisplaySmallMessage(LanguageControl.Get(fName, 22), Color.White, blinking: false, playNotificationSound: false);
 				}
 				else
 				{
 					m_subsystemWeather.ManualFogStart();
-					DisplaySmallMessage("Fog On", Color.White, blinking: false, playNotificationSound: false);
+					DisplaySmallMessage(LanguageControl.Get(fName, 23), Color.White, blinking: false, playNotificationSound: false);
 				}
 			}
 			if (m_subsystemGameInfo.WorldSettings.GameMode == GameMode.Creative && (m_timeOfDayButtonWidget.IsClicked || playerInput.TimeOfDay))
@@ -763,22 +763,22 @@ namespace Game
 				if (num2 == num6)
 				{
 					m_subsystemTimeOfDay.TimeOfDayOffset += num2;
-					DisplaySmallMessage("Dawn", Color.White, blinking: false, playNotificationSound: false);
+					DisplaySmallMessage(LanguageControl.Get(fName, 15), Color.White, blinking: false, playNotificationSound: false);
 				}
 				else if (num3 == num6)
 				{
 					m_subsystemTimeOfDay.TimeOfDayOffset += num3;
-					DisplaySmallMessage("Noon", Color.White, blinking: false, playNotificationSound: false);
+					DisplaySmallMessage(LanguageControl.Get(fName, 16), Color.White, blinking: false, playNotificationSound: false);
 				}
 				else if (num4 == num6)
 				{
 					m_subsystemTimeOfDay.TimeOfDayOffset += num4;
-					DisplaySmallMessage("Dusk", Color.White, blinking: false, playNotificationSound: false);
+					DisplaySmallMessage(LanguageControl.Get(fName, 17), Color.White, blinking: false, playNotificationSound: false);
 				}
 				else if (num5 == num6)
 				{
 					m_subsystemTimeOfDay.TimeOfDayOffset += num5;
-					DisplaySmallMessage("Midnight", Color.White, blinking: false, playNotificationSound: false);
+					DisplaySmallMessage(LanguageControl.Get(fName, 18), Color.White, blinking: false, playNotificationSound: false);
 				}
 			}
 			if (ModalPanelWidget != null)
