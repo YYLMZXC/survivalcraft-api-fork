@@ -894,6 +894,8 @@
   "BulletBlock": [ "Musket Ball", "Buckshot", "Buckshot Ball" ],
   "PressurePlateBlock": [ "Wooden Pressure Plate", "Stone Pressure Plate" ],
   "PistonBlock": [ "Piston", "Pulling Piston", "Strict Pulling Piston" ],
+  "DeciduousLeavesBlock": [ "Summer ", "Autumn ", "Winter ", "Spring "],
+  "SubsystemSeasons": [ "Early Summer", "Summer", "Late Summer", "Early Autumn", "Autumn", "Late Autumn", "Early Winter", "Winter", "Late Winter", "Early Spring", "Spring", "Late Spring"],
   "Blocks": {
     "AirBlock:0": {
       "DisplayName": "Air",
@@ -2373,6 +2375,18 @@
     "DirtSlabBlock:0": {
       "DisplayName": "Dirt Slab",
       "CRDescription:0": "Make slabs for decoration purposes"
+    },
+    "PoplarWoodBlock:0": {
+      "DisplayName": "Poplar Wood",
+      "Description": "Poplar wood grows in trunks of poplar trees, which grow in temperate areas. It can be crafted into planks, which are a versatile building and crafting material. It can also be used as a fuel in the furnace. To replant trees you need to obtain saplings from the leaves."
+    },
+    "PoplarLeavesBlock:0": {
+      "DisplayName": "Poplar Leaves",
+      "Description": "Poplar leaves grow on poplar trees and can be used to obtain poplar saplings. They will burn and can be used as a cheap fuel. When placed away from the trunk, they will decay."
+    },
+    "FallenLeavesBlock:0": {
+      "DisplayName": "Fallen Leaves",
+      "Description": "Leaves which fell from a tree in the autumn"
     }
   },
   "Help": {
@@ -2561,22 +2575,26 @@
     "LookControlMode.Pad": "Touchpad Only",
     "LookControlMode.EntireScreen": "Entire Screen",
     "LookControlMode.SplitTouch": "Split Touch",
-    "GameMode.Creative.Description": "In Creative mode you have an infinite supply of all items and all blocks can be mined infinitely fast. You are also immortal and can fly.",
-    "GameMode.Harmless.Description": "In Harmless mode almost all danger is removed from the game. The animals will not attack unprovoked. Falls are less deadly. Health regeneration is very quick. Digging is 25% faster. You can place blocks while in the air.",
+    "GameMode.Creative.Description": "In Creative mode you have an infinite supply of all items and all blocks can be mined infinitely fast. You are also immortal and can fly. This mode is ideal for pure building.",
+    "GameMode.Harmless.Description": "Harmless is the easy survival mode. Animals will not attack unprovoked. Falls are less deadly. Health regeneration is very quick. Digging is 25% faster.",
     "GameMode.Survival.Description": "Survival is the default mode. There is danger, but you will be able to respawn at your last sleep position when you die. If you feel it's too easy, try Challenging mode.",
-    "GameMode.Challenging.Description": "Challenging is the advanced survival mode. There is danger, but you will be able to respawn at your last sleep position when you die.",
-    "GameMode.Cruel.Description": "Cruel mode is the same as Challenging, but you will not be able to respawn. Play wisely, because once you are dead, your world is lost!",
+    "GameMode.Challenging.Description": "Challenging is the advanced survival mode. Dangerous animals will spawn more frequently. Temperature, hunger and health simulation is tougher. You cannot place blocks while in the air.",
+    "GameMode.Cruel.Description": "Cruel mode is the same as Challenging, but you will not be able to respawn. Play wisely, because if you die, your world is lost! Once the mode is set to cruel, it cannot be changed back.",
     "GameMode.Adventure.Description": "Adventure mode is for players who want to create quest maps and share them with others. In this mode you cannot dig without tools and health does not regenerate. Create your quest map in Creative mode and change it to Adventure before uploading.",
     "SeaLevelOffset.Description": "Adjust global sea level of the world.",
     "TemperatureOffset.Description": "Adjust global temperature of the world.",
     "HumidityOffset.Description": "Adjust global humidity of the world.",
-    "EnvironmentBehaviorMode.Living.Description": "In Living mode the world is a living place full of animals. Plants and grass grow, blocks made of loose material collapse and detached leaves decay.",
-    "EnvironmentBehaviorMode.Static.Description": "In Static mode the world has no animals. Plants growth, block collapsing and plant decay are disabled. Useful if you want to shape your world the way you want it.",
+    "EnvironmentBehaviorMode.Living.Description": "In Living mode the world is a living place full of animals. Plants and grass grow, blocks made of loose material collapse and detached leaves decay. Snow accumulates on the ground and bodies of water freeze over.",
+    "EnvironmentBehaviorMode.Static.Description": "In Static mode the world has no animals. Plants growth, block collapsing and plant decay are disabled. Snow does not accumulate on the ground and bodies of water do not freeze over. Useful if you want to shape your world the way you want it.",
     "TimeOfDayMode.Changing.Description": "Time of day will change periodically. Sun, moon and stars will move across the sky.",
     "TimeOfDayMode.Day.Description": "Time of day will always be noon. Sun, moon and stars will stay stationary in the sky.",
     "TimeOfDayMode.Night.Description": "Time of day will always be midnight. Sun, moon and stars will stay stationary in the sky.",
     "TimeOfDayMode.Sunrise.Description": "Time of day will always be morning. Sun, moon and stars will stay stationary in the sky.",
     "TimeOfDayMode.Sunset.Description": "Time of day will always be evening. Sun, moon and stars will stay stationary in the sky.",
+    "AreSeasonsChanging.False": "World will be locked to the selected season. Weather conditions will not be changing.",
+    "AreSeasonsChanging.True": "Seasons will change periodically. Weather conditions will slowly vary as the seasons progress.",
+    "YearDays.Description": "Adjust how many days it will take for all the seasons to cycle. Each season will last a quarter of this value.",
+    "TimeOfYear.Description": "Adjust current season of the world.",
     "TerrainGenerationMode.Continent.Name": "Continent",
     "TerrainGenerationMode.Continent.Description": "In Continent mode the environment is made to look like the real world, full of forests, plains, deserts, glaciers, lakes, mountains, hills, caves and so on.",
     "TerrainGenerationMode.Island.Name": "Island",
@@ -2590,8 +2608,8 @@
     "FlatTerrainLevel.Description": "Adjust level of terrain above bedrock, only applicable in flat terrain mode. The lower you put it, the more space will be available above ground. The higher you put it, the more space will be available underground.",
     "FlatTerrainShoreRoughness.Description": "Adjust roughness of flat terrain shore, only applicable in flat terrain mode. Zero is completely straight shore. The higher the value, the more rough the shoreline will be.",
     "FlatTerrainMagmaOcean.Description": "Turn ocean into a sea of magma.",
-    "WeatherMode.True": "The world will experience periodical occurences of rain and snow that will accumulate on the ground. Lightning will strike tall objects and set them on fire.",
-    "WeatherMode.False": "There will be no precipitation or lightning in the world.",
+    "WeatherMode.True": "The world will experience periodical occurences of rain and snow that will accumulate on the ground. Lightning will strike tall objects and set them on fire. Fog will occasionally reduce visibility.",
+    "WeatherMode.False": "There will be no precipitation, fog or lightning in the world.",
     "AdventureRespawnMode.True": "The player will be able to respawn at his last spawn or sleeping place when he dies (good for long adventures with checkpoints).",
     "AdventureRespawnMode.False": "The player will not be able to respawn, but will have to restart the adventure and start from scratch when he dies (good for small adventures with no checkpoints).",
     "AdventureSurvivalMechanics.True": "Hunger, stamina, body temperature, sleep deprivation will be simulated in adventure mode.",

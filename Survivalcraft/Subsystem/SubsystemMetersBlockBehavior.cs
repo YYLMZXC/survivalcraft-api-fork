@@ -120,7 +120,7 @@ namespace Game
 
 		public void CalculateTemperature(int x, int y, int z, float meterTemperature, float meterInsulation, out float targetTemperature, out float targetTemperatureFlux, out float environmentTemperature)
 		{
-			m_toVisit.Clear();
+			m_toVisit.Count = 0;
 			Array.Clear(m_visited);
 			Terrain terrain = base.SubsystemTerrain.Terrain;
 			float num = 0f;
@@ -171,19 +171,7 @@ namespace Game
 					float num20 = 1f / num19;
 					float num21 = terrain.SeasonTemperature;
 					float num22 = SubsystemWeather.GetTemperatureAdjustmentAtHeight(y2);
-					float num23;
-					if (!(block is WaterBlock))
-					{
-						num23 = ((!(block is IceBlock)) ? (MathUtils.Max((float)chunkAtCell.GetTemperatureFast(x2, z2) + num21, 0f) + num22) : (MathUtils.Max(0f + num21, 0f) + num22));
-					}
-					else
-					{
-						num23 = MathUtils.Max((float)chunkAtCell.GetTemperatureFast(x2, z2) + num21, 0f) + num22 - 4f;
-						if (num18 == 0)
-						{
-							num20 *= 2f;
-						}
-					}
+					float num23 = ((block is WaterBlock) ? (MathUtils.Max((float)chunkAtCell.GetTemperatureFast(x2, z2) + num21 - 7f, 0f) + num22) : ((!(block is IceBlock)) ? (MathUtils.Max((float)chunkAtCell.GetTemperatureFast(x2, z2) + num21, 0f) + num22) : MathUtils.Max(0f + num21 + num22, 0f)));
 					num += num20 * num23;
 					num2 += num20;
 				}
@@ -314,7 +302,7 @@ namespace Game
 			}
 			int num = m_thermometersByPoint[key];
 			CalculateTemperature(x, y, z, 0f, 0f, out var _, out var _, out var environmentTemperature);
-			int num2 = Math.Clamp((int)MathF.Round(environmentTemperature), 0, 15);
+			int num2 = (int)MathF.Round(environmentTemperature);
 			if (num2 == num)
 			{
 				return;
@@ -334,7 +322,7 @@ namespace Game
 		{
 			if (Terrain.ExtractContents(value) == 120)
 			{
-				m_thermometersByPoint.Add(new Point3(x, y, z), 0);
+				m_thermometersByPoint[new Point3(x, y, z)] = 0;
 				SimulateThermometer(x, y, z, invalidateTerrainOnChange: false);
 			}
 			else

@@ -865,6 +865,20 @@
         "0": "Вместо этого делается каменный топор",
         "1": "Вместо этого делаются деревянные грабли"
     },
+    "BasePumpkinBlock": {
+        "1": "Pumpkin",
+        "2": "{0} Pumpkin",
+        "3": "{0} {1} Pumpkin",
+        "4": "Rotten",
+        "5": "Unripe"
+    },
+    "CottonBlock": [ "Cotton", "Wild Cotton" ],
+    "ArrowBlock": [ "Wooden Tip Arrow", "Stone Tip Arrow", "Iron Tip Arrow", "Diamond Tip Arrow", "Fire Arrow", "Iron Bolt", "Diamond Tip Iron Bolt", "Explosive Bolt", "Copper Tip Arrow" ],
+    "BulletBlock": [ "Musket Ball", "Buckshot", "Buckshot Ball" ],
+    "PressurePlateBlock": [ "Wooden Pressure Plate", "Stone Pressure Plate" ],
+    "PistonBlock": [ "Piston", "Pulling Piston", "Strict Pulling Piston" ],
+    "DeciduousLeavesBlock": [ "Summer ", "Autumn ", "Winter ", "Spring "],
+    "SubsystemSeasons": [ "Early Summer", "Summer", "Late Summer", "Early Autumn", "Autumn", "Late Autumn", "Early Winter", "Winter", "Late Winter", "Early Spring", "Spring", "Late Spring"],
     "Blocks": {
         "AirBlock:0": {
             "DisplayName": "Воздух",
@@ -2328,6 +2342,18 @@
         "DirtSlabBlock:0": {
             "DisplayName": "Dirt Slab",
             "CRDescription:0": "Make slabs for decoration purposes"
+        },
+        "PoplarWoodBlock:0": {
+            "DisplayName": "Poplar Wood",
+            "Description": "Poplar wood grows in trunks of poplar trees, which grow in temperate areas. It can be crafted into planks, which are a versatile building and crafting material. It can also be used as a fuel in the furnace. To replant trees you need to obtain saplings from the leaves."
+        },
+        "PoplarLeavesBlock": {
+            "DisplayName": "Poplar Leaves",
+            "Description": "Poplar leaves grow on poplar trees and can be used to obtain poplar saplings. They will burn and can be used as a cheap fuel. When placed away from the trunk, they will decay."
+        },
+        "FallenLeavesBlock:0": {
+            "DisplayName": "Fallen Leaves",
+            "Description": "Leaves which fell from a tree in the autumn"
         }
     },
     "Help": {
@@ -2532,6 +2558,10 @@
         "TimeOfDayMode.Night.Description": "Всегда полночь",
         "TimeOfDayMode.Sunrise.Description": "Всегда утро",
         "TimeOfDayMode.Sunset.Description": "Всегда вечер",
+        "AreSeasonsChanging.False": "World will be locked to the selected season. Weather conditions will not be changing.",
+        "AreSeasonsChanging.True": "Seasons will change periodically. Weather conditions will slowly vary as the seasons progress.",
+        "YearDays.Description": "Adjust how many days it will take for all the seasons to cycle. Each season will last a quarter of this value.",
+        "TimeOfYear.Description": "Adjust current season of the world.",
         "TerrainGenerationMode.Continent.Name": "Континент",
         "TerrainGenerationMode.Continent.Description": "Окружающая среда похожа на реальный мир, полный лесов, равнин, пустынь, ледников, озёр, гор, холмов, пещер и тому подобного",
         "TerrainGenerationMode.Island.Name": "Остров",

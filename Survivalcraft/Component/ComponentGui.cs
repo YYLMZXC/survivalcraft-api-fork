@@ -625,13 +625,13 @@ namespace Game
 					if (m_componentPlayer.ComponentBody.StandingOnValue.HasValue)
 					{
 						m_componentPlayer.ComponentBody.TargetCrouchFactor = 1f;
-						DisplaySmallMessage(LanguageControl.Get(fName, 4), Color.White, blinking: false, playNotificationSound: false);
+						DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: false, playNotificationSound: false);
 					}
 				}
 				else
 				{
 					m_componentPlayer.ComponentBody.TargetCrouchFactor = 0f;
-					DisplaySmallMessage(LanguageControl.Get(fName, 3), Color.White, blinking: false, playNotificationSound: false);
+					DisplaySmallMessage(LanguageControl.Get(fName, 4), Color.White, blinking: false, playNotificationSound: false);
 				}
 			}
 			if (componentRider != null && (m_mountButtonWidget.IsClicked || playerInput.ToggleMount))

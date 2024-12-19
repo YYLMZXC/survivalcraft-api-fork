@@ -5,45 +5,47 @@ namespace Game;
 
 public abstract class DeciduousLeavesBlock : LeavesBlock
 {
-	private Random m_random = new Random();
+	public Random m_random1 = new Random();
 
-	private readonly float SummerStart;
+	public readonly float SummerStart;
 
-	private readonly float AutumnStart;
+	public readonly float AutumnStart;
 
-	private readonly float WinterStart;
+	public readonly float WinterStart;
 
-	private readonly float SpringStart;
+	public readonly float SpringStart;
 
-	private readonly float SummerInterval;
+	public readonly float SummerInterval;
 
-	private readonly float AutumnInterval;
+	public readonly float AutumnInterval;
 
-	private readonly float WinterInterval;
+	public readonly float WinterInterval;
 
-	private readonly float SpringInterval;
+	public readonly float SpringInterval;
 
-	private readonly float SummerIntervalInv;
+	public readonly float SummerIntervalInv;
 
-	private readonly float AutumnIntervalInv;
+	public readonly float AutumnIntervalInv;
 
-	private readonly float WinterIntervalInv;
+	public readonly float WinterIntervalInv;
 
-	private readonly float SpringIntervalInv;
+	public readonly float SpringIntervalInv;
 
-	private readonly BlockColorsMap BlockColorsMap;
+	public readonly BlockColorsMap BlockColorsMap;
 
-	private readonly Color AutumnColor1;
+	public readonly Color AutumnColor1;
 
-	private readonly Color AutumnColor2;
+	public readonly Color AutumnColor2;
 
-	private readonly float AutumnTransitionLightening;
+	public readonly float AutumnTransitionLightening;
 
-	private readonly float AutumnSpeedupFactor;
+	public readonly float AutumnSpeedupFactor;
 
-	private readonly Color SpringColor;
+	public readonly Color SpringColor;
 
-	protected DeciduousLeavesBlock(float summerStart, float autumnStart, float winterStart, float springStart, BlockColorsMap blockColorsMap, Color autumnColor1, Color autumnColor2, float autumnTransitionLightening)
+	public const string fName = "DeciduousLeavesBlock";
+
+	public DeciduousLeavesBlock(float summerStart, float autumnStart, float winterStart, float springStart, BlockColorsMap blockColorsMap, Color autumnColor1, Color autumnColor2, float autumnTransitionLightening)
 	{
 		SummerStart = summerStart;
 		AutumnStart = autumnStart;
@@ -158,7 +160,7 @@ public abstract class DeciduousLeavesBlock : LeavesBlock
 		{
 			showDebris = false;
 		}
-		else if (m_random.Bool(0.25f))
+		else if (m_random1.Bool(0.25f))
 		{
 			dropValues.Add(new BlockDropValue
 			{
@@ -183,14 +185,7 @@ public abstract class DeciduousLeavesBlock : LeavesBlock
 
 	public override string GetDisplayName(SubsystemTerrain subsystemTerrain, int value)
 	{
-		string displayName = base.GetDisplayName(subsystemTerrain, value);
-		return GetSeason(Terrain.ExtractData(value)) switch
-		{
-			Season.Summer => "Summer " + displayName, 
-			Season.Autumn => "Autumn " + displayName, 
-			Season.Winter => "Winter " + displayName, 
-			_ => "Spring " + displayName, 
-		};
+		return $"{LanguageControl.Get(fName, (int)GetSeason(Terrain.ExtractData(value)))}{base.GetDisplayName(subsystemTerrain, value)}";
 	}
 
 	public override IEnumerable<int> GetCreativeValues()
@@ -296,7 +291,7 @@ public abstract class DeciduousLeavesBlock : LeavesBlock
 		return (data & -33) | (isManuallyCleared ? 32 : 0);
 	}
 
-	private static float Hat(float f)
+	public static float Hat(float f)
 	{
 		return 1f - 2f * MathF.Abs(f - 0.5f);
 	}

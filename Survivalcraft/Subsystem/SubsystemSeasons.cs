@@ -34,20 +34,18 @@ public class SubsystemSeasons : Subsystem, IUpdateable
 
 	public UpdateOrder UpdateOrder => UpdateOrder.Default;
 
+	public const string fName = "SubsystemSeasons";
+
 	public static string GetTimeOfYearName(float timeOfYear)
 	{
 		TimeOfYearToSeason(timeOfYear, out var season, out var timeOfSeason);
-		string text = season.ToString();
-		string text2 = "";
-		if (timeOfSeason < 0.25f)
+		int num = timeOfSeason switch
 		{
-			text2 = "Early ";
-		}
-		if (timeOfSeason >= 0.75f)
-		{
-			text2 = "Late ";
-		}
-		return text2 + text;
+			< 0.25f => 0,
+			>= 0.75f => 2,
+			_ => 1
+		};
+		return LanguageControl.Get(fName, (int)season * 3 + num);
 	}
 
 	public static Color GetTimeOfYearColor(float timeOfYear)
