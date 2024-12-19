@@ -1,4 +1,4 @@
-#ifdef HLSL
+﻿#ifdef HLSL
 
 float4x4 u_worldViewProjectionMatrix;
 float4 u_color;
@@ -67,6 +67,7 @@ void main()
 #ifdef USE_TEXTURE
 	v_texcoord = a_texcoord;
 #endif
+
 	// Position
 	gl_Position = u_worldViewProjectionMatrix * vec4(a_position.xyz, 1.0);
 

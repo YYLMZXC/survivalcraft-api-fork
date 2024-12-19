@@ -1,4 +1,4 @@
-#ifdef HLSL
+﻿#ifdef HLSL
 
 // Transform
 #ifdef USE_INSTANCING
