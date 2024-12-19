@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Globalization;
+using System.Text.Json;
 using System.IO;
 using System.Text.Json.Nodes;
 namespace Game
@@ -27,9 +28,9 @@ namespace Game
 		public static string Success = default;
 		public static string Delete = default;
 		/// <summary>
-		/// 语言标识符、与标识符对应的本地化名称
+		/// 语言标识符、与相应的CultureInfo
 		/// </summary>
-		public static Dictionary<string,string> LanguageTypes = [];
+		public static Dictionary<string,CultureInfo> LanguageTypes = [];
 
 		public static void Initialize(string languageType)
 		{

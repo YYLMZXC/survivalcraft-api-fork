@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml.Linq;
 namespace Game
 {
@@ -66,7 +67,7 @@ namespace Game
 			}
 			if (m_languageButton.IsClicked)
 			{
-				DialogsManager.ShowDialog(null,new ListSelectionDialog(null,LanguageControl.LanguageTypes,70f,(object item) => ((KeyValuePair<string, string>)item).Value,delegate (object item)
+				DialogsManager.ShowDialog(null,new ListSelectionDialog(null,LanguageControl.LanguageTypes,70f,(object item) => ((KeyValuePair<string, CultureInfo>)item).Value.NativeName,delegate (object item)
 				{
 					LanguageControl.ChangeLanguage(((KeyValuePair<string, string>)item).Key);
 				}));

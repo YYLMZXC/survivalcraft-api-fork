@@ -207,7 +207,7 @@ namespace Game
 				{
 					string px = Path.GetFileNameWithoutExtension(contentInfo.Filename);
 					CultureInfo cultureInfo = new (px,false);
-					LanguageControl.LanguageTypes.TryAdd(px, cultureInfo.NativeName);//第二个参数应为本地化名称
+					LanguageControl.LanguageTypes.TryAdd(px, cultureInfo);//第二个参数应为CultureInfo
 				}
 				//<<<结束
 				if(ModsManager.Configs.TryGetValue("Language",out string value) && LanguageControl.LanguageTypes.ContainsKey(value))
@@ -216,14 +216,56 @@ namespace Game
 				}
 				else
 				{
-					if(LanguageControl.LanguageTypes.ContainsKey(Program.SystemLanguage))
-					{
-						LanguageControl.Initialize(Program.SystemLanguage);
-					}
-					else
+					bool languageNotLoaded = true;
+					string systemLanguage = Program.SystemLanguage;
+					if(systemLanguage == null)
 					{
 						//如果不支持系统语言，英语是最佳选择
 						LanguageControl.Initialize("en-US");
+						languageNotLoaded = false;
+						Log.Information($"Language is not specified, and system language is not detected, en-US is loaded instead.");
+					}
+					else if(LanguageControl.LanguageTypes.ContainsKey(systemLanguage))
+					{
+						LanguageControl.Initialize(systemLanguage);
+						languageNotLoaded = false;
+						Log.Information($"Language is not specified, system language ({systemLanguage}) is successfully loaded.");
+					}
+					else
+					{
+						CultureInfo systemCultureInfoParent = new CultureInfo(systemLanguage).Parent;
+						foreach((string cultureName, CultureInfo cultureInfo) in LanguageControl.LanguageTypes)
+						{
+							bool similar = false;
+							CultureInfo parentCulture = cultureInfo.Parent;
+							string parentCultureName = cultureInfo.Name;
+							if(parentCultureName == systemLanguage
+								|| parentCultureName == systemCultureInfoParent.Name
+								|| parentCultureName == systemCultureInfoParent.Parent.Name)
+							{
+								similar = true;
+							}
+							else
+							{
+								string rootCultureName = parentCulture.Parent.Name;
+								if(rootCultureName.Length > 0
+									&& (rootCultureName == systemCultureInfoParent.Name || rootCultureName == systemCultureInfoParent.Parent.Name))
+								{
+									similar = true;
+								}
+							}
+							if(similar)
+							{
+								LanguageControl.Initialize(cultureName);
+								Log.Information($"Language is not specified, a language ({cultureName}) closest to system language ({systemLanguage}) is successfully loaded.");
+								languageNotLoaded = false;
+							}
+						}
+						if(languageNotLoaded)
+						{
+							LanguageControl.Initialize("en-US");
+							Log.Information($"Language is not specified, and system language ({systemLanguage}) is not supported yet, en-US is loaded instead.");
+						}
 					}
 				}
 				ModsManager.ModListAllDo((modEntity) => { modEntity.LoadLauguage(); });

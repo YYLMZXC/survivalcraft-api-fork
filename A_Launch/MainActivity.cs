@@ -54,6 +54,19 @@ namespace SC4Android
 			}
 		}
 
+		private bool isPermissionGranted()
+		{
+			if(GraterThanAndroid11)
+			{
+				return Environment.IsExternalStorageManager;
+			}
+			else if(GraterThanAndroid6)
+			{
+				return CheckSelfPermission(Manifest.Permission.ReadExternalStorage) == Permission.Granted && CheckSelfPermission(Manifest.Permission.WriteExternalStorage) == Permission.Granted;
+			}
+			return true;
+		}
+
 		private Thread m_thread = null!;
 		protected override void OnCreate(Bundle? savedInstanceState)
 		{
@@ -69,6 +82,14 @@ namespace SC4Android
 					if (RunRequired)
 					{
 						break;
+					}
+					else
+					{
+						RunRequired = isPermissionGranted();
+						if(RunRequired)
+						{
+							break;
+						}
 					}
 
 					// 15 秒后仍未成功申请
