@@ -8,7 +8,7 @@ namespace Game
 
 		public Vector3 Move;
 
-		public Vector3 SneakMove;
+		public Vector3 CrouchMove;
 
 		public Vector3? VrMove;
 
@@ -18,11 +18,11 @@ namespace Game
 
 		public Vector3 CameraMove;
 
-		public Vector3 CameraSneakMove;
+		public Vector3 CameraCrouchMove;
 
 		public bool ToggleCreativeFly;
 
-		public bool ToggleSneak;
+		public bool ToggleCrouch;
 
 		public bool ToggleMount;
 

@@ -153,9 +153,9 @@ namespace Game
 			m_creativeDragMaxStackingButton.Text = SettingsManager.CreativeDragMaxStacking ? LanguageControl.On : LanguageControl.Off;
 			m_splitDragHalfButton.Text = SettingsManager.DragHalfInSplit ? LanguageControl.On : LanguageControl.Off;
 			m_moveSensitivitySlider.Value = SettingsManager.MoveSensitivity;
-			m_moveSensitivitySlider.Text = MathF.Round(SettingsManager.MoveSensitivity * 10f).ToString();
+			m_moveSensitivitySlider.Text = (SettingsManager.MoveSensitivity * 10f).ToString("0.0");
 			m_lookSensitivitySlider.Value = SettingsManager.LookSensitivity;
-			m_lookSensitivitySlider.Text = MathF.Round(SettingsManager.LookSensitivity * 10f).ToString();
+			m_lookSensitivitySlider.Text = (SettingsManager.LookSensitivity * 10f).ToString("0.0");
 			m_gamepadCursorSpeedSlider.Value = SettingsManager.GamepadCursorSpeed;
 			m_gamepadCursorSpeedSlider.Text = $"{SettingsManager.GamepadCursorSpeed:0.0}x";
 			m_gamepadDeadZoneSlider.Value = SettingsManager.GamepadDeadZone;

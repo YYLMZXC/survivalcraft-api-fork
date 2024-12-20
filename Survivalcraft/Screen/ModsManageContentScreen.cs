@@ -96,19 +96,7 @@ public class ModsManageContentScreen : Screen
 
 	public bool m_isAdmin;
 
-	public string[] m_commonPaths = new string[10]
-	{
-		"android:/Download",
-		"android:/Android/data/com.tencent.mobileqq/Tencent/QQfile_recv",
-		"android:/Android/data/com.tencent.tim/Tencent/TIMfile_recv",
-		"android:tencent/TIMfile_recv",
-		"android:tencent/QQfile_recv",
-		"android:/Quark/Download",
-		"android:/BaiduNetdisk",
-		"android:/UCDownloads",
-		"android:/baidu/searchbox/downloads",
-		"android:/SurvivalCraft2.3/Mods"//特意保留用于搜索旧文件夹模组
-	};
+	public string[] m_commonPaths = [];//Abandoned
 
 	public ModsManageContentScreen()
 	{

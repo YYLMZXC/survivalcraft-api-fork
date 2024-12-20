@@ -67,7 +67,7 @@ namespace Game
 			{
 				DialogsManager.ShowDialog(null,new ListSelectionDialog(null,LanguageControl.LanguageTypes,70f,(object item) => ((KeyValuePair<string, CultureInfo>)item).Value.NativeName,delegate (object item)
 				{
-					LanguageControl.ChangeLanguage(((KeyValuePair<string, string>)item).Key);
+					LanguageControl.ChangeLanguage(((KeyValuePair<string, CultureInfo>)item).Key);
 				}));
 			}
 			if (Children.Find<ButtonWidget>("Play").IsClicked)

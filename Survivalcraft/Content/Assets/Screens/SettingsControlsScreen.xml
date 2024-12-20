@@ -64,12 +64,12 @@
 
           <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
             <LabelWidget Text="[SettingsControlsScreen:7]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
-            <SliderWidget Name="MoveSensitivitySlider" Size="Infinity, 60" VerticalAlignment="Center" Margin="20, 0" />
+            <SliderWidget Name="MoveSensitivitySlider" Granularity="0.05" MinValue="0" MaxValue="1" Size="Infinity, 60" VerticalAlignment="Center" Margin="20, 0" />
           </UniformSpacingPanelWidget>
 
           <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">
             <LabelWidget Text="[SettingsControlsScreen:8]"  HorizontalAlignment="Far" VerticalAlignment="Center" Margin="20, 0" />
-            <SliderWidget Name="LookSensitivitySlider" Size="Infinity, 60" VerticalAlignment="Center" Margin="20, 0" />
+            <SliderWidget Name="LookSensitivitySlider" Granularity="0.05" MinValue="0" MaxValue="1" Size="Infinity, 60" VerticalAlignment="Center" Margin="20, 0" />
           </UniformSpacingPanelWidget>
 
           <UniformSpacingPanelWidget Direction="Horizontal" Margin="0, 3">

@@ -501,7 +501,7 @@ namespace Game
 		{
 			if (m_subsystemGameInfo.TotalElapsedGameTime > m_fogEndTime)
 			{
-				float num = ((m_subsystemSeasons.Season == Season.Autumn || m_subsystemSeasons.Season == Season.Winter) ? 2f : 1f);
+				float num = ((m_subsystemSeasons.Season == Season.Autumn || m_subsystemSeasons.Season == Season.Winter) ? 1.75f : 1f);
 				if (m_fogEndTime == 0.0 && m_subsystemGameInfo.WorldSettings.StartingPositionMode == StartingPositionMode.Hard)
 				{
 					m_fogStartTime = m_subsystemGameInfo.TotalElapsedGameTime + (double)(60f * m_random.Float(1f, 10f) / num);

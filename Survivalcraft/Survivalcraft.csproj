@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net9.0-windows</TargetFrameworks>
+		<TargetFrameworks Condition=" '$(Configuration)' == 'Release' ">net9.0;net9.0-windows</TargetFrameworks>
+		<TargetFramework Condition=" '$(Configuration)' == 'Debug' ">net9.0-windows</TargetFramework>
 		<OutputType Condition="'$(TargetFramework)' == 'net9.0'">library</OutputType>
 		<NoWarn>1701;1702;CA1416;1591;1572;1573;1587</NoWarn>
 		<RootNamespace>Game</RootNamespace>

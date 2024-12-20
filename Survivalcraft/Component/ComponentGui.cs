@@ -618,7 +618,7 @@ namespace Game
 
 				}
 			}
-			if (m_crouchButtonWidget.IsClicked || playerInput.ToggleSneak)
+			if (m_crouchButtonWidget.IsClicked || playerInput.ToggleCrouch)
 			{
 				if (m_componentPlayer.ComponentBody.TargetCrouchFactor == 0f)
 				{

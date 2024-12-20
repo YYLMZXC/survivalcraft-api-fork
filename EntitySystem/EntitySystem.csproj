@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net9.0;net9.0-windows;net9.0-android35.0</TargetFrameworks>
+		<TargetFrameworks Condition=" '$(Configuration)' == 'Release' ">net9.0;net9.0-windows;net9.0-android35.0</TargetFrameworks>
+		<TargetFramework Condition=" '$(Configuration)' == 'Debug' ">net9.0-windows</TargetFramework>
 		<NoWarn>$(NoWarn);1591;1573</NoWarn>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>

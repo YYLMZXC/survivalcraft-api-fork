@@ -32,7 +32,7 @@ namespace Game
 				return;
 			}
 			ComponentInput componentInput = componentPlayer.ComponentInput;
-			Vector3 cameraSneakMove = componentInput.PlayerInput.CameraSneakMove;
+			Vector3 cameraSneakMove = componentInput.PlayerInput.CameraCrouchMove;
 			Vector2 cameraLook = componentInput.PlayerInput.CameraLook;
 			m_angles.X = MathUtils.NormalizeAngle(m_angles.X + (4f * cameraLook.X * dt) + (0.5f * cameraSneakMove.X * dt));
 			m_angles.Y = Math.Clamp(MathUtils.NormalizeAngle(m_angles.Y + (4f * cameraLook.Y * dt)), MathUtils.DegToRad(-20f), MathUtils.DegToRad(70f));

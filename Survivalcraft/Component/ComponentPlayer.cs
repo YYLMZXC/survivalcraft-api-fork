@@ -310,7 +310,7 @@ namespace Game
                 });
                 if (!skipVanilla_h)
 				{
-                    ComponentLocomotion.WalkOrder = ComponentBody.IsSneaking ? (0.66f * new Vector2(playerInput.SneakMove.X, playerInput.SneakMove.Z)) : new Vector2(playerInput.Move.X, playerInput.Move.Z);
+                    ComponentLocomotion.WalkOrder = ComponentBody.IsSneaking ? (0.66f * new Vector2(playerInput.CrouchMove.X, playerInput.CrouchMove.Z)) : new Vector2(playerInput.Move.X, playerInput.Move.Z);
                     ComponentLocomotion.FlyOrder = new Vector3(0f, playerInput.Move.Y, 0f);
                     ComponentLocomotion.TurnOrder = playerInput.Look * new Vector2(1f, 0f);
                     ComponentLocomotion.JumpOrder = MathUtils.Max(playerInput.Jump ? 1 : 0, ComponentLocomotion.JumpOrder);

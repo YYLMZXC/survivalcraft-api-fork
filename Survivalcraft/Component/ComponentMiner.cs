@@ -400,7 +400,7 @@ namespace Game
 				num = AttackPower * m_random.Float(0.8f, 1.2f);
 				num2 = 0.66f;
 			}
-			num2 *= ((componentBody.Velocity.Length() < 0.05f) ? 3f : 1f);
+			num2 *= ((componentBody.Velocity.Length() < 0.05f) ? 2f : 1f);
 			bool flag;
 
             ModsManager.HookAction("OnMinerHit", modLoader =>

@@ -404,7 +404,25 @@ public class WidgetInput
 
 	public Matrix? VrQuadMatrix { get; set; }
 
-	public bool IsVrCursorVisible => false;
+	public bool IsVrCursorVisible
+	{
+		get
+		{
+			if (m_isVrCursorVisible)
+			{
+				if ((Devices & WidgetInputDevice.VrControllers) != 0)
+				{
+					return VrManager.IsVrStarted;
+				}
+				return false;
+			}
+			return false;
+		}
+		set
+		{
+			m_isVrCursorVisible = value;
+		}
+	}
 
 	public Vector2? VrCursorPosition { get; set; }
 
@@ -605,6 +623,51 @@ public class WidgetInput
 			{
 				return true;
 			}
+		}
+		return false;
+	}
+
+	public Vector2 GetVrStickPosition(VrController controller, float deadZone = 0f)
+	{
+		if (!m_isCleared && (Devices & WidgetInputDevice.VrControllers) != 0)
+		{
+			return VrManager.GetStickPosition(controller, deadZone);
+		}
+		return Vector2.Zero;
+	}
+
+	public Vector2? GetVrTouchpadPosition(VrController controller, float deadZone = 0f)
+	{
+		if (!m_isCleared && (Devices & WidgetInputDevice.VrControllers) != 0)
+		{
+			return VrManager.GetTouchpadPosition(controller, deadZone);
+		}
+		return null;
+	}
+
+	public float GetVrTriggerPosition(VrController controller, float deadZone = 0f)
+	{
+		if (!m_isCleared && (Devices & WidgetInputDevice.VrControllers) != 0)
+		{
+			return VrManager.GetTriggerPosition(controller, deadZone);
+		}
+		return 0f;
+	}
+
+	public bool IsVrButtonDown(VrController controller, VrControllerButton button)
+	{
+		if (!m_isCleared && (Devices & WidgetInputDevice.VrControllers) != 0)
+		{
+			return VrManager.IsButtonDown(controller, button);
+		}
+		return false;
+	}
+
+	public bool IsVrButtonDownOnce(VrController controller, VrControllerButton button)
+	{
+		if (!m_isCleared && (Devices & WidgetInputDevice.VrControllers) != 0)
+		{
+			return VrManager.IsButtonDownOnce(controller, button);
 		}
 		return false;
 	}
